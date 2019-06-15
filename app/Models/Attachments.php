@@ -2,20 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 
-class Profile extends Model
+class Attachments extends Model
 {
-    protected $attributes = [
-        'data' => '{}',
-    ];
     protected $fillable = [
         'user_id',
-        'data',
+        'attachmentable_id',
+        'attachmentable_type',
+        'original_name',
+        'path',
     ];
-    protected $casts = [
-        'data' => 'array',
+    protected $hidden = [
+        'path',
     ];
 
     /*
@@ -26,5 +26,9 @@ class Profile extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function attachmentable()
+    {
+        return $this->morphTo();
     }
 }

@@ -19,8 +19,9 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->string('title', 255);
+            $table->string('title', 255)->comment('タイトル');
             $table->json('contents')->comment('コンテンツ');
+            $table->string('status', 255)->comment('公開状態');
             $table->timestamps();
 
             $table->foreign('user_id')

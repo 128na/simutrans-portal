@@ -49,4 +49,16 @@ class User extends Authenticatable
         return $this->hasMany(Attachment::class);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | 一般
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * ユーザーが管理者か
+     */
+    public function isAdmin()
+    {
+        return $this->role === config('role.admin');
+    }
 }

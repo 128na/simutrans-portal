@@ -35,10 +35,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Article::class);
     }
-    public function attachments()
-    {
-        return $this->morphMany(Attachments::class, 'attachmentable');
-    }
+
     public function profile()
     {
         return $this->hasOne(Profile::class);

@@ -7,8 +7,29 @@ use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
-class Articles extends Model
+class Article extends Model
 {
+
+    /*
+        アドオン紹介
+            contents = {
+                description: 説明文
+                author: 作者名
+                link: リンク先URL
+                thumbnail?: サムネイル画像ID
+                thanks?: 元アドオン、謝辞
+                license?: ライセンス
+            };
+        アドオン投稿
+            contents = {
+                description: 説明文
+                author: 作者名
+                file: 添付ファイルID
+                thumbnail?: サムネイル画像ID
+                thanks?: 元アドオン、謝辞
+                license?: ライセンス
+            };
+    */
     protected $attributes = [
         'contents' => '{}',
     ];
@@ -29,7 +50,7 @@ class Articles extends Model
     */
     public function attachments()
     {
-        return $this->morphMany(Attachments::class, 'attachmentable');
+        return $this->morphMany(Attachment::class, 'attachmentable');
     }
     public function categories()
     {

@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Models;
-use App\Models\Artcile;
+use App\Models\Article;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Categories extends Model
+class Category extends Model
 {
     protected $fillable = [
         'parent_id',
@@ -20,6 +20,14 @@ class Categories extends Model
     */
     public function articles()
     {
-        return $this->belongsToMany(Artcile::class);
+        return $this->belongsToMany(Article::class);
+    }
+    public function parent()
+    {
+        return $this->belongsTo(Category::class,'parent_id')->where('parent_id',0)->with('parent');
+    }
+    public function children()
+    {
+        return $this->hasMany(Category::class,'parent_id')->with('children');
     }
 }

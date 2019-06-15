@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
-class Attachments extends Model
+class Attachment extends Model
 {
     protected $fillable = [
         'user_id',

@@ -145,9 +145,9 @@ class Article extends Model
     {
         return asset('uploads/'.$this->thumbnail->path);
     }
-    public function getFileUrlAttribute()
+    public function getHasFileAttribute()
     {
-        return asset('uploads/'.$this->file->path);
+        return !is_null($this->file);
     }
 
     public function getCategoryPostAttribute()

@@ -56,8 +56,8 @@ class DevSeeder extends Seeder
     {
         $avater = Attachment::make([
             'user_id'       => $user->id,
-            'original_name' => $user->name.'のアバター',
-            'path'          => 'avater.png',
+            'original_name' => $user->name.'のアバター.jpg',
+            'path'          => 'avater.jpg',
         ]);
         $user->profile->attachments()->save($avater);
     }
@@ -67,12 +67,12 @@ class DevSeeder extends Seeder
         // add attachments
         $thumb = Attachment::make([
             'user_id' => $user->id,
-            'original_name' => 'アドオン投稿「'.$article->title.'」のサムネイル',
-            'path' => 'sample.png',
+            'original_name' => 'アドオン投稿「'.$article->title.'」のサムネイル.png',
+            'path' => 'sample'.random_int(0,2).'.png',
         ]);
         $file = Attachment::make([
             'user_id' => $user->id,
-            'original_name' => 'アドオン投稿「'.$article->title.'」のzipファイル',
+            'original_name' => 'アドオン投稿「'.$article->title.'」のzipファイル.zip',
             'path' => 'sample.zip',
         ]);
         $article->attachments()->saveMany([$thumb, $file]);
@@ -92,8 +92,8 @@ class DevSeeder extends Seeder
         // add attachments
         $thumb = Attachment::make([
             'user_id' => $user->id,
-            'original_name' => 'アドオン紹介「'.$article->title.'」のサムネイル',
-            'path' => 'sample.png',
+            'original_name' => 'アドオン紹介「'.$article->title.'」のサムネイル.png',
+            'path' => 'sample'.random_int(0,2).'.png',
         ]);
         $article->attachments()->saveMany([$thumb]);
 

@@ -17,6 +17,7 @@ Auth::routes();
 // 非ログイン系
 Route::get('/', 'FrontController@index')->name('index');
 Route::get('/articles/{article}', 'FrontController@articles')->name('articles');
+Route::get('/articles/{article}/download', 'FrontController@download')->name('download');
 // Route::get('/search', 'FrontController@search')->name('search');
 // Route::get('/categories/{category}', 'FrontController@categories')->name('categories');
 // Route::get('/tags/{tag}', 'FrontController@tags')->name('tags');

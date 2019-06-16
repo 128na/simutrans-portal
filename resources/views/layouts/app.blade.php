@@ -28,7 +28,6 @@
         }
         .list .img-thumbnail {
             max-height: 128px;
-            min-width: 128px;
             max-width: 256px;
         }
         .list .article-box {
@@ -42,7 +41,6 @@
             .list .article-box {
                 flex-direction: column
             }
-
         }
     </style>
 </head>
@@ -55,7 +53,7 @@
             </button>
 
             <div class="collapse navbar-collapse" id="global-menu">
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ml-auto mr-2">
                     @if (isset($categories))
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="post-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Post Types</a>
@@ -86,10 +84,14 @@
                         <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
                     @else
-                        <li class="nav-item"><a class="nav-link" href="{{ route('mypage.index') }}">{{ __('MyPage') }}</a></li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                            >{{ __('Logout') }}</a>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="mypage-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</a>
+                            <div class="dropdown-menu" aria-labelledby="mypage-dropdown">
+                                <a class="dropdown-item" href="{{ route('mypage.index') }}">{{ __('MyPage') }}</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+                            </div>
                         </li>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf

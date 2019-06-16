@@ -28,6 +28,14 @@ class FrontController extends Controller
         ];
         return static::viewWithHeader('front.articles', $data);
     }
+    public function download(Article $article)
+    {
+        abort_unless($article->is_publish, 404);
 
+        $article->load('attachments');
+        abort_unless($article->has_file, 404);
 
+        return response()
+            ->download(public_path('uploads/'.$article->file->path), $article->file->original_name);
+    }
 }

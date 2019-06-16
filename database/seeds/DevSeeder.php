@@ -55,7 +55,7 @@ class DevSeeder extends Seeder
     private static function addCategories($article, $type)
     {
         $category_ids = collect([$type->id]);
-        $category_ids->merge(
+        $category_ids = $category_ids->merge(
             Category::where('parent_id', '<>', $type->parent_id)->inRandomOrder()->limit(random_int(0, 5))
                 ->get()->pluck('id')
         );

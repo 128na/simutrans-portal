@@ -38,7 +38,7 @@ class ProdSeeder extends Seeder
 
     private static function addPakCategories()
     {
-        $pak = Category::firstOrCreate(['slug' => 'pak', 'name' => 'pakセット',]);
+        $pak = Category::firstOrCreate(['slug' => 'pak', 'name' => 'pakサイズ',]);
 
         $paks = collect(
             [
@@ -55,7 +55,7 @@ class ProdSeeder extends Seeder
 
     private static function addTypeCategories()
     {
-        $type = Category::firstOrCreate(['slug' => 'type', 'name' => '種類']);
+        $type = Category::firstOrCreate(['slug' => 'type', 'name' => 'アドオン種類']);
 
         $types = collect(
             [

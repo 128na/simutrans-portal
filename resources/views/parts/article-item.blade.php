@@ -7,7 +7,7 @@
             <a href="{{ route('articles', $article->slug)}}">{{ $article->title }}</a>
         </h5>
         <p>
-            <a href="#">{{ $article->author}}</a>
+            by <a href="#">{{ $article->author}}</a>
         </p>
         @foreach ($article->categories as $category)
             <a href="#" class="btn btn-sm btn-secondary">{{ $category->name }}</a>

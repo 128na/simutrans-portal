@@ -11,8 +11,8 @@ class FrontController extends Controller
     {
         $data = [
             'articles' => [
-                'latest' => Article::active()->with('user', 'attachments', 'categories.parent')->latest()->limit(5)->get(),
-                'random' => Article::active()->with('user', 'attachments', 'categories.parent')->inRandomOrder()->limit(5)->get(),
+                'latest' => Article::active()->with('user', 'attachments', 'categories')->latest()->limit(5)->get(),
+                'random' => Article::active()->with('user', 'attachments', 'categories')->withoutGlobalScope('order')->inRandomOrder()->limit(5)->get(),
             ]
         ];
 
@@ -24,7 +24,7 @@ class FrontController extends Controller
         abort_unless($article->is_publish, 404);
 
         $data = [
-            'article' => $article->load('user', 'attachments', 'categories.parent'),
+            'article' => $article->load('user', 'attachments', 'categories'),
         ];
         return static::viewWithHeader('front.articles', $data);
     }

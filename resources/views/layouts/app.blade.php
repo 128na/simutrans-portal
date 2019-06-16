@@ -28,15 +28,21 @@
         }
         .list .img-thumbnail {
             max-height: 128px;
-            max-width: 100%;
+            min-width: 128px;
+            max-width: 256px;
         }
         .list .article-box {
             display:flex;
-
         }
         .detail .img-thumbnail {
             max-height: 512px;
             max-width: 100%;
+        }
+        @media (max-width: 768px) {
+            .list .article-box {
+                flex-direction: column
+            }
+
         }
     </style>
 </head>
@@ -49,17 +55,33 @@
             </button>
 
             <div class="collapse navbar-collapse" id="global-menu">
-                <ul class="navbar-nav mr-auto">
-                    @foreach ($categories as $category)
+                <ul class="navbar-nav ml-auto">
+                    @if (isset($categories))
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="{{ $category->slug }}-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $category->name }}</a>
-                            <div class="dropdown-menu" aria-labelledby="{{ $category->slug }}-dropdown">
-                                @foreach ($category->children as $child)
-                                    <a class="dropdown-item" href="#">{{ $child->name }}</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="post-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Post Types</a>
+                            <div class="dropdown-menu" aria-labelledby="post-dropdown">
+                                @foreach ($categories['post'] as $category)
+                                    <a class="dropdown-item" href="#">{{ $category->name }} <small>( {{ $category->articles_count }} )</small></a>
                                 @endforeach
                             </div>
                         </li>
-                    @endforeach
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="pak-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Addons</a>
+                            <div class="dropdown-menu" aria-labelledby="pak-dropdown">
+                                @foreach ($categories['pak'] as $category)
+                                    <a class="dropdown-item" href="#">{{ $category->name }} <small>( {{ $category->articles_count }} )</small></a>
+                                @endforeach
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="addon-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paks</a>
+                            <div class="dropdown-menu" aria-labelledby="addon-dropdown">
+                                @foreach ($categories['addon'] as $category)
+                                    <a class="dropdown-item" href="#">{{ $category->name }} <small>( {{ $category->articles_count }} )</small></a>
+                                @endforeach
+                            </div>
+                        </li>
+                    @endif
                     @guest
                         <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>

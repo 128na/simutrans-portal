@@ -3,5 +3,5 @@
 @section('title', $article->title)
 
 @section('content')
-    @include('parts.article-'.$article->post_type->slug, ['article' => $article])
+    @include('parts.article-'.$article->category_post->slug, ['article' => $article])
 @endsection

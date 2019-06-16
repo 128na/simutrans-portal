@@ -6,7 +6,9 @@ use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\User;
 use App\Traits\Slugable;
+
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Article extends Model
 {
@@ -45,6 +47,22 @@ class Article extends Model
         'contents' => 'array',
     ];
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | グローバルスコープ
+    |--------------------------------------------------------------------------
+    */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('order', function (Builder $builder) {
+            $builder->orderBy('updated_at', 'desc');
+        });
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | リレーション
@@ -82,6 +100,11 @@ class Article extends Model
     | アクセサ
     |--------------------------------------------------------------------------
     */
+    public function getIsPublishAttribute()
+    {
+        return $this->status === config('status.publish');
+    }
+
     public function getDescriptionAttribute()
     {
         return $this->contents['description'] ?? '';
@@ -102,16 +125,13 @@ class Article extends Model
     {
         return $this->contents['thanks'] ?? '';
     }
+
     public function getThumbnailAttribute()
     {
         $id = $this->contents['thumbnail'] ?? '';
         return $this->attachments->first(function($attachment) use ($id) {
             return $id === $attachment->id;
         });
-    }
-    public function getThumbnailUrlAttribute()
-    {
-        return asset('uploads/'.$this->thumbnail->path);
     }
     public function getFileAttribute()
     {
@@ -120,33 +140,39 @@ class Article extends Model
             return $id === $attachment->id;
         });
     }
+
+    public function getThumbnailUrlAttribute()
+    {
+        return asset('uploads/'.$this->thumbnail->path);
+    }
     public function getFileUrlAttribute()
     {
         return asset('uploads/'.$this->file->path);
     }
-    public function getPostTypeAttribute()
+
+    public function getCategoryPostAttribute()
     {
         return $this->categories->first(function($category) {
-            return $category->has_parent && $category->parent->slug === 'post-type';
+            return $category->type === config('category.type.post');
         });
     }
-    public function getIsPostAttribute()
-    {
-        return $this->post_type->slug === 'addon-post';
-    }
-    public function getIsIntroductionAttribute()
-    {
-        return $this->post_type->slug === 'addon-introduction';
-    }
-    public function getTypesAttribute()
+    public function getCategoryPaksAttribute()
     {
         return $this->categories->filter(function($category) {
-            return $category->has_parent && $category->parent->slug === 'type';
+            return $category->type === config('category.type.pak');
         });
     }
-    public function getIsPublishAttribute()
+    public function getCategoryAddonsAttribute()
     {
-        return $this->status === config('status.publish');
+        return $this->categories->filter(function($category) {
+            return $category->type === config('category.type.addon');
+        });
+    }
+    public function getCategoryPak128PositionsAttribute()
+    {
+        return $this->categories->filter(function($category) {
+            return $category->type === config('category.type.pak128_position');
+        });
     }
 
     /*

@@ -20,7 +20,11 @@ class Controller extends BaseController
      */
     protected static function viewWithHeader($view_path, $data = [])
     {
-        $data['categories'] = Category::parents()->with('children')->get();
+        $categories = Category::orderBy('order')->withCount('articles')->get();
+        $data['categories'] = $categories->reduce(function($c, $cat) {
+            $c[$cat->type][] = $cat;
+            return $c;
+        }, []);
 
         return view($view_path, $data);
     }

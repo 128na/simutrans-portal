@@ -30,8 +30,8 @@ class DevSeeder extends Seeder
             );
         });
 
-        $category_post = Category::firstOrCreate(['slug' => 'addon-post']);
-        $category_introduction = Category::firstOrCreate(['slug' => 'addon-introduction']);
+        $category_post = Category::where('slug', 'addon-post')->first();
+        $category_introduction = Category::where('slug', 'addon-introduction')->first();
 
         // add attachment into article
         foreach(User::with(['articles', 'profile'])->cursor() as $user) {
@@ -52,23 +52,12 @@ class DevSeeder extends Seeder
         }
     }
 
-    private static function addCategories($article, $type)
-    {
-        $category_ids = collect([$type->id]);
-        $category_ids = $category_ids->merge(
-            Category::where('parent_id', '<>', $type->parent_id)->inRandomOrder()->limit(random_int(0, 5))
-                ->get()->pluck('id')
-        );
-        $article->categories()->sync($category_ids);
-    }
-
-
     private static function addAvater($user)
     {
         $avater = Attachment::make([
-            'user_id' => $user->id,
+            'user_id'       => $user->id,
             'original_name' => $user->name.'のアバター',
-            'path' => 'avater.png',
+            'path'          => 'avater.png',
         ]);
         $user->profile->attachments()->save($avater);
     }
@@ -116,5 +105,14 @@ class DevSeeder extends Seeder
         $c['license']   = 'MIT';
         $article->contents = $c;
         $article->save();
+    }
+
+    private static function addCategories($article, $type)
+    {
+        $ids = collect([$type->id]);
+        $ids = $ids->merge(Category::pak()->inRandomOrder()->limit(random_int(1, 3))->get()->pluck('id'));
+        $ids = $ids->merge(Category::addon()->inRandomOrder()->limit(random_int(1, 5))->get()->pluck('id'));
+        $ids = $ids->merge(Category::pak128Position()->inRandomOrder()->limit(random_int(0, 1))->get()->pluck('id'));
+        $article->categories()->sync($ids);
     }
 }

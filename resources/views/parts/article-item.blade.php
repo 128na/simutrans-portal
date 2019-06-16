@@ -6,11 +6,17 @@
         <h5>
             <a href="{{ route('articles', $article->slug)}}">{{ $article->title }}</a>
         </h5>
-        <p>
-            by <a href="#">{{ $article->author}}</a>
-        </p>
-        @foreach ($article->categories as $category)
-            <a href="#" class="btn btn-sm btn-secondary">{{ $category->name }}</a>
-        @endforeach
+        <div>
+            <small>by</small> <a href="#">{{ $article->user->name}}</a>
+        </div>
+        <div>
+            @include('parts.category-list', ['categories' => $article->categories])
+        </div>
+        <div>
+            <small>post:</small> {{ $article->created_at }}.
+            @if ($article->updated_at > $article->created_at)
+                <small>updated:</small> {{ $article->updated_at }}.
+            @endif
+        </div>
     </div>
 </div>

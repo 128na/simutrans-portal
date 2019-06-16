@@ -5,16 +5,32 @@ use App\Models\Article;
 use App\Traits\Slugable;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Category extends Model
 {
     use Slugable;
 
     protected $fillable = [
-        'parent_id',
         'name',
+        'type',
         'slug',
+        'order',
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | グローバルスコープ
+    |--------------------------------------------------------------------------
+    */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('order', function (Builder $builder) {
+            $builder->orderBy('order', 'asc');
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -25,24 +41,27 @@ class Category extends Model
     {
         return $this->belongsToMany(Article::class);
     }
-    public function parent()
-    {
-        return $this->belongsTo(Category::class,'parent_id')->where('parent_id', null)->with('parent');
-    }
-    public function children()
-    {
-        return $this->hasMany(Category::class,'parent_id')->with('children');
-    }
 
     /*
     |--------------------------------------------------------------------------
     | スコープ
     |--------------------------------------------------------------------------
     */
-    public function scopeParents($query)
+    public function scopePost($query)
     {
-        return $query->where('parent_id', null)
-            ->whereIn('slug', ['post-type', 'pak', 'type']);
+        return $query->where('type', config('category.type.post'));
+    }
+    public function scopePak($query)
+    {
+        return $query->where('type', config('category.type.pak'));
+    }
+    public function scopeAddon($query)
+    {
+        return $query->where('type', config('category.type.addon'));
+    }
+    public function scopePak128Position($query)
+    {
+        return $query->where('type', config('category.type.pak128_position'));
     }
 
     /*
@@ -50,8 +69,4 @@ class Category extends Model
     | アクセサ
     |--------------------------------------------------------------------------
     */
-    public function getHasParentAttribute()
-    {
-        return !is_null($this->parent_id);
-    }
 }

@@ -2,14 +2,13 @@
     <h1>{{ $article->title }}</h1>
     <img src="{{ $article->thumbnail_url }}" class="img-thumbnail">
     <dl class="mx-1 mt-2">
-        <dt>Author</dt>
-        <dd class="mx-1 mt-2"><a href="#" rel="author">{{ $article->author }}</a></dd>
+        <dt>Author / Publisher</dt>
+        <dd class="mx-1 mt-2">
+            {{ $article->author }}</a> / <a href="#" rel="author">{{ $article->user->name }}</a>
+        </dd>
         <dt>Categories</dt>
         <dd class="mx-1 mt-2">
-            @foreach ($article->categories as $category)
-                <a href="#" class="btn btn-sm btn-secondary" rel="tag">{{ $category->name }}</a>
-            @endforeach
-        </dd>dforeach
+            @include('parts.category-list', ['categories' => $article->categories])
         </dd>
         <dt>Description</dt>
         <dd class="mt-1 ml-2">{{ $article->description }}</dd>

@@ -22,8 +22,10 @@ $factory->define(Article::class, function (Faker $faker) {
         'description' => $faker->realText,
         'author' => $faker->name,
     ];
+    $sentence = $faker->sentence;
     return [
-        'title' => $faker->sentence,
+        'title' => $sentence,
+        'slug' => $sentence,
         'contents' => $contents,
         'status' => $faker->randomElement(config('status')),
     ];

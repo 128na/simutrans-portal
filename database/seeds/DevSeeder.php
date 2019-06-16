@@ -40,14 +40,26 @@ class DevSeeder extends Seeder
             foreach($user->articles as $article) {
                 // アドオン投稿
                 if(random_int(0,1)) {
-                    self::addAddonPost($user, $article, $category_post);
+                    self::addAddonPost($user, $article);
+                    self::AddCategories($article, $category_post);
                 }
                 // アドオン紹介
                 else {
-                    self::addAddonIntroduction($user, $article, $category_introduction);
+                    self::addAddonIntroduction($user, $article);
+                    self::AddCategories($article, $category_introduction);
                 }
             }
         }
+    }
+
+    private static function addCategories($article, $type)
+    {
+        $category_ids = collect([$type->id]);
+        $category_ids->merge(
+            Category::where('parent_id', '<>', $type->parent_id)->inRandomOrder()->limit(random_int(0, 5))
+                ->get()->pluck('id')
+        );
+        $article->categories()->sync($category_ids);
     }
 
 
@@ -61,7 +73,7 @@ class DevSeeder extends Seeder
         $user->profile->attachments()->save($avater);
     }
 
-    private static function addAddonPost($user, $article, $category)
+    private static function addAddonPost($user, $article)
     {
         // add attachments
         $thumb = Attachment::make([
@@ -84,14 +96,9 @@ class DevSeeder extends Seeder
         $c['license']   = 'Creative Commons';
         $article->contents = $c;
         $article->save();
-
-        // add categories
-        $category_ids = [$category->id];
-        $category_ids[] = Category::where('parent_id', '<>', $category->parent_id)->inRandomOrder()->first()->id;
-        $article->categories()->sync($category_ids);
     }
 
-    private static function addAddonIntroduction($user, $article, $category)
+    private static function addAddonIntroduction($user, $article)
     {
         // add attachments
         $thumb = Attachment::make([
@@ -109,10 +116,5 @@ class DevSeeder extends Seeder
         $c['license']   = 'MIT';
         $article->contents = $c;
         $article->save();
-
-        // add categories
-        $category_ids = [$category->id];
-        $category_ids[] = Category::where('parent_id', '<>', $category->parent_id)->inRandomOrder()->first()->id;
-        $article->categories()->sync($category_ids);
     }
 }

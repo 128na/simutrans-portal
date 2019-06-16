@@ -38,14 +38,15 @@ class ProdSeeder extends Seeder
 
     private static function addPakCategories()
     {
-        $pak = Category::firstOrCreate(['name' => 'pakセット', 'slug' => 'pak']);
+        $pak = Category::firstOrCreate(['slug' => 'pak', 'name' => 'pakセット',]);
 
         $paks = collect(
             [
-                ['name' => '64', 'slug' => '64'],
-                ['name' => '128', 'slug' => '128'],
-                ['name' => '128.japan', 'slug' => '128-japan'],
-                ['name' => '256(Extended)', 'slug' => '256-extended'],
+                ['slug' => '64',           'name' => 'pak64'],
+                ['slug' => '128',          'name' => 'pak128'],
+                ['slug' => '128-japan',    'name' => 'pak128.Japan'],
+                ['slug' => '256',          'name' => 'pak256'],
+                ['slug' => '256-extended', 'name' => 'pak256(Extended)'],
             ])->map(function($pak) {
                 return Category::firstOrCreate($pak);
         });
@@ -54,29 +55,29 @@ class ProdSeeder extends Seeder
 
     private static function addTypeCategories()
     {
-        $type = Category::firstOrCreate(['name' => '種類', 'slug' => 'type']);
+        $type = Category::firstOrCreate(['slug' => 'type', 'name' => '種類']);
 
         $types = collect(
             [
-                ['name'=> 'その他', 'slug' => 'others'],
-                ['name'=> 'トラム施設', 'slug' => 'tram-tools'],
-                ['name'=> 'トラム車両', 'slug' => 'tram-vehicle'],
-                ['name'=> 'ナローゲージ施設', 'slug' => 'narrow-gauge-tools'],
-                ['name'=> 'ナローゲージ車両', 'slug' => 'narrow-gauge-vahicle'],
-                ['name'=> 'マグレブ(リニア)施設', 'slug' => 'maglev-tools'],
-                ['name'=> 'マグレブ(リニア)車両', 'slug' => 'maglev-vehicles'],
-                ['name'=> 'モノレール施設', 'slug' => 'monorail-tools'],
-                ['name'=> 'モノレール車両', 'slug' => 'monorail-vehicles'],
-                ['name'=> '一般建築物', 'slug' => 'buildings'],
-                ['name'=> '港湾施設', 'slug' => 'seaport-tools'],
-                ['name'=> '産業', 'slug' => 'industrial-tools'],
-                ['name'=> '空港施設', 'slug' => 'airport-tools'],
-                ['name'=> '自動車', 'slug' => 'road-vehicles'],
-                ['name'=> '航空機', 'slug' => 'aircrafts'],
-                ['name'=> '船舶', 'slug' => 'ships'],
-                ['name'=> '道路施設', 'slug' => 'road-tools'],
-                ['name'=> '鉄道施設', 'slug' => 'rail-tools'],
-                ['name'=> '鉄道車両', 'slug' => 'trains'],
+                ['slug' => 'others',               'name'=> 'その他'],
+                ['slug' => 'tram-tools',           'name'=> 'トラム施設'],
+                ['slug' => 'tram-vehicle',         'name'=> 'トラム車両'],
+                ['slug' => 'narrow-gauge-tools',   'name'=> 'ナローゲージ施設'],
+                ['slug' => 'narrow-gauge-vahicle', 'name'=> 'ナローゲージ車両'],
+                ['slug' => 'maglev-tools',         'name'=> 'マグレブ(リニア)施設'],
+                ['slug' => 'maglev-vehicles',      'name'=> 'マグレブ(リニア)車両'],
+                ['slug' => 'monorail-tools',       'name'=> 'モノレール施設'],
+                ['slug' => 'monorail-vehicles',    'name'=> 'モノレール車両'],
+                ['slug' => 'buildings',            'name'=> '一般建築物'],
+                ['slug' => 'seaport-tools',        'name'=> '港湾施設'],
+                ['slug' => 'industrial-tools',     'name'=> '産業'],
+                ['slug' => 'airport-tools',        'name'=> '空港施設'],
+                ['slug' => 'road-vehicles',        'name'=> '自動車'],
+                ['slug' => 'aircrafts',            'name'=> '航空機'],
+                ['slug' => 'ships',                'name'=> '船舶'],
+                ['slug' => 'road-tools',           'name'=> '道路施設'],
+                ['slug' => 'rail-tools',           'name'=> '鉄道施設'],
+                ['slug' => 'trains',               'name'=> '鉄道車両'],
 
             ])->map(function($type) {
                 return Category::firstOrCreate($type);
@@ -86,12 +87,12 @@ class ProdSeeder extends Seeder
 
     private static function addPak128PositionCategories()
     {
-        $position = Category::firstOrCreate(['name' => 'pak128用描画位置', 'slug' => 'pak128-position']);
+        $position = Category::firstOrCreate(['slug' => 'pak128-position', 'name' => 'pak128用描画位置']);
 
         $positions = collect(
             [
-                ['name' => '新描画位置（主に120.0以降）', 'slug' => 'new'],
-                ['name' => '旧描画位置（主に112.3以前）', 'slug' => 'old'],
+                ['slug' => 'new', 'name' => '新描画位置（主に120.0以降）'],
+                ['slug' => 'old', 'name' => '旧描画位置（主に112.3以前）'],
             ])->map(function($position) {
                 return Category::firstOrCreate($position);
         });
@@ -100,12 +101,12 @@ class ProdSeeder extends Seeder
 
     private static function addPostTypeCategories()
     {
-        $post_type = Category::firstOrCreate(['name' => '投稿形式', 'slug' => 'post-type']);
+        $post_type = Category::firstOrCreate(['slug' => 'post-type', 'name' => '投稿形式']);
 
         $post_types = collect(
             [
-                ['name' => 'アドオン投稿', 'slug' => 'addon-post'],
-                ['name' => 'アドオン紹介', 'slug' => 'addon-introduction'],
+                ['slug' => 'addon-post',         'name' => 'アドオン投稿'],
+                ['slug' => 'addon-introduction', 'name' => 'アドオン紹介'],
             ])->map(function($post_type) {
                 return Category::firstOrCreate($post_type);
         });

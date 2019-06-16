@@ -26,7 +26,8 @@
         footer {
             /* padding: 0.5rem 1rem; */
         }
-        .list .img-thumbnail {
+        .list .img-thumbnail,
+        .form-group .img-thumbnail {
             max-height: 128px;
             max-width: 256px;
         }
@@ -41,6 +42,9 @@
             .list .article-box {
                 flex-direction: column
             }
+        }
+        .badge {
+            padding: 4px;
         }
     </style>
 </head>

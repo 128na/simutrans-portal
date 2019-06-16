@@ -31,11 +31,11 @@ Route::prefix('mypage')->group(function () {
             // Route::get('/edit', 'Mypage\FrontController@edit')->name('edit');
             // Route::post('/edit', 'Mypage\FrontController@update');
 
-            // Route::get('/articles', 'Mypage\ArticleController@index')->name('article.index');
-            // Route::get('/articles/create', 'Mypage\ArticleController@create')->name('article.create');
-            // Route::post('/articles/create', 'Mypage\ArticleController@store')->name('article.store');
-            // Route::get('/articles/{article}/edit', 'Mypage\ArticleController@edit')->name('article.edit');
-            // Route::post('/articles/{article}', 'Mypage\ArticleController@update')->name('article.update');
+            // Route::get('/articles', 'Mypage\ArticleController@index')->name('articles.index');
+            Route::get('/articles/create', 'Mypage\ArticleController@create')->name('articles.create');
+            Route::post('/articles/create', 'Mypage\ArticleController@store')->name('articles.store');
+            Route::get('/articles/{article}/edit', 'Mypage\ArticleController@edit')->name('articles.edit');
+            Route::post('/articles/{article}', 'Mypage\ArticleController@update')->name('articles.update');
         });
     });
 });

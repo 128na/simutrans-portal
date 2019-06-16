@@ -1,23 +1,35 @@
 @extends('layouts.app')
 
+@section('title', 'MyPage')
+
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
+    <p><a class="btn btn-primary" href="{{ route('mypage.articles.create') }}">New Artcile</a></p>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <h1>Articles</h1>
 
-                    You are logged in Mypage!
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    <table class="table table-bordered">
+        <thead>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Views</th>
+            <th>Conversion</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            @foreach ($user->articles as $article)
+                <tr>
+                    <td>{{ $article->id }}</td>
+                    <td>{{ $article->title }}</td>
+                    <td>{{ $article->status }}</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ route('mypage.articles.edit', $article) }}">Edit</a>
+                        <a class="btn btn-secondary" href="{{ route('articles', $article) }}">Show</a>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 @endsection

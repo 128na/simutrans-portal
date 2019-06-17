@@ -5,6 +5,6 @@
 @section('content')
     <h1>Edit {{ $article->title}}</h1>
     <form method="POST" action="{{ route('mypage.articles.update', $article) }}" enctype="multipart/form-data">
-        @include('parts.form-article')
+        @include('mypage.articles._form')
     </form>
 @endsection

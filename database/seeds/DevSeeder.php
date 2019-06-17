@@ -26,7 +26,7 @@ class DevSeeder extends Seeder
                 factory(Profile::class)->make()
             );
             $user->articles()->saveMany(
-                factory(Article::class, random_int(0, 5))->make()
+                factory(Article::class, random_int(0, 10))->make()
             );
         });
 
@@ -111,7 +111,7 @@ class DevSeeder extends Seeder
     {
         $ids = collect([$type->id]);
         $ids = $ids->merge(Category::pak()->inRandomOrder()->limit(random_int(1, 3))->get()->pluck('id'));
-        $ids = $ids->merge(Category::addon()->inRandomOrder()->limit(random_int(1, 5))->get()->pluck('id'));
+        $ids = $ids->merge(Category::addon()->inRandomOrder()->limit(random_int(1, 10))->get()->pluck('id'));
         $ids = $ids->merge(Category::pak128Position()->inRandomOrder()->limit(random_int(0, 1))->get()->pluck('id'));
         $article->categories()->sync($ids);
     }

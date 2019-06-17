@@ -32,6 +32,12 @@ class Article extends Model
                 thanks?: 元アドオン、謝辞
                 license?: ライセンス
             };
+        一般記事
+            contents = {
+                {type:section content:文章},
+                {type:image id:添付画像ID},
+                ...
+            };
     */
     protected $attributes = [
         'contents' => '{}',
@@ -180,4 +186,10 @@ class Article extends Model
     | 一般
     |--------------------------------------------------------------------------
     */
+    public function hasCategory($id)
+    {
+        return $this->categories->search(function($category) use($id) {
+            return $category->id === $id;
+        });
+    }
 }

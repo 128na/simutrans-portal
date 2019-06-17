@@ -46,6 +46,13 @@
         .badge {
             padding: 4px;
         }
+        .category-list {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .category-list .custom-checkbox {
+            min-width: 11rem;
+        }
     </style>
 </head>
 <body>

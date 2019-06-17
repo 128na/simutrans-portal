@@ -11,7 +11,7 @@ class FrontController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $user->load('articles');
+        $user->load('articles.categories');
 
         return view('mypage.index', compact('user'));
     }

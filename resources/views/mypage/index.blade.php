@@ -10,6 +10,7 @@
     <table class="table table-bordered">
         <thead>
             <th>ID</th>
+            <th>Type</th>
             <th>Title</th>
             <th>Status</th>
             <th>Views</th>
@@ -20,6 +21,7 @@
             @foreach ($user->articles as $article)
                 <tr>
                     <td>{{ $article->id }}</td>
+                    <td>{{ $article->category_post->name }}</td>
                     <td>{{ $article->title }}</td>
                     <td>{{ $article->status }}</td>
                     <td>0</td>

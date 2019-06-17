@@ -3,6 +3,7 @@
 namespace App\Models;
 use App\Models\Article;
 use App\Traits\Slugable;
+use App\Collections\CategoryCollection;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,6 +18,16 @@ class Category extends Model
         'slug',
         'order',
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | カスタムコレクション
+    |--------------------------------------------------------------------------
+    */
+    public function newCollection($models = [])
+    {
+        return new CategoryCollection($models);
+    }
 
     /*
     |--------------------------------------------------------------------------

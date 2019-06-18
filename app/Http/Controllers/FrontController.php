@@ -36,6 +36,6 @@ class FrontController extends Controller
         abort_unless($article->has_file, 404);
 
         return response()
-            ->download(public_path('uploads/'.$article->file->path), $article->file->original_name);
+            ->download(public_path('storage/'.$article->file->path), $article->file->original_name);
     }
 }

@@ -131,6 +131,10 @@ class Article extends Model
     {
         return $this->contents['thanks'] ?? '';
     }
+    public function getAgreementAttribute()
+    {
+        return $this->contents['agreement'] ?? false;
+    }
 
     public function getThumbnailAttribute()
     {
@@ -149,7 +153,9 @@ class Article extends Model
 
     public function getThumbnailUrlAttribute()
     {
-        return asset('uploads/'.$this->thumbnail->path);
+        return $this->thumbnail
+             ? asset('storage/'.$this->thumbnail->path)
+             : asset(config('attachment.no-thumbnail'));
     }
     public function getHasFileAttribute()
     {

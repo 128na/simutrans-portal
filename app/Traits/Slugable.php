@@ -30,4 +30,17 @@ trait Slugable
         $value = str_replace($replaces, '-', $value);
         $this->attributes['slug'] = $value;
     }
+
+    /**
+     * スラッグがユニークか
+     */
+    public function isUniqueSlug()
+    {
+        $query = self::where('slug', $this->slug);
+        // IDがある＝保存済みなら自身を除く
+        if ($this->id) {
+            $query->where('id', '<>', $this->id);
+        }
+        return $query->doesntExist();
+    }
 }

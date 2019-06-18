@@ -74,6 +74,10 @@ class Category extends Model
     {
         return $query->where('type', config('category.type.pak128_position'));
     }
+    public function scopeLicense($query)
+    {
+        return $query->where('type', config('category.type.license'));
+    }
 
     /*
     |--------------------------------------------------------------------------

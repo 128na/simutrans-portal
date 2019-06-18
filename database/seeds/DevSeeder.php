@@ -20,6 +20,7 @@ class DevSeeder extends Seeder
     public function run()
     {
         User::where('role', config('role.user'))->delete();
+        Attachment::where('id', '<>', null)->delete();
 
         factory(User::class, 10)->create()->each(function ($user) {
             $user->profile()->save(
@@ -56,8 +57,8 @@ class DevSeeder extends Seeder
     {
         $avater = Attachment::make([
             'user_id'       => $user->id,
-            'original_name' => $user->name.'のアバター.jpg',
-            'path'          => 'avater.jpg',
+            'original_name' => $user->name.'のアバター.png',
+            'path'          => 'default/avater.png',
         ]);
         $user->profile->attachments()->save($avater);
     }
@@ -68,12 +69,12 @@ class DevSeeder extends Seeder
         $thumb = Attachment::make([
             'user_id' => $user->id,
             'original_name' => 'アドオン投稿「'.$article->title.'」のサムネイル.png',
-            'path' => 'sample'.random_int(0,2).'.png',
+            'path' => 'default/sample'.random_int(0,2).'.png',
         ]);
         $file = Attachment::make([
             'user_id' => $user->id,
             'original_name' => 'アドオン投稿「'.$article->title.'」のzipファイル.zip',
-            'path' => 'sample.zip',
+            'path' => 'default/sample.zip',
         ]);
         $article->attachments()->saveMany([$thumb, $file]);
 
@@ -82,7 +83,7 @@ class DevSeeder extends Seeder
         $c['file']      = $file->id;
         $c['thumbnail'] = $thumb->id;
         $c['thanks']    = '圧倒的感謝';
-        $c['license']   = 'Creative Commons';
+        $c['license']   = '改造自由';
         $article->contents = $c;
         $article->save();
     }
@@ -93,7 +94,7 @@ class DevSeeder extends Seeder
         $thumb = Attachment::make([
             'user_id' => $user->id,
             'original_name' => 'アドオン紹介「'.$article->title.'」のサムネイル.png',
-            'path' => 'sample'.random_int(0,2).'.png',
+            'path' => 'default/sample'.random_int(0,2).'.png',
         ]);
         $article->attachments()->saveMany([$thumb]);
 
@@ -102,7 +103,6 @@ class DevSeeder extends Seeder
         $c['link']      = 'http://example.com';
         $c['thumbnail'] = $thumb->id;
         $c['thanks']    = '圧倒的感謝';
-        $c['license']   = 'MIT';
         $article->contents = $c;
         $article->save();
     }
@@ -113,6 +113,7 @@ class DevSeeder extends Seeder
         $ids = $ids->merge(Category::pak()->inRandomOrder()->limit(random_int(1, 3))->get()->pluck('id'));
         $ids = $ids->merge(Category::addon()->inRandomOrder()->limit(random_int(1, 10))->get()->pluck('id'));
         $ids = $ids->merge(Category::pak128Position()->inRandomOrder()->limit(random_int(0, 1))->get()->pluck('id'));
+        $ids = $ids->merge(Category::license()->inRandomOrder()->limit(random_int(0, 1))->get()->pluck('id'));
         $article->categories()->sync($ids);
     }
 }

@@ -31,11 +31,14 @@ Route::prefix('mypage')->group(function () {
             // Route::get('/edit', 'Mypage\FrontController@edit')->name('edit');
             // Route::post('/edit', 'Mypage\FrontController@update');
 
-            // Route::get('/articles', 'Mypage\ArticleController@index')->name('articles.index');
-            Route::get('/articles/create', 'Mypage\ArticleController@create')->name('articles.create');
-            Route::post('/articles/create', 'Mypage\ArticleController@store')->name('articles.store');
-            Route::get('/articles/{article}/edit', 'Mypage\ArticleController@edit')->name('articles.edit');
-            Route::post('/articles/{article}', 'Mypage\ArticleController@update')->name('articles.update');
+            Route::get('/articles/create/{type}', 'Mypage\ArticleController@create')->name('articles.create');
+            Route::get('/articles/create/{type}', 'Mypage\ArticleController@create')->name('articles.create');
+            Route::post('/articles/create/addon-post', 'Mypage\AddonPostController@store')->name('articles.store.addon-post');
+            Route::post('/articles/create/addon-introduction', 'Mypage\AddonIntroductionController@store')->name('articles.store.addon-introduction');
+
+            Route::get('/articles/edit/{article}', 'Mypage\ArticleController@edit')->name('articles.edit');
+            Route::post('/articles/edit/addon-post/{article}', 'Mypage\AddonPostController@update')->name('articles.update.addon-post');
+            Route::post('/articles/edit/addon-introduction/{article}', 'Mypage\AddonIntroductionController@update')->name('articles.update.addon-introduction');
         });
     });
 });

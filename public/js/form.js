@@ -279,6 +279,12 @@ $('form').on('change', '.js-preview-trigger', function (e) {
   var $target = $(e.currentTarget);
   var selector = $target.data('preview');
   $(selector).attr('src', URL.createObjectURL(e.target.files[0]));
+}); // 投稿形式選択切替
+
+var $input_post = $('#js-post');
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  var $target = $(e.target);
+  $input_post.val($target.attr('aria-controls'));
 });
 
 /***/ }),

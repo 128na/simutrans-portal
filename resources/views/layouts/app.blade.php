@@ -50,7 +50,8 @@
             display: flex;
             flex-wrap: wrap;
         }
-        .category-list .custom-checkbox {
+        .category-list .custom-checkbox,
+        .category-list .custom-radio {
             min-width: 11rem;
         }
     </style>
@@ -117,6 +118,26 @@
         </nav>
     </header>
     <main class="container bg-light py-4">
+        <h1>@yield('title')</h1>
+
+        @if (session()->has('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        @if (session()->has('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         @yield('content')
     </main>
     <footer class="navbar-dark bg-primary">

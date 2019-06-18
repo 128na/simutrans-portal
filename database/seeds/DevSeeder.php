@@ -22,12 +22,12 @@ class DevSeeder extends Seeder
         User::where('role', config('role.user'))->delete();
         Attachment::where('id', '<>', null)->delete();
 
-        factory(User::class, 10)->create()->each(function ($user) {
+        factory(User::class, 20)->create()->each(function ($user) {
             $user->profile()->save(
                 factory(Profile::class)->make()
             );
             $user->articles()->saveMany(
-                factory(Article::class, random_int(0, 10))->make()
+                factory(Article::class, random_int(0, 20))->make()
             );
         });
 

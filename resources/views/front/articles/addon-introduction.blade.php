@@ -3,9 +3,8 @@
     <dl class="mx-1 mt-2">
         <dt>Author / Publisher</dt>
         <dd class="mx-1 mt-2">
-            {{ $article->author }}</a> / <a href="#" rel="author">{{ $article->user->name }}</a>
+            {{ $article->author }} / <a href="#" rel="author">{{ $article->user->name }}</a>
         </dd>
-        <dd class="mx-1 mt-2"><a href="#" rel="author">{{ $article->author }}</a></dd>
         <dt>Categories</dt>
         <dd class="mx-1 mt-2">
             @include('parts.category-list', ['categories' => $article->categories])

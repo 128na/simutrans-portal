@@ -6,12 +6,14 @@
     <div class="list">
         <h2>Latest</h2>
         @foreach ($articles['latest'] as $article)
-            @include('front.article.list-item', ['article' => $article])
+            @include('front.articles.list-item', ['article' => $article])
         @endforeach
+
+        <p><a href="{{ route('articles.index') }}">Show All Articles</a>
 
         <h2>Random</h2>
         @foreach ($articles['random'] as $article)
-            @include('front.article.list-item', ['article' => $article])
+            @include('front.articles.list-item', ['article' => $article])
         @endforeach
     </div>
 @endsection

@@ -20,6 +20,6 @@
             <dd class="mt-1 ml-2">{{ $article->license }}</dd>
         @endif
         <dt>Download</dt>
-        <dd class="mt-1 ml-2"><a class="btn btn-lg btn-primary" href="{{ route('download', $article) }}">Download</a></dd>
+        <dd class="mt-1 ml-2"><a class="btn btn-lg btn-primary" href="{{ route('articles.download', $article) }}">Download</a></dd>
     </dl>
 </div>

@@ -19,6 +19,10 @@ use Faker\Generator as Faker;
 $factory->define(Profile::class, function (Faker $faker) {
 
     return [
-        'data' => ['greeting' => 'Hello!'],
+        'data' => [
+                'description' => 'Hello!',
+                'twitter'     => 'twitter_jp',
+                'website'     => 'http://example.com',
+        ],
     ];
 });

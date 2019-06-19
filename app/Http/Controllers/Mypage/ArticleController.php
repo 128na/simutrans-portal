@@ -96,8 +96,8 @@ class ArticleController extends Controller
     /**
      * 記事固有のコンテンツ保存処理
      */
-    protected function saveContents(Request $request, Article $article){
-
+    protected function saveContents(Request $request, Article $article)
+    {
     }
 
     /**
@@ -118,14 +118,13 @@ class ArticleController extends Controller
     /**
      * 添付ファイルの保存
      */
-    protected static function saveAttachment($file, $user_id, $attachmentable)
+    protected static function saveAttachment($file, $user_id, $attachmentable, $old_attachment_id = null)
     {
-        $path = $file->store('user/'.$user_id, 'public');
-        return Attachment::create([
-            'user_id'       => $user_id,
-            'original_name' => $file->getClientOriginalName(),
-            'path'          => $path,
-        ]);
+        $new_attachment = Attachment::createFromFile($file, $user_id);
+        if ($old_attachment_id) {
+            Attachment::destroy($old_attachment_id);
+        }
+        return $new_attachment;
     }
 
     /**

@@ -2,6 +2,6 @@
 
 
 return [
-    'no-thumbnail' => 'storage/default/image.png',
-    'no-avater'    => 'storage/default/avater.png',
+    'no-thumbnail' => 'default/image.png',
+    'no-avater'    => 'default/avater.png',
 ];

@@ -19,9 +19,9 @@ class CreateAttachmentsTable extends Migration
         Schema::create('attachments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('attachmentable_id')->comment('添付先ID');
+            $table->unsignedBigInteger('attachmentable_id')->nullable()->comment('添付先ID');
             $table->string('attachmentable_type', 255)->nullable()->comment('添付先クラス名');
-            $table->string('original_name', 255)->nullable()->comment('オリジナルファイル名');
+            $table->string('original_name', 255)->comment('オリジナルファイル名');
             $table->string('path', 255)->comment('保存先パス');
             $table->timestamps();
 

@@ -1,5 +1,7 @@
 <div class="article detail">
-    <img src="{{ $article->thumbnail_url }}" class="img-thumbnail">
+    @if ($article->has_thumbnail)
+        <img src="{{ $article->thumbnail_url }}" class="img-thumbnail">
+    @endif
     <dl class="mx-1 mt-2">
         <dt>Author / Publisher</dt>
         <dd class="mx-1 mt-2">

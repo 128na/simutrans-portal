@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Mypage;
 
 use Illuminate\Http\Request;
 use App\Models\Article;
+use App\Models\Attachment;
 use Illuminate\Support\Facades\Auth;
 
 class AddonIntroductionController extends ArticleController
@@ -24,6 +25,9 @@ class AddonIntroductionController extends ArticleController
 
         if ($request->hasFile('thumbnail')) {
             $thumbnail = self::saveAttachment($request->file('thumbnail'), Auth::id(), $article);
+            if ($contents['thumbnail']) {
+                Attachment::destroy($contents['thumbnail']);
+            }
             $contents['thumbnail'] = $thumbnail->id;
             $attachments[] = $thumbnail;
         }
@@ -38,6 +42,7 @@ class AddonIntroductionController extends ArticleController
             $request->input('categories.pak128_position', []),
             [$request->input('categories.license')]
         );
+        $categories = array_filter($categories); // remove null elements
         $article->categories()->sync($categories);
     }
 

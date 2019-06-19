@@ -30,7 +30,9 @@
                     <td>0</td>
                     <td>
                         <a class="btn btn-primary" href="{{ route('mypage.articles.edit', $article) }}">Edit</a>
-                        <a class="btn btn-secondary" href="{{ route('articles', $article) }}">Show</a>
+                        @if ($article->is_publish)
+                            <a class="btn btn-secondary" href="{{ route('articles.show', $article) }}">Show</a>
+                        @endif
                     </td>
                 </tr>
             @endforeach

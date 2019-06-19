@@ -151,11 +151,15 @@ class Article extends Model
         });
     }
 
+    public function getHasThumbnailAttribute()
+    {
+        return !!$this->thumbnail;
+    }
     public function getThumbnailUrlAttribute()
     {
-        return $this->thumbnail
+        return $this->has_thumbnail
              ? asset('storage/'.$this->thumbnail->path)
-             : asset(config('attachment.no-thumbnail'));
+             : asset('storage/'.config('attachment.no-thumbnail'));
     }
     public function getHasFileAttribute()
     {

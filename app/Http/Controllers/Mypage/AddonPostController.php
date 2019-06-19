@@ -21,13 +21,13 @@ class AddonPostController extends ArticleController
         $contents['license']     = $request->input('license');
 
         if ($request->hasFile('thumbnail')) {
-            $thumbnail = self::saveAttachment($request->file('thumbnail'), Auth::id(), $article);
+            $thumbnail = self::saveAttachment($request->file('thumbnail'), Auth::id(), $article, $contents['thumbnail'] ?? null);
             $contents['thumbnail'] = $thumbnail->id;
             $attachments[] = $thumbnail;
         }
 
         if ($request->hasFile('file')) {
-            $file = self::saveAttachment($request->file('file'), Auth::id(), $article);
+            $file = self::saveAttachment($request->file('file'), Auth::id(), $article, $contents['file'] ?? null);
             $contents['file'] = $file->id;
             $attachments[] = $file;
         }
@@ -42,6 +42,7 @@ class AddonPostController extends ArticleController
             $request->input('categories.pak128_position', []),
             [$request->input('categories.license')]
         );
+        $categories = array_filter($categories); // remove null elements
         $article->categories()->sync($categories);
     }
 

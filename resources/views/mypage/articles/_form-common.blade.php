@@ -22,7 +22,7 @@
 <div class="form-group">
     <label><span class="badge badge-secondary mr-1">Optional</span>Thumbnail Image</label>
     <div class="mb-2">
-        <img id="thumbnail-preview" class="preview img-thumbnail " src="{{ $article->thumbnail_url ?? '' }}">
+        <img id="thumbnail-preview" class="preview img-thumbnail " src="{{ $article->thumbnail_url ?? asset('storage/'.config('attachment.no-thumbnail')) }}">
     </div>
     <div class="custom-file">
         <label class="custom-file-label" for="thumbnail">{{ old('thumbnail', $article->thumbnail->original_name ?? 'Choose image file') }}</label>

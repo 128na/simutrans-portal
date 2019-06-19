@@ -15,19 +15,21 @@
             <th>Status</th>
             <th>Title</th>
             <th>Type</th>
-            <th>Views</th>
-            <th>Conversion</th>
+            <th>PV <small>(Page Views)</small></th>
+            <th>CV <small>(Conversion)</small></th>
+            <th>CVR <small>(Conversion Rate)</small></th>
             <th>Actions</th>
         </thead>
         <tbody>
-            @foreach ($user->articles as $article)
+            @foreach ($articles as $article)
                 <tr>
                     <td>{{ $article->id }}</td>
                     <td>{{ $article->status }}</td>
                     <td>{{ $article->title }}</td>
                     <td>{{ $article->category_post->name }}</td>
-                    <td>0</td>
-                    <td>0</td>
+                    <td>{{ $article->views_count }}</td>
+                    <td>{{ $article->conversions_count }}</td>
+                    <td>{{ $article->conversion_rate }}</td>
                     <td>
                         <a class="btn btn-primary" href="{{ route('mypage.articles.edit', $article) }}">Edit</a>
                         @if ($article->is_publish)

@@ -12,7 +12,7 @@
 */
 
 // 認証
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 // 非ログイン系
 Route::get('/', 'FrontController@index')->name('index');
@@ -32,14 +32,16 @@ Route::prefix('mypage')->group(function () {
             // Route::get('/edit', 'Mypage\FrontController@edit')->name('edit');
             // Route::post('/edit', 'Mypage\FrontController@update');
 
-            Route::get('/articles/create/{type}', 'Mypage\ArticleController@create')->name('articles.create');
-            Route::get('/articles/create/{type}', 'Mypage\ArticleController@create')->name('articles.create');
-            Route::post('/articles/create/addon-post', 'Mypage\AddonPostController@store')->name('articles.store.addon-post');
-            Route::post('/articles/create/addon-introduction', 'Mypage\AddonIntroductionController@store')->name('articles.store.addon-introduction');
+            Route::middleware(['verified'])->group(function () {
+                Route::get('/articles/create/{type}', 'Mypage\ArticleController@create')->name('articles.create');
+                Route::get('/articles/create/{type}', 'Mypage\ArticleController@create')->name('articles.create');
+                Route::post('/articles/create/addon-post', 'Mypage\AddonPostController@store')->name('articles.store.addon-post');
+                Route::post('/articles/create/addon-introduction', 'Mypage\AddonIntroductionController@store')->name('articles.store.addon-introduction');
 
-            Route::get('/articles/edit/{article}', 'Mypage\ArticleController@edit')->name('articles.edit');
-            Route::post('/articles/edit/addon-post/{article}', 'Mypage\AddonPostController@update')->name('articles.update.addon-post');
-            Route::post('/articles/edit/addon-introduction/{article}', 'Mypage\AddonIntroductionController@update')->name('articles.update.addon-introduction');
+                Route::get('/articles/edit/{article}', 'Mypage\ArticleController@edit')->name('articles.edit');
+                Route::post('/articles/edit/addon-post/{article}', 'Mypage\AddonPostController@update')->name('articles.update.addon-post');
+                Route::post('/articles/edit/addon-introduction/{article}', 'Mypage\AddonIntroductionController@update')->name('articles.update.addon-introduction');
+            });
         });
     });
 });
@@ -47,7 +49,7 @@ Route::prefix('mypage')->group(function () {
 // ログイン系：管理者
 Route::prefix('admin')->group(function () {
     Route::name('admin.')->group(function () {
-        Route::middleware(['auth', 'admin'])->group(function () {
+        Route::middleware(['auth', 'admin', 'verified'])->group(function () {
             Route::get('/', 'Admin\FrontController@index')->name('index');
 
             // Route::get('/users', 'Admin\UserController@index')->name('users.index');

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'New '.$article->title)
+@section('title', 'Edit '.$article->title)
 
 @section('content')
     <form method="POST" action="{{ route('mypage.articles.update.'.$article->category_post->slug, $article) }}" enctype="multipart/form-data">

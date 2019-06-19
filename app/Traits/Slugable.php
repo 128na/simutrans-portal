@@ -13,9 +13,7 @@ trait Slugable
     */
     public function resolveRouteBinding($value)
     {
-        return is_numeric($value)
-            ? $this->findOrFail($value)
-            : ($this->where('slug', $value)->first() ?? $this->findOrFail($value));
+        return $this->where('slug', $value)->first() ?? $this->findOrFail($value);
     }
 
     /*

@@ -5,8 +5,9 @@ namespace App\Models;
 use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\User;
+use App\Models\View;
 use App\Traits\Slugable;
-
+use App\Models\Conversion;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -86,6 +87,14 @@ class Article extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function views()
+    {
+        return $this->hasMany(View::class);
+    }
+    public function conversions()
+    {
+        return $this->hasMany(Conversion::class);
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -113,39 +122,39 @@ class Article extends Model
 
     public function getDescriptionAttribute()
     {
-        return $this->contents['description'] ?? '';
+        return $this->getContents('description');
     }
     public function getLinkAttribute()
     {
-        return $this->contents['link'] ?? '';
+        return $this->getContents('link');
     }
     public function getAuthorAttribute()
     {
-        return $this->contents['author'] ?? '';
+        return $this->getContents('author');
     }
     public function getLicenseAttribute()
     {
-        return $this->contents['license'] ?? '';
+        return $this->getContents('license');
     }
     public function getThanksAttribute()
     {
-        return $this->contents['thanks'] ?? '';
+        return $this->getContents('thanks');
     }
     public function getAgreementAttribute()
     {
-        return $this->contents['agreement'] ?? false;
+        return $this->getContents('agreement');;
     }
 
     public function getThumbnailAttribute()
     {
-        $id = $this->contents['thumbnail'] ?? '';
+        $id = $this->getContents('thumbnail');
         return $this->attachments->first(function($attachment) use ($id) {
             return $id === $attachment->id;
         });
     }
     public function getFileAttribute()
     {
-        $id = $this->contents['file'] ?? '';
+        $id = $this->getContents('file');
         return $this->attachments->first(function($attachment) use ($id) {
             return $id === $attachment->id;
         });
@@ -190,6 +199,14 @@ class Article extends Model
             return $category->type === config('category.type.pak128_position');
         });
     }
+    public function getConversionRateAttribute()
+    {
+        if ($this->conversions_count && $this->views_count) {
+            $rate = $this->conversions_count / $this->views_count * 100;
+            return sprintf('%.1f %%', $rate);
+        }
+        return 'N/A';
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -201,5 +218,15 @@ class Article extends Model
         return $this->categories->search(function($category) use($id) {
             return $category->id === $id;
         });
+    }
+    public function getContents($key, $default = null)
+    {
+        return data_get($this->contents, $key, $default);
+    }
+    public function setContents($key, $value)
+    {
+        $tmp = $this->contents;
+        $tmp[$key] = $value;
+        $this->contents = $tmp;
     }
 }

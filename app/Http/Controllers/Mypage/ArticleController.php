@@ -61,7 +61,15 @@ class ArticleController extends Controller
         $post_type = Category::post()->where('slug', $this->post_type)->firstOrFail();
         $article->categories()->sync($post_type->id);
 
-        $this->saveContents($request, $article);
+        // contents, attachments
+        $attachments = [];
+        if ($request->hasFile('thumbnail')) {
+            $thumbnail = self::saveAttachment($request->file('thumbnail'), Auth::id(), $article, $contents['thumbnail'] ?? null);
+            $article->setContents('thumbnail', $thumbnail->id);
+            $attachments[] = $thumbnail;
+        }
+        $attachments = $this->saveContents($request, $article, $attachments);
+        $article->attachments()->saveMany($attachments);
 
         session()->flash('success', "Article \"{$article->title}\" was created as \"{$article->status}\"");
         return redirect()->route('mypage.index');
@@ -87,7 +95,15 @@ class ArticleController extends Controller
         }
         $article->save();
 
-        $this->saveContents($request, $article);
+        // contents, attachments
+        $attachments = [];
+        if ($request->hasFile('thumbnail')) {
+            $thumbnail = self::saveAttachment($request->file('thumbnail'), Auth::id(), $article, $contents['thumbnail'] ?? null);
+            $article->setContents('thumbnail', $thumbnail->id);
+            $attachments[] = $thumbnail;
+        }
+        $attachments = $this->saveContents($request, $article, $attachments);
+        $article->attachments()->saveMany($attachments);
 
         session()->flash('success', "Article \"{$article->title}\" was updated as \"{$article->status}\"");
         return redirect()->route('mypage.index');
@@ -96,7 +112,7 @@ class ArticleController extends Controller
     /**
      * 記事固有のコンテンツ保存処理
      */
-    protected function saveContents(Request $request, Article $article)
+    protected function saveContents(Request $request, Article $article, $attachments)
     {
     }
 

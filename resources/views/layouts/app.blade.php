@@ -4,15 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title') - {{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
-    <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <style>
         body {
@@ -22,9 +19,6 @@
         }
         body>main {
             flex:1;
-        }
-        footer {
-            /* padding: 0.5rem 1rem; */
         }
         .list .img-thumbnail,
         .form-group .img-thumbnail {
@@ -83,7 +77,7 @@
                                 @endforeach
                             </div>
                         </li>
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown mr-2">
                             <a class="nav-link dropdown-toggle" href="#" id="addon-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paks</a>
                             <div class="dropdown-menu" aria-labelledby="addon-dropdown">
                                 @foreach ($categories['addon'] as $category)

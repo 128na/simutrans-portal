@@ -26,6 +26,7 @@
             <dd class="mx-1 mt-2">The add-on author has given you permission to introduce add-ons (or the author's own post)</dd>
         @endif
         <dt>Download</dt>
-        <dd class="mx-1 mt-2"><a href="{{ $article->link }}" target="_blank" rel="noopener nofollow noreferrer">{{ $article->link }}</a></dd>
+        <dd class="mx-1 mt-2">
+            <a href="#" data-url="{{ $article->link }}" data-slug="{{ $article->slug }}" class="js-click">{{ $article->link }}</a></dd>
     </dl>
 </div>

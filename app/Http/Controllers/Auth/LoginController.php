@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Events\UserLoggedin;
 
 class LoginController extends Controller
 {
@@ -46,6 +47,8 @@ class LoginController extends Controller
      */
     protected function authenticated($request, $user)
     {
+        event(new UserLoggedin($user));
+
         if($user->isAdmin()) {
             return redirect()->intended('admin');
         } else {

@@ -5,35 +5,21 @@ namespace App\Http\Controllers\Mypage;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Attachment;
-use Illuminate\Support\Facades\Auth;
 
 class AddonIntroductionController extends ArticleController
 {
     protected $post_type = 'addon-introduction';
 
-    protected function saveContents(Request $request, Article $article)
+    protected function saveContents(Request $request, Article $article, $attachments)
     {
-        $contents = $article->contents;
-        $attachments = [];
+        $article->setContents('author', $request->input('author'));
+        $article->setContents('link', $request->input('link'));
+        $article->setContents('description', $request->input('description'));
+        $article->setContents('thanks', $request->input('thanks'));
+        $article->setContents('license', $request->input('license'));
+        $article->setContents('agreement', $request->filled('agreement'));
 
-        $contents['author']      = $request->input('author');
-        $contents['link']        = $request->input('link');
-        $contents['description'] = $request->input('description');
-        $contents['thanks']      = $request->input('thanks');
-        $contents['license']     = $request->input('license');
-        $contents['agreement']   = $request->filled('agreement');
-
-        if ($request->hasFile('thumbnail')) {
-            $thumbnail = self::saveAttachment($request->file('thumbnail'), Auth::id(), $article);
-            if ($contents['thumbnail']) {
-                Attachment::destroy($contents['thumbnail']);
-            }
-            $contents['thumbnail'] = $thumbnail->id;
-            $attachments[] = $thumbnail;
-        }
-        $article->contents = $contents;
         $article->save();
-        $article->attachments()->saveMany($attachments);
 
         $categories = array_merge(
             [$article->category_post->id],
@@ -44,6 +30,8 @@ class AddonIntroductionController extends ArticleController
         );
         $categories = array_filter($categories); // remove null elements
         $article->categories()->sync($categories);
+
+        return $attachments;
     }
 
     protected static function getValidateRule($article = null)

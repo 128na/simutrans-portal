@@ -10,30 +10,20 @@ class AddonPostController extends ArticleController
 {
     protected $post_type = 'addon-post';
 
-    protected function saveContents(Request $request, Article $article)
+    protected function saveContents(Request $request, Article $article, $attachments)
     {
-        $contents = $article->contents;
-        $attachments = [];
-
-        $contents['author']      = $request->input('author');
-        $contents['description'] = $request->input('description');
-        $contents['thanks']      = $request->input('thanks');
-        $contents['license']     = $request->input('license');
-
-        if ($request->hasFile('thumbnail')) {
-            $thumbnail = self::saveAttachment($request->file('thumbnail'), Auth::id(), $article, $contents['thumbnail'] ?? null);
-            $contents['thumbnail'] = $thumbnail->id;
-            $attachments[] = $thumbnail;
-        }
+        $article->setContents('author', $request->input('author'));
+        $article->setContents('description', $request->input('description'));
+        $article->setContents('thanks', $request->input('thanks'));
+        $article->setContents('license', $request->input('license'));
 
         if ($request->hasFile('file')) {
-            $file = self::saveAttachment($request->file('file'), Auth::id(), $article, $contents['file'] ?? null);
-            $contents['file'] = $file->id;
+            $file = self::saveAttachment(
+                $request->file('file'), Auth::id(), $article, $article->getContents('file'));
+            $article->setContents('file', $file->id);
             $attachments[] = $file;
         }
-        $article->contents = $contents;
         $article->save();
-        $article->attachments()->saveMany($attachments);
 
         $categories = array_merge(
             [$article->category_post->id],
@@ -44,6 +34,8 @@ class AddonPostController extends ArticleController
         );
         $categories = array_filter($categories); // remove null elements
         $article->categories()->sync($categories);
+
+        return $attachments;
     }
 
     protected static function getValidateRule($article = null)

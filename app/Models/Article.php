@@ -112,7 +112,11 @@ class Article extends Model
     }
     public function scopeLatest($query)
     {
-        return $query->active()->orderBy('updated_at', 'desc');
+        return $query->active();
+    }
+    public function scopeWithForList($query)
+    {
+        return $query->with('user', 'attachments', 'categories', 'tags');
     }
 
     /*

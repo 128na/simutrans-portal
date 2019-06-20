@@ -13,10 +13,8 @@
             @include('parts.category-list', ['categories' => $article->categories])
         </div>
         <div>
-            <small>post:</small> {{ $article->created_at }}.
-            @if ($article->updated_at > $article->created_at)
-                <small>updated:</small> {{ $article->updated_at }}.
-            @endif
+            @include('parts.tag-list', ['tags' => $article->tags])
         </div>
+        <div>Last updated: {{ $article->updated_at }}</div>
     </div>
 </div>

@@ -11,6 +11,10 @@
         <dd class="mx-1 mt-2">
             @include('parts.category-list', ['categories' => $article->categories])
         </dd>
+        <dt>Tags</dt>
+        <dd class="mx-1 mt-2">
+            @include('parts.tag-list', ['tags' => $article->tags])
+        </dd>
         <dt>Description</dt>
         <dd class="mt-1 ml-2">{{ $article->description }}</dd>
         @if ($article->thanks)

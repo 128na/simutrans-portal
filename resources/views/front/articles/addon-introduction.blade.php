@@ -11,6 +11,10 @@
         <dd class="mx-1 mt-2">
             @include('parts.category-list', ['categories' => $article->categories])
         </dd>
+        <dt>Tags</dt>
+        <dd class="mx-1 mt-2">
+            @include('parts.tag-list', ['tags' => $article->tags])
+        </dd>
         <dt>Description</dt>
         <dd class="mx-1 mt-2">{{ $article->description }}</dd>
         @if ($article->thanks)
@@ -27,6 +31,7 @@
         @endif
         <dt>Download</dt>
         <dd class="mx-1 mt-2">
-            <a href="#" data-url="{{ $article->link }}" data-slug="{{ $article->slug }}" class="js-click">{{ $article->link }}</a></dd>
+            <a href="#" data-url="{{ $article->link }}" data-slug="{{ $article->slug }}" class="js-click">{{ $article->link }}</a>
+        </dd>
     </dl>
 </div>

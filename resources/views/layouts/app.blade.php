@@ -65,23 +65,23 @@
                             <a class="nav-link dropdown-toggle" href="#" id="post-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Post Types</a>
                             <div class="dropdown-menu" aria-labelledby="post-dropdown">
                                 @foreach ($categories['post'] as $category)
-                                    <a class="dropdown-item" href="#">{{ $category->name }} <small>( {{ $category->articles_count }} )</small></a>
+                                    <a class="dropdown-item" href="{{ route('category', [$category->type, $category->slug]) }}">{{ $category->name }} <small>( {{ $category->articles_count }} )</small></a>
                                 @endforeach
                             </div>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="pak-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Addons</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="pak-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paks</a>
                             <div class="dropdown-menu" aria-labelledby="pak-dropdown">
                                 @foreach ($categories['pak'] as $category)
-                                    <a class="dropdown-item" href="#">{{ $category->name }} <small>( {{ $category->articles_count }} )</small></a>
+                                    <a class="dropdown-item" href="{{ route('category', [$category->type, $category->slug]) }}">{{ $category->name }} <small>( {{ $category->articles_count }} )</small></a>
                                 @endforeach
                             </div>
                         </li>
                         <li class="nav-item dropdown mr-2">
-                            <a class="nav-link dropdown-toggle" href="#" id="addon-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paks</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="addon-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Addons</a>
                             <div class="dropdown-menu" aria-labelledby="addon-dropdown">
                                 @foreach ($categories['addon'] as $category)
-                                    <a class="dropdown-item" href="#">{{ $category->name }} <small>( {{ $category->articles_count }} )</small></a>
+                                    <a class="dropdown-item" href="{{ route('category', [$category->type, $category->slug]) }}">{{ $category->name }} <small>( {{ $category->articles_count }} )</small></a>
                                 @endforeach
                             </div>
                         </li>

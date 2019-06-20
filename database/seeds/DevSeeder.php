@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Attachment;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Tag;
 use App\Models\Profile;
 use App\Models\User;
 
@@ -19,8 +20,8 @@ class DevSeeder extends Seeder
      */
     public function run()
     {
-        Attachment::all()->each(function($m) {$m->delete(); });
-        User::all()->each(function($m) {$m->delete(); });
+        Attachment::where('id', '<>', null)->delete();
+        User::where('role', config('role.user'))->delete();
 
         factory(User::class, 20)->create()->each(function ($user) {
             $user->profile()->save(
@@ -42,13 +43,14 @@ class DevSeeder extends Seeder
                 // アドオン投稿
                 if(random_int(0,1)) {
                     self::addAddonPost($user, $article);
-                    self::AddCategories($article, $category_post);
+                    self::addCategories($article, $category_post);
                 }
                 // アドオン紹介
                 else {
                     self::addAddonIntroduction($user, $article);
-                    self::AddCategories($article, $category_introduction);
+                    self::addCategories($article, $category_introduction);
                 }
+                self::addTags($article);
             }
         }
     }
@@ -115,5 +117,13 @@ class DevSeeder extends Seeder
         $ids = $ids->merge(Category::pak128Position()->inRandomOrder()->limit(random_int(0, 1))->get()->pluck('id'));
         $ids = $ids->merge(Category::license()->inRandomOrder()->limit(random_int(0, 1))->get()->pluck('id'));
         $article->categories()->sync($ids);
+    }
+
+    private static function addTags($article)
+    {
+        $tags = factory(Tag::class, random_int(0, 10))->make()->map(function ($tag) {
+            return Tag::firstOrCreate(['name' => $tag->name]);
+        });
+        $article->tags()->sync($tags->pluck('id'));
     }
 }

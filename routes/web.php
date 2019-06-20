@@ -19,10 +19,10 @@ Route::get('/', 'FrontController@index')->name('index');
 Route::get('/articles', 'ArticleController@index')->name('articles.index');
 Route::get('/articles/{article}', 'ArticleController@show')->name('articles.show');
 Route::get('/articles/{article}/download', 'ArticleController@download')->name('articles.download');
-// Route::get('/search', 'FrontController@search')->name('search');
-// Route::get('/categories/{category}', 'FrontController@categories')->name('categories');
-// Route::get('/tags/{tag}', 'FrontController@tags')->name('tags');
-// Route::get('/users/{user}', 'FrontController@users')->name('users');
+// Route::get('/search', 'ArticleController@search')->name('search');
+Route::get('/category/{type}/{slug}', 'ArticleController@category')->name('category');
+Route::get('/tag/{tag}', 'ArticleController@tag')->name('tag');
+// Route::get('/users/{user}', 'ArticleController@users')->name('users');
 
 // ログイン系：ユーザー
 Route::prefix('mypage')->group(function () {

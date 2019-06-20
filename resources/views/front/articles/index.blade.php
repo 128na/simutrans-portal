@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Articles')
+@section('title', $title ?? 'Articles')
 
 @section('content')
     {{ $articles->links() }}

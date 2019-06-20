@@ -48,17 +48,17 @@ class ImportUsersFromWP extends Command
      */
     public function handle()
     {
-        $wp_users = $this->fetchWPUsers();
-
         DB::beginTransaction();
-        foreach ($wp_users as $wp_user) {
-            // dump($wp_user);
+        foreach ($this->fetchWPUsers() as $wp_user) {
+            $this->info('creating: '.$wp_user->display_name);
+
             $user = self::createUser($wp_user);
 
             $wp_usermeta = collect($this->fetchWPUsermeta($wp_user->ID));
-            // dump($wp_usermeta);
             $profile = self::createProfile($user, $wp_user, $wp_usermeta);
-            $this->info('created:'.$user->name);
+
+            self::updateCreatedAt($user->id, $wp_user);
+            $this->info('created: '.$user->name);
         }
         DB::commit();
     }
@@ -94,8 +94,7 @@ class ImportUsersFromWP extends Command
                 $avater_url = self::recoverURL($avater_urls['full']);
             }
 
-            $filename = $wp_user->user_nicename.'.'.self::getExtention($avater_url);
-            $path = self::saveFromUrl($user->id, $avater_url, $filename);
+            $path = self::saveFromUrl($user->id, $avater_url);
 
             $profile->attachments()->create([
                 'user_id'       => $user->id,
@@ -106,6 +105,11 @@ class ImportUsersFromWP extends Command
         return $profile;
     }
 
-
-
+    /**
+     * 作成日を引き継ぐ
+     */
+    private static function updateCreatedAt($id, $wp_user)
+    {
+        return DB::update('UPDATE users SET created_at = ? WHERE id = ?', [$wp_user->user_registered, $id]);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Attachment;
 use App\Models\Category;
+use App\Models\Tag;
 use App\Models\User;
 use App\Models\View;
 use App\Traits\Slugable;
@@ -82,6 +83,10 @@ class Article extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
     }
     public function user()
     {

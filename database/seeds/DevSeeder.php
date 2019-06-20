@@ -19,8 +19,8 @@ class DevSeeder extends Seeder
      */
     public function run()
     {
-        User::where('role', config('role.user'))->delete();
-        Attachment::where('id', '<>', null)->delete();
+        Attachment::all()->each(function($m) {$m->delete(); });
+        User::all()->each(function($m) {$m->delete(); });
 
         factory(User::class, 20)->create()->each(function ($user) {
             $user->profile()->save(

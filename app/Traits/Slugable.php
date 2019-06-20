@@ -13,7 +13,7 @@ trait Slugable
     */
     public function resolveRouteBinding($value)
     {
-        return $this->where('slug', $value)->first() ?? $this->findOrFail($value);
+        return $this->where('slug', urlencode($value))->first() ?? $this->findOrFail($value);
     }
 
     /*
@@ -26,6 +26,7 @@ trait Slugable
         $value = strtolower($value);
         $replaces = ['!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '`', '{', '|', '}', ' ', '　', '.'];
         $value = str_replace($replaces, '-', $value);
+        $value = urlencode($value);
         $this->attributes['slug'] = $value;
     }
 

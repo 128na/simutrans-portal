@@ -31,10 +31,10 @@ class Controller extends BaseController
     private static function separateByPak($pak_addon_counts)
     {
         return collect($pak_addon_counts->reduce(function($separated, $item) {
-            if (!isset($separated[$item->pak_name])) {
-                $separated[$item->pak_name] = collect([]);
+            if (!isset($separated[$item->pak_slug])) {
+                $separated[$item->pak_slug] = collect([]);
             }
-            $separated[$item->pak_name]->push($item);
+            $separated[$item->pak_slug]->push($item);
             return $separated;
         }, []));
     }

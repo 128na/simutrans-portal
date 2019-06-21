@@ -20,7 +20,7 @@ class ArticleController extends Controller
     {
         $articles = Article::active()->withForList()->paginate(20);
 
-        $title = 'Top';
+        $title = __('message.articles');
         return static::viewWithHeader('front.articles.index', compact('title', 'articles'));
     }
 
@@ -66,7 +66,7 @@ class ArticleController extends Controller
         $articles = $category->articles()
             ->active()->withForList()->paginate(20);
 
-        $title = 'Category '.$category->name;
+        $title = __('message.of-category', ['name' => $category->name]);
         return static::viewWithHeader('front.articles.index', compact('title', 'articles'));
     }
 
@@ -83,7 +83,7 @@ class ArticleController extends Controller
                 $query->where('type', 'addon')->where('slug', $addon);
             })
             ->withForList()->paginate(20);
-        $title = 'Pak '.$pak.', '.$addon;
+        $title = __('message.of-pak-addon', ['pak' => __('category.pak.'.$pak), 'addon' => __('category.addon.'.$addon)]);
         return static::viewWithHeader('front.articles.index', compact('title', 'articles'));
     }
 
@@ -95,7 +95,7 @@ class ArticleController extends Controller
         $articles = $tag->articles()
             ->active()->withForList()->paginate(20);
 
-        $title = 'Tag '.$tag->name;
+        $title = __('message.of-tag', ['name' => $tag->name]);
         return static::viewWithHeader('front.articles.index', compact('title', 'articles'));
     }
 
@@ -108,7 +108,7 @@ class ArticleController extends Controller
         $articles = $user->articles()
             ->active()->withForList()->paginate(20);
 
-        $title = 'User '.$user->name;
+        $title = __('message.by-user', ['name' => $user->name]);
         return static::viewWithHeader('front.articles.index', compact('title', 'articles'));
     }
 
@@ -123,7 +123,7 @@ class ArticleController extends Controller
         }
         $articles = Article::active()->search($word)->withForList()->paginate(20);
 
-        $title = 'Search Result '.$word;
+        $title = __('message.result-of', ['word' => $word]);
         return static::viewWithHeader('front.articles.index', compact('title', 'articles'));
     }
 }

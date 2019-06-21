@@ -15,9 +15,7 @@ class CreatePakAddonCountsTable extends Migration
     {
         Schema::create('pak_addon_counts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('pak_name', 255);
             $table->string('pak_slug', 255);
-            $table->string('addon_name', 255);
             $table->string('addon_slug', 255);
             $table->unsignedBigInteger('count');
         });

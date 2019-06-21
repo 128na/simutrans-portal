@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use App\Events\UserLoggedin;
+use App\Notifications\Loggedin;
+use Notification;
 
 class LoginController extends Controller
 {
@@ -47,7 +48,7 @@ class LoginController extends Controller
      */
     protected function authenticated($request, $user)
     {
-        event(new UserLoggedin($user));
+        Notification::send($user, new Loggedin($user));
 
         if($user->isAdmin()) {
             return redirect()->intended('admin');

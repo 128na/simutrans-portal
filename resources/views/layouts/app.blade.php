@@ -68,15 +68,15 @@
                     @if (isset($menu_pak_addon_counts))
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Addons
+                                {{ __('message.addons') }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                @foreach ($menu_pak_addon_counts as $pak_name => $addons)
-                                    <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">{{ $pak_name }}</a>
+                                @foreach ($menu_pak_addon_counts as $pak_slug => $addons)
+                                    <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">{{ __('category.pak.'.$pak_slug) }}</a>
                                         <ul class="dropdown-menu">
                                             @foreach ($addons as $addon)
                                                 <li><a class="dropdown-item" href="{{ route('category.pak.addon', [
-                                                        $addon->pak_slug, $addon->addon_slug]) }}">{{ $addon->addon_name }} <small>( {{ $addon->count }} )</small></a></li>
+                                                        $addon->pak_slug, $addon->addon_slug]) }}">{{ __('category.addon.'.$addon->addon_slug) }} <small>( {{ $addon->count }} )</small></a></li>
                                             @endforeach
                                         </ul>
                                     </li>
@@ -87,7 +87,7 @@
                     @if (isset($menu_user_addon_counts))
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Users
+                                {{ __('message.users') }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 @foreach ($menu_user_addon_counts as $user_addon_count)
@@ -98,16 +98,17 @@
                         </li>
                     @endif
                     @guest
-                        <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">{{ __('message.login') }}</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">{{ __('message.register') }}</a></li>
                     @else
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="mypage-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="mypage-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ __('message.title-of-user', ['name' => Auth::user()->name]) }}</a>
                             <div class="dropdown-menu" aria-labelledby="mypage-dropdown">
-                                <a class="dropdown-item" href="{{ route('mypage.index') }}">{{ __('MyPage') }}</a>
+                                <a class="dropdown-item" href="{{ route('mypage.index') }}">{{ __('message.mypage') }}</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('message.logout') }}</a>
                             </div>
                         </li>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -116,8 +117,8 @@
                     @endguest
                 </ul>
                 <form class="form-inline my-2 my-lg-0" action="{{ route('search') }}" method="GET">
-                    <input class="form-control mr-sm-2" name="s" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+                    <input class="form-control mr-sm-2" name="s" type="search" placeholder="{{ __('message.search-word') }}" aria-label="Search">
+                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">{{ __('message.search') }}</button>
                 </form>
             </div>
         </nav>
@@ -125,10 +126,12 @@
     <main class="container bg-light py-4">
         <h1>@yield('title')</h1>
 
+        @if (session()->has('status'))
+            <div class="alert alert-success">{{ session('status') }}</div>
+        @endif
         @if (session()->has('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
-
         @if (session()->has('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif

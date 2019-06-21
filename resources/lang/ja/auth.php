@@ -16,4 +16,23 @@ return [
     'failed' => 'ログイン情報が登録されていません。',
     'throttle' => 'ログインに続けて失敗しています。:seconds秒後に再度お試しください。',
 
+    'login' => 'ログイン',
+    'name' => 'ユーザー名',
+    'email' => 'メールアドレス',
+    'password' => 'パスワード',
+    'confirm-password' => 'パスワード（確認）',
+    'remember-me' => 'ログインしたままにする',
+    'forgot-your-password' => 'パスワード再発行',
+    'reset-password' => 'パスワード再発行',
+    'send-password-reset-link' => '再発行用のメールを送信',
+    'register' => '登録',
+
+    'verify' => [
+        'email' => 'メールアドレスの認証が必要です',
+        'resent' => '新しい認証用のメールを送信しました。',
+        'attention' => '送信されているメールから認証を完了して下さい。',
+        'not-received' => '送信されていない場合は、',
+        'resend' => 'こちらから再送信して下さい。',
+    ],
+
 ];

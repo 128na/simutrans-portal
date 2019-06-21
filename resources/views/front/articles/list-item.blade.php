@@ -15,6 +15,6 @@
         <div>
             @include('parts.tag-list', ['tags' => $article->tags])
         </div>
-        <div>Last updated: {{ $article->updated_at }}</div>
+        <div>{{ __('message.last-updated') }}: {{ $article->updated_at }}</div>
     </div>
 </div>

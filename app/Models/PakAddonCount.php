@@ -11,18 +11,16 @@ use Illuminate\Support\Facades\DB;
 class PakAddonCount extends Model
 {
     private const DELETE_SQL = 'DELETE FROM pak_addon_counts';
-    private const INSERT_SQL = "INSERT INTO pak_addon_counts (pak_name, pak_slug, addon_name, addon_slug, count) (
+    private const INSERT_SQL = "INSERT INTO pak_addon_counts (pak_slug, addon_slug, count) (
         SELECT
-            pak.name pak_name,
             pak.slug pak_slug,
-            addon.name addon_name,
             addon.slug addon_slug,
             COUNT(a.id) count
         FROM
             articles a
         LEFT JOIN (
             SELECT
-                a.id article_id, c.id, c.name, c.slug, c.order
+                a.id article_id, c.id, c.slug, c.order
             FROM
                 categories c
             LEFT JOIN article_category ac ON ac.category_id = c.id AND c.type = 'pak'
@@ -31,7 +29,7 @@ class PakAddonCount extends Model
         ) pak ON pak.article_id = a.id
         LEFT JOIN (
             SELECT
-                a.id article_id, c.id, c.name, c.slug, c.order
+                a.id article_id, c.id, c.slug, c.order
             FROM
                 categories c
             LEFT JOIN article_category ac ON ac.category_id = c.id
@@ -48,9 +46,7 @@ class PakAddonCount extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'pak_name',
         'pak_slug',
-        'addon_name',
         'addon_slug',
         'count',
     ];

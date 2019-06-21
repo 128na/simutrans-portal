@@ -10,8 +10,8 @@ class FrontController extends Controller
     {
         $data = [
             'articles' => [
-                'latest' => Article::active()->withForList()->latest()->limit(5)->get(),
-                'random' => Article::active()->withForList()->withoutGlobalScope('order')->inRandomOrder()->limit(5)->get(),
+                'latest' => Article::active()->withForList()->latest()->limit(3)->get(),
+                'random' => Article::active()->withForList()->withoutGlobalScope('order')->inRandomOrder()->limit(3)->get(),
             ]
         ];
 

@@ -32,3 +32,5 @@ require('./bootstrap');
 // });
 
 require('./api');
+require('./multi_dropdown');
+

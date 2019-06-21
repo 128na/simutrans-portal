@@ -3,8 +3,8 @@
 namespace App\Models;
 use App\Models\Article;
 use App\Traits\Slugable;
-use App\Collections\CategoryCollection;
-
+use App\Models\UserAddonCount;
+use App\Models\PakAddonCount;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -21,17 +21,7 @@ class Category extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | カスタムコレクション
-    |--------------------------------------------------------------------------
-    */
-    public function newCollection($models = [])
-    {
-        return new CategoryCollection($models);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | グローバルスコープ
+    | 初期化時設定
     |--------------------------------------------------------------------------
     */
     protected static function boot()
@@ -41,7 +31,23 @@ class Category extends Model
         static::addGlobalScope('order', function (Builder $builder) {
             $builder->orderBy('order', 'asc');
         });
+
+        self::created(function($model) {
+            $model->recountHandler();
+        });
+        self::updated(function($model) {
+            $model->recountHandler();
+        });
+        self::deleted(function($model) {
+            $model->recountHandler();
+        });
     }
+    private function recountHandler()
+    {
+        UserAddonCount::recount();
+        PakAddonCount::recount();
+    }
+
 
     /*
     |--------------------------------------------------------------------------

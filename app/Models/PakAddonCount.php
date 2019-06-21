@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+
+/**
+ * Pak-アドオン毎の投稿数（メニュー表示用）
+ */
+class PakAddonCount extends Model
+{
+    private const DELETE_SQL = 'DELETE FROM pak_addon_counts';
+    private const INSERT_SQL = "INSERT INTO pak_addon_counts (pak_name, pak_slug, addon_name, addon_slug, count) (
+        SELECT
+            pak.name pak_name,
+            pak.slug pak_slug,
+            addon.name addon_name,
+            addon.slug addon_slug,
+            COUNT(a.id) count
+        FROM
+            articles a
+        LEFT JOIN (
+            SELECT
+                ac.article_id, c.id, c.name, c.slug, c.order
+            FROM
+                categories c
+            LEFT JOIN article_category ac ON ac.category_id = c.id AND c.type = 'pak'
+        ) pak ON pak.article_id = a.id
+        LEFT JOIN (
+            SELECT
+                ac.article_id, c.id, c.name, c.slug, c.order
+            FROM
+                categories c
+            LEFT JOIN article_category ac ON ac.category_id = c.id AND c.type = 'addon'
+        ) addon ON addon.article_id = a.id
+        WHERE
+            pak.id IS NOT NULL
+                AND addon.id IS NOT NULL
+        GROUP BY pak.id , addon.id
+        ORDER BY pak.order , addon.order)";
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'pak_name',
+        'pak_slug',
+        'addon_name',
+        'addon_slug',
+        'count',
+    ];
+
+    public static function recount()
+    {
+        DB::transaction(function () {
+            DB::statement(self::DELETE_SQL);
+            DB::statement(self::INSERT_SQL);
+        });
+    }
+}

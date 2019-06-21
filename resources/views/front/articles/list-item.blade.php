@@ -7,7 +7,7 @@
             <a href="{{ route('articles.show', $article->slug)}}">{{ $article->title }}</a>
         </h5>
         <div>
-            <small>by</small> <a href="#">{{ $article->user->name}}</a>
+            <small class="mr-1">by</small><a href="{{ route('user', [$article->user]) }}">{{ $article->user->name}}</a>
         </div>
         <div>
             @include('parts.category-list', ['categories' => $article->categories])

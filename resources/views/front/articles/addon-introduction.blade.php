@@ -5,7 +5,7 @@
     <dl class="mx-1 mt-2">
         <dt>Author / Publisher</dt>
         <dd class="mx-1 mt-2">
-            {{ $article->author }} / <a href="#" rel="author">{{ $article->user->name }}</a>
+            {{ $article->author }} / <a href="{{ route('user', [$article->user]) }}" rel="author">{{ $article->user->name }}</a>
         </dd>
         <dt>Categories</dt>
         <dd class="mx-1 mt-2">

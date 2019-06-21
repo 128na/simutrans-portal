@@ -32,11 +32,6 @@
             max-height: 512px;
             max-width: 100%;
         }
-        @media (max-width: 768px) {
-            .list .article-box {
-                flex-direction: column
-            }
-        }
         .badge {
             padding: 4px;
         }
@@ -48,6 +43,15 @@
         .category-list .custom-radio {
             min-width: 11rem;
         }
+        @media (max-width: 768px) {
+            .list .article-box {
+                flex-direction: column;
+            }
+            .list .img-thumbnail {
+                width: : 100%;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -60,30 +64,36 @@
 
             <div class="collapse navbar-collapse" id="global-menu">
                 <ul class="navbar-nav ml-auto mr-2">
-                    @if (isset($categories))
+                    @if (isset($menu_pak_addon_counts))
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="post-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Post Types</a>
-                            <div class="dropdown-menu" aria-labelledby="post-dropdown">
-                                @foreach ($categories['post'] as $category)
-                                    <a class="dropdown-item" href="{{ route('category', [$category->type, $category->slug]) }}">{{ $category->name }} <small>( {{ $category->articles_count }} )</small></a>
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Addons
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                @foreach ($menu_pak_addon_counts as $pak_name => $addons)
+                                    <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">{{ $pak_name }}</a>
+                                        <ul class="dropdown-menu">
+                                            @foreach ($addons as $addon)
+                                                <li><a class="dropdown-item" href="{{ route('category.pak.addon', [
+                                                        $addon->pak_slug, $addon->addon_slug]) }}">{{ $addon->addon_name }} <small>( {{ $addon->count }} )</small></a></li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
                                 @endforeach
-                            </div>
+                            </ul>
                         </li>
+                    @endif
+                    @if (isset($menu_user_addon_counts))
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="pak-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paks</a>
-                            <div class="dropdown-menu" aria-labelledby="pak-dropdown">
-                                @foreach ($categories['pak'] as $category)
-                                    <a class="dropdown-item" href="{{ route('category', [$category->type, $category->slug]) }}">{{ $category->name }} <small>( {{ $category->articles_count }} )</small></a>
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Users
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                @foreach ($menu_user_addon_counts as $user_addon_count)
+                                    <li><a class="dropdown-item" href="{{ route('user', [$user_addon_count->user_id]) }}">
+                                        {{ $user_addon_count->user_name }} <small>( {{ $user_addon_count->count }} )</small></a></li>
                                 @endforeach
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown mr-2">
-                            <a class="nav-link dropdown-toggle" href="#" id="addon-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Addons</a>
-                            <div class="dropdown-menu" aria-labelledby="addon-dropdown">
-                                @foreach ($categories['addon'] as $category)
-                                    <a class="dropdown-item" href="{{ route('category', [$category->type, $category->slug]) }}">{{ $category->name }} <small>( {{ $category->articles_count }} )</small></a>
-                                @endforeach
-                            </div>
+                            </ul>
                         </li>
                     @endif
                     @guest

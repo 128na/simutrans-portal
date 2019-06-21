@@ -20,9 +20,10 @@ Route::get('/articles', 'ArticleController@index')->name('articles.index');
 Route::get('/articles/{article}', 'ArticleController@show')->name('articles.show');
 Route::get('/articles/{article}/download', 'ArticleController@download')->name('articles.download');
 // Route::get('/search', 'ArticleController@search')->name('search');
+Route::get('/category/pak/{size}/{slug}', 'ArticleController@categoryPakAddon')->name('category.pak.addon');
 Route::get('/category/{type}/{slug}', 'ArticleController@category')->name('category');
 Route::get('/tag/{tag}', 'ArticleController@tag')->name('tag');
-// Route::get('/users/{user}', 'ArticleController@users')->name('users');
+Route::get('/user/{user}', 'ArticleController@user')->name('user');
 
 // ログイン系：ユーザー
 Route::prefix('mypage')->group(function () {

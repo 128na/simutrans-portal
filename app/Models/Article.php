@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\View;
+use App\Models\UserAddonCount;
+use App\Models\PakAddonCount;
 use App\Traits\Slugable;
 use App\Models\Conversion;
 use Illuminate\Database\Eloquent\Model;
@@ -55,10 +57,9 @@ class Article extends Model
         'contents' => 'array',
     ];
 
-
     /*
     |--------------------------------------------------------------------------
-    | グローバルスコープ
+    | 初期化時設定
     |--------------------------------------------------------------------------
     */
     protected static function boot()
@@ -68,8 +69,22 @@ class Article extends Model
         static::addGlobalScope('order', function (Builder $builder) {
             $builder->orderBy('updated_at', 'desc');
         });
-    }
 
+        self::created(function($model) {
+            $model->recountHandler();
+        });
+        self::updated(function($model) {
+            $model->recountHandler();
+        });
+        self::deleted(function($model) {
+            $model->recountHandler();
+        });
+    }
+    private function recountHandler()
+    {
+        UserAddonCount::recount();
+        PakAddonCount::recount();
+    }
 
     /*
     |--------------------------------------------------------------------------

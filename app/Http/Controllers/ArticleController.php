@@ -18,7 +18,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::active()->withForList()->latest()->paginate(20);
+        $articles = Article::active()->withForList()->paginate(20);
 
         $title = 'Top';
         return static::viewWithHeader('front.articles.index', compact('title', 'articles'));
@@ -64,7 +64,7 @@ class ArticleController extends Controller
     {
         $category = Category::$type()->where('slug', $slug)->firstOrFail();
         $articles = $category->articles()
-            ->active()->withForList()->latest()->paginate(20);
+            ->active()->withForList()->paginate(20);
 
         $title = 'Category '.$category->name;
         return static::viewWithHeader('front.articles.index', compact('title', 'articles'));
@@ -82,7 +82,7 @@ class ArticleController extends Controller
             ->whereHas('categories', function($query) use ($addon) {
                 $query->where('type', 'addon')->where('slug', $addon);
             })
-            ->withForList()->latest()->paginate(20);
+            ->withForList()->paginate(20);
         $title = 'Pak '.$pak.', '.$addon;
         return static::viewWithHeader('front.articles.index', compact('title', 'articles'));
     }
@@ -93,7 +93,7 @@ class ArticleController extends Controller
     public function tag(Tag $tag)
     {
         $articles = $tag->articles()
-            ->active()->withForList()->latest()->paginate(20);
+            ->active()->withForList()->paginate(20);
 
         $title = 'Tag '.$tag->name;
         return static::viewWithHeader('front.articles.index', compact('title', 'articles'));
@@ -106,11 +106,24 @@ class ArticleController extends Controller
     {
         abort_if($user->isAdmin(), 404);
         $articles = $user->articles()
-            ->active()->withForList()->latest()->paginate(20);
+            ->active()->withForList()->paginate(20);
 
         $title = 'User '.$user->name;
         return static::viewWithHeader('front.articles.index', compact('title', 'articles'));
     }
 
+    /**
+     * 検索結果一覧
+     */
+    public function search(Request $request)
+    {
+        $word = $request->input('s');
+        if(is_null($word)) {
+            return \redirect()->route('article.index');
+        }
+        $articles = Article::active()->search($word)->withForList()->paginate(20);
 
+        $title = 'Search Result '.$word;
+        return static::viewWithHeader('front.articles.index', compact('title', 'articles'));
+    }
 }

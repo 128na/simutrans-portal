@@ -22,17 +22,22 @@ class PakAddonCount extends Model
             articles a
         LEFT JOIN (
             SELECT
-                ac.article_id, c.id, c.name, c.slug, c.order
+                a.id article_id, c.id, c.name, c.slug, c.order
             FROM
                 categories c
             LEFT JOIN article_category ac ON ac.category_id = c.id AND c.type = 'pak'
+            LEFT JOIN articles a ON a.id = ac.article_id
+                AND a.status = 'publish'
         ) pak ON pak.article_id = a.id
         LEFT JOIN (
             SELECT
-                ac.article_id, c.id, c.name, c.slug, c.order
+                a.id article_id, c.id, c.name, c.slug, c.order
             FROM
                 categories c
-            LEFT JOIN article_category ac ON ac.category_id = c.id AND c.type = 'addon'
+            LEFT JOIN article_category ac ON ac.category_id = c.id
+                AND c.type = 'addon'
+            LEFT JOIN articles a ON a.id = ac.article_id
+                AND a.status = 'publish'
         ) addon ON addon.article_id = a.id
         WHERE
             pak.id IS NOT NULL

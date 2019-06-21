@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 
+/**
+ * トップページ
+ */
 class FrontController extends Controller
 {
     public function index()
     {
         $data = [
             'articles' => [
-                'latest' => Article::active()->withForList()->latest()->limit(3)->get(),
+                'latest' => Article::active()->withForList()->limit(3)->get(),
                 'random' => Article::active()->withForList()->withoutGlobalScope('order')->inRandomOrder()->limit(3)->get(),
             ]
         ];

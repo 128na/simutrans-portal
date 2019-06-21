@@ -28,7 +28,7 @@ class Controller extends BaseController
         return view($view_path, $data);
     }
 
-    protected static function separateByPak($pak_addon_counts)
+    private static function separateByPak($pak_addon_counts)
     {
         return collect($pak_addon_counts->reduce(function($separated, $item) {
             if (!isset($separated[$item->pak_name])) {

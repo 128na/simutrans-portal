@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('sitemap', 'SitemapController@index');
 
 // 認証
 Auth::routes(['verify' => true]);
@@ -19,7 +20,7 @@ Route::get('/', 'FrontController@index')->name('index');
 Route::get('/articles', 'ArticleController@index')->name('articles.index');
 Route::get('/articles/{article}', 'ArticleController@show')->name('articles.show');
 Route::get('/articles/{article}/download', 'ArticleController@download')->name('articles.download');
-// Route::get('/search', 'ArticleController@search')->name('search');
+Route::get('/search', 'ArticleController@search')->name('search');
 Route::get('/category/pak/{size}/{slug}', 'ArticleController@categoryPakAddon')->name('category.pak.addon');
 Route::get('/category/{type}/{slug}', 'ArticleController@category')->name('category');
 Route::get('/tag/{tag}', 'ArticleController@tag')->name('tag');
@@ -75,3 +76,4 @@ Route::prefix('admin')->group(function () {
         });
     });
 });
+

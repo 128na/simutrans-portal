@@ -18,6 +18,7 @@ class UserAddonCount extends Model
             users u
                 LEFT JOIN
             articles a ON a.user_id = u.id
+                AND a.status = 'publish'
         WHERE
             role = 'user'
         GROUP BY u.id

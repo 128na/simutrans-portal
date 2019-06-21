@@ -19,9 +19,11 @@ class MinifyHTML
     public function handle($request, Closure $next)
     {
         $res = $next($request);
-        $content = $res->getContent();
-        $content = preg_replace('/(>)\s+(<)/', '$1$2', $content);
-        $res->setContent($content);
+        if(\App::environment('production')) {
+            $content = $res->getContent();
+            $content = preg_replace('/(>)\s+(<)/', '$1$2', $content);
+            $res->setContent($content);
+        }
         return $res;
     }
 }

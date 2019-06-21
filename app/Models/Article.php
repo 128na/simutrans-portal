@@ -125,13 +125,20 @@ class Article extends Model
     {
         return $query->where('status', config('status.publish'));
     }
-    public function scopeLatest($query)
-    {
-        return $query->active();
-    }
     public function scopeWithForList($query)
     {
         return $query->with('user', 'attachments', 'categories', 'tags');
+    }
+    public function scopeSearch($query, $word)
+    {
+        $word = trim($word);
+        $like_word = "%{$word}%";
+
+        return $query->where('title', 'like', $like_word)
+            ->orWhere('contents->description', 'like', $like_word)
+            ->orWhere('contents->thanks', 'like', $like_word)
+            ->orWhere('contents->author', 'like', $like_word)
+            ->orWhere('contents->license', 'like', $like_word);
     }
 
     /*

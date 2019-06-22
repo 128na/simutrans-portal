@@ -11,6 +11,8 @@ use App\Traits\WPImportable;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class ImportUsersFromWP extends Command
 {

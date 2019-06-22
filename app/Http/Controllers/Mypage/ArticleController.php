@@ -23,8 +23,12 @@ class ArticleController extends Controller
      */
     public function create($post_type = null)
     {
-        $categories = Category::all()->separateByType();
-        return view('mypage.articles.create', compact('post_type', 'categories'));
+        $post_types = Category::post()->get();
+        $addons = Category::addon()->get();
+        $paks = Category::pak()->get();
+        $pak128_positions = Category::pak128Position()->get();
+        $licenses = Category::license()->get();
+        return view('mypage.articles.create', compact('post_type', 'post_types', 'addons', 'paks', 'pak128_positions', 'licenses'));
     }
 
     /**
@@ -33,8 +37,12 @@ class ArticleController extends Controller
     public function edit(Article $article)
     {
         $article->load('categories', 'attachments');
-        $categories = Category::all()->separateByType();
-        return view('mypage.articles.edit', compact('article', 'categories'));
+        $post_types = Category::post()->get();
+        $addons = Category::addon()->get();
+        $paks = Category::pak()->get();
+        $pak128_positions = Category::pak128Position()->get();
+        $licenses = Category::license()->get();
+        return view('mypage.articles.edit', compact('article', 'post_types', 'addons', 'paks', 'pak128_positions', 'licenses'));
     }
 
     /**
@@ -52,7 +60,7 @@ class ArticleController extends Controller
         ]);
 
         if (!$article->isUniqueSlug()) {
-            session()->flash('error', 'slug is not unique');
+            session()->flash('error', __('article.slug-duplicate'));
             return back()->withInput();
         }
         $article->save();
@@ -71,7 +79,7 @@ class ArticleController extends Controller
         $attachments = $this->saveContents($request, $article, $attachments);
         $article->attachments()->saveMany($attachments);
 
-        session()->flash('success', "Article \"{$article->title}\" was created as \"{$article->status}\"");
+        session()->flash('success', __('article.created', ['title' => $article->title, 'status' => __('status.'.$article->status)]));
         return redirect()->route('mypage.index');
     }
 
@@ -90,7 +98,7 @@ class ArticleController extends Controller
         ]);
 
         if (!$article->isUniqueSlug()) {
-            session()->flash('error', 'slug is not unique');
+            session()->flash('error', __('article.slug-duplicate'));
             return back()->withInput();
         }
         $article->save();
@@ -105,7 +113,7 @@ class ArticleController extends Controller
         $attachments = $this->saveContents($request, $article, $attachments);
         $article->attachments()->saveMany($attachments);
 
-        session()->flash('success', "Article \"{$article->title}\" was updated as \"{$article->status}\"");
+        session()->flash('success', __('article.updated', ['title' => $article->title, 'status' => __('status.'.$article->status)]));
         return redirect()->route('mypage.index');
     }
 

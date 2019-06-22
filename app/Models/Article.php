@@ -232,7 +232,7 @@ class Article extends Model
     }
     public function getConversionRateAttribute()
     {
-        if ($this->conversions_count && $this->views_count) {
+        if (!is_null($this->conversions_count) && $this->views_count) {
             $rate = $this->conversions_count / $this->views_count * 100;
             return sprintf('%.1f %%', $rate);
         }

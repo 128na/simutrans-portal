@@ -145,6 +145,25 @@ return [
 
     'attributes' => [
         'password' => 'パスワード',
+        'status' => 'ステータス',
+        'title' => 'タイトル',
+        'slug' => 'URL用スラッグ',
+        'thumbnail-image' => 'サムネイル画像',
+        'addon-file' => '添付ファイル',
+        'pak' => 'Pak',
+        'addon-type' => 'アドオン種類',
+        'pak128-position' => 'pak128用描画位置',
+        'license-other' => '著作権（その他）',
+        'author' => 'アドオン作者',
+        'publisher' => '記事投稿者',
+        'categories' => 'カテゴリ一覧',
+        'tags' => 'タグ一覧',
+        'description' => '説明',
+        'license' => '著作権',
+        'thanks' => '元になったアドオン、謝辞',
+        'download' => 'ダウンロード',
+        'link' => 'ダウンロード先',
+        'agreement' => '掲載同意',
     ],
 
 ];

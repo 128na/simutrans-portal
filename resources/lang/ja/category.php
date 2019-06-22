@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * カテゴリ
+ */
 return [
     'type' => [
         'post'            => '投稿形式',
@@ -35,8 +37,8 @@ return [
         'buildings'            => '一般建築物',
         'monorail-vehicles'    => 'モノレール車両',
         'monorail-tools'       => 'モノレール施設',
-        'maglev-vehicles'      => 'マグレブ（リニア）車両',
-        'maglev-tools'         => 'マグレブ（リニア）施設',
+        'maglev-vehicles'      => 'マグレブ(リニア)車両',
+        'maglev-tools'         => 'マグレブ(リニア)施設',
         'narrow-gauge-vahicle' => 'ナローゲージ車両',
         'narrow-gauge-tools'   => 'ナローゲージ施設',
         'tram-vehicle'         => 'トラム車両',
@@ -49,11 +51,11 @@ return [
     ],
     'license' => [
         'cc-by'       => 'CC BY',
-        'cc-BY-nc'    => 'CC BY-NC',
-        'cc-BY-nd'    => 'CC BY-ND',
-        'cc-BY-NC-nd' => 'CC BY-NC-ND',
-        'cc-BY-sa'    => 'CC BY-SA',
-        'cc-BY-NC-sa' => 'CC BY-NC-SA',
+        'cc-by-nc'    => 'CC BY-NC',
+        'cc-by-nd'    => 'CC BY-ND',
+        'cc-by-nc-nd' => 'CC BY-NC-ND',
+        'cc-by-sa'    => 'CC BY-SA',
+        'cc-by-nc-sa' => 'CC BY-NC-SA',
         'cc0'         => 'CC0',
         'pdm'         => 'PDM',
         'mit-license' => 'MIT License',

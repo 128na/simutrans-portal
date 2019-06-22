@@ -17,29 +17,29 @@
     @else
         <table class="table table-bordered">
             <thead>
-                <th>ID</th>
-                <th>Status</th>
-                <th>Title</th>
-                <th>Type</th>
-                <th>PV <small>(Page Views)</small></th>
-                <th>CV <small>(Conversion)</small></th>
-                <th>CVR <small>(Conversion Rate)</small></th>
-                <th>Actions</th>
+                <th>{{ __('article.id') }}</th>
+                <th>{{ __('article.status') }}</th>
+                <th>{{ __('article.title') }}</th>
+                <th>{{ __('category.type.post') }}</th>
+                <th>{{ __('article.page-view') }}</th>
+                <th>{{ __('article.conversion') }}</small></th>
+                <th>{{ __('article.conversion-rate') }}</th>
+                <th>{{ __('article.actions') }}</th>
             </thead>
             <tbody>
                 @foreach ($articles as $article)
                     <tr>
                         <td>{{ $article->id }}</td>
-                        <td>{{ $article->status }}</td>
+                        <td>{{ __('status.'.$article->status) }}</td>
                         <td>{{ $article->title }}</td>
-                        <td>{{ $article->category_post->name }}</td>
+                        <td>{{ __('category.post.'.$article->category_post->slug) }}</td>
                         <td>{{ $article->views_count }}</td>
                         <td>{{ $article->conversions_count }}</td>
                         <td>{{ $article->conversion_rate }}</td>
                         <td>
-                            <a class="btn btn-primary" href="{{ route('mypage.articles.edit', $article) }}">Edit</a>
+                            <a class="btn btn-primary" href="{{ route('mypage.articles.edit', $article) }}">{{ __('message.edit') }}</a>
                             @if ($article->is_publish)
-                                <a class="btn btn-secondary" href="{{ route('articles.show', $article) }}">Show</a>
+                                <a class="btn btn-secondary" href="{{ route('articles.show', $article) }}">{{ __('message.show') }}</a>
                             @endif
                         </td>
                     </tr>

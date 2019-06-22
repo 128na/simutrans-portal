@@ -46,7 +46,7 @@ class ResetPassword extends Notification
         return (new MailMessage)
             ->subject(__('email.reset.subject'))
             ->view('emails.reset')
-            ->action(__('emails.reset.action'), url(config('app.url').route('password.reset', $this->token, false)));
+            ->action(__('email.reset.action'), url(config('app.url').route('password.reset', $this->token, false)));
     }
 
     /**

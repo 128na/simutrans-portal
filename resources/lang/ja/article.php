@@ -20,6 +20,7 @@ return [
     'publisher' => '記事投稿者',
     'categories' => 'カテゴリ一覧',
     'tags' => 'タグ一覧',
+    'tag' => 'タグ',
     'description' => '説明',
     'license' => '著作権',
     'thanks' => '元になったアドオン、謝辞',
@@ -32,8 +33,6 @@ return [
     'created' => ':title をステータス :status で保存しました。',
     'slug-duplicate' => '既に同じ名前のスラッグがあるため使用できません。',
 
-    'page-view' => '表示回数',
-    'conversion' => 'DL/リンククリック数',
     'conversion-rate' => 'コンバージョン /%',
     'actions' => '操作',
 ];

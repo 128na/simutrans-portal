@@ -34,5 +34,13 @@ return [
 
     'edit' => '編集',
     'show' => '表示',
-
+    'add'  => '追加',
+    'select-from-popular' => 'よく使われるタグから選ぶ',
+    'to-trash' => 'ゴミ箱',
+    'profile' => 'ユーザー情報',
+    'email-verified' => 'メール認証済み',
+    'email-not-verified' => 'メール未認証',
+    'last-updated' => '最終更新',
+    'no-description' => 'プロフィール未設定',
+    'edit-profile' => 'プロフィール編集',
 ];

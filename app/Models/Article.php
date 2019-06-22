@@ -71,19 +71,20 @@ class Article extends Model
         });
 
         self::created(function($model) {
-            $model->recountHandler();
+            $model->syncRelatedData();
         });
         self::updated(function($model) {
-            $model->recountHandler();
+            $model->syncRelatedData();
         });
         self::deleted(function($model) {
-            $model->recountHandler();
+            $model->syncRelatedData();
         });
     }
-    private function recountHandler()
+    private function syncRelatedData()
     {
         UserAddonCount::recount();
         PakAddonCount::recount();
+        Tag::removeDoesntHaveRelation();
     }
 
     /*

@@ -31,11 +31,11 @@ Route::prefix('mypage')->group(function () {
     Route::name('mypage.')->group(function () {
         Route::middleware(['auth'])->group(function () {
             Route::get('/', 'Mypage\FrontController@index')->name('index');
-            // Route::get('/edit', 'Mypage\FrontController@edit')->name('edit');
-            // Route::post('/edit', 'Mypage\FrontController@update');
 
             Route::middleware(['verified'])->group(function () {
-                Route::get('/articles/create/{type}', 'Mypage\ArticleController@create')->name('articles.create');
+                Route::get('profile', 'Mypage\ProfileController@edit')->name('profile.edit');
+                Route::post('profile', 'Mypage\ProfileController@update')->name('profile.update');
+
                 Route::get('/articles/create/{type}', 'Mypage\ArticleController@create')->name('articles.create');
                 Route::post('/articles/create/addon-post', 'Mypage\AddonPostController@store')->name('articles.store.addon-post');
                 Route::post('/articles/create/addon-introduction', 'Mypage\AddonIntroductionController@store')->name('articles.store.addon-introduction');

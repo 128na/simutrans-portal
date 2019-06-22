@@ -11,48 +11,6 @@
     <script src="{{ mix('js/app.js') }}" defer></script>
 
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height:100vh;
-        }
-        body>main {
-            flex:1;
-        }
-        .list .img-thumbnail,
-        .form-group .img-thumbnail {
-            max-height: 128px;
-            max-width: 256px;
-        }
-        .list .article-box {
-            display:flex;
-        }
-        .detail .img-thumbnail {
-            max-height: 512px;
-            max-width: 100%;
-        }
-        .badge {
-            padding: 4px;
-        }
-        .category-list {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .category-list .custom-checkbox,
-        .category-list .custom-radio {
-            min-width: 11rem;
-        }
-        @media (max-width: 768px) {
-            .list .article-box {
-                flex-direction: column;
-            }
-            .list .img-thumbnail {
-                width: : 100%;
-            }
-        }
-
-    </style>
     <link rel="canonical" href="{{ $canonical_url ?? url()->current() }}">
 </head>
 <body>
@@ -107,6 +65,11 @@
                                 {{ __('message.title-of-user', ['name' => Auth::user()->name]) }}</a>
                             <div class="dropdown-menu" aria-labelledby="mypage-dropdown">
                                 <a class="dropdown-item" href="{{ route('mypage.index') }}">{{ __('message.mypage') }}</a>
+                                <a class="dropdown-item" href="{{ route('mypage.articles.create', 'addon-post') }}">
+                                    {{ __('message.create-article-of', ['type' => __('category.post.addon-post')]) }}</a>
+                                <a class="dropdown-item" href="{{ route('mypage.articles.create', 'addon-introduction') }}">
+                                    {{ __('message.create-article-of', ['type' => __('category.post.addon-introduction')]) }}</a>
+                                <a class="dropdown-item" href="{{ route('mypage.profile.edit') }}">{{ __('message.edit-profile') }}</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('message.logout') }}</a>
                             </div>

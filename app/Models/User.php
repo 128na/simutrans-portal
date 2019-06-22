@@ -19,6 +19,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',
         'name',
         'email',
+        'email_verified_at',
         'password',
     ];
     protected $hidden = [
@@ -28,6 +29,29 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | 初期化時設定
+    |--------------------------------------------------------------------------
+    */
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::created(function($model) {
+            $model->syncRelatedData();
+        });
+    }
+    private function syncRelatedData()
+    {
+        $this->profile()->create();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | 通知
+    |--------------------------------------------------------------------------
+    */
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPassword($token));
@@ -36,6 +60,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new VerifyEmail());
     }
+
     /*
     |--------------------------------------------------------------------------
     | リレーション

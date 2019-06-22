@@ -24,9 +24,6 @@ class DevSeeder extends Seeder
         User::where('role', config('role.user'))->delete();
 
         factory(User::class, 20)->create()->each(function ($user) {
-            $user->profile()->save(
-                factory(Profile::class)->make()
-            );
             $user->articles()->saveMany(
                 factory(Article::class, random_int(0, 20))->make()
             );
@@ -37,7 +34,7 @@ class DevSeeder extends Seeder
 
         // add attachment into article
         foreach(User::with(['articles', 'profile'])->cursor() as $user) {
-            self::addAvater($user);
+            self::addAvatar($user);
 
             foreach($user->articles as $article) {
                 // アドオン投稿
@@ -55,14 +52,14 @@ class DevSeeder extends Seeder
         }
     }
 
-    private static function addAvater($user)
+    private static function addAvatar($user)
     {
-        $avater = Attachment::make([
+        $avatar = Attachment::make([
             'user_id'       => $user->id,
             'original_name' => $user->name.'のアバター.png',
-            'path'          => 'default/avater.png',
+            'path'          => 'default/avatar.png',
         ]);
-        $user->profile->attachments()->save($avater);
+        $user->profile->attachments()->save($avatar);
     }
 
     private static function addAddonPost($user, $article)

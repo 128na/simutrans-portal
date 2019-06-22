@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Mypage;
 
 use Illuminate\Http\Request;
 use App\Models\Article;
+use App\Models\Tag;
 use App\Models\Attachment;
 
 class AddonIntroductionController extends ArticleController
@@ -30,6 +31,12 @@ class AddonIntroductionController extends ArticleController
         );
         $categories = array_filter($categories); // remove null elements
         $article->categories()->sync($categories);
+
+        $tag_names = collect($request->input('tags', []));
+        $tags = $tag_names->map(function($tag_name) {
+            return Tag::firstOrCreate(['name' => $tag_name]);
+        });
+        $article->tags()->sync($tags->pluck('id')->toArray());
 
         return $attachments;
     }

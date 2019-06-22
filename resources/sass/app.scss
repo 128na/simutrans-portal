@@ -8,3 +8,58 @@
 @import '~bootstrap/scss/bootstrap';
 
 @import 'multi_dropdown';
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height:100vh;
+}
+body>main {
+    flex:1;
+}
+.list .img-thumbnail,
+.form-group .img-thumbnail {
+    max-height: 128px;
+    max-width: 256px;
+}
+.list .article-box {
+    display:flex;
+}
+.detail .img-thumbnail {
+    max-height: 512px;
+    max-width: 100%;
+}
+.badge {
+    padding: 4px;
+}
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+.category-list .custom-checkbox,
+.category-list .custom-radio {
+    min-width: 11rem;
+}
+.clickable {
+    cursor: pointer;
+}
+@media (max-width: 768px) {
+    .list .article-box {
+        flex-direction: column;
+    }
+    .list .img-thumbnail {
+        width: 100%;
+    }
+}
+#popular-tags .card-body {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.card-profile {
+    height: 10rem;
+    width: 500px;
+}
+.card-profile .card-img {
+    // height: 128px;
+    // width: 128px;
+}

@@ -55,8 +55,7 @@ class ImportUsersFromWP extends Command
             $user = self::createUser($wp_user);
 
             $wp_usermeta = collect($this->fetchWPUsermeta($wp_user->ID));
-            $profile = self::createProfile($user, $wp_user, $wp_usermeta);
-
+            self::updateProfile($user, $wp_user, $wp_usermeta);
             self::updateCreatedAt($user->id, $wp_user);
             $this->info('created: '.$user->name);
         }
@@ -73,36 +72,33 @@ class ImportUsersFromWP extends Command
             'role'     => config('role.user'),
         ]);
     }
-    private static function createProfile($user, $wp_user, $wp_usermeta)
+    private static function updateProfile($user, $wp_user, $wp_usermeta)
     {
-        $profile = $user->profile()->create([
-            'data' => [
-                'description' => self::searchMetaItem($wp_usermeta, 'description'),
-                'twitter'     => self::searchMetaItem($wp_usermeta, 'twitter'),
-                'website'     => $wp_user->user_url ?? null,
-            ]
-        ]);
+        $user->profile->setContents('description', self::searchMetaItem($wp_usermeta, 'description'));
+        $user->profile->setContents('twitter', self::searchMetaItem($wp_usermeta, 'twitter'));
+        $user->profile->setContents('website',  $wp_user->user_url ?? null);
 
-        // add avater
+        // add avatar
         if($serialized = self::searchMetaItem($wp_usermeta, 'simple_local_avatar')) {
             try {
-                $avater_urls = unserialize($serialized);
-                $avater_url = $avater_urls['full'];
+                $avatar_urls = unserialize($serialized);
+                $avatar_url = $avatar_urls['full'];
             } catch(\ErrorException $e) {
                 $serialized = self::fixSerializedStr($serialized);
-                $avater_urls = unserialize($serialized);
-                $avater_url = self::recoverURL($avater_urls['full']);
+                $avatar_urls = unserialize($serialized);
+                $avatar_url = self::recoverURL($avatar_urls['full']);
             }
 
-            $path = self::saveFromUrl($user->id, $avater_url);
+            $path = self::saveFromUrl($user->id, $avatar_url);
 
-            $profile->attachments()->create([
+            $attachment = $user->profile->attachments()->create([
                 'user_id'       => $user->id,
-                'original_name' => basename($avater_url),
+                'original_name' => basename($avatar_url),
                 'path'          => $path
             ]);
+            $user->profile->setContents('avatar',  $attachment->id);
         }
-        return $profile;
+        $user->profile->save();
     }
 
     /**

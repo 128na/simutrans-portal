@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Validation\Rule;
 use Validator;
 use Illuminate\Support\Facades\Auth;
@@ -23,12 +24,15 @@ class ArticleController extends Controller
      */
     public function create($post_type = null)
     {
-        $post_types = Category::post()->get();
-        $addons = Category::addon()->get();
-        $paks = Category::pak()->get();
+        $post_types       = Category::post()->get();
+        $addons           = Category::addon()->get();
+        $paks             = Category::pak()->get();
         $pak128_positions = Category::pak128Position()->get();
-        $licenses = Category::license()->get();
-        return view('mypage.articles.create', compact('post_type', 'post_types', 'addons', 'paks', 'pak128_positions', 'licenses'));
+        $licenses         = Category::license()->get();
+
+        $popular_tags = Tag::popular()->limit(20)->get();
+
+        return view('mypage.articles.create', compact('post_type', 'post_types', 'addons', 'paks', 'pak128_positions', 'licenses', 'popular_tags'));
     }
 
     /**
@@ -36,13 +40,19 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        $article->load('categories', 'attachments');
-        $post_types = Category::post()->get();
-        $addons = Category::addon()->get();
-        $paks = Category::pak()->get();
+        abort_unless($article->user_id === Auth::id(), 404);
+
+        $article->load('categories', 'attachments', 'tags');
+
+        $post_types       = Category::post()->get();
+        $addons           = Category::addon()->get();
+        $paks             = Category::pak()->get();
         $pak128_positions = Category::pak128Position()->get();
-        $licenses = Category::license()->get();
-        return view('mypage.articles.edit', compact('article', 'post_types', 'addons', 'paks', 'pak128_positions', 'licenses'));
+        $licenses         = Category::license()->get();
+
+        $popular_tags = Tag::popular()->limit(20)->get();
+
+        return view('mypage.articles.edit', compact('article', 'post_types', 'addons', 'paks', 'pak128_positions', 'licenses', 'popular_tags'));
     }
 
     /**
@@ -89,6 +99,8 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
+        abort_unless($article->user_id === Auth::id(), 404);
+
         self::validateData($request->all(), static::getValidateRule($article));
 
         $article->fill([

@@ -15,4 +15,22 @@ class Tag extends Model
     {
         return $this->belongsToMany(Article::class);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | スコープ
+    |--------------------------------------------------------------------------
+    */
+    public function scopePopular($query)
+    {
+        return $query->withCount('articles')->orderBy('articles_count', 'desc');
+    }
+
+    /**
+     * 記事にリレーションがない孤独なタグを削除する
+     */
+    public static function removeDoesntHaveRelation()
+    {
+        self::doesntHave('articles')->delete();
+    }
 }

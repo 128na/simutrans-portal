@@ -23,4 +23,4 @@
     <textarea class="form-control" id="thanks" name="thanks" rows="4">{!! e(old('thanks', $article->thanks ?? '')) !!}</textarea>
 </div>
 
-@include('mypage.articles._form-addon-common')
+@include('parts._form-addon-common')

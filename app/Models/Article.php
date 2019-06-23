@@ -37,11 +37,11 @@ class Article extends Model
                 license?: ライセンス
             };
         一般記事
-            contents = {
-                {type:section content:文章},
+            contents = [
+                {type:text content:文章},
                 {type:image id:添付画像ID},
                 ...
-            };
+            ];
     */
     protected $attributes = [
         'contents' => '{}',
@@ -141,6 +141,12 @@ class Article extends Model
             ->orWhere('contents->author', 'like', $like_word)
             ->orWhere('contents->license', 'like', $like_word);
     }
+    public function scopeAddon($query)
+    {
+        $query->whereHas('categories', function($query) {
+            $query->where('type', 'post')->whereIn('slug', ['addon-post', 'addon-introduction']);
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -151,7 +157,6 @@ class Article extends Model
     {
         return $this->status === config('status.publish');
     }
-
     public function getDescriptionAttribute()
     {
         return $this->getContents('description');
@@ -260,5 +265,18 @@ class Article extends Model
         $tmp = $this->contents;
         $tmp[$key] = $value;
         $this->contents = $tmp;
+    }
+    public function getImage($id)
+    {
+        return $this->attachments->first(function($attachment) use ($id) {
+            return $id === $attachment->id;
+        });
+    }
+    public function getImageUrl($id)
+    {
+        $image = $this->getImage($id);
+        return $image
+             ? asset('storage/'.$image->path)
+             : asset('storage/'.config('attachment.no-thumbnail'));
     }
 }

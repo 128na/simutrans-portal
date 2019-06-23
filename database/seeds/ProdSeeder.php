@@ -23,6 +23,7 @@ class ProdSeeder extends Seeder
         self::addItems(config('category.addon'));
         self::addItems(config('category.pak128_position'));
         self::addItems(config('category.license'));
+        self::addItems(config('category.page'));
     }
 
     private static function addAdminUser()

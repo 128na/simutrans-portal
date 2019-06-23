@@ -1,4 +1,3 @@
-
 <div class="form-group">
     <label for="author"><span class="badge badge-danger mr-1">{{ __('message.required') }}</span>{{ __('article.author') }}</label>
     <input type="text" class="form-control" id="author" name="author" placeholder="Author" value="{{ old('author', $article->author ?? '') }}">
@@ -28,4 +27,4 @@
     </div>
 </div>
 
-@include('mypage.articles._form-addon-common')
+@include('parts._form-addon-common')

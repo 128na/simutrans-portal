@@ -59,21 +59,29 @@
                         <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">{{ __('message.login') }}</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">{{ __('message.register') }}</a></li>
                     @else
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="mypage-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ __('message.title-of-user', ['name' => Auth::user()->name]) }}</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="mypage-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ __('message.title-of-user', ['name' => Auth::user()->name]) }}</a>
                             <div class="dropdown-menu" aria-labelledby="mypage-dropdown">
-                                <a class="dropdown-item" href="{{ route('mypage.index') }}">{{ __('message.mypage') }}</a>
-                                <a class="dropdown-item" href="{{ route('mypage.articles.create', 'addon-post') }}">
-                                    {{ __('message.create-article-of', ['type' => __('category.post.addon-post')]) }}</a>
-                                <a class="dropdown-item" href="{{ route('mypage.articles.create', 'addon-introduction') }}">
-                                    {{ __('message.create-article-of', ['type' => __('category.post.addon-introduction')]) }}</a>
-                                <a class="dropdown-item" href="{{ route('mypage.profile.edit') }}">{{ __('message.edit-profile') }}</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('message.logout') }}</a>
+                                @if(Auth::user()->isAdmin())
+                                    <a class="dropdown-item" href="{{ route('admin.index') }}">{{ __('admin.index') }}</a>
+                                    <a class="dropdown-item" href="{{ route('admin.users.index') }}">{{ __('admin.users.index') }}</a>
+                                    <a class="dropdown-item" href="{{ route('admin.articles.index') }}">{{ __('admin.articles.index') }}</a>
+                                    <div class="dropdown-divider"></div>
+                                @endif
+                                    <a class="dropdown-item" href="{{ route('mypage.index') }}">{{ __('message.mypage') }}</a>
+                                    <a class="dropdown-item" href="{{ route('mypage.articles.create', 'addon-post') }}">
+                                        {{ __('message.create-article-of', ['type' => __('category.post.addon-post')]) }}</a>
+                                    <a class="dropdown-item" href="{{ route('mypage.articles.create', 'addon-introduction') }}">
+                                        {{ __('message.create-article-of', ['type' => __('category.post.addon-introduction')]) }}</a>
+                                    <a class="dropdown-item" href="{{ route('mypage.articles.create', 'page') }}">
+                                        {{ __('message.create-article-of', ['type' => __('category.post.page')]) }}</a>
+                                    <a class="dropdown-item" href="{{ route('mypage.profile.edit') }}">{{ __('message.edit-profile') }}</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('message.logout') }}</a>
                             </div>
                         </li>
+
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>

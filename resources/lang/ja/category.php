@@ -13,6 +13,7 @@ return [
     'post' => [
         'addon-post'         => 'アドオン投稿',
         'addon-introduction' => 'アドオン紹介',
+        'page' => '一般記事',
     ],
     'pak' => [
         '64'           => 'pak64',

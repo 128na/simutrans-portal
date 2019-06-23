@@ -39,10 +39,12 @@ Route::prefix('mypage')->group(function () {
                 Route::get('/articles/create/{type}', 'Mypage\ArticleController@create')->name('articles.create');
                 Route::post('/articles/create/addon-post', 'Mypage\AddonPostController@store')->name('articles.store.addon-post');
                 Route::post('/articles/create/addon-introduction', 'Mypage\AddonIntroductionController@store')->name('articles.store.addon-introduction');
+                Route::post('/articles/create/page', 'Mypage\PageController@store')->name('articles.store.page');
 
                 Route::get('/articles/edit/{article}', 'Mypage\ArticleController@edit')->name('articles.edit');
                 Route::post('/articles/edit/addon-post/{article}', 'Mypage\AddonPostController@update')->name('articles.update.addon-post');
                 Route::post('/articles/edit/addon-introduction/{article}', 'Mypage\AddonIntroductionController@update')->name('articles.update.addon-introduction');
+                Route::post('/articles/edit/page/{article}', 'Mypage\PageController@update')->name('articles.update.page');
             });
         });
     });
@@ -54,15 +56,16 @@ Route::prefix('admin')->group(function () {
         Route::middleware(['auth', 'admin', 'verified'])->group(function () {
             Route::get('/', 'Admin\FrontController@index')->name('index');
 
-            // Route::get('/users', 'Admin\UserController@index')->name('users.index');
+            Route::get('/users', 'Admin\UserController@index')->name('users.index');
             // Route::get('/users/create', 'Admin\UserController@create')->name('users.create');
             // Route::post('/users/create', 'Admin\UserController@store')->name('users.store');
             // Route::get('/users/{user}/edit', 'Admin\UserController@edit')->name('users.edit');
             // Route::post('/users/{user}', 'Admin\UserController@update')->name('users.update');
             // Route::delete('/users/{user}', 'Admin\UserController@destroy')->name('users.destroy');
 
-            // Route::get('/articles', 'Admin\ArticleController@index')->name('articles.index');
-            // Route::delete('/articles/{article}', 'Admin\ArticleController@destroy')->name('articles.destroy');
+            Route::get('/articles', 'Admin\ArticleController@index')->name('articles.index');
+            // Route::get('/articles/create/announce', 'Admin\AnnounceController@create')->name('articles.create');
+            // Route::post('/articles/create/announce', 'Admin\AnnounceController@store')->name('articles.store.announce');
 
             // Route::get('/categories', 'Admin\CategoryController@index')->name('categories.index');
             // Route::get('/categories/create', 'Admin\CategoryController@create')->name('categories.create');

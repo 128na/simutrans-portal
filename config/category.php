@@ -11,6 +11,7 @@ return [
     'post' => [
         ['slug' => 'addon-post',         'type' => 'post', 'order' => 00000, 'name' => 'Addon Post'],
         ['slug' => 'addon-introduction', 'type' => 'post', 'order' => 00010, 'name' => 'Addon Introduction'],
+        ['slug' => 'page',               'type' => 'post', 'order' => 00020, 'name' => 'Post'],
     ],
     'pak' => [
         ['slug' => '64',           'type' => 'pak', 'order' => 10000, 'name' => 'Pak64'],
@@ -58,6 +59,10 @@ return [
         ['slug' => 'pdm',         'type' => 'license', 'order' => 40100, 'name' => 'PDM'],
         ['slug' => 'mit-license', 'type' => 'license', 'order' => 40200, 'name' => 'MIT License'],
         ['slug' => 'others',      'type' => 'license', 'order' => 49000, 'name' => 'Others'],
-    ]
+    ],
+    'page' => [
+        ['slug' => 'announce', 'type' => 'page', 'order' => 50000, 'name' => 'Announce'],
+        ['slug' => 'others',   'type' => 'page', 'order' => 59000, 'name' => 'Others'],
+    ],
 
 ];

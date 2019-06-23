@@ -35,4 +35,12 @@ return [
 
     'conversion-rate' => 'コンバージョン /%',
     'actions' => '操作',
+    'sections' => '内容',
+    'section-text' => 'テキスト',
+    'section-caption' => '見出し',
+    'section-image' => '画像',
+    'remove-section' => '項目削除',
+    'add-caption-section' => '見出しを追加',
+    'add-text-section' => '本文を追加',
+    'add-image-section' => '画像を追加',
 ];

@@ -18,7 +18,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::active()->withForList()->paginate(20);
+        $articles = Article::addon()->active()->withForList()->paginate(20);
 
         $title = __('message.articles');
         return static::viewWithHeader('front.articles.index', compact('title', 'articles'));

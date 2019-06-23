@@ -62,3 +62,79 @@ const addPopularTag = function (e) {
     $tag_area.append(buildTagHTML(name));
 };
 $('.js-add-popular-tag').on('click ', addPopularTag);
+
+// セクション追加
+const $sections = $('#sections');
+const add_caption_section = function (e) {
+    e.preventDefault();
+    const current_index = $('.js-section').last().data('section');
+    $sections.append(buildCaptionSectionHTML(current_index + 1));
+};
+$('.js-add-caption-section').on('click', add_caption_section);
+
+const add_text_section = function (e) {
+    e.preventDefault();
+    const current_index = $('.js-section').last().data('section');
+    $sections.append(buildTextSectionHTML(current_index + 1));
+};
+$('.js-add-text-section').on('click', add_text_section);
+
+const add_image_section = function (e) {
+    e.preventDefault();
+    const current_index = $('.js-section').last().data('section');
+    $sections.append(buildImageSectionHTML(current_index + 1));
+};
+$('.js-add-image-section').on('click', add_image_section);
+
+const buildCaptionSectionHTML = function (index) {
+    return `
+        <div class="form-group js-section" data-section="${index}">
+            <h5 class="row">
+                <div class="col-8">${msg_section_caption}</div>
+                <div class="col-4 ml-auto text-right">
+                    <button class="btn btn-sm btn-danger js-remove-section">${msg_remove_section}</button>
+                </div>
+            </h5>
+            <input type="hidden" name="sections[${index}][type]" value="caption">
+            <input type="text" class="form-control" name="sections[${index}][caption]" value="">
+        </div>`;
+};
+const buildTextSectionHTML = function (index) {
+    return `
+        <div class="form-group js-section" data-section="${index}">
+            <h5 class="row">
+                <div class="col-8">${msg_section_text}</div>
+                <div class="col-4 ml-auto text-right">
+                    <button class="btn btn-sm btn-danger js-remove-section">${msg_remove_section}</button>
+                </div>
+            </h5>
+            <input type="hidden" name="sections[${index}][type]" value="text">
+            <textarea class="form-control" name="sections[${index}][text]" rows="8"></textarea>
+        </div>`;
+};
+const buildImageSectionHTML = function (index) {
+    return `
+        <div class="form-group js-section" data-section="${index}">
+            <h5 class="row">
+                <div class="col-8">${msg_section_image}</div>
+                <div class="col-4 ml-auto text-right">
+                    <button class="btn btn-sm btn-danger js-remove-section">${msg_remove_section}</button>
+                </div>
+            </h5>
+            <input type="hidden" name="sections[${index}][type]" value="image">
+            <div class="mb-2">
+                <img id="thumbnail-preview_${index}" class="preview img-thumbnail " src="${url_default_image}">
+            </div>
+            <div class="custom-file">
+                <label class="custom-file-label" for="thumbnail"></label>
+                <input type="file" class="custom-file-input js-preview-trigger" name="sections[${index}][image]" data-preview="#thumbnail-preview_${index}">
+            </div>
+        </div>`;
+};
+
+// セクション削除
+const remove_section = function (e) {
+    e.preventDefault();
+    $(e.currentTarget).parents('.js-section').remove();
+};
+$sections.on('click', '.js-remove-section', remove_section);

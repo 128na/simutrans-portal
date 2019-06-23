@@ -17,7 +17,8 @@ Auth::routes(['verify' => true]);
 
 // 非ログイン系
 Route::get('/', 'FrontController@index')->name('index');
-Route::get('/articles', 'ArticleController@index')->name('articles.index');
+Route::get('/addons', 'ArticleController@addons')->name('addons.index');
+Route::get('/pages', 'ArticleController@pages')->name('pages.index');
 Route::get('/articles/{article}', 'ArticleController@show')->name('articles.show');
 Route::get('/articles/{article}/download', 'ArticleController@download')->name('articles.download');
 Route::get('/search', 'ArticleController@search')->name('search');

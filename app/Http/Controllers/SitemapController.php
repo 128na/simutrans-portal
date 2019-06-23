@@ -27,13 +27,14 @@ class SitemapController extends Controller
         if (!$sitemap->isCached()) {
             // listing pages
             $sitemap->add(route('index'), now(), '0.9', 'daily');
-            $sitemap->add(route('articles.index'), now(), '0.8', 'monthly');
+            $sitemap->add(route('addons.index'), now(), '0.8', 'weekly');
+            $sitemap->add(route('pages.index'), now(), '0.5', 'monthly');
 
             // articles
-            foreach (Article::active()->with('categories')->cursor() as $article) {
+            foreach (Article::active()->cursor() as $article) {
                 $sitemap->add(
                     route('articles.show', $article->slug), $article->updated_at,
-                    self::PRIORITIES[$article->category_post->slug] ?? '0.5',
+                    self::PRIORITIES[$article->post_type] ?? '0.5',
                     'monthly'
                 );
             }
@@ -73,5 +74,6 @@ class SitemapController extends Controller
     const PRIORITIES = [
         'addon-post' => '1.0',
         'addon-introduction' => '0.7',
+        'page' => '0.5',
     ];
 }

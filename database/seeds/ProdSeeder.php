@@ -18,7 +18,6 @@ class ProdSeeder extends Seeder
     public function run()
     {
         self::addAdminUser();
-        self::addItems(config('category.post'));
         self::addItems(config('category.pak'));
         self::addItems(config('category.addon'));
         self::addItems(config('category.pak128_position'));

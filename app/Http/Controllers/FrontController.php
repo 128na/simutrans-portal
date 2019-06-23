@@ -13,6 +13,7 @@ class FrontController extends Controller
     {
         $data = [
             'articles' => [
+                'pages'  => Article::page()->active()->withForList()->limit(3)->get(),
                 'latest' => Article::addon()->active()->withForList()->limit(3)->get(),
                 'random' => Article::addon()->active()->withForList()->withoutGlobalScope('order')->inRandomOrder()->limit(3)->get(),
             ]

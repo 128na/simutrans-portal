@@ -21,6 +21,7 @@ class CreateArticlesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('title', 255)->comment('タイトル');
             $table->string('slug', 255)->unique()->comment('スラッグ');
+            $table->string('post_type', 255)->comment('投稿形式');
             $table->json('contents')->comment('コンテンツ');
             $table->string('status', 255)->comment('公開状態');
             $table->timestamps();

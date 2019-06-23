@@ -23,7 +23,6 @@ class AddonIntroductionController extends ArticleController
         $article->save();
 
         $categories = array_merge(
-            [$article->category_post->id],
             $request->input('categories.pak', []),
             $request->input('categories.addon', []),
             $request->input('categories.pak128_position', []),

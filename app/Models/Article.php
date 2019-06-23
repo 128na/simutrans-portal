@@ -50,6 +50,7 @@ class Article extends Model
         'user_id',
         'title',
         'slug',
+        'post_type',
         'contents',
         'status',
     ];
@@ -143,9 +144,11 @@ class Article extends Model
     }
     public function scopeAddon($query)
     {
-        $query->whereHas('categories', function($query) {
-            $query->where('type', 'post')->whereIn('slug', ['addon-post', 'addon-introduction']);
-        });
+        $query->whereIn('post_type', ['addon-post', 'addon-introduction']);
+    }
+    public function scopePage($query)
+    {
+        $query->where('post_type', 'page');
     }
 
     /*
@@ -212,12 +215,6 @@ class Article extends Model
         return !is_null($this->file);
     }
 
-    public function getCategoryPostAttribute()
-    {
-        return $this->categories->first(function($category) {
-            return $category->type === config('category.type.post');
-        });
-    }
     public function getCategoryPaksAttribute()
     {
         return $this->categories->filter(function($category) {
@@ -243,6 +240,14 @@ class Article extends Model
             return sprintf('%.1f %%', $rate);
         }
         return 'N/A';
+    }
+    /**
+     * @todo 廃止予定
+     */
+    public function getCategoryPostAttribute()
+    {
+        dump('廃止予定');
+        return $this->post_type;
     }
 
     /*

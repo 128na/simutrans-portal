@@ -59,7 +59,7 @@
                         <td>{{ $article->id }}</td>
                         <td>{{ __('status.'.$article->status) }}</td>
                         <td>{{ $article->title }}</td>
-                        <td>{{ __('category.post.'.$article->category_post->slug) }}</td>
+                        <td>{{ __('category.post.'.$article->post_type) }}</td>
                         <td>{{ $article->conversions_count }} / {{ $article->views_count }} = {{ $article->conversion_rate }}</td>
                         <td>
                             <div class="btn-group">

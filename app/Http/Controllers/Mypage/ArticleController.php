@@ -64,6 +64,7 @@ class ArticleController extends Controller
 
         $article = Article::make([
             'user_id' => Auth::id(),
+            'post_type' => $this->post_type,
             'title'   => $request->input('title'),
             'slug'    => $request->filled('slug') ? $request->input('slug') : $request->input('title'),
             'status'  => $request->input('status'),
@@ -74,10 +75,6 @@ class ArticleController extends Controller
             return back()->withInput();
         }
         $article->save();
-
-        // add post type category
-        $post_type = Category::post()->where('slug', $this->post_type)->firstOrFail();
-        $article->categories()->sync($post_type->id);
 
         // contents, attachments
         $attachments = [];

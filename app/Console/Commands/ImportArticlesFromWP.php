@@ -57,7 +57,7 @@ class ImportArticlesFromWP extends Command
                 }
                 $this->info('creating:'.$wp_post->post_title);
 
-                $article = self::createArticle($user, $wp_post);
+                $article = $this->createArticle($user, $wp_post);
 
                 $this->applyCategories($article, $wp_post->ID);
                 $this->applyTags($article, $wp_post->ID);
@@ -74,7 +74,7 @@ class ImportArticlesFromWP extends Command
                     $article->setContents('thumbnail', $attachment->id);
                 }
 
-                if ($article->category_post->slug === 'addon-post') {
+                if ($article->post_type === 'addon-post') {
                     $article->setContents('author', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-author'));
                     $article->setContents('description', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-description'));
                     $article->setContents('thanks', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-based'));
@@ -92,7 +92,7 @@ class ImportArticlesFromWP extends Command
                     $article->setContents('file', $attachment->id);
 
                 }
-                if ($article->category_post->slug === 'addon-introduction') {
+                if ($article->post_type === 'addon-introduction') {
                     $article->setContents('author', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-author'));
                     $article->setContents('description', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-description'));
                     $article->setContents('thanks', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-based'));
@@ -109,11 +109,14 @@ class ImportArticlesFromWP extends Command
         DB::commit();
     }
 
-    private static function createArticle($user, $wp_post)
+    private function createArticle($user, $wp_post)
     {
+        // post type
+        $post_type = $this->fetchWPTerms($wp_post->ID, 'category')[0]->slug;
         return $user->articles()->create([
             'title'    => $wp_post->post_title,
             'slug'     => self::hasSlug($wp_post->post_name) ? $wp_post->post_name : $wp_post->post_title,
+            'post_type' => $post_type,
             'status'   => config('status.publish'),
         ]);
     }
@@ -126,10 +129,6 @@ class ImportArticlesFromWP extends Command
     private function applyCategories($article, $wp_post_id)
     {
         $categories = collect([]);
-
-        // post type
-        $wp_term_slugs = collect($this->fetchWPTerms($wp_post_id, 'category'))->pluck('slug');
-        $categories = $categories->merge(Category::post()->whereIn('slug', $wp_term_slugs)->get());
 
         // pak
         $wp_term_slugs = collect($this->fetchWPTerms($wp_post_id, 'pak'))->pluck('slug');

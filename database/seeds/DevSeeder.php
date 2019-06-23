@@ -29,25 +29,26 @@ class DevSeeder extends Seeder
             );
         });
 
-        $category_post = Category::where('slug', 'addon-post')->first();
-        $category_introduction = Category::where('slug', 'addon-introduction')->first();
-
         // add attachment into article
         foreach(User::with(['articles', 'profile'])->cursor() as $user) {
             self::addAvatar($user);
 
             foreach($user->articles as $article) {
                 // アドオン投稿
-                if(random_int(0,1)) {
+                if($article->post_type === 'addon-post') {
                     self::addAddonPost($user, $article);
-                    self::addCategories($article, $category_post);
+                    self::addCategories($article);
+                    self::addTags($article);
                 }
                 // アドオン紹介
-                else {
+                if($article->post_type === 'addon-introduction') {
                     self::addAddonIntroduction($user, $article);
-                    self::addCategories($article, $category_introduction);
+                    self::addCategories($article);
+                    self::addTags($article);
                 }
-                self::addTags($article);
+                // 一般記事
+                if($article->post_type === 'page') {
+                }
             }
         }
     }
@@ -106,9 +107,9 @@ class DevSeeder extends Seeder
         $article->save();
     }
 
-    private static function addCategories($article, $type)
+    private static function addCategories($article)
     {
-        $ids = collect([$type->id]);
+        $ids = collect([]);
         $ids = $ids->merge(Category::pak()->inRandomOrder()->limit(random_int(1, 3))->get()->pluck('id'));
         $ids = $ids->merge(Category::addon()->inRandomOrder()->limit(random_int(1, 10))->get()->pluck('id'));
         $ids = $ids->merge(Category::pak128Position()->inRandomOrder()->limit(random_int(0, 1))->get()->pluck('id'));

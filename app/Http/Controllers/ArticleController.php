@@ -14,13 +14,23 @@ use Illuminate\Support\Facades\Auth;
 class ArticleController extends Controller
 {
     /**
-     * 記事一覧
+     * アドオン記事一覧
      */
-    public function index()
+    public function addons()
     {
         $articles = Article::addon()->active()->withForList()->paginate(20);
 
         $title = __('message.articles');
+        return static::viewWithHeader('front.articles.index', compact('title', 'articles'));
+    }
+    /**
+     * 一般記事一覧
+     */
+    public function pages()
+    {
+        $articles = Article::page()->active()->withForList()->paginate(20);
+
+        $title = __('message.pages');
         return static::viewWithHeader('front.articles.index', compact('title', 'articles'));
     }
 

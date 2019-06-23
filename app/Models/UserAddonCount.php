@@ -19,8 +19,6 @@ class UserAddonCount extends Model
                 LEFT JOIN
             articles a ON a.user_id = u.id
                 AND a.status = 'publish'
-        WHERE
-            role = 'user'
         GROUP BY u.id
         HAVING COUNT(a.id) > 0
         ORDER BY COUNT(a.id) DESC)";

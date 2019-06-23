@@ -18,15 +18,29 @@ use Faker\Generator as Faker;
 
 $factory->define(Article::class, function (Faker $faker) {
 
+    $post_type = $faker->randomElement(config('post_types'));
     $contents = [
-        'description' => $faker->realText,
-        'author' => $faker->name,
+        'addon-introduction' => [
+            'description' => $faker->realText,
+            'author' => $faker->name,
+            'link' => $faker->url,
+        ],
+        'addon-post' => [
+            'description' => $faker->realText,
+            'author' => $faker->name,
+        ],
+        'page' => [
+            'sections' => [
+                ['type' => 'text', 'text' => $faker->realText]
+            ]
+        ],
     ];
     $sentence = $faker->sentence;
     return [
         'title' => $sentence,
         'slug' => $sentence,
-        'contents' => $contents,
+        'contents' => $contents[$post_type],
+        'post_type' => $post_type,
         'status' => $faker->randomElement(config('status')),
     ];
 });

@@ -38,7 +38,8 @@ class PakAddonCount extends Model
                 AND a.status = 'publish'
         ) addon ON addon.article_id = a.id
         WHERE
-            pak.id IS NOT NULL
+            a.post_type IN ('addon-post', 'addon-introduction')
+                AND pak.id IS NOT NULL
                 AND addon.id IS NOT NULL
         GROUP BY pak.id , addon.id
         ORDER BY pak.order , addon.order)";

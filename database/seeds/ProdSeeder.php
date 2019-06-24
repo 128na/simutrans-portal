@@ -27,6 +27,10 @@ class ProdSeeder extends Seeder
 
     private static function addAdminUser()
     {
+        if(is_null(config('admin.email'))) {
+            throw new \Exception("admin email was empty!");
+        }
+
         $admin = User::with('profile')->firstOrCreate(
             ['role' => config('role.admin'), 'name' => config('admin.name'), 'email' => config('admin.email')],
             ['password' => bcrypt(config('admin.password')), 'email_verified_at' => now()]

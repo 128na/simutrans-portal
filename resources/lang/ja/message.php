@@ -43,4 +43,10 @@ return [
     'last-updated' => '最終更新',
     'no-description' => 'プロフィール未設定',
     'edit-profile' => 'プロフィール編集',
+    'open-uploader' => 'ファイルマネージャーを開く',
+    'uploader' => 'ファイルマネージャー',
+    'upload-file' => 'アップロード',
+    'select-file' => '選択',
+    'loading' => '読み込み中...',
+    'uploading' => 'アップロード中...',
 ];

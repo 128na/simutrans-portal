@@ -7,11 +7,8 @@ $('.dropdown-menu a.dropdown-toggle').on('click', function (e) {
     var $subMenu = $target.next(".dropdown-menu");
     $subMenu.toggleClass('show');
 
-
     $target.parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
         $('.dropdown-submenu .show').removeClass("show");
     });
-
-
     return false;
 });

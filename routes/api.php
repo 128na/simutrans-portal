@@ -13,3 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 Route::post('/v1/click/{article}', 'Api\ConversionController@click');
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/v1/attachments/my', 'Api\AttachmentController@my');
+    Route::get('/v1/attachments/myimage', 'Api\AttachmentController@myimage');
+    Route::post('/v1/attachments/upload', 'Api\AttachmentController@upload');
+    Route::delete('/v1/attachments/delete/{id}', 'Api\AttachmentController@delete');
+});
+

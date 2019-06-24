@@ -7,6 +7,23 @@
 
 <div class="form-group">
     <label><span class="badge badge-danger mr-1">{{ __('message.required') }}</span>{{ __('article.addon-file') }} </label>
+    <div class="mb-2">
+        <p id="file_preview">
+            {{ $article->file->original_name ?? __('message.not-selected') }}
+        </p>
+        <input type="hidden" id="file_id" name="file_id" value="{{ old('file_id', $article->file_id ?? '') }}">
+    </div>
+    <div>
+        <a href="#" class="btn btn-secondary js-open-uploader"
+            data-input="#file_id" data-preview="#file_preview" data-preview-url=""
+        >{{ __('message.open-uploader') }}</a>
+    </div>
+</div>
+
+
+
+<div class="form-group">
+    <label><span class="badge badge-danger mr-1">{{ __('message.required') }}</span>{{ __('article.addon-file') }} </label>
     <div class="custom-file">
         <label class="custom-file-label" for="file">{{ old('file', $article->file->original_name ?? __('message.not-selected')) }}</label>
         <input type="file" class="custom-file-input js-preview-trigger" id="file" name="file">

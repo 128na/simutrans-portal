@@ -34,12 +34,9 @@ class ProfileController extends Controller
         ]);
         $user->save();
 
-        // avatar
-        if ($request->hasFile('avatar')) {
-            $avatar = self::saveAttachment($request->file('avatar'), $user->id,
-                $user->profile, $user->profile->getContents('avatar') ?? null);
-            $user->profile->setContents('avatar', $avatar->id);
-            $user->profile->attachments()->save($avatar);
+        $user->profile->setContents('avatar', $request->input('avatar_id'));
+        if ($request->filled('avatar_id')) {
+            $user->profile->attachments()->save(Attachment::findOrFail($request->input('avatar_id')));
         }
 
         $user->profile->setContents('description', $request->input('description'));
@@ -71,7 +68,7 @@ class ProfileController extends Controller
         return [
             'name'        => "required|max:255",
             'email'       => "required|email|unique:users,email,{$user->id}max:255",
-            'thumbnail'   => 'nullable|image',
+            'avatar_id'   => 'nullable|exists:attachments,id',
             'description' => 'nullable|max:255',
             'website'     => 'nullable|url|max:255',
             'twitter'     => 'nullable|max:255',

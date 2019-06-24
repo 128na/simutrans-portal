@@ -11,7 +11,7 @@ class AddonIntroductionController extends ArticleController
 {
     protected $post_type = 'addon-introduction';
 
-    protected function saveContents(Request $request, Article $article, $attachments)
+    protected function saveContents(Request $request, Article $article)
     {
         $article->setContents('author', $request->input('author'));
         $article->setContents('link', $request->input('link'));
@@ -19,8 +19,6 @@ class AddonIntroductionController extends ArticleController
         $article->setContents('thanks', $request->input('thanks'));
         $article->setContents('license', $request->input('license'));
         $article->setContents('agreement', $request->filled('agreement'));
-
-        $article->save();
 
         $categories = array_merge(
             $request->input('categories.pak', []),
@@ -37,7 +35,7 @@ class AddonIntroductionController extends ArticleController
         });
         $article->tags()->sync($tags->pluck('id')->toArray());
 
-        return $attachments;
+        return $article;
     }
 
     protected static function getValidateRule($article = null)

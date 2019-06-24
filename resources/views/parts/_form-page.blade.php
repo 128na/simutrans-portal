@@ -35,12 +35,15 @@
                         </h5>
                         <input type="hidden" name="sections[{{ $index }}][type]" value="image">
                         <div class="mb-2">
-                            <img id="thumbnail-preview_{{ $index }}" class="preview img-thumbnail " src="{{ isset($section['id']) ? $article->getImageUrl($section['id']) : asset('storage/'.config('attachment.no-thumbnail')) }}">
+                            <img id="image_preview_{{ $index }}" class="preview img-thumbnail " src="{{ old("sections.{$index}.image_preview_url",
+                                    isset($section['id']) ? $article->getImageUrl($section['id']) : asset('storage/'.config('attachment.no-thumbnail'))) }}">
+                            <input type="hidden" id="image_preview_url_{{ $index }}" name="sections[{{ $index }}][image_preview_url]" value="{{ old("sections.{$index}.image_preview_url") }}">
+                            <input type="hidden" id="image_id_{{ $index }}" name="sections[{{ $index }}][id]" value="{{ old("sections.{$index}.id", $section['id']) }}">
                         </div>
-                        <div class="custom-file">
-                            <label class="custom-file-label" for="thumbnail">{{ old('thumbnail', isset($article) ? $article->getImage($section['id'])->original_name : __('message.not-selected')) }}</label>
-                            <input type="file" class="custom-file-input js-preview-trigger" name="sections[{{ $index }}][image]" data-preview="#thumbnail-preview_{{ $index }}">
-                            <input type="hidden" name="sections[{{ $index }}][id]" value="{{ $section['id'] ?? '' }}">
+                        <div>
+                            <a href="#" class="btn btn-secondary js-open-uploader"
+                                data-input="#image_id_{{ $index }}" data-preview="#image_preview_{{ $index }}" data-preview-url="#image_preview_url_{{ $index }}" data-only-image="true"
+                            >{{ __('message.open-uploader') }}</a>
                         </div>
                         @break
                 @endswitch
@@ -69,4 +72,5 @@
     var msg_section_text = @json(__('article.section-text'));
     var msg_section_image = @json(__('article.section-image'));
     var msg_remove_section = @json(__('article.remove-section'));
+    var msg_open_uploader = @json(__('message.open-uploader'));
 </script>

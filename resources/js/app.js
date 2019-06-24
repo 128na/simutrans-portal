@@ -31,7 +31,8 @@ require('./files/bootstrap');
 //     el: '#app',
 // });
 
-require('./files/api');
+require('./files/conversion');
 require('./files/form');
 require('./files/multi_dropdown');
+require('./files/uploader');
 

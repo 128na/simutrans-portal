@@ -1,22 +1,3 @@
-// カスタムファイル選択
-const bsCustomFileInput = require('bs-custom-file-input');
-bsCustomFileInput.init()
-
-// アップロード画像プレビュー
-$('form').on('change', '.js-preview-trigger', function (e) {
-    const $target = $(e.currentTarget);
-    const selector = $target.data('preview');
-
-    $(selector).attr('src', URL.createObjectURL(e.target.files[0]));
-});
-
-// 投稿形式選択切替
-const $input_post = $('#js-post');
-$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    const $target = $(e.target);
-    $input_post.val($target.attr('aria-controls'));
-})
-
 // タグ追加
 const $tag_area = $('.tag-list');
 const $new_tag = $('#new-tag');
@@ -114,22 +95,25 @@ const buildTextSectionHTML = function (index) {
 };
 const buildImageSectionHTML = function (index) {
     return `
-        <div class="form-group js-section" data-section="${index}">
-            <h5 class="row">
-                <div class="col-8">${msg_section_image}</div>
-                <div class="col-4 ml-auto text-right">
-                    <button class="btn btn-sm btn-danger js-remove-section">${msg_remove_section}</button>
-                </div>
-            </h5>
-            <input type="hidden" name="sections[${index}][type]" value="image">
-            <div class="mb-2">
-                <img id="thumbnail-preview_${index}" class="preview img-thumbnail " src="${url_default_image}">
+    <div class="form-group js-section" data-section="${index}">
+        <h5 class="row">
+            <div class="col-8">${msg_section_image}</div>
+            <div class="col-4 ml-auto text-right">
+                <button class="btn btn-sm btn-danger js-remove-section">${msg_remove_section}</button>
             </div>
-            <div class="custom-file">
-                <label class="custom-file-label" for="thumbnail"></label>
-                <input type="file" class="custom-file-input js-preview-trigger" name="sections[${index}][image]" data-preview="#thumbnail-preview_${index}">
-            </div>
-        </div>`;
+        </h5>
+        <input type="hidden" name="sections[${index}][type]" value="image">
+        <div class="mb-2">
+            <img id="image_preview_${index}" class="preview img-thumbnail " src="${url_default_image}">
+            <input type="hidden" id="image_preview_url_${index}" name="sections[${index}][image_preview_url]" value="">
+            <input type="hidden" id="thumbnail_id_${index}" name="sections[${index}][id]" value="">
+        </div>
+        <div>
+            <a href="#" class="btn btn-secondary js-open-uploader"
+                data-input="#thumbnail_id_${index}" data-preview="#image_preview_${index}" data-preview-url="#image_preview_url_${index}" data-only-image="true"
+            >${msg_open_uploader}</a>
+        </div>
+    </div>`;
 };
 
 // セクション削除

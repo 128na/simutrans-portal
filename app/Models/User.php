@@ -76,7 +76,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Profile::class);
     }
     // 自身が投稿した添付
-    public function ownedAttachments()
+    public function myAttachments()
     {
         return $this->hasMany(Attachment::class);
     }

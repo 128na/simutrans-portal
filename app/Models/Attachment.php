@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Profile;
+use App\Models\Article;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
@@ -63,5 +65,23 @@ class Attachment extends Model
             'path'          => $file->store('user/'.$user_id, 'public'),
             'original_name' => $file->getClientOriginalName(),
         ]);
+    }
+
+
+    public function getIsImageAttribute()
+    {
+        $path = public_path('storage/'.$this->path);
+        $mime = mime_content_type($path);
+        return stripos($mime, 'image') !== false;
+    }
+    public function getThumbnailAttribute()
+    {
+        return $this->is_image
+            ? asset('storage/'.$this->path)
+            : asset('storage/'.config('attachment.thumbnail-file'));
+    }
+    public function getUrlAttribute()
+    {
+        return asset('storage/'.$this->path);
     }
 }

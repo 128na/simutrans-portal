@@ -76,15 +76,13 @@ class ArticleController extends Controller
         }
         $article->save();
 
-        // contents, attachments
-        $attachments = [];
-        if ($request->hasFile('thumbnail')) {
-            $thumbnail = self::saveAttachment($request->file('thumbnail'), Auth::id(), $article, $contents['thumbnail'] ?? null);
-            $article->setContents('thumbnail', $thumbnail->id);
-            $attachments[] = $thumbnail;
+        $article->setContents('thumbnail', $request->input('thumbnail_id'));
+        if ($request->filled('thumbnail_id')) {
+            $article->attachments()->save(Attachment::findOrFail($request->input('thumbnail_id')));
         }
-        $attachments = $this->saveContents($request, $article, $attachments);
-        $article->attachments()->saveMany($attachments);
+
+        $article = $this->saveContents($request, $article);
+        $article->save();
 
         session()->flash('success', __('article.created', ['title' => $article->title, 'status' => __('status.'.$article->status)]));
         return redirect()->route('mypage.index');
@@ -110,17 +108,14 @@ class ArticleController extends Controller
             session()->flash('error', __('article.slug-duplicate'));
             return back()->withInput();
         }
-        $article->save();
 
-        // contents, attachments
-        $attachments = [];
-        if ($request->hasFile('thumbnail')) {
-            $thumbnail = self::saveAttachment($request->file('thumbnail'), Auth::id(), $article, $contents['thumbnail'] ?? null);
-            $article->setContents('thumbnail', $thumbnail->id);
-            $attachments[] = $thumbnail;
+        $article->setContents('thumbnail', $request->input('thumbnail_id'));
+        if ($request->filled('thumbnail_id')) {
+            $article->attachments()->save(Attachment::findOrFail($request->input('thumbnail_id')));
         }
-        $attachments = $this->saveContents($request, $article, $attachments);
-        $article->attachments()->saveMany($attachments);
+
+        $article = $this->saveContents($request, $article);
+        $article->save();
 
         session()->flash('success', __('article.updated', ['title' => $article->title, 'status' => __('status.'.$article->status)]));
         return redirect()->route('mypage.index');
@@ -129,7 +124,7 @@ class ArticleController extends Controller
     /**
      * 記事固有のコンテンツ保存処理
      */
-    protected function saveContents(Request $request, Article $article, $attachments)
+    protected function saveContents(Request $request, Article $article)
     {
     }
 
@@ -143,21 +138,9 @@ class ArticleController extends Controller
                 ? "required|unique:articles,title,{$article->id}|max:255"
                 : 'required|unique:articles,title|max:255',
             'slug'      => 'nullable|max:255',
-            'thumbnail' => 'nullable|image',
+            'thumbnail_id'=> 'nullable|exists:attachments,id',
             'status'    => ['required', Rule::in(config('status')), ],
         ];
-    }
-
-    /**
-     * 添付ファイルの保存
-     */
-    protected static function saveAttachment($file, $user_id, $attachmentable, $old_attachment_id = null)
-    {
-        $new_attachment = Attachment::createFromFile($file, $user_id);
-        if ($old_attachment_id) {
-            Attachment::destroy($old_attachment_id);
-        }
-        return $new_attachment;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mypage;
 
 use App\Models\Article;
+use App\Models\Attachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,12 +11,11 @@ class PageController extends ArticleController
 {
     protected $post_type = 'page';
 
-    protected function saveContents(Request $request, Article $article, $attachments)
+    protected function saveContents(Request $request, Article $article)
     {
-        $old_sections = $article->getContents('sections', []);
         $sections = collect($request->input('sections', []));
 
-        $sections = $sections->map(function($section, $index) use ($request, $article, &$attachments) {
+        $sections = $sections->map(function($section, $index) use ($request, $article) {
             switch ($section['type']) {
                 case 'caption':
                     return [
@@ -28,29 +28,18 @@ class PageController extends ArticleController
                         'text' => $section['text'],
                     ];
                 case 'image':
-                    if($request->hasFile("sections.{$index}.image")) {
-                        $image = static::saveAttachment(
-                            $request->file("sections.{$index}.image"), Auth::id(), $article, $section['id'] ?? null);
-                        $article->setContents('image', $image->id);
-                        $attachments[] = $image;
-
-                        return [
-                            'type' => 'image',
-                            'id'   => $image->id,
-                        ];
-                    } else {
-                        return [
-                            'type' => 'image',
-                            'id'   => (int)$section['id'],
-                        ];
-                    }
+                    $article->attachments()->save(
+                        Attachment::findOrFail($section['id']));
+                    return [
+                        'type' => 'image',
+                        'id'   => (int)$section['id'],
+                    ];
             }
         });
 
         $article->setContents('sections', $sections->toArray());
 
-        $article->save();
-        return $attachments;
+        return $article;
     }
 
     protected static function getValidateRule($article = null)
@@ -60,8 +49,7 @@ class PageController extends ArticleController
             'sections.*.type'    => 'required|in:caption,text,image',
             'sections.*.caption' => 'required_if:sections.*.type,caption|max:255',
             'sections.*.text'    => 'required_if:sections.*.type,text|max:1024',
-            'sections.*.image'   => 'nullable|image',
-            'sections.*.id'      => 'nullable|numeric',
+            'sections.*.id'      => 'required_if:sections.*.type,image|exists:attachments,id',
         ]);
     }
 }

@@ -59,7 +59,21 @@ body>main {
     height: 10rem;
     width: 500px;
 }
-.card-profile .card-img {
-    // height: 128px;
-    // width: 128px;
+
+.selected {
+    border: solid 1px red;
+}
+#uploaderModal ul {
+    list-style-type: none;
+    padding: 0;
+    margin:auto;
+}
+.modal-footer {
+    flex-direction: column;
+}
+.hidable {
+    display: none;
+}
+.show {
+    display: block!important;
 }

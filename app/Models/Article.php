@@ -9,14 +9,17 @@ use App\Models\User;
 use App\Models\View;
 use App\Models\UserAddonCount;
 use App\Models\PakAddonCount;
-use App\Traits\Slugable;
 use App\Models\Conversion;
+use App\Traits\Slugable;
+use App\Traits\JsonFieldable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 class Article extends Model
 {
     use Slugable;
+    use JsonFieldable;
+
     /*
         アドオン紹介
             contents = {
@@ -86,6 +89,11 @@ class Article extends Model
         UserAddonCount::recount();
         PakAddonCount::recount();
         Tag::removeDoesntHaveRelation();
+    }
+
+    public function getJsonableField()
+    {
+        return 'contents';
     }
 
     /*
@@ -210,6 +218,10 @@ class Article extends Model
              ? asset('storage/'.$this->thumbnail->path)
              : asset('storage/'.config('attachment.no-thumbnail'));
     }
+    public function getThumbnailIdAttribute()
+    {
+        return $this->thumbnail->id ?? null;
+    }
     public function getHasFileAttribute()
     {
         return !is_null($this->file);
@@ -260,16 +272,6 @@ class Article extends Model
         return $this->categories->search(function($category) use($id) {
             return $category->id === $id;
         });
-    }
-    public function getContents($key, $default = null)
-    {
-        return data_get($this->contents, $key, $default);
-    }
-    public function setContents($key, $value)
-    {
-        $tmp = $this->contents;
-        $tmp[$key] = $value;
-        $this->contents = $tmp;
     }
     public function getImage($id)
     {

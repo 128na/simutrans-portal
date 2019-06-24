@@ -1,11 +1,14 @@
 <div class="form-group">
     <label><span class="badge badge-secondary mr-1">{{ __('message.optional') }}</span>{{ __('user.profile.avatar-image') }} </label>
     <div class="mb-2">
-        <img id="avatar-preview" class="preview img-thumbnail " src="{{ $user->profile->avatar_url ?? asset('storage/'.config('attachment.no-avatar')) }}">
+        <img id="avatar_preview" class="preview img-thumbnail " src="{{ old('avatar_preview_url', $user->profile->avatar_url ?? asset('storage/'.config('attachment.no-avatar'))) }}">
+        <input type="hidden" id="avatar_preview_url" name="avatar_preview_url" value="{{ old('avatar_preview_url') }}">
+        <input type="hidden" id="avatar_id" name="avatar_id" value="{{ old('avatar_id', $user->profile->getContents('avatar') ?? '') }}">
     </div>
-    <div class="custom-file">
-        <label class="custom-file-label" for="avatar">{{ old('avatar', $user->avatar->original_name ?? __('message.not-selected')) }}</label>
-        <input type="file" class="custom-file-input js-preview-trigger" id="avatar" name="avatar" data-preview="#avatar-preview">
+    <div>
+        <a href="#" class="btn btn-secondary js-open-uploader"
+            data-input="#avatar_id" data-preview="#avatar_preview" data-preview-url="#avatar_preview_url" data-only-image="true"
+        >{{ __('message.open-uploader') }}</a>
     </div>
 </div>
 

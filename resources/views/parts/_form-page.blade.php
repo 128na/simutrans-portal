@@ -65,12 +65,18 @@
     <a href="#" class="btn btn-secondary js-add-caption-section">{{ __('article.add-caption-section') }}</a>
     <a href="#" class="btn btn-secondary js-add-text-section">{{ __('article.add-text-section') }}</a>
     <a href="#" class="btn btn-secondary js-add-image-section">{{ __('article.add-image-section') }}</a>
+    <script>
+        var url_default_image = @json(asset('storage/'.config('attachment.no-thumbnail')));
+        var msg_section_caption = @json(__('article.section-caption'));
+        var msg_section_text = @json(__('article.section-text'));
+        var msg_section_image = @json(__('article.section-image'));
+        var msg_remove_section = @json(__('article.remove-section'));
+        var msg_open_uploader = @json(__('message.open-uploader'));
+    </script>
 </div>
-<script>
-    var url_default_image = @json(asset('storage/'.config('attachment.no-thumbnail')));
-    var msg_section_caption = @json(__('article.section-caption'));
-    var msg_section_text = @json(__('article.section-text'));
-    var msg_section_image = @json(__('article.section-image'));
-    var msg_remove_section = @json(__('article.remove-section'));
-    var msg_open_uploader = @json(__('message.open-uploader'));
-</script>
+<div class="form-group">
+    <label><span class="badge badge-secondary mr-1">{{ __('message.optional') }}</span>{{ __('article.page') }}</label>
+    <div class="category-list">
+        @include('parts._form-category-list', ['name' => 'page', 'categories' => $categories->get('page')])
+    </div>
+</div>

@@ -17,6 +17,7 @@ class Category extends Model
         'type',
         'slug',
         'order',
+        'need_admin',
     ];
 
     /*
@@ -84,10 +85,24 @@ class Category extends Model
     {
         return $query->where('type', config('category.type.license'));
     }
+    public function scopePage($query)
+    {
+        return $query->where('type', config('category.type.page'));
+    }
 
     /*
     |--------------------------------------------------------------------------
-    | アクセサ
+    | 一般
     |--------------------------------------------------------------------------
     */
+    public static function getSeparatedCategories()
+    {
+        return collect(self::all()->reduce(function($list, $item) {
+            if(!isset($list[$item->type])) {
+                $list[$item->type] = [];
+            }
+            $list[$item->type][] = $item;
+            return $list;
+        }, []));
+    }
 }

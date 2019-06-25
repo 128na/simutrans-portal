@@ -9,6 +9,7 @@ return [
         'addon'           => 'アドオン',
         'pak128_position' => 'Pak128用描画位置',
         'license'         => '著作権',
+        'page'            => 'カテゴリ',
     ],
     'post' => [
         'addon-post'         => 'アドオン投稿',
@@ -61,6 +62,10 @@ return [
         'pdm'         => 'PDM',
         'mit-license' => 'MIT License',
         'others'      => 'その他',
-    ]
-
+    ],
+    'page' => [
+        'announce' => 'お知らせ',
+        'common' => '一般',
+        'others' => 'その他',
+    ],
 ];

@@ -22,7 +22,6 @@ try {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-window.axios.defaults.baseURL = process.env.MIX_API_BASE_URL;
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
  * all outgoing HTTP requests automatically have it attached. This is just
@@ -30,9 +29,15 @@ window.axios.defaults.baseURL = process.env.MIX_API_BASE_URL;
  */
 
 let token = document.head.querySelector('meta[name="csrf-token"]');
-
 if (token) {
     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
+
+let baseURL = document.head.querySelector('meta[name="api-entrypoint"]');
+if (baseURL) {
+    window.axios.defaults.baseURL = baseURL.content;
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }

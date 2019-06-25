@@ -36,8 +36,10 @@ class PageController extends ArticleController
                     ];
             }
         });
-
         $article->setContents('sections', $sections->toArray());
+
+        $categories = $request->input('categories.page', []);
+        $article->categories()->sync($categories);
 
         return $article;
     }
@@ -50,6 +52,7 @@ class PageController extends ArticleController
             'sections.*.caption' => 'required_if:sections.*.type,caption|max:255',
             'sections.*.text'    => 'required_if:sections.*.type,text|max:1024',
             'sections.*.id'      => 'required_if:sections.*.type,image|exists:attachments,id',
+            'categories.page.*'  => 'nullable|exists:categories,id',
         ]);
     }
 }

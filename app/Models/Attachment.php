@@ -55,19 +55,9 @@ class Attachment extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | 一般
+    | アクセサ
     |--------------------------------------------------------------------------
     */
-    public static function createFromFile($file, $user_id)
-    {
-        return self::create([
-            'user_id'       => $user_id,
-            'path'          => $file->store('user/'.$user_id, 'public'),
-            'original_name' => $file->getClientOriginalName(),
-        ]);
-    }
-
-
     public function getIsImageAttribute()
     {
         $path = public_path('storage/'.$this->path);
@@ -83,5 +73,19 @@ class Attachment extends Model
     public function getUrlAttribute()
     {
         return asset('storage/'.$this->path);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | 一般
+    |--------------------------------------------------------------------------
+    */
+    public static function createFromFile($file, $user_id)
+    {
+        return self::create([
+            'user_id'       => $user_id,
+            'path'          => $file->store('user/'.$user_id, 'public'),
+            'original_name' => $file->getClientOriginalName(),
+        ]);
     }
 }

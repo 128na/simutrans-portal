@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="api-entrypoint" content="{{ config('app.url') }}">
 
-    <title>@yield('title') - {{ config('app.name', 'Laravel') }}</title>
+    <title>{{ isset($preview) ? __('message.preview-mode') : ''}}@yield('title') - {{ config('app.name', 'Laravel') }}</title>
 
     <script src="{{ asset(mix('js/app.js')) }}" defer></script>
 
@@ -95,8 +96,9 @@
         </nav>
     </header>
     <main class="container bg-light py-4">
-        <h1>@yield('title')</h1>
-
+        @if (isset($preview))
+            <div class="alert alert-warning">{{ __('message.preview-text') }}</div>
+        @endif
         @if (session()->has('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
@@ -106,6 +108,8 @@
         @if (session()->has('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
+
+        <h1>@yield('title')</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">

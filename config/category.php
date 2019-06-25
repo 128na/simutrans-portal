@@ -61,7 +61,8 @@ return [
         ['slug' => 'others',      'type' => 'license', 'order' => 49000, 'name' => 'Others'],
     ],
     'page' => [
-        ['slug' => 'announce', 'type' => 'page', 'order' => 50000, 'name' => 'Announce'],
+        ['slug' => 'announce', 'type' => 'page', 'order' => 50000, 'name' => 'Announce', 'need_admin' => true],
+        ['slug' => 'common',   'type' => 'page', 'order' => 50010, 'name' => 'Common'],
         ['slug' => 'others',   'type' => 'page', 'order' => 59000, 'name' => 'Others'],
     ],
 

@@ -11,6 +11,11 @@ class Conversion extends Model
         'article_id',
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | リレーション
+    |--------------------------------------------------------------------------
+    */
     public function article()
     {
         return $this->belongsTo(Article::class);

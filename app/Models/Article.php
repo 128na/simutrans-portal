@@ -253,14 +253,6 @@ class Article extends Model
         }
         return 'N/A';
     }
-    /**
-     * @todo 廃止予定
-     */
-    public function getCategoryPostAttribute()
-    {
-        dump('廃止予定');
-        return $this->post_type;
-    }
 
     /*
     |--------------------------------------------------------------------------

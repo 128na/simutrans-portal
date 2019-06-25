@@ -49,4 +49,7 @@ return [
     'select-file' => '選択',
     'loading' => '読み込み中...',
     'uploading' => 'アップロード中...',
+    'preview' => 'プレビュー',
+    'preview-mode' => '[プレビュー] ',
+    'preview-text' => 'プレビュー表示です。記事は保存・更新されていません。 ',
 ];

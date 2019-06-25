@@ -43,4 +43,5 @@ return [
     'add-caption-section' => '見出しを追加',
     'add-text-section' => '本文を追加',
     'add-image-section' => '画像を追加',
+    'page' => 'カテゴリ',
 ];

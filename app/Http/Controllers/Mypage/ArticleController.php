@@ -11,7 +11,7 @@ use App\Models\Tag;
 use Illuminate\Validation\Rule;
 use Validator;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 /**
  * 記事CRUD共通コントローラー
  */
@@ -24,15 +24,10 @@ class ArticleController extends Controller
      */
     public function create($post_type = null)
     {
-        $post_types       = Category::post()->get();
-        $addons           = Category::addon()->get();
-        $paks             = Category::pak()->get();
-        $pak128_positions = Category::pak128Position()->get();
-        $licenses         = Category::license()->get();
-
+        $categories = Category::getSeparatedCategories();
         $popular_tags = Tag::popular()->limit(20)->get();
 
-        return view('mypage.articles.create', compact('post_type', 'post_types', 'addons', 'paks', 'pak128_positions', 'licenses', 'popular_tags'));
+        return view('mypage.articles.create', compact('post_type', 'categories', 'popular_tags'));
     }
 
     /**
@@ -44,21 +39,16 @@ class ArticleController extends Controller
 
         $article->load('categories', 'attachments', 'tags');
 
-        $post_types       = Category::post()->get();
-        $addons           = Category::addon()->get();
-        $paks             = Category::pak()->get();
-        $pak128_positions = Category::pak128Position()->get();
-        $licenses         = Category::license()->get();
-
+        $categories = Category::getSeparatedCategories();
         $popular_tags = Tag::popular()->limit(20)->get();
 
-        return view('mypage.articles.edit', compact('article', 'post_types', 'addons', 'paks', 'pak128_positions', 'licenses', 'popular_tags'));
+        return view('mypage.articles.edit', compact('article', 'categories', 'popular_tags'));
     }
 
     /**
      * 登録
      */
-    public function store(Request $request)
+    public function store(Request $request, $preview = false)
     {
         self::validateData($request->all(), static::getValidateRule());
 
@@ -70,10 +60,9 @@ class ArticleController extends Controller
             'status'  => $request->input('status'),
         ]);
 
-        if (!$article->isUniqueSlug()) {
-            session()->flash('error', __('article.slug-duplicate'));
-            return back()->withInput();
-        }
+        // check slug is unique
+        self::validateData(['slug' => $article->slug], ['slug' => "required|unique:articles,slug|max:255"]);
+
         $article->save();
 
         $article->setContents('thumbnail', $request->input('thumbnail_id'));
@@ -84,6 +73,10 @@ class ArticleController extends Controller
         $article = $this->saveContents($request, $article);
         $article->save();
 
+        if($preview) {
+            return $this->renderPreview($article);
+        }
+
         session()->flash('success', __('article.created', ['title' => $article->title, 'status' => __('status.'.$article->status)]));
         return redirect()->route('mypage.index');
     }
@@ -92,7 +85,7 @@ class ArticleController extends Controller
     /**
      * 更新
      */
-    public function update(Request $request, Article $article)
+    public function update(Request $request, Article $article, $preview = false)
     {
         abort_unless($article->user_id === Auth::id(), 404);
 
@@ -104,10 +97,8 @@ class ArticleController extends Controller
             'status'  => $request->input('status'),
         ]);
 
-        if (!$article->isUniqueSlug()) {
-            session()->flash('error', __('article.slug-duplicate'));
-            return back()->withInput();
-        }
+        // check slug is unique
+        self::validateData(['slug' => $article->slug], ['slug' => "required|unique:articles,slug,{$article->id}|max:255"]);
 
         $article->setContents('thumbnail', $request->input('thumbnail_id'));
         if ($request->filled('thumbnail_id')) {
@@ -117,8 +108,23 @@ class ArticleController extends Controller
         $article = $this->saveContents($request, $article);
         $article->save();
 
+        if($preview) {
+            return $this->renderPreview($article);
+        }
+
         session()->flash('success', __('article.updated', ['title' => $article->title, 'status' => __('status.'.$article->status)]));
         return redirect()->route('mypage.index');
+    }
+
+    /**
+     * プレビュー
+     */
+    private function renderPreview(Article $article)
+    {
+        $preview = true;
+        return response(
+            view('front.articles.show', compact('article', 'preview')),
+            config('app.preview_status_code'));
     }
 
     /**

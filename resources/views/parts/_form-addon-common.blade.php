@@ -2,48 +2,21 @@
 <div class="form-group">
     <label><span class="badge badge-secondary mr-1">{{ __('message.optional') }}</span>{{ __('article.pak') }}</label>
     <div class="category-list">
-        @foreach ($paks as $category)
-            @php
-                $checked = old('categories.pak.'.$category->id, isset($article) ? $article->hasCategory($category->id) : false);
-            @endphp
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="category-{{ $category->id }}" name="categories[pak][{{ $category->id }}]"
-                    value="{{ $category->id }}" {{ $checked ? 'checked' : '' }}>
-                <label class="custom-control-label" for="category-{{ $category->id }}">{{ __("category.{$category->type}.{$category->slug}") }}</label>
-            </div>
-        @endforeach
+        @include('parts._form-category-list', ['name' => 'pak', 'categories' => $categories->get('pak')])
     </div>
 </div>
 
 <div class="form-group">
     <label><span class="badge badge-secondary mr-1">{{ __('message.optional') }}</span>{{ __('article.addon-type') }}</label>
     <div class="category-list">
-        @foreach ($addons as $category)
-            @php
-                $checked = old('categories.addon.'.$category->id, isset($article) ? $article->hasCategory($category->id) : false);
-            @endphp
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="category-{{ $category->id }}" name="categories[addon][{{ $category->id }}]"
-                    value="{{ $category->id }}" {{ $checked ? 'checked' : '' }}>
-                <label class="custom-control-label" for="category-{{ $category->id }}">{{ __("category.{$category->type}.{$category->slug}") }}</label>
-            </div>
-        @endforeach
+        @include('parts._form-category-list', ['name' => 'addon', 'categories' => $categories->get('addon')])
     </div>
 </div>
 
 <div class="form-group">
     <label><span class="badge badge-secondary mr-1">{{ __('message.optional') }}</span>{{ __('article.pak128-position') }}</label>
     <div class="category-list">
-        @foreach ($pak128_positions as $category)
-            @php
-                $checked = old('categories.pak128_position.'.$category->id, isset($article) ? $article->hasCategory($category->id) : false);
-            @endphp
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="category-{{ $category->id }}" name="categories[pak128_position][{{ $category->id }}]"
-                    value="{{ $category->id }}" {{ $checked ? 'checked' : '' }}>
-                <label class="custom-control-label" for="category-{{ $category->id }}">{{ __("category.{$category->type}.{$category->slug}") }}</label>
-            </div>
-        @endforeach
+        @include('parts._form-category-list', ['name' => 'pak128_position', 'categories' => $categories->get('pak128_position')])
     </div>
 </div>
 
@@ -82,16 +55,7 @@
 <div class="form-group">
     <label><span class="badge badge-secondary mr-1">{{ __('message.optional') }}</span>{{ __('article.license') }}</label>
     <div class="category-list">
-        @foreach ($licenses as $category)
-            @php
-                $checked = old('categories.license', isset($article) ? $article->hasCategory($category->id) : false);
-            @endphp
-            <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" id="category-{{ $category->id }}" name="categories[license]"
-                    value="{{ $category->id }}" {{ $checked ? 'checked' : '' }}>
-                <label class="custom-control-label" for="category-{{ $category->id }}">{{ __("category.{$category->type}.{$category->slug}") }}</label>
-            </div>
-        @endforeach
+        @include('parts._form-category-list', ['name' => 'license', 'categories' => $categories->get('license')])
     </div>
 </div>
 

@@ -13,7 +13,7 @@ const buildParam = function ($form) {
             return el.checked && params.append(el.name, el.value);
         }
         if (el.type === 'select-one') {
-            return el.selectedIndex && params.append(el.name, el.options[el.selectedIndex].value);
+            return Number.isInteger(el.selectedIndex) && params.append(el.name, el.options[el.selectedIndex].value);
         }
         // console.warn('non support type:' + el.type);
     });

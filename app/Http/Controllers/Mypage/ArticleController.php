@@ -24,7 +24,8 @@ class ArticleController extends Controller
      */
     public function create($post_type = null)
     {
-        $categories = Category::getSeparatedCategories();
+        $categories = Category::for(Auth::user())->get();
+        $categories = self::separateCategories($categories);
         $popular_tags = Tag::popular()->limit(20)->get();
 
         return view('mypage.articles.create', compact('post_type', 'categories', 'popular_tags'));
@@ -39,7 +40,8 @@ class ArticleController extends Controller
 
         $article->load('categories', 'attachments', 'tags');
 
-        $categories = Category::getSeparatedCategories();
+        $categories = Category::for(Auth::user())->get();
+        $categories = self::separateCategories($categories);
         $popular_tags = Tag::popular()->limit(20)->get();
 
         return view('mypage.articles.edit', compact('article', 'categories', 'popular_tags'));
@@ -157,4 +159,17 @@ class ArticleController extends Controller
         return Validator::make($data, $rule)->validate();
     }
 
+    /**
+     * タイプ別に分類したカテゴリ一覧を返す
+     */
+    private static function separateCategories($categories)
+    {
+        return collect($categories->reduce(function($list, $item) {
+            if(!isset($list[$item->type])) {
+                $list[$item->type] = [];
+            }
+            $list[$item->type][] = $item;
+            return $list;
+        }, []));
+    }
 }

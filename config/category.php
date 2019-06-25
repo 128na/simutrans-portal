@@ -7,6 +7,7 @@ return [
         'addon'           => 'addon',
         'pak128_position' => 'pak128_position',
         'license'         => 'license',
+        'page'            => 'page',
     ],
     'post' => [
         ['slug' => 'addon-post',         'type' => 'post', 'order' => 00000, 'name' => 'Addon Post'],

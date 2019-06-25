@@ -7,6 +7,7 @@ use App\Models\UserAddonCount;
 use App\Models\PakAddonCount;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class Category extends Model
 {
@@ -89,20 +90,11 @@ class Category extends Model
     {
         return $query->where('type', config('category.type.page'));
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | 一般
-    |--------------------------------------------------------------------------
-    */
-    public static function getSeparatedCategories()
+    public function scopeFor($query, $user)
     {
-        return collect(self::all()->reduce(function($list, $item) {
-            if(!isset($list[$item->type])) {
-                $list[$item->type] = [];
-            }
-            $list[$item->type][] = $item;
-            return $list;
-        }, []));
+        if(!$user->isAdmin()) {
+            $query->where('need_admin', 0);
+        }
     }
+
 }

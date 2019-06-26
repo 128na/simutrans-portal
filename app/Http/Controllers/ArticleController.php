@@ -76,7 +76,7 @@ class ArticleController extends Controller
         $articles = $category->articles()
             ->active()->withForList()->paginate(20);
 
-        $title = __('message.of-category', ['name' => $category->name]);
+        $title = __('message.of-category', ['name' => __("category.{$type}.{$category->slug}")]);
         return static::viewWithHeader('front.articles.index', compact('title', 'articles'));
     }
 

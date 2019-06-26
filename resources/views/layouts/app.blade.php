@@ -27,7 +27,7 @@
                     @if (isset($menu_pak_addon_counts))
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ __('message.addons') }}
+                                {{ __('message.by-addons') }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 @foreach ($menu_pak_addon_counts as $pak_slug => $addons)
@@ -46,7 +46,7 @@
                     @if (isset($menu_user_addon_counts))
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ __('message.users') }}
+                                {{ __('message.by-users') }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 @foreach ($menu_user_addon_counts as $user_addon_count)
@@ -95,7 +95,7 @@
             </div>
         </nav>
     </header>
-    <main class="container bg-light py-4">
+    <main class="container bg-white py-2">
         @if (isset($preview))
             <div class="alert alert-warning">{{ __('message.preview-text') }}</div>
         @endif
@@ -123,11 +123,8 @@
 
         @yield('content')
     </main>
-    <footer class="navbar-dark bg-primary">
-        <a class="navbar-brand" href="{{ route('index') }}">created by 128na</a>
+    <footer class="navbar-dark bg-primary px-2">
+        <small><a class="text-white"href="{{ route('index') }}">created by 128na</a></small>
     </footer>
-
-
-    </div>
 </body>
 </html>

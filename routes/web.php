@@ -19,6 +19,7 @@ Auth::routes(['verify' => true]);
 Route::get('/', 'FrontController@index')->name('index');
 Route::get('/addons', 'ArticleController@addons')->name('addons.index');
 Route::get('/pages', 'ArticleController@pages')->name('pages.index');
+Route::get('/announces', 'ArticleController@announces')->name('announces.index');
 Route::get('/articles/{article}', 'ArticleController@show')->name('articles.show');
 Route::get('/articles/{article}/download', 'ArticleController@download')->name('articles.download');
 Route::get('/search', 'ArticleController@search')->name('search');

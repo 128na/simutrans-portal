@@ -158,6 +158,20 @@ class Article extends Model
     {
         $query->where('post_type', 'page');
     }
+    public function scopeAnnounce($query)
+    {
+        $query->where('post_type', 'page')
+            ->whereHas('categories', function($query) {
+                $query->where('type', 'page')->where('slug', 'announce');
+            });
+    }
+    public function scopeWithoutAnnounce($query)
+    {
+        $query->where('post_type', 'page')
+            ->whereDoesntHave('categories', function($query) {
+                $query->where('type', 'page')->where('slug', 'announce');
+            });
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -259,11 +273,17 @@ class Article extends Model
     | 一般
     |--------------------------------------------------------------------------
     */
+    public function isAnnounce()
+    {
+        return $this->categories->search(function($category) {
+            return $category->type === 'page' && $category->slug === 'announce';
+        }) !== false;
+    }
     public function hasCategory($id)
     {
         return $this->categories->search(function($category) use($id) {
             return $category->id === $id;
-        });
+        }) !== false;
     }
     public function getImage($id)
     {

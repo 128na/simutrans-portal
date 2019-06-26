@@ -3,13 +3,15 @@
 @section('title', $title ?? 'Articles')
 
 @section('content')
-    {{ $articles->links() }}
+    {!! e($articles->links()) !!}
 
     <div class="list">
-        @foreach ($articles as $article)
+        @forelse ($articles as $article)
             @include('front.articles.list-item', ['article' => $article])
-        @endforeach
+        @empty
+            <p>{{ __('message.no-article')}}</p>
+        @endforelse
     </div>
 
-    {{ $articles->links() }}
+    {!! e($articles->links()) !!}
 @endsection

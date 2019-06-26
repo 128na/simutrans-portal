@@ -1,11 +1,12 @@
 <div class="article detail">
     @if ($article->has_thumbnail)
-        <div class="mb-4">
-            <img src="{{ $article->thumbnail_url }}" class="img-thumbnail">
+        <div class="img-full-box mb-2">
+            <img src="{{ $article->thumbnail_url }}" class="img-fluid">
         </div>
     @endif
+    <div class="page-contents">
     @foreach ($article->getContents('sections', []) as $section)
-        <div class="mb-4">
+        <section>
             @switch($section['type'])
                 @case('caption')
                     <h3>{{ $section['caption'] }}</h3>
@@ -17,13 +18,15 @@
                     <img class="img-thumbnail" src="{{ $article->getImageUrl($section['id']) }}">
                     @break
             @endswitch
-        </div>
+        </section>
     @endforeach
+    </div>
 
     <dl class="mx-1 mt-2">
         <dt>{{ __('article.categories') }}</dt>
-        <dd class="mx-1 mt-2">
-            @include('parts.category-list', ['categories' => $article->categories])
+        <dd>
+            @include('parts.category-list', ['categories' => $article->categories,
+                'post_type' => $article->isAnnounce() ? null : $article->post_type, 'route_name' => 'pages.index'])
         </dd>
     </dl>
 </div>

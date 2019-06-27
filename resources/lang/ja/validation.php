@@ -166,6 +166,11 @@ return [
         'agreement' => '掲載同意',
         'name' => 'ユーザー名',
         'email' => 'メールアドレス',
+        'thumbnail_id' => 'サムネイル画像',
+        'file_id' => '添付ファイル',
+        'sections.*.text' => 'テキスト',
+        'sections.*.id' => '画像',
+        'sections.*.caption' => '見出し',
+        'sections.*.type' => '種類',
     ],
-
 ];

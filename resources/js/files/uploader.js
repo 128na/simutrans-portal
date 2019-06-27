@@ -3,6 +3,7 @@ const $modal = $('#uploaderModal');
 const $loading = $modal.find('.js-loading');
 const $uploading = $modal.find('.js-uploading');
 const $file_list = $modal.find('.js-file-list');
+const $file_list_box = $modal.find('.js-file-list-box');
 const $select_button = $modal.find('.js-select-file');
 const $upload_file = $modal.find('#upload_file');
 
@@ -24,18 +25,20 @@ const api = {
 
 // ファイル一覧取得
 const syncFileList = async function () {
-    const res = only_image
-        ? await api.fetchImageAttachments()
-        : await api.fetchAttachments();
+    try {
+        const res = only_image
+            ? await api.fetchImageAttachments()
+            : await api.fetchAttachments();
 
-    if (res.status === 200) {
-        file_list = res.data.data.reverse();
-        renderAll();
-        showFileList();
-    } else {
-        console.warn(res);
-        alert('Error');
-        $modal.modal('hide');
+        if (res.status === 200) {
+            file_list = res.data.data.reverse();
+            renderAll();
+            showFileList();
+        } else {
+            showErrorAndCloseModal(res);
+        }
+    } catch (e) {
+        showErrorAndCloseModal(e.response);
     }
 }
 
@@ -47,12 +50,13 @@ const renderAll = function () {
 const renderFileList = function (list) {
     const html = (list || file_list).map(item => {
         return `
-            <li class="js-selectable ${item.id == selected_file_id ? 'selected' : ''}" data-id="${item.id}">
-                <img class="img-thumbnail" src="${item.thumbnail}">
-                <div>No.${item.id}: ${item.original_name}</div>
+            <li class="mb-2 ${item.id == selected_file_id ? 'selected' : ''}">
+                <img class="img-thumbnail js-selectable" src="${item.thumbnail}" data-id="${item.id}">
+                <div class="js-selectable" data-id="${item.id}">${item.original_name}</div>
+                <button type="button" class="close js-delete-file" data-id="${item.id}"><span>&times;</span></button>
             </li>`;
-    });
-    return $file_list.html(html);
+    }).join('');
+    return $file_list.html(html || msg_no_file);
 }
 const renderSelectButton = function () {
     $select_button.prop('disabled', !selected_file_id);
@@ -125,13 +129,15 @@ const uploadFile = async function (e) {
     formData.append('file', file);
 
     showUploading();
-    const res = await api.uploadAttachment(formData);
-    if (res.status === 200) {
-        syncFileList();
-    } else {
-        console.warn(res);
-        alert('Error');
-        $modal.modal('hide');
+    try {
+        const res = await api.uploadAttachment(formData);
+        if (res.status === 200) {
+            syncFileList();
+        } else {
+            showErrorAndCloseModal(res);
+        }
+    } catch (e) {
+        showErrorAndCloseModal(e.response);
     }
 }
 $upload_file.on('change, input', uploadFile);
@@ -139,15 +145,41 @@ $upload_file.on('change, input', uploadFile);
 const showLoading = function () {
     $loading.addClass('show');
     $uploading.removeClass('show');
-    $file_list.removeClass('show');
+    $file_list_box.removeClass('show');
 }
 const showUploading = function () {
     $loading.removeClass('show');
     $uploading.addClass('show');
-    $file_list.removeClass('show');
+    $file_list_box.removeClass('show');
 }
 const showFileList = function () {
     $loading.removeClass('show');
     $uploading.removeClass('show');
-    $file_list.addClass('show');
+    $file_list_box.addClass('show');
+}
+
+const deleteFile = async function (e) {
+    e.preventDefault();
+    if (!confirm(msg_confirm)) {
+        return;
+    }
+
+    const id = $(e.currentTarget).data('id');
+    try {
+        const res = await api.deleteAttachment(id);
+        if (res.status === 200) {
+            syncFileList();
+        } else {
+            showErrorAndCloseModal(res);
+        }
+    } catch (e) {
+        showErrorAndCloseModal(e.response);
+    }
+}
+$modal.on('click', '.js-delete-file', deleteFile);
+
+const showErrorAndCloseModal = function (res) {
+    console.warn(res);
+    alert('Error');
+    $modal.modal('hide');
 }

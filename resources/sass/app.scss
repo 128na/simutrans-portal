@@ -29,6 +29,7 @@ dd {
     margin-left: 1rem;
     margin-bottom:2rem;
 }
+
 .img-thumbnail {
     max-height: 256px;
     max-width: 100%;
@@ -62,29 +63,86 @@ dd {
 .clickable {
     cursor: pointer;
 }
+
+
+// 投稿画面
 #popular-tags .card-body {
     flex-direction: row;
     flex-wrap: wrap;
 }
-.card-profile {
-    height: 10rem;
-    width: 500px;
+
+
+// profile card
+.card-description {
+    word-break: break-all;
+    max-height: 6rem;
+    overflow-y: scroll;
+}
+.img-card-box {
+    min-width: 30%;
+    width: 30%;
+}
+.img-card {
+    width: 100%;
+}
+.profile-card {
+    min-width: 40%;
+    max-width: 512px;
+}
+.verify-status {
+    position: absolute;
+    top: 0;
 }
 
-.selected {
-    border: solid 1px red;
-}
-#uploaderModal ul {
-    list-style-type: none;
-    padding: 0;
-    margin:auto;
-}
-.modal-footer {
-    flex-direction: column;
-}
-.hidable {
-    display: none;
-}
-.show {
-    display: block!important;
+
+// modal
+#uploaderModal {
+    @media (min-width: 576px) {
+        .modal-dialog {
+            max-width: 75%;
+        }
+    }
+    .selected {
+        border: solid 1px rgb(72, 163, 224);
+        background-color: rgba(72, 163, 224, 0.5);
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin:auto;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    li {
+        position: relative;
+        padding: .2rem;
+        margin: .3rem;
+    }
+    .img-thumbnail {
+        max-height: 128px;
+    }
+    .modal-footer {
+        flex-direction: column;
+    }
+    .hidable {
+        display: none;
+    }
+    .show {
+        display: block!important;
+    }
+    .modal-body button {
+        min-width: 8rem;
+    }
+    li .close {
+        position: absolute;
+        top: -0.4rem;
+        right: -0.4rem;
+        border: solid 2px #000;
+        border-radius: 999px;
+        line-height: 1.3rem;
+        background-color: #fff;
+        opacity: 0.7;
+        font-size: 1.5rem;
+        outline: none;
+    }
 }

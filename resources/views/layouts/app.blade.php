@@ -23,6 +23,9 @@
             </button>
 
             <div class="collapse navbar-collapse" id="global-menu">
+                @php
+                    $show_searchbox = isset($menu_pak_addon_counts) || isset($menu_user_addon_counts);
+                @endphp
                 <ul class="navbar-nav ml-auto mr-2">
                     @if (isset($menu_pak_addon_counts))
                         <li class="nav-item dropdown">
@@ -60,15 +63,15 @@
                         <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">{{ __('message.login') }}</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">{{ __('message.register') }}</a></li>
                     @else
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="mypage-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ __('message.title-of-user', ['name' => Auth::user()->name]) }}</a>
-                            <div class="dropdown-menu" aria-labelledby="mypage-dropdown">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="mypage-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ __('message.title-of-user', ['name' => Auth::user()->name]) }}</a>
+                            <div class="dropdown-menu {{ $show_searchbox ?: 'dropdown-menu-right' }}" aria-labelledby="mypage-dropdown">
                                 @if(Auth::user()->isAdmin())
                                     <a class="dropdown-item" href="{{ route('admin.index') }}">{{ __('admin.index') }}</a>
                                     <a class="dropdown-item" href="{{ route('admin.users.index') }}">{{ __('admin.users.index') }}</a>
                                     <a class="dropdown-item" href="{{ route('admin.articles.index') }}">{{ __('admin.articles.index') }}</a>
-                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-divider my-1"></div>
                                 @endif
                                     <a class="dropdown-item" href="{{ route('mypage.index') }}">{{ __('message.mypage') }}</a>
                                     <a class="dropdown-item" href="{{ route('mypage.articles.create', 'addon-post') }}">
@@ -77,21 +80,25 @@
                                         {{ __('message.create-article-of', ['type' => __('category.post.addon-introduction')]) }}</a>
                                     <a class="dropdown-item" href="{{ route('mypage.articles.create', 'page') }}">
                                         {{ __('message.create-article-of', ['type' => __('category.post.page')]) }}</a>
+                                    <div class="dropdown-divider my-1"></div>
+
                                     <a class="dropdown-item" href="{{ route('mypage.profile.edit') }}">{{ __('message.edit-profile') }}</a>
-                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-divider my-1"></div>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('message.logout') }}</a>
                             </div>
                         </li>
-
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
                     @endguest
                 </ul>
-                <form class="form-inline my-2 my-lg-0" action="{{ route('search') }}" method="GET">
-                    <input class="form-control mr-sm-2" name="s" type="search" placeholder="{{ __('message.search-word') }}" aria-label="Search">
-                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">{{ __('message.search') }}</button>
-                </form>
+                @if ($show_searchbox)
+                    <form class="form-inline my-2 my-lg-0" action="{{ route('search') }}" method="GET">
+                        <input class="form-control mr-sm-2" name="s" type="search" placeholder="{{ __('message.search-word') }}" aria-label="Search">
+                        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">{{ __('message.search') }}</button>
+                    </form>
+                @endif
             </div>
         </nav>
     </header>
@@ -108,6 +115,12 @@
         @if (session()->has('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
+
+        @if (!empty($breadcrumb))
+            @include('parts.breadcrumb')
+        @endif
+
+        @yield('before_title')
 
         <h1>@yield('title')</h1>
 

@@ -39,8 +39,9 @@ class AttachmentController extends Controller
         $user->load('myAttachments');
         return new AttachmentsResource($user->myAttachments);
     }
-    public function delete($id)
+    public function delete(Attachment $attachment)
     {
-        Attachment::where('user_id', Auth::id())->delete($id);
+        abort_unless($attachment->user_id === Auth::id(), 404);
+        return [$attachment->delete()];
     }
 }

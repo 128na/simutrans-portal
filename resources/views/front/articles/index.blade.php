@@ -2,6 +2,12 @@
 
 @section('title', $title ?? 'Articles')
 
+{{-- プロフィールカード表示 --}}
+@if (isset($user))
+    @section('before_title')
+        @include('parts.profile-card', ['in_mypage' => false])
+    @endsection
+@endif
 @section('content')
     {!! e($articles->links()) !!}
 

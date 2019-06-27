@@ -43,14 +43,15 @@ class AddonIntroductionController extends ArticleController
         return array_merge(parent::getValidateRule($article), [
             'author'       => 'required|max:255',
             'link'         => 'required|url',
-            'description'  => 'nullable|string:2048',
+            'description'  => 'nullable|string|max:2048',
             'agreement'    => 'nullable',
-            'thanks'       => 'nullable|string:2048',
-            'license'      => 'nullable|string:2048',
-            'categories.pak.*'             => 'nullable|exists:categories,id',
-            'categories.addon.*'           => 'nullable|exists:categories,id',
-            'categories.pak128_position.*' => 'nullable|exists:categories,id',
-            'categories.license'           => 'nullable|exists:categories,id',
+            'thanks'       => 'nullable|string|max:2048',
+            'license'      => 'nullable|string|max:2048',
+            'categories.pak.*'             => 'exists:categories,id',
+            'categories.addon.*'           => 'exists:categories,id',
+            'categories.pak128_position.*' => 'exists:categories,id',
+            'categories.license'           => 'exists:categories,id',
+            'tags.*'                       => 'max:255',
         ]);
     }
 }

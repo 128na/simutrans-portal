@@ -19,6 +19,7 @@ return [
     'author-memo' => '空の場合、投稿ユーザ名が使用されます。',
     'publisher' => '記事投稿者',
     'categories' => 'カテゴリ一覧',
+    'category' => 'カテゴリ',
     'tags' => 'タグ一覧',
     'tag' => 'タグ',
     'description' => '説明',

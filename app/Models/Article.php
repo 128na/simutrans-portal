@@ -71,7 +71,7 @@ class Article extends Model
         parent::boot();
 
         static::addGlobalScope('order', function (Builder $builder) {
-            $builder->orderBy('updated_at', 'desc');
+            $builder->orderBy('created_at', 'desc');
         });
 
         self::created(function($model) {

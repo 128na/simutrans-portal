@@ -45,4 +45,6 @@ return [
     'add-text-section' => '本文を追加',
     'add-image-section' => '画像を追加',
     'page' => 'カテゴリ',
+    'created_at' => '作成日',
+    'updated_at' => '更新日',
 ];

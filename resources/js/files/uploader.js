@@ -25,20 +25,16 @@ const api = {
 
 // ファイル一覧取得
 const syncFileList = async function () {
-    try {
-        const res = only_image
-            ? await api.fetchImageAttachments()
-            : await api.fetchAttachments();
+    const res = only_image
+        ? await api.fetchImageAttachments().catch(e => showErrorAndCloseModal(e.response))
+        : await api.fetchAttachments().catch(e => showErrorAndCloseModal(e.response));
 
-        if (res.status === 200) {
-            file_list = res.data.data.reverse();
-            renderAll();
-            showFileList();
-        } else {
-            showErrorAndCloseModal(res);
-        }
-    } catch (e) {
-        showErrorAndCloseModal(e.response);
+    if (res && res.status === 200) {
+        file_list = res.data.data.reverse();
+        renderAll();
+        showFileList();
+    } else {
+        showErrorAndCloseModal(res);
     }
 }
 
@@ -129,15 +125,11 @@ const uploadFile = async function (e) {
     formData.append('file', file);
 
     showUploading();
-    try {
-        const res = await api.uploadAttachment(formData);
-        if (res.status === 200) {
-            syncFileList();
-        } else {
-            showErrorAndCloseModal(res);
-        }
-    } catch (e) {
-        showErrorAndCloseModal(e.response);
+    const res = await api.uploadAttachment(formData).catch(e => showErrorAndCloseModal(e.response));
+    if (res && res.status === 200) {
+        syncFileList();
+    } else {
+        showErrorAndCloseModal(res);
     }
 }
 $upload_file.on('change, input', uploadFile);
@@ -165,15 +157,11 @@ const deleteFile = async function (e) {
     }
 
     const id = $(e.currentTarget).data('id');
-    try {
-        const res = await api.deleteAttachment(id);
-        if (res.status === 200) {
-            syncFileList();
-        } else {
-            showErrorAndCloseModal(res);
-        }
-    } catch (e) {
-        showErrorAndCloseModal(e.response);
+    const res = await api.deleteAttachment(id).catch(e => showErrorAndCloseModal(e.response))
+    if (res && res.status === 200) {
+        syncFileList();
+    } else {
+        showErrorAndCloseModal(res);
     }
 }
 $modal.on('click', '.js-delete-file', deleteFile);

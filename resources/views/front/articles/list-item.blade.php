@@ -9,9 +9,11 @@
 </div>
 @else
 <div class="mb-3 article-box">
-    <a href="{{ route('articles.show', $article->slug)}}">
-        <img src="{{ $article->thumbnail_url }}" class="img-thumbnail">
-    </a>
+    <div class="img-full-box mb-2">
+        <a href="{{ route('articles.show', $article->slug)}}">
+            <img src="{{ $article->thumbnail_url }}" class="img-fluid">
+        </a>
+        </div>
     <div class="my-1">
         <h5>
             <a href="{{ route('articles.show', $article->slug)}}">{{ $article->title }}</a>

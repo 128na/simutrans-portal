@@ -3,7 +3,7 @@
 @section('title', __('message.top'))
 
 @section('content')
-    <section class="mb-4">
+    <section class="mb-4 list">
         <h2 class="border-bottom">{{ __('message.latest') }}</h2>
         @unless (empty($articles['latest']))
             @foreach ($articles['latest'] as $article)
@@ -15,7 +15,7 @@
         @endunless
     </section>
 
-    <section class="mb-4">
+    <section class="mb-4 list">
         <h2 class="border-bottom">{{ __('message.random') }}</h2>
         @unless (empty($articles['random']))
             @foreach ($articles['random'] as $article)
@@ -26,7 +26,7 @@
         @endunless
     </section>
 
-    <section class="mb-4">
+    <section class="mb-4 list">
         <h2 class="border-bottom">{{ __('message.pages') }}</h2>
         @unless (empty($articles['pages']))
             @foreach ($articles['pages'] as $article)
@@ -38,7 +38,7 @@
         @endunless
     </section>
 
-    <section class="mb-4">
+    <section class="mb-4 list">
         <h2 class="border-bottom">{{ __('message.announces') }}</h2>
         @unless (empty($articles['pages']))
             @foreach ($articles['announces'] as $article)

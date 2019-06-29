@@ -19,6 +19,11 @@ class ConversionCount extends Model
 
     public $timestamps = false;
 
+    public static function getTableName()
+    {
+        return 'conversion_counts';
+    }
+
     /*
     |--------------------------------------------------------------------------
     | リレーション

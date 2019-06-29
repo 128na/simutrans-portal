@@ -17,6 +17,11 @@ trait CountUpable
         'total'   => 4,
     ];
 
+    public static function getTableName()
+    {
+        throw new Exception('未実装');
+    }
+
     public static function countUp(Article $article, $datetime = null)
     {
         $datetime = $datetime ?? now();
@@ -25,12 +30,13 @@ trait CountUpable
 
     private static function buildSql(Article $article, Carbon $datetime)
     {
+        $table   = static::getTableName();
         $dayly   = $datetime->format('Ymd');
         $monthly = $datetime->format('Ym');
         $yearly  = $datetime->format('Y');
         $total   = 'total';
 
-        return "INSERT INTO view_counts(article_id, type, period, count)
+        return "INSERT INTO {$table}(article_id, type, period, count)
             VALUES
                 ({$article->id}, 1,'{$dayly}', 1),
                 ({$article->id}, 2,'{$monthly}', 1),

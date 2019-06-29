@@ -75,34 +75,15 @@ class ImportArticlesFromWP extends Command
                 }
 
                 if ($article->post_type === 'addon-post') {
-                    $article->setContents('author', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-author'));
-                    $article->setContents('description', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-description'));
-                    $article->setContents('thanks', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-based'));
-                    $article->setContents('license', null);
-
-                    // addon file
-                    $wp_addon_file = $this->fetchWPAddonFile($wp_post->ID);
-                    $path = self::saveFromUrl($user->id, $wp_addon_file->guid);
-
-                    $attachment = $article->attachments()->create([
-                        'user_id'       => $user->id,
-                        'original_name' => basename($wp_addon_file->guid),
-                        'path'          => $path
-                    ]);
-                    $article->setContents('file', $attachment->id);
-
+                    $article = $this->applyAddonPost($user, $article, $wp_post);
                 }
                 if ($article->post_type === 'addon-introduction') {
-                    $article->setContents('author', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-author'));
-                    $article->setContents('description', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-description'));
-                    $article->setContents('thanks', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-based'));
-                    $article->setContents('license', null);
-                    $article->setContents('link', $this->fetchWPPostmetaValueBy($wp_post->ID, 'site-url'));
-                    $article->setContents('agreement',
-                        $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-introduction-agreement') ? true : false);
+                    $article = $this->applyAddonIntroduction($user, $article, $wp_post);
                 }
                 $article->save();
                 self::updateCreatedAt($article->id, $wp_post);
+
+                $this->createViewCount($article, $wp_post);
                 $this->info('created:'.$article->title);
             }
         }
@@ -153,6 +134,60 @@ class ImportArticlesFromWP extends Command
 
         return $article->tags()->sync($tags->pluck('id'));
     }
+
+    private function applyAddonPost($user, $article, $wp_post)
+    {
+        $article->setContents('author', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-author'));
+        $article->setContents('description', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-description'));
+        $article->setContents('thanks', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-based'));
+        $article->setContents('license', null);
+
+        // addon file
+        $wp_addon_file = $this->fetchWPAddonFile($wp_post->ID);
+        $path = self::saveFromUrl($user->id, $wp_addon_file->guid);
+
+        $attachment = $article->attachments()->create([
+            'user_id'       => $user->id,
+            'original_name' => basename($wp_addon_file->guid),
+            'path'          => $path
+        ]);
+        $article->setContents('file', $attachment->id);
+        return $article;
+    }
+
+    private function applyAddonIntroduction($user, $article, $wp_post)
+    {
+        $article->setContents('author', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-author'));
+        $article->setContents('description', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-description'));
+        $article->setContents('thanks', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-based'));
+        $article->setContents('license', null);
+        $article->setContents('link', $this->fetchWPPostmetaValueBy($wp_post->ID, 'site-url'));
+        $article->setContents('agreement',
+        $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-introduction-agreement') ? true : false);
+        return $article;
+    }
+
+    private function createViewCount($article, $wp_post)
+    {
+        $types = [
+            0 => 1, // daily
+            2 => 2, // monthly
+            3 => 3, // yearly
+            4 => 4, // total
+        ];
+
+        // レコード数は3年分~1000程度なのでメモリは行けるはず
+        $items = [];
+        foreach ($this->fetchWPPostViews($wp_post->ID) as $wp_post_view) {
+            $items[] = [
+                'type'   => $types[$wp_post_view->type],
+                'period' => $wp_post_view->period,
+                'count'  => $wp_post_view->count,
+            ];
+        }
+        $article->viewCounts()->createMany($items);
+    }
+
     /**
      * 作成日を引き継ぐ
      */

@@ -19,6 +19,11 @@ class ViewCount extends Model
 
     public $timestamps = false;
 
+    public static function getTableName()
+    {
+        return 'view_counts';
+    }
+
     protected $casts = [
         'count' => 'integer',
     ];

@@ -117,6 +117,14 @@ class Article extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function viewCounts()
+    {
+        return $this->hasMany(ViewCount::class);
+    }
+    public function conversionCounts()
+    {
+        return $this->hasMany(ConversionCount::class);
+    }
 
     public function dailyViewCounts()
     {

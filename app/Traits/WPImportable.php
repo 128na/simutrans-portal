@@ -107,6 +107,16 @@ trait WPImportable
             AND
                 tx.taxonomy = ?", [$post_id, $taxonomy]);
     }
+    private function fetchWPPostViews($post_id)
+    {
+        return $this->getWPConnection()->select(
+            "SELECT
+                *
+            FROM
+                wp.wp_post_views
+            WHERE
+                id = ? AND type IN (0 , 2, 3, 4)", [$post_id]);
+    }
 
     /**
      * https -> http

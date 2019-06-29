@@ -15,7 +15,6 @@ const buildParam = function ($form) {
         if (el.type === 'select-one') {
             return Number.isInteger(el.selectedIndex) && params.append(el.name, el.options[el.selectedIndex].value);
         }
-        // console.warn('non support type:' + el.type);
     });
     return params;
 }
@@ -24,11 +23,7 @@ const $form = $('.js-previewable-form');
 const openPreview = async function (e) {
     e.preventDefault();
     const action = $form.data('preview-action');
-    api.preview(action, $form).catch(err => {
-        if (err.response.status === 418) {
-            return renderPreviewWindow(err.response.data);
-        }
-
+    const res = await api.preview(action, $form).catch(err => {
         // バリデーションエラー
         if (err.response.status === 422) {
             const message = Object.values(err.response.data.errors).flat().join("\n");
@@ -36,9 +31,11 @@ const openPreview = async function (e) {
         }
         return alert('Error');
     })
+    if (res && res.status === 200) {
+        return renderPreviewWindow(res.data);
+    }
 }
 $('.js-open-preview').on('click', openPreview);
-
 
 let preview_window = null;
 const renderPreviewWindow = function (html) {

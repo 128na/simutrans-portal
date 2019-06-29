@@ -6,10 +6,10 @@ use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
-use App\Models\View;
+use App\Models\ViewCount;
 use App\Models\UserAddonCount;
 use App\Models\PakAddonCount;
-use App\Models\Conversion;
+use App\Models\ConversionCount;
 use App\Traits\Slugable;
 use App\Traits\JsonFieldable;
 use Illuminate\Database\Eloquent\Model;
@@ -71,7 +71,7 @@ class Article extends Model
         parent::boot();
 
         static::addGlobalScope('order', function (Builder $builder) {
-            $builder->orderBy('updated_at', 'desc');
+            $builder->orderBy('created_at', 'desc');
         });
 
         self::created(function($model) {
@@ -117,13 +117,47 @@ class Article extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function views()
+    public function viewCounts()
     {
-        return $this->hasMany(View::class);
+        return $this->hasMany(ViewCount::class);
     }
-    public function conversions()
+    public function conversionCounts()
     {
-        return $this->hasMany(Conversion::class);
+        return $this->hasMany(ConversionCount::class);
+    }
+
+    public function dailyViewCounts()
+    {
+        return $this->hasMany(ViewCount::class)->where('type', ViewCount::$types['daily']);
+    }
+    public function monthlyViewCounts()
+    {
+        return $this->hasMany(ViewCount::class)->where('type', ViewCount::$types['monthly']);
+    }
+    public function yearlyViewCounts()
+    {
+        return $this->hasMany(ViewCount::class)->where('type', ViewCount::$types['yearly']);
+    }
+    public function totalViewCount()
+    {
+        return $this->hasOne(ViewCount::class)->where('type', ViewCount::$types['total']);
+    }
+
+    public function dailyConversionCounts()
+    {
+        return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::$types['daily']);
+    }
+    public function monthlyConversionCounts()
+    {
+        return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::$types['monthly']);
+    }
+    public function yearlyConversionCounts()
+    {
+        return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::$types['yearly']);
+    }
+    public function totalConversionCount()
+    {
+        return $this->hasOne(ConversionCount::class)->where('type', ConversionCount::$types['total']);
     }
 
     /*

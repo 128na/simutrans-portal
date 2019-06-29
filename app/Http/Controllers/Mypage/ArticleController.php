@@ -124,9 +124,10 @@ class ArticleController extends Controller
     private function renderPreview(Article $article)
     {
         $preview = true;
-        return response(
-            view('front.articles.show', compact('article', 'preview')),
-            config('app.preview_status_code'));
+        $res = response(view('front.articles.show', compact('article', 'preview')));
+
+        DB::rollback();
+        return $res;
     }
 
     /**

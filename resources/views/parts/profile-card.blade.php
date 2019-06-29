@@ -1,15 +1,18 @@
 <div class="card d-flex flex-row mb-4 mr-auto profile-card">
-    <a href="{{ route('mypage.profile.edit') }}" class="mt-3 mb-auto img-card-box">
+    <a href="{{ route('mypage.profile.edit') }}" class="my-auto img-card-box">
         <img src="{{ $user->profile->avatar_url }}" class="img-card">
     </a>
     <div class="card-body">
-        <h4 class="">{{ $user->name }}</h4>
-        <div class="card-text card-description">{{ $user->profile->getContents('description') ?? __('message.no-description') }}</div>
+        <h4 class="mb-1">{{ $user->name }}</h4>
+        <div class="card-text card-description">{{ $user->profile->getContents('description') ?: __('message.no-description') }}</div>
         @if ($user->profile->getContents('twitter'))
-            <div class="card-text">Twitter: <a href="https://twitter.com/{{ $user->profile->getContents('twitter') }}"} target="_blank" rel="noopener nofollow">&#064;{{ $user->profile->getContents('twitter') }}</a></div>
+            <div class="card-text">
+                <a href="https://twitter.com/{{ $user->profile->getContents('twitter') }}"} target="_blank" rel="noopener nofollow">
+                    &#064;{{ $user->profile->getContents('twitter') }}</a></div>
         @endif
         @if ($user->profile->getContents('website'))
-            <div class="card-text">Website: <a href="{{ $user->profile->getContents('website') }}"} target="_blank" rel="noopener nofollow">{{ $user->profile->getContents('website') }}</a></div>
+            <div class="card-text">
+                <a href="{{ $user->profile->getContents('website') }}"} target="_blank" rel="noopener nofollow">{{ $user->profile->getContents('website') }}</a></div>
         @endif
         @if ($in_mypage)
             <div class="card-text mt-2 text-right">

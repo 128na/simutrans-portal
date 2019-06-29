@@ -113,9 +113,9 @@ trait WPImportable
             "SELECT
                 *
             FROM
-                wp.wp_post_views
+                wp_post_views
             WHERE
-                id = ? AND type IN (0 , 2, 3, 4)", [$post_id]);
+                id = ? AND type IN (0, 2, 3, 4)", [$post_id]);
     }
 
     /**

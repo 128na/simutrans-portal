@@ -1,6 +1,7 @@
 <?php
 namespace App\Listeners;
 
+use App\Models\ViewCount;
 use App\Events\ArticleShown;
 
 class AddViewRecord
@@ -22,6 +23,6 @@ class AddViewRecord
      */
     public function handle(ArticleShown $event)
     {
-        $event->article->views()->create();
+        ViewCount::countUp($event->article->id);
     }
 }

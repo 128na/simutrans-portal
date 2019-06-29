@@ -9,4 +9,5 @@ return [
         'website' => 'サイトURL',
         'twitter' => 'Twitter ID',
     ],
+    'updated' => 'プロフィールを更新しました',
 ];

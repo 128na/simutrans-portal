@@ -1,6 +1,7 @@
 <?php
 namespace App\Listeners;
 
+use App\Models\ConversionCount;
 use App\Events\ArticleConversion;
 
 class AddConversionRecord
@@ -22,6 +23,6 @@ class AddConversionRecord
      */
     public function handle(ArticleConversion $event)
     {
-        $event->article->conversions()->create();
+        ConversionCount::countUp($event->article->id);
     }
 }

@@ -61,7 +61,8 @@ class ArticleController extends Controller
 
         $article->load('user', 'attachments', 'categories', 'tags');
         $breadcrumb = Breadcrumb::forShow($article);
-        return static::viewWithHeader('front.articles.show', compact('article', 'breadcrumb'));
+        $canonical_url = route('articles.show', $article->slug);
+        return static::viewWithHeader('front.articles.show', compact('article', 'breadcrumb', 'canonical_url'));
     }
 
     /**

@@ -4,15 +4,26 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <title>{{ isset($preview) ? __('message.preview-mode') : ''}}@yield('title') - {{ config('app.name') }}</title>
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="api-entrypoint" content="{{ config('app.url') }}">
 
-    <title>{{ isset($preview) ? __('message.preview-mode') : ''}}@yield('title') - {{ config('app.name', 'Laravel') }}</title>
+    <meta name="description" content="@yield('meta-description')">
 
-    <script src="{{ asset(mix('js/app.js')) }}" defer></script>
+    <meta property="og:type"        content="website">
+    <meta property="og:title"       content="@yield('title') - {{ config('app.name') }}">
+    <meta property="og:description" content="@yield('meta-description')">
+    <meta property="og:url"         content="{{ $canonical_url ?? url()->current() }}">
+
+    <meta name="twitter:card"    content="summary_large_image">
+    <meta name="twitter:site"    content="{{ '@'.config('app.twitter') }}">
+    <meta name="twitter:creator" content="{{ '@'.config('app.creator') }}">
+    <meta name="twitter:image" content="@yield('meta-image')">
 
     <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet">
     <link rel="canonical" href="{{ $canonical_url ?? url()->current() }}">
+    <script src="{{ asset(mix('js/app.js')) }}" defer></script>
 </head>
 <body>
     <header class="global-menu">

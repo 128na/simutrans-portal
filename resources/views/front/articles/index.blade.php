@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', $title ?? 'Articles')
+@section('meta-description', config('app.meta-description'))
+@section('meta-image', asset('storage/'.config('app.meta-image')))
 
 {{-- プロフィールカード表示 --}}
 @if (isset($user))
@@ -13,7 +15,7 @@
 
     <div class="list">
         @forelse ($articles as $article)
-            @include('front.articles.list-item', ['article' => $article])
+            @include('front.articles.parts.list-item', ['article' => $article])
         @empty
             <p>{{ __('message.no-article')}}</p>
         @endforelse

@@ -313,6 +313,12 @@ class Article extends Model
         }
         return 'N/A';
     }
+    public function getMetaDescriptionAttribute()
+    {
+        return $this->getContents('description', null)
+            ?? collect($this->getContents('sections', []))->first(function($s) { return $s['type'] === 'text';})['text']
+            ?? $this->title;
+    }
 
     /*
     |--------------------------------------------------------------------------

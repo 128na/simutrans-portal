@@ -28,7 +28,8 @@ class SitemapController extends Controller
             // listing pages
             $sitemap->add(route('index'), now(), '0.9', 'daily');
             $sitemap->add(route('addons.index'), now(), '0.8', 'weekly');
-            $sitemap->add(route('pages.index'), now(), '0.5', 'monthly');
+            $sitemap->add(route('pages.index'), now(), '0.3', 'monthly');
+            $sitemap->add(route('announces.index'), now(), '0.3', 'monthly');
 
             // articles
             foreach (Article::active()->cursor() as $article) {
@@ -73,7 +74,7 @@ class SitemapController extends Controller
 
     const PRIORITIES = [
         'addon-post' => '1.0',
-        'addon-introduction' => '0.7',
+        'addon-introduction' => '0.8',
         'page' => '0.5',
     ];
 }

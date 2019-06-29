@@ -23,6 +23,6 @@ class AddViewRecord
      */
     public function handle(ArticleShown $event)
     {
-        ViewCount::countUp($event->article->id);
+        ViewCount::countUp($event->article);
     }
 }

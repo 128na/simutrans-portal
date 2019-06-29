@@ -23,6 +23,6 @@ class AddConversionRecord
      */
     public function handle(ArticleConversion $event)
     {
-        ConversionCount::countUp($event->article->id);
+        ConversionCount::countUp($event->article);
     }
 }

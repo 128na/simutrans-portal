@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use App\Models\Article;
-use App\Traits\Countable;
+use App\Traits\CountUpable;
 use Illuminate\Database\Eloquent\Model;
 
 class ConversionCount extends Model
 {
-    use Countable;
+    use CountUpable;
 
     protected $fillable = [
         'article_id',

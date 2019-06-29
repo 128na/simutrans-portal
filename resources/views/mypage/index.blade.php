@@ -38,7 +38,7 @@
                             <td>{{ $article->title }}</td>
                             <td>{{ __('category.post.'.$article->post_type) }}</td>
                             <td>{{$article->created_at }}<br>{{$article->updated_at }}</td>
-                            <td>{{ $article->conversions_count }} / {{ $article->views_count }} = {{ $article->conversion_rate }}</td>
+                            <td>{{ $article->todaysConversionCount->count ?? 0 }} / {{ $article->todaysViewCount->count ?? 0 }} = {{ $article->todays_conversion_rate }}</td>
                             <td>
                                 <div class="btn-group">
                                     <a class="btn btn-sm btn-outline-primary" href="{{ route('mypage.articles.edit', $article) }}">{{ __('message.edit') }}</a>

@@ -121,9 +121,11 @@ class Article extends Model
     {
         return $this->hasMany(ViewCount::class);
     }
-    public function conversionCounts()
+    public function todaysViewCount()
     {
-        return $this->hasMany(ConversionCount::class);
+        return $this->hasOne(ViewCount::class)
+            ->where('type', ViewCount::$types['daily'])
+            ->where('period', now()->format('Ymd'));
     }
 
     public function dailyViewCounts()
@@ -143,6 +145,16 @@ class Article extends Model
         return $this->hasOne(ViewCount::class)->where('type', ViewCount::$types['total']);
     }
 
+    public function conversionCounts()
+    {
+        return $this->hasMany(ConversionCount::class);
+    }
+    public function todaysConversionCount()
+    {
+        return $this->hasOne(ConversionCount::class)
+            ->where('type', ConversionCount::$types['daily'])
+            ->where('period', now()->format('Ymd'));
+    }
     public function dailyConversionCounts()
     {
         return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::$types['daily']);
@@ -293,10 +305,10 @@ class Article extends Model
             return $category->type === config('category.type.pak128_position');
         });
     }
-    public function getConversionRateAttribute()
+    public function getTodaysConversionRateAttribute()
     {
-        if (!is_null($this->conversions_count) && $this->views_count) {
-            $rate = $this->conversions_count / $this->views_count * 100;
+        if (!is_null($this->todaysConversionCount) && $this->todaysViewCount) {
+            $rate = $this->todaysConversionCount->count / $this->todaysViewCount->count * 100;
             return sprintf('%.1f %%', $rate);
         }
         return 'N/A';

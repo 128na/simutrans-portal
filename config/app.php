@@ -2,18 +2,12 @@
 
 return [
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | プレビュー用レスポンスのステータスコード
-    |--------------------------------------------------------------------------
-    |
-    | This value is the name of your application. This value is used when the
-    | framework needs to place the application's name in a notification or
-    | any other location as required by the application or its packages.
-    |
-    */
-    'preview_status_code' => 418,
+    'twitter' => 'PortalSimutrans',
+    'creator' => '128Na',
+    'meta-description' => 'Simutrans（シムトランス）のaddon（アドオン）を気軽に投稿・紹介できるポータルサイトです。
+        様々なWikiや個人サイト、アップローダーに掲載・投稿されているアドオン情報もまとめて確認できます。
+        主にpak64, pak128, pak128.japanのアドオンが投稿・紹介されています。',
+    'meta-image' => 'default/ogp-image.png',
 
     /*
     |--------------------------------------------------------------------------

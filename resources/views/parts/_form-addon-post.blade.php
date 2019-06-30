@@ -20,16 +20,6 @@
     </div>
 </div>
 
-
-
-<div class="form-group">
-    <label><span class="badge badge-danger mr-1">{{ __('message.required') }}</span>{{ __('article.addon-file') }} </label>
-    <div class="custom-file">
-        <label class="custom-file-label" for="file">{{ old('file', $article->file->original_name ?? __('message.not-selected')) }}</label>
-        <input type="file" class="custom-file-input js-preview-trigger" id="file" name="file">
-    </div>
-</div>
-
 <div class="form-group">
     <label for="description"><span class="badge badge-danger mr-1">{{ __('message.required') }}</span>{{ __('article.description') }}</label>
     <textarea class="form-control" id="description" name="description" rows="8">{!! e(old('description', $article->description ?? '')) !!}</textarea>

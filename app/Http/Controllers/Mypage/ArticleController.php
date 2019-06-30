@@ -12,6 +12,7 @@ use Illuminate\Validation\Rule;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\Twitter;
 /**
  * 記事CRUD共通コントローラー
  */
@@ -79,6 +80,10 @@ class ArticleController extends Controller
             return $this->renderPreview($article);
         }
 
+        if($article->is_publish) {
+            Twitter::articleCreated($article);
+        }
+
         session()->flash('success', __('article.created', ['title' => $article->title, 'status' => __('status.'.$article->status)]));
         return redirect()->route('mypage.index');
     }
@@ -112,6 +117,10 @@ class ArticleController extends Controller
 
         if($preview) {
             return $this->renderPreview($article);
+        }
+
+        if($article->is_publish) {
+            Twitter::articleUpdated($article);
         }
 
         session()->flash('success', __('article.updated', ['title' => $article->title, 'status' => __('status.'.$article->status)]));

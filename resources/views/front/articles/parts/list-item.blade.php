@@ -11,7 +11,7 @@
 <div class="mb-3 article-box">
     <div class="img-full-box mb-2">
         <a href="{{ route('articles.show', $article->slug)}}">
-            <img src="{{ $article->thumbnail_url }}" class="img-fluid">
+            <img data-src="{{ $article->thumbnail_url }}" class="img-fluid lazy">
         </a>
         </div>
     <div class="my-1">

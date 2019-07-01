@@ -212,6 +212,13 @@ class ImportArticlesFromWP extends Command
             '128',
             '128-japan',
         ]);
+        $paks->map(function($item) {
+            Redirect::firstOrCreate([
+                'from' => "/pak/{$item}",
+                'to'   => route('category', ['pak', $item], false),
+            ]);
+        });
+
         $addons = collect([
             'trains',
             'rail-tools',
@@ -233,36 +240,29 @@ class ImportArticlesFromWP extends Command
             'tram-tools',
             'others',
         ]);
+        $addons->map(function($item) {
+            Redirect::firstOrCreate([
+                'from' => "/type/{$item}",
+                'to'   => route('category', ['addon', $item], false),
+            ]);
+        });
+
         $pak128_positions = collect([
             'old',
             'new',
         ]);
-        // pak
-        $paks->map(function($item) {
-            Redirect::firstOrCreate([
-                'from' => "/pak/{$item[0]}",
-                'to'   => route('category', ['pak', $item[0]], false),
-            ]);
-        });
-        // addon
-        $addons->map(function($item) {
-            Redirect::firstOrCreate([
-                'from' => "/type/{$item[0]}",
-                'to'   => route('category', ['addon', $item[0]], false),
-            ]);
-        });
-        // addon
         $pak128_positions->map(function($item) {
             Redirect::firstOrCreate([
-                'from' => "/pak128_position/{$item[0]}",
-                'to'   => route('category', ['pak128_position', $item[0]], false),
+                'from' => "/pak128_position/{$item}",
+                'to'   => route('category', ['pak128_position', $item], false),
             ]);
         });
+
         // pak/addon
-        $paks->crossJoin($addons)->map(function($item) {
+        $paks->crossJoin($addons)->map(function($pak_addon) {
             Redirect::firstOrCreate([
-                'from' => "/pak/{$item[0]}/?type={$item[1]}",
-                'to'   => route('category.pak.addon', [$item[0], $item[1]], false),
+                'from' => "/pak/{$pak_addon[0]}/?type={$pak_addon[1]}",
+                'to'   => route('category.pak.addon', [$pak_addon[0], $pak_addon[1]], false),
             ]);
         });
     }

@@ -50,6 +50,7 @@ class ImportArticlesFromWP extends Command
     public function handle()
     {
         DB::beginTransaction();
+        self::createCategoryRedirect();
         foreach ($this->fetchWPUsers() as $wp_user) {
             $user = User::where('email', $wp_user->user_email)->firstOrFail();
             foreach ($this->fetchWPPosts($wp_user->ID) as $wp_post) {
@@ -201,5 +202,68 @@ class ImportArticlesFromWP extends Command
     private static function updateCreatedAt($id, $wp_post)
     {
         return DB::update('UPDATE articles SET created_at = ? WHERE id = ?', [$wp_post->post_date, $id]);
+    }
+
+
+    private static function createCategoryRedirect()
+    {
+        $paks = collect([
+            '64',
+            '128',
+            '128-japan',
+        ]);
+        $addons = collect([
+            'trains',
+            'rail-tools',
+            'road-tools',
+            'ships',
+            'aircrafts',
+            'road-vehicles',
+            'airport-tools',
+            'industrial-tools',
+            'seaport-tools',
+            'buildings',
+            'monorail-vehicles',
+            'monorail-tools',
+            'maglev-vehicles',
+            'maglev-tools',
+            'narrow-gauge-vahicle',
+            'narrow-gauge-tools',
+            'tram-vehicle',
+            'tram-tools',
+            'others',
+        ]);
+        $pak128_positions = collect([
+            'old',
+            'new',
+        ]);
+        // pak
+        $paks->map(function($item) {
+            Redirect::firstOrCreate([
+                'from' => "/pak/{$item[0]}",
+                'to'   => route('category', ['pak', $item[0]], false),
+            ]);
+        });
+        // addon
+        $addons->map(function($item) {
+            Redirect::firstOrCreate([
+                'from' => "/type/{$item[0]}",
+                'to'   => route('category', ['addon', $item[0]], false),
+            ]);
+        });
+        // addon
+        $pak128_positions->map(function($item) {
+            Redirect::firstOrCreate([
+                'from' => "/pak128_position/{$item[0]}",
+                'to'   => route('category', ['pak128_position', $item[0]], false),
+            ]);
+        });
+        // pak/addon
+        $paks->crossJoin($addons)->map(function($item) {
+            Redirect::firstOrCreate([
+                'from' => "/pak/{$item[0]}/?type={$item[1]}",
+                'to'   => route('category.pak.addon', [$item[0], $item[1]], false),
+            ]);
+        });
     }
 }

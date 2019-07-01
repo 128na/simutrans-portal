@@ -11,6 +11,7 @@ use App\Events\ArticleShown;
 use App\Events\ArticleConversion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
@@ -88,7 +89,8 @@ class ArticleController extends Controller
      */
     public function category($type, $slug)
     {
-        $category = Category::$type()->where('slug', $slug)->firstOrFail();
+        $method = Str::camel($type);
+        $category = Category::$method()->where('slug', $slug)->firstOrFail();
         $articles = $category->articles()
             ->active()->withForList()->paginate(20);
 

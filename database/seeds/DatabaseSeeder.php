@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProdSeeder::class);
 
         if(App::environment(['local', 'development'])) {
-            $this->call(DevSeeder::class);
+            // $this->call(DevSeeder::class);
         }
 
     }

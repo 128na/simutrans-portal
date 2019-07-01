@@ -100,7 +100,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'ja',
 
     /*
     |--------------------------------------------------------------------------
@@ -181,7 +181,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        App\Providers\DropboxServiceProvider::class,
     ],
 
     /*

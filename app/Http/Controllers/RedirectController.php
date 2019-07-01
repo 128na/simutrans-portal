@@ -15,6 +15,7 @@ class RedirectController extends Controller
         $path = self::getFullPath($request);
         $redirect = Redirect::from($path)->firstOrFail();
 
+        logger("[redirect]: {$path} -> {$redirect->to}");
         return redirect($redirect->to, 301);
     }
 

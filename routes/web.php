@@ -82,3 +82,4 @@ Route::prefix('admin')->group(function () {
     });
 });
 
+Route::get('{any}', 'RedirectController@index')->where('any', '.*');

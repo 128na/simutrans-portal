@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Models\Redirect;
 use App\Traits\WPImportable;
 
 use Illuminate\Console\Command;
@@ -49,6 +50,7 @@ class ImportArticlesFromWP extends Command
     public function handle()
     {
         DB::beginTransaction();
+        self::createCategoryRedirect();
         foreach ($this->fetchWPUsers() as $wp_user) {
             $user = User::where('email', $wp_user->user_email)->firstOrFail();
             foreach ($this->fetchWPPosts($wp_user->ID) as $wp_post) {
@@ -81,9 +83,10 @@ class ImportArticlesFromWP extends Command
                     $article = $this->applyAddonIntroduction($user, $article, $wp_post);
                 }
                 $article->save();
-                self::updateCreatedAt($article->id, $wp_post);
-
                 $this->createViewCount($article, $wp_post);
+
+                self::createRedirect($article, $wp_post);
+                self::updateCreatedAt($article->id, $wp_post);
                 $this->info('created:'.$article->title);
             }
         }
@@ -95,16 +98,11 @@ class ImportArticlesFromWP extends Command
         // post type
         $post_type = $this->fetchWPTerms($wp_post->ID, 'category')[0]->slug;
         return $user->articles()->create([
-            'title'    => $wp_post->post_title,
-            'slug'     => self::hasSlug($wp_post->post_name) ? $wp_post->post_name : $wp_post->post_title,
+            'title'     => $wp_post->post_title,
+            'slug'      => $wp_post->post_name,
             'post_type' => $post_type,
-            'status'   => config('status.publish'),
+            'status'    => config('status.publish'),
         ]);
-    }
-
-    private static function hasSlug($str)
-    {
-        return stripos($str, 'post-') === false;
     }
 
     private function applyCategories($article, $wp_post_id)
@@ -188,11 +186,84 @@ class ImportArticlesFromWP extends Command
         $article->viewCounts()->createMany($items);
     }
 
+    private static function createRedirect($article, $wp_post)
+    {
+        $from = '/'.$wp_post->post_name;
+        $to   = route('articles.show', $article->slug, false);
+        return Redirect::firstOrCreate([
+            'from' => $from,
+            'to'   => $to,
+        ]);
+    }
+
     /**
      * 作成日を引き継ぐ
      */
     private static function updateCreatedAt($id, $wp_post)
     {
         return DB::update('UPDATE articles SET created_at = ? WHERE id = ?', [$wp_post->post_date, $id]);
+    }
+
+
+    private static function createCategoryRedirect()
+    {
+        $paks = collect([
+            '64',
+            '128',
+            '128-japan',
+        ]);
+        $paks->map(function($item) {
+            Redirect::firstOrCreate([
+                'from' => "/pak/{$item}",
+                'to'   => route('category', ['pak', $item], false),
+            ]);
+        });
+
+        $addons = collect([
+            'trains',
+            'rail-tools',
+            'road-tools',
+            'ships',
+            'aircrafts',
+            'road-vehicles',
+            'airport-tools',
+            'industrial-tools',
+            'seaport-tools',
+            'buildings',
+            'monorail-vehicles',
+            'monorail-tools',
+            'maglev-vehicles',
+            'maglev-tools',
+            'narrow-gauge-vahicle',
+            'narrow-gauge-tools',
+            'tram-vehicle',
+            'tram-tools',
+            'others',
+        ]);
+        $addons->map(function($item) {
+            Redirect::firstOrCreate([
+                'from' => "/type/{$item}",
+                'to'   => route('category', ['addon', $item], false),
+            ]);
+        });
+
+        $pak128_positions = collect([
+            'old',
+            'new',
+        ]);
+        $pak128_positions->map(function($item) {
+            Redirect::firstOrCreate([
+                'from' => "/pak128_position/{$item}",
+                'to'   => route('category', ['pak128_position', $item], false),
+            ]);
+        });
+
+        // pak/addon
+        $paks->crossJoin($addons)->map(function($pak_addon) {
+            Redirect::firstOrCreate([
+                'from' => "/pak/{$pak_addon[0]}/?type={$pak_addon[1]}",
+                'to'   => route('category.pak.addon', [$pak_addon[0], $pak_addon[1]], false),
+            ]);
+        });
     }
 }

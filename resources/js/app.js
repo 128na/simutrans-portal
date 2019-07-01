@@ -36,3 +36,9 @@ require('./files/form');
 require('./files/multi_dropdown');
 require('./files/uploader');
 require('./files/preview');
+
+import LazyLoad from "vanilla-lazyload";
+
+var lazyLoadInstance = new LazyLoad({
+    elements_selector: ".lazy"
+});

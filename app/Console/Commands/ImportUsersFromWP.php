@@ -7,6 +7,7 @@ use App\Models\Profile;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Categories;
+use App\Models\Redirect;
 use App\Traits\WPImportable;
 
 use Illuminate\Console\Command;
@@ -58,6 +59,7 @@ class ImportUsersFromWP extends Command
 
             $wp_usermeta = collect($this->fetchWPUsermeta($wp_user->ID));
             self::updateProfile($user, $wp_user, $wp_usermeta);
+            self::createRedirect($user, $wp_user);
             self::updateCreatedAt($user->id, $wp_user);
             $this->info('created: '.$user->name);
         }
@@ -109,5 +111,16 @@ class ImportUsersFromWP extends Command
     private static function updateCreatedAt($id, $wp_user)
     {
         return DB::update('UPDATE users SET created_at = ? WHERE id = ?', [$wp_user->user_registered, $id]);
+    }
+
+
+    private static function createRedirect($user, $wp_user)
+    {
+        $from = '/author/'.$wp_user->user_nicename;
+        $to   = route('user', $user, false);
+        return Redirect::firstOrCreate([
+            'from' => $from,
+            'to'   => $to,
+        ]);
     }
 }

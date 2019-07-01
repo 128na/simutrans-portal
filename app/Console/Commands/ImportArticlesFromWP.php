@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Models\Redirect;
 use App\Traits\WPImportable;
 
 use Illuminate\Console\Command;
@@ -81,9 +82,10 @@ class ImportArticlesFromWP extends Command
                     $article = $this->applyAddonIntroduction($user, $article, $wp_post);
                 }
                 $article->save();
-                self::updateCreatedAt($article->id, $wp_post);
-
                 $this->createViewCount($article, $wp_post);
+
+                self::createRedirect($article, $wp_post);
+                self::updateCreatedAt($article->id, $wp_post);
                 $this->info('created:'.$article->title);
             }
         }
@@ -95,16 +97,11 @@ class ImportArticlesFromWP extends Command
         // post type
         $post_type = $this->fetchWPTerms($wp_post->ID, 'category')[0]->slug;
         return $user->articles()->create([
-            'title'    => $wp_post->post_title,
-            'slug'     => self::hasSlug($wp_post->post_name) ? $wp_post->post_name : $wp_post->post_title,
+            'title'     => $wp_post->post_title,
+            'slug'      => $wp_post->post_name,
             'post_type' => $post_type,
-            'status'   => config('status.publish'),
+            'status'    => config('status.publish'),
         ]);
-    }
-
-    private static function hasSlug($str)
-    {
-        return stripos($str, 'post-') === false;
     }
 
     private function applyCategories($article, $wp_post_id)
@@ -186,6 +183,16 @@ class ImportArticlesFromWP extends Command
             ];
         }
         $article->viewCounts()->createMany($items);
+    }
+
+    private static function createRedirect($article, $wp_post)
+    {
+        $from = '/'.$wp_post->post_name;
+        $to   = route('articles.show', $article->slug, false);
+        return Redirect::firstOrCreate([
+            'from' => $from,
+            'to'   => $to,
+        ]);
     }
 
     /**

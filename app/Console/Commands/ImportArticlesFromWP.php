@@ -261,7 +261,7 @@ class ImportArticlesFromWP extends Command
         // pak/addon
         $paks->crossJoin($addons)->map(function($pak_addon) {
             Redirect::firstOrCreate([
-                'from' => "/pak/{$pak_addon[0]}/?type={$pak_addon[1]}",
+                'from' => "/pak/{$pak_addon[0]}?type={$pak_addon[1]}",
                 'to'   => route('category.pak.addon', [$pak_addon[0], $pak_addon[1]], false),
             ]);
         });

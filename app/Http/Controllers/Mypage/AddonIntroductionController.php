@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Mypage;
 
-use Illuminate\Http\Request;
 use App\Models\Article;
-use App\Models\Tag;
 use App\Models\Attachment;
+use App\Models\Tag;
+use Illuminate\Http\Request;
 
 class AddonIntroductionController extends ArticleController
 {

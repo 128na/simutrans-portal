@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Mypage;
 
-use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Attachment;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 

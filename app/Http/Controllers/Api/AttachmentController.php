@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\Attachments as AttachmentsResource;
 use App\Models\Attachment;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class AttachmentController extends Controller
@@ -18,6 +18,7 @@ class AttachmentController extends Controller
         $user = Auth::user()->load('myAttachments', 'myAttachments.attachmentable');
         return new AttachmentsResource($user->myAttachments);
     }
+
     /**
      * アップロード一覧
      */
@@ -39,6 +40,7 @@ class AttachmentController extends Controller
         $user->load('myAttachments');
         return new AttachmentsResource($user->myAttachments);
     }
+
     public function delete(Attachment $attachment)
     {
         abort_unless($attachment->user_id === Auth::id(), 404);

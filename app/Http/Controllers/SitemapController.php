@@ -73,8 +73,8 @@ class SitemapController extends Controller
     }
 
     const PRIORITIES = [
-        'addon-post' => '1.0',
+        'addon-post'         => '1.0',
         'addon-introduction' => '0.8',
-        'page' => '0.5',
+        'page'               => '0.5',
     ];
 }

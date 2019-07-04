@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Profile;
 use App\Models\Article;
+use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 

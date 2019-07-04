@@ -7,9 +7,9 @@ use App\Models\Attachment;
 use App\Models\Profile;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {

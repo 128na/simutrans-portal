@@ -2,14 +2,15 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
-use App\Models\Attachment;
 use App\Models\Article;
+use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Profile;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Tests\TestCase;
+
 class AuthTest extends TestCase
 {
     use RefreshDatabase;

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Mypage;
 
-use App\Models\Article;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FrontController extends Controller
 {

@@ -1,8 +1,8 @@
 <?php
 namespace App\Listeners;
 
-use App\Models\ViewCount;
 use App\Events\ArticleShown;
+use App\Models\ViewCount;
 
 class AddViewRecord
 {

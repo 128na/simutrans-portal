@@ -19,7 +19,7 @@ class PageController extends ArticleController
             switch ($section['type']) {
                 case 'caption':
                     return [
-                        'type' => 'caption',
+                        'type'    => 'caption',
                         'caption' => $section['caption'],
                     ];
                 case 'text':

@@ -9,8 +9,12 @@ use App\Models\Attachment;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+
 class FrontTest extends TestCase
 {
+    use RefreshDatabase;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -18,95 +22,119 @@ class FrontTest extends TestCase
     }
 
     /**
-     *  トップ
+     *  トップが表示されること
      * */
     public function testTop()
     {
         $response = $this->get('/');
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     /**
-     *  アドオン一覧
+     *  アドオン一覧が表示されること
      * */
     public function testAddons()
     {
         $response = $this->get('/addons');
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     /**
-     *  記事一覧
+     *  記事一覧が表示されること
      * */
     public function testPages()
     {
         $response = $this->get('/pages');
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     /**
-     *  お知らせ一覧
+     *  お知らせ一覧が表示されること
      * */
     public function testAnnounces()
     {
         $response = $this->get('/announces');
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     /**
-     *  アドオン投稿
+     *  アドオン投稿が表示されること
      * */
     public function testShowAddonPost()
     {
-        $article = self::createAddonPost();
+        $article = static::createAddonPost();
         $response = $this->get('/articles/'.$article->slug);
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     /**
-     *  アドオン紹介
+     *  アドオン紹介が表示されること
      * */
     public function testShowAddonIntroduction()
     {
-        $article = self::createAddonIntroduction();
+        $article = static::createAddonIntroduction();
         $response = $this->get('/articles/'.$article->slug);
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     /**
-     *  一般記事
+     *  一般記事が表示されること
      * */
     public function testShowPage()
     {
-        $article = self::createPage();
+        $article = static::createPage();
         $response = $this->get('/articles/'.$article->slug);
-        $response->assertStatus(200);
+        $response->assertOk();
 
     }
 
     /**
-     *  お知らせ
+     *  お知らせが表示されること
      * */
     public function testShowAnnounce()
     {
-        $article = self::createAnnounce();
+        $article = static::createAnnounce();
         $response = $this->get('/articles/'.$article->slug);
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
 
     /**
-     *  存在しない記事
+     *  存在しない記事は404となること
      * */
     public function testMissingArticle()
     {
-        $article = self::createAddonIntroduction();
+        $article = static::createAddonIntroduction();
         $response = $this->get('/articles/'.$article->slug.'missing');
-        $response->assertStatus(404);
+        $response->assertNotFound();
     }
 
     /**
-     * ユーザーの投稿一覧
+     *  非公開の記事は404となること
+     * */
+    public function testUnpublishArticle()
+    {
+        $user = factory(User::class)->create();
+        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'publish']);
+        $response = $this->get('/articles/'.$article->slug);
+        $response->assertOk();
+
+        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'draft']);
+        $response = $this->get('/articles/'.$article->slug);
+        $response->assertNotFound();
+
+        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'private']);
+        $response = $this->get('/articles/'.$article->slug);
+        $response->assertNotFound();
+
+        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'trash']);
+        $response = $this->get('/articles/'.$article->slug);
+        $response->assertNotFound();
+    }
+
+
+    /**
+     * ユーザーの投稿一覧が表示されること
      */
     public function testUsers()
     {
@@ -115,12 +143,12 @@ class FrontTest extends TestCase
 
         foreach ($users as $user) {
             $response = $this->get('/user/'.$user->id);
-            $response->assertStatus(200);
+            $response->assertOk();
         }
     }
 
     /**
-     * カテゴリの投稿一覧
+     * カテゴリの投稿一覧が表示されること
      */
     public function testCategories()
     {
@@ -129,13 +157,13 @@ class FrontTest extends TestCase
 
         foreach ($categories as $category) {
             $response = $this->get('/category/'.$category->type.'/'.$category->slug);
-            $response->assertStatus(200);
+            $response->assertOk();
         }
     }
 
 
     /**
-     * pak/addonの投稿一覧
+     * pak/addonの投稿一覧が表示されること
      */
     public function testPakAddonCategories()
     {
@@ -147,72 +175,152 @@ class FrontTest extends TestCase
         foreach ($paks as $pak) {
             foreach ($addons as $addon) {
                 $response = $this->get('/category/pak/'.$pak->slug.'/'.$addon->slug);
-                $response->assertStatus(200);
+                $response->assertOk();
             }
         }
     }
 
 
+    /**
+     *  未ログインユーザーが記事を表示したときview_countsが日次、月次、年次、合計の値が+1されること
+     *  ログインユーザーが自分以外の記事を表示したときview_countsが日次、月次、年次、合計の値が+1されること
+     *  ログインユーザーが自分の記事を表示したときview_countsが日次、月次、年次、合計の値が更新されないこと
+     * */
+    public function testViewCount()
+    {
+        $user = factory(User::class)->create();
+        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'publish']);
+
+        $dayly   = now()->format('Ymd');
+        $monthly = now()->format('Ym');
+        $yearly  = now()->format('Y');
+        $total   = 'total';
+
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly]);
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly]);
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly]);
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total]);
+
+        $response = $this->get('articles/'.$article->slug);
+        $response->assertOk();
+
+        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
+        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);
+        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);
+        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 1]);
+
+        $other_user = factory(User::class)->create();
+        $response = $this->actingAs($other_user)->get('articles/'.$article->slug);
+        $response->assertOk();
+
+        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly, 'count' => 2]);
+        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly, 'count' => 2]);
+        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 2]);
+        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 2]);
+
+        $response = $this->actingAs($user)->get('articles/'.$article->slug);
+        $response->assertOk();
+
+        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly, 'count' => 2]);
+        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly, 'count' => 2]);
+        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 2]);
+        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 2]);
+    }
 
 
-    private static function createAddonPost()
+    /**
+     *  未ログインユーザーがアドオン紹介記事のDL先リンクをクリックしたときconversion_countsが日次、月次、年次、合計の値が+1されること
+     *  ログインユーザーが自分以外のアドオン紹介記事のDL先リンクをクリックしたときconversion_countsが日次、月次、年次、合計の値が+1されること
+     *  ログインユーザーが自分のアドオン紹介記事のDL先リンクをクリックしたときconversion_countsが日次、月次、年次、合計の値が更新されないこと
+     * */
+    public function testConversionCountAddonIntroduction()
     {
         $user = factory(User::class)->create();
-        $file = UploadedFile::fake()->create('document.zip', 1);
-        $attachment = Attachment::createFromFile($file, $user->id);
-        $article = factory(Article::class)->create([
-            'user_id' => $user->id,
-            'post_type' => 'addon-post',
-            'title' => 'test_addon-post',
-            'status' => 'publish',
-            'contents' => [
-                'description' => 'test addon-post text',
-                'author' => 'test author',
-                'file' => $attachment->id,
-            ],
-        ]);
-        return $article;
+        $article = static::createAddonIntroduction($user);
+
+        $dayly   = now()->format('Ymd');
+        $monthly = now()->format('Ym');
+        $yearly  = now()->format('Y');
+        $total   = 'total';
+
+        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly]);
+        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly]);
+        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly]);
+        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total]);
+
+        $response = $this->post('api/v1/click/'.$article->slug);
+        $response->assertOk();
+
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 1]);
+
+        $other_user = factory(User::class)->create();
+        $response = $this->actingAs($other_user)->post('api/v1/click/'.$article->slug);
+        $response->assertOk();
+
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly, 'count' => 2]);
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly, 'count' => 2]);
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 2]);
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 2]);
+
+        $response = $this->actingAs($user)->post('api/v1/click/'.$article->slug);
+        $response->assertOk();
+
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly, 'count' => 2]);
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly, 'count' => 2]);
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 2]);
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 2]);
     }
-    private static function createAddonIntroduction()
+
+
+    /**
+     *  未ログインユーザーがアドオン紹介記事のDL先リンクをクリックしたときconversion_countsが日次、月次、年次、合計の値が+1されること
+     *  ログインユーザーが自分以外のアドオン紹介記事のDL先リンクをクリックしたときconversion_countsが日次、月次、年次、合計の値が+1されること
+     *  ログインユーザーが自分のアドオン紹介記事のDL先リンクをクリックしたときconversion_countsが日次、月次、年次、合計の値が更新されないこと
+     *
+     *  テストでは保存したフィルが取得できず500エラーになる
+     *  diskインスタンス経由でファイル取得していないのが原因？
+     * */
+    public function testConversionCountAddonPost()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create([
-            'user_id' => $user->id,
-            'post_type' => 'addon-introduction',
-            'title' => 'test_addon-introduction',
-            'status' => 'publish',
-            'contents' => [
-                'description' => 'test addon-introduction text',
-                'author' => 'test author',
-                'link' => 'http://example.com',
-            ],
-        ]);
-        return $article;
-    }
-    private static function createPage()
-    {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create([
-            'user_id' => $user->id,
-            'post_type' => 'page',
-            'title' => 'test_page',
-            'status' => 'publish',
-            'contents' => ['type' => 'text', 'text' => 'test page text'],
-        ]);
-        return $article;
-    }
-    private static function createAnnounce()
-    {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create([
-            'user_id' => $user->id,
-            'post_type' => 'page',
-            'title' => 'test_announce',
-            'status' => 'publish',
-            'contents' => ['type' => 'text', 'text' => 'test announce text'],
-        ]);
-        $announce_category = Category::where('type', 'page')->where('slug', 'announce')->firstOrFail();
-        $article->categories()->save($announce_category);
-        return $article;
+        // $user = factory(User::class)->create();
+        // $article = static::createAddonPost($user);
+
+        // $dayly   = now()->format('Ymd');
+        // $monthly = now()->format('Ym');
+        // $yearly  = now()->format('Y');
+        // $total   = 'total';
+
+        // $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly]);
+        // $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly]);
+        // $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly]);
+        // $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total]);
+
+        // $response = $this->get('articles/'.$article->slug.'/download');
+        // $response->assertOk();
+
+        // $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
+        // $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);
+        // $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);
+        // $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 1]);
+
+        // $other_user = factory(User::class)->create();
+        // $response = $this->actingAs($other_user)->get('articles/'.$article->slug.'/download');
+        // $response->assertOk();
+
+        // $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly, 'count' => 2]);
+        // $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly, 'count' => 2]);
+        // $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 2]);
+        // $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 2]);
+
+        // $response = $this->actingAs($user)->get('articles/'.$article->slug.'/download');
+        // $response->assertOk();
+
+        // $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly, 'count' => 2]);
+        // $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly, 'count' => 2]);
+        // $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 2]);
+        // $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 2]);
     }
 }

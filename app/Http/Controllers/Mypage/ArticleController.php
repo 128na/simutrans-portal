@@ -156,7 +156,7 @@ class ArticleController extends Controller
                 ? "required|unique:articles,title,{$article->id}|max:255"
                 : 'required|unique:articles,title|max:255',
             'slug'      => 'nullable|max:255',
-            'thumbnail_id'=> 'nullable|exists:attachments,id',
+            'thumbnail_id' => 'nullable|exists:attachments,id,user_id,'.Auth::id(),
             'status'    => ['required', Rule::in(config('status')), ],
         ];
     }

@@ -47,11 +47,11 @@ class PageController extends ArticleController
     protected static function getValidateRule($article = null)
     {
         return array_merge(parent::getValidateRule($article), [
-            'sections' => 'required|array',
+            'sections' => 'required|array|min:1',
             'sections.*.type'    => 'required|in:caption,text,image',
             'sections.*.caption' => 'required_if:sections.*.type,caption|max:255',
-            'sections.*.text'    => 'required_if:sections.*.type,text|max:1024',
-            'sections.*.id'      => 'required_if:sections.*.type,image|exists:attachments,id',
+            'sections.*.text'    => 'required_if:sections.*.type,text|max:2048',
+            'sections.*.id'      => 'required_if:sections.*.type,image|exists:attachments,id,user_id,'.Auth::id(),
             'categories.page.*'  => 'nullable|exists:categories,id',
         ]);
     }

@@ -42,7 +42,7 @@ class AddonIntroductionController extends ArticleController
     {
         return array_merge(parent::getValidateRule($article), [
             'author'       => 'required|max:255',
-            'link'         => 'required|url',
+            'link'         => 'required|url|max:255',
             'description'  => 'nullable|string|max:2048',
             'agreement'    => 'nullable',
             'thanks'       => 'nullable|string|max:2048',

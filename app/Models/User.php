@@ -44,7 +44,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     private function syncRelatedData()
     {
-        $this->profile()->create();
+        if(Profile::where('user_id', $this->id)->doesntExist()) {
+            $this->profile()->create();
+        }
     }
 
     /*

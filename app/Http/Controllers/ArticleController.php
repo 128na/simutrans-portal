@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ArticleConversion;
+use App\Events\ArticleShown;
 use App\Models\Article;
 use App\Models\Breadcrumb;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
-use App\Events\ArticleShown;
-use App\Events\ArticleConversion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -26,6 +26,7 @@ class ArticleController extends Controller
         $breadcrumb = Breadcrumb::forList('articles');
         return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
     }
+
     /**
      * 一般記事一覧
      */
@@ -37,6 +38,7 @@ class ArticleController extends Controller
         $breadcrumb = Breadcrumb::forList('pages');
         return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
     }
+
     /**
      * 一般記事一覧
      */

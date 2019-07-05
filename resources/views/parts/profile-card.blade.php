@@ -7,12 +7,12 @@
         <div class="card-text card-description">{{ $user->profile->getContents('description') ?: __('message.no-description') }}</div>
         @if ($user->profile->getContents('twitter'))
             <div class="card-text">
-                <a href="https://twitter.com/{{ $user->profile->getContents('twitter') }}"} target="_blank" rel="noopener nofollow">
+                <a href="https://twitter.com/{{ $user->profile->getContents('twitter') }}"} target="_blank" rel="noopener, nofollow">
                     &#064;{{ $user->profile->getContents('twitter') }}</a></div>
         @endif
         @if ($user->profile->getContents('website'))
             <div class="card-text">
-                <a href="{{ $user->profile->getContents('website') }}"} target="_blank" rel="noopener nofollow">{{ $user->profile->getContents('website') }}</a></div>
+                <a href="{{ $user->profile->getContents('website') }}"} target="_blank" rel="noopener, nofollow">{{ $user->profile->getContents('website') }}</a></div>
         @endif
         @if ($in_mypage)
             <div class="card-text mt-2 text-right">

@@ -1,16 +1,14 @@
 <?php
-
 namespace App\Console\Commands;
 
-use App\Models\User;
-use App\Models\Profile;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
-use App\Models\Tag;
+use App\Models\Profile;
 use App\Models\Redirect;
+use App\Models\Tag;
+use App\Models\User;
 use App\Traits\WPImportable;
-
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -123,6 +121,7 @@ class ImportArticlesFromWP extends Command
 
         return $article->categories()->sync($categories->pluck('id'));
     }
+
     private function applyTags($article, $wp_post_id)
     {
         $wp_terms = collect($this->fetchWPTerms($wp_post_id, 'post_tag'));

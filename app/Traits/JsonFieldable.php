@@ -1,7 +1,6 @@
 <?php
 namespace App\Traits;
 
-
 trait JsonFieldable
 {
     public function getJsonableField()

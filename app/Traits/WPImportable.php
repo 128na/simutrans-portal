@@ -3,6 +3,7 @@ namespace App\Traits;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+
 trait WPImportable
 {
     private $conn = null;
@@ -39,6 +40,7 @@ trait WPImportable
         return $this->getWPConnection()->select(
             "SELECT * FROM wp_posts WHERE post_author=? AND post_type='post'", [$user_id]);
     }
+
     /**
      * サムネイル投稿取得
      */
@@ -61,8 +63,9 @@ trait WPImportable
                             AND pm.meta_key = '_thumbnail_id')
                     AND post_type = 'attachment'", [$id])[0] ?? null;
     }
+
     /**
-     * サムネイル投稿取得
+     * アドオン投稿取得
      */
     private function fetchWPAddonFile($id)
     {
@@ -83,12 +86,22 @@ trait WPImportable
                             AND pm.meta_key = 'addon-file')
                     AND post_type = 'attachment'", [$id])[0] ?? null;
     }
+
+    /**
+     * 指定post_id, meta_keyのmeta_valueを返す
+     * @param int $post_id 投稿ID
+     * @param string $meta_key キー名
+     * @return mixed meta_value
+     */
     private function fetchWPPostmetaValueBy($post_id, $meta_key)
     {
         return $this->getWPConnection()->select(
             "SELECT * FROM wp_postmeta WHERE post_id=? AND meta_key=?", [$post_id, $meta_key])[0]->meta_value ?? null;
     }
 
+    /**
+     * 指定post_id, taxonomyのターム一覧を返す
+     */
     private function fetchWPTerms($post_id, $taxonomy)
     {
         return $this->getWPConnection()->select(
@@ -107,6 +120,10 @@ trait WPImportable
             AND
                 tx.taxonomy = ?", [$post_id, $taxonomy]);
     }
+
+    /**
+     * 指定post_idのpost_view一覧を返す。週次は除外
+     */
     private function fetchWPPostViews($post_id)
     {
         return $this->getWPConnection()->select(

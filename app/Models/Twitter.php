@@ -35,7 +35,7 @@ class Twitter
      */
     public static function post($message)
     {
-        if(App::environment(['production'])) {
+        if(\App::environment(['production'])) {
             return self::getClient()->post('statuses/update', ['status' => $message ]);
         }
         logger('Tweet: '.$message);

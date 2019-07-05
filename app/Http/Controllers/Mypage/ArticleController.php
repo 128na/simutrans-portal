@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Mypage;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Tag;
-use Illuminate\Validation\Rule;
-use Validator;
+use App\Models\Twitter;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Models\Twitter;
+use Illuminate\Validation\Rule;
+use Validator;
+
 /**
  * 記事CRUD共通コントローラー
  */
@@ -56,11 +57,11 @@ class ArticleController extends Controller
         self::validateData($request->all(), static::getValidateRule());
 
         $article = Article::make([
-            'user_id' => Auth::id(),
+            'user_id'   => Auth::id(),
             'post_type' => $this->post_type,
-            'title'   => $request->input('title'),
-            'slug'    => $request->filled('slug') ? $request->input('slug') : $request->input('title'),
-            'status'  => $request->input('status'),
+            'title'     => $request->input('title'),
+            'slug'      => $request->filled('slug') ? $request->input('slug') : $request->input('title'),
+            'status'    => $request->input('status'),
         ]);
 
         // check slug is unique
@@ -88,7 +89,6 @@ class ArticleController extends Controller
         return redirect()->route('mypage.index');
     }
 
-
     /**
      * 更新
      */
@@ -99,9 +99,9 @@ class ArticleController extends Controller
         self::validateData($request->all(), static::getValidateRule($article));
 
         $article->fill([
-            'title'   => $request->input('title'),
-            'slug'    => $request->filled('slug') ? $request->input('slug') : $request->input('title'),
-            'status'  => $request->input('status'),
+            'title'  => $request->input('title'),
+            'slug'   => $request->filled('slug') ? $request->input('slug') : $request->input('title'),
+            'status' => $request->input('status'),
         ]);
 
         // check slug is unique
@@ -152,12 +152,12 @@ class ArticleController extends Controller
     protected static function getValidateRule($article = null)
     {
         return [
-            'title'     => $article
+            'title' => $article
                 ? "required|unique:articles,title,{$article->id}|max:255"
                 : 'required|unique:articles,title|max:255',
-            'slug'      => 'nullable|max:255',
-            'thumbnail_id'=> 'nullable|exists:attachments,id',
-            'status'    => ['required', Rule::in(config('status')), ],
+            'slug'         => 'nullable|max:255',
+            'thumbnail_id' => 'nullable|exists:attachments,id,user_id,'.Auth::id(),
+            'status'       => ['required', Rule::in(config('status')), ],
         ];
     }
 

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Article;
 use App\Events\ArticleConversion;
 use App\Http\Controllers\Controller;
+use App\Models\Article;
 use Illuminate\Support\Facades\Auth;
 
 class ConversionController extends Controller
 {
-    //
     public function click(Article $article)
     {
         abort_unless($article->is_publish, 404);

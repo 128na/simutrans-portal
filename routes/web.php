@@ -15,18 +15,21 @@ Route::get('sitemap', 'SitemapController@index');
 // 認証
 Auth::routes(['verify' => true]);
 
-// 非ログイン系
-Route::get('/', 'FrontController@index')->name('index');
-Route::get('/addons', 'ArticleController@addons')->name('addons.index');
-Route::get('/pages', 'ArticleController@pages')->name('pages.index');
-Route::get('/announces', 'ArticleController@announces')->name('announces.index');
+// 非ログイン系 reidsキャッシュ有効
+Route::middleware(['cache.redis'])->group(function () {
+    Route::get('/', 'FrontController@index')->name('index');
+    Route::get('/addons', 'ArticleController@addons')->name('addons.index');
+    Route::get('/pages', 'ArticleController@pages')->name('pages.index');
+    Route::get('/announces', 'ArticleController@announces')->name('announces.index');
+    Route::get('/category/pak/{size}/{slug}', 'ArticleController@categoryPakAddon')->name('category.pak.addon');
+    Route::get('/category/{type}/{slug}', 'ArticleController@category')->name('category');
+    Route::get('/tag/{tag}', 'ArticleController@tag')->name('tag');
+    Route::get('/user/{user}', 'ArticleController@user')->name('user');
+});
+// 非ログイン系 reidsキャッシュ無効
 Route::get('/articles/{article}', 'ArticleController@show')->name('articles.show');
 Route::get('/articles/{article}/download', 'ArticleController@download')->name('articles.download');
 Route::get('/search', 'ArticleController@search')->name('search');
-Route::get('/category/pak/{size}/{slug}', 'ArticleController@categoryPakAddon')->name('category.pak.addon');
-Route::get('/category/{type}/{slug}', 'ArticleController@category')->name('category');
-Route::get('/tag/{tag}', 'ArticleController@tag')->name('tag');
-Route::get('/user/{user}', 'ArticleController@user')->name('user');
 
 // ログイン系：ユーザー
 Route::prefix('mypage')->group(function () {

@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Models\Profile;
 use App\Models\Article;
+use App\Models\Profile;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class Attachments extends ResourceCollection
 {
@@ -18,11 +18,11 @@ class Attachments extends ResourceCollection
     {
         return $this->collection->map(function($item) {
             return [
-                'id' => $item->id,
-                'is_image' => $item->is_image,
+                'id'            => $item->id,
+                'is_image'      => $item->is_image,
                 'original_name' => $item->original_name,
-                'thumbnail' => $item->thumbnail,
-                'url' => $item->url,
+                'thumbnail'     => $item->thumbnail,
+                'url'           => $item->url,
             ];
         });
     }

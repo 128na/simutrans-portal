@@ -8,7 +8,7 @@
     {{ __('email.loggedin.message_2') }}
 </p>
 <p>
-    {{ __('email.loggedin.ip') }}: {{ $_SERVER['REMOTE_ADDR'] }}<br>
-    {{ __('email.loggedin.referrer') }}: {{ $_SERVER['HTTP_REFERER'] }}<br>
-    {{ __('email.loggedin.user-agent') }}: {{ $_SERVER['HTTP_USER_AGENT'] }}
+    {{ __('email.loggedin.ip') }}: {{ env('REMOTE_ADDR', 'unknown') }}<br>
+    {{ __('email.loggedin.referrer') }}: {{ env('HTTP_REFERER', 'unknown') }}<br>
+    {{ __('email.loggedin.user-agent') }}: {{ env('HTTP_USER_AGENT', 'unknown') }}
 </p>

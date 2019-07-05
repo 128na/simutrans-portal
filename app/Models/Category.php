@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Models;
+
 use App\Models\Article;
-use App\Traits\Slugable;
-use App\Models\UserAddonCount;
 use App\Models\PakAddonCount;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\UserAddonCount;
+use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 class Category extends Model
@@ -49,7 +50,6 @@ class Category extends Model
         UserAddonCount::recount();
         PakAddonCount::recount();
     }
-
 
     /*
     |--------------------------------------------------------------------------

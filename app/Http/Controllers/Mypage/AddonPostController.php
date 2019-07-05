@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Mypage;
 
-use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Attachment;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AddonPostController extends ArticleController
 {
@@ -39,7 +40,7 @@ class AddonPostController extends ArticleController
     {
         return array_merge(parent::getValidateRule($article), [
             'author'      => 'nullable|max:255',
-            'file_id'     => 'required|exists:attachments,id',
+            'file_id'     => 'required|exists:attachments,id,user_id,'.Auth::id(),
             'description' => 'required|string|max:2048',
             'thanks'      => 'nullable|string|max:2048',
             'license'     => 'nullable|string|max:2048',

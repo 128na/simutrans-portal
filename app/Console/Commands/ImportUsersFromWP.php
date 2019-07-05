@@ -2,14 +2,13 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User;
-use App\Models\Profile;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Categories;
+use App\Models\Profile;
 use App\Models\Redirect;
+use App\Models\User;
 use App\Traits\WPImportable;
-
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -65,6 +64,7 @@ class ImportUsersFromWP extends Command
         }
         DB::commit();
     }
+
     private static function createUser($wp_user)
     {
         return User::create([
@@ -76,6 +76,7 @@ class ImportUsersFromWP extends Command
             'role'     => config('role.user'),
         ]);
     }
+
     private static function updateProfile($user, $wp_user, $wp_usermeta)
     {
         $user->profile->setContents('description', self::searchMetaItem($wp_usermeta, 'description'));
@@ -112,7 +113,6 @@ class ImportUsersFromWP extends Command
     {
         return DB::update('UPDATE users SET created_at = ? WHERE id = ?', [$wp_user->user_registered, $id]);
     }
-
 
     private static function createRedirect($user, $wp_user)
     {

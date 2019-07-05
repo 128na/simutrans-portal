@@ -4,16 +4,17 @@ namespace App\Models;
 
 use App\Models\Attachment;
 use App\Models\Category;
+use App\Models\ConversionCount;
+use App\Models\PakAddonCount;
 use App\Models\Tag;
 use App\Models\User;
-use App\Models\ViewCount;
 use App\Models\UserAddonCount;
-use App\Models\PakAddonCount;
-use App\Models\ConversionCount;
-use App\Traits\Slugable;
+use App\Models\ViewCount;
 use App\Traits\JsonFieldable;
-use Illuminate\Database\Eloquent\Model;
+use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Redis;
 
 class Article extends Model
 {
@@ -89,6 +90,7 @@ class Article extends Model
         UserAddonCount::recount();
         PakAddonCount::recount();
         Tag::removeDoesntHaveRelation();
+        Redis::flushAll();
     }
 
     public function getJsonableField()

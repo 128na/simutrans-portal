@@ -1,8 +1,8 @@
 <?php
 namespace App\Listeners;
 
-use App\Models\ConversionCount;
 use App\Events\ArticleConversion;
+use App\Models\ConversionCount;
 
 class AddConversionRecord
 {

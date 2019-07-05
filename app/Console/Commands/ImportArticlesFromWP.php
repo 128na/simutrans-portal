@@ -97,7 +97,7 @@ class ImportArticlesFromWP extends Command
         $post_type = $this->fetchWPTerms($wp_post->ID, 'category')[0]->slug;
         return $user->articles()->create([
             'title'     => $wp_post->post_title,
-            'slug'      => $wp_post->post_name,
+            'slug'      => $wp_post->post_title,
             'post_type' => $post_type,
             'status'    => config('status.publish'),
         ]);

@@ -10,6 +10,7 @@ use App\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Redis;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -40,6 +41,9 @@ class User extends Authenticatable implements MustVerifyEmail
 
         self::created(function($model) {
             $model->syncRelatedData();
+        });
+        self::updated(function($model) {
+            Redis::flushAll();
         });
     }
     private function syncRelatedData()

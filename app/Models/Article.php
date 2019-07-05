@@ -14,6 +14,7 @@ use App\Traits\JsonFieldable;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Redis;
 
 class Article extends Model
 {
@@ -89,6 +90,7 @@ class Article extends Model
         UserAddonCount::recount();
         PakAddonCount::recount();
         Tag::removeDoesntHaveRelation();
+        Redis::flushAll();
     }
 
     public function getJsonableField()

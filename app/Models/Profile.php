@@ -6,6 +6,7 @@ use App\Models\Attachment;
 use App\Models\User;
 use App\Traits\JsonFieldable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Redis;
 
 class Profile extends Model
 {
@@ -21,6 +22,21 @@ class Profile extends Model
     protected $casts = [
         'data' => 'array',
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | 初期化時設定
+    |--------------------------------------------------------------------------
+    */
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::updated(function($model) {
+            Redis::flushAll();
+        });
+    }
+
 
     public function getJsonableField()
     {

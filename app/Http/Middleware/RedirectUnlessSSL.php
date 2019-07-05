@@ -7,7 +7,7 @@ use Closure;
 class RedirectUnlessSSL
 {
     /**
-     * Handle an incoming request.
+     * 本番、ステージング環境でhttpアクセスの場合リダイレクトする
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -15,8 +15,8 @@ class RedirectUnlessSSL
      */
     public function handle($request, Closure $next)
     {
-        if (!$request->secure() && env('HTTPS') === 'on') {
-            return redirect()->secure($request->getRequestUri());
+        if (!$request->secure() && \App::environment('production', 'staging')) {
+            return redirect()->secure($request->fullUri());
         }
 
         return $next($request);

@@ -16,7 +16,7 @@ class RedirectUnlessSSL
     public function handle($request, Closure $next)
     {
         if (!$request->secure() && \App::environment('production', 'staging')) {
-            return redirect()->secure($request->fullUri());
+            return redirect()->secure($request->fullUrl());
         }
 
         return $next($request);

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.front')
 
 @section('title', $title ?? 'Articles')
 @section('meta-description', config('app.meta-description'))

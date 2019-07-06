@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.mypage')
 
 @section('title', __('message.edit-article', ['title' => $article->title]))
 

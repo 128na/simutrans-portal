@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.front')
 
 @section('title', __('message.top'))
 @section('meta-description', config('app.meta-description'))

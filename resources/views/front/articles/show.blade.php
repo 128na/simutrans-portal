@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.front')
 
 @section('title', $article->title)
 @section('meta-description', $article->meta_description)

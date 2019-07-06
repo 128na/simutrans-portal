@@ -96,8 +96,8 @@ class ImportArticlesFromWP extends Command
         // post type
         $post_type = $this->fetchWPTerms($wp_post->ID, 'category')[0]->slug;
         return $user->articles()->create([
-            'title'     => $wp_post->post_title,
-            'slug'      => $wp_post->post_title,
+            'title'     => trim($wp_post->post_title),
+            'slug'      => trim($wp_post->post_title),
             'post_type' => $post_type,
             'status'    => config('status.publish'),
         ]);
@@ -126,7 +126,7 @@ class ImportArticlesFromWP extends Command
     {
         $wp_terms = collect($this->fetchWPTerms($wp_post_id, 'post_tag'));
         $tags = $wp_terms->map(function($wp_term) {
-            return Tag::firstOrCreate(['name' => $wp_term->name]);
+            return Tag::firstOrCreate(['name' => trim($wp_term->name)]);
         });
 
         return $article->tags()->sync($tags->pluck('id'));
@@ -134,9 +134,9 @@ class ImportArticlesFromWP extends Command
 
     private function applyAddonPost($user, $article, $wp_post)
     {
-        $article->setContents('author', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-author'));
-        $article->setContents('description', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-description'));
-        $article->setContents('thanks', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-based'));
+        $article->setContents('author', trim($this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-author')));
+        $article->setContents('description', trim($this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-description')));
+        $article->setContents('thanks', trim($this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-based')));
         $article->setContents('license', null);
 
         // addon file
@@ -154,11 +154,11 @@ class ImportArticlesFromWP extends Command
 
     private function applyAddonIntroduction($user, $article, $wp_post)
     {
-        $article->setContents('author', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-author'));
-        $article->setContents('description', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-description'));
-        $article->setContents('thanks', $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-based'));
+        $article->setContents('author', trim($this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-author')));
+        $article->setContents('description', trim($this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-description')));
+        $article->setContents('thanks', trim($this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-based')));
         $article->setContents('license', null);
-        $article->setContents('link', $this->fetchWPPostmetaValueBy($wp_post->ID, 'site-url'));
+        $article->setContents('link', trim($this->fetchWPPostmetaValueBy($wp_post->ID, 'site-url')));
         $article->setContents('agreement',
         $this->fetchWPPostmetaValueBy($wp_post->ID, 'addon-introduction-agreement') ? true : false);
         return $article;

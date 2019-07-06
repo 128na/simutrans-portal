@@ -354,6 +354,10 @@ class Article extends Model
             ?? collect($this->getContents('sections', []))->first(function($s) { return $s['type'] === 'text';})['text']
             ?? $this->title;
     }
+    public function getUrlDecodedSlugAttribute()
+    {
+        return urldecode($this->slug);
+    }
 
     /*
     |--------------------------------------------------------------------------

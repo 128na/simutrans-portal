@@ -15,7 +15,7 @@
 
 <div class="form-group">
     <label for="slug"><span class="badge badge-secondary mr-1">{{ __('message.optional') }}</span>{{ __('article.slug') }}</label>
-    <input type="text" class="form-control" id="slug" name="slug" placeholder="Slug" value="{{ old('slug', $article->slug ?? '') }}">
+    <input type="text" class="form-control" id="slug" name="slug" placeholder="Slug" value="{{ old('slug', $article->url_decoded_slug ?? '') }}">
     <small class="form-text text-muted">{{ __('article.slug-memo') }}</small>
 </div>
 

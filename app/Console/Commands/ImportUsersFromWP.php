@@ -68,8 +68,8 @@ class ImportUsersFromWP extends Command
     private static function createUser($wp_user)
     {
         return User::create([
-            'name'     => $wp_user->display_name,
-            'email'    => $wp_user->user_email,
+            'name'     => trim($wp_user->display_name),
+            'email'    => trim($wp_user->user_email),
             'password' => \App::environment(['local', 'development'])
                 ? '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'
                 : Hash::make((string) Str::uuid()),
@@ -79,9 +79,9 @@ class ImportUsersFromWP extends Command
 
     private static function updateProfile($user, $wp_user, $wp_usermeta)
     {
-        $user->profile->setContents('description', self::searchMetaItem($wp_usermeta, 'description'));
-        $user->profile->setContents('twitter', self::searchMetaItem($wp_usermeta, 'twitter'));
-        $user->profile->setContents('website',  $wp_user->user_url ?? null);
+        $user->profile->setContents('description', trim(self::searchMetaItem($wp_usermeta, 'description')));
+        $user->profile->setContents('twitter', trim(self::searchMetaItem($wp_usermeta, 'twitter')));
+        $user->profile->setContents('website',  trim($wp_user->user_url) ?? null);
 
         // add avatar
         if($serialized = self::searchMetaItem($wp_usermeta, 'simple_local_avatar')) {

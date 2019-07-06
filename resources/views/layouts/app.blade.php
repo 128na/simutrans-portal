@@ -167,8 +167,10 @@
 
         @yield('content')
     </main>
-    <footer class="navbar-dark bg-primary px-2">
-        <small><a class="text-white"href="{{ route('index') }}">created by 128na</a></small>
+    <footer class="navbar-dark bg-primary">
+        <div class="container">
+            <small><a class="text-white"href="{{ route('index') }}">created by 128na</a></small>
+        </div>
     </footer>
 </body>
 </html>

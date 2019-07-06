@@ -28,6 +28,18 @@ class ArticleController extends Controller
     }
 
     /**
+     * アドオンランキング一覧
+     */
+    public function ranking()
+    {
+        $articles = Article::addon()->ranking()->active()->withForList()->paginate(20);
+
+        $title = __('message.ranking');
+        $breadcrumb = Breadcrumb::forList('ranking');
+        return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
+    }
+
+    /**
      * 一般記事一覧
      */
     public function pages()

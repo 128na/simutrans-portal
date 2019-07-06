@@ -16,7 +16,7 @@
                     @break
                 @case('image')
                     <div class="text-center">
-                        <img class="img-thumbnail" src="{{ $article->getImageUrl($section['id']) }}">
+                        <img class="img-fluid" src="{{ $article->getImageUrl($section['id']) }}">
                     </div>
                     @break
             @endswitch

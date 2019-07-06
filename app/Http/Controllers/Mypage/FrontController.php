@@ -12,7 +12,7 @@ class FrontController extends Controller
     public function index()
     {
         $user = Auth::user()->load('profile');
-        $articles = Article::where('user_id', $user->id)
+        $articles = $user->articles()
             ->with('categories', 'todaysViewCount', 'todaysConversionCount')->get();
 
         return view('mypage.index', compact('user', 'articles'));

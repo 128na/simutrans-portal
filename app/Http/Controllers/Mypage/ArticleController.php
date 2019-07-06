@@ -127,6 +127,48 @@ class ArticleController extends Controller
         return redirect()->route('mypage.index');
     }
 
+    public function analytics()
+    {
+        $articles = Auth::user()->articles()
+            ->with('viewCounts', 'conversionCounts')->get();
+        $articles = self::toSlim($articles);
+
+        return view('mypage.analytics', compact('articles'));
+    }
+
+    /**
+     * チャート用に加工
+     */
+    private static function toSlim($articles)
+    {
+        return $articles->map(function($article) {
+            return [
+                'id'    => $article->id,
+                'title' => $article->title,
+                'url'   => route('articles.show', $article->slug),
+                'updated_at' => $article->updated_at,
+                'created_at' => $article->created_at,
+                'checked' => true,
+                'conversion_counts' => $article->conversionCounts->map(function($count) {
+                    return [
+                        'id'     => $count->id,
+                        'type'   => $count->type,
+                        'period' => $count->period,
+                        'count'  => $count->count,
+                    ];
+                }),
+                'view_counts' => $article->viewCounts->map(function($count) {
+                    return [
+                        'id'     => $count->id,
+                        'type'   => $count->type,
+                        'period' => $count->period,
+                        'count'  => $count->count,
+                    ];
+                }),
+            ];
+        });
+    }
+
     /**
      * プレビュー
      */

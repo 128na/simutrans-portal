@@ -61,6 +61,7 @@ Route::prefix('admin')->group(function () {
     Route::name('admin.')->group(function () {
         Route::middleware(['auth', 'admin', 'verified'])->group(function () {
             Route::get('/', 'Admin\FrontController@index')->name('index');
+            Route::post('/flush-cache', 'Admin\FrontController@flushCache')->name('flush.cache');
 
             Route::get('/users', 'Admin\UserController@index')->name('users.index');
             // Route::get('/users/create', 'Admin\UserController@create')->name('users.create');

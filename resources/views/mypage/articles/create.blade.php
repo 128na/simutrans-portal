@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.mypage')
 
 @section('title', __('message.create-article-of', ['type' => __('category.post.'.$post_type)]))
 

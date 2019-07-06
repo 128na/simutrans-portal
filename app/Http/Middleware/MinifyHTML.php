@@ -20,6 +20,11 @@ class MinifyHTML
     {
         $res = $next($request);
 
+        // htmlレスポンス以外はそのまま返す
+        if(stripos($res->headers->get('Content-Type'), 'text/html') === false) {
+            return $res;
+        }
+
         $content = $res->getContent();
         $content = preg_replace('/(\S)\s+(\S)/', '$1 $2', $content);
         $res->setContent($content);

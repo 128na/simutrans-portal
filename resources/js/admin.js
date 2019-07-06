@@ -1,7 +1,5 @@
 /**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
+ * マイページ機能用
  */
 
 require('./files/bootstrap');
@@ -31,14 +29,7 @@ require('./files/bootstrap');
 //     el: '#app',
 // });
 
-require('./files/conversion');
 require('./files/form');
 require('./files/multi_dropdown');
 require('./files/uploader');
 require('./files/preview');
-
-import LazyLoad from "vanilla-lazyload";
-
-var lazyLoadInstance = new LazyLoad({
-    elements_selector: ".lazy"
-});

@@ -6,7 +6,7 @@ const buildParam = function ($form) {
     const elements = $form.find('input, textarea, select').toArray();
 
     elements.forEach(el => {
-        if (el.type === 'hidden' || el.type === 'text' || el.type === 'textarea') {
+        if (el.type === 'hidden' || el.type === 'text' || el.type === 'url' || el.type === 'textarea') {
             return params.append(el.name, el.value)
         }
         if (el.type === 'checkbox') {

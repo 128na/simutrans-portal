@@ -11,7 +11,7 @@
         <p id="file_preview">
             {{ $article->file->original_name ?? __('message.not-selected') }}
         </p>
-        <input type="hidden" id="file_id" name="file_id" value="{{ old('file_id', $article->file_id ?? '') }}">
+        <input type="hidden" id="file_id" name="file_id" value="{{ old('file_id', isset($article) ? $article->getContents('file') : '') }}">
     </div>
     <div>
         <a href="#" class="btn btn-secondary js-open-uploader"

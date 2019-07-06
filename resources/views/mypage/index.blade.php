@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.mypage')
 
 @section('title', __('message.mypage'))
 
@@ -43,7 +43,7 @@
                                 <div class="btn-group">
                                     <a class="btn btn-sm btn-outline-primary" href="{{ route('mypage.articles.edit', $article) }}">{{ __('message.edit') }}</a>
                                     @if ($article->is_publish)
-                                        <a class="btn btn-sm btn-outline-secondary" href="{{ route('articles.show', $article) }}" target="_blank" rel="noopener">{{ __('message.show') }}</a>
+                                        <a class="btn btn-sm btn-outline-secondary" href="{{ route('articles.show', $article->slug) }}" target="_blank">{{ __('message.show') }}</a>
                                     @endif
                                 </div>
                             </td>

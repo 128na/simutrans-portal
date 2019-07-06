@@ -46,6 +46,12 @@ class RedisCache
         $cache = unserialize(Redis::get($key));
         if(empty($cache)) {
             $data = $callback();
+
+            // エラーレスポンスはキャッシュしない
+            if($data->getStatusCode() !== 200) {
+                return $data;
+            }
+
             Redis::set($key, serialize($data->getContent()));
             if($expire_sec) {
                 Redis::expire($key, $expire_sec);

@@ -19,6 +19,7 @@ Auth::routes(['verify' => true]);
 Route::middleware(['cache.redis'])->group(function () {
     Route::get('/', 'FrontController@index')->name('index');
     Route::get('/addons', 'ArticleController@addons')->name('addons.index');
+    Route::get('/ranking', 'ArticleController@ranking')->name('addons.ranking');
     Route::get('/pages', 'ArticleController@pages')->name('pages.index');
     Route::get('/announces', 'ArticleController@announces')->name('announces.index');
     Route::get('/category/pak/{size}/{slug}', 'ArticleController@categoryPakAddon')->name('category.pak.addon');

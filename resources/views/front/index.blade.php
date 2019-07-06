@@ -18,11 +18,12 @@
     </section>
 
     <section class="mb-4 list">
-        <h2 class="border-bottom">{{ __('message.random') }}</h2>
-        @unless (empty($articles['random']))
-            @foreach ($articles['random'] as $article)
+        <h2 class="border-bottom">{{ __('message.ranking') }}</h2>
+        @unless (empty($articles['ranking']))
+            @foreach ($articles['ranking'] as $article)
                 @include('front.articles.parts.list-item', ['article' => $article])
             @endforeach
+            <h6><a href="{{ route('addons.ranking') }}">{{ __('message.show-ranking-addons') }}</a></h6>
         @else
             <p>{{ __('message.no-article')}}</p>
         @endunless

@@ -11,7 +11,7 @@
     @endsection
 @endif
 @section('content')
-    {!! e($articles->links()) !!}
+    {!! e($articles->onEachSide(1)->links('vendor.pagination.default')) !!}
 
     <div class="list">
         @forelse ($articles as $article)
@@ -21,5 +21,5 @@
         @endforelse
     </div>
 
-    {!! e($articles->links()) !!}
+    {!! e($articles->onEachSide(1)->links('vendor.pagination.default')) !!}
 @endsection

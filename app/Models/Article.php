@@ -220,7 +220,40 @@ class Article extends Model
                 $query->where('type', 'page')->where('slug', 'announce');
             });
     }
+    /**
+     * ランキング
+     * 閲覧数が当日、当月、当年、合計の多⇒少順
+     */
+    public function scopeRanking($query)
+    {
+        $datetime = now();
 
+        $query->select('articles.*'); // view_countのフィールドがあるとリレーションデータが取れない（多分idが複数あるから？）
+        $query->leftJoin('view_counts as d', function($join) use ($datetime) {
+            $join->on('d.article_id', 'articles.id')
+                ->where('d.type', 1)
+                ->where('d.period', $datetime->format('Ymd'));
+        });
+        $query->leftJoin('view_counts as m', function($join) use ($datetime) {
+            $join->on('m.article_id', 'articles.id')
+                ->where('m.type', 1)
+                ->where('m.period', $datetime->format('Ym'));
+        });
+        $query->leftJoin('view_counts as y', function($join) use ($datetime) {
+            $join->on('y.article_id', 'articles.id')
+                ->where('y.type', 1)
+                ->where('y.period', $datetime->format('Y'));
+        });
+        $query->leftJoin('view_counts as t', function($join) {
+            $join->on('t.article_id', 'articles.id')
+                ->where('t.type', 1)
+                ->where('t.period', 'total');
+        });
+        $query->orderBy('d.count', 'desc');
+        $query->orderBy('m.count', 'desc');
+        $query->orderBy('y.count', 'desc');
+        $query->orderBy('t.count', 'desc');
+    }
     /*
     |--------------------------------------------------------------------------
     | アクセサ

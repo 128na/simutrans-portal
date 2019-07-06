@@ -29,7 +29,7 @@ class RedisCache
 
         return self::redisOrCallback($path, function() use($request, $next) {
             return $next($request);
-        }, null);
+        });
     }
 
     /**
@@ -41,7 +41,7 @@ class RedisCache
      * @param int $expire_sec 保持期間
      * @return mixed
      */
-    protected static function redisOrCallback($key, $callback, $expire_sec = 864000)
+    protected static function redisOrCallback($key, $callback, $expire_sec = 86400)
     {
         $cache = unserialize(Redis::get($key));
         if(empty($cache)) {

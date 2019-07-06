@@ -11,7 +11,7 @@ node(アセットコンパイルを行う場合に必要)
 ## setup
 
 1. 依存ファイルのインストール `composer install`
-2. `.env.example`をコピーし`.env.`ファイルを作成、環境に合わせて設定する。
+2. `.env.example`をコピーし`.env`ファイルを作成、環境に合わせて設定する。
 3. データベースを作成し、テーブル・初期データを登録する `php artisan migrate --seed`
 
 ## setup (アセット)

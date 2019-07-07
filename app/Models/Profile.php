@@ -6,7 +6,7 @@ use App\Models\Attachment;
 use App\Models\User;
 use App\Traits\JsonFieldable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Cache;
 
 class Profile extends Model
 {
@@ -33,7 +33,7 @@ class Profile extends Model
         parent::boot();
 
         self::updated(function($model) {
-            Redis::flushAll();
+            Cache::flush();
         });
     }
 

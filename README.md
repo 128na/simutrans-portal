@@ -3,10 +3,15 @@
 ## 環境
 
 一般的なLAMP環境やdockerコンテナなどをご用意ください。
-PHP:7.1以上
-mysql:5.7
-redis
-node(アセットコンパイルを行う場合に必要)
+### Required
+
+- PHP:7.1~
+- mysql:5.7
+
+### Optional
+
+- redis キャッシュ用。あると速い
+- node アセットコンパイルを行う場合に必要
 
 ## setup
 

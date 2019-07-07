@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Cache;
 
 class FrontController extends Controller
 {
@@ -15,7 +15,7 @@ class FrontController extends Controller
 
     public function flushCache()
     {
-        Redis::flushAll();
+        Cache::flush();
         \Artisan::call('config:clear');
         \Artisan::call('route:clear');
 

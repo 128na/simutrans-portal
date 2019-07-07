@@ -69,7 +69,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'cache.redis' => \App\Http\Middleware\RedisCache::class,
+        'cache.response' => \App\Http\Middleware\CacheResponse::class,
     ];
 
     /**
@@ -88,7 +88,7 @@ class Kernel extends HttpKernel
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
         \App\Http\Middleware\AdminCheck::class,
-        \App\Http\Middleware\RedisCache::class,
+        \App\Http\Middleware\CacheResponse::class,
         \App\Http\Middleware\MinifyHTML::class,
     ];
 }

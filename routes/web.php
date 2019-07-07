@@ -16,7 +16,7 @@ Route::get('sitemap', 'SitemapController@index');
 Auth::routes(['verify' => true]);
 
 // 非ログイン系 reidsキャッシュ有効
-Route::middleware(['cache.redis'])->group(function () {
+Route::middleware(['cache.response'])->group(function () {
     Route::get('/', 'FrontController@index')->name('index');
     Route::get('/addons', 'ArticleController@addons')->name('addons.index');
     Route::get('/ranking', 'ArticleController@ranking')->name('addons.ranking');

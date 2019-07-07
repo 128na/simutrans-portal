@@ -1,16 +1,18 @@
 <template>
   <div class="analytics">
-    <line-chart :chart-data="render_data"></line-chart>
+    <div class="chart-area">
+      <line-chart :datasets="datasets" :labels="labels"></line-chart>
+    </div>
 
     <div>
-      <span class="clickable" @click="setType('yearly')">
-        <input type="radio" :checked="isType('yearly')" />年間
+      <span class="clickable" @click="setType(3)">
+        <input type="radio" :checked="isType(3)" />年間
       </span>
-      <span class="clickable" @click="setType('monthly')">
-        <input type="radio" :checked="isType('monthly')" />月間
+      <span class="clickable" @click="setType(2)">
+        <input type="radio" :checked="isType(2)" />月間
       </span>
-      <span class="clickable" @click="setType('daily')">
-        <input type="radio" :checked="isType('daily')" />日間
+      <span class="clickable" @click="setType(1)">
+        <input type="radio" :checked="isType(1)" />日間
       </span>
     </div>
 
@@ -23,8 +25,8 @@
       </span>
     </div>
     <div>
-      <input type="date" v-model="begin" />～
-      <input type="date" v-model="end" />
+      <input type="text" v-model="begin" />～
+      <input type="text" v-model="end" />
     </div>
 
     <table>
@@ -44,7 +46,8 @@
 </template>
 
 <script>
-import LineChart from "./LineChart.js";
+import LineChart from "./LineChart";
+import { DateTime } from "luxon";
 
 export default {
   components: {
@@ -53,13 +56,17 @@ export default {
   data() {
     return {
       articles: window.articles,
-      type: "daily",
+      type: 1,
       mode: "line",
       begin: null,
-      end: null
+      end: DateTime.local().toFormat("yyyyLLdd")
     };
   },
-  mounted() {},
+  mounted() {
+    const oldest = window.articles.slice(-1).pop();
+    console.log(oldest);
+    this.begin = oldest.created_at;
+  },
   methods: {
     isType(type) {
       return this.type === type;
@@ -81,20 +88,36 @@ export default {
   },
   computed: {
     labels() {
-      return [];
+      return [
+        ...new Set(
+          this.articles
+            .filter(a => a.checked)
+            .reduce(
+              (arr, a) =>
+                arr.concat(
+                  a.view_counts
+                    .filter(c => c.type === this.type)
+                    .map(c => c.period)
+                ),
+              []
+            )
+        )
+      ];
     },
     datasets() {
-      return [];
-    },
-    render_data() {
-      return {
-        labels: this.labels,
-        datasets: this.datasets
-      };
+      return this.articles
+        .filter(a => a.checked)
+        .map(a => {
+          return {
+            type: "line",
+            label: a.title,
+            fill: false,
+            data: a.view_counts
+              .filter(c => c.type === this.type)
+              .map(c => c.count)
+          };
+        });
     }
   }
 };
 </script>
-
-<style>
-</style>

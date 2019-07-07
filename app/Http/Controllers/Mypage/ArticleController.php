@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Validator;
+use Carbon\CarbonPeriod;
 
 /**
  * 記事CRUD共通コントローラー
@@ -133,7 +134,9 @@ class ArticleController extends Controller
             ->with('viewCounts', 'conversionCounts')->get();
         $articles = self::toSlim($articles);
 
-        return view('mypage.analytics', compact('articles'));
+        $labels = self::createLabels();
+
+        return view('mypage.analytics', compact('articles', 'labels'));
     }
 
     /**
@@ -146,27 +149,42 @@ class ArticleController extends Controller
                 'id'    => $article->id,
                 'title' => $article->title,
                 'url'   => route('articles.show', $article->slug),
-                'updated_at' => $article->updated_at,
-                'created_at' => $article->created_at,
-                'checked' => true,
-                'conversion_counts' => $article->conversionCounts->map(function($count) {
+                'updated_at' => $article->updated_at->format('Ymd'),
+                'created_at' => $article->created_at->format('Ymd'),
+                'checked' => false,
+                'conversion_counts' => $article->conversionCounts->map(function($c) {
                     return [
-                        'id'     => $count->id,
-                        'type'   => $count->type,
-                        'period' => $count->period,
-                        'count'  => $count->count,
+                        'id'     => $c->id,
+                        'type'   => $c->type,
+                        'period' => $c->period,
+                        'count'  => $c->count,
                     ];
                 }),
-                'view_counts' => $article->viewCounts->map(function($count) {
+                'view_counts' => $article->viewCounts->map(function($c) {
                     return [
-                        'id'     => $count->id,
-                        'type'   => $count->type,
-                        'period' => $count->period,
-                        'count'  => $count->count,
+                        'id'     => $c->id,
+                        'type'   => $c->type,
+                        'period' => $c->period,
+                        'count'  => $c->count,
                     ];
                 }),
             ];
         });
+    }
+
+    private static function createLabels()
+    {
+        return [
+            'daily' => self::createLabel('1day', 'Ymd'),
+            'monthly' => self::createLabel('1month', 'Ym'),
+            'yealy' => self::createLabel('1year', 'Y'),
+        ];
+    }
+    private static function createLabel($interval, $format)
+    {
+        $items = (new CarbonPeriod(config('app.oldest_published_at'), '1day', now()->format('Y-m-d')))->toArray();
+
+        return collect($items)->map(function($item) use ($format) { return $item->format($format); });
     }
 
     /**

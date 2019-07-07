@@ -8,6 +8,6 @@
         console.log(window.articles);
     </script>
     <div class="mypage">
-        <div id="app"></div>
+        <div id="app-analytics"></div>
     </div>
 @endsection

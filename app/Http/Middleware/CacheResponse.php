@@ -4,12 +4,12 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Cache;
 
 /**
- * 生成ページ丸ごとredisにキャッシュする
+ * 生成ページ丸ごとキャッシュする
  */
-class RedisCache
+class CacheResponse
 {
     /**
      * Handle an incoming request.
@@ -27,23 +27,22 @@ class RedisCache
 
         $path = str_replace(config('app.url'), '', $request->fullUrl());
 
-        return self::redisOrCallback($path, function() use($request, $next) {
+        return self::cacheOrCallback($path, function() use($request, $next) {
             return $next($request);
         });
     }
 
     /**
-     * 指定キーでreidsからデータ取得を行う。
-     * 値が無ければコールバックを実行し、結果をreisにセットして結果を返す
+     * 指定キーでキャッシュからデータ取得を行う。
+     * 値が無ければコールバックを実行し、結果をキャッシュにセットして結果を返す
      * ビューインスタンス丸ごとはクロージャが含まれるためキャッシュできないのでcontentのみキャッシュ
      * @param string $key
      * @param closure $callback
-     * @param int $expire_sec 保持期間
      * @return mixed
      */
-    protected static function redisOrCallback($key, $callback, $expire_sec = 86400)
+    protected static function cacheOrCallback($key, $callback)
     {
-        $cache = unserialize(Redis::get($key));
+        $cache = Cache::get($key);
         if(empty($cache)) {
             $data = $callback();
 
@@ -52,10 +51,7 @@ class RedisCache
                 return $data;
             }
 
-            Redis::set($key, serialize($data->getContent()));
-            if($expire_sec) {
-                Redis::expire($key, $expire_sec);
-            }
+            Cache::set($key, $data->getContent());
             return $data;
         }
         return response($cache);

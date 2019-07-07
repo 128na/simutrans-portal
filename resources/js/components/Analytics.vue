@@ -48,7 +48,7 @@
 <script>
 import LineChart from "./LineChart";
 import { DateTime } from "luxon";
-
+import Interval from "luxon/src/interval.js";
 export default {
   components: {
     LineChart
@@ -87,22 +87,44 @@ export default {
     }
   },
   computed: {
+    intervalType() {
+      switch (this.type) {
+        case 1:
+          return { days: 1 };
+        case 2:
+          return { months: 1 };
+        case 3:
+          return { years: 1 };
+      }
+    },
+    labelType() {
+      switch (this.type) {
+        case 1:
+          return "yyyy/LL/dd";
+        case 2:
+          return "yyyy/LL";
+        case 3:
+          return "yyyy";
+      }
+    },
+    periodType() {
+      switch (this.type) {
+        case 1:
+          return "yyyyLLdd";
+        case 2:
+          return "yyyyLL";
+        case 3:
+          return "yyyy";
+      }
+    },
+    interval() {
+      return Interval.fromDateTimes(
+        DateTime.fromISO(this.begin),
+        DateTime.fromISO(this.end)
+      ).splitBy(this.intervalType);
+    },
     labels() {
-      return [
-        ...new Set(
-          this.articles
-            .filter(a => a.checked)
-            .reduce(
-              (arr, a) =>
-                arr.concat(
-                  a.view_counts
-                    .filter(c => c.type === this.type)
-                    .map(c => c.period)
-                ),
-              []
-            )
-        )
-      ];
+      return this.interval.map(d => d.start.toFormat(this.labelType));
     },
     datasets() {
       return this.articles
@@ -112,9 +134,9 @@ export default {
             type: "line",
             label: a.title,
             fill: false,
-            data: a.view_counts
-              .filter(c => c.type === this.type)
-              .map(c => c.count)
+            data: this.interval.map(
+              d => a.view_counts[d.start.toFormat(this.periodType)] || null
+            )
           };
         });
     }

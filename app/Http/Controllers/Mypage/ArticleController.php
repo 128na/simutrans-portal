@@ -134,9 +134,7 @@ class ArticleController extends Controller
             ->with('viewCounts', 'conversionCounts')->get();
         $articles = self::toSlim($articles);
 
-        $labels = self::createLabels();
-
-        return view('mypage.analytics', compact('articles', 'labels'));
+        return view('mypage.analytics', compact('articles'));
     }
 
     /**
@@ -152,39 +150,16 @@ class ArticleController extends Controller
                 'updated_at' => $article->updated_at->format('Ymd'),
                 'created_at' => $article->created_at->format('Ymd'),
                 'checked' => false,
-                'conversion_counts' => $article->conversionCounts->map(function($c) {
-                    return [
-                        'id'     => $c->id,
-                        'type'   => $c->type,
-                        'period' => $c->period,
-                        'count'  => $c->count,
-                    ];
-                }),
-                'view_counts' => $article->viewCounts->map(function($c) {
-                    return [
-                        'id'     => $c->id,
-                        'type'   => $c->type,
-                        'period' => $c->period,
-                        'count'  => $c->count,
-                    ];
-                }),
+                'conversion_counts' => $article->conversionCounts->reduce(function($acc, $c) {
+                    $acc[$c->period] = $c->count;
+                    return $acc;
+                }, []),
+                'view_counts' => $article->viewCounts->reduce(function($acc, $c) {
+                    $acc[$c->period] = $c->count;
+                    return $acc;
+                }, []),
             ];
         });
-    }
-
-    private static function createLabels()
-    {
-        return [
-            'daily' => self::createLabel('1day', 'Ymd'),
-            'monthly' => self::createLabel('1month', 'Ym'),
-            'yealy' => self::createLabel('1year', 'Y'),
-        ];
-    }
-    private static function createLabel($interval, $format)
-    {
-        $items = (new CarbonPeriod(config('app.oldest_published_at'), '1day', now()->format('Y-m-d')))->toArray();
-
-        return collect($items)->map(function($item) use ($format) { return $item->format($format); });
     }
 
     /**

@@ -38,9 +38,10 @@ class CacheResponse
      * ビューインスタンス丸ごとはクロージャが含まれるためキャッシュできないのでcontentのみキャッシュ
      * @param string $key
      * @param closure $callback
+     * @param int $expire_sec
      * @return mixed
      */
-    protected static function cacheOrCallback($key, $callback)
+    protected static function cacheOrCallback($key, $callback, $expire_sec = 86400)
     {
         $cache = Cache::get($key);
         if(empty($cache)) {
@@ -51,7 +52,7 @@ class CacheResponse
                 return $data;
             }
 
-            Cache::set($key, $data->getContent());
+            Cache::put($key, $data->getContent(), $expire_sec);
             return $data;
         }
         return response($cache);

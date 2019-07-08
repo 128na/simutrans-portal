@@ -1,47 +1,62 @@
 <template>
   <div class="analytics">
-    <div class="chart-area">
+    <section class="chart-area">
       <line-chart :datasets="datasets" :labels="labels"></line-chart>
-    </div>
+    </section>
 
-    <div>
-      <span class="clickable" @click="setType(3)">
-        <input type="radio" :checked="isType(3)" />年間
-      </span>
-      <span class="clickable" @click="setType(2)">
-        <input type="radio" :checked="isType(2)" />月間
-      </span>
-      <span class="clickable" @click="setType(1)">
-        <input type="radio" :checked="isType(1)" />日間
-      </span>
-    </div>
+    <section>
+      <b-form-group label="区分">
+        <b-form-radio-group v-model="type" :options="OPTION_TYPES"></b-form-radio-group>
+      </b-form-group>
+    </section>
 
-    <div>
-      <span class="clickable" @click="setMode('line')">
-        <input type="radio" :checked="isMode('line')" />推移
-      </span>
-      <span class="clickable" @click="setMode('accumulation')">
-        <input type="radio" :checked="isMode('accumulation')" />積算
-      </span>
-    </div>
-    <div>
-      <input type="text" v-model="begin" />～
-      <input type="text" v-model="end" />
-    </div>
+    <section>
+      <b-form-group label="タイプ">
+        <b-form-radio-group v-model="mode" :options="OPTION_MODES"></b-form-radio-group>
+      </b-form-group>
+    </section>
 
-    <table>
-      <thead>
-        <th>Title</th>
-      </thead>
-      <tbody>
-        <tr v-for="article in articles" :key="article.id">
-          <td @click="toggleChecked(article.id)" class="clickable">
-            <input type="checkbox" :checked="article.checked" />
-            {{ article.title }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <section>
+      <div class="pb-1">期間</div>
+      <b-form inline>
+        <b-form-input v-model="start" type="text"></b-form-input>～
+        <b-form-input v-model="end" type="text"></b-form-input>
+      </b-form>
+    </section>
+
+    <section>
+      <b-form-group label="カウント">
+        <b-form-checkbox-group v-model="render_types" :options="OPTION_RENDER_TYPES"></b-form-checkbox-group>
+      </b-form-group>
+    </section>
+
+    <section>
+      <h5>記事</h5>
+      <table class="table table-bordered">
+        <thead>
+          <tr class="clickable" @click="toggleAllChecked" :class="{ checked: toggle_all }">
+            <th>
+              <b-form-checkbox :checked="toggle_all"></b-form-checkbox>
+            </th>
+            <th>全て</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="article in articles"
+            :key="article.id"
+            @click="toggleChecked(article.id)"
+            class="clickable"
+            :class="{ checked: article.checked }"
+          >
+            <td>
+              <b-form-checkbox :checked="article.checked"></b-form-checkbox>
+            </td>
+            <td>{{ article.title }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
   </div>
 </template>
 
@@ -49,97 +64,171 @@
 import LineChart from "./LineChart";
 import { DateTime } from "luxon";
 import Interval from "luxon/src/interval.js";
+import constValues from "../files/const_values.js";
+
 export default {
+  mixins: [constValues],
   components: {
     LineChart
   },
   data() {
     return {
       articles: window.articles,
-      type: 1,
-      mode: "line",
-      begin: null,
-      end: DateTime.local().toFormat("yyyyLLdd")
+      type: null, // 集計区分 日間、月間、年間
+      mode: null, // 集計方法 推移、積算
+      start: null, // 開始日
+      end: null, // 終了日
+      toggle_all: false, //記事チェック全切替用チェック状態
+      render_types: []
     };
   },
-  mounted() {
-    const oldest = window.articles.slice(-1).pop();
-    console.log(oldest);
-    this.begin = oldest.created_at;
+  created() {
+    this.type = this.TYPE_MONTHLY;
+    this.mode = this.MODE_LINE;
+
+    this.start = DateTime.local()
+      .minus({ years: 1 })
+      .toFormat("yyyyLLdd");
+    this.end = DateTime.local().toFormat("yyyyLLdd");
+
+    this.render_types = [this.RENDER_TYPE_VIEW];
   },
   methods: {
-    isType(type) {
-      return this.type === type;
-    },
-    setType(type) {
-      this.type = type;
-    },
-    isMode(mode) {
-      return this.mode === mode;
-    },
-    setMode(mode) {
-      this.mode = mode;
-    },
     toggleChecked(id) {
       this.articles = this.articles.map(a =>
         a.id !== id ? a : Object.assign(a, { checked: !a.checked })
       );
+    },
+    toggleAllChecked() {
+      this.toggle_all = !this.toggle_all;
+      this.articles = this.articles.map(a =>
+        Object.assign(a, { checked: this.toggle_all })
+      );
+    },
+    getColor(article, render_type, alpha = 1) {
+      if (render_type === this.RENDER_TYPE_VIEW) {
+        return `hsla(${article.id * 53}, 48%, 47%, ${alpha})`;
+      }
+      if (render_type === this.RENDER_TYPE_CONVERSION) {
+        return `hsla(${article.id * 53}, 48%, 27%, ${alpha})`;
+      }
+    },
+    sumFromOldest(article, render_type) {
+      return Interval.fromDateTimes(
+        DateTime.fromISO(article.created_at),
+        DateTime.fromISO(this.start)
+      )
+        .splitBy(this.interval_type)
+        .reduce((acc, d) => {
+          acc += article[render_type][d.start.toFormat(this.period_type)] || 0;
+          return acc;
+        }, 0);
+    },
+    calcData(article, render_type) {
+      switch (this.mode) {
+        case this.MODE_LINE:
+          return this.interval.map(
+            d => article[render_type][d.start.toFormat(this.period_type)] || 0
+          );
+        case this.MODE_SUM:
+          let total = this.sumFromOldest(article, render_type);
+
+          return this.interval
+            .map(
+              d => article[render_type][d.start.toFormat(this.period_type)] || 0
+            )
+            .map(c => {
+              total += c;
+              return total;
+            });
+      }
+    },
+    renderTypeLabel(render_type) {
+      if (render_type === this.RENDER_TYPE_VIEW) {
+        return "PV";
+      }
+      if (render_type === this.RENDER_TYPE_CONVERSION) {
+        return "CV";
+      }
     }
   },
   computed: {
-    intervalType() {
+    interval_type() {
       switch (this.type) {
-        case 1:
+        case this.TYPE_DAILY:
           return { days: 1 };
-        case 2:
+        case this.TYPE_MONTHLY:
           return { months: 1 };
-        case 3:
+        case this.TYPE_YEARLY:
           return { years: 1 };
       }
     },
-    labelType() {
+    label_type() {
       switch (this.type) {
-        case 1:
-          return "yyyy/LL/dd";
-        case 2:
-          return "yyyy/LL";
-        case 3:
-          return "yyyy";
+        case this.TYPE_DAILY:
+          return this.DISPLAY_FORMAT_DAILY;
+        case this.TYPE_MONTHLY:
+          return this.DISPLAY_FORMAT_MONTHLY;
+        case this.TYPE_YEARLY:
+          return this.DISPLAY_FORMAT_YEARLY;
       }
     },
-    periodType() {
+    period_type() {
       switch (this.type) {
-        case 1:
-          return "yyyyLLdd";
-        case 2:
-          return "yyyyLL";
-        case 3:
-          return "yyyy";
+        case this.TYPE_DAILY:
+          return this.FORMAT_DAILY;
+        case this.TYPE_MONTHLY:
+          return this.FORMAT_MONTHLY;
+        case this.TYPE_YEARLY:
+          return this.FORMAT_YEARLY;
       }
     },
     interval() {
       return Interval.fromDateTimes(
-        DateTime.fromISO(this.begin),
+        DateTime.fromISO(this.start),
         DateTime.fromISO(this.end)
-      ).splitBy(this.intervalType);
+      ).splitBy(this.interval_type);
     },
     labels() {
-      return this.interval.map(d => d.start.toFormat(this.labelType));
+      return this.interval.map(d => d.start.toFormat(this.label_type));
     },
     datasets() {
-      return this.articles
-        .filter(a => a.checked)
-        .map(a => {
-          return {
-            type: "line",
-            label: a.title,
-            fill: false,
-            data: this.interval.map(
-              d => a.view_counts[d.start.toFormat(this.periodType)] || null
-            )
-          };
-        });
+      return this.render_types
+        .map(r => {
+          return this.articles
+            .filter(a => a.checked)
+            .map(a => {
+              return {
+                type: "line",
+                label: `${a.title}(${this.renderTypeLabel(r)})`,
+                backgroundColor: this.getColor(a, r, ".5"),
+                borderColor: this.getColor(a, r),
+                borderWidth: 2,
+                pointRadius: 1,
+                fill: false,
+                data: this.calcData(a, r)
+              };
+            });
+        })
+        .flat();
     }
   }
 };
 </script>
+<style lang="scss" scoped>
+@import "../../sass/variables-mypage";
+
+h5 {
+  margin: 1rem 0;
+}
+section {
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+}
+span {
+  margin-right: 1rem;
+}
+.checked {
+  background-color: rgba($primary, 0.3);
+}
+</style>

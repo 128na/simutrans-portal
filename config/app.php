@@ -9,9 +9,6 @@ return [
         主にpak64, pak128, pak128.japanのアドオンが投稿・紹介されています。',
     'meta-image' => 'default/ogp-image.png',
 
-    //WordPress版最古
-    'oldest_published_at' => '2016-04-03',
-
     /*
     |--------------------------------------------------------------------------
     | Application Name

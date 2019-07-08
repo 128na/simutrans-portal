@@ -23,7 +23,29 @@ export default {
       default: () => {
         return {
           maintainAspectRatio: false,
-          responsive: true
+          responsive: true,
+          scales: {
+            xAxes: [
+              {
+                ticks: {
+                  autoSkip: true
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: "日付"
+                }
+              }
+            ],
+            yAxes: [
+              {
+                type: "linear",
+                ticks: {
+                  autoSkip: true,
+                  min: 0
+                }
+              }
+            ]
+          }
         };
       }
     },

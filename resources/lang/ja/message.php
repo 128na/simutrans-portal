@@ -62,4 +62,5 @@ return [
     'detail' => '記事詳細',
     'no-file' => 'ファイルがありません',
     'confirm' => 'ファイルを削除します。よろしいですか。',
+    'analytics' => 'PV,CV集計',
 ];

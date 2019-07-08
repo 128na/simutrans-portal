@@ -9,7 +9,9 @@
 
         @include('parts.profile-card', ['in_mypage' => true])
 
-        <h2>{{ __('message.my-articles') }}</h2>
+        <p>
+            <a class="btn btn-outline-primary" href="{{route('mypage.articles.analytics') }}">{{ __('message.analytics') }}</a>
+        </p>
         <p class="mb-4">
             @foreach (config('category.post') as $post_type)
                 <a class="btn btn-outline-primary" href="{{ route('mypage.articles.create', $post_type['slug']) }}">
@@ -17,6 +19,7 @@
             @endforeach
         </p>
 
+        <h2>{{ __('message.my-articles') }}</h2>
         @if ($articles->isEmpty())
         <p>{{ __('message.no-article') }}</p>
         @else

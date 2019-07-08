@@ -51,6 +51,8 @@ Route::prefix('mypage')->group(function () {
                 Route::post('/articles/edit/addon-post/{article}/{preview?}', 'Mypage\AddonPostController@update')->name('articles.update.addon-post');
                 Route::post('/articles/edit/addon-introduction/{article}/{preview?}', 'Mypage\AddonIntroductionController@update')->name('articles.update.addon-introduction');
                 Route::post('/articles/edit/page/{article}/{preview?}', 'Mypage\PageController@update')->name('articles.update.page');
+
+                Route::get('/articles/analytics', 'Mypage\ArticleController@analytics')->name('articles.analytics');
             });
         });
     });

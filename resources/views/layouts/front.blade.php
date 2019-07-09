@@ -6,14 +6,7 @@
 
     <title>{{ isset($preview) ? __('message.preview-mode') : ''}}@yield('title') - {{ config('app.name') }}</title>
 
-    {{-- Google Tag Manager --}}
-    @if (\App::environment('production'))
-        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-MLK48JC');</script>
-    @endif
+    @includeWhen(\App::environment('production'), 'parts._ga')
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="api-entrypoint" content="{{ config('app.url') }}">
@@ -40,11 +33,7 @@
     <script src="{{ asset(mix('js/front.js')) }}" defer></script>
 </head>
 <body>
-    {{-- Google Tag Manager --}}
-    @if (\App::environment('production'))
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MLK48JC"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    @endif
+    @includeWhen(\App::environment('production'), 'parts._ga-noscript')
 
     @include('parts.menu-header')
 
@@ -63,9 +52,7 @@
             <div class="alert alert-warning">{{ __('message.preview-text') }}</div>
         @endif
 
-        @unless (empty($breadcrumb))
-            @include('parts.breadcrumb')
-        @endunless
+        @includeWhen(!empty($breadcrumb), 'parts.breadcrumb')
 
         @yield('before_title')
 

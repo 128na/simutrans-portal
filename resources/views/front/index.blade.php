@@ -6,6 +6,18 @@
 
 @section('content')
     <section class="mb-4 list">
+        <h2 class="border-bottom">{{ __('message.announces') }}</h2>
+        @unless (empty($articles['pages']))
+            @foreach ($articles['announces'] as $article)
+                @include('front.articles.parts.list-item', ['article' => $article])
+            @endforeach
+            <h6><a href="{{ route('announces.index') }}">{{ __('message.show-all-announces') }}</a></h6>
+        @else
+            <p>{{ __('message.no-article')}}</p>
+        @endunless
+    </section>
+
+    <section class="mb-4 list">
         <h2 class="border-bottom">{{ __('message.latest') }}</h2>
         @unless (empty($articles['latest']))
             @foreach ($articles['latest'] as $article)
@@ -41,15 +53,4 @@
         @endunless
     </section>
 
-    <section class="mb-4 list">
-        <h2 class="border-bottom">{{ __('message.announces') }}</h2>
-        @unless (empty($articles['pages']))
-            @foreach ($articles['announces'] as $article)
-                @include('front.articles.parts.list-item', ['article' => $article])
-            @endforeach
-            <h6><a href="{{ route('announces.index') }}">{{ __('message.show-all-announces') }}</a></h6>
-        @else
-            <p>{{ __('message.no-article')}}</p>
-        @endunless
-    </section>
 @endsection

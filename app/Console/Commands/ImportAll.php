@@ -54,5 +54,9 @@ class ImportAll extends Command
         $this->info('importing all articles');
         $this->call('import:articles');
         $this->info('imported all articles');
+
+        $this->info('importing all ga');
+        $this->call('import:ga');
+        $this->info('imported all ga');
     }
 }

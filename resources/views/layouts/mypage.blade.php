@@ -6,6 +6,8 @@
 
     <title>@yield('title') - {{ config('app.name') }}</title>
 
+    @includeWhen(\App::environment('production'), 'parts._ga')
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="api-entrypoint" content="{{ config('app.url') }}">
 
@@ -13,6 +15,7 @@
     <script src="{{ asset(mix('js/mypage.js')) }}" defer></script>
 </head>
 <body>
+    @includeWhen(\App::environment('production'), 'parts._ga-noscript')
 
     @include('parts.menu-header')
 
@@ -26,10 +29,6 @@
         @if (session()->has('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
-
-        @unless (empty($breadcrumb))
-            @include('parts.breadcrumb')
-        @endunless
 
         @yield('before_title')
 

@@ -2,7 +2,6 @@
 namespace App\Traits;
 
 use App\Models\Article;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -28,7 +27,7 @@ trait CountUpable
         DB::statement(self::buildSql($article, $datetime));
     }
 
-    private static function buildSql(Article $article, Carbon $datetime)
+    private static function buildSql(Article $article, $datetime)
     {
         $table   = static::getTableName();
         $dayly   = $datetime->format('Ymd');

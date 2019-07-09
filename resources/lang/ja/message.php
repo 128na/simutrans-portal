@@ -63,4 +63,8 @@ return [
     'no-file' => 'ファイルがありません',
     'confirm' => 'ファイルを削除します。よろしいですか。',
     'analytics' => 'PV,CV集計',
+
+    'not-found' => 'ページが見つかりませんでした',
+    'server-error' => '処理にエラーが発生しました',
+    'server-maintenance' => 'メンテナンス中です',
 ];

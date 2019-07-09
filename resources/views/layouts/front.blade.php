@@ -49,6 +49,16 @@
     @include('parts.menu-header')
 
     <main class="container bg-white py-2">
+        @if (session()->has('status'))
+            <div class="alert alert-success">{{ session('status') }}</div>
+        @endif
+        @if (session()->has('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+        @if (session()->has('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+
         @if (isset($preview))
             <div class="alert alert-warning">{{ __('message.preview-text') }}</div>
         @endif

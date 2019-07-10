@@ -11,6 +11,7 @@
 |
 */
 Route::get('sitemap', 'SitemapController@index');
+Route::feeds();
 
 // 認証
 Auth::routes(['verify' => true]);

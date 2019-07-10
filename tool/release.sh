@@ -1,6 +1,6 @@
 #!/bin/sh
 cd `dirname $0`
-cd ..
+cd ../
 
 echo "|--------------------------------------------------------------------------"
 echo "| current git information."

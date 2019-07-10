@@ -216,7 +216,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../sass/variables-mypage";
+@import "../../sass/mypage/variables";
 
 h5 {
   margin: 1rem 0;

@@ -23,7 +23,9 @@
             @foreach ($articles['latest'] as $article)
                 @include('front.articles.parts.list-item', ['article' => $article])
             @endforeach
-            <h6><a href="{{ route('addons.index') }}">{{ __('message.show-all-addons') }}</a></h6>
+            <h6>
+                <a href="{{ route('addons.index') }}">{{ __('message.show-all-addons') }}</a>
+            </h6>
         @else
             <p>{{ __('message.no-article')}}</p>
         @endunless

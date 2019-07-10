@@ -15,8 +15,10 @@ use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Spatie\Feed\Feedable;
+use Spatie\Feed\FeedItem;
 
-class Article extends Model
+class Article extends Model implements Feedable
 {
     use Slugable;
     use JsonFieldable;
@@ -388,5 +390,26 @@ class Article extends Model
         return $image
              ? asset('storage/'.$image->path)
              : asset('storage/'.config('attachment.no-thumbnail'));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | RSS
+    |--------------------------------------------------------------------------
+    */
+    public static function getAllFeedItems($type = null)
+    {
+        return self::active()->addon()->get();
+    }
+
+    public function toFeedItem()
+    {
+        return FeedItem::create()
+            ->id($this->id)
+            ->title($this->title)
+            ->summary($this->getContents('description') ?? '')
+            ->updated($this->updated_at->toMutable())    // CarbonImmutableは未対応
+            ->link(route('articles.show', $this->slug))
+            ->author($this->user->name);
     }
 }

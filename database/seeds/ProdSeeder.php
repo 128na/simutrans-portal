@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Database\Seeder;
-use App\Models\User;
+use App\Models\Article;
 use App\Models\Category;
+use App\Models\User;
 use App\Models\Profile;
+use Illuminate\Database\Seeder;
 
 /**
  * 本番環境用シーダー
@@ -17,12 +18,13 @@ class ProdSeeder extends Seeder
      */
     public function run()
     {
-        self::addAdminUser();
+        $admin = self::addAdminUser();
         self::addItems(config('category.pak'));
         self::addItems(config('category.addon'));
         self::addItems(config('category.pak128_position'));
         self::addItems(config('category.license'));
         self::addItems(config('category.page'));
+        self::addAnounces($admin);
     }
 
     private static function addAdminUser()
@@ -31,14 +33,12 @@ class ProdSeeder extends Seeder
             throw new \Exception("admin email was empty!");
         }
 
-        $admin = User::with('profile')->firstOrCreate(
+        $admin = User::firstOrCreate(
             ['role' => config('role.admin'), 'name' => config('admin.name'), 'email' => config('admin.email')],
             ['password' => bcrypt(config('admin.password')), 'email_verified_at' => now()]
         );
 
-        if(!$admin->profile) {
-            $admin->profile()->save(factory(Profile::class)->make());
-        }
+        return $admin;
     }
 
     private static function addItems($items)
@@ -46,5 +46,23 @@ class ProdSeeder extends Seeder
         return collect($items)->map(function($item) {
             return Category::firstOrCreate($item);
         });
+    }
+
+    /**
+     * お知らせ記事作成
+     */
+    private static function addAnounces($user)
+    {
+        $announce_category = Category::page()->where('slug', 'announce')->firstOrFail();
+
+        foreach (config('announces', []) as $data) {
+            $data = array_merge([
+                'post_type' => config('post_types.page'),
+                'status' => config('status.publish'),
+            ], $data);
+
+            $article = $user->articles()->updateOrCreate(['slug' => $data['slug']], $data);
+            $article->categories()->sync($announce_category->id);
+        }
     }
 }

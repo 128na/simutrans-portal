@@ -2,13 +2,12 @@
 // @import url('https://fonts.googleapis.com/css?family=Nunito');
 
 // Variables
-@import 'variables-mypage';
+@import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-@import 'node_modules/bootstrap-vue/src/index.scss';
 
-@import 'multi_dropdown';
+@import '../multi_dropdown';
 
-@import 'common';
+@import '../common';
 

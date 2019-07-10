@@ -48,21 +48,21 @@ $('.js-add-popular-tag').on('click ', addPopularTag);
 const $sections = $('#sections');
 const add_caption_section = function (e) {
     e.preventDefault();
-    const current_index = $('.js-section').last().data('section');
+    const current_index = $('.js-section').last().data('section') || 0;
     $sections.append(buildCaptionSectionHTML(current_index + 1));
 };
 $('.js-add-caption-section').on('click', add_caption_section);
 
 const add_text_section = function (e) {
     e.preventDefault();
-    const current_index = $('.js-section').last().data('section');
+    const current_index = $('.js-section').last().data('section') || 0;
     $sections.append(buildTextSectionHTML(current_index + 1));
 };
 $('.js-add-text-section').on('click', add_text_section);
 
 const add_image_section = function (e) {
     e.preventDefault();
-    const current_index = $('.js-section').last().data('section');
+    const current_index = $('.js-section').last().data('section') || 0;
     $sections.append(buildImageSectionHTML(current_index + 1));
 };
 $('.js-add-image-section').on('click', add_image_section);

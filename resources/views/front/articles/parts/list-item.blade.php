@@ -9,15 +9,15 @@
 </div>
 @else
 <div class="mb-3 article-box">
-    <div class="img-full-box mb-2">
-        <a href="{{ route('articles.show', $article->slug)}}">
-            <img data-src="{{ $article->thumbnail_url }}" class="img-fluid lazy">
-        </a>
-        </div>
     <div class="my-1">
         <h5>
             <a href="{{ route('articles.show', $article->slug)}}">{{ $article->title }}</a>
         </h5>
+        <div class="img-full-box mb-1">
+            <a href="{{ route('articles.show', $article->slug)}}">
+                <img data-src="{{ $article->thumbnail_url }}" class="img-fluid lazy">
+            </a>
+        </div>
         <div>
             <small class="mr-1">by</small><a href="{{ route('user', [$article->user]) }}">{{ $article->user->name}}</a>
         </div>

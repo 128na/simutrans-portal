@@ -35,7 +35,7 @@
                 </thead>
                 <tbody>
                     @foreach ($articles as $article)
-                <tr class="status-{{ $article->status }}">
+                        <tr class="status-{{ $article->status }}">
                             <td>{{ $article->id }}</td>
                             <td>{{ __('status.'.$article->status) }}</td>
                             <td>{{ $article->title }}</td>

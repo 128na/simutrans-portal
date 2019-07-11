@@ -28,7 +28,7 @@ class AddonPostController extends ArticleController
             $request->input('categories.pak', []),
             $request->input('categories.addon', []),
             $request->input('categories.pak128_position', []),
-            [$request->input('categories.license')]
+            $request->input('categories.license', [])
         );
         $categories = array_filter($categories); // remove null elements
         $article->categories()->sync($categories);
@@ -44,10 +44,10 @@ class AddonPostController extends ArticleController
             'description' => 'required|string|max:2048',
             'thanks'      => 'nullable|string|max:2048',
             'license'     => 'nullable|string|max:2048',
-            'categories.pak.*'             => 'exists:categories,id',
-            'categories.addon.*'           => 'exists:categories,id',
-            'categories.pak128_position.*' => 'exists:categories,id',
-            'categories.license'           => 'exists:categories,id',
+            'categories.pak.*'             => 'exists:categories,id,type,pak',
+            'categories.addon.*'           => 'exists:categories,id,type,addon',
+            'categories.pak128_position.*' => 'exists:categories,id,type,pak128_position',
+            'categories.license'           => 'exists:categories,id,type,license',
             'tags.*'                       => 'max:255',
         ]);
     }

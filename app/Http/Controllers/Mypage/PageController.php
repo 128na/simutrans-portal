@@ -52,7 +52,7 @@ class PageController extends ArticleController
             'sections.*.caption' => 'required_if:sections.*.type,caption|max:255',
             'sections.*.text'    => 'required_if:sections.*.type,text|max:2048',
             'sections.*.id'      => 'required_if:sections.*.type,image|exists:attachments,id,user_id,'.Auth::id(),
-            'categories.page.*'  => 'nullable|exists:categories,id',
+            'categories.page.*'  => 'nullable|exists:categories,id,type,page',
         ]);
     }
 }

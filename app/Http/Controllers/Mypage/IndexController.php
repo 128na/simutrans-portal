@@ -7,7 +7,7 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class FrontController extends Controller
+class IndexController extends Controller
 {
     public function index()
     {

@@ -12,3 +12,12 @@
 
 @import '../common';
 
+.status-draft {
+    background-color: $gray-200;
+}
+.status-private {
+    background-color: $gray-500;
+}
+.status-trash {
+    background-color: $gray-500;
+}

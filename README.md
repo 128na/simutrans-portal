@@ -1,8 +1,11 @@
 # simutrans-portal
 
+https://simutrans.sakura.ne.jp/portal/
+
 ## 環境
 
 一般的なLAMP環境やdockerコンテナなどをご用意ください。
+
 ### Required
 
 - PHP:7.1~
@@ -12,6 +15,10 @@
 
 - redis キャッシュ用。あると速い
 - node アセットコンパイルを行う場合に必要
+
+## システム構成図
+
+img
 
 ## setup
 

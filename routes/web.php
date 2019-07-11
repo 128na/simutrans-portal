@@ -19,27 +19,27 @@ Auth::routes(['verify' => true]);
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware(['minify'])->group(function () {
     Route::middleware(['cache.response'])->group(function () {
-        Route::get('/', 'FrontController@index')->name('index');
-        Route::get('/addons', 'ArticleController@addons')->name('addons.index');
-        Route::get('/ranking', 'ArticleController@ranking')->name('addons.ranking');
-        Route::get('/pages', 'ArticleController@pages')->name('pages.index');
-        Route::get('/announces', 'ArticleController@announces')->name('announces.index');
-        Route::get('/category/pak/{size}/{slug}', 'ArticleController@categoryPakAddon')->name('category.pak.addon');
-        Route::get('/category/{type}/{slug}', 'ArticleController@category')->name('category');
-        Route::get('/tag/{tag}', 'ArticleController@tag')->name('tag');
-        Route::get('/user/{user}', 'ArticleController@user')->name('user');
+        Route::get('/', 'Front\IndexController@index')->name('index');
+        Route::get('/addons', 'Front\ArticleController@addons')->name('addons.index');
+        Route::get('/ranking', 'Front\ArticleController@ranking')->name('addons.ranking');
+        Route::get('/pages', 'Front\ArticleController@pages')->name('pages.index');
+        Route::get('/announces', 'Front\ArticleController@announces')->name('announces.index');
+        Route::get('/category/pak/{size}/{slug}', 'Front\ArticleController@categoryPakAddon')->name('category.pak.addon');
+        Route::get('/category/{type}/{slug}', 'Front\ArticleController@category')->name('category');
+        Route::get('/tag/{tag}', 'Front\ArticleController@tag')->name('tag');
+        Route::get('/user/{user}', 'Front\ArticleController@user')->name('user');
     });
     // 非ログイン系 reidsキャッシュ無効
-    Route::get('/articles/{article}', 'ArticleController@show')->name('articles.show');
-    Route::get('/search', 'ArticleController@search')->name('search');
+    Route::get('/articles/{article}', 'Front\ArticleController@show')->name('articles.show');
+    Route::get('/search', 'Front\ArticleController@search')->name('search');
 });
-Route::get('/articles/{article}/download', 'ArticleController@download')->name('articles.download');
+Route::get('/articles/{article}/download', 'Front\ArticleController@download')->name('articles.download');
 
 // ログイン系：ユーザー
 Route::prefix('mypage')->group(function () {
     Route::name('mypage.')->group(function () {
         Route::middleware(['auth'])->group(function () {
-            Route::get('/', 'Mypage\FrontController@index')->name('index');
+            Route::get('/', 'Mypage\IndexController@index')->name('index');
 
             Route::middleware(['verified'])->group(function () {
                 Route::get('profile', 'Mypage\ProfileController@edit')->name('profile.edit');
@@ -65,8 +65,8 @@ Route::prefix('mypage')->group(function () {
 Route::prefix('admin')->group(function () {
     Route::name('admin.')->group(function () {
         Route::middleware(['auth', 'admin', 'verified'])->group(function () {
-            Route::get('/', 'Admin\FrontController@index')->name('index');
-            Route::post('/flush-cache', 'Admin\FrontController@flushCache')->name('flush.cache');
+            Route::get('/', 'Admin\IndexController@index')->name('index');
+            Route::post('/flush-cache', 'Admin\IndexController@flushCache')->name('flush.cache');
 
             Route::get('/users', 'Admin\UserController@index')->name('users.index');
             // Route::get('/users/create', 'Admin\UserController@create')->name('users.create');

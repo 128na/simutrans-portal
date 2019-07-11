@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Front;
 
 use App\Models\Article;
+use App\Http\Controllers\Controller;
 
 /**
  * トップページ
  */
-class FrontController extends Controller
+class IndexController extends Controller
 {
     public function index()
     {

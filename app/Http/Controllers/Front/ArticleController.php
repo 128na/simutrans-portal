@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Front;
 
 use App\Events\ArticleConversion;
 use App\Events\ArticleShown;
+use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Breadcrumb;
 use App\Models\Category;

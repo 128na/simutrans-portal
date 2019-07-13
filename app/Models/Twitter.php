@@ -44,13 +44,15 @@ class Twitter
     public static function articleCreated($article)
     {
         $url = route('articles.show', $article->slug);
-        $message = "新規投稿「{$article->title}」\nby {$article->user->name}\n{$url}\n#simutrans";
+        $now = now()->format('Y/m/d H:i');
+        $message = "新規投稿「{$article->title}」\nby {$article->user->name}\nat {$now}\n{$url}\n#simutrans";
         return Twitter::post($message);
     }
     public static function articleUpdated($article)
     {
         $url = route('articles.show', $article->slug);
-        $message = "「{$article->title}」更新\nby {$article->user->name}\n{$url}\n#simutrans";
+        $now = now()->format('Y/m/d H:i');
+        $message = "「{$article->title}」更新\nby {$article->user->name}\nat {$now}\n{$url}\n#simutrans";
         return Twitter::post($message);
     }
 

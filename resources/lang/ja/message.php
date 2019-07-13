@@ -20,7 +20,7 @@ return [
     'last-updated' => '最終更新',
     'of-tag' => ':nameの投稿',
     'of-category' => ':nameの投稿',
-    'of-pak-addon' => ':pfak、:addonの投稿',
+    'of-pak-addon' => ':pak、:addonの投稿',
     'by-user' => ':nameさんの投稿',
     'result-of' => ':wordの検索結果一覧',
     'title-of-user' => ':name さん',

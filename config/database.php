@@ -61,6 +61,13 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
+
+            /**
+             * @see https://docs.spatie.be/laravel-backup/v6/installation-and-setup/#dumping-the-database
+             */
+            'dump' => [
+                'dump_binary_path' => env('DUMP_BINARY_PATH', '/usr/local/bin/'),
+            ]
         ],
 
         'pgsql' => [

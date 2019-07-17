@@ -1,9 +1,9 @@
 @extends('layouts.front')
 
-@section('title', __('message.not-found'))
+@section('title', __('Not found'))
 
 @section('content')
     <p>
-        <a href="{{ route('index') }}">{{ __('message.top') }}</a>
+        <a href="{{ route('index') }}">{{ __('Top') }}</a>
     </p>
 @endsection

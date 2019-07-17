@@ -5,34 +5,34 @@
         </div>
     @endif
     <dl class="mx-1 mt-2">
-        <dt>{{ __('article.author') }} / {{ __('article.publisher') }}</dt>
+        <dt>{{ __('Author') }} / {{ __('Publisher') }}</dt>
         <dd>
             {{ $article->author }} / <a href="{{ route('user', [$article->user]) }}" rel="author">{{ $article->user->name }}</a>
         </dd>
-        <dt>{{ __('article.categories') }}</dt>
+        <dt>{{ __('Categories') }}</dt>
         <dd>
             @include('parts.category-list', ['categories' => $article->categories,
                 'post_type' => $article->post_type, 'route_name' => 'addons.index'])
         </dd>
-        <dt>{{ __('article.tags') }}</dt>
+        <dt>{{ __('Tags') }}</dt>
         <dd>
             @include('parts.tag-list', ['tags' => $article->tags])
         </dd>
-        <dt>{{ __('article.description') }}</dt>
+        <dt>{{ __('Description') }}</dt>
         <dd>{{ $article->description }}</dd>
         @if ($article->thanks)
-            <dt>{{ __('article.thanks') }}</dt>
+            <dt>{{ __('Acknowledgments and Referenced') }}</dt>
             <dd>{{ $article->thanks }}</dd>
         @endif
         @if ($article->license)
-            <dt>{{ __('article.license') }}</dt>
+            <dt>{{ __('License') }}</dt>
             <dd>{{ $article->license }}</dd>
         @endif
         @if ($article->agreement)
-            <dt>{{ __('article.agreement') }}</dt>
-            <dd>{{ __('article.ageement-message') }}</dd>
+            <dt>{{ __('Agreement') }}</dt>
+            <dd>{{ __('This article is published by author\'s permission or by author himself.') }}</dd>
         @endif
-        <dt>{{ __('article.link') }}</dt>
+        <dt>{{ __('Link') }}</dt>
         <dd>
             <a href="#" data-url="{{ $article->link }}" data-slug="{{ $article->slug }}" class="js-click">{{ $article->link }}</a>
         </dd>

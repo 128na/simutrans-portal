@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('title', $title ?? 'Articles')
+@section('title', $title ?? __('Articles'))
 @section('meta-description', config('app.meta-description'))
 @section('meta-image', asset('storage/'.config('app.meta-image')))
 
@@ -17,7 +17,7 @@
         @forelse ($articles as $article)
             @include('front.articles.parts.list-item', ['article' => $article])
         @empty
-            <p>{{ __('message.no-article')}}</p>
+            <p>{{ __('No article exists.')}}</p>
         @endforelse
     </div>
 

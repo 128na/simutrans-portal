@@ -25,7 +25,7 @@
     </div>
 
     <dl class="mx-1 mt-2">
-        <dt>{{ __('article.categories') }}</dt>
+        <dt>{{ __('Categories') }}</dt>
         <dd>
             @include('parts.category-list', ['categories' => $article->categories,
                 'post_type' => $article->isAnnounce() ? null : $article->post_type, 'route_name' => 'pages.index'])

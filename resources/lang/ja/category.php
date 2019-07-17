@@ -4,17 +4,11 @@
  */
 return [
     'type' => [
-        'post'            => '投稿形式',
         'pak'             => 'Pak',
         'addon'           => 'アドオン',
         'pak128_position' => 'Pak128用描画位置',
         'license'         => '著作権',
         'page'            => 'カテゴリ',
-    ],
-    'post' => [
-        'addon-post'         => 'アドオン投稿',
-        'addon-introduction' => 'アドオン紹介',
-        'page' => '一般記事',
     ],
     'pak' => [
         '64'           => 'pak64',

@@ -12,7 +12,7 @@
             'Target' :  "@lang('Target')",
             'Articles' :  "@lang('Articles')",
             'Daily': "@lang('Daily')",
-            'Mothly': "@lang('Mothly')",
+            'Monthly': "@lang('Monthly')",
             'Yearly': "@lang('Yearly')",
             'Transition': "@lang('Transition')",
             'Total': "@lang('Total')",

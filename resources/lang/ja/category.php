@@ -4,20 +4,20 @@
  */
 return [
     'type' => [
-        'pak'             => 'Pak',
-        'addon'           => 'アドオン',
-        'pak128_position' => 'Pak128用描画位置',
-        'license'         => '著作権',
-        'page'            => 'カテゴリ',
+        'pak'             => __('Paks'),
+        'addon'           => __('Addon Types'),
+        'pak128_position' => __('Track positions for pak128'),
+        'license'         => __('License'),
+        'page'            => __('Categories'),
     ],
     'pak' => [
-        '64'           => 'pak64',
-        '128'          => 'pak128',
-        '128-japan'    => 'pak128.Japan',
-        '256'          => 'pak256',
-        '96-comic'     => 'pak96.Comic',
-        '192-comic'    => 'pak192.Comic',
-        '256-extended' => 'pak256(Extended)',
+        '64'           => 'Pak64',
+        '128'          => 'Pak128',
+        '128-japan'    => 'Pak128.Japan',
+        '256'          => 'Pak256',
+        '96-comic'     => 'Pak96.Comic',
+        '192-comic'    => 'Pak192.Comic',
+        '256-extended' => 'Pak256(Extended)',
         'others'       => 'その他',
     ],
     'addon' => [

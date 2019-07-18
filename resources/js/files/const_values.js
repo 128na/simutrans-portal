@@ -24,7 +24,7 @@ const values = {
 
 values.OPTION_TYPES = [
     { text: 'Daily', value: values.TYPE_DAILY },
-    { text: 'Mothly', value: values.TYPE_MONTHLY },
+    { text: 'Monthly', value: values.TYPE_MONTHLY },
     { text: 'Yearly', value: values.TYPE_YEARLY },
 ];
 values.OPTION_MODES = [

@@ -14,7 +14,7 @@
                 {{-- 言語一覧 --}}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLangs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        @lang('Current Language')
+                        @lang('__Current_Language__')
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownLangs">
                         @foreach (config('languages', []) as $name => $language)

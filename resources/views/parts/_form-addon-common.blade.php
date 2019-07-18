@@ -34,7 +34,7 @@
     <div class="input-group mb-3">
         <input type="text" class="form-control" id="new-tag" autocomplete="off">
         <div class="input-group-append">
-            <button class="btn btn-outline-secondary js-add-tag" type="button">@lang('Add tag')</button>
+            <button class="btn btn-outline-secondary js-add-tag" type="button">@lang('Add Tag')</button>
         </div>
     </div>
 

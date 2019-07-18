@@ -4,11 +4,11 @@
  */
 return [
     'type' => [
-        'pak'             => 'Paks',
-        'addon'           => 'Addons',
-        'pak128_position' => 'Track positions for pak128',
-        'license'         => 'Licenses',
-        'page'            => 'Categories',
+        'pak'             => __('Paks'),
+        'addon'           => __('Addon Types'),
+        'pak128_position' => __('Track positions for pak128'),
+        'license'         => __('License'),
+        'page'            => __('Categories'),
     ],
     'pak' => [
         '64'           => 'Pak64',

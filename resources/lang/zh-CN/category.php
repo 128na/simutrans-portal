@@ -1,0 +1,65 @@
+<?php
+/**
+ * カテゴリ
+ */
+return [
+    'type' => [
+        'pak'             => __('Paks'),
+        'addon'           => __('Addon Types'),
+        'pak128_position' => __('Track positions for pak128'),
+        'license'         => __('License'),
+        'page'            => __('Categories'),
+    ],
+    'pak' => [
+        '64'           => 'Pak64',
+        '128'          => 'Pak128',
+        '128-japan'    => 'Pak128.Japan',
+        '256'          => 'Pak256',
+        '96-comic'     => 'Pak96.Comic',
+        '192-comic'    => 'Pak192.Comic',
+        '256-extended' => 'Pak256(Extended)',
+        'others'       => '其他',
+    ],
+    'addon' => [
+        'trains'               => '火车',
+        'rail-tools'           => '铁路工具',
+        'road-tools'           => '道路工具',
+        'ships'                => '船舶',
+        'aircrafts'            => '飞行器',
+        'road-vehicles'        => '道路车辆',
+        'airport-tools'        => '机场工具',
+        'industrial-tools'     => '工业工具',
+        'seaport-tools'        => '海港工具',
+        'buildings'            => '房屋',
+        'monorail-vehicles'    => '单轨车辆',
+        'monorail-tools'       => '单轨工具',
+        'maglev-vehicles'      => '磁悬浮车辆',
+        'maglev-tools'         => '磁悬浮工具',
+        'narrow-gauge-vahicle' => '窄轨vahicles',
+        'narrow-gauge-tools'   => '窄轨工具',
+        'tram-vehicle'         => '有轨电车',
+        'tram-tools'           => '电车工具',
+        'others'               => '其他',
+    ],
+    'pak128_position' => [
+        'old' => '旧位置（112.3之前）',
+        'new' => '新职位（120.0之后）',
+    ],
+    'license' => [
+        'cc-by'       => 'CC BY',
+        'cc-by-nc'    => 'CC BY-NC',
+        'cc-by-nd'    => 'CC BY-ND',
+        'cc-by-nc-nd' => 'CC BY-NC-ND',
+        'cc-by-sa'    => 'CC BY-SA',
+        'cc-by-nc-sa' => 'CC BY-NC-SA',
+        'cc0'         => 'CC0',
+        'pdm'         => 'PDM',
+        'mit-license' => 'MIT License',
+        'others'      => '其他',
+    ],
+    'page' => [
+        'announce' => '宣布',
+        'common' => '一般文章',
+        'others' => '其他',
+    ],
+];

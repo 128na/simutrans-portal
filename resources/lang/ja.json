@@ -1,6 +1,7 @@
 {
     "__Current_Language__": "日本語",
     ":name logged in at :time.": ":nameが:timeにログインしました。",
+    ":pak, :addon": ":pak、:addon",
     "[admin] Article list": "[管理用] 記事一覧",
     "[admin] Dashboard": "[管理用] トップ",
     "[admin] User list": "[管理用] ユーザー一覧",
@@ -9,7 +10,7 @@
     "== Login information ==": "== ログイン情報 ==",
     "A fresh verification link has been sent to your email address.": "新しい確認リンクを送りました。",
     "Access Analytics": "アクセス解析",
-    "Access Ranking": "新着アドオン",
+    "Access Ranking": "アクセスランキング",
     "Acknowledgments and Referenced": "謝辞・参考にしたアドオン",
     "Actions": "操作",
     "Add Caption": "見出しを追加",
@@ -53,6 +54,7 @@
     "Email": "メールアドレス",
     "Error": "エラー",
     "File Manager": "ファイルマネージャー",
+    "File": "ファイル",
     "For article URL. If empty, the article title is used.": "記事のURLに使用されます。空の場合、タイトルが使用されます",
     "Forbidden": "禁止されています",
     "Forgot Your Password?": "パスワードを忘れた方はこちら",
@@ -92,7 +94,6 @@
     "Page Not Found": "ページが見つかりません",
     "Page Views": "閲覧数",
     "Pages": "一般記事",
-    "pak, :addon": "pak、:addon",
     "Paks": "Pak一覧",
     "Password": "パスワード",
     "Please click the button below to verify your email address.": "メールアドレスを確認するには、下のボタンをクリックしてください。",
@@ -150,8 +151,8 @@
     "Track positions for pak128": "Pak128用描画位置",
     "Transition": "推移",
     "Twitter ID": "Twitter ID",
-    "Types": "区分",
     "Type": "タイプ",
+    "Types": "区分",
     "Unauthorized": "認証が必要です",
     "Under maintenance.": "メンテナンス中です",
     "Updated at": "更新日時",
@@ -167,6 +168,5 @@
     "Whoops!": "おっと！",
     "Yearly": "年間",
     "You are receiving this email because we received a password reset request for your account.": "パスワードリセットのリクエストを受け付けました。",
-    "File": "ファイル",
-    "ZZZZ FOR PREVENTING TRAILING COMMA ERASE": "末尾カンマ誤爆防止用"
+    "ZZZZ FOR PREVENTING TRAILING COMMA ERASE": ""
 }

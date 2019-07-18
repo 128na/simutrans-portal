@@ -81,7 +81,7 @@
     "My articles": "作成記事一覧",
     "Mypage": "マイページ",
     "Name": "名前",
-    "New Article Punlished. \":title\"\nby :name\nat :at\n#simutrans": "新規投稿「:title」\nby :name\nat :at\n#simutrans",
+    "New Article Published. \":title\"\nby :name\nat :at\n#simutrans": "新規投稿「:title」\nby :name\nat :at\n#simutrans",
     "No article exists.": "記事がありません",
     "No description exists.": "説明がありません",
     "No file.": "ファイルがありません。",

@@ -23,17 +23,17 @@ const values = {
 };
 
 values.OPTION_TYPES = [
-    { text: '日間', value: values.TYPE_DAILY },
-    { text: '月間', value: values.TYPE_MONTHLY },
-    { text: '年間', value: values.TYPE_YEARLY },
+    { text: 'Daily', value: values.TYPE_DAILY },
+    { text: 'Mothly', value: values.TYPE_MONTHLY },
+    { text: 'Yearly', value: values.TYPE_YEARLY },
 ];
 values.OPTION_MODES = [
-    { text: '推移', value: values.MODE_LINE },
-    { text: '合計', value: values.MODE_SUM },
+    { text: 'Transition', value: values.MODE_LINE },
+    { text: 'Total', value: values.MODE_SUM },
 ];
 values.OPTION_RENDER_TYPES = [
-    { text: 'PV', value: values.RENDER_TYPE_VIEW },
-    { text: 'CV', value: values.RENDER_TYPE_CONVERSION },
+    { text: 'Page Views', value: values.RENDER_TYPE_VIEW },
+    { text: 'Conversions', value: values.RENDER_TYPE_CONVERSION },
 ];
 
 export default {

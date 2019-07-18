@@ -31,8 +31,7 @@ export default {
                   autoSkip: true
                 },
                 scaleLabel: {
-                  display: true,
-                  labelString: "日付"
+                  display: true
                 }
               }
             ],

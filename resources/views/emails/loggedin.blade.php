@@ -2,13 +2,16 @@
     <a href="{{ config('app.url') }}">{{ config('app.name') }}</a>
 </h3>
 <p>
-    @lang('email.loggedin.message_1', ['name' => $user->name, 'time' => now()])
+    @lang(':name logged in at :time.', ['name' => $user->name, 'time' => now()])
 </p>
 <p>
-    @lang('email.loggedin.message_2')
+    @lang('== Login information ==')
 </p>
 <p>
-    @lang('email.loggedin.ip'): {{ env('REMOTE_ADDR', 'unknown') }}<br>
-    @lang('email.loggedin.referrer'): {{ env('HTTP_REFERER', 'unknown') }}<br>
-    @lang('email.loggedin.user-agent'): {{ env('HTTP_USER_AGENT', 'unknown') }}
+    @lang('IP Address')<br>
+    {{ env('REMOTE_ADDR', 'unknown') }}<br>
+    @lang('Referrer')<br>
+    {{ env('HTTP_REFERER', 'unknown') }}<br>
+    @lang('User Agent')<br>
+    {{ env('HTTP_USER_AGENT', 'unknown') }}
 </p>

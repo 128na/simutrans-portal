@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ isset($preview) ? __('message.preview-mode') : ''}}@yield('title') - {{ config('app.name') }}</title>
+    <title>{{ isset($preview) ? __('[Preview]') : ''}}@yield('title') - {{ config('app.name') }}</title>
 
     @includeWhen(\App::environment('production'), 'parts._ga')
 
@@ -49,7 +49,7 @@
         @endif
 
         @if (isset($preview))
-            <div class="alert alert-warning">{{ __('message.preview-text') }}</div>
+            <div class="alert alert-warning">@lang('This is a preview display. Articles have not been saved or updated.')</div>
         @endif
 
         @includeWhen(!empty($breadcrumb), 'parts.breadcrumb')

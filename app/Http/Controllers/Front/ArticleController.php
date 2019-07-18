@@ -23,8 +23,8 @@ class ArticleController extends Controller
     {
         $articles = Article::addon()->active()->withForList()->paginate(20);
 
-        $title = __('message.articles');
-        $breadcrumb = Breadcrumb::forList('articles');
+        $title = __('Articles');
+        $breadcrumb = Breadcrumb::forList('Articles');
         return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
     }
 
@@ -35,8 +35,8 @@ class ArticleController extends Controller
     {
         $articles = Article::addon()->ranking()->active()->withForList()->paginate(20);
 
-        $title = __('message.ranking');
-        $breadcrumb = Breadcrumb::forList('ranking');
+        $title = __('Ranking');
+        $breadcrumb = Breadcrumb::forList('Ranking');
         return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
     }
 
@@ -47,8 +47,8 @@ class ArticleController extends Controller
     {
         $articles = Article::withoutAnnounce()->active()->withForList()->paginate(20);
 
-        $title = __('message.pages');
-        $breadcrumb = Breadcrumb::forList('pages');
+        $title = __('Pages');
+        $breadcrumb = Breadcrumb::forList('Pages');
         return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
     }
 
@@ -59,8 +59,8 @@ class ArticleController extends Controller
     {
         $articles = Article::announce()->active()->withForList()->paginate(20);
 
-        $title = __('message.announces');
-        $breadcrumb = Breadcrumb::forList('announces');
+        $title = __('Announces');
+        $breadcrumb = Breadcrumb::forList('Announces');
         return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
     }
 
@@ -109,7 +109,7 @@ class ArticleController extends Controller
         $articles = $category->articles()
             ->active()->withForList()->paginate(20);
 
-        $title = __('message.of-category', ['name' => __("category.{$type}.{$category->slug}")]);
+        $title = __('Category :name', ['name' => __("category.{$type}.{$category->slug}")]);
         $breadcrumb = Breadcrumb::forCategory($category);
         return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
     }
@@ -127,7 +127,7 @@ class ArticleController extends Controller
                 $query->where('type', 'addon')->where('slug', $addon);
             })
             ->withForList()->paginate(20);
-        $title = __('message.of-pak-addon', ['pak' => __('category.pak.'.$pak), 'addon' => __('category.addon.'.$addon)]);
+        $title = __(':pak, :addon', ['pak' => __('category.pak.'.$pak), 'addon' => __('category.addon.'.$addon)]);
         $breadcrumb = Breadcrumb::forPakAddon($pak, $addon);
         return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
     }
@@ -140,7 +140,7 @@ class ArticleController extends Controller
         $articles = $tag->articles()
             ->active()->withForList()->paginate(20);
 
-        $title = __('message.of-tag', ['name' => $tag->name]);
+        $title = __('Tag :name', ['name' => $tag->name]);
         $breadcrumb = Breadcrumb::forTag($tag->name);
         return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
     }
@@ -154,7 +154,7 @@ class ArticleController extends Controller
         $articles = $user->articles()
             ->active()->withForList()->paginate(20);
 
-        $title = __('message.by-user', ['name' => $user->name]);
+        $title = __('User :name', ['name' => $user->name]);
         $breadcrumb = Breadcrumb::forUser($user);
         return static::viewWithHeader('front.articles.index', compact('title', 'user', 'articles', 'breadcrumb'));
     }
@@ -170,7 +170,7 @@ class ArticleController extends Controller
         }
         $articles = Article::active()->search($word)->withForList()->paginate(20);
 
-        $title = __('message.result-of', ['word' => $word]);
+        $title = __('Search results by :word', ['word' => $word]);
         $breadcrumb = Breadcrumb::forSearch($word);
         return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
     }

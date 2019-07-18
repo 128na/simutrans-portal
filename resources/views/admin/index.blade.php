@@ -7,7 +7,7 @@
     <p>
         <form action="{{ route('admin.flush.cache') }}" method="POST">
             @csrf
-            <button class="btn btn-danger">キャッシュ削除</button>
+            <button class="btn btn-danger">@lang('Clear Cache')</button>
         </form>
     </p>
 

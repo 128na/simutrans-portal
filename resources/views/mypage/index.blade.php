@@ -1,52 +1,52 @@
 @extends('layouts.mypage')
 
-@section('title', __('message.mypage'))
+@section('title', __('Mypage'))
 
 @section('content')
     <div class="mypage">
 
-        <h2>{{ __('message.profile') }}</h2>
+        <h2>@lang('Profile')</h2>
 
         @include('parts.profile-card', ['in_mypage' => true])
 
         <p>
-            <a class="btn btn-outline-primary" href="{{route('mypage.articles.analytics') }}">{{ __('message.analytics') }}</a>
+            <a class="btn btn-outline-primary" href="{{route('mypage.articles.analytics') }}">@lang('Access Analytics')</a>
         </p>
         <p class="mb-4">
             @foreach (config('category.post') as $post_type)
                 <a class="btn btn-outline-primary" href="{{ route('mypage.articles.create', $post_type['slug']) }}">
-                    {{ __('message.create-article-of', ['type' => __('category.post.'.$post_type['slug'])]) }}</a>
+                    @lang('Create :post_type', ['post_type' => __('post_types.'.$post_type['slug'])])</a>
             @endforeach
         </p>
 
-        <h2>{{ __('message.my-articles') }}</h2>
+        <h2>@lang('My articles')</h2>
         @if ($articles->isEmpty())
-        <p>{{ __('message.no-article') }}</p>
+        <p>@lang('No article exists.')</p>
         @else
             <table class="table table-bordered">
                 <thead>
-                    <th>{{ __('article.id') }}</th>
-                    <th>{{ __('article.status') }}</th>
-                    <th>{{ __('article.title') }}</th>
-                    <th>{{ __('category.type.post') }}</th>
-                    <th>{{ __('article.created_at') }} / {{ __('article.updated_at') }}</th>
-                    <th>{{ __('article.conversion-rate') }}</th>
-                    <th>{{ __('article.actions') }}</th>
+                    <th>@lang('ID')</th>
+                    <th>@lang('Status')</th>
+                    <th>@lang('Title')</th>
+                    <th>@lang('Post Type')</th>
+                    <th>@lang('Created at') / @lang('Updated at')</th>
+                    <th>@lang('Conversion Rate')</th>
+                    <th>@lang('Actions')</th>
                 </thead>
                 <tbody>
                     @foreach ($articles as $article)
                         <tr class="status-{{ $article->status }}">
                             <td>{{ $article->id }}</td>
-                            <td>{{ __('status.'.$article->status) }}</td>
+                            <td>@lang('statuses.'.$article->status)</td>
                             <td>{{ $article->title }}</td>
-                            <td>{{ __('category.post.'.$article->post_type) }}</td>
+                            <td>@lang('post_types.'.$article->post_type)</td>
                             <td>{{$article->created_at }}<br>{{$article->updated_at }}</td>
                             <td>{{ $article->todaysConversionCount->count ?? 0 }} / {{ $article->todaysViewCount->count ?? 0 }} = {{ $article->todays_conversion_rate }}</td>
                             <td>
                                 <div class="btn-group">
-                                    <a class="btn btn-sm btn-outline-primary" href="{{ route('mypage.articles.edit', $article) }}">{{ __('message.edit') }}</a>
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ route('mypage.articles.edit', $article) }}">@lang('Edit')</a>
                                     @if ($article->is_publish)
-                                        <a class="btn btn-sm btn-outline-secondary" href="{{ route('articles.show', $article->slug) }}" target="_blank">{{ __('message.show') }}</a>
+                                        <a class="btn btn-sm btn-outline-secondary" href="{{ route('articles.show', $article->slug) }}" target="_blank">@lang('Show')</a>
                                     @endif
                                 </div>
                             </td>

@@ -26,8 +26,10 @@ class CacheResponse
         }
 
         $path = str_replace(config('app.url'), '', $request->fullUrl());
+        $locale = \App::getLocale();
+        $key = "{$path}@{$locale}";
 
-        return self::cacheOrCallback($path, function() use($request, $next) {
+        return self::cacheOrCallback($key, function() use($request, $next) {
             return $next($request);
         });
     }
@@ -41,7 +43,7 @@ class CacheResponse
      * @param int $expire_sec
      * @return mixed
      */
-    protected static function cacheOrCallback($key, $callback, $expire_sec = 86400)
+    protected static function cacheOrCallback($key, $callback, $expire_sec = 3600)
     {
         $cache = Cache::get($key);
         if(empty($cache)) {

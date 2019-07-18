@@ -5,19 +5,19 @@
     </section>
 
     <section>
-      <b-form-group label="区分">
-        <b-form-radio-group v-model="type" :options="OPTION_TYPES"></b-form-radio-group>
+      <b-form-group :label="__('Types')">
+        <b-form-radio-group v-model="type" :options="optionTypes"></b-form-radio-group>
       </b-form-group>
     </section>
 
     <section>
-      <b-form-group label="タイプ">
-        <b-form-radio-group v-model="mode" :options="OPTION_MODES"></b-form-radio-group>
+      <b-form-group :label="__('Aggregation method')">
+        <b-form-radio-group v-model="mode" :options="optionModes"></b-form-radio-group>
       </b-form-group>
     </section>
 
     <section>
-      <div class="pb-1">期間</div>
+      <div class="pb-1">{{ __('Term') }}</div>
       <b-form inline>
         <b-form-input v-model="start" type="text"></b-form-input>～
         <b-form-input v-model="end" type="text"></b-form-input>
@@ -25,20 +25,20 @@
     </section>
 
     <section>
-      <b-form-group label="カウント">
-        <b-form-checkbox-group v-model="render_types" :options="OPTION_RENDER_TYPES"></b-form-checkbox-group>
+      <b-form-group :label="__('Target')">
+        <b-form-checkbox-group v-model="render_types" :options="optionRenderTypes"></b-form-checkbox-group>
       </b-form-group>
     </section>
 
     <section>
-      <h5>記事</h5>
+      <h5>{{ __('Articles') }}</h5>
       <table class="table table-bordered">
         <thead>
           <tr class="clickable" @click="toggleAllChecked" :class="{ checked: toggle_all }">
             <th>
               <b-form-checkbox :checked="toggle_all"></b-form-checkbox>
             </th>
-            <th>全て</th>
+            <th>{{ __('Toggle All') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -94,6 +94,9 @@ export default {
     this.render_types = [this.RENDER_TYPE_VIEW];
   },
   methods: {
+    __(key) {
+      return window.lang[key] || key;
+    },
     toggleChecked(id) {
       this.articles = this.articles.map(a =>
         a.id !== id ? a : Object.assign(a, { checked: !a.checked })
@@ -153,6 +156,24 @@ export default {
     }
   },
   computed: {
+    optionTypes() {
+      return this.OPTION_TYPES.map(item => {
+        item.text = this.__(item.text);
+        return item;
+      });
+    },
+    optionModes() {
+      return this.OPTION_MODES.map(item => {
+        item.text = this.__(item.text);
+        return item;
+      });
+    },
+    optionRenderTypes() {
+      return this.OPTION_RENDER_TYPES.map(type => {
+        type.text = this.__(type.text);
+        return type;
+      });
+    },
     interval_type() {
       switch (this.type) {
         case this.TYPE_DAILY:

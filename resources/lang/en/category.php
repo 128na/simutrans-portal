@@ -1,0 +1,65 @@
+<?php
+/**
+ * カテゴリ
+ */
+return [
+    'type' => [
+        'pak'             => __('Paks'),
+        'addon'           => __('Addon Types'),
+        'pak128_position' => __('Track positions for pak128'),
+        'license'         => __('License'),
+        'page'            => __('Categories'),
+    ],
+    'pak' => [
+        '64'           => 'Pak64',
+        '128'          => 'Pak128',
+        '128-japan'    => 'Pak128.Japan',
+        '256'          => 'Pak256',
+        '96-comic'     => 'Pak96.Comic',
+        '192-comic'    => 'Pak192.Comic',
+        '256-extended' => 'Pak256(Extended)',
+        'others'       => 'Other',
+    ],
+    'addon' => [
+        'trains'               => 'Trains',
+        'rail-tools'           => 'Rail tools',
+        'road-tools'           => 'Road tools',
+        'ships'                => 'Ships',
+        'aircrafts'            => 'Aircrafts',
+        'road-vehicles'        => 'Road vehicles',
+        'airport-tools'        => 'Airport tools',
+        'industrial-tools'     => 'Industrial tools',
+        'seaport-tools'        => 'Seaport tools',
+        'buildings'            => 'Buildings',
+        'monorail-vehicles'    => 'Monorail vehicles',
+        'monorail-tools'       => 'Monorail tools',
+        'maglev-vehicles'      => 'Maglev vehicles',
+        'maglev-tools'         => 'Maglev tools',
+        'narrow-gauge-vahicle' => 'Narrow gauge vahicles',
+        'narrow-gauge-tools'   => 'Narrow gauge tools',
+        'tram-vehicle'         => 'Tram vehicles',
+        'tram-tools'           => 'Tram tools',
+        'others'               => 'Other',
+    ],
+    'pak128_position' => [
+        'old' => 'Old position (before 112.3)',
+        'new' => 'New Position (after 120.0)',
+    ],
+    'license' => [
+        'cc-by'       => 'CC BY',
+        'cc-by-nc'    => 'CC BY-NC',
+        'cc-by-nd'    => 'CC BY-ND',
+        'cc-by-nc-nd' => 'CC BY-NC-ND',
+        'cc-by-sa'    => 'CC BY-SA',
+        'cc-by-nc-sa' => 'CC BY-NC-SA',
+        'cc0'         => 'CC0',
+        'pdm'         => 'PDM',
+        'mit-license' => 'MIT License',
+        'others'      => 'Other',
+    ],
+    'page' => [
+        'announce' => 'Announce',
+        'common' => 'Common',
+        'others' => 'Other',
+    ],
+];

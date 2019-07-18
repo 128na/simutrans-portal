@@ -1,3 +1,3 @@
 @extends('layouts.front')
 
-@section('title', __('message.server-maintenance'))
+@section('title', __('Under maintenance'))

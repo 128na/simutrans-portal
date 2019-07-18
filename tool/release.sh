@@ -29,7 +29,7 @@ echo ""
 echo "|--------------------------------------------------------------------------"
 echo "| update dependencies."
 echo "|--------------------------------------------------------------------------"
-composer install --optimize-autoloader --no-dev
+php /home/simutrans/bin/composer.phar install --optimize-autoloader --no-dev
 
 echo ""
 echo "|--------------------------------------------------------------------------"

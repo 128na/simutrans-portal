@@ -86,7 +86,7 @@ class ArticleController extends Controller
             Twitter::articleCreated($article);
         }
 
-        session()->flash('success', __('article.created', ['title' => $article->title, 'status' => __('status.'.$article->status)]));
+        session()->flash('success', __('Article ":title" has been saved as :status.', ['title' => $article->title, 'status' => __('statuses.'.$article->status)]));
         return redirect()->route('mypage.index');
     }
 
@@ -124,7 +124,7 @@ class ArticleController extends Controller
             Twitter::articleUpdated($article);
         }
 
-        session()->flash('success', __('article.updated', ['title' => $article->title, 'status' => __('status.'.$article->status)]));
+        session()->flash('success', __('Article ":title" has been saved as :status.', ['title' => $article->title, 'status' => __('statuses.'.$article->status)]));
         return redirect()->route('mypage.index');
     }
 

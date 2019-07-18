@@ -145,6 +145,34 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'password' => __('Password'),
+        'status' => __('Status'),
+        'title' => __('Title'),
+        'slug' => __('Slug'),
+        'thumbnail-image' => __('Thumbnail'),
+        'addon-file' => __('Addon File'),
+        'pak' => __('Paks'),
+        'addon-type' => __('Addon Types'),
+        'pak128-position' => __('Track positions for pak128'),
+        'license-other' => __('License other'),
+        'author' => __('Author'),
+        'publisher' => __('Publisher'),
+        'categories' => __('Categories'),
+        'tags' => __('Tags'),
+        'description' => __('Description'),
+        'license' => __('License'),
+        'thanks' => __('Acknowledgments and Referenced'),
+        'link' => __('Link'),
+        'agreement' => __('Agreement'),
+        'name' => __('Name'),
+        'email' => __('Email'),
+        'thumbnail_id' => __('Thumbnail'),
+        'file_id' => __('File'),
+        'sections.*.text' => __('Text'),
+        'sections.*.id' => __('Image'),
+        'sections.*.caption' => __('Caption'),
+        'sections.*.type' => __('Type'),
+    ],
 
 ];

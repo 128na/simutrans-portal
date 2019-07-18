@@ -5,30 +5,30 @@
         </div>
     @endif
     <dl class="mx-1 mt-2">
-        <dt>{{ __('article.author') }} / {{ __('article.publisher') }}</dt>
+        <dt>@lang('Author') / @lang('Publisher')</dt>
         <dd>
             {{ $article->author }}</a> / <a href="{{ route('user', [$article->user]) }}" rel="author">{{ $article->user->name }}</a>
         </dd>
-        <dt>{{ __('article.categories') }}</dt>
+        <dt>@lang('Categories')</dt>
         <dd>
             @include('parts.category-list', ['categories' => $article->categories,
                 'post_type' => $article->post_type, 'route_name' => 'addons.index'])
         </dd>
-        <dt>{{ __('article.tags') }}</dt>
+        <dt>@lang('Tags')</dt>
         <dd>
             @include('parts.tag-list', ['tags' => $article->tags])
         </dd>
-        <dt>{{ __('article.description') }}</dt>
+        <dt>@lang('Description')</dt>
         <dd class="mt-1 ml-2">{{ $article->description }}</dd>
         @if ($article->thanks)
-            <dt>{{ __('article.thanks') }}</dt>
+            <dt>@lang('Acknowledgments and Referenced')</dt>
             <dd class="mt-1 ml-2">{{ $article->thanks }}</dd>
         @endif
         @if ($article->license)
-            <dt>{{ __('article.license') }}</dt>
+            <dt>@lang('License')</dt>
             <dd class="mt-1 ml-2">{{ $article->license }}</dd>
         @endif
-        <dt>{{ __('article.download') }}</dt>
-        <dd class="mt-1 ml-2"><a class="btn btn-lg btn-primary" href="{{ route('articles.download', $article) }}">{{ __('article.download') }}</a></dd>
+        <dt>@lang('Download')</dt>
+        <dd class="mt-1 ml-2"><a class="btn btn-lg btn-primary" href="{{ route('articles.download', $article) }}">@lang('Click to Download')</a></dd>
     </dl>
 </div>

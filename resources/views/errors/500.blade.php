@@ -1,3 +1,3 @@
 @extends('layouts.front')
 
-@section('title', __('message.server-error'))
+@section('title', __('An error has occurred'))

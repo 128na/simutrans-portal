@@ -33,6 +33,7 @@ Route::middleware(['minify'])->group(function () {
     Route::get('/articles/{article}', 'Front\ArticleController@show')->name('articles.show');
     Route::get('/search', 'Front\ArticleController@search')->name('search');
 });
+Route::get('/language/{name}', 'Front\IndexController@language')->name('language');
 Route::get('/articles/{article}/download', 'Front\ArticleController@download')->name('articles.download');
 
 // ログイン系：ユーザー

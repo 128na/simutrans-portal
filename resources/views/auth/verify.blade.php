@@ -1,16 +1,16 @@
 @extends('layouts.mypage')
 
-@section('title', __('auth.verify.email'))
+@section('title', __('Verify Your Email Address'))
 
 @section('content')
 <div class="container">
     @if (session('resent'))
         <div class="alert alert-success" role="alert">
-            {{ __('auth.verify.resent') }}
+            @lang('A fresh verification link has been sent to your email address.')
         </div>
     @endif
 
-    {{ __('auth.verify.attention') }}<br>
-    {{ __('auth.verify.not-received') }}<a href="{{ route('verification.resend') }}">{{ __('auth.verify.resend') }}</a>
+    @lang('Before proceeding, please check your email for a verification link.')
+    @lang('If you did not receive the email'), <a href="{{ route('verification.resend') }}">@lang('click here to request another')</a>.
 </div>
 @endsection

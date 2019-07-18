@@ -48,7 +48,7 @@ class ProfileController extends Controller
             $user->sendEmailVerificationNotification();
         }
 
-        session()->flash('success', __('user.updated'));
+        session()->flash('success', __('Profile Updated.'));
         return redirect()->route('mypage.index');
     }
 

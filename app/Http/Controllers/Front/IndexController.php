@@ -30,4 +30,14 @@ class IndexController extends Controller
         return static::viewWithHeader('front.index', $data);
     }
 
+    public function language($name) {
+        if(array_key_exists($name, config('languages'))) {
+            \App::setLocale($name);
+            session()->flash('success', __('Set language.'));
+            return redirect()->back()->withCookie('lang', $name);
+        } else {
+            session()->flash('error', __('This language is not supported.'));
+        }
+        return redirect()->back();
+    }
 }

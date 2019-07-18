@@ -2,17 +2,17 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ __('File Manager') }}</h5>
+                <h5 class="modal-title">@lang('File Manager')</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body text-right">
                 <input type="file" class="d-none" name="upload_file" id="upload_file">
-                <button type="button" class="btn btn-secondary js-open-upload-dialog">{{ __('Upload File') }}</button>
-                <button type="button" class="btn btn-primary js-select-file" disabled>{{ __('Select File') }}</button>
+                <button type="button" class="btn btn-secondary js-open-upload-dialog">@lang('Upload File')</button>
+                <button type="button" class="btn btn-primary js-select-file" disabled>@lang('Select File')</button>
             </div>
             <div class="modal-footer">
-                <div class="hidable js-loading show">{{ __('Loading...') }}</div>
-                <div class="hidable js-uploading">{{ __('Uploading...') }}</div>
+                <div class="hidable js-loading show">@lang('Loading...')</div>
+                <div class="hidable js-uploading">@lang('Uploading...')</div>
                 <div class="hidable js-file-list-box">
                     <ul class="js-file-list"></ul>
                 </div>

@@ -9,7 +9,7 @@
         @include('parts._modal_uploader')
 
         <div class="form-group">
-            <button class="btn btn-lg btn-primary">{{ __('Save') }}</button>
+            <button class="btn btn-lg btn-primary">@lang('Save')</button>
         </div>
     </form>
 @endsection

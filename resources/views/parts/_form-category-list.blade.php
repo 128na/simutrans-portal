@@ -5,6 +5,6 @@
     <div class="custom-control custom-checkbox">
         <input type="checkbox" class="custom-control-input" id="category-{{ $category->id }}" name="categories[{{ $name }}][{{ $category->id }}]"
             value="{{ $category->id }}" {{ $checked ? 'checked' : '' }}>
-        <label class="custom-control-label" for="category-{{ $category->id }}">{{ __("category.{$category->type}.{$category->slug}") }}</label>
+        <label class="custom-control-label" for="category-{{ $category->id }}">@lang("category.{$category->type}.{$category->slug}")</label>
     </div>
 @endforeach

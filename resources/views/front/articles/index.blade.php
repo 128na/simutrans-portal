@@ -17,7 +17,7 @@
         @forelse ($articles as $article)
             @include('front.articles.parts.list-item', ['article' => $article])
         @empty
-            <p>{{ __('No article exists.')}}</p>
+            <p>@lang('No article exists.')</p>
         @endforelse
     </div>
 

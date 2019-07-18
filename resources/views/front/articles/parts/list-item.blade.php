@@ -1,7 +1,7 @@
 @if ($article->post_type === 'page')
 <div class="mb-3 article-box">
     <h5><a href="{{ route('articles.show', $article->slug)}}">{{ $article->title }}</a></h5>
-    <small>{{ __('Last updated: :date', ['date' => $article->updated_at]) }}</small>
+    <small>@lang('Last updated: :date', ['date' => $article->updated_at])</small>
 </div>
 @else
 <div class="mb-3 article-box">
@@ -22,7 +22,7 @@
                 'post_type' => $article->post_type, 'route_name' => 'addons.index'])
             @include('parts.tag-list', ['tags' => $article->tags])
         </div>
-        <small>{{ __('Last updated: :date', ['date' => $article->updated_at]) }}</small>
+        <small>@lang('Last updated: :date', ['date' => $article->updated_at])</small>
     </div>
 </div>
 @endif

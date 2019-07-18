@@ -1,27 +1,27 @@
 
 <div class="form-group">
-    <label><span class="badge badge-secondary mr-1">{{ __('Optional') }}</span>{{ __('Paks') }}</label>
+    <label><span class="badge badge-secondary mr-1">@lang('Optional')</span>@lang('Paks')</label>
     <div class="category-list">
         @include('parts._form-category-list', ['name' => 'pak', 'categories' => $categories->get('pak')])
     </div>
 </div>
 
 <div class="form-group">
-    <label><span class="badge badge-secondary mr-1">{{ __('Optional') }}</span>{{ __('Addon Types') }}</label>
+    <label><span class="badge badge-secondary mr-1">@lang('Optional')</span>@lang('Addon Types')</label>
     <div class="category-list">
         @include('parts._form-category-list', ['name' => 'addon', 'categories' => $categories->get('addon')])
     </div>
 </div>
 
 <div class="form-group">
-    <label><span class="badge badge-secondary mr-1">{{ __('Optional') }}</span>{{ __('Track positions for pak128') }}</label>
+    <label><span class="badge badge-secondary mr-1">@lang('Optional')</span>@lang('Track positions for pak128')</label>
     <div class="category-list">
         @include('parts._form-category-list', ['name' => 'pak128_position', 'categories' => $categories->get('pak128_position')])
     </div>
 </div>
 
 <div class="form-group">
-    <label for="tag"><span class="badge badge-secondary mr-1">{{ __('Optional') }}</span>{{ __('Tags') }}</label>
+    <label for="tag"><span class="badge badge-secondary mr-1">@lang('Optional')</span>@lang('Tags')</label>
     <div class="tag-list mb-2">
         @foreach ($article->tags ?? [] as $tag)
             <div class="badge badge-secondary fade show">
@@ -34,12 +34,12 @@
     <div class="input-group mb-3">
         <input type="text" class="form-control" id="new-tag" autocomplete="off">
         <div class="input-group-append">
-            <button class="btn btn-outline-secondary js-add-tag" type="button">{{ __('Add tag') }}</button>
+            <button class="btn btn-outline-secondary js-add-tag" type="button">@lang('Add tag')</button>
         </div>
     </div>
 
     <a class="btn btn-secondary mb-2" data-toggle="collapse" href="#popular-tags" role="button" aria-expanded="false" aria-controls="popular-tags">
-        {{ __('Choose from commonly used tags') }}
+        @lang('Choose from commonly used tags')
     </a>
     <div class="collapse" id="popular-tags">
         <div class="card card-body">
@@ -53,13 +53,13 @@
 </div>
 
 <div class="form-group">
-    <label><span class="badge badge-secondary mr-1">{{ __('Optional') }}</span>{{ __('License') }}</label>
+    <label><span class="badge badge-secondary mr-1">@lang('Optional')</span>@lang('License')</label>
     <div class="category-list">
         @include('parts._form-category-list', ['name' => 'license', 'categories' => $categories->get('license')])
     </div>
 </div>
 
 <div class="form-group">
-    <label for="license"><span class="badge badge-secondary mr-1">{{ __('Optional') }}</span>{{ __('License other') }}</label>
+    <label for="license"><span class="badge badge-secondary mr-1">@lang('Optional')</span>@lang('License other')</label>
     <textarea class="form-control" id="license" name="license" rows="4">{!! e(old('license', $article->license ?? '')) !!}</textarea>
 </div>

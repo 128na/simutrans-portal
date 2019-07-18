@@ -16,15 +16,15 @@
         @endif
         @if ($in_mypage)
             <div class="card-text mt-2 text-right">
-                <a href="{{ route('mypage.profile.edit') }}">{{ __('Edit my profile') }}</a>
+                <a href="{{ route('mypage.profile.edit') }}">@lang('Edit my profile')</a>
             </div>
         @endif
     </div>
     @if ($in_mypage)
         @if ($user->email_verified_at)
-            <small class="verify-status ml-1 mt-1 px-1 rounded border border-success text-success">{{ __('Verified') }}</small>
+            <small class="verify-status ml-1 mt-1 px-1 rounded border border-success text-success">@lang('Verified')</small>
         @else
-            <small class="verify-status ml-1 mt-1 px-1 rounded border border-danger text-danger">{{ __('NOT verified') }}</small>
+            <small class="verify-status ml-1 mt-1 px-1 rounded border border-danger text-danger">@lang('NOT verified')</small>
         @endif
     @endif
 </div>

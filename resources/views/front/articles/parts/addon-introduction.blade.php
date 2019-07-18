@@ -5,34 +5,34 @@
         </div>
     @endif
     <dl class="mx-1 mt-2">
-        <dt>{{ __('Author') }} / {{ __('Publisher') }}</dt>
+        <dt>@lang('Author') / @lang('Publisher')</dt>
         <dd>
             {{ $article->author }} / <a href="{{ route('user', [$article->user]) }}" rel="author">{{ $article->user->name }}</a>
         </dd>
-        <dt>{{ __('Categories') }}</dt>
+        <dt>@lang('Categories')</dt>
         <dd>
             @include('parts.category-list', ['categories' => $article->categories,
                 'post_type' => $article->post_type, 'route_name' => 'addons.index'])
         </dd>
-        <dt>{{ __('Tags') }}</dt>
+        <dt>@lang('Tags')</dt>
         <dd>
             @include('parts.tag-list', ['tags' => $article->tags])
         </dd>
-        <dt>{{ __('Description') }}</dt>
+        <dt>@lang('Description')</dt>
         <dd>{{ $article->description }}</dd>
         @if ($article->thanks)
-            <dt>{{ __('Acknowledgments and Referenced') }}</dt>
+            <dt>@lang('Acknowledgments and Referenced')</dt>
             <dd>{{ $article->thanks }}</dd>
         @endif
         @if ($article->license)
-            <dt>{{ __('License') }}</dt>
+            <dt>@lang('License')</dt>
             <dd>{{ $article->license }}</dd>
         @endif
         @if ($article->agreement)
-            <dt>{{ __('Agreement') }}</dt>
-            <dd>{{ __('This article is published by author\'s permission or by author himself.') }}</dd>
+            <dt>@lang('Agreement')</dt>
+            <dd>@lang('This article is published by author\'s permission or by author himself.')</dd>
         @endif
-        <dt>{{ __('Link') }}</dt>
+        <dt>@lang('Link')</dt>
         <dd>
             <a href="#" data-url="{{ $article->link }}" data-slug="{{ $article->slug }}" class="js-click">{{ $article->link }}</a>
         </dd>

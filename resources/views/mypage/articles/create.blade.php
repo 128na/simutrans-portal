@@ -11,8 +11,8 @@
         @include('parts._modal_uploader')
 
         <div class="form-group">
-            <button class="btn btn-lg btn-primary">{{ __('Save') }}</button>
-            <button class="btn btn btn-secondary js-open-preview">{{ __('Preview') }}</button>
+            <button class="btn btn-lg btn-primary">@lang('Save')</button>
+            <button class="btn btn btn-secondary js-open-preview">@lang('Preview')</button>
         </div>
     </form>
 @endsection

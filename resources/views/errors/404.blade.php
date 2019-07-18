@@ -4,6 +4,6 @@
 
 @section('content')
     <p>
-        <a href="{{ route('index') }}">{{ __('Top') }}</a>
+        <a href="{{ route('index') }}">@lang('Top')</a>
     </p>
 @endsection

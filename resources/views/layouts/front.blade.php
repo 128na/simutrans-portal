@@ -49,7 +49,7 @@
         @endif
 
         @if (isset($preview))
-            <div class="alert alert-warning">{{ __('This is a preview display. Articles have not been saved or updated.') }}</div>
+            <div class="alert alert-warning">@lang('This is a preview display. Articles have not been saved or updated.')</div>
         @endif
 
         @includeWhen(!empty($breadcrumb), 'parts.breadcrumb')

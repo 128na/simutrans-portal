@@ -1,16 +1,16 @@
 
 
 <div class="form-group">
-    <label><span class="badge badge-danger mr-1">{{ __('Required') }}</span>{{ __('Sections') }}</label>
+    <label><span class="badge badge-danger mr-1">@lang('Required')</span>@lang('Sections')</label>
     <div id="sections" class="mb-1">
         @forelse (old('sections', isset($article) ? $article->getContents('sections', []) : []) as $index => $section)
             <div class="form-group js-section" data-section="{{ $index }}">
                 @switch($section['type'])
                     @case('caption')
                         <h5 class="row">
-                            <div class="col-8">{{ __('Caption') }}</div>
+                            <div class="col-8">@lang('Caption')</div>
                             <div class="col-4 ml-auto text-right">
-                                <button class="btn btn-sm btn-danger js-remove-section">{{ __('Remove') }}</button>
+                                <button class="btn btn-sm btn-danger js-remove-section">@lang('Remove')</button>
                             </div>
                         </h5>
                         <input type="hidden" name="sections[{{ $index }}][type]" value="caption">
@@ -18,9 +18,9 @@
                         @break
                     @case('text')
                         <h5 class="row">
-                            <div class="col-8">{{ __('Text') }}</div>
+                            <div class="col-8">@lang('Text')</div>
                             <div class="col-4 ml-auto text-right">
-                                <button class="btn btn-sm btn-danger js-remove-section">{{ __('Remove') }}</button>
+                                <button class="btn btn-sm btn-danger js-remove-section">@lang('Remove')</button>
                             </div>
                         </h5>
                         <input type="hidden" name="sections[{{ $index }}][type]" value="text">
@@ -28,9 +28,9 @@
                         @break
                     @case('image')
                         <h5 class="row">
-                            <div class="col-8">{{ __('Image') }}</div>
+                            <div class="col-8">@lang('Image')</div>
                             <div class="col-4 ml-auto text-right">
-                                <button class="btn btn-sm btn-danger js-remove-section">{{ __('Remove') }}</button>
+                                <button class="btn btn-sm btn-danger js-remove-section">@lang('Remove')</button>
                             </div>
                         </h5>
                         <input type="hidden" name="sections[{{ $index }}][type]" value="image">
@@ -43,7 +43,7 @@
                         <div>
                             <a href="#" class="btn btn-secondary js-open-uploader"
                                 data-input="#image_id_{{ $index }}" data-preview="#image_preview_{{ $index }}" data-preview-url="#image_preview_url_{{ $index }}" data-only-image="true"
-                            >{{ __('Open File Manager') }}</a>
+                            >@lang('Open File Manager')</a>
                         </div>
                         @break
                 @endswitch
@@ -52,9 +52,9 @@
         @empty
             <div class="form-group js-section" data-section="0">
                 <h5 class="row">
-                    <div class="col-8">{{ __('Text') }}</div>
+                    <div class="col-8">@lang('Text')</div>
                     <div class="col-4 ml-auto text-right">
-                        <button class="btn btn-sm btn-danger js-remove-section">{{ __('Remove') }}</button>
+                        <button class="btn btn-sm btn-danger js-remove-section">@lang('Remove')</button>
                     </div>
                 </h5>
                 <input type="hidden" name="sections[0][type]" value="text">
@@ -62,13 +62,13 @@
             </div>
         @endforelse
     </div>
-    <a href="#" class="btn btn-secondary js-add-caption-section">{{ __('Add Caption') }}</a>
-    <a href="#" class="btn btn-secondary js-add-text-section">{{ __('Add Text') }}</a>
-    <a href="#" class="btn btn-secondary js-add-image-section">{{ __('Add Image') }}</a>
+    <a href="#" class="btn btn-secondary js-add-caption-section">@lang('Add Caption')</a>
+    <a href="#" class="btn btn-secondary js-add-text-section">@lang('Add Text')</a>
+    <a href="#" class="btn btn-secondary js-add-image-section">@lang('Add Image')</a>
 
 </div>
 <div class="form-group">
-    <label><span class="badge badge-secondary mr-1">{{ __('Optional') }}</span>{{ __('Categories') }}</label>
+    <label><span class="badge badge-secondary mr-1">@lang('Optional')</span>@lang('Categories')</label>
     <div class="category-list">
         @include('parts._form-category-list', ['name' => 'page', 'categories' => $categories->get('page')])
     </div>

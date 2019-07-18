@@ -81,7 +81,7 @@
     "My articles": "Meine Artikel",
     "Mypage": "Meine Seite",
     "Name": "Name",
-    "New Article Punlished. \":title\"\nby :name\nat :at\n#simutrans": "Neuer Artikel bestraft. \":title\"\nnach :name\num :at\n#simutrans",
+    "New Article Published. \":title\"\nby :name\nat :at\n#simutrans": "Neuer Artikel veröffentlicht. \":title\"\nnach :name\num :at\n#simutrans",
     "No article exists.": "Es existiert kein Artikel.",
     "No description exists.": "Es existiert keine Beschreibung.",
     "No file.": "Keine Datei.",

@@ -81,7 +81,7 @@
     "My articles": "我的文章",
     "Mypage": "我的页面",
     "Name": "名称",
-    "New Article Punlished. \":title\"\nby :name\nat :at\n#simutrans": "新文章发表。 “:title”\nby :name\nat :at\n#simutrans",
+    "New Article Published. \":title\"\nby :name\nat :at\n#simutrans": "新文章发布。 “:title”\nby :name\nat :at\n#simutrans",
     "No article exists.": "没有文章存在。",
     "No description exists.": "没有描述。",
     "No file.": "没有文件。",

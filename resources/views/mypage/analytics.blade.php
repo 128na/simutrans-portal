@@ -1,6 +1,6 @@
 @extends('layouts.mypage')
 
-@section('title', __('message.analytics'))
+@section('title', __('Access Analytics'))
 
 @section('content')
     <script>

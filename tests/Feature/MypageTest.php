@@ -665,6 +665,87 @@ class MypageTest extends TestCase
     }
 
     /**
+     * 他人の記事を編集すると権限がないエラーが発生すること
+     */
+    public function testEditOthersPage()
+    {
+        $user = factory(User::class)->create();
+        $other_user = factory(User::class)->create();
+        $others_article = static::createPage($other_user);
+        $this->actingAs($user);
+
+        $response = $this->get('mypage/articles/edit/'.$others_article->id);
+        $response->assertForbidden();
+
+        $data = [
+            'title'        => $others_article->title,
+            'slug'         => $others_article->slug,
+            'status'       => $others_article->status,
+            'thumbnail_id' => $others_article->getContents('thumbnail'),
+            'sections'     => $others_article->getContents('sections'),
+        ];
+        $response = $this->post('mypage/articles/edit/page/'.$others_article->id, $data);
+        $response->assertForbidden();
+    }
+
+    /**
+     * 他人の記事を編集すると権限がないエラーが発生すること
+     */
+    public function testEditOthersAddonIntroduction()
+    {
+        $user = factory(User::class)->create();
+        $other_user = factory(User::class)->create();
+        $others_article = static::createAddonIntroduction($other_user);
+        $this->actingAs($user);
+
+        $response = $this->get('mypage/articles/edit/'.$others_article->id);
+        $response->assertForbidden();
+
+        $data = [
+            'title'        => $others_article->title,
+            'slug'         => $others_article->slug,
+            'status'       => $others_article->status,
+            'thumbnail_id' => $others_article->getContents('thumbnail'),
+            'author'      => $others_article->getContents('author'),
+            'link'        => $others_article->getContents('link'),
+            'description' => $others_article->getContents('description'),
+            'thanks'      => $others_article->getContents('thanks'),
+            'license'     => $others_article->getContents('license'),
+        ];
+        $response = $this->post('mypage/articles/edit/addon-introduction/'.$others_article->id, $data);
+        $response->assertForbidden();
+    }
+
+    /**
+     * 他人の記事を編集すると権限がないエラーが発生すること
+     */
+    public function testEditOthersAddonPost()
+    {
+        $user = factory(User::class)->create();
+        $other_user = factory(User::class)->create();
+        $others_article = static::createAddonPost($other_user);
+        $this->actingAs($user);
+
+        $response = $this->get('mypage/articles/edit/'.$others_article->id);
+        $response->assertForbidden();
+
+        $data = [
+            'title'        => $others_article->title,
+            'slug'         => $others_article->slug,
+            'status'       => $others_article->status,
+            'thumbnail_id' => $others_article->getContents('thumbnail'),
+            'author'      => $others_article->getContents('author'),
+            'file_id'     => $others_article->getContents('file'),
+            'description' => $others_article->getContents('description'),
+            'thanks'      => $others_article->getContents('thanks'),
+            'license'     => $others_article->getContents('license'),
+        ];
+        $response = $this->post('mypage/articles/edit/addon-post/'.$others_article->id, $data);
+        $response->assertForbidden();
+    }
+
+
+    /**
      * アナリティクス画面が正常に表示されること
      * 記事が0件
      * 記事が1件

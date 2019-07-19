@@ -17,8 +17,8 @@ Route::feeds();
 Auth::routes(['verify' => true]);
 
 // 非ログイン系 reidsキャッシュ有効
-Route::middleware(['minify'])->group(function () {
-    Route::middleware(['cache.response'])->group(function () {
+Route::middleware('minify')->group(function () {
+    Route::middleware('cache.response')->group(function () {
         Route::get('/', 'Front\IndexController@index')->name('index');
         Route::get('/addons', 'Front\ArticleController@addons')->name('addons.index');
         Route::get('/ranking', 'Front\ArticleController@ranking')->name('addons.ranking');
@@ -39,10 +39,10 @@ Route::get('/articles/{article}/download', 'Front\ArticleController@download')->
 // ログイン系：ユーザー
 Route::prefix('mypage')->group(function () {
     Route::name('mypage.')->group(function () {
-        Route::middleware(['auth'])->group(function () {
+        Route::middleware('auth')->group(function () {
             Route::get('/', 'Mypage\IndexController@index')->name('index');
 
-            Route::middleware(['verified'])->group(function () {
+            Route::middleware('verified')->group(function () {
                 Route::get('profile', 'Mypage\ProfileController@edit')->name('profile.edit');
                 Route::post('profile', 'Mypage\ProfileController@update')->name('profile.update');
 
@@ -51,10 +51,12 @@ Route::prefix('mypage')->group(function () {
                 Route::post('/articles/create/addon-introduction/{preview?}', 'Mypage\AddonIntroductionController@store')->name('articles.store.addon-introduction');
                 Route::post('/articles/create/page/{preview?}', 'Mypage\PageController@store')->name('articles.store.page');
 
-                Route::get('/articles/edit/{article}', 'Mypage\ArticleController@edit')->name('articles.edit');
-                Route::post('/articles/edit/addon-post/{article}/{preview?}', 'Mypage\AddonPostController@update')->name('articles.update.addon-post');
-                Route::post('/articles/edit/addon-introduction/{article}/{preview?}', 'Mypage\AddonIntroductionController@update')->name('articles.update.addon-introduction');
-                Route::post('/articles/edit/page/{article}/{preview?}', 'Mypage\PageController@update')->name('articles.update.page');
+                Route::middleware('can:update,article')->group(function () {
+                    Route::get('/articles/edit/{article}', 'Mypage\ArticleController@edit')->name('articles.edit');
+                    Route::post('/articles/edit/addon-post/{article}/{preview?}', 'Mypage\AddonPostController@update')->name('articles.update.addon-post');
+                    Route::post('/articles/edit/addon-introduction/{article}/{preview?}', 'Mypage\AddonIntroductionController@update')->name('articles.update.addon-introduction');
+                    Route::post('/articles/edit/page/{article}/{preview?}', 'Mypage\PageController@update')->name('articles.update.page');
+                });
 
                 Route::get('/articles/analytics', 'Mypage\ArticleController@analytics')->name('articles.analytics');
             });

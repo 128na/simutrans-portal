@@ -105,7 +105,12 @@ class ArticleController extends Controller
     public function category($type, $slug)
     {
         $method = Str::camel($type);
-        $category = Category::$method()->where('slug', $slug)->firstOrFail();
+
+        try {
+            $category = Category::$method()->slug($slug)->firstOrFail();
+        } catch (\BadMethodCallException $e) {
+            throw new \Illuminate\Database\Eloquent\ModelNotFoundException($e);
+        }
         $articles = $category->articles()
             ->active()->withForList()->paginate(20);
 
@@ -117,18 +122,21 @@ class ArticleController extends Controller
     /**
      * カテゴリ(pak/addon)の投稿一覧画面
      */
-    public function categoryPakAddon($pak, $addon)
+    public function categoryPakAddon($pak_slug, $addon_slug)
     {
+        $pak   = Category::pak()->slug($pak_slug)->firstOrFail();
+        $addon = Category::addon()->slug($addon_slug)->firstOrFail();
+
         $articles = Article::active()
             ->whereHas('categories', function($query) use ($pak) {
-                $query->where('type', 'pak')->where('slug', $pak);
+                $query->pak()->slug($pak->slug);
             })
             ->whereHas('categories', function($query) use ($addon) {
-                $query->where('type', 'addon')->where('slug', $addon);
+                $query->addon()->slug($addon->slug);
             })
             ->withForList()->paginate(20);
-        $title = __(':pak, :addon', ['pak' => __('category.pak.'.$pak), 'addon' => __('category.addon.'.$addon)]);
-        $breadcrumb = Breadcrumb::forPakAddon($pak, $addon);
+        $title = __(':pak, :addon', ['pak' => __('category.pak.'.$pak->slug), 'addon' => __('category.addon.'.$addon->slug)]);
+        $breadcrumb = Breadcrumb::forPakAddon($pak->slug, $addon->slug);
         return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
     }
 

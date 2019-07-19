@@ -13,7 +13,17 @@ trait Slugable
     */
     public function resolveRouteBinding($value)
     {
-        return $this->where('slug', urlencode($value))->first() ?? $this->findOrFail($value);
+        return $this->slug(urlencode($value))->first() ?? $this->findOrFail($value);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | スコープ
+    |--------------------------------------------------------------------------
+    */
+    public function scopeSlug($query, $slug)
+    {
+        return $query->where('slug', $slug);
     }
 
     /*

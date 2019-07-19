@@ -145,6 +145,8 @@ class FrontTest extends TestCase
             $response = $this->get('/user/'.$user->id);
             $response->assertOk();
         }
+        $response = $this->get('/user/wrong-id');
+        $response->assertNotFound();
     }
 
     /**
@@ -158,7 +160,15 @@ class FrontTest extends TestCase
         foreach ($categories as $category) {
             $response = $this->get('/category/'.$category->type.'/'.$category->slug);
             $response->assertOk();
+
+            $response = $this->get('/category/wrong-type/'.$category->slug);
+            $response->assertNotFound();
+
+            $response = $this->get('/category/'.$category->type.'/wrong-slug');
+            $response->assertNotFound();
         }
+        $response = $this->get('/category/wrong-type/wrong-slug');
+        $response->assertNotFound();
     }
 
 
@@ -176,8 +186,16 @@ class FrontTest extends TestCase
             foreach ($addons as $addon) {
                 $response = $this->get('/category/pak/'.$pak->slug.'/'.$addon->slug);
                 $response->assertOk();
+
+                $response = $this->get('/category/pak/wrong-pak/'.$addon->slug);
+                $response->assertNotFound();
+
+                $response = $this->get('/category/pak/'.$pak->slug.'/wrong-addon');
+                $response->assertNotFound();
             }
         }
+        $response = $this->get('/category/pak/wrong-pak/wrong-addon');
+        $response->assertNotFound();
     }
 
 

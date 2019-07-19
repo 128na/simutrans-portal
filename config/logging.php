@@ -2,6 +2,7 @@
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
+use App\Handlers\MailHandler;
 
 return [
 
@@ -36,8 +37,14 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['daily'],
+            'channels' => ['daily', 'mail'],
             'ignore_exceptions' => false,
+        ],
+
+        'mail' => [
+            'driver'  => 'monolog',
+            'level' => 'error',
+            'handler' => MailHandler::class,
         ],
 
         'single' => [

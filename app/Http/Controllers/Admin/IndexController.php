@@ -23,4 +23,19 @@ class IndexController extends Controller
         return redirect()->route('admin.index');
     }
 
+    public function error()
+    {
+        trigger_error("Error was created manually.", E_USER_ERROR);
+    }
+
+    public function warning()
+    {
+        trigger_error("Warning was created manually.", E_USER_WARNING);
+    }
+
+    public function notice()
+    {
+        trigger_error("Notice was created manually.", E_USER_NOTICE);
+    }
+
 }

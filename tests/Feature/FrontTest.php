@@ -323,4 +323,40 @@ class FrontTest extends TestCase
         $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 2]);
         $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 2]);
     }
+
+    public function testSetLanguage()
+    {
+        $response = $this->get('/language/ja');
+        $this->assertCookie($response, 'lang', 'ja');
+
+        $response = $this->get('/language/en');
+        $this->assertCookie($response, 'lang', 'en');
+
+        $response = $this->get('/language/de');
+        $this->assertCookie($response, 'lang', 'de');
+
+        $response = $this->get('/language/zh-CN');
+        $this->assertCookie($response, 'lang', 'zh-CN');
+
+        $response = $this->get('/language/zh-TW');
+        $this->assertCookie($response, 'lang', 'zh-TW');
+
+        $response = $this->get('/language/invalid');
+        $this->assertCookie($response, 'lang', null);
+    }
+
+    /**
+     * assertPlainCookieでlangが拾えないので代用
+     */
+    private function assertCookie($response, $name, $value)
+    {
+        $cookies = $response->headers->getCookies();
+
+        foreach ($cookies as $cookie) {
+            if($cookie->getName() === $name) {
+                return $this->assertEquals($cookie->getValue(), $value);
+            }
+        }
+        return $this->assertEquals(null, $value);
+    }
 }

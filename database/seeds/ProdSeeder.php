@@ -53,7 +53,7 @@ class ProdSeeder extends Seeder
      */
     private static function addAnounces($user)
     {
-        $announce_category = Category::page()->where('slug', 'announce')->firstOrFail();
+        $announce_category = Category::page()->slug('announce')->firstOrFail();
 
         foreach (config('announces', []) as $data) {
             $data = array_merge([

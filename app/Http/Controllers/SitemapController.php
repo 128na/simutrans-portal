@@ -54,10 +54,10 @@ class SitemapController extends Controller
             foreach (PakAddonCount::cursor() as $pak_addon) {
                 $latest = Article::active()
                     ->whereHas('categories', function($query) use ($pak_addon) {
-                        $query->where('type', 'pak')->where('slug', $pak_addon->pak_slug);
+                        $query->pak()->slug($pak_addon->pak_slug);
                     })
                     ->whereHas('categories', function($query) use ($pak_addon) {
-                        $query->where('type', 'addon')->where('slug', $pak_addon->addon_slug);
+                        $query->addon()->slug($pak_addon->addon_slug);
                     })
                     ->first();
                 $sitemap->add(

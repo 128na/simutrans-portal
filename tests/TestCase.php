@@ -77,7 +77,7 @@ abstract class TestCase extends BaseTestCase
                 'sections' => [['type' => 'text', 'text' => 'test announce text']]
             ],
         ]);
-        $announce_category = Category::where('type', 'page')->where('slug', 'announce')->firstOrFail();
+        $announce_category = Category::page()->slug('announce')->firstOrFail();
         $article->categories()->save($announce_category);
         return $article;
     }

@@ -67,7 +67,12 @@ Route::prefix('admin')->group(function () {
     Route::name('admin.')->group(function () {
         Route::middleware(['auth', 'admin', 'verified'])->group(function () {
             Route::get('/', 'Admin\IndexController@index')->name('index');
+
+            // デバッグツール
             Route::post('/flush-cache', 'Admin\IndexController@flushCache')->name('flush.cache');
+            Route::get('/error', 'Admin\IndexController@error')->name('error');
+            Route::get('/warning', 'Admin\IndexController@warning')->name('warning');
+            Route::get('/notice', 'Admin\IndexController@notice')->name('notice');
 
             Route::get('/users', 'Admin\UserController@index')->name('users.index');
             // Route::get('/users/create', 'Admin\UserController@create')->name('users.create');

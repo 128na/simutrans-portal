@@ -45,14 +45,16 @@ class Twitter
     {
         $url = route('articles.show', $article->slug);
         $now = now()->format('Y/m/d H:i');
-        $message = __("New Article Published. \":title\"\nby :name\nat :at\n#simutrans", ['title' => $article->title, 'name' => $article->user->name, 'at' => $now]);
+        $message = __("New Article Published. \":title\"\n:url\nby :name\nat :at\n#simutrans",
+            ['title' => $article->title, 'url' => $url, 'name' => $article->user->name, 'at' => $now]);
         return Twitter::post($message);
     }
     public static function articleUpdated($article)
     {
         $url = route('articles.show', $article->slug);
         $now = now()->format('Y/m/d H:i');
-        $message = __("\":title\" Updated.\nby :name\nat :at\n#simutrans", ['title' => $article->title, 'name' => $article->user->name, 'at' => $now]);
+        $message = __("\":title\" Updated.\n:url\nby :name\nat :at\n#simutrans",
+            ['title' => $article->title, 'url' => $url, 'name' => $article->user->name, 'at' => $now]);
         return Twitter::post($message);
     }
 

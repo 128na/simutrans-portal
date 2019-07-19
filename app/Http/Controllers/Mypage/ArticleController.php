@@ -39,8 +39,6 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        abort_unless($article->user_id === Auth::id(), 404);
-
         $article->load('categories', 'attachments', 'tags');
 
         $categories = Category::for(Auth::user())->get();
@@ -95,8 +93,6 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article, $preview = false)
     {
-        abort_unless($article->user_id === Auth::id(), 404);
-
         self::validateData($request->all(), static::getValidateRule($article));
 
         $article->fill([

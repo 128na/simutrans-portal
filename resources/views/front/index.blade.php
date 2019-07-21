@@ -6,53 +6,40 @@
 
 @section('content')
     <section class="mb-4 list">
-        <h2 class="border-bottom">@lang('Announces')</h2>
-        @unless (empty($articles['pages']))
-            @foreach ($articles['announces'] as $article)
-                @include('front.articles.parts.list-item', ['article' => $article])
-            @endforeach
-            <h6><a href="{{ route('announces.index') }}">@lang('Show all announces.')</a></h6>
-        @else
-            <p>@lang('No article exists.')</p>
-        @endunless
+        @component('components.page-list', ['articles' => $announces])
+            <a href="{{ route('announces.index') }}">@lang('Announces')</a>
+            @slot('no_item')
+                @lang('No article exists.')
+            @endslot
+        @endcomponent
+    </section>
+
+    @foreach ($latest as $pak => $latest_articles)
+        <section class="mb-4 list">
+            @component('components.addon-list', ['articles' => $latest_articles])
+                <a href="{{ route('category', ['pak', $pak]) }}">@lang(':pak Latest Addons', ['pak' => __("category.pak.$pak")])</a>
+                @slot('no_item')
+                    @lang('No article exists.')
+                @endslot
+            @endcomponent
+        </section>
+    @endforeach
+
+    <section class="mb-4 list">
+        @component('components.addon-list', ['articles' => $ranking])
+            <a href="{{ route('addons.ranking') }}">@lang('Access Ranking')</a>
+            @slot('no_item')
+                @lang('No article exists.')
+            @endslot
+        @endcomponent
     </section>
 
     <section class="mb-4 list">
-        <h2 class="border-bottom">@lang('Latest Addons')</h2>
-        @unless (empty($articles['latest']))
-            @foreach ($articles['latest'] as $article)
-                @include('front.articles.parts.list-item', ['article' => $article])
-            @endforeach
-            <h6>
-                <a href="{{ route('addons.index') }}">@lang('Show all addons.')</a>
-            </h6>
-        @else
-            <p>@lang('No article exists.')</p>
-        @endunless
+        @component('components.page-list', ['articles' => $pages])
+            <a href="{{ route('pages.index') }}">@lang('Pages')</a>
+            @slot('no_item')
+                @lang('No article exists.')
+            @endslot
+        @endcomponent
     </section>
-
-    <section class="mb-4 list">
-        <h2 class="border-bottom">@lang('Access Ranking')</h2>
-        @unless (empty($articles['ranking']))
-            @foreach ($articles['ranking'] as $article)
-                @include('front.articles.parts.list-item', ['article' => $article])
-            @endforeach
-            <h6><a href="{{ route('addons.ranking') }}">@lang('Show ranking addons.')</a></h6>
-        @else
-            <p>@lang('No article exists.')</p>
-        @endunless
-    </section>
-
-    <section class="mb-4 list">
-        <h2 class="border-bottom">@lang('Pages')</h2>
-        @unless (empty($articles['pages']))
-            @foreach ($articles['pages'] as $article)
-                @include('front.articles.parts.list-item', ['article' => $article])
-            @endforeach
-            <h6><a href="{{ route('pages.index') }}">@lang('Show all pages.')</a></h6>
-        @else
-            <p>@lang('No article exists.')</p>
-        @endunless
-    </section>
-
 @endsection

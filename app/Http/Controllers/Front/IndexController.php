@@ -14,20 +14,15 @@ class IndexController extends Controller
     {
         $announces = Article::announce()->active()->withForList()->limit(3)->get();
         $pages     = Article::withoutAnnounce()->active()->withForList()->limit(3)->get();
-        $latest    = Article::addon()->active()->withForList()->limit(3)->get();
-        $ranking   = Article::addon()->ranking()->active()->whereNotIn('articles.id', $latest->pluck('id'))->withForList()->limit(3)->get();
-
-
-        $data = [
-            'articles' => [
-                'announces' => $announces,
-                'pages'     => $pages,
-                'latest'    => $latest,
-                'ranking'   => $ranking,
-            ]
+        $latest = [
+            '64' => Article::pak('64')->addon()->active()->withForList()->limit(6)->get(),
+            '128' => Article::pak('128')->addon()->active()->withForList()->limit(6)->get(),
+            '128-japan' => Article::pak('128-japan')->addon()->active()->withForList()->limit(6)->get(),
         ];
+        $excludes = collect($latest)->flatten()->pluck('id')->unique()->toArray();
+        $ranking = Article::addon()->ranking()->active()->whereNotIn('articles.id', $excludes)->withForList()->limit(6)->get();
 
-        return static::viewWithHeader('front.index', $data);
+        return static::viewWithHeader('front.index', compact('announces', 'pages', 'latest', 'ranking'));
     }
 
     public function language($name) {

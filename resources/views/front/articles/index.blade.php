@@ -13,13 +13,13 @@
 @section('content')
     {!! e($articles->onEachSide(1)->links('vendor.pagination.default')) !!}
 
-    <div class="list">
-        @forelse ($articles as $article)
-            @include('front.articles.parts.list-item', ['article' => $article])
-        @empty
-            <p>@lang('No article exists.')</p>
-        @endforelse
-    </div>
+    <section class="mb-4 list">
+        @component('components.addon-list', ['articles' => $articles])
+            @slot('no_item')
+                @lang('No article exists.')
+            @endslot
+        @endcomponent
+    </section>
 
     {!! e($articles->onEachSide(1)->links('vendor.pagination.default')) !!}
 @endsection

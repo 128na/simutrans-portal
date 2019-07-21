@@ -208,6 +208,13 @@ class Article extends Model implements Feedable
     {
         $query->where('post_type', 'page');
     }
+    public function scopePak($query, $slug)
+    {
+        $query->whereHas('categories', function($query) use ($slug) {
+            $query->pak()->slug($slug);
+        });
+    }
+
     public function scopeAnnounce($query)
     {
         $query->where('post_type', 'page')

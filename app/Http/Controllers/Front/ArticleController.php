@@ -21,7 +21,7 @@ class ArticleController extends Controller
      */
     public function addons()
     {
-        $articles = Article::addon()->active()->withForList()->paginate(20);
+        $articles = Article::addon()->active()->withForList()->paginate(24);
 
         $title = __('Articles');
         $breadcrumb = Breadcrumb::forList('Articles');
@@ -33,7 +33,7 @@ class ArticleController extends Controller
      */
     public function ranking()
     {
-        $articles = Article::addon()->ranking()->active()->withForList()->paginate(20);
+        $articles = Article::addon()->ranking()->active()->withForList()->paginate(24);
 
         $title = __('Ranking');
         $breadcrumb = Breadcrumb::forList('Ranking');
@@ -45,7 +45,7 @@ class ArticleController extends Controller
      */
     public function pages()
     {
-        $articles = Article::withoutAnnounce()->active()->withForList()->paginate(20);
+        $articles = Article::withoutAnnounce()->active()->withForList()->paginate(24);
 
         $title = __('Pages');
         $breadcrumb = Breadcrumb::forList('Pages');
@@ -57,7 +57,7 @@ class ArticleController extends Controller
      */
     public function announces()
     {
-        $articles = Article::announce()->active()->withForList()->paginate(20);
+        $articles = Article::announce()->active()->withForList()->paginate(24);
 
         $title = __('Announces');
         $breadcrumb = Breadcrumb::forList('Announces');
@@ -112,7 +112,7 @@ class ArticleController extends Controller
             throw new \Illuminate\Database\Eloquent\ModelNotFoundException($e);
         }
         $articles = $category->articles()
-            ->active()->withForList()->paginate(20);
+            ->active()->withForList()->paginate(24);
 
         $title = __('Category :name', ['name' => __("category.{$type}.{$category->slug}")]);
         $breadcrumb = Breadcrumb::forCategory($category);
@@ -134,7 +134,7 @@ class ArticleController extends Controller
             ->whereHas('categories', function($query) use ($addon) {
                 $query->addon()->slug($addon->slug);
             })
-            ->withForList()->paginate(20);
+            ->withForList()->paginate(24);
         $title = __(':pak, :addon', ['pak' => __('category.pak.'.$pak->slug), 'addon' => __('category.addon.'.$addon->slug)]);
         $breadcrumb = Breadcrumb::forPakAddon($pak->slug, $addon->slug);
         return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
@@ -146,7 +146,7 @@ class ArticleController extends Controller
     public function tag(Tag $tag)
     {
         $articles = $tag->articles()
-            ->active()->withForList()->paginate(20);
+            ->active()->withForList()->paginate(24);
 
         $title = __('Tag :name', ['name' => $tag->name]);
         $breadcrumb = Breadcrumb::forTag($tag->name);
@@ -160,7 +160,7 @@ class ArticleController extends Controller
     {
         $user->load('profile','profile.attachments');
         $articles = $user->articles()
-            ->active()->withForList()->paginate(20);
+            ->active()->withForList()->paginate(24);
 
         $title = __('User :name', ['name' => $user->name]);
         $breadcrumb = Breadcrumb::forUser($user);
@@ -176,7 +176,7 @@ class ArticleController extends Controller
         if(is_null($word)) {
             return redirect()->route('addons.index');
         }
-        $articles = Article::active()->search($word)->withForList()->paginate(20);
+        $articles = Article::active()->search($word)->withForList()->paginate(24);
 
         $title = __('Search results by :word', ['word' => $word]);
         $breadcrumb = Breadcrumb::forSearch($word);

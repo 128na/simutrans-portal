@@ -26,8 +26,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('check:deadlink')->dailyAt(0, '10:00');
         $schedule->command('backup:clean')->dailyAt(0, '2:00');
-        $schedule->commaFnd('backup:run')->dailyAt(0, '3:00');
-        $schedule->commaFnd('compress:image')->dailyAt(0, '4:00');
+        $schedule->command('backup:run')->dailyAt(0, '3:00');
+        $schedule->command('compress:image')->dailyAt(0, '4:00');
 
     }
 

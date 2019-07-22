@@ -43,7 +43,7 @@ class CacheResponse
      * @param int $expire_sec
      * @return mixed
      */
-    protected static function cacheOrCallback($key, $callback, $expire_sec = 3600)
+    protected static function cacheOrCallback($key, $callback)
     {
         $cache = Cache::get($key);
         if(empty($cache)) {
@@ -54,7 +54,7 @@ class CacheResponse
                 return $data;
             }
 
-            Cache::put($key, $data->getContent(), $expire_sec);
+            Cache::put($key, $data->getContent(), config('app.cache_lifetime_min', 0)*60);
             return $data;
         }
         return response($cache);

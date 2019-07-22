@@ -10,6 +10,9 @@ return [
     'meta-image' => 'default/ogp-image.png',
 
     'tinypng_api_key' => env('TINYPNG_API_KEY'),
+
+    'cache_lifetime_min' => env('CACHE_LIFETIME_MIN', 180),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

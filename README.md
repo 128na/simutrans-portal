@@ -18,7 +18,7 @@ https://simutrans.sakura.ne.jp/portal/
 
 ## システム構成図
 
-img
+![portal_system](https://user-images.githubusercontent.com/15730241/61630404-98e09a00-acc2-11e9-871f-0d5810640f9b.png)
 
 ## setup
 

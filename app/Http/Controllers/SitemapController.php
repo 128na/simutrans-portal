@@ -21,7 +21,7 @@ class SitemapController extends Controller
 
         // set cache key (string), duration in minutes (Carbon|Datetime|int), turn on/off (boolean)
         // by default cache is disabled
-        $sitemap->setCache('laravel.sitemap', 60);
+        $sitemap->setCache('laravel.sitemap', config('app.cache_lifetime_min'), true);
 
         // check if there is cached sitemap and build new only if is not
         if (!$sitemap->isCached()) {

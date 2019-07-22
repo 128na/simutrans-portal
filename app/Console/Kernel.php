@@ -24,10 +24,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
-        $schedule->command('backup:clean')->weeklyOn(0, '1:00');
-        $schedule->command('backup:run')->weeklyOn(0, '2:00');
+        $schedule->command('check:deadlink')->dailyAt(0, '10:00');
+        $schedule->command('backup:clean')->dailyAt(0, '2:00');
+        $schedule->commaFnd('backup:run')->dailyAt(0, '3:00');
+        $schedule->commaFnd('compress:image')->dailyAt(0, '4:00');
 
     }
 

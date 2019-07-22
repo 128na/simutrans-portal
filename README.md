@@ -39,8 +39,11 @@ img
 `phpunit`
 
 
-## バッチ
+## バッチ（自動実行）
+コマンドスケジューラでそれぞれ毎日実行に指定してあります。
+`* * * * * cd /path-to-your-project && php artisan schedule:run`
 
+## バッチ（手動実行）
 ### リンク切れ自動非公開、ユーザーへ通知
 
 - php artisan check:deadlink

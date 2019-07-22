@@ -41,12 +41,6 @@ img
 
 ## バッチ
 
-### WordPressからのデータインポート（旧サイトからの移行用）
-
-- php artisan import:all
-- php artisan import:users
-- php artisan import:articles
-
 ### リンク切れ自動非公開、ユーザーへ通知
 
 - php artisan check:deadlink
@@ -55,3 +49,7 @@ img
 
 - php artisan backup:clean
 - php artisan backup:run
+
+### アップロード画像一括圧縮
+
+- php artisan compress:image

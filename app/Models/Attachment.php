@@ -64,6 +64,12 @@ class Attachment extends Model
         $mime = mime_content_type($path);
         return stripos($mime, 'image') !== false;
     }
+    public function getIsPngAttribute()
+    {
+        $path = public_path('storage/'.$this->path);
+        $mime = mime_content_type($path);
+        return stripos($mime, 'image/png') !== false;
+    }
     public function getThumbnailAttribute()
     {
         return $this->is_image

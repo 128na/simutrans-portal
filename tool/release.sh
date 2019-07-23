@@ -39,5 +39,9 @@ php artisan config:cache
 echo "--------------"
 echo ""
 php artisan route:cache
-echo "--------------"
-echo "complete!"
+
+echo ""
+echo "|--------------------------------------------------------------------------"
+echo "| migration status."
+echo "|--------------------------------------------------------------------------"
+php artisan migrate:status

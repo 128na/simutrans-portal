@@ -16,7 +16,9 @@ class AttachmentController extends Controller
     public function my()
     {
         $user = Auth::user()->load('myAttachments', 'myAttachments.attachmentable');
-        return new AttachmentsResource($user->myAttachments);
+        return new AttachmentsResource($user->myAttachments->filter(function($attachment) {
+            return $attachment->path_exists;
+        }));
     }
 
     /**
@@ -26,7 +28,7 @@ class AttachmentController extends Controller
     {
         $user = Auth::user()->load('myAttachments', 'myAttachments.attachmentable');
         return new AttachmentsResource($user->myAttachments->filter(function($attachment) {
-            return $attachment->is_image;
+            return $attachment->path_exists && $attachment->is_image;
         }));
     }
 
@@ -38,7 +40,9 @@ class AttachmentController extends Controller
         Attachment::createFromFile($request->file('file'), $user->id);
 
         $user->load('myAttachments');
-        return new AttachmentsResource($user->myAttachments);
+        return new AttachmentsResource($user->myAttachments->filter(function($attachment) {
+            return $attachment->path_exists;
+        }));
     }
 
     public function delete(Attachment $attachment)

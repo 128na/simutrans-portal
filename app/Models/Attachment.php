@@ -58,6 +58,10 @@ class Attachment extends Model
     | アクセサ
     |--------------------------------------------------------------------------
     */
+    public function getPathExistsAttribute()
+    {
+        return Storage::disk('public')->exists($this->path);
+    }
     public function getIsImageAttribute()
     {
         $path = public_path('storage/'.$this->path);

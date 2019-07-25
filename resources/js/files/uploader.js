@@ -106,6 +106,7 @@ const openUploader = function (e) {
     toggleSelectedFileId($apply_to_input.val());
 
     only_image = $target.data('only-image');
+    $upload_file.attr('accept', only_image ? "image/*" : '');
     $modal.modal('show');
     syncFileList();
 }

@@ -14,7 +14,7 @@ class AddonPostController extends ArticleController
 
     protected function saveContents(Request $request, Article $article)
     {
-        $article->setContents('author', $request->input('author'));
+        $article->setContents('author', $request->input('author', Auth::user()->name));
         $article->setContents('description', $request->input('description'));
         $article->setContents('thanks', $request->input('thanks'));
         $article->setContents('license', $request->input('license'));

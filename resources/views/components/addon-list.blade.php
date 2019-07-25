@@ -1,8 +1,8 @@
 <h2 class="border-bottom">{{ $slot }}</h2>
 @unless (empty($articles))
-    <div class="d-flex flex-wrap addon-list">
+    <div class="d-flex flex-wrap addon-list mx-n2">
         @foreach ($articles as $article)
-            <div class="col-md-4 col-sm-6 px-0 px-sm-1 py-1 highlightable">
+            <div class="col-md-4 col-sm-6 p-2 highlightable">
                 <h6>
                     <a href="{{ route('articles.show', $article->slug)}}">{{ $article->title }}</a>
                 </h6>

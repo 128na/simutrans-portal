@@ -13,6 +13,8 @@ return [
 
     'cache_lifetime_min' => env('CACHE_LIFETIME_MIN', 180),
 
+    'version' => env('APP_VERSION', '0.0'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

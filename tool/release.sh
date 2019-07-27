@@ -33,6 +33,12 @@ php /home/simutrans/bin/composer.phar install --optimize-autoloader --no-dev
 
 echo ""
 echo "|--------------------------------------------------------------------------"
+echo "| update app version."
+echo "|--------------------------------------------------------------------------"
+git describe | php ./tool/updateAppVersion.php
+
+echo ""
+echo "|--------------------------------------------------------------------------"
 echo "| optimize app."
 echo "|--------------------------------------------------------------------------"
 php artisan config:cache

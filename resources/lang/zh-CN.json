@@ -77,6 +77,8 @@
     "Login notification": "登录通知",
     "Login": "登录",
     "Logout": "注销",
+    "%m-%d-%Y %k:%M:%S": "%Y/%m/%d %k:%M:%S",
+    "%m-%d-%Y": "%Y/%m/%d",
     "Monthly": "每月一次",
     "My articles": "我的文章",
     "Mypage": "我的页面",

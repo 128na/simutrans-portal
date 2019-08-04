@@ -7,7 +7,10 @@
     <dl class="mx-1 mt-2">
         <dt>@lang('Author') / @lang('Publisher')</dt>
         <dd>
-            {{ $article->author }}</a> / <a href="{{ route('user', [$article->user]) }}" rel="author">{{ $article->user->name }}</a>
+            @if ($article->author)
+                {{ $article->author }}</a> /
+            @endif
+            <a href="{{ route('user', [$article->user]) }}" rel="author">{{ $article->user->name }}</a>
         </dd>
         <dt>@lang('Categories')</dt>
         <dd>

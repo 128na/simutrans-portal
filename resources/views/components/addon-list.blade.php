@@ -19,7 +19,7 @@
                         'post_type' => $article->post_type, 'route_name' => 'addons.index'])
                     @include('parts.tag-list', ['tags' => $article->tags])
                 </div>
-                <small>{{ $article->updated_at }}</small>
+                <small>{{ $article->updated_at->formatLocalized(__('%m-%d-%Y %k:%M:%S')) }}</small>
             </div>
     @endforeach
     </div>

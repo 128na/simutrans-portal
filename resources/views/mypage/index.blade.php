@@ -40,7 +40,7 @@
                             <td>@lang('statuses.'.$article->status)</td>
                             <td>{{ $article->title }}</td>
                             <td>@lang('post_types.'.$article->post_type)</td>
-                            <td>{{$article->created_at }}<br>{{$article->updated_at }}</td>
+                            <td>{{$article->created_at->formatLocalized(__('%m-%d-%Y %k:%M:%S')) }}<br>{{$article->updated_at->formatLocalized(__('%m-%d-%Y %k:%M:%S')) }}</td>
                             <td>{{ $article->todaysConversionCount->count ?? 0 }} / {{ $article->todaysViewCount->count ?? 0 }} = {{ $article->todays_conversion_rate }}</td>
                             <td>
                                 <div class="btn-group">

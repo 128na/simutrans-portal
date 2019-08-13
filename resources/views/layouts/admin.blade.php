@@ -15,8 +15,6 @@
     <script src="{{ asset(mix('js/admin.js')) }}" defer></script>
 </head>
 <body>
-    @includeWhen(\App::environment('production'), 'parts._ga-noscript')
-
     @include('parts.menu-header')
 
     <main class="container bg-white py-2">

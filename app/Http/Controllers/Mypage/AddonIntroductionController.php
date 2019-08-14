@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Mypage;
 
+use App\Models\Contents\Content;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Tag;
@@ -13,12 +14,19 @@ class AddonIntroductionController extends ArticleController
 
     protected function saveContents(Request $request, Article $article)
     {
-        $article->setContents('author', $request->input('author'));
-        $article->setContents('link', $request->input('link'));
-        $article->setContents('description', $request->input('description'));
-        $article->setContents('thanks', $request->input('thanks'));
-        $article->setContents('license', $request->input('license'));
-        $article->setContents('agreement', $request->filled('agreement'));
+        $data = [
+            'thumbnail' => $request->input('thumbnail_id'),
+            'author' => $request->input('author'),
+            'link' => $request->input('link'),
+            'description' => $request->input('description'),
+            'thanks' => $request->input('thanks'),
+            'license' => $request->input('license'),
+            'agreement' => $request->filled('agreement'),
+        ];
+        if ($request->filled('thumbnail_id')) {
+            $article->attachments()->save(Attachment::findOrFail($request->input('thumbnail_id')));
+        }
+        $article->contents = Content::createFromType($this->post_type, $data);
 
         $categories = array_merge(
             $request->input('categories.pak', []),

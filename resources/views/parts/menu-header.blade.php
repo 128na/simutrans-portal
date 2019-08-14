@@ -9,7 +9,7 @@
             @php
                 $show_searchbox = isset($menu_pak_addon_counts) || isset($menu_user_addon_counts);
             @endphp
-            <ul class="navbar-nav ml-auto mr-2">
+            <ul class="navbar-nav ml-auto mr-2" itemscope itemtype="http://www.schema.org/SiteNavigationElement">
 
                 {{-- 言語一覧 --}}
                 <li class="nav-item dropdown">
@@ -25,7 +25,7 @@
                 </li>
 
                 @if (isset($menu_pak_addon_counts))
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" itemprop="name">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAddons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             @lang('By pak')
                         </a>
@@ -34,8 +34,8 @@
                                 <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">@lang('category.pak.'.$pak_slug)</a>
                                     <ul class="dropdown-menu">
                                         @foreach ($addons as $addon)
-                                            <li><a class="dropdown-item" href="{{ route('category.pak.addon', [
-                                                    $addon->pak_slug, $addon->addon_slug]) }}">@lang('category.addon.'.$addon->addon_slug) <small>( {{ $addon->count }} )</small></a></li>
+                                            <li itemprop="name"><a class="dropdown-item" href="{{ route('category.pak.addon', [
+                                                    $addon->pak_slug, $addon->addon_slug]) }}" itemprop="url">@lang('category.addon.'.$addon->addon_slug) <small>( {{ $addon->count }} )</small></a></li>
                                         @endforeach
                                     </ul>
                                 </li>
@@ -44,13 +44,13 @@
                     </li>
                 @endif
                 @if (isset($menu_user_addon_counts))
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" itemprop="name">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUsers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             @lang('By user')
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownUsers">
                             @foreach ($menu_user_addon_counts as $user_addon_count)
-                                <li><a class="dropdown-item" href="{{ route('user', [$user_addon_count->user_id]) }}">
+                                <li itemprop="name"><a class="dropdown-item" href="{{ route('user', [$user_addon_count->user_id]) }}" itemprop="url">
                                     {{ $user_addon_count->user_name }} <small>( {{ $user_addon_count->count }} )</small></a></li>
                             @endforeach
                         </ul>

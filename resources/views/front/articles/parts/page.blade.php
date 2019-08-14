@@ -5,7 +5,7 @@
         </div>
     @endif
     <div class="page-contents">
-    @foreach ($article->getContents('sections', []) as $section)
+    @foreach ($article->contents->sections ?? [] as $section)
         <section class="mb-2">
             @switch($section['type'])
                 @case('caption')

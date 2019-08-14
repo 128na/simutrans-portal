@@ -7,8 +7,8 @@
     <dl class="mx-1 mt-2">
         <dt>@lang('Author') / @lang('Publisher')</dt>
         <dd>
-            @if ($article->author)
-                {{ $article->author }}</a> /
+            @if ($article->contents->author)
+                {{ $article->contents->author }}</a> /
             @endif
             <a href="{{ route('user', [$article->user]) }}" rel="author">{{ $article->user->name }}</a>
         </dd>
@@ -22,14 +22,14 @@
             @include('parts.tag-list', ['tags' => $article->tags])
         </dd>
         <dt>@lang('Description')</dt>
-        <dd class="mt-1 ml-2">{{ $article->description }}</dd>
-        @if ($article->thanks)
+        <dd class="mt-1 ml-2">{{ $article->contents->description }}</dd>
+        @if ($article->contents->thanks)
             <dt>@lang('Acknowledgments and Referenced')</dt>
-            <dd class="mt-1 ml-2">{{ $article->thanks }}</dd>
+            <dd class="mt-1 ml-2">{{ $article->contents->thanks }}</dd>
         @endif
-        @if ($article->license)
+        @if ($article->contents->license)
             <dt>@lang('License')</dt>
-            <dd class="mt-1 ml-2">{{ $article->license }}</dd>
+            <dd class="mt-1 ml-2">{{ $article->contents->license }}</dd>
         @endif
         <dt>@lang('Download')</dt>
         <dd class="mt-1 ml-2"><a class="btn btn-lg btn-primary" href="{{ route('articles.download', $article) }}">@lang('Click to Download')</a></dd>

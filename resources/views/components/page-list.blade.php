@@ -4,7 +4,7 @@
         @foreach ($articles as $article)
             <div>
                 {{ $article->updated_at->formatLocalized(__('%m-%d-%Y')) }}
-                <a href="{{ route('articles.show', $article->slug)}}">{{ $article->title }}</a>
+                <a href="{{ route('articles.show', $article->slug)}}" itemprop="url"><span itemprop="name">{{ $article->title }}</span></a>
                 <small class="mr-1">by</small><a href="{{ route('user', [$article->user]) }}">{{ $article->user->name}}</a>
             </div>
         @endforeach

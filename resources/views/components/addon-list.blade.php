@@ -4,7 +4,7 @@
         @foreach ($articles as $article)
             <div class="col-md-4 col-sm-6 p-2 highlightable">
                 <h6>
-                    <a href="{{ route('articles.show', $article->slug)}}">{{ $article->title }}</a>
+                    <a href="{{ route('articles.show', $article->slug)}}" itemprop="url"><span itemprop="name">{{ $article->title }}</span></a>
                 </h6>
                 <div class="img-full-box mb-1 text-center">
                     <a href="{{ route('articles.show', $article->slug)}}">

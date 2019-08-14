@@ -45,7 +45,7 @@ class CheckDeadLink extends Command
     public function handle()
     {
         foreach (Article::where('post_type', 'addon-introduction')->active()->with('user')->cursor() as $article) {
-            $link = $article->getContents('link');
+            $link = $article->contents->link;
 
             if(!self::isStatusOK($link)) {
                 $this->info('dead link '.$link);

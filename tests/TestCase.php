@@ -5,6 +5,7 @@ namespace Tests;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use App\Models\Attachment;
+use App\Models\Contents\Content;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\UploadedFile;
@@ -26,11 +27,11 @@ abstract class TestCase extends BaseTestCase
             'post_type' => 'addon-post',
             'title' => 'test_addon-post',
             'status' => 'publish',
-            'contents' => [
+            'contents' => Content::createFromType('addon-post', [
                 'description' => 'test addon-post text',
                 'author' => 'test author',
                 'file' => $attachment->id,
-            ],
+            ]),
         ]);
         $article->attachments()->save($attachment);
         return $article;
@@ -43,11 +44,11 @@ abstract class TestCase extends BaseTestCase
             'post_type' => 'addon-introduction',
             'title' => 'test_addon-introduction',
             'status' => 'publish',
-            'contents' => [
+            'contents' => Content::createFromType('addon-introduction', [
                 'description' => 'test addon-introduction text',
                 'author' => 'test author',
                 'link' => 'http://example.com',
-            ],
+            ]),
         ]);
         return $article;
     }
@@ -59,9 +60,9 @@ abstract class TestCase extends BaseTestCase
             'post_type' => 'page',
             'title' => 'test_page',
             'status' => 'publish',
-            'contents' => [
+            'contents' => Content::createFromType('page', [
                 'sections' => [['type' => 'text', 'text' => 'test page text']]
-            ],
+            ]),
         ]);
         return $article;
     }
@@ -73,9 +74,9 @@ abstract class TestCase extends BaseTestCase
             'post_type' => 'page',
             'title' => 'test_announce',
             'status' => 'publish',
-            'contents' => [
+            'contents' => Content::createFromType('page', [
                 'sections' => [['type' => 'text', 'text' => 'test announce text']]
-            ],
+            ]),
         ]);
         $announce_category = Category::page()->slug('announce')->firstOrFail();
         $article->categories()->save($announce_category);

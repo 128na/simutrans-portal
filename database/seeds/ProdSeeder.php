@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Contents\Content;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
@@ -60,6 +61,7 @@ class ProdSeeder extends Seeder
                 'post_type' => config('post_types.page'),
                 'status' => config('status.publish'),
             ], $data);
+            $data['contents'] = Content::createFromType('page', $data['contents']);
 
             $article = $user->articles()->updateOrCreate(['slug' => $data['slug']], $data);
             $article->categories()->sync($announce_category->id);

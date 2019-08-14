@@ -3,7 +3,7 @@
 <div class="form-group">
     <label><span class="badge badge-danger mr-1">@lang('Required')</span>@lang('Sections')</label>
     <div id="sections" class="mb-1">
-        @forelse (old('sections', isset($article) ? $article->contents->sections) : []) as $index => $section)
+        @forelse (old('sections', isset($article) ? $article->contents->sections : []) as $index => $section)
             <div class="form-group js-section" data-section="{{ $index }}">
                 @switch($section['type'])
                     @case('caption')

@@ -5,13 +5,19 @@ namespace App\Models\Contents;
 class Content
 {
     protected $content = [];
-    public $thumbnail = null;
+    protected $attributes = ['thumbnail'];
 
     public function __construct($content = [])
     {
-        $this->content = is_array($content) ? $content : json_decode($content , true);
+        $content = is_array($content) ? $content : json_decode($content , true);
 
-        $this->thumbnail = $this->content['thumbnail'] ?? null;
+        foreach ($this->attributes as $key => $value) {
+            if(is_numeric($key)) {
+                $this->content[$value] = $content[$value] ?? null;
+            } else {
+                $this->content[$key] = $content[$key] ?? $value;
+            }
+        }
     }
 
     public static function createFromType($post_type, $content)
@@ -29,5 +35,20 @@ class Content
     public function __toString()
     {
         return json_encode($this->content);
+    }
+    public function __get($key)
+    {
+        if(in_array($key, $this->attributes, true) || array_key_exists($key, $this->attributes)) {
+            return $this->content[$key] ?? null;
+        }
+        throw new \Exception("The attribute '{$key}' is not defined", 1);
+    }
+    public function __set($key, $value)
+    {
+        if(in_array($key, $this->attributes, true) || array_key_exists($key, $this->attributes)) {
+            $this->content[$key] = $value;
+            return;
+        }
+        throw new \Exception("The attribute '{$key}' is not defined", 1);
     }
 }

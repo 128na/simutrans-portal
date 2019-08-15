@@ -41,7 +41,6 @@ class Content
         if(in_array($key, $this->attributes, true) || array_key_exists($key, $this->attributes)) {
             return $this->content[$key] ?? null;
         }
-        throw new \Exception("The attribute '{$key}' is not defined", 1);
     }
     public function __set($key, $value)
     {
@@ -49,6 +48,5 @@ class Content
             $this->content[$key] = $value;
             return;
         }
-        throw new \Exception("The attribute '{$key}' is not defined", 1);
     }
 }

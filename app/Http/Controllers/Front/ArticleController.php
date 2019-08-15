@@ -75,7 +75,7 @@ class ArticleController extends Controller
             event(new ArticleShown($article));
         }
 
-        $article->load('user', 'attachments', 'categories', 'tags');
+        $article->load('user.profile.attachments', 'attachments', 'categories', 'tags');
         $breadcrumb = Breadcrumb::forShow($article);
         $canonical_url = route('articles.show', $article->slug);
         return static::viewWithHeader('front.articles.show', compact('article', 'breadcrumb', 'canonical_url'));

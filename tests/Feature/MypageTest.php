@@ -410,12 +410,12 @@ class MypageTest extends TestCase
             'title'        => $article->title,
             'slug'         => $article->slug,
             'status'       => $article->status,
-            'thumbnail_id' => $article->getContents('thumbnail'),
-            'author'      => $article->getContents('author'),
-            'file_id'     => $article->getContents('file'),
-            'description' => $article->getContents('description'),
-            'thanks'      => $article->getContents('thanks'),
-            'license'     => $article->getContents('license'),
+            'thumbnail_id' => $article->contents->thumbnail,
+            'author'      => $article->contents->author,
+            'file_id'     => $article->contents->file,
+            'description' => $article->contents->description,
+            'thanks'      => $article->contents->thanks,
+            'license'     => $article->contents->license,
         ];
         // ステータスが空
         $response = $this->post($path, array_merge($data, ['status' => '']));
@@ -502,12 +502,12 @@ class MypageTest extends TestCase
             'title'        => $article->title,
             'slug'         => $article->slug,
             'status'       => $article->status,
-            'thumbnail_id' => $article->getContents('thumbnail'),
-            'author'      => $article->getContents('author'),
-            'link'        => $article->getContents('link'),
-            'description' => $article->getContents('description'),
-            'thanks'      => $article->getContents('thanks'),
-            'license'     => $article->getContents('license'),
+            'thumbnail_id' => $article->contents->thumbnail,
+            'author'      => $article->contents->author,
+            'link'        => $article->contents->link,
+            'description' => $article->contents->description,
+            'thanks'      => $article->contents->thanks,
+            'license'     => $article->contents->license,
         ];
         // ステータスが空
         $response = $this->post($path, array_merge($data, ['status' => '']));
@@ -593,8 +593,8 @@ class MypageTest extends TestCase
             'title'        => $article->title,
             'slug'         => $article->slug,
             'status'       => $article->status,
-            'thumbnail_id' => $article->getContents('thumbnail'),
-            'sections'     => $article->getContents('sections'),
+            'thumbnail_id' => $article->contents->thumbnail,
+            'sections'     => $article->contents->sections,
         ];
         // ステータスが空
         $response = $this->post($path, array_merge($data, ['status' => '']));
@@ -681,8 +681,8 @@ class MypageTest extends TestCase
             'title'        => $others_article->title,
             'slug'         => $others_article->slug,
             'status'       => $others_article->status,
-            'thumbnail_id' => $others_article->getContents('thumbnail'),
-            'sections'     => $others_article->getContents('sections'),
+            'thumbnail_id' => $others_article->contents->thumbnail,
+            'sections'     => $others_article->contents->sections,
         ];
         $response = $this->post('mypage/articles/edit/page/'.$others_article->id, $data);
         $response->assertForbidden();
@@ -705,12 +705,12 @@ class MypageTest extends TestCase
             'title'        => $others_article->title,
             'slug'         => $others_article->slug,
             'status'       => $others_article->status,
-            'thumbnail_id' => $others_article->getContents('thumbnail'),
-            'author'      => $others_article->getContents('author'),
-            'link'        => $others_article->getContents('link'),
-            'description' => $others_article->getContents('description'),
-            'thanks'      => $others_article->getContents('thanks'),
-            'license'     => $others_article->getContents('license'),
+            'thumbnail_id' => $others_article->contents->thumbnail,
+            'author'      => $others_article->contents->author,
+            'link'        => $others_article->contents->link,
+            'description' => $others_article->contents->description,
+            'thanks'      => $others_article->contents->thanks,
+            'license'     => $others_article->contents->license,
         ];
         $response = $this->post('mypage/articles/edit/addon-introduction/'.$others_article->id, $data);
         $response->assertForbidden();
@@ -733,12 +733,12 @@ class MypageTest extends TestCase
             'title'        => $others_article->title,
             'slug'         => $others_article->slug,
             'status'       => $others_article->status,
-            'thumbnail_id' => $others_article->getContents('thumbnail'),
-            'author'      => $others_article->getContents('author'),
-            'file_id'     => $others_article->getContents('file'),
-            'description' => $others_article->getContents('description'),
-            'thanks'      => $others_article->getContents('thanks'),
-            'license'     => $others_article->getContents('license'),
+            'thumbnail_id' => $others_article->contents->thumbnail,
+            'author'      => $others_article->contents->author,
+            'file_id'     => $others_article->contents->file,
+            'description' => $others_article->contents->description,
+            'thanks'      => $others_article->contents->thanks,
+            'license'     => $others_article->contents->license,
         ];
         $response = $this->post('mypage/articles/edit/addon-post/'.$others_article->id, $data);
         $response->assertForbidden();

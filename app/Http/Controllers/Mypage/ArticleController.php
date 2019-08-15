@@ -68,11 +68,6 @@ class ArticleController extends Controller
 
         $article->save();
 
-        $article->setContents('thumbnail', $request->input('thumbnail_id'));
-        if ($request->filled('thumbnail_id')) {
-            $article->attachments()->save(Attachment::findOrFail($request->input('thumbnail_id')));
-        }
-
         $article = $this->saveContents($request, $article);
         $article->save();
 
@@ -103,11 +98,6 @@ class ArticleController extends Controller
 
         // check slug is unique
         self::validateData(['slug' => $article->slug], ['slug' => "required|unique:articles,slug,{$article->id}|max:255"]);
-
-        $article->setContents('thumbnail', $request->input('thumbnail_id'));
-        if ($request->filled('thumbnail_id')) {
-            $article->attachments()->save(Attachment::findOrFail($request->input('thumbnail_id')));
-        }
 
         $article = $this->saveContents($request, $article);
         $article->save();

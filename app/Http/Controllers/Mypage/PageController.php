@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Mypage;
 
+use App\Models\Contents\Content;
 use App\Models\Article;
 use App\Models\Attachment;
 use Illuminate\Http\Request;
@@ -13,9 +14,15 @@ class PageController extends ArticleController
 
     protected function saveContents(Request $request, Article $article)
     {
-        $sections = collect($request->input('sections', []));
+        $data = [
+            'thumbnail' => $request->input('thumbnail_id'),
+        ];
+        if ($request->filled('thumbnail_id')) {
+            $article->attachments()->save(Attachment::findOrFail($request->input('thumbnail_id')));
+        }
 
-        $sections = $sections->map(function($section, $index) use ($request, $article) {
+        $sections = collect($request->input('sections', []));
+        $data['sections'] = $sections->map(function($section, $index) use ($request, $article) {
             switch ($section['type']) {
                 case 'caption':
                     return [
@@ -36,7 +43,7 @@ class PageController extends ArticleController
                     ];
             }
         });
-        $article->setContents('sections', $sections->toArray());
+        $article->contents = Content::createFromType($this->post_type, $data);
 
         $categories = $request->input('categories.page', []);
         $article->categories()->sync($categories);

@@ -2,6 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use App\Models\Profile;
+use App\Models\Contents\ProfileData;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
@@ -19,10 +20,10 @@ use Faker\Generator as Faker;
 $factory->define(Profile::class, function (Faker $faker) {
 
     return [
-        'data' => [
+        'data' => new ProfileData([
                 'description' => 'Hello!',
                 'twitter'     => 'twitter_jp',
                 'website'     => 'http://example.com',
-        ],
+        ]),
     ];
 });

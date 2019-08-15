@@ -4,13 +4,12 @@ namespace App\Models;
 
 use App\Models\Attachment;
 use App\Models\User;
-use App\Traits\JsonFieldable;
+use App\Models\Contents\ProfileData;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class Profile extends Model
 {
-    use JsonFieldable;
 
     protected $attributes = [
         'data' => '{}',
@@ -18,9 +17,6 @@ class Profile extends Model
     protected $fillable = [
         'user_id',
         'data',
-    ];
-    protected $casts = [
-        'data' => 'array',
     ];
 
     /*
@@ -34,6 +30,9 @@ class Profile extends Model
 
         self::updated(function($model) {
             Cache::flush();
+        });
+        self::retrieved(function($model) {
+            $model->data = new ProfileData($model->data);
         });
     }
 
@@ -64,7 +63,7 @@ class Profile extends Model
     */
     public function getAvatarAttribute()
     {
-        $id = $this->getContents('avatar');
+        $id = $this->data->avatar;
         return $this->attachments->first(function($attachment) use ($id) {
             return $id === $attachment->id;
         });

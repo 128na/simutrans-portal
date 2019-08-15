@@ -7,10 +7,10 @@ use App\Models\Category;
 use App\Models\ConversionCount;
 use App\Models\PakAddonCount;
 use App\Models\Tag;
+use App\Models\Contents\Content;
 use App\Models\User;
 use App\Models\UserAddonCount;
 use App\Models\ViewCount;
-use App\Traits\JsonFieldable;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -21,37 +21,7 @@ use Spatie\Feed\FeedItem;
 class Article extends Model implements Feedable
 {
     use Slugable;
-    use JsonFieldable;
 
-    /*
-        アドオン紹介
-            contents = {
-                description: 説明文
-                author: 作者名
-                link: リンク先URL
-                thumbnail?: サムネイル画像ID
-                thanks?: 元アドオン、謝辞
-                license?: ライセンス
-            };
-        アドオン投稿
-            contents = {
-                description: 説明文
-                author: 作者名
-                file: 添付ファイルID
-                thumbnail?: サムネイル画像ID
-                thanks?: 元アドオン、謝辞
-                license?: ライセンス
-            };
-        一般記事
-            contents = [
-                {type:text content:文章},
-                {type:image id:添付画像ID},
-                ...
-            ];
-    */
-    protected $attributes = [
-        'contents' => '{}',
-    ];
     protected $fillable = [
         'user_id',
         'title',
@@ -60,9 +30,7 @@ class Article extends Model implements Feedable
         'contents',
         'status',
     ];
-    protected $casts = [
-        'contents' => 'array',
-    ];
+    protected $attributes = ['contents' => '{}'];
 
     /*
     |--------------------------------------------------------------------------
@@ -76,7 +44,9 @@ class Article extends Model implements Feedable
         static::addGlobalScope('order', function (Builder $builder) {
             $builder->orderBy('created_at', 'desc');
         });
-
+        self::retrieved(function($model) {
+            $model->contents = Content::createFromType($model->post_type, $model->contents);
+        });
         self::created(function($model) {
             $model->syncRelatedData();
         });
@@ -93,11 +63,6 @@ class Article extends Model implements Feedable
         PakAddonCount::recount();
         Tag::removeDoesntHaveRelation();
         Cache::flush();
-    }
-
-    public function getJsonableField()
-    {
-        return 'contents';
     }
 
     /*
@@ -272,49 +237,17 @@ class Article extends Model implements Feedable
     {
         return $this->status === config('status.publish');
     }
-    public function getDescriptionAttribute()
-    {
-        return $this->getContents('description');
-    }
-    public function getLinkAttribute()
-    {
-        return $this->getContents('link');
-    }
-    public function getAuthorAttribute()
-    {
-        return $this->getContents('author');
-    }
-    public function getLicenseAttribute()
-    {
-        return $this->getContents('license');
-    }
-    public function getThanksAttribute()
-    {
-        return $this->getContents('thanks');
-    }
-    public function getAgreementAttribute()
-    {
-        return $this->getContents('agreement');;
-    }
-
-    public function getThumbnailAttribute()
-    {
-        $id = $this->getContents('thumbnail');
-        return $this->attachments->first(function($attachment) use ($id) {
-            return $id === $attachment->id;
-        });
-    }
-    public function getFileAttribute()
-    {
-        $id = $this->getContents('file');
-        return $this->attachments->first(function($attachment) use ($id) {
-            return $id === $attachment->id;
-        });
-    }
 
     public function getHasThumbnailAttribute()
     {
-        return !!$this->thumbnail;
+        return !is_null($this->contents->thumbnail);
+    }
+    public function getThumbnailAttribute()
+    {
+        $id = $this->contents->thumbnail;
+        return $this->attachments->first(function($attachment) use ($id) {
+            return $id === $attachment->id;
+        });
     }
     public function getThumbnailUrlAttribute()
     {
@@ -322,13 +255,17 @@ class Article extends Model implements Feedable
              ? asset('storage/'.$this->thumbnail->path)
              : asset('storage/'.config('attachment.no-thumbnail'));
     }
-    public function getThumbnailIdAttribute()
-    {
-        return $this->thumbnail->id ?? null;
-    }
+
     public function getHasFileAttribute()
     {
-        return !is_null($this->file);
+        return !is_null($this->contents->file);
+    }
+    public function getFileAttribute()
+    {
+        $id = $this->contents->file;
+        return $this->attachments->first(function($attachment) use ($id) {
+            return $id === $attachment->id;
+        });
     }
 
     public function getCategoryPaksAttribute()
@@ -359,8 +296,8 @@ class Article extends Model implements Feedable
     }
     public function getMetaDescriptionAttribute()
     {
-        return $this->getContents('description', null)
-            ?? collect($this->getContents('sections', []))->first(function($s) { return $s['type'] === 'text';})['text']
+        return $this->content->description
+            ?? collect($this->content->sections ?? [])->first(function($s) { return $s['type'] === 'text';})['text']
             ?? $this->title;
     }
     public function getUrlDecodedSlugAttribute()
@@ -414,7 +351,7 @@ class Article extends Model implements Feedable
         return FeedItem::create()
             ->id($this->id)
             ->title($this->title)
-            ->summary($this->getContents('description') ?? '')
+            ->summary($this->contents->description ?? '')
             ->updated($this->updated_at->toMutable())    // CarbonImmutableは未対応
             ->link(route('articles.show', $this->slug))
             ->author($this->user->name);

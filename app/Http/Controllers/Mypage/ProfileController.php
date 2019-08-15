@@ -34,14 +34,17 @@ class ProfileController extends Controller
         ]);
         $user->save();
 
-        $user->profile->setContents('avatar', $request->input('avatar_id'));
+        $profile_data = $user->profile->data;
+
+        $profile_data->avatar = $request->input('avatar_id');
         if ($request->filled('avatar_id')) {
             $user->profile->attachments()->save(Attachment::findOrFail($request->input('avatar_id')));
         }
+        $profile_data->description = $request->input('description');
+        $profile_data->website = $request->input('website');
+        $profile_data->twitter = $request->input('twitter');
 
-        $user->profile->setContents('description', $request->input('description'));
-        $user->profile->setContents('website', $request->input('website'));
-        $user->profile->setContents('twitter', $request->input('twitter'));
+        $user->profile->data = $profile_data;
         $user->profile->save();
 
         if ($email_changed) {

@@ -4,15 +4,15 @@
     </a>
     <div class="card-body">
         <h4 class="mb-1">{{ $user->name }}</h4>
-        <div class="card-text card-description">{{ $user->profile->getContents('description') ?: __('No description exists.') }}</div>
-        @if ($user->profile->getContents('twitter'))
+        <div class="card-text card-description">{{ $user->profile->data->description ?: __('No description exists.') }}</div>
+        @if ($user->profile->data->twitter)
             <div class="card-text">
-                <a href="https://twitter.com/{{ $user->profile->getContents('twitter') }}"} target="_blank" rel="noopener, nofollow">
-                    &#064;{{ $user->profile->getContents('twitter') }}</a></div>
+                <a href="https://twitter.com/{{ $user->profile->data->twitter }}"} target="_blank" rel="noopener, nofollow">
+                    &#064;{{ $user->profile->data->twitter }}</a></div>
         @endif
-        @if ($user->profile->getContents('website'))
+        @if ($user->profile->data->website)
             <div class="card-text">
-                <a href="{{ $user->profile->getContents('website') }}"} target="_blank" rel="noopener, nofollow">{{ $user->profile->getContents('website') }}</a></div>
+                <a href="{{ $user->profile->data->website }}"} target="_blank" rel="noopener, nofollow">{{ $user->profile->data->website }}</a></div>
         @endif
         @if ($in_mypage)
             <div class="card-text mt-2 text-right">

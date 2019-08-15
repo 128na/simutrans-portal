@@ -7,7 +7,7 @@
     <dl class="mx-1 mt-2">
         <dt>@lang('Author') / @lang('Publisher')</dt>
         <dd>
-            {{ $article->author }} / <a href="{{ route('user', [$article->user]) }}" rel="author">{{ $article->user->name }}</a>
+            {{ $article->contents->author }} / <a href="{{ route('user', [$article->user]) }}" rel="author">{{ $article->user->name }}</a>
         </dd>
         <dt>@lang('Categories')</dt>
         <dd>
@@ -19,22 +19,22 @@
             @include('parts.tag-list', ['tags' => $article->tags])
         </dd>
         <dt>@lang('Description')</dt>
-        <dd>{{ $article->description }}</dd>
-        @if ($article->thanks)
+        <dd>{{ $article->contents->description }}</dd>
+        @if ($article->contents->thanks)
             <dt>@lang('Acknowledgments and Referenced')</dt>
-            <dd>{{ $article->thanks }}</dd>
+            <dd>{{ $article->contents->thanks }}</dd>
         @endif
-        @if ($article->license)
+        @if ($article->contents->license)
             <dt>@lang('License')</dt>
-            <dd>{{ $article->license }}</dd>
+            <dd>{{ $article->contents->license }}</dd>
         @endif
-        @if ($article->agreement)
+        @if ($article->contents->agreement)
             <dt>@lang('Agreement')</dt>
             <dd>@lang('This article is published by author\'s permission or by author himself.')</dd>
         @endif
         <dt>@lang('Link')</dt>
         <dd>
-            <a href="#" data-url="{{ $article->link }}" data-slug="{{ $article->slug }}" class="js-click">{{ $article->link }}</a>
+            <a href="#" data-url="{{ $article->contents->link }}" data-slug="{{ $article->slug }}" class="js-click">{{ $article->contents->link }}</a>
         </dd>
     </dl>
 </div>

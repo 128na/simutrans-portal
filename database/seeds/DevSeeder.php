@@ -80,10 +80,10 @@ class DevSeeder extends Seeder
 
         // update contents
         $c = $article->contents;
-        $c['file']      = $file->id;
-        $c['thumbnail'] = $thumb->id;
-        $c['thanks']    = '圧倒的感謝';
-        $c['license']   = '改造自由';
+        $c->file      = $file->id;
+        $c->thumbnail = $thumb->id;
+        $c->thanks    = '圧倒的感謝';
+        $c->license   = '改造自由';
         $article->contents = $c;
         $article->save();
     }
@@ -100,9 +100,9 @@ class DevSeeder extends Seeder
 
         // update contents
         $c = $article->contents;
-        $c['link']      = 'http://example.com';
-        $c['thumbnail'] = $thumb->id;
-        $c['thanks']    = '圧倒的感謝';
+        $c->link      = 'http://example.com';
+        $c->thumbnail = $thumb->id;
+        $c->thanks    = '圧倒的感謝';
         $article->contents = $c;
         $article->save();
     }

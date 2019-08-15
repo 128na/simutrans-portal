@@ -3,7 +3,7 @@
     <div class="mb-2">
         <img id="avatar_preview" class="preview img-thumbnail " src="{{ old('avatar_preview_url', $user->profile->avatar_url ?? asset('storage/'.config('attachment.no-avatar'))) }}">
         <input type="hidden" id="avatar_preview_url" name="avatar_preview_url" value="{{ old('avatar_preview_url') }}">
-        <input type="hidden" id="avatar_id" name="avatar_id" value="{{ old('avatar_id', $user->profile->getContents('avatar') ?? '') }}">
+        <input type="hidden" id="avatar_id" name="avatar_id" value="{{ old('avatar_id', $user->profile->data->avatar ?? '') }}">
     </div>
     <div>
         <a href="#" class="btn btn-secondary js-open-uploader"
@@ -24,12 +24,12 @@
 
 <div class="form-group">
     <label for="description"><span class="badge badge-secondary mr-1">@lang('Optional')</span>@lang('Description')</label>
-    <textarea class="form-control" id="description" name="description" rows="4">{!! e(old('description', $user->profile->getContents('description') ?? '')) !!}</textarea>
+    <textarea class="form-control" id="description" name="description" rows="4">{!! e(old('description', $user->profile->data->description ?? '')) !!}</textarea>
 </div>
 
 <div class="form-group">
     <label for="website"><span class="badge badge-secondary mr-1">@lang('Optional')</span>@lang('Website URL')</label>
-    <input type="text" class="form-control" id="website" name="website" placeholder="Website" value="{{ old('website', $user->profile->getContents('website') ?? '') }}">
+    <input type="text" class="form-control" id="website" name="website" placeholder="Website" value="{{ old('website', $user->profile->data->website ?? '') }}">
 </div>
 
 <div class="form-group">
@@ -38,6 +38,6 @@
         <div class="input-group-prepend">
             <span class="input-group-text">@</span>
         </div>
-        <input type="text" class="form-control" id="twitter" name="twitter" placeholder="Twitter" value="{{ old('twitter', $user->profile->getContents('twitter') ?? '') }}">
+        <input type="text" class="form-control" id="twitter" name="twitter" placeholder="Twitter" value="{{ old('twitter', $user->profile->data->twitter ?? '') }}">
     </div>
 </div>

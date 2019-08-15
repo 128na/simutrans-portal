@@ -11,7 +11,6 @@ use App\Models\Contents\Content;
 use App\Models\User;
 use App\Models\UserAddonCount;
 use App\Models\ViewCount;
-use App\Traits\JsonFieldable;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -22,33 +21,6 @@ use Spatie\Feed\FeedItem;
 class Article extends Model implements Feedable
 {
     use Slugable;
-
-    /*
-        アドオン紹介
-            contents = {
-                description: 説明文
-                author: 作者名
-                link: リンク先URL
-                thumbnail?: サムネイル画像ID
-                thanks?: 元アドオン、謝辞
-                license?: ライセンス
-            };
-        アドオン投稿
-            contents = {
-                description: 説明文
-                author: 作者名
-                file: 添付ファイルID
-                thumbnail?: サムネイル画像ID
-                thanks?: 元アドオン、謝辞
-                license?: ライセンス
-            };
-        一般記事
-            contents = [
-                {type:text content:文章},
-                {type:image id:添付画像ID},
-                ...
-            ];
-    */
 
     protected $fillable = [
         'user_id',

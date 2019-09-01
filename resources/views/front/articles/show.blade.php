@@ -5,7 +5,11 @@
 @section('meta-image', $article->thumbnail_url)
 
 @section('content')
-    @include('front.articles.parts.'.$article->post_type, ['article' => $article])
+    @includeWhen($article->contents->isAddonIntroductionContent(), 'front.articles.parts.addon-introduction', ['article' => $article])
+    @includeWhen($article->contents->isAddonPostContent(), 'front.articles.parts.addon-post', ['article' => $article])
+    @includeWhen($article->contents->isPageContent(), 'front.articles.parts.page', ['article' => $article])
+    @includeWhen($article->contents->isMarkdownContent(), 'front.articles.parts.markdown', ['article' => $article])
+
     @php
         $schemas = [
             [

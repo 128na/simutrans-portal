@@ -164,6 +164,7 @@ return [
         'link' => __('Link'),
         'agreement' => __('Agreement'),
         'name' => __('Name'),
+        'data' => __('Contents'),
         'email' => __('Email'),
         'thumbnail_id' => __('Thumbnail'),
         'file_id' => __('File'),

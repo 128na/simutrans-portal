@@ -22,14 +22,29 @@ class Content
 
     public static function createFromType($post_type, $content)
     {
+        $content = is_array($content) ? $content : json_decode($content , true);
         switch ($post_type) {
             case 'addon-post':
                 return new AddonPostContent($content);
             case 'addon-introduction':
                 return new AddonIntroductionContent($content);
-            case 'page':
+            case 'page' && array_key_exists('sections', $content):
                 return new PageContent($content);
+            case 'page' && array_key_exists('data', $content):
+                return new MarkdownContent($content);
         }
+    }
+    public function isAddonIntroductionContent() {
+        return $this instanceof AddonIntroductionContent;
+    }
+    public function isAddonPostContent() {
+        return $this instanceof AddonPostContent;
+    }
+    public function isPageContent() {
+        return $this instanceof PageContent;
+    }
+    public function isMarkdownContent() {
+        return $this instanceof MarkdownContent;
     }
 
     public function __toString()

@@ -13,6 +13,7 @@ return [
         ['slug' => 'addon-post',         'type' => 'post', 'order' => 00000, 'name' => 'Addon Post'],
         ['slug' => 'addon-introduction', 'type' => 'post', 'order' => 00010, 'name' => 'Addon Introduction'],
         ['slug' => 'page',               'type' => 'post', 'order' => 00020, 'name' => 'Post'],
+        ['slug' => 'markdown',           'type' => 'post', 'order' => 00030, 'name' => 'Post(markdown)'],
     ],
     'pak' => [
         ['slug' => '64',           'type' => 'pak', 'order' => 10000, 'name' => 'Pak64'],

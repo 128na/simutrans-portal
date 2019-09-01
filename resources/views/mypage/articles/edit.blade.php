@@ -5,10 +5,10 @@
 @section('content')
     @if ($article->contents->isMarkdownContent())
         <form method="POST" action="{{ route('mypage.articles.update.markdown', $article) }}"
-            class="js-previewable-form" data-preview-action="{{ route('mypage.articles.update.markdown'.$article, [$article,'preview'], false) }}">
+            class="js-previewable-form" data-preview-action="{{ route('mypage.articles.update.markdown', [$article,'preview'], false) }}">
     @else
         <form method="POST" action="{{ route('mypage.articles.update.'.$article->post_type, $article) }}"
-            class="js-previewable-form" data-preview-action="{{ route('mypage.articles.update.'.$article, [$article,'preview'], false) }}">
+            class="js-previewable-form" data-preview-action="{{ route('mypage.articles.update.'.$article->post_type, [$article,'preview'], false) }}">
     @endif
         @csrf
         @include('parts._form-common')

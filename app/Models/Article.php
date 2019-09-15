@@ -246,12 +246,12 @@ class Article extends Model implements Feedable
     {
         $id = $this->contents->thumbnail;
         return $this->attachments->first(function($attachment) use ($id) {
-            return $id == $attachment->id;
+            return (string)$id == $attachment->id;
         });
     }
     public function getThumbnailUrlAttribute()
     {
-        return $this->has_thumbnail && $this->thumbnail
+        return $this->has_thumbnail
              ? asset('storage/'.$this->thumbnail->path)
              : asset('storage/'.config('attachment.no-thumbnail'));
     }
@@ -264,7 +264,7 @@ class Article extends Model implements Feedable
     {
         $id = $this->contents->file;
         return $this->attachments->first(function($attachment) use ($id) {
-            return $id === $attachment->id;
+            return (string)$id == $attachment->id;
         });
     }
 
@@ -325,7 +325,7 @@ class Article extends Model implements Feedable
     public function getImage($id)
     {
         return $this->attachments->first(function($attachment) use ($id) {
-            return $id === $attachment->id;
+            return (string)$id == $attachment->id;
         });
     }
     public function getImageUrl($id)

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'simutrans_search_token' => env('SIMUTRANS_SEARCH_TOKEN'),
 
     /*
     |--------------------------------------------------------------------------

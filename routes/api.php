@@ -22,3 +22,4 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/v1/attachments/{attachment}', 'Api\AttachmentController@delete');
 });
 
+Route::get('/v1/articles', 'Api\ArticleController@index');

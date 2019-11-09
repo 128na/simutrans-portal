@@ -11,6 +11,11 @@
     @endif
 
     @lang('Before proceeding, please check your email for a verification link.')
-    @lang('If you did not receive the email'), <a href="{{ route('verification.resend') }}">@lang('click here to request another')</a>.
+    @lang('If you did not receive the email'),
+
+    <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
+        @csrf
+        <button type="submit" class="btn btn-link p-0 m-0 align-baseline">@lang('click here to request another')</button>.
+    </form>
 </div>
 @endsection

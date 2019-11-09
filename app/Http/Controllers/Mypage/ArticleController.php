@@ -75,7 +75,7 @@ class ArticleController extends Controller
             return $this->renderPreview($article);
         }
 
-        if($article->is_publish) {
+        if($article->is_publish && $request->filled('should_tweet')) {
             Twitter::articleCreated($article);
         }
 
@@ -106,7 +106,7 @@ class ArticleController extends Controller
             return $this->renderPreview($article);
         }
 
-        if($article->is_publish) {
+        if($article->is_publish && $request->filled('should_tweet')) {
             Twitter::articleUpdated($article);
         }
 
@@ -179,6 +179,7 @@ class ArticleController extends Controller
             'slug'         => 'nullable|max:255',
             'thumbnail_id' => 'nullable|exists:attachments,id,user_id,'.Auth::id(),
             'status'       => ['required', Rule::in(config('status')), ],
+            'should_tweet' => 'nullable',
         ];
     }
 

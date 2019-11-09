@@ -20,6 +20,15 @@
 
         @include('parts._modal_uploader')
 
+        <hr>
+        <div class="form-group">
+            <label>@lang('Auto Tweet')</label>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="should_tweet" name="should_tweet"
+                    value="1" {{ old('should_tweet', false) ? 'checked' : '' }}>
+                <label class="custom-control-label" for="should_tweet">@lang('Tweet when posting or updating.')</label>
+            </div>
+        </div>
         <div class="form-group">
             <button class="btn btn-lg btn-primary">@lang('Save')</button>
             <button class="btn btn btn-secondary js-open-preview">@lang('Preview')</button>

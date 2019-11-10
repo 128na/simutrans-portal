@@ -77,8 +77,8 @@
                                     @lang('Create :post_type', ['post_type' => __('post_types.addon-introduction')])</a>
                                 <a class="dropdown-item" href="{{ route('mypage.articles.create', 'page') }}">
                                     @lang('Create :post_type', ['post_type' => __('post_types.page')])</a>
-                                <a class="dropdown-item" href="{{ route('mypage.articles.create', 'markdown') }}">
-                                    @lang('Create :post_type', ['post_type' => __('post_types.markdown')])</a>
+                                {{-- <a class="dropdown-item" href="{{ route('mypage.articles.create', 'markdown') }}">
+                                    @lang('Create :post_type', ['post_type' => __('post_types.markdown')])</a> --}}
                                 <div class="dropdown-divider my-1"></div>
 
                                 <a class="dropdown-item" href="{{ route('mypage.profile.edit') }}">@lang('Edit my profile')</a>

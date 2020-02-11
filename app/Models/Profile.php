@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Models\Attachment;
-use App\Models\User;
 use App\Models\Contents\ProfileData;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
@@ -23,19 +23,18 @@ class Profile extends Model
     |--------------------------------------------------------------------------
     | 初期化時設定
     |--------------------------------------------------------------------------
-    */
+     */
     protected static function boot()
     {
         parent::boot();
 
-        self::updated(function($model) {
+        self::updated(function ($model) {
             Cache::flush();
         });
-        self::retrieved(function($model) {
+        self::retrieved(function ($model) {
             $model->data = new ProfileData($model->data);
         });
     }
-
 
     public function getJsonableField()
     {
@@ -46,7 +45,7 @@ class Profile extends Model
     |--------------------------------------------------------------------------
     | リレーション
     |--------------------------------------------------------------------------
-    */
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -60,11 +59,11 @@ class Profile extends Model
     |--------------------------------------------------------------------------
     | アクセサ
     |--------------------------------------------------------------------------
-    */
+     */
     public function getAvatarAttribute()
     {
         $id = $this->data->avatar;
-        return $this->attachments->first(function($attachment) use ($id) {
+        return $this->attachments->first(function ($attachment) use ($id) {
             return $id === $attachment->id;
         });
     }
@@ -75,11 +74,15 @@ class Profile extends Model
     public function getAvatarUrlAttribute()
     {
         return $this->has_avatar
-             ? asset('storage/'.$this->avatar->path)
-             : asset('storage/'.config('attachment.no-avatar'));
+        ? asset('storage/' . $this->avatar->path)
+        : asset('storage/' . config('attachment.no-avatar'));
     }
     public function getHasFileAttribute()
     {
         return !is_null($this->file);
+    }
+    public function getHasTwitterAttribute()
+    {
+        return !is_null($this->data->twitter ?? null);
     }
 }

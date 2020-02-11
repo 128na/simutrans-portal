@@ -58,6 +58,7 @@ class Twitter
     }
     public static function articleUpdated($article)
     {
+        $article->loadMissing('user.profile');
         $url = route('articles.show', $article->slug);
         $now = now()->format('Y/m/d H:i');
         $name = $article->user->profile->has_twitter

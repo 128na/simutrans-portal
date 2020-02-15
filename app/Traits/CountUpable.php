@@ -24,7 +24,11 @@ trait CountUpable
     public static function countUp(Article $article, $datetime = null)
     {
         $datetime = $datetime ?? now();
-        DB::statement(self::buildSql($article, $datetime));
+        $sql = self::buildSql($article, $datetime);
+
+        DB::transaction(function () use ($sql) {
+            DB::statement($sql);
+        }, 10);
     }
 
     private static function buildSql(Article $article, $datetime)

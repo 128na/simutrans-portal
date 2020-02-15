@@ -30,9 +30,7 @@ Route::middleware('minify')->group(function () {
         Route::get('/user/{user}', 'Front\ArticleController@user')->name('user');
     });
     // 非ログイン系 reidsキャッシュ無効
-    Route::middleware('transaction')->group(function () {
-        Route::get('/articles/{article}', 'Front\ArticleController@show')->name('articles.show');
-    });
+    Route::get('/articles/{article}', 'Front\ArticleController@show')->name('articles.show');
     Route::get('/search', 'Front\ArticleController@search')->name('search');
 });
 Route::get('/language/{name}', 'Front\IndexController@language')->name('language');

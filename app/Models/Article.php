@@ -4,10 +4,11 @@ namespace App\Models;
 
 use App\Models\Attachment;
 use App\Models\Category;
+use App\Models\Contents\Content;
 use App\Models\ConversionCount;
 use App\Models\PakAddonCount;
+use App\Models\Sitemap;
 use App\Models\Tag;
-use App\Models\Contents\Content;
 use App\Models\User;
 use App\Models\UserAddonCount;
 use App\Models\ViewCount;
@@ -36,7 +37,7 @@ class Article extends Model implements Feedable
     |--------------------------------------------------------------------------
     | 初期化時設定
     |--------------------------------------------------------------------------
-    */
+     */
     protected static function boot()
     {
         parent::boot();
@@ -44,16 +45,16 @@ class Article extends Model implements Feedable
         static::addGlobalScope('order', function (Builder $builder) {
             $builder->orderBy('created_at', 'desc');
         });
-        self::retrieved(function($model) {
+        self::retrieved(function ($model) {
             $model->contents = Content::createFromType($model->post_type, $model->contents);
         });
-        self::created(function($model) {
+        self::created(function ($model) {
             $model->syncRelatedData();
         });
-        self::updated(function($model) {
+        self::updated(function ($model) {
             $model->syncRelatedData();
         });
-        self::deleted(function($model) {
+        self::deleted(function ($model) {
             $model->syncRelatedData();
         });
     }
@@ -63,13 +64,14 @@ class Article extends Model implements Feedable
         PakAddonCount::recount();
         Tag::removeDoesntHaveRelation();
         Cache::flush();
+        Sitemap::generate();
     }
 
     /*
     |--------------------------------------------------------------------------
     | リレーション
     |--------------------------------------------------------------------------
-    */
+     */
     public function attachments()
     {
         return $this->morphMany(Attachment::class, 'attachmentable');
@@ -145,7 +147,7 @@ class Article extends Model implements Feedable
     |--------------------------------------------------------------------------
     | スコープ
     |--------------------------------------------------------------------------
-    */
+     */
     public function scopeActive($query)
     {
         return $query->where('status', config('status.publish'));
@@ -175,7 +177,7 @@ class Article extends Model implements Feedable
     }
     public function scopePak($query, $slug)
     {
-        $query->whereHas('categories', function($query) use ($slug) {
+        $query->whereHas('categories', function ($query) use ($slug) {
             $query->pak()->slug($slug);
         });
     }
@@ -183,14 +185,14 @@ class Article extends Model implements Feedable
     public function scopeAnnounce($query)
     {
         $query->where('post_type', 'page')
-            ->whereHas('categories', function($query) {
+            ->whereHas('categories', function ($query) {
                 $query->page()->slug('announce');
             });
     }
     public function scopeWithoutAnnounce($query)
     {
         $query->where('post_type', 'page')
-            ->whereDoesntHave('categories', function($query) {
+            ->whereDoesntHave('categories', function ($query) {
                 $query->page()->slug('announce');
             });
     }
@@ -203,22 +205,22 @@ class Article extends Model implements Feedable
         $datetime = now();
 
         $query->select('articles.*'); // view_countのフィールドがあるとリレーションデータが取れない（多分idが複数あるから？）
-        $query->leftJoin('view_counts as d', function($join) use ($datetime) {
+        $query->leftJoin('view_counts as d', function ($join) use ($datetime) {
             $join->on('d.article_id', 'articles.id')
                 ->where('d.type', 1)
                 ->where('d.period', $datetime->format('Ymd'));
         });
-        $query->leftJoin('view_counts as m', function($join) use ($datetime) {
+        $query->leftJoin('view_counts as m', function ($join) use ($datetime) {
             $join->on('m.article_id', 'articles.id')
                 ->where('m.type', 1)
                 ->where('m.period', $datetime->format('Ym'));
         });
-        $query->leftJoin('view_counts as y', function($join) use ($datetime) {
+        $query->leftJoin('view_counts as y', function ($join) use ($datetime) {
             $join->on('y.article_id', 'articles.id')
                 ->where('y.type', 1)
                 ->where('y.period', $datetime->format('Y'));
         });
-        $query->leftJoin('view_counts as t', function($join) {
+        $query->leftJoin('view_counts as t', function ($join) {
             $join->on('t.article_id', 'articles.id')
                 ->where('t.type', 1)
                 ->where('t.period', 'total');
@@ -232,7 +234,7 @@ class Article extends Model implements Feedable
     |--------------------------------------------------------------------------
     | アクセサ
     |--------------------------------------------------------------------------
-    */
+     */
     public function getIsPublishAttribute()
     {
         return $this->status === config('status.publish');
@@ -245,15 +247,15 @@ class Article extends Model implements Feedable
     public function getThumbnailAttribute()
     {
         $id = $this->contents->thumbnail;
-        return $this->attachments->first(function($attachment) use ($id) {
-            return (string)$id == $attachment->id;
+        return $this->attachments->first(function ($attachment) use ($id) {
+            return (string) $id == $attachment->id;
         });
     }
     public function getThumbnailUrlAttribute()
     {
         return $this->has_thumbnail
-             ? asset('storage/'.$this->thumbnail->path)
-             : asset('storage/'.config('attachment.no-thumbnail'));
+        ? asset('storage/' . $this->thumbnail->path)
+        : asset('storage/' . config('attachment.no-thumbnail'));
     }
 
     public function getHasFileAttribute()
@@ -263,26 +265,26 @@ class Article extends Model implements Feedable
     public function getFileAttribute()
     {
         $id = $this->contents->file;
-        return $this->attachments->first(function($attachment) use ($id) {
-            return (string)$id == $attachment->id;
+        return $this->attachments->first(function ($attachment) use ($id) {
+            return (string) $id == $attachment->id;
         });
     }
 
     public function getCategoryPaksAttribute()
     {
-        return $this->categories->filter(function($category) {
+        return $this->categories->filter(function ($category) {
             return $category->type === config('category.type.pak');
         });
     }
     public function getCategoryAddonsAttribute()
     {
-        return $this->categories->filter(function($category) {
+        return $this->categories->filter(function ($category) {
             return $category->type === config('category.type.addon');
         });
     }
     public function getCategoryPak128PositionsAttribute()
     {
-        return $this->categories->filter(function($category) {
+        return $this->categories->filter(function ($category) {
             return $category->type === config('category.type.pak128_position');
         });
     }
@@ -296,9 +298,7 @@ class Article extends Model implements Feedable
     }
     public function getMetaDescriptionAttribute()
     {
-        return $this->content->description
-            ?? collect($this->content->sections ?? [])->first(function($s) { return $s['type'] === 'text';})['text']
-            ?? $this->title;
+        return $this->content->description ?? collect($this->content->sections ?? [])->first(function ($s) {return $s['type'] === 'text';})['text'] ?? $this->title;
     }
     public function getUrlDecodedSlugAttribute()
     {
@@ -309,38 +309,38 @@ class Article extends Model implements Feedable
     |--------------------------------------------------------------------------
     | 一般
     |--------------------------------------------------------------------------
-    */
+     */
     public function isAnnounce()
     {
-        return $this->categories->search(function($category) {
+        return $this->categories->search(function ($category) {
             return $category->type === 'page' && $category->slug === 'announce';
         }) !== false;
     }
     public function hasCategory($id)
     {
-        return $this->categories->search(function($category) use($id) {
+        return $this->categories->search(function ($category) use ($id) {
             return $category->id === $id;
         }) !== false;
     }
     public function getImage($id)
     {
-        return $this->attachments->first(function($attachment) use ($id) {
-            return (string)$id == $attachment->id;
+        return $this->attachments->first(function ($attachment) use ($id) {
+            return (string) $id == $attachment->id;
         });
     }
     public function getImageUrl($id)
     {
         $image = $this->getImage($id);
         return $image
-             ? asset('storage/'.$image->path)
-             : asset('storage/'.config('attachment.no-thumbnail'));
+        ? asset('storage/' . $image->path)
+        : asset('storage/' . config('attachment.no-thumbnail'));
     }
 
     /*
     |--------------------------------------------------------------------------
     | RSS
     |--------------------------------------------------------------------------
-    */
+     */
     public static function getAllFeedItems($type = null)
     {
         return self::active()->addon()->get();
@@ -352,7 +352,7 @@ class Article extends Model implements Feedable
             ->id($this->id)
             ->title($this->title)
             ->summary($this->contents->description ?? '')
-            ->updated($this->updated_at->toMutable())    // CarbonImmutableは未対応
+            ->updated($this->updated_at->toMutable()) // CarbonImmutableは未対応
             ->link(route('articles.show', $this->slug))
             ->author($this->user->name);
     }

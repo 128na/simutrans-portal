@@ -9,10 +9,10 @@ class Content
 
     public function __construct($content = [])
     {
-        $content = is_array($content) ? $content : json_decode($content , true);
+        $content = is_array($content) ? $content : json_decode($content, true);
 
         foreach ($this->attributes as $key => $value) {
-            if(is_numeric($key)) {
+            if (is_numeric($key)) {
                 $this->content[$value] = $content[$value] ?? null;
             } else {
                 $this->content[$key] = $content[$key] ?? $value;
@@ -22,7 +22,7 @@ class Content
 
     public static function createFromType($post_type, $content)
     {
-        $content = is_array($content) ? $content : json_decode($content , true);
+        $content = is_array($content) ? $content : json_decode($content, true);
         switch ($post_type) {
             case 'addon-post':
                 return new AddonPostContent($content);
@@ -34,16 +34,20 @@ class Content
                 return new MarkdownContent($content);
         }
     }
-    public function isAddonIntroductionContent() {
+    public function isAddonIntroductionContent()
+    {
         return $this instanceof AddonIntroductionContent;
     }
-    public function isAddonPostContent() {
+    public function isAddonPostContent()
+    {
         return $this instanceof AddonPostContent;
     }
-    public function isPageContent() {
+    public function isPageContent()
+    {
         return $this instanceof PageContent;
     }
-    public function isMarkdownContent() {
+    public function isMarkdownContent()
+    {
         return $this instanceof MarkdownContent;
     }
 
@@ -53,15 +57,20 @@ class Content
     }
     public function __get($key)
     {
-        if(in_array($key, $this->attributes, true) || array_key_exists($key, $this->attributes)) {
+        if (in_array($key, $this->attributes, true) || array_key_exists($key, $this->attributes)) {
             return $this->content[$key] ?? null;
         }
     }
     public function __set($key, $value)
     {
-        if(in_array($key, $this->attributes, true) || array_key_exists($key, $this->attributes)) {
+        if (in_array($key, $this->attributes, true) || array_key_exists($key, $this->attributes)) {
             $this->content[$key] = $value;
             return;
         }
+    }
+
+    public function getDescription()
+    {
+
     }
 }

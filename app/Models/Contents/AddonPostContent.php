@@ -12,4 +12,9 @@ class AddonPostContent extends Content
         'license',
         'thanks',
     ];
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
 }

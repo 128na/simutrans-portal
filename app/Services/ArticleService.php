@@ -18,6 +18,7 @@ class ArticleService extends Service
     {
         return $this->model->active()
             ->with('user', 'tags', 'categories')
+            ->orderBy('updated_at', 'desc')
             ->paginate($this->per_page);
     }
 
@@ -26,6 +27,7 @@ class ArticleService extends Service
         return $this->model->active()
             ->search($request->word)
             ->with('user', 'tags', 'categories')
+            ->orderBy('updated_at', 'desc')
             ->paginate($this->per_page);
     }
 
@@ -33,18 +35,21 @@ class ArticleService extends Service
     {
         return $user->articles()->active()
             ->with('user', 'tags', 'categories')
+            ->orderBy('updated_at', 'desc')
             ->paginate($this->per_page);
     }
     public function byCategory(Category $category)
     {
         return $category->articles()->active()
             ->with('user', 'tags', 'categories')
+            ->orderBy('updated_at', 'desc')
             ->paginate($this->per_page);
     }
     public function byTag(Tag $tag)
     {
         return $tag->articles()->active()
             ->with('user', 'tags', 'categories')
+            ->orderBy('updated_at', 'desc')
             ->paginate($this->per_page);
     }
 }

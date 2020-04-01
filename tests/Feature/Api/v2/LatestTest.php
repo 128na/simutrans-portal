@@ -32,6 +32,18 @@ class LatestTest extends TestCase
         $res->assertStatus(200);
     }
 
+    public function testThrottle()
+    {
+        $url = route('api.v2.latest');
+
+        for ($i = 0; $i < 10; $i++) {
+            $res = $this->getJson($url);
+            $res->assertStatus(200);
+        }
+        $res = $this->getJson($url);
+        $res->assertStatus(429);
+    }
+
     public function testData()
     {
         $user = factory(User::class)->create();

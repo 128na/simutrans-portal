@@ -11,6 +11,11 @@ class AddonIntroductionContent extends Content
         'author',
         'license',
         'thanks',
-        'agreement' => false
+        'agreement' => false,
     ];
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
 }

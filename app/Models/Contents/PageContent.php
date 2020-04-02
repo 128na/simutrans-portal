@@ -9,4 +9,9 @@ class PageContent extends Content
         'thumbnail',
         'sections' => [],
     ];
+
+    public function getDescription()
+    {
+        return collect($this->sections)->pluck('text')->implode("\n");
+    }
 }

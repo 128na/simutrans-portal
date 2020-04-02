@@ -56,3 +56,6 @@ https://simutrans.sakura.ne.jp/portal/
 ### アップロード画像一括圧縮
 
 - php artisan compress:image
+
+## API
+[APIについて](./docs/api.md)

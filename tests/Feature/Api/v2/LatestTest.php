@@ -36,7 +36,8 @@ class LatestTest extends TestCase
     {
         $url = route('api.v2.latest');
 
-        for ($i = 0; $i < 10; $i++) {
+        $throttle_limit = 60;
+        for ($i = 0; $i < $throttle_limit; $i++) {
             $res = $this->getJson($url);
             $res->assertStatus(200);
         }

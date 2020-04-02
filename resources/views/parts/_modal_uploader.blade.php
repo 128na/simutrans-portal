@@ -25,6 +25,7 @@
     var msg_section_caption = @json(__('Caption'));
     var msg_section_text    = @json(__('Text'));
     var msg_section_image   = @json(__('Image'));
+    var msg_section_url     = @json(__('Url'));
     var msg_remove_section  = @json(__('Remove'));
     var msg_open_uploader   = @json(__('Open File Manager'));
     var msg_no_file         = @json(__('No file.'));

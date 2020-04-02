@@ -25,6 +25,16 @@
                         </h5>
                         <input type="hidden" name="sections[{{ $index }}][type]" value="text">
                         <textarea class="form-control" name="sections[{{ $index }}][text]" rows="8">{!! e($section['text']) !!}</textarea>
+                    @break
+                    @case('url')
+                        <h5 class="row">
+                            <div class="col-8">@lang('Url')</div>
+                            <div class="col-4 ml-auto text-right">
+                                <button class="btn btn-sm btn-danger js-remove-section">@lang('Remove')</button>
+                            </div>
+                        </h5>
+                        <input type="hidden" name="sections[{{ $index }}][type]" value="url">
+                        <input type="url" class="form-control" name="sections[{{ $index }}][url]" value="{{ e($section['url']) }}">
                         @break
                     @case('image')
                         <h5 class="row">
@@ -65,6 +75,7 @@
     <a href="#" class="btn btn-secondary js-add-caption-section">@lang('Add Caption')</a>
     <a href="#" class="btn btn-secondary js-add-text-section">@lang('Add Text')</a>
     <a href="#" class="btn btn-secondary js-add-image-section">@lang('Add Image')</a>
+    <a href="#" class="btn btn-secondary js-add-url-section">@lang('Add URL')</a>
 
 </div>
 <div class="form-group">

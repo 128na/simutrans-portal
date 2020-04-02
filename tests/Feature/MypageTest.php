@@ -4,11 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Article;
 use App\Models\Attachment;
-use App\Models\Category;
-use App\Models\Profile;
+use App\Models\ConversionCount;
 use App\Models\User;
 use App\Models\ViewCount;
-use App\Models\ConversionCount;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
@@ -57,15 +55,15 @@ class MypageTest extends TestCase
 
         // edit
         $article = static::createAddonPost($user);
-        $response = $this->get('mypage/articles/edit/'.$article->id);
+        $response = $this->get('mypage/articles/edit/' . $article->id);
         $response->assertRedirect('email/verify');
 
         $article = static::createAddonIntroduction($user);
-        $response = $this->get('mypage/articles/edit/'.$article->id);
+        $response = $this->get('mypage/articles/edit/' . $article->id);
         $response->assertRedirect('email/verify');
 
         $article = static::createPage($user);
-        $response = $this->get('mypage/articles/edit/'.$article->id);
+        $response = $this->get('mypage/articles/edit/' . $article->id);
         $response->assertRedirect('email/verify');
     }
 
@@ -103,15 +101,15 @@ class MypageTest extends TestCase
 
         // edit
         $article = static::createAddonPost($user);
-        $response = $this->get('mypage/articles/edit/'.$article->id);
+        $response = $this->get('mypage/articles/edit/' . $article->id);
         $response->assertOk();
 
         $article = static::createAddonIntroduction($user);
-        $response = $this->get('mypage/articles/edit/'.$article->id);
+        $response = $this->get('mypage/articles/edit/' . $article->id);
         $response->assertOk();
 
         $article = static::createPage($user);
-        $response = $this->get('mypage/articles/edit/'.$article->id);
+        $response = $this->get('mypage/articles/edit/' . $article->id);
         $response->assertOk();
     }
 
@@ -127,19 +125,19 @@ class MypageTest extends TestCase
         $response->assertOk();
 
         $thumbnail = Attachment::createFromFile(UploadedFile::fake()->create('thumbnail.jpg', 1), $user->id);
-        $addon     = Attachment::createFromFile(UploadedFile::fake()->create('addon.zip', 1), $user->id);
+        $addon = Attachment::createFromFile(UploadedFile::fake()->create('addon.zip', 1), $user->id);
 
         $date = now()->format('YmdHis');
         $data = [
-            'title'        => 'test title '.$date,
-            'slug'         => 'test-slug-'.$date,
+            'title' => 'test title ' . $date,
+            'slug' => 'test-slug-' . $date,
             'thumbnail_id' => $thumbnail->id,
-            'status'       => 'publish',
-            'author'      => 'test auhtor',
-            'file_id'     => $addon->id,
+            'status' => 'publish',
+            'author' => 'test auhtor',
+            'file_id' => $addon->id,
             'description' => 'test description',
-            'thanks'      => 'tets thanks',
-            'license'     => 'test license',
+            'thanks' => 'tets thanks',
+            'license' => 'test license',
         ];
         // ステータスが空
         $response = $this->post($path, array_merge($data, ['status' => '']));
@@ -155,7 +153,7 @@ class MypageTest extends TestCase
         $response = $this->post($path, array_merge($data, ['title' => str_repeat('a', 256)]));
         $response->assertSessionHasErrors(['title']);
         // タイトルが重複
-        $article = factory(Article::class)->create(['user_id'=>factory(User::class)->create()->id]);
+        $article = factory(Article::class)->create(['user_id' => factory(User::class)->create()->id]);
         $response = $this->post($path, array_merge($data, ['title' => $article->title]));
         $response->assertSessionHasErrors(['title']);
 
@@ -211,7 +209,6 @@ class MypageTest extends TestCase
         $response->assertRedirect('mypage');
     }
 
-
     /**
      * アドオン紹介作成のバリデーション
      */
@@ -227,15 +224,15 @@ class MypageTest extends TestCase
 
         $date = now()->format('YmdHis');
         $data = [
-            'title'        => 'test title '.$date,
-            'slug'         => 'test-slug-'.$date,
+            'title' => 'test title ' . $date,
+            'slug' => 'test-slug-' . $date,
             'thumbnail_id' => $thumbnail->id,
-            'status'       => 'publish',
-            'author'      => 'test auhtor',
-            'link'        => 'http://example.com',
+            'status' => 'publish',
+            'author' => 'test auhtor',
+            'link' => 'http://example.com',
             'description' => 'test description',
-            'thanks'      => 'tets thanks',
-            'license'     => 'test license',
+            'thanks' => 'tets thanks',
+            'license' => 'test license',
         ];
         // ステータスが空
         $response = $this->post($path, array_merge($data, ['status' => '']));
@@ -251,7 +248,7 @@ class MypageTest extends TestCase
         $response = $this->post($path, array_merge($data, ['title' => str_repeat('a', 256)]));
         $response->assertSessionHasErrors(['title']);
         // タイトルが重複
-        $article = factory(Article::class)->create(['user_id'=>factory(User::class)->create()->id]);
+        $article = factory(Article::class)->create(['user_id' => factory(User::class)->create()->id]);
         $response = $this->post($path, array_merge($data, ['title' => $article->title]));
         $response->assertSessionHasErrors(['title']);
 
@@ -281,7 +278,7 @@ class MypageTest extends TestCase
         $response = $this->post($path, array_merge($data, ['link' => 'test']));
         $response->assertSessionHasErrors(['link']);
         // ダウンロード先がURLだが256文字以上
-        $response = $this->post($path, array_merge($data, ['link' => 'http://example.com/'.str_repeat('a', 256)]));
+        $response = $this->post($path, array_merge($data, ['link' => 'http://example.com/' . str_repeat('a', 256)]));
         $response->assertSessionHasErrors(['link']);
 
         // 説明が2049文字以上
@@ -306,7 +303,6 @@ class MypageTest extends TestCase
         $response->assertRedirect('mypage');
     }
 
-
     /**
      * 一般記事作成のバリデーション
      */
@@ -322,11 +318,11 @@ class MypageTest extends TestCase
 
         $date = now()->format('YmdHis');
         $data = [
-            'title'        => 'test title '.$date,
-            'slug'         => 'test-slug-'.$date,
+            'title' => 'test title ' . $date,
+            'slug' => 'test-slug-' . $date,
             'thumbnail_id' => $thumbnail->id,
-            'status'       => 'publish',
-            'sections'     => [['type' => 'text', 'text' => 'test']],
+            'status' => 'publish',
+            'sections' => [['type' => 'text', 'text' => 'test']],
         ];
         // ステータスが空
         $response = $this->post($path, array_merge($data, ['status' => '']));
@@ -342,7 +338,7 @@ class MypageTest extends TestCase
         $response = $this->post($path, array_merge($data, ['title' => str_repeat('a', 256)]));
         $response->assertSessionHasErrors(['title']);
         // タイトルが重複
-        $article = factory(Article::class)->create(['user_id'=>factory(User::class)->create()->id]);
+        $article = factory(Article::class)->create(['user_id' => factory(User::class)->create()->id]);
         $response = $this->post($path, array_merge($data, ['title' => $article->title]));
         $response->assertSessionHasErrors(['title']);
 
@@ -403,19 +399,19 @@ class MypageTest extends TestCase
     {
         $user = factory(User::class)->create();
         $article = static::createAddonPost($user);
-        $path = 'mypage/articles/edit/addon-post/'.$article->slug;
+        $path = 'mypage/articles/edit/addon-post/' . $article->slug;
         $this->actingAs($user);
 
         $data = [
-            'title'        => $article->title,
-            'slug'         => $article->slug,
-            'status'       => $article->status,
+            'title' => $article->title,
+            'slug' => $article->slug,
+            'status' => $article->status,
             'thumbnail_id' => $article->contents->thumbnail,
-            'author'      => $article->contents->author,
-            'file_id'     => $article->contents->file,
+            'author' => $article->contents->author,
+            'file_id' => $article->contents->file,
             'description' => $article->contents->description,
-            'thanks'      => $article->contents->thanks,
-            'license'     => $article->contents->license,
+            'thanks' => $article->contents->thanks,
+            'license' => $article->contents->license,
         ];
         // ステータスが空
         $response = $this->post($path, array_merge($data, ['status' => '']));
@@ -431,7 +427,7 @@ class MypageTest extends TestCase
         $response = $this->post($path, array_merge($data, ['title' => str_repeat('a', 256)]));
         $response->assertSessionHasErrors(['title']);
         // タイトルが重複
-        $article = factory(Article::class)->create(['user_id'=>factory(User::class)->create()->id]);
+        $article = factory(Article::class)->create(['user_id' => factory(User::class)->create()->id]);
         $response = $this->post($path, array_merge($data, ['title' => $article->title]));
         $response->assertSessionHasErrors(['title']);
 
@@ -494,20 +490,20 @@ class MypageTest extends TestCase
     {
         $user = factory(User::class)->create();
         $article = static::createAddonIntroduction($user);
-        $path = 'mypage/articles/edit/addon-introduction/'.$article->slug;
+        $path = 'mypage/articles/edit/addon-introduction/' . $article->slug;
         $this->actingAs($user);
 
         $date = now()->format('YmdHis');
         $data = [
-            'title'        => $article->title,
-            'slug'         => $article->slug,
-            'status'       => $article->status,
+            'title' => $article->title,
+            'slug' => $article->slug,
+            'status' => $article->status,
             'thumbnail_id' => $article->contents->thumbnail,
-            'author'      => $article->contents->author,
-            'link'        => $article->contents->link,
+            'author' => $article->contents->author,
+            'link' => $article->contents->link,
             'description' => $article->contents->description,
-            'thanks'      => $article->contents->thanks,
-            'license'     => $article->contents->license,
+            'thanks' => $article->contents->thanks,
+            'license' => $article->contents->license,
         ];
         // ステータスが空
         $response = $this->post($path, array_merge($data, ['status' => '']));
@@ -523,7 +519,7 @@ class MypageTest extends TestCase
         $response = $this->post($path, array_merge($data, ['title' => str_repeat('a', 256)]));
         $response->assertSessionHasErrors(['title']);
         // タイトルが重複
-        $article = factory(Article::class)->create(['user_id'=>factory(User::class)->create()->id]);
+        $article = factory(Article::class)->create(['user_id' => factory(User::class)->create()->id]);
         $response = $this->post($path, array_merge($data, ['title' => $article->title]));
         $response->assertSessionHasErrors(['title']);
 
@@ -553,7 +549,7 @@ class MypageTest extends TestCase
         $response = $this->post($path, array_merge($data, ['link' => 'test']));
         $response->assertSessionHasErrors(['link']);
         // ダウンロード先がURLだが256文字以上
-        $response = $this->post($path, array_merge($data, ['link' => 'http://example.com/'.str_repeat('a', 256)]));
+        $response = $this->post($path, array_merge($data, ['link' => 'http://example.com/' . str_repeat('a', 256)]));
         $response->assertSessionHasErrors(['link']);
 
         // 説明が2049文字以上
@@ -585,16 +581,16 @@ class MypageTest extends TestCase
     {
         $user = factory(User::class)->create();
         $article = static::createPage($user);
-        $path = 'mypage/articles/edit/page/'.$article->slug;
+        $path = 'mypage/articles/edit/page/' . $article->slug;
         $this->actingAs($user);
 
         $date = now()->format('YmdHis');
         $data = [
-            'title'        => $article->title,
-            'slug'         => $article->slug,
-            'status'       => $article->status,
+            'title' => $article->title,
+            'slug' => $article->slug,
+            'status' => $article->status,
             'thumbnail_id' => $article->contents->thumbnail,
-            'sections'     => $article->contents->sections,
+            'sections' => $article->contents->sections,
         ];
         // ステータスが空
         $response = $this->post($path, array_merge($data, ['status' => '']));
@@ -610,7 +606,7 @@ class MypageTest extends TestCase
         $response = $this->post($path, array_merge($data, ['title' => str_repeat('a', 256)]));
         $response->assertSessionHasErrors(['title']);
         // タイトルが重複
-        $article = factory(Article::class)->create(['user_id'=>factory(User::class)->create()->id]);
+        $article = factory(Article::class)->create(['user_id' => factory(User::class)->create()->id]);
         $response = $this->post($path, array_merge($data, ['title' => $article->title]));
         $response->assertSessionHasErrors(['title']);
 
@@ -647,6 +643,16 @@ class MypageTest extends TestCase
         $response = $this->post($path, array_merge($data, ['sections' => [['type' => 'caption', 'caption' => str_repeat('a', 256)]]]));
         $response->assertSessionHasErrors(['sections.*.caption']);
 
+        // URLセクションが空
+        $response = $this->post($path, array_merge($data, ['sections' => [['type' => 'url', 'url' => '']]]));
+        $response->assertSessionHasErrors(['sections.*.url']);
+        // URLセクションが不正な形式
+        $response = $this->post($path, array_merge($data, ['sections' => [['type' => 'url', 'url' => str_repeat('a', 255)]]]));
+        $response->assertSessionHasErrors(['sections.*.url']);
+        // URLセクションが256文字以上
+        $response = $this->post($path, array_merge($data, ['sections' => [['type' => 'url', 'url' => 'http://' . str_repeat('a', 256)]]]));
+        $response->assertSessionHasErrors(['sections.*.url']);
+
         // 画像セクションが空
         $response = $this->post($path, array_merge($data, ['sections' => [['type' => 'image', 'id' => '']]]));
         $response->assertSessionHasErrors(['sections.*.id']);
@@ -674,17 +680,17 @@ class MypageTest extends TestCase
         $others_article = static::createPage($other_user);
         $this->actingAs($user);
 
-        $response = $this->get('mypage/articles/edit/'.$others_article->id);
+        $response = $this->get('mypage/articles/edit/' . $others_article->id);
         $response->assertForbidden();
 
         $data = [
-            'title'        => $others_article->title,
-            'slug'         => $others_article->slug,
-            'status'       => $others_article->status,
+            'title' => $others_article->title,
+            'slug' => $others_article->slug,
+            'status' => $others_article->status,
             'thumbnail_id' => $others_article->contents->thumbnail,
-            'sections'     => $others_article->contents->sections,
+            'sections' => $others_article->contents->sections,
         ];
-        $response = $this->post('mypage/articles/edit/page/'.$others_article->id, $data);
+        $response = $this->post('mypage/articles/edit/page/' . $others_article->id, $data);
         $response->assertForbidden();
     }
 
@@ -698,21 +704,21 @@ class MypageTest extends TestCase
         $others_article = static::createAddonIntroduction($other_user);
         $this->actingAs($user);
 
-        $response = $this->get('mypage/articles/edit/'.$others_article->id);
+        $response = $this->get('mypage/articles/edit/' . $others_article->id);
         $response->assertForbidden();
 
         $data = [
-            'title'        => $others_article->title,
-            'slug'         => $others_article->slug,
-            'status'       => $others_article->status,
+            'title' => $others_article->title,
+            'slug' => $others_article->slug,
+            'status' => $others_article->status,
             'thumbnail_id' => $others_article->contents->thumbnail,
-            'author'      => $others_article->contents->author,
-            'link'        => $others_article->contents->link,
+            'author' => $others_article->contents->author,
+            'link' => $others_article->contents->link,
             'description' => $others_article->contents->description,
-            'thanks'      => $others_article->contents->thanks,
-            'license'     => $others_article->contents->license,
+            'thanks' => $others_article->contents->thanks,
+            'license' => $others_article->contents->license,
         ];
-        $response = $this->post('mypage/articles/edit/addon-introduction/'.$others_article->id, $data);
+        $response = $this->post('mypage/articles/edit/addon-introduction/' . $others_article->id, $data);
         $response->assertForbidden();
     }
 
@@ -726,24 +732,23 @@ class MypageTest extends TestCase
         $others_article = static::createAddonPost($other_user);
         $this->actingAs($user);
 
-        $response = $this->get('mypage/articles/edit/'.$others_article->id);
+        $response = $this->get('mypage/articles/edit/' . $others_article->id);
         $response->assertForbidden();
 
         $data = [
-            'title'        => $others_article->title,
-            'slug'         => $others_article->slug,
-            'status'       => $others_article->status,
+            'title' => $others_article->title,
+            'slug' => $others_article->slug,
+            'status' => $others_article->status,
             'thumbnail_id' => $others_article->contents->thumbnail,
-            'author'      => $others_article->contents->author,
-            'file_id'     => $others_article->contents->file,
+            'author' => $others_article->contents->author,
+            'file_id' => $others_article->contents->file,
             'description' => $others_article->contents->description,
-            'thanks'      => $others_article->contents->thanks,
-            'license'     => $others_article->contents->license,
+            'thanks' => $others_article->contents->thanks,
+            'license' => $others_article->contents->license,
         ];
-        $response = $this->post('mypage/articles/edit/addon-post/'.$others_article->id, $data);
+        $response = $this->post('mypage/articles/edit/addon-post/' . $others_article->id, $data);
         $response->assertForbidden();
     }
-
 
     /**
      * アナリティクス画面が正常に表示されること
@@ -767,7 +772,7 @@ class MypageTest extends TestCase
         $response = $this->get($path);
         $response->assertOk();
 
-        $first_article = factory(Article::class)->create(['user_id'=>$user->id]);
+        $first_article = factory(Article::class)->create(['user_id' => $user->id]);
         $response = $this->get($path);
         $response->assertOk();
 
@@ -781,7 +786,7 @@ class MypageTest extends TestCase
         $response = $this->get($path);
         $response->assertOk();
 
-        $second_article = factory(Article::class)->create(['user_id'=>$user->id]);
+        $second_article = factory(Article::class)->create(['user_id' => $user->id]);
         $response = $this->get($path);
         $response->assertOk();
     }

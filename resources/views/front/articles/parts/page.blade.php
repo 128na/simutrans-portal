@@ -14,6 +14,11 @@
                 @case('text')
                     <div class="pl-1">{{ $section['text'] }}</div>
                     @break
+                @case('url')
+                    <div class="pl-1">
+                        <a href="{{$section['url']}}" target="_blank" rel="noopener noreferrer">{{ $section['url'] }}</a>
+                    </div>
+                    @break
                 @case('image')
                     <div class="text-center">
                         <img class="img-fluid" src="{{ $article->getImageUrl($section['id']) }}">

@@ -1,4 +1,4 @@
-# simutrans-portal
+# Simutrans Addon Portal
 
 https://simutrans.sakura.ne.jp/portal/
 

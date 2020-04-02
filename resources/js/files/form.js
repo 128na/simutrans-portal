@@ -67,6 +67,13 @@ const add_image_section = function (e) {
 };
 $('.js-add-image-section').on('click', add_image_section);
 
+const add_url_section = function (e) {
+    e.preventDefault();
+    const current_index = $('.js-section').last().data('section') || 0;
+    $sections.append(buildUrlSectionHTML(current_index + 1));
+};
+$('.js-add-url-section').on('click', add_url_section);
+
 const buildCaptionSectionHTML = function (index) {
     return `
         <div class="form-group js-section" data-section="${index}">
@@ -91,6 +98,20 @@ const buildTextSectionHTML = function (index) {
             </h5>
             <input type="hidden" name="sections[${index}][type]" value="text">
             <textarea class="form-control" name="sections[${index}][text]" rows="8"></textarea>
+        </div>`;
+};
+
+const buildUrlSectionHTML = function (index) {
+    return `
+        <div class="form-group js-section" data-section="${index}">
+            <h5 class="row">
+                <div class="col-8">${msg_section_url}</div>
+                <div class="col-4 ml-auto text-right">
+                    <button class="btn btn-sm btn-danger js-remove-section">${msg_remove_section}</button>
+                </div>
+            </h5>
+            <input type="hidden" name="sections[${index}][type]" value="url">
+            <input type="url" class="form-control" name="sections[${index}][url]">
         </div>`;
 };
 const buildImageSectionHTML = function (index) {

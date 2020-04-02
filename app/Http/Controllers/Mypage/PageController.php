@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Mypage;
 
-use App\Models\Contents\Content;
 use App\Models\Article;
 use App\Models\Attachment;
+use App\Models\Contents\Content;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,11 +22,11 @@ class PageController extends ArticleController
         }
 
         $sections = collect($request->input('sections', []));
-        $data['sections'] = $sections->map(function($section, $index) use ($request, $article) {
+        $data['sections'] = $sections->map(function ($section, $index) use ($request, $article) {
             switch ($section['type']) {
                 case 'caption':
                     return [
-                        'type'    => 'caption',
+                        'type' => 'caption',
                         'caption' => $section['caption'],
                     ];
                 case 'text':
@@ -34,12 +34,17 @@ class PageController extends ArticleController
                         'type' => 'text',
                         'text' => $section['text'],
                     ];
+                case 'url':
+                    return [
+                        'type' => 'url',
+                        'url' => $section['url'],
+                    ];
                 case 'image':
                     $article->attachments()->save(
                         Attachment::findOrFail($section['id']));
                     return [
                         'type' => 'image',
-                        'id'   => (int)$section['id'],
+                        'id' => (int) $section['id'],
                     ];
             }
         });
@@ -55,11 +60,12 @@ class PageController extends ArticleController
     {
         return array_merge(parent::getValidateRule($article), [
             'sections' => 'required|array|min:1',
-            'sections.*.type'    => 'required|in:caption,text,image',
-            'sections.*.caption' => 'required_if:sections.*.type,caption|max:255',
-            'sections.*.text'    => 'required_if:sections.*.type,text|max:2048',
-            'sections.*.id'      => 'required_if:sections.*.type,image|exists:attachments,id,user_id,'.Auth::id(),
-            'categories.page.*'  => 'nullable|exists:categories,id,type,page',
+            'sections.*.type' => 'required|in:caption,text,url,image',
+            'sections.*.caption' => 'required_if:sections.*.type,caption|string|max:255',
+            'sections.*.text' => 'required_if:sections.*.type,text|string|max:2048',
+            'sections.*.url' => 'required_if:sections.*.type,url|url|max:255',
+            'sections.*.id' => 'required_if:sections.*.type,image|exists:attachments,id,user_id,' . Auth::id(),
+            'categories.page.*' => 'nullable|exists:categories,id,type,page',
         ]);
     }
 }

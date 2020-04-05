@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\v2;
+namespace Tests\Feature\Api\v2\Article;
 
 use App\Models\Article;
 use App\Models\Category;
@@ -26,23 +26,23 @@ class SearchTest extends TestCase
         $user = factory(User::class)->create();
         $publish_article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'publish']);
 
-        $url = route('api.v2.search', ['word' => null]);
+        $url = route('api.v2.articles.search', ['word' => null]);
         $res = $this->getJson($url);
         $res->assertJsonValidationErrors('word');
 
-        $url = route('api.v2.search', ['word' => '']);
+        $url = route('api.v2.articles.search', ['word' => '']);
         $res = $this->getJson($url);
         $res->assertJsonValidationErrors('word');
 
-        $url = route('api.v2.search', ['word' => str_repeat('a', 101)]);
+        $url = route('api.v2.articles.search', ['word' => str_repeat('a', 101)]);
         $res = $this->getJson($url);
         $res->assertJsonValidationErrors('word');
 
-        $url = route('api.v2.search', ['word' => ['array']]);
+        $url = route('api.v2.articles.search', ['word' => ['array']]);
         $res = $this->getJson($url);
         $res->assertJsonValidationErrors('word');
 
-        $url = route('api.v2.search', ['word' => str_repeat('a', 100)]);
+        $url = route('api.v2.articles.search', ['word' => str_repeat('a', 100)]);
         $res = $this->getJson($url);
         $res->assertStatus(200);
     }
@@ -56,12 +56,12 @@ class SearchTest extends TestCase
         $tag = factory(Tag::class)->create();
         $article->tags()->attach($tag->id);
 
-        $url = route('api.v2.search', ['word' => $article->title]);
+        $url = route('api.v2.articles.search', ['word' => $article->title]);
         $res = $this->getJson($url);
         $res->assertStatus(200);
         $res->assertJsonFragment(['title' => $article->title]);
 
-        $url = route('api.v2.search', ['word' => $article->title . '_hoge']);
+        $url = route('api.v2.articles.search', ['word' => $article->title . '_hoge']);
         $res = $this->getJson($url);
         $res->assertStatus(200);
         $res->assertJsonMissing(['title' => $article->title]);
@@ -72,7 +72,7 @@ class SearchTest extends TestCase
         $user = factory(User::class)->create();
         $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'draft']);
 
-        $url = route('api.v2.latest', ['word' => $article->title]);
+        $url = route('api.v2.articles.latest', ['word' => $article->title]);
         $res = $this->getJson($url);
         $res->assertStatus(200);
 
@@ -84,7 +84,7 @@ class SearchTest extends TestCase
         $user = factory(User::class)->create();
         $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'private']);
 
-        $url = route('api.v2.latest', ['word' => $article->title]);
+        $url = route('api.v2.articles.latest', ['word' => $article->title]);
         $res = $this->getJson($url);
         $res->assertStatus(200);
 
@@ -96,7 +96,7 @@ class SearchTest extends TestCase
         $user = factory(User::class)->create();
         $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'trash']);
 
-        $url = route('api.v2.latest', ['word' => $article->title]);
+        $url = route('api.v2.articles.latest', ['word' => $article->title]);
         $res = $this->getJson($url);
         $res->assertStatus(200);
 

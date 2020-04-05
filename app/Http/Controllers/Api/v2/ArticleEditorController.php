@@ -23,7 +23,7 @@ class ArticleEditorController extends Controller
         $this->article_editor_service = $article_editor_service;
     }
 
-    public function index()
+    public function options()
     {
         return [
             'categories' => $this->article_editor_service->getSeparatedCategories(Auth::user()),

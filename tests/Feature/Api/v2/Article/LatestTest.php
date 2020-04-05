@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\v2;
+namespace Tests\Feature\Api\v2\Article;
 
 use App\Models\Article;
 use App\Models\Category;
@@ -26,7 +26,7 @@ class LatestTest extends TestCase
         $user = factory(User::class)->create();
         $publish_article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'publish']);
 
-        $url = route('api.v2.latest');
+        $url = route('api.v2.articles.latest');
 
         $res = $this->getJson($url);
         $res->assertStatus(200);
@@ -34,7 +34,7 @@ class LatestTest extends TestCase
 
     public function testThrottle()
     {
-        $url = route('api.v2.latest');
+        $url = route('api.v2.articles.latest');
 
         $throttle_limit = 60;
         for ($i = 0; $i < $throttle_limit; $i++) {
@@ -54,7 +54,7 @@ class LatestTest extends TestCase
         $tag = factory(Tag::class)->create();
         $article->tags()->attach($tag->id);
 
-        $url = route('api.v2.latest');
+        $url = route('api.v2.articles.latest');
 
         $res = $this->getJson($url);
         $res->assertStatus(200);
@@ -67,20 +67,20 @@ class LatestTest extends TestCase
         $res->assertJsonPath('data.0.author', $article->contents->author);
         $res->assertJsonPath('data.0.categories.0.name', $category->name);
         $res->assertJsonPath('data.0.categories.0.url', route('category', [$category->type, $category->slug]));
-        $res->assertJsonPath('data.0.categories.0.api', route('api.v2.category', [$category->id]));
+        $res->assertJsonPath('data.0.categories.0.api', route('api.v2.articles.category', [$category->id]));
         $res->assertJsonPath('data.0.tags.0.name', $tag->name);
         $res->assertJsonPath('data.0.tags.0.url', route('tag', $tag->id));
-        $res->assertJsonPath('data.0.tags.0.api', route('api.v2.tag', $tag->id));
+        $res->assertJsonPath('data.0.tags.0.api', route('api.v2.articles.tag', $tag->id));
         $res->assertJsonPath('data.0.created_by.name', $user->name);
         $res->assertJsonPath('data.0.created_by.url', route('user', $user->id));
-        $res->assertJsonPath('data.0.created_by.api', route('api.v2.user', $user->id));
+        $res->assertJsonPath('data.0.created_by.api', route('api.v2.articles.user', $user->id));
     }
 
     public function testVisibilityDraft()
     {
         $user = factory(User::class)->create();
         $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'draft']);
-        $url = route('api.v2.latest');
+        $url = route('api.v2.articles.latest');
 
         $res = $this->getJson($url);
         $res->assertStatus(200);
@@ -91,7 +91,7 @@ class LatestTest extends TestCase
     {
         $user = factory(User::class)->create();
         $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'private']);
-        $url = route('api.v2.latest');
+        $url = route('api.v2.articles.latest');
 
         $res = $this->getJson($url);
         $res->assertStatus(200);
@@ -102,7 +102,7 @@ class LatestTest extends TestCase
     {
         $user = factory(User::class)->create();
         $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'trash']);
-        $url = route('api.v2.latest');
+        $url = route('api.v2.articles.latest');
 
         $res = $this->getJson($url);
         $res->assertStatus(200);

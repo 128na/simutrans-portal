@@ -13,10 +13,8 @@
             <a class="btn btn-outline-primary" href="{{route('mypage.articles.analytics') }}">@lang('Access Analytics')</a>
         </p>
         <p class="mb-4">
-            @foreach (config('category.post') as $post_type)
-                <a class="btn btn-outline-primary" href="{{ route('mypage.articles.create', $post_type['slug']) }}">
-                    @lang('Create :post_type', ['post_type' => __('post_types.'.$post_type['slug'])])</a>
-            @endforeach
+            <a class="btn btn-outline-primary" href="{{ route('mypage.articles.create') }}">
+                @lang('Create New Article')</a>
         </p>
 
         <h2>@lang('My articles')</h2>

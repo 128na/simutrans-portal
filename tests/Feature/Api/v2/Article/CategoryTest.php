@@ -1,13 +1,14 @@
 <?php
 
-namespace Tests\Feature\Api\v2;
+namespace Tests\Feature\Api\v2\Article;
 
 use App\Models\Article;
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class UserTest extends TestCase
+class CategoryTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -23,8 +24,10 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
         $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'publish']);
+        $category = Category::first();
+        $article->categories()->attach($category->id);
 
-        $url = route('api.v2.user', $user);
+        $url = route('api.v2.articles.category', $category);
 
         $res = $this->getJson($url);
         $res->assertStatus(200);
@@ -33,7 +36,7 @@ class UserTest extends TestCase
 
     public function testInvalid()
     {
-        $url = route('api.v2.user', 65535);
+        $url = route('api.v2.articles.category', 65535);
 
         $res = $this->getJson($url);
         $res->assertStatus(404);
@@ -43,8 +46,10 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
         $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'draft']);
+        $category = Category::first();
+        $article->categories()->attach($category->id);
 
-        $url = route('api.v2.user', $user);
+        $url = route('api.v2.articles.category', $category);
         $res = $this->getJson($url);
         $res->assertStatus(200);
 
@@ -55,8 +60,10 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
         $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'private']);
+        $category = Category::first();
+        $article->categories()->attach($category->id);
 
-        $url = route('api.v2.user', $user);
+        $url = route('api.v2.articles.category', $category);
         $res = $this->getJson($url);
         $res->assertStatus(200);
 
@@ -67,8 +74,10 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
         $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'trash']);
+        $category = Category::first();
+        $article->categories()->attach($category->id);
 
-        $url = route('api.v2.user', $user);
+        $url = route('api.v2.articles.category', $category);
         $res = $this->getJson($url);
         $res->assertStatus(200);
 

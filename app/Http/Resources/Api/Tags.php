@@ -18,7 +18,7 @@ class Tags extends ResourceCollection
             return [
                 'name' => $item->name,
                 'url' => route('tag', $item->id),
-                'api' => route('api.v2.tag', $item->id),
+                'api' => route('api.v2.articles.tag', $item->id),
             ];
         });
     }

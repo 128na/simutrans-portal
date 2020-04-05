@@ -23,23 +23,22 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api\v1')->group(function () {
 });
 
 Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
-    Route::get('articles/latest', 'ArticleController@latest')->name('latest');
-    Route::get('articles/search', 'ArticleController@search')->name('search');
-    Route::get('articles/user/{user}', 'ArticleController@user')->name('user');
-    Route::get('articles/tag/{tag}', 'ArticleController@tag')->name('tag');
-    Route::get('articles/category/{category}', 'ArticleController@category')->name('category');
+    Route::get('articles/latest', 'ArticleController@latest')->name('articles.latest');
+    Route::get('articles/search', 'ArticleController@search')->name('articles.search');
+    Route::get('articles/user/{user}', 'ArticleController@user')->name('articles.user');
+    Route::get('articles/tag/{tag}', 'ArticleController@tag')->name('articles.tag');
+    Route::get('articles/category/{category}', 'ArticleController@category')->name('articles.category');
 
-    Route::middleware(['auth'])->group(function () {
-        Route::get('tags', 'TagController@search');
-        Route::post('tags', 'TagController@store');
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('tags', 'TagController@search')->name('tags.search');
+        Route::post('tags', 'TagController@store')->name('tags.store');
 
-        Route::get('attachments/{article?}', 'AttachmentController@index');
-        Route::post('attachments/{article?}', 'AttachmentController@store');
-        Route::delete('attachments/{attachment}/{article?}', 'AttachmentController@destroy');
+        Route::get('attachments/{article?}', 'AttachmentController@index')->name('attachments.index');
+        Route::post('attachments/{article?}', 'AttachmentController@store')->name('attachments.store');
+        Route::delete('attachments/{attachment}/{article?}', 'AttachmentController@destroy')->name('attachments.destroy');
 
-        Route::get('options', 'ArticleEditorController@index');
-        Route::post('articles', 'ArticleEditorController@store');
-        Route::post('articles/preview', 'ArticleEditorController@preview');
-        Route::post('articles/{article}', 'ArticleEditorController@update');
+        Route::get('options', 'ArticleEditorController@options')->name('articles.options');
+        Route::post('articles', 'ArticleEditorController@store')->name('articles.store');
+        Route::post('articles/{article}', 'ArticleEditorController@update')->name('articles.update');
     });
 });

@@ -20,7 +20,7 @@ abstract class BaseRequest extends FormRequest
             case 'markdown':
                 return array_merge($this->baseRule(), $this->markdown());
             default:
-                abort(400, 'Invalid post_type');
+                return $this->baseRule();
         }
     }
 
@@ -51,7 +51,7 @@ abstract class BaseRequest extends FormRequest
             'article.tags.*' => 'required|exists:tags,name',
             'article.contents' => 'required|array',
             'article.contents.thumbnail' => 'nullable|exists:attachments,id,user_id,' . Auth::id(),
-            'article.contents.author' => 'nullable|max:255',
+            'article.contents.author' => 'required|max:255',
             'article.contents.link' => 'required|url|max:255',
             'article.contents.description' => 'required|string|max:2048',
             'article.contents.agreement' => 'nullable',
@@ -64,8 +64,6 @@ abstract class BaseRequest extends FormRequest
         return [
             'article.categories' => 'present|array',
             'article.categories.*' => 'required|exists:categories,id,type,page',
-            'article.tags' => 'present|array',
-            'article.tags.*' => 'required|exists:tags,name',
             'article.contents' => 'required|array',
             'article.contents.thumbnail' => 'nullable|exists:attachments,id,user_id,' . Auth::id(),
             'article.contents.sections' => 'required|array|min:1',

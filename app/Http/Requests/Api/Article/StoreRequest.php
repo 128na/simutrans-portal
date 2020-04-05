@@ -9,7 +9,7 @@ class StoreRequest extends BaseRequest
     protected function baseRule()
     {
         return [
-            'article.post_type' => ['required', Rule::in(config('post_types'))],
+            'article.post_type' => ['bail', 'required', Rule::in(config('post_types'))],
             'article.status' => ['required', Rule::in(config('status'))],
             'article.title' => 'required|unique:articles,title|max:255',
             'article.slug' => 'required|unique:articles,slug|max:255',

@@ -17,7 +17,7 @@ class User extends JsonResource
         return [
             'name' => $this->name,
             'url' => route('user', $this->id),
-            'api' => route('api.v2.user', $this->id),
+            'api' => route('api.v2.articles.user', $this->id),
         ];
     }
 }

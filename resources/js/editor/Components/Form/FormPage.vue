@@ -37,6 +37,9 @@
       <b-btn @click="handleAdd('url')">Add Url</b-btn>
       <b-btn @click="handleAdd('image')">Add Image</b-btn>
     </b-form-group>
+    <b-form-group label="Category">
+      <b-form-checkbox-group v-model="article.categories" :options="options.categories.page" />
+    </b-form-group>
   </div>
 </template>
 <script>

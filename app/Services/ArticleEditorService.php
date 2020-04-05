@@ -6,6 +6,7 @@ use App\Http\Requests\Api\Article\StoreRequest;
 use App\Http\Requests\Api\Article\UpdateRequest;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Tag;
 use App\Models\User;
 
 class ArticleEditorService extends Service
@@ -100,6 +101,12 @@ class ArticleEditorService extends Service
             });
 
         $article->categories()->sync($request->input('article.categories', []));
-        $article->tags()->sync($request->input('article.tags', []));
+
+        $tag_names = $request->input('article.tags', []);
+        $tags_ids = Tag::whereIn('name', $tag_names)->get()->pluck('id')->toArray();
+        $article->tags()->sync($tags_ids);
+
+        Tag::removeDoesntHaveRelation();
+
     }
 }

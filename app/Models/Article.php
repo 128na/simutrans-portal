@@ -48,6 +48,9 @@ class Article extends Model implements Feedable
         self::retrieved(function ($model) {
             $model->contents = Content::createFromType($model->post_type, $model->contents);
         });
+        self::creating(function ($model) {
+            $model->contents = Content::createFromType($model->post_type, $model->contents);
+        });
         self::created(function ($model) {
             $model->syncRelatedData();
         });

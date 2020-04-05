@@ -2,7 +2,9 @@
 
 namespace App\Models\Contents;
 
-class Content
+use Illuminate\Contracts\Support\Arrayable;
+
+class Content implements Arrayable
 {
     protected $content = [];
     protected $attributes = ['thumbnail'];
@@ -72,5 +74,10 @@ class Content
     public function getDescription()
     {
 
+    }
+
+    public function toArray()
+    {
+        return $this->content;
     }
 }

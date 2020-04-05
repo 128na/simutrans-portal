@@ -3,6 +3,7 @@
 @section('title', __('Access Analytics'))
 
 @section('content')
+    <script src="{{ asset(mix('js/analytics.js')) }}" defer></script>
     <script>
         window.articles = @json($articles);
         window.lang = {
@@ -22,6 +23,6 @@
         };
     </script>
     <div class="mypage">
-        <div id="app-analytics"></div>
+        <div id="app"></div>
     </div>
 @endsection

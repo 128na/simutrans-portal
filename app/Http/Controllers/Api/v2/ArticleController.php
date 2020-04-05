@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\v2;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\ArticleSearchRequest;
+use App\Http\Requests\Api\Article\SearchRequest;
 use App\Http\Resources\Api\Articles as ArticlesResource;
 use App\Models\Category;
 use App\Models\Tag;
@@ -22,7 +22,7 @@ class ArticleController extends Controller
             $this->article_service->listing()
         );
     }
-    public function search(ArticleSearchRequest $request)
+    public function search(SearchRequest $request)
     {
         return new ArticlesResource(
             $this->article_service->search($request)

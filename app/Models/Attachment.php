@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Article;
-use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -25,12 +23,12 @@ class Attachment extends Model
     |--------------------------------------------------------------------------
     | イベントハンドラ
     |--------------------------------------------------------------------------
-    */
+     */
     protected static function boot()
     {
         parent::boot();
 
-        self::deleting(function($model) {
+        self::deleting(function ($model) {
             $model->deleteFileHandler();
         });
     }
@@ -43,7 +41,7 @@ class Attachment extends Model
     |--------------------------------------------------------------------------
     | リレーション
     |--------------------------------------------------------------------------
-    */
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -57,44 +55,69 @@ class Attachment extends Model
     |--------------------------------------------------------------------------
     | アクセサ
     |--------------------------------------------------------------------------
-    */
+     */
     public function getPathExistsAttribute()
     {
         return Storage::disk('public')->exists($this->path);
     }
     public function getIsImageAttribute()
     {
-        $path = public_path('storage/'.$this->path);
-        $mime = mime_content_type($path);
-        return stripos($mime, 'image') !== false;
+        return $this->type === 'image';
     }
+
+    public function getTypeAttribute()
+    {
+        $path = public_path('storage/' . $this->path);
+        $mime = mime_content_type($path);
+
+        if (stripos($mime, 'image') !== false) {
+            return 'image';
+        }
+        if (stripos($mime, 'video') !== false) {
+            return 'video';
+        }
+        if (stripos($mime, 'text') !== false) {
+            return 'text';
+        }
+        return 'file';
+    }
+
     public function getIsPngAttribute()
     {
-        $path = public_path('storage/'.$this->path);
+        $path = public_path('storage/' . $this->path);
         $mime = mime_content_type($path);
         return stripos($mime, 'image/png') !== false;
     }
+
     public function getThumbnailAttribute()
     {
-        return $this->is_image
-            ? asset('storage/'.$this->path)
-            : asset('storage/'.config('attachment.thumbnail-file'));
+        switch ($this->type) {
+            case 'image':
+                return asset('storage/' . $this->path);
+            case 'zip':
+                return asset('storage/' . config('attachment.thumbnail-zip'));
+            case 'movie':
+                return asset('storage/' . config('attachment.thumbnail-movie'));
+            case 'file':
+            default:
+                return asset('storage/' . config('attachment.thumbnail-file'));
+        }
     }
     public function getUrlAttribute()
     {
-        return asset('storage/'.$this->path);
+        return asset('storage/' . $this->path);
     }
 
     /*
     |--------------------------------------------------------------------------
     | 一般
     |--------------------------------------------------------------------------
-    */
+     */
     public static function createFromFile($file, $user_id)
     {
         return self::create([
-            'user_id'       => $user_id,
-            'path'          => $file->store('user/'.$user_id, 'public'),
+            'user_id' => $user_id,
+            'path' => $file->store('user/' . $user_id, 'public'),
             'original_name' => $file->getClientOriginalName(),
         ]);
     }

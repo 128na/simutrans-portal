@@ -1,7 +1,7 @@
 <?php
 namespace App\Services;
 
-use App\Http\Requests\Api\ArticleSearchRequest;
+use App\Http\Requests\Api\v2\Article\SearchRequest;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
@@ -9,9 +9,9 @@ use App\Models\User;
 
 class ArticleService extends Service
 {
-    public function __construct(Article $article)
+    public function __construct(Article $model)
     {
-        $this->model = $article;
+        $this->model = $model;
     }
 
     public function listing()
@@ -22,7 +22,7 @@ class ArticleService extends Service
             ->paginate($this->per_page);
     }
 
-    public function search(ArticleSearchRequest $request)
+    public function search(SearchRequest $request)
     {
         return $this->model->active()
             ->search($request->word)

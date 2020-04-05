@@ -50,22 +50,10 @@ Route::prefix('mypage')->group(function () {
                     Route::post('profile', 'Mypage\ProfileController@update')->name('profile.update');
                 });
 
-                Route::get('/articles/create/{type}', 'Mypage\ArticleController@create')->name('articles.create');
-                Route::middleware('transaction')->group(function () {
-                    Route::post('/articles/create/addon-post/{preview?}', 'Mypage\AddonPostController@store')->name('articles.store.addon-post');
-                    Route::post('/articles/create/addon-introduction/{preview?}', 'Mypage\AddonIntroductionController@store')->name('articles.store.addon-introduction');
-                    Route::post('/articles/create/page/{preview?}', 'Mypage\PageController@store')->name('articles.store.page');
-                    Route::post('/articles/create/markdown/{preview?}', 'Mypage\MarkdownController@store')->name('articles.store.markdown');
-                });
+                Route::get('/articles/create', 'Mypage\ArticleController@create')->name('articles.create');
 
                 Route::middleware('can:update,article')->group(function () {
                     Route::get('/articles/edit/{article}', 'Mypage\ArticleController@edit')->name('articles.edit');
-                    Route::middleware('transaction')->group(function () {
-                        Route::post('/articles/edit/addon-post/{article}/{preview?}', 'Mypage\AddonPostController@update')->name('articles.update.addon-post');
-                        Route::post('/articles/edit/addon-introduction/{article}/{preview?}', 'Mypage\AddonIntroductionController@update')->name('articles.update.addon-introduction');
-                        Route::post('/articles/edit/page/{article}/{preview?}', 'Mypage\PageController@update')->name('articles.update.page');
-                        Route::post('/articles/edit/markdown/{article}/{preview?}', 'Mypage\MarkdownController@update')->name('articles.update.markdown');
-                    });
                 });
 
                 Route::get('/articles/analytics', 'Mypage\ArticleController@analytics')->name('articles.analytics');

@@ -8,7 +8,6 @@ use App\Models\UserAddonCount;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 class Category extends Model
 {
@@ -26,7 +25,7 @@ class Category extends Model
     |--------------------------------------------------------------------------
     | 初期化時設定
     |--------------------------------------------------------------------------
-    */
+     */
     protected static function boot()
     {
         parent::boot();
@@ -35,13 +34,13 @@ class Category extends Model
             $builder->orderBy('order', 'asc');
         });
 
-        self::created(function($model) {
+        self::created(function ($model) {
             $model->recountHandler();
         });
-        self::updated(function($model) {
+        self::updated(function ($model) {
             $model->recountHandler();
         });
-        self::deleted(function($model) {
+        self::deleted(function ($model) {
             $model->recountHandler();
         });
     }
@@ -55,7 +54,7 @@ class Category extends Model
     |--------------------------------------------------------------------------
     | リレーション
     |--------------------------------------------------------------------------
-    */
+     */
     public function articles()
     {
         return $this->belongsToMany(Article::class);
@@ -65,7 +64,7 @@ class Category extends Model
     |--------------------------------------------------------------------------
     | スコープ
     |--------------------------------------------------------------------------
-    */
+     */
     public function scopePost($query)
     {
         return $query->where('type', config('category.type.post'));
@@ -90,9 +89,9 @@ class Category extends Model
     {
         return $query->where('type', config('category.type.page'));
     }
-    public function scopeFor($query, $user)
+    public function scopeForUser($query, User $user)
     {
-        if(!$user->isAdmin()) {
+        if (!$user->isAdmin()) {
             $query->where('need_admin', 0);
         }
     }

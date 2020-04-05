@@ -27,12 +27,12 @@ export default {
     fetchAttachments(article_id = '') {
         return axios.get(`/api/v2/attachments/${article_id}`);
     },
-    storeAttachment(form) {
-        return axios.post('/api/v2/attachments', form, {
+    storeAttachment(form, article_id = '') {
+        return axios.post(`/api/v2/attachments/${article_id}`, form, {
             headers: { 'content-type': 'multipart/form-data' }
         });
     },
-    deleteAttachment(attachment_id) {
-        return axios.delete(`/api/v2/attachments/${attachment_id}`);
+    deleteAttachment(attachment_id, article_id = '') {
+        return axios.delete(`/api/v2/attachments/${attachment_id}/${article_id}`);
     },
 }

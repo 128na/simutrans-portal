@@ -56,7 +56,13 @@ import api from "../../api";
 import { toastable } from "../../mixins";
 export default {
   name: "media-manager",
-  props: { id: {}, value: {}, attachments: {}, only_image: { default: false } },
+  props: {
+    id: {},
+    article: {},
+    value: {},
+    attachments: {},
+    only_image: { default: false }
+  },
   mixins: [toastable],
   data() {
     return {
@@ -146,7 +152,7 @@ export default {
         formData.append("only_image", true);
       }
       const res = await api
-        .storeAttachment(formData)
+        .storeAttachment(formData, this.article.id)
         .catch(this.handleErrorToast);
 
       if (res && res.status === 200) {
@@ -164,7 +170,9 @@ export default {
       }
     },
     async delete(id) {
-      const res = await api.deleteAttachment(id).catch(this.handleErrorToast);
+      const res = await api
+        .deleteAttachment(id, this.article.id)
+        .catch(this.handleErrorToast);
 
       if (res && res.status === 200) {
         this.$emit("attachmentsUpdated", res.data.data);

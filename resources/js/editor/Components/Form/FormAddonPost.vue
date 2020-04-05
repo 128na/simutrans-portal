@@ -7,6 +7,7 @@
       <media-manager
         id="addon"
         v-model="article.contents.file"
+        :article="article"
         :attachments="attachments"
         @attachmentsUpdated="handleAttachmentsUpdated"
       />

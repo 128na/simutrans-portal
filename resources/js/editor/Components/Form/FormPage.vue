@@ -18,6 +18,7 @@
           type="text"
           :id="`section-${index}`"
           :value="section.id"
+          :article="article"
           :attachments="attachments"
           :only_image="true"
           @input="v=>handleInput(index, v)"

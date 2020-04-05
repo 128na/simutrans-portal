@@ -31,25 +31,29 @@ class AttachmentController extends Controller
         return new AttachmentsResource($attachments);
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, Article $article = null)
     {
         abort_unless($request->hasFile('file'), 400);
 
         $this->attachment_service->createFromFile(Auth::user(), $request);
 
-        return new AttachmentsResource(
-            $this->attachment_service->getAttachments(Auth::user())
-        );
+        $attachments = $article
+        ? $this->attachment_service->getUpdateArchiveAttachments(Auth::user(), $article)
+        : $this->attachment_service->getCreateArchiveAttachments(Auth::user());
+
+        return new AttachmentsResource($attachments);
     }
 
-    public function destroy(Attachment $attachment)
+    public function destroy(Attachment $attachment, Article $article = null)
     {
         abort_unless($attachment->user_id === Auth::id(), 403);
 
         $this->attachment_service->destroy($attachment);
 
-        return new AttachmentsResource(
-            $this->attachment_service->getAttachments(Auth::user())
-        );
+        $attachments = $article
+        ? $this->attachment_service->getUpdateArchiveAttachments(Auth::user(), $article)
+        : $this->attachment_service->getCreateArchiveAttachments(Auth::user());
+
+        return new AttachmentsResource($attachments);
     }
 }

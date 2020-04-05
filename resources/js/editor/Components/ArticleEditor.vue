@@ -58,9 +58,9 @@ export default {
       options: {
         categories: {},
         statuses: [],
-        post_types: [],
-        attachments: []
+        post_types: []
       },
+      attachments: [],
       preview_window: null
     };
   },

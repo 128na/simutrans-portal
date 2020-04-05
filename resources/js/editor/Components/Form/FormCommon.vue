@@ -15,6 +15,7 @@
         id="thumbnail"
         v-model="article.contents.thumbnail"
         :attachments="attachments"
+        :article="article"
         :only_image="true"
         @attachmentsUpdated="handleAttachmentsUpdated"
       />

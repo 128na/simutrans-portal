@@ -30,14 +30,14 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
     Route::get('articles/category/{category}', 'ArticleController@category')->name('category');
 
     Route::middleware(['auth'])->group(function () {
-        Route::get('options', 'ArticleEditorController@index');
         Route::get('tags', 'TagController@search');
         Route::post('tags', 'TagController@store');
 
         Route::get('attachments/{article?}', 'AttachmentController@index');
-        Route::post('attachments', 'AttachmentController@store');
-        Route::delete('attachments/{attachment?}', 'AttachmentController@destroy');
+        Route::post('attachments/{article?}', 'AttachmentController@store');
+        Route::delete('attachments/{attachment}/{article?}', 'AttachmentController@destroy');
 
+        Route::get('options', 'ArticleEditorController@index');
         Route::post('articles', 'ArticleEditorController@store');
         Route::post('articles/preview', 'ArticleEditorController@preview');
         Route::post('articles/{article}', 'ArticleEditorController@update');

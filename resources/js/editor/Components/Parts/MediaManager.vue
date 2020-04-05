@@ -32,7 +32,7 @@
               class="position-absolute btn-close"
               pill
               size="sm"
-              @click="handleDelete(attachment.id)"
+              @click.stop="handleDelete(attachment.id)"
             >&times;</b-button>
           </div>
           <small class="ellipsis">{{ attachment.original_name }}</small>
@@ -156,8 +156,11 @@ export default {
         .catch(this.handleErrorToast);
 
       if (res && res.status === 200) {
-        this.$emit("attachmentsUpdated", res.data.data);
         this.$refs[this.file_uploader_id].value = null;
+        this.selected = res.data.data.find(
+          a => a.original_name === file.name
+        ).id;
+        this.$emit("attachmentsUpdated", res.data.data);
         this.toastSuccess("File Uploaded");
       }
     },

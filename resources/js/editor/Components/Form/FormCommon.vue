@@ -4,7 +4,12 @@
       <b-form-select v-model="article.status" :options="options.statuses" />
     </b-form-group>
     <b-form-group label="title">
-      <b-form-input type="text" v-model="article.title" />
+      <b-input-group>
+        <b-form-input type="text" v-model="article.title" />
+        <b-input-group-append>
+          <b-button @click="handleSlug">To Slug</b-button>
+        </b-input-group-append>
+      </b-input-group>
     </b-form-group>
     <b-form-group label="slug">
       <b-form-input type="text" v-model="url_decoded_slug" />
@@ -40,6 +45,11 @@ export default {
         );
         this.article.slug = encodeURI(replaced);
       }
+    }
+  },
+  methods: {
+    handleSlug() {
+      this.url_decoded_slug = this.article.title;
     }
   }
 };

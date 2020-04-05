@@ -13,12 +13,12 @@
       @attachmentsUpdated="handleAttachmentsUpdated"
     />
 
-    <b-form-group label="post type" v-if="can_select_post_type">
+    <b-form-group label="post type" v-show="can_save">
       <b-form-checkbox v-model="article.should_tweet">Should Tweet</b-form-checkbox>
     </b-form-group>
     <b-form-group>
-      <b-btn variant @click="handlePreview">Preview</b-btn>
-      <b-btn variant="primary" :disabled="!can_save" @click="handleSave">Save</b-btn>
+      <b-btn :disabled="!can_save" @click="handlePreview">Preview</b-btn>
+      <b-btn :disabled="!can_save" variant="primary" @click="handleSave">Save</b-btn>
     </b-form-group>
   </div>
   <div v-else>initializing...</div>
@@ -72,7 +72,7 @@ export default {
       return this.article.post_type;
     },
     can_save() {
-      return true;
+      return this.article.post_type;
     }
   },
   methods: {

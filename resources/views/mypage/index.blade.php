@@ -3,7 +3,9 @@
 @section('title', __('Mypage'))
 
 @section('content')
-    <div class="mypage">
+    <script src="{{ asset(mix('js/mypage.js')) }}" defer></script>
+    <div id="app"></div>
+    {{-- <div class="mypage">
 
         <h2>@lang('Profile')</h2>
 
@@ -53,5 +55,5 @@
                 </tbody>
             </table>
         @endif
-    </div>
+    </div> --}}
 @endsection

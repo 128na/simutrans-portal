@@ -1,3 +1,3 @@
 <template>
-  <article-editor />
+  <div>index</div>
 </template>

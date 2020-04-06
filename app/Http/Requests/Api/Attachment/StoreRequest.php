@@ -16,10 +16,12 @@ class StoreRequest extends FormRequest
         if (request()->has('only_image')) {
             return [
                 'file' => 'required|file|image',
+                'only_image' => 'nullable',
             ];
         }
         return [
             'file' => 'required|file',
+            'only_image' => 'nullable',
         ];
     }
 }

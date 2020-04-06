@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Api;
+namespace App\Http\Resources\Api\Mypage;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class Attachments extends ResourceCollection
+class Articles extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -15,13 +15,7 @@ class Attachments extends ResourceCollection
     public function toArray($request)
     {
         return $this->collection->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'type' => $item->type,
-                'original_name' => $item->original_name,
-                'thumbnail' => $item->thumbnail,
-                'url' => $item->url,
-            ];
+            return new Article($item);
         });
     }
 }

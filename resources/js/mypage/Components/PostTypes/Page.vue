@@ -4,21 +4,19 @@
       :article="article"
       :attachments="attachments"
       :options="options"
-      @attachmentsUpdated="handleAttachmentsUpdated"
+      @update:attachments="$emit('update:attachments', $event)"
     />
     <form-page
       :article="article"
       :attachments="attachments"
       :options="options"
-      @attachmentsUpdated="handleAttachmentsUpdated"
+      @update:attachments="$emit('update:attachments', $event)"
     />
   </div>
 </template>
 <script>
-import { attachments_updatable } from "../../mixins";
 export default {
   name: "page",
-  props: ["article", "attachments", "options"],
-  mixins: [attachments_updatable]
+  props: ["article", "attachments", "options"]
 };
 </script>

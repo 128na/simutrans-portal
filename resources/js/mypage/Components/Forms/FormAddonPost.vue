@@ -5,11 +5,12 @@
     </b-form-group>
     <b-form-group label="addon file">
       <media-manager
-        id="addon"
+        name="addon"
         v-model="article.contents.file"
-        :article="article"
+        type="Article"
+        :id="article.id"
         :attachments="attachments"
-        @attachmentsUpdated="handleAttachmentsUpdated"
+        @update:attachments="$emit('update:attachments', $event)"
       />
     </b-form-group>
     <b-form-group label="description">
@@ -21,10 +22,8 @@
   </div>
 </template>
 <script>
-import { attachments_updatable } from "../../mixins";
 export default {
   name: "form-addon-post",
-  props: ["article", "attachments", "options"],
-  mixins: [attachments_updatable]
+  props: ["article", "attachments", "options"]
 };
 </script>

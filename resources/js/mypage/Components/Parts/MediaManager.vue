@@ -10,7 +10,7 @@
     <b-img v-if="can_preview" :src="current_thumbnail" thumbnail />
     <p>{{ current_filename }}</p>
     <b-button variant="outline-secondary" @click="handleModal">Select File</b-button>
-    <b-modal :id="id" title="Select File" size="xl" scrollable>
+    <b-modal :id="name" title="Select File" size="xl" scrollable>
       <template v-slot:modal-header>
         <div>Select File</div>
         <b-form inline>
@@ -58,9 +58,10 @@ export default {
   name: "media-manager",
   props: {
     id: {},
-    article: {},
-    value: {},
+    name: {},
+    type: {},
     attachments: {},
+    value: {},
     only_image: { default: false }
   },
   mixins: [toastable],
@@ -78,16 +79,25 @@ export default {
       return this.search.trim().toLowerCase();
     },
     filtered_attachments() {
-      const items = this.only_image
+      const image_filtered = this.only_image
         ? this.attachments.filter(a => a.type === "image")
         : this.attachments;
 
+      const type_filtered = this.id
+        ? image_filtered.filter(
+            a =>
+              a.attachmentable_id === null ||
+              (a.attachmentable_id == this.id &&
+                a.attachmentable_type === this.type)
+          )
+        : image_filtered.filter(a => a.attachmentable_id === null);
+
       return this.criteria
-        ? items.filter(a => a.original_name.includes(this.criteria))
-        : items;
+        ? type_filtered.filter(a => a.original_name.includes(this.criteria))
+        : type_filtered;
     },
     file_uploader_id() {
-      return `uploader_${this.id}`;
+      return `uploader_${this.name}`;
     },
     accept() {
       return this.only_image ? "image/*" : "";
@@ -133,7 +143,7 @@ export default {
       }
     },
     handleModal() {
-      this.$bvModal.show(this.id);
+      this.$bvModal.show(this.name);
     },
     handleUpload() {
       this.$refs[this.file_uploader_id].click();
@@ -148,11 +158,15 @@ export default {
     async upload(file) {
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("type", this.type);
+      if (this.id) {
+        formData.append("id", this.id);
+      }
       if (this.only_image) {
         formData.append("only_image", true);
       }
       const res = await api
-        .storeAttachment(formData, this.article.id)
+        .storeAttachment(formData)
         .catch(this.handleErrorToast);
 
       if (res && res.status === 200) {
@@ -160,7 +174,7 @@ export default {
         this.selected = res.data.data.find(
           a => a.original_name === file.name
         ).id;
-        this.$emit("attachmentsUpdated", res.data.data);
+        this.$emit("update:attachments", res.data.data);
         this.toastSuccess("File Uploaded");
       }
     },
@@ -173,21 +187,19 @@ export default {
       }
     },
     async delete(id) {
-      const res = await api
-        .deleteAttachment(id, this.article.id)
-        .catch(this.handleErrorToast);
+      const res = await api.deleteAttachment(id).catch(this.handleErrorToast);
 
       if (res && res.status === 200) {
-        this.$emit("attachmentsUpdated", res.data.data);
+        this.$emit("update:attachments", res.data.data);
         this.toastSuccess("File Deleted");
       }
     },
     handleCancel() {
-      this.$bvModal.hide(this.id);
+      this.$bvModal.hide(this.name);
     },
     handleOK() {
       this.$emit("input", this.selected);
-      this.$bvModal.hide(this.id);
+      this.$bvModal.hide(this.name);
     },
 
     selectedClass(attachment_id) {

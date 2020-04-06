@@ -17,32 +17,33 @@
     </b-form-group>
     <b-form-group label="thumbnail">
       <media-manager
-        id="thumbnail"
+        name="thumbnail"
         v-model="article.contents.thumbnail"
+        type="Article"
+        :id="article.id"
         :attachments="attachments"
-        :article="article"
         :only_image="true"
-        @attachmentsUpdated="handleAttachmentsUpdated"
+        @update:attachments="$emit('update:attachments', $event)"
       />
     </b-form-group>
   </div>
 </template>
 <script>
-import { attachments_updatable } from "../../mixins";
 export default {
   name: "form-common",
   props: ["article", "attachments", "options"],
-  mixins: [attachments_updatable],
   computed: {
     url_decoded_slug: {
       get() {
         return decodeURI(this.article.slug);
       },
       set(val) {
-        const replaced = val.replace(
-          /(!|"|#|\$|%|&|\'|\(|\)|\*|\+|,|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\s|\.)+/,
-          "-"
-        );
+        const replaced = val
+          .toLowerCase()
+          .replace(
+            /(!|"|#|\$|%|&|\'|\(|\)|\*|\+|,|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\s|\.)+/gi,
+            "-"
+          );
         this.article.slug = encodeURI(replaced);
       }
     }

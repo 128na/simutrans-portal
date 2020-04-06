@@ -17,4 +17,4 @@ mix.js('resources/js/script.js', 'public/js')
     .version();
 
 mix.js('resources/js/analytics/app.js', 'public/js/analytics.js');
-mix.js('resources/js/editor/app.js', 'public/js/editor.js');
+mix.js('resources/js/mypage/app.js', 'public/js/mypage.js');

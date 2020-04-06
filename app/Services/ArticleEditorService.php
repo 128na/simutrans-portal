@@ -16,6 +16,13 @@ class ArticleEditorService extends Service
         $this->model = $model;
     }
 
+    public function getArticles(User $user)
+    {
+        return $user->articles()
+            ->with('categories', 'tags')
+            ->get();
+    }
+
     public function getSeparatedCategories(User $user)
     {
         $categories = Category::forUser($user)->get();

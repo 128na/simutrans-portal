@@ -4,17 +4,15 @@
       :article="article"
       :attachments="attachments"
       :options="options"
-      @attachmentsUpdated="handleAttachmentsUpdated"
+      @update:attachments="$emit('update:attachments', $event)"
     />
     <form-addon-introduction :article="article" :options="options" />
     <form-addon :article="article" :options="options" />
   </div>
 </template>
 <script>
-import { attachments_updatable } from "../../mixins";
 export default {
   name: "addon-introduction",
-  props: ["article", "attachments", "options"],
-  mixins: [attachments_updatable]
+  props: ["article", "attachments", "options"]
 };
 </script>

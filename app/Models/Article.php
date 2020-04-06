@@ -78,6 +78,7 @@ class Article extends Model implements Feedable
     {
         return $this->morphMany(Attachment::class, 'attachmentable');
     }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class);

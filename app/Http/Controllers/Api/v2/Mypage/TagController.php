@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\v2;
+namespace App\Http\Controllers\Api\v2\Mypage;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Tag\SearchRequest;

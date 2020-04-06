@@ -14,6 +14,11 @@ class AttachmentService extends Service
         $this->model = $model;
     }
 
+    public function getAttachments(User $user)
+    {
+        return $user->myAttachments;
+    }
+
     public function getCreateArchiveAttachments(User $user)
     {
         return $user->myAttachments()

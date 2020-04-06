@@ -15,14 +15,14 @@
         />
         <media-manager
           v-if="isImage(section.type)"
-          type="text"
-          :id="`section-${index}`"
+          :name="`section-${index}`"
           :value="section.id"
-          :article="article"
+          type="Article"
+          :id="article.id"
           :attachments="attachments"
           :only_image="true"
           @input="v=>handleInput(index, v)"
-          @attachmentsUpdated="handleAttachmentsUpdated"
+          @update:attachments="$emit('update:attachments', $event)"
         />
         <b-form-input
           v-if="isCaption(section.type)"
@@ -43,11 +43,9 @@
   </div>
 </template>
 <script>
-import { attachments_updatable } from "../../mixins";
 export default {
   name: "form-page",
   props: ["article", "attachments", "options"],
-  mixins: [attachments_updatable],
   methods: {
     isText(type) {
       return type === "text";

@@ -7,6 +7,7 @@
     :options="options"
     @update:attachments="handleAttachments"
     @update:articles="handleArticles"
+    @update:user="handleUser"
   />
   <div v-else>Loading ...</div>
 </template>
@@ -15,6 +16,7 @@ import { DateTime } from "luxon";
 import api from "./api";
 import { toastable } from "./mixins";
 export default {
+  mixins: [toastable],
   data() {
     return {
       initialized: false,
@@ -44,27 +46,42 @@ export default {
       const res = await api.fetchUser().catch(this.handleErrorToast);
 
       if (res && res.status === 200) {
-        this.user = res.data.data;
+        this.setUser(res.data.data);
       }
+    },
+    handleUser(user) {
+      this.toastSuccess("Profile Updated");
+      this.setUser(user);
+    },
+    setUser(user) {
+      this.user = user;
     },
     async fetchAttachments() {
       const res = await api.fetchAttachments().catch(this.handleErrorToast);
 
       if (res && res.status === 200) {
-        this.handleAttachments(res.data.data);
+        this.setAttachments(res.data.data);
       }
     },
     handleAttachments(attachments) {
+      this.toastSuccess("Attachment Updated");
+      this.setAttachments(attachments);
+    },
+    setAttachments(attachments) {
       this.attachments = attachments;
     },
     async fetchArticles() {
       const res = await api.fetchArticles().catch(this.handleErrorToast);
 
       if (res && res.status === 200) {
-        this.handleArticles(res.data.data);
+        this.setArticles(res.data.data);
       }
     },
     handleArticles(articles) {
+      this.toastSuccess("Article Updated");
+      this.setArticles(articles);
+    },
+    setArticles(articles) {
       this.articles = articles.map(a => {
         a.created_at = DateTime.fromISO(a.created_at).toLocaleString(
           DateTime.DATETIME_FULL

@@ -102,10 +102,9 @@ class ArticleEditorService extends Service
             ->merge($request->input('article.contents.sections.*.id', []))
             ->filter();
 
-        $article->user->myAttachments()->find($attachment_ids)
-            ->map(function ($attachment) use ($article) {
-                $article->attachments()->save($attachment);
-            });
+        $article->attachments()->saveMany(
+            $article->user->myAttachments()->find($attachment_ids)
+        );
 
         $article->categories()->sync($request->input('article.categories', []));
 

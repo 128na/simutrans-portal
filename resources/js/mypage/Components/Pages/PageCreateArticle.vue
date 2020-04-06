@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="$route.params.post_type">
     <router-link :to="{name:'index'}">Back to MyPage</router-link>
     <component
       :is="article.post_type"
@@ -19,10 +19,10 @@
   </div>
 </template>
 <script>
-import { article_editable } from "../../mixins";
+import { verifiedable, article_editable } from "../../mixins";
 export default {
   props: ["attachments", "options"],
-  mixins: [article_editable],
+  mixins: [verifiedable, article_editable],
   created() {
     switch (this.$route.params.post_type) {
       case "addon-post":

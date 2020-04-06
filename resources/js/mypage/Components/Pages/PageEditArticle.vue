@@ -19,10 +19,10 @@
   </div>
 </template>
 <script>
-import { article_editable } from "../../mixins";
+import { verifiedable, article_editable } from "../../mixins";
 export default {
   props: ["articles", "attachments", "options"],
-  mixins: [article_editable],
+  mixins: [verifiedable, article_editable],
   created() {
     this.article = this.articles.find(a => a.id == this.$route.params.id);
   }

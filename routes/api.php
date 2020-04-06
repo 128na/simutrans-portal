@@ -29,20 +29,20 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
     Route::get('articles/tag/{tag}', 'ArticleController@tag')->name('articles.tag');
     Route::get('articles/category/{category}', 'ArticleController@category')->name('articles.category');
 
-    Route::prefix('mypage')->namespace('Mypage')->middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('mypage')->namespace('Mypage')->middleware(['auth'])->group(function () {
         Route::get('user', 'UserController@index')->name('users.index');
-        Route::post('user', 'UserController@update')->name('users.update');
-
         Route::get('tags', 'TagController@search')->name('tags.search');
-        Route::post('tags', 'TagController@store')->name('tags.store');
-
         Route::get('attachments', 'AttachmentController@index')->name('attachments.index');
-        Route::post('attachments', 'AttachmentController@store')->name('attachments.store');
-        Route::delete('attachments/{attachment}', 'AttachmentController@destroy')->name('attachments.destroy');
-
         Route::get('articles', 'ArticleController@index')->name('articles.index');
-        Route::post('articles', 'ArticleController@store')->name('articles.store');
-        Route::post('articles/{article}', 'ArticleController@update')->name('articles.update');
         Route::get('options', 'ArticleController@options')->name('articles.options');
+
+        Route::middleware(['verified'])->group(function () {
+            Route::post('user', 'UserController@update')->name('users.update');
+            Route::post('tags', 'TagController@store')->name('tags.store');
+            Route::post('attachments', 'AttachmentController@store')->name('attachments.store');
+            Route::delete('attachments/{attachment}', 'AttachmentController@destroy')->name('attachments.destroy');
+            Route::post('articles', 'ArticleController@store')->name('articles.store');
+            Route::post('articles/{article}', 'ArticleController@update')->name('articles.update');
+        });
     });
 });

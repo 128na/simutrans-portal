@@ -46,6 +46,15 @@ const toastable = {
     }
 }
 
+const verifiedable = {
+    props: ['user'],
+    created() {
+        if (!this.user.verified) {
+            this.$router.push({ name: 'index' });
+        }
+    },
+}
+
 import api from "./api";
 const article_editable = {
     mixins: [toastable],
@@ -77,9 +86,6 @@ const article_editable = {
         async handleUpdateOrCreate() {
             const data = await this.updateOrCreate();
             if (data) {
-                this.toastSuccess(
-                    this.is_edit ? "Article Updated" : "Article Created"
-                );
                 this.$emit('update:articles', data.data);
                 this.$router.push({ name: 'index' });
             }
@@ -105,4 +111,5 @@ const article_editable = {
         }
     }
 };
-export { toastable, article_editable };
+
+export { toastable, article_editable, verifiedable };

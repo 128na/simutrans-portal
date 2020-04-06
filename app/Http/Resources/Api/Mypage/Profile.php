@@ -4,7 +4,7 @@ namespace App\Http\Resources\Api\Mypage;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class User extends JsonResource
+class Profile extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,7 @@ class User extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'profile' => new Profile($this->profile),
-            'verified' => !!$this->email_verified_at,
-            'attachments' => new Attachments($this->profile->attachments),
+            'data' => $this->data->toArray(),
         ];
     }
 }

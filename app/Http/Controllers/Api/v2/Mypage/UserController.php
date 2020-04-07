@@ -21,7 +21,7 @@ class UserController extends Controller
     }
     public function index()
     {
-        $user = Auth::user()->load('profile');
+        $user = $this->user_service->getUser(Auth::user());
 
         return new UserResouce($user);
     }

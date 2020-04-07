@@ -1,22 +1,34 @@
 <template>
-  <router-view
-    v-if="initialized"
-    :user="user"
-    :articles="articles"
-    :attachments="attachments"
-    :options="options"
-    @update:attachments="handleAttachments"
-    @update:articles="handleArticles"
-    @update:user="handleUser"
-  />
-  <div v-else>Loading ...</div>
+  <transition appear name="fade" mode="out-in">
+    <div v-if="initialized" key="initialized">
+      <header-menu :user="user" @logout="handleLogout" />
+      <b-container class="my-4">
+        <transition name="fade" mode="out-in">
+          <router-view
+            :user="user"
+            :articles="articles"
+            :attachments="attachments"
+            :options="options"
+            @update:attachments="handleAttachments"
+            @update:articles="handleArticles"
+            @update:user="handleUser"
+            @loggedin="handleLoggedin"
+          />
+        </transition>
+      </b-container>
+    </div>
+    <div v-else class="m-auto" key="not_initialized">
+      <h2>
+        <b-icon icon="arrow-clockwise" animation="spin" class="mr-2"></b-icon>Loading
+      </h2>
+    </div>
+  </transition>
 </template>
 <script>
 import { DateTime } from "luxon";
-import api from "./api";
-import { toastable } from "./mixins";
+import { toastable, api_handlable } from "./mixins";
 export default {
-  mixins: [toastable],
+  mixins: [toastable, api_handlable],
   data() {
     return {
       initialized: false,
@@ -32,54 +44,40 @@ export default {
   methods: {
     async initialize() {
       this.initialized = false;
+      this.user = null;
+      this.articles = [];
+      this.attachments = [];
+      this.options = null;
 
-      await Promise.all([
-        this.fetchUser(),
-        this.fetchArticles(),
-        this.fetchAttachments(),
-        this.fetchOptions()
-      ]);
+      await this.fetchUser();
 
       this.initialized = true;
     },
-    async fetchUser() {
-      const res = await api.fetchUser().catch(this.handleErrorToast);
-
-      if (res && res.status === 200) {
-        this.setUser(res.data.data);
-      }
-    },
-    handleUser(user) {
-      this.toastSuccess("Profile Updated");
-      this.setUser(user);
-    },
-    setUser(user) {
+    async handleLoggedin(user) {
       this.user = user;
-    },
-    async fetchAttachments() {
-      const res = await api.fetchAttachments().catch(this.handleErrorToast);
 
-      if (res && res.status === 200) {
-        this.setAttachments(res.data.data);
-      }
+      await Promise.all([
+        this.fetchAttachments(),
+        this.fetchArticles(),
+        this.fetchOptions()
+      ]);
+      this.$router.push({ name: "index" });
+      this.toastSuccess("Login Success");
     },
-    handleAttachments(attachments) {
-      this.toastSuccess("Attachment Updated");
-      this.setAttachments(attachments);
+    handleLogout() {
+      this.initialize();
+    },
+    async setUser(user) {
+      this.user = user;
+
+      await Promise.all([
+        this.fetchAttachments(),
+        this.fetchArticles(),
+        this.fetchOptions()
+      ]);
     },
     setAttachments(attachments) {
       this.attachments = attachments;
-    },
-    async fetchArticles() {
-      const res = await api.fetchArticles().catch(this.handleErrorToast);
-
-      if (res && res.status === 200) {
-        this.setArticles(res.data.data);
-      }
-    },
-    handleArticles(articles) {
-      this.toastSuccess("Article Updated");
-      this.setArticles(articles);
     },
     setArticles(articles) {
       this.articles = articles.map(a => {
@@ -92,13 +90,32 @@ export default {
         return a;
       });
     },
-    async fetchOptions() {
-      const res = await api.fetchOptions().catch(this.handleErrorToast);
-
-      if (res && res.status === 200) {
-        this.options = res.data;
-      }
+    setOptions(options) {
+      this.options = options;
+    },
+    handleUser(user) {
+      this.setUser(user);
+    },
+    handleAttachments(attachments) {
+      this.setAttachments(attachments);
+    },
+    handleArticles(articles) {
+      this.toastSuccess("Article Updated");
+      this.setArticles(articles);
     }
   }
 };
 </script>
+<style>
+.pre-line {
+  white-space: pre-line;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.1s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

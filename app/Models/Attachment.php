@@ -68,7 +68,7 @@ class Attachment extends Model
     public function getTypeAttribute()
     {
         $path = public_path('storage/' . $this->path);
-        $mime = mime_content_type($path);
+        $mime = @mime_content_type($path);
 
         if (stripos($mime, 'image') !== false) {
             return 'image';

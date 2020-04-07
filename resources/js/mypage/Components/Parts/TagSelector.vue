@@ -29,7 +29,7 @@
                 <b-button
                   variant="primary"
                   size="sm"
-                  :disabled="!can_create"
+                  :disabled="!can_create || fetching"
                   @click="handleCreateTagClick"
                 >タグを追加</b-button>
               </b-input-group-append>
@@ -38,23 +38,22 @@
         </b-dropdown-form>
         <b-dropdown-divider></b-dropdown-divider>
         <b-dropdown-item-button
-          v-for="option in options"
-          :key="option"
-          @click="handleOptionClick(option)"
-        >{{ option }}</b-dropdown-item-button>
-        <b-dropdown-text v-if="options.length === 0">No Results</b-dropdown-text>
+          v-for="tag in tags"
+          :key="tag"
+          @click="handletagClick(tag)"
+        >{{ tag }}</b-dropdown-item-button>
+        <b-dropdown-text v-if="tags.length === 0">No Results</b-dropdown-text>
       </b-dropdown>
     </template>
   </b-form-tags>
 </template>
 
 <script>
-import api from "../../api";
-import { toastable } from "../../mixins";
+import { toastable, api_handlable } from "../../mixins";
 
 export default {
   name: "tag-selector",
-  mixins: [toastable],
+  mixins: [toastable, api_handlable],
   props: {
     value: {
       type: Array,
@@ -67,17 +66,16 @@ export default {
   },
   data() {
     return {
-      options: [],
-      search: "",
-      fetching: false
+      tags: [],
+      search: ""
     };
   },
   created() {
-    this.fetch();
+    this.fetchTags();
   },
   watch: {
     criteria() {
-      this.fetch();
+      this.fetchTags();
     }
   },
   computed: {
@@ -85,35 +83,15 @@ export default {
       return this.search.trim().toLowerCase();
     },
     just_match() {
-      return this.options.find(o => o === this.criteria);
+      return this.tags.find(o => o === this.criteria);
     },
     can_create() {
       return this.creatable && this.criteria && !this.just_match;
     }
   },
   methods: {
-    async fetch() {
-      if (this.fetching) {
-        return;
-      }
-
-      this.fetching = true;
-      const res = await api.fetchTags(this.search).catch(this.handleErrorToast);
-
-      if (res && res.status === 200) {
-        this.options = res.data;
-      }
-      this.fetching = false;
-    },
-    async create() {
-      const res = await api
-        .storeTag(this.criteria)
-        .catch(this.handleErrorToast);
-
-      if (res && res.status === 201) {
-        this.handleOptionClick(res.data.name);
-        this.toastSuccess("Tag Created");
-      }
+    setTags(tags) {
+      this.tags = tags;
     },
     handleOptionClick(option) {
       this.value.push(option);
@@ -123,8 +101,9 @@ export default {
       const index = this.value.findIndex(v => v === tag_name);
       this.value.splice(index, 1);
     },
-    handleCreateTagClick() {
-      this.create();
+    async handleCreateTagClick() {
+      await this.storeTag(this.criteria);
+      this.toastSuccess("Tag Created");
     }
   }
 };

@@ -23,6 +23,8 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api\v1')->group(function () {
 });
 
 Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
+    Auth::routes(['verify' => true]);
+
     Route::get('articles/latest', 'ArticleController@latest')->name('articles.latest');
     Route::get('articles/search', 'ArticleController@search')->name('articles.search');
     Route::get('articles/user/{user}', 'ArticleController@user')->name('articles.user');
@@ -42,7 +44,10 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
             Route::post('attachments', 'AttachmentController@store')->name('attachments.store');
             Route::delete('attachments/{attachment}', 'AttachmentController@destroy')->name('attachments.destroy');
             Route::post('articles', 'ArticleController@store')->name('articles.store');
-            Route::post('articles/{article}', 'ArticleController@update')->name('articles.update');
+
+            Route::middleware('can:update,article')->group(function () {
+                Route::post('articles/{article}', 'ArticleController@update')->name('articles.update');
+            });
         });
     });
 });

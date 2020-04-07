@@ -1,21 +1,15 @@
 <template>
   <div>
-    <input
-      type="file"
-      :ref="file_uploader_id"
-      :accept="accept"
-      class="d-none"
-      @change="handleUploader"
-    />
+    <input type="file" :ref="file_uploader_id" :accept="accept" class="d-none" @change="handleFile" />
     <b-img v-if="can_preview" :src="current_thumbnail" thumbnail />
     <p>{{ current_filename }}</p>
-    <b-button variant="outline-secondary" @click="handleModal">Select File</b-button>
+    <b-button variant="outline-secondary" @click="handleShow">Select File</b-button>
     <b-modal :id="name" title="Select File" size="xl" scrollable>
       <template v-slot:modal-header>
         <div>Select File</div>
         <b-form inline>
           <b-form-input v-model="search" placeholder="search" class="mr-1" />
-          <b-btn variant="primary" @click="handleUpload">Upload</b-btn>
+          <b-btn :disabled="fetching" variant="primary" @click="handleUpload">Upload</b-btn>
         </b-form>
       </template>
       <div class="attachment-list">
@@ -24,7 +18,7 @@
           :key="attachment.id"
           :class="selectedClass(attachment.id)"
           class="attachment-item"
-          @click="handleAttachment(attachment.id)"
+          @click="handleSelect(attachment.id)"
         >
           <div class="attachment-thumbnail">
             <b-img :src="attachment.thumbnail" fluid class="m-auto" />
@@ -44,16 +38,15 @@
           <div>{{ selected_filename }}</div>
         </div>
         <div>
-          <b-btn @click="handleCancel">Cancel</b-btn>
-          <b-btn variant="primary" @click="handleOK">OK</b-btn>
+          <b-btn :disabled="fetching" @click="handleCancel" size="sm">Cancel</b-btn>
+          <b-btn :disabled="fetching" variant="primary" @click="handleOK">OK</b-btn>
         </div>
       </template>
     </b-modal>
   </div>
 </template>
 <script>
-import api from "../../api";
-import { toastable } from "../../mixins";
+import { toastable, api_handlable } from "../../mixins";
 export default {
   name: "media-manager",
   props: {
@@ -64,7 +57,7 @@ export default {
     value: {},
     only_image: { default: false }
   },
-  mixins: [toastable],
+  mixins: [api_handlable, toastable],
   data() {
     return {
       search: "",
@@ -134,66 +127,35 @@ export default {
     }
   },
   methods: {
+    getFileElement() {
+      return this.$refs[this.file_uploader_id];
+    },
+    getFile() {
+      return this.getFileElement().files.item(0);
+    },
     initialize() {
       this.selected = this.value || null;
       this.search = "";
 
-      if (this.$refs[this.file_uploader_id]) {
-        this.$refs[this.file_uploader_id].value = null;
+      const el = this.getFileElement();
+      if (el) {
+        el.value = null;
       }
     },
-    handleModal() {
+    setAttachments(attachments) {
+      const file = this.getFile();
+      if (file) {
+        this.selected = attachments.find(a => a.original_name === file.name).id;
+        this.getFileElement().value = null;
+      }
+
+      this.$emit("update:attachments", attachments);
+    },
+    // modal controll
+    handleShow() {
       this.$bvModal.show(this.name);
     },
-    handleUpload() {
-      this.$refs[this.file_uploader_id].click();
-    },
-    handleUploader(e) {
-      const file = e.target.files.item(0);
-
-      if (file) {
-        this.upload(file);
-      }
-    },
-    async upload(file) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("type", this.type);
-      if (this.id) {
-        formData.append("id", this.id);
-      }
-      if (this.only_image) {
-        formData.append("only_image", true);
-      }
-      const res = await api
-        .storeAttachment(formData)
-        .catch(this.handleErrorToast);
-
-      if (res && res.status === 200) {
-        this.$refs[this.file_uploader_id].value = null;
-        this.selected = res.data.data.find(
-          a => a.original_name === file.name
-        ).id;
-        this.$emit("update:attachments", res.data.data);
-        this.toastSuccess("File Uploaded");
-      }
-    },
-    handleAttachment(id) {
-      this.selected = this.selected == id ? null : id;
-    },
-    handleDelete(id) {
-      if (window.confirm("sure?")) {
-        this.delete(id);
-      }
-    },
-    async delete(id) {
-      const res = await api.deleteAttachment(id).catch(this.handleErrorToast);
-
-      if (res && res.status === 200) {
-        this.$emit("update:attachments", res.data.data);
-        this.toastSuccess("File Deleted");
-      }
-    },
+    // modal actions
     handleCancel() {
       this.$bvModal.hide(this.name);
     },
@@ -201,7 +163,29 @@ export default {
       this.$emit("input", this.selected);
       this.$bvModal.hide(this.name);
     },
-
+    handleSelect(id) {
+      this.selected = this.selected == id ? null : id;
+    },
+    handleUpload() {
+      this.getFileElement().click();
+    },
+    async handleFile(e) {
+      const file = this.getFile();
+      if (file) {
+        await this.storeAttachment(file);
+        this.toastSuccess("File Uploaded");
+      }
+    },
+    async handleDelete(id) {
+      if (window.confirm("sure?")) {
+        if (this.selected == id) {
+          this.selected = null;
+        }
+        await this.deleteAttachment(id);
+        this.toastSuccess("File Deleted");
+      }
+    },
+    // style
     selectedClass(attachment_id) {
       return attachment_id == this.selected ? "selected" : "";
     }

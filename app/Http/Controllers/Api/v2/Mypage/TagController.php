@@ -21,13 +21,16 @@ class TagController extends Controller
 
     public function search(SearchRequest $request)
     {
-        return $this->tag_service->search($request->name);
+        return $request->name
+        ? $this->tag_service->searchTags($request->name)
+        : $this->tag_service->getTags();
     }
 
     public function store(StoreRequest $request)
     {
-        return $this->tag_service->create([
+        $this->tag_service->create([
             'name' => $request->name,
         ]);
+        return $this->tag_service->getTags();
     }
 }

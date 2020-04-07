@@ -15,37 +15,6 @@
     <script src="{{ asset(mix('js/script.js')) }}" defer></script>
 </head>
 <body>
-    @include('parts.menu-header')
-
-    <main class="container bg-white py-2">
-        @if (session()->has('status'))
-            <div class="alert alert-success">{{ session('status') }}</div>
-        @endif
-        @if (session()->has('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        @if (session()->has('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
-
-        @yield('before_title')
-
-        <h1>@yield('title')</h1>
-
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        @yield('content')
-    </main>
-
-    @include('parts.menu-footer')
-
+    @yield('content')
 </body>
 </html>

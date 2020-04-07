@@ -1,7 +1,7 @@
 <?php
 namespace App\Services;
 
-use App\Http\Requests\Api\v2\Article\SearchRequest;
+use App\Http\Requests\Api\Article\SearchRequest;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;

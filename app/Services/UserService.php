@@ -12,6 +12,11 @@ class UserService extends Service
         $this->model = $model;
     }
 
+    public function getUser(User $user)
+    {
+        return $user->load('profile');
+    }
+
     public function updateUserAndProfile(User $user, UpdateRequest $request)
     {
         $email_changed = $user->email !== $request->input('user.email');

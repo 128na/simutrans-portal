@@ -30,36 +30,13 @@ Route::middleware('minify')->group(function () {
         Route::get('/user/{user}', 'Front\ArticleController@user')->name('user');
     });
     // 非ログイン系 reidsキャッシュ無効
+    Route::get('/mypage', 'Mypage\IndexController@index')->name('mypage.index');
     Route::get('/articles/{article}', 'Front\ArticleController@show')->name('articles.show');
     Route::get('/search', 'Front\ArticleController@search')->name('search');
 });
 Route::get('/language/{name}', 'Front\IndexController@language')->name('language');
 Route::middleware('transaction')->group(function () {
     Route::get('/articles/{article}/download', 'Front\ArticleController@download')->name('articles.download');
-});
-
-// ログイン系：ユーザー
-Route::prefix('mypage')->group(function () {
-    Route::name('mypage.')->group(function () {
-        Route::middleware('auth')->group(function () {
-            Route::get('/', 'Mypage\IndexController@index')->name('index');
-
-            Route::middleware('verified')->group(function () {
-                Route::get('profile', 'Mypage\ProfileController@edit')->name('profile.edit');
-                Route::middleware('transaction')->group(function () {
-                    Route::post('profile', 'Mypage\ProfileController@update')->name('profile.update');
-                });
-
-                Route::get('/articles/create', 'Mypage\ArticleController@create')->name('articles.create');
-
-                Route::middleware('can:update,article')->group(function () {
-                    Route::get('/articles/edit/{article}', 'Mypage\ArticleController@edit')->name('articles.edit');
-                });
-
-                Route::get('/articles/analytics', 'Mypage\ArticleController@analytics')->name('articles.analytics');
-            });
-        });
-    });
 });
 
 // ログイン系：管理者

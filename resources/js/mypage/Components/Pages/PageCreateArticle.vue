@@ -1,6 +1,6 @@
 <template>
   <div v-if="$route.params.post_type">
-    <router-link :to="{name:'index'}">Back to MyPage</router-link>
+    <h1>Create Article</h1>
     <component
       :is="article.post_type"
       :article="article"
@@ -13,16 +13,22 @@
       <b-form-checkbox v-model="should_tweet">Should Tweet</b-form-checkbox>
     </b-form-group>
     <b-form-group>
-      <b-btn @click="handlePreview">Preview</b-btn>
-      <b-btn variant="primary" @click="handleUpdateOrCreate">Create</b-btn>
+      <b-btn :disabled="fetching" @click="handlePreview">Preview</b-btn>
+      <b-btn :disabled="fetching" variant="primary" @click="handleCreate">Create</b-btn>
     </b-form-group>
   </div>
 </template>
 <script>
-import { verifiedable, article_editable } from "../../mixins";
+import { verifiedable, previewable, api_handlable } from "../../mixins";
 export default {
   props: ["attachments", "options"],
-  mixins: [verifiedable, article_editable],
+  data() {
+    return {
+      article: null,
+      should_tweet: true
+    };
+  },
+  mixins: [verifiedable, previewable, api_handlable],
   created() {
     switch (this.$route.params.post_type) {
       case "addon-post":
@@ -49,8 +55,7 @@ export default {
           thanks: ""
         },
         categories: [],
-        tags: [],
-        should_tweet: true
+        tags: []
       };
     },
     createAddonIntroduction() {
@@ -69,8 +74,7 @@ export default {
           thanks: ""
         },
         categories: [],
-        tags: [],
-        should_tweet: true
+        tags: []
       };
     },
     createPage() {
@@ -83,9 +87,28 @@ export default {
           thumbnail: null,
           sections: []
         },
-        tags: [],
-        should_tweet: true
+        categories: []
       };
+    },
+    handlePreview() {
+      const params = {
+        article: this.article,
+        should_tweet: this.should_tweet,
+        preview: true
+      };
+      this.createArticle(params);
+    },
+    handleCreate() {
+      const params = {
+        article: this.article,
+        should_tweet: this.should_tweet,
+        preview: false
+      };
+      this.createArticle(params);
+    },
+    setArticles(articles) {
+      this.$emit("update:articles", articles);
+      this.$router.push({ name: "index" });
     }
   }
 };

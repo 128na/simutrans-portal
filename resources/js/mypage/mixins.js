@@ -1,3 +1,6 @@
+/**
+ * 汎用トーストメッセージ
+ */
 const toastable = {
     methods: {
         toastInfo(message) {
@@ -30,6 +33,8 @@ const toastable = {
         handleErrorToast(error) {
             const res = error.response;
             switch (res.status) {
+                case 401:
+                    return this.$router.push({ name: 'login' }).catch(e => { })
                 case 403:
                     return this.toastError('No permission');
                 case 404:
@@ -46,6 +51,9 @@ const toastable = {
     }
 }
 
+/**
+ * メール認証していなければ403ページへ飛ばす
+ */
 const verifiedable = {
     props: ['user'],
     created() {
@@ -55,61 +63,164 @@ const verifiedable = {
     },
 }
 
-import api from "./api";
-const article_editable = {
-    mixins: [toastable],
+/**
+ * プレビュー
+ */
+const previewable = {
     data() {
         return {
-            article: null,
-            should_tweet: true,
             preview_window: null
         };
     },
-    created() {
-        this.should_tweet = !this.is_edit;
-    },
-    computed: {
-        is_edit() {
-            return !!this.$route.params.id;
-        }
-    },
     methods: {
-        async handlePreview() {
-            const html = await this.updateOrCreate(true);
-            if (html) {
-                if (!this.preview_window || this.preview_window.closed) {
-                    this.preview_window = window.open();
-                }
-                this.preview_window.document.body.innerHTML = html;
+        async setPreview(html) {
+            if (!this.preview_window || this.preview_window.closed) {
+                this.preview_window = window.open();
             }
-        },
-        async handleUpdateOrCreate() {
-            const data = await this.updateOrCreate();
-            if (data) {
-                this.$emit('update:articles', data.data);
-                this.$router.push({ name: 'index' });
-            }
-        },
-        updateOrCreate(preview = false) {
-            return this.is_edit ? this.update(preview) : this.create(preview);
-        },
-        async create(preview) {
-            const res = await api
-                .createArticle(this.article, preview)
-                .catch(this.handleErrorToast);
-            if (res && res.status === 200) {
-                return res.data;
-            }
-        },
-        async update(preview) {
-            const res = await api
-                .updateArticle(this.article, preview)
-                .catch(this.handleErrorToast);
-            if (res && res.status === 200) {
-                return res.data;
-            }
+            this.preview_window.document.body.innerHTML = html;
         }
     }
 };
 
-export { toastable, article_editable, verifiedable };
+/**
+ * APIエラーハンドリング付き
+ */
+import api from "./api";
+const api_handlable = {
+    mixins: [toastable],
+    data() {
+        return {
+            fetching: false,
+        }
+    },
+    methods: {
+        async login(params) {
+            this.fetching = true;
+            const res = await api.login(params).catch(this.handleErrorToast);
+            if (res && res.status === 200) {
+                await this.setUser(res.data.data);
+            }
+            this.fetching = false;
+        },
+        async logout() {
+            await api.logout().catch(this.handleErrorToast);
+            await this.setUser(null);
+        },
+        async fetchUser() {
+            this.fetching = true;
+            const res = await api.fetchUser().catch(this.handleErrorToast);
+
+            if (res && res.status === 200) {
+                await this.setUser(res.data.data);
+            }
+            this.fetching = false;
+        },
+        async fetchAttachments() {
+            this.fetching = true;
+            const res = await api.fetchAttachments().catch(this.handleErrorToast);
+
+            if (res && res.status === 200) {
+                await this.setAttachments(res.data.data);
+            }
+            this.fetching = false;
+        },
+        async fetchArticles() {
+            this.fetching = true;
+            const res = await api.fetchArticles().catch(this.handleErrorToast);
+
+            if (res && res.status === 200) {
+                await this.setArticles(res.data.data);
+            }
+            this.fetching = false;
+        },
+        async fetchOptions() {
+            this.fetching = true;
+            const res = await api.fetchOptions().catch(this.handleErrorToast);
+
+            if (res && res.status === 200) {
+                await this.setOptions(res.data);
+            }
+            this.fetching = false;
+        },
+        async storeAttachment(file) {
+            this.fetching = true;
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("type", this.type);
+            if (this.id) {
+                formData.append("id", this.id);
+            }
+            if (this.only_image) {
+                formData.append("only_image", true);
+            }
+            const res = await api
+                .storeAttachment(formData)
+                .catch(this.handleErrorToast);
+
+            if (res && res.status === 200) {
+                await this.setAttachments(res.data.data);
+            }
+            this.fetching = false;
+        },
+        async deleteAttachment(id) {
+            this.fetching = true;
+            const res = await api.deleteAttachment(id).catch(this.handleErrorToast);
+
+            if (res && res.status === 200) {
+                await this.setAttachments(res.data.data);
+            }
+            this.fetching = false;
+        },
+        async fetchTags() {
+            this.fetching = true;
+            const res = await api.fetchTags(this.search).catch(this.handleErrorToast);
+
+            if (res && res.status === 200) {
+                await this.setTags(res.data);
+            }
+            this.fetching = false;
+        },
+        async storeTag(name) {
+            this.fetching = true;
+            const res = await api
+                .storeTag(name)
+                .catch(this.handleErrorToast);
+
+            if (res && res.status === 201) {
+                await this.setTags(res.data);
+            }
+            this.fetching = false;
+        },
+        async updateUser(user) {
+            this.fetching = true;
+            const res = await api.updateUser(user).catch(this.handleErrorToast);
+
+            if (res && res.status === 200) {
+                await this.setUser(res.data.data);
+            }
+            this.fetching = false;
+        },
+        async createArticle(params) {
+            this.fetching = true;
+            const res = await api
+                .createArticle(params)
+                .catch(this.handleErrorToast);
+            if (res && res.status === 200) {
+                params.preview ? this.setPreview(res.data) : this.setArticles(res.data.data);
+            }
+            this.fetching = false;
+        },
+        async updateArticle(params) {
+            this.fetching = true;
+            const res = await api
+                .updateArticle(params)
+                .catch(this.handleErrorToast);
+            if (res && res.status === 200) {
+                params.preview ? this.setPreview(res.data) : this.setArticles(res.data.data);
+            }
+            this.fetching = false;
+        }
+    },
+}
+
+export { toastable, previewable, verifiedable, api_handlable };

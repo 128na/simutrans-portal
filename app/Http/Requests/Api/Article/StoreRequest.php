@@ -13,7 +13,7 @@ class StoreRequest extends BaseRequest
             'article.status' => ['required', Rule::in(config('status'))],
             'article.title' => 'required|unique:articles,title|max:255',
             'article.slug' => 'required|unique:articles,slug|max:255',
-            'article.should_tweet' => 'nullable',
+            'should_tweet' => 'nullable',
             'preview' => 'nullable',
         ];
     }

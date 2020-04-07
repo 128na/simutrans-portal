@@ -1,34 +1,29 @@
 <template>
   <div>
-    <router-link :to="{name:'index'}">Back to MyPage</router-link>
+    <h1>Edit Profile</h1>
     <form-profile
       :user="user"
       :attachments="attachments"
+      @update:attachments="$emit('update:attachments', $event)"
       @update:user="$emit('update:user', $event)"
     />
     <b-form-group>
-      <b-btn variant="primary" @click="handleUpdate">Update</b-btn>
+      <b-btn :disabled="fetching" variant="primary" @click="handleUpdate">Update</b-btn>
     </b-form-group>
   </div>
 </template>
 <script>
-import api from "../../api";
-import { toastable, verifiedable } from "../../mixins";
+import { toastable, verifiedable, api_handlable } from "../../mixins";
 export default {
   props: ["user", "attachments"],
-  mixins: [toastable, verifiedable],
+  mixins: [toastable, verifiedable, api_handlable],
   methods: {
     handleUpdate() {
-      this.update();
+      this.updateUser(this.user);
     },
-    async update() {
-      const res = await api.updateUser(this.user).catch(this.handleErrorToast);
-
-      console.log(res);
-      if (res && res.status === 200) {
-        this.$emit("update:user", res.data.data);
-        this.$router.push({ name: "index" });
-      }
+    setUser(user) {
+      this.$emit("update:user", user);
+      this.$router.push({ name: "index" });
     }
   }
 };

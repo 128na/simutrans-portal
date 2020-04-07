@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\v2\ArticleEditor;
+namespace Tests\Feature\Api\v2\Mypage\Article;
 
 use App\Models\Article;
 use App\Models\Attachment;
@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
-class StoreAddonPostTest extends TestCase
+class StoreAddonIntroductionTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -33,21 +33,21 @@ class StoreAddonPostTest extends TestCase
         $this->actingAs($user);
 
         $thumbnail = Attachment::createFromFile(UploadedFile::fake()->create('thumbnail.jpg', 1), $user->id);
-        $addon = Attachment::createFromFile(UploadedFile::fake()->create('addon.zip', 1), $user->id);
 
         $date = now()->format('YmdHis');
         $data = [
-            'post_type' => 'addon-post',
+            'post_type' => 'addon-introduction',
             'status' => 'publish',
             'title' => 'test title ' . $date,
             'slug' => 'test-slug-' . $date,
             'contents' => [
                 'thumbnail' => $thumbnail->id,
                 'author' => 'test auhtor',
-                'file' => $addon->id,
+                'link' => 'http://example.com',
                 'description' => 'test description',
                 'thanks' => 'tets thanks',
                 'license' => 'test license',
+                'agreement' => true,
             ],
             'tags' => [
                 factory(Tag::class)->create()->name,
@@ -103,20 +103,19 @@ class StoreAddonPostTest extends TestCase
         $response = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['thumbnail' => $others_attachment->id]])]);
         $response->assertJsonValidationErrors(['article.contents.thumbnail']);
 
+        // アドオン作者が空
+        $response = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['author' => '']])]);
+        $response->assertJsonValidationErrors(['article.contents.author']);
         // アドオン作者が256文字以上
         $response = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['author' => str_repeat('a', 256)]])]);
         $response->assertJsonValidationErrors(['article.contents.author']);
 
-        // ファイルIDが空
-        $response = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['file' => '']])]);
-        $response->assertJsonValidationErrors(['article.contents.file']);
-        // 存在しないファイルID
-        $response = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['file' => 99999]])]);
-        $response->assertJsonValidationErrors(['article.contents.file']);
-        // 他人の投稿したファイルID
-        $others_attachment = Attachment::createFromFile(UploadedFile::fake()->create('other.zip', 1), factory(User::class)->create()->id);
-        $response = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['file' => $others_attachment->id]])]);
-        $response->assertJsonValidationErrors(['article.contents.file']);
+        // リンクが空
+        $response = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['link' => '']])]);
+        $response->assertJsonValidationErrors(['article.contents.link']);
+        // リンクが不正なURL
+        $response = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['link' => 'not_url']])]);
+        $response->assertJsonValidationErrors(['article.contents.link']);
 
         // 説明が空
         $response = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['description' => '']])]);
@@ -154,6 +153,7 @@ class StoreAddonPostTest extends TestCase
         // 適切なデータ
         $response = $this->postJson($url, ['article' => $data]);
         $response->assertStatus(200);
-        $response->assertJson(['data' => $data]);
+        $get_response = json_decode($this->getJson(route('api.v2.articles.index'))->content(), true);
+        $response->assertJson($get_response);
     }
 }

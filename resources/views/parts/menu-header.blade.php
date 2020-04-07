@@ -71,13 +71,6 @@
                                 <div class="dropdown-divider my-1"></div>
                             @endif
                                 <a class="dropdown-item" href="{{ route('mypage.index') }}">@lang('Mypage')</a>
-                                <a class="dropdown-item" href="{{ route('mypage.articles.create') }}">
-                                    @lang('Create New Article')</a>
-                                <div class="dropdown-divider my-1"></div>
-
-                                <a class="dropdown-item" href="{{ route('mypage.profile.edit') }}">@lang('Edit my profile')</a>
-                                <div class="dropdown-divider my-1"></div>
-
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">@lang('Logout')</a>
                         </div>
                     </li>

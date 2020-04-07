@@ -1,6 +1,17 @@
 import axios from 'axios';
 const entrypoint = '';
 export default {
+    // auth
+    login(params) {
+        return axios.post(`${entrypoint}/api/v2/login`, params);
+    },
+    logout() {
+        return axios.post(`${entrypoint}/api/v2/logout`);
+    },
+    verify() { },
+    register() { },
+    reset() { },
+
     // user profile
     fetchUser() {
         return axios.get(`${entrypoint}/api/v2/mypage/user`);
@@ -13,11 +24,11 @@ export default {
     fetchArticles() {
         return axios.get(`${entrypoint}/api/v2/mypage/articles`);
     },
-    createArticle(article, preview = false) {
-        return axios.post(`/api/v2/mypage/articles${preview ? '?preview' : ''}`, { article });
+    createArticle(params) {
+        return axios.post('/api/v2/mypage/articles', params);
     },
-    updateArticle(article, preview = false) {
-        return axios.post(`/api/v2/mypage/articles/${article.id}${preview ? '?preview' : ''}`, { article });
+    updateArticle(params) {
+        return axios.post(`/api/v2/mypage/articles/${article.id}`, params);
     },
     // article options
     fetchOptions() {

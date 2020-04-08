@@ -234,4 +234,55 @@ const api_handlable = {
     },
 }
 
-export { toastable, previewable, verifiedable, api_handlable };
+/**
+ * ルーターリンク先
+ */
+const linkable = {
+    computed: {
+        to_login() {
+            return {
+                name: "login"
+            };
+        },
+        to_register() {
+            return { name: "register" };
+        },
+        to_reset() {
+            return { name: "reset" };
+        },
+        to_index() {
+            return {
+                name: "index"
+            };
+        },
+        to_analytics() {
+            return {
+                name: "analyticsArticle"
+            };
+        },
+        to_addon_post() {
+            return {
+                name: "createArticle",
+                params: { post_type: "addon-post" }
+            };
+        },
+        to_addon_introduction() {
+            return {
+                name: "createArticle",
+                params: { post_type: "addon-introduction" }
+            };
+        },
+        to_page() {
+            return {
+                name: "createArticle",
+                params: { post_type: "page" }
+            };
+        },
+        to_profile() {
+            return {
+                name: "editProfile"
+            };
+        },
+    }
+}
+export { toastable, previewable, verifiedable, api_handlable, linkable };

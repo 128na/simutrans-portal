@@ -32,51 +32,13 @@
   </div>
 </template>
 <script>
-import { api_handlable } from "../../mixins";
+import { api_handlable, linkable } from "../../mixins";
 export default {
   props: ["user"],
-  mixins: [api_handlable],
+  mixins: [api_handlable, linkable],
   computed: {
     is_logged_in() {
       return !!this.user;
-    },
-    to_index() {
-      return {
-        name: "index"
-      };
-    },
-    to_addon_post() {
-      return {
-        name: "createArticle",
-        params: { post_type: "addon-post" }
-      };
-    },
-    to_addon_introduction() {
-      return {
-        name: "createArticle",
-        params: { post_type: "addon-introduction" }
-      };
-    },
-    to_page() {
-      return {
-        name: "createArticle",
-        params: { post_type: "page" }
-      };
-    },
-    to_profile() {
-      return {
-        name: "editProfile"
-      };
-    },
-    to_login() {
-      return {
-        name: "login"
-      };
-    },
-    to_register() {
-      return {
-        name: "register"
-      };
     }
   },
   methods: {

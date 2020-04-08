@@ -20,9 +20,9 @@
   </div>
 </template>
 <script>
-import { api_handlable } from "../../mixins";
+import { api_handlable, linkable } from "../../mixins";
 export default {
-  mixins: [api_handlable],
+  mixins: [api_handlable, linkable],
   props: ["user"],
   data() {
     return {
@@ -34,14 +34,6 @@ export default {
   created() {
     if (this.user) {
       this.$router.push({ name: "index" });
-    }
-  },
-  computed: {
-    to_register() {
-      return { name: "register" };
-    },
-    to_reset() {
-      return { name: "reset" };
     }
   },
   methods: {

@@ -14,14 +14,9 @@
   </div>
 </template>
 <script>
+import { linkable } from "../../mixins";
 export default {
   props: ["articles", "user"],
-  computed: {
-    to_analytics() {
-      return {
-        name: "analyticsArticle"
-      };
-    }
-  }
+  mixins: [linkable]
 };
 </script>

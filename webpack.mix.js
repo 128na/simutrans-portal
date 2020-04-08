@@ -16,5 +16,5 @@ mix.js('resources/js/script.js', 'public/js')
     .sass('resources/sass/admin/index.scss', 'public/css/admin.css')
     .version();
 
-mix.js('resources/js/analytics/app.js', 'public/js/analytics.js');
+// mix.js('resources/js/analytics/app.js', 'public/js/analytics.js');
 mix.js('resources/js/mypage/app.js', 'public/js/mypage.js');

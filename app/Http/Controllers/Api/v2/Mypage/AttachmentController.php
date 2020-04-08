@@ -34,9 +34,7 @@ class AttachmentController extends Controller
 
         $this->attachment_service->createFromFile(Auth::user(), $request);
 
-        return new AttachmentsResource(
-            $this->attachment_service->getAttachments(Auth::user())
-        );
+        return $this->index();
     }
 
     public function destroy(Attachment $attachment)
@@ -45,8 +43,6 @@ class AttachmentController extends Controller
 
         $this->attachment_service->destroy($attachment);
 
-        return new AttachmentsResource(
-            $this->attachment_service->getAttachments(Auth::user())
-        );
+        return $this->index();
     }
 }

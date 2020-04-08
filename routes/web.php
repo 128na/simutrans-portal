@@ -13,8 +13,11 @@
 Route::get('sitemap', 'SitemapController@index');
 Route::feeds();
 
-// 認証
-Auth::routes(['verify' => true]);
+// メール確認
+Route::GET('email/verify/{id}/{hash}', 'Auth\VerificationController@verify')->name('verification.verify');
+// PWリセット
+Route::POST('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
+Route::GET('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware('minify')->group(function () {
@@ -28,9 +31,9 @@ Route::middleware('minify')->group(function () {
         Route::get('/category/{type}/{slug}', 'Front\ArticleController@category')->name('category');
         Route::get('/tag/{tag}', 'Front\ArticleController@tag')->name('tag');
         Route::get('/user/{user}', 'Front\ArticleController@user')->name('user');
+        Route::get('/mypage', 'Mypage\IndexController@index')->name('mypage.index');
     });
     // 非ログイン系 reidsキャッシュ無効
-    Route::get('/mypage', 'Mypage\IndexController@index')->name('mypage.index');
     Route::get('/articles/{article}', 'Front\ArticleController@show')->name('articles.show');
     Route::get('/search', 'Front\ArticleController@search')->name('search');
 });

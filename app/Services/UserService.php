@@ -32,6 +32,10 @@ class UserService extends Service
         $this->updateProfile($user->profile, $request);
         $this->syncRelated($user, $request);
 
+        if ($email_changed) {
+            $user->sendEmailVerificationNotification();
+        }
+
         return $user->refresh();
     }
 

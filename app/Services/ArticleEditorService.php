@@ -23,6 +23,15 @@ class ArticleEditorService extends Service
             ->get();
     }
 
+    public function getOptions(User $user)
+    {
+        return [
+            'categories' => $this->getSeparatedCategories($user),
+            'statuses' => $this->getStatuses(),
+            'post_types' => $this->getPostTypes(),
+        ];
+    }
+
     public function getSeparatedCategories(User $user)
     {
         $categories = Category::forUser($user)->get();

@@ -106,6 +106,17 @@ const api_handlable = {
             await api.logout().catch(this.handleErrorToast);
             await this.setUser(null);
         },
+        resend() {
+            return api.resend().catch(this.handleErrorToast);
+        },
+        async reset(params) {
+            this.fetching = true;
+            const res = await api.reset(params).catch(this.handleErrorToast);
+            if (res && res.status === 200) {
+                this.sent();
+            }
+            this.fetching = false;
+        },
         async fetchUser() {
             this.fetching = true;
             const res = await api.fetchUser().catch(this.handleErrorToast);

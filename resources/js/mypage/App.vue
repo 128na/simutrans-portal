@@ -118,4 +118,10 @@ export default {
 .fade-leave-to {
   opacity: 0;
 }
+.clickable {
+  cursor: pointer;
+}
+:disabled {
+  cursor: not-allowed;
+}
 </style>

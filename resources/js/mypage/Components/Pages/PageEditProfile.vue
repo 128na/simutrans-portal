@@ -1,5 +1,6 @@
 <template>
   <div>
+    <button-back />
     <h1>Edit Profile</h1>
     <form-profile
       :user="user"

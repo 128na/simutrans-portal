@@ -57,8 +57,7 @@
                     </li>
                 @endif
                 @guest
-                    <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">@lang('Login')</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">@lang('Register')</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('mypage.index') }}">@lang('Login / Register')</a></li>
                 @else
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="mypage-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -71,10 +70,10 @@
                                 <div class="dropdown-divider my-1"></div>
                             @endif
                                 <a class="dropdown-item" href="{{ route('mypage.index') }}">@lang('Mypage')</a>
-                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">@lang('Logout')</a>
+                                <a class="dropdown-item" href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();">@lang('Logout')</a>
                         </div>
                     </li>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    <form id="logout-form" action="{{ route('api.v2.logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
                 @endguest

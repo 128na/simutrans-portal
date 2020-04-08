@@ -6,10 +6,6 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav v-if="is_logged_in">
-        <b-navbar-nav>
-          <b-nav-item :to="to_index">Mypage</b-nav-item>
-        </b-navbar-nav>
-
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown text="Create" right>
@@ -20,10 +16,8 @@
 
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
-            <template v-slot:button-content>
-              <em>{{ user.name }}</em>
-            </template>
-            <b-dropdown-item :to="to_profile">Edit Profile</b-dropdown-item>
+            <template v-slot:button-content>{{ user.name }}</template>
+            <b-dropdown-item v-if="user.verified" :to="to_profile">Edit Profile</b-dropdown-item>
             <b-dropdown-item @click="logout">Log Out</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>

@@ -1,5 +1,6 @@
 <template>
   <div v-if="$route.params.post_type">
+    <button-back />
     <h1>Create Article</h1>
     <component
       :is="article.post_type"

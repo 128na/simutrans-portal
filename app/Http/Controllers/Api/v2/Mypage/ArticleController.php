@@ -7,6 +7,7 @@ use App\Http\Requests\Api\Article\StoreRequest;
 use App\Http\Requests\Api\Article\UpdateRequest;
 use App\Http\Resources\Api\Mypage\Articles as ArticlesResouce;
 use App\Models\Article;
+use App\Models\Twitter;
 use App\Services\ArticleEditorService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,11 +33,7 @@ class ArticleController extends Controller
 
     public function options()
     {
-        return [
-            'categories' => $this->article_editor_service->getSeparatedCategories(Auth::user()),
-            'statuses' => $this->article_editor_service->getStatuses(),
-            'post_types' => $this->article_editor_service->getPostTypes(),
-        ];
+        return $this->article_editor_service->getOptions(Auth::user());
     }
 
     public function store(StoreRequest $request)
@@ -44,12 +41,12 @@ class ArticleController extends Controller
         DB::beginTransaction();
         $article = $this->article_editor_service->storeArticle(Auth::user(), $request);
 
-        if ($request->has('preview')) {
+        if ($request->preview) {
             return $this->createPreview($article);
         }
         DB::commit();
 
-        if ($article->is_publish && $request->filled('should_tweet')) {
+        if ($article->is_publish && $request->should_tweet) {
             Twitter::articleCreated($article);
         }
 
@@ -61,12 +58,12 @@ class ArticleController extends Controller
         DB::beginTransaction();
         $article = $this->article_editor_service->updateArticle($article, $request);
 
-        if ($request->has('preview')) {
+        if ($request->preview) {
             return $this->createPreview($article);
         }
         DB::commit();
 
-        if ($article->is_publish && $request->filled('should_tweet')) {
+        if ($article->is_publish && $request->should_tweet) {
             Twitter::articleUpdated($article);
         }
 

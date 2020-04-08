@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div v-if="article">
+    <button-back />
     <h1>Edit Article</h1>
     <component
       :is="article.post_type"

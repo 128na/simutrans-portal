@@ -22,8 +22,19 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api\v1')->group(function () {
     });
 });
 
+Route::prefix('v2')->name('api.v2.')->group(function () {
+    // 登録
+    Route::POST('register', 'Auth\RegisterController@registerApi')->name('register');
+    // メール確認
+    Route::POST('email/resend', 'Auth\VerificationController@resendApi')->name('verification.resend');
+    // 認証
+    Route::POST('login', 'Auth\LoginController@login')->name('login');
+    Route::POST('logout', 'Auth\LoginController@logout')->name('logout');
+    // PWリセット
+    Route::POST('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+});
+
 Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
-    Auth::routes(['verify' => true]);
 
     Route::get('articles/latest', 'ArticleController@latest')->name('articles.latest');
     Route::get('articles/search', 'ArticleController@search')->name('articles.search');

@@ -8,9 +8,15 @@ export default {
     logout() {
         return axios.post(`${entrypoint}/api/v2/logout`);
     },
-    verify() { },
-    register() { },
-    reset() { },
+    resend() {
+        return axios.post(`${entrypoint}/api/v2/email/resend`);
+    },
+    register() {
+        return axios.post(`${entrypoint}/api/v2/register`);
+    },
+    reset(params) {
+        return axios.post(`${entrypoint}/api/v2/password/email`, params);
+    },
 
     // user profile
     fetchUser() {
@@ -28,7 +34,7 @@ export default {
         return axios.post('/api/v2/mypage/articles', params);
     },
     updateArticle(params) {
-        return axios.post(`/api/v2/mypage/articles/${article.id}`, params);
+        return axios.post(`/api/v2/mypage/articles/${params.article.id}`, params);
     },
     // article options
     fetchOptions() {

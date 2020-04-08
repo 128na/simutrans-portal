@@ -2,15 +2,25 @@
   <b-table hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc">
     <template v-slot:cell(action)="data">
       <b-button-group>
-        <a :href="data.item.url" target="_blank" class="btn btn-sm btn-outline-secondary">Show</a>
-        <b-button size="sm" variant="outline-primary" @click="handleEdit(data.item.id)">Edit</b-button>
+        <a
+          v-if="isPublish(data.item)"
+          :href="data.item.url"
+          target="_blank"
+          class="btn btn-sm btn-outline-secondary"
+        >Show</a>
+        <b-button
+          size="sm"
+          variant="outline-primary"
+          :disabled="!can_edit"
+          @click="handleEdit(data.item.id)"
+        >Edit</b-button>
       </b-button-group>
     </template>
   </b-table>
 </template>
 <script>
 export default {
-  props: ["articles"],
+  props: ["articles", "user"],
   name: "article-table",
   data() {
     return {
@@ -61,9 +71,15 @@ export default {
         a._rowVariant = this.rowValiant(a);
         return a;
       });
+    },
+    can_edit() {
+      return this.user.verified;
     }
   },
   methods: {
+    isPublish(article) {
+      return article.status === "publish";
+    },
     handleEdit(id) {
       this.$router.push({
         name: "editArticle",

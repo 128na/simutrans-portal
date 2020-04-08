@@ -80,11 +80,12 @@ export default {
       this.attachments = attachments;
     },
     setArticles(articles) {
-      this.articles = articles.map(a => {
-        a.created_at = DateTime.fromISO(a.created_at);
-        a.updated_at = DateTime.fromISO(a.updated_at);
-        return a;
-      });
+      this.articles = articles.map(a =>
+        Object.assign(a, {
+          created_at: DateTime.fromISO(a.created_at),
+          updated_at: DateTime.fromISO(a.updated_at)
+        })
+      );
     },
     setOptions(options) {
       this.options = options;

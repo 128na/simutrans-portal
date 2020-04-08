@@ -61,43 +61,28 @@ export default {
     }
   },
   mounted() {
-    this.render();
+    this.initialize();
   },
   methods: {
-    test() {
-      var ctx = this.$refs.chart.getContext("2d");
-      new Chart(ctx, {
-        // The type of chart we want to create
+    initialize() {
+      const ctx = this.$refs.chart.getContext("2d");
+      this.chart = new Chart(ctx, {
         type: "line",
-
-        // The data for our dataset
         data: {
           labels: this.labels,
-          datasets: [
-            {
-              label: "My First dataset",
-              backgroundColor: "rgb(255, 99, 132)",
-              borderColor: "rgb(255, 99, 132)",
-              data: [0, 10, 5, 2, 20, 30, 45]
-            }
-          ]
+          datasets: this.datasets
         },
-
-        // Configuration options go here
         options: this.options
       });
     },
     render() {
-      const ctx = this.$refs.chart.getContext("2d");
-      const chart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: JSON.parse(JSON.stringify(this.labels)),
-          datasets: JSON.parse(JSON.stringify(this.datasets))
-        },
-        options: this.options
-      });
-      console.log(chart);
+      if (this.datasets.length) {
+        this.chart.data.labels = this.labels;
+        this.chart.data.datasets = this.datasets;
+        this.chart.data.options = this.options;
+
+        this.chart.update();
+      }
     }
   },
   watch: {

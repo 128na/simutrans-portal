@@ -58,12 +58,13 @@ export default {
   },
   computed: {
     items() {
-      return this.articles.map(a => {
-        a.created_at = a.created_at.toLocaleString(DateTime.DATETIME_FULL);
-        a.updated_at = a.updated_at.toLocaleString(DateTime.DATETIME_FULL);
-        a._rowVariant = this.rowValiant(a);
-        return a;
-      });
+      return this.articles.map(a =>
+        Object.assign({}, a, {
+          created_at: a.created_at.toLocaleString(DateTime.DATETIME_FULL),
+          updated_at: a.updated_at.toLocaleString(DateTime.DATETIME_FULL),
+          _rowVariant: this.rowValiant(a)
+        })
+      );
     },
     all_selected() {
       return this.value.length >= this.articles.length;

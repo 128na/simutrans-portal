@@ -85,14 +85,14 @@ export default {
       this.labels = this.interval.map(d => d.start.toFormat(this.format_type));
     },
     calcDatasets() {
-      const datasets = this.options.axes.map(axis => {
-        const axis_index =
-          axis === this.AXIS_VIEW
-            ? this.INDEX_OF_VIEW
-            : this.INDEX_OF_CONVERSION;
+      const datasets = this.options.axes
+        .map(axis => {
+          const axis_index =
+            axis === this.AXIS_VIEW
+              ? this.INDEX_OF_VIEW
+              : this.INDEX_OF_CONVERSION;
 
-        return this.analytics
-          .map(analytic => {
+          return this.analytics.map(analytic => {
             const article = this.articles.find(
               a => a.id == analytic[this.INDEX_OF_ARCHIVE_ID]
             );
@@ -107,12 +107,13 @@ export default {
               fill: false,
               data: this.calcData(article.created_at, values)
             };
-          })
-          .flat();
-      });
+          });
+        })
+        .flat();
       this.datasets = datasets.length ? datasets : null;
     },
     sumFromOldest(created_at, values) {
+      console.log(created_at, this.options.start_date);
       return Interval.fromDateTimes(created_at, this.options.start_date)
         .splitBy(this.interval_type)
         .reduce((acc, d) => {

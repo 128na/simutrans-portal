@@ -1,5 +1,12 @@
 <template>
-  <b-table hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc">
+  <b-table
+    hover
+    :items="items"
+    :fields="fields"
+    :sort-by.sync="sortBy"
+    :sort-desc.sync="sortDesc"
+    stacked="sm"
+  >
     <template v-slot:cell(action)="data">
       <b-button-group>
         <a
@@ -19,6 +26,7 @@
   </b-table>
 </template>
 <script>
+import { DateTime } from "luxon";
 export default {
   props: ["articles", "user"],
   name: "article-table",
@@ -48,6 +56,16 @@ export default {
           sortable: true
         },
         {
+          key: "views",
+          label: "PV",
+          sortable: true
+        },
+        {
+          key: "conversions",
+          label: "CV",
+          sortable: true
+        },
+        {
           key: "created_at",
           label: "Created At",
           sortable: true
@@ -68,6 +86,8 @@ export default {
   computed: {
     items() {
       return this.articles.map(a => {
+        a.created_at = a.created_at.toLocaleString(DateTime.DATETIME_FULL);
+        a.updated_at = a.updated_at.toLocaleString(DateTime.DATETIME_FULL);
         a._rowVariant = this.rowValiant(a);
         return a;
       });

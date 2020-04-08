@@ -26,6 +26,8 @@ class Article extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'url' => route('articles.show', $this->slug),
+            'views' => $this->totalViewCount->count ?? 0,
+            'conversions' => $this->totalConversionCount->count ?? 0,
         ];
     }
 }

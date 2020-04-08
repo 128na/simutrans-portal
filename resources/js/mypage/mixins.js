@@ -230,6 +230,16 @@ const api_handlable = {
                 params.preview ? this.setPreview(res.data) : this.setArticles(res.data.data);
             }
             this.fetching = false;
+        },
+        async fetchAnalytics(params) {
+            this.fetching = true;
+            const res = await api
+                .fetchAnalytics(params)
+                .catch(this.handleErrorToast);
+            if (res && res.status === 200) {
+                await this.setAnalytics(res.data.data);
+            }
+            this.fetching = false;
         }
     },
 }
@@ -285,4 +295,22 @@ const linkable = {
         },
     }
 }
-export { toastable, previewable, verifiedable, api_handlable, linkable };
+
+const analytics_constants = {
+    computed: {
+        TYPE_DAILY: () => "daily",
+        TYPE_MONTHLY: () => "monthly",
+        TYPE_YEARLY: () => "yearly",
+
+        MODE_LINE: () => 'line',
+        MODE_SUM: () => 'sum',
+
+        AXIS_VIEW: () => 'pv',
+        AXIS_CONVERSION: () => 'cv',
+
+        INDEX_OF_ARCHIVE_ID: () => 0,
+        INDEX_OF_VIEW: () => 1,
+        INDEX_OF_CONVERSION: () => 2,
+    }
+}
+export { toastable, previewable, verifiedable, api_handlable, linkable, analytics_constants };

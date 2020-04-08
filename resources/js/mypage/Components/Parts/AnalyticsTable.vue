@@ -1,0 +1,100 @@
+<template>
+  <b-form-group label="Articles">
+    <b-table
+      hover
+      :items="items"
+      :fields="fields"
+      :sort-by.sync="sortBy"
+      :sort-desc.sync="sortDesc"
+      @row-clicked="handleCheck"
+      stacked="sm"
+    >
+      <template v-slot:head(select)>
+        <b-form-checkbox :checked="all_selected" @change="handleToggle" />
+      </template>
+      <template v-slot:cell(select)="data">
+        <b-form-checkbox :checked="checked(data.item.id)" @change="handleCheck(data.item)" />
+      </template>
+    </b-table>
+  </b-form-group>
+</template>
+<script>
+import { DateTime } from "luxon";
+export default {
+  props: ["articles", "value"],
+  name: "article-table",
+  data() {
+    return {
+      sortBy: "id",
+      sortDesc: false,
+      fields: [
+        {
+          key: "select",
+          label: "",
+          sortable: false
+        },
+        {
+          key: "id",
+          label: "ID",
+          sortable: true
+        },
+        {
+          key: "title",
+          label: "Title",
+          sortable: true
+        },
+        {
+          key: "created_at",
+          label: "Created At",
+          sortable: true
+        },
+        {
+          key: "updated_at",
+          label: "Updated At",
+          sortable: true
+        }
+      ]
+    };
+  },
+  computed: {
+    items() {
+      return this.articles.map(a => {
+        a.created_at = a.created_at.toLocaleString(DateTime.DATETIME_FULL);
+        a.updated_at = a.updated_at.toLocaleString(DateTime.DATETIME_FULL);
+        a._rowVariant = this.rowValiant(a);
+        return a;
+      });
+    },
+    all_selected() {
+      return this.value.length >= this.articles.length;
+    },
+    toggle_button_text() {
+      return this.all_selected ? "Unselect All" : "Select All";
+    }
+  },
+  methods: {
+    rowValiant(article) {
+      return this.checked(article.id) ? "success" : "";
+    },
+    checked(id) {
+      return this.value.includes(id);
+    },
+    handleCheck(item) {
+      const index = this.value.indexOf(item.id);
+      if (index === -1) {
+        return this.value.push(item.id);
+      }
+      return this.value.splice(index, 1);
+    },
+    handleToggle() {
+      if (this.all_selected) {
+        return this.$emit("input", []);
+      }
+      return this.$emit(
+        "input",
+        this.articles.map(a => a.id)
+      );
+    }
+  }
+};
+</script>

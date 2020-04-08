@@ -31,22 +31,22 @@ export default {
         return axios.get(`${entrypoint}/api/v2/mypage/articles`);
     },
     createArticle(params) {
-        return axios.post('/api/v2/mypage/articles', params);
+        return axios.post(`${entrypoint}/api/v2/mypage/articles`, params);
     },
     updateArticle(params) {
-        return axios.post(`/api/v2/mypage/articles/${params.article.id}`, params);
+        return axios.post(`${entrypoint}/api/v2/mypage/articles/${params.article.id}`, params);
     },
     // article options
     fetchOptions() {
-        return axios.get('/api/v2/mypage/options');
+        return axios.get(`${entrypoint}/api/v2/mypage/options`);
     },
 
     // tag
     fetchTags(name) {
-        return axios.get(`/api/v2/mypage/tags?name=${name}`);
+        return axios.get(`${entrypoint}/api/v2/mypage/tags?name=${name}`);
     },
     storeTag(name) {
-        return axios.post('/api/v2/mypage/tags', { name });
+        return axios.post(`${entrypoint}/api/v2/mypage/tags`, { name });
     },
 
     // attachments
@@ -54,11 +54,15 @@ export default {
         return axios.get(`${entrypoint}/api/v2/mypage/attachments`);
     },
     storeAttachment(form) {
-        return axios.post('/api/v2/mypage/attachments/', form, {
+        return axios.post(`${entrypoint}/api/v2/mypage/attachments`, form, {
             headers: { 'content-type': 'multipart/form-data' }
         });
     },
     deleteAttachment(attachment_id) {
-        return axios.delete(`/api/v2/mypage/attachments/${attachment_id}`);
+        return axios.delete(`${entrypoint}/api/v2/mypage/attachments/${attachment_id}`);
+    },
+    // analytics
+    fetchAnalytics(params) {
+        return axios.get(`${entrypoint}/api/v2/mypage/analytics`, { params });
     },
 }

@@ -19,7 +19,7 @@ class ArticleEditorService extends Service
     public function getArticles(User $user)
     {
         return $user->articles()
-            ->with('categories', 'tags')
+            ->with('categories', 'tags', 'totalViewCount', 'totalConversionCount')
             ->get();
     }
 

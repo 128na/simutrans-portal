@@ -81,12 +81,8 @@ export default {
     },
     setArticles(articles) {
       this.articles = articles.map(a => {
-        a.created_at = DateTime.fromISO(a.created_at).toLocaleString(
-          DateTime.DATETIME_FULL
-        );
-        a.updated_at = DateTime.fromISO(a.updated_at).toLocaleString(
-          DateTime.DATETIME_FULL
-        );
+        a.created_at = DateTime.fromISO(a.created_at);
+        a.updated_at = DateTime.fromISO(a.updated_at);
         return a;
       });
     },

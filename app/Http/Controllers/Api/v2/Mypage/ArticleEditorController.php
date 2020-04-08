@@ -12,7 +12,7 @@ use App\Services\ArticleEditorService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class ArticleController extends Controller
+class ArticleEditorController extends Controller
 {
     /**
      * @var ArticleEditorService

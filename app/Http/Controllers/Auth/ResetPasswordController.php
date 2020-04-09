@@ -37,4 +37,13 @@ class ResetPasswordController extends Controller
         $this->middleware('guest');
         $this->redirectTo = route('mypage.index');
     }
+
+    protected function rules()
+    {
+        return [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8|max:255',
+        ];
+    }
 }

@@ -2,13 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Article;
-use App\Models\Attachment;
-use App\Models\Category;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class AdminTest extends TestCase
@@ -23,41 +18,49 @@ class AdminTest extends TestCase
 
     public function testNeedLogin()
     {
-        $response = $this->get('mypage');
+        $url = route('admin.index');
+        $response = $this->get($url);
         $response->assertStatus(302);
-        $response->assertRedirect('login');
+        $response->assertRedirect(route('mypage.index'));
 
-        $user = factory(User::class)->create(['role' => 'admin']);
-        $response = $this->actingAs($user)->get('/mypage');
-        $response->assertOk();
-        $response = $this->get('/admin');
+        $user = factory(User::class)->create(['role' => 'user']);
+        $this->actingAs($user);
+        $response = $this->get($url);
+        $response->assertStatus(404);
+
+        $admin = factory(User::class)->create(['role' => 'admin']);
+        $this->actingAs($admin);
+        $response = $this->get($url);
         $response->assertOk();
     }
 
     public function testError()
     {
-        $response = $this->get('/admin/error');
-        $response->assertRedirect('login');
+        $url = route('admin.error');
+        $response = $this->get($url);
+        $response->assertRedirect(route('mypage.index'));
         $user = factory(User::class)->create(['role' => 'admin']);
-        $response = $this->actingAs($user)->get('/admin/error');
+        $response = $this->actingAs($user)->get($url);
         $response->assertStatus(500);
     }
 
     public function testWarnig()
     {
-        $response = $this->get('/admin/warning');
-        $response->assertRedirect('login');
+        $url = route('admin.warning');
+        $response = $this->get($url);
+        $response->assertRedirect(route('mypage.index'));
         $user = factory(User::class)->create(['role' => 'admin']);
-        $response = $this->actingAs($user)->get('/admin/warning');
+        $response = $this->actingAs($user)->get($url);
         $response->assertStatus(500);
     }
 
     public function testNotice()
     {
-        $response = $this->get('/admin/notice');
-        $response->assertRedirect('login');
+        $url = route('admin.notice');
+        $response = $this->get($url);
+        $response->assertRedirect(route('mypage.index'));
         $user = factory(User::class)->create(['role' => 'admin']);
-        $response = $this->actingAs($user)->get('/admin/notice');
+        $response = $this->actingAs($user)->get($url);
         $response->assertStatus(500);
     }
 

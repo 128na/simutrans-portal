@@ -12,6 +12,7 @@
         <tooltip-menu :article="data.item" />
       </template>
     </b-table>
+    <div>{{$t('No article exists.')}}</div>
   </b-form-group>
 </template>
 <script>

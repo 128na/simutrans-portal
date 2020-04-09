@@ -3,15 +3,7 @@
     <button-back name="login">{{$t('Back to Login')}}</button-back>
     <h1>{{$t('Register')}}</h1>
     <b-form>
-      <b-form-group :label="$t('Name')">
-        <b-form-input type="text" v-model="name" autocomplete="name" />
-      </b-form-group>
-      <b-form-group :label="$t('Email')">
-        <b-form-input type="email" v-model="email" autocomplete="email" />
-      </b-form-group>
-      <b-form-group :label="$t('Password')">
-        <form-password v-model="password" autocomplete="new-password" />
-      </b-form-group>
+      <form-register :params="params" :errors="errors" />
       <b-form-group>
         <b-button variant="primary" :disabled="fetching" @click="handleRegister">{{$t('Register')}}</b-button>
       </b-form-group>
@@ -25,9 +17,11 @@ export default {
   props: ["user"],
   data() {
     return {
-      name: "",
-      email: "",
-      password: ""
+      params: {
+        name: "",
+        email: "",
+        password: ""
+      }
     };
   },
   created() {
@@ -37,11 +31,7 @@ export default {
   },
   methods: {
     handleRegister() {
-      this.register({
-        name: this.name,
-        email: this.email,
-        password: this.password
-      });
+      this.register(this.params);
     },
     setUser(user) {
       this.$emit("loggedin", user);

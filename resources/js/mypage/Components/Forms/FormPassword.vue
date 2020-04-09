@@ -4,6 +4,7 @@
       :type="type"
       :value="value"
       :autocomplete="autocomplete"
+      :state="state"
       @input="$emit('input', $event)"
     />
     <template v-slot:append>
@@ -15,7 +16,7 @@
 </template>
 <script>
 export default {
-  props: ["value", "autocomplete"],
+  props: ["value", "autocomplete", "state"],
   data() {
     return {
       show: false

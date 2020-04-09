@@ -4,12 +4,14 @@
       :article="article"
       :attachments="attachments"
       :options="options"
+      :errors="errors"
       @update:attachments="$emit('update:attachments', $event)"
     />
     <form-page
       :article="article"
       :attachments="attachments"
       :options="options"
+      :errors="errors"
       @update:attachments="$emit('update:attachments', $event)"
     />
   </div>
@@ -17,6 +19,6 @@
 <script>
 export default {
   name: "page",
-  props: ["article", "attachments", "options"]
+  props: ["article", "attachments", "options", "errors"]
 };
 </script>

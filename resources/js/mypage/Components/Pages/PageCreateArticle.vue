@@ -3,14 +3,19 @@
     <button-back />
     <h1>{{title}}</h1>
     <component
-      :is="article.post_type"
-      :article="article"
+      :is="copy.post_type"
+      :article="copy"
       :attachments="attachments"
       :options="options"
+      :errors="errors"
       @update:attachments="$emit('update:attachments', $event)"
     />
 
-    <b-form-group :label="$t('Auto Tweet')">
+    <b-form-group>
+      <template slot="label">
+        <badge-optional />
+        {{$t('Auto Tweet')}}
+      </template>
       <b-form-checkbox v-model="should_tweet">{{$t('Tweet when posting or updating.')}}</b-form-checkbox>
     </b-form-group>
     <b-form-group>
@@ -20,7 +25,12 @@
   </div>
 </template>
 <script>
-import { verifiedable, previewable, api_handlable } from "../../mixins";
+import {
+  verifiedable,
+  previewable,
+  api_handlable,
+  editor_handlable
+} from "../../mixins";
 export default {
   props: ["attachments", "options"],
   data() {
@@ -29,15 +39,13 @@ export default {
       should_tweet: true
     };
   },
-  mixins: [verifiedable, previewable, api_handlable],
+  mixins: [verifiedable, previewable, api_handlable, editor_handlable],
   created() {
-    switch (this.$route.params.post_type) {
-      case "addon-post":
-        return this.createAddonPost();
-      case "addon-introduction":
-        return this.createAddonIntroduction();
-      case "page":
-        return this.createPage();
+    this.initialize();
+  },
+  watch: {
+    "$route.params.post_type"() {
+      this.initialize();
     }
   },
   computed: {
@@ -48,12 +56,26 @@ export default {
     }
   },
   methods: {
+    initialize() {
+      switch (this.$route.params.post_type) {
+        case "addon-post":
+          this.createAddonPost();
+          break;
+        case "addon-introduction":
+          this.createAddonIntroduction();
+          break;
+        case "page":
+          this.createPage();
+          break;
+      }
+      this.setCopy(this.article);
+    },
     createAddonPost() {
       this.article = {
         post_type: "addon-post",
         title: "",
         slug: "",
-        status: null,
+        status: "draft",
         contents: {
           thumbnail: null,
           author: "",
@@ -71,7 +93,7 @@ export default {
         post_type: "addon-introduction",
         title: "",
         slug: "",
-        status: null,
+        status: "draft",
         contents: {
           thumbnail: null,
           agreement: false,
@@ -90,17 +112,17 @@ export default {
         post_type: "page",
         title: "",
         slug: "",
-        status: null,
+        status: "draft",
         contents: {
           thumbnail: null,
-          sections: []
+          sections: [{ type: "text", text: "" }]
         },
         categories: []
       };
     },
     handlePreview() {
       const params = {
-        article: this.article,
+        article: this.copy,
         should_tweet: this.should_tweet,
         preview: true
       };
@@ -108,15 +130,20 @@ export default {
     },
     handleCreate() {
       const params = {
-        article: this.article,
+        article: this.copy,
         should_tweet: this.should_tweet,
         preview: false
       };
       this.createArticle(params);
     },
-    setArticles(articles) {
+    async setArticles(articles) {
       this.$emit("update:articles", articles);
+      this.setCopy(this.article);
+      await this.$nextTick();
       this.$router.push({ name: "index" });
+    },
+    getOriginal() {
+      return this.article;
     }
   }
 };

@@ -3,8 +3,9 @@
     <button-back />
     <h1>{{$t('Edit my profile')}}</h1>
     <form-profile
-      :user="user"
+      :user="copy"
       :attachments="attachments"
+      :errors="errors"
       @update:attachments="$emit('update:attachments', $event)"
       @update:user="$emit('update:user', $event)"
     />
@@ -14,17 +15,30 @@
   </div>
 </template>
 <script>
-import { toastable, verifiedable, api_handlable } from "../../mixins";
+import {
+  toastable,
+  verifiedable,
+  api_handlable,
+  editor_handlable
+} from "../../mixins";
 export default {
   props: ["user", "attachments"],
-  mixins: [toastable, verifiedable, api_handlable],
+  mixins: [toastable, verifiedable, api_handlable, editor_handlable],
+  created() {
+    this.setCopy(this.user);
+  },
   methods: {
     handleUpdate() {
-      this.updateUser(this.user);
+      this.updateUser(this.copy);
     },
-    setUser(user) {
+    async setUser(user) {
       this.$emit("update:user", user);
+      this.setCopy(user);
+      await this.$nextTick();
       this.$router.push({ name: "index" });
+    },
+    getOriginal() {
+      return this.user;
     }
   }
 };

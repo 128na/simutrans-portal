@@ -14,11 +14,6 @@ const toastable = {
             this._toast('Error', 'danger', message, true);
 
         },
-        toastValidationError(errors) {
-            const message = Object.values(errors).map(e => e.join("\n")).join("\n");
-            this._toast('Confirmation required', 'danger', message, true);
-
-        },
         _toast(title, variant, message, noAutoHide = false) {
             this.$bvToast.toast(this.$t(message), {
                 title: this.$t(title),
@@ -30,29 +25,11 @@ const toastable = {
                 bodyClass: 'pre-line'
             })
         },
-        handleErrorToast(error) {
-            const res = error.response;
-            switch (res.status) {
-                case 401:
-                    return this.$router.push({ name: 'login' }).catch(e => { })
-                case 403:
-                    return this.toastError('Forbidden');
-                case 404:
-                    return this.toastError('Not found');
-                case 422:
-                    return this.toastValidationError(res.data.errors);
-                case 429:
-                    return this.toastError('Too Many Requests');
-                default:
-                    console.log(error);
-                    return this.toastError('Whoops, something went wrong on our servers.');
-            }
-        }
     }
-}
+};
 
 /**
- * メール認証していなければ403ページへ飛ばす
+ * メール認証していなければログインページへ飛ばす
  */
 const verifiedable = {
     props: ['user'],
@@ -61,7 +38,7 @@ const verifiedable = {
             this.$router.push({ name: 'index' });
         }
     },
-}
+};
 
 /**
  * プレビュー
@@ -91,70 +68,109 @@ const api_handlable = {
     data() {
         return {
             fetching: false,
+            errors: {},
         }
     },
     methods: {
-        async login(params) {
+        beforeRequest() {
             this.fetching = true;
-            const res = await api.login(params).catch(this.handleErrorToast);
+            this.errors = {};
+        },
+        afterRequest() {
+            this.fetching = false;
+        },
+        handleError(error) {
+            const res = error.response;
+            switch (res.status) {
+                case 401:
+                    return this.$router.push({ name: 'login' }).catch(e => { });
+                case 403:
+                    return this.toastError('Forbidden');
+                case 404:
+                    return this.toastError('Not found');
+                case 422:
+                    return this.handleValidationError(res.data.errors);
+                case 429:
+                    return this.toastError('Too Many Requests');
+                default:
+                    console.log(error);
+                    return this.toastError('Whoops, something went wrong on our servers.');
+            }
+        },
+        handleValidationError(errors) {
+            this.errors = errors;
+            const message = Object.values(errors).map(e => e.join("\n")).join("\n");
+            this._toast('Confirmation required', 'danger', message, true);
+        },
+        async login(params) {
+            this.beforeRequest();
+            const res = await api.login(params).catch(this.handleError);
             if (res && res.status === 200) {
                 await this.setUser(res.data.data);
             }
-            this.fetching = false;
+            this.afterRequest();
         },
         async logout() {
-            await api.logout().catch(this.handleErrorToast);
+            await api.logout().catch(this.handleError);
             await this.setUser(null);
         },
+        async register(params) {
+            this.beforeRequest();
+            const res = await api.register(params).catch(this.handleError);
+            if (res && res.status === 201) {
+                await this.setUser(res.data.data);
+            }
+            this.afterRequest();
+        },
         resend() {
-            return api.resend().catch(this.handleErrorToast);
+            return api.resend().catch(this.handleError);
         },
         async reset(params) {
-            this.fetching = true;
-            const res = await api.reset(params).catch(this.handleErrorToast);
+            this.beforeRequest();
+            const res = await api.reset(params).catch(this.handleError);
             if (res && res.status === 200) {
                 this.sent();
             }
-            this.fetching = false;
+            this.afterRequest();
         },
         async fetchUser() {
-            this.fetching = true;
-            const res = await api.fetchUser().catch(this.handleErrorToast);
+            this.beforeRequest();
+            const res = await api.fetchUser().catch(this.handleError);
 
             if (res && res.status === 200) {
                 await this.setUser(res.data.data);
             }
-            this.fetching = false;
+            this.afterRequest();
         },
         async fetchAttachments() {
-            this.fetching = true;
-            const res = await api.fetchAttachments().catch(this.handleErrorToast);
+            this.beforeRequest();
+            const res = await api.fetchAttachments().catch(this.handleError);
 
             if (res && res.status === 200) {
                 await this.setAttachments(res.data.data);
             }
-            this.fetching = false;
+            this.afterRequest();
         },
         async fetchArticles() {
-            this.fetching = true;
-            const res = await api.fetchArticles().catch(this.handleErrorToast);
+            this.beforeRequest();
+            const res = await api.fetchArticles().catch(this.handleError);
 
             if (res && res.status === 200) {
                 await this.setArticles(res.data.data);
             }
-            this.fetching = false;
+            this.afterRequest();
         },
         async fetchOptions() {
-            this.fetching = true;
-            const res = await api.fetchOptions().catch(this.handleErrorToast);
+            this.beforeRequest();
+            const res = await api.fetchOptions().catch(this.handleError);
 
             if (res && res.status === 200) {
                 await this.setOptions(res.data);
             }
-            this.fetching = false;
+            this.afterRequest();
         },
         async storeAttachment(file) {
-            this.fetching = true;
+            this.beforeRequest();
             const formData = new FormData();
             formData.append("file", file);
             formData.append("type", this.type);
@@ -166,83 +182,83 @@ const api_handlable = {
             }
             const res = await api
                 .storeAttachment(formData)
-                .catch(this.handleErrorToast);
+                .catch(this.handleError);
 
             if (res && res.status === 200) {
                 await this.setAttachments(res.data.data);
             }
-            this.fetching = false;
+            this.afterRequest();
         },
         async deleteAttachment(id) {
-            this.fetching = true;
-            const res = await api.deleteAttachment(id).catch(this.handleErrorToast);
+            this.beforeRequest();
+            const res = await api.deleteAttachment(id).catch(this.handleError);
 
             if (res && res.status === 200) {
                 await this.setAttachments(res.data.data);
             }
-            this.fetching = false;
+            this.afterRequest();
         },
         async fetchTags() {
-            this.fetching = true;
-            const res = await api.fetchTags(this.search).catch(this.handleErrorToast);
+            this.beforeRequest();
+            const res = await api.fetchTags(this.search).catch(this.handleError);
 
             if (res && res.status === 200) {
                 await this.setTags(res.data);
             }
-            this.fetching = false;
+            this.afterRequest();
         },
         async storeTag(name) {
-            this.fetching = true;
+            this.beforeRequest();
             const res = await api
                 .storeTag(name)
-                .catch(this.handleErrorToast);
+                .catch(this.handleError);
 
             if (res && res.status === 201) {
                 await this.setTags(res.data);
             }
-            this.fetching = false;
+            this.afterRequest();
         },
         async updateUser(user) {
-            this.fetching = true;
-            const res = await api.updateUser(user).catch(this.handleErrorToast);
+            this.beforeRequest();
+            const res = await api.updateUser(user).catch(this.handleError);
 
             if (res && res.status === 200) {
                 await this.setUser(res.data.data);
             }
-            this.fetching = false;
+            this.afterRequest();
         },
         async createArticle(params) {
-            this.fetching = true;
+            this.beforeRequest();
             const res = await api
                 .createArticle(params)
-                .catch(this.handleErrorToast);
+                .catch(this.handleError);
             if (res && res.status === 200) {
                 params.preview ? this.setPreview(res.data) : this.setArticles(res.data.data);
             }
-            this.fetching = false;
+            this.afterRequest();
         },
         async updateArticle(params) {
-            this.fetching = true;
+            this.beforeRequest();
             const res = await api
                 .updateArticle(params)
-                .catch(this.handleErrorToast);
+                .catch(this.handleError);
             if (res && res.status === 200) {
                 params.preview ? this.setPreview(res.data) : this.setArticles(res.data.data);
             }
-            this.fetching = false;
+            this.afterRequest();
         },
         async fetchAnalytics(params) {
-            this.fetching = true;
+            this.beforeRequest();
             const res = await api
                 .fetchAnalytics(params)
-                .catch(this.handleErrorToast);
+                .catch(this.handleError);
             if (res && res.status === 200) {
                 await this.setAnalytics(res.data.data);
             }
-            this.fetching = false;
+            this.afterRequest();
         }
     },
-}
+};
 
 /**
  * ルーターリンク先
@@ -296,6 +312,37 @@ const linkable = {
     }
 }
 
+/**
+ * エディタを離れる際の確認ダイアログ
+ */
+const editor_handlable = {
+    data() {
+        return {
+            copy: null,
+        };
+    },
+    computed: {
+        has_changed() {
+            const original = this.getOriginal();
+            const copy = this.copy;
+            return JSON.stringify(original) !== JSON.stringify(copy);
+        }
+    }, methods: {
+        setCopy(item) {
+            this.copy = JSON.parse(JSON.stringify(item));
+        },
+    },
+    beforeRouteLeave(to, from, next) {
+        if (this.has_changed) {
+            return next(window.confirm('!!!'));
+        }
+        return next();
+    }
+};
+
+/**
+ * 分析用の定数
+ */
 const analytics_constants = {
     computed: {
         TYPE_DAILY: () => "daily",
@@ -312,5 +359,22 @@ const analytics_constants = {
         INDEX_OF_VIEW: () => 1,
         INDEX_OF_CONVERSION: () => 2,
     }
-}
-export { toastable, previewable, verifiedable, api_handlable, linkable, analytics_constants };
+};
+
+/**
+ * バリデーションのステート表示用
+ */
+const validatable = {
+    props: {
+        errors: {
+            default: () => { return {} }
+        }
+    },
+    methods: {
+        state(key) {
+            return this.errors[key] ? false : null;
+        }
+    }
+};
+
+export { toastable, previewable, verifiedable, api_handlable, linkable, analytics_constants, editor_handlable, validatable };

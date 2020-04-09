@@ -2,15 +2,7 @@
   <div>
     <h1>{{$t('Login')}}</h1>
     <b-form>
-      <b-form-group :label="$t('Email')">
-        <b-form-input type="email" v-model="email" autocomplete="email" />
-      </b-form-group>
-      <b-form-group :label="$t('Password')">
-        <form-password v-model="password" autocomplete="current-password" />
-      </b-form-group>
-      <b-form-group>
-        <b-form-checkbox v-model="remember">{{$t('Remember Me')}}</b-form-checkbox>
-      </b-form-group>
+      <form-login :params="params" :errors="errors" />
       <b-form-group>
         <b-button
           class="mr-1"
@@ -31,9 +23,11 @@ export default {
   props: ["user"],
   data() {
     return {
-      email: "",
-      password: "",
-      remember: false
+      params: {
+        email: "",
+        password: "",
+        remember: false
+      }
     };
   },
   created() {
@@ -43,11 +37,7 @@ export default {
   },
   methods: {
     handleLogin() {
-      this.login({
-        email: this.email,
-        password: this.password,
-        remember: this.remember
-      });
+      this.login(this.params);
     },
     setUser(user) {
       this.$emit("loggedin", user);

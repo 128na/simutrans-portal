@@ -1,11 +1,16 @@
 <template>
   <div>
-    <b-form-group :label="$t('Sections')">
+    <b-form-group>
+      <template slot="label">
+        <badge-required />
+        {{$t('Sections')}}
+      </template>
       <b-form inline v-for="(section,index) in article.contents.sections" :key="index">
         <b-form-textarea
           v-if="isText(section.type)"
           :value="section.text"
           :placeholder="$t('Text')"
+          :state="state(`article.contents.sections.${index}.text`)"
           @input="v=>handleInput(index, v)"
         />
         <b-form-input
@@ -13,6 +18,7 @@
           type="url"
           :value="section.url"
           placeholder="URL"
+          :state="state(`article.contents.sections.${index}.url`)"
           @input="v=>handleInput(index, v)"
         />
         <media-manager
@@ -23,6 +29,7 @@
           :id="article.id"
           :attachments="attachments"
           :only_image="true"
+          :state="state(`article.contents.sections.${index}.id`)"
           @input="v=>handleInput(index, v)"
           @update:attachments="$emit('update:attachments', $event)"
         />
@@ -31,6 +38,7 @@
           type="text"
           :value="section.caption"
           :placeholder="$t('Caption')"
+          :state="state(`article.contents.sections.${index}.caption`)"
           @input="v=>handleInput(index, v)"
         />
         <b-button variant="outline-danger" @click="handleRemove(index)" size="sm" pill>&times;</b-button>
@@ -40,15 +48,21 @@
       <b-btn @click="handleAdd('url')">{{$t('Add URL')}}</b-btn>
       <b-btn @click="handleAdd('image')">{{$t('Add Image')}}</b-btn>
     </b-form-group>
-    <b-form-group :label="$t('Categories')">
+    <b-form-group>
+      <template slot="label">
+        <badge-optional />
+        {{$t('Categories')}}
+      </template>
       <b-form-checkbox-group v-model="article.categories" :options="options.categories.page" />
     </b-form-group>
   </div>
 </template>
 <script>
+import { validatable } from "../../mixins";
 export default {
   name: "form-page",
   props: ["article", "attachments", "options"],
+  mixins: [validatable],
   methods: {
     isText(type) {
       return type === "text";

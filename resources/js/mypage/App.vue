@@ -92,6 +92,7 @@ export default {
       this.options = options;
     },
     handleUser(user) {
+      this.toastSuccess("Profile Updated.");
       this.setUser(user);
     },
     handleAttachments(attachments) {

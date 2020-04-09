@@ -158,11 +158,11 @@ return [
         'article.contents.license' => __('License other'),
         'article.contents.thanks' => __('Acknowledgments and Referenced'),
         'article.contents.agreement' => __('Agreement'),
-        'article.sections.*.type' => __('Type'),
-        'article.sections.*.text' => __('Text'),
-        'article.sections.*.caption' => __('Caption'),
-        'article.sections.*.url' => __('URL'),
-        'article.sections.*.id' => __('Image'),
+        'article.contents.sections.*.type' => __('Type'),
+        'article.contents.sections.*.text' => __('Text'),
+        'article.contents.sections.*.caption' => __('Caption'),
+        'article.contents.sections.*.url' => __('URL'),
+        'article.contents.sections.*.id' => __('Image'),
         'article.categories' => __('Categories'),
         'article.tags' => __('Tags'),
         'article.contents.file' => __('File'),
@@ -179,5 +179,10 @@ return [
         'user.profile.data.website' => __('Website URL'),
         'user.profile.data.twitter' => __('Twitter ID'),
 
+        // analytics
+        'ids' => __('Article'),
+        'type' => __('Types'),
+        'start_date' => __('Start Date'),
+        'end_date' => __('End Date'),
     ],
 ];

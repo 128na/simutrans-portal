@@ -19,14 +19,12 @@
     <b-form-group :label="$t('Target')">
       <b-form-checkbox-group v-model="value.axes" :options="options.axes"></b-form-checkbox-group>
     </b-form-group>
-    <b-form inline class="mb-1">
-      <b-form-group :label="$t('Start Date')">
-        <b-form-datepicker class="mr-2" v-model="computed_start_date"></b-form-datepicker>
-      </b-form-group>
-      <b-form-group :label="$t('End Date')">
-        <b-form-datepicker v-model="computed_end_date"></b-form-datepicker>
-      </b-form-group>
-    </b-form>
+    <b-form-group :label="$t('Start Date')">
+      <b-form-datepicker class="mr-2" v-model="computed_start_date"></b-form-datepicker>
+    </b-form-group>
+    <b-form-group :label="$t('End Date')">
+      <b-form-datepicker v-model="computed_end_date"></b-form-datepicker>
+    </b-form-group>
   </div>
 </template>
 <script>

@@ -11,7 +11,7 @@ return [
     | the validator class. Some of these rules have multiple versions such
     | as the size rules. Feel free to tweak each of these messages here.
     |
-    */
+     */
 
     'accepted' => 'The :attribute must be accepted.',
     'active_url' => 'The :attribute is not a valid URL.',
@@ -126,7 +126,7 @@ return [
     | convention "attribute.rule" to name the lines. This makes it quick to
     | specify a specific custom language line for a given attribute rule.
     |
-    */
+     */
 
     'custom' => [
         'attribute-name' => [
@@ -143,36 +143,49 @@ return [
     | with something more reader friendly such as "E-Mail Address" instead
     | of "email". This simply helps us make our message more expressive.
     |
-    */
+     */
 
     'attributes' => [
-        'password' => __('Password'),
-        'status' => __('Status'),
-        'title' => __('Title'),
-        'slug' => __('Slug'),
-        'thumbnail-image' => __('Thumbnail'),
-        'addon-file' => __('Addon File'),
-        'pak' => __('Paks'),
-        'addon-type' => __('Addon Types'),
-        'pak128-position' => __('Track positions for pak128'),
-        'license-other' => __('License other'),
-        'author' => __('Author'),
-        'publisher' => __('Publisher'),
-        'categories' => __('Categories'),
-        'tags' => __('Tags'),
-        'description' => __('Description'),
-        'license' => __('License'),
-        'thanks' => __('Acknowledgments and Referenced'),
-        'link' => __('Link'),
-        'agreement' => __('Agreement'),
-        'name' => __('Name'),
+        //article
+        'article.post_type' => __('Post Type'),
+        'article.status' => __('Status'),
+        'article.title' => __('Title'),
+        'article.slug' => __('Slug'),
+        'article.contents' => __('Contents'),
+        'article.contents.thumbnail' => __('Thumbnail'),
+        'article.contents.author' => __('Author'),
+        'article.contents.file' => __('Addon File'),
+        'article.contents.link' => __('Link'),
+        'article.contents.description' => __('Description'),
+        'article.contents.license' => __('License other'),
+        'article.contents.thanks' => __('Acknowledgments and Referenced'),
+        'article.contents.agreement' => __('Agreement'),
+        'article.contents.sections.*.type' => __('Type'),
+        'article.contents.sections.*.text' => __('Text'),
+        'article.contents.sections.*.caption' => __('Caption'),
+        'article.contents.sections.*.url' => __('URL'),
+        'article.contents.sections.*.id' => __('Image'),
+        'article.categories' => __('Categories'),
+        'article.tags' => __('Tags'),
+        'article.contents.file' => __('File'),
+
+        //auth
         'email' => __('Email'),
-        'thumbnail_id' => __('Thumbnail'),
-        'file_id' => __('File'),
-        'sections.*.text' => __('Text'),
-        'sections.*.id' => __('Image'),
-        'sections.*.caption' => __('Caption'),
-        'sections.*.type' => __('Type'),
+        'name' => __('Name'),
+        'password' => __('Password'),
+
+        // profile
+        'user.email' => __('Email'),
+        'user.name' => __('Name'),
+        'user.profile.data.description' => __('Description'),
+        'user.profile.data.website' => __('Website URL'),
+        'user.profile.data.twitter' => __('Twitter ID'),
+
+        // analytics
+        'ids' => __('Article'),
+        'type' => __('Types'),
+        'start_date' => __('Start Date'),
+        'end_date' => __('End Date'),
     ],
 
 ];

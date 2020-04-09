@@ -1,11 +1,23 @@
 <template>
   <div>
-    <b-form-group :label="$t('Status')">
-      <b-form-select v-model="article.status" :options="options.statuses" />
+    <b-form-group>
+      <template slot="label">
+        <badge-required />
+        {{$t('Status')}}
+      </template>
+      <b-form-select
+        v-model="article.status"
+        :options="options.statuses"
+        :state="state('article.status')"
+      />
     </b-form-group>
-    <b-form-group :label="$t('Title')">
+    <b-form-group>
+      <template slot="label">
+        <badge-required />
+        {{$t('Title')}}
+      </template>
       <b-input-group>
-        <b-form-input type="text" v-model="article.title" />
+        <b-form-input type="text" v-model="article.title" :state="state('article.title')" />
         <b-input-group-append>
           <b-button @click="handleSlug">
             <b-icon icon="arrow-down" />
@@ -14,11 +26,19 @@
         </b-input-group-append>
       </b-input-group>
     </b-form-group>
-    <b-form-group :label="$t('Slug')">
-      <b-form-input type="text" v-model="url_decoded_slug" />
+    <b-form-group>
+      <template slot="label">
+        <badge-required />
+        {{$t('Slug')}}
+      </template>
+      <b-form-input type="text" v-model="url_decoded_slug" :state="state('article.slug')" />
       <div class="mt-1">URL: https://simutrans.sakura.ne.jp/portal/articles/{{ article.slug }}</div>
     </b-form-group>
-    <b-form-group :label="$t('Thumbnail')">
+    <b-form-group>
+      <template slot="label">
+        <badge-optional />
+        {{$t('Thumbnail')}}
+      </template>
       <media-manager
         name="thumbnail"
         v-model="article.contents.thumbnail"
@@ -26,15 +46,18 @@
         :id="article.id"
         :attachments="attachments"
         :only_image="true"
+        :state="state('article.contents.thumbnail')"
         @update:attachments="$emit('update:attachments', $event)"
       />
     </b-form-group>
   </div>
 </template>
 <script>
+import { validatable } from "../../mixins";
 export default {
   name: "form-common",
   props: ["article", "attachments", "options"],
+  mixins: [validatable],
   computed: {
     url_decoded_slug: {
       get() {

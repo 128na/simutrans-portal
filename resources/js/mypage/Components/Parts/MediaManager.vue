@@ -3,14 +3,11 @@
     <input type="file" :ref="file_uploader_id" :accept="accept" class="d-none" @change="handleFile" />
     <b-img v-if="can_preview" :src="current_thumbnail" thumbnail />
     <p>{{ current_filename }}</p>
-    <b-button variant="outline-secondary" @click="handleShow">{{$t('Open File Manager')}}</b-button>
+    <b-button :variant="button_variant" @click="handleShow">{{$t('Open File Manager')}}</b-button>
     <b-modal :id="name" title="Select File" size="xl" scrollable>
       <template v-slot:modal-header>
         <div>{{$t('File Manager')}}</div>
-        <b-form inline>
-          <b-form-input v-model="search" :placeholder="$t('Search')" class="mr-1" />
-          <b-btn :disabled="fetching" variant="primary" @click="handleUpload">{{$t('Upload File')}}</b-btn>
-        </b-form>
+        <b-btn :disabled="fetching" variant="primary" @click="handleUpload">{{$t('Upload File')}}</b-btn>
       </template>
       <div class="attachment-list">
         <div
@@ -34,7 +31,7 @@
         <div v-show="filtered_attachments.length < 1">{{$t('No file.')}}</div>
       </div>
       <template v-slot:modal-footer>
-        <div class="flex-1">
+        <div class="flex-grow-1 flex-shrink-0">
           <div>{{ selected_filename }}</div>
         </div>
         <div>
@@ -55,12 +52,12 @@ export default {
     type: {},
     attachments: {},
     value: {},
-    only_image: { default: false }
+    only_image: { default: false },
+    state: { default: null }
   },
   mixins: [api_handlable, toastable],
   data() {
     return {
-      search: "",
       selected: null
     };
   },
@@ -68,15 +65,15 @@ export default {
     this.initialize();
   },
   computed: {
-    criteria() {
-      return this.search.trim().toLowerCase();
+    button_variant() {
+      return this.state === null ? "outline-secondary" : "outline-danger";
     },
     filtered_attachments() {
       const image_filtered = this.only_image
         ? this.attachments.filter(a => a.type === "image")
         : this.attachments;
 
-      const type_filtered = this.id
+      return this.id
         ? image_filtered.filter(
             a =>
               a.attachmentable_id === null ||
@@ -84,10 +81,6 @@ export default {
                 a.attachmentable_type === this.type)
           )
         : image_filtered.filter(a => a.attachmentable_id === null);
-
-      return this.criteria
-        ? type_filtered.filter(a => a.original_name.includes(this.criteria))
-        : type_filtered;
     },
     file_uploader_id() {
       return `uploader_${this.name}`;
@@ -135,7 +128,6 @@ export default {
     },
     initialize() {
       this.selected = this.value || null;
-      this.search = "";
 
       const el = this.getFileElement();
       if (el) {

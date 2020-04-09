@@ -115,7 +115,6 @@ export default {
       this.datasets = datasets.length ? datasets : null;
     },
     sumFromOldest(created_at, values) {
-      console.log(created_at, this.options.start_date);
       return Interval.fromDateTimes(created_at, this.options.start_date)
         .splitBy(this.interval_type)
         .reduce((acc, d) => {

@@ -3,9 +3,7 @@
     <button-back name="login">{{$t('Back to Login')}}</button-back>
     <h1>{{$t('Reset Password')}}</h1>
     <b-form>
-      <b-form-group :label="$t('Email')">
-        <b-form-input type="email" v-model="email" autocomplete="email" />
-      </b-form-group>
+      <form-reset :params="params" :errors="errors" />
       <b-form-group>
         <b-button
           variant="primary"
@@ -22,14 +20,14 @@ export default {
   mixins: [api_handlable],
   data() {
     return {
-      email: ""
+      params: {
+        email: ""
+      }
     };
   },
   methods: {
     handleSubmit() {
-      this.reset({
-        email: this.email
-      });
+      this.reset(this.params);
     },
     sent() {
       this.toastSuccess(

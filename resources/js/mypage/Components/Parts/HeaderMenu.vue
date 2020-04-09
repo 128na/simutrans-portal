@@ -1,7 +1,7 @@
 <template>
   <b-navbar toggleable="lg" type="dark" variant="primary">
     <b-container>
-      <b-navbar-brand href="#">Simutrans Addon Portal</b-navbar-brand>
+      <b-navbar-brand :href="top_url">Simutrans Addon Portal</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -16,28 +16,19 @@
               {{$t('Edit my profile')}}
             </b-dropdown-item>
             <b-dropdown-item :to="to_addon_post">
-              <b-iconstack class="mr-1">
-                <b-icon icon="file-zip" scale="0.8" shift-v="0" shift-h="-2" />
-                <b-icon icon="pencil" scale="0.5" shift-v="5" shift-h="3" />
-              </b-iconstack>
+              <icon-create-addon-post class="mr-1" />
               {{
               $t('Create {post_type}', {post_type:$t('post_types.addon-post')})
               }}
             </b-dropdown-item>
             <b-dropdown-item :to="to_addon_introduction">
-              <b-iconstack class="mr-1">
-                <b-icon icon="file-text" scale="0.8" shift-v="0" shift-h="-2" />
-                <b-icon icon="pencil" scale="0.5" shift-v="5" shift-h="3" />
-              </b-iconstack>
+              <icon-create-addon-introduction class="mr-1" />
               {{
               $t('Create {post_type}', {post_type:$t('post_types.addon-introduction')})
               }}
             </b-dropdown-item>
             <b-dropdown-item :to="to_page">
-              <b-iconstack class="mr-1">
-                <b-icon icon="file-richtext" scale="0.8" shift-v="0" shift-h="-2" />
-                <b-icon icon="pencil" scale="0.5" shift-v="5" shift-h="3" />
-              </b-iconstack>
+              <icon-create-page class="mr-1" />
               {{
               $t('Create {post_type}', {post_type:$t('post_types.page')})
               }}
@@ -67,6 +58,9 @@ export default {
   computed: {
     is_logged_in() {
       return !!this.user;
+    },
+    top_url() {
+      return `${process.env.MIX_APP_URL}`;
     }
   },
   methods: {

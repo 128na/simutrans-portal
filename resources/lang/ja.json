@@ -127,7 +127,7 @@
     "Show all announces.": "お知らせ一覧",
     "Show all pages.": "一般記事一覧",
     "Show ranking addons.": "ランキング一覧",
-    "Slug": "スラッグ（URL用）",
+    "Slug": "パーマリンク",
     "Sorry, the page you are looking for could not be found.": "申し訳ありません、探しているページは見つかりませんでした。",
     "Sorry, we are doing some maintenance. Please check back soon.": "申し訳ありません、メンテナンス中です。あとでもう一度確認してください。",
     "Sorry, you are forbidden from accessing this page.": "申し訳ありません、このページへのアクセスは禁止されています。",
@@ -181,7 +181,7 @@
     "Apply": "適用",
     "Start Date": "開始日",
     "End Date": "終了日",
-    "To Slug": "タイトルをスラッグにコピー",
+    "To Slug": "タイトルをパーマリンクにコピー",
     "Cancel": "キャンセル",
     "Deleted": "削除しました",
     "Uploaded": "アップロードしました",
@@ -190,5 +190,6 @@
     "Tag created": "タグを作成しました",
     "Create and add tag": "タグを作成して追加",
     "Confirmation required": "確認が必要です",
+    "Login / Register": "ログイン・登録",
     "ZZZZ FOR PREVENTING TRAILING COMMA ERASE": ""
 }

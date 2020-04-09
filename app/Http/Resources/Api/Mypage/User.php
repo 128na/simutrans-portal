@@ -19,6 +19,7 @@ class User extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'profile' => new Profile($this->profile),
+            'admin' => $this->isAdmin(),
             'verified' => !!$this->email_verified_at,
             'attachments' => new Attachments($this->profile->attachments),
         ];

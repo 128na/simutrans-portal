@@ -11,6 +11,7 @@
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
             <template v-slot:button-content>{{ user.name }}</template>
+            <b-dropdown-item v-if="user.admin" :href="admin_url">{{$t('[admin] Dashboard')}}</b-dropdown-item>
             <b-dropdown-item v-if="user.verified" :to="to_profile">
               <b-icon icon="person" class="mr-1" />
               {{$t('Edit my profile')}}
@@ -61,6 +62,9 @@ export default {
     },
     top_url() {
       return `${process.env.MIX_APP_URL}`;
+    },
+    admin_url() {
+      return `${process.env.MIX_APP_URL}/admin`;
     }
   },
   methods: {

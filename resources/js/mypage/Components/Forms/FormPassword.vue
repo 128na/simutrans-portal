@@ -7,7 +7,7 @@
       @input="$emit('input', $event)"
     />
     <template v-slot:append>
-      <b-input-group-text @mousedown="showPassword" @mouseup="hidePassword">
+      <b-input-group-text @click="toggle">
         <b-icon :icon="icon" />
       </b-input-group-text>
     </template>
@@ -30,11 +30,8 @@ export default {
     }
   },
   methods: {
-    showPassword() {
-      this.show = true;
-    },
-    hidePassword() {
-      this.show = false;
+    toggle() {
+      this.show = !this.show;
     }
   }
 };

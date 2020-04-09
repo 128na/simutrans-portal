@@ -1,7 +1,7 @@
 <template>
   <div v-if="$route.params.post_type">
     <button-back />
-    <h1>Create Article</h1>
+    <h1>{{title}}</h1>
     <component
       :is="article.post_type"
       :article="article"
@@ -10,12 +10,12 @@
       @update:attachments="$emit('update:attachments', $event)"
     />
 
-    <b-form-group label="Tweet">
-      <b-form-checkbox v-model="should_tweet">Should Tweet</b-form-checkbox>
+    <b-form-group :label="$t('Auto Tweet')">
+      <b-form-checkbox v-model="should_tweet">{{$t('Tweet when posting or updating.')}}</b-form-checkbox>
     </b-form-group>
     <b-form-group>
-      <b-btn :disabled="fetching" @click="handlePreview">Preview</b-btn>
-      <b-btn :disabled="fetching" variant="primary" @click="handleCreate">Create</b-btn>
+      <b-btn :disabled="fetching" @click="handlePreview">{{$t('Preview')}}</b-btn>
+      <b-btn :disabled="fetching" variant="primary" @click="handleCreate">{{$t('Save')}}</b-btn>
     </b-form-group>
   </div>
 </template>
@@ -38,6 +38,13 @@ export default {
         return this.createAddonIntroduction();
       case "page":
         return this.createPage();
+    }
+  },
+  computed: {
+    title() {
+      return this.$t("Create {post_type}", {
+        post_type: this.$t(`post_types.${this.article.post_type}`)
+      });
     }
   },
   methods: {

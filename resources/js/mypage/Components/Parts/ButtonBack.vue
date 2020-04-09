@@ -2,7 +2,7 @@
   <div class="mb-2">
     <router-link :to="to">
       <b-icon icon="arrow-left" />
-      <slot>Back to Index</slot>
+      <slot>{{$t('Back to Index')}}</slot>
     </router-link>
   </div>
 </template>

@@ -1,9 +1,11 @@
 <template>
   <div>
     <button-back />
-    <h1>Analytics</h1>
+    <h1>{{$t('Access Analytics')}}</h1>
     <analytics-graph :datasets="datasets" :labels="labels" />
-    <b-button varant="primary" @click="handleApply">Apply</b-button>
+    <b-form-group>
+      <b-button varant="primary" @click="handleApply">{{$t('Apply')}}</b-button>
+    </b-form-group>
     <form-analytics-config v-model="options" />
     <analytics-table :articles="articles" v-model="ids" />
   </div>
@@ -141,9 +143,9 @@ export default {
     axisLabel(axis) {
       switch (axis) {
         case this.AXIS_VIEW:
-          return "PV";
+          return this.$t("Page Views");
         case this.AXIS_CONVERSION:
-          return "CV";
+          return this.$t("Conversions");
       }
     },
     getColor(article, axis, alpha = 1) {

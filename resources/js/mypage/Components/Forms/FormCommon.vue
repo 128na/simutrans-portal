@@ -1,21 +1,24 @@
 <template>
   <div>
-    <b-form-group label="status">
+    <b-form-group :label="$t('Status')">
       <b-form-select v-model="article.status" :options="options.statuses" />
     </b-form-group>
-    <b-form-group label="title">
+    <b-form-group :label="$t('Title')">
       <b-input-group>
         <b-form-input type="text" v-model="article.title" />
         <b-input-group-append>
-          <b-button @click="handleSlug">To Slug</b-button>
+          <b-button @click="handleSlug">
+            <b-icon icon="arrow-down" />
+            {{$t('To Slug')}}
+          </b-button>
         </b-input-group-append>
       </b-input-group>
     </b-form-group>
-    <b-form-group label="slug">
+    <b-form-group :label="$t('Slug')">
       <b-form-input type="text" v-model="url_decoded_slug" />
-      <small>URL: https://simutrans.sakura.ne.jp/portal/articles/{{ article.slug }}</small>
+      <div class="mt-1">URL: https://simutrans.sakura.ne.jp/portal/articles/{{ article.slug }}</div>
     </b-form-group>
-    <b-form-group label="thumbnail">
+    <b-form-group :label="$t('Thumbnail')">
       <media-manager
         name="thumbnail"
         v-model="article.contents.thumbnail"

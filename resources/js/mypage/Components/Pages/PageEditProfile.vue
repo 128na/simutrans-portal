@@ -1,7 +1,7 @@
 <template>
   <div>
     <button-back />
-    <h1>Edit Profile</h1>
+    <h1>{{$t('Edit my profile')}}</h1>
     <form-profile
       :user="user"
       :attachments="attachments"
@@ -9,7 +9,7 @@
       @update:user="$emit('update:user', $event)"
     />
     <b-form-group>
-      <b-btn :disabled="fetching" variant="primary" @click="handleUpdate">Update</b-btn>
+      <b-btn :disabled="fetching" variant="primary" @click="handleUpdate">{{$t('Save')}}</b-btn>
     </b-form-group>
   </div>
 </template>

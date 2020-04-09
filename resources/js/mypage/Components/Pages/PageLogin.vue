@@ -1,20 +1,25 @@
 <template>
   <div>
-    <h1>Login</h1>
+    <h1>{{$t('Login')}}</h1>
     <b-form>
-      <b-form-group label="Email">
+      <b-form-group :label="$t('Email')">
         <b-form-input type="email" v-model="email" autocomplete="email" />
       </b-form-group>
-      <b-form-group label="Password">
+      <b-form-group :label="$t('Password')">
         <form-password v-model="password" autocomplete="current-password" />
       </b-form-group>
       <b-form-group>
-        <b-form-checkbox v-model="remember">Remember Me</b-form-checkbox>
+        <b-form-checkbox v-model="remember">{{$t('Remember Me')}}</b-form-checkbox>
       </b-form-group>
       <b-form-group>
-        <b-button class="mr-1" variant="primary" :disabled="fetching" @click="handleLogin">Login</b-button>
-        <router-link :to="to_register">Register</router-link>&nbsp;
-        <router-link :to="to_reset">Forget Password</router-link>
+        <b-button
+          class="mr-1"
+          variant="primary"
+          :disabled="fetching"
+          @click="handleLogin"
+        >{{$t('Login')}}</b-button>
+        <router-link :to="to_register">{{$t('Register')}}</router-link>&nbsp;|&nbsp;
+        <router-link :to="to_reset">{{$t('Forgot Your Password?')}}</router-link>
       </b-form-group>
     </b-form>
   </div>

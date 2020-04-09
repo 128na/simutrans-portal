@@ -1,5 +1,5 @@
 <template>
-  <b-form-group label="Articles">
+  <b-form-group :label="$t('Articles')">
     <b-table
       hover
       :items="items"
@@ -27,34 +27,37 @@ export default {
     return {
       sortBy: "id",
       sortDesc: false,
-      fields: [
-        {
-          key: "select",
-          label: "",
-          sortable: false
-        },
-        {
-          key: "id",
-          label: "ID",
-          sortable: true
-        },
-        {
-          key: "title",
-          label: "Title",
-          sortable: true
-        },
-        {
-          key: "created_at",
-          label: "Created At",
-          sortable: true
-        },
-        {
-          key: "updated_at",
-          label: "Updated At",
-          sortable: true
-        }
-      ]
+      fields: []
     };
+  },
+  created() {
+    this.fields = [
+      {
+        key: "select",
+        label: "",
+        sortable: false
+      },
+      {
+        key: "id",
+        label: "ID",
+        sortable: true
+      },
+      {
+        key: "title",
+        label: this.$t("Title"),
+        sortable: true
+      },
+      {
+        key: "created_at",
+        label: this.$t("Created at"),
+        sortable: true
+      },
+      {
+        key: "updated_at",
+        label: this.$t("Updated at"),
+        sortable: true
+      }
+    ];
   },
   computed: {
     items() {

@@ -1,7 +1,7 @@
 <template>
   <div v-if="article">
     <button-back />
-    <h1>Edit Article</h1>
+    <h1>{{$t('Edit {title}', {title:article.title})}}</h1>
     <component
       :is="article.post_type"
       :article="article"
@@ -10,12 +10,12 @@
       @update:attachments="$emit('update:attachments', $event)"
     />
 
-    <b-form-group label="Tweet">
-      <b-form-checkbox v-model="should_tweet">Should Tweet</b-form-checkbox>
+    <b-form-group :label="$t('Auto Tweet')">
+      <b-form-checkbox v-model="should_tweet">{{$t('Tweet when posting or updating.')}}</b-form-checkbox>
     </b-form-group>
     <b-form-group>
-      <b-btn :disabled="fetching" @click="handlePreview">Preview</b-btn>
-      <b-btn :disabled="fetching" variant="primary" @click="handleUpdate">Update</b-btn>
+      <b-btn :disabled="fetching" @click="handlePreview">{{$t('Preview')}}</b-btn>
+      <b-btn :disabled="fetching" variant="primary" @click="handleUpdate">{{$t('Save')}}</b-btn>
     </b-form-group>
   </div>
 </template>

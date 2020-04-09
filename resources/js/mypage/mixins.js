@@ -16,12 +16,12 @@ const toastable = {
         },
         toastValidationError(errors) {
             const message = Object.values(errors).map(e => e.join("\n")).join("\n");
-            this._toast('Validation Error', 'warning', message, true);
+            this._toast('Confirmation required', 'danger', message, true);
 
         },
         _toast(title, variant, message, noAutoHide = false) {
-            this.$bvToast.toast(message, {
-                title,
+            this.$bvToast.toast(this.$t(message), {
+                title: this.$t(title),
                 variant,
                 toaster: 'b-toaster-bottom-right',
                 solid: true,
@@ -36,7 +36,7 @@ const toastable = {
                 case 401:
                     return this.$router.push({ name: 'login' }).catch(e => { })
                 case 403:
-                    return this.toastError('No permission');
+                    return this.toastError('Forbidden');
                 case 404:
                     return this.toastError('Not found');
                 case 422:
@@ -45,7 +45,7 @@ const toastable = {
                     return this.toastError('Too Many Requests');
                 default:
                     console.log(error);
-                    return this.toastError('Error');
+                    return this.toastError('Whoops, something went wrong on our servers.');
             }
         }
     }

@@ -19,7 +19,8 @@
     </div>
     <div v-else class="m-auto" key="not_initialized">
       <h2>
-        <b-icon icon="arrow-clockwise" animation="spin" class="mr-2"></b-icon>Loading
+        <b-icon icon="arrow-clockwise" animation="spin" class="mr-2"></b-icon>
+        {{$t('Loading...')}}
       </h2>
     </div>
   </transition>
@@ -62,7 +63,7 @@ export default {
         this.fetchOptions()
       ]);
       this.$router.push({ name: "index" });
-      this.toastSuccess("Login Success");
+      this.toastSuccess("Logged in");
     },
     handleLogout() {
       this.initialize();
@@ -120,5 +121,11 @@ export default {
 }
 :disabled {
   cursor: not-allowed;
+}
+a.dropdown-item,
+a.btn,
+button.btn {
+  display: inline-flex;
+  align-items: center;
 }
 </style>

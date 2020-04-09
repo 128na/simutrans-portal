@@ -1,16 +1,18 @@
 <template>
   <div>
-    <b-form-group label="Sections">
+    <b-form-group :label="$t('Sections')">
       <b-form inline v-for="(section,index) in article.contents.sections" :key="index">
         <b-form-textarea
           v-if="isText(section.type)"
           :value="section.text"
+          :placeholder="$t('Text')"
           @input="v=>handleInput(index, v)"
         />
         <b-form-input
           v-if="isUrl(section.type)"
           type="url"
           :value="section.url"
+          placeholder="URL"
           @input="v=>handleInput(index, v)"
         />
         <media-manager
@@ -28,16 +30,17 @@
           v-if="isCaption(section.type)"
           type="text"
           :value="section.caption"
+          :placeholder="$t('Caption')"
           @input="v=>handleInput(index, v)"
         />
         <b-button variant="outline-danger" @click="handleRemove(index)" size="sm" pill>&times;</b-button>
       </b-form>
-      <b-btn @click="handleAdd('caption')">Add Caption</b-btn>
-      <b-btn @click="handleAdd('text')">Add Text</b-btn>
-      <b-btn @click="handleAdd('url')">Add Url</b-btn>
-      <b-btn @click="handleAdd('image')">Add Image</b-btn>
+      <b-btn @click="handleAdd('caption')">{{$t('Add Caption')}}</b-btn>
+      <b-btn @click="handleAdd('text')">{{$t('Add Text')}}</b-btn>
+      <b-btn @click="handleAdd('url')">{{$t('Add URL')}}</b-btn>
+      <b-btn @click="handleAdd('image')">{{$t('Add Image')}}</b-btn>
     </b-form-group>
-    <b-form-group label="Category">
+    <b-form-group :label="$t('Categories')">
       <b-form-checkbox-group v-model="article.categories" :options="options.categories.page" />
     </b-form-group>
   </div>
@@ -103,7 +106,7 @@ export default {
       }
     },
     handleRemove(index) {
-      if (window.confirm("削除しますか？")) {
+      if (window.confirm(this.$t("Are you sure you want to delete?"))) {
         const sections = [...this.article.contents.sections];
         sections.splice(index, 1)[0];
         this.article.contents.sections = sections;

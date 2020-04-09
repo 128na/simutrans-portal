@@ -3,13 +3,13 @@
     <input type="file" :ref="file_uploader_id" :accept="accept" class="d-none" @change="handleFile" />
     <b-img v-if="can_preview" :src="current_thumbnail" thumbnail />
     <p>{{ current_filename }}</p>
-    <b-button variant="outline-secondary" @click="handleShow">Select File</b-button>
+    <b-button variant="outline-secondary" @click="handleShow">{{$t('Open File Manager')}}</b-button>
     <b-modal :id="name" title="Select File" size="xl" scrollable>
       <template v-slot:modal-header>
-        <div>Select File</div>
+        <div>{{$t('File Manager')}}</div>
         <b-form inline>
-          <b-form-input v-model="search" placeholder="search" class="mr-1" />
-          <b-btn :disabled="fetching" variant="primary" @click="handleUpload">Upload</b-btn>
+          <b-form-input v-model="search" :placeholder="$t('Search')" class="mr-1" />
+          <b-btn :disabled="fetching" variant="primary" @click="handleUpload">{{$t('Upload File')}}</b-btn>
         </b-form>
       </template>
       <div class="attachment-list">
@@ -31,15 +31,15 @@
           </div>
           <small class="ellipsis">{{ attachment.original_name }}</small>
         </div>
-        <div v-show="filtered_attachments.length < 1">No Items</div>
+        <div v-show="filtered_attachments.length < 1">{{$t('No file.')}}</div>
       </div>
       <template v-slot:modal-footer>
         <div class="flex-1">
           <div>{{ selected_filename }}</div>
         </div>
         <div>
-          <b-btn :disabled="fetching" @click="handleCancel" size="sm">Cancel</b-btn>
-          <b-btn :disabled="fetching" variant="primary" @click="handleOK">OK</b-btn>
+          <b-btn :disabled="fetching" @click="handleCancel" size="sm">{{$t('Cancel')}}</b-btn>
+          <b-btn :disabled="fetching" variant="primary" @click="handleOK">{{$t('Select File')}}</b-btn>
         </div>
       </template>
     </b-modal>
@@ -123,7 +123,7 @@ export default {
       if (this.current_attachment) {
         return this.current_attachment.original_name;
       }
-      return "not selected";
+      return this.$t("Not selected.");
     }
   },
   methods: {
@@ -173,16 +173,16 @@ export default {
       const file = this.getFile();
       if (file) {
         await this.storeAttachment(file);
-        this.toastSuccess("File Uploaded");
+        this.toastSuccess("Uploaded");
       }
     },
     async handleDelete(id) {
-      if (window.confirm("sure?")) {
+      if (window.confirm(this.$t("Are you sure you want to delete?"))) {
         if (this.selected == id) {
           this.selected = null;
         }
         await this.deleteAttachment(id);
-        this.toastSuccess("File Deleted");
+        this.toastSuccess("Deleted");
       }
     },
     // style

@@ -1,24 +1,24 @@
 <template>
   <div>
-    <b-form-group label="Paks">
+    <b-form-group :label="$t('Paks')">
       <b-form-checkbox-group v-model="article.categories" :options="options.categories.pak" />
     </b-form-group>
-    <b-form-group label="Addon Types">
+    <b-form-group :label="$t('Addon Types')">
       <b-form-checkbox-group v-model="article.categories" :options="options.categories.addon" />
     </b-form-group>
-    <b-form-group label="Track positions for pak128" v-show="includes_pak128">
+    <b-form-group v-show="includes_pak128" :label="$t('Track positions for pak128')">
       <b-form-checkbox-group
         v-model="article.categories"
         :options="options.categories.pak128_position"
       />
     </b-form-group>
-    <b-form-group label="Tags">
+    <b-form-group :label="$t('Tags')">
       <tag-selector v-model="article.tags" :creatable="true" />
     </b-form-group>
-    <b-form-group label="License">
+    <b-form-group :label="$t('License')">
       <b-form-checkbox-group v-model="article.categories" :options="options.categories.license" />
     </b-form-group>
-    <b-form-group label="License other">
+    <b-form-group :label="$t('License other')">
       <b-form-textarea v-model="article.license" />
     </b-form-group>
   </div>

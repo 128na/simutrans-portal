@@ -1,7 +1,8 @@
 <template>
   <b-alert show variant="danger">
-    Need Verify
-    <a href="#" class="alert-link" @click.prevent="handleResend">Resend Email</a>
+    <strong>{{$t('Verify Your Email Address')}}</strong>
+    <p>{{$t('Please click the button below to verify your email address.')}}</p>
+    <a href="#" class="alert-link" @click.prevent="handleResend">{{$t('Verify Email Address')}}</a>
   </b-alert>
 </template>
 <script>
@@ -12,7 +13,9 @@ export default {
   methods: {
     handleResend() {
       this.resend();
-      this.toastSuccess("Mail Resend");
+      this.toastSuccess(
+        "A fresh verification link has been sent to your email address."
+      );
     }
   }
 };

@@ -13,7 +13,7 @@ class StoreRequest extends FormRequest
      */
     public function rules()
     {
-        if (request()->has('only_image')) {
+        if (request()->input('only_image')) {
             return [
                 'file' => 'required|file|image',
                 'only_image' => 'nullable',

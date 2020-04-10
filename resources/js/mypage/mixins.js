@@ -177,9 +177,8 @@ const api_handlable = {
             if (this.id) {
                 formData.append("id", this.id);
             }
-            if (this.only_image) {
-                formData.append("only_image", true);
-            }
+            formData.append("only_image", this.only_image);
+
             const res = await api
                 .storeAttachment(formData)
                 .catch(this.handleError);

@@ -23,7 +23,7 @@ class VerifiedTest extends TestCase
     {
         $user = factory(User::class)->create(['email_verified_at' => null]);
         $article = factory(Article::class)->create(['user_id' => $user->id]);
-        $attachment = Attachment::createFromFile(UploadedFile::fake()->create('thumbnail.jpg', 1), $user->id);
+        $attachment = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $user->id);
         $this->actingAs($user);
 
         // need not verify
@@ -57,7 +57,7 @@ class VerifiedTest extends TestCase
     {
         $user = factory(User::class)->create();
         $article = factory(Article::class)->create(['user_id' => $user->id]);
-        $attachment = Attachment::createFromFile(UploadedFile::fake()->create('thumbnail.jpg', 1), $user->id);
+        $attachment = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $user->id);
         $this->actingAs($user);
 
         // need not verify

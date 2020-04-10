@@ -100,7 +100,7 @@ class UserTest extends TestCase
         $res = $this->postJson($url, ['user' => array_merge($data, ['profile' => ['data' => ['avatar' => $not_image->id]]])]);
         $res->assertJsonValidationErrors(['user.profile.data.avatar']);
         $other_user = factory(User::class)->create();
-        $other_avatar = Attachment::createFromFile(UploadedFile::fake()->create('avatar.jpg', 1), $other_user->id);
+        $other_avatar = Attachment::createFromFile(UploadedFile::fake()->image('avatar.jpg', 1), $other_user->id);
         $res = $this->postJson($url, ['user' => array_merge($data, ['profile' => ['data' => ['avatar' => $other_avatar->id]]])]);
         $res->assertJsonValidationErrors(['user.profile.data.avatar']);
 

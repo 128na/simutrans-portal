@@ -139,10 +139,10 @@ class ArticleService extends Service
             ->active()
             ->withForList()
             ->whereHas('categories', function ($query) use ($pak) {
-                $query->where('id', $pak);
+                $query->where('id', $pak->id);
             })
             ->whereHas('categories', function ($query) use ($addon) {
-                $query->where('id', $addon);
+                $query->where('id', $addon->id);
             })
             ->paginate($this->per_page);
     }

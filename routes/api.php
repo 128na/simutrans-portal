@@ -13,13 +13,6 @@
 Route::prefix('v1')->name('api.v1.')->namespace('Api\v1')->group(function () {
     Route::post('click/{article}', 'ConversionController@click');
     Route::get('articles', 'ArticleController@index');
-
-    Route::middleware(['auth'])->group(function () {
-        Route::get('attachments/my', 'AttachmentController@my');
-        Route::get('attachments/myimage', 'AttachmentController@myimage');
-        Route::post('attachments/upload', 'AttachmentController@upload');
-        Route::delete('attachments/{attachment}', 'AttachmentController@delete');
-    });
 });
 
 Route::prefix('v2')->name('api.v2.')->group(function () {

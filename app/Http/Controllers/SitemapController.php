@@ -2,25 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sitemap;
+use App\Services\SitemapService;
 
-/**
- * sitemap
- * @see https://gitlab.com/Laravelium/Sitemap
- * @see https://www.sitemaps.org/protocol.html
- */
 class SitemapController extends Controller
 {
-    private $sitemap;
+    private $sitemap_service;
 
-    public function __construct(Sitemap $sitemap)
+    public function __construct(SitemapService $sitemap_service)
     {
-        $this->sitemap = $sitemap;
+        $this->sitemap_service = $sitemap_service;
     }
 
     public function index()
     {
-        $sitemap = $this->sitemap->getOrGenerate();
+        $sitemap = $this->sitemap_service->getOrGenerate();
 
         return response($sitemap)->header('Content-Type', 'text/xml');
     }

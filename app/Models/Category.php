@@ -65,29 +65,33 @@ class Category extends Model
     | スコープ
     |--------------------------------------------------------------------------
      */
+    public function scopeType($query, $type)
+    {
+        return $query->where('type', $type);
+    }
     public function scopePost($query)
     {
-        return $query->where('type', config('category.type.post'));
+        return $query->type(config('category.type.post'));
     }
     public function scopePak($query)
     {
-        return $query->where('type', config('category.type.pak'));
+        return $query->type(config('category.type.pak'));
     }
     public function scopeAddon($query)
     {
-        return $query->where('type', config('category.type.addon'));
+        return $query->type(config('category.type.addon'));
     }
     public function scopePak128Position($query)
     {
-        return $query->where('type', config('category.type.pak128_position'));
+        return $query->type(config('category.type.pak128_position'));
     }
     public function scopeLicense($query)
     {
-        return $query->where('type', config('category.type.license'));
+        return $query->type(config('category.type.license'));
     }
     public function scopePage($query)
     {
-        return $query->where('type', config('category.type.page'));
+        return $query->type(config('category.type.page'));
     }
     public function scopeForUser($query, User $user)
     {

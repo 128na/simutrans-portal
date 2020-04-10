@@ -2,16 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Attachment;
-use App\Models\Category;
 use App\Models\Contents\Content;
-use App\Models\ConversionCount;
-use App\Models\PakAddonCount;
-use App\Models\Sitemap;
-use App\Models\Tag;
-use App\Models\User;
-use App\Models\UserAddonCount;
-use App\Models\ViewCount;
+use App\Services\SitemapService;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -66,7 +58,7 @@ class Article extends Model implements Feedable
         UserAddonCount::recount();
         PakAddonCount::recount();
         Cache::flush();
-        Sitemap::generate();
+        app(SitemapService::class)->generate();
     }
 
     /*
@@ -151,6 +143,10 @@ class Article extends Model implements Feedable
     | スコープ
     |--------------------------------------------------------------------------
      */
+    public function scopeUser($query, User $user)
+    {
+        return $query->where('user_id', $user->id);
+    }
     public function scopeActive($query)
     {
         return $query->where('status', config('status.publish'));

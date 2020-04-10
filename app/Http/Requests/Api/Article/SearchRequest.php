@@ -2,19 +2,8 @@
 
 namespace App\Http\Requests\Api\Article;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Article\SearchRequest as BaseRequest;
 
-class SearchRequest extends FormRequest
+class SearchRequest extends BaseRequest
 {
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            'word' => 'required|string|max:100',
-        ];
-    }
 }

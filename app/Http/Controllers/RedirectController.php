@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Redirect;
+use App\Services\RedirectService;
 use Illuminate\Http\Request;
 
 /**
@@ -10,17 +10,18 @@ use Illuminate\Http\Request;
  */
 class RedirectController extends Controller
 {
-    public function index(Request $request)
-    {
-        $path = self::getFullPath($request);
-        $redirect = Redirect::from($path)->firstOrFail();
+    /**
+     * @var RedirectService
+     */
+    private $redirect_service;
 
-        logger("[redirect]: {$path} -> {$redirect->to}");
-        return redirect($redirect->to, 301);
+    public function __construct(RedirectService $redirect_service)
+    {
+        $this->redirect_service = $redirect_service;
     }
 
-    private function getFullPath($request)
+    public function index(Request $request)
     {
-        return str_replace(config('app.url'), '', $request->fullUrl());
+        return $this->redirect_service->redirectOrFail($request);
     }
 }

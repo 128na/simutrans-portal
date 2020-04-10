@@ -1,12 +1,20 @@
 <?php
 
-namespace App\Models;
+namespace App\Services;
 
+use App\Models\Article;
+use App\Models\PakAddonCount;
+use App\Models\UserAddonCount;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Sitemap\Sitemap as SitemapGenerator;
 use Spatie\Sitemap\Tags\Url;
 
-class Sitemap
+/**
+ * sitemap
+ * @see https://gitlab.com/Laravelium/Sitemap
+ * @see https://www.sitemaps.org/protocol.html
+ */
+class SitemapService
 {
     private const PRIORITIES = [
         'addon-post' => '1.0',

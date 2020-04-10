@@ -6,21 +6,21 @@ class Breadcrumb
 {
     public static function forShow($article)
     {
-        if($article->post_type === 'addon-introduction' || $article->post_type === 'addon-introduction') {
+        if ($article->post_type === 'addon-introduction' || $article->post_type === 'addon-introduction') {
             return [
                 ['name' => __('Top'), 'url' => route('index')],
                 ['name' => __('Articles'), 'url' => route('addons.index')],
                 ['name' => __('Detail')],
             ];
         }
-        if($article->post_type === 'page' && $article->isAnnounce()) {
+        if ($article->post_type === 'page' && $article->isAnnounce()) {
             return [
                 ['name' => __('Top'), 'url' => route('index')],
                 ['name' => __('Announces'), 'url' => route('announces.index')],
                 ['name' => __('Detail')],
             ];
         }
-        if($article->post_type === 'page') {
+        if ($article->post_type === 'page') {
             return [
                 ['name' => __('Top'), 'url' => route('index')],
                 ['name' => __('Pages'), 'url' => route('pages.index')],
@@ -44,19 +44,19 @@ class Breadcrumb
             ['name' => $name],
         ];
     }
-    public static function forCategory($category)
+    public static function forCategory($type, $slug)
     {
         return [
             ['name' => __('Top'), 'url' => route('index')],
-            ['name' => __("category.{$category->type}.{$category->slug}")],
+            ['name' => __("category.{$type}.{$slug}")],
         ];
     }
     public static function forPakAddon($pak, $addon)
     {
         return [
             ['name' => __('Top'), 'url' => route('index')],
-            ['name' => __('category.pak.'.$pak), 'url' => route('category', ['pak', $pak])],
-            ['name' => __('category.addon.'.$addon)],
+            ['name' => __('category.pak.' . $pak), 'url' => route('category', ['pak', $pak])],
+            ['name' => __('category.addon.' . $addon)],
         ];
     }
     public static function forUser($user)

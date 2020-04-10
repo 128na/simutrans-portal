@@ -12,38 +12,48 @@ use App\Services\ArticleService;
 
 class ArticleController extends Controller
 {
+    /**
+     * @var ArticleService
+     */
+    private $article_service;
+
     public function __construct(ArticleService $article_service)
     {
         $this->article_service = $article_service;
     }
+
     public function latest()
     {
         return new ArticlesResource(
-            $this->article_service->listing()
+            $this->article_service->getAddonArticles()
         );
     }
+
     public function search(SearchRequest $request)
     {
         return new ArticlesResource(
-            $this->article_service->search($request)
+            $this->article_service->getSearchArticles($request)
         );
     }
+
     public function user(User $user)
     {
         return new ArticlesResource(
-            $this->article_service->byUser($user)
+            $this->article_service->getUserArticles($user)
         );
     }
+
     public function category(Category $category)
     {
         return new ArticlesResource(
-            $this->article_service->byCategory($category)
+            $this->article_service->getCategoryArtciles($category)
         );
     }
+
     public function tag(Tag $tag)
     {
         return new ArticlesResource(
-            $this->article_service->byTag($tag)
+            $this->article_service->getTagArticles($tag)
         );
     }
 }

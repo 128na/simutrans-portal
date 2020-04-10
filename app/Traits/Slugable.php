@@ -11,7 +11,7 @@ trait Slugable
     | モデル取得
     |--------------------------------------------------------------------------
      */
-    public function resolveRouteBinding($value)
+    public function resolveRouteBinding($value, $field = null)
     {
         return $this->slug(urlencode($value))->first() ?? $this->findOrFail($value);
     }

@@ -48,7 +48,7 @@ class LatestTest extends TestCase
     public function testData()
     {
         $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'publish']);
+        $article = $this->createAddonPost($user);
         $category = Category::first();
         $article->categories()->attach($category->id);
         $tag = factory(Tag::class)->create();

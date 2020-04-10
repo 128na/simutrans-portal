@@ -3,7 +3,9 @@
 namespace Tests\Feature\Api\v2\Auth;
 
 use App\Models\User;
+use App\Notifications\Loggedin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class LoginLogoutTest extends TestCase
@@ -18,6 +20,7 @@ class LoginLogoutTest extends TestCase
 
     public function testLogin()
     {
+        Notification::fake();
         $user = factory(User::class)->create();
 
         $url = route('api.v2.login');
@@ -32,9 +35,12 @@ class LoginLogoutTest extends TestCase
         $response = $this->postJson($url, ['email' => $user->email, 'password' => 'password_wrong']);
         $response->assertJsonValidationErrors(['email']);
 
+        Notification::assertNothingSent();
+
         $response = $this->postJson($url, ['email' => $user->email, 'password' => 'password']);
         $response->assertOK();
         $this->assertAuthenticated();
+        Notification::assertSentTo($user, Loggedin::class);
     }
 
     public function LogoutTest()

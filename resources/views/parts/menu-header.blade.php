@@ -80,7 +80,7 @@
             </ul>
             @if ($show_searchbox)
                 <form class="form-inline my-2 my-lg-0" action="{{ route('search') }}" method="GET">
-                    <input class="form-control mr-sm-2" name="s" type="search" placeholder="@lang('Search words')" aria-label="Search">
+                    <input class="form-control mr-sm-2" name="word" type="search" placeholder="@lang('Search words')" aria-label="Search">
                     <button class="btn btn-outline-light my-2 my-sm-0" type="submit">@lang('Search')</button>
                 </form>
             @endif

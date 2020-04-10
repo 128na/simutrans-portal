@@ -170,6 +170,10 @@ class Article extends Model implements Feedable
     {
         $query->whereIn('post_type', ['addon-post', 'addon-introduction']);
     }
+    public function scopeAddonIntroduction($query)
+    {
+        $query->where('post_type', 'addon-introduction');
+    }
     public function scopePage($query)
     {
         $query->where('post_type', 'page');

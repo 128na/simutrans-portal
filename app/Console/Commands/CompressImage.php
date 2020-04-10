@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\Attachment;
 use App\Models\CompressedImage;
-use Illuminate\Support\Facades\Storage;
+use App\Services\CompressedImageService;
+use Illuminate\Console\Command;
 
 /**
  * tinypng api経由で画像を圧縮する
@@ -28,13 +27,18 @@ class CompressImage extends Command
     protected $description = 'Compress Image via tinypng.';
 
     /**
+     * @var CompressedImageService
+     */
+    private $compressed_image_service;
+    /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(CompressedImageService $compressed_image_service)
     {
         parent::__construct();
+        $this->compressed_image_service = $compressed_image_service;
     }
 
     /**
@@ -44,38 +48,15 @@ class CompressImage extends Command
      */
     public function handle()
     {
-        \Tinify\setKey(config('app.tinypng_api_key'));
-
-        foreach (Attachment::cursor() as $attachment) {
+        return $this->compressed_image_service->getAttachmentsCursor()->each(function ($attachment) {
             $this->info($attachment->path);
-            if(!Storage::disk('public')->exists($attachment->path)) {
-                $this->warn('ファイルがありません');
-                continue;
-            }
-            if(!$attachment->is_png) {
-                $this->info('PNG画像以外');
-                continue;
-            }
-            if(CompressedImage::isCompressed($attachment->path)) {
-                $this->info('圧縮済み');
-                continue;
-            }
-            $path = $attachment->path;
-            $backup_path = $path.'.bak';
-            try {
-                Storage::disk('public')->copy($path, $backup_path);
-                $source = \Tinify\fromFile(Storage::disk('public')->path($path));
-                $source->toFile(Storage::disk('public')->path($path));
 
-                CompressedImage::create(['path' => $path]);
-                Storage::disk('public')->delete($backup_path);
-                $this->info('圧縮成功');
-            } catch(\Throwable $e) {
+            try {
+                $this->compressed_image_service->compressIfNeeded($attachment);
+            } catch (\Throwable $e) {
                 $this->error('圧縮失敗');
                 $this->error($e->getMessage());
-                Storage::disk('public')->delete($path);
-                Storage::disk('public')->move($backup_path, $path);
             }
-        }
+        });
     }
 }

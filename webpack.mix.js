@@ -10,11 +10,15 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
-mix.js('resources/js/script.js', 'public/js')
-    .sass('resources/sass/front/index.scss', 'public/css/front.css')
-    .sass('resources/sass/mypage/index.scss', 'public/css/mypage.css')
-    .sass('resources/sass/admin/index.scss', 'public/css/admin.css')
-    .version();
 
-// mix.js('resources/js/analytics/app.js', 'public/js/analytics.js');
-mix.js('resources/js/mypage/app.js', 'public/js/mypage.js');
+mix.sass('resources/sass/front/index.scss', 'public/css/style.css')
+    .js('resources/js/script.js', 'public/js/script.js');
+
+mix.sass('resources/sass/mypage/index.scss', 'public/css/mypage.css')
+    .js('resources/js/mypage/app.js', 'public/js/mypage.js');
+
+if (mix.inProduction()) {
+    mix.version();
+} else {
+    mix.sourceMaps();
+}

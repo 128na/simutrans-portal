@@ -1,6 +1,7 @@
 <?php
-return  [
-    'addon-post'         => 'addon-post',
+return [
+    'addon-post' => 'addon-post',
     'addon-introduction' => 'addon-introduction',
-    'page'               => 'page',
+    'page' => 'page',
+    'markdown' => 'markdown',
 ];

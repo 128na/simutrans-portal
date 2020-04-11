@@ -18,7 +18,7 @@ class Categories extends ResourceCollection
             return [
                 'name' => $item->name,
                 'url' => route('category', [$item->type, $item->slug]),
-                'api' => route('api.v2.category', [$item->id]),
+                'api' => route('api.v2.articles.category', [$item->id]),
             ];
         });
     }

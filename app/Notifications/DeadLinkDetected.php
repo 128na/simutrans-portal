@@ -3,9 +3,8 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class DeadLinkDetected extends Notification
 {
@@ -16,10 +15,8 @@ class DeadLinkDetected extends Notification
      *
      * @return void
      */
-    public function __construct($article)
+    public function __construct()
     {
-        $this->article = $article;
-        //
     }
 
     /**
@@ -42,8 +39,8 @@ class DeadLinkDetected extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject(__('The download destination URL for article ":title" is broken', ['title' => $this->article->title]))
-            ->view('emails.deadlink-detected', ['article' => $this->article]);
+            ->subject(__('The download destination URL for article ":title" is broken', ['title' => $notifiable->title]))
+            ->view('emails.deadlink-detected', ['article' => $notifiable]);
     }
 
     /**

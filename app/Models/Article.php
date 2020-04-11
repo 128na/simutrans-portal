@@ -2,19 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Attachment;
-use App\Models\Category;
 use App\Models\Contents\Content;
-use App\Models\ConversionCount;
-use App\Models\PakAddonCount;
-use App\Models\Sitemap;
-use App\Models\Tag;
-use App\Models\User;
-use App\Models\UserAddonCount;
-use App\Models\ViewCount;
+use App\Services\SitemapService;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
@@ -22,6 +15,7 @@ use Spatie\Feed\FeedItem;
 class Article extends Model implements Feedable
 {
     use Slugable;
+    use Notifiable;
 
     protected $fillable = [
         'user_id',
@@ -48,6 +42,9 @@ class Article extends Model implements Feedable
         self::retrieved(function ($model) {
             $model->contents = Content::createFromType($model->post_type, $model->contents);
         });
+        self::creating(function ($model) {
+            $model->contents = Content::createFromType($model->post_type, $model->contents);
+        });
         self::created(function ($model) {
             $model->syncRelatedData();
         });
@@ -62,9 +59,8 @@ class Article extends Model implements Feedable
     {
         UserAddonCount::recount();
         PakAddonCount::recount();
-        Tag::removeDoesntHaveRelation();
         Cache::flush();
-        Sitemap::generate();
+        app(SitemapService::class)->generate();
     }
 
     /*
@@ -76,6 +72,7 @@ class Article extends Model implements Feedable
     {
         return $this->morphMany(Attachment::class, 'attachmentable');
     }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class);
@@ -148,6 +145,10 @@ class Article extends Model implements Feedable
     | スコープ
     |--------------------------------------------------------------------------
      */
+    public function scopeUser($query, User $user)
+    {
+        return $query->where('user_id', $user->id);
+    }
     public function scopeActive($query)
     {
         return $query->where('status', config('status.publish'));
@@ -171,6 +172,11 @@ class Article extends Model implements Feedable
     {
         $query->whereIn('post_type', ['addon-post', 'addon-introduction']);
     }
+    public function scopeLinkCheckTarget($query)
+    {
+        $query->where('post_type', 'addon-introduction')
+            ->where('contents->exclude_link_check', '<>', true);
+    }
     public function scopePage($query)
     {
         $query->where('post_type', 'page');
@@ -184,14 +190,14 @@ class Article extends Model implements Feedable
 
     public function scopeAnnounce($query)
     {
-        $query->where('post_type', 'page')
+        $query->whereIn('post_type', ['page', 'markdown'])
             ->whereHas('categories', function ($query) {
                 $query->page()->slug('announce');
             });
     }
     public function scopeWithoutAnnounce($query)
     {
-        $query->where('post_type', 'page')
+        $query->whereIn('post_type', ['page', 'markdown'])
             ->whereDoesntHave('categories', function ($query) {
                 $query->page()->slug('announce');
             });

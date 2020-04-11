@@ -18,6 +18,11 @@ class Service
         return $this->model->findOrFail($id);
     }
 
+    public function find($id)
+    {
+        return $this->model->find($id);
+    }
+
     public function create($data)
     {
         return $this->model->create($data);

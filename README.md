@@ -57,5 +57,9 @@ https://simutrans.sakura.ne.jp/portal/
 
 - php artisan compress:image
 
-## API
-[APIについて](./docs/api.md)
+## ドキュメント
+- [APIについて](./docs/api.md)
+- [ルート一覧](./docs/routes.txt)
+    コマンドで出力しただけ
+- [ページ一覧](./docs/pages.md)
+- [TODO表](./docs/todo.md)

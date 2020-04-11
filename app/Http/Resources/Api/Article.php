@@ -24,8 +24,8 @@ class Article extends JsonResource
             'categories' => new Categories($this->categories),
             'tags' => new Tags($this->tags),
             'created_by' => new User($this->user),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_at' => $this->created_at->format('Y-m-dTH-i-s'),
+            'updated_at' => $this->updated_at->format('Y-m-dTH-i-s'),
         ];
     }
 }

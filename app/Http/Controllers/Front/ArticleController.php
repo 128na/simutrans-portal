@@ -5,27 +5,46 @@ namespace App\Http\Controllers\Front;
 use App\Events\ArticleConversion;
 use App\Events\ArticleShown;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Article\SearchRequest;
 use App\Models\Article;
 use App\Models\Breadcrumb;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Services\ArticleService;
+use App\Services\CategoryService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
+    /**
+     * @var ArticleService
+     */
+    private $article_service;
+    /**
+     * @var CategoryService
+     */
+    private $category_service;
+
+    public function __construct(ArticleService $article_service, CategoryService $category_service)
+    {
+        $this->article_service = $article_service;
+        $this->category_service = $category_service;
+    }
+
     /**
      * アドオン記事一覧
      */
     public function addons()
     {
-        $articles = Article::addon()->active()->withForList()->paginate(24);
+        $contents = [
+            'articles' => $this->article_service->getAddonArticles(),
+            'title' => __('Articles'),
+            'breadcrumb' => Breadcrumb::forList('Articles'),
+        ];
+        $contents = array_merge($contents, $this->article_service->getHeaderContents());
 
-        $title = __('Articles');
-        $breadcrumb = Breadcrumb::forList('Articles');
-        return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
+        return view('front.articles.index', $contents);
     }
 
     /**
@@ -33,11 +52,14 @@ class ArticleController extends Controller
      */
     public function ranking()
     {
-        $articles = Article::addon()->ranking()->active()->withForList()->paginate(24);
+        $contents = [
+            'articles' => $this->article_service->getRankingArticles(),
+            'title' => __('Ranking'),
+            'breadcrumb' => Breadcrumb::forList('Ranking'),
+        ];
+        $contents = array_merge($contents, $this->article_service->getHeaderContents());
 
-        $title = __('Ranking');
-        $breadcrumb = Breadcrumb::forList('Ranking');
-        return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
+        return view('front.articles.index', $contents);
     }
 
     /**
@@ -45,11 +67,14 @@ class ArticleController extends Controller
      */
     public function pages()
     {
-        $articles = Article::withoutAnnounce()->active()->withForList()->paginate(24);
+        $contents = [
+            'articles' => $this->article_service->getCommonArticles(),
+            'title' => __('Pages'),
+            'breadcrumb' => Breadcrumb::forList('Pages'),
+        ];
+        $contents = array_merge($contents, $this->article_service->getHeaderContents());
 
-        $title = __('Pages');
-        $breadcrumb = Breadcrumb::forList('Pages');
-        return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
+        return view('front.articles.index', $contents);
     }
 
     /**
@@ -57,11 +82,14 @@ class ArticleController extends Controller
      */
     public function announces()
     {
-        $articles = Article::announce()->active()->withForList()->paginate(24);
+        $contents = [
+            'articles' => $this->article_service->getAnnouces(),
+            'title' => __('Announces'),
+            'breadcrumb' => Breadcrumb::forList('Announces'),
+        ];
+        $contents = array_merge($contents, $this->article_service->getHeaderContents());
 
-        $title = __('Announces');
-        $breadcrumb = Breadcrumb::forList('Announces');
-        return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
+        return view('front.articles.index', $contents);
     }
 
     /**
@@ -71,14 +99,18 @@ class ArticleController extends Controller
     {
         abort_unless($article->is_publish, 404);
 
-        if(Auth::check() === false || Auth::id() !== $article->user_id) {
+        if (Auth::check() === false || Auth::id() !== $article->user_id) {
             event(new ArticleShown($article));
         }
 
-        $article->load('user.profile.attachments', 'attachments', 'categories', 'tags');
-        $breadcrumb = Breadcrumb::forShow($article);
-        $canonical_url = route('articles.show', $article->slug);
-        return static::viewWithHeader('front.articles.show', compact('article', 'breadcrumb', 'canonical_url'));
+        $contents = [
+            'article' => $this->article_service->getArticle($article),
+            'breadcrumb' => Breadcrumb::forShow($article),
+            'canonical_url' => route('articles.show', $article->slug),
+        ];
+        $contents = array_merge($contents, $this->article_service->getHeaderContents());
+
+        return view('front.articles.show', $contents);
     }
 
     /**
@@ -88,15 +120,17 @@ class ArticleController extends Controller
     {
         abort_unless($article->is_publish, 404);
 
-        if(Auth::check() === false || Auth::id() !== $article->user_id) {
+        if (Auth::check() === false || Auth::id() !== $article->user_id) {
             event(new ArticleConversion($article));
         }
 
-        $article->load('attachments');
         abort_unless($article->has_file, 404);
 
         return response()
-            ->download(public_path('storage/'.$article->file->path), $article->file->original_name);
+            ->download(
+                public_path('storage/' . $article->file->path),
+                $article->file->original_name
+            );
     }
 
     /**
@@ -104,19 +138,16 @@ class ArticleController extends Controller
      */
     public function category($type, $slug)
     {
-        $method = Str::camel($type);
+        $category = $this->category_service->findOrFailByTypeAndSlug($type, $slug);
 
-        try {
-            $category = Category::$method()->slug($slug)->firstOrFail();
-        } catch (\BadMethodCallException $e) {
-            throw new \Illuminate\Database\Eloquent\ModelNotFoundException($e);
-        }
-        $articles = $category->articles()
-            ->active()->withForList()->paginate(24);
+        $contents = [
+            'articles' => $this->article_service->getCategoryArtciles($category),
+            'title' => __('Category :name', ['name' => __("category.{$type}.{$slug}")]),
+            'breadcrumb' => Breadcrumb::forCategory($type, $slug),
+        ];
+        $contents = array_merge($contents, $this->article_service->getHeaderContents());
 
-        $title = __('Category :name', ['name' => __("category.{$type}.{$category->slug}")]);
-        $breadcrumb = Breadcrumb::forCategory($category);
-        return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
+        return view('front.articles.index', $contents);
     }
 
     /**
@@ -124,20 +155,20 @@ class ArticleController extends Controller
      */
     public function categoryPakAddon($pak_slug, $addon_slug)
     {
-        $pak   = Category::pak()->slug($pak_slug)->firstOrFail();
-        $addon = Category::addon()->slug($addon_slug)->firstOrFail();
+        $pak_category = $this->category_service->findOrFailByTypeAndSlug('pak', $pak_slug);
+        $addon_category = $this->category_service->findOrFailByTypeAndSlug('addon', $addon_slug);
 
-        $articles = Article::active()
-            ->whereHas('categories', function($query) use ($pak) {
-                $query->pak()->slug($pak->slug);
-            })
-            ->whereHas('categories', function($query) use ($addon) {
-                $query->addon()->slug($addon->slug);
-            })
-            ->withForList()->paginate(24);
-        $title = __(':pak, :addon', ['pak' => __('category.pak.'.$pak->slug), 'addon' => __('category.addon.'.$addon->slug)]);
-        $breadcrumb = Breadcrumb::forPakAddon($pak->slug, $addon->slug);
-        return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
+        $contents = [
+            'articles' => $this->article_service->getPakAddonCategoryArtciles($pak_category, $addon_category),
+            'title' => __(':pak, :addon', [
+                'pak' => __('category.pak.' . $pak_slug),
+                'addon' => __('category.addon.' . $addon_slug),
+            ]),
+            'breadcrumb' => Breadcrumb::forPakAddon($pak_slug, $addon_slug),
+        ];
+        $contents = array_merge($contents, $this->article_service->getHeaderContents());
+
+        return view('front.articles.index', $contents);
     }
 
     /**
@@ -145,12 +176,14 @@ class ArticleController extends Controller
      */
     public function tag(Tag $tag)
     {
-        $articles = $tag->articles()
-            ->active()->withForList()->paginate(24);
+        $contents = [
+            'articles' => $this->article_service->getTagArticles($tag),
+            'title' => __('Tag :name', ['name' => $tag->name]),
+            'breadcrumb' => Breadcrumb::forTag($tag->name),
+        ];
+        $contents = array_merge($contents, $this->article_service->getHeaderContents());
 
-        $title = __('Tag :name', ['name' => $tag->name]);
-        $breadcrumb = Breadcrumb::forTag($tag->name);
-        return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
+        return view('front.articles.index', $contents);
     }
 
     /**
@@ -158,28 +191,29 @@ class ArticleController extends Controller
      */
     public function user(User $user)
     {
-        $user->load('profile','profile.attachments');
-        $articles = $user->articles()
-            ->active()->withForList()->paginate(24);
+        $contents = [
+            'articles' => $this->article_service->getUserArticles($user),
+            'title' => __('User :name', ['name' => $user->name]),
+            'breadcrumb' => Breadcrumb::forUser($user),
+            'user' => $user->load('profile', 'profile.attachments'),
+        ];
+        $contents = array_merge($contents, $this->article_service->getHeaderContents());
 
-        $title = __('User :name', ['name' => $user->name]);
-        $breadcrumb = Breadcrumb::forUser($user);
-        return static::viewWithHeader('front.articles.index', compact('title', 'user', 'articles', 'breadcrumb'));
+        return view('front.articles.index', $contents);
     }
 
     /**
      * 検索結果一覧
      */
-    public function search(Request $request)
+    public function search(SearchRequest $request)
     {
-        $word = $request->input('s');
-        if(is_null($word)) {
-            return redirect()->route('addons.index');
-        }
-        $articles = Article::active()->search($word)->withForList()->paginate(24);
+        $contents = [
+            'articles' => $this->article_service->getSearchArticles($request),
+            'title' => __('Search results by :word', ['word' => $request->word]),
+            'breadcrumb' => Breadcrumb::forSearch($request->word),
+        ];
+        $contents = array_merge($contents, $this->article_service->getHeaderContents());
 
-        $title = __('Search results by :word', ['word' => $word]);
-        $breadcrumb = Breadcrumb::forSearch($word);
-        return static::viewWithHeader('front.articles.index', compact('title', 'articles', 'breadcrumb'));
+        return view('front.articles.index', $contents);
     }
 }

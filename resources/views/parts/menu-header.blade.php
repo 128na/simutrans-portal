@@ -57,8 +57,7 @@
                     </li>
                 @endif
                 @guest
-                    <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">@lang('Login')</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">@lang('Register')</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('mypage.index') }}">@lang('Login / Register')</a></li>
                 @else
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="mypage-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -71,30 +70,17 @@
                                 <div class="dropdown-divider my-1"></div>
                             @endif
                                 <a class="dropdown-item" href="{{ route('mypage.index') }}">@lang('Mypage')</a>
-                                <a class="dropdown-item" href="{{ route('mypage.articles.create', 'addon-post') }}">
-                                    @lang('Create :post_type', ['post_type' => __('post_types.addon-post')])</a>
-                                <a class="dropdown-item" href="{{ route('mypage.articles.create', 'addon-introduction') }}">
-                                    @lang('Create :post_type', ['post_type' => __('post_types.addon-introduction')])</a>
-                                <a class="dropdown-item" href="{{ route('mypage.articles.create', 'page') }}">
-                                    @lang('Create :post_type', ['post_type' => __('post_types.page')])</a>
-                                {{-- <a class="dropdown-item" href="{{ route('mypage.articles.create', 'markdown') }}">
-                                    @lang('Create :post_type', ['post_type' => __('post_types.markdown')])</a> --}}
-                                <div class="dropdown-divider my-1"></div>
-
-                                <a class="dropdown-item" href="{{ route('mypage.profile.edit') }}">@lang('Edit my profile')</a>
-                                <div class="dropdown-divider my-1"></div>
-
-                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">@lang('Logout')</a>
+                                <a class="dropdown-item" href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();">@lang('Logout')</a>
                         </div>
                     </li>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    <form id="logout-form" action="{{ route('api.v2.logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
                 @endguest
             </ul>
             @if ($show_searchbox)
                 <form class="form-inline my-2 my-lg-0" action="{{ route('search') }}" method="GET">
-                    <input class="form-control mr-sm-2" name="s" type="search" placeholder="@lang('Search words')" aria-label="Search">
+                    <input class="form-control mr-sm-2" name="word" type="search" placeholder="@lang('Search words')" aria-label="Search">
                     <button class="btn btn-outline-light my-2 my-sm-0" type="submit">@lang('Search')</button>
                 </form>
             @endif

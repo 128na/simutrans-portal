@@ -13,8 +13,11 @@
 Route::get('sitemap', 'SitemapController@index');
 Route::feeds();
 
-// 認証
-Auth::routes(['verify' => true]);
+// メール確認
+Route::GET('email/verify/{id}/{hash}', 'Auth\VerificationController@verify')->name('verification.verify');
+// PWリセット
+Route::POST('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
+Route::GET('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware('minify')->group(function () {
@@ -32,47 +35,11 @@ Route::middleware('minify')->group(function () {
     // 非ログイン系 reidsキャッシュ無効
     Route::get('/articles/{article}', 'Front\ArticleController@show')->name('articles.show');
     Route::get('/search', 'Front\ArticleController@search')->name('search');
+    Route::get('/mypage/', 'Mypage\IndexController@index')->name('mypage.index');
+    Route::get('/mypage/{any}', 'RedirectController@mypage')->where('any', '.*');
 });
 Route::get('/language/{name}', 'Front\IndexController@language')->name('language');
-Route::middleware('transaction')->group(function () {
-    Route::get('/articles/{article}/download', 'Front\ArticleController@download')->name('articles.download');
-});
-
-// ログイン系：ユーザー
-Route::prefix('mypage')->group(function () {
-    Route::name('mypage.')->group(function () {
-        Route::middleware('auth')->group(function () {
-            Route::get('/', 'Mypage\IndexController@index')->name('index');
-
-            Route::middleware('verified')->group(function () {
-                Route::get('profile', 'Mypage\ProfileController@edit')->name('profile.edit');
-                Route::middleware('transaction')->group(function () {
-                    Route::post('profile', 'Mypage\ProfileController@update')->name('profile.update');
-                });
-
-                Route::get('/articles/create/{type}', 'Mypage\ArticleController@create')->name('articles.create');
-                Route::middleware('transaction')->group(function () {
-                    Route::post('/articles/create/addon-post/{preview?}', 'Mypage\AddonPostController@store')->name('articles.store.addon-post');
-                    Route::post('/articles/create/addon-introduction/{preview?}', 'Mypage\AddonIntroductionController@store')->name('articles.store.addon-introduction');
-                    Route::post('/articles/create/page/{preview?}', 'Mypage\PageController@store')->name('articles.store.page');
-                    Route::post('/articles/create/markdown/{preview?}', 'Mypage\MarkdownController@store')->name('articles.store.markdown');
-                });
-
-                Route::middleware('can:update,article')->group(function () {
-                    Route::get('/articles/edit/{article}', 'Mypage\ArticleController@edit')->name('articles.edit');
-                    Route::middleware('transaction')->group(function () {
-                        Route::post('/articles/edit/addon-post/{article}/{preview?}', 'Mypage\AddonPostController@update')->name('articles.update.addon-post');
-                        Route::post('/articles/edit/addon-introduction/{article}/{preview?}', 'Mypage\AddonIntroductionController@update')->name('articles.update.addon-introduction');
-                        Route::post('/articles/edit/page/{article}/{preview?}', 'Mypage\PageController@update')->name('articles.update.page');
-                        Route::post('/articles/edit/markdown/{article}/{preview?}', 'Mypage\MarkdownController@update')->name('articles.update.markdown');
-                    });
-                });
-
-                Route::get('/articles/analytics', 'Mypage\ArticleController@analytics')->name('articles.analytics');
-            });
-        });
-    });
-});
+Route::get('/articles/{article}/download', 'Front\ArticleController@download')->name('articles.download');
 
 // ログイン系：管理者
 Route::prefix('admin')->group(function () {

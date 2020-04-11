@@ -2,7 +2,9 @@
 
 namespace App\Models\Contents;
 
-class Content
+use Illuminate\Contracts\Support\Arrayable;
+
+class Content implements Arrayable
 {
     protected $content = [];
     protected $attributes = ['thumbnail'];
@@ -28,9 +30,9 @@ class Content
                 return new AddonPostContent($content);
             case 'addon-introduction':
                 return new AddonIntroductionContent($content);
-            case 'page' && array_key_exists('sections', $content):
+            case 'page':
                 return new PageContent($content);
-            case 'page' && array_key_exists('data', $content):
+            case 'markdown':
                 return new MarkdownContent($content);
         }
     }
@@ -72,5 +74,10 @@ class Content
     public function getDescription()
     {
 
+    }
+
+    public function toArray()
+    {
+        return $this->content;
     }
 }

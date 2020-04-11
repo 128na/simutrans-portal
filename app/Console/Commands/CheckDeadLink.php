@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\Article;
-use Notification;
 use App\Notifications\DeadLinkDetected;
+use App\Services\CheckDeadLinkService;
+use Illuminate\Console\Command;
 
 /**
  * 公開済みのアドオン紹介記事でリンク切れのものを確認する
@@ -28,13 +27,19 @@ class CheckDeadLink extends Command
     protected $description = 'Check Dead Link';
 
     /**
+     * @var CheckDeadLinkService
+     */
+    private $check_deadlink_service;
+
+    /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(CheckDeadLinkService $check_deadlink_service)
     {
         parent::__construct();
+        $this->check_deadlink_service = $check_deadlink_service;
     }
 
     /**
@@ -44,28 +49,17 @@ class CheckDeadLink extends Command
      */
     public function handle()
     {
-        foreach (Article::where('post_type', 'addon-introduction')->active()->with('user')->cursor() as $article) {
-            $link = $article->contents->link;
+        $count = $this->check_deadlink_service->getTargetArticles()->map(function ($article) {
+            if ($this->check_deadlink_service->isLinkDead($article)) {
+                $this->info('dead link ' . $article->title);
+                logger('dead link ' . $article->title);
 
-            if(!self::isStatusOK($link)) {
-                $this->info('dead link '.$link);
-                logger('dead link '.$link);
-                $article->status = config('status.private');
-                $article->save();
-
-                Notification::send($article->user, new DeadLinkDetected($article));
+                $article->update(['status' => config('status.private')]);
+                $article->notify(new DeadLinkDetected);
             }
-        }
-    }
+        })->count();
+        logger("$count articles checked");
 
-    private static function isStatusOK($url)
-    {
-        $info_list = @get_headers($url) ?: [];
-        foreach ($info_list as $info) {
-            if(stripos($info, ' 200 OK') !== false) {
-                return true;
-            }
-        }
-        return false;
+        return 0;
     }
 }

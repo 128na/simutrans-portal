@@ -7,6 +7,7 @@
       <b-form-group>
         <b-button
           variant="primary"
+          type="submit"
           :disabled="fetching"
           @click="handleSubmit"
         >{{$t('Send Password Reset Link')}}</b-button>

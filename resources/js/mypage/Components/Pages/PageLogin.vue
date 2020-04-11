@@ -6,6 +6,7 @@
       <b-form-group>
         <b-button
           class="mr-1"
+          type="submit"
           variant="primary"
           :disabled="fetching"
           @click="handleLogin"

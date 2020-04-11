@@ -5,7 +5,12 @@
     <b-form>
       <form-register :params="params" :errors="errors" />
       <b-form-group>
-        <b-button variant="primary" :disabled="fetching" @click="handleRegister">{{$t('Register')}}</b-button>
+        <b-button
+          variant="primary"
+          type="submit"
+          :disabled="fetching"
+          @click="handleRegister"
+        >{{$t('Register')}}</b-button>
       </b-form-group>
     </b-form>
   </div>

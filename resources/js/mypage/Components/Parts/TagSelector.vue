@@ -31,7 +31,7 @@
                   size="sm"
                   :disabled="!can_create || fetching"
                   @click="handleCreateTagClick"
-                >{{$t('Create and add tag')}}</b-button>
+                >{{$t('Create and add tag "{name}"', {name:criteria})}}</b-button>
               </b-input-group-append>
             </b-input-group>
           </b-form-group>

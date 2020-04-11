@@ -8,6 +8,7 @@ class TagService extends Service
     public function __construct(Tag $model)
     {
         $this->model = $model;
+        $this->per_page = 10;
     }
 
     public function searchTags($name)

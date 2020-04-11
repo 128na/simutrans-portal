@@ -188,7 +188,7 @@
   "No tags": "No tags",
   "Select tag": "Select tag",
   "Tag created": "Tag created",
-  "Create and add tag": "Create and add tag",
+  "Create and add tag \":name\"": "Create and add tag \":name\"",
   "Confirmation required": "Confirmation required",
   "Login / Register": "Login / Register",
   "Exit without saving?": "Exit without saving?",

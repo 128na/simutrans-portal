@@ -188,7 +188,7 @@
   "No tags": "タグがありません",
   "Select tag": "タグを選択",
   "Tag created": "タグを作成しました",
-  "Create and add tag": "タグを作成して追加",
+  "Create and add tag \":name\"": "タグ「:name」を作成して追加",
   "Confirmation required": "確認が必要です",
   "Login / Register": "ログイン・登録",
   "Exit without saving?": "保存せずに終了しますか？",

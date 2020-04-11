@@ -187,7 +187,7 @@
   "No tags": "Keine Tags",
   "Select tag": "Tag auswählen",
   "Tag created": "Tag erstellt",
-  "Create and add tag": "Tag erstellen und hinzufügen",
+  "Create and add tag \":name\"": "Erstellen Sie den Tag \":name\" und fügen Sie ihn hinzu.",
   "Confirmation required": "Bestätigung erforderlich",
   "Login / Register": "Anmeldung / Registrieren",
   "Exit without saving?": "Beenden ohne Speichern?",

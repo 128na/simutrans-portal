@@ -31,7 +31,8 @@ Route::middleware('minify')->group(function () {
         Route::get('/category/{type}/{slug}', 'Front\ArticleController@category')->name('category');
         Route::get('/tag/{tag}', 'Front\ArticleController@tag')->name('tag');
         Route::get('/user/{user}', 'Front\ArticleController@user')->name('user');
-        Route::get('/mypage', 'Mypage\IndexController@index')->name('mypage.index');
+        Route::get('/mypage/', 'Mypage\IndexController@index')->name('mypage.index');
+        Route::get('/mypage/{any}', 'RedirectController@mypage')->where('any', '.*');
     });
     // 非ログイン系 reidsキャッシュ無効
     Route::get('/articles/{article}', 'Front\ArticleController@show')->name('articles.show');

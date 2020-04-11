@@ -24,4 +24,9 @@ class RedirectController extends Controller
     {
         return $this->redirect_service->redirectOrFail($request);
     }
+
+    public function mypage()
+    {
+        return redirect()->route('mypage.index');
+    }
 }

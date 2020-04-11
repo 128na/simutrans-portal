@@ -5,5 +5,5 @@ require('./files/conversion');
 import LazyLoad from "vanilla-lazyload";
 
 new LazyLoad({
-    elements_selector: ".lazy"
+  elements_selector: ".lazy"
 });

@@ -12,19 +12,19 @@ Vue.use(VueRouter);
 
 import routes from './routes';
 const router = new VueRouter({
-    base: '/mypage',
-    // mode: 'history',
-    scrollBehavior(to, from, savedPosition) {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(savedPosition
-                    ? savedPosition
-                    : { x: 0, y: 0 }
-                )
-            }, 100) // transitionの時間と合わせる
-        })
-    },
-    routes,
+  base: '/mypage',
+  // mode: 'history',
+  scrollBehavior(to, from, savedPosition) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(savedPosition
+          ? savedPosition
+          : { x: 0, y: 0 }
+        )
+      }, 100) // transitionの時間と合わせる
+    })
+  },
+  routes,
 });
 
 // i18n
@@ -34,9 +34,9 @@ Vue.use(VueInternationalization);
 
 const lang = document.documentElement.lang.substr(0, 2);
 const i18n = new VueInternationalization({
-    locale: lang,
-    messages: Locale,
-    silentTranslationWarn: true
+  locale: lang,
+  messages: Locale,
+  silentTranslationWarn: true
 });
 
 // components
@@ -44,8 +44,8 @@ const files = require.context('./Components', true, /\.vue$/i);
 files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 new Vue({
-    el: '#app',
-    render: h => h(App),
-    i18n,
-    router
+  el: '#app',
+  render: h => h(App),
+  i18n,
+  router
 });

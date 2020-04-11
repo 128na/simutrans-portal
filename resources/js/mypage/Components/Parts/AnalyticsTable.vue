@@ -25,8 +25,8 @@ export default {
   name: "article-table",
   data() {
     return {
-      sortBy: "id",
-      sortDesc: false,
+      sortBy: "updated_at",
+      sortDesc: true,
       fields: []
     };
   },

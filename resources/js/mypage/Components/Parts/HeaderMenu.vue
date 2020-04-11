@@ -17,25 +17,25 @@
               {{$t('Edit my profile')}}
             </b-dropdown-item>
             <b-dropdown-item :to="to_addon_post">
-              <icon-create-addon-post class="mr-1" />
+              <icon-edit-article class="mr-1" />
               {{
               $t('Create {post_type}', {post_type:$t('post_types.addon-post')})
               }}
             </b-dropdown-item>
             <b-dropdown-item :to="to_addon_introduction">
-              <icon-create-addon-introduction class="mr-1" />
+              <icon-edit-article class="mr-1" />
               {{
               $t('Create {post_type}', {post_type:$t('post_types.addon-introduction')})
               }}
             </b-dropdown-item>
             <b-dropdown-item :to="to_page">
-              <icon-create-page class="mr-1" />
+              <icon-edit-article class="mr-1" />
               {{
               $t('Create {post_type}', {post_type:$t('post_types.page')})
               }}
             </b-dropdown-item>
             <b-dropdown-item :to="to_markdown">
-              <icon-create-markdown class="mr-1" />
+              <icon-edit-article class="mr-1" />
               {{
               $t('Create {post_type}', {post_type:$t('post_types.markdown')})
               }}

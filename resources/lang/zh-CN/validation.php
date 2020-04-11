@@ -10,7 +10,7 @@ return [
     | the validator class. Some of these rules have multiple versions such
     | as the size rules. Feel free to tweak each of these messages.
     |
-    */
+     */
 
     'accepted' => ':attribute 必须接受。',
     'active_url' => ':attribute 不是一个有效的网址。',
@@ -96,7 +96,7 @@ return [
     | convention 'attribute.rule' to name the lines. This makes it quick to
     | specify a specific custom language line for a given attribute rule.
     |
-    */
+     */
 
     'custom' => [
         'attribute-name' => [
@@ -113,35 +113,7 @@ return [
     | with something more reader friendly such as E-Mail Address instead
     | of 'email'. This simply helps us make messages a little cleaner.
     |
-    */
+     */
+    'attributes' => @include dirname(__DIR__) . '/_attributes.php' ?? [],
 
-    'attributes' => [
-        'password' => __('Password'),
-        'status' => __('Status'),
-        'title' => __('Title'),
-        'slug' => __('Slug'),
-        'thumbnail-image' => __('Thumbnail'),
-        'addon-file' => __('Addon File'),
-        'pak' => __('Paks'),
-        'addon-type' => __('Addon Types'),
-        'pak128-position' => __('Track positions for pak128'),
-        'license-other' => __('License other'),
-        'author' => __('Author'),
-        'publisher' => __('Publisher'),
-        'categories' => __('Categories'),
-        'tags' => __('Tags'),
-        'description' => __('Description'),
-        'license' => __('License'),
-        'thanks' => __('Acknowledgments and Referenced'),
-        'link' => __('Link'),
-        'agreement' => __('Agreement'),
-        'name' => __('Name'),
-        'email' => __('Email'),
-        'thumbnail_id' => __('Thumbnail'),
-        'file_id' => __('File'),
-        'sections.*.text' => __('Text'),
-        'sections.*.id' => __('Image'),
-        'sections.*.caption' => __('Caption'),
-        'sections.*.type' => __('Type'),
-    ],
 ];

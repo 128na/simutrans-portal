@@ -3,7 +3,7 @@
 新着一覧取得など一部のAPIを公開しています。
 
 ## 制限事項
-APIは単一IPあたり60回/分の制限があります。
+APIは単一IPあたり100回/分の制限があります。
 制限を超過すると429レスポンスが返されるようになります。
 制限は1分経過すると解除されます。
 
@@ -20,7 +20,7 @@ APIは単一IPあたり60回/分の制限があります。
 
 |メソッド|URL|説明|
 |---|---|---|
-| GET | https://simutrans.sakura.ne.jp/portal/api/v2/articles/latest | 新着記事一覧を返します | 
+| GET | https://simutrans.sakura.ne.jp/portal/api/v2/articles/latest | 新着アドオン記事一覧を返します | 
 | GET | https://simutrans.sakura.ne.jp/portal/api/v2/articles/search?word={your_keyword} | 指定キーワードに該当する新着記事一覧を返します | 
 | GET | https://simutrans.sakura.ne.jp/portal/api/v2/articles/user/{user_id} | 指定ユーザーの新着記事一覧を返します | 
 | GET | https://simutrans.sakura.ne.jp/portal/api/v2/articles/category/{category_id} | 指定カテゴリを持つ新着記事一覧を返します | 

@@ -12,6 +12,7 @@ class AddonIntroductionContent extends Content
         'license',
         'thanks',
         'agreement' => false,
+        'exclude_link_check' => false,
     ];
 
     public function getDescription()

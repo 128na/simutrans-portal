@@ -8,7 +8,6 @@ use App\Models\UserAddonCount;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 class Category extends Model
 {
@@ -26,7 +25,7 @@ class Category extends Model
     |--------------------------------------------------------------------------
     | 初期化時設定
     |--------------------------------------------------------------------------
-    */
+     */
     protected static function boot()
     {
         parent::boot();
@@ -35,13 +34,13 @@ class Category extends Model
             $builder->orderBy('order', 'asc');
         });
 
-        self::created(function($model) {
+        self::created(function ($model) {
             $model->recountHandler();
         });
-        self::updated(function($model) {
+        self::updated(function ($model) {
             $model->recountHandler();
         });
-        self::deleted(function($model) {
+        self::deleted(function ($model) {
             $model->recountHandler();
         });
     }
@@ -55,7 +54,7 @@ class Category extends Model
     |--------------------------------------------------------------------------
     | リレーション
     |--------------------------------------------------------------------------
-    */
+     */
     public function articles()
     {
         return $this->belongsToMany(Article::class);
@@ -65,34 +64,38 @@ class Category extends Model
     |--------------------------------------------------------------------------
     | スコープ
     |--------------------------------------------------------------------------
-    */
+     */
+    public function scopeType($query, $type)
+    {
+        return $query->where('type', $type);
+    }
     public function scopePost($query)
     {
-        return $query->where('type', config('category.type.post'));
+        return $query->type(config('category.type.post'));
     }
     public function scopePak($query)
     {
-        return $query->where('type', config('category.type.pak'));
+        return $query->type(config('category.type.pak'));
     }
     public function scopeAddon($query)
     {
-        return $query->where('type', config('category.type.addon'));
+        return $query->type(config('category.type.addon'));
     }
     public function scopePak128Position($query)
     {
-        return $query->where('type', config('category.type.pak128_position'));
+        return $query->type(config('category.type.pak128_position'));
     }
     public function scopeLicense($query)
     {
-        return $query->where('type', config('category.type.license'));
+        return $query->type(config('category.type.license'));
     }
     public function scopePage($query)
     {
-        return $query->where('type', config('category.type.page'));
+        return $query->type(config('category.type.page'));
     }
-    public function scopeFor($query, $user)
+    public function scopeForUser($query, User $user)
     {
-        if(!$user->isAdmin()) {
+        if (!$user->isAdmin()) {
             $query->where('need_admin', 0);
         }
     }

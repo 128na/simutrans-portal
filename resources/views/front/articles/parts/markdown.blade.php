@@ -5,7 +5,8 @@
         </div>
     @endif
     <div class="page-contents markdown">
-        @markdown($article->contents->data)
+        @markdown($article->contents->markdown)
+
     </div>
 
     <dl class="mx-1 mt-2">

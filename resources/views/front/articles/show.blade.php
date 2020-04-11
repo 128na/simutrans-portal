@@ -1,6 +1,7 @@
 @extends('layouts.front')
 
 @section('title', $article->title)
+@section('card-type', $article->has_thumbnail ? 'summary_large_image' : 'summary')
 @section('meta-description', $article->meta_description)
 @section('meta-image', $article->thumbnail_url)
 

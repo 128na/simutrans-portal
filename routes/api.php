@@ -10,22 +10,51 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
  */
-Route::post('/v1/click/{article}', 'Api\ConversionController@click');
-
-Route::middleware(['auth'])->group(function () {
-
-    Route::get('/v1/attachments/my', 'Api\AttachmentController@my');
-    Route::get('/v1/attachments/myimage', 'Api\AttachmentController@myimage');
-    Route::post('/v1/attachments/upload', 'Api\AttachmentController@upload');
-    Route::delete('/v1/attachments/{attachment}', 'Api\AttachmentController@delete');
+Route::prefix('v1')->name('api.v1.')->namespace('Api\v1')->group(function () {
+    Route::post('click/{article}', 'ConversionController@click');
+    Route::get('articles', 'ArticleController@index');
 });
 
-Route::get('/v1/articles', 'Api\ArticleController@index');
-
 Route::prefix('v2')->name('api.v2.')->group(function () {
-    Route::get('articles/latest', 'Api\v2\ArticleController@latest')->name('latest');
-    Route::get('articles/search', 'Api\v2\ArticleController@search')->name('search');
-    Route::get('articles/user/{user}', 'Api\v2\ArticleController@user')->name('user');
-    Route::get('articles/tag/{tag}', 'Api\v2\ArticleController@tag')->name('tag');
-    Route::get('articles/category/{category}', 'Api\v2\ArticleController@category')->name('category');
+    // 登録
+    Route::POST('register', 'Auth\RegisterController@registerApi')->name('register');
+    // メール確認
+    Route::POST('email/resend', 'Auth\VerificationController@resendApi')->name('verification.resend');
+    // 認証
+    Route::POST('login', 'Auth\LoginController@login')->name('login');
+    Route::POST('logout', 'Auth\LoginController@logout')->name('logout');
+    // PWリセット
+    Route::POST('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+});
+
+Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
+    // 一般公開API
+    Route::get('articles/latest', 'ArticleController@latest')->name('articles.latest');
+    Route::get('articles/search', 'ArticleController@search')->name('articles.search');
+    Route::get('articles/user/{user}', 'ArticleController@user')->name('articles.user');
+    Route::get('articles/tag/{tag}', 'ArticleController@tag')->name('articles.tag');
+    Route::get('articles/category/{category}', 'ArticleController@category')->name('articles.category');
+
+    // マイページ機能
+    Route::prefix('mypage')->namespace('Mypage')->middleware(['auth'])->group(function () {
+        Route::get('user', 'UserController@index')->name('users.index');
+        Route::get('tags', 'TagController@search')->name('tags.search');
+        Route::get('attachments', 'AttachmentController@index')->name('attachments.index');
+        Route::get('articles', 'Article\EditorController@index')->name('articles.index');
+        Route::get('options', 'Article\EditorController@options')->name('articles.options');
+
+        // メール必須機能
+        Route::middleware(['verified'])->group(function () {
+            Route::post('user', 'UserController@update')->name('users.update');
+            Route::post('tags', 'TagController@store')->name('tags.store');
+            Route::post('attachments', 'AttachmentController@store')->name('attachments.store');
+            Route::delete('attachments/{attachment}', 'AttachmentController@destroy')->name('attachments.destroy');
+            Route::post('articles', 'Article\EditorController@store')->name('articles.store');
+            Route::get('analytics', 'Article\AnalyticsController@index')->name('analytics.index');
+
+            Route::middleware('can:update,article')->group(function () {
+                Route::post('articles/{article}', 'Article\EditorController@update')->name('articles.update');
+            });
+        });
+    });
 });

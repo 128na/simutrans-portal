@@ -2,20 +2,17 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
-use App\Models\Attachment;
-use App\Models\Contents\Content;
 use App\Models\Article;
+use App\Models\Attachment;
 use App\Models\Category;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Contents\Content;
+use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Http\UploadedFile;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
-
 
     protected static function createAddonPost($user = null)
     {
@@ -61,7 +58,21 @@ abstract class TestCase extends BaseTestCase
             'title' => 'test_page',
             'status' => 'publish',
             'contents' => Content::createFromType('page', [
-                'sections' => [['type' => 'text', 'text' => 'test page text']]
+                'sections' => [['type' => 'text', 'text' => 'test page text']],
+            ]),
+        ]);
+        return $article;
+    }
+    protected static function createMarkdown($user = null)
+    {
+        $user = $user ?: factory(User::class)->create();
+        $article = factory(Article::class)->create([
+            'user_id' => $user->id,
+            'post_type' => 'markdown',
+            'title' => 'test_markdown',
+            'status' => 'publish',
+            'contents' => Content::createFromType('markdown', [
+                'markdown' => '# test markdown text',
             ]),
         ]);
         return $article;
@@ -75,7 +86,23 @@ abstract class TestCase extends BaseTestCase
             'title' => 'test_announce',
             'status' => 'publish',
             'contents' => Content::createFromType('page', [
-                'sections' => [['type' => 'text', 'text' => 'test announce text']]
+                'sections' => [['type' => 'text', 'text' => 'test announce text']],
+            ]),
+        ]);
+        $announce_category = Category::page()->slug('announce')->firstOrFail();
+        $article->categories()->save($announce_category);
+        return $article;
+    }
+    protected static function createMarkdownAnnounce($user = null)
+    {
+        $user = $user ?: factory(User::class)->create();
+        $article = factory(Article::class)->create([
+            'user_id' => $user->id,
+            'post_type' => 'markdown',
+            'title' => 'test_markdown',
+            'status' => 'publish',
+            'contents' => Content::createFromType('markdown', [
+                'markdown' => '# test markdown text',
             ]),
         ]);
         $announce_category = Category::page()->slug('announce')->firstOrFail();

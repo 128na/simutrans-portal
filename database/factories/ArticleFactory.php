@@ -3,7 +3,6 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use App\Models\Article;
 use App\Models\Contents\Content;
-use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
 /*
@@ -15,7 +14,7 @@ use Faker\Generator as Faker;
 | your application. Factories provide a convenient way to generate new
 | model instances for testing / seeding your application's database.
 |
-*/
+ */
 
 $factory->define(Article::class, function (Faker $faker) {
 
@@ -32,8 +31,11 @@ $factory->define(Article::class, function (Faker $faker) {
         ]),
         'page' => Content::createFromType('page', [
             'sections' => [
-                ['type' => 'text', 'text' => $faker->realText]
-            ]
+                ['type' => 'text', 'text' => $faker->realText],
+            ],
+        ]),
+        'markdown' => Content::createFromType('markdown', [
+            'markdown' => $faker->realText,
         ]),
     ];
     $sentence = $faker->sentence;

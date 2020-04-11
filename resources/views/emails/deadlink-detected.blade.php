@@ -8,6 +8,6 @@
     @lang('The article was automatically changed to private. If the link destination changes, please correct the article.')
 </p>
 <p>
-    @lang('Article edit page:')
-    <a href="{{ route('mypage.articles.edit', $article) }}">{{ route('mypage.articles.edit', $article) }}</a>
+    @lang('Mypage:')
+    <a href="{{ route('mypage.index') }}">{{ route('mypage.index') }}</a>
 </p>

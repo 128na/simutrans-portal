@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Notifications\DeadLinkDetected;
 use App\Services\CheckDeadLinkService;
 use Illuminate\Console\Command;
-use Notification;
 
 /**
  * 公開済みのアドオン紹介記事でリンク切れのものを確認する
@@ -56,7 +55,7 @@ class CheckDeadLink extends Command
                 logger('dead link ' . $article->title);
 
                 $article->update(['status' => config('status.private')]);
-                Notification::send($article->user, new DeadLinkDetected($article));
+                $article->notify(new DeadLinkDetected);
             }
         });
     }

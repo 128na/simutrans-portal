@@ -8,7 +8,6 @@ use App\Notifications\Loggedin;
 use App\Services\UserService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
-use Notification;
 
 class LoginController extends Controller
 {
@@ -45,7 +44,7 @@ class LoginController extends Controller
      */
     protected function authenticated($request, $user)
     {
-        Notification::send($user, new Loggedin($user));
+        $user->notify(new Loggedin);
 
         $user = $this->user_service->getUser(Auth::user());
 

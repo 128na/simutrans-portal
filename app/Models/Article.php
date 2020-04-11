@@ -7,6 +7,7 @@ use App\Services\SitemapService;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
@@ -14,6 +15,7 @@ use Spatie\Feed\FeedItem;
 class Article extends Model implements Feedable
 {
     use Slugable;
+    use Notifiable;
 
     protected $fillable = [
         'user_id',

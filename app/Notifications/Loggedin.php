@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -11,16 +10,13 @@ class Loggedin extends Notification
 {
     use Queueable;
 
-    public $user;
-
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct()
     {
-        $this->user = $user;
         //
     }
 
@@ -45,7 +41,7 @@ class Loggedin extends Notification
     {
         return (new MailMessage)
             ->subject(__('Login notification'))
-            ->view('emails.loggedin', ['user' => $this->user]);
+            ->view('emails.loggedin', ['user' => $notifiable]);
     }
 
     /**

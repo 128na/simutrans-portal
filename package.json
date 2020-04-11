@@ -3,8 +3,8 @@
     "scripts": {
         "dev": "run-s i18n development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch": "run-s i18n development -- --watch",
-        "watch-poll": "run-s i18n watch -- --watch-poll",
+        "watch": "npm run development -- --watch",
+        "watch-poll": "npm run watch -- --watch-poll",
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "run-s i18n production",
         "i18n": "php artisan vue-i18n:generate",

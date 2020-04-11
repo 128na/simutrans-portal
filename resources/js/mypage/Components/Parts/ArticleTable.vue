@@ -9,7 +9,7 @@
       stacked="sm"
     >
       <template v-slot:cell(action)="data">
-        <tooltip-menu :article="data.item" />
+        <tooltip-menu :article="data.item" @update:articles="$emit('update:articles', $event)" />
       </template>
     </b-table>
     <div>{{$t('No article exists.')}}</div>

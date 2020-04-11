@@ -12,13 +12,15 @@ const mix = require('laravel-mix');
  */
 
 mix.sass('resources/sass/front/index.scss', 'public/css/style.css')
-    .js('resources/js/script.js', 'public/js/script.js');
+  .js('resources/js/script.js', 'public/js/script.js');
 
 mix.sass('resources/sass/mypage/index.scss', 'public/css/mypage.css')
-    .js('resources/js/mypage/app.js', 'public/js/mypage.js');
+  .js('resources/js/mypage/app.js', 'public/js/mypage.js');
+
+
+const productionSourceMaps = false;
+mix.sourceMaps(productionSourceMaps);
 
 if (mix.inProduction()) {
-    mix.version();
-} else {
-    mix.sourceMaps();
+  mix.version();
 }

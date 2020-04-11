@@ -49,7 +49,7 @@ class CheckDeadLink extends Command
      */
     public function handle()
     {
-        return $this->check_deadlink_service->getArticles()->each(function ($article) {
+        $count = $this->check_deadlink_service->getTargetArticles()->map(function ($article) {
             if ($this->check_deadlink_service->isLinkDead($article)) {
                 $this->info('dead link ' . $article->title);
                 logger('dead link ' . $article->title);
@@ -57,6 +57,9 @@ class CheckDeadLink extends Command
                 $article->update(['status' => config('status.private')]);
                 $article->notify(new DeadLinkDetected);
             }
-        });
+        })->count();
+        logger("$count articles checked");
+
+        return 0;
     }
 }

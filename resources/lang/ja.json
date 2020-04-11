@@ -193,5 +193,9 @@
   "Login / Register": "ログイン・登録",
   "Exit without saving?": "保存せずに終了しますか？",
   "Article Updated.": "記事を更新しました",
+  "To Private": "非公開にする",
+  "To Publish (no tweet)": "公開にする(ツイート無し)",
+  "Periodic broken link checks": "定期リンク切れチェック",
+  "Exclude periodic broken link checks": "定期リンク切れチェックの対象外にする",
   "ZZZZ FOR PREVENTING TRAILING COMMA ERASE": ""
 }

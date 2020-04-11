@@ -56,6 +56,7 @@ abstract class BaseRequest extends FormRequest
             'article.contents.link' => 'required|url|max:255',
             'article.contents.description' => 'required|string|max:2048',
             'article.contents.agreement' => 'nullable',
+            'article.contents.exclude_link_check' => 'nullable',
             'article.contents.thanks' => 'nullable|string|max:2048',
             'article.contents.license' => 'nullable|string|max:2048',
         ];

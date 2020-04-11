@@ -58,6 +58,20 @@
         }}
       </b-form-checkbox>
     </b-form-group>
+    <b-form-group>
+      <template slot="label">
+        <badge-optional />
+        {{$t('Periodic broken link checks')}}
+      </template>
+      <b-form-checkbox
+        v-model="article.contents.exclude_link_check"
+        :state="state('article.contents.exclude_link_check')"
+      >
+        {{
+        $t("Exclude periodic broken link checks")
+        }}
+      </b-form-checkbox>
+    </b-form-group>
   </div>
 </template>
 <script>

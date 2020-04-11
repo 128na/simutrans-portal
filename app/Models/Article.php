@@ -172,9 +172,10 @@ class Article extends Model implements Feedable
     {
         $query->whereIn('post_type', ['addon-post', 'addon-introduction']);
     }
-    public function scopeAddonIntroduction($query)
+    public function scopeLinkCheckTarget($query)
     {
-        $query->where('post_type', 'addon-introduction');
+        $query->where('post_type', 'addon-introduction')
+            ->where('contents->exclude_link_check', '<>', true);
     }
     public function scopePage($query)
     {

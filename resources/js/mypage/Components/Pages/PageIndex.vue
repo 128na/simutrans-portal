@@ -37,7 +37,11 @@
           }}
         </b-button>
       </b-form-group>
-      <article-table :articles="articles" :user="user" />
+      <article-table
+        :articles="articles"
+        :user="user"
+        @update:articles="$emit('update:articles', $event)"
+      />
     </div>
   </div>
 </template>

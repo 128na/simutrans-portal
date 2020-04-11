@@ -10,12 +10,13 @@ class CheckDeadLinkService extends Service
         $this->model = $model;
     }
 
-    public function getArticles()
+    public function getTargetArticles()
     {
-        return $this->model->active()->addonIntroduction()->with('user')->cursor()
-            ->each(function ($article) {
-                $this->checkArticle($article);
-            });
+        return $this->model
+            ->active()
+            ->linkCheckTarget()
+            ->with('user')
+            ->cursor();
     }
 
     public function isLinkDead(Article $article)

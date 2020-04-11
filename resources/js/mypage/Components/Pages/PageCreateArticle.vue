@@ -100,6 +100,7 @@ export default {
         contents: {
           thumbnail: null,
           agreement: false,
+          exclude_link_check: false,
           author: "",
           description: "",
           license: "",

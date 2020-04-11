@@ -192,5 +192,9 @@
   "Login / Register": "登录 / 注册",
   "Exit without saving?": "不保存就退出吗？",
   "Article Updated.": "文章已更新。",
+  "To Private": "改为私营企业",
+  "To Publish (no tweet)": "改为发布（无推文）",
+  "Periodic broken link checks": "定期检查中断的链接",
+  "Exclude periodic broken link checks": "不包括定期检查断裂的环节",
   "ZZZZ FOR PREVENTING TRAILING COMMA ERASE": ""
 }

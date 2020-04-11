@@ -192,5 +192,9 @@
   "Login / Register": "Anmeldung / Registrieren",
   "Exit without saving?": "Beenden ohne Speichern?",
   "Article Updated.": "Artikel aktualisiert.",
+  "To Private": "Wechsel zu Privat",
+  "To Publish (no tweet)": "Zur Veröffentlichung wechseln (kein Tweet)",
+  "Periodic broken link checks": "Periodische Überprüfung unterbrochener Links",
+  "Exclude periodic broken link checks": "Regelmäßige Überprüfungen von unterbrochenen Verbindungen ausschließen",
   "ZZZZ FOR PREVENTING TRAILING COMMA ERASE": ""
 }

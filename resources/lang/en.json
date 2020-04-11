@@ -193,5 +193,9 @@
   "Login / Register": "Login / Register",
   "Exit without saving?": "Exit without saving?",
   "Article Updated.": "Article Updated.",
+  "To Private": "Change to Private",
+  "To Publish (no tweet)": "Change to Publish (no tweet)",
+  "Periodic broken link checks": "Periodic broken link checks",
+  "Exclude periodic broken link checks": "Exclude periodic broken link checks",
   "ZZZZ FOR PREVENTING TRAILING COMMA ERASE": ""
 }

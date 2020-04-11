@@ -39,9 +39,7 @@ Route::middleware('minify')->group(function () {
     Route::get('/mypage/{any}', 'RedirectController@mypage')->where('any', '.*');
 });
 Route::get('/language/{name}', 'Front\IndexController@language')->name('language');
-Route::middleware('transaction')->group(function () {
-    Route::get('/articles/{article}/download', 'Front\ArticleController@download')->name('articles.download');
-});
+Route::get('/articles/{article}/download', 'Front\ArticleController@download')->name('articles.download');
 
 // ログイン系：管理者
 Route::prefix('admin')->group(function () {

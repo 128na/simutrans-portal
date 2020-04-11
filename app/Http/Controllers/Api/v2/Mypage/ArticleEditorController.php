@@ -7,7 +7,8 @@ use App\Http\Requests\Api\Article\StoreRequest;
 use App\Http\Requests\Api\Article\UpdateRequest;
 use App\Http\Resources\Api\Mypage\Articles as ArticlesResouce;
 use App\Models\Article;
-use App\Models\Twitter;
+use App\Notifications\ArticlePublished;
+use App\Notifications\ArticleUpdated;
 use App\Services\ArticleEditorService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -47,7 +48,7 @@ class ArticleEditorController extends Controller
         DB::commit();
 
         if ($article->is_publish && $request->should_tweet) {
-            Twitter::articleCreated($article);
+            $article->notify(new ArticlePublished);
         }
 
         return $this->index();
@@ -64,7 +65,7 @@ class ArticleEditorController extends Controller
         DB::commit();
 
         if ($article->is_publish && $request->should_tweet) {
-            Twitter::articleUpdated($article);
+            $article->notify(new ArticleUpdated);
         }
 
         return $this->index();

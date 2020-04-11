@@ -114,6 +114,6 @@ return [
     | of 'email'. This simply helps us make messages a little cleaner.
     |
      */
-    'attributes' => @include dirname(__DIR__) . '../_attributes.php' ?? [],
+    'attributes' => @include dirname(__DIR__) . '/_attributes.php' ?? [],
 
 ];

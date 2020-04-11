@@ -99,7 +99,7 @@ export default {
       this.setAttachments(attachments);
     },
     handleArticles(articles) {
-      this.toastSuccess("Article Updated");
+      this.toastSuccess("Article Updated.");
       this.setArticles(articles);
     }
   }

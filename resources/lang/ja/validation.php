@@ -143,5 +143,5 @@ return [
     |
      */
 
-    'attributes' => @include dirname(__DIR__) . '../_attributes.php' ?? [],
+    'attributes' => @include dirname(__DIR__) . '/_attributes.php' ?? [],
 ];

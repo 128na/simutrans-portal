@@ -19,6 +19,7 @@ return [
     'article.contents.sections.*.caption' => __('Caption'),
     'article.contents.sections.*.url' => __('URL'),
     'article.contents.sections.*.id' => __('Image'),
+    'article.contents.markdown' => __('Contents'),
     'article.categories' => __('Categories'),
     'article.tags' => __('Tags'),
     'article.contents.file' => __('File'),

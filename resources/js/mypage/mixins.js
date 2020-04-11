@@ -318,22 +318,38 @@ const editor_handlable = {
     data() {
         return {
             copy: null,
+            has_changed: false,
         };
     },
-    computed: {
-        has_changed() {
-            const original = this.getOriginal();
-            const copy = this.copy;
-            return JSON.stringify(original) !== JSON.stringify(copy);
+    watch: {
+        copy: {
+            deep: true,
+            handler(value) {
+                if (!this.has_changed) {
+                    const original = this.getOriginal();
+                    const changed = JSON.stringify(original) !== JSON.stringify(value);
+                    if (changed) {
+                        this.setUnloadDialog();
+                        this.has_changed = true;
+                    }
+                }
+            }
         }
-    }, methods: {
+    },
+    methods: {
         setCopy(item) {
             this.copy = JSON.parse(JSON.stringify(item));
+        },
+        setUnloadDialog() {
+            window.addEventListener('beforeunload', function (event) {
+                event.preventDefault();
+                event.returnValue = this.$t('Exit without saving?');
+            });
         },
     },
     beforeRouteLeave(to, from, next) {
         if (this.has_changed) {
-            return next(window.confirm('!!!'));
+            return next(window.confirm(this.$t('Exit without saving?')));
         }
         return next();
     }
@@ -362,6 +378,10 @@ const analytics_constants = {
 
 /**
  * バリデーションのステート表示用
+ * バリデーションステートの種類
+ *      null  : 未実施
+ *      true  : 成功
+ *      false : 失敗
  */
 const validatable = {
     props: {

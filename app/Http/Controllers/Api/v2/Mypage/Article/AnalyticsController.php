@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\v2\Mypage;
+namespace App\Http\Controllers\Api\v2\Mypage\Article;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ArticleAnalytics\SearchRequest;
@@ -9,7 +9,7 @@ use App\Models\Article;
 use App\Services\ArticleAnalyticsService;
 use Illuminate\Support\Facades\Auth;
 
-class ArticleAnalyticsController extends Controller
+class AnalyticsController extends Controller
 {
     /**
      * @var ArticleAnalyticsService

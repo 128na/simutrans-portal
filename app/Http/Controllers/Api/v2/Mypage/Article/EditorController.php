@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\v2\Mypage;
+namespace App\Http\Controllers\Api\v2\Mypage\Article;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Article\StoreRequest;
@@ -13,7 +13,7 @@ use App\Services\ArticleEditorService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class ArticleEditorController extends Controller
+class EditorController extends Controller
 {
     /**
      * @var ArticleEditorService

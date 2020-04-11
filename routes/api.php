@@ -40,8 +40,8 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
         Route::get('user', 'UserController@index')->name('users.index');
         Route::get('tags', 'TagController@search')->name('tags.search');
         Route::get('attachments', 'AttachmentController@index')->name('attachments.index');
-        Route::get('articles', 'ArticleEditorController@index')->name('articles.index');
-        Route::get('options', 'ArticleEditorController@options')->name('articles.options');
+        Route::get('articles', 'Article\EditorController@index')->name('articles.index');
+        Route::get('options', 'Article\EditorController@options')->name('articles.options');
 
         // メール必須機能
         Route::middleware(['verified'])->group(function () {
@@ -49,11 +49,11 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
             Route::post('tags', 'TagController@store')->name('tags.store');
             Route::post('attachments', 'AttachmentController@store')->name('attachments.store');
             Route::delete('attachments/{attachment}', 'AttachmentController@destroy')->name('attachments.destroy');
-            Route::post('articles', 'ArticleEditorController@store')->name('articles.store');
-            Route::get('analytics', 'ArticleAnalyticsController@index')->name('analytics.index');
+            Route::post('articles', 'Article\EditorController@store')->name('articles.store');
+            Route::get('analytics', 'Article\AnalyticsController@index')->name('analytics.index');
 
             Route::middleware('can:update,article')->group(function () {
-                Route::post('articles/{article}', 'ArticleEditorController@update')->name('articles.update');
+                Route::post('articles/{article}', 'Article\EditorController@update')->name('articles.update');
             });
         });
     });

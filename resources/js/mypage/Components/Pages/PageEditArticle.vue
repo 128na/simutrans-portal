@@ -67,10 +67,15 @@ export default {
     setArticles(articles) {
       this.$emit("update:articles", articles);
       this.unsetUnloadDialog();
-      this.$router.push({ name: "index" });
+      if (!this.isDraft()) {
+        this.$router.push({ name: "index" });
+      }
     },
     getOriginal() {
       return this.selected_article;
+    },
+    isDraft() {
+      return this.copy.status === "draft";
     }
   }
 };

@@ -156,10 +156,19 @@ export default {
     setArticles(articles) {
       this.$emit("update:articles", articles);
       this.unsetUnloadDialog();
-      this.$router.push({ name: "index" });
+
+      if (!this.isDraft()) {
+        this.$router.push({ name: "index" });
+      } else {
+        const id = articles.find(a => a.slug === this.copy.slug).id;
+        this.$router.push({ name: "editArticle", params: { id } });
+      }
     },
     getOriginal() {
       return this.article;
+    },
+    isDraft() {
+      return this.copy.status === "draft";
     }
   }
 };

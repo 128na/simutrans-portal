@@ -189,14 +189,14 @@ class Article extends Model implements Feedable
 
     public function scopeAnnounce($query)
     {
-        $query->where('post_type', 'page')
+        $query->whereIn('post_type', ['page', 'markdown'])
             ->whereHas('categories', function ($query) {
                 $query->page()->slug('announce');
             });
     }
     public function scopeWithoutAnnounce($query)
     {
-        $query->where('post_type', 'page')
+        $query->whereIn('post_type', ['page', 'markdown'])
             ->whereDoesntHave('categories', function ($query) {
                 $query->page()->slug('announce');
             });

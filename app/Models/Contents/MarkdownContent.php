@@ -7,6 +7,6 @@ class MarkdownContent extends Content
 
     protected $attributes = [
         'thumbnail',
-        'data',
+        'markdown',
     ];
 }

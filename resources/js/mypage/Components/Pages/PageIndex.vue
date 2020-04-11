@@ -30,6 +30,12 @@
           $t('Create {post_type}', {post_type:$t('post_types.page')})
           }}
         </b-button>
+        <b-button variant="primary" :to="to_markdown">
+          <icon-create-markdown class="mr-1" />
+          {{
+          $t('Create {post_type}', {post_type:$t('post_types.markdown')})
+          }}
+        </b-button>
       </b-form-group>
       <article-table :articles="articles" :user="user" />
     </div>

@@ -82,10 +82,7 @@ abstract class BaseRequest extends FormRequest
             'article.categories.*' => 'required|exists:categories,id,type,page',
             'article.contents' => 'required|array',
             'article.contents.thumbnail' => ['nullable', 'exists:attachments,id,user_id,' . Auth::id(), app(ImageAttachment::class)],
-            'article.contents.raw' => 'required|string|max:10000',
-            'article.contents.html' => 'required|string|max:10000',
-            'article.contents.files' => 'present|array',
-            'article.contents.files.*' => 'required|exists:attachments,id,user_id,' . Auth::id(),
+            'article.contents.markdown' => 'required|string|max:65535',
         ];
     }
 }

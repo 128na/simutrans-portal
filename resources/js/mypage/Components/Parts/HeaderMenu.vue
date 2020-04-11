@@ -34,6 +34,12 @@
               $t('Create {post_type}', {post_type:$t('post_types.page')})
               }}
             </b-dropdown-item>
+            <b-dropdown-item :to="to_markdown">
+              <icon-create-markdown class="mr-1" />
+              {{
+              $t('Create {post_type}', {post_type:$t('post_types.markdown')})
+              }}
+            </b-dropdown-item>
             <b-dropdown-divider />
             <b-dropdown-item @click="logout">
               <b-icon icon="box-arrow-right" class="mr-1" />

@@ -67,6 +67,9 @@ export default {
         case "page":
           this.createPage();
           break;
+        case "markdown":
+          this.createMarkdown();
+          break;
       }
       this.setCopy(this.article);
     },
@@ -116,6 +119,19 @@ export default {
         contents: {
           thumbnail: null,
           sections: [{ type: "text", text: "" }]
+        },
+        categories: []
+      };
+    },
+    createMarkdown() {
+      this.article = {
+        post_type: "markdown",
+        title: "",
+        slug: "",
+        status: "draft",
+        contents: {
+          thumbnail: null,
+          markdown: ""
         },
         categories: []
       };

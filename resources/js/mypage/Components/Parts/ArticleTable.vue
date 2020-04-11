@@ -12,7 +12,7 @@
         <tooltip-menu :article="data.item" @update:articles="$emit('update:articles', $event)" />
       </template>
     </b-table>
-    <div>{{$t('No article exists.')}}</div>
+    <div v-show="items.length === 0">{{$t('No article exists.')}}</div>
   </b-form-group>
 </template>
 <script>

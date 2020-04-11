@@ -18,7 +18,7 @@
     <meta property="og:description" content="@yield('meta-description')">
     <meta property="og:url"         content="{{ $canonical_url ?? url()->current() }}">
 
-    <meta name="twitter:card"    content="summary_large_image">
+    <meta name="twitter:card"    content="@yield('card-type', 'summary_large_image')">
     <meta name="twitter:site"    content="{{ '@'.config('app.twitter') }}">
     <meta name="twitter:creator" content="{{ '@'.config('app.creator') }}">
     <meta name="twitter:image" content="@yield('meta-image')">

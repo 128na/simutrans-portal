@@ -64,10 +64,9 @@ export default {
       };
       this.updateArticle(params);
     },
-    async setArticles(articles) {
+    setArticles(articles) {
       this.$emit("update:articles", articles);
-      this.setCopy(articles.find(a => a.id == this.$route.params.id));
-      await this.$nextTick();
+      this.unsetUnloadDialog();
       this.$router.push({ name: "index" });
     },
     getOriginal() {

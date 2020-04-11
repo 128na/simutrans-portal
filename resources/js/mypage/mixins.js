@@ -330,7 +330,6 @@ const editor_handlable = {
                     const changed = JSON.stringify(original) !== JSON.stringify(value);
                     if (changed) {
                         this.setUnloadDialog();
-                        this.has_changed = true;
                     }
                 }
             }
@@ -341,11 +340,17 @@ const editor_handlable = {
             this.copy = JSON.parse(JSON.stringify(item));
         },
         setUnloadDialog() {
-            window.addEventListener('beforeunload', function (event) {
-                event.preventDefault();
-                event.returnValue = this.$t('Exit without saving?');
-            });
+            this.has_changed = true;
+            window.addEventListener('beforeunload', this._unloadDialogEvent);
         },
+        unsetUnloadDialog() {
+            this.has_changed = false;
+            window.removeEventListener('beforeunload', this._unloadDialogEvent);
+        },
+        _unloadDialogEvent(e) {
+            e.preventDefault();
+            e.returnValue = this.$t('Exit without saving?');
+        }
     },
     beforeRouteLeave(to, from, next) {
         if (this.has_changed) {

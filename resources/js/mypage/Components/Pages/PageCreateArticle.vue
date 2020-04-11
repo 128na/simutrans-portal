@@ -136,10 +136,9 @@ export default {
       };
       this.createArticle(params);
     },
-    async setArticles(articles) {
+    setArticles(articles) {
       this.$emit("update:articles", articles);
-      this.setCopy(this.article);
-      await this.$nextTick();
+      this.unsetUnloadDialog();
       this.$router.push({ name: "index" });
     },
     getOriginal() {

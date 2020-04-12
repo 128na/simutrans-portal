@@ -117,12 +117,14 @@ export default {
 .fade-leave-to {
   opacity: 0;
 }
+/* 汎用カーソル */
 .clickable {
   cursor: pointer;
 }
 :disabled {
   cursor: not-allowed;
 }
+/* アイコンの縦位置調整 */
 a.dropdown-item,
 a.btn,
 button.btn {

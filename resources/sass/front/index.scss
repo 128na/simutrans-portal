@@ -25,10 +25,21 @@
     }
   }
 
-  code,
+  code {
+    background: var(--light);
+    padding: 0.1rem 0.4rem;
+    border-radius: 0.2rem;
+  }
   pre {
     background: var(--light);
     padding: 0.1rem 0.4rem;
     border-radius: 0.2rem;
+    code {
+      padding: 0;
+    }
+  }
+  p {
+    margin-left: 1rem;
+    margin-bottom: 3rem;
   }
 }

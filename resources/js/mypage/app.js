@@ -1,43 +1,11 @@
 import Vue from 'vue';
 import App from './App.vue';
+import use from "./use";
 
-// boostrap
-import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
-Vue.use(BootstrapVue);
-Vue.use(BootstrapVueIcons);
-
-// router
-import VueRouter from 'vue-router';
-Vue.use(VueRouter);
-
-import routes from './routes';
-const router = new VueRouter({
-  base: '/mypage',
-  // mode: 'history',
-  scrollBehavior(to, from, savedPosition) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(savedPosition
-          ? savedPosition
-          : { x: 0, y: 0 }
-        )
-      }, 100) // transitionの時間と合わせる
-    })
-  },
-  routes,
-});
-
-// i18n
-import VueInternationalization from 'vue-i18n';
-import Locale from '../vue-i18n-locales.generated';
-Vue.use(VueInternationalization);
-
-const lang = document.documentElement.lang.substr(0, 2);
-const i18n = new VueInternationalization({
-  locale: lang,
-  messages: Locale,
-  silentTranslationWarn: true
-});
+use.boostrap_vue(Vue);
+const router = use.vue_router(Vue);
+const i18n = use.i18n(Vue);
+use.clipboard(Vue);
 
 // components
 const files = require.context('./Components', true, /\.vue$/i);

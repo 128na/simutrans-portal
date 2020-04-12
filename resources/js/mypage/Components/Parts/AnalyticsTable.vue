@@ -16,6 +16,7 @@
         <b-form-checkbox :checked="checked(data.item.id)" @change="handleCheck(data.item)" />
       </template>
     </b-table>
+    <div v-show="items.length === 0">{{$t('No article exists.')}}</div>
   </b-form-group>
 </template>
 <script>

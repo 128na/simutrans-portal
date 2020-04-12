@@ -34,8 +34,7 @@ class TwitterChannel
 
         // 通知を$notifiableインスタンスへ送信する…
         if ($message && \App::environment(['production'])) {
-            $res = $this->client->post('statuses/update', ['status' => $message]);
-            dd($res);
+            $this->client->post('statuses/update', ['status' => $message]);
         }
         logger('Tweet: ' . $message);
     }

@@ -3,11 +3,17 @@
     <template v-slot:button-content>
       <b-icon icon="three-dots-vertical" />
     </template>
-    <b-dropdown-item v-if="is_publish" :href="article.url" target="_blank">
-      <b-icon icon="box-arrow-up-right" class="mr-1" />Show
+    <b-dropdown-item v-if="is_publish" class="mb-1" @click="handleCopy(article.url)">
+      <b-icon icon="clipboard-data" class="mr-1" />
+      {{$t('Copy URL')}}
+    </b-dropdown-item>
+    <b-dropdown-item v-if="is_publish" :href="article.url" target="_blank" class="mb-1">
+      <b-icon icon="box-arrow-up-right" class="mr-1" />
+      {{$t('Show')}}
     </b-dropdown-item>
     <b-dropdown-item @click="handleEdit">
-      <b-icon icon="pencil" class="mr-1" />Edit
+      <b-icon icon="pencil" class="mr-1" />
+      {{$t('Edit')}}
     </b-dropdown-item>
     <b-dropdown-divider></b-dropdown-divider>
     <b-dropdown-item v-show="is_publish" @click="handleToPrivate">
@@ -52,6 +58,10 @@ export default {
         })
       };
       this.updateArticle(params);
+    },
+    handleCopy(text) {
+      this.$copyText(text);
+      this.toastSuccess(this.$t("Copied"));
     },
     setArticles(articles) {
       this.$emit("update:articles", articles);

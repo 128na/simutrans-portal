@@ -22,8 +22,8 @@ class ArticleAnalytics extends ResourceCollection
         return $this->collection->map(function ($item) {
             return [
                 $item->id,
-                $item->conversionCounts->pluck('count', 'period'),
                 $item->viewCounts->pluck('count', 'period'),
+                $item->conversionCounts->pluck('count', 'period'),
             ];
         });
     }

@@ -32,6 +32,14 @@ export default {
       labels: null
     };
   },
+  watch: {
+    "options.mode"() {
+      this.calcDatasets();
+    },
+    "options.axes"() {
+      this.calcDatasets();
+    }
+  },
   created() {
     this.initialize();
   },

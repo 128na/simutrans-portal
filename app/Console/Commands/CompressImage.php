@@ -48,7 +48,7 @@ class CompressImage extends Command
      */
     public function handle()
     {
-        return $this->compressed_image_service->getAttachmentsCursor()->each(function ($attachment) {
+        $count = $this->compressed_image_service->getAttachmentsCursor()->each(function ($attachment) {
             $this->info($attachment->path);
 
             try {
@@ -57,6 +57,9 @@ class CompressImage extends Command
                 $this->error('圧縮失敗');
                 $this->error($e->getMessage());
             }
-        });
+        })->count();
+        logger("$count image compressed");
+
+        return 0;
     }
 }

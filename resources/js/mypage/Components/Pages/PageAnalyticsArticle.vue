@@ -32,6 +32,14 @@ export default {
       labels: null
     };
   },
+  watch: {
+    "options.mode"() {
+      this.calcDatasets();
+    },
+    "options.axes"() {
+      this.calcDatasets();
+    }
+  },
   created() {
     this.initialize();
   },
@@ -106,6 +114,7 @@ export default {
               borderColor: this.getColor(article, axis),
               borderWidth: 2,
               pointRadius: 1,
+              lineTension: 0,
               fill: false,
               data: this.calcData(article.created_at, values)
             };

@@ -92,7 +92,7 @@ class AttachmentTest extends TestCase
 
         $data = [
             'file' => UploadedFile::fake()->create('file.zip', 1),
-            'only_image' => false,
+            'only_image' => 0,
         ];
 
         $this->actingAs($user);
@@ -130,7 +130,7 @@ class AttachmentTest extends TestCase
 
         $data = [
             'file' => UploadedFile::fake()->image('file.png', 1),
-            'only_image' => true,
+            'only_image' => 1,
         ];
 
         $this->actingAs($user);

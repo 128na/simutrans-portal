@@ -142,6 +142,7 @@ export default {
       }
 
       this.$emit("update:attachments", attachments);
+      this.toastSuccess("Uploaded");
     },
     // modal controll
     handleShow() {
@@ -161,11 +162,10 @@ export default {
     handleUpload() {
       this.getFileElement().click();
     },
-    async handleFile(e) {
+    handleFile(e) {
       const file = this.getFile();
       if (file) {
-        await this.storeAttachment(file);
-        this.toastSuccess("Uploaded");
+        this.storeAttachment(file);
       }
     },
     async handleDelete(id) {

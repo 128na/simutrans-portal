@@ -41,8 +41,10 @@ echo ""
 echo "|--------------------------------------------------------------------------"
 echo "| optimize app."
 echo "|--------------------------------------------------------------------------"
-php artisan cache:clear
+php artisan session:clear
+php artisan clear-compiled
 php artisan optimize
+php artisan config:cache
 
 echo ""
 echo "|--------------------------------------------------------------------------"

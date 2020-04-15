@@ -87,7 +87,7 @@ class ArticleService extends Service
     {
         $query = $this->model->withoutAnnounce()->active()->withForList();
 
-        return $limit ? $query->limit(3)->get() : $query->paginate($this->per_page);
+        return $limit ? $query->limit($limit)->get() : $query->paginate($this->per_page);
     }
     /**
      * pak別の投稿一覧
@@ -96,7 +96,7 @@ class ArticleService extends Service
     {
         $query = $this->model->pak($pak)->addon()->active()->withForList();
 
-        return $limit ? $query->limit(3)->get() : $query->paginate($this->per_page);
+        return $limit ? $query->limit($limit)->get() : $query->paginate($this->per_page);
     }
 
     /**
@@ -106,7 +106,7 @@ class ArticleService extends Service
     {
         $query = $this->model->addon()->ranking()->active()->whereNotIn('articles.id', $excludes)->withForList();
 
-        return $limit ? $query->limit(3)->get() : $query->paginate($this->per_page);
+        return $limit ? $query->limit($limit)->get() : $query->paginate($this->per_page);
     }
 
     /**

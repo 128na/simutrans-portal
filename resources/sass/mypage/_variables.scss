@@ -1,3 +1,8 @@
+// overwrite variables
 @import "../variables";
 $primary: hsla(132, 82%, 31%, 1);
 $font-size-base: 0.8rem;
+$spacer: $font-size-base;
+
+// depends variables
+@import "~bootstrap/scss/bootstrap";

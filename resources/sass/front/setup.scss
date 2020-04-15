@@ -1,0 +1,14 @@
+// 変数定義
+@import "../variables";
+$primary: #4687cc;
+$font-size-base: 0.9rem;
+$spacer: $font-size-base;
+
+// 変数依存項目の定義
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+$link-color: $dark;
+$link-hover-color: darken($link-color, 15%);
+$navbar-sidebar-width: 260px;
+
+@import "~bootstrap/scss/bootstrap";

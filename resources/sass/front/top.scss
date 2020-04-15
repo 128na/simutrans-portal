@@ -1,0 +1,51 @@
+// TOPのみ画面サイズに応じて表示件数を変える
+#top {
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .articles {
+    > div {
+      &:nth-of-type(1n + 4) {
+        display: none;
+      }
+    }
+
+    @media (min-width: 576px) {
+    }
+    @media (min-width: 768px) {
+      > article {
+        &:nth-of-type(1n) {
+          display: block;
+        }
+        &:nth-of-type(1n + 5) {
+          display: none;
+        }
+      }
+    }
+    @media (min-width: 992px) {
+      > article {
+        &:nth-of-type(1n) {
+          display: block;
+        }
+        &:nth-of-type(1n + 5) {
+          display: none;
+        }
+      }
+    }
+    @media (min-width: 1200px) {
+      > article {
+        &:nth-of-type(1n + 6) {
+          display: block;
+        }
+      }
+    }
+    @media (min-width: 1600px) {
+      > article {
+        &:nth-of-type(1n) {
+          display: block;
+        }
+      }
+    }
+  }
+}

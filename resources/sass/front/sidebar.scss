@@ -1,0 +1,78 @@
+@import "../../../node_modules/bootstrap/scss/mixins/breakpoints";
+$navbar-sidebar-width: 260px;
+$navbar-sidebar-breakpoint: "md";
+
+body {
+  padding-top: 90px;
+
+  @include media-breakpoint-up($navbar-sidebar-breakpoint) {
+    padding-top: 0;
+  }
+}
+
+@mixin navbar-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $zindex-fixed;
+
+  @include media-breakpoint-up($navbar-sidebar-breakpoint) {
+    bottom: 0;
+    width: $navbar-sidebar-width;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+
+    .navbar-collapse {
+      flex-grow: 0;
+      flex-direction: column;
+      width: 100%;
+
+      .navbar-nav {
+        flex-direction: column;
+        width: 100%;
+
+        .nav-item {
+          width: 100%;
+
+          .dropdown-menu {
+            top: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+body {
+  @include media-breakpoint-up($navbar-sidebar-breakpoint) {
+    margin-left: $navbar-sidebar-width;
+  }
+}
+
+.navbar {
+  &.fixed-left {
+    @include navbar-sidebar;
+    @include media-breakpoint-up($navbar-sidebar-breakpoint) {
+      right: auto;
+
+      .navbar-nav {
+        .nav-item {
+          .dropdown-toggle {
+            &:after {
+              border-top: $caret-width solid transparent;
+              border-left: $caret-width solid;
+              border-bottom: $caret-width solid transparent;
+              border-right: none;
+              vertical-align: baseline;
+            }
+          }
+
+          .dropdown-menu {
+            left: 100%;
+          }
+        }
+      }
+    }
+  }
+}

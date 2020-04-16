@@ -8,4 +8,4 @@ $primary: hsl(211, 57%, 54%);
 @import "../../../node_modules/bootstrap/scss/variables";
 $link-color: $dark;
 $link-hover-color: darken($link-color, 15%);
-@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap";

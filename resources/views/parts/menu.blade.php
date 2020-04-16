@@ -53,7 +53,7 @@
         {{-- 言語一覧 --}}
         <li class="nav-item">
             <a class="nav-link active collapsed with-icon" data-toggle="collapse" href="#collapse-lang" aria-expanded="false" aria-controls="collapse-lang">
-                @lang('Display Language')
+                @lang('__Current_Language__')
             </a>
             <ul class="navbar-nav ml-3 collapse" id="collapse-lang">
                 @foreach (config('languages', []) as $name => $language)

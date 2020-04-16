@@ -1,8 +1,8 @@
 // 共通変数定義
 @import "../variables";
 
-// フロント機能でのみ使用する変数定義を記述する
-$primary: hsl(211, 57%, 54%);
+// 管理者機能でのみ使用する変数定義を記述する
+$primary: hsl(345, 82%, 35%);
 
 @import "../../../node_modules/bootstrap/scss/functions";
 @import "../../../node_modules/bootstrap/scss/variables";

@@ -11,10 +11,11 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.sass('resources/sass/front/index.scss', 'public/css/style.css')
-  .js('resources/js/script.js', 'public/js/script.js');
-
-mix.sass('resources/sass/mypage/index.scss', 'public/css/mypage.css')
+mix
+  .sass('resources/sass/front/index.scss', 'public/css/front.css')
+  .sass('resources/sass/mypage/index.scss', 'public/css/mypage.css')
+  .sass('resources/sass/admin/index.scss', 'public/css/admin.css')
+  .js('resources/js/front/index.js', 'public/js/front.js')
   .js('resources/js/mypage/app.js', 'public/js/mypage.js');
 
 

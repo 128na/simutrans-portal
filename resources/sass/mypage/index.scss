@@ -1,23 +1,5 @@
-// Fonts
-// @import url('https://fonts.googleapis.com/css?family=Nunito');
+@import "./variables";
 
-// Variables
-@import "variables";
+@import "../shared";
 
-// Bootstrap
-@import "~bootstrap/scss/bootstrap";
-@import "node_modules/bootstrap-vue/src/index.scss";
-
-@import "../multi_dropdown";
-
-@import "../common";
-
-.status-draft {
-  background-color: $gray-200;
-}
-.status-private {
-  background-color: $gray-500;
-}
-.status-trash {
-  background-color: $gray-500;
-}
+// マイページ機能でのみ使用するスタイルを記述する

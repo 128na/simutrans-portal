@@ -1,3 +1,10 @@
+// 共通変数定義
 @import "../variables";
-$primary: hsla(132, 82%, 31%, 1);
-$font-size-base: 0.8rem;
+
+// マイページ機能でのみ使用する変数定義を記述する
+$primary: hsl(132, 82%, 31%);
+
+// Bootstrap
+@import "~bootstrap/scss/bootstrap";
+// BootstrapVue
+@import "node_modules/bootstrap-vue/src/index.scss";

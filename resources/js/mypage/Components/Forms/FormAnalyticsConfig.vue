@@ -30,8 +30,10 @@
 <script>
 import { DateTime } from "luxon";
 import Interval from "luxon/src/interval.js";
+import { analytics_constants } from "../../mixins";
 export default {
   name: "form-analytics-config",
+  mixins: [analytics_constants],
   props: ["value"],
   data() {
     return {
@@ -39,21 +41,7 @@ export default {
     };
   },
   created() {
-    this.options = {
-      types: [
-        { value: "daily", text: this.$t("Daily") },
-        { value: "monthly", text: this.$t("Monthly") },
-        { value: "yearly", text: this.$t("Yearly") }
-      ],
-      modes: [
-        { value: "line", text: this.$t("Transition") },
-        { value: "sum", text: this.$t("Total") }
-      ],
-      axes: [
-        { value: "pv", text: this.$t("Page Views") },
-        { value: "cv", text: this.$t("Conversions") }
-      ]
-    };
+    this.options = this.OPTIONS;
   },
   computed: {
     computed_start_date: {

@@ -13,8 +13,8 @@
                 </div>
                 @break
             @case('image')
-                <div class="text-center">
-                    <img class="img-fluid" src="{{ $article->getImageUrl($section['id']) }}">
+                <div class="imgage">
+                    <img class="img-fluid thumbnail shadow-sm" src="{{ $article->getImageUrl($section['id']) }}">
                 </div>
                 @break
         @endswitch

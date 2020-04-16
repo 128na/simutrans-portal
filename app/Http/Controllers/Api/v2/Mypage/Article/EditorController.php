@@ -10,19 +10,27 @@ use App\Models\Article;
 use App\Notifications\ArticlePublished;
 use App\Notifications\ArticleUpdated;
 use App\Services\ArticleEditorService;
+use App\Services\ArticleService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class EditorController extends Controller
 {
     /**
+     * @var ArticleService
+     */
+    private $article_service;
+    /**
      * @var ArticleEditorService
      */
     private $article_editor_service;
 
-    public function __construct(ArticleEditorService $article_editor_service)
-    {
+    public function __construct(
+        ArticleEditorService $article_editor_service,
+        ArticleService $article_service
+    ) {
         $this->article_editor_service = $article_editor_service;
+        $this->article_service = $article_service;
     }
 
     public function index()
@@ -73,6 +81,7 @@ class EditorController extends Controller
 
     private function createPreview(Article $article)
     {
+        $article = $this->article_service->getArticle($article, true);
         DB::rollback();
         $preview = true;
 

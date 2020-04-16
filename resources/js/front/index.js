@@ -1,5 +1,4 @@
 require('./bootstrap');
-require('./multi_dropdown');
 require('./conversion');
 
 $('.articles .popover-thumbnail').popover({

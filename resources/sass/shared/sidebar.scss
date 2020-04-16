@@ -4,9 +4,15 @@ $navbar-sidebar-breakpoint: "md";
 
 body {
   padding-top: 90px;
+  .initializing {
+    margin-top: -90px;
+  }
 
   @include media-breakpoint-up($navbar-sidebar-breakpoint) {
     padding-top: 0;
+    .initializing {
+      margin-top: 0px;
+    }
   }
 }
 
@@ -22,7 +28,6 @@ body {
     width: $navbar-sidebar-width;
     flex-flow: column nowrap;
     align-items: flex-start;
-
     .navbar-collapse {
       flex-grow: 0;
       flex-direction: column;
@@ -47,6 +52,9 @@ body {
 body {
   @include media-breakpoint-up($navbar-sidebar-breakpoint) {
     margin-left: $navbar-sidebar-width;
+    .initializing {
+      margin-left: -$navbar-sidebar-width;
+    }
   }
 }
 

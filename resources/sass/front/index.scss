@@ -4,36 +4,15 @@
 @import "./articles.scss";
 @import "./top.scss";
 
-// こまごま
+// パンくず
 .breadcrumb {
   margin: -2rem -15px 0 -15px;
   padding: 2rem 1rem;
   border-radius: 0;
 }
+// リンク下線非表示
 a.no-underline {
   text-decoration: none;
-}
-.fixed-left {
-  overflow-y: auto;
-}
-
-.nav-link.with-icon {
-  &::before {
-    content: "";
-    display: inline-block;
-    vertical-align: baseline;
-    margin-bottom: 0.2rem;
-    border-right: 0.3em solid transparent;
-    border-left: 0.3em solid transparent;
-    border-bottom: 0.3em solid;
-    border-top: none;
-  }
-  &.collapsed {
-    &::before {
-      border-bottom: none;
-      border-top: 0.3em solid;
-    }
-  }
 }
 
 .page-contents.markdown {

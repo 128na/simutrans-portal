@@ -22,14 +22,15 @@
 
 // article content
 .articles {
-  article {
+  > article {
+    display: grid;
+    grid-template-rows: 128px 1fr 1.2rem 1.2rem;
     .thumbnail {
-      display: flex;
-      height: 128px;
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
     }
+
     .title {
       font-size: 1rem;
       overflow: hidden;
@@ -40,4 +41,8 @@
       -webkit-box-orient: vertical;
     }
   }
+}
+// ポップオーバー表示サイズを512pxに
+.popover {
+  max-width: 512px;
 }

@@ -13,7 +13,6 @@
     "cebe/markdown": "^1.2",
     "ezyang/htmlpurifier": "^4.12",
     "fideloper/proxy": "^4.0",
-    "google/apiclient": "^2.2",
     "laravel/framework": "^7.0",
     "laravel/tinker": "^2.0",
     "laravel/ui": "2.0",

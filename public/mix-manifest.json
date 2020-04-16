@@ -1,6 +1,7 @@
 {
-    "/js/mypage.js": "/js/mypage.js?id=9bc9c8097d409744ce0c",
-    "/js/script.js": "/js/script.js?id=e8249894f3335c06a1df",
-    "/css/style.css": "/css/style.css?id=77e604fc17917d10d95a",
-    "/css/mypage.css": "/css/mypage.css?id=5aaa10d3e5d71a68713d"
+    "/js/front.js": "/js/front.js?id=aa6b469012a8e925336e",
+    "/css/front.css": "/css/front.css?id=81d2b675b42dcb7a35af",
+    "/css/mypage.css": "/css/mypage.css?id=605339a34fcc7a815ccc",
+    "/css/admin.css": "/css/admin.css?id=720ca5e5573791409a30",
+    "/js/mypage.js": "/js/mypage.js?id=08a7f8b7b0da59a840c4"
 }

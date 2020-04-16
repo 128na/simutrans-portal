@@ -15,9 +15,11 @@
     <script src="{{ asset(mix('js/script.js')) }}" defer></script>
 </head>
 <body>
-    @include('parts.menu-header')
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-left py-4">
+        @include('parts.menu')
+    </nav>
 
-    <main class="container bg-white py-2">
+    <main id="@yield('id')" class="container-fluid bg-light py-4">
         @if (session()->has('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
@@ -28,9 +30,11 @@
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
-        @yield('before_title')
+        @if (isset($preview))
+            <div class="alert alert-warning">@lang('This is a preview display. Articles have not been saved or updated.')</div>
+        @endif
 
-        <h1>@yield('title')</h1>
+        @includeWhen(!empty($breadcrumb), 'parts.breadcrumb')
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -44,8 +48,5 @@
 
         @yield('content')
     </main>
-
-    @include('parts.menu-footer')
-
 </body>
 </html>

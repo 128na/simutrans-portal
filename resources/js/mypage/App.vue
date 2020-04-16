@@ -17,8 +17,8 @@
         </transition>
       </b-container>
     </div>
-    <div v-else class="m-auto" key="not_initialized">
-      <h2>
+    <div v-else class="initializing" key="not_initialized">
+      <h2 class="m-auto">
         <b-icon icon="arrow-clockwise" animation="spin" class="mr-2"></b-icon>
         {{$t('Loading...')}}
       </h2>
@@ -106,6 +106,10 @@ export default {
 };
 </script>
 <style>
+.initializing {
+  height: 100vh;
+  display: flex;
+}
 .pre-line {
   white-space: pre-line;
 }

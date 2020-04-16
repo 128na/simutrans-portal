@@ -11,8 +11,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="api-entrypoint" content="{{ config('app.url') }}">
 
-    <link href="{{ asset(mix('css/style.css')) }}" rel="stylesheet">
-    <script src="{{ asset(mix('js/script.js')) }}" defer></script>
+    <link href="{{ asset(mix('css/admin.css')) }}" rel="stylesheet">
+    <script src="{{ asset(mix('js/front.js')) }}" defer></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-left py-4">

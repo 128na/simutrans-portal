@@ -2,7 +2,7 @@
   <transition appear name="fade" mode="out-in">
     <div v-if="initialized" key="initialized">
       <header-menu :user="user" @logout="handleLogout" />
-      <b-container class="my-4">
+      <main class="container-fluid bg-light py-4">
         <transition name="fade" mode="out-in">
           <router-view
             :user="user"
@@ -15,7 +15,7 @@
             @loggedin="handleLoggedin"
           />
         </transition>
-      </b-container>
+      </main>
     </div>
     <div v-else class="initializing" key="not_initialized">
       <h2 class="m-auto">

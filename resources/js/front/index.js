@@ -1,12 +1,6 @@
-require('./files/bootstrap');
-require('./files/multi_dropdown');
-require('./files/conversion');
-
-import LazyLoad from "vanilla-lazyload";
-
-new LazyLoad({
-  elements_selector: ".lazy"
-});
+require('./bootstrap');
+require('./multi_dropdown');
+require('./conversion');
 
 $('.articles .popover-thumbnail').popover({
   html: true,

@@ -1,9 +1,5 @@
-// Fonts
-// @import url('https://fonts.googleapis.com/css?family=Nunito');
-
-// Variables
 @import "./variables";
 
-// Bootstrap
-@import "~bootstrap/scss/bootstrap";
-@import "node_modules/bootstrap-vue/src/index.scss";
+@import "../shared";
+
+// マイページ機能でのみ使用するスタイルを記述する

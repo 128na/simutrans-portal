@@ -28,9 +28,9 @@
             <meta name="robots" content="noindex, nofollow">
         @endunless
 
-        <link href="{{ asset(mix('css/style.css')) }}" rel="stylesheet">
+        <link href="{{ asset(mix('css/front.css')) }}" rel="stylesheet">
         <link rel="canonical" href="{{ $canonical_url ?? url()->current() }}">
-        <script src="{{ asset(mix('js/script.js')) }}" defer></script>
+        <script src="{{ asset(mix('js/front.js')) }}" defer></script>
     </head>
 
     <body>

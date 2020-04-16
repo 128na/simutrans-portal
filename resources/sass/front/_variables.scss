@@ -1,13 +1,11 @@
-// 変数定義
+// 共通変数定義
 @import "../variables";
-$primary: #4687cc;
-$font-size-base: 0.9rem;
-$spacer: $font-size-base;
 
-// 変数依存項目の定義
+// フロント機能でのみ使用する変数定義を記述する
+$primary: hsl(211, 57%, 54%);
+
 @import "../../../node_modules/bootstrap/scss/functions";
 @import "../../../node_modules/bootstrap/scss/variables";
 $link-color: $dark;
 $link-hover-color: darken($link-color, 15%);
-$navbar-sidebar-width: 260px;
 @import "~bootstrap/scss/bootstrap";

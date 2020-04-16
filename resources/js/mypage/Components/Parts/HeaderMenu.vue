@@ -1,60 +1,55 @@
 <template>
-  <b-navbar toggleable="lg" type="dark" variant="primary">
-    <b-container>
-      <b-navbar-brand :href="top_url">Simutrans Addon Portal</b-navbar-brand>
+  <b-navbar class="fixed-left py-4" type="dark" variant="primary" toggleable="md">
+    <b-navbar-brand class="p-0 mb-md-4 mb-0" :href="top_url">Simutrans Addon Portal</b-navbar-brand>
 
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+    <b-navbar-toggle target="global-menu"></b-navbar-toggle>
 
-      <b-collapse id="nav-collapse" is-nav v-if="is_logged_in">
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown right>
-            <!-- Using 'button-content' slot -->
-            <template v-slot:button-content>{{ user.name }}</template>
-            <b-dropdown-item v-if="user.admin" :href="admin_url">{{$t('[admin] Dashboard')}}</b-dropdown-item>
-            <b-dropdown-item v-if="user.verified" :to="to_profile">
-              <b-icon icon="person" class="mr-1" />
-              {{$t('Edit my profile')}}
-            </b-dropdown-item>
-            <b-dropdown-item :to="to_addon_post">
-              <icon-edit-article class="mr-1" />
-              {{
-              $t('Create {post_type}', {post_type:$t('post_types.addon-post')})
-              }}
-            </b-dropdown-item>
-            <b-dropdown-item :to="to_addon_introduction">
-              <icon-edit-article class="mr-1" />
-              {{
-              $t('Create {post_type}', {post_type:$t('post_types.addon-introduction')})
-              }}
-            </b-dropdown-item>
-            <b-dropdown-item :to="to_page">
-              <icon-edit-article class="mr-1" />
-              {{
-              $t('Create {post_type}', {post_type:$t('post_types.page')})
-              }}
-            </b-dropdown-item>
-            <b-dropdown-item :to="to_markdown">
-              <icon-edit-article class="mr-1" />
-              {{
-              $t('Create {post_type}', {post_type:$t('post_types.markdown')})
-              }}
-            </b-dropdown-item>
-            <b-dropdown-divider />
-            <b-dropdown-item @click="logout">
-              <b-icon icon="box-arrow-right" class="mr-1" />
-              {{$t('Logout')}}
-            </b-dropdown-item>
-          </b-nav-item-dropdown>
-        </b-navbar-nav>
-      </b-collapse>
-      <b-collapse id="nav-collapse" is-nav v-else>
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item :to="to_login">{{$t('Login')}}</b-nav-item>
-          <b-nav-item :to="to_register">{{$t('Register')}}</b-nav-item>
-        </b-navbar-nav>
-      </b-collapse>
-    </b-container>
+    <b-collapse id="global-menu" is-nav>
+      <b-navbar-nav v-if="is_logged_in">
+        <b-nav-item class="active" v-if="user.admin" :href="admin_url">{{$t('[admin] Dashboard')}}</b-nav-item>
+        <b-nav-item class="active" v-if="user.verified" :to="to_analytics">
+          <b-icon icon="graph-up" class="mr-1" />
+          {{$t('Access Analytics')}}
+        </b-nav-item>
+        <b-nav-item class="active" v-if="user.verified" :to="to_profile">
+          <b-icon icon="person" class="mr-1" />
+          {{$t('Edit my profile')}}
+        </b-nav-item>
+        <b-nav-item class="active" v-if="user.verified" :to="to_addon_post">
+          <icon-edit-article class="mr-1" />
+          {{
+          $t('Create {post_type}', {post_type:$t('post_types.addon-post')})
+          }}
+        </b-nav-item>
+        <b-nav-item class="active" v-if="user.verified" :to="to_addon_introduction">
+          <icon-edit-article class="mr-1" />
+          {{
+          $t('Create {post_type}', {post_type:$t('post_types.addon-introduction')})
+          }}
+        </b-nav-item>
+        <b-nav-item class="active" v-if="user.verified" :to="to_page">
+          <icon-edit-article class="mr-1" />
+          {{
+          $t('Create {post_type}', {post_type:$t('post_types.page')})
+          }}
+        </b-nav-item>
+        <b-nav-item class="active" v-if="user.verified" :to="to_markdown">
+          <icon-edit-article class="mr-1" />
+          {{
+          $t('Create {post_type}', {post_type:$t('post_types.markdown')})
+          }}
+        </b-nav-item>
+        <div class="dropdown-divider border-light" />
+        <b-nav-item class="active" @click="logout">
+          <b-icon icon="box-arrow-right" class="mr-1" />
+          {{$t('Logout')}}
+        </b-nav-item>
+      </b-navbar-nav>
+      <b-navbar-nav v-else>
+        <b-nav-item class="active" :to="to_login">{{$t('Login')}}</b-nav-item>
+        <b-nav-item class="active" :to="to_register">{{$t('Register')}}</b-nav-item>
+      </b-navbar-nav>
+    </b-collapse>
   </b-navbar>
 </template>
 <script>

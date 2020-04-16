@@ -188,14 +188,15 @@ class ArticleService extends Service
     /**
      * 記事表示
      */
-    public function getArticle(Article $article)
+    public function getArticle(Article $article, $with_count = false)
     {
-        return $article->load(
-            'user',
-            'attachments',
-            'categories',
-            'tags'
-        );
+        $relations = $with_count ? [
+            'user', 'attachments', 'categories', 'tags',
+            'totalViewCount', 'totalConversionCount',
+        ] : [
+            'user', 'attachments', 'categories', 'tags',
+        ];
+        return $article->load($relations);
     }
 
 }

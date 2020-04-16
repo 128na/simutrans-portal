@@ -1,8 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="container">
-
     <h3>キャッシュ</h3>
     <p>
         <form action="{{ route('admin.flush.cache') }}" method="POST">
@@ -16,6 +14,4 @@
         <a class="btn btn-danger" href="{{ route('admin.warning') }} ">Warning</a>
         <a class="btn btn-danger" href="{{ route('admin.notice') }} ">Notice</a>
     </p>
-
-</div>
 @endsection

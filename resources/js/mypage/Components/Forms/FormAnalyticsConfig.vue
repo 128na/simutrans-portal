@@ -33,6 +33,7 @@ import Interval from "luxon/src/interval.js";
 import { analytics_constants } from "../../mixins";
 export default {
   name: "form-analytics-config",
+  mixins: [analytics_constants],
   props: ["value"],
   data() {
     return {

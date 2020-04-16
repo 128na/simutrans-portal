@@ -99,13 +99,14 @@ class ArticleController extends Controller
     {
         abort_unless($article->is_publish, 404);
 
-        if (Auth::check() === false || Auth::id() !== $article->user_id) {
+        $is_owner = Auth::check() && Auth::user()->can('update', $article);
+
+        if (!$is_owner) {
             event(new ArticleShown($article));
         }
 
         $contents = [
-            'article' => $this->article_service->getArticle($article),
-            'breadcrumb' => Breadcrumb::forShow($article),
+            'article' => $this->article_service->getArticle($article, $is_owner),
             'canonical_url' => route('articles.show', $article->slug),
         ];
         $contents = array_merge($contents, $this->article_service->getHeaderContents());

@@ -206,7 +206,7 @@ export default {
 }
 .selected {
   border: 1px solid #48a3e0;
-  background-color: rgba(72, 163, 224, 0.5);
+  background-color: rgb(72, 163, 224, 0.5);
 }
 .flex-1 {
   flex: 1;

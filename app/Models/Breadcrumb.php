@@ -6,7 +6,7 @@ class Breadcrumb
 {
     public static function forShow($article)
     {
-        if ($article->post_type === 'addon-introduction' || $article->post_type === 'addon-introduction') {
+        if ($article->post_type === 'addon-introduction' || $article->post_type === 'addon-post') {
             return [
                 ['name' => __('Top'), 'url' => route('index')],
                 ['name' => __('Articles'), 'url' => route('addons.index')],

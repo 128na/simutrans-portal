@@ -1,3 +1,7 @@
+/**
+ * @see https://github.com/twbs/bootstrap/blob/master/scss/_variables.scss
+ */
+
 // Body
 $body-bg: #f8fafc;
 
@@ -5,7 +9,8 @@ $body-bg: #f8fafc;
 $font-family-sans-serif: "Nunito", sans-serif;
 $font-size-base: 1rem;
 $line-height-base: 1.6;
-$spacer: 2rem;
+$font-size-base: 0.9rem;
+$spacer: $font-size-base;
 
 // Colors
 $blue: #3490dc;
@@ -18,5 +23,3 @@ $yellow: #ffed4a;
 $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
-
-$primary: #156ad4;

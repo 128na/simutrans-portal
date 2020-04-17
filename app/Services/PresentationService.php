@@ -107,6 +107,7 @@ class PresentationService extends Service
                 ['name' => __('category.pak.' . $pak->slug), 'url' => route('category', ['pak', $pak->slug])],
                 ['name' => __('category.addon.' . $addon->slug)],
             ],
+            'open_menu_pak_addon' => [$pak->slug => true],
         ]);
     }
     /**
@@ -121,6 +122,7 @@ class PresentationService extends Service
                 ['name' => __('User :name', ['name' => $user->name])],
             ],
             'user' => $user->load('profile', 'profile.attachments'),
+            'open_menu_user_addon' => true,
         ]);
     }
     /**

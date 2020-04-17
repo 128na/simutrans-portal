@@ -1,7 +1,7 @@
 @extends('layouts.front')
 
 @section('id', 'top')
-@section('title', __('Top'))
+@section('title', $title)
 @section('meta-description', config('app.meta-description'))
 @section('meta-image', asset('storage/'.config('app.meta-image')))
 

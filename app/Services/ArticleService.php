@@ -4,10 +4,8 @@ namespace App\Services;
 use App\Http\Requests\Article\SearchRequest;
 use App\Models\Article;
 use App\Models\Category;
-use App\Models\PakAddonCount;
 use App\Models\Tag;
 use App\Models\User;
-use App\Models\UserAddonCount;
 
 class ArticleService extends Service
 {
@@ -35,40 +33,6 @@ class ArticleService extends Service
             'latest' => $latest,
             'ranking' => $ranking,
         ];
-    }
-
-    public function getHeaderContents()
-    {
-        return [
-            'menu_user_addon_counts' => $this->getUserAddonCounts(),
-            'menu_pak_addon_counts' => $this->getPakAddonCounts(),
-        ];
-    }
-
-    /**
-     * ユーザー別アドオン投稿数一覧
-     */
-    public function getUserAddonCounts()
-    {
-        return UserAddonCount::all();
-    }
-    /**
-     * pak別アドオン投稿数一覧
-     */
-    public function getPakAddonCounts()
-    {
-        return $this->separateByPak(PakAddonCount::all());
-    }
-
-    private function separateByPak($pak_addon_counts)
-    {
-        return collect($pak_addon_counts->reduce(function ($separated, $item) {
-            if (!isset($separated[$item->pak_slug])) {
-                $separated[$item->pak_slug] = collect([]);
-            }
-            $separated[$item->pak_slug]->push($item);
-            return $separated;
-        }, []));
     }
 
     /**

@@ -1,7 +1,7 @@
 @extends('layouts.front')
 
 @section('id', 'listing')
-@section('title', $title ?? __('Articles'))
+@section('title', $title)
 @section('meta-description', config('app.meta-description'))
 @section('meta-image', asset('storage/'.config('app.meta-image')))
 

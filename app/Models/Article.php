@@ -347,11 +347,6 @@ class Article extends Model implements Feedable
     | RSS
     |--------------------------------------------------------------------------
      */
-    public static function getAllFeedItems($type = null)
-    {
-        return self::active()->addon()->get();
-    }
-
     public function toFeedItem()
     {
         return FeedItem::create()

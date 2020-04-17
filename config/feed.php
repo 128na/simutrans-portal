@@ -3,7 +3,7 @@
 return [
     'feeds' => [
         'addon' => [
-            'items' => 'App\Models\Article@getAllFeedItems',
+            'items' => 'App\Services\FeedService@getAllFeedItems',
             'url' => '/feed',
             'title' => 'All Addon Articles',
             'view' => 'feed::feed',

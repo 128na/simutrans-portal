@@ -7,12 +7,12 @@ use App\Events\ArticleShown;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Article\SearchRequest;
 use App\Models\Article;
-use App\Models\Breadcrumb;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
 use App\Services\ArticleService;
 use App\Services\CategoryService;
+use App\Services\PresentationService;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
@@ -25,11 +25,19 @@ class ArticleController extends Controller
      * @var CategoryService
      */
     private $category_service;
+    /**
+     * @var PresentationService
+     */
+    private $presentation_service;
 
-    public function __construct(ArticleService $article_service, CategoryService $category_service)
-    {
+    public function __construct(
+        ArticleService $article_service,
+        CategoryService $category_service,
+        PresentationService $presentation_service
+    ) {
         $this->article_service = $article_service;
         $this->category_service = $category_service;
+        $this->presentation_service = $presentation_service;
     }
 
     /**
@@ -37,12 +45,8 @@ class ArticleController extends Controller
      */
     public function addons()
     {
-        $contents = [
-            'articles' => $this->article_service->getAddonArticles(),
-            'title' => __('Articles'),
-            'breadcrumb' => Breadcrumb::forList('Articles'),
-        ];
-        $contents = array_merge($contents, $this->article_service->getHeaderContents());
+        $contents = ['articles' => $this->article_service->getAddonArticles()];
+        $contents = array_merge($contents, $this->presentation_service->forList('Articles'));
 
         return view('front.articles.index', $contents);
     }
@@ -52,12 +56,8 @@ class ArticleController extends Controller
      */
     public function ranking()
     {
-        $contents = [
-            'articles' => $this->article_service->getRankingArticles(),
-            'title' => __('Ranking'),
-            'breadcrumb' => Breadcrumb::forList('Ranking'),
-        ];
-        $contents = array_merge($contents, $this->article_service->getHeaderContents());
+        $contents = ['articles' => $this->article_service->getRankingArticles()];
+        $contents = array_merge($contents, $this->presentation_service->forList('Access Ranking'));
 
         return view('front.articles.index', $contents);
     }
@@ -67,12 +67,8 @@ class ArticleController extends Controller
      */
     public function pages()
     {
-        $contents = [
-            'articles' => $this->article_service->getCommonArticles(),
-            'title' => __('Pages'),
-            'breadcrumb' => Breadcrumb::forList('Pages'),
-        ];
-        $contents = array_merge($contents, $this->article_service->getHeaderContents());
+        $contents = ['articles' => $this->article_service->getCommonArticles()];
+        $contents = array_merge($contents, $this->presentation_service->forList('Pages'));
 
         return view('front.articles.index', $contents);
     }
@@ -82,12 +78,8 @@ class ArticleController extends Controller
      */
     public function announces()
     {
-        $contents = [
-            'articles' => $this->article_service->getAnnouces(),
-            'title' => __('Announces'),
-            'breadcrumb' => Breadcrumb::forList('Announces'),
-        ];
-        $contents = array_merge($contents, $this->article_service->getHeaderContents());
+        $contents = ['articles' => $this->article_service->getAnnouces()];
+        $contents = array_merge($contents, $this->presentation_service->forList('Announces'));
 
         return view('front.articles.index', $contents);
     }
@@ -105,11 +97,8 @@ class ArticleController extends Controller
             event(new ArticleShown($article));
         }
 
-        $contents = [
-            'article' => $this->article_service->getArticle($article, $is_owner),
-            'canonical_url' => route('articles.show', $article->slug),
-        ];
-        $contents = array_merge($contents, $this->article_service->getHeaderContents());
+        $contents = ['article' => $this->article_service->getArticle($article, $is_owner)];
+        $contents = array_merge($contents, $this->presentation_service->forShow($article));
 
         return view('front.articles.show', $contents);
     }
@@ -140,13 +129,8 @@ class ArticleController extends Controller
     public function category($type, $slug)
     {
         $category = $this->category_service->findOrFailByTypeAndSlug($type, $slug);
-
-        $contents = [
-            'articles' => $this->article_service->getCategoryArtciles($category),
-            'title' => __('Category :name', ['name' => __("category.{$type}.{$slug}")]),
-            'breadcrumb' => Breadcrumb::forCategory($type, $slug),
-        ];
-        $contents = array_merge($contents, $this->article_service->getHeaderContents());
+        $contents = ['articles' => $this->article_service->getCategoryArtciles($category)];
+        $contents = array_merge($contents, $this->presentation_service->forCategory($category));
 
         return view('front.articles.index', $contents);
     }
@@ -156,18 +140,11 @@ class ArticleController extends Controller
      */
     public function categoryPakAddon($pak_slug, $addon_slug)
     {
-        $pak_category = $this->category_service->findOrFailByTypeAndSlug('pak', $pak_slug);
-        $addon_category = $this->category_service->findOrFailByTypeAndSlug('addon', $addon_slug);
+        $pak = $this->category_service->findOrFailByTypeAndSlug('pak', $pak_slug);
+        $addon = $this->category_service->findOrFailByTypeAndSlug('addon', $addon_slug);
 
-        $contents = [
-            'articles' => $this->article_service->getPakAddonCategoryArtciles($pak_category, $addon_category),
-            'title' => __(':pak, :addon', [
-                'pak' => __('category.pak.' . $pak_slug),
-                'addon' => __('category.addon.' . $addon_slug),
-            ]),
-            'breadcrumb' => Breadcrumb::forPakAddon($pak_slug, $addon_slug),
-        ];
-        $contents = array_merge($contents, $this->article_service->getHeaderContents());
+        $contents = ['articles' => $this->article_service->getPakAddonCategoryArtciles($pak, $addon)];
+        $contents = array_merge($contents, $this->presentation_service->forPakAddon($pak, $addon));
 
         return view('front.articles.index', $contents);
     }
@@ -177,12 +154,8 @@ class ArticleController extends Controller
      */
     public function tag(Tag $tag)
     {
-        $contents = [
-            'articles' => $this->article_service->getTagArticles($tag),
-            'title' => __('Tag :name', ['name' => $tag->name]),
-            'breadcrumb' => Breadcrumb::forTag($tag->name),
-        ];
-        $contents = array_merge($contents, $this->article_service->getHeaderContents());
+        $contents = ['articles' => $this->article_service->getTagArticles($tag)];
+        $contents = array_merge($contents, $this->presentation_service->forTag($tag));
 
         return view('front.articles.index', $contents);
     }
@@ -192,13 +165,8 @@ class ArticleController extends Controller
      */
     public function user(User $user)
     {
-        $contents = [
-            'articles' => $this->article_service->getUserArticles($user),
-            'title' => __('User :name', ['name' => $user->name]),
-            'breadcrumb' => Breadcrumb::forUser($user),
-            'user' => $user->load('profile', 'profile.attachments'),
-        ];
-        $contents = array_merge($contents, $this->article_service->getHeaderContents());
+        $contents = ['articles' => $this->article_service->getUserArticles($user)];
+        $contents = array_merge($contents, $this->presentation_service->forUser($user));
 
         return view('front.articles.index', $contents);
     }
@@ -208,12 +176,8 @@ class ArticleController extends Controller
      */
     public function search(SearchRequest $request)
     {
-        $contents = [
-            'articles' => $this->article_service->getSearchArticles($request),
-            'title' => __('Search results by :word', ['word' => $request->word]),
-            'breadcrumb' => Breadcrumb::forSearch($request->word),
-        ];
-        $contents = array_merge($contents, $this->article_service->getHeaderContents());
+        $contents = ['articles' => $this->article_service->getSearchArticles($request)];
+        $contents = array_merge($contents, $this->presentation_service->forSearch($request));
 
         return view('front.articles.index', $contents);
     }

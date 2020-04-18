@@ -32,13 +32,18 @@ class UserTest extends TestCase
 
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson(['data' => [
+        $res->assertJson(['data' => [
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'profile' => [
                 'id' => $user->profile->id,
-                'data' => $user->profile->data->toArray(),
+                'data' => [
+                    'avatar' => $user->profile->data->avatar,
+                    'description' => $user->profile->data->description,
+                    'twitter' => $user->profile->data->twitter,
+                    'website' => $user->profile->data->website,
+                ],
             ],
             'admin' => $user->isAdmin(),
             'verified' => !!$user->email_verified_at,
@@ -59,8 +64,8 @@ class UserTest extends TestCase
                 'data' => [
                     'avatar' => $user->profile->data->avatar,
                     'description' => $user->profile->data->description,
-                    'website' => $user->profile->data->website,
                     'twitter' => $user->profile->data->twitter,
+                    'website' => $user->profile->data->website,
                 ],
             ],
         ];
@@ -115,13 +120,18 @@ class UserTest extends TestCase
 
         $res = $this->postJson($url, ['user' => $data]);
         $res->assertOK();
-        $res->assertExactJson(['data' => [
+        $res->assertJson(['data' => [
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'profile' => [
                 'id' => $user->profile->id,
-                'data' => $user->profile->data->toArray(),
+                'data' => [
+                    'avatar' => $user->profile->data->avatar,
+                    'description' => $user->profile->data->description,
+                    'twitter' => $user->profile->data->twitter,
+                    'website' => $user->profile->data->website,
+                ],
             ],
             'admin' => $user->isAdmin(),
             'verified' => !!$user->email_verified_at,
@@ -145,8 +155,8 @@ class UserTest extends TestCase
                 'data' => [
                     'avatar' => $user->profile->data->avatar,
                     'description' => $user->profile->data->description,
-                    'website' => $user->profile->data->website,
                     'twitter' => $user->profile->data->twitter,
+                    'website' => $user->profile->data->website,
                 ],
             ],
         ];
@@ -154,13 +164,18 @@ class UserTest extends TestCase
 
         $url = route('api.v2.users.update');
         $res = $this->postJson($url, ['user' => $data]);
-        $res->assertExactJson(['data' => [
+        $res->assertJson(['data' => [
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'profile' => [
                 'id' => $user->profile->id,
-                'data' => $user->profile->data->toArray(),
+                'data' => [
+                    'avatar' => $user->profile->data->avatar,
+                    'description' => $user->profile->data->description,
+                    'website' => $user->profile->data->website,
+                    'twitter' => $user->profile->data->twitter,
+                ],
             ],
             'admin' => $user->isAdmin(),
             'verified' => false,

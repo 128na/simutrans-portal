@@ -1,20 +1,20 @@
 @foreach ($article->contents->sections ?? [] as $section)
     <section>
-        @switch($section['type'])
+        @switch($section->type)
             @case('caption')
-                <h2 class="my-2">{{ $section['caption'] }}</h2>
+                <h2 class="my-2">{{ $section->caption }}</h2>
                 @break
             @case('text')
-                <div class="text">{{ $section['text'] }}</div>
+                <div class="text">{{ $section->text }}</div>
                 @break
             @case('url')
                 <div class="url">
-                    <a href="{{$section['url']}}" class="text-primary" target="_blank" rel="noopener noreferrer">{{ $section['url'] }}</a>
+                    <a href="{{$section->url}}" class="text-primary" target="_blank" rel="noopener noreferrer">{{ $section->url }}</a>
                 </div>
                 @break
             @case('image')
                 <div class="imgage">
-                    <img class="img-fluid thumbnail shadow-sm" src="{{ $article->getImageUrl($section['id']) }}">
+                    <img class="img-fluid thumbnail shadow-sm" src="{{ $article->getImageUrl($section->id) }}">
                 </div>
                 @break
         @endswitch

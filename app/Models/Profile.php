@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Casts\ToProfileData;
 use App\Models\Attachment;
-use App\Models\Contents\ProfileData;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -18,6 +18,9 @@ class Profile extends Model
         'user_id',
         'data',
     ];
+    protected $casts = [
+        'data' => ToProfileData::class,
+    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -31,14 +34,6 @@ class Profile extends Model
         self::updated(function ($model) {
             Cache::flush();
         });
-        self::retrieved(function ($model) {
-            $model->data = new ProfileData($model->data);
-        });
-    }
-
-    public function getJsonableField()
-    {
-        return 'data';
     }
 
     /*

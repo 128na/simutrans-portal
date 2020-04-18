@@ -1,10 +1,7 @@
 <?php
 
-use App\Models\Contents\Content;
-use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
-use App\Models\Profile;
 use Illuminate\Database\Seeder;
 
 /**
@@ -30,7 +27,7 @@ class ProdSeeder extends Seeder
 
     private static function addAdminUser()
     {
-        if(is_null(config('admin.email'))) {
+        if (is_null(config('admin.email'))) {
             throw new \Exception("admin email was empty!");
         }
 
@@ -44,7 +41,7 @@ class ProdSeeder extends Seeder
 
     private static function addItems($items)
     {
-        return collect($items)->map(function($item) {
+        return collect($items)->map(function ($item) {
             return Category::firstOrCreate($item);
         });
     }
@@ -61,7 +58,6 @@ class ProdSeeder extends Seeder
                 'post_type' => config('post_types.page'),
                 'status' => config('status.publish'),
             ], $data);
-            $data['contents'] = Content::createFromType('page', $data['contents']);
 
             $article = $user->articles()->updateOrCreate(['slug' => $data['slug']], $data);
             $article->categories()->sync($announce_category->id);

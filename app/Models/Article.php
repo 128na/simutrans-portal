@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Contents\Content;
+use App\Casts\ToArticleContents;
 use App\Services\SitemapService;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,7 +25,9 @@ class Article extends Model implements Feedable
         'contents',
         'status',
     ];
-    protected $attributes = ['contents' => '{}'];
+    protected $casts = [
+        'contents' => ToArticleContents::class,
+    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -38,12 +40,6 @@ class Article extends Model implements Feedable
 
         static::addGlobalScope('order', function (Builder $builder) {
             $builder->orderBy('created_at', 'desc');
-        });
-        self::retrieved(function ($model) {
-            $model->contents = Content::createFromType($model->post_type, $model->contents);
-        });
-        self::creating(function ($model) {
-            $model->contents = Content::createFromType($model->post_type, $model->contents);
         });
         self::created(function ($model) {
             $model->syncRelatedData();

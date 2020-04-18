@@ -2,7 +2,6 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use App\Models\Article;
-use App\Models\Contents\Content;
 use Faker\Generator as Faker;
 
 /*
@@ -20,23 +19,23 @@ $factory->define(Article::class, function (Faker $faker) {
 
     $post_type = $faker->randomElement(config('post_types'));
     $contents = [
-        'addon-introduction' => Content::createFromType('addon-introduction', [
+        'addon-introduction' => [
             'description' => $faker->realText,
             'author' => $faker->name,
             'link' => $faker->url,
-        ]),
-        'addon-post' => Content::createFromType('addon-post', [
+        ],
+        'addon-post' => [
             'description' => $faker->realText,
             'author' => $faker->name,
-        ]),
-        'page' => Content::createFromType('page', [
+        ],
+        'page' => [
             'sections' => [
                 ['type' => 'text', 'text' => $faker->realText],
             ],
-        ]),
-        'markdown' => Content::createFromType('markdown', [
+        ],
+        'markdown' => [
             'markdown' => $faker->realText,
-        ]),
+        ],
     ];
     $sentence = $faker->sentence;
     return [

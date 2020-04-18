@@ -12,10 +12,7 @@
             <img src="{{ $article->thumbnail_url }}" class="img-fluid thumbnail mb-4 shadow-sm">
         @endif
         <h1 class="title mb-3">{{$article->title}}</h1>
-        @includeWhen($article->contents->isAddonIntroductionContent(), 'front.articles.parts.addon-introduction', ['article' => $article])
-        @includeWhen($article->contents->isAddonPostContent(), 'front.articles.parts.addon-post', ['article' => $article])
-        @includeWhen($article->contents->isPageContent(), 'front.articles.parts.page', ['article' => $article])
-        @includeWhen($article->contents->isMarkdownContent(), 'front.articles.parts.markdown', ['article' => $article])
+        @includeIf("front.articles.parts.{$article->post_type}", ['article' => $article])
 
         <footer class="border-top pt-2">
             <div>
@@ -46,10 +43,10 @@
                     ],
                     'name' => $article->user->name,
                 ],
-                'author' => [
-                    '@type' =>'Person',
-                    'name' => $article->contents->author,
-                ],
+                    'author' => [
+                        '@type' =>'Person',
+                        'name' => $article->contents->author ?? $article->user->name,
+                    ],
                 'datePublished' => $article->created_at,
                 'dateModified' => $article->updated_at,
                 'image' => $article->has_thumbnail ? $article->thumbnail_url : null,

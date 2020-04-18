@@ -156,14 +156,16 @@ class PresentationService extends Service
      */
     private function getUserAddonCounts()
     {
-        return UserAddonCount::all();
+        return $this->user_addon_count->all();
     }
     /**
      * pak別アドオン投稿数一覧
      */
     private function getPakAddonCounts()
     {
-        return $this->separateByPak(PakAddonCount::all());
+        return $this->separateByPak(
+            $this->pak_addon_count->all()
+        );
     }
 
     private function separateByPak($pak_addon_counts)

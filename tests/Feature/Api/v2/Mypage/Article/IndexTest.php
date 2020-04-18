@@ -37,7 +37,7 @@ class IndexTest extends TestCase
                 'slug' => $article->slug,
                 'status' => $article->status,
                 'post_type' => $article->post_type,
-                'contents' => $article->contents->toArray(),
+                'contents' => json_decode(json_encode($article->contents), true),
                 'categories' => $article->categories->pluck('id')->toArray(),
                 'tags' => $article->tags->pluck('name')->toArray(),
                 'url' => route('articles.show', $article->slug),

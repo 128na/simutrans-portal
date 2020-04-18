@@ -20,7 +20,7 @@ class Article extends JsonResource
             'post_type' => $this->post_type,
             'contents' => $this->contents->getDescription(),
             'url' => route('articles.show', $this->slug),
-            'author' => $this->contents->author,
+            'author' => $this->contents->author ?? $this->user->name,
             'categories' => new Categories($this->categories),
             'tags' => new Tags($this->tags),
             'created_by' => new User($this->user),

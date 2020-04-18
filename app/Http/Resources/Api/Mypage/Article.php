@@ -20,7 +20,7 @@ class Article extends JsonResource
             'slug' => $this->slug,
             'status' => $this->status,
             'post_type' => $this->post_type,
-            'contents' => $this->contents->toArray(),
+            'contents' => $this->contents,
             'categories' => $this->categories->pluck('id'),
             'tags' => $this->tags->pluck('name'),
             'created_at' => $this->created_at,

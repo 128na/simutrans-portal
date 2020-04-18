@@ -63,3 +63,5 @@ https://simutrans.sakura.ne.jp/portal/
     コマンドで出力しただけ
 - [ページ一覧](./docs/pages.md)
 - [TODO表](./docs/todo.md)
+- [ERD](./docs/erd.pu)
+- [ERD(画像)](./docs/erd.png)

@@ -11,6 +11,7 @@ use App\Notifications\ArticlePublished;
 use App\Notifications\ArticleUpdated;
 use App\Services\ArticleEditorService;
 use App\Services\ArticleService;
+use App\Services\PresentationService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -27,10 +28,12 @@ class EditorController extends Controller
 
     public function __construct(
         ArticleEditorService $article_editor_service,
-        ArticleService $article_service
+        ArticleService $article_service,
+        PresentationService $presentation_service
     ) {
         $this->article_editor_service = $article_editor_service;
         $this->article_service = $article_service;
+        $this->presentation_service = $presentation_service;
     }
 
     public function index()
@@ -83,10 +86,10 @@ class EditorController extends Controller
     {
         $article = $this->article_service->getArticle($article, true);
         DB::rollback();
-        $preview = true;
 
-        return response(
-            view('front.articles.show', compact('article', 'preview'))
-        );
+        $contents = ['preview' => true, 'article' => $article];
+        $contents = array_merge($contents, $this->presentation_service->forShow($article));
+
+        return response(view('front.articles.show', $contents));
     }
 }

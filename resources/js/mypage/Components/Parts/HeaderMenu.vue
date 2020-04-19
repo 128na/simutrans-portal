@@ -7,13 +7,13 @@
     <b-collapse id="global-menu" is-nav>
       <b-navbar-nav v-if="is_logged_in">
         <b-nav-item class="active" v-if="user.admin" :href="admin_url">{{$t('[admin] Dashboard')}}</b-nav-item>
-        <b-nav-item class="active" v-if="user.verified" :to="to_analytics">
-          <b-icon icon="graph-up" class="mr-1" />
-          {{$t('Access Analytics')}}
-        </b-nav-item>
         <b-nav-item class="active" v-if="user.verified" :to="to_profile">
           <b-icon icon="person" class="mr-1" />
           {{$t('Edit my profile')}}
+        </b-nav-item>
+        <b-nav-item class="active" v-if="user.verified" :to="to_analytics">
+          <b-icon icon="graph-up" class="mr-1" />
+          {{$t('Access Analytics')}}
         </b-nav-item>
         <b-nav-item class="active" v-if="user.verified" :to="to_addon_post">
           <icon-edit-article class="mr-1" />

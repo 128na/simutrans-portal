@@ -32,7 +32,9 @@
         {{$t('Slug')}}
       </template>
       <b-form-input type="text" v-model="url_decoded_slug" :state="state('article.slug')" />
-      <div class="mt-1">URL: https://simutrans.sakura.ne.jp/portal/articles/{{ article.slug }}</div>
+      <div
+        class="mt-1 text-break"
+      >URL: https://simutrans.sakura.ne.jp/portal/articles/{{ article.slug }}</div>
     </b-form-group>
     <b-form-group>
       <template slot="label">

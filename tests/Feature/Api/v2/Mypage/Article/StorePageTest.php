@@ -158,4 +158,42 @@ class StorePageTest extends TestCase
         $get_response = json_decode($this->getJson(route('api.v2.articles.index'))->content(), true);
         $res->assertJson($get_response);
     }
+
+    public function testPreview()
+    {
+        $url = route('api.v2.articles.store');
+
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $user->id);
+        $image = Attachment::createFromFile(UploadedFile::fake()->image('image.jpg', 1), $user->id);
+
+        $date = now()->format('YmdHis');
+        $data = [
+            'post_type' => 'page',
+            'status' => 'publish',
+            'title' => 'test title ' . $date,
+            'slug' => 'test-slug-' . $date,
+            'contents' => [
+                'thumbnail' => $thumbnail->id,
+                'sections' => [
+                    ['type' => 'text', 'text' => 'text' . $date],
+                    ['type' => 'caption', 'caption' => 'caption' . $date],
+                    ['type' => 'url', 'url' => 'http://example.com'],
+                    ['type' => 'image', 'id' => $image->id],
+                ],
+            ],
+            'categories' => [
+                Category::page()->first()->id,
+            ],
+        ];
+        $res = $this->postJson($url, ['article' => $data, 'preview' => true]);
+        $res->assertHeader('content-type', 'text/html; charset=UTF-8');
+        $res->assertSee('<html', false);
+        $res->assertSee($data['title']);
+        $this->assertDatabaseMissing('articles', [
+            'title' => $data['title'],
+        ]);
+    }
 }

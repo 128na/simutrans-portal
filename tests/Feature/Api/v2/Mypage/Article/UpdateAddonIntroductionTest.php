@@ -167,4 +167,47 @@ class UpdateAddonIntroductionTest extends TestCase
         $res = $this->postJson($url);
         $res->assertForbidden();
     }
+
+    public function testPreview()
+    {
+        $user = factory(User::class)->create();
+        $article = $this->createAddonIntroduction($user);
+        $url = route('api.v2.articles.update', $article);
+        $this->actingAs($user);
+
+        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $user->id);
+
+        $date = now()->format('YmdHis');
+        $data = [
+            'post_type' => 'addon-introduction',
+            'status' => 'publish',
+            'title' => 'test title ' . $date,
+            'slug' => 'test-slug-' . $date,
+            'contents' => [
+                'thumbnail' => $thumbnail->id,
+                'author' => 'test auhtor',
+                'link' => 'http://example.com',
+                'description' => 'test description',
+                'thanks' => 'tets thanks',
+                'license' => 'test license',
+                'agreement' => true,
+            ],
+            'tags' => [
+                factory(Tag::class)->create()->name,
+            ],
+            'categories' => [
+                Category::pak()->first()->id,
+                Category::addon()->first()->id,
+                Category::pak128Position()->first()->id,
+                Category::license()->first()->id,
+            ],
+        ];
+        $res = $this->postJson($url, ['article' => $data, 'preview' => true]);
+        $res->assertHeader('content-type', 'text/html; charset=UTF-8');
+        $res->assertSee('<html', false);
+        $res->assertSee($data['title']);
+        $this->assertDatabaseMissing('articles', [
+            'title' => $data['title'],
+        ]);
+    }
 }

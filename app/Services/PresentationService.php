@@ -136,6 +136,7 @@ class PresentationService extends Service
                 ['name' => __('Top'), 'url' => route('index')],
                 ['name' => __('Search results by :word', ['word' => $request->word])],
             ],
+            'word' => $request->word,
         ]);
     }
 

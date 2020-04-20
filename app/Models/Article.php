@@ -158,11 +158,8 @@ class Article extends Model implements Feedable
         $word = trim($word);
         $like_word = "%{$word}%";
 
-        return $query->where('title', 'like', $like_word)
-            ->orWhere('contents->description', 'like', $like_word)
-            ->orWhere('contents->thanks', 'like', $like_word)
-            ->orWhere('contents->author', 'like', $like_word)
-            ->orWhere('contents->license', 'like', $like_word);
+        return $query->where('title', 'LIKE', $like_word)
+            ->orWhere('contents', 'LIKE', $like_word);
     }
     public function scopeAddon($query)
     {

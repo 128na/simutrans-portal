@@ -68,12 +68,14 @@ class SitemapService
         foreach (UserAddonCount::cursor() as $user_addon) {
             $latest = Article::active()->where('user_id', $user_addon->user_id)->first();
 
-            $add(
-                route('user', $user_addon->user_id),
-                '0.3',
-                Url::CHANGE_FREQUENCY_WEEKLY,
-                $latest->updated_at
-            );
+            if ($latest) {
+                $add(
+                    route('user', $user_addon->user_id),
+                    '0.3',
+                    Url::CHANGE_FREQUENCY_WEEKLY,
+                    $latest->updated_at
+                );
+            }
         }
 
         // pak/addons
@@ -87,12 +89,15 @@ class SitemapService
                 })
                 ->first();
 
-            $add(
-                route('category.pak.addon', [$pak_addon->pak_slug, $pak_addon->addon_slug]),
-                '0.3',
-                Url::CHANGE_FREQUENCY_WEEKLY,
-                $latest->updated_at
-            );
+            if ($latest) {
+                $add(
+                    route('category.pak.addon', [$pak_addon->pak_slug, $pak_addon->addon_slug]),
+                    '0.3',
+                    Url::CHANGE_FREQUENCY_WEEKLY,
+                    $latest->updated_at
+                );
+            }
+
         }
         $path = storage_path('app/public/' . self::FILENAME);
         $sitemap->writeToFile($path);

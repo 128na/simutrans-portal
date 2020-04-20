@@ -5,7 +5,7 @@
 </button>
 
 <div class="collapse navbar-collapse" id="global-menu">
-    <form class="form-inline mb-2" action="{{ route('search') }}" method="GET">
+    <form class="form-inline my-2 mt-md-0" action="{{ route('search') }}" method="GET">
         <div class="input-group">
             <input class="form-control" name="word" type="search" placeholder="@lang('Search words')" aria-label="Search" value="{{ $word ?? '' }}">
             <div class="input-group-append">

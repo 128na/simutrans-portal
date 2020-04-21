@@ -11,9 +11,19 @@ use App\Models\User;
 
 class ArticleEditorService extends Service
 {
-    public function __construct(Article $model)
+    /**
+     * @var Category
+     */
+    private $category;
+    /**
+     * @var Tag
+     */
+    private $tag;
+
+    public function __construct(Category $category, Tag $tag)
     {
-        $this->model = $model;
+        $this->category = $category;
+        $this->tag = $tag;
     }
 
     public function getArticles(User $user)
@@ -34,7 +44,7 @@ class ArticleEditorService extends Service
 
     public function getSeparatedCategories(User $user)
     {
-        $categories = Category::forUser($user)->get();
+        $categories = $this->category->forUser($user)->get();
         return self::separateCategories($categories);
     }
 
@@ -118,10 +128,9 @@ class ArticleEditorService extends Service
         $article->categories()->sync($request->input('article.categories', []));
 
         $tag_names = $request->input('article.tags', []);
-        $tags_ids = Tag::whereIn('name', $tag_names)->get()->pluck('id')->toArray();
+        $tags_ids = $this->tag->whereIn('name', $tag_names)->get()->pluck('id')->toArray();
         $article->tags()->sync($tags_ids);
 
-        Tag::removeDoesntHaveRelation();
-
+        $this->tag->removeDoesntHaveRelation();
     }
 }

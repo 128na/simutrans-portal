@@ -61,4 +61,5 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
 
     //Cross Search 連携
     Route::get('cross-search', 'CrossSearchController@index');
+    Route::get('cross-search/{article}', 'CrossSearchController@show');
 });

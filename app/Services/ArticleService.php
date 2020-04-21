@@ -36,6 +36,10 @@ class ArticleService extends Service
             'ranking' => $ranking,
         ];
     }
+    private function limitOrPaginate($query, $limit = null)
+    {
+        return $limit ? $query->limit($limit)->get() : $query->paginate($this->per_page);
+    }
 
     /**
      * お知らせ記事一覧
@@ -43,8 +47,7 @@ class ArticleService extends Service
     public function getAnnouces($limit = null)
     {
         $query = $this->model->announce()->active()->with($this->relations_for_listing);
-
-        return $limit ? $query->limit(3)->get() : $query->paginate($this->per_page);
+        return $this->limitOrPaginate($query, $limit);
     }
     /**
      * 一般記事一覧
@@ -52,8 +55,7 @@ class ArticleService extends Service
     public function getCommonArticles($limit = null)
     {
         $query = $this->model->withoutAnnounce()->active()->with($this->relations_for_listing);
-
-        return $limit ? $query->limit($limit)->get() : $query->paginate($this->per_page);
+        return $this->limitOrPaginate($query, $limit);
     }
     /**
      * pak別の投稿一覧
@@ -61,8 +63,7 @@ class ArticleService extends Service
     public function getPakArticles($pak, $limit = null)
     {
         $query = $this->model->pak($pak)->addon()->active()->with($this->relations_for_listing);
-
-        return $limit ? $query->limit($limit)->get() : $query->paginate($this->per_page);
+        return $this->limitOrPaginate($query, $limit);
     }
 
     /**
@@ -71,34 +72,34 @@ class ArticleService extends Service
     public function getRankingArticles($excludes = [], $limit = null)
     {
         $query = $this->model->addon()->ranking()->active()->whereNotIn('articles.id', $excludes)->with($this->relations_for_listing);
-
-        return $limit ? $query->limit($limit)->get() : $query->paginate($this->per_page);
+        return $this->limitOrPaginate($query, $limit);
     }
 
     /**
      * アドオン投稿/紹介の一覧
      */
-    public function getAddonArticles()
+    public function getAddonArticles($limit = null)
     {
-        return $this->model->addon()->active()->with($this->relations_for_listing)->paginate($this->per_page);
+        $query = $this->model->addon()->active()->with($this->relations_for_listing);
+        return $this->limitOrPaginate($query, $limit);
     }
 
     /**
      * カテゴリの投稿一覧
      */
-    public function getCategoryArtciles(Category $category)
+    public function getCategoryArtciles(Category $category, $limit = null)
     {
-        return $category->articles()
+        $query = $category->articles()
             ->active()
-            ->with($this->relations_for_listing)
-            ->paginate($this->per_page);
+            ->with($this->relations_for_listing);
+        return $this->limitOrPaginate($query, $limit);
     }
     /**
      * カテゴリ(pak/addon)の投稿一覧
      */
-    public function getPakAddonCategoryArtciles(Category $pak, Category $addon)
+    public function getPakAddonCategoryArtciles(Category $pak, Category $addon, $limit = null)
     {
-        return $this->model
+        $query = $this->model
             ->active()
             ->with($this->relations_for_listing)
             ->whereHas('categories', function ($query) use ($pak) {
@@ -106,44 +107,43 @@ class ArticleService extends Service
             })
             ->whereHas('categories', function ($query) use ($addon) {
                 $query->where('id', $addon->id);
-            })
-            ->paginate($this->per_page);
+            });
+        return $this->limitOrPaginate($query, $limit);
     }
 
     /**
      * タグを持つ投稿記事一覧
      */
-    public function getTagArticles(Tag $tag)
+    public function getTagArticles(Tag $tag, $limit = null)
     {
-        return $tag->articles()
+        $query = $tag->articles()
             ->active()
-            ->with($this->relations_for_listing)
-            ->paginate($this->per_page);
+            ->with($this->relations_for_listing);
+        return $this->limitOrPaginate($query, $limit);
     }
 
     /**
      * ユーザーの投稿記事一覧
      */
-    public function getUserArticles(User $user)
+    public function getUserArticles(User $user, $limit = null)
     {
-        return $user->articles()
+        $query = $user->articles()
             ->active()
-            ->with($this->relations_for_listing)
-            ->paginate($this->per_page);
-
+            ->with($this->relations_for_listing);
+        return $this->limitOrPaginate($query, $limit);
     }
 
     /**
      * 記事検索結果一覧
      */
-    public function getSearchArticles(SearchRequest $request)
+    public function getSearchArticles(SearchRequest $request, $limit = null)
     {
-        return $this->model
+        $query = $this->model
             ->active()
             ->search($request->word)
             ->with($this->relations_for_listing)
-            ->orderBy('updated_at', 'desc')
-            ->paginate($this->per_page);
+            ->orderBy('updated_at', 'desc');
+        return $this->limitOrPaginate($query, $limit);
     }
 
     /**
@@ -159,5 +159,4 @@ class ArticleService extends Service
         ];
         return $article->load($relations);
     }
-
 }

@@ -15,6 +15,7 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api\v1')->group(function () {
     Route::get('articles', 'ArticleController@index');
 });
 
+// auth
 Route::prefix('v2')->name('api.v2.')->group(function () {
     // 登録
     Route::POST('register', 'Auth\RegisterController@registerApi')->name('register');
@@ -57,4 +58,7 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
             });
         });
     });
+
+    //Cross Search 連携
+    Route::get('cross-search', 'CrossSearchController@index');
 });

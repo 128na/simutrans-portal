@@ -9,6 +9,8 @@ use App\Models\User;
 
 class ArticleService extends Service
 {
+    private $relations_for_listing = ['user', 'attachments', 'categories', 'tags'];
+
     public function __construct(Article $model)
     {
         $this->model = $model;
@@ -40,7 +42,7 @@ class ArticleService extends Service
      */
     public function getAnnouces($limit = null)
     {
-        $query = $this->model->announce()->active()->withForList();
+        $query = $this->model->announce()->active()->with($this->relations_for_listing);
 
         return $limit ? $query->limit(3)->get() : $query->paginate($this->per_page);
     }
@@ -49,7 +51,7 @@ class ArticleService extends Service
      */
     public function getCommonArticles($limit = null)
     {
-        $query = $this->model->withoutAnnounce()->active()->withForList();
+        $query = $this->model->withoutAnnounce()->active()->with($this->relations_for_listing);
 
         return $limit ? $query->limit($limit)->get() : $query->paginate($this->per_page);
     }
@@ -58,7 +60,7 @@ class ArticleService extends Service
      */
     public function getPakArticles($pak, $limit = null)
     {
-        $query = $this->model->pak($pak)->addon()->active()->withForList();
+        $query = $this->model->pak($pak)->addon()->active()->with($this->relations_for_listing);
 
         return $limit ? $query->limit($limit)->get() : $query->paginate($this->per_page);
     }
@@ -68,7 +70,7 @@ class ArticleService extends Service
      */
     public function getRankingArticles($excludes = [], $limit = null)
     {
-        $query = $this->model->addon()->ranking()->active()->whereNotIn('articles.id', $excludes)->withForList();
+        $query = $this->model->addon()->ranking()->active()->whereNotIn('articles.id', $excludes)->with($this->relations_for_listing);
 
         return $limit ? $query->limit($limit)->get() : $query->paginate($this->per_page);
     }
@@ -78,7 +80,7 @@ class ArticleService extends Service
      */
     public function getAddonArticles()
     {
-        return $this->model->addon()->active()->withForList()->paginate($this->per_page);
+        return $this->model->addon()->active()->with($this->relations_for_listing)->paginate($this->per_page);
     }
 
     /**
@@ -86,12 +88,9 @@ class ArticleService extends Service
      */
     public function getCategoryArtciles(Category $category)
     {
-        return $this->model
+        return $category->articles()
             ->active()
-            ->withForList()
-            ->whereHas('categories', function ($query) use ($category) {
-                $query->where('id', $category->id);
-            })
+            ->with($this->relations_for_listing)
             ->paginate($this->per_page);
     }
     /**
@@ -101,7 +100,7 @@ class ArticleService extends Service
     {
         return $this->model
             ->active()
-            ->withForList()
+            ->with($this->relations_for_listing)
             ->whereHas('categories', function ($query) use ($pak) {
                 $query->where('id', $pak->id);
             })
@@ -116,12 +115,9 @@ class ArticleService extends Service
      */
     public function getTagArticles(Tag $tag)
     {
-        return $this->model
+        return $tag->articles()
             ->active()
-            ->withForList()
-            ->whereHas('Tags', function ($query) use ($tag) {
-                $query->where('id', $tag->id);
-            })
+            ->with($this->relations_for_listing)
             ->paginate($this->per_page);
     }
 
@@ -130,11 +126,11 @@ class ArticleService extends Service
      */
     public function getUserArticles(User $user)
     {
-        return $this->model
+        return $user->articles()
             ->active()
-            ->withForList()
-            ->user($user)
+            ->with($this->relations_for_listing)
             ->paginate($this->per_page);
+
     }
 
     /**
@@ -142,9 +138,10 @@ class ArticleService extends Service
      */
     public function getSearchArticles(SearchRequest $request)
     {
-        return $this->model->active()
+        return $this->model
+            ->active()
             ->search($request->word)
-            ->with('user', 'tags', 'categories')
+            ->with($this->relations_for_listing)
             ->orderBy('updated_at', 'desc')
             ->paginate($this->per_page);
     }

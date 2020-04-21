@@ -37,10 +37,6 @@
                 'name' =>$article->title,
                 'publisher' => [
                     '@type' =>'Organization',
-                    'logo' => [
-                        '@type' =>'ImageObject',
-                        'url' => $article->user->profile->avatar_url
-                    ],
                     'name' => $article->user->name,
                 ],
                     'author' => [

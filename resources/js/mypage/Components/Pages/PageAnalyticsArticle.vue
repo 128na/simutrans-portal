@@ -4,7 +4,7 @@
     <h1>{{$t('Access Analytics')}}</h1>
     <analytics-graph :datasets="datasets" :labels="labels" />
     <b-form-group>
-      <b-button varant="primary" @click="handleApply">{{$t('Apply')}}</b-button>
+      <b-button varant="primary" @click="handleApply" :disabled="fetching">{{$t('Apply')}}</b-button>
     </b-form-group>
     <form-analytics-config v-model="options" />
     <analytics-table :articles="articles" v-model="ids" />

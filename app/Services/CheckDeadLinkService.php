@@ -13,7 +13,7 @@ class CheckDeadLinkService extends Service
     public function getTargetArticles()
     {
         return $this->model
-        // ->select('id', 'title', 'post_type', 'contents')
+            ->select('id', 'user_id', 'title', 'post_type', 'contents')
             ->active()
             ->linkCheckTarget()
             ->with('user')

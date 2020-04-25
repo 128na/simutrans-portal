@@ -51,12 +51,17 @@ class Article extends Model implements Feedable
             $model->syncRelatedData();
         });
     }
-    private function syncRelatedData()
+    public function syncRelatedData()
     {
         UserAddonCount::recount();
         PakAddonCount::recount();
         Cache::flush();
         app(SitemapService::class)->generate();
+    }
+
+    public function routeNotificationForMail($notification)
+    {
+        return $this->user->email;
     }
 
     /*

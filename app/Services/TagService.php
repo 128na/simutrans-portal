@@ -13,7 +13,7 @@ class TagService extends Service
 
     public function searchTags($name)
     {
-        return $this->model->where('name', 'like', "%{$name}%")
+        return $this->model->select('name')->where('name', 'like', "%{$name}%")
             ->orderByRaw('LENGTH(name) asc')
             ->limit($this->per_page)
             ->get()
@@ -22,7 +22,7 @@ class TagService extends Service
 
     public function getTags()
     {
-        return $this->model->limit($this->per_page)
+        return $this->model->select('name')->limit($this->per_page)
             ->get()
             ->pluck('name');
     }

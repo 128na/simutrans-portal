@@ -4,7 +4,6 @@ namespace Tests\Feature\Api\v2\Article;
 
 use App\Models\Article;
 use App\Models\Category;
-use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -51,8 +50,6 @@ class LatestTest extends TestCase
         $article = $this->createAddonPost($user);
         $category = Category::first();
         $article->categories()->attach($category->id);
-        $tag = factory(Tag::class)->create();
-        $article->tags()->attach($tag->id);
 
         $url = route('api.v2.articles.latest');
 
@@ -65,12 +62,10 @@ class LatestTest extends TestCase
         $res->assertJsonPath('data.0.contents', $article->contents->getDescription());
         $res->assertJsonPath('data.0.url', route('articles.show', $article->slug));
         $res->assertJsonPath('data.0.author', $article->contents->author);
-        $res->assertJsonPath('data.0.categories.0.name', $category->name);
+        $res->assertJsonPath('data.0.categories.0.slug', $category->slug);
+        $res->assertJsonPath('data.0.categories.0.type', $category->type);
         $res->assertJsonPath('data.0.categories.0.url', route('category', [$category->type, $category->slug]));
         $res->assertJsonPath('data.0.categories.0.api', route('api.v2.articles.category', [$category->id]));
-        $res->assertJsonPath('data.0.tags.0.name', $tag->name);
-        $res->assertJsonPath('data.0.tags.0.url', route('tag', $tag->id));
-        $res->assertJsonPath('data.0.tags.0.api', route('api.v2.articles.tag', $tag->id));
         $res->assertJsonPath('data.0.created_by.name', $user->name);
         $res->assertJsonPath('data.0.created_by.url', route('user', $user->id));
         $res->assertJsonPath('data.0.created_by.api', route('api.v2.articles.user', $user->id));

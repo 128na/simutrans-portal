@@ -22,10 +22,7 @@ class Article extends JsonResource
             'url' => route('articles.show', $this->slug),
             'author' => $this->contents->author ?? $this->user->name,
             'categories' => new Categories($this->categories),
-            'tags' => new Tags($this->tags),
             'created_by' => new User($this->user),
-            'created_at' => $this->created_at->format('Y-m-dTH-i-s'),
-            'updated_at' => $this->updated_at->format('Y-m-dTH-i-s'),
         ];
     }
 }

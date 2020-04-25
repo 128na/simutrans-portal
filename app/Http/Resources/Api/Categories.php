@@ -16,7 +16,8 @@ class Categories extends ResourceCollection
     {
         return $this->collection->map(function ($item) {
             return [
-                'name' => $item->name,
+                'type' => $item->type,
+                'slug' => $item->slug,
                 'url' => route('category', [$item->type, $item->slug]),
                 'api' => route('api.v2.articles.category', [$item->id]),
             ];

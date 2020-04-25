@@ -51,12 +51,17 @@ class Article extends Model implements Feedable
             $model->syncRelatedData();
         });
     }
-    private function syncRelatedData()
+    public function syncRelatedData()
     {
         UserAddonCount::recount();
         PakAddonCount::recount();
         Cache::flush();
         app(SitemapService::class)->generate();
+    }
+
+    public function routeNotificationForMail($notification)
+    {
+        return $this->user->email;
     }
 
     /*
@@ -168,7 +173,10 @@ class Article extends Model implements Feedable
     public function scopeLinkCheckTarget($query)
     {
         $query->where('post_type', 'addon-introduction')
-            ->where('contents->exclude_link_check', '<>', true);
+            ->where(function ($query) {
+                $query->whereNull('contents->exclude_link_check');
+                $query->orWhere('contents->exclude_link_check', false);
+            });
     }
     public function scopePage($query)
     {
@@ -342,12 +350,13 @@ class Article extends Model implements Feedable
      */
     public function toFeedItem()
     {
-        return FeedItem::create()
-            ->id($this->id)
-            ->title($this->title)
-            ->summary($this->contents->description ?? '')
-            ->updated($this->updated_at->toMutable()) // CarbonImmutableは未対応
-            ->link(route('articles.show', $this->slug))
-            ->author($this->user->name);
+        return FeedItem::create([
+            'id' => $this->id,
+            'title' => $this->title,
+            'summary' => $this->contents->getDescription() ?? '',
+            'updated' => $this->updated_at->toMutable(), // CarbonImmutableは未対応
+            'link' => route('articles.show', $this->slug),
+            'author' => $this->user->name,
+        ]);
     }
 }

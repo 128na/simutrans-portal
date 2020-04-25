@@ -16,12 +16,16 @@ class AttachmentService extends Service
 
     public function getAttachments(User $user)
     {
-        return $user->myAttachments;
+        return $user->myAttachments()
+            ->select('id', 'original_name', 'path', 'attachmentable_id', 'attachmentable_type')
+            ->get()
+        ;
     }
 
     public function getCreateArchiveAttachments(User $user)
     {
         return $user->myAttachments()
+            ->select('id', 'original_name', 'path', 'attachmentable_id', 'attachmentable_type')
             ->whereNull('attachmentable_id')
             ->whereNull('attachmentable_type')
             ->orderBy('created_at', 'desc')
@@ -34,6 +38,7 @@ class AttachmentService extends Service
     public function getUpdateArchiveAttachments(User $user, Article $article)
     {
         return $user->myAttachments()
+            ->select('id', 'original_name', 'path', 'attachmentable_id', 'attachmentable_type')
             ->where(function ($query) {
                 $query
                     ->whereNull('attachmentable_id')

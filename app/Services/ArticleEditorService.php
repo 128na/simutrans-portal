@@ -29,7 +29,8 @@ class ArticleEditorService extends Service
     public function getArticles(User $user)
     {
         return $user->articles()
-            ->with('categories', 'tags', 'totalViewCount', 'totalConversionCount')
+            ->select('id', 'title', 'slug', 'post_type', 'contents', 'status', 'created_at', 'updated_at')
+            ->with('categories:id', 'tags:id,name', 'totalViewCount:article_id,count', 'totalConversionCount:article_id,count')
             ->get();
     }
 
@@ -131,6 +132,5 @@ class ArticleEditorService extends Service
         $tags_ids = $this->tag->whereIn('name', $tag_names)->get()->pluck('id')->toArray();
         $article->tags()->sync($tags_ids);
 
-        $this->tag->removeDoesntHaveRelation();
     }
 }

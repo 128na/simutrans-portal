@@ -16,7 +16,7 @@ class CheckDeadLinkService extends Service
             ->select('id', 'user_id', 'title', 'post_type', 'contents')
             ->active()
             ->linkCheckTarget()
-            ->with('user')
+            ->with('user:id,email')
             ->cursor();
     }
 

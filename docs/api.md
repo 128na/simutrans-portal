@@ -56,17 +56,10 @@ APIは単一IPあたり100回/分の制限があります。
       "author": string|null アドオン作者,
       "categories": [
         {
-          "name": string カテゴリ名,
+          "type": string カテゴリタイプ名,
+          "slug": string カテゴリスラッグ,
           "url": string カテゴリ記事一覧のURL,
           "api": string カテゴリ記事一覧APIのURL
-        },
-        ...
-      ],
-      "tags": [
-        {
-          "name": string タグ名,
-          "url": string タグ記事一覧のURL,
-          "api": string タグ記事一覧APIのURL
         },
         ...
       ],
@@ -75,8 +68,6 @@ APIは単一IPあたり100回/分の制限があります。
         "url": string ユーザー記事一覧のURL,
         "api": string ユーザー記事一覧APIのURL
       },
-      "created_at": string 記事作成日時
-      "updated_at": string 記事更新日時
     },
     ...
   ],

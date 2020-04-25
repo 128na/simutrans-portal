@@ -14,7 +14,7 @@ class UserService extends Service
 
     public function getUser(User $user)
     {
-        return $user->load('profile');
+        return $user->load('profile:id,user_id,data');
     }
 
     public function updateUserAndProfile(User $user, UpdateRequest $request)

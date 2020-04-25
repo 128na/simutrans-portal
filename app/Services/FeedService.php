@@ -17,7 +17,7 @@ class FeedService extends Service
             ->active()
             ->addon()
             ->limit($this->per_page)
-            ->with('user')
+            ->with('user:id,name')
             ->get();
     }
 }

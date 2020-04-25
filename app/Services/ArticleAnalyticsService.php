@@ -23,6 +23,7 @@ class ArticleAnalyticsService extends Service
         $period_query = $this->getPeriodQuery($type, $start_date, $end_date);
 
         return $user->articles()
+            ->select('id')
             ->whereIn('id', $ids)
             ->with([
                 'viewCounts' => $period_query,
@@ -36,7 +37,8 @@ class ArticleAnalyticsService extends Service
         $type_id = $this->getTypeId($type);
 
         return function ($query) use ($type_id, $period) {
-            $query->where('type', $type_id)->whereBetween('period', $period);
+            $query->select('article_id', 'count', 'period')
+                ->where('type', $type_id)->whereBetween('period', $period);
         };
     }
 

@@ -34,7 +34,7 @@
             data-slug="{{ $article->slug }}"
             class="js-click text-primary"
             target="_blank"
-            rel="noopener noreferer"
+            rel="noopener noreferrer"
         >{{ $article->contents->link }}</a>
     </dd>
 </dl>

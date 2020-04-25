@@ -55,7 +55,7 @@ class SitemapService
         $add(route('announces.index'), '0.3', Url::CHANGE_FREQUENCY_MONTHLY);
 
         // articles
-        foreach (Article::active()->cursor() as $article) {
+        foreach (Article::select('slug', 'post_type', 'updated_at')->active()->cursor() as $article) {
             $add(
                 route('articles.show', $article->slug),
                 self::PRIORITIES[$article->post_type] ?? '0.5',
@@ -66,7 +66,7 @@ class SitemapService
 
         // users
         foreach (UserAddonCount::cursor() as $user_addon) {
-            $latest = Article::active()->where('user_id', $user_addon->user_id)->first();
+            $latest = Article::select('updated_at')->active()->where('user_id', $user_addon->user_id)->first();
 
             if ($latest) {
                 $add(
@@ -80,7 +80,7 @@ class SitemapService
 
         // pak/addons
         foreach (PakAddonCount::cursor() as $pak_addon) {
-            $latest = Article::active()
+            $latest = Article::select('updated_at')->active()
                 ->whereHas('categories', function ($query) use ($pak_addon) {
                     $query->pak()->slug($pak_addon->pak_slug);
                 })

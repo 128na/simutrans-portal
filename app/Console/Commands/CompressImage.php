@@ -52,7 +52,8 @@ class CompressImage extends Command
             $this->info($attachment->path);
 
             try {
-                $this->compressed_image_service->compressIfNeeded($attachment);
+                $res = $this->compressed_image_service->compressIfNeeded($attachment);
+                $this->info($res);
             } catch (\Throwable $e) {
                 $this->error('圧縮失敗');
                 $this->error($e->getMessage());

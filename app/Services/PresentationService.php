@@ -157,7 +157,7 @@ class PresentationService extends Service
      */
     private function getUserAddonCounts()
     {
-        return $this->user_addon_count->all();
+        return $this->user_addon_count->select('user_id', 'user_name', 'count')->get();
     }
     /**
      * pak別アドオン投稿数一覧
@@ -165,7 +165,7 @@ class PresentationService extends Service
     private function getPakAddonCounts()
     {
         return $this->separateByPak(
-            $this->pak_addon_count->all()
+            $this->pak_addon_count->select('pak_slug', 'addon_slug', 'count')->get()
         );
     }
 

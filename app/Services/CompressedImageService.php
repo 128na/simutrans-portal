@@ -15,21 +15,22 @@ class CompressedImageService extends Service
 
     public function getAttachmentsCursor()
     {
-        return Attachment::cursor();
+        return Attachment::select('path')->cursor();
     }
 
     public function compressIfNeeded(Attachment $attachment)
     {
         if (!Storage::disk('public')->exists($attachment->path)) {
-            return;
+            return 'missing';
         }
         if (!$attachment->is_png) {
-            return;
+            return 'not png';
         }
         if ($this->model->isCompressed($attachment->path)) {
-            return;
+            return 'already compressed';
         }
         $this->compress($attachment);
+        return 'compressed';
     }
 
     private function compress(Attachment $attachment)

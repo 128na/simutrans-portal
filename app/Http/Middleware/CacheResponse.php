@@ -29,7 +29,7 @@ class CacheResponse
         $locale = \App::getLocale();
         $key = "{$path}@{$locale}";
 
-        return self::cacheOrCallback($key, function() use($request, $next) {
+        return self::cacheOrCallback($key, function () use ($request, $next) {
             return $next($request);
         });
     }
@@ -45,16 +45,16 @@ class CacheResponse
      */
     protected static function cacheOrCallback($key, $callback)
     {
-        $cache = Cache::get($key);
-        if(empty($cache)) {
+        $cache = Cache::tags(['response'])->get($key);
+        if (empty($cache)) {
             $data = $callback();
 
             // エラーレスポンスはキャッシュしない
-            if($data->getStatusCode() !== 200) {
+            if ($data->getStatusCode() !== 200) {
                 return $data;
             }
 
-            Cache::put($key, $data->getContent(), config('app.cache_lifetime_min', 0)*60);
+            Cache::tags(['response'])->put($key, $data->getContent(), config('app.cache_lifetime_min', 0) * 60);
             return $data;
         }
         return response($cache);

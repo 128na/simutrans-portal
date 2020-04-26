@@ -54,7 +54,7 @@ class Article extends Model implements Feedable
     {
         UserAddonCount::recount();
         PakAddonCount::recount();
-        Cache::tags(['response'])->flush();
+        Cache::flush();
     }
 
     public function routeNotificationForMail($notification)

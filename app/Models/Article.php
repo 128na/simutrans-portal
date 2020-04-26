@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Casts\ToArticleContents;
-use App\Services\SitemapService;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -55,8 +54,7 @@ class Article extends Model implements Feedable
     {
         UserAddonCount::recount();
         PakAddonCount::recount();
-        Cache::flush();
-        app(SitemapService::class)->generate();
+        Cache::tags(['response'])->flush();
     }
 
     public function routeNotificationForMail($notification)

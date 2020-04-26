@@ -16,23 +16,6 @@ class MiscTest extends TestCase
     }
 
     /**
-     * サイトマップが表示されること
-     */
-    public function testSitemap()
-    {
-        $response = $this->get('/sitemap');
-        $response->assertOk();
-
-        static::createAddonPost();
-        static::createAddonIntroduction();
-        static::createPage();
-        static::createAnnounce();
-
-        $response = $this->get('/sitemap');
-        $response->assertOk();
-    }
-
-    /**
      * feedが表示されること
      */
     public function testFeed()

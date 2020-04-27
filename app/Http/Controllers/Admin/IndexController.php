@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class IndexController extends Controller
@@ -36,6 +35,11 @@ class IndexController extends Controller
     public function notice()
     {
         trigger_error("Notice was created manually.", E_USER_NOTICE);
+    }
+
+    public function phpinfo()
+    {
+        return phpinfo();
     }
 
 }

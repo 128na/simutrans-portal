@@ -1,6 +1,10 @@
 @extends('layouts.admin')
 
 @section('content')
+    <h3>phpinfo</h3>
+    <p>
+        <a class="btn btn-danger" href="{{ route('admin.phpinfo') }} ">phpinfo</a>
+    </p>
     <h3>キャッシュ</h3>
     <p>
         <form action="{{ route('admin.flush.cache') }}" method="POST">

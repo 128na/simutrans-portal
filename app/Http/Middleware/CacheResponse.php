@@ -45,7 +45,7 @@ class CacheResponse
      */
     protected static function cacheOrCallback($key, $callback)
     {
-        $cache = Cache::storage('apc')->get($key);
+        $cache = Cache::store('apc')->get($key);
         if (empty($cache)) {
             $data = $callback();
 
@@ -54,7 +54,7 @@ class CacheResponse
                 return $data;
             }
 
-            Cache::storage('apc')->put($key, $data->getContent(), config('app.cache_lifetime_min', 0) * 60);
+            Cache::store('apc')->put($key, $data->getContent(), config('app.cache_lifetime_min', 0) * 60);
             return $data;
         }
         return response($cache);

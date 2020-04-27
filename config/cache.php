@@ -32,6 +32,9 @@ return [
      */
 
     'stores' => [
+        'apc' => [
+            'driver' => 'apc',
+        ],
         'array' => [
             'driver' => 'array',
         ],
@@ -42,9 +45,6 @@ return [
         'redis' => [
             'driver' => 'redis',
             'connection' => 'cache',
-        ],
-        'apc' => [
-            'driver' => 'apc',
         ],
     ],
 

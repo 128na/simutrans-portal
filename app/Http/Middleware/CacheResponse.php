@@ -25,7 +25,7 @@ class CacheResponse
             return $next($request);
         }
 
-        $path = str_replace(config('app.url'), '', $request->fullUrl());
+        $path = str_replace($request->url(), '', $request->fullUrl());
         $locale = \App::getLocale();
         $key = "{$path}@{$locale}";
 
@@ -53,10 +53,10 @@ class CacheResponse
             if ($data->getStatusCode() !== 200) {
                 return $data;
             }
+            $cache = gzencode($data->getContent());
 
-            Cache::put($key, $data->getContent(), config('app.cache_lifetime_min', 0) * 60);
-            return $data;
+            Cache::put($key, $cache, config('app.cache_lifetime_min', 0) * 60);
         }
-        return response($cache);
+        return response($cache)->header('Content-Encoding', 'gzip');
     }
 }

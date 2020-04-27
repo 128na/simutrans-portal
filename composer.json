@@ -20,7 +20,8 @@
     "spatie/flysystem-dropbox": "^1.1",
     "spatie/laravel-backup": "^6.2",
     "spatie/laravel-feed": "^2.2",
-    "tinify/tinify": "^1.5"
+    "tinify/tinify": "^1.5",
+    "vlucas/phpdotenv": "^4.1"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.3",

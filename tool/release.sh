@@ -29,26 +29,26 @@ echo ""
 echo "|--------------------------------------------------------------------------"
 echo "| update dependencies."
 echo "|--------------------------------------------------------------------------"
-php /home/simutrans/bin/composer.phar install --optimize-autoloader --no-dev
+php -c /home/simutrans/www/php.ini /home/simutrans/bin/composer.phar install --optimize-autoloader --no-dev
 
 echo ""
 echo "|--------------------------------------------------------------------------"
 echo "| update app version."
 echo "|--------------------------------------------------------------------------"
-git describe | php ./tool/updateAppVersion.php
+git describe | php -c /home/simutrans/www/php.ini ./tool/updateAppVersion.php
 
 echo ""
 echo "|--------------------------------------------------------------------------"
 echo "| optimize app."
 echo "|--------------------------------------------------------------------------"
-php artisan optimize:clear
-php artisan optimize
-php artisan view:cache
-php artisan event:cache
-php artisan route:clear
+php -c /home/simutrans/www/php.ini artisan optimize:clear
+php -c /home/simutrans/www/php.ini artisan optimize
+php -c /home/simutrans/www/php.ini artisan view:cache
+php -c /home/simutrans/www/php.ini artisan event:cache
+php -c /home/simutrans/www/php.ini artisan route:clear
 
 echo ""
 echo "|--------------------------------------------------------------------------"
 echo "| migration status."
 echo "|--------------------------------------------------------------------------"
-php artisan migrate:status
+php -c /home/simutrans/www/php.ini artisan migrate:status

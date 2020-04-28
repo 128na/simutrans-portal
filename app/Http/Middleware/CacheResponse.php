@@ -45,7 +45,13 @@ class CacheResponse
      */
     protected static function cacheOrCallback($key, $callback)
     {
-        $cache = Cache::get($key);
+        try {
+            $cache = Cache::get($key);
+        } catch (\Predis\PredisException $e) {
+            report($e);
+            return $callback();
+        }
+
         if (empty($cache)) {
             $data = $callback();
 

@@ -9,10 +9,10 @@ class MailHandler extends BaseHandler
 {
     protected function send($content, array $records): void
     {
-        $admins = User::admin()->get()->pluck('email')->all();
+        $admins = User::select('email')->admin()->get()->pluck('email')->all();
 
         foreach ($records as $record) {
-            Mail::raw($content, function ($message) use($admins, $content, $record) {
+            Mail::raw($content, function ($message) use ($admins, $content, $record) {
                 $message->cc($admins)->subject("{$record['message']} @{$record['channel']}");
             });
         }

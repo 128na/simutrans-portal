@@ -25,7 +25,7 @@ class CacheResponse
             return $next($request);
         }
 
-        $path = str_replace($request->url(), '', $request->fullUrl());
+        $path = str_replace(config('app.url'), '', $request->fullUrl());
         $locale = \App::getLocale();
         $key = "{$path}@{$locale}";
 

@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use RedisException;
 
 /**
  * 生成ページ丸ごとキャッシュする
@@ -47,7 +48,7 @@ class CacheResponse
     {
         try {
             $cache = Cache::get($key);
-        } catch (\Predis\PredisException $e) {
+        } catch (RedisException $e) {
             report($e);
             return $callback();
         }

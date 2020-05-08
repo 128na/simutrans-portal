@@ -81,22 +81,4 @@
 
     </ul>
 </nav>
-    @if (isset($menu_pak_addon_counts))
-        @php
-            $schemas = [];
-            foreach ($menu_pak_addon_counts as $pak_slug => $addons) {
-                foreach ($addons as $addon) {
-                    $schemas[] = [
-                        '@context'=> 'http://schema.org',
-                        '@type'=> 'SiteNavigationElement',
-                        'name'=> __('category.pak.'.$pak_slug).'/'.__('category.addon.'.$addon->addon_slug),
-                        'url'=> route('category.pak.addon', [$addon->pak_slug, $addon->addon_slug]),
-                    ];
-                }
-            }
-        @endphp
-        <script type="application/ld+json">
-            @json($schemas)
-        </script>
-    @endif
 </div>

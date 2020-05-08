@@ -23,14 +23,20 @@ class PresentationService extends Service
      * @var UserAddonCount
      */
     private $user_addon_count;
+    /**
+     * @var SchemaService
+     */
+    private $schema_service;
 
     public function __construct(
         PakAddonCount $pak_addon_count,
-        UserAddonCount $user_addon_count
+        UserAddonCount $user_addon_count,
+        SchemaService $schema_service
     ) {
 
         $this->pak_addon_count = $pak_addon_count;
         $this->user_addon_count = $user_addon_count;
+        $this->schema_service = $schema_service;
     }
 
     /**
@@ -41,6 +47,7 @@ class PresentationService extends Service
         return $this->withHeaderContents([
             'title' => __($article->title),
             'canonical_url' => route('articles.show', $article->slug),
+            'schemas' => $this->schema_service->forShow($article),
         ]);
     }
     /**
@@ -50,13 +57,14 @@ class PresentationService extends Service
     {
         return $this->withHeaderContents([
             'title' => __('Top'),
+            'schemas' => $this->schema_service->forTop(),
         ]);
     }
 
     /**
      * アドオン新着、ランキング、お知らせ、一般記事記事一覧ページ用
      */
-    public function forList($name)
+    public function forList($name, $articles)
     {
         return $this->withHeaderContents([
             'title' => __($name),
@@ -64,79 +72,90 @@ class PresentationService extends Service
                 ['name' => __('Top'), 'url' => route('index')],
                 ['name' => __($name)],
             ],
+            'schemas' => $this->schema_service->forList($name, $articles),
         ]);
     }
     /**
      * タグの記事一覧ページ用
      */
-    public function forTag(Tag $tag)
+    public function forTag(Tag $tag, $articles)
     {
+        $title = $tag->name;
         return $this->withHeaderContents([
-            'title' => __('Tag :name', ['name' => $tag->name]),
+            'title' => __('Tag :name', ['name' => $title]),
             'breadcrumb' => [
                 ['name' => __('Top'), 'url' => route('index')],
-                ['name' => $tag->name],
+                ['name' => $title],
             ],
+            'schemas' => $this->schema_service->forList($title, $articles),
         ]);
     }
     /**
      * カテゴリの記事一覧ページ用
      */
-    public function forCategory(Category $category)
+    public function forCategory(Category $category, $articles)
     {
+        $title = __("category.{$category->type}.{$category->slug}");
         return $this->withHeaderContents([
-            'title' => __('Category :name', ['name' => __("category.{$category->type}.{$category->slug}")]),
+            'title' => __('Category :name', ['name' => $title]),
             'breadcrumb' => [
                 ['name' => __('Top'), 'url' => route('index')],
-                ['name' => __("category.{$category->type}.{$category->slug}")],
+                ['name' => $title],
             ],
+            'schemas' => $this->schema_service->forList($title, $articles),
         ]);
     }
     /**
      * pak別カテゴリの記事一覧ページ用
      */
-    public function forPakAddon(Category $pak, Category $addon)
+    public function forPakAddon(Category $pak, Category $addon, $articles)
     {
+        $title = __(':pak, :addon', [
+            'pak' => __('category.pak.' . $pak->slug),
+            'addon' => __('category.addon.' . $addon->slug),
+        ]);
         return $this->withHeaderContents([
-            'title' => __(':pak, :addon', [
-                'pak' => __('category.pak.' . $pak->slug),
-                'addon' => __('category.addon.' . $addon->slug),
-            ]),
+            'title' => $title,
             'breadcrumb' => [
                 ['name' => __('Top'), 'url' => route('index')],
                 ['name' => __('category.pak.' . $pak->slug), 'url' => route('category', ['pak', $pak->slug])],
                 ['name' => __('category.addon.' . $addon->slug)],
             ],
             'open_menu_pak_addon' => [$pak->slug => true],
+            'schemas' => $this->schema_service->forList($title, $articles),
         ]);
     }
     /**
      *  ユーザー記事一覧ページ用
      */
-    public function forUser(User $user)
+    public function forUser(User $user, $articles)
     {
+        $title = __('User :name', ['name' => $user->name]);
         return $this->withHeaderContents([
-            'title' => __('User :name', ['name' => $user->name]),
+            'title' => $title,
             'breadcrumb' => [
                 ['name' => __('Top'), 'url' => route('index')],
-                ['name' => __('User :name', ['name' => $user->name])],
+                ['name' => $title],
             ],
             'user' => $user->load('profile', 'profile.attachments'),
             'open_menu_user_addon' => true,
+            'schemas' => $this->schema_service->forList($title, $articles),
         ]);
     }
     /**
      *  検索記事一覧ページ用
      */
-    public function forSearch(SearchRequest $request)
+    public function forSearch(SearchRequest $request, $articles)
     {
+        $title = __('Search results by :word', ['word' => $request->word]);
         return $this->withHeaderContents([
-            'title' => __('Search results by :word', ['word' => $request->word]),
+            'title' => $title,
             'breadcrumb' => [
                 ['name' => __('Top'), 'url' => route('index')],
-                ['name' => __('Search results by :word', ['word' => $request->word])],
+                ['name' => $title],
             ],
             'word' => $request->word,
+            'schemas' => $this->schema_service->forList($title, $articles),
         ]);
     }
 

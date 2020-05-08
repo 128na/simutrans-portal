@@ -29,8 +29,13 @@ class TagService extends Service
 
     public function getAllTags()
     {
-        return $this->model->select('id', 'name')->withCount('articles')
-            ->has('articles')
+        return $this->model->select('id', 'name')
+            ->whereHas('articles', function ($query) {
+                $query->active();
+            })
+            ->withCount(['articles' => function ($query) {
+                $query->active();
+            }])
             ->orderBy('articles_count', 'desc')
             ->get();
     }

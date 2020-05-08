@@ -25,7 +25,7 @@
                         @foreach ($addons as $addon)
                             <li class="nav-item">
                                 <a class="nav-link active py-1" href="{{ route('category.pak.addon', [$addon->pak_slug, $addon->addon_slug]) }}">
-                                    @lang('category.addon.'.$addon->addon_slug) <small>( {{ $addon->count }} )</small>
+                                    @lang('category.addon.'.$addon->addon_slug) <small>({{ $addon->count }})</small>
                                 </a>
                             </li>
                         @endforeach
@@ -43,13 +43,14 @@
                     @foreach ($menu_user_addon_counts as $user_addon_count)
                         <li class="nav-item">
                             <a class="nav-link active py-1" href="{{ route('user', [$user_addon_count->user_id]) }}">
-                                {{ $user_addon_count->user_name }} <small>( {{ $user_addon_count->count }} )</small>
+                                {{ $user_addon_count->user_name }} <small>({{ $user_addon_count->count }})</small>
                             </a>
                         </li>
                     @endforeach
                 </ul>
             </li>
         @endif
+        <li class="nav-item"><a class="nav-link active" href="{{ route('tags') }}">@lang('Tags')</a></li>
         {{-- 言語一覧 --}}
         <li class="nav-item">
             <a class="nav-link active collapsed with-icon" data-toggle="collapse" href="#collapse-lang" aria-expanded="false" aria-controls="collapse-lang">

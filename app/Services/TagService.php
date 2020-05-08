@@ -26,4 +26,12 @@ class TagService extends Service
             ->get()
             ->pluck('name');
     }
+
+    public function getAllTags()
+    {
+        return $this->model->select('id', 'name')->withCount('articles')
+            ->has('articles')
+            ->orderBy('articles_count', 'desc')
+            ->get();
+    }
 }

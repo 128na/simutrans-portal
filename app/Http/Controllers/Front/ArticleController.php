@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Services\ArticleService;
 use App\Services\CategoryService;
 use App\Services\PresentationService;
+use App\Services\TagService;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
@@ -29,15 +30,21 @@ class ArticleController extends Controller
      * @var PresentationService
      */
     private $presentation_service;
+    /**
+     * @var TagService
+     */
+    private $tag_service;
 
     public function __construct(
         ArticleService $article_service,
         CategoryService $category_service,
-        PresentationService $presentation_service
+        PresentationService $presentation_service,
+        TagService $tag_service
     ) {
         $this->article_service = $article_service;
         $this->category_service = $category_service;
         $this->presentation_service = $presentation_service;
+        $this->tag_service = $tag_service;
     }
 
     /**
@@ -181,4 +188,16 @@ class ArticleController extends Controller
 
         return view('front.articles.index', $contents);
     }
+
+    /**
+     * タグ一覧
+     */
+    public function tags()
+    {
+        $contents = ['tags' => $this->tag_service->getAllTags()];
+        $contents = array_merge($contents, $this->presentation_service->forTags());
+
+        return view('front.tags', $contents);
+    }
+
 }

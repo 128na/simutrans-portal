@@ -24,11 +24,13 @@ class SchemaService extends Service
         return $schemas;
     }
 
-    public function forList($name, $articles)
+    public function forList($name, $articles = null)
     {
         $schemas = collect([]);
         $schemas->push($this->schemaListBreadcrumb($name));
-        $schemas->push($this->schemaCarouselArticles($articles));
+        if ($articles && $articles->count()) {
+            $schemas->push($this->schemaCarouselArticles($articles));
+        }
         return $schemas;
     }
 
@@ -61,7 +63,7 @@ class SchemaService extends Service
             'image' => [$article->thumbnail_url ? $article->thumbnail_url : asset('storage/default/ogp-image.png')],
             'publisher' => [
                 '@type' => 'Organization',
-                'name' => $article->contents->author ?? $article->user->name,
+                'name' => config('app.name'),
                 'logo' => [
                     '@type' => 'ImageObject',
                     'url' => asset('storage/default/logo.png'),

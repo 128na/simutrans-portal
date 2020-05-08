@@ -17,4 +17,9 @@
     </section>
 
     {!! e($articles->onEachSide(1)->links('vendor.pagination.default')) !!}
+
+    <script type="application/ld+json">
+        @json($schemas)
+    </script>
+
 @endsection

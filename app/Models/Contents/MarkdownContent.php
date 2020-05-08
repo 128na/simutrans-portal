@@ -2,6 +2,8 @@
 
 namespace App\Models\Contents;
 
+use App\Services\MarkdownService;
+
 class MarkdownContent extends Content
 {
     public $thumbnail;
@@ -15,6 +17,6 @@ class MarkdownContent extends Content
 
     public function getDescription()
     {
-        return $this->markdown;
+        return app(MarkdownService::class)->toEscapedHTML($this->markdown);
     }
 }

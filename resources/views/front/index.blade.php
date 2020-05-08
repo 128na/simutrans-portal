@@ -44,4 +44,8 @@
         @endcomponent
     </section>
 
+    <script type="application/ld+json">
+        @json($schemas)
+    </script>
+
 @endsection

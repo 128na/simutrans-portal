@@ -303,7 +303,11 @@ class Article extends Model implements Feedable
     }
     public function getMetaDescriptionAttribute()
     {
-        return $this->content->description ?? collect($this->content->sections ?? [])->first(function ($s) {return $s['type'] === 'text';})['text'] ?? $this->title;
+        return mb_strimwidth($this->contents->getDescription(), 0, 300, '…');
+    }
+    public function getHeadlineDescriptionAttribute()
+    {
+        return mb_strimwidth($this->contents->getDescription(), 0, 55, '…');
     }
     public function getUrlDecodedSlugAttribute()
     {

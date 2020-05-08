@@ -2,6 +2,8 @@
 namespace App\Services;
 
 use App\Models\Article;
+use App\Models\Category;
+use App\Models\Tag;
 
 class SchemaService extends Service
 {
@@ -28,6 +30,26 @@ class SchemaService extends Service
     {
         $schemas = collect([]);
         $schemas->push($this->schemaListBreadcrumb($name));
+        if ($articles && $articles->count()) {
+            $schemas->push($this->schemaCarouselArticles($articles));
+        }
+        return $schemas;
+    }
+
+    public function forPakAddon(Category $pak, Category $addon, $articles)
+    {
+        $schemas = collect([]);
+        $schemas->push($this->schemaPakAddonBreadcrumb($pak, $addon));
+        if ($articles && $articles->count()) {
+            $schemas->push($this->schemaCarouselArticles($articles));
+        }
+        return $schemas;
+    }
+
+    public function forTag(Tag $tag, $articles)
+    {
+        $schemas = collect([]);
+        $schemas->push($this->schemaTagBreadcrumb($tag));
         if ($articles && $articles->count()) {
             $schemas->push($this->schemaCarouselArticles($articles));
         }
@@ -118,6 +140,55 @@ class SchemaService extends Service
                     '@type' => 'ListItem',
                     'position' => 2,
                     'name' => __($name),
+                    'item' => url()->current(),
+                ],
+            ]];
+    }
+
+    private function schemaPakAddonBreadcrumb(Category $pak, Category $addon)
+    {
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => __('Top'),
+                    'item' => route('index'),
+                ], [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => __('category.pak.' . $pak->slug),
+                    'item' => route('category', ['pak', $pak->slug]),
+                ], [
+                    '@type' => 'ListItem',
+                    'position' => 3,
+                    'name' => __('category.addon.' . $addon->slug),
+                    'item' => url()->current(),
+                ],
+            ]];
+    }
+    private function schemaTagBreadcrumb(Tag $tag)
+    {
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => __('Top'),
+                    'item' => route('index'),
+                ], [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => __('Tags'),
+                    'item' => route('tags'),
+                ], [
+                    '@type' => 'ListItem',
+                    'position' => 3,
+                    'name' => $tag->name,
                     'item' => url()->current(),
                 ],
             ]];

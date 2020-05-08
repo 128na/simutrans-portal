@@ -85,9 +85,10 @@ class PresentationService extends Service
             'title' => __('Tag :name', ['name' => $title]),
             'breadcrumb' => [
                 ['name' => __('Top'), 'url' => route('index')],
+                ['name' => __('Tags'), 'url' => route('tags')],
                 ['name' => $title],
             ],
-            'schemas' => $this->schema_service->forList($title, $articles),
+            'schemas' => $this->schema_service->forTag($tag, $articles),
         ]);
     }
     /**
@@ -122,7 +123,7 @@ class PresentationService extends Service
                 ['name' => __('category.addon.' . $addon->slug)],
             ],
             'open_menu_pak_addon' => [$pak->slug => true],
-            'schemas' => $this->schema_service->forList($title, $articles),
+            'schemas' => $this->schema_service->forPakAddon($pak, $addon, $articles),
         ]);
     }
     /**

@@ -40,14 +40,21 @@ class ShowTagsTest extends TestCase
         // assertSeeではキャッシュされたgzipがテキストにパースされないのでログインしておく
         $this->actingAs($user);
 
+        // 記事に紐づいていないタグ 表示されないこと
         $res = $this->get($url);
         $res->assertOk();
         $res->assertDontSee($tag->name);
 
+        // 公開されている記事に紐づいてるタグ 表示されること
         $article->tags()->sync([$tag->id]);
-
         $res = $this->get($url);
         $res->assertOk();
         $res->assertSee($tag->name);
+
+        // 非公開の記事に紐づいてるタグ 表示されないこと
+        $article->update(['status' => 'draft']);
+        $res = $this->get($url);
+        $res->assertOk();
+        $res->assertDontSee($tag->name);
     }
 }

@@ -14,7 +14,7 @@
         <meta name="description" content="@yield('meta-description')">
 
         <meta property="og:type"        content="website">
-        <meta property="og:title"       content="@yield('title') - {{ config('app.name') }}">
+        <meta property="og:title"       content="@yield('title')">
         <meta property="og:description" content="@yield('meta-description')">
         <meta property="og:url"         content="{{ $canonical_url ?? url()->current() }}">
 

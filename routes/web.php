@@ -29,6 +29,7 @@ Route::middleware('cache.response')->group(function () {
     Route::get('/category/{type}/{slug}', 'Front\ArticleController@category')->name('category');
     Route::get('/tag/{tag}', 'Front\ArticleController@tag')->name('tag');
     Route::get('/user/{user}', 'Front\ArticleController@user')->name('user');
+    Route::get('/tags', 'Front\ArticleController@tags')->name('tags');
 });
 // 非ログイン系 reidsキャッシュ無効
 Route::get('/articles/{article}', 'Front\ArticleController@show')->name('articles.show');

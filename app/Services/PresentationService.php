@@ -198,4 +198,17 @@ class PresentationService extends Service
             return $separated;
         }, []));
     }
+
+    public function forTags()
+    {
+        $title = __('Tags');
+        return $this->withHeaderContents([
+            'title' => $title,
+            'breadcrumb' => [
+                ['name' => __('Top'), 'url' => route('index')],
+                ['name' => $title],
+            ],
+            'schemas' => $this->schema_service->forList($title),
+        ]);
+    }
 }

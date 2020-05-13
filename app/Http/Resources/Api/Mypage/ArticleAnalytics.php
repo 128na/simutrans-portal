@@ -19,12 +19,12 @@ class ArticleAnalytics extends ResourceCollection
          * conversion_counts
          * view_counts
          */
-        return $this->collection->map(function ($item) {
-            return [
+        return $this->collection->map(
+            fn ($item) =>  [
                 $item->id,
                 $item->viewCounts->pluck('count', 'period'),
                 $item->conversionCounts->pluck('count', 'period'),
-            ];
-        });
+            ]
+        );
     }
 }

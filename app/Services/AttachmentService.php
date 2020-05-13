@@ -30,30 +30,26 @@ class AttachmentService extends Service
             ->whereNull('attachmentable_type')
             ->orderBy('created_at', 'desc')
             ->get()
-            ->filter(function ($attachment) {
-                return $attachment->path_exists;
-            });
+            ->filter(fn ($attachment) => $attachment->path_exists);
     }
 
     public function getUpdateArchiveAttachments(User $user, Article $article)
     {
         return $user->myAttachments()
             ->select('id', 'original_name', 'path', 'attachmentable_id', 'attachmentable_type')
-            ->where(function ($query) {
-                $query
+            ->where(
+                fn ($query) => $query
                     ->whereNull('attachmentable_id')
-                    ->whereNull('attachmentable_type');
-            })
-            ->orWhere(function ($query) use ($article) {
-                $query
+                    ->whereNull('attachmentable_type')
+            )
+            ->orWhere(
+                fn ($query) => $query
                     ->where('attachmentable_id', $article->id)
-                    ->where('attachmentable_type', Article::class);
-            })
+                    ->where('attachmentable_type', Article::class)
+            )
             ->orderBy('created_at', 'desc')
             ->get()
-            ->filter(function ($attachment) {
-                return $attachment->path_exists;
-            });
+            ->filter(fn ($attachment) => $attachment->path_exists);
     }
 
     public function createFromFile(User $user, StoreRequest $request)

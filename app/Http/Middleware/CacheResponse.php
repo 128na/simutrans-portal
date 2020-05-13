@@ -30,9 +30,7 @@ class CacheResponse
         $locale = \App::getLocale();
         $key = "{$path}@{$locale}";
 
-        return self::cacheOrCallback($key, function () use ($request, $next) {
-            return $next($request);
-        });
+        return self::cacheOrCallback($key, fn () => $next($request));
     }
 
     /**

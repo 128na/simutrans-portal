@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Cache;
 
 class Profile extends Model
 {
-
     protected $attributes = [
         'data' => '{}',
     ];
@@ -58,9 +57,7 @@ class Profile extends Model
     public function getAvatarAttribute()
     {
         $id = $this->data->avatar;
-        return $this->attachments->first(function ($attachment) use ($id) {
-            return $id === $attachment->id;
-        });
+        return $this->attachments->first(fn ($attachment) => $id === $attachment->id);
     }
     public function getHasAvatarAttribute()
     {

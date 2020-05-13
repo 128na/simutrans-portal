@@ -17,8 +17,6 @@ class DBTransaction
      */
     public function handle($request, Closure $next)
     {
-        return DB::transaction(function () use ($next, $request) {
-            return $next($request);
-        }, 5);
+        return DB::transaction(fn () => $next($request), 5);
     }
 }

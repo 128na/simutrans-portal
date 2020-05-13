@@ -17,14 +17,8 @@ use Illuminate\Support\Facades\DB;
 
 class EditorController extends Controller
 {
-    /**
-     * @var ArticleService
-     */
-    private $article_service;
-    /**
-     * @var ArticleEditorService
-     */
-    private $article_editor_service;
+    private ArticleService $article_service;
+    private ArticleEditorService $article_editor_service;
 
     public function __construct(
         ArticleEditorService $article_editor_service,

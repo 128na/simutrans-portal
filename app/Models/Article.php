@@ -171,10 +171,10 @@ class Article extends Model implements Feedable
     public function scopeLinkCheckTarget($query)
     {
         $query->where('post_type', 'addon-introduction')
-            ->where(function ($query) {
-                $query->whereNull('contents->exclude_link_check');
-                $query->orWhere('contents->exclude_link_check', false);
-            });
+            ->where(
+                fn ($query) => $query->whereNull('contents->exclude_link_check')
+                    ->orWhere('contents->exclude_link_check', false)
+            );
     }
     public function scopePage($query)
     {
@@ -182,24 +182,18 @@ class Article extends Model implements Feedable
     }
     public function scopePak($query, $slug)
     {
-        $query->whereHas('categories', function ($query) use ($slug) {
-            $query->pak()->slug($slug);
-        });
+        $query->whereHas('categories', fn ($query) => $query->pak()->slug($slug));
     }
 
     public function scopeAnnounce($query)
     {
         $query->whereIn('post_type', ['page', 'markdown'])
-            ->whereHas('categories', function ($query) {
-                $query->page()->slug('announce');
-            });
+            ->whereHas('categories', fn ($query) => $query->page()->slug('announce'));
     }
     public function scopeWithoutAnnounce($query)
     {
         $query->whereIn('post_type', ['page', 'markdown'])
-            ->whereDoesntHave('categories', function ($query) {
-                $query->page()->slug('announce');
-            });
+            ->whereDoesntHave('categories', fn ($query) => $query->page()->slug('announce'));
     }
     /**
      * ランキング
@@ -210,26 +204,33 @@ class Article extends Model implements Feedable
         $datetime = now();
 
         $query->select('articles.*'); // view_countのフィールドがあるとリレーションデータが取れない（多分idが複数あるから？）
-        $query->leftJoin('view_counts as d', function ($join) use ($datetime) {
-            $join->on('d.article_id', 'articles.id')
+        $query->leftJoin(
+            'view_counts as d',
+            fn ($join) => $join
+                ->on('d.article_id', 'articles.id')
                 ->where('d.type', 1)
-                ->where('d.period', $datetime->format('Ymd'));
-        });
-        $query->leftJoin('view_counts as m', function ($join) use ($datetime) {
-            $join->on('m.article_id', 'articles.id')
+                ->where('d.period', $datetime->format('Ymd'))
+        );
+        $query->leftJoin(
+            'view_counts as m',
+            fn ($join) => $join
+                ->on('m.article_id', 'articles.id')
                 ->where('m.type', 1)
-                ->where('m.period', $datetime->format('Ym'));
-        });
-        $query->leftJoin('view_counts as y', function ($join) use ($datetime) {
-            $join->on('y.article_id', 'articles.id')
+                ->where('m.period', $datetime->format('Ym'))
+        );
+        $query->leftJoin(
+            'view_counts as y',
+            fn ($join) => $join
+                ->on('y.article_id', 'articles.id')
                 ->where('y.type', 1)
-                ->where('y.period', $datetime->format('Y'));
-        });
-        $query->leftJoin('view_counts as t', function ($join) {
-            $join->on('t.article_id', 'articles.id')
+                ->where('y.period', $datetime->format('Y'))
+        );
+        $query->leftJoin(
+            'view_counts as t',
+            fn ($join) => $join->on('t.article_id', 'articles.id')
                 ->where('t.type', 1)
-                ->where('t.period', 'total');
-        });
+                ->where('t.period', 'total')
+        );
         $query->orderBy('d.count', 'desc');
         $query->orderBy('m.count', 'desc');
         $query->orderBy('y.count', 'desc');
@@ -252,9 +253,7 @@ class Article extends Model implements Feedable
     public function getThumbnailAttribute()
     {
         $id = $this->contents->thumbnail;
-        return $this->attachments->first(function ($attachment) use ($id) {
-            return (string) $id == $attachment->id;
-        });
+        return $this->attachments->first(fn ($attachment) => (string) $id == $attachment->id);
     }
     public function getThumbnailUrlAttribute()
     {
@@ -270,28 +269,20 @@ class Article extends Model implements Feedable
     public function getFileAttribute()
     {
         $id = $this->contents->file;
-        return $this->attachments->first(function ($attachment) use ($id) {
-            return (string) $id == $attachment->id;
-        });
+        return $this->attachments->first(fn ($attachment) => (string) $id == $attachment->id);
     }
 
     public function getCategoryPaksAttribute()
     {
-        return $this->categories->filter(function ($category) {
-            return $category->type === config('category.type.pak');
-        });
+        return $this->categories->filter(fn ($category) => $category->type === config('category.type.pak'));
     }
     public function getCategoryAddonsAttribute()
     {
-        return $this->categories->filter(function ($category) {
-            return $category->type === config('category.type.addon');
-        });
+        return $this->categories->filter(fn ($category) => $category->type === config('category.type.addon'));
     }
     public function getCategoryPak128PositionsAttribute()
     {
-        return $this->categories->filter(function ($category) {
-            return $category->type === config('category.type.pak128_position');
-        });
+        return $this->categories->filter(fn ($category) => $category->type === config('category.type.pak128_position'));
     }
     public function getTodaysConversionRateAttribute()
     {
@@ -321,21 +312,21 @@ class Article extends Model implements Feedable
      */
     public function isAnnounce()
     {
-        return $this->categories->search(function ($category) {
-            return $category->type === 'page' && $category->slug === 'announce';
-        }) !== false;
+        return $this->categories->search(
+            fn ($category) => $category->type === 'page' && $category->slug === 'announce'
+        ) !== false;
     }
     public function hasCategory($id)
     {
-        return $this->categories->search(function ($category) use ($id) {
-            return $category->id === $id;
-        }) !== false;
+        return $this->categories->search(
+            fn ($category) => $category->id === $id
+        ) !== false;
     }
     public function getImage($id)
     {
-        return $this->attachments->first(function ($attachment) use ($id) {
-            return (string) $id == $attachment->id;
-        });
+        return $this->attachments->first(
+            fn ($attachment) => (string) $id == $attachment->id
+        );
     }
     public function getImageUrl($id)
     {

@@ -62,21 +62,21 @@ class ArticleEditorService extends Service
 
     public function getStatuses()
     {
-        return collect(config('status'))->map(function ($item) {
-            return [
+        return collect(config('status'))->map(
+            fn ($item) =>[
                 'text' => __("statuses.{$item}"),
                 'value' => $item,
-            ];
-        })->values();
+            ]
+        )->values();
     }
     public function getPostTypes()
     {
-        return collect(config('post_types'))->map(function ($item) {
-            return [
+        return collect(config('post_types'))->map(
+            fn ($item) => [
                 'text' => __("post_types.{$item}"),
                 'value' => $item,
-            ];
-        })->values();
+            ]
+        )->values();
     }
 
     public function storeArticle(User $user, StoreRequest $request)

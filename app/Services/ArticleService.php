@@ -46,7 +46,11 @@ class ArticleService extends Service
      */
     public function getAnnouces($limit = null)
     {
-        $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents', 'updated_at')->announce()->active()->with($this->relations_for_listing);
+        $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents', 'updated_at')
+            ->announce()
+            ->active()
+            ->with($this->relations_for_listing);
+
         return $this->limitOrPaginate($query, $limit);
     }
     /**
@@ -54,7 +58,11 @@ class ArticleService extends Service
      */
     public function getCommonArticles($limit = null)
     {
-        $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents', 'updated_at')->withoutAnnounce()->active()->with($this->relations_for_listing);
+        $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents', 'updated_at')
+            ->withoutAnnounce()
+            ->active()
+            ->with($this->relations_for_listing);
+
         return $this->limitOrPaginate($query, $limit);
     }
     /**
@@ -62,7 +70,12 @@ class ArticleService extends Service
      */
     public function getPakArticles($pak, $limit = null)
     {
-        $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')->pak($pak)->addon()->active()->with($this->relations_for_listing);
+        $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
+            ->pak($pak)
+            ->addon()
+            ->active()
+            ->with($this->relations_for_listing);
+
         return $this->limitOrPaginate($query, $limit);
     }
 
@@ -71,7 +84,13 @@ class ArticleService extends Service
      */
     public function getRankingArticles($excludes = [], $limit = null)
     {
-        $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')->addon()->ranking()->active()->whereNotIn('articles.id', $excludes)->with($this->relations_for_listing);
+        $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
+            ->addon()
+            ->ranking()
+            ->active()
+            ->whereNotIn('articles.id', $excludes)
+            ->with($this->relations_for_listing);
+
         return $this->limitOrPaginate($query, $limit);
     }
 
@@ -80,7 +99,11 @@ class ArticleService extends Service
      */
     public function getAddonArticles($limit = null)
     {
-        $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')->addon()->active()->with($this->relations_for_listing);
+        $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
+            ->addon()
+            ->active()
+            ->with($this->relations_for_listing);
+
         return $this->limitOrPaginate($query, $limit);
     }
 
@@ -93,6 +116,7 @@ class ArticleService extends Service
             ->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
             ->active()
             ->with($this->relations_for_listing);
+
         return $this->limitOrPaginate($query, $limit);
     }
     /**
@@ -104,12 +128,9 @@ class ArticleService extends Service
             ->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
             ->active()
             ->with($this->relations_for_listing)
-            ->whereHas('categories', function ($query) use ($pak) {
-                $query->where('id', $pak->id);
-            })
-            ->whereHas('categories', function ($query) use ($addon) {
-                $query->where('id', $addon->id);
-            });
+            ->whereHas('categories', fn ($query) =>$query->where('id', $pak->id))
+            ->whereHas('categories', fn ($query) =>$query->where('id', $addon->id));
+
         return $this->limitOrPaginate($query, $limit);
     }
 
@@ -122,6 +143,7 @@ class ArticleService extends Service
             ->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
             ->active()
             ->with($this->relations_for_listing);
+
         return $this->limitOrPaginate($query, $limit);
     }
 
@@ -134,6 +156,7 @@ class ArticleService extends Service
             ->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
             ->active()
             ->with($this->relations_for_listing);
+
         return $this->limitOrPaginate($query, $limit);
     }
 
@@ -148,6 +171,7 @@ class ArticleService extends Service
             ->search($request->word)
             ->with($this->relations_for_listing)
             ->orderBy('updated_at', 'desc');
+
         return $this->limitOrPaginate($query, $limit);
     }
 
@@ -162,6 +186,7 @@ class ArticleService extends Service
         ] : [
             'user:id,name', 'attachments:id,attachmentable_id,attachmentable_type,path', 'categories:id,type,slug', 'tags:id,name',
         ];
+
         return $article->load($relations);
     }
 }

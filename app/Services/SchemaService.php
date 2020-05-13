@@ -196,14 +196,12 @@ class SchemaService extends Service
 
     private function schemaCarouselArticles($articles)
     {
-        $items = $articles->map(function ($article, $index) {
-            return [
+        $items = $articles->map(fn ($article, $index) => [
                 '@type' => 'ListItem',
                 'position' => $index + 1,
                 'name' => $article->title,
                 'url' => route('articles.show', $article->slug),
-            ];
-        });
+            ]);
 
         return [
             '@context' => 'https://schema.org',

@@ -16,14 +16,14 @@ class Attachments extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection->map(function($item) {
-            return [
+        return $this->collection->map(
+            fn ($item) => [
                 'id'            => $item->id,
                 'is_image'      => $item->is_image,
                 'original_name' => $item->original_name,
                 'thumbnail'     => $item->thumbnail,
                 'url'           => $item->url,
-            ];
-        });
+            ]
+        );
     }
 }

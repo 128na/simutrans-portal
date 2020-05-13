@@ -14,13 +14,13 @@ class Categories extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection->map(function ($item) {
-            return [
+        return $this->collection->map(
+            fn ($item) => [
                 'type' => $item->type,
                 'slug' => $item->slug,
                 'url' => route('category', [$item->type, $item->slug]),
                 'api' => route('api.v2.articles.category', [$item->id]),
-            ];
-        });
+            ]
+        );
     }
 }

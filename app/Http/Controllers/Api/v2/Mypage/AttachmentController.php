@@ -11,10 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AttachmentController extends Controller
 {
-    /**
-     * @var AttachmentService
-     */
-    private $attachment_service;
+    private AttachmentService $attachment_service;
 
     public function __construct(AttachmentService $attachment_service)
     {

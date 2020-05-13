@@ -7,10 +7,7 @@ use Illuminate\Notifications\Notification;
 
 class TwitterChannel
 {
-    /**
-     * @var TwitterOAuth
-     */
-    private $client;
+    private TwitterOAuth $client;
 
     public function __construct()
     {
@@ -38,5 +35,4 @@ class TwitterChannel
         }
         logger('Tweet: ' . $message);
     }
-
 }

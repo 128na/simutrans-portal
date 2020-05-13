@@ -12,14 +12,8 @@ use App\Services\PresentationService;
  */
 class IndexController extends Controller
 {
-    /**
-     * @var ArticleService
-     */
-    private $article_service;
-    /**
-     * @var PresentationService
-     */
-    private $presentation_service;
+    private ArticleService $article_service;
+    private PresentationService $presentation_service;
 
     public function __construct(
         ArticleService $article_service,

@@ -15,25 +15,15 @@ use App\Models\UserAddonCount;
  */
 class PresentationService extends Service
 {
-    /**
-     * @var PakAddonCount
-     */
-    private $pak_addon_count;
-    /**
-     * @var UserAddonCount
-     */
-    private $user_addon_count;
-    /**
-     * @var SchemaService
-     */
-    private $schema_service;
+    private PakAddonCount $pak_addon_count;
+    private UserAddonCount $user_addon_count;
+    private SchemaService $schema_service;
 
     public function __construct(
         PakAddonCount $pak_addon_count,
         UserAddonCount $user_addon_count,
         SchemaService $schema_service
     ) {
-
         $this->pak_addon_count = $pak_addon_count;
         $this->user_addon_count = $user_addon_count;
         $this->schema_service = $schema_service;
@@ -165,11 +155,13 @@ class PresentationService extends Service
      */
     private function withHeaderContents(array $contents): array
     {
-        return array_merge($contents,
+        return array_merge(
+            $contents,
             [
                 'menu_user_addon_counts' => $this->getUserAddonCounts(),
                 'menu_pak_addon_counts' => $this->getPakAddonCounts(),
-            ]);
+            ]
+        );
     }
 
     /**

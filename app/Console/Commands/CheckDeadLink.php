@@ -26,10 +26,7 @@ class CheckDeadLink extends Command
      */
     protected $description = 'Check Dead Link';
 
-    /**
-     * @var CheckDeadLinkService
-     */
-    private $check_deadlink_service;
+    private CheckDeadLinkService $check_deadlink_service;
 
     /**
      * Create a new command instance.

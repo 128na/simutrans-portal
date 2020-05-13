@@ -7,8 +7,8 @@ use Illuminate\Contracts\Validation\Rule;
 
 class ImageAttachment implements Rule
 {
-    private $attachment_service;
-    private $message;
+    private AttachmentService $attachment_service;
+    private string $message;
     /**
      * Create a new rule instance.
      *

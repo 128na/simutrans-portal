@@ -10,10 +10,7 @@ use Illuminate\Http\Request;
  */
 class RedirectController extends Controller
 {
-    /**
-     * @var RedirectService
-     */
-    private $redirect_service;
+    private RedirectService $redirect_service;
 
     public function __construct(RedirectService $redirect_service)
     {

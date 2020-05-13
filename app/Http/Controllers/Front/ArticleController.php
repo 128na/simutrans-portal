@@ -18,22 +18,10 @@ use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
-    /**
-     * @var ArticleService
-     */
-    private $article_service;
-    /**
-     * @var CategoryService
-     */
-    private $category_service;
-    /**
-     * @var PresentationService
-     */
-    private $presentation_service;
-    /**
-     * @var TagService
-     */
-    private $tag_service;
+    private ArticleService $article_service;
+    private CategoryService $category_service;
+    private PresentationService $presentation_service;
+    private TagService $tag_service;
 
     public function __construct(
         ArticleService $article_service,
@@ -199,5 +187,4 @@ class ArticleController extends Controller
 
         return view('front.tags', $contents);
     }
-
 }

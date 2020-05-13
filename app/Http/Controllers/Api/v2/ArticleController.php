@@ -12,10 +12,7 @@ use App\Services\ArticleService;
 
 class ArticleController extends Controller
 {
-    /**
-     * @var ArticleService
-     */
-    private $article_service;
+    private ArticleService $article_service;
 
     public function __construct(ArticleService $article_service)
     {

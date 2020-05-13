@@ -11,14 +11,8 @@ use App\Models\User;
 
 class ArticleEditorService extends Service
 {
-    /**
-     * @var Category
-     */
-    private $category;
-    /**
-     * @var Tag
-     */
-    private $tag;
+    private Category $category;
+    private Tag $tag;
 
     public function __construct(Category $category, Tag $tag)
     {
@@ -131,6 +125,5 @@ class ArticleEditorService extends Service
         $tag_names = $request->input('article.tags', []);
         $tags_ids = $this->tag->whereIn('name', $tag_names)->get()->pluck('id')->toArray();
         $article->tags()->sync($tags_ids);
-
     }
 }

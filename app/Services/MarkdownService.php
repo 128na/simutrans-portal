@@ -11,15 +11,8 @@ use \HTMLPurifier_Config;
  */
 class MarkdownService extends Service
 {
-    /**
-     * @var GithubMarkdown
-     */
-    private $parser;
-
-    /**
-     * @var HTMLPurifier
-     */
-    private $purifier;
+    private GithubMarkdown $parser;
+    private HTMLPurifier $purifier;
 
     public function __construct(GithubMarkdown $parser)
     {

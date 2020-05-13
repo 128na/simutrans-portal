@@ -26,10 +26,7 @@ class CompressImage extends Command
      */
     protected $description = 'Compress Image via tinypng.';
 
-    /**
-     * @var CompressedImageService
-     */
-    private $compressed_image_service;
+    private CompressedImageService $compressed_image_service;
     /**
      * Create a new command instance.
      *

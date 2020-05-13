@@ -5,8 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Service
 {
-    protected $model;
-    protected $per_page = 20;
+    protected Model $model;
+    protected int $per_page = 20;
 
     public function listing()
     {

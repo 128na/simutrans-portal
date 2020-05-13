@@ -11,10 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AnalyticsController extends Controller
 {
-    /**
-     * @var ArticleAnalyticsService
-     */
-    private $article_analytics_service;
+    private ArticleAnalyticsService $article_analytics_service;
 
     public function __construct(ArticleAnalyticsService $article_analytics_service)
     {
@@ -27,5 +24,4 @@ class AnalyticsController extends Controller
             $this->article_analytics_service->getArticles(Auth::user(), $request)
         );
     }
-
 }

@@ -27,10 +27,7 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
-    /**
-     * @var UserService
-     */
-    private $user_service;
+    private UserService $user_service;
 
     public function __construct(UserService $user_service)
     {

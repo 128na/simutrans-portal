@@ -66,6 +66,7 @@ class SchemaService extends Service
                 '@type' => 'SearchAction',
                 'target' => route('search') . '?word={search_term_string}',
                 'query-input' => 'required name=search_term_string',
+                'url' => route('index'),
             ],
         ];
     }

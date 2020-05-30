@@ -4,19 +4,16 @@ namespace App\Channels;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Illuminate\Notifications\Notification;
+use App\Services\TweetService;
+use App\Models\Article;
 
 class TwitterChannel
 {
-    private TwitterOAuth $client;
+    private TweetService $tweet_service;
 
-    public function __construct()
+    public function __construct(TweetService $tweet_service)
     {
-        $this->client = new TwitterOAuth(
-            config('twitter.consumer_key'),
-            config('twitter.consumer_secret'),
-            config('twitter.access_token'),
-            config('twitter.access_token_secret')
-        );
+        $this->tweet_service = $tweet_service;
     }
     /**
      * 指定された通知の送信
@@ -25,14 +22,15 @@ class TwitterChannel
      * @param  \Illuminate\Notifications\Notification  $notification
      * @return void
      */
-    public function send($notifiable, Notification $notification)
+    public function send(Article $notifiable, Notification $notification)
     {
         $message = $notification->toTwitter($notifiable);
 
-        // 通知を$notifiableインスタンスへ送信する…
-        if ($message && \App::environment(['production'])) {
-            $this->client->post('statuses/update', ['status' => $message]);
+        if ($notifiable->has_thumbnail) {
+            $media_paths = [$notifiable->thumbnail->full_path];
+            $this->tweet_service->postMedia($media_paths, $message);
+        } else {
+            $this->tweet_service->post($message);
         }
-        logger('Tweet: ' . $message);
     }
 }

@@ -107,6 +107,10 @@ class Attachment extends Model
     {
         return asset('storage/' . $this->path);
     }
+    public function getFullPathAttribute()
+    {
+        return storage_path('app/public/' . $this->path);
+    }
 
     /*
     |--------------------------------------------------------------------------

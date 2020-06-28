@@ -55,11 +55,15 @@ class CacheResponse
             $data = $callback();
 
             // エラーレスポンスはキャッシュしない
-            if ($data->getStatusCode() !== 200) {
+            if ($data->getStatusCode() !== 200 || !$data->getContent()) {
                 return $data;
             }
             $cache = gzencode($data->getContent());
 
+            // 空データ、キャッシュ失敗？
+            if (strlen($cache) < 100) {
+                return $data;
+            }
             Cache::put($key, $cache, config('app.cache_lifetime_min', 0) * 60);
         }
         return response($cache)->header('Content-Encoding', 'gzip');

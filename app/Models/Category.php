@@ -99,5 +99,4 @@ class Category extends Model
             $query->where('need_admin', 0);
         }
     }
-
 }

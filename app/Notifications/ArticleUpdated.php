@@ -45,9 +45,15 @@ class ArticleUpdated extends Notification
         $name = $article->user->profile->has_twitter
         ? '@' . $article->user->profile->data->twitter
         : $article->user->name;
+        $tags = collect('Simutrans')
+            ->merge($article->categoryPaks->pluck('name'))
+            ->map(fn ($name) => "#$name")
+            ->implode(', ');
 
-        $message = __("\":title\" Updated.\n:url\nby :name\nat :at\n#simutrans",
-            ['title' => $article->title, 'url' => $url, 'name' => $name, 'at' => $now]);
+        $message = __(
+            "\":title\" Updated.\n:url\nby :name\nat :at\n:tags",
+            ['title' => $article->title, 'url' => $url, 'name' => $name, 'at' => $now, 'tags' => $tags]
+        );
         return $message;
     }
 }

@@ -2,58 +2,10 @@
 
 namespace App\Notifications;
 
-use App\Channels\TwitterChannel;
-use App\Models\Article;
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
-
-class ArticlePublished extends Notification
+class ArticlePublished extends ArticleNotification
 {
-    use Queueable;
-
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    protected function getMessage():string
     {
-        //
-    }
-
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return [TwitterChannel::class];
-    }
-
-    /**
-     * @param  Article  $article
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toTwitter($article)
-    {
-        $article->loadMissing('user.profile');
-        $url = route('articles.show', $article->slug);
-        $now = now()->format('Y/m/d H:i');
-        $name = $article->user->profile->has_twitter
-        ? '@' . $article->user->profile->data->twitter
-        : $article->user->name;
-        $tags = collect('simutrans')
-            ->merge($article->categoryPaks->pluck('name'))
-            ->map(fn ($name) => "#$name")
-            ->implode(', ');
-
-        $message = __(
-            "New Article Published. \":title\"\n:url\nby :name\nat :at\n:tags",
-            ['title' => $article->title, 'url' => $url, 'name' => $name, 'at' => $now, 'tags' => $tags]
-        );
-        return $message;
+        return "New Article Published. \":title\"\n:url\nby :name\nat :at\n:tags";
     }
 }

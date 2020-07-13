@@ -48,7 +48,7 @@ abstract class ArticleNotification extends Notification
             ->merge($article->categoryPaks->pluck('name'))
             ->map(fn ($name) => "#$name")
             ->map(fn ($name) => str_replace('.', '', $name))
-            ->implode(', ');
+            ->implode(' ');
 
         $message = __(
             $this->getMessage(),

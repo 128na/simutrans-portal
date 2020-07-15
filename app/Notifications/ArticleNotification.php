@@ -44,10 +44,9 @@ abstract class ArticleNotification extends Notification
         $name = $article->user->profile->has_twitter
         ? '@' . $article->user->profile->data->twitter
         : $article->user->name;
-        $tags = collect('simutrans')
+        $tags = collect('Simutrans')
             ->merge($article->categoryPaks->pluck('name'))
-            ->map(fn ($name) => "#$name")
-            ->map(fn ($name) => str_replace('.', '', $name))
+            ->map(fn ($name) => str_replace('.', '', "#$name")) // ドットはハッシュタグに使用できない
             ->implode(' ');
 
         $message = __(

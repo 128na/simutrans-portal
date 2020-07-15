@@ -12,7 +12,6 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Services\ArticleService;
 use App\Services\CategoryService;
-use App\Services\PresentationService;
 use App\Services\TagService;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,18 +19,15 @@ class ArticleController extends Controller
 {
     private ArticleService $article_service;
     private CategoryService $category_service;
-    private PresentationService $presentation_service;
     private TagService $tag_service;
 
     public function __construct(
         ArticleService $article_service,
         CategoryService $category_service,
-        PresentationService $presentation_service,
         TagService $tag_service
     ) {
         $this->article_service = $article_service;
         $this->category_service = $category_service;
-        $this->presentation_service = $presentation_service;
         $this->tag_service = $tag_service;
     }
 
@@ -41,8 +37,6 @@ class ArticleController extends Controller
     public function addons()
     {
         $contents = ['articles' => $this->article_service->getAddonArticles()];
-        $contents = array_merge($contents, $this->presentation_service->forList('Articles', $contents['articles']));
-
         return view('front.articles.index', $contents);
     }
 
@@ -52,8 +46,6 @@ class ArticleController extends Controller
     public function ranking()
     {
         $contents = ['articles' => $this->article_service->getRankingArticles()];
-        $contents = array_merge($contents, $this->presentation_service->forList('Access Ranking', $contents['articles']));
-
         return view('front.articles.index', $contents);
     }
 
@@ -63,8 +55,6 @@ class ArticleController extends Controller
     public function pages()
     {
         $contents = ['articles' => $this->article_service->getCommonArticles()];
-        $contents = array_merge($contents, $this->presentation_service->forList('Pages', $contents['articles']));
-
         return view('front.articles.index', $contents);
     }
 
@@ -74,8 +64,6 @@ class ArticleController extends Controller
     public function announces()
     {
         $contents = ['articles' => $this->article_service->getAnnouces()];
-        $contents = array_merge($contents, $this->presentation_service->forList('Announces', $contents['articles']));
-
         return view('front.articles.index', $contents);
     }
 
@@ -93,8 +81,6 @@ class ArticleController extends Controller
         }
 
         $contents = ['article' => $this->article_service->getArticle($article, $is_owner)];
-        $contents = array_merge($contents, $this->presentation_service->forShow($article));
-
         return view('front.articles.show', $contents);
     }
 
@@ -124,9 +110,10 @@ class ArticleController extends Controller
     public function category($type, $slug)
     {
         $category = $this->category_service->findOrFailByTypeAndSlug($type, $slug);
-        $contents = ['articles' => $this->article_service->getCategoryArtciles($category)];
-        $contents = array_merge($contents, $this->presentation_service->forCategory($category, $contents['articles']));
-
+        $contents = [
+            'articles' => $this->article_service->getCategoryArtciles($category),
+            'category' => $category
+        ];
         return view('front.articles.index', $contents);
     }
 
@@ -138,9 +125,10 @@ class ArticleController extends Controller
         $pak = $this->category_service->findOrFailByTypeAndSlug('pak', $pak_slug);
         $addon = $this->category_service->findOrFailByTypeAndSlug('addon', $addon_slug);
 
-        $contents = ['articles' => $this->article_service->getPakAddonCategoryArtciles($pak, $addon)];
-        $contents = array_merge($contents, $this->presentation_service->forPakAddon($pak, $addon, $contents['articles']));
-
+        $contents = [
+            'articles' => $this->article_service->getPakAddonCategoryArtciles($pak, $addon),
+            'categories' => ['pak' => $pak, 'addon' => $addon]
+        ];
         return view('front.articles.index', $contents);
     }
 
@@ -149,9 +137,7 @@ class ArticleController extends Controller
      */
     public function tag(Tag $tag)
     {
-        $contents = ['articles' => $this->article_service->getTagArticles($tag)];
-        $contents = array_merge($contents, $this->presentation_service->forTag($tag, $contents['articles']));
-
+        $contents = ['articles' => $this->article_service->getTagArticles($tag), 'tag' => $tag];
         return view('front.articles.index', $contents);
     }
 
@@ -160,9 +146,7 @@ class ArticleController extends Controller
      */
     public function user(User $user)
     {
-        $contents = ['articles' => $this->article_service->getUserArticles($user)];
-        $contents = array_merge($contents, $this->presentation_service->forUser($user, $contents['articles']));
-
+        $contents = ['articles' => $this->article_service->getUserArticles($user), 'user' => $user];
         return view('front.articles.index', $contents);
     }
 
@@ -171,9 +155,7 @@ class ArticleController extends Controller
      */
     public function search(SearchRequest $request)
     {
-        $contents = ['articles' => $this->article_service->getSearchArticles($request)];
-        $contents = array_merge($contents, $this->presentation_service->forSearch($request, $contents['articles']));
-
+        $contents = ['articles' => $this->article_service->getSearchArticles($request), 'request' => $request];
         return view('front.articles.index', $contents);
     }
 
@@ -183,8 +165,6 @@ class ArticleController extends Controller
     public function tags()
     {
         $contents = ['tags' => $this->tag_service->getAllTags()];
-        $contents = array_merge($contents, $this->presentation_service->forTags());
-
         return view('front.tags', $contents);
     }
 }

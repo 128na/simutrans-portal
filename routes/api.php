@@ -57,5 +57,4 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
             });
         });
     });
-
 });

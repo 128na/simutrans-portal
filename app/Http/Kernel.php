@@ -15,7 +15,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \App\Http\Middleware\RedirectUnlessSSL::class,
-        \App\Http\Middleware\CheckForMaintenanceMode::class,
+        // \App\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
@@ -59,7 +59,7 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        // 'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'admin' => \App\Http\Middleware\AdminCheck::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
@@ -69,8 +69,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'cache.response' => \App\Http\Middleware\CacheResponse::class,
-        'minify' => \App\Http\Middleware\MinifyHTML::class,
-        'transaction' => \App\Http\Middleware\DBTransaction::class,
+        // 'minify' => \App\Http\Middleware\MinifyHTML::class,
+        // 'transaction' => \App\Http\Middleware\DBTransaction::class,
     ];
 
     /**
@@ -92,6 +92,6 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\AdminCheck::class,
         \App\Http\Middleware\SetLocale::class,
         \App\Http\Middleware\CacheResponse::class,
-        \App\Http\Middleware\MinifyHTML::class,
+        // \App\Http\Middleware\MinifyHTML::class,
     ];
 }

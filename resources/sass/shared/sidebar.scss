@@ -87,6 +87,7 @@ body {
 .navbar {
   //サイドバー 縦スクロール
   &.fixed-left {
+    max-height: 100vh;
     overflow-y: auto;
   }
   // サイドバー▼アイコン

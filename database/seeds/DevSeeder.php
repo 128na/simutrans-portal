@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Attachment;
@@ -30,24 +31,24 @@ class DevSeeder extends Seeder
         });
 
         // add attachment into article
-        foreach(User::with(['articles', 'profile'])->cursor() as $user) {
+        foreach (User::with(['articles', 'profile'])->cursor() as $user) {
             self::addAvatar($user);
 
-            foreach($user->articles as $article) {
+            foreach ($user->articles as $article) {
                 // アドオン投稿
-                if($article->post_type === 'addon-post') {
+                if ($article->post_type === 'addon-post') {
                     self::addAddonPost($user, $article);
                     self::addCategories($article);
                     self::addTags($article);
                 }
                 // アドオン紹介
-                if($article->post_type === 'addon-introduction') {
+                if ($article->post_type === 'addon-introduction') {
                     self::addAddonIntroduction($user, $article);
                     self::addCategories($article);
                     self::addTags($article);
                 }
                 // 一般記事
-                if($article->post_type === 'page') {
+                if ($article->post_type === 'page') {
                 }
             }
         }
@@ -69,7 +70,7 @@ class DevSeeder extends Seeder
         $thumb = Attachment::make([
             'user_id' => $user->id,
             'original_name' => 'アドオン投稿「'.$article->title.'」のサムネイル.png',
-            'path' => 'default/sample'.random_int(0,2).'.png',
+            'path' => 'default/sample'.random_int(0, 2).'.png',
         ]);
         $file = Attachment::make([
             'user_id' => $user->id,
@@ -94,7 +95,7 @@ class DevSeeder extends Seeder
         $thumb = Attachment::make([
             'user_id' => $user->id,
             'original_name' => 'アドオン紹介「'.$article->title.'」のサムネイル.png',
-            'path' => 'default/sample'.random_int(0,2).'.png',
+            'path' => 'default/sample'.random_int(0, 2).'.png',
         ]);
         $article->attachments()->saveMany([$thumb]);
 

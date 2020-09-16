@@ -22,7 +22,7 @@ class UserTest extends TestCase
 
     public function testIndex()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $url = route('api.v2.users.index');
 
         $res = $this->getJson($url);
@@ -55,7 +55,7 @@ class UserTest extends TestCase
     {
         Notification::fake();
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $data = [
             'name' => $user->name,
@@ -81,7 +81,7 @@ class UserTest extends TestCase
         $res->assertJsonValidationErrors(['user.name']);
         $res = $this->postJson($url, ['user' => array_merge($data, ['name' => str_repeat('a', 256)])]);
         $res->assertJsonValidationErrors(['user.name']);
-        $other_user = factory(User::class)->create();
+        $other_user = User::factory()->create();
         $res = $this->postJson($url, ['user' => array_merge($data, ['name' => $other_user->name])]);
         $res->assertJsonValidationErrors(['user.name']);
 
@@ -89,7 +89,7 @@ class UserTest extends TestCase
         $res->assertJsonValidationErrors(['user.email']);
         $res = $this->postJson($url, ['user' => array_merge($data, ['email' => 'invalid-email'])]);
         $res->assertJsonValidationErrors(['user.email']);
-        $other_user = factory(User::class)->create();
+        $other_user = User::factory()->create();
         $res = $this->postJson($url, ['user' => array_merge($data, ['email' => $other_user->email])]);
         $res->assertJsonValidationErrors(['user.email']);
 
@@ -104,7 +104,7 @@ class UserTest extends TestCase
         $not_image = Attachment::createFromFile(UploadedFile::fake()->create('not_image.zip', 1), $user->id);
         $res = $this->postJson($url, ['user' => array_merge($data, ['profile' => ['data' => ['avatar' => $not_image->id]]])]);
         $res->assertJsonValidationErrors(['user.profile.data.avatar']);
-        $other_user = factory(User::class)->create();
+        $other_user = User::factory()->create();
         $other_avatar = Attachment::createFromFile(UploadedFile::fake()->image('avatar.jpg', 1), $other_user->id);
         $res = $this->postJson($url, ['user' => array_merge($data, ['profile' => ['data' => ['avatar' => $other_avatar->id]]])]);
         $res->assertJsonValidationErrors(['user.profile.data.avatar']);
@@ -145,7 +145,7 @@ class UserTest extends TestCase
     {
         Notification::fake();
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $new_email = 'new@example.com';
         $data = [

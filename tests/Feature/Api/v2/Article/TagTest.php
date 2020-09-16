@@ -22,9 +22,9 @@ class TagTest extends TestCase
 
     public function testShow()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'publish']);
-        $tag = factory(Tag::class)->create();
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'publish']);
+        $tag = Tag::factory()->create();
         $article->tags()->attach($tag->id);
 
         $url = route('api.v2.articles.tag', $tag);
@@ -32,7 +32,6 @@ class TagTest extends TestCase
         $res = $this->getJson($url);
         $res->assertStatus(200);
         $res->assertJsonFragment(['title' => $article->title]);
-
     }
 
     public function testInvalid()
@@ -45,9 +44,9 @@ class TagTest extends TestCase
 
     public function testVisibilityDraft()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'draft']);
-        $tag = factory(Tag::class)->create();
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'draft']);
+        $tag = Tag::factory()->create();
         $article->tags()->attach($tag->id);
 
         $url = route('api.v2.articles.tag', $tag);
@@ -59,9 +58,9 @@ class TagTest extends TestCase
 
     public function testVisibilityPrivate()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'private']);
-        $tag = factory(Tag::class)->create();
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'private']);
+        $tag = Tag::factory()->create();
         $article->tags()->attach($tag->id);
 
         $url = route('api.v2.articles.tag', $tag);
@@ -73,9 +72,9 @@ class TagTest extends TestCase
 
     public function testVisibilityTrash()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'trash']);
-        $tag = factory(Tag::class)->create();
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'trash']);
+        $tag = Tag::factory()->create();
         $article->tags()->attach($tag->id);
 
         $url = route('api.v2.articles.tag', $tag);

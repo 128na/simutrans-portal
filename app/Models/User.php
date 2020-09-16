@@ -11,10 +11,12 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
+    use HasFactory;
 
     protected $fillable = [
         'role',
@@ -39,16 +41,16 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         parent::boot();
 
-        self::created(function($model) {
+        self::created(function ($model) {
             $model->syncRelatedData();
         });
-        self::updated(function($model) {
+        self::updated(function ($model) {
             Cache::flush();
         });
     }
     private function syncRelatedData()
     {
-        if(Profile::where('user_id', $this->id)->doesntExist()) {
+        if (Profile::where('user_id', $this->id)->doesntExist()) {
             $this->profile()->create();
         }
     }

@@ -24,9 +24,9 @@ class DevSeeder extends Seeder
         Attachment::where('id', '<>', null)->delete();
         User::where('role', config('role.user'))->delete();
 
-        factory(User::class, 20)->create()->each(function ($user) {
+        User::factory()->count(20)->create()->each(function ($user) {
             $user->articles()->saveMany(
-                factory(Article::class, random_int(0, 20))->make()
+                Article::factory()->count(random_int(0, 20))->make()
             );
         });
 
@@ -120,7 +120,7 @@ class DevSeeder extends Seeder
 
     private static function addTags($article)
     {
-        $tags = factory(Tag::class, random_int(0, 10))->make()->map(function ($tag) {
+        $tags = Tag::factory()->count(random_int(0, 10))->make()->map(function ($tag) {
             return Tag::firstOrCreate(['name' => $tag->name]);
         });
         $article->tags()->sync($tags->pluck('id'));

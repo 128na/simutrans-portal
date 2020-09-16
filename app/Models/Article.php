@@ -10,11 +10,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Article extends Model implements Feedable
 {
     use Slugable;
     use Notifiable;
+    use HasFactory;
 
     protected $fillable = [
         'user_id',

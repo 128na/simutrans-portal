@@ -22,8 +22,7 @@ class UpdateMarkdownTest extends TestCase
 
     public function testValidation()
     {
-
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $article = $this->createMarkdown($user);
         $url = route('api.v2.articles.update', $article);
 
@@ -63,7 +62,7 @@ class UpdateMarkdownTest extends TestCase
         $res = $this->postJson($url, ['article' => array_merge($data, ['title' => str_repeat('a', 256)])]);
         $res->assertJsonValidationErrors(['article.title']);
         // タイトルが重複
-        $other_article = factory(Article::class)->create(['user_id' => factory(User::class)->create()->id]);
+        $other_article = Article::factory()->create(['user_id' => User::factory()->create()->id]);
         $res = $this->postJson($url, ['article' => array_merge($data, ['title' => $other_article->title])]);
         $res->assertJsonValidationErrors(['article.title']);
 
@@ -74,7 +73,7 @@ class UpdateMarkdownTest extends TestCase
         $res = $this->postJson($url, ['article' => array_merge($data, ['slug' => str_repeat('a', 256)])]);
         $res->assertJsonValidationErrors(['article.slug']);
         // スラッグが重複
-        $other_article = factory(Article::class)->create(['user_id' => factory(User::class)->create()->id]);
+        $other_article = Article::factory()->create(['user_id' => User::factory()->create()->id]);
         $res = $this->postJson($url, ['article' => array_merge($data, ['slug' => $other_article->slug])]);
         $res->assertJsonValidationErrors(['article.slug']);
 
@@ -86,7 +85,7 @@ class UpdateMarkdownTest extends TestCase
         $res = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['thumbnail' => $file_attachment->id]])]);
         $res->assertJsonValidationErrors(['article.contents.thumbnail']);
         // 他人の投稿したサムネイルID
-        $others_attachment = Attachment::createFromFile(UploadedFile::fake()->image('other.png', 1), factory(User::class)->create()->id);
+        $others_attachment = Attachment::createFromFile(UploadedFile::fake()->image('other.png', 1), User::factory()->create()->id);
         $res = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['thumbnail' => $others_attachment->id]])]);
         $res->assertJsonValidationErrors(['article.contents.thumbnail']);
 
@@ -114,10 +113,10 @@ class UpdateMarkdownTest extends TestCase
 
     public function testPermission()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->actingAs($user);
 
-        $other_user = factory(User::class)->create();
+        $other_user = User::factory()->create();
         $other_article = $this->createMarkdown($other_user);
         $url = route('api.v2.articles.update', $other_article);
 
@@ -127,7 +126,7 @@ class UpdateMarkdownTest extends TestCase
 
     public function testPreview()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $article = $this->createMarkdown($user);
         $url = route('api.v2.articles.update', $article);
         $this->actingAs($user);

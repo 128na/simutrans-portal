@@ -33,8 +33,8 @@ class ShowTagsTest extends TestCase
     public function testTagDoesntHaveArticles()
     {
         $url = route('tags');
-        $tag = factory(Tag::class)->create();
-        $user = factory(User::class)->create();
+        $tag = Tag::factory()->create();
+        $user = User::factory()->create();
         $article = $this->createAddonIntroduction($user);
 
         // assertSeeではキャッシュされたgzipがテキストにパースされないのでログインしておく

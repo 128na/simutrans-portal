@@ -22,8 +22,8 @@ class LatestTest extends TestCase
 
     public function testShow()
     {
-        $user = factory(User::class)->create();
-        $publish_article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'publish']);
+        $user = User::factory()->create();
+        $publish_article = Article::factory()->create(['user_id' => $user->id, 'status' => 'publish']);
 
         $url = route('api.v2.articles.latest');
 
@@ -46,7 +46,7 @@ class LatestTest extends TestCase
 
     public function testData()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $article = $this->createAddonPost($user);
         $category = Category::first();
         $article->categories()->attach($category->id);
@@ -73,8 +73,8 @@ class LatestTest extends TestCase
 
     public function testVisibilityDraft()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'draft']);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'draft']);
         $url = route('api.v2.articles.latest');
 
         $res = $this->getJson($url);
@@ -84,8 +84,8 @@ class LatestTest extends TestCase
     }
     public function testVisibilityPrivate()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'private']);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'private']);
         $url = route('api.v2.articles.latest');
 
         $res = $this->getJson($url);
@@ -95,8 +95,8 @@ class LatestTest extends TestCase
     }
     public function testVisibilityTrash()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'trash']);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'trash']);
         $url = route('api.v2.articles.latest');
 
         $res = $this->getJson($url);
@@ -104,5 +104,4 @@ class LatestTest extends TestCase
 
         $res->assertJsonMissing(['title' => $article->title]);
     }
-
 }

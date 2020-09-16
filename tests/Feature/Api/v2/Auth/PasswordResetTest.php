@@ -21,7 +21,7 @@ class PasswordResetTest extends TestCase
     public function testReset()
     {
         Notification::fake();
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $this->assertCredentials(['email' => $user->email, 'password' => 'password']);
 
@@ -66,7 +66,7 @@ class PasswordResetTest extends TestCase
         $res->assertSessionHasErrors(['email']);
         $res = $this->post($url, array_merge($data, ['email' => 'invalid']));
         $res->assertSessionHasErrors(['email']);
-        $other_user = factory(User::class)->create();
+        $other_user = User::factory()->create();
         $res = $this->post($url, array_merge($data, ['email' => $other_user->email]));
         $res->assertSessionHasErrors(['email']);
 

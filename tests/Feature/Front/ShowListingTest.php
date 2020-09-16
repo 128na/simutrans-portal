@@ -58,7 +58,7 @@ class ShowListingTest extends TestCase
      */
     public function testUsers()
     {
-        $users = factory(User::class, 20)->create();
+        $users = User::factory()->count(20)->create();
         $this->assertGreaterThan(0, $users->count());
 
         foreach ($users as $user) {

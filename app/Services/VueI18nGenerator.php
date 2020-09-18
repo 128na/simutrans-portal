@@ -11,11 +11,8 @@ use Traversable;
  */
 class VueI18nGenerator
 {
-    private $config;
-
     private $availableLocales = [];
     private $filesToCreate = [];
-    private $langFiles;
 
     const VUEX_I18N = 'vuex-i18n';
     const VUE_I18N = 'vue-i18n';
@@ -29,8 +26,6 @@ class VueI18nGenerator
     public function __construct()
     {
         $this->config = [
-            'i18nLib' => self::VUE_I18N,
-            'excludes' => [],
             'escape_char' => self::ESCAPE_CHAR,
         ];
     }
@@ -42,13 +37,11 @@ class VueI18nGenerator
      * @return string
      * @throws Exception
      */
-    public function generateFromPath($path, $format = 'es6', $withVendor = false, $langFiles = [])
+    public function generateFromPath($path)
     {
         if (!is_dir($path)) {
             throw new Exception('Directory not found: ' . $path);
         }
-
-        $this->langFiles = $langFiles;
 
         $locales = [];
         $files = [];
@@ -56,12 +49,6 @@ class VueI18nGenerator
         $jsBody = '';
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDot()) {
-                if (!$withVendor
-                    && in_array($fileinfo->getFilename(), array_merge(['vendor'], $this->config['excludes']))
-                ) {
-                    continue;
-                }
-
                 $files[] = $fileinfo->getRealPath();
             }
         }
@@ -101,89 +88,8 @@ class VueI18nGenerator
             throw new Exception('Could not generate JSON, error code '.json_last_error());
         }
 
-        // formats other than 'es6' and 'umd' will become plain JSON
-        if ($format === 'es6') {
-            $jsBody = $this->getES6Module($jsonLocales);
-        } elseif ($format === 'umd') {
-            $jsBody = $this->getUMDModule($jsonLocales);
-        } else {
-            $jsBody = $jsonLocales;
-        }
-
-        return $jsBody;
+        return $this->getES6Module($jsonLocales);
     }
-
-    /**
-     * @param string $path
-     * @param string $format
-     * @return string
-     * @throws Exception
-     */
-    public function generateMultiple($path, $format = 'es6', $multiLocales = false)
-    {
-        if (!is_dir($path)) {
-            throw new Exception('Directory not found: ' . $path);
-        }
-        $jsPath = base_path() . $this->config['jsPath'];
-        $locales = [];
-        $fileToCreate = '';
-        $createdFiles = '';
-        $dir = new DirectoryIterator($path);
-        $jsBody = '';
-        foreach ($dir as $fileinfo) {
-            if (!$fileinfo->isDot()
-                && !in_array($fileinfo->getFilename(), array_merge(['vendor'], $this->config['excludes']))
-                && $fileinfo !== ''
-            ) {
-                $noExt = $this->removeExtension($fileinfo->getFilename());
-                if ($noExt !== '') {
-                    if (class_exists('App')) {
-                        App::setLocale($noExt);
-                    }
-                    if (!in_array($noExt, $this->availableLocales)) {
-                        $this->availableLocales[] = $noExt;
-                    }
-                    if ($fileinfo->isDir()) {
-                        $local = $this->allocateLocaleArray($fileinfo->getRealPath(), $multiLocales);
-                    } else {
-                        $local = $this->allocateLocaleJSON($fileinfo->getRealPath());
-                        if ($local === null) {
-                            continue;
-                        }
-                    }
-
-                    if (isset($locales[$noExt])) {
-                        $locales[$noExt] = array_merge($local, $locales[$noExt]);
-                    } else {
-                        $locales[$noExt] = $local;
-                    }
-                }
-            }
-        }
-        foreach ($this->filesToCreate as $fileName => $data) {
-            $fileToCreate = $jsPath . $fileName . '.js';
-            $createdFiles .= $fileToCreate . PHP_EOL;
-            $jsonLocales = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . PHP_EOL;
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception('Could not generate JSON, error code '.json_last_error());
-            }
-            if ($format === 'es6') {
-                $jsBody = $this->getES6Module($jsonLocales);
-            } elseif ($format === 'umd') {
-                $jsBody = $this->getUMDModule($jsonLocales);
-            } else {
-                $jsBody = $jsonLocales;
-            }
-
-            if (!is_dir(dirname($fileToCreate))) {
-                mkdir(dirname($fileToCreate), 0777, true);
-            }
-
-            file_put_contents($fileToCreate, $jsBody);
-        }
-        return $createdFiles;
-    }
-
 
     /**
      * @param string $path
@@ -207,7 +113,7 @@ class VueI18nGenerator
      * @param string $path
      * @return array
      */
-    private function allocateLocaleArray($path, $multiLocales = false)
+    private function allocateLocaleArray($path)
     {
         $data = [];
         $dir = new DirectoryIterator($path);
@@ -231,10 +137,6 @@ class VueI18nGenerator
                     continue;
                 }
 
-                if ($this->shouldIgnoreLangFile($noExt)) {
-                    continue;
-                }
-
                 $tmp = include($fileName);
 
                 if (gettype($tmp) !== "array") {
@@ -242,37 +144,18 @@ class VueI18nGenerator
                     continue;
                 }
                 if ($lastLocale !== false) {
-                    $root = realpath(base_path() . $this->config['langPath'] . DIRECTORY_SEPARATOR . $lastLocale);
+                    $root = realpath(base_path() . DIRECTORY_SEPARATOR . $lastLocale);
                     $filePath = $this->removeExtension(str_replace('\\', '_', ltrim(str_replace($root, '', realpath($fileName)), '\\')));
                     if ($filePath[0] === DIRECTORY_SEPARATOR) {
                         $filePath = substr($filePath, 1);
                     }
-                    if ($multiLocales) {
-                        $this->filesToCreate[$lastLocale][$lastLocale][$filePath] = $this->adjustArray($tmp);
-                    } else {
-                        $this->filesToCreate[$filePath][$lastLocale] = $this->adjustArray($tmp);
-                    }
+                    $this->filesToCreate[$filePath][$lastLocale] = $this->adjustArray($tmp);
                 }
 
                 $data[$noExt] = $this->adjustArray($tmp);
             }
         }
         return $data;
-    }
-
-    /**
-     * @param string $noExt
-     * @return boolean
-     */
-    private function shouldIgnoreLangFile($noExt)
-    {
-        // langFiles passed by option have priority
-        if (isset($this->langFiles) && !empty($this->langFiles)) {
-            return !in_array($noExt, $this->langFiles);
-        }
-
-        return (isset($this->config['langFiles']) && !empty($this->config['langFiles']) && !in_array($noExt, $this->config['langFiles']))
-                    || (isset($this->config['excludes']) && in_array($noExt, $this->config['excludes']));
     }
 
     /**
@@ -330,12 +213,6 @@ class VueI18nGenerator
             return $s;
         }
 
-        if ($this->config['i18nLib'] === self::VUEX_I18N) {
-            $searchPipePattern = '/(\s)*(\|)(\s)*/';
-            $threeColons = ' ::: ';
-            $s = preg_replace($searchPipePattern, $threeColons, $s);
-        }
-
         $escaped_escape_char = preg_quote($this->config['escape_char'], '/');
         return preg_replace_callback(
             "/(?<!mailto|tel|{$escaped_escape_char}):\w+/",
@@ -378,25 +255,6 @@ class VueI18nGenerator
         }
 
         return mb_substr($filename, 0, $pos);
-    }
-
-    /**
-     * Returns an UMD style module
-     * @param string $body
-     * @return string
-     */
-    private function getUMDModule($body)
-    {
-        $js = <<<HEREDOC
-(function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-        typeof define === 'function' && define.amd ? define(factory) :
-            typeof global.vuei18nLocales === 'undefined' ? global.vuei18nLocales = factory() : Object.keys(factory()).forEach(function (key) {global.vuei18nLocales[key] = factory()[key]});
-}(this, (function () { 'use strict';
-    return {$body}
-})));
-HEREDOC;
-        return $js;
     }
 
     /**

@@ -127,9 +127,9 @@ class ArticleService extends Service
         $query = $this->model
             ->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
             ->active()
-            ->with($this->relations_for_listing)
             ->whereHas('categories', fn ($query) =>$query->where('id', $pak->id))
-            ->whereHas('categories', fn ($query) =>$query->where('id', $addon->id));
+            ->whereHas('categories', fn ($query) =>$query->where('id', $addon->id))
+            ->with($this->relations_for_listing);
 
         return $this->limitOrPaginate($query, $limit);
     }
@@ -169,8 +169,8 @@ class ArticleService extends Service
             ->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
             ->active()
             ->search($request->word)
-            ->with($this->relations_for_listing)
-            ->orderBy('updated_at', 'desc');
+            ->orderBy('updated_at', 'desc')
+            ->with($this->relations_for_listing);
 
         return $this->limitOrPaginate($query, $limit);
     }

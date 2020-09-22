@@ -22,8 +22,8 @@ class TestCheckDeadlink extends TestCase
     public function testCommand()
     {
         Notification::fake();
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create([
+        $user = User::factory()->create();
+        $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'addon-introduction',
             'status' => 'publish',
@@ -44,8 +44,8 @@ class TestCheckDeadlink extends TestCase
     public function testExclude()
     {
         Notification::fake();
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create([
+        $user = User::factory()->create();
+        $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'addon-introduction',
             'status' => 'publish',
@@ -66,8 +66,8 @@ class TestCheckDeadlink extends TestCase
     public function testTrash()
     {
         Notification::fake();
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create([
+        $user = User::factory()->create();
+        $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'addon-introduction',
             'status' => 'trash',
@@ -88,8 +88,8 @@ class TestCheckDeadlink extends TestCase
     public function testDraft()
     {
         Notification::fake();
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create([
+        $user = User::factory()->create();
+        $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'addon-introduction',
             'status' => 'draft',
@@ -110,8 +110,8 @@ class TestCheckDeadlink extends TestCase
     public function testPrivate()
     {
         Notification::fake();
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create([
+        $user = User::factory()->create();
+        $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'addon-introduction',
             'status' => 'private',

@@ -45,7 +45,6 @@ class ShowArticleTest extends TestCase
         $article = static::createPage();
         $response = $this->get('/articles/' . $article->slug);
         $response->assertOk();
-
     }
 
     /**
@@ -56,7 +55,6 @@ class ShowArticleTest extends TestCase
         $article = static::createMarkdown();
         $response = $this->get('/articles/' . $article->slug);
         $response->assertOk();
-
     }
 
     /**
@@ -94,20 +92,20 @@ class ShowArticleTest extends TestCase
      * */
     public function testUnpublishArticle()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'publish']);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'publish']);
         $response = $this->get('/articles/' . $article->slug);
         $response->assertOk();
 
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'draft']);
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'draft']);
         $response = $this->get('/articles/' . $article->slug);
         $response->assertNotFound();
 
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'private']);
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'private']);
         $response = $this->get('/articles/' . $article->slug);
         $response->assertNotFound();
 
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'trash']);
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'trash']);
         $response = $this->get('/articles/' . $article->slug);
         $response->assertNotFound();
     }
@@ -119,8 +117,8 @@ class ShowArticleTest extends TestCase
      * */
     public function testViewCount()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'publish']);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'publish']);
 
         $dayly = now()->format('Ymd');
         $monthly = now()->format('Ym');
@@ -140,7 +138,7 @@ class ShowArticleTest extends TestCase
         $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);
         $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 1]);
 
-        $other_user = factory(User::class)->create();
+        $other_user = User::factory()->create();
         $response = $this->actingAs($other_user)->get('articles/' . $article->slug);
         $response->assertOk();
 
@@ -165,7 +163,7 @@ class ShowArticleTest extends TestCase
      * */
     public function testConversionCountAddonIntroduction()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $article = static::createAddonIntroduction($user);
 
         $dayly = now()->format('Ymd');
@@ -186,7 +184,7 @@ class ShowArticleTest extends TestCase
         $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);
         $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 1]);
 
-        $other_user = factory(User::class)->create();
+        $other_user = User::factory()->create();
         $response = $this->actingAs($other_user)->post('api/v1/click/' . $article->slug);
         $response->assertOk();
 
@@ -214,7 +212,7 @@ class ShowArticleTest extends TestCase
      * */
     public function testConversionCountAddonPost()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $article = static::createAddonPost($user);
 
         $dayly = now()->format('Ymd');
@@ -235,7 +233,7 @@ class ShowArticleTest extends TestCase
         $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);
         $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 1]);
 
-        $other_user = factory(User::class)->create();
+        $other_user = User::factory()->create();
         $response = $this->actingAs($other_user)->get('articles/' . $article->slug . '/download');
         $response->assertOk();
 
@@ -252,5 +250,4 @@ class ShowArticleTest extends TestCase
         $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 2]);
         $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 2]);
     }
-
 }

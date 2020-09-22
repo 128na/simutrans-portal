@@ -7,9 +7,12 @@ use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Profile extends Model
 {
+    use HasFactory;
+
     protected $attributes = [
         'data' => '{}',
     ];

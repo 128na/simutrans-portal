@@ -50,7 +50,7 @@ class EmailVerificationTest extends TestCase
     public function testVerificationEmailResent()
     {
         Notification::fake();
-        $user = factory(User::class)->create(['email_verified_at' => null]);
+        $user = User::factory()->create(['email_verified_at' => null]);
 
         $this->actingAs($user);
 

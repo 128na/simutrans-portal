@@ -19,7 +19,7 @@ class MarkdownEscapeTest extends TestCase
 
     public function testContent()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $markdown = '# hoge';
         $data = [
@@ -28,7 +28,7 @@ class MarkdownEscapeTest extends TestCase
             'status' => 'publish',
             'contents' => ['markdown' => $markdown],
         ];
-        $article = factory(Article::class)->create($data);
+        $article = Article::factory()->create($data);
 
         $url = route('articles.show', $article->slug);
         $res = $this->get($url);
@@ -40,7 +40,7 @@ class MarkdownEscapeTest extends TestCase
      */
     public function testEscape()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $keyword = 'keyword' . now()->format('YmdHis');
         $markdown = "# hogehoge";
@@ -57,7 +57,7 @@ class MarkdownEscapeTest extends TestCase
             'status' => 'publish',
             'contents' => ['markdown' => $markdown],
         ];
-        $article = factory(Article::class)->create($data);
+        $article = Article::factory()->create($data);
 
         $url = route('articles.show', $article->slug);
         $res = $this->get($url);

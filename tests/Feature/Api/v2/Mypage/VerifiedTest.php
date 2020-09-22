@@ -21,8 +21,8 @@ class VerifiedTest extends TestCase
 
     public function testNotVerified()
     {
-        $user = factory(User::class)->create(['email_verified_at' => null]);
-        $article = factory(Article::class)->create(['user_id' => $user->id]);
+        $user = User::factory()->create(['email_verified_at' => null]);
+        $article = Article::factory()->create(['user_id' => $user->id]);
         $attachment = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $user->id);
         $this->actingAs($user);
 
@@ -55,8 +55,8 @@ class VerifiedTest extends TestCase
 
     public function testVerified()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id]);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id]);
         $attachment = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $user->id);
         $this->actingAs($user);
 
@@ -86,5 +86,4 @@ class VerifiedTest extends TestCase
         $response = $this->postJson(route('api.v2.articles.update', $article));
         $response->assertStatus(422);
     }
-
 }

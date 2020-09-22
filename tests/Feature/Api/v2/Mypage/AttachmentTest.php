@@ -20,7 +20,7 @@ class AttachmentTest extends TestCase
 
     public function testIndex()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $file = Attachment::createFromFile(UploadedFile::fake()->create('file.zip', 1), $user->id);
 
         $url = route('api.v2.attachments.index');
@@ -36,7 +36,7 @@ class AttachmentTest extends TestCase
 
     public function testFormatImage()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $file = Attachment::createFromFile(UploadedFile::fake()->image('file.png', 1), $user->id);
 
         $url = route('api.v2.attachments.index');
@@ -60,7 +60,7 @@ class AttachmentTest extends TestCase
     // mime_typeが働かないのでzipなどは判定できない
     public function testFormatOther()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $file = Attachment::createFromFile(UploadedFile::fake()->create('file.zip', 1), $user->id);
 
         $url = route('api.v2.attachments.index');
@@ -83,7 +83,7 @@ class AttachmentTest extends TestCase
 
     public function testStore()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $url = route('api.v2.attachments.store');
 
@@ -121,7 +121,7 @@ class AttachmentTest extends TestCase
 
     public function testStoreImage()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $url = route('api.v2.attachments.store');
 
@@ -160,7 +160,7 @@ class AttachmentTest extends TestCase
 
     public function testDestroy()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $file = Attachment::createFromFile(UploadedFile::fake()->image('file.png', 1), $user->id);
         $url = route('api.v2.attachments.destroy', $file);
@@ -169,7 +169,7 @@ class AttachmentTest extends TestCase
 
         $this->actingAs($user);
 
-        $other_user = factory(User::class)->create();
+        $other_user = User::factory()->create();
         $other_file = Attachment::createFromFile(UploadedFile::fake()->image('file.png', 1), $other_user->id);
         $url = route('api.v2.attachments.destroy', $other_file);
         $res = $this->deleteJson($url);
@@ -184,8 +184,19 @@ class AttachmentTest extends TestCase
         $url = route('api.v2.attachments.destroy', $file);
         $res = $this->deleteJson($url);
         $res->assertOK();
+
+        $this->assertNull(Attachment::find($file->id));
+
+        // IDのみだとなぜか失敗する
         $this->assertDatabaseMissing('attachments', [
             'id' => $file->id,
+            'user_id' => $file->user_if,
+            // 'attachmentable_id' => null,
+            // 'attachmentable_type' => null,
+            // 'original_name' => 'file.png',
+            // 'path' => $file->path,
+            // 'created_at' => $file->created_at,
+            // 'updated_at' => $file->updated_at,
         ]);
     }
 }

@@ -19,9 +19,9 @@ class TagTest extends TestCase
 
     public function testIndex()
     {
-        $user = factory(User::class)->create();
-        $tag1 = factory(Tag::class)->create(['name' => 'long tag name']);
-        $tag2 = factory(Tag::class)->create(['name' => 'short']);
+        $user = User::factory()->create();
+        $tag1 = Tag::factory()->create(['name' => 'long tag name']);
+        $tag2 = Tag::factory()->create(['name' => 'short']);
         $url = route('api.v2.tags.search');
 
         $res = $this->getJson($url);
@@ -31,7 +31,7 @@ class TagTest extends TestCase
 
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson([$tag2->name, $tag1->name]);
+        $res->assertExactJson([$tag1->name, $tag2->name]);
 
         $url = route('api.v2.tags.search', ['name' => 'sh']);
         $res = $this->getJson($url);
@@ -51,8 +51,8 @@ class TagTest extends TestCase
 
     public function testStore()
     {
-        $user = factory(User::class)->create();
-        $tag1 = factory(Tag::class)->create(['name' => 'long tag name']);
+        $user = User::factory()->create();
+        $tag1 = Tag::factory()->create(['name' => 'long tag name']);
         $tag2_name = 'short';
         $url = route('api.v2.tags.store');
 
@@ -69,6 +69,6 @@ class TagTest extends TestCase
         $res->assertJsonValidationErrors(['name']);
         $res = $this->postJson($url, ['name' => $tag2_name]);
         $res->assertOK();
-        $res->assertExactJson([$tag2_name, $tag1->name]);
+        $res->assertExactJson([$tag1->name, $tag2_name]);
     }
 }

@@ -24,7 +24,7 @@ class StorePageTest extends TestCase
     {
         $url = route('api.v2.articles.store');
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $res = $this->postJson($url);
         $res->assertUnauthorized();
@@ -74,7 +74,7 @@ class StorePageTest extends TestCase
         $res = $this->postJson($url, ['article' => array_merge($data, ['title' => str_repeat('a', 256)])]);
         $res->assertJsonValidationErrors(['article.title']);
         // タイトルが重複
-        $other_article = factory(Article::class)->create(['user_id' => factory(User::class)->create()->id]);
+        $other_article = Article::factory()->create(['user_id' => User::factory()->create()->id]);
         $res = $this->postJson($url, ['article' => array_merge($data, ['title' => $other_article->title])]);
         $res->assertJsonValidationErrors(['article.title']);
 
@@ -85,7 +85,7 @@ class StorePageTest extends TestCase
         $res = $this->postJson($url, ['article' => array_merge($data, ['slug' => str_repeat('a', 256)])]);
         $res->assertJsonValidationErrors(['article.slug']);
         // スラッグが重複
-        $other_article = factory(Article::class)->create(['user_id' => factory(User::class)->create()->id]);
+        $other_article = Article::factory()->create(['user_id' => User::factory()->create()->id]);
         $res = $this->postJson($url, ['article' => array_merge($data, ['slug' => $other_article->slug])]);
         $res->assertJsonValidationErrors(['article.slug']);
 
@@ -97,7 +97,7 @@ class StorePageTest extends TestCase
         $res = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['thumbnail' => $file_attachment->id]])]);
         $res->assertJsonValidationErrors(['article.contents.thumbnail']);
         // 他人の投稿したサムネイルID
-        $others_attachment = Attachment::createFromFile(UploadedFile::fake()->image('other.png', 1), factory(User::class)->create()->id);
+        $others_attachment = Attachment::createFromFile(UploadedFile::fake()->image('other.png', 1), User::factory()->create()->id);
         $res = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['thumbnail' => $others_attachment->id]])]);
         $res->assertJsonValidationErrors(['article.contents.thumbnail']);
 
@@ -140,7 +140,7 @@ class StorePageTest extends TestCase
         $res = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['sections' => [['type' => 'image', 'id' => $file_attachment->id]]]])]);
         $res->assertJsonValidationErrors(['article.contents.sections.0.id']);
         // 画像セクションが他人の投稿したID
-        $others_attachment = Attachment::createFromFile(UploadedFile::fake()->image('other.png', 1), factory(User::class)->create()->id);
+        $others_attachment = Attachment::createFromFile(UploadedFile::fake()->image('other.png', 1), User::factory()->create()->id);
         $res = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['sections' => [['type' => 'image', 'id' => $others_attachment->id]]]])]);
         $res->assertJsonValidationErrors(['article.contents.sections.0.id']);
 
@@ -163,7 +163,7 @@ class StorePageTest extends TestCase
     {
         $url = route('api.v2.articles.store');
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->actingAs($user);
 
         $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $user->id);

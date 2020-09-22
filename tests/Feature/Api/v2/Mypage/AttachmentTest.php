@@ -184,8 +184,19 @@ class AttachmentTest extends TestCase
         $url = route('api.v2.attachments.destroy', $file);
         $res = $this->deleteJson($url);
         $res->assertOK();
+
+        $this->assertNull(Attachment::find($file->id));
+
+        // IDのみだとなぜか失敗する
         $this->assertDatabaseMissing('attachments', [
             'id' => $file->id,
+            'user_id' => $file->user_if,
+            // 'attachmentable_id' => null,
+            // 'attachmentable_type' => null,
+            // 'original_name' => 'file.png',
+            // 'path' => $file->path,
+            // 'created_at' => $file->created_at,
+            // 'updated_at' => $file->updated_at,
         ]);
     }
 }

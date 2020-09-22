@@ -37,6 +37,7 @@ class TagService extends Service
                 $query->active();
             }])
             ->orderBy('articles_count', 'desc')
+            ->withCache()
             ->get();
     }
 }

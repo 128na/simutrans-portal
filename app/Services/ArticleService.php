@@ -49,6 +49,7 @@ class ArticleService extends Service
         $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents', 'updated_at')
             ->announce()
             ->active()
+            ->withCache()
             ->with($this->relations_for_listing);
 
         return $this->limitOrPaginate($query, $limit);
@@ -61,6 +62,7 @@ class ArticleService extends Service
         $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents', 'updated_at')
             ->withoutAnnounce()
             ->active()
+            ->withCache()
             ->with($this->relations_for_listing);
 
         return $this->limitOrPaginate($query, $limit);
@@ -74,6 +76,7 @@ class ArticleService extends Service
             ->pak($pak)
             ->addon()
             ->active()
+            ->withCache()
             ->with($this->relations_for_listing);
 
         return $this->limitOrPaginate($query, $limit);
@@ -89,6 +92,7 @@ class ArticleService extends Service
             ->ranking()
             ->active()
             ->whereNotIn('articles.id', $excludes)
+            ->withCache()
             ->with($this->relations_for_listing);
 
         return $this->limitOrPaginate($query, $limit);
@@ -102,6 +106,7 @@ class ArticleService extends Service
         $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
             ->addon()
             ->active()
+            ->withCache()
             ->with($this->relations_for_listing);
 
         return $this->limitOrPaginate($query, $limit);
@@ -115,6 +120,7 @@ class ArticleService extends Service
         $query = $category->articles()
             ->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
             ->active()
+            ->withCache()
             ->with($this->relations_for_listing);
 
         return $this->limitOrPaginate($query, $limit);
@@ -129,6 +135,7 @@ class ArticleService extends Service
             ->active()
             ->whereHas('categories', fn ($query) =>$query->where('id', $pak->id))
             ->whereHas('categories', fn ($query) =>$query->where('id', $addon->id))
+            ->withCache()
             ->with($this->relations_for_listing);
 
         return $this->limitOrPaginate($query, $limit);
@@ -142,6 +149,7 @@ class ArticleService extends Service
         $query = $tag->articles()
             ->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
             ->active()
+            ->withCache()
             ->with($this->relations_for_listing);
 
         return $this->limitOrPaginate($query, $limit);
@@ -155,6 +163,7 @@ class ArticleService extends Service
         $query = $user->articles()
             ->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
             ->active()
+            ->withCache()
             ->with($this->relations_for_listing);
 
         return $this->limitOrPaginate($query, $limit);
@@ -170,6 +179,7 @@ class ArticleService extends Service
             ->active()
             ->search($request->word)
             ->orderBy('updated_at', 'desc')
+            ->withCache()
             ->with($this->relations_for_listing);
 
         return $this->limitOrPaginate($query, $limit);

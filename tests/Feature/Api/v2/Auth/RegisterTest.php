@@ -37,7 +37,7 @@ class RegisterTest extends TestCase
         $response->assertJsonValidationErrors(['email']);
         $response = $this->postJson($url, array_merge($data, ['email' => 'invalid-email']));
         $response->assertJsonValidationErrors(['email']);
-        $registrated_user = factory(User::class)->create();
+        $registrated_user = User::factory()->create();
         $response = $this->postJson($url, array_merge($data, ['email' => $registrated_user->email]));
         $response->assertJsonValidationErrors(['email']);
 

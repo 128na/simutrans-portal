@@ -7,6 +7,7 @@ use App\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Password;
 
 class PasswordResetTest extends TestCase
 {
@@ -21,7 +22,7 @@ class PasswordResetTest extends TestCase
     public function testReset()
     {
         Notification::fake();
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $this->assertCredentials(['email' => $user->email, 'password' => 'password']);
 
@@ -40,12 +41,8 @@ class PasswordResetTest extends TestCase
         $res = $this->postJson($url, ['email' => $user->email]);
         $res->assertOK();
 
-        $token = null;
-        Notification::assertSentTo($user, ResetPassword::class, function ($notification, $channels) use (&$token) {
-            $token = $notification->token;
-            return true;
-        });
-
+        Notification::assertSentTo($user, ResetPassword::class);
+        $token = Password::broker()->createToken($user);
         $new_password = 'new_password';
         $res = $this->get(route('password.reset', ['token' => $token]));
         $res->assertOK();
@@ -66,7 +63,7 @@ class PasswordResetTest extends TestCase
         $res->assertSessionHasErrors(['email']);
         $res = $this->post($url, array_merge($data, ['email' => 'invalid']));
         $res->assertSessionHasErrors(['email']);
-        $other_user = factory(User::class)->create();
+        $other_user = User::factory()->create();
         $res = $this->post($url, array_merge($data, ['email' => $other_user->email]));
         $res->assertSessionHasErrors(['email']);
 
@@ -80,8 +77,28 @@ class PasswordResetTest extends TestCase
         $res = $this->post($url, array_merge($data, ['password_confirmation' => 'invalid']));
         $res->assertSessionHasErrors(['password']);
 
-        $res = $this->post($url, $data);
-        $res->assertRedirect(route('mypage.index'));
+        $this->assertCredentials(['email' => $user->email, 'password' => 'password']);
+    }
+
+    public function testResetSuccess()
+    {
+        $user = User::factory()->create();
+        $token = Password::broker()->createToken($user);
+        $get_url = route('password.reset', ['token' => $token]);
+        $post_url = route('password.update');
+
+        $new_password = 'new_password';
+        $data = [
+            'token' => $token,
+            'email' => $user->email,
+            'password' => $new_password,
+            'password_confirmation' => $new_password,
+        ];
+        $this->followingRedirects()
+            ->from($get_url)
+            ->post($post_url, $data)
+            ->assertSessionHasNoErrors()
+            ->assertOK();
 
         $this->assertInvalidCredentials(['email' => $user->email, 'password' => 'password']);
         $this->assertCredentials(['email' => $user->email, 'password' => $new_password]);

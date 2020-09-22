@@ -21,8 +21,8 @@ class UserTest extends TestCase
 
     public function testShow()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'publish']);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'publish']);
 
         $url = route('api.v2.articles.user', $user);
 
@@ -41,8 +41,8 @@ class UserTest extends TestCase
 
     public function testVisibilityDraft()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'draft']);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'draft']);
 
         $url = route('api.v2.articles.user', $user);
         $res = $this->getJson($url);
@@ -53,8 +53,8 @@ class UserTest extends TestCase
 
     public function testVisibilityPrivate()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'private']);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'private']);
 
         $url = route('api.v2.articles.user', $user);
         $res = $this->getJson($url);
@@ -65,8 +65,8 @@ class UserTest extends TestCase
 
     public function testVisibilityTrash()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'trash']);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'trash']);
 
         $url = route('api.v2.articles.user', $user);
         $res = $this->getJson($url);

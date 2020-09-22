@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
@@ -13,9 +14,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(ProdSeeder::class);
 
-        if(App::environment(['local', 'development'])) {
+        if (\App::environment(['local', 'development'])) {
             // $this->call(DevSeeder::class);
         }
-
     }
 }

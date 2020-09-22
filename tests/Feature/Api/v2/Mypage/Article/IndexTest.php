@@ -19,7 +19,7 @@ class IndexTest extends TestCase
 
     public function testIndex()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $article = $this->createPage($user);
         $url = route('api.v2.articles.index');
 
@@ -47,7 +47,7 @@ class IndexTest extends TestCase
 
     public function testOptions()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $url = route('api.v2.articles.options');
 
         $response = $this->getJson($url);

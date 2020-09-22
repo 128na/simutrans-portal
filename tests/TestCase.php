@@ -15,10 +15,10 @@ abstract class TestCase extends BaseTestCase
 
     protected static function createAddonPost($user = null)
     {
-        $user = $user ?: factory(User::class)->create();
+        $user = $user ?: User::factory()->create();
         $file = UploadedFile::fake()->create('document.zip', 1);
         $attachment = Attachment::createFromFile($file, $user->id);
-        $article = factory(Article::class)->create([
+        $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'addon-post',
             'title' => 'test_addon-post',
@@ -34,8 +34,8 @@ abstract class TestCase extends BaseTestCase
     }
     protected static function createAddonIntroduction($user = null)
     {
-        $user = $user ?: factory(User::class)->create();
-        $article = factory(Article::class)->create([
+        $user = $user ?: User::factory()->create();
+        $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'addon-introduction',
             'title' => 'test_addon-introduction',
@@ -50,8 +50,8 @@ abstract class TestCase extends BaseTestCase
     }
     protected static function createPage($user = null)
     {
-        $user = $user ?: factory(User::class)->create();
-        $article = factory(Article::class)->create([
+        $user = $user ?: User::factory()->create();
+        $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'page',
             'title' => 'test_page',
@@ -64,8 +64,8 @@ abstract class TestCase extends BaseTestCase
     }
     protected static function createMarkdown($user = null)
     {
-        $user = $user ?: factory(User::class)->create();
-        $article = factory(Article::class)->create([
+        $user = $user ?: User::factory()->create();
+        $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'markdown',
             'title' => 'test_markdown',
@@ -78,8 +78,8 @@ abstract class TestCase extends BaseTestCase
     }
     protected static function createAnnounce($user = null)
     {
-        $user = $user ?: factory(User::class)->create();
-        $article = factory(Article::class)->create([
+        $user = $user ?: User::factory()->create();
+        $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'page',
             'title' => 'test_announce',
@@ -94,8 +94,8 @@ abstract class TestCase extends BaseTestCase
     }
     protected static function createMarkdownAnnounce($user = null)
     {
-        $user = $user ?: factory(User::class)->create();
-        $article = factory(Article::class)->create([
+        $user = $user ?: User::factory()->create();
+        $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'markdown',
             'title' => 'test_markdown',

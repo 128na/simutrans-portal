@@ -22,8 +22,8 @@ class CategoryTest extends TestCase
 
     public function testShow()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'publish']);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'publish']);
         $category = Category::first();
         $article->categories()->attach($category->id);
 
@@ -44,8 +44,8 @@ class CategoryTest extends TestCase
 
     public function testVisibilityDraft()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'draft']);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'draft']);
         $category = Category::first();
         $article->categories()->attach($category->id);
 
@@ -58,8 +58,8 @@ class CategoryTest extends TestCase
 
     public function testVisibilityPrivate()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'private']);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'private']);
         $category = Category::first();
         $article->categories()->attach($category->id);
 
@@ -72,8 +72,8 @@ class CategoryTest extends TestCase
 
     public function testVisibilityTrash()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id, 'status' => 'trash']);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'trash']);
         $category = Category::first();
         $article->categories()->attach($category->id);
 

@@ -23,12 +23,12 @@ class AdminTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect(route('mypage.index'));
 
-        $user = factory(User::class)->create(['role' => 'user']);
+        $user = User::factory()->create(['role' => 'user']);
         $this->actingAs($user);
         $response = $this->get($url);
         $response->assertStatus(404);
 
-        $admin = factory(User::class)->create(['role' => 'admin']);
+        $admin = User::factory()->create(['role' => 'admin']);
         $this->actingAs($admin);
         $response = $this->get($url);
         $response->assertOk();
@@ -39,7 +39,7 @@ class AdminTest extends TestCase
         $url = route('admin.error');
         $response = $this->get($url);
         $response->assertRedirect(route('mypage.index'));
-        $user = factory(User::class)->create(['role' => 'admin']);
+        $user = User::factory()->create(['role' => 'admin']);
         $response = $this->actingAs($user)->get($url);
         $response->assertStatus(500);
     }
@@ -49,7 +49,7 @@ class AdminTest extends TestCase
         $url = route('admin.warning');
         $response = $this->get($url);
         $response->assertRedirect(route('mypage.index'));
-        $user = factory(User::class)->create(['role' => 'admin']);
+        $user = User::factory()->create(['role' => 'admin']);
         $response = $this->actingAs($user)->get($url);
         $response->assertStatus(500);
     }
@@ -59,9 +59,8 @@ class AdminTest extends TestCase
         $url = route('admin.notice');
         $response = $this->get($url);
         $response->assertRedirect(route('mypage.index'));
-        $user = factory(User::class)->create(['role' => 'admin']);
+        $user = User::factory()->create(['role' => 'admin']);
         $response = $this->actingAs($user)->get($url);
         $response->assertStatus(500);
     }
-
 }

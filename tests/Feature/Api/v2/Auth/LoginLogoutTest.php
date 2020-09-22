@@ -21,7 +21,7 @@ class LoginLogoutTest extends TestCase
     public function testLogin()
     {
         Notification::fake();
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $url = route('api.v2.login');
 
@@ -45,7 +45,7 @@ class LoginLogoutTest extends TestCase
 
     public function LogoutTest()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->actingAs($user);
         $this->assertAuthenticated();
 

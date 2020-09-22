@@ -1,48 +1,54 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
+
 use App\Models\Article;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
- */
+class ArticleFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Article::class;
 
-$factory->define(Article::class, function (Faker $faker) {
-
-    $post_type = $faker->randomElement(config('post_types'));
-    $contents = [
-        'addon-introduction' => [
-            'description' => $faker->realText,
-            'author' => $faker->name,
-            'link' => $faker->url,
-        ],
-        'addon-post' => [
-            'description' => $faker->realText,
-            'author' => $faker->name,
-        ],
-        'page' => [
-            'sections' => [
-                ['type' => 'text', 'text' => $faker->realText],
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $post_type = $this->faker->randomElement(config('post_types'));
+        $contents = [
+            'addon-introduction' => [
+                'description' => $this->faker->realText,
+                'author' => $this->faker->name,
+                'link' => $this->faker->url,
             ],
-        ],
-        'markdown' => [
-            'markdown' => $faker->realText,
-        ],
-    ];
-    $sentence = $faker->sentence;
-    return [
-        'title' => $sentence,
-        'slug' => $sentence,
-        'contents' => $contents[$post_type],
-        'post_type' => $post_type,
-        'status' => $faker->randomElement(config('status')),
-    ];
-});
+            'addon-post' => [
+                'description' => $this->faker->realText,
+                'author' => $this->faker->name,
+            ],
+            'page' => [
+                'sections' => [
+                    ['type' => 'text', 'text' => $this->faker->realText],
+                ],
+            ],
+            'markdown' => [
+                'markdown' => $this->faker->realText,
+            ],
+        ];
+        $sentence = $this->faker->sentence;
+        return [
+            'title' => $sentence,
+            'slug' => $sentence,
+            'contents' => $contents[$post_type],
+            'post_type' => $post_type,
+            'status' => $this->faker->randomElement(config('status')),
+        ];
+    }
+}

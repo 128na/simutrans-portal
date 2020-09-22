@@ -18,8 +18,8 @@ class AnalyticsTest extends TestCase
     }
     public function testAnalytics()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id]);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id]);
 
         $url = route('api.v2.analytics.index');
         $res = $this->getJson($url);
@@ -37,8 +37,8 @@ class AnalyticsTest extends TestCase
         $url = route('api.v2.analytics.index', ['ids' => [99999]]);
         $res = $this->getJson($url);
         $res->assertJsonValidationErrors(['ids.0']);
-        $other_user = factory(User::class)->create();
-        $other_article = factory(Article::class)->create(['user_id' => $other_user->id]);
+        $other_user = User::factory()->create();
+        $other_article = Article::factory()->create(['user_id' => $other_user->id]);
         $url = route('api.v2.analytics.index', ['ids' => [$other_article->id]]);
         $res = $this->getJson($url);
         $res->assertJsonValidationErrors(['ids.0']);
@@ -72,8 +72,8 @@ class AnalyticsTest extends TestCase
 
     public function testValues()
     {
-        $user = factory(User::class)->create();
-        $article = factory(Article::class)->create(['user_id' => $user->id]);
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id]);
         $this->actingAs($user);
 
         $now = now();
@@ -95,8 +95,8 @@ class AnalyticsTest extends TestCase
         $res->assertExactJson(['data' => [
             [
                 $article->id,
-                [$dailyConversionCount->period => $dailyConversionCount->count],
                 [$dailyViewCount->period => $dailyViewCount->count],
+                [$dailyConversionCount->period => $dailyConversionCount->count],
             ],
         ]]);
 
@@ -111,8 +111,8 @@ class AnalyticsTest extends TestCase
         $res->assertExactJson(['data' => [
             [
                 $article->id,
-                [$monthlyConversionCount->period => $monthlyConversionCount->count],
                 [$monthlyViewCount->period => $monthlyViewCount->count],
+                [$monthlyConversionCount->period => $monthlyConversionCount->count],
             ],
         ]]);
 
@@ -127,8 +127,8 @@ class AnalyticsTest extends TestCase
         $res->assertExactJson(['data' => [
             [
                 $article->id,
-                [$yearlyConversionCount->period => $yearlyConversionCount->count],
                 [$yearlyViewCount->period => $yearlyViewCount->count],
+                [$yearlyConversionCount->period => $yearlyConversionCount->count],
             ],
         ]]);
     }

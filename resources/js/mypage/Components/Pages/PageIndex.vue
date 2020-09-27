@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{$t('Mypage')}}</h1>
+    <h1>{{ $t("Mypage") }}</h1>
     <div v-if="!user.verified">
       <form-verify :user="user" />
     </div>
@@ -17,6 +17,6 @@
 import { linkable } from "../../mixins";
 export default {
   props: ["articles", "user"],
-  mixins: [linkable]
+  mixins: [linkable],
 };
 </script>

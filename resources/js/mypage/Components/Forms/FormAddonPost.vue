@@ -3,7 +3,7 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{$t('Author')}}
+        {{ $t("Author") }}
       </template>
       <b-form-input
         type="text"
@@ -14,7 +14,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{$t('Addon File')}}
+        {{ $t("Addon File") }}
       </template>
       <media-manager
         name="addon"
@@ -29,7 +29,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{$t('Description')}}
+        {{ $t("Description") }}
       </template>
       <b-form-textarea
         v-model="article.contents.description"
@@ -40,7 +40,7 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{$t('Acknowledgments and Referenced')}}
+        {{ $t("Acknowledgments and Referenced") }}
       </template>
       <b-form-textarea
         v-model="article.contents.thanks"
@@ -55,6 +55,6 @@ import { validatable } from "../../mixins";
 export default {
   name: "form-addon-post",
   props: ["article", "attachments", "options"],
-  mixins: [validatable]
+  mixins: [validatable],
 };
 </script>

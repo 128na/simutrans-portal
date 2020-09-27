@@ -19,6 +19,6 @@
 <script>
 export default {
   name: "page",
-  props: ["article", "attachments", "options", "errors"]
+  props: ["article", "attachments", "options", "errors"],
 };
 </script>

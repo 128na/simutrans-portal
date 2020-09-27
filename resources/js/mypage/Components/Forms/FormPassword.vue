@@ -19,7 +19,7 @@ export default {
   props: ["value", "autocomplete", "state"],
   data() {
     return {
-      show: false
+      show: false,
     };
   },
   computed: {
@@ -28,12 +28,12 @@ export default {
     },
     icon() {
       return this.show ? "eye-fill" : "eye-slash-fill";
-    }
+    },
   },
   methods: {
     toggle() {
       this.show = !this.show;
-    }
-  }
+    },
+  },
 };
 </script>

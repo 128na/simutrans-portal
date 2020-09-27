@@ -14,6 +14,6 @@
 import { validatable } from "../../mixins";
 export default {
   props: ["params"],
-  mixins: [validatable]
+  mixins: [validatable],
 };
 </script>

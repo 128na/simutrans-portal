@@ -3,7 +3,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{$t('Status')}}
+        {{ $t("Status") }}
       </template>
       <b-form-select
         v-model="article.status"
@@ -14,14 +14,18 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{$t('Title')}}
+        {{ $t("Title") }}
       </template>
       <b-input-group>
-        <b-form-input type="text" v-model="article.title" :state="state('article.title')" />
+        <b-form-input
+          type="text"
+          v-model="article.title"
+          :state="state('article.title')"
+        />
         <b-input-group-append>
           <b-button @click="handleSlug">
             <b-icon icon="arrow-down" />
-            {{$t('To Slug')}}
+            {{ $t("To Slug") }}
           </b-button>
         </b-input-group-append>
       </b-input-group>
@@ -29,17 +33,21 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{$t('Slug')}}
+        {{ $t("Slug") }}
       </template>
-      <b-form-input type="text" v-model="url_decoded_slug" :state="state('article.slug')" />
-      <div
-        class="mt-1 text-break"
-      >URL: https://simutrans.sakura.ne.jp/portal/articles/{{ article.slug }}</div>
+      <b-form-input
+        type="text"
+        v-model="url_decoded_slug"
+        :state="state('article.slug')"
+      />
+      <div class="mt-1 text-break">
+        URL: https://simutrans.sakura.ne.jp/portal/articles/{{ article.slug }}
+      </div>
     </b-form-group>
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{$t('Thumbnail')}}
+        {{ $t("Thumbnail") }}
       </template>
       <media-manager
         name="thumbnail"
@@ -73,13 +81,13 @@ export default {
             "-"
           );
         this.article.slug = encodeURI(replaced);
-      }
-    }
+      },
+    },
   },
   methods: {
     handleSlug() {
       this.url_decoded_slug = this.article.title;
-    }
-  }
+    },
+  },
 };
 </script>

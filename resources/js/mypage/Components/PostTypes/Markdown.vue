@@ -19,6 +19,6 @@
 <script>
 export default {
   name: "markdown",
-  props: ["article", "attachments", "options", "errors"]
+  props: ["article", "attachments", "options", "errors"],
 };
 </script>

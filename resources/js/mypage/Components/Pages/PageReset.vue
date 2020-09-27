@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button-back name="login">{{$t('Back to Login')}}</button-back>
-    <h1>{{$t('Reset Password')}}</h1>
+    <button-back name="login">{{ $t("Back to Login") }}</button-back>
+    <h1>{{ $t("Reset Password") }}</h1>
     <b-form>
       <form-reset :params="params" :errors="errors" />
       <b-form-group>
@@ -10,7 +10,8 @@
           type="submit"
           :disabled="fetching"
           @click="handleSubmit"
-        >{{$t('Send Password Reset Link')}}</b-button>
+          >{{ $t("Send Password Reset Link") }}</b-button
+        >
       </b-form-group>
     </b-form>
   </div>
@@ -22,8 +23,8 @@ export default {
   data() {
     return {
       params: {
-        email: ""
-      }
+        email: "",
+      },
     };
   },
   methods: {
@@ -34,7 +35,7 @@ export default {
       this.toastSuccess(
         "You are receiving this email because we received a password reset request for your account."
       );
-    }
-  }
+    },
+  },
 };
 </script>

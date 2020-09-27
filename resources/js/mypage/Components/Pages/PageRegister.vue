@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button-back name="login">{{$t('Back to Login')}}</button-back>
-    <h1>{{$t('Register')}}</h1>
+    <button-back name="login">{{ $t("Back to Login") }}</button-back>
+    <h1>{{ $t("Register") }}</h1>
     <b-form>
       <form-register :params="params" :errors="errors" />
       <b-form-group>
@@ -10,7 +10,8 @@
           type="submit"
           :disabled="fetching"
           @click="handleRegister"
-        >{{$t('Register')}}</b-button>
+          >{{ $t("Register") }}</b-button
+        >
       </b-form-group>
     </b-form>
   </div>
@@ -25,8 +26,8 @@ export default {
       params: {
         name: "",
         email: "",
-        password: ""
-      }
+        password: "",
+      },
     };
   },
   created() {
@@ -40,7 +41,7 @@ export default {
     },
     setUser(user) {
       this.$emit("loggedin", user);
-    }
-  }
+    },
+  },
 };
 </script>

@@ -3,14 +3,19 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{$t('Name')}}
+        {{ $t("Name") }}
       </template>
-      <b-form-input type="text" v-model="params.name" :state="state('name')" autocomplete="name" />
+      <b-form-input
+        type="text"
+        v-model="params.name"
+        :state="state('name')"
+        autocomplete="name"
+      />
     </b-form-group>
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{$t('Email')}}
+        {{ $t("Email") }}
       </template>
       <b-form-input
         type="email"
@@ -22,7 +27,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{$t('Password')}}
+        {{ $t("Password") }}
       </template>
       <form-password
         v-model="params.password"
@@ -36,6 +41,6 @@
 import { validatable } from "../../mixins";
 export default {
   props: ["params"],
-  mixins: [validatable]
+  mixins: [validatable],
 };
 </script>

@@ -3,15 +3,19 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{$t('Sections')}}
+        {{ $t("Sections") }}
       </template>
-      <b-form inline v-for="(section,index) in article.contents.sections" :key="index">
+      <b-form
+        inline
+        v-for="(section, index) in article.contents.sections"
+        :key="index"
+      >
         <b-form-textarea
           v-if="isText(section.type)"
           :value="section.text"
           :placeholder="$t('Text')"
           :state="state(`article.contents.sections.${index}.text`)"
-          @input="v=>handleInput(index, v)"
+          @input="(v) => handleInput(index, v)"
         />
         <b-form-input
           v-if="isUrl(section.type)"
@@ -19,7 +23,7 @@
           :value="section.url"
           placeholder="URL"
           :state="state(`article.contents.sections.${index}.url`)"
-          @input="v=>handleInput(index, v)"
+          @input="(v) => handleInput(index, v)"
         />
         <media-manager
           v-if="isImage(section.type)"
@@ -30,7 +34,7 @@
           :attachments="attachments"
           :only_image="true"
           :state="state(`article.contents.sections.${index}.id`)"
-          @input="v=>handleInput(index, v)"
+          @input="(v) => handleInput(index, v)"
           @update:attachments="$emit('update:attachments', $event)"
         />
         <b-form-input
@@ -39,21 +43,30 @@
           :value="section.caption"
           :placeholder="$t('Caption')"
           :state="state(`article.contents.sections.${index}.caption`)"
-          @input="v=>handleInput(index, v)"
+          @input="(v) => handleInput(index, v)"
         />
-        <b-button variant="outline-danger" @click="handleRemove(index)" size="sm" pill>&times;</b-button>
+        <b-button
+          variant="outline-danger"
+          @click="handleRemove(index)"
+          size="sm"
+          pill
+          >&times;</b-button
+        >
       </b-form>
-      <b-btn @click="handleAdd('caption')">{{$t('Add Caption')}}</b-btn>
-      <b-btn @click="handleAdd('text')">{{$t('Add Text')}}</b-btn>
-      <b-btn @click="handleAdd('url')">{{$t('Add URL')}}</b-btn>
-      <b-btn @click="handleAdd('image')">{{$t('Add Image')}}</b-btn>
+      <b-btn @click="handleAdd('caption')">{{ $t("Add Caption") }}</b-btn>
+      <b-btn @click="handleAdd('text')">{{ $t("Add Text") }}</b-btn>
+      <b-btn @click="handleAdd('url')">{{ $t("Add URL") }}</b-btn>
+      <b-btn @click="handleAdd('image')">{{ $t("Add Image") }}</b-btn>
     </b-form-group>
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{$t('Categories')}}
+        {{ $t("Categories") }}
       </template>
-      <b-form-checkbox-group v-model="article.categories" :options="options.categories.page" />
+      <b-form-checkbox-group
+        v-model="article.categories"
+        :options="options.categories.page"
+      />
     </b-form-group>
   </div>
 </template>
@@ -115,7 +128,7 @@ export default {
       if (this.isCaption(type)) {
         return this.article.contents.sections.push({
           type: "caption",
-          caption: ""
+          caption: "",
         });
       }
     },
@@ -125,8 +138,8 @@ export default {
         sections.splice(index, 1)[0];
         this.article.contents.sections = sections;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

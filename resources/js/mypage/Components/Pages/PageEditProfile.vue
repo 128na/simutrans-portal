@@ -1,7 +1,7 @@
 <template>
   <div>
     <button-back />
-    <h1>{{$t('Edit my profile')}}</h1>
+    <h1>{{ $t("Edit my profile") }}</h1>
     <form-profile
       :user="copy"
       :attachments="attachments"
@@ -10,7 +10,9 @@
       @update:user="$emit('update:user', $event)"
     />
     <b-form-group>
-      <b-btn :disabled="fetching" variant="primary" @click="handleUpdate">{{$t('Save')}}</b-btn>
+      <b-btn :disabled="fetching" variant="primary" @click="handleUpdate">{{
+        $t("Save")
+      }}</b-btn>
     </b-form-group>
   </div>
 </template>
@@ -19,7 +21,7 @@ import {
   toastable,
   verifiedable,
   api_handlable,
-  editor_handlable
+  editor_handlable,
 } from "../../mixins";
 export default {
   props: ["user", "attachments"],
@@ -39,7 +41,7 @@ export default {
     },
     getOriginal() {
       return this.user;
-    }
-  }
+    },
+  },
 };
 </script>

@@ -3,12 +3,22 @@
     <template v-slot="{ tags }">
       <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
         <li v-for="tag in tags" :key="tag" class="list-inline-item mb-1">
-          <b-form-tag @remove="handleRemoveClick(tag)" :title="tag" variant="primary">{{ tag }}</b-form-tag>
+          <b-form-tag
+            @remove="handleRemoveClick(tag)"
+            :title="tag"
+            variant="primary"
+            >{{ tag }}</b-form-tag
+          >
         </li>
       </ul>
 
-      <b-dropdown size="sm" variant="outline-secondary" block menu-class="w-100">
-        <template v-slot:button-content>{{$t('Select tag')}}</template>
+      <b-dropdown
+        size="sm"
+        variant="outline-secondary"
+        block
+        menu-class="w-100"
+      >
+        <template v-slot:button-content>{{ $t("Select tag") }}</template>
         <b-dropdown-form @submit.stop.prevent="() => {}">
           <b-form-group
             label-for="tag-search-input"
@@ -31,7 +41,10 @@
                   size="sm"
                   :disabled="!can_create || fetching"
                   @click="handleCreateTagClick"
-                >{{$t('Create and add tag "{name}"', {name:criteria})}}</b-button>
+                  >{{
+                    $t('Create and add tag "{name}"', { name: criteria })
+                  }}</b-button
+                >
               </b-input-group-append>
             </b-input-group>
           </b-form-group>
@@ -41,8 +54,11 @@
           v-for="tag in items"
           :key="tag"
           @click="handleTagClick(tag)"
-        >{{ tag }}</b-dropdown-item-button>
-        <b-dropdown-text v-if="items.length === 0">{{$t('No tags')}}</b-dropdown-text>
+          >{{ tag }}</b-dropdown-item-button
+        >
+        <b-dropdown-text v-if="items.length === 0">{{
+          $t("No tags")
+        }}</b-dropdown-text>
       </b-dropdown>
     </template>
   </b-form-tags>
@@ -57,17 +73,17 @@ export default {
   props: {
     value: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     creatable: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       tags: [],
-      search: ""
+      search: "",
     };
   },
   created() {
@@ -76,7 +92,7 @@ export default {
   watch: {
     criteria() {
       this.fetchTags();
-    }
+    },
   },
   computed: {
     items() {
@@ -86,11 +102,11 @@ export default {
       return this.search.trim().toLowerCase();
     },
     just_match() {
-      return this.tags.find(o => o === this.criteria);
+      return this.tags.find((o) => o === this.criteria);
     },
     can_create() {
       return this.creatable && this.criteria && !this.just_match;
-    }
+    },
   },
   methods: {
     setTags(tags) {
@@ -101,14 +117,14 @@ export default {
       this.search = "";
     },
     handleRemoveClick(tag_name) {
-      const index = this.value.findIndex(v => v === tag_name);
+      const index = this.value.findIndex((v) => v === tag_name);
       this.value.splice(index, 1);
     },
     async handleCreateTagClick() {
       await this.storeTag(this.criteria);
       this.value.push(this.criteria);
       this.toastSuccess("Tag Created");
-    }
-  }
+    },
+  },
 };
 </script>

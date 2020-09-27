@@ -1,7 +1,7 @@
 <template>
   <div v-if="$route.params.post_type">
     <button-back />
-    <h1>{{title}}</h1>
+    <h1>{{ title }}</h1>
     <component
       :is="copy.post_type"
       :article="copy"
@@ -14,13 +14,19 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{$t('Auto Tweet')}}
+        {{ $t("Auto Tweet") }}
       </template>
-      <b-form-checkbox v-model="should_tweet">{{$t('Tweet when posting or updating.')}}</b-form-checkbox>
+      <b-form-checkbox v-model="should_tweet">{{
+        $t("Tweet when posting or updating.")
+      }}</b-form-checkbox>
     </b-form-group>
     <b-form-group>
-      <b-btn :disabled="fetching" @click="handlePreview">{{$t('Preview')}}</b-btn>
-      <b-btn :disabled="fetching" variant="primary" @click="handleCreate">{{$t('Save')}}</b-btn>
+      <b-btn :disabled="fetching" @click="handlePreview">{{
+        $t("Preview")
+      }}</b-btn>
+      <b-btn :disabled="fetching" variant="primary" @click="handleCreate">{{
+        $t("Save")
+      }}</b-btn>
     </b-form-group>
   </div>
 </template>
@@ -29,14 +35,14 @@ import {
   verifiedable,
   previewable,
   api_handlable,
-  editor_handlable
+  editor_handlable,
 } from "../../mixins";
 export default {
   props: ["attachments", "options"],
   data() {
     return {
       article: null,
-      should_tweet: true
+      should_tweet: true,
     };
   },
   mixins: [verifiedable, previewable, api_handlable, editor_handlable],
@@ -46,14 +52,14 @@ export default {
   watch: {
     "$route.params.post_type"() {
       this.initialize();
-    }
+    },
   },
   computed: {
     title() {
       return this.$t("Create {post_type}", {
-        post_type: this.$t(`post_types.${this.article.post_type}`)
+        post_type: this.$t(`post_types.${this.article.post_type}`),
       });
-    }
+    },
   },
   methods: {
     initialize() {
@@ -85,10 +91,10 @@ export default {
           description: "",
           file: null,
           license: "",
-          thanks: ""
+          thanks: "",
         },
         categories: [],
-        tags: []
+        tags: [],
       };
     },
     createAddonIntroduction() {
@@ -105,10 +111,10 @@ export default {
           description: "",
           license: "",
           link: "",
-          thanks: ""
+          thanks: "",
         },
         categories: [],
-        tags: []
+        tags: [],
       };
     },
     createPage() {
@@ -119,9 +125,9 @@ export default {
         status: "draft",
         contents: {
           thumbnail: null,
-          sections: [{ type: "text", text: "" }]
+          sections: [{ type: "text", text: "" }],
         },
-        categories: []
+        categories: [],
       };
     },
     createMarkdown() {
@@ -132,16 +138,16 @@ export default {
         status: "draft",
         contents: {
           thumbnail: null,
-          markdown: ""
+          markdown: "",
         },
-        categories: []
+        categories: [],
       };
     },
     handlePreview() {
       const params = {
         article: this.copy,
         should_tweet: this.should_tweet,
-        preview: true
+        preview: true,
       };
       this.createArticle(params);
     },
@@ -149,7 +155,7 @@ export default {
       const params = {
         article: this.copy,
         should_tweet: this.should_tweet,
-        preview: false
+        preview: false,
       };
       this.createArticle(params);
     },
@@ -160,7 +166,7 @@ export default {
       if (!this.isDraft()) {
         this.$router.push({ name: "index" });
       } else {
-        const id = articles.find(a => a.slug === this.copy.slug).id;
+        const id = articles.find((a) => a.slug === this.copy.slug).id;
         this.$router.push({ name: "editArticle", params: { id } });
       }
     },
@@ -169,7 +175,7 @@ export default {
     },
     isDraft() {
       return this.copy.status === "draft";
-    }
-  }
+    },
+  },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{$t('Login')}}</h1>
+    <h1>{{ $t("Login") }}</h1>
     <b-form>
       <form-login :params="params" :errors="errors" />
       <b-form-group>
@@ -10,9 +10,13 @@
           variant="primary"
           :disabled="fetching"
           @click="handleLogin"
-        >{{$t('Login')}}</b-button>
-        <router-link :to="to_register">{{$t('Register')}}</router-link>&nbsp;|&nbsp;
-        <router-link :to="to_reset">{{$t('Forgot Your Password?')}}</router-link>
+          >{{ $t("Login") }}</b-button
+        >
+        <router-link :to="to_register">{{ $t("Register") }}</router-link
+        >&nbsp;|&nbsp;
+        <router-link :to="to_reset">{{
+          $t("Forgot Your Password?")
+        }}</router-link>
       </b-form-group>
     </b-form>
   </div>
@@ -27,8 +31,8 @@ export default {
       params: {
         email: "",
         password: "",
-        remember: false
-      }
+        remember: false,
+      },
     };
   },
   created() {
@@ -42,7 +46,7 @@ export default {
     },
     setUser(user) {
       this.$emit("loggedin", user);
-    }
-  }
+    },
+  },
 };
 </script>

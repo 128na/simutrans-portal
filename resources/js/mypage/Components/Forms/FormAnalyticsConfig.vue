@@ -17,10 +17,16 @@
       ></b-form-radio-group>
     </b-form-group>
     <b-form-group :label="$t('Target')">
-      <b-form-checkbox-group v-model="value.axes" :options="options.axes"></b-form-checkbox-group>
+      <b-form-checkbox-group
+        v-model="value.axes"
+        :options="options.axes"
+      ></b-form-checkbox-group>
     </b-form-group>
     <b-form-group :label="$t('Start Date')">
-      <b-form-datepicker class="mr-2" v-model="computed_start_date"></b-form-datepicker>
+      <b-form-datepicker
+        class="mr-2"
+        v-model="computed_start_date"
+      ></b-form-datepicker>
     </b-form-group>
     <b-form-group :label="$t('End Date')">
       <b-form-datepicker v-model="computed_end_date"></b-form-datepicker>
@@ -37,7 +43,7 @@ export default {
   props: ["value"],
   data() {
     return {
-      options: {}
+      options: {},
     };
   },
   created() {
@@ -50,7 +56,7 @@ export default {
       },
       set(val) {
         return (this.value.start_date = DateTime.fromISO(val));
-      }
+      },
     },
     computed_end_date: {
       get() {
@@ -58,8 +64,8 @@ export default {
       },
       set(val) {
         return (this.value.end_date = DateTime.fromISO(val));
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

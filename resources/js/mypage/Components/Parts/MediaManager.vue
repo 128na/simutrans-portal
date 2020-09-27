@@ -1,13 +1,23 @@
 <template>
   <div>
-    <input type="file" :ref="file_uploader_id" :accept="accept" class="d-none" @change="handleFile" />
+    <input
+      type="file"
+      :ref="file_uploader_id"
+      :accept="accept"
+      class="d-none"
+      @change="handleFile"
+    />
     <b-img v-if="can_preview" :src="current_thumbnail" thumbnail />
     <p>{{ current_filename }}</p>
-    <b-button :variant="button_variant" @click="handleShow">{{$t('Open File Manager')}}</b-button>
+    <b-button :variant="button_variant" @click="handleShow">{{
+      $t("Open File Manager")
+    }}</b-button>
     <b-modal :id="name" title="Select File" size="xl" scrollable>
       <template v-slot:modal-header>
-        <div>{{$t('File Manager')}}</div>
-        <b-btn :disabled="fetching" variant="primary" @click="handleUpload">{{$t('Upload File')}}</b-btn>
+        <div>{{ $t("File Manager") }}</div>
+        <b-btn :disabled="fetching" variant="primary" @click="handleUpload">{{
+          $t("Upload File")
+        }}</b-btn>
       </template>
       <div class="attachment-list">
         <div
@@ -24,19 +34,24 @@
               pill
               size="sm"
               @click.stop="handleDelete(attachment.id)"
-            >&times;</b-button>
+              >&times;</b-button
+            >
           </div>
           <small class="ellipsis">{{ attachment.original_name }}</small>
         </div>
-        <div v-show="filtered_attachments.length < 1">{{$t('No file.')}}</div>
+        <div v-show="filtered_attachments.length < 1">{{ $t("No file.") }}</div>
       </div>
       <template v-slot:modal-footer>
         <div class="flex-grow-1 flex-shrink-0">
           <div>{{ selected_filename }}</div>
         </div>
         <div>
-          <b-btn :disabled="fetching" @click="handleCancel" size="sm">{{$t('Cancel')}}</b-btn>
-          <b-btn :disabled="fetching" variant="primary" @click="handleOK">{{$t('Select File')}}</b-btn>
+          <b-btn :disabled="fetching" @click="handleCancel" size="sm">{{
+            $t("Cancel")
+          }}</b-btn>
+          <b-btn :disabled="fetching" variant="primary" @click="handleOK">{{
+            $t("Select File")
+          }}</b-btn>
         </div>
       </template>
     </b-modal>
@@ -53,12 +68,12 @@ export default {
     attachments: {},
     value: {},
     only_image: { default: false },
-    state: { default: null }
+    state: { default: null },
   },
   mixins: [api_handlable, toastable],
   data() {
     return {
-      selected: null
+      selected: null,
     };
   },
   created() {
@@ -70,17 +85,17 @@ export default {
     },
     filtered_attachments() {
       const image_filtered = this.only_image
-        ? this.attachments.filter(a => a.type === "image")
+        ? this.attachments.filter((a) => a.type === "image")
         : this.attachments;
 
       return this.id
         ? image_filtered.filter(
-            a =>
+            (a) =>
               a.attachmentable_id === null ||
               (a.attachmentable_id == this.id &&
                 a.attachmentable_type === this.type)
           )
-        : image_filtered.filter(a => a.attachmentable_id === null);
+        : image_filtered.filter((a) => a.attachmentable_id === null);
     },
     file_uploader_id() {
       return `uploader_${this.name}`;
@@ -93,7 +108,7 @@ export default {
     },
     selected_attachment() {
       if (this.selected) {
-        return this.attachments.find(a => a.id == this.selected);
+        return this.attachments.find((a) => a.id == this.selected);
       }
     },
     selected_filename() {
@@ -104,7 +119,7 @@ export default {
     },
     current_attachment() {
       if (this.value) {
-        return this.attachments.find(a => a.id == this.value);
+        return this.attachments.find((a) => a.id == this.value);
       }
     },
     current_thumbnail() {
@@ -117,7 +132,7 @@ export default {
         return this.current_attachment.original_name;
       }
       return this.$t("Not selected.");
-    }
+    },
   },
   methods: {
     getFileElement() {
@@ -137,8 +152,13 @@ export default {
     setAttachments(attachments) {
       const file = this.getFile();
       if (file) {
-        this.selected = attachments.find(a => a.original_name === file.name).id;
-        this.getFileElement().value = null;
+        const attachment = attachments.find(
+          (a) => a.original_name === file.name
+        );
+        if (attachment) {
+          this.selected = attachment.id;
+          this.getFileElement().value = null;
+        }
       }
 
       this.$emit("update:attachments", attachments);
@@ -180,8 +200,8 @@ export default {
     // style
     selectedClass(attachment_id) {
       return attachment_id == this.selected ? "selected" : "";
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

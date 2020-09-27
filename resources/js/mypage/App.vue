@@ -20,7 +20,7 @@
     <div v-else class="initializing" key="not_initialized">
       <h2 class="m-auto">
         <b-icon icon="arrow-clockwise" animation="spin" class="mr-2"></b-icon>
-        {{$t('Loading...')}}
+        {{ $t("Loading...") }}
       </h2>
     </div>
   </transition>
@@ -36,7 +36,7 @@ export default {
       user: null,
       articles: [],
       attachments: [],
-      options: null
+      options: null,
     };
   },
   created() {
@@ -60,7 +60,7 @@ export default {
       await Promise.all([
         this.fetchAttachments(),
         this.fetchArticles(),
-        this.fetchOptions()
+        this.fetchOptions(),
       ]);
       this.$router.push({ name: "index" });
       this.toastSuccess("Logged in");
@@ -74,17 +74,17 @@ export default {
       await Promise.all([
         this.fetchAttachments(),
         this.fetchArticles(),
-        this.fetchOptions()
+        this.fetchOptions(),
       ]);
     },
     setAttachments(attachments) {
       this.attachments = attachments;
     },
     setArticles(articles) {
-      this.articles = articles.map(a =>
+      this.articles = articles.map((a) =>
         Object.assign(a, {
           created_at: DateTime.fromISO(a.created_at),
-          updated_at: DateTime.fromISO(a.updated_at)
+          updated_at: DateTime.fromISO(a.updated_at),
         })
       );
     },
@@ -101,8 +101,8 @@ export default {
     handleArticles(articles) {
       this.toastSuccess("Article Updated.");
       this.setArticles(articles);
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

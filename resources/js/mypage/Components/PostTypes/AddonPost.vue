@@ -20,6 +20,6 @@
 <script>
 export default {
   name: "addon-post",
-  props: ["article", "attachments", "options", "errors"]
+  props: ["article", "attachments", "options", "errors"],
 };
 </script>

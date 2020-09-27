@@ -9,17 +9,17 @@ export default {
   name: "analytics-graph",
   data() {
     return {
-      chart: null
+      chart: null,
     };
   },
   props: {
     labels: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     datasets: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     options: {
       type: Object,
@@ -30,35 +30,35 @@ export default {
             xAxes: [
               {
                 ticks: {
-                  autoSkip: true
+                  autoSkip: true,
                 },
                 scaleLabel: {
-                  display: true
-                }
-              }
+                  display: true,
+                },
+              },
             ],
             yAxes: [
               {
                 type: "linear",
                 ticks: {
                   autoSkip: true,
-                  min: 0
-                }
-              }
-            ]
-          }
+                  min: 0,
+                },
+              },
+            ],
+          },
         };
-      }
+      },
     },
     height: {
       type: Number,
-      default: 400
-    }
+      default: 400,
+    },
   },
   computed: {
     style() {
       return { height: `${this.height}px` };
-    }
+    },
   },
   mounted() {
     this.initialize();
@@ -70,9 +70,9 @@ export default {
         type: "line",
         data: {
           labels: this.labels,
-          datasets: this.datasets
+          datasets: this.datasets,
         },
-        options: this.options
+        options: this.options,
       });
     },
     render() {
@@ -83,7 +83,7 @@ export default {
 
         this.chart.update();
       }
-    }
+    },
   },
   watch: {
     labels(val) {
@@ -94,7 +94,7 @@ export default {
     },
     options(val) {
       this.render();
-    }
-  }
+    },
+  },
 };
 </script>

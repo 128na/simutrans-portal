@@ -1,10 +1,12 @@
 <template>
   <div>
     <button-back />
-    <h1>{{$t('Access Analytics')}}</h1>
+    <h1>{{ $t("Access Analytics") }}</h1>
     <analytics-graph :datasets="datasets" :labels="labels" />
     <b-form-group>
-      <b-button varant="primary" @click="handleApply" :disabled="fetching">{{$t('Apply')}}</b-button>
+      <b-button varant="primary" @click="handleApply" :disabled="fetching">{{
+        $t("Apply")
+      }}</b-button>
     </b-form-group>
     <form-analytics-config v-model="options" />
     <analytics-table :articles="articles" v-model="ids" />
@@ -25,11 +27,11 @@ export default {
         mode: "line", // 集計方法 推移、積算
         axes: ["pv"], // 集計方法 推移、積算
         start_date: null, // 開始日
-        end_date: null // 終了日
+        end_date: null, // 終了日
       },
       analytics: [],
       datasets: null,
-      labels: null
+      labels: null,
     };
   },
   watch: {
@@ -38,7 +40,7 @@ export default {
     },
     "options.axes"() {
       this.calcDatasets();
-    }
+    },
   },
   created() {
     this.initialize();
@@ -69,7 +71,7 @@ export default {
         this.options.start_date,
         this.options.end_date
       ).splitBy(this.interval_type);
-    }
+    },
   },
   methods: {
     initialize() {
@@ -81,7 +83,7 @@ export default {
         ids: this.ids,
         type: this.options.type,
         start_date: this.options.start_date.toISODate(),
-        end_date: this.options.end_date.toISODate()
+        end_date: this.options.end_date.toISODate(),
       };
       this.fetchAnalytics(params);
     },
@@ -92,19 +94,21 @@ export default {
       this.calcDatasets();
     },
     calcLabels() {
-      this.labels = this.interval.map(d => d.start.toFormat(this.format_type));
+      this.labels = this.interval.map((d) =>
+        d.start.toFormat(this.format_type)
+      );
     },
     calcDatasets() {
       const datasets = this.options.axes
-        .map(axis => {
+        .map((axis) => {
           const axis_index =
             axis === this.AXIS_VIEW
               ? this.INDEX_OF_VIEW
               : this.INDEX_OF_CONVERSION;
 
-          return this.analytics.map(analytic => {
+          return this.analytics.map((analytic) => {
             const article = this.articles.find(
-              a => a.id == analytic[this.INDEX_OF_ARCHIVE_ID]
+              (a) => a.id == analytic[this.INDEX_OF_ARCHIVE_ID]
             );
             const values = analytic[axis_index];
             return {
@@ -116,7 +120,7 @@ export default {
               pointRadius: 1,
               lineTension: 0,
               fill: false,
-              data: this.calcData(article.created_at, values)
+              data: this.calcData(article.created_at, values),
             };
           });
         })
@@ -135,14 +139,14 @@ export default {
       switch (this.options.mode) {
         case this.MODE_LINE:
           return this.interval.map(
-            d => values[d.start.toFormat(this.format_type)] || 0
+            (d) => values[d.start.toFormat(this.format_type)] || 0
           );
         case this.MODE_SUM:
           let total = this.sumFromOldest(created_at, values);
 
           return this.interval
-            .map(d => values[d.start.toFormat(this.format_type)] || 0)
-            .map(c => {
+            .map((d) => values[d.start.toFormat(this.format_type)] || 0)
+            .map((c) => {
               total += c;
               return total;
             });
@@ -163,7 +167,7 @@ export default {
         case this.AXIS_CONVERSION:
           return `hsl(${article.id * 53}, 48%, 27%, ${alpha})`;
       }
-    }
-  }
+    },
+  },
 };
 </script>

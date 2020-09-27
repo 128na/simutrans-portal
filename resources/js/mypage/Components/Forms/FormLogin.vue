@@ -16,7 +16,9 @@
       />
     </b-form-group>
     <b-form-group>
-      <b-form-checkbox v-model="params.remember" :state="state('remember')">{{$t('Remember Me')}}</b-form-checkbox>
+      <b-form-checkbox v-model="params.remember" :state="state('remember')">{{
+        $t("Remember Me")
+      }}</b-form-checkbox>
     </b-form-group>
   </div>
 </template>
@@ -24,6 +26,6 @@
 import { validatable } from "../../mixins";
 export default {
   props: ["params"],
-  mixins: [validatable]
+  mixins: [validatable],
 };
 </script>

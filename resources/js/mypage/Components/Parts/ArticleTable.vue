@@ -9,10 +9,13 @@
       stacked="sm"
     >
       <template v-slot:cell(action)="data">
-        <tooltip-menu :article="data.item" @update:articles="$emit('update:articles', $event)" />
+        <tooltip-menu
+          :article="data.item"
+          @update:articles="$emit('update:articles', $event)"
+        />
       </template>
     </b-table>
-    <div v-show="items.length === 0">{{$t('No article exists.')}}</div>
+    <div v-show="items.length === 0">{{ $t("No article exists.") }}</div>
   </b-form-group>
 </template>
 <script>
@@ -24,7 +27,7 @@ export default {
     return {
       sortBy: "updated_at",
       sortDesc: true,
-      fields: []
+      fields: [],
     };
   },
   created() {
@@ -32,60 +35,60 @@ export default {
       {
         key: "status",
         label: this.$t("Status"),
-        sortable: true
+        sortable: true,
       },
       {
         key: "post_type",
         label: this.$t("Post Type"),
-        sortable: true
+        sortable: true,
       },
       {
         key: "title",
         label: this.$t("Title"),
-        sortable: true
+        sortable: true,
       },
       {
         key: "views",
         label: "PV",
-        sortable: true
+        sortable: true,
       },
       {
         key: "conversions",
         label: "CV",
-        sortable: true
+        sortable: true,
       },
       {
         key: "created_at",
         label: this.$t("Created at"),
-        sortable: true
+        sortable: true,
       },
       {
         key: "updated_at",
         label: this.$t("Updated at"),
-        sortable: true
+        sortable: true,
       },
       {
         key: "action",
         label: "",
-        sortable: false
-      }
+        sortable: false,
+      },
     ];
   },
   computed: {
     items() {
-      return this.articles.map(a =>
+      return this.articles.map((a) =>
         Object.assign({}, a, {
           status: this.$t(`statuses.${a.status}`),
           post_type: this.$t(`post_types.${a.post_type}`),
           created_at: a.created_at.toLocaleString(DateTime.DATETIME_FULL),
           updated_at: a.updated_at.toLocaleString(DateTime.DATETIME_FULL),
-          _rowVariant: this.rowValiant(a)
+          _rowVariant: this.rowValiant(a),
         })
       );
     },
     can_edit() {
       return this.user.verified;
-    }
+    },
   },
   methods: {
     rowValiant(article) {
@@ -98,7 +101,7 @@ export default {
         default:
           return "";
       }
-    }
-  }
+    },
+  },
 };
 </script>

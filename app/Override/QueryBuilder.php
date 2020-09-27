@@ -17,8 +17,6 @@ class QueryBuilder extends \Illuminate\Database\Query\Builder
     public function get($columns = ['*'])
     {
         if ($this->with_cache) {
-            return parent::get($columns);
-        } else {
             $sql_str = str_replace('?', '"%s"', $this->toSql());
             $sql_str = vsprintf($sql_str, $this->getBindings());
             $key = 'query:' . hash('sha256', $sql_str);
@@ -28,6 +26,8 @@ class QueryBuilder extends \Illuminate\Database\Query\Builder
                 config('app.cache_lifetime_min', 60),
                 fn () => parent::get($columns)
             );
+        } else {
+            return parent::get($columns);
         }
     }
 }

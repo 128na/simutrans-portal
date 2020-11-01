@@ -34,7 +34,7 @@
     </head>
 
     <body>
-        <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-left py-4">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-left py-4">
             @include('parts.menu')
         </nav>
 

@@ -10,6 +10,7 @@ use App\Models\User;
 class ArticleService extends Service
 {
     private $relations_for_listing = ['user:id,name', 'attachments:id,attachmentable_id,attachmentable_type,path', 'categories:id,type,slug'];
+    private $article_columns = ['id', 'user_id', 'slug', 'title', 'post_type', 'contents', 'updated_at'];
 
     public function __construct(Article $model)
     {
@@ -46,7 +47,7 @@ class ArticleService extends Service
      */
     public function getAnnouces($limit = null)
     {
-        $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents', 'updated_at')
+        $query = $this->model->select($this->article_columns)
             ->announce()
             ->active()
             ->withCache()
@@ -59,7 +60,7 @@ class ArticleService extends Service
      */
     public function getCommonArticles($limit = null)
     {
-        $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents', 'updated_at')
+        $query = $this->model->select($this->article_columns)
             ->withoutAnnounce()
             ->active()
             ->withCache()
@@ -72,7 +73,7 @@ class ArticleService extends Service
      */
     public function getPakArticles($pak, $limit = null)
     {
-        $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
+        $query = $this->model->select($this->article_columns)
             ->pak($pak)
             ->addon()
             ->active()
@@ -87,7 +88,7 @@ class ArticleService extends Service
      */
     public function getRankingArticles($excludes = [], $limit = null)
     {
-        $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
+        $query = $this->model->select($this->article_columns)
             ->addon()
             ->ranking()
             ->active()
@@ -103,7 +104,7 @@ class ArticleService extends Service
      */
     public function getAddonArticles($limit = null)
     {
-        $query = $this->model->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
+        $query = $this->model->select($this->article_columns)
             ->addon()
             ->active()
             ->withCache()
@@ -118,7 +119,7 @@ class ArticleService extends Service
     public function getCategoryArtciles(Category $category, $limit = null)
     {
         $query = $category->articles()
-            ->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
+            ->select($this->article_columns)
             ->active()
             ->withCache()
             ->with($this->relations_for_listing);
@@ -131,7 +132,7 @@ class ArticleService extends Service
     public function getPakAddonCategoryArtciles(Category $pak, Category $addon, $limit = null)
     {
         $query = $this->model
-            ->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
+            ->select($this->article_columns)
             ->active()
             ->whereHas('categories', fn ($query) =>$query->where('id', $pak->id))
             ->whereHas('categories', fn ($query) =>$query->where('id', $addon->id))
@@ -147,7 +148,7 @@ class ArticleService extends Service
     public function getTagArticles(Tag $tag, $limit = null)
     {
         $query = $tag->articles()
-            ->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
+            ->select($this->article_columns)
             ->active()
             ->withCache()
             ->with($this->relations_for_listing);
@@ -161,7 +162,7 @@ class ArticleService extends Service
     public function getUserArticles(User $user, $limit = null)
     {
         $query = $user->articles()
-            ->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
+            ->select($this->article_columns)
             ->active()
             ->withCache()
             ->with($this->relations_for_listing);
@@ -175,7 +176,7 @@ class ArticleService extends Service
     public function getSearchArticles(SearchRequest $request, $limit = null)
     {
         $query = $this->model
-            ->select('id', 'user_id', 'slug', 'title', 'post_type', 'contents')
+            ->select($this->article_columns)
             ->active()
             ->search($request->word)
             ->orderBy('updated_at', 'desc')

@@ -6,6 +6,7 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Cache;
 
 class ShowTagsTest extends TestCase
 {
@@ -47,6 +48,8 @@ class ShowTagsTest extends TestCase
 
         // 公開されている記事に紐づいてるタグ 表示されること
         $article->tags()->sync([$tag->id]);
+        Cache::flush();
+
         $res = $this->get($url);
         $res->assertOk();
         $res->assertSee($tag->name);

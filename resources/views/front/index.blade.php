@@ -6,9 +6,9 @@
 @section('meta-image', asset('storage/'.config('app.meta-image')))
 
 @section('content')
-    <section class="mb-4">
-        @component('components.articles-addon', ['articles' => $ranking])
-            <a class="no-underline" href="{{ route('addons.ranking') }}">@lang('Access Ranking')</a>
+    <section class="mb-5">
+        @component('components.articles', ['articles' => $ranking])
+            <a href="{{ route('addons.ranking') }}">@lang('Access Ranking')</a>
             @slot('no_item')
                 @lang('No article exists.')
             @endslot
@@ -16,9 +16,9 @@
     </section>
 
     @foreach ($latest as $pak => $latest_articles)
-        <section class="mb-4">
-            @component('components.articles-addon', ['articles' => $latest_articles])
-                <a class="no-underline" href="{{ route('category', ['pak', $pak]) }}">@lang(':pak Latest Addons', ['pak' => __("category.pak.$pak")])</a>
+        <section class="mb-5">
+            @component('components.articles', ['articles' => $latest_articles])
+                <a href="{{ route('category', ['pak', $pak]) }}">@lang(':pak Latest Addons', ['pak' => __("category.pak.$pak")])</a>
                 @slot('no_item')
                     @lang('No article exists.')
                 @endslot
@@ -26,18 +26,18 @@
         </section>
     @endforeach
 
-    <section class="mb-4">
-        @component('components.articles-page', ['articles' => $pages])
-            <a class="no-underline" href="{{ route('pages.index') }}">@lang('Pages')</a>
+    <section class="mb-5">
+        @component('components.articles', ['articles' => $pages, 'hide_detail' => true])
+            <a href="{{ route('pages.index') }}">@lang('Pages')</a>
             @slot('no_item')
                 @lang('No article exists.')
             @endslot
         @endcomponent
     </section>
 
-    <section class="mb-4">
-        @component('components.articles-page', ['articles' => $announces])
-            <a class="no-underline" href="{{ route('announces.index') }}">@lang('Announces')</a>
+    <section class="mb-5">
+        @component('components.articles', ['articles' => $announces, 'hide_detail' => true])
+            <a href="{{ route('announces.index') }}">@lang('Announces')</a>
             @slot('no_item')
                 @lang('No article exists.')
             @endslot

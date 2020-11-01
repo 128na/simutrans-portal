@@ -314,15 +314,11 @@ class Article extends Model implements Feedable
      */
     public function isAnnounce()
     {
-        return $this->categories->search(
-            fn ($category) => $category->type === 'page' && $category->slug === 'announce'
-        ) !== false;
+        return $this->categories->some(fn ($category) => $category->type === 'page' && $category->slug === 'announce');
     }
     public function hasCategory($id)
     {
-        return $this->categories->search(
-            fn ($category) => $category->id === $id
-        ) !== false;
+        return $this->categories->some(fn ($category) => $category->id === $id);
     }
     public function getImage($id)
     {

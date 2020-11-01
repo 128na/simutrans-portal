@@ -20,7 +20,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
-        \App\Http\Middleware\SetLocale::class,
+        // \App\Http\Middleware\SetLocale::class,
     ];
 
     /**
@@ -90,7 +90,7 @@ class Kernel extends HttpKernel
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
         \App\Http\Middleware\AdminCheck::class,
-        \App\Http\Middleware\SetLocale::class,
+        // \App\Http\Middleware\SetLocale::class,
         \App\Http\Middleware\CacheResponse::class,
         // \App\Http\Middleware\MinifyHTML::class,
     ];

@@ -9,7 +9,7 @@
     {!! e($articles->onEachSide(1)->links('vendor.pagination.default')) !!}
 
     <section class="mb-4 list">
-        @component('components.articles-addon', ['articles' => $articles])
+        @component('components.articles', ['articles' => $articles, 'hide_detail' => $hide_detail ?? false])
             @slot('no_item')
                 @lang('No article exists.')
             @endslot
@@ -18,8 +18,10 @@
 
     {!! e($articles->onEachSide(1)->links('vendor.pagination.default')) !!}
 
-    <script type="application/ld+json">
-        @json($schemas)
-    </script>
+    @isset($schemas)
+        <script type="application/ld+json">
+            @json($schemas)
+        </script>
+    @endisset
 
 @endsection

@@ -92,14 +92,12 @@ class MetaCreator
      */
     public function forList($name)
     {
-        $articles = $this->data['articles'];
         return [
             'title' => __($name),
             'breadcrumb' => [
                 ['name' => __('Top'), 'url' => route('index')],
                 ['name' => __($name)],
             ],
-            'schemas' => $this->schema_service->forList($name, $articles),
         ];
     }
 
@@ -109,7 +107,6 @@ class MetaCreator
     public function forCategory()
     {
         $category = $this->data['category'];
-        $articles = $this->data['articles'];
         $title = __("category.{$category->type}.{$category->slug}");
         return [
             'title' => __('Category :name', ['name' => $title]),
@@ -117,7 +114,6 @@ class MetaCreator
                 ['name' => __('Top'), 'url' => route('index')],
                 ['name' => $title],
             ],
-            'schemas' => $this->schema_service->forList($title, $articles),
         ];
     }
 
@@ -128,7 +124,6 @@ class MetaCreator
     {
         $pak = $this->data['categories']['pak'];
         $addon = $this->data['categories']['addon'];
-        $articles = $this->data['articles'];
         $title = __(':pak, :addon', [
             'pak' => __('category.pak.' . $pak->slug),
             'addon' => __('category.addon.' . $addon->slug),
@@ -141,7 +136,6 @@ class MetaCreator
                 ['name' => __('category.addon.' . $addon->slug)],
             ],
             'open_menu_pak_addon' => [$pak->slug => true],
-            'schemas' => $this->schema_service->forPakAddon($pak, $addon, $articles),
         ];
     }
 
@@ -163,7 +157,6 @@ class MetaCreator
      */
     public function forTag()
     {
-        $articles = $this->data['articles'];
         $tag = $this->data['tag'];
         $title = $tag->name;
         return [
@@ -173,7 +166,6 @@ class MetaCreator
                 ['name' => __('Tags'), 'url' => route('tags')],
                 ['name' => $title],
             ],
-            'schemas' => $this->schema_service->forTag($tag, $articles),
         ];
     }
     /**
@@ -181,7 +173,6 @@ class MetaCreator
      */
     public function forUser()
     {
-        $articles = $this->data['articles'];
         $user = $this->data['user'];
         $title = __('User :name', ['name' => $user->name]);
         return [
@@ -192,7 +183,6 @@ class MetaCreator
             ],
             'user' => $user->load('profile', 'profile.attachments'),
             'open_menu_user_addon' => true,
-            'schemas' => $this->schema_service->forList($title, $articles),
         ];
     }
 
@@ -201,7 +191,6 @@ class MetaCreator
      */
     public function forSearch()
     {
-        $articles = $this->data['articles'];
         $request = $this->data['request'];
         $title = __('Search results by :word', ['word' => $request->word]);
         return [
@@ -211,7 +200,6 @@ class MetaCreator
                 ['name' => $title],
             ],
             'word' => $request->word,
-            'schemas' => $this->schema_service->forList($title, $articles),
         ];
     }
 

@@ -8,10 +8,10 @@
 
 @section('content')
     <article class="{{$article->post_type}}">
+        <h1 class="title border-bottom mb-4">{{$article->title}}</h1>
         @if ($article->has_thumbnail)
             <img src="{{ $article->thumbnail_url }}" class="img-fluid thumbnail mb-4 shadow-sm">
         @endif
-        <h1 class="title mb-3">{{$article->title}}</h1>
         @includeIf("front.articles.parts.{$article->post_type}", ['article' => $article])
 
         <footer class="border-top pt-2">

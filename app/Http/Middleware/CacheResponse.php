@@ -22,7 +22,7 @@ class CacheResponse
     public function handle($request, Closure $next)
     {
         // ログインしているユーザーはキャッシュを使用しない
-        if (Auth::check()) {
+        if (Auth::check() || app()->environment('development')) {
             return $next($request);
         }
 

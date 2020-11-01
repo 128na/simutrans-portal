@@ -8,10 +8,12 @@
         @include('parts.category-list', ['categories' => $article->categories,
             'post_type' => $article->post_type, 'route_name' => 'addons.index'])
     </dd>
-    <dt>@lang('Tags')</dt>
-    <dd>
-        @include('parts.tag-list', ['tags' => $article->tags])
-    </dd>
+    @if ($article->tags->isNotEmpty())
+        <dt>@lang('Tags')</dt>
+        <dd>
+            @include('parts.tag-list', ['tags' => $article->tags])
+        </dd>
+    @endif
     <dt>@lang('Description')</dt>
     <dd>{{ $article->contents->description }}</dd>
     @if ($article->contents->thanks)

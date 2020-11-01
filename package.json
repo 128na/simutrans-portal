@@ -31,5 +31,7 @@
     "vue-template-compiler": "^2.6.12",
     "webpack-cli": "^3.3.12"
   },
-  "dependencies": {}
+  "dependencies": {
+    "vuex": "^3.5.1"
+  }
 }

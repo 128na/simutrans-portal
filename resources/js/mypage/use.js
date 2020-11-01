@@ -4,6 +4,7 @@ import VueInternationalization from 'vue-i18n';
 import VueClipboard from 'vue-clipboard2';
 import routes from './routes';
 import Locale from '../vue-i18n-locales.generated';
+import Vuex from 'vuex'
 
 export default {
   boostrap_vue(Vue) {

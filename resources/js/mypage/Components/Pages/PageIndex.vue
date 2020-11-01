@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{ $t("Mypage") }}</h1>
-    <div v-if="!user.verified">
+    <div v-if="!isVerified">
       <form-verify :user="user" />
     </div>
     <div v-else>
@@ -14,9 +14,12 @@
   </div>
 </template>
 <script>
-import { linkable } from "../../mixins";
+import { linkable, validateLogin } from "../../mixins";
+import { mapGetters, mapActions } from "vuex";
 export default {
-  props: ["articles", "user"],
-  mixins: [linkable],
+  mixins: [linkable, validateLogin],
+  computed: {
+    ...mapGetters(["isVerified", "statusCode", "user"]),
+  },
 };
 </script>

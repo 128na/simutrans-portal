@@ -424,4 +424,39 @@ const validatable = {
   }
 };
 
+import { mapGetters, mapActions } from "vuex";
+export const validateLogin = {
+  created() {
+    if (!this.isLoggedIn) {
+      this.$router.push({ name: "login" });
+    }
+  },
+  watch: {
+    isLoggedIn(val) {
+      if (!val) {
+        this.$router.push({ name: "login" });
+      }
+    },
+  },
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+  }
+}
+export const validateNotLogin = {
+  created() {
+    if (this.isLoggedIn) {
+      this.$router.push({ name: "index" });
+    }
+  },
+  watch: {
+    isLoggedIn(val) {
+      if (val) {
+        this.$router.push({ name: "index" });
+      }
+    },
+  },
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+  }
+}
 export { toastable, previewable, verifiedable, api_handlable, linkable, analytics_constants, editor_handlable, validatable };

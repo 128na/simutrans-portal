@@ -1,58 +1,32 @@
 <template>
-  <transition appear name="fade" mode="out-in">
-    <div v-if="initialized" key="initialized">
-      <header-menu :user="user" @logout="handleLogout" />
-      <main class="container-fluid bg-light py-4">
-        <transition name="fade" mode="out-in">
-          <router-view
-            :user="user"
-            :articles="articles"
-            :attachments="attachments"
-            :options="options"
-            @update:attachments="handleAttachments"
-            @update:articles="handleArticles"
-            @update:user="handleUser"
-            @loggedin="handleLoggedin"
-          />
-        </transition>
-      </main>
-    </div>
-    <div v-else class="initializing" key="not_initialized">
-      <h2 class="m-auto">
-        <b-icon icon="arrow-clockwise" animation="spin" class="mr-2"></b-icon>
-        {{ $t("Loading...") }}
-      </h2>
-    </div>
-  </transition>
+  <div>
+    <header-menu :user="user" @logout="handleLogout" />
+    <main class="container-fluid bg-light py-4">
+      <div class="alert alert-danger" v-show="errorMessage">
+        [{{ statusCode }}] {{ errorMessage }}
+      </div>
+      <transition name="fade" mode="out-in">
+        <router-view />
+      </transition>
+    </main>
+  </div>
 </template>
 <script>
 import { DateTime } from "luxon";
-import { toastable, api_handlable } from "./mixins";
+import { mapGetters, mapActions } from "vuex";
 export default {
-  mixins: [toastable, api_handlable],
   data() {
     return {
-      initialized: false,
-      user: null,
-      articles: [],
-      attachments: [],
-      options: null,
+      initialized: true,
     };
   },
   created() {
-    this.initialize();
+    this.checkLogin();
   },
   methods: {
-    async initialize() {
-      this.initialized = false;
-      this.user = null;
-      this.articles = [];
-      this.attachments = [];
-      this.options = null;
-
-      await this.fetchUser();
-
-      this.initialized = true;
+    ...mapActions(["checkLogin", "logout"]),
+    handleLogout() {
+      this.logout();
     },
     async handleLoggedin(user) {
       this.user = user;
@@ -65,9 +39,7 @@ export default {
       this.$router.push({ name: "index" });
       this.toastSuccess("Logged in");
     },
-    handleLogout() {
-      this.initialize();
-    },
+
     async setUser(user) {
       this.user = user;
 
@@ -103,13 +75,12 @@ export default {
       this.setArticles(articles);
     },
   },
+  computed: {
+    ...mapGetters(["errorMessage", "statusCode", "user"]),
+  },
 };
 </script>
 <style>
-.initializing {
-  height: 100vh;
-  display: flex;
-}
 .pre-line {
   white-space: pre-line;
 }

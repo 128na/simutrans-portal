@@ -5,26 +5,26 @@
     variant="primary"
     toggleable="md"
   >
-    <b-navbar-brand class="p-0 mb-md-4 mb-0" :href="top_url"
-      >Simutrans Addon Portal</b-navbar-brand
-    >
+    <b-navbar-brand class="p-0 mb-md-4 mb-0" :href="top_url">
+      Simutrans Addon Portal
+    </b-navbar-brand>
 
     <b-navbar-toggle target="global-menu"></b-navbar-toggle>
 
     <b-collapse id="global-menu" is-nav>
       <b-navbar-nav v-if="is_logged_in">
-        <b-nav-item class="active" v-if="user.admin" :href="admin_url">{{
+        <b-nav-item class="active" v-if="is_admin" :href="admin_url">{{
           $t("[admin] Dashboard")
         }}</b-nav-item>
-        <b-nav-item class="active" v-if="user.verified" :to="to_profile">
+        <b-nav-item class="active" v-if="is_verified" :to="to_profile">
           <b-icon icon="person" class="mr-1" />
           {{ $t("Edit my profile") }}
         </b-nav-item>
-        <b-nav-item class="active" v-if="user.verified" :to="to_analytics">
+        <b-nav-item class="active" v-if="is_verified" :to="to_analytics">
           <b-icon icon="graph-up" class="mr-1" />
           {{ $t("Access Analytics") }}
         </b-nav-item>
-        <b-nav-item class="active" v-if="user.verified" :to="to_addon_post">
+        <b-nav-item class="active" v-if="is_verified" :to="to_addon_post">
           <icon-edit-article class="mr-1" />
           {{
             $t("Create {post_type}", { post_type: $t("post_types.addon-post") })
@@ -32,7 +32,7 @@
         </b-nav-item>
         <b-nav-item
           class="active"
-          v-if="user.verified"
+          v-if="is_verified"
           :to="to_addon_introduction"
         >
           <icon-edit-article class="mr-1" />
@@ -42,11 +42,11 @@
             })
           }}
         </b-nav-item>
-        <b-nav-item class="active" v-if="user.verified" :to="to_page">
+        <b-nav-item class="active" v-if="is_verified" :to="to_page">
           <icon-edit-article class="mr-1" />
           {{ $t("Create {post_type}", { post_type: $t("post_types.page") }) }}
         </b-nav-item>
-        <b-nav-item class="active" v-if="user.verified" :to="to_markdown">
+        <b-nav-item class="active" v-if="is_verified" :to="to_markdown">
           <icon-edit-article class="mr-1" />
           {{
             $t("Create {post_type}", { post_type: $t("post_types.markdown") })
@@ -68,13 +68,19 @@
   </b-navbar>
 </template>
 <script>
-import { api_handlable, linkable } from "../../mixins";
+import { linkable } from "../../mixins";
 export default {
   props: ["user"],
-  mixins: [api_handlable, linkable],
+  mixins: [linkable],
   computed: {
     is_logged_in() {
       return !!this.user;
+    },
+    is_verified() {
+      return this.is_logged_in && this.user.verified;
+    },
+    is_admin() {
+      return this.is_logged_in && this.user.admin;
     },
     top_url() {
       return `${process.env.MIX_APP_URL}`;
@@ -84,7 +90,7 @@ export default {
     },
   },
   methods: {
-    setUser() {
+    logout() {
       this.$emit("logout");
     },
   },

@@ -6,11 +6,15 @@
         max-width: 100%;
       }
       .article-description {
-        display: box;
-        box-orient: vertical;
-        line-clamp: 5;
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
         overflow: hidden;
         max-height: calc(1.45rem * 5);
+      }
+      @media (max-width: 576px) {
+        .article-description {
+          display: none;
+        }
       }
     }
   }

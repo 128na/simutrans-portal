@@ -8,14 +8,16 @@
                         <strong>{{ $article->title }}</strong>
                     </a>
                 </div>
-                <div class="article-main d-flex mb-1">
-                    <a href="{{ route('articles.show', $article->slug)}}">
-                        <img src="{{$article->thumbnail_url}}" loading="lazy">
-                    </a>
-                    <span class="pl-2 article-description d-none d-sm-inline">
-                        {{ $article->contents->description ?? '' }}
-                    </span>
-                </div>
+                @unless($hide_detail ?? false)
+                    <div class="article-main d-flex mb-1">
+                        <a href="{{ route('articles.show', $article->slug)}}">
+                            <img src="{{$article->thumbnail_url}}" loading="lazy">
+                        </a>
+                        <span class="pl-2 article-description">
+                            {{ $article->contents->description ?? '' }}
+                        </span>
+                    </div>
+                @endunless
                 <div class="article-footer">
                     <span class="mr-2">{{ $article->updated_at->formatLocalized(__('%m-%d-%Y')) }}</span>
                     <span class="mr-2"><a href="{{ route('user', [$article->user]) }}">{{ $article->user->name}}</a></span>

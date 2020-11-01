@@ -98,7 +98,6 @@ class MetaCreator
                 ['name' => __('Top'), 'url' => route('index')],
                 ['name' => __($name)],
             ],
-            'show_page_component' => request()->route()->named('pages.index') || request()->route()->named('announces.index'),
         ];
     }
 
@@ -115,7 +114,6 @@ class MetaCreator
                 ['name' => __('Top'), 'url' => route('index')],
                 ['name' => $title],
             ],
-            'show_page_component' => $category->type === 'page',
         ];
     }
 

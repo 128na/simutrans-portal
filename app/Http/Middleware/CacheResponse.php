@@ -26,9 +26,9 @@ class CacheResponse
             return $next($request);
         }
 
-        $path = str_replace(config('app.url'), '', $request->fullUrl());
-        $locale = \App::getLocale();
-        $key = "{$path}@{$locale}";
+        $key = str_replace(config('app.url'), '', $request->fullUrl());
+        // $locale = \App::getLocale();
+        // $key = "{$path}@{$locale}";
 
         return self::cacheOrCallback($key, fn () => $next($request));
     }

@@ -52,7 +52,7 @@
         @endif
         <li class="nav-item"><a class="nav-link active" href="{{ route('tags') }}">@lang('Tags')</a></li>
         {{-- 言語一覧 --}}
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link active collapsed with-icon" data-toggle="collapse" href="#collapse-lang" aria-expanded="false" aria-controls="collapse-lang">
                 @lang('__Current_Language__')
             </a>
@@ -63,7 +63,7 @@
                     </li>
                 @endforeach
             </ul>
-        </li>
+        </li> --}}
         <div class="dropdown-divider border-light"></div>
         {{-- ログイン・登録/マイページ --}}
         @guest

@@ -117,26 +117,26 @@ class ShowListingTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function testSetLanguage()
-    {
-        $response = $this->get('/language/ja');
-        $this->assertCookie($response, 'lang', 'ja');
+    // public function testSetLanguage()
+    // {
+    //     $response = $this->get('/language/ja');
+    //     $this->assertCookie($response, 'lang', 'ja');
 
-        $response = $this->get('/language/en');
-        $this->assertCookie($response, 'lang', 'en');
+    //     $response = $this->get('/language/en');
+    //     $this->assertCookie($response, 'lang', 'en');
 
-        $response = $this->get('/language/de');
-        $this->assertCookie($response, 'lang', 'de');
+    //     $response = $this->get('/language/de');
+    //     $this->assertCookie($response, 'lang', 'de');
 
-        $response = $this->get('/language/zh-CN');
-        $this->assertCookie($response, 'lang', 'zh-CN');
+    //     $response = $this->get('/language/zh-CN');
+    //     $this->assertCookie($response, 'lang', 'zh-CN');
 
-        $response = $this->get('/language/zh-TW');
-        $this->assertCookie($response, 'lang', 'zh-TW');
+    //     $response = $this->get('/language/zh-TW');
+    //     $this->assertCookie($response, 'lang', 'zh-TW');
 
-        $response = $this->get('/language/invalid');
-        $this->assertCookie($response, 'lang', null);
-    }
+    //     $response = $this->get('/language/invalid');
+    //     $this->assertCookie($response, 'lang', null);
+    // }
 
     /**
      * assertPlainCookieでlangが拾えないので代用

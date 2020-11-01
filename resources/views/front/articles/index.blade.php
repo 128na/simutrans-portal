@@ -9,17 +9,27 @@
     {!! e($articles->onEachSide(1)->links('vendor.pagination.default')) !!}
 
     <section class="mb-4 list">
-        @component('components.articles-addon', ['articles' => $articles])
-            @slot('no_item')
-                @lang('No article exists.')
-            @endslot
-        @endcomponent
+        @isset($show_page_component)
+            @component('components.articles-page', ['articles' => $articles])
+                @slot('no_item')
+                    @lang('No article exists.')
+                @endslot
+            @endcomponent
+        @else
+            @component('components.articles-addon', ['articles' => $articles])
+                @slot('no_item')
+                    @lang('No article exists.')
+                @endslot
+            @endcomponent
+        @endisset
     </section>
 
     {!! e($articles->onEachSide(1)->links('vendor.pagination.default')) !!}
 
-    <script type="application/ld+json">
-        @json($schemas)
-    </script>
+    @isset($schemas)
+        <script type="application/ld+json">
+            @json($schemas)
+        </script>
+    @endisset
 
 @endsection

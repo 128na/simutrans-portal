@@ -1,11 +1,11 @@
-<a class="navbar-brand p-0 mb-md-4 mb-0" href="{{ route('index') }}">{{ config('app.name', 'Laravel') }}</a>
+<a class="navbar-brand p-0 mb-lg-4 mb-0" href="{{ route('index') }}">{{ config('app.name', 'Laravel') }}</a>
 
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#global-menu" aria-controls="global-menu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
 </button>
 
 <div class="collapse navbar-collapse" id="global-menu">
-    <form class="form-inline my-2 mt-md-0" action="{{ route('search') }}" method="GET">
+    <form class="form-inline my-2 mt-lg-0" action="{{ route('search') }}" method="GET">
         <div class="input-group">
             <input class="form-control" name="word" type="search" placeholder="@lang('Search words')" aria-label="Search" value="{{ $word ?? '' }}">
             <div class="input-group-append">

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form-group label="形式">
+    <b-form-group label="間隔">
       <b-form-radio-group
         v-model="value.type"
         :options="options.types"

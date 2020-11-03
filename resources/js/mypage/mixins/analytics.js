@@ -19,17 +19,17 @@ export const analytics_constants = {
     OPTIONS() {
       return {
         types: [
-          { value: "daily", text: this.$t("Daily") },
-          { value: "monthly", text: this.$t("Monthly") },
-          { value: "yearly", text: this.$t("Yearly") }
+          { value: "daily", text: "日" },
+          { value: "monthly", text: "月" },
+          { value: "yearly", text: "年" }
         ],
         modes: [
-          { value: "line", text: this.$t("Transition") },
-          { value: "sum", text: this.$t("Total") }
+          { value: "line", text: "推移" },
+          { value: "sum", text: "合計" }
         ],
         axes: [
-          { value: "pv", text: this.$t("Page Views") },
-          { value: "cv", text: this.$t("Conversions") }
+          { value: "pv", text: "PV（ページ表示回数）" },
+          { value: "cv", text: "CV（DL・リンククリック回数）" }
         ]
       }
     }

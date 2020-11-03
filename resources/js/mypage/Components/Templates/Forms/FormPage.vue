@@ -39,7 +39,7 @@
           v-if="isCaption(section.type)"
           type="text"
           :value="section.caption"
-          :placeholder="$t('Caption')"
+          placeholder="見出し"
           :state="validationState(`article.contents.sections.${index}.caption`)"
           @input="(v) => handleInput(index, v)"
         />

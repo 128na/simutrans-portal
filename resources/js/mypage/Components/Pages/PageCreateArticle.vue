@@ -64,11 +64,6 @@ export default {
       "articles",
       "hasError",
     ]),
-    title() {
-      return this.$t("Create {post_type}", {
-        post_type: this.$t(`post_types.${this.article.post_type}`),
-      });
-    },
     ready() {
       return this.$route.params.post_type && this.optionsLoaded && !!this.copy;
     },

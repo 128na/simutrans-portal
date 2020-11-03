@@ -6,7 +6,7 @@
       <analytics-graph :datasets="datasets" :labels="labels" />
       <b-form-group>
         <fetching-overlay>
-          <b-button varant="primary" @click="handleApply"> 反映 </b-button>
+          <b-button varant="primary" @click="handleApply">反映</b-button>
         </fetching-overlay>
       </b-form-group>
       <form-analytics-config v-model="options" />
@@ -168,9 +168,9 @@ export default {
     axisLabel(axis) {
       switch (axis) {
         case this.AXIS_VIEW:
-          return this.$t("Page Views");
+          return "PV";
         case this.AXIS_CONVERSION:
-          return this.$t("Conversions");
+          return "CV";
       }
     },
     getColor(article, axis, alpha = 1) {

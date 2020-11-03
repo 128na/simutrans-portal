@@ -5,9 +5,7 @@
     <form-profile :user="copy">
       <b-form-group>
         <fetching-overlay>
-          <b-btn variant="primary" @click="handleUpdate">
-            {{ $t("Save") }}
-          </b-btn>
+          <b-btn variant="primary" @click="handleUpdate"> 保存 </b-btn>
         </fetching-overlay>
       </b-form-group>
     </form-profile>

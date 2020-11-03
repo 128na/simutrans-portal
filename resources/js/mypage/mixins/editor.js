@@ -33,12 +33,12 @@ export const editor = {
     },
     _unloadDialogEvent(e) {
       e.preventDefault();
-      e.returnValue = this.$t('Exit without saving?');
+      e.returnValue = '保存せずに移動しますか？';
     }
   },
   beforeRouteLeave(to, from, next) {
     if (this.has_changed) {
-      return next(window.confirm(this.$t('Exit without saving?')));
+      return next(window.confirm('保存せずに移動しますか？'));
     }
     return next();
   }

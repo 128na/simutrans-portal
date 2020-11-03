@@ -1,5 +1,6 @@
 import axios from 'axios';
 axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? process.env.MIX_APP_URL : '';
+axios.defaults.timeout = 5000;
 export default {
   // auth
   login(params) {

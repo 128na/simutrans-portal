@@ -1,173 +1,135 @@
 <template>
-  <div v-if="$route.params.post_type">
+  <div>
     <button-back />
     <h1>{{ title }}</h1>
-    <component
-      :is="copy.post_type"
-      :article="copy"
-      :attachments="attachments"
-      :options="options"
-      :errors="errors"
-      @update:attachments="$emit('update:attachments', $event)"
-    />
-
-    <b-form-group>
-      <template slot="label">
-        <badge-optional />
-        {{ $t("Auto Tweet") }}
-      </template>
-      <b-form-checkbox v-model="should_tweet">{{
-        $t("Tweet when posting or updating.")
-      }}</b-form-checkbox>
-    </b-form-group>
-    <b-form-group>
-      <b-btn :disabled="fetching" @click="handlePreview">{{
-        $t("Preview")
-      }}</b-btn>
-      <b-btn :disabled="fetching" variant="primary" @click="handleCreate">{{
-        $t("Save")
-      }}</b-btn>
-    </b-form-group>
+    <div v-if="ready">
+      <component :is="component_name" :article="copy" />
+      <b-form-group>
+        <template slot="label">
+          <badge-optional />
+          {{ $t("Auto Tweet") }}
+        </template>
+        <b-form-checkbox v-model="should_tweet">
+          {{ $t("Tweet when posting or updating.") }}
+        </b-form-checkbox>
+      </b-form-group>
+      <b-form-group>
+        <fetching-overlay>
+          <b-btn @click="handlePreview">
+            {{ $t("Preview") }}
+          </b-btn>
+        </fetching-overlay>
+        <fetching-overlay>
+          <b-btn variant="primary" @click="handleCreate">
+            {{ $t("Save") }}
+          </b-btn>
+        </fetching-overlay>
+      </b-form-group>
+    </div>
+    <loading v-else />
   </div>
 </template>
 <script>
-import {
-  verifiedable,
-  previewable,
-  api_handlable,
-  editor_handlable,
-} from "../../mixins";
+import { mapGetters, mapActions } from "vuex";
+import { validateVerified } from "../../mixins/auth";
+import { editor } from "../../mixins/editor";
+import { preview } from "../../mixins/preview";
+import { defaultArticle } from "../../mixins/default_values";
 export default {
-  props: ["attachments", "options"],
   data() {
     return {
       article: null,
       should_tweet: true,
     };
   },
-  mixins: [verifiedable, previewable, api_handlable, editor_handlable],
+  mixins: [validateVerified, preview, defaultArticle, editor],
   created() {
-    this.initialize();
+    this.initDefaultArticle();
+    if (!this.optionsLoaded) {
+      this.$store.dispatch("fetchOptions");
+    }
+    if (!this.attachmentsLoaded) {
+      this.$store.dispatch("fetchAttachments");
+    }
+    if (!this.tagsLoaded) {
+      this.$store.dispatch("fetchTags");
+    }
   },
   watch: {
     "$route.params.post_type"() {
-      this.initialize();
+      this.initDefaultArticle();
     },
   },
   computed: {
+    ...mapGetters([
+      "attachmentsLoaded",
+      "tagsLoaded",
+      "optionsLoaded",
+      "articles",
+      "hasError",
+    ]),
     title() {
       return this.$t("Create {post_type}", {
         post_type: this.$t(`post_types.${this.article.post_type}`),
       });
     },
+    ready() {
+      return this.$route.params.post_type && this.optionsLoaded && !!this.copy;
+    },
+    component_name() {
+      return `post-type-${this.copy.post_type}`;
+    },
   },
   methods: {
-    initialize() {
-      switch (this.$route.params.post_type) {
-        case "addon-post":
-          this.createAddonPost();
-          break;
-        case "addon-introduction":
-          this.createAddonIntroduction();
-          break;
-        case "page":
-          this.createPage();
-          break;
-        case "markdown":
-          this.createMarkdown();
-          break;
-      }
+    ...mapActions([
+      "fetchOptions",
+      "fetchAttachments",
+      "fetchTags",
+      "createArticle",
+    ]),
+    initDefaultArticle() {
+      this.article = this.createDefaultArticle(this.$route.params.post_type);
       this.setCopy(this.article);
     },
-    createAddonPost() {
-      this.article = {
-        post_type: "addon-post",
-        title: "",
-        slug: "",
-        status: "draft",
-        contents: {
-          thumbnail: null,
-          author: "",
-          description: "",
-          file: null,
-          license: "",
-          thanks: "",
-        },
-        categories: [],
-        tags: [],
-      };
-    },
-    createAddonIntroduction() {
-      this.article = {
-        post_type: "addon-introduction",
-        title: "",
-        slug: "",
-        status: "draft",
-        contents: {
-          thumbnail: null,
-          agreement: false,
-          exclude_link_check: false,
-          author: "",
-          description: "",
-          license: "",
-          link: "",
-          thanks: "",
-        },
-        categories: [],
-        tags: [],
-      };
-    },
-    createPage() {
-      this.article = {
-        post_type: "page",
-        title: "",
-        slug: "",
-        status: "draft",
-        contents: {
-          thumbnail: null,
-          sections: [{ type: "text", text: "" }],
-        },
-        categories: [],
-      };
-    },
-    createMarkdown() {
-      this.article = {
-        post_type: "markdown",
-        title: "",
-        slug: "",
-        status: "draft",
-        contents: {
-          thumbnail: null,
-          markdown: "",
-        },
-        categories: [],
-      };
-    },
-    handlePreview() {
+    async handlePreview() {
       const params = {
         article: this.copy,
         should_tweet: this.should_tweet,
         preview: true,
       };
-      this.createArticle(params);
+      const html = await this.$store.dispatch("createArticle", {
+        params,
+        message: null,
+      });
+
+      // プレビュー作成が成功すればプレビューウインドウを表示する
+      // エラーがあれば画面上部へスクロールする（通知が見えないため）
+      if (!this.hasError && html) {
+        return this.setPreview(html);
+      }
+      this.scrollToTop();
     },
-    handleCreate() {
+    async handleCreate() {
       const params = {
         article: this.copy,
         should_tweet: this.should_tweet,
         preview: false,
       };
-      this.createArticle(params);
-    },
-    setArticles(articles) {
-      this.$emit("update:articles", articles);
-      this.unsetUnloadDialog();
+      await this.$store.dispatch("createArticle", { params });
 
-      if (!this.isDraft()) {
-        this.$router.push({ name: "index" });
+      // 更新が成功していれば遷移ダイアログを無効化してマイページトップへ戻る
+      // ステータスが下書きの時は編集画面へ遷移する
+      // エラーがあれば編集画面上部へスクロールする（通知が見えないため）
+      if (!this.hasError) {
+        this.unsetUnloadDialog();
+        if (!this.isDraft()) {
+          this.$router.push({ name: "index" });
+        } else {
+          const id = this.articles.find((a) => a.slug === this.copy.slug).id;
+          this.$router.push({ name: "editArticle", params: { id } });
+        }
       } else {
-        const id = articles.find((a) => a.slug === this.copy.slug).id;
-        this.$router.push({ name: "editArticle", params: { id } });
+        this.scrollToTop();
       }
     },
     getOriginal() {

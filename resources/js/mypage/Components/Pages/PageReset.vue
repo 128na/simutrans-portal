@@ -2,24 +2,22 @@
   <div>
     <button-back name="login">{{ $t("Back to Login") }}</button-back>
     <h1>{{ $t("Reset Password") }}</h1>
-    <b-form>
-      <form-reset :params="params" :errors="errors" />
+    <form-reset :params="params">
       <b-form-group>
-        <b-button
-          variant="primary"
-          type="submit"
-          :disabled="fetching"
-          @click="handleSubmit"
-          >{{ $t("Send Password Reset Link") }}</b-button
-        >
+        <fetching-overlay>
+          <b-button variant="primary" type="submit" @click="handleSubmit">
+            {{ $t("Send Password Reset Link") }}
+          </b-button>
+        </fetching-overlay>
       </b-form-group>
-    </b-form>
+    </form-reset>
   </div>
 </template>
 <script>
-import { api_handlable } from "../../mixins";
+import { validateGuest } from "../../mixins/auth";
+import { mapActions } from "vuex";
 export default {
-  mixins: [api_handlable],
+  mixins: [validateGuest],
   data() {
     return {
       params: {
@@ -28,13 +26,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["sendResetEmail"]),
     handleSubmit() {
-      this.reset(this.params);
-    },
-    sent() {
-      this.toastSuccess(
-        "You are receiving this email because we received a password reset request for your account."
-      );
+      this.$store.dispatch("sendResetEmail", this.params);
     },
   },
 };

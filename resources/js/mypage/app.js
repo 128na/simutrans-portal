@@ -1,13 +1,9 @@
 import Vue from 'vue';
+import './plugins';
 import App from './App.vue';
-import use from "./use";
 
 import store from './store';
-
-use.boostrap_vue(Vue);
-const router = use.vue_router(Vue);
-const i18n = use.i18n(Vue);
-use.clipboard(Vue);
+import router from './router'
 
 // components
 const files = require.context('./Components', true, /\.vue$/i);
@@ -17,6 +13,5 @@ new Vue({
   el: '#app',
   render: h => h(App),
   store,
-  i18n,
   router
 });

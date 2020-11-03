@@ -2,24 +2,22 @@
   <div>
     <button-back name="login">{{ $t("Back to Login") }}</button-back>
     <h1>{{ $t("Register") }}</h1>
-    <b-form>
-      <form-register :params="params" :errors="errors" />
+    <form-register :params="params">
       <b-form-group>
-        <b-button
-          variant="primary"
-          type="submit"
-          :disabled="fetching"
-          @click="handleRegister"
-          >{{ $t("Register") }}</b-button
-        >
+        <fetching-overlay>
+          <b-button variant="primary" type="submit" @click="handleRegister">
+            {{ $t("Register") }}
+          </b-button>
+        </fetching-overlay>
       </b-form-group>
-    </b-form>
+    </form-register>
   </div>
 </template>
 <script>
-import { api_handlable } from "../../mixins";
+import { validateGuest } from "../../mixins/auth";
+import { mapActions } from "vuex";
 export default {
-  mixins: [api_handlable],
+  mixins: [validateGuest],
   props: ["user"],
   data() {
     return {
@@ -30,17 +28,10 @@ export default {
       },
     };
   },
-  created() {
-    if (this.user) {
-      this.$router.push({ name: "index" });
-    }
-  },
   methods: {
+    ...mapActions(["register"]),
     handleRegister() {
-      this.register(this.params);
-    },
-    setUser(user) {
-      this.$emit("loggedin", user);
+      this.$store.dispatch("register", this.params);
     },
   },
 };

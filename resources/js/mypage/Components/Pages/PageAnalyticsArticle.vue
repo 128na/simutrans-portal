@@ -2,23 +2,28 @@
   <div>
     <button-back />
     <h1>{{ $t("Access Analytics") }}</h1>
-    <analytics-graph :datasets="datasets" :labels="labels" />
-    <b-form-group>
-      <b-button varant="primary" @click="handleApply" :disabled="fetching">{{
-        $t("Apply")
-      }}</b-button>
-    </b-form-group>
-    <form-analytics-config v-model="options" />
-    <analytics-table :articles="articles" v-model="ids" />
+    <div v-if="ready">
+      <analytics-graph :datasets="datasets" :labels="labels" />
+      <b-form-group>
+        <fetching-overlay>
+          <b-button varant="primary" @click="handleApply">
+            {{ $t("Apply") }}
+          </b-button>
+        </fetching-overlay>
+      </b-form-group>
+      <form-analytics-config v-model="options" />
+      <analytics-table :articles="articles" v-model="ids" />
+    </div>
   </div>
 </template>
 <script>
-import { DateTime } from "luxon";
-import Interval from "luxon/src/interval.js";
-import { api_handlable, analytics_constants } from "../../mixins";
+import { mapGetters, mapActions } from "vuex";
+import { validateVerified } from "../../mixins/auth";
+
+import { DateTime, Interval } from "luxon";
+import { analytics_constants } from "../../mixins/analytics";
 export default {
-  props: ["articles"],
-  mixins: [api_handlable, analytics_constants],
+  mixins: [analytics_constants, validateVerified],
   data() {
     return {
       ids: [],
@@ -29,7 +34,6 @@ export default {
         start_date: null, // 開始日
         end_date: null, // 終了日
       },
-      analytics: [],
       datasets: null,
       labels: null,
     };
@@ -44,8 +48,12 @@ export default {
   },
   created() {
     this.initialize();
+    if (!this.articlesLoaded) {
+      this.$store.dispatch("fetchArticles");
+    }
   },
   computed: {
+    ...mapGetters(["articlesLoaded", "articles", "analytics", "hasError"]),
     format_type() {
       switch (this.options.type) {
         case this.TYPE_DAILY:
@@ -72,26 +80,33 @@ export default {
         this.options.end_date
       ).splitBy(this.interval_type);
     },
+    ready() {
+      return this.articlesLoaded;
+    },
   },
   methods: {
+    ...mapActions(["fetchArticles", "fetchAnalytics"]),
     initialize() {
       this.options.start_date = DateTime.local().minus({ month: 3 });
       this.options.end_date = DateTime.local();
     },
-    handleApply() {
+    async handleApply() {
       const params = {
         ids: this.ids,
         type: this.options.type,
         start_date: this.options.start_date.toISODate(),
         end_date: this.options.end_date.toISODate(),
       };
-      this.fetchAnalytics(params);
+      await this.fetchAnalytics(params);
+
+      if (!this.hasError) {
+        this.calcLabels();
+        this.calcDatasets();
+      }
+      this.scrollToTop();
     },
     setAnalytics(analytics) {
       this.analytics = analytics;
-
-      this.calcLabels();
-      this.calcDatasets();
     },
     calcLabels() {
       this.labels = this.interval.map((d) =>

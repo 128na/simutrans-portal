@@ -1,25 +1,35 @@
 <template>
   <div>
     <h1>{{ $t("Mypage") }}</h1>
-    <div v-if="!isVerified">
-      <form-verify :user="user" />
+    <div v-if="ready">
+      <div v-if="!isVerified">
+        <need-verify />
+      </div>
+      <div v-else>
+        <article-table :articles="articles" :user="user" />
+      </div>
     </div>
-    <div v-else>
-      <article-table
-        :articles="articles"
-        :user="user"
-        @update:articles="$emit('update:articles', $event)"
-      />
-    </div>
+    <loading v-else />
   </div>
 </template>
 <script>
-import { linkable, validateLogin } from "../../mixins";
 import { mapGetters, mapActions } from "vuex";
+import { validateLogin } from "../../mixins/auth";
 export default {
-  mixins: [linkable, validateLogin],
+  mixins: [validateLogin],
+  created() {
+    if (!this.articlesLoaded) {
+      this.fetchArticles();
+    }
+  },
   computed: {
-    ...mapGetters(["isVerified", "statusCode", "user"]),
+    ...mapGetters(["isVerified", "user", "articlesLoaded", "articles"]),
+    ready() {
+      return this.articlesLoaded;
+    },
+  },
+  methods: {
+    ...mapActions(["fetchArticles"]),
   },
 };
 </script>

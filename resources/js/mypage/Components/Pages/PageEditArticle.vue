@@ -1,80 +1,138 @@
 <template>
-  <div v-if="copy">
+  <div v-if="articlesLoaded">
     <button-back />
     <h1>{{ $t("Edit {title}", { title: selected_article.title }) }}</h1>
-    <component
-      :is="copy.post_type"
-      :article="copy"
-      :attachments="attachments"
-      :options="options"
-      :errors="errors"
-      @update:attachments="$emit('update:attachments', $event)"
-    />
+    <div v-if="ready">
+      <component :is="component_name" :article="copy" />
 
-    <b-form-group>
-      <template slot="label">
-        <badge-optional />
-        {{ $t("Auto Tweet") }}
-      </template>
-      <b-form-checkbox v-model="should_tweet">{{
-        $t("Tweet when posting or updating.")
-      }}</b-form-checkbox>
-    </b-form-group>
-    <b-form-group>
-      <b-btn :disabled="fetching" @click="handlePreview">{{
-        $t("Preview")
-      }}</b-btn>
-      <b-btn :disabled="fetching" variant="primary" @click="handleUpdate">{{
-        $t("Save")
-      }}</b-btn>
-    </b-form-group>
+      <b-form-group>
+        <template slot="label">
+          <badge-optional />
+          {{ $t("Auto Tweet") }}
+        </template>
+        <b-form-checkbox v-model="should_tweet">
+          {{ $t("Tweet when posting or updating.") }}
+        </b-form-checkbox>
+      </b-form-group>
+      <b-form-group>
+        <fetching-overlay>
+          <b-btn @click="handlePreview">
+            {{ $t("Preview") }}
+          </b-btn>
+        </fetching-overlay>
+        <fetching-overlay>
+          <b-btn variant="primary" @click="handleUpdate">
+            {{ $t("Save") }}
+          </b-btn>
+        </fetching-overlay>
+      </b-form-group>
+    </div>
+    <loading v-else />
   </div>
 </template>
 <script>
-import {
-  verifiedable,
-  previewable,
-  api_handlable,
-  editor_handlable,
-} from "../../mixins";
+import { mapGetters, mapActions } from "vuex";
+import { validateVerified } from "../../mixins/auth";
+import { editor } from "../../mixins/editor";
+import { preview } from "../../mixins/preview";
 export default {
-  props: ["articles", "attachments", "options"],
-  mixins: [verifiedable, previewable, api_handlable, editor_handlable],
+  mixins: [validateVerified, preview, editor],
   data() {
     return {
       should_tweet: false,
     };
   },
   created() {
-    this.setCopy(this.selected_article);
+    if (!this.articlesLoaded) {
+      this.$store.dispatch("fetchArticles");
+    } else {
+      this.setCopy(this.selected_article);
+    }
+    if (!this.optionsLoaded) {
+      this.$store.dispatch("fetchOptions");
+    }
+    if (!this.attachmentsLoaded) {
+      this.$store.dispatch("fetchAttachments");
+    }
+    if (!this.tagsLoaded) {
+      this.$store.dispatch("fetchTags");
+    }
+  },
+  watch: {
+    articlesLoaded(val) {
+      if (val) {
+        this.setCopy(this.selected_article);
+      }
+    },
   },
   computed: {
+    ...mapGetters([
+      "attachmentsLoaded",
+      "optionsLoaded",
+      "tagsLoaded",
+      "articlesLoaded",
+      "articles",
+      "hasError",
+    ]),
     selected_article() {
-      return this.articles.find((a) => a.id == this.$route.params.id);
+      if (this.articlesLoaded) {
+        return this.articles.find((a) => a.id == this.$route.params.id);
+      }
+    },
+    ready() {
+      return this.optionsLoaded && this.articlesLoaded && !!this.copy;
+    },
+    component_name() {
+      return `post-type-${this.copy.post_type}`;
     },
   },
   methods: {
-    handlePreview() {
+    ...mapActions([
+      "fetchOptions",
+      "fetchAttachments",
+      "fetchArticles",
+      "fetchTags",
+      "updateArticle",
+    ]),
+    async handlePreview() {
       const params = {
         article: this.copy,
         should_tweet: this.should_tweet,
         preview: true,
       };
-      this.updateArticle(params);
+      const html = await this.$store.dispatch("updateArticle", {
+        params,
+        message: null,
+      });
+
+      // プレビュー作成が成功すればプレビューウインドウを表示する
+      // エラーがあれば画面上部へスクロールする（通知が見えないため）
+      if (!this.hasError && html) {
+        return this.setPreview(html);
+      }
+      this.scrollToTop();
     },
-    handleUpdate() {
+    async handleUpdate() {
       const params = {
         article: this.copy,
         should_tweet: this.should_tweet,
         preview: false,
       };
-      this.updateArticle(params);
-    },
-    setArticles(articles) {
-      this.$emit("update:articles", articles);
-      this.unsetUnloadDialog();
-      if (!this.isDraft()) {
-        this.$router.push({ name: "index" });
+      await this.$store.dispatch("updateArticle", { params });
+
+      // 更新が成功すれば遷移ダイアログを無効化してマイページトップへ戻る
+      // ステータスが下書きの時は編集画面上部へスクロールする（通知が見えないため）
+      // エラーがあれば編集画面上部へスクロールする（通知が見えないため）
+      if (!this.hasError) {
+        this.unsetUnloadDialog();
+
+        if (!this.isDraft()) {
+          this.$router.push({ name: "index" });
+        } else {
+          this.scrollToTop();
+        }
+      } else {
+        this.scrollToTop();
       }
     },
     getOriginal() {

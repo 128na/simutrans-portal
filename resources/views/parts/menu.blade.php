@@ -66,16 +66,7 @@
         </li> --}}
         <div class="dropdown-divider border-light"></div>
         {{-- ログイン・登録/マイページ --}}
-        @guest
-            <li class="nav-item"><a class="nav-link active" href="{{ route('mypage.index') }}">@lang('Login / Register')</a></li>
-        @else
-            @if(Auth::user()->isAdmin())
-                <li class="nav-item"><a class="nav-link active" href="{{ route('admin.index') }}">@lang('[admin] Dashboard')</a></li>
-            @endif
-            <li class="nav-item"><a class="nav-link active" href="{{ route('mypage.index') }}">@lang('Mypage')</a></li>
-            <li class="nav-item"><a class="nav-link active" href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();">@lang('Logout')</a></li>
-            <form id="logout-form" action="{{ route('api.v2.logout') }}" method="POST" style="display: none;">@csrf</form>
-        @endguest
+        <li class="nav-item"><a class="nav-link active" href="{{ route('mypage.index') }}">@lang('Mypage')</a></li>
         <div class="dropdown-divider border-light"></div>
 
         @include('parts.copyright')

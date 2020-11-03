@@ -25,9 +25,8 @@ class TagController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $this->tag_service->create([
+        return $this->tag_service->create([
             'name' => $request->name,
         ]);
-        return $this->tag_service->getTags();
     }
 }

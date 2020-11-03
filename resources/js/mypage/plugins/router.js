@@ -4,15 +4,15 @@ import VueRouter from 'vue-router';
 /**
 * import components
 */
-import PageLogin from './Components/Pages/PageLogin';
-import PageRegister from './Components/Pages/PageRegister';
-import PageReset from './Components/Pages/PageReset';
-import PageIndex from './Components/Pages/PageIndex';
-import PageCreateArticle from './Components/Pages/PageCreateArticle';
-import PageEditArticle from './Components/Pages/PageEditArticle';
-import PageEditProfile from './Components/Pages/PageEditProfile';
-import PageAnalyticsArticle from './Components/Pages/PageAnalyticsArticle';
-import store from './store';
+import PageLogin from '../Components/Pages/PageLogin';
+import PageRegister from '../Components/Pages/PageRegister';
+import PageReset from '../Components/Pages/PageReset';
+import PageIndex from '../Components/Pages/PageIndex';
+import PageCreateArticle from '../Components/Pages/PageCreateArticle';
+import PageEditArticle from '../Components/Pages/PageEditArticle';
+import PageEditProfile from '../Components/Pages/PageEditProfile';
+import PageAnalyticsArticle from '../Components/Pages/PageAnalyticsArticle';
+import store from '../store';
 const routes = [
   { name: "login", path: '/login', component: PageLogin },
   { name: "register", path: '/register', component: PageRegister },

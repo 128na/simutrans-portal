@@ -1,0 +1,82 @@
+import api from '../../api'
+import { DateTime } from 'luxon';
+const SET_ARTICLES = 'SET_ARTICLES';
+
+export default {
+  state: () => {
+    return {
+      articles: false,
+    };
+  },
+  getters: {
+    articlesLoaded: state => state.articles !== false,
+    articles: state => state.articles || [],
+  },
+  mutations: {
+    [SET_ARTICLES](state, articles = false) {
+      if (articles) {
+        articles = articles.map(a => Object.assign(a, {
+          created_at: DateTime.fromISO(a.created_at),
+          updated_at: DateTime.fromISO(a.updated_at),
+        }));
+      }
+      state.articles = articles;
+    },
+  },
+  actions: {
+    /**
+     * 投稿記事一覧
+     */
+    async fetchArticles({ commit, dispatch }) {
+      try {
+        const res = await api.fetchArticles();
+        if (res && res.status === 200) {
+          return commit(SET_ARTICLES, res.data.data);
+        }
+        dispatch('setApiStatusError');
+      } catch (e) {
+        dispatch('setApiStatusError', e);
+      }
+    },
+    /**
+     * 記事更新
+     */
+    async updateArticle({ commit, dispatch }, { params, message = '更新しました' }) {
+      dispatch('setApiStatusFetching');
+      try {
+        const res = await api.updateArticle(params);
+        if (res && res.status === 200) {
+          dispatch('setApiStatusSuccess');
+          if (params.preview) {
+            return res.data;
+          }
+          commit(SET_ARTICLES, res.data.data);
+          return dispatch('setInfoMessage', { message });
+        }
+        dispatch('setApiStatusError');
+      } catch (e) {
+        dispatch('setApiStatusError', e);
+      }
+    },
+    /**
+     * 記事作成
+     */
+    async createArticle({ commit, dispatch }, { params, message = '作成しました' }) {
+      dispatch('setApiStatusFetching');
+      try {
+        const res = await api.createArticle(params);
+        if (res && res.status === 200) {
+          dispatch('setApiStatusSuccess');
+          if (params.preview) {
+            return res.data;
+          }
+          commit(SET_ARTICLES, res.data.data);
+          return dispatch('setInfoMessage', { message });
+        }
+        dispatch('setApiStatusError');
+      } catch (e) {
+        dispatch('setApiStatusError', e);
+      }
+    },
+  }
+};

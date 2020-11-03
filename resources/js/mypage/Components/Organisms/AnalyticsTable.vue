@@ -1,5 +1,5 @@
 <template>
-  <b-form-group :label="$t('Articles')">
+  <b-form-group label="投稿一覧">
     <b-table
       hover
       :items="items"
@@ -20,7 +20,7 @@
         />
       </template>
     </b-table>
-    <div v-show="items.length === 0">{{ $t("No article exists.") }}</div>
+    <div v-show="items.length === 0">投稿がありません</div>
   </b-form-group>
 </template>
 <script>
@@ -49,17 +49,17 @@ export default {
       },
       {
         key: "title",
-        label: this.$t("Title"),
+        label: "タイトル",
         sortable: true,
       },
       {
         key: "created_at",
-        label: this.$t("Created at"),
+        label: "作成日時",
         sortable: true,
       },
       {
         key: "updated_at",
-        label: this.$t("Updated at"),
+        label: "更新日時",
         sortable: true,
       },
     ];
@@ -68,17 +68,14 @@ export default {
     items() {
       return this.articles.map((a) =>
         Object.assign({}, a, {
-          created_at: a.created_at.toLocaleString(DateTime.DATETIME_FULL),
-          updated_at: a.updated_at.toLocaleString(DateTime.DATETIME_FULL),
+          created_at: a.created_at.toFormat("yyyy/LL/dd HH:mm"),
+          updated_at: a.updated_at.toFormat("yyyy/LL/dd HH:mm"),
           _rowVariant: this.rowValiant(a),
         })
       );
     },
     all_selected() {
       return this.value.length >= this.articles.length;
-    },
-    toggle_button_text() {
-      return this.all_selected ? "Unselect All" : "Select All";
     },
   },
   methods: {

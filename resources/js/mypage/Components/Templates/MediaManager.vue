@@ -10,14 +10,14 @@
     <b-img v-if="can_preview" :src="current_thumbnail" thumbnail />
     <p>{{ current_filename }}</p>
     <b-button :variant="button_variant" @click="handleShow">
-      {{ $t("Open File Manager") }}
+      ファイルを選択する
     </b-button>
     <b-modal :id="name" title="Select File" size="xl" scrollable>
       <template v-slot:modal-header>
-        <div>{{ $t("File Manager") }}</div>
+        <div>ファイルマネージャー</div>
         <fetching-overlay>
           <b-btn variant="primary" @click="handleClickUpload">
-            {{ $t("Upload File") }}
+            ファイルをアップロード
           </b-btn>
         </fetching-overlay>
       </template>
@@ -41,7 +41,7 @@
           </div>
           <small class="ellipsis">{{ attachment.original_name }}</small>
         </div>
-        <div v-show="filtered_attachments.length < 1">{{ $t("No file.") }}</div>
+        <div v-show="filtered_attachments.length < 1">ファイルがありません</div>
       </div>
       <template v-slot:modal-footer>
         <div class="flex-grow-1 flex-shrink-0">
@@ -49,14 +49,10 @@
         </div>
         <div>
           <fetching-overlay>
-            <b-btn @click="handleCancel" size="sm">
-              {{ $t("Cancel") }}
-            </b-btn>
+            <b-btn @click="handleCancel" size="sm"> キャンセル </b-btn>
           </fetching-overlay>
           <fetching-overlay>
-            <b-btn variant="primary" @click="handleOK">
-              {{ $t("Select File") }}
-            </b-btn>
+            <b-btn variant="primary" @click="handleOK"> 決定 </b-btn>
           </fetching-overlay>
         </div>
       </template>
@@ -136,7 +132,7 @@ export default {
       if (this.current_attachment) {
         return this.current_attachment.original_name;
       }
-      return this.$t("Not selected.");
+      return "ファイル未選択";
     },
   },
   methods: {
@@ -183,7 +179,7 @@ export default {
     async handleFileChange(e) {
       const file = this.getFile();
       if (file) {
-        await this.$store.dispatch("storeAttachment", {
+        await this.storeAttachment({
           file,
           type: this.type,
           id: this.id,
@@ -200,11 +196,11 @@ export default {
       }
     },
     async handleDelete(id) {
-      if (window.confirm(this.$t("Are you sure you want to delete?"))) {
+      if (window.confirm("削除してよろしいですか？")) {
         if (this.selected == id) {
           this.selected = null;
         }
-        this.$store.dispatch("deleteAttachment", id);
+        this.deleteAttachment(id);
       }
     },
     // style

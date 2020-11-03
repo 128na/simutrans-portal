@@ -1,8 +1,3 @@
 <template>
-  <div>Loading...</div>
+  <div>読み込み中...</div>
 </template>
-<script>
-export default {
-  name: "loading",
-};
-</script>

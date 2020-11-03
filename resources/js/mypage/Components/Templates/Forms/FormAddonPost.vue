@@ -3,7 +3,7 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("Author") }}
+        作者
       </template>
       <b-form-input
         type="text"
@@ -14,7 +14,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{ $t("Addon File") }}
+        アドオンファイル
       </template>
       <media-manager
         name="addon"
@@ -27,7 +27,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{ $t("Description") }}
+        説明
       </template>
       <b-form-textarea
         v-model="article.contents.description"
@@ -38,7 +38,7 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("Acknowledgments and Referenced") }}
+        謝辞・参考にしたアドオン
       </template>
       <b-form-textarea
         v-model="article.contents.thanks"

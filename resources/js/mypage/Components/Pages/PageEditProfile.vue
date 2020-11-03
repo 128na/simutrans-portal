@@ -1,7 +1,7 @@
 <template>
   <div v-if="ready">
     <button-back />
-    <h1>{{ $t("Edit my profile") }}</h1>
+    <h1>プロフィール編集</h1>
     <form-profile :user="copy">
       <b-form-group>
         <fetching-overlay>
@@ -24,7 +24,7 @@ export default {
   created() {
     this.setCopy(this.user);
     if (!this.attachmentsLoaded) {
-      this.$store.dispatch("fetchAttachments");
+      this.fetchAttachments();
     }
   },
   computed: {
@@ -36,7 +36,7 @@ export default {
   methods: {
     ...mapActions(["fetchAttachments", "updateUser"]),
     async handleUpdate() {
-      await this.$store.dispatch("updateUser", { user: this.copy });
+      await this.updateUser({ user: this.copy });
 
       // 更新が成功すれば遷移ダイアログを無効化して編集画面上部へスクロールする（通知が見えないため）
       if (!this.hasError) {

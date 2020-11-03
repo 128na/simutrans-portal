@@ -3,7 +3,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{ $t("Name") }}
+        名前
       </template>
       <b-form-input
         type="text"
@@ -15,7 +15,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{ $t("Email") }}
+        メールアドレス
       </template>
       <b-form-input
         type="email"
@@ -27,7 +27,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{ $t("Password") }}
+        パスワード
       </template>
       <input-password
         v-model="params.password"

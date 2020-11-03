@@ -1,5 +1,5 @@
 <template>
-  <b-form-group :label="$t('Articles')">
+  <b-form-group label="投稿一覧">
     <b-table
       hover
       :items="items"
@@ -12,7 +12,7 @@
         <tooltip-menu :article="data.item" />
       </template>
     </b-table>
-    <div v-show="items.length === 0">{{ $t("No article exists.") }}</div>
+    <div v-show="items.length === 0">投稿がありません</div>
   </b-form-group>
 </template>
 <script>
@@ -31,17 +31,17 @@ export default {
     this.fields = [
       {
         key: "status",
-        label: this.$t("Status"),
+        label: "ステータス",
         sortable: true,
       },
       {
         key: "post_type",
-        label: this.$t("Post Type"),
+        label: "形式",
         sortable: true,
       },
       {
         key: "title",
-        label: this.$t("Title"),
+        label: "タイトル",
         sortable: true,
       },
       {
@@ -56,12 +56,12 @@ export default {
       },
       {
         key: "created_at",
-        label: this.$t("Created at"),
+        label: "作成日時",
         sortable: true,
       },
       {
         key: "updated_at",
-        label: this.$t("Updated at"),
+        label: "更新日時",
         sortable: true,
       },
       {
@@ -75,10 +75,10 @@ export default {
     items() {
       return this.articles.map((a) =>
         Object.assign({}, a, {
-          status: this.$t(`statuses.${a.status}`),
-          post_type: this.$t(`post_types.${a.post_type}`),
-          created_at: a.created_at.toLocaleString(DateTime.DATETIME_FULL),
-          updated_at: a.updated_at.toLocaleString(DateTime.DATETIME_FULL),
+          status: this.status(a.status),
+          post_type: this.post_type(a.post_type),
+          created_at: a.created_at.toFormat("yyyy/LL/dd HH:mm"),
+          updated_at: a.updated_at.toFormat("yyyy/LL/dd HH:mm"),
           _rowVariant: this.rowValiant(a),
         })
       );
@@ -94,6 +94,30 @@ export default {
         case "publish":
         default:
           return "";
+      }
+    },
+    status(status) {
+      switch (status) {
+        case "publish":
+          return "公開";
+        case "draft":
+          return "下書き";
+        case "private":
+          return "非公開";
+        case "trash":
+          return "ゴミ箱";
+      }
+    },
+    post_type(post_type) {
+      switch (post_type) {
+        case "addon-post":
+          return "アドオン投稿";
+        case "addon-introduction":
+          return "アドオン紹介";
+        case "page":
+          return "一般記事";
+        case "markdown":
+          return "一般記事(markdown)";
       }
     },
   },

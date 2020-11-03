@@ -3,7 +3,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{ $t("Contents") }}
+        コンテンツ
       </template>
       <b-form-textarea
         v-model="article.contents.markdown"
@@ -14,7 +14,7 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("Categories") }}
+        カテゴリ
       </template>
       <b-form-checkbox-group
         v-model="article.categories"

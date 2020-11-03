@@ -3,17 +3,17 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("Paks") }}
+        Pak
       </template>
       <b-form-checkbox-group
         v-model="article.categories"
         :options="options.categories.pak"
       />
     </b-form-group>
-    <b-form-group :label="$t('s')">
+    <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("Addon Type") }}
+        形式
       </template>
       <b-form-checkbox-group
         v-model="article.categories"
@@ -23,7 +23,7 @@
     <b-form-group v-show="includes_pak128">
       <template slot="label">
         <badge-optional />
-        {{ $t("Track positions for pak128") }}
+        Pak128用描画位置
       </template>
       <b-form-checkbox-group
         v-model="article.categories"
@@ -33,14 +33,14 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("Tags") }}
+        タグ
       </template>
       <tag-selector v-model="article.tags" :creatable="true" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("License") }}
+        ライセンス
       </template>
       <b-form-checkbox-group
         v-model="article.categories"
@@ -50,7 +50,7 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("License other") }}
+        ライセンスその他
       </template>
       <b-form-textarea
         v-model="article.contents.license"

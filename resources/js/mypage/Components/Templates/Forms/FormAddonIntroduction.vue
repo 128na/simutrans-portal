@@ -3,7 +3,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{ $t("Author") }}
+        作者
       </template>
       <b-form-input
         type="text"
@@ -14,7 +14,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{ $t("Link") }}
+        リンク先URL
       </template>
       <b-form-input
         type="url"
@@ -25,7 +25,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{ $t("Description") }}
+        説明
       </template>
       <b-form-textarea
         v-model="article.contents.description"
@@ -36,7 +36,7 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("Acknowledgments and Referenced") }}
+        謝辞・参考にしたアドオン
       </template>
       <b-form-textarea
         v-model="article.contents.thanks"
@@ -47,29 +47,25 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("Agreement") }}
+        掲載許可
       </template>
       <b-form-checkbox
         v-model="article.contents.agreement"
         :state="validationState('article.contents.agreement')"
       >
-        {{
-          $t(
-            "This article is published by author's permission or by author himself."
-          )
-        }}
+        この記事は作者の許可を得てまたは作者自身により掲載しています。
       </b-form-checkbox>
     </b-form-group>
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("Periodic broken link checks") }}
+        自動リンク切れチェック
       </template>
       <b-form-checkbox
         v-model="article.contents.exclude_link_check"
         :state="validationState('article.contents.exclude_link_check')"
       >
-        {{ $t("Exclude periodic broken link checks") }}
+        自動リンク切れチェックの対象外にする
       </b-form-checkbox>
     </b-form-group>
   </div>

@@ -1,12 +1,12 @@
 <template>
   <b-alert show variant="info">
-    <strong>{{ $t("メールアドレスの確認が済んでいません") }}</strong>
+    <strong>メールアドレスの確認が済んでいません</strong>
     <p>
-      {{ $t("全ての機能を使用するにはメールアドレスの確認が必要です。") }}<br />
-      {{ $t("確認メールを再送信するには下のボタンをクリックしてください。") }}
+      全ての機能を使用するにはメールアドレスの確認が必要です。<br />
+      確認メールを再送信するには下のボタンをクリックしてください。
     </p>
     <b-button variant="secondary" @click.prevent="resend">
-      {{ $t("確認メールを再送信する") }}
+      確認メールを再送信する
     </b-button>
   </b-alert>
 </template>

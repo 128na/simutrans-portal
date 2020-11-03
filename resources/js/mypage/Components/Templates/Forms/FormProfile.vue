@@ -3,7 +3,7 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("Avatar image") }}
+        アバター画像
       </template>
       <media-manager
         name="avatar"
@@ -16,7 +16,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{ $t("Name") }}
+        名前
       </template>
       <b-form-input
         type="text"
@@ -27,7 +27,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{ $t("Email") }}
+        メールアドレス
       </template>
       <b-form-input
         type="email"
@@ -41,7 +41,7 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("Description") }}
+        説明
       </template>
       <b-form-textarea
         v-model="user.profile.data.description"
@@ -52,7 +52,7 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("Website URL") }}
+        WebサイトURL
       </template>
       <b-form-input
         type="url"
@@ -63,7 +63,7 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("Twitter ID") }}
+        Twitter ID
       </template>
       <b-input-group prepend="@">
         <b-form-input

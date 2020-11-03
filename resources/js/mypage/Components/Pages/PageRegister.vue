@@ -1,12 +1,11 @@
 <template>
   <div>
-    <button-back name="login">{{ $t("Back to Login") }}</button-back>
-    <h1>{{ $t("Register") }}</h1>
+    <h1>新規登録</h1>
     <form-register :params="params">
       <b-form-group>
         <fetching-overlay>
           <b-button variant="primary" type="submit" @click="handleRegister">
-            {{ $t("Register") }}
+            新規登録
           </b-button>
         </fetching-overlay>
       </b-form-group>
@@ -31,7 +30,7 @@ export default {
   methods: {
     ...mapActions(["register"]),
     handleRegister() {
-      this.$store.dispatch("register", this.params);
+      this.register(this.params);
     },
   },
 };

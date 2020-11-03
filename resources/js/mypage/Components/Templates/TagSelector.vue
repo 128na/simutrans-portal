@@ -20,14 +20,14 @@
         :no-flip="true"
         :dropup="false"
       >
-        <template v-slot:button-content>{{ $t("Select tag") }}</template>
+        <template v-slot:button-content>タグを選択する</template>
         <b-dropdown-form @submit.stop.prevent="() => {}">
           <b-form-group
             class="mb-0"
             label-for="tag-search-input"
             label-cols-md="auto"
             label-size="sm"
-            :label="$t('Search words')"
+            label="検索"
           >
             <b-input-group>
               <b-form-input
@@ -45,7 +45,7 @@
                     :disabled="!can_create"
                     @click="handleCreateTagClick"
                   >
-                    {{ $t('Create and add tag "{name}"', { name: criteria }) }}
+                    「{{ criteria }}」を作成して追加
                   </b-button>
                 </fetching-overlay>
               </b-input-group-append>
@@ -61,7 +61,7 @@
           {{ tag }}
         </b-dropdown-item-button>
         <b-dropdown-text v-if="items.length === 0">
-          {{ $t("No tags") }}
+          該当タグ無し
         </b-dropdown-text>
       </b-dropdown>
     </template>
@@ -90,12 +90,12 @@ export default {
   },
   created() {
     if (!this.tagsLoaded) {
-      this.$store.dispatch("fetchTags", this.criteria);
+      this.fetchTags(this.criteria);
     }
   },
   watch: {
     criteria() {
-      this.$store.dispatch("fetchTags", this.criteria);
+      this.fetchTags(this.criteria);
     },
   },
   computed: {
@@ -124,7 +124,7 @@ export default {
       this.value.splice(index, 1);
     },
     async handleCreateTagClick() {
-      await this.$store.dispatch("storeTag", this.criteria);
+      await this.storeTag(this.criteria);
       this.value.push(this.criteria);
       this.search = "";
     },

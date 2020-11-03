@@ -1,6 +1,6 @@
 <template>
   <b-form>
-    <b-form-group :label="$t('Email')">
+    <b-form-group label="メールアドレス">
       <b-form-input
         type="email"
         v-model="params.email"

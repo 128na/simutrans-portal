@@ -3,7 +3,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{ $t("Sections") }}
+        本文
       </template>
       <b-form
         inline
@@ -13,7 +13,7 @@
         <b-form-textarea
           v-if="isText(section.type)"
           :value="section.text"
-          :placeholder="$t('Text')"
+          placeholder="テキスト"
           :state="validationState(`article.contents.sections.${index}.text`)"
           @input="(v) => handleInput(index, v)"
         />
@@ -51,15 +51,15 @@
           >&times;</b-button
         >
       </b-form>
-      <b-btn @click="handleAdd('caption')">{{ $t("Add Caption") }}</b-btn>
-      <b-btn @click="handleAdd('text')">{{ $t("Add Text") }}</b-btn>
-      <b-btn @click="handleAdd('url')">{{ $t("Add URL") }}</b-btn>
-      <b-btn @click="handleAdd('image')">{{ $t("Add Image") }}</b-btn>
+      <b-btn @click="handleAdd('caption')">見出しを追加</b-btn>
+      <b-btn @click="handleAdd('text')">テキストを追加</b-btn>
+      <b-btn @click="handleAdd('url')">URLを追加</b-btn>
+      <b-btn @click="handleAdd('image')">画像を追加</b-btn>
     </b-form-group>
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("Categories") }}
+        カテゴリ
       </template>
       <b-form-checkbox-group
         v-model="article.categories"
@@ -133,7 +133,7 @@ export default {
       }
     },
     handleRemove(index) {
-      if (window.confirm(this.$t("Are you sure you want to delete?"))) {
+      if (window.confirm("削除してもよろしいですか？")) {
         const sections = [...this.article.contents.sections];
         sections.splice(index, 1)[0];
         this.article.contents.sections = sections;

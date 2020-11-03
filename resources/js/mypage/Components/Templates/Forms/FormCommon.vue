@@ -3,7 +3,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{ $t("Status") }}
+        公開状態
       </template>
       <b-form-select
         v-model="article.status"
@@ -14,7 +14,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{ $t("Title") }}
+        タイトル
       </template>
       <b-input-group>
         <b-form-input
@@ -25,7 +25,7 @@
         <b-input-group-append>
           <b-button @click="handleSlug">
             <b-icon icon="arrow-down" />
-            {{ $t("To Slug") }}
+            タイトルをパーマリンクにコピー
           </b-button>
         </b-input-group-append>
       </b-input-group>
@@ -33,7 +33,7 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        {{ $t("Slug") }}
+        パーマリンク
       </template>
       <b-form-input
         type="text"
@@ -47,7 +47,7 @@
     <b-form-group>
       <template slot="label">
         <badge-optional />
-        {{ $t("Thumbnail") }}
+        サムネイル画像
       </template>
       <media-manager
         name="thumbnail"

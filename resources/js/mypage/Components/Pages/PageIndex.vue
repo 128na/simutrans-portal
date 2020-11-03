@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{ $t("Mypage") }}</h1>
+    <h1>マイページ</h1>
     <div v-if="ready">
       <div v-if="!isVerified">
         <need-verify />

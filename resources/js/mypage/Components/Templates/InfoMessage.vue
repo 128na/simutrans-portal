@@ -15,7 +15,7 @@ export default {
   methods: {
     ...mapActions(["setInfoMessage"]),
     close() {
-      this.$store.dispatch("setInfoMessage", {});
+      this.setInfoMessage({});
     },
   },
 };

@@ -14,15 +14,15 @@
     <b-collapse id="global-menu" is-nav>
       <b-navbar-nav v-if="isLoggedIn">
         <b-nav-item class="active" v-if="isAdmin" :href="admin_url">
-          {{ $t("[admin] Dashboard") }}
+          管理者画面
         </b-nav-item>
         <b-nav-item class="active" v-if="isVerified" :to="route_edit_profile">
           <b-icon icon="person" class="mr-1" />
-          {{ $t("Edit my profile") }}
+          プロフィール編集
         </b-nav-item>
         <b-nav-item class="active" v-if="isVerified" :to="route_analytics">
           <b-icon icon="graph-up" class="mr-1" />
-          {{ $t("Access Analytics") }}
+          アクセス解析
         </b-nav-item>
         <b-nav-item
           class="active"
@@ -30,9 +30,7 @@
           :to="route_create_addon_post"
         >
           <icon-edit-article class="mr-1" />
-          {{
-            $t("Create {post_type}", { post_type: $t("post_types.addon-post") })
-          }}
+          アドオン投稿を作成
         </b-nav-item>
         <b-nav-item
           class="active"
@@ -40,15 +38,11 @@
           :to="route_create_addon_introduction"
         >
           <icon-edit-article class="mr-1" />
-          {{
-            $t("Create {post_type}", {
-              post_type: $t("post_types.addon-introduction"),
-            })
-          }}
+          アドオン紹介を作成
         </b-nav-item>
         <b-nav-item class="active" v-if="isVerified" :to="route_create_page">
           <icon-edit-article class="mr-1" />
-          {{ $t("Create {post_type}", { post_type: $t("post_types.page") }) }}
+          一般記事を作成
         </b-nav-item>
         <b-nav-item
           class="active"
@@ -56,23 +50,17 @@
           :to="route_create_markdown"
         >
           <icon-edit-article class="mr-1" />
-          {{
-            $t("Create {post_type}", { post_type: $t("post_types.markdown") })
-          }}
+          一般記事(markdown)を作成
         </b-nav-item>
         <div class="dropdown-divider border-light" />
         <b-nav-item class="active" @click="logout">
           <b-icon icon="box-arrow-right" class="mr-1" />
-          {{ $t("Logout") }}
+          ログアウト
         </b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav v-else>
-        <b-nav-item class="active" :to="route_login">
-          {{ $t("Login") }}
-        </b-nav-item>
-        <b-nav-item class="active" :to="route_register">
-          {{ $t("Register") }}
-        </b-nav-item>
+        <b-nav-item class="active" :to="route_login"> ログイン </b-nav-item>
+        <b-nav-item class="active" :to="route_register"> 新規登録 </b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
@@ -91,9 +79,6 @@ export default {
   },
   methods: {
     ...mapActions(["logout"]),
-    logout() {
-      this.$store.dispatch("logout");
-    },
   },
 };
 </script>

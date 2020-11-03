@@ -1,3 +1,3 @@
 <template>
-  <b-badge variant="secondary">{{ $t("Optional") }}</b-badge>
+  <b-badge variant="secondary">任意</b-badge>
 </template>

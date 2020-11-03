@@ -17,7 +17,7 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
   created() {
-    this.$store.dispatch("checkLogin");
+    this.checkLogin();
   },
   methods: {
     ...mapActions(["checkLogin"]),

@@ -9,7 +9,7 @@
       @click="handleCopy(article.url)"
     >
       <b-icon icon="clipboard-data" class="mr-1" />
-      {{ $t("Copy URL") }}
+      URLをコピー
     </b-dropdown-item>
     <b-dropdown-item
       v-if="is_publish"
@@ -18,20 +18,20 @@
       class="mb-1"
     >
       <b-icon icon="box-arrow-up-right" class="mr-1" />
-      {{ $t("Show") }}
+      表示
     </b-dropdown-item>
     <b-dropdown-item @click="handleEdit">
       <b-icon icon="pencil" class="mr-1" />
-      {{ $t("Edit") }}
+      編集
     </b-dropdown-item>
     <b-dropdown-divider></b-dropdown-divider>
     <b-dropdown-item v-show="is_publish" @click="handleToPrivate">
       <b-icon icon="lock-fill" class="mr-1" />
-      {{ $t("To Private") }}
+      記事を非公開にする
     </b-dropdown-item>
     <b-dropdown-item v-show="!is_publish" @click="handleToPublish">
       <b-icon icon="unlock-fill" class="mr-1" />
-      {{ $t("To Publish (no tweet)") }}
+      記事を公開にする（自動ツイート無し）
     </b-dropdown-item>
   </b-dropdown>
 </template>
@@ -41,7 +41,7 @@ export default {
   props: ["article"],
   computed: {
     is_publish() {
-      return this.article.status === this.$t("statuses.publish");
+      return this.article.status === "公開";
     },
   },
   methods: {
@@ -55,7 +55,7 @@ export default {
           status: "private",
         }),
       };
-      this.$store.dispatch("updateArticle", {
+      this.updateArticle({
         params,
         message: "ステータスを非公開にしました",
       });
@@ -66,14 +66,14 @@ export default {
           status: "publish",
         }),
       };
-      this.$store.dispatch("updateArticle", {
+      this.updateArticle({
         params,
         message: "ステータスを公開にしました",
       });
     },
     handleCopy(text) {
       this.$copyText(text);
-      this.$store.dispatch("setInfoMessage", {
+      this.setInfoMessage({
         message: "クリップボードにコピーしました",
       });
     },

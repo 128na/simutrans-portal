@@ -1,12 +1,11 @@
 <template>
   <div>
-    <button-back name="login">{{ $t("Back to Login") }}</button-back>
-    <h1>{{ $t("Reset Password") }}</h1>
+    <h1>パスワード再設定</h1>
     <form-reset :params="params">
       <b-form-group>
         <fetching-overlay>
           <b-button variant="primary" type="submit" @click="handleSubmit">
-            {{ $t("Send Password Reset Link") }}
+            再設定用のメールを送信
           </b-button>
         </fetching-overlay>
       </b-form-group>
@@ -28,7 +27,7 @@ export default {
   methods: {
     ...mapActions(["sendResetEmail"]),
     handleSubmit() {
-      this.$store.dispatch("sendResetEmail", this.params);
+      this.sendResetEmail(this.params);
     },
   },
 };

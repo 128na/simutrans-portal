@@ -1,6 +1,6 @@
 <template>
   <b-form>
-    <b-form-group :label="$t('Email')">
+    <b-form-group label="メールアドレス">
       <b-form-input
         type="email"
         v-model="params.email"
@@ -8,7 +8,7 @@
         autocomplete="email"
       />
     </b-form-group>
-    <b-form-group :label="$t('Password')">
+    <b-form-group label="パスワード">
       <input-password
         v-model="params.password"
         :state="validationState('password')"
@@ -17,7 +17,7 @@
     </b-form-group>
     <b-form-group>
       <b-form-checkbox v-model="params.remember">
-        {{ $t("Remember Me") }}
+        ログインしたままにする
       </b-form-checkbox>
     </b-form-group>
     <slot />

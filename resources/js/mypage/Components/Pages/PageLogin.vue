@@ -1,20 +1,16 @@
 <template>
   <div>
-    <h1>{{ $t("Login") }}</h1>
+    <h1>ログイン</h1>
     <form-login :params="params">
       <b-form-group>
-        <fetching-overlay class="mr-2">
+        <fetching-overlay>
           <b-button type="submit" variant="primary" @click="handleLogin">
-            {{ $t("Login") }}
+            ログイン
           </b-button>
         </fetching-overlay>
-        <router-link :to="route_register">
-          {{ $t("Register") }}
-        </router-link>
+        <router-link :to="route_register" class="ml-2"> 新規登録 </router-link>
         &nbsp;|&nbsp;
-        <router-link :to="route_password_reset">
-          {{ $t("Forgot Your Password?") }}
-        </router-link>
+        <router-link :to="route_password_reset"> パスワード再設定 </router-link>
       </b-form-group>
     </form-login>
   </div>
@@ -36,7 +32,7 @@ export default {
   methods: {
     ...mapActions(["login"]),
     handleLogin() {
-      this.$store.dispatch("login", this.params);
+      this.login(this.params);
     },
   },
 };

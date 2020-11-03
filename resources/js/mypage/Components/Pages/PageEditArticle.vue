@@ -1,29 +1,25 @@
 <template>
-  <div v-if="articlesLoaded">
+  <div>
     <button-back />
-    <h1>{{ $t("Edit {title}", { title: selected_article.title }) }}</h1>
+    <h1>編集</h1>
     <div v-if="ready">
       <component :is="component_name" :article="copy" />
 
       <b-form-group>
         <template slot="label">
           <badge-optional />
-          {{ $t("Auto Tweet") }}
+          自動ツイート
         </template>
         <b-form-checkbox v-model="should_tweet">
-          {{ $t("Tweet when posting or updating.") }}
+          記事公開時にツイートする
         </b-form-checkbox>
       </b-form-group>
       <b-form-group>
         <fetching-overlay>
-          <b-btn @click="handlePreview">
-            {{ $t("Preview") }}
-          </b-btn>
+          <b-btn @click="handlePreview"> プレビュー表示 </b-btn>
         </fetching-overlay>
         <fetching-overlay>
-          <b-btn variant="primary" @click="handleUpdate">
-            {{ $t("Save") }}
-          </b-btn>
+          <b-btn variant="primary" @click="handleUpdate"> 保存 </b-btn>
         </fetching-overlay>
       </b-form-group>
     </div>
@@ -44,18 +40,18 @@ export default {
   },
   created() {
     if (!this.articlesLoaded) {
-      this.$store.dispatch("fetchArticles");
+      this.fetchArticles();
     } else {
       this.setCopy(this.selected_article);
     }
     if (!this.optionsLoaded) {
-      this.$store.dispatch("fetchOptions");
+      this.fetchOptions();
     }
     if (!this.attachmentsLoaded) {
-      this.$store.dispatch("fetchAttachments");
+      this.fetchAttachments();
     }
     if (!this.tagsLoaded) {
-      this.$store.dispatch("fetchTags");
+      this.fetchTags();
     }
   },
   watch: {
@@ -100,7 +96,7 @@ export default {
         should_tweet: this.should_tweet,
         preview: true,
       };
-      const html = await this.$store.dispatch("updateArticle", {
+      const html = await this.updateArticle({
         params,
         message: null,
       });
@@ -118,7 +114,7 @@ export default {
         should_tweet: this.should_tweet,
         preview: false,
       };
-      await this.$store.dispatch("updateArticle", { params });
+      await this.updateArticle({ params });
 
       // 更新が成功すれば遷移ダイアログを無効化してマイページトップへ戻る
       // ステータスが下書きの時は編集画面上部へスクロールする（通知が見えないため）

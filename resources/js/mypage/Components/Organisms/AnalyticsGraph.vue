@@ -6,7 +6,6 @@
 <script>
 import Chart from "chart.js";
 export default {
-  name: "analytics-graph",
   data() {
     return {
       chart: null,

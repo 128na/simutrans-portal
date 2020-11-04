@@ -7,12 +7,20 @@
       :sort-by.sync="sortBy"
       :sort-desc.sync="sortDesc"
       stacked="sm"
+      class="clickable"
+      @row-clicked="handleRowClicked"
     >
-      <template v-slot:cell(action)="data">
+      <!-- <template v-slot:cell(action)="data">
         <tooltip-menu :article="data.item" />
-      </template>
+      </template> -->
     </b-table>
     <div v-show="items.length === 0">投稿がありません</div>
+    <tooltip-menu
+      v-if="selected_item"
+      :article="selected_item"
+      :style="tooltip_style"
+      @close="handleTooltipClose"
+    />
   </b-form-group>
 </template>
 <script>
@@ -24,6 +32,9 @@ export default {
       sortBy: "updated_at",
       sortDesc: true,
       fields: [],
+      x: 0,
+      y: 0,
+      selected_item: null,
     };
   },
   created() {
@@ -63,11 +74,11 @@ export default {
         label: "更新日時",
         sortable: true,
       },
-      {
-        key: "action",
-        label: "",
-        sortable: false,
-      },
+      // {
+      //   key: "action",
+      //   label: "",
+      //   sortable: false,
+      // },
     ];
   },
   computed: {
@@ -81,6 +92,13 @@ export default {
           _rowVariant: this.rowValiant(a),
         })
       );
+    },
+    tooltip_style() {
+      return {
+        position: "absolute",
+        top: `${this.y}px`,
+        left: `${this.x}px`,
+      };
     },
   },
   methods: {
@@ -118,6 +136,22 @@ export default {
         case "markdown":
           return "一般記事(markdown)";
       }
+    },
+    handleRowClicked(item, index, event) {
+      this.selected_item = item;
+
+      // 現在位置（右は時に近い場合は固定値）
+      const innerWidth = window.innerWidth;
+      const clientX = event.clientX;
+      this.x = Math.min(innerWidth - 250, clientX);
+
+      // 現在位置+スクロール距離
+      const scrollY = window.scrollY;
+      const clientY = event.clientY;
+      this.y = scrollY + clientY;
+    },
+    handleTooltipClose() {
+      this.selected_item = null;
     },
   },
 };

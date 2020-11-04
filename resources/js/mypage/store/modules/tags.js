@@ -1,6 +1,5 @@
-import api from '../../api'
-
-const SET_TAGS = 'SET_TAGS';
+import api from '../../api';
+import { SET_TAGS } from '../mutation-types';
 
 export default {
   state: () => {

@@ -1,6 +1,5 @@
-import api from '../../api'
-
-const SET_ANALYTICS = 'SET_ANALYTICS';
+import api from '../../api';
+import { SET_ANALYTICS } from '../mutation-types';
 
 export default {
   state: () => {
@@ -33,6 +32,5 @@ export default {
         dispatch('setApiStatusError', e);
       }
     }
-
   }
 };

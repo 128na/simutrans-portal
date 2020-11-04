@@ -5,10 +5,10 @@
         <badge-required />
         本文
       </template>
-      <b-form
-        inline
+      <div
         v-for="(section, index) in article.contents.sections"
         :key="index"
+        class="mb-3"
       >
         <b-form-textarea
           v-if="isText(section.type)"
@@ -44,17 +44,36 @@
           @input="(v) => handleInput(index, v)"
         />
         <b-button
-          variant="outline-danger"
+          variant="danger"
           @click="handleRemove(index)"
           size="sm"
-          pill
-          >&times;</b-button
+          class="mt-1"
         >
-      </b-form>
-      <b-btn @click="handleAdd('caption')">見出しを追加</b-btn>
-      <b-btn @click="handleAdd('text')">テキストを追加</b-btn>
-      <b-btn @click="handleAdd('url')">URLを追加</b-btn>
-      <b-btn @click="handleAdd('image')">画像を追加</b-btn>
+          項目を削除
+        </b-button>
+        <validation-message
+          :field="`article.contents.sections.${index}.text`"
+        />
+        <validation-message :field="`article.contents.sections.${index}.url`" />
+        <validation-message :field="`article.contents.sections.${index}.id`" />
+        <validation-message
+          :field="`article.contents.sections.${index}.caption`"
+        />
+      </div>
+      <b-button-group>
+        <b-button variant="outline-secondary" @click="handleAdd('caption')">
+          見出しを追加
+        </b-button>
+        <b-button variant="outline-secondary" @click="handleAdd('text')">
+          テキストを追加
+        </b-button>
+        <b-button variant="outline-secondary" @click="handleAdd('url')">
+          URLを追加
+        </b-button>
+        <b-button variant="outline-secondary" @click="handleAdd('image')">
+          画像を追加
+        </b-button>
+      </b-button-group>
     </b-form-group>
     <b-form-group>
       <template slot="label">

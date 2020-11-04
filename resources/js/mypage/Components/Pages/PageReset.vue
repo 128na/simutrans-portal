@@ -13,10 +13,8 @@
   </div>
 </template>
 <script>
-import { validateGuest } from "../../mixins/auth";
 import { mapActions } from "vuex";
 export default {
-  mixins: [validateGuest],
   data() {
     return {
       params: {

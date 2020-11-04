@@ -7,6 +7,7 @@
         autocomplete="email"
         :state="validationState('email')"
       />
+      <validation-message field="email" />
     </b-form-group>
     <slot />
   </b-form>

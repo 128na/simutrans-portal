@@ -10,7 +10,9 @@
         </fetching-overlay>
       </b-form-group>
       <form-analytics-config v-model="options" />
-      <analytics-table :articles="articles" v-model="ids" />
+      <analytics-table :articles="articles" v-model="ids">
+        <validation-message field="ids" />
+      </analytics-table>
     </div>
   </div>
 </template>

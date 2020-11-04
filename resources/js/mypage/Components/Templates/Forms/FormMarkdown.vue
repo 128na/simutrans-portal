@@ -10,6 +10,7 @@
         :state="validationState('article.contents.markdown')"
         rows="20"
       />
+      <validation-message field="article.contents.markdown" />
     </b-form-group>
     <b-form-group>
       <template slot="label">

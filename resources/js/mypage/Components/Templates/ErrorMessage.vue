@@ -1,7 +1,7 @@
 <template>
-  <div class="alert alert-danger" v-show="errorMessage">
+  <b-alert variant="danger" :show="!!errorMessage">
     [{{ statusCode }}] {{ errorMessage }}
-  </div>
+  </b-alert>
 </template>
 <script>
 import { mapGetters } from "vuex";

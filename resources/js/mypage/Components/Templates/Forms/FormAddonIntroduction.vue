@@ -10,6 +10,7 @@
         v-model="article.contents.author"
         :state="validationState('article.contents.author')"
       />
+      <validation-message field="article.contents.author" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -21,6 +22,7 @@
         v-model="article.contents.link"
         :state="validationState('article.contents.link')"
       />
+      <validation-message field="article.contents.link" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -32,6 +34,7 @@
         :state="validationState('article.contents.description')"
         rows="8"
       />
+      <validation-message field="article.contents.description" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -43,6 +46,7 @@
         :state="validationState('article.contents.thanks')"
         rows="8"
       />
+      <validation-message field="article.contents.thanks" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -55,6 +59,7 @@
       >
         この記事は作者の許可を得てまたは作者自身により掲載しています。
       </b-form-checkbox>
+      <validation-message field="article.contents.agreement" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -67,6 +72,7 @@
       >
         自動リンク切れチェックの対象外にする
       </b-form-checkbox>
+      <validation-message field="article.contents.exclude_link_check" />
     </b-form-group>
   </div>
 </template>

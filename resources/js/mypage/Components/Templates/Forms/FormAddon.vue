@@ -56,6 +56,7 @@
         v-model="article.contents.license"
         :state="validationState('article.contents.license')"
       />
+      <validation-message field="article.contents.license" />
     </b-form-group>
   </div>
 </template>

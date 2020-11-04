@@ -1,3 +1,4 @@
+const dialog_message = '保存せずに移動しますか？';
 export const editor = {
   data() {
     return {
@@ -17,7 +18,7 @@ export const editor = {
           }
         }
       }
-    }
+    },
   },
   methods: {
     setCopy(item) {
@@ -33,13 +34,35 @@ export const editor = {
     },
     _unloadDialogEvent(e) {
       e.preventDefault();
-      e.returnValue = '保存せずに移動しますか？';
-    }
+      e.returnValue = dialog_message;
+    },
   },
+  /**
+   * ページ遷移時に呼ばれる
+   */
   beforeRouteLeave(to, from, next) {
     if (this.has_changed) {
-      return next(window.confirm('保存せずに移動しますか？'));
+      if (window.confirm(dialog_message)) {
+        this.unsetUnloadDialog();
+        return next();
+      } else {
+        return next(false);
+      }
     }
     return next();
-  }
+  },
+  /**
+   * パラメーター変化時（post_type）に呼ばれる
+   */
+  beforeRouteUpdate(to, from, next) {
+    if (this.has_changed) {
+      if (window.confirm(dialog_message)) {
+        this.unsetUnloadDialog();
+        return next();
+      } else {
+        return next(false);
+      }
+    }
+    return next();
+  },
 };

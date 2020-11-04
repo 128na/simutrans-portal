@@ -10,6 +10,7 @@
         v-model="article.contents.author"
         :state="validationState('article.contents.author')"
       />
+      <validation-message field="article.contents.author" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -23,6 +24,7 @@
         :id="article.id"
         :state="validationState('article.contents.file')"
       />
+      <validation-message field="article.contents.file" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -34,6 +36,7 @@
         :state="validationState('article.contents.description')"
         rows="8"
       />
+      <validation-message field="article.contents.description" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -45,6 +48,7 @@
         :state="validationState('article.contents.thanks')"
         rows="8"
       />
+      <validation-message field="article.contents.thanks" />
     </b-form-group>
   </div>
 </template>

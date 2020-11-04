@@ -10,6 +10,7 @@
         :options="options.statuses"
         :state="validationState('article.status')"
       />
+      <validation-message field="article.status" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -29,6 +30,7 @@
           </b-button>
         </b-input-group-append>
       </b-input-group>
+      <validation-message field="article.title" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -43,6 +45,7 @@
       <div class="mt-1 text-break">
         URL: https://simutrans.sakura.ne.jp/portal/articles/{{ article.slug }}
       </div>
+      <validation-message field="article.slug" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -58,6 +61,7 @@
         :state="validationState('article.contents.thumbnail')"
       />
     </b-form-group>
+    <validation-message field="article.contents.thumbnail" />
   </div>
 </template>
 <script>

@@ -1,6 +1,6 @@
 import api from '../../api'
+import { SET_ARTICLES } from '../mutation-types';
 import { DateTime } from 'luxon';
-const SET_ARTICLES = 'SET_ARTICLES';
 
 export default {
   state: () => {

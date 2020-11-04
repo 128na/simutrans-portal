@@ -1,10 +1,7 @@
 <template>
-  <div class="alert alert-success" v-show="infoMessage">
+  <b-alert variant="success" :show="!!infoMessage" dismissible>
     {{ infoMessage }}
-    <button type="button" class="close" @click="close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
+  </b-alert>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";

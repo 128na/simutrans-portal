@@ -1,6 +1,5 @@
-import api from '../../api'
-
-const SET_OPTIONS = 'SET_OPTIONS';
+import api from '../../api';
+import { SET_OPTIONS } from '../mutation-types';
 
 export default {
   state: () => {
@@ -11,7 +10,7 @@ export default {
   getters: {
     optionsLoaded: state => state.options !== false,
     options: state => state.options || {},
-
+    getStatusText: state => value => state.options.statuses.find(o => o.value === value).text || '',
   },
   mutations: {
     [SET_OPTIONS](state, options = false) {
@@ -20,7 +19,7 @@ export default {
   },
   actions: {
     /**
-     * 記事編集用オプション
+     * 記事編集用オプション取得
      */
     async fetchOptions({ commit }) {
       try {

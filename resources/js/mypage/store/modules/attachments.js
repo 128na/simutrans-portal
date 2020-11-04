@@ -1,6 +1,5 @@
-import api from '../../api'
-
-const SET_ATTACHMENTS = 'SET_ATTACHMENTS';
+import api from '../../api';
+import { SET_ATTACHMENTS } from '../mutation-types';
 
 export default {
   state: () => {
@@ -73,4 +72,4 @@ export default {
       }
     },
   }
-}
+};

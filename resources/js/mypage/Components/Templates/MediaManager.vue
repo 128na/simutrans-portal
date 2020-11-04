@@ -16,9 +16,9 @@
       <template v-slot:modal-header>
         <div>ファイルマネージャー</div>
         <fetching-overlay>
-          <b-btn variant="primary" @click="handleClickUpload">
+          <b-button variant="primary" @click="handleClickUpload">
             ファイルをアップロード
-          </b-btn>
+          </b-button>
         </fetching-overlay>
       </template>
       <div class="attachment-list">
@@ -49,10 +49,10 @@
         </div>
         <div>
           <fetching-overlay>
-            <b-btn @click="handleCancel" size="sm"> キャンセル </b-btn>
+            <b-button @click="handleCancel" size="sm"> キャンセル </b-button>
           </fetching-overlay>
           <fetching-overlay>
-            <b-btn variant="primary" @click="handleOK"> 決定 </b-btn>
+            <b-button variant="primary" @click="handleOK"> 決定 </b-button>
           </fetching-overlay>
         </div>
       </template>

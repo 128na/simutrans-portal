@@ -1,7 +1,5 @@
-import api from '../../api'
-
-const SET_INITIALIZED = 'SET_INITIALIZED';
-const SET_USER = 'SET_USER';
+import api from '../../api';
+import { SET_INITIALIZED, SET_USER } from '../mutation-types';
 
 export default {
   state: () => {
@@ -59,12 +57,18 @@ export default {
         dispatch('setApiStatusError', e);
       }
     },
+    /**
+     * ログアウト
+     */
     async logout({ commit }) {
       try {
         api.logout();
         commit(SET_USER, null);
       } catch (e) { }
     },
+    /**
+     * ユーザー登録
+     */
     async register({ commit, dispatch }, params) {
       dispatch('setApiStatusFetching');
       try {
@@ -80,7 +84,7 @@ export default {
       }
     },
     /**
-     * ユーザー更新
+     * ユーザープロフィール更新
      */
     async updateUser({ commit, dispatch }, { user, message = 'プロフィールを更新しました。' }) {
       dispatch('setApiStatusFetching');

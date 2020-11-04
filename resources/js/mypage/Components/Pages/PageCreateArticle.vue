@@ -3,24 +3,27 @@
     <button-back />
     <h1>新規作成</h1>
     <div v-if="ready">
-      <component :is="component_name" :article="copy" />
-      <b-form-group>
-        <template slot="label">
-          <badge-optional />
-          自動ツイート
-        </template>
-        <b-form-checkbox v-model="should_tweet">
-          記事公開時にツイートする
-        </b-form-checkbox>
-      </b-form-group>
-      <b-form-group>
-        <fetching-overlay>
-          <b-btn @click="handlePreview"> プレビュー表示 </b-btn>
-        </fetching-overlay>
-        <fetching-overlay>
-          <b-btn variant="primary" @click="handleCreate"> 保存 </b-btn>
-        </fetching-overlay>
-      </b-form-group>
+      <component :is="component_name" :article="copy">
+        <b-form-group>
+          <template slot="label">
+            <badge-optional />
+            自動ツイート
+          </template>
+          <b-form-checkbox v-model="should_tweet">
+            記事公開時にツイートする
+          </b-form-checkbox>
+        </b-form-group>
+        <b-form-group>
+          <fetching-overlay>
+            <b-button @click="handlePreview"> プレビュー表示 </b-button>
+          </fetching-overlay>
+          <fetching-overlay>
+            <b-button variant="primary" @click="handleCreate">
+              「{{ article_status }}」で保存
+            </b-button>
+          </fetching-overlay>
+        </b-form-group>
+      </component>
     </div>
     <loading v-else />
   </div>
@@ -61,6 +64,7 @@ export default {
       "attachmentsLoaded",
       "tagsLoaded",
       "optionsLoaded",
+      "getStatusText",
       "articles",
       "hasError",
     ]),
@@ -69,6 +73,9 @@ export default {
     },
     component_name() {
       return `post-type-${this.copy.post_type}`;
+    },
+    article_status() {
+      return this.getStatusText(this.copy.status);
     },
   },
   methods: {

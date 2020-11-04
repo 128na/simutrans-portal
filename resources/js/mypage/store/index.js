@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Vuex from 'vuex'
+import Vuex from 'vuex';
 
 import ArticlesModule from './modules/articles';
 import AuthModule from './modules/auth';
@@ -9,8 +9,7 @@ import AnalyticsModule from './modules/analytics';
 import OptionsModule from './modules/options';
 Vue.use(Vuex);
 
-const SET_INFO_MESSAGE = 'SET_INFO_MESSAGE';
-const SET_API_STATUS = 'SET_API_STATUS';
+import { SET_INFO_MESSAGE, SET_API_STATUS } from './mutation-types';
 
 export default new Vuex.Store({
   modules: {
@@ -55,6 +54,9 @@ export default new Vuex.Store({
       }
       return null;
     },
+    getValidationErrors: state => key => {
+      return state.api_status.errors && state.api_status.errors[key] || [];
+    },
   },
   mutations: {
     [SET_INFO_MESSAGE](state, message = null) {
@@ -70,9 +72,9 @@ export default new Vuex.Store({
   actions: {
     setInfoMessage({ commit, state }, { message = null, timeout = 5 }) {
       commit(SET_INFO_MESSAGE, message);
-      // メッセージが残っていれば消す
       if (timeout) {
         setTimeout(() => {
+          // 指定時間経過後にメッセージが残っていれば消す
           if (state.info_message === message) {
             commit(SET_INFO_MESSAGE);
           }

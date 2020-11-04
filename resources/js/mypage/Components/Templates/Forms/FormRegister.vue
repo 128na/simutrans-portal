@@ -11,6 +11,7 @@
         :state="validationState('name')"
         autocomplete="name"
       />
+      <validation-message field="name" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -23,6 +24,7 @@
         :state="validationState('email')"
         autocomplete="email"
       />
+      <validation-message field="email" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -34,6 +36,7 @@
         :state="validationState('password')"
         autocomplete="new-password"
       />
+      <validation-message field="password" />
     </b-form-group>
     <slot />
   </b-form>

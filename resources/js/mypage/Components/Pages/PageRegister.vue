@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>新規登録</h1>
+    <page-title>新規登録</page-title>
     <form-register :params="params">
       <b-form-group>
         <fetching-overlay>

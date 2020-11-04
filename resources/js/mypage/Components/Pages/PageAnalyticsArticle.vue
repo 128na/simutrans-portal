@@ -1,7 +1,9 @@
 <template>
   <div>
-    <button-back />
-    <h1>アクセス解析</h1>
+    <page-title>アクセス解析</page-title>
+    <page-description>
+      投稿した記事のアクセス数やDL、リンククック数の情報を確認できます。
+    </page-description>
     <div v-if="ready">
       <analytics-graph :datasets="datasets" :labels="labels" />
       <b-form-group>

@@ -14,40 +14,50 @@
     <b-collapse id="global-menu" is-nav>
       <b-navbar-nav v-if="isLoggedIn">
         <b-nav-item class="active" v-if="isAdmin" :href="admin_url">
+          <b-icon icon="house-fill" class="nav-icon" />
           管理者画面
         </b-nav-item>
         <b-nav-item class="active" :to="route_mypage_index">
-          マイページトップ
+          <b-icon icon="house-fill" class="nav-icon" />
+          マイページ
         </b-nav-item>
         <b-nav-item class="active" v-if="isVerified" :to="route_edit_profile">
-          プロフィール編集
+          <b-icon icon="person-fill" class="nav-icon" />
+          プロフィール
         </b-nav-item>
         <b-nav-item class="active" v-if="isVerified" :to="route_analytics">
+          <b-icon icon="graph-up" class="nav-icon" />
           アクセス解析
         </b-nav-item>
+        <div class="dropdown-divider border-light" />
+        <b-nav-text class="text-white">記事作成</b-nav-text>
         <b-nav-item
           class="active"
           v-if="isVerified"
           :to="route_create_addon_post"
         >
-          アドオン投稿を作成
+          <b-icon icon="file-earmark-zip-fill" class="nav-icon" />
+          アドオン投稿
         </b-nav-item>
         <b-nav-item
           class="active"
           v-if="isVerified"
           :to="route_create_addon_introduction"
         >
-          アドオン紹介を作成
+          <b-icon icon="file-earmark-text-fill" class="nav-icon" />
+          アドオン紹介
         </b-nav-item>
         <b-nav-item class="active" v-if="isVerified" :to="route_create_page">
-          一般記事を作成
+          <b-icon icon="file-earmark-text-fill" class="nav-icon" />
+          一般記事
         </b-nav-item>
         <b-nav-item
           class="active"
           v-if="isVerified"
           :to="route_create_markdown"
         >
-          一般記事(markdown)を作成
+          <b-icon icon="file-earmark-text-fill" class="nav-icon" />
+          一般記事(markdown)
         </b-nav-item>
         <div class="dropdown-divider border-light" />
         <b-nav-item class="active" @click="logout">ログアウト</b-nav-item>
@@ -76,3 +86,8 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.nav-icon {
+  margin-bottom: 2px;
+}
+</style>

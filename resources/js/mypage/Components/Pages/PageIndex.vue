@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>マイページ</h1>
+    <page-title>マイページ</page-title>
+    <page-description>投稿した記事の管理ができます</page-description>
     <div v-if="ready">
       <div v-if="!isVerified">
         <need-verify />

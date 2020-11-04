@@ -1,7 +1,6 @@
 <template>
   <div>
-    <button-back />
-    <h1>新規作成</h1>
+    <page-title>新規作成</page-title>
     <div v-if="ready">
       <component :is="component_name" :article="copy">
         <b-form-group>

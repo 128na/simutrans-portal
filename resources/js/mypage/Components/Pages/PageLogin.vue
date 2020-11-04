@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>ログイン</h1>
+    <page-title>ログイン</page-title>
     <form-login :params="params">
       <b-form-group>
         <fetching-overlay>

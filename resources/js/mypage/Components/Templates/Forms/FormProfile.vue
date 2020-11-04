@@ -35,12 +35,7 @@
         :state="validationState('user.email')"
       />
       <small>
-        メールアドレスを変更すると新しいメールアドレスへ確認メールが送られます。<br />
-        パスワードの変更は
-        <router-link :to="route_password_reset">
-          パスワードのリセット
-        </router-link>
-        から行えます。
+        メールアドレスを変更すると新しいメールアドレスへ確認メールが送られます。
       </small>
     </b-form-group>
     <b-form-group>

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <h1>パスワード再設定</h1>
+    <page-title>パスワード再設定</page-title>
+    <page-description>
+      指定したメールアドレスにパスワード再設定用のリンクを送信します。<br />
+      送信されたリンクのページページから再設定ができます。
+    </page-description>
     <form-reset :params="params">
       <b-form-group>
         <fetching-overlay>

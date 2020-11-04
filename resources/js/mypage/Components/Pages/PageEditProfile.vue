@@ -1,7 +1,12 @@
 <template>
   <div v-if="ready">
-    <button-back />
-    <h1>プロフィール編集</h1>
+    <page-title>プロフィール編集</page-title>
+    <page-description>
+      自身のプロフィール情報を編集できます。<br />
+      パスワードの変更は
+      <router-link :to="route_password_reset">パスワードのリセット</router-link>
+      から行えます。
+    </page-description>
     <form-profile :user="copy">
       <b-form-group>
         <fetching-overlay>

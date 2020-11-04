@@ -1,7 +1,6 @@
 <template>
   <div>
-    <button-back />
-    <h1>編集</h1>
+    <page-title>編集</page-title>
     <div v-if="ready">
       <component :is="component_name" :article="copy">
         <b-form-group>

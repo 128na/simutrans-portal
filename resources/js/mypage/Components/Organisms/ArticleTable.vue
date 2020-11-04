@@ -19,7 +19,6 @@
 import { DateTime } from "luxon";
 export default {
   props: ["articles", "user"],
-  name: "article-table",
   data() {
     return {
       sortBy: "updated_at",

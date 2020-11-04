@@ -63,7 +63,6 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  name: "form-addon",
   props: ["article"],
   computed: {
     ...mapGetters(["options", "validationState"]),

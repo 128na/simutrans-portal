@@ -84,7 +84,6 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  name: "form-profile",
   props: ["user"],
   computed: {
     ...mapGetters(["validationState"]),

@@ -62,7 +62,6 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
-  name: "media-manager",
   props: {
     id: {},
     name: {},

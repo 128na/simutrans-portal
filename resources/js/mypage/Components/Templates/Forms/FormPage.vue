@@ -90,7 +90,6 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  name: "form-page",
   props: ["article"],
   computed: {
     ...mapGetters(["options", "validationState"]),

@@ -27,7 +27,6 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  name: "form-markdown",
   props: ["article"],
   computed: {
     ...mapGetters(["options", "validationState"]),

@@ -72,7 +72,6 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: "tag-selector",
   props: {
     value: {
       type: Array,

@@ -41,7 +41,6 @@ import { mapGetters } from "vuex";
 import { DateTime, Interval } from "luxon";
 import { analytics_constants } from "../../../mixins/analytics";
 export default {
-  name: "form-analytics-config",
   mixins: [analytics_constants],
   props: ["value"],
   data() {

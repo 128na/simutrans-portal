@@ -1,7 +1,7 @@
 <template>
   <transition name="fade" mode="out-in">
     <div v-if="initialized">
-      <header-menu />
+      <global-menu />
       <main class="container-fluid bg-light py-4">
         <error-message />
         <info-message />

@@ -16,6 +16,7 @@
         <validation-message field="ids" />
       </analytics-table>
     </div>
+    <loading v-else />
   </div>
 </template>
 <script>

@@ -47,6 +47,11 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   store.dispatch('setApiStatusInit');
   next();
-})
+});
+
+import route_shortcut from '../mixins/route';
+Vue.mixin(route_shortcut);
+
+
 export default router;
 

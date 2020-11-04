@@ -13,13 +13,13 @@ export const validateLogin = {
   },
   created() {
     if (!this.isLoggedIn) {
-      this.$router.push({ name: "login" });
+      return this.$router.push({ name: "login" });
     }
   },
   watch: {
-    isLoggedIn(val) {
-      if (!val) {
-        this.$router.push({ name: "login" });
+    isLoggedIn() {
+      if (!this.isLoggedIn) {
+        return this.$router.push({ name: "login" });
       }
     },
   },
@@ -28,29 +28,41 @@ export const validateLogin = {
   }
 }
 /**
+ * 未ログインならログインページへ移動させる
  * メール未認証ならマイページトップへ移動させる
  */
 export const validateVerified = {
   beforeRouteEnter(to, from, next) {
-    if (store.getters.initialized === true && store.getters.isVerified === false) {
-      return next({ name: "index" });
+    if (store.getters.initialized === true) {
+      if (store.getters.isLoggedIn === false) {
+        return next({ name: "login" });
+      }
+      if (store.getters.isVerified === false) {
+        return next({ name: "index" });
+      }
     }
     next();
   },
   created() {
+    if (!this.isLoggedIn) {
+      return this.$router.push({ name: "login" });
+    }
     if (!this.isVerified) {
-      this.$router.push({ name: "index" });
+      return this.$router.push({ name: "index" });
     }
   },
   watch: {
-    isVerified(val) {
-      if (!val) {
-        this.$router.push({ name: "index" });
+    isVerified() {
+      if (!this.isLoggedIn) {
+        return this.$router.push({ name: "login" });
+      }
+      if (!this.isVerified) {
+        return this.$router.push({ name: "index" });
       }
     },
   },
   computed: {
-    ...mapGetters(["isVerified"]),
+    ...mapGetters(["isLoggedIn", "isVerified"]),
   }
 }
 /**

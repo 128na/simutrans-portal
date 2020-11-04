@@ -22,7 +22,9 @@ export const editor = {
   },
   methods: {
     setCopy(item) {
-      this.copy = JSON.parse(JSON.stringify(item));
+      if (item) {
+        this.copy = JSON.parse(JSON.stringify(item));
+      }
     },
     setUnloadDialog() {
       this.has_changed = true;

@@ -339,7 +339,7 @@ class Article extends Model implements Feedable
     | RSS
     |--------------------------------------------------------------------------
      */
-    public function toFeedItem()
+    public function toFeedItem(): FeedItem
     {
         return FeedItem::create([
             'id' => $this->id,

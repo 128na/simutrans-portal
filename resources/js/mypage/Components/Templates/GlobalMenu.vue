@@ -37,7 +37,7 @@
           <b-icon icon="graph-up" class="nav-icon" />
           アクセス解析
         </b-nav-item>
-        <b-nav-text class="mt-4" v-if="isVerified">記事作成</b-nav-text>
+        <b-nav-text class="" v-if="isVerified">記事作成</b-nav-text>
         <b-nav-item
           v-if="isVerified"
           :to="route_create_addon_post"
@@ -70,11 +70,15 @@
           <b-icon icon="file-earmark-text-fill" class="nav-icon" />
           一般記事(markdown)
         </b-nav-item>
-        <b-nav-item @click="logout" class="mt-4">ログアウト</b-nav-item>
+        <b-nav-item :to="route_logout">ログアウト</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav v-else>
-        <b-nav-item :to="route_login">ログイン</b-nav-item>
-        <b-nav-item :to="route_register">新規登録</b-nav-item>
+        <b-nav-item :to="route_login" :active="isActive('login')">
+          ログイン
+        </b-nav-item>
+        <b-nav-item :to="route_register" :active="isActive('register')">
+          新規登録
+        </b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
@@ -113,8 +117,13 @@ export default {
     margin: 0 -0.9rem;
     padding: 0.5rem 1.4rem;
   }
-  .active {
-    background-color: rgba(0, 0, 0, 0.2);
+  .nav-link {
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    &.active {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
   }
 }
 </style>

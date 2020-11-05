@@ -4,7 +4,11 @@
     <form-register :params="params">
       <b-form-group>
         <fetching-overlay>
-          <b-button variant="primary" type="submit" @click="handleRegister">
+          <b-button
+            variant="primary"
+            type="submit"
+            @click.prevent="handleRegister"
+          >
             新規登録
           </b-button>
         </fetching-overlay>

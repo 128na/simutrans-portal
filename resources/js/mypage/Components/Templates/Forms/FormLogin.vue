@@ -4,14 +4,14 @@
       <b-form-input
         type="email"
         v-model="params.email"
-        :state="validationState('password')"
+        :state="validationState('email', 'password')"
         autocomplete="email"
       />
     </b-form-group>
     <b-form-group label="パスワード">
       <input-password
         v-model="params.password"
-        :state="validationState('password')"
+        :state="validationState('email', 'password')"
         autocomplete="current-password"
       />
     </b-form-group>

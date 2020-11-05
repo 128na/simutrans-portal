@@ -5,6 +5,7 @@ import VueRouter from 'vue-router';
 * import components
 */
 import PageLogin from '../Components/Pages/PageLogin';
+import PageLogout from '../Components/Pages/PageLogout';
 import PageRegister from '../Components/Pages/PageRegister';
 import PageReset from '../Components/Pages/PageReset';
 import PageIndex from '../Components/Pages/PageIndex';
@@ -15,6 +16,7 @@ import PageAnalyticsArticle from '../Components/Pages/PageAnalyticsArticle';
 import store from '../store';
 const routes = [
   { name: "login", path: '/login', component: PageLogin },
+  { name: "logout", path: '/logout', component: PageLogout },
   { name: "register", path: '/register', component: PageRegister },
   { name: "reset", path: '/reset', component: PageReset },
   { name: "index", path: '/', component: PageIndex },

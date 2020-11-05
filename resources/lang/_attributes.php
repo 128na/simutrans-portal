@@ -42,4 +42,7 @@ return [
     'type' => __('Types'),
     'start_date' => __('Start Date'),
     'end_date' => __('End Date'),
+
+    // attachments
+    'file' => __('File'),
 ];

@@ -138,17 +138,23 @@ export default {
       }
     },
     handleRowClicked(item, index, event) {
+      // 選択中に再度同じアイテムを選択したら選択解除
+      if (this.selected_item && this.selected_item.id === item.id) {
+        this.selected_item = null;
+        return;
+      }
       this.selected_item = item;
+      const offset = 10;
 
       // 現在位置（右は時に近い場合は固定値）
       const innerWidth = window.innerWidth;
       const clientX = event.clientX;
-      this.x = Math.min(innerWidth - 250, clientX);
+      this.x = Math.min(innerWidth - 250, clientX + offset);
 
       // 現在位置+スクロール距離
       const scrollY = window.scrollY;
       const clientY = event.clientY;
-      this.y = scrollY + clientY;
+      this.y = scrollY + clientY + offset;
     },
     handleTooltipClose() {
       this.selected_item = null;

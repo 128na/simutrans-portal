@@ -48,8 +48,8 @@ export default new Vuex.Store({
      * true: バリエーション通過
      * false: バリデーションエラー
      */
-    validationState: state => (key) => {
-      if (state.api_status.status_code === 422 && state.api_status.errors && state.api_status.errors[key]) {
+    validationState: state => (...keys) => {
+      if (state.api_status.status_code === 422 && state.api_status.errors && keys.some(key => state.api_status.errors[key])) {
         return false;
       }
       return null;

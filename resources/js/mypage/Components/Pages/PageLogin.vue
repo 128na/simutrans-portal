@@ -4,7 +4,11 @@
     <form-login :params="params">
       <b-form-group>
         <fetching-overlay>
-          <b-button type="submit" variant="primary" @click="handleLogin">
+          <b-button
+            type="submit"
+            variant="primary"
+            @click.prevent="handleLogin"
+          >
             ログイン
           </b-button>
         </fetching-overlay>

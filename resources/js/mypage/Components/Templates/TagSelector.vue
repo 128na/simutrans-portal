@@ -19,6 +19,7 @@
         block
         :no-flip="true"
         :dropup="false"
+        @shown="handleShown"
       >
         <template v-slot:button-content>タグを選択する</template>
         <b-dropdown-form @submit.stop.prevent="() => {}">
@@ -35,6 +36,7 @@
                 type="search"
                 size="sm"
                 autocomplete="off"
+                maxlength="20"
                 v-model="search"
               ></b-form-input>
               <b-input-group-append v-if="creatable">
@@ -85,16 +87,13 @@ export default {
   data() {
     return {
       search: "",
+      timer: null,
     };
   },
-  created() {
-    if (!this.tagsLoaded) {
-      this.fetchTags(this.criteria);
-    }
-  },
+  created() {},
   watch: {
     criteria() {
-      this.fetchTags(this.criteria);
+      this.fetchTimeout();
     },
   },
   computed: {
@@ -114,6 +113,19 @@ export default {
   },
   methods: {
     ...mapActions(["fetchTags", "storeTag"]),
+    fetchTimeout() {
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
+      this.timer = setTimeout(() => {
+        this.fetchTags(this.criteria);
+      }, 500);
+    },
+    handleShown() {
+      if (!this.tagsLoaded) {
+        this.fetchTags(this.criteria);
+      }
+    },
     handleTagClick(option) {
       this.value.push(option);
       this.search = "";

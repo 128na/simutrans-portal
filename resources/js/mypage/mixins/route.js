@@ -14,6 +14,9 @@ export default {
     route_login() {
       return { name: "login" };
     },
+    route_logout() {
+      return { name: "logout" };
+    },
     route_register() {
       return { name: "register" };
     },

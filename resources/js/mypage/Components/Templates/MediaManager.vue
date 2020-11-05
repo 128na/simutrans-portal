@@ -14,7 +14,10 @@
     </b-button>
     <b-modal :id="name" title="Select File" size="xl" scrollable>
       <template v-slot:modal-header>
-        <div>ファイルマネージャー</div>
+        <div>
+          ファイルマネージャー
+          <validation-message field="file" />
+        </div>
         <fetching-overlay>
           <b-button variant="primary" @click="handleClickUpload">
             ファイルをアップロード

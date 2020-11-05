@@ -19,12 +19,19 @@ import { validateLogin } from "../../mixins/auth";
 export default {
   mixins: [validateLogin],
   created() {
-    if (!this.articlesLoaded) {
+    if (this.isLoggedIn && !this.articlesLoaded) {
       this.fetchArticles();
     }
   },
   computed: {
-    ...mapGetters(["isVerified", "user", "articlesLoaded", "articles"]),
+    ...mapGetters([
+      "isLoggedIn",
+      "initialized",
+      "isVerified",
+      "user",
+      "articlesLoaded",
+      "articles",
+    ]),
     ready() {
       return this.articlesLoaded;
     },

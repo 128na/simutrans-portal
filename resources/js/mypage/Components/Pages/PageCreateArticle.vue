@@ -14,10 +14,10 @@
         </b-form-group>
         <b-form-group>
           <fetching-overlay>
-            <b-button @click="handlePreview"> プレビュー表示 </b-button>
+            <b-button @click.prevent="handlePreview"> プレビュー表示 </b-button>
           </fetching-overlay>
           <fetching-overlay>
-            <b-button variant="primary" @click="handleCreate">
+            <b-button variant="primary" @click.prevent="handleCreate">
               「{{ article_status }}」で保存
             </b-button>
           </fetching-overlay>
@@ -42,15 +42,17 @@ export default {
   },
   mixins: [validateVerified, preview, defaultArticle, editor],
   created() {
-    this.initDefaultArticle();
-    if (!this.optionsLoaded) {
-      this.fetchOptions();
-    }
-    if (!this.attachmentsLoaded) {
-      this.fetchAttachments();
-    }
-    if (!this.tagsLoaded) {
-      this.fetchTags();
+    if (this.isVerified) {
+      this.initDefaultArticle();
+      if (!this.optionsLoaded) {
+        this.fetchOptions();
+      }
+      if (!this.attachmentsLoaded) {
+        this.fetchAttachments();
+      }
+      if (!this.tagsLoaded) {
+        this.fetchTags();
+      }
     }
   },
   watch: {
@@ -60,6 +62,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      "isVerified",
       "attachmentsLoaded",
       "tagsLoaded",
       "optionsLoaded",

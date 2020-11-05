@@ -8,7 +8,11 @@
     <form-reset :params="params">
       <b-form-group>
         <fetching-overlay>
-          <b-button variant="primary" type="submit" @click="handleSubmit">
+          <b-button
+            variant="primary"
+            type="submit"
+            @click.prevent="handleSubmit"
+          >
             再設定用のメールを送信
           </b-button>
         </fetching-overlay>

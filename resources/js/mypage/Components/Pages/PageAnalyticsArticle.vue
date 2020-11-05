@@ -2,13 +2,16 @@
   <div>
     <page-title>アクセス解析</page-title>
     <page-description>
-      投稿した記事のアクセス数やDL、リンククック数の情報を確認できます。
+      投稿した記事のアクセス数やDL、リンククック数の情報を確認できます。<br />
+      グラフを右クリックすると画像として保存できます。
     </page-description>
     <div v-if="ready">
       <analytics-graph :datasets="datasets" :labels="labels" />
       <b-form-group>
         <fetching-overlay>
-          <b-button varant="primary" @click="handleApply">反映</b-button>
+          <b-button varant="primary" @click.prevent="handleApply">
+            反映
+          </b-button>
         </fetching-overlay>
       </b-form-group>
       <form-analytics-config v-model="options" />
@@ -50,13 +53,21 @@ export default {
     },
   },
   created() {
-    this.initialize();
-    if (!this.articlesLoaded) {
-      this.fetchArticles();
+    if (this.isVerified) {
+      this.initialize();
+      if (!this.articlesLoaded) {
+        this.fetchArticles();
+      }
     }
   },
   computed: {
-    ...mapGetters(["articlesLoaded", "articles", "analytics", "hasError"]),
+    ...mapGetters([
+      "isVerified",
+      "articlesLoaded",
+      "articles",
+      "analytics",
+      "hasError",
+    ]),
     format_type() {
       switch (this.options.type) {
         case this.TYPE_DAILY:

@@ -10,7 +10,9 @@
     <form-profile :user="copy">
       <b-form-group>
         <fetching-overlay>
-          <b-button variant="primary" @click="handleUpdate"> 保存 </b-button>
+          <b-button variant="primary" @click.prevent="handleUpdate">
+            保存
+          </b-button>
         </fetching-overlay>
       </b-form-group>
     </form-profile>
@@ -26,12 +28,12 @@ export default {
   mixins: [validateVerified, editor],
   created() {
     this.setCopy(this.user);
-    if (!this.attachmentsLoaded) {
+    if (this.isVerified && !this.attachmentsLoaded) {
       this.fetchAttachments();
     }
   },
   computed: {
-    ...mapGetters(["user", "attachmentsLoaded"]),
+    ...mapGetters(["isVerified", "user", "attachmentsLoaded", "hasError"]),
     ready() {
       return this.attachmentsLoaded && !!this.copy;
     },

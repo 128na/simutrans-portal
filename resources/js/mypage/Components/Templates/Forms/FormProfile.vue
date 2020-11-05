@@ -12,6 +12,7 @@
         :id="user.profile.id"
         :only_image="true"
       />
+      <validation-message field="avatar" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -23,6 +24,7 @@
         v-model="user.name"
         :state="validationState('user.name')"
       />
+      <validation-message field="user.name" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -37,6 +39,7 @@
       <small>
         メールアドレスを変更すると新しいメールアドレスへ確認メールが送られます。
       </small>
+      <validation-message field="user.email" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -48,6 +51,7 @@
         rows="8"
         :state="validationState('user.profile.data.description')"
       />
+      <validation-message field="user.profile.data.description" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -59,6 +63,7 @@
         v-model="user.profile.data.website"
         :state="validationState('user.profile.data.website')"
       />
+      <validation-message field="user.profile.data.website" />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -72,6 +77,7 @@
           :state="validationState('user.profile.data.twitter')"
         />
       </b-input-group>
+      <validation-message field="user.profile.data.twitter" />
     </b-form-group>
     <slot />
   </div>

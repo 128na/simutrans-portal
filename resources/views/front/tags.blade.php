@@ -9,8 +9,4 @@
     @foreach ($tags as $tag)
         <a class="btn btn-outline-secondary m-2" href="{{ route('tag', $tag) }}">{{$tag->name}} ({{ $tag->articles_count }})</a>
     @endforeach
-
-    <script type="application/ld+json">
-        @json($schemas)
-    </script>
 @endsection

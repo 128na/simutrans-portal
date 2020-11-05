@@ -2,12 +2,13 @@
     <a href="{{ config('app.url') }}">{{ config('app.name') }}</a>
 </h3>
 <p>
-    @lang('We have detected that the download destination URL of ":title" is broken.', ['title' => $article->title])
+    「{{ $article->title }}」のダウンロード先URLがリンク切れになっていることを検出しました。
 </p>
 <p>
-    @lang('The article was automatically changed to private. If the link destination changes, please correct the article.')
+    記事は自動的に非公開に変更されました。リンク先が変更になった場合は記事の修正をお願いします。<br>
+    自動リンク切れチェックは記事編集から無効化できます。
 </p>
 <p>
-    @lang('Mypage:')
+    マイページ：
     <a href="{{ route('mypage.index') }}">{{ route('mypage.index') }}</a>
 </p>

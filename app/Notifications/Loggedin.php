@@ -40,7 +40,7 @@ class Loggedin extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject(__('Login notification'))
+            ->subject('ログイン通知')
             ->view('emails.loggedin', ['user' => $notifiable]);
     }
 

@@ -26,16 +26,6 @@ class SchemaService extends Service
         return $schemas;
     }
 
-    public function forList($name, $articles = null)
-    {
-        $schemas = collect([]);
-        $schemas->push($this->schemaListBreadcrumb($name));
-        if ($articles && $articles->count()) {
-            $schemas->push($this->schemaCarouselArticles($articles));
-        }
-        return $schemas;
-    }
-
     public function forPakAddon(Category $pak, Category $addon, $articles)
     {
         $schemas = collect([]);
@@ -110,12 +100,12 @@ class SchemaService extends Service
                 [
                     '@type' => 'ListItem',
                     'position' => 1,
-                    'name' => __('Top'),
+                    'name' => "トップ",
                     'item' => route('index'),
                 ], [
                     '@type' => 'ListItem',
                     'position' => 2,
-                    'name' => __('User :name', ['name' => $article->user->name]),
+                    'name' => $article->user->name."さんの投稿一覧",
                     'item' => route('user', $article->user),
                 ], [
                     '@type' => 'ListItem',
@@ -126,25 +116,6 @@ class SchemaService extends Service
             ]];
     }
 
-    private function schemaListBreadcrumb($name)
-    {
-        return [
-            '@context' => 'https://schema.org',
-            '@type' => 'BreadcrumbList',
-            'itemListElement' => [
-                [
-                    '@type' => 'ListItem',
-                    'position' => 1,
-                    'name' => __('Top'),
-                    'item' => route('index'),
-                ], [
-                    '@type' => 'ListItem',
-                    'position' => 2,
-                    'name' => __($name),
-                    'item' => url()->current(),
-                ],
-            ]];
-    }
 
     private function schemaPakAddonBreadcrumb(Category $pak, Category $addon)
     {
@@ -155,7 +126,7 @@ class SchemaService extends Service
                 [
                     '@type' => 'ListItem',
                     'position' => 1,
-                    'name' => __('Top'),
+                    'name' => "トップ",
                     'item' => route('index'),
                 ], [
                     '@type' => 'ListItem',
@@ -179,12 +150,12 @@ class SchemaService extends Service
                 [
                     '@type' => 'ListItem',
                     'position' => 1,
-                    'name' => __('Top'),
+                    'name' => "トップ",
                     'item' => route('index'),
                 ], [
                     '@type' => 'ListItem',
                     'position' => 2,
-                    'name' => __('Tags'),
+                    'name' => 'タグ一覧',
                     'item' => route('tags'),
                 ], [
                     '@type' => 'ListItem',

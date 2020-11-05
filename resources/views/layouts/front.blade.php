@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ isset($preview) ? __('[Preview]') : ''}}@yield('title') - {{ config('app.name') }}</title>
+        <title>{{ isset($preview) ? '[プレビュー]' : ''}}@yield('title') - {{ config('app.name') }}</title>
 
         @includeWhen(\App::environment('production'), 'parts._ga')
 
@@ -50,7 +50,7 @@
             @endif
 
             @if (isset($preview))
-                <div class="alert alert-warning">@lang('This is a preview display. Articles have not been saved or updated.')</div>
+                <div class="alert alert-warning">プレビュー表示です。記事は保存・更新されていません。</div>
             @endif
 
             @includeWhen(!empty($breadcrumb), 'parts.breadcrumb')

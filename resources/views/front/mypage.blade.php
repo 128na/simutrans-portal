@@ -1,6 +1,6 @@
 @extends('layouts.mypage')
 
-@section('title', __('Mypage'))
+@section('title', 'マイページ')
 
 @section('content')
     <div id="app"></div>

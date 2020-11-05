@@ -36,7 +36,6 @@ Route::get('/articles/{article}', 'Front\ArticleController@show')->name('article
 Route::get('/search', 'Front\ArticleController@search')->name('search');
 Route::get('/mypage/', 'Mypage\IndexController@index')->name('mypage.index');
 Route::get('/mypage/{any}', 'RedirectController@mypage')->where('any', '.*');
-Route::get('/language/{name}', 'Front\IndexController@language')->name('language');
 Route::get('/articles/{article}/download', 'Front\ArticleController@download')->name('articles.download');
 
 // ログイン系：管理者

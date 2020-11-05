@@ -17,7 +17,7 @@ return [
     |
     */
 
-    'default' => env('LOG_CHANNEL', 'stack'),
+    'default' => env('LOG_CHANNEL', 'dev'),
 
     /*
     |--------------------------------------------------------------------------
@@ -35,9 +35,15 @@ return [
     */
 
     'channels' => [
-        'stack' => [
+        'prod' => [
             'driver' => 'stack',
-            'channels' => ['daily', 'mail'],
+            'channels' => ['daily', 'slack'],
+            'ignore_exceptions' => false,
+        ],
+
+        'dev' => [
+            'driver' => 'stack',
+            'channels' => ['daily', 'slack_debug'],
             'ignore_exceptions' => false,
         ],
 
@@ -52,6 +58,20 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => 'debug',
             'days' => 14,
+        ],
+        'slack' => [
+            'driver' => 'slack',
+            'url' => env('LOG_SLACK_WEBHOOK_URL'),
+            'username' => 'SimutransAddonPortal',
+            'emoji' => ':innocent:',
+            'level' => 'notice',
+        ],
+        'slack_debug' => [
+            'driver' => 'slack',
+            'url' => env('LOG_SLACK_WEBHOOK_URL'),
+            'username' => 'SimutransAddonPortal',
+            'emoji' => ':innocent:',
+            'level' => 'debug',
         ],
     ],
 ];

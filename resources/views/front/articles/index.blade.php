@@ -11,7 +11,7 @@
     <section class="mb-4 list">
         @component('components.articles', ['articles' => $articles, 'hide_detail' => $hide_detail ?? false])
             @slot('no_item')
-                @lang('No article exists.')
+                記事がありません。
             @endslot
         @endcomponent
     </section>

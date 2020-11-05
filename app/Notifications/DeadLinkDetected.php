@@ -39,7 +39,7 @@ class DeadLinkDetected extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject(__('The download destination URL for article ":title" is broken', ['title' => $notifiable->title]))
+            ->subject("「{$notifiable->title}」のダウンロード先URLがリンク切れになっています")
             ->view('emails.deadlink-detected', ['article' => $notifiable]);
     }
 

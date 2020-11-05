@@ -1,10 +1,10 @@
 @extends('layouts.front')
 
-@section('title', __('An error has occurred'))
+@section('title', 'システムエラー')
 
 @section('content')
-    <h2>@lang('An error has occurred')</h2>
+    <h2>システムエラーが発生しました。</h2>
     <p>
-        <a href="{{ route('index') }}">@lang('Top')</a>
+        <a href="{{ route('index') }}">トップ</a>
     </p>
 @endsection

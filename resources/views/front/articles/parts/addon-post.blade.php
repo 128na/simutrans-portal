@@ -1,34 +1,34 @@
 <dl>
-    <dt>@lang('Author') / @lang('Publisher')</dt>
+    <dt>作者 / 投稿者</dt>
     <dd>
         @if ($article->contents->author)
             {{ $article->contents->author }}</a> /
         @endif
         <a href="{{ route('user', [$article->user]) }}" rel="author">{{ $article->user->name }}</a>
     </dd>
-    <dt>@lang('Categories')</dt>
+    <dt>カテゴリ</dt>
     <dd>
         @include('parts.category-list', ['categories' => $article->categories,
             'post_type' => $article->post_type, 'route_name' => 'addons.index'])
     </dd>
     @if ($article->tags->isNotEmpty())
-        <dt>@lang('Tags')</dt>
+        <dt>タグ</dt>
         <dd>
             @include('parts.tag-list', ['tags' => $article->tags])
         </dd>
     @endif
-    <dt>@lang('Description')</dt>
+    <dt>説明</dt>
     <dd>{{ $article->contents->description }}</dd>
     @if ($article->contents->thanks)
-        <dt>@lang('Acknowledgments and Referenced')</dt>
+        <dt>謝辞・参考にしたアドオン</dt>
         <dd>{{ $article->contents->thanks }}</dd>
     @endif
     @if ($article->contents->license)
-        <dt>@lang('License')</dt>
+        <dt>ライセンス</dt>
         <dd>{{ $article->contents->license }}</dd>
     @endif
-    <dt class="mb-2">@lang('Download')</dt>
+    <dt class="mb-2">ダウンロード</dt>
     <dd>
-        <a class="btn btn-lg btn-primary" href="{{ route('articles.download', $article) }}">@lang('Click to Download')</a>
+        <a class="btn btn-lg btn-primary" href="{{ route('articles.download', $article) }}">ダウンロードする</a>
     </dd>
 </dl>

@@ -12,11 +12,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable;
-    use HasFactory;
+    use Notifiable, HasFactory, SoftDeletes;
 
     protected $fillable = [
         'role',

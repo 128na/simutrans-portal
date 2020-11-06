@@ -26,6 +26,7 @@ class PakAddonCount extends Model
             LEFT JOIN article_category ac ON ac.category_id = c.id AND c.type = 'pak'
             LEFT JOIN articles a ON a.id = ac.article_id
                 AND a.status = 'publish'
+                AND a.deleted_at IS NULL
         ) pak ON pak.article_id = a.id
         LEFT JOIN (
             SELECT
@@ -36,6 +37,7 @@ class PakAddonCount extends Model
                 AND c.type = 'addon'
             LEFT JOIN articles a ON a.id = ac.article_id
                 AND a.status = 'publish'
+                AND a.deleted_at IS NULL
         ) addon ON addon.article_id = a.id
         WHERE
             a.post_type IN ('addon-post', 'addon-introduction')

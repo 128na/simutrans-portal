@@ -72,6 +72,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
+        abort_unless($article->user, 404);
         abort_unless($article->is_publish, 404);
 
         $is_owner = Auth::check() && Auth::user()->can('update', $article);

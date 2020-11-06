@@ -19,6 +19,8 @@ class UserAddonCount extends Model
                 LEFT JOIN
             articles a ON a.user_id = u.id
                 AND a.status = 'publish'
+                AND a.deleted_at IS NULL
+        WHERE u.deleted_at IS NULL
         GROUP BY u.id
         HAVING COUNT(a.id) > 0
         ORDER BY COUNT(a.id) DESC)";
@@ -38,5 +40,4 @@ class UserAddonCount extends Model
             DB::statement(self::INSERT_SQL);
         });
     }
-
 }

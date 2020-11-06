@@ -25,8 +25,8 @@ class UserService extends Service
             'name' => $request->input('user.name'),
             'email' => $request->input('user.email'),
             'email_verified_at' => $email_changed
-            ? null
-            : $user->email_verified_at,
+                ? null
+                : $user->email_verified_at,
         ]);
 
         $this->updateProfile($user->profile, $request);
@@ -54,5 +54,4 @@ class UserService extends Service
             );
         }
     }
-
 }

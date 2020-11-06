@@ -11,12 +11,11 @@ use Illuminate\Support\Facades\Cache;
 use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends Model implements Feedable
 {
-    use Slugable;
-    use Notifiable;
-    use HasFactory;
+    use Notifiable, HasFactory, SoftDeletes, Slugable;
 
     protected $fillable = [
         'user_id',

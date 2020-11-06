@@ -23,7 +23,7 @@
 
 @if ($article->categories->isNotEmpty())
     <dl class="mt-4">
-        <dt>@lang('Categories')</dt>
+        <dt>カテゴリ</dt>
         <dd>
             @include('parts.category-list', ['categories' => $article->categories,
                 'post_type' => $article->isAnnounce() ? null : $article->post_type, 'route_name' => 'pages.index'])

@@ -143,5 +143,51 @@ return [
     |
      */
 
-    'attributes' => @include dirname(__DIR__) . '/_attributes.php' ?? [],
+    'attributes' => [
+        //article
+        'article.post_type' => '投稿形式',
+        'article.status' => '公開状態',
+        'article.title' => 'タイトル',
+        'article.slug' => 'パーマリンク',
+        'article.contents' => '内容',
+        'article.contents.thumbnail' => 'サムネイル画像',
+        'article.contents.author' => '作者',
+        'article.contents.file' => 'アドオンファイル',
+        'article.contents.link' => 'リンク先URL',
+        'article.contents.description' => '説明',
+        'article.contents.license' => 'ライセンスその他',
+        'article.contents.thanks' => '謝辞・参考にしたアドオン',
+        'article.contents.agreement' => '掲載許可',
+        'article.contents.sections.*.type' => '種類一覧',
+        'article.contents.sections.*.text' => 'テキスト',
+        'article.contents.sections.*.caption' => '見出し',
+        'article.contents.sections.*.url' => 'URL',
+        'article.contents.sections.*.id' => '画像',
+        'article.contents.markdown' => '内容',
+        'article.categories' => 'カテゴリ',
+        'article.tags' => 'タグ',
+        'article.contents.file' => 'ファイル',
+
+        //auth
+        'email' => 'メールアドレス',
+        'name' => '名前',
+        'password' => 'パスワード',
+
+        // profile
+        'user.email' => 'メールアドレス',
+        'user.name' => '名前',
+        'user.profile.data.avatar' => 'ユーザー画像',
+        'user.profile.data.description' => '説明',
+        'user.profile.data.website' => 'WebサイトURL',
+        'user.profile.data.twitter' => 'Twitter ID',
+
+        // analytics
+        'ids' => '記事',
+        'type' => '形式',
+        'start_date' => '開始日',
+        'end_date' => '終了日',
+
+        // attachments
+        'file' => 'ファイル',
+    ],
 ];

@@ -41,9 +41,9 @@ class VerifyEmail extends BaseVerifyEmail
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject(__('Verify Email Address'))
+            ->subject('メールアドレスを確認')
             ->view('emails.verify')
-            ->action(__('Verify Email Address'), $this->verificationUrl($notifiable));
+            ->action('メールアドレスを確認する', $this->verificationUrl($notifiable));
     }
 
     /**

@@ -49,13 +49,13 @@ class MetaCreator
                 return $this->forTop();
 
             case $route->named('addons.index'):
-                return $this->forList('Articles');
+                return $this->forList('記事一覧');
             case $route->named('addons.ranking'):
-                return $this->forList('Access Ranking');
+                return $this->forList('アクセスランキング');
             case $route->named('pages.index'):
-                return $this->forList('Pages');
+                return $this->forList('一般記事一覧');
             case $route->named('announces.index'):
-                return $this->forList('Announces');
+                return $this->forList('お知らせ一覧');
 
             case $route->named('category'):
                 return $this->forCategory();
@@ -82,7 +82,7 @@ class MetaCreator
     public function forTop()
     {
         return [
-            'title' => __('Top'),
+            'title' => 'トップ',
             'schemas' => $this->schema_service->forTop(),
         ];
     }
@@ -93,10 +93,10 @@ class MetaCreator
     public function forList($name)
     {
         return [
-            'title' => __($name),
+            'title' => $name,
             'breadcrumb' => [
-                ['name' => __('Top'), 'url' => route('index')],
-                ['name' => __($name)],
+                ['name' => 'トップ', 'url' => route('index')],
+                ['name' => $name],
             ],
         ];
     }
@@ -107,11 +107,11 @@ class MetaCreator
     public function forCategory()
     {
         $category = $this->data['category'];
-        $title = __("category.{$category->type}.{$category->slug}");
+        $title = __("category.{$category->type}.{$category->slug}").'カテゴリ';
         return [
-            'title' => __('Category :name', ['name' => $title]),
+            'title' => $title,
             'breadcrumb' => [
-                ['name' => __('Top'), 'url' => route('index')],
+                ['name' => 'トップ', 'url' => route('index')],
                 ['name' => $title],
             ],
         ];
@@ -124,16 +124,15 @@ class MetaCreator
     {
         $pak = $this->data['categories']['pak'];
         $addon = $this->data['categories']['addon'];
-        $title = __(':pak, :addon', [
-            'pak' => __('category.pak.' . $pak->slug),
-            'addon' => __('category.addon.' . $addon->slug),
-        ]);
+        $pak_title = __('category.pak.' . $pak->slug);
+        $addon_title = __('category.addon.' . $addon->slug);
+        $title = "{$pak_title}/{$addon_title}カテゴリ";
         return [
             'title' => $title,
             'breadcrumb' => [
-                ['name' => __('Top'), 'url' => route('index')],
-                ['name' => __('category.pak.' . $pak->slug), 'url' => route('category', ['pak', $pak->slug])],
-                ['name' => __('category.addon.' . $addon->slug)],
+                ['name' => 'トップ', 'url' => route('index')],
+                ['name' => $pak_title, 'url' => route('category', ['pak', $pak->slug])],
+                ['name' => $addon_title],
             ],
             'open_menu_pak_addon' => [$pak->slug => true],
         ];
@@ -146,7 +145,7 @@ class MetaCreator
     {
         $article = $this->data['article'];
         return [
-            'title' => __($article->title),
+            'title' => $article->title,
             'canonical_url' => route('articles.show', $article->slug),
             'schemas' => $this->schema_service->forShow($article),
         ];
@@ -158,12 +157,12 @@ class MetaCreator
     public function forTag()
     {
         $tag = $this->data['tag'];
-        $title = $tag->name;
+        $title = "{$tag->name}タグ";
         return [
-            'title' => __('Tag :name', ['name' => $title]),
+            'title' => $title,
             'breadcrumb' => [
-                ['name' => __('Top'), 'url' => route('index')],
-                ['name' => __('Tags'), 'url' => route('tags')],
+                ['name' => 'トップ', 'url' => route('index')],
+                ['name' => 'タグ一覧', 'url' => route('tags')],
                 ['name' => $title],
             ],
         ];
@@ -174,11 +173,11 @@ class MetaCreator
     public function forUser()
     {
         $user = $this->data['user'];
-        $title = __('User :name', ['name' => $user->name]);
+        $title = $user->name.'さんの投稿一覧';
         return [
             'title' => $title,
             'breadcrumb' => [
-                ['name' => __('Top'), 'url' => route('index')],
+                ['name' => 'トップ', 'url' => route('index')],
                 ['name' => $title],
             ],
             'user' => $user->load('profile', 'profile.attachments'),
@@ -192,11 +191,11 @@ class MetaCreator
     public function forSearch()
     {
         $request = $this->data['request'];
-        $title = __('Search results by :word', ['word' => $request->word]);
+        $title = "「{$request->word}」での検索結果";
         return [
             'title' => $title,
             'breadcrumb' => [
-                ['name' => __('Top'), 'url' => route('index')],
+                ['name' => 'トップ', 'url' => route('index')],
                 ['name' => $title],
             ],
             'word' => $request->word,
@@ -208,14 +207,13 @@ class MetaCreator
      */
     public function forTags()
     {
-        $title = __('Tags');
+        $title = "タグ一覧";
         return [
             'title' => $title,
             'breadcrumb' => [
-                ['name' => __('Top'), 'url' => route('index')],
+                ['name' => 'トップ', 'url' => route('index')],
                 ['name' => $title],
             ],
-            'schemas' => $this->schema_service->forList($title),
         ];
     }
 }

@@ -1,24 +1,23 @@
 {
-  "name": "laravel/laravel",
+  "name": "simutrans-potal/simutrans-potal",
   "type": "project",
-  "description": "The Laravel Framework.",
+  "description": "simutrans potal",
   "keywords": [
-    "framework",
-    "laravel"
+    "simutrans"
   ],
   "license": "MIT",
   "require": {
     "php": "^7.4",
-    "abraham/twitteroauth": "^1.0",
+    "abraham/twitteroauth": "^1.2",
     "cebe/markdown": "^1.2",
-    "ezyang/htmlpurifier": "^4.12",
+    "ezyang/htmlpurifier": "^4.13",
     "fideloper/proxy": "^4.0",
     "laravel/framework": "^8.0",
     "laravel/tinker": "^2.0",
     "laravel/ui": "^2.0",
-    "spatie/flysystem-dropbox": "^1.1",
-    "spatie/laravel-backup": "^6.2",
-    "spatie/laravel-feed": "^2.2",
+    "spatie/flysystem-dropbox": "^1.2",
+    "spatie/laravel-backup": "^6.11",
+    "spatie/laravel-feed": "^3.0",
     "tinify/tinify": "^1.5"
   },
   "require-dev": {

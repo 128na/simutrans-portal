@@ -4,11 +4,11 @@
  */
 return [
     'type' => [
-        'pak'             => __('Paks'),
-        'addon'           => __('Addon Types'),
-        'pak128_position' => __('Track positions for pak128'),
-        'license'         => __('License'),
-        'page'            => __('Categories'),
+        'pak'             => 'Pak一覧',
+        'addon'           => '種類一覧',
+        'pak128_position' => 'Pak128用描画位置',
+        'license'         => 'ライセンス',
+        'page'            => 'カテゴリ',
     ],
     'pak' => [
         '64'           => 'Pak64',

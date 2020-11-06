@@ -1,7 +1,7 @@
 @extends('layouts.front')
 
-@section('title', __('Under maintenance'))
+@section('title', 'メンテナンス中です')
 
 @section('content')
-    <h2>@lang('Under maintenance')</h2>
+    <h2>メンテナンス中です。終了までSimutransをプレイしながらお待ちください。</h2>
 @endsection

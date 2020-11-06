@@ -27,7 +27,8 @@ class ForgotPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        // ログイン中ユーザーも利用できるようにする
+        // $this->middleware('guest');
     }
 
     protected function sendResetLinkResponse(Request $request, $response)

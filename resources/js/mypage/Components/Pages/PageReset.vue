@@ -1,25 +1,28 @@
 <template>
   <div>
-    <button-back name="login">{{ $t("Back to Login") }}</button-back>
-    <h1>{{ $t("Reset Password") }}</h1>
-    <b-form>
-      <form-reset :params="params" :errors="errors" />
+    <page-title>パスワード再設定</page-title>
+    <page-description>
+      指定したメールアドレスにパスワード再設定用のリンクを送信します。<br />
+      送信されたリンクのページページから再設定ができます。
+    </page-description>
+    <form-reset :params="params">
       <b-form-group>
-        <b-button
-          variant="primary"
-          type="submit"
-          :disabled="fetching"
-          @click="handleSubmit"
-          >{{ $t("Send Password Reset Link") }}</b-button
-        >
+        <fetching-overlay>
+          <b-button
+            variant="primary"
+            type="submit"
+            @click.prevent="handleSubmit"
+          >
+            再設定用のメールを送信
+          </b-button>
+        </fetching-overlay>
       </b-form-group>
-    </b-form>
+    </form-reset>
   </div>
 </template>
 <script>
-import { api_handlable } from "../../mixins";
+import { mapActions } from "vuex";
 export default {
-  mixins: [api_handlable],
   data() {
     return {
       params: {
@@ -28,13 +31,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["sendResetEmail"]),
     handleSubmit() {
-      this.reset(this.params);
-    },
-    sent() {
-      this.toastSuccess(
-        "You are receiving this email because we received a password reset request for your account."
-      );
+      this.sendResetEmail(this.params);
     },
   },
 };

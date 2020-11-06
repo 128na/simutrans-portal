@@ -68,7 +68,6 @@ class TagTest extends TestCase
         $res = $this->postJson($url, ['name' => $tag1->name]);
         $res->assertJsonValidationErrors(['name']);
         $res = $this->postJson($url, ['name' => $tag2_name]);
-        $res->assertOK();
-        $res->assertExactJson([$tag1->name, $tag2_name]);
+        $res->assertCreated();
     }
 }

@@ -7,9 +7,9 @@
 <div class="collapse navbar-collapse" id="global-menu">
     <form class="form-inline my-2 mt-lg-0" action="{{ route('search') }}" method="GET">
         <div class="input-group">
-            <input class="form-control" name="word" type="search" placeholder="@lang('Search words')" aria-label="Search" value="{{ $word ?? '' }}" required>
+            <input class="form-control" name="word" type="search" placeholder="検索" aria-label="Search" value="{{ $word ?? '' }}" required>
             <div class="input-group-append">
-                <button class="btn btn-outline-light" type="submit">@lang('Search')</button>
+                <button class="btn btn-outline-light" type="submit">検索</button>
             </div>
         </div>
     </form>
@@ -37,7 +37,7 @@
         @if (isset($menu_user_addon_counts))
             <li class="nav-item">
                 <a class="nav-link active collapsed with-icon" data-toggle="collapse" href="#collapse-user" aria-expanded="{{isset($open_menu_user_addon) ? 'true' : 'false'}}" aria-controls="collapse-user">
-                    @lang('By user')
+                    ユーザー一覧
                 </a>
                 <ul class="navbar-nav ml-3 collapse {{isset($open_menu_user_addon) ? 'show' : ''}}" id="collapse-user">
                     @foreach ($menu_user_addon_counts as $user_addon_count)
@@ -50,32 +50,10 @@
                 </ul>
             </li>
         @endif
-        <li class="nav-item"><a class="nav-link active" href="{{ route('tags') }}">@lang('Tags')</a></li>
-        {{-- 言語一覧 --}}
-        {{-- <li class="nav-item">
-            <a class="nav-link active collapsed with-icon" data-toggle="collapse" href="#collapse-lang" aria-expanded="false" aria-controls="collapse-lang">
-                @lang('__Current_Language__')
-            </a>
-            <ul class="navbar-nav ml-3 collapse" id="collapse-lang">
-                @foreach (config('languages', []) as $name => $language)
-                    <li class="nav-item">
-                        <a class="nav-link active py-1" href="{{ route('language', $name) }}">{{ $language['label'] }}</a>
-                    </li>
-                @endforeach
-            </ul>
-        </li> --}}
+        <li class="nav-item"><a class="nav-link active" href="{{ route('tags') }}">タグ一覧</a></li>
         <div class="dropdown-divider border-light"></div>
         {{-- ログイン・登録/マイページ --}}
-        @guest
-            <li class="nav-item"><a class="nav-link active" href="{{ route('mypage.index') }}">@lang('Login / Register')</a></li>
-        @else
-            @if(Auth::user()->isAdmin())
-                <li class="nav-item"><a class="nav-link active" href="{{ route('admin.index') }}">@lang('[admin] Dashboard')</a></li>
-            @endif
-            <li class="nav-item"><a class="nav-link active" href="{{ route('mypage.index') }}">@lang('Mypage')</a></li>
-            <li class="nav-item"><a class="nav-link active" href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();">@lang('Logout')</a></li>
-            <form id="logout-form" action="{{ route('api.v2.logout') }}" method="POST" style="display: none;">@csrf</form>
-        @endguest
+        <li class="nav-item"><a class="nav-link active" href="{{ route('mypage.index') }}">ログイン・マイページ</a></li>
         <div class="dropdown-divider border-light"></div>
 
         @include('parts.copyright')

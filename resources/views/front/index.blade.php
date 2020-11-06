@@ -8,9 +8,9 @@
 @section('content')
     <section class="mb-5">
         @component('components.articles', ['articles' => $ranking])
-            <a href="{{ route('addons.ranking') }}">@lang('Access Ranking')</a>
+            <a href="{{ route('addons.ranking') }}">アクセスランキング</a>
             @slot('no_item')
-                @lang('No article exists.')
+                記事がありません。
             @endslot
         @endcomponent
     </section>
@@ -18,9 +18,9 @@
     @foreach ($latest as $pak => $latest_articles)
         <section class="mb-5">
             @component('components.articles', ['articles' => $latest_articles])
-                <a href="{{ route('category', ['pak', $pak]) }}">@lang(':pak Latest Addons', ['pak' => __("category.pak.$pak")])</a>
+                <a href="{{ route('category', ['pak', $pak]) }}">@lang("category.pak.$pak")の新着アドオン</a>
                 @slot('no_item')
-                    @lang('No article exists.')
+                    記事がありません。
                 @endslot
             @endcomponent
         </section>
@@ -28,18 +28,18 @@
 
     <section class="mb-5">
         @component('components.articles', ['articles' => $pages, 'hide_detail' => true])
-            <a href="{{ route('pages.index') }}">@lang('Pages')</a>
+            <a href="{{ route('pages.index') }}">一般記事</a>
             @slot('no_item')
-                @lang('No article exists.')
+                記事がありません。
             @endslot
         @endcomponent
     </section>
 
     <section class="mb-5">
         @component('components.articles', ['articles' => $announces, 'hide_detail' => true])
-            <a href="{{ route('announces.index') }}">@lang('Announces')</a>
+            <a href="{{ route('announces.index') }}">お知らせ</a>
             @slot('no_item')
-                @lang('No article exists.')
+                記事がありません。
             @endslot
         @endcomponent
     </section>

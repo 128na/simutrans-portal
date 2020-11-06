@@ -1,24 +1,35 @@
 <template>
   <div>
-    <button-back />
-    <h1>{{ $t("Access Analytics") }}</h1>
-    <analytics-graph :datasets="datasets" :labels="labels" />
-    <b-form-group>
-      <b-button varant="primary" @click="handleApply" :disabled="fetching">{{
-        $t("Apply")
-      }}</b-button>
-    </b-form-group>
-    <form-analytics-config v-model="options" />
-    <analytics-table :articles="articles" v-model="ids" />
+    <page-title>アクセス解析</page-title>
+    <page-description>
+      投稿した記事のアクセス数やDL、リンククック数の情報を確認できます。<br />
+      グラフを右クリックすると画像として保存できます。
+    </page-description>
+    <div v-if="ready">
+      <analytics-graph :datasets="datasets" :labels="labels" />
+      <b-form-group>
+        <fetching-overlay>
+          <b-button varant="primary" @click.prevent="handleApply">
+            反映
+          </b-button>
+        </fetching-overlay>
+      </b-form-group>
+      <form-analytics-config v-model="options" />
+      <analytics-table :articles="articles" v-model="ids">
+        <validation-message field="ids" />
+      </analytics-table>
+    </div>
+    <loading v-else />
   </div>
 </template>
 <script>
-import { DateTime } from "luxon";
-import Interval from "luxon/src/interval.js";
-import { api_handlable, analytics_constants } from "../../mixins";
+import { mapGetters, mapActions } from "vuex";
+import { validateVerified } from "../../mixins/auth";
+
+import { DateTime, Interval } from "luxon";
+import { analytics_constants } from "../../mixins/analytics";
 export default {
-  props: ["articles"],
-  mixins: [api_handlable, analytics_constants],
+  mixins: [analytics_constants, validateVerified],
   data() {
     return {
       ids: [],
@@ -29,7 +40,6 @@ export default {
         start_date: null, // 開始日
         end_date: null, // 終了日
       },
-      analytics: [],
       datasets: null,
       labels: null,
     };
@@ -43,9 +53,21 @@ export default {
     },
   },
   created() {
-    this.initialize();
+    if (this.isVerified) {
+      this.initialize();
+      if (!this.articlesLoaded) {
+        this.fetchArticles();
+      }
+    }
   },
   computed: {
+    ...mapGetters([
+      "isVerified",
+      "articlesLoaded",
+      "articles",
+      "analytics",
+      "hasError",
+    ]),
     format_type() {
       switch (this.options.type) {
         case this.TYPE_DAILY:
@@ -72,26 +94,33 @@ export default {
         this.options.end_date
       ).splitBy(this.interval_type);
     },
+    ready() {
+      return this.articlesLoaded;
+    },
   },
   methods: {
+    ...mapActions(["fetchArticles", "fetchAnalytics"]),
     initialize() {
       this.options.start_date = DateTime.local().minus({ month: 3 });
       this.options.end_date = DateTime.local();
     },
-    handleApply() {
+    async handleApply() {
       const params = {
         ids: this.ids,
         type: this.options.type,
         start_date: this.options.start_date.toISODate(),
         end_date: this.options.end_date.toISODate(),
       };
-      this.fetchAnalytics(params);
+      await this.fetchAnalytics(params);
+
+      if (!this.hasError) {
+        this.calcLabels();
+        this.calcDatasets();
+      }
+      this.scrollToTop();
     },
     setAnalytics(analytics) {
       this.analytics = analytics;
-
-      this.calcLabels();
-      this.calcDatasets();
     },
     calcLabels() {
       this.labels = this.interval.map((d) =>
@@ -155,9 +184,9 @@ export default {
     axisLabel(axis) {
       switch (axis) {
         case this.AXIS_VIEW:
-          return this.$t("Page Views");
+          return "PV";
         case this.AXIS_CONVERSION:
-          return this.$t("Conversions");
+          return "CV";
       }
     },
     getColor(article, axis, alpha = 1) {

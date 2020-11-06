@@ -16,15 +16,15 @@
 
         <footer class="border-top pt-2">
             <div>
-                @lang('Publisher'): <a href="{{route('user', $article->user)}}">{{ $article->user->name }}</a><br>
-                @lang('Created at'): <span>{{ $article->created_at->formatLocalized(__('%m-%d-%Y %k:%M:%S')) }}</span>,
-                @lang('Updated at'): <span>{{ $article->updated_at->formatLocalized(__('%m-%d-%Y %k:%M:%S')) }}</span>
+                投稿者: <a href="{{route('user', $article->user)}}">{{ $article->user->name }}</a><br>
+                投稿日時: <span>{{ $article->created_at->format('Y/m/d H:i') }}</span>,
+                最終更新: <span>{{ $article->updated_at->format('Y/m/d H:i') }}</span>
             </div>
             @can('update', $article)
             <div>
-                @lang('Page Views') : <span>{{ $article->totalViewCount->count ?? 'N/A' }}</span>,
-                @lang('Conversions') : <span>{{ $article->totalConversionCount->count ?? 'N/A' }}</span>
-                <a href="{{ route('mypage.index', ["#/edit/{$article->id}"]) }}" class="text-primary">@lang('Edit')</a>
+                PV: <span>{{ $article->totalViewCount->count ?? 'N/A' }}</span>,
+                CV: <span>{{ $article->totalConversionCount->count ?? 'N/A' }}</span>
+                <a href="{{ route('mypage.index', ["#/edit/{$article->id}"]) }}" class="text-primary">記事を編集</a>
             </div>
             @endcan
         </footer>

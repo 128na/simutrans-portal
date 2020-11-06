@@ -1,31 +1,31 @@
 <template>
   <div>
-    <h1>{{ $t("Login") }}</h1>
-    <b-form>
-      <form-login :params="params" :errors="errors" />
+    <page-title>ログイン</page-title>
+    <form-login :params="params">
       <b-form-group>
-        <b-button
-          class="mr-1"
-          type="submit"
-          variant="primary"
-          :disabled="fetching"
-          @click="handleLogin"
-          >{{ $t("Login") }}</b-button
-        >
-        <router-link :to="to_register">{{ $t("Register") }}</router-link
-        >&nbsp;|&nbsp;
-        <router-link :to="to_reset">{{
-          $t("Forgot Your Password?")
-        }}</router-link>
+        <fetching-overlay>
+          <b-button
+            type="submit"
+            variant="primary"
+            @click.prevent="handleLogin"
+          >
+            ログイン
+          </b-button>
+        </fetching-overlay>
+        <router-link :to="route_register" class="mx-2">新規登録</router-link>
+        |
+        <router-link :to="route_password_reset" class="mx-2">
+          パスワード再設定
+        </router-link>
       </b-form-group>
-    </b-form>
+    </form-login>
   </div>
 </template>
 <script>
-import { api_handlable, linkable } from "../../mixins";
+import { validateGuest } from "../../mixins/auth";
+import { mapActions } from "vuex";
 export default {
-  mixins: [api_handlable, linkable],
-  props: ["user"],
+  mixins: [validateGuest],
   data() {
     return {
       params: {
@@ -35,17 +35,10 @@ export default {
       },
     };
   },
-  created() {
-    if (this.user) {
-      this.$router.push({ name: "index" });
-    }
-  },
   methods: {
+    ...mapActions(["login"]),
     handleLogin() {
       this.login(this.params);
-    },
-    setUser(user) {
-      this.$emit("loggedin", user);
     },
   },
 };

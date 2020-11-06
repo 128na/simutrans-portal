@@ -30,12 +30,6 @@
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
-        @if (isset($preview))
-            <div class="alert alert-warning">@lang('This is a preview display. Articles have not been saved or updated.')</div>
-        @endif
-
-        @includeWhen(!empty($breadcrumb), 'parts.breadcrumb')
-
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>

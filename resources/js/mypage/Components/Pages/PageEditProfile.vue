@@ -1,43 +1,53 @@
 <template>
-  <div>
-    <button-back />
-    <h1>{{ $t("Edit my profile") }}</h1>
-    <form-profile
-      :user="copy"
-      :attachments="attachments"
-      :errors="errors"
-      @update:attachments="$emit('update:attachments', $event)"
-      @update:user="$emit('update:user', $event)"
-    />
-    <b-form-group>
-      <b-btn :disabled="fetching" variant="primary" @click="handleUpdate">{{
-        $t("Save")
-      }}</b-btn>
-    </b-form-group>
+  <div v-if="ready">
+    <page-title>プロフィール編集</page-title>
+    <page-description>
+      自身のプロフィール情報を編集できます。<br />
+      パスワードの変更は
+      <router-link :to="route_password_reset">パスワードのリセット</router-link>
+      から行えます。
+    </page-description>
+    <form-profile :user="copy">
+      <b-form-group>
+        <fetching-overlay>
+          <b-button variant="primary" @click.prevent="handleUpdate">
+            保存
+          </b-button>
+        </fetching-overlay>
+      </b-form-group>
+    </form-profile>
   </div>
+  <loading v-else />
 </template>
 <script>
-import {
-  toastable,
-  verifiedable,
-  api_handlable,
-  editor_handlable,
-} from "../../mixins";
+import { mapGetters, mapActions } from "vuex";
+import { validateVerified } from "../../mixins/auth";
+import { editor } from "../../mixins/editor";
+
 export default {
-  props: ["user", "attachments"],
-  mixins: [toastable, verifiedable, api_handlable, editor_handlable],
+  mixins: [validateVerified, editor],
   created() {
     this.setCopy(this.user);
+    if (this.isVerified && !this.attachmentsLoaded) {
+      this.fetchAttachments();
+    }
+  },
+  computed: {
+    ...mapGetters(["isVerified", "user", "attachmentsLoaded", "hasError"]),
+    ready() {
+      return this.attachmentsLoaded && !!this.copy;
+    },
   },
   methods: {
-    handleUpdate() {
-      this.updateUser(this.copy);
-    },
-    async setUser(user) {
-      this.$emit("update:user", user);
-      this.setCopy(user);
-      await this.$nextTick();
-      this.$router.push({ name: "index" });
+    ...mapActions(["fetchAttachments", "updateUser"]),
+    async handleUpdate() {
+      await this.updateUser({ user: this.copy });
+
+      // 更新が成功すれば遷移ダイアログを無効化して編集画面上部へスクロールする（通知が見えないため）
+      if (!this.hasError) {
+        this.unsetUnloadDialog();
+      }
+      this.scrollToTop();
     },
     getOriginal() {
       return this.user;

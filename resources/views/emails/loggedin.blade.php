@@ -2,16 +2,16 @@
     <a href="{{ config('app.url') }}">{{ config('app.name') }}</a>
 </h3>
 <p>
-    @lang(':name logged in at :time.', ['name' => $user->name, 'time' => now()])
+    {{$user->name}}が{{now()->format('Y/m/d H:i')}}にログインしました。
 </p>
 <p>
-    @lang('== Login information ==')
+    == ログイン情報 ==
 </p>
 <p>
-    @lang('IP Address')<br>
-    {{ env('REMOTE_ADDR', 'unknown') }}<br>
-    @lang('Referrer')<br>
-    {{ env('HTTP_REFERER', 'unknown') }}<br>
-    @lang('User Agent')<br>
-    {{ env('HTTP_USER_AGENT', 'unknown') }}
+    IPアドレス<br>
+    {{ env('REMOTE_ADDR', '不明') }}<br>
+    アクセス元<br>
+    {{ env('HTTP_REFERER', '不明') }}<br>
+    ユーザーエージェント（ブラウザ情報）<br>
+    {{ env('HTTP_USER_AGENT', '不明') }}
 </p>

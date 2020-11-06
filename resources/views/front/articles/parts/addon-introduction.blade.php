@@ -1,34 +1,34 @@
 <dl>
-    <dt>@lang('Author') / @lang('Publisher')</dt>
+    <dt>作者 / 投稿者</dt>
     <dd>
         {{ $article->contents->author }} / <a href="{{ route('user', [$article->user]) }}" rel="author">{{ $article->user->name }}</a>
     </dd>
-    <dt>@lang('Categories')</dt>
+    <dt>カテゴリ</dt>
     <dd>
         @include('parts.category-list', ['categories' => $article->categories,
             'post_type' => $article->post_type, 'route_name' => 'addons.index'])
     </dd>
     @if ($article->tags->isNotEmpty())
-        <dt>@lang('Tags')</dt>
+        <dt>タグ</dt>
         <dd>
             @include('parts.tag-list', ['tags' => $article->tags])
         </dd>
     @endif
-    <dt>@lang('Description')</dt>
+    <dt>説明</dt>
     <dd>{{ $article->contents->description }}</dd>
     @if ($article->contents->thanks)
-        <dt>@lang('Acknowledgments and Referenced')</dt>
+        <dt>謝辞・参考にしたアドオン</dt>
         <dd>{{ $article->contents->thanks }}</dd>
     @endif
     @if ($article->contents->license)
-        <dt>@lang('License')</dt>
+        <dt>ライセンス</dt>
         <dd>{{ $article->contents->license }}</dd>
     @endif
     @if ($article->contents->agreement)
-        <dt>@lang('Agreement')</dt>
-        <dd>@lang('This article is published by author\'s permission or by author himself.')</dd>
+        <dt>掲載許可</dt>
+        <dd>この記事は作者の許可を得てまたは作者自身により掲載しています。</dd>
     @endif
-    <dt>@lang('Link')</dt>
+    <dt>掲載先URL</dt>
     <dd>
         <a
             href="{{$article->contents->link}}"

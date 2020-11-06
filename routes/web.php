@@ -38,21 +38,4 @@ Route::get('/mypage/', 'Mypage\IndexController@index')->name('mypage.index');
 Route::get('/mypage/{any}', 'RedirectController@mypage')->where('any', '.*');
 Route::get('/articles/{article}/download', 'Front\ArticleController@download')->name('articles.download');
 
-// ログイン系：管理者
-Route::prefix('admin')->group(function () {
-    Route::name('admin.')->group(function () {
-        Route::middleware(['auth', 'admin', 'verified'])->group(function () {
-            Route::get('/', 'Admin\IndexController@index')->name('index');
-
-            // デバッグツール
-            Route::post('/flush-cache', 'Admin\IndexController@flushCache')->name('flush.cache');
-            Route::get('/error', 'Admin\IndexController@error')->name('error');
-            Route::get('/warning', 'Admin\IndexController@warning')->name('warning');
-            Route::get('/notice', 'Admin\IndexController@notice')->name('notice');
-
-            Route::get('/phpinfo', 'Admin\IndexController@phpinfo')->name('phpinfo');
-        });
-    });
-});
-
 Route::fallback('RedirectController@index');

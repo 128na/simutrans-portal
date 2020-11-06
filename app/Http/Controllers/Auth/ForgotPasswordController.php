@@ -33,11 +33,11 @@ class ForgotPasswordController extends Controller
 
     protected function sendResetLinkResponse(Request $request, $response)
     {
-        return response(['status' => true]);
+        return response('');
     }
     protected function sendResetLinkFailedResponse(Request $request, $response)
     {
         // invalid user etc
-        return response(['status' => false], 400);
+        return response('');
     }
 }

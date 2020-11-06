@@ -114,7 +114,7 @@ export default new Vuex.Store({
         case 429:
           return commit(SET_API_STATUS, { message: 'リクエスト頻度制限により実行できませんでした。', status_code: 429 });
       }
-      return commit(SET_API_STATUS, { message: 'エラーが発生しました', status_code: res.status });
+      return commit(SET_API_STATUS, { message: res.message || 'エラーが発生しました', status_code: res.status });
     },
   }
 });

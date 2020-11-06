@@ -41,12 +41,15 @@ export default {
   methods: {
     ...mapActions(["fetchAttachments", "updateUser"]),
     async handleUpdate() {
+      // メールアドレスの更新が成功すると未認証となり、画面を追い出されるため離脱警告ダイアログを解除
+      this.unsetUnloadDialog();
       await this.updateUser({ user: this.copy });
 
-      // 更新が成功すれば遷移ダイアログを無効化して編集画面上部へスクロールする（通知が見えないため）
-      if (!this.hasError) {
-        this.unsetUnloadDialog();
+      // エラーがあれば離脱警告ダイアログを再セット
+      if (this.hasError) {
+        this.setUnloadDialog();
       }
+      // 更新が成功すれば編集画面上部へスクロールする（通知が見えないため）
       this.scrollToTop();
     },
     getOriginal() {

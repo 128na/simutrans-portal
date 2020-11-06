@@ -34,7 +34,7 @@ class PasswordResetTest extends TestCase
         $res->assertJsonValidationErrors(['email']);
 
         $res = $this->postJson($url, ['email' => 'missing-user@exmaple.com']);
-        $res->assertStatus(400);
+        $res->assertOK();
 
         Notification::assertNothingSent();
 

@@ -23,5 +23,10 @@ const router = new VueRouter({
   routes,
 });
 
+import { ga_page_view } from "../../mypage/plugins/ga";
+router.afterEach((to, from) => {
+  ga_page_view(to, '/admin');
+});
+
 export default router;
 

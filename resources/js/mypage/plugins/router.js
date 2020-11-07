@@ -51,9 +51,13 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
+import { ga_page_view } from "./ga";
+router.afterEach((to, from) => {
+  ga_page_view(to);
+});
+
 import route_shortcut from '../mixins/route';
 Vue.mixin(route_shortcut);
-
 
 export default router;
 

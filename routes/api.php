@@ -67,7 +67,6 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
 
         // ユーザー管理
         Route::get('/users', 'UserController@index')->name('admin.users.index');
-        Route::put('/users/{user}', 'UserController@update')->name('admin.users.update');
         Route::delete('/users/{user}', 'UserController@destroy')->name('admin.users.destroy');
 
         // 記事管理

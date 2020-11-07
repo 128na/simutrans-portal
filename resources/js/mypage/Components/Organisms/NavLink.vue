@@ -3,7 +3,12 @@
     :to="to"
     v-slot="{ href, route, navigate, isActive, isExactActive }"
   >
-    <b-nav-item :active="isExactActive" :href="href" @click="navigate">
+    <b-nav-item
+      :active="isExactActive"
+      :href="href"
+      @click="navigate"
+      class="navnav"
+    >
       <slot />
     </b-nav-item>
   </router-link>
@@ -13,8 +18,3 @@ export default {
   props: ["to"],
 };
 </script>
-<style lang="scss" scoped>
-.active {
-  color: red;
-}
-</style>

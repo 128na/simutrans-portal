@@ -1,13 +1,8 @@
 <template>
   <div v-if="initialized">
-    <main class="bg-light d-flex h-100">
-      <div id="menu" class="border-right p-4 pt-5">
-        <page-title>管理機能</page-title>
-        <global-menu />
-      </div>
-      <div id="main">
-        <router-view class="p-4 pt-5" />
-      </div>
+    <global-menu />
+    <main class="container-fluid bg-light py-4">
+      <router-view />
     </main>
   </div>
   <loading v-else />
@@ -26,12 +21,25 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-#menu {
-  width: 200px;
-  min-height: 100vh;
-}
-#main {
-  flex: 1;
+<style lang="scss">
+#global-menu {
+  .nav-icon {
+    margin-bottom: 2px;
+  }
+  .navbar-text,
+  .nav-link {
+    color: rgba(255, 255, 255, 1);
+    margin: 0 -0.9rem;
+    padding: 0.5rem 1.4rem;
+  }
+  .nav-link {
+    background-color: rgba(0, 0, 0, 0);
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    &.active {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-title>PHP info</page-title>
-    <iframe :srcdoc="phpinfo" class="w-100" sandbox />
+    <div v-html="phpinfo" />
   </div>
 </template>
 <script>
@@ -20,8 +20,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-iframe {
-  min-height: 85vh;
-}
-</style>

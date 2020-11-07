@@ -51,6 +51,14 @@ class Article extends Model implements Feedable
             $model->syncRelatedData();
         });
     }
+    protected static function booted()
+    {
+        // 論理削除されていないユーザーを持つ
+        static::addGlobalScope('WithoutTrashedUser', function (Builder $builder) {
+            $builder->has('user');
+        });
+    }
+
     public function syncRelatedData()
     {
         UserAddonCount::recount();
@@ -145,6 +153,10 @@ class Article extends Model implements Feedable
     | スコープ
     |--------------------------------------------------------------------------
      */
+    public function scopeWithUserTrashed($query)
+    {
+        $query->withoutGlobalScope('WithoutTrashedUser');
+    }
     public function scopeUser($query, User $user)
     {
         return $query->where('user_id', $user->id);

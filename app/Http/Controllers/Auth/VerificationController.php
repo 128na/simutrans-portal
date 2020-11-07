@@ -47,4 +47,9 @@ class VerificationController extends Controller
 
         return response(['status' => true]);
     }
+
+    public function notice()
+    {
+        abort(404);
+    }
 }

@@ -18,9 +18,6 @@ export default {
   fetchUsers() {
     return axios.get(`/api/v2/admin/users`);
   },
-  updateUser(id, params) {
-    return axios.put(`/api/v2/admin/users/${id}`, { params });
-  },
   deleteUser(id) {
     return axios.delete(`/api/v2/admin/users/${id}`);
   },
@@ -28,7 +25,7 @@ export default {
     return axios.get(`/api/v2/admin/articles`);
   },
   updateArticle(id, params) {
-    return axios.put(`/api/v2/admin/articles/${id}`, { params });
+    return axios.put(`/api/v2/admin/articles/${id}`, params);
   },
   deleteArticle(id) {
     return axios.delete(`/api/v2/admin/articles/${id}`);

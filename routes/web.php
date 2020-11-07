@@ -14,6 +14,7 @@ Route::feeds();
 
 // メール確認
 Route::GET('email/verify/{id}/{hash}', 'Auth\VerificationController@verify')->name('verification.verify');
+Route::get('/verification/notice', 'Auth\VerificationController@notice')->name('verification.notice');
 // PWリセット
 Route::POST('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
 Route::GET('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
@@ -34,25 +35,12 @@ Route::middleware(['cache.response'])->group(function () {
 // 非ログイン系 reidsキャッシュ無効
 Route::get('/articles/{article}', 'Front\ArticleController@show')->name('articles.show');
 Route::get('/search', 'Front\ArticleController@search')->name('search');
-Route::get('/mypage/', 'Mypage\IndexController@index')->name('mypage.index');
+Route::get('/mypage/', 'MypageController@index')->name('mypage.index');
 Route::get('/mypage/{any}', 'RedirectController@mypage')->where('any', '.*');
 Route::get('/articles/{article}/download', 'Front\ArticleController@download')->name('articles.download');
 
-// ログイン系：管理者
-Route::prefix('admin')->group(function () {
-    Route::name('admin.')->group(function () {
-        Route::middleware(['auth', 'admin', 'verified'])->group(function () {
-            Route::get('/', 'Admin\IndexController@index')->name('index');
-
-            // デバッグツール
-            Route::post('/flush-cache', 'Admin\IndexController@flushCache')->name('flush.cache');
-            Route::get('/error', 'Admin\IndexController@error')->name('error');
-            Route::get('/warning', 'Admin\IndexController@warning')->name('warning');
-            Route::get('/notice', 'Admin\IndexController@notice')->name('notice');
-
-            Route::get('/phpinfo', 'Admin\IndexController@phpinfo')->name('phpinfo');
-        });
-    });
+Route::middleware(['auth', 'admin', 'verified'])->group(function () {
+    Route::get('/admin/', 'AdminController@index')->name('admin.index');
 });
 
 Route::fallback('RedirectController@index');

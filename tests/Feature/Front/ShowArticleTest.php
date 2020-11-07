@@ -111,6 +111,38 @@ class ShowArticleTest extends TestCase
     }
 
     /**
+     * ユーザーが論理削除済みの記事は404となること
+     */
+    public function testUserDeleted()
+    {
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'publish']);
+        $response = $this->get('/articles/' . $article->slug);
+        $response->assertOk();
+
+        $user->delete();
+
+        $response = $this->get('/articles/' . $article->slug);
+        $response->assertNotFound();
+    }
+
+    /**
+     * 記事が論理削除済みの記事は404となること
+     */
+    public function testArticleDeleted()
+    {
+        $user = User::factory()->create();
+        $article = Article::factory()->create(['user_id' => $user->id, 'status' => 'publish']);
+        $response = $this->get('/articles/' . $article->slug);
+        $response->assertOk();
+
+        $article->delete();
+
+        $response = $this->get('/articles/' . $article->slug);
+        $response->assertNotFound();
+    }
+
+    /**
      *  未ログインユーザーが記事を表示したときview_countsが日次、月次、年次、合計の値が+1されること
      *  ログインユーザーが自分以外の記事を表示したときview_countsが日次、月次、年次、合計の値が+1されること
      *  ログインユーザーが自分の記事を表示したときview_countsが日次、月次、年次、合計の値が更新されないこと

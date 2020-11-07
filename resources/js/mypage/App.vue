@@ -27,7 +27,7 @@ export default {
   },
 };
 </script>
-<style>
+<style lang="scss">
 .fade-enter-active {
   transition: opacity 0.05s;
 }
@@ -54,5 +54,25 @@ a.btn,
 button.btn {
   display: inline-flex;
   align-items: center;
+}
+
+#global-menu {
+  .nav-icon {
+    margin-bottom: 2px;
+  }
+  .navbar-text,
+  .nav-link {
+    color: rgba(255, 255, 255, 1);
+    margin: 0 -0.9rem;
+    padding: 0.5rem 1.4rem;
+  }
+  .nav-link {
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    &.active {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  }
 }
 </style>

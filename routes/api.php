@@ -61,18 +61,18 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
     // 管理者機能
     Route::prefix('admin')->namespace('Admin')->middleware(['auth', 'admin', 'verified'])->group(function () {
         // デバッグツール
-        Route::post('/flush-cache', 'Admin\DebugController@flushCache')->name('admin.debug.flushCache');
-        Route::get('/error/{level}', 'Admin\DebugController@error')->name('admin.debug.error');
-        Route::get('/phpinfo', 'Admin\DebugController@phpinfo')->name('admin.debug.phpinfo');
+        Route::post('/flush-cache', 'DebugController@flushCache')->name('admin.debug.flushCache');
+        Route::get('/debug/{level}', 'DebugController@error')->name('admin.debug.error');
+        Route::get('/phpinfo', 'DebugController@phpinfo')->name('admin.debug.phpinfo');
 
         // ユーザー管理
-        Route::get('/users', 'Admin\UserController@index')->name('admin.users.index');
-        Route::put('/users/{user}', 'Admin\UserController@update')->name('admin.users.update');
-        Route::delete('/users/{user}', 'Admin\UserController@destroy')->name('admin.users.destroy');
+        Route::get('/users', 'UserController@index')->name('admin.users.index');
+        Route::put('/users/{user}', 'UserController@update')->name('admin.users.update');
+        Route::delete('/users/{user}', 'UserController@destroy')->name('admin.users.destroy');
 
         // 記事管理
-        Route::get('/articles', 'Admin\ArticleController@index')->name('admin.articles.index');
-        Route::put('/articles/{article}', 'Admin\ArticleController@update')->name('admin.articles.update');
-        Route::delete('/articles/{article}', 'Admin\ArticleController@destroy')->name('admin.articles.destroy');
+        Route::get('/articles', 'ArticleController@index')->name('admin.articles.index');
+        Route::put('/articles/{article}', 'ArticleController@update')->name('admin.articles.update');
+        Route::delete('/articles/{article}', 'ArticleController@destroy')->name('admin.articles.destroy');
     });
 });

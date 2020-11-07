@@ -88,12 +88,6 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   computed: {
     ...mapGetters(["isLoggedIn", "isVerified", "isAdmin"]),
-    top_url() {
-      return `${process.env.MIX_APP_URL}`;
-    },
-    admin_url() {
-      return `${process.env.MIX_APP_URL}/admin`;
-    },
   },
   methods: {
     ...mapActions(["logout"]),

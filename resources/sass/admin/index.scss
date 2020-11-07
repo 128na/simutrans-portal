@@ -1,15 +1,3 @@
 @import "./variables";
 
-@import "../shared";
-
-// 管理者機能でのみ使用するスタイルを記述する
-// パンくず
-.breadcrumb {
-  margin: -2rem -15px 0 -15px;
-  padding: 2rem 1rem;
-  border-radius: 0;
-}
-// リンク下線非表示
-a.no-underline {
-  text-decoration: none;
-}
+// @import "../shared";

@@ -1,6 +1,9 @@
 <template>
   <div>
     <page-title>デバッグ機能</page-title>
+    <page-description>
+      APIレスポンスは面倒なのでコンソール出力で確認する。
+    </page-description>
     <div class="mb-4">
       <b-button variant="danger" @click="handleFlushCache">
         キャッシュ削除

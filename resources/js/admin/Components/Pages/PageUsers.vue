@@ -1,7 +1,7 @@
 <template>
   <div>
-    <page-title>記事一覧</page-title>
-    <page-description>記事一覧</page-description>
+    <page-title>ユーザー一覧</page-title>
+    <page-description> ユーザーの論理削除状態を変更できる。 </page-description>
     <b-form inline class="mb-2">
       <detail-button v-model="detail" />
       <b-form-input v-model="search" placeholder="絞り込み" />

@@ -31,6 +31,10 @@ class DebugController extends Controller
 
     public function phpinfo()
     {
-        return phpinfo();
+        ob_start();
+        phpinfo();
+        $html = ob_get_contents();
+        ob_get_clean();
+        return $html;
     }
 }

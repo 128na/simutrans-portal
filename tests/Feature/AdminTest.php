@@ -33,34 +33,4 @@ class AdminTest extends TestCase
         $response = $this->get($url);
         $response->assertOk();
     }
-
-    // public function testError()
-    // {
-    //     $url = route('admin.error');
-    //     $response = $this->get($url);
-    //     $response->assertRedirect(route('mypage.index'));
-    //     $user = User::factory()->create(['role' => 'admin']);
-    //     $response = $this->actingAs($user)->get($url);
-    //     $response->assertStatus(500);
-    // }
-
-    // public function testWarnig()
-    // {
-    //     $url = route('admin.warning');
-    //     $response = $this->get($url);
-    //     $response->assertRedirect(route('mypage.index'));
-    //     $user = User::factory()->create(['role' => 'admin']);
-    //     $response = $this->actingAs($user)->get($url);
-    //     $response->assertStatus(500);
-    // }
-
-    // public function testNotice()
-    // {
-    //     $url = route('admin.notice');
-    //     $response = $this->get($url);
-    //     $response->assertRedirect(route('mypage.index'));
-    //     $user = User::factory()->create(['role' => 'admin']);
-    //     $response = $this->actingAs($user)->get($url);
-    //     $response->assertStatus(500);
-    // }
 }

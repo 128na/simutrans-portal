@@ -17,68 +17,40 @@
           <b-icon icon="house-fill" class="nav-icon" />
           管理者画面
         </b-nav-item>
-        <b-nav-item :to="route_mypage_index" :active="isActive('index')">
+        <nav-link :to="route_mypage_index">
           <b-icon icon="house-fill" class="nav-icon" />
           マイページ
-        </b-nav-item>
-        <b-nav-item
-          v-if="isVerified"
-          :to="route_edit_profile"
-          :active="isActive('editProfile')"
-        >
+        </nav-link>
+        <nav-link v-if="isVerified" :to="route_edit_profile">
           <b-icon icon="person-fill" class="nav-icon" />
           プロフィール
-        </b-nav-item>
-        <b-nav-item
-          v-if="isVerified"
-          :to="route_analytics"
-          :active="isActive('analyticsArticle')"
-        >
+        </nav-link>
+        <nav-link v-if="isVerified" :to="route_analytics">
           <b-icon icon="graph-up" class="nav-icon" />
           アクセス解析
-        </b-nav-item>
+        </nav-link>
         <b-nav-text class="" v-if="isVerified">記事作成</b-nav-text>
-        <b-nav-item
-          v-if="isVerified"
-          :to="route_create_addon_post"
-          :active="isActive('createArticle', 'addon-post')"
-        >
+        <nav-link v-if="isVerified" :to="route_create_addon_post">
           <b-icon icon="file-earmark-zip-fill" class="nav-icon" />
           アドオン投稿
-        </b-nav-item>
-        <b-nav-item
-          v-if="isVerified"
-          :to="route_create_addon_introduction"
-          :active="isActive('createArticle', 'addon-introduction')"
-        >
+        </nav-link>
+        <nav-link v-if="isVerified" :to="route_create_addon_introduction">
           <b-icon icon="file-earmark-text-fill" class="nav-icon" />
           アドオン紹介
-        </b-nav-item>
-        <b-nav-item
-          v-if="isVerified"
-          :to="route_create_page"
-          :active="isActive('createArticle', 'page')"
-        >
+        </nav-link>
+        <nav-link v-if="isVerified" :to="route_create_page">
           <b-icon icon="file-earmark-text-fill" class="nav-icon" />
           一般記事
-        </b-nav-item>
-        <b-nav-item
-          v-if="isVerified"
-          :to="route_create_markdown"
-          :active="isActive('createArticle', 'markdown')"
-        >
+        </nav-link>
+        <nav-link v-if="isVerified" :to="route_create_markdown">
           <b-icon icon="file-earmark-text-fill" class="nav-icon" />
           一般記事(markdown)
-        </b-nav-item>
-        <b-nav-item :to="route_logout">ログアウト</b-nav-item>
+        </nav-link>
+        <nav-link :to="route_logout">ログアウト</nav-link>
       </b-navbar-nav>
       <b-navbar-nav v-else>
-        <b-nav-item :to="route_login" :active="isActive('login')">
-          ログイン
-        </b-nav-item>
-        <b-nav-item :to="route_register" :active="isActive('register')">
-          新規登録
-        </b-nav-item>
+        <nav-link :to="route_login"> ログイン </nav-link>
+        <nav-link :to="route_register"> 新規登録 </nav-link>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
@@ -88,12 +60,6 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   computed: {
     ...mapGetters(["isLoggedIn", "isVerified", "isAdmin"]),
-    top_url() {
-      return `${process.env.MIX_APP_URL}`;
-    },
-    admin_url() {
-      return `${process.env.MIX_APP_URL}/admin`;
-    },
   },
   methods: {
     ...mapActions(["logout"]),
@@ -106,24 +72,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-.nav-icon {
-  margin-bottom: 2px;
-}
-#global-menu {
-  .nav-link,
-  .navbar-text {
-    color: rgba(255, 255, 255, 1);
-    margin: 0 -0.9rem;
-    padding: 0.5rem 1.4rem;
-  }
-  .nav-link {
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.1);
-    }
-    &.active {
-      background-color: rgba(0, 0, 0, 0.2);
-    }
-  }
-}
-</style>

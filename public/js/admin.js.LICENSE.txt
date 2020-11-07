@@ -26,16 +26,20 @@
  */
 
 /*!
- * clipboard.js v2.0.6
- * https://clipboardjs.com/
- * 
- * Licensed MIT © Zeno Rocha
- */
-
-/*!
  * vuex v3.5.1
  * (c) 2020 Evan You
  * @license MIT
+ */
+
+/*! 
+  * portal-vue © Thorsten Lünborg, 2019 
+  * 
+  * Version: 2.1.7
+  * 
+  * LICENCE: MIT 
+  * 
+  * https://github.com/linusborg/portal-vue
+  * 
  */
 
 /**!

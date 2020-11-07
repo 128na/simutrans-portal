@@ -11,6 +11,18 @@ export default {
     }
   },
   computed: {
+    base_url() {
+      return process.env.NODE_ENV === "production"
+        ? process.env.MIX_APP_URL
+        : "";
+    },
+    top_url() {
+      return `${this.base_url}`;
+    },
+    admin_url() {
+      return `${this.base_url}/admin`;
+    },
+
     route_login() {
       return { name: "login" };
     },

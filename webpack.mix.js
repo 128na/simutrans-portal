@@ -16,7 +16,8 @@ mix
   .sass('resources/sass/mypage/index.scss', 'public/css/mypage.css')
   .sass('resources/sass/admin/index.scss', 'public/css/admin.css')
   .js('resources/js/front/index.js', 'public/js/front.js')
-  .js('resources/js/mypage/app.js', 'public/js/mypage.js');
+  .js('resources/js/mypage/app.js', 'public/js/mypage.js')
+  .js('resources/js/admin/app.js', 'public/js/admin.js');
 
 
 const productionSourceMaps = false;

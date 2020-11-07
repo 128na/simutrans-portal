@@ -57,4 +57,21 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
             });
         });
     });
+
+    // 管理者機能
+    Route::prefix('admin')->namespace('Admin')->middleware(['auth', 'admin', 'verified'])->group(function () {
+        // デバッグツール
+        Route::post('/flush-cache', 'DebugController@flushCache')->name('admin.flushCache');
+        Route::get('/debug/{level}', 'DebugController@error')->name('admin.debug');
+        Route::get('/phpinfo', 'DebugController@phpinfo')->name('admin.phpinfo');
+
+        // ユーザー管理
+        Route::get('/users', 'UserController@index')->name('admin.users.index');
+        Route::delete('/users/{user}', 'UserController@destroy')->name('admin.users.destroy');
+
+        // 記事管理
+        Route::get('/articles', 'ArticleController@index')->name('admin.articles.index');
+        Route::put('/articles/{article}', 'ArticleController@update')->name('admin.articles.update');
+        Route::delete('/articles/{article}', 'ArticleController@destroy')->name('admin.articles.destroy');
+    });
 });

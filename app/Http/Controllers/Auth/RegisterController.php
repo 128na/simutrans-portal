@@ -38,6 +38,13 @@ class RegisterController extends Controller
 
     public function registerApi(Request $request)
     {
+        $this->validator($request->all())->validate();
+
+        $data = array_merge(['ip'=>$_SERVER['REMOTE_ADDR']], $request->only('name', 'email'));
+        logger()->error('registerApi', $data);
+        sleep(random_int(1, 5));
+        return response(['message'=>'ご利用の環境からの新規登録はできません'], 400);
+
         $this->register($request);
 
         $user = $this->user_service->getUser(Auth::user());

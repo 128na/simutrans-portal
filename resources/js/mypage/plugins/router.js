@@ -14,6 +14,7 @@ import PageEditArticle from '../Components/Pages/PageEditArticle';
 import PageEditProfile from '../Components/Pages/PageEditProfile';
 import PageAnalyticsArticle from '../Components/Pages/PageAnalyticsArticle';
 import store from '../store';
+
 const routes = [
   { name: "login", path: '/login', component: PageLogin },
   { name: "logout", path: '/logout', component: PageLogout },

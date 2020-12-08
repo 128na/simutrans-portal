@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api\v2\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\Api\Admin\UserStoreRequest;
 
 class UserController extends Controller
 {
@@ -35,5 +37,18 @@ class UserController extends Controller
         });
 
         return $this->index();
+    }
+
+    public function store(UserStoreRequest $request)
+    {
+        $validated = $request->validated();
+        $len = 63;
+        $rand = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-~^|,.', $len)), 0, $len);
+        return User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($rand),
+            'role' => config('role.user'),
+        ]);
     }
 }

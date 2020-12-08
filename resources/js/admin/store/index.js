@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import api from "../api";
 import { DateTime } from "luxon";
+import { BIconFileEarmarkSlides } from 'bootstrap-vue';
 Vue.use(Vuex);
 
 
@@ -96,6 +97,13 @@ export default new Vuex.Store({
       if (res && res.status === 200) {
         commit(SET_USERS, res.data);
       }
+    },
+    async storeUser({ commit }, params) {
+      const res = await api.storeUser(params).then(showResponse).catch(showError);
+      if (res && res.status === 200) {
+        return true;
+      }
+      return false;
     },
     async deleteUser({ commit }, id) {
       const res = await api.deleteUser(id).then(showResponse).catch(showError);

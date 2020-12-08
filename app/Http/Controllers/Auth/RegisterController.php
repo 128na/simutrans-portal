@@ -40,7 +40,13 @@ class RegisterController extends Controller
     {
         $this->validator($request->all())->validate();
 
-        $data = array_merge(['ip'=>$_SERVER['REMOTE_ADDR']], $request->only('name', 'email'));
+        $data = array_merge(
+            $request->only('name', 'email'),
+            [
+                'ip'=>$_SERVER['REMOTE_ADDR'] ?? '?',
+                'ua'=>$_SERVER['HTTP_USER_AGENT'] ?? '?',
+            ],
+        );
         logger()->error('registerApi', $data);
         sleep(random_int(1, 5));
         return response(['message'=>'ご利用の環境からの新規登録はできません'], 400);

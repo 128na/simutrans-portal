@@ -7,12 +7,14 @@ import VueRouter from 'vue-router';
 import PageIndex from '../Components/Pages/PageIndex';
 import PagePhpinfo from '../Components/Pages/PagePhpinfo';
 import PageUsers from '../Components/Pages/PageUsers';
+import PageCreateUser from '../Components/Pages/PageCreateUser';
 import PageArticles from '../Components/Pages/PageArticles';
 
 const routes = [
   { name: "index", path: '/', component: PageIndex },
   { name: "phpinfo", path: '/phpinfo', component: PagePhpinfo },
   { name: "users", path: '/users', component: PageUsers },
+  { name: "createUser", path: '/users/create', component: PageCreateUser },
   { name: "articles", path: '/articles', component: PageArticles },
 ];
 

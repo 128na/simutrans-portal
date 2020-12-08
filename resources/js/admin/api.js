@@ -18,6 +18,9 @@ export default {
   fetchUsers() {
     return axios.get(`/api/v2/admin/users`);
   },
+  storeUser(params) {
+    return axios.post(`/api/v2/admin/users`, params);
+  },
   deleteUser(id) {
     return axios.delete(`/api/v2/admin/users/${id}`);
   },

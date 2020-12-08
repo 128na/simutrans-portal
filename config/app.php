@@ -15,6 +15,9 @@ return [
 
     'version' => env('APP_VERSION', '0.0'),
 
+    // 登録画面からのユーザー新規登録を制限する
+    'register_restriction' => env('REGISTER_RESTRICTION', false),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

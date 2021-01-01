@@ -26,7 +26,7 @@ class AdminTest extends TestCase
         $user = User::factory()->create(['role' => 'user']);
         $this->actingAs($user);
         $response = $this->get($url);
-        $response->assertStatus(404);
+        $response->assertStatus(401);
 
         $admin = User::factory()->create(['role' => 'admin']);
         $this->actingAs($admin);

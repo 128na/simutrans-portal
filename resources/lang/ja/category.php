@@ -39,6 +39,7 @@ return [
         'narrow-gauge-tools'   => 'ナローゲージ施設',
         'tram-vehicle'         => 'トラム車両',
         'tram-tools'           => 'トラム施設',
+        'scripts'              => 'スクリプト',
         'others'               => 'その他',
     ],
     'pak128_position' => [

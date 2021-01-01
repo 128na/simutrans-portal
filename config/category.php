@@ -43,6 +43,7 @@ return [
         ['slug' => 'narrow-gauge-tools',   'type' => 'addon', 'order' => 20160, 'name' => 'Narrow gauge tools'],
         ['slug' => 'tram-vehicle',         'type' => 'addon', 'order' => 20170, 'name' => 'Tram vehicle'],
         ['slug' => 'tram-tools',           'type' => 'addon', 'order' => 20180, 'name' => 'Tram tools'],
+        ['slug' => 'scripts',              'type' => 'addon', 'order' => 20200, 'name' => 'Scripts'],
         ['slug' => 'others',               'type' => 'addon', 'order' => 29000, 'name' => 'Others'],
     ],
     'pak128_position' => [

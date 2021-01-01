@@ -112,7 +112,7 @@ export default {
       // プレビュー作成が成功すればプレビューウインドウを表示する
       // エラーがあれば画面上部へスクロールする（通知が見えないため）
       if (!this.hasError && html) {
-        return this.setPreview(html);
+        return this.createPreview(html);
       }
       this.scrollToTop();
     },

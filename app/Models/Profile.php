@@ -78,6 +78,6 @@ class Profile extends Model
     }
     public function getHasTwitterAttribute()
     {
-        return !is_null($this->data->twitter ?? null);
+        return !!$this->data->twitter;
     }
 }

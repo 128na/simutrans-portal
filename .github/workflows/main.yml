@@ -115,3 +115,7 @@ jobs:
         run: mysqldump -uroot -h127.0.0.1 -proot test>~/dump.sql
       - name: Test
         run: php artisan test -v --env=local
+
+      - if: failure()
+        name: Display Error Log
+        run: cat storage/logs/laravel.log

@@ -107,7 +107,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cache-mysql-dump-2-
       - name: Import DB Cache
-        run: "[ -e ~/dump.sql ] && mysql -uroot -h127.0.0.1 -proot test <~/dump.sql"
+        run: "[ -e ~/dump.sql ] && mysql -uroot -h127.0.0.1 -proot test <~/dump.sql || echo 'no dump file.'"
       - name: Migration
         run: php artisan migrate
       - name: Dump DB Cache

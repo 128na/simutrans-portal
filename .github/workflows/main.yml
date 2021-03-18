@@ -1,0 +1,76 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Install SSH key
+        run: mkdir -p ~/.ssh \
+          && echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa \
+          && chmod 0600 ~/.ssh/id_rsa \
+          && echo "${{secrets.KNOWN_HOSTS}}" >> ~/.ssh/known_hosts
+
+      - name: deploy
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.USER }}@${{ secrets.HOST }} -p ${{ secrets.PORT }} ${{ TOOL_DIR }}/deploy.sh
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+
+      - name: .env
+        run: php -r "copy('.env.ci', '.env');"
+
+      - name: Cache php vendor
+        id: cache-php-vendor
+        uses: actions/cache@v2
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-cache-php-vendor-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-cache-php-vendor-
+      - name: Composer Install
+        if: steps.cache-php-vendor.outputs.cache-hit != 'true'
+        run: composer install
+
+      - name: Start MySQL
+        run: sudo /etc/init.d/mysql start
+
+      - name: Database
+        run: mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test;'
+
+      - name: Cache mysql dump
+        id: cache-mysql-dump
+        uses: actions/cache@v2
+        with:
+          path: ~/dump.sql
+          key: ${{ runner.os }}-cache-mysql-dump-2-${{ hashFiles('**/migrations/*') }}
+          restore-keys: |
+            ${{ runner.os }}-cache-mysql-dump-2-
+      - name: Import dump
+        run: "[ -e ~/dump.sql ] && mysql -uroot -h127.0.0.1 -proot test <~/dump.sql"
+
+      - name: Migration
+        run: php artisan migrate
+
+      - name: dump DB
+        if: steps.cache-mysql-dump.outputs.cache-hit != 'true'
+        run: mysqldump -uroot -h127.0.0.1 -proot test>~/dump.sql
+
+      - name: Test
+        run: php artisan test -v --env=local

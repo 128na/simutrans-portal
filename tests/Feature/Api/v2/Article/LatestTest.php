@@ -7,6 +7,13 @@ use Tests\TestCase;
 
 class LatestTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        // シード内の記事作成と作成時間をずらす
+        sleep(1);
+    }
+
     /**
      * @dataProvider dataStatus
      */

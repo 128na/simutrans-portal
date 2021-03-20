@@ -16,8 +16,9 @@ on:
         default: ""
 jobs:
   deploy:
-    # masterブランチかつ、テスト通過orテストスキップの時実行
-    if: ${{ github.ref == 'refs/heads/master' && ( success() || (github.event_name == 'workflow_dispatch' && github.event.inputs.skip_test != '')) }}
+    # タグpush -> テスト通過時
+    # 手動実行 -> テスト通過orテストスキップの時実行
+    if: ${{ (github.event_name == 'push' && success()) || (github.event_name == 'workflow_dispatch' && (success() || github.event.inputs.skip_test != '')) }}
     runs-on: ubuntu-latest
     needs: test
     steps:
@@ -146,12 +147,3 @@ jobs:
       - if: failure()
         name: Display Error Log
         run: cat storage/logs/laravel.log
-
-  debug:
-    if: always()
-    needs: [test, deploy]
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "${{ github.ref}}"
-      - run: echo "${{ github.event_name }}"
-      - run: echo "${{ github.event.inputs.skip_test }}"

@@ -6,17 +6,31 @@ use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+    use RefreshDatabase;
 
-    protected static function createAddonPost($user = null)
+    protected User $user;
+    protected Article $article;
+
+    protected function setUp(): void
     {
-        $user = $user ?: User::factory()->create();
-        $file = UploadedFile::fake()->create('document.zip', 1);
+        parent::setUp();
+        $this->seed('ProdSeeder');
+        $this->user = User::factory()->create();
+        $this->article = Article::factory()->create(['user_id' => $this->user->id, 'status' => 'publish']);
+    }
+
+    protected function createAddonPost($user = null)
+    {
+        $user = $user ?? $this->user;
+        $file = new UploadedFile(Storage::path('testing/test.zip'), 'test.zip');
         $attachment = Attachment::createFromFile($file, $user->id);
         $article = Article::factory()->create([
             'user_id' => $user->id,
@@ -30,11 +44,13 @@ abstract class TestCase extends BaseTestCase
             ],
         ]);
         $article->attachments()->save($attachment);
+
         return $article;
     }
-    protected static function createAddonIntroduction($user = null)
+
+    protected function createAddonIntroduction($user = null)
     {
-        $user = $user ?: User::factory()->create();
+        $user = $user ?? $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'addon-introduction',
@@ -46,11 +62,13 @@ abstract class TestCase extends BaseTestCase
                 'link' => 'http://example.com',
             ],
         ]);
+
         return $article;
     }
-    protected static function createPage($user = null)
+
+    protected function createPage($user = null)
     {
-        $user = $user ?: User::factory()->create();
+        $user = $user ?? $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'page',
@@ -60,11 +78,13 @@ abstract class TestCase extends BaseTestCase
                 'sections' => [['type' => 'text', 'text' => 'test page text']],
             ],
         ]);
+
         return $article;
     }
-    protected static function createMarkdown($user = null)
+
+    protected function createMarkdown($user = null)
     {
-        $user = $user ?: User::factory()->create();
+        $user = $user ?? $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'markdown',
@@ -74,11 +94,13 @@ abstract class TestCase extends BaseTestCase
                 'markdown' => '# test markdown text',
             ],
         ]);
+
         return $article;
     }
-    protected static function createAnnounce($user = null)
+
+    protected function createAnnounce($user = null)
     {
-        $user = $user ?: User::factory()->create();
+        $user = $user ?? $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'page',
@@ -90,11 +112,13 @@ abstract class TestCase extends BaseTestCase
         ]);
         $announce_category = Category::page()->slug('announce')->firstOrFail();
         $article->categories()->save($announce_category);
+
         return $article;
     }
-    protected static function createMarkdownAnnounce($user = null)
+
+    protected function createMarkdownAnnounce($user = null)
     {
-        $user = $user ?: User::factory()->create();
+        $user = $user ?? $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'markdown',
@@ -106,6 +130,7 @@ abstract class TestCase extends BaseTestCase
         ]);
         $announce_category = Category::page()->slug('announce')->firstOrFail();
         $article->categories()->save($announce_category);
+
         return $article;
     }
 }

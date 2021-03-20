@@ -16,7 +16,7 @@ on:
 jobs:
   deploy:
     # masterブランチかつ、テスト通過orテストスキップの時実行
-    if: ${{ github.ref == 'refs/heads/master' && (success() || github.event.inputs.skip_test == '') }}
+    if: ${{ github.ref == 'refs/heads/master' && (success() || github.event.inputs.skip_test != '') }}
     runs-on: ubuntu-latest
     needs: test
     steps:

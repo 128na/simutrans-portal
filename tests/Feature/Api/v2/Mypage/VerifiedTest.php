@@ -2,88 +2,74 @@
 
 namespace Tests\Feature\Api\v2\Mypage;
 
-use App\Models\Article;
 use App\Models\Attachment;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Closure;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class VerifiedTest extends TestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
-        $this->seed('ProdSeeder');
+        $this->attachment = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
     }
 
-    public function testNotVerified()
+    /**
+     * @dataProvider dataVerify
+     */
+    public function testメール確認が未完了(string $method, Closure $route, bool $need_verify)
     {
-        $user = User::factory()->create(['email_verified_at' => null]);
-        $article = Article::factory()->create(['user_id' => $user->id]);
-        $attachment = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $user->id);
-        $this->actingAs($user);
+        $this->user->fill(['email_verified_at' => null])->save();
+        $this->actingAs($this->user);
 
-        // need not verify
-        $response = $this->getJson(route('api.v2.users.index'));
-        $response->assertStatus(200);
-        $response = $this->getJson(route('api.v2.tags.search'));
-        $response->assertStatus(200);
-        $response = $this->getJson(route('api.v2.attachments.index'));
-        $response->assertStatus(200);
-        $response = $this->getJson(route('api.v2.articles.index'));
-        $response->assertStatus(200);
-        $response = $this->getJson(route('api.v2.articles.options'));
-        $response->assertStatus(200);
+        $url = Closure::bind($route, $this)();
 
-        // need verify
-        $response = $this->postJson(route('api.v2.users.update'));
-        $response->assertForbidden();
-        $response = $this->postJson(route('api.v2.tags.store'));
-        $response->assertForbidden();
-        $response = $this->postJson(route('api.v2.attachments.store'));
-        $response->assertForbidden();
-        $response = $this->deleteJson(route('api.v2.attachments.destroy', $attachment));
-        $response->assertForbidden();
-        $response = $this->postJson(route('api.v2.articles.store'));
-        $response->assertForbidden();
-        $response = $this->postJson(route('api.v2.articles.update', $article));
-        $response->assertForbidden();
+        if ($need_verify) {
+            $response = $this->{$method}($url);
+            $response->assertForbidden();
+        } else {
+            $response = $this->{$method}($url);
+            $response->assertStatus(200);
+        }
     }
 
-    public function testVerified()
+    public function dataVerify()
     {
-        $user = User::factory()->create();
-        $article = Article::factory()->create(['user_id' => $user->id]);
-        $attachment = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $user->id);
-        $this->actingAs($user);
+        yield 'マイページトップ' => ['getJson', fn () => route('api.v2.users.index'), false];
+        yield 'タグ検索（投稿ページ）' => ['getJson', fn () => route('api.v2.tags.search'), false];
+        yield '添付ファイル一覧' => ['getJson', fn () => route('api.v2.attachments.index'), false];
+        yield '投稿記事一覧' => ['getJson', fn () => route('api.v2.articles.index'), false];
+        yield '投稿ページオプション' => ['getJson', fn () => route('api.v2.articles.options'), false];
 
-        // need not verify
-        $response = $this->getJson(route('api.v2.users.index'));
-        $response->assertStatus(200);
-        $response = $this->getJson(route('api.v2.tags.search'));
-        $response->assertStatus(200);
-        $response = $this->getJson(route('api.v2.attachments.index'));
-        $response->assertStatus(200);
-        $response = $this->getJson(route('api.v2.articles.index'));
-        $response->assertStatus(200);
-        $response = $this->getJson(route('api.v2.articles.options'));
-        $response->assertStatus(200);
+        yield 'プロフィール更新' => ['postJson', fn () => route('api.v2.users.update'), true];
+        yield 'タグ作成' => ['postJson', fn () => route('api.v2.tags.store'), true];
+        yield '添付ファイル作成' => ['postJson', fn () => route('api.v2.attachments.store'), true];
+        yield '添付ファイル削除' => ['deleteJson', fn () => route('api.v2.attachments.destroy', $this->attachment), true];
+        yield '記事投稿' => ['postJson', fn () => route('api.v2.articles.store'), true];
+        yield '記事更新' => ['postJson', fn () => route('api.v2.articles.update', $this->article), true];
+    }
 
-        // need verify
-        $response = $this->postJson(route('api.v2.users.update'));
-        $response->assertStatus(422);
-        $response = $this->postJson(route('api.v2.tags.store'));
-        $response->assertStatus(422);
-        $response = $this->postJson(route('api.v2.attachments.store'));
-        $response->assertStatus(422);
-        $response = $this->deleteJson(route('api.v2.attachments.destroy', $attachment));
-        $response->assertStatus(200);
-        $response = $this->postJson(route('api.v2.articles.store'));
-        $response->assertStatus(422);
-        $response = $this->postJson(route('api.v2.articles.update', $article));
-        $response->assertStatus(422);
+    /**
+     * @dataProvider dataVerified
+     */
+    public function testメール確認が完了(string $method, Closure $route, int $expected_status)
+    {
+        $this->actingAs($this->user);
+
+        $url = Closure::bind($route, $this)();
+
+        $response = $this->{$method}($url);
+        $response->assertStatus($expected_status);
+    }
+
+    public function dataVerified()
+    {
+        yield 'プロフィール更新' => ['postJson', fn () => route('api.v2.users.update'), 422];
+        yield 'タグ作成' => ['postJson', fn () => route('api.v2.tags.store'), 422];
+        yield '添付ファイル作成' => ['postJson', fn () => route('api.v2.attachments.store'), 422];
+        yield '添付ファイル削除' => ['deleteJson', fn () => route('api.v2.attachments.destroy', $this->attachment), 200];
+        yield '記事投稿' => ['postJson', fn () => route('api.v2.articles.store'), 422];
+        yield '記事更新' => ['postJson', fn () => route('api.v2.articles.update', $this->article), 422];
     }
 }

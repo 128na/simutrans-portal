@@ -9,7 +9,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -37,7 +36,7 @@ abstract class TestCase extends BaseTestCase
     protected function createAddonPost($user = null)
     {
         $user = $user ?? $this->user;
-        $file = new UploadedFile(Storage::path('testing/test.zip'), 'test.zip');
+        $file = UploadedFile::fake()->create('file.zip', 1, 'application/zip');
         $attachment = Attachment::createFromFile($file, $user->id);
         $article = Article::factory()->create([
             'user_id' => $user->id,

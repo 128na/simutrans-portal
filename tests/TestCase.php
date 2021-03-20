@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -30,7 +31,20 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
         $this->seed('ProdSeeder');
         $this->user = User::factory()->create();
-        $this->article = Article::factory()->create(['user_id' => $this->user->id, 'status' => 'publish']);
+        $this->article = $this->createAddonPost();
+    }
+
+    protected function tearDown(): void
+    {
+        $disk = Storage::disk('public');
+        User::all()->map(function (User $user) use ($disk) {
+            $user->myAttachments->map(fn (Attachment $attachment) => $attachment->delete());
+            $dir = "user/$user->id";
+            if (count($disk->files($dir)) === 0) {
+                $disk->deleteDirectory($dir);
+            }
+        });
+        parent::tearDown();
     }
 
     protected function createAddonPost($user = null)

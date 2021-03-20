@@ -2,82 +2,73 @@
 
 namespace Tests\Feature\Api\v2\Admin;
 
-use App\Models\User;
-use App\Models\Article;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Tests\AdminTestCase;
 
-class ArticleTest extends TestCase
+class ArticleTest extends AdminTestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
+    /**
+     * @dataProvider dataUsers
+     */
+    public function test_記事一覧_権限チェック(?string $prop, int $expected_status)
     {
-        parent::setUp();
-        $this->seed('ProdSeeder');
-    }
-
-    public function testFetchArticles()
-    {
+        if (!is_null($prop)) {
+            $this->actingAs($this->{$prop});
+        }
         $url = route('api.v2.admin.articles.index');
+
         $response = $this->getJson($url);
-        $response->assertStatus(401);
-
-        $user = User::factory()->create(['role' => 'user']);
-        $response = $this->actingAs($user)->getJson($url);
-        $response->assertStatus(401);
-
-        $user->update(['role' => 'admin']);
-        $response = $this->actingAs($user)->getJson($url);
-        $response->assertStatus(200);
+        $response->assertStatus($expected_status);
     }
 
-    public function testUpdateArticles()
+    /**
+     * @dataProvider dataUsers
+     */
+    public function test_記事更新_権限チェック(?string $prop, int $expected_status)
     {
-        $target_user = User::factory()->create();
-        $target_article = Article::factory()->create(['user_id'=>$target_user->id, 'status' => 'publish']);
-        $url = route('api.v2.admin.articles.update', $target_article);
-        $data = ['article' => ['status'=> 'private']];
+        $url = route('api.v2.admin.articles.update', $this->article);
+        $data = ['article' => ['status' => 'private']];
 
+        if (!is_null($prop)) {
+            $this->actingAs($this->{$prop});
+        }
         $response = $this->putJson($url, $data);
-        $response->assertStatus(401);
-
-        $user = User::factory()->create(['role' => 'user']);
-        $response = $this->actingAs($user)->putJson($url, $data);
-        $response->assertStatus(401);
-
-        $user->update(['role' => 'admin']);
-        $response = $this->actingAs($user)->putJson($url, $data);
-        $response->assertStatus(200);
-        $this->assertEquals($target_article->fresh()->status, 'private');
-
-        // バリデーション外の項目は更新されないこと
-        $data = ['article' => ['title'=> 'update_'.$target_article->title]];
-        $response = $this->actingAs($user)->putJson($url, $data);
-        $response->assertStatus(200);
-        $this->assertEquals($target_article->title, $target_article->fresh()->title);
+        $response->assertStatus($expected_status);
     }
 
-    public function testDeleteArticle()
+    public function test_記事更新_バリデーション項目以外更新されないこと()
     {
-        $target_user = User::factory()->create();
-        $target_article = Article::factory()->create(['user_id'=>$target_user->id]);
-        $this->assertNull($target_article->deleted_at);
-        $url = route('api.v2.admin.articles.destroy', $target_article);
+        $url = route('api.v2.admin.articles.update', $this->article);
+        $data = ['article' => ['status' => 'private', 'title' => 'update_'.$this->article->title]];
+
+        $this->actingAs($this->admin);
+        $response = $this->putJson($url, $data);
+        $response->assertStatus(200);
+        $this->assertEquals('private', $this->article->fresh()->status);
+        $this->assertEquals($this->article->title, $this->article->fresh()->title);
+    }
+
+    /**
+     * @dataProvider dataUsers
+     */
+    public function test_記事削除_権限チェック(?string $prop, int $expected_status)
+    {
+        $this->assertNull($this->article->deleted_at);
+        $url = route('api.v2.admin.articles.destroy', $this->article);
+
+        if (!is_null($prop)) {
+            $this->actingAs($this->{$prop});
+        }
         $response = $this->deleteJson($url);
-        $response->assertStatus(401);
+        $response->assertStatus($expected_status);
+    }
 
-        $user = User::factory()->create(['role' => 'user']);
-        $response = $this->actingAs($user)->deleteJson($url);
-        $response->assertStatus(401);
+    public function test_論理削除チェック()
+    {
+        $this->actingAs($this->admin);
 
-        $user->update(['role' => 'admin']);
-        $response = $this->actingAs($user)->deleteJson($url);
-        $response->assertStatus(200);
-        $this->assertFalse(is_null($target_article->fresh()->deleted_at));
+        $url = route('api.v2.admin.articles.destroy', $this->article);
+        $response = $this->deleteJson($url);
 
-        $response = $this->actingAs($user)->deleteJson($url);
-        $response->assertStatus(200);
-        $this->assertNull($target_article->refresh()->deleted_at);
+        $this->assertNotNull($this->article->fresh()->deleted_at);
     }
 }

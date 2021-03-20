@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use Tests\AdminTestCase;
 
-class AdminTest extends TestCase
+class AdminTest extends AdminTestCase
 {
     public function test未ログインだとログインページへ()
     {
@@ -17,8 +17,7 @@ class AdminTest extends TestCase
     public function test管理者のときは表示()
     {
         $url = route('admin.index');
-        $this->user->fill(['role' => 'admin'])->save();
-        $this->actingAs($this->user);
+        $this->actingAs($this->admin);
         $response = $this->get($url);
         $response->assertOk();
     }

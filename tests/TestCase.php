@@ -16,7 +16,14 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
     use RefreshDatabase;
 
+    /**
+     * 一般ユーザー
+     */
     protected User $user;
+
+    /**
+     * 一般ユーザーの公開記事.
+     */
     protected Article $article;
 
     protected function setUp(): void

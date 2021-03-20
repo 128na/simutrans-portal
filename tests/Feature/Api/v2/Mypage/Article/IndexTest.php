@@ -2,21 +2,11 @@
 
 namespace Tests\Feature\Api\v2\Mypage\Article;
 
-use App\Models\Article;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class IndexTest extends TestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seed('ProdSeeder');
-    }
-
     public function testIndex()
     {
         $user = User::factory()->create();

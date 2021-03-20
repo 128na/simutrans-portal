@@ -4,18 +4,10 @@ namespace Tests\Feature\Api\v2\Mypage\Article;
 
 use App\Models\Article;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class AnalyticsTest extends TestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seed('ProdSeeder');
-    }
     public function testAnalytics()
     {
         $user = User::factory()->create();

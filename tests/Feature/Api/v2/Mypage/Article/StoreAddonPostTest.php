@@ -7,20 +7,11 @@ use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class StoreAddonPostTest extends TestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seed('ProdSeeder');
-    }
-
     public function testValidation()
     {
         $url = route('api.v2.articles.store');
@@ -39,8 +30,8 @@ class StoreAddonPostTest extends TestCase
         $data = [
             'post_type' => 'addon-post',
             'status' => 'publish',
-            'title' => 'test title ' . $date,
-            'slug' => 'test-slug-' . $date,
+            'title' => 'test title '.$date,
+            'slug' => 'test-slug-'.$date,
             'contents' => [
                 'thumbnail' => $thumbnail->id,
                 'author' => 'test auhtor',
@@ -176,8 +167,8 @@ class StoreAddonPostTest extends TestCase
         $data = [
             'post_type' => 'addon-post',
             'status' => 'publish',
-            'title' => 'test title ' . $date,
-            'slug' => 'test-slug-' . $date,
+            'title' => 'test title '.$date,
+            'slug' => 'test-slug-'.$date,
             'contents' => [
                 'thumbnail' => $thumbnail->id,
                 'author' => 'test auhtor',

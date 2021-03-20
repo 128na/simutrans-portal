@@ -140,4 +140,19 @@ abstract class TestCase extends BaseTestCase
 
         return $article;
     }
+
+    public function dataStatus()
+    {
+        yield '公開' => ['publish', true];
+        yield '下書き' => ['draft', false];
+        yield '非公開' => ['private', false];
+        yield 'ゴミ箱' => ['trash', false];
+    }
+
+    public function dataStatusPrivate()
+    {
+        yield '下書き' => ['draft'];
+        yield '非公開' => ['private'];
+        yield 'ゴミ箱' => ['trash'];
+    }
 }

@@ -51,7 +51,7 @@ class TestCheckDeadlink extends TestCase
     }
 
     /**
-     * @dataProvider dataStatus
+     * @dataProvider dataStatusPrivate
      */
     public function test非公開記事はチェックしない(string $status)
     {
@@ -64,12 +64,5 @@ class TestCheckDeadlink extends TestCase
             ->assertExitCode(0);
 
         Notification::assertNothingSent();
-    }
-
-    public function dataStatus()
-    {
-        yield '下書き' => ['draft'];
-        yield '非公開' => ['private'];
-        yield 'ゴミ箱' => ['trash'];
     }
 }

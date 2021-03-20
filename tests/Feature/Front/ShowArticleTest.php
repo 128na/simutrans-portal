@@ -54,14 +54,6 @@ class ShowArticleTest extends TestCase
         }
     }
 
-    public function dataStatus()
-    {
-        yield '公開' => ['publish', true];
-        yield '下書き' => ['draft', false];
-        yield '非公開' => ['private', false];
-        yield 'ゴミ箱' => ['trash', false];
-    }
-
     public function testUserSoftDeleted()
     {
         $response = $this->get('/articles/'.$this->article->slug);

@@ -2,154 +2,101 @@
 
 namespace Tests\Feature\Front;
 
-use App\Models\Category;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ShowListingTest extends TestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seed('ProdSeeder');
-    }
-
     /**
-     *  トップが表示されること
+     * @dataProvider dataListing
      * */
-    public function testTop()
+    public function testListing(string $name)
     {
-        $response = $this->get('/');
+        $response = $this->get(route($name));
         $response->assertOk();
     }
 
-    /**
-     *  アドオン一覧が表示されること
-     * */
-    public function testAddons()
+    public function dataListing()
     {
-        $response = $this->get('/addons');
-        $response->assertOk();
+        $this->refreshApplication();
+
+        yield 'トップ' => ['index'];
+        yield 'アドオン一覧' => ['addons.index'];
+        yield 'ランキング一覧' => ['addons.ranking'];
+        yield '記事一覧' => ['pages.index'];
+        yield 'お知らせ一覧' => ['announces.index'];
     }
 
     /**
-     *  記事一覧が表示されること
-     * */
-    public function testPages()
-    {
-        $response = $this->get('/pages');
-        $response->assertOk();
-    }
-
-    /**
-     *  お知らせ一覧が表示されること
-     * */
-    public function testAnnounces()
-    {
-        $response = $this->get('/announces');
-        $response->assertOk();
-    }
-
-    /**
-     * ユーザーの投稿一覧が表示されること
+     * ユーザーの投稿一覧が表示されること.
      */
     public function testUsers()
     {
-        $users = User::factory()->count(20)->create();
-        $this->assertGreaterThan(0, $users->count());
+        $response = $this->get('/user/'.$this->user->id);
+        $response->assertOk();
 
-        foreach ($users as $user) {
-            $response = $this->get('/user/' . $user->id);
-            $response->assertOk();
-        }
         $response = $this->get('/user/wrong-id');
         $response->assertNotFound();
     }
 
     /**
-     * カテゴリの投稿一覧が表示されること
+     * @dataProvider dataCategories
      */
-    public function testCategories()
+    public function testCategories(string $type, string $slug, bool $ok)
     {
-        $categories = Category::all();
-        $this->assertGreaterThan(0, $categories->count());
-
-        foreach ($categories as $category) {
-            $response = $this->get('/category/' . $category->type . '/' . $category->slug);
+        $response = $this->get(route('category', [$type, $slug]));
+        if ($ok) {
             $response->assertOk();
-
-            $response = $this->get('/category/wrong-type/' . $category->slug);
-            $response->assertNotFound();
-
-            $response = $this->get('/category/' . $category->type . '/wrong-slug');
+        } else {
             $response->assertNotFound();
         }
-        $response = $this->get('/category/wrong-type/wrong-slug');
-        $response->assertNotFound();
+    }
+
+    public function dataCategories()
+    {
+        $this->refreshApplication();
+
+        $types = array_filter(config('category.type'), fn ($type) => $type !== 'post');
+        foreach ($types as $type) {
+            foreach (config('category.'.$type) as $category) {
+                yield "{$type}/{$category['slug']}" => [$type, $category['slug'], true];
+            }
+            yield "{$type}/invalid-slug" => [$type, 'invalid-slug', false];
+        }
+
+        foreach (config('category.'.$type) as $category) {
+            yield "invalid-type/{$category['slug']}" => ['invalid-type', $category['slug'], false];
+        }
+
+        yield 'invalid-type/invalid-slug' => ['invalid-type', 'invalid-slug', false];
     }
 
     /**
-     * pak/addonの投稿一覧が表示されること
+     * @dataProvider dataPakAddonCategories
      */
-    public function testPakAddonCategories()
+    public function testPakAddonCategories(string $pak, string $addon, bool $ok)
     {
-        $paks = Category::pak()->get();
-        $this->assertGreaterThan(0, $paks->count());
-        $addons = Category::addon()->get();
-        $this->assertGreaterThan(0, $addons->count());
-
-        foreach ($paks as $pak) {
-            foreach ($addons as $addon) {
-                $response = $this->get('/category/pak/' . $pak->slug . '/' . $addon->slug);
-                $response->assertOk();
-
-                $response = $this->get('/category/pak/wrong-pak/' . $addon->slug);
-                $response->assertNotFound();
-
-                $response = $this->get('/category/pak/' . $pak->slug . '/wrong-addon');
-                $response->assertNotFound();
-            }
+        $response = $this->get(route('category.pak.addon', [$pak, $addon]));
+        if ($ok) {
+            $response->assertOk();
+        } else {
+            $response->assertNotFound();
         }
-        $response = $this->get('/category/pak/wrong-pak/wrong-addon');
-        $response->assertNotFound();
     }
 
-    // public function testSetLanguage()
-    // {
-    //     $response = $this->get('/language/ja');
-    //     $this->assertCookie($response, 'lang', 'ja');
-
-    //     $response = $this->get('/language/en');
-    //     $this->assertCookie($response, 'lang', 'en');
-
-    //     $response = $this->get('/language/de');
-    //     $this->assertCookie($response, 'lang', 'de');
-
-    //     $response = $this->get('/language/zh-CN');
-    //     $this->assertCookie($response, 'lang', 'zh-CN');
-
-    //     $response = $this->get('/language/zh-TW');
-    //     $this->assertCookie($response, 'lang', 'zh-TW');
-
-    //     $response = $this->get('/language/invalid');
-    //     $this->assertCookie($response, 'lang', null);
-    // }
-
-    /**
-     * assertPlainCookieでlangが拾えないので代用
-     */
-    private function assertCookie($response, $name, $value)
+    public function dataPakAddonCategories()
     {
-        $cookies = $response->headers->getCookies();
+        $this->refreshApplication();
 
-        foreach ($cookies as $cookie) {
-            if ($cookie->getName() === $name) {
-                return $this->assertEquals($cookie->getValue(), $value);
+        foreach (config('category.pak') as $pak) {
+            foreach (config('category.addon') as $addon) {
+                yield "{$pak['slug']}/{$addon['slug']}" => [$pak['slug'], $addon['slug'], true];
             }
+            yield "{$pak['slug']}/invalid-addon" => [$pak['slug'], 'invalid-addon', false];
         }
-        return $this->assertEquals(null, $value);
+
+        foreach (config('category.addon') as $addon) {
+            yield "invalid-pak/{$addon['slug']}" => ['invalid-pak', $addon['slug'], false];
+        }
+        yield 'invalid-pak/invalid-addon' => ['invalid-pak', 'invalid-addon', false];
     }
 }

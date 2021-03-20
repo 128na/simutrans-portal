@@ -1,0 +1,140 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: .env
+        run: php -r "copy('.env.deploy', '.env');"
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+      - name: npm ci
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Build Assets
+        run: npm run prod
+
+      - name: Install SSH key
+        run: mkdir -p ~/.ssh \
+          && echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa \
+          && chmod 0600 ~/.ssh/id_rsa \
+          && echo "${{secrets.KNOWN_HOSTS}}" >> ~/.ssh/known_hosts
+      - name: Deploy
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: cd ${{ secrets.APP_DIR }}
+            && git fetch -p
+            && git checkout ${{ env.github.ref }}
+            && git pull
+            && git describe | php -c ~/www/php.ini ./tool/updateAppVersion.php
+            && php -c ~/www/php.ini ~/bin/composer.phar install --optimize-autoloader --no-dev
+            && php -c ~/www/php.ini artisan migrate --force
+            && php -c ~/www/php.ini artisan migrate:status
+            && php -c ~/www/php.ini artisan cache:clear
+            && php -c ~/www/php.ini artisan optimize
+            && php -c ~/www/php.ini artisan route:clear
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          privateKey: /home/runner/.ssh/id_rsa
+
+      - name: rsync public dir
+        uses: trendyminds/github-actions-rsync@master
+        with:
+          RSYNC_OPTIONS: -ahvzr --delete --exclude node_modules --exclude '.git*'
+          RSYNC_TARGET: ${{ secrets.APP_DIR }}/public
+          RSYNC_SOURCE: /public/
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_KEY}}
+          SSH_USERNAME: ${{secrets.USER}}
+          SSH_HOSTNAME: ${{secrets.HOST}}
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: .env
+        run: php -r "copy('.env.ci', '.env');"
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+      - name: npm ci
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Build Assets
+        run: npm run prod
+
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+      - name: PHP vendor Cache
+        id: cache-php-vendor
+        uses: actions/cache@v2
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-cache-php-vendor-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-cache-php-vendor-
+      - name: Composer Install
+        if: steps.cache-php-vendor.outputs.cache-hit != 'true'
+        run: composer install
+      - name: Start MySQL
+        run: sudo /etc/init.d/mysql start
+      - name: Setup database
+        run: mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test;'
+      - name: DB Cache
+        id: cache-mysql-dump
+        uses: actions/cache@v2
+        with:
+          path: ~/dump.sql
+          key: ${{ runner.os }}-cache-mysql-dump-2-${{ hashFiles('**/migrations/*') }}
+          restore-keys: |
+            ${{ runner.os }}-cache-mysql-dump-2-
+      - name: Import DB Cache
+        run: "[ -e ~/dump.sql ] && mysql -uroot -h127.0.0.1 -proot test <~/dump.sql || echo 'no dump file.'"
+      - name: Migration
+        run: php artisan migrate
+      - name: Dump DB Cache
+        if: steps.cache-mysql-dump.outputs.cache-hit != 'true'
+        run: mysqldump -uroot -h127.0.0.1 -proot test>~/dump.sql
+      - name: Test
+        run: php artisan test -v --env=local
+
+      - if: failure()
+        name: Display Error Log
+        run: cat storage/logs/laravel.log

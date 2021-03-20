@@ -4,53 +4,54 @@ namespace Tests\Feature\Api\v2\Auth;
 
 use App\Models\User;
 use App\Notifications\Loggedin;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class LoginLogoutTest extends TestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seed('ProdSeeder');
-    }
-
-    public function testLogin()
+    /**
+     * @dataProvider dataValidation
+     */
+    public function testValidation(array $data, ?string $error_field)
     {
         Notification::fake();
         $user = User::factory()->create();
 
         $url = route('api.v2.login');
 
-        $response = $this->postJson($url, ['email' => null, 'password' => 'password']);
-        $response->assertJsonValidationErrors(['email']);
-        $response = $this->postJson($url, ['email' => $user->email . 'wrong', 'password' => 'password']);
-        $response->assertJsonValidationErrors(['email']);
+        $data = array_merge([
+            'email' => $this->user->email,
+            'password' => 'password',
+        ], $data);
 
-        $response = $this->postJson($url, ['email' => $user->email, 'password' => null]);
-        $response->assertJsonValidationErrors(['password']);
-        $response = $this->postJson($url, ['email' => $user->email, 'password' => 'password_wrong']);
-        $response->assertJsonValidationErrors(['email']);
+        $res = $this->postJson($url, $data);
 
-        Notification::assertNothingSent();
+        if (is_null($error_field)) {
+            $res->assertOK();
+            $this->assertAuthenticated();
+            Notification::assertSentTo($user, Loggedin::class);
+        } else {
+            $res->assertJsonValidationErrors($error_field);
+            Notification::assertNothingSent();
+        }
+    }
 
-        $response = $this->postJson($url, ['email' => $user->email, 'password' => 'password']);
-        $response->assertOK();
-        $this->assertAuthenticated();
-        Notification::assertSentTo($user, Loggedin::class);
+    public function dataValidation()
+    {
+        yield 'emailがnull' => [['email' => null], 'email'];
+        yield 'emailが不正' => [['email' => 'invalid-email'], 'email'];
+        yield '存在しないemail' => [['email' => 'missing-user@exmaple.com'], 'email'];
+        yield 'PW不一致' => [['password' => '123'], 'email'];
+        yield 'PWがnull' => [['password' => null], 'password'];
     }
 
     public function LogoutTest()
     {
-        $user = User::factory()->create();
-        $this->actingAs($user);
+        $this->actingAs($this->user);
         $this->assertAuthenticated();
 
         $url = route('api.v2.logout');
-        $response = $this->postJson($url);
+        $this->postJson($url);
         $this->assertGuest();
     }
 }

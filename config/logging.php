@@ -1,11 +1,8 @@
 <?php
 
-use Monolog\Handler\StreamHandler;
-use Monolog\Handler\SyslogUdpHandler;
 use App\Handlers\MailHandler;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Log Channel
@@ -48,7 +45,7 @@ return [
         ],
 
         'mail' => [
-            'driver'  => 'monolog',
+            'driver' => 'monolog',
             'level' => 'error',
             'handler' => MailHandler::class,
         ],
@@ -72,6 +69,11 @@ return [
             'username' => 'SimutransAddonPortal',
             'emoji' => ':innocent:',
             'level' => 'debug',
+        ],
+        'single' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/laravel.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
         ],
     ],
 ];

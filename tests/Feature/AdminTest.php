@@ -2,35 +2,31 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Tests\AdminTestCase;
 
-class AdminTest extends TestCase
+class AdminTest extends AdminTestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seed('ProdSeeder');
-    }
-
-    public function testNeedLogin()
+    public function test未ログインだとログインページへ()
     {
         $url = route('admin.index');
         $response = $this->get($url);
         $response->assertStatus(302);
         $response->assertRedirect(route('mypage.index'));
+    }
 
-        $user = User::factory()->create(['role' => 'user']);
-        $this->actingAs($user);
-        $response = $this->get($url);
-        $response->assertStatus(401);
-
-        $admin = User::factory()->create(['role' => 'admin']);
-        $this->actingAs($admin);
+    public function test管理者のときは表示()
+    {
+        $url = route('admin.index');
+        $this->actingAs($this->admin);
         $response = $this->get($url);
         $response->assertOk();
+    }
+
+    public function test一般ユーザーだと401()
+    {
+        $url = route('admin.index');
+        $this->actingAs($this->user);
+        $response = $this->get($url);
+        $response->assertStatus(401);
     }
 }

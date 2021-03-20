@@ -3,7 +3,6 @@
 use Illuminate\Support\Str;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Database Connection Name
@@ -53,19 +52,19 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
 
-            /**
+            /*
              * @see https://docs.spatie.be/laravel-backup/v6/installation-and-setup/#dumping-the-database
              */
             'dump' => [
                 'dump_binary_path' => env('DUMP_BINARY_PATH', '/usr/local/bin/'),
-            ]
+            ],
         ],
        'testing' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => 'test_'.env('DB_DATABASE', 'forge'),
+            'database' => env('TEST_DB_DATABASE', 'test_forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
@@ -106,7 +105,6 @@ return [
     */
 
     'redis' => [
-
         'client' => env('REDIS_CLIENT', 'predis'),
 
         'options' => [
@@ -129,7 +127,5 @@ return [
             'port' => env('REDIS_PORT', 6379),
             'database' => env('REDIS_CACHE_DB', 1),
         ],
-
     ],
-
 ];

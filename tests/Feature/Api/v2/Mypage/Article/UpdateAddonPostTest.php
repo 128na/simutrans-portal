@@ -7,20 +7,11 @@ use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class UpdateAddonPostTest extends TestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seed('ProdSeeder');
-    }
-
     public function testValidation()
     {
         $user = User::factory()->create();
@@ -39,8 +30,8 @@ class UpdateAddonPostTest extends TestCase
         $data = [
             'post_type' => 'addon-post',
             'status' => 'publish',
-            'title' => 'test title ' . $date,
-            'slug' => 'test-slug-' . $date,
+            'title' => 'test title '.$date,
+            'slug' => 'test-slug-'.$date,
             'contents' => [
                 'thumbnail' => $thumbnail->id,
                 'author' => 'test auhtor',
@@ -183,8 +174,8 @@ class UpdateAddonPostTest extends TestCase
         $data = [
             'post_type' => 'addon-post',
             'status' => 'publish',
-            'title' => 'test title ' . $date,
-            'slug' => 'test-slug-' . $date,
+            'title' => 'test title '.$date,
+            'slug' => 'test-slug-'.$date,
             'contents' => [
                 'thumbnail' => $thumbnail->id,
                 'author' => 'test auhtor',

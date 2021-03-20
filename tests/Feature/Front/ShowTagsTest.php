@@ -3,25 +3,20 @@
 namespace Tests\Feature\Front;
 
 use App\Models\Tag;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Closure;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Cache;
 
 class ShowTagsTest extends TestCase
 {
-    use RefreshDatabase;
+    private Tag $tag;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
-        $this->seed('ProdSeeder');
+        $this->tag = Tag::factory()->create();
     }
 
-    /**
-     *  表示
-     **/
-    public function testShow()
+    public function test_タグ一覧()
     {
         $url = route('tags');
         $res = $this->get($url);
@@ -29,35 +24,33 @@ class ShowTagsTest extends TestCase
     }
 
     /**
-     *  タグ名
-     **/
-    public function testTagDoesntHaveArticles()
+     * @dataProvider data
+     */
+    public function test_記事の無いタグ(Closure $fn, bool $should_see)
     {
-        $url = route('tags');
-        $tag = Tag::factory()->create();
-        $user = User::factory()->create();
-        $article = $this->createAddonIntroduction($user);
-
         // assertSeeではキャッシュされたgzipがテキストにパースされないのでログインしておく
-        $this->actingAs($user);
+        $this->actingAs($this->user);
+
+        Closure::bind($fn, $this)();
 
         // 記事に紐づいていないタグ 表示されないこと
+        $url = route('tags');
         $res = $this->get($url);
         $res->assertOk();
-        $res->assertDontSee($tag->name);
+        if ($should_see) {
+            $res->assertSee($this->tag->name);
+        } else {
+            $res->assertDontSee($this->tag->name);
+        }
+    }
 
-        // 公開されている記事に紐づいてるタグ 表示されること
-        $article->tags()->sync([$tag->id]);
-        Cache::flush();
-
-        $res = $this->get($url);
-        $res->assertOk();
-        $res->assertSee($tag->name);
-
-        // 非公開の記事に紐づいてるタグ 表示されないこと
-        $article->update(['status' => 'draft']);
-        $res = $this->get($url);
-        $res->assertOk();
-        $res->assertDontSee($tag->name);
+    public function data()
+    {
+        yield '記事に紐づいていないタグ' => [fn () => null, false];
+        yield '公開されている記事に紐づいてるタグ' => [fn () => $this->article->tags()->sync([$this->tag->id]), true];
+        yield '非公開の記事に紐づいてるタグ' => [function () {
+            $this->article->update(['status' => 'draft']);
+            $this->article->tags()->sync([$this->tag->id]);
+        }, false];
     }
 }

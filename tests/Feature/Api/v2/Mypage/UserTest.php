@@ -5,140 +5,145 @@ namespace Tests\Feature\Api\v2\Mypage;
 use App\Models\Attachment;
 use App\Models\User;
 use App\Notifications\VerifyEmail;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Closure;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    use RefreshDatabase;
+    private User $user2;
+    private Attachment $not_image;
+    private Attachment $user2_avatar;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
-        $this->seed('ProdSeeder');
+        $this->user2 = User::factory()->create(['name' => 'other name', 'email' => 'other@example.com']);
+        $this->not_image = Attachment::createFromFile(UploadedFile::fake()->create('not_image.zip', 1), $this->user->id);
+        $this->user2_avatar = Attachment::createFromFile(UploadedFile::fake()->image('avatar.jpg', 1), $this->user2->id);
     }
 
     public function testIndex()
     {
-        $user = User::factory()->create();
         $url = route('api.v2.users.index');
 
         $res = $this->getJson($url);
         $res->assertUnauthorized();
 
-        $this->actingAs($user);
+        $this->actingAs($this->user);
 
         $res = $this->getJson($url);
         $res->assertOK();
         $res->assertJson(['data' => [
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
+            'id' => $this->user->id,
+            'name' => $this->user->name,
+            'email' => $this->user->email,
             'profile' => [
-                'id' => $user->profile->id,
+                'id' => $this->user->profile->id,
                 'data' => [
-                    'avatar' => $user->profile->data->avatar,
-                    'description' => $user->profile->data->description,
-                    'twitter' => $user->profile->data->twitter,
-                    'website' => $user->profile->data->website,
+                    'avatar' => $this->user->profile->data->avatar,
+                    'description' => $this->user->profile->data->description,
+                    'twitter' => $this->user->profile->data->twitter,
+                    'website' => $this->user->profile->data->website,
                 ],
             ],
-            'admin' => $user->isAdmin(),
-            'verified' => !!$user->email_verified_at,
+            'admin' => $this->user->isAdmin(),
+            'verified' => (bool) $this->user->email_verified_at,
             'attachments' => [],
         ]]);
     }
 
-    public function testStore()
+    /**
+     * @dataProvider dataValidation
+     */
+    public function testStore(Closure $data, ?string $error_field)
     {
         Notification::fake();
 
-        $user = User::factory()->create();
-
-        $data = [
-            'name' => $user->name,
-            'email' => $user->email,
+        $data = array_merge([
+            'name' => $this->user->name,
+            'email' => $this->user->email,
             'profile' => [
                 'data' => [
-                    'avatar' => $user->profile->data->avatar,
-                    'description' => $user->profile->data->description,
-                    'twitter' => $user->profile->data->twitter,
-                    'website' => $user->profile->data->website,
+                    'avatar' => $this->user->profile->data->avatar,
+                    'description' => $this->user->profile->data->description,
+                    'twitter' => $this->user->profile->data->twitter,
+                    'website' => $this->user->profile->data->website,
                 ],
             ],
-        ];
+        ], Closure::bind($data, $this)());
 
         $url = route('api.v2.users.update');
 
-        $res = $this->postJson($url);
-        $res->assertUnauthorized();
-
-        $this->actingAs($user);
-
-        $res = $this->postJson($url, ['user' => array_merge($data, ['name' => null])]);
-        $res->assertJsonValidationErrors(['user.name']);
-        $res = $this->postJson($url, ['user' => array_merge($data, ['name' => str_repeat('a', 256)])]);
-        $res->assertJsonValidationErrors(['user.name']);
-        $other_user = User::factory()->create();
-        $res = $this->postJson($url, ['user' => array_merge($data, ['name' => $other_user->name])]);
-        $res->assertJsonValidationErrors(['user.name']);
-
-        $res = $this->postJson($url, ['user' => array_merge($data, ['email' => null])]);
-        $res->assertJsonValidationErrors(['user.email']);
-        $res = $this->postJson($url, ['user' => array_merge($data, ['email' => 'invalid-email'])]);
-        $res->assertJsonValidationErrors(['user.email']);
-        $other_user = User::factory()->create();
-        $res = $this->postJson($url, ['user' => array_merge($data, ['email' => $other_user->email])]);
-        $res->assertJsonValidationErrors(['user.email']);
-
-        $res = $this->postJson($url, ['user' => array_merge($data, ['profile' => null])]);
-        $res->assertJsonValidationErrors(['user.profile']);
-
-        $res = $this->postJson($url, ['user' => array_merge($data, ['profile' => ['data' => null]])]);
-        $res->assertJsonValidationErrors(['user.profile.data']);
-
-        $res = $this->postJson($url, ['user' => array_merge($data, ['profile' => ['data' => ['avatar' => 99999]]])]);
-        $res->assertJsonValidationErrors(['user.profile.data.avatar']);
-        $not_image = Attachment::createFromFile(UploadedFile::fake()->create('not_image.zip', 1), $user->id);
-        $res = $this->postJson($url, ['user' => array_merge($data, ['profile' => ['data' => ['avatar' => $not_image->id]]])]);
-        $res->assertJsonValidationErrors(['user.profile.data.avatar']);
-        $other_user = User::factory()->create();
-        $other_avatar = Attachment::createFromFile(UploadedFile::fake()->image('avatar.jpg', 1), $other_user->id);
-        $res = $this->postJson($url, ['user' => array_merge($data, ['profile' => ['data' => ['avatar' => $other_avatar->id]]])]);
-        $res->assertJsonValidationErrors(['user.profile.data.avatar']);
-
-        $res = $this->postJson($url, ['user' => array_merge($data, ['profile' => ['data' => ['description' => str_repeat('a', 256)]]])]);
-        $res->assertJsonValidationErrors(['user.profile.data.description']);
-        $res = $this->postJson($url, ['user' => array_merge($data, ['profile' => ['data' => ['website' => 'invalid-url']]])]);
-        $res->assertJsonValidationErrors(['user.profile.data.website']);
-        $res = $this->postJson($url, ['user' => array_merge($data, ['profile' => ['data' => ['website' => 'http://example.com/' . str_repeat('a', 256)]]])]);
-        $res->assertJsonValidationErrors(['user.profile.data.website']);
-        $res = $this->postJson($url, ['user' => array_merge($data, ['profile' => ['data' => ['twitter' => str_repeat('a', 256)]]])]);
-        $res->assertJsonValidationErrors(['user.profile.data.twitter']);
+        $this->actingAs($this->user);
 
         $res = $this->postJson($url, ['user' => $data]);
-        $res->assertOK();
-        $res->assertJson(['data' => [
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'profile' => [
-                'id' => $user->profile->id,
-                'data' => [
-                    'avatar' => $user->profile->data->avatar,
-                    'description' => $user->profile->data->description,
-                    'twitter' => $user->profile->data->twitter,
-                    'website' => $user->profile->data->website,
-                ],
-            ],
-            'admin' => $user->isAdmin(),
-            'verified' => !!$user->email_verified_at,
-            'attachments' => [],
-        ]]);
 
+        if (is_null($error_field)) {
+            $res->assertOK();
+            $res->assertJson(['data' => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+                'email' => $this->user->email,
+                'profile' => [
+                    'id' => $this->user->profile->id,
+                    'data' => [
+                        'avatar' => $this->user->profile->data->avatar,
+                        'description' => $this->user->profile->data->description,
+                        'twitter' => $this->user->profile->data->twitter,
+                        'website' => $this->user->profile->data->website,
+                    ],
+                ],
+                'admin' => $this->user->isAdmin(),
+                'verified' => (bool) $this->user->email_verified_at,
+                'attachments' => [],
+            ]]);
+        } else {
+            $res->assertJsonValidationErrors($error_field);
+        }
         Notification::assertNothingSent();
+    }
+
+    public function dataValidation()
+    {
+        $this->refreshApplication();
+
+        yield 'user.nameがnull' => [
+            fn () => ['name' => null], 'user.name', ];
+        yield 'user.nameが256文字以上' => [
+            fn () => ['name' => str_repeat('a', 256)], 'user.name', ];
+        yield 'user.nameが存在する' => [
+            fn () => ['name' => 'other name'], 'user.name', ];
+
+        yield 'user.emailがnull' => [
+            fn () => ['email' => null], 'user.email', ];
+        yield 'user.emailが不正' => [
+            fn () => ['email' => 'invalid-email'], 'user.email', ];
+        yield 'user.emailが存在する' => [
+            fn () => ['email' => 'other@example.com'], 'user.email', ];
+
+        yield 'user.profileがnull' => [
+            fn () => ['profile' => null], 'user.profile', ];
+
+        yield 'user.profile.dataがnull' => [
+            fn () => ['profile' => ['data' => null]], 'user.profile.data', ];
+
+        yield 'user.profile.data.avatarが存在しない' => [
+            fn () => ['profile' => ['data' => ['avatar' => 99999]]], 'user.profile.data.avatar', ];
+        yield 'user.profile.data.avatarが画像以外' => [
+            fn () => ['profile' => ['data' => ['avatar' => $this->not_image->id]]], 'user.profile.data.avatar', ];
+        yield 'user.profile.data.avatarが他人のアップロードした画像' => [
+            fn () => ['profile' => ['data' => ['avatar' => $this->user2_avatar->id]]], 'user.profile.data.avatar', ];
+
+        yield 'user.profile.data.descriptionが256文字以上' => [
+            fn () => ['profile' => ['data' => ['description' => str_repeat('a', 256)]]], 'user.profile.data.description', ];
+        yield 'user.profile.data.websiteが不正' => [
+            fn () => ['profile' => ['data' => ['website' => 'invalid-url']]], 'user.profile.data.website', ];
+        yield 'user.profile.data.websiteが256文字以上' => [
+            fn () => ['profile' => ['data' => ['website' => 'http://example.com/'.str_repeat('a', 256)]]], 'user.profile.data.website', ];
+        yield 'user.profile.data.twitterが256文字以上' => [
+            fn () => ['profile' => ['data' => ['twitter' => str_repeat('a', 256)]]], 'user.profile.data.twitter', ];
     }
 
     public function testEmailChange()

@@ -3,71 +3,74 @@
 namespace Tests\Feature\Api\v2\Mypage;
 
 use App\Models\Tag;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Closure;
 use Tests\TestCase;
 
 class TagTest extends TestCase
 {
-    use RefreshDatabase;
+    private Tag $tag1;
+    private Tag $tag2;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
-        $this->seed('ProdSeeder');
+        $this->tag1 = Tag::factory()->create(['name' => 'long tag name']);
+        $this->tag2 = Tag::factory()->create(['name' => 'short']);
     }
 
     public function testIndex()
     {
-        $user = User::factory()->create();
-        $tag1 = Tag::factory()->create(['name' => 'long tag name']);
-        $tag2 = Tag::factory()->create(['name' => 'short']);
         $url = route('api.v2.tags.search');
 
         $res = $this->getJson($url);
         $res->assertUnauthorized();
 
-        $this->actingAs($user);
+        $this->actingAs($this->user);
 
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson([$tag1->name, $tag2->name]);
+        $res->assertExactJson([$this->tag1->name, $this->tag2->name]);
 
         $url = route('api.v2.tags.search', ['name' => 'sh']);
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson([$tag2->name]);
+        $res->assertExactJson([$this->tag2->name]);
 
         $url = route('api.v2.tags.search', ['name' => 'or']);
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson([$tag2->name]);
+        $res->assertExactJson([$this->tag2->name]);
 
         $url = route('api.v2.tags.search', ['name' => 'rt']);
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson([$tag2->name]);
+        $res->assertExactJson([$this->tag2->name]);
     }
 
-    public function testStore()
+    /**
+     * @dataProvider dataValidation
+     */
+    public function testStore(Closure $data, ?string $error_field)
     {
-        $user = User::factory()->create();
-        $tag1 = Tag::factory()->create(['name' => 'long tag name']);
-        $tag2_name = 'short';
         $url = route('api.v2.tags.store');
 
         $res = $this->postJson($url);
         $res->assertUnauthorized();
 
-        $this->actingAs($user);
+        $this->actingAs($this->user);
+        $res = $this->postJson($url, Closure::bind($data, $this)());
+        if (is_null($error_field)) {
+            $res->assertCreated();
+        } else {
+            $res->assertJsonValidationErrors($error_field);
+        }
+    }
 
-        $res = $this->postJson($url, ['name' => null]);
-        $res->assertJsonValidationErrors(['name']);
-        $res = $this->postJson($url, ['name' => str_repeat('a', 21)]);
-        $res->assertJsonValidationErrors(['name']);
-        $res = $this->postJson($url, ['name' => $tag1->name]);
-        $res->assertJsonValidationErrors(['name']);
-        $res = $this->postJson($url, ['name' => $tag2_name]);
-        $res->assertCreated();
+    public function dataValidation()
+    {
+        yield 'nameがnull' => [fn () => ['name' => null], 'name'];
+        yield 'nameが21文字以上' => [fn () => ['name' => str_repeat('a', 21)], 'name'];
+        yield 'nameが存在する' => [fn () => ['name' => $this->tag1->name], 'name'];
+        yield '成功' => [fn () => ['name' => 'new_tag'], null];
     }
 }

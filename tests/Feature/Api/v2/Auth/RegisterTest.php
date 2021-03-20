@@ -3,51 +3,69 @@
 namespace Tests\Feature\Api\v2\Auth;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Config;
 use Tests\TestCase;
 
 class RegisterTest extends TestCase
 {
-    use RefreshDatabase;
+    private User $user2;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
-        $this->seed('ProdSeeder');
+        $this->user2 = User::factory()->create(['email' => 'other@example.com']);
     }
 
-    // public function testRegister()
-    // {
-    //     $url = route('api.v2.register');
+    /**
+     * @dataProvider dataValidation
+     */
+    public function testRegister(array $data, ?string $error_field)
+    {
+        Config::set('app.register_restriction', false);
+        $url = route('api.v2.register');
 
-    //     $date = now()->format('YmdHis');
-    //     $data = [
-    //         'name' => 'example',
-    //         'email' => "test_{$date}@example.com",
-    //         'password' => 'password' . $date,
-    //     ];
-    //     $this->assertGuest();
+        $this->assertGuest();
 
-    //     $response = $this->postJson($url, array_merge($data, ['name' => null]));
-    //     $response->assertJsonValidationErrors(['name']);
-    //     $response = $this->postJson($url, array_merge($data, ['name' => str_repeat('a', 256)]));
-    //     $response->assertJsonValidationErrors(['name']);
+        $response = $this->postJson($url, $data);
+        if (is_null($error_field)) {
+            $response->assertCreated();
+            $this->assertAuthenticated();
+        } else {
+            $response->assertJsonValidationErrors($error_field);
+        }
+    }
 
-    //     $response = $this->postJson($url, array_merge($data, ['email' => null]));
-    //     $response->assertJsonValidationErrors(['email']);
-    //     $response = $this->postJson($url, array_merge($data, ['email' => 'invalid-email']));
-    //     $response->assertJsonValidationErrors(['email']);
-    //     $registrated_user = User::factory()->create();
-    //     $response = $this->postJson($url, array_merge($data, ['email' => $registrated_user->email]));
-    //     $response->assertJsonValidationErrors(['email']);
+    public function dataValidation()
+    {
+        yield 'nameがnull' => [['name' => null], 'name'];
+        yield 'nameが256文字以上' => [['name' => str_repeat('a', 256)], 'name'];
 
-    //     $response = $this->postJson($url, array_merge($data, ['password' => null]));
-    //     $response->assertJsonValidationErrors(['password']);
-    //     $response = $this->postJson($url, array_merge($data, ['password' => str_repeat('a', 256)]));
-    //     $response->assertJsonValidationErrors(['password']);
+        yield 'emailがnull' => [['email' => null], 'email'];
+        yield 'emailが不正' => [['email' => 'invalid-email'], 'email'];
+        yield 'emailが登録済み' => [['email' => 'other@example.com'], 'email'];
 
-    //     $response = $this->postJson($url, $data);
-    //     $response->assertCreated();
-    //     $this->assertAuthenticated();
-    // }
+        yield 'passwordがnull' => [['password' => null], 'password'];
+        yield 'passwordが256文字以上' => [['password' => str_repeat('a', 256)], 'password'];
+
+        yield '成功' => [[
+            'name' => 'example',
+            'email' => 'test_@example.com',
+            'password' => 'password',
+        ], null];
+    }
+
+    public function testRegisterRestriction()
+    {
+        Config::set('app.register_restriction', true);
+        $url = route('api.v2.register');
+
+        $this->assertGuest();
+
+        $response = $this->postJson($url, [
+            'name' => 'example',
+            'email' => 'test_@example.com',
+            'password' => 'password',
+        ]);
+        $response->assertStatus(400);
+    }
 }

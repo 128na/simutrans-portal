@@ -2,92 +2,54 @@
 
 namespace Tests\Feature\Api\v2\Admin;
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Tests\AdminTestCase;
 
-class MiscTest extends TestCase
+class MiscTest extends AdminTestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
+    /**
+     * @dataProvider dataRouteUsers
+     */
+    public function test_権限チェック(string $method, string $name, ?string $prop, int $expected_status)
     {
-        parent::setUp();
-        $this->seed('ProdSeeder');
+        if (!is_null($prop)) {
+            $this->actingAs($this->{$prop});
+        }
+        $url = route($name);
+        $response = $this->{$method}($url);
+        $response->assertStatus($expected_status);
     }
 
-    public function testFlushCache()
+    public function dataRouteUsers()
     {
-        $url = route('api.v2.admin.flushCache');
-        $response = $this->postJson($url);
-        $response->assertStatus(401);
-
-        $user = User::factory()->create(['role' => 'user']);
-        $response = $this->actingAs($user)->postJson($url);
-        $response->assertStatus(401);
-
-        $user->update(['role' => 'admin']);
-        $response = $this->actingAs($user)->postJson($url);
-        $response->assertStatus(200);
+        foreach ($this->dataUsers() as $key => $value) {
+            yield "flushCache/$key" => [
+                'postJson', 'api.v2.admin.flushCache', ...$value,
+            ];
+            yield "phpinfo/$key" => [
+                'getJson', 'api.v2.admin.phpinfo', ...$value,
+            ];
+        }
     }
 
-    public function testPhpinfo()
+    /**
+     * @dataProvider dataDebug
+     */
+    public function testDebug($level, ?string $prop, int $expected_status)
     {
-        $url = route('api.v2.admin.phpinfo');
+        if (!is_null($prop)) {
+            $this->actingAs($this->{$prop});
+        }
+        $url = route('api.v2.admin.debug', ['level' => $level]);
         $response = $this->getJson($url);
-        $response->assertStatus(401);
-
-        $user = User::factory()->create(['role' => 'user']);
-        $response = $this->actingAs($user)->getJson($url);
-        $response->assertStatus(401);
-
-        $user->update(['role' => 'admin']);
-        $response = $this->actingAs($user)->getJson($url);
-        $response->assertStatus(200);
+        $response->assertStatus($expected_status);
     }
 
-    public function testError()
+    public function dataDebug()
     {
-        $url = route('api.v2.admin.debug', ['level' => 'error']);
-        $response = $this->getJson($url);
-        $response->assertStatus(401);
-
-        $user = User::factory()->create(['role' => 'user']);
-        $response = $this->actingAs($user)->getJson($url);
-        $response->assertStatus(401);
-
-        $user->update(['role' => 'admin']);
-        $response = $this->actingAs($user)->getJson($url);
-        $response->assertStatus(500);
-    }
-
-    public function testWarnig()
-    {
-        $url = route('api.v2.admin.debug', ['level' => 'warning']);
-        $response = $this->getJson($url);
-        $response->assertStatus(401);
-
-        $user = User::factory()->create(['role' => 'user']);
-        $response = $this->actingAs($user)->getJson($url);
-        $response->assertStatus(401);
-
-        $user->update(['role' => 'admin']);
-        $response = $this->actingAs($user)->getJson($url);
-        $response->assertStatus(500);
-    }
-
-    public function testNotice()
-    {
-        $url = route('api.v2.admin.debug', ['level' => 'notice']);
-        $response = $this->getJson($url);
-        $response->assertStatus(401);
-
-        $user = User::factory()->create(['role' => 'user']);
-        $response = $this->actingAs($user)->getJson($url);
-        $response->assertStatus(401);
-
-        $user->update(['role' => 'admin']);
-        $response = $this->actingAs($user)->getJson($url);
-        $response->assertStatus(500);
+        foreach (['error', 'warning', 'notice'] as $level) {
+            yield "$level/未ログイン" => [$level, null, 401];
+            yield "$level/一般ユーザー" => [$level, 'user', 401];
+            yield "$level/管理者ユーザー" => [$level, 'admin', 500];
+        }
     }
 }

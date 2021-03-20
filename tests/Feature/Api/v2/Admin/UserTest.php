@@ -2,54 +2,46 @@
 
 namespace Tests\Feature\Api\v2\Admin;
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Tests\AdminTestCase;
 
-class UserTest extends TestCase
+class UserTest extends AdminTestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
+    /**
+     * @dataProvider dataUsers
+     */
+    public function test_ユーザー一覧_権限チェック(?string $prop, int $expected_status)
     {
-        parent::setUp();
-        $this->seed('ProdSeeder');
-    }
-
-    public function testFetchUsers()
-    {
+        if (!is_null($prop)) {
+            $this->actingAs($this->{$prop});
+        }
         $url = route('api.v2.admin.users.index');
+
         $response = $this->getJson($url);
-        $response->assertStatus(401);
-
-        $user = User::factory()->create(['role' => 'user']);
-        $response = $this->actingAs($user)->getJson($url);
-        $response->assertStatus(401);
-
-        $user->update(['role' => 'admin']);
-        $response = $this->actingAs($user)->getJson($url);
-        $response->assertStatus(200);
+        $response->assertStatus($expected_status);
     }
 
-    public function testDeleteUser()
+    /**
+     * @dataProvider dataUsers
+     */
+    public function test_ユーザー削除_権限チェック(?string $prop, int $expected_status)
     {
-        $target_user = User::factory()->create();
-        $this->assertNull($target_user->deleted_at);
-        $url = route('api.v2.admin.users.destroy', $target_user);
+        $this->assertNull($this->article->deleted_at);
+        $url = route('api.v2.admin.users.destroy', $this->user);
+
+        if (!is_null($prop)) {
+            $this->actingAs($this->{$prop});
+        }
         $response = $this->deleteJson($url);
-        $response->assertStatus(401);
+        $response->assertStatus($expected_status);
+    }
 
-        $user = User::factory()->create(['role' => 'user']);
-        $response = $this->actingAs($user)->deleteJson($url);
-        $response->assertStatus(401);
+    public function test_論理削除チェック()
+    {
+        $this->actingAs($this->admin);
 
-        $user->update(['role' => 'admin']);
-        $response = $this->actingAs($user)->deleteJson($url);
-        $response->assertStatus(200);
-        $this->assertFalse(is_null($target_user->fresh()->deleted_at));
+        $url = route('api.v2.admin.users.destroy', $this->user);
+        $response = $this->deleteJson($url);
 
-        $response = $this->actingAs($user)->deleteJson($url);
-        $response->assertStatus(200);
-        $this->assertNull($target_user->refresh()->deleted_at);
+        $this->assertNotNull($this->user->fresh()->deleted_at);
     }
 }

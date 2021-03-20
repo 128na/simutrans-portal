@@ -14,6 +14,7 @@ use App\Services\ArticleService;
 use App\Services\CategoryService;
 use App\Services\TagService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
@@ -32,43 +33,47 @@ class ArticleController extends Controller
     }
 
     /**
-     * アドオン記事一覧
+     * アドオン記事一覧.
      */
     public function addons()
     {
         $contents = ['articles' => $this->article_service->getAddonArticles()];
+
         return view('front.articles.index', $contents);
     }
 
     /**
-     * アドオンランキング一覧
+     * アドオンランキング一覧.
      */
     public function ranking()
     {
         $contents = ['articles' => $this->article_service->getRankingArticles()];
+
         return view('front.articles.index', $contents);
     }
 
     /**
-     * 一般記事一覧
+     * 一般記事一覧.
      */
     public function pages()
     {
         $contents = ['articles' => $this->article_service->getCommonArticles()];
+
         return view('front.articles.index', $contents);
     }
 
     /**
-     * 一般記事一覧
+     * 一般記事一覧.
      */
     public function announces()
     {
         $contents = ['articles' => $this->article_service->getAnnouces()];
+
         return view('front.articles.index', $contents);
     }
 
     /**
-     * 記事詳細
+     * 記事詳細.
      */
     public function show(Article $article)
     {
@@ -81,11 +86,12 @@ class ArticleController extends Controller
         }
 
         $contents = ['article' => $this->article_service->getArticle($article, $is_owner)];
+
         return view('front.articles.show', $contents);
     }
 
     /**
-     * アドオンダウンロード
+     * アドオンダウンロード.
      */
     public function download(Article $article)
     {
@@ -97,28 +103,28 @@ class ArticleController extends Controller
 
         abort_unless($article->has_file, 404);
 
-        return response()
-            ->download(
-                public_path('storage/' . $article->file->path),
-                $article->file->original_name
-            );
+        return response()->download(
+            Storage::disk('public')->path($article->file->path),
+            $article->file->original_name
+        );
     }
 
     /**
-     * カテゴリ(slug)の投稿一覧画面
+     * カテゴリ(slug)の投稿一覧画面.
      */
     public function category($type, $slug)
     {
         $category = $this->category_service->findOrFailByTypeAndSlug($type, $slug);
         $contents = [
             'articles' => $this->article_service->getCategoryArtciles($category),
-            'category' => $category
+            'category' => $category,
         ];
+
         return view('front.articles.index', $contents);
     }
 
     /**
-     * カテゴリ(pak/addon)の投稿一覧画面
+     * カテゴリ(pak/addon)の投稿一覧画面.
      */
     public function categoryPakAddon($pak_slug, $addon_slug)
     {
@@ -127,44 +133,49 @@ class ArticleController extends Controller
 
         $contents = [
             'articles' => $this->article_service->getPakAddonCategoryArtciles($pak, $addon),
-            'categories' => ['pak' => $pak, 'addon' => $addon]
+            'categories' => ['pak' => $pak, 'addon' => $addon],
         ];
+
         return view('front.articles.index', $contents);
     }
 
     /**
-     * タグの投稿一覧画面
+     * タグの投稿一覧画面.
      */
     public function tag(Tag $tag)
     {
         $contents = ['articles' => $this->article_service->getTagArticles($tag), 'tag' => $tag];
+
         return view('front.articles.index', $contents);
     }
 
     /**
-     * ユーザーの投稿一覧画面
+     * ユーザーの投稿一覧画面.
      */
     public function user(User $user)
     {
         $contents = ['articles' => $this->article_service->getUserArticles($user), 'user' => $user];
+
         return view('front.articles.index', $contents);
     }
 
     /**
-     * 検索結果一覧
+     * 検索結果一覧.
      */
     public function search(SearchRequest $request)
     {
         $contents = ['articles' => $this->article_service->getSearchArticles($request), 'request' => $request];
+
         return view('front.articles.index', $contents);
     }
 
     /**
-     * タグ一覧
+     * タグ一覧.
      */
     public function tags()
     {
         $contents = ['tags' => $this->tag_service->getAllTags()];
+
         return view('front.tags', $contents);
     }
 }

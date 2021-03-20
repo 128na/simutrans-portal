@@ -6,17 +6,51 @@ use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+    use RefreshDatabase;
 
-    protected static function createAddonPost($user = null)
+    /**
+     * 一般ユーザー
+     */
+    protected User $user;
+
+    /**
+     * 一般ユーザーの公開記事.
+     */
+    protected Article $article;
+
+    protected function setUp(): void
     {
-        $user = $user ?: User::factory()->create();
-        $file = UploadedFile::fake()->create('document.zip', 1);
+        parent::setUp();
+        $this->seed('ProdSeeder');
+        $this->user = User::factory()->create();
+        $this->article = $this->createAddonIntroduction();
+    }
+
+    protected function tearDown(): void
+    {
+        $disk = Storage::disk('public');
+        User::all()->map(function (User $user) use ($disk) {
+            $user->myAttachments->map(fn (Attachment $attachment) => $attachment->delete());
+            $dir = "user/$user->id";
+            if (count($disk->files($dir)) === 0) {
+                $disk->deleteDirectory($dir);
+            }
+        });
+        parent::tearDown();
+    }
+
+    protected function createAddonPost($user = null)
+    {
+        $user = $user ?? $this->user;
+        $file = UploadedFile::fake()->create('file.zip', 1, 'application/zip');
         $attachment = Attachment::createFromFile($file, $user->id);
         $article = Article::factory()->create([
             'user_id' => $user->id,
@@ -30,11 +64,13 @@ abstract class TestCase extends BaseTestCase
             ],
         ]);
         $article->attachments()->save($attachment);
+
         return $article;
     }
-    protected static function createAddonIntroduction($user = null)
+
+    protected function createAddonIntroduction($user = null)
     {
-        $user = $user ?: User::factory()->create();
+        $user = $user ?? $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'addon-introduction',
@@ -46,11 +82,13 @@ abstract class TestCase extends BaseTestCase
                 'link' => 'http://example.com',
             ],
         ]);
+
         return $article;
     }
-    protected static function createPage($user = null)
+
+    protected function createPage($user = null)
     {
-        $user = $user ?: User::factory()->create();
+        $user = $user ?? $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'page',
@@ -60,11 +98,13 @@ abstract class TestCase extends BaseTestCase
                 'sections' => [['type' => 'text', 'text' => 'test page text']],
             ],
         ]);
+
         return $article;
     }
-    protected static function createMarkdown($user = null)
+
+    protected function createMarkdown($user = null)
     {
-        $user = $user ?: User::factory()->create();
+        $user = $user ?? $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'markdown',
@@ -74,11 +114,13 @@ abstract class TestCase extends BaseTestCase
                 'markdown' => '# test markdown text',
             ],
         ]);
+
         return $article;
     }
-    protected static function createAnnounce($user = null)
+
+    protected function createAnnounce($user = null)
     {
-        $user = $user ?: User::factory()->create();
+        $user = $user ?? $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'page',
@@ -90,11 +132,13 @@ abstract class TestCase extends BaseTestCase
         ]);
         $announce_category = Category::page()->slug('announce')->firstOrFail();
         $article->categories()->save($announce_category);
+
         return $article;
     }
-    protected static function createMarkdownAnnounce($user = null)
+
+    protected function createMarkdownAnnounce($user = null)
     {
-        $user = $user ?: User::factory()->create();
+        $user = $user ?? $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'markdown',
@@ -106,6 +150,22 @@ abstract class TestCase extends BaseTestCase
         ]);
         $announce_category = Category::page()->slug('announce')->firstOrFail();
         $article->categories()->save($announce_category);
+
         return $article;
+    }
+
+    public function dataStatus()
+    {
+        yield '公開' => ['publish', true];
+        yield '下書き' => ['draft', false];
+        yield '非公開' => ['private', false];
+        yield 'ゴミ箱' => ['trash', false];
+    }
+
+    public function dataStatusPrivate()
+    {
+        yield '下書き' => ['draft'];
+        yield '非公開' => ['private'];
+        yield 'ゴミ箱' => ['trash'];
     }
 }

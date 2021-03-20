@@ -6,20 +6,11 @@ use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class UpdateMarkdownTest extends TestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seed('ProdSeeder');
-    }
-
     public function testValidation()
     {
         $user = User::factory()->create();
@@ -37,8 +28,8 @@ class UpdateMarkdownTest extends TestCase
         $data = [
             'post_type' => 'markdown',
             'status' => 'publish',
-            'title' => 'test title ' . $date,
-            'slug' => 'test-slug-' . $date,
+            'title' => 'test title '.$date,
+            'slug' => 'test-slug-'.$date,
             'contents' => [
                 'thumbnail' => $thumbnail->id,
                 'markdown' => '# hello',
@@ -137,8 +128,8 @@ class UpdateMarkdownTest extends TestCase
         $data = [
             'post_type' => 'markdown',
             'status' => 'publish',
-            'title' => 'test title ' . $date,
-            'slug' => 'test-slug-' . $date,
+            'title' => 'test title '.$date,
+            'slug' => 'test-slug-'.$date,
             'contents' => [
                 'thumbnail' => $thumbnail->id,
                 'markdown' => '# hello',

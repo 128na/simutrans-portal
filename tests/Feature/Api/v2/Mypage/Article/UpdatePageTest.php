@@ -6,20 +6,11 @@ use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class UpdatePageTest extends TestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seed('ProdSeeder');
-    }
-
     public function testValidation()
     {
         $user = User::factory()->create();
@@ -38,13 +29,13 @@ class UpdatePageTest extends TestCase
         $data = [
             'post_type' => 'page',
             'status' => 'publish',
-            'title' => 'test title ' . $date,
-            'slug' => 'test-slug-' . $date,
+            'title' => 'test title '.$date,
+            'slug' => 'test-slug-'.$date,
             'contents' => [
                 'thumbnail' => $thumbnail->id,
                 'sections' => [
-                    ['type' => 'text', 'text' => 'text' . $date],
-                    ['type' => 'caption', 'caption' => 'caption' . $date],
+                    ['type' => 'text', 'text' => 'text'.$date],
+                    ['type' => 'caption', 'caption' => 'caption'.$date],
                     ['type' => 'url', 'url' => 'http://example.com'],
                     ['type' => 'image', 'id' => $image->id],
                 ],
@@ -180,13 +171,13 @@ class UpdatePageTest extends TestCase
         $data = [
             'post_type' => 'page',
             'status' => 'publish',
-            'title' => 'test title ' . $date,
-            'slug' => 'test-slug-' . $date,
+            'title' => 'test title '.$date,
+            'slug' => 'test-slug-'.$date,
             'contents' => [
                 'thumbnail' => $thumbnail->id,
                 'sections' => [
-                    ['type' => 'text', 'text' => 'text' . $date],
-                    ['type' => 'caption', 'caption' => 'caption' . $date],
+                    ['type' => 'text', 'text' => 'text'.$date],
+                    ['type' => 'caption', 'caption' => 'caption'.$date],
                     ['type' => 'url', 'url' => 'http://example.com'],
                     ['type' => 'image', 'id' => $image->id],
                 ],

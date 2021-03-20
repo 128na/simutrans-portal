@@ -1,4 +1,5 @@
 <?php
+
 /**
  * カテゴリ
  */
@@ -61,6 +62,7 @@ return [
     'page' => [
         'announce' => 'お知らせ',
         'common' => '一般',
+        'application' => 'アプリケーション',
         'others' => 'その他',
     ],
 ];

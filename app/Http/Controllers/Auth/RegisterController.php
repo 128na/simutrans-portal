@@ -38,19 +38,20 @@ class RegisterController extends Controller
 
     public function registerApi(Request $request)
     {
-        if (config('app.register_restriction')) {
-            $this->validator($request->all())->validate();
+        $this->validator($request->all())->validate();
 
+        if (config('app.register_restriction')) {
             $data = array_merge(
                 $request->only('name', 'email'),
                 [
-                    'ip'=>$_SERVER['REMOTE_ADDR'] ?? '?',
-                    'ua'=>$_SERVER['HTTP_USER_AGENT'] ?? '?',
+                    'ip' => $_SERVER['REMOTE_ADDR'] ?? '?',
+                    'ua' => $_SERVER['HTTP_USER_AGENT'] ?? '?',
                 ],
             );
             logger()->error('registerApi', $data);
             sleep(random_int(1, 5));
-            return response(['message'=>'ご利用の環境からの新規登録はできません'], 400);
+
+            return response(['message' => 'ご利用の環境からの新規登録はできません'], 400);
         }
 
         $this->register($request);
@@ -63,7 +64,6 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -78,7 +78,6 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
      * @return \App\Models\User
      */
     protected function create(array $data)

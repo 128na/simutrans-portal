@@ -78,7 +78,7 @@ jobs:
 
   test:
     # 手動実行かつスキップ指定された時のみスキップ
-    if: ${{ github.event_name != "workflow_dispatch" || github.event.inputs.skip_test == "" }}
+    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.skip_test == '' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

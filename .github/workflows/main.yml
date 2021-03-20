@@ -8,10 +8,14 @@ on:
   pull_request:
     branches: [master]
   workflow_dispatch:
-
+    inputs:
+      skip_test:
+        description: "テストをスキップする場合は文字を入力する"
+        required: false
+        default: ""
 jobs:
   deploy:
-    if: github.ref == 'refs/heads/master'
+    if: success() && (github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
     needs: test
     steps:
@@ -73,6 +77,8 @@ jobs:
           SSH_HOSTNAME: ${{secrets.HOST}}
 
   test:
+    # 手動実行かつスキップ指定された時のみスキップ
+    if: github.event_name != "workflow_dispatch" || github.event.inputs.skip_test == ""
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

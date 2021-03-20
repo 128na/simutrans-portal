@@ -16,17 +16,17 @@ class MiscTest extends TestCase
     }
 
     /**
-     * feedが表示されること
+     * feedが表示されること.
      */
     public function testFeed()
     {
         $response = $this->get('/feed');
         $response->assertOk();
 
-        static::createAddonPost();
-        static::createAddonIntroduction();
-        static::createPage();
-        static::createAnnounce();
+        $this->createAddonPost();
+        $this->createAddonIntroduction();
+        $this->createPage();
+        $this->createAnnounce();
 
         $response = $this->get('/feed');
         $response->assertOk();

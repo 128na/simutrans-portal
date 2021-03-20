@@ -4,7 +4,6 @@ name: CI
 
 on:
   push:
-    # branches: [master]
     tags: ["**"]
   pull_request:
     branches: [master]
@@ -17,6 +16,7 @@ on:
 jobs:
   deploy:
     # タグpush -> テスト通過時
+    # PR -> テストのみ
     # 手動実行 -> テスト通過orテストスキップの時実行
     if: ${{ (github.event_name == 'push' && success()) || (github.event_name == 'workflow_dispatch' && (success() || github.event.inputs.skip_test != '')) }}
     runs-on: ubuntu-latest

@@ -69,32 +69,35 @@ class AttachmentTest extends TestCase
 
     public function dataValidation()
     {
-        yield 'fileがnull' => [fn () => ['file' => null], 'file', false];
-        yield 'fileがファイル以外' => [fn () => ['file' => 'test.zip'], 'file', false];
-        yield '成功' => [fn () => ['file' => UploadedFile::fake()->create('test.zip', 1, '')], null, false];
-        yield '画像のみで画像以外' => [fn () => ['only_image' => 1, 'file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], 'file', true];
-        yield '画像のみで画像' => [fn () => ['only_image' => 1, 'file' => UploadedFile::fake()->image('test.png', 1)], null, true];
+        yield 'fileがnull' => [fn () => ['file' => null], 'file'];
+        yield 'fileがファイル以外' => [fn () => ['file' => 'test.zip'], 'file'];
+        yield '成功' => [fn () => ['file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], null];
+        yield '画像のみで画像以外' => [fn () => ['only_image' => 1, 'file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], 'file'];
+        yield '画像のみで画像' => [fn () => ['only_image' => 1, 'file' => UploadedFile::fake()->image('test.png', 1)], null];
     }
 
     /**
      * @dataProvider dataValidation
      */
-    public function testStore(Closure $data, ?string $error_field, bool $is_image)
+    public function testStore(Closure $data, ?string $error_field)
     {
         $url = route('api.v2.attachments.store');
 
         $this->actingAs($this->user);
 
-        $res = $this->postJson($url, Closure::bind($data, $this)());
+        $data = Closure::bind($data, $this)();
+
+        $res = $this->postJson($url, $data);
         if (is_null($error_field)) {
             $res->assertOK();
+
             $file = Attachment::first();
             $res->assertExactJson(['data' => [
                 [
                     'id' => $file->id,
                     'attachmentable_type' => '',
                     'attachmentable_id' => null,
-                    'type' => $is_image ? 'image' : 'file',
+                    'type' => ($data['only_image'] ?? false) ? 'image' : 'file',
                     'original_name' => $file->original_name,
                     'thumbnail' => $file->thumbnail,
                     'url' => $file->url,

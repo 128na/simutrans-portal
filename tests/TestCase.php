@@ -31,7 +31,7 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
         $this->seed('ProdSeeder');
         $this->user = User::factory()->create();
-        $this->article = $this->createAddonPost();
+        $this->article = $this->createAddonIntroduction();
     }
 
     protected function tearDown(): void

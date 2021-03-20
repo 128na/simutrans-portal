@@ -64,7 +64,7 @@ jobs:
       - name: rsync public dir
         uses: trendyminds/github-actions-rsync@master
         with:
-          RSYNC_OPTIONS: -ahvzr --delete --exclude node_modules --exclude '.git*'
+          RSYNC_OPTIONS: -ahvzr --delete --exclude node_modules --exclude '.git*' --exclude 'storage'
           RSYNC_TARGET: ${{ secrets.APP_DIR }}/public
           RSYNC_SOURCE: /public/
         env:

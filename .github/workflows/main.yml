@@ -146,12 +146,3 @@ jobs:
       - if: failure()
         name: Display Error Log
         run: cat storage/logs/laravel.log
-
-  debug:
-    if: always()
-    needs: [test, deploy]
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "${{ github.ref}}"
-      - run: echo "${{ github.event_name }}"
-      - run: echo "${{ github.event.inputs.skip_test }}"

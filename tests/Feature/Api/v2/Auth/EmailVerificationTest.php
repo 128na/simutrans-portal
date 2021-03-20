@@ -4,55 +4,49 @@ namespace Tests\Feature\Api\v2\Auth;
 
 use App\Models\User;
 use App\Notifications\VerifyEmail;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class EmailVerificationTest extends TestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
+    public function test登録後の確認メール()
     {
-        parent::setUp();
-        $this->seed('ProdSeeder');
+        Config::set('app.register_restriction', false);
+        Notification::fake();
+        Notification::assertNothingSent();
+        $data = [
+            'name' => 'name',
+            'email' => 'test@example.com',
+            'password' => 'password',
+        ];
+
+        $res = $this->postJson(route('api.v2.register', $data));
+        $res->assertCreated();
+
+        $res = $this->postJson(route('api.v2.articles.store'));
+        $res->assertForbidden();
+
+        $user = User::where('email', $data['email'])->first();
+        $url = null;
+        Notification::assertSentTo($user, VerifyEmail::class, function ($notification, $channels) use (&$url, $user) {
+            $url = $notification->getVerificationUrl($user);
+
+            return true;
+        });
+        $res = $this->get($url);
+        $res->assertRedirect(route('mypage.index'));
+
+        $res = $this->postJson(route('api.v2.articles.store'));
+        $res->assertStatus(422);
     }
 
-    // public function testVerificationEmailAfterRegister()
-    // {
-    //     Notification::fake();
-    //     Notification::assertNothingSent();
-    //     $data = [
-    //         'name' => 'name',
-    //         'email' => 'test@example.com',
-    //         'password' => 'password',
-    //     ];
-
-    //     $res = $this->postJson(route('api.v2.register', $data));
-    //     $res->assertCreated();
-
-    //     $res = $this->postJson(route('api.v2.articles.store'));
-    //     $res->assertForbidden();
-
-    //     $user = User::where('email', $data['email'])->first();
-    //     $url = null;
-    //     Notification::assertSentTo($user, VerifyEmail::class, function ($notification, $channels) use (&$url, $user) {
-    //         $url = $notification->getVerificationUrl($user);
-    //         return true;
-    //     });
-    //     $res = $this->get($url);
-    //     $res->assertRedirect(route('mypage.index'));
-
-    //     $res = $this->postJson(route('api.v2.articles.store'));
-    //     $res->assertStatus(422);
-    // }
-
-    public function testVerificationEmailResent()
+    public function test確認メール再送()
     {
         Notification::fake();
-        $user = User::factory()->create(['email_verified_at' => null]);
+        $this->user->fill(['email_verified_at' => null])->save();
 
-        $this->actingAs($user);
+        $this->actingAs($this->user);
 
         $res = $this->postJson(route('api.v2.articles.store'));
         $res->assertForbidden();
@@ -63,8 +57,9 @@ class EmailVerificationTest extends TestCase
         $res->assertStatus(200);
 
         $url = null;
-        Notification::assertSentTo($user, VerifyEmail::class, function ($notification, $channels) use (&$url, $user) {
-            $url = $notification->getVerificationUrl($user);
+        Notification::assertSentTo($this->user, VerifyEmail::class, function ($notification, $channels) use (&$url) {
+            $url = $notification->getVerificationUrl($this->user);
+
             return true;
         });
         $res = $this->get($url);

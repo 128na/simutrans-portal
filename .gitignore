@@ -1,5 +1,7 @@
 /node_modules
 /public/hot
+/public/css
+/public/js
 /public/storage
 /storage/*.key
 /vendor
@@ -15,3 +17,4 @@ resources/js/vue-i18n-locales.generated.js
 redis.ini
 _ide_helper.php
 _ide_helper_models.php
+public/mix-manifest.json

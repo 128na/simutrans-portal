@@ -103,4 +103,27 @@ abstract class ArticleTestCase extends TestCase
         yield 'markdownが無い' => [fn () => ['contents' => ['markdown' => null]], 'article.contents.markdown'];
         yield 'markdownが65536文字以上' => [fn () => ['contents' => ['markdown' => \str_repeat('a', 65536)]], 'article.contents.markdown'];
     }
+
+    /**
+     * 一般記事.
+     */
+    public function dataPageValidation()
+    {
+        yield 'セクションが無い' => [fn () => ['contents' => ['sections' => null]], 'article.contents.sections'];
+        yield 'セクションが空' => [fn () => ['contents' => ['sections' => []]], 'article.contents.sections'];
+
+        yield '本文セクションが空' => [fn () => ['contents' => ['sections' => [['type' => 'text', 'text' => '']]]], 'article.contents.sections.0.text'];
+        yield '本文セクションが2049文字以上' => [fn () => ['contents' => ['sections' => [['type' => 'text', 'text' => str_repeat('a', 2049)]]]], 'article.contents.sections.0.text'];
+
+        yield '見出しセクションが空' => [fn () => ['contents' => ['sections' => [['type' => 'caption', 'caption' => '']]]], 'article.contents.sections.0.caption'];
+        yield '見出しセクションが256文字以上' => [fn () => ['contents' => ['sections' => [['type' => 'caption', 'caption' => str_repeat('a', 2049)]]]], 'article.contents.sections.0.caption'];
+
+        yield 'URLセクションが空' => [fn () => ['contents' => ['sections' => [['type' => 'url', 'url' => '']]]], 'article.contents.sections.0.url'];
+        yield 'URLセクションが不正な形式' => [fn () => ['contents' => ['sections' => [['type' => 'url', 'url' => 'not_url']]]], 'article.contents.sections.0.url'];
+
+        yield '画像セクションが空' => [fn () => ['contents' => ['sections' => [['type' => 'image', 'id' => '']]]], 'article.contents.sections.0.id'];
+        yield '画像セクションが存在しないID' => [fn () => ['contents' => ['sections' => [['type' => 'image', 'id' => 99999]]]], 'article.contents.sections.0.id'];
+        yield '画像セクションが画像以外' => [fn () => ['contents' => ['sections' => [['type' => 'image', 'id' => $this->user_file->id]]]], 'article.contents.sections.0.id'];
+        yield '画像セクションが他人の投稿したID' => [fn () => ['contents' => ['sections' => [['type' => 'image', 'id' => $this->user2_image->id]]]], 'article.contents.sections.0.id'];
+    }
 }

@@ -2,48 +2,44 @@
 
 namespace Tests\Feature\Api\v2\Mypage\Article;
 
-use App\Models\User;
 use Tests\TestCase;
 
 class IndexTest extends TestCase
 {
     public function testIndex()
     {
-        $user = User::factory()->create();
-        $article = $this->createPage($user);
         $url = route('api.v2.articles.index');
 
         $response = $this->getJson($url);
         $response->assertUnauthorized();
 
-        $this->actingAs($user);
+        $this->actingAs($this->user);
 
         $response = $this->getJson($url);
         $response->assertStatus(200);
         $response->assertJson(['data' => [
             [
-                'id' => $article->id,
-                'title' => $article->title,
-                'slug' => $article->slug,
-                'status' => $article->status,
-                'post_type' => $article->post_type,
-                'contents' => json_decode(json_encode($article->contents), true),
-                'categories' => $article->categories->pluck('id')->toArray(),
-                'tags' => $article->tags->pluck('name')->toArray(),
-                'url' => route('articles.show', $article->slug),
+                'id' => $this->article->id,
+                'title' => $this->article->title,
+                'slug' => $this->article->slug,
+                'status' => $this->article->status,
+                'post_type' => $this->article->post_type,
+                'contents' => json_decode(json_encode($this->article->contents), true),
+                'categories' => $this->article->categories->pluck('id')->toArray(),
+                'tags' => $this->article->tags->pluck('name')->toArray(),
+                'url' => route('articles.show', $this->article->slug),
             ],
         ]]);
     }
 
     public function testOptions()
     {
-        $user = User::factory()->create();
         $url = route('api.v2.articles.options');
 
         $response = $this->getJson($url);
         $response->assertUnauthorized();
 
-        $this->actingAs($user);
+        $this->actingAs($this->user);
 
         $response = $this->getJson($url);
         $response->assertStatus(200);

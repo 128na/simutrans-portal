@@ -14,7 +14,7 @@ class PasswordResetTest extends TestCase
     private PasswordBroker $broker;
     private User $user2;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->broker = Password::broker();

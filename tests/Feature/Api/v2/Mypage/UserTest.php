@@ -16,7 +16,7 @@ class UserTest extends TestCase
     private Attachment $not_image;
     private Attachment $user2_avatar;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->user2 = User::factory()->create(['name' => 'other name', 'email' => 'other@example.com']);

@@ -11,7 +11,7 @@ class TagTest extends TestCase
     private Tag $tag1;
     private Tag $tag2;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->tag1 = Tag::factory()->create(['name' => 'long tag name']);

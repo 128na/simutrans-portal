@@ -91,22 +91,25 @@ jobs:
       - name: .env
         run: php -r "copy('.env.ci', '.env');"
 
-      - name: Setup Node
-        uses: actions/setup-node@v2
-      - name: Cache node modules
-        id: cache-node-modules
+      - name: Cache build assets
+        id: cache-assets
         uses: actions/cache@v2
         env:
-          cache-name: cache-node-modules
+          cache-name: cache-assets
         with:
-          path: ./node_modules
+          path: ./public
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Setup Node
+        if: steps.cache-assets.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v2
       - name: npm ci
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        if: steps.cache-assets.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build Assets
+        if: steps.cache-assets.outputs.cache-hit != 'true'
         run: npm run prod
 
       - name: PHP
@@ -114,34 +117,34 @@ jobs:
         with:
           php-version: "7.4"
       - name: PHP vendor Cache
-        id: cache-php-vendor
+        id: cache-vendor
         uses: actions/cache@v2
         with:
           path: ./vendor
-          key: ${{ runner.os }}-cache-php-vendor-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-cache-vendor-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-cache-php-vendor-
+            ${{ runner.os }}-cache-vendor-
       - name: Composer Install
-        if: steps.cache-php-vendor.outputs.cache-hit != 'true'
+        if: steps.cache-vendor.outputs.cache-hit != 'true'
         run: composer install
       - name: Start MySQL
         run: sudo /etc/init.d/mysql start
       - name: Setup database
         run: mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test;'
       - name: DB Cache
-        id: cache-mysql-dump
+        id: cache-database
         uses: actions/cache@v2
         with:
           path: ~/dump.sql
-          key: ${{ runner.os }}-cache-mysql-dump-${{ hashFiles('**/migrations/*') }}
+          key: ${{ runner.os }}-cache-database-${{ hashFiles('**/migrations/*') }}
           restore-keys: |
-            ${{ runner.os }}-cache-mysql-dump-
+            ${{ runner.os }}-cache-database-
       - name: Import DB Cache
         run: "[ -e ~/dump.sql ] && mysql -uroot -h127.0.0.1 -proot test <~/dump.sql || echo 'no dump file.'"
       - name: Migration
         run: php artisan migrate
       - name: Dump DB Cache
-        if: steps.cache-mysql-dump.outputs.cache-hit != 'true'
+        if: steps.cache-database.outputs.cache-hit != 'true'
         run: mysqldump -uroot -h127.0.0.1 -proot test>~/dump.sql
       - name: Test
         run: php artisan test -v --env=local

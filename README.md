@@ -8,8 +8,8 @@ https://simutrans.sakura.ne.jp/portal/
 
 ### Required
 
-- PHP:7.1~
-- mysql:5.7
+- PHP:7.4~
+- mysql:5.7~
 
 ### Optional
 

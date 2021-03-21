@@ -2,70 +2,19 @@
 
 namespace Tests\Feature\Api\v2\Mypage\Article;
 
-use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Tag;
-use App\Models\User;
 use Closure;
 use Illuminate\Http\UploadedFile;
-use Tests\TestCase;
+use Tests\ArticleTestCase;
 
-class UpdateAddonPostTest extends TestCase
+class UpdateAddonPostTest extends ArticleTestCase
 {
-    private User $user2;
-    private Article $article2;
-    private Attachment $file_attachment;
-    private Attachment $user2_attachment;
-    private Attachment $user2_file;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->article = $this->createAddonPost();
-        $this->user2 = User::factory()->create();
-        $this->article2 = $this->createAddonPost($this->user2);
-        $this->file_attachment = Attachment::createFromFile(UploadedFile::fake()->create('other.zip', 1), $this->user->id);
-        $this->user2_attachment = Attachment::createFromFile(UploadedFile::fake()->image('other.png', 1), $this->user2->id);
-        $this->user2_file = Attachment::createFromFile(UploadedFile::fake()->image('other.zip', 1), $this->user2->id);
-    }
-
-    public function dataValidation()
-    {
-        yield 'ステータスが空' => [fn () => ['status' => ''], 'article.status'];
-        yield '不正なステータス' => [fn () => ['status' => 'test_example'], 'article.status'];
-
-        yield 'タイトルが空' => [fn () => ['title' => ''], 'article.title'];
-        yield 'タイトルが256文字以上' => [fn () => ['title' => str_repeat('a', 256)], 'article.title'];
-        yield 'タイトルが重複' => [fn () => ['title' => $this->article2->title], 'article.title'];
-
-        yield 'スラッグが空' => [fn () => ['slug' => ''], 'article.slug'];
-        yield 'スラッグが256文字以上' => [fn () => ['slug' => str_repeat('a', 256)], 'article.slug'];
-        yield 'スラッグが重複' => [fn () => ['slug' => $this->article2->slug], 'article.slug'];
-
-        yield '存在しないサムネイルID' => [fn () => ['contents' => ['thumbnail' => 99999]], 'article.contents.thumbnail'];
-        yield '画像以外' => [fn () => ['contents' => ['thumbnail' => $this->file_attachment->id]], 'article.contents.thumbnail'];
-        yield '他人の投稿したサムネイルID' => [fn () => ['contents' => ['thumbnail' => $this->user2_attachment->id]], 'article.contents.thumbnail'];
-        yield 'アドオン作者が256文字以上' => [fn () => ['contents' => ['author' => str_repeat('a', 256)]], 'article.contents.author'];
-
-        yield 'ファイルIDが空' => [fn () => ['contents' => ['file' => '']], 'article.contents.file'];
-        yield '存在しないファイルID' => [fn () => ['contents' => ['file' => 99999]], 'article.contents.file'];
-        yield '他人の投稿したファイルID' => [fn () => ['contents' => ['file' => $this->user2_file->id]], 'article.contents.file'];
-
-        yield '説明が空' => [fn () => ['contents' => ['description' => '']], 'article.contents.description'];
-        yield '説明が2049文字以上' => [fn () => ['contents' => ['description' => str_repeat('a', 2049)]], 'article.contents.description'];
-        yield '謝辞が2049文字以上' => [fn () => ['contents' => ['thanks' => str_repeat('a', 2049)]], 'article.contents.thanks'];
-        yield 'ライセンス（その他）が2049文字以上' => [fn () => ['contents' => ['license' => str_repeat('a', 2049)]], 'article.contents.license'];
-        yield 'タグ名が空' => [fn () => ['tags' => null], 'article.tags'];
-        yield '存在しないタグ名' => [fn () => ['tags' => ['missing_tag']], 'article.tags.0'];
-        yield 'タグ名が256文字以上' => [fn () => ['tags' => [str_repeat('a', 256)]], 'article.tags.0'];
-        yield 'カテゴリが空' => [fn () => ['categories' => null], 'article.categories'];
-        yield '存在しないカテゴリ' => [fn () => ['categories' => [99999]], 'article.categories.0'];
-        yield 'OK' => [fn () => [], null];
-    }
-
     /**
-     * @dataProvider dataValidation
+     * @dataProvider dataArticleValidation
+     * @dataProvider dataAddonValidation
+     * @dataProvider dataAddonPostValidation
      */
     public function testValidation(Closure $fn, ?string $error_field)
     {

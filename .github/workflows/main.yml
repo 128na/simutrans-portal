@@ -116,7 +116,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ./vendor
-          key: ${{ runner.os }}-cache-php-vendor-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-cache-php-vendor-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-cache-php-vendor-
       - name: Composer Install
@@ -131,9 +131,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/dump.sql
-          key: ${{ runner.os }}-cache-mysql-dump-2-${{ hashFiles('**/migrations/*') }}
+          key: ${{ runner.os }}-cache-mysql-dump-${{ hashFiles('**/migrations/*') }}
           restore-keys: |
-            ${{ runner.os }}-cache-mysql-dump-2-
+            ${{ runner.os }}-cache-mysql-dump-
       - name: Import DB Cache
         run: "[ -e ~/dump.sql ] && mysql -uroot -h127.0.0.1 -proot test <~/dump.sql || echo 'no dump file.'"
       - name: Migration
@@ -146,4 +146,4 @@ jobs:
 
       - if: failure()
         name: Display Error Log
-        run: cat storage/logs/laravel.log
+        run: "[ -e storage/logs/laravel.log ] && cat storage/logs/laravel.log || echo 'no log file.'"

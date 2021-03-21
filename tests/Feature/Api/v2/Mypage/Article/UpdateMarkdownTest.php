@@ -2,27 +2,35 @@
 
 namespace Tests\Feature\Api\v2\Mypage\Article;
 
-use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
-use App\Models\User;
+use Closure;
 use Illuminate\Http\UploadedFile;
-use Tests\TestCase;
+use Tests\ArticleTestCase;
 
-class UpdateMarkdownTest extends TestCase
+class UpdateMarkdownTest extends ArticleTestCase
 {
-    public function testValidation()
+    protected function setUp(): void
     {
-        $user = User::factory()->create();
-        $article = $this->createMarkdown($user);
-        $url = route('api.v2.articles.update', $article);
+        parent::setUp();
+        $this->article = $this->createMarkdown();
+        $this->article2 = $this->createMarkdown($this->user2);
+    }
+
+    /**
+     * @dataProvider dataArticleValidation
+     * @dataProvider dataMarkdownValidation
+     */
+    public function testValidation(Closure $fn, ?string $error_field)
+    {
+        $url = route('api.v2.articles.update', $this->article);
 
         $res = $this->postJson($url);
         $res->assertUnauthorized();
 
-        $this->actingAs($user);
+        $this->actingAs($this->user);
 
-        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $user->id);
+        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
 
         $date = now()->format('YmdHis');
         $data = [
@@ -39,90 +47,24 @@ class UpdateMarkdownTest extends TestCase
             ],
         ];
 
-        // ステータスが空
-        $res = $this->postJson($url, ['article' => array_merge($data, ['status' => ''])]);
-        $res->assertJsonValidationErrors(['article.status']);
-        // 不正なステータス
-        $res = $this->postJson($url, ['article' => array_merge($data, ['status' => 'test_example'])]);
-        $res->assertJsonValidationErrors(['article.status']);
+        $data = array_merge($data, Closure::bind($fn, $this)());
 
-        // タイトルが空
-        $res = $this->postJson($url, ['article' => array_merge($data, ['title' => ''])]);
-        $res->assertJsonValidationErrors(['article.title']);
-        // タイトルが256文字以上
-        $res = $this->postJson($url, ['article' => array_merge($data, ['title' => str_repeat('a', 256)])]);
-        $res->assertJsonValidationErrors(['article.title']);
-        // タイトルが重複
-        $other_article = Article::factory()->create(['user_id' => User::factory()->create()->id]);
-        $res = $this->postJson($url, ['article' => array_merge($data, ['title' => $other_article->title])]);
-        $res->assertJsonValidationErrors(['article.title']);
-
-        // スラッグが空
-        $res = $this->postJson($url, ['article' => array_merge($data, ['slug' => ''])]);
-        $res->assertJsonValidationErrors(['article.slug']);
-        // スラッグが256文字以上
-        $res = $this->postJson($url, ['article' => array_merge($data, ['slug' => str_repeat('a', 256)])]);
-        $res->assertJsonValidationErrors(['article.slug']);
-        // スラッグが重複
-        $other_article = Article::factory()->create(['user_id' => User::factory()->create()->id]);
-        $res = $this->postJson($url, ['article' => array_merge($data, ['slug' => $other_article->slug])]);
-        $res->assertJsonValidationErrors(['article.slug']);
-
-        // 存在しないサムネイルID
-        $res = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['thumbnail' => 99999]])]);
-        $res->assertJsonValidationErrors(['article.contents.thumbnail']);
-        // 画像以外
-        $file_attachment = Attachment::createFromFile(UploadedFile::fake()->create('other.zip', 1), $user->id);
-        $res = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['thumbnail' => $file_attachment->id]])]);
-        $res->assertJsonValidationErrors(['article.contents.thumbnail']);
-        // 他人の投稿したサムネイルID
-        $others_attachment = Attachment::createFromFile(UploadedFile::fake()->image('other.png', 1), User::factory()->create()->id);
-        $res = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['thumbnail' => $others_attachment->id]])]);
-        $res->assertJsonValidationErrors(['article.contents.thumbnail']);
-
-        // markdownが無い
-        $res = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['markdown' => null]])]);
-        $res->assertJsonValidationErrors(['article.contents.markdown']);
-        // markdownが65536文字以上
-        $res = $this->postJson($url, ['article' => array_merge($data, ['contents' => ['markdown' => \str_repeat('a', 65536)]])]);
-        $res->assertJsonValidationErrors(['article.contents.markdown']);
-
-        // カテゴリが空
-        $res = $this->postJson($url, ['article' => array_merge($data, ['categories' => null])]);
-        $res->assertJsonValidationErrors(['article.categories']);
-
-        // 存在しないカテゴリ
-        $res = $this->postJson($url, ['article' => array_merge($data, ['categories' => [99999]])]);
-        $res->assertJsonValidationErrors(['article.categories.0']);
-
-        // 適切なデータ
         $res = $this->postJson($url, ['article' => $data]);
-        $res->assertStatus(200);
-        $get_response = json_decode($this->getJson(route('api.v2.articles.index'))->content(), true);
-        $res->assertJson($get_response);
-    }
-
-    public function testPermission()
-    {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
-        $other_user = User::factory()->create();
-        $other_article = $this->createMarkdown($other_user);
-        $url = route('api.v2.articles.update', $other_article);
-
-        $res = $this->postJson($url);
-        $res->assertForbidden();
+        if (is_null($error_field)) {
+            $res->assertStatus(200);
+            $get_response = json_decode($this->getJson(route('api.v2.articles.index'))->content(), true);
+            $res->assertJson($get_response);
+        } else {
+            $res->assertJsonValidationErrors($error_field);
+        }
     }
 
     public function testPreview()
     {
-        $user = User::factory()->create();
-        $article = $this->createMarkdown($user);
-        $url = route('api.v2.articles.update', $article);
-        $this->actingAs($user);
+        $url = route('api.v2.articles.update', $this->article);
+        $this->actingAs($this->user);
 
-        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $user->id);
+        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
 
         $date = now()->format('YmdHis');
         $data = [

@@ -11,6 +11,13 @@ use Tests\ArticleTestCase;
 
 class UpdateAddonPostTest extends ArticleTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->article = $this->createAddonPost();
+        $this->article2 = $this->createAddonPost($this->user2);
+    }
+
     /**
      * @dataProvider dataArticleValidation
      * @dataProvider dataAddonValidation

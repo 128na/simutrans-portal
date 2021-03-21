@@ -55,22 +55,28 @@ abstract class ArticleTestCase extends TestCase
         yield '画像以外' => [fn () => ['contents' => ['thumbnail' => $this->user_file->id]], 'article.contents.thumbnail'];
         yield '他人の投稿したサムネイルID' => [fn () => ['contents' => ['thumbnail' => $this->user2_image->id]], 'article.contents.thumbnail'];
 
-        yield 'タグ名が空' => [fn () => ['tags' => null], 'article.tags'];
-        yield '存在しないタグ名' => [fn () => ['tags' => ['missing_tag']], 'article.tags.0'];
-        yield 'タグ名が256文字以上' => [fn () => ['tags' => [str_repeat('a', 256)]], 'article.tags.0'];
         yield 'カテゴリが空' => [fn () => ['categories' => null], 'article.categories'];
         yield '存在しないカテゴリ' => [fn () => ['categories' => [99999]], 'article.categories.0'];
         yield 'OK' => [fn () => [], null];
     }
 
+    /**
+     * アドオン形式の追加項目.
+     */
     public function dataAddonValidation()
     {
+        yield 'タグ名が空' => [fn () => ['tags' => null], 'article.tags'];
+        yield '存在しないタグ名' => [fn () => ['tags' => ['missing_tag']], 'article.tags.0'];
+        yield 'タグ名が256文字以上' => [fn () => ['tags' => [str_repeat('a', 256)]], 'article.tags.0'];
         yield '説明が空' => [fn () => ['contents' => ['description' => '']], 'article.contents.description'];
         yield '説明が2049文字以上' => [fn () => ['contents' => ['description' => str_repeat('a', 2049)]], 'article.contents.description'];
         yield '謝辞が2049文字以上' => [fn () => ['contents' => ['thanks' => str_repeat('a', 2049)]], 'article.contents.thanks'];
         yield 'ライセンス（その他）が2049文字以上' => [fn () => ['contents' => ['license' => str_repeat('a', 2049)]], 'article.contents.license'];
     }
 
+    /**
+     * アドオン紹介の追加項目.
+     */
     public function dataAddonIntroductionValidation()
     {
         yield 'アドオン作者が空' => [fn () => ['contents' => ['author' => '']], 'article.contents.author'];
@@ -79,10 +85,22 @@ abstract class ArticleTestCase extends TestCase
         yield 'リンクが不正なURL' => [fn () => ['contents' => ['link' => 'not_url']], 'article.contents.link'];
     }
 
+    /**
+     * アドオン投稿の追加項目.
+     */
     public function dataAddonPostValidation()
     {
         yield 'ファイルIDが空' => [fn () => ['contents' => ['file' => '']], 'article.contents.file'];
         yield '存在しないファイルID' => [fn () => ['contents' => ['file' => 99999]], 'article.contents.file'];
         yield '他人の投稿したファイルID' => [fn () => ['contents' => ['file' => $this->user2_file->id]], 'article.contents.file'];
+    }
+
+    /**
+     * マークダウンの追加項目.
+     */
+    public function dataMarkdownValidation()
+    {
+        yield 'markdownが無い' => [fn () => ['contents' => ['markdown' => null]], 'article.contents.markdown'];
+        yield 'markdownが65536文字以上' => [fn () => ['contents' => ['markdown' => \str_repeat('a', 65536)]], 'article.contents.markdown'];
     }
 }

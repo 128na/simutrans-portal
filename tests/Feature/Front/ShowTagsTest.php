@@ -10,7 +10,7 @@ class ShowTagsTest extends TestCase
 {
     private Tag $tag;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->tag = Tag::factory()->create();

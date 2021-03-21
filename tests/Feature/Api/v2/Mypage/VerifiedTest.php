@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class VerifiedTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->attachment = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);

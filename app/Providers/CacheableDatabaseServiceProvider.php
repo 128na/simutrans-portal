@@ -3,16 +3,10 @@
 namespace App\Providers;
 
 use App\Override\Connection;
-use Faker\Factory as FakerFactory;
-use Faker\Generator as FakerGenerator;
-use Illuminate\Contracts\Queue\EntityResolver;
 use Illuminate\Database\Connectors\ConnectionFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\QueueEntityResolver;
 use Illuminate\Database\DatabaseManager;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Schema\Grammars\MySqlGrammar as SchemaGrammar;
 use Illuminate\Database\Query\Grammars\MySqlGrammar as QueryGrammar;
+use Illuminate\Database\Schema\Grammars\MySqlGrammar as SchemaGrammar;
 
 class CacheableDatabaseServiceProvider extends \Illuminate\Database\DatabaseServiceProvider
 {
@@ -50,8 +44,10 @@ class CacheableDatabaseServiceProvider extends \Illuminate\Database\DatabaseServ
                 //Set the appropriate grammar object
                 $new_connection->setQueryGrammar(new QueryGrammar());
                 $new_connection->setSchemaGrammar(new SchemaGrammar());
+
                 return $new_connection;
             });
+
             return $dbm;
         });
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Contents;
 
 use App\Models\Contents\Sections\SectionCaption;

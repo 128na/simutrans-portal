@@ -5,17 +5,20 @@ namespace App\Models;
 use App\Casts\ToArticleContents;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends Model implements Feedable
 {
-    use Notifiable, HasFactory, SoftDeletes, Slugable;
+    use Notifiable;
+    use HasFactory;
+    use SoftDeletes;
+    use Slugable;
 
     protected $fillable = [
         'user_id',
@@ -51,6 +54,7 @@ class Article extends Model implements Feedable
             $model->syncRelatedData();
         });
     }
+
     protected static function booted()
     {
         // 論理削除されていないユーザーを持つ
@@ -86,18 +90,22 @@ class Article extends Model implements Feedable
     {
         return $this->belongsToMany(Category::class);
     }
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
     }
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
     public function viewCounts()
     {
         return $this->hasMany(ViewCount::class);
     }
+
     public function todaysViewCount()
     {
         return $this->hasOne(ViewCount::class)
@@ -109,14 +117,17 @@ class Article extends Model implements Feedable
     {
         return $this->hasMany(ViewCount::class)->where('type', ViewCount::$types['daily']);
     }
+
     public function monthlyViewCounts()
     {
         return $this->hasMany(ViewCount::class)->where('type', ViewCount::$types['monthly']);
     }
+
     public function yearlyViewCounts()
     {
         return $this->hasMany(ViewCount::class)->where('type', ViewCount::$types['yearly']);
     }
+
     public function totalViewCount()
     {
         return $this->hasOne(ViewCount::class)->where('type', ViewCount::$types['total']);
@@ -126,24 +137,29 @@ class Article extends Model implements Feedable
     {
         return $this->hasMany(ConversionCount::class);
     }
+
     public function todaysConversionCount()
     {
         return $this->hasOne(ConversionCount::class)
             ->where('type', ConversionCount::$types['daily'])
             ->where('period', now()->format('Ymd'));
     }
+
     public function dailyConversionCounts()
     {
         return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::$types['daily']);
     }
+
     public function monthlyConversionCounts()
     {
         return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::$types['monthly']);
     }
+
     public function yearlyConversionCounts()
     {
         return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::$types['yearly']);
     }
+
     public function totalConversionCount()
     {
         return $this->hasOne(ConversionCount::class)->where('type', ConversionCount::$types['total']);
@@ -158,18 +174,22 @@ class Article extends Model implements Feedable
     {
         $query->withoutGlobalScope('WithoutTrashedUser');
     }
+
     public function scopeUser($query, User $user)
     {
         return $query->where('user_id', $user->id);
     }
+
     public function scopeActive($query)
     {
         return $query->where('status', config('status.publish'));
     }
+
     public function scopeWithForList($query)
     {
         return $query->with('user', 'attachments', 'categories', 'tags');
     }
+
     public function scopeSearch($query, $word)
     {
         $word = trim($word);
@@ -178,10 +198,12 @@ class Article extends Model implements Feedable
         return $query->where('title', 'LIKE', $like_word)
             ->orWhere('contents', 'LIKE', $like_word);
     }
+
     public function scopeAddon($query)
     {
         $query->whereIn('post_type', ['addon-post', 'addon-introduction']);
     }
+
     public function scopeLinkCheckTarget($query)
     {
         $query->where('post_type', 'addon-introduction')
@@ -190,10 +212,12 @@ class Article extends Model implements Feedable
                     ->orWhere('contents->exclude_link_check', false)
             );
     }
+
     public function scopePage($query)
     {
         $query->where('post_type', 'page');
     }
+
     public function scopePak($query, $slug)
     {
         $query->whereHas('categories', fn ($query) => $query->pak()->slug($slug));
@@ -204,14 +228,16 @@ class Article extends Model implements Feedable
         $query->whereIn('post_type', ['page', 'markdown'])
             ->whereHas('categories', fn ($query) => $query->page()->slug('announce'));
     }
+
     public function scopeWithoutAnnounce($query)
     {
         $query->whereIn('post_type', ['page', 'markdown'])
             ->whereDoesntHave('categories', fn ($query) => $query->page()->slug('announce'));
     }
+
     /**
      * ランキング
-     * 閲覧数が当日、当月、当年、合計の多⇒少順
+     * 閲覧数が当日、当月、当年、合計の多⇒少順.
      */
     public function scopeRanking($query)
     {
@@ -250,6 +276,7 @@ class Article extends Model implements Feedable
         $query->orderBy('y.count', 'desc');
         $query->orderBy('t.count', 'desc');
     }
+
     /*
     |--------------------------------------------------------------------------
     | アクセサ
@@ -264,25 +291,30 @@ class Article extends Model implements Feedable
     {
         return !is_null($this->contents->thumbnail) && $this->thumbnail;
     }
+
     public function getThumbnailAttribute()
     {
         $id = $this->contents->thumbnail;
+
         return $this->attachments->first(fn ($attachment) => (string) $id == $attachment->id);
     }
+
     public function getThumbnailUrlAttribute()
     {
         return $this->has_thumbnail
-        ? asset('storage/' . $this->thumbnail->path)
-        : asset('storage/' . config('attachment.no-thumbnail'));
+        ? asset('storage/'.$this->thumbnail->path)
+        : asset('storage/'.config('attachment.no-thumbnail'));
     }
 
     public function getHasFileAttribute()
     {
         return !is_null($this->contents->file) && $this->file;
     }
+
     public function getFileAttribute()
     {
         $id = $this->contents->file;
+
         return $this->attachments->first(fn ($attachment) => (string) $id == $attachment->id);
     }
 
@@ -290,30 +322,38 @@ class Article extends Model implements Feedable
     {
         return $this->categories->filter(fn ($category) => $category->type === config('category.type.pak'));
     }
+
     public function getCategoryAddonsAttribute()
     {
         return $this->categories->filter(fn ($category) => $category->type === config('category.type.addon'));
     }
+
     public function getCategoryPak128PositionsAttribute()
     {
         return $this->categories->filter(fn ($category) => $category->type === config('category.type.pak128_position'));
     }
+
     public function getTodaysConversionRateAttribute()
     {
         if (!is_null($this->todaysConversionCount) && $this->todaysViewCount) {
             $rate = $this->todaysConversionCount->count / $this->todaysViewCount->count * 100;
+
             return sprintf('%.1f %%', $rate);
         }
+
         return 'N/A';
     }
+
     public function getMetaDescriptionAttribute()
     {
         return mb_strimwidth($this->contents->getDescription(), 0, 300, '…');
     }
+
     public function getHeadlineDescriptionAttribute()
     {
         return mb_strimwidth($this->contents->getDescription(), 0, 55, '…');
     }
+
     public function getUrlDecodedSlugAttribute()
     {
         return urldecode($this->slug);
@@ -328,22 +368,26 @@ class Article extends Model implements Feedable
     {
         return $this->categories->some(fn ($category) => $category->type === 'page' && $category->slug === 'announce');
     }
+
     public function hasCategory($id)
     {
         return $this->categories->some(fn ($category) => $category->id === $id);
     }
+
     public function getImage($id)
     {
         return $this->attachments->first(
             fn ($attachment) => (string) $id == $attachment->id
         );
     }
+
     public function getImageUrl($id)
     {
         $image = $this->getImage($id);
+
         return $image
-        ? asset('storage/' . $image->path)
-        : asset('storage/' . config('attachment.no-thumbnail'));
+        ? asset('storage/'.$image->path)
+        : asset('storage/'.config('attachment.no-thumbnail'));
     }
 
     /*

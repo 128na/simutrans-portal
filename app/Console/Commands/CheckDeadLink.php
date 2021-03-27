@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 
 /**
  * 公開済みのアドオン紹介記事でリンク切れのものを確認する
- * リンク切れのものはステータスを非公開にする
+ * リンク切れのものはステータスを非公開にする.
  */
 class CheckDeadLink extends Command
 {
@@ -48,11 +48,11 @@ class CheckDeadLink extends Command
     {
         $count = $this->check_deadlink_service->getTargetArticles()->map(function ($article) {
             if ($this->check_deadlink_service->isLinkDead($article)) {
-                $this->info('dead link ' . $article->title);
-                logger('dead link ' . $article->title);
+                $this->info('dead link '.$article->title);
+                logger('dead link '.$article->title);
 
                 $article->update(['status' => config('status.private')]);
-                $article->notify(new DeadLinkDetected);
+                $article->notify(new DeadLinkDetected());
             }
         })->count();
         logger("$count articles checked");

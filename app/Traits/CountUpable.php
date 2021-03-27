@@ -1,19 +1,21 @@
 <?php
+
 namespace App\Traits;
 
 use App\Models\Article;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 /**
- * 日次、月次、年次、全体の合計をカウントアップする
+ * 日次、月次、年次、全体の合計をカウントアップする.
  */
 trait CountUpable
 {
     public static $types = [
-        'daily'   => 1,
+        'daily' => 1,
         'monthly' => 2,
-        'yearly'  => 3,
-        'total'   => 4,
+        'yearly' => 3,
+        'total' => 4,
     ];
 
     public static function getTableName()
@@ -33,11 +35,11 @@ trait CountUpable
 
     private static function buildSql(Article $article, $datetime)
     {
-        $table   = static::getTableName();
-        $dayly   = $datetime->format('Ymd');
+        $table = static::getTableName();
+        $dayly = $datetime->format('Ymd');
         $monthly = $datetime->format('Ym');
-        $yearly  = $datetime->format('Y');
-        $total   = 'total';
+        $yearly = $datetime->format('Y');
+        $total = 'total';
 
         return "INSERT INTO {$table}(article_id, type, period, count)
             VALUES

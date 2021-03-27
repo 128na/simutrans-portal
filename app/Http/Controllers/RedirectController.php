@@ -6,7 +6,7 @@ use App\Services\RedirectService;
 use Illuminate\Http\Request;
 
 /**
- * 旧サイト -> 新サイトのリダイレクトを行う
+ * 旧サイト -> 新サイトのリダイレクトを行う.
  */
 class RedirectController extends Controller
 {

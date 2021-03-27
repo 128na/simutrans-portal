@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Override;
 
 class Connection extends \Illuminate\Database\MySqlConnection

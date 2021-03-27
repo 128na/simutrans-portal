@@ -2,17 +2,12 @@
 
 namespace App\Http\View\Creators;
 
-use App\Repositories\UserRepository;
-use Illuminate\View\View;
-use App\Models\Article;
-use App\Models\Category;
 use App\Models\PakAddonCount;
-use App\Models\Tag;
-use App\Models\User;
 use App\Models\UserAddonCount;
+use Illuminate\View\View;
 
 /**
- * サイドバーの項目を設定する
+ * サイドバーの項目を設定する.
  */
 class SidebarCreator
 {
@@ -28,9 +23,8 @@ class SidebarCreator
     }
 
     /**
-     * データをビューと結合
+     * データをビューと結合.
      *
-     * @param  View  $view
      * @return void
      */
     public function create(View $view)
@@ -42,14 +36,15 @@ class SidebarCreator
     }
 
     /**
-     * ユーザー別アドオン投稿数一覧
+     * ユーザー別アドオン投稿数一覧.
      */
     private function getUserAddonCounts()
     {
         return $this->user_addon_count->select('user_id', 'user_name', 'count')->get();
     }
+
     /**
-     * pak別アドオン投稿数一覧
+     * pak別アドオン投稿数一覧.
      */
     private function getPakAddonCounts()
     {
@@ -65,6 +60,7 @@ class SidebarCreator
                 $separated[$item->pak_slug] = collect([]);
             }
             $separated[$item->pak_slug]->push($item);
+
             return $separated;
         }, []));
     }

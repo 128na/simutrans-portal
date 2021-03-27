@@ -2,12 +2,12 @@
 
 return [
     'type' => [
-        'post'            => 'post',
-        'pak'             => 'pak',
-        'addon'           => 'addon',
+        'post' => 'post',
+        'pak' => 'pak',
+        'addon' => 'addon',
         'pak128_position' => 'pak128_position',
-        'license'         => 'license',
-        'page'            => 'page',
+        'license' => 'license',
+        'page' => 'page',
     ],
     'post' => [
         ['slug' => 'addon-post',         'type' => 'post', 'order' => 00000, 'name' => 'Addon Post'],
@@ -67,5 +67,4 @@ return [
         ['slug' => 'common',   'type' => 'page', 'order' => 50010, 'name' => 'Common'],
         ['slug' => 'others',   'type' => 'page', 'order' => 59000, 'name' => 'Others'],
     ],
-
 ];

@@ -1,11 +1,11 @@
 <?php
+
 namespace App\Services;
 
 use App\Http\Requests\Api\Attachment\StoreRequest;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 
 class AttachmentService extends Service
 {

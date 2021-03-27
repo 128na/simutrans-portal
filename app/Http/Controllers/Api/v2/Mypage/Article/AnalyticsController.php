@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\v2\Mypage\Article;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ArticleAnalytics\SearchRequest;
 use App\Http\Resources\Api\Mypage\ArticleAnalytics as ArticleAnalyticsResource;
-use App\Models\Article;
 use App\Services\ArticleAnalyticsService;
 use Illuminate\Support\Facades\Auth;
 

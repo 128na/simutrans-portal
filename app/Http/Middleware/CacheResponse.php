@@ -3,20 +3,20 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use RedisException;
 
 /**
- * 生成ページ丸ごとキャッシュする
+ * 生成ページ丸ごとキャッシュする.
  */
 class CacheResponse
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -36,18 +36,20 @@ class CacheResponse
     /**
      * 指定キーでキャッシュからデータ取得を行う。
      * 値が無ければコールバックを実行し、結果をキャッシュにセットして結果を返す
-     * ビューインスタンス丸ごとはクロージャが含まれるためキャッシュできないのでcontentのみキャッシュ
-     * @param string $key
+     * ビューインスタンス丸ごとはクロージャが含まれるためキャッシュできないのでcontentのみキャッシュ.
+     *
+     * @param string  $key
      * @param closure $callback
-     * @param int $expire_sec
+     *
      * @return mixed
      */
     protected static function cacheOrCallback($key, $callback)
     {
         try {
             $cache = Cache::get($key);
-        } catch (RedisException $e) {
+        } catch (Exception $e) {
             report($e);
+
             return $callback();
         }
 
@@ -66,6 +68,7 @@ class CacheResponse
             }
             Cache::put($key, $cache, config('app.cache_lifetime_min', 0) * 60);
         }
+
         return response($cache)->header('Content-Encoding', 'gzip');
     }
 }

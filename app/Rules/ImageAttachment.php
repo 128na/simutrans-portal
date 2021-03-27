@@ -9,6 +9,7 @@ class ImageAttachment implements Rule
 {
     private AttachmentService $attachment_service;
     private string $message;
+
     /**
      * Create a new rule instance.
      *
@@ -22,8 +23,9 @@ class ImageAttachment implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param string $attribute
+     * @param mixed  $value
+     *
      * @return bool
      */
     public function passes($attribute, $value)
@@ -35,6 +37,7 @@ class ImageAttachment implements Rule
         }
         $tranlated_attribute = app('translator')->get('validation.attributes')[$attribute] ?? $attribute;
         $this->message = __('validation.image', ['attribute' => $tranlated_attribute]);
+
         return false;
     }
 

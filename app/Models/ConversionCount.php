@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Article;
 use App\Traits\CountUpable;
 use Illuminate\Database\Eloquent\Model;
 

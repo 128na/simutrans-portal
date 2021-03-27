@@ -5,15 +5,15 @@ namespace App\Http\Middleware;
 use Closure;
 
 /**
- * 改行・スペースを削除する
+ * 改行・スペースを削除する.
  */
 class MinifyHTML
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -21,7 +21,7 @@ class MinifyHTML
         $res = $next($request);
 
         // htmlレスポンス以外はそのまま返す
-        if(stripos($res->headers->get('Content-Type'), 'text/html') === false) {
+        if (stripos($res->headers->get('Content-Type'), 'text/html') === false) {
             return $res;
         }
 

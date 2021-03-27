@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Redirect;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class RedirectService extends Service
@@ -18,6 +18,7 @@ class RedirectService extends Service
         $redirect = $this->model->from($path)->firstOrFail();
 
         logger("[redirect]: {$path} -> {$redirect->to}");
+
         return redirect($redirect->to, 301);
     }
 

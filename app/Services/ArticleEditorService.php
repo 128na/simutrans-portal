@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Http\Requests\Api\Article\BaseRequest;
@@ -40,11 +41,12 @@ class ArticleEditorService extends Service
     public function getSeparatedCategories(User $user)
     {
         $categories = $this->category->forUser($user)->get();
+
         return self::separateCategories($categories);
     }
 
     /**
-     * タイプ別に分類したカテゴリ一覧を返す
+     * タイプ別に分類したカテゴリ一覧を返す.
      */
     private static function separateCategories($categories)
     {
@@ -56,6 +58,7 @@ class ArticleEditorService extends Service
                 'text' => __("category.{$item->type}.{$item->slug}"),
                 'value' => $item->id,
             ];
+
             return $list;
         }, []));
     }
@@ -63,12 +66,13 @@ class ArticleEditorService extends Service
     public function getStatuses()
     {
         return collect(config('status'))->map(
-            fn ($item) =>[
+            fn ($item) => [
                 'text' => __("statuses.{$item}"),
                 'value' => $item,
             ]
         )->values();
     }
+
     public function getPostTypes()
     {
         return collect(config('post_types'))->map(
@@ -93,6 +97,7 @@ class ArticleEditorService extends Service
 
         return $article->fresh();
     }
+
     public function updateArticle(Article $article, UpdateRequest $request)
     {
         $article->update([

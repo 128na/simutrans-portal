@@ -11,6 +11,7 @@ use App\Notifications\ArticlePublished;
 use App\Notifications\ArticleUpdated;
 use App\Services\ArticleEditorService;
 use App\Services\ArticleService;
+use App\Services\TagService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -18,13 +19,16 @@ class EditorController extends Controller
 {
     private ArticleService $article_service;
     private ArticleEditorService $article_editor_service;
+    private TagService $tag_service;
 
     public function __construct(
         ArticleEditorService $article_editor_service,
-        ArticleService $article_service
+        ArticleService $article_service,
+        TagService $tag_service
     ) {
         $this->article_editor_service = $article_editor_service;
         $this->article_service = $article_service;
+        $this->tag_service = $tag_service;
     }
 
     public function index()
@@ -45,12 +49,15 @@ class EditorController extends Controller
         $article = $this->article_editor_service->storeArticle(Auth::user(), $request);
 
         if ($request->preview) {
-            return $this->createPreview($article);
+            $preview = $this->createPreview($article);
+            DB::rollback();
+
+            return $preview;
         }
         DB::commit();
 
         if ($article->is_publish && $request->should_tweet) {
-            $article->notify(new ArticlePublished);
+            $article->notify(new ArticlePublished());
         }
 
         return $this->index();
@@ -62,12 +69,15 @@ class EditorController extends Controller
         $article = $this->article_editor_service->updateArticle($article, $request);
 
         if ($request->preview) {
-            return $this->createPreview($article);
+            $preview = $this->createPreview($article);
+            DB::rollback();
+
+            return $preview;
         }
         DB::commit();
 
         if ($article->is_publish && $request->should_tweet) {
-            $article->notify(new ArticleUpdated);
+            $article->notify(new ArticleUpdated());
         }
 
         return $this->index();
@@ -76,9 +86,9 @@ class EditorController extends Controller
     private function createPreview(Article $article)
     {
         $article = $this->article_service->getArticle($article, true);
-        DB::rollback();
 
         $contents = ['preview' => true, 'article' => $article];
+
         return view('front.articles.show', $contents);
     }
 }

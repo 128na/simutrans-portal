@@ -19,6 +19,7 @@ class StoreRequest extends FormRequest
                 'only_image' => 'nullable',
             ];
         }
+
         return [
             'file' => 'required|file',
             'only_image' => 'nullable',

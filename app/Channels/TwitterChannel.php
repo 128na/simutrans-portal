@@ -2,10 +2,9 @@
 
 namespace App\Channels;
 
-use Abraham\TwitterOAuth\TwitterOAuth;
-use Illuminate\Notifications\Notification;
-use App\Services\TweetService;
 use App\Models\Article;
+use App\Notifications\ArticleNotification;
+use App\Services\TweetService;
 
 class TwitterChannel
 {
@@ -15,14 +14,15 @@ class TwitterChannel
     {
         $this->tweet_service = $tweet_service;
     }
+
     /**
      * 指定された通知の送信
      *
-     * @param  mixed  $notifiable
-     * @param  \Illuminate\Notifications\Notification  $notification
+     * @param mixed $notifiable
+     *
      * @return void
      */
-    public function send(Article $notifiable, Notification $notification)
+    public function send(Article $notifiable, ArticleNotification $notification)
     {
         $message = $notification->toTwitter($notifiable);
 

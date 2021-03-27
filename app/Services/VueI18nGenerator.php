@@ -1,10 +1,10 @@
 <?php
+
 namespace App\Services;
 
+use App;
 use DirectoryIterator;
 use Exception;
-use App;
-use Traversable;
 
 /**
  * @see https://github.com/martinlindhe/laravel-vue-i18n-generator/blob/master/src/Generator.php
@@ -19,9 +19,7 @@ class VueI18nGenerator
     const ESCAPE_CHAR = '!';
 
     /**
-     * The constructor
-     *
-     * @param array $config
+     * The constructor.
      */
     public function __construct()
     {
@@ -32,15 +30,15 @@ class VueI18nGenerator
 
     /**
      * @param string $path
-     * @param string $format
-     * @param boolean $withVendor
+     *
      * @return string
+     *
      * @throws Exception
      */
     public function generateFromPath($path)
     {
         if (!is_dir($path)) {
-            throw new Exception('Directory not found: ' . $path);
+            throw new Exception('Directory not found: '.$path);
         }
 
         $locales = [];
@@ -82,7 +80,7 @@ class VueI18nGenerator
 
         $locales = $this->adjustVendor($locales);
 
-        $jsonLocales = json_encode($locales, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . PHP_EOL;
+        $jsonLocales = json_encode($locales, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES).PHP_EOL;
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new Exception('Could not generate JSON, error code '.json_last_error());
@@ -93,6 +91,7 @@ class VueI18nGenerator
 
     /**
      * @param string $path
+     *
      * @return array
      */
     private function allocateLocaleJSON($path)
@@ -101,9 +100,9 @@ class VueI18nGenerator
         if (pathinfo($path, PATHINFO_EXTENSION) !== 'json') {
             return null;
         }
-        $tmp = (array)json_decode(file_get_contents($path), true);
-        if (gettype($tmp) !== "array") {
-            throw new Exception('Unexpected data while processing ' . $path);
+        $tmp = (array) json_decode(file_get_contents($path), true);
+        if (gettype($tmp) !== 'array') {
+            throw new Exception('Unexpected data while processing '.$path);
         }
 
         return $this->adjustArray($tmp);
@@ -111,6 +110,7 @@ class VueI18nGenerator
 
     /**
      * @param string $path
+     *
      * @return array
      */
     private function allocateLocaleArray($path)
@@ -127,24 +127,24 @@ class VueI18nGenerator
             if ($fileinfo->isDir()) {
                 // Recursivley iterate through subdirs, until everything is allocated.
 
-                $data[$fileinfo->getFilename()] = $this->allocateLocaleArray($path . DIRECTORY_SEPARATOR . $fileinfo->getFilename());
+                $data[$fileinfo->getFilename()] = $this->allocateLocaleArray($path.DIRECTORY_SEPARATOR.$fileinfo->getFilename());
             } else {
                 $noExt = $this->removeExtension($fileinfo->getFilename());
-                $fileName = $path . DIRECTORY_SEPARATOR . $fileinfo->getFilename();
+                $fileName = $path.DIRECTORY_SEPARATOR.$fileinfo->getFilename();
 
                 // Ignore non *.php files (ex.: .gitignore, vim swap files etc.)
                 if (pathinfo($fileName, PATHINFO_EXTENSION) !== 'php') {
                     continue;
                 }
 
-                $tmp = include($fileName);
+                $tmp = include $fileName;
 
-                if (gettype($tmp) !== "array") {
-                    throw new Exception('Unexpected data while processing ' . $fileName);
+                if (gettype($tmp) !== 'array') {
+                    throw new Exception('Unexpected data while processing '.$fileName);
                     continue;
                 }
                 if ($lastLocale !== false) {
-                    $root = realpath(base_path() . DIRECTORY_SEPARATOR . $lastLocale);
+                    $root = realpath(base_path().DIRECTORY_SEPARATOR.$lastLocale);
                     $filePath = $this->removeExtension(str_replace('\\', '_', ltrim(str_replace($root, '', realpath($fileName)), '\\')));
                     if ($filePath[0] === DIRECTORY_SEPARATOR) {
                         $filePath = substr($filePath, 1);
@@ -155,11 +155,11 @@ class VueI18nGenerator
                 $data[$noExt] = $this->adjustArray($tmp);
             }
         }
+
         return $data;
     }
 
     /**
-     * @param array $arr
      * @return array
      */
     private function adjustArray(array $arr)
@@ -174,6 +174,7 @@ class VueI18nGenerator
                 $res[$key] = $this->removeEscapeCharacter($this->adjustString($val));
             }
         }
+
         return $res;
     }
 
@@ -205,6 +206,7 @@ class VueI18nGenerator
      * Turn Laravel style ":link" into vue-i18n style "{link}" or vuex-i18n style ":::".
      *
      * @param string $s
+     *
      * @return string
      */
     private function adjustString($s)
@@ -214,10 +216,11 @@ class VueI18nGenerator
         }
 
         $escaped_escape_char = preg_quote($this->config['escape_char'], '/');
+
         return preg_replace_callback(
             "/(?<!mailto|tel|{$escaped_escape_char}):\w+/",
             function ($matches) {
-                return '{' . mb_substr($matches[0], 1) . '}';
+                return '{'.mb_substr($matches[0], 1).'}';
             },
             $s
         );
@@ -228,11 +231,13 @@ class VueI18nGenerator
      * Laravel style ":link", but should not be interpreted as such and was therefore escaped.
      *
      * @param string $s
+     *
      * @return string
      */
     private function removeEscapeCharacter($s)
     {
         $escaped_escape_char = preg_quote($this->config['escape_char'], '/');
+
         return preg_replace_callback(
             "/{$escaped_escape_char}(:\w+)/",
             function ($matches) {
@@ -243,8 +248,10 @@ class VueI18nGenerator
     }
 
     /**
-     * Returns filename, with extension stripped
+     * Returns filename, with extension stripped.
+     *
      * @param string $filename
+     *
      * @return string
      */
     private function removeExtension($filename)
@@ -258,8 +265,10 @@ class VueI18nGenerator
     }
 
     /**
-     * Returns an ES6 style module
+     * Returns an ES6 style module.
+     *
      * @param string $body
+     *
      * @return string
      */
     private function getES6Module($body)

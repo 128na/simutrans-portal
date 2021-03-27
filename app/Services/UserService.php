@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Http\Requests\Api\User\UpdateRequest;

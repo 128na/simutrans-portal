@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Article;
@@ -15,6 +16,7 @@ class SchemaService extends Service
     {
         $schemas = collect([]);
         $schemas->push($this->schemaSearch());
+
         return $schemas;
     }
 
@@ -23,6 +25,7 @@ class SchemaService extends Service
         $schemas = collect([]);
         $schemas->push($this->schemaArticle($article));
         $schemas->push($this->schemaArticleBreadcrumb($article));
+
         return $schemas;
     }
 
@@ -33,6 +36,7 @@ class SchemaService extends Service
         if ($articles && $articles->count()) {
             $schemas->push($this->schemaCarouselArticles($articles));
         }
+
         return $schemas;
     }
 
@@ -43,6 +47,7 @@ class SchemaService extends Service
         if ($articles && $articles->count()) {
             $schemas->push($this->schemaCarouselArticles($articles));
         }
+
         return $schemas;
     }
 
@@ -54,7 +59,7 @@ class SchemaService extends Service
             'url' => route('index'),
             'potentialAction' => [
                 '@type' => 'SearchAction',
-                'target' => route('search') . '?word={search_term_string}',
+                'target' => route('search').'?word={search_term_string}',
                 'query-input' => 'required name=search_term_string',
                 'url' => route('index'),
             ],
@@ -100,12 +105,12 @@ class SchemaService extends Service
                 [
                     '@type' => 'ListItem',
                     'position' => 1,
-                    'name' => "トップ",
+                    'name' => 'トップ',
                     'item' => route('index'),
                 ], [
                     '@type' => 'ListItem',
                     'position' => 2,
-                    'name' => $article->user->name."さんの投稿一覧",
+                    'name' => $article->user->name.'さんの投稿一覧',
                     'item' => route('user', $article->user),
                 ], [
                     '@type' => 'ListItem',
@@ -113,9 +118,8 @@ class SchemaService extends Service
                     'name' => $article->title,
                     'item' => route('articles.show', $article->slug),
                 ],
-            ]];
+            ], ];
     }
-
 
     private function schemaPakAddonBreadcrumb(Category $pak, Category $addon)
     {
@@ -126,21 +130,22 @@ class SchemaService extends Service
                 [
                     '@type' => 'ListItem',
                     'position' => 1,
-                    'name' => "トップ",
+                    'name' => 'トップ',
                     'item' => route('index'),
                 ], [
                     '@type' => 'ListItem',
                     'position' => 2,
-                    'name' => __('category.pak.' . $pak->slug),
+                    'name' => __('category.pak.'.$pak->slug),
                     'item' => route('category', ['pak', $pak->slug]),
                 ], [
                     '@type' => 'ListItem',
                     'position' => 3,
-                    'name' => __('category.addon.' . $addon->slug),
+                    'name' => __('category.addon.'.$addon->slug),
                     'item' => url()->current(),
                 ],
-            ]];
+            ], ];
     }
+
     private function schemaTagBreadcrumb(Tag $tag)
     {
         return [
@@ -150,7 +155,7 @@ class SchemaService extends Service
                 [
                     '@type' => 'ListItem',
                     'position' => 1,
-                    'name' => "トップ",
+                    'name' => 'トップ',
                     'item' => route('index'),
                 ], [
                     '@type' => 'ListItem',
@@ -163,7 +168,7 @@ class SchemaService extends Service
                     'name' => $tag->name,
                     'item' => url()->current(),
                 ],
-            ]];
+            ], ];
     }
 
     private function schemaCarouselArticles($articles)

@@ -6,7 +6,7 @@ use App\Models\Article;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * DL、掲載先遷移時にコンバージョンをカウントする
+ * DL、掲載先遷移時にコンバージョンをカウントする.
  */
 class ArticleConversion
 {
@@ -15,8 +15,7 @@ class ArticleConversion
     public $article;
 
     /**
-     * 新しいイベントインスタンスの生成
-     *
+     * 新しいイベントインスタンスの生成.
      */
     public function __construct(Article $article)
     {

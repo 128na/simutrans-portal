@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Pak-アドオン毎の投稿数（メニュー表示用）
+ * Pak-アドオン毎の投稿数（メニュー表示用）.
  */
 class PakAddonCount extends Model
 {

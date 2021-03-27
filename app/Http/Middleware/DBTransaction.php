@@ -8,12 +8,13 @@ use Illuminate\Support\Facades\DB;
 class DBTransaction
 {
     /**
-     * リクエストからレスポンスの間にDBトランザクションを適用する
+     * リクエストからレスポンスの間にDBトランザクションを適用する.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     *
      * @return mixed
-     * @link https://gist.github.com/rodrigopedra/a4a91948bd41617a9b1a
+     *
+     * @see https://gist.github.com/rodrigopedra/a4a91948bd41617a9b1a
      */
     public function handle($request, Closure $next)
     {

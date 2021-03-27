@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Models\CompressedImage;
 use App\Services\CompressedImageService;
 use Illuminate\Console\Command;
 
 /**
- * tinypng api経由で画像を圧縮する
+ * tinypng api経由で画像を圧縮する.
+ *
  * @see https://tinypng.com/dashboard/api
  */
 class CompressImage extends Command
@@ -27,6 +27,7 @@ class CompressImage extends Command
     protected $description = 'Compress Image via tinypng.';
 
     private CompressedImageService $compressed_image_service;
+
     /**
      * Create a new command instance.
      *

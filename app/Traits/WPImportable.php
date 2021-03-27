@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Traits;
 
 use Illuminate\Support\Facades\DB;
@@ -10,30 +11,33 @@ trait WPImportable
 
     private function getWPConnection()
     {
-        if(is_null($this->conn)) {
+        if (is_null($this->conn)) {
             $this->conn = DB::connection('wp');
         }
+
         return $this->conn;
     }
 
     /**
-     * ユーザー一覧取得
+     * ユーザー一覧取得.
      */
     private function fetchWPUsers()
     {
         return $this->getWPConnection()->select(
-            "SELECT * FROM wp_users");
+            'SELECT * FROM wp_users');
     }
+
     /**
-     * ユーザーメタ一覧取得
+     * ユーザーメタ一覧取得.
      */
     private function fetchWPUsermeta($user_id)
     {
         return $this->getWPConnection()->select(
-            "SELECT * FROM wp_usermeta WHERE user_id=?", [$user_id]);
+            'SELECT * FROM wp_usermeta WHERE user_id=?', [$user_id]);
     }
+
     /**
-     * ユーザー投稿一覧取得
+     * ユーザー投稿一覧取得.
      */
     private function fetchWPPosts($user_id)
     {
@@ -42,7 +46,7 @@ trait WPImportable
     }
 
     /**
-     * サムネイル投稿取得
+     * サムネイル投稿取得.
      */
     private function fetchWPThumbnail($id)
     {
@@ -65,7 +69,7 @@ trait WPImportable
     }
 
     /**
-     * アドオン投稿取得
+     * アドオン投稿取得.
      */
     private function fetchWPAddonFile($id)
     {
@@ -88,24 +92,26 @@ trait WPImportable
     }
 
     /**
-     * 指定post_id, meta_keyのmeta_valueを返す
-     * @param int $post_id 投稿ID
+     * 指定post_id, meta_keyのmeta_valueを返す.
+     *
+     * @param int    $post_id  投稿ID
      * @param string $meta_key キー名
+     *
      * @return mixed meta_value
      */
     private function fetchWPPostmetaValueBy($post_id, $meta_key)
     {
         return $this->getWPConnection()->select(
-            "SELECT * FROM wp_postmeta WHERE post_id=? AND meta_key=?", [$post_id, $meta_key])[0]->meta_value ?? null;
+            'SELECT * FROM wp_postmeta WHERE post_id=? AND meta_key=?', [$post_id, $meta_key])[0]->meta_value ?? null;
     }
 
     /**
-     * 指定post_id, taxonomyのターム一覧を返す
+     * 指定post_id, taxonomyのターム一覧を返す.
      */
     private function fetchWPTerms($post_id, $taxonomy)
     {
         return $this->getWPConnection()->select(
-            "SELECT
+            'SELECT
                 t.name, t.slug
             FROM
                 wp_terms t
@@ -118,27 +124,27 @@ trait WPImportable
             WHERE
                 p.ID = ?
             AND
-                tx.taxonomy = ?", [$post_id, $taxonomy]);
+                tx.taxonomy = ?', [$post_id, $taxonomy]);
     }
 
     /**
-     * 指定post_idのpost_view一覧を返す。週次は除外
+     * 指定post_idのpost_view一覧を返す。週次は除外.
      */
     private function fetchWPPostViews($post_id)
     {
         return $this->getWPConnection()->select(
-            "SELECT
+            'SELECT
                 *
             FROM
                 wp_post_views
             WHERE
-                id = ? AND type IN (0, 2, 3, 4)", [$post_id]);
+                id = ? AND type IN (0, 2, 3, 4)', [$post_id]);
     }
 
     /**
      * https -> http
      * シリアライズ不整合の修復
-     * 無理やりHTTPS化したときの後遺症
+     * 無理やりHTTPS化したときの後遺症.
      */
     private static function fixSerializedStr($str)
     {
@@ -146,8 +152,9 @@ trait WPImportable
             'https://simutrans.sakura.ne.jp/portal/wp-content/uploads',
             'http://simutrans.sakura.ne.jp/portal/wp-content/uploads', $str);
     }
+
     /**
-     * http -> https
+     * http -> https.
      */
     private static function recoverURL($str)
     {
@@ -155,10 +162,12 @@ trait WPImportable
             'http://simutrans.sakura.ne.jp/portal/wp-content/uploads',
             'https://simutrans.sakura.ne.jp/portal/wp-content/uploads', $str);
     }
+
     private static function searchMetaItem($wp_usermeta, $meta_key)
     {
-        return $wp_usermeta->first(function($m) use($meta_key) {
-            return $m->meta_key === $meta_key; })->meta_value ?? null;
+        return $wp_usermeta->first(function ($m) use ($meta_key) {
+            return $m->meta_key === $meta_key;
+        })->meta_value ?? null;
     }
 
     private static function saveFromUrl($user_id, $url, $filename = null)
@@ -168,12 +177,14 @@ trait WPImportable
         fwrite($temp, @file_get_contents($url));
         $path = 'user/'.$user_id.'/'.$filename;
         Storage::put('public/'.$path, $temp);
+
         return $path;
     }
 
     private static function getExtention($str)
     {
         $tmp = explode('.', $str);
+
         return end($tmp);
     }
 }

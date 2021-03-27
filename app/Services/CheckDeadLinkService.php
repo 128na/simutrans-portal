@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Article;
@@ -37,6 +38,7 @@ class CheckDeadLinkService extends Service
                 return true;
             }
         }
+
         return false;
     }
 }

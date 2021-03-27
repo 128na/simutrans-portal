@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Http\Requests\Api\ArticleAnalytics\SearchRequest;
@@ -53,6 +54,7 @@ class ArticleAnalyticsService extends Service
                 return [$start_date->format('Y'), $end_date->format('Y')];
         }
     }
+
     private function getTypeId($type)
     {
         switch ($type) {
@@ -64,5 +66,4 @@ class ArticleAnalyticsService extends Service
                 return 3;
         }
     }
-
 }

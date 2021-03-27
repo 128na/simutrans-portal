@@ -11,17 +11,19 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     private UserService $user_service;
-    //
+
     public function __construct(UserService $user_service)
     {
         $this->user_service = $user_service;
     }
+
     public function index()
     {
         $user = $this->user_service->getUser(Auth::user());
 
         return new UserResouce($user);
     }
+
     public function update(UpdateRequest $request)
     {
         $user = $this->user_service->updateUserAndProfile(Auth::user(), $request);

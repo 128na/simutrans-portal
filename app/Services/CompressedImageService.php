@@ -1,9 +1,9 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Attachment;
 use App\Models\CompressedImage;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
 class CompressedImageService extends Service
@@ -30,6 +30,7 @@ class CompressedImageService extends Service
             return 'already compressed';
         }
         $this->compress($attachment);
+
         return 'compressed';
     }
 
@@ -38,7 +39,7 @@ class CompressedImageService extends Service
         \Tinify\setKey(config('app.tinypng_api_key'));
 
         $path = $attachment->path;
-        $backup_path = $path . '.bak';
+        $backup_path = $path.'.bak';
         try {
             Storage::disk('public')->copy($path, $backup_path);
             $source = \Tinify\fromFile(Storage::disk('public')->path($path));

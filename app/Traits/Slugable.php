@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Traits;
 
 /**
- * Slug
+ * Slug.
  */
 trait Slugable
 {
@@ -42,7 +43,7 @@ trait Slugable
     }
 
     /**
-     * スラッグがユニークか
+     * スラッグがユニークか.
      */
     public function isUniqueSlug()
     {
@@ -51,6 +52,7 @@ trait Slugable
         if ($this->id) {
             $query->where('id', '<>', $this->id);
         }
+
         return $query->doesntExist();
     }
 }

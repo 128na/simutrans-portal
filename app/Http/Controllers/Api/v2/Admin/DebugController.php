@@ -10,6 +10,7 @@ class DebugController extends Controller
     public function flushCache()
     {
         Cache::flush();
+
         return response('');
     }
 
@@ -17,14 +18,17 @@ class DebugController extends Controller
     {
         switch ($level) {
             case 'notice':
-                trigger_error("Notice was created manually.", E_USER_NOTICE);
+                trigger_error('Notice was created manually.', E_USER_NOTICE);
+
                 return response('');
         case 'warning':
-                trigger_error("Warning was created manually.", E_USER_WARNING);
+                trigger_error('Warning was created manually.', E_USER_WARNING);
+
                 return response('');
             case 'error':
             default:
-                trigger_error("Error was created manually.", E_USER_ERROR);
+                trigger_error('Error was created manually.', E_USER_ERROR);
+
                 return response('');
         }
     }
@@ -35,6 +39,7 @@ class DebugController extends Controller
         phpinfo();
         $html = ob_get_contents();
         ob_get_clean();
+
         return $html;
     }
 }

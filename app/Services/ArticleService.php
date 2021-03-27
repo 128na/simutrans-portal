@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Http\Requests\Article\SearchRequest;
@@ -37,13 +38,14 @@ class ArticleService extends Service
             'ranking' => $ranking,
         ];
     }
+
     private function limitOrPaginate($query, $limit = null)
     {
         return $limit ? $query->limit($limit)->get() : $query->paginate($this->per_page);
     }
 
     /**
-     * お知らせ記事一覧
+     * お知らせ記事一覧.
      */
     public function getAnnouces($limit = null)
     {
@@ -55,8 +57,9 @@ class ArticleService extends Service
 
         return $this->limitOrPaginate($query, $limit);
     }
+
     /**
-     * 一般記事一覧
+     * 一般記事一覧.
      */
     public function getCommonArticles($limit = null)
     {
@@ -68,8 +71,9 @@ class ArticleService extends Service
 
         return $this->limitOrPaginate($query, $limit);
     }
+
     /**
-     * pak別の投稿一覧
+     * pak別の投稿一覧.
      */
     public function getPakArticles($pak, $limit = null)
     {
@@ -84,7 +88,7 @@ class ArticleService extends Service
     }
 
     /**
-     * アドオン投稿/紹介のデイリーPVランキング
+     * アドオン投稿/紹介のデイリーPVランキング.
      */
     public function getRankingArticles($excludes = [], $limit = null)
     {
@@ -100,7 +104,7 @@ class ArticleService extends Service
     }
 
     /**
-     * アドオン投稿/紹介の一覧
+     * アドオン投稿/紹介の一覧.
      */
     public function getAddonArticles($limit = null)
     {
@@ -114,7 +118,7 @@ class ArticleService extends Service
     }
 
     /**
-     * カテゴリの投稿一覧
+     * カテゴリの投稿一覧.
      */
     public function getCategoryArtciles(Category $category, $limit = null)
     {
@@ -126,16 +130,17 @@ class ArticleService extends Service
 
         return $this->limitOrPaginate($query, $limit);
     }
+
     /**
-     * カテゴリ(pak/addon)の投稿一覧
+     * カテゴリ(pak/addon)の投稿一覧.
      */
     public function getPakAddonCategoryArtciles(Category $pak, Category $addon, $limit = null)
     {
         $query = $this->model
             ->select($this->article_columns)
             ->active()
-            ->whereHas('categories', fn ($query) =>$query->where('id', $pak->id))
-            ->whereHas('categories', fn ($query) =>$query->where('id', $addon->id))
+            ->whereHas('categories', fn ($query) => $query->where('id', $pak->id))
+            ->whereHas('categories', fn ($query) => $query->where('id', $addon->id))
             ->withCache()
             ->with($this->relations_for_listing);
 
@@ -143,7 +148,7 @@ class ArticleService extends Service
     }
 
     /**
-     * タグを持つ投稿記事一覧
+     * タグを持つ投稿記事一覧.
      */
     public function getTagArticles(Tag $tag, $limit = null)
     {
@@ -157,7 +162,7 @@ class ArticleService extends Service
     }
 
     /**
-     * ユーザーの投稿記事一覧
+     * ユーザーの投稿記事一覧.
      */
     public function getUserArticles(User $user, $limit = null)
     {
@@ -171,7 +176,7 @@ class ArticleService extends Service
     }
 
     /**
-     * 記事検索結果一覧
+     * 記事検索結果一覧.
      */
     public function getSearchArticles(SearchRequest $request, $limit = null)
     {
@@ -187,7 +192,7 @@ class ArticleService extends Service
     }
 
     /**
-     * 記事表示
+     * 記事表示.
      */
     public function getArticle(Article $article, $with_count = false)
     {

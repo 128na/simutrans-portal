@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Override;
 
 /**
- * クエリをキャッシュする
+ * クエリをキャッシュする.
  */
 class QueryBuilder extends \Illuminate\Database\Query\Builder
 {
@@ -11,6 +12,7 @@ class QueryBuilder extends \Illuminate\Database\Query\Builder
     public function withCache()
     {
         $this->with_cache = true;
+
         return $this;
     }
 
@@ -19,7 +21,7 @@ class QueryBuilder extends \Illuminate\Database\Query\Builder
         if ($this->with_cache) {
             $sql_str = str_replace('?', '"%s"', $this->toSql());
             $sql_str = vsprintf($sql_str, $this->getBindings());
-            $key = 'query:' . hash('sha256', $sql_str);
+            $key = 'query:'.hash('sha256', $sql_str);
 
             return \Cache::remember(
                 $key,

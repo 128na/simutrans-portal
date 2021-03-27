@@ -10,7 +10,7 @@ use App\Services\TagService;
 class TagController extends Controller
 {
     private TagService $tag_service;
-    //
+
     public function __construct(TagService $tag_service)
     {
         $this->tag_service = $tag_service;

@@ -2,21 +2,20 @@
 
 namespace App\Models;
 
-use App\Models\Article;
-use App\Models\Attachment;
-use App\Models\Profile;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, HasFactory, SoftDeletes;
+    use Notifiable;
+    use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'role',
@@ -48,6 +47,7 @@ class User extends Authenticatable implements MustVerifyEmail
             Cache::flush();
         });
     }
+
     private function syncRelatedData()
     {
         if (Profile::where('user_id', $this->id)->doesntExist()) {
@@ -64,6 +64,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new ResetPassword($token));
     }
+
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmail());
@@ -83,6 +84,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Profile::class);
     }
+
     // 自身が投稿した添付
     public function myAttachments()
     {
@@ -104,8 +106,9 @@ class User extends Authenticatable implements MustVerifyEmail
     | 一般
     |--------------------------------------------------------------------------
     */
+
     /**
-     * ユーザーが管理者か
+     * ユーザーが管理者か.
      */
     public function isAdmin()
     {

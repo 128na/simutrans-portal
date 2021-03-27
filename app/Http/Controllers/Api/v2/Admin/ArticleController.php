@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Api\v2\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Article;
 use App\Http\Requests\Api\Admin\ArticleUpdateRequest;
+use App\Models\Article;
 
 class ArticleController extends Controller
 {
@@ -33,14 +32,17 @@ class ArticleController extends Controller
             ->with(['user' => fn ($q) => $q->select(self::USER_COLUMNS)->withTrashed()])
             ->get();
     }
+
     public function update(ArticleUpdateRequest $request, int $id)
     {
         Article::withTrashed()
             ->withUserTrashed()
             ->findOrFail($id)
             ->update($request->validated()['article'] ?? []);
+
         return $this->index();
     }
+
     public function destroy(int $id)
     {
         tap(Article::withTrashed()
@@ -50,6 +52,7 @@ class ArticleController extends Controller
                     ? $a->restore()
                     : $a->delete();
             });
+
         return $this->index();
     }
 }

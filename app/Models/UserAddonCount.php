@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 /**
- * ユーザー毎の投稿数（メニュー表示用）
+ * ユーザー毎の投稿数（メニュー表示用）.
  */
 class UserAddonCount extends Model
 {

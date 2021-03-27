@@ -1,4 +1,5 @@
 <?php
+
 return [
     'ja' => ['label' => '日本語'],
     'en' => ['label' => 'English'],

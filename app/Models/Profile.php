@@ -3,11 +3,9 @@
 namespace App\Models;
 
 use App\Casts\ToProfileData;
-use App\Models\Attachment;
-use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Profile extends Model
 {
@@ -47,6 +45,7 @@ class Profile extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function attachments()
     {
         return $this->morphMany(Attachment::class, 'attachmentable');
@@ -60,24 +59,29 @@ class Profile extends Model
     public function getAvatarAttribute()
     {
         $id = $this->data->avatar;
+
         return $this->attachments->first(fn ($attachment) => $id === $attachment->id);
     }
+
     public function getHasAvatarAttribute()
     {
-        return !!$this->avatar;
+        return (bool) $this->avatar;
     }
+
     public function getAvatarUrlAttribute()
     {
         return $this->has_avatar
-        ? asset('storage/' . $this->avatar->path)
-        : asset('storage/' . config('attachment.no-avatar'));
+        ? asset('storage/'.$this->avatar->path)
+        : asset('storage/'.config('attachment.no-avatar'));
     }
+
     public function getHasFileAttribute()
     {
         return !is_null($this->file);
     }
+
     public function getHasTwitterAttribute()
     {
-        return !!$this->data->twitter;
+        return (bool) $this->data->twitter;
     }
 }

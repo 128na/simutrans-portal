@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Api\v2\Admin;
 
-use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Api\Admin\UserStoreRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -27,6 +26,7 @@ class UserController extends Controller
             ->withCount(['articles' => fn ($q) => $q->withUserTrashed()->withTrashed()])
             ->get();
     }
+
     public function destroy(int $id)
     {
         tap(User::withTrashed()
@@ -44,6 +44,7 @@ class UserController extends Controller
         $validated = $request->validated();
         $len = 63;
         $rand = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-~^|,.', $len)), 0, $len);
+
         return User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],

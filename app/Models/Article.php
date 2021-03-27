@@ -63,6 +63,7 @@ class Article extends Model implements Feedable
     {
         UserAddonCount::recount();
         PakAddonCount::recount();
+        Tag::deleteUnrelated();
         Cache::flush();
     }
 

@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Article;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
@@ -30,10 +29,20 @@ class Tag extends Model
     }
 
     /**
-     * 記事にリレーションがない孤独なタグを削除する
+     * 記事にリレーションがない孤独なタグを削除する.
      */
     public static function removeDoesntHaveRelation()
     {
         self::doesntHave('articles')->delete();
+    }
+
+    /**
+     * 記事に関連づいていないタグを削除する.
+     */
+    public static function deleteUnrelated(): int
+    {
+        return self::leftJoin('article_tag', 'tags.id', '=', 'article_tag.tag_id')
+            ->whereNull('article_id')
+            ->delete();
     }
 }

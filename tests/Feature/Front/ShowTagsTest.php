@@ -49,8 +49,8 @@ class ShowTagsTest extends TestCase
         yield '記事に紐づいていないタグ' => [fn () => null, false];
         yield '公開されている記事に紐づいてるタグ' => [fn () => $this->article->tags()->sync([$this->tag->id]), true];
         yield '非公開の記事に紐づいてるタグ' => [function () {
-            $this->article->update(['status' => 'draft']);
             $this->article->tags()->sync([$this->tag->id]);
+            $this->article->update(['status' => 'draft']);
         }, false];
     }
 }

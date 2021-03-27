@@ -24,9 +24,9 @@ class ArticleService extends Service
         $announces = $this->getAnnouces(3);
         $pages = $this->getCommonArticles(3);
         $latest = [
-            '64' => $this->getPakArticles('64', 6),
-            '128' => $this->getPakArticles('128', 6),
             '128-japan' => $this->getPakArticles('128-japan', 6),
+            '128' => $this->getPakArticles('128', 6),
+            '64' => $this->getPakArticles('64', 6),
         ];
         $excludes = collect($latest)->flatten()->pluck('id')->unique()->toArray();
         $ranking = $this->getRankingArticles($excludes, 6);

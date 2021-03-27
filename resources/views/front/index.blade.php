@@ -3,18 +3,9 @@
 @section('id', 'top')
 @section('title', $title)
 @section('meta-description', config('app.meta-description'))
-@section('meta-image', asset('storage/'.config('app.meta-image')))
+@section('meta-image', asset('storage/' . config('app.meta-image')))
 
 @section('content')
-    <section class="mb-5">
-        @component('components.articles', ['articles' => $ranking])
-            <a href="{{ route('addons.ranking') }}">アクセスランキング</a>
-            @slot('no_item')
-                記事がありません。
-            @endslot
-        @endcomponent
-    </section>
-
     @foreach ($latest as $pak => $latest_articles)
         <section class="mb-5">
             @component('components.articles', ['articles' => $latest_articles])
@@ -25,6 +16,15 @@
             @endcomponent
         </section>
     @endforeach
+
+    <section class="mb-5">
+        @component('components.articles', ['articles' => $ranking])
+            <a href="{{ route('addons.ranking') }}">アクセスランキング</a>
+            @slot('no_item')
+                記事がありません。
+            @endslot
+        @endcomponent
+    </section>
 
     <section class="mb-5">
         @component('components.articles', ['articles' => $pages, 'hide_detail' => true])
@@ -46,6 +46,7 @@
 
     <script type="application/ld+json">
         @json($schemas)
+
     </script>
 
 @endsection

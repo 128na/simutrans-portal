@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v2\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Admin\ArticleUpdateRequest;
+use App\Jobs\Article\UpdateRelated;
 use App\Models\Article;
 
 class ArticleController extends Controller
@@ -40,6 +41,8 @@ class ArticleController extends Controller
             ->findOrFail($id)
             ->update($request->validated()['article'] ?? []);
 
+        UpdateRelated::dispatchSync();
+
         return $this->index();
     }
 
@@ -52,6 +55,8 @@ class ArticleController extends Controller
                     ? $a->restore()
                     : $a->delete();
             });
+
+        UpdateRelated::dispatchSync();
 
         return $this->index();
     }

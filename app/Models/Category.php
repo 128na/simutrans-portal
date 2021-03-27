@@ -30,22 +30,6 @@ class Category extends Model
         static::addGlobalScope('order', function (Builder $builder) {
             $builder->orderBy('order', 'asc');
         });
-
-        self::created(function ($model) {
-            $model->recountHandler();
-        });
-        self::updated(function ($model) {
-            $model->recountHandler();
-        });
-        self::deleted(function ($model) {
-            $model->recountHandler();
-        });
-    }
-
-    private function recountHandler()
-    {
-        UserAddonCount::recount();
-        PakAddonCount::recount();
     }
 
     /*

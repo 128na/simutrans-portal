@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Article\StoreRequest;
 use App\Http\Requests\Api\Article\UpdateRequest;
 use App\Http\Resources\Api\Mypage\Articles as ArticlesResouce;
+use App\Jobs\Article\UpdateRelated;
 use App\Models\Article;
 use App\Notifications\ArticlePublished;
 use App\Notifications\ArticleUpdated;
@@ -54,6 +55,7 @@ class EditorController extends Controller
 
             return $preview;
         }
+        UpdateRelated::dispatchSync();
         DB::commit();
 
         if ($article->is_publish && $request->should_tweet) {
@@ -74,6 +76,7 @@ class EditorController extends Controller
 
             return $preview;
         }
+        UpdateRelated::dispatchSync();
         DB::commit();
 
         if ($article->is_publish && $request->should_tweet) {

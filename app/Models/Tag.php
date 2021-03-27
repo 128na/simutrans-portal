@@ -29,14 +29,6 @@ class Tag extends Model
     }
 
     /**
-     * 記事にリレーションがない孤独なタグを削除する.
-     */
-    public static function removeDoesntHaveRelation()
-    {
-        self::doesntHave('articles')->delete();
-    }
-
-    /**
      * 記事に関連づいていないタグを削除する.
      */
     public static function deleteUnrelated(): int

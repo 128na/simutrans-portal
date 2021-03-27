@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\Article\UpdateRelated;
 use App\Notifications\DeadLinkDetected;
 use App\Services\CheckDeadLinkService;
 use Illuminate\Console\Command;
@@ -52,6 +53,7 @@ class CheckDeadLink extends Command
                 logger('dead link '.$article->title);
 
                 $article->update(['status' => config('status.private')]);
+                UpdateRelated::dispatchSync();
                 $article->notify(new DeadLinkDetected());
             }
         })->count();

@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Cache;
 use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
 
@@ -44,15 +43,6 @@ class Article extends Model implements Feedable
         static::addGlobalScope('order', function (Builder $builder) {
             $builder->orderBy('created_at', 'desc');
         });
-        self::created(function ($model) {
-            $model->syncRelatedData();
-        });
-        self::updated(function ($model) {
-            $model->syncRelatedData();
-        });
-        self::deleted(function ($model) {
-            $model->syncRelatedData();
-        });
     }
 
     protected static function booted()
@@ -61,14 +51,6 @@ class Article extends Model implements Feedable
         static::addGlobalScope('WithoutTrashedUser', function (Builder $builder) {
             $builder->has('user');
         });
-    }
-
-    public function syncRelatedData()
-    {
-        UserAddonCount::recount();
-        PakAddonCount::recount();
-        Tag::deleteUnrelated();
-        Cache::flush();
     }
 
     public function routeNotificationForMail($notification)

@@ -135,7 +135,10 @@ jobs:
             CREATE DATABASE IF NOT EXISTS test_test_1;
             CREATE DATABASE IF NOT EXISTS test_test_2;
             CREATE DATABASE IF NOT EXISTS test_test_3;
-            CREATE DATABASE IF NOT EXISTS test_test_4;'
+            CREATE DATABASE IF NOT EXISTS test_test_4;
+            CREATE DATABASE IF NOT EXISTS test_test_5;
+            CREATE DATABASE IF NOT EXISTS test_test_6;
+            CREATE DATABASE IF NOT EXISTS test_test_7;'
       - name: DB Cache
         id: cache-database
         uses: actions/cache@v2
@@ -152,7 +155,7 @@ jobs:
         if: steps.cache-database.outputs.cache-hit != 'true'
         run: mysqldump -uroot -h127.0.0.1 -proot --all-databases >~/dump.sql
       - name: Test
-        run: php artisan test -v --env=local --parallel --processes=2
+        run: php artisan test -v --env=local --parallel --processes=8
 
       - if: failure()
         name: Display Error Log

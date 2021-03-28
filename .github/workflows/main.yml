@@ -138,7 +138,8 @@ jobs:
             CREATE DATABASE IF NOT EXISTS test_test_4;
             CREATE DATABASE IF NOT EXISTS test_test_5;
             CREATE DATABASE IF NOT EXISTS test_test_6;
-            CREATE DATABASE IF NOT EXISTS test_test_7;'
+            CREATE DATABASE IF NOT EXISTS test_test_7;
+            CREATE DATABASE IF NOT EXISTS test_test_8;'
       - name: DB Cache
         id: cache-database
         uses: actions/cache@v2

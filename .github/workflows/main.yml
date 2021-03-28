@@ -130,7 +130,7 @@ jobs:
       - name: Start MySQL
         run: sudo /etc/init.d/mysql start
       - name: Setup database
-        run: mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test;'
+        run: mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test_test_1;CREATE DATABASE IF NOT EXISTS test_test_2;CREATE DATABASE IF NOT EXISTS test_test_3;CREATE DATABASE IF NOT EXISTS test_test_4;'
       - name: DB Cache
         id: cache-database
         uses: actions/cache@v2
@@ -140,12 +140,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cache-database-
       - name: Import DB Cache
-        run: "[ -e ~/dump.sql ] && mysql -uroot -h127.0.0.1 -proot test <~/dump.sql || echo 'no dump file.'"
+        run: "[ -e ~/dump.sql ] && mysql -uroot -h127.0.0.1 -proot <~/dump.sql || echo 'no dump file.'"
       - name: Migration
         run: php artisan migrate
       - name: Dump DB Cache
         if: steps.cache-database.outputs.cache-hit != 'true'
-        run: mysqldump -uroot -h127.0.0.1 -proot test>~/dump.sql
+        run: mysqldump -uroot -h127.0.0.1 -proot --all-databases >~/dump.sql
       - name: Test
         run: php artisan test -v --env=local --parallel --processes=4
 

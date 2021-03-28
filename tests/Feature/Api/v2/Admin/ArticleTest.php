@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Api\v2\Admin;
 
+use App\Jobs\Article\JobUpdateRelated;
+use Illuminate\Support\Facades\Bus;
 use Tests\AdminTestCase;
 
 class ArticleTest extends AdminTestCase
@@ -25,6 +27,7 @@ class ArticleTest extends AdminTestCase
      */
     public function test_記事更新_権限チェック(?string $prop, int $expected_status)
     {
+        Bus::fake();
         $url = route('api.v2.admin.articles.update', $this->article);
         $data = ['article' => ['status' => 'private']];
 
@@ -33,6 +36,12 @@ class ArticleTest extends AdminTestCase
         }
         $response = $this->putJson($url, $data);
         $response->assertStatus($expected_status);
+
+        if ($expected_status === 200) {
+            Bus::assertDispatched(JobUpdateRelated::class);
+        } else {
+            Bus::assertNotDispatched(JobUpdateRelated::class);
+        }
     }
 
     public function test_記事更新_バリデーション項目以外更新されないこと()
@@ -52,6 +61,7 @@ class ArticleTest extends AdminTestCase
      */
     public function test_記事削除_権限チェック(?string $prop, int $expected_status)
     {
+        Bus::fake();
         $this->assertNull($this->article->deleted_at);
         $url = route('api.v2.admin.articles.destroy', $this->article);
 
@@ -60,6 +70,12 @@ class ArticleTest extends AdminTestCase
         }
         $response = $this->deleteJson($url);
         $response->assertStatus($expected_status);
+
+        if ($expected_status === 200) {
+            Bus::assertDispatched(JobUpdateRelated::class);
+        } else {
+            Bus::assertNotDispatched(JobUpdateRelated::class);
+        }
     }
 
     public function test_論理削除チェック()

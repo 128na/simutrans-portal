@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Api\v2\Admin;
 
+use App\Jobs\Article\JobUpdateRelated;
+use Illuminate\Support\Facades\Bus;
 use Tests\AdminTestCase;
 
 class MiscTest extends AdminTestCase
@@ -29,6 +31,15 @@ class MiscTest extends AdminTestCase
                 'getJson', 'api.v2.admin.phpinfo', ...$value,
             ];
         }
+    }
+
+    public function testDispatch()
+    {
+        Bus::fake();
+        $url = route('api.v2.admin.flushCache');
+        $this->actingAs($this->admin);
+        $this->postJson($url);
+        Bus::assertDispatched(JobUpdateRelated::class);
     }
 
     /**

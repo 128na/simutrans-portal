@@ -32,6 +32,7 @@ class JobCheckDeadLink implements ShouldQueue
      */
     public function handle()
     {
+        $changed = false;
         foreach ($this->articleRepository->cursorCheckLinkArticles() as $article) {
             if ($this->isLinkDead($article)) {
                 logger('dead link '.$article->title);
@@ -41,7 +42,12 @@ class JobCheckDeadLink implements ShouldQueue
                 ]);
 
                 $article->notify(new DeadLinkDetected());
+                $changed = true;
             }
+        }
+
+        if ($changed) {
+            dispatch_now(app(JobUpdateRelated::class));
         }
     }
 

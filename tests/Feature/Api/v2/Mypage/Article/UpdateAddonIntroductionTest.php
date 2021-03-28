@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Api\v2\Mypage\Article;
 
+use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Category;
 use App\Models\Tag;
 use Closure;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Bus;
 use Tests\ArticleTestCase;
 
 class UpdateAddonIntroductionTest extends ArticleTestCase
@@ -32,6 +34,7 @@ class UpdateAddonIntroductionTest extends ArticleTestCase
      */
     public function testValidation(Closure $fn, ?string $error_field)
     {
+        Bus::fake();
         $url = route('api.v2.articles.update', $this->article);
         $this->actingAs($this->user);
 
@@ -70,8 +73,10 @@ class UpdateAddonIntroductionTest extends ArticleTestCase
             $res->assertStatus(200);
             $get_response = json_decode($this->getJson(route('api.v2.articles.index'))->content(), true);
             $res->assertJson($get_response);
+            Bus::assertDispatched(JobUpdateRelated::class);
         } else {
             $res->assertJsonValidationErrors($error_field);
+            Bus::assertNotDispatched(JobUpdateRelated::class);
         }
     }
 

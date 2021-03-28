@@ -38,13 +38,14 @@ class LoginController extends Controller
     /**
      * The user has been authenticated.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
+     * @param \Illuminate\Http\Request $request
+     * @param mixed                    $user
+     *
      * @return mixed
      */
     protected function authenticated($request, $user)
     {
-        $user->notify(new Loggedin);
+        $user->notify(new Loggedin());
 
         $user = $this->user_service->getUser(Auth::user());
 

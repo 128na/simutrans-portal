@@ -2,12 +2,12 @@
 
 return [
     'type' => [
-        'post'            => 'post',
-        'pak'             => 'pak',
-        'addon'           => 'addon',
+        'post' => 'post',
+        'pak' => 'pak',
+        'addon' => 'addon',
         'pak128_position' => 'pak128_position',
-        'license'         => 'license',
-        'page'            => 'page',
+        'license' => 'license',
+        'page' => 'page',
     ],
     'post' => [
         ['slug' => 'addon-post',         'type' => 'post', 'order' => 00000, 'name' => 'Addon Post'],
@@ -15,9 +15,9 @@ return [
         ['slug' => 'page',               'type' => 'post', 'order' => 00020, 'name' => 'Post'],
     ],
     'pak' => [
-        ['slug' => '64',           'type' => 'pak', 'order' => 10000, 'name' => 'Pak64'],
+        ['slug' => '128-japan',    'type' => 'pak', 'order' => 10000, 'name' => 'Pak128.Japan'],
         ['slug' => '128',          'type' => 'pak', 'order' => 10010, 'name' => 'Pak128'],
-        ['slug' => '128-japan',    'type' => 'pak', 'order' => 10011, 'name' => 'Pak128.Japan'],
+        ['slug' => '64',           'type' => 'pak', 'order' => 10011, 'name' => 'Pak64'],
         ['slug' => '256',          'type' => 'pak', 'order' => 10020, 'name' => 'Pak256'],
         ['slug' => '96-comic',     'type' => 'pak', 'order' => 10030, 'name' => 'Pak96.Comic'],
         ['slug' => '192-comic',    'type' => 'pak', 'order' => 10031, 'name' => 'Pak192.Comic'],
@@ -67,5 +67,4 @@ return [
         ['slug' => 'common',   'type' => 'page', 'order' => 50010, 'name' => 'Common'],
         ['slug' => 'others',   'type' => 'page', 'order' => 59000, 'name' => 'Others'],
     ],
-
 ];

@@ -16,7 +16,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
     }
 
     /**
@@ -30,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
         // https://codeday.me/jp/qa/20190208/214590.html
         \Blade::setEchoFormat('nl2br(e(%s), false)');
 
-        Date::use (CarbonImmutable::class);
+        Date::use(CarbonImmutable::class);
 
         MarkdownService::registerBlade();
     }

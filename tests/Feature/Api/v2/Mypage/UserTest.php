@@ -8,20 +8,19 @@ use App\Notifications\VerifyEmail;
 use Closure;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Notification;
-use Tests\TestCase;
+use Tests\ArticleTestCase;
 
-class UserTest extends TestCase
+class UserTest extends ArticleTestCase
 {
-    private User $user2;
     private Attachment $not_image;
     private Attachment $user2_avatar;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user2 = User::factory()->create(['name' => 'other name', 'email' => 'other@example.com']);
-        $this->not_image = Attachment::createFromFile(UploadedFile::fake()->create('not_image.zip', 1), $this->user->id);
-        $this->user2_avatar = Attachment::createFromFile(UploadedFile::fake()->image('avatar.jpg', 1), $this->user2->id);
+        $this->user2->fill(['email' => 'other@example.com', 'name' => 'other name'])->save();
+        $this->not_image = $this->createFromFile(UploadedFile::fake()->create('not_image.zip', 1), $this->user->id);
+        $this->user2_avatar = $this->createFromFile(UploadedFile::fake()->image('avatar.jpg', 1), $this->user2->id);
     }
 
     public function testIndex()

@@ -4,9 +4,9 @@ namespace Tests\Feature\Front;
 
 use App\Models\Tag;
 use Closure;
-use Tests\TestCase;
+use Tests\ArticleTestCase;
 
-class ShowTagsTest extends TestCase
+class ShowTagsTest extends ArticleTestCase
 {
     private Tag $tag;
 

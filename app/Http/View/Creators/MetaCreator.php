@@ -2,19 +2,11 @@
 
 namespace App\Http\View\Creators;
 
-use App\Repositories\UserRepository;
-use Illuminate\View\View;
-use App\Http\Requests\Article\SearchRequest;
-use App\Models\Article;
-use App\Models\Category;
-use App\Models\PakAddonCount;
-use App\Models\Tag;
-use App\Models\User;
-use App\Models\UserAddonCount;
 use App\Services\SchemaService;
+use Illuminate\View\View;
 
 /**
- * タイトル、メタ、OGP、Schemaデータを設定する
+ * タイトル、メタ、OGP、Schemaデータを設定する.
  */
 class MetaCreator
 {
@@ -28,9 +20,8 @@ class MetaCreator
     }
 
     /**
-     * データをビューと結合
+     * データをビューと結合.
      *
-     * @param  View  $view
      * @return void
      */
     public function create(View $view)
@@ -77,7 +68,7 @@ class MetaCreator
     }
 
     /**
-     * トップページ用
+     * トップページ用.
      */
     public function forTop()
     {
@@ -88,7 +79,7 @@ class MetaCreator
     }
 
     /**
-     * アドオン新着、ランキング、お知らせ、一般記事記事一覧ページ用
+     * アドオン新着、ランキング、お知らせ、一般記事記事一覧ページ用.
      */
     public function forList($name)
     {
@@ -102,12 +93,13 @@ class MetaCreator
     }
 
     /**
-     * カテゴリの記事一覧ページ用
+     * カテゴリの記事一覧ページ用.
      */
     public function forCategory()
     {
         $category = $this->data['category'];
         $title = __("category.{$category->type}.{$category->slug}").'カテゴリ';
+
         return [
             'title' => $title,
             'breadcrumb' => [
@@ -118,15 +110,16 @@ class MetaCreator
     }
 
     /**
-     * pak別カテゴリの記事一覧ページ用
+     * pak別カテゴリの記事一覧ページ用.
      */
     public function forPakAddon()
     {
         $pak = $this->data['categories']['pak'];
         $addon = $this->data['categories']['addon'];
-        $pak_title = __('category.pak.' . $pak->slug);
-        $addon_title = __('category.addon.' . $addon->slug);
+        $pak_title = __('category.pak.'.$pak->slug);
+        $addon_title = __('category.addon.'.$addon->slug);
         $title = "{$pak_title}/{$addon_title}カテゴリ";
+
         return [
             'title' => $title,
             'breadcrumb' => [
@@ -139,11 +132,12 @@ class MetaCreator
     }
 
     /**
-     * 記事詳細ページ用
+     * 記事詳細ページ用.
      */
     public function forShow()
     {
         $article = $this->data['article'];
+
         return [
             'title' => $article->title,
             'canonical_url' => route('articles.show', $article->slug),
@@ -152,12 +146,13 @@ class MetaCreator
     }
 
     /**
-     * タグの記事一覧ページ用
+     * タグの記事一覧ページ用.
      */
     public function forTag()
     {
         $tag = $this->data['tag'];
         $title = "{$tag->name}タグ";
+
         return [
             'title' => $title,
             'breadcrumb' => [
@@ -167,13 +162,15 @@ class MetaCreator
             ],
         ];
     }
+
     /**
-     *  ユーザー記事一覧ページ用
+     *  ユーザー記事一覧ページ用.
      */
     public function forUser()
     {
         $user = $this->data['user'];
         $title = $user->name.'さんの投稿一覧';
+
         return [
             'title' => $title,
             'breadcrumb' => [
@@ -186,12 +183,13 @@ class MetaCreator
     }
 
     /**
-     *  検索記事一覧ページ用
+     *  検索記事一覧ページ用.
      */
     public function forSearch()
     {
         $request = $this->data['request'];
         $title = "「{$request->word}」での検索結果";
+
         return [
             'title' => $title,
             'breadcrumb' => [
@@ -203,11 +201,12 @@ class MetaCreator
     }
 
     /**
-     *  タグ一覧ページ用
+     *  タグ一覧ページ用.
      */
     public function forTags()
     {
-        $title = "タグ一覧";
+        $title = 'タグ一覧';
+
         return [
             'title' => $title,
             'breadcrumb' => [

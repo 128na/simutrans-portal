@@ -5,27 +5,27 @@ namespace App\Http\Controllers\Api\v2\Mypage;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Tag\SearchRequest;
 use App\Http\Requests\Api\Tag\StoreRequest;
-use App\Services\TagService;
+use App\Repositories\TagRepository;
 
 class TagController extends Controller
 {
-    private TagService $tag_service;
-    //
-    public function __construct(TagService $tag_service)
+    private TagRepository $tagRepository;
+
+    public function __construct(TagRepository $tagRepository)
     {
-        $this->tag_service = $tag_service;
+        $this->tagRepository = $tagRepository;
     }
 
     public function search(SearchRequest $request)
     {
         return $request->name
-        ? $this->tag_service->searchTags($request->name)
-        : $this->tag_service->getTags();
+            ? $this->tagRepository->searchTags($request->name)
+            : $this->tagRepository->getTags();
     }
 
     public function store(StoreRequest $request)
     {
-        return $this->tag_service->create([
+        return $this->tagRepository->store([
             'name' => $request->name,
         ]);
     }

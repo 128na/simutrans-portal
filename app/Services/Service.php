@@ -1,40 +1,7 @@
 <?php
-namespace App\Services;
 
-use Illuminate\Database\Eloquent\Model;
+namespace App\Services;
 
 class Service
 {
-    protected Model $model;
-    protected int $per_page = 20;
-
-    public function listing()
-    {
-        return $this->model->paginate($this->per_page);
-    }
-
-    public function get($id)
-    {
-        return $this->model->findOrFail($id);
-    }
-
-    public function find($id)
-    {
-        return $this->model->find($id);
-    }
-
-    public function create($data)
-    {
-        return $this->model->create($data);
-    }
-
-    public function update(Model $model, $data)
-    {
-        return $model->update($data);
-    }
-
-    public function delete($id)
-    {
-        return $this->model->delete($id);
-    }
 }

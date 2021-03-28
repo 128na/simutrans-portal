@@ -6,7 +6,7 @@ use App\Models\Article;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * 記事閲覧時に閲覧をカウントする
+ * 記事閲覧時に閲覧をカウントする.
  */
 class ArticleShown
 {
@@ -15,8 +15,7 @@ class ArticleShown
     public $article;
 
     /**
-     * 新しいイベントインスタンスの生成
-     *
+     * 新しいイベントインスタンスの生成.
      */
     public function __construct(Article $article)
     {

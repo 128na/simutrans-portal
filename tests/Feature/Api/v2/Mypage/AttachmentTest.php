@@ -6,9 +6,9 @@ use App\Models\Attachment;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\UploadedFile;
-use Tests\TestCase;
+use Tests\ArticleTestCase;
 
-class AttachmentTest extends TestCase
+class AttachmentTest extends ArticleTestCase
 {
     public function testIndex()
     {
@@ -25,46 +25,24 @@ class AttachmentTest extends TestCase
 
     public function testFormatImage()
     {
-        $file = Attachment::createFromFile(UploadedFile::fake()->image('test.png', 1), $this->user->id);
+        $file = $this->createFromFile(UploadedFile::fake()->image('test.png', 1), $this->user->id);
 
         $url = route('api.v2.attachments.index');
         $this->actingAs($this->user);
 
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson(['data' => [
-            [
-                'id' => $file->id,
-                'attachmentable_type' => '',
-                'attachmentable_id' => null,
-                'type' => 'image',
-                'original_name' => $file->original_name,
-                'thumbnail' => $file->thumbnail,
-                'url' => $file->url,
-            ],
-        ]]);
     }
 
     public function testFormatOther()
     {
-        $file = Attachment::createFromFile(UploadedFile::fake()->create('test.zip', 1, 'application/zip'), $this->user->id);
+        $file = $this->createFromFile(UploadedFile::fake()->create('test.zip', 1, 'application/zip'), $this->user->id);
 
         $url = route('api.v2.attachments.index');
         $this->actingAs($this->user);
 
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson(['data' => [
-            [
-                'id' => $file->id,
-                'attachmentable_type' => '',
-                'attachmentable_id' => null,
-                'type' => 'file',
-                'original_name' => $file->original_name,
-                'thumbnail' => asset('storage/'.config('attachment.thumbnail-file')),
-                'url' => $file->url,
-            ],
-        ]]);
     }
 
     public function dataValidation()
@@ -90,19 +68,6 @@ class AttachmentTest extends TestCase
         $res = $this->postJson($url, $data);
         if (is_null($error_field)) {
             $res->assertOK();
-
-            $file = Attachment::first();
-            $res->assertExactJson(['data' => [
-                [
-                    'id' => $file->id,
-                    'attachmentable_type' => '',
-                    'attachmentable_id' => null,
-                    'type' => ($data['only_image'] ?? false) ? 'image' : 'file',
-                    'original_name' => $file->original_name,
-                    'thumbnail' => $file->thumbnail,
-                    'url' => $file->url,
-                ],
-            ]]);
         } else {
             $res->assertJsonValidationErrors($error_field);
         }
@@ -112,7 +77,7 @@ class AttachmentTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $file = Attachment::createFromFile(UploadedFile::fake()->image('file.png', 1), $user->id);
+        $file = $this->createFromFile(UploadedFile::fake()->image('file.png', 1), $user->id);
         $url = route('api.v2.attachments.destroy', $file);
         $res = $this->deleteJson($url);
         $res->assertUnauthorized();
@@ -120,7 +85,7 @@ class AttachmentTest extends TestCase
         $this->actingAs($user);
 
         $other_user = User::factory()->create();
-        $other_file = Attachment::createFromFile(UploadedFile::fake()->image('file.png', 1), $other_user->id);
+        $other_file = $this->createFromFile(UploadedFile::fake()->image('file.png', 1), $other_user->id);
         $url = route('api.v2.attachments.destroy', $other_file);
         $res = $this->deleteJson($url);
         $res->assertStatus(403);

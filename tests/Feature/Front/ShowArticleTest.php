@@ -4,9 +4,9 @@ namespace Tests\Feature\Front;
 
 use App\Models\User;
 use Closure;
-use Tests\TestCase;
+use Tests\ArticleTestCase;
 
-class ShowArticleTest extends TestCase
+class ShowArticleTest extends ArticleTestCase
 {
     /**
      *  @dataProvider dataShow

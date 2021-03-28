@@ -6,22 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Attachment\StoreRequest;
 use App\Http\Resources\Api\Mypage\Attachments as AttachmentsResource;
 use App\Models\Attachment;
-use App\Services\AttachmentService;
+use App\Repositories\AttachmentRepository;
 use Illuminate\Support\Facades\Auth;
 
 class AttachmentController extends Controller
 {
-    private AttachmentService $attachment_service;
+    private AttachmentRepository $attachmentRepository;
 
-    public function __construct(AttachmentService $attachment_service)
+    public function __construct(AttachmentRepository $attachmentRepository)
     {
-        $this->attachment_service = $attachment_service;
+        $this->attachmentRepository = $attachmentRepository;
     }
 
     public function index()
     {
         return new AttachmentsResource(
-            $this->attachment_service->getAttachments(Auth::user())
+            $this->attachmentRepository->findAllByUser(Auth::user())
         );
     }
 
@@ -29,7 +29,7 @@ class AttachmentController extends Controller
     {
         abort_unless($request->hasFile('file'), 400);
 
-        $this->attachment_service->createFromFile(Auth::user(), $request);
+        $this->attachmentRepository->createFromFile(Auth::user(), $request->file);
 
         return $this->index();
     }
@@ -38,7 +38,7 @@ class AttachmentController extends Controller
     {
         abort_unless($attachment->user_id === Auth::id(), 403);
 
-        $this->attachment_service->destroy($attachment);
+        $this->attachmentRepository->delete($attachment);
 
         return $this->index();
     }

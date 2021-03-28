@@ -2,17 +2,16 @@
 
 namespace Tests\Feature\Api\v2\Mypage;
 
-use App\Models\Attachment;
 use Closure;
 use Illuminate\Http\UploadedFile;
-use Tests\TestCase;
+use Tests\ArticleTestCase;
 
-class VerifiedTest extends TestCase
+class VerifiedTest extends ArticleTestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
-        $this->attachment = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
+        $this->attachment = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
     }
 
     /**

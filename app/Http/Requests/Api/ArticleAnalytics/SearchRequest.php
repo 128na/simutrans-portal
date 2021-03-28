@@ -15,6 +15,7 @@ class SearchRequest extends FormRequest
     public function rules()
     {
         $user_id = Auth::id();
+
         return [
             'ids' => 'required|array|max:10',
             'ids.*' => "required|exists:articles,id,user_id,{$user_id}",

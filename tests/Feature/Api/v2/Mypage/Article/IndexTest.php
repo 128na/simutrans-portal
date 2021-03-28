@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Api\v2\Mypage\Article;
 
-use Tests\TestCase;
+use Tests\ArticleTestCase;
 
-class IndexTest extends TestCase
+class IndexTest extends ArticleTestCase
 {
     public function testIndex()
     {

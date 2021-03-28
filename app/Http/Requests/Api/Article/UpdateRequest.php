@@ -6,10 +6,10 @@ use Illuminate\Validation\Rule;
 
 class UpdateRequest extends BaseRequest
 {
-
     protected function baseRule()
     {
         $article_id = request()->input('article.id');
+
         return [
             'article.status' => ['required', Rule::in(config('status'))],
             'article.title' => "required|unique:articles,title,{$article_id}|max:255",

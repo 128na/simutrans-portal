@@ -1,28 +1,21 @@
 <?php
+
 namespace App\Listeners;
 
 use App\Events\ArticleShown;
-use App\Models\ViewCount;
+use App\Repositories\ViewCountRepository;
 
 class AddViewRecord
 {
-    /**
-     * イベントリスナ生成
-     *
-     * @return void
-     */
-    public function __construct()
+    private ViewCountRepository $viewCountRepository;
+
+    public function __construct(ViewCountRepository $viewCountRepository)
     {
-        //
+        $this->viewCountRepository = $viewCountRepository;
     }
 
-    /**
-     * イベントの処理
-     *
-     * @return void
-     */
     public function handle(ArticleShown $event)
     {
-        ViewCount::countUp($event->article);
+        $this->viewCountRepository->countUp($event->article);
     }
 }

@@ -9,7 +9,8 @@ class User extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function toArray($request)
@@ -20,7 +21,7 @@ class User extends JsonResource
             'email' => $this->email,
             'profile' => new Profile($this->profile),
             'admin' => $this->isAdmin(),
-            'verified' => !!$this->email_verified_at,
+            'verified' => (bool) $this->email_verified_at,
             'attachments' => new Attachments($this->profile->attachments),
         ];
     }

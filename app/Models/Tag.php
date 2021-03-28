@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Article;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
@@ -26,14 +25,7 @@ class Tag extends Model
     */
     public function scopePopular($query)
     {
-        return $query->withCount('articles')->orderBy('articles_count', 'desc');
-    }
-
-    /**
-     * 記事にリレーションがない孤独なタグを削除する
-     */
-    public static function removeDoesntHaveRelation()
-    {
-        self::doesntHave('articles')->delete();
+        return $query->withCount(['articles' => fn ($query) => $query->active()])
+            ->orderBy('articles_count', 'desc');
     }
 }

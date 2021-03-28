@@ -7,29 +7,28 @@ use App\Events\ArticleShown;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Article\SearchRequest;
 use App\Models\Article;
-use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
-use App\Services\ArticleService;
-use App\Services\CategoryService;
-use App\Services\TagService;
+use App\Repositories\ArticleRepository;
+use App\Repositories\CategoryRepository;
+use App\Repositories\TagRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
-    private ArticleService $article_service;
-    private CategoryService $category_service;
-    private TagService $tag_service;
+    private ArticleRepository $articleRepository;
+    private CategoryRepository $categoryRepository;
+    private TagRepository $tagRepository;
 
     public function __construct(
-        ArticleService $article_service,
-        CategoryService $category_service,
-        TagService $tag_service
+        ArticleRepository $articleRepository,
+        CategoryRepository $categoryRepository,
+        TagRepository $tagRepository
     ) {
-        $this->article_service = $article_service;
-        $this->category_service = $category_service;
-        $this->tag_service = $tag_service;
+        $this->articleRepository = $articleRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -37,7 +36,7 @@ class ArticleController extends Controller
      */
     public function addons()
     {
-        $contents = ['articles' => $this->article_service->getAddonArticles()];
+        $contents = ['articles' => $this->articleRepository->paginateAddonArticles()];
 
         return view('front.articles.index', $contents);
     }
@@ -47,7 +46,7 @@ class ArticleController extends Controller
      */
     public function ranking()
     {
-        $contents = ['articles' => $this->article_service->getRankingArticles()];
+        $contents = ['articles' => $this->articleRepository->paginateRankingArticles()];
 
         return view('front.articles.index', $contents);
     }
@@ -57,7 +56,7 @@ class ArticleController extends Controller
      */
     public function pages()
     {
-        $contents = ['articles' => $this->article_service->getCommonArticles()];
+        $contents = ['articles' => $this->articleRepository->paginateCommonArticles()];
 
         return view('front.articles.index', $contents);
     }
@@ -67,7 +66,7 @@ class ArticleController extends Controller
      */
     public function announces()
     {
-        $contents = ['articles' => $this->article_service->getAnnouces()];
+        $contents = ['articles' => $this->articleRepository->paginateAnnouces()];
 
         return view('front.articles.index', $contents);
     }
@@ -79,13 +78,13 @@ class ArticleController extends Controller
     {
         abort_unless($article->is_publish, 404);
 
-        $is_owner = Auth::check() && Auth::user()->can('update', $article);
+        $isOwner = Auth::check() && Auth::user()->can('update', $article);
 
-        if (!$is_owner) {
+        if (!$isOwner) {
             event(new ArticleShown($article));
         }
 
-        $contents = ['article' => $this->article_service->getArticle($article, $is_owner)];
+        $contents = ['article' => $this->articleRepository->getArticle($article, $isOwner)];
 
         return view('front.articles.show', $contents);
     }
@@ -112,11 +111,11 @@ class ArticleController extends Controller
     /**
      * カテゴリ(slug)の投稿一覧画面.
      */
-    public function category($type, $slug)
+    public function category(string $type, string $slug)
     {
-        $category = $this->category_service->findOrFailByTypeAndSlug($type, $slug);
+        $category = $this->categoryRepository->findOrFailByTypeAndSlug($type, $slug);
         $contents = [
-            'articles' => $this->article_service->getCategoryArtciles($category),
+            'articles' => $this->articleRepository->paginateCategoryArtciles($category),
             'category' => $category,
         ];
 
@@ -126,13 +125,13 @@ class ArticleController extends Controller
     /**
      * カテゴリ(pak/addon)の投稿一覧画面.
      */
-    public function categoryPakAddon($pak_slug, $addon_slug)
+    public function categoryPakAddon(string $pakSlug, string $addonSlug)
     {
-        $pak = $this->category_service->findOrFailByTypeAndSlug('pak', $pak_slug);
-        $addon = $this->category_service->findOrFailByTypeAndSlug('addon', $addon_slug);
+        $pak = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
+        $addon = $this->categoryRepository->findOrFailByTypeAndSlug('addon', $addonSlug);
 
         $contents = [
-            'articles' => $this->article_service->getPakAddonCategoryArtciles($pak, $addon),
+            'articles' => $this->articleRepository->paginatePakAddonCategoryArtciles($pak, $addon),
             'categories' => ['pak' => $pak, 'addon' => $addon],
         ];
 
@@ -144,7 +143,7 @@ class ArticleController extends Controller
      */
     public function tag(Tag $tag)
     {
-        $contents = ['articles' => $this->article_service->getTagArticles($tag), 'tag' => $tag];
+        $contents = ['articles' => $this->articleRepository->paginateTagArticles($tag), 'tag' => $tag];
 
         return view('front.articles.index', $contents);
     }
@@ -154,7 +153,7 @@ class ArticleController extends Controller
      */
     public function user(User $user)
     {
-        $contents = ['articles' => $this->article_service->getUserArticles($user), 'user' => $user];
+        $contents = ['articles' => $this->articleRepository->paginateUserArticles($user), 'user' => $user];
 
         return view('front.articles.index', $contents);
     }
@@ -164,7 +163,8 @@ class ArticleController extends Controller
      */
     public function search(SearchRequest $request)
     {
-        $contents = ['articles' => $this->article_service->getSearchArticles($request), 'request' => $request];
+        $word = $request->word;
+        $contents = ['articles' => $this->articleRepository->paginateSearchArticles($word), 'request' => $request];
 
         return view('front.articles.index', $contents);
     }
@@ -174,7 +174,7 @@ class ArticleController extends Controller
      */
     public function tags()
     {
-        $contents = ['tags' => $this->tag_service->getAllTags()];
+        $contents = ['tags' => $this->tagRepository->getAllTags()];
 
         return view('front.tags', $contents);
     }

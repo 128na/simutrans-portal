@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use Tests\ArticleTestCase;
 
-class MiscTest extends TestCase
+class MiscTest extends ArticleTestCase
 {
     /**
      * feedが表示されること.

@@ -7,10 +7,10 @@ use Closure;
 class RedirectUnlessSSL
 {
     /**
-     * 本番、ステージング環境でhttpアクセスの場合リダイレクトする
+     * 本番、ステージング環境でhttpアクセスの場合リダイレクトする.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)

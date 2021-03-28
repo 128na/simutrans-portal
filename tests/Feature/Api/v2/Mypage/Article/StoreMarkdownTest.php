@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Api\v2\Mypage\Article;
 
-use App\Models\Attachment;
+use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Category;
 use Closure;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Bus;
 use Tests\ArticleTestCase;
 
 class StoreMarkdownTest extends ArticleTestCase
@@ -17,11 +18,12 @@ class StoreMarkdownTest extends ArticleTestCase
      */
     public function testValidation(Closure $fn, ?string $error_field)
     {
+        Bus::fake();
         $url = route('api.v2.articles.store');
 
         $this->actingAs($this->user);
 
-        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
+        $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
 
         $date = now()->format('YmdHis');
         $data = [
@@ -45,8 +47,10 @@ class StoreMarkdownTest extends ArticleTestCase
             $res->assertStatus(200);
             $get_response = json_decode($this->getJson(route('api.v2.articles.index'))->content(), true);
             $res->assertJson($get_response);
+            Bus::assertDispatched(JobUpdateRelated::class);
         } else {
             $res->assertJsonValidationErrors($error_field);
+            Bus::assertNotDispatched(JobUpdateRelated::class);
         }
     }
 
@@ -56,7 +60,7 @@ class StoreMarkdownTest extends ArticleTestCase
 
         $this->actingAs($this->user);
 
-        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
+        $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
 
         $date = now()->format('YmdHis');
         $data = [

@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Services;
 
+use cebe\markdown\GithubMarkdown;
+use HTMLPurifier;
+use HTMLPurifier_Config;
 use Illuminate\Support\Facades\Blade;
-use \cebe\markdown\GithubMarkdown;
-use \HTMLPurifier;
-use \HTMLPurifier_Config;
 
 /**
  * @see https://github.com/cebe/markdown
@@ -38,6 +39,7 @@ class MarkdownService extends Service
     public function toEscapedHTML(string $markdown)
     {
         $raw = $this->parser->parse($markdown);
+
         return $this->purifier->purify($raw);
     }
 

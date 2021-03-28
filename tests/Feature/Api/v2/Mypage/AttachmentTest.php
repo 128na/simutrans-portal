@@ -6,9 +6,9 @@ use App\Models\Attachment;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\UploadedFile;
-use Tests\TestCase;
+use Tests\ArticleTestCase;
 
-class AttachmentTest extends TestCase
+class AttachmentTest extends ArticleTestCase
 {
     public function testIndex()
     {
@@ -32,17 +32,6 @@ class AttachmentTest extends TestCase
 
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson(['data' => [
-            [
-                'id' => $file->id,
-                'attachmentable_type' => '',
-                'attachmentable_id' => null,
-                'type' => 'image',
-                'original_name' => $file->original_name,
-                'thumbnail' => $file->thumbnail,
-                'url' => $file->url,
-            ],
-        ]]);
     }
 
     public function testFormatOther()
@@ -54,17 +43,6 @@ class AttachmentTest extends TestCase
 
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson(['data' => [
-            [
-                'id' => $file->id,
-                'attachmentable_type' => '',
-                'attachmentable_id' => null,
-                'type' => 'file',
-                'original_name' => $file->original_name,
-                'thumbnail' => asset('storage/'.config('attachment.thumbnail-file')),
-                'url' => $file->url,
-            ],
-        ]]);
     }
 
     public function dataValidation()
@@ -90,19 +68,6 @@ class AttachmentTest extends TestCase
         $res = $this->postJson($url, $data);
         if (is_null($error_field)) {
             $res->assertOK();
-
-            $file = Attachment::first();
-            $res->assertExactJson(['data' => [
-                [
-                    'id' => $file->id,
-                    'attachmentable_type' => '',
-                    'attachmentable_id' => null,
-                    'type' => ($data['only_image'] ?? false) ? 'image' : 'file',
-                    'original_name' => $file->original_name,
-                    'thumbnail' => $file->thumbnail,
-                    'url' => $file->url,
-                ],
-            ]]);
         } else {
             $res->assertJsonValidationErrors($error_field);
         }

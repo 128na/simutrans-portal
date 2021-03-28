@@ -4,9 +4,9 @@ namespace Tests\Feature\Api\v2\Mypage;
 
 use Closure;
 use Illuminate\Http\UploadedFile;
-use Tests\TestCase;
+use Tests\ArticleTestCase;
 
-class VerifiedTest extends TestCase
+class VerifiedTest extends ArticleTestCase
 {
     protected function setUp(): void
     {

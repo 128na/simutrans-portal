@@ -300,4 +300,37 @@ class ArticleRepository extends BaseRepository
 
         return $this->load($article, $relations);
     }
+
+    /**
+     * 論理削除されているものも含めた一覧.
+     */
+    public function findAllWithTrashed(): Collection
+    {
+        return $this->model
+            ->withTrashed()
+            ->withUserTrashed()
+            ->with(['user' => fn ($q) => $q->withTrashed()])
+            ->get();
+    }
+
+    /**
+     * 論理削除されているものも含めて探す.
+     */
+    public function findWithTrashed(int $id): Article
+    {
+        return $this->model
+            ->withTrashed()
+            ->withUserTrashed()
+            ->findOrFail($id);
+    }
+
+    /**
+     * 論理削除状態を切り替える.
+     */
+    public function toggleDelete(Article $article): void
+    {
+        $article->trashed()
+            ? $article->restore()
+            : $article->delete();
+    }
 }

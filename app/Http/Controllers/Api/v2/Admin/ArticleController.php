@@ -5,41 +5,26 @@ namespace App\Http\Controllers\Api\v2\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Admin\ArticleUpdateRequest;
 use App\Jobs\Article\JobUpdateRelated;
-use App\Models\Article;
+use App\Repositories\ArticleRepository;
 
 class ArticleController extends Controller
 {
-    const ARTICLE_COLUMNS = [
-        'id',
-        'user_id',
-        'title',
-        'slug',
-        'post_type',
-        'status',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-    const USER_COLUMNS = [
-        'id',
-        'name',
-    ];
+    private ArticleRepository $articleRepository;
+
+    public function __construct(ArticleRepository $articleRepository)
+    {
+        $this->articleRepository = $articleRepository;
+    }
 
     public function index()
     {
-        return Article::select(self::ARTICLE_COLUMNS)
-            ->withTrashed()
-            ->withUserTrashed()
-            ->with(['user' => fn ($q) => $q->select(self::USER_COLUMNS)->withTrashed()])
-            ->get();
+        return $this->articleRepository->findAllWithTrashed();
     }
 
     public function update(ArticleUpdateRequest $request, int $id)
     {
-        Article::withTrashed()
-            ->withUserTrashed()
-            ->findOrFail($id)
-            ->update($request->validated()['article'] ?? []);
+        $article = $this->articleRepository->findWithTrashed($id);
+        $this->articleRepository->update($article, $request->validated()['article']);
 
         dispatch_now(app(JobUpdateRelated::class));
 
@@ -48,13 +33,8 @@ class ArticleController extends Controller
 
     public function destroy(int $id)
     {
-        tap(Article::withTrashed()
-            ->withUserTrashed()
-            ->findOrFail($id), function ($a) {
-                $a->deleted_at
-                    ? $a->restore()
-                    : $a->delete();
-            });
+        $article = $this->articleRepository->findWithTrashed($id);
+        $this->articleRepository->toggleDelete($article);
 
         dispatch_now(app(JobUpdateRelated::class));
 

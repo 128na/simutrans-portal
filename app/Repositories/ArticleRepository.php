@@ -9,6 +9,7 @@ use App\Models\User;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 
@@ -97,28 +98,51 @@ class ArticleRepository extends BaseRepository
             ->orderBy($order[0], $order[1]);
     }
 
-    /**
-     * お知らせ記事一覧.
-     */
-    public function queryAnnouces(): Builder
+    private function queryAnnouces(): Builder
     {
         return $this->basicQuery()
             ->announce();
     }
 
     /**
-     * 一般記事一覧.
+     * お知らせ記事一覧.
      */
-    public function queryCommonArticles(): Builder
+    public function getAnnouces(?int $limit = null): Collection
+    {
+        return $this->queryAnnouces()->limit($limit)->get();
+    }
+
+    /**
+     * お知らせ記事一覧.
+     */
+    public function paginateAnnouces(?int $limit = null): LengthAwarePaginator
+    {
+        return $this->queryAnnouces()->paginate($limit);
+    }
+
+    private function queryCommonArticles(): Builder
     {
         return $this->basicQuery()
             ->withoutAnnounce();
     }
 
     /**
-     * pak別の投稿一覧.
+     * 一般記事一覧.
      */
-    public function queryPakArticles(string $pak): Builder
+    public function getCommonArticles(?int $limit = null): Collection
+    {
+        return $this->queryCommonArticles()->limit($limit)->get();
+    }
+
+    /**
+     * 一般記事一覧.
+     */
+    public function paginateCommonArticles(?int $limit = null): LengthAwarePaginator
+    {
+        return $this->queryCommonArticles()->paginate($limit);
+    }
+
+    private function queryPakArticles(string $pak): Builder
     {
         return $this->basicQuery()
             ->pak($pak)
@@ -126,9 +150,14 @@ class ArticleRepository extends BaseRepository
     }
 
     /**
-     * アドオン投稿/紹介のデイリーPVランキング.
+     * pak別の投稿一覧.
      */
-    public function queryRankingArticles(array $excludes = []): Builder
+    public function getPakArticles(string $pak, ?int $limit = null): Collection
+    {
+        return $this->queryPakArticles($pak)->limit($limit)->get();
+    }
+
+    private function queryRankingArticles(array $excludes = []): Builder
     {
         return $this->basicQuery()
             ->addon()
@@ -137,9 +166,22 @@ class ArticleRepository extends BaseRepository
     }
 
     /**
-     * アドオン投稿/紹介の一覧.
+     * アドオン投稿/紹介のデイリーPVランキング.
      */
-    public function queryAddonArticles(): Builder
+    public function getRankingArticles(array $excludes = [], ?int $limit = null): Collection
+    {
+        return $this->queryRankingArticles($excludes)->limit($limit)->get();
+    }
+
+    /**
+     * アドオン投稿/紹介のデイリーPVランキング.
+     */
+    public function paginateRankingArticles(array $excludes = [], ?int $limit = null): LengthAwarePaginator
+    {
+        return $this->queryRankingArticles($excludes)->paginate($limit);
+    }
+
+    private function queryAddonArticles(): Builder
     {
         return $this->basicQuery()
             ->addon()
@@ -147,17 +189,27 @@ class ArticleRepository extends BaseRepository
     }
 
     /**
-     * カテゴリの投稿一覧.
+     * アドオン投稿/紹介の一覧.
      */
-    public function queryCategoryArtciles(Category $category): Relation
+    public function paginateAddonArticles(?int $limit = null): LengthAwarePaginator
+    {
+        return $this->queryAddonArticles()->paginate($limit);
+    }
+
+    private function queryCategoryArtciles(Category $category): Relation
     {
         return $this->basicRelationQuery($category->articles());
     }
 
     /**
-     * カテゴリ(pak/addon)の投稿一覧.
+     * カテゴリの投稿一覧.
      */
-    public function queryPakAddonCategoryArtciles(Category $pak, Category $addon): Builder
+    public function paginateCategoryArtciles(Category $category, ?int $limit = null): LengthAwarePaginator
+    {
+        return $this->queryCategoryArtciles($category)->paginate($limit);
+    }
+
+    private function queryPakAddonCategoryArtciles(Category $pak, Category $addon): Builder
     {
         return $this->basicQuery()
             ->whereHas('categories', fn ($query) => $query->where('id', $pak->id))
@@ -165,29 +217,52 @@ class ArticleRepository extends BaseRepository
     }
 
     /**
-     * タグを持つ投稿記事一覧.
+     * カテゴリ(pak/addon)の投稿一覧.
      */
-    public function queryTagArticles(Tag $tag): Relation
+    public function paginatePakAddonCategoryArtciles(Category $pak, Category $addon, ?int $limit = null): LengthAwarePaginator
+    {
+        return $this->queryPakAddonCategoryArtciles($pak, $addon)->paginate($limit);
+    }
+
+    private function queryTagArticles(Tag $tag): Relation
     {
         return $this->basicRelationQuery($tag->articles());
     }
 
     /**
-     * ユーザーの投稿記事一覧.
+     * タグを持つ投稿記事一覧.
      */
-    public function queryUserArticles(User $user): Relation
+    public function paginateTagArticles(Tag $tag, ?int $limit = null): LengthAwarePaginator
+    {
+        return $this->queryTagArticles($tag)->paginate($limit);
+    }
+
+    private function queryUserArticles(User $user): Relation
     {
         return $this->basicRelationQuery($user->articles());
     }
 
     /**
-     * 記事検索結果一覧.
+     * ユーザーの投稿記事一覧.
      */
-    public function querySearchArticles(string $word): Builder
+    public function paginateUserArticles(User $user, ?int $limit = null): LengthAwarePaginator
+    {
+        return $this->queryUserArticles($user)->paginate($limit);
+    }
+
+    private function querySearchArticles(string $word): Builder
     {
         return $this->basicQuery()
             ->search($word)
             ->orderBy('updated_at', 'desc');
+    }
+
+    /**
+     * 記事検索結果一覧.
+     */
+    public function paginateSearchArticles(string $word, ?int $limit = null): LengthAwarePaginator
+    {
+        return $this->querySearchArticles($word)->paginate($limit);
     }
 
     public function cursorCheckLinkArticles(): LazyCollection
@@ -209,5 +284,20 @@ class ArticleRepository extends BaseRepository
             ->limit(24)
             ->with('user:id,name')
             ->get();
+    }
+
+    /**
+     * 記事表示.
+     */
+    public function getArticle(Article $article, bool $withCount = false): Article
+    {
+        $relations = $withCount ? [
+            'user:id,name', 'attachments:id,attachmentable_id,attachmentable_type,path', 'categories:id,type,slug', 'tags:id,name',
+            'totalViewCount:article_id,count', 'totalConversionCount:article_id,count',
+        ] : [
+            'user:id,name', 'attachments:id,attachmentable_id,attachmentable_type,path', 'categories:id,type,slug', 'tags:id,name',
+        ];
+
+        return $this->load($article, $relations);
     }
 }

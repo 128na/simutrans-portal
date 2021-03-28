@@ -17,7 +17,7 @@ class UpdateRelatedTest extends TestCase
         Queue::fake();
         Queue::assertNothingPushed();
 
-        JobUpdateRelated::dispatch();
+        dispatch_now(app(JobUpdateRelated::class));
 
         Queue::assertPushed(JobUpdateRelated::class);
     }

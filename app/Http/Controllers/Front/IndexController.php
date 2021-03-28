@@ -3,36 +3,44 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Services\ArticleService;
+use App\Repositories\ArticleRepository;
 
 /**
  * トップページ.
  */
 class IndexController extends Controller
 {
-    private ArticleService $article_service;
+    private ArticleRepository $articleRepository;
 
-    public function __construct(
-        ArticleService $article_service
-    ) {
-        $this->article_service = $article_service;
+    public function __construct(ArticleRepository $articleRepository)
+    {
+        $this->articleRepository = $articleRepository;
     }
 
     public function index()
     {
-        $contents = $this->article_service->getTopContents();
+        $contents = $this->getContents();
 
         return view('front.index', $contents);
     }
 
-    public function language($name)
+    private function getContents(): array
     {
-        if (array_key_exists($name, config('languages'))) {
-            \App::setLocale($name);
+        $announces = $this->articleRepository->getAnnouces(3);
+        $pages = $this->articleRepository->getCommonArticles(3);
+        $latest = [
+            '128-japan' => $this->articleRepository->getPakArticles('128-japan', 6),
+            '128' => $this->articleRepository->getPakArticles('128', 6),
+            '64' => $this->articleRepository->getPakArticles('64', 6),
+        ];
+        $excludes = collect($latest)->flatten()->pluck('id')->unique()->toArray();
+        $ranking = $this->articleRepository->getRankingArticles($excludes, 6);
 
-            return redirect()->back(307, ['Cache-Control' => 'no-store'])->withCookie('lang', $name);
-        }
-
-        return redirect()->back();
+        return [
+            'announces' => $announces,
+            'pages' => $pages,
+            'latest' => $latest,
+            'ranking' => $ranking,
+        ];
     }
 }

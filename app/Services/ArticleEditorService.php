@@ -135,4 +135,9 @@ class ArticleEditorService extends Service
         $tagIds = $this->tagRepository->getIdsByNames($request->input('article.tags', []));
         $this->articleRepository->syncTags($article, $tagIds->toArray());
     }
+
+    public function getArticle(Article $article, bool $withCount): Article
+    {
+        return $this->articleRepository->getArticle($article, $withCount);
+    }
 }

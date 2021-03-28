@@ -20,8 +20,8 @@ class UserTest extends TestCase
     {
         parent::setUp();
         $this->user2 = User::factory()->create(['name' => 'other name', 'email' => 'other@example.com']);
-        $this->not_image = Attachment::createFromFile(UploadedFile::fake()->create('not_image.zip', 1), $this->user->id);
-        $this->user2_avatar = Attachment::createFromFile(UploadedFile::fake()->image('avatar.jpg', 1), $this->user2->id);
+        $this->not_image = $this->createFromFile(UploadedFile::fake()->create('not_image.zip', 1), $this->user->id);
+        $this->user2_avatar = $this->createFromFile(UploadedFile::fake()->image('avatar.jpg', 1), $this->user2->id);
     }
 
     public function testIndex()

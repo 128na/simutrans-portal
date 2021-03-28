@@ -2,23 +2,11 @@
 
 namespace Tests\Feature\Api\v2\Mypage\Article;
 
-use App\Models\Article;
-use App\Models\User;
 use Closure;
-use Tests\TestCase;
+use Tests\ArticleTestCase;
 
-class AnalyticsTest extends TestCase
+class AnalyticsTest extends ArticleTestCase
 {
-    private User $user2;
-    private Article $article2;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->user2 = User::factory()->create();
-        $this->article2 = Article::factory()->create(['user_id' => $this->user2->id]);
-    }
-
     /**
      * @dataProvider dataValidation
      */

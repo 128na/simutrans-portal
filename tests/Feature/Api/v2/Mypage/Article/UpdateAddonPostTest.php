@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Api\v2\Mypage\Article;
 
-use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Tag;
 use Closure;
@@ -28,8 +27,8 @@ class UpdateAddonPostTest extends ArticleTestCase
         $url = route('api.v2.articles.update', $this->article);
         $this->actingAs($this->user);
 
-        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
-        $addon = Attachment::createFromFile(UploadedFile::fake()->create('addon.zip', 1), $this->user->id);
+        $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
+        $addon = $this->createFromFile(UploadedFile::fake()->create('addon.zip', 1), $this->user->id);
 
         $date = now()->format('YmdHis');
         $data = [
@@ -73,8 +72,8 @@ class UpdateAddonPostTest extends ArticleTestCase
         $url = route('api.v2.articles.update', $this->article);
         $this->actingAs($this->user);
 
-        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
-        $addon = Attachment::createFromFile(UploadedFile::fake()->create('addon.zip', 1), $this->user->id);
+        $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
+        $addon = $this->createFromFile(UploadedFile::fake()->create('addon.zip', 1), $this->user->id);
 
         $date = now()->format('YmdHis');
         $data = [

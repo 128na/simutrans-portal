@@ -6,48 +6,44 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Article\StoreRequest;
 use App\Http\Requests\Api\Article\UpdateRequest;
 use App\Http\Resources\Api\Mypage\Articles as ArticlesResouce;
-use App\Jobs\Article\UpdateRelated;
+use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
 use App\Notifications\ArticlePublished;
 use App\Notifications\ArticleUpdated;
 use App\Services\ArticleEditorService;
 use App\Services\ArticleService;
-use App\Services\TagService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class EditorController extends Controller
 {
-    private ArticleService $article_service;
-    private ArticleEditorService $article_editor_service;
-    private TagService $tag_service;
+    private ArticleService $articleService;
+    private ArticleEditorService $articleEditorService;
 
     public function __construct(
-        ArticleEditorService $article_editor_service,
-        ArticleService $article_service,
-        TagService $tag_service
+        ArticleEditorService $articleEditorService,
+        ArticleService $articleService
     ) {
-        $this->article_editor_service = $article_editor_service;
-        $this->article_service = $article_service;
-        $this->tag_service = $tag_service;
+        $this->articleEditorService = $articleEditorService;
+        $this->articleService = $articleService;
     }
 
     public function index()
     {
         return new ArticlesResouce(
-            $this->article_editor_service->getArticles(Auth::user())
+            $this->articleEditorService->getArticles(Auth::user())
         );
     }
 
     public function options()
     {
-        return $this->article_editor_service->getOptions(Auth::user());
+        return $this->articleEditorService->getOptions(Auth::user());
     }
 
     public function store(StoreRequest $request)
     {
         DB::beginTransaction();
-        $article = $this->article_editor_service->storeArticle(Auth::user(), $request);
+        $article = $this->articleEditorService->storeArticle(Auth::user(), $request);
 
         if ($request->preview) {
             $preview = $this->createPreview($article);
@@ -55,7 +51,7 @@ class EditorController extends Controller
 
             return $preview;
         }
-        UpdateRelated::dispatchSync();
+        dispatch_now(app(JobUpdateRelated::class));
         DB::commit();
 
         if ($article->is_publish && $request->should_tweet) {
@@ -68,7 +64,7 @@ class EditorController extends Controller
     public function update(UpdateRequest $request, Article $article)
     {
         DB::beginTransaction();
-        $article = $this->article_editor_service->updateArticle($article, $request);
+        $article = $this->articleEditorService->updateArticle($article, $request);
 
         if ($request->preview) {
             $preview = $this->createPreview($article);
@@ -76,7 +72,7 @@ class EditorController extends Controller
 
             return $preview;
         }
-        UpdateRelated::dispatchSync();
+        dispatch_now(app(JobUpdateRelated::class));
         DB::commit();
 
         if ($article->is_publish && $request->should_tweet) {
@@ -88,7 +84,7 @@ class EditorController extends Controller
 
     private function createPreview(Article $article)
     {
-        $article = $this->article_service->getArticle($article, true);
+        $article = $this->articleService->getArticle($article, true);
 
         $contents = ['preview' => true, 'article' => $article];
 

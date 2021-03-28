@@ -7,19 +7,19 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
+use App\Repositories\ArticleRepository;
+use Illuminate\Support\Collection;
 
 class ArticleService extends Service
 {
-    private $relations_for_listing = ['user:id,name', 'attachments:id,attachmentable_id,attachmentable_type,path', 'categories:id,type,slug'];
-    private $article_columns = ['id', 'user_id', 'slug', 'title', 'post_type', 'contents', 'updated_at'];
+    private ArticleRepository $articleRepository;
 
-    public function __construct(Article $model)
+    public function __construct(ArticleRepository $articleRepository)
     {
-        $this->model = $model;
-        $this->per_page = 24;
+        $this->articleRepository = $articleRepository;
     }
 
-    public function getTopContents()
+    public function getTopContents(): array
     {
         $announces = $this->getAnnouces(3);
         $pages = $this->getCommonArticles(3);
@@ -39,170 +39,100 @@ class ArticleService extends Service
         ];
     }
 
-    private function limitOrPaginate($query, $limit = null)
-    {
-        return $limit ? $query->limit($limit)->get() : $query->paginate($this->per_page);
-    }
-
     /**
      * お知らせ記事一覧.
      */
-    public function getAnnouces($limit = null)
+    public function getAnnouces(?int $limit = null): Collection
     {
-        $query = $this->model->select($this->article_columns)
-            ->announce()
-            ->active()
-            ->withCache()
-            ->with($this->relations_for_listing);
-
-        return $this->limitOrPaginate($query, $limit);
+        return $this->articleRepository->queryAnnouces()->limit($limit)->get();
     }
 
     /**
      * 一般記事一覧.
      */
-    public function getCommonArticles($limit = null)
+    public function getCommonArticles(?int $limit = null): Collection
     {
-        $query = $this->model->select($this->article_columns)
-            ->withoutAnnounce()
-            ->active()
-            ->withCache()
-            ->with($this->relations_for_listing);
-
-        return $this->limitOrPaginate($query, $limit);
+        return $this->articleRepository->queryCommonArticles()->limit($limit)->get();
     }
 
     /**
      * pak別の投稿一覧.
      */
-    public function getPakArticles($pak, $limit = null)
+    public function getPakArticles(string $pak, ?int $limit = null): Collection
     {
-        $query = $this->model->select($this->article_columns)
-            ->pak($pak)
-            ->addon()
-            ->active()
-            ->withCache()
-            ->with($this->relations_for_listing);
-
-        return $this->limitOrPaginate($query, $limit);
+        return $this->articleRepository->queryPakArticles($pak)->limit($limit)->get();
     }
 
     /**
      * アドオン投稿/紹介のデイリーPVランキング.
      */
-    public function getRankingArticles($excludes = [], $limit = null)
+    public function getRankingArticles(array $excludes = [], ?int $limit = null): Collection
     {
-        $query = $this->model->select($this->article_columns)
-            ->addon()
-            ->ranking()
-            ->active()
-            ->whereNotIn('articles.id', $excludes)
-            ->withCache()
-            ->with($this->relations_for_listing);
-
-        return $this->limitOrPaginate($query, $limit);
+        return $this->articleRepository->queryRankingArticles($excludes)->limit($limit)->get();
     }
 
     /**
      * アドオン投稿/紹介の一覧.
      */
-    public function getAddonArticles($limit = null)
+    public function getAddonArticles(?int $limit = null): Collection
     {
-        $query = $this->model->select($this->article_columns)
-            ->addon()
-            ->active()
-            ->withCache()
-            ->with($this->relations_for_listing);
-
-        return $this->limitOrPaginate($query, $limit);
+        return $this->articleRepository->queryAddonArticles()->limit($limit)->get();
     }
 
     /**
      * カテゴリの投稿一覧.
      */
-    public function getCategoryArtciles(Category $category, $limit = null)
+    public function getCategoryArtciles(Category $category, ?int $limit = null): Collection
     {
-        $query = $category->articles()
-            ->select($this->article_columns)
-            ->active()
-            ->withCache()
-            ->with($this->relations_for_listing);
-
-        return $this->limitOrPaginate($query, $limit);
+        return $this->articleRepository->queryCategoryArtciles($category)->limit($limit)->get();
     }
 
     /**
      * カテゴリ(pak/addon)の投稿一覧.
      */
-    public function getPakAddonCategoryArtciles(Category $pak, Category $addon, $limit = null)
+    public function getPakAddonCategoryArtciles(Category $pak, Category $addon, ?int $limit = null): Collection
     {
-        $query = $this->model
-            ->select($this->article_columns)
-            ->active()
-            ->whereHas('categories', fn ($query) => $query->where('id', $pak->id))
-            ->whereHas('categories', fn ($query) => $query->where('id', $addon->id))
-            ->withCache()
-            ->with($this->relations_for_listing);
-
-        return $this->limitOrPaginate($query, $limit);
+        return $this->articleRepository->queryPakAddonCategoryArtciles($pak, $addon)->limit($limit)->get();
     }
 
     /**
      * タグを持つ投稿記事一覧.
      */
-    public function getTagArticles(Tag $tag, $limit = null)
+    public function getTagArticles(Tag $tag, ?int $limit = null): Collection
     {
-        $query = $tag->articles()
-            ->select($this->article_columns)
-            ->active()
-            ->withCache()
-            ->with($this->relations_for_listing);
-
-        return $this->limitOrPaginate($query, $limit);
+        return $this->articleRepository->queryTagArticles($tag)->limit($limit)->get();
     }
 
     /**
      * ユーザーの投稿記事一覧.
      */
-    public function getUserArticles(User $user, $limit = null)
+    public function getUserArticles(User $user, ?int $limit = null): Collection
     {
-        $query = $user->articles()
-            ->select($this->article_columns)
-            ->active()
-            ->withCache()
-            ->with($this->relations_for_listing);
-
-        return $this->limitOrPaginate($query, $limit);
+        return $this->articleRepository->queryUserArticles($user)->limit($limit)->get();
     }
 
     /**
      * 記事検索結果一覧.
      */
-    public function getSearchArticles(SearchRequest $request, $limit = null)
+    public function getSearchArticles(SearchRequest $request, ?int $limit = null): Collection
     {
-        $query = $this->model
-            ->select($this->article_columns)
-            ->active()
-            ->search($request->word)
-            ->orderBy('updated_at', 'desc')
-            ->withCache()
-            ->with($this->relations_for_listing);
+        $word = $request->input('word');
 
-        return $this->limitOrPaginate($query, $limit);
+        return $this->articleRepository->querySearchArticles($word)->limit($limit)->get();
     }
 
     /**
      * 記事表示.
      */
-    public function getArticle(Article $article, $with_count = false)
+    public function getArticle(Article $article, bool $withCount = false): Article
     {
-        $relations = $with_count ? [
+        $relations = $withCount ? [
             'user:id,name', 'attachments:id,attachmentable_id,attachmentable_type,path', 'categories:id,type,slug', 'tags:id,name',
             'totalViewCount:article_id,count', 'totalConversionCount:article_id,count',
         ] : [
             'user:id,name', 'attachments:id,attachmentable_id,attachmentable_type,path', 'categories:id,type,slug', 'tags:id,name',
         ];
 
-        return $article->load($relations);
+        return $this->articleRepository->load($article, $relations);
     }
 }

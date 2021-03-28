@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\CompressedImageService;
+use App\Jobs\Attachments\JobCompressImage;
 use Illuminate\Console\Command;
 
 /**
@@ -26,19 +26,6 @@ class CompressImage extends Command
      */
     protected $description = 'Compress Image via tinypng.';
 
-    private CompressedImageService $compressed_image_service;
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct(CompressedImageService $compressed_image_service)
-    {
-        parent::__construct();
-        $this->compressed_image_service = $compressed_image_service;
-    }
-
     /**
      * Execute the console command.
      *
@@ -46,18 +33,7 @@ class CompressImage extends Command
      */
     public function handle()
     {
-        $count = $this->compressed_image_service->getAttachmentsCursor()->each(function ($attachment) {
-            $this->info($attachment->path);
-
-            try {
-                $res = $this->compressed_image_service->compressIfNeeded($attachment);
-                $this->info($res);
-            } catch (\Throwable $e) {
-                $this->error('圧縮失敗');
-                $this->error($e->getMessage());
-            }
-        })->count();
-        logger("$count image compressed");
+        dispatch_now(app(JobCompressImage::class));
 
         return 0;
     }

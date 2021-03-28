@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Api\v2\Mypage\Article;
 
-use App\Models\Attachment;
 use App\Models\Category;
 use Closure;
 use Illuminate\Http\UploadedFile;
@@ -20,8 +19,8 @@ class StorePageTest extends ArticleTestCase
         $url = route('api.v2.articles.store');
         $this->actingAs($this->user);
 
-        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
-        $image = Attachment::createFromFile(UploadedFile::fake()->image('image.jpg', 1), $this->user->id);
+        $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
+        $image = $this->createFromFile(UploadedFile::fake()->image('image.jpg', 1), $this->user->id);
 
         $date = now()->format('YmdHis');
         $data = [
@@ -61,8 +60,8 @@ class StorePageTest extends ArticleTestCase
 
         $this->actingAs($this->user);
 
-        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
-        $image = Attachment::createFromFile(UploadedFile::fake()->image('image.jpg', 1), $this->user->id);
+        $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
+        $image = $this->createFromFile(UploadedFile::fake()->image('image.jpg', 1), $this->user->id);
 
         $date = now()->format('YmdHis');
         $data = [

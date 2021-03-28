@@ -3,15 +3,19 @@
 namespace App\Services;
 
 use App\Http\Requests\Api\ArticleAnalytics\SearchRequest;
-use App\Models\Article;
 use App\Models\User;
+use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable as Carbon;
+use Closure;
+use UnexpectedValueException;
 
 class ArticleAnalyticsService extends Service
 {
-    public function __construct(Article $model)
+    private ArticleRepository $articleRepository;
+
+    public function __construct(ArticleRepository $articleRepository)
     {
-        $this->model = $model;
+        $this->articleRepository = $articleRepository;
     }
 
     public function getArticles(User $user, SearchRequest $request)
@@ -21,18 +25,12 @@ class ArticleAnalyticsService extends Service
         $type = $request->type;
         $ids = $request->ids;
 
-        $period_query = $this->getPeriodQuery($type, $start_date, $end_date);
+        $periodQuery = $this->getPeriodQuery($type, $start_date, $end_date);
 
-        return $user->articles()
-            ->select('id')
-            ->whereIn('id', $ids)
-            ->with([
-                'viewCounts' => $period_query,
-                'conversionCounts' => $period_query,
-            ])->get();
+        return $this->articleRepository->findAllForAnalytics($user, $ids, $periodQuery);
     }
 
-    private function getPeriodQuery($type, $start_date, $end_date)
+    private function getPeriodQuery(string $type, Carbon $start_date, Carbon $end_date): Closure
     {
         $period = $this->getPeriod($type, $start_date, $end_date);
         $type_id = $this->getTypeId($type);
@@ -43,7 +41,7 @@ class ArticleAnalyticsService extends Service
         };
     }
 
-    private function getPeriod($type, $start_date, $end_date)
+    private function getPeriod(string $type, Carbon $start_date, Carbon $end_date): array
     {
         switch ($type) {
             case 'daily':
@@ -53,9 +51,10 @@ class ArticleAnalyticsService extends Service
             case 'yearly':
                 return [$start_date->format('Y'), $end_date->format('Y')];
         }
+        throw new UnexpectedValueException(sprintf('unknown type provided: %s', $type));
     }
 
-    private function getTypeId($type)
+    private function getTypeId($type): int
     {
         switch ($type) {
             case 'daily':
@@ -65,5 +64,6 @@ class ArticleAnalyticsService extends Service
             case 'yearly':
                 return 3;
         }
+        throw new UnexpectedValueException(sprintf('unknown type provided: %s', $type));
     }
 }

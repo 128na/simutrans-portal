@@ -10,26 +10,26 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
+use App\Repositories\CategoryRepository;
+use App\Repositories\TagRepository;
 use App\Services\ArticleService;
-use App\Services\CategoryService;
-use App\Services\TagService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
-    private ArticleService $article_service;
-    private CategoryService $category_service;
-    private TagService $tag_service;
+    private ArticleService $articleService;
+    private CategoryRepository $categoryRepository;
+    private TagRepository $tagRepository;
 
     public function __construct(
-        ArticleService $article_service,
-        CategoryService $category_service,
-        TagService $tag_service
+        ArticleService $articleService,
+        CategoryRepository $categoryRepository,
+        TagRepository $tagRepository
     ) {
-        $this->article_service = $article_service;
-        $this->category_service = $category_service;
-        $this->tag_service = $tag_service;
+        $this->articleService = $articleService;
+        $this->categoryRepository = $categoryRepository;
+        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -37,7 +37,7 @@ class ArticleController extends Controller
      */
     public function addons()
     {
-        $contents = ['articles' => $this->article_service->getAddonArticles()];
+        $contents = ['articles' => $this->articleService->getAddonArticles()];
 
         return view('front.articles.index', $contents);
     }
@@ -47,7 +47,7 @@ class ArticleController extends Controller
      */
     public function ranking()
     {
-        $contents = ['articles' => $this->article_service->getRankingArticles()];
+        $contents = ['articles' => $this->articleService->getRankingArticles()];
 
         return view('front.articles.index', $contents);
     }
@@ -57,7 +57,7 @@ class ArticleController extends Controller
      */
     public function pages()
     {
-        $contents = ['articles' => $this->article_service->getCommonArticles()];
+        $contents = ['articles' => $this->articleService->getCommonArticles()];
 
         return view('front.articles.index', $contents);
     }
@@ -67,7 +67,7 @@ class ArticleController extends Controller
      */
     public function announces()
     {
-        $contents = ['articles' => $this->article_service->getAnnouces()];
+        $contents = ['articles' => $this->articleService->getAnnouces()];
 
         return view('front.articles.index', $contents);
     }
@@ -79,13 +79,13 @@ class ArticleController extends Controller
     {
         abort_unless($article->is_publish, 404);
 
-        $is_owner = Auth::check() && Auth::user()->can('update', $article);
+        $isOwner = Auth::check() && Auth::user()->can('update', $article);
 
-        if (!$is_owner) {
+        if (!$isOwner) {
             event(new ArticleShown($article));
         }
 
-        $contents = ['article' => $this->article_service->getArticle($article, $is_owner)];
+        $contents = ['article' => $this->articleService->getArticle($article, $isOwner)];
 
         return view('front.articles.show', $contents);
     }
@@ -114,9 +114,9 @@ class ArticleController extends Controller
      */
     public function category($type, $slug)
     {
-        $category = $this->category_service->findOrFailByTypeAndSlug($type, $slug);
+        $category = $this->categoryRepository->findOrFailByTypeAndSlug($type, $slug);
         $contents = [
-            'articles' => $this->article_service->getCategoryArtciles($category),
+            'articles' => $this->articleService->getCategoryArtciles($category),
             'category' => $category,
         ];
 
@@ -128,11 +128,11 @@ class ArticleController extends Controller
      */
     public function categoryPakAddon($pak_slug, $addon_slug)
     {
-        $pak = $this->category_service->findOrFailByTypeAndSlug('pak', $pak_slug);
-        $addon = $this->category_service->findOrFailByTypeAndSlug('addon', $addon_slug);
+        $pak = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pak_slug);
+        $addon = $this->categoryRepository->findOrFailByTypeAndSlug('addon', $addon_slug);
 
         $contents = [
-            'articles' => $this->article_service->getPakAddonCategoryArtciles($pak, $addon),
+            'articles' => $this->articleService->getPakAddonCategoryArtciles($pak, $addon),
             'categories' => ['pak' => $pak, 'addon' => $addon],
         ];
 
@@ -144,7 +144,7 @@ class ArticleController extends Controller
      */
     public function tag(Tag $tag)
     {
-        $contents = ['articles' => $this->article_service->getTagArticles($tag), 'tag' => $tag];
+        $contents = ['articles' => $this->articleService->getTagArticles($tag), 'tag' => $tag];
 
         return view('front.articles.index', $contents);
     }
@@ -154,7 +154,7 @@ class ArticleController extends Controller
      */
     public function user(User $user)
     {
-        $contents = ['articles' => $this->article_service->getUserArticles($user), 'user' => $user];
+        $contents = ['articles' => $this->articleService->getUserArticles($user), 'user' => $user];
 
         return view('front.articles.index', $contents);
     }
@@ -164,7 +164,7 @@ class ArticleController extends Controller
      */
     public function search(SearchRequest $request)
     {
-        $contents = ['articles' => $this->article_service->getSearchArticles($request), 'request' => $request];
+        $contents = ['articles' => $this->articleService->getSearchArticles($request), 'request' => $request];
 
         return view('front.articles.index', $contents);
     }
@@ -174,7 +174,7 @@ class ArticleController extends Controller
      */
     public function tags()
     {
-        $contents = ['tags' => $this->tag_service->getAllTags()];
+        $contents = ['tags' => $this->tagRepository->getAllTags()];
 
         return view('front.tags', $contents);
     }

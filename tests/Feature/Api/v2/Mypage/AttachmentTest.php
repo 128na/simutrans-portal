@@ -25,7 +25,7 @@ class AttachmentTest extends TestCase
 
     public function testFormatImage()
     {
-        $file = Attachment::createFromFile(UploadedFile::fake()->image('test.png', 1), $this->user->id);
+        $file = $this->createFromFile(UploadedFile::fake()->image('test.png', 1), $this->user->id);
 
         $url = route('api.v2.attachments.index');
         $this->actingAs($this->user);
@@ -47,7 +47,7 @@ class AttachmentTest extends TestCase
 
     public function testFormatOther()
     {
-        $file = Attachment::createFromFile(UploadedFile::fake()->create('test.zip', 1, 'application/zip'), $this->user->id);
+        $file = $this->createFromFile(UploadedFile::fake()->create('test.zip', 1, 'application/zip'), $this->user->id);
 
         $url = route('api.v2.attachments.index');
         $this->actingAs($this->user);
@@ -112,7 +112,7 @@ class AttachmentTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $file = Attachment::createFromFile(UploadedFile::fake()->image('file.png', 1), $user->id);
+        $file = $this->createFromFile(UploadedFile::fake()->image('file.png', 1), $user->id);
         $url = route('api.v2.attachments.destroy', $file);
         $res = $this->deleteJson($url);
         $res->assertUnauthorized();
@@ -120,7 +120,7 @@ class AttachmentTest extends TestCase
         $this->actingAs($user);
 
         $other_user = User::factory()->create();
-        $other_file = Attachment::createFromFile(UploadedFile::fake()->image('file.png', 1), $other_user->id);
+        $other_file = $this->createFromFile(UploadedFile::fake()->image('file.png', 1), $other_user->id);
         $url = route('api.v2.attachments.destroy', $other_file);
         $res = $this->deleteJson($url);
         $res->assertStatus(403);

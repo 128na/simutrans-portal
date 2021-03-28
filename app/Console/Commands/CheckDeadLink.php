@@ -2,9 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\Article\UpdateRelated;
-use App\Notifications\DeadLinkDetected;
-use App\Services\CheckDeadLinkService;
+use App\Jobs\Article\JobCheckDeadLink;
 use Illuminate\Console\Command;
 
 /**
@@ -27,19 +25,6 @@ class CheckDeadLink extends Command
      */
     protected $description = 'Check Dead Link';
 
-    private CheckDeadLinkService $check_deadlink_service;
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct(CheckDeadLinkService $check_deadlink_service)
-    {
-        parent::__construct();
-        $this->check_deadlink_service = $check_deadlink_service;
-    }
-
     /**
      * Execute the console command.
      *
@@ -47,17 +32,7 @@ class CheckDeadLink extends Command
      */
     public function handle()
     {
-        $count = $this->check_deadlink_service->getTargetArticles()->map(function ($article) {
-            if ($this->check_deadlink_service->isLinkDead($article)) {
-                $this->info('dead link '.$article->title);
-                logger('dead link '.$article->title);
-
-                $article->update(['status' => config('status.private')]);
-                UpdateRelated::dispatchSync();
-                $article->notify(new DeadLinkDetected());
-            }
-        })->count();
-        logger("$count articles checked");
+        dispatch_now(app(JobCheckDeadLink::class));
 
         return 0;
     }

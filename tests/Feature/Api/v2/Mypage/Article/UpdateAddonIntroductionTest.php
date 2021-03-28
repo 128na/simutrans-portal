@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Api\v2\Mypage\Article;
 
-use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Tag;
 use Closure;
@@ -36,7 +35,7 @@ class UpdateAddonIntroductionTest extends ArticleTestCase
         $url = route('api.v2.articles.update', $this->article);
         $this->actingAs($this->user);
 
-        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
+        $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
 
         $date = now()->format('YmdHis');
         $data = [
@@ -91,7 +90,7 @@ class UpdateAddonIntroductionTest extends ArticleTestCase
         $url = route('api.v2.articles.update', $this->article);
         $this->actingAs($this->user);
 
-        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
+        $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
 
         $date = now()->format('YmdHis');
         $data = [

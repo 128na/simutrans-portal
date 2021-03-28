@@ -28,13 +28,6 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
 });
 
 Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
-    // 一般公開API
-    Route::get('articles/latest', 'ArticleController@latest')->name('articles.latest');
-    Route::get('articles/search', 'ArticleController@search')->name('articles.search');
-    Route::get('articles/user/{user}', 'ArticleController@user')->name('articles.user');
-    Route::get('articles/tag/{tag}', 'ArticleController@tag')->name('articles.tag');
-    Route::get('articles/category/{category}', 'ArticleController@category')->name('articles.category');
-
     // マイページ機能
     Route::prefix('mypage')->namespace('Mypage')->middleware(['auth'])->group(function () {
         Route::get('user', 'UserController@index')->name('users.index');

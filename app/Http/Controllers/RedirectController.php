@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\RedirectService;
+use App\Repositories\RedirectRepository;
 use Illuminate\Http\Request;
 
 /**
@@ -10,16 +10,25 @@ use Illuminate\Http\Request;
  */
 class RedirectController extends Controller
 {
-    private RedirectService $redirect_service;
+    private RedirectRepository $redirectRepository;
 
-    public function __construct(RedirectService $redirect_service)
+    public function __construct(RedirectRepository $redirectRepository)
     {
-        $this->redirect_service = $redirect_service;
+        $this->redirectRepository = $redirectRepository;
     }
 
     public function index(Request $request)
     {
-        return $this->redirect_service->redirectOrFail($request);
+        $path = $this->getRelativePath($request->fullUrl());
+        $redirect = $this->redirectRepository->findOrFailByPath($path);
+        logger("[redirect]: {$redirect->from} -> {$redirect->to}");
+
+        return redirect($redirect->to, 301);
+    }
+
+    private function getRelativePath(string $fullUrl): string
+    {
+        return str_replace(config('app.url'), '', $fullUrl);
     }
 
     public function mypage()

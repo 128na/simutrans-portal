@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 class Attachment extends Model
@@ -58,17 +57,17 @@ class Attachment extends Model
     | アクセサ
     |--------------------------------------------------------------------------
      */
-    public function getPathExistsAttribute()
+    public function getPathExistsAttribute(): bool
     {
         return Storage::disk('public')->exists($this->path);
     }
 
-    public function getIsImageAttribute()
+    public function getIsImageAttribute(): bool
     {
         return $this->type === 'image';
     }
 
-    public function getTypeAttribute()
+    public function getTypeAttribute(): string
     {
         $mime = Storage::disk('public')->mimeType($this->path);
 
@@ -85,14 +84,14 @@ class Attachment extends Model
         return 'file';
     }
 
-    public function getIsPngAttribute()
+    public function getIsPngAttribute(): bool
     {
         $mime = Storage::disk('public')->mimeType($this->path);
 
         return stripos($mime, 'image/png') !== false;
     }
 
-    public function getThumbnailAttribute()
+    public function getThumbnailAttribute(): string
     {
         switch ($this->type) {
             case 'image':
@@ -107,27 +106,13 @@ class Attachment extends Model
         }
     }
 
-    public function getUrlAttribute()
+    public function getUrlAttribute(): string
     {
-        return asset('storage/'.$this->path);
+        return Storage::disk('public')->url($this->path);
     }
 
-    public function getFullPathAttribute()
+    public function getFullPathAttribute(): string
     {
         return Storage::disk('public')->path($this->path);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | 一般
-    |--------------------------------------------------------------------------
-     */
-    public static function createFromFile(UploadedFile $file, int $user_id)
-    {
-        return self::create([
-            'user_id' => $user_id,
-            'path' => $file->store('user/'.$user_id, 'public'),
-            'original_name' => $file->getClientOriginalName(),
-        ]);
     }
 }

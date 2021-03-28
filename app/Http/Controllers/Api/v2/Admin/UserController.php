@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\v2\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Admin\UserStoreRequest;
-use App\Jobs\Article\UpdateRelated;
+use App\Jobs\Article\JobUpdateRelated;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -36,7 +36,7 @@ class UserController extends Controller
                 ? $u->restore()
                 : $u->delete();
         });
-        UpdateRelated::dispatchSync();
+        dispatch_now(app(JobUpdateRelated::class));
 
         return $this->index();
     }

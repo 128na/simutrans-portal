@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Api\v2\Mypage\Article;
 
-use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
@@ -32,7 +31,7 @@ class StoreAddonIntroductionTest extends ArticleTestCase
 
         $this->actingAs($this->user);
 
-        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
+        $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
 
         $date = now()->format('YmdHis');
         $data = [
@@ -79,7 +78,7 @@ class StoreAddonIntroductionTest extends ArticleTestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $thumbnail = Attachment::createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $user->id);
+        $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $user->id);
 
         $date = now()->format('YmdHis');
         $data = [

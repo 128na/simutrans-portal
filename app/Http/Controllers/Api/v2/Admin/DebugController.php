@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Api\v2\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\Article\UpdateRelated;
+use App\Jobs\Article\JobUpdateRelated;
 use Illuminate\Support\Facades\Cache;
 
 class DebugController extends Controller
 {
     public function flushCache()
     {
-        UpdateRelated::dispatchSync();
+        dispatch_now(app(JobUpdateRelated::class));
         Cache::flush();
 
         return response('');

@@ -2,12 +2,12 @@
 
 namespace App\Rules;
 
-use App\Services\AttachmentService;
+use App\Repositories\AttachmentRepository;
 use Illuminate\Contracts\Validation\Rule;
 
 class ImageAttachment implements Rule
 {
-    private AttachmentService $attachment_service;
+    private AttachmentRepository $attachmentRepository;
     private string $message;
 
     /**
@@ -15,9 +15,9 @@ class ImageAttachment implements Rule
      *
      * @return void
      */
-    public function __construct(AttachmentService $attachment_service)
+    public function __construct(AttachmentRepository $attachmentRepository)
     {
-        $this->attachment_service = $attachment_service;
+        $this->attachmentRepository = $attachmentRepository;
     }
 
     /**
@@ -30,7 +30,7 @@ class ImageAttachment implements Rule
      */
     public function passes($attribute, $value)
     {
-        $attachment = $this->attachment_service->find($value);
+        $attachment = $this->attachmentRepository->find($value);
 
         if ($attachment && $attachment->is_image) {
             return true;

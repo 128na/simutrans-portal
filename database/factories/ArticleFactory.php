@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 class ArticleFactory extends Factory
 {
@@ -43,7 +43,9 @@ class ArticleFactory extends Factory
             ],
         ];
         $sentence = $this->faker->sentence;
+
         return [
+            'user_id' => User::factory()->create()->id,
             'title' => $sentence,
             'slug' => $sentence,
             'contents' => $contents[$post_type],

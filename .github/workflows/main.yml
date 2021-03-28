@@ -147,8 +147,8 @@ jobs:
           key: ${{ runner.os }}-cache-database-${{ hashFiles('**/migrations/*') }}
           restore-keys: |
             ${{ runner.os }}-cache-database-
-      - name: Import DB Cache
-        run: "[ -e ~/dump.sql ] && mysql -uroot -h127.0.0.1 -proot <~/dump.sql || echo 'no dump file.'"
+      # - name: Import DB Cache
+      #   run: "[ -e ~/dump.sql ] && mysql -uroot -h127.0.0.1 -proot <~/dump.sql || echo 'no dump file.'"
       - name: Migration
         run: php artisan migrate
       - name: Dump DB Cache

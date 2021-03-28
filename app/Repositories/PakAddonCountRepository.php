@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\PakAddonCount;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class PakAddonCountRepository extends BaseRepository
@@ -62,5 +63,10 @@ class PakAddonCountRepository extends BaseRepository
             DB::statement(self::DELETE_SQL);
             DB::statement(self::INSERT_SQL);
         });
+    }
+
+    public function get(): Collection
+    {
+        return $this->model->select('pak_slug', 'addon_slug', 'count')->get();
     }
 }

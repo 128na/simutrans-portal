@@ -15,9 +15,9 @@ return [
         ['slug' => 'page',               'type' => 'post', 'order' => 00020, 'name' => 'Post'],
     ],
     'pak' => [
-        ['slug' => '64',           'type' => 'pak', 'order' => 10000, 'name' => 'Pak64'],
+        ['slug' => '128-japan',    'type' => 'pak', 'order' => 10000, 'name' => 'Pak128.Japan'],
         ['slug' => '128',          'type' => 'pak', 'order' => 10010, 'name' => 'Pak128'],
-        ['slug' => '128-japan',    'type' => 'pak', 'order' => 10011, 'name' => 'Pak128.Japan'],
+        ['slug' => '64',           'type' => 'pak', 'order' => 10011, 'name' => 'Pak64'],
         ['slug' => '256',          'type' => 'pak', 'order' => 10020, 'name' => 'Pak256'],
         ['slug' => '96-comic',     'type' => 'pak', 'order' => 10030, 'name' => 'Pak96.Comic'],
         ['slug' => '192-comic',    'type' => 'pak', 'order' => 10031, 'name' => 'Pak192.Comic'],

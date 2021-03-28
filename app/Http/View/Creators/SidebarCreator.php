@@ -2,8 +2,8 @@
 
 namespace App\Http\View\Creators;
 
-use App\Models\PakAddonCount;
-use App\Models\UserAddonCount;
+use App\Repositories\PakAddonCountRepository;
+use App\Repositories\UserAddonCountRepository;
 use Illuminate\View\View;
 
 /**
@@ -11,15 +11,15 @@ use Illuminate\View\View;
  */
 class SidebarCreator
 {
-    private PakAddonCount $pak_addon_count;
-    private UserAddonCount $user_addon_count;
+    private PakAddonCountRepository $pakAddonCountRepository;
+    private UserAddonCountRepository $userAddonCountRepository;
 
     public function __construct(
-        PakAddonCount $pak_addon_count,
-        UserAddonCount $user_addon_count
+        PakAddonCountRepository $pakAddonCountRepository,
+        UserAddonCountRepository $userAddonCountRepository
     ) {
-        $this->pak_addon_count = $pak_addon_count;
-        $this->user_addon_count = $user_addon_count;
+        $this->pakAddonCountRepository = $pakAddonCountRepository;
+        $this->userAddonCountRepository = $userAddonCountRepository;
     }
 
     /**
@@ -40,7 +40,7 @@ class SidebarCreator
      */
     private function getUserAddonCounts()
     {
-        return $this->user_addon_count->select('user_id', 'user_name', 'count')->get();
+        return $this->userAddonCountRepository->get();
     }
 
     /**
@@ -49,7 +49,7 @@ class SidebarCreator
     private function getPakAddonCounts()
     {
         return $this->separateByPak(
-            $this->pak_addon_count->select('pak_slug', 'addon_slug', 'count')->get()
+            $this->pakAddonCountRepository->get()
         );
     }
 

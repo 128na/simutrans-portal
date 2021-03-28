@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\UserAddonCount;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class UserAddonCountRepository extends BaseRepository
@@ -41,5 +42,10 @@ class UserAddonCountRepository extends BaseRepository
             DB::statement(self::DELETE_SQL);
             DB::statement(self::INSERT_SQL);
         });
+    }
+
+    public function get(): Collection
+    {
+        return $this->model->select('user_id', 'user_name', 'count')->get();
     }
 }

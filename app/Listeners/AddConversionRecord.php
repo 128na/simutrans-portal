@@ -3,26 +3,19 @@
 namespace App\Listeners;
 
 use App\Events\ArticleConversion;
-use App\Models\ConversionCount;
+use App\Repositories\CoversionCountRepository;
 
 class AddConversionRecord
 {
-    /**
-     * イベントリスナ生成.
-     *
-     * @return void
-     */
-    public function __construct()
+    private CoversionCountRepository $coversionCountRepository;
+
+    public function __construct(CoversionCountRepository $coversionCountRepository)
     {
+        $this->coversionCountRepository = $coversionCountRepository;
     }
 
-    /**
-     * イベントの処理.
-     *
-     * @return void
-     */
     public function handle(ArticleConversion $event)
     {
-        ConversionCount::countUp($event->article);
+        $this->coversionCountRepository->countUp($event->article);
     }
 }

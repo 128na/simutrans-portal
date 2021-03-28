@@ -91,28 +91,28 @@ class Article extends Model implements Feedable
     public function todaysViewCount()
     {
         return $this->hasOne(ViewCount::class)
-            ->where('type', ViewCount::$types['daily'])
+            ->where('type', ViewCount::TYPE_DAILY)
             ->where('period', now()->format('Ymd'));
     }
 
     public function dailyViewCounts()
     {
-        return $this->hasMany(ViewCount::class)->where('type', ViewCount::$types['daily']);
+        return $this->hasMany(ViewCount::class)->where('type', ViewCount::TYPE_DAILY);
     }
 
     public function monthlyViewCounts()
     {
-        return $this->hasMany(ViewCount::class)->where('type', ViewCount::$types['monthly']);
+        return $this->hasMany(ViewCount::class)->where('type', ViewCount::TYPE_MONTHLY);
     }
 
     public function yearlyViewCounts()
     {
-        return $this->hasMany(ViewCount::class)->where('type', ViewCount::$types['yearly']);
+        return $this->hasMany(ViewCount::class)->where('type', ViewCount::TYPE_YEARLY);
     }
 
     public function totalViewCount()
     {
-        return $this->hasOne(ViewCount::class)->where('type', ViewCount::$types['total']);
+        return $this->hasOne(ViewCount::class)->where('type', ViewCount::TYPE_TOTAL);
     }
 
     public function conversionCounts()
@@ -123,28 +123,28 @@ class Article extends Model implements Feedable
     public function todaysConversionCount()
     {
         return $this->hasOne(ConversionCount::class)
-            ->where('type', ConversionCount::$types['daily'])
+            ->where('type', ConversionCount::TYPE_DAILY)
             ->where('period', now()->format('Ymd'));
     }
 
     public function dailyConversionCounts()
     {
-        return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::$types['daily']);
+        return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::TYPE_DAILY);
     }
 
     public function monthlyConversionCounts()
     {
-        return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::$types['monthly']);
+        return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::TYPE_MONTHLY);
     }
 
     public function yearlyConversionCounts()
     {
-        return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::$types['yearly']);
+        return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::TYPE_YEARLY);
     }
 
     public function totalConversionCount()
     {
-        return $this->hasOne(ConversionCount::class)->where('type', ConversionCount::$types['total']);
+        return $this->hasOne(ConversionCount::class)->where('type', ConversionCount::TYPE_TOTAL);
     }
 
     /*

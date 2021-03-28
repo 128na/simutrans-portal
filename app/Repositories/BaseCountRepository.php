@@ -1,41 +1,34 @@
 <?php
 
-namespace App\Traits;
+namespace App\Repositories;
 
 use App\Models\Article;
-use Exception;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
-/**
- * 日次、月次、年次、全体の合計をカウントアップする.
- */
-trait CountUpable
+abstract class BaseCountRepository extends BaseRepository
 {
-    public static $types = [
-        'daily' => 1,
-        'monthly' => 2,
-        'yearly' => 3,
-        'total' => 4,
-    ];
-
-    public static function getTableName()
-    {
-        throw new Exception('未実装');
-    }
-
-    public static function countUp(Article $article, $datetime = null)
+    /**
+     * 日次、月次、年次、全体の合計をカウントアップする.
+     */
+    public function countUp(Article $article, CarbonImmutable $datetime = null): void
     {
         $datetime = $datetime ?? now();
-        $sql = self::buildSql($article, $datetime);
+        $sql = $this->buildSql($article, $datetime);
 
         DB::transaction(function () use ($sql) {
             DB::statement($sql);
         }, 10);
     }
 
-    private static function buildSql(Article $article, $datetime)
+    /**
+     * テーブル名を返す.
+     */
+    abstract public function getTableName(): string;
+
+    private function buildSql(Article $article, CarbonImmutable $datetime): string
     {
-        $table = static::getTableName();
+        $table = $this->getTableName();
         $dayly = $datetime->format('Ymd');
         $monthly = $datetime->format('Ym');
         $yearly = $datetime->format('Y');
@@ -46,7 +39,7 @@ trait CountUpable
                 ({$article->id}, 1,'{$dayly}', 1),
                 ({$article->id}, 2,'{$monthly}', 1),
                 ({$article->id}, 3,'{$yearly}', 1),
-                ({$article->id}, 4,'total', 1)
+                ({$article->id}, 4,'{$total}', 1)
             ON DUPLICATE KEY UPDATE
                 count = count + 1;";
     }

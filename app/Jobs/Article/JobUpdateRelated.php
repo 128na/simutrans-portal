@@ -2,9 +2,9 @@
 
 namespace App\Jobs\Article;
 
-use App\Models\PakAddonCount;
-use App\Models\UserAddonCount;
+use App\Repositories\PakAddonCountRepository;
 use App\Repositories\TagRepository;
+use App\Repositories\UserAddonCountRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,10 +20,17 @@ class JobUpdateRelated implements ShouldQueue
     use SerializesModels;
 
     private TagRepository $tagRepository;
+    private PakAddonCountRepository $pakAddonCountRepository;
+    private UserAddonCountRepository $userAddonCountRepository;
 
-    public function __construct(TagRepository $tagRepository)
-    {
+    public function __construct(
+        TagRepository $tagRepository,
+        PakAddonCountRepository $pakAddonCountRepository,
+        UserAddonCountRepository $userAddonCountRepository
+    ) {
         $this->tagRepository = $tagRepository;
+        $this->pakAddonCountRepository = $pakAddonCountRepository;
+        $this->userAddonCountRepository = $userAddonCountRepository;
     }
 
     /**
@@ -33,10 +40,10 @@ class JobUpdateRelated implements ShouldQueue
      */
     public function handle()
     {
-        UserAddonCount::recount();
-        PakAddonCount::recount();
-
+        $this->pakAddonCountRepository->recount();
+        $this->userAddonCountRepository->recount();
         $this->tagRepository->deleteUnrelated();
+
         Cache::flush();
     }
 }

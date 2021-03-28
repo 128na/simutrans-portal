@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use App\Traits\CountUpable;
 use Illuminate\Database\Eloquent\Model;
 
 class ConversionCount extends Model
 {
-    use CountUpable;
+    public const TYPE_DAILY = 1;
+    public const TYPE_MONTHLY = 2;
+    public const TYPE_YEARLY = 3;
+    public const TYPE_TOTAL = 4;
 
     protected $fillable = [
         'article_id',
@@ -17,11 +19,6 @@ class ConversionCount extends Model
     ];
 
     public $timestamps = false;
-
-    public static function getTableName()
-    {
-        return 'conversion_counts';
-    }
 
     /*
     |--------------------------------------------------------------------------

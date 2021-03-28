@@ -66,6 +66,9 @@
     ],
     "post-create-project-cmd": [
       "@php artisan key:generate --ansi"
+    ],
+    "test": [
+      "@php artisan test --parallel --processes=2"
     ]
   }
 }

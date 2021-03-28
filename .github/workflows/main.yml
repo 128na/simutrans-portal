@@ -147,7 +147,7 @@ jobs:
         if: steps.cache-database.outputs.cache-hit != 'true'
         run: mysqldump -uroot -h127.0.0.1 -proot test>~/dump.sql
       - name: Test
-        run: php artisan test -v --env=local
+        run: php artisan test -v --env=local --parallel --processes=4
 
       - if: failure()
         name: Display Error Log

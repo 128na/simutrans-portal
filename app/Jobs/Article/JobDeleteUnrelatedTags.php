@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Cache;
 /**
  * 記事に紐づいていないタグを削除する.
  */
-class JobDeleteUnreatedTags implements ShouldQueue
+class JobDeleteUnrelatedTags implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

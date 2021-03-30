@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\Article\JobDeleteUnreatedTags;
+use App\Jobs\Article\JobDeleteUnrelatedTags;
 use Illuminate\Console\Command;
 
-class CommandDeleteUnreatedTags extends Command
+class CommandDeleteUnrelatedTags extends Command
 {
     protected $signature = 'delete:tags';
 
@@ -13,7 +13,7 @@ class CommandDeleteUnreatedTags extends Command
 
     public function handle()
     {
-        JobDeleteUnreatedTags::dispatchSync();
+        JobDeleteUnrelatedTags::dispatchSync();
 
         return 0;
     }

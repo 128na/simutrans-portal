@@ -4,7 +4,7 @@ namespace Tests\Feature\Commands;
 
 use Tests\TestCase;
 
-class CommandDeleteUnreatedTagsTest extends TestCase
+class CommandDeleteUnrelatedTagsTest extends TestCase
 {
     public function test()
     {

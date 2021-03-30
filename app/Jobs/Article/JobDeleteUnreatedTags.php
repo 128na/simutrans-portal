@@ -2,8 +2,7 @@
 
 namespace App\Jobs\Article;
 
-use App\Repositories\PakAddonCountRepository;
-use App\Repositories\UserAddonCountRepository;
+use App\Repositories\TagRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -12,9 +11,9 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 
 /**
- * サイドバー表示用のデータを更新する.
+ * 記事に紐づいていないタグを削除する.
  */
-class JobUpdateRelated implements ShouldQueue
+class JobDeleteUnreatedTags implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -26,13 +25,9 @@ class JobUpdateRelated implements ShouldQueue
      *
      * @return void
      */
-    public function handle(
-        PakAddonCountRepository $pakAddonCountRepository,
-        UserAddonCountRepository $userAddonCountRepository
-    ) {
-        $pakAddonCountRepository->recount();
-        $userAddonCountRepository->recount();
-
+    public function handle(TagRepository $tagRepository)
+    {
+        $tagRepository->deleteUnrelated();
         Cache::flush();
     }
 }

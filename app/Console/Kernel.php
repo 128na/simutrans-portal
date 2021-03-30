@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:clean')->dailyAt('2:00');
         $schedule->command('backup:run')->dailyAt('3:00');
         $schedule->command('compress:image')->dailyAt('4:00');
+        $schedule->command('delete:tags')->dailyAt('4:00');
     }
 
     /**

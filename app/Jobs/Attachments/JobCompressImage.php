@@ -19,25 +19,20 @@ class JobCompressImage implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    private AttachmentRepository $attachmentRepository;
-    private CompressedImageRepository $compressedImageRepository;
-
-    public function __construct(
-        AttachmentRepository $attachmentRepository,
-        CompressedImageRepository $compressedImageRepository)
-    {
-        $this->attachmentRepository = $attachmentRepository;
-        $this->compressedImageRepository = $compressedImageRepository;
-    }
+    private ?CompressedImageRepository $compressedImageRepository;
 
     /**
      * Execute the job.
      *
      * @return void
      */
-    public function handle()
-    {
-        foreach ($this->attachmentRepository->cursorCheckCompress() as $attachment) {
+    public function handle(
+        AttachmentRepository $attachmentRepository,
+        CompressedImageRepository $compressedImageRepository
+    ) {
+        $this->compressedImageRepository = $compressedImageRepository;
+
+        foreach ($attachmentRepository->cursorCheckCompress() as $attachment) {
             if ($this->shouldCompress($attachment)) {
                 try {
                     $this->compress($attachment);

@@ -2,12 +2,13 @@
 
 namespace Tests\Feature\Command;
 
+use App\Jobs\Article\JobCheckDeadLink;
 use App\Models\Article;
 use App\Notifications\DeadLinkDetected;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
-class TestCheckDeadlink extends TestCase
+class JobCheckDeadlinkTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -28,8 +29,7 @@ class TestCheckDeadlink extends TestCase
         Notification::fake();
         Notification::assertNothingSent();
 
-        $this->artisan('check:deadlink')
-            ->assertExitCode(0);
+        JobCheckDeadLink::dispatchSync();
 
         Notification::assertSentTo($this->article, DeadLinkDetected::class);
     }
@@ -44,8 +44,7 @@ class TestCheckDeadlink extends TestCase
 
         Notification::assertNothingSent();
 
-        $this->artisan('check:deadlink')
-            ->assertExitCode(0);
+        JobCheckDeadLink::dispatchSync();
 
         Notification::assertNothingSent();
     }
@@ -60,8 +59,7 @@ class TestCheckDeadlink extends TestCase
 
         Notification::assertNothingSent();
 
-        $this->artisan('check:deadlink')
-            ->assertExitCode(0);
+        JobCheckDeadLink::dispatchSync();
 
         Notification::assertNothingSent();
     }

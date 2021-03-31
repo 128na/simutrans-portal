@@ -18,26 +18,19 @@ class JobCheckDeadLink implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    private ArticleRepository $articleRepository;
-
-    public function __construct(ArticleRepository $articleRepository)
-    {
-        $this->articleRepository = $articleRepository;
-    }
-
     /**
      * Execute the job.
      *
      * @return void
      */
-    public function handle()
+    public function handle(ArticleRepository $articleRepository)
     {
         $changed = false;
-        foreach ($this->articleRepository->cursorCheckLinkArticles() as $article) {
+        foreach ($articleRepository->cursorCheckLinkArticles() as $article) {
             if ($this->isLinkDead($article)) {
                 logger('dead link '.$article->title);
 
-                $this->articleRepository->update($article, [
+                $articleRepository->update($article, [
                     'status' => config('status.private'),
                 ]);
 
@@ -47,7 +40,7 @@ class JobCheckDeadLink implements ShouldQueue
         }
 
         if ($changed) {
-            dispatch_now(app(JobUpdateRelated::class));
+            JobUpdateRelated::dispatchSync();
         }
     }
 

@@ -27,7 +27,7 @@ class UserController extends Controller
         $user = $this->userRepository->findWithTrashed($id);
         $this->userRepository->toggleDelete($user);
 
-        dispatch_now(app(JobUpdateRelated::class));
+        JobUpdateRelated::dispatchSync();
 
         return $this->index();
     }

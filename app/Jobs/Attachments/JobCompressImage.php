@@ -45,7 +45,7 @@ class JobCompressImage implements ShouldQueue
 
     private function shouldCompress(Attachment $attachment): bool
     {
-        if ($attachment->path_exists) {
+        if (!$attachment->path_exists) {
             logger()->warning('missing path', [$attachment->full_path]);
 
             return false;

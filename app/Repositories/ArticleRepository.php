@@ -345,21 +345,19 @@ class ArticleRepository extends BaseRepository
     public function advancedSearch(
         ?string $word = null,
         ?Collection $categories = null,
-        bool $categoryAnd = true,
+        ?bool $categoryAnd = true,
         ?Collection $tags = null,
-        bool $tagAnd = true,
+        ?bool $tagAnd = true,
         ?Collection $users = null,
-        bool $userAnd = true,
+        ?bool $userAnd = true,
         ?CarbonImmutable $startAt = null,
         ?CarbonImmutable $endAt = null,
         string $order = 'updated_at',
         string $direction = 'desc',
         int $limit = 50
     ): LengthAwarePaginator {
-        /**
-         * @var Builder
-         */
-        $q = $this->model->select('articles.*');
+        $q = $this->basicQuery(['articles.*'], self::RELATIONS, [$order, $direction]);
+
         if ($word) {
             $this->advancedSearchQueryBuilder->addWordSearch($q, $word);
         }
@@ -379,9 +377,6 @@ class ArticleRepository extends BaseRepository
             $this->advancedSearchQueryBuilder->addEndAt($q, $endAt);
         }
         $this->advancedSearchQueryBuilder->addOrder($q, $order, $direction);
-        $q->withCache();
-
-        logger($q->toSql(), $q->getBindings(), $q->count());
 
         return $q->paginate($limit);
     }

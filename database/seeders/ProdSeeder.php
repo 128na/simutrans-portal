@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use App\Models\Category;
@@ -11,7 +12,7 @@ use Illuminate\Database\Seeder;
 class ProdSeeder extends Seeder
 {
     /**
-     * 管理者とカテゴリを追加する
+     * 管理者とカテゴリを追加する.
      *
      * @return void
      */
@@ -29,7 +30,7 @@ class ProdSeeder extends Seeder
     private static function addAdminUser()
     {
         if (is_null(config('admin.email'))) {
-            throw new \Exception("admin email was empty!");
+            throw new \Exception('admin email was empty!');
         }
 
         $admin = User::firstOrCreate(
@@ -48,7 +49,7 @@ class ProdSeeder extends Seeder
     }
 
     /**
-     * お知らせ記事作成
+     * お知らせ記事作成.
      */
     private static function addAnounces($user)
     {

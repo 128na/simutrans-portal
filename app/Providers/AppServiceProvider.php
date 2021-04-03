@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Services\MarkdownService;
 use Carbon\CarbonImmutable;
-use FullTextSearchQueryLike;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\ServiceProvider;
 
@@ -17,9 +16,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(FullTextSearchQueryLike::class, function ($app) {
-            return new FullTextSearchQueryLike(['title', 'contents']);
-        });
     }
 
     /**

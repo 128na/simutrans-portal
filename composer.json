@@ -18,7 +18,8 @@
     "spatie/flysystem-dropbox": "^1.2",
     "spatie/laravel-backup": "^6.11",
     "spatie/laravel-feed": "^3.0",
-    "tinify/tinify": "^1.5"
+    "tinify/tinify": "^1.5",
+    "yarri/full-text-search-query-like": "^0.2.0"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.3",

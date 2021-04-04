@@ -24,18 +24,17 @@ class QueryBuilder extends \Illuminate\Database\Query\Builder
             $sql = str_replace('?', '"%s"', $this->toSql());
             try {
                 $sql = @vsprintf($sql, $this->getBindings());
+                if ($sql) {
+                    $key = 'query:'.hash('sha256', $sql);
+
+                    return \Cache::remember(
+                        $key,
+                        config('app.cache_lifetime_min', 60),
+                        fn () => parent::get($columns)
+                    );
+                }
             } catch (Throwable $e) {
                 // 詳細検索だと稀によく引数が合わないっぽい
-            }
-            if ($sql) {
-                logger($sql);
-                $key = 'query:'.hash('sha256', $sql);
-
-                return \Cache::remember(
-                    $key,
-                    config('app.cache_lifetime_min', 60),
-                    fn () => parent::get($columns)
-                );
             }
         }
 

@@ -342,7 +342,7 @@ class ArticleRepository extends BaseRepository
     /**
      * 詳細検索.
      */
-    public function advancedSearch(
+    private function queryAdvancedSearch(
         ?string $word = null,
         ?Collection $categories = null,
         ?bool $categoryAnd = true,
@@ -353,10 +353,9 @@ class ArticleRepository extends BaseRepository
         ?CarbonImmutable $startAt = null,
         ?CarbonImmutable $endAt = null,
         string $order = 'updated_at',
-        string $direction = 'desc',
-        int $limit = 50
-    ): LengthAwarePaginator {
-        $q = $this->basicQuery(['articles.*'], self::RELATIONS, [$order, $direction]);
+        string $direction = 'desc'
+    ): Builder {
+        $q = $this->basicQuery(self::COLUMNS, self::RELATIONS, [$order, $direction]);
 
         if ($word) {
             $this->advancedSearchQueryBuilder->addWordSearch($q, $word);
@@ -377,6 +376,27 @@ class ArticleRepository extends BaseRepository
             $this->advancedSearchQueryBuilder->addEndAt($q, $endAt);
         }
         $this->advancedSearchQueryBuilder->addOrder($q, $order, $direction);
+
+        return $q;
+    }
+
+    public function paginateAdvancedSearch(
+        ?string $word = null,
+        ?Collection $categories = null,
+        ?bool $categoryAnd = true,
+        ?Collection $tags = null,
+        ?bool $tagAnd = true,
+        ?Collection $users = null,
+        ?bool $userAnd = true,
+        ?CarbonImmutable $startAt = null,
+        ?CarbonImmutable $endAt = null,
+        string $order = 'updated_at',
+        string $direction = 'desc',
+        int $limit = 50
+    ): LengthAwarePaginator {
+        $q = $this->queryAdvancedSearch(
+            $word, $categories, $categoryAnd, $tags, $tagAnd, $users, $userAnd, $startAt, $endAt, $order, $direction
+        );
 
         return $q->paginate($limit);
     }

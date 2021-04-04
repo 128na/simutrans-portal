@@ -11,7 +11,7 @@ use Closure;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
-class AdvancedSearchTest extends TestCase
+class PaginateAdvancedSearchTest extends TestCase
 {
     private ArticleRepository $repository;
     private Article $article;
@@ -39,7 +39,7 @@ class AdvancedSearchTest extends TestCase
     public function test(Closure $fn, int $expectedCount)
     {
         $cond = Closure::bind($fn, $this)();
-        $res = $this->repository->advancedSearch(
+        $res = $this->repository->paginateAdvancedSearch(
             $cond['word'] ?? null,
             $cond['categories'] ?? null,
             $cond['categoryAnd'] ?? true,
@@ -326,7 +326,7 @@ class AdvancedSearchTest extends TestCase
             $article1->id,
         ]);
         $article2 = Article::factory()->create(['status' => 'publish']);
-        $res = $this->repository->advancedSearch(
+        $res = $this->repository->paginateAdvancedSearch(
             null, null, null, null, null, null, null, null, null, $order, $direction
         );
 
@@ -361,7 +361,7 @@ class AdvancedSearchTest extends TestCase
     public function testLimit(int $limit)
     {
         Article::factory()->count(49)->create();
-        $res = $this->repository->advancedSearch(
+        $res = $this->repository->paginateAdvancedSearch(
             null, null, null, null, null, null, null, null, null, 'updated_at', 'desc', $limit
         );
         $this->assertEquals($limit, $res->perPage(), '1ページ当たりの取得件数が一致すること');

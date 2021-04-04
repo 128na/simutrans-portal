@@ -6,6 +6,8 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
+use App\QueryBuilders\AdvancedSearchQueryBuilder;
+use Carbon\CarbonImmutable;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -24,9 +26,12 @@ class ArticleRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(Article $model)
+    private AdvancedSearchQueryBuilder $advancedSearchQueryBuilder;
+
+    public function __construct(Article $model, AdvancedSearchQueryBuilder $advancedSearchQueryBuilder)
     {
         $this->model = $model;
+        $this->advancedSearchQueryBuilder = $advancedSearchQueryBuilder;
     }
 
     /**
@@ -332,5 +337,67 @@ class ArticleRepository extends BaseRepository
         $article->trashed()
             ? $article->restore()
             : $article->delete();
+    }
+
+    /**
+     * 詳細検索.
+     */
+    private function queryAdvancedSearch(
+        ?string $word = null,
+        ?Collection $categories = null,
+        ?bool $categoryAnd = true,
+        ?Collection $tags = null,
+        ?bool $tagAnd = true,
+        ?Collection $users = null,
+        ?bool $userAnd = true,
+        ?CarbonImmutable $startAt = null,
+        ?CarbonImmutable $endAt = null,
+        string $order = 'updated_at',
+        string $direction = 'desc'
+    ): Builder {
+        $q = $this->basicQuery(self::COLUMNS, self::RELATIONS, [$order, $direction]);
+
+        if ($word) {
+            $this->advancedSearchQueryBuilder->addWordSearch($q, $word);
+        }
+        if ($categories) {
+            $this->advancedSearchQueryBuilder->addCategories($q, $categories, $categoryAnd);
+        }
+        if ($tags) {
+            $this->advancedSearchQueryBuilder->addTags($q, $tags, $tagAnd);
+        }
+        if ($users) {
+            $this->advancedSearchQueryBuilder->addUsers($q, $users, $userAnd);
+        }
+        if ($startAt) {
+            $this->advancedSearchQueryBuilder->addStartAt($q, $startAt);
+        }
+        if ($endAt) {
+            $this->advancedSearchQueryBuilder->addEndAt($q, $endAt);
+        }
+        $this->advancedSearchQueryBuilder->addOrder($q, $order, $direction);
+
+        return $q;
+    }
+
+    public function paginateAdvancedSearch(
+        ?string $word = null,
+        ?Collection $categories = null,
+        ?bool $categoryAnd = true,
+        ?Collection $tags = null,
+        ?bool $tagAnd = true,
+        ?Collection $users = null,
+        ?bool $userAnd = true,
+        ?CarbonImmutable $startAt = null,
+        ?CarbonImmutable $endAt = null,
+        string $order = 'updated_at',
+        string $direction = 'desc',
+        int $limit = 50
+    ): LengthAwarePaginator {
+        $q = $this->queryAdvancedSearch(
+            $word, $categories, $categoryAnd, $tags, $tagAnd, $users, $userAnd, $startAt, $endAt, $order, $direction
+        );
+
+        return $q->paginate($limit);
     }
 }

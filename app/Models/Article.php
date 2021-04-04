@@ -31,20 +31,6 @@ class Article extends Model implements Feedable
         'contents' => ToArticleContents::class,
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | 初期化時設定
-    |--------------------------------------------------------------------------
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope('order', function (Builder $builder) {
-            $builder->orderBy('created_at', 'desc');
-        });
-    }
-
     protected static function booted()
     {
         // 論理削除されていないユーザーを持つ

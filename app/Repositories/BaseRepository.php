@@ -68,6 +68,11 @@ abstract class BaseRepository
         return $this->model->find($id);
     }
 
+    public function findByIds(array $ids): Collection
+    {
+        return $this->model->whereIn('id', $ids)->get();
+    }
+
     /**
      * 一覧取得.
      */

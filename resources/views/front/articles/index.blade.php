@@ -3,9 +3,11 @@
 @section('id', 'listing')
 @section('title', $title)
 @section('meta-description', config('app.meta-description'))
-@section('meta-image', asset('storage/'.config('app.meta-image')))
+@section('meta-image', asset('storage/' . config('app.meta-image')))
 
 @section('content')
+    @includeWhen(isset($advancedSearch), 'parts.advanced-search')
+
     {!! e($articles->onEachSide(1)->links('vendor.pagination.default')) !!}
 
     <section class="mb-4 list">
@@ -21,6 +23,7 @@
     @isset($schemas)
         <script type="application/ld+json">
             @json($schemas)
+
         </script>
     @endisset
 

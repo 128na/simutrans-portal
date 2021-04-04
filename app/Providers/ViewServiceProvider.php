@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Http\View\Creators\MetaCreator;
+use App\Http\View\Creators\SidebarCreator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,13 +25,8 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::creator(
-            ['front.index', 'front.tags', 'front.articles.index', 'front.articles.show'],
-            \App\Http\View\Creators\SidebarCreator::class
-        );
-        View::creator(
-            ['front.index', 'front.tags', 'front.articles.index', 'front.articles.show'],
-            \App\Http\View\Creators\MetaCreator::class
-        );
+        $views = ['front.index', 'front.tags', 'front.articles.index', 'front.articles.show'];
+        View::creator($views, SidebarCreator::class);
+        View::creator($views, MetaCreator::class);
     }
 }

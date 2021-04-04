@@ -3,9 +3,9 @@ $navbar-sidebar-width: 260px;
 $navbar-sidebar-breakpoint: "lg";
 
 body {
-  padding-top: 90px;
+  padding-top: 50px;
   .initializing {
-    margin-top: -90px;
+    margin-top: -50px;
   }
 
   @include media-breakpoint-up($navbar-sidebar-breakpoint) {

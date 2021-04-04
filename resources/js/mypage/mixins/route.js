@@ -14,7 +14,7 @@ export default {
     base_url() {
       return process.env.NODE_ENV === "production"
         ? process.env.MIX_APP_URL
-        : "";
+        : "/";
     },
     top_url() {
       return `${this.base_url}`;

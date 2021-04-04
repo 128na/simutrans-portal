@@ -35,14 +35,14 @@ class VerificationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('signed')->only('verify');
-        $this->middleware('throttle:6,1')->only('verify', 'resend');
         $this->redirectTo = route('mypage.index');
     }
 
     public function resendApi(Request $request)
     {
+        $this->middleware('auth');
+        $this->middleware('signed')->only('verify');
+        $this->middleware('throttle:6,1')->only('verify', 'resend');
         $this->resend($request);
 
         return response(['status' => true]);
@@ -50,6 +50,6 @@ class VerificationController extends Controller
 
     public function notice()
     {
-        abort(404);
+        return response(view('errors.verification'), 401);
     }
 }

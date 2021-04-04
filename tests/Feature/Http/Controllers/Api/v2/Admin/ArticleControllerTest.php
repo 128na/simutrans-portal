@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Api\v2\Admin;
+namespace Tests\Feature\Http\Controllers\Api\v2\Admin;
 
 use App\Jobs\Article\JobUpdateRelated;
 use Illuminate\Support\Facades\Bus;
 use Tests\AdminTestCase;
 
-class ArticleTest extends AdminTestCase
+class ArticleControllerTest extends AdminTestCase
 {
     /**
      * @dataProvider dataUsers

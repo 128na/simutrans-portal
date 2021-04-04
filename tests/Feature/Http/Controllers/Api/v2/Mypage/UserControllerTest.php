@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\v2\Mypage;
+namespace Tests\Feature\Http\Controllers\Api\v2\Mypage;
 
 use App\Models\Attachment;
 use App\Models\User;
@@ -10,7 +10,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Notification;
 use Tests\ArticleTestCase;
 
-class UserTest extends ArticleTestCase
+class UserControllerTest extends ArticleTestCase
 {
     private Attachment $not_image;
     private Attachment $user2_avatar;

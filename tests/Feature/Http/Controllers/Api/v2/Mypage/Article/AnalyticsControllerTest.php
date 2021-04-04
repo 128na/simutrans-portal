@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Feature\Api\v2\Mypage\Article;
+namespace Tests\Feature\Http\Controllers\Api\v2\Mypage\Article;
 
 use Closure;
 use Tests\ArticleTestCase;
 
-class AnalyticsTest extends ArticleTestCase
+class AnalyticsControllerTest extends ArticleTestCase
 {
     /**
      * @dataProvider dataValidation

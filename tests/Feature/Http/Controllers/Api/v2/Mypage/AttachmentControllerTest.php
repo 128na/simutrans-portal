@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\v2\Mypage;
+namespace Tests\Feature\Http\Controllers\Api\v2\Mypage;
 
 use App\Models\Attachment;
 use App\Models\User;
@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\UploadedFile;
 use Tests\ArticleTestCase;
 
-class AttachmentTest extends ArticleTestCase
+class AttachmentControllerTest extends ArticleTestCase
 {
     public function testIndex()
     {

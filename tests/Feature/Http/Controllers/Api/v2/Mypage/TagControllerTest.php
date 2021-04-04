@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Api\v2\Mypage;
+namespace Tests\Feature\Http\Controllers\Api\v2\Mypage;
 
 use App\Models\Tag;
 use Closure;
 use Tests\TestCase;
 
-class TagTest extends TestCase
+class TagControllerTest extends TestCase
 {
     private Tag $tag1;
     private Tag $tag2;

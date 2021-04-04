@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\v2\Mypage;
+namespace Tests\Feature\Http\Controllers\Api\v2\Mypage;
 
 use Closure;
 use Illuminate\Http\UploadedFile;

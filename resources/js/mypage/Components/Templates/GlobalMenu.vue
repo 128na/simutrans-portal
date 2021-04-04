@@ -1,6 +1,6 @@
 <template>
   <b-navbar
-    class="fixed-left py-4"
+    class="fixed-left py-2 py-lg-4"
     type="dark"
     variant="primary"
     toggleable="lg"

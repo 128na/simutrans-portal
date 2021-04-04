@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\v2\Mypage\Article;
+namespace Tests\Feature\Http\Controllers\Api\v2\Mypage\Article\EditorController;
 
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Category;
@@ -9,17 +9,26 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
 use Tests\ArticleTestCase;
 
-class StoreMarkdownTest extends ArticleTestCase
+class UpdateMarkdownTest extends ArticleTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->article = $this->createMarkdown();
+        $this->article2 = $this->createMarkdown($this->user2);
+    }
+
     /**
-     * @dataProvider dataStoreArticleValidation
      * @dataProvider dataArticleValidation
      * @dataProvider dataMarkdownValidation
      */
     public function testValidation(Closure $fn, ?string $error_field)
     {
         Bus::fake();
-        $url = route('api.v2.articles.store');
+        $url = route('api.v2.articles.update', $this->article);
+
+        $res = $this->postJson($url);
+        $res->assertUnauthorized();
 
         $this->actingAs($this->user);
 
@@ -56,8 +65,7 @@ class StoreMarkdownTest extends ArticleTestCase
 
     public function testPreview()
     {
-        $url = route('api.v2.articles.store');
-
+        $url = route('api.v2.articles.update', $this->article);
         $this->actingAs($this->user);
 
         $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);

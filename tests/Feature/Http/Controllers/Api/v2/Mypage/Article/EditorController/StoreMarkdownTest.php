@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\v2\Mypage\Article;
+namespace Tests\Feature\Http\Controllers\Api\v2\Mypage\Article\EditorController;
 
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Category;
@@ -9,42 +9,31 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
 use Tests\ArticleTestCase;
 
-class UpdatePageTest extends ArticleTestCase
+class StoreMarkdownTest extends ArticleTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->article = $this->createPage();
-        $this->article2 = $this->createPage($this->user2);
-    }
-
     /**
+     * @dataProvider dataStoreArticleValidation
      * @dataProvider dataArticleValidation
-     * @dataProvider dataPageValidation
+     * @dataProvider dataMarkdownValidation
      */
     public function testValidation(Closure $fn, ?string $error_field)
     {
         Bus::fake();
-        $url = route('api.v2.articles.update', $this->article);
+        $url = route('api.v2.articles.store');
+
         $this->actingAs($this->user);
 
         $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
-        $image = $this->createFromFile(UploadedFile::fake()->image('image.jpg', 1), $this->user->id);
 
         $date = now()->format('YmdHis');
         $data = [
-            'post_type' => 'page',
+            'post_type' => 'markdown',
             'status' => 'publish',
             'title' => 'test title '.$date,
             'slug' => 'test-slug-'.$date,
             'contents' => [
                 'thumbnail' => $thumbnail->id,
-                'sections' => [
-                    ['type' => 'text', 'text' => 'text'.$date],
-                    ['type' => 'caption', 'caption' => 'caption'.$date],
-                    ['type' => 'url', 'url' => 'http://example.com'],
-                    ['type' => 'image', 'id' => $image->id],
-                ],
+                'markdown' => '# hello',
             ],
             'categories' => [
                 Category::page()->first()->id,
@@ -67,26 +56,21 @@ class UpdatePageTest extends ArticleTestCase
 
     public function testPreview()
     {
-        $url = route('api.v2.articles.update', $this->article);
+        $url = route('api.v2.articles.store');
+
         $this->actingAs($this->user);
 
         $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
-        $image = $this->createFromFile(UploadedFile::fake()->image('image.jpg', 1), $this->user->id);
 
         $date = now()->format('YmdHis');
         $data = [
-            'post_type' => 'page',
+            'post_type' => 'markdown',
             'status' => 'publish',
             'title' => 'test title '.$date,
             'slug' => 'test-slug-'.$date,
             'contents' => [
                 'thumbnail' => $thumbnail->id,
-                'sections' => [
-                    ['type' => 'text', 'text' => 'text'.$date],
-                    ['type' => 'caption', 'caption' => 'caption'.$date],
-                    ['type' => 'url', 'url' => 'http://example.com'],
-                    ['type' => 'image', 'id' => $image->id],
-                ],
+                'markdown' => '# hello',
             ],
             'categories' => [
                 Category::page()->first()->id,

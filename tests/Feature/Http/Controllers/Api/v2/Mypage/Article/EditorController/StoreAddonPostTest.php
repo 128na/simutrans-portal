@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\v2\Mypage\Article;
+namespace Tests\Feature\Http\Controllers\Api\v2\Mypage\Article\EditorController;
 
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Category;

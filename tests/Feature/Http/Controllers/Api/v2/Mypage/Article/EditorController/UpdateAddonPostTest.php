@@ -1,55 +1,51 @@
 <?php
 
-namespace Tests\Feature\Api\v2\Mypage\Article;
+namespace Tests\Feature\Http\Controllers\Api\v2\Mypage\Article\EditorController;
 
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Category;
 use App\Models\Tag;
-use App\Models\User;
 use Closure;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
 use Tests\ArticleTestCase;
 
-class StoreAddonIntroductionTest extends ArticleTestCase
+class UpdateAddonPostTest extends ArticleTestCase
 {
-    public function testログイン()
+    protected function setUp(): void
     {
-        $url = route('api.v2.articles.store');
-
-        $res = $this->postJson($url);
-        $res->assertUnauthorized();
+        parent::setUp();
+        $this->article = $this->createAddonPost();
+        $this->article2 = $this->createAddonPost($this->user2);
     }
 
     /**
-     * @dataProvider dataStoreArticleValidation
      * @dataProvider dataArticleValidation
      * @dataProvider dataAddonValidation
-     * @dataProvider dataAddonIntroductionValidation
+     * @dataProvider dataAddonPostValidation
      */
     public function testValidation(Closure $fn, ?string $error_field)
     {
         Bus::fake();
-        $url = route('api.v2.articles.store');
-
+        $url = route('api.v2.articles.update', $this->article);
         $this->actingAs($this->user);
 
         $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
+        $addon = $this->createFromFile(UploadedFile::fake()->create('addon.zip', 1), $this->user->id);
 
         $date = now()->format('YmdHis');
         $data = [
-            'post_type' => 'addon-introduction',
+            'post_type' => 'addon-post',
             'status' => 'publish',
             'title' => 'test title '.$date,
             'slug' => 'test-slug-'.$date,
             'contents' => [
                 'thumbnail' => $thumbnail->id,
                 'author' => 'test auhtor',
-                'link' => 'http://example.com',
+                'file' => $addon->id,
                 'description' => 'test description',
                 'thanks' => 'tets thanks',
                 'license' => 'test license',
-                'agreement' => true,
             ],
             'tags' => [
                 Tag::factory()->create()->name,
@@ -78,27 +74,25 @@ class StoreAddonIntroductionTest extends ArticleTestCase
 
     public function testPreview()
     {
-        $url = route('api.v2.articles.store');
+        $url = route('api.v2.articles.update', $this->article);
+        $this->actingAs($this->user);
 
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
-        $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $user->id);
+        $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
+        $addon = $this->createFromFile(UploadedFile::fake()->create('addon.zip', 1), $this->user->id);
 
         $date = now()->format('YmdHis');
         $data = [
-            'post_type' => 'addon-introduction',
+            'post_type' => 'addon-post',
             'status' => 'publish',
             'title' => 'test title '.$date,
             'slug' => 'test-slug-'.$date,
             'contents' => [
                 'thumbnail' => $thumbnail->id,
                 'author' => 'test auhtor',
-                'link' => 'http://example.com',
+                'file' => $addon->id,
                 'description' => 'test description',
                 'thanks' => 'tets thanks',
                 'license' => 'test license',
-                'agreement' => true,
             ],
             'tags' => [
                 Tag::factory()->create()->name,

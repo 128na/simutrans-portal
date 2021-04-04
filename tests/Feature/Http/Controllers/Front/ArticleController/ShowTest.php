@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Front;
+namespace Tests\Feature\Http\Controllers\Front\ArticleController;
 
 use App\Models\User;
 use Closure;
 use Tests\ArticleTestCase;
 
-class ShowArticleTest extends ArticleTestCase
+class ShowTest extends ArticleTestCase
 {
     /**
      *  @dataProvider dataShow

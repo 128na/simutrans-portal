@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Front;
+namespace Tests\Feature\Http\Controllers\Front\ArticleController;
 
 use App\Models\Article;
 use Tests\TestCase;

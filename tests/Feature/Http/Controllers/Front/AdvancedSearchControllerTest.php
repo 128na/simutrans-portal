@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\Front\AdvancedSearchController;
+namespace Tests\Feature\Http\Controllers\Front;
 
 use Tests\TestCase;
 
-class SearchTest extends TestCase
+class AdvancedSearchControllerTest extends TestCase
 {
     private string $url;
 

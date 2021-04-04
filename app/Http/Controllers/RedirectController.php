@@ -30,9 +30,4 @@ class RedirectController extends Controller
     {
         return str_replace(config('app.url'), '', $fullUrl);
     }
-
-    public function mypage()
-    {
-        return redirect()->route('mypage.index');
-    }
 }

@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Tests\ArticleTestCase;
 
-class MiscTest extends ArticleTestCase
+class FeedTest extends ArticleTestCase
 {
     /**
      * feedが表示されること.

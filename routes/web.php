@@ -46,7 +46,7 @@ Route::middleware(['cache.response'])->group(function () {
 Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
 Route::get('/search', [ArticleController::class, 'search'])->name('search');
 Route::get('/mypage/', [MypageController::class, 'index'])->name('mypage.index');
-Route::get('/mypage/{any}', [RedirectController::class, 'mypage'])->where('any', '.*');
+Route::get('/mypage/{any}', [MypageController::class, 'fallback'])->where('any', '.*');
 Route::get('/articles/{article}/download', [ArticleController::class, 'download'])->name('articles.download');
 
 // ログイン系 reidsキャッシュ無効

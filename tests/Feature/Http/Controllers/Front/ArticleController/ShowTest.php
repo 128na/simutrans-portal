@@ -115,44 +115,6 @@ class ShowTest extends ArticleTestCase
     /**
      * @dataProvider dataCount
      * */
-    public function testConversionCountAddonIntroduction(Closure $fn, ?int $expected_count)
-    {
-        $article = $this->createAddonIntroduction();
-
-        $dayly = now()->format('Ymd');
-        $monthly = now()->format('Ym');
-        $yearly = now()->format('Y');
-        $total = 'total';
-
-        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly]);
-        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly]);
-        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly]);
-        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total]);
-
-        $fn = Closure::bind($fn, $this);
-        $user = $fn();
-        if ($user) {
-            $this->actingAs($user);
-        }
-        $response = $this->post('api/v1/click/'.$article->slug);
-        $response->assertOk();
-
-        if (is_null($expected_count)) {
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly]);
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly]);
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly]);
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total]);
-        } else {
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly, 'count' => $expected_count]);
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly, 'count' => $expected_count]);
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => $expected_count]);
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => $expected_count]);
-        }
-    }
-
-    /**
-     * @dataProvider dataCount
-     * */
     public function testConversionCountAddonPost(Closure $fn, ?int $expected_count)
     {
         $article = $this->createAddonPost();

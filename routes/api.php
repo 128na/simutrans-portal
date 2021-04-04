@@ -25,7 +25,7 @@ use App\Http\Controllers\Auth\VerificationController;
 |
  */
 Route::prefix('v1')->name('api.v1.')->namespace('Api\v1')->group(function () {
-    Route::post('click/{article}', [ConversionController::class, 'click']);
+    Route::post('click/{article}', [ConversionController::class, 'click'])->name('click');
 });
 
 // auth

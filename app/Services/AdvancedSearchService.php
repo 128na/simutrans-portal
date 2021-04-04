@@ -6,6 +6,7 @@ use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
 use App\Repositories\UserRepository;
+use Carbon\CarbonImmutable;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdvancedSearchservice extends Service
@@ -31,20 +32,20 @@ class AdvancedSearchservice extends Service
     {
         $word = $conditions['word'] ?? null;
 
-        $categoryAnd = $conditions['categoryAnd'] ?? null;
+        $categoryAnd = $conditions['categoryAnd'] ?? true;
         $categoryIds = $conditions['categoryIds'] ?? null;
         $categories = empty($categoryIds) ? null : $this->categoryRepository->findByIds($categoryIds);
 
-        $tagAnd = $conditions['tagAnd'] ?? null;
+        $tagAnd = $conditions['tagAnd'] ?? true;
         $tagIds = $conditions['tagIds'] ?? null;
         $tags = empty($tagIds) ? null : $this->tagRepository->findByIds($tagIds);
 
-        $userAnd = $conditions['userAnd'] ?? null;
+        $userAnd = $conditions['userAnd'] ?? true;
         $userIds = $conditions['userIds'] ?? null;
         $users = empty($userIds) ? null : $this->userRepository->findByIds($userIds);
 
-        $startAt = $conditions['startAt'] ?? null;
-        $endAt = $conditions['endAt'] ?? null;
+        $startAt = is_null($conditions['startAt'] ?? null) ? null : CarbonImmutable::parse($conditions['startAt']);
+        $endAt = is_null($conditions['endAt'] ?? null) ? null : CarbonImmutable::parse($conditions['endAt']);
 
         $order = $conditions['order'] ?? 'updated_at';
         $direction = $conditions['direction'] ?? 'desc';
@@ -52,5 +53,14 @@ class AdvancedSearchservice extends Service
         return $this->articleRepository->paginateAdvancedSearch(
             $word, $categories, $categoryAnd, $tags, $tagAnd, $users, $userAnd, $startAt, $endAt, $order, $direction
         );
+    }
+
+    public function getOptions(): array
+    {
+        return [
+            'categories' => $this->categoryRepository->findAll(['id', 'slug', 'type']),
+            'tags' => $this->tagRepository->findAll(['id', 'name']),
+            'users' => $this->userRepository->findAll(['id', 'name']),
+        ];
     }
 }

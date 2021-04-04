@@ -27,8 +27,9 @@ class AdvancedSearchController extends Controller
         $contents = [
             'articles' => $articles,
             'advancedSearch' => $advancedSearch,
+            'options' => $this->advancedSearchservice->getOptions(),
         ];
 
-        return view('front.articles.advancedSearch', $contents);
+        return view('front.articles.index', $contents);
     }
 }

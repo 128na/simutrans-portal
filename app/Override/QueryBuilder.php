@@ -2,6 +2,8 @@
 
 namespace App\Override;
 
+use Throwable;
+
 /**
  * クエリをキャッシュする.
  */
@@ -20,7 +22,11 @@ class QueryBuilder extends \Illuminate\Database\Query\Builder
     {
         if ($this->with_cache) {
             $sql = str_replace('?', '"%s"', $this->toSql());
-            $sql = @vsprintf($sql, $this->getBindings());
+            try {
+                $sql = @vsprintf($sql, $this->getBindings());
+            } catch (Throwable $e) {
+                // 詳細検索だと稀によく引数が合わないっぽい
+            }
             if ($sql) {
                 logger($sql);
                 $key = 'query:'.hash('sha256', $sql);

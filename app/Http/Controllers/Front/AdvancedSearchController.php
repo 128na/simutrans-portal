@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\article\AdvancedSearchRequest;
+use App\Http\Requests\Article\AdvancedSearchRequest;
 use App\Services\AdvancedSearchService;
 
 class AdvancedSearchController extends Controller

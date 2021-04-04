@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\article\AdvancedSearchRequest;
-use App\Services\AdvancedSearchservice;
+use App\Services\AdvancedSearchService;
 
 class AdvancedSearchController extends Controller
 {
-    private AdvancedSearchservice $advancedSearchservice;
+    private AdvancedSearchService $advancedSearchService;
 
     public function __construct(
-        AdvancedSearchservice $advancedSearchservice
+        AdvancedSearchService $advancedSearchService
     ) {
-        $this->advancedSearchservice = $advancedSearchservice;
+        $this->advancedSearchService = $advancedSearchService;
     }
 
     /**
@@ -23,11 +23,11 @@ class AdvancedSearchController extends Controller
     {
         $advancedSearch = $request->validated()['advancedSearch'] ?? [];
 
-        $articles = $this->advancedSearchservice->search($advancedSearch);
+        $articles = $this->advancedSearchService->search($advancedSearch);
         $contents = [
             'articles' => $articles,
             'advancedSearch' => $advancedSearch,
-            'options' => $this->advancedSearchservice->getOptions(),
+            'options' => $this->advancedSearchService->getOptions(),
         ];
 
         return view('front.articles.index', $contents);

@@ -9,7 +9,7 @@ use App\Repositories\UserRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class AdvancedSearchservice extends Service
+class AdvancedSearchService extends Service
 {
     private ArticleRepository $articleRepository;
     private CategoryRepository $categoryRepository;

@@ -23,13 +23,8 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::creator(
-            ['front.index', 'front.tags', 'front.articles.index', 'front.articles.show'],
-            \App\Http\View\Creators\SidebarCreator::class
-        );
-        View::creator(
-            ['front.index', 'front.tags', 'front.articles.index', 'front.articles.show'],
-            \App\Http\View\Creators\MetaCreator::class
-        );
+        $views = ['front.index', 'front.tags', 'front.articles.index', 'front.articles.show', 'front.articles.advancedSearch'];
+        View::creator($views, \App\Http\View\Creators\SidebarCreator::class);
+        View::creator($views, \App\Http\View\Creators\MetaCreator::class);
     }
 }

@@ -58,12 +58,16 @@ class MetaCreator
                 return $this->forUser();
             case $route->named('search'):
                 return $this->forSearch();
+            case $route->named('advancedSearch'):
+                return $this->forAdvancedSearch();
 
             case $this->name === 'front.tags':
                 return $this->forTags();
 
             case $this->name === 'front.articles.show':
                 return $this->forShow();
+
+            logger('unknown route:'.$route);
         }
     }
 
@@ -197,6 +201,22 @@ class MetaCreator
                 ['name' => $title],
             ],
             'word' => $request->word,
+        ];
+    }
+
+    /**
+     *  検索記事一覧ページ用.
+     */
+    public function forAdvancedSearch()
+    {
+        $title = '詳細検索';
+
+        return [
+            'title' => $title,
+            'breadcrumb' => [
+                ['name' => 'トップ', 'url' => route('index')],
+                ['name' => $title],
+            ],
         ];
     }
 

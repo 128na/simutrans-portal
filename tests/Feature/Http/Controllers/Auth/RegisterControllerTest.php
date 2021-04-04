@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Api\v2\Auth;
+namespace Tests\Feature\Http\Controllers\Auth;
 
 use App\Models\User;
 use Config;
 use Tests\TestCase;
 
-class RegisterTest extends TestCase
+class RegisterControllerTest extends TestCase
 {
     private User $user2;
 

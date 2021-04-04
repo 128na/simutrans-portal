@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\v2\Auth;
+namespace Tests\Feature\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Notifications\ResetPassword;
@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
 use Tests\TestCase;
 
-class PasswordResetTest extends TestCase
+class ResetPasswordControllerTest extends TestCase
 {
     private PasswordBroker $broker;
     private User $user2;

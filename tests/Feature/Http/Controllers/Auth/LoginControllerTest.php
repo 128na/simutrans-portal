@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature\Api\v2\Auth;
+namespace Tests\Feature\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Notifications\Loggedin;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
-class LoginLogoutTest extends TestCase
+class LoginControllerTest extends TestCase
 {
     /**
      * @dataProvider dataValidation
@@ -45,7 +45,7 @@ class LoginLogoutTest extends TestCase
         yield 'PWがnull' => [['password' => null], 'password'];
     }
 
-    public function LogoutTest()
+    public function testLogout()
     {
         $this->actingAs($this->user);
         $this->assertAuthenticated();

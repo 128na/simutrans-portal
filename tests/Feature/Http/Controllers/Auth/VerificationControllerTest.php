@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\v2\Auth;
+namespace Tests\Feature\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Notifications\VerifyEmail;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
-class EmailVerificationTest extends TestCase
+class VerificationControllerTest extends TestCase
 {
     public function test登録後の確認メール()
     {

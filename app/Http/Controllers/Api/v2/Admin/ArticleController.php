@@ -23,7 +23,7 @@ class ArticleController extends Controller
 
     public function update(ArticleUpdateRequest $request, int $id)
     {
-        $article = $this->articleRepository->findWithTrashed($id);
+        $article = $this->articleRepository->findOrFailWithTrashed($id);
         $this->articleRepository->update($article, $request->validated()['article']);
 
         JobUpdateRelated::dispatchSync();
@@ -33,7 +33,7 @@ class ArticleController extends Controller
 
     public function destroy(int $id)
     {
-        $article = $this->articleRepository->findWithTrashed($id);
+        $article = $this->articleRepository->findOrFailWithTrashed($id);
         $this->articleRepository->toggleDelete($article);
 
         JobUpdateRelated::dispatchSync();

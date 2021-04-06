@@ -4,9 +4,10 @@ namespace Tests\Feature\Repositories\ArticleRepository;
 
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\ArticleTestCase;
 
-class FindArticleTest extends ArticleTestCase
+class FindOrFailWithTrashedTest extends ArticleTestCase
 {
     private ArticleRepository $repository;
 
@@ -18,15 +19,14 @@ class FindArticleTest extends ArticleTestCase
 
     public function test()
     {
-        $res = $this->repository->loadArticle($this->article);
+        $res = $this->repository->findOrFailWithTrashed($this->article->id);
 
         $this->assertInstanceOf(Article::class, $res);
     }
 
-    public function testWithCount()
+    public function testNotFound()
     {
-        $res = $this->repository->loadArticle($this->article, true);
-
-        $this->assertInstanceOf(Article::class, $res);
+        $this->expectException(ModelNotFoundException::class);
+        $this->repository->findOrFailWithTrashed(0);
     }
 }

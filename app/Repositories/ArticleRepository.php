@@ -321,7 +321,7 @@ class ArticleRepository extends BaseRepository
     /**
      * 論理削除されているものも含めて探す.
      */
-    public function findWithTrashed(int $id): Article
+    public function findOrFailWithTrashed(int $id): Article
     {
         return $this->model
             ->withTrashed()

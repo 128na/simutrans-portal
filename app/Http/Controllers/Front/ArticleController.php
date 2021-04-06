@@ -84,7 +84,7 @@ class ArticleController extends Controller
             event(new ArticleShown($article));
         }
 
-        $contents = ['article' => $this->articleRepository->findArticle($article, $isOwner)];
+        $contents = ['article' => $this->articleRepository->loadArticle($article, $isOwner)];
 
         return view('front.articles.show', $contents);
     }

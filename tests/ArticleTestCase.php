@@ -27,7 +27,7 @@ abstract class ArticleTestCase extends TestCase
         $this->article = $this->createAddonIntroduction();
         $this->user_file = $this->createFromFile(UploadedFile::fake()->create('other.zip', 1), $this->user->id);
         $this->user2 = User::factory()->create();
-        $this->article2 = Article::factory()->create(['user_id' => $this->user2->id]);
+        $this->article2 = $this->createAddonIntroduction($this->user2);
         $this->user2_image = $this->createFromFile(UploadedFile::fake()->image('other.png', 1), $this->user2->id);
         $this->user2_file = $this->createFromFile(UploadedFile::fake()->image('other.zip', 1), $this->user2->id);
     }

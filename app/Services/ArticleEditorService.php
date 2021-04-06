@@ -136,8 +136,8 @@ class ArticleEditorService extends Service
         $this->articleRepository->syncTags($article, $tagIds->toArray());
     }
 
-    public function findArticle(Article $article, bool $withCount): Article
+    public function loadArticle(Article $article, bool $withCount): Article
     {
-        return $this->articleRepository->findArticle($article, $withCount);
+        return $this->articleRepository->loadArticle($article, $withCount);
     }
 }

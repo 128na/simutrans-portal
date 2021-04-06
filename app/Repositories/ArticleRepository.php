@@ -294,7 +294,7 @@ class ArticleRepository extends BaseRepository
     /**
      * 記事表示.
      */
-    public function findArticle(Article $article, bool $withCount = false): Article
+    public function loadArticle(Article $article, bool $withCount = false): Article
     {
         $relations = $withCount ? [
             'user:id,name', 'attachments:id,attachmentable_id,attachmentable_type,path', 'categories:id,type,slug', 'tags:id,name',

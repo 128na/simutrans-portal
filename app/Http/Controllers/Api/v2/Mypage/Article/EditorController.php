@@ -79,7 +79,7 @@ class EditorController extends Controller
 
     private function createPreview(Article $article)
     {
-        $article = $this->articleEditorService->findArticle($article, true);
+        $article = $this->articleEditorService->loadArticle($article, true);
 
         $contents = ['preview' => true, 'article' => $article];
 

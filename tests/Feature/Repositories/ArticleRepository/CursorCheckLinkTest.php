@@ -6,7 +6,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Support\LazyCollection;
 use Tests\ArticleTestCase;
 
-class CursorCheckLinkArticlesTest extends ArticleTestCase
+class CursorCheckLinkTest extends ArticleTestCase
 {
     private ArticleRepository $repository;
 
@@ -23,7 +23,7 @@ class CursorCheckLinkArticlesTest extends ArticleTestCase
         $this->createMarkdown();
         $this->createMarkdownAnnounce();
 
-        $res = $this->repository->cursorCheckLinkArticles();
+        $res = $this->repository->cursorCheckLink();
 
         $this->assertInstanceOf(LazyCollection::class, $res);
         $this->assertEquals(2, $res->count(), 'アドオン紹介記事のみ取得できること');
@@ -37,7 +37,7 @@ class CursorCheckLinkArticlesTest extends ArticleTestCase
             'contents' => $contents,
         ]);
 
-        $res = $this->repository->cursorCheckLinkArticles();
+        $res = $this->repository->cursorCheckLink();
 
         $this->assertInstanceOf(LazyCollection::class, $res);
         $this->assertEquals(1, $res->count(), 'チェック無効の記事は取得できないこと');
@@ -46,7 +46,7 @@ class CursorCheckLinkArticlesTest extends ArticleTestCase
     public function test公開以外のステータス()
     {
         $this->article->update(['status' => 'draft']);
-        $res = $this->repository->cursorCheckLinkArticles();
+        $res = $this->repository->cursorCheckLink();
 
         $this->assertInstanceOf(LazyCollection::class, $res);
         $this->assertEquals(1, $res->count(), '非公開記事は取得できないこと');
@@ -55,7 +55,7 @@ class CursorCheckLinkArticlesTest extends ArticleTestCase
     public function test論理削除()
     {
         $this->article->delete();
-        $res = $this->repository->cursorCheckLinkArticles();
+        $res = $this->repository->cursorCheckLink();
 
         $this->assertInstanceOf(LazyCollection::class, $res);
         $this->assertEquals(1, $res->count(), '削除済み記事は取得できないこと');

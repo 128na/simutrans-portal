@@ -36,7 +36,7 @@ class ArticleController extends Controller
      */
     public function addons()
     {
-        $contents = ['articles' => $this->articleRepository->paginateAddonArticles()];
+        $contents = ['articles' => $this->articleRepository->paginateAddons()];
 
         return view('front.articles.index', $contents);
     }
@@ -46,7 +46,7 @@ class ArticleController extends Controller
      */
     public function ranking()
     {
-        $contents = ['articles' => $this->articleRepository->paginateRankingArticles()];
+        $contents = ['articles' => $this->articleRepository->paginateRanking()];
 
         return view('front.articles.index', $contents);
     }
@@ -56,7 +56,7 @@ class ArticleController extends Controller
      */
     public function pages()
     {
-        $contents = ['articles' => $this->articleRepository->paginateCommonArticles()];
+        $contents = ['articles' => $this->articleRepository->paginatePages()];
 
         return view('front.articles.index', $contents);
     }
@@ -115,7 +115,7 @@ class ArticleController extends Controller
     {
         $category = $this->categoryRepository->findOrFailByTypeAndSlug($type, $slug);
         $contents = [
-            'articles' => $this->articleRepository->paginateCategoryArtciles($category),
+            'articles' => $this->articleRepository->paginateByCategory($category),
             'category' => $category,
         ];
 
@@ -131,7 +131,7 @@ class ArticleController extends Controller
         $addon = $this->categoryRepository->findOrFailByTypeAndSlug('addon', $addonSlug);
 
         $contents = [
-            'articles' => $this->articleRepository->paginatePakAddonCategoryArtciles($pak, $addon),
+            'articles' => $this->articleRepository->paginateByPakAddonCategory($pak, $addon),
             'categories' => ['pak' => $pak, 'addon' => $addon],
         ];
 
@@ -143,7 +143,7 @@ class ArticleController extends Controller
      */
     public function tag(Tag $tag)
     {
-        $contents = ['articles' => $this->articleRepository->paginateTagArticles($tag), 'tag' => $tag];
+        $contents = ['articles' => $this->articleRepository->paginateByTag($tag), 'tag' => $tag];
 
         return view('front.articles.index', $contents);
     }
@@ -153,7 +153,7 @@ class ArticleController extends Controller
      */
     public function user(User $user)
     {
-        $contents = ['articles' => $this->articleRepository->paginateUserArticles($user), 'user' => $user];
+        $contents = ['articles' => $this->articleRepository->paginateByUser($user), 'user' => $user];
 
         return view('front.articles.index', $contents);
     }
@@ -164,7 +164,7 @@ class ArticleController extends Controller
     public function search(SearchRequest $request)
     {
         $word = $request->word;
-        $contents = ['articles' => $this->articleRepository->paginateSearchArticles($word), 'request' => $request];
+        $contents = ['articles' => $this->articleRepository->paginateBySearch($word), 'request' => $request];
 
         return view('front.articles.index', $contents);
     }

@@ -27,7 +27,7 @@ class ArticleEditorService extends Service
         $this->tagRepository = $tagRepository;
     }
 
-    public function getArticles(User $user)
+    public function findArticles(User $user)
     {
         return $this->articleRepository->findAllByUser($user);
     }
@@ -136,8 +136,8 @@ class ArticleEditorService extends Service
         $this->articleRepository->syncTags($article, $tagIds->toArray());
     }
 
-    public function getArticle(Article $article, bool $withCount): Article
+    public function findArticle(Article $article, bool $withCount): Article
     {
-        return $this->articleRepository->getArticle($article, $withCount);
+        return $this->articleRepository->findArticle($article, $withCount);
     }
 }

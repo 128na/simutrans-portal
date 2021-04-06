@@ -26,7 +26,7 @@ class EditorController extends Controller
     public function index()
     {
         return new ArticlesResouce(
-            $this->articleEditorService->getArticles(Auth::user())
+            $this->articleEditorService->findArticles(Auth::user())
         );
     }
 
@@ -79,7 +79,7 @@ class EditorController extends Controller
 
     private function createPreview(Article $article)
     {
-        $article = $this->articleEditorService->getArticle($article, true);
+        $article = $this->articleEditorService->findArticle($article, true);
 
         $contents = ['preview' => true, 'article' => $article];
 

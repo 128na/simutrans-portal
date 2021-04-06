@@ -20,7 +20,7 @@ class AnalyticsController extends Controller
     public function index(SearchRequest $request)
     {
         return new ArticleAnalyticsResource(
-            $this->article_analytics_service->getArticles(Auth::user(), $request)
+            $this->article_analytics_service->findArticles(Auth::user(), $request)
         );
     }
 }

@@ -112,7 +112,7 @@ class ArticleRepository extends BaseRepository
     /**
      * お知らせ記事一覧.
      */
-    public function getAnnouces(?int $limit = null): Collection
+    public function findAnnouces(?int $limit = null): Collection
     {
         return $this->queryAnnouces()->limit($limit)->get();
     }
@@ -134,7 +134,7 @@ class ArticleRepository extends BaseRepository
     /**
      * 一般記事一覧.
      */
-    public function getCommonArticles(?int $limit = null): Collection
+    public function findCommonArticles(?int $limit = null): Collection
     {
         return $this->queryCommonArticles()->limit($limit)->get();
     }
@@ -157,7 +157,7 @@ class ArticleRepository extends BaseRepository
     /**
      * pak別の投稿一覧.
      */
-    public function getPakArticles(string $pak, ?int $limit = null): Collection
+    public function findPakArticles(string $pak, ?int $limit = null): Collection
     {
         return $this->queryPakArticles($pak)->limit($limit)->get();
     }
@@ -173,7 +173,7 @@ class ArticleRepository extends BaseRepository
     /**
      * アドオン投稿/紹介のデイリーPVランキング.
      */
-    public function getRankingArticles(array $excludes = [], ?int $limit = null): Collection
+    public function findRankingArticles(array $excludes = [], ?int $limit = null): Collection
     {
         return $this->queryRankingArticles($excludes)->limit($limit)->get();
     }
@@ -294,7 +294,7 @@ class ArticleRepository extends BaseRepository
     /**
      * 記事表示.
      */
-    public function getArticle(Article $article, bool $withCount = false): Article
+    public function findArticle(Article $article, bool $withCount = false): Article
     {
         $relations = $withCount ? [
             'user:id,name', 'attachments:id,attachmentable_id,attachmentable_type,path', 'categories:id,type,slug', 'tags:id,name',

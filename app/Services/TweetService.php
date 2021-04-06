@@ -3,21 +3,17 @@
 namespace App\Services;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use Illuminate\Support\Facades\App;
 
 class TweetService
 {
     private TwitterOAuth $client;
     private bool $is_prod;
 
-    public function __construct()
+    public function __construct(TwitterOAuth $client)
     {
-        $this->client = new TwitterOAuth(
-            config('twitter.consumer_key'),
-            config('twitter.consumer_secret'),
-            config('twitter.access_token'),
-            config('twitter.access_token_secret')
-        );
-        $this->is_prod = \App::environment(['production']);
+        $this->client = $this->client;
+        $this->is_prod = App::environment(['production']);
     }
 
     public function post($message = '')

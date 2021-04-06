@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Services\MarkdownService;
 use Carbon\CarbonImmutable;
+use HTMLPurifier;
+use HTMLPurifier_Config;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,6 +19,31 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind(TwitterOAuth::class, function ($app) {
+            return new TwitterOAuth(
+                config('twitter.consumer_key'),
+                config('twitter.consumer_secret'),
+                config('twitter.access_token'),
+                config('twitter.access_token_secret')
+            );
+        });
+
+        $this->app->bind(HTMLPurifier::class, function ($app) {
+            $config = HTMLPurifier_Config::createDefault();
+            $config->set('HTML.AllowedElements', [
+                'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+                'hr',
+                'pre', 'code',
+                'blockquote',
+                'table', 'tr', 'td', 'th', 'thead', 'tbody',
+                'strong', 'em', 'b', 'i', 'u', 's', 'span',
+                'a', 'p', 'br',
+                'ul', 'ol', 'li',
+                'img',
+            ]);
+
+            return new HTMLPurifier($config);
+        });
     }
 
     /**

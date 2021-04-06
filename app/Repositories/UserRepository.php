@@ -47,4 +47,12 @@ class UserRepository extends BaseRepository
             ? $user->restore()
             : $user->delete();
     }
+
+    public function findByEmailWithTrashed(string $email): ?User
+    {
+        return $this->model
+            ->where('email', $email)
+            ->withTrashed()
+            ->first();
+    }
 }

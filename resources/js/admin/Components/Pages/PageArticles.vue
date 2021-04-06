@@ -152,13 +152,13 @@ export default {
     base_url() {
       return process.env.NODE_ENV === "production"
         ? process.env.MIX_APP_URL
-        : "";
+        : "/";
     },
   },
   methods: {
     ...mapActions(["fetchArticles", "updateArticle", "deleteArticle"]),
     linkUrl(slug) {
-      return `${this.base_url}/articles/${slug}`;
+      return `${this.base_url}articles/${slug}`;
     },
     toRestore(article) {
       if (confirm("復元しますか？")) {

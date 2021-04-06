@@ -18,9 +18,22 @@ abstract class BaseRepository
     /**
      * モデルの複数形名称を返す.
      */
-    private function plural(): string
+    protected function plural(): string
     {
         return Str::plural(class_basename($this->model));
+    }
+
+    /**
+     * モデルの単数形名称を返す.
+     */
+    protected function singular(): string
+    {
+        return Str::singular(class_basename($this->model));
+    }
+
+    protected function getRelationName(): string
+    {
+        return $this->plural();
     }
 
     /**
@@ -60,7 +73,7 @@ abstract class BaseRepository
      */
     public function storeByUser(User $user, array $data): Model
     {
-        return $user->{$this->plural()}()->create($data);
+        return $user->{$this->getRelationName()}()->create($data);
     }
 
     public function find($id): ?Model

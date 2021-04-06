@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Feature\Controllers\Front;
+namespace Tests\Feature\Repositories\ArticleRepository;
 
 use Tests\TestCase;
 
-class ArticleControllerTest extends TestCase
+class PaginateBySearch extends TestCase
 {
     public function test_example()
     {

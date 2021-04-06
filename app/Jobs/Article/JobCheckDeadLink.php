@@ -26,7 +26,7 @@ class JobCheckDeadLink implements ShouldQueue
     public function handle(ArticleRepository $articleRepository)
     {
         $changed = false;
-        foreach ($articleRepository->cursorCheckLinkArticles() as $article) {
+        foreach ($articleRepository->cursorCheckLink() as $article) {
             if ($this->isLinkDead($article)) {
                 logger('dead link '.$article->title);
 

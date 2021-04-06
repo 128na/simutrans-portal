@@ -31,7 +31,7 @@ class UserRepository extends BaseRepository
     /**
      * 論理削除されているものも含めて探す.
      */
-    public function findWithTrashed(int $id): User
+    public function findOrFailWithTrashed(int $id): User
     {
         return $this->model
             ->withTrashed()

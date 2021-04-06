@@ -18,7 +18,7 @@ class ArticleAnalyticsService extends Service
         $this->articleRepository = $articleRepository;
     }
 
-    public function getArticles(User $user, SearchRequest $request)
+    public function findArticles(User $user, SearchRequest $request)
     {
         $start_date = new Carbon($request->start_date);
         $end_date = new Carbon($request->end_date);

@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
+/**
+ * リポジトリクラス.
+ *
+ * 単体： find(OrFail)(By)Hoge
+ * 一覧： findAll(By)Hoge
+ * ページネーション: paginate(By)Hoge
+ * カーソル: cursor(By)Hoge
+ */
 abstract class BaseRepository
 {
     /**

@@ -7,41 +7,32 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Tests\ArticleTestCase;
 
-class PaginatePakAddonCategoryArtcilesTest extends ArticleTestCase
+class PaginateByCategoryTest extends ArticleTestCase
 {
     private ArticleRepository $repository;
-    private Category $pak;
-    private Category $addon;
+    private Category $category;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->repository = app(ArticleRepository::class);
 
-        $this->pak = Category::where('type', 'pak')->first();
-        $this->addon = Category::where('type', 'addon')->first();
-        $this->article->categories()->sync([$this->pak->id, $this->addon->id]);
+        $this->category = Category::first();
+        $this->article->categories()->sync([$this->category->id]);
     }
 
     public function test()
     {
-        tap($this->createAddonIntroduction(), function ($a) {
-            $a->categories()->sync([$this->pak->id]);
-        });
-        tap($this->createAddonIntroduction(), function ($a) {
-            $a->categories()->sync([$this->addon->id]);
-        });
-
-        $res = $this->repository->paginateByPakAddonCategory($this->pak, $this->addon);
+        $res = $this->repository->paginateByCategory($this->category);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEquals(1, $res->count(), 'pak,addonカテゴリ両方に紐づく記事のみ取得出来ること');
+        $this->assertEquals(1, $res->count(), 'カテゴリに紐づく記事のみ取得出来ること');
     }
 
     public function test公開以外のステータス()
     {
         $this->article->update(['status' => 'draft']);
-        $res = $this->repository->paginateByPakAddonCategory($this->pak, $this->addon);
+        $res = $this->repository->paginateByCategory($this->category);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(0, $res->count(), '非公開記事は取得できないこと');
@@ -50,7 +41,7 @@ class PaginatePakAddonCategoryArtcilesTest extends ArticleTestCase
     public function test論理削除()
     {
         $this->article->delete();
-        $res = $this->repository->paginateByPakAddonCategory($this->pak, $this->addon);
+        $res = $this->repository->paginateByCategory($this->category);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');

@@ -6,7 +6,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Tests\ArticleTestCase;
 
-class PaginateCommonArticlesTest extends ArticleTestCase
+class PaginatePagesTest extends ArticleTestCase
 {
     private ArticleRepository $repository;
 

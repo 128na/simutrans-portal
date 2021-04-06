@@ -13,6 +13,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\TwitterLoginController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Front\AdvancedSearchController;
 use App\Http\Controllers\Front\ArticleController;
@@ -28,6 +29,10 @@ Route::get('/verification/notice', [VerificationController::class, 'notice'])->n
 // PWリセット
 Route::POST('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 Route::GET('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+
+// TwitterLogin
+Route::get('twitter/login', [TwitterLoginController::class, 'redirect'])->name('twitter.login');
+Route::get('twitter/callback', [TwitterLoginController::class, 'callback'])->name('twitter.callback');
 
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware(['cache.response'])->group(function () {

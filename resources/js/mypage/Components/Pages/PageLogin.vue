@@ -19,6 +19,9 @@
         </router-link>
       </b-form-group>
     </form-login>
+    <div>
+      <a :href="twitter_login_url"> Twitterログイン </a>
+    </div>
   </div>
 </template>
 <script>

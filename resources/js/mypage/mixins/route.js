@@ -20,7 +20,13 @@ export default {
       return `${this.base_url}`;
     },
     admin_url() {
-      return `${this.base_url}/admin`;
+      return `${this.base_url}admin`;
+    },
+    twitter_login_url() {
+      return `${this.base_url}twitter/login`;
+    },
+    twitter_disconnect_url() {
+      return `${this.base_url}twitter/disconnect`;
     },
 
     route_login() {

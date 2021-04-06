@@ -29,7 +29,7 @@ class ArticleEditorService extends Service
 
     public function getArticles(User $user)
     {
-        return $this->articleRepository->finaAllByUser($user);
+        return $this->articleRepository->findAllByUser($user);
     }
 
     public function getOptions(User $user)
@@ -43,7 +43,7 @@ class ArticleEditorService extends Service
 
     public function getSeparatedCategories(User $user)
     {
-        $categories = $this->categoryRepository->finaAllByUser($user);
+        $categories = $this->categoryRepository->findAllByUser($user);
 
         return $this->separateCategories($categories);
     }

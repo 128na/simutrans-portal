@@ -77,7 +77,7 @@ class ArticleRepository extends BaseRepository
     /**
      * ユーザーに紐づくデータを返す.
      */
-    public function finaAllByUser(User $user, array $columns = self::COLUMNS, array $relations = self::RELATIONS): Collection
+    public function findAllByUser(User $user, array $columns = self::COLUMNS, array $relations = self::RELATIONS): Collection
     {
         return $user->articles()
             ->select($columns)

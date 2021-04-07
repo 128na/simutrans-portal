@@ -8,10 +8,6 @@ use App\Models\Tag;
 
 class SchemaService extends Service
 {
-    public function __construct()
-    {
-    }
-
     public function forTop()
     {
         $schemas = collect([]);

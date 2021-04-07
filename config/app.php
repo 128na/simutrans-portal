@@ -16,7 +16,6 @@ return [
 
     // 登録画面からのユーザー新規登録を制限する
     'register_restriction' => env('REGISTER_RESTRICTION', true),
-    'register_restriction_twitter' => env('REGISTER_RESTRICTION_TWITTER', true),
 
     /*
     |--------------------------------------------------------------------------

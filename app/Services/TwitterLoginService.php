@@ -31,30 +31,31 @@ class TwitterLoginService extends Service
     {
         logger('twitter', [$oauth1User]);
         $user = $oauth1User->user;
-        if ($user['needs_phone_verification'] ?? true) {
+        if (config('services.twitter.access_restriction.needs_phone_verification') && $user['needs_phone_verification']) {
             throw new InvalidSocialUserException('電話番号未認証');
         }
-        if ($user['suspended'] ?? true) {
+        if (config('services.twitter.access_restriction.suspended') && $user['suspended']) {
             throw new InvalidSocialUserException('凍結');
         }
-        if ($user['default_profile_image'] ?? true) {
+        if (config('services.twitter.access_restriction.default_profile_image') && $user['default_profile_image']) {
             throw new InvalidSocialUserException('デフォルトアイコン');
         }
-        // if ($user['default_profile'] ?? true) {
-        //     throw new InvalidSocialUserException('デフォルトプロフィール設定');
-        // }
-        if ($user['statuses_count'] < 50) {
+        if (config('services.twitter.access_restriction.default_profile') && $user['default_profile']) {
+            throw new InvalidSocialUserException('デフォルトプロフィール設定');
+        }
+        if ($user['statuses_count'] <= config('services.twitter.access_restriction.statuses_count')) {
             throw new InvalidSocialUserException('ツイートの数が少ない', $user['statuses_count']);
         }
-        if ($user['followers_count'] < 50) {
+        if ($user['followers_count'] <= config('services.twitter.access_restriction.followers_count')) {
             throw new InvalidSocialUserException('フォロワーの数が少ない', $user['followers_count']);
         }
-        $createdAt = CarbonImmutable::createFromFormat('D M d H:i:s +T Y', $user['created_at']);
-        if ($createdAt->diffInDays(today()) < 100) {
+        $createdAt = CarbonImmutable::createFromFormat('D M d H:i:s O Y', $user['created_at']);
+        if ($createdAt->diffInDays(today()) < config('services.twitter.access_restriction.created_at')) {
             throw new InvalidSocialUserException('登録したばかり', $createdAt->toDateTimeString());
         }
 
-        if (!Str::endsWith($oauth1User->getEmail(), '@gmail.com')) {
+        $emailRule = config('services.twitter.access_restriction.email_suffix');
+        if ($emailRule && !Str::endsWith($oauth1User->getEmail(), $emailRule)) {
             throw new InvalidSocialUserException('Gmail以外', $oauth1User->getEmail());
         }
     }
@@ -62,9 +63,9 @@ class TwitterLoginService extends Service
     /**
      * Twitter連携からの新規登録が可能か.
      */
-    private function validateRegistar(): void
+    private function validateRegistarable(): void
     {
-        if (config('app.register_restriction_twitter')) {
+        if (config('services.twitter.register_restriction')) {
             throw new InvalidSocialUserException('登録制限');
         }
     }
@@ -74,6 +75,9 @@ class TwitterLoginService extends Service
      */
     private function validateLoginable(User $user): void
     {
+        if (config('services.twitter.login_restriction')) {
+            throw new SocialLoginNotAllowedException('ログイン制限', $user->email);
+        }
         if ($user->trashed()) {
             throw new SocialLoginNotAllowedException('削除済みユーザー', $user->email);
         }
@@ -93,7 +97,7 @@ class TwitterLoginService extends Service
 
         // ユーザー未作成のときは新規登録
         if (is_null($user)) {
-            $this->validateRegistar();
+            $this->validateRegistarable();
             $user = $this->register($oauth1User);
         }
         $this->validateLoginable($user);

@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Tests\Unit\Services\Social;
 
 use App\Exceptions\Social\InvalidSocialUserException;
 use App\Exceptions\Social\SocialLoginNotAllowedException;
 use App\Models\User;
 use App\Repositories\UserRepository;
-use App\Services\TwitterLoginService;
-use Config;
+use App\Services\Social\TwitterLoginService;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Mockery\MockInterface;
 use SocialiteProviders\Manager\OAuth1\User as OAuth1User;
@@ -42,6 +42,15 @@ class TwitterLoginServiceTest extends UnitTestCase
         Config::set('services.twitter.access_restriction.followers_count', 1000);
         Config::set('services.twitter.access_restriction.created_at', 1000);
         Config::set('services.twitter.access_restriction.email_suffix', '.com');
+    }
+
+    public function test_validateLoginRestriction()
+    {
+        Config::set('services.twitter.login_restriction', true);
+        $this->expectException(SocialLoginNotAllowedException::class);
+
+        $service = app(TwitterLoginService::class);
+        $service->validateLoginRestriction();
     }
 
     public function test登録済み()
@@ -135,19 +144,6 @@ class TwitterLoginServiceTest extends UnitTestCase
 
         $this->mock(UserRepository::class, function (MockInterface $mock) {
             $mock->shouldReceive('findByEmailWithTrashed')->andReturn(null);
-        });
-
-        $service = app(TwitterLoginService::class);
-        $service->findOrRegister($this->oauth1User);
-    }
-
-    public function testログイン制限()
-    {
-        Config::set('services.twitter.login_restriction', true);
-        $this->expectException(SocialLoginNotAllowedException::class);
-
-        $this->mock(UserRepository::class, function (MockInterface $mock) {
-            $mock->shouldReceive('findByEmailWithTrashed')->andReturn(new User());
         });
 
         $service = app(TwitterLoginService::class);

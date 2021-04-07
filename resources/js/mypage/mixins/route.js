@@ -23,10 +23,10 @@ export default {
       return `${this.base_url}admin`;
     },
     twitter_login_url() {
-      return `${this.base_url}twitter/login`;
+      return `${this.base_url}login/twitter`;
     },
-    twitter_disconnect_url() {
-      return `${this.base_url}twitter/disconnect`;
+    google_login_url() {
+      return `${this.base_url}login/google`;
     },
 
     route_login() {

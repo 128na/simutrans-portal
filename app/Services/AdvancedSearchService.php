@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
+use App\Repositories\UserAddonCountRepository;
 use App\Repositories\UserRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -15,17 +16,20 @@ class AdvancedSearchService extends Service
     private CategoryRepository $categoryRepository;
     private TagRepository $tagRepository;
     private UserRepository $userRepository;
+    private UserAddonCountRepository $userAddonCountRepository;
 
     public function __construct(
         ArticleRepository $articleRepository,
         CategoryRepository $categoryRepository,
         TagRepository $tagRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        UserAddonCountRepository $userAddonCountRepository
     ) {
         $this->articleRepository = $articleRepository;
         $this->categoryRepository = $categoryRepository;
         $this->tagRepository = $tagRepository;
         $this->userRepository = $userRepository;
+        $this->userAddonCountRepository = $userAddonCountRepository;
     }
 
     public function search(array $conditions = []): LengthAwarePaginator
@@ -60,7 +64,7 @@ class AdvancedSearchService extends Service
         return [
             'categories' => $this->categoryRepository->findAll(['id', 'slug', 'type']),
             'tags' => $this->tagRepository->findAll(['id', 'name']),
-            'users' => $this->userRepository->findAll(['id', 'name']),
+            'userAddonCounts' => $this->userAddonCountRepository->findAll(['user_id', 'user_name']),
         ];
     }
 }

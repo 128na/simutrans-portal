@@ -9,15 +9,15 @@ use Illuminate\Database\Seeder;
 /**
  * お知らせ記事.
  */
-class ProdSeeder extends Seeder
+class AnnounceSeeder extends Seeder
 {
     public function run()
     {
-        $admin = self::addAdminUser();
-        self::addAnounces($admin);
+        $admin = $this->addAdminUser();
+        $this->addAnounces($admin);
     }
 
-    private static function addAdminUser()
+    private function addAdminUser()
     {
         if (is_null(config('admin.email'))) {
             throw new \Exception('admin email was empty!');
@@ -34,18 +34,23 @@ class ProdSeeder extends Seeder
     /**
      * お知らせ記事作成.
      */
-    private static function addAnounces($user)
+    private function addAnounces($user)
     {
         $announce_category = Category::page()->slug('announce')->firstOrFail();
 
-        foreach (config('announces', []) as $data) {
+        foreach ($this->getAnnouces() as $data) {
             $data = array_merge([
                 'post_type' => config('post_types.page'),
                 'status' => config('status.publish'),
             ], $data);
 
-            $article = $user->articles()->updateOrCreate(['slug' => $data['slug']], $data);
+            $article = $user->articles()->firstOrCreate(['slug' => $data['slug']], $data);
             $article->categories()->sync($announce_category->id);
         }
+    }
+
+    private function getAnnouces(): array
+    {
+        return require resource_path('articles\announces.php');
     }
 }

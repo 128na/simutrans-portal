@@ -150,15 +150,13 @@ export default {
         : this.fields.filter((f) => filter_keys.includes(f.key));
     },
     base_url() {
-      return process.env.NODE_ENV === "production"
-        ? process.env.MIX_APP_URL
-        : "/";
+      return process.env.MIX_APP_URL;
     },
   },
   methods: {
     ...mapActions(["fetchArticles", "updateArticle", "deleteArticle"]),
     linkUrl(slug) {
-      return `${this.base_url}articles/${slug}`;
+      return `${this.base_url}/articles/${slug}`;
     },
     toRestore(article) {
       if (confirm("復元しますか？")) {

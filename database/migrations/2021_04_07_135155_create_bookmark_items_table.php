@@ -17,8 +17,8 @@ class CreateBookmarkItemsTable extends Migration
             $table->id();
             $table->foreignId('bookmark_id')->constrained()->onDelete('cascade');
             $table->morphs('bookmark_itemable');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->text('memo')->nullable()->comment('メモ');
+            $table->unsignedInteger('order')->default(0)->comment('表示順');
             $table->timestamps();
         });
     }

@@ -5,7 +5,7 @@ namespace App\Repositories\User;
 use App\Models\User\BookmarkItem;
 use App\Repositories\BaseRepository;
 
-class BookmarkItemRepository extends BaseRepository
+class BookmarkRepository extends BaseRepository
 {
     /**
      * @var BookmarkItem

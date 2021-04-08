@@ -2,6 +2,9 @@
 
 namespace App\Models\User;
 
+use App\Models\Article;
+use App\Models\Category;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,14 +19,17 @@ class BookmarkItem extends Model
         'bookmark_id',
         'bookmark_itemable_type',
         'bookmark_itemable_id',
-        'user_id',
         'memo',
+        'order',
     ];
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
+    public const BOOKMARK_ITEMABLE_TYPES = [
+        Article::class,
+        Bookmark::class,
+        Category::class,
+        Tag::class,
+        User::class,
+    ];
 
     public function bookmark(): BelongsTo
     {

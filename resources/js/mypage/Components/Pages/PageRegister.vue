@@ -3,7 +3,7 @@
     <page-title>新規登録</page-title>
     <form-register :params="params">
       <b-form-group>
-        <div class="mb-4">
+        <div class="mb-4" v-if="can_register">
           現在、一部環境からの新規登録を遮断しています。<br />
           制限によって登録ができない場合は
           <a

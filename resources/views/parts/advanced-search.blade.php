@@ -7,9 +7,9 @@
                 @php
                     $wordSelelected = !empty($advancedSearch['word']);
                 @endphp
-                <div data-toggle="collapse" data-target="#adv-word" class="clickable mb-2"
+                <div data-toggle="collapse" data-target="#adv-word" class="togglable clickable mb-2"
                     aria-expanded="{{ $wordSelelected ? 'true' : 'false' }}" aria-controls="adv-word">
-                    ▼キーワード
+                    キーワード
                 </div>
 
                 <div class="collapse ml-3 {{ $wordSelelected ? 'show' : '' }}" id="adv-word">
@@ -23,9 +23,9 @@
                 @php
                     $updatedAtSelelected = !empty($advancedSearch['startAt']) || !empty($advancedSearch['endAt']);
                 @endphp
-                <div data-toggle="collapse" data-target="#adv-updated-at" class="clickable mb-2"
+                <div data-toggle="collapse" data-target="#adv-updated-at" class="togglable clickable mb-2"
                     aria-expanded="{{ $updatedAtSelelected ? 'true' : 'false' }}" aria-controls="adv-updated-at">
-                    ▼更新期間
+                    更新期間
                 </div>
                 <div class="collapse ml-3 {{ $updatedAtSelelected ? 'show' : '' }}" id="adv-updated-at">
 
@@ -46,9 +46,9 @@
                 @php
                     $categorySelelected = !empty($advancedSearch['categoryIds']);
                 @endphp
-                <div data-toggle="collapse" data-target="#adv-category" class="clickable mb-2"
+                <div data-toggle="collapse" data-target="#adv-category" class="togglable clickable mb-2"
                     aria-expanded="{{ $categorySelelected ? 'true' : 'false' }}" aria-controls="adv-category">
-                    ▼カテゴリ
+                    カテゴリ
                 </div>
                 <div class="collapse ml-3 {{ $categorySelelected ? 'show' : '' }}" id="adv-category">
                     <div class="form-group">
@@ -125,9 +125,9 @@
                 @php
                     $tagSelelected = !empty($advancedSearch['tagIds']);
                 @endphp
-                <div data-toggle="collapse" data-target="#adv-tag" class="clickable mb-2"
+                <div data-toggle="collapse" data-target="#adv-tag" class="togglable clickable mb-2"
                     aria-expanded="{{ $tagSelelected ? 'true' : 'false' }}" aria-controls="adv-tag">
-                    ▼タグ
+                    タグ
                 </div>
                 <div class="collapse ml-3 {{ $tagSelelected ? 'show' : '' }}" id="adv-tag">
                     <div class="form-group">
@@ -160,9 +160,9 @@
                 @php
                     $userSelelected = !empty($advancedSearch['userIds']);
                 @endphp
-                <div data-toggle="collapse" data-target="#adv-user" class="clickable mb-2"
+                <div data-toggle="collapse" data-target="#adv-user" class="togglable clickable mb-2"
                     aria-expanded="{{ $userSelelected ? 'true' : 'false' }}" aria-controls="adv-user">
-                    ▼ユーザー
+                    ユーザー
                 </div>
                 <div class="collapse ml-3 {{ $userSelelected ? 'show' : '' }}" id="adv-user">
                     <div class="form-group">

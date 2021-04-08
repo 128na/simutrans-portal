@@ -20,7 +20,7 @@
         @if (isset($menu_pak_addon_counts))
             @foreach ($menu_pak_addon_counts as $pak_slug => $addons)
                 <li class="nav-item">
-                    <a class="nav-link active collapsed with-icon" data-toggle="collapse"
+                    <a class="nav-link active collapsed togglable" data-toggle="collapse"
                         href="#collapse-{{ $pak_slug }}"
                         aria-expanded="{{ isset($open_menu_pak_addon[$pak_slug]) ? 'true' : 'false' }}"
                         aria-controls="collapse-{{ $pak_slug }}">
@@ -43,7 +43,7 @@
         {{-- ユーザー一覧 --}}
         @if (isset($menu_user_addon_counts))
             <li class="nav-item">
-                <a class="nav-link active collapsed with-icon" data-toggle="collapse" href="#collapse-user"
+                <a class="nav-link active collapsed togglable" data-toggle="collapse" href="#collapse-user"
                     aria-expanded="{{ isset($open_menu_user_addon) ? 'true' : 'false' }}"
                     aria-controls="collapse-user">
                     ユーザー一覧

@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Http\Requests\Api\User\UpdateRequest;
 use App\Models\User;
 use App\Repositories\AttachmentRepository;
-use App\Repositories\ProfileRepository;
+use App\Repositories\User\ProfileRepository;
 use App\Repositories\UserRepository;
 
 class UserService extends Service

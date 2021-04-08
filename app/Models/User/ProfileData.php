@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Contents;
+namespace App\Models\User;
 
 class ProfileData
 {

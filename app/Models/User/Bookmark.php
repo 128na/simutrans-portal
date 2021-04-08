@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Str;
 
 class Bookmark extends Model
 {
@@ -20,6 +21,13 @@ class Bookmark extends Model
         'title',
         'description',
     ];
+
+    protected static function booted()
+    {
+        static::creating(function (self $model) {
+            $model->uuid = (string) Str::uuid();
+        });
+    }
 
     public function user(): BelongsTo
     {

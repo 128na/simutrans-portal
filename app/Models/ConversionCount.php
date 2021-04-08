@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ConversionCount extends Model
 {
@@ -25,7 +26,7 @@ class ConversionCount extends Model
     | リレーション
     |--------------------------------------------------------------------------
     */
-    public function article()
+    public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class);
     }

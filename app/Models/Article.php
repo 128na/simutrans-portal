@@ -8,6 +8,11 @@ use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -51,86 +56,86 @@ class Article extends Model implements Feedable
     | リレーション
     |--------------------------------------------------------------------------
      */
-    public function attachments()
+    public function attachments(): MorphMany
     {
         return $this->morphMany(Attachment::class, 'attachmentable');
     }
 
-    public function categories()
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }
 
-    public function tags()
+    public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function viewCounts()
+    public function viewCounts(): HasMany
     {
         return $this->hasMany(ViewCount::class);
     }
 
-    public function todaysViewCount()
+    public function todaysViewCount(): HasOne
     {
         return $this->hasOne(ViewCount::class)
             ->where('type', ViewCount::TYPE_DAILY)
             ->where('period', now()->format('Ymd'));
     }
 
-    public function dailyViewCounts()
+    public function dailyViewCounts(): HasMany
     {
         return $this->hasMany(ViewCount::class)->where('type', ViewCount::TYPE_DAILY);
     }
 
-    public function monthlyViewCounts()
+    public function monthlyViewCounts(): HasMany
     {
         return $this->hasMany(ViewCount::class)->where('type', ViewCount::TYPE_MONTHLY);
     }
 
-    public function yearlyViewCounts()
+    public function yearlyViewCounts(): HasMany
     {
         return $this->hasMany(ViewCount::class)->where('type', ViewCount::TYPE_YEARLY);
     }
 
-    public function totalViewCount()
+    public function totalViewCount(): HasOne
     {
         return $this->hasOne(ViewCount::class)->where('type', ViewCount::TYPE_TOTAL);
     }
 
-    public function conversionCounts()
+    public function conversionCounts(): HasMany
     {
         return $this->hasMany(ConversionCount::class);
     }
 
-    public function todaysConversionCount()
+    public function todaysConversionCount(): HasOne
     {
         return $this->hasOne(ConversionCount::class)
             ->where('type', ConversionCount::TYPE_DAILY)
             ->where('period', now()->format('Ymd'));
     }
 
-    public function dailyConversionCounts()
+    public function dailyConversionCounts(): HasMany
     {
         return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::TYPE_DAILY);
     }
 
-    public function monthlyConversionCounts()
+    public function monthlyConversionCounts(): HasMany
     {
         return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::TYPE_MONTHLY);
     }
 
-    public function yearlyConversionCounts()
+    public function yearlyConversionCounts(): HasMany
     {
         return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::TYPE_YEARLY);
     }
 
-    public function totalConversionCount()
+    public function totalConversionCount(): HasOne
     {
         return $this->hasOne(ConversionCount::class)->where('type', ConversionCount::TYPE_TOTAL);
     }

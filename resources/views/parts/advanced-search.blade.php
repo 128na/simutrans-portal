@@ -179,13 +179,13 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        @foreach ($options['users'] as $u)
+                        @foreach ($options['userAddonCounts'] as $u)
                             <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="user_{{ $u->id }}"
-                                    name="advancedSearch[userIds][{{ $u->id }}]" value="{{ $u->id }}"
-                                    {{ in_array($u->id, old('advancedSearch.userIds', $advancedSearch['userIds'] ?? [])) ? 'checked' : '' }}>
-                                <label class="custom-control-label" for="user_{{ $u->id }}">
-                                    {{ $u->name }}
+                                <input type="checkbox" class="custom-control-input" id="user_{{ $u->user_id }}"
+                                    name="advancedSearch[userIds][{{ $u->user_id }}]" value="{{ $u->user_id }}"
+                                    {{ in_array($u->user_id, old('advancedSearch.userIds', $advancedSearch['userIds'] ?? [])) ? 'checked' : '' }}>
+                                <label class="custom-control-label" for="user_{{ $u->user_id }}">
+                                    {{ $u->user_name }}
                                 </label>
                             </div>
                         @endforeach

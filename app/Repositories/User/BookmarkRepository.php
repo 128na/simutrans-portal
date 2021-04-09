@@ -33,7 +33,7 @@ class BookmarkRepository extends BaseRepository
         return $this->model
             ->where('is_public', true)
             ->where('uuid', $uuid)
-            ->with(['user', 'bookmarkItems.bookmarkItemables'])
+            ->with(['user', 'bookmarkItems.bookmarkItemable'])
             ->firstOrFail();
     }
 }

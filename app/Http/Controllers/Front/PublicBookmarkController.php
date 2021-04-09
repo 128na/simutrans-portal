@@ -14,7 +14,6 @@ class PublicBookmarkController extends Controller
         $this->bookmarkRepository = $bookmarkRepository;
     }
 
-    // TODO 公開ブックマーク一覧画面を実装する
     public function index()
     {
         $items = $this->bookmarkRepository->paginatePublic();
@@ -30,5 +29,13 @@ class PublicBookmarkController extends Controller
     // TODO 公開ブックマーク詳細画面を実装する
     public function show(string $uuid)
     {
+        $item = $this->bookmarkRepository->findOrFailByUuid($uuid);
+        dd($item->toArray());
+        $data = [
+            'item' => $item,
+            'title' => '公開ブックマーク',
+        ];
+
+        return view('front.public-bookmarks.show', $data);
     }
 }

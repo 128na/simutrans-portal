@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Updates;
 
 use App\Models\Attachment;
 use App\Models\User\Profile;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Updates;
 
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Category;

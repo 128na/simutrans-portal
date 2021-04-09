@@ -39,7 +39,7 @@ class BookmarkItem extends Model
     /**
      * 指定モデル：Bookmark,User,Article,Category,Tag.
      */
-    public function bookmarkItemables(): MorphTo
+    public function bookmarkItemable(): MorphTo
     {
         return $this->morphTo();
     }

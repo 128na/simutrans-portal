@@ -1,4 +1,4 @@
-<form class="form-inline mt-3" action="{{ route('bookmarkItems.store') }}" method="POST">
+<form class="form-inline mt-2" action="{{ route('bookmarkItems.store') }}" method="POST">
     @csrf
     <input type="hidden" name="bookmarkItem[bookmark_itemable_type]" value="{{ $bookmarkItemableType }}">
     <input type="hidden" name="bookmarkItem[bookmark_itemable_id]" value="{{ $bookmarkItemableId }}">
@@ -9,7 +9,7 @@
             @endforeach
         </select>
         <div class="input-group-append">
-            <button class="btn btn-outline-primary" type="submit">追加</button>
+            <button class="btn btn-outline-primary" type="submit">{{ $message ?? '追加' }}</button>
         </div>
     </div>
 </form>

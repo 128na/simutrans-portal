@@ -32,11 +32,11 @@ class BookmarkItemController extends Controller
             $validated['bookmarkItem']['bookmark_itemable_id'])) {
             session()->flash('error', '既に追加されています');
 
-            return redirect()->intended();
+            return redirect()->back();
         }
         $this->bookmarkItemRepository->add($bookmark, $validated['bookmarkItem']);
-        session()->flash('status', '追加しました');
+        session()->flash('status', 'ブックマークに追加しました');
 
-        return redirect()->intended();
+        return redirect()->back();
     }
 }

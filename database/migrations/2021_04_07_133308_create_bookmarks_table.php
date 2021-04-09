@@ -23,6 +23,7 @@ class CreateBookmarksTable extends Migration
             $table->timestamps();
 
             $table->index('title');
+            $table->index(['is_public', 'updated_at']);
         });
     }
 

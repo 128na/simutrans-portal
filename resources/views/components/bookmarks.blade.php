@@ -14,7 +14,7 @@
                 @auth
                     <div>
                         @include('parts.add-bookmark', [
-                        'bookmarkItemableType' => 'App\Models\Article',
+                        'bookmarkItemableType' => 'App\Models\User\Bookmark',
                         'bookmarkItemableId' => $item->id])
                     </div>
                 @endauth

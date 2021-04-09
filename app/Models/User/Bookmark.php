@@ -3,6 +3,7 @@
 namespace App\Models\User;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +27,10 @@ class Bookmark extends Model
     {
         static::creating(function (self $model) {
             $model->uuid = (string) Str::uuid();
+        });
+        // 論理削除されていないユーザーを持つ
+        static::addGlobalScope('WithoutTrashedUser', function (Builder $builder) {
+            $builder->has('user');
         });
     }
 

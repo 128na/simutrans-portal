@@ -20,20 +20,8 @@ class BookmarkRepository extends BaseRepository
 
     public function paginatePublic(): LengthAwarePaginator
     {
-        // return $this->model
-        //     ->where('is_public', true)
-        //     ->has('bookmarkItems')
-        //     ->with(['user'])
-        //     ->orderBy('updated_at', 'desc')
-        //     ->withCount('bookmarkItems')
-        //     ->paginate(50);
-
         return $this->model
-            ->distinct()
-            ->select('bookmarks.*')
             ->where('is_public', true)
-            ->leftJoin('bookmark_items', 'bookmarks.id', '=', 'bookmark_items.bookmark_id')
-            ->whereNotNull('bookmark_items.bookmark_itemable_id')
             ->with(['user'])
             ->orderBy('updated_at', 'desc')
             ->withCount('bookmarkItems')

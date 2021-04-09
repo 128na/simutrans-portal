@@ -89,6 +89,11 @@ abstract class BaseRepository
         return $this->model->find($id);
     }
 
+    public function findOrFail($id): Model
+    {
+        return $this->model->findOrFail($id);
+    }
+
     public function findByIds(array $ids): Collection
     {
         return $this->model->whereIn('id', $ids)->get();

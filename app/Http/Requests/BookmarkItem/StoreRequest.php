@@ -13,6 +13,7 @@ class StoreRequest extends FormRequest
         $type = $this->input('bookmarkItem.bookmark_itemable_type');
 
         return [
+            'bookmarkItem.bookmark_id' => 'required|exists:bookmarks,id',
             'bookmarkItem.bookmark_itemable_type' => ['required', Rule::in(BookmarkItem::BOOKMARK_ITEMABLE_TYPES), 'bail'],
             'bookmarkItem.bookmark_itemable_id' => ['required', "exists:{$type},id"],
             'bookmarkItem.memo' => 'nullable|max:1000',

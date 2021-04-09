@@ -62,7 +62,7 @@ Route::get('/articles/{article}/download', [ArticleController::class, 'download'
 // ログイン系 reidsキャッシュ無効
 Route::middleware(['verified'])->group(function () {
     Route::match(['get', 'post'], '/advancedSearch', [AdvancedSearchController::class, 'search'])->name('advancedSearch');
-    Route::post('/bookmarks/{bookmark}', [BookmarkItemController::class, 'store'])->name('bookmarkItems.store');
+    Route::post('/bookmark-items', [BookmarkItemController::class, 'store'])->name('bookmarkItems.store');
 });
 
 Route::middleware(['auth', 'admin', 'verified'])->group(function () {

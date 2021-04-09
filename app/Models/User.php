@@ -56,7 +56,7 @@ class User extends Authenticatable implements MustVerifyEmail
             $this->profile()->create();
         }
         if ($this->bookmarks()->count() === 0) {
-            $this->bookmarks()->create(['title' => '名称未設定']);
+            $this->bookmarks()->create(['title' => 'ブックマーク']);
         }
     }
 

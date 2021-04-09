@@ -14,7 +14,7 @@ class CreateDefaultBookmarkSeeder extends Seeder
     {
         foreach (User::withTrashed()->cursor() as $user) {
             if ($user->bookmarks()->count() === 0) {
-                $user->bookmarks()->create(['title' => '名称未設定']);
+                $user->bookmarks()->create(['title' => 'ブックマーク']);
             }
         }
     }

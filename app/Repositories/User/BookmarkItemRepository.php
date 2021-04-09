@@ -18,8 +18,16 @@ class BookmarkItemRepository extends BaseRepository
         $this->model = $model;
     }
 
-    public function addItem(Bookmark $bookmark, array $data): BookmarkItem
+    public function add(Bookmark $bookmark, array $data): BookmarkItem
     {
         return $bookmark->bookmarkItems()->create($data);
+    }
+
+    public function exists(Bookmark $bookmark, string $bookmarkItemableType, int $bookmarkItemableId): bool
+    {
+        return $bookmark->bookmarkItems()
+            ->where('bookmark_itemable_type', $bookmarkItemableType)
+            ->where('bookmark_itemable_id', $bookmarkItemableId)
+            ->exists();
     }
 }

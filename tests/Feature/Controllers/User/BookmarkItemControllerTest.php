@@ -20,11 +20,12 @@ class BookmarkItemControllerTest extends TestCase
     {
         $bookmark = Bookmark::factory()->create();
         $data = ['bookmarkItem' => [
+            'bookmark_id' => $bookmark->id,
             'bookmark_itemable_type' => Article::class,
             'bookmark_itemable_id' => Article::factory()->create()->id,
         ]];
 
-        $url = route('bookmarkItems.store', $bookmark);
+        $url = route('bookmarkItems.store');
         $this->actingAs($this->user);
         $response = $this->post($url, $data);
         $response->assertStatus(403);
@@ -35,6 +36,7 @@ class BookmarkItemControllerTest extends TestCase
         $bookmark = Bookmark::factory()->create(['user_id' => $this->user->id]);
         $article = Article::factory()->create();
         $data = ['bookmarkItem' => [
+            'bookmark_id' => $bookmark->id,
             'bookmark_itemable_type' => Article::class,
             'bookmark_itemable_id' => $article->id,
         ]];
@@ -45,16 +47,40 @@ class BookmarkItemControllerTest extends TestCase
             'bookmark_itemable_id' => $article->id,
         ]);
 
-        $url = route('bookmarkItems.store', $bookmark);
+        $url = route('bookmarkItems.store');
         $this->actingAs($this->user);
         $response = $this->post($url, $data);
         $response->assertRedirect();
+        $response->assertSessionHas('status');
 
         $this->assertDatabaseHas('bookmark_items', [
             'bookmark_id' => $bookmark->id,
             'bookmark_itemable_type' => Article::class,
             'bookmark_itemable_id' => $article->id,
         ]);
+    }
+
+    public function test追加済みアイテムはエラー()
+    {
+        $bookmark = Bookmark::factory()->create(['user_id' => $this->user->id]);
+        $article = Article::factory()->create();
+        $bookmark->bookmarkItems()->create([
+            'bookmark_itemable_type' => Article::class,
+            'bookmark_itemable_id' => $article->id,
+        ]);
+
+        $data = ['bookmarkItem' => [
+            'bookmark_id' => $bookmark->id,
+            'bookmark_itemable_type' => Article::class,
+            'bookmark_itemable_id' => $article->id,
+        ]];
+
+        $url = route('bookmarkItems.store');
+
+        $this->actingAs($this->user);
+        $response = $this->post($url, $data);
+        $response->assertRedirect();
+        $response->assertSessionHas('error');
     }
 
     /**
@@ -68,7 +94,7 @@ class BookmarkItemControllerTest extends TestCase
             'bookmark_itemable_id' => $itemable->id,
         ], $data)];
 
-        $url = route('bookmarkItems.store', $bookmark);
+        $url = route('bookmarkItems.store');
         $this->actingAs($this->user);
         $response = $this->post($url, $data);
         $response->assertSessionHasErrors($expectedError);
@@ -76,6 +102,9 @@ class BookmarkItemControllerTest extends TestCase
 
     public function dataValidation()
     {
+        yield '不正なbookmark_id' => [
+            ['bookmark_id' => 0, 'bookmark_itemable_type' => Article::class], 'bookmarkItem.bookmark_id',
+        ];
         yield '不正なbookmark_itemable_type' => [
             ['bookmark_itemable_type' => Attachment::class], 'bookmarkItem.bookmark_itemable_type',
         ];

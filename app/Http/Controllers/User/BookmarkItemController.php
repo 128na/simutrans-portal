@@ -4,25 +4,38 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookmarkItem\StoreRequest;
-use App\Models\User\Bookmark;
 use App\Repositories\User\BookmarkItemRepository;
+use App\Repositories\User\BookmarkRepository;
 
 class BookmarkItemController extends Controller
 {
     private BookmarkItemRepository $bookmarkItemRepository;
+    private BookmarkRepository $bookmarkRepository;
 
-    public function __construct(BookmarkItemRepository $bookmarkItemRepository)
+    public function __construct(
+        BookmarkRepository $bookmarkRepository,
+        BookmarkItemRepository $bookmarkItemRepository)
     {
+        $this->bookmarkRepository = $bookmarkRepository;
         $this->bookmarkItemRepository = $bookmarkItemRepository;
     }
 
-    public function store(Bookmark $bookmark, StoreRequest $request)
+    public function store(StoreRequest $request)
     {
-        $this->authorize('update', $bookmark);
-
         $validated = $request->validated();
 
-        $this->bookmarkItemRepository->addItem($bookmark, $validated['bookmarkItem']);
+        $bookmark = $this->bookmarkRepository->findOrFail($validated['bookmarkItem']['bookmark_id']);
+        $this->authorize('update', $bookmark);
+
+        if ($this->bookmarkItemRepository->exists($bookmark,
+            $validated['bookmarkItem']['bookmark_itemable_type'],
+            $validated['bookmarkItem']['bookmark_itemable_id'])) {
+            session()->flash('error', '既に追加されています');
+
+            return redirect()->intended();
+        }
+        $this->bookmarkItemRepository->add($bookmark, $validated['bookmarkItem']);
+        session()->flash('status', '追加しました');
 
         return redirect()->intended();
     }

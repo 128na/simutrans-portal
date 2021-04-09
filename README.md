@@ -1,6 +1,6 @@
 # Simutrans Addon Portal
 
-https://simutrans.sakura.ne.jp/portal/
+https://simutrans-portal.128-bit.net/
 
 ## 環境
 

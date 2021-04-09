@@ -43,7 +43,7 @@
         :state="validationState('article.slug')"
       />
       <div class="mt-1 text-break">
-        URL: https://simutrans.sakura.ne.jp/portal/articles/{{ article.slug }}
+        URL: {{ base_url }}/articles/{{ article.slug }}
       </div>
       <validation-message field="article.slug" />
     </b-form-group>

@@ -63,6 +63,9 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
                 Route::post('articles/{article}', [EditorController::class, 'update'])->name('articles.update');
             });
         });
+
+        // TODO 自身のブックマーク一覧APIを実装する
+        // TODO 自身のブックマーク更新APIを実装する
     });
 
     // 管理者機能

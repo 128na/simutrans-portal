@@ -62,6 +62,7 @@
         @endif
         <li class="nav-item"><a class="nav-link active" href="{{ route('tags') }}">タグ一覧</a></li>
         <li class="nav-item"><a class="nav-link active" href="{{ route('advancedSearch') }}">詳細検索</a></li>
+        <li class="nav-item"><a class="nav-link active" href="{{ route('publicBookmarks.index') }}">公開ブックマーク</a></li>
         <div class="dropdown-divider border-light"></div>
         {{-- ログイン・登録/マイページ --}}
         <li class="nav-item"><a class="nav-link active" href="{{ route('mypage.index') }}">ログイン・マイページ</a></li>

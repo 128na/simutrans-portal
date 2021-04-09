@@ -49,8 +49,8 @@ Route::middleware(['cache.response'])->group(function () {
     Route::get('/user/{user}', [ArticleController::class, 'user'])->name('user');
     Route::get('/tags', [ArticleController::class, 'tags'])->name('tags');
 
-    Route::get('/bookmarks', [PublicBookmarkController::class, 'index'])->name('publicBookmarks.index');
-    Route::get('/bookmarks/{uuid}', [PublicBookmarkController::class, 'show'])->name('publicBookmarks.show');
+    Route::get('/public-bookmarks', [PublicBookmarkController::class, 'index'])->name('publicBookmarks.index');
+    Route::get('/public-bookmarks/{uuid}', [PublicBookmarkController::class, 'show'])->name('publicBookmarks.show');
 });
 // 非ログイン系 reidsキャッシュ無効
 Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');

@@ -59,13 +59,11 @@ jobs:
             && git fetch -p
             && git checkout ${{ env.github.ref }}
             && git pull
-            && bash -c 'sed "s/APP_VERSION=.*/APP_VERSION=$( git describe )/" .env'
+            && bash -c 'sed -i "" "s/APP_VERSION=.*/APP_VERSION=$( git describe )/" .env'
             && php -c ~/www/php.ini ~/bin/composer.phar install --optimize-autoloader --no-dev
             && php -c ~/www/php.ini artisan migrate --force
             && php -c ~/www/php.ini artisan migrate:status
-            && php -c ~/www/php.ini artisan cache:clear
             && php -c ~/www/php.ini artisan optimize
-            && php -c ~/www/php.ini artisan route:clear
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           privateKey: /home/runner/.ssh/id_rsa

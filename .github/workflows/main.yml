@@ -59,7 +59,7 @@ jobs:
             && git fetch -p
             && git checkout ${{ env.github.ref }}
             && git pull
-            && bash -c 'sed "s/APP_VERSION=.*/APP_VERSION=$( git describe )/" .env'
+            && bash -c 'sed -i "s/APP_VERSION=.*/APP_VERSION=$( git describe )/" .env'
             && php -c ~/www/php.ini ~/bin/composer.phar install --optimize-autoloader --no-dev
             && php -c ~/www/php.ini artisan migrate --force
             && php -c ~/www/php.ini artisan migrate:status

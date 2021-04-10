@@ -43,4 +43,9 @@ class BookmarkItem extends Model
     {
         return $this->morphTo();
     }
+
+    public function getTypeNameAttribute()
+    {
+        return mb_strtolower(class_basename($this->bookmark_itemable_type));
+    }
 }

@@ -20,6 +20,8 @@ class CreateBookmarkItemsTable extends Migration
             $table->text('memo')->nullable()->comment('メモ');
             $table->unsignedInteger('order')->default(0)->comment('表示順');
             $table->timestamps();
+
+            $table->index(['bookmark_id', 'order', 'created_at']);
         });
     }
 

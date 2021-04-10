@@ -64,6 +64,12 @@ class MetaCreator
             case $route->named('advancedSearch'):
                 return $this->forAdvancedSearch();
 
+            case $this->name === 'front.public-bookmarks.index':
+                return $this->forPublicBookmarkList();
+
+            case $this->name === 'front.public-bookmarks.show':
+                return $this->forPublicBookmark();
+
             case $this->name === 'front.tags':
                 return $this->forTags();
 
@@ -72,6 +78,30 @@ class MetaCreator
 
             logger('unknown route:'.$route);
         }
+    }
+
+    /**
+     * 公開ブックマーク一覧.
+     */
+    public function forPublicBookmarkList()
+    {
+        return [
+            'title' => '公開ブックマーク一覧',
+            'breadcrumb' => [
+                ['name' => 'トップ', 'url' => route('index')],
+                ['name' => '公開ブックマーク一覧'],
+            ],
+        ];
+    }
+
+    /**
+     * 公開ブックマーク.
+     */
+    public function forPublicBookmark()
+    {
+        return [
+            'title' => $this->data['item']->title,
+        ];
     }
 
     /**

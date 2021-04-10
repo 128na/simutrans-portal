@@ -41,7 +41,9 @@ class Bookmark extends Model
 
     public function bookmarkItems(): HasMany
     {
-        return $this->hasMany(BookmarkItem::class);
+        return $this->hasMany(BookmarkItem::class)
+            ->orderBy('order', 'asc')
+            ->orderBy('created_at', 'desc');
     }
 
     public function bookmarkItemables(): MorphToMany

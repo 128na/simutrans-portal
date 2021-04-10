@@ -8,13 +8,15 @@
 
 @section('content')
     <article class="{{ $article->post_type }}">
-        <h1 class="title border-bottom mb-4">{{ $article->title }}</h1>
-        @auth
-            @include('parts.add-bookmark', [
-            'bookmarkItemableType' => 'App\Models\Article',
-            'bookmarkItemableId' => $article->id])
-            <hr>
-        @endauth
+        <h3 class="title border-bottom mb-4">
+            {{ $article->title }}
+            @auth
+                @include('parts.add-bookmark', [
+                'name' => $article->title,
+                'type' => 'App\Models\Article',
+                'id' => $article->id])
+            @endauth
+        </h3>
         @if ($article->has_thumbnail)
             <img src="{{ $article->thumbnail_url }}" class="img-fluid thumbnail mb-4 shadow-sm">
         @endif

@@ -1,24 +1,25 @@
 <h2 class="section-title">{{ $slot }}</h2>
 @if ($items->isNotEmpty())
-    <ul>
+    <ul class="list-style-none">
         @foreach ($items as $item)
             <li class="mb-4">
-                <h5>
-                    <a href="{{ route('publicBookmarks.show', $item->uuid) }}">{{ $item->title }}</a>
-                    <small>
+                <strong>
+                    <a href="{{ route('publicBookmarks.show', $item->uuid) }}">
+                        {{ $item->title }}
                         ({{ $item->bookmark_items_count }})
+                    </a>
+                    @auth
+                        @include('parts.add-bookmark', [
+                        'name' => $item->title,
+                        'type' => 'App\Models\User\Bookmark',
+                        'id' => $item->id])
+                    @endauth
+                    <small>
                         <span>
                             作成： {{ $item->user->name }}
                         </span>
                     </small>
-                </h5>
-                @auth
-                    <div>
-                        @include('parts.add-bookmark', [
-                        'bookmarkItemableType' => 'App\Models\User\Bookmark',
-                        'bookmarkItemableId' => $item->id])
-                    </div>
-                @endauth
+                </strong>
             </li>
         @endforeach
     </ul>

@@ -1,20 +1,16 @@
 <template>
   <b-card body-class="p-1 shadow">
     <template slot="header">
-      {{ article.title }}
+      {{ item.title }}
     </template>
     <b-nav vertical>
-      <b-nav-item
-        v-if="is_publish"
-        class="mb-1"
-        @click="handleCopy(article.url)"
-      >
+      <b-nav-item v-if="is_publish" class="mb-1" @click="handleCopy(item.url)">
         <b-icon icon="clipboard-data" class="mr-1" />
         URLをコピー
       </b-nav-item>
       <b-nav-item
         v-if="is_publish"
-        :href="article.url"
+        :href="item.url"
         target="_blank"
         class="mb-1"
       >
@@ -39,20 +35,20 @@
 <script>
 import { mapActions } from "vuex";
 export default {
-  props: ["article"],
+  props: ["item"],
   computed: {
     is_publish() {
-      return this.article.status === "公開";
+      return this.item.status === "公開";
     },
   },
   methods: {
     ...mapActions(["updateArticle", "setInfoMessage"]),
     handleEdit() {
-      this.goto(this.route_edit_article(this.article.id));
+      this.goto(this.route_edit_article(this.item.id));
     },
     handleToPrivate() {
       const params = {
-        article: Object.assign({}, this.article, {
+        item: Object.assign({}, this.item, {
           status: "private",
         }),
       };
@@ -64,7 +60,7 @@ export default {
     },
     handleToPublish() {
       const params = {
-        article: Object.assign({}, this.article, {
+        item: Object.assign({}, this.item, {
           status: "publish",
         }),
       };

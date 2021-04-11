@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\User\Bookmark;
+use App\Models\User\BookmarkItem;
+use App\Models\User\Profile;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -45,15 +48,15 @@ class User extends Authenticatable implements MustVerifyEmail
         self::created(function ($model) {
             $model->syncRelatedData();
         });
-        self::updated(function ($model) {
-            Cache::flush();
-        });
     }
 
     private function syncRelatedData()
     {
-        if (Profile::where('user_id', $this->id)->doesntExist()) {
+        if ($this->profile()->doesntExist()) {
             $this->profile()->create();
+        }
+        if ($this->bookmarks()->count() === 0) {
+            $this->bookmarks()->create(['title' => 'ブックマーク']);
         }
     }
 
@@ -91,6 +94,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function myAttachments(): HasMany
     {
         return $this->hasMany(Attachment::class);
+    }
+
+    public function bookmarks(): HasMany
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
+    public function bookmarkItemables(): MorphMany
+    {
+        return $this->morphMany(BookmarkItem::class, 'bookmark_itemable');
     }
 
     /*

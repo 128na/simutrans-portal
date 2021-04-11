@@ -25,24 +25,24 @@ class ArticleFactory extends Factory
         $post_type = $this->faker->randomElement(config('post_types'));
         $contents = [
             'addon-introduction' => [
-                'description' => $this->faker->realText,
-                'author' => $this->faker->name,
-                'link' => $this->faker->url,
+                'description' => $this->faker->realText(),
+                'author' => $this->faker->name(),
+                'link' => $this->faker->url(),
             ],
             'addon-post' => [
-                'description' => $this->faker->realText,
-                'author' => $this->faker->name,
+                'description' => $this->faker->realText(),
+                'author' => $this->faker->name(),
             ],
             'page' => [
                 'sections' => [
-                    ['type' => 'text', 'text' => $this->faker->realText],
+                    ['type' => 'text', 'text' => $this->faker->realText()],
                 ],
             ],
             'markdown' => [
-                'markdown' => $this->faker->realText,
+                'markdown' => $this->faker->realText(),
             ],
         ];
-        $sentence = $this->faker->sentence;
+        $sentence = $this->faker->sentence();
 
         return [
             'user_id' => User::factory()->create()->id,

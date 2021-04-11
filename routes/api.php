@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\v2\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\v2\Mypage\Article\AnalyticsController;
 use App\Http\Controllers\Api\v2\Mypage\Article\EditorController;
 use App\Http\Controllers\Api\v2\Mypage\AttachmentController;
+use App\Http\Controllers\Api\v2\Mypage\BookmarkController;
 use App\Http\Controllers\Api\v2\Mypage\TagController;
 use App\Http\Controllers\Api\v2\Mypage\UserController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -62,6 +63,11 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
             Route::middleware('can:update,article')->group(function () {
                 Route::post('articles/{article}', [EditorController::class, 'update'])->name('articles.update');
             });
+
+            Route::get('bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
+            Route::post('bookmarks', [BookmarkController::class, 'store'])->name('bookmarks.store');
+            Route::post('bookmarks/{bookmark}', [BookmarkController::class, 'update'])->name('bookmarks.update');
+            Route::delete('bookmarks/{bookmark}', [BookmarkController::class, 'destroy'])->name('bookmarks.destroy');
         });
     });
 

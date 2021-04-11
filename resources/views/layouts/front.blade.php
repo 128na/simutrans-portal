@@ -67,6 +67,44 @@
         @endif
 
         @yield('content')
+
+        @auth
+            <div class="modal fade" id="add-bookmark" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"><span id="from-item-name"></span>をブックマークに追加</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="add-bookmark-form" action="{{ route('bookmarkItems.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" id="from-bookark-item-type"
+                                    name="bookmarkItem[bookmark_itemable_type]">
+                                <input type="hidden" id="from-bookark-item-id" name="bookmarkItem[bookmark_itemable_id]">
+                                <div class="form-group">
+                                    <label for="form-bookmark">追加するブックマーク</label>
+                                    <select class="form-control" id="form-bookmark" name="bookmarkItem[bookmark_id]">
+                                        @foreach (Auth::user()->bookmarks as $bookmark)
+                                            <option value="{{ $bookmark->id }}">{{ $bookmark->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="form-memo">メモ</label>
+                                    <textarea class="form-control" id="form-memo" name="bookmarkItem[memo]"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-outline-primary" type="submit">{{ $message ?? '追加' }}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endauth
     </main>
 </body>
 

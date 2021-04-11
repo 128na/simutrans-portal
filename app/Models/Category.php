@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\User\BookmarkItem;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Category extends Model
 {
@@ -41,6 +43,11 @@ class Category extends Model
     public function articles(): BelongsToMany
     {
         return $this->belongsToMany(Article::class);
+    }
+
+    public function bookmarkItemables(): MorphMany
+    {
+        return $this->morphMany(BookmarkItem::class, 'bookmark_itemable');
     }
 
     /*

@@ -7,3 +7,4 @@ export const SET_OPTIONS = 'SET_OPTIONS';
 export const SET_TAGS = 'SET_TAGS';
 export const SET_ATTACHMENTS = 'SET_ATTACHMENTS';
 export const SET_ANALYTICS = 'SET_ANALYTICS';
+export const SET_BOOKMARKS = 'SET_BOOKMARKS';

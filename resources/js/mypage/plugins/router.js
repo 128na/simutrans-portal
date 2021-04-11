@@ -13,6 +13,8 @@ import PageCreateArticle from '../Components/Pages/PageCreateArticle';
 import PageEditArticle from '../Components/Pages/PageEditArticle';
 import PageEditProfile from '../Components/Pages/PageEditProfile';
 import PageAnalyticsArticle from '../Components/Pages/PageAnalyticsArticle';
+import PageBookmarks from '../Components/Pages/PageBookmarks';
+import PageEditBookmark from '../Components/Pages/PageEditBookmark';
 import store from '../store';
 
 const routes = [
@@ -25,6 +27,8 @@ const routes = [
   { name: "editArticle", path: '/edit/:id', component: PageEditArticle },
   { name: "editProfile", path: '/profile', component: PageEditProfile },
   { name: "analyticsArticle", path: '/analytics', component: PageAnalyticsArticle },
+  { name: "bookmarks", path: '/bookmarks', component: PageBookmarks },
+  { name: "editBookmark", path: '/bookmark/:id?', component: PageEditBookmark },
   { path: '*', redirect: { name: 'login' } },
 ];
 

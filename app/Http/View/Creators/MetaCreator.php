@@ -2,6 +2,9 @@
 
 namespace App\Http\View\Creators;
 
+use App\Models\Category;
+use App\Models\Tag;
+use App\Models\User;
 use App\Services\SchemaService;
 use Illuminate\View\View;
 
@@ -61,6 +64,12 @@ class MetaCreator
             case $route->named('advancedSearch'):
                 return $this->forAdvancedSearch();
 
+            case $this->name === 'front.public-bookmarks.index':
+                return $this->forPublicBookmarkList();
+
+            case $this->name === 'front.public-bookmarks.show':
+                return $this->forPublicBookmark();
+
             case $this->name === 'front.tags':
                 return $this->forTags();
 
@@ -69,6 +78,30 @@ class MetaCreator
 
             logger('unknown route:'.$route);
         }
+    }
+
+    /**
+     * 公開ブックマーク一覧.
+     */
+    public function forPublicBookmarkList()
+    {
+        return [
+            'title' => '公開ブックマーク一覧',
+            'breadcrumb' => [
+                ['name' => 'トップ', 'url' => route('index')],
+                ['name' => '公開ブックマーク一覧'],
+            ],
+        ];
+    }
+
+    /**
+     * 公開ブックマーク.
+     */
+    public function forPublicBookmark()
+    {
+        return [
+            'title' => $this->data['item']->title,
+        ];
     }
 
     /**
@@ -108,7 +141,7 @@ class MetaCreator
             'title' => $title,
             'breadcrumb' => [
                 ['name' => 'トップ', 'url' => route('index')],
-                ['name' => $title],
+                ['name' => $title, 'bookmarkItemableType' => Category::class, 'bookmarkItemableId' => $category->id],
             ],
         ];
     }
@@ -128,8 +161,8 @@ class MetaCreator
             'title' => $title,
             'breadcrumb' => [
                 ['name' => 'トップ', 'url' => route('index')],
-                ['name' => $pak_title, 'url' => route('category', ['pak', $pak->slug])],
-                ['name' => $addon_title],
+                ['name' => $pak_title, 'bookmarkItemableType' => Category::class, 'bookmarkItemableId' => $pak->id, 'url' => route('category', ['pak', $pak->slug])],
+                ['name' => $addon_title, 'bookmarkItemableType' => Category::class, 'bookmarkItemableId' => $addon->id],
             ],
             'open_menu_pak_addon' => [$pak->slug => true],
         ];
@@ -162,7 +195,7 @@ class MetaCreator
             'breadcrumb' => [
                 ['name' => 'トップ', 'url' => route('index')],
                 ['name' => 'タグ一覧', 'url' => route('tags')],
-                ['name' => $title],
+                ['name' => $title, 'bookmarkItemableType' => Tag::class, 'bookmarkItemableId' => $tag->id],
             ],
         ];
     }
@@ -179,7 +212,7 @@ class MetaCreator
             'title' => $title,
             'breadcrumb' => [
                 ['name' => 'トップ', 'url' => route('index')],
-                ['name' => $title],
+                ['name' => $title, 'bookmarkItemableType' => User::class, 'bookmarkItemableId' => $user->id],
             ],
             'user' => $user->load('profile', 'profile.attachments'),
             'open_menu_user_addon' => true,

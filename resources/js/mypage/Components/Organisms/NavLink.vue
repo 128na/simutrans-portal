@@ -2,6 +2,7 @@
   <router-link
     :to="to"
     v-slot="{ href, route, navigate, isActive, isExactActive }"
+    custom
   >
     <b-nav-item
       :active="isExactActive"

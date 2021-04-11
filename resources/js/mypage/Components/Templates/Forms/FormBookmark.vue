@@ -39,6 +39,7 @@
       />
       <validation-message field="bookmark.description" />
     </b-form-group>
+    <form-bookmark-items v-model="bookmark.bookmarkItems" />
     <slot />
   </div>
 </template>

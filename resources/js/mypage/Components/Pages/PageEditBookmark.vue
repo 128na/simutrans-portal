@@ -87,8 +87,7 @@ export default {
         await this.updateBookmark({ params });
       }
 
-      // 更新が成功すれば遷移ダイアログを無効化してマイページトップへ戻る
-      // ステータスが下書きの時は編集画面上部へスクロールする（通知が見えないため）
+      // 更新が成功すれば遷移ダイアログを無効化してブックマーク一覧へ戻る
       // エラーがあれば編集画面上部へスクロールする（通知が見えないため）
       if (!this.hasError) {
         this.unsetUnloadDialog();

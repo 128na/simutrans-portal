@@ -15,6 +15,7 @@ class BookmarkItemResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'bookmark_itemable_type' => $this->bookmark_itemable_type,
             'bookmark_itemable_id' => $this->bookmark_itemable_id,
             'memo' => $this->memo,

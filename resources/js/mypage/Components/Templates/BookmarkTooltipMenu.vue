@@ -52,7 +52,7 @@ export default {
   methods: {
     ...mapActions(["updateBookmark", "deleteBookmark", "setInfoMessage"]),
     handleEdit() {
-      this.goto(this.route_edit_item(this.item.id));
+      this.goto(this.route_edit_bookmark(this.item.id));
     },
     handleToPrivate() {
       const params = {

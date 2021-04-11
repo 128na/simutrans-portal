@@ -8,7 +8,9 @@
       </div>
       <div v-else>
         <div class="mb-4">
-          <b-button variant="primary">新規作成</b-button>
+          <b-button variant="primary" :to="route_edit_bookmark()">
+            新規作成
+          </b-button>
         </div>
 
         <div>

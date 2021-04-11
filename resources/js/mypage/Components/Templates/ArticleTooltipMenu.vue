@@ -48,7 +48,7 @@ export default {
     },
     handleToPrivate() {
       const params = {
-        item: Object.assign({}, this.item, {
+        article: Object.assign({}, this.item, {
           status: "private",
         }),
       };
@@ -60,7 +60,7 @@ export default {
     },
     handleToPublish() {
       const params = {
-        item: Object.assign({}, this.item, {
+        article: Object.assign({}, this.item, {
           status: "publish",
         }),
       };

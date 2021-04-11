@@ -32,6 +32,11 @@ class BookmarkService extends Service
         return $this->bookmarkRepository->storeByUser($user, $dataBookmark);
     }
 
+    public function delete(Bookmark $bookmark): void
+    {
+        $this->bookmarkRepository->delete($bookmark);
+    }
+
     public function update(Bookmark $bookmark, array $dataBookmark, array $dataBookmarkItems): void
     {
         DB::transaction(function () use ($bookmark, $dataBookmark, $dataBookmarkItems) {

@@ -7,7 +7,7 @@
         <need-verify />
       </div>
       <div v-else>
-        <article-table :articles="articles" :user="user" />
+        <article-table :articles="articles" />
       </div>
     </div>
     <loading v-else />
@@ -28,7 +28,6 @@ export default {
       "isLoggedIn",
       "initialized",
       "isVerified",
-      "user",
       "articlesLoaded",
       "articles",
     ]),

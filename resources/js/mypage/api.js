@@ -71,9 +71,12 @@ export default {
     return axios.get(`/api/v2/mypage/bookmarks`);
   },
   storeBookmark(params) {
-    return axios.post(`/api/v2/mypage/bookmarks`, { params });
+    return axios.post(`/api/v2/mypage/bookmarks`, params);
   },
-  updateBookmark(bookmark_id, params) {
-    return axios.post(`/api/v2/mypage/bookmarks/${bookmark_id}`, { params });
+  updateBookmark(params) {
+    return axios.post(`/api/v2/mypage/bookmarks/${params.bookmark.id}`, params);
+  },
+  deleteBookmark(bookmark_id) {
+    return axios.delete(`/api/v2/mypage/bookmarks/${bookmark_id}`);
   },
 }

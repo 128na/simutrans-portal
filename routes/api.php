@@ -67,6 +67,7 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
             Route::get('bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
             Route::post('bookmarks', [BookmarkController::class, 'store'])->name('bookmarks.store');
             Route::post('bookmarks/{bookmark}', [BookmarkController::class, 'update'])->name('bookmarks.update');
+            Route::delete('bookmarks/{bookmark}', [BookmarkController::class, 'destroy'])->name('bookmarks.destroy');
         });
     });
 

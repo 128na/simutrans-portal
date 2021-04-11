@@ -68,7 +68,8 @@ import {
   BIconLockFill,
   BIconUnlockFill,
   BIconArrowDown,
-  BIconBookmarkStarFill
+  BIconBookmarkStarFill,
+  BIconTrash
 } from 'bootstrap-vue';
 Vue.component('BIcon', BIcon);
 Vue.component('BIconEyeFill', BIconEyeFill);
@@ -86,3 +87,4 @@ Vue.component('BIconLockFill', BIconLockFill);
 Vue.component('BIconUnlockFill', BIconUnlockFill);
 Vue.component('BIconArrowDown', BIconArrowDown);
 Vue.component('BIconBookmarkStarFill', BIconBookmarkStarFill);
+Vue.component('BIconTrash', BIconTrash);

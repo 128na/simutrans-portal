@@ -37,13 +37,30 @@ class UpdateTest extends TestCase
         $response->assertStatus(403);
     }
 
+    public function test他人のはNG()
+    {
+        $this->actingAs(User::factory()->create());
+
+        $url = route('api.v2.bookmarks.update', $this->bookmark);
+        $data = [
+            'bookmark' => ['title' => 'hoge', 'is_public' => false],
+            'bookmarkItems' => [],
+        ];
+        $response = $this->postJson($url, $data);
+        $response->assertStatus(403);
+    }
+
     public function testOK()
     {
         $this->actingAs($this->user);
 
         $url = route('api.v2.bookmarks.update', $this->bookmark);
-        $response = $this->postJson($url);
-        $response->assertStatus(422);
+        $data = [
+            'bookmark' => ['title' => 'hoge', 'is_public' => false],
+            'bookmarkItems' => [],
+        ];
+        $response = $this->postJson($url, $data);
+        $response->assertStatus(200);
     }
 
     /**

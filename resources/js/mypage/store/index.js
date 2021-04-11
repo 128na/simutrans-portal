@@ -6,6 +6,7 @@ import AuthModule from './modules/auth';
 import AttachmentsModule from './modules/attachments';
 import TagsModule from './modules/tags';
 import AnalyticsModule from './modules/analytics';
+import BookmarksModule from './modules/bookmarks';
 import OptionsModule from './modules/options';
 Vue.use(Vuex);
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     TagsModule,
     OptionsModule,
     AnalyticsModule,
+    BookmarksModule,
   },
   state: {
     /**
@@ -92,6 +94,7 @@ export default new Vuex.Store({
       commit(SET_API_STATUS, { status: 200 });
     },
     setApiStatusError({ commit }, error = {}) {
+      console.error(error);
       const res = error.response || null;
       if (!res) {
         return commit(SET_API_STATUS, { message: '通信エラーが発生しました。', status_code: 0 });
@@ -100,7 +103,7 @@ export default new Vuex.Store({
         case 401:
           return commit(SET_API_STATUS, { message: '認証に失敗しました。', status_code: 401 });
         case 403:
-          return commit(SET_API_STATUS, { message: '操作を実行できませんでした。', status_code: 403 });
+          return commit(SET_API_STATUS, { message: res?.data?.message || '操作を実行できませんでした。', status_code: 403 });
         case 404:
           return commit(SET_API_STATUS, { message: 'データが見つかりませんでした。', status_code: 404 });
         case 419:

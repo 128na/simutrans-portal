@@ -38,7 +38,15 @@ class BookmarkController extends Controller
     {
         $this->authorize('update', $bookmark);
         $validated = $request->validated();
-        $this->bookmarkService->update($bookmark, $validated['bookmark'], $validated['bookmarkItems']);
+        $this->bookmarkService->update($bookmark, $validated['bookmark'], $validated['bookmarkItems'] ?? []);
+
+        return $this->index();
+    }
+
+    public function destroy(Bookmark $bookmark)
+    {
+        $this->authorize('destroy', $bookmark);
+        $this->bookmarkService->delete($bookmark);
 
         return $this->index();
     }

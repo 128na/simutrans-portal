@@ -6,7 +6,15 @@
       <div v-if="!isVerified">
         <need-verify />
       </div>
-      <div v-else>hello</div>
+      <div v-else>
+        <div class="mb-4">
+          <b-button variant="primary">新規作成</b-button>
+        </div>
+
+        <div>
+          <bookmark-table :bookmarks="bookmarks" />
+        </div>
+      </div>
     </div>
     <loading v-else />
   </div>
@@ -17,8 +25,8 @@ import { validateLogin } from "../../mixins/auth";
 export default {
   mixins: [validateLogin],
   created() {
-    if (this.isLoggedIn && !this.articlesLoaded) {
-      this.fetchArticles();
+    if (this.isLoggedIn && !this.bookmarksLoaded) {
+      this.fetchBookmarks();
     }
   },
   computed: {
@@ -26,16 +34,15 @@ export default {
       "isLoggedIn",
       "initialized",
       "isVerified",
-      "user",
-      "articlesLoaded",
-      "articles",
+      "bookmarksLoaded",
+      "bookmarks",
     ]),
     ready() {
-      return this.articlesLoaded;
+      return this.bookmarksLoaded;
     },
   },
   methods: {
-    ...mapActions(["fetchArticles"]),
+    ...mapActions(["fetchBookmarks"]),
   },
 };
 </script>

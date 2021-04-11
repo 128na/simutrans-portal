@@ -64,10 +64,12 @@ class IndexTest extends TestCase
         $response->assertOk();
         $response->assertJson(['data' => [
             [
+                'id' => $bookmark->id,
                 'uuid' => $bookmark->uuid,
                 'title' => $bookmark->title,
                 'description' => $bookmark->description,
                 'is_public' => (bool) $bookmark->is_public,
+                'created_at' => $bookmark->created_at->toDateTimeString(),
                 'bookmarkItems' => [
                     [
                         'bookmark_itemable_type' => User::class,

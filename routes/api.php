@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\v2\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\v2\Mypage\Article\AnalyticsController;
 use App\Http\Controllers\Api\v2\Mypage\Article\EditorController;
 use App\Http\Controllers\Api\v2\Mypage\AttachmentController;
+use App\Http\Controllers\Api\v2\Mypage\BookmarkController;
 use App\Http\Controllers\Api\v2\Mypage\TagController;
 use App\Http\Controllers\Api\v2\Mypage\UserController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -62,10 +63,11 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
             Route::middleware('can:update,article')->group(function () {
                 Route::post('articles/{article}', [EditorController::class, 'update'])->name('articles.update');
             });
-        });
 
-        // TODO 自身のブックマーク一覧APIを実装する
-        // TODO 自身のブックマーク更新APIを実装する
+            Route::get('bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
+            Route::post('bookmarks', [BookmarkController::class, 'store'])->name('bookmarks.store');
+            Route::post('bookmarks/{bookmark}', [BookmarkController::class, 'update'])->name('bookmarks.update');
+        });
     });
 
     // 管理者機能

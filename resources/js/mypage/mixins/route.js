@@ -69,5 +69,8 @@ export default {
     route_edit_profile() {
       return { name: "editProfile" };
     },
+    route_bookmarks() {
+      return { name: "bookmarks" };
+    },
   }
 }

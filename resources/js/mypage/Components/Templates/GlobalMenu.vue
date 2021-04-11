@@ -29,6 +29,10 @@
           <b-icon icon="graph-up" class="nav-icon" />
           アクセス解析
         </nav-link>
+        <nav-link v-if="isVerified" :to="route_bookmarks">
+          <b-icon icon="bookmark-star-fill" class="nav-icon" />
+          ブックマーク
+        </nav-link>
         <b-nav-text class="" v-if="isVerified">記事作成</b-nav-text>
         <nav-link v-if="isVerified" :to="route_create_addon_post">
           <b-icon icon="file-earmark-zip-fill" class="nav-icon" />

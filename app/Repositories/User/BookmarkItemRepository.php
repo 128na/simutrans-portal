@@ -30,4 +30,9 @@ class BookmarkItemRepository extends BaseRepository
             ->where('bookmark_itemable_id', $bookmarkItemableId)
             ->exists();
     }
+
+    public function deleteByBookmark(Bookmark $bookmark): void
+    {
+        $bookmark->bookmarkItems()->delete();
+    }
 }

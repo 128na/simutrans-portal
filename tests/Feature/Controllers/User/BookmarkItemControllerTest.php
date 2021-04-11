@@ -11,7 +11,22 @@ class BookmarkItemControllerTest extends TestCase
 {
     public function test未ログイン()
     {
-        $url = route('bookmarkItems.store', 1);
+        $url = route('bookmarkItems.store');
+        $response = $this->post($url);
+        $response->assertRedirect(route('verification.notice'));
+    }
+
+    public function testメール未認証()
+    {
+        $this->user->update(['email_verified_at' => null]);
+        $bookmark = Bookmark::factory()->create(['user_id' => $this->user->id]);
+        $article = Article::factory()->create();
+        $data = ['bookmarkItem' => [
+            'bookmark_id' => $bookmark->id,
+            'bookmark_itemable_type' => Article::class,
+            'bookmark_itemable_id' => $article->id,
+        ]];
+        $url = route('bookmarkItems.store');
         $response = $this->post($url);
         $response->assertRedirect(route('verification.notice'));
     }

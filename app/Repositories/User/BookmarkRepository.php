@@ -2,9 +2,11 @@
 
 namespace App\Repositories\User;
 
+use App\Models\User;
 use App\Models\User\Bookmark;
 use App\Repositories\BaseRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class BookmarkRepository extends BaseRepository
 {
@@ -35,5 +37,13 @@ class BookmarkRepository extends BaseRepository
             ->where('uuid', $uuid)
             ->with(['user', 'bookmarkItems.bookmarkItemable'])
             ->firstOrFail();
+    }
+
+    public function findAllByUser(User $user): Collection
+    {
+        return $user->bookmarks()
+            ->orderBy('created_at', 'desc')
+            ->with(['bookmarkItems.bookmarkItemable'])
+            ->get();
     }
 }

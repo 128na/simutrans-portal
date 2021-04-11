@@ -14,8 +14,8 @@ class BookmarkFactory extends Factory
     {
         return [
             'user_id' => User::factory()->create()->id,
-            'title' => $this->faker->word,
-            'description' => $this->faker->text,
+            'title' => $this->faker->word(),
+            'description' => $this->faker->text(),
             'is_public' => random_int(0, 1),
         ];
     }

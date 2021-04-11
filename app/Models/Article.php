@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Feed\Feedable;
@@ -140,9 +139,9 @@ class Article extends Model implements Feedable
         return $this->hasOne(ConversionCount::class)->where('type', ConversionCount::TYPE_TOTAL);
     }
 
-    public function bookmarkItemables(): MorphToMany
+    public function bookmarkItemables(): MorphMany
     {
-        return $this->morphToMany(BookmarkItem::class, 'bookmark_itemable');
+        return $this->morphMany(BookmarkItem::class, 'bookmark_itemable');
     }
 
     /*

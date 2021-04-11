@@ -6,7 +6,7 @@ use App\Models\User\BookmarkItem;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Tag extends Model
 {
@@ -21,9 +21,9 @@ class Tag extends Model
         return $this->belongsToMany(Article::class);
     }
 
-    public function bookmarkItemables(): MorphToMany
+    public function bookmarkItemables(): MorphMany
     {
-        return $this->morphToMany(BookmarkItem::class, 'bookmark_itemable');
+        return $this->morphMany(BookmarkItem::class, 'bookmark_itemable');
     }
 
     /*

@@ -66,4 +66,14 @@ export default {
   fetchAnalytics(params) {
     return axios.get(`/api/v2/mypage/analytics`, { params });
   },
+
+  fetchBookmarks() {
+    return axios.get(`/api/v2/mypage/bookmarks`);
+  },
+  storeBookmark(params) {
+    return axios.post(`/api/v2/mypage/bookmarks`, { params });
+  },
+  updateBookmark(bookmark_id, params) {
+    return axios.post(`/api/v2/mypage/bookmarks/${bookmark_id}`, { params });
+  },
 }

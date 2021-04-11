@@ -6,6 +6,8 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
+use App\QueryBuilders\AdvancedSearchQueryBuilder;
+use Carbon\CarbonImmutable;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -24,9 +26,12 @@ class ArticleRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(Article $model)
+    private AdvancedSearchQueryBuilder $advancedSearchQueryBuilder;
+
+    public function __construct(Article $model, AdvancedSearchQueryBuilder $advancedSearchQueryBuilder)
     {
         $this->model = $model;
+        $this->advancedSearchQueryBuilder = $advancedSearchQueryBuilder;
     }
 
     /**
@@ -72,7 +77,7 @@ class ArticleRepository extends BaseRepository
     /**
      * ユーザーに紐づくデータを返す.
      */
-    public function finaAllByUser(User $user, array $columns = self::COLUMNS, array $relations = self::RELATIONS): Collection
+    public function findAllByUser(User $user, array $columns = self::COLUMNS, array $relations = self::RELATIONS): Collection
     {
         return $user->articles()
             ->select($columns)
@@ -107,7 +112,7 @@ class ArticleRepository extends BaseRepository
     /**
      * お知らせ記事一覧.
      */
-    public function getAnnouces(?int $limit = null): Collection
+    public function findAllAnnouces(?int $limit = null): Collection
     {
         return $this->queryAnnouces()->limit($limit)->get();
     }
@@ -120,7 +125,7 @@ class ArticleRepository extends BaseRepository
         return $this->queryAnnouces()->paginate($limit);
     }
 
-    private function queryCommonArticles(): Builder
+    private function queryPages(): Builder
     {
         return $this->basicQuery()
             ->withoutAnnounce();
@@ -129,20 +134,20 @@ class ArticleRepository extends BaseRepository
     /**
      * 一般記事一覧.
      */
-    public function getCommonArticles(?int $limit = null): Collection
+    public function findAllPages(?int $limit = null): Collection
     {
-        return $this->queryCommonArticles()->limit($limit)->get();
+        return $this->queryPages()->limit($limit)->get();
     }
 
     /**
      * 一般記事一覧.
      */
-    public function paginateCommonArticles(?int $limit = null): LengthAwarePaginator
+    public function paginatePages(?int $limit = null): LengthAwarePaginator
     {
-        return $this->queryCommonArticles()->paginate($limit);
+        return $this->queryPages()->paginate($limit);
     }
 
-    private function queryPakArticles(string $pak): Builder
+    private function queryByPak(string $pak): Builder
     {
         return $this->basicQuery()
             ->pak($pak)
@@ -152,12 +157,12 @@ class ArticleRepository extends BaseRepository
     /**
      * pak別の投稿一覧.
      */
-    public function getPakArticles(string $pak, ?int $limit = null): Collection
+    public function findAllByPak(string $pak, ?int $limit = null): Collection
     {
-        return $this->queryPakArticles($pak)->limit($limit)->get();
+        return $this->queryByPak($pak)->limit($limit)->get();
     }
 
-    private function queryRankingArticles(array $excludes = []): Builder
+    private function queryRanking(array $excludes = []): Builder
     {
         return $this->basicQuery()
             ->addon()
@@ -168,20 +173,20 @@ class ArticleRepository extends BaseRepository
     /**
      * アドオン投稿/紹介のデイリーPVランキング.
      */
-    public function getRankingArticles(array $excludes = [], ?int $limit = null): Collection
+    public function findAllRanking(array $excludes = [], ?int $limit = null): Collection
     {
-        return $this->queryRankingArticles($excludes)->limit($limit)->get();
+        return $this->queryRanking($excludes)->limit($limit)->get();
     }
 
     /**
      * アドオン投稿/紹介のデイリーPVランキング.
      */
-    public function paginateRankingArticles(array $excludes = [], ?int $limit = null): LengthAwarePaginator
+    public function paginateRanking(array $excludes = [], ?int $limit = null): LengthAwarePaginator
     {
-        return $this->queryRankingArticles($excludes)->paginate($limit);
+        return $this->queryRanking($excludes)->paginate($limit);
     }
 
-    private function queryAddonArticles(): Builder
+    private function queryAddon(): Builder
     {
         return $this->basicQuery()
             ->addon()
@@ -191,12 +196,12 @@ class ArticleRepository extends BaseRepository
     /**
      * アドオン投稿/紹介の一覧.
      */
-    public function paginateAddonArticles(?int $limit = null): LengthAwarePaginator
+    public function paginateAddons(?int $limit = null): LengthAwarePaginator
     {
-        return $this->queryAddonArticles()->paginate($limit);
+        return $this->queryAddon()->paginate($limit);
     }
 
-    private function queryCategoryArtciles(Category $category): Relation
+    private function queryByCategory(Category $category): Relation
     {
         return $this->basicRelationQuery($category->articles());
     }
@@ -204,12 +209,12 @@ class ArticleRepository extends BaseRepository
     /**
      * カテゴリの投稿一覧.
      */
-    public function paginateCategoryArtciles(Category $category, ?int $limit = null): LengthAwarePaginator
+    public function paginateByCategory(Category $category, ?int $limit = null): LengthAwarePaginator
     {
-        return $this->queryCategoryArtciles($category)->paginate($limit);
+        return $this->queryByCategory($category)->paginate($limit);
     }
 
-    private function queryPakAddonCategoryArtciles(Category $pak, Category $addon): Builder
+    private function queryByPakAddonCategory(Category $pak, Category $addon): Builder
     {
         return $this->basicQuery()
             ->whereHas('categories', fn ($query) => $query->where('id', $pak->id))
@@ -219,12 +224,12 @@ class ArticleRepository extends BaseRepository
     /**
      * カテゴリ(pak/addon)の投稿一覧.
      */
-    public function paginatePakAddonCategoryArtciles(Category $pak, Category $addon, ?int $limit = null): LengthAwarePaginator
+    public function paginateByPakAddonCategory(Category $pak, Category $addon, ?int $limit = null): LengthAwarePaginator
     {
-        return $this->queryPakAddonCategoryArtciles($pak, $addon)->paginate($limit);
+        return $this->queryByPakAddonCategory($pak, $addon)->paginate($limit);
     }
 
-    private function queryTagArticles(Tag $tag): Relation
+    private function queryByTag(Tag $tag): Relation
     {
         return $this->basicRelationQuery($tag->articles());
     }
@@ -232,12 +237,12 @@ class ArticleRepository extends BaseRepository
     /**
      * タグを持つ投稿記事一覧.
      */
-    public function paginateTagArticles(Tag $tag, ?int $limit = null): LengthAwarePaginator
+    public function paginateByTag(Tag $tag, ?int $limit = null): LengthAwarePaginator
     {
-        return $this->queryTagArticles($tag)->paginate($limit);
+        return $this->queryByTag($tag)->paginate($limit);
     }
 
-    private function queryUserArticles(User $user): Relation
+    private function queryByUser(User $user): Relation
     {
         return $this->basicRelationQuery($user->articles());
     }
@@ -245,12 +250,12 @@ class ArticleRepository extends BaseRepository
     /**
      * ユーザーの投稿記事一覧.
      */
-    public function paginateUserArticles(User $user, ?int $limit = null): LengthAwarePaginator
+    public function paginateByUser(User $user, ?int $limit = null): LengthAwarePaginator
     {
-        return $this->queryUserArticles($user)->paginate($limit);
+        return $this->queryByUser($user)->paginate($limit);
     }
 
-    private function querySearchArticles(string $word): Builder
+    private function queryBySearch(string $word): Builder
     {
         return $this->basicQuery()
             ->search($word)
@@ -260,12 +265,12 @@ class ArticleRepository extends BaseRepository
     /**
      * 記事検索結果一覧.
      */
-    public function paginateSearchArticles(string $word, ?int $limit = null): LengthAwarePaginator
+    public function paginateBySearch(string $word, ?int $limit = null): LengthAwarePaginator
     {
-        return $this->querySearchArticles($word)->paginate($limit);
+        return $this->queryBySearch($word)->paginate($limit);
     }
 
-    public function cursorCheckLinkArticles(): LazyCollection
+    public function cursorCheckLink(): LazyCollection
     {
         return $this->model
             ->select('id', 'user_id', 'title', 'post_type', 'contents')
@@ -289,7 +294,7 @@ class ArticleRepository extends BaseRepository
     /**
      * 記事表示.
      */
-    public function getArticle(Article $article, bool $withCount = false): Article
+    public function loadArticle(Article $article, bool $withCount = false): Article
     {
         $relations = $withCount ? [
             'user:id,name', 'attachments:id,attachmentable_id,attachmentable_type,path', 'categories:id,type,slug', 'tags:id,name',
@@ -316,7 +321,7 @@ class ArticleRepository extends BaseRepository
     /**
      * 論理削除されているものも含めて探す.
      */
-    public function findWithTrashed(int $id): Article
+    public function findOrFailWithTrashed(int $id): Article
     {
         return $this->model
             ->withTrashed()
@@ -332,5 +337,67 @@ class ArticleRepository extends BaseRepository
         $article->trashed()
             ? $article->restore()
             : $article->delete();
+    }
+
+    /**
+     * 詳細検索.
+     */
+    private function queryByAdvancedSearch(
+        ?string $word = null,
+        ?Collection $categories = null,
+        ?bool $categoryAnd = true,
+        ?Collection $tags = null,
+        ?bool $tagAnd = true,
+        ?Collection $users = null,
+        ?bool $userAnd = true,
+        ?CarbonImmutable $startAt = null,
+        ?CarbonImmutable $endAt = null,
+        string $order = 'updated_at',
+        string $direction = 'desc'
+    ): Builder {
+        $q = $this->basicQuery(self::COLUMNS, self::RELATIONS, [$order, $direction]);
+
+        if ($word) {
+            $this->advancedSearchQueryBuilder->addWordSearch($q, $word);
+        }
+        if ($categories) {
+            $this->advancedSearchQueryBuilder->addCategories($q, $categories, $categoryAnd);
+        }
+        if ($tags) {
+            $this->advancedSearchQueryBuilder->addTags($q, $tags, $tagAnd);
+        }
+        if ($users) {
+            $this->advancedSearchQueryBuilder->addUsers($q, $users, $userAnd);
+        }
+        if ($startAt) {
+            $this->advancedSearchQueryBuilder->addStartAt($q, $startAt);
+        }
+        if ($endAt) {
+            $this->advancedSearchQueryBuilder->addEndAt($q, $endAt);
+        }
+        $this->advancedSearchQueryBuilder->addOrder($q, $order, $direction);
+
+        return $q;
+    }
+
+    public function paginateByAdvancedSearch(
+        ?string $word = null,
+        ?Collection $categories = null,
+        ?bool $categoryAnd = true,
+        ?Collection $tags = null,
+        ?bool $tagAnd = true,
+        ?Collection $users = null,
+        ?bool $userAnd = true,
+        ?CarbonImmutable $startAt = null,
+        ?CarbonImmutable $endAt = null,
+        string $order = 'updated_at',
+        string $direction = 'desc',
+        int $limit = 50
+    ): LengthAwarePaginator {
+        $q = $this->queryByAdvancedSearch(
+            $word, $categories, $categoryAnd, $tags, $tagAnd, $users, $userAnd, $startAt, $endAt, $order, $direction
+        );
+
+        return $q->paginate($limit);
     }
 }

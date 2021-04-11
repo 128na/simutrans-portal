@@ -7,7 +7,7 @@ on:
     branches: [master]
     tags: ["**"]
   pull_request:
-    branches: [master]
+    branches: [master, develop]
   workflow_dispatch:
     inputs:
       skip_test:

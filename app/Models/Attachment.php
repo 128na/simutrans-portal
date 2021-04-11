@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Storage;
 
 class Attachment extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'attachmentable_id',
@@ -42,12 +47,12 @@ class Attachment extends Model
     | リレーション
     |--------------------------------------------------------------------------
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function attachmentable()
+    public function attachmentable(): MorphTo
     {
         return $this->morphTo();
     }

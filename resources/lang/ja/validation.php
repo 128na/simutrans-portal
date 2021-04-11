@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | バリデーション言語行
@@ -189,5 +188,30 @@ return [
 
         // attachments
         'file' => 'ファイル',
+
+        'advancedSearch.word' => 'キーワード',
+        'advancedSearch.categoryIds.*' => 'カテゴリ',
+        'advancedSearch.categoryAnd' => 'カテゴリ条件',
+        'advancedSearch.tagIds.*' => 'タグ',
+        'advancedSearch.tagAnd' => 'タグ条件',
+        'advancedSearch.userIds.*' => 'ユーザー',
+        'advancedSearch.userAnd' => 'ユーザー条件',
+        'advancedSearch.startAt' => '更新期間の開始日',
+        'advancedSearch.endAt' => '更新期間の終了日',
+        'advancedSearch.order' => 'ソート項目',
+        'advancedSearch.direction' => 'ソート順',
+
+        'bookmark.title' => 'タイトル',
+        'bookmark.description' => '説明',
+        'bookmark.is_public' => '公開設定',
+
+        'bookmarkItems.*.bookmark_itemable_type' => 'ブックマーク対象',
+        'bookmarkItems.*.bookmark_itemable_id' => 'ブックマーク対象',
+        'bookmarkItems.*.memo' => 'メモ',
+        'bookmarkItems.*.order' => '表示順',
+
+        'bookmarkItem.bookmark_itemable_type' => 'ブックマーク対象',
+        'bookmarkItem.bookmark_itemable_id' => 'ブックマーク対象',
+        'bookmarkItem.memo' => 'メモ',
     ],
 ];

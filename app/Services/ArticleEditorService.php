@@ -27,9 +27,9 @@ class ArticleEditorService extends Service
         $this->tagRepository = $tagRepository;
     }
 
-    public function getArticles(User $user)
+    public function findArticles(User $user)
     {
-        return $this->articleRepository->finaAllByUser($user);
+        return $this->articleRepository->findAllByUser($user);
     }
 
     public function getOptions(User $user)
@@ -43,7 +43,7 @@ class ArticleEditorService extends Service
 
     public function getSeparatedCategories(User $user)
     {
-        $categories = $this->categoryRepository->finaAllByUser($user);
+        $categories = $this->categoryRepository->findAllByUser($user);
 
         return $this->separateCategories($categories);
     }
@@ -136,8 +136,8 @@ class ArticleEditorService extends Service
         $this->articleRepository->syncTags($article, $tagIds->toArray());
     }
 
-    public function getArticle(Article $article, bool $withCount): Article
+    public function loadArticle(Article $article, bool $withCount): Article
     {
-        return $this->articleRepository->getArticle($article, $withCount);
+        return $this->articleRepository->loadArticle($article, $withCount);
     }
 }

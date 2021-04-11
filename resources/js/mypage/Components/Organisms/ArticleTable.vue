@@ -9,15 +9,11 @@
       stacked="sm"
       class="clickable"
       @row-clicked="handleRowClicked"
-    >
-      <!-- <template v-slot:cell(action)="data">
-        <tooltip-menu :article="data.item" />
-      </template> -->
-    </b-table>
+    />
     <div v-show="items.length === 0">投稿がありません</div>
-    <tooltip-menu
+    <article-tooltip-menu
       v-if="selected_item"
-      :article="selected_item"
+      :item="selected_item"
       :style="tooltip_style"
       @close="handleTooltipClose"
     />
@@ -26,7 +22,7 @@
 <script>
 import { DateTime } from "luxon";
 export default {
-  props: ["articles", "user"],
+  props: ["articles"],
   data() {
     return {
       sortBy: "updated_at",
@@ -74,11 +70,6 @@ export default {
         label: "更新日時",
         sortable: true,
       },
-      // {
-      //   key: "action",
-      //   label: "",
-      //   sortable: false,
-      // },
     ];
   },
   computed: {

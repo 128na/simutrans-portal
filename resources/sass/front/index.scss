@@ -5,11 +5,35 @@
 // フロント機能でのみ使用するスタイルを記述する
 // パンくず
 .breadcrumb {
-  margin: -2rem -15px 0 -15px;
-  padding: 2rem 1rem;
+  margin: -1.3rem -15px 0 -15px;
+  padding: 1rem 1rem;
   border-radius: 0;
 }
 // リンク下線非表示
 a.no-underline {
   text-decoration: none;
+}
+
+.togglable {
+  &::before {
+    content: "";
+    display: inline-block;
+    vertical-align: baseline;
+    margin-bottom: 0.2rem;
+    border-right: 0.3em solid transparent;
+    border-left: 0.3em solid transparent;
+    border-bottom: 0.3em solid;
+    border-top: none;
+  }
+  &[aria-expanded="true"] {
+    &::before {
+      border-bottom: none;
+      border-top: 0.3em solid;
+    }
+  }
+}
+
+.list-style-none {
+  padding-left: 0;
+  list-style: none;
 }

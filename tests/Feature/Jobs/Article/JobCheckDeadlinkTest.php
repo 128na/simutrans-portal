@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Command;
+namespace Tests\Feature\Jobs\Article;
 
 use App\Jobs\Article\JobCheckDeadLink;
 use App\Models\Article;

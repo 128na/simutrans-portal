@@ -2,7 +2,7 @@
 
 namespace App\Casts;
 
-use App\Models\Contents\ProfileData;
+use App\Models\User\ProfileData;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 class ToProfileData implements CastsAttributes

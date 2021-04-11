@@ -150,9 +150,7 @@ export default {
         : this.fields.filter((f) => filter_keys.includes(f.key));
     },
     base_url() {
-      return process.env.NODE_ENV === "production"
-        ? process.env.MIX_APP_URL
-        : "";
+      return process.env.MIX_APP_URL;
     },
   },
   methods: {

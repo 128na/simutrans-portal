@@ -1,13 +1,13 @@
 <?php
+
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Attachment;
 use App\Models\Article;
+use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Tag;
-use App\Models\Profile;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
 /**
  * 開発環境用シーダー
@@ -15,7 +15,7 @@ use App\Models\User;
 class DevSeeder extends Seeder
 {
     /**
-     * テスト用一般ユーザーと記事を作成する
+     * テスト用一般ユーザーと記事を作成する.
      *
      * @return void
      */
@@ -57,9 +57,9 @@ class DevSeeder extends Seeder
     private static function addAvatar($user)
     {
         $avatar = Attachment::make([
-            'user_id'       => $user->id,
+            'user_id' => $user->id,
             'original_name' => $user->name.'のアバター.png',
-            'path'          => 'default/avatar.png',
+            'path' => 'default/avatar.png',
         ]);
         $user->profile->attachments()->save($avatar);
     }
@@ -81,10 +81,10 @@ class DevSeeder extends Seeder
 
         // update contents
         $c = $article->contents;
-        $c->file      = $file->id;
+        $c->file = $file->id;
         $c->thumbnail = $thumb->id;
-        $c->thanks    = '圧倒的感謝';
-        $c->license   = '改造自由';
+        $c->thanks = '圧倒的感謝';
+        $c->license = '改造自由';
         $article->contents = $c;
         $article->save();
     }
@@ -101,9 +101,9 @@ class DevSeeder extends Seeder
 
         // update contents
         $c = $article->contents;
-        $c->link      = 'http://example.com';
+        $c->link = 'http://example.com';
         $c->thumbnail = $thumb->id;
-        $c->thanks    = '圧倒的感謝';
+        $c->thanks = '圧倒的感謝';
         $article->contents = $c;
         $article->save();
     }

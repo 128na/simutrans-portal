@@ -26,15 +26,15 @@ class IndexController extends Controller
 
     private function getContents(): array
     {
-        $announces = $this->articleRepository->getAnnouces(3);
-        $pages = $this->articleRepository->getCommonArticles(3);
+        $announces = $this->articleRepository->findAllAnnouces(3);
+        $pages = $this->articleRepository->findAllPages(3);
         $latest = [
-            '128-japan' => $this->articleRepository->getPakArticles('128-japan', 6),
-            '128' => $this->articleRepository->getPakArticles('128', 6),
-            '64' => $this->articleRepository->getPakArticles('64', 6),
+            '128-japan' => $this->articleRepository->findAllByPak('128-japan', 6),
+            '128' => $this->articleRepository->findAllByPak('128', 6),
+            '64' => $this->articleRepository->findAllByPak('64', 6),
         ];
         $excludes = collect($latest)->flatten()->pluck('id')->unique()->toArray();
-        $ranking = $this->articleRepository->getRankingArticles($excludes, 6);
+        $ranking = $this->articleRepository->findAllRanking($excludes, 6);
 
         return [
             'announces' => $announces,

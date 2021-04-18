@@ -26,7 +26,7 @@ class ArticleController extends Controller
         $article = $this->articleRepository->findOrFailWithTrashed($id);
         $this->articleRepository->update($article, $request->validated()['article']);
 
-        JobUpdateRelated::dispatchSync();
+        JobUpdateRelated::dispatch();
 
         return $this->index();
     }
@@ -36,7 +36,7 @@ class ArticleController extends Controller
         $article = $this->articleRepository->findOrFailWithTrashed($id);
         $this->articleRepository->toggleDelete($article);
 
-        JobUpdateRelated::dispatchSync();
+        JobUpdateRelated::dispatch();
 
         return $this->index();
     }

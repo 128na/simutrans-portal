@@ -10,7 +10,7 @@ class DebugController extends Controller
 {
     public function flushCache()
     {
-        JobUpdateRelated::dispatchSync();
+        JobUpdateRelated::dispatch();
         Cache::flush();
 
         return response('');

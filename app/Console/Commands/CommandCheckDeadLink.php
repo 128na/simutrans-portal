@@ -13,7 +13,7 @@ class CommandCheckDeadLink extends Command
 
     public function handle()
     {
-        JobCheckDeadLink::dispatchSync();
+        JobCheckDeadLink::dispatch();
 
         return 0;
     }

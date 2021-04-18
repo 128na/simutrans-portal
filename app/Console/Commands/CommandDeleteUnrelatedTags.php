@@ -13,7 +13,7 @@ class CommandDeleteUnrelatedTags extends Command
 
     public function handle()
     {
-        JobDeleteUnrelatedTags::dispatchSync();
+        JobDeleteUnrelatedTags::dispatch();
 
         return 0;
     }

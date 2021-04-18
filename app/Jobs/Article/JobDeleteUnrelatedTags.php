@@ -20,11 +20,11 @@ class JobDeleteUnrelatedTags implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
+    public function __construct()
+    {
+        $this->onConnection('sync');
+    }
+
     public function handle(TagRepository $tagRepository)
     {
         $tagRepository->deleteUnrelated();

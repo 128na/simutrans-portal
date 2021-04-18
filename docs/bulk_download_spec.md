@@ -17,26 +17,20 @@
 マイページトップからDL可能
 
 ## DLフロー
-ボタンクリック /api/v3/bulk-downloads
+ボタンクリック /api/v3/bulk-zips
 DLファイルが生成済み？
 Y: 既存の一括DLデータ(bulk_downloads)を返却
 N: DLデータを作成、DLファイル作成ジョブ登録して返却
 
 DLデータが完了？
-Y: DL開始 /bulk-downloads/{uuid}
+Y: DL開始 /bulk-zips/{uuid}
 N: 指定時間後に再チェック5秒とか？
 
 ## エントリポイント
-### [POST] /api/v3/bulk-downloads
-
-```
-bulkDownloads: {
-    bulk_downloadable_id:xxx
-    bulk_downloadable_type:App\Models\User\Bookmark|App\Models\User
-}
-```
-
-### [GET] /bulk-downloads/{uuid}
+### [GET] /api/v3/public-bookmarks/{uuid}/bulk-zip
+### [GET] /api/v3/mypage/bookmarks/{id}/bulk-zip
+### [GET] /api/v3/mypage/bulk-zip
+### [GET] /bulk-zips/{uuid}
 
 ## データ構造
 
@@ -44,8 +38,8 @@ bookmarks
 bulk_downloads
     id
     uuid
-    bulk_downloadable_id
-    bulk_downloadable_type
+    bulk_zippable_id
+    bulk_zippable_type
     generated: 0:生成中,1:完了
     path: nullable,生成完了したら更新
 
@@ -57,8 +51,13 @@ bulk_downloads
 
 ## commands
 ```
-php artisan make:model BulkDownload -m
-php artisan make:controller Front/BulkDownloadController
-php artisan make:controller Api/v3/BulkDownloadController
-php artisan make:job BulkDownload/CreateBulkZip
+php artisan make:model BulkZip -m
+php artisan make:controller Api/v3/BulkZipController
+php artisan make:controller Front/BulkZipController
+php artisan make:job BulkZip/CreateBulkZip
+php artisan make:resource Api/BulkZipResource
+php artisan make:test Controllers/Api/v3/BulkZipControllerTest
+php artisan make:test Controllers/Front/BulkZipControllerTest
+php artisan make:test Jobs/BulkZip/CreateBulkZipTest
+
 ```

@@ -19,7 +19,7 @@ class JobUpdateRelatedTest extends TestCase
             'pak_slug' => 'foo', 'addon_slug' => 'bar', 'count' => 334,
         ]);
 
-        JobUpdateRelated::dispatchSync();
+        JobUpdateRelated::dispatch();
 
         $this->assertDatabaseMissing('pak_addon_counts', [
             'pak_slug' => 'foo', 'addon_slug' => 'bar', 'count' => 334,
@@ -36,7 +36,7 @@ class JobUpdateRelatedTest extends TestCase
             'user_id' => $this->user->id, 'user_name' => 'hoge', 'count' => 72,
         ]);
 
-        JobUpdateRelated::dispatchSync();
+        JobUpdateRelated::dispatch();
 
         $this->assertDatabaseMissing('user_addon_counts', [
             'user_id' => $this->user->id, 'user_name' => 'hoge', 'count' => 72,

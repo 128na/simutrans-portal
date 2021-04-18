@@ -16,7 +16,7 @@ class JobDeleteUnrelatedTagsTest extends TestCase
             'name' => $tag->name,
         ]);
 
-        JobDeleteUnrelatedTags::dispatchSync();
+        JobDeleteUnrelatedTags::dispatch();
 
         $this->assertDatabaseMissing('tags', [
             'name' => $tag->name,

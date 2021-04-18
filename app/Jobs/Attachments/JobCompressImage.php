@@ -21,11 +21,11 @@ class JobCompressImage implements ShouldQueue
 
     private ?CompressedImageRepository $compressedImageRepository;
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
+    public function __construct()
+    {
+        $this->onConnection('sync');
+    }
+
     public function handle(
         AttachmentRepository $attachmentRepository,
         CompressedImageRepository $compressedImageRepository

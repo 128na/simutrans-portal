@@ -3,7 +3,11 @@
 namespace App\Jobs\BulkZip;
 
 use App\Models\BulkZip;
-use App\Services\BulkZipService;
+use App\Models\User;
+use App\Models\User\Bookmark;
+use App\Repositories\BulkZipRepository;
+use App\Services\BulkZip\ZipManager;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -25,14 +29,33 @@ class CreateBulkZip implements ShouldQueue
         $this->bulkZip = $bulkZip;
     }
 
-    public function handle(BulkZipService $bulkZipService)
-    {
-        logger('CreateBulkZip::handle', $this->bulkZip->toArray());
-        $bulkZipService->createZip($this->bulkZip);
+    public function handle(
+        BulkZipRepository $bulkZipRepository,
+        ZipManager $zipManager
+    ) {
+        $begin = microtime(true);
+
+        $items = $this->getItems($this->bulkZip);
+        $path = $zipManager->create($items);
+        $bulkZipRepository->update($this->bulkZip, ['generated' => true, 'path' => $path]);
+
+        logger(sprintf('CreateBulkZip::handle %.2f sec.', microtime(true) - $begin));
     }
 
-    public function failed(Throwable $exception)
+    private function getItems(BulkZip $bulkZip): array
     {
+        switch ($bulkZip->bulk_zippable_type) {
+            case User::class:
+                return $bulkZip->bulkZippable->articles->all();
+            case Bookmark::class:
+                return $bulkZip->bulkZippable->bookmarkItems->pluck('bookmarkItemable')->all();
+        }
+        throw new Exception("unsupport type provided:{$bulkZip->bulk_zippable_type}", 1);
+    }
+
+    public function failed(Throwable $e)
+    {
+        report($e);
         $this->bulkZip->delete();
     }
 }

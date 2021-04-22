@@ -33,7 +33,7 @@ class BulkZip extends Model
         });
     }
 
-    public function bulkZipable(): MorphTo
+    public function bulkZippable(): MorphTo
     {
         return $this->morphTo();
     }

@@ -3,12 +3,17 @@
 namespace App\Providers;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use App\Services\BulkZip\Decorators\AddonIntroductionDecorator;
+use App\Services\BulkZip\Decorators\AddonPostDecorator;
+use App\Services\BulkZip\ZipManager;
 use App\Services\MarkdownService;
 use Carbon\CarbonImmutable;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\ServiceProvider;
+use Storage;
+use ZipArchive;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -43,6 +48,17 @@ class AppServiceProvider extends ServiceProvider
             ]);
 
             return new HTMLPurifier($config);
+        });
+
+        $this->app->bind(ZipManager::class, function ($app) {
+            return new ZipManager(
+                new ZipArchive(),
+                Storage::disk('public'),
+                [
+                    $app->make(AddonPostDecorator::class),
+                    $app->make(AddonIntroductionDecorator::class),
+                ]
+            );
         });
     }
 

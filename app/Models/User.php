@@ -107,7 +107,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphMany(BookmarkItem::class, 'bookmark_itemable');
     }
 
-    public function bulkZipable(): MorphOne
+    public function bulkZippable(): MorphOne
     {
         return $this->morphOne(BulkZip::class, 'bulk_zippable');
     }

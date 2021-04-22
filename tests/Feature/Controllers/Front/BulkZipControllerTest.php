@@ -2,20 +2,34 @@
 
 namespace Tests\Feature\Controllers\Front;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\BulkZip;
+use Storage;
 use Tests\TestCase;
 
 class BulkZipControllerTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    private BulkZip $bulkZip;
+
+    protected function setUp(): void
     {
-        $response = $this->get('/');
+        parent::setUp();
+
+        $path = 'testing/dummy.zip';
+        Storage::disk('public')->put($path, 'dummy');
+        $this->bulkZip = BulkZip::factory()->create(['path' => $path]);
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        Storage::disk('public')->delete('testing/dummy.zip');
+    }
+
+    public function test()
+    {
+        $url = route('bulkZips.download', $this->bulkZip->uuid);
+        $response = $this->get($url);
 
         $response->assertStatus(200);
     }

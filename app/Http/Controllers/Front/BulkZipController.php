@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Services\BulkZipService;
+use App\Services\BulkZip\BulkZipService;
 use Storage;
 
 class BulkZipController extends Controller
@@ -20,7 +20,7 @@ class BulkZipController extends Controller
         $bulkZip = $this->bulkZipService->findOrFail($uuid);
         $disk = Storage::disk('public');
         $path = $disk->path($bulkZip->path);
-        $name = $bulkZip->uuid;
+        $name = sprintf('%s %s.zip', config('app.name'), $bulkZip->uuid);
 
         return response()->download($path, $name);
     }

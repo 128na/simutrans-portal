@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\BulkZipResource;
 use App\Models\User\Bookmark;
 use App\Repositories\User\BookmarkRepository;
-use App\Services\BulkZipService;
+use App\Services\BulkZip\BulkZipService;
 use Auth;
 
 class BulkZipController extends Controller
@@ -25,7 +25,7 @@ class BulkZipController extends Controller
         $bookmark = $this->bookmarkRepository->findOrFailByUuid($uuid, []);
         $bulkZip = $this->bulkZipService->findOrCreate($bookmark);
 
-        return new BulkZipResource($bulkZip);
+        return response(new BulkZipResource($bulkZip), 200);
     }
 
     public function bookmark(Bookmark $bookmark)
@@ -33,13 +33,13 @@ class BulkZipController extends Controller
         $this->authorize('download', $bookmark);
         $bulkZip = $this->bulkZipService->findOrCreate($bookmark);
 
-        return new BulkZipResource($bulkZip);
+        return response(new BulkZipResource($bulkZip), 200);
     }
 
     public function user()
     {
         $bulkZip = $this->bulkZipService->findOrCreate(Auth::user());
 
-        return new BulkZipResource($bulkZip);
+        return response(new BulkZipResource($bulkZip), 200);
     }
 }

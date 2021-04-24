@@ -16,7 +16,7 @@ class CommandCompressImage extends Command
 
     public function handle()
     {
-        JobCompressImage::dispatch();
+        JobCompressImage::dispatchSync();
 
         return 0;
     }

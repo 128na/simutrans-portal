@@ -2,28 +2,33 @@
 
 namespace Tests\Feature\Controllers\Api\v3\BulkZipController;
 
-use App\Jobs\BulkZip\CreateBulkZip;
 use App\Models\BulkZip;
 use App\Models\User;
-use Queue;
+use Illuminate\Support\Facades\Bus;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        BulkZip::all()->map(fn ($bz) => $bz->delete());
+        parent::tearDown();
+    }
+
     public function test()
     {
-        Queue::fake();
+        Bus::fake();
         $url = route('api.v3.bulkZip.user');
 
         $this->actingAs($this->user);
         $response = $this->getJson($url);
         $response->assertOk();
-        Queue::assertPushed(CreateBulkZip::class);
+        Bus::assertDispatchedAfterResponse(JobCreateBulkZip::class);
     }
 
     public function test_作成済み()
     {
-        Queue::fake();
+        Bus::fake();
         BulkZip::factory()->create([
             'bulk_zippable_id' => $this->user->id,
             'bulk_zippable_type' => User::class,
@@ -33,7 +38,7 @@ class UserTest extends TestCase
         $this->actingAs($this->user);
         $response = $this->getJson($url);
         $response->assertOk();
-        Queue::assertNotPushed(CreateBulkZip::class);
+        Bus::assertNotDispatchedAfterResponse(JobCreateBulkZip::class);
     }
 
     public function test_未ログイン()

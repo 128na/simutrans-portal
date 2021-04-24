@@ -27,7 +27,7 @@ class UserController extends Controller
         $user = $this->userRepository->findOrFailWithTrashed($id);
         $this->userRepository->toggleDelete($user);
 
-        JobUpdateRelated::dispatch();
+        JobUpdateRelated::dispatchSync();
 
         return $this->index();
     }

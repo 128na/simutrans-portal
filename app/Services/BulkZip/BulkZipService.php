@@ -2,7 +2,8 @@
 
 namespace App\Services\BulkZip;
 
-use App\Jobs\BulkZip\CreateBulkZip;
+use App\Jobs\BulkZip\JobCreateBulkZip;
+use App\Jobs\BulkZip\JobDeleteExpiredBulkzip;
 use App\Models\BulkZip;
 use App\Repositories\BulkZipRepository;
 use App\Services\Service;
@@ -27,7 +28,8 @@ class BulkZipService extends Service
         $bulkZip = $this->bulkZipRepository->findByBulkZippable($model);
         if (is_null($bulkZip)) {
             $bulkZip = $this->bulkZipRepository->storeByBulkZippable($model);
-            CreateBulkZip::dispatch($bulkZip);
+            JobCreateBulkZip::dispatchAfterResponse($bulkZip);
+            JobDeleteExpiredBulkzip::dispatchAfterResponse();
         }
 
         return $bulkZip;

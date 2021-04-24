@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\BulkZip;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\LazyCollection;
 
 class BulkZipRepository extends BaseRepository
 {
@@ -34,5 +35,12 @@ class BulkZipRepository extends BaseRepository
     public function storeByBulkZippable(Model $model, array $data = []): BulkZip
     {
         return $model->bulkZippable()->create($data);
+    }
+
+    public function cursorExpired(): LazyCollection
+    {
+        $expiredAt = now()->modify('-1 days');
+
+        return $this->model->whereDate('created_at', '<=', $expiredAt)->cursor();
     }
 }

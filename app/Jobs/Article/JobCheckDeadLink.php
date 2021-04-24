@@ -40,7 +40,7 @@ class JobCheckDeadLink implements ShouldQueue
         }
 
         if ($changed) {
-            JobUpdateRelated::dispatch();
+            JobUpdateRelated::dispatchSync();
         }
     }
 

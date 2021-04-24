@@ -16,14 +16,13 @@ class BulkZipControllerTest extends TestCase
 
         $path = 'testing/dummy.zip';
         Storage::disk('public')->put($path, 'dummy');
-        $this->bulkZip = BulkZip::factory()->create(['path' => $path]);
+        $this->bulkZip = BulkZip::factory()->create(['generated' => true, 'path' => $path]);
     }
 
     protected function tearDown(): void
     {
+        $this->bulkZip->delete();
         parent::tearDown();
-
-        Storage::disk('public')->delete('testing/dummy.zip');
     }
 
     public function test()
@@ -32,5 +31,14 @@ class BulkZipControllerTest extends TestCase
         $response = $this->get($url);
 
         $response->assertStatus(200);
+    }
+
+    public function test_未生成は404()
+    {
+        $this->bulkZip->update(['generated' => false]);
+        $url = route('bulkZips.download', $this->bulkZip->uuid);
+        $response = $this->get($url);
+
+        $response->assertNotFound();
     }
 }

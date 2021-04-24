@@ -15,7 +15,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Throwable;
 
-class CreateBulkZip implements ShouldQueue
+class JobCreateBulkZip implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -33,13 +33,17 @@ class CreateBulkZip implements ShouldQueue
         BulkZipRepository $bulkZipRepository,
         ZipManager $zipManager
     ) {
+        if ($this->bulkZip->generated) {
+            return;
+        }
+
         $begin = microtime(true);
 
         $items = $this->getItems($this->bulkZip);
         $path = $zipManager->create($items);
         $bulkZipRepository->update($this->bulkZip, ['generated' => true, 'path' => $path]);
 
-        logger(sprintf('CreateBulkZip::handle %.2f sec.', microtime(true) - $begin));
+        logger(sprintf('JobCreateBulkZip::handle %.2f sec.', microtime(true) - $begin));
     }
 
     private function getItems(BulkZip $bulkZip): array

@@ -46,7 +46,7 @@ class AddonPostDecorator extends BaseDecorator
                 ? $this->toPath($model->id, $model->thumbnail->original_name)
                 : '無し',
             ],
-            ['アドオンファイル', $this->toPath($model->id, $model->file->original_name)],
+
             ['投稿者', $model->user->name],
             ['カテゴリ', ...$model->categories->map(fn (Category $c) => __("category.{$c->type}.{$c->slug}"))->toArray()],
             ['タグ', ...$model->tags()->pluck('name')->toArray()],
@@ -54,6 +54,7 @@ class AddonPostDecorator extends BaseDecorator
             ['説明', $model->contents->description],
             ['謝辞・参考にしたアドオン', $model->contents->thanks],
             ['ライセンス', $model->contents->license],
+            ['アドオンファイル', $this->toPath($model->id, $model->file->original_name)],
             ['------'],
         ];
     }

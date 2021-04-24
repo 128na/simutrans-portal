@@ -46,7 +46,7 @@ class EditorController extends Controller
 
             return $preview;
         }
-        JobUpdateRelated::dispatch();
+        JobUpdateRelated::dispatchAfterResponse();
         DB::commit();
 
         if ($article->is_publish && $request->should_tweet) {
@@ -67,7 +67,7 @@ class EditorController extends Controller
 
             return $preview;
         }
-        JobUpdateRelated::dispatch();
+        JobUpdateRelated::dispatchAfterResponse();
         DB::commit();
 
         if ($article->is_publish && $request->should_tweet) {

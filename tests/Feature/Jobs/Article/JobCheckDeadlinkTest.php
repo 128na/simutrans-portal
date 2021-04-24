@@ -29,7 +29,7 @@ class JobCheckDeadlinkTest extends TestCase
         Notification::fake();
         Notification::assertNothingSent();
 
-        JobCheckDeadLink::dispatch();
+        JobCheckDeadLink::dispatchSync();
 
         Notification::assertSentTo($this->article, DeadLinkDetected::class);
     }
@@ -44,7 +44,7 @@ class JobCheckDeadlinkTest extends TestCase
 
         Notification::assertNothingSent();
 
-        JobCheckDeadLink::dispatch();
+        JobCheckDeadLink::dispatchSync();
 
         Notification::assertNothingSent();
     }
@@ -59,7 +59,7 @@ class JobCheckDeadlinkTest extends TestCase
 
         Notification::assertNothingSent();
 
-        JobCheckDeadLink::dispatch();
+        JobCheckDeadLink::dispatchSync();
 
         Notification::assertNothingSent();
     }

@@ -21,7 +21,7 @@ class UpdateCategoryOrder extends Seeder
                 'order' => $data['order'],
             ]);
         }
-        JobUpdateRelated::dispatch();
+        JobUpdateRelated::dispatchSync();
     }
 
     private function getCategories(): Iterator

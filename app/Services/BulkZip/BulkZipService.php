@@ -34,9 +34,4 @@ class BulkZipService extends Service
 
         return $bulkZip;
     }
-
-    public function findOrFail(string $uuid): BulkZip
-    {
-        return $this->bulkZipRepository->findOrFailByUuid($uuid);
-    }
 }

@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Services\BulkZip\BulkZipService;
+use App\Repositories\BulkZipRepository;
 use Storage;
 
 class BulkZipController extends Controller
 {
-    private BulkZipService $bulkZipService;
+    private BulkZipRepository $bulkZipRepository;
 
-    public function __construct(BulkZipService $bulkZipService)
+    public function __construct(BulkZipRepository $bulkZipRepository)
     {
-        $this->bulkZipService = $bulkZipService;
+        $this->bulkZipRepository = $bulkZipRepository;
     }
 
     public function download(string $uuid)
     {
-        $bulkZip = $this->bulkZipService->findOrFail($uuid);
+        $bulkZip = $this->bulkZipRepository->findOrFailByUuid($uuid);
         $disk = Storage::disk('public');
         $path = $disk->path($bulkZip->path);
         $name = sprintf('%s %s.zip', config('app.name'), $bulkZip->uuid);

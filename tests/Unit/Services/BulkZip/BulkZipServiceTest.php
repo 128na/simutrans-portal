@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Mockery\MockInterface;
 use Tests\UnitTestCase;
 
-class BuklZipServiceTest extends UnitTestCase
+class BulkZipServiceTest extends UnitTestCase
 {
     public function test()
     {

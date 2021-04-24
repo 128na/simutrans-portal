@@ -127,7 +127,7 @@ class ZipManager extends Service
 
     private function open(): void
     {
-        $result = $this->zipArchive->open($this->disk->path($this->filepath), ZipArchive::OVERWRITE);
+        $result = $this->zipArchive->open($this->disk->path($this->filepath), ZipArchive::CREATE);
         if ($result !== true) {
             throw new ZipErrorException("open faild: {$this->filepath}, {$result}");
         }

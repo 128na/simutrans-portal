@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers\Api\v3\BulkZipController;
 
+use App\Jobs\BulkZip\JobCreateBulkZip;
 use App\Models\BulkZip;
 use App\Models\User\Bookmark;
 use Illuminate\Support\Facades\Bus;

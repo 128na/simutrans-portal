@@ -5,6 +5,7 @@ namespace App\Services\BulkZip;
 use App\Exceptions\ZipErrorException;
 use App\Services\Service;
 use App\Services\ZipDecorators\BaseDecorator;
+use ErrorException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Str;
@@ -157,8 +158,13 @@ class ZipManager extends Service
 
     private function close(): void
     {
-        if ($this->zipArchive->close() !== true) {
-            throw new ZipErrorException('close faild');
+        try {
+            $res = $this->zipArchive->close() !== true;
+            if ($res) {
+                throw new ZipErrorException('close faild');
+            }
+        } catch (ErrorException $e) {
+            report($e);
         }
     }
 }

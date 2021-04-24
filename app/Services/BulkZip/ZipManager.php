@@ -159,6 +159,7 @@ class ZipManager extends Service
     private function close(): void
     {
         try {
+            // CIエラー対策 ZipArchive::close(): Failure to create temporary file: No such file or directory
             $res = $this->zipArchive->close() !== true;
             if ($res) {
                 throw new ZipErrorException('close faild');

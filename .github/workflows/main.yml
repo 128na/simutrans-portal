@@ -137,6 +137,5 @@ jobs:
       - name: Test
         run: php artisan test -v --env=local --parallel --processes=2
 
-      - if: failure()
-        name: Display Error Log
+      - name: Display Error Log
         run: "[ -e storage/logs/laravel.log ] && cat storage/logs/laravel.log || echo 'no log file.'"

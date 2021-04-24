@@ -56,6 +56,8 @@ class ZipManager extends Service
 
     /**
      * アイテムから情報を取得.
+     *
+     * @param Model[] $items
      */
     private function processItems(array $items): array
     {

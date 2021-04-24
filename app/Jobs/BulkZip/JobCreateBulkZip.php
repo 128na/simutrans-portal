@@ -2,6 +2,7 @@
 
 namespace App\Jobs\BulkZip;
 
+use App\Models\Article;
 use App\Models\BulkZip;
 use App\Models\User;
 use App\Models\User\Bookmark;
@@ -50,9 +51,20 @@ class JobCreateBulkZip implements ShouldQueue
     {
         switch ($bulkZip->bulk_zippable_type) {
             case User::class:
-                return $bulkZip->bulkZippable->articles->all();
+                return $bulkZip->bulkZippable
+                    ->articles()
+                    ->get()
+                    ->load(['categories', 'tags', 'attachments', 'user'])
+                    ->all();
             case Bookmark::class:
-                return $bulkZip->bulkZippable->bookmarkItems->pluck('bookmarkItemable')->all();
+                return $bulkZip->bulkZippable
+                    ->bookmarkItems()
+                    ->get()
+                    ->loadMorph('bookmarkItemable', [
+                        Article::class => ['categories', 'tags', 'attachments', 'user'],
+                    ])
+                    ->pluck('bookmarkItemable')
+                    ->all();
         }
         throw new Exception("unsupport type provided:{$bulkZip->bulk_zippable_type}", 1);
     }

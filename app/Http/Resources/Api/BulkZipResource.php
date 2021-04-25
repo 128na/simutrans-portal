@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Storage;
 
 class BulkZipResource extends JsonResource
 {
@@ -11,6 +12,7 @@ class BulkZipResource extends JsonResource
         return [
             'uuid' => $this->uuid,
             'generated' => (bool) $this->generated,
+            'url' => $this->generated ? Storage::disk('public')->url($this->path) : null,
         ];
     }
 }

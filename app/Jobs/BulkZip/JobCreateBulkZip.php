@@ -71,7 +71,8 @@ class JobCreateBulkZip implements ShouldQueue
 
     public function failed(Throwable $e)
     {
-        report($e);
+        logger('JobCreateBulkZip failed');
         $this->bulkZip->delete();
+        report($e);
     }
 }

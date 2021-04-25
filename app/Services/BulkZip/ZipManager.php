@@ -38,7 +38,7 @@ class ZipManager extends Service
      */
     public function create(array $items): string
     {
-        $this->filepath = $this->randName('/bulk_zip/', '.zip');
+        $this->filepath = $this->randName('bulk_zip/', '.zip');
 
         $result = $this->processItems($items);
 
@@ -111,7 +111,7 @@ class ZipManager extends Service
                 fputcsv($csv, mb_convert_encoding($row, 'SJIS', 'UTF-8'));
             }
         }
-        $filepath = $this->randName('/bulk_zip/', '.csv');
+        $filepath = $this->randName('bulk_zip/', '.csv');
         $this->disk->put($filepath, $csv);
         fclose($csv);
 
@@ -139,7 +139,9 @@ class ZipManager extends Service
     private function addFile(string $filepath, string $filenameInZip = ''): void
     {
         $this->open();
-        $result = $this->zipArchive->addFile($this->disk->path($filepath), $filenameInZip);
+        $path = $this->disk->path($filepath);
+        logger('addFile', [$path, $filenameInZip]);
+        $result = $this->zipArchive->addFile($path, $filenameInZip);
         $this->close();
 
         if ($result !== true) {
@@ -150,6 +152,7 @@ class ZipManager extends Service
     private function addText(string $filenameInZip, string $content): void
     {
         $this->open();
+        logger('addText', [$filenameInZip]);
         $result = $this->zipArchive->addFromString($filenameInZip, $content);
         $this->close();
 

@@ -1,5 +1,5 @@
 <template>
-  <b-form-group label="投稿一覧">
+  <b-form-group>
     <b-table
       hover
       :items="items"

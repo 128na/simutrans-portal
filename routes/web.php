@@ -16,7 +16,6 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Front\ArticleController;
-use App\Http\Controllers\Front\BulkZipController;
 use App\Http\Controllers\Front\IndexController;
 use App\Http\Controllers\Front\PublicBookmarkController;
 use App\Http\Controllers\MypageController;
@@ -59,7 +58,6 @@ Route::get('/search', [ArticleController::class, 'search'])->name('search');
 Route::get('/mypage/', [MypageController::class, 'index'])->name('mypage.index');
 Route::get('/mypage/{any}', [MypageController::class, 'fallback'])->where('any', '.*');
 Route::get('/articles/{article}/download', [ArticleController::class, 'download'])->name('articles.download');
-Route::get('/bulk-zips/{uuid}', [BulkZipController::class, 'download'])->name('bulkZips.download');
 
 // ログイン系 reidsキャッシュ無効
 Route::middleware(['verified'])->group(function () {

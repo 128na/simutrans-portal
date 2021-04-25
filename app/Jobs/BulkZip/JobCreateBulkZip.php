@@ -14,7 +14,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Throwable;
 
 class JobCreateBulkZip implements ShouldQueue
 {
@@ -34,17 +33,24 @@ class JobCreateBulkZip implements ShouldQueue
         BulkZipRepository $bulkZipRepository,
         ZipManager $zipManager
     ) {
-        if ($this->bulkZip->generated) {
-            return;
+        // dispatchAfterResponseではfailedメソッドは呼ばれない
+        try {
+            if ($this->bulkZip->generated) {
+                return;
+            }
+
+            $begin = microtime(true);
+
+            $items = $this->getItems($this->bulkZip);
+            $path = $zipManager->create($items);
+            $bulkZipRepository->update($this->bulkZip, ['generated' => true, 'path' => $path]);
+
+            logger(sprintf('JobCreateBulkZip::handle %.2f sec.', microtime(true) - $begin));
+        } catch (\Throwable $e) {
+            logger('JobCreateBulkZip failed');
+            $this->bulkZip->delete();
+            report($e);
         }
-
-        $begin = microtime(true);
-
-        $items = $this->getItems($this->bulkZip);
-        $path = $zipManager->create($items);
-        $bulkZipRepository->update($this->bulkZip, ['generated' => true, 'path' => $path]);
-
-        logger(sprintf('JobCreateBulkZip::handle %.2f sec.', microtime(true) - $begin));
     }
 
     private function getItems(BulkZip $bulkZip): array
@@ -67,12 +73,5 @@ class JobCreateBulkZip implements ShouldQueue
                     ->all();
         }
         throw new Exception("unsupport type provided:{$bulkZip->bulk_zippable_type}", 1);
-    }
-
-    public function failed(Throwable $e)
-    {
-        logger('JobCreateBulkZip failed');
-        $this->bulkZip->delete();
-        report($e);
     }
 }

@@ -12,7 +12,7 @@ class BulkZipResource extends JsonResource
         return [
             'uuid' => $this->uuid,
             'generated' => (bool) $this->generated,
-            'url' => $this->generated ? Storage::disk('public')->url($this->path) : null,
+            'url' => $this->when($this->generated, Storage::disk('public')->url($this->path)),
         ];
     }
 }

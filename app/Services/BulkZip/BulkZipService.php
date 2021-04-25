@@ -19,7 +19,7 @@ class BulkZipService extends Service
         $this->bulkZipRepository = $bulkZipRepository;
     }
 
-    public function findOrCreate(Model $model): BulkZip
+    public function findOrCreateAndDispatch(Model $model): BulkZip
     {
         if (!method_exists($model, 'bulkZippable')) {
             throw new ModelNotFoundException('invalid model provided: '.get_class($model));

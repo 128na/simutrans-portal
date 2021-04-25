@@ -3,8 +3,6 @@
 @section('id', 'article-show')
 @section('title', $title)
 
-@section('header')
-@endsection
 @section('content')
     <article>
         <h3>{{ $item->title }}</h3>

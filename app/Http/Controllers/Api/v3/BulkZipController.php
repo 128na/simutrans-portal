@@ -23,7 +23,7 @@ class BulkZipController extends Controller
     public function publicBookmark(string $uuid)
     {
         $bookmark = $this->bookmarkRepository->findOrFailByUuid($uuid, []);
-        $bulkZip = $this->bulkZipService->findOrCreate($bookmark);
+        $bulkZip = $this->bulkZipService->findOrCreateAndDispatch($bookmark);
 
         return response(new BulkZipResource($bulkZip), 200);
     }
@@ -31,14 +31,14 @@ class BulkZipController extends Controller
     public function bookmark(Bookmark $bookmark)
     {
         $this->authorize('download', $bookmark);
-        $bulkZip = $this->bulkZipService->findOrCreate($bookmark);
+        $bulkZip = $this->bulkZipService->findOrCreateAndDispatch($bookmark);
 
         return response(new BulkZipResource($bulkZip), 200);
     }
 
     public function user()
     {
-        $bulkZip = $this->bulkZipService->findOrCreate(Auth::user());
+        $bulkZip = $this->bulkZipService->findOrCreateAndDispatch(Auth::user());
 
         return response(new BulkZipResource($bulkZip), 200);
     }

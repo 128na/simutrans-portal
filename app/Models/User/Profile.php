@@ -4,6 +4,7 @@ namespace App\Models\User;
 
 use App\Casts\ToProfileData;
 use App\Models\Attachment;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

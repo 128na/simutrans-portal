@@ -6,12 +6,12 @@ use App\Models\Article;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ArticlePolicy
+class ArticlePolicy extends BasePolicy
 {
     use HandlesAuthorization;
 
     public function update(User $user, Article $article)
     {
-        return $user->id === $article->user_id;
+        return $this->isSameUser($user, $article);
     }
 }

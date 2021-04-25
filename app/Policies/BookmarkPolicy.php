@@ -7,23 +7,28 @@ use App\Models\User\Bookmark;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
-class BookmarkPolicy
+class BookmarkPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 
     public function show(User $user, Bookmark $bookmark)
     {
-        return $user->id === $bookmark->user_id;
+        return $this->isSameUser($user, $bookmark);
     }
 
     public function update(User $user, Bookmark $bookmark)
     {
-        return $user->id === $bookmark->user_id;
+        return $this->isSameUser($user, $bookmark);
+    }
+
+    public function download(User $user, Bookmark $bookmark)
+    {
+        return $this->isSameUser($user, $bookmark);
     }
 
     public function destroy(User $user, Bookmark $bookmark)
     {
-        if ($user->id !== $bookmark->user_id) {
+        if (!$this->isSameUser($user, $bookmark)) {
             return Response::deny();
         }
         if ($user->bookmarks()->count() <= 1) {

@@ -132,9 +132,10 @@ jobs:
           mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test;
             CREATE DATABASE IF NOT EXISTS test_test_1;
             CREATE DATABASE IF NOT EXISTS test_test_2'
+      - name: chmod 777
+        run: chmod -R 0777 ./
       - name: Test
         run: php artisan test -v --env=local --parallel --processes=2
 
-      - if: failure()
-        name: Display Error Log
+      - name: Display Error Log
         run: "[ -e storage/logs/laravel.log ] && cat storage/logs/laravel.log || echo 'no log file.'"

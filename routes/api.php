@@ -93,8 +93,8 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
 
 // 一括DL機能
 Route::prefix('v3')->name('api.v3.')->namespace('Api\v3')->group(function () {
-    Route::get('/public-bookmarks/{uuid}/bulk-zip', [BulkZipController::class, 'publicBookmark'])->name('bulkZip.publicBookmark');
     Route::prefix('mypage')->namespace('Mypage')->middleware(['auth', 'verified'])->group(function () {
+        Route::get('/public-bookmarks/{uuid}/bulk-zip', [BulkZipController::class, 'publicBookmark'])->name('bulkZip.publicBookmark');
         Route::get('/bookmarks/{bookmark}/bulk-zip', [BulkZipController::class, 'bookmark'])->name('bulkZip.bookmark');
         Route::get('/bulk-zip', [BulkZipController::class, 'user'])->name('bulkZip.user');
     });

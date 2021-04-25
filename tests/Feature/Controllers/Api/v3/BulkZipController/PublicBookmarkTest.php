@@ -22,6 +22,7 @@ class PublicBookmarkTest extends TestCase
         $bookmark = Bookmark::factory()->create(['is_public' => true]);
         $url = route('api.v3.bulkZip.publicBookmark', $bookmark->uuid);
 
+        $this->actingAs($this->user);
         $response = $this->getJson($url);
         $response->assertOk();
         Bus::assertDispatchedAfterResponse(JobCreateBulkZip::class);
@@ -37,9 +38,19 @@ class PublicBookmarkTest extends TestCase
         ]);
         $url = route('api.v3.bulkZip.publicBookmark', $bookmark->uuid);
 
+        $this->actingAs($this->user);
         $response = $this->getJson($url);
         $response->assertOk();
         Bus::assertNotDispatchedAfterResponse(JobCreateBulkZip::class);
+    }
+
+    public function test_未ログイン()
+    {
+        $bookmark = Bookmark::factory()->create(['is_public' => true]);
+        $url = route('api.v3.bulkZip.publicBookmark', $bookmark->uuid);
+
+        $response = $this->getJson($url);
+        $response->assertUnauthorized();
     }
 
     public function test_非公開()
@@ -47,6 +58,7 @@ class PublicBookmarkTest extends TestCase
         $bookmark = Bookmark::factory()->create(['is_public' => false]);
         $url = route('api.v3.bulkZip.publicBookmark', $bookmark->uuid);
 
+        $this->actingAs($this->user);
         $response = $this->getJson($url);
         $response->assertNotFound();
     }
@@ -55,6 +67,7 @@ class PublicBookmarkTest extends TestCase
     {
         $url = route('api.v3.bulkZip.publicBookmark', 0);
 
+        $this->actingAs($this->user);
         $response = $this->getJson($url);
         $response->assertNotFound();
     }

@@ -57,7 +57,7 @@ jobs:
         with:
           command: cd ${{ secrets.APP_DIR }}
             && git fetch -p
-            && git checkout $GITHUB_REF
+            && git checkout ${{ github.ref }}
             && git pull
             && bash -c 'sed -i "" "s/APP_VERSION=.*/APP_VERSION=$( git describe )/" .env'
             && php -c ~/www/php.ini ~/bin/composer.phar install --optimize-autoloader --no-dev

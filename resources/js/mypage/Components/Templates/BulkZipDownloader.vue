@@ -6,9 +6,13 @@
         <b-button variant="outline-primary" disabled v-if="processing">
           <b-spinner small class="mr-1" />処理中...
         </b-button>
-        <b-button variant="outline-primary" v-else @click="handleDownload">{{
-          buttonName
-        }}</b-button>
+        <b-button
+          variant="outline-primary"
+          :disabled="!canDownload"
+          v-else
+          @click="handleDownload"
+          >{{ buttonName }}</b-button
+        >
       </component>
     </b-input-group>
     <div v-show="errorMessage" class="text-danger">{{ errorMessage }}</div>
@@ -89,6 +93,16 @@ export default {
           return "ダウンロード";
         case TARGET_TYPE_PUBLIC_BOOKMARK:
           return "ダウンロード";
+      }
+    },
+    canDownload() {
+      switch (this.target_type) {
+        case TARGET_TYPE_USER:
+          return true;
+        case TARGET_TYPE_BOOKMARK:
+          return !!this.target_id;
+        case TARGET_TYPE_PUBLIC_BOOKMARK:
+          return true;
       }
     },
   },

@@ -24,7 +24,7 @@ import {
   RETRY_INTERVAL,
 } from "../../../const";
 export default {
-  props: ["targetType", "targetId"],
+  props: ["target_type", "target_id"],
   data() {
     return {
       processing: false,
@@ -48,13 +48,13 @@ export default {
       }
     },
     async handleApi() {
-      switch (this.targetType) {
+      switch (this.target_type) {
         case TARGET_TYPE_USER:
           return api.fetchUserBulkZip();
         case TARGET_TYPE_BOOKMARK:
-          return api.fetchBookmarkBulkZip(this.targetId);
+          return api.fetchBookmarkBulkZip(this.target_id);
         case TARGET_TYPE_PUBLIC_BOOKMARK:
-          return api.fetchPublicBookmarkBulkZip(this.targetId);
+          return api.fetchPublicBookmarkBulkZip(this.target_id);
       }
     },
     beforeRequest() {
@@ -82,7 +82,7 @@ export default {
       return this.$slots["default"] ? "b-input-group-append" : "div";
     },
     buttonName() {
-      switch (this.targetType) {
+      switch (this.target_type) {
         case TARGET_TYPE_USER:
           return "エクスポート";
         case TARGET_TYPE_BOOKMARK:

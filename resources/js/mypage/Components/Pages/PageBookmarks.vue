@@ -17,8 +17,8 @@
           ブックマーク内の記事を一括でダウンロードできます。<br />
           記事数が多いとファイルの生成には数分かかることがあります。
           <bulk-zip-downloader
-            :targetType="targetType"
-            :targetId="targetId"
+            :target_type="targetType"
+            :target_id="targetId"
             class="mb-3"
             ><template v-slot:default="slotProps">
               <b-select

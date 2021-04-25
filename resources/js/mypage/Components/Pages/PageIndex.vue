@@ -11,7 +11,7 @@
         <page-description>
           投稿した記事を一括でダウンロードできます。<br />
           記事数が多いとファイルの生成には数分かかることがあります。
-          <bulk-zip-downloader :targetType="targetType" class="mb-3" />
+          <bulk-zip-downloader :target_type="targetType" class="mb-3" />
         </page-description>
         <page-sub-title>投稿一覧</page-sub-title>
         <article-table :articles="articles" />

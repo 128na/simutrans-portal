@@ -1,18 +1,35 @@
 <template>
   <div>
     <page-title>ブックマーク一覧</page-title>
-    <page-description>作成したブックマークの管理ができます</page-description>
+    <page-description>
+      作成したブックマークの管理ができます<br />
+      <b-button variant="primary" :to="route_edit_bookmark()">
+        新規作成
+      </b-button>
+    </page-description>
     <div v-if="ready">
       <div v-if="!isVerified">
         <need-verify />
       </div>
       <div v-else>
-        <div class="mb-4">
-          <b-button variant="primary" :to="route_edit_bookmark()">
-            新規作成
-          </b-button>
-        </div>
-
+        <page-sub-title>エクスポート</page-sub-title>
+        <page-description>
+          ブックマーク内の記事を一括でダウンロードできます。<br />
+          記事数が多いとファイルの生成には数分かかることがあります。
+          <bulk-zip-downloader
+            :target_type="targetType"
+            :target_id="targetId"
+            class="mb-3"
+            ><template v-slot:default="slotProps">
+              <b-select
+                :options="options"
+                v-model="targetId"
+                :disabled="slotProps.processing"
+              />
+            </template>
+          </bulk-zip-downloader>
+        </page-description>
+        <page-sub-title>ブックマーク一覧</page-sub-title>
         <div>
           <bookmark-table :bookmarks="bookmarks" />
         </div>
@@ -24,12 +41,18 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { validateLogin } from "../../mixins/auth";
+import { TARGET_TYPE_BOOKMARK } from "../../../const";
 export default {
   mixins: [validateLogin],
   created() {
     if (this.isLoggedIn && !this.bookmarksLoaded) {
       this.fetchBookmarks();
     }
+  },
+  data() {
+    return {
+      targetId: null,
+    };
   },
   computed: {
     ...mapGetters([
@@ -41,6 +64,14 @@ export default {
     ]),
     ready() {
       return this.bookmarksLoaded;
+    },
+    targetType() {
+      return TARGET_TYPE_BOOKMARK;
+    },
+    options() {
+      return this.bookmarks.map((b) => {
+        return { value: b.id, text: b.title };
+      });
     },
   },
   methods: {

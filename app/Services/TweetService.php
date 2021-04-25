@@ -12,7 +12,7 @@ class TweetService
 
     public function __construct(TwitterOAuth $client)
     {
-        $this->client = $this->client;
+        $this->client = $client;
         $this->is_prod = App::environment(['production']);
     }
 

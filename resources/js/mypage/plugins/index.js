@@ -25,7 +25,8 @@ import {
   NavPlugin,
   NavbarPlugin,
   OverlayPlugin,
-  TablePlugin
+  TablePlugin,
+  SpinnerPlugin,
 } from 'bootstrap-vue';
 Vue.use(AlertPlugin);
 Vue.use(BadgePlugin);
@@ -50,6 +51,7 @@ Vue.use(NavPlugin);
 Vue.use(NavbarPlugin);
 Vue.use(OverlayPlugin);
 Vue.use(TablePlugin);
+Vue.use(SpinnerPlugin);
 
 
 import {

@@ -18,11 +18,6 @@ class JobCheckDeadLink implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle(ArticleRepository $articleRepository)
     {
         $changed = false;

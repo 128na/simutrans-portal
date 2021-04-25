@@ -3,18 +3,18 @@
     <page-title>新規登録</page-title>
     <form-register :params="params">
       <b-form-group>
-        <div class="mb-4" v-if="can_register">
+        <div class="mb-4" v-if="!can_register">
           現在、一部環境からの新規登録を遮断しています。<br />
           制限によって登録ができない場合は
           <a
-            href="https://twitter.com/128Na"
+            href="https://twitter.com/PortalSimutrans"
             target="_blank"
             rel="noopener noreferrer"
           >
-            @128Na
+            @PortalSimutrans
           </a>
-          までお問い合わせください。<br />
-          ※Twitterのクオリティフィルターにより除外されるアカウント（未認証など）からの問い合わせは受信されませんのでご注意ください。
+          までDMにてお問い合わせください。<br />
+          ※Twitter社のクオリティフィルターにより除外されるアカウント（未認証など）からの問い合わせは受信されませんのでご注意ください。
         </div>
         <fetching-overlay>
           <b-button

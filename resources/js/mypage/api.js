@@ -59,8 +59,8 @@ export default {
       headers: { 'content-type': 'multipart/form-data' }
     });
   },
-  deleteAttachment(attachment_id) {
-    return axios.delete(`/api/v2/mypage/attachments/${attachment_id}`);
+  deleteAttachment(attachmentId) {
+    return axios.delete(`/api/v2/mypage/attachments/${attachmentId}`);
   },
   // analytics
   fetchAnalytics(params) {
@@ -76,7 +76,19 @@ export default {
   updateBookmark(params) {
     return axios.post(`/api/v2/mypage/bookmarks/${params.bookmark.id}`, params);
   },
-  deleteBookmark(bookmark_id) {
-    return axios.delete(`/api/v2/mypage/bookmarks/${bookmark_id}`);
+  deleteBookmark(bookmarkId) {
+    return axios.delete(`/api/v2/mypage/bookmarks/${bookmarkId}`);
   },
+
+  //一括DL
+  fetchUserBulkZip() {
+    return axios.get(`/api/v3/mypage/bulk-zip`);
+  },
+  fetchBookmarkBulkZip(bookmarkId) {
+    return axios.get(`/api/v3/mypage/bookmarks/${bookmarkId}/bulk-zip`);
+  },
+  fetchPublicBookmarkBulkZip(uuid) {
+    return axios.get(`/api/v3/public-bookmarks/${uuid}/bulk-zip`);
+  },
+
 }

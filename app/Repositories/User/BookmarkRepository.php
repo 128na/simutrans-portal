@@ -30,12 +30,12 @@ class BookmarkRepository extends BaseRepository
             ->paginate(50);
     }
 
-    public function findOrFailByUuid(string $uuid): Bookmark
+    public function findOrFailByUuid(string $uuid, array $with = ['user', 'bookmarkItems.bookmarkItemable']): Bookmark
     {
         return $this->model
             ->where('is_public', true)
             ->where('uuid', $uuid)
-            ->with(['user', 'bookmarkItems.bookmarkItemable'])
+            ->with($with)
             ->firstOrFail();
     }
 

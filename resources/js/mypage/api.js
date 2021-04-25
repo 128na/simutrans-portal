@@ -88,7 +88,7 @@ export default {
     return axios.get(`/api/v3/mypage/bookmarks/${bookmarkId}/bulk-zip`);
   },
   fetchPublicBookmarkBulkZip(uuid) {
-    return axios.get(`/api/v3/public-bookmarks/${uuid}/bulk-zip`);
+    return axios.get(`/api/v3/mypage/public-bookmarks/${uuid}/bulk-zip`);
   },
 
 }

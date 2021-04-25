@@ -29,7 +29,7 @@ class BulkZipServiceTest extends UnitTestCase
          */
         $service = app(BulkZipService::class);
         $model = new Bookmark();
-        $res = $service->findOrCreate($model);
+        $res = $service->findOrCreateAndDispatch($model);
         $this->assertInstanceOf(BulkZip::class, $res);
 
         Bus::assertDispatchedAfterResponse(JobCreateBulkZip::class);
@@ -44,7 +44,7 @@ class BulkZipServiceTest extends UnitTestCase
          */
         $service = app(BulkZipService::class);
         $model = new Attachment();
-        $service->findOrCreate($model);
+        $service->findOrCreateAndDispatch($model);
     }
 
     public function test_作成済みならディスパッチしない()
@@ -58,7 +58,7 @@ class BulkZipServiceTest extends UnitTestCase
          */
         $service = app(BulkZipService::class);
         $model = new User();
-        $res = $service->findOrCreate($model);
+        $res = $service->findOrCreateAndDispatch($model);
         $this->assertInstanceOf(BulkZip::class, $res);
 
         Bus::assertNotDispatchedAfterResponse(JobCreateBulkZip::class);

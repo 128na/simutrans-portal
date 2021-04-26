@@ -45,5 +45,8 @@ export default {
         dispatch('setApiStatusError', e);
       }
     },
+    clearTags({ commit }) {
+      commit(SET_TAGS, false);
+    },
   }
 };

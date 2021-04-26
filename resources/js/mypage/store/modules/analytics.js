@@ -31,6 +31,9 @@ export default {
       } catch (e) {
         dispatch('setApiStatusError', e);
       }
-    }
+    },
+    clearAnalytics({ commit }) {
+      commit(SET_ANALYTICS, false);
+    },
   }
 };

@@ -71,5 +71,8 @@ export default {
         dispatch('setApiStatusError', e);
       }
     },
+    clearAttachments({ commit }) {
+      commit(SET_ATTACHMENTS, false);
+    },
   }
 };

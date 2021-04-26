@@ -7,13 +7,27 @@ export default {
   created() {
     if (this.isLoggedIn) {
       this.logout();
+      this.clearArticles();
+      this.clearAnalytics();
+      this.clearAttachments();
+      this.clearBookmarks();
+      this.clearOptions();
+      this.clearTags();
     }
   },
   computed: {
     ...mapGetters(["isLoggedIn"]),
   },
   methods: {
-    ...mapActions(["logout"]),
+    ...mapActions([
+      "logout",
+      "clearArticles",
+      "clearAnalytics",
+      "clearAttachments",
+      "clearBookmarks",
+      "clearOptions",
+      "clearTags",
+    ]),
   },
 };
 </script>

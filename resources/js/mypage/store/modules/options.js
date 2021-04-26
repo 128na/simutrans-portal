@@ -32,5 +32,8 @@ export default {
         dispatch('setApiStatusError', e);
       }
     },
+    clearOptions({ commit }) {
+      commit(SET_OPTIONS, false);
+    },
   }
 };

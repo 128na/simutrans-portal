@@ -87,5 +87,8 @@ export default {
         dispatch('setApiStatusError', e);
       }
     },
+    clearBookmarks({ commit }) {
+      commit(SET_BOOKMARKS, false);
+    },
   },
 };

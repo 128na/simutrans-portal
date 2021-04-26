@@ -2,13 +2,12 @@
 
 namespace App\Services\BulkZip;
 
+use App\Contracts\Models\BulkZippableInterface;
 use App\Jobs\BulkZip\JobCreateBulkZip;
 use App\Jobs\BulkZip\JobDeleteExpiredBulkzip;
 use App\Models\BulkZip;
 use App\Repositories\BulkZipRepository;
 use App\Services\Service;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class BulkZipService extends Service
 {
@@ -19,12 +18,8 @@ class BulkZipService extends Service
         $this->bulkZipRepository = $bulkZipRepository;
     }
 
-    public function findOrCreateAndDispatch(Model $model): BulkZip
+    public function findOrCreateAndDispatch(BulkZippableInterface $model): BulkZip
     {
-        if (!method_exists($model, 'bulkZippable')) {
-            throw new ModelNotFoundException('invalid model provided: '.get_class($model));
-        }
-
         $bulkZip = $this->bulkZipRepository->findByBulkZippable($model);
         if (is_null($bulkZip)) {
             $bulkZip = $this->bulkZipRepository->storeByBulkZippable($model);

@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use App\Contracts\Models\BulkZippableInterface;
 use App\Models\BulkZip;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Str;
 
-class Bookmark extends Model
+class Bookmark extends Model implements BulkZippableInterface
 {
     use HasFactory;
 

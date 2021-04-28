@@ -145,7 +145,7 @@ class ZipManager extends Service
     {
         $result = $this->zipArchive->open($this->disk->path($this->filepath), ZipArchive::CREATE);
         if ($result !== true) {
-            throw new ZipErrorException("open faild: {$this->filepath}, {$result}");
+            throw new ZipErrorException("open faild: {$this->filepath}", $result);
         }
     }
 

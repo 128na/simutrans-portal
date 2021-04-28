@@ -59,6 +59,6 @@ class BulkZipServiceTest extends UnitTestCase
         $this->assertInstanceOf(BulkZip::class, $res);
 
         Bus::assertNotDispatchedAfterResponse(JobCreateBulkZip::class);
-        Bus::assertNotDispatchedAfterResponse(JobDeleteExpiredBulkzip::class);
+        Bus::assertDispatchedAfterResponse(JobDeleteExpiredBulkzip::class);
     }
 }

@@ -24,8 +24,8 @@ class BulkZipService extends Service
         if (is_null($bulkZip)) {
             $bulkZip = $this->bulkZipRepository->storeByBulkZippable($model);
             JobCreateBulkZip::dispatchAfterResponse($bulkZip);
-            JobDeleteExpiredBulkzip::dispatchAfterResponse();
         }
+        JobDeleteExpiredBulkzip::dispatchAfterResponse();
 
         return $bulkZip;
     }

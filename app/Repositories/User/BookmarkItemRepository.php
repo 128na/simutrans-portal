@@ -5,6 +5,7 @@ namespace App\Repositories\User;
 use App\Models\User\Bookmark;
 use App\Models\User\BookmarkItem;
 use App\Repositories\BaseRepository;
+use Illuminate\Support\Collection;
 
 class BookmarkItemRepository extends BaseRepository
 {
@@ -34,5 +35,12 @@ class BookmarkItemRepository extends BaseRepository
     public function deleteByBookmark(Bookmark $bookmark): void
     {
         $bookmark->bookmarkItems()->delete();
+    }
+
+    public function finaAllByBookmark(Bookmark $bookmark): Collection
+    {
+        return $bookmark
+            ->bookmarkItems()
+            ->get();
     }
 }

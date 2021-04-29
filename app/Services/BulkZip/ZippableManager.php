@@ -5,6 +5,8 @@ namespace App\Services\BulkZip;
 use App\Models\BulkZip;
 use App\Models\User;
 use App\Models\User\Bookmark;
+use App\Repositories\ArticleRepository;
+use App\Repositories\User\BookmarkItemRepository;
 use App\Services\Service;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +15,15 @@ use Illuminate\Support\Collection;
 class ZippableManager extends Service
 {
     private const BOOKMARK_DEPTH_LIMIT = 2;
+
+    private ArticleRepository $articleRepository;
+    private BookmarkItemRepository $bookmarkItemRepository;
+
+    public function __construct(ArticleRepository $articleRepository, BookmarkItemRepository $bookmarkItemRepository)
+    {
+        $this->articleRepository = $articleRepository;
+        $this->bookmarkItemRepository = $bookmarkItemRepository;
+    }
 
     public function getItems(BulkZip $model): array
     {
@@ -25,20 +36,16 @@ class ZippableManager extends Service
         throw new Exception("unsupport type provided:{$model->bulk_zippable_type}", 1);
     }
 
-    public function getUserItems(User $model): array
+    private function getUserItems(User $user): array
     {
-        return $model
-            ->articles()
-            ->get()
+        return $this->articleRepository->finaAllByUser($user)
             ->load(['categories', 'tags', 'attachments', 'user'])
             ->all();
     }
 
-    public function getBookmarkItems(Bookmark $model, int $depth = 0): array
+    private function getBookmarkItems(Bookmark $bookmark, int $depth = 0): array
     {
-        return $model
-            ->bookmarkItems()
-            ->get()
+        return $this->bookmarkItemRepository->finaAllByBookmark($bookmark)
             ->loadMorph('bookmarkItemable', [
                 Article::class => ['categories', 'tags', 'attachments', 'user'],
                 Bookmark::class => ['bookmarkItems'],

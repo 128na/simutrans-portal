@@ -39,7 +39,7 @@ class ZippableManagerTest extends UnitTestCase
     {
         $this->mockBulkZip->shouldReceive('getAttribute')->withArgs(['bulk_zippable_type'])->andReturn(User::class);
         $this->mockBulkZip->shouldReceive('getAttribute')->withArgs(['bulkZippable'])->andReturn(new User);
-        $this->mockArticleRepository->shouldReceive('finaAllByUser')->andReturn(new Collection());
+        $this->mockArticleRepository->shouldReceive('findAllByUser')->andReturn(new Collection());
 
         $res = $this->zippableManager->getItems($this->mockBulkZip);
         $this->assertCount(0, $res);
@@ -49,7 +49,7 @@ class ZippableManagerTest extends UnitTestCase
     {
         $this->mockBulkZip->shouldReceive('getAttribute')->withArgs(['bulk_zippable_type'])->andReturn(Bookmark::class);
         $this->mockBulkZip->shouldReceive('getAttribute')->withArgs(['bulkZippable'])->andReturn(new Bookmark);
-        $this->mockBookmarkItemRepository->shouldReceive('finaAllByBookmark')->andReturn(new Collection());
+        $this->mockBookmarkItemRepository->shouldReceive('findAllByBookmark')->andReturn(new Collection());
 
         $res = $this->zippableManager->getItems($this->mockBulkZip);
         $this->assertCount(0, $res);

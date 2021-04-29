@@ -38,14 +38,14 @@ class ZippableManager extends Service
 
     private function getUserItems(User $user): array
     {
-        return $this->articleRepository->finaAllByUser($user)
+        return $this->articleRepository->findAllByUser($user)
             ->load(['categories', 'tags', 'attachments', 'user'])
             ->all();
     }
 
     private function getBookmarkItems(Bookmark $bookmark, int $depth = 0): array
     {
-        return $this->bookmarkItemRepository->finaAllByBookmark($bookmark)
+        return $this->bookmarkItemRepository->findAllByBookmark($bookmark)
             ->loadMorph('bookmarkItemable', [
                 Article::class => ['categories', 'tags', 'attachments', 'user'],
                 Bookmark::class => ['bookmarkItems'],

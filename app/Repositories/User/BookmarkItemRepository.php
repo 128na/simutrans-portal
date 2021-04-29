@@ -37,7 +37,7 @@ class BookmarkItemRepository extends BaseRepository
         $bookmark->bookmarkItems()->delete();
     }
 
-    public function finaAllByBookmark(Bookmark $bookmark): Collection
+    public function findAllByBookmark(Bookmark $bookmark): Collection
     {
         return $bookmark
             ->bookmarkItems()

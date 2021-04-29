@@ -400,11 +400,4 @@ class ArticleRepository extends BaseRepository
 
         return $q->paginate($limit);
     }
-
-    public function findAllByUser(User $user): Collection
-    {
-        return $user
-            ->articles()
-            ->get();
-    }
 }

@@ -38,7 +38,7 @@ class ZippableManager extends Service
 
     private function getUserItems(User $user): array
     {
-        return $this->articleRepository->findAllByUser($user)
+        return $this->articleRepository->findAllByUser($user, ['*'], [])
             ->load(['categories', 'tags', 'attachments', 'user'])
             ->all();
     }

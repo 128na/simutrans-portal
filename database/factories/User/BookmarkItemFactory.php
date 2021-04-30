@@ -2,6 +2,7 @@
 
 namespace Database\Factories\User;
 
+use App\Models\Category;
 use App\Models\User\Bookmark;
 use App\Models\User\BookmarkItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -13,10 +14,10 @@ class BookmarkItemFactory extends Factory
     public function definition()
     {
         $type = $this->faker->randomElement(BookmarkItem::BOOKMARK_ITEMABLE_TYPES);
-        if ($type === Bookmark::class) {
-            $id = $type::factory()->create()->id;
-        } else {
+        if ($type === Category::class) {
             $id = $type::inRandomOrder()->first()->id;
+        } else {
+            $id = $type::factory()->create()->id;
         }
 
         return [

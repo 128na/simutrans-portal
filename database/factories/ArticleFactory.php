@@ -53,4 +53,81 @@ class ArticleFactory extends Factory
             'status' => $this->faker->randomElement(config('status')),
         ];
     }
+
+    public function publish()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => 'publish',
+            ];
+        });
+    }
+
+    public function draft()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => 'draft',
+            ];
+        });
+    }
+
+    public function addonPost()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'post_type' => 'addon-post',
+                'contents' => [
+                    'description' => $this->faker->realText(),
+                    'license' => $this->faker->realText(),
+                    'thanks' => $this->faker->realText(),
+                    'author' => $this->faker->name(),
+                ],
+            ];
+        });
+    }
+
+    public function addonIntroduction()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'post_type' => 'addon-introduction',
+                'contents' => [
+                    'description' => $this->faker->realText(),
+                    'license' => $this->faker->realText(),
+                    'thanks' => $this->faker->realText(),
+                    'author' => $this->faker->name(),
+                    'link' => $this->faker->url(),
+                    'agreement' => true,
+                    'exclude_link_check' => false,
+                ],
+            ];
+        });
+    }
+
+    public function page()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'post_type' => 'page',
+                'contents' => [
+                    'sections' => [
+                        ['type' => 'text', 'text' => $this->faker->realText()],
+                    ],
+                ],
+            ];
+        });
+    }
+
+    public function markdown()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'post_type' => 'markdown',
+                'contents' => [
+                    'markdown' => $this->faker->realText(),
+                ],
+            ];
+        });
+    }
 }

@@ -78,5 +78,8 @@ export default {
         dispatch('setApiStatusError', e);
       }
     },
+    clearArticles({ commit }) {
+      commit(SET_ARTICLES, false);
+    },
   }
 };

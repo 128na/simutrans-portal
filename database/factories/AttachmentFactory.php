@@ -41,4 +41,14 @@ class AttachmentFactory extends Factory
             'path' => 'test.zip',
         ];
     }
+
+    public function image()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'original_name' => 'test.png',
+                'path' => 'test.png',
+            ];
+        });
+    }
 }

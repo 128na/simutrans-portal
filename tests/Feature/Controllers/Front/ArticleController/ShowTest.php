@@ -2,158 +2,107 @@
 
 namespace Tests\Feature\Controllers\Front\ArticleController;
 
-use App\Models\User;
-use Closure;
-use Tests\ArticleTestCase;
+use App\Models\Article;
+use Tests\TestCase;
 
-class ShowTest extends ArticleTestCase
+class ShowTest extends TestCase
 {
-    /**
-     *  @dataProvider dataShow
-     * */
-    public function testShow(Closure $fn)
+    private Article $article1;
+    private Article $article2;
+
+    protected function setUp(): void
     {
-        $fn = Closure::bind($fn, $this);
-        $article = $fn();
-        $response = $this->get('/articles/'.$article->slug);
-        $response->assertOk();
+        parent::setUp();
+
+        $this->article1 = Article::factory()->publish()->create(['user_id' => $this->user->id]);
+        $this->article2 = Article::factory()->draft()->create();
     }
 
-    public function dataShow()
+    public function test()
     {
-        yield 'アドオン投稿' => [fn () => $this->createAddonPost()];
-        yield 'アドオン紹介' => [fn () => $this->createAddonIntroduction()];
-        yield '一般記事' => [fn () => $this->createPage()];
-        yield 'Markdown形式の記事' => [fn () => $this->createMarkdown()];
-        yield 'お知らせ' => [fn () => $this->createAnnounce()];
-        yield 'Markdown形式のお知らせ' => [fn () => $this->createMarkdownAnnounce()];
+        $url = route('articles.show', $this->article1->slug);
+
+        $res = $this->get($url);
+        $res->assertOk();
+        $res->assertSeeText($this->article1->title);
     }
 
-    /**
-     *  存在しない記事は404となること.
-     * */
-    public function testMissingArticle()
+    public function test非公開()
     {
-        $article = $this->createAddonIntroduction();
-        $response = $this->get('/articles/'.$article->slug.'missing');
-        $response->assertNotFound();
+        $url = route('articles.show', $this->article2->slug);
+
+        $res = $this->get($url);
+        $res->assertNotFound();
     }
 
-    /**
-     *  @dataProvider dataStatus
-     * */
-    public function testStatus(string $status, bool $should_see)
+    public function test404()
     {
-        $this->article->fill(['status' => $status])->save();
-        $response = $this->get('/articles/'.$this->article->slug);
+        $url = route('articles.show', 'aaa');
 
-        if ($should_see) {
-            $response->assertOk();
-        } else {
-            $response->assertNotFound();
-        }
+        $res = $this->get($url);
+        $res->assertNotFound();
     }
 
-    public function testUserSoftDeleted()
+    public function testユーザー削除済み()
     {
-        $response = $this->get('/articles/'.$this->article->slug);
-        $response->assertOk();
-
         $this->user->delete();
+        $url = route('articles.show', 'aaa');
 
-        $response = $this->get('/articles/'.$this->article->slug);
-        $response->assertNotFound();
+        $res = $this->get($url);
+        $res->assertNotFound();
     }
 
-    public function testArticleSoftDeleted()
+    public function test記事削除済み()
     {
-        $response = $this->get('/articles/'.$this->article->slug);
-        $response->assertOk();
+        $this->article1->delete();
+        $url = route('articles.show', $this->article1->slug);
 
-        $this->article->delete();
-
-        $response = $this->get('/articles/'.$this->article->slug);
-        $response->assertNotFound();
+        $res = $this->get($url);
+        $res->assertNotFound();
     }
 
-    /**
-     * @dataProvider dataCount
-     * */
-    public function testViewCount(Closure $fn, ?int $expected_count)
+    public function testPV()
     {
         $dayly = now()->format('Ymd');
         $monthly = now()->format('Ym');
         $yearly = now()->format('Y');
         $total = 'total';
 
-        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article->id, 'type' => '1', 'period' => $dayly]);
-        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article->id, 'type' => '2', 'period' => $monthly]);
-        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article->id, 'type' => '3', 'period' => $yearly]);
-        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article->id, 'type' => '4', 'period' => $total]);
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '1', 'period' => $dayly]);
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '2', 'period' => $monthly]);
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '3', 'period' => $yearly]);
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '4', 'period' => $total]);
 
-        $fn = Closure::bind($fn, $this);
-        $user = $fn();
-        if ($user) {
-            $this->actingAs($user);
-        }
-        $response = $this->get('articles/'.$this->article->slug);
-        $response->assertOk();
+        $url = route('articles.show', $this->article1->slug);
+        $res = $this->get($url);
+        $res->assertOk();
 
-        if (is_null($expected_count)) {
-            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article->id, 'type' => '1', 'period' => $dayly]);
-            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article->id, 'type' => '2', 'period' => $monthly]);
-            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article->id, 'type' => '3', 'period' => $yearly]);
-            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article->id, 'type' => '4', 'period' => $total]);
-        } else {
-            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article->id, 'type' => '1', 'period' => $dayly, 'count' => $expected_count]);
-            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article->id, 'type' => '2', 'period' => $monthly, 'count' => $expected_count]);
-            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article->id, 'type' => '3', 'period' => $yearly, 'count' => $expected_count]);
-            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article->id, 'type' => '4', 'period' => $total, 'count' => $expected_count]);
-        }
+        $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
+        $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);
+        $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);
+        $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => '4', 'period' => $total, 'count' => 1]);
     }
 
-    /**
-     * @dataProvider dataCount
-     * */
-    public function testConversionCountAddonPost(Closure $fn, ?int $expected_count)
+    public function testPV投稿者のときはカウントしない()
     {
-        $article = $this->createAddonPost();
-
         $dayly = now()->format('Ymd');
         $monthly = now()->format('Ym');
         $yearly = now()->format('Y');
         $total = 'total';
 
-        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly]);
-        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly]);
-        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly]);
-        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total]);
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '1', 'period' => $dayly]);
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '2', 'period' => $monthly]);
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '3', 'period' => $yearly]);
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '4', 'period' => $total]);
 
-        $fn = Closure::bind($fn, $this);
-        $user = $fn();
-        if ($user) {
-            $this->actingAs($user);
-        }
-        $response = $this->get('articles/'.$article->slug.'/download');
-        $response->assertOk();
+        $this->actingAs($this->user);
+        $url = route('articles.show', $this->article1->slug);
+        $res = $this->get($url);
+        $res->assertOk();
 
-        if (is_null($expected_count)) {
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly]);
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly]);
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly]);
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total]);
-        } else {
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly, 'count' => $expected_count]);
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly, 'count' => $expected_count]);
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => $expected_count]);
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => $expected_count]);
-        }
-    }
-
-    public function dataCount()
-    {
-        yield '未ログイン' => [fn () => null, 1];
-        yield '記事の投稿者' => [fn () => $this->user, null];
-        yield '他のユーザー' => [fn () => User::factory()->create(), 1];
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '1', 'period' => $dayly]);
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '2', 'period' => $monthly]);
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '3', 'period' => $yearly]);
+        $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '4', 'period' => $total]);
     }
 }

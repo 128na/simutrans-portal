@@ -79,8 +79,9 @@ class ArticleFactory extends Factory
                 'post_type' => 'addon-post',
                 'contents' => [
                     'description' => $this->faker->realText(),
+                    'license' => $this->faker->realText(),
+                    'thanks' => $this->faker->realText(),
                     'author' => $this->faker->name(),
-                    'link' => $this->faker->url(),
                 ],
             ];
         });
@@ -93,7 +94,12 @@ class ArticleFactory extends Factory
                 'post_type' => 'addon-introduction',
                 'contents' => [
                     'description' => $this->faker->realText(),
+                    'license' => $this->faker->realText(),
+                    'thanks' => $this->faker->realText(),
                     'author' => $this->faker->name(),
+                    'link' => $this->faker->url(),
+                    'agreement' => true,
+                    'exclude_link_check' => false,
                 ],
             ];
         });

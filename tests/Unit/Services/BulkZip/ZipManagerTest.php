@@ -31,14 +31,14 @@ class ZipManagerTest extends UnitTestCase
             $m->shouldReceive('addFile')->andReturn(true);
             $m->shouldReceive('close')->andReturn(true);
         });
-        $disk = Storage::fake();
         $decoratorMock = $this->mock(BaseDecorator::class, function (MockInterface $m) {
             $m->shouldReceive('canProcess')->andReturn(true);
             $m->shouldReceive('process')->andReturn([
                 'contents' => [['test']],
-                'files' => ['hoge.txt' => 'fuga.txt'],
+                'files' => [],
             ]);
         });
+        $disk = Storage::fake();
         $modelMock = $this->mock(Model::class);
 
         $zipManager = new ZipManager($zipArchiveMock, $disk, [$decoratorMock]);

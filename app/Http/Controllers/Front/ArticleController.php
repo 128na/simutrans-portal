@@ -95,6 +95,7 @@ class ArticleController extends Controller
     public function download(Article $article)
     {
         abort_unless($article->is_publish, 404);
+        abort_unless($article->post_type === 'addon-post', 404);
 
         if (Auth::check() === false || Auth::id() !== $article->user_id) {
             event(new ArticleConversion($article));

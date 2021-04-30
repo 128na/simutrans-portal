@@ -112,7 +112,7 @@ jobs:
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.4"
+          php-version: "8"
       - name: PHP vendor Cache
         id: cache-vendor
         uses: actions/cache@v2

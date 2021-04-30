@@ -11,9 +11,9 @@ use App\Models\User\Bookmark;
 use App\Repositories\BulkZipRepository;
 use App\Services\BulkZip\BulkZipService;
 use Bus;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Mockery\MockInterface;
 use Tests\UnitTestCase;
+use TypeError;
 
 class BulkZipServiceTest extends UnitTestCase
 {
@@ -38,10 +38,7 @@ class BulkZipServiceTest extends UnitTestCase
 
     public function test_未対応のモデル()
     {
-        $this->expectException(ModelNotFoundException::class);
-        /**
-         * @var BulkZipService
-         */
+        $this->expectException(TypeError::class);
         $service = app(BulkZipService::class);
         $model = new Attachment();
         $service->findOrCreateAndDispatch($model);
@@ -62,6 +59,6 @@ class BulkZipServiceTest extends UnitTestCase
         $this->assertInstanceOf(BulkZip::class, $res);
 
         Bus::assertNotDispatchedAfterResponse(JobCreateBulkZip::class);
-        Bus::assertNotDispatchedAfterResponse(JobDeleteExpiredBulkzip::class);
+        Bus::assertDispatchedAfterResponse(JobDeleteExpiredBulkzip::class);
     }
 }

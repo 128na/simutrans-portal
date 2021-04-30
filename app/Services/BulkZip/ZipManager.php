@@ -9,6 +9,7 @@ use ErrorException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Str;
+use Throwable;
 use ZipArchive;
 
 class ZipManager extends Service
@@ -28,9 +29,16 @@ class ZipManager extends Service
         $this->decorators = $decorators;
     }
 
-    private function randName(?string $prefix, ?string $suffix): string
+    private function randName(?string $prefix = null, ?string $suffix = null): string
     {
         return $prefix.Str::uuid().$suffix;
+    }
+
+    private function isZipFile(string $filepath): bool
+    {
+        $mime = $this->disk->mimeType($filepath);
+
+        return $mime === 'application/zip';
     }
 
     /**
@@ -43,7 +51,12 @@ class ZipManager extends Service
         $result = $this->processItems($items);
 
         foreach ($result['files'] as $filename => $filepath) {
-            $this->addFile($filepath, 'files/'.$filename);
+            if ($this->isZipFile($filepath)) {
+                set_time_limit(60);
+                $this->mergeZip($filepath, 'files/'.$filename);
+            } else {
+                $this->addFile($filepath, 'files/'.$filename);
+            }
         }
         if (!empty($result['contents'])) {
             $this->addTextFile($result['contents']);
@@ -132,7 +145,7 @@ class ZipManager extends Service
     {
         $result = $this->zipArchive->open($this->disk->path($this->filepath), ZipArchive::CREATE);
         if ($result !== true) {
-            throw new ZipErrorException("open faild: {$this->filepath}, {$result}");
+            throw new ZipErrorException("open faild: {$this->filepath}", $result);
         }
     }
 
@@ -145,6 +158,27 @@ class ZipManager extends Service
 
         if ($result !== true) {
             throw new ZipErrorException("add file faild: {$filepath}, {$filenameInZip}");
+        }
+    }
+
+    private function mergeZip(string $filepath, string $filenameInZip = ''): void
+    {
+        $basedir = str_replace(basename($filenameInZip), '', $filenameInZip);
+        $path = $this->disk->path($filepath);
+        $z = new ZipArchive();
+        try {
+            $z->open($path);
+            for ($i = 0; $i < $z->numFiles; ++$i) {
+                $name = $z->getNameIndex($i);
+                $rc = $z->getStream($name);
+                $randName = $this->randName();
+                $this->disk->put($randName, $rc);
+                $this->addFile($randName, "{$basedir}/{$name}");
+                $this->disk->delete($randName);
+            }
+            $z->close();
+        } catch (Throwable $e) {
+            report($e);
         }
     }
 

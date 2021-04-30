@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\Models\BulkZippableInterface;
 use App\Models\User\Bookmark;
 use App\Models\User\BookmarkItem;
 use App\Models\User\Profile;
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, BulkZippableInterface
 {
     use Notifiable;
     use HasFactory;

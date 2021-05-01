@@ -11,6 +11,7 @@ use Tests\TestCase;
 class AddonIntroductionTest extends TestCase
 {
     private Article $article;
+    private Article $article2;
     private Category $category;
     private Tag $tag;
 
@@ -23,6 +24,12 @@ class AddonIntroductionTest extends TestCase
         $this->article->categories()->save($this->category);
         $this->tag = Tag::factory()->create();
         $this->article->tags()->save($this->tag);
+
+        $this->article2 = Article::factory()->publish()->addonIntroduction()->create(['user_id' => $this->user->id]);
+        tap($this->article2->contents, function (AddonIntroductionContent $content) {
+            $content->agreement = false;
+        });
+        $this->article2->save();
     }
 
     public function test()
@@ -53,6 +60,34 @@ class AddonIntroductionTest extends TestCase
         $res->assertSeeText($contents->thanks);
         // 掲載許可
         $res->assertSeeText('この記事は作者の許可を得てまたは作者自身により掲載しています。');
+        // 掲載先URL
+        $res->assertSee($contents->link);
+    }
+
+    public function test未同意()
+    {
+        $url = route('articles.show', $this->article2->slug);
+
+        $res = $this->get($url);
+        $res->assertOk();
+        /**
+         * @var AddonIntroductionContent
+         */
+        $contents = $this->article2->contents;
+
+        // タイトル
+        $res->assertSeeText($this->article2->title);
+        // 作者 / 投稿者
+        $res->assertSeeText($contents->author);
+        $res->assertSeeText($this->user->name);
+        // 説明
+        $res->assertSeeText($contents->description);
+        // ライセンス
+        $res->assertSeeText($contents->license);
+        // 謝辞
+        $res->assertSeeText($contents->thanks);
+        // 掲載許可
+        $res->assertDontSeeText('この記事は作者の許可を得てまたは作者自身により掲載しています。');
         // 掲載先URL
         $res->assertSee($contents->link);
     }

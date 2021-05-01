@@ -81,7 +81,7 @@
       "phpunit --coverage-text=coverage/coverage.txt --coverage-html=coverage/html"
     ],
     "coverage_ci": [
-      "phpunit --coverage-html=coverage --env=local"
+      "phpunit --coverage-html=coverage"
     ]
   }
 }

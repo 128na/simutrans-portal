@@ -138,3 +138,70 @@ jobs:
 
       - name: Display Error Log
         run: "[ -e storage/logs/laravel.log ] && cat storage/logs/laravel.log || echo 'no log file.'"
+
+  coverage:
+    if: ${{ success() && github.ref == 'refs/heads/master' }}
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: .env
+        run: php -r "copy('.env.ci', '.env');"
+
+      - name: Cache build assets
+        id: cache-assets
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-assets
+        with:
+          path: ./public
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Setup Node
+        if: steps.cache-assets.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v2
+      - name: npm ci
+        if: steps.cache-assets.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Build Assets
+        if: steps.cache-assets.outputs.cache-hit != 'true'
+        run: npm run prod
+
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8"
+          coverage: xdebug
+      - name: PHP vendor Cache
+        id: cache-vendor
+        uses: actions/cache@v2
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-cache-vendor-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cache-vendor-
+      - name: Composer Install
+        if: steps.cache-vendor.outputs.cache-hit != 'true'
+        run: composer install
+      - name: Start MySQL
+        run: sudo /etc/init.d/mysql start
+      - name: Setup database
+        run: mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test'
+      - name: chmod 777
+        run: chmod -R 0777 ./
+      - name: Test
+        run: composer run coverage_ci
+
+      - name: Upload coverage
+        uses: trendyminds/github-actions-rsync@master
+        with:
+          RSYNC_OPTIONS: -ahvzr --delete --exclude node_modules
+          RSYNC_TARGET: ~/www/coverage/simutrans-portal
+          RSYNC_SOURCE: /coverage/
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_KEY}}
+          SSH_USERNAME: ${{secrets.USER}}
+          SSH_HOSTNAME: ${{secrets.HOST}}

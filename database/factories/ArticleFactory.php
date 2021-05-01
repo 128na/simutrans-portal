@@ -72,6 +72,15 @@ class ArticleFactory extends Factory
         });
     }
 
+    public function deleted()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'deleted_at' => now(),
+            ];
+        });
+    }
+
     public function addonPost()
     {
         return $this->state(function (array $attributes) {

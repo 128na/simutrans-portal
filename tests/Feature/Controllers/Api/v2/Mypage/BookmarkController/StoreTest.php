@@ -26,10 +26,21 @@ class StoreTest extends TestCase
     public function testOK()
     {
         $this->actingAs($this->user);
-
         $url = route('api.v2.bookmarks.store');
-        $response = $this->postJson($url);
-        $response->assertStatus(422);
+
+        $data = [
+            'bookmark' => [
+                'title' => 'hoge',
+            ],
+        ];
+        $response = $this->postJson($url, $data);
+        $response->assertOk();
+
+        $this->assertDatabaseHas('bookmarks', [
+            'title' => 'hoge',
+            'description' => null,
+            'is_public' => false,
+        ]);
     }
 
     /**

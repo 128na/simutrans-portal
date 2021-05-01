@@ -61,6 +61,14 @@ class UpdateTest extends TestCase
         ];
         $response = $this->postJson($url, $data);
         $response->assertStatus(200);
+
+        $this->assertDatabaseHas('bookmarks', [
+            'user_id' => $this->bookmark->user_id,
+            'uuid' => $this->bookmark->uuid,
+            'title' => 'hoge',
+            'description' => $this->bookmark->description,
+            'is_public' => false,
+        ]);
     }
 
     /**

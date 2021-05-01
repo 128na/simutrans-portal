@@ -77,11 +77,11 @@
     "test": [
       "@php artisan test --parallel --processes=2"
     ],
-    "coverage_linux": [
-      "vendor/bin/phpunit --coverage-text=coverage/coverage.txt --coverage-html=coverage/html"
+    "coverage_local": [
+      "phpunit --coverage-text=coverage/coverage.txt --coverage-html=coverage/html"
     ],
-    "coverage": [
-      "vendor/bin/phpunit.bat --coverage-text=coverage/coverage.txt --coverage-html=coverage/html"
+    "coverage_ci": [
+      "phpunit --coverage-html=coverage --env=local"
     ]
   }
 }

@@ -136,3 +136,15 @@ jobs:
 
       - name: Display Error Log
         run: "[ -e storage/logs/laravel.log ] && cat storage/logs/laravel.log || echo 'no log file.'"
+
+      - name: Upload coverage
+        if: ${{ success() }}
+        uses: trendyminds/github-actions-rsync@master
+        with:
+          RSYNC_OPTIONS: -ahvzr --delete --exclude node_modules
+          RSYNC_TARGET: ~/www/coverage/portal
+          RSYNC_SOURCE: /coverage/
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_KEY}}
+          SSH_USERNAME: ${{secrets.USER}}
+          SSH_HOSTNAME: ${{secrets.HOST}}

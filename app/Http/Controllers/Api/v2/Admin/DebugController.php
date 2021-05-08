@@ -20,18 +20,12 @@ class DebugController extends Controller
     {
         switch ($level) {
             case 'notice':
-                trigger_error('Notice was created manually.', E_USER_NOTICE);
-
-                return response('');
-        case 'warning':
-                trigger_error('Warning was created manually.', E_USER_WARNING);
-
-                return response('');
+                return trigger_error('Notice was created manually.', E_USER_NOTICE);
+            case 'warning':
+                return trigger_error('Warning was created manually.', E_USER_WARNING);
             case 'error':
             default:
-                trigger_error('Error was created manually.', E_USER_ERROR);
-
-                return response('');
+                return trigger_error('Error was created manually.', E_USER_ERROR);
         }
     }
 

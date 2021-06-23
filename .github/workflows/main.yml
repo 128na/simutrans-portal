@@ -188,7 +188,7 @@ jobs:
         uses: trendyminds/github-actions-rsync@master
         with:
           RSYNC_OPTIONS: -ahvzr --delete --exclude node_modules
-          RSYNC_TARGET: ~/www/coverage/simutrans-portal
+          RSYNC_TARGET: ${{secrets.MISC_DIR}}/coverage/simutrans-portal
           RSYNC_SOURCE: /coverage/
         env:
           SSH_PRIVATE_KEY: ${{secrets.SSH_KEY}}

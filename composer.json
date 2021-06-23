@@ -7,7 +7,7 @@
   ],
   "license": "MIT",
   "require": {
-    "php": "^7.4",
+    "php": "^7.4|^8.0",
     "abraham/twitteroauth": "^1.2",
     "cebe/markdown": "^1.2",
     "doctrine/dbal": "^3.0",

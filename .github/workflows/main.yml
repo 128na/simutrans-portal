@@ -110,9 +110,9 @@ jobs:
             && git checkout ${{ github.ref }}
             && sed -i "s/APP_VERSION=.*/APP_VERSION=$( git describe --tags )/" .env
             && composer install --optimize-autoloader --no-dev
-            && artisan migrate --force
-            && artisan migrate:status
-            && artisan optimize
+            && php artisan migrate --force
+            && php artisan migrate:status
+            && php artisan optimize
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           privateKey: /home/runner/.ssh/id_rsa
@@ -188,7 +188,7 @@ jobs:
         uses: trendyminds/github-actions-rsync@master
         with:
           RSYNC_OPTIONS: -ahvzr --delete --exclude node_modules
-          RSYNC_TARGET: ~/www/coverage/simutrans-portal
+          RSYNC_TARGET: ${{secrets.MISC_DIR}}/coverage/simutrans-portal
           RSYNC_SOURCE: /coverage/
         env:
           SSH_PRIVATE_KEY: ${{secrets.SSH_KEY}}

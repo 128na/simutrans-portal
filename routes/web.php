@@ -20,10 +20,20 @@ use App\Http\Controllers\Front\IndexController;
 use App\Http\Controllers\Front\PublicBookmarkController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
+use App\Http\Controllers\RegistrationOrderController;
 use App\Http\Controllers\User\AdvancedSearchController;
 use App\Http\Controllers\User\BookmarkItemController;
 
 Route::feeds();
+
+Route::get('registration_orders/create', [RegistrationOrderController::class, 'create'])->name('registrationOrders.create');
+Route::middleware(['guest', 'throttle:register'])->group(function () {
+    Route::post('registration_orders/create', [RegistrationOrderController::class, 'store'])->name('registrationOrders.store');
+});
+Route::middleware(['auth', 'admin', 'verified'])->group(function () {
+    Route::get('registration_orders', [RegistrationOrderController::class, 'index'])->name('registrationOrders.index');
+    Route::post('registration_orders/{registration_order}', [RegistrationOrderController::class, 'update'])->name('registrationOrders.update');
+});
 
 // メール確認
 Route::GET('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');

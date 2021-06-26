@@ -33,13 +33,14 @@ class RegistrationOrderController extends Controller
             return response('ご利用の環境からの新規登録はできません', 400);
         }
 
-        RegistrationOrder::create([
+        $order = RegistrationOrder::create([
             'email' => $validated['email'],
             'twitter' => $validated['twitter'],
             'name' => $validated['name'],
             'code' => $validated['code'],
             'request_info' => $this->getRequestInfo(),
         ]);
+        logger()->channel('slack')->notice('登録依頼', $order->toArray());
 
         return response('登録依頼を受け付けました<br><a href="/">Top</a>', 200);
     }

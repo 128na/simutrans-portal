@@ -47,7 +47,9 @@ class RegistrationOrderController extends Controller
 
     private function canRegisterable(array $validated): bool
     {
-        if (!Str::endsWith($validated['email'], '@gmail.com')) {
+        $allowableDomain = collect(config('app.allowable_domains'))
+            ->some(fn ($domain) => Str::endsWith($validated['email'], $domain));
+        if (!$allowableDomain) {
             return false;
         }
 

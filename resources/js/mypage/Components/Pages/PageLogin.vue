@@ -12,7 +12,8 @@
             ログイン
           </b-button>
         </fetching-overlay>
-        <router-link :to="route_register" class="mx-2">新規登録</router-link>
+        <a href="/registration_orders/create" class="mx-2">新規登録</a>
+        <!-- <router-link :to="route_register" class="mx-2">新規登録</router-link> -->
         |
         <router-link :to="route_password_reset" class="mx-2">
           パスワード再設定

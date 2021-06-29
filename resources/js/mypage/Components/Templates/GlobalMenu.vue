@@ -53,8 +53,9 @@
         <nav-link :to="route_logout">ログアウト</nav-link>
       </b-navbar-nav>
       <b-navbar-nav v-else>
-        <nav-link :to="route_login"> ログイン </nav-link>
-        <nav-link :to="route_register"> 新規登録 </nav-link>
+        <nav-link :to="route_login">ログイン</nav-link>
+        <b-nav-item href="/registration_orders/create">新規登録</b-nav-item>
+        <!-- <nav-link :to="route_register"> 新規登録 </nav-link> -->
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>

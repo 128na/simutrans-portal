@@ -16,6 +16,11 @@ return [
 
     // 登録画面からのユーザー新規登録を制限する
     'register_restriction' => env('REGISTER_RESTRICTION', true),
+    'allowable_domains' => [
+        '@gmail.com',
+        '@yahoo.co.jp',
+        '@live.jp',
+    ],
 
     /*
     |--------------------------------------------------------------------------

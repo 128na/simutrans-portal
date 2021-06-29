@@ -4,12 +4,7 @@
     v-slot="{ href, route, navigate, isActive, isExactActive }"
     custom
   >
-    <b-nav-item
-      :active="isExactActive"
-      :href="href"
-      @click="navigate"
-      class="navnav"
-    >
+    <b-nav-item :active="isExactActive" :href="href" @click="navigate">
       <slot />
     </b-nav-item>
   </router-link>

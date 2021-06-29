@@ -40,9 +40,9 @@ class RegistrationOrderController extends Controller
             'code' => $validated['code'],
             'request_info' => $this->getRequestInfo(),
         ]);
-        logger()->channel('slack')->notice('登録依頼', $order->toArray());
+        logger()->channel('slack')->notice('登録申請', $order->toArray());
 
-        return response('登録依頼を受け付けました<br><a href="/">Top</a>', 200);
+        return response('登録申請を受け付けました<br><a href="/">Top</a>', 200);
     }
 
     private function canRegisterable(array $validated): bool

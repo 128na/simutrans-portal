@@ -17,9 +17,6 @@
           <b-icon icon="house-fill" class="nav-icon" />
           管理者画面
         </b-nav-item>
-        <a v-if="isAdmin" href="/registration_orders" class="mx-2 text-white">
-          登録依頼一覧
-        </a>
         <nav-link :to="route_mypage_index">
           <b-icon icon="house-fill" class="nav-icon" />
           マイページ
@@ -56,10 +53,8 @@
         <nav-link :to="route_logout">ログアウト</nav-link>
       </b-navbar-nav>
       <b-navbar-nav v-else>
-        <nav-link :to="route_login"> ログイン </nav-link>
-        <a href="/registration_orders/create" class="mx-2 text-white">
-          新規登録
-        </a>
+        <nav-link :to="route_login">ログイン</nav-link>
+        <b-nav-item href="/registration_orders/create">新規登録</b-nav-item>
         <!-- <nav-link :to="route_register"> 新規登録 </nav-link> -->
       </b-navbar-nav>
     </b-collapse>

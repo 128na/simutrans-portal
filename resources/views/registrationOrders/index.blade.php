@@ -1,11 +1,9 @@
 @extends('layouts.front')
 
-@section('title', '登録依頼一覧')
+@section('title', '登録申請一覧')
 
 @section('content')
-
-
-    <h2>登録依頼一覧</h2>
+    <h2>登録申請一覧</h2>
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
@@ -17,6 +15,7 @@
                     <th>Twitter</th>
                     <th>Code</th>
                     <th>Request Info</th>
+                    <th>Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -30,6 +29,7 @@
                         <td>{{ $item->twitter }}</td>
                         <td>{{ $item->code }}</td>
                         <td>{{ $item->request_info }}</td>
+                        <td>{{ $item->updated_at->toDatetimeString() }}</td>
                         <td>
                             <button type="submit" form="form-applove"
                                 formaction="{{ route('registrationOrders.update', $item) }}"

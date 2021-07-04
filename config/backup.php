@@ -145,7 +145,7 @@ return [
             ],
         ],
         [
-            'name' => 'ftp_'.env('APP_NAME', 'laravel-backup'),
+            'name' => env('APP_NAME', 'laravel-backup'),
             'disks' => ['ftp'],
             'health_checks' => [
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 10,

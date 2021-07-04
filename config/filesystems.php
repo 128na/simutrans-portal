@@ -57,5 +57,12 @@ return [
             'driver' => 'dropbox',
             'authorization_token' => env('DROPBOX_AUTHORIZATION_TOKEN'),
         ],
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => 'simutrans.sakura.ne.jp',
+            'root' => 'backup/',
+            'username' => env('SFTP_USER'),
+            'password' => env('SFTP_PASSWORD'),
+        ],
     ],
 ];

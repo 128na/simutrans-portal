@@ -78,6 +78,7 @@ return [
              * The disk names on which the backups will be stored.
              */
             'disks' => [
+                'ftp',
                 'dropbox',
             ],
         ],
@@ -141,6 +142,14 @@ return [
             'health_checks' => [
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,
+            ],
+        ],
+        [
+            'name' => 'ftp_'.env('APP_NAME', 'laravel-backup'),
+            'disks' => ['ftp'],
+            'health_checks' => [
+                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 10,
+                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 50000,
             ],
         ],
 

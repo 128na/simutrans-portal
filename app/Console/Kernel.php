@@ -22,11 +22,21 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('check:deadlink')->dailyAt('10:00');
-        $schedule->command('backup:clean')->dailyAt('2:00');
-        $schedule->command('backup:run')->dailyAt('3:00');
-        $schedule->command('compress:image')->dailyAt('4:00');
-        $schedule->command('delete:tags')->dailyAt('4:00');
+        $schedule->command('check:deadlink')->dailyAt('10:00')
+            ->withoutOverlapping()
+            ->onOneServer();
+        $schedule->command('backup:clean')->dailyAt('2:00')
+            ->withoutOverlapping()
+            ->onOneServer();
+        $schedule->command('backup:run')->dailyAt('3:00')
+            ->withoutOverlapping()
+            ->onOneServer();
+        $schedule->command('compress:image')->dailyAt('4:00')
+            ->withoutOverlapping()
+            ->onOneServer();
+        $schedule->command('delete:tags')->dailyAt('4:00')
+            ->withoutOverlapping()
+            ->onOneServer();
     }
 
     /**

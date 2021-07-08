@@ -45,6 +45,11 @@ return [
             'driver' => 'redis',
             'connection' => 'cache',
         ],
+        'database' => [
+            'driver' => 'database',
+            'table' => 'cache',
+            'connection' => null,
+        ],
     ],
 
     /*

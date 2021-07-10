@@ -100,14 +100,14 @@ class Attachment extends Model
     {
         switch ($this->type) {
             case 'image':
-                return asset('storage/'.$this->path);
+                return Storage::disk('public')->url($this->path);
             case 'zip':
-                return asset('storage/'.config('attachment.thumbnail-zip'));
+                return Storage::disk('public')->url(config('attachment.thumbnail-zip'));
             case 'movie':
-                return asset('storage/'.config('attachment.thumbnail-movie'));
+                return Storage::disk('public')->url(config('attachment.thumbnail-movie'));
             case 'file':
             default:
-                return asset('storage/'.config('attachment.thumbnail-file'));
+                return Storage::disk('public')->url(config('attachment.thumbnail-file'));
         }
     }
 

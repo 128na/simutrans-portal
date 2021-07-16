@@ -3,7 +3,7 @@
 @section('id', 'top')
 @section('title', $title)
 @section('meta-description', config('app.meta-description'))
-@section('meta-image', asset('storage/' . config('app.meta-image')))
+@section('meta-image', Illuminate\Support\Facades\Storage::disk('public')->url(config('app.meta-image')))
 
 @section('content')
     @foreach ($latest as $pak => $latest_articles)
@@ -46,7 +46,6 @@
 
     <script type="application/ld+json">
         @json($schemas)
-
     </script>
 
 @endsection

@@ -17,6 +17,7 @@
     "laravel/socialite": "^5.2",
     "laravel/tinker": "^2.0",
     "laravel/ui": "^2.0",
+    "league/flysystem-sftp": "~1.0",
     "socialiteproviders/google": "^4.1",
     "socialiteproviders/twitter": "^4.1",
     "spatie/flysystem-dropbox": "^1.2",

@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
+use Storage;
 
 class Article extends Model implements Feedable
 {
@@ -280,9 +281,10 @@ class Article extends Model implements Feedable
 
     public function getThumbnailUrlAttribute()
     {
-        return $this->has_thumbnail
-        ? asset('storage/'.$this->thumbnail->path)
-        : asset('storage/'.config('attachment.no-thumbnail'));
+        return Storage::disk('public')->url($this->has_thumbnail
+            ? $this->thumbnail->path
+            : config('attachment.no-thumbnail')
+        );
     }
 
     public function getHasFileAttribute()
@@ -364,9 +366,10 @@ class Article extends Model implements Feedable
     {
         $image = $this->getImage($id);
 
-        return $image
-        ? asset('storage/'.$image->path)
-        : asset('storage/'.config('attachment.no-thumbnail'));
+        return Storage::disk('public')->url($image
+            ? $image->path
+            : config('attachment.no-thumbnail')
+        );
     }
 
     /*

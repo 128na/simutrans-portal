@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class Profile extends Model
 {
@@ -74,9 +75,10 @@ class Profile extends Model
 
     public function getAvatarUrlAttribute()
     {
-        return $this->has_avatar
-        ? asset('storage/'.$this->avatar->path)
-        : asset('storage/'.config('attachment.no-avatar'));
+        return Storage::disk('public')->url($this->has_avatar
+            ? $this->avatar->path
+            : config('attachment.no-avatar')
+        );
     }
 
     public function getHasFileAttribute()

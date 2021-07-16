@@ -103,8 +103,8 @@ class ArticleController extends Controller
 
         abort_unless($article->has_file, 404);
 
-        return response()->download(
-            Storage::disk('public')->path($article->file->path),
+        return Storage::disk('public')->download(
+            $article->file->path,
             $article->file->original_name
         );
     }

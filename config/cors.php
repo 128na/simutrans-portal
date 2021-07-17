@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['jwt'],
+    'paths' => ['oauth/*'],
 
     'allowed_methods' => ['*'],
 

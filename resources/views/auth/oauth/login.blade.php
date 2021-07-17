@@ -5,7 +5,7 @@
 @section('content')
     <div class="container mt-5">
         <h2>ログイン</h2>
-        <form method="POST" action="{{ route('firebase.login', $provider) }}">
+        <form method="POST" action="{{ route('oauth.login') }}">
             @csrf
             <div class="form-group">
                 <label for="email">メールアドレス</label>

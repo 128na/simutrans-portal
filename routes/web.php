@@ -12,10 +12,10 @@
  */
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\OauthController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\FirebaseController;
 use App\Http\Controllers\Front\ArticleController;
 use App\Http\Controllers\Front\IndexController;
 use App\Http\Controllers\Front\PublicBookmarkController;
@@ -27,10 +27,8 @@ use App\Http\Controllers\User\BookmarkItemController;
 
 Route::feeds();
 
-Route::get('/firebase/{provider}', [FirebaseController::class, 'redirect'])->name('firebase.redirect');
-Route::post('/firebase/{provider}', [FirebaseController::class, 'login'])->name('firebase.login');
-Route::post('/firebase/{provider}/accept', [FirebaseController::class, 'accept'])->name('firebase.accept');
-
+Route::get('/oauth/login', [OauthController::class, 'showLogin'])->name('oauth.showLogin');
+Route::post('/oauth/login', [OauthController::class, 'login'])->name('oauth.login');
 
 Route::get('registration_orders/create', [RegistrationOrderController::class, 'create'])->name('registrationOrders.create');
 Route::middleware(['guest', 'throttle:register'])->group(function () {

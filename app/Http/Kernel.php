@@ -45,8 +45,13 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
             'throttle:100,1',
-            'bindings',
+        ],
+
+        'oauth_api' => [
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            'throttle:100,1',
         ],
     ];
 
@@ -69,6 +74,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'cache.response' => \App\Http\Middleware\CacheResponse::class,
+        'scopeAll' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
+        'scopeAny' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
     ];
 
     /**

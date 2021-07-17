@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Cross-Origin Resource Sharing (CORS) Configuration
@@ -15,7 +14,7 @@ return [
     |
     */
 
-    'paths' => ['oauth/*'],
+    'paths' => ['oauth/*', 'api/oauth/*'],
 
     'allowed_methods' => ['*'],
 
@@ -30,5 +29,4 @@ return [
     'max_age' => 0,
 
     'supports_credentials' => true,
-
 ];

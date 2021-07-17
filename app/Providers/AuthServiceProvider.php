@@ -29,5 +29,9 @@ class AuthServiceProvider extends ServiceProvider
 
         Passport::routes();
         Passport::hashClientSecrets();
+        Passport::tokensCan([
+            'user-read' => '自身のプロフィールや投稿データの読み取り',
+            'user-write' => '自身のプロフィールや投稿データの更新',
+        ]);
     }
 }

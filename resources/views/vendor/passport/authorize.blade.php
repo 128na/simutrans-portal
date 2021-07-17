@@ -21,7 +21,7 @@
         @endif
 
         <div class="form-group">
-            <button type="submit" class="btn btn-primary"  form="approve">認証する</button>
+            <button type="submit" class="btn btn-primary" form="approve">認証する</button>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-secondary" form="deny">やめる</button>

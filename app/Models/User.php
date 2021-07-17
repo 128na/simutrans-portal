@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Models\BulkZippableInterface;
+use App\Models\Firebase\ProjectUser;
 use App\Models\User\Bookmark;
 use App\Models\User\BookmarkItem;
 use App\Models\User\Profile;
@@ -11,6 +12,7 @@ use App\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -113,6 +115,16 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
     public function bulkZippable(): MorphOne
     {
         return $this->morphOne(BulkZip::class, 'bulk_zippable');
+    }
+
+    public function projectUsers(): HasMany
+    {
+        return $this->hasMany(ProjectUser::class);
+    }
+
+    public function projects(): HasManyThrough
+    {
+        return $this->hasManyThrough(Project::class, ProjectUser::class);
     }
 
     /*

@@ -12,7 +12,7 @@ class ProjectSeeder extends Seeder
         foreach ($this->seeds() as $seed) {
             Project::updateOrCreate([
                 'name' => $seed['name'],
-            ],[
+            ], [
                 'credential' => file_get_contents($seed['credential']),
             ]);
         }

@@ -37,27 +37,27 @@ class FirebaseController extends Controller
 
     public function login(Project $project)
     {
-        $portalUser = Auth::user();
+        $user = Auth::user();
 
         try {
-            $projectUser = $portalUser->projectUsers()->where('project_id', $project->id)->first();
+            $projectUser = $user->projectUsers()->where('project_id', $project->id)->first();
             if (is_null($projectUser)) {
                 throw new UserNotFound();
             }
             $firebaseUser = $this->auth->getUser($projectUser->uid);
         } catch (UserNotFound $e) {
             try {
-                $firebaseUser = $this->auth->getUserByEmail($portalUser->email);
+                $firebaseUser = $this->auth->getUserByEmail($user->email);
             } catch (UserNotFound $e) {
                 $firebaseUser = $this->auth->createUser([
-                    'email' => $portalUser->email,
-                    'emailVerified' => (bool) $portalUser->email_verified_at,
-                    'displayName' => $portalUser->name,
-                    'disabled' => (bool) $portalUser->deleted_at,
+                    'email' => $user->email,
+                    'emailVerified' => (bool) $user->email_verified_at,
+                    'displayName' => $user->name,
+                    'disabled' => (bool) $user->deleted_at,
                 ]);
             }
         }
-        $portalUser->projectUsers()->updateOrCreate(
+        $user->projectUsers()->updateOrCreate(
             ['project_id' => $project->id],
             ['uid' => $firebaseUser->uid]
         );
@@ -71,10 +71,10 @@ class FirebaseController extends Controller
     public function link(Project $project, Request $request)
     {
         try {
-            $portalUser = Auth::user();
+            $user = Auth::user();
             $uid = $request->input('uid');
             $firebaseUser = $this->auth->getUser($uid);
-            $portalUser->projectUsers()->updateOrCreate(
+            $user->projectUsers()->updateOrCreate(
                 ['project_id' => $project->id],
                 ['uid' => $firebaseUser->uid]
             );
@@ -88,8 +88,8 @@ class FirebaseController extends Controller
     public function unlink(Project $project)
     {
         try {
-            $portalUser = Auth::user();
-            $portalUser->projectUsers()->where('project_id', $project->id)->delete();
+            $user = Auth::user();
+            $user->projectUsers()->where('project_id', $project->id)->delete();
 
             return response(['result' => 'unlinked'], 200);
         } catch (UserNotFound $e) {

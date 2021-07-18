@@ -25,10 +25,6 @@
           <b-icon icon="person-fill" class="nav-icon" />
           プロフィール
         </nav-link>
-        <nav-link v-if="isVerified" :to="route_tokens">
-          <b-icon icon="key-fill" class="nav-icon" />
-          認証アプリ
-        </nav-link>
         <nav-link v-if="isVerified" :to="route_analytics">
           <b-icon icon="graph-up" class="nav-icon" />
           アクセス解析
@@ -36,6 +32,10 @@
         <nav-link v-if="isVerified" :to="route_bookmarks">
           <b-icon icon="bookmark-star-fill" class="nav-icon" />
           ブックマーク
+        </nav-link>
+        <nav-link v-if="isVerified" :to="route_tokens">
+          <b-icon icon="key-fill" class="nav-icon" />
+          認証管理
         </nav-link>
         <b-nav-text class="" v-if="isVerified">記事作成</b-nav-text>
         <nav-link v-if="isVerified" :to="route_create_addon_post">

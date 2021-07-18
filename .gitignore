@@ -20,4 +20,4 @@ _ide_helper_models.php
 public/mix-manifest.json
 coverage/
 
-*-firebase-adminsdk-*.json
+*-firebase-adminsdk*.json

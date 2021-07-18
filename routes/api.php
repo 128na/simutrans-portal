@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\v2\Mypage\BookmarkController;
 use App\Http\Controllers\Api\v2\Mypage\TagController;
 use App\Http\Controllers\Api\v2\Mypage\UserController;
 use App\Http\Controllers\Api\v3\BulkZipController;
+use App\Http\Controllers\Api\v3\ProjectController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -91,11 +92,18 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
     });
 });
 
-// 一括DL機能
 Route::prefix('v3')->name('api.v3.')->namespace('Api\v3')->group(function () {
     Route::prefix('mypage')->namespace('Mypage')->middleware(['auth', 'verified'])->group(function () {
+        // 一括DL機能
         Route::get('/public-bookmarks/{uuid}/bulk-zip', [BulkZipController::class, 'publicBookmark'])->name('bulkZip.publicBookmark');
         Route::get('/bookmarks/{bookmark}/bulk-zip', [BulkZipController::class, 'bookmark'])->name('bulkZip.bookmark');
         Route::get('/bulk-zip', [BulkZipController::class, 'user'])->name('bulkZip.user');
+    });
+
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('firebase/projects', [ProjectController::class, 'index']);
+        Route::post('firebase/projects', [ProjectController::class, 'store']);
+        Route::put('firebase/projects/{project}', [ProjectController::class, 'update']);
+        Route::delete('firebase/projects/{project}', [ProjectController::class, 'destroy']);
     });
 });

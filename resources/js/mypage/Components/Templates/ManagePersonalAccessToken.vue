@@ -5,7 +5,7 @@
       title="PAT作成"
       ok-title="作成"
       cancel-title="キャンセル"
-      @ok="handleUpdateOrStore"
+      @ok.prevent="handleUpdateOrStore"
     >
       <b-form-group label="PAT名">
         <b-input v-model="item.name" />
@@ -67,92 +67,20 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import { DateTime } from "luxon";
+import manage from "../../mixins/manage";
 export default {
-  props: {
-    scopes: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-  },
+  mixins: [manage],
   data() {
     return {
-      items: [],
-      fetching: false,
-      item: {
-        id: null,
-        name: "",
-        scopes: [],
-      },
+      modal: "pat",
+      endpoint: "/oauth/personal-access-tokens",
       accessToken: null,
     };
   },
-  created() {
-    this.fetch();
-  },
-  computed: {
-    optionScopes() {
-      return this.scopes.map((s) => {
-        return {
-          text: s.description,
-          value: s.id,
-        };
-      });
-    },
-  },
   methods: {
-    toDateTime(str, format = "fromISO") {
-      return DateTime[format](str).toLocaleString(DateTime.DATETIME_FULL);
-    },
-    scopeName(scope) {
-      const s = this.scopes.find((s) => s.id === scope);
-      if (s) {
-        return s.description;
-      }
-      return scope;
-    },
-    setItem({ id, name, scopes } = {}) {
-      this.item = {
-        id: id || null,
-        name: name || "",
-        scopes: scopes || [],
-      };
-    },
-    async fetch() {
-      try {
-        this.fetching = true;
-        const res = await axios.get("/oauth/personal-access-tokens");
-        this.items = res.data;
-      } finally {
-        this.fetching = false;
-      }
-    },
-    async handleDelete(item) {
-      if (confirm("削除しますか？")) {
-        await axios.delete(`/oauth/personal-access-tokens/${item.id}`);
-        this.fetch();
-      }
-    },
-    handleCreate() {
-      this.setItem();
-      this.$bvModal.show("modal-pat-editor");
-    },
-    async handleUpdateOrStore() {
-      try {
-        const res = await axios.post("/oauth/personal-access-tokens", {
-          name: this.item.name,
-          scopes: this.item.scopes,
-        });
-        this.accessToken = res.data.accessToken;
-        this.$bvModal.show("modal-pat-result");
-        this.setItem();
-        this.fetch();
-      } catch (e) {
-        alert("作成に失敗しました。");
-      }
+    onCreated(data) {
+      this.accessToken = data.accessToken;
+      this.$bvModal.show("modal-pat-result");
     },
   },
 };

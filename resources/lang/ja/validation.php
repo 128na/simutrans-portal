@@ -213,5 +213,10 @@ return [
         'bookmarkItem.bookmark_itemable_type' => 'ブックマーク対象',
         'bookmarkItem.bookmark_itemable_id' => 'ブックマーク対象',
         'bookmarkItem.memo' => 'メモ',
+
+        'redirect' => 'リダイレクトURL',
+        'scopes' => 'スコープ',
+        'scopes.*' => 'スコープ',
+        'credential' => '認証情報',
     ],
 ];

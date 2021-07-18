@@ -36,52 +36,14 @@
   <loading v-else />
 </template>
 <script>
-import axios from "axios";
-import { DateTime } from "luxon";
+import manage from "../../mixins/manage";
 export default {
-  props: {
-    scopes: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-  },
+  mixins: [manage],
   data() {
     return {
-      items: [],
-      fetching: false,
+      modal: "token",
+      endpoint: "/oauth/tokens",
     };
-  },
-  created() {
-    this.fetch();
-  },
-  methods: {
-    toDateTime(str, format = "fromISO") {
-      return DateTime[format](str).toLocaleString(DateTime.DATETIME_FULL);
-    },
-    scopeName(scope) {
-      const s = this.scopes.find((s) => s.id === scope);
-      if (s) {
-        return s.description;
-      }
-      return scope;
-    },
-    async fetch() {
-      try {
-        this.fetching = true;
-        const res = await axios.get("/oauth/tokens");
-        this.items = res.data;
-      } finally {
-        this.fetching = false;
-      }
-    },
-    async handleDelete(item) {
-      if (confirm("削除しますか？")) {
-        await axios.delete(`/oauth/tokens/${item.id}`);
-        this.fetch();
-      }
-    },
   },
 };
 </script>

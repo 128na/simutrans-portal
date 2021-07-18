@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Models\BulkZippableInterface;
+use App\Models\Firebase\Project;
 use App\Models\Firebase\ProjectUser;
 use App\Models\User\Bookmark;
 use App\Models\User\BookmarkItem;
@@ -119,6 +120,11 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
     public function projectUsers(): HasMany
     {
         return $this->hasMany(ProjectUser::class);
+    }
+
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
     }
 
     /*

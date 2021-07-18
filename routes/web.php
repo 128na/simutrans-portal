@@ -12,6 +12,7 @@
  */
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\OauthController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\Auth\VerificationController;
@@ -25,6 +26,9 @@ use App\Http\Controllers\User\AdvancedSearchController;
 use App\Http\Controllers\User\BookmarkItemController;
 
 Route::feeds();
+
+Route::get('/oauth/login', [OauthController::class, 'showLogin'])->name('oauth.showLogin');
+Route::post('/oauth/login', [OauthController::class, 'login'])->name('oauth.login');
 
 Route::get('registration_orders/create', [RegistrationOrderController::class, 'create'])->name('registrationOrders.create');
 Route::middleware(['guest', 'throttle:register'])->group(function () {

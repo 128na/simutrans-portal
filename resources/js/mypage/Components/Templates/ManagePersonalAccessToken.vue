@@ -5,7 +5,7 @@
       title="PAT作成"
       ok-title="作成"
       cancel-title="キャンセル"
-      @ok="handleUpdateOrStore"
+      @ok.prevent="handleUpdateOrStore"
     >
       <b-form-group label="PAT名">
         <b-input v-model="item.name" />

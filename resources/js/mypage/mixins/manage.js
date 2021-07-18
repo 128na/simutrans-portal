@@ -75,24 +75,40 @@ export default {
       this.$bvModal.show(`modal-${this.modal}-editor`);
     },
     async handleUpdateOrStore() {
-      if (this.item.id) {
-        try {
-          await axios.put(`${this.endpoint}/${this.item.id}`, this.item);
-          return this.fetch();
-        } catch (e) {
-          return alert("更新に失敗しました。");
-        }
-      }
-
       try {
-        const res = await axios.post(`${this.endpoint}`, this.item);
-        this.onCreated(res.data);
+        if (this.item.id) {
+          await axios.put(`${this.endpoint}/${this.item.id}`, this.item);
+        } else {
+          const res = await axios.post(`${this.endpoint}`, this.item);
+          this.onCreated(res.data);
+        }
+        this.$bvModal.close(`modal-${this.modal}-editor`);
         this.setItem();
         this.fetch();
       } catch (e) {
-        return alert("作成に失敗しました。");
+        this.handleError(e.response)
       }
     },
-    onCreated(data) { }
+    onCreated(data) { },
+    handleError(res) {
+      if (!res) {
+        return alert('通信エラーが発生しました。');
+      }
+      switch (res.status) {
+        case 401:
+          return alert('認証に失敗しました。');
+        case 403:
+          return alert(res?.data?.message || '操作を実行できませんでした。');
+        case 404:
+          return alert('データが見つかりませんでした。');
+        case 419:
+          return alert('ページの有効期限が切れました。ページを再読み込みしてから再度操作してください。');
+        case 422:
+          return alert(`入力データを確認してください。\n${Object.entries(res.data.errors).map(([label, message]) => message).join("\n")}`);
+        case 429:
+          return alert('リクエスト頻度制限により実行できませんでした。');
+      }
+      return alert(res?.data?.message || 'エラーが発生しました');
+    }
   }
 };

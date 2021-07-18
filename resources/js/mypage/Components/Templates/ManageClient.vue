@@ -5,7 +5,7 @@
       :title="item.id ? 'クライアント更新' : 'クライアント作成'"
       :ok-title="item.id ? '更新' : '作成'"
       cancel-title="キャンセル"
-      @ok="handleUpdateOrStore"
+      @ok.prevent="handleUpdateOrStore"
     >
       <b-form-group label="クライアント名">
         <b-input v-model="item.name" />

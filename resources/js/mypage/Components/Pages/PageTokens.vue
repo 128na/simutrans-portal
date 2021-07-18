@@ -28,7 +28,7 @@
 
     <page-sub-title>Firebaseプロジェクト</page-sub-title>
     <page-description>
-      Firebaseのカスタム認証でのログインやアカウント連携に必要な認証情報を登録できる
+      Firebaseのカスタム認証でのログインやアカウント連携に必要な認証情報を登録できます。
     </page-description>
     <manage-firebase-project class="ml-3 mb-5" :scopes="scopes" />
   </div>

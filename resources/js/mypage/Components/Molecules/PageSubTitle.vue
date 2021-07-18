@@ -1,3 +1,5 @@
 <template>
-  <h5><slot /></h5>
+  <h5>
+    <strong><slot /></strong>
+  </h5>
 </template>

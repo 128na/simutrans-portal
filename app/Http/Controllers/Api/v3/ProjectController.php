@@ -10,9 +10,7 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        return Auth::user()
-            ->projects()
-            ->get();
+        return response(Auth::user()->projects()->get(), 200);
     }
 
     public function store(Request $request)
@@ -22,9 +20,7 @@ class ProjectController extends Controller
             'credential' => 'required|json|max:10240',
         ]);
 
-        return Auth::user()
-            ->projects()
-            ->create($data);
+        return response(Auth::user()->projects()->create($data), 200);
     }
 
     public function update(Request $request, string $projectId)
@@ -34,17 +30,11 @@ class ProjectController extends Controller
             'credential' => 'required|json|max:10240',
         ]);
 
-        return Auth::user()
-            ->projects()
-            ->findOrFail($projectId)
-            ->update($data);
+        return response(Auth::user()->projects()->findOrFail($projectId)->update($data), 200);
     }
 
     public function destroy(string $projectId)
     {
-        return Auth::user()
-            ->projects()
-            ->findOrFail($projectId)
-            ->delete();
+        return response(Auth::user()->projects()->findOrFail($projectId)->delete(), 200);
     }
 }

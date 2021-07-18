@@ -1,3 +1,5 @@
 <template>
-  <h3><slot /></h3>
+  <h3>
+    <strong><slot /></strong>
+  </h3>
 </template>

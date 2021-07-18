@@ -82,10 +82,11 @@ export default {
           const res = await axios.post(`${this.endpoint}`, this.item);
           this.onCreated(res.data);
         }
-        this.$bvModal.close(`modal-${this.modal}-editor`);
+        this.$bvModal.hide(`modal-${this.modal}-editor`);
         this.setItem();
-        this.fetch();
+        return this.fetch();
       } catch (e) {
+        console.error(e)
         this.handleError(e.response)
       }
     },

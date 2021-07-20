@@ -11,6 +11,12 @@
         <b-input v-model="item.name" />
       </b-form-group>
       <b-form-group
+        label="アクセス元URL"
+        description="複数指定する場合はカンマ区切りで入力してください"
+      >
+        <b-input v-model="item.redirect" />
+      </b-form-group>
+      <b-form-group
         label="認証情報"
         description="jsonデータをそのまま入力してください"
       >
@@ -28,6 +34,10 @@
         <dl class="ml-3 mb-3">
           <dt>ID</dt>
           <dd>{{ item.id }}</dd>
+          <dt>リダイレクトURL</dt>
+          <dd>
+            {{ item.redirect }}
+          </dd>
           <dt>作成日時</dt>
           <dd>
             {{ toDateTime(item.created_at, "fromISO") }}

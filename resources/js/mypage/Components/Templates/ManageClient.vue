@@ -11,7 +11,7 @@
         <b-input v-model="item.name" />
       </b-form-group>
       <b-form-group
-        label="リダイレクト先URL一覧"
+        label="リダイレクトURL"
         description="複数指定する場合はカンマ区切りで入力してください"
       >
         <b-input v-model="item.redirect" />

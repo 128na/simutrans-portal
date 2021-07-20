@@ -13,6 +13,7 @@ class Project extends Model
 
     protected $fillable = [
         'name',
+        'redirect',
         'credential',
         'user_id',
     ];
@@ -25,5 +26,10 @@ class Project extends Model
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
+    }
+
+    public function getRedirectsAttribute(): array
+    {
+        return explode(',', $this->redirect);
     }
 }

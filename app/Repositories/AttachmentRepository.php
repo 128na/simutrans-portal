@@ -6,6 +6,7 @@ use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\LazyCollection;
 
 class AttachmentRepository extends BaseRepository
@@ -37,7 +38,7 @@ class AttachmentRepository extends BaseRepository
     {
         return $this->model->create([
             'user_id' => $user->id,
-            'path' => $file->store('user/'.$user->id, 'public'),
+            'path' => Storage::disk('public')->putFile('user/'.$user->id, $file),
             'original_name' => $file->getClientOriginalName(),
         ]);
     }

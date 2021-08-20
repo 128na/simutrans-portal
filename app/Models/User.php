@@ -19,14 +19,15 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
+
+// use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail, BulkZippableInterface
 {
     use Notifiable;
     use HasFactory;
     use SoftDeletes;
-    use HasApiTokens;
+    // use HasApiTokens;
 
     protected $fillable = [
         'role',

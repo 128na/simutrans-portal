@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('passport:purge')->hourly();
+        // $schedule->command('passport:purge')->hourly();
 
         $schedule->command('check:deadlink')->dailyAt('10:00')
             ->withoutOverlapping()

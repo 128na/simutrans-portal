@@ -16,7 +16,6 @@
     "fruitcake/laravel-cors": "^2.0",
     "kreait/firebase-php": "^5.21",
     "laravel/framework": "^8.0",
-    "laravel/passport": "^10.1",
     "laravel/socialite": "^5.2",
     "laravel/tinker": "^2.0",
     "laravel/ui": "^2.0",

@@ -19,6 +19,7 @@ return [
         ['slug' => '128',          'type' => 'pak', 'order' => 10010, 'name' => 'Pak128'],
         ['slug' => '64',           'type' => 'pak', 'order' => 10011, 'name' => 'Pak64'],
         ['slug' => '256',          'type' => 'pak', 'order' => 10020, 'name' => 'Pak256'],
+        ['slug' => '192-xxx',      'type' => 'pak', 'order' => 10021, 'name' => 'Pak192.xxx'],
         ['slug' => '96-comic',     'type' => 'pak', 'order' => 10030, 'name' => 'Pak96.Comic'],
         ['slug' => '192-comic',    'type' => 'pak', 'order' => 10031, 'name' => 'Pak192.Comic'],
         ['slug' => '256-extended', 'type' => 'pak', 'order' => 10040, 'name' => 'Pak256(Extended)'],

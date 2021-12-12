@@ -31,6 +31,7 @@ class JobCheckDeadLink implements ShouldQueue
 
                 $article->notify(new DeadLinkDetected());
                 $changed = true;
+                sleep(5);
             }
         }
 
@@ -46,15 +47,21 @@ class JobCheckDeadLink implements ShouldQueue
         if ($link) {
             return !$this->isStatusOK($link);
         }
+
+        return false;
     }
 
-    private function isStatusOK(string $url): bool
+    private function isStatusOK(string $url, int $retry = 3): bool
     {
-        $info_list = @get_headers($url) ?: [];
-        foreach ($info_list as $info) {
-            if (stripos($info, ' 200 OK') !== false) {
-                return true;
+        for ($i = 0; $i < $retry; ++$i) {
+            $info = @get_headers($url) ?: [];
+            foreach ($info as $i) {
+                if (stripos($i, '200 OK') !== false) {
+                    return true;
+                }
             }
+            logger('status check', [$url, ...$info]);
+            sleep(5);
         }
 
         return false;

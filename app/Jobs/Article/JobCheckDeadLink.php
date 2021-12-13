@@ -31,7 +31,7 @@ class JobCheckDeadLink implements ShouldQueue
 
                 $article->notify(new DeadLinkDetected());
                 $changed = true;
-                sleep(5);
+                $this->wait();
             }
         }
 
@@ -44,7 +44,7 @@ class JobCheckDeadLink implements ShouldQueue
     {
         $link = $article->contents->link ?? null;
 
-        if ($link) {
+        if ($link && !$this->inBlacklist($link)) {
             return !$this->isStatusOK($link);
         }
 
@@ -61,9 +61,29 @@ class JobCheckDeadLink implements ShouldQueue
                 }
             }
             logger('status check', [$url, ...$info]);
-            sleep(5);
+            $this->wait();
         }
 
         return false;
+    }
+
+    private function inBlacklist(string $url): bool
+    {
+        $blackList = ['getuploader.com'];
+
+        foreach ($blackList as $b) {
+            if (stripos($url, $b) !== false) {
+                logger('blacklist url', [$url]);
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function wait(): void
+    {
+        sleep(5);
     }
 }

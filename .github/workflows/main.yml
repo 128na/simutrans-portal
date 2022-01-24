@@ -118,7 +118,7 @@ jobs:
           privateKey: /home/runner/.ssh/id_rsa
 
       - name: rsync2
-        run: rsync -ahv -i /home/runner/.ssh/id_rsa ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/public ./public/
+        run: rsync -ahv -e "ssh -i /home/runner/.ssh/id_rsa" ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/public ./public/
 
       # - name: rsync public dir
       #   uses: trendyminds/github-actions-rsync@master

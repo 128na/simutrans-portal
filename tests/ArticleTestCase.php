@@ -168,6 +168,7 @@ abstract class ArticleTestCase extends TestCase
         yield 'タイトルが空' => [fn () => ['title' => ''], 'article.title'];
         yield 'タイトルが256文字以上' => [fn () => ['title' => str_repeat('a', 256)], 'article.title'];
         yield 'タイトルが重複' => [fn () => ['title' => $this->article2->title], 'article.title'];
+        yield 'タイトルにNG文字' => [fn () => ['title' => '@example'], 'article.title'];
 
         yield 'スラッグが空' => [fn () => ['slug' => ''], 'article.slug'];
         yield 'スラッグが256文字以上' => [fn () => ['slug' => str_repeat('a', 256)], 'article.slug'];

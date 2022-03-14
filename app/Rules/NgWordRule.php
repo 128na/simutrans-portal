@@ -7,6 +7,8 @@ use Illuminate\Support\Str;
 
 class NgWordRule implements Rule
 {
+    private array $detected = [];
+
     /**
      * Create a new rule instance.
      *
@@ -26,7 +28,13 @@ class NgWordRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        return !Str::contains($value, $this->ngWords);
+        foreach ($this->ngWords as $ngWord) {
+            if (Str::contains($value, $ngWord)) {
+                $this->detected[] = $ngWord;
+            }
+        }
+
+        return empty($this->detected);
     }
 
     /**
@@ -36,6 +44,6 @@ class NgWordRule implements Rule
      */
     public function message()
     {
-        return sprintf('使用できない文字が含まれています。(%s)', implode(',', $this->ngWords));
+        return sprintf('使用できない文字が含まれています。(%s)', implode(',', $this->detected));
     }
 }

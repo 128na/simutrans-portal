@@ -42,6 +42,7 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    const TITLE_NG_WORDS = ['#', '@', ':', '//'];
 
     /*
     |--------------------------------------------------------------------------

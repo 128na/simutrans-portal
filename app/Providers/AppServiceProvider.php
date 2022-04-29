@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use App\Models\User;
 use App\Services\BulkZip\Decorators\AddonIntroductionDecorator;
 use App\Services\BulkZip\Decorators\AddonPostDecorator;
 use App\Services\BulkZip\ZipManager;
@@ -11,6 +12,7 @@ use Carbon\CarbonImmutable;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Storage;
 use ZipArchive;
@@ -62,6 +64,13 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
+    private function registerRouteBindings()
+    {
+        Route::bind('invitation_code', function ($value) {
+            return User::where('invitation_code', $value)->firstOrFail();
+        });
+    }
+
     /**
      * Bootstrap any application services.
      *
@@ -76,5 +85,7 @@ class AppServiceProvider extends ServiceProvider
         Date::use(CarbonImmutable::class);
 
         MarkdownService::registerBlade();
+
+        $this->registerRouteBindings();
     }
 }

@@ -51,7 +51,9 @@
     <page-sub-title>招待したユーザー</page-sub-title>
     <template v-if="hasInvites">
       <ul>
-        <li v-for="invite in invites">{{ invite.name }}</li>
+        <li v-for="invite in invites">
+          {{ invite.id }}. {{ invite.name }} ({{ invite.created_at }})
+        </li>
       </ul>
     </template>
     <template v-else> 招待したユーザーはいません。 </template>

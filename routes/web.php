@@ -19,6 +19,7 @@ use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Front\ArticleController;
 use App\Http\Controllers\Front\IndexController;
 use App\Http\Controllers\Front\PublicBookmarkController;
+use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\RegistrationOrderController;
@@ -82,5 +83,8 @@ Route::middleware(['verified'])->group(function () {
 Route::middleware(['auth', 'admin', 'verified'])->group(function () {
     Route::get('/admin/', [AdminController::class, 'index'])->name('admin.index');
 });
+
+Route::get('/invite/{invitation_code}', [InviteController::class, 'index'])->name('invite.index');
+Route::post('/invite/{invitation_code}', [InviteController::class, 'store'])->name('invite.store');
 
 Route::fallback([RedirectController::class, 'index']);

@@ -33,6 +33,10 @@
           <b-icon icon="bookmark-star-fill" class="nav-icon" />
           ブックマーク
         </nav-link>
+        <nav-link v-if="isVerified" :to="route_invitation">
+          <b-icon icon="person-plus-fill" class="nav-icon" />
+          ユーザー招待
+        </nav-link>
         <!-- <nav-link v-if="isVerified" :to="route_tokens">
           <b-icon icon="key-fill" class="nav-icon" />
           認証管理

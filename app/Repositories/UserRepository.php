@@ -55,4 +55,9 @@ class UserRepository extends BaseRepository
             ->withTrashed()
             ->first();
     }
+
+    public function getInvites(User $user): Collection
+    {
+        return $user->invites()->get();
+    }
 }

@@ -132,5 +132,39 @@ export default {
         dispatch('setApiStatusError', e);
       }
     },
+    /**
+     * 招待コード更新
+     */
+    async updateInvitationCode({ commit, dispatch }, { message = '招待コードを生成しました。' }) {
+      dispatch('setApiStatusFetching');
+      try {
+        const res = await api.updateInvitationCode();
+        if (res && res.status === 200) {
+          commit(SET_USER, res.data.data);
+          dispatch('setApiStatusSuccess');
+          return dispatch('setInfoMessage', { message });
+        }
+        dispatch('setApiStatusError');
+      } catch (e) {
+        dispatch('setApiStatusError', e);
+      }
+    },
+    /**
+     * 招待コード更新
+     */
+    async deleteInvitationCode({ commit, dispatch }, { message = '招待コードを削除しました。' }) {
+      dispatch('setApiStatusFetching');
+      try {
+        const res = await api.deleteInvitationCode();
+        if (res && res.status === 200) {
+          commit(SET_USER, res.data.data);
+          dispatch('setApiStatusSuccess');
+          return dispatch('setInfoMessage', { message });
+        }
+        dispatch('setApiStatusError');
+      } catch (e) {
+        dispatch('setApiStatusError', e);
+      }
+    },
   }
 };

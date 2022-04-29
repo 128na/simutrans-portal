@@ -15,7 +15,8 @@ import PageEditProfile from '../Components/Pages/PageEditProfile';
 import PageAnalyticsArticle from '../Components/Pages/PageAnalyticsArticle';
 import PageBookmarks from '../Components/Pages/PageBookmarks';
 import PageEditBookmark from '../Components/Pages/PageEditBookmark';
-import PageTokens from '../Components/Pages/PageTokens';
+// import PageTokens from '../Components/Pages/PageTokens';
+import PageInvitation from '../Components/Pages/PageInvitation';
 import store from '../store';
 
 const routes = [
@@ -30,7 +31,8 @@ const routes = [
   { name: "analyticsArticle", path: '/analytics', component: PageAnalyticsArticle },
   { name: "bookmarks", path: '/bookmarks', component: PageBookmarks },
   { name: "editBookmark", path: '/bookmark/:id?', component: PageEditBookmark },
-  { name: "tokens", path: '/tokens', component: PageTokens },
+  // { name: "tokens", path: '/tokens', component: PageTokens },
+  { name: "invitation", path: '/invitation', component: PageInvitation },
   { path: '*', redirect: { name: 'login' } },
 ];
 

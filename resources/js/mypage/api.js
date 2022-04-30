@@ -91,4 +91,15 @@ export default {
     return axios.get(`/api/v3/mypage/public-bookmarks/${uuid}/bulk-zip`);
   },
 
+  // invitation
+  fetchInvites() {
+    return axios.get('/api/v3/mypage/invitation_code');
+  },
+  updateInvitationCode() {
+    return axios.post('/api/v3/mypage/invitation_code');
+  },
+  deleteInvitationCode() {
+    return axios.delete('/api/v3/mypage/invitation_code');
+  },
+
 }

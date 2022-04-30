@@ -12,6 +12,7 @@ use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -32,6 +33,8 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
     protected $fillable = [
         'role',
         'name',
+        'invited_by',
+        'invitation_code',
         'email',
         'email_verified_at',
         'password',
@@ -127,6 +130,21 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class);
+    }
+
+    public function invited(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'invited_by');
+    }
+
+    public function invites(): HasMany
+    {
+        return $this->hasMany(User::class, 'invited_by');
+    }
+
+    public function invitesReclusive(): HasMany
+    {
+        return $this->hasMany(User::class, 'invited_by')->with(['invites']);
     }
 
     /*

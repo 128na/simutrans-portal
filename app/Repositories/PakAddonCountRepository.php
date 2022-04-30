@@ -16,6 +16,7 @@ class PakAddonCountRepository extends BaseRepository
             COUNT(a.id) count
         FROM
             articles a
+        LEFT JOIN users u ON u.id = a.user_id
         LEFT JOIN (
             SELECT
                 a.id article_id, c.id, c.slug, c.order
@@ -41,6 +42,7 @@ class PakAddonCountRepository extends BaseRepository
             a.post_type IN ('addon-post', 'addon-introduction')
                 AND pak.id IS NOT NULL
                 AND addon.id IS NOT NULL
+                AND u.deleted_at IS NULL
         GROUP BY pak.id , addon.id
         ORDER BY pak.order , addon.order)";
 

@@ -73,6 +73,7 @@ import {
   BIconBookmarkStarFill,
   BIconTrash,
   BIconKeyFill,
+  BIconPersonPlusFill,
 } from 'bootstrap-vue';
 Vue.component('BIcon', BIcon);
 Vue.component('BIconEyeFill', BIconEyeFill);
@@ -92,3 +93,4 @@ Vue.component('BIconArrowDown', BIconArrowDown);
 Vue.component('BIconBookmarkStarFill', BIconBookmarkStarFill);
 Vue.component('BIconTrash', BIconTrash);
 Vue.component('BIconKeyFill', BIconKeyFill);
+Vue.component('BIconPersonPlusFill', BIconPersonPlusFill);

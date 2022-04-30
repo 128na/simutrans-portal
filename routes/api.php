@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\v2\Mypage\BookmarkController;
 use App\Http\Controllers\Api\v2\Mypage\TagController;
 use App\Http\Controllers\Api\v2\Mypage\UserController;
 use App\Http\Controllers\Api\v3\BulkZipController;
+use App\Http\Controllers\Api\v3\InvitationCodeController;
 use App\Http\Controllers\Api\v3\ProjectController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -98,6 +99,11 @@ Route::prefix('v3')->name('api.v3.')->namespace('Api\v3')->group(function () {
         Route::get('/public-bookmarks/{uuid}/bulk-zip', [BulkZipController::class, 'publicBookmark'])->name('bulkZip.publicBookmark');
         Route::get('/bookmarks/{bookmark}/bulk-zip', [BulkZipController::class, 'bookmark'])->name('bulkZip.bookmark');
         Route::get('/bulk-zip', [BulkZipController::class, 'user'])->name('bulkZip.user');
+
+        // 招待機能
+        Route::get('/invitation_code', [InvitationCodeController::class, 'index'])->name('invitationCode.index');
+        Route::post('/invitation_code', [InvitationCodeController::class, 'update'])->name('invitationCode.update');
+        Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy'])->name('invitationCode.destroy');
     });
 
     Route::middleware(['auth', 'verified'])->group(function () {

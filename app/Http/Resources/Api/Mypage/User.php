@@ -19,6 +19,7 @@ class User extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'invitation_url' => $this->invitation_code ? route('invite.index', $this->invitation_code) : null,
             'profile' => new Profile($this->profile),
             'admin' => $this->isAdmin(),
             'verified' => (bool) $this->email_verified_at,

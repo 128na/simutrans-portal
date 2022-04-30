@@ -21,6 +21,7 @@ return [
         '@yahoo.co.jp',
         '@live.jp',
     ],
+    'enable_invite' => env('ENABLE_INVITE', false),
 
     /*
     |--------------------------------------------------------------------------

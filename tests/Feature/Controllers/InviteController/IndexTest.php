@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers\InviteController;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -11,12 +12,20 @@ class IndexTest extends TestCase
     {
         parent::setUp();
         $this->user->update(['invitation_code' => Str::uuid()]);
+        Config::set('app.enable_invite', true);
     }
 
     public function test()
     {
         $response = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
         $response->assertOk();
+    }
+
+    public function test機能無効()
+    {
+        Config::set('app.enable_invite', false);
+        $response = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
+        $response->assertStatus(400);
     }
 
     public function test無効なユーザー()

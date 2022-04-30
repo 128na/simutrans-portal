@@ -4,6 +4,7 @@ namespace Tests\Feature\Controllers\InviteController;
 
 use App\Notifications\UserInvited;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
@@ -22,6 +23,7 @@ class StoreTest extends TestCase
     {
         parent::setUp();
         $this->user->update(['email' => 'invite@example.com', 'invitation_code' => Str::uuid()]);
+        Config::set('app.enable_invite', true);
     }
 
     public function test()
@@ -41,6 +43,17 @@ class StoreTest extends TestCase
         Notification::assertSentTo(
             [$this->user], UserInvited::class
         );
+    }
+
+    public function test機能無効()
+    {
+        Config::set('app.enable_invite', false);
+
+        $response = $this->post(
+            route('invite.index', ['invitation_code' => $this->user->invitation_code]),
+            $this->data
+        );
+        $response->assertStatus(400);
     }
 
     /**

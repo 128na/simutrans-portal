@@ -77,10 +77,10 @@
       "@php artisan test --parallel --processes=2"
     ],
     "cs-check": [
-      "vendor/bin/phpcs --standard=./ruleset.xml"
+      "vendor/bin/phpcs --standard=ruleset.xml"
     ],
     "cs": [
-      "vendor/bin/phpcbf --standard=./ruleset.xml"
+      "vendor/bin/phpcbf --standard=ruleset.xml"
     ],
     "coverage_local": [
       "phpunit --coverage-text=coverage/coverage.txt --coverage-html=coverage/html"

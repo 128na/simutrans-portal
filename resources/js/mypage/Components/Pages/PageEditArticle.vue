@@ -2,7 +2,10 @@
   <div>
     <page-title>編集</page-title>
     <div v-if="ready">
-      <component :is="component_name" :article="copy">
+      <component
+        :is="component_name"
+        :article="copy"
+      >
         <b-form-group>
           <template slot="label">
             <badge-optional />
@@ -14,30 +17,42 @@
         </b-form-group>
         <b-form-group>
           <fetching-overlay>
-            <b-button @click.prevent="handlePreview">プレビュー表示</b-button>
+            <b-button @click.prevent="handlePreview">
+              プレビュー表示
+            </b-button>
           </fetching-overlay>
           <fetching-overlay>
-            <b-button variant="primary" @click.prevent="handleUpdate">
+            <b-button
+              variant="primary"
+              @click.prevent="handleUpdate"
+            >
               「{{ article_status }}」で保存
             </b-button>
           </fetching-overlay>
         </b-form-group>
       </component>
     </div>
-    <loading v-else />
+    <loading-message v-else />
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { validateVerified } from "../../mixins/auth";
-import { editor } from "../../mixins/editor";
-import { preview } from "../../mixins/preview";
+import { mapGetters, mapActions } from 'vuex';
+import { validateVerified } from '../../mixins/auth';
+import { editor } from '../../mixins/editor';
+import { preview } from '../../mixins/preview';
 export default {
   mixins: [validateVerified, preview, editor],
   data() {
     return {
-      should_tweet: false,
+      should_tweet: false
     };
+  },
+  watch: {
+    articlesLoaded(val) {
+      if (val) {
+        this.setCopy(this.selected_article);
+      }
+    }
   },
   created() {
     if (this.isVerified) {
@@ -57,28 +72,22 @@ export default {
       }
     }
   },
-  watch: {
-    articlesLoaded(val) {
-      if (val) {
-        this.setCopy(this.selected_article);
-      }
-    },
-  },
   computed: {
     ...mapGetters([
-      "isVerified",
-      "attachmentsLoaded",
-      "optionsLoaded",
-      "getStatusText",
-      "tagsLoaded",
-      "articlesLoaded",
-      "articles",
-      "hasError",
+      'isVerified',
+      'attachmentsLoaded',
+      'optionsLoaded',
+      'getStatusText',
+      'tagsLoaded',
+      'articlesLoaded',
+      'articles',
+      'hasError'
     ]),
     selected_article() {
       if (this.articlesLoaded) {
         return this.articles.find((a) => a.id == this.$route.params.id);
       }
+      return null;
     },
     ready() {
       return this.optionsLoaded && this.articlesLoaded && !!this.copy;
@@ -88,25 +97,25 @@ export default {
     },
     article_status() {
       return this.getStatusText(this.copy.status);
-    },
+    }
   },
   methods: {
     ...mapActions([
-      "fetchOptions",
-      "fetchAttachments",
-      "fetchArticles",
-      "fetchTags",
-      "updateArticle",
+      'fetchOptions',
+      'fetchAttachments',
+      'fetchArticles',
+      'fetchTags',
+      'updateArticle'
     ]),
     async handlePreview() {
       const params = {
         article: this.copy,
         should_tweet: this.should_tweet,
-        preview: true,
+        preview: true
       };
       const html = await this.updateArticle({
         params,
-        message: null,
+        message: null
       });
 
       // プレビュー作成が成功すればプレビューウインドウを表示する
@@ -120,7 +129,7 @@ export default {
       const params = {
         article: this.copy,
         should_tweet: this.should_tweet,
-        preview: false,
+        preview: false
       };
       await this.updateArticle({ params });
 
@@ -131,7 +140,7 @@ export default {
         this.unsetUnloadDialog();
 
         if (!this.isDraft()) {
-          this.$router.push({ name: "index" });
+          this.$router.push({ name: 'index' });
         } else {
           this.scrollToTop();
         }
@@ -143,8 +152,8 @@ export default {
       return this.selected_article;
     },
     isDraft() {
-      return this.copy.status === "draft";
-    },
-  },
+      return this.copy.status === 'draft';
+    }
+  }
 };
 </script>

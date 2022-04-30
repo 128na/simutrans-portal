@@ -27,10 +27,10 @@
         />
         <media-manager
           v-if="isImage(section.type)"
+          :id="article.id"
           :name="`section-${index}`"
           :value="section.id"
           type="Article"
-          :id="article.id"
           :only_image="true"
           :state="validationState(`article.contents.sections.${index}.id`)"
           @input="(v) => handleInput(index, v)"
@@ -45,9 +45,9 @@
         />
         <b-button
           variant="danger"
-          @click="handleRemove(index)"
           size="sm"
           class="mt-1"
+          @click="handleRemove(index)"
         >
           項目を削除
         </b-button>
@@ -61,16 +61,28 @@
         />
       </div>
       <b-button-group>
-        <b-button variant="outline-secondary" @click="handleAdd('caption')">
+        <b-button
+          variant="outline-secondary"
+          @click="handleAdd('caption')"
+        >
           見出しを追加
         </b-button>
-        <b-button variant="outline-secondary" @click="handleAdd('text')">
+        <b-button
+          variant="outline-secondary"
+          @click="handleAdd('text')"
+        >
           テキストを追加
         </b-button>
-        <b-button variant="outline-secondary" @click="handleAdd('url')">
+        <b-button
+          variant="outline-secondary"
+          @click="handleAdd('url')"
+        >
           URLを追加
         </b-button>
-        <b-button variant="outline-secondary" @click="handleAdd('image')">
+        <b-button
+          variant="outline-secondary"
+          @click="handleAdd('image')"
+        >
           画像を追加
         </b-button>
       </b-button-group>
@@ -88,27 +100,27 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
-  props: ["article"],
+  props: ['article'],
   computed: {
-    ...mapGetters(["options", "validationState"]),
+    ...mapGetters(['options', 'validationState'])
   },
   methods: {
     isText(type) {
-      return type === "text";
+      return type === 'text';
     },
 
     isUrl(type) {
-      return type === "url";
+      return type === 'url';
     },
 
     isImage(type) {
-      return type === "image";
+      return type === 'image';
     },
 
     isCaption(type) {
-      return type === "caption";
+      return type === 'caption';
     },
     handleInput(index, value) {
       const sections = [...this.article.contents.sections];
@@ -132,32 +144,32 @@ export default {
     },
     handleAdd(type) {
       if (this.isText(type)) {
-        return this.article.contents.sections.push({ type: "text", text: "" });
+        return this.article.contents.sections.push({ type: 'text', text: '' });
       }
 
       if (this.isUrl(type)) {
-        return this.article.contents.sections.push({ type: "url", url: "" });
+        return this.article.contents.sections.push({ type: 'url', url: '' });
       }
 
       if (this.isImage(type)) {
-        return this.article.contents.sections.push({ type: "image", id: null });
+        return this.article.contents.sections.push({ type: 'image', id: null });
       }
 
       if (this.isCaption(type)) {
         return this.article.contents.sections.push({
-          type: "caption",
-          caption: "",
+          type: 'caption',
+          caption: ''
         });
       }
     },
     handleRemove(index) {
-      if (window.confirm("削除してもよろしいですか？")) {
+      if (window.confirm('削除してもよろしいですか？')) {
         const sections = [...this.article.contents.sections];
-        sections.splice(index, 1)[0];
+        sections.splice(index, 1);
         this.article.contents.sections = sections;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

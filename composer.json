@@ -76,6 +76,9 @@
     "test": [
       "@php artisan test --parallel --processes=2"
     ],
+    "cs-check": [
+      "vendor/bin/phpcs --standard=./ruleset.xml"
+    ],
     "cs": [
       "vendor/bin/phpcbf --standard=./ruleset.xml"
     ],

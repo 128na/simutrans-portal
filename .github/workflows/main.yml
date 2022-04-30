@@ -14,30 +14,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: .env
-        run: php -r "copy('.env.ci', '.env');"
-
-      - name: Cache build assets
-        id: cache-assets
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-assets
-        with:
-          path: ./public
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-
-      - name: Setup Node
-        if: steps.cache-assets.outputs.cache-hit != 'true'
-        uses: actions/setup-node@v2
-      - name: npm ci
-        if: steps.cache-assets.outputs.cache-hit != 'true'
-        run: npm ci
-      - name: Build Assets
-        if: steps.cache-assets.outputs.cache-hit != 'true'
-        run: npm run prod
-
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -53,10 +29,21 @@ jobs:
       - name: Composer Install
         if: steps.cache-vendor.outputs.cache-hit != 'true'
         run: composer install
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
       - name: phpcs
-        run: composer run cs
+        run: composer run cs-check
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
+        if: steps.cache-assets.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v2
+      - name: npm ci
+        if: steps.cache-assets.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: eslint
+        run: npm run eslint-check
   test:
     runs-on: ubuntu-latest
     steps:

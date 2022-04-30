@@ -19,8 +19,8 @@
       </template>
       <b-input-group>
         <b-form-input
-          type="text"
           v-model="article.title"
+          type="text"
           :state="validationState('article.title')"
         />
         <b-input-group-append>
@@ -38,8 +38,8 @@
         パーマリンク
       </template>
       <b-form-input
-        type="text"
         v-model="url_decoded_slug"
+        type="text"
         :state="validationState('article.slug')"
       />
       <div class="mt-1 text-break">
@@ -53,10 +53,10 @@
         サムネイル画像
       </template>
       <media-manager
-        name="thumbnail"
-        v-model="article.contents.thumbnail"
-        type="Article"
         :id="article.id"
+        v-model="article.contents.thumbnail"
+        name="thumbnail"
+        type="Article"
         :only_image="true"
         :state="validationState('article.contents.thumbnail')"
       />
@@ -65,11 +65,11 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
-  props: ["article"],
+  props: ['article'],
   computed: {
-    ...mapGetters(["options", "validationState"]),
+    ...mapGetters(['options', 'validationState']),
     url_decoded_slug: {
       get() {
         return decodeURI(this.article.slug);
@@ -78,17 +78,17 @@ export default {
         const replaced = val
           .toLowerCase()
           .replace(
-            /(!|"|#|\$|%|&|\'|\(|\)|\*|\+|,|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\s|\.)+/gi,
-            "-"
+            /(!|"|#|\$|%|&|'|\(|\)|\*|\+|,|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\s|\.)+/gi,
+            '-'
           );
         this.article.slug = encodeURI(replaced);
-      },
-    },
+      }
+    }
   },
   methods: {
     handleSlug() {
       this.url_decoded_slug = this.article.title;
-    },
-  },
+    }
+  }
 };
 </script>

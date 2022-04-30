@@ -11,19 +11,19 @@
 </template>
 <script>
 export default {
-  props: ["value"],
+  props: ['value'],
   computed: {
     variant() {
-      return this.value ? "outline-success" : "outline-secondary";
+      return this.value ? 'outline-success' : 'outline-secondary';
     },
     text() {
-      return this.value ? "省略表示にする" : "詳細表示にする";
-    },
+      return this.value ? '省略表示にする' : '詳細表示にする';
+    }
   },
   methods: {
     handleInput(e) {
-      this.$emit("input", !e);
-    },
-  },
+      this.$emit('input', !e);
+    }
+  }
 };
 </script>

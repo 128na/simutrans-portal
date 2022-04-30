@@ -1,25 +1,40 @@
 <template>
   <div>
     <input
+      :ref="file_uploader_id"
       type="file"
       class="d-none"
-      :ref="file_uploader_id"
       :accept="accept"
       @change="handleFileChange"
+    >
+    <b-img
+      v-if="can_preview"
+      :src="current_thumbnail"
+      thumbnail
     />
-    <b-img v-if="can_preview" :src="current_thumbnail" thumbnail />
     <p>{{ current_filename }}</p>
-    <b-button :variant="button_variant" @click="handleShow">
+    <b-button
+      :variant="button_variant"
+      @click="handleShow"
+    >
       ファイルを選択する
     </b-button>
-    <b-modal :id="name" title="Select File" size="xl" scrollable>
-      <template v-slot:modal-header>
+    <b-modal
+      :id="name"
+      title="Select File"
+      size="xl"
+      scrollable
+    >
+      <template #modal-header>
         <div>
           ファイルマネージャー
           <validation-message field="file" />
         </div>
         <fetching-overlay>
-          <b-button variant="primary" @click="handleClickUpload">
+          <b-button
+            variant="primary"
+            @click="handleClickUpload"
+          >
             ファイルをアップロード
           </b-button>
         </fetching-overlay>
@@ -33,29 +48,46 @@
           @click="handleSelect(attachment.id)"
         >
           <div class="attachment-thumbnail">
-            <b-img :src="attachment.thumbnail" fluid class="m-auto" />
+            <b-img
+              :src="attachment.thumbnail"
+              fluid
+              class="m-auto"
+            />
             <b-button
               class="position-absolute btn-close"
               pill
               size="sm"
               @click.stop="handleDelete(attachment.id)"
-              >&times;</b-button
             >
+              &times;
+            </b-button>
           </div>
           <small class="ellipsis">{{ attachment.original_name }}</small>
         </div>
-        <div v-show="filtered_attachments.length < 1">ファイルがありません</div>
+        <div v-show="filtered_attachments.length < 1">
+          ファイルがありません
+        </div>
       </div>
-      <template v-slot:modal-footer>
+      <template #modal-footer>
         <div class="flex-grow-1 flex-shrink-0">
           <div>{{ selected_filename }}</div>
         </div>
         <div>
           <fetching-overlay>
-            <b-button @click="handleCancel" size="sm"> キャンセル </b-button>
+            <b-button
+              size="sm"
+              @click="handleCancel"
+            >
+              キャンセル
+            </b-button>
           </fetching-overlay>
           <fetching-overlay>
-            <b-button variant="primary" @click="handleOK"> 決定 </b-button>
+            <b-button
+              variant="primary"
+              @click="handleOK"
+            >
+              決定
+            </b-button>
           </fetching-overlay>
         </div>
       </template>
@@ -63,7 +95,7 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 export default {
   props: {
     id: {},
@@ -71,40 +103,40 @@ export default {
     type: {},
     value: {},
     only_image: { default: false },
-    state: { default: null },
+    state: { default: null }
   },
   data() {
     return {
-      selected: null,
+      selected: null
     };
   },
   created() {
     this.initialize();
   },
   computed: {
-    ...mapGetters(["attachments"]),
+    ...mapGetters(['attachments']),
     button_variant() {
-      return this.state === null ? "outline-secondary" : "outline-danger";
+      return this.state === null ? 'outline-secondary' : 'outline-danger';
     },
     filtered_attachments() {
-      const image_filtered = this.only_image
-        ? this.attachments.filter((a) => a.type === "image")
+      const filtered = this.only_image
+        ? this.attachments.filter((a) => a.type === 'image')
         : this.attachments;
 
       return this.id
-        ? image_filtered.filter(
-            (a) =>
-              a.attachmentable_id === null ||
+        ? filtered.filter(
+          (a) =>
+            a.attachmentable_id === null ||
               (a.attachmentable_id == this.id &&
                 a.attachmentable_type === this.type)
-          )
-        : image_filtered.filter((a) => a.attachmentable_id === null);
+        )
+        : filtered.filter((a) => a.attachmentable_id === null);
     },
     file_uploader_id() {
       return `uploader_${this.name}`;
     },
     accept() {
-      return this.only_image ? "image/*" : "";
+      return this.only_image ? 'image/*' : '';
     },
     can_preview() {
       return this.only_image && this.value;
@@ -113,32 +145,35 @@ export default {
       if (this.selected) {
         return this.attachments.find((a) => a.id == this.selected);
       }
+      return null;
     },
     selected_filename() {
       if (this.selected_attachment) {
         return this.selected_attachment.original_name;
       }
-      return "";
+      return '';
     },
     current_attachment() {
       if (this.value) {
         return this.attachments.find((a) => a.id == this.value);
       }
+      return null;
     },
     current_thumbnail() {
       if (this.current_attachment) {
         return this.current_attachment.thumbnail;
       }
+      return null;
     },
     current_filename() {
       if (this.current_attachment) {
         return this.current_attachment.original_name;
       }
-      return "ファイル未選択";
-    },
+      return 'ファイル未選択';
+    }
   },
   methods: {
-    ...mapActions(["fetchAttachments", "storeAttachment", "deleteAttachment"]),
+    ...mapActions(['fetchAttachments', 'storeAttachment', 'deleteAttachment']),
     getFileElement() {
       return this.$refs[this.file_uploader_id];
     },
@@ -166,7 +201,7 @@ export default {
       this.$bvModal.hide(this.name);
     },
     handleOK() {
-      this.$emit("input", this.selected);
+      this.$emit('input', this.selected);
       this.$bvModal.hide(this.name);
     },
     handleSelect(id) {
@@ -185,7 +220,7 @@ export default {
           file,
           type: this.type,
           id: this.id,
-          only_image: this.only_image,
+          onlyImage: this.only_image
         });
 
         const attachment = this.attachments.find(
@@ -198,7 +233,7 @@ export default {
       }
     },
     async handleDelete(id) {
-      if (window.confirm("削除してよろしいですか？")) {
+      if (window.confirm('削除してよろしいですか？')) {
         if (this.selected == id) {
           this.selected = null;
         }
@@ -207,9 +242,9 @@ export default {
     },
     // style
     selectedClass(attachment_id) {
-      return attachment_id == this.selected ? "selected" : "";
-    },
-  },
+      return attachment_id == this.selected ? 'selected' : '';
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

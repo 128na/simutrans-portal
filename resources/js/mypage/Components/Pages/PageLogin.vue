@@ -12,7 +12,10 @@
             ログイン
           </b-button>
         </fetching-overlay>
-        <router-link :to="route_password_reset" class="mx-2">
+        <router-link
+          :to="route_password_reset"
+          class="mx-2"
+        >
           パスワード再設定
         </router-link>
       </b-form-group>
@@ -20,24 +23,24 @@
   </div>
 </template>
 <script>
-import { validateGuest } from "../../mixins/auth";
-import { mapActions } from "vuex";
+import { validateGuest } from '../../mixins/auth';
+import { mapActions } from 'vuex';
 export default {
   mixins: [validateGuest],
   data() {
     return {
       params: {
-        email: "",
-        password: "",
-        remember: false,
-      },
+        email: '',
+        password: '',
+        remember: false
+      }
     };
   },
   methods: {
-    ...mapActions(["login"]),
+    ...mapActions(['login']),
     handleLogin() {
       this.login(this.params);
-    },
-  },
+    }
+  }
 };
 </script>

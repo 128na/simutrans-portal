@@ -6,8 +6,8 @@
         作者
       </template>
       <b-form-input
-        type="text"
         v-model="article.contents.author"
+        type="text"
         :state="validationState('article.contents.author')"
       />
       <validation-message field="article.contents.author" />
@@ -18,8 +18,8 @@
         リンク先URL
       </template>
       <b-form-input
-        type="url"
         v-model="article.contents.link"
+        type="url"
         :state="validationState('article.contents.link')"
       />
       <validation-message field="article.contents.link" />
@@ -77,11 +77,11 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
-  props: ["article"],
+  props: ['article'],
   computed: {
-    ...mapGetters(["validationState"]),
-  },
+    ...mapGetters(['validationState'])
+  }
 };
 </script>

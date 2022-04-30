@@ -1,10 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import api from "../api";
-import { DateTime } from "luxon";
-import { BIconFileEarmarkSlides } from 'bootstrap-vue';
+import api from '../api';
+import { DateTime } from 'luxon';
 Vue.use(Vuex);
-
 
 const SET_INITIALIZED = 'SET_INITIALIZED';
 const SET_USER = 'SET_USER';
@@ -19,14 +17,14 @@ export default new Vuex.Store({
     user: false,
     phpinfo: null,
     users: [],
-    articles: [],
+    articles: []
   },
   getters: {
     initialized: state => state.initialized,
     isAdmin: state => state.user && state.user.admin,
     phpinfo: state => state.phpinfo,
     users: state => state.users,
-    articles: state => state.articles,
+    articles: state => state.articles
   },
   mutations: {
     [SET_INITIALIZED](state, initialized = false) {
@@ -37,22 +35,22 @@ export default new Vuex.Store({
     },
     [SET_USERS](state, users = []) {
       state.users = users.map(u => Object.assign(u, {
-        email_verified_at: u.email_verified_at ? DateTime.fromISO(u.email_verified_at).toFormat("yyyy/LL/dd HH:mm") : null,
-        created_at: u.created_at ? DateTime.fromISO(u.created_at).toFormat("yyyy/LL/dd HH:mm") : null,
-        updated_at: u.updated_at ? DateTime.fromISO(u.updated_at).toFormat("yyyy/LL/dd HH:mm") : null,
-        deleted_at: u.deleted_at ? DateTime.fromISO(u.deleted_at).toFormat("yyyy/LL/dd HH:mm") : null,
-      }));;
+        email_verified_at: u.email_verified_at ? DateTime.fromISO(u.email_verified_at).toFormat('yyyy/LL/dd HH:mm') : null,
+        created_at: u.created_at ? DateTime.fromISO(u.created_at).toFormat('yyyy/LL/dd HH:mm') : null,
+        updated_at: u.updated_at ? DateTime.fromISO(u.updated_at).toFormat('yyyy/LL/dd HH:mm') : null,
+        deleted_at: u.deleted_at ? DateTime.fromISO(u.deleted_at).toFormat('yyyy/LL/dd HH:mm') : null
+      })); ;
     },
     [SET_ARTICLES](state, articles = []) {
       state.articles = articles.map(a => Object.assign(a, {
-        created_at: a.created_at ? DateTime.fromISO(a.created_at).toFormat("yyyy/LL/dd HH:mm") : null,
-        updated_at: a.updated_at ? DateTime.fromISO(a.updated_at).toFormat("yyyy/LL/dd HH:mm") : null,
-        deleted_at: a.deleted_at ? DateTime.fromISO(a.deleted_at).toFormat("yyyy/LL/dd HH:mm") : null,
+        created_at: a.created_at ? DateTime.fromISO(a.created_at).toFormat('yyyy/LL/dd HH:mm') : null,
+        updated_at: a.updated_at ? DateTime.fromISO(a.updated_at).toFormat('yyyy/LL/dd HH:mm') : null,
+        deleted_at: a.deleted_at ? DateTime.fromISO(a.deleted_at).toFormat('yyyy/LL/dd HH:mm') : null
       }));
     },
     [SET_PHPINFO](state, phpinfo) {
       state.phpinfo = phpinfo;
-    },
+    }
   },
   actions: {
     async initialize({ commit }) {
@@ -65,7 +63,7 @@ export default new Vuex.Store({
     flushCache() {
       api.flushCache().then(showResponse).catch(showError);
     },
-    fetchDebug({ }, level = 'error') {
+    fetchDebug(store, level = 'error') {
       api.debug(level).then(showResponse).catch(showError);
     },
     async fetchPhpinfo({ commit }) {
@@ -110,7 +108,7 @@ export default new Vuex.Store({
       if (res && res.status === 200) {
         commit(SET_USERS, res.data);
       }
-    },
+    }
   }
 });
 

@@ -1,80 +1,80 @@
 export const defaultArticle = {
   methods: {
-    createDefaultArticle(post_type) {
-      switch (post_type) {
-        case "addon-post":
+    createDefaultArticle(postType) {
+      switch (postType) {
+        case 'addon-post':
           return this.createAddonPost();
-        case "addon-introduction":
+        case 'addon-introduction':
           return this.createAddonIntroduction();
-        case "page":
+        case 'page':
           return this.createPage();
-        case "markdown":
+        case 'markdown':
           return this.createMarkdown();
       }
     },
     createAddonPost() {
       return {
-        post_type: "addon-post",
-        title: "",
-        slug: "",
-        status: "draft",
+        post_type: 'addon-post',
+        title: '',
+        slug: '',
+        status: 'draft',
         contents: {
           thumbnail: null,
-          author: "",
-          description: "",
+          author: '',
+          description: '',
           file: null,
-          license: "",
-          thanks: "",
+          license: '',
+          thanks: ''
         },
         categories: [],
-        tags: [],
+        tags: []
       };
     },
     createAddonIntroduction() {
       return {
-        post_type: "addon-introduction",
-        title: "",
-        slug: "",
-        status: "draft",
+        post_type: 'addon-introduction',
+        title: '',
+        slug: '',
+        status: 'draft',
         contents: {
           thumbnail: null,
           agreement: false,
           exclude_link_check: false,
-          author: "",
-          description: "",
-          license: "",
-          link: "",
-          thanks: "",
+          author: '',
+          description: '',
+          license: '',
+          link: '',
+          thanks: ''
         },
         categories: [],
-        tags: [],
+        tags: []
       };
     },
     createPage() {
       return {
-        post_type: "page",
-        title: "",
-        slug: "",
-        status: "draft",
+        post_type: 'page',
+        title: '',
+        slug: '',
+        status: 'draft',
         contents: {
           thumbnail: null,
-          sections: [{ type: "text", text: "" }],
+          sections: [{ type: 'text', text: '' }]
         },
-        categories: [],
+        categories: []
       };
     },
     createMarkdown() {
       return {
-        post_type: "markdown",
-        title: "",
-        slug: "",
-        status: "draft",
+        post_type: 'markdown',
+        title: '',
+        slug: '',
+        status: 'draft',
         contents: {
           thumbnail: null,
-          markdown: "",
+          markdown: ''
         },
-        categories: [],
+        categories: []
       };
-    },
+    }
   }
-}
+};

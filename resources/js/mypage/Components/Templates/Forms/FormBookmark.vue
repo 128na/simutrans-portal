@@ -6,8 +6,8 @@
         タイトル
       </template>
       <b-form-input
-        type="text"
         v-model="bookmark.title"
+        type="text"
         :state="validationState('bookmark.title')"
       />
       <validation-message field="bookmark.title" />
@@ -44,11 +44,11 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
-  props: ["bookmark"],
+  props: ['bookmark'],
   computed: {
-    ...mapGetters(["validationState"]),
-  },
+    ...mapGetters(['validationState'])
+  }
 };
 </script>

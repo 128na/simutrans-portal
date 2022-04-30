@@ -1,8 +1,19 @@
 <template>
-  <b-form-tags v-model="value" no-outer-focus class="mb-2">
-    <template v-slot="{ tags }">
-      <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
-        <li v-for="tag in tags" :key="tag" class="list-inline-item mb-1">
+  <b-form-tags
+    v-model="value"
+    no-outer-focus
+    class="mb-2"
+  >
+    <template #default="{ tags }">
+      <ul
+        v-if="tags.length > 0"
+        class="list-inline d-inline-block mb-2"
+      >
+        <li
+          v-for="tag in tags"
+          :key="tag"
+          class="list-inline-item mb-1"
+        >
           <b-form-tag
             variant="primary"
             :title="tag"
@@ -21,7 +32,9 @@
         :dropup="false"
         @shown="handleShown"
       >
-        <template v-slot:button-content>タグを選択する</template>
+        <template #button-content>
+          タグを選択する
+        </template>
         <b-dropdown-form @submit.stop.prevent="() => {}">
           <b-form-group
             class="mb-0"
@@ -33,12 +46,12 @@
             <b-input-group>
               <b-form-input
                 id="tag-search-input"
+                v-model="search"
                 type="search"
                 size="sm"
                 autocomplete="off"
                 maxlength="20"
-                v-model="search"
-              ></b-form-input>
+              />
               <b-input-group-append v-if="creatable">
                 <fetching-overlay>
                   <b-button
@@ -54,7 +67,7 @@
             </b-input-group>
           </b-form-group>
         </b-dropdown-form>
-        <b-dropdown-divider></b-dropdown-divider>
+        <b-dropdown-divider />
         <b-dropdown-item-button
           v-for="tag in items"
           :key="tag"
@@ -71,33 +84,33 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   props: {
     value: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     creatable: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
-      search: "",
-      timer: null,
+      search: '',
+      timer: null
     };
   },
-  created() {},
   watch: {
     criteria() {
       this.fetchTimeout();
-    },
+    }
   },
+  created() {},
   computed: {
-    ...mapGetters(["tags", "tagsLoaded"]),
+    ...mapGetters(['tags', 'tagsLoaded']),
     items() {
       return this.tags;
     },
@@ -109,10 +122,10 @@ export default {
     },
     can_create() {
       return this.creatable && this.criteria && !this.just_match;
-    },
+    }
   },
   methods: {
-    ...mapActions(["fetchTags", "storeTag"]),
+    ...mapActions(['fetchTags', 'storeTag']),
     fetchTimeout() {
       if (this.timer) {
         clearTimeout(this.timer);
@@ -128,17 +141,17 @@ export default {
     },
     handleTagClick(option) {
       this.value.push(option);
-      this.search = "";
+      this.search = '';
     },
-    handleRemoveClick(tag_name) {
-      const index = this.value.findIndex((v) => v === tag_name);
+    handleRemoveClick(tagName) {
+      const index = this.value.findIndex((v) => v === tagName);
       this.value.splice(index, 1);
     },
     async handleCreateTagClick() {
       await this.storeTag(this.criteria);
       this.value.push(this.criteria);
-      this.search = "";
-    },
-  },
+      this.search = '';
+    }
+  }
 };
 </script>

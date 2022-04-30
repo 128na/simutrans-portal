@@ -2,7 +2,10 @@
   <div>
     <page-title>新規作成</page-title>
     <div v-if="ready">
-      <component :is="component_name" :article="copy">
+      <component
+        :is="component_name"
+        :article="copy"
+      >
         <b-form-group>
           <template slot="label">
             <badge-optional />
@@ -14,33 +17,43 @@
         </b-form-group>
         <b-form-group>
           <fetching-overlay>
-            <b-button @click.prevent="handlePreview"> プレビュー表示 </b-button>
+            <b-button @click.prevent="handlePreview">
+              プレビュー表示
+            </b-button>
           </fetching-overlay>
           <fetching-overlay>
-            <b-button variant="primary" @click.prevent="handleCreate">
+            <b-button
+              variant="primary"
+              @click.prevent="handleCreate"
+            >
               「{{ article_status }}」で保存
             </b-button>
           </fetching-overlay>
         </b-form-group>
       </component>
     </div>
-    <loading v-else />
+    <loading-message v-else />
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { validateVerified } from "../../mixins/auth";
-import { editor } from "../../mixins/editor";
-import { preview } from "../../mixins/preview";
-import { defaultArticle } from "../../mixins/default_values";
+import { mapGetters, mapActions } from 'vuex';
+import { validateVerified } from '../../mixins/auth';
+import { editor } from '../../mixins/editor';
+import { preview } from '../../mixins/preview';
+import { defaultArticle } from '../../mixins/default_values';
 export default {
+  mixins: [validateVerified, preview, defaultArticle, editor],
   data() {
     return {
       article: null,
-      should_tweet: true,
+      should_tweet: true
     };
   },
-  mixins: [validateVerified, preview, defaultArticle, editor],
+  watch: {
+    '$route.params.post_type'() {
+      this.initDefaultArticle();
+    }
+  },
   created() {
     if (this.isVerified) {
       this.initDefaultArticle();
@@ -55,20 +68,15 @@ export default {
       }
     }
   },
-  watch: {
-    "$route.params.post_type"() {
-      this.initDefaultArticle();
-    },
-  },
   computed: {
     ...mapGetters([
-      "isVerified",
-      "attachmentsLoaded",
-      "tagsLoaded",
-      "optionsLoaded",
-      "getStatusText",
-      "articles",
-      "hasError",
+      'isVerified',
+      'attachmentsLoaded',
+      'tagsLoaded',
+      'optionsLoaded',
+      'getStatusText',
+      'articles',
+      'hasError'
     ]),
     ready() {
       return this.$route.params.post_type && this.optionsLoaded && !!this.copy;
@@ -78,14 +86,14 @@ export default {
     },
     article_status() {
       return this.getStatusText(this.copy.status);
-    },
+    }
   },
   methods: {
     ...mapActions([
-      "fetchOptions",
-      "fetchAttachments",
-      "fetchTags",
-      "createArticle",
+      'fetchOptions',
+      'fetchAttachments',
+      'fetchTags',
+      'createArticle'
     ]),
     initDefaultArticle() {
       this.article = this.createDefaultArticle(this.$route.params.post_type);
@@ -95,11 +103,11 @@ export default {
       const params = {
         article: this.copy,
         should_tweet: this.should_tweet,
-        preview: true,
+        preview: true
       };
       const html = await this.createArticle({
         params,
-        message: null,
+        message: null
       });
 
       // プレビュー作成が成功すればプレビューウインドウを表示する
@@ -113,7 +121,7 @@ export default {
       const params = {
         article: this.copy,
         should_tweet: this.should_tweet,
-        preview: false,
+        preview: false
       };
       await this.createArticle({ params });
 
@@ -123,10 +131,10 @@ export default {
       if (!this.hasError) {
         this.unsetUnloadDialog();
         if (!this.isDraft()) {
-          this.$router.push({ name: "index" });
+          this.$router.push({ name: 'index' });
         } else {
           const id = this.articles.find((a) => a.slug === this.copy.slug).id;
-          this.$router.push({ name: "editArticle", params: { id } });
+          this.$router.push({ name: 'editArticle', params: { id } });
         }
       } else {
         this.scrollToTop();
@@ -136,8 +144,8 @@ export default {
       return this.article;
     },
     isDraft() {
-      return this.copy.status === "draft";
-    },
-  },
+      return this.copy.status === 'draft';
+    }
+  }
 };
 </script>

@@ -17,30 +17,32 @@ import PageEditBookmark from '../Components/Pages/PageEditBookmark';
 import PageInvitation from '../Components/Pages/PageInvitation';
 import store from '../store';
 
+import { gaPageView } from './ga';
+
+import routeShortcut from '../mixins/route';
+
 const routes = [
-  { name: "login", path: '/login', component: PageLogin },
-  { name: "logout", path: '/logout', component: PageLogout },
-  { name: "reset", path: '/reset', component: PageReset },
-  { name: "index", path: '/', component: PageIndex },
-  { name: "createArticle", path: '/create/:post_type', component: PageCreateArticle },
-  { name: "editArticle", path: '/edit/:id', component: PageEditArticle },
-  { name: "editProfile", path: '/profile', component: PageEditProfile },
-  { name: "analyticsArticle", path: '/analytics', component: PageAnalyticsArticle },
-  { name: "bookmarks", path: '/bookmarks', component: PageBookmarks },
-  { name: "editBookmark", path: '/bookmark/:id?', component: PageEditBookmark },
-  { name: "invitation", path: '/invitation', component: PageInvitation },
-  { path: '*', redirect: { name: 'login' } },
+  { name: 'login', path: '/login', component: PageLogin },
+  { name: 'logout', path: '/logout', component: PageLogout },
+  { name: 'reset', path: '/reset', component: PageReset },
+  { name: 'index', path: '/', component: PageIndex },
+  { name: 'createArticle', path: '/create/:post_type', component: PageCreateArticle },
+  { name: 'editArticle', path: '/edit/:id', component: PageEditArticle },
+  { name: 'editProfile', path: '/profile', component: PageEditProfile },
+  { name: 'analyticsArticle', path: '/analytics', component: PageAnalyticsArticle },
+  { name: 'bookmarks', path: '/bookmarks', component: PageBookmarks },
+  { name: 'editBookmark', path: '/bookmark/:id?', component: PageEditBookmark },
+  { name: 'invitation', path: '/invitation', component: PageInvitation },
+  { path: '*', redirect: { name: 'login' } }
 ];
 
 const scrollBehavior = (to, from, savedPosition) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(savedPosition
-        ? savedPosition
-        : { x: 0, y: 0 }
-      )
-    }, 100) // transitionの時間と合わせる
-  })
+      resolve(savedPosition || { x: 0, y: 0 }
+      );
+    }, 100); // transitionの時間と合わせる
+  });
 };
 
 Vue.use(VueRouter);
@@ -48,21 +50,16 @@ const router = new VueRouter({
   base: '/mypage',
   // mode: 'history',
   scrollBehavior,
-  routes,
+  routes
 });
 
 router.beforeEach((to, from, next) => {
   store.dispatch('setApiStatusInit');
   next();
 });
-
-import { ga_page_view } from "./ga";
 router.afterEach((to, from) => {
-  ga_page_view(to);
+  gaPageView(to);
 });
-
-import route_shortcut from '../mixins/route';
-Vue.mixin(route_shortcut);
+Vue.mixin(routeShortcut);
 
 export default router;
-

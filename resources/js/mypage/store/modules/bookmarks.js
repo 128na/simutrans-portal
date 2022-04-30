@@ -4,17 +4,17 @@ import { SET_BOOKMARKS } from '../mutation-types';
 export default {
   state: () => {
     return {
-      bookmarks: false,
+      bookmarks: false
     };
   },
   getters: {
     bookmarksLoaded: state => state.bookmarks !== false,
-    bookmarks: state => state.bookmarks || [],
+    bookmarks: state => state.bookmarks || []
   },
   mutations: {
     [SET_BOOKMARKS](state, bookmarks = false) {
       state.bookmarks = bookmarks;
-    },
+    }
   },
   actions: {
     /**
@@ -71,11 +71,11 @@ export default {
     /**
      * ブックマーク削除
      */
-    async deleteBookmark({ dispatch, commit }, { bookmark_id, message = '削除しました' }) {
+    async deleteBookmark({ dispatch, commit }, { bookmarkId, message = '削除しました' }) {
       dispatch('setApiStatusFetching');
 
       try {
-        const res = await api.deleteBookmark(bookmark_id);
+        const res = await api.deleteBookmark(bookmarkId);
 
         if (res && res.status === 200) {
           dispatch('setApiStatusSuccess');
@@ -89,6 +89,6 @@ export default {
     },
     clearBookmarks({ commit }) {
       commit(SET_BOOKMARKS, false);
-    },
-  },
+    }
+  }
 };

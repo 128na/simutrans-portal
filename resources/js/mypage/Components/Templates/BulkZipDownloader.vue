@@ -1,40 +1,80 @@
 <template>
   <div>
     <b-input-group>
-      <slot v-bind:processing="processing"></slot>
+      <slot :processing="processing" />
       <component :is="appendable">
-        <b-button variant="outline-primary" disabled v-if="processing">
-          <b-spinner small class="mr-1" />処理中...
+        <b-button
+          v-if="processing"
+          variant="outline-primary"
+          disabled
+        >
+          <b-spinner
+            small
+            class="mr-1"
+          />処理中...
         </b-button>
         <b-button
+          v-else
           variant="outline-primary"
           :disabled="!canDownload"
-          v-else
           @click="handleDownload"
-          >{{ buttonName }}</b-button
         >
+          {{ buttonName }}
+        </b-button>
       </component>
     </b-input-group>
-    <div v-show="errorMessage" class="text-danger">{{ errorMessage }}</div>
+    <div
+      v-show="errorMessage"
+      class="text-danger"
+    >
+      {{ errorMessage }}
+    </div>
   </div>
 </template>
 <script>
-import api from "../../api";
+import api from '../../api';
 import {
   TARGET_TYPE_USER,
   TARGET_TYPE_BOOKMARK,
   TARGET_TYPE_PUBLIC_BOOKMARK,
   RETRY_LIMIT,
-  RETRY_INTERVAL,
-} from "../../../const";
+  RETRY_INTERVAL
+} from '../../../const';
 export default {
-  props: ["target_type", "target_id"],
+  props: ['target_type', 'target_id'],
   data() {
     return {
       processing: false,
       errorMessage: null,
-      retry: 0,
+      retry: 0
     };
+  },
+  computed: {
+    appendable() {
+      return this.$slots.default ? 'b-input-group-append' : 'div';
+    },
+    buttonName() {
+      switch (this.target_type) {
+        case TARGET_TYPE_USER:
+          return 'エクスポート';
+        case TARGET_TYPE_BOOKMARK:
+          return 'ダウンロード';
+        case TARGET_TYPE_PUBLIC_BOOKMARK:
+          return 'ダウンロード';
+      }
+      return '';
+    },
+    canDownload() {
+      switch (this.target_type) {
+        case TARGET_TYPE_USER:
+          return true;
+        case TARGET_TYPE_BOOKMARK:
+          return !!this.target_id;
+        case TARGET_TYPE_PUBLIC_BOOKMARK:
+          return true;
+      }
+      return false;
+    }
   },
   methods: {
     async handleDownload() {
@@ -76,35 +116,10 @@ export default {
       window.open(url);
     },
     failed() {
-      this.errorMessage = "生成に失敗しました";
+      this.errorMessage = '生成に失敗しました';
       this.processing = false;
       this.retry = 0;
-    },
-  },
-  computed: {
-    appendable() {
-      return this.$slots["default"] ? "b-input-group-append" : "div";
-    },
-    buttonName() {
-      switch (this.target_type) {
-        case TARGET_TYPE_USER:
-          return "エクスポート";
-        case TARGET_TYPE_BOOKMARK:
-          return "ダウンロード";
-        case TARGET_TYPE_PUBLIC_BOOKMARK:
-          return "ダウンロード";
-      }
-    },
-    canDownload() {
-      switch (this.target_type) {
-        case TARGET_TYPE_USER:
-          return true;
-        case TARGET_TYPE_BOOKMARK:
-          return !!this.target_id;
-        case TARGET_TYPE_PUBLIC_BOOKMARK:
-          return true;
-      }
-    },
-  },
+    }
+  }
 };
 </script>

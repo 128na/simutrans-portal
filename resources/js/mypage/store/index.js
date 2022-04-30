@@ -8,9 +8,9 @@ import TagsModule from './modules/tags';
 import AnalyticsModule from './modules/analytics';
 import BookmarksModule from './modules/bookmarks';
 import OptionsModule from './modules/options';
-Vue.use(Vuex);
 
 import { SET_INFO_MESSAGE, SET_API_STATUS } from './mutation-types';
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
@@ -20,7 +20,7 @@ export default new Vuex.Store({
     TagsModule,
     OptionsModule,
     AnalyticsModule,
-    BookmarksModule,
+    BookmarksModule
   },
   state: {
     /**
@@ -34,8 +34,8 @@ export default new Vuex.Store({
       fetching: false,
       errors: null,
       message: null,
-      status_code: null,
-    },
+      status_code: null
+    }
   },
   getters: {
     infoMessage: state => state.info_message,
@@ -57,19 +57,19 @@ export default new Vuex.Store({
       return null;
     },
     getValidationErrors: state => key => {
-      return state.api_status.errors && state.api_status.errors[key] || [];
-    },
+      return (state.api_status.errors && state.api_status.errors[key]) || [];
+    }
   },
   mutations: {
     [SET_INFO_MESSAGE](state, message = null) {
       state.info_message = message;
     },
-    [SET_API_STATUS](state, { fetching = false, errors = null, message = null, status_code = 0 }) {
+    [SET_API_STATUS](state, { fetching = false, errors = null, message = null, statusCode = 0 }) {
       state.api_status.fetching = fetching;
       state.api_status.errors = errors;
       state.api_status.message = message;
-      state.api_status.status_code = status_code;
-    },
+      state.api_status.status_code = statusCode;
+    }
   },
   actions: {
     setInfoMessage({ commit, state }, { message = null, timeout = 5 }) {
@@ -97,27 +97,27 @@ export default new Vuex.Store({
       console.error(error);
       const res = error.response || null;
       if (!res) {
-        return commit(SET_API_STATUS, { message: '通信エラーが発生しました。', status_code: 0 });
+        return commit(SET_API_STATUS, { message: '通信エラーが発生しました。', statusCode: 0 });
       }
       switch (res.status) {
         case 401:
-          return commit(SET_API_STATUS, { message: '認証に失敗しました。', status_code: 401 });
+          return commit(SET_API_STATUS, { message: '認証に失敗しました。', statusCode: 401 });
         case 403:
-          return commit(SET_API_STATUS, { message: res?.data?.message || '操作を実行できませんでした。', status_code: 403 });
+          return commit(SET_API_STATUS, { message: res?.data?.message || '操作を実行できませんでした。', statusCode: 403 });
         case 404:
-          return commit(SET_API_STATUS, { message: 'データが見つかりませんでした。', status_code: 404 });
+          return commit(SET_API_STATUS, { message: 'データが見つかりませんでした。', statusCode: 404 });
         case 419:
-          return commit(SET_API_STATUS, { message: 'ページの有効期限が切れました。ページを再読み込みしてから再度操作してください。', status_code: 419 });
+          return commit(SET_API_STATUS, { message: 'ページの有効期限が切れました。ページを再読み込みしてから再度操作してください。', statusCode: 419 });
         case 422:
           return commit(SET_API_STATUS, {
             message: '入力データを確認してください。',
             errors: res.data.errors,
-            status_code: 422
+            statusCode: 422
           });
         case 429:
-          return commit(SET_API_STATUS, { message: 'リクエスト頻度制限により実行できませんでした。', status_code: 429 });
+          return commit(SET_API_STATUS, { message: 'リクエスト頻度制限により実行できませんでした。', statusCode: 429 });
       }
-      return commit(SET_API_STATUS, { message: res?.data?.message || 'エラーが発生しました', status_code: res.status });
-    },
+      return commit(SET_API_STATUS, { message: res?.data?.message || 'エラーが発生しました', statusCode: res.status });
+    }
   }
 });

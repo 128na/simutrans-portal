@@ -1,11 +1,11 @@
 /**
  * 分析用の定数
  */
-export const analytics_constants = {
+export const analyticsConstants = {
   computed: {
-    TYPE_DAILY: () => "daily",
-    TYPE_MONTHLY: () => "monthly",
-    TYPE_YEARLY: () => "yearly",
+    TYPE_DAILY: () => 'daily',
+    TYPE_MONTHLY: () => 'monthly',
+    TYPE_YEARLY: () => 'yearly',
 
     MODE_LINE: () => 'line',
     MODE_SUM: () => 'sum',
@@ -19,19 +19,19 @@ export const analytics_constants = {
     OPTIONS() {
       return {
         types: [
-          { value: "daily", text: "日" },
-          { value: "monthly", text: "月" },
-          { value: "yearly", text: "年" }
+          { value: 'daily', text: '日' },
+          { value: 'monthly', text: '月' },
+          { value: 'yearly', text: '年' }
         ],
         modes: [
-          { value: "line", text: "推移" },
-          { value: "sum", text: "合計" }
+          { value: 'line', text: '推移' },
+          { value: 'sum', text: '合計' }
         ],
         axes: [
-          { value: "pv", text: "PV（ページ表示回数）" },
-          { value: "cv", text: "CV（DL・リンククリック回数）" }
+          { value: 'pv', text: 'PV（ページ表示回数）' },
+          { value: 'cv', text: 'CV（DL・リンククリック回数）' }
         ]
-      }
+      };
     }
   }
 };

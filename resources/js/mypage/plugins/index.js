@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueClipboard from 'vue-clipboard2';
-Vue.use(VueClipboard);
 
 import {
   AlertPlugin,
@@ -26,8 +25,30 @@ import {
   NavbarPlugin,
   OverlayPlugin,
   TablePlugin,
-  SpinnerPlugin,
+  SpinnerPlugin
+  ,
+  BIcon,
+  BIconEyeFill,
+  BIconEyeSlashFill,
+  BIconArrowLeft,
+  BIconHouseFill,
+  BIconPersonFill,
+  BIconGraphUp,
+  BIconFileEarmarkZipFill,
+  BIconFileEarmarkTextFill,
+  BIconClipboardData,
+  BIconBoxArrowUpRight,
+  BIconPencil,
+  BIconLockFill,
+  BIconUnlockFill,
+  BIconArrowDown,
+  BIconBookmarkStarFill,
+  BIconTrash,
+  BIconKeyFill,
+  BIconPersonPlusFill
 } from 'bootstrap-vue';
+
+Vue.use(VueClipboard);
 Vue.use(AlertPlugin);
 Vue.use(BadgePlugin);
 Vue.use(ButtonPlugin);
@@ -52,29 +73,6 @@ Vue.use(NavbarPlugin);
 Vue.use(OverlayPlugin);
 Vue.use(TablePlugin);
 Vue.use(SpinnerPlugin);
-
-
-import {
-  BIcon,
-  BIconEyeFill,
-  BIconEyeSlashFill,
-  BIconArrowLeft,
-  BIconHouseFill,
-  BIconPersonFill,
-  BIconGraphUp,
-  BIconFileEarmarkZipFill,
-  BIconFileEarmarkTextFill,
-  BIconClipboardData,
-  BIconBoxArrowUpRight,
-  BIconPencil,
-  BIconLockFill,
-  BIconUnlockFill,
-  BIconArrowDown,
-  BIconBookmarkStarFill,
-  BIconTrash,
-  BIconKeyFill,
-  BIconPersonPlusFill,
-} from 'bootstrap-vue';
 Vue.component('BIcon', BIcon);
 Vue.component('BIconEyeFill', BIconEyeFill);
 Vue.component('BIconEyeSlashFill', BIconEyeSlashFill);

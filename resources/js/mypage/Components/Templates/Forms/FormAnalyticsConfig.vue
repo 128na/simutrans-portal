@@ -17,12 +17,15 @@
       />
     </b-form-group>
     <b-form-group label="対象">
-      <b-form-checkbox-group v-model="value.axes" :options="options.axes" />
+      <b-form-checkbox-group
+        v-model="value.axes"
+        :options="options.axes"
+      />
     </b-form-group>
     <b-form-group label="開始日">
       <b-form-datepicker
-        class="mr-2"
         v-model="computed_start_date"
+        class="mr-2"
         :state="validationState('start_date')"
       />
       <validation-message field="start_date" />
@@ -37,29 +40,29 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
-import { DateTime, Interval } from "luxon";
-import { analytics_constants } from "../../../mixins/analytics";
+import { mapGetters } from 'vuex';
+import { DateTime } from 'luxon';
+import { analyticsConstants } from '../../../mixins/analytics';
 export default {
-  mixins: [analytics_constants],
-  props: ["value"],
+  mixins: [analyticsConstants],
+  props: ['value'],
   data() {
     return {
-      options: {},
+      options: {}
     };
   },
   created() {
     this.options = this.OPTIONS;
   },
   computed: {
-    ...mapGetters(["validationState"]),
+    ...mapGetters(['validationState']),
     computed_start_date: {
       get() {
         return this.value.start_date.toISODate();
       },
       set(val) {
         return (this.value.start_date = DateTime.fromISO(val));
-      },
+      }
     },
     computed_end_date: {
       get() {
@@ -67,8 +70,8 @@ export default {
       },
       set(val) {
         return (this.value.end_date = DateTime.fromISO(val));
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>

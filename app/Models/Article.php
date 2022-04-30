@@ -283,8 +283,7 @@ class Article extends Model implements Feedable
     {
         return Storage::disk('public')->url($this->has_thumbnail
             ? $this->thumbnail->path
-            : config('attachment.no-thumbnail')
-        );
+            : config('attachment.no-thumbnail'));
     }
 
     public function getHasFileAttribute()
@@ -368,8 +367,7 @@ class Article extends Model implements Feedable
 
         return Storage::disk('public')->url($image
             ? $image->path
-            : config('attachment.no-thumbnail')
-        );
+            : config('attachment.no-thumbnail'));
     }
 
     /*

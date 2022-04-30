@@ -14,8 +14,8 @@ class BookmarkItemController extends Controller
 
     public function __construct(
         BookmarkRepository $bookmarkRepository,
-        BookmarkItemRepository $bookmarkItemRepository)
-    {
+        BookmarkItemRepository $bookmarkItemRepository
+    ) {
         $this->bookmarkRepository = $bookmarkRepository;
         $this->bookmarkItemRepository = $bookmarkItemRepository;
     }
@@ -27,9 +27,11 @@ class BookmarkItemController extends Controller
         $bookmark = $this->bookmarkRepository->findOrFail($validated['bookmarkItem']['bookmark_id']);
         $this->authorize('update', $bookmark);
 
-        if ($this->bookmarkItemRepository->exists($bookmark,
+        if ($this->bookmarkItemRepository->exists(
+            $bookmark,
             $validated['bookmarkItem']['bookmark_itemable_type'],
-            $validated['bookmarkItem']['bookmark_itemable_id'])) {
+            $validated['bookmarkItem']['bookmark_itemable_id']
+        )) {
             session()->flash('error', '既に追加されています');
 
             return redirect()->back();

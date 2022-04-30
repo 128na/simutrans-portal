@@ -24,13 +24,15 @@ class AddonPostDecorator extends BaseDecorator
             $result = $this->addFile(
                 $result,
                 $this->toPath($model->id, $model->thumbnail->original_name),
-                $model->thumbnail->path);
+                $model->thumbnail->path
+            );
         }
         // アドオンファイル
         $result = $this->addFile(
             $result,
             $this->toPath($model->id, $model->file->original_name),
-            $model->file->path);
+            $model->file->path
+        );
         $result = $this->addContent($result, $this->content($model));
 
         return $result;

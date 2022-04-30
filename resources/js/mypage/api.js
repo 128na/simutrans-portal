@@ -12,9 +12,6 @@ export default {
   resend() {
     return axios.post(`/api/v2/email/resend`);
   },
-  register(params) {
-    return axios.post(`/api/v2/register`, params);
-  },
   reset(params) {
     return axios.post(`/api/v2/password/email`, params);
   },

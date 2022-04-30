@@ -67,23 +67,6 @@ export default {
       } catch (e) { }
     },
     /**
-     * ユーザー登録
-     */
-    async register({ commit, dispatch }, params) {
-      dispatch('setApiStatusFetching');
-      try {
-        const res = await api.register(params);
-        if (res && res.status === 201) {
-          commit(SET_USER, res.data.data);
-          dispatch('setApiStatusSuccess');
-          return dispatch('setInfoMessage', { message: 'ユーザー登録しました。' });
-        }
-        dispatch('setApiStatusError');
-      } catch (e) {
-        dispatch('setApiStatusError', e);
-      }
-    },
-    /**
      * ユーザープロフィール更新
      */
     async updateUser({ commit, dispatch }, { user, message = 'プロフィールを更新しました。' }) {

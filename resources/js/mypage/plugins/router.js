@@ -6,7 +6,6 @@ import VueRouter from 'vue-router';
 */
 import PageLogin from '../Components/Pages/PageLogin';
 import PageLogout from '../Components/Pages/PageLogout';
-import PageRegister from '../Components/Pages/PageRegister';
 import PageReset from '../Components/Pages/PageReset';
 import PageIndex from '../Components/Pages/PageIndex';
 import PageCreateArticle from '../Components/Pages/PageCreateArticle';
@@ -15,14 +14,12 @@ import PageEditProfile from '../Components/Pages/PageEditProfile';
 import PageAnalyticsArticle from '../Components/Pages/PageAnalyticsArticle';
 import PageBookmarks from '../Components/Pages/PageBookmarks';
 import PageEditBookmark from '../Components/Pages/PageEditBookmark';
-// import PageTokens from '../Components/Pages/PageTokens';
 import PageInvitation from '../Components/Pages/PageInvitation';
 import store from '../store';
 
 const routes = [
   { name: "login", path: '/login', component: PageLogin },
   { name: "logout", path: '/logout', component: PageLogout },
-  { name: "register", path: '/register', component: PageRegister },
   { name: "reset", path: '/reset', component: PageReset },
   { name: "index", path: '/', component: PageIndex },
   { name: "createArticle", path: '/create/:post_type', component: PageCreateArticle },
@@ -31,7 +28,6 @@ const routes = [
   { name: "analyticsArticle", path: '/analytics', component: PageAnalyticsArticle },
   { name: "bookmarks", path: '/bookmarks', component: PageBookmarks },
   { name: "editBookmark", path: '/bookmark/:id?', component: PageEditBookmark },
-  // { name: "tokens", path: '/tokens', component: PageTokens },
   { name: "invitation", path: '/invitation', component: PageInvitation },
   { path: '*', redirect: { name: 'login' } },
 ];

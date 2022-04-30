@@ -23,21 +23,6 @@ export default {
     admin_url() {
       return `${this.base_url}/admin`;
     },
-    can_register() {
-      return process.env.MIX_REGISTER_RESTRICTION === 'false';
-    },
-    can_twitter_login() {
-      return process.env.MIX_TWITTER_LOGIN_RESTRICTION === 'false';
-    },
-    can_google_login() {
-      return process.env.MIX_GOOGLE_LOGIN_RESTRICTION === 'false';
-    },
-    twitter_login_url() {
-      return `${this.base_url}/login/twitter`;
-    },
-    google_login_url() {
-      return `${this.base_url}/login/google`;
-    },
 
     route_login() {
       return { name: "login" };

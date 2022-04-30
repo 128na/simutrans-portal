@@ -17,17 +17,6 @@
         </router-link>
       </b-form-group>
     </form-login>
-    <hr />
-    <div class="mb-3" v-if="can_twitter_login">
-      <a :href="twitter_login_url" title="Twitterログイン">
-        <img src="/storage/default/login_twitter.png" />
-      </a>
-    </div>
-    <div class="mb-3" v-if="can_google_login">
-      <a :href="google_login_url" title="Googleログイン">
-        <img src="/storage/default/login_google.png" />
-      </a>
-    </div>
   </div>
 </template>
 <script>

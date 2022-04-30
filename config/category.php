@@ -15,6 +15,7 @@ return [
         ['slug' => 'page',               'type' => 'post', 'order' => 00020, 'name' => 'Post'],
     ],
     'pak' => [
+        ['slug' => 'any',          'type' => 'pak', 'order' => 9000,  'name' => 'Any'],
         ['slug' => '128-japan',    'type' => 'pak', 'order' => 10000, 'name' => 'Pak128.Japan'],
         ['slug' => '128',          'type' => 'pak', 'order' => 10010, 'name' => 'Pak128'],
         ['slug' => '64',           'type' => 'pak', 'order' => 10011, 'name' => 'Pak64'],

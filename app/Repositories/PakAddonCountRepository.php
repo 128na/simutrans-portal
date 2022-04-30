@@ -12,7 +12,7 @@ class PakAddonCountRepository extends BaseRepository
     private const INSERT_SQL = "INSERT INTO pak_addon_counts (pak_slug, addon_slug, count) (
         SELECT
             pak.slug pak_slug,
-            addon.slug addon_slug,
+            case addon.slug is null when 1 then 'none' else addon.slug end addon_slug,
             COUNT(a.id) count
         FROM
             articles a
@@ -41,10 +41,9 @@ class PakAddonCountRepository extends BaseRepository
         WHERE
             a.post_type IN ('addon-post', 'addon-introduction')
                 AND pak.id IS NOT NULL
-                AND addon.id IS NOT NULL
                 AND u.deleted_at IS NULL
         GROUP BY pak.id , addon.id
-        ORDER BY pak.order , addon.order)";
+        ORDER BY pak.order , case addon.order is null when 1 then 2147483647 else addon.order end)";
 
     /**
      * @var PakAddonCount

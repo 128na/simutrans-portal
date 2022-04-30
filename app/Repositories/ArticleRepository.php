@@ -229,6 +229,16 @@ class ArticleRepository extends BaseRepository
         return $this->queryByPakAddonCategory($pak, $addon)->paginate($limit);
     }
 
+    /**
+     * カテゴリ(pak,addon指定なし)の投稿一覧.
+     */
+    public function paginateByPakNoneAddonCategory(Category $pak, ?int $limit = null): LengthAwarePaginator
+    {
+        return $this->queryByCategory($pak)
+            ->whereDoesntHave('categories', fn ($query) => $query->where('type', 'addon'))
+            ->paginate($limit);
+    }
+
     private function queryByTag(Tag $tag): Relation
     {
         return $this->basicRelationQuery($tag->articles());

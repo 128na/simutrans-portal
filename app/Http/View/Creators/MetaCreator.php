@@ -53,6 +53,8 @@ class MetaCreator
 
             case $route->named('category'):
                 return $this->forCategory();
+            case $route->named('category.pak.noneAddon'):
+                return $this->forPakNoneAddon();
             case $route->named('category.pak.addon'):
                 return $this->forPakAddon();
             case $route->named('tag'):
@@ -163,6 +165,25 @@ class MetaCreator
                 ['name' => 'トップ', 'url' => route('index')],
                 ['name' => $pak_title, 'bookmarkItemableType' => Category::class, 'bookmarkItemableId' => $pak->id, 'url' => route('category', ['pak', $pak->slug])],
                 ['name' => $addon_title, 'bookmarkItemableType' => Category::class, 'bookmarkItemableId' => $addon->id],
+            ],
+            'open_menu_pak_addon' => [$pak->slug => true],
+        ];
+    }
+
+    /**
+     * pak別カテゴリの記事一覧ページ用.
+     */
+    public function forPakNoneAddon()
+    {
+        $pak = $this->data['categories']['pak'];
+        $pak_title = __('category.pak.'.$pak->slug);
+        $title = "{$pak_title}/アドオン指定なし";
+
+        return [
+            'title' => $title,
+            'breadcrumb' => [
+                ['name' => 'トップ', 'url' => route('index')],
+                ['name' => $pak_title, 'bookmarkItemableType' => Category::class, 'bookmarkItemableId' => $pak->id, 'url' => route('category', ['pak', $pak->slug])],
             ],
             'open_menu_pak_addon' => [$pak->slug => true],
         ];

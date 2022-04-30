@@ -58,6 +58,7 @@ Route::middleware(['cache.response'])->group(function () {
     Route::get('/ranking', [ArticleController::class, 'ranking'])->name('addons.ranking');
     Route::get('/pages', [ArticleController::class, 'pages'])->name('pages.index');
     Route::get('/announces', [ArticleController::class, 'announces'])->name('announces.index');
+    Route::get('/category/pak/{size}/none', [ArticleController::class, 'categoryPakNoneAddon'])->name('category.pak.noneAddon');
     Route::get('/category/pak/{size}/{slug}', [ArticleController::class, 'categoryPakAddon'])->name('category.pak.addon');
     Route::get('/category/{type}/{slug}', [ArticleController::class, 'category'])->name('category');
     Route::get('/tag/{tag}', [ArticleController::class, 'tag'])->name('tag');

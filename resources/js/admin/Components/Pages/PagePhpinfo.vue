@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 export default {
   created() {
     if (!this.phpinfo) {
@@ -13,10 +13,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["phpinfo"]),
+    ...mapGetters(['phpinfo'])
   },
   methods: {
-    ...mapActions(["fetchPhpinfo"]),
-  },
+    ...mapActions(['fetchPhpinfo'])
+  }
 };
 </script>

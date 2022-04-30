@@ -24,7 +24,8 @@ class AddonIntroductionDecorator extends BaseDecorator
             $result = $this->addFile(
                 $result,
                 $this->toPath($model->id, $model->thumbnail->original_name),
-                $model->thumbnail->path);
+                $model->thumbnail->path
+            );
         }
         $result = $this->addContent($result, $this->content($model));
 

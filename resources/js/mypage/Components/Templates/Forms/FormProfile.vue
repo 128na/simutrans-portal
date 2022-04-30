@@ -6,10 +6,10 @@
         アバター画像
       </template>
       <media-manager
-        name="avatar"
-        v-model="user.profile.data.avatar"
-        type="Profile"
         :id="user.profile.id"
+        v-model="user.profile.data.avatar"
+        name="avatar"
+        type="Profile"
         :only_image="true"
       />
       <validation-message field="avatar" />
@@ -20,8 +20,8 @@
         名前
       </template>
       <b-form-input
-        type="text"
         v-model="user.name"
+        type="text"
         :state="validationState('user.name')"
       />
       <validation-message field="user.name" />
@@ -32,8 +32,8 @@
         メールアドレス
       </template>
       <b-form-input
-        type="email"
         v-model="user.email"
+        type="email"
         :state="validationState('user.email')"
       />
       <small>
@@ -59,8 +59,8 @@
         WebサイトURL
       </template>
       <b-form-input
-        type="url"
         v-model="user.profile.data.website"
+        type="url"
         :state="validationState('user.profile.data.website')"
       />
       <validation-message field="user.profile.data.website" />
@@ -72,8 +72,8 @@
       </template>
       <b-input-group prepend="@">
         <b-form-input
-          type="text"
           v-model="user.profile.data.twitter"
+          type="text"
           :state="validationState('user.profile.data.twitter')"
         />
       </b-input-group>
@@ -83,11 +83,11 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
-  props: ["user"],
+  props: ['user'],
   computed: {
-    ...mapGetters(["validationState"]),
-  },
+    ...mapGetters(['validationState'])
+  }
 };
 </script>

@@ -2,8 +2,8 @@
   <div>
     <page-title>ユーザー招待</page-title>
     <page-description>
-      このサイトへユーザーを招待、登録できるようにします。<br />
-      ユーザーを招待にするには招待URLを生成し、招待したいユーザーにURLを伝えてください。<br />
+      このサイトへユーザーを招待、登録できるようにします。<br>
+      ユーザーを招待にするには招待URLを生成し、招待したいユーザーにURLを伝えてください。<br>
     </page-description>
     <page-sub-title>注意事項</page-sub-title>
     <page-description>
@@ -23,7 +23,10 @@
     <b-form-group>
       <b-input-group>
         <b-input-group-prepend v-if="user.invitation_url">
-          <b-button variant="outline-secondary" @click="handleCopy">
+          <b-button
+            variant="outline-secondary"
+            @click="handleCopy"
+          >
             <b-icon icon="clipboard-data" />
           </b-button>
         </b-input-group-prepend>
@@ -33,15 +36,24 @@
         />
         <b-input-group-append>
           <template v-if="user.invitation_url">
-            <b-button variant="primary" @click="updateInvitationCode">
+            <b-button
+              variant="primary"
+              @click="updateInvitationCode"
+            >
               再生成
             </b-button>
-            <b-button variant="danger" @click="deleteInvitationCode">
+            <b-button
+              variant="danger"
+              @click="deleteInvitationCode"
+            >
               削除
             </b-button>
           </template>
           <template v-else>
-            <b-button variant="primary" @click="updateInvitationCode">
+            <b-button
+              variant="primary"
+              @click="updateInvitationCode"
+            >
               生成
             </b-button>
           </template>
@@ -51,39 +63,41 @@
     <page-sub-title>招待したユーザー</page-sub-title>
     <template v-if="hasInvites">
       <ul>
-        <li v-for="invite in invites">
+        <li v-for="invite in invites" :key="invite.id">
           {{ invite.id }}. {{ invite.name }} ({{ invite.created_at }})
         </li>
       </ul>
     </template>
-    <template v-else> 招待したユーザーはいません。 </template>
+    <template v-else>
+      招待したユーザーはいません。
+    </template>
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { validateVerified } from "../../mixins/auth";
-import api from "../../api";
+import { mapGetters, mapActions } from 'vuex';
+import { validateVerified } from '../../mixins/auth';
+import api from '../../api';
 export default {
   mixins: [validateVerified],
   data() {
     return {
-      invites: null,
+      invites: null
     };
   },
   created() {
     this.fetch();
   },
   computed: {
-    ...mapGetters(["isVerified", "user"]),
+    ...mapGetters(['isVerified', 'user']),
     hasInvites() {
       return this.invites && this.invites.length;
-    },
+    }
   },
   methods: {
     ...mapActions([
-      "updateInvitationCode",
-      "deleteInvitationCode",
-      "setInfoMessage",
+      'updateInvitationCode',
+      'deleteInvitationCode',
+      'setInfoMessage'
     ]),
     async fetch() {
       const res = await api.fetchInvites();
@@ -95,9 +109,9 @@ export default {
     handleCopy() {
       this.$copyText(this.user.invitation_url);
       this.setInfoMessage({
-        message: "クリップボードにコピーしました",
+        message: 'クリップボードにコピーしました'
       });
-    },
-  },
+    }
+  }
 };
 </script>

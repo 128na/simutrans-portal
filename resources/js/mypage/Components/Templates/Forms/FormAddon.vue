@@ -35,7 +35,10 @@
         <badge-optional />
         タグ
       </template>
-      <tag-selector v-model="article.tags" :creatable="true" />
+      <tag-selector
+        v-model="article.tags"
+        :creatable="true"
+      />
     </b-form-group>
     <b-form-group>
       <template slot="label">
@@ -61,18 +64,18 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
-  props: ["article"],
+  props: ['article'],
   computed: {
-    ...mapGetters(["options", "validationState"]),
+    ...mapGetters(['options', 'validationState']),
     pak128_category_id() {
       const pak = this.options.categories.pak;
-      return pak.find((c) => c.text == "Pak128").value || null;
+      return pak.find((c) => c.text == 'Pak128').value || null;
     },
     includes_pak128() {
       return this.article.categories.includes(this.pak128_category_id);
-    },
-  },
+    }
+  }
 };
 </script>

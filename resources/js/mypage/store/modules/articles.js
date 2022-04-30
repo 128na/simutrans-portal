@@ -1,27 +1,27 @@
-import api from '../../api'
+import api from '../../api';
 import { SET_ARTICLES } from '../mutation-types';
 import { DateTime } from 'luxon';
 
 export default {
   state: () => {
     return {
-      articles: false,
+      articles: false
     };
   },
   getters: {
     articlesLoaded: state => state.articles !== false,
-    articles: state => state.articles || [],
+    articles: state => state.articles || []
   },
   mutations: {
     [SET_ARTICLES](state, articles = false) {
       if (articles) {
         articles = articles.map(a => Object.assign(a, {
           created_at: DateTime.fromISO(a.created_at),
-          updated_at: DateTime.fromISO(a.updated_at),
+          updated_at: DateTime.fromISO(a.updated_at)
         }));
       }
       state.articles = articles;
-    },
+    }
   },
   actions: {
     /**
@@ -80,6 +80,6 @@ export default {
     },
     clearArticles({ commit }) {
       commit(SET_ARTICLES, false);
-    },
+    }
   }
 };

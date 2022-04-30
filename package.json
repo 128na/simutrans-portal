@@ -7,7 +7,9 @@
     "watch-poll": "mix watch -- --watch-options-poll=1000",
     "hot": "mix watch --hot",
     "prod": "npm run production",
-    "production": "mix --production"
+    "production": "mix --production",
+    "es-check": "npx eslint --ext .js,.vue ./resources/js",
+    "es": "npx eslint --fix --ext .js,.vue ./resources/js"
   },
   "devDependencies": {
     "axios": "^0.21.1",
@@ -15,6 +17,13 @@
     "bootstrap-vue": "^2.21.2",
     "chart.js": "^2.9.4",
     "cross-env": "^7.0.3",
+    "eslint": "^8.14.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jquery": "^1.5.1",
+    "eslint-plugin-n": "^15.2.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-vue": "^8.7.1",
     "jquery": "^3.6.0",
     "laravel-mix": "^6",
     "luxon": "^1.26.0",

@@ -4,21 +4,31 @@
     <div v-if="ready">
       <form-bookmark :bookmark="copy">
         <fetching-overlay>
-          <b-button variant="primary" @click.prevent="handleSave">
+          <b-button
+            variant="primary"
+            @click.prevent="handleSave"
+          >
             保存
           </b-button>
         </fetching-overlay>
       </form-bookmark>
     </div>
-    <loading v-else />
+    <loading-message v-else />
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { validateVerified } from "../../mixins/auth";
-import { editor } from "../../mixins/editor";
+import { mapGetters, mapActions } from 'vuex';
+import { validateVerified } from '../../mixins/auth';
+import { editor } from '../../mixins/editor';
 export default {
   mixins: [validateVerified, editor],
+  watch: {
+    bookmarksLoaded(val) {
+      if (val) {
+        this.setCopy(this.selected_bookmark);
+      }
+    }
+  },
   created() {
     if (this.isVerified) {
       if (!this.bookmarksLoaded) {
@@ -28,23 +38,16 @@ export default {
       }
     }
   },
-  watch: {
-    bookmarksLoaded(val) {
-      if (val) {
-        this.setCopy(this.selected_bookmark);
-      }
-    },
-  },
   computed: {
     is_create() {
       return !this.copy.id;
     },
     ...mapGetters([
-      "isVerified",
-      "getStatusText",
-      "bookmarksLoaded",
-      "bookmarks",
-      "hasError",
+      'isVerified',
+      'getStatusText',
+      'bookmarksLoaded',
+      'bookmarks',
+      'hasError'
     ]),
     selected_bookmark() {
       if (this.bookmarksLoaded) {
@@ -53,33 +56,29 @@ export default {
           this.createBookmark()
         );
       }
+      return null;
     },
     ready() {
       return this.bookmarksLoaded && !!this.copy;
-    },
+    }
   },
   methods: {
     createBookmark() {
       return {
-        title: "",
-        description: "",
+        title: '',
+        description: '',
         is_public: false,
-        bookmarkItems: [],
+        bookmarkItems: []
       };
     },
-    ...mapActions(["fetchBookmarks", "updateBookmark", "storeBookmark"]),
+    ...mapActions(['fetchBookmarks', 'updateBookmark', 'storeBookmark']),
     async handlePreview() {
-      const params = {
-        bookmark: this.copy,
-        bookmarkItems: this.copy.bookmarkItems,
-      };
-
       this.scrollToTop();
     },
     async handleSave() {
       const params = {
         bookmark: this.copy,
-        bookmarkItems: this.copy.bookmarkItems,
+        bookmarkItems: this.copy.bookmarkItems
       };
       if (this.is_create) {
         await this.storeBookmark({ params });
@@ -91,14 +90,14 @@ export default {
       // エラーがあれば編集画面上部へスクロールする（通知が見えないため）
       if (!this.hasError) {
         this.unsetUnloadDialog();
-        this.$router.push({ name: "bookmarks" });
+        this.$router.push({ name: 'bookmarks' });
       } else {
         this.scrollToTop();
       }
     },
     getOriginal() {
       return this.selected_bookmark;
-    },
-  },
+    }
+  }
 };
 </script>

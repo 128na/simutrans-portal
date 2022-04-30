@@ -1,17 +1,25 @@
 <template>
   <div>
     <label>ブックマークアイテム一覧</label>
-    <draggable v-model="items" class="mx-3">
+    <draggable
+      v-model="items"
+      class="mx-3"
+    >
       <transition-group>
-        <div v-for="(item, index) in value" :key="item.id" class="clickable">
+        <div
+          v-for="(item, index) in value"
+          :key="item.id"
+          class="clickable"
+        >
           <div class="d-flex align-items-center">
             <div>{{ icon(item) }} {{ item.title }}</div>
             <b-button
               variant="link"
               class="ml-auto text-danger"
               @click="handleDelete(index)"
-              >削除</b-button
             >
+              削除
+            </b-button>
           </div>
           <b-form-group>
             <b-form-textarea
@@ -26,37 +34,37 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
-import draggable from "vuedraggable";
+import { mapGetters } from 'vuex';
+import draggable from 'vuedraggable';
 export default {
-  props: ["value"],
   components: {
-    draggable,
+    draggable
   },
+  props: ['value'],
   computed: {
-    ...mapGetters(["validationState"]),
+    ...mapGetters(['validationState']),
     items: {
       get() {
         return this.value;
       },
       set(items) {
-        this.$emit("input", this.reorder(items));
-      },
-    },
+        this.$emit('input', this.reorder(items));
+      }
+    }
   },
   methods: {
     icon(item) {
       switch (item.bookmark_itemable_type) {
-        case "App\\Models\\Article":
-          return "📄";
-        case "App\\Models\\User\\Bookmark":
-          return "🔖";
-        case "App\\Models\\Category":
-          return "📁";
-        case "App\\Models\\Tag":
-          return "🏷️";
-        case "App\\Models\\User":
-          return "👷";
+        case 'App\\Models\\Article':
+          return '📄';
+        case 'App\\Models\\User\\Bookmark':
+          return '🔖';
+        case 'App\\Models\\Category':
+          return '📁';
+        case 'App\\Models\\Tag':
+          return '🏷️';
+        case 'App\\Models\\User':
+          return '👷';
       }
     },
     reorder(items) {
@@ -65,10 +73,10 @@ export default {
       );
     },
     handleDelete(index) {
-      if (confirm("削除しますか？")) {
+      if (confirm('削除しますか？')) {
         this.items = this.items.filter((item, i) => i !== index);
       }
-    },
-  },
+    }
+  }
 };
 </script>

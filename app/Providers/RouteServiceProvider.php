@@ -36,8 +36,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
-        $this->mapOauthApiRoutes();
-
         $this->mapApiRoutes();
 
         $this->mapWebRoutes();
@@ -70,14 +68,6 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
-    }
-
-    protected function mapOauthApiRoutes()
-    {
-        Route::prefix('api/oauth')
-             ->middleware('oauth_api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/oauth_api.php'));
     }
 
     protected function configureRateLimiting()

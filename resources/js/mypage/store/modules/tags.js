@@ -4,17 +4,17 @@ import { SET_TAGS } from '../mutation-types';
 export default {
   state: () => {
     return {
-      tags: false,
+      tags: false
     };
   },
   getters: {
     tagsLoaded: state => state.tags !== false,
-    tags: state => state.tags || [],
+    tags: state => state.tags || []
   },
   mutations: {
     [SET_TAGS](state, tags = false) {
       state.tags = tags;
-    },
+    }
   },
   actions: {
     /**
@@ -47,6 +47,6 @@ export default {
     },
     clearTags({ commit }) {
       commit(SET_TAGS, false);
-    },
+    }
   }
 };

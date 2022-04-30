@@ -2,8 +2,8 @@
   <b-form>
     <b-form-group label="メールアドレス">
       <b-form-input
-        type="email"
         v-model="params.email"
+        type="email"
         :state="validationState('email', 'password')"
         autocomplete="email"
       />
@@ -24,11 +24,11 @@
   </b-form>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
-  props: ["params"],
+  props: ['params'],
   computed: {
-    ...mapGetters(["validationState"]),
-  },
+    ...mapGetters(['validationState'])
+  }
 };
 </script>

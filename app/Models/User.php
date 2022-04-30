@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use App\Contracts\Models\BulkZippableInterface;
-use App\Models\Firebase\Project;
-use App\Models\Firebase\ProjectUser;
 use App\Models\User\Bookmark;
 use App\Models\User\BookmarkItem;
 use App\Models\User\Profile;
@@ -21,14 +19,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-// use Laravel\Passport\HasApiTokens;
-
 class User extends Authenticatable implements MustVerifyEmail, BulkZippableInterface
 {
     use Notifiable;
     use HasFactory;
     use SoftDeletes;
-    // use HasApiTokens;
 
     protected $fillable = [
         'role',
@@ -120,16 +115,6 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
     public function bulkZippable(): MorphOne
     {
         return $this->morphOne(BulkZip::class, 'bulk_zippable');
-    }
-
-    public function projectUsers(): HasMany
-    {
-        return $this->hasMany(ProjectUser::class);
-    }
-
-    public function projects(): HasMany
-    {
-        return $this->hasMany(Project::class);
     }
 
     public function invited(): BelongsTo

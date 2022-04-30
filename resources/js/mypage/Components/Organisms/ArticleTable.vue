@@ -10,7 +10,9 @@
       class="clickable"
       @row-clicked="handleRowClicked"
     />
-    <div v-show="items.length === 0">投稿がありません</div>
+    <div v-show="items.length === 0">
+      投稿がありません
+    </div>
     <article-tooltip-menu
       v-if="selected_item"
       :item="selected_item"
@@ -20,57 +22,17 @@
   </b-form-group>
 </template>
 <script>
-import { DateTime } from "luxon";
 export default {
-  props: ["articles"],
+  props: ['articles'],
   data() {
     return {
-      sortBy: "updated_at",
+      sortBy: 'updated_at',
       sortDesc: true,
       fields: [],
       x: 0,
       y: 0,
-      selected_item: null,
+      selected_item: null
     };
-  },
-  created() {
-    this.fields = [
-      {
-        key: "status",
-        label: "ステータス",
-        sortable: true,
-      },
-      {
-        key: "post_type",
-        label: "形式",
-        sortable: true,
-      },
-      {
-        key: "title",
-        label: "タイトル",
-        sortable: true,
-      },
-      {
-        key: "views",
-        label: "PV",
-        sortable: true,
-      },
-      {
-        key: "conversions",
-        label: "CV",
-        sortable: true,
-      },
-      {
-        key: "created_at",
-        label: "作成日時",
-        sortable: true,
-      },
-      {
-        key: "updated_at",
-        label: "更新日時",
-        sortable: true,
-      },
-    ];
   },
   computed: {
     items() {
@@ -78,54 +40,93 @@ export default {
         Object.assign({}, a, {
           status: this.status(a.status),
           post_type: this.post_type(a.post_type),
-          created_at: a.created_at.toFormat("yyyy/LL/dd HH:mm"),
-          updated_at: a.updated_at.toFormat("yyyy/LL/dd HH:mm"),
-          _rowVariant: this.rowValiant(a),
+          created_at: a.created_at.toFormat('yyyy/LL/dd HH:mm'),
+          updated_at: a.updated_at.toFormat('yyyy/LL/dd HH:mm'),
+          _rowVariant: this.rowValiant(a)
         })
       );
     },
     tooltip_style() {
       return {
-        position: "absolute",
+        position: 'absolute',
         top: `${this.y}px`,
-        left: `${this.x}px`,
+        left: `${this.x}px`
       };
-    },
+    }
+  },
+  created() {
+    this.fields = [
+      {
+        key: 'status',
+        label: 'ステータス',
+        sortable: true
+      },
+      {
+        key: 'post_type',
+        label: '形式',
+        sortable: true
+      },
+      {
+        key: 'title',
+        label: 'タイトル',
+        sortable: true
+      },
+      {
+        key: 'views',
+        label: 'PV',
+        sortable: true
+      },
+      {
+        key: 'conversions',
+        label: 'CV',
+        sortable: true
+      },
+      {
+        key: 'created_at',
+        label: '作成日時',
+        sortable: true
+      },
+      {
+        key: 'updated_at',
+        label: '更新日時',
+        sortable: true
+      }
+    ];
   },
   methods: {
     rowValiant(article) {
       switch (article.status) {
-        case "private":
-        case "trash":
-        case "draft":
-          return "secondary";
-        case "publish":
+        case 'private':
+        case 'trash':
+        case 'draft':
+          return 'secondary';
+        case 'publish':
         default:
-          return "";
+          return '';
       }
     },
     status(status) {
       switch (status) {
-        case "publish":
-          return "公開";
-        case "draft":
-          return "下書き";
-        case "private":
-          return "非公開";
-        case "trash":
-          return "ゴミ箱";
+        case 'publish':
+          return '公開';
+        case 'draft':
+          return '下書き';
+        case 'private':
+          return '非公開';
+        case 'trash':
+          return 'ゴミ箱';
       }
     },
     post_type(post_type) {
       switch (post_type) {
-        case "addon-post":
-          return "アドオン投稿";
-        case "addon-introduction":
-          return "アドオン紹介";
-        case "page":
-          return "一般記事";
-        case "markdown":
-          return "一般記事(markdown)";
+        case 'addon-post':
+          return 'アドオン投稿';
+        case 'addon-introduction':
+          return 'アドオン紹介';
+        case 'page':
+          return '一般記事';
+        case 'markdown':
+          return '一般記事(markdown)';
       }
     },
     handleRowClicked(item, index, event) {
@@ -149,7 +150,7 @@ export default {
     },
     handleTooltipClose() {
       this.selected_item = null;
-    },
-  },
+    }
+  }
 };
 </script>

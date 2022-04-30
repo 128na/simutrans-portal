@@ -405,7 +405,17 @@ class ArticleRepository extends BaseRepository
         int $limit = 50
     ): LengthAwarePaginator {
         $q = $this->queryByAdvancedSearch(
-            $word, $categories, $categoryAnd, $tags, $tagAnd, $users, $userAnd, $startAt, $endAt, $order, $direction
+            $word,
+            $categories,
+            $categoryAnd,
+            $tags,
+            $tagAnd,
+            $users,
+            $userAnd,
+            $startAt,
+            $endAt,
+            $order,
+            $direction
         );
 
         return $q->paginate($limit);

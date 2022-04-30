@@ -12,9 +12,7 @@
  */
 
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Auth\OauthController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Front\ArticleController;
 use App\Http\Controllers\Front\IndexController;
@@ -22,34 +20,19 @@ use App\Http\Controllers\Front\PublicBookmarkController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
-use App\Http\Controllers\RegistrationOrderController;
 use App\Http\Controllers\User\AdvancedSearchController;
 use App\Http\Controllers\User\BookmarkItemController;
 
 Route::feeds();
 
-Route::get('/oauth/login', [OauthController::class, 'showLogin'])->name('oauth.showLogin');
-Route::post('/oauth/login', [OauthController::class, 'login'])->name('oauth.login');
-
-Route::get('registration_orders/create', [RegistrationOrderController::class, 'create'])->name('registrationOrders.create');
-Route::middleware(['guest', 'throttle:register'])->group(function () {
-    Route::post('registration_orders/create', [RegistrationOrderController::class, 'store'])->name('registrationOrders.store');
-});
-Route::middleware(['auth', 'admin', 'verified'])->group(function () {
-    Route::get('registration_orders', [RegistrationOrderController::class, 'index'])->name('registrationOrders.index');
-    Route::post('registration_orders/{registration_order}', [RegistrationOrderController::class, 'update'])->name('registrationOrders.update');
-});
-
 // メール確認
-Route::GET('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+Route::middleware(['auth'])->group(function () {
+    Route::GET('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+});
 Route::get('/verification/notice', [VerificationController::class, 'notice'])->name('verification.notice');
 // PWリセット
 Route::POST('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 Route::GET('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
-
-// SocialLogin
-Route::get('login/{driver}', [SocialLoginController::class, 'redirect'])->name('social.login');
-Route::get('login/{driver}/callback', [SocialLoginController::class, 'callback'])->name('social.callback');
 
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware(['cache.response'])->group(function () {

@@ -2,9 +2,15 @@
   <div>
     <page-title>ユーザー一覧</page-title>
     <page-description> ユーザーの論理削除状態を変更できる。 </page-description>
-    <b-form inline class="mb-2">
+    <b-form
+      inline
+      class="mb-2"
+    >
       <detail-button v-model="detail" />
-      <b-form-input v-model="search" placeholder="絞り込み" />
+      <b-form-input
+        v-model="search"
+        placeholder="絞り込み"
+      />
     </b-form>
     <b-table
       hover
@@ -16,13 +22,13 @@
       stacked="sm"
       @row-clicked="handleRow"
     >
-      <template v-slot:cell(invites)="row">
+      <template #cell(invites)="row">
         {{ findInvites(row.item.id).length }}
       </template>
-      <template v-slot:cell(invited)="row">
+      <template #cell(invited)="row">
         {{ findUser(row.item.invited_by, {}).name }}
       </template>
-      <template v-slot:cell(action)="row">
+      <template #cell(action)="row">
         <div v-if="row.item.deleted_at">
           <b-button
             size="sm"
@@ -43,7 +49,11 @@
         </div>
       </template>
     </b-table>
-    <b-modal id="user-modal" :title="selectedUser.name" size="lg">
+    <b-modal
+      id="user-modal"
+      :title="selectedUser.name"
+      size="lg"
+    >
       <dl>
         <dt>ID</dt>
         <dd>{{ selectedUser.id }}</dd>
@@ -74,72 +84,72 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 export default {
   data() {
     return {
-      sortBy: "id",
+      sortBy: 'id',
       sortDesc: true,
-      search: "",
+      search: '',
       detail: false,
       fields: [
         {
-          key: "id",
-          label: "ID",
-          sortable: true,
+          key: 'id',
+          label: 'ID',
+          sortable: true
         },
         {
-          key: "name",
-          label: "名前",
-          sortable: false,
+          key: 'name',
+          label: '名前',
+          sortable: false
         },
         {
-          key: "role",
-          label: "権限",
-          sortable: true,
+          key: 'role',
+          label: '権限',
+          sortable: true
         },
         {
-          key: "articles_count",
-          label: "投稿数",
-          sortable: true,
+          key: 'articles_count',
+          label: '投稿数',
+          sortable: true
         },
         {
-          key: "invites",
-          label: "招待数",
-          sortable: true,
+          key: 'invites',
+          label: '招待数',
+          sortable: true
         },
         {
-          key: "invited",
-          label: "招待者",
-          sortable: true,
+          key: 'invited',
+          label: '招待者',
+          sortable: true
         },
         {
-          key: "email_verified_at",
-          label: "メール認証日時",
-          sortable: true,
+          key: 'email_verified_at',
+          label: 'メール認証日時',
+          sortable: true
         },
         {
-          key: "created_at",
-          label: "作成日時",
-          sortable: true,
+          key: 'created_at',
+          label: '作成日時',
+          sortable: true
         },
         {
-          key: "updated_at",
-          label: "更新日時",
-          sortable: true,
+          key: 'updated_at',
+          label: '更新日時',
+          sortable: true
         },
         {
-          key: "deleted_at",
-          label: "削除日時",
-          sortable: true,
+          key: 'deleted_at',
+          label: '削除日時',
+          sortable: true
         },
         {
-          key: "action",
-          label: "操作",
-          sortable: false,
-        },
+          key: 'action',
+          label: '操作',
+          sortable: false
+        }
       ],
-      selectedUser: {},
+      selectedUser: {}
     };
   },
   created() {
@@ -148,31 +158,31 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["users"]),
+    ...mapGetters(['users']),
     computed_fields() {
-      const filter_keys = ["id", "name", "action"];
+      const filter_keys = ['id', 'name', 'action'];
       return this.detail
         ? this.fields
         : this.fields.filter((f) => filter_keys.includes(f.key));
     },
     parentMap() {
       const parents = this.findInvitedReclusive(this.selectedUser.invited_by);
-      return parents.map((user) => user.name).join(" ← ");
+      return parents.map((user) => user.name).join(' ← ');
     },
     childrenMap() {
       const children = this.findInvitesReclusive(this.selectedUser.id);
-      return children.map((user) => this.childrenString(user)).join("\n");
-    },
+      return children.map((user) => this.childrenString(user)).join('\n');
+    }
   },
   methods: {
-    ...mapActions(["fetchUsers", "deleteUser"]),
+    ...mapActions(['fetchUsers', 'deleteUser']),
     toRestore(user) {
-      if (confirm("復元しますか？")) {
+      if (confirm('復元しますか？')) {
         this.deleteUser(user.id);
       }
     },
     toDestroy(user) {
-      if (confirm("論理削除しますか")) {
+      if (confirm('論理削除しますか')) {
         this.deleteUser(user.id);
       }
     },
@@ -197,7 +207,7 @@ export default {
       if (users.length) {
         return users.map((user) =>
           Object.assign({}, user, {
-            invites: this.findInvitesReclusive(user.id),
+            invites: this.findInvitesReclusive(user.id)
           })
         );
       }
@@ -205,19 +215,19 @@ export default {
     },
     handleRow(item, index, event) {
       this.selectedUser = item;
-      this.$bvModal.show("user-modal");
+      this.$bvModal.show('user-modal');
     },
     childrenString(user, level = 1) {
       if (user.invites.length) {
-        const tab = "\t".repeat(level);
+        const tab = '\t'.repeat(level);
         const children = user.invites
           .map((c) => `${tab}┗${this.childrenString(c, level + 1)}`)
-          .join("\n");
+          .join('\n');
         return `${user.name}\n${children}`;
       }
       return `${user.name}`;
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

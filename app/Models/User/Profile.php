@@ -77,8 +77,7 @@ class Profile extends Model
     {
         return Storage::disk('public')->url($this->has_avatar
             ? $this->avatar->path
-            : config('attachment.no-avatar')
-        );
+            : config('attachment.no-avatar'));
     }
 
     public function getHasFileAttribute()

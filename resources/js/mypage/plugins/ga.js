@@ -1,10 +1,11 @@
-const has_gtag = typeof gtag === 'function';
-const base_url = process.env.NODE_ENV === 'production' ? '/portal' : '';
+const hasGtag = typeof gtag === 'function';
+const baseUrl = process.env.NODE_ENV === 'production' ? '/portal' : '';
 
-export function ga_page_view(to, prefix = '/mypage') {
-  if (has_gtag) {
+export function gaPageView(to, prefix = '/mypage') {
+  if (hasGtag) {
+    // eslint-disable-next-line no-undef
     gtag('event', 'page_view', {
-      page_path: `${base_url}${prefix}${to.path}`,
+      page_path: `${baseUrl}${prefix}${to.path}`
     });
   }
 }

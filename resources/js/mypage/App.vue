@@ -1,30 +1,36 @@
 <template>
-  <transition name="fade" mode="out-in">
+  <transition
+    name="fade"
+    mode="out-in"
+  >
     <div v-if="initialized">
       <global-menu />
       <main class="container-fluid bg-light py-4">
         <error-message />
         <info-message />
-        <transition name="fade" mode="out-in">
+        <transition
+          name="fade"
+          mode="out-in"
+        >
           <router-view />
         </transition>
       </main>
     </div>
-    <loading v-else />
+    <loading-message v-else />
   </transition>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 export default {
   created() {
     this.checkLogin();
   },
   methods: {
-    ...mapActions(["checkLogin"]),
+    ...mapActions(['checkLogin'])
   },
   computed: {
-    ...mapGetters(["initialized"]),
-  },
+    ...mapGetters(['initialized'])
+  }
 };
 </script>
 <style lang="scss">

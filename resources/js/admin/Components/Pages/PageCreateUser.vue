@@ -15,26 +15,26 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 export default {
   data() {
     return {
       params: {
-        name: "",
-        email: "",
-      },
+        name: '',
+        email: ''
+      }
     };
   },
   methods: {
-    ...mapActions(["storeUser"]),
+    ...mapActions(['storeUser']),
     async handleRegister() {
       const res = await this.storeUser(this.params);
       if (res) {
-        params.name = "";
-        params.email = "";
+        this.params.name = '';
+        this.params.email = '';
       }
-      alert(res ? "成功" : "失敗");
-    },
-  },
+      alert(res ? '成功' : '失敗');
+    }
+  }
 };
 </script>

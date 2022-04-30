@@ -1,7 +1,9 @@
-<template></template>
+<template>
+  <span></span>
+</template>
 <script>
-import { validateLogin } from "../../mixins/auth";
-import { mapGetters, mapActions } from "vuex";
+import { validateLogin } from '../../mixins/auth';
+import { mapGetters, mapActions } from 'vuex';
 export default {
   mixins: [validateLogin],
   created() {
@@ -16,18 +18,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["isLoggedIn"]),
+    ...mapGetters(['isLoggedIn'])
   },
   methods: {
     ...mapActions([
-      "logout",
-      "clearArticles",
-      "clearAnalytics",
-      "clearAttachments",
-      "clearBookmarks",
-      "clearOptions",
-      "clearTags",
-    ]),
-  },
+      'logout',
+      'clearArticles',
+      'clearAnalytics',
+      'clearAttachments',
+      'clearBookmarks',
+      'clearOptions',
+      'clearTags'
+    ])
+  }
 };
 </script>

@@ -25,11 +25,11 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
-  props: ["article"],
+  props: ['article'],
   computed: {
-    ...mapGetters(["options", "validationState"]),
-  },
+    ...mapGetters(['options', 'validationState'])
+  }
 };
 </script>

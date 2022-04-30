@@ -3,34 +3,34 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? process.env.MIX
 axios.defaults.timeout = 5000;
 export default {
   fetchUser() {
-    return axios.get(`/api/v2/mypage/user`);
+    return axios.get('/api/v2/mypage/user');
   },
   // auth
   flushCache() {
-    return axios.post(`/api/v2/admin/flush-cache`);
+    return axios.post('/api/v2/admin/flush-cache');
   },
   debug(level = 'error') {
     return axios.get(`/api/v2/admin/debug/${level}`);
   },
   phpinfo() {
-    return axios.get(`/api/v2/admin/phpinfo`);
+    return axios.get('/api/v2/admin/phpinfo');
   },
   fetchUsers() {
-    return axios.get(`/api/v2/admin/users`);
+    return axios.get('/api/v2/admin/users');
   },
   storeUser(params) {
-    return axios.post(`/api/v2/admin/users`, params);
+    return axios.post('/api/v2/admin/users', params);
   },
   deleteUser(id) {
     return axios.delete(`/api/v2/admin/users/${id}`);
   },
   fetchArticles() {
-    return axios.get(`/api/v2/admin/articles`);
+    return axios.get('/api/v2/admin/articles');
   },
   updateArticle(id, params) {
     return axios.put(`/api/v2/admin/articles/${id}`, params);
   },
   deleteArticle(id) {
     return axios.delete(`/api/v2/admin/articles/${id}`);
-  },
-}
+  }
+};

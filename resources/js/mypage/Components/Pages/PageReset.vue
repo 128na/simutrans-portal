@@ -2,7 +2,7 @@
   <div>
     <page-title>パスワード再設定</page-title>
     <page-description>
-      指定したメールアドレスにパスワード再設定用のリンクを送信します。<br />
+      指定したメールアドレスにパスワード再設定用のリンクを送信します。<br>
       送信されたリンクのページページから再設定ができます。
     </page-description>
     <form-reset :params="params">
@@ -21,20 +21,20 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 export default {
   data() {
     return {
       params: {
-        email: "",
-      },
+        email: ''
+      }
     };
   },
   methods: {
-    ...mapActions(["sendResetEmail"]),
+    ...mapActions(['sendResetEmail']),
     handleSubmit() {
       this.sendResetEmail(this.params);
-    },
-  },
+    }
+  }
 };
 </script>

@@ -1,9 +1,9 @@
-const dialog_message = '保存せずに移動しますか？';
+const dialogMessage = '保存せずに移動しますか？';
 export const editor = {
   data() {
     return {
       copy: null,
-      has_changed: false,
+      has_changed: false
     };
   },
   watch: {
@@ -18,7 +18,7 @@ export const editor = {
           }
         }
       }
-    },
+    }
   },
   methods: {
     setCopy(item) {
@@ -36,15 +36,15 @@ export const editor = {
     },
     _unloadDialogEvent(e) {
       e.preventDefault();
-      e.returnValue = dialog_message;
-    },
+      e.returnValue = dialogMessage;
+    }
   },
   /**
    * ページ遷移時に呼ばれる
    */
   beforeRouteLeave(to, from, next) {
     if (this.has_changed) {
-      if (window.confirm(dialog_message)) {
+      if (window.confirm(dialogMessage)) {
         this.unsetUnloadDialog();
         return next();
       } else {
@@ -58,7 +58,7 @@ export const editor = {
    */
   beforeRouteUpdate(to, from, next) {
     if (this.has_changed) {
-      if (window.confirm(dialog_message)) {
+      if (window.confirm(dialogMessage)) {
         this.unsetUnloadDialog();
         return next();
       } else {
@@ -66,5 +66,5 @@ export const editor = {
       }
     }
     return next();
-  },
+  }
 };

@@ -6,8 +6,8 @@
         作者
       </template>
       <b-form-input
-        type="text"
         v-model="article.contents.author"
+        type="text"
         :state="validationState('article.contents.author')"
       />
       <validation-message field="article.contents.author" />
@@ -18,10 +18,10 @@
         アドオンファイル
       </template>
       <media-manager
-        name="addon"
-        v-model="article.contents.file"
-        type="Article"
         :id="article.id"
+        v-model="article.contents.file"
+        name="addon"
+        type="Article"
         :state="validationState('article.contents.file')"
       />
       <validation-message field="article.contents.file" />
@@ -53,11 +53,11 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
-  props: ["article"],
+  props: ['article'],
   computed: {
-    ...mapGetters(["validationState"]),
-  },
+    ...mapGetters(['validationState'])
+  }
 };
 </script>

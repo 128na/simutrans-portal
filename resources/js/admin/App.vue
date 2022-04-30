@@ -5,20 +5,20 @@
       <router-view />
     </main>
   </div>
-  <loading v-else />
+  <loading-message v-else />
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 export default {
   created() {
     this.initialize();
   },
   methods: {
-    ...mapActions(["initialize"]),
+    ...mapActions(['initialize'])
   },
   computed: {
-    ...mapGetters(["initialized"]),
-  },
+    ...mapGetters(['initialized'])
+  }
 };
 </script>
 <style lang="scss">

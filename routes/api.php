@@ -12,10 +12,8 @@ use App\Http\Controllers\Api\v2\Mypage\TagController;
 use App\Http\Controllers\Api\v2\Mypage\UserController;
 use App\Http\Controllers\Api\v3\BulkZipController;
 use App\Http\Controllers\Api\v3\InvitationCodeController;
-use App\Http\Controllers\Api\v3\ProjectController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerificationController;
 
 /*
@@ -34,8 +32,6 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api\v1')->group(function () {
 
 // auth
 Route::prefix('v2')->name('api.v2.')->group(function () {
-    // 登録
-    Route::POST('register', [RegisterController::class, 'registerApi'])->name('register');
     // メール確認
     Route::POST('email/resend', [VerificationController::class, 'resendApi'])->name('verification.resend');
     // 認証
@@ -104,12 +100,5 @@ Route::prefix('v3')->name('api.v3.')->namespace('Api\v3')->group(function () {
         Route::get('/invitation_code', [InvitationCodeController::class, 'index'])->name('invitationCode.index');
         Route::post('/invitation_code', [InvitationCodeController::class, 'update'])->name('invitationCode.update');
         Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy'])->name('invitationCode.destroy');
-    });
-
-    Route::middleware(['auth', 'verified'])->group(function () {
-        Route::get('firebase/projects', [ProjectController::class, 'index']);
-        Route::post('firebase/projects', [ProjectController::class, 'store']);
-        Route::put('firebase/projects/{project}', [ProjectController::class, 'update']);
-        Route::delete('firebase/projects/{project}', [ProjectController::class, 'destroy']);
     });
 });

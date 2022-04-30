@@ -1,3 +1,5 @@
 <template>
-  <b-badge variant="secondary">任意</b-badge>
+  <b-badge variant="secondary">
+    任意
+  </b-badge>
 </template>

@@ -9,7 +9,10 @@
         class="mb-1"
         @click="handleCopy(public_url)"
       >
-        <b-icon icon="clipboard-data" class="mr-1" />
+        <b-icon
+          icon="clipboard-data"
+          class="mr-1"
+        />
         公開用URLをコピー
       </b-nav-item>
       <b-nav-item
@@ -18,83 +21,104 @@
         target="_blank"
         class="mb-1"
       >
-        <b-icon icon="box-arrow-up-right" class="mr-1" />
+        <b-icon
+          icon="box-arrow-up-right"
+          class="mr-1"
+        />
         表示
       </b-nav-item>
       <b-nav-item @click="handleEdit">
-        <b-icon icon="pencil" class="mr-1" />
+        <b-icon
+          icon="pencil"
+          class="mr-1"
+        />
         編集
       </b-nav-item>
-      <b-nav-item v-show="item.is_public" @click="handleToPrivate">
-        <b-icon icon="lock-fill" class="mr-1" />
+      <b-nav-item
+        v-show="item.is_public"
+        @click="handleToPrivate"
+      >
+        <b-icon
+          icon="lock-fill"
+          class="mr-1"
+        />
         非公開にする
       </b-nav-item>
-      <b-nav-item v-show="!item.is_public" @click="handleToPublish">
-        <b-icon icon="unlock-fill" class="mr-1" />
+      <b-nav-item
+        v-show="!item.is_public"
+        @click="handleToPublish"
+      >
+        <b-icon
+          icon="unlock-fill"
+          class="mr-1"
+        />
         公開にする
       </b-nav-item>
       <b-nav-item @click="handleDelete">
-        <b-icon icon="trash" class="mr-1" />
+        <b-icon
+          icon="trash"
+          class="mr-1"
+        />
         削除
       </b-nav-item>
     </b-nav>
   </b-card>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 export default {
-  props: ["item"],
+  props: ['item'],
   computed: {
     public_url() {
       return `${this.base_url}/public-bookmarks/${this.item.uuid}`;
-    },
+    }
   },
   methods: {
-    ...mapActions(["updateBookmark", "deleteBookmark", "setInfoMessage"]),
+    ...mapActions(['updateBookmark', 'deleteBookmark', 'setInfoMessage']),
     handleEdit() {
       this.goto(this.route_edit_bookmark(this.item.id));
     },
     handleToPrivate() {
       const params = {
         bookmark: Object.assign({}, this.item, {
-          is_public: false,
+          is_public: false
         }),
-        bookmarkItems: this.item.bookmarkItems,
+        bookmarkItems: this.item.bookmarkItems
       };
       this.updateBookmark({
         params,
-        message: "ステータスを非公開にしました",
+        message: 'ステータスを非公開にしました'
       });
-      this.$emit("close");
+      this.$emit('close');
     },
     handleToPublish() {
       const params = {
         bookmark: Object.assign({}, this.item, {
-          is_public: true,
+          is_public: true
         }),
-        bookmarkItems: this.item.bookmarkItems,
+        bookmarkItems: this.item.bookmarkItems
       };
       this.updateBookmark({
         params,
-        message: "ステータスを公開にしました",
+        message: 'ステータスを公開にしました'
       });
-      this.$emit("close");
+      this.$emit('close');
     },
     handleCopy(text) {
       this.$copyText(text);
       this.setInfoMessage({
-        message: "クリップボードにコピーしました",
+        message: 'クリップボードにコピーしました'
       });
-      this.$emit("close");
+      this.$emit('close');
     },
     handleDelete() {
-      if (confirm("ブックマークを削除しますか？")) {
+      if (confirm('ブックマークを削除しますか？')) {
         this.deleteBookmark({
-          bookmark_id: this.item.id,
+          bookmarkId: this.item.id
         });
-        this.$emit("close");
+        this.$emit('close');
       }
-    },
-  },
+    }
+  }
 };
 </script>

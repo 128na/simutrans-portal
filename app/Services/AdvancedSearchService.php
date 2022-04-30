@@ -55,7 +55,17 @@ class AdvancedSearchService extends Service
         $direction = $conditions['direction'] ?? 'desc';
 
         return $this->articleRepository->paginateByAdvancedSearch(
-            $word, $categories, $categoryAnd, $tags, $tagAnd, $users, $userAnd, $startAt, $endAt, $order, $direction
+            $word,
+            $categories,
+            $categoryAnd,
+            $tags,
+            $tagAnd,
+            $users,
+            $userAnd,
+            $startAt,
+            $endAt,
+            $order,
+            $direction
         );
     }
 

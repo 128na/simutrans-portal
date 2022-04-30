@@ -8,8 +8,8 @@ export default {
        * 初期化ステータス（ログイン判定完了で初期化完了）
        */
       initialized: false,
-      user: false,
-    }
+      user: false
+    };
   },
   getters: {
     initialized: state => state.initialized,
@@ -17,15 +17,15 @@ export default {
     user: state => state.user,
     isLoggedIn: state => !!state.user,
     isAdmin: state => state.user && state.user.admin,
-    isVerified: state => state.user && state.user.verified,
+    isVerified: state => state.user && state.user.verified
   },
   mutations: {
     [SET_INITIALIZED](state, initialized = false) {
-      state.initialized = initialized
+      state.initialized = initialized;
     },
     [SET_USER](state, user = false) {
       state.user = user;
-    },
+    }
   },
   actions: {
     /**
@@ -65,23 +65,6 @@ export default {
         api.logout();
         commit(SET_USER, null);
       } catch (e) { }
-    },
-    /**
-     * ユーザー登録
-     */
-    async register({ commit, dispatch }, params) {
-      dispatch('setApiStatusFetching');
-      try {
-        const res = await api.register(params);
-        if (res && res.status === 201) {
-          commit(SET_USER, res.data.data);
-          dispatch('setApiStatusSuccess');
-          return dispatch('setInfoMessage', { message: 'ユーザー登録しました。' });
-        }
-        dispatch('setApiStatusError');
-      } catch (e) {
-        dispatch('setApiStatusError', e);
-      }
     },
     /**
      * ユーザープロフィール更新
@@ -165,6 +148,6 @@ export default {
       } catch (e) {
         dispatch('setApiStatusError', e);
       }
-    },
+    }
   }
 };

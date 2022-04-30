@@ -27,13 +27,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        // Passport::routes();
-        // Passport::hashClientSecrets();
-        // Passport::tokensCan([
-        //     'user-read' => '自身のプロフィールや投稿データの読み取り',
-        //     'user-write' => '自身のプロフィールや投稿データの更新',
-        // ]);
-        // Passport::tokensExpireIn(now()->addDays(14));
     }
 }

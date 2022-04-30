@@ -142,6 +142,11 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
         return $this->hasMany(User::class, 'invited_by');
     }
 
+    public function invitesReclusive(): HasMany
+    {
+        return $this->hasMany(User::class, 'invited_by')->with(['invites']);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | スコープ

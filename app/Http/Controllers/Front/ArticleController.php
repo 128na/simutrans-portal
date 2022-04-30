@@ -140,6 +140,21 @@ class ArticleController extends Controller
     }
 
     /**
+     * カテゴリ(pak,addon指定なし)の投稿一覧画面.
+     */
+    public function categoryPakNoneAddon(string $pakSlug)
+    {
+        $pak = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
+
+        $contents = [
+            'articles' => $this->articleRepository->paginateByPakNoneAddonCategory($pak),
+            'categories' => ['pak' => $pak],
+        ];
+
+        return view('front.articles.index', $contents);
+    }
+
+    /**
      * タグの投稿一覧画面.
      */
     public function tag(Tag $tag)

@@ -31,7 +31,7 @@ jobs:
         run: composer install
       - name: phpcs
         run: composer run cs-check
-  eslint:
+  es:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -43,7 +43,7 @@ jobs:
         if: steps.cache-assets.outputs.cache-hit != 'true'
         run: npm ci
       - name: eslint
-        run: npm run eslint-check
+        run: npm run es
   test:
     runs-on: ubuntu-latest
     steps:

@@ -60,9 +60,6 @@ export default {
     route_bookmarks() {
       return { name: "bookmarks" };
     },
-    // route_tokens() {
-    //   return { name: "tokens" };
-    // },
     route_invitation() {
       return { name: "invitation" };
     },

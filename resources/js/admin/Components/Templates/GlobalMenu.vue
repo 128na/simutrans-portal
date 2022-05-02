@@ -32,9 +32,6 @@
         <nav-link :to="{ name: 'articles' }">
           記事管理
         </nav-link>
-        <b-nav-item href="/registration_orders">
-          登録申請一覧
-        </b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>

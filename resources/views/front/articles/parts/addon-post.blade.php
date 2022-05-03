@@ -8,8 +8,11 @@
     </dd>
     <dt>カテゴリ</dt>
     <dd>
-        @include('parts.category-list', ['categories' => $article->categories,
-            'post_type' => $article->post_type, 'route_name' => 'addons.index'])
+        @include('parts.category-list', [
+            'categories' => $article->categories,
+            'post_type' => $article->post_type,
+            'route_name' => 'addons.index',
+        ])
     </dd>
     @if ($article->tags->isNotEmpty())
         <dt>タグ</dt>
@@ -29,6 +32,6 @@
     @endif
     <dt class="mb-2">ダウンロード</dt>
     <dd>
-        <a class="btn btn-lg btn-primary" href="{{ route('articles.download', $article) }}">ダウンロードする</a>
+        <a class="btn btn-lg btn-primary js-download" href="{{ route('articles.download', $article) }}">ダウンロードする</a>
     </dd>
 </dl>

@@ -8,6 +8,8 @@ Vue.component('BulkZipDownloader', BulkZipDownloader);
 Vue.component('PageSubTitle', PageSubTitle);
 Vue.component('PageDescription', PageDescription);
 
-new Vue({
-  el: '#app'
-});
+if (document.getElementById('app')) {
+  new Vue({
+    el: '#app'
+  });
+}

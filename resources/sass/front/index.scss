@@ -37,3 +37,7 @@ a.no-underline {
   padding-left: 0;
   list-style: none;
 }
+.profile-card img {
+  max-height: 100px;
+  object-fit: contain;
+}

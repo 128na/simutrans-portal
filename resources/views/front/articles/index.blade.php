@@ -8,6 +8,8 @@
 @section('content')
     @includeWhen(isset($advancedSearch), 'parts.advanced-search')
 
+    @includeWhen(isset($user), 'parts.profile-card')
+
     {!! e($articles->onEachSide(1)->links('vendor.pagination.default')) !!}
 
     <section class="mb-4 list">

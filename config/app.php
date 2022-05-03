@@ -8,6 +8,8 @@ return [
         主にpak64, pak128, pak128.japanのアドオンが投稿・紹介されています。',
     'meta-image' => 'default/ogp-image.png',
 
+    'gtag' => env('GTAG'),
+
     'tinypng_api_key' => env('TINYPNG_API_KEY'),
 
     'cache_lifetime_min' => env('CACHE_LIFETIME_MIN', 180),

@@ -7,7 +7,7 @@
 
     <title>{{ isset($preview) ? '[プレビュー]' : '' }}@yield('title') - {{ config('app.name') }}</title>
 
-    @includeWhen(\App::environment('production'), 'parts._ga')
+    @includeWhen(config('app.gtag') || true, 'parts._ga')
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="api-entrypoint" content="{{ config('app.url') }}">

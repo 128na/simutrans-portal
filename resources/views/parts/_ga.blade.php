@@ -1,5 +1,5 @@
 {{-- Google Tag Manager --}}
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-75900038-1"></script>
+<script async src="https://www.googletagmanager.com/gtag/js"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
 
@@ -8,7 +8,7 @@
     }
     gtag('js', new Date());
 
-    gtag('config', 'UA-75900038-1');
+    gtag('config', '{{ config('app.gtag') }}');
 
     @isset($gtag)
         gtag('config', '{{ $gtag }}');

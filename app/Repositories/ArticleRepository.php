@@ -311,6 +311,7 @@ class ArticleRepository extends BaseRepository
             'totalViewCount:article_id,count', 'totalConversionCount:article_id,count',
         ] : [
             'user:id,name', 'attachments:id,attachmentable_id,attachmentable_type,path', 'categories:id,type,slug', 'tags:id,name',
+            'user.profile:user_id,data',
         ];
 
         return $this->load($article, $relations);

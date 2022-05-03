@@ -79,6 +79,22 @@
       </b-input-group>
       <validation-message field="user.profile.data.twitter" />
     </b-form-group>
+    <b-form-group>
+      <template slot="label">
+        <badge-optional />
+        Google Tag Manager
+      </template>
+        <b-form-input
+          v-model="user.profile.data.gtag"
+          type="text"
+          placeholder="UA-00000000"
+          :state="validationState('user.profile.data.gtag')"
+        />
+      <validation-message field="user.profile.data.gtag" />
+      <small>
+        自身の投稿記事にGoogleAnalytics(gtag)のタグを追加できます。
+      </small>
+    </b-form-group>
     <slot />
   </div>
 </template>

@@ -58,16 +58,6 @@
         </nav-link>
         <nav-link
           v-if="isVerified"
-          :to="route_bookmarks"
-        >
-          <b-icon
-            icon="bookmark-star-fill"
-            class="nav-icon"
-          />
-          ブックマーク
-        </nav-link>
-        <nav-link
-          v-if="isVerified"
           :to="route_invitation"
         >
           <b-icon

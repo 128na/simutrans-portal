@@ -8,16 +8,6 @@
                 <li class="breadcrumb-item" aria-current="page">
                     {{ $bread['name'] }}
             @endif
-            @auth
-                @if (isset($bread['bookmarkItemableType']))
-                    @include('parts.add-bookmark', [
-                    'name' => $bread['name'],
-                    'type' => $bread['bookmarkItemableType'],
-                    'id' => $bread['bookmarkItemableId']])
-                    </iv>
-                @endif
-            @endauth
-
             </li>
         @endforeach
     </ol>

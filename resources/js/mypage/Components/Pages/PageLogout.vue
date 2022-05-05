@@ -12,7 +12,6 @@ export default {
       this.clearArticles();
       this.clearAnalytics();
       this.clearAttachments();
-      this.clearBookmarks();
       this.clearOptions();
       this.clearTags();
     }
@@ -26,7 +25,6 @@ export default {
       'clearArticles',
       'clearAnalytics',
       'clearAttachments',
-      'clearBookmarks',
       'clearOptions',
       'clearTags'
     ])

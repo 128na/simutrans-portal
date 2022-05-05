@@ -10,12 +10,6 @@
     <article class="{{ $article->post_type }}">
         <h3 class="title border-bottom mb-4">
             {{ $article->title }}
-            @auth
-                @include('parts.add-bookmark', [
-                'name' => $article->title,
-                'type' => 'App\Models\Article',
-                'id' => $article->id])
-            @endauth
         </h3>
         @if ($article->has_thumbnail)
             <img src="{{ $article->thumbnail_url }}" class="img-fluid thumbnail mb-4 shadow-sm">
@@ -39,6 +33,5 @@
     </article>
     <script type="application/ld+json">
         @json($schemas)
-
     </script>
 @endsection

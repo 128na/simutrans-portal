@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\BulkZip;
 use App\Models\User;
-use App\Models\User\Bookmark;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BulkZipFactory extends Factory
@@ -13,7 +12,7 @@ class BulkZipFactory extends Factory
 
     public function definition()
     {
-        $type = $this->faker->randomElement([Bookmark::class, User::class]);
+        $type = $this->faker->randomElement([User::class]);
 
         return [
             'bulk_zippable_id' => $type::factory()->create()->id,

@@ -6,7 +6,6 @@ import AuthModule from './modules/auth';
 import AttachmentsModule from './modules/attachments';
 import TagsModule from './modules/tags';
 import AnalyticsModule from './modules/analytics';
-import BookmarksModule from './modules/bookmarks';
 import OptionsModule from './modules/options';
 
 import { SET_INFO_MESSAGE, SET_API_STATUS } from './mutation-types';
@@ -20,7 +19,6 @@ export default new Vuex.Store({
     TagsModule,
     OptionsModule,
     AnalyticsModule,
-    BookmarksModule
   },
   state: {
     /**

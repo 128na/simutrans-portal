@@ -30,8 +30,6 @@ class ViewServiceProvider extends ServiceProvider
             'front.tags',
             'front.articles.index',
             'front.articles.show',
-            'front.public-bookmarks.index',
-            'front.public-bookmarks.show',
         ];
         View::creator($views, SidebarCreator::class);
         View::creator($views, MetaCreator::class);

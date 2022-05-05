@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Casts\ToArticleContents;
-use App\Models\User\BookmarkItem;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -138,11 +137,6 @@ class Article extends Model implements Feedable
     public function totalConversionCount(): HasOne
     {
         return $this->hasOne(ConversionCount::class)->where('type', ConversionCount::TYPE_TOTAL);
-    }
-
-    public function bookmarkItemables(): MorphMany
-    {
-        return $this->morphMany(BookmarkItem::class, 'bookmark_itemable');
     }
 
     /*

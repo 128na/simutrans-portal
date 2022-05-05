@@ -7,12 +7,6 @@
                     <a href="{{ route('articles.show', $article->slug) }}">
                         <strong>{{ $article->title }}</strong>
                     </a>
-                    @auth
-                        @include('parts.add-bookmark', [
-                        'name' => $article->title,
-                        'type' => 'App\Models\Article',
-                        'id' => $article->id])
-                    @endauth
                 </div>
                 @unless($hide_detail ?? false)
                     <div class="article-main d-flex mb-1">

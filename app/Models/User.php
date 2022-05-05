@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use App\Contracts\Models\BulkZippableInterface;
-use App\Models\User\Bookmark;
-use App\Models\User\BookmarkItem;
 use App\Models\User\Profile;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
@@ -13,7 +11,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -61,9 +58,6 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
         if ($this->profile()->doesntExist()) {
             $this->profile()->create();
         }
-        if ($this->bookmarks()->count() === 0) {
-            $this->bookmarks()->create(['title' => 'ブックマーク']);
-        }
     }
 
     public function routeNotificationForSlack($notification)
@@ -105,16 +99,6 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
     public function myAttachments(): HasMany
     {
         return $this->hasMany(Attachment::class);
-    }
-
-    public function bookmarks(): HasMany
-    {
-        return $this->hasMany(Bookmark::class);
-    }
-
-    public function bookmarkItemables(): MorphMany
-    {
-        return $this->morphMany(BookmarkItem::class, 'bookmark_itemable');
     }
 
     public function bulkZippable(): MorphOne

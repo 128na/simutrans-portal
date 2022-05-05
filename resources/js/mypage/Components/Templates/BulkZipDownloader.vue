@@ -35,8 +35,6 @@
 import api from '../../api';
 import {
   TARGET_TYPE_USER,
-  TARGET_TYPE_BOOKMARK,
-  TARGET_TYPE_PUBLIC_BOOKMARK,
   RETRY_LIMIT,
   RETRY_INTERVAL
 } from '../../../const';
@@ -57,20 +55,12 @@ export default {
       switch (this.target_type) {
         case TARGET_TYPE_USER:
           return 'エクスポート';
-        case TARGET_TYPE_BOOKMARK:
-          return 'ダウンロード';
-        case TARGET_TYPE_PUBLIC_BOOKMARK:
-          return 'ダウンロード';
       }
       return '';
     },
     canDownload() {
       switch (this.target_type) {
         case TARGET_TYPE_USER:
-          return true;
-        case TARGET_TYPE_BOOKMARK:
-          return !!this.target_id;
-        case TARGET_TYPE_PUBLIC_BOOKMARK:
           return true;
       }
       return false;
@@ -95,10 +85,6 @@ export default {
       switch (this.target_type) {
         case TARGET_TYPE_USER:
           return api.fetchUserBulkZip();
-        case TARGET_TYPE_BOOKMARK:
-          return api.fetchBookmarkBulkZip(this.target_id);
-        case TARGET_TYPE_PUBLIC_BOOKMARK:
-          return api.fetchPublicBookmarkBulkZip(this.target_id);
       }
     },
     beforeRequest() {

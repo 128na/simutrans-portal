@@ -6,9 +6,6 @@ export default {
     route_edit_article(id) {
       return { name: 'editArticle', params: { id } };
     },
-    route_edit_bookmark(id = null) {
-      return { name: 'editBookmark', params: { id } };
-    },
     scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -56,9 +53,6 @@ export default {
     },
     route_edit_profile() {
       return { name: 'editProfile' };
-    },
-    route_bookmarks() {
-      return { name: 'bookmarks' };
     },
     route_invitation() {
       return { name: 'invitation' };

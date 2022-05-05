@@ -7,7 +7,6 @@ use App\Jobs\BulkZip\JobDeleteExpiredBulkzip;
 use App\Models\Attachment;
 use App\Models\BulkZip;
 use App\Models\User;
-use App\Models\User\Bookmark;
 use App\Repositories\BulkZipRepository;
 use App\Services\BulkZip\BulkZipService;
 use Bus;
@@ -28,7 +27,7 @@ class BulkZipServiceTest extends UnitTestCase
          * @var BulkZipService
          */
         $service = app(BulkZipService::class);
-        $model = new Bookmark();
+        $model = new User();
         $res = $service->findOrCreateAndDispatch($model);
         $this->assertInstanceOf(BulkZip::class, $res);
 
@@ -36,7 +35,7 @@ class BulkZipServiceTest extends UnitTestCase
         Bus::assertDispatchedAfterResponse(JobDeleteExpiredBulkzip::class);
     }
 
-    public function test_未対応のモデル()
+    public function test未対応のモデル()
     {
         $this->expectException(TypeError::class);
         $service = app(BulkZipService::class);
@@ -44,7 +43,7 @@ class BulkZipServiceTest extends UnitTestCase
         $service->findOrCreateAndDispatch($model);
     }
 
-    public function test_作成済みならディスパッチしない()
+    public function test作成済みならディスパッチしない()
     {
         Bus::fake();
         $this->mock(BulkZipRepository::class, function (MockInterface $m) {

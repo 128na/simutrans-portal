@@ -7,7 +7,6 @@ use App\Http\Controllers\Api\v2\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\v2\Mypage\Article\AnalyticsController;
 use App\Http\Controllers\Api\v2\Mypage\Article\EditorController;
 use App\Http\Controllers\Api\v2\Mypage\AttachmentController;
-use App\Http\Controllers\Api\v2\Mypage\BookmarkController;
 use App\Http\Controllers\Api\v2\Mypage\TagController;
 use App\Http\Controllers\Api\v2\Mypage\UserController;
 use App\Http\Controllers\Api\v3\BulkZipController;
@@ -62,11 +61,6 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
             Route::middleware('can:update,article')->group(function () {
                 Route::post('articles/{article}', [EditorController::class, 'update'])->name('articles.update');
             });
-
-            Route::get('bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
-            Route::post('bookmarks', [BookmarkController::class, 'store'])->name('bookmarks.store');
-            Route::post('bookmarks/{bookmark}', [BookmarkController::class, 'update'])->name('bookmarks.update');
-            Route::delete('bookmarks/{bookmark}', [BookmarkController::class, 'destroy'])->name('bookmarks.destroy');
         });
     });
 
@@ -92,8 +86,6 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
 Route::prefix('v3')->name('api.v3.')->namespace('Api\v3')->group(function () {
     Route::prefix('mypage')->namespace('Mypage')->middleware(['auth', 'verified'])->group(function () {
         // 一括DL機能
-        Route::get('/public-bookmarks/{uuid}/bulk-zip', [BulkZipController::class, 'publicBookmark'])->name('bulkZip.publicBookmark');
-        Route::get('/bookmarks/{bookmark}/bulk-zip', [BulkZipController::class, 'bookmark'])->name('bulkZip.bookmark');
         Route::get('/bulk-zip', [BulkZipController::class, 'user'])->name('bulkZip.user');
 
         // 招待機能

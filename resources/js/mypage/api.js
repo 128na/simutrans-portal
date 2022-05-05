@@ -64,28 +64,9 @@ export default {
     return axios.get('/api/v2/mypage/analytics', { params });
   },
 
-  fetchBookmarks() {
-    return axios.get('/api/v2/mypage/bookmarks');
-  },
-  storeBookmark(params) {
-    return axios.post('/api/v2/mypage/bookmarks', params);
-  },
-  updateBookmark(params) {
-    return axios.post(`/api/v2/mypage/bookmarks/${params.bookmark.id}`, params);
-  },
-  deleteBookmark(bookmarkId) {
-    return axios.delete(`/api/v2/mypage/bookmarks/${bookmarkId}`);
-  },
-
   // 一括DL
   fetchUserBulkZip() {
     return axios.get('/api/v3/mypage/bulk-zip');
-  },
-  fetchBookmarkBulkZip(bookmarkId) {
-    return axios.get(`/api/v3/mypage/bookmarks/${bookmarkId}/bulk-zip`);
-  },
-  fetchPublicBookmarkBulkZip(uuid) {
-    return axios.get(`/api/v3/mypage/public-bookmarks/${uuid}/bulk-zip`);
   },
 
   // invitation

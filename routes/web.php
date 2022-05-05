@@ -16,12 +16,10 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Front\ArticleController;
 use App\Http\Controllers\Front\IndexController;
-use App\Http\Controllers\Front\PublicBookmarkController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\User\AdvancedSearchController;
-use App\Http\Controllers\User\BookmarkItemController;
 
 Route::feeds();
 
@@ -47,9 +45,6 @@ Route::middleware(['cache.response'])->group(function () {
     Route::get('/tag/{tag}', [ArticleController::class, 'tag'])->name('tag');
     Route::get('/user/{user}', [ArticleController::class, 'user'])->name('user');
     Route::get('/tags', [ArticleController::class, 'tags'])->name('tags');
-
-    Route::get('/public-bookmarks', [PublicBookmarkController::class, 'index'])->name('publicBookmarks.index');
-    Route::get('/public-bookmarks/{uuid}', [PublicBookmarkController::class, 'show'])->name('publicBookmarks.show');
 });
 // 非ログイン系 reidsキャッシュ無効
 Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
@@ -61,7 +56,6 @@ Route::get('/articles/{article}/download', [ArticleController::class, 'download'
 // ログイン系 reidsキャッシュ無効
 Route::middleware(['verified'])->group(function () {
     Route::match(['get', 'post'], '/advancedSearch', [AdvancedSearchController::class, 'search'])->name('advancedSearch');
-    Route::post('/bookmark-items', [BookmarkItemController::class, 'store'])->name('bookmarkItems.store');
 });
 
 Route::middleware(['auth', 'admin', 'verified'])->group(function () {

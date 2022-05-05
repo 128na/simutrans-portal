@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 
 class UserInvited extends Notification
@@ -29,7 +30,7 @@ class UserInvited extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'slack'];
     }
 
     /**
@@ -44,6 +45,12 @@ class UserInvited extends Notification
         return (new MailMessage())
             ->subject('ユーザー招待通知')
             ->view('emails.invited', ['user' => $notifiable, 'invited' => $this->invited]);
+    }
+
+    public function toSlack($notifiable)
+    {
+        return (new SlackMessage())
+                    ->content("{$this->invited->name}が{$notifiable->name}の招待URLからユーザー登録しました。");
     }
 
     /**

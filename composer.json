@@ -15,6 +15,7 @@
     "fideloper/proxy": "^4.0",
     "fruitcake/laravel-cors": "^2.0",
     "laravel/framework": "8.83.1",
+    "laravel/slack-notification-channel": "^2.4",
     "laravel/tinker": "^2.0",
     "laravel/ui": "^3",
     "spatie/flysystem-dropbox": "^1.2",

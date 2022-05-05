@@ -66,6 +66,11 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
         }
     }
 
+    public function routeNotificationForSlack($notification)
+    {
+        return config('logging.channels.slack.url');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | 通知

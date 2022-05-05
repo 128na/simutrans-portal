@@ -75,7 +75,7 @@
       "@php artisan key:generate --ansi"
     ],
     "test": [
-      "@php artisan test --parallel --processes=2"
+      "@php artisan test"
     ],
     "cs-check": [
       "vendor/bin/phpcs --standard=ruleset.xml"

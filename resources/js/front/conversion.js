@@ -5,7 +5,7 @@ const sendEvent = eventName => {
   if (gtag) {
     const data = {
       event_category: 'click',
-      event_label: location.pathname,
+      event_label: decodeURI(location.pathname),
       non_interaction: true
     };
     // eslint-disable-next-line no-undef

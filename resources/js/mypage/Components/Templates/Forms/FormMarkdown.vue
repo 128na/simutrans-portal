@@ -5,10 +5,11 @@
         <badge-required />
         コンテンツ
       </template>
-      <b-form-textarea
+        <countable-textarea
         v-model="article.contents.markdown"
         :state="validationState('article.contents.markdown')"
-        rows="20"
+        :rows="20"
+        :max-length="65535"
       />
       <validation-message field="article.contents.markdown" />
     </b-form-group>

@@ -31,10 +31,11 @@
         <badge-required />
         説明
       </template>
-      <b-form-textarea
+      <countable-textarea
         v-model="article.contents.description"
         :state="validationState('article.contents.description')"
-        rows="8"
+        :rows="8"
+        :max-length="2048"
       />
       <validation-message field="article.contents.description" />
     </b-form-group>
@@ -43,10 +44,11 @@
         <badge-optional />
         謝辞・参考にしたアドオン
       </template>
-      <b-form-textarea
+      <countable-textarea
         v-model="article.contents.thanks"
         :state="validationState('article.contents.thanks')"
-        rows="8"
+        :rows="8"
+        :max-length="2048"
       />
       <validation-message field="article.contents.thanks" />
     </b-form-group>

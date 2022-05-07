@@ -18,7 +18,7 @@ export default new Vuex.Store({
     AttachmentsModule,
     TagsModule,
     OptionsModule,
-    AnalyticsModule,
+    AnalyticsModule
   },
   state: {
     /**

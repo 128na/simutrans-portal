@@ -46,9 +46,10 @@
         <badge-optional />
         説明
       </template>
-      <b-form-textarea
+      <countable-textarea
         v-model="user.profile.data.description"
-        rows="8"
+        rows=8
+        :max-length="1024"
         :state="validationState('user.profile.data.description')"
       />
       <validation-message field="user.profile.data.description" />

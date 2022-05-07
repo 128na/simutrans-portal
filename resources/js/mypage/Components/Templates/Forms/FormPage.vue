@@ -10,9 +10,11 @@
         :key="index"
         class="mb-3"
       >
-        <b-form-textarea
+        <countable-textarea
           v-if="isText(section.type)"
           :value="section.text"
+          :rows="8"
+          :max-length="2048"
           placeholder="テキスト"
           :state="validationState(`article.contents.sections.${index}.text`)"
           @input="(v) => handleInput(index, v)"

@@ -55,8 +55,9 @@
         <badge-optional />
         ライセンスその他
       </template>
-      <b-form-textarea
+      <countable-textarea
         v-model="article.contents.license"
+        :max-length="2048"
         :state="validationState('article.contents.license')"
       />
       <validation-message field="article.contents.license" />

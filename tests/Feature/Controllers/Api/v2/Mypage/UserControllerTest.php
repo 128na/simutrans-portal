@@ -135,8 +135,8 @@ class UserControllerTest extends ArticleTestCase
         yield 'user.profile.data.avatarが他人のアップロードした画像' => [
             fn () => ['profile' => ['data' => ['avatar' => $this->user2_avatar->id]]], 'user.profile.data.avatar', ];
 
-        yield 'user.profile.data.descriptionが256文字以上' => [
-            fn () => ['profile' => ['data' => ['description' => str_repeat('a', 256)]]], 'user.profile.data.description', ];
+        yield 'user.profile.data.descriptionが1025文字以上' => [
+            fn () => ['profile' => ['data' => ['description' => str_repeat('a', 1025)]]], 'user.profile.data.description', ];
         yield 'user.profile.data.websiteが不正' => [
             fn () => ['profile' => ['data' => ['website' => 'invalid-url']]], 'user.profile.data.website', ];
         yield 'user.profile.data.websiteが256文字以上' => [

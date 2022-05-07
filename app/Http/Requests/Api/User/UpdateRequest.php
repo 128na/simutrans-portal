@@ -26,6 +26,7 @@ class UpdateRequest extends FormRequest
             'user.profile.data.description' => 'nullable|max:255',
             'user.profile.data.website' => 'nullable|url|max:255',
             'user.profile.data.twitter' => 'nullable|max:255',
+            'user.profile.data.gtag' => 'nullable|starts_with:UA-,G-',
         ];
     }
 }

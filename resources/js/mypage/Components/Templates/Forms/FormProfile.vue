@@ -87,12 +87,13 @@
         <b-form-input
           v-model="user.profile.data.gtag"
           type="text"
-          placeholder="UA-00000000"
+          placeholder="UA-00000000, G-00000000"
           :state="validationState('user.profile.data.gtag')"
         />
       <validation-message field="user.profile.data.gtag" />
       <small>
-        自身の投稿記事にGoogleAnalytics(gtag)のタグを追加できます。
+        自身の投稿記事にGoogleAnalyticsのタグ(GA_Measurement_ID)を追加できます。<br>
+        紹介記事のURL遷移数、投稿記事のDL数が計測できます。
       </small>
     </b-form-group>
     <slot />

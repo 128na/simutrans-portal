@@ -13,6 +13,7 @@ return [
      */
 
     'accepted' => ':attributeを承認してください。',
+    'accepted_if' => ':otherが:valueの場合、:attributeを承認してください。',
     'active_url' => ':attributeが有効なURLではありません。',
     'after' => ':attributeには、:dateより後の日付を指定してください。',
     'after_or_equal' => ':attributeには、:date以降の日付を指定してください。',
@@ -30,6 +31,7 @@ return [
     ],
     'boolean' => ':attributeは、trueかfalseを指定してください。',
     'confirmed' => ':attributeと、確認フィールドとが、一致していません。',
+    'current_password' => 'パスワードが正しくありません。',
     'date' => ':attributeには有効な日付を指定してください。',
     'date_equals' => ':attributeには、:dateと同じ日付けを指定してください。',
     'date_format' => ':attributeは:format形式で指定してください。',
@@ -39,6 +41,7 @@ return [
     'dimensions' => ':attributeの図形サイズが正しくありません。',
     'distinct' => ':attributeには異なった値を指定してください。',
     'email' => ':attributeには、有効なメールアドレスを指定してください。',
+    'ends_with' => ':attributeには、:valuesのどれかで終わる値を指定してください。',
     'exists' => '選択された:attributeは正しくありません。',
     'file' => ':attributeにはファイルを指定してください。',
     'filled' => ':attributeに値を指定してください。',
@@ -88,9 +91,11 @@ return [
         'string' => ':attributeは、:min文字以上で指定してください。',
         'array' => ':attributeは:min個以上指定してください。',
     ],
+    'multiple_of' => ':attributeには、:valueの倍数を指定してください。',
     'not_in' => '選択された:attributeは正しくありません。',
     'not_regex' => ':attributeの形式が正しくありません。',
     'numeric' => ':attributeには、数字を指定してください。',
+    'password' => '正しいパスワードを指定してください。',
     'present' => ':attributeが存在していません。',
     'regex' => ':attributeに正しい形式を指定してください。',
     'required' => ':attributeは必ず指定してください。',
@@ -100,6 +105,10 @@ return [
     'required_with_all' => ':valuesを指定する場合は、:attributeも指定してください。',
     'required_without' => ':valuesを指定しない場合は、:attributeを指定してください。',
     'required_without_all' => ':valuesのどれも指定しない場合は、:attributeを指定してください。',
+    'prohibited' => ':attributeは入力禁止です。',
+    'prohibited_if' => ':otherが:valueの場合、:attributeは入力禁止です。',
+    'prohibited_unless' => ':otherが:valueでない場合、:attributeは入力禁止です。',
+    'prohibits' => 'attributeは:otherの入力を禁じています。',
     'same' => ':attributeと:otherには同じ値を指定してください。',
     'size' => [
         'numeric' => ':attributeは:sizeを指定してください。',
@@ -107,6 +116,7 @@ return [
         'string' => ':attributeは:size文字で指定してください。',
         'array' => ':attributeは:size個指定してください。',
     ],
+    'starts_with' => ':attributeには、:valuesのどれかで始まる値を指定してください。',
     'string' => ':attributeは文字列を指定してください。',
     'timezone' => ':attributeには、有効なゾーンを指定してください。',
     'unique' => ':attributeの値は既に存在しています。',
@@ -179,6 +189,7 @@ return [
         'user.profile.data.description' => '説明',
         'user.profile.data.website' => 'WebサイトURL',
         'user.profile.data.twitter' => 'Twitter ID',
+        'user.profile.data.gtag' => 'GA_Measurement_ID',
 
         // analytics
         'ids' => '記事',

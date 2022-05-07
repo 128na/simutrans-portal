@@ -151,6 +151,7 @@ class UserControllerTest extends ArticleTestCase
     {
         Notification::fake();
 
+        /** @var User */
         $user = User::factory()->create();
 
         $new_email = 'new@example.com';

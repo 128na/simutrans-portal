@@ -80,6 +80,7 @@ class StoreAddonIntroductionTest extends ArticleTestCase
     {
         $url = route('api.v2.articles.store');
 
+        /** @var User */
         $user = User::factory()->create();
         $this->actingAs($user);
 

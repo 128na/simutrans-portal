@@ -75,6 +75,7 @@ class AttachmentControllerTest extends ArticleTestCase
 
     public function testDestroy()
     {
+        /** @var User */
         $user = User::factory()->create();
 
         $file = $this->createFromFile(UploadedFile::fake()->image('file.png', 1), $user->id);

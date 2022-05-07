@@ -143,6 +143,8 @@ class UserControllerTest extends ArticleTestCase
             fn () => ['profile' => ['data' => ['website' => 'http://example.com/'.str_repeat('a', 256)]]], 'user.profile.data.website', ];
         yield 'user.profile.data.twitterが256文字以上' => [
             fn () => ['profile' => ['data' => ['twitter' => str_repeat('a', 256)]]], 'user.profile.data.twitter', ];
+        yield 'user.profile.data.fdtagが指定形式以外' => [
+            fn () => ['profile' => ['data' => ['gtag' => 'aaa']]], 'user.profile.data.gtag', ];
     }
 
     public function testEmailChange()

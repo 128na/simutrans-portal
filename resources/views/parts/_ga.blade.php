@@ -8,7 +8,9 @@
     }
     gtag('js', new Date());
 
-    gtag('config', '{{ config('app.gtag') }}');
+    gtag('config', '{{ config('app.gtag') }}', {
+        debug_mode: {{ \App::environment('production') ? 'false' : 'true' }}
+    });
 
     @isset($gtag)
         gtag('config', '{{ $gtag }}');

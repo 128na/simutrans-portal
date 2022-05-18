@@ -9,6 +9,9 @@ use App\Services\BulkZip\Decorators\AddonPostDecorator;
 use App\Services\BulkZip\ZipManager;
 use App\Services\MarkdownService;
 use Carbon\CarbonImmutable;
+use Google\Service\AnalyticsReporting;
+use Google\Service\AnalyticsReporting\Resource\Reports;
+use Google_Client;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Illuminate\Support\Facades\Date;
@@ -61,6 +64,17 @@ class AppServiceProvider extends ServiceProvider
                     $app->make(AddonIntroductionDecorator::class),
                 ]
             );
+        });
+
+        $this->app->bind(Reports::class, function ($app) {
+            $client = $app->make(Google_Client::class);
+            $client->setApplicationName(config('app.name'));
+            $client->setAuthConfig(config('analytics.key_location'));
+            $client->setScopes(config('analytics.scopes'));
+
+            $analyticsReporting = $app->make(AnalyticsReporting::class, [$client]);
+
+            return $analyticsReporting->reports;
         });
     }
 

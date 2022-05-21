@@ -14,13 +14,15 @@ use Google\Service\AnalyticsReporting\Resource\Reports;
 use Google_Client;
 use HTMLPurifier;
 use HTMLPurifier_Config;
+use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
-use Storage;
 use ZipArchive;
 
-class AppServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * Register any application services.
@@ -94,12 +96,22 @@ class AppServiceProvider extends ServiceProvider
     {
         // blade内の改行を有効にする
         // https://codeday.me/jp/qa/20190208/214590.html
-        \Blade::setEchoFormat('nl2br(e(%s), false)');
+        Blade::setEchoFormat('nl2br(e(%s), false)');
 
         Date::use(CarbonImmutable::class);
 
         MarkdownService::registerBlade();
 
         $this->registerRouteBindings();
+    }
+
+    public function provides()
+    {
+        return [
+            TwitterOAuth::class,
+            HTMLPurifier::class,
+            ZipManager::class,
+            Reports::class,
+        ];
     }
 }

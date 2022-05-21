@@ -32,8 +32,11 @@ class UpdateRanking extends Command
             $articles = $this->resolveArticleService->pathToArticles(array_keys($ranking));
             $this->rankingService->updateRanking($articles);
 
+            $this->info('success');
+
             return 0;
         } catch (\Throwable $e) {
+            $this->error($e->getMessage());
             report($e);
 
             return 1;

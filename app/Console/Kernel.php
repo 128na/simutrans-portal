@@ -24,6 +24,10 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('passport:purge')->hourly();
 
+        $schedule->command('ranking:update')->hourly()
+            ->withoutOverlapping()
+            ->onOneServer();
+
         $schedule->command('check:deadlink')->dailyAt('10:00')
             ->withoutOverlapping()
             ->onOneServer();

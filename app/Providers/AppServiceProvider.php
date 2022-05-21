@@ -72,7 +72,7 @@ class AppServiceProvider extends ServiceProvider
             $client->setAuthConfig(config('analytics.key_location'));
             $client->setScopes(config('analytics.scopes'));
 
-            $analyticsReporting = $app->make(AnalyticsReporting::class, [$client]);
+            $analyticsReporting = $app->make(AnalyticsReporting::class, ['clientOrConfig' => $client]);
 
             return $analyticsReporting->reports;
         });

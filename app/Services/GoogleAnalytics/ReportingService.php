@@ -19,7 +19,7 @@ class ReportingService
     {
     }
 
-    public function getPageViewRanking(string $viewId, string $startDate = '7daysAgo', string $endDate = 'today', int $limit = 20): GetReportsResponse
+    public function getPageViewRanking(string $viewId, string $startDate = '7daysAgo', string $endDate = 'today', int $limit = 50): GetReportsResponse
     {
         $request = app(ReportRequest::class);
         $request->setViewId($viewId);

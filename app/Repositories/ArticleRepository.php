@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\LazyCollection;
 
 class ArticleRepository extends BaseRepository
@@ -420,5 +421,29 @@ class ArticleRepository extends BaseRepository
         );
 
         return $q->paginate($limit);
+    }
+
+    public function findBySlugs(array $slugs): Collection
+    {
+        return $this->model
+            ->active()
+            ->whereIn('slug', $slugs)
+            ->get()
+            ->sortBy(function (Article $article) use ($slugs) {
+                return array_search($article->slug, $slugs, true);
+            })
+            ->values();
+    }
+
+    public function updateRanking(Collection $articles): void
+    {
+        $data = $articles
+            ->map(fn ($a, $i) => ['order' => $i, 'article_id' => $a->id])
+            ->all();
+
+        DB::transaction(function () use ($data) {
+            DB::table('rankings')->delete();
+            DB::table('rankings')->insert($data);
+        });
     }
 }

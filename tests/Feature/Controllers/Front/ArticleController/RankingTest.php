@@ -3,6 +3,7 @@
 namespace Tests\Feature\Controllers\Front\ArticleController;
 
 use App\Models\Article;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class RankingTest extends TestCase
@@ -20,6 +21,13 @@ class RankingTest extends TestCase
         $this->article2 = Article::factory()->publish()->addonPost()->create();
         $this->article3 = Article::factory()->publish()->page()->create();
         $this->article4 = Article::factory()->publish()->markdown()->create();
+
+        DB::table('rankings')->insert([
+            ['article_id' => $this->article1->id, 'order' => 0],
+            ['article_id' => $this->article2->id, 'order' => 1],
+            ['article_id' => $this->article3->id, 'order' => 2],
+            ['article_id' => $this->article4->id, 'order' => 3],
+        ]);
     }
 
     public function test()
@@ -33,7 +41,7 @@ class RankingTest extends TestCase
         $res->assertDontSeeText($this->article4->title);
     }
 
-    public function test_非公開()
+    public function test非公開()
     {
         $this->article1->update(['status' => 'private']);
 

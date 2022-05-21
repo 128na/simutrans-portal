@@ -4,6 +4,7 @@ namespace Tests\Feature\Repositories\ArticleRepository;
 
 use App\Repositories\ArticleRepository;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Tests\ArticleTestCase;
 
 class FindAllRankingTest extends ArticleTestCase
@@ -14,6 +15,11 @@ class FindAllRankingTest extends ArticleTestCase
     {
         parent::setUp();
         $this->repository = app(ArticleRepository::class);
+
+        DB::table('rankings')->insert([
+            ['article_id' => $this->article->id, 'order' => 0],
+            ['article_id' => $this->article2->id, 'order' => 1],
+        ]);
     }
 
     public function test()

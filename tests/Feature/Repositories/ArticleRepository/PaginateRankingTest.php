@@ -4,6 +4,7 @@ namespace Tests\Feature\Repositories\ArticleRepository;
 
 use App\Repositories\ArticleRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 use Tests\ArticleTestCase;
 
 class PaginateRankingTest extends ArticleTestCase
@@ -14,11 +15,15 @@ class PaginateRankingTest extends ArticleTestCase
     {
         parent::setUp();
         $this->repository = app(ArticleRepository::class);
+
+        DB::table('rankings')->insert([
+            ['article_id' => $this->article->id, 'order' => 0],
+            ['article_id' => $this->article2->id, 'order' => 1],
+        ]);
     }
 
     public function test()
     {
-        $this->createPage();
         $res = $this->repository->paginateRanking([$this->article2->id]);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);

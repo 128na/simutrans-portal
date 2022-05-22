@@ -429,16 +429,14 @@ class ArticleRepository extends BaseRepository
             ->active()
             ->whereIn('slug', $slugs)
             ->get()
-            ->sortBy(function (Article $article) use ($slugs) {
-                return array_search($article->slug, $slugs, true);
-            })
+            ->sortBy(fn (Article $a) => array_search($a->slug, $slugs, true))
             ->values();
     }
 
     public function updateRanking(Collection $articles): void
     {
         $data = $articles
-            ->map(fn ($a, $i) => ['order' => $i, 'article_id' => $a->id])
+            ->map(fn (Article $a, int $i) => ['order' => $i, 'article_id' => $a->id])
             ->all();
 
         DB::transaction(function () use ($data) {

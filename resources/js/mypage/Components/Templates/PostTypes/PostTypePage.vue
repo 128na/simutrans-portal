@@ -4,6 +4,7 @@
     <form-common :article="article" />
     <form-page :article="article" />
     <slot />
+    <form-status :article="article" />
   </div>
 </template>
 <script>

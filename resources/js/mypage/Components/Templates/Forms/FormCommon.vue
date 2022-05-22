@@ -3,18 +3,6 @@
     <b-form-group>
       <template slot="label">
         <badge-required />
-        公開状態
-      </template>
-      <b-form-select
-        v-model="article.status"
-        :options="options.statuses"
-        :state="validationState('article.status')"
-      />
-      <validation-message field="article.status" />
-    </b-form-group>
-    <b-form-group>
-      <template slot="label">
-        <badge-required />
         タイトル
       </template>
       <b-input-group>

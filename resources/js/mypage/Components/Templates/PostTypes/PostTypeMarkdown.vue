@@ -10,6 +10,7 @@
     </page-description>
     <form-common :article="article" />
     <form-markdown :article="article" />
+    <form-status :article="article" />
     <slot />
   </div>
 </template>

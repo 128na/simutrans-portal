@@ -3,7 +3,7 @@
     <page-title>編集</page-title>
     <div v-if="ready">
       <component
-        :is="component_name"
+        :is="componentName"
         :article="copy"
       >
         <b-form-group>
@@ -11,9 +11,14 @@
             <badge-optional />
             自動ツイート
           </template>
-          <b-form-checkbox v-model="should_tweet">
-            記事公開時にツイートする
-          </b-form-checkbox>
+          <template v-if="canTweet">
+            <b-form-checkbox v-model="should_tweet">
+              記事公開時にツイートする
+            </b-form-checkbox>
+          </template>
+          <template v-else>
+            公開状態が「公開」のときのみ選べます。
+          </template>
         </b-form-group>
         <b-form-group>
           <fetching-overlay>
@@ -26,7 +31,7 @@
               variant="primary"
               @click.prevent="handleUpdate"
             >
-              「{{ article_status }}」で保存
+              「{{ articleStatusText }}」で保存
             </b-button>
           </fetching-overlay>
         </b-form-group>
@@ -92,11 +97,14 @@ export default {
     ready() {
       return this.optionsLoaded && this.articlesLoaded && !!this.copy;
     },
-    component_name() {
+    componentName() {
       return `post-type-${this.copy.post_type}`;
     },
-    article_status() {
+    articleStatusText() {
       return this.getStatusText(this.copy.status);
+    },
+    canTweet() {
+      return this.copy.status === 'publish';
     }
   },
   methods: {

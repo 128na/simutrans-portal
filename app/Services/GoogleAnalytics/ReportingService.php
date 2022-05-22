@@ -2,8 +2,8 @@
 
 namespace App\Services\GoogleAnalytics;
 
-use Google\Service\AnalyticsData\Dimension;
 use Google\Service\AnalyticsReporting\DateRange;
+use Google\Service\AnalyticsReporting\Dimension;
 use Google\Service\AnalyticsReporting\DimensionFilter;
 use Google\Service\AnalyticsReporting\DimensionFilterClause;
 use Google\Service\AnalyticsReporting\GetReportsRequest;

@@ -4,22 +4,17 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Exception;
+use Illuminate\Http\Middleware\SetCacheHeaders;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 /**
  * 生成ページ丸ごとキャッシュする.
  */
-class CacheResponse
+class CacheResponse extends SetCacheHeaders
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return mixed
-     */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $options = [])
     {
         // ログインしているユーザーはキャッシュを使用しない
         if (Auth::check() || app()->environment('local')) {
@@ -33,10 +28,27 @@ class CacheResponse
         $lifetime = config('app.cache_lifetime_min', 0) * 60;
         $data = self::cacheOrCallback($key, fn () => $next($request), $lifetime);
 
-        return response($data)->withHeaders([
-            'Content-Encoding' => 'gzip',
-            'Cache-Control' => "max-age={$lifetime}, public",
-        ]);
+        if (is_string($options)) {
+            $options = $this->parseOptions($options);
+        }
+
+        if (isset($options['etag']) && $options['etag'] === true) {
+            $options['etag'] = md5($data);
+        }
+
+        if (isset($options['last_modified'])) {
+            if (is_numeric($options['last_modified'])) {
+                $options['last_modified'] = Carbon::createFromTimestamp($options['last_modified']);
+            } else {
+                $options['last_modified'] = Carbon::parse($options['last_modified']);
+            }
+        }
+        $response = response($data);
+        $response->header('Content-Encoding', 'gzip');
+        $response->setCache($options);
+        $response->isNotModified($request);
+
+        return $response;
     }
 
     /**

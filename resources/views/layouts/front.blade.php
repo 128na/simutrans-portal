@@ -39,7 +39,7 @@
         @include('parts.menu')
     </nav>
 
-    <main id="@yield('id')" class="container-fluid bg-light py-4">
+    <main id="@yield('id')" class="container-fluid py-4">
         @if (session()->has('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif

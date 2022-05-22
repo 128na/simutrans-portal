@@ -30,7 +30,13 @@ class CacheResponse
         // $locale = \App::getLocale();
         // $key = "{$path}@{$locale}";
 
-        return self::cacheOrCallback($key, fn () => $next($request));
+        $lifetime = config('app.cache_lifetime_min', 0) * 60;
+        $data = self::cacheOrCallback($key, fn () => $next($request), $lifetime);
+
+        return response($data)->withHeaders([
+            'Content-Encoding' => 'gzip',
+            'Cache-Control' => "max-age={$lifetime}, public",
+        ]);
     }
 
     /**
@@ -43,7 +49,7 @@ class CacheResponse
      *
      * @return mixed
      */
-    protected static function cacheOrCallback($key, $callback)
+    protected static function cacheOrCallback($key, $callback, $lifetime)
     {
         try {
             $cache = Cache::get($key);
@@ -66,9 +72,9 @@ class CacheResponse
             if (strlen($cache) < 100) {
                 return $data;
             }
-            Cache::put($key, $cache, config('app.cache_lifetime_min', 0) * 60);
+            Cache::put($key, $cache, $lifetime);
         }
 
-        return response($cache)->header('Content-Encoding', 'gzip');
+        return $cache;
     }
 }

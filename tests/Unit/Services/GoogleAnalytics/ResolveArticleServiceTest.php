@@ -17,10 +17,10 @@ class ResolveArticleServiceTest extends UnitTestCase
     public function test()
     {
         $this->mock(ArticleRepository::class, function (MockInterface $m) {
-            $m->shouldReceive('findBySlugs')->withArgs(['dummy'])->andReturn(collect());
+            $m->shouldReceive('findBySlugs')->withArgs([['dummy']])->andReturn(collect());
         });
 
         $service = $this->getSUT();
-        $service->pathToArticles(['articles/dummy']);
+        $service->pathToArticles(['/articles/dummy']);
     }
 }

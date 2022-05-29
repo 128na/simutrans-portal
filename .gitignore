@@ -21,3 +21,4 @@ public/mix-manifest.json
 coverage/
 
 *-firebase-adminsdk*.json
+gcp_service_account.json

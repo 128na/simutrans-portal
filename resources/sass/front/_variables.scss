@@ -2,7 +2,8 @@
 @import "../variables";
 
 // フロント機能でのみ使用する変数定義を記述する
-$primary: hsl(211, 57%, 54%);
+$primary: hsl(211, 82%, 54%);
+$body-bg: #fff;
 
 @import "../../../node_modules/bootstrap/scss/functions";
 @import "../../../node_modules/bootstrap/scss/variables";

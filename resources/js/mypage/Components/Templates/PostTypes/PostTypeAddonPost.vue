@@ -6,6 +6,7 @@
     <form-common :article="article" />
     <form-addon-post :article="article" />
     <form-addon :article="article" />
+    <form-status :article="article" />
     <slot />
   </div>
 </template>

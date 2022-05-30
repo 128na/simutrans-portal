@@ -147,7 +147,10 @@ jobs:
             && php -c ~/www/php.ini ~/bin/composer.phar install --optimize-autoloader --no-dev
             && php -c ~/www/php.ini artisan migrate --force
             && php -c ~/www/php.ini artisan migrate:status
+            && php -c ~/www/php.ini artisan optimize:clear
             && php -c ~/www/php.ini artisan optimize
+            && php -c ~/www/php.ini artisan event:cache
+            && php -c ~/www/php.ini artisan view:cache
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           privateKey: /home/runner/.ssh/id_rsa

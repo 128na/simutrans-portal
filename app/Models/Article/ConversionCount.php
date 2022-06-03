@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Article;
 
+use App\Models\Article;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ViewCount extends Model
+class ConversionCount extends Model
 {
     public const TYPE_DAILY = 1;
     public const TYPE_MONTHLY = 2;
@@ -21,10 +22,11 @@ class ViewCount extends Model
 
     public $timestamps = false;
 
-    protected $casts = [
-        'count' => 'integer',
-    ];
-
+    /*
+    |--------------------------------------------------------------------------
+    | リレーション
+    |--------------------------------------------------------------------------
+    */
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class);

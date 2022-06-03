@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\ConversionCount;
+use App\Models\Article\ConversionCount;
 
 class ViewCountRepository extends BaseCountRepository
 {

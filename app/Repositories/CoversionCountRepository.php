@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\ViewCount;
+use App\Models\Article\ViewCount;
 
 class CoversionCountRepository extends BaseCountRepository
 {

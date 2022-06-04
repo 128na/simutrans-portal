@@ -18,7 +18,7 @@ use Illuminate\Support\LazyCollection;
 class ArticleRepository extends BaseRepository
 {
     private const COLUMNS = ['id', 'user_id', 'slug', 'title', 'post_type', 'contents', 'status', 'updated_at', 'created_at'];
-    private const RELATIONS = ['user:id,name', 'attachments:id,attachmentable_id,attachmentable_type,path', 'categories:id,type,slug'];
+    private const RELATIONS = ['user', 'attachments', 'categories', 'tags', 'tweetLogSummary', 'totalViewCount', 'totalConversionCount'];
     private const ORDER = ['updated_at', 'desc'];
 
     /**

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\ToArticleContents;
 use App\Models\Article\ConversionCount;
 use App\Models\Article\TweetLog;
+use App\Models\Article\TweetLogSummary;
 use App\Models\Article\ViewCount;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;

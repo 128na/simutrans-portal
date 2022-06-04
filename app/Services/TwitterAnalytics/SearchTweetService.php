@@ -2,13 +2,10 @@
 
 namespace App\Services\TwitterAnalytics;
 
-use Abraham\TwitterOAuth\TwitterOAuth;
-
 class SearchTweetService
 {
-    public function __construct(private TwitterOAuth $client)
+    public function __construct(private TwitterV2Api $client)
     {
-        $client->setApiVersion('2');
     }
 
     /**

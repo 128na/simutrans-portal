@@ -31,8 +31,8 @@ class AppServiceProvider extends ServiceProvider
             return new TwitterOAuth(
                     config('twitter.consumer_key'),
                     config('twitter.consumer_secret'),
-                    null,
-                    config('twitter.bearer_token')
+                    config('twitter.access_token'),
+                    config('twitter.access_token_secret')
                 );
         });
 
@@ -47,9 +47,6 @@ class AppServiceProvider extends ServiceProvider
             $client->setApiVersion('2');
 
             return $client;
-        });
-
-        $this->app->bind(TwitterOAuth::class, function ($app) {
         });
 
         $this->app->bind(HTMLPurifier::class, function ($app) {

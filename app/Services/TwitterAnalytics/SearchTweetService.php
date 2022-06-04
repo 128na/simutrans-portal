@@ -8,7 +8,6 @@ class SearchTweetService
 {
     public function __construct(private TwitterOAuth $client)
     {
-        $client->setApiVersion('2');
     }
 
     /**

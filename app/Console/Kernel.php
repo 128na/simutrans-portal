@@ -39,9 +39,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('delete:tags')->dailyAt('4:00')
             ->withoutOverlapping()
             ->onOneServer();
-        $schedule->command('tweet_log:update')->dailyAt('5:00')
-            ->withoutOverlapping()
-            ->onOneServer();
     }
 
     /**

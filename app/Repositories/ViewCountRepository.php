@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Repositories\Article;
+namespace App\Repositories;
 
-use App\Models\Article\ConversionCount;
-use App\Repositories\BaseCountRepository;
+use App\Models\ConversionCount;
 
 class ViewCountRepository extends BaseCountRepository
 {

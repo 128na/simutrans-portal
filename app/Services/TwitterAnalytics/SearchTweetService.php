@@ -26,6 +26,14 @@ class SearchTweetService
         // 7日で2ページ分もツイート発生しないのでページングは考慮しない
         $data = $this->client->get('tweets/search/recent', $query)->data ?? [];
 
-        return array_map(fn ($d) => new TweetData($d), $data);
+        $tweetDataArray = array_map(function ($d) {
+            try {
+                return new TweetData($d);
+            } catch (InvalidTweetDataException $e) {
+                return null;
+            }
+        }, $data);
+
+        return array_filter($tweetDataArray, fn (?TweetData $d) => !is_null($d));
     }
 }

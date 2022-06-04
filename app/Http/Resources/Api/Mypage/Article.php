@@ -27,8 +27,14 @@ class Article extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'url' => route('articles.show', $this->slug),
-            'views' => $this->totalViewCount->count ?? 0,
-            'conversions' => $this->totalConversionCount->count ?? 0,
+            'metrics' => [
+                'totalViewCount' => $this->totalViewCount->count ?? 0,
+                'totalConversionCount' => $this->totalConversionCount->count ?? 0,
+                'totalRetweetCount' => $this->tweetLogSummary?->total_retweet_count ?? 0,
+                'totalReplyCount' => $this->tweetLogSummary?->total_reply_count ?? 0,
+                'totalLikeCount' => $this->tweetLogSummary?->total_like_count ?? 0,
+                'totalQuoteCount' => $this->tweetLogSummary?->total_quote_count ?? 0,
+            ],
         ];
     }
 }

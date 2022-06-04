@@ -2,6 +2,8 @@
 
 namespace App\Services\TwitterAnalytics;
 
+use Illuminate\Support\LazyCollection;
+
 class SearchTweetService
 {
     public function __construct(private TwitterV2Api $client)
@@ -10,27 +12,57 @@ class SearchTweetService
 
     /**
      * @see https://developer.twitter.com/en/docs/twitter-api/tweets/search/api-reference/get-tweets-search-recent
-     *
-     * @return TweetData[]
      */
-    public function searchMyTweets(): array
+    public function searchTweetsByUsername(string $username): LazyCollection
     {
-        $query = [
-            'query' => 'from:'.config('app.twitter'),
-            'tweet.fields' => 'text,public_metrics,created_at',
-            'max_results' => 100,
-        ];
-        // 7日で2ページ分もツイート発生しないのでページングは考慮しない
-        $data = $this->client->get('tweets/search/recent', $query)->data ?? [];
+        return LazyCollection::make(function () use ($username) {
+            $query = [
+                'query' => "from:{$username}",
+                'tweet.fields' => 'text,public_metrics,created_at',
+                'max_results' => 100,
+            ];
+            // 7日で2ページ分もツイート発生しないのでページングは考慮しない
+            $data = $this->client->get('tweets/search/recent', $query)->data ?? [];
 
-        $tweetDataArray = array_map(function ($d) {
-            try {
-                return new TweetData($d);
-            } catch (InvalidTweetDataException $e) {
-                return null;
+            foreach ($data as $d) {
+                try {
+                    yield new TweetData($d);
+                } catch (InvalidTweetDataException $e) {
+                }
             }
-        }, $data);
+        });
+    }
 
-        return array_filter($tweetDataArray, fn (?TweetData $d) => !is_null($d));
+    /**
+     * @see https://developer.twitter.com/en/docs/twitter-api/lists/list-tweets/api-reference/get-lists-id-tweets
+     */
+    public function searchTweetsByList(string $listId): LazyCollection
+    {
+        return LazyCollection::make(function () use ($listId) {
+            $query = [
+                'tweet.fields' => 'text,public_metrics,created_at',
+                'max_results' => 100,
+            ];
+
+            $paginationToken = null;
+            do {
+                if ($paginationToken) {
+                    $query['pagination_token'] = $paginationToken;
+                }
+                $result = $this->client->get("lists/{$listId}/tweets", $query);
+                $data = $result->data ?? [];
+
+                foreach ($data as $d) {
+                    yield new TweetData($d);
+                }
+
+                if (isset($result->meta->next_token)) {
+                    $paginationToken = $result->meta->next_token;
+                    sleep(1);
+                } else {
+                    $paginationToken = null;
+                }
+            } while ($paginationToken);
+        });
     }
 }

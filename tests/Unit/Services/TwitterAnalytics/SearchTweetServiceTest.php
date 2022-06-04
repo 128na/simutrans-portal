@@ -15,7 +15,7 @@ class SearchTweetServiceTest extends UnitTestCase
         return app(SearchTweetService::class);
     }
 
-    private function createMockData(): stdClass
+    private function createMockData(?string $paginationToken = null): stdClass
     {
         $publicMetrics = new stdClass();
         $publicMetrics->retweet_count = 1;
@@ -29,20 +29,25 @@ class SearchTweetServiceTest extends UnitTestCase
         $data->created_at = '2022-01-01T23:59:59+09:00';
         $data->public_metrics = $publicMetrics;
 
+        $meta = new stdClass();
+        if ($paginationToken) {
+            $meta->next_token = $paginationToken;
+        }
         $response = new stdClass();
         $response->data = [$data];
+        $response->meta = $meta;
 
         return $response;
     }
 
-    public function testSearchMyTweets()
+    public function testSearchTweetsByUsername()
     {
         $this->mock(TwitterV2Api::class, function (MockInterface $m) {
             $m->shouldReceive('setApiVersion')->withArgs(['2']);
 
             $m->shouldReceive('get')->withArgs([
                 'tweets/search/recent', [
-                    'query' => 'from:'.config('app.twitter'),
+                    'query' => 'from:user',
                     'tweet.fields' => 'text,public_metrics,created_at',
                     'max_results' => 100,
                 ],
@@ -51,8 +56,36 @@ class SearchTweetServiceTest extends UnitTestCase
 
         $service = $this->getSUT();
 
-        $response = $service->searchMyTweets();
+        $response = $service->searchTweetsByUsername('user');
 
         $this->assertCount(1, $response);
+    }
+
+    public function testSearchTweetsByList()
+    {
+        $this->mock(TwitterV2Api::class, function (MockInterface $m) {
+            $m->shouldReceive('setApiVersion')->withArgs(['2']);
+
+            $m->shouldReceive('get')->withArgs([
+                'lists/123/tweets', [
+                    'tweet.fields' => 'text,public_metrics,created_at',
+                    'max_results' => 100,
+                ],
+            ])->andReturn($this->createMockData('dummy_token'));
+
+            $m->shouldReceive('get')->withArgs([
+                'lists/123/tweets', [
+                    'tweet.fields' => 'text,public_metrics,created_at',
+                    'max_results' => 100,
+                    'pagination_token' => 'dummy_token',
+                ],
+            ])->andReturn($this->createMockData());
+        });
+
+        $service = $this->getSUT();
+
+        $response = $service->searchTweetsByList('123');
+
+        $this->assertCount(2, $response);
     }
 }

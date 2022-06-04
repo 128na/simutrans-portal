@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Services\TwitterAnalytics;
 
-use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Services\TwitterAnalytics\SearchTweetService;
+use App\Services\TwitterAnalytics\TwitterV2Api;
 use Mockery\MockInterface;
 use stdClass;
 use Tests\UnitTestCase;
@@ -37,7 +37,7 @@ class SearchTweetServiceTest extends UnitTestCase
 
     public function testSearchMyTweets()
     {
-        $this->mock(TwitterOAuth::class, function (MockInterface $m) {
+        $this->mock(TwitterV2Api::class, function (MockInterface $m) {
             $m->shouldReceive('setApiVersion')->withArgs(['2']);
 
             $m->shouldReceive('get')->withArgs([

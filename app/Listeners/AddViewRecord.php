@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\ArticleShown;
-use App\Repositories\Article\ViewCountRepository;
+use App\Repositories\ViewCountRepository;
 
 class AddViewRecord
 {

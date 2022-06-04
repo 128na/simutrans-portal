@@ -99,11 +99,6 @@ abstract class BaseRepository
         return $this->model->whereIn('id', $ids)->get();
     }
 
-    public function updateOrCreate(array $search, array $data = [])
-    {
-        return $this->model->updateOrCreate($search, $data);
-    }
-
     /**
      * 一覧取得.
      */

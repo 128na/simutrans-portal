@@ -1,17 +1,4 @@
 <template>
-<div>
-  <b-form-group>
-    <b-button v-b-toggle.fieldSelect variant="secondary">表示項目</b-button>
-    <b-collapse id="fieldSelect" class="mt-2">
-      <b-card>
-          <b-form-checkbox-group
-            v-model="activeFields"
-            :options="checkboxFields"
-            stacked
-          />
-      </b-card>
-    </b-collapse>
-  </b-form-group>
   <b-form-group>
     <b-table
       hover
@@ -33,33 +20,18 @@
       @close="handleTooltipClose"
     />
   </b-form-group>
-  </div>
 </template>
 <script>
-import { ARTICLE_FIELDS } from '../../../const';
 export default {
-  props: {
-    articles: {
-      type: Array,
-      default: () => []
-    }
-  },
+  props: ['articles'],
   data() {
     return {
       sortBy: 'updated_at',
       sortDesc: true,
+      fields: [],
       x: 0,
       y: 0,
-      selected_item: null,
-      activeFields: [
-        'status',
-        'post_type',
-        'title',
-        'totalViewCount',
-        'totalConversionCount',
-        'created_at',
-        'updated_at'
-      ]
+      selected_item: null
     };
   },
   computed: {
@@ -70,12 +42,6 @@ export default {
           post_type: this.post_type(a.post_type),
           created_at: a.created_at.toFormat('yyyy/LL/dd HH:mm'),
           updated_at: a.updated_at.toFormat('yyyy/LL/dd HH:mm'),
-          totalViewCount: a.metrics.totalViewCount,
-          totalConversionCount: a.metrics.totalConversionCount,
-          totalRetweetCount: a.metrics.totalRetweetCount,
-          totalReplyCount: a.metrics.totalReplyCount,
-          totalLikeCount: a.metrics.totalLikeCount,
-          totalQuoteCount: a.metrics.totalQuoteCount,
           _rowVariant: this.rowValiant(a)
         })
       );
@@ -86,17 +52,46 @@ export default {
         top: `${this.y}px`,
         left: `${this.x}px`
       };
-    },
-    checkboxFields() {
-      return ARTICLE_FIELDS.map(f => {
-        return { text: `${f.label}：${f.desc}`, value: f.key };
-      });
-    },
-    fields() {
-      return ARTICLE_FIELDS.filter(f => this.activeFields.includes(f.key));
     }
   },
   created() {
+    this.fields = [
+      {
+        key: 'status',
+        label: 'ステータス',
+        sortable: true
+      },
+      {
+        key: 'post_type',
+        label: '形式',
+        sortable: true
+      },
+      {
+        key: 'title',
+        label: 'タイトル',
+        sortable: true
+      },
+      {
+        key: 'views',
+        label: 'PV',
+        sortable: true
+      },
+      {
+        key: 'conversions',
+        label: 'CV',
+        sortable: true
+      },
+      {
+        key: 'created_at',
+        label: '作成日時',
+        sortable: true
+      },
+      {
+        key: 'updated_at',
+        label: '更新日時',
+        sortable: true
+      }
+    ];
   },
   methods: {
     rowValiant(article) {

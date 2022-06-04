@@ -421,4 +421,9 @@ class ArticleRepository extends BaseRepository
 
         return $q->paginate($limit);
     }
+
+    public function findByTitles(array $titles): Collection
+    {
+        return $this->model->active()->whereIn('title', $titles)->get();
+    }
 }

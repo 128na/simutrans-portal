@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Casts\ToArticleContents;
 use App\Models\Article\ConversionCount;
+use App\Models\Article\TweetLog;
 use App\Models\Article\ViewCount;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
@@ -139,6 +140,16 @@ class Article extends Model implements Feedable
     public function totalConversionCount(): HasOne
     {
         return $this->hasOne(ConversionCount::class)->where('type', ConversionCount::TYPE_TOTAL);
+    }
+
+    public function tweetLogs(): HasMany
+    {
+        return $this->hasMany(TweetLog::class);
+    }
+
+    public function tweetLogSummary(): HasOne
+    {
+        return $this->hasOne(TweetLogSummary::class);
     }
 
     /*

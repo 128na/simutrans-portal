@@ -29,21 +29,21 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(TwitterOAuth::class, function () {
             return new TwitterOAuth(
-                    config('twitter.consumer_key'),
-                    config('twitter.consumer_secret'),
-                    config('twitter.access_token'),
-                    config('twitter.access_token_secret')
-                );
+                config('twitter.consumer_key'),
+                config('twitter.consumer_secret'),
+                config('twitter.access_token'),
+                config('twitter.access_token_secret')
+            );
         });
 
         $this->app->bind(TwitterV2Api::class, function () {
             // bearer token https://github.com/abraham/twitteroauth/issues/431
             $client = new TwitterV2Api(
-                    config('twitter.consumer_key'),
-                    config('twitter.consumer_secret'),
-                    null,
-                    config('twitter.bearer_token')
-                );
+                config('twitter.consumer_key'),
+                config('twitter.consumer_secret'),
+                null,
+                config('twitter.bearer_token')
+            );
             $client->setApiVersion('2');
 
             return $client;

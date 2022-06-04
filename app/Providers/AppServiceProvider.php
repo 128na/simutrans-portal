@@ -27,11 +27,12 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(TwitterOAuth::class, function ($app) {
+            // bearer token https://github.com/abraham/twitteroauth/issues/431
             return new TwitterOAuth(
                 config('twitter.consumer_key'),
                 config('twitter.consumer_secret'),
-                config('twitter.access_token'),
-                config('twitter.access_token_secret')
+                null,
+                config('twitter.bearer_token')
             );
         });
 

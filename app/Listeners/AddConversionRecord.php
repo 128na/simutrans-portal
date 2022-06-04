@@ -3,19 +3,19 @@
 namespace App\Listeners;
 
 use App\Events\ArticleConversion;
-use App\Repositories\CoversionCountRepository;
+use App\Repositories\Article\ConversionCountRepository;
 
 class AddConversionRecord
 {
-    private CoversionCountRepository $coversionCountRepository;
+    private ConversionCountRepository $conversionCountRepository;
 
-    public function __construct(CoversionCountRepository $coversionCountRepository)
+    public function __construct(ConversionCountRepository $conversionCountRepository)
     {
-        $this->coversionCountRepository = $coversionCountRepository;
+        $this->conversionCountRepository = $conversionCountRepository;
     }
 
     public function handle(ArticleConversion $event)
     {
-        $this->coversionCountRepository->countUp($event->article);
+        $this->conversionCountRepository->countUp($event->article);
     }
 }

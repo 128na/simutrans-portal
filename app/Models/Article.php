@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use App\Casts\ToArticleContents;
+use App\Models\Article\ConversionCount;
+use App\Models\Article\TweetLog;
+use App\Models\Article\TweetLogSummary;
+use App\Models\Article\ViewCount;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,9 +18,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
-use Storage;
 
 class Article extends Model implements Feedable
 {
@@ -137,6 +141,16 @@ class Article extends Model implements Feedable
     public function totalConversionCount(): HasOne
     {
         return $this->hasOne(ConversionCount::class)->where('type', ConversionCount::TYPE_TOTAL);
+    }
+
+    public function tweetLogs(): HasMany
+    {
+        return $this->hasMany(TweetLog::class);
+    }
+
+    public function tweetLogSummary(): HasOne
+    {
+        return $this->hasOne(TweetLogSummary::class);
     }
 
     /*

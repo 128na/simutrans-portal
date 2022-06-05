@@ -13,11 +13,11 @@ class CreateOauthCodesTable extends Migration
      */
     public function up()
     {
-        Schema::create('oauth_codes', function (Blueprint $table) {
+        Schema::create('oauth_tokens', function (Blueprint $table) {
             $table->id();
-            $table->text('code')->nullable();
             $table->text('access_token')->nullable();
             $table->text('refresh_token')->nullable();
+            $table->timestamp('expired_at')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateOauthCodesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('oauth_codes');
+        Schema::dropIfExists('oauth_tokens');
     }
 }

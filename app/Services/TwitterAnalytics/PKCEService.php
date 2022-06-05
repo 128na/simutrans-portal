@@ -3,7 +3,6 @@
 namespace App\Services\TwitterAnalytics;
 
 use GuzzleHttp\Client;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class PKCEService
@@ -38,7 +37,7 @@ class PKCEService
         return 'https://twitter.com/i/oauth2/authorize?'.http_build_query([
             'response_type' => 'code',
             'client_id' => config('twitter.client_id'),
-            'redirect_uri' => route('oauth2.twitter'),
+            'redirect_uri' => route('admin.oauth.twitter.callback'),
             'scope' => 'users.read tweet.read offline.access',
             'state' => $state,
             'code_challenge' => $codeChallange,
@@ -46,23 +45,10 @@ class PKCEService
         ]);
     }
 
-    public function putCode(Request $request): void
+    public function verifyState(string $expected, string $actual): void
     {
-        Cache::put('oauth2.twitter.state', $request->state);
-        Cache::put('oauth2.twitter.code', $request->code);
-    }
-
-    public function getCode(string $state): ?string
-    {
-        while (true) {
-            if (Cache::has('oauth2.twitter.code')) {
-                if ($state === Cache::pull('oauth2.twitter.state')) {
-                    return Cache::pull('oauth2.twitter.code');
-                }
-                Cache::forget('oauth2.twitter.code');
-                throw new \Exception('state not match');
-            }
-            sleep(1);
+        if ($expected !== $actual) {
+            throw new \Exception('state mismach!');
         }
     }
 
@@ -73,7 +59,7 @@ class PKCEService
             'form_params' => [
                 'code' => $code,
                 'grant_type' => 'authorization_code',
-                'redirect_uri' => route('oauth2.twitter'),
+                'redirect_uri' => route('admin.oauth.twitter.callback'),
                 'code_verifier' => $codeVerifier,
             ],
         ]);
@@ -81,8 +67,6 @@ class PKCEService
         $data = json_decode($res->getBody()->getContents(), true);
 
         logger('generate token', [$data]);
-        Cache::put('oauth2.twitter.access_token', $data['access_token']);
-        Cache::put('oauth2.twitter.refresh_token', $data['refresh_token']);
 
         return $data;
     }

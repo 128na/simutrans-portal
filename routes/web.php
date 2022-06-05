@@ -11,7 +11,7 @@
 |
  */
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Front\ArticleController;
@@ -20,17 +20,9 @@ use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\User\AdvancedSearchController;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 Route::feeds();
-
-Route::GET('/oauth2/twitter', function () {
-    Cache::put('oauth2.twitter.state', request()->state);
-    Cache::put('oauth2.twitter.code', request()->code);
-
-    return 'ok';
-})->name('oauth2.twitter');
 
 // メール確認
 Route::middleware(['auth'])->group(function () {
@@ -69,6 +61,8 @@ Route::middleware(['verified'])->group(function () {
 
 Route::middleware(['auth', 'admin', 'verified'])->group(function () {
     Route::get('/admin/', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/admin/oauth/twitter/authorize', [OauthController::class, 'twitterAuthoroize'])->name('admin.oauth.twitter.authorize');
+    Route::get('/admin/oauth/twitter', [OauthController::class, 'twitterCallback'])->name('admin.oauth.twitter.callback');
 });
 
 Route::get('/invite/{invitation_code}', [InviteController::class, 'index'])->name('invite.index');

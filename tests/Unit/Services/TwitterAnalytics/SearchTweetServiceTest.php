@@ -46,10 +46,11 @@ class SearchTweetServiceTest extends UnitTestCase
         return $response;
     }
 
-    public function testSearchTweetsByUsername()
+    public function testSearchTweetsByUsernamePkceToken()
     {
         $this->mock(TwitterV2Api::class, function (MockInterface $m) {
             $m->shouldReceive('setApiVersion')->withArgs(['2']);
+            $m->shouldReceive('isPkceToken')->andReturn(true);
 
             $m->shouldReceive('get')->withArgs([
                 'tweets/search/recent', [
@@ -67,10 +68,33 @@ class SearchTweetServiceTest extends UnitTestCase
         $this->assertCount(1, $response);
     }
 
-    public function testSearchTweetsByList()
+    public function testSearchTweetsByUsernameAppOnlyToken()
     {
         $this->mock(TwitterV2Api::class, function (MockInterface $m) {
             $m->shouldReceive('setApiVersion')->withArgs(['2']);
+            $m->shouldReceive('isPkceToken')->andReturn(false);
+
+            $m->shouldReceive('get')->withArgs([
+                'tweets/search/recent', [
+                    'query' => 'from:user',
+                    'tweet.fields' => 'text,public_metrics,created_at',
+                    'max_results' => 100,
+                ],
+            ])->andReturn($this->createMockData());
+        });
+
+        $service = $this->getSUT();
+
+        $response = $service->searchTweetsByUsername('user');
+
+        $this->assertCount(1, $response);
+    }
+
+    public function testSearchTweetsByListPkceToken()
+    {
+        $this->mock(TwitterV2Api::class, function (MockInterface $m) {
+            $m->shouldReceive('setApiVersion')->withArgs(['2']);
+            $m->shouldReceive('isPkceToken')->andReturn(true);
 
             $m->shouldReceive('get')->withArgs([
                 'lists/123/tweets', [
@@ -82,6 +106,35 @@ class SearchTweetServiceTest extends UnitTestCase
             $m->shouldReceive('get')->withArgs([
                 'lists/123/tweets', [
                     'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
+                    'max_results' => 100,
+                    'pagination_token' => 'dummy_token',
+                ],
+            ])->andReturn($this->createMockData());
+        });
+
+        $service = $this->getSUT();
+
+        $response = $service->searchTweetsByList('123');
+
+        $this->assertCount(2, $response);
+    }
+
+    public function testSearchTweetsByListAppOnlyToken()
+    {
+        $this->mock(TwitterV2Api::class, function (MockInterface $m) {
+            $m->shouldReceive('setApiVersion')->withArgs(['2']);
+            $m->shouldReceive('isPkceToken')->andReturn(false);
+
+            $m->shouldReceive('get')->withArgs([
+                'lists/123/tweets', [
+                    'tweet.fields' => 'text,public_metrics,created_at',
+                    'max_results' => 100,
+                ],
+            ])->andReturn($this->createMockData('dummy_token'));
+
+            $m->shouldReceive('get')->withArgs([
+                'lists/123/tweets', [
+                    'tweet.fields' => 'text,public_metrics,created_at',
                     'max_results' => 100,
                     'pagination_token' => 'dummy_token',
                 ],

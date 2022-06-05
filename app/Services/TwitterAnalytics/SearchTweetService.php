@@ -18,7 +18,9 @@ class SearchTweetService
         return LazyCollection::make(function () use ($username) {
             $query = [
                 'query' => "from:{$username}",
-                'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
+                'tweet.fields' => $this->client->isPkceToken()
+                    ? 'text,public_metrics,created_at,non_public_metrics'
+                    : 'text,public_metrics,created_at',
                 'max_results' => 100,
             ];
             // 7日で2ページ分もツイート発生しないのでページングは考慮しない
@@ -40,7 +42,9 @@ class SearchTweetService
     {
         return LazyCollection::make(function () use ($listId) {
             $query = [
-                'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
+                'tweet.fields' => $this->client->isPkceToken()
+                    ? 'text,public_metrics,created_at,non_public_metrics'
+                    : 'text,public_metrics,created_at',
                 'max_results' => 100,
             ];
 

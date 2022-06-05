@@ -29,20 +29,22 @@ class TwitterOauthProvider extends ServiceProvider
         $this->app->bind(TwitterV2Api::class, function () {
             // bearer token https://github.com/abraham/twitteroauth/issues/431
             $token = OauthToken::where('application', 'twitter')->first();
-            if ($token) {
+            if (false && $token) {
                 $token = $this->updateTokenIfERxpired($token);
                 $client = new TwitterV2Api(
                     config('twitter.consumer_key'),
                     config('twitter.consumer_secret'),
                     null,
-                    $token->access_token
+                    $token->access_token,
+                    TwitterV2Api::PKCE_TOKEN,
                 );
             } else {
                 $client = new TwitterV2Api(
                     config('twitter.consumer_key'),
                     config('twitter.consumer_secret'),
                     null,
-                    config('twitter.bearer_token')
+                    config('twitter.bearer_token'),
+                    TwitterV2Api::APP_ONLY_TOKEN,
                 );
             }
 

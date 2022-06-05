@@ -6,6 +6,8 @@ return [
     'access_token' => env('TWITTER_ACCESS_TOKEN'),
     'access_token_secret' => env('TWITTER_ACCESS_TOKEN_SECRET'),
     'bearer_token' => env('TWITTER_BEARER_TOKEN'),
+    'client_id' => env('TWITTER_CLIENT_ID'),
+    'client_secret' => env('TWITTER_CLIENT_SECRET'),
 
     // https://twitter.com/i/lists/1533065708212396033
     'list_id' => '1533065708212396033',

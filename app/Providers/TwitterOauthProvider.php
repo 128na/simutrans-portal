@@ -6,6 +6,7 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Models\OauthToken;
 use App\Services\TwitterAnalytics\PKCEService;
 use App\Services\TwitterAnalytics\TwitterV2Api;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\ServiceProvider;
 
 class TwitterOauthProvider extends ServiceProvider
@@ -28,8 +29,12 @@ class TwitterOauthProvider extends ServiceProvider
 
         $this->app->bind(TwitterV2Api::class, function () {
             // bearer token https://github.com/abraham/twitteroauth/issues/431
-            $token = OauthToken::where('application', 'twitter')->first();
-            if (false && $token) {
+            try {
+                $token = OauthToken::where('application', 'twitter')->first();
+            } catch (QueryException $e) {
+                $token = null;
+            }
+            if ($token) {
                 $token = $this->updateTokenIfERxpired($token);
                 $client = new TwitterV2Api(
                     config('twitter.consumer_key'),

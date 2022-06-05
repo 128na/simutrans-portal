@@ -2,8 +2,9 @@
 
 namespace App\Services\TwitterAnalytics;
 
+use App\Models\OauthToken;
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class PKCEService
 {
@@ -11,11 +12,14 @@ class PKCEService
     {
     }
 
-    public function generateState(): string
+    public function generateState(int $length = 32): string
     {
-        return (string) random_int(1000, 9999);
+        return Str::random($length);
     }
 
+    /**
+     * @see https://qiita.com/sugamaan/items/50699432a65ad9e5829e
+     */
     public function generateCodeVerifier(int $byteLength = 32): string
     {
         return str_replace('=', '', strtr(base64_encode(openssl_random_pseudo_bytes($byteLength)), '+/', '-_'));
@@ -38,7 +42,7 @@ class PKCEService
             'response_type' => 'code',
             'client_id' => config('twitter.client_id'),
             'redirect_uri' => route('admin.oauth.twitter.callback'),
-            'scope' => 'users.read tweet.read offline.access',
+            'scope' => 'users.read tweet.read list.read offline.access',
             'state' => $state,
             'code_challenge' => $codeChallange,
             'code_challenge_method' => 'S256',
@@ -71,12 +75,12 @@ class PKCEService
         return $data;
     }
 
-    public function refreshToken(string $refreshToken): array
+    public function refreshToken(OauthToken $token): array
     {
         $res = $this->client->request('POST', 'https://api.twitter.com/2/oauth2/token', [
             'auth' => [config('twitter.client_id'), config('twitter.client_secret')],
             'form_params' => [
-                'refresh_token' => $refreshToken,
+                'refresh_token' => $token->refresh_token,
                 'grant_type' => 'refresh_token',
             ],
         ]);
@@ -84,35 +88,22 @@ class PKCEService
         $data = json_decode($res->getBody()->getContents(), true);
 
         logger('generate token', [$data]);
-        Cache::put('oauth2.twitter.access_token', $data['access_token']);
-        Cache::put('oauth2.twitter.refresh_token', $data['refresh_token']);
 
         return $data;
     }
 
-    public function revokeToken(string $accessToken): void
+    public function revokeToken(OauthToken $token): void
     {
         $res = $this->client->request('POST', 'https://api.twitter.com/2/oauth2/revoke', [
             'auth' => [config('twitter.client_id'), config('twitter.client_secret')],
             'form_params' => [
-                'token' => $accessToken,
+                'token' => $token->access_token,
+                'token_type_hint' => 'access_token',
             ],
         ]);
 
         $data = json_decode($res->getBody()->getContents(), true);
 
         logger('revoke token', [$data]);
-        Cache::forget('oauth2.twitter.access_token');
-        Cache::forget('oauth2.twitter.refresh_token');
-    }
-
-    public function getAccessToken(): ?string
-    {
-        return Cache::get('oauth2.twitter.access_token');
-    }
-
-    public function getRefreshToken(): ?string
-    {
-        return Cache::get('oauth2.twitter.refresh_token');
     }
 }

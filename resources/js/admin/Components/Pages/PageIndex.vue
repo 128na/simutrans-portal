@@ -33,6 +33,12 @@
         Notice
       </b-button>
     </div>
+    <page-sub-title>Oauth2</page-sub-title>
+    <div class="mb-4">
+      <a href="/admin/oauth/twitter/authorize">認証</a><br>
+      <a href="/admin/oauth/twitter/refresh">トークンリフレッシュ</a><br>
+      <a href="/admin/oauth/twitter/revoke">トークン削除</a><br>
+    </div>
   </div>
 </template>
 <script>

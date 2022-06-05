@@ -20,6 +20,9 @@ class TweetLogSummary extends Model
         'total_reply_count',
         'total_like_count',
         'total_quote_count',
+        'total_impression_count',
+        'total_url_link_clicks',
+        'total_user_profile_clicks',
     ];
 
     public function article(): BelongsTo

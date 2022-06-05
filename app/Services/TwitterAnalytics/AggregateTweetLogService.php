@@ -33,6 +33,9 @@ class AggregateTweetLogService
                         'reply_count' => $tweetData->replyCount,
                         'like_count' => $tweetData->likeCount,
                         'quote_count' => $tweetData->quoteCount,
+                        'impression_count' => $tweetData->impressionCount,
+                        'url_link_clicks' => $tweetData->urlLinkClicks,
+                        'user_profile_clicks' => $tweetData->userProfileClicks,
                         'tweet_created_at' => $tweetData->createdAt,
                     ]
                 );
@@ -55,6 +58,9 @@ class AggregateTweetLogService
                     'total_reply_count' => $summary->total_reply_count,
                     'total_like_count' => $summary->total_like_count,
                     'total_quote_count' => $summary->total_quote_count,
+                    'total_impression_count' => $summary->total_impression_count,
+                    'total_url_link_clicks' => $summary->total_url_link_clicks,
+                    'total_user_profile_clicks' => $summary->total_user_profile_clicks,
                 ]
             );
         }

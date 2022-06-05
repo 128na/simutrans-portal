@@ -3,19 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\OauthToken;
+use App\Repositories\OauthTokenRepository;
 use App\Services\TwitterAnalytics\PKCEService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class OauthController extends Controller
 {
     public function __construct(
-        private PKCEService $pkceService
+        private PKCEService $pkceService,
+        private OauthTokenRepository $oauthTokenRepository,
     ) {
     }
 
-    public function twitterAuthoroize()
+    public function authoroize()
     {
         $state = $this->pkceService->generateState();
         $codeVerifier = $this->pkceService->generateCodeVerifier();
@@ -28,15 +30,65 @@ class OauthController extends Controller
         return redirect($authUrl);
     }
 
-    public function twitterCallback(Request $request)
+    public function callback(Request $request)
     {
-        $state = $request->state;
-        $code = $request->code;
+        $this->pkceService->verifyState($request->state, Session::pull('oauth2.twitter.state'));
+        $data = $this->pkceService->generateToken($request->code, Session::pull('oauth2.twitter.codeVerifier'));
 
-        $this->pkceService->verifyState($state, Session::pull('oauth2.twitter.state'));
+        $this->oauthTokenRepository->updateOrCreate(
+            ['application' => 'twitter'],
+            [
+                'token_type' => $data['token_type'],
+                'scope' => $data['scope'],
+                'access_token' => $data['access_token'],
+                'refresh_token' => $data['refresh_token'],
+                'expired_at' => now()->addSeconds($data['expires_in']),
+            ]
+        );
 
-        $data = $this->pkceService->generateToken($code, Session::pull('oauth2.twitter.codeVerifier'));
+        Session::flash('success', 'access token created');
 
-        OauthToken::create($data);
+        return redirect()->route('admin.index');
+    }
+
+    public function revoke()
+    {
+        try {
+            $token = $this->oauthTokenRepository->getToken('twitter');
+
+            $this->pkceService->revokeToken($token);
+            $this->oauthTokenRepository->delete($token);
+
+            Session::flash('success', 'access token revoked');
+        } catch (ModelNotFoundException $e) {
+            Session::flash('error', 'token not found');
+        }
+
+        return redirect()->route('admin.index');
+    }
+
+    public function refresh()
+    {
+        try {
+            $token = $this->oauthTokenRepository->getToken('twitter');
+
+            $data = $this->pkceService->refreshToken($token);
+
+            $this->oauthTokenRepository->updateOrCreate(
+                ['application' => 'twitter'],
+                [
+                    'token_type' => $data['token_type'],
+                    'scope' => $data['scope'],
+                    'access_token' => $data['access_token'],
+                    'refresh_token' => $data['refresh_token'],
+                    'expired_at' => now()->addSeconds($data['expires_in']),
+                ]
+            );
+            Session::flash('success', 'access token refreshed');
+        } catch (ModelNotFoundException $e) {
+            Session::flash('error', 'token not found');
+        }
+
+        return redirect()->route('admin.index');
     }
 }

@@ -18,7 +18,7 @@ class SearchTweetService
         return LazyCollection::make(function () use ($username) {
             $query = [
                 'query' => "from:{$username}",
-                'tweet.fields' => 'text,public_metrics,created_at',
+                'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
                 'max_results' => 100,
             ];
             // 7日で2ページ分もツイート発生しないのでページングは考慮しない
@@ -40,7 +40,7 @@ class SearchTweetService
     {
         return LazyCollection::make(function () use ($listId) {
             $query = [
-                'tweet.fields' => 'text,public_metrics,created_at',
+                'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
                 'max_results' => 100,
             ];
 
@@ -50,6 +50,7 @@ class SearchTweetService
                     $query['pagination_token'] = $paginationToken;
                 }
                 $result = $this->client->get("lists/{$listId}/tweets", $query);
+
                 $data = $result->data ?? [];
 
                 foreach ($data as $d) {

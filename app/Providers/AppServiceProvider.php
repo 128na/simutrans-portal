@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use App\Models\OauthToken;
 use App\Models\User;
 use App\Services\BulkZip\Decorators\AddonIntroductionDecorator;
 use App\Services\BulkZip\Decorators\AddonPostDecorator;
@@ -38,11 +39,12 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(TwitterV2Api::class, function () {
             // bearer token https://github.com/abraham/twitteroauth/issues/431
+            $token = OauthToken::where('application', 'twitter')->first();
             $client = new TwitterV2Api(
                 config('twitter.consumer_key'),
                 config('twitter.consumer_secret'),
                 null,
-                config('twitter.bearer_token')
+                $token ? $token->access_token : config('twitter.bearer_token')
             );
             $client->setApiVersion('2');
 

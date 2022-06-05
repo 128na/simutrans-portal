@@ -14,10 +14,12 @@ class CreateOauthCodesTable extends Migration
     public function up()
     {
         Schema::create('oauth_tokens', function (Blueprint $table) {
-            $table->id();
-            $table->text('access_token')->nullable();
-            $table->text('refresh_token')->nullable();
-            $table->timestamp('expired_at')->nullable();
+            $table->string('application')->primary();
+            $table->string('token_type');
+            $table->string('scope');
+            $table->string('access_token');
+            $table->string('refresh_token');
+            $table->timestamp('expired_at');
             $table->timestamps();
         });
     }

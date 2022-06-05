@@ -25,6 +25,7 @@ class SearchTweetService
             ];
             // 7日で2ページ分もツイート発生しないのでページングは考慮しない
             $result = $this->client->get('tweets/search/recent', $query);
+            logger('searchTweetsByUsername', [$result]);
 
             foreach ($result->data ?? [] as $d) {
                 try {
@@ -54,6 +55,7 @@ class SearchTweetService
                     $query['pagination_token'] = $paginationToken;
                 }
                 $result = $this->client->get("lists/{$listId}/tweets", $query);
+                logger('searchTweetsByList', [$result]);
 
                 $data = $result->data ?? [];
 

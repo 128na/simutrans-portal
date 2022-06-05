@@ -69,6 +69,24 @@ export const ARTICLE_FIELDS = [
     sortable: true
   },
   {
+    key: 'totalImpressionCount',
+    label: 'IC',
+    desc: '自動ツイートの合計表示回数',
+    sortable: true
+  },
+  {
+    key: 'totalUrlLinkClicks',
+    label: 'LC',
+    desc: '自動ツイートのURL合計クリック数',
+    sortable: true
+  },
+  {
+    key: 'totalUserProfileClicks',
+    label: 'UC',
+    desc: '自動ツイートのプロフィール合計クリック数',
+    sortable: true
+  },
+  {
     key: 'created_at',
     label: '作成日時',
     desc: '記事の作成日時',

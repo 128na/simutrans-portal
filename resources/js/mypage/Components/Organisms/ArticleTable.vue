@@ -76,6 +76,9 @@ export default {
           totalReplyCount: a.metrics.totalReplyCount,
           totalLikeCount: a.metrics.totalLikeCount,
           totalQuoteCount: a.metrics.totalQuoteCount,
+          totalImpressionCount: a.metrics.totalImpressionCount,
+          totalUrlLinkClicks: a.metrics.totalUrlLinkClicks,
+          totalUserProfileClicks: a.metrics.totalUserProfileClicks,
           _rowVariant: this.rowValiant(a)
         })
       );

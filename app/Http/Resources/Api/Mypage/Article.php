@@ -34,6 +34,9 @@ class Article extends JsonResource
                 'totalReplyCount' => $this->tweetLogSummary?->total_reply_count ?? 0,
                 'totalLikeCount' => $this->tweetLogSummary?->total_like_count ?? 0,
                 'totalQuoteCount' => $this->tweetLogSummary?->total_quote_count ?? 0,
+                'totalImpressionCount' => $this->tweetLogSummary?->total_impression_count ?? 0,
+                'totalUrlLinkClicks' => $this->tweetLogSummary?->total_url_link_clicks ?? 0,
+                'totalUserProfileClicks' => $this->tweetLogSummary?->total_user_profile_clicks ?? 0,
             ],
         ];
     }

@@ -25,11 +25,17 @@ class ResolveArticleServiceTest extends UnitTestCase
         $publicMetrics->like_count = 3;
         $publicMetrics->quote_count = 4;
 
+        $nonPublicMetrics = new stdClass();
+        $nonPublicMetrics->impression_count = 5;
+        $nonPublicMetrics->url_link_clicks = 6;
+        $nonPublicMetrics->user_profile_clicks = 7;
+
         $data = new stdClass();
         $data->id = '123';
         $data->text = "新規投稿「dummy」\n";
         $data->created_at = '2022-01-01T23:59:59+09:00';
         $data->public_metrics = $publicMetrics;
+        $data->non_public_metrics = $nonPublicMetrics;
 
         return new TweetData($data);
     }

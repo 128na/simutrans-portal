@@ -11,7 +11,8 @@
 |
  */
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\OauthController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Front\ArticleController;
@@ -61,6 +62,10 @@ Route::middleware(['verified'])->group(function () {
 
 Route::middleware(['auth', 'admin', 'verified'])->group(function () {
     Route::get('/admin/', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/admin/oauth/twitter/authorize', [OauthController::class, 'authoroize'])->name('admin.oauth.twitter.authorize');
+    Route::get('/admin/oauth/twitter/callback', [OauthController::class, 'callback'])->name('admin.oauth.twitter.callback');
+    Route::get('/admin/oauth/twitter/refresh', [OauthController::class, 'refresh'])->name('admin.oauth.twitter.refresh');
+    Route::get('/admin/oauth/twitter/revoke', [OauthController::class, 'revoke'])->name('admin.oauth.twitter.revoke');
 });
 
 Route::get('/invite/{invitation_code}', [InviteController::class, 'index'])->name('invite.index');

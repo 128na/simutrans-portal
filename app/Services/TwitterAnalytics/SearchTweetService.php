@@ -18,13 +18,15 @@ class SearchTweetService
         return LazyCollection::make(function () use ($username) {
             $query = [
                 'query' => "from:{$username}",
-                'tweet.fields' => 'text,public_metrics,created_at',
+                'tweet.fields' => $this->client->isPkceToken()
+                    ? 'text,public_metrics,created_at,non_public_metrics'
+                    : 'text,public_metrics,created_at',
                 'max_results' => 100,
             ];
             // 7日で2ページ分もツイート発生しないのでページングは考慮しない
-            $data = $this->client->get('tweets/search/recent', $query)->data ?? [];
+            $result = $this->client->get('tweets/search/recent', $query);
 
-            foreach ($data as $d) {
+            foreach ($result->data ?? [] as $d) {
                 try {
                     yield new TweetData($d);
                 } catch (InvalidTweetDataException $e) {
@@ -40,7 +42,9 @@ class SearchTweetService
     {
         return LazyCollection::make(function () use ($listId) {
             $query = [
-                'tweet.fields' => 'text,public_metrics,created_at',
+                'tweet.fields' => $this->client->isPkceToken()
+                    ? 'text,public_metrics,created_at,non_public_metrics'
+                    : 'text,public_metrics,created_at',
                 'max_results' => 100,
             ];
 
@@ -50,6 +54,7 @@ class SearchTweetService
                     $query['pagination_token'] = $paginationToken;
                 }
                 $result = $this->client->get("lists/{$listId}/tweets", $query);
+
                 $data = $result->data ?? [];
 
                 foreach ($data as $d) {

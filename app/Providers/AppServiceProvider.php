@@ -2,13 +2,11 @@
 
 namespace App\Providers;
 
-use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Models\User;
 use App\Services\BulkZip\Decorators\AddonIntroductionDecorator;
 use App\Services\BulkZip\Decorators\AddonPostDecorator;
 use App\Services\BulkZip\ZipManager;
 use App\Services\MarkdownService;
-use App\Services\TwitterAnalytics\TwitterV2Api;
 use Carbon\CarbonImmutable;
 use HTMLPurifier;
 use HTMLPurifier_Config;
@@ -27,28 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(TwitterOAuth::class, function () {
-            return new TwitterOAuth(
-                config('twitter.consumer_key'),
-                config('twitter.consumer_secret'),
-                config('twitter.access_token'),
-                config('twitter.access_token_secret')
-            );
-        });
-
-        $this->app->bind(TwitterV2Api::class, function () {
-            // bearer token https://github.com/abraham/twitteroauth/issues/431
-            $client = new TwitterV2Api(
-                config('twitter.consumer_key'),
-                config('twitter.consumer_secret'),
-                null,
-                config('twitter.bearer_token')
-            );
-            $client->setApiVersion('2');
-
-            return $client;
-        });
-
         $this->app->bind(HTMLPurifier::class, function ($app) {
             $config = HTMLPurifier_Config::createDefault();
             $config->set('HTML.AllowedElements', [

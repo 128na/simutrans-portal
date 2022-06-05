@@ -192,6 +192,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\DropboxServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
+        App\Providers\TwitterOauthProvider::class,
     ],
 
     /*

@@ -30,11 +30,17 @@ class AggregateTweetLogServiceTest extends UnitTestCase
         $publicMetrics->like_count = 3;
         $publicMetrics->quote_count = 4;
 
+        $nonPublicMetrics = new stdClass();
+        $nonPublicMetrics->impression_count = 5;
+        $nonPublicMetrics->url_link_clicks = 6;
+        $nonPublicMetrics->user_profile_clicks = 7;
+
         $data = new stdClass();
         $data->id = '123';
         $data->text = "新規投稿「dummy」\n";
         $data->created_at = '2022-01-01T23:59:59+09:00';
         $data->public_metrics = $publicMetrics;
+        $data->non_public_metrics = $nonPublicMetrics;
 
         $tweetData = new TweetData($data);
         $tweetData->articleId = 1;
@@ -54,6 +60,9 @@ class AggregateTweetLogServiceTest extends UnitTestCase
                     'reply_count' => 2,
                     'like_count' => 3,
                     'quote_count' => 4,
+                    'impression_count' => 5,
+                    'url_link_clicks' => 6,
+                    'user_profile_clicks' => 7,
                     'tweet_created_at' => Carbon::parse('2022-01-01T23:59:59+09:00'),
                 ],
             ]);
@@ -78,6 +87,9 @@ class AggregateTweetLogServiceTest extends UnitTestCase
                     $data->total_reply_count = 2;
                     $data->total_like_count = 3;
                     $data->total_quote_count = 4;
+                    $data->total_impression_count = 5;
+                    $data->total_url_link_clicks = 6;
+                    $data->total_user_profile_clicks = 7;
                     yield $data;
                 }));
         });
@@ -90,6 +102,9 @@ class AggregateTweetLogServiceTest extends UnitTestCase
                     'total_reply_count' => 2,
                     'total_like_count' => 3,
                     'total_quote_count' => 4,
+                    'total_impression_count' => 5,
+                    'total_url_link_clicks' => 6,
+                    'total_user_profile_clicks' => 7,
                 ],
             ]);
         });

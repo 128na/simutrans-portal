@@ -22,6 +22,9 @@ class TweetLog extends Model
         'reply_count',
         'like_count',
         'quote_count',
+        'impression_count',
+        'url_link_clicks',
+        'user_profile_clicks',
         'tweet_created_at',
     ];
 

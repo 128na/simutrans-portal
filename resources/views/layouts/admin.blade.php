@@ -17,6 +17,16 @@
 </head>
 
 <body>
+    @if (session()->has('status'))
+        <div class="alert alert-success m-4">{{ session('status') }}</div>
+    @endif
+    @if (session()->has('success'))
+        <div class="alert alert-success m-4">{{ session('success') }}</div>
+    @endif
+    @if (session()->has('error'))
+        <div class="alert alert-danger m-4">{{ session('error') }}</div>
+    @endif
+
     @yield('content')
 </body>
 

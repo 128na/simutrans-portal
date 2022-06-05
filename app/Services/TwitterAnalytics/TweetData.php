@@ -7,12 +7,45 @@ use stdClass;
 
 class TweetData
 {
+    /**
+     * ツイートID.
+     */
     public string $id;
+    /**
+     * ツイート本文.
+     */
     public string $text;
+    /**
+     * リツイート回数.
+     */
     public int $retweetCount;
+    /**
+     * 返信数.
+     */
     public int $replyCount;
+    /**
+     * いいね数.
+     */
     public int $likeCount;
+    /**
+     * 引用RT回数.
+     */
     public int $quoteCount;
+    /**
+     * ツイート表示回数.
+     */
+    public int $impressionCount;
+    /**
+     * ツイート内のURLクリック回数.
+     */
+    public int $urlLinkClicks;
+    /**
+     * ツイートのプロフィールクリック回数.
+     */
+    public int $userProfileClicks;
+    /**
+     * ツイート日時
+     */
     public Carbon $createdAt;
 
     public string $title;
@@ -27,6 +60,9 @@ class TweetData
         $this->replyCount = $data->public_metrics->reply_count;
         $this->likeCount = $data->public_metrics->like_count;
         $this->quoteCount = $data->public_metrics->quote_count;
+        $this->impressionCount = $data?->non_public_metrics->impression_count ?? 0;
+        $this->urlLinkClicks = $data?->non_public_metrics->url_link_clicks ?? 0;
+        $this->userProfileClicks = $data?->non_public_metrics->user_profile_clicks ?? 0;
         $this->createdAt = Carbon::parse($data->created_at);
 
         $this->parseText();

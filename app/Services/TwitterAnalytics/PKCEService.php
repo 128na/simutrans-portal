@@ -55,7 +55,7 @@ class PKCEService
     public function verifyState(string $expected, string $actual): void
     {
         if ($expected !== $actual) {
-            throw new \Exception('state mismach!');
+            throw new InvalidStateException('state mismach!');
         }
     }
 
@@ -72,8 +72,6 @@ class PKCEService
         ]);
 
         $data = json_decode($res->getBody()->getContents(), true);
-
-        logger('generate token', [$data]);
 
         $token = $this->oauthTokenRepository->updateOrCreate(
             ['application' => 'twitter'],
@@ -101,8 +99,6 @@ class PKCEService
 
         $data = json_decode($res->getBody()->getContents(), true);
 
-        logger('generate token', [$data]);
-
         $token = $this->oauthTokenRepository->updateOrCreate(
             ['application' => 'twitter'],
             [
@@ -128,8 +124,6 @@ class PKCEService
         ]);
 
         $data = json_decode($res->getBody()->getContents(), true);
-
-        logger('revoke token', [$data]);
 
         $this->oauthTokenRepository->delete($token);
     }

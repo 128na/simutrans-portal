@@ -21,4 +21,13 @@ class OauthToken extends Model
         'refresh_token',
         'expired_at',
     ];
+
+    protected $casts = [
+        'expired_at' => 'datetime',
+    ];
+
+    public function isExpired(): bool
+    {
+        return now()->greaterThan($this->expired_at);
+    }
 }

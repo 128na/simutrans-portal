@@ -3,13 +3,16 @@
 namespace App\Services\TwitterAnalytics;
 
 use App\Models\OauthToken;
+use App\Repositories\OauthTokenRepository;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 
 class PKCEService
 {
-    public function __construct(private Client $client)
-    {
+    public function __construct(
+        private Client $client,
+        private OauthTokenRepository $oauthTokenRepository,
+    ) {
     }
 
     public function generateState(int $length = 32): string
@@ -56,7 +59,7 @@ class PKCEService
         }
     }
 
-    public function generateToken(string $code, string $codeVerifier): array
+    public function generateToken(string $code, string $codeVerifier): OauthToken
     {
         $res = $this->client->request('POST', 'https://api.twitter.com/2/oauth2/token', [
             'auth' => [config('twitter.client_id'), config('twitter.client_secret')],
@@ -72,10 +75,21 @@ class PKCEService
 
         logger('generate token', [$data]);
 
-        return $data;
+        $token = $this->oauthTokenRepository->updateOrCreate(
+            ['application' => 'twitter'],
+            [
+                'token_type' => $data['token_type'],
+                'scope' => $data['scope'],
+                'access_token' => $data['access_token'],
+                'refresh_token' => $data['refresh_token'],
+                'expired_at' => now()->addSeconds($data['expires_in']),
+            ]
+        );
+
+        return $token;
     }
 
-    public function refreshToken(OauthToken $token): array
+    public function refreshToken(OauthToken $token): OauthToken
     {
         $res = $this->client->request('POST', 'https://api.twitter.com/2/oauth2/token', [
             'auth' => [config('twitter.client_id'), config('twitter.client_secret')],
@@ -89,7 +103,18 @@ class PKCEService
 
         logger('generate token', [$data]);
 
-        return $data;
+        $token = $this->oauthTokenRepository->updateOrCreate(
+            ['application' => 'twitter'],
+            [
+                'token_type' => $data['token_type'],
+                'scope' => $data['scope'],
+                'access_token' => $data['access_token'],
+                'refresh_token' => $data['refresh_token'],
+                'expired_at' => now()->addSeconds($data['expires_in']),
+            ]
+        );
+
+        return $token;
     }
 
     public function revokeToken(OauthToken $token): void
@@ -105,5 +130,7 @@ class PKCEService
         $data = json_decode($res->getBody()->getContents(), true);
 
         logger('revoke token', [$data]);
+
+        $this->oauthTokenRepository->delete($token);
     }
 }

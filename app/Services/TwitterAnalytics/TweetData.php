@@ -60,9 +60,9 @@ class TweetData
         $this->replyCount = $data->public_metrics->reply_count;
         $this->likeCount = $data->public_metrics->like_count;
         $this->quoteCount = $data->public_metrics->quote_count;
-        $this->impressionCount = $data->non_public_metrics?->impression_count;
-        $this->urlLinkClicks = $data->non_public_metrics?->url_link_clicks;
-        $this->userProfileClicks = $data->non_public_metrics?->user_profile_clicks;
+        $this->impressionCount = $data?->non_public_metrics->impression_count ?? 0;
+        $this->urlLinkClicks = $data?->non_public_metrics->url_link_clicks ?? 0;
+        $this->userProfileClicks = $data?->non_public_metrics->user_profile_clicks ?? 0;
         $this->createdAt = Carbon::parse($data->created_at);
 
         $this->parseText();

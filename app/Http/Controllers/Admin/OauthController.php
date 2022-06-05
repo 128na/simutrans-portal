@@ -33,36 +33,9 @@ class OauthController extends Controller
     public function callback(Request $request)
     {
         $this->pkceService->verifyState($request->state, Session::pull('oauth2.twitter.state'));
-        $data = $this->pkceService->generateToken($request->code, Session::pull('oauth2.twitter.codeVerifier'));
-
-        $this->oauthTokenRepository->updateOrCreate(
-            ['application' => 'twitter'],
-            [
-                'token_type' => $data['token_type'],
-                'scope' => $data['scope'],
-                'access_token' => $data['access_token'],
-                'refresh_token' => $data['refresh_token'],
-                'expired_at' => now()->addSeconds($data['expires_in']),
-            ]
-        );
+        $this->pkceService->generateToken($request->code, Session::pull('oauth2.twitter.codeVerifier'));
 
         Session::flash('success', 'access token created');
-
-        return redirect()->route('admin.index');
-    }
-
-    public function revoke()
-    {
-        try {
-            $token = $this->oauthTokenRepository->getToken('twitter');
-
-            $this->pkceService->revokeToken($token);
-            $this->oauthTokenRepository->delete($token);
-
-            Session::flash('success', 'access token revoked');
-        } catch (ModelNotFoundException $e) {
-            Session::flash('error', 'token not found');
-        }
 
         return redirect()->route('admin.index');
     }
@@ -71,20 +44,21 @@ class OauthController extends Controller
     {
         try {
             $token = $this->oauthTokenRepository->getToken('twitter');
-
-            $data = $this->pkceService->refreshToken($token);
-
-            $this->oauthTokenRepository->updateOrCreate(
-                ['application' => 'twitter'],
-                [
-                    'token_type' => $data['token_type'],
-                    'scope' => $data['scope'],
-                    'access_token' => $data['access_token'],
-                    'refresh_token' => $data['refresh_token'],
-                    'expired_at' => now()->addSeconds($data['expires_in']),
-                ]
-            );
+            $this->pkceService->refreshToken($token);
             Session::flash('success', 'access token refreshed');
+        } catch (ModelNotFoundException $e) {
+            Session::flash('error', 'token not found');
+        }
+
+        return redirect()->route('admin.index');
+    }
+
+    public function revoke()
+    {
+        try {
+            $token = $this->oauthTokenRepository->getToken('twitter');
+            $this->pkceService->revokeToken($token);
+            Session::flash('success', 'access token revoked');
         } catch (ModelNotFoundException $e) {
             Session::flash('error', 'token not found');
         }

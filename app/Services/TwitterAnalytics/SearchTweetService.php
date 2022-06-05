@@ -22,9 +22,9 @@ class SearchTweetService
                 'max_results' => 100,
             ];
             // 7日で2ページ分もツイート発生しないのでページングは考慮しない
-            $data = $this->client->get('tweets/search/recent', $query)->data ?? [];
+            $result = $this->client->get('tweets/search/recent', $query);
 
-            foreach ($data as $d) {
+            foreach ($result->data ?? [] as $d) {
                 try {
                     yield new TweetData($d);
                 } catch (InvalidTweetDataException $e) {

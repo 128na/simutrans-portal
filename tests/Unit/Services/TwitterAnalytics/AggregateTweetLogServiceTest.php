@@ -76,6 +76,34 @@ class AggregateTweetLogServiceTest extends UnitTestCase
         $this->assertEquals(1, $response[0]);
     }
 
+    public function testFirstOrCreateTweetLogs()
+    {
+        $this->mock(TweetLogRepository::class, function (MockInterface $m) {
+            $m->shouldReceive('firstOrCreate')->withArgs([
+                ['id' => '123'],
+                [
+                    'article_id' => 1,
+                    'text' => "新規投稿「dummy」\n",
+                    'retweet_count' => 1,
+                    'reply_count' => 2,
+                    'like_count' => 3,
+                    'quote_count' => 4,
+                    'impression_count' => 5,
+                    'url_link_clicks' => 6,
+                    'user_profile_clicks' => 7,
+                    'tweet_created_at' => Carbon::parse('2022-01-01T23:59:59+09:00'),
+                ],
+            ]);
+        });
+
+        $service = $this->getSUT();
+
+        $response = $service->firstOrCreateTweetLogs($this->createMockData());
+
+        $this->assertCount(1, $response);
+        $this->assertEquals(1, $response[0]);
+    }
+
     public function testUpdateOrCreateTweetLogSummary()
     {
         $this->mock(TweetLogRepository::class, function (MockInterface $m) {

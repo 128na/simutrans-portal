@@ -104,6 +104,11 @@ abstract class BaseRepository
         return $this->model->updateOrCreate($search, $data);
     }
 
+    public function firstOrCreate(array $search, array $data = [])
+    {
+        return $this->model->firstOrCreate($search, $data);
+    }
+
     /**
      * 一覧取得.
      */

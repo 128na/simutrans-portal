@@ -1,0 +1,13 @@
+[
+  {
+    "id": "dummyId",
+    "text": "新規投稿「dummyTitle」\n",
+    "public_metrics": {
+      "retweet_count": 1,
+      "like_count": 2,
+      "reply_count": 3,
+      "quote_count": 4
+    },
+    "created_at": "Mon Apr 18 04:57:32 +0000 2016"
+  }
+]

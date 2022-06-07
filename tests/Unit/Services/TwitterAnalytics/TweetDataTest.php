@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Services\TwitterAnalytics;
 
-use App\Services\TwitterAnalytics\InvalidTweetDataException;
+use App\Services\TwitterAnalytics\Exceptions\InvalidTweetDataException;
 use App\Services\TwitterAnalytics\TweetData;
 use stdClass;
 use Tests\UnitTestCase;

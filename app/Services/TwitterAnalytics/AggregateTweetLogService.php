@@ -46,6 +46,38 @@ class AggregateTweetLogService
     }
 
     /**
+     * @param TweetData[] $resolved
+     *
+     * @return int[] articleIds
+     */
+    public function firstOrCreateTweetLogs(array $resolved): array
+    {
+        $articleIds = [];
+        foreach ($resolved as $tweetData) {
+            if ($tweetData->articleId) {
+                $articleIds[] = $tweetData->articleId;
+                $this->tweetLogRepository->firstOrCreate(
+                    ['id' => $tweetData->id],
+                    [
+                        'article_id' => $tweetData->articleId,
+                        'text' => $tweetData->text,
+                        'retweet_count' => $tweetData->retweetCount,
+                        'reply_count' => $tweetData->replyCount,
+                        'like_count' => $tweetData->likeCount,
+                        'quote_count' => $tweetData->quoteCount,
+                        'impression_count' => $tweetData->impressionCount,
+                        'url_link_clicks' => $tweetData->urlLinkClicks,
+                        'user_profile_clicks' => $tweetData->userProfileClicks,
+                        'tweet_created_at' => $tweetData->createdAt,
+                    ]
+                );
+            }
+        }
+
+        return $articleIds;
+    }
+
+    /**
      * @param int[] $articleIds
      */
     public function updateOrCreateTweetLogSummary(array $articleIds): void

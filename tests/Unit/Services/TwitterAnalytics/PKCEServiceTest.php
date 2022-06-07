@@ -4,7 +4,7 @@ namespace Tests\Unit\Services\TwitterAnalytics;
 
 use App\Models\OauthToken;
 use App\Repositories\OauthTokenRepository;
-use App\Services\TwitterAnalytics\InvalidStateException;
+use App\Services\TwitterAnalytics\Exceptions\InvalidStateException;
 use App\Services\TwitterAnalytics\PKCEService;
 use Carbon\Carbon;
 use GuzzleHttp\Client;

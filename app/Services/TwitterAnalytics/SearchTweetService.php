@@ -2,6 +2,8 @@
 
 namespace App\Services\TwitterAnalytics;
 
+use App\Services\TwitterAnalytics\Exceptions\InvalidTweetDataException;
+use App\Services\TwitterAnalytics\Exceptions\TooManyIdsException;
 use Illuminate\Support\LazyCollection;
 
 class SearchTweetService
@@ -70,6 +72,33 @@ class SearchTweetService
                     $paginationToken = null;
                 }
             } while ($paginationToken);
+        });
+    }
+
+    /**
+     * @see https://developer.twitter.com/en/docs/twitter-api/tweets/search/api-reference/get-tweets-search-recent
+     */
+    public function searchTweetsByIds(array $ids): LazyCollection
+    {
+        if (count($ids) > 100) {
+            throw new TooManyIdsException();
+        }
+
+        return LazyCollection::make(function () use ($ids) {
+            $query = [
+                'ids' => implode(',', $ids),
+                'tweet.fields' => 'text,public_metrics,created_at',
+            ];
+            $result = $this->client->get('tweets', $query);
+            logger('searchTweetsByIds', [$result]);
+
+            foreach ($result->data ?? [] as $d) {
+                try {
+                    yield new TweetData($d);
+                } catch (InvalidTweetDataException $e) {
+                    report($e);
+                }
+            }
         });
     }
 }

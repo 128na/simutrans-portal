@@ -2,6 +2,7 @@
 
 namespace App\Services\TwitterAnalytics;
 
+use App\Services\TwitterAnalytics\Exceptions\InvalidTweetDataException;
 use Carbon\Carbon;
 use stdClass;
 
@@ -68,7 +69,7 @@ class TweetData
         $this->parseText();
     }
 
-    private function parseText()
+    protected function parseText(): void
     {
         $this->isNew = mb_stripos($this->text, '新規投稿') === 0;
 

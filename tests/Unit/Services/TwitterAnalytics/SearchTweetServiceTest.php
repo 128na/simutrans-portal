@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Services\TwitterAnalytics;
 
+use App\Services\TwitterAnalytics\Exceptions\TooManyIdsException;
 use App\Services\TwitterAnalytics\SearchTweetService;
 use App\Services\TwitterAnalytics\TwitterV2Api;
 use Mockery\MockInterface;
@@ -146,5 +147,40 @@ class SearchTweetServiceTest extends UnitTestCase
         $response = $service->searchTweetsByList('123');
 
         $this->assertCount(2, $response);
+    }
+
+    public function testSearchTweetsByIds()
+    {
+        $this->mock(TwitterV2Api::class, function (MockInterface $m) {
+            $m->shouldReceive('setApiVersion')->withArgs(['2']);
+            $m->shouldReceive('get')->withArgs([
+                'tweets', [
+                    'ids' => '123,456',
+                    'tweet.fields' => 'text,public_metrics,created_at',
+                ],
+            ])->andReturn($this->createMockData());
+        });
+
+        $service = $this->getSUT();
+
+        $response = $service->searchTweetsByIds(['123', '456']);
+
+        $this->assertCount(1, $response);
+    }
+
+    public function testSearchTweetsByIdsID101個以上()
+    {
+        $this->mock(TwitterV2Api::class, function (MockInterface $m) {
+            $m->shouldReceive('setApiVersion')->withArgs(['2']);
+        });
+
+        $this->expectException(TooManyIdsException::class);
+
+        $service = $this->getSUT();
+
+        $ids = array_map(fn ($n) => (string) $n, range(1, 101));
+        $this->assertCount(101, $ids);
+
+        $service->searchTweetsByIds($ids);
     }
 }

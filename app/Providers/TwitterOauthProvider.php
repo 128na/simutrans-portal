@@ -10,8 +10,8 @@ use App\Services\TwitterAnalytics\TwitterV2Api;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Support\DeferrableProvider;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\ServiceProvider;
+use Throwable;
 
 class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -55,7 +55,7 @@ class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
             // bearer token https://github.com/abraham/twitteroauth/issues/431
             try {
                 $token = OauthToken::where('application', 'twitter')->first();
-            } catch (QueryException $e) {
+            } catch (Throwable $e) {
                 $token = null;
             }
             if ($token) {

@@ -6,6 +6,7 @@ use App\Models\OauthToken;
 use App\Repositories\OauthTokenRepository;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
+use Throwable;
 
 class PKCEService
 {
@@ -115,15 +116,16 @@ class PKCEService
 
     public function revokeToken(OauthToken $token): void
     {
-        $res = $this->client->request('POST', 'https://api.twitter.com/2/oauth2/revoke', [
-            'auth' => [config('twitter.client_id'), config('twitter.client_secret')],
-            'form_params' => [
-                'token' => $token->access_token,
-                'token_type_hint' => 'access_token',
-            ],
-        ]);
-
-        $data = json_decode($res->getBody()->getContents(), true);
+        try {
+            $this->client->request('POST', 'https://api.twitter.com/2/oauth2/revoke', [
+                'auth' => [config('twitter.client_id'), config('twitter.client_secret')],
+                'form_params' => [
+                    'token' => $token->access_token,
+                    'token_type_hint' => 'access_token',
+                ],
+            ]);
+        } catch (Throwable $e) {
+        }
 
         $this->oauthTokenRepository->delete($token);
     }

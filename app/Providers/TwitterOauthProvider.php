@@ -6,11 +6,20 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Models\OauthToken;
 use App\Services\TwitterAnalytics\PKCEService;
 use App\Services\TwitterAnalytics\TwitterV2Api;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\ServiceProvider;
 
-class TwitterOauthProvider extends ServiceProvider
+class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
 {
+    public function provides()
+    {
+        return [
+            TwitterOAuth::class,
+            TwitterV2Api::class,
+        ];
+    }
+
     /**
      * Register any application services.
      *
@@ -64,7 +73,14 @@ class TwitterOauthProvider extends ServiceProvider
         if ($token->isExpired()) {
             logger('token expired, refresh');
 
-            return app(PKCEService::class)->refreshToken($token);
+            /** @var PKCEService */
+            $service = app(PKCEService::class);
+            try {
+                $service->refreshToken($token);
+            } catch (\Throwable $e) {
+                logger()->error('refresh failed, revoke token');
+                $service->revokeToken($token);
+            }
         }
 
         return $token;

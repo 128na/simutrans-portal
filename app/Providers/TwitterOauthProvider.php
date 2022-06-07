@@ -4,10 +4,14 @@ namespace App\Providers;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Models\OauthToken;
+use App\Repositories\OauthTokenRepository;
 use App\Services\TwitterAnalytics\PKCEService;
 use App\Services\TwitterAnalytics\TwitterV2Api;
+use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
 class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
@@ -17,6 +21,7 @@ class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
         return [
             TwitterOAuth::class,
             TwitterV2Api::class,
+            PKCEService::class,
         ];
     }
 
@@ -27,6 +32,17 @@ class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
      */
     public function register()
     {
+        $this->app->bind(PKCEService::class, function (App $app) {
+            return new PKCEService(
+                $app->make(Carbon::class),
+                $app->make(Client::class),
+                $app->make(OauthTokenRepository::class),
+                config('twitter.client_id'),
+                config('twitter.client_secret'),
+                route('admin.oauth.twitter.callback'),
+            );
+        });
+
         $this->app->bind(TwitterOAuth::class, function () {
             return new TwitterOAuth(
                 config('twitter.consumer_key'),

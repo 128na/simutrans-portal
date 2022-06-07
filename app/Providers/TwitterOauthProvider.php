@@ -11,7 +11,6 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
 class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
@@ -32,11 +31,11 @@ class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
      */
     public function register()
     {
-        $this->app->bind(PKCEService::class, function (App $app) {
+        $this->app->bind(PKCEService::class, function () {
             return new PKCEService(
-                $app->make(Carbon::class),
-                $app->make(Client::class),
-                $app->make(OauthTokenRepository::class),
+                $this->app->make(Carbon::class),
+                $this->app->make(Client::class),
+                $this->app->make(OauthTokenRepository::class),
                 config('twitter.client_id'),
                 config('twitter.client_secret'),
                 route('admin.oauth.twitter.callback'),

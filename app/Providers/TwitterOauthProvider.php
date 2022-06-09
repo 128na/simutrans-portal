@@ -2,25 +2,23 @@
 
 namespace App\Providers;
 
-use Abraham\TwitterOAuth\TwitterOAuth;
-use App\Models\OauthToken;
 use App\Repositories\OauthTokenRepository;
 use App\Services\TwitterAnalytics\PKCEService;
+use App\Services\TwitterAnalytics\TwitterV1Api;
 use App\Services\TwitterAnalytics\TwitterV2Api;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
-use Throwable;
 
 class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
 {
     public function provides()
     {
         return [
-            TwitterOAuth::class,
-            TwitterV2Api::class,
             PKCEService::class,
+            TwitterV1Api::class,
+            TwitterV2Api::class,
         ];
     }
 
@@ -42,8 +40,8 @@ class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
             );
         });
 
-        $this->app->bind(TwitterOAuth::class, function () {
-            return new TwitterOAuth(
+        $this->app->bind(TwitterV1Api::class, function () {
+            return new TwitterV1Api(
                 config('twitter.consumer_key'),
                 config('twitter.consumer_secret'),
                 config('twitter.access_token'),
@@ -52,52 +50,17 @@ class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
         });
 
         $this->app->bind(TwitterV2Api::class, function () {
-            // bearer token https://github.com/abraham/twitteroauth/issues/431
-            try {
-                $token = OauthToken::where('application', 'twitter')->first();
-            } catch (Throwable $e) {
-                $token = null;
-            }
-            if ($token) {
-                $token = $this->updateTokenIfERxpired($token);
-                $client = new TwitterV2Api(
-                    config('twitter.consumer_key'),
-                    config('twitter.consumer_secret'),
-                    null,
-                    $token->access_token,
-                    TwitterV2Api::PKCE_TOKEN,
-                );
-            } else {
-                $client = new TwitterV2Api(
-                    config('twitter.consumer_key'),
-                    config('twitter.consumer_secret'),
-                    null,
-                    config('twitter.bearer_token'),
-                    TwitterV2Api::APP_ONLY_TOKEN,
-                );
-            }
+            $client = new TwitterV2Api(
+                config('twitter.consumer_key'),
+                config('twitter.consumer_secret'),
+                config('twitter.bearer_token'),
+                $this->app->make(OauthTokenRepository::class),
+                $this->app->make(PKCEService::class),
+            );
 
             $client->setApiVersion('2');
 
             return $client;
         });
-    }
-
-    private function updateTokenIfERxpired(OauthToken $token): OauthToken
-    {
-        if ($token->isExpired()) {
-            logger('token expired, refresh');
-
-            /** @var PKCEService */
-            $service = app(PKCEService::class);
-            try {
-                $service->refreshToken($token);
-            } catch (\Throwable $e) {
-                logger()->error('refresh failed, revoke token');
-                $service->revokeToken($token);
-            }
-        }
-
-        return $token;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services\TwitterAnalytics;
 
 use App\Services\TwitterAnalytics\Exceptions\InvalidTweetDataException;
+use App\Services\TwitterAnalytics\Exceptions\PKCETokenException;
 use App\Services\TwitterAnalytics\Exceptions\TooManyIdsException;
 use Illuminate\Support\LazyCollection;
 
@@ -10,6 +11,11 @@ class SearchTweetService
 {
     public function __construct(private TwitterV2Api $client)
     {
+        try {
+            $this->client->applyPKCEToken();
+        } catch (PKCETokenException $e) {
+            report($e);
+        }
     }
 
     /**
@@ -20,9 +26,7 @@ class SearchTweetService
         return LazyCollection::make(function () use ($username) {
             $query = [
                 'query' => "from:{$username}",
-                'tweet.fields' => $this->client->isPkceToken()
-                    ? 'text,public_metrics,created_at,non_public_metrics'
-                    : 'text,public_metrics,created_at',
+                'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
                 'max_results' => 100,
             ];
             // 7日で2ページ分もツイート発生しないのでページングは考慮しない
@@ -45,9 +49,7 @@ class SearchTweetService
     {
         return LazyCollection::make(function () use ($listId) {
             $query = [
-                'tweet.fields' => $this->client->isPkceToken()
-                    ? 'text,public_metrics,created_at,non_public_metrics'
-                    : 'text,public_metrics,created_at',
+                'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
                 'max_results' => 100,
             ];
 

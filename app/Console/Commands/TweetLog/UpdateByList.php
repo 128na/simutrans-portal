@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\TweetLog;
 
 use App\Services\TwitterAnalytics\AggregateTweetLogService;
 use App\Services\TwitterAnalytics\ResolveArticleService;
 use App\Services\TwitterAnalytics\SearchTweetService;
 use Illuminate\Console\Command;
 
-class UpdateTweetLogByList extends Command
+class UpdateByList extends Command
 {
     protected $signature = 'tweet_log:update_by_list';
 

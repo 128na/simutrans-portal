@@ -9,6 +9,8 @@ use App\Services\TwitterAnalytics\Exceptions\PKCETokenNotFoundException;
 use App\Services\TwitterAnalytics\Exceptions\PKCETokenRefreshFailedException;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use PDOException;
 
 class TwitterV2Api extends TwitterOAuth
 {
@@ -50,7 +52,7 @@ class TwitterV2Api extends TwitterOAuth
             if (!$token->isExpired()) {
                 return $token;
             }
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException | QueryException | PDOException $e) {
             throw new PKCETokenNotFoundException();
         }
 

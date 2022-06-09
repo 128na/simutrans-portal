@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Repositories\OauthTokenRepository;
+use App\Services\TweetService;
 use App\Services\TwitterAnalytics\PKCEService;
 use App\Services\TwitterAnalytics\TwitterV1Api;
 use App\Services\TwitterAnalytics\TwitterV2Api;
@@ -19,6 +20,7 @@ class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
             PKCEService::class,
             TwitterV1Api::class,
             TwitterV2Api::class,
+            TweetService::class,
         ];
     }
 
@@ -29,6 +31,13 @@ class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
      */
     public function register()
     {
+        $this->app->bind(TweetService::class, function () {
+            return new TweetService(
+                $this->app->make(TwitterV1Api::class),
+                $this->app->environment(['production']),
+            );
+        });
+
         $this->app->bind(PKCEService::class, function () {
             return new PKCEService(
                 $this->app->make(Carbon::class),

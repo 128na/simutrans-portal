@@ -2,23 +2,19 @@
 
 namespace App\Services;
 
-use Abraham\TwitterOAuth\TwitterOAuth;
-use Illuminate\Support\Facades\App;
+use App\Services\TwitterAnalytics\TwitterV1Api;
 
 class TweetService
 {
-    private TwitterOAuth $client;
-    private bool $is_prod;
-
-    public function __construct(TwitterOAuth $client)
-    {
-        $this->client = $client;
-        $this->is_prod = App::environment(['production']);
+    public function __construct(
+        private TwitterV1Api $client,
+        private bool $isProd
+    ) {
     }
 
     public function post($message = '')
     {
-        if ($this->is_prod) {
+        if ($this->isProd) {
             $params = [
                 'status' => $message,
             ];
@@ -31,7 +27,7 @@ class TweetService
     {
         $media_paths = collect($media_paths);
 
-        if ($this->is_prod) {
+        if ($this->isProd) {
             $media = $this->uploadMedia($media_paths);
             $params = [
                 'status' => $message,

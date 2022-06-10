@@ -4,6 +4,7 @@ namespace App\Channels;
 
 use App\Models\Article;
 use App\Notifications\ArticleNotification;
+use App\Services\TweetFailedException;
 use App\Services\TweetService;
 
 class TwitterChannel
@@ -26,11 +27,15 @@ class TwitterChannel
     {
         $message = $notification->toTwitter($notifiable);
 
-        if ($notifiable->has_thumbnail) {
-            $media_paths = [$notifiable->thumbnail->full_path];
-            $this->tweet_service->postMedia($media_paths, $message);
-        } else {
-            $this->tweet_service->post($message);
+        try {
+            if ($notifiable->has_thumbnail) {
+                $media_paths = [$notifiable->thumbnail->full_path];
+                $this->tweet_service->postMedia($media_paths, $message);
+            } else {
+                $this->tweet_service->post($message);
+            }
+        } catch (TweetFailedException $e) {
+            report($e);
         }
     }
 }

@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use App\Repositories\OauthTokenRepository;
-use App\Services\TweetService;
 use App\Services\Twitter\PKCEService;
+use App\Services\Twitter\TweetService;
 use App\Services\Twitter\TwitterV1Api;
 use App\Services\Twitter\TwitterV2Api;
 use Carbon\Carbon;

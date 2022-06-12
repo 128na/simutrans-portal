@@ -15,10 +15,10 @@ class TweetDataV1 extends TweetData
     {
         $this->id = $data->id_str;
         $this->text = $data->text;
-        $this->retweetCount = $data->retweet_count;
-        $this->replyCount = $data->reply_count;
-        $this->likeCount = $data->favorite_count;
-        $this->quoteCount = $data->quote_count;
+        $this->retweetCount = $data->retweet_count ?? 0;
+        $this->replyCount = $data->reply_count ?? 0;
+        $this->likeCount = $data->favorite_count ?? 0;
+        $this->quoteCount = $data->quote_count ?? 0;
         $this->impressionCount = 0;
         $this->urlLinkClicks = 0;
         $this->userProfileClicks = 0;

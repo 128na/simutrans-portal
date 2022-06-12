@@ -11,4 +11,7 @@ return [
 
     // https://twitter.com/i/lists/1533065708212396033
     'list_id' => '1533065708212396033',
+
+    // https://developer.twitter.com/en/docs/twitter-api/users/lookup/api-reference/get-users-me
+    'user_id' => '718733002918875137',
 ];

@@ -23,23 +23,13 @@ class SearchTweetService
      */
     public function searchTweetsByUsername(string $username): LazyCollection
     {
-        return LazyCollection::make(function () use ($username) {
-            $query = [
-                'query' => "from:{$username}",
-                'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
-                'max_results' => 100,
-            ];
-            // 7日で2ページ分もツイート発生しないのでページングは考慮しない
-            $result = $this->client->get('tweets/search/recent', $query);
-            logger('searchTweetsByUsername', [$result]);
+        $query = [
+            'query' => "from:{$username}",
+            'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
+            'max_results' => 100,
+        ];
 
-            foreach ($result->data ?? [] as $d) {
-                try {
-                    yield new TweetData($d);
-                } catch (InvalidTweetDataException $e) {
-                }
-            }
-        });
+        return $this->execRequest('tweets/search/recent', $query);
     }
 
     /**
@@ -47,34 +37,12 @@ class SearchTweetService
      */
     public function searchTweetsByList(string $listId): LazyCollection
     {
-        return LazyCollection::make(function () use ($listId) {
-            $query = [
-                'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
-                'max_results' => 100,
-            ];
+        $query = [
+            'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
+            'max_results' => 100,
+        ];
 
-            $paginationToken = null;
-            do {
-                if ($paginationToken) {
-                    $query['pagination_token'] = $paginationToken;
-                }
-                $result = $this->client->get("lists/{$listId}/tweets", $query);
-                logger('searchTweetsByList', [$result]);
-
-                $data = $result->data ?? [];
-
-                foreach ($data as $d) {
-                    yield new TweetData($d);
-                }
-
-                if (isset($result->meta->next_token)) {
-                    $paginationToken = $result->meta->next_token;
-                    sleep(1);
-                } else {
-                    $paginationToken = null;
-                }
-            } while ($paginationToken);
-        });
+        return $this->execRequest("lists/{$listId}/tweets", $query);
     }
 
     /**
@@ -85,22 +53,55 @@ class SearchTweetService
         if (count($ids) > 100) {
             throw new TooManyIdsException();
         }
+        $query = [
+            'ids' => implode(',', $ids),
+            'tweet.fields' => 'text,public_metrics,created_at',
+        ];
 
-        return LazyCollection::make(function () use ($ids) {
-            $query = [
-                'ids' => implode(',', $ids),
-                'tweet.fields' => 'text,public_metrics,created_at',
-            ];
-            $result = $this->client->get('tweets', $query);
-            logger('searchTweetsByIds', [$result]);
+        return $this->execRequest('tweets', $query);
+    }
 
-            foreach ($result->data ?? [] as $d) {
-                try {
-                    yield new TweetData($d);
-                } catch (InvalidTweetDataException $e) {
-                    report($e);
+    /**
+     * @see https://developer.twitter.com/en/docs/twitter-api/lists/list-tweets/api-reference/get-lists-id-tweets
+     */
+    public function searchTweetsByTimeline(string $userId): LazyCollection
+    {
+        $query = [
+            'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
+            'max_results' => 100,
+        ];
+
+        return $this->execRequest("users/{$userId}/tweets", $query);
+    }
+
+    private function execRequest(string $endpoint, array $query = []): LazyCollection
+    {
+        return LazyCollection::make(function () use ($endpoint, $query) {
+            $paginationToken = null;
+            do {
+                if ($paginationToken) {
+                    $query['pagination_token'] = $paginationToken;
                 }
-            }
+                $result = $this->client->get($endpoint, $query);
+                logger($endpoint, [$result]);
+
+                $data = $result->data ?? [];
+
+                foreach ($data as $d) {
+                    try {
+                        yield new TweetData($d);
+                    } catch (InvalidTweetDataException $e) {
+                        report($e);
+                    }
+                }
+
+                if (isset($result->meta->next_token)) {
+                    $paginationToken = $result->meta->next_token;
+                    sleep(1);
+                } else {
+                    $paginationToken = null;
+                }
+            } while ($paginationToken);
         });
     }
 }

@@ -4,16 +4,15 @@ namespace App\Channels;
 
 use App\Models\Article;
 use App\Notifications\ArticleNotification;
-use App\Services\TweetFailedException;
-use App\Services\TweetService;
+use App\Repositories\Article\TweetLogRepository;
+use App\Services\Twitter\Exceptions\InvalidTweetDataException;
+use App\Services\Twitter\Exceptions\TweetFailedException;
+use App\Services\Twitter\TweetService;
 
 class TwitterChannel
 {
-    private TweetService $tweet_service;
-
-    public function __construct(TweetService $tweet_service)
+    public function __construct(private TweetService $tweetService, private TweetLogRepository $tweetLogRepository)
     {
-        $this->tweet_service = $tweet_service;
     }
 
     /**
@@ -25,16 +24,28 @@ class TwitterChannel
      */
     public function send(Article $notifiable, ArticleNotification $notification)
     {
-        $message = $notification->toTwitter($notifiable);
-
         try {
-            if ($notifiable->has_thumbnail) {
-                $media_paths = [$notifiable->thumbnail->full_path];
-                $this->tweet_service->postMedia($media_paths, $message);
-            } else {
-                $this->tweet_service->post($message);
+            $message = $notification->toTwitter($notifiable);
+            $tweetData = $notifiable->has_thumbnail
+                ? $this->tweetService->postMedia([$notifiable->thumbnail->full_path], $message)
+                : $this->tweetService->post($message);
+
+            if ($tweetData) {
+                $this->tweetLogRepository->store([
+                    'id' => $tweetData->id,
+                    'article_id' => $notifiable->id,
+                    'text' => $tweetData->text,
+                    'retweet_count' => 0,
+                    'reply_count' => 0,
+                    'like_count' => 0,
+                    'quote_count' => 0,
+                    'impression_count' => 0,
+                    'url_link_clicks' => 0,
+                    'user_profile_clicks' => 0,
+                    'tweet_created_at' => $tweetData->createdAt,
+                ]);
             }
-        } catch (TweetFailedException $e) {
+        } catch (TweetFailedException | InvalidTweetDataException $e) {
             report($e);
         }
     }

@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Unit\Services\TwitterAnalytics;
+namespace Tests\Unit\Services\Twitter;
 
 use App\Models\OauthToken;
 use App\Repositories\OauthTokenRepository;
-use App\Services\TwitterAnalytics\Exceptions\InvalidStateException;
-use App\Services\TwitterAnalytics\PKCEService;
+use App\Services\Twitter\Exceptions\InvalidStateException;
+use App\Services\Twitter\PKCEService;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;

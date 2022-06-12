@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit\Services\TwitterAnalytics;
+namespace Tests\Unit\Services\Twitter;
 
-use App\Services\TwitterAnalytics\Exceptions\InvalidTweetDataException;
-use App\Services\TwitterAnalytics\TweetData;
+use App\Services\Twitter\Exceptions\InvalidTweetDataException;
+use App\Services\Twitter\TweetData;
 use stdClass;
 use Tests\UnitTestCase;
 
@@ -23,7 +23,7 @@ class TweetDataTest extends UnitTestCase
         $nonPublicMetrics->user_profile_clicks = 7;
 
         $data = new stdClass();
-        $data->id = '123';
+        $data->id_str = '123';
         $data->text = "新規投稿「dummy」\n";
         $data->created_at = '2022-01-01T23:59:59+09:00';
         $data->public_metrics = $publicMetrics;
@@ -59,7 +59,7 @@ class TweetDataTest extends UnitTestCase
         $nonPublicMetrics->user_profile_clicks = 7;
 
         $data = new stdClass();
-        $data->id = '123';
+        $data->id_str = '123';
         $data->text = "「dummy」更新\n";
         $data->created_at = '2022-01-01T23:59:59+09:00';
         $data->public_metrics = $publicMetrics;
@@ -95,7 +95,7 @@ class TweetDataTest extends UnitTestCase
         $nonPublicMetrics->user_profile_clicks = 7;
 
         $data = new stdClass();
-        $data->id = '123';
+        $data->id_str = '123';
         $data->text = "dummy\n";
         $data->created_at = '2022-01-01T23:59:59+09:00';
         $data->public_metrics = $publicMetrics;
@@ -115,7 +115,7 @@ class TweetDataTest extends UnitTestCase
         $publicMetrics->quote_count = 4;
 
         $data = new stdClass();
-        $data->id = '123';
+        $data->id_str = '123';
         $data->text = "新規投稿「dummy」\n";
         $data->created_at = '2022-01-01T23:59:59+09:00';
         $data->public_metrics = $publicMetrics;

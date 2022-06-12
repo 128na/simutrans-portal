@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\TwitterAnalytics;
+namespace App\Services\Twitter;
 
-use App\Services\TwitterAnalytics\Exceptions\InvalidTweetDataException;
+use App\Services\Twitter\Exceptions\InvalidTweetDataException;
 
 class TweetDataOldFormatSupport extends TweetData
 {

@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands\TweetLog;
 
-use App\Services\TwitterAnalytics\AggregateTweetLogService;
-use App\Services\TwitterAnalytics\ImportTweetService;
-use App\Services\TwitterAnalytics\ResolveArticleService;
-use App\Services\TwitterAnalytics\SearchTweetService;
+use App\Services\Twitter\AggregateTweetLogService;
+use App\Services\Twitter\ImportTweetService;
+use App\Services\Twitter\ResolveArticleService;
+use App\Services\Twitter\SearchTweetService;
 use Illuminate\Console\Command;
 
 class Import extends Command

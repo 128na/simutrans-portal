@@ -4,9 +4,9 @@ namespace App\Providers;
 
 use App\Repositories\OauthTokenRepository;
 use App\Services\TweetService;
-use App\Services\TwitterAnalytics\PKCEService;
-use App\Services\TwitterAnalytics\TwitterV1Api;
-use App\Services\TwitterAnalytics\TwitterV2Api;
+use App\Services\Twitter\PKCEService;
+use App\Services\Twitter\TwitterV1Api;
+use App\Services\Twitter\TwitterV2Api;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Support\DeferrableProvider;
@@ -34,7 +34,7 @@ class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
         $this->app->bind(TweetService::class, function () {
             return new TweetService(
                 $this->app->make(TwitterV1Api::class),
-                $this->app->environment(['production']),
+                $this->app->environment(['production', 'local']),
             );
         });
 

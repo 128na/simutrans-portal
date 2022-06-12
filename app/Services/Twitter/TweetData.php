@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\TwitterAnalytics;
+namespace App\Services\Twitter;
 
-use App\Services\TwitterAnalytics\Exceptions\InvalidTweetDataException;
+use App\Services\Twitter\Exceptions\InvalidTweetDataException;
 use Carbon\Carbon;
 use stdClass;
 
@@ -53,9 +53,12 @@ class TweetData
     public bool $isNew;
     public ?int $articleId = null;
 
+    /**
+     * @throws InvalidTweetDataException
+     */
     public function __construct(stdClass $data)
     {
-        $this->id = $data->id;
+        $this->id = $data->id_str;
         $this->text = $data->text;
         $this->retweetCount = $data->public_metrics->retweet_count;
         $this->replyCount = $data->public_metrics->reply_count;

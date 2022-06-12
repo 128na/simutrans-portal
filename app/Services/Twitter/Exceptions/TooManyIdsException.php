@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\TwitterAnalytics\Exceptions;
+namespace App\Services\Twitter\Exceptions;
 
 class TooManyIdsException extends \Exception
 {

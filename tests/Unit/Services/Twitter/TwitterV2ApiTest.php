@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Unit\Services\TwitterAnalytics;
+namespace Tests\Unit\Services\Twitter;
 
 use App\Models\OauthToken;
 use App\Repositories\OauthTokenRepository;
-use App\Services\TwitterAnalytics\Exceptions\PKCETokenNotFoundException;
-use App\Services\TwitterAnalytics\Exceptions\PKCETokenRefreshFailedException;
-use App\Services\TwitterAnalytics\PKCEService;
-use App\Services\TwitterAnalytics\TwitterV2Api;
+use App\Services\Twitter\Exceptions\PKCETokenNotFoundException;
+use App\Services\Twitter\Exceptions\PKCETokenRefreshFailedException;
+use App\Services\Twitter\PKCEService;
+use App\Services\Twitter\TwitterV2Api;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;

@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands\TweetLog;
 
-use App\Services\TwitterAnalytics\AggregateTweetLogService;
-use App\Services\TwitterAnalytics\ResolveArticleService;
-use App\Services\TwitterAnalytics\SearchTweetService;
+use App\Services\Twitter\AggregateTweetLogService;
+use App\Services\Twitter\ResolveArticleService;
+use App\Services\Twitter\SearchTweetService;
 use Illuminate\Console\Command;
 
 class UpdateByList extends Command

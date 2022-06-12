@@ -1,27 +1,24 @@
 <?php
 
-namespace App\Services\TwitterAnalytics;
+namespace App\Services\Twitter;
 
-use App\Services\TwitterAnalytics\Exceptions\InvalidTweetDataException;
-use App\Services\TwitterAnalytics\Exceptions\PKCETokenException;
-use App\Services\TwitterAnalytics\Exceptions\TooManyIdsException;
+use App\Services\Twitter\Exceptions\InvalidTweetDataException;
+use App\Services\Twitter\Exceptions\TooManyIdsException;
 use Illuminate\Support\LazyCollection;
 
 class SearchTweetService
 {
+    public const USE_PKCE_TOKEN = 'USE_PKCE_TOKEN';
+    public const USE_APP_ONLY_TOKEN = 'USE_APP_ONLY_TOKEN';
+
     public function __construct(private TwitterV2Api $client)
     {
-        try {
-            $this->client->applyPKCEToken();
-        } catch (PKCETokenException $e) {
-            report($e);
-        }
     }
 
     /**
      * @see https://developer.twitter.com/en/docs/twitter-api/tweets/search/api-reference/get-tweets-search-recent
      */
-    public function searchTweetsByUsername(string $username): LazyCollection
+    public function searchTweetsByUsername(string $username, string $token = self::USE_PKCE_TOKEN): LazyCollection
     {
         $query = [
             'query' => "from:{$username}",
@@ -29,26 +26,26 @@ class SearchTweetService
             'max_results' => 100,
         ];
 
-        return $this->execRequest('tweets/search/recent', $query);
+        return $this->execRequest('tweets/search/recent', $query, $token);
     }
 
     /**
      * @see https://developer.twitter.com/en/docs/twitter-api/lists/list-tweets/api-reference/get-lists-id-tweets
      */
-    public function searchTweetsByList(string $listId): LazyCollection
+    public function searchTweetsByList(string $listId, string $token = self::USE_PKCE_TOKEN): LazyCollection
     {
         $query = [
             'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
             'max_results' => 100,
         ];
 
-        return $this->execRequest("lists/{$listId}/tweets", $query);
+        return $this->execRequest("lists/{$listId}/tweets", $query, $token);
     }
 
     /**
      * @see https://developer.twitter.com/en/docs/twitter-api/tweets/search/api-reference/get-tweets-search-recent
      */
-    public function searchTweetsByIds(array $ids): LazyCollection
+    public function searchTweetsByIds(array $ids, string $token = self::USE_PKCE_TOKEN): LazyCollection
     {
         if (count($ids) > 100) {
             throw new TooManyIdsException();
@@ -58,24 +55,28 @@ class SearchTweetService
             'tweet.fields' => 'text,public_metrics,created_at',
         ];
 
-        return $this->execRequest('tweets', $query);
+        return $this->execRequest('tweets', $query, $token);
     }
 
     /**
      * @see https://developer.twitter.com/en/docs/twitter-api/lists/list-tweets/api-reference/get-lists-id-tweets
      */
-    public function searchTweetsByTimeline(string $userId): LazyCollection
+    public function searchTweetsByTimeline(string $userId, string $token = self::USE_PKCE_TOKEN): LazyCollection
     {
         $query = [
             'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
             'max_results' => 100,
         ];
 
-        return $this->execRequest("users/{$userId}/tweets", $query);
+        return $this->execRequest("users/{$userId}/tweets", $query, $token);
     }
 
-    private function execRequest(string $endpoint, array $query = []): LazyCollection
+    private function execRequest(string $endpoint, array $query, string $token): LazyCollection
     {
+        if ($token === self::USE_PKCE_TOKEN) {
+            $this->client->applyPKCEToken();
+        }
+
         return LazyCollection::make(function () use ($endpoint, $query) {
             $paginationToken = null;
             do {

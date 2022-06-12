@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Unit\Services\TwitterAnalytics;
+namespace Tests\Unit\Services\Twitter;
 
-use App\Services\TwitterAnalytics\Exceptions\PKCETokenNotFoundException;
-use App\Services\TwitterAnalytics\Exceptions\PKCETokenRefreshFailedException;
-use App\Services\TwitterAnalytics\Exceptions\TooManyIdsException;
-use App\Services\TwitterAnalytics\SearchTweetService;
-use App\Services\TwitterAnalytics\TwitterV2Api;
+use App\Services\Twitter\Exceptions\PKCETokenNotFoundException;
+use App\Services\Twitter\Exceptions\PKCETokenRefreshFailedException;
+use App\Services\Twitter\Exceptions\TooManyIdsException;
+use App\Services\Twitter\SearchTweetService;
+use App\Services\Twitter\TwitterV2Api;
 use Mockery\MockInterface;
 use stdClass;
 use Tests\UnitTestCase;
@@ -32,7 +32,7 @@ class SearchTweetServiceTest extends UnitTestCase
         $nonPublicMetrics->user_profile_clicks = 7;
 
         $data = new stdClass();
-        $data->id = '123';
+        $data->id_str = '123';
         $data->text = "新規投稿「dummy」\n";
         $data->created_at = '2022-01-01T23:59:59+09:00';
         $data->public_metrics = $publicMetrics;
@@ -55,7 +55,7 @@ class SearchTweetServiceTest extends UnitTestCase
             $m->shouldReceive('applyPKCEToken')->andThrow(new PKCETokenNotFoundException());
         });
 
-        $service = $this->getSUT();
+        $this->getSUT();
         $this->assertTrue(true);
     }
 
@@ -65,7 +65,7 @@ class SearchTweetServiceTest extends UnitTestCase
             $m->shouldReceive('applyPKCEToken')->andThrow(new PKCETokenRefreshFailedException());
         });
 
-        $service = $this->getSUT();
+        $this->getSUT();
         $this->assertTrue(true);
     }
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Unit\Services\TwitterAnalytics;
+namespace Tests\Unit\Services\Twitter;
 
 use App\Repositories\Article\TweetLogRepository;
 use App\Repositories\Article\TweetLogSummaryRepository;
-use App\Services\TwitterAnalytics\AggregateTweetLogService;
-use App\Services\TwitterAnalytics\TweetData;
+use App\Services\Twitter\AggregateTweetLogService;
+use App\Services\Twitter\TweetData;
 use Carbon\Carbon;
 use Illuminate\Support\LazyCollection;
 use Mockery\MockInterface;
@@ -36,7 +36,7 @@ class AggregateTweetLogServiceTest extends UnitTestCase
         $nonPublicMetrics->user_profile_clicks = 7;
 
         $data = new stdClass();
-        $data->id = '123';
+        $data->id_str = '123';
         $data->text = "新規投稿「dummy」\n";
         $data->created_at = '2022-01-01T23:59:59+09:00';
         $data->public_metrics = $publicMetrics;

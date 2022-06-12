@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Twitter;
 
-use App\Services\TwitterAnalytics\TwitterV1Api;
+use App\Services\Twitter\Exceptions\TweetFailedException;
 
 class TweetService
 {
@@ -12,18 +12,20 @@ class TweetService
     ) {
     }
 
-    public function post($message = '')
+    public function post($message = ''): ?TweetDataV1
     {
         if ($this->isProd) {
             $params = [
                 'status' => $message,
             ];
-            $this->handleResponse($this->client->post('statuses/update', $params));
+            $res = $this->handleResponse($this->client->post('statuses/update', $params));
+
+            return new TweetDataV1($res);
         }
         logger(sprintf('Tweet %s', $message));
     }
 
-    public function postMedia($mediaPathes = [], $message = '')
+    public function postMedia($mediaPathes = [], $message = ''): ?TweetDataV1
     {
         $mediaPathes = collect($mediaPathes);
 
@@ -33,7 +35,9 @@ class TweetService
                 'status' => $message,
                 'media_ids' => $media->pluck('media_id_string')->implode(','),
             ];
-            $this->handleResponse($this->client->post('statuses/update', $params));
+            $res = $this->handleResponse($this->client->post('statuses/update', $params));
+
+            return new TweetDataV1($res);
         }
         logger(sprintf('Tweet with media %s, %s', $message, $mediaPathes->implode(', ')));
     }

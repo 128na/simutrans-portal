@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\TwitterAnalytics;
+namespace App\Services\Twitter;
 
 use App\Models\Article;
 use App\Repositories\ArticleRepository;

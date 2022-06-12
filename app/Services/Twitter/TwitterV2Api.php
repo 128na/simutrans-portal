@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\TwitterAnalytics;
+namespace App\Services\Twitter;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Models\OauthToken;
 use App\Repositories\OauthTokenRepository;
-use App\Services\TwitterAnalytics\Exceptions\PKCETokenNotFoundException;
-use App\Services\TwitterAnalytics\Exceptions\PKCETokenRefreshFailedException;
+use App\Services\Twitter\Exceptions\PKCETokenNotFoundException;
+use App\Services\Twitter\Exceptions\PKCETokenRefreshFailedException;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -38,10 +38,12 @@ class TwitterV2Api extends TwitterOAuth
 
     public function applyPKCEToken(): void
     {
-        $token = $this->getPKCEToken();
+        if (!$this->pkceToken) {
+            $token = $this->getPKCEToken();
 
-        $this->setBearer($token->access_token);
-        $this->pkceToken = true;
+            $this->setBearer($token->access_token);
+            $this->pkceToken = true;
+        }
     }
 
     private function getPKCEToken(): OauthToken

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\TwitterAnalytics;
+namespace App\Services\Twitter;
 
 use App\Repositories\Article\TweetLogRepository;
 use App\Repositories\Article\TweetLogSummaryRepository;

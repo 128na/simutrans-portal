@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\TwitterAnalytics;
+namespace App\Services\Twitter;
 
 use App\Models\OauthToken;
 use App\Repositories\OauthTokenRepository;
-use App\Services\TwitterAnalytics\Exceptions\InvalidStateException;
+use App\Services\Twitter\Exceptions\InvalidStateException;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;

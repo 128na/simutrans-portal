@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Services\TwitterAnalytics;
+namespace Tests\Unit\Services\Twitter;
 
-use App\Services\TwitterAnalytics\TweetDataOldFormatSupport;
+use App\Services\Twitter\TweetDataOldFormatSupport;
 use stdClass;
 use Tests\UnitTestCase;
 
@@ -17,7 +17,7 @@ class TweetDataOldFormatSupportTest extends UnitTestCase
         $publicMetrics->quote_count = 4;
 
         $data = new stdClass();
-        $data->id = '123';
+        $data->id_str = '123';
         $data->text = "新規投稿アドオン「dummy」 by user\n";
         $data->created_at = '2022-01-01T23:59:59+09:00';
         $data->public_metrics = $publicMetrics;
@@ -47,7 +47,7 @@ class TweetDataOldFormatSupportTest extends UnitTestCase
         $publicMetrics->quote_count = 4;
 
         $data = new stdClass();
-        $data->id = '123';
+        $data->id_str = '123';
         $data->text = "新規投稿アドオン「dummy」\n";
         $data->created_at = '2022-01-01T23:59:59+09:00';
         $data->public_metrics = $publicMetrics;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Services\TwitterAnalytics;
+namespace Tests\Unit\Services\Twitter;
 
-use App\Services\TwitterAnalytics\ImportTweetService;
+use App\Services\Twitter\ImportTweetService;
 use Tests\UnitTestCase;
 
 class ImportTweetServiceTest extends UnitTestCase

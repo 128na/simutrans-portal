@@ -72,7 +72,7 @@ class PKCEServiceTest extends UnitTestCase
     public function testGenerateToken()
     {
         $this->mock(Client::class, function (MockInterface $m) {
-            $m->shouldReceive('request')->withAnyArgs([
+            $m->shouldReceive('request')->once()->withAnyArgs([
                 'POST',
                 'https://api.twitter.com/2/oauth2/token',
                 [
@@ -85,15 +85,15 @@ class PKCEServiceTest extends UnitTestCase
                     ],
                 ],
             ])->andReturn($this->mock(ResponseInterface::class, function (MockInterface $m) {
-                $m->shouldReceive('getBody')->andReturn($this->mock(StreamInterface::class, function (MockInterface $m) {
-                    $m->shouldReceive('getContents')
+                $m->shouldReceive('getBody')->once()->andReturn($this->mock(StreamInterface::class, function (MockInterface $m) {
+                    $m->shouldReceive('getContents')->once()
                         ->andReturn('{"token_type":"dummyType","scope":"dummyScope","access_token":"dummyAccessToken","refresh_token":"dummyRefreshToken","expires_in":"7200"}');
                 }));
             }));
         });
 
         $this->mock(OauthTokenRepository::class, function (MockInterface $m) {
-            $m->shouldReceive('updateOrCreate')
+            $m->shouldReceive('updateOrCreate')->once()
                 ->withArgs([
                     ['application' => 'twitter'],
                     [
@@ -123,9 +123,9 @@ class PKCEServiceTest extends UnitTestCase
                         'grant_type' => 'refresh_token',
                     ],
                 ],
-            ])->andReturn($this->mock(ResponseInterface::class, function (MockInterface $m) {
-                $m->shouldReceive('getBody')->andReturn($this->mock(StreamInterface::class, function (MockInterface $m) {
-                    $m->shouldReceive('getContents')
+            ])->once()->andReturn($this->mock(ResponseInterface::class, function (MockInterface $m) {
+                $m->shouldReceive('getBody')->once()->andReturn($this->mock(StreamInterface::class, function (MockInterface $m) {
+                    $m->shouldReceive('getContents')->once()
                         ->andReturn('{"token_type":"dummyType","scope":"dummyScope","access_token":"dummyAccessToken","refresh_token":"dummyRefreshToken2","expires_in":"7200"}');
                 }));
             }));
@@ -142,7 +142,7 @@ class PKCEServiceTest extends UnitTestCase
                         'refresh_token' => 'dummyRefreshToken2',
                         'expired_at' => new Carbon('2022-01-01 02:00:00'),
                     ],
-                ])
+                ])->once()
                 ->andReturn(new OauthToken());
         });
 
@@ -162,11 +162,11 @@ class PKCEServiceTest extends UnitTestCase
                         'token_type_hint' => 'access_token',
                     ],
                 ],
-            ]);
+            ])->once();
         });
 
         $this->mock(OauthTokenRepository::class, function (MockInterface $m) {
-            $m->shouldReceive('delete');
+            $m->shouldReceive('delete')->once();
         });
 
         $this->getSUT()->revokeToken(new OauthToken(['access_token' => 'dummyAccessToken']));
@@ -175,12 +175,12 @@ class PKCEServiceTest extends UnitTestCase
     public function testRevokeTokenAPIエラーでもトークン削除される()
     {
         $this->mock(Client::class, function (MockInterface $m) {
-            $m->shouldReceive('request')
+            $m->shouldReceive('request')->once()
                 ->andThrow(new ClientException('dummy', new Request('post', ''), new Response()));
         });
 
         $this->mock(OauthTokenRepository::class, function (MockInterface $m) {
-            $m->shouldReceive('delete');
+            $m->shouldReceive('delete')->once();
         });
 
         $this->getSUT()->revokeToken(new OauthToken(['access_token' => 'dummyAccessToken']));

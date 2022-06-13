@@ -14,6 +14,14 @@ class AggregateTweetLogService
     }
 
     /**
+     * 値が0のフィールドを更新から除外する.
+     */
+    private function filterUpdatableFields(array $data): array
+    {
+        return array_filter($data, fn ($d) => !is_numeric($d) || $d > 0);
+    }
+
+    /**
      * @param TweetData[] $resolved
      *
      * @return int[] articleIds
@@ -26,7 +34,7 @@ class AggregateTweetLogService
                 $articleIds[] = $tweetData->articleId;
                 $this->tweetLogRepository->updateOrCreate(
                     ['id' => $tweetData->id],
-                    [
+                    $this->filterUpdatableFields([
                         'article_id' => $tweetData->articleId,
                         'text' => $tweetData->text,
                         'retweet_count' => $tweetData->retweetCount,
@@ -37,7 +45,7 @@ class AggregateTweetLogService
                         'url_link_clicks' => $tweetData->urlLinkClicks,
                         'user_profile_clicks' => $tweetData->userProfileClicks,
                         'tweet_created_at' => $tweetData->createdAt,
-                    ]
+                    ])
                 );
             }
         }
@@ -58,7 +66,7 @@ class AggregateTweetLogService
                 $articleIds[] = $tweetData->articleId;
                 $this->tweetLogRepository->firstOrCreate(
                     ['id' => $tweetData->id],
-                    [
+                    $this->filterUpdatableFields([
                         'article_id' => $tweetData->articleId,
                         'text' => $tweetData->text,
                         'retweet_count' => $tweetData->retweetCount,
@@ -69,7 +77,7 @@ class AggregateTweetLogService
                         'url_link_clicks' => $tweetData->urlLinkClicks,
                         'user_profile_clicks' => $tweetData->userProfileClicks,
                         'tweet_created_at' => $tweetData->createdAt,
-                    ]
+                    ])
                 );
             }
         }

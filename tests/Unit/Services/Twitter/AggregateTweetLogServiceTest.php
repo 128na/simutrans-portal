@@ -48,6 +48,35 @@ class AggregateTweetLogServiceTest extends UnitTestCase
         return [$tweetData];
     }
 
+    /**
+     * @return TweetData[]
+     */
+    private function createMockDataEmpty(): array
+    {
+        $publicMetrics = new stdClass();
+        $publicMetrics->retweet_count = 0;
+        $publicMetrics->reply_count = 0;
+        $publicMetrics->like_count = 0;
+        $publicMetrics->quote_count = 0;
+
+        $nonPublicMetrics = new stdClass();
+        $nonPublicMetrics->impression_count = 0;
+        $nonPublicMetrics->url_link_clicks = 0;
+        $nonPublicMetrics->user_profile_clicks = 0;
+
+        $data = new stdClass();
+        $data->id = '123';
+        $data->text = "新規投稿「dummy」\n";
+        $data->created_at = '2022-01-01T23:59:59+09:00';
+        $data->public_metrics = $publicMetrics;
+        $data->non_public_metrics = $nonPublicMetrics;
+
+        $tweetData = new TweetData($data);
+        $tweetData->articleId = 1;
+
+        return [$tweetData];
+    }
+
     public function testUpdateOrCreateTweetLogs()
     {
         $this->mock(TweetLogRepository::class, function (MockInterface $m) {
@@ -76,6 +105,27 @@ class AggregateTweetLogServiceTest extends UnitTestCase
         $this->assertEquals(1, $response[0]);
     }
 
+    public function testUpdateOrCreateTweetLogs0値は除外される()
+    {
+        $this->mock(TweetLogRepository::class, function (MockInterface $m) {
+            $m->shouldReceive('updateOrCreate')->withArgs([
+                ['id' => '123'],
+                [
+                    'article_id' => 1,
+                    'text' => "新規投稿「dummy」\n",
+                    'tweet_created_at' => Carbon::parse('2022-01-01T23:59:59+09:00'),
+                ],
+            ]);
+        });
+
+        $service = $this->getSUT();
+
+        $response = $service->updateOrCreateTweetLogs($this->createMockDataEmpty());
+
+        $this->assertCount(1, $response);
+        $this->assertEquals(1, $response[0]);
+    }
+
     public function testFirstOrCreateTweetLogs()
     {
         $this->mock(TweetLogRepository::class, function (MockInterface $m) {
@@ -99,6 +149,27 @@ class AggregateTweetLogServiceTest extends UnitTestCase
         $service = $this->getSUT();
 
         $response = $service->firstOrCreateTweetLogs($this->createMockData());
+
+        $this->assertCount(1, $response);
+        $this->assertEquals(1, $response[0]);
+    }
+
+    public function testFirstOrCreateTweetLogs0値は除外される()
+    {
+        $this->mock(TweetLogRepository::class, function (MockInterface $m) {
+            $m->shouldReceive('firstOrCreate')->withArgs([
+                ['id' => '123'],
+                [
+                    'article_id' => 1,
+                    'text' => "新規投稿「dummy」\n",
+                    'tweet_created_at' => Carbon::parse('2022-01-01T23:59:59+09:00'),
+                ],
+            ]);
+        });
+
+        $service = $this->getSUT();
+
+        $response = $service->firstOrCreateTweetLogs($this->createMockDataEmpty());
 
         $this->assertCount(1, $response);
         $this->assertEquals(1, $response[0]);

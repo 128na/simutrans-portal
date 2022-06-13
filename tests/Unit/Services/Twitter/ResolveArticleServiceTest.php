@@ -47,6 +47,7 @@ class ResolveArticleServiceTest extends UnitTestCase
             $article->id = 123;
             $m->shouldReceive('findByTitles')
                 ->withArgs([['dummy']])
+                ->once()
                 ->andReturn(collect([$article]));
         });
 

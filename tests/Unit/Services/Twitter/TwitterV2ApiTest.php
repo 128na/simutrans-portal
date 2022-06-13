@@ -37,7 +37,7 @@ class TwitterV2ApiTest extends UnitTestCase
     public function testApplyToken()
     {
         $this->mock(OauthTokenRepository::class, function (MockInterface $m) {
-            $m->shouldReceive('getToken')->withArgs(['twitter'])->andReturn(new OauthToken(['access_token' => 'dummy']));
+            $m->shouldReceive('getToken')->withArgs(['twitter'])->once()->andReturn(new OauthToken(['access_token' => 'dummy']));
         });
 
         $client = $this->getSUT();
@@ -48,10 +48,10 @@ class TwitterV2ApiTest extends UnitTestCase
     public function testApplyTokenトークン更新()
     {
         $this->mock(OauthTokenRepository::class, function (MockInterface $m) {
-            $m->shouldReceive('getToken')->withArgs(['twitter'])->andReturn(new OauthToken(['expired_at' => now()->yesterday()]));
+            $m->shouldReceive('getToken')->withArgs(['twitter'])->once()->andReturn(new OauthToken(['expired_at' => now()->yesterday()]));
         });
         $this->mock(PKCEService::class, function (MockInterface $m) {
-            $m->shouldReceive('refreshToken')->andThrow(new OauthToken(['access_token' => 'dummy']));
+            $m->shouldReceive('refreshToken')->once()->andThrow(new OauthToken(['access_token' => 'dummy']));
         });
 
         $client = $this->getSUT();
@@ -62,7 +62,7 @@ class TwitterV2ApiTest extends UnitTestCase
     public function testApplyTokenトークン無し()
     {
         $this->mock(OauthTokenRepository::class, function (MockInterface $m) {
-            $m->shouldReceive('getToken')->withArgs(['twitter'])->andThrow(new ModelNotFoundException());
+            $m->shouldReceive('getToken')->withArgs(['twitter'])->once()->andThrow(new ModelNotFoundException());
         });
 
         $this->expectException(PKCETokenNotFoundException::class);
@@ -74,11 +74,11 @@ class TwitterV2ApiTest extends UnitTestCase
     public function testApplyTokenトークン更新失敗()
     {
         $this->mock(OauthTokenRepository::class, function (MockInterface $m) {
-            $m->shouldReceive('getToken')->withArgs(['twitter'])->andReturn(new OauthToken(['expired_at' => now()->yesterday()]));
+            $m->shouldReceive('getToken')->withArgs(['twitter'])->once()->andReturn(new OauthToken(['expired_at' => now()->yesterday()]));
         });
         $this->mock(PKCEService::class, function (MockInterface $m) {
-            $m->shouldReceive('refreshToken')->andThrow(new ClientException('dummy', new Request('post', ''), new Response()));
-            $m->shouldReceive('revokeToken')->andReturn(new OauthToken());
+            $m->shouldReceive('refreshToken')->once()->andThrow(new ClientException('dummy', new Request('post', ''), new Response()));
+            $m->shouldReceive('revokeToken')->once()->andReturn(new OauthToken());
         });
 
         $this->expectException(PKCETokenRefreshFailedException::class);

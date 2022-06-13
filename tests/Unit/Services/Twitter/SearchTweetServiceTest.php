@@ -4,7 +4,6 @@ namespace Tests\Unit\Services\Twitter;
 
 use App\Services\Twitter\Exceptions\PKCETokenNotFoundException;
 use App\Services\Twitter\Exceptions\PKCETokenRefreshFailedException;
-use App\Services\Twitter\Exceptions\TooManyIdsException;
 use App\Services\Twitter\SearchTweetService;
 use App\Services\Twitter\TwitterV2Api;
 use Mockery\MockInterface;
@@ -49,111 +48,75 @@ class SearchTweetServiceTest extends UnitTestCase
         return $response;
     }
 
+    public function testsearchTweetsByTimelinePkce()
+    {
+        $this->mock(TwitterV2Api::class, function (MockInterface $m) {
+            $m->shouldReceive('applyPKCEToken')->once();
+
+            $m->shouldReceive('get')->withArgs([
+                'users/dummyId/tweets', [
+                    'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
+                    'max_results' => 100,
+                ],
+            ])->once()->andReturn($this->createMockData('dummyToken'));
+
+            $m->shouldReceive('get')->withArgs([
+                'users/dummyId/tweets', [
+                    'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
+                    'max_results' => 100,
+                    'pagination_token' => 'dummyToken',
+                ],
+            ])->once()->andReturn($this->createMockData(), SearchTweetService::USE_PKCE_TOKEN);
+        });
+
+        $service = $this->getSUT();
+
+        $response = $service->searchTweetsByTimeline('dummyId', SearchTweetService::USE_PKCE_TOKEN);
+
+        $this->assertCount(2, $response);
+    }
+
+    public function testsearchTweetsByTimelineAppOnly()
+    {
+        $this->mock(TwitterV2Api::class, function (MockInterface $m) {
+            $m->shouldReceive('applyPKCEToken')->never();
+
+            $m->shouldReceive('get')->withArgs([
+                'users/dummyId/tweets', [
+                    'tweet.fields' => 'text,public_metrics,created_at',
+                    'max_results' => 100,
+                ],
+            ])->once()->andReturn($this->createMockData());
+        });
+
+        $service = $this->getSUT();
+
+        $response = $service->searchTweetsByTimeline('dummyId', SearchTweetService::USE_APP_ONLY_TOKEN);
+
+        $this->assertCount(1, $response);
+    }
+
     public function testPKCEToken無し()
     {
         $this->mock(TwitterV2Api::class, function (MockInterface $m) {
-            $m->shouldReceive('applyPKCEToken')->andThrow(new PKCETokenNotFoundException());
+            $m->shouldReceive('applyPKCEToken')->once()->andThrow(new PKCETokenNotFoundException());
         });
 
-        $this->getSUT();
-        $this->assertTrue(true);
+        $this->expectException(PKCETokenNotFoundException::class);
+        $service = $this->getSUT();
+
+        $service->searchTweetsByTimeline('dummyId', SearchTweetService::USE_PKCE_TOKEN);
     }
 
     public function testPKCEToken更新失敗()
     {
         $this->mock(TwitterV2Api::class, function (MockInterface $m) {
-            $m->shouldReceive('applyPKCEToken')->andThrow(new PKCETokenRefreshFailedException());
+            $m->shouldReceive('applyPKCEToken')->once()->andThrow(new PKCETokenRefreshFailedException());
         });
 
-        $this->getSUT();
-        $this->assertTrue(true);
-    }
-
-    public function testSearchTweetsByUsername()
-    {
-        $this->mock(TwitterV2Api::class, function (MockInterface $m) {
-            $m->shouldReceive('applyPKCEToken');
-            $m->shouldReceive('setApiVersion')->withArgs(['2']);
-
-            $m->shouldReceive('get')->withArgs([
-                'tweets/search/recent', [
-                    'query' => 'from:user',
-                    'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
-                    'max_results' => 100,
-                ],
-            ])->andReturn($this->createMockData());
-        });
-
+        $this->expectException(PKCETokenRefreshFailedException::class);
         $service = $this->getSUT();
 
-        $response = $service->searchTweetsByUsername('user');
-
-        $this->assertCount(1, $response);
-    }
-
-    public function testSearchTweetsByList()
-    {
-        $this->mock(TwitterV2Api::class, function (MockInterface $m) {
-            $m->shouldReceive('applyPKCEToken');
-            $m->shouldReceive('setApiVersion')->withArgs(['2']);
-
-            $m->shouldReceive('get')->withArgs([
-                'lists/123/tweets', [
-                    'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
-                    'max_results' => 100,
-                ],
-            ])->andReturn($this->createMockData('dummy_token'));
-
-            $m->shouldReceive('get')->withArgs([
-                'lists/123/tweets', [
-                    'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
-                    'max_results' => 100,
-                    'pagination_token' => 'dummy_token',
-                ],
-            ])->andReturn($this->createMockData());
-        });
-
-        $service = $this->getSUT();
-
-        $response = $service->searchTweetsByList('123');
-
-        $this->assertCount(2, $response);
-    }
-
-    public function testSearchTweetsByIds()
-    {
-        $this->mock(TwitterV2Api::class, function (MockInterface $m) {
-            $m->shouldReceive('applyPKCEToken');
-            $m->shouldReceive('setApiVersion')->withArgs(['2']);
-            $m->shouldReceive('get')->withArgs([
-                'tweets', [
-                    'ids' => '123,456',
-                    'tweet.fields' => 'text,public_metrics,created_at',
-                ],
-            ])->andReturn($this->createMockData());
-        });
-
-        $service = $this->getSUT();
-
-        $response = $service->searchTweetsByIds(['123', '456']);
-
-        $this->assertCount(1, $response);
-    }
-
-    public function testSearchTweetsByIdsID101個以上()
-    {
-        $this->mock(TwitterV2Api::class, function (MockInterface $m) {
-            $m->shouldReceive('applyPKCEToken');
-            $m->shouldReceive('setApiVersion')->withArgs(['2']);
-        });
-
-        $this->expectException(TooManyIdsException::class);
-
-        $service = $this->getSUT();
-
-        $ids = array_map(fn ($n) => (string) $n, range(1, 101));
-        $this->assertCount(101, $ids);
-
-        $service->searchTweetsByIds($ids);
+        $service->searchTweetsByTimeline('dummyId', SearchTweetService::USE_PKCE_TOKEN);
     }
 }

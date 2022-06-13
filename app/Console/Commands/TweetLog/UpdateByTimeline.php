@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 
 class UpdateByTimeline extends Command
 {
-    protected $signature = 'tweet_log:update_by_timeline';
+    protected $signature = 'tweet_log:update_by_timeline {--w|with-non-public-metrics : add non_public_metircs field (required PKCE Token)}';
 
     protected $description = 'Update tweet logs';
 
@@ -24,12 +24,14 @@ class UpdateByTimeline extends Command
     public function handle()
     {
         try {
-            $collection = $this->searchTweetService->searchTweetsByTimeline(config('twitter.user_id'));
+            $token = $this->option('with-non-public-metrics')
+                ? SearchTweetService::USE_PKCE_TOKEN
+                : SearchTweetService::USE_APP_ONLY_TOKEN;
+
+            $collection = $this->searchTweetService->searchTweetsByTimeline(config('twitter.user_id'), $token);
 
             foreach ($collection->chunk(100) as $chunk) {
                 $result = $chunk->toArray();
-
-                dd($chunk);
                 $resolved = $this->resolveArticleService->titleToArticles($result);
                 $articleIds = $this->aggregateTweetLogService->updateOrCreateTweetLogs($resolved);
                 $this->aggregateTweetLogService->updateOrCreateTweetLogSummary($articleIds);

@@ -14,35 +14,34 @@ use Tests\UnitTestCase;
 
 class ZippableManagerTest extends UnitTestCase
 {
-    private ZippableManager $zippableManager;
-    private ArticleRepository | MockInterface $mockArticleRepository;
-    private BulkZip | MockInterface $mockBulkZip;
-
-    protected function setUp(): void
+    private function getSUT(): ZippableManager
     {
-        parent::setUp();
-
-        $this->mockArticleRepository = $this->mock(ArticleRepository::class);
-        $this->mockBulkZip = $this->mock(BulkZip::class);
-
-        $this->zippableManager = new ZippableManager($this->mockArticleRepository);
+        return app(ZippableManager::class);
     }
 
     public function testUser()
     {
-        $this->mockBulkZip->shouldReceive('getAttribute')->withArgs(['bulk_zippable_type'])->andReturn(User::class);
-        $this->mockBulkZip->shouldReceive('getAttribute')->withArgs(['bulkZippable'])->andReturn(new User());
-        $this->mockArticleRepository->shouldReceive('findAllByUser')->andReturn(new Collection());
+        $this->mock(BulkZip::class, function (MockInterface $m) {
+            $m->shouldReceive('getAttribute')->withArgs(['bulk_zippable_type'])->once()->andReturn(User::class);
+            $m->shouldReceive('getAttribute')->withArgs(['bulkZippable'])->once()->andReturn(new User());
+        });
 
-        $res = $this->zippableManager->getItems($this->mockBulkZip);
+        $this->mock(ArticleRepository::class, function (MockInterface $m) {
+            $m->shouldReceive('findAllByUser')->once()->andReturn(new Collection());
+        });
+
+        $res = $this->getSUT()->getItems(app(BulkZip::class));
         $this->assertCount(0, $res);
     }
 
     public function test未対応モデル()
     {
-        $this->expectException(Exception::class);
-        $this->mockBulkZip->shouldReceive('getAttribute')->withArgs(['bulk_zippable_type'])->andReturn(stdClass::class);
+        $this->mock(BulkZip::class, function (MockInterface $m) {
+            $m->shouldReceive('getAttribute')->withArgs(['bulk_zippable_type'])->twice()->andReturn(stdClass::class);
+        });
 
-        $this->zippableManager->getItems($this->mockBulkZip);
+        $this->expectException(Exception::class);
+
+        $this->getSUT()->getItems(app(BulkZip::class));
     }
 }

@@ -47,7 +47,7 @@ class TweetServiceTest extends UnitTestCase
             $m->shouldReceive('post')->withArgs([
                 'statuses/update',
                 ['status' => 'dummy'],
-            ])->andReturn($this->createSuccessResponse());
+            ])->once()->andReturn($this->createSuccessResponse());
         });
         $this->getSUT()->post('dummy');
     }
@@ -58,7 +58,7 @@ class TweetServiceTest extends UnitTestCase
             $m->shouldReceive('post')->withArgs([
                 'statuses/update',
                 ['status' => 'dummy'],
-            ])->andReturn($this->createFailedResponse());
+            ])->once()->andReturn($this->createFailedResponse());
         });
 
         $this->expectException(TweetFailedException::class);
@@ -73,12 +73,12 @@ class TweetServiceTest extends UnitTestCase
             $m->shouldReceive('upload')->withArgs([
                 'media/upload',
                 ['media' => 'dummy.png'],
-            ])->andReturn($response);
+            ])->once()->andReturn($response);
 
             $m->shouldReceive('post')->withArgs([
                 'statuses/update',
                 ['status' => 'dummy', 'media_ids' => 'http://example.com/dummy.png'],
-            ])->andReturn($this->createSuccessResponse());
+            ])->once()->andReturn($this->createSuccessResponse());
         });
         $this->getSUT()->postMedia(['dummy.png'], 'dummy');
     }
@@ -89,7 +89,7 @@ class TweetServiceTest extends UnitTestCase
             $m->shouldReceive('upload')->withArgs([
                 'media/upload',
                 ['media' => 'dummy.png'],
-            ])->andReturn($this->createFailedResponse());
+            ])->once()->andReturn($this->createFailedResponse());
         });
 
         $this->expectException(TweetFailedException::class);

@@ -3,7 +3,6 @@
 namespace App\Services\Twitter;
 
 use App\Services\Twitter\Exceptions\InvalidTweetDataException;
-use App\Services\Twitter\Exceptions\TooManyIdsException;
 use Illuminate\Support\LazyCollection;
 
 class SearchTweetService
@@ -15,47 +14,11 @@ class SearchTweetService
     {
     }
 
-    /**
-     * @see https://developer.twitter.com/en/docs/twitter-api/tweets/search/api-reference/get-tweets-search-recent
-     */
-    public function searchTweetsByUsername(string $username, string $token = self::USE_PKCE_TOKEN): LazyCollection
+    private function createFields(string $token): string
     {
-        $query = [
-            'query' => "from:{$username}",
-            'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
-            'max_results' => 100,
-        ];
-
-        return $this->execRequest('tweets/search/recent', $query, $token);
-    }
-
-    /**
-     * @see https://developer.twitter.com/en/docs/twitter-api/lists/list-tweets/api-reference/get-lists-id-tweets
-     */
-    public function searchTweetsByList(string $listId, string $token = self::USE_PKCE_TOKEN): LazyCollection
-    {
-        $query = [
-            'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
-            'max_results' => 100,
-        ];
-
-        return $this->execRequest("lists/{$listId}/tweets", $query, $token);
-    }
-
-    /**
-     * @see https://developer.twitter.com/en/docs/twitter-api/tweets/search/api-reference/get-tweets-search-recent
-     */
-    public function searchTweetsByIds(array $ids, string $token = self::USE_PKCE_TOKEN): LazyCollection
-    {
-        if (count($ids) > 100) {
-            throw new TooManyIdsException();
-        }
-        $query = [
-            'ids' => implode(',', $ids),
-            'tweet.fields' => 'text,public_metrics,created_at',
-        ];
-
-        return $this->execRequest('tweets', $query, $token);
+        return $token === self::USE_PKCE_TOKEN
+            ? 'text,public_metrics,created_at,non_public_metrics'
+            : 'text,public_metrics,created_at';
     }
 
     /**
@@ -64,7 +27,7 @@ class SearchTweetService
     public function searchTweetsByTimeline(string $userId, string $token = self::USE_PKCE_TOKEN): LazyCollection
     {
         $query = [
-            'tweet.fields' => 'text,public_metrics,created_at,non_public_metrics',
+            'tweet.fields' => $this->createFields($token),
             'max_results' => 100,
         ];
 

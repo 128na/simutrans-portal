@@ -47,7 +47,7 @@ class ZipManagerTest extends UnitTestCase
         $this->assertFalse(Storage::disk('public')->exists($result), '実際に出力されていないこと');
     }
 
-    public function test_error()
+    public function testError()
     {
         $this->expectException(ZipErrorException::class);
 

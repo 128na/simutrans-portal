@@ -1,6 +1,6 @@
 [
   {
-    "id_str": "dummyId",
+    "id": "dummyId",
     "text": "新規投稿「dummyTitle」\n",
     "public_metrics": {
       "retweet_count": 1,

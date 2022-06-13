@@ -58,7 +58,7 @@ class TweetData
      */
     public function __construct(stdClass $data)
     {
-        $this->id = $data->id_str;
+        $this->id = $data->id;
         $this->text = $data->text;
         $this->retweetCount = $data->public_metrics->retweet_count;
         $this->replyCount = $data->public_metrics->reply_count;

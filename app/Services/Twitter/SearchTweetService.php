@@ -55,7 +55,7 @@ class SearchTweetService
                     try {
                         yield new TweetData($d);
                     } catch (InvalidTweetDataException $e) {
-                        report($e);
+                        logger()->warning('invalid format', [$d]);
                     }
                 }
 

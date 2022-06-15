@@ -53,7 +53,7 @@ class SearchTweetService
 
                 foreach ($data as $d) {
                     try {
-                        yield new TweetData($d);
+                        yield new TweetDataOldFormatSupport($d);
                     } catch (InvalidTweetDataException $e) {
                         logger()->warning('invalid format', [$d]);
                     }

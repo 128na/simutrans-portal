@@ -61,7 +61,7 @@ return [
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
             'username' => 'SimutransAddonPortal',
             'emoji' => ':innocent:',
-            'level' => 'notice',
+            'level' => 'error',
         ],
         'slack_debug' => [
             'driver' => 'slack',

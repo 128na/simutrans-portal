@@ -3,6 +3,8 @@
 namespace Tests\Unit\Services\Twitter;
 
 use App\Models\Article;
+use App\Models\Article\TweetLog;
+use App\Repositories\Article\TweetLogRepository;
 use App\Repositories\ArticleRepository;
 use App\Services\Twitter\ResolveArticleService;
 use App\Services\Twitter\TweetData;
@@ -40,11 +42,45 @@ class ResolveArticleServiceTest extends UnitTestCase
         return new TweetData($data);
     }
 
-    public function testTitleToArticles()
+    public function testresolveByTweetDatas登録済みでタイトル不一致()
     {
+        $this->mock(TweetLogRepository::class, function (MockInterface $m) {
+            $tweetLog = new TweetLog(['article_id' => 456]);
+            $tweetLog->id = '123';
+            $m->shouldReceive('findByIds')
+                ->withArgs([['123']])
+                ->once()
+                ->andReturn(collect([$tweetLog]));
+        });
+        $this->mock(ArticleRepository::class, function (MockInterface $m) {
+            $m->shouldReceive('findByTitles')
+                ->withArgs([['dummy']])
+                ->once()
+                ->andReturn(collect());
+        });
+
+        $service = $this->getSUT();
+
+        $data = [$this->createMockData()];
+
+        $response = $service->resolveByTweetDatas($data);
+
+        $this->assertCount(1, $response);
+
+        $this->assertEquals(456, $response[0]->articleId);
+    }
+
+    public function testresolveByTweetDatasタイトル一致()
+    {
+        $this->mock(TweetLogRepository::class, function (MockInterface $m) {
+            $m->shouldReceive('findByIds')
+                ->withArgs([['123']])
+                ->once()
+                ->andReturn(collect());
+        });
         $this->mock(ArticleRepository::class, function (MockInterface $m) {
             $article = new Article(['title' => 'dummy']);
-            $article->id = 123;
+            $article->id = 456;
             $m->shouldReceive('findByTitles')
                 ->withArgs([['dummy']])
                 ->once()
@@ -55,10 +91,36 @@ class ResolveArticleServiceTest extends UnitTestCase
 
         $data = [$this->createMockData()];
 
-        $response = $service->titleToArticles($data);
+        $response = $service->resolveByTweetDatas($data);
 
         $this->assertCount(1, $response);
 
-        $this->assertEquals(123, $response[0]->articleId);
+        $this->assertEquals(456, $response[0]->articleId);
+    }
+
+    public function testresolveByTweetDatas解決できない()
+    {
+        $this->mock(TweetLogRepository::class, function (MockInterface $m) {
+            $m->shouldReceive('findByIds')
+                ->withArgs([['123']])
+                ->once()
+                ->andReturn(collect());
+        });
+        $this->mock(ArticleRepository::class, function (MockInterface $m) {
+            $m->shouldReceive('findByTitles')
+                ->withArgs([['dummy']])
+                ->once()
+                ->andReturn(collect());
+        });
+
+        $service = $this->getSUT();
+
+        $data = [$this->createMockData()];
+
+        $response = $service->resolveByTweetDatas($data);
+
+        $this->assertCount(1, $response);
+
+        $this->assertNull($response[0]->articleId);
     }
 }

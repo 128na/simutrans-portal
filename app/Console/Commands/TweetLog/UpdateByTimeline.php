@@ -32,7 +32,7 @@ class UpdateByTimeline extends Command
 
             foreach ($collection->chunk(100) as $chunk) {
                 $result = $chunk->toArray();
-                $resolved = $this->resolveArticleService->titleToArticles($result);
+                $resolved = $this->resolveArticleService->resolveByTweetDatas($result);
                 $articleIds = $this->aggregateTweetLogService->updateOrCreateTweetLogs($resolved);
                 $this->aggregateTweetLogService->updateOrCreateTweetLogSummary($articleIds);
             }

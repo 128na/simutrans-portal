@@ -27,7 +27,7 @@ class Import extends Command
     {
         $path = base_path($this->argument('path'));
         $result = $this->importTweetService->importJson($path);
-        $resolved = $this->resolveArticleService->titleToArticles($result);
+        $resolved = $this->resolveArticleService->resolveByTweetDatas($result);
         $articleIds = $this->aggregateTweetLogService->firstOrCreateTweetLogs($resolved);
         $this->aggregateTweetLogService->updateOrCreateTweetLogSummary($articleIds);
     }

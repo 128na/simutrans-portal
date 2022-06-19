@@ -20,16 +20,36 @@ class ResolveArticleService
      */
     public function resolveByTweetDatas(array $tweetDataArray): array
     {
-        $tweetIds = array_map(fn (TweetData $tweetData) => $tweetData->id, $tweetDataArray);
-        $storedTweetLogs = $this->tweetLogRepository->findByIds($tweetIds);
+        $tweetDataArray = $this->resolveById($tweetDataArray);
+        $tweetDataArray = $this->resolveByTitle($tweetDataArray);
 
-        $titles = array_map(fn (TweetData $tweetData) => $tweetData->title, $tweetDataArray);
+        return $tweetDataArray;
+    }
+
+    private function resolveById(array $tweetDataArray): array
+    {
+        $tweetIds = array_map(fn (TweetData $tweetData) => $tweetData->id, $tweetDataArray);
+        $rweetLogs = $this->tweetLogRepository->findByIds($tweetIds);
+
+        return array_map(function (TweetData $tweetData) use ($rweetLogs) {
+            if ($id = $rweetLogs->first(fn (TweetLog $t) => $tweetData->id === $t->id)?->article_id) {
+                $tweetData->articleId = $id;
+            }
+
+            return $tweetData;
+        }, $tweetDataArray);
+    }
+
+    private function resolveByTitle(array $tweetDataArray): array
+    {
+        $titles = array_map(
+            fn (TweetData $tweetData) => $tweetData->title,
+            array_filter($tweetDataArray, fn (TweetData $tweetData) => is_null($tweetData->articleId))
+        );
         $articles = $this->articleRepository->findByTitles($titles);
 
-        return array_map(function (TweetData $tweetData) use ($storedTweetLogs, $articles) {
-            if ($id = $storedTweetLogs->first(fn (TweetLog $t) => $tweetData->id === $t->id)?->article_id) {
-                $tweetData->articleId = $id;
-            } elseif ($id = $articles->first(fn (Article $a) => $tweetData->title === $a->title)?->id) {
+        return array_map(function (TweetData $tweetData) use ($articles) {
+            if ($id = $articles->first(fn (Article $a) => $tweetData->title === $a->title)?->id) {
                 $tweetData->articleId = $id;
             }
 

@@ -439,23 +439,19 @@ class ArticleRepository extends BaseRepository
             ->leftJoin('view_counts as d', fn (JoinClause $join) => $join
                 ->on('d.article_id', 'articles.id')
                 ->where('d.type', 1)
-                ->where('d.period', $datetime->format('Ymd'))
-            )
+                ->where('d.period', $datetime->format('Ymd')))
             ->leftJoin('view_counts as m', fn (JoinClause $join) => $join
                 ->on('m.article_id', 'articles.id')
                 ->where('m.type', 2)
-                ->where('m.period', $datetime->format('Ym'))
-            )
+                ->where('m.period', $datetime->format('Ym')))
             ->leftJoin('view_counts as y', fn (JoinClause $join) => $join
                 ->on('y.article_id', 'articles.id')
                 ->where('y.type', 3)
-                ->where('y.period', $datetime->format('Y'))
-            )
+                ->where('y.period', $datetime->format('Y')))
             ->leftJoin('view_counts as t', fn (JoinClause $join) => $join
                 ->on('t.article_id', 'articles.id')
                 ->where('t.type', 4)
-                ->where('t.period', 'total')
-            )
+                ->where('t.period', 'total'))
             ->orderBy('d.count', 'desc')
             ->orderBy('m.count', 'desc')
             ->orderBy('y.count', 'desc')

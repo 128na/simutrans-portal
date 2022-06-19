@@ -2,25 +2,26 @@
 
 namespace App\Override;
 
+use Illuminate\Database\Query\Builder;
 use Throwable;
 
 /**
  * クエリをキャッシュする.
  */
-class QueryBuilder extends \Illuminate\Database\Query\Builder
+class QueryBuilder extends Builder
 {
-    private bool $with_cache = false;
+    private bool $withCache = false;
 
     public function withCache()
     {
-        $this->with_cache = true;
+        $this->withCache = true;
 
         return $this;
     }
 
     public function get($columns = ['*'])
     {
-        if ($this->with_cache) {
+        if ($this->withCache) {
             $sql = str_replace('?', '"%s"', $this->toSql());
             try {
                 $sql = @vsprintf($sql, $this->getBindings());

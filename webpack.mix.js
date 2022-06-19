@@ -18,12 +18,11 @@ mix
   .js('resources/js/front/index.js', 'public/js/front.js')
   .js('resources/js/mypage/app.js', 'public/js/mypage.js')
   .js('resources/js/admin/app.js', 'public/js/admin.js')
-  .vue({ version: 2 });
-
-
-const productionSourceMaps = false;
-mix.sourceMaps(productionSourceMaps);
+  .vue({ version: 2 })
+  .extract();
 
 if (mix.inProduction()) {
   mix.version();
+} else {
+  mix.sourceMaps();
 }

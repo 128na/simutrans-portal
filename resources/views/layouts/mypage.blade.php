@@ -13,6 +13,8 @@
     <meta name="api-entrypoint" content="{{ config('app.url') }}">
 
     <link href="{{ asset(mix('css/mypage.css')) }}" rel="stylesheet">
+    <script src="{{ asset(mix('js/manifest.js')) }}" defer></script>
+    <script src="{{ asset(mix('js/vendor.js')) }}" defer></script>
     <script src="{{ asset(mix('js/mypage.js')) }}" defer></script>
 </head>
 

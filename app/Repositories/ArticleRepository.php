@@ -165,6 +165,7 @@ class ArticleRepository extends BaseRepository
     private function queryRanking(): Builder
     {
         return $this->model->select(['articles.*'])
+            ->withCache()
             ->active()
             ->with(self::FRONT_RELATIONS)
             ->rankingOrder();

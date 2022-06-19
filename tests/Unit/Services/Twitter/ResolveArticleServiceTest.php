@@ -42,7 +42,7 @@ class ResolveArticleServiceTest extends UnitTestCase
         return new TweetData($data);
     }
 
-    public function testresolveByTweetDatas登録済みでタイトル不一致()
+    public function testresolveByTweetDatas登録済み()
     {
         $this->mock(TweetLogRepository::class, function (MockInterface $m) {
             $tweetLog = new TweetLog(['article_id' => 456]);
@@ -54,9 +54,9 @@ class ResolveArticleServiceTest extends UnitTestCase
         });
         $this->mock(ArticleRepository::class, function (MockInterface $m) {
             $m->shouldReceive('findByTitles')
-                ->withArgs([['dummy']])
+                ->withArgs([[]])
                 ->once()
-                ->andReturn(collect());
+                ->andReturn(collect([]));
         });
 
         $service = $this->getSUT();

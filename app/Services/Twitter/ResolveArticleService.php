@@ -29,10 +29,10 @@ class ResolveArticleService
     private function resolveById(array $tweetDataArray): array
     {
         $tweetIds = array_map(fn (TweetData $tweetData) => $tweetData->id, $tweetDataArray);
-        $rweetLogs = $this->tweetLogRepository->findByIds($tweetIds);
+        $tweetLogs = $this->tweetLogRepository->findByIds($tweetIds);
 
-        return array_map(function (TweetData $tweetData) use ($rweetLogs) {
-            if ($id = $rweetLogs->first(fn (TweetLog $t) => $tweetData->id === $t->id)?->article_id) {
+        return array_map(function (TweetData $tweetData) use ($tweetLogs) {
+            if ($id = $tweetLogs->first(fn (TweetLog $t) => $tweetData->id === $t->id)?->article_id) {
                 $tweetData->articleId = $id;
             }
 

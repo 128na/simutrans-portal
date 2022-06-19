@@ -29,7 +29,7 @@ class ArticleEditorService extends Service
 
     public function findArticles(User $user)
     {
-        return $this->articleRepository->findAllByUser($user);
+        return $this->articleRepository->findAllByUser($user, ArticleRepository::MYPAGE_RELATIONS);
     }
 
     public function getOptions(User $user)

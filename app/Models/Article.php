@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Casts\ToArticleContents;
 use App\Models\Article\ConversionCount;
+use App\Models\Article\Ranking;
 use App\Models\Article\TweetLog;
 use App\Models\Article\TweetLogSummary;
 use App\Models\Article\ViewCount;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Feed\Feedable;
@@ -153,6 +155,11 @@ class Article extends Model implements Feedable
         return $this->hasOne(TweetLogSummary::class);
     }
 
+    public function ranking(): HasOne
+    {
+        return $this->hasOne(Ranking::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | スコープ
@@ -171,11 +178,6 @@ class Article extends Model implements Feedable
     public function scopeActive($query)
     {
         return $query->where('status', config('status.publish'));
-    }
-
-    public function scopeWithForList($query)
-    {
-        return $query->with('user', 'attachments', 'categories', 'tags');
     }
 
     public function scopeSearch($query, $word)
@@ -223,46 +225,38 @@ class Article extends Model implements Feedable
             ->whereDoesntHave('categories', fn ($query) => $query->page()->slug('announce'));
     }
 
-    /**
-     * ランキング
-     * 閲覧数が当日、当月、当年、合計の多⇒少順.
-     */
-    public function scopeRanking($query)
+    public function scopeRankingOrder($query)
     {
-        $datetime = now();
+        $query->join('rankings', 'rankings.article_id', '=', 'articles.id')
+            ->orderBy('rankings.rank', 'asc');
+    }
 
-        $query->select('articles.*'); // view_countのフィールドがあるとリレーションデータが取れない（多分idが複数あるから？）
-        $query->leftJoin(
-            'view_counts as d',
-            fn ($join) => $join
-                ->on('d.article_id', 'articles.id')
-                ->where('d.type', 1)
-                ->where('d.period', $datetime->format('Ymd'))
-        );
-        $query->leftJoin(
-            'view_counts as m',
-            fn ($join) => $join
-                ->on('m.article_id', 'articles.id')
-                ->where('m.type', 1)
-                ->where('m.period', $datetime->format('Ym'))
-        );
-        $query->leftJoin(
-            'view_counts as y',
-            fn ($join) => $join
-                ->on('y.article_id', 'articles.id')
-                ->where('y.type', 1)
-                ->where('y.period', $datetime->format('Y'))
-        );
-        $query->leftJoin(
-            'view_counts as t',
-            fn ($join) => $join->on('t.article_id', 'articles.id')
-                ->where('t.type', 1)
-                ->where('t.period', 'total')
-        );
-        $query->orderBy('d.count', 'desc');
-        $query->orderBy('m.count', 'desc');
-        $query->orderBy('y.count', 'desc');
-        $query->orderBy('t.count', 'desc');
+    public function scopeCategory($query, Category $category)
+    {
+        $query->join('article_category', function (JoinClause $join) use ($category) {
+            $join->on('article_category.article_id', '=', 'articles.id')
+                ->where('article_category.category_id', $category->id);
+        });
+    }
+
+    public function scopePakAddonCategory($query, Category $pak, Category $addon)
+    {
+        $query->join('article_category', function (JoinClause $join) use ($pak) {
+            $join->on('article_category.article_id', '=', 'articles.id')
+                ->where('article_category.category_id', $pak->id);
+        });
+        $query->join('article_category', function (JoinClause $join) use ($addon) {
+            $join->on('article_category.article_id', '=', 'articles.id')
+                ->where('article_category.category_id', $addon->id);
+        });
+    }
+
+    public function scopeTag($query, Tag $tag)
+    {
+        $query->join('article_tag', function (JoinClause $join) use ($tag) {
+            $join->on('article_tag.article_id', '=', 'articles.id')
+                ->where('article_tag.tag_id', $tag->id);
+        });
     }
 
     /*

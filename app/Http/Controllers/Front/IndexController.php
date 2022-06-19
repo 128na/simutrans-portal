@@ -33,8 +33,7 @@ class IndexController extends Controller
             '128' => $this->articleRepository->findAllByPak('128', 6),
             '64' => $this->articleRepository->findAllByPak('64', 6),
         ];
-        $excludes = collect($latest)->flatten()->pluck('id')->unique()->toArray();
-        $ranking = $this->articleRepository->findAllRanking($excludes, 6);
+        $ranking = $this->articleRepository->findAllRanking(6);
 
         return [
             'announces' => $announces,

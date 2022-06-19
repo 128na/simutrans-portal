@@ -22,8 +22,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('passport:purge')->hourly();
+        // 毎時
+        $schedule->command('ranking:update')->hourly()
+            ->withoutOverlapping()
+            ->onOneServer();
 
+        // 毎日
         $schedule->command('check:deadlink')->dailyAt('10:00')
             ->withoutOverlapping()
             ->onOneServer();

@@ -11,15 +11,15 @@ use Carbon\CarbonImmutable;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 
 class ArticleRepository extends BaseRepository
 {
-    private const COLUMNS = ['id', 'user_id', 'slug', 'title', 'post_type', 'contents', 'status', 'updated_at', 'created_at'];
-    private const RELATIONS = ['user', 'attachments', 'categories', 'tags', 'tweetLogSummary', 'totalViewCount', 'totalConversionCount'];
-    private const ORDER = ['updated_at', 'desc'];
+    public const MYPAGE_RELATIONS = ['user', 'attachments', 'categories', 'tags', 'tweetLogSummary', 'totalViewCount', 'totalConversionCount'];
+    public const FRONT_RELATIONS = ['user', 'attachments', 'categories', 'tags'];
 
     /**
      * @var Article
@@ -77,30 +77,30 @@ class ArticleRepository extends BaseRepository
     /**
      * ユーザーに紐づくデータを返す.
      */
-    public function findAllByUser(User $user, array $columns = self::COLUMNS, array $relations = self::RELATIONS): Collection
+    public function findAllByUser(User $user, array $relations = self::FRONT_RELATIONS): Collection
     {
         return $user->articles()
-            ->select($columns)
+            ->select(['articles.*'])
             ->with($relations)
             ->get();
     }
 
-    private function basicQuery(array $columns = self::COLUMNS, array $relations = self::RELATIONS, array $order = self::ORDER): Builder
+    private function basicQuery(array $relations = self::FRONT_RELATIONS): Builder
     {
-        return $this->model->select($columns)
+        return $this->model->select(['articles.*'])
             ->active()
             ->withCache()
             ->with($relations)
-            ->orderBy($order[0], $order[1]);
+            ->orderBy('updated_at', 'desc');
     }
 
-    private function basicRelationQuery(Relation $query, array $columns = self::COLUMNS, array $relations = self::RELATIONS, array $order = self::ORDER): Relation
+    private function basicRelationQuery(Relation $query, array $relations = self::FRONT_RELATIONS): Relation
     {
-        return $query->select($columns)
+        return $query->select(['articles.*'])
             ->active()
             ->withCache()
             ->with($relations)
-            ->orderBy($order[0], $order[1]);
+            ->orderBy('updated_at', 'desc');
     }
 
     private function queryAnnouces(): Builder
@@ -162,28 +162,28 @@ class ArticleRepository extends BaseRepository
         return $this->queryByPak($pak)->limit($limit)->get();
     }
 
-    private function queryRanking(array $excludes = []): Builder
+    private function queryRanking(): Builder
     {
-        return $this->basicQuery()
-            ->addon()
-            ->ranking()
-            ->whereNotIn('articles.id', $excludes);
+        return $this->model->select(['articles.*'])
+            ->active()
+            ->with(self::FRONT_RELATIONS)
+            ->rankingOrder();
     }
 
     /**
      * アドオン投稿/紹介のデイリーPVランキング.
      */
-    public function findAllRanking(array $excludes = [], ?int $limit = null): Collection
+    public function findAllRanking(?int $limit = null): Collection
     {
-        return $this->queryRanking($excludes)->limit($limit)->get();
+        return $this->queryRanking()->limit($limit)->get();
     }
 
     /**
      * アドオン投稿/紹介のデイリーPVランキング.
      */
-    public function paginateRanking(array $excludes = [], ?int $limit = null): LengthAwarePaginator
+    public function paginateRanking(?int $limit = null): LengthAwarePaginator
     {
-        return $this->queryRanking($excludes)->paginate($limit);
+        return $this->queryRanking()->paginate($limit);
     }
 
     private function queryAddon(): Builder
@@ -366,7 +366,7 @@ class ArticleRepository extends BaseRepository
         string $order = 'updated_at',
         string $direction = 'desc'
     ): Builder {
-        $q = $this->basicQuery(self::COLUMNS, self::RELATIONS, [$order, $direction]);
+        $q = $this->basicQuery(self::FRONT_RELATIONS, [$order, $direction]);
 
         if ($word) {
             $this->advancedSearchQueryBuilder->addWordSearch($q, $word);
@@ -425,5 +425,40 @@ class ArticleRepository extends BaseRepository
     public function findByTitles(array $titles): Collection
     {
         return $this->model->active()->whereIn('title', $titles)->get();
+    }
+
+    /**
+     * @return LazyCollection<Article>
+     */
+    public function fetchAggregatedRanking(CarbonImmutable $datetime): LazyCollection
+    {
+        return $this->model
+            ->select('articles.*')
+            ->addon()
+            ->leftJoin('view_counts as d', fn (JoinClause $join) => $join
+                ->on('d.article_id', 'articles.id')
+                ->where('d.type', 1)
+                ->where('d.period', $datetime->format('Ymd'))
+            )
+            ->leftJoin('view_counts as m', fn (JoinClause $join) => $join
+                ->on('m.article_id', 'articles.id')
+                ->where('m.type', 2)
+                ->where('m.period', $datetime->format('Ym'))
+            )
+            ->leftJoin('view_counts as y', fn (JoinClause $join) => $join
+                ->on('y.article_id', 'articles.id')
+                ->where('y.type', 3)
+                ->where('y.period', $datetime->format('Y'))
+            )
+            ->leftJoin('view_counts as t', fn (JoinClause $join) => $join
+                ->on('t.article_id', 'articles.id')
+                ->where('t.type', 4)
+                ->where('t.period', 'total')
+            )
+            ->orderBy('d.count', 'desc')
+            ->orderBy('m.count', 'desc')
+            ->orderBy('y.count', 'desc')
+            ->orderBy('t.count', 'desc')
+            ->cursor();
     }
 }

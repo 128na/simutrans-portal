@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Repositories\ArticleRepository;
 
+use App\Models\Article\Ranking;
 use App\Repositories\ArticleRepository;
 use Illuminate\Support\Collection;
 use Tests\ArticleTestCase;
@@ -14,12 +15,13 @@ class FindAllRankingTest extends ArticleTestCase
     {
         parent::setUp();
         $this->repository = app(ArticleRepository::class);
+        Ranking::create(['rank' => 1, 'article_id' => $this->article->id]);
     }
 
     public function test()
     {
         $this->createPage();
-        $res = $this->repository->findAllRanking([$this->article2->id]);
+        $res = $this->repository->findAllRanking();
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(1, $res->count(), '除外記事を除いた記事のみ取得出来ること');
@@ -31,7 +33,7 @@ class FindAllRankingTest extends ArticleTestCase
         $res = $this->repository->findAllRanking();
 
         $this->assertInstanceOf(Collection::class, $res);
-        $this->assertEquals(1, $res->count(), '非公開記事は取得できないこと');
+        $this->assertEquals(0, $res->count(), '非公開記事は取得できないこと');
     }
 
     public function test論理削除()
@@ -40,6 +42,6 @@ class FindAllRankingTest extends ArticleTestCase
         $res = $this->repository->findAllRanking();
 
         $this->assertInstanceOf(Collection::class, $res);
-        $this->assertEquals(1, $res->count(), '削除済み記事は取得できないこと');
+        $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');
     }
 }

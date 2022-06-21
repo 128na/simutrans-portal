@@ -47,4 +47,17 @@ class AttachmentRepository extends BaseRepository
     {
         return $this->model->select('path')->cursor();
     }
+
+    /**
+     * @return LazyCollection<Attachment>
+     */
+    public function cursorNeedUpdateFileInfoAttachment(): LazyCollection
+    {
+        return $this->model
+            ->select('attachments.*')
+            ->leftJoin('file_infos', 'file_infos.attachment_id', '=', 'attachments.id')
+            ->whereNull('file_infos.id')
+            ->where('attachments.path', 'like', '%.zip')
+            ->cursor();
+    }
 }

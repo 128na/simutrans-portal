@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Attachment\FileInfo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Storage;
 
@@ -55,6 +57,11 @@ class Attachment extends Model
     public function attachmentable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function fileInfo(): HasOne
+    {
+        return $this->hasOne(FileInfo::class);
     }
 
     /*

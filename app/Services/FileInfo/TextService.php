@@ -16,13 +16,14 @@ class TextService extends Service
 
     public function encoding(string $text): string
     {
-        $text = mb_convert_encoding(trim($text), 'UTF-8');
-        $result = json_encode([$text]);
+        $enc = mb_detect_encoding($text, ['SJIS', 'EUC-JP', 'UTF-8']);
+        $encoded = mb_convert_encoding(trim($text), 'UTF-8', $enc);
+        $result = json_encode([$encoded]);
 
         if ($result === false) {
             throw new InvalidEncodingException($text);
         }
 
-        return $text;
+        return $encoded;
     }
 }

@@ -11,6 +11,7 @@ use App\Services\BulkZip\Decorators\AddonPostDecorator;
 use App\Services\BulkZip\ZipManager;
 use App\Services\FileInfo\Extractors\DatExtractor;
 use App\Services\FileInfo\Extractors\PakExtractor;
+use App\Services\FileInfo\Extractors\ReadmeExtractor;
 use App\Services\FileInfo\Extractors\TabExtractor;
 use App\Services\FileInfo\ZipArchiveParser;
 use App\Services\MarkdownService;
@@ -69,6 +70,7 @@ class AppServiceProvider extends ServiceProvider
                     $this->app->make(DatExtractor::class),
                     $this->app->make(TabExtractor::class),
                     $this->app->make(PakExtractor::class),
+                    $this->app->make(ReadmeExtractor::class),
                 ]
             );
         });

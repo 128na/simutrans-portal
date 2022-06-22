@@ -13,6 +13,7 @@ use App\Services\FileInfo\Extractors\DatExtractor;
 use App\Services\FileInfo\Extractors\PakExtractor;
 use App\Services\FileInfo\Extractors\ReadmeExtractor;
 use App\Services\FileInfo\Extractors\TabExtractor;
+use App\Services\FileInfo\TextService;
 use App\Services\FileInfo\ZipArchiveParser;
 use App\Services\MarkdownService;
 use Carbon\CarbonImmutable;
@@ -66,6 +67,7 @@ class AppServiceProvider extends ServiceProvider
                 $this->app->make(AttachmentRepository::class),
                 $this->app->make(FileInfoRepository::class),
                 $this->app->make(ZipArchiveParser::class),
+                $this->app->make(TextService::class),
                 [
                     $this->app->make(DatExtractor::class),
                     $this->app->make(TabExtractor::class),

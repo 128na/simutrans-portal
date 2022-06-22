@@ -5,6 +5,11 @@ namespace App\Services\FileInfo\Extractors;
 interface Extractor
 {
     /**
+     * テキストか.
+     */
+    public function isText(): bool;
+
+    /**
      * 保存キー
      */
     public function getKey(): string;

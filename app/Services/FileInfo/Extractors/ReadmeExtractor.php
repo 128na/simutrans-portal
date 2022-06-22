@@ -2,14 +2,13 @@
 
 namespace App\Services\FileInfo\Extractors;
 
-use App\Services\FileInfo\TextService;
 use App\Services\Service;
 
 class ReadmeExtractor extends Service implements Extractor
 {
-    public function __construct(
-        private TextService $textService
-    ) {
+    public function isText(): bool
+    {
+        return true;
     }
 
     public function getKey(): string
@@ -29,6 +28,6 @@ class ReadmeExtractor extends Service implements Extractor
      */
     public function extract(string $text): array
     {
-        return [$this->textService->encoding($text)];
+        return [$text];
     }
 }

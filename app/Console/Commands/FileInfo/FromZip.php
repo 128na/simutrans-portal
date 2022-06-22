@@ -6,6 +6,7 @@ use App\Repositories\Attachment\FileInfoRepository;
 use App\Repositories\AttachmentRepository;
 use App\Services\FileInfo\Extractors\Extractor;
 use App\Services\FileInfo\InvalidEncodingException;
+use App\Services\FileInfo\TextService;
 use App\Services\FileInfo\ZipArchiveParser;
 use Illuminate\Console\Command;
 use Throwable;
@@ -23,6 +24,7 @@ class FromZip extends Command
         private AttachmentRepository $attachmentRepository,
         private FileInfoRepository $fileInfoRepository,
         private ZipArchiveParser $zipArchiveParser,
+        private TextService $textService,
         private array $extractors,
     ) {
         parent::__construct();
@@ -37,8 +39,12 @@ class FromZip extends Command
                 $contentCursor = $this->zipArchiveParser->parseTextContent($attachment);
                 $data = [];
                 foreach ($contentCursor as $filename => $text) {
+                    $filename = $this->handleText($filename);
                     foreach ($this->extractors as $extractor) {
                         if ($extractor->isTarget($filename)) {
+                            if ($extractor->isText()) {
+                                $text = $this->handleText($text);
+                            }
                             $data[$extractor->getKey()][$filename] = $extractor->extract($text);
                         }
                     }
@@ -54,5 +60,13 @@ class FromZip extends Command
         }
 
         return 0;
+    }
+
+    private function handleText(string $text): string
+    {
+        $text = $this->textService->encoding($text);
+        $text = $this->textService->removeBom($text);
+
+        return $text;
     }
 }

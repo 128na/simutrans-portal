@@ -16,7 +16,7 @@ class TextService extends Service
 
     public function encoding(string $text): string
     {
-        $enc = mb_detect_encoding($text, ['SJIS', 'EUC-JP', 'UTF-8']);
+        $enc = mb_detect_encoding($text, ['UTF-8', 'SJIS', 'EUC-JP']) ?: null;
         $encoded = mb_convert_encoding(trim($text), 'UTF-8', $enc);
         $result = json_encode([$encoded]);
 

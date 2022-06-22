@@ -2,14 +2,13 @@
 
 namespace App\Services\FileInfo\Extractors;
 
-use App\Services\FileInfo\TextService;
 use App\Services\Service;
 
 class DatExtractor extends Service implements Extractor
 {
-    public function __construct(
-        private TextService $textService
-    ) {
+    public function isText(): bool
+    {
+        return true;
     }
 
     public function getKey(): string
@@ -29,11 +28,10 @@ class DatExtractor extends Service implements Extractor
      */
     public function extract(string $dat): array
     {
-        $dat = $this->textService->removeBom($dat);
         preg_match_all('/[\s^]name\=(.*)\s/i', $dat, $matches);
 
         return array_map(function ($text) {
-            return $this->textService->encoding($text);
+            return $text;
         }, $matches[1] ?? []);
     }
 }

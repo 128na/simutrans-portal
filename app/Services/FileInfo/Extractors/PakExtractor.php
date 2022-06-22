@@ -6,8 +6,9 @@ use App\Services\Service;
 
 class PakExtractor extends Service implements Extractor
 {
-    public function __construct()
+    public function isText(): bool
     {
+        return false;
     }
 
     public function getKey(): string

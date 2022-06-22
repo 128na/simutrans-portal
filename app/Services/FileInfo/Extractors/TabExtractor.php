@@ -2,14 +2,13 @@
 
 namespace App\Services\FileInfo\Extractors;
 
-use App\Services\FileInfo\TextService;
 use App\Services\Service;
 
 class TabExtractor extends Service implements Extractor
 {
-    public function __construct(
-        private TextService $textService
-    ) {
+    public function isText(): bool
+    {
+        return true;
     }
 
     public function getKey(): string
@@ -29,7 +28,6 @@ class TabExtractor extends Service implements Extractor
      */
     public function extract(string $tab): array
     {
-        $tab = $this->textService->removeBom($tab);
         $tabs = explode("\n", str_replace(["\r\n", "\r"], "\n", $tab));
 
         $translate = [];
@@ -37,8 +35,6 @@ class TabExtractor extends Service implements Extractor
         /** @var string|null */
         $line = null;
         foreach ($tabs as $text) {
-            $text = $this->textService->encoding($text);
-
             if (str_starts_with($text, '§') || str_starts_with($text, '#')) {
                 continue;
             }

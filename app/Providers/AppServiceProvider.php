@@ -2,10 +2,17 @@
 
 namespace App\Providers;
 
+use App\Console\Commands\FileInfo\FromZip;
 use App\Models\User;
+use App\Repositories\Attachment\FileInfoRepository;
+use App\Repositories\AttachmentRepository;
 use App\Services\BulkZip\Decorators\AddonIntroductionDecorator;
 use App\Services\BulkZip\Decorators\AddonPostDecorator;
 use App\Services\BulkZip\ZipManager;
+use App\Services\FileInfo\Extractors\DatExtractor;
+use App\Services\FileInfo\Extractors\PakExtractor;
+use App\Services\FileInfo\Extractors\TabExtractor;
+use App\Services\FileInfo\ZipArchiveParser;
 use App\Services\MarkdownService;
 use Carbon\CarbonImmutable;
 use HTMLPurifier;
@@ -49,6 +56,19 @@ class AppServiceProvider extends ServiceProvider
                 [
                     $app->make(AddonPostDecorator::class),
                     $app->make(AddonIntroductionDecorator::class),
+                ]
+            );
+        });
+
+        $this->app->bind(FromZip::class, function ($app) {
+            return new FromZip(
+                $this->app->make(AttachmentRepository::class),
+                $this->app->make(FileInfoRepository::class),
+                $this->app->make(ZipArchiveParser::class),
+                [
+                    $this->app->make(DatExtractor::class),
+                    $this->app->make(TabExtractor::class),
+                    $this->app->make(PakExtractor::class),
                 ]
             );
         });

@@ -80,7 +80,7 @@ class ArticleController extends Controller
 
         $isOwner = Auth::check() && Auth::user()->can('update', $article);
 
-        $contents = ['article' => $this->articleRepository->loadArticle($article, $isOwner)];
+        $contents = ['article' => $this->articleRepository->loadArticle($article)];
 
         if (!$isOwner) {
             event(new ArticleShown($article));

@@ -30,6 +30,13 @@
         <dt>ライセンス</dt>
         <dd>{{ $article->contents->license }}</dd>
     @endif
+
+    @if ($article->hasFileInfo)
+        <dt class="mb-2">ファイル情報</dt>
+        <dd>
+            @include('front.articles.parts.fileinfo', ['fileInfo' => $article->file->fileInfo])
+        </dd>
+    @endif
     <dt class="mb-2">ダウンロード</dt>
     <dd>
         <a class="btn btn-lg btn-primary js-download" href="{{ route('articles.download', $article) }}">ダウンロードする</a>

@@ -300,6 +300,11 @@ class Article extends Model implements Feedable
         return $this->attachments->first(fn ($attachment) => (string) $id == $attachment->id);
     }
 
+    public function getHasFileInfoAttribute()
+    {
+        return $this->hasFile && $this->file->fileInfo;
+    }
+
     public function getCategoryPaksAttribute()
     {
         return $this->categories->filter(fn ($category) => $category->type === config('category.type.pak'));

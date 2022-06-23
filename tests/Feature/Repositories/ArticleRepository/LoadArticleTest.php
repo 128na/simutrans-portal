@@ -22,11 +22,4 @@ class LoadArticleTest extends ArticleTestCase
 
         $this->assertInstanceOf(Article::class, $res);
     }
-
-    public function testWithCount()
-    {
-        $res = $this->repository->loadArticle($this->article, true);
-
-        $this->assertInstanceOf(Article::class, $res);
-    }
 }

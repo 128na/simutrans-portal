@@ -1,4 +1,3 @@
-{{ logger('data', $fileInfo->data) }}
 @isset($fileInfo->data['dats'])
     <div>
         <a data-toggle="collapse" href="#datInfo" aria-expanded="false">
@@ -6,7 +5,7 @@
         </a>
     </div>
     <div class="collapse" id="datInfo">
-        <div class="card card-body">
+        <div class="card card-body bg-light">
             @foreach ($fileInfo->data['dats'] as $filename => $names)
                 <li><span>{{ $filename }}</span>
                     <ul>
@@ -26,7 +25,7 @@
         </a>
     </div>
     <div class="collapse" id="pakInfo">
-        <div class="card card-body">
+        <div class="card card-body bg-light">
             @foreach ($fileInfo->data['paks'] as $filename => $names)
                 <li><span>{{ $filename }}</span>
                     <ul>
@@ -46,7 +45,7 @@
         </a>
     </div>
     <div class="collapse" id="tabInfo">
-        <div class="card card-body">
+        <div class="card card-body bg-light">
             @foreach ($fileInfo->data['tabs'] as $filename => $names)
                 <li><span>{{ $filename }}</span>
                     <ul>

@@ -32,7 +32,7 @@
     @endif
 
     @if ($article->hasFileInfo)
-        <dt class="mb-2">ファイル情報</dt>
+        <dt class="mb-2">添付ファイル情報（ベータ版機能）</dt>
         <dd>
             @include('front.articles.parts.fileinfo', ['fileInfo' => $article->file->fileInfo])
         </dd>

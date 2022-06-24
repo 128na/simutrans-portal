@@ -34,7 +34,7 @@ class AttachmentRepository extends BaseRepository
             ->get();
     }
 
-    public function createFromFile(User $user, UploadedFile $file)
+    public function createFromFile(User $user, UploadedFile $file): Attachment
     {
         return $this->model->create([
             'user_id' => $user->id,
@@ -55,8 +55,6 @@ class AttachmentRepository extends BaseRepository
     {
         return $this->model
             ->select('attachments.*')
-            ->leftJoin('file_infos', 'file_infos.attachment_id', '=', 'attachments.id')
-            ->whereNull('file_infos.id')
             ->where('attachments.path', 'like', '%.zip')
             ->cursor();
     }
@@ -68,8 +66,6 @@ class AttachmentRepository extends BaseRepository
     {
         return $this->model
             ->select('attachments.*')
-            ->leftJoin('file_infos', 'file_infos.attachment_id', '=', 'attachments.id')
-            ->whereNull('file_infos.id')
             ->where('attachments.original_name', 'like', '%.pak')
             ->cursor();
     }

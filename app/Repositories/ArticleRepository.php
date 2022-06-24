@@ -360,7 +360,11 @@ class ArticleRepository extends BaseRepository
         string $order = 'updated_at',
         string $direction = 'desc'
     ): Builder {
-        $q = $this->basicQuery(self::FRONT_RELATIONS, [$order, $direction]);
+        $q = $this->model->select(['articles.*'])
+            ->active()
+            ->withCache()
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy($order, $direction);
 
         if ($word) {
             $this->advancedSearchQueryBuilder->addWordSearch($q, $word);

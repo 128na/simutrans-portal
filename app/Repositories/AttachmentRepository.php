@@ -31,6 +31,7 @@ class AttachmentRepository extends BaseRepository
     {
         return $user->myAttachments()
             ->select('id', 'original_name', 'path', 'attachmentable_id', 'attachmentable_type')
+            ->with('fileInfo')
             ->get();
     }
 

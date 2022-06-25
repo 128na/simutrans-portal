@@ -32,7 +32,7 @@ class AttachmentController extends Controller
 
         $attachment = $this->attachmentRepository->createFromFile(Auth::user(), $request->file);
 
-        UpdateFileInfo::dispatchAfterResponse($attachment);
+        UpdateFileInfo::dispatchSync($attachment);
 
         return $this->index();
     }

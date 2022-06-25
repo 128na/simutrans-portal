@@ -24,6 +24,8 @@ class Attachments extends ResourceCollection
                 'original_name' => $item->original_name,
                 'thumbnail' => $item->thumbnail,
                 'url' => $item->url,
+                'readmes' => $this->when($item->fileInfo && isset($item->fileInfo->data['readmes']), fn () => $item
+                    ->fileInfo->data['readmes']),
             ];
         });
     }

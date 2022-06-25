@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Controllers\Api\v2\Mypage;
 
+use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Queue;
 use Tests\ArticleTestCase;
 
 class AttachmentControllerTest extends ArticleTestCase
@@ -65,11 +67,14 @@ class AttachmentControllerTest extends ArticleTestCase
 
         $data = Closure::bind($data, $this)();
 
+        Queue::fake();
         $res = $this->postJson($url, $data);
         if (is_null($error_field)) {
             $res->assertOK();
+            Queue::assertPushed(UpdateFileInfo::class);
         } else {
             $res->assertJsonValidationErrors($error_field);
+            Queue::assertNotPushed(UpdateFileInfo::class);
         }
     }
 

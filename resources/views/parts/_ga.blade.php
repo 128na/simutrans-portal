@@ -12,7 +12,7 @@
         debug_mode: {{ \App::environment('production') ? 'false' : 'true' }}
     });
 
-    @isset($gtag)
+    @if (\App::environment('production') && isset($gtag))
         gtag('config', '{{ $gtag }}');
-    @endisset
+    @endif
 </script>

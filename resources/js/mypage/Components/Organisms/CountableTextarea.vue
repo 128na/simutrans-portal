@@ -37,7 +37,7 @@ export default {
   },
   computed: {
     currentLength() {
-      return this.value.length;
+      return this.value ? this.value.length : 0;
     },
     isLimit() {
       if (this.maxLength) {

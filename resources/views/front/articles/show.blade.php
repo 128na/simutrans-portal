@@ -22,13 +22,6 @@
                 投稿日時: <span>{{ $article->created_at->format('Y/m/d H:i') }}</span>,
                 最終更新: <span>{{ $article->updated_at->format('Y/m/d H:i') }}</span>
             </div>
-            @can('update', $article)
-                <div>
-                    PV: <span>{{ $article->totalViewCount->count ?? 'N/A' }}</span>,
-                    CV: <span>{{ $article->totalConversionCount->count ?? 'N/A' }}</span>
-                    <a href="{{ route('mypage.index', ["#/edit/{$article->id}"]) }}" class="text-primary">記事を編集</a>
-                </div>
-            @endcan
         </footer>
     </article>
     <script type="application/ld+json">

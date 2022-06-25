@@ -3,9 +3,18 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Repositories\Attachment\FileInfoRepository;
+use App\Repositories\AttachmentRepository;
 use App\Services\BulkZip\Decorators\AddonIntroductionDecorator;
 use App\Services\BulkZip\Decorators\AddonPostDecorator;
 use App\Services\BulkZip\ZipManager;
+use App\Services\FileInfo\Extractors\DatExtractor;
+use App\Services\FileInfo\Extractors\PakExtractor;
+use App\Services\FileInfo\Extractors\ReadmeExtractor;
+use App\Services\FileInfo\Extractors\TabExtractor;
+use App\Services\FileInfo\FileInfoService;
+use App\Services\FileInfo\TextService;
+use App\Services\FileInfo\ZipArchiveParser;
 use App\Services\MarkdownService;
 use Carbon\CarbonImmutable;
 use HTMLPurifier;
@@ -25,6 +34,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind(ReadmeExtractor::class, function ($app) {
+            $config = HTMLPurifier_Config::createDefault();
+            $config->set('HTML.AllowedElements', []);
+
+            return new ReadmeExtractor(new HTMLPurifier($config));
+        });
+
         $this->app->bind(HTMLPurifier::class, function ($app) {
             $config = HTMLPurifier_Config::createDefault();
             $config->set('HTML.AllowedElements', [
@@ -49,6 +65,21 @@ class AppServiceProvider extends ServiceProvider
                 [
                     $app->make(AddonPostDecorator::class),
                     $app->make(AddonIntroductionDecorator::class),
+                ]
+            );
+        });
+
+        $this->app->bind(FileInfoService::class, function ($app) {
+            return new FileInfoService(
+                $this->app->make(AttachmentRepository::class),
+                $this->app->make(FileInfoRepository::class),
+                $this->app->make(ZipArchiveParser::class),
+                $this->app->make(TextService::class),
+                [
+                    $this->app->make(DatExtractor::class),
+                    $this->app->make(TabExtractor::class),
+                    $this->app->make(PakExtractor::class),
+                    $this->app->make(ReadmeExtractor::class),
                 ]
             );
         });

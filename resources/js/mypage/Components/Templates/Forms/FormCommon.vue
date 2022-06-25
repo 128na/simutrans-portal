@@ -14,7 +14,7 @@
         <b-input-group-append>
           <b-button @click="handleSlug">
             <b-icon icon="arrow-down" />
-            タイトルをパーマリンクにコピー
+            コピー
           </b-button>
         </b-input-group-append>
       </b-input-group>

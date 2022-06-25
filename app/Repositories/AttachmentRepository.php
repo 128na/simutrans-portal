@@ -31,10 +31,11 @@ class AttachmentRepository extends BaseRepository
     {
         return $user->myAttachments()
             ->select('id', 'original_name', 'path', 'attachmentable_id', 'attachmentable_type')
+            ->with('fileInfo')
             ->get();
     }
 
-    public function createFromFile(User $user, UploadedFile $file)
+    public function createFromFile(User $user, UploadedFile $file): Attachment
     {
         return $this->model->create([
             'user_id' => $user->id,
@@ -46,5 +47,27 @@ class AttachmentRepository extends BaseRepository
     public function cursorCheckCompress(): LazyCollection
     {
         return $this->model->select('path')->cursor();
+    }
+
+    /**
+     * @return LazyCollection<Attachment>
+     */
+    public function cursorZipFileAttachment(): LazyCollection
+    {
+        return $this->model
+            ->select('attachments.*')
+            ->where('attachments.path', 'like', '%.zip')
+            ->cursor();
+    }
+
+    /**
+     * @return LazyCollection<Attachment>
+     */
+    public function cursorPakFileAttachment(): LazyCollection
+    {
+        return $this->model
+            ->select('attachments.*')
+            ->where('attachments.original_name', 'like', '%.pak')
+            ->cursor();
     }
 }

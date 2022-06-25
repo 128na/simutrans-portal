@@ -18,8 +18,9 @@ use Illuminate\Support\LazyCollection;
 
 class ArticleRepository extends BaseRepository
 {
-    public const MYPAGE_RELATIONS = ['user', 'attachments', 'categories', 'tags', 'tweetLogSummary', 'totalViewCount', 'totalConversionCount'];
+    public const MYPAGE_RELATIONS = ['user', 'attachments.fileInfo', 'categories', 'tags', 'tweetLogSummary', 'totalViewCount', 'totalConversionCount'];
     public const FRONT_RELATIONS = ['user', 'attachments', 'categories', 'tags'];
+    public const SHOW_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags'];
 
     /**
      * @var Article
@@ -268,8 +269,18 @@ class ArticleRepository extends BaseRepository
 
     private function queryBySearch(string $word): Builder
     {
-        return $this->basicQuery()
-            ->search($word)
+        $word = trim($word);
+        $likeWord = "%{$word}%";
+
+        return $this->model->select(['articles.*'])
+            ->active()
+            ->withCache()
+            ->where(fn ($q) => $q
+                ->orWhere('title', 'LIKE', $likeWord)
+                ->orWhere('contents', 'LIKE', $likeWord)
+                ->orWhereHas('attachments.fileInfo', fn ($q) => $q
+                    ->where('data', 'LIKE', $likeWord)))
+            ->with(self::FRONT_RELATIONS)
             ->orderBy('updated_at', 'desc');
     }
 
@@ -305,17 +316,9 @@ class ArticleRepository extends BaseRepository
     /**
      * 記事表示.
      */
-    public function loadArticle(Article $article, bool $withCount = false): Article
+    public function loadArticle(Article $article): Article
     {
-        $relations = $withCount ? [
-            'user:id,name', 'attachments:id,attachmentable_id,attachmentable_type,path', 'categories:id,type,slug', 'tags:id,name',
-            'totalViewCount:article_id,count', 'totalConversionCount:article_id,count',
-        ] : [
-            'user:id,name', 'attachments:id,attachmentable_id,attachmentable_type,path', 'categories:id,type,slug', 'tags:id,name',
-            'user.profile:user_id,data',
-        ];
-
-        return $this->load($article, $relations);
+        return $this->load($article, self::SHOW_RELATIONS);
     }
 
     /**
@@ -367,7 +370,11 @@ class ArticleRepository extends BaseRepository
         string $order = 'updated_at',
         string $direction = 'desc'
     ): Builder {
-        $q = $this->basicQuery(self::FRONT_RELATIONS, [$order, $direction]);
+        $q = $this->model->select(['articles.*'])
+            ->active()
+            ->withCache()
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy($order, $direction);
 
         if ($word) {
             $this->advancedSearchQueryBuilder->addWordSearch($q, $word);

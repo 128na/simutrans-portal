@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Jobs\Attachments;
+
+use App\Models\Attachment;
+use App\Services\FileInfo\FileInfoService;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+
+class UpdateFileInfo implements ShouldQueue
+{
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
+
+    public function __construct(private Attachment $attachment)
+    {
+    }
+
+    public function handle(FileInfoService $fileInfoService)
+    {
+        if (str_ends_with($this->attachment->original_name, 'zip')) {
+            $fileInfoService->updateOrCreateFromZip($this->attachment);
+        }
+        if (str_ends_with($this->attachment->original_name, 'pak')) {
+            $fileInfoService->updateOrCreateFromPak($this->attachment);
+        }
+    }
+}

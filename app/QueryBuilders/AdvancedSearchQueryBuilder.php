@@ -15,12 +15,17 @@ class AdvancedSearchQueryBuilder
     public function addWordSearch(Builder $query, string $word): void
     {
         $query->where(function ($q) use ($word) {
-            $contents = new FullTextSearchQueryLike('contents');
-            $title = new FullTextSearchQueryLike('title');
-            if ($title->parse($word) && $contents->parse($word)) {
-                $q->whereRaw($title->get_formatted_query());
-                $q->orWhereRaw($contents->get_formatted_query());
+            $title = new FullTextSearchQueryLike('articles.title');
+            $contents = new FullTextSearchQueryLike('articles.contents');
+            $fileInfo = new FullTextSearchQueryLike('file_infos.data');
+            if (!$title->parse($word) || !$contents->parse($word) || !$fileInfo->parse($word)) {
+                return;
             }
+            $q->where(fn ($q) => $q
+                ->orWhere(fn ($q) => $q->whereRaw($title->get_formatted_query()))
+                ->orWhere(fn ($q) => $q->whereRaw($contents->get_formatted_query()))
+                ->orWhereHas('attachments.fileInfo', fn ($q) => $q
+                    ->whereRaw($fileInfo->get_formatted_query())));
         });
     }
 

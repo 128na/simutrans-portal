@@ -31,6 +31,15 @@
         <badge-required />
         説明
       </template>
+      <div v-show="fileSelected">
+        <b-button
+          :disabled="!hasReadme"
+          @click="handleReadme"
+          size="sm"
+          variant="outline-secondary"
+          >Zipファイル内のreadmeからコピー</b-button
+        >
+      </div>
       <countable-textarea
         v-model="article.contents.description"
         :state="validationState('article.contents.description')"
@@ -59,7 +68,30 @@ import { mapGetters } from 'vuex';
 export default {
   props: ['article'],
   computed: {
-    ...mapGetters(['validationState'])
+    ...mapGetters(['validationState', 'findAttachment']),
+    fileSelected() {
+      return this.article.contents.file;
+    },
+    hasReadme() {
+      return (
+        this.fileSelected && this.findAttachment(this.article.contents.file)?.readmes
+      );
+    }
+  },
+  methods: {
+    handleReadme() {
+      const readmes = this.findAttachment(this.article.contents.file).readmes;
+
+      const text = [];
+
+      for (const filename in readmes) {
+        if (Object.hasOwnProperty.call(readmes, filename)) {
+          text.push(`#${filename}\n${readmes[filename].join('')}`);
+        }
+      }
+
+      this.article.contents.description += text.join('\n------\n');
+    }
   }
 };
 </script>

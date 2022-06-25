@@ -34,6 +34,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind(ReadmeExtractor::class, function ($app) {
+            $config = HTMLPurifier_Config::createDefault();
+            $config->set('HTML.AllowedElements', []);
+
+            return new ReadmeExtractor(new HTMLPurifier($config));
+        });
+
         $this->app->bind(HTMLPurifier::class, function ($app) {
             $config = HTMLPurifier_Config::createDefault();
             $config->set('HTML.AllowedElements', [

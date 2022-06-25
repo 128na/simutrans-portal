@@ -3,9 +3,14 @@
 namespace App\Services\FileInfo\Extractors;
 
 use App\Services\Service;
+use HTMLPurifier;
 
 class ReadmeExtractor extends Service implements Extractor
 {
+    public function __construct(private HTMLPurifier $purifier)
+    {
+    }
+
     public function isText(): bool
     {
         return true;
@@ -28,6 +33,6 @@ class ReadmeExtractor extends Service implements Extractor
      */
     public function extract(string $text): array
     {
-        return [$text];
+        return [$this->purifier->purify($text)];
     }
 }

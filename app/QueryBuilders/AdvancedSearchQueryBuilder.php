@@ -25,9 +25,7 @@ class AdvancedSearchQueryBuilder
                 ->orWhere(fn ($q) => $q->whereRaw($title->get_formatted_query()))
                 ->orWhere(fn ($q) => $q->whereRaw($contents->get_formatted_query()))
                 ->orWhereHas('attachments.fileInfo', fn ($q) => $q
-                    ->whereRaw($fileInfo->get_formatted_query())
-                )
-            );
+                    ->whereRaw($fileInfo->get_formatted_query())));
         });
     }
 

@@ -279,9 +279,7 @@ class ArticleRepository extends BaseRepository
                 ->orWhere('title', 'LIKE', $likeWord)
                 ->orWhere('contents', 'LIKE', $likeWord)
                 ->orWhereHas('attachments.fileInfo', fn ($q) => $q
-                    ->where('data', 'LIKE', $likeWord)
-                )
-            )
+                    ->where('data', 'LIKE', $likeWord)))
             ->with(self::FRONT_RELATIONS)
             ->orderBy('updated_at', 'desc');
     }

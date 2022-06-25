@@ -269,8 +269,20 @@ class ArticleRepository extends BaseRepository
 
     private function queryBySearch(string $word): Builder
     {
-        return $this->basicQuery()
-            ->search($word)
+        $word = trim($word);
+        $likeWord = "%{$word}%";
+
+        return $this->model->select(['articles.*'])
+            ->active()
+            ->withCache()
+            ->where(fn ($q) => $q
+                ->orWhere('title', 'LIKE', $likeWord)
+                ->orWhere('contents', 'LIKE', $likeWord)
+                ->orWhereHas('attachments.fileInfo', fn ($q) => $q
+                    ->where('data', 'LIKE', $likeWord)
+                )
+            )
+            ->with(self::FRONT_RELATIONS)
             ->orderBy('updated_at', 'desc');
     }
 

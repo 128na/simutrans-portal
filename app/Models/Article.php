@@ -180,15 +180,6 @@ class Article extends Model implements Feedable
         return $query->where('status', config('status.publish'));
     }
 
-    public function scopeSearch($query, $word)
-    {
-        $word = trim($word);
-        $like_word = "%{$word}%";
-
-        return $query->where('title', 'LIKE', $like_word)
-            ->orWhere('contents', 'LIKE', $like_word);
-    }
-
     public function scopeAddon($query)
     {
         $query->whereIn('post_type', ['addon-post', 'addon-introduction']);

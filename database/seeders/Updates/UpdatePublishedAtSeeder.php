@@ -6,12 +6,12 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * 追加したpublished_atにupdated_atの値を登録する.
+ * 追加したpublished_at, modified_atにcreated_at, updated_atの値を登録する.
  */
 class UpdatePublishedAtSeeder extends Seeder
 {
     public function run()
     {
-        DB::statement('UPDATE articles SET published_at = updated_at');
+        DB::statement('UPDATE articles SET published_at = created_at, modified_at = updated_at');
     }
 }

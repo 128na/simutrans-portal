@@ -10,14 +10,15 @@ class UpdateRequest extends BaseRequest
 {
     protected function baseRule()
     {
-        $article_id = request()->input('article.id');
+        $articleId = request()->input('article.id');
 
         return [
             'article.status' => ['required', Rule::in(config('status'))],
-            'article.title' => ['required', "unique:articles,title,{$article_id}", 'max:255', new NgWordRule(User::TITLE_NG_WORDS)],
-            'article.slug' => "required|unique:articles,slug,{$article_id}|max:255",
-            'should_tweet' => 'nullable',
+            'article.title' => ['required', "unique:articles,title,{$articleId}", 'max:255', new NgWordRule(User::TITLE_NG_WORDS)],
+            'article.slug' => "required|unique:articles,slug,{$articleId}|max:255",
+            'should_tweet' => 'nullable|boolean',
             'preview' => 'nullable',
+            'without_update_modified_at' => 'nullable|boolean',
         ];
     }
 }

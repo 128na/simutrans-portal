@@ -51,6 +51,8 @@ class ArticleFactory extends Factory
             'contents' => $contents[$post_type],
             'post_type' => $post_type,
             'status' => $this->faker->randomElement(config('status')),
+            'published_at' => now(),
+            'modified_at' => now(),
         ];
     }
 

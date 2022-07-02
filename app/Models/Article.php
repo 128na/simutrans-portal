@@ -38,9 +38,13 @@ class Article extends Model implements Feedable
         'post_type',
         'contents',
         'status',
+        'published_at',
+        'modified_at',
     ];
     protected $casts = [
         'contents' => ToArticleContents::class,
+        'published_at' => 'immutable_datetime',
+        'modified_at' => 'immutable_datetime',
     ];
 
     protected static function booted()

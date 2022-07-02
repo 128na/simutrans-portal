@@ -17,6 +17,10 @@ class AddPublishedAtColumnInArticlesTable extends Migration
             $table->timestamp('published_at')->nullable()->after('status')->comment('投稿日時');
             $table->index(['published_at']);
             $table->index(['status', 'published_at']);
+
+            $table->timestamp('modified_at')->nullable()->after('published_at')->comment('更新日時');
+            $table->index(['modified_at']);
+            $table->index(['status', 'modified_at']);
         });
     }
 
@@ -31,6 +35,10 @@ class AddPublishedAtColumnInArticlesTable extends Migration
             $table->dropIndex(['published_at']);
             $table->dropIndex(['status', 'published_at']);
             $table->dropColumn('published_at');
+
+            $table->dropIndex(['modified_at']);
+            $table->dropIndex(['status', 'modified_at']);
+            $table->dropColumn('modified_at');
         });
     }
 }

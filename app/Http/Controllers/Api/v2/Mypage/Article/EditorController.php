@@ -59,6 +59,7 @@ class EditorController extends Controller
     public function update(UpdateRequest $request, Article $article)
     {
         DB::beginTransaction();
+        $notYetPublished = is_null($article->published_at);
         $article = $this->articleEditorService->updateArticle($article, $request);
 
         if ($request->preview) {
@@ -70,11 +71,32 @@ class EditorController extends Controller
         DB::commit();
         JobUpdateRelated::dispatchAfterResponse();
 
-        if ($article->is_publish && $request->should_tweet) {
-            $article->notify(new ArticleUpdated());
-        }
+        $this->handleTweet($article, $request, $notYetPublished);
 
         return $this->index();
+    }
+
+    private function handleTweet(Article $article, UpdateRequest $request, bool $notYetPublished = true): void
+    {
+        // 公開以外
+        if (!$article->is_publish) {
+            return;
+        }
+        // ツイートを希望しない
+        if (!$request->should_tweet) {
+            return;
+        }
+        // 更新日を更新しない
+        if ($request->without_update_modified_at) {
+            return;
+        }
+
+        // published_atがnullから初めて変わった場合は新規投稿扱い
+        if ($notYetPublished) {
+            $article->notify(new ArticlePublished());
+        } else {
+            $article->notify(new ArticleUpdated());
+        }
     }
 
     private function createPreview(Article $article)

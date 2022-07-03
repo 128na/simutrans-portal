@@ -23,6 +23,8 @@ class TweetService
             return new TweetDataV1($res);
         }
         logger(sprintf('Tweet %s', $message));
+
+        return null;
     }
 
     public function postMedia($mediaPathes = [], $message = ''): ?TweetDataV1
@@ -40,6 +42,8 @@ class TweetService
             return new TweetDataV1($res);
         }
         logger(sprintf('Tweet with media %s, %s', $message, $mediaPathes->implode(', ')));
+
+        return null;
     }
 
     private function uploadMedia($mediaPathes)

@@ -46,7 +46,7 @@ class PublishReservation extends Command
         $changed = false;
         foreach ($cusror as $article) {
             $article->update([
-                'status' => 'publish',
+                'status' => config('status.publish'),
                 'modified_at' => $article->published_at,
             ]);
             $changed = true;

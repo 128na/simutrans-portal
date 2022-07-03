@@ -475,7 +475,7 @@ class ArticleRepository extends BaseRepository
     public function cursorReservations(CarbonImmutable $date): LazyCollection
     {
         return $this->model
-            ->where('status', 'reservation')
+            ->where('status', config('status.reservation'))
             ->where('published_at', '<=', $date)
             ->cursor();
     }

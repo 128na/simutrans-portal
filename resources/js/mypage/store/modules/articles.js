@@ -16,8 +16,8 @@ export default {
     [SET_ARTICLES](state, articles = false) {
       if (articles) {
         articles = articles.map(a => Object.assign(a, {
-          created_at: DateTime.fromISO(a.created_at),
-          updated_at: DateTime.fromISO(a.updated_at)
+          published_at: a.published_at ? DateTime.fromISO(a.published_at) : null,
+          modified_at: DateTime.fromISO(a.modified_at)
         }));
       }
       state.articles = articles;

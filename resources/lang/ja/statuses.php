@@ -10,7 +10,7 @@
 */
 return [
     'publish' => '公開',
-    'reservation' => '予約公開',
+    'reservation' => '予約投稿',
     'draft' => '下書き',
     'private' => '非公開',
     'trash' => 'ゴミ箱',

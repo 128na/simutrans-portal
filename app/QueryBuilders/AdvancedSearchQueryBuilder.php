@@ -65,9 +65,4 @@ class AdvancedSearchQueryBuilder
     {
         $query->whereDate('updated_at', '<=', $date);
     }
-
-    public function addOrder(Builder $query, string $column, string $direction): void
-    {
-        $query->orderBy($column, $direction);
-    }
 }

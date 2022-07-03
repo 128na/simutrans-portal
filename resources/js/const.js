@@ -87,15 +87,15 @@ export const ARTICLE_FIELDS = [
     sortable: true
   },
   {
-    key: 'created_at',
-    label: '作成日時',
-    desc: '記事の作成日時',
+    key: 'published_at',
+    label: '投稿日時',
+    desc: '記事の投稿（予約）日時',
     sortable: true
   },
   {
-    key: 'updated_at',
-    label: '更新日時',
-    desc: '記事の更新日時',
+    key: 'modified_at',
+    label: '最終更新日時',
+    desc: '記事の最終更新日時',
     sortable: true
   }
 ];

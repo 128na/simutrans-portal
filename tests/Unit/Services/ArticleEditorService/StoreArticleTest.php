@@ -95,4 +95,42 @@ class StoreArticleTest extends UnitTestCase
         });
         $this->getSUT($now)->storeArticle($user, $request);
     }
+
+    public function testそれ以外()
+    {
+        $user = new User();
+        $request = new StoreRequest([
+            'article' => [
+                'post_type' => 'addon-introduction',
+                'title' => 'dummy title',
+                'slug' => 'dummy-slug',
+                'status' => 'draft',
+                'contents' => 'dummy',
+            ],
+        ]);
+        $now = new CarbonImmutable();
+
+        $this->mock(ArticleRepository::class, function (MockInterface $m) use ($user, $now) {
+            $m->shouldReceive('storeByUser')->withArgs([
+                $user,
+                [
+                    'post_type' => 'addon-introduction',
+                    'title' => 'dummy title',
+                    'slug' => 'dummy-slug',
+                    'status' => 'reservation',
+                    'contents' => 'dummy',
+                    'published_at' => null,
+                    'modified_at' => $now->toDateTimeString(),
+                ],
+            ])->once()->andReturn(new Article());
+            $m->shouldReceive('syncAttachments')->once();
+            $m->shouldReceive('syncCategories')->once();
+            $m->shouldReceive('syncTags')->once();
+        });
+
+        $this->mock(TagRepository::class, function (MockInterface $m) {
+            $m->shouldReceive('getIdsByNames')->once()->andReturn(collect());
+        });
+        $this->getSUT($now)->storeArticle($user, $request);
+    }
 }

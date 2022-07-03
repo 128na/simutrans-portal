@@ -176,6 +176,8 @@ return [
         'article.categories' => 'カテゴリ',
         'article.tags' => 'タグ',
         'article.contents.file' => 'ファイル',
+        'article.published_at' => '投稿日時',
+        'article.modified_at' => '最終更新日時',
 
         //auth
         'email' => 'メールアドレス',

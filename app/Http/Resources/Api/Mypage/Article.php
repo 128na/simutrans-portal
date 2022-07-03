@@ -24,8 +24,8 @@ class Article extends JsonResource
             'contents' => $this->contents,
             'categories' => $this->categories->pluck('id'),
             'tags' => $this->tags->pluck('name'),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'published_at' => $this->published_at,
+            'modified_at' => $this->modified_at,
             'url' => route('articles.show', $this->slug),
             'metrics' => [
                 'totalViewCount' => $this->totalViewCount->count ?? 0,

@@ -34,7 +34,7 @@ export default {
   props: ['articles', 'value'],
   data() {
     return {
-      sortBy: 'updated_at',
+      sortBy: 'modified_at',
       sortDesc: true,
       fields: []
     };
@@ -43,8 +43,8 @@ export default {
     items() {
       return this.articles.map((a) =>
         Object.assign({}, a, {
-          created_at: a.created_at.toFormat('yyyy/LL/dd HH:mm'),
-          updated_at: a.updated_at.toFormat('yyyy/LL/dd HH:mm'),
+          published_at: a.published_at.toFormat('yyyy/LL/dd HH:mm'),
+          modified_at: a.modified_at.toFormat('yyyy/LL/dd HH:mm'),
           _rowVariant: this.rowValiant(a)
         })
       );
@@ -71,12 +71,12 @@ export default {
         sortable: true
       },
       {
-        key: 'created_at',
+        key: 'published_at',
         label: '作成日時',
         sortable: true
       },
       {
-        key: 'updated_at',
+        key: 'modified_at',
         label: '更新日時',
         sortable: true
       }

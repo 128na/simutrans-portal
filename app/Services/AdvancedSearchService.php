@@ -51,7 +51,7 @@ class AdvancedSearchService extends Service
         $startAt = is_null($conditions['startAt'] ?? null) ? null : CarbonImmutable::parse($conditions['startAt']);
         $endAt = is_null($conditions['endAt'] ?? null) ? null : CarbonImmutable::parse($conditions['endAt']);
 
-        $order = $conditions['order'] ?? 'updated_at';
+        $order = $conditions['order'] ?? 'modified_at';
         $direction = $conditions['direction'] ?? 'desc';
 
         return $this->articleRepository->paginateByAdvancedSearch(

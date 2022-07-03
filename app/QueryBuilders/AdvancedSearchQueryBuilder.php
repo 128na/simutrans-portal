@@ -58,11 +58,11 @@ class AdvancedSearchQueryBuilder
 
     public function addStartAt(Builder $query, CarbonImmutable $date): void
     {
-        $query->whereDate('updated_at', '>=', $date);
+        $query->whereDate('modified_at', '>=', $date);
     }
 
     public function addEndAt(Builder $query, CarbonImmutable $date): void
     {
-        $query->whereDate('updated_at', '<=', $date);
+        $query->whereDate('modified_at', '<=', $date);
     }
 }

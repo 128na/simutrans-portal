@@ -104,10 +104,10 @@ class ArticleEditorService extends Service
     private function getPublishedAt(StoreRequest $request): ?string
     {
         $status = $request->input('article.status');
-        if ($status === 'reservation') {
+        if ($status === config('status.reservation')) {
             return $request->input('article.published_at');
         }
-        if ($status === 'publish') {
+        if ($status === config('status.publish')) {
             return $this->now->toDateTimeString();
         }
 

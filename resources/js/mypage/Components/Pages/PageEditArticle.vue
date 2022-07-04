@@ -6,6 +6,16 @@
         :is="componentName"
         :article="copy"
       >
+        <form-status :article="copy" />
+        <b-form-group>
+          <template slot="label">
+            <badge-optional />
+            更新日時
+          </template>
+          <b-form-checkbox v-model="without_update_modified_at">
+            記事保存時に更新日時を更新しない
+          </b-form-checkbox>
+        </b-form-group>
         <b-form-group>
           <template slot="label">
             <badge-optional />
@@ -17,7 +27,7 @@
             </b-form-checkbox>
           </template>
           <template v-else>
-            公開状態が「公開」のときのみ選べます。
+            公開状態が「公開」かつ更新日時を更新するときのみ選べます。
           </template>
         </b-form-group>
         <b-form-group>
@@ -49,7 +59,8 @@ export default {
   mixins: [validateVerified, preview, editor],
   data() {
     return {
-      should_tweet: false
+      should_tweet: false,
+      without_update_modified_at: false
     };
   },
   watch: {
@@ -104,7 +115,7 @@ export default {
       return this.getStatusText(this.copy.status);
     },
     canTweet() {
-      return this.copy.status === 'publish';
+      return this.copy.status === 'publish' && !this.without_update_modified_at;
     }
   },
   methods: {
@@ -119,6 +130,7 @@ export default {
       const params = {
         article: this.copy,
         should_tweet: this.should_tweet,
+        without_update_modified_at: this.without_update_modified_at,
         preview: true
       };
       const html = await this.updateArticle({
@@ -137,6 +149,7 @@ export default {
       const params = {
         article: this.copy,
         should_tweet: this.should_tweet,
+        without_update_modified_at: this.without_update_modified_at,
         preview: false
       };
       await this.updateArticle({ params });

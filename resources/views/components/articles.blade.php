@@ -19,7 +19,7 @@
                     </div>
                 @endunless
                 <div class="article-footer">
-                    <span class="mr-2">{{ $article->updated_at->format('Y/m/d') }}</span>
+                    <span class="mr-2">{{ $article->modified_at->format('Y/m/d') }}</span>
                     <span class="mr-2"><a
                             href="{{ route('user', [$article->user]) }}">{{ $article->user->name }}</a></span>
                     <span class="mr-2">

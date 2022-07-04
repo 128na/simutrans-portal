@@ -15,7 +15,8 @@ class StoreRequest extends BaseRequest
             'article.status' => ['required', Rule::in(config('status'))],
             'article.title' => ['required', 'unique:articles,title', 'max:255', new NgWordRule(User::TITLE_NG_WORDS)],
             'article.slug' => 'required|unique:articles,slug|max:255',
-            'should_tweet' => 'nullable',
+            'article.published_at' => 'nullable|date|after:+1 hour',
+            'should_tweet' => 'nullable|boolean',
             'preview' => 'nullable',
         ];
     }

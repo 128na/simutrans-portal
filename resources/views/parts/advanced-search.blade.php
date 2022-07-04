@@ -196,16 +196,16 @@
                     <label for="order">表示順</label>
                     <div class="input-group">
                         <select class="form-control" name="advancedSearch[order]" id="order">
-                            <option value="created_at"
-                                {{ old('advancedSearch.order', $advancedSearch['order'] ?? 'created_at') === 'created_at' ? 'selected' : '' }}>
+                            <option value="published_at"
+                                {{ old('advancedSearch.order', $advancedSearch['order'] ?? 'published_at') === 'published_at' ? 'selected' : '' }}>
                                 投稿日
                             </option>
-                            <option value="updated_at"
-                                {{ old('advancedSearch.order', $advancedSearch['order'] ?? 'created_at') === 'updated_at' ? 'selected' : '' }}>
+                            <option value="modified_at"
+                                {{ old('advancedSearch.order', $advancedSearch['order'] ?? 'published_at') === 'modified_at' ? 'selected' : '' }}>
                                 更新日
                             </option>
                             <option value="title"
-                                {{ old('advancedSearch.order', $advancedSearch['order'] ?? 'created_at') === 'title' ? 'selected' : '' }}>
+                                {{ old('advancedSearch.order', $advancedSearch['order'] ?? 'published_at') === 'title' ? 'selected' : '' }}>
                                 タイトル
                             </option>
                         </select>

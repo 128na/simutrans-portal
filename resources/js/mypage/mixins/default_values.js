@@ -27,7 +27,8 @@ export const defaultArticle = {
           thanks: ''
         },
         categories: [],
-        tags: []
+        tags: [],
+        published_at: null
       };
     },
     createAddonIntroduction() {
@@ -47,7 +48,8 @@ export const defaultArticle = {
           thanks: ''
         },
         categories: [],
-        tags: []
+        tags: [],
+        published_at: null
       };
     },
     createPage() {
@@ -60,7 +62,8 @@ export const defaultArticle = {
           thumbnail: null,
           sections: [{ type: 'text', text: '' }]
         },
-        categories: []
+        categories: [],
+        published_at: null
       };
     },
     createMarkdown() {
@@ -73,7 +76,8 @@ export const defaultArticle = {
           thumbnail: null,
           markdown: ''
         },
-        categories: []
+        categories: [],
+        published_at: null
       };
     }
   }

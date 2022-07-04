@@ -38,9 +38,13 @@ class Article extends Model implements Feedable
         'post_type',
         'contents',
         'status',
+        'published_at',
+        'modified_at',
     ];
     protected $casts = [
         'contents' => ToArticleContents::class,
+        'published_at' => 'immutable_datetime',
+        'modified_at' => 'immutable_datetime',
     ];
 
     protected static function booted()
@@ -379,7 +383,7 @@ class Article extends Model implements Feedable
             'id' => $this->id,
             'title' => $this->title,
             'summary' => $this->contents->getDescription() ?? '',
-            'updated' => $this->updated_at->toMutable(), // CarbonImmutableは未対応
+            'updated' => $this->modified_at->toMutable(), // CarbonImmutableは未対応
             'link' => route('articles.show', $this->slug),
             'author' => $this->user->name,
         ]);

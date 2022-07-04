@@ -129,7 +129,7 @@ class AdvancedSearchControllerTest extends TestCase
         ];
 
         yield 'order 指定値' => [
-            ['order' => 'created_at'],
+            ['order' => 'published_at'],
             null,
         ];
         yield 'order 指定値以外' => [

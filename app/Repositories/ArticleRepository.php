@@ -72,7 +72,9 @@ class ArticleRepository extends BaseRepository
             ->with([
                 'viewCounts' => $periodQuery,
                 'conversionCounts' => $periodQuery,
-            ])->get();
+            ])
+            ->orderBy('published_at', 'desc')
+            ->get();
     }
 
     /**
@@ -83,6 +85,7 @@ class ArticleRepository extends BaseRepository
         return $user->articles()
             ->select(['articles.*'])
             ->with($relations)
+            ->orderBy('published_at', 'desc')
             ->get();
     }
 
@@ -92,7 +95,7 @@ class ArticleRepository extends BaseRepository
             ->active()
             ->withCache()
             ->with($relations)
-            ->orderBy('updated_at', 'desc');
+            ->orderBy('modified_at', 'desc');
     }
 
     private function basicRelationQuery(Relation $query, array $relations = self::FRONT_RELATIONS): Relation
@@ -101,7 +104,7 @@ class ArticleRepository extends BaseRepository
             ->active()
             ->withCache()
             ->with($relations)
-            ->orderBy('updated_at', 'desc');
+            ->orderBy('modified_at', 'desc');
     }
 
     private function queryAnnouces(): Builder
@@ -281,7 +284,7 @@ class ArticleRepository extends BaseRepository
                 ->orWhereHas('attachments.fileInfo', fn ($q) => $q
                     ->where('data', 'LIKE', $likeWord)))
             ->with(self::FRONT_RELATIONS)
-            ->orderBy('updated_at', 'desc');
+            ->orderBy('modified_at', 'desc');
     }
 
     /**
@@ -305,11 +308,12 @@ class ArticleRepository extends BaseRepository
     public function findAllFeedItems(): Collection
     {
         return $this->model
-            ->select('id', 'user_id', 'title', 'slug', 'post_type', 'contents', 'updated_at')
+            ->select('id', 'user_id', 'title', 'slug', 'post_type', 'contents', 'modified_at')
             ->active()
             ->addon()
             ->limit(24)
             ->with('user:id,name')
+            ->orderBy('modified_at', 'desc')
             ->get();
     }
 
@@ -367,7 +371,7 @@ class ArticleRepository extends BaseRepository
         ?bool $userAnd = true,
         ?CarbonImmutable $startAt = null,
         ?CarbonImmutable $endAt = null,
-        string $order = 'updated_at',
+        string $order = 'modified_at',
         string $direction = 'desc'
     ): Builder {
         $q = $this->model->select(['articles.*'])
@@ -394,7 +398,6 @@ class ArticleRepository extends BaseRepository
         if ($endAt) {
             $this->advancedSearchQueryBuilder->addEndAt($q, $endAt);
         }
-        $this->advancedSearchQueryBuilder->addOrder($q, $order, $direction);
 
         return $q;
     }
@@ -409,7 +412,7 @@ class ArticleRepository extends BaseRepository
         ?bool $userAnd = true,
         ?CarbonImmutable $startAt = null,
         ?CarbonImmutable $endAt = null,
-        string $order = 'updated_at',
+        string $order = 'modified_at',
         string $direction = 'desc',
         int $limit = 50
     ): LengthAwarePaginator {
@@ -463,6 +466,17 @@ class ArticleRepository extends BaseRepository
             ->orderBy('m.count', 'desc')
             ->orderBy('y.count', 'desc')
             ->orderBy('t.count', 'desc')
+            ->cursor();
+    }
+
+    /**
+     * @return LazyCollection<Article>
+     */
+    public function cursorReservations(CarbonImmutable $date): LazyCollection
+    {
+        return $this->model
+            ->where('status', config('status.reservation'))
+            ->where('published_at', '<=', $date)
             ->cursor();
     }
 }

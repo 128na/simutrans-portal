@@ -22,6 +22,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        // 毎分
+        $schedule->command('article:publish-reservation')->everyMinute()
+            ->withoutOverlapping()
+            ->onOneServer();
+
         // 毎時
         $schedule->command('ranking:update')->hourly()
             ->withoutOverlapping()

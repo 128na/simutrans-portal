@@ -12,6 +12,7 @@ import {
   FormPlugin,
   FormCheckboxPlugin,
   FormDatepickerPlugin,
+  FormTimepickerPlugin,
   FormGroupPlugin,
   FormInputPlugin,
   FormRadioPlugin,
@@ -25,8 +26,7 @@ import {
   NavbarPlugin,
   OverlayPlugin,
   TablePlugin,
-  SpinnerPlugin
-  ,
+  SpinnerPlugin,
   BIcon,
   BIconEyeFill,
   BIconEyeSlashFill,
@@ -59,6 +59,7 @@ Vue.use(DropdownPlugin);
 Vue.use(FormPlugin);
 Vue.use(FormCheckboxPlugin);
 Vue.use(FormDatepickerPlugin);
+Vue.use(FormTimepickerPlugin);
 Vue.use(FormGroupPlugin);
 Vue.use(FormInputPlugin);
 Vue.use(FormRadioPlugin);

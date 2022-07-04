@@ -6,6 +6,8 @@
         :is="componentName"
         :article="copy"
       >
+        <form-status :article="copy" :can-reservation="true" />
+        <form-reservation :article="copy" />
         <b-form-group>
           <template slot="label">
             <badge-optional />

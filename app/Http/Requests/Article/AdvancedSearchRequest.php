@@ -18,7 +18,7 @@ class AdvancedSearchRequest extends FormRequest
             'advancedSearch.userAnd' => 'nullable|bool',
             'advancedSearch.startAt' => 'nullable|date',
             'advancedSearch.endAt' => 'nullable|date|after:advancedSearch.startAt',
-            'advancedSearch.order' => 'nullable|in:created_at,updated_at,title',
+            'advancedSearch.order' => 'nullable|in:published_at,modified_at,title',
             'advancedSearch.direction' => 'nullable|in:desc,asc',
         ];
     }

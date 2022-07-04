@@ -72,7 +72,7 @@ class SchemaService extends Service
                 '@type' => 'Person',
                 'name' => $article->contents->author ?? $article->user->name,
             ],
-            'datePublished' => $article->created_at,
+            'datePublished' => $article->published_at,
             'headline' => $article->headline_description,
             'image' => [$article->thumbnail_url ? $article->thumbnail_url : asset('storage/default/ogp-image.png')],
             'publisher' => [
@@ -86,7 +86,7 @@ class SchemaService extends Service
                     'name' => config('app.name'),
                 ],
             ],
-            'dateModified' => $article->updated_at,
+            'dateModified' => $article->modified_at,
             'description' => $article->meta_description,
             'mainEntityOfPage' => route('articles.show', $article->slug),
         ];

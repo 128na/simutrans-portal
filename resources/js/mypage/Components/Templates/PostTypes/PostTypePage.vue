@@ -3,7 +3,6 @@
     <page-description>Simutransに関する記事を作成します。</page-description>
     <form-common :article="article" />
     <form-page :article="article" />
-    <form-status :article="article" />
     <slot />
   </div>
 </template>

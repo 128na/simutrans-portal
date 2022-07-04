@@ -46,7 +46,7 @@ export default {
   },
   data() {
     return {
-      sortBy: 'updated_at',
+      sortBy: 'modified_at',
       sortDesc: true,
       x: 0,
       y: 0,
@@ -57,8 +57,8 @@ export default {
         'title',
         'totalViewCount',
         'totalConversionCount',
-        'created_at',
-        'updated_at'
+        'published_at',
+        'modified_at'
       ]
     };
   },
@@ -68,8 +68,8 @@ export default {
         Object.assign({}, a, {
           status: this.status(a.status),
           post_type: this.post_type(a.post_type),
-          created_at: a.created_at.toFormat('yyyy/LL/dd HH:mm'),
-          updated_at: a.updated_at.toFormat('yyyy/LL/dd HH:mm'),
+          published_at: a.published_at ? a.published_at.toFormat('yyyy/LL/dd HH:mm') : '-',
+          modified_at: a.modified_at.toFormat('yyyy/LL/dd HH:mm'),
           totalViewCount: a.metrics.totalViewCount,
           totalConversionCount: a.metrics.totalConversionCount,
           totalRetweetCount: a.metrics.totalRetweetCount,
@@ -117,6 +117,8 @@ export default {
       switch (status) {
         case 'publish':
           return '公開';
+        case 'reservation':
+          return '予約投稿';
         case 'draft':
           return '下書き';
         case 'private':

@@ -10,21 +10,16 @@ use App\Models\User;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
+use Carbon\CarbonImmutable;
 
 class ArticleEditorService extends Service
 {
-    private ArticleRepository $articleRepository;
-    private CategoryRepository $categoryRepository;
-    private TagRepository $tagRepository;
-
     public function __construct(
-        ArticleRepository $articleRepository,
-        CategoryRepository $categoryRepository,
-        TagRepository $tagRepository
+        private ArticleRepository $articleRepository,
+        private CategoryRepository $categoryRepository,
+        private TagRepository $tagRepository,
+        private CarbonImmutable $now
     ) {
-        $this->articleRepository = $articleRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->tagRepository = $tagRepository;
     }
 
     public function findArticles(User $user)
@@ -94,6 +89,8 @@ class ArticleEditorService extends Service
             'slug' => $request->input('article.slug'),
             'status' => $request->input('article.status'),
             'contents' => $request->input('article.contents'),
+            'published_at' => $this->getPublishedAt($request),
+            'modified_at' => $this->now->toDateTimeString(),
         ];
         $article = $this->articleRepository->storeByUser($user, $data);
 
@@ -102,18 +99,40 @@ class ArticleEditorService extends Service
         return $article->fresh();
     }
 
+    private function getPublishedAt(StoreRequest $request): ?string
+    {
+        $status = $request->input('article.status');
+        if ($status === config('status.reservation')) {
+            return $request->input('article.published_at');
+        }
+        if ($status === config('status.publish')) {
+            return $this->now->toDateTimeString();
+        }
+
+        return null;
+    }
+
     public function updateArticle(Article $article, UpdateRequest $request)
     {
-        $this->articleRepository->update($article, [
+        $data = [
             'title' => $request->input('article.title'),
             'slug' => $request->input('article.slug'),
             'status' => $request->input('article.status'),
             'contents' => $request->input('article.contents'),
-        ]);
+        ];
+        if ($this->shouldUpdateModifiedAt($request)) {
+            $data['modified_at'] = $this->now->toDateTimeString();
+        }
+        $this->articleRepository->update($article, $data);
 
         $this->syncRelated($article, $request);
 
         return $article->fresh();
+    }
+
+    private function shouldUpdateModifiedAt(UpdateRequest $request): bool
+    {
+        return !$request->input('without_update_modified_at');
     }
 
     private function syncRelated(Article $article, BaseRequest $request)

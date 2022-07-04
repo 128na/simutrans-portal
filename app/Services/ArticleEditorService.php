@@ -83,13 +83,11 @@ class ArticleEditorService extends Service
 
     public function storeArticle(User $user, StoreRequest $request)
     {
-        $status = $request->input('article.status');
-
         $data = [
             'post_type' => $request->input('article.post_type'),
             'title' => $request->input('article.title'),
             'slug' => $request->input('article.slug'),
-            'status' => $status,
+            'status' => $request->input('article.status'),
             'contents' => $request->input('article.contents'),
             'published_at' => $this->getPublishedAt($request),
             'modified_at' => $this->now->toDateTimeString(),

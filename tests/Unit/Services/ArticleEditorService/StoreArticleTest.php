@@ -117,7 +117,7 @@ class StoreArticleTest extends UnitTestCase
                     'post_type' => 'addon-introduction',
                     'title' => 'dummy title',
                     'slug' => 'dummy-slug',
-                    'status' => 'reservation',
+                    'status' => 'draft',
                     'contents' => 'dummy',
                     'published_at' => null,
                     'modified_at' => $now->toDateTimeString(),

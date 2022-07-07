@@ -264,6 +264,20 @@ class Article extends Model implements Feedable
         return $this->status === config('status.publish');
     }
 
+    public function getIsReservationAttribute()
+    {
+        return $this->status === config('status.reservation');
+    }
+
+    public function getIsInactiveAttribute()
+    {
+        return in_array($this->status, [
+            config('status.draft'),
+            config('status.private'),
+            config('status.trash'),
+        ]);
+    }
+
     public function getHasThumbnailAttribute()
     {
         return !is_null($this->contents->thumbnail) && $this->thumbnail;

@@ -6,7 +6,8 @@
         :is="componentName"
         :article="copy"
       >
-        <form-status :article="copy" />
+        <form-status :article="copy" :can-reservation="canReservation" />
+        <form-reservation :article="copy" />
         <b-form-group>
           <template slot="label">
             <badge-optional />
@@ -116,6 +117,9 @@ export default {
     },
     canTweet() {
       return this.copy.status === 'publish' && !this.without_update_modified_at;
+    },
+    canReservation() {
+      return this.copy.published_at === null || this.copy.status === 'reservation';
     }
   },
   methods: {

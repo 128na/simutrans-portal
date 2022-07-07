@@ -99,14 +99,15 @@ class ArticleEditorService extends Service
         return $article->fresh();
     }
 
-    private function getPublishedAt(StoreRequest $request): ?string
+    private function getPublishedAt(StoreRequest | UpdateRequest $request): ?string
     {
         $status = $request->input('article.status');
-        if ($status === config('status.reservation')) {
-            return $request->input('article.published_at');
-        }
         if ($status === config('status.publish')) {
             return $this->now->toDateTimeString();
+        }
+
+        if ($status === config('status.reservation')) {
+            return $request->input('article.published_at');
         }
 
         return null;
@@ -120,6 +121,12 @@ class ArticleEditorService extends Service
             'status' => $request->input('article.status'),
             'contents' => $request->input('article.contents'),
         ];
+        if ($article->is_reservation) {
+            $data['published_at'] = $this->getPublishedAt($request);
+        }
+        if ($this->inactiveToPublish($article, $request)) {
+            $data['published_at'] = $this->getPublishedAt($request);
+        }
         if ($this->shouldUpdateModifiedAt($request)) {
             $data['modified_at'] = $this->now->toDateTimeString();
         }
@@ -128,6 +135,14 @@ class ArticleEditorService extends Service
         $this->syncRelated($article, $request);
 
         return $article->fresh();
+    }
+
+    private function inactiveToPublish(Article $article, UpdateRequest $request): bool
+    {
+        return $article->is_inactive && (
+            $request->input('article.status') === config('status.publish')
+            || $request->input('article.status') === config('status.reservation')
+        );
     }
 
     private function shouldUpdateModifiedAt(UpdateRequest $request): bool

@@ -6,6 +6,7 @@ use App\Events\ArticleConversion;
 use App\Events\ArticleShown;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Article\SearchRequest;
+use App\Http\Resources\Front\ArticleResource;
 use App\Models\Article;
 use App\Models\Tag;
 use App\Models\User;
@@ -80,7 +81,12 @@ class ArticleController extends Controller
 
         $isOwner = Auth::check() && Auth::user()->can('update', $article);
 
-        $contents = ['article' => $this->articleRepository->loadArticle($article)];
+        $article = $this->articleRepository->loadArticle($article);
+
+        $contents = [
+            'article' => $article,
+            'articleResource' => new ArticleResource($article),
+        ];
 
         if (!$isOwner) {
             event(new ArticleShown($article));

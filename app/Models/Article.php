@@ -259,6 +259,11 @@ class Article extends Model implements Feedable
     | アクセサ
     |--------------------------------------------------------------------------
      */
+    public function getIsAddonPostAttribute()
+    {
+        return $this->post_type === config('post_types.addon-post');
+    }
+
     public function getIsPublishAttribute()
     {
         return $this->status === config('status.publish');

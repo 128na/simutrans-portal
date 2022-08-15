@@ -30,7 +30,6 @@
     <dd><content-file-info :article="article" /></dd>
     <dt><text-sub-title text="ダウンロード" /></dt>
     <dd><content-download :article="article" /></dd>
-    <dd></dd>
   </dl>
 </article>
 </template>

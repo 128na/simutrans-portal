@@ -32,7 +32,6 @@
     </template>
     <dt><text-sub-title text="掲載先URL" /></dt>
     <dd><content-link :article="article" /></dd>
-    <dd></dd>
   </dl>
 </article>
 </template>

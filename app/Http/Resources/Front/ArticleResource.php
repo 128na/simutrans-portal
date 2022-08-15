@@ -30,11 +30,11 @@ class ArticleResource extends JsonResource
                 'url' => route('articles.show', $this->user),
             ],
             'thumbnail_url' => $this->thumbnail_url,
-            'download_url' => $this->when($this->is_addon_post, route('articles.download', $this->slug)),
+            'download_url' => $this->when($this->is_addon_post, fn () => route('articles.download', $this->slug)),
             'url' => route('articles.show', $this->slug),
             'published_at' => $this->published_at ? $this->published_at->toDateTimeString() : '未投稿',
             'modified_at' => $this->modified_at->toDateTimeString(),
-            'file_info' => $this->when($this->hasFileInfo, $this->file->fileInfo->data),
+            'file_info' => $this->when($this->hasFileInfo, fn () => $this->file->fileInfo->data),
         ];
     }
 }

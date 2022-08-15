@@ -304,7 +304,7 @@ class Article extends Model implements Feedable
 
     public function getHasFileAttribute()
     {
-        return !is_null($this->contents->file) && $this->file;
+        return $this->is_addon_post && !isset($this->contents->file) && $this->file;
     }
 
     public function getFileAttribute()

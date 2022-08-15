@@ -29,6 +29,7 @@
     "jquery": "^3.6.0",
     "laravel-mix": "^6",
     "luxon": "^1.26.0",
+    "markdown-it": "^13.0.1",
     "popper.js": "^1.16.1",
     "resolve-url-loader": "^4",
     "sass": "^1.32.8",

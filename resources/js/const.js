@@ -7,6 +7,13 @@ export const GA_EVENTS = {
   DOWNLOAD_CLICK: 'portal_download_click'
 };
 
+export const POST_TYPES = {
+  ADDON_INTRODUCTION: 'addon-introduction',
+  ADDON_POST: 'addon-post',
+  PAGE: 'page',
+  MARKDOWN: 'markdown'
+};
+
 export const ARTICLE_FIELDS = [
   {
     key: 'id',

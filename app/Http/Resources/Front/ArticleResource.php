@@ -34,6 +34,7 @@ class ArticleResource extends JsonResource
             'url' => route('articles.show', $this->slug),
             'published_at' => $this->published_at ? $this->published_at->toDateTimeString() : '未投稿',
             'modified_at' => $this->modified_at->toDateTimeString(),
+            'file_info' => $this->when($this->hasFileInfo, $this->file->fileInfo->data),
         ];
     }
 }

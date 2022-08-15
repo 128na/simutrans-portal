@@ -1,5 +1,5 @@
 <template v-if="article">
-  <div>mounted {{ article.title }}</div>
+  <template-article :article="article" />
 </template>
 <script>
 export default {
@@ -10,7 +10,8 @@ export default {
     },
     article: {
       type: Object,
-      default: () => window.article
+      default: () => window.article,
+      required: false
     }
 
   }

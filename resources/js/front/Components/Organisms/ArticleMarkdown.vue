@@ -1,5 +1,5 @@
 <template>
-<article class="addon-post">
+<article class="markdown">
   <content-title :article="article" />
   <content-thumbnail :article="article" />
 

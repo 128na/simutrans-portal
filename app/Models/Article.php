@@ -264,6 +264,11 @@ class Article extends Model implements Feedable
         return $this->post_type === config('post_types.addon-post');
     }
 
+    public function getIsPageAttribute()
+    {
+        return $this->post_type === config('post_types.page');
+    }
+
     public function getIsPublishAttribute()
     {
         return $this->status === config('status.publish');

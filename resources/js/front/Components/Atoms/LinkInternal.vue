@@ -1,5 +1,7 @@
 <template>
-  <a :href="href"><slot /></a>
+  <a :href="href">
+    <slot />
+  </a>
 </template>
 <script>
 export default {

@@ -1,16 +1,20 @@
 <template>
-<article class="page">
-  <content-title :article="article" />
-  <content-thumbnail :article="article" />
+  <article class="page">
+    <content-title :article="article" />
+    <content-thumbnail :article="article" />
 
-  <content-page :article="article" />
-  <dl>
-    <template v-if="article.categories.length">
-      <dt><text-sub-title text="カテゴリ" /></dt>
-      <dd><content-categories :article="article" /></dd>
-    </template>
-  </dl>
-</article>
+    <content-page :article="article" />
+    <dl>
+      <template v-if="article.categories.length">
+        <dt>
+          <text-sub-title text="カテゴリ" />
+        </dt>
+        <dd>
+          <content-categories :article="article" />
+        </dd>
+      </template>
+    </dl>
+  </article>
 </template>
 <script>
 export default {

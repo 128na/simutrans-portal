@@ -13,7 +13,6 @@ export default {
       default: () => window.article,
       required: false
     }
-
   }
 };
 </script>

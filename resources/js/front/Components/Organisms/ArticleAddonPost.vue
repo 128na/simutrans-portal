@@ -56,12 +56,14 @@
           <text-pre :text="article.contents.license" />
         </dd>
       </template>
-      <dt>
-        <text-sub-title text="添付ファイル情報（ベータ版機能）" />
-      </dt>
-      <dd>
-        <content-file-info :article="article" />
-      </dd>
+      <template v-if="article.file_info">
+        <dt>
+          <text-sub-title text="添付ファイル情報（ベータ版機能）" />
+        </dt>
+        <dd>
+          <content-file-info :article="article" />
+        </dd>
+      </template>
       <dt>
         <text-sub-title text="ダウンロード" />
       </dt>

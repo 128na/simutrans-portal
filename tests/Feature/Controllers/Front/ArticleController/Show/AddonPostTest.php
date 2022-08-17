@@ -27,6 +27,7 @@ class AddonPostTest extends TestCase
 
     public function test()
     {
+        $this->markTestSkipped('ブラウザテストに移行する');
         $url = route('articles.show', $this->article->slug);
 
         $res = $this->get($url);

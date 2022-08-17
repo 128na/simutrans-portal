@@ -61,6 +61,7 @@ class StorePageTest extends ArticleTestCase
 
     public function testPreview()
     {
+        $this->markTestSkipped('機能廃止予定');
         $url = route('api.v2.articles.store');
 
         $this->actingAs($this->user);

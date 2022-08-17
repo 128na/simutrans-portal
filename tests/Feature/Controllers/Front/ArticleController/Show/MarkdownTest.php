@@ -25,6 +25,7 @@ class MarkdownTest extends TestCase
 
     public function test()
     {
+        $this->markTestSkipped('ブラウザテストに移行する');
         $url = route('articles.show', $this->article->slug);
 
         $res = $this->get($url);
@@ -46,6 +47,7 @@ class MarkdownTest extends TestCase
      */
     public function testEscape($markdown)
     {
+        $this->markTestSkipped('ブラウザテストに移行する');
         $this->article->update([
             'contents' => ['markdown' => '# hogehoge'.$markdown],
         ]);

@@ -65,6 +65,7 @@ class UpdateMarkdownTest extends ArticleTestCase
 
     public function testPreview()
     {
+        $this->markTestSkipped('機能廃止予定');
         $url = route('api.v2.articles.update', $this->article);
         $this->actingAs($this->user);
 

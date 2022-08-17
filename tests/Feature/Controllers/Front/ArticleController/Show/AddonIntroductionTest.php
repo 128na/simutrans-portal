@@ -34,6 +34,7 @@ class AddonIntroductionTest extends TestCase
 
     public function test()
     {
+        $this->markTestSkipped('ブラウザテストに移行する');
         $url = route('articles.show', $this->article->slug);
 
         $res = $this->get($url);
@@ -66,6 +67,7 @@ class AddonIntroductionTest extends TestCase
 
     public function test未同意()
     {
+        $this->markTestSkipped('ブラウザテストに移行する');
         $url = route('articles.show', $this->article2->slug);
 
         $res = $this->get($url);

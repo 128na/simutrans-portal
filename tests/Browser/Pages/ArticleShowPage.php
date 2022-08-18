@@ -2,10 +2,18 @@
 
 namespace Tests\Browser\Pages;
 
+use App\Models\Article;
 use Laravel\Dusk\Browser;
 
-class HomePage extends Page
+class ArticleShowPage extends Page
 {
+    private Article $article;
+
+    public function __construct()
+    {
+        $this->article = Article::factory()->create();
+    }
+
     /**
      * Get the URL for the page.
      *
@@ -13,18 +21,18 @@ class HomePage extends Page
      */
     public function url()
     {
-        return '/';
+        return '/articles/'.urlencode($this->article->slug);
     }
 
     /**
      * Assert that the browser is on the page.
      *
-     * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      */
     public function assert(Browser $browser)
     {
-        //
+        $browser
+            ->assertSee($this->article->title);
     }
 
     /**

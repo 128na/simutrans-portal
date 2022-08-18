@@ -3,20 +3,23 @@
 namespace Tests\Browser;
 
 use Laravel\Dusk\Browser;
+use Tests\Browser\Pages\ArticleShowPage;
+use Tests\Browser\Pages\TopPage;
 use Tests\DuskTestCase;
 
 class TopTest extends DuskTestCase
 {
     /**
-     * A basic browser test example.
-     *
-     * @return void
+     * @dataProvider dataPages
      */
-    public function testBasicExample()
+    public function testBasicExample(string $pageClass)
     {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                    ->assertSee('Simutrans Addon Portal');
-        });
+        $this->browse(fn (Browser $browser) => $browser->visit(new $pageClass()));
+    }
+
+    public function dataPages()
+    {
+        yield 'トップページ' => [TopPage::class];
+        yield '記事詳細' => [ArticleShowPage::class];
     }
 }

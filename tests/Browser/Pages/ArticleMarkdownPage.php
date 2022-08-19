@@ -3,15 +3,23 @@
 namespace Tests\Browser\Pages;
 
 use App\Models\Article;
+use App\Models\Category;
+use App\Models\User;
 use Laravel\Dusk\Browser;
 
-class ArticleShowPage extends Page
+class ArticleMarkdownPage extends Page
 {
     private Article $article;
 
     public function __construct()
     {
-        $this->article = Article::factory()->create();
+        $user = User::factory()->create();
+        $this->article = Article::factory()->publish()->markdown()->create([
+            'user_id' => $user->id,
+            'contents' => ['markdown' => '# Hoge'],
+        ]);
+        $this->category = Category::inRandomOrder()->first();
+        $this->article->categories()->save($this->category);
     }
 
     /**

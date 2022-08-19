@@ -11,6 +11,18 @@ abstract class DuskTestCase extends BaseTestCase
 {
     use CreatesApplication;
 
+    private static bool $ranSeeder = false;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        if (!self::$ranSeeder) {
+            $this->artisan('db:seed --class=ProdSeeder');
+            self::$ranSeeder = true;
+        }
+    }
+
     /**
      * Prepare for Dusk test execution.
      *

@@ -17,7 +17,6 @@ class StoreRequest extends BaseRequest
             'article.slug' => 'required|unique:articles,slug|max:255',
             'article.published_at' => 'nullable|date|after:+1 hour',
             'should_tweet' => 'nullable|boolean',
-            'preview' => 'nullable',
         ];
     }
 }

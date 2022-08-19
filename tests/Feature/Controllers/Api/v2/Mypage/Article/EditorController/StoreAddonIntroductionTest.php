@@ -75,49 +75,4 @@ class StoreAddonIntroductionTest extends ArticleTestCase
             Bus::assertNotDispatched(JobUpdateRelated::class);
         }
     }
-
-    public function testPreview()
-    {
-        $this->markTestSkipped('機能廃止予定');
-        $url = route('api.v2.articles.store');
-
-        /** @var User */
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
-        $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $user->id);
-
-        $date = now()->format('YmdHis');
-        $data = [
-            'post_type' => 'addon-introduction',
-            'status' => 'publish',
-            'title' => 'test title '.$date,
-            'slug' => 'test-slug-'.$date,
-            'contents' => [
-                'thumbnail' => $thumbnail->id,
-                'author' => 'test auhtor',
-                'link' => 'http://example.com',
-                'description' => 'test description',
-                'thanks' => 'tets thanks',
-                'license' => 'test license',
-                'agreement' => true,
-            ],
-            'tags' => [
-                Tag::factory()->create()->name,
-            ],
-            'categories' => [
-                Category::pak()->first()->id,
-                Category::addon()->first()->id,
-                Category::pak128Position()->first()->id,
-                Category::license()->first()->id,
-            ],
-        ];
-        $res = $this->postJson($url, ['article' => $data, 'preview' => true]);
-        $res->assertHeader('content-type', 'text/html; charset=UTF-8');
-        $res->assertSee('<html', false);
-        $res->assertSee($data['title']);
-        $this->assertDatabaseMissing('articles', [
-            'title' => $data['title'],
-        ]);
-    }
 }

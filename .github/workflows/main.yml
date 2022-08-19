@@ -105,7 +105,7 @@ jobs:
       - name: Display Error Log
         run: "[ -e storage/logs/laravel.log ] && cat storage/logs/laravel.log || echo 'no log file.'"
 
-  dusk-php:
+  dusk:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

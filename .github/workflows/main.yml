@@ -164,7 +164,7 @@ jobs:
         run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
 
       - name: Run Laravel Server
-        run: php -S localhost:8000 -t public/ > /dev/null 2>&1 &
+        run: php -S 127.0.0.1:8000 -t public/ > /dev/null 2>&1 &
 
       - name: wait 10 seconds
         run: sleep 10

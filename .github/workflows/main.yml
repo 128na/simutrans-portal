@@ -136,18 +136,6 @@ jobs:
       - name: chmod 777
         run: chmod -R 0777 ./
 
-      - name: Display Error Log
-        run: "[ -e storage/logs/laravel.log ] && cat storage/logs/laravel.log || echo 'no log file.'"
-
-      - name: Upgrade Chrome Driver
-        run: php artisan dusk:chrome-driver
-
-      - name: Start Chrome Driver
-        run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
-
-      - name: Run Laravel Server
-        run: php artisan serve > /dev/null 2>&1 &
-
       - name: Cache build assets
         id: cache-assets
         uses: actions/cache@v2
@@ -168,6 +156,15 @@ jobs:
       - name: Build Assets
         if: steps.cache-assets.outputs.cache-hit != 'true'
         run: npm run prod
+
+      - name: Upgrade Chrome Driver
+        run: php artisan dusk:chrome-driver
+
+      - name: Start Chrome Driver
+        run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+
+      - name: Run Laravel Server
+        run: php -S localhost:8000 -t public/ > /dev/null 2>&1 &
 
       - name: Run Dusk Tests
         run: |

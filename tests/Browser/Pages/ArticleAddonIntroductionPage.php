@@ -39,6 +39,7 @@ class ArticleAddonIntroductionPage extends Page
      */
     public function assert(Browser $browser)
     {
+        $browser->dump();
         $browser
             ->assertSee($this->article->title);
     }

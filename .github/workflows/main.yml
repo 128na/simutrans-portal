@@ -105,81 +105,81 @@ jobs:
       - name: Display Error Log
         run: "[ -e storage/logs/laravel.log ] && cat storage/logs/laravel.log || echo 'no log file.'"
 
-  dusk:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: .env
-        run: php -r "copy('.env.ci', '.env');"
+  # dusk:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+  #     - name: .env
+  #       run: php -r "copy('.env.ci', '.env');"
 
-      - name: PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8"
-      - name: PHP vendor Cache
-        id: cache-vendor
-        uses: actions/cache@v2
-        with:
-          path: ./vendor
-          key: ${{ runner.os }}-cache-vendor-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cache-vendor-
-      - name: Composer Install
-        if: steps.cache-vendor.outputs.cache-hit != 'true'
-        run: composer install
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
-      - name: Setup database
-        run: |
-          mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test;'
-      - name: chmod 777
-        run: chmod -R 0777 ./
+  #     - name: PHP
+  #       uses: shivammathur/setup-php@v2
+  #       with:
+  #         php-version: "8"
+  #     - name: PHP vendor Cache
+  #       id: cache-vendor
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: ./vendor
+  #         key: ${{ runner.os }}-cache-vendor-${{ hashFiles('**/composer.lock') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-cache-vendor-
+  #     - name: Composer Install
+  #       if: steps.cache-vendor.outputs.cache-hit != 'true'
+  #       run: composer install
+  #     - name: Start MySQL
+  #       run: sudo /etc/init.d/mysql start
+  #     - name: Setup database
+  #       run: |
+  #         mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test;'
+  #     - name: chmod 777
+  #       run: chmod -R 0777 ./
 
-      - name: Display Error Log
-        run: "[ -e storage/logs/laravel.log ] && cat storage/logs/laravel.log || echo 'no log file.'"
+  #     - name: Display Error Log
+  #       run: "[ -e storage/logs/laravel.log ] && cat storage/logs/laravel.log || echo 'no log file.'"
 
-      - name: Upgrade Chrome Driver
-        run: php artisan dusk:chrome-driver
+  #     - name: Upgrade Chrome Driver
+  #       run: php artisan dusk:chrome-driver
 
-      - name: Start Chrome Driver
-        run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+  #     - name: Start Chrome Driver
+  #       run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
 
-      - name: Run Laravel Server
-        run: php artisan serve --port=80 > /dev/null 2>&1 &
+  #     - name: Run Laravel Server
+  #       run: php artisan serve --port=80 > /dev/null 2>&1 &
 
-      - name: Cache build assets
-        id: cache-assets
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-assets
-        with:
-          path: ./public
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
+  #     - name: Cache build assets
+  #       id: cache-assets
+  #       uses: actions/cache@v2
+  #       env:
+  #         cache-name: cache-assets
+  #       with:
+  #         path: ./public
+  #         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-build-${{ env.cache-name }}-
 
-      - name: Setup Node
-        if: steps.cache-assets.outputs.cache-hit != 'true'
-        uses: actions/setup-node@v2
-      - name: npm ci
-        if: steps.cache-assets.outputs.cache-hit != 'true'
-        run: npm ci
-      - name: Build Assets
-        if: steps.cache-assets.outputs.cache-hit != 'true'
-        run: npm run prod
+  #     - name: Setup Node
+  #       if: steps.cache-assets.outputs.cache-hit != 'true'
+  #       uses: actions/setup-node@v2
+  #     - name: npm ci
+  #       if: steps.cache-assets.outputs.cache-hit != 'true'
+  #       run: npm ci
+  #     - name: Build Assets
+  #       if: steps.cache-assets.outputs.cache-hit != 'true'
+  #       run: npm run prod
 
-      - name: Run Dusk Tests
-        run: |
-          chmod -R 0755 vendor/laravel/dusk/bin/
-          php artisan dusk
-        env:
-          APP_ENV: local
-          APP_URL: "http://localhost"
+  #     - name: Run Dusk Tests
+  #       run: |
+  #         chmod -R 0755 vendor/laravel/dusk/bin/
+  #         php artisan dusk
+  #       env:
+  #         APP_ENV: local
+  #         APP_URL: "http://localhost"
 
   deploy:
     # tag push -> テスト通過後デプロイ
-    needs: [test, es, cs, dusk]
+    needs: [test, es, cs]
     if: ${{ success() && startsWith( github.ref, 'refs/tags/' ) }}
     runs-on: ubuntu-latest
     steps:

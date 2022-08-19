@@ -105,20 +105,24 @@ jobs:
       - name: Display Error Log
         run: "[ -e storage/logs/laravel.log ] && cat storage/logs/laravel.log || echo 'no log file.'"
 
-  dusk:
+  dusk-php:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Prepare The Environment
-        run: cp .env.example .env
-      - name: Create Database
-        run: |
-          sudo systemctl start mysql
-          mysql --user="root" --password="root" -e "CREATE DATABASE IF NOT EXISTS v2_portal;"
-      - name: Install Composer Dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader
-      - name: Generate Application Key
-        run: php artisan key:generate
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: .env
+        run: php -r "copy('.env.ci', '.env');"
+
+      - name: Cache build assets
+        id: cache-assets
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-assets
+        with:
+          path: ./public
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
 
       - name: Setup Node
         if: steps.cache-assets.outputs.cache-hit != 'true'
@@ -130,28 +134,46 @@ jobs:
         if: steps.cache-assets.outputs.cache-hit != 'true'
         run: npm run prod
 
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8"
+      - name: PHP vendor Cache
+        id: cache-vendor
+        uses: actions/cache@v2
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-cache-vendor-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cache-vendor-
+      - name: Composer Install
+        if: steps.cache-vendor.outputs.cache-hit != 'true'
+        run: composer install
+      - name: Start MySQL
+        run: sudo /etc/init.d/mysql start
+      - name: Setup database
+        run: |
+          mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test;'
+      - name: chmod 777
+        run: chmod -R 0777 ./
+
+      - name: Display Error Log
+        run: "[ -e storage/logs/laravel.log ] && cat storage/logs/laravel.log || echo 'no log file.'"
+
       - name: Upgrade Chrome Driver
-        run: php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
+        run: php artisan dusk:chrome-driver
+
       - name: Start Chrome Driver
-        run: ./vendor/laravel/dusk/bin/chromedriver-linux &
+        run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+
       - name: Run Laravel Server
-        run: php artisan serve --no-reload &
+        run: php artisan serve --port=80 > /dev/null 2>&1 &
+
       - name: Run Dusk Tests
-        env:
-          APP_URL: "http://127.0.0.1:8000"
-        run: php artisan dusk
-      - name: Upload Screenshots
-        if: failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: screenshots
-          path: tests/Browser/screenshots
-      - name: Upload Console Logs
-        if: failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: console
-          path: tests/Browser/console
+        run: |
+          chmod -R 0755 vendor/laravel/dusk/bin/
+          php artisan dusk
+
   deploy:
     # tag push -> テスト通過後デプロイ
     needs: [test, es, cs, dusk]

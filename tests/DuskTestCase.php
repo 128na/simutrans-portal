@@ -11,16 +11,22 @@ abstract class DuskTestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    private static bool $ranSeeder = false;
+    private static bool $init = false;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        if (!self::$ranSeeder) {
-            $this->artisan('db:seed --class=ProdSeeder');
-            self::$ranSeeder = true;
+        if (!self::$init) {
+            $this->setupDatabase();
         }
+    }
+
+    protected function setupDatabase(): void
+    {
+        $this->artisan('migrate:refresh');
+        $this->artisan('db:seed --class=ProdSeeder');
+        self::$init = true;
     }
 
     /**

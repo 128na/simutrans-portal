@@ -113,27 +113,6 @@ jobs:
       - name: .env
         run: php -r "copy('.env.ci', '.env');"
 
-      - name: Cache build assets
-        id: cache-assets
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-assets
-        with:
-          path: ./public
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-
-      - name: Setup Node
-        if: steps.cache-assets.outputs.cache-hit != 'true'
-        uses: actions/setup-node@v2
-      - name: npm ci
-        if: steps.cache-assets.outputs.cache-hit != 'true'
-        run: npm ci
-      - name: Build Assets
-        if: steps.cache-assets.outputs.cache-hit != 'true'
-        run: npm run prod
-
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -168,6 +147,27 @@ jobs:
 
       - name: Run Laravel Server
         run: php artisan serve --port=80 > /dev/null 2>&1 &
+
+      - name: Cache build assets
+        id: cache-assets
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-assets
+        with:
+          path: ./public
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Setup Node
+        if: steps.cache-assets.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v2
+      - name: npm ci
+        if: steps.cache-assets.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Build Assets
+        if: steps.cache-assets.outputs.cache-hit != 'true'
+        run: npm run prod
 
       - name: Run Dusk Tests
         run: |

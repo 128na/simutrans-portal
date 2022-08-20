@@ -68,9 +68,9 @@ import { mapGetters } from 'vuex';
 export default {
   props: ['article'],
   computed: {
-    ...mapGetters(['validationState', 'findAttachment']),
+    ...mapGetters(['validationState', 'attachmentsLoaded', 'findAttachment']),
     fileSelected() {
-      return this.article.contents.file;
+      return this.article.contents.file && this.attachmentsLoaded;
     },
     hasReadme() {
       return (

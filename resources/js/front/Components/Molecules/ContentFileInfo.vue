@@ -34,7 +34,7 @@ export default {
   props: {
     file_info: {
       type: Object,
-      default: () => Object.create({ dats: {}, tabs: {} }),
+      default: () => Object.create({ dats: {}, tabs: {} })
     }
   },
   computed: {

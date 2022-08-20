@@ -1,6 +1,6 @@
 <template>
   <b-row v-if="ready">
-    <b-col>
+    <b-col class="w-50">
       <page-title>編集</page-title>
       <component :is="componentName" :article="copy">
         <form-status :article="copy" :can-reservation="canReservation" />
@@ -31,7 +31,7 @@
         <b-form-group>
           <fetching-overlay>
             <b-button @click.prevent="handlePreview">
-              プレビュー表示
+              {{ show_preview ? 'プレビュー非表示' : 'プレビュー表示' }}
             </b-button>
           </fetching-overlay>
           <fetching-overlay>
@@ -42,7 +42,7 @@
         </b-form-group>
       </component>
     </b-col>
-    <b-col>
+    <b-col class="w-50" v-show="show_preview">
       <article-preview :article="copy" />
     </b-col>
   </b-row>
@@ -52,13 +52,13 @@
 import { mapGetters, mapActions } from 'vuex';
 import { validateVerified } from '../../mixins/auth';
 import { editor } from '../../mixins/editor';
-import { preview } from '../../mixins/preview';
 export default {
-  mixins: [validateVerified, preview, editor],
+  mixins: [validateVerified, editor],
   data() {
     return {
       should_tweet: false,
-      without_update_modified_at: false
+      without_update_modified_at: false,
+      show_preview: true
     };
   },
   watch: {
@@ -128,23 +128,7 @@ export default {
       'updateArticle'
     ]),
     async handlePreview() {
-      const params = {
-        article: this.copy,
-        should_tweet: this.should_tweet,
-        without_update_modified_at: this.without_update_modified_at,
-        preview: true
-      };
-      const html = await this.updateArticle({
-        params,
-        message: null
-      });
-
-      // プレビュー作成が成功すればプレビューウインドウを表示する
-      // エラーがあれば画面上部へスクロールする（通知が見えないため）
-      if (!this.hasError && html) {
-        return this.createPreview(html);
-      }
-      this.scrollToTop();
+      this.show_preview = !this.show_preview;
     },
     async handleUpdate() {
       const params = {

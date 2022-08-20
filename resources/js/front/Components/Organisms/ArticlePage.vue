@@ -3,7 +3,7 @@
     <content-title :article="article" />
     <content-thumbnail :article="article" :attachments="attachments" />
 
-    <content-page :article="article" />
+    <content-page :article="article" :attachments="attachments" />
     <dl>
       <template v-if="article.categories.length">
         <dt>

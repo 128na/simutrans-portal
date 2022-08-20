@@ -18,6 +18,10 @@ export default {
     article: {
       type: Object,
       required: true
+    },
+    attachments: {
+      type: Array,
+      default: () => []
     }
   },
   methods: {
@@ -34,7 +38,7 @@ export default {
       return section.type === 'image';
     },
     imageUrl(section) {
-      return this.article.images.find(i => i.id === section.id)?.url;
+      return this.attachments.find(i => i.id == section.id)?.url;
     }
   }
 };

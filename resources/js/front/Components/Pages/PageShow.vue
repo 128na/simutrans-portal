@@ -1,5 +1,5 @@
 <template v-if="article">
-  <template-article :article="article" />
+  <template-article :article="article" :attachments="attachments" />
 </template>
 <script>
 export default {
@@ -12,6 +12,10 @@ export default {
       type: Object,
       default: () => window.article,
       required: false
+    },
+    attachments: {
+      type: Array,
+      default: () => window.attachments
     }
   }
 };

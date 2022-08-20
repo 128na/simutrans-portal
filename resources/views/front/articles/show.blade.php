@@ -8,7 +8,8 @@
 
 @section('content')
     <script>
-        window.article = @json($articleResource)
+        window.article = {{ Js::from($articleResource) }};
+        window.attachments = {{ Js::from($attachmentResource) }};
     </script>
     <script src="{{ asset(mix('js/front_spa.js')) }}" defer></script>
     <div id="app"></div>

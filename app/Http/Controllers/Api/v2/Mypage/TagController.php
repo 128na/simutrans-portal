@@ -22,8 +22,7 @@ class TagController extends Controller
     {
         return new Tags($request->name
             ? $this->tagRepository->searchTags($request->name)
-            : $this->tagRepository->getTags()
-        );
+            : $this->tagRepository->getTags());
     }
 
     public function store(StoreRequest $request)

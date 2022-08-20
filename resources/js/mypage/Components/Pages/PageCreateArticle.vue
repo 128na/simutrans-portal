@@ -1,11 +1,8 @@
 <template>
-  <div>
-    <page-title>新規作成</page-title>
-    <div v-if="ready">
-      <component
-        :is="componentName"
-        :article="copy"
-      >
+  <b-row v-if="ready">
+    <b-col>
+      <page-title>新規作成</page-title>
+      <component :is="componentName" :article="copy">
         <form-status :article="copy" :can-reservation="true" />
         <form-reservation :article="copy" />
         <b-form-group>
@@ -29,18 +26,18 @@
             </b-button>
           </fetching-overlay>
           <fetching-overlay>
-            <b-button
-              variant="primary"
-              @click.prevent="handleCreate"
-            >
+            <b-button variant="primary" @click.prevent="handleCreate">
               「{{ articleStatusText }}」で保存
             </b-button>
           </fetching-overlay>
         </b-form-group>
       </component>
-    </div>
-    <loading-message v-else />
-  </div>
+    </b-col>
+    <b-col>
+      <article-preview :article="copy" />
+    </b-col>
+  </b-row>
+  <loading-message v-else />
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';

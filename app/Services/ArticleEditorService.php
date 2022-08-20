@@ -53,8 +53,10 @@ class ArticleEditorService extends Service
                 $list[$item->type] = [];
             }
             $list[$item->type][] = [
-                'text' => __("category.{$item->type}.{$item->slug}"),
-                'value' => $item->id,
+                'name' => __("category.{$item->type}.{$item->slug}"),
+                'id' => $item->id,
+                'url' => route('category', ['type' => $item->type, 'slug' => $item->slug]),
+                'type' => $item->type,
             ];
 
             return $list;
@@ -163,11 +165,12 @@ class ArticleEditorService extends Service
         $this->articleRepository->syncAttachments($article, $attachmentIds);
 
         // カテゴリ
-        $this->articleRepository->syncCategories($article, $request->input('article.categories', []));
+        $categoryIds = $request->input('article.categories.*.id', []);
+        $this->articleRepository->syncCategories($article, $categoryIds);
 
         // タグ
-        $tagIds = $this->tagRepository->getIdsByNames($request->input('article.tags', []));
-        $this->articleRepository->syncTags($article, $tagIds->toArray());
+        $tagIds = $request->input('article.tags.*.id', []);
+        $this->articleRepository->syncTags($article, $tagIds);
     }
 
     public function loadArticle(Article $article): Article

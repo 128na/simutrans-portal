@@ -1,65 +1,27 @@
 <template>
-  <b-form-tags
-    v-model="value"
-    no-outer-focus
-    class="mb-2"
-  >
+  <b-form-tags v-model="selected" no-outer-focus class="mb-2">
     <template #default="{ tags }">
-      <ul
-        v-if="tags.length > 0"
-        class="list-inline d-inline-block mb-2"
-      >
-        <li
-          v-for="tag in tags"
-          :key="tag"
-          class="list-inline-item mb-1"
-        >
-          <b-form-tag
-            variant="primary"
-            :title="tag"
-            @remove="handleRemoveClick(tag)"
-          >
+      <!-- tagはstring -->
+      <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
+        <li v-for="tag in tags" :key="tag" class="list-inline-item mb-1">
+          <b-form-tag variant="primary" :title="tag" @remove="handleRemoveClick(tag)">
             {{ tag }}
           </b-form-tag>
         </li>
       </ul>
-      <b-dropdown
-        size="sm"
-        variant="outline-secondary"
-        menu-class="w-100"
-        block
-        :no-flip="true"
-        :dropup="false"
-        @shown="handleShown"
-      >
+      <b-dropdown size="sm" variant="outline-secondary" menu-class="w-100" block :no-flip="true" :dropup="false"
+        @shown="handleShown">
         <template #button-content>
           タグを選択する
         </template>
-        <b-dropdown-form @submit.stop.prevent="() => {}">
-          <b-form-group
-            class="mb-0"
-            label-for="tag-search-input"
-            label-cols-md="auto"
-            label-size="sm"
-            label="検索"
-          >
+        <b-dropdown-form @submit.stop.prevent="() => { }">
+          <b-form-group class="mb-0" label-for="tag-search-input" label-cols-md="auto" label-size="sm" label="検索">
             <b-input-group>
-              <b-form-input
-                id="tag-search-input"
-                v-model="search"
-                type="search"
-                size="sm"
-                autocomplete="off"
-                maxlength="20"
-              />
+              <b-form-input id="tag-search-input" v-model="search" type="search" size="sm" autocomplete="off"
+                maxlength="20" />
               <b-input-group-append v-if="creatable">
                 <fetching-overlay>
-                  <b-button
-                    variant="primary"
-                    size="sm"
-                    :disabled="!can_create"
-                    @click="handleCreateTagClick"
-                  >
+                  <b-button variant="primary" size="sm" :disabled="!can_create" @click="handleCreateTagClick">
                     「{{ criteria }}」を作成して追加
                   </b-button>
                 </fetching-overlay>
@@ -68,12 +30,8 @@
           </b-form-group>
         </b-dropdown-form>
         <b-dropdown-divider />
-        <b-dropdown-item-button
-          v-for="tag in items"
-          :key="tag"
-          @click="handleTagClick(tag)"
-        >
-          {{ tag }}
+        <b-dropdown-item-button v-for="tag in items" :key="tag.id" @click="handleTagClick(tag)">
+          {{ tag.name }}
         </b-dropdown-item-button>
         <b-dropdown-text v-if="items.length === 0">
           該当タグ無し
@@ -108,7 +66,7 @@ export default {
       this.fetchTimeout();
     }
   },
-  created() {},
+  created() { },
   computed: {
     ...mapGetters(['tags', 'tagsLoaded']),
     items() {
@@ -118,10 +76,14 @@ export default {
       return this.search.trim().toLowerCase();
     },
     just_match() {
-      return this.tags.find((o) => o === this.criteria);
+      return this.tags.find((t) => t.name === this.criteria);
     },
     can_create() {
       return this.creatable && this.criteria && !this.just_match;
+    },
+    selected: {
+      get() { return this.value.map(v => v.name); },
+      set(val) { console.log(val); }
     }
   },
   methods: {
@@ -139,17 +101,18 @@ export default {
         this.fetchTags(this.criteria);
       }
     },
-    handleTagClick(option) {
-      this.value.push(option);
+    handleTagClick(tag) {
+      console.log({ tag }, this.value);
+      this.value.push(tag);
       this.search = '';
     },
-    handleRemoveClick(tagName) {
-      const index = this.value.findIndex((v) => v === tagName);
+    handleRemoveClick(name) {
+      const index = this.value.findIndex((v) => v.name === name);
       this.value.splice(index, 1);
     },
     async handleCreateTagClick() {
-      await this.storeTag(this.criteria);
-      this.value.push(this.criteria);
+      const res = await this.storeTag(this.criteria);
+      this.value.push(res);
       this.search = '';
     }
   }

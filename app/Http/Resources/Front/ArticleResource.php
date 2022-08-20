@@ -19,11 +19,12 @@ class ArticleResource extends JsonResource
             'post_type' => $this->post_type,
             'contents' => $this->contents,
             'categories' => $this->categories->map(fn (Category $c) => [
+                'id' => $c->id,
                 'name' => __("category.{$c->type}.{$c->slug}"),
-                'type' => __("category.type.{$c->type}"),
                 'url' => route('category', ['type' => $c->type, 'slug' => $c->slug]),
             ]),
             'tags' => $this->tags->map(fn (Tag $t) => [
+                'id' => $t->id,
                 'name' => $t->name,
                 'url' => route('tag', $t),
             ]),

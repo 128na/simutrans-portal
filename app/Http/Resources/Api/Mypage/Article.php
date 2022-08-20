@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\Api\Mypage;
 
+use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Article extends JsonResource
@@ -22,8 +24,16 @@ class Article extends JsonResource
             'status' => $this->status,
             'post_type' => $this->post_type,
             'contents' => $this->contents,
-            'categories' => $this->categories->pluck('id'),
-            'tags' => $this->tags->pluck('name'),
+            'categories' => $this->categories->map(fn (Category $c) => [
+                'id' => $c->id,
+                'name' => __("category.{$c->type}.{$c->slug}"),
+                'url' => route('category', ['type' => $c->type, 'slug' => $c->slug]),
+            ]),
+            'tags' => $this->tags->map(fn (Tag $t) => [
+                'id' => $t->id,
+                'name' => $t->name,
+                'url' => route('tag', $t),
+            ]),
             'published_at' => $this->published_at,
             'modified_at' => $this->modified_at,
             'url' => route('articles.show', $this->slug),

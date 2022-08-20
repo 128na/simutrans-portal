@@ -24,6 +24,7 @@ class User extends JsonResource
             'admin' => $this->isAdmin(),
             'verified' => (bool) $this->email_verified_at,
             'attachments' => new Attachments($this->profile->attachments),
+            'url' => route('articles.show', $this->id),
         ];
     }
 }

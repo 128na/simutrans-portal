@@ -10,7 +10,14 @@ export default {
   getters: {
     optionsLoaded: state => state.options !== false,
     options: state => state.options || {},
-    getStatusText: state => value => state.options.statuses.find(o => o.value === value).text || ''
+    getStatusText: state => value => state.options.statuses.find(o => o.value === value).text || '',
+    getCategory: state => id => {
+      return state.options.categories.addon.find(c => c.id === id) ||
+        state.options.categories.license.find(c => c.id === id) ||
+        state.options.categories.page.find(c => c.id === id) ||
+        state.options.categories.pak.find(c => c.id === id) ||
+        state.options.categories.pak128_position.find(c => c.id === id);
+    }
   },
   mutations: {
     [SET_OPTIONS](state, options = false) {

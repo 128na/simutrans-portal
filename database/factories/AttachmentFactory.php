@@ -27,7 +27,7 @@ class AttachmentFactory extends Factory
             'attachmentable_id' => null,
             'attachmentable_type' => null,
             'original_name' => 'test.png',
-            'path' => 'test.png',
+            'path' => 'testing/test.png',
         ];
     }
 
@@ -38,7 +38,7 @@ class AttachmentFactory extends Factory
             'attachmentable_id' => null,
             'attachmentable_type' => null,
             'original_name' => 'test.zip',
-            'path' => 'test.zip',
+            'path' => 'testing/test.zip',
         ];
     }
 
@@ -47,7 +47,7 @@ class AttachmentFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'original_name' => 'test.png',
-                'path' => 'test.png',
+                'path' => 'testing/test.png',
             ];
         });
     }

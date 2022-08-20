@@ -3,7 +3,7 @@
     <b-button v-if="hasDat" v-b-toggle.collapse-dat variant="outline-secondary" size="sm">Datファイル一覧</b-button>
     <b-collapse id="collapse-dat" class="my-2">
       <b-card body-class="bg-light">
-        <li v-for="(names, filename) in article.file_info.dats" :key="filename">
+        <li v-for="(names, filename) in file_info.dats" :key="filename">
           <span>{{ filename }}</span>
           <ul>
             <li v-for="name in names" :key="name">
@@ -16,7 +16,7 @@
     <b-button v-if="hasTab" v-b-toggle.collapse-tab variant="outline-secondary" size="sm">Tabファイル一覧</b-button>
     <b-collapse id="collapse-tab" class="my-2">
       <b-card body-class="bg-light">
-        <li v-for="(names, filename) in article.file_info.tabs" :key="filename">
+        <li v-for="(names, filename) in file_info.tabs" :key="filename">
           <span>{{ filename }}</span>
           <ul>
             <li v-for="(translated, original) in names" :key="original">
@@ -32,17 +32,17 @@
 <script>
 export default {
   props: {
-    article: {
+    file_info: {
       type: Object,
-      required: true
+      default: () => Object.create({ dats: {}, tabs: {} }),
     }
   },
   computed: {
     hasDat() {
-      return this.article.file_info.dats && Object.keys(this.article.file_info.dats).length > 0;
+      return this.file_info.dats && Object.keys(this.file_info.dats).length > 0;
     },
     hasTab() {
-      return this.article.file_info.tabs && Object.keys(this.article.file_info.tabs).length > 0;
+      return this.file_info.tabs && Object.keys(this.file_info.tabs).length > 0;
     }
   }
 };

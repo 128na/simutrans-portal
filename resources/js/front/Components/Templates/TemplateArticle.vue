@@ -1,5 +1,5 @@
 <template>
-  <component :is=component :article="article" />
+  <component :is=component :article="article" :attachments="attachments" :preview="preview" />
 </template>
 <script>
 import { POST_TYPES } from '../../../const';
@@ -8,6 +8,14 @@ export default {
     article: {
       type: Object,
       required: true
+    },
+    attachments: {
+      type: Array,
+      default: () => []
+    },
+    preview: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

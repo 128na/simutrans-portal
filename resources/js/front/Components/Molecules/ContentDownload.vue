@@ -1,5 +1,5 @@
 <template>
-  <a class="btn btn-lg btn-primary js-download" :href="article.download_url">ダウンロードする</a>
+  <a class="btn btn-lg btn-primary js-download" :href="download_url">ダウンロードする</a>
 </template>
 <script>
 export default {
@@ -7,6 +7,11 @@ export default {
     article: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    download_url() {
+      return `${this.article.url}/download`;
     }
   }
 };

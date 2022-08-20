@@ -1,5 +1,5 @@
 <template>
-  <img v-if="article.thumbnail_url" :src="article.thumbnail_url" class="img-fluid thumbnail mb-4 shadow-sm" />
+  <img v-if="thumbnail_url" :src="thumbnail_url" class="img-fluid thumbnail mb-4 shadow-sm" />
 </template>
 <script>
 export default {
@@ -7,6 +7,15 @@ export default {
     article: {
       type: Object,
       required: true
+    },
+    attachments: {
+      type: Array,
+      default: () => []
+    }
+  },
+  computed: {
+    thumbnail_url() {
+      return this.attachments.find(a => a.id == this.article.contents.thumbnail)?.url;
     }
   }
 };

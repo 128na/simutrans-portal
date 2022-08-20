@@ -1,7 +1,7 @@
 <template>
   <article class="addon-introduction">
     <content-title :article="article" />
-    <content-thumbnail :article="article" />
+    <content-thumbnail :article="article" :attachments="attachments" />
 
     <dl>
       <dt>
@@ -79,6 +79,10 @@ export default {
     article: {
       type: Object,
       required: true
+    },
+    attachments: {
+      type: Array,
+      default: () => []
     }
   }
 };

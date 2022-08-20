@@ -1,5 +1,5 @@
 <template>
-  <template-article :article="previewArticle" :preview="true" />
+  <template-article :article="previewArticle" :attachments="attachments" :preview="true" />
 </template>
 <script>
 import { mapGetters } from 'vuex';
@@ -13,7 +13,7 @@ export default {
   computed: {
     ...mapGetters([
       'user',
-      'findAttachment',
+      'attachments',
       'getCategory'
     ]),
     previewArticle() {
@@ -32,7 +32,6 @@ export default {
         url: `/articles/${this.article.slug}`,
         published_at: this.article.published_at ? this.article.published_at : '未投稿',
         modified_at: this.article.modified_at,
-        images: [],
         file_info: {}
       };
     }

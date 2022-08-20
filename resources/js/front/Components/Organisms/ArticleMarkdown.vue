@@ -1,7 +1,7 @@
 <template>
   <article class="markdown">
     <content-title :article="article" />
-    <content-thumbnail :article="article" />
+    <content-thumbnail :article="article" :attachments="attachments" />
 
     <content-markdown :article="article" />
     <dl>
@@ -22,6 +22,10 @@ export default {
     article: {
       type: Object,
       required: true
+    },
+    attachments: {
+      type: Array,
+      default: () => []
     }
   }
 };

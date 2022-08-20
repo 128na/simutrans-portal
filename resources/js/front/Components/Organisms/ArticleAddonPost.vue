@@ -1,7 +1,7 @@
 <template>
   <article class="addon-post">
     <content-title :article="article" />
-    <content-thumbnail :article="article" />
+    <content-thumbnail :article="article" :attachments="attachments" />
 
     <dl>
       <dt>
@@ -56,12 +56,12 @@
           <text-pre :text="article.contents.license" />
         </dd>
       </template>
-      <template v-if="article.file_info">
+      <template v-if="file_info">
         <dt>
           <text-sub-title text="添付ファイル情報（ベータ版機能）" />
         </dt>
         <dd>
-          <content-file-info :article="article" />
+          <content-file-info :file_info="file_info" />
         </dd>
       </template>
       <dt>
@@ -79,6 +79,18 @@ export default {
     article: {
       type: Object,
       required: true
+    },
+    attachments: {
+      type: Array,
+      default: () => []
+    }
+  },
+  computed: {
+    file_info() {
+      if (this.article.contents.file) {
+        return this.attachments.find(a => a.id == this.article.contents.file)?.fileInfo;
+      }
+      return null;
     }
   }
 };

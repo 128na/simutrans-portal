@@ -56,13 +56,13 @@ class UpdateAddonIntroductionTest extends ArticleTestCase
                 'agreement' => true,
             ],
             'tags' => [
-                Tag::factory()->create()->name,
+                ['id' => Tag::factory()->create()->id],
             ],
             'categories' => [
-                Category::pak()->first()->id,
-                Category::addon()->first()->id,
-                Category::pak128Position()->first()->id,
-                Category::license()->first()->id,
+                ['id' => Category::pak()->first()->id],
+                ['id' => Category::addon()->first()->id],
+                ['id' => Category::pak128Position()->first()->id],
+                ['id' => Category::license()->first()->id],
             ],
         ];
 

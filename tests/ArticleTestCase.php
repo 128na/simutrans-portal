@@ -179,7 +179,7 @@ abstract class ArticleTestCase extends TestCase
         yield '他人の投稿したサムネイルID' => [fn () => ['contents' => ['thumbnail' => $this->user2_image->id]], 'article.contents.thumbnail'];
 
         yield 'カテゴリが空' => [fn () => ['categories' => null], 'article.categories'];
-        yield '存在しないカテゴリ' => [fn () => ['categories' => [99999]], 'article.categories.0'];
+        yield '存在しないカテゴリ' => [fn () => ['categories' => [['id' => 99999]]], 'article.categories.0.id'];
         yield 'OK' => [fn () => [], null];
     }
 
@@ -189,8 +189,7 @@ abstract class ArticleTestCase extends TestCase
     public function dataAddonValidation()
     {
         yield 'タグ名が空' => [fn () => ['tags' => null], 'article.tags'];
-        yield '存在しないタグ名' => [fn () => ['tags' => ['missing_tag']], 'article.tags.0'];
-        yield 'タグ名が256文字以上' => [fn () => ['tags' => [str_repeat('a', 256)]], 'article.tags.0'];
+        yield '存在しないタグ' => [fn () => ['tags' => [['id' => -1]]], 'article.tags.0.id'];
         yield '説明が空' => [fn () => ['contents' => ['description' => '']], 'article.contents.description'];
         yield '説明が2049文字以上' => [fn () => ['contents' => ['description' => str_repeat('a', 2049)]], 'article.contents.description'];
         yield '謝辞が2049文字以上' => [fn () => ['contents' => ['thanks' => str_repeat('a', 2049)]], 'article.contents.thanks'];

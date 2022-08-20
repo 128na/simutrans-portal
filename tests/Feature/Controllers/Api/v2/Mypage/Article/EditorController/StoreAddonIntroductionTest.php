@@ -5,7 +5,6 @@ namespace Tests\Feature\Controllers\Api\v2\Mypage\Article\EditorController;
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Category;
 use App\Models\Tag;
-use App\Models\User;
 use Closure;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
@@ -52,13 +51,13 @@ class StoreAddonIntroductionTest extends ArticleTestCase
                 'agreement' => true,
             ],
             'tags' => [
-                Tag::factory()->create()->name,
+                ['id' => Tag::factory()->create()->id],
             ],
             'categories' => [
-                Category::pak()->first()->id,
-                Category::addon()->first()->id,
-                Category::pak128Position()->first()->id,
-                Category::license()->first()->id,
+                ['id' => Category::pak()->first()->id],
+                ['id' => Category::addon()->first()->id],
+                ['id' => Category::pak128Position()->first()->id],
+                ['id' => Category::license()->first()->id],
             ],
         ];
 

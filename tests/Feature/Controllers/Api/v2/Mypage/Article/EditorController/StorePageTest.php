@@ -41,7 +41,7 @@ class StorePageTest extends ArticleTestCase
                 ],
             ],
             'categories' => [
-                Category::page()->first()->id,
+                ['id' => Category::page()->first()->id],
             ],
         ];
 

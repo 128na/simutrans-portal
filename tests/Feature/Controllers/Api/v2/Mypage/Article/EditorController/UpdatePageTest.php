@@ -47,7 +47,7 @@ class UpdatePageTest extends ArticleTestCase
                 ],
             ],
             'categories' => [
-                Category::page()->first()->id,
+                ['id' => Category::page()->first()->id],
             ],
         ];
 

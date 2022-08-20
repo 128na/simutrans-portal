@@ -36,7 +36,7 @@ class StoreMarkdownTest extends ArticleTestCase
                 'markdown' => '# hello',
             ],
             'categories' => [
-                Category::page()->first()->id,
+                ['id' => Category::page()->first()->id],
             ],
         ];
 

@@ -50,7 +50,7 @@ abstract class BaseRequest extends FormRequest
             'article.categories' => 'present|array',
             'article.categories.*.id' => 'required|exists:categories,id',
             'article.tags' => 'present|array',
-            'article.tags.*' => 'required|exists:tags,name',
+            'article.tags.*.id' => 'required|exists:tags,id',
             'article.contents' => 'required|array',
             'article.contents.thumbnail' => ['nullable', 'exists:attachments,id,user_id,'.Auth::id(), app(ImageAttachment::class)],
             'article.contents.author' => 'required|max:255',

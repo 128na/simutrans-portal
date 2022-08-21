@@ -38,6 +38,12 @@ npm run dev
 ### Test
 
 ```
-php artisan test
-php artisan dusk
+composer run test
+```
+
+### Formatter
+
+```
+composer run cs
+npm run es
 ```

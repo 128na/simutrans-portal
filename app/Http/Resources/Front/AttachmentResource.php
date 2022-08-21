@@ -10,10 +10,9 @@ class AttachmentResource extends ResourceCollection
     public function toArray($request)
     {
         return $this->collection
-            ->filter(fn (Attachment $a) => $a->is_image)
             ->map(fn (Attachment $a) => [
                 'id' => $a->id,
-                'url' => $a->url,
+                'url' => $this->when($a->is_image, $a->url),
                 'fileInfo' => $this->when($a->fileInfo, fn () => $a->fileInfo->data),
             ]);
     }

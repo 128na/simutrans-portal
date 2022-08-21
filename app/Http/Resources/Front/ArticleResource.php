@@ -28,7 +28,7 @@ class ArticleResource extends JsonResource
             ]),
             'user' => [
                 'name' => $this->user->name,
-                'url' => route('articles.show', $this->user),
+                'url' => route('user', $this->user),
             ],
             'url' => route('articles.show', $this->slug),
             'published_at' => $this->published_at ? $this->published_at->toDateTimeString() : '未投稿',

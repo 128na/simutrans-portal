@@ -6,7 +6,6 @@ use App\Http\Requests\Api\Article\StoreRequest;
 use App\Models\Article;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
-use App\Repositories\TagRepository;
 use App\Services\ArticleEditorService;
 use Carbon\CarbonImmutable;
 use Mockery\MockInterface;
@@ -50,10 +49,6 @@ class StoreArticleTest extends UnitTestCase
             $m->shouldReceive('syncCategories')->once();
             $m->shouldReceive('syncTags')->once();
         });
-
-        $this->mock(TagRepository::class, function (MockInterface $m) {
-            $m->shouldReceive('getIdsByNames')->once()->andReturn(collect());
-        });
         $this->getSUT($now)->storeArticle($user, $request);
     }
 
@@ -89,10 +84,6 @@ class StoreArticleTest extends UnitTestCase
             $m->shouldReceive('syncCategories')->once();
             $m->shouldReceive('syncTags')->once();
         });
-
-        $this->mock(TagRepository::class, function (MockInterface $m) {
-            $m->shouldReceive('getIdsByNames')->once()->andReturn(collect());
-        });
         $this->getSUT($now)->storeArticle($user, $request);
     }
 
@@ -126,10 +117,6 @@ class StoreArticleTest extends UnitTestCase
             $m->shouldReceive('syncAttachments')->once();
             $m->shouldReceive('syncCategories')->once();
             $m->shouldReceive('syncTags')->once();
-        });
-
-        $this->mock(TagRepository::class, function (MockInterface $m) {
-            $m->shouldReceive('getIdsByNames')->once()->andReturn(collect());
         });
         $this->getSUT($now)->storeArticle($user, $request);
     }

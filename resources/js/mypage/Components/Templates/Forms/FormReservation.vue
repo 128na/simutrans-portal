@@ -5,15 +5,8 @@
         <badge-required />
         予約投稿日時
       </template>
-      <b-form-datepicker
-        v-model="date"
-        :min="minDate"
-        locale="ja-JP"
-      />
-      <b-form-timepicker
-        v-model="time"
-        locale="ja-JP"
-      />
+      <b-form-datepicker v-model="date" :min="minDate" locale="ja-JP" />
+      <b-form-timepicker v-model="time" locale="ja-JP" />
       <small>
         保存時刻より1時間後を指定できます。公開時刻は1分単位で指定できますが、サーバーの都合で実際に公開されるのは5分刻みの時刻になります。<br>
         また、投稿時には自動ツイートはされません。

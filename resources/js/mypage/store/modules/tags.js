@@ -24,7 +24,7 @@ export default {
       try {
         const res = await api.fetchTags(name);
         if (res && res.status === 200) {
-          return commit(SET_TAGS, res.data);
+          return commit(SET_TAGS, res.data.data);
         }
         dispatch('setApiStatusError');
       } catch (e) {
@@ -38,7 +38,7 @@ export default {
       try {
         const res = await api.storeTag(name);
         if (res && res.status === 201) {
-          return;
+          return res.data.data;
         }
         dispatch('setApiStatusError');
       } catch (e) {

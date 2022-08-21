@@ -7,23 +7,12 @@
 @section('meta-image', $article->thumbnail_url)
 
 @section('content')
-    <article class="{{ $article->post_type }}">
-        <h3 class="title border-bottom mb-4">
-            {{ $article->title }}
-        </h3>
-        @if ($article->has_thumbnail)
-            <img src="{{ $article->thumbnail_url }}" class="img-fluid thumbnail mb-4 shadow-sm">
-        @endif
-        @includeIf("front.articles.parts.{$article->post_type}", ['article' => $article])
-
-        <footer class="border-top pt-2">
-            <div>
-                投稿者: <a href="{{ route('user', $article->user) }}">{{ $article->user->name }}</a><br>
-                投稿日時: <span>{{ $article->published_at ? $article->published_at->format('Y/m/d H:i') : '' }}</span>,
-                最終更新: <span>{{ $article->modified_at->format('Y/m/d H:i') }}</span>
-            </div>
-        </footer>
-    </article>
+    <script>
+        window.article = {{ Js::from($articleResource) }};
+        window.attachments = {{ Js::from($attachmentResource) }};
+    </script>
+    <script src="{{ asset(mix('js/front_spa.js')) }}" defer></script>
+    <div id="app"></div>
     <script type="application/ld+json">
         @json($schemas)
     </script>

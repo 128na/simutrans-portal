@@ -10,7 +10,7 @@ export default {
   getters: {
     attachmentsLoaded: state => state.attachments !== false,
     attachments: state => state.attachments || [],
-    findAttachment: state => id => state.attachments.find(a => a.id === id)
+    findAttachment: state => id => state.attachments.find(a => a.id == id)
   },
   mutations: {
     [SET_ATTACHMENTS](state, attachments = false) {

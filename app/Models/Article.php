@@ -259,6 +259,16 @@ class Article extends Model implements Feedable
     | アクセサ
     |--------------------------------------------------------------------------
      */
+    public function getIsAddonPostAttribute()
+    {
+        return $this->post_type === config('post_types.addon-post');
+    }
+
+    public function getIsPageAttribute()
+    {
+        return $this->post_type === config('post_types.page');
+    }
+
     public function getIsPublishAttribute()
     {
         return $this->status === config('status.publish');
@@ -299,7 +309,7 @@ class Article extends Model implements Feedable
 
     public function getHasFileAttribute()
     {
-        return !is_null($this->contents->file) && $this->file;
+        return $this->is_addon_post && !is_null($this->contents->file) && $this->file;
     }
 
     public function getFileAttribute()

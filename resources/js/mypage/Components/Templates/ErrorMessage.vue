@@ -1,8 +1,5 @@
 <template>
-  <b-alert
-    variant="danger"
-    :show="!!errorMessage"
-  >
+  <b-alert variant="danger" :show="!!errorMessage">
     [{{ statusCode }}] {{ errorMessage }}
   </b-alert>
 </template>

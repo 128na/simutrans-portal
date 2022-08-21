@@ -5,12 +5,7 @@
         <badge-required />
         名前
       </template>
-      <b-form-input
-        v-model="params.name"
-        type="text"
-        :state="validationState('name')"
-        autocomplete="name"
-      />
+      <b-form-input v-model="params.name" type="text" :state="validationState('name')" autocomplete="name" />
       <validation-message field="name" />
     </b-form-group>
     <b-form-group>
@@ -18,12 +13,7 @@
         <badge-required />
         メールアドレス
       </template>
-      <b-form-input
-        v-model="params.email"
-        type="email"
-        :state="validationState('email')"
-        autocomplete="email"
-      />
+      <b-form-input v-model="params.email" type="email" :state="validationState('email')" autocomplete="email" />
       <validation-message field="email" />
     </b-form-group>
     <b-form-group>
@@ -31,11 +21,7 @@
         <badge-required />
         パスワード
       </template>
-      <input-password
-        v-model="params.password"
-        :state="validationState('password')"
-        autocomplete="new-password"
-      />
+      <input-password v-model="params.password" :state="validationState('password')" autocomplete="new-password" />
       <validation-message field="password" />
     </b-form-group>
     <slot />

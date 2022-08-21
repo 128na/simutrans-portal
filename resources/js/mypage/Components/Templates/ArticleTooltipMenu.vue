@@ -4,54 +4,24 @@
       {{ item.title }}
     </template>
     <b-nav vertical>
-      <b-nav-item
-        v-if="is_publish"
-        class="mb-1"
-        @click="handleCopy(item.url)"
-      >
-        <b-icon
-          icon="clipboard-data"
-          class="mr-1"
-        />
+      <b-nav-item v-if="is_publish" class="mb-1" @click="handleCopy(item.url)">
+        <b-icon icon="clipboard-data" class="mr-1" />
         URLをコピー
       </b-nav-item>
-      <b-nav-item
-        v-if="is_publish"
-        :href="item.url"
-        target="_blank"
-        class="mb-1"
-      >
-        <b-icon
-          icon="box-arrow-up-right"
-          class="mr-1"
-        />
+      <b-nav-item v-if="is_publish" :href="item.url" target="_blank" class="mb-1">
+        <b-icon icon="box-arrow-up-right" class="mr-1" />
         表示
       </b-nav-item>
       <b-nav-item @click="handleEdit">
-        <b-icon
-          icon="pencil"
-          class="mr-1"
-        />
+        <b-icon icon="pencil" class="mr-1" />
         編集
       </b-nav-item>
-      <b-nav-item
-        v-show="is_publish"
-        @click="handleToPrivate"
-      >
-        <b-icon
-          icon="lock-fill"
-          class="mr-1"
-        />
+      <b-nav-item v-show="is_publish" @click="handleToPrivate">
+        <b-icon icon="lock-fill" class="mr-1" />
         記事を非公開にする
       </b-nav-item>
-      <b-nav-item
-        v-show="!is_publish"
-        @click="handleToPublish"
-      >
-        <b-icon
-          icon="unlock-fill"
-          class="mr-1"
-        />
+      <b-nav-item v-show="!is_publish" @click="handleToPublish">
+        <b-icon icon="unlock-fill" class="mr-1" />
         記事を公開にする（自動ツイート無し）
       </b-nav-item>
     </b-nav>

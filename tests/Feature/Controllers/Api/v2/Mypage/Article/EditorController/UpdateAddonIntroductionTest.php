@@ -56,13 +56,13 @@ class UpdateAddonIntroductionTest extends ArticleTestCase
                 'agreement' => true,
             ],
             'tags' => [
-                Tag::factory()->create()->name,
+                ['id' => Tag::factory()->create()->id],
             ],
             'categories' => [
-                Category::pak()->first()->id,
-                Category::addon()->first()->id,
-                Category::pak128Position()->first()->id,
-                Category::license()->first()->id,
+                ['id' => Category::pak()->first()->id],
+                ['id' => Category::addon()->first()->id],
+                ['id' => Category::pak128Position()->first()->id],
+                ['id' => Category::license()->first()->id],
             ],
         ];
 
@@ -88,46 +88,5 @@ class UpdateAddonIntroductionTest extends ArticleTestCase
 
         $res = $this->postJson($url);
         $res->assertForbidden();
-    }
-
-    public function testPreview()
-    {
-        $url = route('api.v2.articles.update', $this->article);
-        $this->actingAs($this->user);
-
-        $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
-
-        $date = now()->format('YmdHis');
-        $data = [
-            'post_type' => 'addon-introduction',
-            'status' => 'publish',
-            'title' => 'test title '.$date,
-            'slug' => 'test-slug-'.$date,
-            'contents' => [
-                'thumbnail' => $thumbnail->id,
-                'author' => 'test auhtor',
-                'link' => 'http://example.com',
-                'description' => 'test description',
-                'thanks' => 'tets thanks',
-                'license' => 'test license',
-                'agreement' => true,
-            ],
-            'tags' => [
-                Tag::factory()->create()->name,
-            ],
-            'categories' => [
-                Category::pak()->first()->id,
-                Category::addon()->first()->id,
-                Category::pak128Position()->first()->id,
-                Category::license()->first()->id,
-            ],
-        ];
-        $res = $this->postJson($url, ['article' => $data, 'preview' => true]);
-        $res->assertHeader('content-type', 'text/html; charset=UTF-8');
-        $res->assertSee('<html', false);
-        $res->assertSee($data['title']);
-        $this->assertDatabaseMissing('articles', [
-            'title' => $data['title'],
-        ]);
     }
 }

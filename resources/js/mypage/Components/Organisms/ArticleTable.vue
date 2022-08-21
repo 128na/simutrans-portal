@@ -1,38 +1,22 @@
 <template>
-<div>
-  <b-form-group>
-    <b-button v-b-toggle.fieldSelect variant="secondary">表示項目</b-button>
-    <b-collapse id="fieldSelect" class="mt-2">
-      <b-card>
-          <b-form-checkbox-group
-            v-model="activeFields"
-            :options="checkboxFields"
-            stacked
-          />
-      </b-card>
-    </b-collapse>
-  </b-form-group>
-  <b-form-group>
-    <b-table
-      hover
-      :items="items"
-      :fields="fields"
-      :sort-by.sync="sortBy"
-      :sort-desc.sync="sortDesc"
-      stacked="sm"
-      class="clickable"
-      @row-clicked="handleRowClicked"
-    />
-    <div v-show="items.length === 0">
-      投稿がありません
-    </div>
-    <article-tooltip-menu
-      v-if="selected_item"
-      :item="selected_item"
-      :style="tooltip_style"
-      @close="handleTooltipClose"
-    />
-  </b-form-group>
+  <div>
+    <b-form-group>
+      <b-button v-b-toggle.fieldSelect variant="secondary">表示項目</b-button>
+      <b-collapse id="fieldSelect" class="mt-2">
+        <b-card>
+          <b-form-checkbox-group v-model="activeFields" :options="checkboxFields" stacked />
+        </b-card>
+      </b-collapse>
+    </b-form-group>
+    <b-form-group>
+      <b-table hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" stacked="sm"
+        class="clickable" @row-clicked="handleRowClicked" />
+      <div v-show="items.length === 0">
+        投稿がありません
+      </div>
+      <article-tooltip-menu v-if="selected_item" :item="selected_item" :style="tooltip_style"
+        @close="handleTooltipClose" />
+    </b-form-group>
   </div>
 </template>
 <script>

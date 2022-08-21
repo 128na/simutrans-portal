@@ -22,3 +22,4 @@ coverage/
 
 *-firebase-adminsdk*.json
 gcp_service_account.json
+.env.dusk.local

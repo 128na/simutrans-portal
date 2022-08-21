@@ -1,11 +1,8 @@
 <template>
-  <div>
-    <page-title>編集</page-title>
-    <div v-if="ready">
-      <component
-        :is="componentName"
-        :article="copy"
-      >
+  <b-row v-if="ready">
+    <b-col class="w-50">
+      <page-title>編集</page-title>
+      <component :is="componentName" :article="copy">
         <form-status :article="copy" :can-reservation="canReservation" />
         <form-reservation :article="copy" />
         <b-form-group>
@@ -34,34 +31,34 @@
         <b-form-group>
           <fetching-overlay>
             <b-button @click.prevent="handlePreview">
-              プレビュー表示
+              {{ show_preview ? 'プレビュー非表示' : 'プレビュー表示' }}
             </b-button>
           </fetching-overlay>
           <fetching-overlay>
-            <b-button
-              variant="primary"
-              @click.prevent="handleUpdate"
-            >
+            <b-button variant="primary" @click.prevent="handleUpdate">
               「{{ articleStatusText }}」で保存
             </b-button>
           </fetching-overlay>
         </b-form-group>
       </component>
-    </div>
-    <loading-message v-else />
-  </div>
+    </b-col>
+    <b-col class="w-50" v-show="show_preview">
+      <article-preview :article="copy" />
+    </b-col>
+  </b-row>
+  <loading-message v-else />
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { validateVerified } from '../../mixins/auth';
 import { editor } from '../../mixins/editor';
-import { preview } from '../../mixins/preview';
 export default {
-  mixins: [validateVerified, preview, editor],
+  mixins: [validateVerified, editor],
   data() {
     return {
       should_tweet: false,
-      without_update_modified_at: false
+      without_update_modified_at: false,
+      show_preview: true
     };
   },
   watch: {
@@ -131,23 +128,7 @@ export default {
       'updateArticle'
     ]),
     async handlePreview() {
-      const params = {
-        article: this.copy,
-        should_tweet: this.should_tweet,
-        without_update_modified_at: this.without_update_modified_at,
-        preview: true
-      };
-      const html = await this.updateArticle({
-        params,
-        message: null
-      });
-
-      // プレビュー作成が成功すればプレビューウインドウを表示する
-      // エラーがあれば画面上部へスクロールする（通知が見えないため）
-      if (!this.hasError && html) {
-        return this.createPreview(html);
-      }
-      this.scrollToTop();
+      this.show_preview = !this.show_preview;
     },
     async handleUpdate() {
       const params = {
@@ -182,3 +163,14 @@ export default {
   }
 };
 </script>
+<style scoped>
+.row {
+  max-height: calc(100vh - 2.7rem);
+  overflow: hidden;
+}
+
+.w-50.col {
+  max-height: calc(100vh - 2.7rem);
+  overflow: auto;
+}
+</style>

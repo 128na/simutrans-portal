@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -32,7 +33,9 @@ abstract class TestCase extends BaseTestCase
     {
         $disk = Storage::disk('public');
         User::all()->map(function (User $user) use ($disk) {
-            $user->myAttachments->map(fn (Attachment $attachment) => $attachment->delete());
+            $user->myAttachments
+                ->filter(fn (Attachment $a) => Str::startsWith($a->path, 'user/'))
+                ->map(fn (Attachment $a) => $a->delete());
             $dir = "user/$user->id";
             if (count($disk->files($dir)) === 0) {
                 $disk->deleteDirectory($dir);

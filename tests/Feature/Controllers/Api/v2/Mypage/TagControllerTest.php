@@ -29,22 +29,25 @@ class TagControllerTest extends TestCase
 
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson([$this->tag1->name, $this->tag2->name]);
+        $res->assertExactJson(['data' => [
+            ['id' => $this->tag1->id, 'name' => $this->tag1->name, 'url' => route('tag', $this->tag1)],
+            ['id' => $this->tag2->id, 'name' => $this->tag2->name, 'url' => route('tag', $this->tag2)],
+        ]]);
 
         $url = route('api.v2.tags.search', ['name' => 'sh']);
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson([$this->tag2->name]);
+        $res->assertExactJson(['data' => [['id' => $this->tag2->id, 'name' => $this->tag2->name, 'url' => route('tag', $this->tag2)]]]);
 
         $url = route('api.v2.tags.search', ['name' => 'or']);
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson([$this->tag2->name]);
+        $res->assertExactJson(['data' => [['id' => $this->tag2->id, 'name' => $this->tag2->name, 'url' => route('tag', $this->tag2)]]]);
 
         $url = route('api.v2.tags.search', ['name' => 'rt']);
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson([$this->tag2->name]);
+        $res->assertExactJson(['data' => [['id' => $this->tag2->id, 'name' => $this->tag2->name, 'url' => route('tag', $this->tag2)]]]);
     }
 
     /**

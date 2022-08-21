@@ -37,16 +37,7 @@ class EditorController extends Controller
 
     public function store(StoreRequest $request)
     {
-        DB::beginTransaction();
-        $article = $this->articleEditorService->storeArticle(Auth::user(), $request);
-
-        if ($request->preview) {
-            $preview = $this->createPreview($article);
-            DB::rollback();
-
-            return $preview;
-        }
-        DB::commit();
+        $article = DB::transaction(fn () => $this->articleEditorService->storeArticle(Auth::user(), $request));
         JobUpdateRelated::dispatchAfterResponse();
 
         if ($article->is_publish && $request->should_tweet) {
@@ -58,17 +49,8 @@ class EditorController extends Controller
 
     public function update(UpdateRequest $request, Article $article)
     {
-        DB::beginTransaction();
         $notYetPublished = is_null($article->published_at);
-        $article = $this->articleEditorService->updateArticle($article, $request);
-
-        if ($request->preview) {
-            $preview = $this->createPreview($article);
-            DB::rollback();
-
-            return $preview;
-        }
-        DB::commit();
+        $article = DB::transaction(fn () => $this->articleEditorService->updateArticle($article, $request));
         JobUpdateRelated::dispatchAfterResponse();
 
         $this->handleTweet($article, $request, $notYetPublished);
@@ -97,14 +79,5 @@ class EditorController extends Controller
         } else {
             $article->notify(new ArticleUpdated());
         }
-    }
-
-    private function createPreview(Article $article)
-    {
-        $article = $this->articleEditorService->loadArticle($article);
-
-        $contents = ['preview' => true, 'article' => $article];
-
-        return view('front.articles.show', $contents);
     }
 }

@@ -5,7 +5,6 @@ namespace Tests\Unit\Services\ArticleEditorService;
 use App\Http\Requests\Api\Article\UpdateRequest;
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
-use App\Repositories\TagRepository;
 use App\Services\ArticleEditorService;
 use Carbon\CarbonImmutable;
 use Mockery\MockInterface;
@@ -48,10 +47,6 @@ class UpdateArticleTest extends UnitTestCase
             $m->shouldReceive('syncCategories')->once();
             $m->shouldReceive('syncTags')->once();
         });
-
-        $this->mock(TagRepository::class, function (MockInterface $m) {
-            $m->shouldReceive('getIdsByNames')->once()->andReturn(collect());
-        });
         $this->getSUT($now)->updateArticle($article, $request);
     }
 
@@ -83,10 +78,6 @@ class UpdateArticleTest extends UnitTestCase
             $m->shouldReceive('syncAttachments')->once();
             $m->shouldReceive('syncCategories')->once();
             $m->shouldReceive('syncTags')->once();
-        });
-
-        $this->mock(TagRepository::class, function (MockInterface $m) {
-            $m->shouldReceive('getIdsByNames')->once()->andReturn(collect());
         });
         $this->getSUT($now)->updateArticle($article, $request);
     }

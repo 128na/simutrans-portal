@@ -1,12 +1,7 @@
 <template>
   <b-form>
     <b-form-group label="メールアドレス">
-      <b-form-input
-        v-model="params.email"
-        type="email"
-        autocomplete="email"
-        :state="validationState('email')"
-      />
+      <b-form-input v-model="params.email" type="email" autocomplete="email" :state="validationState('email')" />
       <validation-message field="email" />
     </b-form-group>
     <slot />

@@ -36,7 +36,7 @@ class StoreMarkdownTest extends ArticleTestCase
                 'markdown' => '# hello',
             ],
             'categories' => [
-                Category::page()->first()->id,
+                ['id' => Category::page()->first()->id],
             ],
         ];
 
@@ -52,36 +52,5 @@ class StoreMarkdownTest extends ArticleTestCase
             $res->assertJsonValidationErrors($error_field);
             Bus::assertNotDispatched(JobUpdateRelated::class);
         }
-    }
-
-    public function testPreview()
-    {
-        $url = route('api.v2.articles.store');
-
-        $this->actingAs($this->user);
-
-        $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
-
-        $date = now()->format('YmdHis');
-        $data = [
-            'post_type' => 'markdown',
-            'status' => 'publish',
-            'title' => 'test title '.$date,
-            'slug' => 'test-slug-'.$date,
-            'contents' => [
-                'thumbnail' => $thumbnail->id,
-                'markdown' => '# hello',
-            ],
-            'categories' => [
-                Category::page()->first()->id,
-            ],
-        ];
-        $res = $this->postJson($url, ['article' => $data, 'preview' => true]);
-        $res->assertHeader('content-type', 'text/html; charset=UTF-8');
-        $res->assertSee('<html', false);
-        $res->assertSee($data['title']);
-        $this->assertDatabaseMissing('articles', [
-            'title' => $data['title'],
-        ]);
     }
 }

@@ -1,9 +1,5 @@
 <template>
-  <b-alert
-    variant="success"
-    :show="!!infoMessage"
-    dismissible
-  >
+  <b-alert variant="success" :show="!!infoMessage" dismissible>
     {{ infoMessage }}
   </b-alert>
 </template>

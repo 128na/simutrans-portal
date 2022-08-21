@@ -47,9 +47,6 @@ export default {
         const res = await api.updateArticle(params);
         if (res && res.status === 200) {
           dispatch('setApiStatusSuccess');
-          if (params.preview) {
-            return res.data;
-          }
           commit(SET_ARTICLES, res.data.data);
           return dispatch('setInfoMessage', { message });
         }
@@ -67,9 +64,6 @@ export default {
         const res = await api.createArticle(params);
         if (res && res.status === 200) {
           dispatch('setApiStatusSuccess');
-          if (params.preview) {
-            return res.data;
-          }
           commit(SET_ARTICLES, res.data.data);
           return dispatch('setInfoMessage', { message });
         }

@@ -1,9 +1,6 @@
 <template>
   <div :style="style">
-    <canvas
-      ref="chart"
-      :style="style"
-    />
+    <canvas ref="chart" :style="style" />
   </div>
 </template>
 <script>

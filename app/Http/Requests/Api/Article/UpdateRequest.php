@@ -17,7 +17,6 @@ class UpdateRequest extends BaseRequest
             'article.title' => ['required', "unique:articles,title,{$articleId}", 'max:255', new NgWordRule(User::TITLE_NG_WORDS)],
             'article.slug' => "required|unique:articles,slug,{$articleId}|max:255",
             'should_tweet' => 'nullable|boolean',
-            'preview' => 'nullable',
             'without_update_modified_at' => 'nullable|boolean',
         ];
     }

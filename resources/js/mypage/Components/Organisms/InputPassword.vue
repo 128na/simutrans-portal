@@ -1,12 +1,7 @@
 <template>
   <b-input-group>
-    <b-form-input
-      :type="type"
-      :value="value"
-      :autocomplete="autocomplete"
-      :state="state"
-      @input="$emit('input', $event)"
-    />
+    <b-form-input :type="type" :value="value" :autocomplete="autocomplete" :state="state"
+      @input="$emit('input', $event)" />
     <template #append>
       <b-input-group-text @click="toggle">
         <b-icon :icon="icon" />

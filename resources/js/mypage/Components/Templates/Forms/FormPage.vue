@@ -5,86 +5,37 @@
         <badge-required />
         本文
       </template>
-      <div
-        v-for="(section, index) in article.contents.sections"
-        :key="index"
-        class="mb-3"
-      >
-        <countable-textarea
-          v-if="isText(section.type)"
-          :value="section.text"
-          :rows="8"
-          :max-length="2048"
-          placeholder="テキスト"
-          :state="validationState(`article.contents.sections.${index}.text`)"
-          @input="(v) => handleInput(index, v)"
-        />
-        <b-form-input
-          v-if="isUrl(section.type)"
-          type="url"
-          :value="section.url"
-          placeholder="URL"
-          :state="validationState(`article.contents.sections.${index}.url`)"
-          @input="(v) => handleInput(index, v)"
-        />
-        <media-manager
-          v-if="isImage(section.type)"
-          :id="article.id"
-          :name="`section-${index}`"
-          :value="section.id"
-          type="Article"
-          :only_image="true"
-          :state="validationState(`article.contents.sections.${index}.id`)"
-          @input="(v) => handleInput(index, v)"
-        />
-        <b-form-input
-          v-if="isCaption(section.type)"
-          type="text"
-          :value="section.caption"
-          placeholder="見出し"
+      <div v-for="(section, index) in article.contents.sections" :key="index" class="mb-3">
+        <countable-textarea v-if="isText(section.type)" :value="section.text" :rows="8" :max-length="2048"
+          placeholder="テキスト" :state="validationState(`article.contents.sections.${index}.text`)"
+          @input="(v) => handleInput(index, v)" />
+        <b-form-input v-if="isUrl(section.type)" type="url" :value="section.url" placeholder="URL"
+          :state="validationState(`article.contents.sections.${index}.url`)" @input="(v) => handleInput(index, v)" />
+        <media-manager v-if="isImage(section.type)" :id="article.id" :name="`section-${index}`" :value="section.id"
+          type="Article" :only_image="true" :state="validationState(`article.contents.sections.${index}.id`)"
+          @input="(v) => handleInput(index, v)" />
+        <b-form-input v-if="isCaption(section.type)" type="text" :value="section.caption" placeholder="見出し"
           :state="validationState(`article.contents.sections.${index}.caption`)"
-          @input="(v) => handleInput(index, v)"
-        />
-        <b-button
-          variant="danger"
-          size="sm"
-          class="mt-1"
-          @click="handleRemove(index)"
-        >
+          @input="(v) => handleInput(index, v)" />
+        <b-button variant="danger" size="sm" class="mt-1" @click="handleRemove(index)">
           項目を削除
         </b-button>
-        <validation-message
-          :field="`article.contents.sections.${index}.text`"
-        />
+        <validation-message :field="`article.contents.sections.${index}.text`" />
         <validation-message :field="`article.contents.sections.${index}.url`" />
         <validation-message :field="`article.contents.sections.${index}.id`" />
-        <validation-message
-          :field="`article.contents.sections.${index}.caption`"
-        />
+        <validation-message :field="`article.contents.sections.${index}.caption`" />
       </div>
       <b-button-group>
-        <b-button
-          variant="outline-secondary"
-          @click="handleAdd('caption')"
-        >
+        <b-button variant="outline-secondary" @click="handleAdd('caption')">
           見出しを追加
         </b-button>
-        <b-button
-          variant="outline-secondary"
-          @click="handleAdd('text')"
-        >
+        <b-button variant="outline-secondary" @click="handleAdd('text')">
           テキストを追加
         </b-button>
-        <b-button
-          variant="outline-secondary"
-          @click="handleAdd('url')"
-        >
+        <b-button variant="outline-secondary" @click="handleAdd('url')">
           URLを追加
         </b-button>
-        <b-button
-          variant="outline-secondary"
-          @click="handleAdd('image')"
-        >
+        <b-button variant="outline-secondary" @click="handleAdd('image')">
           画像を追加
         </b-button>
       </b-button-group>
@@ -94,10 +45,7 @@
         <badge-optional />
         カテゴリ
       </template>
-      <b-form-checkbox-group
-        v-model="article.categories"
-        :options="options.categories.page"
-      />
+      <b-form-checkbox-group v-model="selectedCategories" :options="page" />
     </b-form-group>
   </div>
 </template>
@@ -106,7 +54,19 @@ import { mapGetters } from 'vuex';
 export default {
   props: ['article'],
   computed: {
-    ...mapGetters(['options', 'validationState'])
+    ...mapGetters(['options', 'validationState', 'getCategory']),
+    page() {
+      return this.options.categories.page.map(c => Object.create({ text: c.name, value: c.id }));
+    },
+    selectedCategories:
+    {
+      get() {
+        return this.article.categories.map(c => c.id);
+      },
+      set(v) {
+        this.article.categories = v.map(c => this.getCategory(c));
+      }
+    }
   },
   methods: {
     isText(type) {
@@ -179,6 +139,7 @@ export default {
   margin: 1rem 0;
   justify-content: space-between;
   align-items: flex-start;
+
   input,
   textarea {
     flex: 1;

@@ -23,37 +23,22 @@
     <b-form-group>
       <b-input-group>
         <b-input-group-prepend v-if="user.invitation_url">
-          <b-button
-            variant="outline-secondary"
-            @click="handleCopy"
-          >
+          <b-button variant="outline-secondary" @click="handleCopy">
             <b-icon icon="clipboard-data" />
           </b-button>
         </b-input-group-prepend>
-        <b-form-input
-          :value="user.invitation_url || '未生成'"
-          :readonly="true"
-        />
+        <b-form-input :value="user.invitation_url || '未生成'" :readonly="true" />
         <b-input-group-append>
           <template v-if="user.invitation_url">
-            <b-button
-              variant="primary"
-              @click="updateInvitationCode"
-            >
+            <b-button variant="primary" @click="updateInvitationCode">
               再生成
             </b-button>
-            <b-button
-              variant="danger"
-              @click="deleteInvitationCode"
-            >
+            <b-button variant="danger" @click="deleteInvitationCode">
               削除
             </b-button>
           </template>
           <template v-else>
-            <b-button
-              variant="primary"
-              @click="updateInvitationCode"
-            >
+            <b-button variant="primary" @click="updateInvitationCode">
               生成
             </b-button>
           </template>

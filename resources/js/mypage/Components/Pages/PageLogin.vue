@@ -4,18 +4,11 @@
     <form-login :params="params">
       <b-form-group>
         <fetching-overlay>
-          <b-button
-            type="submit"
-            variant="primary"
-            @click.prevent="handleLogin"
-          >
+          <b-button type="submit" variant="primary" @click.prevent="handleLogin">
             ログイン
           </b-button>
         </fetching-overlay>
-        <router-link
-          :to="route_password_reset"
-          class="mx-2"
-        >
+        <router-link :to="route_password_reset" class="mx-2">
           パスワード再設定
         </router-link>
       </b-form-group>

@@ -1,12 +1,5 @@
 <template>
-  <b-overlay
-    :show="fetching"
-    rounded
-    opacity="0.6"
-    spinner-small
-    spinner-variant="primary"
-    class="d-inline-block"
-  >
+  <b-overlay :show="fetching" rounded opacity="0.6" spinner-small spinner-variant="primary" class="d-inline-block">
     <slot />
   </b-overlay>
 </template>

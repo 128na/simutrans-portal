@@ -1,40 +1,20 @@
 <template>
   <div>
     <b-form-group label="間隔">
-      <b-form-radio-group
-        v-model="value.type"
-        :options="options.types"
-        buttons
-        button-variant="outline-primary"
-      />
+      <b-form-radio-group v-model="value.type" :options="options.types" buttons button-variant="outline-primary" />
     </b-form-group>
     <b-form-group label="集計方式">
-      <b-form-radio-group
-        v-model="value.mode"
-        :options="options.modes"
-        buttons
-        button-variant="outline-primary"
-      />
+      <b-form-radio-group v-model="value.mode" :options="options.modes" buttons button-variant="outline-primary" />
     </b-form-group>
     <b-form-group label="対象">
-      <b-form-checkbox-group
-        v-model="value.axes"
-        :options="options.axes"
-      />
+      <b-form-checkbox-group v-model="value.axes" :options="options.axes" />
     </b-form-group>
     <b-form-group label="開始日">
-      <b-form-datepicker
-        v-model="computed_start_date"
-        class="mr-2"
-        :state="validationState('start_date')"
-      />
+      <b-form-datepicker v-model="computed_start_date" class="mr-2" :state="validationState('start_date')" />
       <validation-message field="start_date" />
     </b-form-group>
     <b-form-group label="終了日">
-      <b-form-datepicker
-        v-model="computed_end_date"
-        :state="validationState('end_date')"
-      />
+      <b-form-datepicker v-model="computed_end_date" :state="validationState('end_date')" />
       <validation-message field="end_date" />
     </b-form-group>
   </div>

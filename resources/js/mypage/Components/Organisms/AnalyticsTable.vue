@@ -1,27 +1,13 @@
 <template>
   <b-form-group label="投稿一覧">
     <slot />
-    <b-table
-      hover
-      :items="items"
-      :fields="fields"
-      :sort-by.sync="sortBy"
-      :sort-desc.sync="sortDesc"
-      stacked="sm"
-      class="clickable"
-      @row-clicked="handleCheck"
-    >
+    <b-table hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" stacked="sm"
+      class="clickable" @row-clicked="handleCheck">
       <template #head(select)>
-        <b-form-checkbox
-          :checked="all_selected"
-          @change="handleToggle"
-        />
+        <b-form-checkbox :checked="all_selected" @change="handleToggle" />
       </template>
       <template #cell(select)="data">
-        <b-form-checkbox
-          :checked="checked(data.item.id)"
-          @change="handleCheck(data.item)"
-        />
+        <b-form-checkbox :checked="checked(data.item.id)" @change="handleCheck(data.item)" />
       </template>
     </b-table>
     <div v-show="items.length === 0">

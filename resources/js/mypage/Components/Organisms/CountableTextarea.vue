@@ -1,19 +1,14 @@
 <template>
-<div>
-    <b-form-textarea
-      :value="value"
-      :rows="rows"
-      :state="!isLimit && state"
-      @input="$emit('input', $event)"
-    />
-    <small :class="{'text-danger': isLimit}">
-        {{ currentLength }}
+  <div>
+    <b-form-textarea :value="value" :rows="rows" :state="!isLimit && state" @input="$emit('input', $event)" />
+    <small :class="{ 'text-danger': isLimit }">
+      {{ currentLength }}
       <template v-if="maxLength">
-         / {{ maxLength }}
+        / {{ maxLength }}
       </template>
       文字
     </small>
-    </div>
+  </div>
 </template>
 <script>
 export default {

@@ -3,30 +3,15 @@
     <b-input-group>
       <slot :processing="processing" />
       <component :is="appendable">
-        <b-button
-          v-if="processing"
-          variant="outline-primary"
-          disabled
-        >
-          <b-spinner
-            small
-            class="mr-1"
-          />処理中...
+        <b-button v-if="processing" variant="outline-primary" disabled>
+          <b-spinner small class="mr-1" />処理中...
         </b-button>
-        <b-button
-          v-else
-          variant="outline-primary"
-          :disabled="!canDownload"
-          @click="handleDownload"
-        >
+        <b-button v-else variant="outline-primary" :disabled="!canDownload" @click="handleDownload">
           {{ buttonName }}
         </b-button>
       </component>
     </b-input-group>
-    <div
-      v-show="errorMessage"
-      class="text-danger"
-    >
+    <div v-show="errorMessage" class="text-danger">
       {{ errorMessage }}
     </div>
   </div>

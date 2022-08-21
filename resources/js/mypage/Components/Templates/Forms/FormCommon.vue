@@ -6,11 +6,7 @@
         タイトル
       </template>
       <b-input-group>
-        <b-form-input
-          v-model="article.title"
-          type="text"
-          :state="validationState('article.title')"
-        />
+        <b-form-input v-model="article.title" type="text" :state="validationState('article.title')" />
         <b-input-group-append>
           <b-button @click="handleSlug">
             <b-icon icon="arrow-down" />
@@ -25,11 +21,7 @@
         <badge-required />
         パーマリンク
       </template>
-      <b-form-input
-        v-model="url_decoded_slug"
-        type="text"
-        :state="validationState('article.slug')"
-      />
+      <b-form-input v-model="url_decoded_slug" type="text" :state="validationState('article.slug')" />
       <div class="mt-1 text-break">
         URL: {{ base_url }}/articles/{{ article.slug }}
       </div>
@@ -40,14 +32,8 @@
         <badge-optional />
         サムネイル画像
       </template>
-      <media-manager
-        :id="article.id"
-        v-model="article.contents.thumbnail"
-        name="thumbnail"
-        type="Article"
-        :only_image="true"
-        :state="validationState('article.contents.thumbnail')"
-      />
+      <media-manager :id="article.id" v-model="article.contents.thumbnail" name="thumbnail" type="Article"
+        :only_image="true" :state="validationState('article.contents.thumbnail')" />
     </b-form-group>
     <validation-message field="article.contents.thumbnail" />
   </div>

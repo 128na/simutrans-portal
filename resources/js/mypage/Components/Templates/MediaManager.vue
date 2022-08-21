@@ -1,64 +1,29 @@
 <template>
   <div>
-    <input
-      :ref="file_uploader_id"
-      type="file"
-      class="d-none"
-      :accept="accept"
-      @change="handleFileChange"
-    >
-    <b-img
-      v-if="can_preview"
-      :src="current_thumbnail"
-      thumbnail
-    />
+    <input :ref="file_uploader_id" type="file" class="d-none" :accept="accept" @change="handleFileChange">
+    <b-img v-if="can_preview" :src="current_thumbnail" thumbnail />
     <p>{{ current_filename }}</p>
-    <b-button
-      :variant="button_variant"
-      @click="handleShow"
-    >
+    <b-button :variant="button_variant" @click="handleShow">
       ファイルを選択する
     </b-button>
-    <b-modal
-      :id="name"
-      title="Select File"
-      size="xl"
-      scrollable
-    >
+    <b-modal :id="name" title="Select File" size="xl" scrollable>
       <template #modal-header>
         <div>
           ファイルマネージャー
           <validation-message field="file" />
         </div>
         <fetching-overlay>
-          <b-button
-            variant="primary"
-            @click="handleClickUpload"
-          >
+          <b-button variant="primary" @click="handleClickUpload">
             ファイルをアップロード
           </b-button>
         </fetching-overlay>
       </template>
       <div class="attachment-list">
-        <div
-          v-for="attachment in filtered_attachments"
-          :key="attachment.id"
-          :class="selectedClass(attachment.id)"
-          class="attachment-item"
-          @click="handleSelect(attachment.id)"
-        >
+        <div v-for="attachment in filtered_attachments" :key="attachment.id" :class="selectedClass(attachment.id)"
+          class="attachment-item" @click="handleSelect(attachment.id)">
           <div class="attachment-thumbnail">
-            <b-img
-              :src="attachment.thumbnail"
-              fluid
-              class="m-auto"
-            />
-            <b-button
-              class="position-absolute btn-close"
-              pill
-              size="sm"
-              @click.stop="handleDelete(attachment.id)"
-            >
+            <b-img :src="attachment.thumbnail" fluid class="m-auto" />
+            <b-button class="position-absolute btn-close" pill size="sm" @click.stop="handleDelete(attachment.id)">
               &times;
             </b-button>
           </div>
@@ -74,18 +39,12 @@
         </div>
         <div>
           <fetching-overlay>
-            <b-button
-              size="sm"
-              @click="handleCancel"
-            >
+            <b-button size="sm" @click="handleCancel">
               キャンセル
             </b-button>
           </fetching-overlay>
           <fetching-overlay>
-            <b-button
-              variant="primary"
-              @click="handleOK"
-            >
+            <b-button variant="primary" @click="handleOK">
               決定
             </b-button>
           </fetching-overlay>
@@ -127,8 +86,8 @@ export default {
         ? filtered.filter(
           (a) =>
             a.attachmentable_id === null ||
-              (a.attachmentable_id == this.id &&
-                a.attachmentable_type === this.type)
+            (a.attachmentable_id == this.id &&
+              a.attachmentable_type === this.type)
         )
         : filtered.filter((a) => a.attachmentable_id === null);
     },
@@ -254,6 +213,7 @@ export default {
   justify-content: flex-start;
   align-items: flex-start;
 }
+
 .attachment-item {
   cursor: pointer;
   padding: 4px;
@@ -261,25 +221,30 @@ export default {
   height: 156px;
   border: 1px solid rgb(0, 0, 0, 0);
 }
+
 .attachment-thumbnail {
   position: relative;
   display: flex;
   height: 128px;
   width: 128px;
 }
+
 .selected {
   border: 1px solid #48a3e0;
   background-color: rgb(72, 163, 224, 0.5);
 }
+
 .flex-1 {
   flex: 1;
 }
+
 .ellipsis {
   display: block;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
+
 .btn-close {
   cursor: pointer;
   top: -0.1rem;

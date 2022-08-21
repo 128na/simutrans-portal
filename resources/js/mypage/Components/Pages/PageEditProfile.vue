@@ -12,10 +12,7 @@
     <form-profile :user="copy">
       <b-form-group>
         <fetching-overlay>
-          <b-button
-            variant="primary"
-            @click.prevent="handleUpdate"
-          >
+          <b-button variant="primary" @click.prevent="handleUpdate">
             保存
           </b-button>
         </fetching-overlay>

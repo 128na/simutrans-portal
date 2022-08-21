@@ -5,13 +5,8 @@
         <badge-required />
         公開状態
       </template>
-      <b-form-radio-group
-        v-model="article.status"
-        :options="statuses"
-        button-variant="outline-primary"
-        buttons
-        @change="handleChange"
-      ></b-form-radio-group>
+      <b-form-radio-group v-model="article.status" :options="statuses" button-variant="outline-primary" buttons
+        @change="handleChange"></b-form-radio-group>
       <validation-message field="article.status" />
     </b-form-group>
   </div>

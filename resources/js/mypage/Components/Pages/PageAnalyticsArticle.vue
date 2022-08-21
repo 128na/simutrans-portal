@@ -6,25 +6,16 @@
       グラフを右クリックすると画像として保存できます。
     </page-description>
     <div v-if="ready">
-      <analytics-graph
-        :datasets="datasets"
-        :labels="labels"
-      />
+      <analytics-graph :datasets="datasets" :labels="labels" />
       <b-form-group>
         <fetching-overlay>
-          <b-button
-            varant="primary"
-            @click.prevent="handleApply"
-          >
+          <b-button varant="primary" @click.prevent="handleApply">
             反映
           </b-button>
         </fetching-overlay>
       </b-form-group>
       <form-analytics-config v-model="options" />
-      <analytics-table
-        v-model="ids"
-        :articles="articles"
-      >
+      <analytics-table v-model="ids" :articles="articles">
         <validation-message field="ids" />
       </analytics-table>
     </div>

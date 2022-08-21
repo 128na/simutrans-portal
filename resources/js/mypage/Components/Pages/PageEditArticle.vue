@@ -163,3 +163,14 @@ export default {
   }
 };
 </script>
+<style scoped>
+.row {
+  max-height: calc(100vh - 2.7rem);
+  overflow: hidden;
+}
+
+.w-50.col {
+  max-height: calc(100vh - 2.7rem);
+  overflow: auto;
+}
+</style>

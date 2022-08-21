@@ -1,7 +1,7 @@
-<a class="navbar-brand p-0 mb-lg-4 mb-0" href="{{ route('index') }}">{{ config('app.name', 'Laravel') }}</a>
+<a class="navbar-brand p-0 mb-lg-4 mb-0 mr-0" href="{{ route('index') }}">{{ config('app.name', 'Laravel') }}</a>
 
-<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#global-menu"
-    aria-controls="global-menu" aria-expanded="false" aria-label="Toggle navigation">
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#global-menu" aria-controls="global-menu"
+    aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
 </button>
 
@@ -24,7 +24,7 @@
                         href="#collapse-{{ $pak_slug }}"
                         aria-expanded="{{ isset($open_menu_pak_addon[$pak_slug]) ? 'true' : 'false' }}"
                         aria-controls="collapse-{{ $pak_slug }}">
-                        @lang('category.pak.'.$pak_slug)
+                        @lang('category.pak.' . $pak_slug)
                     </a>
                     <ul class="navbar-nav ml-3 collapse {{ isset($open_menu_pak_addon[$pak_slug]) ? 'show' : '' }}"
                         id="collapse-{{ $pak_slug }}">
@@ -32,7 +32,7 @@
                             <li class="nav-item">
                                 <a class="nav-link active py-1"
                                     href="{{ route('category.pak.addon', [$addon->pak_slug, $addon->addon_slug]) }}">
-                                    @lang('category.addon.'.$addon->addon_slug) <small>({{ $addon->count }})</small>
+                                    @lang('category.addon.' . $addon->addon_slug) <small>({{ $addon->count }})</small>
                                 </a>
                             </li>
                         @endforeach

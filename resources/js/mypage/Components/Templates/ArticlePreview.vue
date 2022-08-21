@@ -1,5 +1,8 @@
 <template>
-  <template-article :article="previewArticle" :attachments="attachments" :preview="true" />
+  <div>
+    <b-alert show variant="warning">プレビュー表示</b-alert>
+    <template-article :article="previewArticle" :attachments="attachments" :preview="true" />
+  </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';

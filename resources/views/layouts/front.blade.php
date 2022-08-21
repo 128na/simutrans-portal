@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ isset($preview) ? '[プレビュー]' : '' }}@yield('title') - {{ config('app.name') }}</title>
+    <title>@yield('title') - {{ config('app.name') }}</title>
 
     @includeWhen(config('app.gtag') || true, 'parts._ga')
 
@@ -50,10 +50,6 @@
         @endif
         @if (session()->has('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
-
-        @if (isset($preview))
-            <div class="alert alert-warning">プレビュー表示です。記事は保存・更新されていません。</div>
         @endif
 
         @includeWhen(!empty($breadcrumb), 'parts.breadcrumb')

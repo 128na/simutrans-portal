@@ -75,5 +75,12 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
+
+        'bulkzip' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/bulkzip.log'),
+            'level' => 'debug',
+            'days' => 365,
+        ],
     ],
 ];

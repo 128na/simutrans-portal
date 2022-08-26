@@ -36,6 +36,7 @@ class JobCreateBulkZip implements ShouldQueue
             if ($this->bulkZip->generated) {
                 return;
             }
+            logger()->channel('bulkzip')->debug('JobCreateBulkZip::begin', ['id' => $this->bulkZip->id]);
 
             $begin = microtime(true);
 
@@ -43,9 +44,9 @@ class JobCreateBulkZip implements ShouldQueue
             $path = $zipManager->create($items);
             $bulkZipRepository->update($this->bulkZip, ['generated' => true, 'path' => $path]);
 
-            logger(sprintf('JobCreateBulkZip::handle %.2f sec.', microtime(true) - $begin));
+            logger()->channel('bulkzip')->debug(sprintf('JobCreateBulkZip::finished %.2f sec.', microtime(true) - $begin));
         } catch (\Throwable $e) {
-            logger('JobCreateBulkZip failed');
+            logger()->error('JobCreateBulkZip failed', ['id' => $this->bulkZip->id]);
             $this->bulkZip->delete();
             report($e);
         }

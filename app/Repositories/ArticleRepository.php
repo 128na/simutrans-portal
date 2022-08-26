@@ -66,8 +66,9 @@ class ArticleRepository extends BaseRepository
      */
     public function findAllForAnalytics(User $user, array $ids, Closure $periodQuery): Collection
     {
-        return $user->articles()
+        return $this->model
             ->select('id')
+            ->where('user_id', $user->id)
             ->whereIn('id', $ids)
             ->with([
                 'viewCounts' => $periodQuery,
@@ -82,8 +83,9 @@ class ArticleRepository extends BaseRepository
      */
     public function findAllByUser(User $user, array $relations = self::FRONT_RELATIONS): Collection
     {
-        return $user->articles()
+        return $this->model
             ->select(['articles.*'])
+            ->where('user_id', $user->id)
             ->with($relations)
             ->orderBy('published_at', 'desc')
             ->get();
@@ -91,7 +93,8 @@ class ArticleRepository extends BaseRepository
 
     private function basicQuery(array $relations = self::FRONT_RELATIONS): Builder
     {
-        return $this->model->select(['articles.*'])
+        return $this->model
+            ->select(['articles.*'])
             ->active()
             ->withCache()
             ->with($relations)
@@ -168,7 +171,8 @@ class ArticleRepository extends BaseRepository
 
     private function queryRanking(): Builder
     {
-        return $this->model->select(['articles.*'])
+        return $this->model
+            ->select(['articles.*'])
             ->withCache()
             ->active()
             ->with(self::FRONT_RELATIONS)

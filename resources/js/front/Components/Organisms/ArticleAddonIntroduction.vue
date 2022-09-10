@@ -71,6 +71,7 @@
         <content-link :article="article" />
       </dd>
     </dl>
+    <content-meta :article="article" />
   </article>
 </template>
 <script>

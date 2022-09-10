@@ -14,6 +14,7 @@
         </dd>
       </template>
     </dl>
+    <content-meta :article="article" />
   </article>
 </template>
 <script>

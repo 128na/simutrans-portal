@@ -71,6 +71,7 @@
         <content-download :article="article" />
       </dd>
     </dl>
+    <content-meta :article="article" />
   </article>
 </template>
 <script>

@@ -15,7 +15,8 @@ export default {
   },
   computed: {
     thumbnail_url() {
-      return this.attachments.find(a => a.id == this.article.contents.thumbnail)?.url;
+      return this.attachments.find(a => a.id == this.article.contents.thumbnail)?.url ||
+        '/storage/default/image.png';
     }
   }
 };

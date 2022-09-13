@@ -29,7 +29,7 @@ class ViewServiceProvider extends ServiceProvider
             'front.index',
             'front.tags',
             'front.articles.index',
-            'front.articles.show',
+            // 'front.articles.show',
         ];
         View::creator($views, SidebarCreator::class);
         View::creator($views, MetaCreator::class);

@@ -34,6 +34,14 @@ class ArticleController extends Controller
     }
 
     /**
+     * SPA用フロント.
+     */
+    public function fallback()
+    {
+        return view('front.spa');
+    }
+
+    /**
      * アドオン記事一覧.
      */
     public function addons()

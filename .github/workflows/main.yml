@@ -181,6 +181,8 @@ jobs:
         uses: actions/checkout@v2
       - name: .env
         run: php -r "copy('.env.deploy', '.env');"
+      - name: set app version
+        run: sed -i "" "s/APP_VERSION=.*/APP_VERSION=$( git describe )/" .env
 
       - name: Setup Node
         uses: actions/setup-node@v2

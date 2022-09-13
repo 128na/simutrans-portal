@@ -1,15 +1,17 @@
 @import "../../../node_modules/bootstrap/scss/mixins/breakpoints";
-$navbar-sidebar-width: 240px;
+$navbar-sidebar-width: 270px;
 $navbar-sidebar-breakpoint: "lg";
 
 body {
   padding-top: 50px;
+
   .initializing {
     margin-top: -50px;
   }
 
   @include media-breakpoint-up($navbar-sidebar-breakpoint) {
     padding-top: 0;
+
     .initializing {
       margin-top: 0px;
     }
@@ -28,6 +30,7 @@ body {
     width: $navbar-sidebar-width;
     flex-flow: column nowrap;
     align-items: flex-start;
+
     .navbar-collapse {
       flex-grow: 0;
       flex-direction: column;
@@ -52,6 +55,7 @@ body {
 body {
   @include media-breakpoint-up($navbar-sidebar-breakpoint) {
     margin-left: $navbar-sidebar-width;
+
     .initializing {
       margin-left: -$navbar-sidebar-width;
     }
@@ -61,6 +65,7 @@ body {
 .navbar {
   &.fixed-left {
     @include navbar-sidebar;
+
     @include media-breakpoint-up($navbar-sidebar-breakpoint) {
       right: auto;
 
@@ -84,7 +89,9 @@ body {
     }
   }
 }
+
 .navbar {
+
   //サイドバー 縦スクロール
   &.fixed-left {
     max-height: 100vh;

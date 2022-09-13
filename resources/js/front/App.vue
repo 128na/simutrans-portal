@@ -1,7 +1,7 @@
 <template>
-  <main>
+  <main class="container-fluid py-4">
     <front-menu :pak_addon_counts="pak_addon_counts" :user_addon_counts="user_addon_counts" />
-    <!-- <router-view /> -->
+    <router-view />
   </main>
 </template>
 <script>
@@ -23,7 +23,6 @@ export default {
   methods: {
     async fetchSidebar() {
       const res = await axios.get('/api/v3/front/sidebar');
-      console.log({ res });
       if (res.status === 200) {
         this.pak_addon_counts = res.data.pak_addon_counts;
         this.user_addon_counts = res.data.user_addon_counts;

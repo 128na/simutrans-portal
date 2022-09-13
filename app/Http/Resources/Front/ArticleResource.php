@@ -34,6 +34,7 @@ class ArticleResource extends JsonResource
             'published_at' => $this->published_at ? $this->published_at->toDateTimeString() : '未投稿',
             'modified_at' => $this->modified_at->toDateTimeString(),
             'file_info' => $this->when($this->hasFileInfo, fn () => $this->file->fileInfo->data),
+            'attachments' => new AttachmentResource($this->attachments),
         ];
     }
 }

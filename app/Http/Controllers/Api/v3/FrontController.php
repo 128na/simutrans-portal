@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\v3;
 use App\Events\ArticleShown;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Front\ArticleResource;
-use App\Http\Resources\Front\AttachmentResource;
 use App\Http\Resources\Front\PakAddonResource;
 use App\Http\Resources\Front\UserAddonResource;
 use App\Models\Article;
@@ -41,9 +40,6 @@ class FrontController extends Controller
 
         $article = $this->articleRepository->loadArticle($article);
 
-        return [
-            'article' => new ArticleResource($article),
-            'attachments' => new AttachmentResource($article->attachments),
-        ];
+        return new ArticleResource($article);
     }
 }

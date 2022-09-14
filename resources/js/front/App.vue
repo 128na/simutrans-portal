@@ -1,7 +1,7 @@
 <template>
   <main class="container-fluid py-4">
     <front-menu :pak_addon_counts="pak_addon_counts" :user_addon_counts="user_addon_counts" />
-    <router-view />
+    <router-view :cachedArticles="cachedArticles" @addCache="handleAddCache" @addCaches="handleAddCaches" />
   </main>
 </template>
 <script>
@@ -11,7 +11,8 @@ export default {
   data() {
     return {
       pak_addon_counts: null,
-      user_addon_counts: null
+      user_addon_counts: null,
+      cachedArticles: []
     };
   },
 
@@ -27,6 +28,14 @@ export default {
         this.pak_addon_counts = res.data.pak_addon_counts;
         this.user_addon_counts = res.data.user_addon_counts;
       }
+    },
+    handleAddCache(article) {
+      if (!this.cachedArticles.some(a => a.id == article.id)) {
+        this.cachedArticles.push(article);
+      }
+    },
+    handleAddCaches(articles) {
+      articles.map(a => this.handleAddCache(a));
     }
   }
 };

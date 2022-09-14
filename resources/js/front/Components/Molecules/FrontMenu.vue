@@ -14,31 +14,32 @@
             </b-input-group-append>
           </b-input-group>
         </form>
-        <b-nav-item active v-for="(addons, pakName) in pak_addon_counts" :key="pakName">
-          <div class="togglable" :class="{'togglable-close': isOpen('pak', pakName)}"
-            @click="toggleCollapse('pak', pakName)">
+        <div v-for="(addons, pakName) in pak_addon_counts" :key="pakName">
+          <b-nav-item active class="togglable" link-classes="d-inline-block"
+            :class="{'togglable-close': isOpen('pak', pakName)}" @click="toggleCollapse('pak', pakName)">
             {{pakName}}
-          </div>
+          </b-nav-item>
           <b-collapse :id="collapseId('pak', pakName)">
-            <b-nav-item active v-for="addon in addons" :key="addon.addon" :to="addon.url">
+            <b-nav-item active v-for="addon in addons" :key="addon.addon" :href="addon.url">
               {{addon.addon}} ({{addon.count}})
             </b-nav-item>
           </b-collapse>
-        </b-nav-item>
-
-        <b-nav-item active>
-          <div class="togglable" :class="{'togglable-close': isOpen('user')}" @click="toggleCollapse('user')">
-            ユーザー一覧</div>
+        </div>
+        <div>
+          <b-nav-item active class="togglable" link-classes="d-inline-block"
+            :class="{'togglable-close': isOpen('user')}" @click="toggleCollapse('user')">
+            ユーザー一覧
+          </b-nav-item>
           <b-collapse :id="collapseId('user')">
-            <b-nav-item active v-for="user_addon in user_addon_counts" :key="user_addon.name" :to="user_addon.url">
+            <b-nav-item active v-for="user_addon in user_addon_counts" :key="user_addon.name" :href="user_addon.url">
               {{user_addon.name}} ({{user_addon.count}})
             </b-nav-item>
           </b-collapse>
-        </b-nav-item>
-        <b-nav-item active to="/tags">タグ一覧</b-nav-item>
-        <b-nav-item active to="/advancedSearch">詳細検索</b-nav-item>
+        </div>
+        <b-nav-item active href="/tags">タグ一覧</b-nav-item>
+        <b-nav-item active href="/advancedSearch">詳細検索</b-nav-item>
         <b-dropdown-divider />
-        <b-nav-item active to="/mypage">マイページ</b-nav-item>
+        <b-nav-item active href="/mypage">マイページ</b-nav-item>
         <b-dropdown-divider />
         <b-nav-item>
           <small class="d-block mb-1 text-white">
@@ -126,14 +127,14 @@ export default {
     margin-bottom: 0.2rem;
     border-right: 0.3em solid transparent;
     border-left: 0.3em solid transparent;
-    border-bottom: 0.3em solid;
+    border-bottom: 0.3em solid var(--white);
     border-top: none;
   }
 
   &.togglable-close {
     &::before {
       border-bottom: none;
-      border-top: 0.3em solid;
+      border-top: 0.3em solid var(--white);
     }
   }
 }

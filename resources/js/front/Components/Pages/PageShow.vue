@@ -20,10 +20,13 @@ export default {
   },
   methods: {
     async fetchArticle(slug) {
-      const res = await axios.get(`/api/v3/front/articles/${slug}`);
-
-      if (res.status === 200) {
-        this.$emit('addCache', res.data.data);
+      try {
+        const res = await axios.get(`/api/v3/front/articles/${slug}`);
+        if (res.status === 200) {
+          this.$emit('addCache', res.data.data);
+        }
+      } catch (error) {
+        this.$router.push({ name: 'error', params: { status: error?.response?.status || 0 } });
       }
     }
   }

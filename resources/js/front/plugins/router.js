@@ -5,13 +5,16 @@ import VueRouter from 'vue-router';
 * import components
 */
 import PageShow from '../Components/Pages/PageShow';
+import PageError from '../Components/Pages/PageError';
 
 // import { gaPageView } from './ga';
 
 // import routeShortcut from '../mixins/route';
 
 const routes = [
-  { name: 'show', path: '/articles/:slug', component: PageShow }
+  { name: 'show', path: '/articles/:slug', component: PageShow },
+  { path: '*', redirect: { name: 'notFound' } },
+  { name: 'error', path: '/error/:status', component: PageError }
 ];
 
 // const scrollBehavior = (to, from, savedPosition) => {

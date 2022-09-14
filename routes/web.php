@@ -49,7 +49,7 @@ Route::middleware(['cache.response:public;max_age=2628000;etag'])->group(functio
     Route::get('/tags', [ArticleController::class, 'tags'])->name('tags');
 });
 // 非ログイン系 reidsキャッシュ無効
-Route::get('/articles/{any}', [ArticleController::class, 'fallback'])->where('any', '.*')->name('articles.show');
+Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
 Route::get('/search', [ArticleController::class, 'search'])->name('search');
 Route::get('/mypage/', [MypageController::class, 'index'])->name('mypage.index');
 Route::get('/mypage/{any}', [MypageController::class, 'fallback'])->where('any', '.*');

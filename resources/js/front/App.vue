@@ -30,7 +30,7 @@ export default {
       }
     },
     handleAddCache(article) {
-      if (!this.cachedArticles.some(a => a.id == article.id)) {
+      if (!this.cachedArticles.some(a => a.slug == article.slug)) {
         this.cachedArticles.push(article);
       }
     },

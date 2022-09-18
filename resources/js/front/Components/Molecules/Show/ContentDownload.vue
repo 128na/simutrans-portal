@@ -11,7 +11,7 @@ export default {
   },
   computed: {
     download_url() {
-      return `${this.article.url}/download`;
+      return `/articles/${this.article.slug}/download`;
     }
   }
 };

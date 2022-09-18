@@ -8,6 +8,7 @@ use App\Http\Resources\Front\ArticleResource;
 use App\Http\Resources\Front\PakAddonResource;
 use App\Http\Resources\Front\UserAddonResource;
 use App\Models\Article;
+use App\Models\User;
 use App\Repositories\ArticleRepository;
 use App\Services\Front\SidebarService;
 use Auth;
@@ -41,5 +42,12 @@ class FrontController extends Controller
         $article = $this->articleRepository->loadArticle($article);
 
         return new ArticleResource($article);
+    }
+
+    public function user(User $user)
+    {
+        $articles = $this->articleRepository->paginateByUser($user);
+
+        return ArticleResource::collection($articles);
     }
 }

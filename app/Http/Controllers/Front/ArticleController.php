@@ -168,9 +168,7 @@ class ArticleController extends Controller
      */
     public function user(User $user)
     {
-        $contents = ['articles' => $this->articleRepository->paginateByUser($user), 'user' => $user];
-
-        return view('front.articles.index', $contents);
+        return view('front.spa');
     }
 
     /**

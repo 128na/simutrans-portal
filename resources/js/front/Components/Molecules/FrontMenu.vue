@@ -20,7 +20,7 @@
             {{pakName}}
           </b-nav-item>
           <b-collapse :id="collapseId('pak', pakName)">
-            <b-nav-item active v-for="addon in addons" :key="addon.addon" :href="addon.url">
+            <b-nav-item active v-for="addon in addons" :key="addon.addon" :to="toCategoryByAddon(addon)">
               {{addon.addon}} ({{addon.count}})
             </b-nav-item>
           </b-collapse>
@@ -31,22 +31,20 @@
             ユーザー一覧
           </b-nav-item>
           <b-collapse :id="collapseId('user')">
-            <b-nav-item active v-for="user_addon in user_addon_counts" :key="user_addon.name" :href="user_addon.url">
+            <b-nav-item active v-for="user_addon in user_addon_counts" :key="user_addon.name"
+              :to="toUserByAddon(user_addon)">
               {{user_addon.name}} ({{user_addon.count}})
             </b-nav-item>
           </b-collapse>
         </div>
-        <b-nav-item active href="/tags">タグ一覧</b-nav-item>
-        <b-nav-item active href="/advancedSearch">詳細検索</b-nav-item>
+        <b-nav-item active :to="toTags">タグ一覧</b-nav-item>
+        <b-nav-item active :to="toAdvancedSearch">詳細検索</b-nav-item>
         <b-dropdown-divider />
         <b-nav-item active href="/mypage">マイページ</b-nav-item>
         <b-dropdown-divider />
-        <b-nav-item>
-          <small class="d-block mb-1 text-white">
-            <a class="text-white" href="/articles/about">サイトの使い方</a><br>
-            <a class="text-white" href="/articles/privacy">プライバシーポリシー</a>
-          </small>
-
+        <b-nav-item active :to="toAbout">サイトの使い方</b-nav-item>
+        <b-nav-item active :to="toPrivacy">プライバシーポリシー</b-nav-item>
+        <b-nav-text>
           <small class="d-block mb-1 text-white">
             {{ appName }}
             v{{ appVersion }}
@@ -62,13 +60,15 @@
             <a class="text-white" href="/feed">
               <img src="/storage/default/feed.png" class="feed-icon mr-1">Atom</a>
           </small>
-        </b-nav-item>
+        </b-nav-text>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
 </template>
 <script>
+import { routeLink, appInfo } from '../../mixins';
 export default {
+  mixins: [routeLink, appInfo],
   props: {
     pak_addon_counts: {
       type: Object,
@@ -83,17 +83,6 @@ export default {
     return {
       toggleStatus: []
     };
-  },
-  computed: {
-    appName() {
-      return process.env.MIX_APP_NAME;
-    },
-    appVersion() {
-      return process.env.MIX_APP_VERSION;
-    },
-    appUrl() {
-      return process.env.MIX_APP_URL;
-    }
   },
   methods: {
     collapseId(prefix, name = '') {

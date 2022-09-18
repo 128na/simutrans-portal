@@ -11,8 +11,8 @@ class UserAddonResource extends ResourceCollection
     {
         return $this->collection
             ->map(fn (UserAddonCount $u) => [
+                'user_id' => $u->user_id,
                 'name' => $u->user_name,
-                'url' => route('user', [$u->user_id]),
                 'count' => $u->count,
             ]);
     }

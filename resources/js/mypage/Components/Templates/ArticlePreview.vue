@@ -29,8 +29,8 @@ export default {
         categories: this.article.categories,
         tags: this.article.tags,
         user: {
-          name: this.user.name,
-          url: this.user.url
+          id: this.user.id,
+          name: this.user.name
         },
         url: `/articles/${this.article.slug}`,
         published_at: this.article.published_at ? this.article.published_at : '未投稿',

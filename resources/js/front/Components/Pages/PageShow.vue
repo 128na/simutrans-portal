@@ -4,29 +4,24 @@
 </template>
 <script>
 import axios from 'axios';
-
+import { watchAndFetch } from '../../mixins';
 export default {
   props: ['cachedArticles'],
-  created() {
-    if (!this.article) {
-      this.fetchArticle(this.$route.params.slug);
-    }
-  },
+  mixins: [watchAndFetch],
   computed: {
     article() {
-      const slug = encodeURI(this.$route.params.slug);
-      return this.cachedArticles.find(a => a.slug === slug);
+      return this.cachedArticles.find(a => a.slug === this.$route.params.slug);
     }
   },
   methods: {
-    async fetchArticle(slug) {
+    async fetch() {
       try {
-        const res = await axios.get(`/api/v3/front/articles/${slug}`);
+        const res = await axios.get(`/api/v3/front/articles/${this.$route.params.slug}`);
         if (res.status === 200) {
           this.$emit('addCache', res.data.data);
         }
-      } catch (error) {
-        this.$router.push({ name: 'error', params: { status: error?.response?.status || 0 } });
+      } catch (err) {
+        this.handleError(err);
       }
     }
   }

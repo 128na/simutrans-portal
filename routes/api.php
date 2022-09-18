@@ -98,6 +98,16 @@ Route::prefix('v3')->name('api.v3.')->group(function () {
         // キャッシュ有効
         Route::middleware(['cache.headers:public;max_age=2628000;etag'])->group(function () {
             Route::get('/sidebar', [FrontController::class, 'sidebar'])->name('sidebar');
+            Route::get('/', [FrontController::class, 'index'])->name('index');
+            // Route::get('/ranking/', [FrontController::class, 'ranking'])->name('addons.ranking');
+            // Route::get('/pages', [FrontController::class, 'pages'])->name('pages.index');
+            // Route::get('/announces', [FrontController::class, 'announces'])->name('announces.index');
+            // Route::get('/category/pak/{size}/none', [FrontController::class, 'categoryPakNoneAddon'])->name('category.pak.noneAddon');
+            // Route::get('/category/pak/{size}/{slug}', [FrontController::class, 'categoryPakAddon'])->name('category.pak.addon');
+            // Route::get('/category/{type}/{slug}', [FrontController::class, 'category'])->name('category');
+            // Route::get('/tag/{tag}', [FrontController::class, 'tag'])->name('tag');
+            Route::get('/user/{user}', [FrontController::class, 'user'])->name('user');
+            // Route::get('/tags', [FrontController::class, 'tags'])->name('tags');
         });
         Route::get('/articles/{article}', [FrontController::class, 'show'])->name('articles.show');
     });

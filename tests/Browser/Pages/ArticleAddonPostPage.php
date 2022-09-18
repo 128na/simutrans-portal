@@ -40,6 +40,7 @@ class ArticleAddonPostPage extends Page
     public function assert(Browser $browser)
     {
         $browser
+            ->waitForText($this->article->title)
             ->assertSee($this->article->title);
     }
 

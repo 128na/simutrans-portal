@@ -23,7 +23,7 @@ class TopPage extends Page
      */
     public function assert(Browser $browser)
     {
-        $browser->assertSee('Simutrans Addon Portal');
+        $browser->assertSee('の新着アドオン');
     }
 
     /**

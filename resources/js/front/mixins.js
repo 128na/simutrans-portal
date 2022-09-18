@@ -6,10 +6,10 @@ export const routeLink = {
         params: { type: category.type, slug: category.slug }
       };
     },
-    toCategoryByAddon(addon) {
+    toCategoryPakByAddon(addon) {
       return {
-        name: 'category',
-        params: { type: addon.pak_slug, slug: addon.addon_slug }
+        name: 'categoryPak',
+        params: { size: addon.pak_slug, slug: addon.addon_slug }
       };
     },
     toTag(tag) {

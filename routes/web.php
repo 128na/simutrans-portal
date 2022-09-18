@@ -37,7 +37,6 @@ Route::GET('password/reset/{token}', [ResetPasswordController::class, 'showReset
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware(['cache.response:public;max_age=2628000;etag'])->group(function () {
     Route::get('/', [IndexController::class, 'index'])->name('index');
-    Route::get('/addons', [ArticleController::class, 'addons'])->name('addons.index');
     Route::get('/ranking', [ArticleController::class, 'ranking'])->name('addons.ranking');
     Route::get('/pages', [ArticleController::class, 'pages'])->name('pages.index');
     Route::get('/announces', [ArticleController::class, 'announces'])->name('announces.index');

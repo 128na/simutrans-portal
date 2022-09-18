@@ -44,9 +44,10 @@ import {
   BIconBookmarkStarFill,
   BIconTrash,
   BIconKeyFill,
-  BIconPersonPlusFill
+  BIconPersonPlusFill,
+  PaginationNavPlugin
 } from 'bootstrap-vue';
-
+Vue.use(PaginationNavPlugin);
 Vue.use(AlertPlugin);
 Vue.use(BadgePlugin);
 Vue.use(ButtonPlugin);

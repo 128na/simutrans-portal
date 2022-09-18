@@ -2,11 +2,14 @@
   <section class="mb-4 list">
     <h2 class="section-title">{{ title }}</h2>
     <mode-switcher v-model="mode" />
+    <list-paginator :pagination="pagination" />
+    <div v-show="loading">Loading...</div>
     <list-articles v-if="mode=='list'" :articles="articles" />
     <template v-else>
       <template-article v-for="article in articles" :key="article.slug" :article="article"
         :attachments="article.attachments" class="mb-4" />
     </template>
+    <list-paginator :pagination="pagination" />
   </section>
 </template>
 <script>
@@ -18,8 +21,9 @@ export default {
   mixins: [watchAndFetch],
   data() {
     return {
+      loading: true,
       articles: [],
-      pagination: [],
+      pagination: null,
       mode: 'list'
     };
   },
@@ -34,24 +38,62 @@ export default {
     }
   },
   methods: {
-    fetch() {
-      switch (this.$route.name) {
-        case 'user':
-          return this.fetchByUser(this.$route.params.id);
-      }
-    },
-    async fetchByUser(userId) {
+    async fetch() {
+      this.loading = true;
+      this.articles = [];
       try {
-        const res = await axios.get(`/api/v3/front/user/${userId}`);
+        const res = await (async () => {
+          switch (this.$route.name) {
+            case 'categoryPak':
+              return this.fetchCategoryPak();
+            case 'category':
+              return this.fetchCategory();
+            case 'tag':
+              return this.fetchTag();
+            case 'user':
+              return this.fetchUser();
+            case 'announces':
+              return this.fetchAnnounces();
+            case 'pages':
+              return this.fetchPages();
+            case 'ranking':
+              return this.fetchRanking();
+            default:
+              throw new Error(`unknown route name "${this.$route.name}" provided"`);
+          }
+        })();
         this.handleResponse(res);
       } catch (err) {
         this.handleError(err);
+      } finally {
+        this.loading = false;
       }
+    },
+    fetchUser() {
+      return axios.get(`/api/v3/front/user/${this.$route.params.id}?page=${this.$route.query.page || 1}`);
+    },
+    fetchCategoryPak() {
+      return axios.get(`/api/v3/front/category/pak/${this.$route.params.size}/${this.$route.params.slug}?page=${this.$route.query.page || 1}`);
+    },
+    fetchCategory() {
+      return axios.get(`/api/v3/front/category/${this.$route.params.type}/${this.$route.params.slug}?page=${this.$route.query.page || 1}`);
+    },
+    fetchTag() {
+      return axios.get(`/api/v3/front/tag/${this.$route.params.id}?page=${this.$route.query.page || 1}`);
+    },
+    fetchAnnounces() {
+      return axios.get(`/api/v3/front/announces?page=${this.$route.query.page || 1}`);
+    },
+    fetchPages() {
+      return axios.get(`/api/v3/front/pages?page=${this.$route.query.page || 1}`);
+    },
+    fetchRanking() {
+      return axios.get(`/api/v3/front/ranking?page=${this.$route.query.page || 1}`);
     },
     handleResponse(res) {
       if (res.status === 200) {
         this.articles = res.data.data;
-        this.pagination = res.data.meta.links;
+        this.pagination = res.data.meta;
         this.$emit('addCaches', res.data.data);
       }
     }

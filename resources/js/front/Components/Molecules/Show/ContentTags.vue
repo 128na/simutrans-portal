@@ -1,12 +1,12 @@
 <template>
   <div v-if="preview">
-    <b-badge v-for="tag in article.tags" :key="tag.name" variant="secondary" class="mr-2">
-      {{ tag.name }}
+    <b-badge v-for="t in article.tags" :key="t.id" variant="secondary" class="text-white mr-2">
+      {{ t.name }}
     </b-badge>
   </div>
   <div v-else>
-    <b-badge v-for="tag in article.tags" :key="tag.name" :to="toTag(tag)" variant="secondary" class="mr-2">
-      {{ tag.name }}
+    <b-badge v-for="t in article.tags" :key="t.id" :to="toTag(t)" variant="secondary" class="text-white mr-2">
+      {{ t.name }}
     </b-badge>
   </div>
 </template>

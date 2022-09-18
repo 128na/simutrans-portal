@@ -6,6 +6,7 @@ import VueRouter from 'vue-router';
 */
 import PageShow from '../Components/Pages/PageShow';
 import PageList from '../Components/Pages/PageList';
+import PageTags from '../Components/Pages/PageTags';
 import PageError from '../Components/Pages/PageError';
 
 // import { gaPageView } from './ga';
@@ -22,7 +23,7 @@ const routes = [
   { name: 'pages', path: '/pages', component: PageList },
   { name: 'ranking', path: '/ranking', component: PageList },
   // { name: 'top', path: '/', component: PageTop },
-  { name: 'tags', path: '/tags', component: PageList },
+  { name: 'tags', path: '/tags', component: PageTags },
   { name: 'advancedSearch', path: '/advancedSearch', component: PageList },
   { path: '*', redirect: { name: 'notFound' } },
   { name: 'error', path: '/error/:status', component: PageError }

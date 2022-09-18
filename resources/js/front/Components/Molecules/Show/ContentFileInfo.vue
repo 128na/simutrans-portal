@@ -6,8 +6,8 @@
         <li v-for="(names, filename) in file_info.dats" :key="filename">
           <span>{{ filename }}</span>
           <ul>
-            <li v-for="name in names" :key="name">
-              {{ name }}
+            <li v-for="(n, index) in names" :key="`${n}-${index}`">
+              {{ n }}
             </li>
           </ul>
         </li>

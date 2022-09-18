@@ -69,7 +69,7 @@
         <content-download :article="article" />
       </dd>
     </dl>
-    <content-meta :article="article" />
+    <content-meta :article="article" class="mt-4" />
   </article>
 </template>
 <script>

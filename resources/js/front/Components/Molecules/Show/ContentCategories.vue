@@ -1,13 +1,13 @@
 <template>
   <div v-if="preview">
-    <b-badge v-for="category in article.categories" :key="category.name" variant="secondary" class="mr-2">
-      {{ category.name }}
+    <b-badge v-for="c in article.categories" :key="key(c)" variant="secondary" class="text-white mr-2">
+      {{ c.name }}
     </b-badge>
   </div>
   <div v-else>
-    <b-badge v-for="category in article.categories" :key="category.name" :to="toCategory(category)" variant="secondary"
-      class="mr-2">
-      {{ category.name }}
+    <b-badge v-for="c in article.categories" :key="key(c)" :to="toCategory(c)" variant="secondary"
+      class="text-white mr-2">
+      {{ c.name }}
     </b-badge>
   </div>
 </template>
@@ -25,8 +25,10 @@ export default {
       default: false
     }
   },
-  computed: {
-
+  methods: {
+    key(category) {
+      return `${category.type}-${category.slug}`;
+    }
   }
 };
 </script>

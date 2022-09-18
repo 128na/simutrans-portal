@@ -1,8 +1,8 @@
 <template>
-  <main class="container-fluid py-4">
+  <div class="container-fluid py-4">
     <front-menu :pak_addon_counts="pak_addon_counts" :user_addon_counts="user_addon_counts" />
     <router-view :cachedArticles="cachedArticles" @addCache="handleAddCache" @addCaches="handleAddCaches" />
-  </main>
+  </div>
 </template>
 <script>
 import axios from 'axios';
@@ -30,8 +30,11 @@ export default {
       }
     },
     handleAddCache(article) {
-      if (!this.cachedArticles.some(a => a.slug == article.slug)) {
+      const index = this.cachedArticles.findIndex(a => a.slug === article.slug);
+      if (!index === -1) {
         this.cachedArticles.push(article);
+      } else {
+        this.cachedArticles.splice(index, 1, article);
       }
     },
     handleAddCaches(articles) {

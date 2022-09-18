@@ -39,23 +39,11 @@ class ArticleController extends Controller
     }
 
     /**
-     * アドオン記事一覧.
-     */
-    public function addons()
-    {
-        $contents = ['articles' => $this->articleRepository->paginateAddons()];
-
-        return view('front.articles.index', $contents);
-    }
-
-    /**
      * アドオンランキング一覧.
      */
     public function ranking()
     {
-        $contents = ['articles' => $this->articleRepository->paginateRanking()];
-
-        return view('front.articles.index', $contents);
+        return view('front.spa');
     }
 
     /**
@@ -63,9 +51,7 @@ class ArticleController extends Controller
      */
     public function pages()
     {
-        $contents = ['articles' => $this->articleRepository->paginatePages()];
-
-        return view('front.articles.index', $contents);
+        return view('front.spa');
     }
 
     /**
@@ -73,9 +59,7 @@ class ArticleController extends Controller
      */
     public function announces()
     {
-        $contents = ['articles' => $this->articleRepository->paginateAnnouces()];
-
-        return view('front.articles.index', $contents);
+        return view('front.spa');
     }
 
     /**
@@ -114,12 +98,8 @@ class ArticleController extends Controller
     public function category(string $type, string $slug)
     {
         $category = $this->categoryRepository->findOrFailByTypeAndSlug($type, $slug);
-        $contents = [
-            'articles' => $this->articleRepository->paginateByCategory($category),
-            'category' => $category,
-        ];
 
-        return view('front.articles.index', $contents);
+        return view('front.spa');
     }
 
     /**
@@ -130,12 +110,7 @@ class ArticleController extends Controller
         $pak = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
         $addon = $this->categoryRepository->findOrFailByTypeAndSlug('addon', $addonSlug);
 
-        $contents = [
-            'articles' => $this->articleRepository->paginateByPakAddonCategory($pak, $addon),
-            'categories' => ['pak' => $pak, 'addon' => $addon],
-        ];
-
-        return view('front.articles.index', $contents);
+        return view('front.spa');
     }
 
     /**
@@ -145,12 +120,7 @@ class ArticleController extends Controller
     {
         $pak = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
 
-        $contents = [
-            'articles' => $this->articleRepository->paginateByPakNoneAddonCategory($pak),
-            'categories' => ['pak' => $pak],
-        ];
-
-        return view('front.articles.index', $contents);
+        return view('front.spa');
     }
 
     /**
@@ -158,9 +128,7 @@ class ArticleController extends Controller
      */
     public function tag(Tag $tag)
     {
-        $contents = ['articles' => $this->articleRepository->paginateByTag($tag), 'tag' => $tag];
-
-        return view('front.articles.index', $contents);
+        return view('front.spa');
     }
 
     /**
@@ -176,10 +144,7 @@ class ArticleController extends Controller
      */
     public function search(SearchRequest $request)
     {
-        $word = $request->word;
-        $contents = ['articles' => $this->articleRepository->paginateBySearch($word), 'request' => $request];
-
-        return view('front.articles.index', $contents);
+        return view('front.spa');
     }
 
     /**
@@ -187,6 +152,8 @@ class ArticleController extends Controller
      */
     public function tags()
     {
+        return view('front.spa');
+
         $contents = ['tags' => $this->tagRepository->getAllTags()];
 
         return view('front.tags', $contents);

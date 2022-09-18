@@ -15,35 +15,32 @@
           </b-input-group>
         </form>
         <div v-for="(addons, pakName) in pak_addon_counts" :key="pakName">
-          <b-nav-item active class="togglable" link-classes="d-inline-block"
-            :class="{'togglable-close': isOpen('pak', pakName)}" @click="toggleCollapse('pak', pakName)">
+          <toggle-collapse-button :open="isOpen('pak', pakName)" @click="toggleCollapse('pak', pakName)">
             {{pakName}}
-          </b-nav-item>
+          </toggle-collapse-button>
           <b-collapse :id="collapseId('pak', pakName)">
-            <b-nav-item active v-for="addon in addons" :key="addon.addon" :to="toCategoryByAddon(addon)">
+            <b-nav-item v-for="addon in addons" :key="addon.addon" :to="toCategoryPakByAddon(addon)">
               {{addon.addon}} ({{addon.count}})
             </b-nav-item>
           </b-collapse>
         </div>
         <div>
-          <b-nav-item active class="togglable" link-classes="d-inline-block"
-            :class="{'togglable-close': isOpen('user')}" @click="toggleCollapse('user')">
+          <toggle-collapse-button :open="isOpen('user')" @click="toggleCollapse('user')">
             ユーザー一覧
-          </b-nav-item>
+          </toggle-collapse-button>
           <b-collapse :id="collapseId('user')">
-            <b-nav-item active v-for="user_addon in user_addon_counts" :key="user_addon.name"
-              :to="toUserByAddon(user_addon)">
+            <b-nav-item v-for="user_addon in user_addon_counts" :key="user_addon.name" :to="toUserByAddon(user_addon)">
               {{user_addon.name}} ({{user_addon.count}})
             </b-nav-item>
           </b-collapse>
         </div>
-        <b-nav-item active :to="toTags">タグ一覧</b-nav-item>
-        <b-nav-item active :to="toAdvancedSearch">詳細検索</b-nav-item>
+        <b-nav-item :to="toTags">タグ一覧</b-nav-item>
+        <b-nav-item :to="toAdvancedSearch">詳細検索</b-nav-item>
         <b-dropdown-divider />
-        <b-nav-item active href="/mypage">マイページ</b-nav-item>
+        <b-nav-item href="/mypage">マイページ</b-nav-item>
         <b-dropdown-divider />
-        <b-nav-item active :to="toAbout">サイトの使い方</b-nav-item>
-        <b-nav-item active :to="toPrivacy">プライバシーポリシー</b-nav-item>
+        <b-nav-item :to="toAbout">サイトの使い方</b-nav-item>
+        <b-nav-item :to="toPrivacy">プライバシーポリシー</b-nav-item>
         <b-nav-text>
           <small class="d-block mb-1 text-white">
             {{ appName }}
@@ -107,24 +104,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.togglable {
-  &::before {
-    content: "";
-    display: inline-block;
-    vertical-align: baseline;
-    margin-bottom: 0.2rem;
-    border-right: 0.3em solid transparent;
-    border-left: 0.3em solid transparent;
-    border-bottom: 0.3em solid var(--white);
-    border-top: none;
-  }
-
-  &.togglable-close {
-    &::before {
-      border-bottom: none;
-      border-top: 0.3em solid var(--white);
-    }
-  }
-}
-</style>

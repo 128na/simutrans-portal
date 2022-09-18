@@ -1,18 +1,19 @@
 <template>
   <b-navbar class="fixed-left py-2 py-lg-4" type="dark" variant="primary" toggleable="lg">
-    <b-navbar-brand class="p-0 mb-lg mb-2 mb-0" href="/">
+    <b-navbar-brand class="p-0 mb-lg mb-2 mb-0" :to="toTop">
       {{ appName }}
     </b-navbar-brand>
     <b-navbar-toggle target="global-menu" />
     <b-collapse id="global-menu" is-nav>
       <b-navbar-nav>
         <form-search />
-        <div v-for="(addons, pakName) in pak_addon_counts" :key="pakName">
+        <div v-for="(addons, pakName) in pakAddonCounts" :key="pakName">
           <toggle-collapse-button :open="isOpen('pak', pakName)" @click="toggleCollapse('pak', pakName)">
             {{pakName}}
           </toggle-collapse-button>
           <b-collapse :id="collapseId('pak', pakName)">
-            <b-nav-item v-for="addon in addons" :key="addon.addon" :to="toCategoryPakByAddon(addon)">
+            <b-nav-item v-for="addon in addons" :key="addon.addon" :to="toCategoryPakByAddon(addon)"
+              link-classes="py-none">
               {{addon.addon}} ({{addon.count}})
             </b-nav-item>
           </b-collapse>
@@ -22,7 +23,7 @@
             ユーザー一覧
           </toggle-collapse-button>
           <b-collapse :id="collapseId('user')">
-            <b-nav-item v-for="user_addon in user_addon_counts" :key="user_addon.name" :to="toUserByAddon(user_addon)">
+            <b-nav-item v-for="user_addon in userAddonCounts" :key="user_addon.name" :to="toUserByAddon(user_addon)">
               {{user_addon.name}} ({{user_addon.count}})
             </b-nav-item>
           </b-collapse>
@@ -55,25 +56,28 @@
   </b-navbar>
 </template>
 <script>
+import axios from 'axios';
 import { routeLink, appInfo } from '../../mixins';
 export default {
   mixins: [routeLink, appInfo],
-  props: {
-    pak_addon_counts: {
-      type: Object,
-      default: () => Object.create()
-    },
-    user_addon_counts: {
-      type: Array,
-      default: () => Array.create()
-    }
-  },
   data() {
     return {
+      pakAddonCounts: null,
+      userAddonCounts: null,
       toggleStatus: []
     };
   },
+  created() {
+    this.fetchSidebar();
+  },
   methods: {
+    async fetchSidebar() {
+      const res = await axios.get('/api/v3/front/sidebar');
+      if (res.status === 200) {
+        this.pakAddonCounts = res.data.pakAddonCounts;
+        this.userAddonCounts = res.data.userAddonCounts;
+      }
+    },
     collapseId(prefix, name = '') {
       return `front_menu_${prefix}_${name}`;
     },

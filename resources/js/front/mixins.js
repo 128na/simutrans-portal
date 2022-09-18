@@ -50,6 +50,11 @@ export const routeLink = {
     }
   },
   computed: {
+    toTop() {
+      return {
+        name: 'top'
+      };
+    },
     toTags() {
       return {
         name: 'tags'

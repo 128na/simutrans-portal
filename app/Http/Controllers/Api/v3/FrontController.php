@@ -31,8 +31,8 @@ class FrontController extends Controller
     public function sidebar()
     {
         return [
-            'user_addon_counts' => new UserAddonResource($this->sidebarService->userAddonCounts()),
-            'pak_addon_counts' => new PakAddonResource($this->sidebarService->pakAddonsCounts()),
+            'userAddonCounts' => new UserAddonResource($this->sidebarService->userAddonCounts()),
+            'pakAddonCounts' => new PakAddonResource($this->sidebarService->pakAddonsCounts()),
         ];
     }
 

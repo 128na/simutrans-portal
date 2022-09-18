@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 /**
 * import components
 */
+import PageTop from '../Components/Pages/PageTop';
 import PageShow from '../Components/Pages/PageShow';
 import PageList from '../Components/Pages/PageList';
 import PageTags from '../Components/Pages/PageTags';
@@ -14,6 +15,7 @@ import PageError from '../Components/Pages/PageError';
 // import routeShortcut from '../mixins/route';
 
 const routes = [
+  { name: 'top', path: '/', component: PageTop },
   { name: 'show', path: '/articles/:slug', component: PageShow },
   { name: 'categoryPak', path: '/category/pak/:size/:slug', component: PageList },
   { name: 'category', path: '/category/:type/:slug', component: PageList },
@@ -22,7 +24,6 @@ const routes = [
   { name: 'announces', path: '/announces', component: PageList },
   { name: 'pages', path: '/pages', component: PageList },
   { name: 'ranking', path: '/ranking', component: PageList },
-  // { name: 'top', path: '/', component: PageTop },
   { name: 'tags', path: '/tags', component: PageTags },
   { name: 'search', path: '/search', component: PageList },
   { path: '*', redirect: { name: 'notFound' } },

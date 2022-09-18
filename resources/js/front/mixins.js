@@ -47,7 +47,7 @@ export const routeLink = {
         name: 'search',
         query: { word }
       };
-    },
+    }
   },
   computed: {
     toTags() {

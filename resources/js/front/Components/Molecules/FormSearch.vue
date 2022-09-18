@@ -13,7 +13,7 @@
 export default {
   data() {
     return {
-      word: '',
+      word: ''
     };
   },
   created() {
@@ -27,5 +27,5 @@ export default {
       }).catch(e => { });
     }
   }
-}
+};
 </script>

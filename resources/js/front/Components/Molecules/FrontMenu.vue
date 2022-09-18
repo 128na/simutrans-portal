@@ -92,7 +92,7 @@ export default {
       } else {
         this.toggleStatus.splice(index, 1);
       }
-    },
+    }
   }
 };
 </script>

@@ -6,14 +6,7 @@
     <b-navbar-toggle target="global-menu" />
     <b-collapse id="global-menu" is-nav>
       <b-navbar-nav>
-        <form class="form-inline my-2 mt-lg-0" action="/search" method="GET">
-          <b-input-group>
-            <b-form-input name="word" type="search" placeholder="検索" required />
-            <b-input-group-append>
-              <b-button variant="outline-light" type="submit">検索</b-button>
-            </b-input-group-append>
-          </b-input-group>
-        </form>
+        <form-search />
         <div v-for="(addons, pakName) in pak_addon_counts" :key="pakName">
           <toggle-collapse-button :open="isOpen('pak', pakName)" @click="toggleCollapse('pak', pakName)">
             {{pakName}}
@@ -35,7 +28,6 @@
           </b-collapse>
         </div>
         <b-nav-item :to="toTags">タグ一覧</b-nav-item>
-        <b-nav-item :to="toAdvancedSearch">詳細検索</b-nav-item>
         <b-dropdown-divider />
         <b-nav-item href="/mypage">マイページ</b-nav-item>
         <b-dropdown-divider />
@@ -100,7 +92,7 @@ export default {
       } else {
         this.toggleStatus.splice(index, 1);
       }
-    }
+    },
   }
 };
 </script>

@@ -108,6 +108,7 @@ Route::prefix('v3')->name('api.v3.')->group(function () {
             Route::get('/tag/{tag}', [FrontController::class, 'tag'])->name('tag');
             Route::get('/user/{user}', [FrontController::class, 'user'])->name('user');
             Route::get('/tags', [FrontController::class, 'tags'])->name('tags');
+            Route::get('/search', [FrontController::class, 'search'])->name('search');
         });
         Route::get('/articles/{article}', [FrontController::class, 'show'])->name('articles.show');
     });

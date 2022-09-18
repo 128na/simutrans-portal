@@ -1,7 +1,7 @@
 <template>
   <main id="article-show">
+    <message-loading v-show="loading" />
     <template-article v-if="article" :article="article" :attachments="article.attachments" />
-    <div v-else>Loading</div>
   </main>
 </template>
 <script>

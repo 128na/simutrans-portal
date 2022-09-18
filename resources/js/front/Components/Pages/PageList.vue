@@ -3,7 +3,7 @@
     <h2 class="section-title">{{ title }}</h2>
     <mode-switcher v-model="mode" />
     <list-paginator :pagination="pagination" />
-    <div v-show="loading">Loading...</div>
+    <message-loading v-show="loading" />
     <list-articles v-if="mode=='list'" :articles="articles" />
     <template v-else>
       <template-article v-for="article in articles" :key="article.slug" :article="article"
@@ -30,8 +30,8 @@ export default {
   computed: {
     title() {
       switch (this.$route.name) {
-        // case 'user':
-        // return `${this.$route.params.id}`;
+        case 'search':
+          return `「${this.$route.query.word}」の検索結果`;
         default:
           return '記事一覧';
       }
@@ -58,6 +58,8 @@ export default {
               return this.fetchPages();
             case 'ranking':
               return this.fetchRanking();
+            case 'search':
+              return this.fetchSearch();
             default:
               throw new Error(`unknown route name "${this.$route.name}" provided"`);
           }
@@ -89,6 +91,9 @@ export default {
     },
     fetchRanking() {
       return axios.get(`/api/v3/front/ranking?page=${this.$route.query.page || 1}`);
+    },
+    fetchSearch() {
+      return axios.get(`/api/v3/front/search?word=${this.$route.query.word}&page=${this.$route.query.page || 1}`);
     },
     handleResponse(res) {
       if (res.status === 200) {

@@ -24,7 +24,7 @@ const routes = [
   { name: 'ranking', path: '/ranking', component: PageList },
   // { name: 'top', path: '/', component: PageTop },
   { name: 'tags', path: '/tags', component: PageTags },
-  { name: 'advancedSearch', path: '/advancedSearch', component: PageList },
+  { name: 'search', path: '/search', component: PageList },
   { path: '*', redirect: { name: 'notFound' } },
   { name: 'error', path: '/error/:status', component: PageError }
 ];

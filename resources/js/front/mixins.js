@@ -41,17 +41,18 @@ export const routeLink = {
         name: 'show',
         params: { slug }
       };
-    }
+    },
+    toSearch(word) {
+      return {
+        name: 'search',
+        query: { word }
+      };
+    },
   },
   computed: {
     toTags() {
       return {
         name: 'tags'
-      };
-    },
-    toAdvancedSearch() {
-      return {
-        name: 'advancedSearch'
       };
     },
     toAbout() {

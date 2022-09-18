@@ -46,10 +46,12 @@ import {
   OverlayPlugin,
   PaginationNavPlugin,
   SpinnerPlugin,
-  TablePlugin
+  TablePlugin,
+  BIconArrowClockwise
 } from 'bootstrap-vue';
 
 Vue.component('BIcon', BIcon);
+Vue.component('BIconArrowClockwise', BIconArrowClockwise);
 Vue.component('BIconArrowDown', BIconArrowDown);
 Vue.component('BIconArrowLeft', BIconArrowLeft);
 Vue.component('BIconBookmarkStarFill', BIconBookmarkStarFill);

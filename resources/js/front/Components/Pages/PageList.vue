@@ -4,6 +4,7 @@
     <mode-switcher v-model="mode" />
     <list-paginator :pagination="pagination" />
     <message-loading v-show="loading" />
+    <message-error v-show="error" @reload="fetch" />
     <list-articles v-if="mode=='list'" :articles="articles" />
     <template v-else>
       <template-article v-for="article in articles" :key="article.slug" :article="article"
@@ -22,6 +23,7 @@ export default {
   data() {
     return {
       loading: true,
+      error: false,
       articles: [],
       pagination: null,
       mode: 'list'
@@ -40,6 +42,7 @@ export default {
   methods: {
     async fetch() {
       this.loading = true;
+      this.error = false;
       this.articles = [];
       try {
         const res = await (async () => {
@@ -66,7 +69,8 @@ export default {
         })();
         this.handleResponse(res);
       } catch (err) {
-        this.handleError(err);
+        this.error = true;
+        console.warn(err.response);
       } finally {
         this.loading = false;
       }

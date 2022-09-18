@@ -102,7 +102,7 @@ export const watchAndFetch = {
   },
   methods: {
     handleError(err) {
-      this.$router.push({ name: 'error', params: { status: err?.response?.status || 0 } });
+      this.$router.replace({ name: 'error', params: { status: err?.response?.status || 0 } });
     }
   }
 };

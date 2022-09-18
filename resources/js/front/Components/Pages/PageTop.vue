@@ -5,7 +5,7 @@
         <h2 class="section-title">{{c.label}}</h2>
       </router-link>
       <message-loading v-show="c.loading" />
-      <message-error v-show="c.error" />
+      <message-error v-show="c.error" @reload="fetchContent(c)" />
       <list-articles :articles="c.articles" />
     </section>
   </main>
@@ -70,24 +70,25 @@ export default {
     };
   },
   methods: {
-    async fetch() {
-      this.contents.map(async c => {
-        c.loading = true;
-        c.error = false;
-        c.articles = [];
-        try {
-          const res = await axios.get(c.api);
-          if (res.status === 200) {
-            this.$emit('addCaches', res.data.data);
-            c.articles = JSON.parse(JSON.stringify(res.data.data)).splice(0, 3);
-          }
-        } catch (err) {
-          c.error = true;
-          console.log(err.response);
-        } finally {
-          c.loading = false;
+    fetch() {
+      this.contents.map(c => this.fetchContent(c));
+    },
+    async fetchContent(content) {
+      content.loading = true;
+      content.error = false;
+      content.articles = [];
+      try {
+        const res = await axios.get(content.api);
+        if (res.status === 200) {
+          this.$emit('addCaches', res.data.data);
+          content.articles = JSON.parse(JSON.stringify(res.data.data)).splice(0, 3);
         }
-      });
+      } catch (err) {
+        content.error = true;
+        console.warn(err.response);
+      } finally {
+        content.loading = false;
+      }
     }
 
   }

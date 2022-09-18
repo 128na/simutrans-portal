@@ -36,9 +36,9 @@ Route::GET('password/reset/{token}', [ResetPasswordController::class, 'showReset
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware(['cache.response:public;max_age=2628000;etag'])->group(function () {
     Route::get('/', [FrontController::class, 'fallback'])->name('index');
-    Route::get('/ranking', [FrontController::class, 'fallback'])->name('addons.ranking');
-    Route::get('/pages', [FrontController::class, 'fallback'])->name('pages.index');
-    Route::get('/announces', [FrontController::class, 'fallback'])->name('announces.index');
+    Route::get('/ranking', [FrontController::class, 'fallback'])->name('ranking');
+    Route::get('/pages', [FrontController::class, 'fallback'])->name('pages');
+    Route::get('/announces', [FrontController::class, 'fallback'])->name('announces');
     Route::get('/category/pak/{size}/none', [FrontController::class, 'categoryPakNoneAddon'])->name('category.pak.noneAddon');
     Route::get('/category/pak/{size}/{slug}', [FrontController::class, 'categoryPakAddon'])->name('category.pak.addon');
     Route::get('/category/{type}/{slug}', [FrontController::class, 'category'])->name('category');

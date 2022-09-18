@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Front;
+namespace App\Http\Controllers;
 
 use App\Events\ArticleConversion;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Article\SearchRequest;
 use App\Models\Article;
 use App\Models\Tag;
@@ -14,50 +13,19 @@ use App\Repositories\TagRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class ArticleController extends Controller
+class FrontController extends Controller
 {
-    private ArticleRepository $articleRepository;
-    private CategoryRepository $categoryRepository;
-    private TagRepository $tagRepository;
-
     public function __construct(
-        ArticleRepository $articleRepository,
-        CategoryRepository $categoryRepository,
-        TagRepository $tagRepository
+       private ArticleRepository $articleRepository,
+       private CategoryRepository $categoryRepository,
+       private TagRepository $tagRepository
     ) {
-        $this->articleRepository = $articleRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->tagRepository = $tagRepository;
     }
 
     /**
      * SPA用フロント.
      */
     public function fallback()
-    {
-        return view('front.spa');
-    }
-
-    /**
-     * アドオンランキング一覧.
-     */
-    public function ranking()
-    {
-        return view('front.spa');
-    }
-
-    /**
-     * 一般記事一覧.
-     */
-    public function pages()
-    {
-        return view('front.spa');
-    }
-
-    /**
-     * 一般記事一覧.
-     */
-    public function announces()
     {
         return view('front.spa');
     }
@@ -145,17 +113,5 @@ class ArticleController extends Controller
     public function search(SearchRequest $request)
     {
         return view('front.spa');
-    }
-
-    /**
-     * タグ一覧.
-     */
-    public function tags()
-    {
-        return view('front.spa');
-
-        $contents = ['tags' => $this->tagRepository->getAllTags()];
-
-        return view('front.tags', $contents);
     }
 }

@@ -65,7 +65,7 @@ export default {
           articles: [],
           error: false,
           loading: true
-        },
+        }
       ]
     };
   },
@@ -92,5 +92,5 @@ export default {
     }
 
   }
-}
+};
 </script>

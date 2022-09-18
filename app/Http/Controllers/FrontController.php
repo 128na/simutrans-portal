@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Storage;
 class FrontController extends Controller
 {
     public function __construct(
-       private ArticleRepository $articleRepository,
-       private CategoryRepository $categoryRepository,
-       private TagRepository $tagRepository
+        private ArticleRepository $articleRepository,
+        private CategoryRepository $categoryRepository,
+        private TagRepository $tagRepository
     ) {
     }
 

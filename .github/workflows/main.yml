@@ -150,10 +150,8 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
 
       - name: Setup Node
-        if: steps.cache-assets.outputs.cache-hit != 'true'
         uses: actions/setup-node@v2
       - name: npm ci
-        if: steps.cache-assets.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build Assets
         run: npm run prod

@@ -14,6 +14,7 @@ class TopPage extends Page
 
     public function __construct()
     {
+        Article::query()->delete();
         $user = User::factory()->create();
         $this->article = Article::factory()->publish()->addonPost()->create([
             'user_id' => $user->id,

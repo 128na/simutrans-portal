@@ -19,23 +19,7 @@ export default {
     return {
       contents: [
         {
-          api: '/api/v3/front/category/pak/64',
-          to: { name: 'category', params: { type: 'pak', slug: '64' } },
-          label: 'pak64の新着アドオン',
-          articles: [],
-          error: false,
-          loading: true
-        },
-        {
-          api: '/api/v3/front/category/pak/128',
-          to: { name: 'category', params: { type: 'pak', slug: '128' } },
-          label: 'pak128の新着アドオン',
-          articles: [],
-          error: false,
-          loading: true
-        },
-        {
-          api: '/api/v3/front/category/pak/128-japan',
+          api: '/api/v3/front/category/pak/128-japan?page=1',
           to: { name: 'category', params: { type: 'pak', slug: '128-japan' } },
           label: 'pak128Japanの新着アドオン',
           articles: [],
@@ -43,7 +27,23 @@ export default {
           loading: true
         },
         {
-          api: '/api/v3/front/ranking',
+          api: '/api/v3/front/category/pak/128?page=1',
+          to: { name: 'category', params: { type: 'pak', slug: '128' } },
+          label: 'pak128の新着アドオン',
+          articles: [],
+          error: false,
+          loading: true
+        },
+        {
+          api: '/api/v3/front/category/pak/64?page=1',
+          to: { name: 'category', params: { type: 'pak', slug: '64' } },
+          label: 'pak64の新着アドオン',
+          articles: [],
+          error: false,
+          loading: true
+        },
+        {
+          api: '/api/v3/front/ranking?page=1',
           to: { name: 'ranking' },
           label: 'アクセスランキング',
           articles: [],
@@ -51,7 +51,7 @@ export default {
           loading: true
         },
         {
-          api: '/api/v3/front/pages',
+          api: '/api/v3/front/pages?page=1',
           to: { name: 'pages' },
           label: '一般記事',
           articles: [],
@@ -59,7 +59,7 @@ export default {
           loading: true
         },
         {
-          api: '/api/v3/front/announces',
+          api: '/api/v3/front/announces?page=1',
           to: { name: 'announces' },
           label: 'お知らせ',
           articles: [],

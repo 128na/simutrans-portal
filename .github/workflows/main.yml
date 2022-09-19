@@ -151,10 +151,15 @@ jobs:
 
       - name: Setup Node
         uses: actions/setup-node@v2
+
       - name: npm ci
         run: npm ci
+
       - name: Build Assets
         run: npm run prod
+
+      - name: Storage link
+        run: php artisan storage:link
 
       - name: Upgrade Chrome Driver
         run: php artisan dusk:chrome-driver

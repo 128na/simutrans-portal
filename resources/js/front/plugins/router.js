@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-
 /**
 * import components
 */
@@ -9,10 +8,6 @@ import PageShow from '../Components/Pages/PageShow';
 import PageList from '../Components/Pages/PageList';
 import PageTags from '../Components/Pages/PageTags';
 import PageError from '../Components/Pages/PageError';
-
-// import { gaPageView } from './ga';
-
-// import routeShortcut from '../mixins/route';
 
 const routes = [
   { name: 'top', path: '/', component: PageTop },
@@ -30,26 +25,16 @@ const routes = [
   { name: 'error', path: '/error/:status', component: PageError }
 ];
 
-// const scrollBehavior = (to, from, savedPosition) => {
-//   return new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       resolve(savedPosition || { x: 0, y: 0 }
-//       );
-//     }, 100); // transitionの時間と合わせる
-//   });
-// };
+const scrollBehavior = (to, from, savedPosition) => {
+  return savedPosition || { x: 0, y: 0 };
+};
 
 Vue.use(VueRouter);
 const router = new VueRouter({
   base: '/',
   mode: 'history',
-  // scrollBehavior,
+  scrollBehavior,
   routes
 });
-
-router.afterEach((to, from) => {
-  // gaPageView(to);
-});
-// Vue.mixin(routeShortcut);
 
 export default router;

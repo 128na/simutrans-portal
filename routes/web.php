@@ -19,7 +19,6 @@ use App\Http\Controllers\FrontController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
-use App\Http\Controllers\User\AdvancedSearchController;
 use Illuminate\Support\Facades\Route;
 
 Route::feeds();
@@ -34,7 +33,7 @@ Route::POST('password/reset', [ResetPasswordController::class, 'reset'])->name('
 Route::GET('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 
 // 非ログイン系 reidsキャッシュ有効
-Route::middleware(['cache.response:public;max_age=2628000;etag'])->group(function () {
+Route::middleware(['cache.headers:public;max_age=2628000;etag'])->group(function () {
     Route::get('/', [FrontController::class, 'fallback'])->name('index');
     Route::get('/ranking', [FrontController::class, 'fallback'])->name('ranking');
     Route::get('/pages', [FrontController::class, 'fallback'])->name('pages');
@@ -52,11 +51,6 @@ Route::get('/search', [FrontController::class, 'search'])->name('search');
 Route::get('/mypage/', [MypageController::class, 'index'])->name('mypage.index');
 Route::get('/mypage/{any}', [MypageController::class, 'fallback'])->where('any', '.*');
 Route::get('/articles/{article}/download', [FrontController::class, 'download'])->name('articles.download');
-
-// ログイン系 reidsキャッシュ無効
-Route::middleware(['verified'])->group(function () {
-    Route::match(['get', 'post'], '/advancedSearch', [AdvancedSearchController::class, 'search'])->name('advancedSearch');
-});
 
 Route::middleware(['auth', 'admin', 'verified'])->group(function () {
     Route::get('/admin/', [AdminController::class, 'index'])->name('admin.index');

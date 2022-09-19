@@ -39,9 +39,6 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
     Route::POST('logout', [LoginController::class, 'logout'])->name('logout');
     // PWリセット
     Route::POST('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-});
-
-Route::prefix('v2')->name('api.v2.')->group(function () {
     // マイページ機能
     Route::prefix('mypage')->middleware(['auth'])->group(function () {
         Route::get('user', [UserController::class, 'index'])->name('users.index');

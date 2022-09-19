@@ -22,6 +22,7 @@ export default {
   },
   methods: {
     async fetch() {
+      axios.post(`/api/v3/shown/${this.$route.params.slug}`);
       if (this.cachedArticles.find(a => a.slug === this.$route.params.slug)) {
         this.loading = false;
         return;

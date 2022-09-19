@@ -14,7 +14,7 @@ export default {
   },
   methods: {
     handle() {
-      axios.post(`/api/v1/click/${this.article.slug}`);
+      axios.post(`/api/v3/conversion/${this.article.slug}`);
     }
   }
 };

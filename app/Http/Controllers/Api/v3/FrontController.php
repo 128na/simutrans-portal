@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\v3;
 
-use App\Events\ArticleShown;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Article\SearchRequest;
 use App\Http\Resources\Front\ArticleResource;
@@ -17,7 +16,6 @@ use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
 use App\Services\Front\SidebarService;
-use Auth;
 
 class FrontController extends Controller
 {
@@ -40,12 +38,6 @@ class FrontController extends Controller
     public function show(Article $article)
     {
         abort_unless($article->is_publish, 404);
-
-        $isOwner = Auth::check() && Auth::user()->can('update', $article);
-        if (!$isOwner) {
-            event(new ArticleShown($article));
-            $contents['gtag'] = $article->user->profile->data->gtag;
-        }
 
         $article = $this->articleRepository->loadArticle($article);
 

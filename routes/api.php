@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\v1\ConversionController;
 use App\Http\Controllers\Api\v2\Admin\ArticleController;
 use App\Http\Controllers\Api\v2\Admin\DebugController;
 use App\Http\Controllers\Api\v2\Admin\UserController as AdminUserController;
@@ -10,6 +9,7 @@ use App\Http\Controllers\Api\v2\Mypage\AttachmentController;
 use App\Http\Controllers\Api\v2\Mypage\TagController;
 use App\Http\Controllers\Api\v2\Mypage\UserController;
 use App\Http\Controllers\Api\v3\BulkZipController;
+use App\Http\Controllers\Api\v3\ConversionController;
 use App\Http\Controllers\Api\v3\FrontController;
 use App\Http\Controllers\Api\v3\InvitationCodeController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -26,9 +26,6 @@ use App\Http\Controllers\Auth\VerificationController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
  */
-Route::prefix('v1')->name('api.v1.')->group(function () {
-    Route::post('click/{article}', [ConversionController::class, 'click'])->name('click');
-});
 
 // auth
 Route::prefix('v2')->name('api.v2.')->group(function () {
@@ -82,6 +79,9 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
 });
 
 Route::prefix('v3')->name('api.v3.')->group(function () {
+    Route::post('conversion/{article}', [ConversionController::class, 'conversion'])->name('conversion');
+    Route::post('shown/{article}', [ConversionController::class, 'conversion'])->name('conversion');
+
     Route::prefix('mypage')->middleware(['auth', 'verified'])->group(function () {
         // 一括DL機能
         Route::get('/bulk-zip', [BulkZipController::class, 'user'])->name('bulkZip.user');

@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use App\Models\Article;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\ArticleAddonIntroductionPage;
 use Tests\Browser\Pages\ArticleAddonPostPage;
@@ -13,6 +14,13 @@ use Tests\DuskTestCase;
 
 class PageTest extends DuskTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Article::query()->delete();
+    }
+
     /**
      * @dataProvider dataPages
      */

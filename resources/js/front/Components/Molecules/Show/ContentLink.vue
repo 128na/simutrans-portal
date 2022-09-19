@@ -1,6 +1,6 @@
 <template>
-  <a :href="article.contents.link" :data-url="article.contents.link" :data-slug="article.slug" class="text-primary"
-    target="_blank" rel="noopener noreferrer" dusk="conversion-link" @click="handle">{{ article.contents.link }}</a>
+  <a :href="article.contents.link" class="text-primary" target="_blank" rel="noopener noreferrer" dusk="conversion-link"
+    @click="handle">{{ article.contents.link }}</a>
 </template>
 <script>
 import axios from 'axios';

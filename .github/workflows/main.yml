@@ -156,7 +156,6 @@ jobs:
         if: steps.cache-assets.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build Assets
-        if: steps.cache-assets.outputs.cache-hit != 'true'
         run: npm run prod
 
       - name: Upgrade Chrome Driver
@@ -187,7 +186,7 @@ jobs:
 
   deploy:
     # tag push -> テスト通過後デプロイ
-    needs: [test, es, cs]
+    needs: [test, es, cs, dusk]
     if: ${{ success() && startsWith( github.ref, 'refs/tags/' ) }}
     runs-on: ubuntu-latest
     steps:

@@ -15,7 +15,10 @@ class TopPage extends Page
     public function __construct()
     {
         $user = User::factory()->create();
-        $this->article = Article::factory()->publish()->addonPost()->create(['user_id' => $user->id]);
+        $this->article = Article::factory()->publish()->addonPost()->create([
+            'title' => 'dummy title',
+            'user_id' => $user->id,
+        ]);
         $this->category = Category::where('type', 'pak')->where('slug', '128')->first();
         $this->article->categories()->save($this->category);
     }
@@ -38,7 +41,7 @@ class TopPage extends Page
     public function assert(Browser $browser)
     {
         $browser
-            ->waitForText($this->article->title)
+            ->waitForText($this->article->title, 30)
             ->assertSee($this->article->title)
             ->assertSee('の新着アドオン')
             ->assertSee(__("category.{$this->category->type}.{$this->category->slug}"))

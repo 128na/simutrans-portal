@@ -108,6 +108,8 @@ jobs:
   dusk:
     runs-on: ubuntu-latest
     steps:
+      - name: install japanese font
+        run: apt install -y fonts-ipafont && fc-cache -fv install
       - name: Checkout
         uses: actions/checkout@v2
       - name: .env

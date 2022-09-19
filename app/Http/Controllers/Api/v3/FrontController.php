@@ -9,6 +9,7 @@ use App\Http\Resources\Front\ArticleResource;
 use App\Http\Resources\Front\PakAddonResource;
 use App\Http\Resources\Front\TagResource;
 use App\Http\Resources\Front\UserAddonResource;
+use App\Http\Resources\Front\UserProfileResource;
 use App\Models\Article;
 use App\Models\Tag;
 use App\Models\User;
@@ -55,28 +56,35 @@ class FrontController extends Controller
     {
         $articles = $this->articleRepository->paginateByUser($user);
 
-        return ArticleResource::collection($articles);
+        return ArticleResource::collection($articles)
+            ->additional(([
+                'title' => sprintf('%sさんの投稿', $user->name),
+                'profile' => new UserProfileResource($user),
+            ]));
     }
 
     public function pages()
     {
         $articles = $this->articleRepository->paginatePages();
 
-        return ArticleResource::collection($articles);
+        return ArticleResource::collection($articles)
+            ->additional((['title' => '一般記事']));
     }
 
     public function announces()
     {
         $articles = $this->articleRepository->paginateAnnouces();
 
-        return ArticleResource::collection($articles);
+        return ArticleResource::collection($articles)
+            ->additional((['title' => 'お知らせ']));
     }
 
     public function ranking()
     {
         $articles = $this->articleRepository->paginateRanking();
 
-        return ArticleResource::collection($articles);
+        return ArticleResource::collection($articles)
+            ->additional((['title' => 'アクセスランキング']));
     }
 
     public function category(string $type, string $slug)
@@ -84,7 +92,8 @@ class FrontController extends Controller
         $category = $this->categoryRepository->findOrFailByTypeAndSlug($type, $slug);
         $articles = $this->articleRepository->paginateByCategory($category);
 
-        return ArticleResource::collection($articles);
+        return ArticleResource::collection($articles)
+            ->additional((['title' => sprintf('%sの投稿', __("category.{$type}.{$slug}"))]));
     }
 
     public function categoryPakAddon(string $pakSlug, string $addonSlug)
@@ -93,7 +102,8 @@ class FrontController extends Controller
         $addon = $this->categoryRepository->findOrFailByTypeAndSlug('addon', $addonSlug);
         $articles = $this->articleRepository->paginateByPakAddonCategory($pak, $addon);
 
-        return ArticleResource::collection($articles);
+        return ArticleResource::collection($articles)
+            ->additional((['title' => sprintf('%s、%sの投稿', __("category.pak.{$pakSlug}"), __("category.addon.{$addonSlug}"))]));
     }
 
     public function categoryPakNoneAddon(string $pakSlug)
@@ -102,14 +112,16 @@ class FrontController extends Controller
 
         $articles = $this->articleRepository->paginateByPakNoneAddonCategory($pak);
 
-        return ArticleResource::collection($articles);
+        return ArticleResource::collection($articles)
+            ->additional((['title' => sprintf('%s、%sの投稿', __("category.pak.{$pakSlug}"), __('category.addon.none'))]));
     }
 
     public function tag(Tag $tag)
     {
         $articles = $this->articleRepository->paginateByTag($tag);
 
-        return ArticleResource::collection($articles);
+        return ArticleResource::collection($articles)
+           ->additional((['title' => sprintf('%sタグを含む投稿', $tag->name)]));
     }
 
     public function search(SearchRequest $request)
@@ -118,7 +130,8 @@ class FrontController extends Controller
 
         $articles = $this->articleRepository->paginateBySearch($word);
 
-        return ArticleResource::collection($articles);
+        return ArticleResource::collection($articles)
+           ->additional((['title' => sprintf('%sの検索結果', $word)]));
     }
 
     public function tags()

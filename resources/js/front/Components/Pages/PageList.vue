@@ -5,6 +5,7 @@
     <list-paginator :pagination="pagination" />
     <message-loading v-show="loading" />
     <message-error v-show="error" @reload="fetch" />
+    <profile-card v-if="profile" :profile="profile" />
     <list-articles v-if="mode=='list'" :articles="articles" />
     <template v-else>
       <template-article v-for="article in articles" :key="article.slug" :article="article"
@@ -26,18 +27,10 @@ export default {
       error: false,
       articles: [],
       pagination: null,
-      mode: 'list'
+      mode: 'list',
+      title: '記事一覧',
+      profile: null
     };
-  },
-  computed: {
-    title() {
-      switch (this.$route.name) {
-        case 'search':
-          return `「${this.$route.query.word}」の検索結果`;
-        default:
-          return '記事一覧';
-      }
-    }
   },
   methods: {
     async fetch() {
@@ -103,6 +96,8 @@ export default {
       if (res.status === 200) {
         this.articles = res.data.data;
         this.pagination = res.data.meta;
+        this.title = res.data.title;
+        this.profile = res.data?.profile || null;
         this.$emit('addCaches', res.data.data);
       }
     }

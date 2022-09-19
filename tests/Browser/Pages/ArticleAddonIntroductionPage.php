@@ -11,6 +11,8 @@ use Laravel\Dusk\Browser;
 class ArticleAddonIntroductionPage extends Page
 {
     private Article $article;
+    private Category $category;
+    private Tag $tag;
 
     public function __construct()
     {
@@ -41,7 +43,10 @@ class ArticleAddonIntroductionPage extends Page
     {
         $browser
             ->waitForText($this->article->title)
-            ->assertSee($this->article->title);
+            ->assertSee($this->article->title)
+            ->assertSee(__("category.{$this->category->type}.{$this->category->slug}"))
+            ->assertSee($this->tag->name)
+        ;
     }
 
     /**

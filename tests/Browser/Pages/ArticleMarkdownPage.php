@@ -10,6 +10,7 @@ use Laravel\Dusk\Browser;
 class ArticleMarkdownPage extends Page
 {
     private Article $article;
+    private Category $category;
 
     public function __construct()
     {
@@ -41,7 +42,10 @@ class ArticleMarkdownPage extends Page
     {
         $browser
             ->waitForText($this->article->title)
-            ->assertSee($this->article->title);
+            ->assertSee($this->article->title)
+            ->assertSee('Hoge')
+            ->assertSee(__("category.{$this->category->type}.{$this->category->slug}"))
+        ;
     }
 
     /**

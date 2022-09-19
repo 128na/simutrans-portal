@@ -1,5 +1,5 @@
 <template>
-  <a class="btn btn-lg btn-primary js-download" :href="download_url">ダウンロードする</a>
+  <a class="btn btn-lg btn-primary" :href="download_url" dusk="conversion-download">ダウンロードする</a>
 </template>
 <script>
 export default {

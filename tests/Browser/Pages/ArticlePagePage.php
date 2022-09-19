@@ -24,8 +24,8 @@ class ArticlePagePage extends Page
             'attachmentable_id' => $this->article->id,
         ]);
         $this->article->update(['contents' => ['sections' => [
-                ['type' => 'caption', 'caption' => 'Caption'],
-                ['type' => 'text', 'text' => 'Text'],
+                ['type' => 'caption', 'caption' => 'DummyCaption'],
+                ['type' => 'text', 'text' => 'DummyText'],
                 ['type' => 'url', 'url' => 'http://example.com'],
                 ['type' => 'image', 'id' => $this->attachment->id],
         ]]]);
@@ -53,7 +53,11 @@ class ArticlePagePage extends Page
     {
         $browser
             ->waitForText($this->article->title)
-            ->assertSee($this->article->title);
+            ->assertSee($this->article->title)
+            ->assertSee('DummyCaption')
+            ->assertSee('DummyText')
+            ->assertSee('http://example.com')
+        ;
     }
 
     /**

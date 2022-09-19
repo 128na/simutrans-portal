@@ -8,7 +8,7 @@ use App\Models\User;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
-class ZConversionTest extends DuskTestCase
+class ConversionTest extends DuskTestCase
 {
     private Article $article1;
     private Article $article2;

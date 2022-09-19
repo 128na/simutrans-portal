@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\Article;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -18,6 +19,7 @@ abstract class DuskTestCase extends BaseTestCase
         parent::setUp();
 
         $this->setupDatabase();
+        Article::query()->delete();
     }
 
     protected function setupDatabase(): void

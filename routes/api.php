@@ -80,7 +80,7 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
 
 Route::prefix('v3')->name('api.v3.')->group(function () {
     Route::post('conversion/{article}', [ConversionController::class, 'conversion'])->name('conversion');
-    Route::post('shown/{article}', [ConversionController::class, 'conversion'])->name('conversion');
+    Route::post('shown/{article}', [ConversionController::class, 'shown'])->name('shown');
 
     Route::prefix('mypage')->middleware(['auth', 'verified'])->group(function () {
         // 一括DL機能

@@ -5,11 +5,13 @@ namespace Tests;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\TestCase as BaseTestCase;
 
 abstract class DuskTestCase extends BaseTestCase
 {
     use CreatesApplication;
+    use DatabaseMigrations;
 
     protected function setUp(): void
     {
@@ -20,7 +22,6 @@ abstract class DuskTestCase extends BaseTestCase
 
     protected function setupDatabase(): void
     {
-        $this->artisan('migrate:refresh');
         $this->artisan('db:seed --class=ProdSeeder');
     }
 

@@ -3,7 +3,6 @@
 namespace Tests\Browser\Pages;
 
 use App\Models\Article;
-use App\Models\Category;
 use App\Models\User;
 use Laravel\Dusk\Browser;
 
@@ -17,8 +16,6 @@ class ListPagePage extends Page
         $this->article = Article::factory()->publish()->page()->create([
             'user_id' => $user->id,
         ]);
-        $category = Category::where('type', 'page')->where('slug', '!=', 'announce')->firstOrFail();
-        $this->article->categories()->save($category);
     }
 
     public function url()

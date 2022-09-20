@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\v1\ConversionController;
 use App\Http\Controllers\Api\v2\Admin\ArticleController;
 use App\Http\Controllers\Api\v2\Admin\DebugController;
 use App\Http\Controllers\Api\v2\Admin\UserController as AdminUserController;
@@ -10,6 +9,8 @@ use App\Http\Controllers\Api\v2\Mypage\AttachmentController;
 use App\Http\Controllers\Api\v2\Mypage\TagController;
 use App\Http\Controllers\Api\v2\Mypage\UserController;
 use App\Http\Controllers\Api\v3\BulkZipController;
+use App\Http\Controllers\Api\v3\ConversionController;
+use App\Http\Controllers\Api\v3\FrontController;
 use App\Http\Controllers\Api\v3\InvitationCodeController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -25,9 +26,6 @@ use App\Http\Controllers\Auth\VerificationController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
  */
-Route::prefix('v1')->name('api.v1.')->namespace('Api\v1')->group(function () {
-    Route::post('click/{article}', [ConversionController::class, 'click'])->name('click');
-});
 
 // auth
 Route::prefix('v2')->name('api.v2.')->group(function () {
@@ -38,11 +36,8 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
     Route::POST('logout', [LoginController::class, 'logout'])->name('logout');
     // PWリセット
     Route::POST('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-});
-
-Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
     // マイページ機能
-    Route::prefix('mypage')->namespace('Mypage')->middleware(['auth'])->group(function () {
+    Route::prefix('mypage')->middleware(['auth'])->group(function () {
         Route::get('user', [UserController::class, 'index'])->name('users.index');
         Route::get('tags', [TagController::class, 'search'])->name('tags.search');
         Route::get('attachments', [AttachmentController::class, 'index'])->name('attachments.index');
@@ -65,7 +60,7 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
     });
 
     // 管理者機能
-    Route::prefix('admin')->namespace('Admin')->middleware(['auth', 'admin', 'verified'])->group(function () {
+    Route::prefix('admin')->middleware(['auth', 'admin', 'verified'])->group(function () {
         // デバッグツール
         Route::post('/flush-cache', [DebugController::class, 'flushCache'])->name('admin.flushCache');
         Route::get('/debug/{level}', [DebugController::class, 'error'])->name('admin.debug');
@@ -83,8 +78,11 @@ Route::prefix('v2')->name('api.v2.')->namespace('Api\v2')->group(function () {
     });
 });
 
-Route::prefix('v3')->name('api.v3.')->namespace('Api\v3')->group(function () {
-    Route::prefix('mypage')->namespace('Mypage')->middleware(['auth', 'verified'])->group(function () {
+Route::prefix('v3')->name('api.v3.')->group(function () {
+    Route::post('conversion/{article}', [ConversionController::class, 'conversion'])->name('conversion');
+    Route::post('shown/{article}', [ConversionController::class, 'shown'])->name('shown');
+
+    Route::prefix('mypage')->middleware(['auth', 'verified'])->group(function () {
         // 一括DL機能
         Route::get('/bulk-zip', [BulkZipController::class, 'user'])->name('bulkZip.user');
 
@@ -92,5 +90,23 @@ Route::prefix('v3')->name('api.v3.')->namespace('Api\v3')->group(function () {
         Route::get('/invitation_code', [InvitationCodeController::class, 'index'])->name('invitationCode.index');
         Route::post('/invitation_code', [InvitationCodeController::class, 'update'])->name('invitationCode.update');
         Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy'])->name('invitationCode.destroy');
+    });
+    Route::prefix('front')->group(function () {
+        // キャッシュ有効
+        Route::middleware(['cache.headers:public;max_age=2628000;etag'])->group(function () {
+            Route::get('/sidebar', [FrontController::class, 'sidebar'])->name('sidebar');
+            Route::get('/', [FrontController::class, 'index'])->name('index');
+            Route::get('/ranking/', [FrontController::class, 'ranking'])->name('addons.ranking');
+            Route::get('/pages', [FrontController::class, 'pages'])->name('pages.index');
+            Route::get('/announces', [FrontController::class, 'announces'])->name('announces.index');
+            Route::get('/category/pak/{size}/none', [FrontController::class, 'categoryPakNoneAddon'])->name('category.pak.noneAddon');
+            Route::get('/category/pak/{size}/{slug}', [FrontController::class, 'categoryPakAddon'])->name('category.pak.addon');
+            Route::get('/category/{type}/{slug}', [FrontController::class, 'category'])->name('category');
+            Route::get('/tag/{tag}', [FrontController::class, 'tag'])->name('tag');
+            Route::get('/user/{user}', [FrontController::class, 'user'])->name('user');
+            Route::get('/tags', [FrontController::class, 'tags'])->name('tags');
+            Route::get('/search', [FrontController::class, 'search'])->name('search');
+            Route::get('/articles/{article}', [FrontController::class, 'show'])->name('articles.show');
+        });
     });
 });

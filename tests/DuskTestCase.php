@@ -2,31 +2,26 @@
 
 namespace Tests;
 
+use Database\Seeders\DuskSeeder;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Http\Middleware\SetCacheHeaders;
 use Laravel\Dusk\TestCase as BaseTestCase;
 
 abstract class DuskTestCase extends BaseTestCase
 {
     use CreatesApplication;
+    use DatabaseMigrations;
 
-    private static bool $init = false;
+    protected $seeder = DuskSeeder::class;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        if (!self::$init) {
-            $this->setupDatabase();
-        }
-    }
-
-    protected function setupDatabase(): void
-    {
-        $this->artisan('migrate:refresh');
-        $this->artisan('db:seed --class=ProdSeeder');
-        self::$init = true;
+        $this->withoutMiddleware(SetCacheHeaders::class);
     }
 
     /**

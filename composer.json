@@ -9,7 +9,6 @@
   "require": {
     "php": "^8.0",
     "abraham/twitteroauth": "^3",
-    "cebe/markdown": "^1.2",
     "doctrine/dbal": "^3.0",
     "ezyang/htmlpurifier": "^4.13",
     "fideloper/proxy": "^4.0",

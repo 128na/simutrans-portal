@@ -200,7 +200,7 @@ class Article extends Model implements Feedable
 
     public function scopePage($query)
     {
-        $query->where('post_type', 'page');
+        $query->where('post_type', ['page', 'markdown']);
     }
 
     public function scopePak($query, $slug)

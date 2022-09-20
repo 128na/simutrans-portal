@@ -24,8 +24,8 @@ class ArticlePagePage extends Page
             'attachmentable_id' => $this->article->id,
         ]);
         $this->article->update(['contents' => ['sections' => [
-                ['type' => 'caption', 'caption' => 'Caption'],
-                ['type' => 'text', 'text' => 'Text'],
+                ['type' => 'caption', 'caption' => 'DummyCaption'],
+                ['type' => 'text', 'text' => 'DummyText'],
                 ['type' => 'url', 'url' => 'http://example.com'],
                 ['type' => 'image', 'id' => $this->attachment->id],
         ]]]);
@@ -34,36 +34,19 @@ class ArticlePagePage extends Page
         $this->article->categories()->save($this->category);
     }
 
-    /**
-     * Get the URL for the page.
-     *
-     * @return string
-     */
     public function url()
     {
         return '/articles/'.urlencode($this->article->slug);
     }
 
-    /**
-     * Assert that the browser is on the page.
-     *
-     * @return void
-     */
     public function assert(Browser $browser)
     {
         $browser
-            ->assertSee($this->article->title);
-    }
-
-    /**
-     * Get the element shortcuts for the page.
-     *
-     * @return array
-     */
-    public function elements()
-    {
-        return [
-            '@element' => '#selector',
-        ];
+            ->waitForText($this->article->title)
+            ->assertSee($this->article->title)
+            ->assertSee('DummyCaption')
+            ->assertSee('DummyText')
+            ->assertSee('http://example.com')
+        ;
     }
 }

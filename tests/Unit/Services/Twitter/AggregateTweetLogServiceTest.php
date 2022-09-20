@@ -209,6 +209,8 @@ class AggregateTweetLogServiceTest extends UnitTestCase
         });
 
         $service = $this->getSUT();
-        $service->updateOrCreateTweetLogSummary([1]);
+        $response = $service->updateOrCreateTweetLogSummary([1]);
+
+        $this->assertNull($response);
     }
 }

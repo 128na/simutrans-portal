@@ -27,12 +27,12 @@ class Article extends JsonResource
             'categories' => $this->categories->map(fn (Category $c) => [
                 'id' => $c->id,
                 'name' => __("category.{$c->type}.{$c->slug}"),
-                'url' => route('category', ['type' => $c->type, 'slug' => $c->slug]),
+                'type' => $c->type,
+                'slug' => $c->slug,
             ]),
             'tags' => $this->tags->map(fn (Tag $t) => [
                 'id' => $t->id,
                 'name' => $t->name,
-                'url' => route('tag', $t),
             ]),
             'published_at' => $this->published_at,
             'modified_at' => $this->modified_at,

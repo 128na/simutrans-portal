@@ -18,20 +18,11 @@ class TagRepository extends BaseRepository
         $this->model = $model;
     }
 
-    public function getIdsByNames(array $tagNames): Collection
-    {
-        $tags = collect($tagNames)
-            ->map(fn (string $tagName) => $this->model->firstOrCreate(['name' => $tagName]));
-
-        return $tags->pluck('id');
-    }
-
     public function getAllTags(): Collection
     {
         return $this->model->select('id', 'name')
             ->whereHas('articles', fn ($query) => $query->active())
             ->popular('articles_count', 'desc')
-            ->withCache()
             ->get();
     }
 

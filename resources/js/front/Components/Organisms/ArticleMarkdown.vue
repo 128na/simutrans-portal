@@ -7,14 +7,14 @@
     <dl>
       <template v-if="article.categories.length">
         <dt>
-          <text-sub-title text="カテゴリ" />
+          <text-sub-title text="カテゴリ" :preview="preview" />
         </dt>
         <dd>
           <content-categories :article="article" />
         </dd>
       </template>
     </dl>
-    <content-meta :article="article" />
+    <content-meta :article="article" class="mt-4" />
   </article>
 </template>
 <script>
@@ -27,6 +27,10 @@ export default {
     attachments: {
       type: Array,
       default: () => []
+    },
+    preview: {
+      type: Boolean,
+      default: false
     }
   }
 };

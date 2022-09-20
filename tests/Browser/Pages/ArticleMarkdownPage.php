@@ -10,6 +10,7 @@ use Laravel\Dusk\Browser;
 class ArticleMarkdownPage extends Page
 {
     private Article $article;
+    private Category $category;
 
     public function __construct()
     {
@@ -22,36 +23,18 @@ class ArticleMarkdownPage extends Page
         $this->article->categories()->save($this->category);
     }
 
-    /**
-     * Get the URL for the page.
-     *
-     * @return string
-     */
     public function url()
     {
         return '/articles/'.urlencode($this->article->slug);
     }
 
-    /**
-     * Assert that the browser is on the page.
-     *
-     * @return void
-     */
     public function assert(Browser $browser)
     {
         $browser
-            ->assertSee($this->article->title);
-    }
-
-    /**
-     * Get the element shortcuts for the page.
-     *
-     * @return array
-     */
-    public function elements()
-    {
-        return [
-            '@element' => '#selector',
-        ];
+            ->waitForText($this->article->title)
+            ->assertSee($this->article->title)
+            ->assertSee('Hoge')
+            ->assertSee(__("category.{$this->category->type}.{$this->category->slug}"))
+        ;
     }
 }

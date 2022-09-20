@@ -6,7 +6,6 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
-use App\QueryBuilders\AdvancedSearchQueryBuilder;
 use Carbon\CarbonImmutable;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,12 +26,9 @@ class ArticleRepository extends BaseRepository
      */
     protected $model;
 
-    private AdvancedSearchQueryBuilder $advancedSearchQueryBuilder;
-
-    public function __construct(Article $model, AdvancedSearchQueryBuilder $advancedSearchQueryBuilder)
+    public function __construct(Article $model)
     {
         $this->model = $model;
-        $this->advancedSearchQueryBuilder = $advancedSearchQueryBuilder;
     }
 
     /**
@@ -96,7 +92,6 @@ class ArticleRepository extends BaseRepository
         return $this->model
             ->select(['articles.*'])
             ->active()
-            ->withCache()
             ->with($relations)
             ->orderBy('modified_at', 'desc');
     }
@@ -105,7 +100,6 @@ class ArticleRepository extends BaseRepository
     {
         return $query->select(['articles.*'])
             ->active()
-            ->withCache()
             ->with($relations)
             ->orderBy('modified_at', 'desc');
     }
@@ -114,14 +108,6 @@ class ArticleRepository extends BaseRepository
     {
         return $this->basicQuery()
             ->announce();
-    }
-
-    /**
-     * お知らせ記事一覧.
-     */
-    public function findAllAnnouces(?int $limit = null): Collection
-    {
-        return $this->queryAnnouces()->limit($limit)->get();
     }
 
     /**
@@ -141,14 +127,6 @@ class ArticleRepository extends BaseRepository
     /**
      * 一般記事一覧.
      */
-    public function findAllPages(?int $limit = null): Collection
-    {
-        return $this->queryPages()->limit($limit)->get();
-    }
-
-    /**
-     * 一般記事一覧.
-     */
     public function paginatePages(?int $limit = null): LengthAwarePaginator
     {
         return $this->queryPages()->paginate($limit);
@@ -161,30 +139,13 @@ class ArticleRepository extends BaseRepository
             ->addon();
     }
 
-    /**
-     * pak別の投稿一覧.
-     */
-    public function findAllByPak(string $pak, ?int $limit = null): Collection
-    {
-        return $this->queryByPak($pak)->limit($limit)->get();
-    }
-
     private function queryRanking(): Builder
     {
         return $this->model
             ->select(['articles.*'])
-            ->withCache()
             ->active()
             ->with(self::FRONT_RELATIONS)
             ->rankingOrder();
-    }
-
-    /**
-     * アドオン投稿/紹介のデイリーPVランキング.
-     */
-    public function findAllRanking(?int $limit = null): Collection
-    {
-        return $this->queryRanking()->limit($limit)->get();
     }
 
     /**
@@ -200,14 +161,6 @@ class ArticleRepository extends BaseRepository
         return $this->basicQuery()
             ->addon()
             ->active();
-    }
-
-    /**
-     * アドオン投稿/紹介の一覧.
-     */
-    public function paginateAddons(?int $limit = null): LengthAwarePaginator
-    {
-        return $this->queryAddon()->paginate($limit);
     }
 
     private function queryByCategory(Category $category): Relation
@@ -281,7 +234,6 @@ class ArticleRepository extends BaseRepository
 
         return $this->model->select(['articles.*'])
             ->active()
-            ->withCache()
             ->where(fn ($q) => $q
                 ->orWhere('title', 'LIKE', $likeWord)
                 ->orWhere('contents', 'LIKE', $likeWord)
@@ -360,81 +312,6 @@ class ArticleRepository extends BaseRepository
         $article->trashed()
             ? $article->restore()
             : $article->delete();
-    }
-
-    /**
-     * 詳細検索.
-     */
-    private function queryByAdvancedSearch(
-        ?string $word = null,
-        ?Collection $categories = null,
-        ?bool $categoryAnd = true,
-        ?Collection $tags = null,
-        ?bool $tagAnd = true,
-        ?Collection $users = null,
-        ?bool $userAnd = true,
-        ?CarbonImmutable $startAt = null,
-        ?CarbonImmutable $endAt = null,
-        string $order = 'modified_at',
-        string $direction = 'desc'
-    ): Builder {
-        $q = $this->model->select(['articles.*'])
-            ->active()
-            ->withCache()
-            ->with(self::FRONT_RELATIONS)
-            ->orderBy($order, $direction);
-
-        if ($word) {
-            $this->advancedSearchQueryBuilder->addWordSearch($q, $word);
-        }
-        if ($categories) {
-            $this->advancedSearchQueryBuilder->addCategories($q, $categories, $categoryAnd);
-        }
-        if ($tags) {
-            $this->advancedSearchQueryBuilder->addTags($q, $tags, $tagAnd);
-        }
-        if ($users) {
-            $this->advancedSearchQueryBuilder->addUsers($q, $users, $userAnd);
-        }
-        if ($startAt) {
-            $this->advancedSearchQueryBuilder->addStartAt($q, $startAt);
-        }
-        if ($endAt) {
-            $this->advancedSearchQueryBuilder->addEndAt($q, $endAt);
-        }
-
-        return $q;
-    }
-
-    public function paginateByAdvancedSearch(
-        ?string $word = null,
-        ?Collection $categories = null,
-        ?bool $categoryAnd = true,
-        ?Collection $tags = null,
-        ?bool $tagAnd = true,
-        ?Collection $users = null,
-        ?bool $userAnd = true,
-        ?CarbonImmutable $startAt = null,
-        ?CarbonImmutable $endAt = null,
-        string $order = 'modified_at',
-        string $direction = 'desc',
-        int $limit = 50
-    ): LengthAwarePaginator {
-        $q = $this->queryByAdvancedSearch(
-            $word,
-            $categories,
-            $categoryAnd,
-            $tags,
-            $tagAnd,
-            $users,
-            $userAnd,
-            $startAt,
-            $endAt,
-            $order,
-            $direction
-        );
-
-        return $q->paginate($limit);
     }
 
     public function findByTitles(array $titles): Collection

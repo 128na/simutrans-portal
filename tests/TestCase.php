@@ -2,11 +2,11 @@
 
 namespace Tests;
 
-use App\Http\Middleware\CacheResponse;
 use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Http\Middleware\SetCacheHeaders;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -26,7 +26,7 @@ abstract class TestCase extends BaseTestCase
         $this->seed('ProdSeeder');
         $this->user = User::factory()->create();
 
-        $this->withoutMiddleware(CacheResponse::class);
+        $this->withoutMiddleware(SetCacheHeaders::class);
     }
 
     protected function tearDown(): void

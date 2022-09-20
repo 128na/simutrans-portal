@@ -14,21 +14,19 @@
         <text-sub-title text="投稿者" />
       </dt>
       <dd>
-        <link-internal :href="article.user.url">
-          <text-pre :text="article.user.name" />
-        </link-internal>
+        <content-user :user="article.user" :preview="preview" />
       </dd>
       <template v-if="article.categories.length">
         <dt>
           <text-sub-title text="カテゴリ" />
         </dt>
         <dd>
-          <content-categories :article="article" />
+          <content-categories :article="article" :preview="preview" />
         </dd>
       </template>
       <template v-if="article.tags.length">
         <dt>
-          <text-sub-title text="タグ" />
+          <text-sub-title text="タグ" :preview="preview" />
         </dt>
         <dd>
           <content-tags :article="article" />
@@ -71,7 +69,7 @@
         <content-link :article="article" />
       </dd>
     </dl>
-    <content-meta :article="article" />
+    <content-meta :article="article" class="mt-4" />
   </article>
 </template>
 <script>
@@ -84,6 +82,10 @@ export default {
     attachments: {
       type: Array,
       default: () => []
+    },
+    preview: {
+      type: Boolean,
+      default: false
     }
   }
 };

@@ -1,5 +1,4 @@
 import Vue from 'vue';
-// import store from './store';
 import router from './plugins/router';
 import './plugins';
 
@@ -13,7 +12,6 @@ if (document.getElementById('app')) {
   new Vue({
     el: '#app',
     render: h => h(App),
-    // store,
     router
   });
 }

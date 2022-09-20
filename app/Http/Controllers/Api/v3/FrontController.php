@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Api\v3;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Article\SearchRequest;
-use App\Http\Resources\Front\ArticleResource;
-use App\Http\Resources\Front\PakAddonResource;
-use App\Http\Resources\Front\TagResource;
-use App\Http\Resources\Front\UserAddonResource;
-use App\Http\Resources\Front\UserProfileResource;
+use App\Http\Resources\Api\Front\ArticleResource;
+use App\Http\Resources\Api\Front\PakAddonResource;
+use App\Http\Resources\Api\Front\TagResource;
+use App\Http\Resources\Api\Front\UserAddonResource;
+use App\Http\Resources\Api\Front\UserProfileResource;
 use App\Models\Article;
 use App\Models\Tag;
 use App\Models\User;

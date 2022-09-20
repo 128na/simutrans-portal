@@ -208,8 +208,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Get tags
-        run: git fetch --tags origin
+        with:
+          fetch-depth: 0
       - name: .env
         run: php -r "copy('.env.deploy', '.env');"
       - name: set app version

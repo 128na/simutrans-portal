@@ -40,8 +40,8 @@ class TopPage extends Page
     public function assert(Browser $browser)
     {
         $browser
-            // ->waitForText($this->article->title, 5)
-            // ->assertSee($this->article->title)
+            ->waitForText($this->article->title, 5)
+            ->assertSee($this->article->title)
             ->assertSee('の新着アドオン')
             ->assertSee(__("category.{$this->category->type}.{$this->category->slug}"))
         ;

@@ -113,14 +113,6 @@ class ArticleRepository extends BaseRepository
     /**
      * お知らせ記事一覧.
      */
-    public function findAllAnnouces(?int $limit = null): Collection
-    {
-        return $this->queryAnnouces()->limit($limit)->get();
-    }
-
-    /**
-     * お知らせ記事一覧.
-     */
     public function paginateAnnouces(?int $limit = null): LengthAwarePaginator
     {
         return $this->queryAnnouces()->paginate($limit);
@@ -130,14 +122,6 @@ class ArticleRepository extends BaseRepository
     {
         return $this->basicQuery()
             ->withoutAnnounce();
-    }
-
-    /**
-     * 一般記事一覧.
-     */
-    public function findAllPages(?int $limit = null): Collection
-    {
-        return $this->queryPages()->limit($limit)->get();
     }
 
     /**
@@ -155,14 +139,6 @@ class ArticleRepository extends BaseRepository
             ->addon();
     }
 
-    /**
-     * pak別の投稿一覧.
-     */
-    public function findAllByPak(string $pak, ?int $limit = null): Collection
-    {
-        return $this->queryByPak($pak)->limit($limit)->get();
-    }
-
     private function queryRanking(): Builder
     {
         return $this->model
@@ -170,14 +146,6 @@ class ArticleRepository extends BaseRepository
             ->active()
             ->with(self::FRONT_RELATIONS)
             ->rankingOrder();
-    }
-
-    /**
-     * アドオン投稿/紹介のデイリーPVランキング.
-     */
-    public function findAllRanking(?int $limit = null): Collection
-    {
-        return $this->queryRanking()->limit($limit)->get();
     }
 
     /**
@@ -193,14 +161,6 @@ class ArticleRepository extends BaseRepository
         return $this->basicQuery()
             ->addon()
             ->active();
-    }
-
-    /**
-     * アドオン投稿/紹介の一覧.
-     */
-    public function paginateAddons(?int $limit = null): LengthAwarePaginator
-    {
-        return $this->queryAddon()->paginate($limit);
     }
 
     private function queryByCategory(Category $category): Relation

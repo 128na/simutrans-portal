@@ -202,18 +202,6 @@ return [
         // attachments
         'file' => 'ファイル',
 
-        'advancedSearch.word' => 'キーワード',
-        'advancedSearch.categoryIds.*' => 'カテゴリ',
-        'advancedSearch.categoryAnd' => 'カテゴリ条件',
-        'advancedSearch.tagIds.*' => 'タグ',
-        'advancedSearch.tagAnd' => 'タグ条件',
-        'advancedSearch.userIds.*' => 'ユーザー',
-        'advancedSearch.userAnd' => 'ユーザー条件',
-        'advancedSearch.startAt' => '更新期間の開始日',
-        'advancedSearch.endAt' => '更新期間の終了日',
-        'advancedSearch.order' => 'ソート項目',
-        'advancedSearch.direction' => 'ソート順',
-
         'redirect' => 'リダイレクトURL',
         'scopes' => 'スコープ',
         'scopes.*' => 'スコープ',

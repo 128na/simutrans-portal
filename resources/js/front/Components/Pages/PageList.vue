@@ -11,6 +11,7 @@
       <template-article v-for="article in articles" :key="article.slug" :article="article"
         :attachments="article.attachments" class="mb-4" />
     </template>
+    <div v-show="isEmpty">記事がありません</div>
     <list-paginator :pagination="pagination" />
   </section>
 </template>
@@ -31,6 +32,11 @@ export default {
       title: '記事一覧',
       profile: null
     };
+  },
+  computed: {
+    isEmpty() {
+      return !this.loading && this.articles.length === 0;
+    }
   },
   methods: {
     async fetch() {

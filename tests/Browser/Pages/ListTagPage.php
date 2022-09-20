@@ -3,14 +3,14 @@
 namespace Tests\Browser\Pages;
 
 use App\Models\Article;
-use App\Models\Category;
+use App\Models\Tag;
 use App\Models\User;
 use Laravel\Dusk\Browser;
 
-class TopPage extends Page
+class ListTagPage extends Page
 {
     private Article $article;
-    private Category $category;
+    private Tag $tag;
 
     public function __construct()
     {
@@ -18,22 +18,20 @@ class TopPage extends Page
         $this->article = Article::factory()->publish()->addonPost()->create([
             'user_id' => $user->id,
         ]);
-        $this->category = Category::where('type', 'pak')->where('slug', '128')->first();
-        $this->article->categories()->save($this->category);
+        $this->tag = Tag::factory()->create();
+        $this->article->tags()->save($this->tag);
     }
 
     public function url()
     {
-        return '/';
+        return "/tag/{$this->tag->id}";
     }
 
     public function assert(Browser $browser)
     {
         $browser
-            ->waitForText($this->article->title)
+            ->waitForText($this->tag->name)
             ->assertSee($this->article->title)
-            ->assertSee('の新着アドオン')
-            ->assertSee(__("category.{$this->category->type}.{$this->category->slug}"))
         ;
     }
 }

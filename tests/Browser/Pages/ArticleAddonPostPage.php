@@ -24,21 +24,11 @@ class ArticleAddonPostPage extends Page
         $this->article->tags()->save($this->tag);
     }
 
-    /**
-     * Get the URL for the page.
-     *
-     * @return string
-     */
     public function url()
     {
         return '/articles/'.urlencode($this->article->slug);
     }
 
-    /**
-     * Assert that the browser is on the page.
-     *
-     * @return void
-     */
     public function assert(Browser $browser)
     {
         $browser
@@ -47,17 +37,5 @@ class ArticleAddonPostPage extends Page
             ->assertSee(__("category.{$this->category->type}.{$this->category->slug}"))
             ->assertSee($this->tag->name)
         ;
-    }
-
-    /**
-     * Get the element shortcuts for the page.
-     *
-     * @return array
-     */
-    public function elements()
-    {
-        return [
-            '@element' => '#selector',
-        ];
     }
 }

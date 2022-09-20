@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Database\Seeders\DuskSeeder;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -13,16 +14,11 @@ abstract class DuskTestCase extends BaseTestCase
     use CreatesApplication;
     use DatabaseMigrations;
 
+    protected $seeder = DuskSeeder::class;
+
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->setupDatabase();
-    }
-
-    protected function setupDatabase(): void
-    {
-        $this->artisan('db:seed --class=ProdSeeder');
     }
 
     /**

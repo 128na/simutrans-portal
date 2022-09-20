@@ -16,7 +16,6 @@ class ConversionTest extends DuskTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Article::query()->delete();
         $user = User::factory()->create();
         $category = Category::where('type', 'pak')->where('slug', '128')->first();
 

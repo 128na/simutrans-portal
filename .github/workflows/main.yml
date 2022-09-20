@@ -86,6 +86,7 @@ jobs:
             ${{ runner.os }}-
       - name: Composer Install
         if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
+        run: composer install
       - name: Setup Node
         uses: actions/setup-node@v2
       - name: Cache node_modules

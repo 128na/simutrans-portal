@@ -96,7 +96,6 @@ class ArticleRepository extends BaseRepository
         return $this->model
             ->select(['articles.*'])
             ->active()
-            ->withCache()
             ->with($relations)
             ->orderBy('modified_at', 'desc');
     }
@@ -105,7 +104,6 @@ class ArticleRepository extends BaseRepository
     {
         return $query->select(['articles.*'])
             ->active()
-            ->withCache()
             ->with($relations)
             ->orderBy('modified_at', 'desc');
     }
@@ -173,7 +171,6 @@ class ArticleRepository extends BaseRepository
     {
         return $this->model
             ->select(['articles.*'])
-            ->withCache()
             ->active()
             ->with(self::FRONT_RELATIONS)
             ->rankingOrder();
@@ -281,7 +278,6 @@ class ArticleRepository extends BaseRepository
 
         return $this->model->select(['articles.*'])
             ->active()
-            ->withCache()
             ->where(fn ($q) => $q
                 ->orWhere('title', 'LIKE', $likeWord)
                 ->orWhere('contents', 'LIKE', $likeWord)
@@ -380,7 +376,6 @@ class ArticleRepository extends BaseRepository
     ): Builder {
         $q = $this->model->select(['articles.*'])
             ->active()
-            ->withCache()
             ->with(self::FRONT_RELATIONS)
             ->orderBy($order, $direction);
 

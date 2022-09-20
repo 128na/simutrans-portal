@@ -31,12 +31,13 @@ class PageTest extends DuskTestCase
      */
     public function testPages(string $pageClass)
     {
-        $this->browse(fn (Browser $browser) => $browser->visit(new $pageClass()));
+        $this->browse(fn (Browser $browser) => $browser
+            ->visit(new $pageClass())
+        );
     }
 
     public function dataPages()
     {
-        yield 'トップページ' => [TopPage::class];
         yield '記事詳細_アドオン投稿' => [ArticleAddonPostPage::class];
         yield '記事詳細_アドオン紹介' => [ArticleAddonIntroductionPage::class];
         yield '記事詳細_markdown' => [ArticleMarkdownPage::class];
@@ -46,9 +47,12 @@ class PageTest extends DuskTestCase
         yield '一覧ページ（カテゴリ）' => [ListCategoryPage::class];
         yield '一覧ページ（pak&カテゴリ）' => [ListPakCategoryPage::class];
         yield '一覧ページ（ユーザー）' => [ListUserPage::class];
-        // yield '一覧ページ（お知らせ）' => [ListAnnouncePage::class];
-        // yield '一覧ページ（一般記事）' => [ListPagePage::class];
+        yield '一覧ページ（お知らせ）' => [ListAnnouncePage::class];
+        yield '一覧ページ（一般記事）' => [ListPagePage::class];
         yield '一覧ページ（検索）' => [ListSearchPage::class];
         yield 'タグ一覧' => [TagsPage::class];
+
+        // キャッシュの影響なのか最後にする必要あり
+        yield 'トップページ' => [TopPage::class];
     }
 }

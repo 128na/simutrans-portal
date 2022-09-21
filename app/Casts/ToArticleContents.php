@@ -18,7 +18,7 @@ class ToArticleContents implements CastsAttributes
      * @param mixed                               $value
      * @param array                               $attributes
      *
-     * @return \App\Address
+     * @return \App\Models\Contents\Content
      */
     public function get($model, $key, $value, $attributes)
     {
@@ -40,7 +40,7 @@ class ToArticleContents implements CastsAttributes
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      * @param string                              $key
-     * @param \App\Address                        $value
+     * @param \App\Models\Contents\Content        $value
      * @param array                               $attributes
      *
      * @return array

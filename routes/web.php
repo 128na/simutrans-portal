@@ -63,4 +63,6 @@ Route::middleware(['auth', 'admin', 'verified'])->group(function () {
 Route::get('/invite/{invitation_code}', [InviteController::class, 'index'])->name('invite.index');
 Route::post('/invite/{invitation_code}', [InviteController::class, 'store'])->name('invite.store');
 
+Route::get('/error/{status}', [FrontController::class, 'error'])->name('error');
+
 Route::fallback([RedirectController::class, 'index']);

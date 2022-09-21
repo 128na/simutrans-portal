@@ -119,7 +119,7 @@ class FrontController extends Controller
 
     public function tags()
     {
-        $tags = $this->tagRepository->getAllTags();
+        $tags = $this->tagService->getAllTags();
 
         return TagResource::collection($tags);
     }

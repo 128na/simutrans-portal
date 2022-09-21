@@ -7,8 +7,8 @@ use App\Services\Service;
 
 class MetaOgpService extends Service
 {
-    public function __construct(
-    ) {
+    public function __construct()
+    {
     }
 
     public function forShow(Article $article): array

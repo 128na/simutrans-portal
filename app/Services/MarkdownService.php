@@ -28,4 +28,11 @@ class MarkdownService extends Service
 
         return $this->purifier->purify($raw);
     }
+
+    public function toEscapedAllHTML(string $markdown)
+    {
+        $raw = $this->parser->parse($markdown);
+
+        return $this->purifier->purify($raw);
+    }
 }

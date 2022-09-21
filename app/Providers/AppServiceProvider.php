@@ -15,7 +15,9 @@ use App\Services\FileInfo\Extractors\TabExtractor;
 use App\Services\FileInfo\FileInfoService;
 use App\Services\FileInfo\TextService;
 use App\Services\FileInfo\ZipArchiveParser;
+use App\Services\MarkdownService;
 use Carbon\CarbonImmutable;
+use cebe\markdown\GithubMarkdown;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Illuminate\Support\Facades\Date;
@@ -40,21 +42,11 @@ class AppServiceProvider extends ServiceProvider
             return new ReadmeExtractor(new HTMLPurifier($config));
         });
 
-        $this->app->bind(HTMLPurifier::class, function ($app) {
+        $this->app->bind(MarkdownService::class, function ($app) {
             $config = HTMLPurifier_Config::createDefault();
-            $config->set('HTML.AllowedElements', [
-                'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-                'hr',
-                'pre', 'code',
-                'blockquote',
-                'table', 'tr', 'td', 'th', 'thead', 'tbody',
-                'strong', 'em', 'b', 'i', 'u', 's', 'span',
-                'a', 'p', 'br',
-                'ul', 'ol', 'li',
-                'img',
-            ]);
+            $config->set('HTML.AllowedElements', []);
 
-            return new HTMLPurifier($config);
+            return new MarkdownService($app->make(GithubMarkdown::class), new HTMLPurifier($config));
         });
 
         $this->app->bind(ZipManager::class, function ($app) {

@@ -6,7 +6,7 @@ return [
     'meta-description' => 'Simutrans（シムトランス）のaddon（アドオン）を気軽に投稿・紹介できるポータルサイトです。
         様々なWikiや個人サイト、アップローダーに掲載・投稿されているアドオン情報もまとめて確認できます。
         主にpak64, pak128, pak128.japanのアドオンが投稿・紹介されています。',
-    'meta-image' => 'default/ogp-image.png',
+    'meta-image' => 'storage/default/ogp-image.png',
 
     'gtag' => env('GTAG'),
 

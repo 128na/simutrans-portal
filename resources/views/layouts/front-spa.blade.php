@@ -5,16 +5,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name') }}</title>
+    <title>{{ $meta['title'] ?? config('app.name') }}</title>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="api-entrypoint" content="{{ config('app.url') }}">
+
+    <meta name="description" content="{{ $meta['description'] ?? config('app.meta-description') }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ $meta['title'] ?? config('app.name') }}">
+    <meta property="og:description" content="{{ $meta['description'] ?? config('app.meta-description') }}">
+    <meta property="og:url" content="{{ $meta['canonical'] ?? url()->current() }}">
+
+    <meta name="twitter:card" content="{{ $meta['card_type'] ?? 'summary_large_image' }}">
+    <meta name="twitter:site" content="{{ '@' . config('app.twitter') }}">
+    <meta name="twitter:creator" content="{{ '@' . config('app.creator') }}">
+    <meta name="twitter:image" content="{{ $meta['image'] ?? asset(config('app.meta-image')) }}">
 
     {{-- 本番環境以外はnoindex nofollow --}}
     @unless(\App::environment('production'))
         <meta name="robots" content="noindex, nofollow">
     @endunless
-    <link rel="canonical" href="{{ $canonical_url ?? url()->current() }}">
+    <link rel="canonical" href="{{ $meta['canonical'] ?? url()->current() }}">
     <link href="{{ asset(mix('css/front.css')) }}" rel="stylesheet">
     <script src="{{ asset(mix('js/manifest.js')) }}" defer></script>
     <script src="{{ asset(mix('js/vendor.js')) }}" defer></script>

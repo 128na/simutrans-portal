@@ -7,18 +7,16 @@ use App\Http\Requests\Article\SearchRequest;
 use App\Models\Article;
 use App\Models\Tag;
 use App\Models\User;
-use App\Repositories\ArticleRepository;
-use App\Repositories\CategoryRepository;
-use App\Repositories\TagRepository;
+use App\Services\Front\ArticleService;
+use App\Services\Front\MetaOgpService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class FrontController extends Controller
 {
     public function __construct(
-        private ArticleRepository $articleRepository,
-        private CategoryRepository $categoryRepository,
-        private TagRepository $tagRepository
+        private ArticleService $articleService,
+        private MetaOgpService $metaOgpService,
     ) {
     }
 
@@ -36,8 +34,9 @@ class FrontController extends Controller
     public function show(Article $article)
     {
         abort_unless($article->is_publish, 404);
+        $meta = $this->metaOgpService->forShow($article);
 
-        return view('front.spa');
+        return view('front.spa', ['meta' => $meta]);
     }
 
     /**
@@ -65,7 +64,7 @@ class FrontController extends Controller
      */
     public function category(string $type, string $slug)
     {
-        $category = $this->categoryRepository->findOrFailByTypeAndSlug($type, $slug);
+        $this->articleService->validateCategoryByTypeAndSlug($type, $slug);
 
         return view('front.spa');
     }
@@ -75,8 +74,7 @@ class FrontController extends Controller
      */
     public function categoryPakAddon(string $pakSlug, string $addonSlug)
     {
-        $pak = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
-        $addon = $this->categoryRepository->findOrFailByTypeAndSlug('addon', $addonSlug);
+        $this->articleService->validateCategoryByPakAndAddon($pakSlug, $addonSlug);
 
         return view('front.spa');
     }
@@ -86,7 +84,7 @@ class FrontController extends Controller
      */
     public function categoryPakNoneAddon(string $pakSlug)
     {
-        $pak = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
+        $this->articleService->validateCategoryByTypeAndSlug('pak', $pakSlug);
 
         return view('front.spa');
     }

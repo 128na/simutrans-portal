@@ -7,22 +7,8 @@
 
     <title>@yield('title') - {{ config('app.name') }}</title>
 
-    @includeWhen(config('app.gtag') || true, 'parts._ga')
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="api-entrypoint" content="{{ config('app.url') }}">
-
-    <meta name="description" content="@yield('meta-description')">
-
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="@yield('title')">
-    <meta property="og:description" content="@yield('meta-description')">
-    <meta property="og:url" content="{{ $canonical_url ?? url()->current() }}">
-
-    <meta name="twitter:card" content="@yield('card-type', 'summary_large_image')">
-    <meta name="twitter:site" content="{{ '@' . config('app.twitter') }}">
-    <meta name="twitter:creator" content="{{ '@' . config('app.creator') }}">
-    <meta name="twitter:image" content="@yield('meta-image')">
 
     {{-- 本番環境以外はnoindex nofollow --}}
     @unless(\App::environment('production'))
@@ -30,7 +16,6 @@
     @endunless
 
     <link href="{{ asset(mix('css/front.css')) }}" rel="stylesheet">
-    <link rel="canonical" href="{{ $canonical_url ?? url()->current() }}">
     <script src="{{ asset(mix('js/manifest.js')) }}" defer></script>
     <script src="{{ asset(mix('js/vendor.js')) }}" defer></script>
     <script src="{{ asset(mix('js/front.js')) }}" defer></script>

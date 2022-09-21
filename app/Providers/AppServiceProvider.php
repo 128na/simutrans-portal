@@ -40,6 +40,23 @@ class AppServiceProvider extends ServiceProvider
             return new ReadmeExtractor(new HTMLPurifier($config));
         });
 
+        $this->app->bind(HTMLPurifier::class, function ($app) {
+            $config = HTMLPurifier_Config::createDefault();
+            $config->set('HTML.AllowedElements', [
+                'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+                'hr',
+                'pre', 'code',
+                'blockquote',
+                'table', 'tr', 'td', 'th', 'thead', 'tbody',
+                'strong', 'em', 'b', 'i', 'u', 's', 'span',
+                'a', 'p', 'br',
+                'ul', 'ol', 'li',
+                'img',
+            ]);
+
+            return new HTMLPurifier($config);
+        });
+
         $this->app->bind(ZipManager::class, function ($app) {
             return new ZipManager(
                 new ZipArchive(),

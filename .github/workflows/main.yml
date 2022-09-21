@@ -117,9 +117,12 @@ jobs:
         run: chmod -R 0777 ./
       - name: Test
         run: php artisan test -v --env=local --parallel --processes=2
-
-      - name: Display Error Log
-        run: "[ -e storage/logs/laravel.log ] && cat storage/logs/laravel.log || echo 'no log file.'"
+      - name: Upload Laravel Logs
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: TestLaravelLog
+          path: storage/logs
 
   dusk:
     runs-on: ubuntu-latest
@@ -199,6 +202,12 @@ jobs:
         with:
           name: console
           path: tests/Browser/console
+      - name: Upload Laravel Logs
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: DuskLaravelLog
+          path: storage/logs
 
   deploy:
     # tag push -> テスト通過後デプロイ

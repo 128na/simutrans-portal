@@ -93,7 +93,7 @@ Route::prefix('v3')->name('api.v3.')->group(function () {
     });
     Route::prefix('front')->group(function () {
         // キャッシュ有効
-        Route::middleware(['cache.headers:public;max_age=2628000;etag'])->group(function () {
+        Route::middleware(['cache.headers:public;max_age=600;etag'])->group(function () {
             Route::get('/sidebar', [FrontController::class, 'sidebar'])->name('sidebar');
             Route::get('/', [FrontController::class, 'index'])->name('index');
             Route::get('/ranking/', [FrontController::class, 'ranking'])->name('addons.ranking');

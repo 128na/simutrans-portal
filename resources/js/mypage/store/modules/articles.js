@@ -17,7 +17,8 @@ export default {
       if (articles) {
         articles = articles.map(a => Object.assign(a, {
           published_at: a.published_at ? DateTime.fromISO(a.published_at) : null,
-          modified_at: DateTime.fromISO(a.modified_at)
+          modified_at: DateTime.fromISO(a.modified_at),
+          created_at: DateTime.fromISO(a.created_at)
         }));
       }
       state.articles = articles;

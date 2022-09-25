@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @include('parts.gtm-header')
 
     <title>{{ $meta['title'] ?? config('app.name') }}</title>
 
@@ -34,6 +35,7 @@
 </head>
 
 <body>
+    @include('parts.gtm-body')
     @yield('content')
 </body>
 

@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @include('parts.gtm-header')
 
     <title>@yield('title') - {{ config('app.name') }}</title>
 
@@ -22,6 +23,7 @@
 </head>
 
 <body>
+    @include('parts.gtm-body')
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-left py-2 py-lg-4">
         @include('parts.menu')
     </nav>

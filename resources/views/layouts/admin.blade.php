@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @include('parts.gtm-header')
 
     <title>@yield('title') - {{ config('app.name') }}</title>
 
@@ -17,6 +18,7 @@
 </head>
 
 <body>
+    @include('parts.gtm-body')
     @if (session()->has('status'))
         <div class="alert alert-success m-4">{{ session('status') }}</div>
     @endif

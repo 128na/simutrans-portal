@@ -9,8 +9,7 @@ import PagePhpinfo from '../Components/Pages/PagePhpinfo';
 import PageUsers from '../Components/Pages/PageUsers';
 import PageCreateUser from '../Components/Pages/PageCreateUser';
 import PageArticles from '../Components/Pages/PageArticles';
-
-import { gaPageView } from '../../mypage/plugins/ga';
+import gtm from '../../gtm';
 
 const routes = [
   { name: 'index', path: '/', component: PageIndex },
@@ -27,7 +26,7 @@ const router = new VueRouter({
   routes
 });
 router.afterEach((to, from) => {
-  gaPageView(to, '/admin');
+  gtm.resetDataLayer(process.env.MIX_GTM);
 });
 
 export default router;

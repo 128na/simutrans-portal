@@ -1,7 +1,8 @@
 <template>
-  <a class="btn btn-lg btn-primary" :href="download_url" dusk="conversion-download">ダウンロードする</a>
+  <a class="btn btn-lg btn-primary" :href="download_url" dusk="conversion-download" @click="handleClick">ダウンロードする</a>
 </template>
 <script>
+import gtm from '../../../../gtm';
 export default {
   props: {
     article: {
@@ -12,6 +13,11 @@ export default {
   computed: {
     download_url() {
       return `/articles/${this.article.slug}/download`;
+    }
+  },
+  methods: {
+    handleClick() {
+      gtm.frontConversionDownload();
     }
   }
 };

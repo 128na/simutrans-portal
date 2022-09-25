@@ -15,9 +15,8 @@ import PageAnalyticsArticle from '../Components/Pages/PageAnalyticsArticle';
 import PageInvitation from '../Components/Pages/PageInvitation';
 import store from '../store';
 
-import { gaPageView } from './ga';
-
 import routeShortcut from '../mixins/route';
+import gtm from '../../gtm';
 
 const routes = [
   { name: 'login', path: '/login', component: PageLogin },
@@ -54,7 +53,7 @@ router.beforeEach((to, from, next) => {
   next();
 });
 router.afterEach((to, from) => {
-  gaPageView(to);
+  gtm.resetDataLayer(process.env.MIX_GTM);
 });
 Vue.mixin(routeShortcut);
 

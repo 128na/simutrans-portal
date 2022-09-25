@@ -8,6 +8,7 @@ import PageShow from '../Components/Pages/PageShow';
 import PageList from '../Components/Pages/PageList';
 import PageTags from '../Components/Pages/PageTags';
 import PageError from '../Components/Pages/PageError';
+import gtm from '../../gtm';
 
 const routes = [
   { name: 'top', path: '/', component: PageTop },
@@ -36,5 +37,7 @@ const router = new VueRouter({
   scrollBehavior,
   routes
 });
-
+router.afterEach((to, from) => {
+  gtm.resetDataLayer(process.env.MIX_GTM);
+});
 export default router;

@@ -4,6 +4,7 @@
 </template>
 <script>
 import axios from 'axios';
+import gtm from '../../../../gtm';
 
 export default {
   props: {
@@ -15,6 +16,7 @@ export default {
   methods: {
     handle() {
       axios.post(`/api/v3/conversion/${this.article.slug}`);
+      gtm.frontConversionLink();
     }
   }
 };

@@ -12,9 +12,9 @@
 </template>
 <script>
 import axios from 'axios';
-import { watchAndFetch } from '../../mixins';
+import { watchAndFetch, titleResolver } from '../../mixins';
 export default {
-  mixins: [watchAndFetch],
+  mixins: [watchAndFetch, titleResolver],
   data() {
     return {
       contents: [
@@ -72,6 +72,7 @@ export default {
   methods: {
     fetch() {
       this.contents.map(c => this.fetchContent(c));
+      this.title = 'Top';
     },
     async fetchContent(content) {
       content.loading = true;

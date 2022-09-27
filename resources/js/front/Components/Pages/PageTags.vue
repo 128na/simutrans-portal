@@ -9,9 +9,9 @@
 </template>
 <script>
 import axios from 'axios';
-import { watchAndFetch, routeLink } from '../../mixins';
+import { watchAndFetch, routeLink, titleResolver } from '../../mixins';
 export default {
-  mixins: [routeLink, watchAndFetch],
+  mixins: [routeLink, watchAndFetch, titleResolver],
   data() {
     return {
       loading: true,
@@ -21,6 +21,7 @@ export default {
   methods: {
     async fetch() {
       this.loading = true;
+      this.title = 'タグ一覧';
       try {
         const res = await axios.get('/api/v3/front/tags');
         if (res.status === 200) {

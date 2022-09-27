@@ -6,10 +6,10 @@
 </template>
 <script>
 import axios from 'axios';
-import { watchAndFetch } from '../../mixins';
+import { watchAndFetch, titleResolver } from '../../mixins';
 export default {
   props: ['cachedArticles'],
-  mixins: [watchAndFetch],
+  mixins: [watchAndFetch, titleResolver],
   data() {
     return {
       loading: true
@@ -25,8 +25,10 @@ export default {
       axios.post(`/api/v3/shown/${this.$route.params.slug}`);
       if (this.cachedArticles.find(a => a.slug === this.$route.params.slug)) {
         this.loading = false;
+        this.title = this.article.title;
         return;
       }
+
       this.loading = true;
       try {
         const res = await axios.get(`/api/v3/front/articles/${this.$route.params.slug}`);

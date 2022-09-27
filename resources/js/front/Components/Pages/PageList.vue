@@ -17,11 +17,11 @@
 </template>
 <script>
 import axios from 'axios';
-import { watchAndFetch } from '../../mixins';
+import { watchAndFetch, titleResolver } from '../../mixins';
 
 export default {
   props: ['cachedArticles'],
-  mixins: [watchAndFetch],
+  mixins: [watchAndFetch, titleResolver],
   data() {
     return {
       loading: true,
@@ -29,7 +29,6 @@ export default {
       articles: [],
       pagination: null,
       mode: 'list',
-      title: '記事一覧',
       profile: null
     };
   },

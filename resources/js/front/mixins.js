@@ -106,3 +106,19 @@ export const watchAndFetch = {
     }
   }
 };
+export const titleResolver = {
+  mixins: [appInfo],
+  data() {
+    return {
+      title: null
+    };
+  },
+  watch: {
+    title(val) {
+      // 空文字だと発火しない
+      window.document.title = (val && val !== 'Top')
+        ? `${val} - ${this.appName}`
+        : this.appName;
+    }
+  },
+};

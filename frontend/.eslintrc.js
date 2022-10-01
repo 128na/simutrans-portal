@@ -57,6 +57,7 @@ module.exports = {
     'no-void': 'off',
     'no-nested-ternary': 'off',
     'max-classes-per-file': 'off',
+    'max-len': 'off',
 
     'import/first': 'off',
     'import/named': 'error',
@@ -69,6 +70,9 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'prefer-promise-reject-errors': 'off',
 
+    // level down
+    'vue/no-unused-vars': 'warn',
+    'no-unused-vars': 'warn',
 
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'

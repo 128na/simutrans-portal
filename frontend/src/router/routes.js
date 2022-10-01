@@ -3,7 +3,24 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
+      { name: 'top', path: '', component: () => import('pages/Index.vue') },
+      { name: 'show', path: '/articles/:slug', component: () => import('pages/Index.vue') },
+      { name: 'categoryPak', path: '/category/pak/:size/:slug', component: () => import('pages/Index.vue') },
+      { name: 'category', path: '/category/:type/:slug', component: () => import('pages/Index.vue') },
+      { name: 'tag', path: '/tag/:id', component: () => import('pages/Index.vue') },
+      { name: 'user', path: '/user/:id', component: () => import('pages/Index.vue') },
+      { name: 'announces', path: '/announces', component: () => import('pages/Index.vue') },
+      { name: 'pages', path: '/pages', component: () => import('pages/Index.vue') },
+      { name: 'ranking', path: '/ranking', component: () => import('pages/Index.vue') },
+      { name: 'tags', path: '/tags', component: () => import('pages/Index.vue') },
+      { name: 'search', path: '/search', component: () => import('pages/Index.vue') },
+    ],
+  },
+  {
+    path: '/mypage',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { name: 'mypage', path: '', component: () => import('pages/Index.vue') },
     ],
   },
 

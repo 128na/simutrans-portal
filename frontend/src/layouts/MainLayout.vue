@@ -24,7 +24,7 @@
 <script>
 
 import { defineComponent, ref } from 'vue';
-import appInfo from '../composables/appInfo';
+import { appInfo } from '../composables/appInfo';
 import FrontMenu from '../components/menu/FrontMenu.vue';
 
 export default defineComponent({

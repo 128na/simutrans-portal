@@ -11,6 +11,7 @@
 // It's highly recommended to change the default colors
 // to match your app's branding.
 // Tip: Use the "Theme Builder" on Quasar's documentation website.
+// https://quasar.dev/style/sass-scss-variables#variables-list
 
 $primary : hsl(211, 82%, 54%);
 $secondary : hsl(132, 82%, 31%);
@@ -22,3 +23,5 @@ $positive : #21BA45;
 $negative : #C10015;
 $info : #31CCEC;
 $warning : #F2C037;
+
+$item-base-color : red

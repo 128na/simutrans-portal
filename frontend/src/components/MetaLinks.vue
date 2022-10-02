@@ -1,19 +1,24 @@
 <template>
   <q-list>
 
+    <q-item dense clickable href="https://twitter.com/PortalSimutrans" target="_blank" rel="noopener nofollow">
+      <q-item-section>@PortalSimutrans</q-item-section>
+    </q-item>
     <q-item dense clickable href="https://twitter.com/128Na" target="_blank" rel="noopener nofollow">
-      @128Na
+      <q-item-section>@128Na</q-item-section>
     </q-item>
     <q-item dense clickable href="https://github.com/128na/simutrans-portal" target="_blank" rel="noopener nofollow">
-      Github
+      <q-item-section>Github</q-item-section>
     </q-item>
-    <q-item dense clickable href="/feed" target="_blank">
-      <q-icon name="rss_feed" />Atom
+    <q-item dense clickable :href="feedUrl" target="_blank">
+      <q-item-section>
+        RSS (Atom)
+      </q-item-section>
     </q-item>
   </q-list>
 </template>
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import { staticUrls } from '../composables/routeShortcut';
 
 export default defineComponent({

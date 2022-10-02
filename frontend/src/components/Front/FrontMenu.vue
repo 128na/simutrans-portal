@@ -1,106 +1,100 @@
 <template>
   <q-list>
-    <q-tree :nodes="items" no-connectors node-key="key" v-model:expanded="expanded" v-model:selected="selected">
-      <template v-slot:default-header="prop">
-        <span class="front-menu-link cursor-pointer">
-          {{prop.node.label}}
-        </span>
-      </template>
-    </q-tree>
+    <q-item v-show="loading">
+      <q-item-section>
+        <LoadingMessage />
+      </q-item-section>
+    </q-item>
+    <q-item v-show="errorMessage">
+      <q-item-section>
+        <ApiErrorMessage :message="errorMessage" :retry="fetch" />
+      </q-item-section>
+    </q-item>
+    <q-expansion-item v-for="(pakAddons, label) in pakAddonCounts" expand-separator :label="label" :key="label">
+      <q-item v-for="(a, index) in pakAddons" clickable
+        :to="{ name: 'categoryPak', params:{size:a.pak_slug, slug:a.addon_slug} }" :key="index">
+        <q-item-section>{{a.addon}} ({{a.count}})</q-item-section>
+      </q-item>
+
+    </q-expansion-item>
+    <q-expansion-item expand-separator label="ユーザー一覧">
+      <q-item v-for="(a, index) in userAddonCounts" clickable :to="{ name: 'user', params:{id:a.user_id} }"
+        :key="index">
+        <q-item-section>{{a.name}} ({{a.count}})</q-item-section>
+      </q-item>
+    </q-expansion-item>
+    <q-item clickable :to="{ name: 'tags' }">
+      <q-item-section>タグ一覧</q-item-section>
+    </q-item>
+    <q-separator />
+    <q-item clickable :to="{ name: 'mypage' }">
+      <q-item-section>マイページ</q-item-section>
+    </q-item>
+    <q-separator />
+    <q-item clickable dense :to="{ name: 'about' }">
+      <q-item-section>サイトの使い方</q-item-section>
+    </q-item>
+    <q-item clickable dense :to="{ name: 'privacy' }">
+      <q-item-section>プライバシーポリシー</q-item-section>
+    </q-item>
     <q-separator />
     <MetaLinks />
+    <q-separator />
+    <MetaInfo />
   </q-list>
 
 </template>
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { api } from '../../boot/axios';
-import { routeTo } from '../../composables/routeShortcut';
 import MetaLinks from '../MetaLinks.vue';
+import MetaInfo from '../MetaInfo.vue';
+import LoadingMessage from '../Common/LoadingMessage.vue';
+import ApiErrorMessage from '../Common/ApiErrorMessage.vue';
 
 export default defineComponent({
   name: 'FrontMenu',
   setup() {
-    const router = useRouter();
-    const handler = routeTo(router);
-    const baseItems = [
-      {
-        key: 'loading',
-        label: 'Loading...',
-        children: [],
-      },
-      {
-        key: 'tags',
-        label: 'タグ一覧',
-        handler,
-        to: { name: 'tags' },
-      },
-      {
-        key: 'mypage',
-        label: 'マイページ',
-        handler,
-        to: { name: 'mypage' },
-      },
-      {
-        key: 'about',
-        label: 'サイトの使い方',
-        handler,
-        to: { name: 'show', params: { slug: 'about' } },
-      },
-      {
-        key: 'privacy',
-        label: 'プライバシーポリシー',
-        handler,
-        to: { name: 'show', params: { slug: 'privacy' } },
-      },
-    ];
-    const toPakAddonItem = (pakAddon) => pakAddon.map((p) => ({
-      key: `pak-addon-${p.pak_slug}-${p.addon_slug}`,
-      label: `${p.addon} (${p.count})`,
-      handler,
-      to: { name: 'categoryPak', params: { size: p.pak_slug, slug: p.addon_slug } },
-    }));
-    const toPakAddonItems = (pakAddonCounts) => Object.keys(pakAddonCounts).map((k) => ({
-      key: `pak-addon-${k}`,
-      label: k,
-      handler,
-      selectable: false,
-      children: toPakAddonItem(pakAddonCounts[k]),
-    }));
-    const toUserAddonItem = (pakAddonCounts) => ({
-      key: 'users',
-      label: 'ユーザー一覧',
-      selectable: false,
-      children: pakAddonCounts.map((p) => ({
-        key: `users-${p.user_id}`,
-        label: `${p.name} (${p.count})`,
-        to: { name: 'user', params: { id: p.user_id } },
-      })),
-    });
-    const fetch = async (items) => {
-      const res = await api.get('/api/v3/front/sidebar');
-      if (res.status === 200) {
-        items.value.splice(0, 1, ...toPakAddonItems(res.data.pakAddonCounts), toUserAddonItem(res.data.userAddonCounts));
+    const pakAddonCounts = ref({});
+    const userAddonCounts = ref([]);
+    const loading = ref(true);
+    const errorMessage = ref(null);
+
+    const fetch = async () => {
+      loading.value = true;
+      errorMessage.value = null;
+
+      try {
+        const res = await api.get('/api/v3/front/sidebar');
+        if (res.status === 200) {
+          pakAddonCounts.value = res.data.pakAddonCounts;
+          userAddonCounts.value = res.data.userAddonCounts;
+        }
+      } catch (error) {
+        errorMessage.value = 'メニューの取得に失敗しました';
+      } finally {
+        loading.value = false;
       }
     };
-    const expanded = ref([]);
-    const selected = ref('');
-    const items = ref(baseItems);
-    fetch(items);
+    fetch();
+
     return {
-      expanded,
-      selected,
-      items,
+      pakAddonCounts,
+      userAddonCounts,
+      loading,
+      errorMessage,
+      fetch,
     };
   },
-  components: { MetaLinks },
+  components: {
+    MetaLinks, MetaInfo, LoadingMessage, ApiErrorMessage,
+  },
 });
 </script>
 <style lang="scss">
-.q-tree__node--selected .front-menu-link {
-  color: $primary;
+.q-tree__node--selected .q-tree__node-header-content {
+  color: $dark;
   font-weight: bold;
 }
 </style>

@@ -47,10 +47,10 @@ module.exports = configure((ctx) => ({
 
   // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
   build: {
-    vueRouterMode: 'hash', // available values: 'hash', 'history'
+    vueRouterMode: 'history', // available values: 'hash', 'history'
     env: require('dotenv').config().parsed,
     // transpile: false,
-    // publicPath: '/',
+    publicPath: '/',
 
     // Add dependencies for transpiling with Babel (Array of string/regex)
     // (from node_modules, which are by default not transpiled).
@@ -98,7 +98,9 @@ module.exports = configure((ctx) => ({
     // directives: [],
 
     // Quasar plugins
-    plugins: [],
+    plugins: [
+      'LocalStorage',
+    ],
   },
 
   // animations: 'all', // --- includes all animations

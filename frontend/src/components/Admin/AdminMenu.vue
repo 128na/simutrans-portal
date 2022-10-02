@@ -1,18 +1,26 @@
 <template>
   <q-list>
-    <q-item :to="{name:'top'}">フロントページ</q-item>
-    <q-item :to="{name:'mypage'}">マイページ</q-item>
+    <q-item clickable :to="{name:'top'}">
+      <q-item-section>フロントページ</q-item-section>
+    </q-item>
+    <q-item clickable :to="{name:'mypage'}">
+      <q-item-section>マイページ</q-item-section>
+    </q-item>
+    <q-separator />
+    <MetaInfo />
   </q-list>
 
 </template>
 
 <script>
 import { defineComponent } from 'vue';
+import MetaInfo from '../MetaInfo.vue';
 
 export default defineComponent({
   name: 'AdminMenu',
 
   components: {
+    MetaInfo,
   },
 
   setup() {

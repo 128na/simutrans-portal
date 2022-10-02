@@ -49,7 +49,7 @@ module.exports = configure((ctx) => ({
   build: {
     vueRouterMode: 'history', // available values: 'hash', 'history'
     env: require('dotenv').config().parsed,
-    // transpile: false,
+    transpile: false,
     publicPath: '/',
 
     // Add dependencies for transpiling with Babel (Array of string/regex)
@@ -60,8 +60,8 @@ module.exports = configure((ctx) => ({
     // rtl: true, // https://quasar.dev/options/rtl-support
     // preloadChunks: true,
     // showProgress: false,
-    // gzip: true,
-    // analyze: true,
+    gzip: true,
+    analyze: false,
 
     // Options below are automatically set depending on the env, set them if you want to override
     // extractCSS: false,

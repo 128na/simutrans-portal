@@ -14,7 +14,7 @@
 </template>
 <script>
 import { defineComponent, ref } from 'vue';
-import { staticUrls } from '../../composables/routeShortcut';
+import { staticUrls } from '../composables/routeShortcut';
 
 export default defineComponent({
   name: 'MetaLinks',

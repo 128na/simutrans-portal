@@ -13,7 +13,7 @@
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <FrontMenu />
+      <MypageMenu />
     </q-drawer>
 
     <q-page-container>
@@ -24,19 +24,22 @@
 <script>
 
 import { defineComponent, ref } from 'vue';
+import { setCssVar } from 'quasar';
 import { appInfo } from '../composables/appInfo';
-import FrontMenu from '../components/menu/FrontMenu.vue';
+import MypageMenu from '../components/Mypage/MypageMenu.vue';
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: 'MypageLayout',
 
   components: {
-    FrontMenu,
+    MypageMenu,
   },
 
   setup() {
     const { appName, appVersion } = appInfo();
     const leftDrawerOpen = ref(false);
+
+    setCssVar('primary', 'hsl(132, 82%, 31%)');
 
     return {
       appName,

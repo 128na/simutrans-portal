@@ -18,7 +18,7 @@ import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { api } from '../../boot/axios';
 import { routeTo } from '../../composables/routeShortcut';
-import MetaLinks from './MetaLinks.vue';
+import MetaLinks from '../MetaLinks.vue';
 
 export default defineComponent({
   name: 'FrontMenu',

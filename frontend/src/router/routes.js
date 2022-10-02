@@ -1,7 +1,7 @@
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/FrontLayout.vue'),
     children: [
       { name: 'top', path: '', component: () => import('pages/Index.vue') },
       { name: 'show', path: '/articles/:slug', component: () => import('pages/Index.vue') },
@@ -18,9 +18,16 @@ const routes = [
   },
   {
     path: '/mypage',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/MypageLayout.vue'),
     children: [
       { name: 'mypage', path: '', component: () => import('pages/Index.vue') },
+    ],
+  },
+  {
+    path: '/admin',
+    component: () => import('layouts/AdminLayout.vue'),
+    children: [
+      { name: 'admin', path: '', component: () => import('pages/Index.vue') },
     ],
   },
 

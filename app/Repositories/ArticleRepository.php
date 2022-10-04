@@ -8,6 +8,7 @@ use App\Models\Tag;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Closure;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\JoinClause;
@@ -113,9 +114,11 @@ class ArticleRepository extends BaseRepository
     /**
      * お知らせ記事一覧.
      */
-    public function paginateAnnouces(?int $limit = null): LengthAwarePaginator
+    public function paginateAnnouces(bool $simple = false): Paginator
     {
-        return $this->queryAnnouces()->paginate($limit);
+        return $simple
+            ? $this->queryAnnouces()->simplePaginate()
+            : $this->queryAnnouces()->paginate();
     }
 
     private function queryPages(): Builder
@@ -127,16 +130,11 @@ class ArticleRepository extends BaseRepository
     /**
      * 一般記事一覧.
      */
-    public function paginatePages(?int $limit = null): LengthAwarePaginator
+    public function paginatePages(bool $simple = false): Paginator
     {
-        return $this->queryPages()->paginate($limit);
-    }
-
-    private function queryByPak(string $pak): Builder
-    {
-        return $this->basicQuery()
-            ->pak($pak)
-            ->addon();
+        return $simple
+            ? $this->queryPages()->simplePaginate()
+            : $this->queryPages()->paginate();
     }
 
     private function queryRanking(): Builder
@@ -151,16 +149,11 @@ class ArticleRepository extends BaseRepository
     /**
      * アドオン投稿/紹介のデイリーPVランキング.
      */
-    public function paginateRanking(?int $limit = null): LengthAwarePaginator
+    public function paginateRanking(bool $simple = false): Paginator
     {
-        return $this->queryRanking()->paginate($limit);
-    }
-
-    private function queryAddon(): Builder
-    {
-        return $this->basicQuery()
-            ->addon()
-            ->active();
+        return $simple
+            ? $this->queryRanking()->simplePaginate()
+            : $this->queryRanking()->paginate();
     }
 
     private function queryByCategory(Category $category): Relation
@@ -171,9 +164,11 @@ class ArticleRepository extends BaseRepository
     /**
      * カテゴリの投稿一覧.
      */
-    public function paginateByCategory(Category $category, ?int $limit = null): LengthAwarePaginator
+    public function paginateByCategory(Category $category, bool $simple = false): Paginator
     {
-        return $this->queryByCategory($category)->paginate($limit);
+        return $simple
+            ? $this->queryByCategory($category)->simplePaginate()
+            : $this->queryByCategory($category)->paginate();
     }
 
     private function queryByPakAddonCategory(Category $pak, Category $addon): Builder
@@ -186,19 +181,19 @@ class ArticleRepository extends BaseRepository
     /**
      * カテゴリ(pak/addon)の投稿一覧.
      */
-    public function paginateByPakAddonCategory(Category $pak, Category $addon, ?int $limit = null): LengthAwarePaginator
+    public function paginateByPakAddonCategory(Category $pak, Category $addon): LengthAwarePaginator
     {
-        return $this->queryByPakAddonCategory($pak, $addon)->paginate($limit);
+        return $this->queryByPakAddonCategory($pak, $addon)->paginate();
     }
 
     /**
      * カテゴリ(pak,addon指定なし)の投稿一覧.
      */
-    public function paginateByPakNoneAddonCategory(Category $pak, ?int $limit = null): LengthAwarePaginator
+    public function paginateByPakNoneAddonCategory(Category $pak): LengthAwarePaginator
     {
         return $this->queryByCategory($pak)
             ->whereDoesntHave('categories', fn ($query) => $query->where('type', 'addon'))
-            ->paginate($limit);
+            ->paginate();
     }
 
     private function queryByTag(Tag $tag): Relation
@@ -209,9 +204,9 @@ class ArticleRepository extends BaseRepository
     /**
      * タグを持つ投稿記事一覧.
      */
-    public function paginateByTag(Tag $tag, ?int $limit = null): LengthAwarePaginator
+    public function paginateByTag(Tag $tag): LengthAwarePaginator
     {
-        return $this->queryByTag($tag)->paginate($limit);
+        return $this->queryByTag($tag)->paginate();
     }
 
     private function queryByUser(User $user): Relation
@@ -222,9 +217,9 @@ class ArticleRepository extends BaseRepository
     /**
      * ユーザーの投稿記事一覧.
      */
-    public function paginateByUser(User $user, ?int $limit = null): LengthAwarePaginator
+    public function paginateByUser(User $user): LengthAwarePaginator
     {
-        return $this->queryByUser($user)->paginate($limit);
+        return $this->queryByUser($user)->paginate();
     }
 
     private function queryBySearch(string $word): Builder
@@ -246,9 +241,9 @@ class ArticleRepository extends BaseRepository
     /**
      * 記事検索結果一覧.
      */
-    public function paginateBySearch(string $word, ?int $limit = null): LengthAwarePaginator
+    public function paginateBySearch(string $word): LengthAwarePaginator
     {
-        return $this->queryBySearch($word)->paginate($limit);
+        return $this->queryBySearch($word)->paginate();
     }
 
     public function cursorCheckLink(): LazyCollection

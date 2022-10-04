@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Services\Front\ArticleService;
 use App\Services\Front\SidebarService;
 use App\Services\Front\TagService;
+use Illuminate\Http\Request;
 
 class FrontController extends Controller
 {
@@ -51,33 +52,33 @@ class FrontController extends Controller
             ]));
     }
 
-    public function pages()
+    public function pages(Request $request)
     {
-        $articles = $this->articleService->paginatePages();
+        $articles = $this->articleService->paginatePages($request->has('simple'));
 
         return ArticleResource::collection($articles)
             ->additional((['title' => '一般記事']));
     }
 
-    public function announces()
+    public function announces(Request $request)
     {
-        $articles = $this->articleService->paginateAnnouces();
+        $articles = $this->articleService->paginateAnnouces($request->has('simple'));
 
         return ArticleResource::collection($articles)
             ->additional((['title' => 'お知らせ']));
     }
 
-    public function ranking()
+    public function ranking(Request $request)
     {
-        $articles = $this->articleService->paginateRanking();
+        $articles = $this->articleService->paginateRanking($request->has('simple'));
 
         return ArticleResource::collection($articles)
             ->additional((['title' => 'アクセスランキング']));
     }
 
-    public function category(string $type, string $slug)
+    public function category(string $type, string $slug, Request $request)
     {
-        $articles = $this->articleService->paginateByCategory($type, $slug);
+        $articles = $this->articleService->paginateByCategory($type, $slug, $request->has('simple'));
 
         return ArticleResource::collection($articles)
             ->additional((['title' => sprintf('%sの投稿', __("category.{$type}.{$slug}"))]));

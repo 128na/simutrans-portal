@@ -10,6 +10,7 @@ use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
 use App\Services\Service;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\Paginator;
 
 class ArticleService extends Service
 {
@@ -30,26 +31,26 @@ class ArticleService extends Service
         return $this->articleRepository->paginateByUser($user);
     }
 
-    public function paginatePages(): LengthAwarePaginator
+    public function paginatePages(bool $simple = false): Paginator
     {
-        return $this->articleRepository->paginatePages();
+        return $this->articleRepository->paginatePages($simple);
     }
 
-    public function paginateAnnouces(): LengthAwarePaginator
+    public function paginateAnnouces(bool $simple = false): Paginator
     {
-        return $this->articleRepository->paginateAnnouces();
+        return $this->articleRepository->paginateAnnouces($simple);
     }
 
-    public function paginateRanking(): LengthAwarePaginator
+    public function paginateRanking(bool $simple = false): Paginator
     {
-        return $this->articleRepository->paginateRanking();
+        return $this->articleRepository->paginateRanking($simple);
     }
 
-    public function paginateByCategory(string $type, string $slug): LengthAwarePaginator
+    public function paginateByCategory(string $type, string $slug, bool $simple = false): Paginator
     {
         $category = $this->categoryRepository->findOrFailByTypeAndSlug($type, $slug);
 
-        return $this->articleRepository->paginateByCategory($category);
+        return $this->articleRepository->paginateByCategory($category, $simple);
     }
 
     public function paginateByPakAddonCategory(string $pakSlug, string $addonSlug): LengthAwarePaginator

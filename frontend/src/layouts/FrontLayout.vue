@@ -3,10 +3,10 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn flat dense round icon="menu" @click="$emit('toggleMenu')" />
-
-        <q-toolbar-title>
+        <q-btn flat dense no-caps size="lg" :to="{ name: 'top' }">
           {{ appName}}
-        </q-toolbar-title>
+        </q-btn>
+        <q-space />
         <ToggleDarkMode />
       </q-toolbar>
     </q-header>
@@ -16,7 +16,7 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view :cachedArticles="state.cachedArticles" @addCache="handleAddCache" @addCaches="handleAddCaches" />
     </q-page-container>
   </q-layout>
 </template>
@@ -25,6 +25,7 @@
 import { defineComponent } from 'vue';
 import { setCssVar } from 'quasar';
 import ToggleDarkMode from 'src/components/Common/ToggleDarkMode.vue';
+import { cachedArticles } from 'src/composables/cachedArticles';
 import { appInfo } from '../composables/appInfo';
 import FrontMenu from '../components/Front/FrontMenu.vue';
 
@@ -45,8 +46,13 @@ export default defineComponent({
     const { appName } = appInfo();
     setCssVar('primary', 'hsl(211, 82%, 54%)');
 
+    const { state, handleAddCache, handleAddCaches } = cachedArticles();
+
     return {
       appName,
+      state,
+      handleAddCache,
+      handleAddCaches,
     };
   },
 });

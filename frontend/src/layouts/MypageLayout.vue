@@ -3,10 +3,10 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn flat dense round icon="menu" @click="$emit('toggleMenu')" />
-
-        <q-toolbar-title>
+        <q-btn flat dense no-caps size="lg" :to="{ name: 'top' }">
           {{ appName}}
-        </q-toolbar-title>
+        </q-btn>
+        <q-space />
         <ToggleDarkMode />
       </q-toolbar>
     </q-header>

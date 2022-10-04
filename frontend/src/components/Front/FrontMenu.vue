@@ -7,17 +7,17 @@
     </q-item>
     <q-item v-show="errorMessage">
       <q-item-section>
-        <ApiErrorMessage :message="errorMessage" :retry="fetch" />
+        <ApiErrorMessage :message="errorMessage" @retry="fetch" />
       </q-item-section>
     </q-item>
     <q-expansion-item v-for="(pakAddons, label) in pakAddonCounts" expand-separator :label="label" :key="label">
       <q-item v-for="(a, index) in pakAddons" clickable
         :to="{ name: 'categoryPak', params:{size:a.pak_slug, slug:a.addon_slug} }" :key="index">
-        <q-item-section>{{a.addon}} ({{a.count}})</q-item-section>
+        <q-item-section right>{{a.addon}} ({{a.count}})</q-item-section>
       </q-item>
 
     </q-expansion-item>
-    <q-expansion-item expand-separator label="ユーザー一覧">
+    <q-expansion-item v-show="!loading" expand-separator label="ユーザー一覧">
       <q-item v-for="(a, index) in userAddonCounts" clickable :to="{ name: 'user', params:{id:a.user_id} }"
         :key="index">
         <q-item-section>{{a.name}} ({{a.count}})</q-item-section>

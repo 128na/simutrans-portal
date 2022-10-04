@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-btn v-show="canRetry" flat round size="sm" icon="replay" @click="retry" />
+    <q-btn v-show="canRetry" flat round size="sm" icon="replay" @click="$emit('retry')" />
     {{message}}
   </div>
 </template>
@@ -15,12 +15,8 @@ export default defineComponent({
       type: [String, Object],
       default: '',
     },
-    retry: {
-      type: Function,
-      required: false,
-    },
   },
-  setup(props) {
+  setup(props, context) {
     const renderMessage = computed(() => {
       if (typeof props.message === 'string') {
         return props.message;
@@ -29,7 +25,7 @@ export default defineComponent({
         .map((k, v) => `${k} ${v.join(', ')}`)
         .join('\n');
     });
-    const canRetry = computed(() => typeof props.retry === 'function');
+    const canRetry = computed(() => context.attrs.onRetry);
     return { renderMessage, canRetry };
   },
 });

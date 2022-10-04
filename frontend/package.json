@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "0.0.1",
-  "description": "A Quasar Framework app",
+  "description": "Simutrans Addon Portal front app",
   "productName": "Simutrans Addon Portal",
   "author": "128na <simutrans.128na@gmail.com>",
   "private": true,
@@ -15,7 +15,10 @@
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "luxon": "^3.0.4",
+    "markdown-it": "^13.0.1",
     "quasar": "^2.0.0",
+    "sanitize-html": "^2.7.2",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0",
     "vuex": "^4.0.1"

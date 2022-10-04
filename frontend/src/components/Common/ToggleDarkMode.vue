@@ -1,10 +1,10 @@
 <template>
   <transition mode="out-in">
     <div v-if="isDark" @click="handle">
-      <q-icon name="dark_mode" size="sm" color="warning" class="night toggle-day-night" />
+      <q-icon name="dark_mode" size="sm" color="warning" class="cursor-pointer night toggle-day-night" />
     </div>
     <div v-else @click="handle">
-      <q-icon name="light_mode" size="sm" color="white" class="toggle-day-night" />
+      <q-icon name="light_mode" size="sm" color="white" class="cursor-pointer toggle-day-night" />
     </div>
   </transition>
 </template>

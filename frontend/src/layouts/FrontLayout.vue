@@ -7,6 +7,7 @@
           {{ appName}}
         </q-btn>
         <q-space />
+        <ToggleListMode v-model="listMode" class="q-mr-md" />
         <ToggleDarkMode />
       </q-toolbar>
     </q-header>
@@ -16,16 +17,18 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view :cachedArticles="state.cachedArticles" @addCache="handleAddCache" @addCaches="handleAddCaches" />
+      <router-view :cachedArticles="state.cachedArticles" :listMode="listMode" @addCache="handleAddCache"
+        @addCaches="handleAddCaches" />
     </q-page-container>
   </q-layout>
 </template>
 <script>
 
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { setCssVar } from 'quasar';
 import ToggleDarkMode from 'src/components/Common/ToggleDarkMode.vue';
 import { cachedArticles } from 'src/composables/cachedArticles';
+import ToggleListMode from 'src/components/Common/ToggleListMode.vue';
 import { appInfo } from '../composables/appInfo';
 import FrontMenu from '../components/Front/FrontMenu.vue';
 
@@ -40,6 +43,7 @@ export default defineComponent({
   components: {
     FrontMenu,
     ToggleDarkMode,
+    ToggleListMode,
   },
 
   setup() {
@@ -47,12 +51,14 @@ export default defineComponent({
     setCssVar('primary', 'hsl(211, 82%, 54%)');
 
     const { state, handleAddCache, handleAddCaches } = cachedArticles();
+    const listMode = ref('list');
 
     return {
       appName,
       state,
       handleAddCache,
       handleAddCaches,
+      listMode,
     };
   },
 });

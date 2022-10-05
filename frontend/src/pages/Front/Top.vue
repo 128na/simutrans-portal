@@ -17,7 +17,7 @@
             <ApiErrorMessage message="記事取得に失敗しました" @retry="fetchContent($emit, c)" />
           </q-item-section>
         </q-item>
-        <FrontArticleList :articles="c.articles" />
+        <FrontArticleList :articles="c.articles" :listMode="listMode" />
         <q-separator />
       </q-list>
     </template>
@@ -90,7 +90,7 @@ const fetchContent = async (emit, content) => {
   try {
     const res = await api.get(content.api);
     if (res.status === 200) {
-      content.articles = JSON.parse(JSON.stringify(res.data.data)).splice(0, 5);
+      content.articles = JSON.parse(JSON.stringify(res.data.data)).splice(0, 6);
       emit('addCaches', res.data.data);
     }
   } catch (err) {
@@ -105,6 +105,13 @@ export default defineComponent({
     FrontArticleList,
     LoadingMessage,
     ApiErrorMessage,
+  },
+
+  props: {
+    listMode: {
+      type: String,
+      default: 'list',
+    },
   },
 
   setup(props, { emit }) {

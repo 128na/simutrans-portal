@@ -17,7 +17,7 @@
     "core-js": "^3.6.5",
     "luxon": "^3.0.4",
     "markdown-it": "^13.0.1",
-    "quasar": "^2.0.0",
+    "quasar": "^2.8.5",
     "sanitize-html": "^2.7.2",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0",

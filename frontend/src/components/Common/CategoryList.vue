@@ -1,7 +1,7 @@
 <template>
   <span>
-    <q-btn v-for="c in article.categories" :key="key(c)" dense color="blue-grey" size="sm" no-caps class="q-mr-xs"
-      @click.prevent="handle(c)">
+    <q-btn v-for="c in article.categories" :key="key(c)" dense color="blue-grey" size="sm" no-caps
+      class="q-mr-xs q-mb-xs" @click.prevent="handle(c)">
       {{ c.name }}
     </q-btn>
   </span>

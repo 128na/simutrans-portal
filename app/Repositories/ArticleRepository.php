@@ -19,7 +19,7 @@ use Illuminate\Support\LazyCollection;
 class ArticleRepository extends BaseRepository
 {
     public const MYPAGE_RELATIONS = ['user', 'attachments.fileInfo', 'categories', 'tags', 'tweetLogSummary', 'totalViewCount', 'totalConversionCount'];
-    public const FRONT_RELATIONS = ['user', 'attachments', 'categories', 'tags'];
+    public const FRONT_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags'];
     public const SHOW_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags'];
 
     /**

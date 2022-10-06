@@ -7,7 +7,7 @@
     </q-item>
     <q-item v-show="errorMessage">
       <q-item-section>
-        <ApiErrorMessage :message="errorMessage" @retry="fetch" />
+        <api-error-message :message="errorMessage" @retry="fetch" />
       </q-item-section>
     </q-item>
     <q-expansion-item v-for="(pakAddons, label) in pakAddonCounts" expand-separator :label="label" :key="label">
@@ -38,7 +38,7 @@
       <q-item-section>プライバシーポリシー</q-item-section>
     </q-item>
     <q-separator />
-    <MetaLinks />
+    <meta-links />
     <q-separator />
     <MetaInfo />
   </q-list>

@@ -9,15 +9,15 @@
         </q-item>
         <q-item v-show="c.loading">
           <q-item-section>
-            <LoadingMessage />
+            <loading-message />
           </q-item-section>
         </q-item>
         <q-item v-show="c.error">
           <q-item-section>
-            <ApiErrorMessage message="記事取得に失敗しました" @retry="fetchContent($emit, c)" />
+            <api-error-message message="記事取得に失敗しました" @retry="fetchContent($emit, c)" />
           </q-item-section>
         </q-item>
-        <FrontArticleList :articles="c.articles" :listMode="listMode" />
+        <front-article-list :articles="c.articles" :listMode="listMode" />
         <q-separator />
       </q-list>
     </template>

@@ -3,7 +3,7 @@
     <h4 class="text-h4">
       {{article.title}}
     </h4>
-    <img :src="thumbnailUrl" class="thumbnai" />
+    <content-thumbnail :article="article" />
 
     <dl>
       <dt>作者</dt>
@@ -59,19 +59,14 @@
   </article>
 </template>
 <script>
-import { defineComponent, computed } from 'vue';
+import { defineComponent } from 'vue';
 import CategoryList from './CategoryList';
 import TagList from './TagList';
 import ContentAgreement from './ContentAgreement';
 import TextPre from './TextPre.vue';
 import ContentLink from './ContentLink.vue';
 import ContentMeta from './ContentMeta.vue';
-
-const thumbnailUrl = (article) => {
-  const attachmentId = parseInt(article.contents.thumbnail, 10);
-  return article.attachments.find((a) => a.id === attachmentId)?.url
-    || `${process.env.BACKEND_URL}/storage/default/image.png`;
-};
+import ContentThumbnail from './ContentThumbnail.vue';
 
 export default defineComponent({
   name: 'ArticleShowAddonIntroduction',
@@ -82,6 +77,7 @@ export default defineComponent({
     TextPre,
     ContentLink,
     ContentMeta,
+    ContentThumbnail,
   },
   props: {
     article: {
@@ -89,15 +85,5 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
-    return {
-      thumbnailUrl: computed(() => thumbnailUrl(props.article)),
-    };
-  },
 });
 </script>
-<style lang="scss">
-.thumbnai {
-  max-width: 100%;
-}
-</style>

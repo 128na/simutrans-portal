@@ -34,10 +34,10 @@
       <q-item-section>マイページ</q-item-section>
     </q-item>
     <q-separator />
-    <q-item clickable dense :to="{ name: 'about' }">
+    <q-item clickable dense :to="{ name:'show',params:{slug: 'about'} }">
       <q-item-section>サイトの使い方</q-item-section>
     </q-item>
-    <q-item clickable dense :to="{ name: 'privacy' }">
+    <q-item clickable dense :to="{ name:'show',params:{slug: 'privacy'} }">
       <q-item-section>プライバシーポリシー</q-item-section>
     </q-item>
     <q-separator />

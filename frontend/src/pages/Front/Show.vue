@@ -17,7 +17,9 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from 'vue';
+import {
+  defineComponent, ref, computed, watch,
+} from 'vue';
 import { useRoute } from 'vue-router';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { api } from '../../boot/axios';
@@ -53,6 +55,7 @@ export default defineComponent({
       const { setTitle } = metaHandler();
       if (props.cachedArticles.find((a) => a.slug === route.params.slug)) {
         loading.value = false;
+        error.value = false;
         setTitle(article.value.title);
         return;
       }
@@ -72,6 +75,7 @@ export default defineComponent({
       }
     };
     fetchArticle();
+    watch(() => route.params, () => fetchArticle());
 
     return {
       article,

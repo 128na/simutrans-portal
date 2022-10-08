@@ -9,8 +9,8 @@
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
-    "build": "quasar build && copy",
-    "copy": "node ./deployment/spa"
+    "build": "quasar build && npm run spa:copy",
+    "spa:copy": "node ./deployment/spa"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",

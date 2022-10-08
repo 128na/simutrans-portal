@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <q-list>
-      <q-item>
+      <q-item v-show="title">
         <q-item-section>
           <q-item-label class="text-h2">{{title}}</q-item-label>
         </q-item-section>
@@ -18,13 +18,12 @@
         </q-item-section>
       </q-item>
       <front-article-list :articles="articles" :listMode="listMode" />
-      <q-separator />
     </q-list>
   </q-page>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { api } from '../../boot/axios';
 import { metaHandler } from '../../composables/metaHandler';
@@ -114,6 +113,8 @@ export default defineComponent({
       }
     };
     fetchArticles();
+
+    watch(() => route.params, () => fetchArticles());
 
     return {
       articles,

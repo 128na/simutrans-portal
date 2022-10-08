@@ -4,7 +4,7 @@ const routes = [
     component: () => import('layouts/FrontLayout.vue'),
     children: [
       { name: 'top', path: '', component: () => import('pages/Front/Top.vue') },
-      { name: 'show', path: '/articles/:slug', component: () => import('pages/Index.vue') },
+      { name: 'show', path: '/articles/:slug', component: () => import('pages/Front/Show.vue') },
       { name: 'categoryPak', path: '/category/pak/:size/:slug', component: () => import('pages/Front/List.vue') },
       { name: 'category', path: '/category/:type/:slug', component: () => import('pages/Front/List.vue') },
       { name: 'tag', path: '/tag/:id', component: () => import('pages/Front/List.vue') },

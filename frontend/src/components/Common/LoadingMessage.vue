@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="q-mb-md">
     <q-spinner />
     Loading...
   </div>

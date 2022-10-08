@@ -1,5 +1,8 @@
 <template>
   <q-list>
+    <q-item>
+      <search-form />
+    </q-item>
     <q-item v-show="loading">
       <q-item-section>
         <LoadingMessage />
@@ -52,6 +55,7 @@ import MetaLinks from '../MetaLinks.vue';
 import MetaInfo from '../MetaInfo.vue';
 import LoadingMessage from '../Common/LoadingMessage.vue';
 import ApiErrorMessage from '../Common/ApiErrorMessage.vue';
+import SearchForm from './SearchForm.vue';
 
 export default defineComponent({
   name: 'FrontMenu',
@@ -88,7 +92,11 @@ export default defineComponent({
     };
   },
   components: {
-    MetaLinks, MetaInfo, LoadingMessage, ApiErrorMessage,
+    MetaLinks,
+    MetaInfo,
+    LoadingMessage,
+    ApiErrorMessage,
+    SearchForm,
   },
 });
 </script>

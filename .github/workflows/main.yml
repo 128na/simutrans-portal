@@ -138,7 +138,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
       - name: Cache frontend_node_modules
-        id: cache-npm
+        id: frontend-cache-npm
         uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
@@ -224,7 +224,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
       - name: Cache frontend_node_modules
-        id: cache-npm
+        id: frontend-cache-npm
         uses: actions/cache@v3
         env:
           cache-name: cache-node-modules

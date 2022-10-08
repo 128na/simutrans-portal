@@ -7,7 +7,7 @@
     </q-item>
     <q-item v-show="error">
       <q-item-section>
-        <api-error-message message="記事取得に失敗しました" @retry="fetchArticle" />
+        <api-error-message :message="errorMessage" @retry="fetchArticle" />
       </q-item-section>
     </q-item>
     <q-item v-if="article">
@@ -20,8 +20,9 @@
 import {
   defineComponent, ref, computed, watch,
 } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
+import { useErrorHandler } from 'src/composables/errorHandler';
 import { api } from '../../boot/axios';
 import { metaHandler } from '../../composables/metaHandler';
 import LoadingMessage from '../../components/Common/LoadingMessage.vue';
@@ -51,6 +52,7 @@ export default defineComponent({
 
     const article = computed(() => props.cachedArticles.find((a) => a.slug === route.params.slug));
 
+    const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter);
     const fetchArticle = async () => {
       const { setTitle } = metaHandler();
       if (props.cachedArticles.find((a) => a.slug === route.params.slug)) {
@@ -70,6 +72,7 @@ export default defineComponent({
         }
       } catch (err) {
         error.value = true;
+        errorHandlerStrict(err, '記事取得に失敗しました');
       } finally {
         loading.value = false;
       }
@@ -81,6 +84,7 @@ export default defineComponent({
       article,
       loading,
       error,
+      errorMessage,
       fetchArticle,
     };
   },

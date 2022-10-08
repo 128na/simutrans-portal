@@ -17,7 +17,7 @@
         </q-item>
         <q-item v-show="c.error">
           <q-item-section>
-            <api-error-message message="記事取得に失敗しました" @retry="fetchContent($emit, c)" />
+            <api-error-message :message="errorMessage" @retry="fetchContent(c)" />
           </q-item-section>
         </q-item>
         <front-article-list :articles="c.articles" :listMode="listMode" />
@@ -29,9 +29,11 @@
 
 <script>
 import { defineComponent, reactive } from 'vue';
+import { useRouter } from 'vue-router';
 import TextTitle from 'src/components/Common/TextTitle.vue';
 import { api } from '../../boot/axios';
 import { metaHandler } from '../../composables/metaHandler';
+import { useErrorHandler } from '../../composables/errorHandler';
 import FrontArticleList from '../../components/Front/FrontArticleList.vue';
 import LoadingMessage from '../../components/Common/LoadingMessage.vue';
 import ApiErrorMessage from '../../components/Common/ApiErrorMessage.vue';
@@ -87,22 +89,6 @@ const contents = reactive([
   },
 ]);
 
-const fetchContent = async (emit, content) => {
-  content.loading = true;
-  content.error = false;
-  content.articles = [];
-  try {
-    const res = await api.get(content.api);
-    if (res.status === 200) {
-      content.articles = JSON.parse(JSON.stringify(res.data.data)).splice(0, 6);
-      emit('addCaches', res.data.data);
-    }
-  } catch (err) {
-    content.error = true;
-  } finally {
-    content.loading = false;
-  }
-};
 export default defineComponent({
   name: 'FrontTop',
   components: {
@@ -120,13 +106,32 @@ export default defineComponent({
   },
 
   setup(props, { emit }) {
-    contents.map((c) => fetchContent(emit, c));
+    const { errorHandler, errorMessage } = useErrorHandler(useRouter());
+    const fetchContent = async (content) => {
+      content.loading = true;
+      content.error = false;
+      content.articles = [];
+      try {
+        const res = await api.get(content.api);
+        if (res.status === 200) {
+          content.articles = JSON.parse(JSON.stringify(res.data.data)).splice(0, 6);
+          emit('addCaches', res.data.data);
+        }
+      } catch (err) {
+        content.error = true;
+        errorHandler(err, '記事取得に失敗しました');
+      } finally {
+        content.loading = false;
+      }
+    };
+    contents.map((c) => fetchContent(c));
     const { setTitle } = metaHandler();
     setTitle('top');
 
     return {
       contents,
       fetchContent,
+      errorMessage,
     };
   },
 });

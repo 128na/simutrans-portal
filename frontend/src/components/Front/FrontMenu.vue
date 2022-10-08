@@ -8,7 +8,7 @@
         <LoadingMessage />
       </q-item-section>
     </q-item>
-    <q-item v-show="errorMessage">
+    <q-item v-show="error">
       <q-item-section>
         <api-error-message :message="errorMessage" @retry="fetch" />
       </q-item-section>
@@ -50,6 +50,8 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useErrorHandler } from 'src/composables/errorHandler';
 import { api } from '../../boot/axios';
 import MetaLinks from '../MetaLinks.vue';
 import MetaInfo from '../MetaInfo.vue';
@@ -63,11 +65,13 @@ export default defineComponent({
     const pakAddonCounts = ref({});
     const userAddonCounts = ref([]);
     const loading = ref(true);
-    const errorMessage = ref(null);
+    const error = ref(false);
+
+    const { errorMessage, errorHandler } = useErrorHandler(useRouter());
 
     const fetch = async () => {
       loading.value = true;
-      errorMessage.value = null;
+      error.value = false;
 
       try {
         const res = await api.get('/api/v3/front/sidebar');
@@ -75,8 +79,9 @@ export default defineComponent({
           pakAddonCounts.value = res.data.pakAddonCounts;
           userAddonCounts.value = res.data.userAddonCounts;
         }
-      } catch (error) {
-        errorMessage.value = 'メニューの取得に失敗しました';
+      } catch (err) {
+        error.value = true;
+        errorHandler(err, 'メニューの取得に失敗しました');
       } finally {
         loading.value = false;
       }
@@ -87,6 +92,7 @@ export default defineComponent({
       pakAddonCounts,
       userAddonCounts,
       loading,
+      error,
       errorMessage,
       fetch,
     };

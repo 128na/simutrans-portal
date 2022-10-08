@@ -20,22 +20,32 @@ const routes = [
     path: '/mypage',
     component: () => import('layouts/MypageLayout.vue'),
     children: [
-      { name: 'mypage', path: '', component: () => import('pages/Index.vue') },
+      {
+        name: 'mypage', path: '', meta: { requiresAuth: true }, component: () => import('pages/Mypage/Top.vue'),
+      },
+      { name: 'login', path: 'login', component: () => import('pages/Mypage/Login.vue') },
     ],
   },
   {
     path: '/admin',
     component: () => import('layouts/AdminLayout.vue'),
     children: [
-      { name: 'admin', path: '', component: () => import('pages/Index.vue') },
+      {
+        name: 'admin', path: '', meta: { requiresAdmin: true }, component: () => import('pages/Index.vue'),
+      },
     ],
+  },
+  {
+    name: 'error',
+    path: '/error/:status',
+    component: () => import('src/pages/Error.vue'),
   },
 
   // Always leave this as last one,
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
-    component: () => import('pages/Error404.vue'),
+    component: () => import('src/pages/Error.vue'),
   },
 ];
 

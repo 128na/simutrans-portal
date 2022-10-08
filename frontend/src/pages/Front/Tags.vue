@@ -2,7 +2,7 @@
   <q-page class="q-pa-md">
     <text-title>タグ一覧</text-title>
     <loading-message v-show="loading" />
-    <api-error-message v-show="error" message="一覧取得に失敗しました" @retry="fetchTags" />
+    <api-error-message v-show="error" :message="errorMessage" @retry="fetchTags" />
     <div class="q-gutter-md">
       <q-btn v-for="t in tags" :key="t.id" :to="{name:'tag', params:{id:t.id}}" :size="size(t.count)" no-caps>
         {{ t.name }} ({{t.count}})
@@ -17,6 +17,8 @@ import {
 import LoadingMessage from 'src/components/Common/LoadingMessage.vue';
 import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
 import TextTitle from 'src/components/Common/TextTitle.vue';
+import { useErrorHandler } from 'src/composables/errorHandler';
+import { useRouter } from 'vue-router';
 import { api } from '../../boot/axios';
 import { metaHandler } from '../../composables/metaHandler';
 
@@ -35,6 +37,7 @@ export default defineComponent({
     const error = ref(false);
     const tags = ref([]);
 
+    const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter());
     const fetchTags = async () => {
       loading.value = true;
       error.value = false;
@@ -46,6 +49,7 @@ export default defineComponent({
         }
       } catch (err) {
         error.value = true;
+        errorHandlerStrict(err, 'タグ一覧取得に失敗しました');
       } finally {
         loading.value = false;
       }
@@ -68,6 +72,7 @@ export default defineComponent({
       tags,
       fetchTags,
       size,
+      errorMessage,
     };
   },
 });

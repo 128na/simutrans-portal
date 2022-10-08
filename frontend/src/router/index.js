@@ -28,5 +28,25 @@ export default route((/* { store, ssrContext } */) => {
     history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE),
   });
 
+  Router.beforeEach((to, from, next) => {
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+      // このルートはログインされているかどうか認証が必要です。
+      // もしされていないならば、ログインページにリダイレクトします。
+      // eslint-disable-next-line no-constant-condition
+      if (true) {
+        return next({ name: 'login' });
+      }
+    }
+    if (to.matched.some((record) => record.meta.requiresAdmin)) {
+      // このルートはログインされているかどうか認証が必要です。
+      // もしされていないならば、ログインページにリダイレクトします。
+      // eslint-disable-next-line no-constant-condition
+      if (true) {
+        return next({ name: 'error', params: { status: 401 } });
+      }
+    }
+    return next();
+  });
+
   return Router;
 });

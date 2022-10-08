@@ -14,7 +14,7 @@
       </q-item>
       <q-item v-show="error">
         <q-item-section>
-          <api-error-message message="記事取得に失敗しました" @retry="fetchArticles" />
+          <api-error-message :message="errorMessage" @retry="fetchArticles" />
         </q-item-section>
       </q-item>
       <front-article-list :articles="articles" :listMode="listMode" />
@@ -24,8 +24,9 @@
 
 <script>
 import { defineComponent, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import TextTitle from 'src/components/Common/TextTitle.vue';
+import { useErrorHandler } from 'src/composables/errorHandler';
 import { api } from '../../boot/axios';
 import { metaHandler } from '../../composables/metaHandler';
 import FrontArticleList from '../../components/Front/FrontArticleList.vue';
@@ -77,6 +78,8 @@ export default defineComponent({
         emit('addCaches', res.data.data);
       }
     };
+
+    const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter());
     const route = useRoute();
     const fetchArticles = async () => {
       loading.value = true;
@@ -109,7 +112,7 @@ export default defineComponent({
         handleResponse(res);
       } catch (err) {
         error.value = true;
-        // console.warn(err.response);
+        errorHandlerStrict(err, '記事取得に失敗しました');
       } finally {
         loading.value = false;
       }
@@ -125,6 +128,7 @@ export default defineComponent({
       title,
       loading,
       error,
+      errorMessage,
       fetchArticles,
     };
   },

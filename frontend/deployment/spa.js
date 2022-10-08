@@ -9,6 +9,7 @@ const targets = [
   { src: path.join(__dirname, '..\\dist\\spa\\js'), dest: path.join(__dirname, '..\\..\\public\\js') },
   { src: path.join(__dirname, '..\\dist\\spa\\fonts'), dest: path.join(__dirname, '..\\..\\public\\fonts') },
   { src: path.join(__dirname, '..\\dist\\spa\\icons'), dest: path.join(__dirname, '..\\..\\public\\icons') },
+  { src: path.join(__dirname, '..\\dist\\spa\\images'), dest: path.join(__dirname, '..\\..\\public\\images') },
 ];
 targets.forEach((target) => {
   fs.emptyDirSync(target.dest);

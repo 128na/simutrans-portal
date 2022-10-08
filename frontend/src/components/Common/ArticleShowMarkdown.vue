@@ -1,8 +1,8 @@
 <template>
   <article>
-    <h4 class="text-h4">
+    <text-title>
       {{article.title}}
-    </h4>
+    </text-title>
     <content-thumbnail :article="article" />
 
     <dl>
@@ -31,6 +31,7 @@ import CategoryList from './CategoryList';
 import ContentMeta from './ContentMeta.vue';
 import ContentThumbnail from './ContentThumbnail.vue';
 import ContentMarkdown from './ContentMarkdown.vue';
+import TextTitle from './TextTitle.vue';
 
 export default defineComponent({
   name: 'ArticleShowMarkdown',
@@ -39,6 +40,7 @@ export default defineComponent({
     ContentMeta,
     ContentThumbnail,
     ContentMarkdown,
+    TextTitle,
   },
   props: {
     article: {

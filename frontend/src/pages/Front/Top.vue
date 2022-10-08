@@ -7,6 +7,7 @@
             <q-item-label class="text-h2">{{c.label}}</q-item-label>
           </q-item-section>
         </q-item>
+        <q-separator />
         <q-item v-show="c.loading">
           <q-item-section>
             <loading-message />

@@ -4,13 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    @include('parts.gtm-header')
 
     <title>{{ $meta['title'] ?? config('app.name') }}</title>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="api-entrypoint" content="{{ config('app.url') }}">
-
     <meta name="description" content="{{ $meta['description'] ?? config('app.meta-description') }}">
 
     <meta name="twitter:card" content="{{ $meta['card_type'] ?? 'summary_large_image' }}">
@@ -22,21 +19,20 @@
     <meta property="og:description" content="{{ $meta['description'] ?? config('app.meta-description') }}">
     <meta property="og:url" content="{{ $meta['canonical'] ?? url()->current() }}">
 
-
     {{-- 本番環境以外はnoindex nofollow --}}
     @unless(\App::environment('production'))
         <meta name="robots" content="noindex, nofollow">
     @endunless
     <link rel="canonical" href="{{ $meta['canonical'] ?? url()->current() }}">
-    <link href="{{ asset(mix('css/front.css')) }}" rel="stylesheet">
-    <script src="{{ asset(mix('js/manifest.js')) }}" defer></script>
-    <script src="{{ asset(mix('js/vendor.js')) }}" defer></script>
-    <script src="{{ asset(mix('js/front_spa.js')) }}" defer></script>
+    <link rel=icon type=image/ico href=favicon.ico>
+    <script defer src="{{ asset('/js/vendor.js') }}"></script>
+    <script defer src="{{ asset('/js/app.js') }}"></script>
+    <link href="{{ asset('/css/vendor.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 </head>
 
 <body>
-    @include('parts.gtm-body')
-    @yield('content')
+    <div id=q-app></div>
 </body>
 
 </html>

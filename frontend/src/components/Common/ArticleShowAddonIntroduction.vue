@@ -1,8 +1,8 @@
 <template>
   <article>
-    <h4 class="text-h4">
+    <text-title>
       {{article.title}}
-    </h4>
+    </text-title>
     <content-thumbnail :article="article" />
 
     <dl>
@@ -67,6 +67,7 @@ import TextPre from './TextPre.vue';
 import ContentLink from './ContentLink.vue';
 import ContentMeta from './ContentMeta.vue';
 import ContentThumbnail from './ContentThumbnail.vue';
+import TextTitle from './TextTitle.vue';
 
 export default defineComponent({
   name: 'ArticleShowAddonIntroduction',
@@ -78,6 +79,7 @@ export default defineComponent({
     ContentLink,
     ContentMeta,
     ContentThumbnail,
+    TextTitle,
   },
   props: {
     article: {

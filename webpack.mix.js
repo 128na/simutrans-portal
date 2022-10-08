@@ -11,21 +11,32 @@ const mix = require('laravel-mix');
  |
  */
 
+const fs = require('fs');
+const path = require('path');
+
+const replaces = [
+  { key: '\\js\\vendor.', dist: '\\js\\vendor.js' },
+  { key: '\\js\\app.', dist: '\\js\\app.js' },
+  { key: '\\css\\app.', dist: '\\css\\app.css' },
+  { key: '\\css\\vendor.', dist: '\\css\\vendor.css' }
+];
+
+/**
+ * Quasarのバージョニングを消してLaravelから読み取れるようにする
+ */
+const versioningRemover = (original) => {
+  replaces.forEach(replace => {
+    if (original.startsWith(replace.key)) {
+      try {
+        fs.copyFileSync(path.join(__dirname, 'public', original), path.join(__dirname, 'public', replace.dist));
+      } catch (e) {}
+    }
+  });
+};
+
 mix
-  .sass('resources/sass/front/index.scss', 'public/css/front.css')
-  .sass('resources/sass/mypage/index.scss', 'public/css/mypage.css')
-  .sass('resources/sass/admin/index.scss', 'public/css/admin.css')
-  .js('resources/js/front/index.js', 'public/js/front.js')
-  .js('resources/js/front/app.js', 'public/js/front_spa.js')
-  .js('resources/js/mypage/app.js', 'public/js/mypage.js')
-  .js('resources/js/admin/app.js', 'public/js/admin.js')
-  .vue({ version: 2 })
-  .extract();
-
-mix.disableNotifications();
-
-if (mix.inProduction()) {
-  mix.version();
-} else {
-  mix.sourceMaps();
-}
+  .copyDirectory('frontend/dist/spa/css', 'public/css')
+  .copyDirectory('frontend/dist/spa/fonts', 'public/fonts')
+  .copyDirectory('frontend/dist/spa/icons', 'public/icons')
+  .copyDirectory('frontend/dist/spa/js', 'public/js')
+  .after(stats => Object.entries(stats.compilation.assets).map(data => versioningRemover(data[0])));

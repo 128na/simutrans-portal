@@ -14,7 +14,7 @@ class SearchRequest extends FormRequest
     public function rules()
     {
         return [
-            'word' => 'required|string|max:100',
+            'word' => 'nullable|string|max:100',
         ];
     }
 }

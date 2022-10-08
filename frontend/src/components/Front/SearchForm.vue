@@ -1,6 +1,6 @@
 <template>
   <form class="w-100" @submit.prevent="search">
-    <q-input v-model="word" label="検索">
+    <q-input :borderless="borderless" v-model="word" label="検索" @focus="focus=true" @blur="focus=false">
       <template v-slot:append>
         <q-icon v-if="word" name="close" @click="clear" class="cursor-pointer" />
         <q-icon name="search" @click="search" class="cursor-pointer" />
@@ -9,7 +9,7 @@
   </form>
 </template>
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 export default defineComponent({
@@ -26,10 +26,15 @@ export default defineComponent({
       router.push({ name: 'search', query: { word: word.value } });
     };
 
+    const focus = ref(false);
+    const borderless = computed(() => !focus.value && !word.value);
+
     return {
       word,
       clear,
       search,
+      focus,
+      borderless,
     };
   },
 });

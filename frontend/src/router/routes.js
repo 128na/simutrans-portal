@@ -13,7 +13,7 @@ const routes = [
       { name: 'pages', path: '/pages', component: () => import('pages/Front/List.vue') },
       { name: 'ranking', path: '/ranking', component: () => import('pages/Front/List.vue') },
       { name: 'search', path: '/search', component: () => import('pages/Front/List.vue') },
-      { name: 'tags', path: '/tags', component: () => import('pages/Index.vue') },
+      { name: 'tags', path: '/tags', component: () => import('pages/Front/Tags.vue') },
     ],
   },
   {

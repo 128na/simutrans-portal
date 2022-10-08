@@ -37,30 +37,30 @@ jobs:
         run: composer install
       - name: phpcs
         run: composer run cs-check
-  es:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Node
-        uses: actions/setup-node@v2
-      - name: Cache node_modules
-        id: cache-npm
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ./node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-      - name: npm ci
-        if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
-        run: npm ci
-      - name: eslint
-        run: npm run es
+  # es:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v2
+  #     - name: Cache node_modules
+  #       id: cache-npm
+  #       uses: actions/cache@v3
+  #       env:
+  #         cache-name: cache-node-modules
+  #       with:
+  #         path: ./node_modules
+  #         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-build-${{ env.cache-name }}-
+  #           ${{ runner.os }}-build-
+  #           ${{ runner.os }}-
+  #     - name: npm ci
+  #       if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
+  #       run: npm ci
+  #     - name: eslint
+  #       run: npm run es
   test:
     runs-on: ubuntu-latest
     steps:
@@ -87,25 +87,6 @@ jobs:
       - name: Composer Install
         if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
         run: composer install
-      - name: Setup Node
-        uses: actions/setup-node@v2
-      - name: Cache node_modules
-        id: cache-npm
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ./node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-      - name: npm ci
-        if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
-        run: npm ci
-      - name: Build Assets
-        run: npm run prod
       - name: Start MySQL
         run: sudo /etc/init.d/mysql start
       - name: Setup database
@@ -132,7 +113,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: .env
-        run: php -r "copy('.env.dusk.ci', '.env');"
+        run: php -r "copy('.env.dusk.ci', '.env');copy('frontend/.env.dusk.ci', 'frontend/.env');"
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -156,6 +137,23 @@ jobs:
         run: php artisan storage:link
       - name: Setup Node
         uses: actions/setup-node@v2
+      - name: Cache frontend_node_modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ./frontend/node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: npm ci
+        if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
+        run: cd frontend && npm ci
+      - name: Build Assets
+        run: cd frontend && npm run build
       - name: Cache node_modules
         id: cache-npm
         uses: actions/cache@v3
@@ -220,11 +218,28 @@ jobs:
         with:
           fetch-depth: 0
       - name: .env
-        run: php -r "copy('.env.deploy', '.env');"
+        run: php -r "copy('.env.deploy', '.env');copy('frontend/.env.deploy', 'frontend/.env');"
       - name: set app version
-        run: sed -i "s/APP_VERSION=.*/APP_VERSION=$( git describe --tags --abbrev=0 )/" .env
+        run: sed -i "s/APP_VERSION=.*/APP_VERSION=$( git describe --tags --abbrev=0 )/" frontend/.env
       - name: Setup Node
         uses: actions/setup-node@v2
+      - name: Cache frontend_node_modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ./frontend/node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: npm ci
+        if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
+        run: cd frontend && npm ci
+      - name: Build Assets
+        run: cd frontend && npm run build
       - name: Cache node_modules
         id: cache-npm
         uses: actions/cache@v3

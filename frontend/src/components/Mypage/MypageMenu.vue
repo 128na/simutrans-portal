@@ -1,7 +1,7 @@
 <template>
   <q-list>
     <q-item clickable :to="{name:'top'}">
-      <q-item-section>フロントページ</q-item-section>
+      <q-item-section>トップページ</q-item-section>
     </q-item>
     <q-item clickable :to="{name:'admin'}">
       <q-item-section>管理画面</q-item-section>

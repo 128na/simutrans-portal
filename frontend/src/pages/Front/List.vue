@@ -3,7 +3,7 @@
     <q-list>
       <q-item v-show="title">
         <q-item-section>
-          <q-item-label class="text-h2">{{title}}</q-item-label>
+          <text-title>{{title}}</text-title>
         </q-item-section>
       </q-item>
       <q-separator />
@@ -25,6 +25,7 @@
 <script>
 import { defineComponent, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import TextTitle from 'src/components/Common/TextTitle.vue';
 import { api } from '../../boot/axios';
 import { metaHandler } from '../../composables/metaHandler';
 import FrontArticleList from '../../components/Front/FrontArticleList.vue';
@@ -46,6 +47,7 @@ export default defineComponent({
     FrontArticleList,
     LoadingMessage,
     ApiErrorMessage,
+    TextTitle,
   },
 
   props: {

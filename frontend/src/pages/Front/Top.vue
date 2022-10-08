@@ -4,7 +4,9 @@
       <q-list>
         <q-item :to="c.to">
           <q-item-section>
-            <q-item-label class="text-h2">{{c.label}}</q-item-label>
+            <text-title>
+              {{c.label}}
+            </text-title>
           </q-item-section>
         </q-item>
         <q-separator />
@@ -27,6 +29,7 @@
 
 <script>
 import { defineComponent, reactive } from 'vue';
+import TextTitle from 'src/components/Common/TextTitle.vue';
 import { api } from '../../boot/axios';
 import { metaHandler } from '../../composables/metaHandler';
 import FrontArticleList from '../../components/Front/FrontArticleList.vue';
@@ -37,7 +40,7 @@ const contents = reactive([
   {
     api: '/api/v3/front/category/pak/128-japan?simple',
     to: { name: 'category', params: { type: 'pak', slug: '128-japan' } },
-    label: 'pak128Japanの新着アドオン',
+    label: 'pak128Japanの新着',
     articles: [],
     error: false,
     loading: true,
@@ -45,7 +48,7 @@ const contents = reactive([
   {
     api: '/api/v3/front/category/pak/128?simple',
     to: { name: 'category', params: { type: 'pak', slug: '128' } },
-    label: 'pak128の新着アドオン',
+    label: 'pak128の新着',
     articles: [],
     error: false,
     loading: true,
@@ -53,7 +56,7 @@ const contents = reactive([
   {
     api: '/api/v3/front/category/pak/64?simple',
     to: { name: 'category', params: { type: 'pak', slug: '64' } },
-    label: 'pak64の新着アドオン',
+    label: 'pak64の新着',
     articles: [],
     error: false,
     loading: true,
@@ -106,6 +109,7 @@ export default defineComponent({
     FrontArticleList,
     LoadingMessage,
     ApiErrorMessage,
+    TextTitle,
   },
 
   props: {

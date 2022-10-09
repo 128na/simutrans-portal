@@ -3,8 +3,8 @@
     @click="handle">{{ article.contents.link }}</a>
 </template>
 <script>
+import { useFrontApi } from 'src/composables/api';
 import { defineComponent } from 'vue';
-import { api } from '../../boot/axios';
 import gtm from '../../boot/gtm';
 
 export default defineComponent({
@@ -16,9 +16,10 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const { postConversion } = useFrontApi();
     return {
       handle() {
-        api.post(`/api/v3/conversion/${props.article.slug}`);
+        postConversion(props.article.slug);
         gtm.frontConversionLink();
       },
     };

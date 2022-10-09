@@ -1,6 +1,7 @@
 <template>
   <q-page class="q-pa-md fit row wrap justify-center">
-    <q-form class="col-6 q-gutter-sm">
+    <q-form class="col-6 q-gutter-sm" @submit=handle>
+      <text-title>ログイン</text-title>
       <api-error-message :message="errorMessage" />
       <q-input v-model="authState.email" filled type="email" label="email" autocomplete="email" />
       <input-password v-model="authState.password" filled label="password" autocomplete="current-password" />
@@ -8,7 +9,7 @@
         <q-checkbox v-model="authState.remember" label="ログインしたままにする" />
       </div>
       <div>
-        <q-btn label="ログイン" color="primary" @click=handle />
+        <q-btn label="ログイン" color="primary" type="submit" />
       </div>
       <div>
         <router-link :to="{name:'reset'}">パスワードリセット</router-link>
@@ -23,21 +24,31 @@ import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useRouter } from 'vue-router';
 import InputPassword from 'src/components/Common/InputPassword.vue';
-import { api } from '../../boot/axios';
+import TextTitle from 'src/components/Common/TextTitle.vue';
+import { useMypageApi } from 'src/composables/api';
+import { useAuthStore } from 'src/store/auth';
 
 export default defineComponent({
   name: 'MypageLogin',
   setup() {
+    const router = useRouter();
+    const store = useAuthStore();
+    if (store.isLoggedIn) {
+      router.replace({ name: 'mypage' });
+    }
+
     const authState = reactive({ email: '', password: '', remember: false });
     const loading = ref(false);
 
     const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter());
+    const { postLogin } = useMypageApi();
     const handle = async () => {
       loading.value = true;
       try {
-        const res = await api.post('/api/v2/login', authState);
+        const res = await postLogin(authState);
         if (res.status === 200) {
-          // console.log('ok');
+          store.loggedin(res.data.data);
+          router.push({ name: 'mypage' });
         }
       } catch (err) {
         errorHandlerStrict(err);
@@ -45,8 +56,10 @@ export default defineComponent({
         loading.value = false;
       }
     };
-    return { authState, handle, errorMessage };
+    return {
+      authState, handle, errorMessage, loading,
+    };
   },
-  components: { ApiErrorMessage, InputPassword },
+  components: { ApiErrorMessage, InputPassword, TextTitle },
 });
 </script>

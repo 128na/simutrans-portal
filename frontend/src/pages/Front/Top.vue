@@ -32,8 +32,8 @@ import { defineComponent, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import TextTitle from 'src/components/Common/TextTitle.vue';
 import { useArticleCacheStore } from 'src/store/articles';
-import { api } from '../../boot/axios';
-import { metaHandler } from '../../composables/metaHandler';
+import { useFrontApi } from 'src/composables/api';
+import { useMeta } from '../../composables/meta';
 import { useErrorHandler } from '../../composables/errorHandler';
 import FrontArticleList from '../../components/Front/FrontArticleList.vue';
 import LoadingMessage from '../../components/Common/LoadingMessage.vue';
@@ -102,12 +102,13 @@ export default defineComponent({
   setup() {
     const { errorHandler, errorMessage } = useErrorHandler(useRouter());
     const articleCache = useArticleCacheStore();
+    const { get } = useFrontApi();
     const fetchContent = async (content) => {
       content.loading = true;
       content.error = false;
       content.articles = [];
       try {
-        const res = await api.get(content.api);
+        const res = await get(content.api);
         if (res.status === 200) {
           content.articles = JSON.parse(JSON.stringify(res.data.data)).splice(0, 6);
           articleCache.addCaches(res.data.data);
@@ -120,7 +121,7 @@ export default defineComponent({
       }
     };
     contents.map((c) => fetchContent(c));
-    const { setTitle } = metaHandler();
+    const { setTitle } = useMeta();
     setTitle('top');
 
     return {

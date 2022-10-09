@@ -2,7 +2,7 @@
   <q-page class="q-pa-md">
     <text-title>タグ一覧</text-title>
     <loading-message v-show="loading" />
-    <api-error-message v-show="error" :message="errorMessage" @retry="fetchTags" />
+    <api-error-message v-show="error" :message="errorMessage" @retry="fetch" />
     <div class="q-gutter-md">
       <q-btn v-for="t in tags" :key="t.id" :to="{name:'tag', params:{id:t.id}}" :size="size(t.count)" no-caps>
         {{ t.name }} ({{t.count}})
@@ -19,8 +19,8 @@ import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
 import TextTitle from 'src/components/Common/TextTitle.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useRouter } from 'vue-router';
-import { api } from '../../boot/axios';
-import { metaHandler } from '../../composables/metaHandler';
+import { useFrontApi } from 'src/composables/api';
+import { useMeta } from '../../composables/meta';
 
 export default defineComponent({
   name: 'FrontTags',
@@ -30,7 +30,7 @@ export default defineComponent({
     TextTitle,
   },
   setup() {
-    const { setTitle } = metaHandler();
+    const { setTitle } = useMeta();
     setTitle('タグ一覧');
 
     const loading = ref(true);
@@ -38,12 +38,13 @@ export default defineComponent({
     const tags = ref([]);
 
     const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter());
-    const fetchTags = async () => {
+    const { fetchTags } = useFrontApi();
+    const fetch = async () => {
       loading.value = true;
       error.value = false;
 
       try {
-        const res = await api.get('/api/v3/front/tags');
+        const res = await fetchTags();
         if (res.status === 200) {
           tags.value = res.data.data;
         }
@@ -54,7 +55,7 @@ export default defineComponent({
         loading.value = false;
       }
     };
-    fetchTags();
+    fetch();
 
     const size = (count) => {
       if (count > 20) {
@@ -70,7 +71,7 @@ export default defineComponent({
       loading,
       error,
       tags,
-      fetchTags,
+      fetch,
       size,
       errorMessage,
     };

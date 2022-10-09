@@ -36,20 +36,11 @@ import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import TextTitle from 'src/components/Common/TextTitle.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useArticleCacheStore } from 'src/store/articles';
-import { api } from '../../boot/axios';
-import { metaHandler } from '../../composables/metaHandler';
+import { useFrontApi } from 'src/composables/api';
+import { useMeta } from '../../composables/meta';
 import FrontArticleList from '../../components/Front/FrontArticleList.vue';
 import LoadingMessage from '../../components/Common/LoadingMessage.vue';
 import ApiErrorMessage from '../../components/Common/ApiErrorMessage.vue';
-
-const fetchUser = (route) => api.get(`/api/v3/front/user/${route.params.id}?page=${route.query.page || 1}`);
-const fetchCategoryPak = (route) => api.get(`/api/v3/front/category/pak/${route.params.size}/${route.params.slug}?page=${route.query.page || 1}`);
-const fetchCategory = (route) => api.get(`/api/v3/front/category/${route.params.type}/${route.params.slug}?page=${route.query.page || 1}`);
-const fetchTag = (route) => api.get(`/api/v3/front/tag/${route.params.id}?page=${route.query.page || 1}`);
-const fetchAnnounces = (route) => api.get(`/api/v3/front/announces?page=${route.query.page || 1}`);
-const fetchPages = (route) => api.get(`/api/v3/front/pages?page=${route.query.page || 1}`);
-const fetchRanking = (route) => api.get(`/api/v3/front/ranking?page=${route.query.page || 1}`);
-const fetchSearch = (route) => api.get(`/api/v3/front/search?word=${route.query.word}&page=${route.query.page || 1}`);
 
 export default defineComponent({
   name: 'FrontList',
@@ -68,7 +59,7 @@ export default defineComponent({
     const error = ref(false);
 
     const title = ref(null);
-    const { setTitle } = metaHandler();
+    const { setTitle } = useMeta();
 
     const articleCache = useArticleCacheStore();
     const handleResponse = (res) => {
@@ -83,6 +74,7 @@ export default defineComponent({
     };
 
     const router = useRouter();
+    const api = useFrontApi();
     const { errorMessage, errorHandlerStrict } = useErrorHandler(router);
     const route = useRoute();
     const fetchArticles = async (currentRoute) => {
@@ -94,23 +86,23 @@ export default defineComponent({
         const res = await (async () => {
           switch (currentRoute.name) {
             case 'categoryPak':
-              return fetchCategoryPak(currentRoute);
+              return api.fetchCategoryPak(route.params.size, route.params.slug, route.query.page);
             case 'category':
-              return fetchCategory(currentRoute);
+              return api.fetchCategory(route.params.size, route.params.slug, route.query.page);
             case 'tag':
-              return fetchTag(currentRoute);
+              return api.fetchTag(route.params.id, route.query.page);
             case 'user':
-              return fetchUser(currentRoute);
+              return api.fetchUser(route.params.id, route.query.page);
             case 'announces':
-              return fetchAnnounces(currentRoute);
+              return api.fetchAnnounces(route.query.page);
             case 'pages':
-              return fetchPages(currentRoute);
+              return api.fetchPages(route.query.page);
             case 'ranking':
-              return fetchRanking(currentRoute);
+              return api.fetchRanking(route.query.page);
             case 'search':
-              return fetchSearch(currentRoute);
+              return api.fetchSearch(route.query.word, route.query.page);
             default:
-              throw new Error(`unknown route name "${currentRoute.name}" provided"`);
+              throw new Error(`unknown route name "${route.params.name}" provided"`);
           }
         })();
         handleResponse(res);

@@ -1,4 +1,5 @@
-import { route } from 'quasar/wrappers';
+import { useAuthStore } from 'src/store/auth';
+import { watch } from 'vue';
 import {
   createRouter, createMemoryHistory, createWebHistory, createWebHashHistory,
 } from 'vue-router';
@@ -13,40 +14,38 @@ import routes from './routes';
  * with the Router instance.
  */
 
-export default route((/* { store, ssrContext } */) => {
-  const createHistory = process.env.SERVER
-    ? createMemoryHistory
-    : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory);
+const createHistory = process.env.SERVER
+  ? createMemoryHistory
+  : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory);
 
-  const Router = createRouter({
-    scrollBehavior: () => ({ left: 0, top: 0 }),
-    routes,
+const Router = createRouter({
+  scrollBehavior: () => ({ left: 0, top: 0 }),
+  routes,
 
-    // Leave this as is and make changes in quasar.conf.js instead!
-    // quasar.conf.js -> build -> vueRouterMode
-    // quasar.conf.js -> build -> publicPath
-    history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE),
-  });
-
-  Router.beforeEach((to, from, next) => {
-    if (to.matched.some((record) => record.meta.requiresAuth)) {
-      // このルートはログインされているかどうか認証が必要です。
-      // もしされていないならば、ログインページにリダイレクトします。
-      // eslint-disable-next-line no-constant-condition
-      if (true) {
-        return next({ name: 'login' });
-      }
-    }
-    if (to.matched.some((record) => record.meta.requiresAdmin)) {
-      // このルートはログインされているかどうか認証が必要です。
-      // もしされていないならば、ログインページにリダイレクトします。
-      // eslint-disable-next-line no-constant-condition
-      if (true) {
-        return next({ name: 'error', params: { status: 401 } });
-      }
-    }
-    return next();
-  });
-
-  return Router;
+  // Leave this as is and make changes in quasar.conf.js instead!
+  // quasar.conf.js -> build -> vueRouterMode
+  // quasar.conf.js -> build -> publicPath
+  history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE),
 });
+
+Router.beforeEach((to, from, next) => {
+  const store = useAuthStore();
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!store.isLoggedIn) {
+      return next({ replace: true, name: 'login' });
+    }
+  }
+  if (to.matched.some((record) => record.meta.requiresVerified)) {
+    if (!store.isVerified) {
+      return next({ replace: true, name: 'error', params: { status: 401 } });
+    }
+  }
+  if (to.matched.some((record) => record.meta.requiresAdmin)) {
+    if (!store.isAdmin) {
+      return next({ replace: true, name: 'error', params: { status: 401 } });
+    }
+  }
+  return next();
+});
+
+export default Router;

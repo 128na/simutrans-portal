@@ -7,7 +7,7 @@
     </q-item>
     <q-item v-show="error">
       <q-item-section>
-        <api-error-message :message="errorMessage" @retry="fetchArticle($route)" />
+        <api-error-message :message="errorMessage" @retry="fetch($route)" />
       </q-item-section>
     </q-item>
     <q-item v-if="article">
@@ -24,8 +24,8 @@ import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useArticleCacheStore } from 'src/store/articles';
-import { api } from '../../boot/axios';
-import { metaHandler } from '../../composables/metaHandler';
+import { useFrontApi } from 'src/composables/api';
+import { useMeta } from '../../composables/meta';
 import LoadingMessage from '../../components/Common/LoadingMessage.vue';
 import ApiErrorMessage from '../../components/Common/ApiErrorMessage.vue';
 
@@ -49,15 +49,17 @@ export default defineComponent({
     const error = ref(false);
 
     const route = useRoute();
-    api.post(`/api/v3/shown/${route.params.slug}`);
+    const { postShown } = useFrontApi();
+    postShown(route.params.slug);
 
     const articleCache = useArticleCacheStore();
 
     const article = computed(() => articleCache.getCache(route.params.slug));
 
-    const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter);
-    const fetchArticle = async (currentRoute) => {
-      const { setTitle } = metaHandler();
+    const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter());
+    const { fetchArticle } = useFrontApi();
+    const fetch = async (currentRoute) => {
+      const { setTitle } = useMeta();
       if (articleCache.hasCache(currentRoute.params.slug)) {
         loading.value = false;
         error.value = false;
@@ -68,7 +70,7 @@ export default defineComponent({
       loading.value = true;
       error.value = false;
       try {
-        const res = await api.get(`/api/v3/front/articles/${currentRoute.params.slug}`);
+        const res = await fetchArticle(currentRoute.params.slug);
         if (res.status === 200) {
           articleCache.addCache(res.data.data);
           setTitle(res.data.data.title);
@@ -80,9 +82,9 @@ export default defineComponent({
         loading.value = false;
       }
     };
-    fetchArticle(route);
+    fetch(route);
     onBeforeRouteUpdate((to) => {
-      fetchArticle(to);
+      fetch(to);
     });
 
     return {
@@ -90,7 +92,7 @@ export default defineComponent({
       loading,
       error,
       errorMessage,
-      fetchArticle,
+      fetch,
     };
   },
 });

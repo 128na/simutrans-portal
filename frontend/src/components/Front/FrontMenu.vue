@@ -52,7 +52,7 @@
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useErrorHandler } from 'src/composables/errorHandler';
-import { api } from '../../boot/axios';
+import { useFrontApi } from 'src/composables/api';
 import MetaLinks from '../MetaLinks.vue';
 import MetaInfo from '../MetaInfo.vue';
 import LoadingMessage from '../Common/LoadingMessage.vue';
@@ -69,12 +69,13 @@ export default defineComponent({
 
     const { errorMessage, errorHandler } = useErrorHandler(useRouter());
 
+    const { fetchSidebar } = useFrontApi();
     const fetch = async () => {
       loading.value = true;
       error.value = false;
 
       try {
-        const res = await api.get('/api/v3/front/sidebar');
+        const res = await fetchSidebar();
         if (res.status === 200) {
           pakAddonCounts.value = res.data.pakAddonCounts;
           userAddonCounts.value = res.data.userAddonCounts;

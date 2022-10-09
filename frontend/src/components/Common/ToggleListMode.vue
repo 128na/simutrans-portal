@@ -7,7 +7,7 @@
 <script>
 
 import { defineComponent } from 'vue';
-import { useListModeStore } from 'src/store/front';
+import { useListModeStore } from 'src/store/listMode';
 
 export default defineComponent({
   name: 'ToggleListMode',

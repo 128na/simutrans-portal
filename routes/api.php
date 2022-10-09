@@ -15,7 +15,6 @@ use App\Http\Controllers\Api\v3\InvitationCodeController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Middleware\VerifyCsrfToken;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,11 +34,11 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
     // 認証
     Route::POST('login', [LoginController::class, 'login'])->name('login');
     Route::POST('logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('mypage/user', [UserController::class, 'index'])->name('users.index');
     // PWリセット
     Route::POST('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
     // マイページ機能
     Route::prefix('mypage')->middleware(['auth'])->group(function () {
-        Route::get('user', [UserController::class, 'index'])->name('users.index');
         Route::get('tags', [TagController::class, 'search'])->name('tags.search');
         Route::get('attachments', [AttachmentController::class, 'index'])->name('attachments.index');
         Route::get('articles', [EditorController::class, 'index'])->name('articles.index');
@@ -80,8 +79,8 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
 });
 
 Route::prefix('v3')->name('api.v3.')->group(function () {
-    Route::post('conversion/{article}', [ConversionController::class, 'conversion'])->name('conversion')->withoutMiddleware(VerifyCsrfToken::class);
-    Route::post('shown/{article}', [ConversionController::class, 'shown'])->name('shown')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('conversion/{article}', [ConversionController::class, 'conversion'])->name('conversion');
+    Route::post('shown/{article}', [ConversionController::class, 'shown'])->name('shown');
 
     Route::prefix('mypage')->middleware(['auth', 'verified'])->group(function () {
         // 一括DL機能

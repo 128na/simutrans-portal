@@ -4,8 +4,7 @@ export const useErrorHandler = (router) => {
   const errorMessage = ref('');
 
   const setValidationErrorMessage = (errors) => {
-    // eslint-disable-next-line no-console
-    console.log({ errors });
+    errorMessage.value = Object.values(errors).map((messages) => messages.join('、')).join('\n');
   };
   const setErrorMessage = (error) => {
     errorMessage.value = error;

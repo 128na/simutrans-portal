@@ -1,12 +1,13 @@
 <template>
   <div>
+    <text-pre class="text-negative">{{message}}</text-pre>
     <q-btn v-show="canRetry" flat round size="sm" icon="replay" @click="$emit('retry')" />
-    {{message}}
   </div>
 </template>
 <script>
 
 import { defineComponent, computed } from 'vue';
+import TextPre from './TextPre.vue';
 
 export default defineComponent({
   name: 'ApiErrorMessage',
@@ -28,5 +29,6 @@ export default defineComponent({
     const canRetry = computed(() => context.attrs.onRetry);
     return { renderMessage, canRetry };
   },
+  components: { TextPre },
 });
 </script>

@@ -7,7 +7,7 @@
     </q-item>
     <q-item v-show="error">
       <q-item-section>
-        <api-error-message :message="errorMessage" @retry="fetchArticle" />
+        <api-error-message :message="errorMessage" @retry="fetchArticle($route)" />
       </q-item-section>
     </q-item>
     <q-item v-if="article">
@@ -18,9 +18,9 @@
 
 <script>
 import {
-  defineComponent, ref, computed, watch,
+  defineComponent, ref, computed,
 } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { api } from '../../boot/axios';
@@ -53,9 +53,9 @@ export default defineComponent({
     const article = computed(() => props.cachedArticles.find((a) => a.slug === route.params.slug));
 
     const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter);
-    const fetchArticle = async () => {
+    const fetchArticle = async (currentRoute) => {
       const { setTitle } = metaHandler();
-      if (props.cachedArticles.find((a) => a.slug === route.params.slug)) {
+      if (props.cachedArticles.find((a) => a.slug === currentRoute.params.slug)) {
         loading.value = false;
         error.value = false;
         setTitle(article.value.title);
@@ -65,7 +65,7 @@ export default defineComponent({
       loading.value = true;
       error.value = false;
       try {
-        const res = await api.get(`/api/v3/front/articles/${route.params.slug}`);
+        const res = await api.get(`/api/v3/front/articles/${currentRoute.params.slug}`);
         if (res.status === 200) {
           emit('addCache', res.data.data);
           setTitle(res.data.data.title);
@@ -77,8 +77,10 @@ export default defineComponent({
         loading.value = false;
       }
     };
-    fetchArticle();
-    watch(() => route.params, () => fetchArticle());
+    fetchArticle(route);
+    onBeforeRouteUpdate((to) => {
+      fetchArticle(to);
+    });
 
     return {
       article,

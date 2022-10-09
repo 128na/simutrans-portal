@@ -14,7 +14,7 @@
       </q-item>
       <q-item v-show="error">
         <q-item-section>
-          <api-error-message :message="errorMessage" @retry="fetchArticles" />
+          <api-error-message :message="errorMessage" @retry="fetchArticles($route)" />
         </q-item-section>
       </q-item>
       <front-article-list :articles="articles" :listMode="listMode" />
@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import { defineComponent, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { defineComponent, ref } from 'vue';
+import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import TextTitle from 'src/components/Common/TextTitle.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { api } from '../../boot/axios';
@@ -81,32 +81,32 @@ export default defineComponent({
 
     const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter());
     const route = useRoute();
-    const fetchArticles = async () => {
+    const fetchArticles = async (currentRoute) => {
       loading.value = true;
       error.value = false;
       articles.value = [];
 
       try {
         const res = await (async () => {
-          switch (route.name) {
+          switch (currentRoute.name) {
             case 'categoryPak':
-              return fetchCategoryPak(route);
+              return fetchCategoryPak(currentRoute);
             case 'category':
-              return fetchCategory(route);
+              return fetchCategory(currentRoute);
             case 'tag':
-              return fetchTag(route);
+              return fetchTag(currentRoute);
             case 'user':
-              return fetchUser(route);
+              return fetchUser(currentRoute);
             case 'announces':
-              return fetchAnnounces(route);
+              return fetchAnnounces(currentRoute);
             case 'pages':
-              return fetchPages(route);
+              return fetchPages(currentRoute);
             case 'ranking':
-              return fetchRanking(route);
+              return fetchRanking(currentRoute);
             case 'search':
-              return fetchSearch(route);
+              return fetchSearch(currentRoute);
             default:
-              throw new Error(`unknown route name "${route.name}" provided"`);
+              throw new Error(`unknown route name "${currentRoute.name}" provided"`);
           }
         })();
         handleResponse(res);
@@ -117,9 +117,10 @@ export default defineComponent({
         loading.value = false;
       }
     };
-    fetchArticles();
-
-    watch(() => route.params, () => fetchArticles());
+    fetchArticles(route);
+    onBeforeRouteUpdate((to) => {
+      fetchArticles(to);
+    });
 
     return {
       articles,

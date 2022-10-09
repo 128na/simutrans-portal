@@ -26,11 +26,11 @@
 import { defineComponent } from 'vue';
 import ToggleDarkMode from 'src/components/Common/ToggleDarkMode.vue';
 import { useAuthStore } from 'src/store/auth';
-import { useColor } from 'src/store/color';
-import { useMenu } from 'src/store/menu';
-import { appInfo } from '../composables/appInfo';
-import MypageMenu from '../components/Mypage/MypageMenu.vue';
-import LoadingPage from '../components/Common/LoadingPage.vue';
+import { useColorStore } from 'src/store/color';
+import { useMenuStore } from 'src/store/menu';
+import { appInfo } from 'src/composables/appInfo';
+import MypageMenu from 'src/components/Mypage/MypageMenu.vue';
+import LoadingPage from 'src/components/Common/LoadingPage.vue';
 
 export default defineComponent({
   name: 'MypageLayout',
@@ -43,8 +43,8 @@ export default defineComponent({
 
   setup() {
     const { appName } = appInfo();
-    useColor().setMypage();
-    const menu = useMenu();
+    useColorStore().setMypage();
+    const menu = useMenuStore();
 
     const authStore = useAuthStore();
 

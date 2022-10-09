@@ -17,7 +17,7 @@
 
 <script>
 import { defineComponent } from 'vue';
-import MetaInfo from '../MetaInfo.vue';
+import MetaInfo from '../Common/MetaInfo.vue';
 
 export default defineComponent({
   name: 'AdminMenu',

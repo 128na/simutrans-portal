@@ -27,11 +27,11 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
-import CategoryList from './CategoryList';
-import ContentMeta from './ContentMeta.vue';
-import ContentThumbnail from './ContentThumbnail.vue';
-import ContentMarkdown from './ContentMarkdown.vue';
-import TextTitle from './TextTitle.vue';
+import CategoryList from 'src/components/Common/CategoryList';
+import ContentMeta from 'src/components/Common/ContentMeta.vue';
+import ContentThumbnail from 'src/components/Common/ContentThumbnail.vue';
+import ContentMarkdown from 'src/components/Common/ContentMarkdown.vue';
+import TextTitle from 'src/components/Common/TextTitle.vue';
 
 export default defineComponent({
   name: 'ArticleShowMarkdown',

@@ -28,7 +28,7 @@ import { useMypageApi } from 'src/composables/api';
 import { useAuthStore } from 'src/store/auth';
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
-import MetaInfo from '../MetaInfo.vue';
+import MetaInfo from 'src/components/Common/MetaInfo.vue';
 
 export default defineComponent({
   name: 'MypageMenu',

@@ -9,7 +9,7 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
-import { appInfo } from '../composables/appInfo';
+import { appInfo } from 'src/composables/appInfo';
 
 export default defineComponent({
   name: 'MetaLinks',

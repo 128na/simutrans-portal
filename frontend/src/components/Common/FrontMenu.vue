@@ -53,11 +53,11 @@ import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useFrontApi } from 'src/composables/api';
-import MetaLinks from '../MetaLinks.vue';
-import MetaInfo from '../MetaInfo.vue';
-import LoadingMessage from '../Common/LoadingMessage.vue';
-import ApiErrorMessage from '../Common/ApiErrorMessage.vue';
-import SearchForm from './SearchForm.vue';
+import MetaLinks from 'src/components/Common/MetaLinks.vue';
+import MetaInfo from 'src/components/Common/MetaInfo.vue';
+import LoadingMessage from 'src/components/Common/LoadingMessage.vue';
+import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
+import SearchForm from 'src/components/Front/SearchForm.vue';
 
 export default defineComponent({
   name: 'FrontMenu',

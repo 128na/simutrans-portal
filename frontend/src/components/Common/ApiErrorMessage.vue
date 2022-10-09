@@ -7,7 +7,7 @@
 <script>
 
 import { defineComponent, computed } from 'vue';
-import TextPre from './TextPre.vue';
+import TextPre from 'src/components/Common/TextPre.vue';
 
 export default defineComponent({
   name: 'ApiErrorMessage',

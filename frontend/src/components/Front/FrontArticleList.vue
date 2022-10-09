@@ -55,11 +55,11 @@
 <script>
 import { defineComponent } from 'vue';
 import { useListModeStore } from 'src/store/listMode';
-import { render, sanitizeAll } from '../../composables/markdownParser';
-import CategoryList from '../Common/CategoryList.vue';
-import TagList from '../Common/TagList.vue';
-import ContentMeta from '../Common/ContentMeta.vue';
-import FrontArticleShow from './FrontArticleShow.vue';
+import { render, sanitizeAll } from 'src/composables/markdownParser';
+import CategoryList from 'src/components/Common/CategoryList.vue';
+import TagList from 'src/components/Common/TagList.vue';
+import ContentMeta from 'src/components/Common/ContentMeta.vue';
+import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 
 const sectionTextableTypes = ['caption', 'text', 'url'];
 

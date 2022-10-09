@@ -3,10 +3,10 @@
 </template>
 <script>
 import { defineComponent, computed } from 'vue';
-import ArticleShowAddonIntroduction from '../Common/ArticleShowAddonIntroduction';
-import ArticleShowAddonPost from '../Common/ArticleShowAddonPost';
-import ArticleShowPage from '../Common/ArticleShowPage';
-import ArticleShowMarkdown from '../Common/ArticleShowMarkdown';
+import ArticleShowAddonIntroduction from 'src/components/Common/ArticleShowAddonIntroduction';
+import ArticleShowAddonPost from 'src/components/Common/ArticleShowAddonPost';
+import ArticleShowPage from 'src/components/Common/ArticleShowPage';
+import ArticleShowMarkdown from 'src/components/Common/ArticleShowMarkdown';
 
 export default defineComponent({
   name: 'FrontArticleList',

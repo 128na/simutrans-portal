@@ -24,10 +24,10 @@
 
 import { defineComponent } from 'vue';
 import ToggleDarkMode from 'src/components/Common/ToggleDarkMode.vue';
-import { useColor } from 'src/store/color';
-import { useMenu } from 'src/store/menu';
-import { appInfo } from '../composables/appInfo';
-import AdminMenu from '../components/Admin/AdminMenu.vue';
+import { useColorStore } from 'src/store/color';
+import { useMenuStore } from 'src/store/menu';
+import { appInfo } from 'src/composables/appInfo';
+import AdminMenu from 'src/components/Admin/AdminMenu.vue';
 
 export default defineComponent({
   name: 'AdminLayout',
@@ -46,8 +46,8 @@ export default defineComponent({
   setup() {
     const { appName } = appInfo();
 
-    useColor().setAdmin();
-    const menu = useMenu();
+    useColorStore().setAdmin();
+    const menu = useMenuStore();
 
     return {
       appName,

@@ -5,7 +5,7 @@
 </template>
 <script>
 import { defineComponent, computed } from 'vue';
-import { render, sanitize } from '../../composables/markdownParser';
+import { render, sanitize } from 'src/composables/markdownParser';
 
 export default defineComponent({
   name: 'ContentMarkdown',

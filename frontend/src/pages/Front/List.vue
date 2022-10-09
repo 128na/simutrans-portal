@@ -37,10 +37,10 @@ import TextTitle from 'src/components/Common/TextTitle.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useArticleCacheStore } from 'src/store/articles';
 import { useFrontApi } from 'src/composables/api';
-import { useMeta } from '../../composables/meta';
-import FrontArticleList from '../../components/Front/FrontArticleList.vue';
-import LoadingMessage from '../../components/Common/LoadingMessage.vue';
-import ApiErrorMessage from '../../components/Common/ApiErrorMessage.vue';
+import { useMeta } from 'src/composables/meta';
+import FrontArticleList from 'src/components/Front/FrontArticleList.vue';
+import LoadingMessage from 'src/components/Common/LoadingMessage.vue';
+import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
 
 export default defineComponent({
   name: 'FrontList',

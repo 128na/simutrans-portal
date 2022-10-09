@@ -20,7 +20,7 @@ import TextTitle from 'src/components/Common/TextTitle.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useRouter } from 'vue-router';
 import { useFrontApi } from 'src/composables/api';
-import { useMeta } from '../../composables/meta';
+import { useMeta } from 'src/composables/meta';
 
 export default defineComponent({
   name: 'FrontTags',

@@ -60,14 +60,14 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
-import CategoryList from './CategoryList';
-import TagList from './TagList';
-import ContentAgreement from './ContentAgreement';
-import TextPre from './TextPre.vue';
-import ContentMeta from './ContentMeta.vue';
-import ContentThumbnail from './ContentThumbnail.vue';
-import ContentDownload from './ContentDownload.vue';
-import TextTitle from './TextTitle.vue';
+import CategoryList from 'src/components/Common/CategoryList';
+import TagList from 'src/components/Common/TagList';
+import ContentAgreement from 'src/components/Common/ContentAgreement';
+import TextPre from 'src/components/Common/TextPre.vue';
+import ContentMeta from 'src/components/Common/ContentMeta.vue';
+import ContentThumbnail from 'src/components/Common/ContentThumbnail.vue';
+import ContentDownload from 'src/components/Common/ContentDownload.vue';
+import TextTitle from 'src/components/Common/TextTitle.vue';
 
 export default defineComponent({
   name: 'ArticleShowAddonPost',

@@ -19,7 +19,7 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
-import { staticUrls } from '../composables/staticUrls';
+import { staticUrls } from 'src/composables/staticUrls';
 
 export default defineComponent({
   name: 'MetaLinks',

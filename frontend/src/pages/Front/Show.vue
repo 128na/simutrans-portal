@@ -23,6 +23,7 @@ import {
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
+import { useArticleCacheStore } from 'src/store/articles';
 import { api } from '../../boot/axios';
 import { metaHandler } from '../../composables/metaHandler';
 import LoadingMessage from '../../components/Common/LoadingMessage.vue';
@@ -43,19 +44,21 @@ export default defineComponent({
     },
   },
 
-  setup(props, { emit }) {
+  setup() {
     const loading = ref(true);
     const error = ref(false);
 
     const route = useRoute();
     api.post(`/api/v3/shown/${route.params.slug}`);
 
-    const article = computed(() => props.cachedArticles.find((a) => a.slug === route.params.slug));
+    const articleCache = useArticleCacheStore();
+
+    const article = computed(() => articleCache.getCache(route.params.slug));
 
     const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter);
     const fetchArticle = async (currentRoute) => {
       const { setTitle } = metaHandler();
-      if (props.cachedArticles.find((a) => a.slug === currentRoute.params.slug)) {
+      if (articleCache.hasCache(currentRoute.params.slug)) {
         loading.value = false;
         error.value = false;
         setTitle(article.value.title);
@@ -67,7 +70,7 @@ export default defineComponent({
       try {
         const res = await api.get(`/api/v3/front/articles/${currentRoute.params.slug}`);
         if (res.status === 200) {
-          emit('addCache', res.data.data);
+          articleCache.addCache(res.data.data);
           setTitle(res.data.data.title);
         }
       } catch (err) {

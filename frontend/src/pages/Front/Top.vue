@@ -31,6 +31,7 @@
 import { defineComponent, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import TextTitle from 'src/components/Common/TextTitle.vue';
+import { useArticleCacheStore } from 'src/store/articles';
 import { api } from '../../boot/axios';
 import { metaHandler } from '../../composables/metaHandler';
 import { useErrorHandler } from '../../composables/errorHandler';
@@ -105,8 +106,9 @@ export default defineComponent({
     },
   },
 
-  setup(props, { emit }) {
+  setup() {
     const { errorHandler, errorMessage } = useErrorHandler(useRouter());
+    const articleCache = useArticleCacheStore();
     const fetchContent = async (content) => {
       content.loading = true;
       content.error = false;
@@ -115,7 +117,7 @@ export default defineComponent({
         const res = await api.get(content.api);
         if (res.status === 200) {
           content.articles = JSON.parse(JSON.stringify(res.data.data)).splice(0, 6);
-          emit('addCaches', res.data.data);
+          articleCache.addCaches(res.data.data);
         }
       } catch (err) {
         content.error = true;

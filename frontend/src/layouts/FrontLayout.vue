@@ -17,8 +17,7 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view :cachedArticles="state.cachedArticles" :listMode="listMode" @addCache="handleAddCache"
-        @addCaches="handleAddCaches" />
+      <router-view :listMode="listMode" />
     </q-page-container>
   </q-layout>
 </template>
@@ -27,7 +26,6 @@
 import { defineComponent, ref } from 'vue';
 import { setCssVar } from 'quasar';
 import ToggleDarkMode from 'src/components/Common/ToggleDarkMode.vue';
-import { cachedArticles } from 'src/composables/cachedArticles';
 import ToggleListMode from 'src/components/Common/ToggleListMode.vue';
 import { appInfo } from '../composables/appInfo';
 import FrontMenu from '../components/Front/FrontMenu.vue';
@@ -50,14 +48,10 @@ export default defineComponent({
     const { appName } = appInfo();
     setCssVar('primary', 'hsl(211, 82%, 54%)');
 
-    const { state, handleAddCache, handleAddCaches } = cachedArticles();
     const listMode = ref('list');
 
     return {
       appName,
-      state,
-      handleAddCache,
-      handleAddCaches,
       listMode,
     };
   },

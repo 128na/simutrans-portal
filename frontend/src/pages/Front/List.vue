@@ -6,18 +6,26 @@
           <text-title>{{title}}</text-title>
         </q-item-section>
       </q-item>
-      <q-separator />
       <q-item v-show="loading">
         <q-item-section>
           <loading-message />
         </q-item-section>
       </q-item>
+      <q-item v-if=" pagination" class="flex flex-center">
+        <q-pagination :model-value="pagination.current_page" :min="1" :max="pagination.last_page" :max-pages="3"
+          :to-fn="page => ({ query: { page } })" direction-links boundary-links />
+      </q-item>
+      <q-separator />
       <q-item v-show="error">
         <q-item-section>
           <api-error-message :message="errorMessage" @retry="fetchArticles($route)" />
         </q-item-section>
       </q-item>
       <front-article-list :articles="articles" :listMode="listMode" />
+      <q-item v-if=" pagination" class="flex flex-center">
+        <q-pagination :model-value="pagination.current_page" :min="1" :max="pagination.last_page" :max-pages="3"
+          :to-fn="page => ({ query: { page } })" direction-links boundary-links />
+      </q-item>
     </q-list>
   </q-page>
 </template>
@@ -27,6 +35,7 @@ import { defineComponent, ref } from 'vue';
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import TextTitle from 'src/components/Common/TextTitle.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
+import { useArticleCacheStore } from 'src/store/articles';
 import { api } from '../../boot/axios';
 import { metaHandler } from '../../composables/metaHandler';
 import FrontArticleList from '../../components/Front/FrontArticleList.vue';
@@ -58,7 +67,7 @@ export default defineComponent({
     },
   },
 
-  setup(props, { emit }) {
+  setup() {
     const articles = ref([]);
     const profile = ref(null);
     const pagination = ref(null);
@@ -68,6 +77,7 @@ export default defineComponent({
     const title = ref(null);
     const { setTitle } = metaHandler();
 
+    const articleCache = useArticleCacheStore();
     const handleResponse = (res) => {
       if (res.status === 200) {
         articles.value = res.data.data;
@@ -75,11 +85,12 @@ export default defineComponent({
         title.value = res.data.title;
         setTitle(res.data.title);
         profile.value = res.data?.profile || null;
-        emit('addCaches', res.data.data);
+        articleCache.addCaches(res.data.data);
       }
     };
 
-    const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter());
+    const router = useRouter();
+    const { errorMessage, errorHandlerStrict } = useErrorHandler(router);
     const route = useRoute();
     const fetchArticles = async (currentRoute) => {
       loading.value = true;

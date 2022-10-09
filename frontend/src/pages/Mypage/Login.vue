@@ -37,7 +37,7 @@ export default defineComponent({
       try {
         const res = await api.post('/api/v2/login', authState);
         if (res.status === 200) {
-          console.log('ok');
+          // console.log('ok');
         }
       } catch (err) {
         errorHandlerStrict(err);

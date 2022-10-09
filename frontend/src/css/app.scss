@@ -1,4 +1,7 @@
 // app global css in SCSS form
+
+
+// 標準リンク用。ダークモードだと白文字にする
 .default-link {
   color: $dark;
   text-decoration: none;
@@ -8,10 +11,18 @@
   }
 }
 
+.body--dark {
+  .default-link {
+    color: #fff;
+  }
+}
+
+// リスト間隔調整
 dd {
   margin-bottom: .5rem;
 }
 
+// 全幅表示
 .w-100 {
   width: 100%;
 }

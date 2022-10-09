@@ -1,15 +1,14 @@
 <template>
-  <router-view :menuOpen=menuOpen @toggleMenu="toggleMenu" />
+  <router-view />
 </template>
 <script>
-import { defineComponent, ref } from 'vue';
-import { useMypageApi } from './composables/api';
-import { useAuthStore } from './store/auth';
+import { defineComponent } from 'vue';
+import { useMypageApi } from 'src/composables/api';
+import { useAuthStore } from 'src/store/auth';
 
 export default defineComponent({
   name: 'App',
   setup() {
-    const menuOpen = ref(false);
     const { fetchUser } = useMypageApi();
     const store = useAuthStore();
     const checkLogin = async () => {
@@ -27,10 +26,6 @@ export default defineComponent({
 
     return {
       store,
-      menuOpen,
-      toggleMenu() {
-        menuOpen.value = !menuOpen.value;
-      },
     };
   },
 });

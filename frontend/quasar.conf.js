@@ -81,10 +81,8 @@ module.exports = configure((ctx) => ({
     port: 8080,
     open: true, // opens browser window automatically
     proxy: {
-      // proxy all requests starting with /api to jsonplaceholder
-      '/api': {
-        target: 'http://localhost:1080',
-      },
+      '/api': { target: 'http://localhost:1080' },
+      '/storage': { target: 'http://localhost:1080' },
     },
   },
 

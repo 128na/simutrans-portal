@@ -1,5 +1,4 @@
 import { useAuthStore } from 'src/store/auth';
-import { watch } from 'vue';
 import {
   createRouter, createMemoryHistory, createWebHistory, createWebHashHistory,
 } from 'vue-router';
@@ -36,11 +35,17 @@ Router.beforeEach((to, from, next) => {
     }
   }
   if (to.matched.some((record) => record.meta.requiresVerified)) {
+    if (!store.isLoggedIn) {
+      return next({ replace: true, name: 'login' });
+    }
     if (!store.isVerified) {
       return next({ replace: true, name: 'error', params: { status: 401 } });
     }
   }
   if (to.matched.some((record) => record.meta.requiresAdmin)) {
+    if (!store.isLoggedIn) {
+      return next({ replace: true, name: 'login' });
+    }
     if (!store.isAdmin) {
       return next({ replace: true, name: 'error', params: { status: 401 } });
     }

@@ -3,8 +3,8 @@
     <q-form class="col-6 q-gutter-sm" @submit=handle>
       <text-title>ログイン</text-title>
       <api-error-message :message="errorMessage" />
-      <q-input v-model="authState.email" filled type="email" label="email" autocomplete="email" />
-      <input-password v-model="authState.password" filled label="password" autocomplete="current-password" />
+      <q-input v-model="authState.email" type="email" label="email" autocomplete="email" />
+      <input-password v-model="authState.password" label="password" autocomplete="current-password" />
       <div>
         <q-checkbox v-model="authState.remember" label="ログインしたままにする" />
       </div>
@@ -12,7 +12,7 @@
         <q-btn label="ログイン" color="primary" type="submit" />
       </div>
       <div>
-        <router-link :to="{name:'reset'}">パスワードリセット</router-link>
+        <router-link :to="{name:'reset'}" class="default-link">パスワードリセット</router-link>
       </div>
     </q-form>
   </q-page>

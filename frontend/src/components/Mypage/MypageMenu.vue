@@ -3,14 +3,19 @@
     <q-item :to="{name:'top'}">
       <q-item-section>トップページ</q-item-section>
     </q-item>
-    <q-item :to="{name:'admin'}">
-      <q-item-section>管理画面</q-item-section>
-    </q-item>
-    <q-item v-if="store.isLoggedIn" clickable @click="logout">
-      <q-item-section>ログアウト</q-item-section>
-    </q-item>
+    <template v-if="store.isLoggedIn">
+      <q-item :to="{name:'mypage'}">
+        <q-item-section>マイページ</q-item-section>
+      </q-item>
+      <q-item clickable @click="logout">
+        <q-item-section>ログアウト</q-item-section>
+      </q-item>
+    </template>
     <q-item v-else :to="{name:'login'}">
       <q-item-section>ログイン</q-item-section>
+    </q-item>
+    <q-item v-if="store.isAdmin" :to="{name:'admin'}">
+      <q-item-section>管理トップ</q-item-section>
     </q-item>
     <q-separator />
     <MetaInfo />
@@ -39,7 +44,7 @@ export default defineComponent({
     const logout = () => {
       postLogout();
       store.logout();
-      router.push({ name: 'top' });
+      router.push({ name: 'login' });
     };
     return {
       store,

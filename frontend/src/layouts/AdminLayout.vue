@@ -2,7 +2,7 @@
   <q-layout view="hHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn flat dense round icon="menu" @click="$emit('toggleMenu')" />
+        <q-btn flat dense round icon="menu" @click="menu.toggle" />
         <q-btn flat dense no-caps size="lg" :to="{ name: 'top' }">
           {{ appName}}
         </q-btn>
@@ -11,7 +11,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer :model-value="menuOpen" show-if-above bordered @update:model-value="$emit('toggleMenu')">
+    <q-drawer v-model="menu.open" show-if-above bordered>
       <AdminMenu />
     </q-drawer>
 
@@ -22,9 +22,10 @@
 </template>
 <script>
 
-import { defineComponent, ref } from 'vue';
-import { setCssVar } from 'quasar';
+import { defineComponent } from 'vue';
 import ToggleDarkMode from 'src/components/Common/ToggleDarkMode.vue';
+import { useColor } from 'src/store/color';
+import { useMenu } from 'src/store/menu';
 import { appInfo } from '../composables/appInfo';
 import AdminMenu from '../components/Admin/AdminMenu.vue';
 
@@ -44,16 +45,13 @@ export default defineComponent({
 
   setup() {
     const { appName } = appInfo();
-    const leftDrawerOpen = ref(false);
 
-    setCssVar('primary', 'hsl(345, 82%, 35%)');
+    useColor().setAdmin();
+    const menu = useMenu();
 
     return {
       appName,
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
+      menu,
     };
   },
 });

@@ -2,66 +2,56 @@
   <q-layout view="hHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn flat dense round icon="menu" @click="$emit('toggleMenu')" />
+        <q-btn flat dense round icon="menu" @click="menu.toggle" />
         <q-btn flat dense no-caps size="lg" :to="{ name: 'top' }">
           {{ appName}}
         </q-btn>
         <q-space />
-        <ToggleDarkMode />
+        <toggle-dark-mode />
       </q-toolbar>
     </q-header>
 
-    <q-drawer :model-value="menuOpen" show-if-above bordered @update:model-value="$emit('toggleMenu')">
+    <q-drawer v-model="menu.open" show-if-above bordered>
       <MypageMenu />
     </q-drawer>
 
     <q-page-container>
       <router-view v-if="authStore.isInitialized" />
-      <q-page v-else class="flex flex-center">
-        <loading-message />
-      </q-page>
+      <loading-page v-else />
     </q-page-container>
   </q-layout>
 </template>
 <script>
 
-import { defineComponent, ref } from 'vue';
-import { setCssVar } from 'quasar';
+import { defineComponent } from 'vue';
 import ToggleDarkMode from 'src/components/Common/ToggleDarkMode.vue';
 import { useAuthStore } from 'src/store/auth';
-import LoadingMessage from 'src/components/Common/LoadingMessage.vue';
+import { useColor } from 'src/store/color';
+import { useMenu } from 'src/store/menu';
 import { appInfo } from '../composables/appInfo';
 import MypageMenu from '../components/Mypage/MypageMenu.vue';
+import LoadingPage from '../components/Common/LoadingPage.vue';
 
 export default defineComponent({
   name: 'MypageLayout',
 
-  props: {
-    menuOpen: {
-      type: Boolean,
-      required: true,
-    },
-  },
   components: {
     MypageMenu,
     ToggleDarkMode,
-    LoadingMessage,
+    LoadingPage,
   },
 
   setup() {
     const { appName } = appInfo();
-    const leftDrawerOpen = ref(false);
+    useColor().setMypage();
+    const menu = useMenu();
 
     const authStore = useAuthStore();
-    setCssVar('primary', 'hsl(132, 82%, 31%)');
 
     return {
       authStore,
       appName,
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
+      menu,
     };
   },
 });

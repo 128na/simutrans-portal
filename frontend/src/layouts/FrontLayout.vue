@@ -28,7 +28,7 @@ import ToggleDarkMode from 'src/components/Common/ToggleDarkMode.vue';
 import ToggleListMode from 'src/components/Common/ToggleListMode.vue';
 import { useMenuStore } from 'src/store/menu';
 import { useColorStore } from 'src/store/color';
-import { appInfo } from 'src/composables/appInfo';
+import { useAppInfo } from 'src/composables/appInfo';
 import FrontMenu from 'src/components/Common/FrontMenu.vue';
 
 export default defineComponent({
@@ -40,7 +40,7 @@ export default defineComponent({
   },
 
   setup() {
-    const { appName } = appInfo();
+    const { appName } = useAppInfo();
     useColorStore().setFront();
 
     const menu = useMenuStore();

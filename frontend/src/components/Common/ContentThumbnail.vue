@@ -3,13 +3,8 @@
 </template>
 
 <script>
+import { useAppInfo } from 'src/composables/appInfo';
 import { defineComponent, computed } from 'vue';
-
-const thumbnailUrl = (article) => {
-  const attachmentId = parseInt(article.contents.thumbnail, 10);
-  return article.attachments.find((a) => a.id === attachmentId)?.url
-    || `${process.env.BACKEND_URL}/storage/default/image.png`;
-};
 
 export default defineComponent({
   name: 'ContentThumbnail',
@@ -22,6 +17,13 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const { backendUrl } = useAppInfo();
+    const thumbnailUrl = (article) => {
+      const attachmentId = parseInt(article.contents.thumbnail, 10);
+      return article.attachments.find((a) => a.id === attachmentId)?.url
+        || `${backendUrl}/storage/default/image.png`;
+    };
+
     return {
       thumbnailUrl: computed(() => thumbnailUrl(props.article)),
     };

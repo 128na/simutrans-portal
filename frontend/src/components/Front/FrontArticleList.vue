@@ -55,35 +55,15 @@
 <script>
 import { defineComponent } from 'vue';
 import { useListModeStore } from 'src/store/listMode';
-import { render, sanitizeAll } from 'src/composables/markdownParser';
+import { useMarkdown } from 'src/composables/markdown';
 import CategoryList from 'src/components/Common/CategoryList.vue';
 import TagList from 'src/components/Common/TagList.vue';
 import ContentMeta from 'src/components/Common/ContentMeta.vue';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
+import { useAppInfo } from 'src/composables/appInfo';
 
 const sectionTextableTypes = ['caption', 'text', 'url'];
 
-const handlePage = (sections) => sections
-  .filter((s) => sectionTextableTypes.includes(s.type))
-  .map((s) => s[s.type])
-  .join('');
-
-const description = (article) => {
-  switch (article.post_type) {
-    case 'page':
-      return handlePage(article.contents.sections);
-    case 'markdown':
-      return sanitizeAll(render(article.contents.markdown));
-    default:
-      return article.contents.description;
-  }
-};
-
-const thumbnailUrl = (article) => {
-  const attachmentId = parseInt(article.contents.thumbnail, 10);
-  return article.attachments.find((a) => a.id === attachmentId)?.url
-    || `${process.env.BACKEND_URL}/storage/default/image.png`;
-};
 export default defineComponent({
   name: 'FrontArticleList',
   props: {
@@ -93,6 +73,30 @@ export default defineComponent({
     },
   },
   setup() {
+    const { render, sanitizeAll } = useMarkdown();
+    const handlePage = (sections) => sections
+      .filter((s) => sectionTextableTypes.includes(s.type))
+      .map((s) => s[s.type])
+      .join('');
+
+    const description = (article) => {
+      switch (article.post_type) {
+        case 'page':
+          return handlePage(article.contents.sections);
+        case 'markdown':
+          return sanitizeAll(render(article.contents.markdown));
+        default:
+          return article.contents.description;
+      }
+    };
+
+    const { backendUrl } = useAppInfo();
+    const thumbnailUrl = (article) => {
+      const attachmentId = parseInt(article.contents.thumbnail, 10);
+      return article.attachments.find((a) => a.id === attachmentId)?.url
+        || `${backendUrl}/storage/default/image.png`;
+    };
+
     const listMode = useListModeStore();
     return {
       thumbnailUrl,

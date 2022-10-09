@@ -9,12 +9,12 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
-import { appInfo } from 'src/composables/appInfo';
+import { useAppInfo } from 'src/composables/appInfo';
 
 export default defineComponent({
   name: 'MetaLinks',
   setup() {
-    const { appName, appVersion } = appInfo();
+    const { appName, appVersion } = useAppInfo();
     return {
       appName,
       appVersion,

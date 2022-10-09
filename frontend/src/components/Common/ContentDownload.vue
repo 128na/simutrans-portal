@@ -2,6 +2,7 @@
   <q-btn color="primary" dusk="conversion-download" @click="handleClick">ダウンロードする</q-btn>
 </template>
 <script>
+import { useAppInfo } from 'src/composables/appInfo';
 import { defineComponent } from 'vue';
 import gtm from '../../boot/gtm';
 
@@ -14,9 +15,10 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const { backendUrl } = useAppInfo();
     return {
       handleClick() {
-        window.open(`${process.env.BACKEND_URL}/articles/${props.article.slug}/download`);
+        window.open(`${backendUrl}/articles/${props.article.slug}/download`);
         gtm.frontConversionDownload();
       },
     };

@@ -28,7 +28,7 @@ import ToggleDarkMode from 'src/components/Common/ToggleDarkMode.vue';
 import { useAuthStore } from 'src/store/auth';
 import { useColorStore } from 'src/store/color';
 import { useMenuStore } from 'src/store/menu';
-import { appInfo } from 'src/composables/appInfo';
+import { useAppInfo } from 'src/composables/appInfo';
 import MypageMenu from 'src/components/Mypage/MypageMenu.vue';
 import LoadingPage from 'src/components/Common/LoadingPage.vue';
 
@@ -42,7 +42,7 @@ export default defineComponent({
   },
 
   setup() {
-    const { appName } = appInfo();
+    const { appName } = useAppInfo();
     useColorStore().setMypage();
     const menu = useMenuStore();
 

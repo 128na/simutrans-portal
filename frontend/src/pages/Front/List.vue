@@ -21,7 +21,7 @@
           <api-error-message :message="errorMessage" @retry="fetchArticles($route)" />
         </q-item-section>
       </q-item>
-      <front-article-list :articles="articles" :listMode="listMode" />
+      <front-article-list :articles="articles" />
       <q-item v-if=" pagination" class="flex flex-center">
         <q-pagination :model-value="pagination.current_page" :min="1" :max="pagination.last_page" :max-pages="3"
           :to-fn="page => ({ query: { page } })" direction-links boundary-links />
@@ -52,19 +52,12 @@ const fetchRanking = (route) => api.get(`/api/v3/front/ranking?page=${route.quer
 const fetchSearch = (route) => api.get(`/api/v3/front/search?word=${route.query.word}&page=${route.query.page || 1}`);
 
 export default defineComponent({
-  name: 'FrontTop',
+  name: 'FrontList',
   components: {
     FrontArticleList,
     LoadingMessage,
     ApiErrorMessage,
     TextTitle,
-  },
-
-  props: {
-    listMode: {
-      type: String,
-      default: 'list',
-    },
   },
 
   setup() {

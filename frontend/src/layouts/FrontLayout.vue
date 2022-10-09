@@ -7,7 +7,7 @@
           {{ appName}}
         </q-btn>
         <q-space />
-        <ToggleListMode v-model="listMode" class="q-mr-md" />
+        <ToggleListMode class="q-mr-md" />
         <ToggleDarkMode />
       </q-toolbar>
     </q-header>
@@ -17,13 +17,13 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view :listMode="listMode" />
+      <router-view />
     </q-page-container>
   </q-layout>
 </template>
 <script>
 
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import { setCssVar } from 'quasar';
 import ToggleDarkMode from 'src/components/Common/ToggleDarkMode.vue';
 import ToggleListMode from 'src/components/Common/ToggleListMode.vue';
@@ -48,11 +48,8 @@ export default defineComponent({
     const { appName } = appInfo();
     setCssVar('primary', 'hsl(211, 82%, 54%)');
 
-    const listMode = ref('list');
-
     return {
       appName,
-      listMode,
     };
   },
 });

@@ -1,5 +1,6 @@
+<!-- eslint-disable vue/no-dupe-v-else-if -->
 <template>
-  <template v-if="listMode==='list'">
+  <template v-if="listMode.is('list')">
     <q-list>
       <q-item v-for="(a, i) in articles" :key="i" :to="{name:'show', params:{slug:a.slug}}" tag="article">
         <q-item-section side>
@@ -27,7 +28,7 @@
       </q-item>
     </q-list>
   </template>
-  <template v-else-if="listMode==='gallery'">
+  <template v-else-if="listMode.is('gallery')">
     <div class="q-col-gutter-md row items-start">
       <article v-for="(a, i) in articles" :key="i" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
         <router-link :to="{name:'show', params:{slug:a.slug}}">
@@ -53,6 +54,7 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
+import { useListModeStore } from 'src/store/front';
 import { render, sanitizeAll } from '../../composables/markdownParser';
 import CategoryList from '../Common/CategoryList.vue';
 import TagList from '../Common/TagList.vue';
@@ -89,18 +91,17 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
-    listMode: {
-      type: String,
-      default: 'list',
-    },
   },
   setup() {
+    const listMode = useListModeStore();
     return {
       thumbnailUrl,
       description,
+      listMode,
     };
   },
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     CategoryList, TagList, ContentMeta, FrontArticleShow,
   },
 });

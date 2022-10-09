@@ -20,7 +20,7 @@
             <api-error-message :message="errorMessage" @retry="fetchContent(c)" />
           </q-item-section>
         </q-item>
-        <front-article-list :articles="c.articles" :listMode="listMode" />
+        <front-article-list :articles="c.articles" />
         <q-separator />
       </q-list>
     </template>
@@ -97,13 +97,6 @@ export default defineComponent({
     LoadingMessage,
     ApiErrorMessage,
     TextTitle,
-  },
-
-  props: {
-    listMode: {
-      type: String,
-      default: 'list',
-    },
   },
 
   setup() {

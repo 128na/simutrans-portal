@@ -23,7 +23,6 @@ module.exports = configure((ctx) => ({
   // --> boot files are part of "main.js"
   // https://quasar.dev/quasar-cli/boot-files
   boot: [
-    'axios',
   ],
 
   // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -81,6 +80,12 @@ module.exports = configure((ctx) => ({
     },
     port: 8080,
     open: true, // opens browser window automatically
+    proxy: {
+      // proxy all requests starting with /api to jsonplaceholder
+      '/api': {
+        target: 'http://localhost:1080',
+      },
+    },
   },
 
   // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework

@@ -19,10 +19,3 @@ export default defineComponent({
   },
 });
 </script>
-<style lang="scss">
-* {
-  transform: ease;
-  color: 1s;
-  background: 1s;
-}
-</style>

@@ -13,10 +13,10 @@
   </q-expansion-item>
   <q-table v-model:pagination="pagination" :rows="rows" :columns="columns" :visible-columns="visibleColumns"
     :rows-per-page-options="[20,50,100,0]" title="記事一覧" rows-per-page-label="表示件数" row-key="id"
-    @row-click="popMenu.open" @row-dblclick="handleDoubleClick" />
+    @row-click.stop="popMenu.open" @row-dblclick.stop="handleDoubleClick" />
 
-  <div v-if="popMenu.show.value">
-    <pop-menu :row="popMenu.row.value" :style="popMenu.style.value" />
+  <div v-if="popMenu.show">
+    <pop-menu :style="popMenu.style" />
   </div>
 </template>
 
@@ -24,10 +24,11 @@
 import { DateTime } from 'luxon';
 import { useQuasar } from 'quasar';
 import { useMypageStore } from 'src/store/mypage';
-import { usePopMenu } from 'src/composables/popMenu';
+import { usePopMenuStore } from 'src/store/popMenu';
 import {
   defineComponent, computed, ref, watch,
 } from 'vue';
+import { useRouter } from 'vue-router';
 import PopMenu from './PopMenu.vue';
 
 const postTypes = {
@@ -180,7 +181,8 @@ export default defineComponent({
     watch(visibleColumns, (val) => {
       $q.localStorage.set('mypage.visibleColumns', val);
     });
-    const popMenu = usePopMenu();
+    const popMenu = usePopMenuStore();
+    const router = useRouter();
     return {
       rows,
       columns,
@@ -189,7 +191,8 @@ export default defineComponent({
       options,
       popMenu,
       handleDoubleClick: (event, row) => {
-        console.log({ event, row });
+        popMenu.close();
+        router.push({ name: 'edit', params: { id: row.id } });
       },
     };
   },

@@ -1,9 +1,9 @@
 <template>
-  <q-list bordered separator class="pop-menu bg-default shadow-2" v-if="row">
+  <q-list bordered separator class="pop-menu bg-default shadow-2">
     <q-item>
       <q-item-section>
         <q-item-label>
-          {{row.id}}: {{row.title}}
+          {{store.state.row.id}}: {{store.state.row.title}}
         </q-item-label>
       </q-item-section>
     </q-item>
@@ -28,7 +28,7 @@
         </q-item-label>
       </q-item-section>
     </q-item>
-    <q-item v-if="row.post_type === 'publish'">
+    <q-item v-if="store.state.row.post_type === 'publish'">
       <q-item-section>
         <q-item-label>
           記事を非公開にする
@@ -45,17 +45,17 @@
   </q-list>
 </template>
 <script>
+import { usePopMenuStore } from 'src/store/popMenu';
 import {
   defineComponent,
 } from 'vue';
 
 export default defineComponent({
   name: 'PopMenu',
-  props: {
-    row: {
-      type: Object,
-      required: true,
-    },
+  setup() {
+    const store = usePopMenuStore();
+
+    return { store };
   },
 });
 </script>

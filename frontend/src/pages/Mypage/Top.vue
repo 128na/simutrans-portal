@@ -30,6 +30,7 @@ export default defineComponent({
     if (!store.articles) {
       fetch();
     }
+
     return {
       errorMessage,
       fetch,

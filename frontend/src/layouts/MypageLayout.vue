@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh Lpr lFf">
+  <q-layout view="hHh Lpr lFf" @click="popMenu.close">
     <q-header elevated>
       <q-toolbar>
         <q-btn flat dense round icon="menu" @click="menu.toggle" />
@@ -31,6 +31,7 @@ import { useMenuStore } from 'src/store/menu';
 import { useAppInfo } from 'src/composables/appInfo';
 import MypageMenu from 'src/components/Mypage/MypageMenu.vue';
 import LoadingPage from 'src/components/Common/LoadingPage.vue';
+import { usePopMenuStore } from 'src/store/popMenu';
 
 export default defineComponent({
   name: 'MypageLayout',
@@ -47,11 +48,13 @@ export default defineComponent({
     const menu = useMenuStore();
 
     const authStore = useAuthStore();
+    const popMenu = usePopMenuStore();
 
     return {
       authStore,
       appName,
       menu,
+      popMenu,
     };
   },
 });

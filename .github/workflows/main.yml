@@ -37,30 +37,31 @@ jobs:
         run: composer install
       - name: phpcs
         run: composer run cs-check
-  # es:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #     - name: Setup Node
-  #       uses: actions/setup-node@v2
-  #     - name: Cache node_modules
-  #       id: cache-npm
-  #       uses: actions/cache@v3
-  #       env:
-  #         cache-name: cache-node-modules
-  #       with:
-  #         path: ./node_modules
-  #         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-build-${{ env.cache-name }}-
-  #           ${{ runner.os }}-build-
-  #           ${{ runner.os }}-
-  #     - name: npm ci
-  #       if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
-  #       run: npm ci
-  #     - name: eslint
-  #       run: npm run es
+  es:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v2
+      - name: Cache frontend_node_modules
+        id: frontend-cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ./frontend/node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: npm ci
+        if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
+        run: cd frontend && npm ci
+      - name: Build Assets
+        run: cd frontend && npm run lint
+
   test:
     runs-on: ubuntu-latest
     steps:

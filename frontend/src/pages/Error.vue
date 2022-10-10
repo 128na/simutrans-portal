@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 
 const getMessage = (status) => {
@@ -47,7 +47,7 @@ export default defineComponent({
   name: 'Error',
   setup() {
     const route = useRoute();
-    const status = Number.parseInt(route.params.status || 404, 10);
+    const status = reactive(Number.parseInt(route.params.status || 404, 10));
     const message = getMessage(status);
 
     return {

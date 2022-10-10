@@ -175,6 +175,7 @@ export default defineComponent({
       page: 1,
       rowsPerPage: 20,
     });
+
     const $q = useQuasar();
     const visibleColumns = ref($q.localStorage.getItem('mypage.visibleColumns')
       || ['id', 'status', 'post_type', 'title', 'totalViewCount', 'totalConversionCount', 'published_at', 'modified_at']);

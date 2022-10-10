@@ -12,6 +12,8 @@ export const useMypageStore = defineStore('mypage', {
     tags: null,
   }),
   getters: {
+    findArticleById: (state) => (id) => state.articles?.find((a) => a.id === id),
+    findArticleBySlug: (state) => (slug) => state.articles?.find((a) => a.slug === slug),
   },
   actions: {
   },

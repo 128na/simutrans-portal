@@ -29,6 +29,7 @@ import { useAuthStore } from 'src/store/auth';
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import MetaInfo from 'src/components/Common/MetaInfo.vue';
+import { useNotify } from 'src/composables/notify';
 
 export default defineComponent({
   name: 'MypageMenu',
@@ -41,9 +42,11 @@ export default defineComponent({
     const store = useAuthStore();
     const { postLogout } = useMypageApi();
     const router = useRouter();
+    const notify = useNotify();
     const logout = () => {
       postLogout();
       store.logout();
+      notify.info('ログアウトしました');
       router.push({ name: 'login' });
     };
     return {

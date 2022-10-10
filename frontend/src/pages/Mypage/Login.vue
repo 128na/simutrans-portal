@@ -27,6 +27,7 @@ import InputPassword from 'src/components/Common/InputPassword.vue';
 import TextTitle from 'src/components/Common/TextTitle.vue';
 import { useMypageApi } from 'src/composables/api';
 import { useAuthStore } from 'src/store/auth';
+import { useNotify } from 'src/composables/notify';
 
 export default defineComponent({
   name: 'MypageLogin',
@@ -40,6 +41,7 @@ export default defineComponent({
     const authState = reactive({ email: '', password: '', remember: false });
     const loading = ref(false);
 
+    const notify = useNotify();
     const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter());
     const { postLogin } = useMypageApi();
     const handle = async () => {
@@ -47,6 +49,7 @@ export default defineComponent({
       try {
         const res = await postLogin(authState);
         if (res.status === 200) {
+          notify.success('ログインしました');
           store.loggedin(res.data.data);
           router.push({ name: 'mypage' });
         }

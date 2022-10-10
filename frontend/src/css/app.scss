@@ -26,3 +26,14 @@ dd {
 .w-100 {
   width: 100%;
 }
+
+
+.body--dark {
+  .bg-default {
+    background-color: $dark;
+  }
+}
+
+.bg-default {
+  background-color: #fff;
+}

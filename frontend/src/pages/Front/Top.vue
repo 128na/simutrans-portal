@@ -31,7 +31,7 @@
 import { defineComponent, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import TextTitle from 'src/components/Common/TextTitle.vue';
-import { useArticleCacheStore } from 'src/store/articles';
+import { useArticleCacheStore } from 'src/store/articleCache';
 import { useFrontApi } from 'src/composables/api';
 import { useMeta } from 'src/composables/meta';
 import { useErrorHandler } from 'src/composables/errorHandler';

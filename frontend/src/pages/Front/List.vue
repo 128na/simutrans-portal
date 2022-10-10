@@ -35,7 +35,7 @@ import { defineComponent, ref } from 'vue';
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import TextTitle from 'src/components/Common/TextTitle.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
-import { useArticleCacheStore } from 'src/store/articles';
+import { useArticleCacheStore } from 'src/store/articleCache';
 import { useFrontApi } from 'src/composables/api';
 import { useMeta } from 'src/composables/meta';
 import FrontArticleList from 'src/components/Front/FrontArticleList.vue';

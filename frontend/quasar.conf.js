@@ -83,6 +83,16 @@ module.exports = configure((ctx) => ({
     proxy: {
       '/api': { target: 'http://localhost:1080' },
       '/storage': { target: 'http://localhost:1080' },
+      '/articles': {
+        target: 'http://localhost:1080',
+        bypass: (req) => {
+          // downloadのときのみプロキシする
+          if (req.url.endsWith('/download')) {
+            return null;
+          }
+          return req.url;
+        },
+      },
     },
   },
 

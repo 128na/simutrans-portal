@@ -10,10 +10,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="api-entrypoint" content="{{ config('app.url') }}">
 
-    <script defer src="{{ asset('/js/vendor.js') }}"></script>
-    <script defer src="{{ asset('/js/app.js') }}"></script>
-    <link href="{{ asset('/css/vendor.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+    <script defer src="{{ asset(mix('/js/vendor.js')) }}"></script>
+    <script defer src="{{ asset(mix('/js/app.js')) }}"></script>
+    <link href="{{ asset(mix('/css/vendor.css')) }}" rel="stylesheet">
+    <link href="{{ asset(mix('/css/app.css')) }}" rel="stylesheet">
 </head>
 
 <body>

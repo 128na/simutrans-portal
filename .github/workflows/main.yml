@@ -88,6 +88,25 @@ jobs:
       - name: Composer Install
         if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
         run: composer install
+      - name: Setup Node
+        uses: actions/setup-node@v2
+      - name: Cache frontend_node_modules
+        id: frontend-cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ./frontend/node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: npm ci
+        if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
+        run: cd frontend && npm ci
+      - name: Build Assets
+        run: cd frontend && npm run build
       - name: Start MySQL
         run: sudo /etc/init.d/mysql start
       - name: Setup database

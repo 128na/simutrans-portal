@@ -13,8 +13,8 @@ export const useListModeStore = defineStore('listMode', () => {
 
   const listMode = computed(() => listModes[current.value]);
   const nextMode = () => {
-    current.value = listMode.value.next;
     $q.localStorage.set('front.listMode', listMode.value.next);
+    current.value = listMode.value.next;
   };
   const is = (mode) => current.value === mode;
 

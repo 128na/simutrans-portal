@@ -34,7 +34,7 @@ import PopMenu from './PopMenu.vue';
 const postTypes = {
   addon_post: 'アドオン投稿',
   addon_introduction: 'アドオン紹介',
-  markdown: 'markdown記事',
+  markdown: '一般記事(markdown)',
   page: '一般記事',
 };
 const statuses = {

@@ -31,5 +31,6 @@ export default defineComponent({
 <style lang="scss">
 .thumbnai {
   max-width: 100%;
+  max-height: 50vh;
 }
 </style>

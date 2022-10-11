@@ -32,7 +32,7 @@ class TopPage extends Page
         $browser
             ->waitForText($this->article->title)
             ->assertSee($this->article->title)
-            ->assertSee('の新着アドオン')
+            ->assertSee('pak128の新着')
             ->assertSee(__("category.{$this->category->type}.{$this->category->slug}"))
         ;
     }

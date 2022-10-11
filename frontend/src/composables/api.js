@@ -7,7 +7,7 @@ if (!token) {
 }
 
 const api = axios.create({
-  baseURL: process.env.BACKEND_URL,
+  // baseURL: process.env.BACKEND_URL,
   headers: {
     common: {
       'X-Requested-With': 'XMLHttpRequest',

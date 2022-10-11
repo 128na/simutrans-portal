@@ -41,7 +41,6 @@
   </q-list>
 </template>
 <script>
-import { useAppInfo } from 'src/composables/appInfo';
 import { useNotify } from 'src/composables/notify';
 import { useClipboard } from 'src/composables/clipboard';
 import { usePopMenuStore } from 'src/store/popMenu';
@@ -55,12 +54,11 @@ export default defineComponent({
   name: 'PopMenu',
   setup() {
     const popMenu = usePopMenuStore();
-    const { backendUrl } = useAppInfo();
     const notify = useNotify();
     const clipboad = useClipboard();
     const copy = async () => {
       try {
-        clipboad.write(`${backendUrl}/articles/${popMenu.state.row.slug}`);
+        clipboad.write(`${window.location.origin}/articles/${popMenu.state.row.slug}`);
         notify.success('コピーしました');
       } catch (err) {
         notify.failed('コピーに失敗しました');

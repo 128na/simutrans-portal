@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import { useAppInfo } from 'src/composables/appInfo';
 import { defineComponent, computed } from 'vue';
 
 export default defineComponent({
@@ -17,11 +16,10 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { backendUrl } = useAppInfo();
     const thumbnailUrl = (article) => {
       const attachmentId = parseInt(article.contents.thumbnail, 10);
       return article.attachments.find((a) => a.id === attachmentId)?.url
-        || `${backendUrl}/storage/default/image.png`;
+        || '/storage/default/image.png';
     };
 
     return {

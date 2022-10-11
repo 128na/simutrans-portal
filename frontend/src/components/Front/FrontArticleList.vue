@@ -60,7 +60,6 @@ import CategoryList from 'src/components/Common/CategoryList.vue';
 import TagList from 'src/components/Common/TagList.vue';
 import ContentMeta from 'src/components/Common/ContentMeta.vue';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
-import { useAppInfo } from 'src/composables/appInfo';
 
 const sectionTextableTypes = ['caption', 'text', 'url'];
 
@@ -90,11 +89,10 @@ export default defineComponent({
       }
     };
 
-    const { backendUrl } = useAppInfo();
     const thumbnailUrl = (article) => {
       const attachmentId = parseInt(article.contents.thumbnail, 10);
       return article.attachments.find((a) => a.id === attachmentId)?.url
-        || `${backendUrl}/storage/default/image.png`;
+        || '/storage/default/image.png';
     };
 
     const listMode = useListModeStore();

@@ -88,7 +88,7 @@ export default defineComponent({
             case 'categoryPak':
               return api.fetchCategoryPak(route.params.size, route.params.slug, route.query.page);
             case 'category':
-              return api.fetchCategory(route.params.size, route.params.slug, route.query.page);
+              return api.fetchCategory(route.params.type, route.params.slug, route.query.page);
             case 'tag':
               return api.fetchTag(route.params.id, route.query.page);
             case 'user':

@@ -23,7 +23,11 @@ const routes = [
       {
         name: 'mypage', path: '', meta: { requiresAuth: true }, component: () => import('pages/Mypage/Top.vue'),
       },
-      { name: 'edit', path: 'edit/:id', component: () => import('pages/Index.vue') },
+      { name: 'edit', path: '/edit/:id', component: () => import('pages/Index.vue') },
+      { name: 'create', path: '/create/:post_type', component: () => import('pages/Index.vue') },
+      { name: 'analytics', path: '/analytics', component: () => import('pages/Index.vue') },
+      { name: 'profile', path: '/profile', component: () => import('pages/Index.vue') },
+      { name: 'invitation', path: '/invitation', component: () => import('pages/Index.vue') },
       { name: 'login', path: 'login', component: () => import('pages/Mypage/Login.vue') },
       { name: 'reset', path: 'reset', component: () => import('pages/Mypage/Top.vue') },
     ],

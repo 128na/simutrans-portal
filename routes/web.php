@@ -25,7 +25,7 @@ Route::feeds();
 
 // メール確認
 Route::middleware(['auth'])->group(function () {
-    Route::GET('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+    Route::GET('mypage/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
 });
 Route::get('/verification/notice', [VerificationController::class, 'notice'])->name('verification.notice');
 // PWリセット

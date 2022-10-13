@@ -79,6 +79,11 @@ export const useMypageApi = () => ({
   reset(params) {
     return api.post('/api/v2/password/email', params);
   },
+  verify(userId, hash, expires, signature) {
+    return api.get(`/api/v2/email/verify/${userId}/${hash}`, {
+      params: { expires, signature },
+    });
+  },
 
   // user profile
   fetchUser() {

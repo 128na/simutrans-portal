@@ -31,6 +31,9 @@ use App\Http\Controllers\Auth\VerificationController;
 Route::prefix('v2')->name('api.v2.')->group(function () {
     // メール確認
     Route::POST('email/resend', [VerificationController::class, 'resendApi'])->name('verification.resend');
+    // メール認証
+    Route::GET('email/verify/{id}/{hash}', [VerificationController::class, 'verifyApi'])->name('verification.verify');
+
     // 認証
     Route::POST('login', [LoginController::class, 'login'])->name('login');
     Route::POST('logout', [LoginController::class, 'logout'])->name('logout');

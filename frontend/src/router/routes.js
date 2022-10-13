@@ -43,6 +43,7 @@ const routes = [
       },
       { name: 'login', path: 'login', component: () => import('pages/Mypage/Login.vue') },
       { name: 'reset', path: 'reset', component: () => import('pages/Mypage/Top.vue') },
+      { name: 'verify', path: 'verify/:userId/:hash', component: () => import('pages/Mypage/Verify.vue') },
     ],
   },
   {

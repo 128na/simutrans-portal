@@ -21,13 +21,26 @@ const routes = [
     component: () => import('layouts/MypageLayout.vue'),
     children: [
       {
-        name: 'mypage', path: '', meta: { requiresAuth: true }, component: () => import('pages/Mypage/Top.vue'),
+        name: 'mypage', path: '', meta: { requiresVerified: true }, component: () => import('pages/Mypage/Top.vue'),
       },
-      { name: 'edit', path: '/edit/:id', component: () => import('pages/Index.vue') },
-      { name: 'create', path: '/create/:post_type', component: () => import('pages/Index.vue') },
-      { name: 'analytics', path: '/analytics', component: () => import('pages/Index.vue') },
-      { name: 'profile', path: '/profile', component: () => import('pages/Index.vue') },
-      { name: 'invitation', path: '/invitation', component: () => import('pages/Index.vue') },
+      {
+        name: 'edit', path: '/edit/:id', meta: { requiresVerified: true }, component: () => import('pages/Index.vue'),
+      },
+      {
+        name: 'create', path: '/create/:post_type', meta: { requiresVerified: true }, component: () => import('pages/Index.vue'),
+      },
+      {
+        name: 'analytics', path: '/analytics', meta: { requiresVerified: true }, component: () => import('pages/Index.vue'),
+      },
+      {
+        name: 'profile', path: '/profile', meta: { requiresVerified: true }, component: () => import('pages/Index.vue'),
+      },
+      {
+        name: 'invitation', path: '/invitation', meta: { requiresVerified: true }, component: () => import('pages/Index.vue'),
+      },
+      {
+        name: 'requiresVerified', path: '/requires-verified', meta: { requiresAuth: true }, component: () => import('pages/Mypage/RequiresVerified.vue'),
+      },
       { name: 'login', path: 'login', component: () => import('pages/Mypage/Login.vue') },
       { name: 'reset', path: 'reset', component: () => import('pages/Mypage/Top.vue') },
     ],

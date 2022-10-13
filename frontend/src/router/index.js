@@ -39,7 +39,7 @@ Router.beforeEach((to, from, next) => {
       return next({ replace: true, name: 'login' });
     }
     if (!store.isVerified) {
-      return next({ replace: true, name: 'error', params: { status: 401 } });
+      return next({ replace: true, name: 'requiresVerified' });
     }
   }
   if (to.matched.some((record) => record.meta.requiresAdmin)) {

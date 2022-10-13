@@ -41,9 +41,11 @@ const routes = [
       {
         name: 'requiresVerified', path: '/requires-verified', meta: { requiresAuth: true }, component: () => import('pages/Mypage/RequiresVerified.vue'),
       },
+      {
+        name: 'verify', path: 'verify/:userId/:hash', meta: { requiresAuth: true }, component: () => import('pages/Mypage/Verify.vue'),
+      },
       { name: 'login', path: 'login', component: () => import('pages/Mypage/Login.vue') },
       { name: 'reset', path: 'reset', component: () => import('pages/Mypage/Top.vue') },
-      { name: 'verify', path: 'verify/:userId/:hash', component: () => import('pages/Mypage/Verify.vue') },
     ],
   },
   {

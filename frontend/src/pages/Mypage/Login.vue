@@ -22,7 +22,7 @@
 import { defineComponent, reactive, ref } from 'vue';
 import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import InputPassword from 'src/components/Common/InputPassword.vue';
 import TextTitle from 'src/components/Common/TextTitle.vue';
 import { useMypageApi } from 'src/composables/api';
@@ -32,6 +32,7 @@ import { useNotify } from 'src/composables/notify';
 export default defineComponent({
   name: 'MypageLogin',
   setup() {
+    const route = useRoute();
     const router = useRouter();
     const store = useAuthStore();
     if (store.isLoggedIn) {
@@ -51,7 +52,7 @@ export default defineComponent({
         if (res.status === 200) {
           notify.success('ログインしました');
           store.loggedin(res.data.data);
-          router.push({ name: 'mypage' });
+          router.push(route.query.redirect || { name: 'mypage' });
         }
       } catch (err) {
         errorHandlerStrict(err);

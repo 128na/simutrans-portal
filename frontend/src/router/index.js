@@ -31,12 +31,12 @@ Router.beforeEach((to, from, next) => {
   const store = useAuthStore();
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!store.isLoggedIn) {
-      return next({ replace: true, name: 'login' });
+      return next({ replace: true, name: 'login', query: { redirect: to.href } });
     }
   }
   if (to.matched.some((record) => record.meta.requiresVerified)) {
     if (!store.isLoggedIn) {
-      return next({ replace: true, name: 'login' });
+      return next({ replace: true, name: 'login', query: { redirect: to.href } });
     }
     if (!store.isVerified) {
       return next({ replace: true, name: 'requiresVerified' });
@@ -44,7 +44,7 @@ Router.beforeEach((to, from, next) => {
   }
   if (to.matched.some((record) => record.meta.requiresAdmin)) {
     if (!store.isLoggedIn) {
-      return next({ replace: true, name: 'login' });
+      return next({ replace: true, name: 'error', params: { status: 404 } });
     }
     if (!store.isAdmin) {
       return next({ replace: true, name: 'error', params: { status: 401 } });

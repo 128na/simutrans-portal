@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\v3\FrontController;
 use App\Http\Controllers\Api\v3\InvitationCodeController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 
 /*
@@ -33,6 +34,7 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
     Route::POST('email/resend', [VerificationController::class, 'resendApi'])->name('verification.resend');
     // メール認証
     Route::GET('email/verify/{id}/{hash}', [VerificationController::class, 'verifyApi'])->name('verification.verify');
+    Route::POST('email/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
     // 認証
     Route::POST('login', [LoginController::class, 'login'])->name('login');

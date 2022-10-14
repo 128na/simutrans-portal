@@ -29,8 +29,7 @@ Route::middleware(['auth'])->group(function () {
 });
 Route::get('/verification/notice', [VerificationController::class, 'notice'])->name('verification.notice');
 // PWリセット
-Route::POST('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
-Route::GET('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::GET('mypage/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware(['cache.headers:public;max_age=2628000;etag'])->group(function () {

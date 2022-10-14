@@ -76,8 +76,11 @@ export const useMypageApi = () => ({
   resend() {
     return api.post('/api/v2/email/resend');
   },
-  reset(params) {
+  forget(params) {
     return api.post('/api/v2/password/email', params);
+  },
+  reset(params) {
+    return api.post('/api/v2/email/reset', params);
   },
   verify(userId, hash, expires, signature) {
     return api.get(`/api/v2/email/verify/${userId}/${hash}`, {

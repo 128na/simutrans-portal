@@ -1,23 +1,16 @@
 <template>
   <q-page class="q-pa-md fit row wrap justify-center">
     <q-form class="col-6 q-gutter-sm" @submit=handle>
-      <text-title>ログイン</text-title>
+      <text-title>パスワード再設定</text-title>
       <api-error-message :message="errorMessage" />
-      <q-input v-model="authState.email" type="email" label="email" autocomplete="email" />
-      <input-password v-model="authState.password" label="password" autocomplete="current-password" />
+      <q-input v-model="state.email" type="email" label="email" autocomplete="email" />
+      <input-password v-model="state.password" label="new password" autocomplete="new-password" />
       <div>
-        <q-checkbox v-model="authState.remember" label="ログインしたままにする" />
-      </div>
-      <div>
-        <q-btn label="ログイン" color="primary" type="submit" />
-      </div>
-      <div>
-        <router-link :to="{name:'forget'}" class="default-link">パスワードリセット</router-link>
+        <q-btn label="送信" color="primary" type="submit" />
       </div>
     </q-form>
   </q-page>
 </template>
-
 <script>
 import { defineComponent, reactive, ref } from 'vue';
 import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
@@ -30,7 +23,7 @@ import { useAuthStore } from 'src/store/auth';
 import { useNotify } from 'src/composables/notify';
 
 export default defineComponent({
-  name: 'MypageLogin',
+  name: 'MypageReset',
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -39,20 +32,20 @@ export default defineComponent({
       router.replace({ name: 'mypage' });
     }
 
-    const authState = reactive({ email: '', password: '', remember: false });
+    const state = reactive({ email: '', password: '', token: route.params.token });
     const loading = ref(false);
 
     const notify = useNotify();
     const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter());
-    const { postLogin } = useMypageApi();
+    const { reset } = useMypageApi();
     const handle = async () => {
       loading.value = true;
       try {
-        const res = await postLogin(authState);
+        const res = await reset(state);
         if (res.status === 200) {
-          notify.success('ログインしました');
-          store.loggedin(res.data.data);
-          router.push(route.query.redirect || { name: 'mypage' });
+          notify.success('パスワードを更新しました');
+          store.logout();
+          router.push({ name: 'login' });
         }
       } catch (err) {
         errorHandlerStrict(err);
@@ -61,7 +54,7 @@ export default defineComponent({
       }
     };
     return {
-      authState, handle, errorMessage, loading,
+      state, handle, errorMessage, loading,
     };
   },
   components: { ApiErrorMessage, InputPassword, TextTitle },

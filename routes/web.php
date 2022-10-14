@@ -27,7 +27,6 @@ Route::feeds();
 Route::middleware(['auth'])->group(function () {
     Route::GET('mypage/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
 });
-Route::get('/verification/notice', [VerificationController::class, 'notice'])->name('verification.notice');
 // PWリセット
 Route::GET('mypage/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 

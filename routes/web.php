@@ -13,7 +13,6 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OauthController;
-use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\InviteController;
@@ -27,8 +26,10 @@ Route::feeds();
 Route::middleware(['auth'])->group(function () {
     Route::GET('mypage/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
 });
+// 未認証時のリダイレクト先。SPAなので使わないがAuthライブラリ側でルート名が必要
+Route::get('/verification/notice', [MypageController::class, 'index'])->name('verification.notice');
 // PWリセット
-Route::GET('mypage/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::GET('mypage/reset/{token}', [MypageController::class, 'index'])->name('password.reset');
 
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware(['cache.headers:public;max_age=2628000;etag'])->group(function () {

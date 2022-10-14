@@ -19,7 +19,7 @@ import { useMypageApi } from 'src/composables/api';
 import { useNotify } from 'src/composables/notify';
 
 export default defineComponent({
-  name: 'MypageLogin',
+  name: 'MypageRequiresVerified',
   components: { TextTitle },
   setup() {
     const { resend } = useMypageApi();

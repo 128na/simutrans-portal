@@ -13,7 +13,6 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OauthController;
-use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MypageController;
@@ -22,11 +21,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::feeds();
 
+// 認証系ルート名保持用
 // メール確認
-Route::middleware(['auth'])->group(function () {
-    Route::GET('mypage/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
-});
-// 未認証時のリダイレクト先。SPAなので使わないがAuthライブラリ側でルート名が必要
+Route::GET('mypage/verify/{id}/{hash}', [MypageController::class, 'index'])->name('verification.verify');
+// 未認証時
 Route::get('/verification/notice', [MypageController::class, 'index'])->name('verification.notice');
 // PWリセット
 Route::GET('mypage/reset/{token}', [MypageController::class, 'index'])->name('password.reset');

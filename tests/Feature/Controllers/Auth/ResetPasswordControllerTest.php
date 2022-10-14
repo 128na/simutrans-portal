@@ -75,9 +75,8 @@ class ResetPasswordControllerTest extends TestCase
             'token' => $token,
             'email' => $this->user->email,
             'password' => 'new_password',
-            'password_confirmation' => 'new_password',
         ], $data);
-        $url = route('password.update');
+        $url = route('api.v2.password.update');
         $data = array_merge(['token' => $token], $data);
         $res = $this->postJson($url, $data);
 
@@ -104,8 +103,5 @@ class ResetPasswordControllerTest extends TestCase
 
         yield 'passwordがnull' => [['password' => null], 'password'];
         yield 'passwordが256文字以上' => [['password' => str_repeat('a', 256)], 'password'];
-
-        yield 'password確認がnull' => [['password_confirmation' => null], 'password'];
-        yield 'password確認が不一致' => [['password_confirmation' => 'invalid'], 'password'];
     }
 }

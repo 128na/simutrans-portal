@@ -21,10 +21,10 @@ class MypageControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testFallback()
+    public function testAny()
     {
         $url = $this->url.'/foo';
         $response = $this->get($url);
-        $response->assertRedirect($this->url);
+        $response->assertOk();
     }
 }

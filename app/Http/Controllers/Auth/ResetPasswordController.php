@@ -50,6 +50,13 @@ class ResetPasswordController extends Controller
         ];
     }
 
+    protected function credentials(Request $request)
+    {
+        return $request->only(
+            'email', 'password', 'token'
+        );
+    }
+
     /**
      * Get the response for a successful password reset.
      *
@@ -62,17 +69,5 @@ class ResetPasswordController extends Controller
         Auth::logout();
 
         return response('', 200);
-    }
-
-    /**
-     * Get the response for a failed password reset.
-     *
-     * @param string $response
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
-     */
-    protected function sendResetFailedResponse(Request $request, $response)
-    {
-        return $response;
     }
 }

@@ -1,7 +1,10 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 export const useAuthStore = defineStore('auth', () => {
+  const router = useRouter();
+  const route = useRoute();
   const user = ref(undefined);
 
   const isInitialized = computed(() => user.value !== undefined);
@@ -12,21 +15,53 @@ export const useAuthStore = defineStore('auth', () => {
   const initialized = () => {
     user.value = null;
   };
-  const loggedin = (loginUser) => {
+  const login = (loginUser) => {
     user.value = loginUser;
   };
   const logout = () => {
     user.value = null;
   };
 
+  const validateAuth = (currentRoute = route) => {
+    console.log(currentRoute);
+    if (currentRoute.meta.requiresAuth) {
+      if (!isLoggedIn.value) {
+        router.push({ replace: true, name: 'login', query: { redirect: currentRoute.href } });
+        return false;
+      }
+    }
+    if (currentRoute.meta.requiresVerified) {
+      if (!isLoggedIn.value) {
+        router.push({ replace: true, name: 'login', query: { redirect: currentRoute.href } });
+        return false;
+      }
+      if (!isVerified.value) {
+        router.push({ replace: true, name: 'requiresVerified' });
+        return false;
+      }
+    }
+    if (currentRoute.meta.requiresAdmin) {
+      if (!isLoggedIn.value) {
+        router.push({ replace: true, name: 'error', params: { status: 404 } });
+        return false;
+      }
+      if (!isAdmin.value) {
+        router.push({ replace: true, name: 'error', params: { status: 401 } });
+        return false;
+      }
+    }
+    return true;
+  };
+
   return {
     isInitialized,
-    initialized,
     user,
     isLoggedIn,
     isVerified,
     isAdmin,
-    loggedin,
+    initialized,
+    login,
     logout,
+    validateAuth,
   };
 });

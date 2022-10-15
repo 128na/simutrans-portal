@@ -1,4 +1,3 @@
-import { useAuthStore } from 'src/store/auth';
 import {
   createRouter, createMemoryHistory, createWebHistory, createWebHashHistory,
 } from 'vue-router';
@@ -25,32 +24,6 @@ const Router = createRouter({
   // quasar.conf.js -> build -> vueRouterMode
   // quasar.conf.js -> build -> publicPath
   history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE),
-});
-
-Router.beforeEach((to, from, next) => {
-  const store = useAuthStore();
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!store.isLoggedIn) {
-      return next({ replace: true, name: 'login', query: { redirect: to.href } });
-    }
-  }
-  if (to.matched.some((record) => record.meta.requiresVerified)) {
-    if (!store.isLoggedIn) {
-      return next({ replace: true, name: 'login', query: { redirect: to.href } });
-    }
-    if (!store.isVerified) {
-      return next({ replace: true, name: 'requiresVerified' });
-    }
-  }
-  if (to.matched.some((record) => record.meta.requiresAdmin)) {
-    if (!store.isLoggedIn) {
-      return next({ replace: true, name: 'error', params: { status: 404 } });
-    }
-    if (!store.isAdmin) {
-      return next({ replace: true, name: 'error', params: { status: 401 } });
-    }
-  }
-  return next();
 });
 
 export default Router;

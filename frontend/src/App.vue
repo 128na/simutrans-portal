@@ -14,8 +14,8 @@ export default defineComponent({
     const checkLogin = async () => {
       try {
         const res = await fetchUser();
-        if (res.status === 200 && res.data) {
-          return store.loggedin(res.data.data);
+        if (res.status === 200 && res.data?.data) {
+          return store.login(res.data.data);
         }
       } catch (error) {
         // do nothing

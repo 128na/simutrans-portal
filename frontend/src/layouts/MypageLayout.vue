@@ -16,7 +16,7 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view v-if="authStore.isInitialized" />
+      <router-view v-if="auth.isInitialized" />
       <loading-page v-else />
     </q-page-container>
   </q-layout>
@@ -47,11 +47,11 @@ export default defineComponent({
     useColorStore().setMypage();
     const menu = useMenuStore();
 
-    const authStore = useAuthStore();
+    const auth = useAuthStore();
     const popMenu = usePopMenuStore();
 
     return {
-      authStore,
+      auth,
       appName,
       menu,
       popMenu,

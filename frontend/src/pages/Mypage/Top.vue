@@ -1,6 +1,6 @@
 <template>
-  <q-page v-if="store.articles">
-    <article-table />
+  <q-page>
+    <article-table v-if="store.articles" />
   </q-page>
 </template>
 
@@ -8,6 +8,7 @@
 import { useMypageApi } from 'src/composables/api';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useMypageStore } from 'src/store/mypage';
+import { useAuthStore } from 'src/store/auth';
 import { defineComponent } from 'vue';
 import ArticleTable from 'src/components/Mypage/ArticleTable.vue';
 
@@ -15,7 +16,7 @@ export default defineComponent({
   name: 'MypageTop',
   setup() {
     const { fetchArticles } = useMypageApi();
-    const { errorHandlerStrict, errorMessage } = useErrorHandler();
+    const { errorHandlerStrict } = useErrorHandler();
     const store = useMypageStore();
     const fetch = async () => {
       try {
@@ -27,13 +28,12 @@ export default defineComponent({
         errorHandlerStrict(err, '');
       }
     };
-    if (!store.articles) {
+    const auth = useAuthStore();
+    if (auth.validateAuth()) {
       fetch();
     }
 
     return {
-      errorMessage,
-      fetch,
       store,
     };
   },

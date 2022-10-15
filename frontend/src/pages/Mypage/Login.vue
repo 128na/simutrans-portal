@@ -51,7 +51,7 @@ export default defineComponent({
         const res = await postLogin(authState);
         if (res.status === 200) {
           notify.success('ログインしました');
-          store.loggedin(res.data.data);
+          store.login(res.data.data);
           router.push(route.query.redirect || { name: 'mypage' });
         }
       } catch (err) {

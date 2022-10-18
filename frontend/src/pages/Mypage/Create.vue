@@ -13,7 +13,6 @@
         </div>
       </div>
       <div class="col q-pa-md" v-show="editor.preview">
-        <q-banner class="bg-info">プレビュー表示です</q-banner>
         <front-article-show :article="articleWithAttachments" />
       </div>
     </div>

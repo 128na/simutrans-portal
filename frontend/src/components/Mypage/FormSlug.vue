@@ -1,10 +1,10 @@
 <template>
-  <q-input label="URL" v-model="rawSlug" >
+  <q-input label="URL" v-model="rawSlug">
     <template v-slot:append>
       <q-btn flat color="secondary" @click="rawSlug=title">タイトルからコピー</q-btn>
     </template>
-    </q-input>
-  <div>url: {{url}}</div>
+  </q-input>
+  <div class="word-break">{{url}}</div>
 </template>
 <script>
 import { useAppInfo } from 'src/composables/appInfo';

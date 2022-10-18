@@ -16,13 +16,23 @@ export default defineComponent({
       ? editor.options.statuses
       : editor.options.statuses.filter((s) => s.value !== 'reservation')));
 
-    const handle = (val) => {
+    const handlePublishedAt = (val) => {
       // 予約投稿のときは投稿日時に入力値をセットする
       if (val === 'reservation') {
         editor.article.published_at = defaultDateTime().toISO();
       } else {
         editor.article.published_at = null;
       }
+    };
+    const handleTweet = (val) => {
+      // 公開のとき以外は無効にする
+      if (val !== 'publish') {
+        editor.tweet = false;
+      }
+    };
+    const handle = (val) => {
+      handlePublishedAt(val);
+      handleTweet(val);
     };
     return {
       editor,

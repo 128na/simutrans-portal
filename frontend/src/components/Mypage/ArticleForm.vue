@@ -11,9 +11,7 @@
     <form-reservation />
   </div>
   <div>
-    <q-btn @click="editor.togglePreview()">{{
-    editor.preview ? "プレビュー非表示" : "プレビュー表示"
-    }}</q-btn>
+    <form-tweet />
   </div>
 </template>
 <script>
@@ -22,10 +20,13 @@ import FormSlug from 'src/components/Mypage/FormSlug.vue';
 import FormStatus from 'src/components/Mypage/FormStatus.vue';
 import { defineComponent } from 'vue';
 import FormReservation from './FormReservation.vue';
+import FormTweet from './FormTweet.vue';
 
 export default defineComponent({
   name: 'ArticleForm',
-  components: { FormSlug, FormStatus, FormReservation },
+  components: {
+    FormSlug, FormStatus, FormReservation, FormTweet,
+  },
   setup() {
     const editor = useArticleEditStore();
 

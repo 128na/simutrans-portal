@@ -7,7 +7,7 @@ export const useArticleEditStore = defineStore('articleEdit', {
   state: () => ({
     article: null,
     preview: true,
-    tweet: true,
+    tweet: false,
     withoutUpdateModifiedAt: false,
     options: null,
   }),

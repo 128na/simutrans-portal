@@ -1,6 +1,6 @@
 <template>
   <span>
-    <q-btn v-for="c in article.categories" :key="key(c)" dense color="blue-grey" size="sm" no-caps
+    <q-btn v-for="c in article.categories" :key="key(c)" dense color="secondary" size="sm" no-caps
       class="q-mr-xs q-mb-xs q-px-sm" @click.prevent="handle(c)">
       {{ c.name }}
     </q-btn>

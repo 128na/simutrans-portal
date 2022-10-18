@@ -3,7 +3,14 @@
     <div class="row">
       <div class="col q-pa-md q-gutter-md">
         <article-form />
-        <q-btn color="primary">保存する</q-btn>
+        <div class="row">
+          <q-btn color="primary">保存する</q-btn>
+          <q-space />
+          <q-btn @click="editor.togglePreview()" color="secondary">
+            {{editor.preview ? "プレビュー非表示" : "プレビュー表示"}}
+            <q-icon name="keyboard_double_arrow_right" />
+          </q-btn>
+        </div>
       </div>
       <div class="col q-pa-md" v-show="editor.preview">
         <q-banner class="bg-info">プレビュー表示です</q-banner>

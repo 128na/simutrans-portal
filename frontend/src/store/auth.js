@@ -22,17 +22,24 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null;
   };
 
-  const validateAuth = (currentRoute = route) => {
-    console.log(currentRoute);
-    if (currentRoute.meta.requiresAuth) {
+  const validateAuth = () => {
+    // 個別ルートハンドリング
+    if (route.name === 'login' && isLoggedIn.value) {
+      router.replace({ name: 'mypage' });
+    }
+    if (route.name === 'requiresVerified' && isVerified.value) {
+      router.replace({ name: 'mypage' });
+    }
+
+    if (route.meta.requiresAuth) {
       if (!isLoggedIn.value) {
-        router.push({ replace: true, name: 'login', query: { redirect: currentRoute.href } });
+        router.push({ replace: true, name: 'login', query: { redirect: route.href } });
         return false;
       }
     }
-    if (currentRoute.meta.requiresVerified) {
+    if (route.meta.requiresVerified) {
       if (!isLoggedIn.value) {
-        router.push({ replace: true, name: 'login', query: { redirect: currentRoute.href } });
+        router.push({ replace: true, name: 'login', query: { redirect: route.href } });
         return false;
       }
       if (!isVerified.value) {
@@ -40,7 +47,7 @@ export const useAuthStore = defineStore('auth', () => {
         return false;
       }
     }
-    if (currentRoute.meta.requiresAdmin) {
+    if (route.meta.requiresAdmin) {
       if (!isLoggedIn.value) {
         router.push({ replace: true, name: 'error', params: { status: 404 } });
         return false;

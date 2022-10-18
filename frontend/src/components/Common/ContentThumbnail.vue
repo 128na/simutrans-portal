@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { DEFAULT_THUMBNAIL } from 'src/const';
 import { defineComponent, computed } from 'vue';
 
 export default defineComponent({
@@ -16,14 +17,17 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const thumbnailUrl = (article) => {
-      const attachmentId = parseInt(article.contents.thumbnail, 10);
-      return article.attachments.find((a) => a.id === attachmentId)?.url
-        || '/storage/default/image.png';
-    };
+    const thumbnailUrl = computed(() => {
+      if (props.article.contents.thumbnail) {
+        const attachmentId = parseInt(props.article.contents.thumbnail, 10);
+        return props.article.attachments.find((a) => a.id === attachmentId)?.url
+          || DEFAULT_THUMBNAIL;
+      }
+      return DEFAULT_THUMBNAIL;
+    });
 
     return {
-      thumbnailUrl: computed(() => thumbnailUrl(props.article)),
+      thumbnailUrl,
     };
   },
 });

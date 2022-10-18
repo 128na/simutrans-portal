@@ -32,12 +32,8 @@ import { useNotify } from 'src/composables/notify';
 export default defineComponent({
   name: 'MypageLogin',
   setup() {
-    const route = useRoute();
-    const router = useRouter();
     const store = useAuthStore();
-    if (store.isLoggedIn) {
-      router.replace({ name: 'mypage' });
-    }
+    store.validateAuth();
 
     const authState = reactive({ email: '', password: '', remember: false });
     const loading = ref(false);
@@ -45,6 +41,8 @@ export default defineComponent({
     const notify = useNotify();
     const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter());
     const { postLogin } = useMypageApi();
+    const route = useRoute();
+    const router = useRouter();
     const handle = async () => {
       loading.value = true;
       try {

@@ -18,13 +18,25 @@ export const useNotify = () => {
     position: 'top',
     message,
     timeout: 0,
+    actions: [{ icon: 'close', color: 'white' }],
+  });
+  const failedRetryable = (message, handler) => $q.notify({
+    type: 'negative',
+    position: 'top',
+    message,
+    timeout: 0,
     actions: [
-      { icon: 'close', color: 'white' },
+      {
+        label: 'Retry', icon: 'replay', color: 'white', handler,
+      },
+      { label: 'Close', icon: 'close', color: 'white' },
     ],
   });
+
   return {
     success,
     info,
     failed,
+    failedRetryable,
   };
 };

@@ -67,7 +67,7 @@ class ArticleEditorService extends Service
     {
         return collect(config('status'))->map(
             fn ($item) => [
-                'text' => __("statuses.{$item}"),
+                'label' => __("statuses.{$item}"),
                 'value' => $item,
             ]
         )->values();
@@ -77,7 +77,7 @@ class ArticleEditorService extends Service
     {
         return collect(config('post_types'))->map(
             fn ($item) => [
-                'text' => __("post_types.{$item}"),
+                'label' => __("post_types.{$item}"),
                 'value' => $item,
             ]
         )->values();

@@ -1,17 +1,17 @@
 <template>
   <article>
     <text-title>
-      {{article.title}}
+      {{article.title || '名もなき一般記事'}}
     </text-title>
     <content-thumbnail :article="article" />
 
     <dl>
       <dt>作者</dt>
-      <dd>{{article.contents.author}}</dd>
+      <dd>{{article.contents.author || '未設定'}}</dd>
       <dt>投稿者</dt>
       <dd>
         <router-link class="default-link" :to="{name:'user', params:{id:article.user.id}}">
-          {{ article.user.name }}
+          {{ article.user.name || '未設定'}}
         </router-link>
       </dd>
       <template v-if="article.categories.length">

@@ -18,17 +18,14 @@ import TextTitle from 'src/components/Common/TextTitle.vue';
 import { useMypageApi } from 'src/composables/api';
 import { useNotify } from 'src/composables/notify';
 import { useAuthStore } from 'src/store/auth';
-import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'MypageRequiresVerified',
   components: { TextTitle },
   setup() {
     const auth = useAuthStore();
-    const router = useRouter();
-    if (auth.validateAuth() && auth.isVerified) {
-      router.push({ name: 'mypage' });
-    }
+    auth.validateAuth();
+
     const { resend } = useMypageApi();
     const notify = useNotify();
     const handle = async () => {

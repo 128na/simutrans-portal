@@ -13,23 +13,22 @@
   </q-expansion-item>
   <q-table v-model:pagination="pagination" :rows="rows" :columns="columns" :visible-columns="visibleColumns"
     :rows-per-page-options="[20,50,100,0]" title="記事一覧" rows-per-page-label="表示件数" no-results-label="該当記事がありません"
-    no-data-label="記事がありません" row-key="id" @row-click.stop="popMenu.open" @row-dblclick.stop="handleDoubleClick" />
-
-  <div v-if="popMenu.show">
-    <pop-menu :style="popMenu.style" />
-  </div>
+    no-data-label="記事がありません" row-key="id" @row-click.stop="(e,r)=>dialogRow=r" @row-dblclick.stop="handleDoubleClick">
+  </q-table>
+  <q-dialog v-model="dialogShow">
+    <dialog-menu :row=dialogRow />
+  </q-dialog>
 </template>
 
 <script>
 import { DateTime } from 'luxon';
 import { useQuasar } from 'quasar';
 import { useMypageStore } from 'src/store/mypage';
-import { usePopMenuStore } from 'src/store/popMenu';
 import {
   defineComponent, computed, ref, watch,
 } from 'vue';
 import { useRouter } from 'vue-router';
-import PopMenu from './PopMenu.vue';
+import DialogMenu from './DialogMenu.vue';
 
 const postTypes = {
   addon_post: 'アドオン投稿',
@@ -182,7 +181,11 @@ export default defineComponent({
     watch(visibleColumns, (val) => {
       $q.localStorage.set('mypage.visibleColumns', val);
     });
-    const popMenu = usePopMenuStore();
+    const dialogRow = ref();
+    const dialogShow = computed({
+      get: () => !!dialogRow.value,
+      set: () => { dialogRow.value = null; },
+    });
     const router = useRouter();
     return {
       rows,
@@ -190,13 +193,13 @@ export default defineComponent({
       pagination,
       visibleColumns,
       options,
-      popMenu,
+      dialogRow,
+      dialogShow,
       handleDoubleClick: (event, row) => {
-        popMenu.close();
         router.push({ name: 'edit', params: { id: row.id } });
       },
     };
   },
-  components: { PopMenu },
+  components: { DialogMenu },
 });
 </script>

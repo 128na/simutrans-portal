@@ -118,6 +118,7 @@ module.exports = configure((ctx) => ({
       'LocalStorage',
       'Notify',
       'Dialog',
+      'Loading',
     ],
   },
 

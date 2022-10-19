@@ -12,9 +12,9 @@
 
 
 
-import {LocalStorage,Notify,Dialog} from 'quasar'
+import {LocalStorage,Notify,Dialog,Loading} from 'quasar'
 
 
 
-export default { config: {"notify":{}},plugins: {LocalStorage,Notify,Dialog} }
+export default { config: {"notify":{}},plugins: {LocalStorage,Notify,Dialog,Loading} }
 

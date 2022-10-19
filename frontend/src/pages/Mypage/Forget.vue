@@ -2,6 +2,7 @@
   <q-page class="q-pa-md fit row wrap justify-center">
     <q-form class="col-6 q-gutter-sm" @submit=handle>
       <text-title>パスワード再設定メール送信</text-title>
+      <api-error-message :message="errorMessage" />
       <q-input v-model="state.email" type="email" label="email" autocomplete="email" />
       <div>
         <q-btn label="送信" color="primary" type="submit" />
@@ -10,34 +11,40 @@
   </q-page>
 </template>
 <script>
+import { useQuasar } from 'quasar';
 import { useMypageApi } from 'src/composables/api';
+import { useErrorHandler } from 'src/composables/errorHandler';
 import { useNotify } from 'src/composables/notify';
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, reactive } from 'vue';
+import TextTitle from 'src/components/Common/TextTitle.vue';
+import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
 
 export default defineComponent({
   name: 'MypageForget',
-  components: {},
+  components: { TextTitle, ApiErrorMessage },
   setup() {
+    const $q = useQuasar();
     const state = reactive({ email: '', password: '', remember: false });
-    const loading = ref(false);
     const notify = useNotify();
 
     const { forget } = useMypageApi();
+    const { errorHandlerStrict, clearErrorMessage, errorMessage } = useErrorHandler();
     const handle = async () => {
-      loading.value = true;
+      $q.loading.show();
       try {
         const res = await forget(state);
         if (res.status === 200) {
+          clearErrorMessage();
           notify.success('メールを送信しました');
         }
       } catch (err) {
-        notify.failed('メール送信に失敗しました');
+        errorHandlerStrict(err);
       } finally {
-        loading.value = false;
+        $q.loading.hide();
       }
     };
     return {
-      state, handle, loading,
+      state, handle, errorMessage,
     };
   },
 });

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useRoute, useRouter } from 'vue-router';
@@ -28,15 +28,16 @@ import TextTitle from 'src/components/Common/TextTitle.vue';
 import { useMypageApi } from 'src/composables/api';
 import { useAuthStore } from 'src/store/auth';
 import { useNotify } from 'src/composables/notify';
+import { useQuasar } from 'quasar';
 
 export default defineComponent({
   name: 'MypageLogin',
   setup() {
+    const $q = useQuasar();
     const store = useAuthStore();
     store.validateAuth();
 
     const authState = reactive({ email: '', password: '', remember: false });
-    const loading = ref(false);
 
     const notify = useNotify();
     const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter());
@@ -44,7 +45,7 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const handle = async () => {
-      loading.value = true;
+      $q.loading.show();
       try {
         const res = await postLogin(authState);
         if (res.status === 200) {
@@ -55,11 +56,11 @@ export default defineComponent({
       } catch (err) {
         errorHandlerStrict(err);
       } finally {
-        loading.value = false;
+        $q.loading.hide();
       }
     };
     return {
-      authState, handle, errorMessage, loading,
+      authState, handle, errorMessage,
     };
   },
   components: { ApiErrorMessage, InputPassword, TextTitle },

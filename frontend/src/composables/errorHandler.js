@@ -9,6 +9,9 @@ export const useErrorHandler = (router) => {
   const setErrorMessage = (error) => {
     errorMessage.value = error;
   };
+  const clearErrorMessage = () => {
+    errorMessage.value = '';
+  };
 
   /**
    *  エラーだとページが成り立たなくなるようなケース用
@@ -40,5 +43,7 @@ export const useErrorHandler = (router) => {
     }
   };
 
-  return { errorMessage, errorHandler, errorHandlerStrict };
+  return {
+    errorMessage, errorHandler, errorHandlerStrict, clearErrorMessage,
+  };
 };

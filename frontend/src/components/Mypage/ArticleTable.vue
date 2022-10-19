@@ -13,7 +13,7 @@
   </q-expansion-item>
   <q-table v-model:pagination="pagination" :rows="rows" :columns="columns" :visible-columns="visibleColumns"
     :rows-per-page-options="[20,50,100,0]" title="記事一覧" rows-per-page-label="表示件数" no-results-label="該当記事がありません"
-    no-data-label="記事がありません" row-key="id" @row-click.stop="(e,r)=>dialogRow=r" @row-dblclick.stop="handleDoubleClick">
+    no-data-label="記事がありません" row-key="id" @row-click.stop="handleClick" @row-dblclick.stop="handleDoubleClick">
   </q-table>
   <q-dialog v-model="dialogShow">
     <dialog-menu :row=dialogRow />
@@ -176,8 +176,10 @@ export default defineComponent({
     });
 
     const $q = useQuasar();
-    const visibleColumns = ref($q.localStorage.getItem('mypage.visibleColumns')
-      || ['id', 'status', 'post_type', 'title', 'totalViewCount', 'totalConversionCount', 'published_at', 'modified_at']);
+    const visibleColumns = ref(
+      $q.localStorage.getItem('mypage.visibleColumns')
+      || ['id', 'status', 'post_type', 'title', 'totalViewCount', 'totalConversionCount', 'published_at', 'modified_at'],
+    );
     watch(visibleColumns, (val) => {
       $q.localStorage.set('mypage.visibleColumns', val);
     });
@@ -187,6 +189,18 @@ export default defineComponent({
       set: () => { dialogRow.value = null; },
     });
     const router = useRouter();
+    let timer = null;
+    const handleClick = (event, row) => {
+      timer = setTimeout(() => {
+        dialogRow.value = row;
+      }, 250);
+    };
+    const handleDoubleClick = (event, row) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      router.push({ name: 'edit', params: { id: row.id } });
+    };
     return {
       rows,
       columns,
@@ -195,9 +209,8 @@ export default defineComponent({
       options,
       dialogRow,
       dialogShow,
-      handleDoubleClick: (event, row) => {
-        router.push({ name: 'edit', params: { id: row.id } });
-      },
+      handleClick,
+      handleDoubleClick,
     };
   },
   components: { DialogMenu },

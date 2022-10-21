@@ -57,6 +57,7 @@ class ArticleEditorService extends Service
                 'id' => $item->id,
                 'url' => route('category', ['type' => $item->type, 'slug' => $item->slug]),
                 'type' => $item->type,
+                'slug' => $item->slug,
             ];
 
             return $list;

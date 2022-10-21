@@ -17,7 +17,20 @@ export const useArticleEditStore = defineStore('articleEdit', {
     categories: (state) => state.options.categories,
     postTypes: (state) => state.options.post_types,
     canReservation: (state) => state.article.published_at === null || state.article.status === 'reservation',
-
+    getCategory: (state) => (id) => state.options.categories.addon.find((c) => c.id === id)
+      || state.options.categories.license.find((c) => c.id === id)
+      || state.options.categories.page.find((c) => c.id === id)
+      || state.options.categories.pak.find((c) => c.id === id)
+      || state.options.categories.pak128_position.find((c) => c.id === id),
+    pak128CategoryId: (state) => {
+      const { pak } = state.options.categories;
+      return pak.find((c) => c.name === 'Pak128').id || null;
+    },
+    includesPak128(state) { state.article.categories.some((c) => c.id === this.pak128CategoryId); },
+    pak: (state) => state.options.categories.pak.map((c) => Object.create({ label: c.name, value: c.id })),
+    addon: (state) => state.options.categories.addon.map((c) => Object.create({ label: c.name, value: c.id })),
+    pak128Position: (state) => state.options.categories.pak128_position.map((c) => Object.create({ label: c.name, value: c.id })),
+    license: (state) => state.options.categories.license.map((c) => Object.create({ label: c.name, value: c.id })),
   },
   actions: {
     togglePreview() {

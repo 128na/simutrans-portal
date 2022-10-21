@@ -1,6 +1,9 @@
 <template>
   <div v-if="isReservation">
-    <q-input v-model="displayDateTime" label="予約投稿日時">
+    <q-input v-model="displayDateTime" label>
+      <template v-slot:label>
+        <label-required>予約投稿日時</label-required>
+      </template>
       <template v-slot:append>
         <q-icon name="event" class="cursor-pointer">
           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -33,10 +36,12 @@ import { useArticleEditStore } from 'src/store/articleEdit';
 import { DT_FORMAT, D_FORMAT, defaultDateTime } from 'src/const';
 import { defineComponent, computed } from 'vue';
 import { DateTime } from 'luxon';
+import LabelRequired from 'src/components/Common/LabelRequired.vue';
 
 export default defineComponent({
   name: 'FormReservation',
-  components: {},
+  components: { LabelRequired },
+
   setup() {
     const editor = useArticleEditStore();
     const isReservation = computed(() => (editor.article.status === 'reservation'));

@@ -1,7 +1,7 @@
 <template>
   <q-page v-if="editor.ready">
     <div class="row">
-      <div class="col q-pa-md q-gutter-md">
+      <div class="col q-pa-md q-gutter-sm">
         <article-form />
         <div class="row">
           <q-btn color="primary">保存する</q-btn>

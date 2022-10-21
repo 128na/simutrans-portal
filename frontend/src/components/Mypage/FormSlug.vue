@@ -1,5 +1,8 @@
 <template>
-  <q-input label="URL" v-model="rawSlug">
+  <q-input label v-model="rawSlug">
+    <template v-slot:label>
+      <label-required>スラッグ</label-required>
+    </template>
     <template v-slot:append>
       <q-btn flat color="secondary" @click="rawSlug=title">タイトルからコピー</q-btn>
     </template>
@@ -8,12 +11,13 @@
 </template>
 <script>
 import { useAppInfo } from 'src/composables/appInfo';
-import { defineComponent, computed } from 'vue';
+import LabelRequired from 'src/components/Common/LabelRequired.vue';
+import { computed, defineComponent } from 'vue';
 
 const regReplace = /(!|"|#|\$|%|&|'|\(|\)|\*|\+|,|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\s|\.)+/gi;
 export default defineComponent({
   name: 'FormSlug',
-  components: {},
+  components: { LabelRequired },
   props: {
     modelValue: {
       type: String,

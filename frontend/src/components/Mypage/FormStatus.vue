@@ -1,15 +1,16 @@
 <template>
-  <div><label for="status">公開状態</label></div>
+  <label-required>公開状態</label-required>
   <q-btn-toggle v-model="editor.article.status" :options="options" @update:model-value="handle" name="status" />
 </template>
 <script>
 import { useArticleEditStore } from 'src/store/articleEdit';
 import { defineComponent, computed } from 'vue';
 import { defaultDateTime } from 'src/const';
+import LabelRequired from 'src/components/Common/LabelRequired.vue';
 
 export default defineComponent({
   name: 'FormStatus',
-  components: {},
+  components: { LabelRequired },
   setup() {
     const editor = useArticleEditStore();
     const options = computed(() => (editor.canReservation

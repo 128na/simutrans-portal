@@ -53,10 +53,10 @@ class ArticleEditorService extends Service
                 $list[$item->type] = [];
             }
             $list[$item->type][] = [
-                'name' => __("category.{$item->type}.{$item->slug}"),
                 'id' => $item->id,
-                'url' => route('category', ['type' => $item->type, 'slug' => $item->slug]),
+                'name' => __("category.{$item->type}.{$item->slug}"),
                 'type' => $item->type,
+                'slug' => $item->slug,
             ];
 
             return $list;

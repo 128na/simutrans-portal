@@ -249,7 +249,7 @@ jobs:
           && chmod 0600 ~/.ssh/id_rsa \
           && echo "${{secrets.KNOWN_HOSTS}}" >> ~/.ssh/known_hosts
       - name: Deploy
-        uses: garygrossgarten/github-action-ssh@0.6.4
+        uses: garygrossgarten/github-action-ssh@0.6.3
         with:
           command: cd ${{ secrets.APP_DIR }}
             && git fetch -p

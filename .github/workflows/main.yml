@@ -43,7 +43,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
       - name: Cache frontend_node_modules
         id: frontend-cache-npm
         uses: actions/cache@v3
@@ -89,7 +89,7 @@ jobs:
         if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
         run: composer install
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
       - name: Cache frontend_node_modules
         id: frontend-cache-npm
         uses: actions/cache@v3
@@ -156,7 +156,7 @@ jobs:
       - name: Storage link
         run: php artisan storage:link
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
       - name: Cache frontend_node_modules
         id: frontend-cache-npm
         uses: actions/cache@v3
@@ -230,7 +230,7 @@ jobs:
       - name: set app version
         run: sed -i "s/APP_VERSION=.*/APP_VERSION=$( git describe --tags --abbrev=0 )/" frontend/.env
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
       - name: Cache frontend_node_modules
         id: frontend-cache-npm
         uses: actions/cache@v3
@@ -249,26 +249,26 @@ jobs:
       - name: Build Assets
         run: cd frontend && npm run build
       - name: Install SSH key
-        run: mkdir -p ~/.ssh \
-          && echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa \
-          && chmod 0600 ~/.ssh/id_rsa \
+        run: >
+          mkdir -p ~/.ssh
+          && echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa
+          && chmod 0600 ~/.ssh/id_rsa
           && echo "${{secrets.KNOWN_HOSTS}}" >> ~/.ssh/known_hosts
       - name: Deploy
-        uses: garygrossgarten/github-action-ssh@release
-        with:
-          command: cd ${{ secrets.APP_DIR }}
-            && git fetch -p
-            && git checkout ${{ github.ref }}
-            && php -c ~/www/php.ini ~/bin/composer.phar install --optimize-autoloader --no-dev
-            && php -c ~/www/php.ini artisan migrate --force
-            && php -c ~/www/php.ini artisan migrate:status
-            && php -c ~/www/php.ini artisan optimize:clear
-            && php -c ~/www/php.ini artisan optimize
-            && php -c ~/www/php.ini artisan event:cache
-            && php -c ~/www/php.ini artisan view:cache
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          privateKey: /home/runner/.ssh/id_rsa
+        run: >
+          ssh -i /home/runner/.ssh/id_rsa ${{ secrets.USER }}@${{ secrets.HOST }} "
+          cd ${{ secrets.APP_DIR }}
+          && git fetch -p
+          && git checkout ${{ github.ref }}
+          && php -c ~/www/php.ini ~/bin/composer.phar install --optimize-autoloader --no-dev
+          && php -c ~/www/php.ini artisan migrate --force
+          && php -c ~/www/php.ini artisan migrate:status
+          && php -c ~/www/php.ini artisan optimize:clear
+          && php -c ~/www/php.ini artisan optimize
+          && php -c ~/www/php.ini artisan event:cache
+          && php -c ~/www/php.ini artisan view:cache"
 
       - name: rsync assets
-        run: rsync -ah -e "ssh -i /home/runner/.ssh/id_rsa" ./public/ ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/public
+        run: >
+          rsync -ah -e "ssh -i /home/runner/.ssh/id_rsa" ./public/
+          ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/public

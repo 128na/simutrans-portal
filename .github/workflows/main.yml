@@ -249,8 +249,8 @@ jobs:
           && chmod 0600 ~/.ssh/id_rsa \
           && echo "${{secrets.KNOWN_HOSTS}}" >> ~/.ssh/known_hosts
       - name: Deploy
-        run:
-          ssh -i /home/runner/.ssh/id_rsa ${{ secrets.USER }}@${{ secrets.HOST }} "\
+        run: >
+          ssh -i /home/runner/.ssh/id_rsa ${{ secrets.USER }}@${{ secrets.HOST }} "
           cd ${{ secrets.APP_DIR }}
           && git fetch -p
           && git checkout ${{ github.ref }}

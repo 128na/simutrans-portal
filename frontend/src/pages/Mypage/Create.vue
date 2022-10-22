@@ -2,9 +2,10 @@
   <q-page v-if="editor.ready">
     <div class="row">
       <div class="col q-pa-md q-gutter-sm">
+        <api-error-message :message="errorMessage" />
         <article-form />
         <div class="row">
-          <q-btn color="primary">保存する</q-btn>
+          <q-btn color="primary" @click="handle">保存する</q-btn>
           <q-space />
           <q-btn @click="editor.togglePreview()" color="secondary">
             {{editor.preview ? "プレビュー非表示" : "プレビュー表示"}}
@@ -29,11 +30,16 @@ import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import LoadingPage from 'src/components/Common/LoadingPage.vue';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { useMypageStore } from 'src/store/mypage';
+import { useErrorHandler } from 'src/composables/errorHandler';
+import { useQuasar } from 'quasar';
+import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
 import ArticleForm from '../../components/Mypage/ArticleForm.vue';
 
 export default defineComponent({
   name: 'MypageCreate',
-  components: { ArticleForm, LoadingPage, FrontArticleShow },
+  components: {
+    ArticleForm, LoadingPage, FrontArticleShow, ApiErrorMessage,
+  },
   setup() {
     const editor = useArticleEditStore();
     const route = useRoute();
@@ -96,9 +102,30 @@ export default defineComponent({
       { user: auth.user },
     ));
 
+    const $q = useQuasar();
+    const { errorMessage, errorHandlerStrict } = useErrorHandler();
+    const handle = async () => {
+      $q.loading.show();
+      try {
+        const params = {
+          article: editor.article,
+          should_tweet: editor.tweet,
+        };
+        const res = await api.createArticle(params);
+        notify.success('保存しました');
+        router.push({ name: 'edit', params: { id: res.data.data.id } });
+      } catch (error) {
+        errorHandlerStrict(error, '保存に失敗しました');
+      } finally {
+        $q.loading.hide();
+      }
+    };
+
     return {
       editor,
       articleWithAttachments,
+      handle,
+      errorMessage,
     };
   },
 });

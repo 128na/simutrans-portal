@@ -2,14 +2,16 @@
   <label-optional>サムネイル画像</label-optional>
   <q-input :model-value="filename" readonly>
     <template v-slot:append>
-      <file-manager v-model="selected" />
+      <q-icon name="close" class="cursor-pointer q-mr-sm" @click="editor.article.contents.thumbnail=null" />
+      <file-manager v-model="editor.article.contents.thumbnail" onlyImage />
     </template>
   </q-input>
 </template>
 <script>
 import { useArticleEditStore } from 'src/store/articleEdit';
 import LabelOptional from 'src/components/Common/LabelOptional.vue';
-import { defineComponent, ref, computed } from 'vue';
+import { defineComponent, computed } from 'vue';
+import { useMypageStore } from 'src/store/mypage';
 import FileManager from './FileManager.vue';
 
 export default defineComponent({
@@ -17,11 +19,17 @@ export default defineComponent({
   components: { LabelOptional, FileManager },
   setup() {
     const editor = useArticleEditStore();
-    const selected = ref([]);
-    const filename = computed(() => (selected.value.length ? selected.value.join(', ') : '未選択'));
+    const mypage = useMypageStore();
+    const filename = computed(() => {
+      if (!editor.article.contents.thumbnail) {
+        return '未選択';
+      }
+      const file = mypage.findAttachmentById(editor.article.contents.thumbnail);
+
+      return file?.original_name || 'ファイルが見つかりません';
+    });
     return {
       editor,
-      selected,
       filename,
     };
   },

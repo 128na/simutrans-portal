@@ -1,7 +1,7 @@
 <template>
   <q-input label v-model="rawSlug">
     <template v-slot:label>
-      <label-required>スラッグ</label-required>
+      <label-required>パーマリンク</label-required>
     </template>
     <template v-slot:append>
       <q-btn flat color="secondary" @click="rawSlug=title">タイトルからコピー</q-btn>

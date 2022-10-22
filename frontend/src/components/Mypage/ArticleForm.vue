@@ -7,7 +7,7 @@
   <div>
     <form-slug v-model="editor.article.slug" :title="editor.article.title" />
   </div>
-  <form-thumbnail imageOnly />
+  <form-thumbnail />
   <component :is="postTypeForm" />
   <form-status />
   <form-reservation />

@@ -14,6 +14,7 @@ export const useMypageStore = defineStore('mypage', {
   getters: {
     findArticleById: (state) => (id) => state.articles?.find((a) => a.id === id),
     findArticleBySlug: (state) => (slug) => state.articles?.find((a) => a.slug === slug),
+    findAttachmentById: (state) => (id) => state.attachments?.find((a) => a.id === id),
   },
   actions: {
   },

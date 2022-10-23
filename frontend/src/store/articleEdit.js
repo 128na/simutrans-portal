@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useMypageApi } from 'src/composables/api';
 import { useNotify } from 'src/composables/notify';
 
@@ -64,8 +64,14 @@ const createMarkdown = () => ({
   categories: [],
   published_at: null,
 });
+const unloadListener = (event) => {
+  event.preventDefault();
+  event.returnValue = '';
+};
 
 export const useArticleEditStore = defineStore('articleEdit', () => {
+  // 記事変更検知用
+  let original = null;
   // article
   const article = ref(null);
   const options = ref(null);
@@ -73,6 +79,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   const tweet = ref(false);
   const setArticle = (a) => {
     article.value = JSON.parse(JSON.stringify(a));
+    original = JSON.stringify(a);
   };
   const createArticle = (postType) => {
     switch (postType) {
@@ -99,6 +106,15 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
 
     return res.data.data;
   };
+
+  watch(article, (v) => {
+    const current = JSON.stringify(v);
+    if (original !== current) {
+      window.addEventListener('beforeunload', unloadListener);
+    } else {
+      window.removeEventListener('beforeunload', unloadListener);
+    }
+  }, { deep: true });
 
   // option
   const statuses = computed(() => options.value.statuses);

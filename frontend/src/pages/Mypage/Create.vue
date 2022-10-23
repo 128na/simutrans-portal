@@ -67,11 +67,11 @@ export default defineComponent({
       createArticle(to);
     });
 
-    const articleWithAttachments = computed(() => Object.assign(
-      editor.article,
-      { attachments: mypage.attachments },
-      { user: auth.user },
-    ));
+    const articleWithAttachments = computed(() => ({
+      ...editor.article,
+      attachments: mypage.attachments,
+      user: auth.user,
+    }));
 
     const $q = useQuasar();
     const { errorMessage, errorHandlerStrict } = useErrorHandler();

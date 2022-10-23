@@ -14,10 +14,10 @@ export const useMypageStore = defineStore('mypage', () => {
 
   const attachments = ref(null);
   const findAttachmentById = computed(() => (id) => attachments.value?.find((a) => a.id === id));
+  const notify = useNotify();
   const fetchAttachments = () => api.fetchAttachments()
     .then((res) => { attachments.value = res.data.data; })
     .catch(() => {
-      const notify = useNotify();
       notify.failedRetryable('添付ファイル一覧取得に失敗しました', fetchAttachments);
     });
 

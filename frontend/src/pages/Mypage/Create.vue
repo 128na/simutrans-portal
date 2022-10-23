@@ -1,22 +1,24 @@
 <template>
   <q-page v-if="editor.ready">
-    <div class="row">
-      <div class="col q-pa-md q-gutter-sm">
+    <q-splitter v-model="editor.split" reverse :limits="[0, Infinity]" :style="style" ref="splitterRef"
+      before-class="q-pa-md q-gutter-sm">
+      <template v-slot:before>
         <api-error-message :message="errorMessage" />
         <article-form />
         <div class="row">
           <q-btn color="primary" @click="handle">保存する</q-btn>
           <q-space />
           <q-btn @click="editor.togglePreview()" color="secondary">
-            {{editor.preview ? "プレビュー非表示" : "プレビュー表示"}}
+            {{editor.split ? "プレビュー非表示" : "プレビュー表示"}}
             <q-icon name="keyboard_double_arrow_right" />
           </q-btn>
         </div>
-      </div>
-      <div class="col q-pa-md" v-show="editor.preview">
-        <front-article-show :article="articleWithAttachments" />
-      </div>
-    </div>
+      </template>
+      <template v-slot:after v-if="editor.split">
+        <front-article-show :article="articleWithAttachments" class="q-pa-md" />
+      </template>
+
+    </q-splitter>
   </q-page>
   <loading-page v-else />
 </template>
@@ -25,13 +27,15 @@ import { useMypageApi } from 'src/composables/api';
 import { useNotify } from 'src/composables/notify';
 import { useArticleEditStore } from 'src/store/articleEdit';
 import { useAuthStore } from 'src/store/auth';
-import { defineComponent, computed } from 'vue';
+import {
+  defineComponent, computed, ref, watchEffect,
+} from 'vue';
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import LoadingPage from 'src/components/Common/LoadingPage.vue';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { useMypageStore } from 'src/store/mypage';
 import { useErrorHandler } from 'src/composables/errorHandler';
-import { useQuasar } from 'quasar';
+import { useQuasar, dom } from 'quasar';
 import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
 import ArticleForm from '../../components/Mypage/ArticleForm.vue';
 
@@ -41,6 +45,7 @@ export default defineComponent({
     ArticleForm, LoadingPage, FrontArticleShow, ApiErrorMessage,
   },
   setup() {
+    const splitterRef = ref(null);
     const editor = useArticleEditStore();
     const route = useRoute();
     const router = useRouter();
@@ -121,11 +126,22 @@ export default defineComponent({
       }
     };
 
+    const style = ref({ height: '100vh' });
+    watchEffect(() => {
+      const val = splitterRef.value;
+      if (val) {
+        const { top } = dom.offset(val.$el);
+        style.value = { height: `calc(100vh - ${top}px)` };
+      }
+    }, { flush: 'post' });
+
     return {
+      splitterRef,
       editor,
       articleWithAttachments,
       handle,
       errorMessage,
+      style,
     };
   },
 });

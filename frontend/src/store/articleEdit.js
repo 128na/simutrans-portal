@@ -6,7 +6,7 @@ import { defineStore } from 'pinia';
 export const useArticleEditStore = defineStore('articleEdit', {
   state: () => ({
     article: null,
-    preview: true,
+    split: 50,
     tweet: false,
     withoutUpdateModifiedAt: false,
     options: null,
@@ -34,7 +34,7 @@ export const useArticleEditStore = defineStore('articleEdit', {
   },
   actions: {
     togglePreview() {
-      this.preview = !this.preview;
+      this.split = this.split ? 0 : 50;
     },
     setArticle(article) {
       this.article = JSON.parse(JSON.stringify(article));

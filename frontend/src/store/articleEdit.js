@@ -139,10 +139,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     || options.value?.categories?.page?.find((c) => c.id === id)
     || options.value?.categories?.pak?.find((c) => c.id === id)
     || options.value?.categories?.pak128_position?.find((c) => c.id === id));
-  const pak128CategoryId = computed(() => {
-    const { pak } = options.value?.categories;
-    return pak?.find((c) => c.name === 'Pak128').id || null;
-  });
+  const pak128CategoryId = computed(() => options.value?.categories?.pak?.find((c) => c.name === 'Pak128')?.id);
   const includesPak128 = computed(() => article.value?.categories?.some((c) => c.id === pak128CategoryId.value));
   const pak = computed(() => options.value?.categories?.pak?.map((c) => Object.create({ label: c.name, value: c.id })));
   const addon = computed(() => options.value?.categories?.addon?.map((c) => Object.create({ label: c.name, value: c.id })));

@@ -103,6 +103,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     };
     const res = await api.createArticle(params);
     notify.success('保存しました');
+    window.removeEventListener('beforeunload', unloadListener);
 
     return res.data.data;
   };

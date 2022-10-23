@@ -51,9 +51,9 @@ export default defineComponent({
     const router = useRouter();
     const createArticle = (currentRoute) => {
       switch (currentRoute.params.post_type) {
-        case 'addon_introduction':
+        case 'addon-introduction':
           return editor.createAddonIntroduction();
-        case 'addon_post':
+        case 'addon-post':
           return editor.createAddonPost();
         case 'page':
           return editor.createPage();

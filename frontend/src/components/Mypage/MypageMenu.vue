@@ -31,13 +31,13 @@
       <q-item>
         <q-item-section>新規投稿</q-item-section>
       </q-item>
-      <q-item :to="{name:'create', params:{post_type:'addon_post'}}">
+      <q-item :to="{name:'create', params:{post_type:'addon-post'}}">
         <q-item-section avatar>
           <q-icon name="article" />
         </q-item-section>
         <q-item-section>アドオン投稿</q-item-section>
       </q-item>
-      <q-item :to="{name:'create', params:{post_type:'addon_introduction'}}">
+      <q-item :to="{name:'create', params:{post_type:'addon-introduction'}}">
         <q-item-section avatar>
           <q-icon name="article" />
         </q-item-section>

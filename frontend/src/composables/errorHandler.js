@@ -1,10 +1,13 @@
 import { ref } from 'vue';
+import { useNotify } from './notify';
 
 export const useErrorHandler = (router) => {
   const errorMessage = ref('');
+  const notify = useNotify();
 
   const setValidationErrorMessage = (errors) => {
     errorMessage.value = Object.values(errors).map((messages) => messages.join('、')).join('\n');
+    notify.failedAutoClose('入力内容を確認してください');
   };
   const setErrorMessage = (error) => {
     errorMessage.value = error;

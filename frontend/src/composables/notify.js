@@ -20,6 +20,12 @@ export const useNotify = () => {
     timeout: 0,
     actions: [{ icon: 'close', color: 'white' }],
   });
+  const failedAutoClose = (message) => $q.notify({
+    type: 'negative',
+    position: 'top',
+    message,
+    actions: [{ icon: 'close', color: 'white' }],
+  });
   const failedRetryable = (message, handler) => $q.notify({
     type: 'negative',
     position: 'top',
@@ -37,6 +43,7 @@ export const useNotify = () => {
     success,
     info,
     failed,
+    failedAutoClose,
     failedRetryable,
   };
 };

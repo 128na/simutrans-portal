@@ -1,4 +1,9 @@
 <template>
+  <q-input label v-model="editor.article.contents.author">
+    <template v-slot:label>
+      <label-required>作者</label-required>
+    </template>
+  </q-input>
   <form-addon-categories />
   <label-optional>タグ</label-optional>
   <form-tag v-model="editor.article.tags" />

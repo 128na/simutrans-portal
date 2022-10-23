@@ -1,21 +1,23 @@
 <template>
   <q-page v-if="editor.ready">
     <q-splitter v-model="editor.split" reverse :limits="[0, Infinity]" :style="style" ref="splitterRef"
-      before-class="q-pa-md q-gutter-sm">
+      before-class="q-px-md">
       <template v-slot:before>
-        <api-error-message :message="errorMessage" />
-        <article-form />
-        <div class="row">
-          <q-btn color="primary" @click="handle">保存する</q-btn>
-          <q-space />
-          <q-btn @click="editor.togglePreview()" color="secondary">
-            {{editor.split ? "プレビュー非表示" : "プレビュー表示"}}
-            <q-icon name="keyboard_double_arrow_right" />
-          </q-btn>
+        <div class="q-gutter-sm">
+          <api-error-message :message="errorMessage" />
+          <article-form />
+          <div class="row">
+            <q-btn color="primary" @click="handle">保存する</q-btn>
+            <q-space />
+            <q-btn @click="editor.togglePreview()" color="secondary">
+              {{editor.split ? "プレビュー非表示" : "プレビュー表示"}}
+              <q-icon name="keyboard_double_arrow_right" />
+            </q-btn>
+          </div>
         </div>
       </template>
       <template v-slot:after v-if="editor.split">
-        <front-article-show :article="articleWithAttachments" class="q-pa-md" />
+        <front-article-show :article="articleWithAttachments" class="q-px-md" />
       </template>
 
     </q-splitter>
@@ -76,8 +78,13 @@ export default defineComponent({
     const handle = async () => {
       $q.loading.show();
       try {
-        const article = await editor.saveArticle();
-        router.push({ name: 'edit', params: { id: article.id } });
+        const { slug } = editor.article;
+        const articles = await editor.saveArticle();
+        mypage.articles = articles;
+        const article = mypage.findArticleBySlug(slug);
+        if (article) {
+          router.push({ name: 'edit', params: { id: article.id } });
+        }
       } catch (error) {
         errorHandlerStrict(error, '保存に失敗しました');
       } finally {
@@ -88,19 +95,19 @@ export default defineComponent({
     const splitterRef = ref(null);
     const style = ref({ height: '100vh' });
     watchEffect(() => {
-      const val = splitterRef.value;
-      if (val) {
-        const { top } = dom.offset(val.$el);
+      const el = splitterRef.value?.$el;
+      if (el) {
+        const { top } = dom.offset(el);
         style.value = { height: `calc(100vh - ${top}px)` };
       }
     }, { flush: 'post' });
 
     return {
-      splitterRef,
       editor,
       articleWithAttachments,
       handle,
       errorMessage,
+      splitterRef,
       style,
     };
   },

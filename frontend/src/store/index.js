@@ -12,8 +12,9 @@ import { createPinia } from 'pinia';
  * with the Store instance.
  */
 
-export default store((/* { ssrContext } */) => {
-  const Store = createPinia();
+export default store(createPinia());
+// export default store((/* { ssrContext } */) => {
+//   const Store = createPinia();
 
-  return Store;
-});
+//   return Store;
+// });

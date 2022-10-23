@@ -219,4 +219,12 @@ class UserControllerTest extends ArticleTestCase
         $tokenAfterLogout = $res->json('token');
         $this->assertNotEquals($tokenAfterLogin, $tokenAfterLogout, 'ログアウトすると使えなくなる');
     }
+
+    public function testToken指定リファラ以外はNG()
+    {
+        $url = route('api.v2.token');
+        $res = $this->call('GET', $url, [], [], [], ['HTTP_REFERER' => 'http://example.com']);
+        $res->dump();
+        $res->assertOk();
+    }
 }

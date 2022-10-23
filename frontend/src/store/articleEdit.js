@@ -117,9 +117,9 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   }, { deep: true });
 
   // option
-  const statuses = computed(() => options.value.statuses);
-  const categories = computed(() => options.value.categories);
-  const canReservation = computed(() => article.value.published_at === null || article.value.status === 'reservation');
+  const statuses = computed(() => options.value?.statuses);
+  const categories = computed(() => options.value?.categories);
+  const canReservation = computed(() => article.value?.published_at === null || article.value?.status === 'reservation');
   const ready = computed(() => article.value && options.value);
   const fetchOptions = () => api.fetchOptions()
     .then((res) => { options.value = res.data; })
@@ -134,20 +134,20 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   };
 
   // category
-  const getCategory = computed(() => (id) => options.value.categories.addon.find((c) => c.id === id)
-    || options.value.categories.license.find((c) => c.id === id)
-    || options.value.categories.page.find((c) => c.id === id)
-    || options.value.categories.pak.find((c) => c.id === id)
-    || options.value.categories.pak128_position.find((c) => c.id === id));
+  const getCategory = computed(() => (id) => options.value?.categories?.addon?.find((c) => c.id === id)
+    || options.value?.categories?.license?.find((c) => c.id === id)
+    || options.value?.categories?.page?.find((c) => c.id === id)
+    || options.value?.categories?.pak?.find((c) => c.id === id)
+    || options.value?.categories?.pak128_position?.find((c) => c.id === id));
   const pak128CategoryId = computed(() => {
-    const { pak } = options.value.categories;
-    return pak.find((c) => c.name === 'Pak128').id || null;
+    const { pak } = options.value?.categories;
+    return pak?.find((c) => c.name === 'Pak128').id || null;
   });
-  const includesPak128 = computed(() => article.value.categories.some((c) => c.id === pak128CategoryId.value));
-  const pak = computed(() => options.value.categories.pak.map((c) => Object.create({ label: c.name, value: c.id })));
-  const addon = computed(() => options.value.categories.addon.map((c) => Object.create({ label: c.name, value: c.id })));
-  const pak128Position = computed(() => options.value.categories.pak128_position.map((c) => Object.create({ label: c.name, value: c.id })));
-  const license = computed(() => options.value.categories.license.map((c) => Object.create({ label: c.name, value: c.id })));
+  const includesPak128 = computed(() => article.value?.categories?.some((c) => c.id === pak128CategoryId.value));
+  const pak = computed(() => options.value?.categories?.pak?.map((c) => Object.create({ label: c.name, value: c.id })));
+  const addon = computed(() => options.value?.categories?.addon?.map((c) => Object.create({ label: c.name, value: c.id })));
+  const pak128Position = computed(() => options.value?.categories?.pak128_position?.map((c) => Object.create({ label: c.name, value: c.id })));
+  const license = computed(() => options.value?.categories?.license?.map((c) => Object.create({ label: c.name, value: c.id })));
 
   return {
     article,

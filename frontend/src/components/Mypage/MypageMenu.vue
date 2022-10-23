@@ -86,6 +86,7 @@ import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import MetaInfo from 'src/components/Common/MetaInfo.vue';
 import { useNotify } from 'src/composables/notify';
+import axios from 'axios';
 
 export default defineComponent({
   name: 'MypageMenu',
@@ -96,11 +97,13 @@ export default defineComponent({
 
   setup() {
     const store = useAuthStore();
-    const { postLogout } = useMypageApi();
+    const { postLogout, getToken } = useMypageApi();
     const router = useRouter();
     const notify = useNotify();
     const logout = () => {
-      postLogout();
+      postLogout().then(() => {
+        getToken().then((res) => { axios.defaults.headers.common['X-CSRF-TOKEN'] = res.data.token; });
+      });
       store.logout();
       notify.info('ログアウトしました');
       router.push({ name: 'login' });

@@ -40,6 +40,7 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
     Route::POST('login', [LoginController::class, 'login'])->name('login');
     Route::POST('logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('mypage/user', [UserController::class, 'index'])->name('users.index');
+    Route::get('mypage/token', [UserController::class, 'token'])->name('token');
     // PWリセット
     Route::POST('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
     // マイページ機能

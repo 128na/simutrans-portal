@@ -1,5 +1,5 @@
 <template>
-  <q-input label v-model="editor.article.contents.markdown" type="textarea">
+  <q-input label v-model="editor.article.contents.markdown" rows="12" type="textarea">
     <template v-slot:label>
       <label-required>内容</label-required>
     </template>

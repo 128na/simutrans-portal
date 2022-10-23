@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia';
+import { useMypageApi } from 'src/composables/api';
+import { useNotify } from 'src/composables/notify';
 
+const api = useMypageApi();
 /**
  * フロント用記事キャッシュ
  */
@@ -39,8 +42,22 @@ export const useArticleEditStore = defineStore('articleEdit', {
     setArticle(article) {
       this.article = JSON.parse(JSON.stringify(article));
     },
+    createArticle(postType) {
+      switch (postType) {
+        case 'addon-introduction':
+          return this.setArticle(this.createAddonIntroduction());
+        case 'addon-post':
+          return this.setArticle(this.createAddonPost());
+        case 'page':
+          return this.setArticle(this.createPage());
+        case 'markdown':
+          return this.setArticle(this.createMarkdown());
+        default:
+          throw new Error('invalid post type');
+      }
+    },
     createAddonPost() {
-      this.setArticle({
+      return {
         post_type: 'addon-post',
         title: '',
         slug: '',
@@ -56,10 +73,10 @@ export const useArticleEditStore = defineStore('articleEdit', {
         categories: [],
         tags: [],
         published_at: null,
-      });
+      };
     },
     createAddonIntroduction() {
-      this.setArticle({
+      return {
         post_type: 'addon-introduction',
         title: '',
         slug: '',
@@ -77,10 +94,10 @@ export const useArticleEditStore = defineStore('articleEdit', {
         categories: [],
         tags: [],
         published_at: null,
-      });
+      };
     },
     createPage() {
-      this.setArticle({
+      return {
         post_type: 'page',
         title: '',
         slug: '',
@@ -91,10 +108,10 @@ export const useArticleEditStore = defineStore('articleEdit', {
         },
         categories: [],
         published_at: null,
-      });
+      };
     },
     createMarkdown() {
-      this.setArticle({
+      return {
         post_type: 'markdown',
         title: '',
         slug: '',
@@ -105,7 +122,26 @@ export const useArticleEditStore = defineStore('articleEdit', {
         },
         categories: [],
         published_at: null,
-      });
+      };
+    },
+    fetchOptions() {
+      return api.fetchOptions()
+        .then((res) => { this.options = res.data; })
+        .catch(() => {
+          const notify = useNotify();
+          notify.failedRetryable('カテゴリ一覧取得に失敗しました', this.fetchOptions);
+        });
+    },
+    async saveArticle() {
+      const params = {
+        article: this.article,
+        should_tweet: this.tweet,
+      };
+      const res = await api.createArticle(params);
+      const notify = useNotify();
+      notify.success('保存しました');
+
+      return res.data.data;
     },
   },
 });

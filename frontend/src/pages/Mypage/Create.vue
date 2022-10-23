@@ -23,8 +23,6 @@
   <loading-page v-else />
 </template>
 <script>
-import { useMypageApi } from 'src/composables/api';
-import { useNotify } from 'src/composables/notify';
 import { useArticleEditStore } from 'src/store/articleEdit';
 import { useAuthStore } from 'src/store/auth';
 import {
@@ -45,57 +43,23 @@ export default defineComponent({
     ArticleForm, LoadingPage, FrontArticleShow, ApiErrorMessage,
   },
   setup() {
-    const splitterRef = ref(null);
+    const mypage = useMypageStore();
     const editor = useArticleEditStore();
+    const auth = useAuthStore();
+    if (auth.validateAuth()) {
+      editor.fetchOptions();
+      mypage.fetchAttachments();
+    }
+
     const route = useRoute();
     const router = useRouter();
     const createArticle = (currentRoute) => {
-      switch (currentRoute.params.post_type) {
-        case 'addon-introduction':
-          return editor.createAddonIntroduction();
-        case 'addon-post':
-          return editor.createAddonPost();
-        case 'page':
-          return editor.createPage();
-        case 'markdown':
-          return editor.createMarkdown();
-        default:
-          return router.push({ name: 'error', params: { status: 404 } });
-      }
-    };
-    const api = useMypageApi();
-    const notify = useNotify();
-    const fetchOptions = async () => {
-      if (editor.options) {
-        return;
-      }
       try {
-        const res = await api.fetchOptions();
-        editor.options = res.data;
+        editor.createArticle(currentRoute.params.post_type);
       } catch (error) {
-        notify.failed('カテゴリ一覧取得に失敗しました');
-        notify.failedRetryable('カテゴリ一覧取得に失敗しました', fetchOptions);
+        router.push({ name: 'error', params: { status: 404 }, replace: true });
       }
     };
-
-    const mypage = useMypageStore();
-    const fetchAttachments = async () => {
-      if (mypage.attachments) {
-        return;
-      }
-      try {
-        const res = await api.fetchAttachments();
-        mypage.attachments = res.data.data;
-      } catch (error) {
-        notify.failedRetryable('添付ファイル一覧取得に失敗しました', fetchAttachments);
-      }
-    };
-    const auth = useAuthStore();
-    if (auth.validateAuth()) {
-      fetchOptions();
-      fetchAttachments();
-    }
-
     createArticle(route);
     onBeforeRouteUpdate((to) => {
       createArticle(to);
@@ -112,13 +76,8 @@ export default defineComponent({
     const handle = async () => {
       $q.loading.show();
       try {
-        const params = {
-          article: editor.article,
-          should_tweet: editor.tweet,
-        };
-        const res = await api.createArticle(params);
-        notify.success('保存しました');
-        router.push({ name: 'edit', params: { id: res.data.data.id } });
+        const article = await editor.saveArticle();
+        router.push({ name: 'edit', params: { id: article.id } });
       } catch (error) {
         errorHandlerStrict(error, '保存に失敗しました');
       } finally {
@@ -126,6 +85,7 @@ export default defineComponent({
       }
     };
 
+    const splitterRef = ref(null);
     const style = ref({ height: '100vh' });
     watchEffect(() => {
       const val = splitterRef.value;

@@ -26,6 +26,7 @@ import FormReservation from './FormReservation.vue';
 import FormTweet from './FormTweet.vue';
 import FormAddonIntroduction from './FormAddonIntroduction.vue';
 import FormAddonPost from './FormAddonPost.vue';
+import FormMarkdown from './FormMarkdown.vue';
 import FormThumbnail from './FormThumbnail.vue';
 
 export default defineComponent({
@@ -50,7 +51,7 @@ export default defineComponent({
         case POST_TYPE_PAGE:
           throw new Error('未実装');
         case POST_TYPE_MARKDOWN:
-          throw new Error('未実装');
+          return FormMarkdown;
         default:
           throw new Error(`invalid post type ${editor.article.post_type}`);
       }

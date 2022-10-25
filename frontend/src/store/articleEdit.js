@@ -69,6 +69,25 @@ const unloadListener = (event) => {
   event.returnValue = '';
 };
 
+const createTextSection = () => ({ type: 'text', text: '' });
+const createCaptionSection = () => ({ type: 'caption', caption: '' });
+const createUrlSection = () => ({ type: 'url', url: '' });
+const createImageSection = () => ({ type: 'image', id: null });
+const createSection = (type) => {
+  switch (type) {
+    case 'text':
+      return createTextSection();
+    case 'caption':
+      return createCaptionSection();
+    case 'url':
+      return createUrlSection();
+    case 'image':
+      return createImageSection();
+    default:
+      throw new Error('invalid type');
+  }
+};
+
 export const useArticleEditStore = defineStore('articleEdit', () => {
   // 記事変更検知用
   let original = null;
@@ -106,6 +125,23 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     window.removeEventListener('beforeunload', unloadListener);
 
     return res.data.data;
+  };
+
+  // article page
+  const addSection = (type) => {
+    const section = createSection(type);
+    article.value.contents.sections.push(section);
+  };
+  const changeSecstionOrder = (target, dest) => {
+    const sections = [...article.value.contents.sections];
+    [sections[target], sections[dest]] = [article.value.contents.sections[dest], article.value.contents.sections[target]];
+    article.value.contents.sections = sections;
+  };
+  const deleteSection = (index) => {
+    // eslint-disable-next-line no-alert
+    if (window.confirm('削除しますか？')) {
+      article.value.contents.sections.splice(index, 1);
+    }
   };
 
   watch(article, (v) => {
@@ -155,6 +191,9 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     setArticle,
     createArticle,
     saveArticle,
+    addSection,
+    changeSecstionOrder,
+    deleteSection,
 
     options,
     statuses,

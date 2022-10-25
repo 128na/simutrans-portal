@@ -27,6 +27,7 @@ import FormTweet from './FormTweet.vue';
 import FormAddonIntroduction from './FormAddonIntroduction.vue';
 import FormAddonPost from './FormAddonPost.vue';
 import FormMarkdown from './FormMarkdown.vue';
+import FormPage from './FormPage.vue';
 import FormThumbnail from './FormThumbnail.vue';
 
 export default defineComponent({
@@ -49,7 +50,7 @@ export default defineComponent({
         case POST_TYPE_ADDON_POST:
           return FormAddonPost;
         case POST_TYPE_PAGE:
-          throw new Error('未実装');
+          return FormPage;
         case POST_TYPE_MARKDOWN:
           return FormMarkdown;
         default:

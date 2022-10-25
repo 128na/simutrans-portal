@@ -25,7 +25,7 @@ const routes = [
         name: 'mypage', path: '', meta: { requiresVerified: true }, component: () => import('pages/Mypage/Top.vue'),
       },
       {
-        name: 'edit', path: 'edit/:id', meta: { requiresVerified: true }, component: () => import('pages/Index.vue'),
+        name: 'edit', path: 'edit/:id', meta: { requiresVerified: true }, component: () => import('pages/Mypage/Edit.vue'),
       },
       {
         name: 'create', path: 'create/:post_type', meta: { requiresVerified: true }, component: () => import('pages/Mypage/Create.vue'),

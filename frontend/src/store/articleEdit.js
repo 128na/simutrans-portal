@@ -126,13 +126,24 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
 
     return res.data.data;
   };
+  const updateArticle = async () => {
+    const params = {
+      article: article.value,
+      should_tweet: tweet.value,
+    };
+    const res = await api.updateArticle(params);
+    notify.success('更新しました');
+    window.removeEventListener('beforeunload', unloadListener);
+
+    return res.data.data;
+  };
 
   // article page
   const addSection = (type) => {
     const section = createSection(type);
     article.value.contents.sections.push(section);
   };
-  const changeSecstionOrder = (target, dest) => {
+  const changeSectionOrder = (target, dest) => {
     const sections = [...article.value.contents.sections];
     [sections[target], sections[dest]] = [article.value.contents.sections[dest], article.value.contents.sections[target]];
     article.value.contents.sections = sections;
@@ -156,7 +167,15 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   // option
   const statuses = computed(() => options.value?.statuses);
   const categories = computed(() => options.value?.categories);
-  const canReservation = computed(() => article.value?.published_at === null || article.value?.status === 'reservation');
+  const canReservation = computed(() => {
+    // 投稿済みは予約に戻せない
+    const org = JSON.parse(original);
+    if (org.published_at) {
+      return false;
+    }
+    return article.value?.published_at === null || article.value?.status === 'reservation';
+  });
+  const optionsReady = computed(() => !!options.value);
   const ready = computed(() => article.value && options.value);
   const fetchOptions = () => api.fetchOptions()
     .then((res) => { options.value = res.data; })
@@ -191,13 +210,15 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     setArticle,
     createArticle,
     saveArticle,
+    updateArticle,
     addSection,
-    changeSecstionOrder,
+    changeSectionOrder,
     deleteSection,
 
     options,
     statuses,
     fetchOptions,
+    optionsReady,
     ready,
 
     split,

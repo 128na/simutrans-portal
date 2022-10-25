@@ -37,9 +37,9 @@
           </q-item-label>
           <q-item-label caption class="text-right">
             <q-btn-group flat>
-              <q-btn :disable="index === 0" @click="editor.changeSecstionOrder(index, index - 1)" icon="arrow_upward" />
+              <q-btn :disable="index === 0" @click="editor.changeSectionOrder(index, index - 1)" icon="arrow_upward" />
               <q-btn :disable="index === editor.article.contents.sections.length - 1"
-                @click="editor.changeSecstionOrder(index, index + 1)" icon="arrow_downward" />
+                @click="editor.changeSectionOrder(index, index + 1)" icon="arrow_downward" />
               <q-btn @click="editor.deleteSection(index)" icon="close" text-color="negative" />
             </q-btn-group>
           </q-item-label>

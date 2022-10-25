@@ -19,7 +19,6 @@
       <template v-slot:after v-if="editor.split">
         <front-article-show :article="articleWithAttachments" class="q-px-md" />
       </template>
-
     </q-splitter>
   </q-page>
   <loading-page v-else />
@@ -28,7 +27,7 @@
 import { useArticleEditStore } from 'src/store/articleEdit';
 import { useAuthStore } from 'src/store/auth';
 import {
-  defineComponent, computed, ref, watchEffect,
+  defineComponent, computed, ref, watchEffect, watch,
 } from 'vue';
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import LoadingPage from 'src/components/Common/LoadingPage.vue';
@@ -40,7 +39,7 @@ import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
 import ArticleForm from '../../components/Mypage/ArticleForm.vue';
 
 export default defineComponent({
-  name: 'MypageCreate',
+  name: 'MypageEdit',
   components: {
     ArticleForm, LoadingPage, FrontArticleShow, ApiErrorMessage,
   },
@@ -49,23 +48,37 @@ export default defineComponent({
     const editor = useArticleEditStore();
     const auth = useAuthStore();
     if (auth.validateAuth()) {
-      editor.fetchOptions();
-      mypage.fetchAttachments();
+      if (!editor.optionsReady) {
+        editor.fetchOptions();
+      }
+      if (!mypage.articlesReady) {
+        mypage.fetchArticles();
+      }
+      if (!mypage.attachmentsReady) {
+        mypage.fetchAttachments();
+      }
     }
 
     const route = useRoute();
     const router = useRouter();
     const createArticle = (currentRoute) => {
-      try {
-        editor.createArticle(currentRoute.params.post_type);
-      } catch (error) {
-        router.push({ name: 'error', params: { status: 404 }, replace: true });
+      if (mypage.articlesReady) {
+        const article = mypage.findArticleById(Number(currentRoute.params.id));
+        if (article) {
+          editor.setArticle(article);
+        } else {
+          router.push({ name: 'error', params: { status: 404 }, replace: true });
+        }
       }
     };
-    createArticle(route);
+
+    watch(mypage, () => {
+      createArticle(route);
+    }, { deep: true, immediate: true });
     onBeforeRouteUpdate((to) => {
       createArticle(to);
     });
+    createArticle(route);
 
     const articleWithAttachments = computed(() => ({
       ...editor.article,
@@ -78,13 +91,8 @@ export default defineComponent({
     const handle = async () => {
       $q.loading.show();
       try {
-        const { slug } = editor.article;
-        const articles = await editor.saveArticle();
+        const articles = await editor.updateArticle();
         mypage.articles = articles;
-        const article = mypage.findArticleBySlug(slug);
-        if (article) {
-          router.push({ name: 'edit', params: { id: article.id } });
-        }
       } catch (error) {
         errorHandlerStrict(error, '保存に失敗しました');
       } finally {

@@ -1,5 +1,5 @@
 <template>
-  <q-page v-if="editor.ready">
+  <q-page v-if="editor.ready && mypage.ready">
     <q-splitter v-model="editor.split" reverse :limits="[0, Infinity]" :style="style" ref="splitterRef"
       before-class="q-pa-md">
       <template v-slot:before>
@@ -121,6 +121,7 @@ export default defineComponent({
 
     return {
       editor,
+      mypage,
       articleWithAttachments,
       handle,
       errorMessage,

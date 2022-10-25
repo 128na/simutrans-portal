@@ -28,6 +28,8 @@ export const useMypageStore = defineStore('mypage', () => {
       notify.failedRetryable('記事一覧取得に失敗しました', fetchArticles);
     });
 
+  const ready = computed(() => articles.value && attachments.value);
+
   return {
     articles,
     articlesReady,
@@ -38,5 +40,6 @@ export const useMypageStore = defineStore('mypage', () => {
     findAttachmentById,
     fetchAttachments,
     fetchArticles,
+    ready,
   };
 });

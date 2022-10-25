@@ -6,6 +6,7 @@
         <div class="q-gutter-sm">
           <api-error-message :message="errorMessage" />
           <article-form />
+          <form-tweet />
           <div class="row">
             <q-btn color="primary" @click="handle">保存する</q-btn>
             <q-space />
@@ -37,12 +38,17 @@ import { useMypageStore } from 'src/store/mypage';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useQuasar, dom } from 'quasar';
 import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
+import FormTweet from 'src/components/Mypage/FormTweet.vue';
 import ArticleForm from '../../components/Mypage/ArticleForm.vue';
 
 export default defineComponent({
   name: 'MypageCreate',
   components: {
-    ArticleForm, LoadingPage, FrontArticleShow, ApiErrorMessage,
+    ArticleForm,
+    LoadingPage,
+    FrontArticleShow,
+    ApiErrorMessage,
+    FormTweet,
   },
   setup() {
     const mypage = useMypageStore();

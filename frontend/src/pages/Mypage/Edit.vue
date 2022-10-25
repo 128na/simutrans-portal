@@ -6,6 +6,8 @@
         <div class="q-gutter-sm">
           <api-error-message :message="errorMessage" />
           <article-form />
+          <form-without-update-modified-at />
+          <form-tweet />
           <div class="row">
             <q-btn color="primary" @click="handle">保存する</q-btn>
             <q-space />
@@ -36,12 +38,19 @@ import { useMypageStore } from 'src/store/mypage';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useQuasar, dom } from 'quasar';
 import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
-import ArticleForm from '../../components/Mypage/ArticleForm.vue';
+import ArticleForm from 'src/components/Mypage/ArticleForm.vue';
+import FormTweet from 'src/components/Mypage/FormTweet.vue';
+import FormWithoutUpdateModifiedAt from 'src/components/Mypage/FormWithoutUpdateModifiedAt.vue';
 
 export default defineComponent({
   name: 'MypageEdit',
   components: {
-    ArticleForm, LoadingPage, FrontArticleShow, ApiErrorMessage,
+    ArticleForm,
+    LoadingPage,
+    FrontArticleShow,
+    ApiErrorMessage,
+    FormTweet,
+    FormWithoutUpdateModifiedAt,
   },
   setup() {
     const mypage = useMypageStore();

@@ -130,6 +130,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     const params = {
       article: article.value,
       should_tweet: tweet.value,
+      without_update_modified_at: withoutUpdateModifiedAt.value,
     };
     const res = await api.updateArticle(params);
     notify.success('更新しました');

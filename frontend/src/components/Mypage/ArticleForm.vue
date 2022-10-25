@@ -11,7 +11,6 @@
   <component :is="postTypeForm" />
   <form-status />
   <form-reservation />
-  <form-tweet />
 </template>
 <script>
 import { useArticleEditStore } from 'src/store/articleEdit';
@@ -23,7 +22,6 @@ import {
   POST_TYPE_ADDON_INTRODUCTION, POST_TYPE_ADDON_POST, POST_TYPE_PAGE, POST_TYPE_MARKDOWN,
 } from 'src/const';
 import FormReservation from './FormReservation.vue';
-import FormTweet from './FormTweet.vue';
 import FormAddonIntroduction from './FormAddonIntroduction.vue';
 import FormAddonPost from './FormAddonPost.vue';
 import FormMarkdown from './FormMarkdown.vue';
@@ -36,7 +34,6 @@ export default defineComponent({
     FormSlug,
     FormStatus,
     FormReservation,
-    FormTweet,
     LabelRequired,
     FormThumbnail,
   },

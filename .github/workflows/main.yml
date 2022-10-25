@@ -182,7 +182,7 @@ jobs:
       - name: chmod 777
         run: chmod -R 0777 ./
       - name: Upgrade Chrome Driver
-        run: php artisan dusk:chrome-driver
+        run: php artisan dusk:chrome-driver --detect
       - name: Start Chrome Driver
         run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
       - name: Run Laravel Server

@@ -2,6 +2,8 @@ import { DateTime } from 'luxon';
 
 export const DT_FORMAT = 'yyyy/LL/dd HH:mm';
 export const D_FORMAT = 'yyyy/LL/dd';
+export const M_FORMAT = 'yyyy/LL';
+export const Y_FORMAT = 'yyyy';
 export const defaultDateTime = () => DateTime.now().plus({ hours: 1 });
 export const DEFAULT_THUMBNAIL = '/storage/default/image.png';
 
@@ -23,3 +25,26 @@ export const STATUSES = {
   reservation: '予約投稿',
   publish: '公開',
 };
+
+export const ANALYTICS_TYPE_DAILY = 'daily';
+export const ANALYTICS_TYPE_MONTHLY = 'monthly';
+export const ANALYTICS_TYPE_YEARLY = 'yearly';
+export const ANALYTICS_TYPES = [
+  { value: ANALYTICS_TYPE_DAILY, label: '日次' },
+  { value: ANALYTICS_TYPE_MONTHLY, label: '月次' },
+  { value: ANALYTICS_TYPE_YEARLY, label: '年次' },
+];
+
+export const ANALYTICS_MODE_LINE = 'line';
+export const ANALYTICS_MODE_SUM = 'sum';
+export const ANALYTICS_MODES = [
+  { value: ANALYTICS_MODE_LINE, label: '推移' },
+  { value: ANALYTICS_MODE_SUM, label: '合計' },
+];
+
+export const ANALYTICS_AXE_PV = 'pv';
+export const ANALYTICS_AXE_CV = 'cv';
+export const ANALYTICS_AXES = [
+  { value: ANALYTICS_AXE_PV, label: 'PV（ページ表示回数）' },
+  { value: ANALYTICS_AXE_CV, label: 'CV（DL・リンククリック回数）' },
+];

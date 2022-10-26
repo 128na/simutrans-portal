@@ -1,31 +1,30 @@
 <template>
-  <q-page>
-    PageAnyltics
-    <apexchart width="500" type="bar" :options="options" :series="series" />
+  <q-page v-if="mypage.articlesReady">
+    <analytics-graph />
+    <analytics-form />
+    <analytics-table />
   </q-page>
 </template>
 <script>
+import { useMypageStore } from 'src/store/mypage';
 import { defineComponent } from 'vue';
+import { useAuthStore } from 'src/store/auth';
+import AnalyticsTable from 'src/components/Mypage/AnalyticsTable.vue';
+import AnalyticsForm from 'src/components/Mypage/AnalyticsForm.vue';
+import AnalyticsGraph from 'src/components/Mypage/AnalyticsGraph.vue';
 
 export default defineComponent({
   name: 'PageAnyltics',
-  components: {},
+  components: { AnalyticsGraph, AnalyticsForm, AnalyticsTable },
   setup() {
-    const options = {
-      chart: {
-        id: 'vuechart-example',
-      },
-      xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
-      },
-    };
-    const series = [{
-      name: 'series-1',
-      data: [30, 40, 45, 50, 49, 60, 70, 91],
-    }];
+    const auth = useAuthStore();
+    const mypage = useMypageStore();
+    if (auth.validateAuth()) {
+      mypage.fetchArticles();
+    }
+
     return {
-      options,
-      series,
+      mypage,
     };
   },
 });

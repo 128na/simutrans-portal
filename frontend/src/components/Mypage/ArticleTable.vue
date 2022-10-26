@@ -4,16 +4,17 @@
       <template v-slot:label="props">
         <q-item>
           <q-item-section>
-            <q-item-label>{{                                              props.label                                              }}</q-item-label>
-            <q-item-label caption>{{                                              props.desc                                              }}</q-item-label>
+            <q-item-label>{{ props.label }}</q-item-label>
+            <q-item-label caption>{{ props.desc }}</q-item-label>
           </q-item-section>
         </q-item>
       </template>
     </q-option-group>
   </q-expansion-item>
   <q-table v-model:pagination="pagination" :rows="rows" :columns="columns" :visible-columns="visibleColumns"
-    :rows-per-page-options="[20,                                              50,                                              100,                                              0]" title="記事一覧" rows-per-page-label="表示件数" no-results-label="該当記事がありません"
-    no-data-label="記事がありません" row-key="id" @row-click.stop="handleClick" @row-dblclick.stop="handleDoubleClick">
+    :rows-per-page-options="[20, 50, 100, 0]"
+    title="記事一覧" rows-per-page-label="表示件数" no-results-label="該当記事がありません" no-data-label="記事がありません" row-key="id"
+    @row-click.stop="handleClick" @row-dblclick.stop="handleDoubleClick">
   </q-table>
   <q-dialog v-model="dialogShow">
     <dialog-menu :row=dialogRow />

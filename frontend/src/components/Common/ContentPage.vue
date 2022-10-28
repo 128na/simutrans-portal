@@ -2,7 +2,7 @@
   <div class="article-page">
     <section v-for="(section, index) in article.contents.sections" :key="index">
       <h2 v-if="isCaption(section)" class="my-2">{{ section.caption }}</h2>
-      <text-pre v-if="isText(section)">{{section.text}}</text-pre>
+      <text-pre v-if="isText(section)">{{  section.text  }}</text-pre>
       <div v-if="isUrl(section)" class="url">
         <a :href="section.url" class="text-primary" target="_blank" rel="noopener noreferrer">{{ section.url }}</a>
       </div>
@@ -14,7 +14,7 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
-import TextPre from './TextPre.vue';
+import TextPre from 'src/components/Common/TextPre.vue';
 
 export default defineComponent({
   name: 'ContentPage',

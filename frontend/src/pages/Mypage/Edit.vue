@@ -4,6 +4,7 @@
       before-class="q-pa-md">
       <template v-slot:before>
         <div class="q-gutter-sm">
+          <text-title>編集</text-title>
           <api-error-message :message="errorMessage" />
           <article-form />
           <form-without-update-modified-at />
@@ -41,6 +42,7 @@ import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
 import ArticleForm from 'src/components/Mypage/ArticleForm.vue';
 import FormTweet from 'src/components/Mypage/FormTweet.vue';
 import FormWithoutUpdateModifiedAt from 'src/components/Mypage/FormWithoutUpdateModifiedAt.vue';
+import TextTitle from 'src/components/Common/TextTitle.vue';
 
 export default defineComponent({
   name: 'MypageEdit',
@@ -51,6 +53,7 @@ export default defineComponent({
     ApiErrorMessage,
     FormTweet,
     FormWithoutUpdateModifiedAt,
+    TextTitle,
   },
   setup() {
     const mypage = useMypageStore();

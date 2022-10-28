@@ -36,9 +36,9 @@
 import { useArticleEditStore } from 'src/store/articleEdit';
 import { defineComponent } from 'vue';
 import LabelRequired from 'src/components/Common/LabelRequired.vue';
-import FormAddonCategories from './FormAddonCategories.vue';
+import FormAddonCategories from 'src/components/Mypage/FormAddonCategories.vue';
+import FormTag from 'src/components/Mypage/FormTag.vue';
 import LabelOptional from '../Common/LabelOptional.vue';
-import FormTag from './FormTag.vue';
 
 export default defineComponent({
   name: 'FormAddonIntroduction',

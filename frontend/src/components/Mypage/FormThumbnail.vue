@@ -2,7 +2,7 @@
   <label-optional>サムネイル画像</label-optional>
   <q-input :model-value="filename" readonly>
     <template v-slot:append>
-      <q-icon name="close" class="cursor-pointer q-mr-sm" @click="editor.article.contents.thumbnail=null" />
+      <q-icon name="close" class="cursor-pointer q-mr-sm" @click="editor.article.contents.thumbnail  =  null" />
       <file-manager v-model="editor.article.contents.thumbnail" onlyImage />
     </template>
   </q-input>
@@ -12,7 +12,7 @@ import { useArticleEditStore } from 'src/store/articleEdit';
 import LabelOptional from 'src/components/Common/LabelOptional.vue';
 import { defineComponent, computed } from 'vue';
 import { useMypageStore } from 'src/store/mypage';
-import FileManager from './FileManager.vue';
+import FileManager from 'src/components/Mypage/FileManager.vue';
 
 export default defineComponent({
   name: 'FormThumbnail',

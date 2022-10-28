@@ -4,6 +4,7 @@
       before-class="q-pa-md">
       <template v-slot:before>
         <div class="q-gutter-sm">
+          <text-title>新規作成</text-title>
           <api-error-message :message="errorMessage" />
           <article-form />
           <form-tweet />
@@ -39,7 +40,8 @@ import { useErrorHandler } from 'src/composables/errorHandler';
 import { useQuasar, dom } from 'quasar';
 import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
 import FormTweet from 'src/components/Mypage/FormTweet.vue';
-import ArticleForm from '../../components/Mypage/ArticleForm.vue';
+import TextTitle from 'src/components/Common/TextTitle.vue';
+import ArticleForm from 'src/components/Mypage/ArticleForm.vue';
 
 export default defineComponent({
   name: 'MypageCreate',
@@ -49,6 +51,7 @@ export default defineComponent({
     FrontArticleShow,
     ApiErrorMessage,
     FormTweet,
+    TextTitle,
   },
   setup() {
     const mypage = useMypageStore();

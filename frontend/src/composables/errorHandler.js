@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { useNotify } from './notify';
+import { useNotify } from 'src/composables/notify';
 
 export const useErrorHandler = (router) => {
   const errorMessage = ref('');

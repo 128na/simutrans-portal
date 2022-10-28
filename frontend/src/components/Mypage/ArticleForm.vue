@@ -21,12 +21,12 @@ import { defineComponent, computed } from 'vue';
 import {
   POST_TYPE_ADDON_INTRODUCTION, POST_TYPE_ADDON_POST, POST_TYPE_PAGE, POST_TYPE_MARKDOWN,
 } from 'src/const';
-import FormReservation from './FormReservation.vue';
-import FormAddonIntroduction from './FormAddonIntroduction.vue';
-import FormAddonPost from './FormAddonPost.vue';
-import FormMarkdown from './FormMarkdown.vue';
-import FormPage from './FormPage.vue';
-import FormThumbnail from './FormThumbnail.vue';
+import FormReservation from 'src/components/Mypage/FormReservation.vue';
+import FormAddonIntroduction from 'src/components/Mypage/FormAddonIntroduction.vue';
+import FormAddonPost from 'src/components/Mypage/FormAddonPost.vue';
+import FormMarkdown from 'src/components/Mypage/FormMarkdown.vue';
+import FormPage from 'src/components/Mypage/FormPage.vue';
+import FormThumbnail from 'src/components/Mypage/FormThumbnail.vue';
 
 export default defineComponent({
   name: 'ArticleForm',

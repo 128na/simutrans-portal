@@ -28,10 +28,10 @@
 import { useArticleEditStore } from 'src/store/articleEdit';
 import { defineComponent } from 'vue';
 import LabelRequired from 'src/components/Common/LabelRequired.vue';
-import FormAddonCategories from './FormAddonCategories.vue';
-import LabelOptional from '../Common/LabelOptional.vue';
-import FormTag from './FormTag.vue';
-import FormAddonFile from './FormAddonFile.vue';
+import FormAddonCategories from 'src/components/Mypage/FormAddonCategories.vue';
+import LabelOptional from 'src/components/Common/LabelOptional.vue';
+import FormTag from 'src/components/Mypage/FormTag.vue';
+import FormAddonFile from 'src/components/Mypage/FormAddonFile.vue';
 
 export default defineComponent({
   name: 'FormAddonPost',

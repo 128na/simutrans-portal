@@ -60,7 +60,7 @@ import { useArticleEditStore } from 'src/store/articleEdit';
 import { defineComponent } from 'vue';
 import LabelRequired from 'src/components/Common/LabelRequired.vue';
 import { useMypageStore } from 'src/store/mypage';
-import FileManager from './FileManager.vue';
+import FileManager from 'src/components/Mypage/FileManager.vue';
 
 export default defineComponent({
   name: 'FormPage',

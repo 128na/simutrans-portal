@@ -42,9 +42,10 @@ export const ANALYTICS_MODES = [
   { value: ANALYTICS_MODE_SUM, label: '合計' },
 ];
 
-export const ANALYTICS_AXE_PV = 'pv';
-export const ANALYTICS_AXE_CV = 'cv';
+export const ANALYTICS_AXIS_PV = 'pv';
+export const ANALYTICS_AXIS_CV = 'cv';
+export const ANALYTICS_AXIS_DATA_INDEXES = { [ANALYTICS_AXIS_PV]: 1, [ANALYTICS_AXIS_CV]: 2 };
 export const ANALYTICS_AXES = [
-  { value: ANALYTICS_AXE_PV, label: 'PV（ページ表示回数）' },
-  { value: ANALYTICS_AXE_CV, label: 'CV（DL・リンククリック回数）' },
+  { value: ANALYTICS_AXIS_PV, label: 'PV（ページ表示回数）' },
+  { value: ANALYTICS_AXIS_CV, label: 'CV（DL・リンククリック回数）' },
 ];

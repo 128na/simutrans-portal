@@ -3,7 +3,9 @@ import { defineStore } from 'pinia';
 import { useQuasar } from 'quasar';
 import { useMypageApi } from 'src/composables/api';
 import { useErrorHandler } from 'src/composables/errorHandler';
-import { D_FORMAT } from 'src/const';
+import {
+  ANALYTICS_AXIS_CV, ANALYTICS_AXIS_PV, ANALYTICS_MODE_LINE, ANALYTICS_MODE_SUM, ANALYTICS_TYPE_DAILY, D_FORMAT,
+} from 'src/const';
 import { computed, ref } from 'vue';
 
 export const useAnalyticsStore = defineStore('analytics', () => {
@@ -17,9 +19,15 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     }
   };
   const selected = (id) => ids.value.includes(id);
-  const deselect = () => { ids.value = []; };
+  const deselectAll = () => { ids.value = []; };
+  const selectAll = (articles) => { ids.value = articles.map((a) => a.id); };
+  const idsEmpty = computed(() => ids.value.length === 0);
 
-  const type = ref('daily');
+  const type = ref(ANALYTICS_TYPE_DAILY);
+  const axes = ref([ANALYTICS_AXIS_CV, ANALYTICS_AXIS_PV]);
+  const mode = ref(ANALYTICS_MODE_LINE);
+  const isModeSum = computed(() => mode.value === ANALYTICS_MODE_SUM);
+
   const startDate = ref(DateTime.now().minus({ years: 1 }).toFormat(D_FORMAT));
   const endDate = ref(DateTime.now().toFormat(D_FORMAT));
   const dateRange = computed({
@@ -37,6 +45,10 @@ export const useAnalyticsStore = defineStore('analytics', () => {
   const $q = useQuasar();
   const fetch = async () => {
     try {
+      if (ids.value.length < 1) {
+        return;
+      }
+      analyticsData.value = [];
       $q.loading.show();
       clearErrorMessage();
       const params = {
@@ -56,11 +68,16 @@ export const useAnalyticsStore = defineStore('analytics', () => {
 
   return {
     ids,
+    idsEmpty,
     toggleId,
     selected,
-    deselect,
+    deselectAll,
+    selectAll,
     analyticsData,
     type,
+    axes,
+    mode,
+    isModeSum,
     startDate,
     endDate,
     dateRange,

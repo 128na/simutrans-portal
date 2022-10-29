@@ -54,13 +54,10 @@ export default defineComponent({
        */
       const readmes = file.value?.fileInfo?.readmes;
 
-      const text = [];
+      const text = Object.entries(readmes)
+        .reduce((t, [filename, readme]) => `${t}\n------\n#${filename}\n${readme.join('')}`, '');
 
-      Object.entries(readmes).forEach(([filename, readme]) => {
-        text.push(`#${filename}\n${readme.join('')}`);
-      });
-
-      editor.article.contents.description += text.join('\n------\n');
+      editor.article.contents.description += text;
     };
 
     return {

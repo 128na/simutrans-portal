@@ -54,6 +54,7 @@
     <q-btn @click="editor.addSection('image')">画像</q-btn>
     <q-btn @click="editor.addSection('url')">URL</q-btn>
   </q-btn-group>
+  <form-page-categories />
 </template>
 <script>
 import { useArticleEditStore } from 'src/store/articleEdit';
@@ -61,11 +62,12 @@ import { defineComponent } from 'vue';
 import LabelRequired from 'src/components/Common/LabelRequired.vue';
 import { useMypageStore } from 'src/store/mypage';
 import FileManager from 'src/components/Mypage/FileManager.vue';
+import FormPageCategories from 'src/components/Mypage/FormPageCategories.vue';
 
 export default defineComponent({
   name: 'FormPage',
   components: {
-    LabelRequired, FileManager,
+    LabelRequired, FileManager, FormPageCategories,
   },
   setup() {
     const editor = useArticleEditStore();

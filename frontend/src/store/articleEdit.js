@@ -202,6 +202,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   const addon = computed(() => options.value?.categories?.addon?.map((c) => Object.create({ label: c.name, value: c.id })));
   const pak128Position = computed(() => options.value?.categories?.pak128_position?.map((c) => Object.create({ label: c.name, value: c.id })));
   const license = computed(() => options.value?.categories?.license?.map((c) => Object.create({ label: c.name, value: c.id })));
+  const page = computed(() => options.value?.categories?.page?.map((c) => Object.create({ label: c.name, value: c.id })));
 
   return {
     article,
@@ -233,5 +234,6 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     addon,
     pak128Position,
     license,
+    page,
   };
 });

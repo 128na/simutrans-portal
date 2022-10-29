@@ -13,8 +13,8 @@ export const POST_TYPE_PAGE = 'page';
 export const POST_TYPE_MARKDOWN = 'markdown';
 
 export const POST_TYPES = {
-  [POST_TYPE_ADDON_INTRODUCTION]: 'アドオン投稿',
-  [POST_TYPE_ADDON_POST]: 'アドオン紹介',
+  [POST_TYPE_ADDON_INTRODUCTION]: 'アドオン紹介',
+  [POST_TYPE_ADDON_POST]: 'アドオン投稿',
   [POST_TYPE_PAGE]: '一般記事',
   [POST_TYPE_MARKDOWN]: '一般記事(markdown)',
 };

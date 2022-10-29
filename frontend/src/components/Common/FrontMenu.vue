@@ -15,15 +15,15 @@
     </q-item>
     <q-expansion-item v-for="(pakAddons, label) in pakAddonCounts" expand-separator :label="label" :key="label">
       <q-item v-for="(a, index) in pakAddons" clickable
-        :to="{ name: 'categoryPak', params:{size:a.pak_slug, slug:a.addon_slug} }" :key="index">
-        <q-item-section right>{{a.addon}} ({{a.count}})</q-item-section>
+        :to="{ name: 'categoryPak', params: { size: a.pak_slug, slug: a.addon_slug } }" :key="index">
+        <q-item-section right>{{ a.addon }} ({{ a.count }})</q-item-section>
       </q-item>
 
     </q-expansion-item>
     <q-expansion-item v-show="!loading" expand-separator label="ユーザー一覧">
-      <q-item v-for="(a, index) in userAddonCounts" clickable :to="{ name: 'user', params:{id:a.user_id} }"
+      <q-item v-for="(a, index) in userAddonCounts" clickable :to="{ name: 'user', params: { id: a.user_id } }"
         :key="index">
-        <q-item-section>{{a.name}} ({{a.count}})</q-item-section>
+        <q-item-section>{{ a.name }} ({{ a.count }})</q-item-section>
       </q-item>
     </q-expansion-item>
     <q-item clickable :to="{ name: 'tags' }">
@@ -34,10 +34,10 @@
       <q-item-section>マイページ</q-item-section>
     </q-item>
     <q-separator />
-    <q-item clickable dense :to="{ name:'show',params:{slug: 'about'} }">
+    <q-item clickable dense :to="{ name: 'show', params: { slug: 'about' } }">
       <q-item-section>サイトの使い方</q-item-section>
     </q-item>
-    <q-item clickable dense :to="{ name:'show',params:{slug: 'privacy'} }">
+    <q-item clickable dense :to="{ name: 'show', params: { slug: 'privacy' } }">
       <q-item-section>プライバシーポリシー</q-item-section>
     </q-item>
     <q-separator />
@@ -50,7 +50,6 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useFrontApi } from 'src/composables/api';
 import MetaLinks from 'src/components/Common/MetaLinks.vue';
@@ -67,7 +66,7 @@ export default defineComponent({
     const loading = ref(true);
     const error = ref(false);
 
-    const { errorMessage, errorHandler } = useErrorHandler(useRouter());
+    const { errorMessage, errorHandler } = useErrorHandler();
 
     const { fetchSidebar } = useFrontApi();
     const fetch = async () => {

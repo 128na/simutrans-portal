@@ -46,6 +46,9 @@ const routes = [
         name: 'verify', path: 'verify/:userId/:hash', meta: { requiresAuth: true }, component: () => import('pages/Mypage/Verify.vue'),
       },
       { name: 'login', path: 'login', component: () => import('pages/Mypage/Login.vue') },
+      {
+        name: 'logout', path: 'logout', meta: { requiresAuth: true }, component: () => import('pages/Mypage/Logout.vue'),
+      },
       { name: 'forget', path: 'forget', component: () => import('pages/Mypage/Forget.vue') },
     ],
   },

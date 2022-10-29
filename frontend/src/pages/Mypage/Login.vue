@@ -12,7 +12,7 @@
         <q-btn label="ログイン" color="primary" type="submit" />
       </div>
       <div>
-        <router-link :to="{name:'forget'}" class="default-link">パスワードリセット</router-link>
+        <router-link :to="{   name:   'forget'   }" class="default-link">パスワードリセット</router-link>
       </div>
     </q-form>
   </q-page>
@@ -40,7 +40,7 @@ export default defineComponent({
     const authState = reactive({ email: '', password: '', remember: false });
 
     const notify = useNotify();
-    const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter());
+    const { errorMessage, errorHandlerStrict } = useErrorHandler();
     const { postLogin } = useMypageApi();
     const route = useRoute();
     const router = useRouter();

@@ -5,7 +5,7 @@
         <q-item :to="c.to">
           <q-item-section>
             <text-title>
-              {{c.label}}
+              {{ c.label }}
             </text-title>
           </q-item-section>
         </q-item>
@@ -29,7 +29,6 @@
 
 <script>
 import { defineComponent, reactive } from 'vue';
-import { useRouter } from 'vue-router';
 import TextTitle from 'src/components/Common/TextTitle.vue';
 import { useArticleCacheStore } from 'src/store/articleCache';
 import { useFrontApi } from 'src/composables/api';
@@ -100,7 +99,7 @@ export default defineComponent({
   },
 
   setup() {
-    const { errorHandler, errorMessage } = useErrorHandler(useRouter());
+    const { errorHandler, errorMessage } = useErrorHandler();
     const articleCache = useArticleCacheStore();
     const { get } = useFrontApi();
     const fetchContent = async (content) => {

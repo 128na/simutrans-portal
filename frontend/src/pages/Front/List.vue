@@ -32,7 +32,7 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
+import { useRoute, onBeforeRouteUpdate } from 'vue-router';
 import TextTitle from 'src/components/Common/TextTitle.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useArticleCacheStore } from 'src/store/articleCache';
@@ -73,9 +73,8 @@ export default defineComponent({
       }
     };
 
-    const router = useRouter();
     const api = useFrontApi();
-    const { errorMessage, errorHandlerStrict } = useErrorHandler(router);
+    const { errorMessage, errorHandlerStrict } = useErrorHandler();
     const route = useRoute();
     const fetchArticles = async (currentRoute) => {
       loading.value = true;

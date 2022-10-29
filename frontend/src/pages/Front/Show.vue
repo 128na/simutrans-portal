@@ -20,7 +20,7 @@
 import {
   defineComponent, ref, computed,
 } from 'vue';
-import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
+import { useRoute, onBeforeRouteUpdate } from 'vue-router';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useArticleCacheStore } from 'src/store/articleCache';
@@ -56,7 +56,7 @@ export default defineComponent({
 
     const article = computed(() => articleCache.getCache(route.params.slug));
 
-    const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter());
+    const { errorMessage, errorHandlerStrict } = useErrorHandler();
     const { fetchArticle } = useFrontApi();
     const fetch = async (currentRoute) => {
       const { setTitle } = useMeta();

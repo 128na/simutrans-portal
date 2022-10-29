@@ -37,7 +37,7 @@ export default defineComponent({
     const state = reactive({ email: '', password: '', token: route.params.token });
 
     const notify = useNotify();
-    const { errorMessage, errorHandlerStrict } = useErrorHandler(useRouter());
+    const { errorMessage, errorHandlerStrict } = useErrorHandler();
     const { reset } = useMypageApi();
     const handle = async () => {
       $q.loading.show();

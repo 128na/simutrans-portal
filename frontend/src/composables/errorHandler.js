@@ -1,9 +1,11 @@
 import { ref } from 'vue';
 import { useNotify } from 'src/composables/notify';
+import { useRouter } from 'vue-router';
 
-export const useErrorHandler = (router) => {
+export const useErrorHandler = () => {
   const errorMessage = ref('');
   const notify = useNotify();
+  const router = useRouter();
 
   const setValidationErrorMessage = (errors) => {
     errorMessage.value = Object.values(errors).map((messages) => messages.join('、')).join('\n');

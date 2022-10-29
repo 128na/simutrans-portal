@@ -4,9 +4,7 @@
       <label-optional>作者</label-optional>
     </template>
   </q-input>
-  <form-addon-categories />
-  <label-optional>タグ</label-optional>
-  <form-tag v-model="editor.article.tags" />
+  <form-addon-file />
   <q-input label type="textarea" v-model="editor.article.contents.description">
     <template v-slot:label>
       <label-required>説明</label-required>
@@ -22,7 +20,9 @@
       <label-optional>ライセンスその他</label-optional>
     </template>
   </q-input>
-  <form-addon-file />
+  <form-addon-categories />
+  <label-optional>タグ</label-optional>
+  <form-tag v-model="editor.article.tags" />
 </template>
 <script>
 import { useArticleEditStore } from 'src/store/articleEdit';

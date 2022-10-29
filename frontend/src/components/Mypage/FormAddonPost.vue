@@ -10,6 +10,7 @@
       <label-required>説明</label-required>
     </template>
   </q-input>
+  <q-btn flat :disabled="!file" @click="handleCopyFromZip">Zipファイル内のreadmeからコピー</q-btn>
   <q-input label type="textarea" v-model="editor.article.contents.thanks">
     <template v-slot:label>
       <label-optional>謝辞・参考にしたアドオン</label-optional>
@@ -26,12 +27,13 @@
 </template>
 <script>
 import { useArticleEditStore } from 'src/store/articleEdit';
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import LabelRequired from 'src/components/Common/LabelRequired.vue';
 import FormAddonCategories from 'src/components/Mypage/FormAddonCategories.vue';
 import LabelOptional from 'src/components/Common/LabelOptional.vue';
 import FormTag from 'src/components/Mypage/FormTag.vue';
 import FormAddonFile from 'src/components/Mypage/FormAddonFile.vue';
+import { useMypageStore } from 'src/store/mypage';
 
 export default defineComponent({
   name: 'FormAddonPost',
@@ -44,9 +46,27 @@ export default defineComponent({
   },
   setup() {
     const editor = useArticleEditStore();
+    const mypage = useMypageStore();
+    const file = computed(() => (editor.article.contents.file ? mypage.findAttachmentById(editor.article.contents.file) : null));
+    const handleCopyFromZip = () => {
+      /**
+       * @type {Object}
+       */
+      const readmes = file.value?.fileInfo?.readmes;
+
+      const text = [];
+
+      Object.entries(readmes).forEach(([filename, readme]) => {
+        text.push(`#${filename}\n${readme.join('')}`);
+      });
+
+      editor.article.contents.description += text.join('\n------\n');
+    };
 
     return {
       editor,
+      file,
+      handleCopyFromZip,
     };
   },
 });

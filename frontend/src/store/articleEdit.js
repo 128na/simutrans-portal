@@ -138,6 +138,8 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
 
     return res.data.data;
   };
+  // article addon-post
+  const fileSelected = computed(() => article.value?.contents.file);
 
   // article page
   const addSection = (type) => {
@@ -213,6 +215,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     createArticle,
     saveArticle,
     updateArticle,
+    fileSelected,
     addSection,
     changeSectionOrder,
     deleteSection,

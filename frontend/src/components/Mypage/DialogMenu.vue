@@ -1,30 +1,30 @@
 <template>
   <q-card>
     <q-toolbar class="bg-primary text-white">
-      <div>{{row.id}}. {{row.title}}</div>
+      <div>{{ row.id }}. {{ row.title }}</div>
       <q-space />
       <q-btn flat round dense icon="close" v-close-popup />
     </q-toolbar>
     <q-list>
-      <q-item v-if="row.status === 'publish'" clickable @click="copy">
-        <q-item-section avatar>
-          <q-icon name="content_paste" />
-        </q-item-section>
-        <q-item-section>URLをコピー</q-item-section>
-      </q-item>
-      <q-item v-if="row.status === 'publish'" :to="{name:'show' ,params:{slug:row.slug}}">
-        <q-item-section avatar>
-          <q-icon name="launch" />
-        </q-item-section>
-        <q-item-section>記事を表示</q-item-section>
-      </q-item>
-      <q-item :to="{name:'edit' ,params:{id:row.id}}">
+      <q-item :to="{ name: 'edit', params: { id: row.id } }">
         <q-item-section avatar>
           <q-icon name="edit" />
         </q-item-section>
         <q-item-section>
           編集
         </q-item-section>
+      </q-item>
+      <q-item v-if="row.status === 'publish'" :to="{ name: 'show', params: { slug: row.slug } }">
+        <q-item-section avatar>
+          <q-icon name="launch" />
+        </q-item-section>
+        <q-item-section>記事を表示</q-item-section>
+      </q-item>
+      <q-item v-if="row.status === 'publish'" clickable @click="copy">
+        <q-item-section avatar>
+          <q-icon name="content_paste" />
+        </q-item-section>
+        <q-item-section>URLをコピー</q-item-section>
       </q-item>
       <q-item v-if="row.status === 'publish'" clickable @click="handleToPrivate">
         <q-item-section avatar>

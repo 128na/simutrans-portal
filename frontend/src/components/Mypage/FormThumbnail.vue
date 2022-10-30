@@ -2,8 +2,9 @@
   <label-optional>サムネイル画像</label-optional>
   <q-input :model-value="filename" readonly>
     <template v-slot:append>
-      <q-icon name="close" class="cursor-pointer q-mr-sm" @click="editor.article.contents.thumbnail  =  null" />
-      <file-manager v-model="editor.article.contents.thumbnail" onlyImage />
+      <q-icon name="close" class="cursor-pointer q-mr-sm" @click="editor.article.contents.thumbnail = null" />
+      <file-manager v-model="editor.article.contents.thumbnail" onlyImage attachmentableType="Article"
+        :attachmentableId="editor.article.id" />
     </template>
   </q-input>
 </template>

@@ -18,7 +18,7 @@
                 <q-icon class="absolute all-pointer-events cursor-pointer" size="32px" name="cancel" color="negative"
                   style="top: 8px; right: 8px" @click.stop="handleDelete(file.id)" />
                 <div class="text-h5 absolute-bottom text-center">
-                  <q-icon v-show="file.id===modelValue" name="check_circle" size="1.5rem" color="positive" />
+                  <q-icon v-show="file.id === modelValue" name="check_circle" size="1.5rem" color="positive" />
                   {{ file.original_name }}
                 </div>
               </q-img>
@@ -40,13 +40,12 @@
 
     </q-layout>
   </q-dialog>
-  <q-btn flat label="選択" color="secondary" @click="show=true" />
+  <q-btn flat label="選択" color="secondary" @click="show = true" />
 </template>
 <script>
 import { useQuasar } from 'quasar';
 import { useMypageApi } from 'src/composables/api';
 import { useNotify } from 'src/composables/notify';
-import { useArticleEditStore } from 'src/store/articleEdit';
 import { useMypageStore } from 'src/store/mypage';
 import { defineComponent, ref, computed } from 'vue';
 
@@ -57,9 +56,12 @@ export default defineComponent({
       type: Number,
       default: null,
     },
-    type: {
+    attachmentableType: {
       type: String,
-      default: 'Article', // attachmentable_type
+      default: 'Article',
+    },
+    attachmentableId: {
+      type: Number,
     },
     onlyImage: {
       type: Boolean,
@@ -67,7 +69,6 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const editor = useArticleEditStore();
     const mypage = useMypageStore();
     const show = ref(false);
     const files = computed(() => mypage.attachments
@@ -76,8 +77,8 @@ export default defineComponent({
         if (a.attachmentable_id === null) {
           return true;
         }
-        if (editor.article.id) {
-          return a.attachmentable_id === editor.article.id && a.attachmentable_type === props.type;
+        if (props.attachmentableId) {
+          return a.attachmentable_id === props.attachmentableId && a.attachmentable_type === props.attachmentableType;
         }
         return false;
       }));
@@ -100,10 +101,6 @@ export default defineComponent({
       try {
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('type', props.type);
-        if (editor.article.id) {
-          formData.append('id', editor.article.id);
-        }
         formData.append('only_image', props.onlyImage ? 1 : 0);
 
         const res = await storeAttachment(formData);
@@ -133,7 +130,6 @@ export default defineComponent({
       }
     };
     return {
-      editor,
       show,
       files,
       accept,

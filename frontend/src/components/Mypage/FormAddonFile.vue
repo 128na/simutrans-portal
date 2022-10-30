@@ -2,8 +2,9 @@
   <label-optional>アドオンファイル</label-optional>
   <q-input :model-value="filename" readonly>
     <template v-slot:append>
-      <q-icon name="close" class="cursor-pointer q-mr-sm" @click="editor.article.contents.file  =  null" />
-      <file-manager v-model="editor.article.contents.file" />
+      <q-icon name="close" class="cursor-pointer q-mr-sm" @click="editor.article.contents.file = null" />
+      <file-manager v-model="editor.article.contents.file" attachmentableType="Article"
+        :attachmentableId="editor.article.id" />
     </template>
   </q-input>
 </template>

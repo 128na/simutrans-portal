@@ -1,7 +1,9 @@
 <template>
   <div class="q-mb-md">
     <q-spinner />
-    Loading...
+    <slot>
+      Loading...
+    </slot>
   </div>
 </template>
 <script>

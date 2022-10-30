@@ -49,3 +49,6 @@ export const ANALYTICS_AXES = [
   { value: ANALYTICS_AXIS_PV, label: 'PV（ページ表示回数）' },
   { value: ANALYTICS_AXIS_CV, label: 'CV（DL・リンククリック回数）' },
 ];
+
+export const BULK_ZIP_RETRY_INTERVAL = 5000;
+export const BULK_ZIP_RETRY_LIMIT = 60;

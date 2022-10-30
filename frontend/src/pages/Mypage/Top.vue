@@ -1,7 +1,10 @@
 <template>
   <q-page class="q-ma-md">
     <text-title>マイページトップ</text-title>
-    <article-table v-if="mypage.articles" />
+    <template v-if="mypage.articles">
+      <article-export />
+      <article-table />
+    </template>
   </q-page>
 </template>
 
@@ -10,6 +13,7 @@ import { useMypageStore } from 'src/store/mypage';
 import { useAuthStore } from 'src/store/auth';
 import { defineComponent } from 'vue';
 import ArticleTable from 'src/components/Mypage/ArticleTable.vue';
+import ArticleExport from 'src/components/Mypage/ArticleExport.vue';
 import TextTitle from 'src/components/Common/TextTitle.vue';
 
 export default defineComponent({
@@ -25,6 +29,6 @@ export default defineComponent({
       mypage,
     };
   },
-  components: { ArticleTable, TextTitle },
+  components: { ArticleTable, ArticleExport, TextTitle },
 });
 </script>

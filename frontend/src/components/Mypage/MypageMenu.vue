@@ -4,7 +4,7 @@
       <q-item-section>トップページ</q-item-section>
     </q-item>
     <template v-if="store.isVerified">
-      <q-item :to="{ name: 'mypage' }">
+      <q-item :to="{ name: 'mypage' }" exact>
         <q-item-section avatar>
           <q-icon name="home" />
         </q-item-section>

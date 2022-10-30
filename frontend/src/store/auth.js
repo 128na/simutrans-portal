@@ -18,6 +18,9 @@ export const useAuthStore = defineStore('auth', () => {
   const login = (loginUser) => {
     user.value = loginUser;
   };
+  const setUser = (loginUser) => {
+    user.value = loginUser;
+  };
   const logout = () => {
     user.value = null;
   };
@@ -70,5 +73,6 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     logout,
     validateAuth,
+    setUser,
   };
 });

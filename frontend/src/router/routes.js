@@ -34,10 +34,10 @@ const routes = [
         name: 'analytics', path: 'analytics', meta: { requiresVerified: true }, component: () => import('pages/Mypage/Analytics.vue'),
       },
       {
-        name: 'profile', path: 'profile', meta: { requiresVerified: true }, component: () => import('pages/Index.vue'),
+        name: 'profile', path: 'profile', meta: { requiresVerified: true }, component: () => import('pages/Mypage/Profile.vue'),
       },
       {
-        name: 'invitation', path: 'invitation', meta: { requiresVerified: true }, component: () => import('pages/Index.vue'),
+        name: 'invitation', path: 'invitation', meta: { requiresVerified: true }, component: () => import('pages/Mypage/Invitation.vue'),
       },
       {
         name: 'requiresVerified', path: 'requires-verified', meta: { requiresAuth: true }, component: () => import('pages/Mypage/RequiresVerified.vue'),

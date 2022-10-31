@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\v2\Admin\ArticleController;
-use App\Http\Controllers\Api\v2\Admin\DebugController;
 use App\Http\Controllers\Api\v2\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\v2\Mypage\Article\AnalyticsController;
 use App\Http\Controllers\Api\v2\Mypage\Article\EditorController;
@@ -67,14 +66,8 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
 
     // 管理者機能
     Route::prefix('admin')->middleware(['auth', 'admin', 'verified'])->group(function () {
-        // デバッグツール
-        Route::post('/flush-cache', [DebugController::class, 'flushCache'])->name('admin.flushCache');
-        Route::get('/debug/{level}', [DebugController::class, 'error'])->name('admin.debug');
-        Route::get('/phpinfo', [DebugController::class, 'phpinfo'])->name('admin.phpinfo');
-
         // ユーザー管理
         Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
-        Route::post('/users', [AdminUserController::class, 'store'])->name('admin.users.store');
         Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
 
         // 記事管理

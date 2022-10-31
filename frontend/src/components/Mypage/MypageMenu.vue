@@ -3,6 +3,10 @@
     <q-item :to="{ name: 'top' }">
       <q-item-section>トップページ</q-item-section>
     </q-item>
+    <q-item v-if="store.isAdmin" :to="{ name: 'admin' }">
+      <q-item-section>管理トップ</q-item-section>
+    </q-item>
+    <q-separator />
     <template v-if="store.isVerified">
       <q-item :to="{ name: 'mypage' }" exact>
         <q-item-section avatar>
@@ -69,9 +73,6 @@
         <q-icon name="login" />
       </q-item-section>
       <q-item-section>ログイン</q-item-section>
-    </q-item>
-    <q-item v-if="store.isAdmin" :to="{ name: 'admin' }">
-      <q-item-section>管理トップ</q-item-section>
     </q-item>
     <q-separator />
     <MetaInfo />

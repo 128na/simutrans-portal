@@ -1,15 +1,23 @@
 <template>
   <q-page class="q-ma-md">
     <text-title>ユーザー管理</text-title>
-    <q-table :rows="users" :columns="columns" row-key="id" :filter="filter" :rows-per-page-options="[20, 0]">
-      <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
+    <admin-table :rows="users" :columns="columns">
+      <template v-slot="{ props }">
+        <q-btn-group class="q-mb-md">
+          <q-btn v-if="!!props.row.deleted_at" label="復元" @click="handleRestore(props.row)" />
+          <q-btn v-else label="削除" @click="handleDelete(props.row)" />
+        </q-btn-group>
+
+        <div>
+          <div>招待先</div>
+          <pre>{{ childrenMap(props.row) || 'なし' }}</pre>
+        </div>
+        <div>
+          <div>招待元</div>
+          <pre>{{ parentMap(props.row) || 'なし' }}</pre>
+        </div>
       </template>
-    </q-table>
+    </admin-table>
   </q-page>
 </template>
 <script>
@@ -17,6 +25,7 @@ import TextTitle from 'src/components/Common/TextTitle.vue';
 import { defineComponent, ref } from 'vue';
 import { useAdminApi } from 'src/composables/api';
 import { DateTime } from 'luxon';
+import AdminTable from 'src/components/Admin/AdminTable.vue';
 
 const columns = [
   {
@@ -96,7 +105,7 @@ const columns = [
 ];
 export default defineComponent({
   name: 'PageAdminUsers',
-  components: { TextTitle },
+  components: { TextTitle, AdminTable },
   setup() {
     const api = useAdminApi();
 
@@ -107,10 +116,70 @@ export default defineComponent({
     };
     fetch();
 
+    const deleteUser = async (id) => {
+      const res = await api.deleteUser(id);
+      users.value = res.data;
+    };
+    const handleRestore = (user) => {
+      // eslint-disable-next-line no-alert
+      if (window.confirm('復元しますか？')) {
+        deleteUser(user.id);
+      }
+    };
+    const handleDelete = (user) => {
+      // eslint-disable-next-line no-alert
+      if (window.confirm('論理削除しますか')) {
+        deleteUser(user.id);
+      }
+    };
+
+    const findUser = (userId, defaultValue = null) => users.value.find((u) => u.id === userId) || defaultValue;
+    const findInvitedReclusive = (userId) => {
+      const user = findUser(userId);
+      if (user) {
+        if (user.invited_by) {
+          return [user, ...findInvitedReclusive(user.invited_by)];
+        }
+        return [user];
+      }
+      return [];
+    };
+    const parentMap = (user) => {
+      const parents = findInvitedReclusive(user.invited_by);
+      return parents.map((u) => u.name).join(' ← ');
+    };
+
+    const findInvites = (userId) => users.value.filter((u) => u.invited_by === userId);
+    const findInvitesReclusive = (userId) => {
+      const invites = findInvites(userId);
+      if (invites.length) {
+        return invites.map((user) => ({ ...user, invites: findInvitesReclusive(user.id) }));
+      }
+      return invites;
+    };
+    const childrenString = (user, level = 1) => {
+      if (user.invites.length) {
+        const tab = '\t'.repeat(level);
+        const children = user.invites
+          .map((c) => `${tab}┗${childrenString(c, level + 1)}`)
+          .join('\n');
+        return `${user.name}\n${children}`;
+      }
+      return `${user.name}`;
+    };
+    const childrenMap = (user) => {
+      const children = findInvitesReclusive(user.id);
+      return children.map((u) => childrenString(u)).join('\n');
+    };
+
     return {
       filter: ref(''),
       users,
       columns,
+      handleRestore,
+      handleDelete,
+      parentMap,
+      childrenMap,
     };
   },
 });

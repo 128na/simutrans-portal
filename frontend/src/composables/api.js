@@ -158,10 +158,10 @@ export const useAdminApi = () => ({
     return axios.get('/api/v2/admin/articles');
   },
   putArticle(id, params) {
-    return axios.put(`/api/v2/admin/article/${id}`, params);
+    return axios.put(`/api/v2/admin/articles/${id}`, params);
   },
   deleteArticle(id) {
-    return axios.delete(`/api/v2/admin/article/${id}`);
+    return axios.delete(`/api/v2/admin/articles/${id}`);
   },
   fetchUsers() {
     return axios.get('/api/v2/admin/users');

@@ -16,7 +16,6 @@ class RegisterTest extends TestCase
         'name' => 'example',
         'email' => 'example@example.com',
         'password' => 'example123456',
-        'password_confirmation' => 'example123456',
     ];
 
     public function setUp(): void
@@ -90,9 +89,6 @@ class RegisterTest extends TestCase
         ];
         yield 'passwordが10文字以下' => [
             ['password' => str_repeat('a', 10)], 'password',
-        ];
-        yield 'password_confirmationが不一致' => [
-            ['password_confirmation' => '123'], 'password',
         ];
     }
 }

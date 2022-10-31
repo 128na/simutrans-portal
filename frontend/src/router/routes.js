@@ -40,12 +40,17 @@ const routes = [
         name: 'invitation', path: 'invitation', meta: { requiresVerified: true }, component: () => import('pages/Mypage/Invitation.vue'),
       },
       {
+        name: 'invite', path: 'invite/:code', meta: { requiresGuest: true }, component: () => import('pages/Mypage/Invite.vue'),
+      },
+      {
         name: 'requiresVerified', path: 'requires-verified', meta: { requiresAuth: true }, component: () => import('pages/Mypage/RequiresVerified.vue'),
       },
       {
         name: 'verify', path: 'verify/:userId/:hash', meta: { requiresAuth: true }, component: () => import('pages/Mypage/Verify.vue'),
       },
-      { name: 'login', path: 'login', component: () => import('pages/Mypage/Login.vue') },
+      {
+        name: 'login', path: 'login', meta: { requiresGuest: true }, component: () => import('pages/Mypage/Login.vue'),
+      },
       {
         name: 'logout', path: 'logout', meta: { requiresAuth: true }, component: () => import('pages/Mypage/Logout.vue'),
       },

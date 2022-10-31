@@ -27,13 +27,13 @@ export const useAuthStore = defineStore('auth', () => {
 
   const validateAuth = () => {
     // 個別ルートハンドリング
-    if (route.name === 'login' && isLoggedIn.value) {
-      router.replace({ name: 'mypage' });
-    }
     if (route.name === 'requiresVerified' && isVerified.value) {
       router.replace({ name: 'mypage' });
     }
 
+    if (route.meta.requiresGuest && isLoggedIn.value) {
+      router.replace({ name: 'mypage' });
+    }
     if (route.meta.requiresAuth) {
       if (!isLoggedIn.value) {
         router.push({ replace: true, name: 'login', query: { redirect: route.href } });

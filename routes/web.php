@@ -28,6 +28,8 @@ Route::GET('mypage/verify/{id}/{hash}', [MypageController::class, 'index'])->nam
 Route::get('/verification/notice', [MypageController::class, 'index'])->name('verification.notice');
 // PWリセット
 Route::GET('mypage/reset/{token}', [MypageController::class, 'index'])->name('password.reset');
+// 招待
+Route::GET('/mypage/invite/{invitation_code}', [InviteController::class, 'index'])->name('invite.index');
 
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware(['cache.headers:public;max_age=2628000;etag'])->group(function () {
@@ -56,8 +58,6 @@ Route::middleware(['auth', 'admin', 'verified'])->group(function () {
     Route::get('/admin/oauth/twitter/refresh', [OauthController::class, 'refresh'])->name('admin.oauth.twitter.refresh');
     Route::get('/admin/oauth/twitter/revoke', [OauthController::class, 'revoke'])->name('admin.oauth.twitter.revoke');
 });
-
-Route::get('/invite/{invitation_code}', [InviteController::class, 'index'])->name('invite.index');
 
 Route::get('/error/{status}', [FrontController::class, 'error'])->name('error');
 

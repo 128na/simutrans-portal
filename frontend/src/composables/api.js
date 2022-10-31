@@ -147,4 +147,7 @@ export const useMypageApi = () => ({
   deleteInvitationCode() {
     return axios.delete('/api/v3/mypage/invitation_code');
   },
+  invite(code, params) {
+    return axios.post(`/api/v3/mypage/invite/${code}`, params);
+  },
 });

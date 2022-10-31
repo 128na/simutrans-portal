@@ -44,16 +44,14 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
     | 初期化時設定
     |--------------------------------------------------------------------------
     */
-    protected static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
-        self::created(function ($model) {
+        static::created(function ($model) {
             $model->syncRelatedData();
         });
     }
 
-    private function syncRelatedData()
+    public function syncRelatedData()
     {
         if ($this->profile()->doesntExist()) {
             $this->profile()->create();

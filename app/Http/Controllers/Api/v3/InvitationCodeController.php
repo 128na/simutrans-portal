@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\Api\v3;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\InviteRequest;
 use App\Http\Resources\Api\Mypage\Invites;
 use App\Http\Resources\Api\Mypage\User as UserResouce;
+use App\Models\User;
+use App\Notifications\UserInvited;
 use App\Repositories\UserRepository;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 class InvitationCodeController extends Controller
@@ -43,5 +49,28 @@ class InvitationCodeController extends Controller
         $this->userRepository->update(Auth::user(), ['invitation_code' => null]);
 
         return new UserResouce(Auth::user()->fresh());
+    }
+
+    public function register(User $user, InviteRequest $request)
+    {
+        abort_unless(config('app.enable_invite'), 400, response(['message' => '招待機能は現在使用できません']));
+
+        $invitedUser = $this->userRepository->store([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => config('role.user'),
+            'password' => Hash::make($request->password),
+            'invited_by' => $user->id,
+        ]);
+        // なぜかオブザーバーが発火しない
+        $invitedUser->syncRelatedData();
+
+        Auth::login($invitedUser);
+        Session::regenerate();
+
+        event(new Registered($invitedUser));
+        $user->notify(new UserInvited($invitedUser));
+
+        return new UserResouce($invitedUser);
     }
 }

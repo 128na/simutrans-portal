@@ -97,6 +97,8 @@ Route::prefix('v3')->name('api.v3.')->group(function () {
         Route::post('/invitation_code', [InvitationCodeController::class, 'update'])->name('invitationCode.update');
         Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy'])->name('invitationCode.destroy');
     });
+    Route::post('/invite/{invitation_code}', [InvitationCodeController::class, 'register'])->name('invitationCode.register');
+
     Route::prefix('front')->group(function () {
         // キャッシュ有効
         Route::middleware(['cache.headers:public;max_age=600;etag'])->group(function () {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controllers\InviteController;
+namespace Tests\Feature\Controllers\Api\v3\InvitationCodeController;
 
 use App\Notifications\UserInvited;
 use Illuminate\Auth\Events\Registered;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class StoreTest extends TestCase
+class RegisterTest extends TestCase
 {
     private array $data = [
         'name' => 'example',
@@ -32,12 +32,12 @@ class StoreTest extends TestCase
         Event::fake();
         $this->assertGuest();
 
-        $response = $this->post(
-            route('invite.index', ['invitation_code' => $this->user->invitation_code]),
+        $response = $this->postJson(
+            route('api.v3.invitationCode.register', ['invitation_code' => $this->user->invitation_code]),
             $this->data
         );
 
-        $response->assertRedirect(route('mypage.index'));
+        $response->assertCreated();
         $this->assertAuthenticated();
         Event::assertDispatched(Registered::class);
         Notification::assertSentTo(
@@ -49,8 +49,8 @@ class StoreTest extends TestCase
     {
         Config::set('app.enable_invite', false);
 
-        $response = $this->post(
-            route('invite.index', ['invitation_code' => $this->user->invitation_code]),
+        $response = $this->postJson(
+            route('api.v3.invitationCode.register', ['invitation_code' => $this->user->invitation_code]),
             $this->data
         );
         $response->assertStatus(400);
@@ -61,12 +61,11 @@ class StoreTest extends TestCase
      */
     public function testValidation(array $data, string $key)
     {
-        $response = $this->post(
-            route('invite.index', ['invitation_code' => $this->user->invitation_code]),
+        $response = $this->postJson(
+            route('api.v3.invitationCode.register', ['invitation_code' => $this->user->invitation_code]),
             array_merge($this->data, $data)
         );
-
-        $response->assertSessionHasErrors($key);
+        $response->assertJsonValidationErrorFor($key);
     }
 
     public function dataValidation()

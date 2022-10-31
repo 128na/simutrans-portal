@@ -6,7 +6,6 @@ use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Http\Middleware\SetCacheHeaders;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -25,8 +24,6 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
         $this->seed('ProdSeeder');
         $this->user = User::factory()->create();
-
-        $this->withoutMiddleware(SetCacheHeaders::class);
     }
 
     protected function tearDown(): void

@@ -10,29 +10,23 @@
       <q-item-section>管理トップ</q-item-section>
     </q-item>
     <q-separator />
-    <q-item :to="{ name: 'admin' }">
+    <q-item :to="{ name: 'admin.token' }">
       <q-item-section avatar>
         <q-icon name="key" />
       </q-item-section>
       <q-item-section>トークン</q-item-section>
     </q-item>
-    <q-item :to="{ name: 'admin' }">
+    <q-item :to="{ name: 'admin.articles' }">
       <q-item-section avatar>
         <q-icon name="article" />
       </q-item-section>
       <q-item-section>記事</q-item-section>
     </q-item>
-    <q-item :to="{ name: 'admin' }">
+    <q-item :to="{ name: 'admin.users' }">
       <q-item-section avatar>
         <q-icon name="people" />
       </q-item-section>
       <q-item-section>ユーザー</q-item-section>
-    </q-item>
-    <q-item :to="{ name: 'admin' }">
-      <q-item-section avatar>
-        <q-icon name="person_add" />
-      </q-item-section>
-      <q-item-section>ユーザー追加</q-item-section>
     </q-item>
     <q-separator />
     <MetaInfo />

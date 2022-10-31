@@ -64,6 +64,15 @@ const routes = [
       {
         name: 'admin', path: '', meta: { requiresAdmin: true }, component: () => import('pages/Index.vue'),
       },
+      {
+        name: 'admin.token', path: 'token', meta: { requiresAdmin: true }, component: () => import('pages/Admin/Token.vue'),
+      },
+      {
+        name: 'admin.articles', path: 'articles', meta: { requiresAdmin: true }, component: () => import('pages/Admin/Articles.vue'),
+      },
+      {
+        name: 'admin.users', path: 'users', meta: { requiresAdmin: true }, component: () => import('pages/Admin/Users.vue'),
+      },
     ],
   },
   {

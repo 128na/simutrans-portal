@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-btn flat dense round icon="menu" @click="menu.toggle" />
         <q-btn flat dense no-caps size="lg" :to="{ name: 'top' }">
-          {{ appName}}
+          {{ appName }}
         </q-btn>
         <q-space />
         <ToggleDarkMode />
@@ -16,7 +16,8 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view v-if="auth.isInitialized" />
+      <loading-page v-else />
     </q-page-container>
   </q-layout>
 </template>
@@ -28,19 +29,16 @@ import { useColorStore } from 'src/store/color';
 import { useMenuStore } from 'src/store/menu';
 import { useAppInfo } from 'src/composables/appInfo';
 import AdminMenu from 'src/components/Admin/AdminMenu.vue';
+import { useAuthStore } from 'src/store/auth';
+import LoadingPage from 'src/components/Common/LoadingPage.vue';
 
 export default defineComponent({
   name: 'AdminLayout',
-  props: {
-    menuOpen: {
-      type: Boolean,
-      required: true,
-    },
-  },
 
   components: {
     AdminMenu,
     ToggleDarkMode,
+    LoadingPage,
   },
 
   setup() {
@@ -48,8 +46,10 @@ export default defineComponent({
 
     useColorStore().setAdmin();
     const menu = useMenuStore();
+    const auth = useAuthStore();
 
     return {
+      auth,
       appName,
       menu,
     };

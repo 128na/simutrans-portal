@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Middleware\VerifyCsrfToken;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,8 +79,10 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
 });
 
 Route::prefix('v3')->name('api.v3.')->group(function () {
-    Route::post('conversion/{article}', [ConversionController::class, 'conversion'])->name('conversion');
-    Route::post('shown/{article}', [ConversionController::class, 'shown'])->name('shown');
+    Route::withoutMiddleware([VerifyCsrfToken::class])->group(function () {
+        Route::post('conversion/{article}', [ConversionController::class, 'conversion'])->name('conversion');
+        Route::post('shown/{article}', [ConversionController::class, 'shown'])->name('shown');
+    });
 
     Route::prefix('mypage')->middleware(['auth', 'verified'])->group(function () {
         // 一括DL機能

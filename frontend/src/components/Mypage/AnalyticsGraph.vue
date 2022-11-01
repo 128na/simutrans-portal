@@ -81,7 +81,7 @@ export default defineComponent({
       ...staticOptions,
       xaxis: { categories: categories.value },
       theme: { mode: dark.value ? 'dark' : 'light' },
-      colors: [({ value, seriesIndex, w }) => {
+      colors: [({ seriesIndex }) => {
         // pv,cv両方選択時は近しい色に揃える
         if (analytics.axes.length === 2) {
           return seriesIndex % 2 === 0

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, computed, watch } from 'vue';
 import { useMypageApi } from 'src/composables/api';
 import { useNotify } from 'src/composables/notify';
+import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
 
 const api = useMypageApi();
 const createAddonPost = () => ({
@@ -64,10 +65,6 @@ const createMarkdown = () => ({
   categories: [],
   published_at: null,
 });
-const unloadListener = (event) => {
-  event.preventDefault();
-  event.returnValue = '';
-};
 
 const createTextSection = () => ({ type: 'text', text: '' });
 const createCaptionSection = () => ({ type: 'caption', caption: '' });
@@ -88,9 +85,19 @@ const createSection = (type) => {
   }
 };
 
+const unloadListener = (event) => {
+  event.preventDefault();
+  event.returnValue = '';
+};
+// 変更検知用
+let original = null;
+
+const isModified = (val) => {
+  const current = JSON.stringify(val);
+  return original !== current;
+};
+
 export const useArticleEditStore = defineStore('articleEdit', () => {
-  // 記事変更検知用
-  let original = null;
   // article
   const article = ref(null);
   const options = ref(null);
@@ -159,13 +166,33 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   };
 
   watch(article, (v) => {
-    const current = JSON.stringify(v);
-    if (original !== current) {
+    if (isModified(v)) {
       window.addEventListener('beforeunload', unloadListener);
     } else {
       window.removeEventListener('beforeunload', unloadListener);
     }
   }, { deep: true });
+
+  onBeforeRouteLeave((to, from, next) => {
+    // eslint-disable-next-line no-alert
+    if (isModified(article.value) && !window.confirm('保存せずに移動しますか？')) {
+      window.addEventListener('beforeunload', unloadListener);
+      next(false);
+    } else {
+      window.removeEventListener('beforeunload', unloadListener);
+      next();
+    }
+  });
+  onBeforeRouteUpdate((to, from, next) => {
+    // eslint-disable-next-line no-alert
+    if (isModified(article.value) && !window.confirm('保存せずに移動しますか？')) {
+      window.addEventListener('beforeunload', unloadListener);
+      next(false);
+    } else {
+      window.removeEventListener('beforeunload', unloadListener);
+      next();
+    }
+  });
 
   // option
   const statuses = computed(() => options.value?.statuses);

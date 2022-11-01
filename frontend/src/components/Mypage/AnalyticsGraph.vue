@@ -10,7 +10,7 @@ import {
 import { DateTime, Interval } from 'luxon';
 import {
   D_FORMAT, M_FORMAT, Y_FORMAT,
-  ANALYTICS_TYPE_DAILY, ANALYTICS_TYPE_MONTHLY, ANALYTICS_TYPE_YEARLY, ANALYTICS_AXIS_DATA_INDEXES,
+  ANALYTICS_TYPE_DAILY, ANALYTICS_TYPE_MONTHLY, ANALYTICS_TYPE_YEARLY, ANALYTICS_AXIS_DATA_INDEXES, ANALYTICS_AXIS_PV,
 } from 'src/const';
 import { useQuasar } from 'quasar';
 
@@ -20,6 +20,17 @@ const staticOptions = {
   },
   noData: {
     text: '記事を選択してください',
+  },
+  // linechartだとtooltip.intersectが動かないのでカスタムで代用する
+  // https://github.com/apexcharts/apexcharts.js/issues/2565
+  tooltip: {
+    shared: false,
+    followCursor: true,
+    custom({
+      series, seriesIndex, dataPointIndex, w,
+    }) {
+      return `<div class="q-pa-xs"><span>${w.globals.seriesNames[seriesIndex]} : ${series[seriesIndex][dataPointIndex]}</span></div>`;
+    },
   },
 };
 
@@ -70,6 +81,18 @@ export default defineComponent({
       ...staticOptions,
       xaxis: { categories: categories.value },
       theme: { mode: dark.value ? 'dark' : 'light' },
+      colors: [({ value, seriesIndex, w }) => {
+        // pv,cv両方選択時は近しい色に揃える
+        if (analytics.axes.length === 2) {
+          return seriesIndex % 2 === 0
+            ? `hsl(${132 + seriesIndex * 26.5}, 65%, 45%)`
+            : `hsl(${132 + (seriesIndex - 1) * 26.5}, 50%, 72%)`;
+        }
+        // pv,cv一方のときは両方選択時と同じ色にする
+        return analytics.axes[0] === ANALYTICS_AXIS_PV
+          ? `hsl(${132 + seriesIndex * 53}, 65%, 45%)`
+          : `hsl(${132 + seriesIndex * 53}, 50%, 72%)`;
+      }],
     }));
     const series = computed(() => analytics.analyticsData.flatMap((ad) => analytics.axes.map((ax) => {
       const article = mypage.findArticleById(Number(ad[0]));

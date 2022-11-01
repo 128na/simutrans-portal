@@ -13,11 +13,9 @@
     メールアドレスを変更すると新しいメールアドレスへ確認メールが送られます。
   </small>
   <form-avatar />
-  <q-input label v-model="editor.user.profile.data.description" type="textarea">
-    <template v-slot:label>
-      <label-optional>説明</label-optional>
-    </template>
-  </q-input>
+  <input-countable label v-model="editor.user.profile.data.description" :maxLength="1024">
+    <label-required>説明</label-required>
+  </input-countable>
   <q-input label v-model="editor.user.profile.data.website">
     <template v-slot:label>
       <label-optional>WebサイトURL</label-optional>
@@ -40,10 +38,12 @@ import LabelOptional from 'src/components/Common/LabelOptional.vue';
 import FormAvatar from 'src/components/Mypage/FormAvatar.vue';
 import { defineComponent } from 'vue';
 import { useProfileEditStore } from 'src/store/profileEdit';
+import InputCountable from 'src/components/Common/InputCountable.vue';
 
 export default defineComponent({
   name: 'ProfileForm',
   components: {
+    InputCountable,
     LabelRequired,
     LabelOptional,
     FormAvatar,

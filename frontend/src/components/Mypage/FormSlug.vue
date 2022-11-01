@@ -1,13 +1,15 @@
 <template>
-  <q-input label v-model="rawSlug">
+  <q-input label v-model="rawSlug" bottom-slots>
     <template v-slot:label>
       <label-required>パーマリンク</label-required>
     </template>
     <template v-slot:append>
-      <q-btn flat color="secondary" @click="rawSlug=title">タイトルからコピー</q-btn>
+      <q-btn flat color="secondary" @click="rawSlug = title">タイトルからコピー</q-btn>
+    </template>
+    <template v-slot:hint>
+      <div class="word-break">{{ url }}</div>
     </template>
   </q-input>
-  <div class="word-break">{{url}}</div>
 </template>
 <script>
 import { useAppInfo } from 'src/composables/appInfo';

@@ -5,11 +5,9 @@
         <q-item-section>
           <q-item-label>
             <template v-if="section.type === 'text'">
-              <q-input label v-model="section.text" type="textarea">
-                <template v-slot:label>
-                  <label-required>内容</label-required>
-                </template>
-              </q-input>
+              <input-countable label v-model="section.text" :maxLength="2048">
+                <label-required>内容</label-required>
+              </input-countable>
             </template>
             <template v-else-if="section.type === 'caption'">
               <q-input label v-model="section.caption">
@@ -63,11 +61,15 @@ import LabelRequired from 'src/components/Common/LabelRequired.vue';
 import { useMypageStore } from 'src/store/mypage';
 import FileManager from 'src/components/Mypage/FileManager.vue';
 import FormPageCategories from 'src/components/Mypage/FormPageCategories.vue';
+import InputCountable from 'src/components/Common/InputCountable.vue';
 
 export default defineComponent({
   name: 'FormPage',
   components: {
-    LabelRequired, FileManager, FormPageCategories,
+    InputCountable,
+    LabelRequired,
+    FileManager,
+    FormPageCategories,
   },
   setup() {
     const editor = useArticleEditStore();

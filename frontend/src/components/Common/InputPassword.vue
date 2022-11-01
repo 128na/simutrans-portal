@@ -1,8 +1,8 @@
 <template>
-  <q-input :model-value="modelValue" :type="show ? 'text' :'password'" @change="$emit('update:modelValue', $event)"
-    @blur="show=false">
+  <q-input :model-value="modelValue" :type="show ? 'text' : 'password'"
+    @update:modelValue="$emit('update:modelValue', $event)" @blur="show = false">
     <template v-slot:append>
-      <q-icon :name="show ? 'visibility' : 'visibility_off'" class="cursor-pointer" @click="show=!show" />
+      <q-icon :name="show ? 'visibility' : 'visibility_off'" class="cursor-pointer" @click="show = !show" />
     </template>
   </q-input>
 </template>

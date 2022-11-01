@@ -25,7 +25,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const current = computed(() => [...props.modelValue].length);
+    const current = computed(() => (props.modelValue ? [...props.modelValue].length : 0));
     return {
       current,
     };

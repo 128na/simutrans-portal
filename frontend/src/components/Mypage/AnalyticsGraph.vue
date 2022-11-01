@@ -85,13 +85,13 @@ export default defineComponent({
         // pv,cv両方選択時は近しい色に揃える
         if (analytics.axes.length === 2) {
           return seriesIndex % 2 === 0
-            ? `hsl(${132 + seriesIndex * 26.5}, 65%, 45%)`
-            : `hsl(${132 + (seriesIndex - 1) * 26.5}, 50%, 72%)`;
+            ? `hsl(${211 + seriesIndex * 26.5}, 82%, 54%)`
+            : `hsl(${211 + (seriesIndex - 1) * 26.5}, 63%, 76%)`;
         }
         // pv,cv一方のときは両方選択時と同じ色にする
         return analytics.axes[0] === ANALYTICS_AXIS_PV
-          ? `hsl(${132 + seriesIndex * 53}, 65%, 45%)`
-          : `hsl(${132 + seriesIndex * 53}, 50%, 72%)`;
+          ? `hsl(${211 + seriesIndex * 53}, 82%, 54%)`
+          : `hsl(${211 + seriesIndex * 53}, 63%, 76%)`;
       }],
     }));
     const series = computed(() => analytics.analyticsData.flatMap((ad) => analytics.axes.map((ax) => {

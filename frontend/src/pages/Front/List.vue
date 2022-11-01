@@ -3,15 +3,18 @@
     <q-list>
       <q-item v-show="title">
         <q-item-section>
-          <text-title>{{title}}</text-title>
+          <text-title>{{ title }}</text-title>
         </q-item-section>
+      </q-item>
+      <q-item v-if="profile">
+        <user-profile :profile="profile" />
       </q-item>
       <q-item v-show="loading">
         <q-item-section>
           <loading-message />
         </q-item-section>
       </q-item>
-      <q-item v-if=" pagination" class="flex flex-center">
+      <q-item v-if="pagination" class="flex flex-center">
         <q-pagination :model-value="pagination.current_page" :min="1" :max="pagination.last_page" :max-pages="3"
           :to-fn="page => ({ query: { page } })" direction-links boundary-links />
       </q-item>
@@ -22,7 +25,7 @@
         </q-item-section>
       </q-item>
       <front-article-list :articles="articles" />
-      <q-item v-if=" pagination" class="flex flex-center">
+      <q-item v-if="pagination" class="flex flex-center">
         <q-pagination :model-value="pagination.current_page" :min="1" :max="pagination.last_page" :max-pages="3"
           :to-fn="page => ({ query: { page } })" direction-links boundary-links />
       </q-item>
@@ -31,8 +34,8 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
-import { useRoute, onBeforeRouteUpdate } from 'vue-router';
+import { defineComponent, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import TextTitle from 'src/components/Common/TextTitle.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useArticleCacheStore } from 'src/store/articleCache';
@@ -41,6 +44,7 @@ import { useMeta } from 'src/composables/meta';
 import FrontArticleList from 'src/components/Front/FrontArticleList.vue';
 import LoadingMessage from 'src/components/Common/LoadingMessage.vue';
 import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
+import UserProfile from 'src/components/Common/UserProfile.vue';
 
 export default defineComponent({
   name: 'FrontList',
@@ -49,6 +53,7 @@ export default defineComponent({
     LoadingMessage,
     ApiErrorMessage,
     TextTitle,
+    UserProfile,
   },
 
   setup() {
@@ -76,14 +81,14 @@ export default defineComponent({
     const api = useFrontApi();
     const { errorMessage, errorHandlerStrict } = useErrorHandler();
     const route = useRoute();
-    const fetchArticles = async (currentRoute) => {
+    const fetchArticles = async () => {
       loading.value = true;
       error.value = false;
       articles.value = [];
 
       try {
         const res = await (async () => {
-          switch (currentRoute.name) {
+          switch (route.name) {
             case 'categoryPak':
               return api.fetchCategoryPak(route.params.size, route.params.slug, route.query.page);
             case 'category':
@@ -112,10 +117,7 @@ export default defineComponent({
         loading.value = false;
       }
     };
-    fetchArticles(route);
-    onBeforeRouteUpdate((to) => {
-      fetchArticles(to);
-    });
+    watch(route, () => { fetchArticles(); }, { deep: true, immediate: true });
 
     return {
       articles,

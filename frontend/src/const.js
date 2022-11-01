@@ -5,7 +5,9 @@ export const D_FORMAT = 'yyyy/LL/dd';
 export const M_FORMAT = 'yyyy/LL';
 export const Y_FORMAT = 'yyyy';
 export const defaultDateTime = () => DateTime.now().plus({ hours: 1 });
+
 export const DEFAULT_THUMBNAIL = '/storage/default/image.png';
+export const DEFAULT_AVATAR = '/storage/default/avatar.png';
 
 export const POST_TYPE_ADDON_INTRODUCTION = 'addon-introduction';
 export const POST_TYPE_ADDON_POST = 'addon-post';

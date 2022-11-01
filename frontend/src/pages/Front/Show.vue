@@ -18,9 +18,9 @@
 
 <script>
 import {
-  defineComponent, ref, computed,
+  defineComponent, ref, computed, watch,
 } from 'vue';
-import { useRoute, onBeforeRouteUpdate } from 'vue-router';
+import { useRoute } from 'vue-router';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useArticleCacheStore } from 'src/store/articleCache';
@@ -58,9 +58,9 @@ export default defineComponent({
 
     const { errorMessage, errorHandlerStrict } = useErrorHandler();
     const { fetchArticle } = useFrontApi();
-    const fetch = async (currentRoute) => {
+    const fetch = async () => {
       const { setTitle } = useMeta();
-      if (articleCache.hasCache(currentRoute.params.slug)) {
+      if (articleCache.hasCache(route.params.slug)) {
         loading.value = false;
         error.value = false;
         setTitle(article.value.title);
@@ -70,7 +70,7 @@ export default defineComponent({
       loading.value = true;
       error.value = false;
       try {
-        const res = await fetchArticle(currentRoute.params.slug);
+        const res = await fetchArticle(route.params.slug);
         if (res.status === 200) {
           articleCache.addCache(res.data.data);
           setTitle(res.data.data.title);
@@ -82,10 +82,7 @@ export default defineComponent({
         loading.value = false;
       }
     };
-    fetch(route);
-    onBeforeRouteUpdate((to) => {
-      fetch(to);
-    });
+    watch(route, () => { fetch(); }, { deep: true, immediate: true });
 
     return {
       article,

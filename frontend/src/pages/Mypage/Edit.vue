@@ -32,7 +32,7 @@ import { useAuthStore } from 'src/store/auth';
 import {
   defineComponent, computed, ref, watchEffect, watch,
 } from 'vue';
-import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import LoadingPage from 'src/components/Common/LoadingPage.vue';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { useMypageStore } from 'src/store/mypage';
@@ -73,9 +73,11 @@ export default defineComponent({
 
     const route = useRoute();
     const router = useRouter();
-    const createArticle = (currentRoute) => {
-      if (mypage.articlesReady) {
-        const article = mypage.findArticleById(Number(currentRoute.params.id));
+    const createArticle = () => {
+      if (route.name !== 'edit') {
+        return;
+      } if (mypage.articlesReady) {
+        const article = mypage.findArticleById(Number(route.params.id));
         if (article) {
           editor.setArticle(article);
         } else {
@@ -85,12 +87,11 @@ export default defineComponent({
     };
 
     watch(mypage, () => {
-      createArticle(route);
+      createArticle();
     }, { deep: true, immediate: true });
-    onBeforeRouteUpdate((to) => {
-      createArticle(to);
-    });
-    createArticle(route);
+    watch(route, () => {
+      createArticle();
+    }, { deep: true, immediate: true });
 
     const articleWithAttachments = computed(() => ({
       ...editor.article,

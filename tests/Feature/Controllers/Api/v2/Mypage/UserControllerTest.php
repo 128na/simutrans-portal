@@ -197,34 +197,4 @@ class UserControllerTest extends ArticleTestCase
 
         Notification::assertSentTo($user, VerifyEmail::class);
     }
-
-    public function testToken()
-    {
-        $url = route('api.v2.token');
-        $res = $this->getJson($url);
-        $res->assertOk();
-        $token = $res->json('token');
-
-        $this->actingAs($this->user);
-
-        $res = $this->getJson($url);
-        $res->assertOk();
-        $tokenAfterLogin = $res->json('token');
-        $this->assertEquals($token, $tokenAfterLogin, 'ログインしてもトークンは使える');
-
-        $this->postJson(route('api.v2.logout'));
-
-        $res = $this->getJson($url);
-        $res->assertOk();
-        $tokenAfterLogout = $res->json('token');
-        $this->assertNotEquals($tokenAfterLogin, $tokenAfterLogout, 'ログアウトすると使えなくなる');
-    }
-
-    public function testToken指定リファラ以外はNG()
-    {
-        $url = route('api.v2.token');
-        $res = $this->call('GET', $url, [], [], [], ['HTTP_REFERER' => 'http://example.com']);
-        $res->dump();
-        $res->assertOk();
-    }
 }

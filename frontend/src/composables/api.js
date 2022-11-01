@@ -80,9 +80,6 @@ export const useMypageApi = () => ({
       params: { expires, signature },
     });
   },
-  getToken() {
-    return axios.get('/api/v2/mypage/token');
-  },
 
   // user profile
   fetchUser() {

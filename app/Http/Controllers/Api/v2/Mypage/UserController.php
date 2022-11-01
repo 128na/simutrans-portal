@@ -28,13 +28,6 @@ class UserController extends Controller
         return '';
     }
 
-    public function token()
-    {
-        return [
-            'token' => csrf_token(),
-        ];
-    }
-
     public function update(UpdateRequest $request)
     {
         $user = $this->userService->updateUserAndProfile(Auth::user(), $request);

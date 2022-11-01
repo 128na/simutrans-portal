@@ -8,10 +8,8 @@ import TextTitle from 'src/components/Common/TextTitle.vue';
 import { defineComponent } from 'vue';
 import { useMypageApi } from 'src/composables/api';
 import { useAuthStore } from 'src/store/auth';
-import { useRouter } from 'vue-router';
-import { useNotify } from 'src/composables/notify';
-import axios from 'axios';
 import { useErrorHandler } from 'src/composables/errorHandler';
+import { useAppInfo } from 'src/composables/appInfo';
 
 export default defineComponent({
   name: 'PageLogout',
@@ -20,18 +18,14 @@ export default defineComponent({
   },
   setup() {
     const store = useAuthStore();
-    const { postLogout, getToken } = useMypageApi();
-    const router = useRouter();
-    const notify = useNotify();
+    const { postLogout } = useMypageApi();
     const { errorHandlerStrict } = useErrorHandler();
     const logout = async () => {
       try {
         await postLogout();
-        const res = await getToken();
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = res.data.token;
         store.logout();
-        notify.info('ログアウトしました');
-        router.push({ name: 'login' });
+        const { appUrl } = useAppInfo();
+        window.location.href = appUrl;
       } catch (err) {
         errorHandlerStrict(err);
       }

@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { useMypageApi } from 'src/composables/api';
-import { useErrorHandler } from 'src/composables/errorHandler';
-import { useQuasar } from 'quasar';
-import { useNotify } from 'src/composables/notify';
+import { useApiHandler } from 'src/composables/apiHandler';
 
 export const useInvitationStore = defineStore('invitation', () => {
   const invites = ref(null);
@@ -11,42 +9,36 @@ export const useInvitationStore = defineStore('invitation', () => {
   const hasInvites = computed(() => !!invites.value?.length);
 
   const api = useMypageApi();
-  const $q = useQuasar();
-  const notify = useNotify();
-  const { errorMessage, errorHandlerStrict } = useErrorHandler();
+  const handler = useApiHandler();
   const fetch = async () => {
     try {
-      const res = await api.fetchInvites();
+      const res = await handler.handle({
+        doRequest: () => api.fetchInvites(),
+        failedMessage: '招待履歴の取得に失敗しました',
+      });
       invites.value = res.data.data;
-    } catch (err) {
-      errorHandlerStrict(err, '招待履歴の取得に失敗しました');
+    } catch {
+      // do nothing.
     }
   };
 
+  const handlerCode = useApiHandler();
   const regenerate = async () => {
-    try {
-      $q.loading.show();
-      const res = await api.updateInvitationCode();
-      notify.success('招待コードを発行しました');
-      return res.data.data;
-    } catch (err) {
-      return errorHandlerStrict(err, '招待コードの発行に失敗しました');
-    } finally {
-      $q.loading.hide();
-    }
+    const res = await handlerCode.handleWithLoading({
+      doRequest: () => api.updateInvitationCode(),
+      successMessage: '招待コードを発行しました',
+      failedMessage: '招待コードの発行に失敗しました',
+    });
+    return res.data.data;
   };
 
   const revoke = async () => {
-    try {
-      $q.loading.show();
-      const res = await api.deleteInvitationCode();
-      return res.data.data;
-    } catch (err) {
-      notify.success('招待コードを削除しました');
-      return errorHandlerStrict(err, '招待コードの削除に失敗しました');
-    } finally {
-      $q.loading.hide();
-    }
+    const res = await handlerCode.handleWithLoading({
+      doRequest: () => api.deleteInvitationCode(),
+      successMessage: '招待コードを削除しました',
+      failedMessage: '招待コードの削除に失敗しました',
+    });
+    return res.data.data;
   };
 
   return {
@@ -54,7 +46,7 @@ export const useInvitationStore = defineStore('invitation', () => {
     ready,
     regenerate,
     revoke,
-    errorMessage,
+    handlerCode,
     invites,
     hasInvites,
   };

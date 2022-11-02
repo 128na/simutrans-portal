@@ -65,12 +65,20 @@ export default defineComponent({
     }
 
     const handleUpdate = async () => {
-      const user = await invitation.regenerate();
-      auth.setUser(user);
+      try {
+        const user = await invitation.regenerate();
+        auth.setUser(user);
+      } catch {
+        // do nothing
+      }
     };
     const handleDelete = async () => {
-      const user = await invitation.revoke();
-      auth.setUser(user);
+      try {
+        const user = await invitation.revoke();
+        auth.setUser(user);
+      } catch {
+        // do nothing
+      }
     };
 
     const clipboad = useClipboard();

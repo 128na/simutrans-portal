@@ -5,7 +5,7 @@
       <template v-slot:before>
         <div class="q-gutter-sm">
           <text-title>新規作成</text-title>
-          <api-error-message :message="errorMessage" />
+          <api-error-message :message="editor.handlerArticle.validationErrorMessage" />
           <article-form />
           <form-tweet />
           <div class="row">
@@ -36,8 +36,7 @@ import { useRoute, useRouter } from 'vue-router';
 import LoadingPage from 'src/components/Common/LoadingPage.vue';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { useMypageStore } from 'src/store/mypage';
-import { useErrorHandler } from 'src/composables/errorHandler';
-import { useQuasar, dom } from 'quasar';
+import { dom } from 'quasar';
 import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import FormTweet from 'src/components/Mypage/ArticleForm/FormTweet.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
@@ -82,10 +81,7 @@ export default defineComponent({
       user: auth.user,
     }));
 
-    const $q = useQuasar();
-    const { errorMessage, errorHandlerStrict } = useErrorHandler();
     const handle = async () => {
-      $q.loading.show();
       try {
         const { slug } = editor.article;
         const articles = await editor.saveArticle();
@@ -94,10 +90,8 @@ export default defineComponent({
         if (article) {
           router.push({ name: 'edit', params: { id: article.id } });
         }
-      } catch (error) {
-        errorHandlerStrict(error, '保存に失敗しました');
-      } finally {
-        $q.loading.hide();
+      } catch {
+        // do nothing.
       }
     };
 
@@ -115,7 +109,6 @@ export default defineComponent({
       editor,
       articleWithAttachments,
       handle,
-      errorMessage,
       splitterRef,
       style,
     };

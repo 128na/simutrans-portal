@@ -3,10 +3,10 @@
     <div class="q-ma-sm">
       投稿した記事を一括でダウンロードできます。<br>
       記事数が多いとファイルの生成には数分かかることがあります。<br>
-      <template v-if="notRequest">
+      <template v-if="idle">
         <q-btn color="primary" label="エクスポート" @click="bz.fetch" />
       </template>
-      <template v-else-if="bz.loading">
+      <template v-else-if="bz.inProgress">
         <loading-message>
           ファイル生成中...画面を開いたままお待ちください。
         </loading-message>
@@ -29,13 +29,13 @@ export default defineComponent({
   setup() {
     const bz = useBulkZipStore();
 
-    const notRequest = computed(() => bz.loading === false && bz.generated === null);
+    const idle = computed(() => bz.inProgress === false && bz.generated === null);
     const handle = () => {
       window.open(bz.generated.url);
     };
     return {
       bz,
-      notRequest,
+      idle,
       handle,
     };
   },

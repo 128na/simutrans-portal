@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { ref, computed, watch } from 'vue';
 import { useMypageApi } from 'src/composables/api';
-import { useNotify } from 'src/composables/notify';
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
+import { useApiHandler } from 'src/composables/apiHandler';
 
 const api = useMypageApi();
 const createAddonPost = () => ({
@@ -121,16 +121,17 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
         throw new Error('invalid post type');
     }
   };
-  const notify = useNotify();
+  const handlerArticle = useApiHandler();
   const saveArticle = async () => {
     const params = {
       article: article.value,
       should_tweet: tweet.value,
     };
-    const res = await api.createArticle(params);
-    notify.success('保存しました');
+    const res = await handlerArticle.handleWithValidate({
+      doRequest: () => api.createArticle(params),
+      successMessage: '保存しました',
+    });
     window.removeEventListener('beforeunload', unloadListener);
-
     return res.data.data;
   };
   const updateArticle = async () => {
@@ -139,8 +140,10 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
       should_tweet: tweet.value,
       without_update_modified_at: withoutUpdateModifiedAt.value,
     };
-    const res = await api.updateArticle(params);
-    notify.success('更新しました');
+    const res = await handlerArticle.handleWithValidate({
+      doRequest: () => api.updateArticle(params),
+      successMessage: '更新しました',
+    });
     window.removeEventListener('beforeunload', unloadListener);
 
     return res.data.data;
@@ -207,11 +210,18 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   });
   const optionsReady = computed(() => !!options.value);
   const ready = computed(() => article.value && options.value);
-  const fetchOptions = () => api.fetchOptions()
-    .then((res) => { options.value = res.data; })
-    .catch(() => {
-      notify.failedRetryable('カテゴリ一覧取得に失敗しました', fetchOptions);
-    });
+  const handlerOption = useApiHandler();
+  const fetchOptions = async () => {
+    try {
+      const res = await handlerOption.handle({
+        doRequest: () => api.fetchOptions(),
+        failedMessage: 'カテゴリ一覧取得に失敗しました',
+      });
+      options.value = res.data;
+    } catch {
+      // do nothing.
+    }
+  };
 
   // preview
   const split = ref(50);
@@ -246,12 +256,14 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     addSection,
     changeSectionOrder,
     deleteSection,
+    handlerArticle,
 
     options,
     statuses,
     fetchOptions,
     optionsReady,
     ready,
+    handlerOption,
 
     split,
     togglePreview,

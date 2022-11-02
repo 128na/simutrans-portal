@@ -3,14 +3,9 @@
     <q-item>
       <search-form />
     </q-item>
-    <q-item v-show="loading">
+    <q-item v-show="handler.loading.value">
       <q-item-section>
         <LoadingMessage />
-      </q-item-section>
-    </q-item>
-    <q-item v-show="error">
-      <q-item-section>
-        <api-error-message :message="errorMessage" @retry="fetch" />
       </q-item-section>
     </q-item>
     <q-expansion-item v-for="(pakAddons, label) in pakAddonCounts" expand-separator :label="label" :key="label">
@@ -20,7 +15,7 @@
       </q-item>
 
     </q-expansion-item>
-    <q-expansion-item v-show="!loading" expand-separator label="ユーザー一覧">
+    <q-expansion-item v-show="!handler.loading.value" expand-separator label="ユーザー一覧">
       <q-item v-for="(a, index) in userAddonCounts" clickable :to="{ name: 'user', params: { id: a.user_id } }"
         :key="index">
         <q-item-section>{{ a.name }} ({{ a.count }})</q-item-section>
@@ -50,40 +45,28 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { useErrorHandler } from 'src/composables/errorHandler';
 import { useFrontApi } from 'src/composables/api';
 import MetaLinks from 'src/components/Common/MetaLinks.vue';
 import MetaInfo from 'src/components/Common/MetaInfo.vue';
 import LoadingMessage from 'src/components/Common/Text/LoadingMessage.vue';
-import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import SearchForm from 'src/components/Front/SearchForm.vue';
+import { useApiHandler } from 'src/composables/apiHandler';
 
 export default defineComponent({
   name: 'FrontMenu',
   setup() {
     const pakAddonCounts = ref({});
     const userAddonCounts = ref([]);
-    const loading = ref(true);
-    const error = ref(false);
 
-    const { errorMessage, errorHandler } = useErrorHandler();
-
-    const { fetchSidebar } = useFrontApi();
+    const handler = useApiHandler();
+    const api = useFrontApi();
     const fetch = async () => {
-      loading.value = true;
-      error.value = false;
-
       try {
-        const res = await fetchSidebar();
-        if (res.status === 200) {
-          pakAddonCounts.value = res.data.pakAddonCounts;
-          userAddonCounts.value = res.data.userAddonCounts;
-        }
-      } catch (err) {
-        error.value = true;
-        errorHandler(err, 'メニューの取得に失敗しました');
-      } finally {
-        loading.value = false;
+        const res = await handler.handle({ doRequest: api.fetchSidebar, failedMessage: 'メニューの取得に失敗しました' });
+        pakAddonCounts.value = res.data.pakAddonCounts;
+        userAddonCounts.value = res.data.userAddonCounts;
+      } catch {
+        // do nothing
       }
     };
     fetch();
@@ -91,17 +74,13 @@ export default defineComponent({
     return {
       pakAddonCounts,
       userAddonCounts,
-      loading,
-      error,
-      errorMessage,
-      fetch,
+      handler,
     };
   },
   components: {
     MetaLinks,
     MetaInfo,
     LoadingMessage,
-    ApiErrorMessage,
     SearchForm,
   },
 });

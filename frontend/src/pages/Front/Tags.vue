@@ -1,8 +1,6 @@
 <template>
   <q-page class="q-pa-md">
     <text-title>タグ一覧</text-title>
-    <loading-message v-show="loading" />
-    <api-error-message v-show="error" :message="errorMessage" @retry="fetch" />
     <div class="q-gutter-md">
       <q-btn v-for="t in tags" :key="t.id" :to="{ name: 'tag', params: { id: t.id } }" :size="size(t.count)" no-caps>
         {{ t.name }} ({{ t.count }})
@@ -14,44 +12,30 @@
 import {
   defineComponent, ref,
 } from 'vue';
-import LoadingMessage from 'src/components/Common/Text/LoadingMessage.vue';
-import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
-import { useErrorHandler } from 'src/composables/errorHandler';
 import { useFrontApi } from 'src/composables/api';
 import { useMeta } from 'src/composables/meta';
+import { useApiHandler } from 'src/composables/apiHandler';
 
 export default defineComponent({
   name: 'FrontTags',
   components: {
-    LoadingMessage,
-    ApiErrorMessage,
     TextTitle,
   },
   setup() {
     const { setTitle } = useMeta();
     setTitle('タグ一覧');
 
-    const loading = ref(true);
-    const error = ref(false);
     const tags = ref([]);
 
-    const { errorMessage, errorHandlerStrict } = useErrorHandler();
-    const { fetchTags } = useFrontApi();
+    const api = useFrontApi();
+    const handler = useApiHandler();
     const fetch = async () => {
-      loading.value = true;
-      error.value = false;
-
       try {
-        const res = await fetchTags();
-        if (res.status === 200) {
-          tags.value = res.data.data;
-        }
-      } catch (err) {
-        error.value = true;
-        errorHandlerStrict(err, 'タグ一覧取得に失敗しました');
-      } finally {
-        loading.value = false;
+        const res = await handler.handleWithLoading({ doRequest: api.fetchTags, failedMessage: 'タグ一覧取得に失敗しました' });
+        tags.value = res.data.data;
+      } catch {
+        // do nothing.
       }
     };
     fetch();
@@ -67,12 +51,8 @@ export default defineComponent({
     };
 
     return {
-      loading,
-      error,
       tags,
-      fetch,
       size,
-      errorMessage,
     };
   },
 });

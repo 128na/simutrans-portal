@@ -62,7 +62,7 @@
 import { defineComponent } from 'vue';
 import CategoryList from 'src/components/Common/CategoryList';
 import TagList from 'src/components/Common/TagList';
-import ContentAgreement from 'src/components/Common/Content/ContentAgreement';
+import ContentAgreement from 'src/components/Common/Content/ContentAgreement.vue';
 import TextPre from 'src/components/Common/Text/TextPre.vue';
 import ContentLink from 'src/components/Common/Content/ContentLink.vue';
 import ContentMeta from 'src/components/Common/Content/ContentMeta.vue';

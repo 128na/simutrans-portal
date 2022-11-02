@@ -42,14 +42,6 @@
           <text-pre>{{ article.contents.license }}</text-pre>
         </dd>
       </template>
-      <template v-if="article.contents.agreement">
-        <dt>
-          掲載許可
-        </dt>
-        <dd>
-          <content-agreement :article="article" />
-        </dd>
-      </template>
       <dt>ダウンロード</dt>
       <dd>
         <content-download :article="article" />

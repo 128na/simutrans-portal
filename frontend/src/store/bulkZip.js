@@ -1,50 +1,50 @@
 import { defineStore } from 'pinia';
 import { useMypageApi } from 'src/composables/api';
-import { useErrorHandler } from 'src/composables/errorHandler';
+import { useApiHandler } from 'src/composables/apiHandler';
 import { BULK_ZIP_RETRY_INTERVAL, BULK_ZIP_RETRY_LIMIT } from 'src/const';
 import { ref } from 'vue';
 
 export const useBulkZipStore = defineStore('bulkZip', () => {
-  const loading = ref(false);
+  const inProgress = ref(false);
   const retry = ref(0);
   const generated = ref(null);
   const { fetchUserBulkZip } = useMypageApi();
-  const { errorHandlerStrict } = useErrorHandler();
 
   const successed = (data) => {
-    loading.value = false;
+    inProgress.value = false;
     retry.value = 0;
     generated.value = data;
   };
-  const failed = (error) => {
-    loading.value = false;
+  const failed = () => {
+    inProgress.value = false;
     retry.value = 0;
     generated.value = null;
-    return errorHandlerStrict(error, 'アーカイブ取得に失敗しました');
   };
-  const wip = () => {
+  const doRetry = () => {
     retry.value += 1;
     // eslint-disable-next-line no-use-before-define
     return setTimeout(doCheck, BULK_ZIP_RETRY_INTERVAL);
   };
+  const handler = useApiHandler();
   const doCheck = async () => {
     try {
-      const res = await fetchUserBulkZip();
-
-      if (res.status === 200 && res.data.generated) {
+      const res = await handler.handle({
+        doRequest: () => fetchUserBulkZip(),
+      });
+      if (res.data.generated) {
         return successed(res.data);
       }
       if (retry.value < BULK_ZIP_RETRY_LIMIT) {
-        return wip();
+        return doRetry();
       }
       throw new Error('retry limit reached');
-    } catch (error) {
-      return failed(error);
+    } catch {
+      return failed();
     }
   };
 
   const fetch = async () => {
-    loading.value = true;
+    inProgress.value = true;
     retry.value = 0;
     generated.value = null;
     doCheck();
@@ -52,11 +52,11 @@ export const useBulkZipStore = defineStore('bulkZip', () => {
 
   const cancel = () => {
     // todo cancel request;
-    loading.value = false;
+    inProgress.value = false;
     retry.value = 0;
   };
   return {
-    loading,
+    inProgress,
     generated,
     fetch,
     cancel,

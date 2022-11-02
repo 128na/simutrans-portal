@@ -1,8 +1,7 @@
 import { DateTime } from 'luxon';
 import { defineStore } from 'pinia';
-import { useQuasar } from 'quasar';
 import { useMypageApi } from 'src/composables/api';
-import { useErrorHandler } from 'src/composables/errorHandler';
+import { useApiHandler } from 'src/composables/apiHandler';
 import {
   ANALYTICS_AXIS_CV, ANALYTICS_AXIS_PV, ANALYTICS_MODE_LINE, ANALYTICS_MODE_SUM, ANALYTICS_TYPE_DAILY, D_FORMAT,
 } from 'src/const';
@@ -38,31 +37,28 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     },
   });
 
-  const api = useMypageApi();
-  const { errorMessage, errorHandlerStrict, clearErrorMessage } = useErrorHandler();
-
   const analyticsData = ref([]);
-  const $q = useQuasar();
+  const api = useMypageApi();
+  const handler = useApiHandler();
   const fetch = async () => {
     try {
       if (ids.value.length < 1) {
         return;
       }
       analyticsData.value = [];
-      $q.loading.show();
-      clearErrorMessage();
       const params = {
         ids: ids.value,
         type: type.value,
         start_date: startDate.value,
         end_date: endDate.value,
       };
-      const res = await api.fetchAnalytics(params);
+      const res = await handler.handleWithValidate({
+        doRequest: () => api.fetchAnalytics(params),
+        failedMessage: '解析データ取得に失敗しました',
+      });
       analyticsData.value = res.data.data;
-    } catch (error) {
-      errorHandlerStrict(error, '解析データ取得に失敗しました');
-    } finally {
-      $q.loading.hide();
+    } catch {
+      // do nothing.
     }
   };
 
@@ -82,6 +78,6 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     endDate,
     dateRange,
     fetch,
-    errorMessage,
+    handler,
   };
 });

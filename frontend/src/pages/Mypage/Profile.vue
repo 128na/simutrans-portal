@@ -4,7 +4,7 @@
       <text-title>プレビュー</text-title>
       <user-profile :profile="previewData" />
       <text-title>プロフィール編集</text-title>
-      <api-error-message :message="editor.errorMessage" />
+      <api-error-message :message="editor.handler.validationErrorMessage" />
       <profile-form />
       <q-btn color="primary" @click="handle">保存する</q-btn>
     </div>
@@ -43,9 +43,13 @@ export default defineComponent({
       editor.setUser(auth.user);
     }
     const handle = async () => {
-      const user = await editor.updateUser();
-      auth.setUser(user);
-      router.push({ name: 'mypage' });
+      try {
+        const user = await editor.updateUser();
+        auth.setUser(user);
+        router.push({ name: 'mypage' });
+      } catch {
+        // do nothing
+      }
     };
     const avatarUrl = computed(() => {
       if (editor.user.profile.data.avatar) {

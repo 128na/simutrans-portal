@@ -2,9 +2,7 @@ import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
 import { useMypageApi } from 'src/composables/api';
-import { useNotify } from 'src/composables/notify';
-import { useErrorHandler } from 'src/composables/errorHandler';
-import { useQuasar } from 'quasar';
+import { useApiHandler } from 'src/composables/apiHandler';
 
 const unloadListener = (event) => {
   event.preventDefault();
@@ -26,23 +24,16 @@ export const useProfileEditStore = defineStore('profileEdit', () => {
     original = JSON.stringify(a);
   };
 
-  const notify = useNotify();
   const api = useMypageApi();
-  const $q = useQuasar();
-  const { errorMessage, errorHandlerStrict } = useErrorHandler();
+  const handler = useApiHandler();
   const updateUser = async () => {
-    try {
-      $q.loading.show();
-      const res = await api.updateUser(user.value);
-      notify.success('保存しました');
-      window.removeEventListener('beforeunload', unloadListener);
+    const res = await handler.handleWithValidate({
+      doRequest: () => api.updateUser(user.value),
+      successMessage: '保存しました',
+    });
+    window.removeEventListener('beforeunload', unloadListener);
 
-      return res.data.data;
-    } catch (err) {
-      return errorHandlerStrict(err);
-    } finally {
-      $q.loading.hide();
-    }
+    return res.data.data;
   };
 
   watch(user, (v) => {
@@ -81,6 +72,6 @@ export const useProfileEditStore = defineStore('profileEdit', () => {
     ready,
     setUser,
     updateUser,
-    errorMessage,
+    handler,
   };
 });

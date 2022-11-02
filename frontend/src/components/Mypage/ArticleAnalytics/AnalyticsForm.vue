@@ -1,7 +1,7 @@
 <template>
   <div class="q-gutter-md">
     <div>
-      <api-error-message :message="analytics.errorMessage" />
+      <api-error-message :message="analytics.handler.validationErrorMessage" />
     </div>
     <div>
       <q-input v-model="analytics.startDate" label="開始日" />

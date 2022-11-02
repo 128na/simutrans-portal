@@ -5,7 +5,7 @@
       <template v-slot:before>
         <div class="q-gutter-sm">
           <text-title>編集</text-title>
-          <api-error-message :message="errorMessage" />
+          <api-error-message :message="editor.handlerArticle.validationErrorMessage" />
           <article-form />
           <form-without-update-modified-at />
           <form-tweet />
@@ -36,8 +36,7 @@ import { useRoute, useRouter } from 'vue-router';
 import LoadingPage from 'src/components/Common/LoadingPage.vue';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { useMypageStore } from 'src/store/mypage';
-import { useErrorHandler } from 'src/composables/errorHandler';
-import { useQuasar, dom } from 'quasar';
+import { dom } from 'quasar';
 import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import ArticleForm from 'src/components/Mypage/PostType/ArticleForm.vue';
 import FormTweet from 'src/components/Mypage/ArticleForm/FormTweet.vue';
@@ -99,17 +98,12 @@ export default defineComponent({
       user: auth.user,
     }));
 
-    const $q = useQuasar();
-    const { errorMessage, errorHandlerStrict } = useErrorHandler();
     const handle = async () => {
-      $q.loading.show();
       try {
         const articles = await editor.updateArticle();
         mypage.articles = articles;
-      } catch (error) {
-        errorHandlerStrict(error, '保存に失敗しました');
-      } finally {
-        $q.loading.hide();
+      } catch {
+        // do nothing.
       }
     };
 
@@ -128,7 +122,6 @@ export default defineComponent({
       mypage,
       articleWithAttachments,
       handle,
-      errorMessage,
       splitterRef,
       style,
     };

@@ -25,7 +25,7 @@
 
 import { defineComponent } from 'vue';
 import ToggleDarkMode from 'src/components/Common/ToggleDarkMode.vue';
-import { useColorStore } from 'src/store/color';
+import { useColor } from 'src/composables/color';
 import { useMenuStore } from 'src/store/menu';
 import { useAppInfo } from 'src/composables/appInfo';
 import AdminMenu from 'src/components/Admin/AdminMenu.vue';
@@ -44,7 +44,7 @@ export default defineComponent({
   setup() {
     const { appName } = useAppInfo();
 
-    useColorStore().setAdmin();
+    useColor().setAdmin();
     const menu = useMenuStore();
     const auth = useAuthStore();
 

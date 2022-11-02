@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-btn flat dense round icon="menu" @click="menu.toggle" />
         <q-btn flat dense no-caps size="lg" :to="{ name: 'top' }">
-          {{ appName}}
+          {{ appName }}
         </q-btn>
         <q-space />
         <toggle-dark-mode />
@@ -26,7 +26,7 @@
 import { defineComponent } from 'vue';
 import ToggleDarkMode from 'src/components/Common/ToggleDarkMode.vue';
 import { useAuthStore } from 'src/store/auth';
-import { useColorStore } from 'src/store/color';
+import { useColor } from 'src/composables/color';
 import { useMenuStore } from 'src/store/menu';
 import { useAppInfo } from 'src/composables/appInfo';
 import MypageMenu from 'src/components/Mypage/MypageMenu.vue';
@@ -43,7 +43,7 @@ export default defineComponent({
 
   setup() {
     const { appName } = useAppInfo();
-    useColorStore().setMypage();
+    useColor().setMypage();
     const menu = useMenuStore();
 
     const auth = useAuthStore();

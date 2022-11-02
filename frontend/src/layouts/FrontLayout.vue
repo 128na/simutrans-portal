@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-btn flat dense round icon="menu" @click="menu.toggle" />
         <q-btn flat dense no-caps size="lg" :to="{ name: 'top' }">
-          {{ appName}}
+          {{ appName }}
         </q-btn>
         <q-space />
         <ToggleListMode class="q-mr-md" />
@@ -27,7 +27,7 @@ import { defineComponent } from 'vue';
 import ToggleDarkMode from 'src/components/Common/ToggleDarkMode.vue';
 import ToggleListMode from 'src/components/Common/ToggleListMode.vue';
 import { useMenuStore } from 'src/store/menu';
-import { useColorStore } from 'src/store/color';
+import { useColor } from 'src/composables/color';
 import { useAppInfo } from 'src/composables/appInfo';
 import FrontMenu from 'src/components/Common/FrontMenu.vue';
 
@@ -41,7 +41,7 @@ export default defineComponent({
 
   setup() {
     const { appName } = useAppInfo();
-    useColorStore().setFront();
+    useColor().setFront();
 
     const menu = useMenuStore();
     return {

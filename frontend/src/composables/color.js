@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { setCssVar } from 'quasar';
 
-export const useColorStore = defineStore('color', () => {
+export const useColor = defineStore('color', () => {
   const setFront = () => {
     setCssVar('primary', 'hsl(211, 82%, 54%)');
   };

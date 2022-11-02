@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 import { useMypageApi } from 'src/composables/api';
 import { useApiHandler } from 'src/composables/apiHandler';
 import { useAppInfo } from 'src/composables/appInfo';
-import { useNotify } from 'src/composables/notify';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -20,7 +19,6 @@ export const useAuthStore = defineStore('auth', () => {
 
   const router = useRouter();
   const route = useRoute();
-  const notify = useNotify();
   const api = useMypageApi();
   const handler = useApiHandler();
   const info = useAppInfo();
@@ -34,9 +32,8 @@ export const useAuthStore = defineStore('auth', () => {
   };
   const attemptLogin = async (params) => {
     try {
-      const res = await handler.handleWithValidate(() => api.postLogin(params));
+      const res = await handler.handleWithValidate({ doRequest: () => api.postLogin(params), successMessage: 'ログインしました' });
       user.value = res.data.data;
-      notify.success('ログインしました');
       router.push(route.query.redirect || { name: 'mypage' });
     } catch {
       // do nothing

@@ -16,14 +16,19 @@ export const useApiHandler = () => {
 
   /**
    * エラーをハンドリングする
-   * @param {()=>AxiosResponse<any>} doRequest
-   * @param {string} defaultMessage
+   * @param {{doRequest:()=>AxiosResponse<any>, successMessage:string, failedMessage:string, retryable:boolean}}
    * @returns {AxiosResponse<any>|null}
    */
-  const handle = async (doRequest, defaultMessage = 'エラーが発生しました') => {
+  const handle = async ({
+    doRequest, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true,
+  }) => {
     try {
       loading.value = true;
-      return await doRequest();
+      const res = await doRequest();
+      if (successMessage) {
+        notify.success(successMessage);
+      }
+      return res;
     } catch (error) {
       switch (error.response.status) {
         case 401:
@@ -36,7 +41,11 @@ export const useApiHandler = () => {
           router.replace({ name: 'error', params: { status: error.response.status } });
           throw error;
         default:
-          notify.failedRetryable(defaultMessage, handle);
+          if (retryable) {
+            notify.failedRetryable(failedMessage, handle);
+          } else {
+            notify.failed(failedMessage);
+          }
           throw error;
       }
     } finally {
@@ -46,15 +55,20 @@ export const useApiHandler = () => {
 
   /**
    * ローディング画面とエラーをハンドリングする
-   * @param {()=>AxiosResponse<any>} doRequest
-   * @param {string} defaultMessage
+   * @param {{doRequest:()=>AxiosResponse<any>, successMessage:string, failedMessage:string, retryable:boolean}}
    * @returns {AxiosResponse<any>|null}
    */
-  const handleWithLoading = async (doRequest, defaultMessage = 'エラーが発生しました') => {
+  const handleWithLoading = async ({
+    doRequest, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true,
+  }) => {
     try {
       loading.value = true;
       $q.loading.show();
-      return await doRequest();
+      const res = await doRequest();
+      if (successMessage) {
+        notify.success(successMessage);
+      }
+      return res;
     } catch (error) {
       switch (error.response.status) {
         case 401:
@@ -67,7 +81,11 @@ export const useApiHandler = () => {
           router.replace({ name: 'error', params: { status: error.response.status } });
           throw error;
         default:
-          notify.failedRetryable(defaultMessage, handleWithLoading);
+          if (retryable) {
+            notify.failedRetryable(failedMessage, handleWithLoading);
+          } else {
+            notify.failed(failedMessage);
+          }
           throw error;
       }
     } finally {
@@ -78,16 +96,21 @@ export const useApiHandler = () => {
 
   /**
    * ローディング画面とバリデーションエラーをハンドリングする
-   * @param {()=>AxiosResponse<any>} doRequest
-   * @param {string} defaultMessage
+   * @param {{doRequest:()=>AxiosResponse<any>, successMessage:string, failedMessage:string, retryable:boolean}}
    * @returns {AxiosResponse<any>|null}
    */
-  const handleWithValidate = async (doRequest, defaultMessage = 'エラーが発生しました') => {
+  const handleWithValidate = async ({
+    doRequest, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true,
+  }) => {
     try {
       loading.value = true;
       $q.loading.show();
       validationErrors.value = {};
-      return await doRequest();
+      const res = await doRequest();
+      if (successMessage) {
+        notify.success(successMessage);
+      }
+      return res;
     } catch (error) {
       switch (error.response.status) {
         case 401:
@@ -103,7 +126,11 @@ export const useApiHandler = () => {
           validationErrors.value = error.response.data.errors;
           throw error;
         default:
-          notify.failedRetryable(defaultMessage, handleWithValidate);
+          if (retryable) {
+            notify.failedRetryable(failedMessage, handleWithValidate);
+          } else {
+            notify.failed(failedMessage);
+          }
           throw error;
       }
     } finally {

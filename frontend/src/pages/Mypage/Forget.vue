@@ -12,7 +12,6 @@
 </template>
 <script>
 import { useMypageApi } from 'src/composables/api';
-import { useNotify } from 'src/composables/notify';
 import { defineComponent, reactive } from 'vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
@@ -24,13 +23,11 @@ export default defineComponent({
   setup() {
     const state = reactive({ email: '', password: '', remember: false });
 
-    const notify = useNotify();
     const api = useMypageApi();
     const handler = useApiHandler();
     const handle = async () => {
       try {
-        handler.handleWithValidate(() => api.forget(state));
-        notify.success('メールを送信しました');
+        handler.handleWithValidate({ doReqest: () => api.forget(state), successMessage: 'メールを送信しました' });
       } catch {
         // do nothing
       }

@@ -19,7 +19,6 @@ import InputPassword from 'src/components/Common/Input/InputPassword.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import { useMypageApi } from 'src/composables/api';
 import { useAuthStore } from 'src/store/auth';
-import { useNotify } from 'src/composables/notify';
 import { useApiHandler } from 'src/composables/apiHandler';
 
 export default defineComponent({
@@ -31,13 +30,11 @@ export default defineComponent({
     const route = useRoute();
     const state = reactive({ email: '', password: '', token: route.params.token });
 
-    const notify = useNotify();
     const api = useMypageApi();
     const handler = useApiHandler();
     const handle = async () => {
       try {
-        await handler.handleWithValidate(() => api.reset(state));
-        notify.success('パスワードを更新しました');
+        await handler.handleWithValidate({ doRequest: () => api.reset(state), successMessage: 'パスワードを更新しました' });
         auth.attemptLogout();
       } catch {
         // do nothing.

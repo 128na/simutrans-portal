@@ -20,7 +20,9 @@ const routes = [
     path: '/mypage',
     component: () => import('layouts/MypageLayout.vue'),
     children: [
-      { name: 'reset', path: 'reset/:token', component: () => import('pages/Mypage/Reset.vue') },
+      {
+        name: 'reset', path: 'reset/:token', meta: { requiresGuest: true }, component: () => import('pages/Mypage/Reset.vue'),
+      },
       {
         name: 'mypage', path: '', meta: { requiresVerified: true }, component: () => import('pages/Mypage/Top.vue'),
       },

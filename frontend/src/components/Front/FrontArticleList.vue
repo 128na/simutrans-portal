@@ -67,9 +67,9 @@
 import { defineComponent } from 'vue';
 import { useListModeStore } from 'src/store/listMode';
 import { useMarkdown } from 'src/composables/markdown';
-import CategoryList from 'src/components/Common/CategoryList.vue';
-import TagList from 'src/components/Common/TagList.vue';
-import ContentMeta from 'src/components/Common/Content/ContentMeta.vue';
+import CategoryList from 'src/components/Front/CategoryList.vue';
+import TagList from 'src/components/Front/TagList.vue';
+import ContentMeta from 'src/components/Front/Content/ContentMeta.vue';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { DEFAULT_THUMBNAIL } from 'src/const';
 

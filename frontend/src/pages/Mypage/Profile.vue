@@ -21,7 +21,7 @@ import { useProfileEditStore } from 'src/store/profileEdit';
 import { defineComponent, computed } from 'vue';
 import LoadingPage from 'src/components/Common/LoadingPage.vue';
 import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
-import UserProfile from 'src/components/Common/UserProfile.vue';
+import UserProfile from 'src/components/Front/UserProfile.vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({

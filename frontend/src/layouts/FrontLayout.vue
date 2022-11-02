@@ -29,7 +29,7 @@ import ToggleListMode from 'src/components/Common/ToggleListMode.vue';
 import { useMenuStore } from 'src/store/menu';
 import { useColor } from 'src/composables/color';
 import { useAppInfo } from 'src/composables/appInfo';
-import FrontMenu from 'src/components/Common/FrontMenu.vue';
+import FrontMenu from 'src/components/Front/FrontMenu.vue';
 
 export default defineComponent({
   name: 'FrontLayout',

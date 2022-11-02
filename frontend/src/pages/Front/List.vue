@@ -31,7 +31,7 @@ import { useArticleCacheStore } from 'src/store/articleCache';
 import { useFrontApi } from 'src/composables/api';
 import { useMeta } from 'src/composables/meta';
 import FrontArticleList from 'src/components/Front/FrontArticleList.vue';
-import UserProfile from 'src/components/Common/UserProfile.vue';
+import UserProfile from 'src/components/Front/UserProfile.vue';
 import { useApiHandler } from 'src/composables/apiHandler';
 
 const resolveApi = (api, route) => {

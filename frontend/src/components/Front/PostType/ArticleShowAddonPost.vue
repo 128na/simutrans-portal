@@ -1,7 +1,7 @@
 <template>
   <article>
     <text-title>
-      {{ article.title || '名もなきアドオン紹介' }}
+      {{ article.title || '名もなきアドオン投稿' }}
     </text-title>
     <content-thumbnail :article="article" />
 
@@ -42,17 +42,15 @@
           <text-pre>{{ article.contents.license }}</text-pre>
         </dd>
       </template>
-      <template v-if="article.contents.agreement">
-        <dt>
-          掲載許可
-        </dt>
+      <template v-if="article.contents.file">
+        <dt>ファイル一覧</dt>
         <dd>
-          <content-agreement :article="article" />
+          <content-file-info :article="article" />
         </dd>
       </template>
-      <dt>掲載先URL</dt>
+      <dt>ダウンロード</dt>
       <dd>
-        <content-link :article="article" />
+        <content-download :article="article" />
       </dd>
     </dl>
     <content-meta :article="article" />
@@ -60,25 +58,25 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
-import CategoryList from 'src/components/Common/CategoryList';
-import TagList from 'src/components/Common/TagList';
-import ContentAgreement from 'src/components/Common/Content/ContentAgreement.vue';
+import CategoryList from 'src/components/Front/CategoryList';
+import TagList from 'src/components/Front/TagList';
 import TextPre from 'src/components/Common/Text/TextPre.vue';
-import ContentLink from 'src/components/Common/Content/ContentLink.vue';
-import ContentMeta from 'src/components/Common/Content/ContentMeta.vue';
-import ContentThumbnail from 'src/components/Common/Content/ContentThumbnail.vue';
+import ContentMeta from 'src/components/Front/Content/ContentMeta.vue';
+import ContentThumbnail from 'src/components/Front/Content/ContentThumbnail.vue';
+import ContentDownload from 'src/components/Front/Content/ContentDownload.vue';
+import ContentFileInfo from 'src/components/Front/Content/ContentFileInfo.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 
 export default defineComponent({
-  name: 'ArticleShowAddonIntroduction',
+  name: 'ArticleShowAddonPost',
   components: {
     CategoryList,
     TagList,
-    ContentAgreement,
     TextPre,
-    ContentLink,
     ContentMeta,
     ContentThumbnail,
+    ContentDownload,
+    ContentFileInfo,
     TextTitle,
   },
   props: {

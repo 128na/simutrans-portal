@@ -40,6 +40,9 @@ export default defineComponent({
     const handler = useApiHandler();
     const { setTitle } = useMeta();
     const fetch = async () => {
+      if (route.name !== 'show') {
+        return;
+      }
       if (articleCache.hasCache(route.params.slug)) {
         setTitle(article.value.title);
         return;

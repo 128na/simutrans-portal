@@ -27,10 +27,10 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
-import CategoryList from 'src/components/Common/CategoryList';
-import ContentMeta from 'src/components/Common/Content/ContentMeta.vue';
-import ContentThumbnail from 'src/components/Common/Content/ContentThumbnail.vue';
-import ContentMarkdown from 'src/components/Common/Content/ContentMarkdown.vue';
+import CategoryList from 'src/components/Front/CategoryList';
+import ContentMeta from 'src/components/Front/Content/ContentMeta.vue';
+import ContentThumbnail from 'src/components/Front/Content/ContentThumbnail.vue';
+import ContentMarkdown from 'src/components/Front/Content/ContentMarkdown.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 
 export default defineComponent({

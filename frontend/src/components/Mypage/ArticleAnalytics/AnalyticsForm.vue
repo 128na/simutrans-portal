@@ -42,7 +42,7 @@ import { ANALYTICS_TYPES, ANALYTICS_MODES, ANALYTICS_AXES } from 'src/const';
 import { useMypageStore } from 'src/store/mypage';
 import { useAnalyticsStore } from 'src/store/analytics';
 import { defineComponent } from 'vue';
-import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
+import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 
 export default defineComponent({
   name: 'AnalyticsForm',

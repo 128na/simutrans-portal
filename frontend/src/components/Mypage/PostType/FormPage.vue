@@ -60,8 +60,8 @@ import { defineComponent } from 'vue';
 import LabelRequired from 'src/components/Common/LabelRequired.vue';
 import { useMypageStore } from 'src/store/mypage';
 import FileManager from 'src/components/Mypage/FileManager.vue';
-import FormPageCategories from 'src/components/Mypage/FormPageCategories.vue';
-import InputCountable from 'src/components/Common/InputCountable.vue';
+import FormPageCategories from 'src/components/Mypage/ArticleForm/FormPageCategories.vue';
+import InputCountable from 'src/components/Common/Input/InputCountable.vue';
 
 export default defineComponent({
   name: 'FormPage',

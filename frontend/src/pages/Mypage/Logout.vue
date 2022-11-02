@@ -4,7 +4,7 @@
   </q-page>
 </template>
 <script>
-import TextTitle from 'src/components/Common/TextTitle.vue';
+import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import { defineComponent } from 'vue';
 import { useMypageApi } from 'src/composables/api';
 import { useAuthStore } from 'src/store/auth';

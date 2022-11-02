@@ -21,7 +21,7 @@
   </q-page>
 </template>
 <script>
-import TextTitle from 'src/components/Common/TextTitle.vue';
+import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import { defineComponent, ref } from 'vue';
 import { useAdminApi } from 'src/composables/api';
 import { DateTime } from 'luxon';

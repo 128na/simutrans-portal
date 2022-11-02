@@ -26,8 +26,8 @@ import { useErrorHandler } from 'src/composables/errorHandler';
 import { useArticleCacheStore } from 'src/store/articleCache';
 import { useFrontApi } from 'src/composables/api';
 import { useMeta } from 'src/composables/meta';
-import LoadingMessage from 'src/components/Common/LoadingMessage.vue';
-import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
+import LoadingMessage from 'src/components/Common/Text/LoadingMessage.vue';
+import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 
 export default defineComponent({
   name: 'FrontShow',

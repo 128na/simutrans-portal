@@ -3,7 +3,7 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
-import gtm from '../../boot/gtm';
+import gtm from '../../../boot/gtm';
 
 export default defineComponent({
   name: 'ContentDownload',

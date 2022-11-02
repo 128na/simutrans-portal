@@ -29,7 +29,7 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
-import TextPre from 'src/components/Common/TextPre.vue';
+import TextPre from 'src/components/Common/Text/TextPre.vue';
 
 export default defineComponent({
   name: 'UserProfile',

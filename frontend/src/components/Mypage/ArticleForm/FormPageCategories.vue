@@ -5,7 +5,7 @@
 <script>
 import { useArticleEditStore } from 'src/store/articleEdit';
 import { defineComponent, computed } from 'vue';
-import LabelOptional from '../Common/LabelOptional.vue';
+import LabelOptional from '../../Common/LabelOptional.vue';
 
 export default defineComponent({
   name: 'FormPageCategories',

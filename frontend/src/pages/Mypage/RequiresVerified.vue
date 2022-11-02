@@ -14,7 +14,7 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
-import TextTitle from 'src/components/Common/TextTitle.vue';
+import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import { useMypageApi } from 'src/composables/api';
 import { useNotify } from 'src/composables/notify';
 import { useAuthStore } from 'src/store/auth';

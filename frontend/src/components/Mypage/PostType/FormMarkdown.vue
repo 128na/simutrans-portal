@@ -8,8 +8,8 @@
 import { useArticleEditStore } from 'src/store/articleEdit';
 import { defineComponent } from 'vue';
 import LabelRequired from 'src/components/Common/LabelRequired.vue';
-import FormPageCategories from 'src/components/Mypage/FormPageCategories.vue';
-import InputCountable from 'src/components/Common/InputCountable.vue';
+import FormPageCategories from 'src/components/Mypage/ArticleForm/FormPageCategories.vue';
+import InputCountable from 'src/components/Common/Input/InputCountable.vue';
 
 export default defineComponent({
   name: 'FormMarkdown',

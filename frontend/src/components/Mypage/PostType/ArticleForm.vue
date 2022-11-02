@@ -15,18 +15,18 @@
 <script>
 import { useArticleEditStore } from 'src/store/articleEdit';
 import LabelRequired from 'src/components/Common/LabelRequired.vue';
-import FormSlug from 'src/components/Mypage/FormSlug.vue';
-import FormStatus from 'src/components/Mypage/FormStatus.vue';
+import FormSlug from 'src/components/Mypage/ArticleForm/FormSlug.vue';
+import FormStatus from 'src/components/Mypage/ArticleForm/FormStatus.vue';
 import { defineComponent, computed } from 'vue';
 import {
   POST_TYPE_ADDON_INTRODUCTION, POST_TYPE_ADDON_POST, POST_TYPE_PAGE, POST_TYPE_MARKDOWN,
 } from 'src/const';
-import FormReservation from 'src/components/Mypage/FormReservation.vue';
-import FormAddonIntroduction from 'src/components/Mypage/FormAddonIntroduction.vue';
-import FormAddonPost from 'src/components/Mypage/FormAddonPost.vue';
-import FormMarkdown from 'src/components/Mypage/FormMarkdown.vue';
-import FormPage from 'src/components/Mypage/FormPage.vue';
-import FormThumbnail from 'src/components/Mypage/FormThumbnail.vue';
+import FormReservation from 'src/components/Mypage/ArticleForm/FormReservation.vue';
+import FormAddonIntroduction from 'src/components/Mypage/PostType/FormAddonIntroduction.vue';
+import FormAddonPost from 'src/components/Mypage/PostType/FormAddonPost.vue';
+import FormMarkdown from 'src/components/Mypage/PostType/FormMarkdown.vue';
+import FormPage from 'src/components/Mypage/PostType/FormPage.vue';
+import FormThumbnail from 'src/components/Mypage/ArticleForm/FormThumbnail.vue';
 
 export default defineComponent({
   name: 'ArticleForm',

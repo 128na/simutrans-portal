@@ -21,7 +21,7 @@
 
 <script>
 import { useBulkZipStore } from 'src/store/bulkZip';
-import LoadingMessage from 'src/components/Common/LoadingMessage.vue';
+import LoadingMessage from 'src/components/Common/Text/LoadingMessage.vue';
 import { defineComponent, computed } from 'vue';
 
 export default defineComponent({

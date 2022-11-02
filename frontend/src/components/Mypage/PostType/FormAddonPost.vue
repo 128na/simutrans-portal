@@ -23,11 +23,11 @@
 import { useArticleEditStore } from 'src/store/articleEdit';
 import { defineComponent, computed } from 'vue';
 import LabelRequired from 'src/components/Common/LabelRequired.vue';
-import InputCountable from 'src/components/Common/InputCountable.vue';
-import FormAddonCategories from 'src/components/Mypage/FormAddonCategories.vue';
+import InputCountable from 'src/components/Common/Input/InputCountable.vue';
+import FormAddonCategories from 'src/components/Mypage/ArticleForm/FormAddonCategories.vue';
 import LabelOptional from 'src/components/Common/LabelOptional.vue';
-import FormTag from 'src/components/Mypage/FormTag.vue';
-import FormAddonFile from 'src/components/Mypage/FormAddonFile.vue';
+import FormTag from 'src/components/Mypage/ArticleForm/FormTag.vue';
+import FormAddonFile from 'src/components/Mypage/ArticleForm/FormAddonFile.vue';
 import { useMypageStore } from 'src/store/mypage';
 
 export default defineComponent({

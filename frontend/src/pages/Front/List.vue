@@ -36,14 +36,14 @@
 <script>
 import { defineComponent, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import TextTitle from 'src/components/Common/TextTitle.vue';
+import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useArticleCacheStore } from 'src/store/articleCache';
 import { useFrontApi } from 'src/composables/api';
 import { useMeta } from 'src/composables/meta';
 import FrontArticleList from 'src/components/Front/FrontArticleList.vue';
-import LoadingMessage from 'src/components/Common/LoadingMessage.vue';
-import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
+import LoadingMessage from 'src/components/Common/Text/LoadingMessage.vue';
+import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import UserProfile from 'src/components/Common/UserProfile.vue';
 
 export default defineComponent({

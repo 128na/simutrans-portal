@@ -3,10 +3,10 @@
 </template>
 <script>
 import { defineComponent, computed } from 'vue';
-import ArticleShowAddonIntroduction from 'src/components/Common/ArticleShowAddonIntroduction';
-import ArticleShowAddonPost from 'src/components/Common/ArticleShowAddonPost';
-import ArticleShowPage from 'src/components/Common/ArticleShowPage';
-import ArticleShowMarkdown from 'src/components/Common/ArticleShowMarkdown';
+import ArticleShowAddonIntroduction from 'src/components/Common/PostType/ArticleShowAddonIntroduction';
+import ArticleShowAddonPost from 'src/components/Common/PostType/ArticleShowAddonPost';
+import ArticleShowPage from 'src/components/Common/PostType/ArticleShowPage';
+import ArticleShowMarkdown from 'src/components/Common/PostType/ArticleShowMarkdown';
 import {
   POST_TYPE_ADDON_INTRODUCTION, POST_TYPE_ADDON_POST, POST_TYPE_PAGE, POST_TYPE_MARKDOWN,
 } from 'src/const';

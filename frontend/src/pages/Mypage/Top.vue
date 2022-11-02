@@ -14,7 +14,7 @@ import { useAuthStore } from 'src/store/auth';
 import { defineComponent } from 'vue';
 import ArticleTable from 'src/components/Mypage/ArticleTable.vue';
 import ArticleExport from 'src/components/Mypage/ArticleExport.vue';
-import TextTitle from 'src/components/Common/TextTitle.vue';
+import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 
 export default defineComponent({
   name: 'MypageTop',

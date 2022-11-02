@@ -14,15 +14,15 @@
 </template>
 <script>
 import { useQuasar } from 'quasar';
-import TextTitle from 'src/components/Common/TextTitle.vue';
+import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import { useMypageApi } from 'src/composables/api';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useNotify } from 'src/composables/notify';
 import { useAuthStore } from 'src/store/auth';
 import { defineComponent, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
-import InputPassword from 'src/components/Common/InputPassword.vue';
+import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
+import InputPassword from 'src/components/Common/Input/InputPassword.vue';
 
 export default defineComponent({
   name: 'PageInvite',

@@ -16,8 +16,8 @@ import { useMypageApi } from 'src/composables/api';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useNotify } from 'src/composables/notify';
 import { defineComponent, reactive } from 'vue';
-import TextTitle from 'src/components/Common/TextTitle.vue';
-import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
+import TextTitle from 'src/components/Common/Text/TextTitle.vue';
+import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 
 export default defineComponent({
   name: 'MypageForget',

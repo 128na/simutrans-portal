@@ -35,10 +35,10 @@
 <script>
 import LabelRequired from 'src/components/Common/LabelRequired.vue';
 import LabelOptional from 'src/components/Common/LabelOptional.vue';
-import FormAvatar from 'src/components/Mypage/FormAvatar.vue';
+import FormAvatar from 'src/components/Mypage/Profile/FormAvatar.vue';
 import { defineComponent } from 'vue';
 import { useProfileEditStore } from 'src/store/profileEdit';
-import InputCountable from 'src/components/Common/InputCountable.vue';
+import InputCountable from 'src/components/Common/Input/InputCountable.vue';
 
 export default defineComponent({
   name: 'ProfileForm',

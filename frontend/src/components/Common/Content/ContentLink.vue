@@ -5,7 +5,7 @@
 <script>
 import { useFrontApi } from 'src/composables/api';
 import { defineComponent } from 'vue';
-import gtm from '../../boot/gtm';
+import gtm from '../../../boot/gtm';
 
 export default defineComponent({
   name: 'ContentLink',

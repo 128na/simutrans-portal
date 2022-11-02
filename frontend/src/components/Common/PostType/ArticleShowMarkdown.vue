@@ -1,16 +1,16 @@
 <template>
   <article>
     <text-title>
-      {{article.title || '名もなきmarkdown記事'}}
+      {{ article.title || '名もなきmarkdown記事' }}
     </text-title>
     <content-thumbnail :article="article" />
 
     <dl>
       <dt>作者</dt>
-      <dd>{{article.contents.author || '未設定'}}</dd>
+      <dd>{{ article.contents.author || '未設定' }}</dd>
       <dt>投稿者</dt>
       <dd>
-        <router-link class="default-link" :to="{name:'user', params:{id:article.user.id}}">
+        <router-link class="default-link" :to="{ name: 'user', params: { id: article.user.id } }">
           {{ article.user.name || '未設定' }}
         </router-link>
       </dd>
@@ -28,10 +28,10 @@
 <script>
 import { defineComponent } from 'vue';
 import CategoryList from 'src/components/Common/CategoryList';
-import ContentMeta from 'src/components/Common/ContentMeta.vue';
-import ContentThumbnail from 'src/components/Common/ContentThumbnail.vue';
-import ContentMarkdown from 'src/components/Common/ContentMarkdown.vue';
-import TextTitle from 'src/components/Common/TextTitle.vue';
+import ContentMeta from 'src/components/Common/Content/ContentMeta.vue';
+import ContentThumbnail from 'src/components/Common/Content/ContentThumbnail.vue';
+import ContentMarkdown from 'src/components/Common/Content/ContentMarkdown.vue';
+import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 
 export default defineComponent({
   name: 'ArticleShowMarkdown',

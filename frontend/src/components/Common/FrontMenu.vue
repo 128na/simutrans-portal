@@ -54,8 +54,8 @@ import { useErrorHandler } from 'src/composables/errorHandler';
 import { useFrontApi } from 'src/composables/api';
 import MetaLinks from 'src/components/Common/MetaLinks.vue';
 import MetaInfo from 'src/components/Common/MetaInfo.vue';
-import LoadingMessage from 'src/components/Common/LoadingMessage.vue';
-import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
+import LoadingMessage from 'src/components/Common/Text/LoadingMessage.vue';
+import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import SearchForm from 'src/components/Front/SearchForm.vue';
 
 export default defineComponent({

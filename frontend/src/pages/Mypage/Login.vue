@@ -12,7 +12,7 @@
         <q-btn label="ログイン" color="primary" type="submit" />
       </div>
       <div>
-        <router-link :to="{   name:   'forget'   }" class="default-link">パスワードリセット</router-link>
+        <router-link :to="{ name: 'forget' }" class="default-link">パスワードリセット</router-link>
       </div>
     </q-form>
   </q-page>
@@ -20,11 +20,11 @@
 
 <script>
 import { defineComponent, reactive } from 'vue';
-import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
+import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useRoute, useRouter } from 'vue-router';
-import InputPassword from 'src/components/Common/InputPassword.vue';
-import TextTitle from 'src/components/Common/TextTitle.vue';
+import InputPassword from 'src/components/Common/Input/InputPassword.vue';
+import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import { useMypageApi } from 'src/composables/api';
 import { useAuthStore } from 'src/store/auth';
 import { useNotify } from 'src/composables/notify';

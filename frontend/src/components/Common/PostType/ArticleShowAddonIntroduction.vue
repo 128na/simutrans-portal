@@ -1,16 +1,16 @@
 <template>
   <article>
     <text-title>
-      {{article.title || '名もなきアドオン投稿'}}
+      {{ article.title || '名もなきアドオン紹介' }}
     </text-title>
     <content-thumbnail :article="article" />
 
     <dl>
       <dt>作者</dt>
-      <dd>{{article.contents.author || '未設定'}}</dd>
+      <dd>{{ article.contents.author || '未設定' }}</dd>
       <dt>投稿者</dt>
       <dd>
-        <router-link class="default-link" :to="{name:'user', params:{id:article.user.id}}">
+        <router-link class="default-link" :to="{ name: 'user', params: { id: article.user.id } }">
           {{ article.user.name || '未設定' }}
         </router-link>
       </dd>
@@ -28,18 +28,18 @@
       </template>
       <dt>説明</dt>
       <dd>
-        <text-pre>{{article.contents.description}}</text-pre>
+        <text-pre>{{ article.contents.description }}</text-pre>
       </dd>
       <template v-if="article.contents.thanks">
         <dt>謝辞・参考にしたアドオン</dt>
         <dd>
-          <text-pre>{{article.contents.thanks}}</text-pre>
+          <text-pre>{{ article.contents.thanks }}</text-pre>
         </dd>
       </template>
       <template v-if="article.contents.license">
         <dt>ライセンス</dt>
         <dd>
-          <text-pre>{{article.contents.license}}</text-pre>
+          <text-pre>{{ article.contents.license }}</text-pre>
         </dd>
       </template>
       <template v-if="article.contents.agreement">
@@ -50,9 +50,9 @@
           <content-agreement :article="article" />
         </dd>
       </template>
-      <dt>ダウンロード</dt>
+      <dt>掲載先URL</dt>
       <dd>
-        <content-download :article="article" />
+        <content-link :article="article" />
       </dd>
     </dl>
     <content-meta :article="article" />
@@ -62,23 +62,23 @@
 import { defineComponent } from 'vue';
 import CategoryList from 'src/components/Common/CategoryList';
 import TagList from 'src/components/Common/TagList';
-import ContentAgreement from 'src/components/Common/ContentAgreement';
-import TextPre from 'src/components/Common/TextPre.vue';
-import ContentMeta from 'src/components/Common/ContentMeta.vue';
-import ContentThumbnail from 'src/components/Common/ContentThumbnail.vue';
-import ContentDownload from 'src/components/Common/ContentDownload.vue';
-import TextTitle from 'src/components/Common/TextTitle.vue';
+import ContentAgreement from 'src/components/Common/Content/ContentAgreement';
+import TextPre from 'src/components/Common/Text/TextPre.vue';
+import ContentLink from 'src/components/Common/Content/ContentLink.vue';
+import ContentMeta from 'src/components/Common/Content/ContentMeta.vue';
+import ContentThumbnail from 'src/components/Common/Content/ContentThumbnail.vue';
+import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 
 export default defineComponent({
-  name: 'ArticleShowAddonPost',
+  name: 'ArticleShowAddonIntroduction',
   components: {
     CategoryList,
     TagList,
     ContentAgreement,
     TextPre,
+    ContentLink,
     ContentMeta,
     ContentThumbnail,
-    ContentDownload,
     TextTitle,
   },
   props: {

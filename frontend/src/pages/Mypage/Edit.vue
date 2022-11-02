@@ -38,11 +38,11 @@ import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { useMypageStore } from 'src/store/mypage';
 import { useErrorHandler } from 'src/composables/errorHandler';
 import { useQuasar, dom } from 'quasar';
-import ApiErrorMessage from 'src/components/Common/ApiErrorMessage.vue';
-import ArticleForm from 'src/components/Mypage/ArticleForm.vue';
-import FormTweet from 'src/components/Mypage/FormTweet.vue';
-import FormWithoutUpdateModifiedAt from 'src/components/Mypage/FormWithoutUpdateModifiedAt.vue';
-import TextTitle from 'src/components/Common/TextTitle.vue';
+import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
+import ArticleForm from 'src/components/Mypage/PostType/ArticleForm.vue';
+import FormTweet from 'src/components/Mypage/ArticleForm/FormTweet.vue';
+import FormWithoutUpdateModifiedAt from 'src/components/Mypage/ArticleForm/FormWithoutUpdateModifiedAt.vue';
+import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 
 export default defineComponent({
   name: 'MypageEdit',

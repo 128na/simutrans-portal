@@ -44,8 +44,8 @@
   </q-page>
 </template>
 <script>
-import TextTitle from 'src/components/Common/TextTitle.vue';
-import TextSubTitle from 'src/components/Common/TextSubTitle.vue';
+import TextTitle from 'src/components/Common/Text/TextTitle.vue';
+import TextSubTitle from 'src/components/Common/Text/TextSubTitle.vue';
 import { useAuthStore } from 'src/store/auth';
 import { useInvitationStore } from 'src/store/invitation';
 import { defineComponent } from 'vue';

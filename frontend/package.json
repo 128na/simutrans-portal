@@ -8,10 +8,14 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "fix": "eslint --fix --ext .js,.vue ./",
-    "test": "echo \"No test specified\" && exit 0",
+    "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build && npm run spa:copy",
-    "spa:copy": "node ./deployment/spa"
+    "spa:copy": "node ./deployment/spa",
+    "test:e2e": "cross-env NODE_ENV=test start-test \"quasar dev\" http-get://localhost:8080 \"cypress open --e2e\"",
+    "test:e2e:ci": "cross-env NODE_ENV=test start-test \"quasar dev\" http-get://localhost:8080 \"cypress run --e2e\"",
+    "test:component": "cross-env NODE_ENV=test cypress open --component",
+    "test:component:ci": "cross-env NODE_ENV=test cypress run --component"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
@@ -30,11 +34,16 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",
     "@quasar/app": "^3.0.0",
+    "@quasar/quasar-app-extension-testing": "^2.0.4",
+    "@quasar/quasar-app-extension-testing-e2e-cypress": "^5.0.0-beta.5",
+    "cypress": "^10.10.0",
     "dotenv": "^16.0.2",
     "electron": "^21.1.0",
     "electron-packager": "^15.5.2",
     "eslint": "^7.14.0",
     "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-chai-friendly": "^0.7.2",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-vue": "^7.0.0",
     "eslint-webpack-plugin": "^2.4.0",

@@ -27,14 +27,17 @@ module.exports = {
     // 'plugin:vue/vue3-strongly-recommended', // Priority B: Strongly Recommended (Improving Readability)
     // 'plugin:vue/vue3-recommended', // Priority C: Recommended (Minimizing Arbitrary Choices and Cognitive Overhead)
 
-    'airbnb-base'
-
+    'airbnb-base',
+    "plugin:cypress/recommended",
+    "plugin:chai-friendly/recommended"
   ],
 
   plugins: [
     // https://eslint.vuejs.org/user-guide/#why-doesn-t-it-work-on-vue-files
     // required to lint *.vue files
     'vue',
+    "cypress",
+    "chai-friendly"
 
   ],
 
@@ -75,6 +78,6 @@ module.exports = {
     'no-unused-vars': 'warn',
 
     // allow debugger during development only
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
-  }
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+  },
 }

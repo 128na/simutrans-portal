@@ -1,0 +1,10 @@
+{
+  "@quasar/testing-e2e-cypress": {
+    "options": [
+      "scripts"
+    ]
+  },
+  "@quasar/testing": {
+    "harnesses": []
+  }
+}

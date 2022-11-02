@@ -1,12 +1,12 @@
 <template>
   <q-page class="q-pa-md fit row wrap justify-center">
-    <q-form class="col-6 q-gutter-sm" @submit=handle>
+    <q-form class="col-6 q-gutter-sm" @submit=auth.attemptLogin(state)>
       <text-title>ログイン</text-title>
-      <api-error-message :message="errorMessage" />
-      <q-input v-model="authState.email" type="email" label="email" autocomplete="email" />
-      <input-password v-model="authState.password" label="password" autocomplete="current-password" />
+      <api-error-message :message="auth.handler.validationErrorMessage" />
+      <q-input v-model="state.email" type="email" label="email" autocomplete="email" />
+      <input-password v-model="state.password" label="password" autocomplete="current-password" />
       <div>
-        <q-checkbox v-model="authState.remember" label="ログインしたままにする" />
+        <q-checkbox v-model="state.remember" label="ログインしたままにする" />
       </div>
       <div>
         <q-btn label="ログイン" color="primary" type="submit" />
@@ -21,46 +21,20 @@
 <script>
 import { defineComponent, reactive } from 'vue';
 import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
-import { useErrorHandler } from 'src/composables/errorHandler';
-import { useRoute, useRouter } from 'vue-router';
 import InputPassword from 'src/components/Common/Input/InputPassword.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
-import { useMypageApi } from 'src/composables/api';
 import { useAuthStore } from 'src/store/auth';
-import { useNotify } from 'src/composables/notify';
-import { useQuasar } from 'quasar';
 
 export default defineComponent({
   name: 'MypageLogin',
   setup() {
-    const $q = useQuasar();
-    const store = useAuthStore();
-    store.validateAuth();
+    const auth = useAuthStore();
+    auth.validateAuth();
 
-    const authState = reactive({ email: '', password: '', remember: false });
+    const state = reactive({ email: '', password: '', remember: false });
 
-    const notify = useNotify();
-    const { errorMessage, errorHandlerStrict } = useErrorHandler();
-    const { postLogin } = useMypageApi();
-    const route = useRoute();
-    const router = useRouter();
-    const handle = async () => {
-      $q.loading.show();
-      try {
-        const res = await postLogin(authState);
-        if (res.status === 200) {
-          notify.success('ログインしました');
-          store.login(res.data.data);
-          router.push(route.query.redirect || { name: 'mypage' });
-        }
-      } catch (err) {
-        errorHandlerStrict(err);
-      } finally {
-        $q.loading.hide();
-      }
-    };
     return {
-      authState, handle, errorMessage,
+      auth, state,
     };
   },
   components: { ApiErrorMessage, InputPassword, TextTitle },

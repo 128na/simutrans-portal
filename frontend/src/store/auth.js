@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia';
+import { useMypageApi } from 'src/composables/api';
+import { useApiHandler } from 'src/composables/apiHandler';
+import { useAppInfo } from 'src/composables/appInfo';
+import { useNotify } from 'src/composables/notify';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 export const useAuthStore = defineStore('auth', () => {
-  const router = useRouter();
-  const route = useRoute();
   const user = ref(undefined);
 
   const isInitialized = computed(() => user.value !== undefined);
@@ -12,17 +14,40 @@ export const useAuthStore = defineStore('auth', () => {
   const isVerified = computed(() => isLoggedIn.value && user.value.verified);
   const isAdmin = computed(() => isLoggedIn.value && user.value.admin);
 
-  const initialized = () => {
-    user.value = null;
-  };
-  const login = (loginUser) => {
-    user.value = loginUser;
-  };
   const setUser = (loginUser) => {
     user.value = loginUser;
   };
-  const logout = () => {
-    user.value = null;
+
+  const router = useRouter();
+  const route = useRoute();
+  const notify = useNotify();
+  const api = useMypageApi();
+  const handler = useApiHandler();
+  const info = useAppInfo();
+  const checkLoggedIn = async () => {
+    try {
+      const res = await api.fetchUser();
+      user.value = res.data.data || null;
+    } catch {
+      // do nothing
+    }
+  };
+  const attemptLogin = async (params) => {
+    try {
+      const res = await handler.handleWithValidate(() => api.postLogin(params));
+      user.value = res.data.data;
+      notify.success('ログインしました');
+      router.push(route.query.redirect || { name: 'mypage' });
+    } catch {
+      // do nothing
+    }
+  };
+  const attemptLogout = async () => {
+    try {
+      await api.postLogout();
+    } finally {
+      window.location.href = info.appUrl;
+    }
   };
 
   const validateAuth = () => {
@@ -69,10 +94,11 @@ export const useAuthStore = defineStore('auth', () => {
     isLoggedIn,
     isVerified,
     isAdmin,
-    initialized,
-    login,
-    logout,
+    checkLoggedIn,
+    attemptLogin,
+    attemptLogout,
     validateAuth,
     setUser,
+    handler,
   };
 });

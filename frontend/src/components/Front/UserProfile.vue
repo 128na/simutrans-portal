@@ -20,9 +20,9 @@
       <q-separator />
       <q-card-actions>
         <q-btn flat color="primary" v-if="profile.twitter" :href="`https://twitter.com/${profile.twitter}`"
-          rel="noopener noreferrer" no-caps label="Twitter"></q-btn>
-        <q-btn flat color="primary" v-if="profile.website" :href="profile.website" rel="noopener noreferrer" no-caps
-          label="Website"></q-btn>
+          rel="noopener noreferrer" target="_blank" no-caps label="Twitter"></q-btn>
+        <q-btn flat color="primary" v-if="profile.website" :href="profile.website" rel="noopener noreferrer"
+          target="_blank" no-caps label="Website"></q-btn>
       </q-card-actions>
     </template>
   </q-card>

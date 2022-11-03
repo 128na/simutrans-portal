@@ -3,7 +3,7 @@
     <q-toolbar class="bg-primary text-white">
       <div>{{ row.id }}. {{ row.title }}</div>
       <q-space />
-      <q-btn flat round dense icon="close" v-close-popup />
+      <q-btn flat round dense icon="close" class="q-ml-sm" v-close-popup />
     </q-toolbar>
     <q-list>
       <q-item :to="{ name: 'edit', params: { id: row.id } }">
@@ -14,7 +14,8 @@
           編集
         </q-item-section>
       </q-item>
-      <q-item v-if="row.status === 'publish'" :to="{ name: 'show', params: { slug: row.slug } }">
+      <q-item v-if="row.status === 'publish'" :to="{ name: 'show', params: { slug: row.slug } }" target="_blank"
+        v-close-popup>
         <q-item-section avatar>
           <q-icon name="launch" />
         </q-item-section>
@@ -62,11 +63,12 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const notify = useNotify();
     const clipboad = useClipboard();
     const copy = async () => {
       try {
+        emit('close');
         clipboad.write(`${window.location.origin}/articles/${props.row.slug}`);
         notify.success('コピーしました');
       } catch (err) {
@@ -77,6 +79,7 @@ export default defineComponent({
     const api = useMypageApi();
     const store = useMypageStore();
     const handleToPrivate = async () => {
+      emit('close');
       const article = store.findArticleById(props.row.id);
       if (!article) {
         return notify.failed('記事が見つかりませんでした');
@@ -93,6 +96,7 @@ export default defineComponent({
       return notify.failed('更新に失敗しました');
     };
     const handleToPublish = async () => {
+      emit('close');
       const article = store.findArticleById(props.row.id);
       if (!article) {
         return notify.failed('記事が見つかりませんでした');

@@ -18,7 +18,7 @@
     no-data-label="記事がありません" row-key="id" @row-click.stop="handleClick" @row-dblclick.stop="handleDoubleClick">
   </q-table>
   <q-dialog v-model="dialogShow">
-    <dialog-menu :row=dialogRow />
+    <dialog-menu :row=dialogRow @close="dialogShow = false" />
   </q-dialog>
 </template>
 

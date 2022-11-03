@@ -15,7 +15,6 @@
 
 import './commands';
 
-
 // Change this if you have a different entrypoint for the main scss.
 import 'src/css/app.scss';
 // Quasar styles
@@ -32,6 +31,7 @@ import { Dialog } from 'quasar';
 // Since Cypress v10 we cannot import `config` directly from VTU as Cypress bundles its own version of it
 // See https://github.com/cypress-io/cypress/issues/22611
 import { VueTestUtils } from 'cypress/vue';
+
 const { config } = VueTestUtils;
 
 // Example to import i18n from boot and use as plugin

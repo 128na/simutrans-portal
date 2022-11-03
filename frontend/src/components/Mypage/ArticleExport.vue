@@ -1,7 +1,7 @@
 <template>
   <q-expansion-item label="投稿記事エクスポート" switch-toggle-side>
     <div class="q-ma-sm">
-      投稿した記事を一括でダウンロードできます。<br>
+      投稿した記事（アドオン紹介、投稿のみ）を一括でダウンロードできます。<br>
       記事数が多いとファイルの生成には数分かかることがあります。<br>
       <template v-if="idle">
         <q-btn color="primary" label="エクスポート" @click="bz.fetch" />

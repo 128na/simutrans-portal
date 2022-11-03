@@ -1,9 +1,0 @@
-export const SET_INITIALIZED = 'SET_INITIALIZED';
-export const SET_INFO_MESSAGE = 'SET_INFO_MESSAGE';
-export const SET_API_STATUS = 'SET_API_STATUS';
-export const SET_USER = 'SET_USER';
-export const SET_ARTICLES = 'SET_ARTICLES';
-export const SET_OPTIONS = 'SET_OPTIONS';
-export const SET_TAGS = 'SET_TAGS';
-export const SET_ATTACHMENTS = 'SET_ATTACHMENTS';
-export const SET_ANALYTICS = 'SET_ANALYTICS';

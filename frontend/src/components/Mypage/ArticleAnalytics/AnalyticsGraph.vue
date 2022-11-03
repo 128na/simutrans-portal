@@ -1,5 +1,5 @@
 <template>
-  <apexchart type="line" :options="options" :series="series" />
+  <apexchart type="line" :options="options" :series="series" height="500" />
 </template>
 <script>
 import { useMypageStore } from 'src/store/mypage';

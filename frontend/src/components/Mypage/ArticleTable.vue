@@ -183,7 +183,7 @@ export default defineComponent({
     const handleClick = (event, row) => {
       timer = setTimeout(() => {
         dialogRow.value = row;
-      }, 250);
+      }, 150);
     };
     const handleDoubleClick = (event, row) => {
       if (timer) {

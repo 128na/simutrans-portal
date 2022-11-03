@@ -8,12 +8,4 @@ class MypageController extends Controller
     {
         return view('mypage');
     }
-
-    /**
-     * SPA用にマイページトップへリダイレクトさせる.
-     */
-    public function fallback()
-    {
-        return redirect()->route('mypage.index');
-    }
 }

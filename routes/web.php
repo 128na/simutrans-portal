@@ -13,8 +13,6 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OauthController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MypageController;
@@ -23,14 +21,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::feeds();
 
+// 認証系ルート名保持用
 // メール確認
-Route::middleware(['auth'])->group(function () {
-    Route::GET('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
-});
-Route::get('/verification/notice', [VerificationController::class, 'notice'])->name('verification.notice');
+Route::GET('mypage/verify/{id}/{hash}', [MypageController::class, 'index'])->name('verification.verify');
+// 未認証時
+Route::get('/verification/notice', [MypageController::class, 'index'])->name('verification.notice');
 // PWリセット
-Route::POST('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
-Route::GET('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::GET('mypage/reset/{token}', [MypageController::class, 'index'])->name('password.reset');
+// 招待
+Route::GET('/mypage/invite/{invitation_code}', [InviteController::class, 'index'])->name('invite.index');
 
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware(['cache.headers:public;max_age=2628000;etag'])->group(function () {
@@ -49,7 +48,7 @@ Route::middleware(['cache.headers:public;max_age=2628000;etag'])->group(function
 Route::get('/articles/{article}', [FrontController::class, 'show'])->name('articles.show');
 Route::get('/search', [FrontController::class, 'search'])->name('search');
 Route::get('/mypage/', [MypageController::class, 'index'])->name('mypage.index');
-Route::get('/mypage/{any}', [MypageController::class, 'fallback'])->where('any', '.*');
+Route::get('/mypage/{any}', [MypageController::class, 'index'])->where('any', '.*');
 Route::get('/articles/{article}/download', [FrontController::class, 'download'])->name('articles.download');
 
 Route::middleware(['auth', 'admin', 'verified'])->group(function () {
@@ -59,9 +58,6 @@ Route::middleware(['auth', 'admin', 'verified'])->group(function () {
     Route::get('/admin/oauth/twitter/refresh', [OauthController::class, 'refresh'])->name('admin.oauth.twitter.refresh');
     Route::get('/admin/oauth/twitter/revoke', [OauthController::class, 'revoke'])->name('admin.oauth.twitter.revoke');
 });
-
-Route::get('/invite/{invitation_code}', [InviteController::class, 'index'])->name('invite.index');
-Route::post('/invite/{invitation_code}', [InviteController::class, 'store'])->name('invite.store');
 
 Route::get('/error/{status}', [FrontController::class, 'error'])->name('error');
 

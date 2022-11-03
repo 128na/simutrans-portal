@@ -44,13 +44,13 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Node
         uses: actions/setup-node@v3
-      - name: Cache node_modules
-        id: cache-npm
+      - name: Cache frontend_node_modules
+        id: frontend-cache-npm
         uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
-          path: ./node_modules
+          path: ./frontend/node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
@@ -58,9 +58,10 @@ jobs:
             ${{ runner.os }}-
       - name: npm ci
         if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
-        run: npm ci
-      - name: eslint
-        run: npm run es
+        run: cd frontend && npm ci
+      - name: Build Assets
+        run: cd frontend && npm run lint
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -89,13 +90,13 @@ jobs:
         run: composer install
       - name: Setup Node
         uses: actions/setup-node@v3
-      - name: Cache node_modules
-        id: cache-npm
+      - name: Cache frontend_node_modules
+        id: frontend-cache-npm
         uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
-          path: ./node_modules
+          path: ./frontend/node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
@@ -103,9 +104,9 @@ jobs:
             ${{ runner.os }}-
       - name: npm ci
         if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
-        run: npm ci
+        run: cd frontend && npm ci
       - name: Build Assets
-        run: npm run prod
+        run: cd frontend && npm run build
       - name: Start MySQL
         run: sudo /etc/init.d/mysql start
       - name: Setup database
@@ -132,7 +133,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: .env
-        run: php -r "copy('.env.dusk.ci', '.env');"
+        run: php -r "copy('.env.dusk.ci', '.env');copy('frontend/.env.dusk.ci', 'frontend/.env');"
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -156,13 +157,13 @@ jobs:
         run: php artisan storage:link
       - name: Setup Node
         uses: actions/setup-node@v3
-      - name: Cache node_modules
-        id: cache-npm
+      - name: Cache frontend_node_modules
+        id: frontend-cache-npm
         uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
-          path: ./node_modules
+          path: ./frontend/node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
@@ -170,9 +171,9 @@ jobs:
             ${{ runner.os }}-
       - name: npm ci
         if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
-        run: npm ci
+        run: cd frontend && npm ci
       - name: Build Assets
-        run: npm run prod
+        run: cd frontend && npm run build
       - name: Start MySQL
         run: sudo /etc/init.d/mysql start
       - name: Setup database
@@ -181,7 +182,7 @@ jobs:
       - name: chmod 777
         run: chmod -R 0777 ./
       - name: Upgrade Chrome Driver
-        run: php artisan dusk:chrome-driver
+        run: php artisan dusk:chrome-driver --detect
       - name: Start Chrome Driver
         run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
       - name: Run Laravel Server
@@ -220,18 +221,18 @@ jobs:
         with:
           fetch-depth: 0
       - name: .env
-        run: php -r "copy('.env.deploy', '.env');"
+        run: php -r "copy('.env.deploy', '.env');copy('frontend/.env.deploy', 'frontend/.env');"
       - name: set app version
-        run: sed -i "s/APP_VERSION=.*/APP_VERSION=$( git describe --tags --abbrev=0 )/" .env
+        run: sed -i "s/APP_VERSION=.*/APP_VERSION=$( git describe --tags --abbrev=0 )/" frontend/.env
       - name: Setup Node
         uses: actions/setup-node@v3
-      - name: Cache node_modules
-        id: cache-npm
+      - name: Cache frontend_node_modules
+        id: frontend-cache-npm
         uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
-          path: ./node_modules
+          path: ./frontend/node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
@@ -239,10 +240,9 @@ jobs:
             ${{ runner.os }}-
       - name: npm ci
         if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
-        run: npm ci
+        run: cd frontend && npm ci
       - name: Build Assets
-        run: npm run prod
-
+        run: cd frontend && npm run build
       - name: Install SSH key
         run: >
           mkdir -p ~/.ssh

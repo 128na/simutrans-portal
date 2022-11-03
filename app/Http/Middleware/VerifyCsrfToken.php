@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App;
+use Closure;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 
 class VerifyCsrfToken extends Middleware
@@ -20,4 +22,18 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
     ];
+
+    public function handle($request, Closure $next)
+    {
+        if ($this->inDevelopToken($request)) {
+            return $next($request);
+        }
+
+        return parent::handle($request, $next);
+    }
+
+    private function inDevelopToken($request): bool
+    {
+        return !App::environment('production') && $request->header('X-CSRF-TOKEN') === 'dummy';
+    }
 }

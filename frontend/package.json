@@ -1,0 +1,69 @@
+{
+  "name": "frontend",
+  "version": "0.0.1",
+  "description": "Simutrans Addon Portal front app",
+  "productName": "Simutrans Addon Portal",
+  "author": "128na <simutrans.128na@gmail.com>",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.vue ./",
+    "fix": "eslint --fix --ext .js,.vue ./",
+    "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
+    "dev": "quasar dev",
+    "build": "quasar build && npm run spa:copy",
+    "spa:copy": "node ./deployment/spa",
+    "test:e2e": "cross-env NODE_ENV=test start-test \"quasar dev\" http-get://localhost:8080 \"cypress open --e2e\"",
+    "test:e2e:ci": "cross-env NODE_ENV=test start-test \"quasar dev\" http-get://localhost:8080 \"cypress run --e2e\"",
+    "test:component": "cross-env NODE_ENV=test cypress open --component",
+    "test:component:ci": "cross-env NODE_ENV=test cypress run --component"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.0.0",
+    "apexcharts": "^3.36.0",
+    "axios": "^0.21.1",
+    "core-js": "^3.6.5",
+    "luxon": "^3.0.4",
+    "markdown-it": "^13.0.1",
+    "pinia": "^2.0.23",
+    "quasar": "^2.8.5",
+    "sanitize-html": "^2.7.2",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0",
+    "vue3-apexcharts": "^1.4.1"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.13.14",
+    "@quasar/app": "^3.0.0",
+    "@quasar/quasar-app-extension-testing": "^2.0.4",
+    "@quasar/quasar-app-extension-testing-e2e-cypress": "^5.0.0-beta.5",
+    "cypress": "^10.10.0",
+    "dotenv": "^16.0.2",
+    "electron": "^21.1.0",
+    "electron-packager": "^15.5.2",
+    "eslint": "^7.14.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-chai-friendly": "^0.7.2",
+    "eslint-plugin-cypress": "^2.12.1",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-vue": "^7.0.0",
+    "eslint-webpack-plugin": "^2.4.0",
+    "fs-extra": "^10.0.0",
+    "fs-readdir-recursive": "^1.1.0"
+  },
+  "browserslist": [
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 12.22.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}

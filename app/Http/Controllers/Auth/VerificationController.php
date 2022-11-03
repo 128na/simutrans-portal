@@ -3,6 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\Mypage\User as UserResouce;
+use App\Services\UserService;
+use Auth;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Http\Request;
 
@@ -33,7 +38,7 @@ class VerificationController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(private UserService $userService)
     {
         $this->redirectTo = route('mypage.index');
     }
@@ -51,5 +56,26 @@ class VerificationController extends Controller
     public function notice()
     {
         return response(view('errors.verification'), 401);
+    }
+
+    public function verifyApi(Request $request)
+    {
+        if (!hash_equals((string) $request->route('id'), (string) $request->user()->getKey())) {
+            throw new AuthorizationException();
+        }
+
+        if (!hash_equals((string) $request->route('hash'), sha1($request->user()->getEmailForVerification()))) {
+            throw new AuthorizationException();
+        }
+
+        // 認証済み、認証OKならユーザーを返す
+        if ($request->user()->hasVerifiedEmail() || $request->user()->markEmailAsVerified()) {
+            event(new Verified($request->user()));
+
+            $user = $this->userService->getUser(Auth::user());
+
+            return new UserResouce($user);
+        }
+        throw new AuthorizationException();
     }
 }

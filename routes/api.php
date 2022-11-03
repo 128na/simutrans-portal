@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\v2\Admin\ArticleController;
-use App\Http\Controllers\Api\v2\Admin\DebugController;
 use App\Http\Controllers\Api\v2\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\v2\Mypage\Article\AnalyticsController;
 use App\Http\Controllers\Api\v2\Mypage\Article\EditorController;
@@ -14,7 +13,9 @@ use App\Http\Controllers\Api\v3\FrontController;
 use App\Http\Controllers\Api\v3\InvitationCodeController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Middleware\VerifyCsrfToken;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,14 +32,18 @@ use App\Http\Controllers\Auth\VerificationController;
 Route::prefix('v2')->name('api.v2.')->group(function () {
     // メール確認
     Route::POST('email/resend', [VerificationController::class, 'resendApi'])->name('verification.resend');
+    // メール認証
+    Route::GET('email/verify/{id}/{hash}', [VerificationController::class, 'verifyApi'])->name('verification.verify');
+    Route::POST('email/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+
     // 認証
     Route::POST('login', [LoginController::class, 'login'])->name('login');
     Route::POST('logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('mypage/user', [UserController::class, 'index'])->name('users.index');
     // PWリセット
     Route::POST('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
     // マイページ機能
     Route::prefix('mypage')->middleware(['auth'])->group(function () {
-        Route::get('user', [UserController::class, 'index'])->name('users.index');
         Route::get('tags', [TagController::class, 'search'])->name('tags.search');
         Route::get('attachments', [AttachmentController::class, 'index'])->name('attachments.index');
         Route::get('articles', [EditorController::class, 'index'])->name('articles.index');
@@ -61,14 +66,8 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
 
     // 管理者機能
     Route::prefix('admin')->middleware(['auth', 'admin', 'verified'])->group(function () {
-        // デバッグツール
-        Route::post('/flush-cache', [DebugController::class, 'flushCache'])->name('admin.flushCache');
-        Route::get('/debug/{level}', [DebugController::class, 'error'])->name('admin.debug');
-        Route::get('/phpinfo', [DebugController::class, 'phpinfo'])->name('admin.phpinfo');
-
         // ユーザー管理
         Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
-        Route::post('/users', [AdminUserController::class, 'store'])->name('admin.users.store');
         Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
 
         // 記事管理
@@ -79,8 +78,10 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
 });
 
 Route::prefix('v3')->name('api.v3.')->group(function () {
-    Route::post('conversion/{article}', [ConversionController::class, 'conversion'])->name('conversion');
-    Route::post('shown/{article}', [ConversionController::class, 'shown'])->name('shown');
+    Route::withoutMiddleware([VerifyCsrfToken::class])->group(function () {
+        Route::post('conversion/{article}', [ConversionController::class, 'conversion'])->name('conversion');
+        Route::post('shown/{article}', [ConversionController::class, 'shown'])->name('shown');
+    });
 
     Route::prefix('mypage')->middleware(['auth', 'verified'])->group(function () {
         // 一括DL機能
@@ -91,6 +92,8 @@ Route::prefix('v3')->name('api.v3.')->group(function () {
         Route::post('/invitation_code', [InvitationCodeController::class, 'update'])->name('invitationCode.update');
         Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy'])->name('invitationCode.destroy');
     });
+    Route::post('/mypage/invite/{invitation_code}', [InvitationCodeController::class, 'register'])->name('invitationCode.register');
+
     Route::prefix('front')->group(function () {
         // キャッシュ有効
         Route::middleware(['cache.headers:public;max_age=600;etag'])->group(function () {

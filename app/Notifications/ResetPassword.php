@@ -46,7 +46,7 @@ class ResetPassword extends Notification
         return (new MailMessage())
             ->subject('パスワードリセットがリクエストされました')
             ->view('emails.reset')
-            ->action('パスワードリセット画面を開く', url(config('app.url').route('password.reset', $this->token, false)));
+            ->action('パスワードリセット画面を開く', route('password.reset', $this->token));
     }
 
     /**

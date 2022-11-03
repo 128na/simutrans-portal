@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\UserService;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ResetPasswordController extends Controller
 {
@@ -32,7 +35,7 @@ class ResetPasswordController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(private UserService $userService)
     {
         // $this->middleware('guest');
         $this->redirectTo = route('mypage.index');
@@ -43,7 +46,30 @@ class ResetPasswordController extends Controller
         return [
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|confirmed|min:8|max:255',
+            'password' => 'required|min:8|max:255',
         ];
+    }
+
+    protected function credentials(Request $request)
+    {
+        return $request->only(
+            'email',
+            'password',
+            'token'
+        );
+    }
+
+    /**
+     * Get the response for a successful password reset.
+     *
+     * @param string $response
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    protected function sendResetResponse(Request $request, $response)
+    {
+        Auth::logout();
+
+        return response('', 200);
     }
 }

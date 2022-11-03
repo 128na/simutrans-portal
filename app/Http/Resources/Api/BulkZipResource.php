@@ -13,6 +13,7 @@ class BulkZipResource extends JsonResource
             'uuid' => $this->uuid,
             'generated' => (bool) $this->generated,
             'url' => $this->when($this->generated, Storage::disk('public')->url($this->path)),
+            'generated_at' => $this->updated_at->toDateTimeString(),
         ];
     }
 }

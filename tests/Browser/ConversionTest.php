@@ -51,6 +51,7 @@ class ConversionTest extends DuskTestCase
                 ->visit('/')
                 ->waitForText($this->article1->title)
                 ->clickLink($this->article1->title)
+                ->waitForText('掲載先URL')
                 ->assertPathIs("/articles/{$this->article1->slug}")
                 ->click('@conversion-link')
             ;
@@ -77,6 +78,7 @@ class ConversionTest extends DuskTestCase
                 ->visit('/')
                 ->waitForText($this->article2->title)
                 ->clickLink($this->article2->title)
+                ->waitForText('ダウンロード')
                 ->assertPathIs("/articles/{$this->article2->slug}")
                 ->click('@conversion-download')
             ;

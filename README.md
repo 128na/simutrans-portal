@@ -38,6 +38,7 @@ npm run dev
 ### Test
 
 ```
+php artisan dusk:chrome-driver
 composer run test
 ```
 

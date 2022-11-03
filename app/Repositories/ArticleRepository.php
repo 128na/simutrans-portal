@@ -225,6 +225,14 @@ class ArticleRepository extends BaseRepository
     private function queryBySearch(string $word): Builder
     {
         $word = trim($word);
+
+        if (!$word) {
+            return $this->model->select(['articles.*'])
+                ->active()
+                ->with(self::FRONT_RELATIONS)
+                ->orderBy('modified_at', 'desc');
+        }
+
         $likeWord = "%{$word}%";
 
         return $this->model->select(['articles.*'])

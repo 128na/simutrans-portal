@@ -19,9 +19,13 @@ class UserController extends Controller
 
     public function index()
     {
-        $user = $this->userService->getUser(Auth::user());
+        if (Auth::check()) {
+            $user = $this->userService->getUser(Auth::user());
 
-        return new UserResouce($user);
+            return new UserResouce($user);
+        }
+
+        return '';
     }
 
     public function update(UpdateRequest $request)

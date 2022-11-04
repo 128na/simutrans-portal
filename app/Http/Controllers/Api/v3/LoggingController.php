@@ -13,7 +13,7 @@ class LoggingController extends Controller
     public function __construct(
         private LoggerInterface $logger,
         private LogMappingService $logMappingService,
-        ) {
+    ) {
     }
 
     public function index(Request $request)

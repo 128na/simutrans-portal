@@ -33,6 +33,8 @@ const listenVueError = (app) => {
 };
 
 export default ({ app }) => {
-  listenWindowError();
-  listenVueError(app);
+  if (process.env.NODE_ENV === 'production') {
+    listenWindowError();
+    listenVueError(app);
+  }
 };

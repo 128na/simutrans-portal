@@ -19,7 +19,7 @@ class LoggingController extends Controller
     public function index(Request $request)
     {
         $data = $this->logMappingService->mapping($request->all());
-        $user = Auth::check() ? Auth::id() : 'guest';
+        $user = Auth::check() ? 'useeId:'.Auth::id() : 'guest';
         $this->logger->error($user, $data);
     }
 }

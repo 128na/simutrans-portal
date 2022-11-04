@@ -1,7 +1,6 @@
-import { defineStore } from 'pinia';
 import { setCssVar } from 'quasar';
 
-export const useColor = defineStore('color', () => {
+export const useColor = () => {
   const setFront = () => {
     setCssVar('primary', 'hsl(211, 82%, 54%)');
   };
@@ -17,4 +16,4 @@ export const useColor = defineStore('color', () => {
     setMypage,
     setAdmin,
   };
-});
+};

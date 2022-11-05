@@ -113,10 +113,10 @@ class FrontController extends Controller
         return view('front.spa');
     }
 
-    public function error(int $status)
+    public function error(int | string $status)
     {
         $statuses = [400, 404, 500, 503];
-        $status = in_array($status, $statuses, true) ? $status : 404;
+        $status = in_array(intval($status), $statuses, true) ? $status : 404;
 
         return view("errors.{$status}");
     }

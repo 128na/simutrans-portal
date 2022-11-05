@@ -24,7 +24,7 @@
         <meta name="robots" content="noindex, nofollow">
     @endunless
     <link rel="canonical" href="{{ $meta['canonical'] ?? url()->current() }}">
-    <link rel=icon type=image/ico href=favicon.ico>
+    <link rel=icon type=image/ico href=/favicon.ico>
     <script defer src="{{ asset(mix('/js/vendor.js')) }}"></script>
     <script defer src="{{ asset(mix('/js/app.js')) }}"></script>
     <link href="{{ asset(mix('/css/vendor.css')) }}" rel="stylesheet">

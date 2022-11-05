@@ -3,7 +3,7 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn flat dense round icon="menu" @click="menu.toggle" />
-        <q-btn flat dense no-caps size="lg" :to="{ name: 'top' }">
+        <q-btn flat dense no-caps size="lg" href="/">
           {{ appName }}
         </q-btn>
         <q-space />

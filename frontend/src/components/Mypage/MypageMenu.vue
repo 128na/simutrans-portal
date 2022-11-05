@@ -1,6 +1,6 @@
 <template>
   <q-list>
-    <q-item :to="{ name: 'top' }">
+    <q-item href="/">
       <q-item-section>トップページ</q-item-section>
     </q-item>
     <q-item v-if="store.isAdmin" :to="{ name: 'admin' }">

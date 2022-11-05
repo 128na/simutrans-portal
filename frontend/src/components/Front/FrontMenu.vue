@@ -25,7 +25,7 @@
       <q-item-section>タグ一覧</q-item-section>
     </q-item>
     <q-separator />
-    <q-item clickable :to="{ name: 'mypage' }">
+    <q-item clickable href="/mypage">
       <q-item-section>マイページ</q-item-section>
     </q-item>
     <q-separator />

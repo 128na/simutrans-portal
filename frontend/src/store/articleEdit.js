@@ -107,6 +107,11 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     article.value = JSON.parse(JSON.stringify(a));
     original = JSON.stringify(a);
   };
+  const clearArticle = () => {
+    article.value = null;
+    original = null;
+  };
+  const articleInitialized = computed(() => !!article.value);
   const createArticle = (postType) => {
     switch (postType) {
       case 'addon-introduction':
@@ -253,7 +258,9 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     tweet,
     withoutUpdateModifiedAt,
     canReservation,
+    articleInitialized,
     setArticle,
+    clearArticle,
     createArticle,
     saveArticle,
     updateArticle,

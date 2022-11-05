@@ -74,8 +74,10 @@ export default defineComponent({
     const router = useRouter();
     const createArticle = () => {
       if (route.name !== 'edit') {
+        editor.clearArticle();
         return;
-      } if (mypage.articlesReady) {
+      }
+      if (mypage.articlesReady) {
         const article = mypage.findArticleById(Number(route.params.id));
         if (article) {
           editor.setArticle(article);
@@ -86,10 +88,14 @@ export default defineComponent({
     };
 
     watch(mypage, () => {
-      createArticle();
+      if (!editor.articleInitialized) {
+        createArticle();
+      }
     }, { deep: true, immediate: true });
     watch(route, () => {
-      createArticle();
+      if (!editor.articleInitialized) {
+        createArticle();
+      }
     }, { deep: true, immediate: true });
 
     const articleWithAttachments = computed(() => ({

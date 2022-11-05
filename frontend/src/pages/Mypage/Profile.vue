@@ -39,7 +39,9 @@ export default defineComponent({
     const editor = useProfileEditStore();
     const router = useRouter();
     if (auth.validateAuth()) {
-      mypage.fetchAttachments();
+      if (!mypage.attachmentsReady) {
+        mypage.fetchAttachments();
+      }
       editor.setUser(auth.user);
     }
     const handle = async () => {

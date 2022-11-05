@@ -24,13 +24,15 @@ export default defineComponent({
       try {
         const { userId, hash } = route.params;
         const { expires, signature } = route.query;
-        const res = await handler.handleWithLoading({
+        await handler.handleWithLoading({
           doRequest: () => api.verify(userId, hash, expires, signature),
+          done: (res) => {
+            store.setUser(res.data.data);
+            router.push({ name: 'mypage' });
+          },
           successMessage: '認証が完了しました',
           failedMessage: '認証に失敗しました',
         });
-        store.setUser(res.data.data);
-        router.push({ name: 'mypage' });
       } catch {
         // do nothing
       }

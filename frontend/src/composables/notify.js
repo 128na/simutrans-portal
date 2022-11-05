@@ -27,7 +27,7 @@ export const useNotify = () => {
     actions: [{ icon: 'close', color: 'white' }],
   });
   const failedRetryable = (message, handler) => $q.notify({
-    type: 'negative',
+    type: 'info',
     position: 'top',
     message,
     timeout: 0,

@@ -16,11 +16,11 @@ export const useApiHandler = () => {
 
   /**
    * エラーをハンドリングする
-   * @param {{doRequest:()=>AxiosResponse<any>, successMessage:string, failedMessage:string, retryable:boolean}}
+   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>void, successMessage:string, failedMessage:string, retryable:boolean}}
    * @returns {AxiosResponse<any>|null}
    */
   const handle = async ({
-    doRequest, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true,
+    doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true,
   }) => {
     try {
       loading.value = true;
@@ -28,7 +28,7 @@ export const useApiHandler = () => {
       if (successMessage) {
         notify.success(successMessage);
       }
-      return res;
+      return done ? done(res) : res;
     } catch (error) {
       switch (error.response.status) {
         case 401:
@@ -42,7 +42,9 @@ export const useApiHandler = () => {
           throw error;
         default:
           if (retryable) {
-            notify.failedRetryable(failedMessage, handle);
+            notify.failedRetryable(failedMessage, () => handle({
+              doRequest, done, successMessage, failedMessage, retryable,
+            }));
           } else {
             notify.failed(failedMessage);
           }
@@ -55,11 +57,11 @@ export const useApiHandler = () => {
 
   /**
    * ローディング画面とエラーをハンドリングする
-   * @param {{doRequest:()=>AxiosResponse<any>, successMessage:string, failedMessage:string, retryable:boolean}}
+   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>void, successMessage:string, failedMessage:string, retryable:boolean}}
    * @returns {AxiosResponse<any>|null}
    */
   const handleWithLoading = async ({
-    doRequest, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true,
+    doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true,
   }) => {
     try {
       loading.value = true;
@@ -68,7 +70,7 @@ export const useApiHandler = () => {
       if (successMessage) {
         notify.success(successMessage);
       }
-      return res;
+      return done ? done(res) : res;
     } catch (error) {
       switch (error.response.status) {
         case 401:
@@ -82,7 +84,9 @@ export const useApiHandler = () => {
           throw error;
         default:
           if (retryable) {
-            notify.failedRetryable(failedMessage, handleWithLoading);
+            notify.failedRetryable(failedMessage, () => handleWithLoading({
+              doRequest, done, successMessage, failedMessage, retryable,
+            }));
           } else {
             notify.failed(failedMessage);
           }
@@ -96,11 +100,11 @@ export const useApiHandler = () => {
 
   /**
    * ローディング画面とバリデーションエラーをハンドリングする
-   * @param {{doRequest:()=>AxiosResponse<any>, successMessage:string, failedMessage:string, retryable:boolean}}
+   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>void, successMessage:string, failedMessage:string, retryable:boolean}}
    * @returns {AxiosResponse<any>|null}
    */
   const handleWithValidate = async ({
-    doRequest, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true,
+    doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true,
   }) => {
     try {
       loading.value = true;
@@ -110,7 +114,7 @@ export const useApiHandler = () => {
       if (successMessage) {
         notify.success(successMessage);
       }
-      return res;
+      return done ? done(res) : res;
     } catch (error) {
       switch (error.response.status) {
         case 401:
@@ -127,7 +131,9 @@ export const useApiHandler = () => {
           throw error;
         default:
           if (retryable) {
-            notify.failedRetryable(failedMessage, handleWithValidate);
+            notify.failedRetryable(failedMessage, () => handleWithValidate({
+              doRequest, done, successMessage, failedMessage, retryable,
+            }));
           } else {
             notify.failed(failedMessage);
           }

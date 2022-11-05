@@ -36,12 +36,14 @@ export default defineComponent({
     const handler = useApiHandler();
     const handle = async () => {
       try {
-        const res = await handler.handleWithValidate({
+        await handler.handleWithValidate({
           doRequest: () => invite(route.params.code, authState),
+          done: (res) => {
+            store.setUser(res.data.data);
+            router.push(route.query.redirect || { name: 'mypage' });
+          },
           successMessage: '登録しました',
         });
-        store.setUser(res.data.data);
-        router.push(route.query.redirect || { name: 'mypage' });
       } catch {
         // do nothing.
       }

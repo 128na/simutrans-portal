@@ -27,7 +27,7 @@ export default defineComponent({
     const handler = useApiHandler();
     const handle = async () => {
       try {
-        handler.handleWithValidate({ doReqest: () => api.forget(state), successMessage: 'メールを送信しました' });
+        await handler.handleWithValidate({ doRequest: () => api.forget(state), successMessage: 'メールを送信しました' });
       } catch {
         // do nothing
       }

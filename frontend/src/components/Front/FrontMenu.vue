@@ -62,9 +62,14 @@ export default defineComponent({
     const api = useFrontApi();
     const fetch = async () => {
       try {
-        const res = await handler.handle({ doRequest: api.fetchSidebar, failedMessage: 'メニューの取得に失敗しました' });
-        pakAddonCounts.value = res.data.pakAddonCounts;
-        userAddonCounts.value = res.data.userAddonCounts;
+        await handler.handle({
+          doRequest: api.fetchSidebar,
+          done: (res) => {
+            pakAddonCounts.value = res.data.pakAddonCounts;
+            userAddonCounts.value = res.data.userAddonCounts;
+          },
+          failedMessage: 'メニューの取得に失敗しました',
+        });
       } catch {
         // do nothing
       }

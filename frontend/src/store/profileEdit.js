@@ -29,9 +29,11 @@ export const useProfileEditStore = defineStore('profileEdit', () => {
   const updateUser = async () => {
     const res = await handler.handleWithValidate({
       doRequest: () => api.updateUser(user.value),
+      done: () => {
+        window.removeEventListener('beforeunload', unloadListener);
+      },
       successMessage: '保存しました',
     });
-    window.removeEventListener('beforeunload', unloadListener);
 
     return res.data.data;
   };

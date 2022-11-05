@@ -32,9 +32,14 @@ export const useAuthStore = defineStore('auth', () => {
   };
   const attemptLogin = async (params) => {
     try {
-      const res = await handler.handleWithValidate({ doRequest: () => api.postLogin(params), successMessage: 'ログインしました' });
-      user.value = res.data.data;
-      router.push(route.query.redirect || { name: 'mypage' });
+      await handler.handleWithValidate({
+        doRequest: () => api.postLogin(params),
+        done: (res) => {
+          user.value = res.data.data;
+          router.push(route.query.redirect || { name: 'mypage' });
+        },
+        uccessMessage: 'ログインしました',
+      });
     } catch {
       // do nothing
     }

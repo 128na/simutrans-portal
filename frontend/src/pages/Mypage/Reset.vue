@@ -34,8 +34,13 @@ export default defineComponent({
     const handler = useApiHandler();
     const handle = async () => {
       try {
-        await handler.handleWithValidate({ doRequest: () => api.reset(state), successMessage: 'パスワードを更新しました' });
-        auth.attemptLogout();
+        await handler.handleWithValidate({
+          doRequest: () => api.reset(state),
+          done: () => {
+            auth.attemptLogout();
+          },
+          successMessage: 'パスワードを更新しました',
+        });
       } catch {
         // do nothing.
       }

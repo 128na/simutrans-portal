@@ -80,13 +80,18 @@ export default defineComponent({
 
     const fetchArticles = async () => {
       try {
-        const res = await handler.handleWithLoading({ doRequest: () => resolveApi(api, route), failedMessage: '記事取得に失敗しました' });
-        articles.value = res.data.data;
-        pagination.value = res.data.meta;
-        title.value = res.data.title;
-        setTitle(res.data.title);
-        profile.value = res.data?.profile || null;
-        articleCache.addCaches(res.data.data);
+        await handler.handleWithLoading({
+          doRequest: () => resolveApi(api, route),
+          done: (res) => {
+            articles.value = res.data.data;
+            pagination.value = res.data.meta;
+            title.value = res.data.title;
+            setTitle(res.data.title);
+            profile.value = res.data?.profile || null;
+            articleCache.addCaches(res.data.data);
+          },
+          failedMessage: '記事取得に失敗しました',
+        });
       } catch {
         // do nothing
       }

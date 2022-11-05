@@ -122,31 +122,34 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     }
   };
   const handlerArticle = useApiHandler();
-  const saveArticle = async () => {
+  const saveArticle = () => {
     const params = {
       article: article.value,
       should_tweet: tweet.value,
     };
-    const res = await handlerArticle.handleWithValidate({
+    return handlerArticle.handleWithValidate({
       doRequest: () => api.createArticle(params),
+      done: (res) => {
+        window.removeEventListener('beforeunload', unloadListener);
+        return res.data.data;
+      },
       successMessage: '保存しました',
     });
-    window.removeEventListener('beforeunload', unloadListener);
-    return res.data.data;
   };
-  const updateArticle = async () => {
+  const updateArticle = () => {
     const params = {
       article: article.value,
       should_tweet: tweet.value,
       without_update_modified_at: withoutUpdateModifiedAt.value,
     };
-    const res = await handlerArticle.handleWithValidate({
+    return handlerArticle.handleWithValidate({
       doRequest: () => api.updateArticle(params),
+      done: (res) => {
+        window.removeEventListener('beforeunload', unloadListener);
+        return res.data.data;
+      },
       successMessage: '更新しました',
     });
-    window.removeEventListener('beforeunload', unloadListener);
-
-    return res.data.data;
   };
   // article addon-post
   const fileSelected = computed(() => article.value?.contents.file);
@@ -213,11 +216,13 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   const handlerOption = useApiHandler();
   const fetchOptions = async () => {
     try {
-      const res = await handlerOption.handle({
+      await handlerOption.handle({
         doRequest: () => api.fetchOptions(),
+        done: (res) => {
+          options.value = res.data;
+        },
         failedMessage: 'カテゴリ一覧取得に失敗しました',
       });
-      options.value = res.data;
     } catch {
       // do nothing.
     }

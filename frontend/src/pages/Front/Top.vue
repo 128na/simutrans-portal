@@ -90,9 +90,14 @@ export default defineComponent({
     contents.forEach(async (content) => {
       content.articles = [];
       try {
-        const res = await content.handler.handle({ doRequest: () => get(content.api), failedMessage: '記事取得に失敗しました' });
-        content.articles = JSON.parse(JSON.stringify(res.data.data)).splice(0, 6);
-        articleCache.addCaches(res.data.data);
+        await content.handler.handle({
+          doRequest: () => get(content.api),
+          done: (res) => {
+            content.articles = JSON.parse(JSON.stringify(res.data.data)).splice(0, 6);
+            articleCache.addCaches(res.data.data);
+          },
+          failedMessage: `${content.label}一覧の取得に失敗しました`,
+        });
       } catch {
         // do nothing.
       }

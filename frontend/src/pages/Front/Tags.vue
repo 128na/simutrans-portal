@@ -32,8 +32,13 @@ export default defineComponent({
     const handler = useApiHandler();
     const fetch = async () => {
       try {
-        const res = await handler.handleWithLoading({ doRequest: api.fetchTags, failedMessage: 'タグ一覧取得に失敗しました' });
-        tags.value = res.data.data;
+        await handler.handleWithLoading({
+          doRequest: api.fetchTags,
+          done: (res) => {
+            tags.value = res.data.data;
+          },
+          failedMessage: 'タグ一覧取得に失敗しました',
+        });
       } catch {
         // do nothing.
       }

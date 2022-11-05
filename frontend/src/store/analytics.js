@@ -52,11 +52,13 @@ export const useAnalyticsStore = defineStore('analytics', () => {
         start_date: startDate.value,
         end_date: endDate.value,
       };
-      const res = await handler.handleWithValidate({
+      await handler.handleWithValidate({
         doRequest: () => api.fetchAnalytics(params),
+        done: (res) => {
+          analyticsData.value = res.data.data;
+        },
         failedMessage: '解析データ取得に失敗しました',
       });
-      analyticsData.value = res.data.data;
     } catch {
       // do nothing.
     }

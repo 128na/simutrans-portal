@@ -28,16 +28,18 @@ export const useBulkZipStore = defineStore('bulkZip', () => {
   const handler = useApiHandler();
   const doCheck = async () => {
     try {
-      const res = await handler.handle({
+      return await handler.handle({
         doRequest: () => fetchUserBulkZip(),
+        done: (res) => {
+          if (res.data.generated) {
+            return successed(res.data);
+          }
+          if (retry.value < BULK_ZIP_RETRY_LIMIT) {
+            return doRetry();
+          }
+          throw new Error('retry limit reached');
+        },
       });
-      if (res.data.generated) {
-        return successed(res.data);
-      }
-      if (retry.value < BULK_ZIP_RETRY_LIMIT) {
-        return doRetry();
-      }
-      throw new Error('retry limit reached');
     } catch {
       return failed();
     }

@@ -48,9 +48,14 @@ export default defineComponent({
         return;
       }
       try {
-        const res = await handler.handleWithLoading({ doRequest: () => api.fetchArticle(route.params.slug), failedMessage: '記事取得に失敗しました' });
-        articleCache.addCache(res.data.data);
-        setTitle(res.data.data.title);
+        await handler.handleWithLoading({
+          doRequest: () => api.fetchArticle(route.params.slug),
+          done: (res) => {
+            articleCache.addCache(res.data.data);
+            setTitle(res.data.data.title);
+          },
+          failedMessage: '記事取得に失敗しました',
+        });
       } catch {
         // do nothing
       }

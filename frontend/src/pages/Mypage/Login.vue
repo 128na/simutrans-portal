@@ -6,6 +6,9 @@
       <q-input v-model="state.email" type="email" label="email" autocomplete="email" />
       <input-password v-model="state.password" label="password" autocomplete="current-password" />
       <div>
+        <q-checkbox v-model="state.remember" label="ログインしたままにする" />
+      </div>
+      <div>
         <q-btn label="ログイン" color="primary" type="submit" />
       </div>
       <div>
@@ -28,7 +31,7 @@ export default defineComponent({
     const auth = useAuthStore();
     auth.validateAuth();
 
-    const state = reactive({ email: '', password: '', remember: true });
+    const state = reactive({ email: '', password: '', remember: false });
 
     return {
       auth, state,

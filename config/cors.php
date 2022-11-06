@@ -16,15 +16,13 @@ return [
 
     'paths' => ['api/*'],
 
-    'allowed_methods' => ['get', 'post', 'put', 'delete', 'options'],
+    'allowed_methods' => ['*'],
 
-    'allowed_origins' => [
-        env('APP_URL', 'http://localhost'),
-    ],
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['Accept', 'X-Requested-With', 'Origin', 'Content-Type'],
+    'allowed_headers' => ['*'],
 
     'exposed_headers' => [],
 

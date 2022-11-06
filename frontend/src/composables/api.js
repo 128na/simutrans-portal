@@ -1,13 +1,7 @@
 import axios from 'axios';
 
-const token = document.head.querySelector('meta[name="csrf-token"]');
-if (!token) {
-  // eslint-disable-next-line no-console
-  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-}
-
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-axios.defaults.headers.common['X-CSRF-TOKEN'] = token?.content || 'dummy';
+axios.defaults.withCredentials = true;
 
 export const useFrontApi = () => ({
   get(url) {
@@ -60,8 +54,11 @@ export const useFrontApi = () => ({
 
 export const useMypageApi = () => ({
   // auth
+  getCsrf() {
+    return axios.get('/sanctum/csrf-cookie');
+  },
   postLogin(params) {
-    return axios.post('/api/v2/login', params);
+    return axios.post('/login', params);
   },
   postLogout() {
     return axios.post('/api/v2/logout');

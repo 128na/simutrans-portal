@@ -38,13 +38,12 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
     Route::POST('email/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
     // 認証
-    Route::POST('login', [LoginController::class, 'login'])->name('login');
     Route::POST('logout', [LoginController::class, 'logout'])->name('logout');
-    Route::get('mypage/user', [UserController::class, 'index'])->name('users.index');
     // PWリセット
     Route::POST('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
     // マイページ機能
-    Route::prefix('mypage')->middleware(['auth'])->group(function () {
+    Route::prefix('mypage')->middleware(['auth:sanctum'])->group(function () {
+        Route::get('user', [UserController::class, 'index'])->name('users.index');
         Route::get('tags', [TagController::class, 'search'])->name('tags.search');
         Route::get('attachments', [AttachmentController::class, 'index'])->name('attachments.index');
         Route::get('articles', [EditorController::class, 'index'])->name('articles.index');
@@ -66,7 +65,7 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
     });
 
     // 管理者機能
-    Route::prefix('admin')->middleware(['auth', 'admin', 'verified'])->group(function () {
+    Route::prefix('admin')->middleware(['auth:sanctum', 'admin', 'verified'])->group(function () {
         // ユーザー管理
         Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
         Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
@@ -85,7 +84,7 @@ Route::prefix('v3')->name('api.v3.')->group(function () {
         Route::post('logger', [LoggingController::class, 'index'])->name('logging');
     });
 
-    Route::prefix('mypage')->middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('mypage')->middleware(['auth:sanctum', 'verified'])->group(function () {
         // 一括DL機能
         Route::get('/bulk-zip', [BulkZipController::class, 'user'])->name('bulkZip.user');
 

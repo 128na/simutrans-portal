@@ -17,9 +17,13 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = loginUser;
   };
 
+  const api = useMypageApi();
+  const initializeCsrf = async () => {
+    await api.getCsrf();
+  };
+
   const router = useRouter();
   const route = useRoute();
-  const api = useMypageApi();
   const handler = useApiHandler();
   const info = useAppInfo();
   const checkLoggedIn = async () => {
@@ -27,7 +31,7 @@ export const useAuthStore = defineStore('auth', () => {
       const res = await api.fetchUser();
       user.value = res.data.data || null;
     } catch {
-      // do nothing
+      user.value = null;
     }
   };
   const attemptLogin = async (params) => {
@@ -96,6 +100,7 @@ export const useAuthStore = defineStore('auth', () => {
     isLoggedIn,
     isVerified,
     isAdmin,
+    initializeCsrf,
     checkLoggedIn,
     attemptLogin,
     attemptLogout,

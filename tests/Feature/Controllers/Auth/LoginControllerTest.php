@@ -17,7 +17,7 @@ class LoginControllerTest extends TestCase
         Notification::fake();
         $user = User::factory()->create();
 
-        $url = route('api.v2.login');
+        $url = route('login');
 
         $data = array_merge([
             'email' => $this->user->email,

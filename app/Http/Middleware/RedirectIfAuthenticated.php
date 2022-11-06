@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated
@@ -10,18 +11,24 @@ class RedirectIfAuthenticated
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param string|null              $guard
+     * @param \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse) $next
+     * @param string|null                                                                                       ...$guards
      *
-     * @return mixed
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle(Request $request, Closure $next, ...$guards)
     {
-        if (Auth::guard($guard)->check()) {
-            if (Auth::user()->isAdmin()) {
-                return redirect()->intended('admin');
-            } else {
-                return redirect()->intended('mypage');
+        $guards = empty($guards) ? [null] : $guards;
+
+        foreach ($guards as $guard) {
+            if (Auth::guard($guard)->check()) {
+                /** @var \App\Models\User */
+                $user = Auth::user();
+                if ($user->isAdmin()) {
+                    return redirect()->intended('admin');
+                } else {
+                    return redirect()->intended('mypage');
+                }
             }
         }
 

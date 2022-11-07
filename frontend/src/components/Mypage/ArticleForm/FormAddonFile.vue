@@ -1,5 +1,5 @@
 <template>
-  <label-optional>アドオンファイル</label-optional>
+  <label-required>アドオンファイル</label-required>
   <q-input :model-value="filename" readonly>
     <template v-slot:append>
       <q-icon name="close" class="cursor-pointer q-mr-sm" @click="editor.article.contents.file = null" />
@@ -10,14 +10,14 @@
 </template>
 <script>
 import { useArticleEditStore } from 'src/store/articleEdit';
-import LabelOptional from 'src/components/Common/LabelOptional.vue';
+import LabelRequired from 'src/components/Common/LabelRequired.vue';
 import { defineComponent, computed } from 'vue';
 import { useMypageStore } from 'src/store/mypage';
 import FileManager from 'src/components/Mypage/FileManager.vue';
 
 export default defineComponent({
   name: 'FormAddonFile',
-  components: { LabelOptional, FileManager },
+  components: { LabelRequired, FileManager },
   setup() {
     const editor = useArticleEditStore();
     const mypage = useMypageStore();

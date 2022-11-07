@@ -30,7 +30,7 @@ export const useApiHandler = () => {
       if (successMessage) {
         notify.success(successMessage);
       }
-      return done ? done(res) : res;
+      return done ? await done(res) : res;
     } catch (error) {
       switch (error.response.status) {
         case 401:
@@ -74,7 +74,7 @@ export const useApiHandler = () => {
       if (successMessage) {
         notify.success(successMessage);
       }
-      return done ? done(res) : res;
+      return done ? await done(res) : res;
     } catch (error) {
       switch (error.response.status) {
         case 401:
@@ -120,7 +120,7 @@ export const useApiHandler = () => {
       if (successMessage) {
         notify.success(successMessage);
       }
-      return done ? done(res) : res;
+      return done ? await done(res) : res;
     } catch (error) {
       switch (error.response.status) {
         case 401:

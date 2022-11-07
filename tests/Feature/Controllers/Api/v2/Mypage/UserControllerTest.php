@@ -28,9 +28,7 @@ class UserControllerTest extends ArticleTestCase
         $url = route('api.v2.users.index');
 
         $res = $this->getJson($url);
-        $res->assertOK();
-        $content = $res->getContent();
-        $this->assertEmpty($content, '未ログインのときは空レスポンス');
+        $res->assertUnauthorized();
 
         $this->actingAs($this->user);
 

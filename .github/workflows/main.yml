@@ -234,8 +234,10 @@ jobs:
       - name: npm ci
         if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
         run: cd frontend && npm ci
-      - name: Run Cypress
-        run: cd frontend && npm run test:e2e:ci
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          start: cd frontend && npm run test:e2e:ci
 
   deploy:
     # tag push -> テスト通過後デプロイ

@@ -21,6 +21,7 @@ class ArticleRepository extends BaseRepository
     public const MYPAGE_RELATIONS = ['user', 'attachments.fileInfo', 'categories', 'tags', 'tweetLogSummary', 'totalViewCount', 'totalConversionCount'];
     public const FRONT_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags'];
     public const SHOW_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags'];
+    public const PER_PAGE_SIMPLE = 4;
 
     /**
      * @var Article
@@ -117,7 +118,7 @@ class ArticleRepository extends BaseRepository
     public function paginateAnnouces(bool $simple = false): Paginator
     {
         return $simple
-            ? $this->queryAnnouces()->simplePaginate()
+            ? $this->queryAnnouces()->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryAnnouces()->paginate();
     }
 
@@ -133,7 +134,7 @@ class ArticleRepository extends BaseRepository
     public function paginatePages(bool $simple = false): Paginator
     {
         return $simple
-            ? $this->queryPages()->simplePaginate()
+            ? $this->queryPages()->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryPages()->paginate();
     }
 
@@ -152,7 +153,7 @@ class ArticleRepository extends BaseRepository
     public function paginateRanking(bool $simple = false): Paginator
     {
         return $simple
-            ? $this->queryRanking()->simplePaginate()
+            ? $this->queryRanking()->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryRanking()->paginate();
     }
 
@@ -167,7 +168,7 @@ class ArticleRepository extends BaseRepository
     public function paginateByCategory(Category $category, bool $simple = false): Paginator
     {
         return $simple
-            ? $this->queryByCategory($category)->simplePaginate()
+            ? $this->queryByCategory($category)->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryByCategory($category)->paginate();
     }
 

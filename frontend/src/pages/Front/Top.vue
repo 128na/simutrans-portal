@@ -103,7 +103,7 @@ export default defineComponent({
           await content.handler.handle({
             doRequest: () => get(content.api),
             done: (res) => {
-              content.articles = JSON.parse(JSON.stringify(res.data.data)).splice(0, 6);
+              content.articles = JSON.parse(JSON.stringify(res.data.data));
               articleCache.addCaches(res.data.data);
             },
             failedMessage: `${content.label}一覧の取得に失敗しました`,

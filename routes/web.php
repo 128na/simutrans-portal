@@ -13,6 +13,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OauthController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MypageController;
@@ -30,6 +31,7 @@ Route::get('/verification/notice', [MypageController::class, 'index'])->name('ve
 Route::GET('mypage/reset/{token}', [MypageController::class, 'index'])->name('password.reset');
 // 招待
 Route::GET('/mypage/invite/{invitation_code}', [InviteController::class, 'index'])->name('invite.index');
+Route::POST('login', [LoginController::class, 'login'])->name('login');
 
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware(['cache.headers:public;max_age=2628000;etag'])->group(function () {
@@ -51,7 +53,7 @@ Route::get('/mypage/', [MypageController::class, 'index'])->name('mypage.index')
 Route::get('/mypage/{any}', [MypageController::class, 'index'])->where('any', '.*');
 Route::get('/articles/{article}/download', [FrontController::class, 'download'])->name('articles.download');
 
-Route::middleware(['auth', 'admin', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function () {
     Route::get('/admin/', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/admin/oauth/twitter/authorize', [OauthController::class, 'authoroize'])->name('admin.oauth.twitter.authorize');
     Route::get('/admin/oauth/twitter/callback', [OauthController::class, 'callback'])->name('admin.oauth.twitter.callback');

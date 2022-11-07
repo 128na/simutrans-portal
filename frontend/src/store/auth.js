@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { useMypageApi } from 'src/composables/api';
 import { useApiHandler } from 'src/composables/apiHandler';
-import { useAppInfo } from 'src/composables/appInfo';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -17,17 +16,20 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = loginUser;
   };
 
+  const api = useMypageApi();
+  const initializeCsrf = async () => {
+    await api.getCsrf();
+  };
+
   const router = useRouter();
   const route = useRoute();
-  const api = useMypageApi();
   const handler = useApiHandler();
-  const info = useAppInfo();
   const checkLoggedIn = async () => {
     try {
       const res = await api.fetchUser();
       user.value = res.data.data || null;
     } catch {
-      // do nothing
+      user.value = null;
     }
   };
   const attemptLogin = async (params) => {
@@ -38,7 +40,7 @@ export const useAuthStore = defineStore('auth', () => {
           user.value = res.data.data;
           router.push(route.query.redirect || { name: 'mypage' });
         },
-        uccessMessage: 'ログインしました',
+        successMessage: 'ログインしました',
       });
     } catch {
       // do nothing
@@ -47,8 +49,9 @@ export const useAuthStore = defineStore('auth', () => {
   const attemptLogout = async () => {
     try {
       await api.postLogout();
+      user.value = null;
     } finally {
-      window.location.href = info.appUrl;
+      router.push({ name: 'login' });
     }
   };
 
@@ -96,6 +99,7 @@ export const useAuthStore = defineStore('auth', () => {
     isLoggedIn,
     isVerified,
     isAdmin,
+    initializeCsrf,
     checkLoggedIn,
     attemptLogin,
     attemptLogout,

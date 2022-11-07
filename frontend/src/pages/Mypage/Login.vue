@@ -29,7 +29,9 @@ export default defineComponent({
   name: 'MypageLogin',
   setup() {
     const auth = useAuthStore();
-    auth.validateAuth();
+    if (auth.validateAuth()) {
+      auth.initializeCsrf();
+    }
 
     const state = reactive({ email: '', password: '', remember: false });
 

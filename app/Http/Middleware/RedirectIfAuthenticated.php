@@ -18,6 +18,9 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
+        if ($request->ajax()) {
+            return $next($request);
+        }
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {

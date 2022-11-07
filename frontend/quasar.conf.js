@@ -84,6 +84,8 @@ module.exports = configure((ctx) => ({
     port: 8080,
     open: true, // opens browser window automatically
     proxy: {
+      '/sanctum': { target: 'http://localhost:1080' },
+      '/login': { target: 'http://localhost:1080' },
       '/api': { target: 'http://localhost:1080' },
       '/storage': { target: 'http://localhost:1080' },
       '/email/verify': { target: 'http://localhost:1080' },

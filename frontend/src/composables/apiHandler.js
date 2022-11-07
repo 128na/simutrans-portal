@@ -4,6 +4,7 @@ import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
 // eslint-disable-next-line no-unused-vars
 import { AxiosResponse } from 'axios';
+import { useAuthStore } from 'src/store/auth';
 
 export const useApiHandler = () => {
   const validationErrors = ref({});
@@ -11,6 +12,7 @@ export const useApiHandler = () => {
   const notify = useNotify();
   const router = useRouter();
   const $q = useQuasar();
+  const auth = useAuthStore();
 
   const validationErrorMessage = computed(() => Object.values(validationErrors.value).map((m) => m.join('、')).join('\n'));
 
@@ -32,11 +34,13 @@ export const useApiHandler = () => {
     } catch (error) {
       switch (error.response.status) {
         case 401:
-          router.replace({ name: 'login' });
+        case 419:
+          notify.info('ログイン期限が切れました。再度ログインしてください');
+          auth.setUser(null);
+          router.push({ name: 'login' });
           throw error;
         case 403:
         case 404:
-        case 419:
         case 429:
           router.replace({ name: 'error', params: { status: error.response.status } });
           throw error;
@@ -74,11 +78,13 @@ export const useApiHandler = () => {
     } catch (error) {
       switch (error.response.status) {
         case 401:
-          router.replace({ name: 'login' });
+        case 419:
+          notify.info('ログイン期限が切れました。再度ログインしてください');
+          auth.setUser(null);
+          router.push({ name: 'login' });
           throw error;
         case 403:
         case 404:
-        case 419:
         case 429:
           router.replace({ name: 'error', params: { status: error.response.status } });
           throw error;
@@ -118,11 +124,13 @@ export const useApiHandler = () => {
     } catch (error) {
       switch (error.response.status) {
         case 401:
-          router.replace({ name: 'login' });
+        case 419:
+          notify.info('ログイン期限が切れました。再度ログインしてください');
+          auth.setUser(null);
+          router.push({ name: 'login' });
           throw error;
         case 403:
         case 404:
-        case 419:
         case 429:
           router.replace({ name: 'error', params: { status: error.response.status } });
           throw error;

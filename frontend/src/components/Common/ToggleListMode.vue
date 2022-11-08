@@ -1,7 +1,7 @@
 <template>
   <div @click="store.nextMode">
-    <q-icon :name="store.listMode.icon" size="sm" class="cursor-pointer" />
-    <q-tooltip>{{ store.listMode.tooltip}}</q-tooltip>
+    <q-icon :name="store.listMode.icon" size="sm" class="cursor-pointer" data-cy="btn-list" />
+    <q-tooltip>{{ store.listMode.tooltip }}</q-tooltip>
   </div>
 </template>
 <script>

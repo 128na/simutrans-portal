@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md fit row wrap justify-center">
-    <q-form class="col-6 q-gutter-sm" @submit=auth.attemptLogin(state)>
+    <q-form class="col-md-6 col q-gutter-sm" @submit=auth.attemptLogin(state)>
       <text-title>ログイン</text-title>
       <api-error-message :message="auth.handler.validationErrorMessage" />
       <q-input v-model="state.email" type="email" label="email" autocomplete="email" />

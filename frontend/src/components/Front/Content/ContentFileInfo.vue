@@ -1,30 +1,28 @@
 <template>
-  <q-list>
-    <q-expansion-item v-if="dats" label="datファイル一覧">
-      <q-item v-for="(names, filename) in dats" :key="filename">
-        <q-item-section>
-          <q-item-label>{{ filename }}</q-item-label>
-          <q-item-label caption>
-            <div v-for="(n, index) in names" :key="`${n}-${index}`">
-              {{ n }}
-            </div>
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-    </q-expansion-item>
-    <q-expansion-item v-if="tabs" label="tabファイル一覧">
-      <q-item v-for="(names, filename) in tabs" :key="filename">
-        <q-item-section>
-          <q-item-label>{{ filename }}</q-item-label>
-          <q-item-label caption>
-            <div v-for="(translated, original) in names" :key="original">
-              {{ translated }} ({{ original }})
-            </div>
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-    </q-expansion-item>
-  </q-list>
+  <q-expansion-item v-if="dats" label="datファイル一覧" switch-toggle-side>
+    <q-item v-for="(names, filename) in dats" :key="filename">
+      <q-item-section>
+        <q-item-label>{{ filename }}</q-item-label>
+        <q-item-label caption>
+          <div v-for="(n, index) in names" :key="`${n}-${index}`">
+            {{ n }}
+          </div>
+        </q-item-label>
+      </q-item-section>
+    </q-item>
+  </q-expansion-item>
+  <q-expansion-item v-if="tabs" label="tabファイル一覧" switch-toggle-side>
+    <q-item v-for="(names, filename) in tabs" :key="filename">
+      <q-item-section>
+        <q-item-label>{{ filename }}</q-item-label>
+        <q-item-label caption>
+          <div v-for="(translated, original) in names" :key="original">
+            {{ translated }} ({{ original }})
+          </div>
+        </q-item-label>
+      </q-item-section>
+    </q-item>
+  </q-expansion-item>
 </template>
 <script>
 import { defineComponent, computed } from 'vue';

@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md fit row wrap justify-center">
-    <q-form class="col-6 q-gutter-sm" @submit=handle>
+    <q-form class="col-md-6 col q-gutter-sm" @submit=handle>
       <text-title>パスワード再設定</text-title>
       <api-error-message :message="handler.validationErrorMessage.value" />
       <q-input v-model="state.email" type="email" label="email" autocomplete="email" />

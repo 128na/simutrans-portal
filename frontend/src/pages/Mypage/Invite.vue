@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md fit row wrap justify-center">
-    <q-form class="col-6 q-gutter-sm" @submit=handle>
+    <q-form class="col-md-6 col q-gutter-sm" @submit=handle>
       <text-title>ユーザー登録</text-title>
       <api-error-message :message="handler.validationErrorMessage.value" />
       <q-input v-model="authState.name" label="name" />

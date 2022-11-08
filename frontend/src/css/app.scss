@@ -1,5 +1,8 @@
 // app global css in SCSS form
-
+// 長いURLは改行する
+a {
+  word-break: break-word;
+}
 
 // 標準リンク用。ダークモードだと白文字にする
 .default-link {
@@ -20,6 +23,11 @@
 // リスト間隔調整
 dd {
   margin-bottom: .5rem;
+  margin-left: 0rem;
+}
+
+dt {
+  font-weight: bold;
 }
 
 // 全幅表示

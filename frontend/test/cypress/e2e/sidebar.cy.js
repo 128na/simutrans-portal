@@ -8,7 +8,7 @@ const { createMockArticleData, mockSidebarResponse } = require('../__mocks__/res
 // ** This file is an example of how to write Cypress tests, you can safely delete it **
 
 // This test will pass when run against a clean Quasar project
-describe('FrontTop', () => {
+describe('Sidebar', () => {
   beforeEach(() => {
     cy.intercept('/api/v2/mypage/user', { statusCode: 401 }).as('mypage.user');
     cy.intercept('/api/v3/front/sidebar', mockSidebarResponse).as('front.sidebar');
@@ -31,37 +31,12 @@ describe('FrontTop', () => {
     cy.wait('@front.ranking');
     cy.wait('@front.pages');
     cy.wait('@front.announces');
-    cy.get('.fullscreen.q-drawer__backdrop').click();
   });
-  it('表示内容', () => {
-    // タイトル
-    cy.title().should('equal', 'Simutrans Addon Portal');
-  });
-
-  it('ダークモード切替', () => {
-    cy.get('body').should('have.class', 'body--light');
-    cy.get('[data-cy="btn-light"]')
-      .should('exist')
-      .click();
-    cy.get('body').should('have.class', 'body--dark');
-    cy.get('[data-cy="btn-dark"]')
-      .should('exist')
-      .click();
-    cy.get('body').should('have.class', 'body--light');
-  });
-
-  it('リストモード切替', () => {
-    cy.get('[data-cy="mode-list"]').should('exist');
-    cy.get('[data-cy="btn-list"]')
-      .should('exist')
-      .click();
-    cy.get('[data-cy="mode-show"]').should('exist');
-    cy.get('[data-cy="btn-list"]')
-      .should('exist')
-      .click();
-    cy.get('[data-cy="mode-gallery"]').should('exist');
-    cy.get('[data-cy="btn-list"]')
-      .should('exist')
-      .click();
+  it('API依存サイドバー内容', () => {
+    cy.get('body')
+      .should('contain.text', 'DummyPak')
+      .should('contain.text', 'Dummy Addon (334)')
+      .should('contain.text', 'ユーザー一覧')
+      .should('contain.text', 'dummy user (72)');
   });
 });

@@ -17,7 +17,7 @@ describe('Admin 未ログイン', () => {
   });
   it('エラーページへ遷移する', () => {
     // タイトル
-    cy.title().should('equal', 'Simutrans Addon Portal');
+    cy.title().should('equal', 'エラー - Simutrans Addon Portal');
     cy.url().should('equal', 'http://localhost:8080/error/404');
   });
 });
@@ -29,7 +29,7 @@ describe('Admin ログイン済み 管理者', () => {
   });
   it('管理ページが表示される', () => {
     // タイトル
-    cy.title().should('equal', 'Simutrans Addon Portal');
+    cy.title().should('equal', '管理トップ - Simutrans Addon Portal');
     cy.url().should('equal', 'http://localhost:8080/admin');
   });
 });
@@ -42,7 +42,7 @@ describe('Mypage ログイン済み 一般ユーザー', () => {
   });
   it('エラーページへ遷移する', () => {
     // タイトル
-    cy.title().should('equal', 'Simutrans Addon Portal');
+    cy.title().should('equal', 'エラー - Simutrans Addon Portal');
     cy.url().should('equal', 'http://localhost:8080/error/404');
   });
 });

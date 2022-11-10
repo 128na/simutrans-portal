@@ -16,11 +16,14 @@ import { defineComponent, reactive } from 'vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import { useApiHandler } from 'src/composables/apiHandler';
+import { useMeta } from 'src/composables/meta';
 
 export default defineComponent({
   name: 'MypageForget',
   components: { TextTitle, ApiErrorMessage },
   setup() {
+    const meta = useMeta();
+    meta.setTitle('パスワード再設定');
     const state = reactive({ email: '', password: '', remember: false });
 
     const api = useMypageApi();

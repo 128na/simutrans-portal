@@ -18,7 +18,7 @@ describe('Mypage 未ログイン', () => {
   });
   it('ログインページへ遷移する', () => {
     // タイトル
-    cy.title().should('equal', 'Simutrans Addon Portal');
+    cy.title().should('equal', 'ログイン - Simutrans Addon Portal');
     cy.url().should('equal', 'http://localhost:8080/mypage/login');
   });
 });
@@ -32,7 +32,7 @@ describe('Mypage ログイン済み', () => {
   });
   it('マイページが表示される', () => {
     // タイトル
-    cy.title().should('equal', 'Simutrans Addon Portal');
+    cy.title().should('equal', 'マイページトップ - Simutrans Addon Portal');
     cy.url().should('equal', 'http://localhost:8080/mypage');
     cy.get('body').should('include.text', 'dummy title');
   });
@@ -46,7 +46,7 @@ describe('Mypage ログイン済み 未認証', () => {
   });
   it('未認証画面が表示される', () => {
     // タイトル
-    cy.title().should('equal', 'Simutrans Addon Portal');
+    cy.title().should('equal', '未認証 - Simutrans Addon Portal');
     cy.url().should('equal', 'http://localhost:8080/mypage/requires-verified');
     cy.get('body').should('include.text', 'メールアドレスの確認が済んでいません');
   });

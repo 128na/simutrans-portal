@@ -21,6 +21,7 @@ import { useRoute, useRouter } from 'vue-router';
 import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import InputPassword from 'src/components/Common/Input/InputPassword.vue';
 import { useApiHandler } from 'src/composables/apiHandler';
+import { useMeta } from 'src/composables/meta';
 
 export default defineComponent({
   name: 'PageInvite',
@@ -28,6 +29,10 @@ export default defineComponent({
   setup() {
     const store = useAuthStore();
     store.validateAuth();
+
+    const meta = useMeta();
+    meta.setTitle('ユーザー登録');
+
     const authState = reactive({ name: '', email: '', password: '' });
 
     const { invite } = useMypageApi();

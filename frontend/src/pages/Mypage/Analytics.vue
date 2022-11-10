@@ -17,6 +17,7 @@ import AnalyticsForm from 'src/components/Mypage/ArticleAnalytics/AnalyticsForm.
 import AnalyticsGraph from 'src/components/Mypage/ArticleAnalytics/AnalyticsGraph.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import TextSubTitle from 'src/components/Common/Text/TextSubTitle.vue';
+import { useMeta } from 'src/composables/meta';
 
 export default defineComponent({
   name: 'PageAnyltics',
@@ -29,6 +30,9 @@ export default defineComponent({
     if (auth.validateAuth()) {
       mypage.fetchArticles();
     }
+
+    const meta = useMeta();
+    meta.setTitle('アクセス解析');
 
     return {
       mypage,

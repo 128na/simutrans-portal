@@ -24,6 +24,7 @@ import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import InputPassword from 'src/components/Common/Input/InputPassword.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import { useAuthStore } from 'src/store/auth';
+import { useMeta } from 'src/composables/meta';
 
 export default defineComponent({
   name: 'MypageLogin',
@@ -32,6 +33,8 @@ export default defineComponent({
     if (auth.validateAuth()) {
       auth.initializeCsrf();
     }
+    const meta = useMeta();
+    meta.setTitle('ログイン');
 
     const state = reactive({ email: '', password: '', remember: false });
 

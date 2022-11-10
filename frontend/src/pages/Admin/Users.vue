@@ -27,6 +27,7 @@ import { useAdminApi } from 'src/composables/api';
 import { DateTime } from 'luxon';
 import AdminTable from 'src/components/Admin/AdminTable.vue';
 import { useAuthStore } from 'src/store/auth';
+import { useMeta } from 'src/composables/meta';
 
 const columns = [
   {
@@ -110,6 +111,9 @@ export default defineComponent({
   setup() {
     const auth = useAuthStore();
     auth.validateAuth();
+
+    const meta = useMeta();
+    meta.setTitle('ユーザー管理');
 
     const api = useAdminApi();
 

@@ -18,6 +18,7 @@ import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import { useMypageApi } from 'src/composables/api';
 import { useAuthStore } from 'src/store/auth';
 import { useApiHandler } from 'src/composables/apiHandler';
+import { useMeta } from 'src/composables/meta';
 
 export default defineComponent({
   name: 'MypageRequiresVerified',
@@ -25,6 +26,9 @@ export default defineComponent({
   setup() {
     const auth = useAuthStore();
     auth.validateAuth();
+
+    const meta = useMeta();
+    meta.setTitle('未認証');
 
     const api = useMypageApi();
     const handler = useApiHandler();

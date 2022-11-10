@@ -23,6 +23,7 @@ import LoadingPage from 'src/components/Common/LoadingPage.vue';
 import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import UserProfile from 'src/components/Front/UserProfile.vue';
 import { useRouter } from 'vue-router';
+import { useMeta } from 'src/composables/meta';
 
 export default defineComponent({
   name: 'PageProfile',
@@ -44,6 +45,9 @@ export default defineComponent({
       }
       editor.setUser(auth.user);
     }
+    const meta = useMeta();
+    meta.setTitle('プロフィール編集');
+
     const handle = async () => {
       try {
         const user = await editor.updateUser();

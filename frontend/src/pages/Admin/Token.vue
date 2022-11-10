@@ -11,6 +11,7 @@
 </template>
 <script>
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
+import { useMeta } from 'src/composables/meta';
 import { useAuthStore } from 'src/store/auth';
 import { defineComponent } from 'vue';
 
@@ -20,6 +21,9 @@ export default defineComponent({
   setup() {
     const auth = useAuthStore();
     auth.validateAuth();
+
+    const meta = useMeta();
+    meta.setTitle('トークン管理');
   },
 });
 </script>

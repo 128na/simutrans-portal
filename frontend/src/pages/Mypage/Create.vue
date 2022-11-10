@@ -41,6 +41,7 @@ import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import FormTweet from 'src/components/Mypage/ArticleForm/FormTweet.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import ArticleForm from 'src/components/Mypage/PostType/ArticleForm.vue';
+import { useMeta } from 'src/composables/meta';
 
 export default defineComponent({
   name: 'MypageCreate',
@@ -60,6 +61,9 @@ export default defineComponent({
       editor.fetchOptions();
       mypage.fetchAttachments();
     }
+
+    const meta = useMeta();
+    meta.setTitle('新規作成');
 
     const route = useRoute();
     const router = useRouter();

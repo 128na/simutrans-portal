@@ -20,12 +20,16 @@ import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import { useMypageApi } from 'src/composables/api';
 import { useAuthStore } from 'src/store/auth';
 import { useApiHandler } from 'src/composables/apiHandler';
+import { useMeta } from 'src/composables/meta';
 
 export default defineComponent({
   name: 'MypageReset',
   setup() {
     const auth = useAuthStore();
     auth.validateAuth();
+
+    const meta = useMeta();
+    meta.setTitle('パスワード再設定');
 
     const route = useRoute();
     const state = reactive({ email: '', password: '', token: route.params.token });

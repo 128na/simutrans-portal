@@ -42,6 +42,7 @@ import ArticleForm from 'src/components/Mypage/PostType/ArticleForm.vue';
 import FormTweet from 'src/components/Mypage/ArticleForm/FormTweet.vue';
 import FormWithoutUpdateModifiedAt from 'src/components/Mypage/ArticleForm/FormWithoutUpdateModifiedAt.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
+import { useMeta } from 'src/composables/meta';
 
 export default defineComponent({
   name: 'MypageEdit',
@@ -69,6 +70,9 @@ export default defineComponent({
         mypage.fetchAttachments();
       }
     }
+
+    const meta = useMeta();
+    meta.setTitle('編集');
 
     const route = useRoute();
     const router = useRouter();

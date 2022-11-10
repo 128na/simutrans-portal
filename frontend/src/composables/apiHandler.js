@@ -18,11 +18,11 @@ export const useApiHandler = () => {
 
   /**
    * エラーをハンドリングする
-   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>void, successMessage:string, failedMessage:string, retryable:boolean}}
+   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>void, successMessage:string, failedMessage:string, retryable:boolean, autoRetry:number ,retryCount:number}}
    * @returns {AxiosResponse<any>|null}
    */
   const handle = async ({
-    doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true,
+    doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true, autoRetry = 3, retryCount = 0,
   }) => {
     try {
       loading.value = true;
@@ -44,6 +44,23 @@ export const useApiHandler = () => {
         case 429:
           router.replace({ name: 'error', params: { status: error.response.status } });
           throw error;
+        case 500:
+        case 503:
+          if (autoRetry && retryCount < autoRetry) {
+            return setTimeout(() => {
+              handle({
+                doRequest, done, successMessage, failedMessage, retryable, autoRetry, retryCount: retryCount + 1,
+              });
+            }, 1000);
+          }
+          if (retryable) {
+            notify.failedRetryable(failedMessage, () => handle({
+              doRequest, done, successMessage, failedMessage, retryable,
+            }));
+          } else {
+            notify.failed(failedMessage);
+          }
+          throw error;
         default:
           if (retryable) {
             notify.failedRetryable(failedMessage, () => handle({
@@ -61,11 +78,11 @@ export const useApiHandler = () => {
 
   /**
    * ローディング画面とエラーをハンドリングする
-   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>void, successMessage:string, failedMessage:string, retryable:boolean}}
+   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>void, successMessage:string, failedMessage:string, retryable:boolean, autoRetry:number ,retryCount:number}}
    * @returns {AxiosResponse<any>|null}
    */
   const handleWithLoading = async ({
-    doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true,
+    doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true, autoRetry = 3, retryCount = 0,
   }) => {
     try {
       loading.value = true;
@@ -88,6 +105,23 @@ export const useApiHandler = () => {
         case 429:
           router.replace({ name: 'error', params: { status: error.response.status } });
           throw error;
+        case 500:
+        case 503:
+          if (autoRetry && retryCount < autoRetry) {
+            return setTimeout(() => {
+              handle({
+                doRequest, done, successMessage, failedMessage, retryable, autoRetry, retryCount: retryCount + 1,
+              });
+            }, 1000);
+          }
+          if (retryable) {
+            notify.failedRetryable(failedMessage, () => handleWithLoading({
+              doRequest, done, successMessage, failedMessage, retryable,
+            }));
+          } else {
+            notify.failed(failedMessage);
+          }
+          throw error;
         default:
           if (retryable) {
             notify.failedRetryable(failedMessage, () => handleWithLoading({
@@ -106,11 +140,11 @@ export const useApiHandler = () => {
 
   /**
    * ローディング画面とバリデーションエラーをハンドリングする
-   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>void, successMessage:string, failedMessage:string, retryable:boolean}}
+   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>void, successMessage:string, failedMessage:string, retryable:boolean, autoRetry:number ,retryCount:number}}
    * @returns {AxiosResponse<any>|null}
    */
   const handleWithValidate = async ({
-    doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true,
+    doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true, autoRetry = 3, retryCount = 0,
   }) => {
     try {
       loading.value = true;
@@ -136,6 +170,23 @@ export const useApiHandler = () => {
           throw error;
         case 422:
           validationErrors.value = error.response.data.errors;
+          throw error;
+        case 500:
+        case 503:
+          if (autoRetry && retryCount < autoRetry) {
+            return setTimeout(() => {
+              handle({
+                doRequest, done, successMessage, failedMessage, retryable, autoRetry, retryCount: retryCount + 1,
+              });
+            }, 1000);
+          }
+          if (retryable) {
+            notify.failedRetryable(failedMessage, () => handleWithLoading({
+              doRequest, done, successMessage, failedMessage, retryable,
+            }));
+          } else {
+            notify.failed(failedMessage);
+          }
           throw error;
         default:
           if (retryable) {

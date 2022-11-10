@@ -15,6 +15,7 @@ import { defineComponent } from 'vue';
 import ArticleTable from 'src/components/Mypage/ArticleTable.vue';
 import ArticleExport from 'src/components/Mypage/ArticleExport.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
+import { useMeta } from 'src/composables/meta';
 
 export default defineComponent({
   name: 'MypageTop',
@@ -24,6 +25,8 @@ export default defineComponent({
     if (auth.validateAuth()) {
       mypage.fetchArticles();
     }
+    const meta = useMeta();
+    meta.setTitle('マイページトップ');
 
     return {
       mypage,

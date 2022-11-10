@@ -51,6 +51,7 @@ import { useInvitationStore } from 'src/store/invitation';
 import { defineComponent } from 'vue';
 import { useClipboard } from 'src/composables/clipboard';
 import { useNotify } from 'src/composables/notify';
+import { useMeta } from 'src/composables/meta';
 
 export default defineComponent({
   name: 'PageInvitation',
@@ -63,6 +64,8 @@ export default defineComponent({
     if (auth.validateAuth()) {
       invitation.fetch();
     }
+    const meta = useMeta();
+    meta.setTitle('ユーザー招待');
 
     const handleUpdate = async () => {
       try {

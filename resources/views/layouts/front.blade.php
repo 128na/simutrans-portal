@@ -7,8 +7,9 @@
 
     <title>{{ $meta['title'] ?? config('app.name') }}</title>
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="{{ $meta['description'] ?? config('app.meta-description') }}">
+    @production
+        @include('newrelic')
+    @endproduction
 
     <meta name="twitter:card" content="{{ $meta['card_type'] ?? 'summary_large_image' }}">
     <meta name="twitter:site" content="{{ '@' . config('app.twitter') }}">

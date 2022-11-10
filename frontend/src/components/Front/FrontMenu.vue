@@ -63,7 +63,7 @@ export default defineComponent({
     const fetch = async () => {
       try {
         await handler.handle({
-          doRequest: api.fetchSidebar,
+          doRequest: () => api.fetchSidebar(),
           done: (res) => {
             pakAddonCounts.value = res.data.pakAddonCounts;
             userAddonCounts.value = res.data.userAddonCounts;

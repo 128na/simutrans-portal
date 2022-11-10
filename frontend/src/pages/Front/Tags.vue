@@ -33,7 +33,7 @@ export default defineComponent({
     const fetch = async () => {
       try {
         await handler.handleWithLoading({
-          doRequest: api.fetchTags,
+          doRequest: () => api.fetchTags(),
           done: (res) => {
             tags.value = res.data.data;
           },

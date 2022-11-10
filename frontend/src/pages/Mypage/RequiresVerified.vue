@@ -35,7 +35,7 @@ export default defineComponent({
     const handle = async () => {
       try {
         await handler.handleWithLoading({
-          doRequest: api.resend,
+          doRequest: () => api.resend(),
           successMessage: 'メールを送信しました',
           failedMessage: 'メールの送信に失敗しました',
         });

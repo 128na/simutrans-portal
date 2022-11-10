@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
-const { createMockArticleData, mockSidebarResponse } = require('../__mocks__/response');
+const { mockGuestResponse } = require('../../__mocks__/auth');
+const { mockSidebarResponse, createMockArticleData } = require('../../__mocks__/front');
 
 // Use `cy.dataCy` custom command for more robust tests
 // See https://docs.cypress.io/guides/references/best-practices.html#Selecting-Elements
@@ -10,7 +11,7 @@ const { createMockArticleData, mockSidebarResponse } = require('../__mocks__/res
 // This test will pass when run against a clean Quasar project
 describe('FrontTop', () => {
   beforeEach(() => {
-    cy.intercept('/api/v2/mypage/user', { statusCode: 401 }).as('mypage.user');
+    cy.intercept('/api/v2/mypage/user', mockGuestResponse).as('mypage.user');
     cy.intercept('/api/v3/front/sidebar', mockSidebarResponse).as('front.sidebar');
     cy.intercept('/api/v3/front/category/pak/*?simple', {
       statusCode: 200,

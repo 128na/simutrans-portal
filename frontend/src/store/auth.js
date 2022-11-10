@@ -86,7 +86,7 @@ export const useAuthStore = defineStore('auth', () => {
         return false;
       }
       if (!isAdmin.value) {
-        router.push({ replace: true, name: 'error', params: { status: 401 } });
+        router.push({ replace: true, name: 'error', params: { status: 404 } });
         return false;
       }
     }

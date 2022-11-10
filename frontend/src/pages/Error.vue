@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { useColor } from 'src/composables/color';
 import { defineComponent, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -90,6 +91,8 @@ const errors = {
 export default defineComponent({
   name: 'Error',
   setup() {
+    const color = useColor();
+    color.setFront();
     const route = useRoute();
     const status = reactive(Number.parseInt(route.params.status || 404, 10));
     const error = errors[status] || errors.default;

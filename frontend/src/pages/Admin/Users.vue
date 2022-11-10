@@ -26,6 +26,7 @@ import { defineComponent, ref } from 'vue';
 import { useAdminApi } from 'src/composables/api';
 import { DateTime } from 'luxon';
 import AdminTable from 'src/components/Admin/AdminTable.vue';
+import { useAuthStore } from 'src/store/auth';
 
 const columns = [
   {
@@ -107,6 +108,9 @@ export default defineComponent({
   name: 'PageAdminUsers',
   components: { TextTitle, AdminTable },
   setup() {
+    const auth = useAuthStore();
+    auth.validateAuth();
+
     const api = useAdminApi();
 
     const users = ref([]);

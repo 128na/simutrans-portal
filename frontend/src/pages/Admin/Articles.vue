@@ -22,6 +22,7 @@ import { DateTime } from 'luxon';
 import { POST_TYPES, STATUSES } from 'src/const';
 import AdminTable from 'src/components/Admin/AdminTable.vue';
 import { useAppInfo } from 'src/composables/appInfo';
+import { useAuthStore } from 'src/store/auth';
 
 const columns = [
   {
@@ -92,6 +93,9 @@ export default defineComponent({
   name: 'PageAdminArticles',
   components: { TextTitle, AdminTable },
   setup() {
+    const auth = useAuthStore();
+    auth.validateAuth();
+
     const api = useAdminApi();
 
     const articles = ref([]);

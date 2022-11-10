@@ -11,11 +11,15 @@
 </template>
 <script>
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
+import { useAuthStore } from 'src/store/auth';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'PageAdminToken',
   components: { TextTitle },
-  setup() { },
+  setup() {
+    const auth = useAuthStore();
+    auth.validateAuth();
+  },
 });
 </script>

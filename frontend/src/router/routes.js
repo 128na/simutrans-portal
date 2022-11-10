@@ -18,7 +18,7 @@ import MypageLogin from 'pages/Mypage/Login.vue';
 import MypageLogout from 'pages/Mypage/Logout.vue';
 import MypageForget from 'pages/Mypage/Forget.vue';
 import AdminLayout from 'layouts/AdminLayout.vue';
-import AdminIndex from 'pages/Index.vue';
+import AdminTop from 'src/pages/Admin/Top.vue';
 import AdminToken from 'pages/Admin/Token.vue';
 import AdminArticles from 'pages/Admin/Articles.vue';
 import AdminUsers from 'pages/Admin/Users.vue';
@@ -90,7 +90,7 @@ const routes = [
     component: AdminLayout,
     children: [
       {
-        name: 'admin', path: '', meta: { requiresAdmin: true }, component: AdminIndex,
+        name: 'admin', path: '', meta: { requiresAdmin: true }, component: AdminTop,
       },
       {
         name: 'admin.token', path: 'token', meta: { requiresAdmin: true }, component: AdminToken,

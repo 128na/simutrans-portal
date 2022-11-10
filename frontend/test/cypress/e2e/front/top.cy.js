@@ -66,3 +66,44 @@ describe('FrontTop', () => {
       .click();
   });
 });
+describe('FrontTop APIリトライ', () => {
+  beforeEach(() => {
+    // https://github.com/quasarframework/quasar/issues/2233#issuecomment-678115434
+    const resizeObserverLoopErrRe = /^[^(ResizeObserver loop limit exceeded)]/;
+    cy.on('uncaught:exception', (err) => {
+      /* returning false here prevents Cypress from failing the test */
+      if (resizeObserverLoopErrRe.test(err.message)) {
+        return false;
+      }
+      return true;
+    });
+    cy.intercept('/api/v2/mypage/user', mockGuestResponse).as('mypage.user');
+    cy.intercept('/api/v3/front/sidebar', mockSidebarResponse).as('front.sidebar');
+    cy.intercept('/api/v3/front/category/pak/*?simple', {
+      statusCode: 200,
+      body: {
+        title: 'dummy Pak Title',
+        data: [createMockArticleData()],
+      },
+    }).as('front.categoryPak');
+    cy.intercept('/api/v3/front/ranking?simple', { statusCode: 200, body: { data: [] } }).as('front.ranking');
+    cy.intercept('/api/v3/front/pages?simple', { statusCode: 200, body: { data: [] } }).as('front.pages');
+    cy.intercept('/api/v3/front/announces?simple', { statusCode: 500, body: { data: [] } }).as('front.announces');
+    cy.visit('/');
+    cy.wait('@mypage.user');
+    cy.wait('@front.sidebar');
+    cy.wait('@front.categoryPak');
+    cy.wait('@front.categoryPak');
+    cy.wait('@front.categoryPak');
+    cy.wait('@front.ranking');
+    cy.wait('@front.pages');
+    cy.wait('@front.announces');
+    cy.wait('@front.announces');
+    cy.wait('@front.announces');
+  });
+  it('表示内容', () => {
+    // タイトル
+    cy.title().should('equal', 'Simutrans Addon Portal');
+    cy.get('.q-notification__message').should('contain', 'お知らせ一覧の取得に失敗しました');
+  });
+});

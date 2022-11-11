@@ -6,7 +6,7 @@ export const mockArticlesResponse = {
       title: 'dummy title',
       slug: 'dummy-slug',
       status: 'publish',
-      post_type: 'addon-introductio',
+      post_type: 'addon-introduction',
       contents: {
         author: null,
         link: 'https://128na.github.io/iss',
@@ -33,5 +33,47 @@ export const mockArticlesResponse = {
         totalUserProfileClicks: 9,
       },
     }],
+  },
+};
+export const mockOptionsResponse = {
+  statusCode: 200,
+  body: {
+    categories: {
+      addon: [{
+        id: 1, name: 'dummy1', type: 'addon', slug: 'dummy1',
+      }],
+      license: [{
+        id: 2, name: 'dummy2', type: 'addon', slug: 'dummy2',
+      }],
+      pak: [{
+        id: 3, name: 'dummy3', type: 'addon', slug: 'dummy3',
+      }],
+      pak128_position: [{
+        id: 4, name: 'dummy4', type: 'addon', slug: 'dummy4',
+      }],
+      page: [{
+        id: 5, name: 'dummy5', type: 'addon', slug: 'dummy5',
+      }],
+    },
+    statuses: [
+      { label: '公開', value: 'publish' },
+      { label: '予約投稿', value: 'reservation' },
+      { label: '下書き', value: 'draft' },
+      { label: '非公開', value: 'private' },
+      { label: 'ゴミ箱', value: 'trash' },
+    ],
+  },
+};
+export const mockAttachmentsResponse = {
+  statusCode: 200,
+  body: {
+    data: [],
+  },
+};
+
+export const mockTagsResponse = {
+  statusCode: 200,
+  body: {
+    data: [],
   },
 };

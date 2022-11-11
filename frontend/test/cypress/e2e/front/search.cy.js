@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+const { assertFrontSearchPage } = require('../../assertion');
 const { mockGuestResponse } = require('../../__mocks__/auth');
 const { mockSidebarResponse, createMockArticleData } = require('../../__mocks__/front');
 
@@ -16,7 +17,7 @@ describe('Search', () => {
     cy.intercept('/api/v3/front/search?*', {
       statusCode: 200,
       body: {
-        title: 'Dummy Search Result',
+        title: 'dummy の検索結果',
         data: [createMockArticleData()],
       },
     }).as('front.search');
@@ -27,10 +28,6 @@ describe('Search', () => {
     cy.get('.fullscreen.q-drawer__backdrop').click();
   });
   it('表示内容', () => {
-    // タイトル
-    cy.title().should('equal', 'Dummy Search Result - Simutrans Addon Portal');
-    cy.get('body')
-      .should('contain.text', 'ダミー記事タイトル')
-      .should('contain.text', 'Dummy Search Result');
+    assertFrontSearchPage('dummy');
   });
 });

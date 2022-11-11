@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+const { assertFrontTopPage } = require('../../assertion');
 const { mockGuestResponse } = require('../../__mocks__/auth');
 const { mockSidebarResponse, createMockArticleData } = require('../../__mocks__/front');
 
@@ -35,8 +36,7 @@ describe('FrontTop', () => {
     cy.get('.fullscreen.q-drawer__backdrop').click();
   });
   it('表示内容', () => {
-    // タイトル
-    cy.title().should('equal', 'Simutrans Addon Portal');
+    assertFrontTopPage();
   });
 
   it('ダークモード切替', () => {
@@ -102,8 +102,7 @@ describe('FrontTop APIリトライ', () => {
     cy.wait('@front.announces');
   });
   it('表示内容', () => {
-    // タイトル
-    cy.title().should('equal', 'Simutrans Addon Portal');
+    assertFrontTopPage();
     cy.get('.q-notification__message').should('contain', 'お知らせ一覧の取得に失敗しました');
   });
 });

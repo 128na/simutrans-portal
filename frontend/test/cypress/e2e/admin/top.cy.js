@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+const { assertErrorPage, assertAdminTopPage } = require('../../assertion');
 const { mockGuestResponse, mockAdminResponse, mockUserResponse } = require('../../__mocks__/auth');
 
 // Use `cy.dataCy` custom command for more robust tests
@@ -16,9 +17,7 @@ describe('Admin 未ログイン', () => {
     cy.wait('@mypage.user');
   });
   it('エラーページへ遷移する', () => {
-    // タイトル
-    cy.title().should('equal', 'エラー - Simutrans Addon Portal');
-    cy.url().should('equal', 'http://localhost:8080/error/404');
+    assertErrorPage(404);
   });
 });
 describe('Admin ログイン済み 管理者', () => {
@@ -28,9 +27,7 @@ describe('Admin ログイン済み 管理者', () => {
     cy.wait('@mypage.user');
   });
   it('管理ページが表示される', () => {
-    // タイトル
-    cy.title().should('equal', '管理トップ - Simutrans Addon Portal');
-    cy.url().should('equal', 'http://localhost:8080/admin');
+    assertAdminTopPage();
   });
 });
 
@@ -41,8 +38,6 @@ describe('Mypage ログイン済み 一般ユーザー', () => {
     cy.wait('@mypage.user');
   });
   it('エラーページへ遷移する', () => {
-    // タイトル
-    cy.title().should('equal', 'エラー - Simutrans Addon Portal');
-    cy.url().should('equal', 'http://localhost:8080/error/404');
+    assertErrorPage(404);
   });
 });

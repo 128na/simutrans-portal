@@ -1,0 +1,24 @@
+require('dotenv').config();
+const { publishSourcemap } = require('@newrelic/publish-sourcemap');
+const path = require('path');
+const read = require('fs-readdir-recursive');
+
+const s = path.sep;
+
+const jsDir = path.join(__dirname, `..${s}..${s}public`, 'js');
+const files = read(jsDir);
+
+for (let index = 0; index < files.length; index += 2) {
+  const file = files[index];
+  const source = files[index + 1];
+  const data = {
+    sourcemapUrl: `${process.env.BACKEND_URL}/js/${source}`,
+    javascriptUrl: `${process.env.BACKEND_URL}/js/${file}`,
+    applicationId: 601355519,
+    apiKey: process.env.NR_APIKEY,
+    releaseName: process.env.APP_VERSION,
+    releaseId: process.env.APP_VERSION,
+    repoUrl: 'https://github.com/128na/simutrans-portal',
+  };
+  publishSourcemap(data, (err) => { console.log(err || 'Source map upload done'); });
+}

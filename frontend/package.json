@@ -15,7 +15,8 @@
     "test:e2e": "cross-env NODE_ENV=test start-test \"quasar dev\" http-get://localhost:8080 \"cypress open --e2e\"",
     "test:e2e:ci": "cross-env NODE_ENV=test start-test \"quasar dev\" http-get://localhost:8080 \"cypress run --e2e\"",
     "test:component": "cross-env NODE_ENV=test cypress open --component",
-    "test:component:ci": "cross-env NODE_ENV=test cypress run --component"
+    "test:component:ci": "cross-env NODE_ENV=test cypress run --component",
+    "nr:s": "node ./deployment/sourcemap"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
@@ -33,11 +34,12 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",
+    "@newrelic/publish-sourcemap": "^5.1.0",
     "@quasar/app": "^3.0.0",
     "@quasar/quasar-app-extension-testing": "^2.0.4",
     "@quasar/quasar-app-extension-testing-e2e-cypress": "^5.0.0-beta.5",
     "cypress": "^10.10.0",
-    "dotenv": "^16.0.2",
+    "dotenv": "^16.0.3",
     "electron": "^21.1.0",
     "electron-packager": "^15.5.2",
     "eslint": "^7.14.0",

@@ -2,7 +2,7 @@
   <q-page v-if="mypage.attachmentsReady && editor.ready" class="q-ma-md">
     <div class="q-gutter-sm">
       <text-title>プレビュー</text-title>
-      <user-profile :profile="previewData" />
+      <description-profile :profile="previewData" />
       <text-title>プロフィール編集</text-title>
       <api-error-message :message="editor.handler.validationErrorMessage" />
       <profile-form />
@@ -21,7 +21,7 @@ import { useProfileEditStore } from 'src/store/profileEdit';
 import { defineComponent, computed } from 'vue';
 import LoadingPage from 'src/components/Common/LoadingPage.vue';
 import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
-import UserProfile from 'src/components/Front/UserProfile.vue';
+import DescriptionProfile from 'src/components/Front/Description/DescriptionProfile.vue';
 import { useRouter } from 'vue-router';
 import { useMeta } from 'src/composables/meta';
 
@@ -32,7 +32,7 @@ export default defineComponent({
     ProfileForm,
     LoadingPage,
     ApiErrorMessage,
-    UserProfile,
+    DescriptionProfile,
   },
   setup() {
     const auth = useAuthStore();

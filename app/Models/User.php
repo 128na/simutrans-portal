@@ -121,12 +121,12 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
 
     public function createdTags(): HasMany
     {
-        return $this->hasMany(Tags::class, 'created_by');
+        return $this->hasMany(Tag::class, 'created_by');
     }
 
     public function lastModifiedBy(): HasMany
     {
-        return $this->hasMany(Tags::class, 'lastModifiedBy');
+        return $this->hasMany(Tag::class, 'lastModifiedBy');
     }
 
     /*

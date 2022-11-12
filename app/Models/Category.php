@@ -15,7 +15,6 @@ class Category extends Model
         'name',
         'type',
         'slug',
-        'description',
         'order',
         'need_admin',
     ];

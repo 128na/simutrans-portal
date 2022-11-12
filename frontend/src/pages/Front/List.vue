@@ -6,8 +6,8 @@
           <text-title>{{ title }}</text-title>
         </q-item-section>
       </q-item>
-      <q-item v-if="profile">
-        <user-profile :profile="profile" />
+      <q-item v-if="description">
+        <description-handler :description="description" />
       </q-item>
       <q-item v-if="pagination" class="flex flex-center">
         <q-pagination :model-value="pagination.current_page" :min="1" :max="pagination.last_page" :max-pages="3"
@@ -31,7 +31,7 @@ import { useArticleCacheStore } from 'src/store/articleCache';
 import { useFrontApi } from 'src/composables/api';
 import { useMeta } from 'src/composables/meta';
 import FrontArticleList from 'src/components/Front/FrontArticleList.vue';
-import UserProfile from 'src/components/Front/UserProfile.vue';
+import DescriptionHandler from 'src/components/Front/Description/DescriptionHandler.vue';
 import { useApiHandler } from 'src/composables/apiHandler';
 
 const resolveApi = (api, route) => {
@@ -62,12 +62,12 @@ export default defineComponent({
   components: {
     FrontArticleList,
     TextTitle,
-    UserProfile,
+    DescriptionHandler,
   },
 
   setup() {
     const articles = ref([]);
-    const profile = ref(null);
+    const description = ref(null);
     const pagination = ref(null);
 
     const title = ref(null);
@@ -85,9 +85,9 @@ export default defineComponent({
           done: (res) => {
             articles.value = res.data.data;
             pagination.value = res.data.meta;
-            title.value = res.data.title;
-            setTitle(res.data.title);
-            profile.value = res.data?.profile || null;
+            title.value = res.data.description.title;
+            setTitle(title.value);
+            description.value = res.data?.description || null;
             articleCache.addCaches(res.data.data);
           },
           failedMessage: '記事取得に失敗しました',
@@ -100,7 +100,7 @@ export default defineComponent({
 
     return {
       articles,
-      profile,
+      description,
       pagination,
       title,
     };

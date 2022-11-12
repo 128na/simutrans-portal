@@ -46,10 +46,13 @@ class FrontController extends Controller
         $articles = $this->articleService->paginateByUser($user);
 
         return ArticleResource::collection($articles)
-            ->additional(([
-                'title' => sprintf('%sさんの投稿', $user->name),
-                'profile' => new UserProfileResource($user),
-            ]));
+            ->additional([
+                'description' => [
+                    'title' => sprintf('%sさんの投稿', $user->name),
+                    'type' => 'profile',
+                    'profile' => new UserProfileResource($user),
+                ],
+            ]);
     }
 
     public function pages(Request $request)
@@ -57,7 +60,13 @@ class FrontController extends Controller
         $articles = $this->articleService->paginatePages($request->has('simple'));
 
         return ArticleResource::collection($articles)
-            ->additional((['title' => '一般記事']));
+            ->additional([
+                'description' => [
+                    'title' => __('category.page.common'),
+                    'type' => 'message',
+                    'message' => __('category.description.page.common'),
+                    ],
+                ]);
     }
 
     public function announces(Request $request)
@@ -65,7 +74,13 @@ class FrontController extends Controller
         $articles = $this->articleService->paginateAnnouces($request->has('simple'));
 
         return ArticleResource::collection($articles)
-            ->additional((['title' => 'お知らせ']));
+            ->additional([
+                'description' => [
+                'title' => __('category.page.announce'),
+                    'type' => 'message',
+                    'message' => __('category.description.page.announce'),
+                ],
+            ]);
     }
 
     public function ranking(Request $request)
@@ -73,15 +88,29 @@ class FrontController extends Controller
         $articles = $this->articleService->paginateRanking($request->has('simple'));
 
         return ArticleResource::collection($articles)
-            ->additional((['title' => 'アクセスランキング']));
+            ->additional([
+                'description' => [
+                    'title' => 'アクセスランキング',
+                    'type' => 'message',
+                    'message' => '本日のアクセス数の多い記事ランキングです。',
+                ],
+            ]);
     }
 
     public function category(string $type, string $slug, Request $request)
     {
         $articles = $this->articleService->paginateByCategory($type, $slug, $request->has('simple'));
+        $description = $type === 'license'
+            ? ['type' => 'url', 'url' => __("category.description.{$type}.{$slug}")]
+            : ['type' => 'message', 'message' => __("category.description.{$type}.{$slug}")];
 
         return ArticleResource::collection($articles)
-            ->additional((['title' => sprintf('%sの投稿', __("category.{$type}.{$slug}"))]));
+            ->additional([
+                'description' => array_merge(
+                    ['title' => sprintf('%sの投稿', __("category.{$type}.{$slug}"))],
+                    $description,
+                ),
+            ]);
     }
 
     public function categoryPakAddon(string $pakSlug, string $addonSlug)
@@ -89,7 +118,13 @@ class FrontController extends Controller
         $articles = $this->articleService->paginateByPakAddonCategory($pakSlug, $addonSlug);
 
         return ArticleResource::collection($articles)
-            ->additional((['title' => sprintf('%s、%sの投稿', __("category.pak.{$pakSlug}"), __("category.addon.{$addonSlug}"))]));
+            ->additional([
+                'description' => [
+                    'title' => sprintf('%s、%sの投稿', __("category.pak.{$pakSlug}"), __("category.addon.{$addonSlug}")),
+                    'type' => 'message',
+                    'message' => __("category.description.addon.{$addonSlug}"),
+                ],
+            ]);
     }
 
     public function categoryPakNoneAddon(string $pakSlug)
@@ -97,7 +132,13 @@ class FrontController extends Controller
         $articles = $this->articleService->paginateByPakNoneAddonCategory($pakSlug);
 
         return ArticleResource::collection($articles)
-            ->additional((['title' => sprintf('%s、%sの投稿', __("category.pak.{$pakSlug}"), __('category.addon.none'))]));
+            ->additional([
+                'description' => [
+                    'title' => sprintf('%s、%sの投稿', __("category.pak.{$pakSlug}"), __('category.addon.none')),
+                    'type' => 'message',
+                    'message' => __('category.description.addon.none'),
+                ],
+            ]);
     }
 
     public function tag(Tag $tag)
@@ -105,7 +146,20 @@ class FrontController extends Controller
         $articles = $this->articleService->paginateByTag($tag);
 
         return ArticleResource::collection($articles)
-           ->additional((['title' => sprintf('%sタグを含む投稿', $tag->name)]));
+            ->additional([
+                'description' => [
+                    'type' => 'tag',
+                    'title' => sprintf('%sタグを含む投稿', $tag->name),
+                    'message' => $tag->description,
+                    'name' => $tag->name,
+                    'id' => $tag->id,
+                    'editable' => $tag->editable,
+                    'createdBy' => $tag->createdBy?->name,
+                    'lastModifiedBy' => $tag->lastModifiedBy?->name,
+                    'createdAt' => $tag->created_at->toDateTimeString(),
+                    'updatedAt' => $tag->updated_at->toDateTimeString(),
+                ],
+            ]);
     }
 
     public function search(SearchRequest $request)
@@ -115,10 +169,7 @@ class FrontController extends Controller
         $articles = $this->articleService->paginateBySearch($word);
 
         return ArticleResource::collection($articles)
-           ->additional((['title' => $word
-                ? sprintf('%sの検索結果', $word)
-                : '全ての記事',
-        ]));
+           ->additional(['title' => $word ? sprintf('%sの検索結果', $word) : '全ての記事']);
     }
 
     public function tags()

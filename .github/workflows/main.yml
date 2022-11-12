@@ -301,4 +301,4 @@ jobs:
       - name: publish sourcemap to newrelic
         run: cd frontend && npm run nr:s
         env:
-          NR_APIKEY: ${{secrets.NR_APIKEY}}
+          NR_USER_KEY: ${{secrets.NR_USER_KEY}}

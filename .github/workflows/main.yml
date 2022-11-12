@@ -299,6 +299,6 @@ jobs:
           ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/public
 
       - name: publish sourcemap to newrelic
-        run: cd frontend && npm run nr:sourcemap
+        run: cd frontend && npm run nr:s
         env:
           NR_APIKEY: ${{secrets.NR_APIKEY}}

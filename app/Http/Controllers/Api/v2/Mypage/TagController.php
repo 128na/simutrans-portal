@@ -44,8 +44,7 @@ class TagController extends Controller
         $this->tagRepository->update($tag, [
             'description' => $request->input('description'),
             'last_modified_by' => Auth::id(),
+            'last_modified_at' => now(),
         ]);
-
-        return new Tag($tag);
     }
 }

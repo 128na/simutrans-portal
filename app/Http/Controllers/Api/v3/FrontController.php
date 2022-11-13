@@ -8,11 +8,11 @@ use App\Http\Resources\Api\Front\ArticleResource;
 use App\Http\Resources\Api\Front\PakAddonResource;
 use App\Http\Resources\Api\Front\TagResource;
 use App\Http\Resources\Api\Front\UserAddonResource;
-use App\Http\Resources\Api\Front\UserProfileResource;
 use App\Models\Article;
 use App\Models\Tag;
 use App\Models\User;
 use App\Services\Front\ArticleService;
+use App\Services\Front\FrontDescriptionService;
 use App\Services\Front\SidebarService;
 use App\Services\Front\TagService;
 use Illuminate\Http\Request;
@@ -23,6 +23,7 @@ class FrontController extends Controller
         private SidebarService $sidebarService,
         private ArticleService $articleService,
         private TagService $tagService,
+        private FrontDescriptionService $frontDescriptionService
     ) {
     }
 
@@ -46,13 +47,7 @@ class FrontController extends Controller
         $articles = $this->articleService->paginateByUser($user);
 
         return ArticleResource::collection($articles)
-            ->additional([
-                'description' => [
-                    'title' => sprintf('%sさんの投稿', $user->name),
-                    'type' => 'profile',
-                    'profile' => new UserProfileResource($user),
-                ],
-            ]);
+            ->additional($this->frontDescriptionService->user($user));
     }
 
     public function pages(Request $request)
@@ -60,13 +55,7 @@ class FrontController extends Controller
         $articles = $this->articleService->paginatePages($request->has('simple'));
 
         return ArticleResource::collection($articles)
-            ->additional([
-                'description' => [
-                    'title' => __('category.page.common'),
-                    'type' => 'message',
-                    'message' => __('category.description.page.common'),
-                    ],
-                ]);
+            ->additional($this->frontDescriptionService->page());
     }
 
     public function announces(Request $request)
@@ -74,13 +63,7 @@ class FrontController extends Controller
         $articles = $this->articleService->paginateAnnouces($request->has('simple'));
 
         return ArticleResource::collection($articles)
-            ->additional([
-                'description' => [
-                'title' => __('category.page.announce'),
-                    'type' => 'message',
-                    'message' => __('category.description.page.announce'),
-                ],
-            ]);
+            ->additional($this->frontDescriptionService->announces());
     }
 
     public function ranking(Request $request)
@@ -88,29 +71,15 @@ class FrontController extends Controller
         $articles = $this->articleService->paginateRanking($request->has('simple'));
 
         return ArticleResource::collection($articles)
-            ->additional([
-                'description' => [
-                    'title' => 'アクセスランキング',
-                    'type' => 'message',
-                    'message' => '本日のアクセス数の多い記事ランキングです。',
-                ],
-            ]);
+            ->additional($this->frontDescriptionService->ranking());
     }
 
     public function category(string $type, string $slug, Request $request)
     {
         $articles = $this->articleService->paginateByCategory($type, $slug, $request->has('simple'));
-        $description = $type === 'license'
-            ? ['type' => 'url', 'url' => __("category.description.{$type}.{$slug}")]
-            : ['type' => 'message', 'message' => __("category.description.{$type}.{$slug}")];
 
         return ArticleResource::collection($articles)
-            ->additional([
-                'description' => array_merge(
-                    ['title' => sprintf('%sの投稿', __("category.{$type}.{$slug}"))],
-                    $description,
-                ),
-            ]);
+            ->additional($this->frontDescriptionService->category($type, $slug));
     }
 
     public function categoryPakAddon(string $pakSlug, string $addonSlug)
@@ -118,13 +87,7 @@ class FrontController extends Controller
         $articles = $this->articleService->paginateByPakAddonCategory($pakSlug, $addonSlug);
 
         return ArticleResource::collection($articles)
-            ->additional([
-                'description' => [
-                    'title' => sprintf('%s、%sの投稿', __("category.pak.{$pakSlug}"), __("category.addon.{$addonSlug}")),
-                    'type' => 'message',
-                    'message' => __("category.description.addon.{$addonSlug}"),
-                ],
-            ]);
+            ->additional($this->frontDescriptionService($pakSlug, $addonSlug));
     }
 
     public function categoryPakNoneAddon(string $pakSlug)
@@ -132,13 +95,7 @@ class FrontController extends Controller
         $articles = $this->articleService->paginateByPakNoneAddonCategory($pakSlug);
 
         return ArticleResource::collection($articles)
-            ->additional([
-                'description' => [
-                    'title' => sprintf('%s、%sの投稿', __("category.pak.{$pakSlug}"), __('category.addon.none')),
-                    'type' => 'message',
-                    'message' => __('category.description.addon.none'),
-                ],
-            ]);
+            ->additional($this->frontDescriptionService->categoryPakNoneAddon($pakSlug));
     }
 
     public function tag(Tag $tag)
@@ -146,20 +103,7 @@ class FrontController extends Controller
         $articles = $this->articleService->paginateByTag($tag);
 
         return ArticleResource::collection($articles)
-            ->additional([
-                'description' => [
-                    'type' => 'tag',
-                    'title' => sprintf('%sタグを含む投稿', $tag->name),
-                    'message' => $tag->description,
-                    'name' => $tag->name,
-                    'id' => $tag->id,
-                    'editable' => $tag->editable,
-                    'createdBy' => $tag->createdBy?->name,
-                    'lastModifiedBy' => $tag->lastModifiedBy?->name,
-                    'createdAt' => $tag->created_at->toDateTimeString(),
-                    'updatedAt' => $tag->updated_at->toDateTimeString(),
-                ],
-            ]);
+            ->additional($this->frontDescriptionService->tag($tag));
     }
 
     public function search(SearchRequest $request)

@@ -108,6 +108,9 @@ export const useMypageApi = () => ({
   storeTag(name) {
     return axios.post('/api/v2/mypage/tags', { name });
   },
+  updateTag(id, description) {
+    return axios.post(`/api/v2/mypage/tags/${id}`, { description });
+  },
 
   // attachments
   fetchAttachments() {
@@ -162,5 +165,8 @@ export const useAdminApi = () => ({
   },
   deleteUser(id) {
     return axios.delete(`/api/v2/admin/users/${id}`);
+  },
+  toggleEditableTag(id) {
+    return axios.post(`/api/v2/admin/tags/${id}/toggleEditable`);
   },
 });

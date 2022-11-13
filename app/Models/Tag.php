@@ -17,10 +17,12 @@ class Tag extends Model
         'editable',
         'created_by',
         'last_modified_by',
+        'last_modified_at',
     ];
 
     protected $casts = [
         'editable' => 'boolean',
+        'last_modified_at' => 'datetime',
     ];
 
     public function articles(): BelongsToMany

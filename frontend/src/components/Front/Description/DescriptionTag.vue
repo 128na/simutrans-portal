@@ -6,27 +6,26 @@
       </q-item-section>
       <q-item-section>
         <q-item-label>
-          <p>{{ description.name }}の説明</p>
+          <p>{{ description.tag.name }}の説明</p>
           <text-pre>
-            {{ description.message || '説明がありません' }}
+            {{ description.tag.description || '説明がありません' }}
           </text-pre>
         </q-item-label>
         <q-item-label caption>
-          作成: {{ description.createdBy || '-' }} at {{ description.createdAt }}<br />
-          最終更新: {{ description.lastModifiedBy || '-' }} at {{ description.updatedAt }}
+          作成: {{ description.tag.createdBy || '-' }} at {{ description.tag.createdAt }}<br />
+          最終更新: {{ description.tag.lastModifiedBy || '-' }} at {{ description.tag.lastModifiedAt }}
         </q-item-label>
       </q-item-section>
     </q-item>
-    <q-card-actions v-if="auth.isLoggedIn">
-      <q-btn flat color="primary" v-if="description.editable" label="編集する" />
-      <q-btn flat color="primary" v-else label="編集できません" disabled />
+    <q-card-actions>
+      <tag-editor :tag="description.tag" />
     </q-card-actions>
   </q-card>
 </template>
 <script>
 import { defineComponent } from 'vue';
 import TextPre from 'src/components/Common/Text/TextPre.vue';
-import { useAuthStore } from 'src/store/auth';
+import TagEditor from '../TagEditor.vue';
 
 export default defineComponent({
   name: 'DescriptionTag',
@@ -38,12 +37,10 @@ export default defineComponent({
   },
   components: {
     TextPre,
+    TagEditor,
   },
   setup() {
-    const auth = useAuthStore();
-
     return {
-      auth,
     };
   },
 });

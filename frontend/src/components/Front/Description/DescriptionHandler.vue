@@ -5,7 +5,6 @@
 import { defineComponent, computed } from 'vue';
 import DescriptionProfile from 'src/components/Front/Description/DescriptionProfile.vue';
 import DescriptionMessage from 'src/components/Front/Description/DescriptionMessage.vue';
-import DescriptionUrl from 'src/components/Front/Description/DescriptionUrl.vue';
 import DescriptionTag from 'src/components/Front/Description/DescriptionTag.vue';
 
 export default defineComponent({
@@ -25,8 +24,6 @@ export default defineComponent({
           return DescriptionMessage;
         case 'tag':
           return DescriptionTag;
-        case 'url':
-          return DescriptionUrl;
         default:
           throw new Error('invalid description type');
       }

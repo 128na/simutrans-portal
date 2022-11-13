@@ -40,8 +40,6 @@
     "@quasar/quasar-app-extension-testing-e2e-cypress": "^5.0.0-beta.5",
     "cypress": "^10.10.0",
     "dotenv": "^16.0.3",
-    "electron": "^21.1.0",
-    "electron-packager": "^15.5.2",
     "eslint": "^7.14.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-chai-friendly": "^0.7.2",

@@ -46,7 +46,6 @@ export default defineComponent({
   setup() {
     const contents = reactive([
       {
-        wait: 0,
         api: '/api/v3/front/category/pak/128-japan?simple',
         to: { name: 'category', params: { type: 'pak', slug: '128-japan' } },
         label: 'pak128Japanの新着',
@@ -54,7 +53,6 @@ export default defineComponent({
         handler: useApiHandler(),
       },
       {
-        wait: 100,
         api: '/api/v3/front/category/pak/128?simple',
         to: { name: 'category', params: { type: 'pak', slug: '128' } },
         label: 'pak128の新着',
@@ -62,7 +60,6 @@ export default defineComponent({
         handler: useApiHandler(),
       },
       {
-        wait: 200,
         api: '/api/v3/front/category/pak/64?simple',
         to: { name: 'category', params: { type: 'pak', slug: '64' } },
         label: 'pak64の新着',
@@ -70,7 +67,6 @@ export default defineComponent({
         handler: useApiHandler(),
       },
       {
-        wait: 300,
         api: '/api/v3/front/ranking?simple',
         to: { name: 'ranking' },
         label: 'アクセスランキング',
@@ -78,7 +74,6 @@ export default defineComponent({
         handler: useApiHandler(),
       },
       {
-        wait: 1000,
         api: '/api/v3/front/pages?simple',
         to: { name: 'pages' },
         label: '一般記事',
@@ -86,7 +81,6 @@ export default defineComponent({
         handler: useApiHandler(),
       },
       {
-        wait: 1000,
         api: '/api/v3/front/announces?simple',
         to: { name: 'announces' },
         label: 'お知らせ',
@@ -96,23 +90,26 @@ export default defineComponent({
     ]);
     const articleCache = useArticleCacheStore();
     const { get } = useFrontApi();
-    contents.forEach((content) => {
-      content.articles = null;
-      setTimeout(async () => {
+    const doRequests = async () => {
+      for (let index = 0; index < contents.length; index += 1) {
+        contents[index].articles = null;
         try {
-          await content.handler.handle({
-            doRequest: () => get(content.api),
+          // レンタルサーバーが同時アクセスに耐えられないのでゆっくり直列実行
+          // eslint-disable-next-line no-await-in-loop
+          await contents[index].handler.handle({
+            doRequest: () => get(contents[index].api),
             done: (res) => {
-              content.articles = JSON.parse(JSON.stringify(res.data.data));
+              contents[index].articles = JSON.parse(JSON.stringify(res.data.data));
               articleCache.addCaches(res.data.data);
             },
-            failedMessage: `${content.label}一覧の取得に失敗しました`,
+            failedMessage: `${contents[index].label}一覧の取得に失敗しました`,
           });
         } catch {
           // do nothing.
         }
-      }, content.wait);
-    });
+      }
+    };
+    doRequests();
     const { setTitle } = useMeta();
     setTitle('top');
 

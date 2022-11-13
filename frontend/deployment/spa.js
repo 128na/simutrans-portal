@@ -25,15 +25,20 @@ const read = require('fs-readdir-recursive');
   const targets = [
     { key: `js${s}vendor.`, org: '/js/vendor.js' },
     { key: `js${s}app.`, org: '/js/app.js' },
-    { key: `css${s}app.`, org: '/css/app.css' },
+    { key: `js${s}mypage.`, org: '/js/mypage.js' },
+    { key: `js${s}admin.`, org: '/js/admin.js' },
     { key: `css${s}vendor.`, org: '/css/vendor.css' },
+    { key: `css${s}app.`, org: '/css/app.css' },
+    { key: `css${s}mypage.`, org: '/css/mypage.css' },
+    { key: `css${s}admin.`, org: '/css/admin.css' }, // 今は無いが増えたとき用
   ];
   const files = read(path.join(__dirname, `..${s}..${s}public`));
   const manifest = {};
   targets.forEach((t) => {
     const item = files.find((f) => f.startsWith(t.key));
     if (!item) {
-      throw new Error(`target '${t.key}' not found!`);
+      console.log(`target '${t.key}' not found!`);
+      return;
     }
     manifest[t.org] = `/${item.replaceAll('\\', '/')}`;
   });

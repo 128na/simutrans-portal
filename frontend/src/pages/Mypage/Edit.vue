@@ -58,6 +58,7 @@ export default defineComponent({
   setup() {
     const mypage = useMypageStore();
     const editor = useArticleEditStore();
+    editor.clearArticle();
     const auth = useAuthStore();
     if (auth.validateAuth()) {
       if (!editor.optionsReady) {

@@ -36,7 +36,7 @@ export default defineComponent({
     const meta = useMeta();
     meta.setTitle('ログイン');
 
-    const state = reactive({ email: '', password: '', remember: false });
+    const state = reactive({ email: '', password: '', remember: true });
 
     return {
       auth, state,

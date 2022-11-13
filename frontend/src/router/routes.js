@@ -3,25 +3,6 @@ import FrontTop from 'pages/Front/Top.vue';
 import FrontShow from 'pages/Front/Show.vue';
 import FrontList from 'pages/Front/List.vue';
 import FrontTags from 'pages/Front/Tags.vue';
-import MypageLayout from 'layouts/MypageLayout.vue';
-import MypageReset from 'pages/Mypage/Reset.vue';
-import MypageTop from 'pages/Mypage/Top.vue';
-import MypageEdit from 'pages/Mypage/Edit.vue';
-import MypageCreate from 'pages/Mypage/Create.vue';
-import MypageAnalytics from 'pages/Mypage/Analytics.vue';
-import MypageProfile from 'pages/Mypage/Profile.vue';
-import MypageInvitation from 'pages/Mypage/Invitation.vue';
-import MypageInvite from 'pages/Mypage/Invite.vue';
-import MypageRequiresVerified from 'pages/Mypage/RequiresVerified.vue';
-import MypageVerify from 'pages/Mypage/Verify.vue';
-import MypageLogin from 'pages/Mypage/Login.vue';
-import MypageLogout from 'pages/Mypage/Logout.vue';
-import MypageForget from 'pages/Mypage/Forget.vue';
-import AdminLayout from 'layouts/AdminLayout.vue';
-import AdminTop from 'src/pages/Admin/Top.vue';
-import AdminToken from 'pages/Admin/Token.vue';
-import AdminArticles from 'pages/Admin/Articles.vue';
-import AdminUsers from 'pages/Admin/Users.vue';
 import Error from 'src/pages/Error.vue';
 
 const routes = [
@@ -44,62 +25,76 @@ const routes = [
   },
   {
     path: '/mypage',
-    component: MypageLayout,
+    component: () => import(/* webpackChunkName: "mypage" */'layouts/MypageLayout.vue'),
     children: [
       {
-        name: 'reset', path: 'reset/:token', meta: { requiresGuest: true }, component: MypageReset,
+        name: 'reset', path: 'reset/:token', meta: { requiresGuest: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Reset.vue'),
       },
       {
-        name: 'mypage', path: '', meta: { requiresVerified: true }, component: MypageTop,
+        name: 'mypage', path: '', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Top.vue'),
       },
       {
-        name: 'edit', path: 'edit/:id', meta: { requiresVerified: true }, component: MypageEdit,
+        name: 'edit', path: 'edit/:id', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Edit.vue')
+        ,
       },
       {
-        name: 'create', path: 'create/:post_type', meta: { requiresVerified: true }, component: MypageCreate,
+        name: 'create', path: 'create/:post_type', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Create.vue')
+        ,
       },
       {
-        name: 'analytics', path: 'analytics', meta: { requiresVerified: true }, component: MypageAnalytics,
+        name: 'analytics', path: 'analytics', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Analytics.vue')
+        ,
       },
       {
-        name: 'profile', path: 'profile', meta: { requiresVerified: true }, component: MypageProfile,
+        name: 'profile', path: 'profile', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Profile.vue')
+        ,
       },
       {
-        name: 'invitation', path: 'invitation', meta: { requiresVerified: true }, component: MypageInvitation,
+        name: 'invitation', path: 'invitation', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Invitation.vue')
+        ,
       },
       {
-        name: 'invite', path: 'invite/:code', meta: { requiresGuest: true }, component: MypageInvite,
+        name: 'invite', path: 'invite/:code', meta: { requiresGuest: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Invite.vue')
+        ,
       },
       {
-        name: 'requiresVerified', path: 'requires-verified', meta: { requiresAuth: true }, component: MypageRequiresVerified,
+        name: 'requiresVerified', path: 'requires-verified', meta: { requiresAuth: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/RequiresVerified.vue')
+        ,
       },
       {
-        name: 'verify', path: 'verify/:userId/:hash', meta: { requiresAuth: true }, component: MypageVerify,
+        name: 'verify', path: 'verify/:userId/:hash', meta: { requiresAuth: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Verify.vue')
+        ,
       },
       {
-        name: 'login', path: 'login', meta: { requiresGuest: true }, component: MypageLogin,
+        name: 'login', path: 'login', meta: { requiresGuest: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Login.vue')
+        ,
       },
       {
-        name: 'logout', path: 'logout', meta: { requiresAuth: true }, component: MypageLogout,
+        name: 'logout', path: 'logout', meta: { requiresAuth: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Logout.vue')
+        ,
       },
-      { name: 'forget', path: 'forget', component: MypageForget },
+      { name: 'forget', path: 'forget', component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Forget.vue') },
     ],
   },
   {
     path: '/admin',
-    component: AdminLayout,
+    component: () => import(/* webpackChunkName: "admin" */ 'layouts/AdminLayout.vue'),
     children: [
       {
-        name: 'admin', path: '', meta: { requiresAdmin: true }, component: AdminTop,
+        name: 'admin', path: '', meta: { requiresAdmin: true }, component: () => import(/* webpackChunkName: "admin" */ 'src/pages/Admin/Top.vue')
+        ,
       },
       {
-        name: 'admin.token', path: 'token', meta: { requiresAdmin: true }, component: AdminToken,
+        name: 'admin.token', path: 'token', meta: { requiresAdmin: true }, component: () => import(/* webpackChunkName: "admin" */ 'pages/Admin/Token.vue')
+        ,
       },
       {
-        name: 'admin.articles', path: 'articles', meta: { requiresAdmin: true }, component: AdminArticles,
+        name: 'admin.articles', path: 'articles', meta: { requiresAdmin: true }, component: () => import(/* webpackChunkName: "admin" */ 'pages/Admin/Articles.vue')
+        ,
       },
       {
-        name: 'admin.users', path: 'users', meta: { requiresAdmin: true }, component: AdminUsers,
+        name: 'admin.users', path: 'users', meta: { requiresAdmin: true }, component: () => import(/* webpackChunkName: "admin" */ 'pages/Admin/Users.vue')
+        ,
       },
     ],
   },

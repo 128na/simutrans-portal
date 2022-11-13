@@ -52,6 +52,7 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
         Route::middleware(['verified'])->group(function () {
             Route::post('user', [UserController::class, 'update'])->name('users.update');
             Route::post('tags', [TagController::class, 'store'])->name('tags.store');
+            Route::post('tags/{tag}', [TagController::class, 'update'])->name('tags.update');
             Route::post('attachments', [AttachmentController::class, 'store'])->name('attachments.store');
             Route::delete('attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
             Route::post('articles', [EditorController::class, 'store'])->name('articles.store');

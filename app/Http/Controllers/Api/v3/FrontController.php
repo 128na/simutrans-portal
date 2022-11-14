@@ -87,7 +87,7 @@ class FrontController extends Controller
         $articles = $this->articleService->paginateByPakAddonCategory($pakSlug, $addonSlug);
 
         return ArticleResource::collection($articles)
-            ->additional($this->frontDescriptionService($pakSlug, $addonSlug));
+            ->additional($this->frontDescriptionService->categoryPakAddon($pakSlug, $addonSlug));
     }
 
     public function categoryPakNoneAddon(string $pakSlug)

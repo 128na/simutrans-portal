@@ -14,8 +14,8 @@ class TagControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->tag1 = Tag::factory()->create(['name' => 'long tag name']);
-        $this->tag2 = Tag::factory()->create(['name' => 'short']);
+        $this->tag1 = Tag::factory()->create(['name' => 'long tag name', 'description' => 'desc1']);
+        $this->tag2 = Tag::factory()->create(['name' => 'short', 'description' => 'desc2']);
     }
 
     public function testIndex()
@@ -30,24 +30,29 @@ class TagControllerTest extends TestCase
         $res = $this->getJson($url);
         $res->assertOK();
         $res->assertExactJson(['data' => [
-            ['id' => $this->tag1->id, 'name' => $this->tag1->name, 'url' => route('tag', $this->tag1)],
-            ['id' => $this->tag2->id, 'name' => $this->tag2->name, 'url' => route('tag', $this->tag2)],
+            ['id' => $this->tag1->id, 'name' => $this->tag1->name, 'description' => $this->tag1->description],
+            ['id' => $this->tag2->id, 'name' => $this->tag2->name, 'description' => $this->tag2->description],
         ]]);
 
         $url = route('api.v2.tags.search', ['name' => 'sh']);
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson(['data' => [['id' => $this->tag2->id, 'name' => $this->tag2->name, 'url' => route('tag', $this->tag2)]]]);
+        $res->assertExactJson(['data' => [['id' => $this->tag2->id, 'name' => $this->tag2->name, 'description' => $this->tag2->description]]]);
 
         $url = route('api.v2.tags.search', ['name' => 'or']);
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson(['data' => [['id' => $this->tag2->id, 'name' => $this->tag2->name, 'url' => route('tag', $this->tag2)]]]);
+        $res->assertExactJson(['data' => [['id' => $this->tag2->id, 'name' => $this->tag2->name, 'description' => $this->tag2->description]]]);
 
         $url = route('api.v2.tags.search', ['name' => 'rt']);
         $res = $this->getJson($url);
         $res->assertOK();
-        $res->assertExactJson(['data' => [['id' => $this->tag2->id, 'name' => $this->tag2->name, 'url' => route('tag', $this->tag2)]]]);
+        $res->assertExactJson(['data' => [['id' => $this->tag2->id, 'name' => $this->tag2->name, 'description' => $this->tag2->description]]]);
+
+        $url = route('api.v2.tags.search', ['name' => 'desc2']);
+        $res = $this->getJson($url);
+        $res->assertOK();
+        $res->assertExactJson(['data' => [['id' => $this->tag2->id, 'name' => $this->tag2->name, 'description' => $this->tag2->description]]]);
     }
 
     public function testStore認証()

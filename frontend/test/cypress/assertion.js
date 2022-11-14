@@ -35,6 +35,14 @@ export const assertEditPage = (id = 1) => {
   assertTitleAndUrl('編集', `http://localhost:8080/mypage/edit/${id}`);
 };
 
+export const assertCreatePage = (postType) => {
+  assertTitleAndUrl('新規作成', `http://localhost:8080/mypage/create/${postType}`);
+};
+
+export const assertProfilePage = () => {
+  assertTitleAndUrl('プロフィール編集', 'http://localhost:8080/mypage/profile');
+};
+
 // admin
 export const assertAdminTopPage = () => {
   assertTitleAndUrl('管理トップ', 'http://localhost:8080/admin');

@@ -1,11 +1,9 @@
 /// <reference types="cypress" />
 
 const { mockGuestResponse, mockUserResponse, mockUnverifiedUserResponse } = require('../../__mocks__/auth');
+const { mockOptionsResponse, mockAttachmentsResponse, mockTagsResponse } = require('../../__mocks__/mypage');
 const {
-  mockArticlesResponse, mockOptionsResponse, mockAttachmentsResponse, mockTagsResponse,
-} = require('../../__mocks__/mypage');
-const {
-  assertLoginPage, assertEditPage, assertRequiresVerifyPage,
+  assertLoginPage, assertRequiresVerifyPage, assertCreatePage,
 } = require('../../assertion');
 
 // Use `cy.dataCy` custom command for more robust tests
@@ -13,12 +11,12 @@ const {
 
 // ** This file is an example of how to write Cypress tests, you can safely delete it **
 // This test will pass when run against a clean Quasar project
-describe('編集画面', () => {
+describe('新規作成画面', () => {
   describe('未ログイン', () => {
     beforeEach(() => {
       cy.intercept('/api/v2/mypage/user', mockGuestResponse).as('mypage.user');
       cy.intercept('/sanctum/csrf-cookie', { statusCode: 200 }).as('csrf');
-      cy.visit('/mypage/edit/1');
+      cy.visit('/mypage/create/addon-post');
       cy.wait('@mypage.user');
     });
     it('ログイン画面へ遷移する', () => {
@@ -28,26 +26,24 @@ describe('編集画面', () => {
   describe('ログイン済み', () => {
     beforeEach(() => {
       cy.intercept('/api/v2/mypage/user', mockUserResponse).as('mypage.user');
-      cy.intercept('/api/v2/mypage/articles', mockArticlesResponse).as('mypage.articles');
       cy.intercept('/api/v2/mypage/options', mockOptionsResponse).as('mypage.options');
       cy.intercept('/api/v2/mypage/attachments', mockAttachmentsResponse).as('mypage.attachments');
       cy.intercept('/api/v2/mypage/tags?name=', mockTagsResponse).as('mypage.tags');
-      cy.visit('/mypage/edit/1');
+      cy.visit('/mypage/create/addon-post');
       cy.wait('@mypage.user');
-      cy.wait('@mypage.articles');
       cy.wait('@mypage.options');
       cy.wait('@mypage.attachments');
       cy.wait('@mypage.tags');
     });
-    it('編集画面が表示される', () => {
-      assertEditPage(1);
+    it('新規作成画面が表示される', () => {
+      assertCreatePage('addon-post');
     });
   });
 
   describe('ログイン済み 未認証', () => {
     beforeEach(() => {
       cy.intercept('/api/v2/mypage/user', mockUnverifiedUserResponse).as('mypage.user');
-      cy.visit('/mypage/edit/1');
+      cy.visit('/mypage/create/addon-post');
       cy.wait('@mypage.user');
     });
     it('未認証画面が表示される', () => {

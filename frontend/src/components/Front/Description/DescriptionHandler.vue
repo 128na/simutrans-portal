@@ -25,7 +25,7 @@ export default defineComponent({
         case 'tag':
           return DescriptionTag;
         default:
-          throw new Error('invalid description type');
+          return null;
       }
     });
 

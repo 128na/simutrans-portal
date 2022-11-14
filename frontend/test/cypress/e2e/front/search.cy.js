@@ -17,7 +17,7 @@ describe('Search', () => {
     cy.intercept('/api/v3/front/search?*', {
       statusCode: 200,
       body: {
-        title: 'dummy の検索結果',
+        description: { title: 'dummy の検索結果' },
         data: [createMockArticleData()],
       },
     }).as('front.search');

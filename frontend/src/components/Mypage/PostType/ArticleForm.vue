@@ -1,5 +1,5 @@
 <template>
-  <q-input label v-model="editor.article.title">
+  <q-input label-slot v-model="editor.article.title">
     <template v-slot:label>
       <label-required>タイトル</label-required>
     </template>

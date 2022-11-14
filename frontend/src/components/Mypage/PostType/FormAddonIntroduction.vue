@@ -1,21 +1,21 @@
 <template>
-  <q-input label v-model="editor.article.contents.author">
+  <q-input label-slot v-model="editor.article.contents.author">
     <template v-slot:label>
       <label-required>作者</label-required>
     </template>
   </q-input>
-  <q-input label type="url" v-model="editor.article.contents.link">
+  <q-input label-slot type="url" v-model="editor.article.contents.link">
     <template v-slot:label>
       <label-required>リンク先URL</label-required>
     </template>
   </q-input>
-  <input-countable label v-model="editor.article.contents.description" :maxLength="2048">
+  <input-countable label-slot v-model="editor.article.contents.description" :maxLength="2048">
     <label-required>説明</label-required>
   </input-countable>
-  <input-countable label v-model="editor.article.contents.thanks" :maxLength="2048">
+  <input-countable label-slot v-model="editor.article.contents.thanks" :maxLength="2048">
     <label-optional>謝辞・参考にしたアドオン</label-optional>
   </input-countable>
-  <input-countable label v-model="editor.article.contents.license" :maxLength="2048">
+  <input-countable label-slot v-model="editor.article.contents.license" :maxLength="2048">
     <label-optional>ライセンスその他</label-optional>
   </input-countable>
   <label-optional>掲載許可</label-optional>

@@ -1,10 +1,10 @@
 <template>
-  <q-input label v-model="editor.user.name">
+  <q-input label-slot v-model="editor.user.name">
     <template v-slot:label>
       <label-required>名前</label-required>
     </template>
   </q-input>
-  <q-input label v-model="editor.user.email">
+  <q-input label-slot v-model="editor.user.email">
     <template v-slot:label>
       <label-required>メールアドレス</label-required>
     </template>
@@ -13,20 +13,20 @@
     メールアドレスを変更すると新しいメールアドレスへ確認メールが送られます。
   </small>
   <form-avatar />
-  <input-countable label v-model="editor.user.profile.data.description" :maxLength="1024">
+  <input-countable label-slot v-model="editor.user.profile.data.description" :maxLength="1024">
     <label-required>説明</label-required>
   </input-countable>
-  <q-input label v-model="editor.user.profile.data.website">
+  <q-input label-slot v-model="editor.user.profile.data.website">
     <template v-slot:label>
       <label-optional>WebサイトURL</label-optional>
     </template>
   </q-input>
-  <q-input label v-model="editor.user.profile.data.twitter">
+  <q-input label-slot v-model="editor.user.profile.data.twitter">
     <template v-slot:label>
       <label-optional>Twitter ID</label-optional>
     </template>
   </q-input>
-  <q-input label v-model="editor.user.profile.data.gtag">
+  <q-input label-slot v-model="editor.user.profile.data.gtag">
     <template v-slot:label>
       <label-optional>Google Tag Manager連携</label-optional>
     </template>

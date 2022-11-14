@@ -1,5 +1,5 @@
 <template>
-  <q-input label v-model="rawSlug" bottom-slots>
+  <q-input label-slot v-model="rawSlug" bottom-slots>
     <template v-slot:label>
       <label-required>パーマリンク</label-required>
     </template>

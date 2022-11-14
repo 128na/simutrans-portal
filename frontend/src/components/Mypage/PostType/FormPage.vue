@@ -5,19 +5,19 @@
         <q-item-section>
           <q-item-label>
             <template v-if="section.type === 'text'">
-              <input-countable label v-model="section.text" :maxLength="2048">
+              <input-countable label-slot v-model="section.text" :maxLength="2048">
                 <label-required>内容</label-required>
               </input-countable>
             </template>
             <template v-else-if="section.type === 'caption'">
-              <q-input label v-model="section.caption">
+              <q-input label-slot v-model="section.caption">
                 <template v-slot:label>
                   <label-required>見出し</label-required>
                 </template>
               </q-input>
             </template>
             <template v-else-if="section.type === 'url'">
-              <q-input label v-model="section.url" type="url">
+              <q-input label-slot v-model="section.url" type="url">
                 <template v-slot:label>
                   <label-required>URL</label-required>
                 </template>

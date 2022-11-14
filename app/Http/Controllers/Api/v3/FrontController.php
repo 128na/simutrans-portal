@@ -113,7 +113,7 @@ class FrontController extends Controller
         $articles = $this->articleService->paginateBySearch($word);
 
         return ArticleResource::collection($articles)
-           ->additional(['title' => $word ? sprintf('%sの検索結果', $word) : '全ての記事']);
+           ->additional($this->frontDescriptionService->search($word));
     }
 
     public function tags()

@@ -88,4 +88,11 @@ class FrontDescriptionService
             'tag' => new TagDescriptionResource($tag),
         ]];
     }
+
+    public function search(string $word): array
+    {
+        return ['description' => [
+            'title' => $word ? sprintf('%sの検索結果', $word) : '全ての記事',
+        ]];
+    }
 }

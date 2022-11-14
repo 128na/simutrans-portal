@@ -2,7 +2,7 @@
   <q-page v-if="mypage.attachmentsReady && editor.ready" class="q-ma-md">
     <div class="q-gutter-sm">
       <text-title>プレビュー</text-title>
-      <description-profile :profile="previewData" />
+      <description-profile :description="previewData" />
       <text-title>プロフィール編集</text-title>
       <api-error-message :message="editor.handler.validationErrorMessage" />
       <profile-form />
@@ -67,11 +67,13 @@ export default defineComponent({
       return DEFAULT_AVATAR;
     });
     const previewData = computed(() => ({
-      avatar_url: avatarUrl.value,
-      name: editor.user.name,
-      description: editor.user.profile.data.description,
-      twitter: editor.user.profile.data.twitter,
-      website: editor.user.profile.data.website,
+      profile: {
+        avatar_url: avatarUrl.value,
+        name: editor.user.name,
+        description: editor.user.profile.data.description,
+        twitter: editor.user.profile.data.twitter,
+        website: editor.user.profile.data.website,
+      },
     }));
 
     return {

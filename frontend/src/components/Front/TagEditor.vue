@@ -8,21 +8,22 @@
     <q-btn flat color="positive" v-if="auth.isAdmin" label="編集解放" @click="toggle" />
   </template>
   <q-dialog v-model="dialog" class="row">
-    <q-card class="col" style="max-width: 640px;">
-      <q-card-section>
-        <span>{{ tag.name }} の説明を編集</span>
-      </q-card-section>
-      <q-card-section>
-        <input-countable v-model="description" :maxLength="1024" label>
-          説明
-        </input-countable>
-      </q-card-section>
-      <q-card-actions class="row">
-        <q-btn flat color="primary" label="保存" @click="update" />
-        <q-space />
-        <q-btn flat color="negative" label="閉じる" v-close-popup />
-      </q-card-actions>
-    </q-card>
+    <custom-dialog class="col" style="max-width: 640px;">
+      <template v-slot:title>
+        {{ tag.name }} の説明を編集
+      </template>
+      <template v-slot:body>
+        <q-card-section>
+          <input-countable v-model="description" :maxLength="1024" label>
+            説明
+          </input-countable>
+        </q-card-section>
+        <q-card-actions>
+          <q-btn color="primary" label="保存" @click="update" />
+          <q-btn flat color="negative" label="閉じる" v-close-popup />
+        </q-card-actions>
+      </template>
+    </custom-dialog>
   </q-dialog>
 </template>
 <script>
@@ -31,6 +32,7 @@ import { defineComponent, ref } from 'vue';
 import { useMypageApi, useAdminApi } from 'src/composables/api';
 import { useApiHandler } from 'src/composables/apiHandler';
 import InputCountable from '../Common/Input/InputCountable.vue';
+import CustomDialog from '../Common/CustomDialog.vue';
 
 export default defineComponent({
   name: 'TagEditor',
@@ -42,6 +44,7 @@ export default defineComponent({
   },
   components: {
     InputCountable,
+    CustomDialog,
   },
   setup(props) {
     const description = ref(props.tag.description);

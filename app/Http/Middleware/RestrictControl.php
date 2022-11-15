@@ -38,6 +38,6 @@ class RestrictControl
                 return abort_if($this->controllOption->restrictTagUpdate(), 403);
             case 'invitation_code':
                 return abort_if($this->controllOption->restrictInvitationCode(), 403);
-            }
+        }
     }
 }

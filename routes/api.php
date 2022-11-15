@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\v2\Admin\ArticleController;
+use App\Http\Controllers\Api\v2\Admin\ControllOptionController;
 use App\Http\Controllers\Api\v2\Admin\TagController as AdminTagController;
 use App\Http\Controllers\Api\v2\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\v2\Mypage\Article\AnalyticsController;
@@ -76,6 +77,8 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
         Route::put('/articles/{article}', [ArticleController::class, 'update'])->name('admin.articles.update');
         Route::delete('/articles/{article}', [ArticleController::class, 'destroy'])->name('admin.articles.destroy');
         Route::post('/tags/{tag}/toggleEditable', [AdminTagController::class, 'toggleEditable'])->name('tags.toggleEditable');
+        Route::get('/control_options', [ControllOptionController::class, 'index'])->name('controllOptions.index');
+        Route::post('/control_options/{controllOption}/toggle', [ControllOptionController::class, 'toggle'])->name('controllOptions.toggle');
     });
 });
 

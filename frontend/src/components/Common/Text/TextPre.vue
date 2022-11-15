@@ -13,5 +13,6 @@ export default defineComponent({
 <style scoped>
 .text-pre {
   white-space: pre-line;
+  word-break: break-word;
 }
 </style>

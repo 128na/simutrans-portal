@@ -1,3 +1,4 @@
+// 汎用
 export const assertTitleAndUrl = (title, url) => {
   cy.title().should('equal', title ? `${title} - Simutrans Addon Portal` : 'Simutrans Addon Portal');
   cy.url().should('equal', url);
@@ -8,6 +9,11 @@ export const assertBodyHas = (...words) => {
     cy.get('body').should('include.text', word);
   });
 };
+
+export const assertImageExists = (src) => {
+  cy.get(`img[src="${src}"]`).should('exist');
+};
+
 // front
 export const assertFrontTopPage = () => {
   assertTitleAndUrl('', 'http://localhost:8080/');
@@ -15,6 +21,10 @@ export const assertFrontTopPage = () => {
 
 export const assertFrontSearchPage = (word) => {
   assertTitleAndUrl(`${word} の検索結果`, `http://localhost:8080/search?word=${word}`);
+};
+
+export const assertFrontShowPage = (article) => {
+  assertTitleAndUrl(article.title, `http://localhost:8080/articles/${article.slug}`);
 };
 
 // mypage

@@ -46,6 +46,10 @@ class TagController extends Controller
             'last_modified_by' => Auth::id(),
             'last_modified_at' => now(),
         ]);
-        logger()->channel('tag')->info('update', ['name' => $tag->name, 'description' => $request->input('description')]);
+        logger()->channel('tag')->info('update', [
+            'id' => $tag->id,
+            'name' => $tag->name,
+            'description' => $request->input('description'),
+        ]);
     }
 }

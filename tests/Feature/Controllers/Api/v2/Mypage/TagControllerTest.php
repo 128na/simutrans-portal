@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Controllers\Api\v2\Mypage;
 
+use App\Constants\ControllOptionKeys;
+use App\Models\ControllOption;
 use App\Models\Tag;
 use Closure;
 use Tests\TestCase;
@@ -70,6 +72,16 @@ class TagControllerTest extends TestCase
         $res->assertForbidden();
     }
 
+    public function testStore機能制限()
+    {
+        $url = route('api.v2.tags.store');
+
+        ControllOption::create(['key' => ControllOptionKeys::TAG_UPDATE, 'value' => false]);
+        $this->actingAs($this->user);
+        $res = $this->postJson($url);
+        $res->assertForbidden();
+    }
+
     /**
      * @dataProvider dataValidation
      */
@@ -99,6 +111,17 @@ class TagControllerTest extends TestCase
 
         // メール未認証は403
         $this->user->update(['email_verified_at' => null]);
+        $this->actingAs($this->user);
+        $res = $this->postJson($url);
+        $res->assertForbidden();
+    }
+
+    public function testUpdate機能制限()
+    {
+        $tag = Tag::factory()->create();
+        $url = route('api.v2.tags.update', $tag);
+
+        ControllOption::create(['key' => ControllOptionKeys::TAG_UPDATE, 'value' => false]);
         $this->actingAs($this->user);
         $res = $this->postJson($url);
         $res->assertForbidden();

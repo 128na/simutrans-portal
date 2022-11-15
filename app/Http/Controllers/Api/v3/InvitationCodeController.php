@@ -53,8 +53,6 @@ class InvitationCodeController extends Controller
 
     public function register(User $user, InviteRequest $request)
     {
-        abort_unless(config('app.enable_invite'), 400, response(['message' => '招待機能は現在使用できません']));
-
         $invitedUser = $this->userRepository->store([
             'name' => $request->name,
             'email' => $request->email,

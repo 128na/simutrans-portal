@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Controllers\Api\v3\InvitationCodeController;
 
+use App\Constants\ControllOptionKeys;
+use App\Models\ControllOption;
 use App\Notifications\UserInvited;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
@@ -22,7 +23,6 @@ class RegisterTest extends TestCase
     {
         parent::setUp();
         $this->user->update(['email' => 'invite@example.com', 'invitation_code' => Str::uuid()]);
-        Config::set('app.enable_invite', true);
     }
 
     public function test()
@@ -46,13 +46,13 @@ class RegisterTest extends TestCase
 
     public function test機能無効()
     {
-        Config::set('app.enable_invite', false);
+        ControllOption::create(['key' => ControllOptionKeys::INVITATION_CODE, 'value' => false]);
 
         $response = $this->postJson(
             route('api.v3.invitationCode.register', ['invitation_code' => $this->user->invitation_code]),
             $this->data
         );
-        $response->assertStatus(400);
+        $response->assertStatus(403);
     }
 
     /**

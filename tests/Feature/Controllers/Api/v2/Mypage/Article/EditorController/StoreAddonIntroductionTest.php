@@ -12,14 +12,6 @@ use Tests\ArticleTestCase;
 
 class StoreAddonIntroductionTest extends ArticleTestCase
 {
-    public function testログイン()
-    {
-        $url = route('api.v2.articles.store');
-
-        $res = $this->postJson($url);
-        $res->assertUnauthorized();
-    }
-
     /**
      * @dataProvider dataStoreArticleValidation
      * @dataProvider dataArticleValidation

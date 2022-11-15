@@ -15,6 +15,8 @@ export const useApiHandler = () => {
   const auth = useAuthStore();
 
   const validationErrorMessage = computed(() => Object.values(validationErrors.value).map((m) => m.join('、')).join('\n'));
+  const getValidationErrorByKey = (key) => validationErrors.value?.[key]?.join('、');
+  const hasValidationErrorByKey = (key) => !!validationErrors.value?.[key];
 
   /**
    * エラーをハンドリングする
@@ -215,6 +217,8 @@ export const useApiHandler = () => {
   return {
     validationErrors,
     validationErrorMessage,
+    getValidationErrorByKey,
+    hasValidationErrorByKey,
     loading,
     handle,
     handleWithLoading,

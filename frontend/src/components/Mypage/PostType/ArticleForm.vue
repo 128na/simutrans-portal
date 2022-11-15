@@ -1,11 +1,13 @@
 <template>
-  <q-input label-slot v-model="editor.article.title">
+  <q-input v-model="editor.article.title" label-slot bottom-slots :error-message="editor.vali('article.title')"
+    :error="!!editor.vali('article.title')">
     <template v-slot:label>
       <label-required>タイトル</label-required>
     </template>
   </q-input>
   <div>
-    <form-slug v-model="editor.article.slug" :title="editor.article.title" />
+    <form-slug v-model="editor.article.slug" :title="editor.article.title" bottom-slots
+      :error-message="editor.vali('article.slug')" :error="!!editor.vali('article.slug')" />
   </div>
   <form-thumbnail />
   <component :is="postTypeForm" />

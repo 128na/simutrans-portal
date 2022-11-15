@@ -5,7 +5,6 @@
       <template v-slot:before>
         <div class="q-gutter-sm">
           <text-title>編集</text-title>
-          <api-error-message :message="editor.handlerArticle.validationErrorMessage" />
           <article-form />
           <form-without-update-modified-at />
           <form-tweet />
@@ -37,7 +36,6 @@ import LoadingPage from 'src/components/Common/LoadingPage.vue';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { useMypageStore } from 'src/store/mypage';
 import { dom } from 'quasar';
-import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import ArticleForm from 'src/components/Mypage/PostType/ArticleForm.vue';
 import FormTweet from 'src/components/Mypage/ArticleForm/FormTweet.vue';
 import FormWithoutUpdateModifiedAt from 'src/components/Mypage/ArticleForm/FormWithoutUpdateModifiedAt.vue';
@@ -50,7 +48,6 @@ export default defineComponent({
     ArticleForm,
     LoadingPage,
     FrontArticleShow,
-    ApiErrorMessage,
     FormTweet,
     FormWithoutUpdateModifiedAt,
     TextTitle,
@@ -109,15 +106,6 @@ export default defineComponent({
       user: auth.user,
     }));
 
-    const handle = async () => {
-      try {
-        const articles = await editor.updateArticle();
-        mypage.articles = articles;
-      } catch {
-        // do nothing.
-      }
-    };
-
     const splitterRef = ref(null);
     const style = ref({ height: '100vh' });
     watchEffect(() => {
@@ -127,6 +115,16 @@ export default defineComponent({
         style.value = { height: `calc(100vh - ${top}px)` };
       }
     }, { flush: 'post' });
+
+    const handle = async () => {
+      try {
+        const articles = await editor.updateArticle();
+        mypage.articles = articles;
+      } catch {
+        const el = splitterRef.value.$el.querySelector('.q-splitter__before');
+        el.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
 
     return {
       editor,

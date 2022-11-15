@@ -253,6 +253,8 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   const license = computed(() => options.value?.categories?.license?.map((c) => Object.create({ label: c.name, value: c.id })));
   const page = computed(() => options.value?.categories?.page?.map((c) => Object.create({ label: c.name, value: c.id })));
 
+  const vali = (key) => handlerArticle.getValidationErrorByKey(key);
+
   return {
     article,
     tweet,
@@ -289,5 +291,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     pak128Position,
     license,
     page,
+
+    vali,
   };
 });

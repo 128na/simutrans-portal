@@ -5,7 +5,6 @@
       <template v-slot:before>
         <div class="q-gutter-sm">
           <text-title>新規作成</text-title>
-          <api-error-message :message="editor.handlerArticle.validationErrorMessage" />
           <article-form />
           <form-tweet />
           <div class="row">
@@ -37,7 +36,6 @@ import LoadingPage from 'src/components/Common/LoadingPage.vue';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { useMypageStore } from 'src/store/mypage';
 import { dom } from 'quasar';
-import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import FormTweet from 'src/components/Mypage/ArticleForm/FormTweet.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import ArticleForm from 'src/components/Mypage/PostType/ArticleForm.vue';
@@ -49,7 +47,6 @@ export default defineComponent({
     ArticleForm,
     LoadingPage,
     FrontArticleShow,
-    ApiErrorMessage,
     FormTweet,
     TextTitle,
   },
@@ -85,6 +82,16 @@ export default defineComponent({
       user: auth.user,
     }));
 
+    const splitterRef = ref(null);
+    const style = ref({ height: '100vh' });
+    watchEffect(() => {
+      const el = splitterRef.value?.$el;
+      if (el) {
+        const { top } = dom.offset(el);
+        style.value = { height: `calc(100vh - ${top}px)` };
+      }
+    }, { flush: 'post' });
+
     const handle = async () => {
       try {
         const { slug } = editor.article;
@@ -95,19 +102,10 @@ export default defineComponent({
           router.push({ name: 'edit', params: { id: article.id } });
         }
       } catch {
-        // do nothing.
+        const el = splitterRef.value.$el.querySelector('.q-splitter__before');
+        el.scrollTo({ top: 0, behavior: 'smooth' });
       }
     };
-
-    const splitterRef = ref(null);
-    const style = ref({ height: '100vh' });
-    watchEffect(() => {
-      const el = splitterRef.value?.$el;
-      if (el) {
-        const { top } = dom.offset(el);
-        style.value = { height: `calc(100vh - ${top}px)` };
-      }
-    }, { flush: 'post' });
 
     return {
       editor,

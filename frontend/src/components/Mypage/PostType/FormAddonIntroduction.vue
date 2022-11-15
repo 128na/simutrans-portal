@@ -1,21 +1,26 @@
 <template>
-  <q-input label-slot v-model="editor.article.contents.author">
+  <q-input label-slot v-model="editor.article.contents.author" bottom-slots
+    :error-message="editor.vali('article.contents.author')" :error="!!editor.vali('article.contents.author')">
     <template v-slot:label>
       <label-required>作者</label-required>
     </template>
   </q-input>
-  <q-input label-slot type="url" v-model="editor.article.contents.link">
+  <q-input label-slot type="url" v-model="editor.article.contents.link" bottom-slots
+    :error-message="editor.vali('article.contents.author')" :error="!!editor.vali('article.contents.link')">
     <template v-slot:label>
       <label-required>リンク先URL</label-required>
     </template>
   </q-input>
-  <input-countable label-slot v-model="editor.article.contents.description" :maxLength="2048">
+  <input-countable label-slot v-model="editor.article.contents.description" :maxLength="2048" bottom-slots
+    :error-message="editor.vali('article.contents.author')" :error="!!editor.vali('article.contents.description')">
     <label-required>説明</label-required>
   </input-countable>
-  <input-countable label-slot v-model="editor.article.contents.thanks" :maxLength="2048">
+  <input-countable label-slot v-model="editor.article.contents.thanks" :maxLength="2048" bottom-slots
+    :error-message="editor.vali('article.contents.author')" :error="!!editor.vali('article.contents.thanks')">
     <label-optional>謝辞・参考にしたアドオン</label-optional>
   </input-countable>
-  <input-countable label-slot v-model="editor.article.contents.license" :maxLength="2048">
+  <input-countable label-slot v-model="editor.article.contents.license" :maxLength="2048" bottom-slots
+    :error-message="editor.vali('article.contents.author')" :error="!!editor.vali('article.contents.license')">
     <label-optional>ライセンスその他</label-optional>
   </input-countable>
   <label-optional>掲載許可</label-optional>

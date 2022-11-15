@@ -77,8 +77,8 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
         Route::put('/articles/{article}', [ArticleController::class, 'update'])->name('admin.articles.update');
         Route::delete('/articles/{article}', [ArticleController::class, 'destroy'])->name('admin.articles.destroy');
         Route::post('/tags/{tag}/toggleEditable', [AdminTagController::class, 'toggleEditable'])->name('tags.toggleEditable');
-        Route::get('/control_options', [ControllOptionController::class, 'index'])->name('controllOptions.index');
-        Route::post('/control_options/{controllOption}/toggle', [ControllOptionController::class, 'toggle'])->name('controllOptions.toggle');
+        Route::get('/controll_options', [ControllOptionController::class, 'index'])->name('controllOptions.index');
+        Route::post('/controll_options/{controllOption}/toggle', [ControllOptionController::class, 'toggle'])->name('controllOptions.toggle');
     });
 });
 

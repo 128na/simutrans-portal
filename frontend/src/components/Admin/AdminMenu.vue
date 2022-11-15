@@ -10,6 +10,12 @@
       <q-item-section>管理トップ</q-item-section>
     </q-item>
     <q-separator />
+    <q-item :to="{ name: 'admin.controllOptions' }">
+      <q-item-section avatar>
+        <q-icon name="lock" />
+      </q-item-section>
+      <q-item-section>機能制限</q-item-section>
+    </q-item>
     <q-item :to="{ name: 'admin.token' }">
       <q-item-section avatar>
         <q-icon name="key" />

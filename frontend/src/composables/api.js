@@ -169,4 +169,10 @@ export const useAdminApi = () => ({
   toggleEditableTag(id) {
     return axios.post(`/api/v2/admin/tags/${id}/toggleEditable`);
   },
+  fetchControllOptions() {
+    return axios.get('/api/v2/admin/controll_options');
+  },
+  toggleControllOption(key) {
+    return axios.post(`/api/v2/admin/controll_options/${key}/toggle`);
+  },
 });

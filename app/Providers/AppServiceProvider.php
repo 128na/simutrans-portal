@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Http\Controllers\Api\v3\LoggingController;
 use App\Models\User;
 use App\Repositories\Attachment\FileInfoRepository;
 use App\Repositories\AttachmentRepository;
@@ -16,14 +15,11 @@ use App\Services\FileInfo\Extractors\TabExtractor;
 use App\Services\FileInfo\FileInfoService;
 use App\Services\FileInfo\TextService;
 use App\Services\FileInfo\ZipArchiveParser;
-use App\Services\LogMappingService;
 use App\Services\MarkdownService;
 use Carbon\CarbonImmutable;
 use cebe\markdown\GithubMarkdown;
 use HTMLPurifier;
 use HTMLPurifier_Config;
-use Illuminate\Log\LogManager;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -51,13 +47,6 @@ class AppServiceProvider extends ServiceProvider
             $config->set('HTML.AllowedElements', []);
 
             return new MarkdownService($app->make(GithubMarkdown::class), new HTMLPurifier($config));
-        });
-
-        $this->app->bind(LoggingController::class, function ($app) {
-            return new LoggingController(
-                $app->make(LogManager::class)->driver(App::environment('production') ? 'prod_front' : 'dev_front'),
-                $app->make(LogMappingService::class)
-            );
         });
 
         $this->app->bind(ZipManager::class, function ($app) {

@@ -32,29 +32,6 @@ return [
     */
 
     'channels' => [
-        'prod_front' => [
-            'driver' => 'stack',
-            'channels' => ['daily_front', 'slack_front'],
-            'ignore_exceptions' => false,
-        ],
-        'dev_front' => [
-            'driver' => 'stack',
-            'channels' => ['daily_front'],
-            'ignore_exceptions' => false,
-        ],
-        'daily_front' => [
-            'driver' => 'daily',
-            'path' => storage_path('logs/front.log'),
-            'level' => 'debug',
-            'days' => 365,
-        ],
-        'slack_front' => [
-            'driver' => 'slack',
-            'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => 'SimutransAddonPortal(Front)',
-            'emoji' => ':innocent:',
-            'level' => 'error',
-        ],
         'prod' => [
             'driver' => 'stack',
             'channels' => ['daily', 'slack'],
@@ -102,6 +79,13 @@ return [
         'bulkzip' => [
             'driver' => 'daily',
             'path' => storage_path('logs/bulkzip.log'),
+            'level' => 'debug',
+            'days' => 365,
+        ],
+
+        'tag' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/tag.log'),
             'level' => 'debug',
             'days' => 365,
         ],

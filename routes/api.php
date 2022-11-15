@@ -93,7 +93,7 @@ Route::prefix('v3')->name('api.v3.')->group(function () {
         Route::get('/bulk-zip', [BulkZipController::class, 'user'])->name('bulkZip.user');
 
         // 招待機能
-        Route::get('/invitation_code', [InvitationCodeController::class, 'index'])->name('invitationCode.index');
+        Route::get('/invitation_code', [InvitationCodeController::class, 'index'])->middleware('restrict:invitation_code')->name('invitationCode.index');
         Route::post('/invitation_code', [InvitationCodeController::class, 'update'])->name('invitationCode.update');
         Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy'])->name('invitationCode.destroy');
     });

@@ -2,12 +2,13 @@
   <q-page class="q-pa-md fit row wrap justify-center">
     <q-form class="col-md-6 col q-gutter-sm" @submit=handle>
       <text-title>ユーザー登録</text-title>
-      <q-input v-model="authState.name" label="name" bottom-slots :error-message="editor.vali('name')"
-        :error="!!editor.vali('name')" />
-      <q-input v-model="authState.email" type="email" label="email" autocomplete="email" bottom-slots
-        :error-message="editor.vali('email')" :error="!!editor.vali('email')" />
-      <input-password v-model="authState.password" label="password" autocomplete="new-password" bottom-slots
-        :error-message="editor.vali('password')" :error="!!editor.vali('password')" />
+      <q-input v-model="authState.name" label="名前" bottom-slots :error-message="handler.getValidationErrorByKey('name')"
+        :error="handler.hasValidationErrorByKey('name')" />
+      <q-input v-model="authState.email" type="email" label="メールアドレス" autocomplete="email" bottom-slots
+        :error-message="handler.getValidationErrorByKey('email')" :error="handler.hasValidationErrorByKey('email')" />
+      <input-password v-model="authState.password" label="パスワード" autocomplete="new-password" bottom-slots
+        :error-message="handler.getValidationErrorByKey('password')"
+        :error="handler.hasValidationErrorByKey('password')" />
       <div>
         <q-btn label="登録" color="primary" type="submit" />
       </div>

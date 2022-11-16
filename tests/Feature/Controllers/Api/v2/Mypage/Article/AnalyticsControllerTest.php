@@ -22,21 +22,21 @@ class AnalyticsControllerTest extends ArticleTestCase
 
     public function dataValidation()
     {
-        yield 'idsがnull' => [fn () => '/api/mypage/analytics?ids', 'ids'];
-        yield 'idsが空' => [fn () => '/api/mypage/analytics?ids[0]', 'ids'];
+        yield 'idsがnull' => [fn () => '/api/mypage/analytics?'.http_build_query(['ids' => null]), 'ids'];
+        yield 'idsが空' => [fn () => '/api/mypage/analytics?'.http_build_query(['ids' => []]), 'ids'];
 
-        yield 'ids.0が存在しないID' => [fn () => '/api/mypage/analytics?ids[0]=99999', 'ids.0'];
-        yield 'ids.0が他人の記事' => [fn () => "/api/mypage/analytics?ids[0]={$this->article2->id}", 'ids.0'];
+        yield 'ids.0が存在しないID' => [fn () => '/api/mypage/analytics?'.http_build_query(['ids' => [99999]]), 'ids.0'];
+        yield 'ids.0が他人の記事' => [fn () => '/api/mypage/analytics?'.http_build_query(['ids' => [$this->article2->id]]), 'ids.0'];
 
-        yield 'typeがnull' => [fn () => '/api/mypage/analytics?type', 'type'];
-        yield 'typeが不正' => [fn () => '/api/mypage/analytics?type=invalid-type', 'type'];
+        yield 'typeがnull' => [fn () => '/api/mypage/analytics?'.http_build_query(['type' => null]), 'type'];
+        yield 'typeが不正' => [fn () => '/api/mypage/analytics?'.http_build_query(['type' => 'invalid-type']), 'type'];
 
-        yield 'start_dateがnull' => [fn () => '/api/mypage/analytics?start_date', 'start_date'];
-        yield 'start_dateが不正' => [fn () => '/api/mypage/analytics?start_date=invalid-start_date', 'start_date'];
+        yield 'start_dateがnull' => [fn () => '/api/mypage/analytics?'.http_build_query(['start_date' => null]), 'start_date'];
+        yield 'start_dateが不正' => [fn () => '/api/mypage/analytics?'.http_build_query(['start_date' => 'invalid-start_date']), 'start_date'];
 
-        yield 'end_dateがnull' => [fn () => '/api/mypage/analytics?end_date', 'end_date'];
-        yield 'end_dateが不正' => [fn () => '/api/mypage/analytics?end_date=invalid-end_date', 'end_date'];
-        yield 'end_dateがstart_dateよりも過去' => [fn () => '/api/mypage/analytics?start_date='.now().'&end_date='.now()->modify('-1 day'), 'end_date'];
+        yield 'end_dateがnull' => [fn () => '/api/mypage/analytics?'.http_build_query(['end_date' => null]), 'end_date'];
+        yield 'end_dateが不正' => [fn () => '/api/mypage/analytics?'.http_build_query(['end_date' => 'invalid-start_date']), 'end_date'];
+        yield 'end_dateがstart_dateよりも過去' => [fn () => '/api/mypage/analytics?'.http_build_query(['start_date' => now(), 'end_date' => now()->modify('-1 day')]), 'end_date'];
     }
 
     public function testログイン()

@@ -33,7 +33,7 @@ class VerificationControllerTest extends TestCase
         $this->assertNotNull($url);
         $res = $this->get($url);
         $res->assertOk();
-        $apiUrl = str_replace('mypage/verify', 'api/v2/email/verify', $url);
+        $apiUrl = str_replace('mypage/verify', 'api/email/verify', $url);
 
         $res = $this->getJson($apiUrl);
         $res->assertStatus(200);

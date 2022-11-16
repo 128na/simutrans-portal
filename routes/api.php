@@ -21,11 +21,11 @@ use App\Http\Middleware\VerifyCsrfToken;
 
 // auth
 // メール確認
-Route::POST('email/resend', [VerificationController::class, 'resendApi']);
-Route::GET('email/verify/{id}/{hash}', [VerificationController::class, 'verifyApi']);
-Route::POST('email/reset', [ResetPasswordController::class, 'reset']);
-Route::POST('logout', [LoginController::class, 'logout']);
-Route::POST('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
+Route::POST('/email/resend', [VerificationController::class, 'resendApi']);
+Route::GET('/email/verify/{id}/{hash}', [VerificationController::class, 'verifyApi']);
+Route::POST('/email/reset', [ResetPasswordController::class, 'reset']);
+Route::POST('/logout', [LoginController::class, 'logout']);
+Route::POST('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 
 Route::prefix('v2')->name('api.v2.')->group(function () {
     // マイページ機能

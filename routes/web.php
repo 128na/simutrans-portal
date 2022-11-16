@@ -17,6 +17,10 @@ Route::get('/verification/notice', [MypageController::class, 'index'])->name('ve
 Route::GET('mypage/reset/{token}', [MypageController::class, 'index'])->name('password.reset');
 Route::POST('login', [LoginController::class, 'login'])->middleware('restrict:login')->name('login');
 
+// フロント
+// マイページ
+// Admin
+
 // 招待
 Route::GET('/mypage/invite/{invitation_code}', [InviteController::class, 'index'])->middleware('restrict:invitation_code')->name('invite.index');
 

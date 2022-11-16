@@ -30,29 +30,29 @@ Route::POST('/password/email', [ForgotPasswordController::class, 'sendResetLinkE
 Route::prefix('front')->group(function () {
     // キャッシュ有効
     Route::middleware(['cache.headers:public;max_age=600;etag'])->group(function () {
-        Route::get('/sidebar', [FrontController::class, 'sidebar'])->name('sidebar');
-        Route::get('/', [FrontController::class, 'index'])->name('index');
-        Route::get('/ranking/', [FrontController::class, 'ranking'])->name('addons.ranking');
-        Route::get('/pages', [FrontController::class, 'pages'])->name('pages.index');
-        Route::get('/announces', [FrontController::class, 'announces'])->name('announces.index');
-        Route::get('/category/pak/{size}/none', [FrontController::class, 'categoryPakNoneAddon'])->name('category.pak.noneAddon');
-        Route::get('/category/pak/{size}/{slug}', [FrontController::class, 'categoryPakAddon'])->name('category.pak.addon');
-        Route::get('/category/{type}/{slug}', [FrontController::class, 'category'])->name('category');
-        Route::get('/tag/{tag}', [FrontController::class, 'tag'])->name('tag');
-        Route::get('/user/{user}', [FrontController::class, 'user'])->name('user');
-        Route::get('/tags', [FrontController::class, 'tags'])->name('tags');
-        Route::get('/search', [FrontController::class, 'search'])->name('search');
-        Route::get('/articles/{article}', [FrontController::class, 'show'])->name('articles.show');
+        Route::get('/sidebar', [FrontController::class, 'sidebar']);
+        Route::get('/', [FrontController::class, 'index']);
+        Route::get('/ranking/', [FrontController::class, 'ranking']);
+        Route::get('/pages', [FrontController::class, 'pages']);
+        Route::get('/announces', [FrontController::class, 'announces']);
+        Route::get('/category/pak/{size}/none', [FrontController::class, 'categoryPakNoneAddon']);
+        Route::get('/category/pak/{size}/{slug}', [FrontController::class, 'categoryPakAddon']);
+        Route::get('/category/{type}/{slug}', [FrontController::class, 'category']);
+        Route::get('/tag/{tag}', [FrontController::class, 'tag']);
+        Route::get('/user/{user}', [FrontController::class, 'user']);
+        Route::get('/tags', [FrontController::class, 'tags']);
+        Route::get('/search', [FrontController::class, 'search']);
+        Route::get('/articles/{article}', [FrontController::class, 'show']);
     });
 });
 Route::withoutMiddleware([VerifyCsrfToken::class])->group(function () {
-    Route::post('conversion/{article}', [ConversionController::class, 'conversion'])->name('conversion');
-    Route::post('shown/{article}', [ConversionController::class, 'shown'])->name('shown');
+    Route::post('conversion/{article}', [ConversionController::class, 'conversion']);
+    Route::post('shown/{article}', [ConversionController::class, 'shown']);
 });
 
 // マイページ
 Route::prefix('mypage')->group(function () {
-    Route::post('invite/{invitation_code}', [InvitationCodeController::class, 'register'])->middleware('restrict:invitation_code')->name('invitationCode.register');
+    Route::post('invite/{invitation_code}', [InvitationCodeController::class, 'register'])->middleware('restrict:invitation_code');
     // ログイン必須
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('user', [UserController::class, 'index']);
@@ -63,37 +63,37 @@ Route::prefix('mypage')->group(function () {
     });
     // メール認証必須
     Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-        Route::post('user', [UserController::class, 'update'])->name('users.update');
-        Route::post('tags', [TagController::class, 'store'])->middleware('restrict:update_tag')->name('tags.store');
-        Route::post('tags/{tag}', [TagController::class, 'update'])->middleware('restrict:update_tag')->name('tags.update');
-        Route::post('attachments', [AttachmentController::class, 'store'])->name('attachments.store');
-        Route::delete('attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
-        Route::post('articles', [EditorController::class, 'store'])->middleware('restrict:update_article')->name('articles.store');
+        Route::post('user', [UserController::class, 'update']);
+        Route::post('tags', [TagController::class, 'store'])->middleware('restrict:update_tag');
+        Route::post('tags/{tag}', [TagController::class, 'update'])->middleware('restrict:update_tag');
+        Route::post('attachments', [AttachmentController::class, 'store']);
+        Route::delete('attachments/{attachment}', [AttachmentController::class, 'destroy']);
+        Route::post('articles', [EditorController::class, 'store'])->middleware('restrict:update_article');
         Route::middleware(['can:update,article', 'restrict:update_article'])->group(function () {
-            Route::post('articles/{article}', [EditorController::class, 'update'])->name('articles.update');
+            Route::post('articles/{article}', [EditorController::class, 'update']);
         });
         // 記事分析
-        Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+        Route::get('analytics', [AnalyticsController::class, 'index']);
         // 一括DL機能
-        Route::get('/bulk-zip', [BulkZipController::class, 'user'])->name('bulkZip.user');
+        Route::get('/bulk-zip', [BulkZipController::class, 'user']);
 
         // 招待機能
-        Route::get('/invitation_code', [InvitationCodeController::class, 'index'])->name('invitationCode.index');
-        Route::post('/invitation_code', [InvitationCodeController::class, 'update'])->name('invitationCode.update');
-        Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy'])->name('invitationCode.destroy');
+        Route::get('/invitation_code', [InvitationCodeController::class, 'index']);
+        Route::post('/invitation_code', [InvitationCodeController::class, 'update']);
+        Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy']);
     });
 });
 // Admin
 Route::prefix('admin')->middleware(['auth:sanctum', 'admin', 'verified'])->group(function () {
     // ユーザー管理
-    Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
-    Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/users', [AdminUserController::class, 'index']);
+    Route::delete('/users/{user}', [AdminUserController::class, 'destroy']);
 
     // 記事管理
-    Route::get('/articles', [ArticleController::class, 'index'])->name('admin.articles.index');
-    Route::put('/articles/{article}', [ArticleController::class, 'update'])->name('admin.articles.update');
-    Route::delete('/articles/{article}', [ArticleController::class, 'destroy'])->name('admin.articles.destroy');
-    Route::post('/tags/{tag}/toggleEditable', [AdminTagController::class, 'toggleEditable'])->name('tags.toggleEditable');
-    Route::get('/controll_options', [ControllOptionController::class, 'index'])->name('controllOptions.index');
-    Route::post('/controll_options/{controllOption}/toggle', [ControllOptionController::class, 'toggle'])->name('controllOptions.toggle');
+    Route::get('/articles', [ArticleController::class, 'index']);
+    Route::put('/articles/{article}', [ArticleController::class, 'update']);
+    Route::delete('/articles/{article}', [ArticleController::class, 'destroy']);
+    Route::post('/tags/{tag}/toggleEditable', [AdminTagController::class, 'toggleEditable']);
+    Route::get('/controll_options', [ControllOptionController::class, 'index']);
+    Route::post('/controll_options/{controllOption}/toggle', [ControllOptionController::class, 'toggle']);
 });

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controllers\Auth;
+namespace Tests\Feature\Controllers\Api\Auth;
 
 use App\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Notification;
@@ -20,7 +20,7 @@ class VerificationControllerTest extends TestCase
 
         Notification::assertNothingSent();
 
-        $res = $this->postJson(route('api.v2.verification.resend'));
+        $res = $this->postJson('/api/email/resend');
         $res->assertStatus(200);
 
         /** @var string|null */

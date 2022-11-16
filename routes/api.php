@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\ForgotPasswordController;
+use App\Http\Controllers\Api\Auth\ResetPasswordController;
+use App\Http\Controllers\Api\Auth\VerificationController;
 use App\Http\Controllers\Api\v2\Admin\ArticleController;
 use App\Http\Controllers\Api\v2\Admin\ControllOptionController;
 use App\Http\Controllers\Api\v2\Admin\TagController as AdminTagController;
@@ -13,35 +16,18 @@ use App\Http\Controllers\Api\v3\BulkZipController;
 use App\Http\Controllers\Api\v3\ConversionController;
 use App\Http\Controllers\Api\v3\FrontController;
 use App\Http\Controllers\Api\v3\InvitationCodeController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\LoginController;
 use App\Http\Middleware\VerifyCsrfToken;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
- */
-
 // auth
-Route::prefix('v2')->name('api.v2.')->group(function () {
-    // メール確認
-    Route::POST('email/resend', [VerificationController::class, 'resendApi'])->name('verification.resend');
-    // メール認証
-    Route::GET('email/verify/{id}/{hash}', [VerificationController::class, 'verifyApi'])->name('verification.verify');
-    Route::POST('email/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+// メール確認
+Route::POST('email/resend', [VerificationController::class, 'resendApi']);
+Route::GET('email/verify/{id}/{hash}', [VerificationController::class, 'verifyApi']);
+Route::POST('email/reset', [ResetPasswordController::class, 'reset']);
+Route::POST('logout', [LoginController::class, 'logout']);
+Route::POST('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 
-    // 認証
-    Route::POST('logout', [LoginController::class, 'logout'])->name('logout');
-    // PWリセット
-    Route::POST('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::prefix('v2')->name('api.v2.')->group(function () {
     // マイページ機能
     Route::prefix('mypage')->middleware(['auth:sanctum'])->group(function () {
         Route::get('user', [UserController::class, 'index'])->name('users.index');

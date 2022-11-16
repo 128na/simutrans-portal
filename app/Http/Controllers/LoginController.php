@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\Mypage\User as UserResouce;
 use App\Notifications\Loggedin;
 use App\Services\UserService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * ログインのみセッション認証が必要なのでwebアクセスにする.
+ */
 class LoginController extends Controller
 {
     /*

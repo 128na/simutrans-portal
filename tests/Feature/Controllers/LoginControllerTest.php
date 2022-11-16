@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controllers\Auth;
+namespace Tests\Feature\Controllers;
 
 use App\Constants\ControllOptionKeys;
 use App\Models\ControllOption;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controllers\Auth;
+namespace Tests\Feature\Controllers\Api\Auth;
 
 use App\Models\User;
 use App\Notifications\ResetPassword;
@@ -28,7 +28,7 @@ class ResetPasswordControllerTest extends TestCase
     {
         Notification::fake();
 
-        $url = route('api.v2.password.email');
+        $url = '/api/password/email';
 
         $res = $this->postJson($url, $data);
         if (is_null($error_field)) {
@@ -49,7 +49,7 @@ class ResetPasswordControllerTest extends TestCase
     public function test確認メール送信()
     {
         Notification::fake();
-        $url = route('api.v2.password.email');
+        $url = '/api/password/email';
         $res = $this->postJson($url, ['email' => $this->user->email]);
         $res->assertOK();
         Notification::assertSentTo($this->user, ResetPassword::class);
@@ -76,7 +76,7 @@ class ResetPasswordControllerTest extends TestCase
             'email' => $this->user->email,
             'password' => 'new_password',
         ], $data);
-        $url = route('api.v2.password.update');
+        $url = '/api/email/reset';
         $data = array_merge(['token' => $token], $data);
         $res = $this->postJson($url, $data);
 

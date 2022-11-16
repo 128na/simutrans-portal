@@ -214,11 +214,16 @@ export const useApiHandler = () => {
     }
   };
 
+  const clearValidationErrors = () => {
+    validationErrors.value = {};
+  };
+
   return {
     validationErrors,
     validationErrorMessage,
     getValidationErrorByKey,
     hasValidationErrorByKey,
+    clearValidationErrors,
     loading,
     handle,
     handleWithLoading,

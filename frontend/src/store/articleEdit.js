@@ -107,25 +107,8 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     article.value = JSON.parse(JSON.stringify(a));
     original = JSON.stringify(a);
   };
-  const clearArticle = () => {
-    article.value = null;
-    original = null;
-  };
   const articleInitialized = computed(() => !!article.value);
-  const createArticle = (postType) => {
-    switch (postType) {
-      case 'addon-introduction':
-        return setArticle(createAddonIntroduction());
-      case 'addon-post':
-        return setArticle(createAddonPost());
-      case 'page':
-        return setArticle(createPage());
-      case 'markdown':
-        return setArticle(createMarkdown());
-      default:
-        throw new Error('invalid post type');
-    }
-  };
+
   const handlerArticle = useApiHandler();
   const saveArticle = () => {
     const params = {
@@ -253,6 +236,26 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   const license = computed(() => options.value?.categories?.license?.map((c) => Object.create({ label: c.name, value: c.id })));
   const page = computed(() => options.value?.categories?.page?.map((c) => Object.create({ label: c.name, value: c.id })));
 
+  const clearArticle = () => {
+    article.value = null;
+    original = null;
+    handlerArticle.clearValidationErrors();
+  };
+  const createArticle = (postType) => {
+    clearArticle();
+    switch (postType) {
+      case 'addon-introduction':
+        return setArticle(createAddonIntroduction());
+      case 'addon-post':
+        return setArticle(createAddonPost());
+      case 'page':
+        return setArticle(createPage());
+      case 'markdown':
+        return setArticle(createMarkdown());
+      default:
+        throw new Error('invalid post type');
+    }
+  };
   const vali = (key) => handlerArticle.getValidationErrorByKey(key);
 
   return {

@@ -15,7 +15,7 @@ class VerificationControllerTest extends TestCase
 
         $this->actingAs($this->user);
 
-        $res = $this->postJson(route('api.v2.articles.store'));
+        $res = $this->postJson('/api/mypage/articles');
         $res->assertForbidden();
 
         Notification::assertNothingSent();
@@ -33,12 +33,12 @@ class VerificationControllerTest extends TestCase
         $this->assertNotNull($url);
         $res = $this->get($url);
         $res->assertOk();
-        $apiUrl = str_replace('mypage/verify', 'api/email/verify', $url);
+        $apiUrl = str_replace('mypage/verify', '/api/email/verify', $url);
 
         $res = $this->getJson($apiUrl);
         $res->assertStatus(200);
 
-        $res = $this->postJson(route('api.v2.articles.store'));
+        $res = $this->postJson('/api/mypage/articles');
         $res->assertStatus(422);
     }
 }

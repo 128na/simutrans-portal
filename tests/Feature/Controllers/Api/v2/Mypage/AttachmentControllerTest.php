@@ -61,7 +61,7 @@ class AttachmentControllerTest extends ArticleTestCase
      */
     public function testStore(Closure $data, ?string $error_field)
     {
-        $url = route('api.v2.attachments.store');
+        $url = '/api/mypage/attachments';
 
         $this->actingAs($this->user);
 
@@ -84,7 +84,7 @@ class AttachmentControllerTest extends ArticleTestCase
         $user = User::factory()->create();
 
         $file = $this->createFromFile(UploadedFile::fake()->image('file.png', 1), $user->id);
-        $url = route('api.v2.attachments.destroy', $file);
+        $url = "/api/mypage/attachments/{$file->id}";
         $res = $this->deleteJson($url);
         $res->assertUnauthorized();
 
@@ -92,7 +92,7 @@ class AttachmentControllerTest extends ArticleTestCase
 
         $other_user = User::factory()->create();
         $other_file = $this->createFromFile(UploadedFile::fake()->image('file.png', 1), $other_user->id);
-        $url = route('api.v2.attachments.destroy', $other_file);
+        $url = "/api/mypage/attachments/{$file->id}";
         $res = $this->deleteJson($url);
         $res->assertStatus(403);
         $this->assertDatabaseHas('attachments', [
@@ -102,7 +102,7 @@ class AttachmentControllerTest extends ArticleTestCase
             'id' => $other_file->id,
         ]);
 
-        $url = route('api.v2.attachments.destroy', $file);
+        $url = "/api/mypage/attachments/{$file->id}";
         $res = $this->deleteJson($url);
         $res->assertOK();
 

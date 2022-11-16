@@ -32,7 +32,7 @@ class RegisterTest extends TestCase
         $this->assertGuest();
 
         $response = $this->postJson(
-            route('api.v3.invitationCode.register', ['invitation_code' => $this->user->invitation_code]),
+            "/api/mypage/invite/{$this->user->invitation_code}",
             $this->data
         );
 
@@ -49,7 +49,7 @@ class RegisterTest extends TestCase
         ControllOption::create(['key' => ControllOptionKeys::INVITATION_CODE, 'value' => false]);
 
         $response = $this->postJson(
-            route('api.v3.invitationCode.register', ['invitation_code' => $this->user->invitation_code]),
+            "/api/mypage/invite/{$this->user->invitation_code}",
             $this->data
         );
         $response->assertStatus(403);
@@ -61,7 +61,7 @@ class RegisterTest extends TestCase
     public function testValidation(array $data, string $key)
     {
         $response = $this->postJson(
-            route('api.v3.invitationCode.register', ['invitation_code' => $this->user->invitation_code]),
+            "/api/mypage/invite/{$this->user->invitation_code}",
             array_merge($this->data, $data)
         );
         $response->assertJsonValidationErrorFor($key);

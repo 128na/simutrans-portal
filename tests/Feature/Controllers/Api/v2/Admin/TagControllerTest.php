@@ -17,7 +17,7 @@ class TagControllerTest extends TestCase
 
     public function testtoggleEditable認証()
     {
-        $url = route('api.v2.tags.toggleEditable', $this->tag);
+        $url = "/api/admin/tags/{$this->tag->id}/toggleEditable";
 
         $res = $this->postJson($url);
         $res->assertUnauthorized();
@@ -30,7 +30,7 @@ class TagControllerTest extends TestCase
     public function testtoggleEditable()
     {
         $this->assertDatabaseHas('tags', ['id' => $this->tag->id, 'editable' => 1]);
-        $url = route('api.v2.tags.toggleEditable', $this->tag);
+        $url = "/api/admin/tags/{$this->tag->id}/toggleEditable";
 
         $this->user->update(['role' => 'admin']);
         $this->actingAs($this->user);

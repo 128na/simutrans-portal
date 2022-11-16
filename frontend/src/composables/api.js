@@ -9,46 +9,46 @@ export const useFrontApi = () => ({
   },
   // conversion
   postConversion(slug) {
-    return axios.post(`/api/v3/conversion/${slug}`);
+    return axios.post(`/api/conversion/${slug}`);
   },
   postShown(slug) {
-    return axios.post(`/api/v3/shown/${slug}`);
+    return axios.post(`/api/shown/${slug}`);
   },
   // top
   fetchSidebar() {
-    return axios.get('/api/v3/front/sidebar');
+    return axios.get('/api/front/sidebar');
   },
   // list
   fetchCategoryPak(size, slug, page = 1) {
-    return axios.get(`/api/v3/front/category/pak/${size}/${slug}`, { params: { page } });
+    return axios.get(`/api/front/category/pak/${size}/${slug}`, { params: { page } });
   },
   fetchCategory(type, slug, page = 1) {
-    return axios.get(`/api/v3/front/category/${type}/${slug}`, { params: { page } });
+    return axios.get(`/api/front/category/${type}/${slug}`, { params: { page } });
   },
   fetchTag(id, page = 1) {
-    return axios.get(`/api/v3/front/tag/${id}`, { params: { page } });
+    return axios.get(`/api/front/tag/${id}`, { params: { page } });
   },
   fetchUser(id, page = 1) {
-    return axios.get(`/api/v3/front/user/${id}`, { params: { page } });
+    return axios.get(`/api/front/user/${id}`, { params: { page } });
   },
   fetchAnnounces(page = 1) {
-    return axios.get('/api/v3/front/announces', { params: { page } });
+    return axios.get('/api/front/announces', { params: { page } });
   },
   fetchPages(page = 1) {
-    return axios.get('/api/v3/front/pages', { params: { page } });
+    return axios.get('/api/front/pages', { params: { page } });
   },
   fetchRanking(page = 1) {
-    return axios.get('/api/v3/front/ranking', { params: { page } });
+    return axios.get('/api/front/ranking', { params: { page } });
   },
   fetchSearch(word, page = 1) {
-    return axios.get('/api/v3/front/search', { params: { word, page } });
+    return axios.get('/api/front/search', { params: { word, page } });
   },
   // show
   fetchArticle(slug) {
-    return axios.get(`/api/v3/front/articles/${slug}`);
+    return axios.get(`/api/front/articles/${slug}`);
   },
   fetchTags() {
-    return axios.get('/api/v3/front/tags');
+    return axios.get('/api/front/tags');
   },
 });
 
@@ -67,10 +67,10 @@ export const useMypageApi = () => ({
     return axios.post('/api/email/resend');
   },
   forget(params) {
-    return axios.post('/api/v2/password/email', params);
+    return axios.post('/api/password/email', params);
   },
   reset(params) {
-    return axios.post('/api/v2/email/reset', params);
+    return axios.post('/api/email/reset', params);
   },
   verify(userId, hash, expires, signature) {
     return axios.get(`/api/email/verify/${userId}/${hash}`, {
@@ -106,10 +106,10 @@ export const useMypageApi = () => ({
     return axios.get(`/api/mypage/tags?name=${name}`);
   },
   storeTag(name) {
-    return axios.post('/api/v2/mypage/tags', { name });
+    return axios.post('/api/mypage/tags', { name });
   },
   updateTag(id, description) {
-    return axios.post(`/api/v2/mypage/tags/${id}`, { description });
+    return axios.post(`/api/mypage/tags/${id}`, { description });
   },
 
   // attachments
@@ -126,53 +126,53 @@ export const useMypageApi = () => ({
   },
   // analytics
   fetchAnalytics(params) {
-    return axios.get('/api/v2/mypage/analytics', { params });
+    return axios.get('/api/mypage/analytics', { params });
   },
 
   // 一括DL
   fetchUserBulkZip() {
-    return axios.get('/api/v3/mypage/bulk-zip');
+    return axios.get('/api/mypage/bulk-zip');
   },
 
   // invitation
   fetchInvites() {
-    return axios.get('/api/v3/mypage/invitation_code');
+    return axios.get('/api/mypage/invitation_code');
   },
   updateInvitationCode() {
-    return axios.post('/api/v3/mypage/invitation_code');
+    return axios.post('/api/mypage/invitation_code');
   },
   deleteInvitationCode() {
-    return axios.delete('/api/v3/mypage/invitation_code');
+    return axios.delete('/api/mypage/invitation_code');
   },
   invite(code, params) {
-    return axios.post(`/api/v3/mypage/invite/${code}`, params);
+    return axios.post(`/api/mypage/invite/${code}`, params);
   },
 });
 
 export const useAdminApi = () => ({
   // auth
   fetchArticles() {
-    return axios.get('/api/v2/admin/articles');
+    return axios.get('/api/admin/articles');
   },
   putArticle(id, params) {
-    return axios.put(`/api/v2/admin/articles/${id}`, params);
+    return axios.put(`/api/admin/articles/${id}`, params);
   },
   deleteArticle(id) {
-    return axios.delete(`/api/v2/admin/articles/${id}`);
+    return axios.delete(`/api/admin/articles/${id}`);
   },
   fetchUsers() {
-    return axios.get('/api/v2/admin/users');
+    return axios.get('/api/admin/users');
   },
   deleteUser(id) {
-    return axios.delete(`/api/v2/admin/users/${id}`);
+    return axios.delete(`/api/admin/users/${id}`);
   },
   toggleEditableTag(id) {
-    return axios.post(`/api/v2/admin/tags/${id}/toggleEditable`);
+    return axios.post(`/api/admin/tags/${id}/toggleEditable`);
   },
   fetchControllOptions() {
-    return axios.get('/api/v2/admin/controll_options');
+    return axios.get('/api/admin/controll_options');
   },
   toggleControllOption(key) {
-    return axios.post(`/api/v2/admin/controll_options/${key}/toggle`);
+    return axios.post(`/api/admin/controll_options/${key}/toggle`);
   },
 });

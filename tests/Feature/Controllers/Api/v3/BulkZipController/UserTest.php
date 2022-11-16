@@ -19,7 +19,7 @@ class UserTest extends TestCase
     public function test()
     {
         Bus::fake();
-        $url = route('api.v3.bulkZip.user');
+        $url = '/api/mypage/bulkZip/user';
 
         $this->actingAs($this->user);
         $response = $this->getJson($url);
@@ -27,14 +27,14 @@ class UserTest extends TestCase
         Bus::assertDispatchedAfterResponse(JobCreateBulkZip::class);
     }
 
-    public function test_作成済み()
+    public function test作成済み()
     {
         Bus::fake();
         BulkZip::factory()->create([
             'bulk_zippable_id' => $this->user->id,
             'bulk_zippable_type' => User::class,
         ]);
-        $url = route('api.v3.bulkZip.user');
+        $url = '/api/mypage/bulkZip/user';
 
         $this->actingAs($this->user);
         $response = $this->getJson($url);
@@ -42,9 +42,9 @@ class UserTest extends TestCase
         Bus::assertNotDispatchedAfterResponse(JobCreateBulkZip::class);
     }
 
-    public function test_未ログイン()
+    public function test未ログイン()
     {
-        $url = route('api.v3.bulkZip.user');
+        $url = '/api/mypage/bulkZip/user';
 
         $response = $this->getJson($url);
         $response->assertUnauthorized();

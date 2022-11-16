@@ -17,7 +17,7 @@ class ControllOptionControllerTest extends TestCase
 
     public function testIndex()
     {
-        $url = route('api.v2.controllOptions.index');
+        $url = '/api/admin/controllOptions';
 
         $res = $this->getJson($url);
         $res->assertUnauthorized();
@@ -34,7 +34,7 @@ class ControllOptionControllerTest extends TestCase
 
     public function testToggle()
     {
-        $url = route('api.v2.controllOptions.toggle', $this->controllOption->key);
+        $url = "/api/admin/controllOptions/{$this->controllOption->key}/toggle";
 
         $res = $this->postJson($url);
         $res->assertUnauthorized();
@@ -51,7 +51,7 @@ class ControllOptionControllerTest extends TestCase
 
     public function testToggle値の切替()
     {
-        $url = route('api.v2.controllOptions.toggle', $this->controllOption->key);
+        $url = "/api/admin/controllOptions/{$this->controllOption->key}/toggle";
 
         $this->user->update(['role' => 'admin']);
         $this->actingAs($this->user);

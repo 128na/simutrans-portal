@@ -13,7 +13,7 @@ class UpdateTest extends TestCase
 
         $this->assertDatabaseHas('users', ['id' => $this->user->id, 'invitation_code' => null]);
 
-        $response = $this->postJson(route('api.v3.invitationCode.index'));
+        $response = $this->postJson('/api/mypage/invitation_code');
         $response->assertOk();
 
         $this->assertDatabaseMissing('users', ['id' => $this->user->id, 'invitation_code' => null]);
@@ -28,7 +28,7 @@ class UpdateTest extends TestCase
 
         $this->actingAs($this->user);
 
-        $response = $this->postJson(route('api.v3.invitationCode.index'));
+        $response = $this->postJson('/api/mypage/invitation_code');
         $response->assertOk();
         $this->assertDatabaseMissing('users', ['id' => $this->user->id, 'invitation_code' => $oldUuid]);
         $this->assertNotNull($response->json('data.invitation_url'));

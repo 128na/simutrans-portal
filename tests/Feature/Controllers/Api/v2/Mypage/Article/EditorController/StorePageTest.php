@@ -19,7 +19,7 @@ class StorePageTest extends ArticleTestCase
     public function testValidation(Closure $fn, ?string $error_field)
     {
         Bus::fake();
-        $url = route('api.v2.articles.store');
+        $url = '/api/mypage/articles';
         $this->actingAs($this->user);
 
         $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);

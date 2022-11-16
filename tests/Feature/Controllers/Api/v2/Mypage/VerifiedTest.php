@@ -41,12 +41,12 @@ class VerifiedTest extends ArticleTestCase
         yield '投稿記事一覧' => ['getJson', fn () => '/api/mypage/articles', false];
         yield '投稿ページオプション' => ['getJson', fn () => '/api/mypage/options', false];
 
-        yield 'プロフィール更新' => ['postJson', fn () => route('api.v2.users.update'), true];
-        yield 'タグ作成' => ['postJson', fn () => route('api.v2.tags.store'), true];
-        yield '添付ファイル作成' => ['postJson', fn () => route('api.v2.attachments.store'), true];
-        yield '添付ファイル削除' => ['deleteJson', fn () => route('api.v2.attachments.destroy', $this->attachment), true];
-        yield '記事投稿' => ['postJson', fn () => route('api.v2.articles.store'), true];
-        yield '記事更新' => ['postJson', fn () => route('api.v2.articles.update', $this->article), true];
+        yield 'プロフィール更新' => ['postJson', fn () => '/api/mypage/users', true];
+        yield 'タグ作成' => ['postJson', fn () => '/api/mypage/tags', true];
+        yield '添付ファイル作成' => ['postJson', fn () => '/api/mypage/attachments', true];
+        yield '添付ファイル削除' => ['deleteJson', fn () => "/api/mypage/attachments/{$this->attachment->id}", true];
+        yield '記事投稿' => ['postJson', fn () => '/api/mypage/articles', true];
+        yield '記事更新' => ['postJson', fn () => "/api/mypage/articles/{$this->article->id}", true];
     }
 
     /**
@@ -64,11 +64,11 @@ class VerifiedTest extends ArticleTestCase
 
     public function dataVerified()
     {
-        yield 'プロフィール更新' => ['postJson', fn () => route('api.v2.users.update'), 422];
-        yield 'タグ作成' => ['postJson', fn () => route('api.v2.tags.store'), 422];
-        yield '添付ファイル作成' => ['postJson', fn () => route('api.v2.attachments.store'), 422];
-        yield '添付ファイル削除' => ['deleteJson', fn () => route('api.v2.attachments.destroy', $this->attachment), 200];
-        yield '記事投稿' => ['postJson', fn () => route('api.v2.articles.store'), 422];
-        yield '記事更新' => ['postJson', fn () => route('api.v2.articles.update', $this->article), 422];
+        yield 'プロフィール更新' => ['postJson', fn () => '/api/mypage/user', 422];
+        yield 'タグ作成' => ['postJson', fn () => '/api/mypage/tags', 422];
+        yield '添付ファイル作成' => ['postJson', fn () => '/api/mypage/attachments', 422];
+        yield '添付ファイル削除' => ['deleteJson', fn () => "/api/mypage/attachments/{$this->attachment->id}", 200];
+        yield '記事投稿' => ['postJson', fn () => '/api/mypage/articles', 422];
+        yield '記事更新' => ['postJson', fn () => "/api/mypage/articles/{$this->article->id}", 422];
     }
 }

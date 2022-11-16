@@ -10,7 +10,7 @@ class StoreTest extends ArticleTestCase
 {
     public function test()
     {
-        $url = route('api.v2.articles.store');
+        $url = '/api/mypage/articles';
 
         $res = $this->postJson($url);
         $res->assertUnauthorized();
@@ -19,7 +19,7 @@ class StoreTest extends ArticleTestCase
     public function testログイン済み()
     {
         $this->actingAs($this->user);
-        $url = route('api.v2.articles.store');
+        $url = '/api/mypage/articles';
 
         $res = $this->postJson($url);
         $res->assertStatus(422);
@@ -29,7 +29,7 @@ class StoreTest extends ArticleTestCase
     {
         $this->user->update(['email_verified_at' => null]);
         $this->actingAs($this->user);
-        $url = route('api.v2.articles.store');
+        $url = '/api/mypage/articles';
 
         $res = $this->postJson($url);
         $res->assertForbidden();
@@ -39,7 +39,7 @@ class StoreTest extends ArticleTestCase
     {
         ControllOption::create(['key' => ControllOptionKeys::ARTICLE_UPDATE, 'value' => false]);
         $this->actingAs($this->user);
-        $url = route('api.v2.articles.store');
+        $url = '/api/mypage/articles';
         $res = $this->postJson($url);
         $res->assertForbidden();
     }

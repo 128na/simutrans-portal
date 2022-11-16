@@ -13,8 +13,8 @@ const { mockSidebarResponse, createMockArticleData } = require('../../__mocks__/
 describe('Search', () => {
   beforeEach(() => {
     cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
-    cy.intercept('/api/v3/front/sidebar', mockSidebarResponse).as('front.sidebar');
-    cy.intercept('/api/v3/front/search?*', {
+    cy.intercept('/api/front/sidebar', mockSidebarResponse).as('front.sidebar');
+    cy.intercept('/api/front/search?*', {
       statusCode: 200,
       body: {
         description: { title: 'dummy の検索結果' },

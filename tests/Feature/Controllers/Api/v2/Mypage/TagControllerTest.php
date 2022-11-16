@@ -59,7 +59,7 @@ class TagControllerTest extends TestCase
 
     public function testStore認証()
     {
-        $url = route('api.v2.tags.store');
+        $url = '/api/mypage/tags';
 
         // 未ログインは401
         $res = $this->postJson($url);
@@ -74,7 +74,7 @@ class TagControllerTest extends TestCase
 
     public function testStore機能制限()
     {
-        $url = route('api.v2.tags.store');
+        $url = '/api/mypage/tags';
 
         ControllOption::create(['key' => ControllOptionKeys::TAG_UPDATE, 'value' => false]);
         $this->actingAs($this->user);
@@ -87,7 +87,7 @@ class TagControllerTest extends TestCase
      */
     public function testStore(Closure $data, ?string $error_field)
     {
-        $url = route('api.v2.tags.store');
+        $url = '/api/mypage/tags';
 
         $this->actingAs($this->user);
         $params = Closure::bind($data, $this)();
@@ -103,7 +103,7 @@ class TagControllerTest extends TestCase
     public function testUpdate認証()
     {
         $tag = Tag::factory()->create();
-        $url = route('api.v2.tags.update', $tag);
+        $url = "/api/mypage/tags/{$tag->id}";
 
         // 未ログインは401
         $res = $this->postJson($url);
@@ -119,7 +119,7 @@ class TagControllerTest extends TestCase
     public function testUpdate機能制限()
     {
         $tag = Tag::factory()->create();
-        $url = route('api.v2.tags.update', $tag);
+        $url = "/api/mypage/tags/{$tag->id}";
 
         ControllOption::create(['key' => ControllOptionKeys::TAG_UPDATE, 'value' => false]);
         $this->actingAs($this->user);
@@ -141,7 +141,7 @@ class TagControllerTest extends TestCase
     public function testUpdate(Closure $data, ?string $error_field)
     {
         $tag = Tag::factory()->create();
-        $url = route('api.v2.tags.update', $tag);
+        $url = "/api/mypage/tags/{$tag->id}";
 
         $this->actingAs($this->user);
         $params = Closure::bind($data, $this)();
@@ -167,7 +167,7 @@ class TagControllerTest extends TestCase
     public function testUpdate編集ロック()
     {
         $tag = Tag::factory()->create(['editable' => false]);
-        $url = route('api.v2.tags.update', $tag);
+        $url = "/api/mypage/tags/{$tag->id}";
 
         $this->actingAs($this->user);
         $data = ['description' => 'dummy'];

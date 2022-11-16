@@ -23,7 +23,7 @@ class DestroyTest extends TestCase
             'id' => $this->user->id,
             'deleted_at' => null,
         ]);
-        $url = route('api.v2.admin.users.destroy', $this->user);
+        $url = "/api/admin/users/{$this->user->id}";
         $res = $this->deleteJson($url);
         $res->assertOk();
 
@@ -44,7 +44,7 @@ class DestroyTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
         ]);
-        $url = route('api.v2.admin.users.destroy', $this->user);
+        $url = "/api/admin/users/{$this->user->id}";
         $res = $this->deleteJson($url);
         $res->assertOk();
 
@@ -56,7 +56,7 @@ class DestroyTest extends TestCase
 
     public function test未ログイン()
     {
-        $url = route('api.v2.admin.users.destroy', $this->user);
+        $url = "/api/admin/users/{$this->user->id}";
         $res = $this->deleteJson($url);
         $res->assertUnauthorized();
     }
@@ -64,7 +64,7 @@ class DestroyTest extends TestCase
     public function test管理者以外()
     {
         $this->actingAs($this->user);
-        $url = route('api.v2.admin.users.destroy', $this->user);
+        $url = "/api/admin/users/{$this->user->id}";
         $res = $this->deleteJson($url);
         $res->assertUnauthorized();
     }

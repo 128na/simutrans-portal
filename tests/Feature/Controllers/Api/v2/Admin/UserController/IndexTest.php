@@ -18,7 +18,7 @@ class IndexTest extends TestCase
     public function test()
     {
         $this->actingAs($this->admin);
-        $url = route('api.v2.admin.users.index');
+        $url = '/api/admin/users';
         $res = $this->getJson($url);
         $res->assertOk();
         $res->assertJsonFragment(['name' => $this->admin->name]);
@@ -27,7 +27,7 @@ class IndexTest extends TestCase
 
     public function test未ログイン()
     {
-        $url = route('api.v2.admin.users.index');
+        $url = '/api/admin/users';
         $res = $this->getJson($url);
         $res->assertUnauthorized();
     }
@@ -35,7 +35,7 @@ class IndexTest extends TestCase
     public function test管理者以外()
     {
         $this->actingAs($this->user);
-        $url = route('api.v2.admin.users.index');
+        $url = '/api/admin/users';
         $res = $this->getJson($url);
         $res->assertUnauthorized();
     }

@@ -27,7 +27,7 @@ class UpdateAddonPostTest extends ArticleTestCase
     public function testValidation(Closure $fn, ?string $error_field)
     {
         Bus::fake();
-        $url = route('api.v2.articles.update', $this->article);
+        $url = "/api/mypage/articles/{$this->article->id}";
         $this->actingAs($this->user);
 
         $thumbnail = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);

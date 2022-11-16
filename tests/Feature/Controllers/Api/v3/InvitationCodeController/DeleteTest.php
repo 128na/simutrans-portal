@@ -15,7 +15,7 @@ class DeleteTest extends TestCase
 
         $this->actingAs($this->user);
 
-        $response = $this->deleteJson(route('api.v3.invitationCode.index'));
+        $response = $this->deleteJson('/api/mypage/invitation_code');
         $response->assertOk();
         $this->assertDatabaseHas('users', ['id' => $this->user->id, 'invitation_code' => null]);
         $this->assertNull($response->json('data.invitation_url'));

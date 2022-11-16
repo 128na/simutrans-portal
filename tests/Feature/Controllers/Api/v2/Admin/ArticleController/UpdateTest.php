@@ -21,7 +21,7 @@ class UpdateTest extends TestCase
     public function test()
     {
         $this->actingAs($this->admin);
-        $url = route('api.v2.admin.articles.update', $this->article->id);
+        $url = "/api/admin/articles/{$this->article->id}";
         $res = $this->putJson($url, ['article' => ['status' => 'draft']]);
         $res->assertOk();
 
@@ -33,7 +33,7 @@ class UpdateTest extends TestCase
 
     public function test未ログイン()
     {
-        $url = route('api.v2.admin.articles.update', $this->article->id);
+        $url = "/api/admin/articles/{$this->article->id}";
         $res = $this->putJson($url);
         $res->assertUnauthorized();
     }
@@ -41,7 +41,7 @@ class UpdateTest extends TestCase
     public function test管理者以外()
     {
         $this->actingAs($this->user);
-        $url = route('api.v2.admin.articles.update', $this->article->id);
+        $url = "/api/admin/articles/{$this->article->id}";
         $res = $this->putJson($url);
         $res->assertUnauthorized();
     }

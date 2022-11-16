@@ -73,7 +73,7 @@ class UserControllerTest extends ArticleTestCase
             ],
         ], Closure::bind($data, $this)());
 
-        $url = route('api.v2.users.update');
+        $url = '/api/mypage/users';
 
         $this->actingAs($this->user);
 
@@ -169,7 +169,7 @@ class UserControllerTest extends ArticleTestCase
         ];
         $this->actingAs($user);
 
-        $url = route('api.v2.users.update');
+        $url = '/api/mypage/users';
         $res = $this->postJson($url, ['user' => $data]);
         $res->assertJson(['data' => [
             'id' => $user->id,

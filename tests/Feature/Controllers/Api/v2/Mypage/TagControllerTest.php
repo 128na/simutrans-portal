@@ -22,7 +22,7 @@ class TagControllerTest extends TestCase
 
     public function testIndex()
     {
-        $url = route('api.v2.tags.search');
+        $url = '/api/mypage/tags';
 
         $res = $this->getJson($url);
         $res->assertUnauthorized();
@@ -36,22 +36,22 @@ class TagControllerTest extends TestCase
             ['id' => $this->tag2->id, 'name' => $this->tag2->name, 'description' => $this->tag2->description],
         ]]);
 
-        $url = route('api.v2.tags.search', ['name' => 'sh']);
+        $url = '/api/mypage/tags?name=sh';
         $res = $this->getJson($url);
         $res->assertOK();
         $res->assertExactJson(['data' => [['id' => $this->tag2->id, 'name' => $this->tag2->name, 'description' => $this->tag2->description]]]);
 
-        $url = route('api.v2.tags.search', ['name' => 'or']);
+        $url = '/api/mypage/tags?name=or';
         $res = $this->getJson($url);
         $res->assertOK();
         $res->assertExactJson(['data' => [['id' => $this->tag2->id, 'name' => $this->tag2->name, 'description' => $this->tag2->description]]]);
 
-        $url = route('api.v2.tags.search', ['name' => 'rt']);
+        $url = '/api/mypage/tags?name=rt';
         $res = $this->getJson($url);
         $res->assertOK();
         $res->assertExactJson(['data' => [['id' => $this->tag2->id, 'name' => $this->tag2->name, 'description' => $this->tag2->description]]]);
 
-        $url = route('api.v2.tags.search', ['name' => 'desc2']);
+        $url = '/api/mypage/tags?name=desc2';
         $res = $this->getJson($url);
         $res->assertOK();
         $res->assertExactJson(['data' => [['id' => $this->tag2->id, 'name' => $this->tag2->name, 'description' => $this->tag2->description]]]);

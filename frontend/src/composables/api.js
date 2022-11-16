@@ -80,30 +80,30 @@ export const useMypageApi = () => ({
 
   // user profile
   fetchUser() {
-    return axios.get('/api/v2/mypage/user');
+    return axios.get('/api/mypage/user');
   },
   updateUser(user) {
-    return axios.post('/api/v2/mypage/user', { user });
+    return axios.post('/api/mypage/user', { user });
   },
 
   // article
   fetchArticles() {
-    return axios.get('/api/v2/mypage/articles');
+    return axios.get('/api/mypage/articles');
   },
   createArticle(params) {
-    return axios.post('/api/v2/mypage/articles', params);
+    return axios.post('/api/mypage/articles', params);
   },
   updateArticle(params) {
-    return axios.post(`/api/v2/mypage/articles/${params.article.id}`, params);
+    return axios.post(`/api/mypage/articles/${params.article.id}`, params);
   },
   // article options
   fetchOptions() {
-    return axios.get('/api/v2/mypage/options');
+    return axios.get('/api/mypage/options');
   },
 
   // tag
   fetchTags(name) {
-    return axios.get(`/api/v2/mypage/tags?name=${name}`);
+    return axios.get(`/api/mypage/tags?name=${name}`);
   },
   storeTag(name) {
     return axios.post('/api/v2/mypage/tags', { name });
@@ -114,15 +114,15 @@ export const useMypageApi = () => ({
 
   // attachments
   fetchAttachments() {
-    return axios.get('/api/v2/mypage/attachments');
+    return axios.get('/api/mypage/attachments');
   },
   storeAttachment(form) {
-    return axios.post('/api/v2/mypage/attachments', form, {
+    return axios.post('/api/mypage/attachments', form, {
       headers: { 'content-type': 'multipart/form-data' },
     });
   },
   deleteAttachment(attachmentId) {
-    return axios.delete(`/api/v2/mypage/attachments/${attachmentId}`);
+    return axios.delete(`/api/mypage/attachments/${attachmentId}`);
   },
   // analytics
   fetchAnalytics(params) {

@@ -8,7 +8,7 @@ class IndexTest extends ArticleTestCase
 {
     public function testIndex()
     {
-        $url = route('api.v2.articles.index');
+        $url = '/api/mypage/articles';
 
         $response = $this->getJson($url);
         $response->assertUnauthorized();
@@ -34,7 +34,7 @@ class IndexTest extends ArticleTestCase
 
     public function testOptions()
     {
-        $url = route('api.v2.articles.options');
+        $url = '/api/mypage/options';
 
         $response = $this->getJson($url);
         $response->assertUnauthorized();

@@ -19,23 +19,30 @@ use App\Http\Controllers\Api\v3\InvitationCodeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Middleware\VerifyCsrfToken;
 
-// auth
-// メール確認
+// 認証
 Route::POST('/email/resend', [VerificationController::class, 'resendApi']);
 Route::GET('/email/verify/{id}/{hash}', [VerificationController::class, 'verifyApi']);
 Route::POST('/email/reset', [ResetPasswordController::class, 'reset']);
 Route::POST('/logout', [LoginController::class, 'logout']);
 Route::POST('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 
+// フロント
+// マイページ
+Route::prefix('mypage')->group(function () {
+    // 認証必須
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::get('user', [UserController::class, 'index']);
+        Route::get('tags', [TagController::class, 'search']);
+        Route::get('attachments', [AttachmentController::class, 'index']);
+        Route::get('articles', [EditorController::class, 'index']);
+        Route::get('options', [EditorController::class, 'options']);
+    });
+});
+// Admin
+
 Route::prefix('v2')->name('api.v2.')->group(function () {
     // マイページ機能
     Route::prefix('mypage')->middleware(['auth:sanctum'])->group(function () {
-        Route::get('user', [UserController::class, 'index'])->name('users.index');
-        Route::get('tags', [TagController::class, 'search'])->name('tags.search');
-        Route::get('attachments', [AttachmentController::class, 'index'])->name('attachments.index');
-        Route::get('articles', [EditorController::class, 'index'])->name('articles.index');
-        Route::get('options', [EditorController::class, 'options'])->name('articles.options');
-
         // メール必須機能
         Route::middleware(['verified'])->group(function () {
             Route::post('user', [UserController::class, 'update'])->name('users.update');

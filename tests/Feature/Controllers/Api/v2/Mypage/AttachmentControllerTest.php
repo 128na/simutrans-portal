@@ -14,7 +14,7 @@ class AttachmentControllerTest extends ArticleTestCase
 {
     public function testIndex()
     {
-        $url = route('api.v2.attachments.index');
+        $url = '/api/mypage/attachments';
 
         $res = $this->getJson($url);
         $res->assertUnauthorized();
@@ -29,7 +29,7 @@ class AttachmentControllerTest extends ArticleTestCase
     {
         $file = $this->createFromFile(UploadedFile::fake()->image('test.png', 1), $this->user->id);
 
-        $url = route('api.v2.attachments.index');
+        $url = '/api/mypage/attachments';
         $this->actingAs($this->user);
 
         $res = $this->getJson($url);
@@ -40,7 +40,7 @@ class AttachmentControllerTest extends ArticleTestCase
     {
         $file = $this->createFromFile(UploadedFile::fake()->create('test.zip', 1, 'application/zip'), $this->user->id);
 
-        $url = route('api.v2.attachments.index');
+        $url = '/api/mypage/attachments';
         $this->actingAs($this->user);
 
         $res = $this->getJson($url);

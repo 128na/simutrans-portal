@@ -12,7 +12,7 @@ const { assertLoginPage, assertRequiresVerifyPage, assertProfilePage } = require
 describe('プロフィール編集画面', () => {
   describe('未ログイン', () => {
     beforeEach(() => {
-      cy.intercept('/api/v2/mypage/user', mockGuestResponse).as('mypage.user');
+      cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
       cy.intercept('/sanctum/csrf-cookie', { statusCode: 200 }).as('csrf');
       cy.visit('/mypage/profile');
       cy.wait('@mypage.user');
@@ -23,8 +23,8 @@ describe('プロフィール編集画面', () => {
   });
   describe('ログイン済み', () => {
     beforeEach(() => {
-      cy.intercept('/api/v2/mypage/user', mockUserResponse).as('mypage.user');
-      cy.intercept('/api/v2/mypage/attachments', mockAttachmentsResponse).as('mypage.attachments');
+      cy.intercept('/api/mypage/user', mockUserResponse).as('mypage.user');
+      cy.intercept('/api/mypage/attachments', mockAttachmentsResponse).as('mypage.attachments');
       cy.visit('/mypage/profile');
       cy.wait('@mypage.user');
       cy.wait('@mypage.attachments');
@@ -36,7 +36,7 @@ describe('プロフィール編集画面', () => {
 
   describe('プロフィール編集 ログイン済み 未認証', () => {
     beforeEach(() => {
-      cy.intercept('/api/v2/mypage/user', mockUnverifiedUserResponse).as('mypage.user');
+      cy.intercept('/api/mypage/user', mockUnverifiedUserResponse).as('mypage.user');
       cy.visit('/mypage/profile');
       cy.wait('@mypage.user');
     });

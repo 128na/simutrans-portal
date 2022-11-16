@@ -35,11 +35,11 @@ class VerifiedTest extends ArticleTestCase
 
     public function dataVerify()
     {
-        yield 'マイページトップ' => ['getJson', fn () => route('api.v2.users.index'), false];
-        yield 'タグ検索（投稿ページ）' => ['getJson', fn () => route('api.v2.tags.search'), false];
-        yield '添付ファイル一覧' => ['getJson', fn () => route('api.v2.attachments.index'), false];
-        yield '投稿記事一覧' => ['getJson', fn () => route('api.v2.articles.index'), false];
-        yield '投稿ページオプション' => ['getJson', fn () => route('api.v2.articles.options'), false];
+        yield 'マイページトップ' => ['getJson', fn () => '/api/mypage/user', false];
+        yield 'タグ検索（投稿ページ）' => ['getJson', fn () => '/api/mypage/tags', false];
+        yield '添付ファイル一覧' => ['getJson', fn () => '/api/mypage/attachments', false];
+        yield '投稿記事一覧' => ['getJson', fn () => '/api/mypage/articles', false];
+        yield '投稿ページオプション' => ['getJson', fn () => '/api/mypage/options', false];
 
         yield 'プロフィール更新' => ['postJson', fn () => route('api.v2.users.update'), true];
         yield 'タグ作成' => ['postJson', fn () => route('api.v2.tags.store'), true];

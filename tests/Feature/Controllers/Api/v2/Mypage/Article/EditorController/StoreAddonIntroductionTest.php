@@ -58,7 +58,7 @@ class StoreAddonIntroductionTest extends ArticleTestCase
         $res = $this->postJson($url, ['article' => $data]);
         if (is_null($error_field)) {
             $res->assertStatus(200);
-            $get_response = json_decode($this->getJson(route('api.v2.articles.index'))->content(), true);
+            $get_response = json_decode($this->getJson('/api/mypage/articles')->content(), true);
             $res->assertJson($get_response);
             Bus::assertDispatched(JobUpdateRelated::class);
         } else {

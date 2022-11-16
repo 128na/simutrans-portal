@@ -12,7 +12,7 @@ const { mockSidebarResponse, createMockArticleData } = require('../../__mocks__/
 // This test will pass when run against a clean Quasar project
 describe('Search', () => {
   beforeEach(() => {
-    cy.intercept('/api/v2/mypage/user', mockGuestResponse).as('mypage.user');
+    cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
     cy.intercept('/api/v3/front/sidebar', mockSidebarResponse).as('front.sidebar');
     cy.intercept('/api/v3/front/search?*', {
       statusCode: 200,

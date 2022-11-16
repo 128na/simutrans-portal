@@ -15,7 +15,7 @@ const {
 describe('マイページトップ', () => {
   describe('未ログイン', () => {
     beforeEach(() => {
-      cy.intercept('/api/v2/mypage/user', mockGuestResponse).as('mypage.user');
+      cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
       cy.intercept('/sanctum/csrf-cookie', { statusCode: 200 }).as('csrf');
       cy.visit('/mypage');
       cy.wait('@mypage.user');
@@ -26,8 +26,8 @@ describe('マイページトップ', () => {
   });
   describe('ログイン済み', () => {
     beforeEach(() => {
-      cy.intercept('/api/v2/mypage/user', mockUserResponse).as('mypage.user');
-      cy.intercept('/api/v2/mypage/articles', mockArticlesResponse).as('mypage.articles');
+      cy.intercept('/api/mypage/user', mockUserResponse).as('mypage.user');
+      cy.intercept('/api/mypage/articles', mockArticlesResponse).as('mypage.articles');
       cy.visit('/mypage');
       cy.wait('@mypage.user');
       cy.wait('@mypage.articles');
@@ -40,7 +40,7 @@ describe('マイページトップ', () => {
 
   describe('ログイン済み 未認証', () => {
     beforeEach(() => {
-      cy.intercept('/api/v2/mypage/user', mockUnverifiedUserResponse).as('mypage.user');
+      cy.intercept('/api/mypage/user', mockUnverifiedUserResponse).as('mypage.user');
       cy.visit('/mypage');
       cy.wait('@mypage.user');
     });

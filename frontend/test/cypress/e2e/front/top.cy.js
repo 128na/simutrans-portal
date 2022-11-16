@@ -13,7 +13,7 @@ const { mockSidebarResponse, createMockArticleData } = require('../../__mocks__/
 describe('フロントトップ', () => {
   describe('モード切替', () => {
     beforeEach(() => {
-      cy.intercept('/api/v2/mypage/user', mockGuestResponse).as('mypage.user');
+      cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
       cy.intercept('/api/v3/front/sidebar', mockSidebarResponse).as('front.sidebar');
       cy.intercept('/api/v3/front/category/pak/*?simple', {
         statusCode: 200,
@@ -78,7 +78,7 @@ describe('フロントトップ', () => {
         }
         return true;
       });
-      cy.intercept('/api/v2/mypage/user', mockGuestResponse).as('mypage.user');
+      cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
       cy.intercept('/api/v3/front/sidebar', mockSidebarResponse).as('front.sidebar');
       cy.intercept('/api/v3/front/category/pak/*?simple', {
         statusCode: 200,

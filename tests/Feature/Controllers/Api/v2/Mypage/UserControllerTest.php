@@ -25,7 +25,7 @@ class UserControllerTest extends ArticleTestCase
 
     public function testIndex()
     {
-        $url = route('api.v2.users.index');
+        $url = '/api/mypage/user';
 
         $res = $this->getJson($url);
         $res->assertUnauthorized();

@@ -1,6 +1,7 @@
 <template>
   <label-required>アドオンファイル</label-required>
-  <q-input :model-value="filename" readonly>
+  <q-input :model-value="filename" readonly bottom-slots :error-message="editor.vali('article.contents.file')"
+    :error="!!editor.vali('article.contents.file')">
     <template v-slot:append>
       <q-icon name="close" class="cursor-pointer q-mr-sm" @click="editor.article.contents.file = null" />
       <file-manager v-model="editor.article.contents.file" attachmentableType="Article"

@@ -2,10 +2,12 @@
   <q-page class="q-pa-md fit row wrap justify-center">
     <q-form class="col-md-6 col q-gutter-sm" @submit=handle>
       <text-title>ユーザー登録</text-title>
-      <api-error-message :message="handler.validationErrorMessage.value" />
-      <q-input v-model="authState.name" label="name" />
-      <q-input v-model="authState.email" type="email" label="email" autocomplete="email" />
-      <input-password v-model="authState.password" label="password" autocomplete="new-password" />
+      <q-input v-model="authState.name" label="name" bottom-slots :error-message="editor.vali('name')"
+        :error="!!editor.vali('name')" />
+      <q-input v-model="authState.email" type="email" label="email" autocomplete="email" bottom-slots
+        :error-message="editor.vali('email')" :error="!!editor.vali('email')" />
+      <input-password v-model="authState.password" label="password" autocomplete="new-password" bottom-slots
+        :error-message="editor.vali('password')" :error="!!editor.vali('password')" />
       <div>
         <q-btn label="登録" color="primary" type="submit" />
       </div>
@@ -18,14 +20,13 @@ import { useMypageApi } from 'src/composables/api';
 import { useAuthStore } from 'src/store/auth';
 import { defineComponent, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import InputPassword from 'src/components/Common/Input/InputPassword.vue';
 import { useApiHandler } from 'src/composables/apiHandler';
 import { useMeta } from 'src/composables/meta';
 
 export default defineComponent({
   name: 'PageInvite',
-  components: { TextTitle, ApiErrorMessage, InputPassword },
+  components: { TextTitle, InputPassword },
   setup() {
     const store = useAuthStore();
     store.validateAuth();

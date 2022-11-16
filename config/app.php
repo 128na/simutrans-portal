@@ -16,8 +16,6 @@ return [
 
     'version' => env('APP_VERSION', '0.0'),
 
-    'enable_invite' => env('ENABLE_INVITE', false),
-
     /*
     |--------------------------------------------------------------------------
     | Application Name

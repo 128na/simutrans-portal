@@ -183,6 +183,7 @@ return [
         'email' => 'メールアドレス',
         'name' => '名前',
         'password' => 'パスワード',
+        'description' => '説明',
 
         // profile
         'user.email' => 'メールアドレス',

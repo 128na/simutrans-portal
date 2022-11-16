@@ -28,7 +28,9 @@ class TagRepository extends BaseRepository
 
     public function searchTags(string $name, int $limit = self::LIMIT)
     {
-        return $this->model->select('id', 'name')->where('name', 'like', "%{$name}%")
+        return $this->model->select('id', 'name', 'description')
+            ->where('name', 'like', "%{$name}%")
+            ->orWhere('description', 'like', "%{$name}%")
             ->orderByRaw('LENGTH(name) asc')
             ->limit($limit)
             ->get();
@@ -36,7 +38,7 @@ class TagRepository extends BaseRepository
 
     public function getTags(int $limit = self::LIMIT)
     {
-        return $this->model->select('id', 'name')->limit($limit)
+        return $this->model->select('id', 'name', 'description')->limit($limit)
             ->get();
     }
 

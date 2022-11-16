@@ -2,7 +2,8 @@
 
 namespace Tests\Feature\Controllers\InviteController;
 
-use Illuminate\Support\Facades\Config;
+use App\Constants\ControllOptionKeys;
+use App\Models\ControllOption;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -12,7 +13,6 @@ class IndexTest extends TestCase
     {
         parent::setUp();
         $this->user->update(['invitation_code' => Str::uuid()]);
-        Config::set('app.enable_invite', true);
     }
 
     public function test()
@@ -23,9 +23,9 @@ class IndexTest extends TestCase
 
     public function test機能無効()
     {
-        Config::set('app.enable_invite', false);
+        ControllOption::create(['key' => ControllOptionKeys::INVITATION_CODE, 'value' => false]);
         $response = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
-        $response->assertStatus(400);
+        $response->assertForbidden();
     }
 
     public function test無効なユーザー()

@@ -1,6 +1,7 @@
 <template>
   <label-optional>サムネイル画像</label-optional>
-  <q-input :model-value="filename" readonly>
+  <q-input :model-value="filename" readonly bottom-slots :error-message="editor.vali('article.contents.thumbnail')"
+    :error="!!editor.vali('article.contents.thumbnail')">
     <template v-slot:append>
       <q-icon name="close" class="cursor-pointer q-mr-sm" @click="editor.article.contents.thumbnail = null" />
       <file-manager v-model="editor.article.contents.thumbnail" onlyImage attachmentableType="Article"

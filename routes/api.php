@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\v2\Admin\ArticleController;
+use App\Http\Controllers\Api\v2\Admin\ControllOptionController;
+use App\Http\Controllers\Api\v2\Admin\TagController as AdminTagController;
 use App\Http\Controllers\Api\v2\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\v2\Mypage\Article\AnalyticsController;
 use App\Http\Controllers\Api\v2\Mypage\Article\EditorController;
@@ -51,13 +53,14 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
         // メール必須機能
         Route::middleware(['verified'])->group(function () {
             Route::post('user', [UserController::class, 'update'])->name('users.update');
-            Route::post('tags', [TagController::class, 'store'])->name('tags.store');
+            Route::post('tags', [TagController::class, 'store'])->middleware('restrict:update_tag')->name('tags.store');
+            Route::post('tags/{tag}', [TagController::class, 'update'])->middleware('restrict:update_tag')->name('tags.update');
             Route::post('attachments', [AttachmentController::class, 'store'])->name('attachments.store');
             Route::delete('attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
-            Route::post('articles', [EditorController::class, 'store'])->name('articles.store');
+            Route::post('articles', [EditorController::class, 'store'])->middleware('restrict:update_article')->name('articles.store');
             Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
 
-            Route::middleware('can:update,article')->group(function () {
+            Route::middleware(['can:update,article', 'restrict:update_article'])->group(function () {
                 Route::post('articles/{article}', [EditorController::class, 'update'])->name('articles.update');
             });
         });
@@ -73,6 +76,9 @@ Route::prefix('v2')->name('api.v2.')->group(function () {
         Route::get('/articles', [ArticleController::class, 'index'])->name('admin.articles.index');
         Route::put('/articles/{article}', [ArticleController::class, 'update'])->name('admin.articles.update');
         Route::delete('/articles/{article}', [ArticleController::class, 'destroy'])->name('admin.articles.destroy');
+        Route::post('/tags/{tag}/toggleEditable', [AdminTagController::class, 'toggleEditable'])->name('tags.toggleEditable');
+        Route::get('/controll_options', [ControllOptionController::class, 'index'])->name('controllOptions.index');
+        Route::post('/controll_options/{controllOption}/toggle', [ControllOptionController::class, 'toggle'])->name('controllOptions.toggle');
     });
 });
 
@@ -91,7 +97,7 @@ Route::prefix('v3')->name('api.v3.')->group(function () {
         Route::post('/invitation_code', [InvitationCodeController::class, 'update'])->name('invitationCode.update');
         Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy'])->name('invitationCode.destroy');
     });
-    Route::post('/mypage/invite/{invitation_code}', [InvitationCodeController::class, 'register'])->name('invitationCode.register');
+    Route::post('/mypage/invite/{invitation_code}', [InvitationCodeController::class, 'register'])->middleware('restrict:invitation_code')->name('invitationCode.register');
 
     Route::prefix('front')->group(function () {
         // キャッシュ有効

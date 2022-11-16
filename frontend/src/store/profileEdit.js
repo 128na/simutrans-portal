@@ -68,6 +68,7 @@ export const useProfileEditStore = defineStore('profileEdit', () => {
   });
 
   const ready = computed(() => !!user.value);
+  const vali = (key) => handler.getValidationErrorByKey(key);
 
   return {
     user,
@@ -75,5 +76,6 @@ export const useProfileEditStore = defineStore('profileEdit', () => {
     setUser,
     updateUser,
     handler,
+    vali,
   };
 });

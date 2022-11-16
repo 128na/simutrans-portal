@@ -19,14 +19,6 @@ class UpdateAddonIntroductionTest extends ArticleTestCase
         $this->article2 = $this->createAddonIntroduction($this->user2);
     }
 
-    public function testログイン()
-    {
-        $url = route('api.v2.articles.store');
-
-        $res = $this->postJson($url);
-        $res->assertUnauthorized();
-    }
-
     /**
      * @dataProvider dataArticleValidation
      * @dataProvider dataAddonValidation

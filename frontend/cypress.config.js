@@ -19,4 +19,5 @@ module.exports = defineConfig({
     indexHtmlFile: 'test/cypress/support/component-index.html',
     devServer: injectQuasarDevServerConfig(),
   },
+  experimentalWebKitSupport: true,
 });

@@ -34,7 +34,7 @@ class FrontController extends Controller
     public function show(Article $article)
     {
         abort_unless($article->is_publish, 404);
-        $meta = $this->metaOgpService->forShow($article);
+        $meta = $this->metaOgpService->show($article);
 
         return view('front.spa', ['meta' => $meta]);
     }
@@ -66,7 +66,9 @@ class FrontController extends Controller
     {
         $this->articleService->validateCategoryByTypeAndSlug($type, $slug);
 
-        return view('front.spa');
+        $meta = $this->metaOgpService->category($type, $slug);
+
+        return view('front.spa', ['meta' => $meta]);
     }
 
     /**
@@ -75,8 +77,9 @@ class FrontController extends Controller
     public function categoryPakAddon(string $pakSlug, string $addonSlug)
     {
         $this->articleService->validateCategoryByPakAndAddon($pakSlug, $addonSlug);
+        $meta = $this->metaOgpService->categoryPakAddon($pakSlug, $addonSlug);
 
-        return view('front.spa');
+        return view('front.spa', ['meta' => $meta]);
     }
 
     /**
@@ -85,8 +88,9 @@ class FrontController extends Controller
     public function categoryPakNoneAddon(string $pakSlug)
     {
         $this->articleService->validateCategoryByTypeAndSlug('pak', $pakSlug);
+        $meta = $this->metaOgpService->categoryPakNoneAddon($pakSlug);
 
-        return view('front.spa');
+        return view('front.spa', ['meta' => $meta]);
     }
 
     /**
@@ -94,7 +98,9 @@ class FrontController extends Controller
      */
     public function tag(Tag $tag)
     {
-        return view('front.spa');
+        $meta = $this->metaOgpService->tag($tag);
+
+        return view('front.spa', ['meta' => $meta]);
     }
 
     /**
@@ -102,7 +108,9 @@ class FrontController extends Controller
      */
     public function user(User $user)
     {
-        return view('front.spa');
+        $meta = $this->metaOgpService->user($user);
+
+        return view('front.spa', ['meta' => $meta]);
     }
 
     /**

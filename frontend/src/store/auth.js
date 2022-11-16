@@ -92,6 +92,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
     return true;
   };
+  const isOwnedArticle = (article) => Number(article.user.id) === user.value?.id;
 
   return {
     isInitialized,
@@ -106,5 +107,6 @@ export const useAuthStore = defineStore('auth', () => {
     validateAuth,
     setUser,
     handler,
+    isOwnedArticle,
   };
 });

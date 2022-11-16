@@ -30,8 +30,8 @@ Route::get('/verification/notice', [MypageController::class, 'index'])->name('ve
 // PWリセット
 Route::GET('mypage/reset/{token}', [MypageController::class, 'index'])->name('password.reset');
 // 招待
-Route::GET('/mypage/invite/{invitation_code}', [InviteController::class, 'index'])->name('invite.index');
-Route::POST('login', [LoginController::class, 'login'])->name('login');
+Route::GET('/mypage/invite/{invitation_code}', [InviteController::class, 'index'])->middleware('restrict:invitation_code')->name('invite.index');
+Route::POST('login', [LoginController::class, 'login'])->middleware('restrict:login')->name('login');
 
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware(['cache.headers:public;max_age=2628000;etag'])->group(function () {

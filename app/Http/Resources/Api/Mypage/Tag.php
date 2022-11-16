@@ -11,7 +11,7 @@ class Tag extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'url' => route('tag', $this->id),
+            'description' => $this->description,
         ];
     }
 }

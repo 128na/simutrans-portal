@@ -1,18 +1,22 @@
 <template>
-  <q-input label v-model="editor.article.contents.author">
+  <q-input label-slot v-model="editor.article.contents.author" bottom-slots
+    :error-message="editor.vali('article.contents.author')" :error="!!editor.vali('article.contents.author')">
     <template v-slot:label>
       <label-optional>作者</label-optional>
     </template>
   </q-input>
   <form-addon-file />
-  <input-countable label v-model="editor.article.contents.description" :maxLength="2048">
+  <input-countable label-slot v-model="editor.article.contents.description" :maxLength="2048" bottom-slots
+    :error-message="editor.vali('article.contents.description')" :error="!!editor.vali('article.contents.description')">
     <label-required>説明</label-required>
   </input-countable>
   <q-btn flat :disabled="!file" @click="handleCopyFromZip">Zipファイル内のreadmeからコピー</q-btn>
-  <input-countable label v-model="editor.article.contents.thanks" :maxLength="2048">
+  <input-countable label-slot v-model="editor.article.contents.thanks" :maxLength="2048" bottom-slots
+    :error-message="editor.vali('article.contents.thanks')" :error="!!editor.vali('article.contents.thanks')">
     <label-optional>謝辞・参考にしたアドオン</label-optional>
   </input-countable>
-  <input-countable label v-model="editor.article.contents.license" :maxLength="2048">
+  <input-countable label-slot v-model="editor.article.contents.license" :maxLength="2048" bottom-slots
+    :error-message="editor.vali('article.contents.license')" :error="!!editor.vali('article.contents.license')">
     <label-optional>ライセンスその他</label-optional>
   </input-countable>
   <form-addon-categories />

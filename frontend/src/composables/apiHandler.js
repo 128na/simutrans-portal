@@ -15,6 +15,8 @@ export const useApiHandler = () => {
   const auth = useAuthStore();
 
   const validationErrorMessage = computed(() => Object.values(validationErrors.value).map((m) => m.join('、')).join('\n'));
+  const getValidationErrorByKey = (key) => validationErrors.value?.[key]?.join('、');
+  const hasValidationErrorByKey = (key) => !!validationErrors.value?.[key];
 
   /**
    * エラーをハンドリングする
@@ -43,6 +45,10 @@ export const useApiHandler = () => {
         case 404:
         case 429:
           router.replace({ name: 'error', params: { status: error.response.status } });
+          throw error;
+        case 422:
+          validationErrors.value = error.response.data.errors;
+          notify.failed(validationErrorMessage.value);
           throw error;
         case 500:
         case 503:
@@ -104,6 +110,10 @@ export const useApiHandler = () => {
         case 404:
         case 429:
           router.replace({ name: 'error', params: { status: error.response.status } });
+          throw error;
+        case 422:
+          validationErrors.value = error.response.data.errors;
+          notify.failed(validationErrorMessage.value);
           throw error;
         case 500:
         case 503:
@@ -204,9 +214,16 @@ export const useApiHandler = () => {
     }
   };
 
+  const clearValidationErrors = () => {
+    validationErrors.value = {};
+  };
+
   return {
     validationErrors,
     validationErrorMessage,
+    getValidationErrorByKey,
+    hasValidationErrorByKey,
+    clearValidationErrors,
     loading,
     handle,
     handleWithLoading,

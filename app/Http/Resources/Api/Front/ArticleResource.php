@@ -11,6 +11,7 @@ class ArticleResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'title' => $this->title,
             'slug' => urldecode($this->slug),
             'status' => $this->status,
@@ -30,7 +31,7 @@ class ArticleResource extends JsonResource
                 'id' => $this->user->id,
                 'name' => $this->user->name,
             ],
-            'published_at' => $this->published_at ? $this->published_at->toISOString() : '未投稿',
+            'published_at' => $this->published_at?->toISOString() ?? '未投稿',
             'modified_at' => $this->modified_at->toISOString(),
             'file_info' => $this->when($this->hasFileInfo, fn () => $this->file->fileInfo->data),
             'attachments' => new AttachmentResource($this->attachments),

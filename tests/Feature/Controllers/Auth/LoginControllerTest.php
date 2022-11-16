@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Controllers\Auth;
 
+use App\Constants\ControllOptionKeys;
+use App\Models\ControllOption;
 use App\Models\User;
 use App\Notifications\Loggedin;
 use Illuminate\Support\Facades\Notification;
@@ -53,5 +55,20 @@ class LoginControllerTest extends TestCase
         $url = route('api.v2.logout');
         $this->postJson($url);
         $this->assertGuest();
+    }
+
+    public function testLogin機能制限()
+    {
+        ControllOption::create(['key' => ControllOptionKeys::LOGIN, 'value' => false]);
+        $this->actingAs($this->user);
+        $this->assertAuthenticated();
+
+        $url = route('login');
+        $data = [
+            'email' => $this->user->email,
+            'password' => 'password',
+        ];
+        $res = $this->postJson($url, $data);
+        $res->assertForbidden();
     }
 }

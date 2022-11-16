@@ -1,5 +1,6 @@
 <template>
-  <input-countable label v-model="editor.article.contents.markdown" rows="12" :maxLength="65535">
+  <input-countable label-slot v-model="editor.article.contents.markdown" rows="12" :maxLength="65535" bottom-slots
+    :error-message="editor.vali('article.contents.markdown')" :error="!!editor.vali('article.contents.markdown')">
     <label-required>内容</label-required>
   </input-countable>
   <form-page-categories />

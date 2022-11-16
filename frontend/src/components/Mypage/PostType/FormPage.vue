@@ -5,19 +5,25 @@
         <q-item-section>
           <q-item-label>
             <template v-if="section.type === 'text'">
-              <input-countable label v-model="section.text" :maxLength="2048">
+              <input-countable label-slot v-model="section.text" :maxLength="2048" bottom-slots
+                :error-message="editor.vali(`article.contents.sections.${index}.text`)"
+                :error="!!editor.vali(`article.contents.sections.${index}.text`)">
                 <label-required>内容</label-required>
               </input-countable>
             </template>
             <template v-else-if="section.type === 'caption'">
-              <q-input label v-model="section.caption">
+              <q-input label-slot v-model="section.caption" bottom-slots
+                :error-message="editor.vali(`article.contents.sections.${index}.caption`)"
+                :error="!!editor.vali(`article.contents.sections.${index}.caption`)">
                 <template v-slot:label>
                   <label-required>見出し</label-required>
                 </template>
               </q-input>
             </template>
             <template v-else-if="section.type === 'url'">
-              <q-input label v-model="section.url" type="url">
+              <q-input label-slot v-model="section.url" type="url" bottom-slots
+                :error-message="editor.vali(`article.contents.sections.${index}.url`)"
+                :error="!!editor.vali(`article.contents.sections.${index}.url`)">
                 <template v-slot:label>
                   <label-required>URL</label-required>
                 </template>
@@ -25,7 +31,9 @@
             </template>
             <template v-else-if="section.type === 'image'">
               <label-required>画像</label-required>
-              <q-input :model-value="getFilename(section.id)" readonly>
+              <q-input :model-value="getFilename(section.id)" readonly bottom-slots
+                :error-message="editor.vali(`article.contents.sections.${index}.id`)"
+                :error="!!editor.vali(`article.contents.sections.${index}.id`)">
                 <template v-slot:append>
                   <q-icon name="close" class="cursor-pointer q-mr-sm" @click="section.id = null" />
                   <file-manager v-model="section.id" onlyImage />

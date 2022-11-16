@@ -1,6 +1,7 @@
 <template>
   <div v-if="isReservation">
-    <q-input v-model="displayDateTime" label>
+    <q-input v-model="displayDateTime" label bottom-slots :error-message="editor.vali('article.published_at')"
+      :error="!!editor.vali('article.published_at')">
       <template v-slot:label>
         <label-required>予約投稿日時</label-required>
       </template>

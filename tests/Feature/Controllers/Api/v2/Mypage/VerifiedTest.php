@@ -41,7 +41,7 @@ class VerifiedTest extends ArticleTestCase
         yield '投稿記事一覧' => ['getJson', fn () => '/api/mypage/articles', false];
         yield '投稿ページオプション' => ['getJson', fn () => '/api/mypage/options', false];
 
-        yield 'プロフィール更新' => ['postJson', fn () => '/api/mypage/users', true];
+        yield 'プロフィール更新' => ['postJson', fn () => '/api/mypage/user', true];
         yield 'タグ作成' => ['postJson', fn () => '/api/mypage/tags', true];
         yield '添付ファイル作成' => ['postJson', fn () => '/api/mypage/attachments', true];
         yield '添付ファイル削除' => ['deleteJson', fn () => "/api/mypage/attachments/{$this->attachment->id}", true];

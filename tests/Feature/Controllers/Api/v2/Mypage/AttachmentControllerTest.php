@@ -92,7 +92,7 @@ class AttachmentControllerTest extends ArticleTestCase
 
         $other_user = User::factory()->create();
         $other_file = $this->createFromFile(UploadedFile::fake()->image('file.png', 1), $other_user->id);
-        $url = "/api/mypage/attachments/{$file->id}";
+        $url = "/api/mypage/attachments/{$other_file->id}";
         $res = $this->deleteJson($url);
         $res->assertStatus(403);
         $this->assertDatabaseHas('attachments', [

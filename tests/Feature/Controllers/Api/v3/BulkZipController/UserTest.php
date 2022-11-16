@@ -19,7 +19,7 @@ class UserTest extends TestCase
     public function test()
     {
         Bus::fake();
-        $url = '/api/mypage/bulkZip/user';
+        $url = '/api/mypage/bulk-zip';
 
         $this->actingAs($this->user);
         $response = $this->getJson($url);
@@ -34,7 +34,7 @@ class UserTest extends TestCase
             'bulk_zippable_id' => $this->user->id,
             'bulk_zippable_type' => User::class,
         ]);
-        $url = '/api/mypage/bulkZip/user';
+        $url = '/api/mypage/bulk-zip';
 
         $this->actingAs($this->user);
         $response = $this->getJson($url);
@@ -44,7 +44,7 @@ class UserTest extends TestCase
 
     public function test未ログイン()
     {
-        $url = '/api/mypage/bulkZip/user';
+        $url = '/api/mypage/bulk-zip';
 
         $response = $this->getJson($url);
         $response->assertUnauthorized();

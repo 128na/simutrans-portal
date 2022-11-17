@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controllers\Api\BulkZipController;
+namespace Tests\Feature\Controllers\Api\Mypage\BulkZipController;
 
 use App\Jobs\BulkZip\JobCreateBulkZip;
 use App\Models\BulkZip;

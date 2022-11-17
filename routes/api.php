@@ -1,21 +1,21 @@
 <?php
 
-use App\Http\Controllers\Api\Auth\ForgotPasswordController;
-use App\Http\Controllers\Api\Auth\ResetPasswordController;
-use App\Http\Controllers\Api\Auth\VerificationController;
-use App\Http\Controllers\Api\v2\Admin\ArticleController;
-use App\Http\Controllers\Api\v2\Admin\ControllOptionController;
-use App\Http\Controllers\Api\v2\Admin\TagController as AdminTagController;
-use App\Http\Controllers\Api\v2\Admin\UserController as AdminUserController;
-use App\Http\Controllers\Api\v2\Mypage\Article\AnalyticsController;
-use App\Http\Controllers\Api\v2\Mypage\Article\EditorController;
-use App\Http\Controllers\Api\v2\Mypage\AttachmentController;
-use App\Http\Controllers\Api\v2\Mypage\TagController;
-use App\Http\Controllers\Api\v2\Mypage\UserController;
-use App\Http\Controllers\Api\v3\BulkZipController;
-use App\Http\Controllers\Api\v3\ConversionController;
-use App\Http\Controllers\Api\v3\FrontController;
-use App\Http\Controllers\Api\v3\InvitationCodeController;
+use App\Http\Controllers\Api\Admin\ArticleController;
+use App\Http\Controllers\Api\Admin\ControllOptionController;
+use App\Http\Controllers\Api\Admin\TagController as AdminTagController;
+use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Api\Front\ConversionController;
+use App\Http\Controllers\Api\Front\FrontController;
+use App\Http\Controllers\Api\Mypage\AnalyticsController;
+use App\Http\Controllers\Api\Mypage\AttachmentController;
+use App\Http\Controllers\Api\Mypage\BulkZipController;
+use App\Http\Controllers\Api\Mypage\EditorController;
+use App\Http\Controllers\Api\Mypage\ForgotPasswordController;
+use App\Http\Controllers\Api\Mypage\InvitationCodeController;
+use App\Http\Controllers\Api\Mypage\ResetPasswordController;
+use App\Http\Controllers\Api\Mypage\TagController;
+use App\Http\Controllers\Api\Mypage\UserController;
+use App\Http\Controllers\Api\Mypage\VerificationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Middleware\VerifyCsrfToken;
 

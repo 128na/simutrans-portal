@@ -1,21 +1,10 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
- */
-
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OauthController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\InviteController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
 use Illuminate\Support\Facades\Route;
@@ -23,15 +12,17 @@ use Illuminate\Support\Facades\Route;
 Route::feeds();
 
 // 認証系ルート名保持用
-// メール確認
 Route::GET('mypage/verify/{id}/{hash}', [MypageController::class, 'index'])->name('verification.verify');
-// 未認証時
 Route::get('/verification/notice', [MypageController::class, 'index'])->name('verification.notice');
-// PWリセット
 Route::GET('mypage/reset/{token}', [MypageController::class, 'index'])->name('password.reset');
+Route::POST('login', [LoginController::class, 'login'])->middleware('restrict:login')->name('login');
+
+// フロント
+// マイページ
+// Admin
+
 // 招待
 Route::GET('/mypage/invite/{invitation_code}', [InviteController::class, 'index'])->middleware('restrict:invitation_code')->name('invite.index');
-Route::POST('login', [LoginController::class, 'login'])->middleware('restrict:login')->name('login');
 
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware(['cache.headers:public;max_age=2628000;etag'])->group(function () {

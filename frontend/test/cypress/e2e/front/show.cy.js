@@ -35,10 +35,10 @@ describe('フロント記事詳細', () => {
     describe(`post type: ${name}`, () => {
       const article = mock();
       beforeEach(() => {
-        cy.intercept('/api/v2/mypage/user', mockGuestResponse).as('mypage.user');
-        cy.intercept('/api/v3/front/sidebar', mockSidebarResponse).as('front.sidebar');
-        cy.intercept('post', `/api/v3/shown/${article.slug}`, { statusCode: 200 }).as('front.shown');
-        cy.intercept(`/api/v3/front/articles/${article.slug}`, { statusCode: 200, body: { data: article } }).as('front.article');
+        cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
+        cy.intercept('/api/front/sidebar', mockSidebarResponse).as('front.sidebar');
+        cy.intercept('post', `/api/shown/${article.slug}`, { statusCode: 200 }).as('front.shown');
+        cy.intercept(`/api/front/articles/${article.slug}`, { statusCode: 200, body: { data: article } }).as('front.article');
 
         cy.visit(`/articles/${article.slug}`);
         cy.wait('@mypage.user');

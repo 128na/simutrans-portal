@@ -11,18 +11,18 @@ const { mockSidebarResponse, createMockArticleData } = require('../../__mocks__/
 // This test will pass when run against a clean Quasar project
 describe('Sidebar', () => {
   beforeEach(() => {
-    cy.intercept('/api/v2/mypage/user', mockGuestResponse).as('mypage.user');
-    cy.intercept('/api/v3/front/sidebar', mockSidebarResponse).as('front.sidebar');
-    cy.intercept('/api/v3/front/category/pak/*?simple', {
+    cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
+    cy.intercept('/api/front/sidebar', mockSidebarResponse).as('front.sidebar');
+    cy.intercept('/api/front/category/pak/*?simple', {
       statusCode: 200,
       body: {
         title: 'dummy Pak Title',
         data: [createMockArticleData()],
       },
     }).as('front.categoryPak');
-    cy.intercept('/api/v3/front/ranking?simple', { statusCode: 200, body: { data: [] } }).as('front.ranking');
-    cy.intercept('/api/v3/front/pages?simple', { statusCode: 200, body: { data: [] } }).as('front.pages');
-    cy.intercept('/api/v3/front/announces?simple', { statusCode: 200, body: { data: [] } }).as('front.announces');
+    cy.intercept('/api/front/ranking?simple', { statusCode: 200, body: { data: [] } }).as('front.ranking');
+    cy.intercept('/api/front/pages?simple', { statusCode: 200, body: { data: [] } }).as('front.pages');
+    cy.intercept('/api/front/announces?simple', { statusCode: 200, body: { data: [] } }).as('front.announces');
     cy.visit('/');
     cy.wait('@mypage.user');
     cy.wait('@front.sidebar');

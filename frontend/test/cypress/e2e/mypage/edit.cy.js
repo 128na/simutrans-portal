@@ -16,7 +16,7 @@ const {
 describe('編集画面', () => {
   describe('未ログイン', () => {
     beforeEach(() => {
-      cy.intercept('/api/v2/mypage/user', mockGuestResponse).as('mypage.user');
+      cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
       cy.intercept('/sanctum/csrf-cookie', { statusCode: 200 }).as('csrf');
       cy.visit('/mypage/edit/1');
       cy.wait('@mypage.user');
@@ -27,11 +27,11 @@ describe('編集画面', () => {
   });
   describe('ログイン済み', () => {
     beforeEach(() => {
-      cy.intercept('/api/v2/mypage/user', mockUserResponse).as('mypage.user');
-      cy.intercept('/api/v2/mypage/articles', mockArticlesResponse).as('mypage.articles');
-      cy.intercept('/api/v2/mypage/options', mockOptionsResponse).as('mypage.options');
-      cy.intercept('/api/v2/mypage/attachments', mockAttachmentsResponse).as('mypage.attachments');
-      cy.intercept('/api/v2/mypage/tags?name=', mockTagsResponse).as('mypage.tags');
+      cy.intercept('/api/mypage/user', mockUserResponse).as('mypage.user');
+      cy.intercept('/api/mypage/articles', mockArticlesResponse).as('mypage.articles');
+      cy.intercept('/api/mypage/options', mockOptionsResponse).as('mypage.options');
+      cy.intercept('/api/mypage/attachments', mockAttachmentsResponse).as('mypage.attachments');
+      cy.intercept('/api/mypage/tags?name=', mockTagsResponse).as('mypage.tags');
       cy.visit('/mypage/edit/1');
       cy.wait('@mypage.user');
       cy.wait('@mypage.articles');
@@ -46,7 +46,7 @@ describe('編集画面', () => {
 
   describe('ログイン済み 未認証', () => {
     beforeEach(() => {
-      cy.intercept('/api/v2/mypage/user', mockUnverifiedUserResponse).as('mypage.user');
+      cy.intercept('/api/mypage/user', mockUnverifiedUserResponse).as('mypage.user');
       cy.visit('/mypage/edit/1');
       cy.wait('@mypage.user');
     });

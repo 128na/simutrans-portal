@@ -46,42 +46,42 @@ export default defineComponent({
   setup() {
     const contents = reactive([
       {
-        api: '/api/v3/front/category/pak/128-japan?simple',
+        api: '/api/front/category/pak/128-japan?simple',
         to: { name: 'category', params: { type: 'pak', slug: '128-japan' } },
         label: 'pak128Japanの新着',
         articles: null,
         handler: useApiHandler(),
       },
       {
-        api: '/api/v3/front/category/pak/128?simple',
+        api: '/api/front/category/pak/128?simple',
         to: { name: 'category', params: { type: 'pak', slug: '128' } },
         label: 'pak128の新着',
         articles: null,
         handler: useApiHandler(),
       },
       {
-        api: '/api/v3/front/category/pak/64?simple',
+        api: '/api/front/category/pak/64?simple',
         to: { name: 'category', params: { type: 'pak', slug: '64' } },
         label: 'pak64の新着',
         articles: null,
         handler: useApiHandler(),
       },
       {
-        api: '/api/v3/front/ranking?simple',
+        api: '/api/front/ranking?simple',
         to: { name: 'ranking' },
         label: 'アクセスランキング',
         articles: null,
         handler: useApiHandler(),
       },
       {
-        api: '/api/v3/front/pages?simple',
+        api: '/api/front/pages?simple',
         to: { name: 'pages' },
         label: '一般記事',
         articles: null,
         handler: useApiHandler(),
       },
       {
-        api: '/api/v3/front/announces?simple',
+        api: '/api/front/announces?simple',
         to: { name: 'announces' },
         label: 'お知らせ',
         articles: null,

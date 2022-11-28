@@ -64,7 +64,7 @@ export default defineComponent({
       }
       timer = setTimeout(async () => {
         try {
-          await handler.handleWithLoading({
+          await handler.handle({
             doRequest: () => fetchTags(word.value || ''),
             done: (res) => { tags.value = res.data.data; },
           });

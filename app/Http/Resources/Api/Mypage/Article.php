@@ -34,9 +34,9 @@ class Article extends JsonResource
                 'id' => $t->id,
                 'name' => $t->name,
             ]),
-            'created_at' => $this->created_at,
-            'published_at' => $this->published_at,
-            'modified_at' => $this->modified_at,
+            'created_at' => $this->created_at->toDateTimeString(),
+            'published_at' => $this->published_at?->toDateTimeString(),
+            'modified_at' => $this->modified_at?->toDateTimeString(),
             'url' => route('articles.show', $this->slug),
             'metrics' => [
                 'totalViewCount' => $this->totalViewCount->count ?? 0,

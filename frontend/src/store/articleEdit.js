@@ -194,7 +194,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   const canReservation = computed(() => {
     // 投稿済みは予約に戻せない
     const org = JSON.parse(original);
-    if (org.published_at) {
+    if (org.status !== 'reservation' && org.published_at) {
       return false;
     }
     return article.value?.published_at === null || article.value?.status === 'reservation';

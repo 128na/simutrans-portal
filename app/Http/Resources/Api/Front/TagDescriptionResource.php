@@ -14,11 +14,11 @@ class TagDescriptionResource extends JsonResource
             'description' => $this->description,
             'editable' => $this->editable,
             'createdBy' => $this->createdBy?->name,
-            'createdAt' => $this->created_at->format('Y/m/d H:i'),
+            'createdAt' => $this->created_at->toIso8601String(),
             'lastModifiedBy' => $this->lastModifiedBy?->name,
             'lastModifiedAt' => $this->last_modified_at
-                ? $this->last_modified_at->format('Y/m/d H:i')
-                : $this->updated_at->format('Y/m/d H:i'),
+                ? $this->last_modified_at->toIso8601String()
+                : $this->updated_at->toIso8601String(),
         ];
     }
 }

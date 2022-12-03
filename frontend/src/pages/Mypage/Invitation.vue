@@ -33,7 +33,7 @@
       <div v-if="invitation.hasInvites">
         <ul>
           <li v-for="invite in invitation.invites" :key="invite.id">
-            {{ invite.id }}. {{ invite.name }} ({{ invite.created_at }})
+            {{ invite.id }}. {{ invite.name }} ({{ toDateTimeString(invite.created_at) }})
           </li>
         </ul>
       </div>
@@ -52,6 +52,7 @@ import { defineComponent } from 'vue';
 import { useClipboard } from 'src/composables/clipboard';
 import { useNotify } from 'src/composables/notify';
 import { useMeta } from 'src/composables/meta';
+import { DateTime } from 'luxon';
 
 export default defineComponent({
   name: 'PageInvitation',
@@ -95,12 +96,15 @@ export default defineComponent({
       }
     };
 
+    const toDateTimeString = (date) => DateTime.fromISO(date).toLocaleString(DateTime.DATETIME_SHORT);
+
     return {
       auth,
       invitation,
       handleUpdate,
       handleDelete,
       handleCopy,
+      toDateTimeString,
     };
   },
 });

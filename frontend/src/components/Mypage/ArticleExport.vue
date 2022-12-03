@@ -12,7 +12,7 @@
         </loading-message>
       </template>
       <template v-else-if="!!bz.generated">
-        ファイルが作成されました。作成日時：{{ bz.generated.generated_at }}<br>
+        ファイルが作成されました。作成日時：{{ generatedAt }}<br>
         <q-btn color="primary" @click="handle">ダウンロード</q-btn>
       </template>
     </div>
@@ -23,11 +23,14 @@
 import { useBulkZipStore } from 'src/store/bulkZip';
 import LoadingMessage from 'src/components/Common/Text/LoadingMessage.vue';
 import { defineComponent, computed } from 'vue';
+import { DateTime } from 'luxon';
 
 export default defineComponent({
   name: 'ArticleExport',
   setup() {
     const bz = useBulkZipStore();
+
+    const generatedAt = computed(() => DateTime.fromISO(bz.generated.generated_at).toLocaleString(DateTime.DATETIME_SHORT));
 
     const idle = computed(() => bz.inProgress === false && bz.generated === null);
     const handle = () => {
@@ -37,6 +40,7 @@ export default defineComponent({
       bz,
       idle,
       handle,
+      generatedAt,
     };
   },
   components: { LoadingMessage },

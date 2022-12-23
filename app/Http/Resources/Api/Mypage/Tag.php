@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\Api\Mypage;
 
-use App\Models\Tag as ModelsTag;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Tag extends JsonResource

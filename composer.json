@@ -91,7 +91,7 @@
       "./vendor/bin/phpstan analyse --memory-limit=1G"
     ],
     "stan:base": [
-      "./vendor/bin/phpstan analyse --memory-limit=1G --generate-baseline"
+      "./vendor/bin/phpstan analyse --memory-limit=1G --generate-baseline --allow-empty-baseline"
     ]
   }
 }

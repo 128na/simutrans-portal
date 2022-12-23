@@ -29,7 +29,7 @@ class RankingRepository extends BaseRepository
                     'rank' => $rank,
                     'article_id' => $article->id,
                 ]);
-                ++$rank;
+                $rank++;
             }
         });
     }

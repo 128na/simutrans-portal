@@ -10,6 +10,7 @@ use Laravel\Dusk\Browser;
 class TagsPage extends Page
 {
     private Article $article;
+
     private Tag $tag;
 
     public function __construct()
@@ -31,7 +32,6 @@ class TagsPage extends Page
     {
         $browser
             ->waitForText($this->tag->name)
-            ->assertSee($this->tag->name)
-        ;
+            ->assertSee($this->tag->name);
     }
 }

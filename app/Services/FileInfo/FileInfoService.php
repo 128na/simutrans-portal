@@ -11,7 +11,7 @@ use App\Services\Service;
 class FileInfoService extends Service
 {
     /**
-     * @param Extractor[] $extractors
+     * @param  Extractor[]  $extractors
      */
     public function __construct(
         private AttachmentRepository $attachmentRepository,

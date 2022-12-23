@@ -85,7 +85,7 @@ class Category extends Model
 
     public function scopeForUser($query, User $user)
     {
-        if (!$user->isAdmin()) {
+        if (! $user->isAdmin()) {
             $query->where('need_admin', 0);
         }
     }

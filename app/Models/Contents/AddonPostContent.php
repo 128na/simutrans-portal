@@ -5,10 +5,15 @@ namespace App\Models\Contents;
 class AddonPostContent extends Content
 {
     public $thumbnail;
+
     public $description;
+
     public $file;
+
     public $author;
+
     public $license;
+
     public $thanks;
 
     public function __construct(array $contents)

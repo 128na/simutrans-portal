@@ -8,23 +8,23 @@
     | デフォルトのお知らせ記事データ
     |
     */
-return [
-    [
-        'title' => 'サイトについて',
-        'slug' => 'about',
-        'contents' => [
-            'sections' => [
-                ['type' => 'caption', 'caption' => 'コンセプト'],
-                ['type' => 'text', 'text' => 'このサイトはSimutransのアドオンを「プレイヤーが検索しやすく」、
+    return [
+        [
+            'title' => 'サイトについて',
+            'slug' => 'about',
+            'contents' => [
+                'sections' => [
+                    ['type' => 'caption', 'caption' => 'コンセプト'],
+                    ['type' => 'text', 'text' => 'このサイトはSimutransのアドオンを「プレイヤーが検索しやすく」、
 「アドオン作者が検索してもらいやすく」するために設立されました。
 
 ユーザー登録をすれば誰でもアドオンの投稿、紹介記事を掲載出来ます。
 使い勝手のご意見や改善案は@128Naまでお願いいたします。'],
-                ['type' => 'caption', 'caption' => 'サーバー情報'],
-                ['type' => 'text', 'text' => 'レンタルサーバー　515円/月
+                    ['type' => 'caption', 'caption' => 'サーバー情報'],
+                    ['type' => 'text', 'text' => 'レンタルサーバー　515円/月
 さくらのレンタルサーバスタンダード'],
-                ['type' => 'caption', 'caption' => '更新履歴'],
-                ['type' => 'text', 'text' => '2019/Jul/13 システムリニューアル、表示を高速化
+                    ['type' => 'caption', 'caption' => '更新履歴'],
+                    ['type' => 'text', 'text' => '2019/Jul/13 システムリニューアル、表示を高速化
 2017/Jan/21 SSL(https)対応
 2016/Jul/18 サイトデザインをSimplicity2をベースに作成、リニューアル
 2016/Jun/5 pak128向けにカテゴリ「描画位置」を追加
@@ -43,50 +43,50 @@ return [
 2016/Apr/06 掲載URL、DLリンクを１行に収まるように調整
 2016/Apr/05 SNS連携機能を追加（投稿時自動ツイート、記事のシェア）
 2016/Apr/03 ベータ公開'],
+                ],
             ],
         ],
-    ],
-    [
-        'title' => 'アドオン投稿・紹介記事掲載について',
-        'slug' => 'how-to',
-        'contents' => [
-            'sections' => [
-                ['type' => 'text', 'text' => 'アドオンの投稿、紹介記事を掲載するにはユーザー登録が必要です。'],
-                ['type' => 'caption', 'caption' => 'アドオンの投稿・紹介の流れ'],
-                ['type' => 'text', 'text' => '1.ユーザー登録を行い、ログインする
+        [
+            'title' => 'アドオン投稿・紹介記事掲載について',
+            'slug' => 'how-to',
+            'contents' => [
+                'sections' => [
+                    ['type' => 'text', 'text' => 'アドオンの投稿、紹介記事を掲載するにはユーザー登録が必要です。'],
+                    ['type' => 'caption', 'caption' => 'アドオンの投稿・紹介の流れ'],
+                    ['type' => 'text', 'text' => '1.ユーザー登録を行い、ログインする
 2.送られてきたメールからメールアドレスの認証を行う
 3.マイページ＞新規作成から記事を作成する
 
 ※記事を投稿・編集すると自動的に@SimutransPortalのアカウントでツイートが行われます。'],
+                ],
             ],
         ],
-    ],
-    [
-        'title' => 'システムをリニューアルしました☆',
-        'slug' => 'v2-renewal',
-        'contents' => [
-            'sections' => [
-                ['type' => 'text', 'text' => 'システムをWordPressからLaravelの作成したものに置き換えました。
+        [
+            'title' => 'システムをリニューアルしました☆',
+            'slug' => 'v2-renewal',
+            'contents' => [
+                'sections' => [
+                    ['type' => 'text', 'text' => 'システムをWordPressからLaravelの作成したものに置き換えました。
 
 今回は表示の高速化をメインに構築しました。
 機能は以前と大きく変わりませんが出来合いのシステムでは難しかった取得データの最適化、キャッシュを活用して表示速度を上げています。'],
-                ['type' => 'caption', 'caption' => '新機能'],
-                ['type' => 'text', 'text' => 'アドオン記事の閲覧数(PV)やダウンロード・DL先ページへの遷移数(CV)をGoogleAnalyticsのようにグラフ表示できる機能を実装しました。
+                    ['type' => 'caption', 'caption' => '新機能'],
+                    ['type' => 'text', 'text' => 'アドオン記事の閲覧数(PV)やダウンロード・DL先ページへの遷移数(CV)をGoogleAnalyticsのようにグラフ表示できる機能を実装しました。
 PV,CVカウント自体はWordPress時代から行っていたためそのデータを引き継いでいます。'],
-                ['type' => 'caption', 'caption' => '今後のアップデート予定'],
-                ['type' => 'text', 'text' => '表示言語を切り替えられるように
+                    ['type' => 'caption', 'caption' => '今後のアップデート予定'],
+                    ['type' => 'text', 'text' => '表示言語を切り替えられるように
 アドオン管理システムの構築'],
-                ['type' => 'caption', 'caption' => '開発'],
-                ['type' => 'text', 'text' => 'コードはgithubに上げてあります。
+                    ['type' => 'caption', 'caption' => '開発'],
+                    ['type' => 'text', 'text' => 'コードはgithubに上げてあります。
 https://github.com/128na/simutrans-portal'],
+                ],
             ],
         ],
-    ],
-    [
-        'title' => 'プライバシーポリシー',
-        'slug' => 'privacy',
-        'contents' => [
-            'markdown' => '# プライバシーポリシー
+        [
+            'title' => 'プライバシーポリシー',
+            'slug' => 'privacy',
+            'contents' => [
+                'markdown' => '# プライバシーポリシー
 本ウェブサイト上で提供するサービス（以下、「本サービス」といいます。）における、ユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシー（以下、「本ポリシー」といいます。）を定めます。
 
 #### 第1条（個人情報）
@@ -139,6 +139,6 @@ https://github.com/128na/simutrans-portal'],
 
 本ポリシーに関するお問い合わせは、下記の窓口までお願いいたします。
 https://twitter.com/128Na',
+            ],
         ],
-    ],
-];
+    ];

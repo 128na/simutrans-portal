@@ -19,6 +19,7 @@ class BulkZip extends Model
         'generated',
         'path',
     ];
+
     protected $hidden = [
         'path',
     ];

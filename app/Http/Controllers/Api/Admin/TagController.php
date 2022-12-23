@@ -18,7 +18,7 @@ class TagController extends Controller
     public function toggleEditable(ModelsTag $tag)
     {
         $this->tagRepository->update($tag, [
-            'editable' => !$tag->editable,
+            'editable' => ! $tag->editable,
         ]);
     }
 }

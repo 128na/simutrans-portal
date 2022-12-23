@@ -9,8 +9,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ViewCount extends Model
 {
     public const TYPE_DAILY = 1;
+
     public const TYPE_MONTHLY = 2;
+
     public const TYPE_YEARLY = 3;
+
     public const TYPE_TOTAL = 4;
 
     protected $fillable = [

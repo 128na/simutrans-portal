@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class UserAddonCountRepository extends BaseRepository
 {
     private const DELETE_SQL = 'DELETE FROM user_addon_counts';
+
     private const INSERT_SQL = "INSERT INTO user_addon_counts (user_id, user_name, count) (
         SELECT
             u.id user_id, u.name user_name, COUNT(a.id) count

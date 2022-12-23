@@ -9,9 +9,13 @@ use Tests\TestCase;
 class IndexTest extends TestCase
 {
     private User $admin;
+
     private Article $article1;
+
     private Article $article2;
+
     private Article $article3;
+
     private Article $article4;
 
     protected function setUp(): void

@@ -31,12 +31,15 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
         'email_verified_at',
         'password',
     ];
+
     protected $hidden = [
         'password', 'remember_token',
     ];
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
     const TITLE_NG_WORDS = ['#', '@', ':', '//'];
 
     /*

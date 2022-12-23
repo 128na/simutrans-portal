@@ -18,7 +18,7 @@ class ControllOptionController extends Controller
 
     public function toggle(ControllOption $controllOption)
     {
-        $controllOption->update(['value' => !$controllOption->value]);
+        $controllOption->update(['value' => ! $controllOption->value]);
 
         return $this->index();
     }

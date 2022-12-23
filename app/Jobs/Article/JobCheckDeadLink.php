@@ -44,8 +44,8 @@ class JobCheckDeadLink implements ShouldQueue
     {
         $link = $article->contents->link ?? null;
 
-        if ($link && !$this->inBlacklist($link)) {
-            return !$this->isStatusOK($link);
+        if ($link && ! $this->inBlacklist($link)) {
+            return ! $this->isStatusOK($link);
         }
 
         return false;
@@ -53,7 +53,7 @@ class JobCheckDeadLink implements ShouldQueue
 
     private function isStatusOK(string $url, int $retry = 3): bool
     {
-        for ($i = 0; $i < $retry; ++$i) {
+        for ($i = 0; $i < $retry; $i++) {
             $info = @get_headers($url) ?: [];
             foreach ($info as $i) {
                 if (stripos($i, '200 OK') !== false) {

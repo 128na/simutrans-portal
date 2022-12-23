@@ -5,9 +5,13 @@ namespace App\Models\User;
 class ProfileData
 {
     public $avatar;
+
     public $description;
+
     public $website;
+
     public $twitter;
+
     public $gtag;
 
     public function __construct(array $data)

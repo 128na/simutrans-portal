@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateConversionCountsTable extends Migration
 {
@@ -17,7 +17,6 @@ class CreateConversionCountsTable extends Migration
             $table->dropForeign(['article_id']);
         });
         Schema::dropIfExists('conversions');
-
 
         Schema::create('conversion_counts', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -55,6 +54,5 @@ class CreateConversionCountsTable extends Migration
                 ->references('id')->on('articles')
                 ->onDelete('cascade');
         });
-
     }
 }

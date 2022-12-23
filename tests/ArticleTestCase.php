@@ -14,10 +14,15 @@ abstract class ArticleTestCase extends TestCase
      * 一般ユーザーの公開記事.
      */
     protected Article $article;
+
     protected Attachment $user_file;
+
     protected User $user2;
+
     protected Article $article2;
+
     protected Attachment $user2_image;
+
     protected Attachment $user2_file;
 
     protected function setUp(): void

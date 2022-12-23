@@ -10,6 +10,7 @@ use Laravel\Dusk\Browser;
 class ListCategoryPage extends Page
 {
     private Article $article;
+
     private Category $category;
 
     public function __construct()
@@ -31,7 +32,6 @@ class ListCategoryPage extends Page
     {
         $browser
             ->waitForText(__("category.{$this->category->type}.{$this->category->slug}"))
-            ->assertSee($this->article->title)
-        ;
+            ->assertSee($this->article->title);
     }
 }

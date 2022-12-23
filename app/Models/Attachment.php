@@ -21,6 +21,7 @@ class Attachment extends Model
         'original_name',
         'path',
     ];
+
     protected $hidden = [
         'path',
     ];

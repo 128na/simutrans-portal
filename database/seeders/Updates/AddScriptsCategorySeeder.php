@@ -18,7 +18,7 @@ class AddScriptsCategorySeeder extends Seeder
             'slug' => 'scripts',
             'type' => 'addon',
             'order' => 20200,
-            'name' => 'Scripts'
+            'name' => 'Scripts',
         ]);
     }
 }

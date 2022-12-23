@@ -5,12 +5,19 @@ namespace App\Models\Contents;
 class AddonIntroductionContent extends Content
 {
     public $thumbnail;
+
     public $description;
+
     public $link;
+
     public $author;
+
     public $license;
+
     public $thanks;
+
     public $agreement;
+
     public $exclude_link_check;
 
     public function __construct(array $contents)

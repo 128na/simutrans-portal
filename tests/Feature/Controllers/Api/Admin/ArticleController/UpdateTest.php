@@ -9,6 +9,7 @@ use Tests\TestCase;
 class UpdateTest extends TestCase
 {
     private User $admin;
+
     private Article $article;
 
     protected function setUp(): void

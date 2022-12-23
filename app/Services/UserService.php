@@ -11,7 +11,9 @@ use App\Repositories\UserRepository;
 class UserService extends Service
 {
     private UserRepository $userRepository;
+
     private ProfileRepository $profileRepository;
+
     private AttachmentRepository $attachmentRepository;
 
     public function __construct(

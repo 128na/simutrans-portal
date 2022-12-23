@@ -10,6 +10,7 @@ use Tests\ArticleTestCase;
 class PaginateByTagTest extends ArticleTestCase
 {
     private ArticleRepository $repository;
+
     private Tag $tag;
 
     protected function setUp(): void

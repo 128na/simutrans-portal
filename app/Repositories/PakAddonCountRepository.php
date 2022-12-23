@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class PakAddonCountRepository extends BaseRepository
 {
     private const DELETE_SQL = 'DELETE FROM pak_addon_counts';
+
     private const INSERT_SQL = "INSERT INTO pak_addon_counts (pak_slug, addon_slug, count) (
         SELECT
             pak.slug pak_slug,

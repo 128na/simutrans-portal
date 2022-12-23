@@ -33,7 +33,7 @@ abstract class DuskTestCase extends BaseTestCase
      */
     public static function prepare()
     {
-        if (!static::runningInSail()) {
+        if (! static::runningInSail()) {
             static::startChromeDriver();
         }
     }

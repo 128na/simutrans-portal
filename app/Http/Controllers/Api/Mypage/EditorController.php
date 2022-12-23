@@ -61,11 +61,11 @@ class EditorController extends Controller
     private function handleTweet(Article $article, UpdateRequest $request, bool $notYetPublished = true): void
     {
         // 公開以外
-        if (!$article->is_publish) {
+        if (! $article->is_publish) {
             return;
         }
         // ツイートを希望しない
-        if (!$request->should_tweet) {
+        if (! $request->should_tweet) {
             return;
         }
         // 更新日を更新しない

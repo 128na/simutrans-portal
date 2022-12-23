@@ -19,10 +19,12 @@ class Profile extends Model
     protected $attributes = [
         'data' => '{}',
     ];
+
     protected $fillable = [
         'user_id',
         'data',
     ];
+
     protected $casts = [
         'data' => ToProfileData::class,
     ];
@@ -82,7 +84,7 @@ class Profile extends Model
 
     public function getHasFileAttribute()
     {
-        return !is_null($this->file);
+        return ! is_null($this->file);
     }
 
     public function getHasTwitterAttribute()

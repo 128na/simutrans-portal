@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 class TagRepository extends BaseRepository
 {
     private const LIMIT = 10;
+
     /**
      * @var Tag
      */

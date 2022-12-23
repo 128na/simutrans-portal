@@ -11,6 +11,7 @@ use Tests\DuskTestCase;
 class ConversionTest extends DuskTestCase
 {
     private Article $article1;
+
     private Article $article2;
 
     protected function setUp(): void
@@ -53,8 +54,7 @@ class ConversionTest extends DuskTestCase
                 ->clickLink($this->article1->title)
                 ->waitForText('掲載先URL')
                 ->assertPathIs("/articles/{$this->article1->slug}")
-                ->click('@conversion-link')
-            ;
+                ->click('@conversion-link');
             sleep(1);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);
@@ -80,8 +80,7 @@ class ConversionTest extends DuskTestCase
                 ->clickLink($this->article2->title)
                 ->waitForText('ダウンロード')
                 ->assertPathIs("/articles/{$this->article2->slug}")
-                ->click('@conversion-download')
-            ;
+                ->click('@conversion-download');
             sleep(1);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);

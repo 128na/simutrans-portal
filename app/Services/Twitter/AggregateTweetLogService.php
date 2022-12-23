@@ -18,12 +18,11 @@ class AggregateTweetLogService
      */
     private function filterUpdatableFields(array $data): array
     {
-        return array_filter($data, fn ($d) => !is_numeric($d) || $d > 0);
+        return array_filter($data, fn ($d) => ! is_numeric($d) || $d > 0);
     }
 
     /**
-     * @param TweetData[] $resolved
-     *
+     * @param  TweetData[]  $resolved
      * @return int[] articleIds
      */
     public function updateOrCreateTweetLogs(array $resolved): array
@@ -54,8 +53,7 @@ class AggregateTweetLogService
     }
 
     /**
-     * @param TweetData[] $resolved
-     *
+     * @param  TweetData[]  $resolved
      * @return int[] articleIds
      */
     public function firstOrCreateTweetLogs(array $resolved): array
@@ -86,7 +84,7 @@ class AggregateTweetLogService
     }
 
     /**
-     * @param int[] $articleIds
+     * @param  int[]  $articleIds
      */
     public function updateOrCreateTweetLogSummary(array $articleIds): void
     {

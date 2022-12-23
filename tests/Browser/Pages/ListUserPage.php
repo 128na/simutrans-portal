@@ -9,6 +9,7 @@ use Laravel\Dusk\Browser;
 class ListUserPage extends Page
 {
     private Article $article;
+
     private User $user;
 
     public function __construct()
@@ -28,7 +29,6 @@ class ListUserPage extends Page
     {
         $browser
             ->waitForText($this->user->name)
-            ->assertSee($this->article->title)
-        ;
+            ->assertSee($this->article->title);
     }
 }

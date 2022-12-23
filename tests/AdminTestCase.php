@@ -11,6 +11,7 @@ abstract class AdminTestCase extends TestCase
      * 管理者ユーザー
      */
     protected User $admin;
+
     protected Article $article;
 
     protected function setUp(): void

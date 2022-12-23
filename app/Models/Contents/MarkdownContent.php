@@ -7,6 +7,7 @@ use App\Services\MarkdownService;
 class MarkdownContent extends Content
 {
     public $thumbnail;
+
     public $markdown;
 
     public function __construct(array $contents)

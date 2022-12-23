@@ -38,7 +38,7 @@ class TwitterV2Api extends TwitterOAuth
 
     public function applyPKCEToken(): void
     {
-        if (!$this->pkceToken) {
+        if (! $this->pkceToken) {
             $token = $this->getPKCEToken();
 
             $this->setBearer($token->access_token);
@@ -51,10 +51,10 @@ class TwitterV2Api extends TwitterOAuth
         try {
             $token = $this->oauthTokenRepository->getToken('twitter');
 
-            if (!$token->isExpired()) {
+            if (! $token->isExpired()) {
                 return $token;
             }
-        } catch (ModelNotFoundException | QueryException | PDOException $e) {
+        } catch (ModelNotFoundException|QueryException|PDOException $e) {
             throw new PKCETokenNotFoundException();
         }
 

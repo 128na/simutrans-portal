@@ -10,6 +10,7 @@ use Tests\ArticleTestCase;
 class PaginateByCategoryTest extends ArticleTestCase
 {
     private ArticleRepository $repository;
+
     private Category $category;
 
     protected function setUp(): void

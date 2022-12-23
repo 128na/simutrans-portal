@@ -9,8 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 class ControllOption extends Model
 {
     use HasFactory;
+
     public $incrementing = false;
+
     protected $keyType = 'string';
+
     protected $primaryKey = 'key';
 
     protected $fillable = [

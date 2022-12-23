@@ -15,8 +15,11 @@ use ZipArchive;
 class ZipManager extends Service
 {
     private ZipArchive $zipArchive;
+
     private FilesystemAdapter $disk;
+
     private string $filepath;
+
     /**
      * @var BaseDecorator[]
      */
@@ -42,7 +45,7 @@ class ZipManager extends Service
     }
 
     /**
-     * @param Model[] $items
+     * @param  Model[]  $items
      */
     public function create(array $items): string
     {
@@ -58,7 +61,7 @@ class ZipManager extends Service
                 $this->addFile($filepath, 'files/'.$filename);
             }
         }
-        if (!empty($result['contents'])) {
+        if (! empty($result['contents'])) {
             $this->addTextFile($result['contents']);
             $this->addCsvFile($result['contents']);
             // $this->addJsonFile($result['contents']);
@@ -70,7 +73,7 @@ class ZipManager extends Service
     /**
      * アイテムから情報を取得.
      *
-     * @param Model[] $items
+     * @param  Model[]  $items
      */
     private function processItems(array $items): array
     {
@@ -168,7 +171,7 @@ class ZipManager extends Service
         $z = new ZipArchive();
         try {
             $z->open($path);
-            for ($i = 0; $i < $z->numFiles; ++$i) {
+            for ($i = 0; $i < $z->numFiles; $i++) {
                 $name = $z->getNameIndex($i);
                 $rc = $z->getStream($name);
                 $randName = $this->randName();

@@ -8,6 +8,7 @@ use Illuminate\Support\LazyCollection;
 class SearchTweetService
 {
     public const USE_PKCE_TOKEN = 'USE_PKCE_TOKEN';
+
     public const USE_APP_ONLY_TOKEN = 'USE_APP_ONLY_TOKEN';
 
     public function __construct(private TwitterV2Api $client)

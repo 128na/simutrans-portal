@@ -11,6 +11,7 @@ use HTMLPurifier;
 class MarkdownService extends Service
 {
     private GithubMarkdown $parser;
+
     private HTMLPurifier $purifier;
 
     public function __construct(GithubMarkdown $parser, HTMLPurifier $purifier)

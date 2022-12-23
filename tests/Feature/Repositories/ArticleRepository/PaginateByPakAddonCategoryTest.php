@@ -10,7 +10,9 @@ use Tests\ArticleTestCase;
 class PaginateByPakAddonCategoryTest extends ArticleTestCase
 {
     private ArticleRepository $repository;
+
     private Category $pak;
+
     private Category $addon;
 
     protected function setUp(): void

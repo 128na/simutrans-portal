@@ -18,7 +18,7 @@ class AddApplicationCategorySeeder extends Seeder
             'slug' => 'application',
             'type' => 'page',
             'order' => 50200,
-            'name' => 'Application'
+            'name' => 'Application',
         ]);
     }
 }

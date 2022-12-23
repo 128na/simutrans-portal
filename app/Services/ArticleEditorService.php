@@ -49,7 +49,7 @@ class ArticleEditorService extends Service
     private function separateCategories($categories)
     {
         return collect($categories->reduce(function ($list, $item) {
-            if (!isset($list[$item->type])) {
+            if (! isset($list[$item->type])) {
                 $list[$item->type] = [];
             }
             $list[$item->type][] = [
@@ -101,7 +101,7 @@ class ArticleEditorService extends Service
         return $article->fresh();
     }
 
-    private function getPublishedAt(StoreRequest | UpdateRequest $request): ?string
+    private function getPublishedAt(StoreRequest|UpdateRequest $request): ?string
     {
         $status = $request->input('article.status');
         if ($status === config('status.publish')) {
@@ -149,7 +149,7 @@ class ArticleEditorService extends Service
 
     private function shouldUpdateModifiedAt(UpdateRequest $request): bool
     {
-        return !$request->input('without_update_modified_at');
+        return ! $request->input('without_update_modified_at');
     }
 
     private function syncRelated(Article $article, BaseRequest $request)

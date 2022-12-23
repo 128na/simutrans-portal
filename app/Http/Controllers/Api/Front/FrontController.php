@@ -15,7 +15,6 @@ use App\Services\Front\ArticleService;
 use App\Services\Front\FrontDescriptionService;
 use App\Services\Front\SidebarService;
 use App\Services\Front\TagService;
-use Illuminate\Http\Request;
 
 class FrontController extends Controller
 {
@@ -62,7 +61,7 @@ class FrontController extends Controller
             ->additional($this->frontDescriptionService->user($user));
     }
 
-    public function pages(Request $request)
+    public function pages()
     {
         $articles = $this->articleService->paginatePages();
 
@@ -70,7 +69,7 @@ class FrontController extends Controller
             ->additional($this->frontDescriptionService->page());
     }
 
-    public function announces(Request $request)
+    public function announces()
     {
         $articles = $this->articleService->paginateAnnouces();
 
@@ -78,7 +77,7 @@ class FrontController extends Controller
             ->additional($this->frontDescriptionService->announces());
     }
 
-    public function ranking(Request $request)
+    public function ranking()
     {
         $articles = $this->articleService->paginateRanking();
 

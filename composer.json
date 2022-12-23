@@ -90,6 +90,9 @@
     "stan": [
       "./vendor/bin/phpstan analyse --memory-limit=1G"
     ],
+    "stan:clear": [
+      "./vendor/bin/phpstan clear-result-cache"
+    ],
     "stan:base": [
       "./vendor/bin/phpstan analyse --memory-limit=1G --generate-baseline --allow-empty-baseline"
     ]

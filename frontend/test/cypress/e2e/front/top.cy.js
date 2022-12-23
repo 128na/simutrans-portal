@@ -15,25 +15,16 @@ describe('フロントトップ', () => {
     beforeEach(() => {
       cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
       cy.intercept('/api/front/sidebar', mockSidebarResponse).as('front.sidebar');
-      cy.intercept('/api/front/category/pak/*?simple', {
+      cy.intercept('/api/front/top', {
         statusCode: 200,
         body: {
-          title: 'dummy Pak Title',
-          data: [createMockArticleData()],
+          pak128japan: [createMockArticleData()],
         },
-      }).as('front.categoryPak');
-      cy.intercept('/api/front/ranking?simple', { statusCode: 200, body: { data: [] } }).as('front.ranking');
-      cy.intercept('/api/front/pages?simple', { statusCode: 200, body: { data: [] } }).as('front.pages');
-      cy.intercept('/api/front/announces?simple', { statusCode: 200, body: { data: [] } }).as('front.announces');
+      }).as('front.top');
       cy.visit('/');
       cy.wait('@mypage.user');
       cy.wait('@front.sidebar');
-      cy.wait('@front.categoryPak');
-      cy.wait('@front.categoryPak');
-      cy.wait('@front.categoryPak');
-      cy.wait('@front.ranking');
-      cy.wait('@front.pages');
-      cy.wait('@front.announces');
+      cy.wait('@front.top');
       cy.get('.fullscreen.q-drawer__backdrop').click();
     });
     it('表示内容', () => {
@@ -53,6 +44,7 @@ describe('フロントトップ', () => {
     });
 
     it('リストモード切替', () => {
+      // cy.get('.fullscreen.q-drawer__backdrop').click();
       cy.get('[data-cy="mode-list"]').should('exist');
       cy.get('[data-cy="btn-list"]')
         .should('exist')
@@ -80,31 +72,20 @@ describe('フロントトップ', () => {
       });
       cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
       cy.intercept('/api/front/sidebar', mockSidebarResponse).as('front.sidebar');
-      cy.intercept('/api/front/category/pak/*?simple', {
-        statusCode: 200,
-        body: {
-          title: 'dummy Pak Title',
-          data: [createMockArticleData()],
-        },
-      }).as('front.categoryPak');
-      cy.intercept('/api/front/ranking?simple', { statusCode: 200, body: { data: [] } }).as('front.ranking');
-      cy.intercept('/api/front/pages?simple', { statusCode: 200, body: { data: [] } }).as('front.pages');
-      cy.intercept('/api/front/announces?simple', { statusCode: 500, body: { data: [] } }).as('front.announces');
+      cy.intercept('/api/front/top', {
+        statusCode: 500,
+        body: {},
+      }).as('front.topFailed');
       cy.visit('/');
       cy.wait('@mypage.user');
       cy.wait('@front.sidebar');
-      cy.wait('@front.categoryPak');
-      cy.wait('@front.categoryPak');
-      cy.wait('@front.categoryPak');
-      cy.wait('@front.ranking');
-      cy.wait('@front.pages');
-      cy.wait('@front.announces');
-      cy.wait('@front.announces');
-      cy.wait('@front.announces');
+      cy.wait('@front.topFailed');
+      cy.wait('@front.topFailed');
+      cy.wait('@front.topFailed');
     });
     it('表示内容', () => {
       assertFrontTopPage();
-      cy.get('.q-notification__message').should('contain', 'お知らせ一覧の取得に失敗しました');
+      cy.get('.q-notification__message').should('contain', '記事取得に失敗しました');
     });
   });
 });

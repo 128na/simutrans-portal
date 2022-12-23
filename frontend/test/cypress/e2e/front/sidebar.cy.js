@@ -13,25 +13,16 @@ describe('Sidebar', () => {
   beforeEach(() => {
     cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
     cy.intercept('/api/front/sidebar', mockSidebarResponse).as('front.sidebar');
-    cy.intercept('/api/front/category/pak/*?simple', {
+    cy.intercept('/api/front/top', {
       statusCode: 200,
       body: {
-        title: 'dummy Pak Title',
-        data: [createMockArticleData()],
+        pak128japan: [createMockArticleData()],
       },
-    }).as('front.categoryPak');
-    cy.intercept('/api/front/ranking?simple', { statusCode: 200, body: { data: [] } }).as('front.ranking');
-    cy.intercept('/api/front/pages?simple', { statusCode: 200, body: { data: [] } }).as('front.pages');
-    cy.intercept('/api/front/announces?simple', { statusCode: 200, body: { data: [] } }).as('front.announces');
+    }).as('front.top');
     cy.visit('/');
     cy.wait('@mypage.user');
     cy.wait('@front.sidebar');
-    cy.wait('@front.categoryPak');
-    cy.wait('@front.categoryPak');
-    cy.wait('@front.categoryPak');
-    cy.wait('@front.ranking');
-    cy.wait('@front.pages');
-    cy.wait('@front.announces');
+    cy.wait('@front.top');
   });
   it('API依存サイドバー内容', () => {
     cy.get('body')

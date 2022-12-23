@@ -152,23 +152,20 @@ class ArticleRepository extends BaseRepository
             : $this->queryRanking()->paginate();
     }
 
-    private function queryByCategory(Category $category): Builder
-    {
-        return $category->articles()
-            ->active()
-            ->select(['articles.*'])
-            ->with(self::FRONT_RELATIONS)
-            ->orderBy('modified_at', 'desc');
-    }
-
     /**
      * カテゴリの投稿一覧.
      */
     public function paginateByCategory(Category $category, bool $simple = false): Paginator
     {
+        $q = $category->articles()
+            ->active()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy('modified_at', 'desc');
+
         return $simple
-            ? $this->queryByCategory($category)->simplePaginate(self::PER_PAGE_SIMPLE)
-            : $this->queryByCategory($category)->paginate();
+            ? $q->simplePaginate(self::PER_PAGE_SIMPLE)
+            : $q->paginate();
     }
 
     private function queryByPakAddonCategory(Category $pak, Category $addon): Builder
@@ -195,8 +192,12 @@ class ArticleRepository extends BaseRepository
      */
     public function paginateByPakNoneAddonCategory(Category $pak): LengthAwarePaginator
     {
-        return $this->queryByCategory($pak)
+        return $pak->articles()
+            ->active()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
             ->whereDoesntHave('categories', fn ($query) => $query->where('type', 'addon'))
+            ->orderBy('modified_at', 'desc')
             ->paginate();
     }
 

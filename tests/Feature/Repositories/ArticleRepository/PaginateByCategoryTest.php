@@ -24,6 +24,9 @@ class PaginateByCategoryTest extends ArticleTestCase
 
     public function test()
     {
+        /**
+         * @var LengthAwarePaginator $res
+         */
         $res = $this->repository->paginateByCategory($this->category);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
@@ -33,6 +36,9 @@ class PaginateByCategoryTest extends ArticleTestCase
     public function test公開以外のステータス()
     {
         $this->article->update(['status' => 'draft']);
+        /**
+         * @var LengthAwarePaginator $res
+         */
         $res = $this->repository->paginateByCategory($this->category);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
@@ -42,6 +48,9 @@ class PaginateByCategoryTest extends ArticleTestCase
     public function test論理削除()
     {
         $this->article->delete();
+        /**
+         * @var LengthAwarePaginator $res
+         */
         $res = $this->repository->paginateByCategory($this->category);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);

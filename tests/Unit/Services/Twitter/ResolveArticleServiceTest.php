@@ -8,6 +8,7 @@ use App\Repositories\Article\TweetLogRepository;
 use App\Repositories\ArticleRepository;
 use App\Services\Twitter\ResolveArticleService;
 use App\Services\Twitter\TweetData;
+use Illuminate\Database\Eloquent\Collection;
 use Mockery\MockInterface;
 use stdClass;
 use Tests\UnitTestCase;
@@ -56,7 +57,7 @@ class ResolveArticleServiceTest extends UnitTestCase
             $m->shouldReceive('findByTitles')
                 ->withArgs([[]])
                 ->once()
-                ->andReturn(collect([]));
+                ->andReturn(new Collection([]));
         });
 
         $service = $this->getSUT();
@@ -84,7 +85,7 @@ class ResolveArticleServiceTest extends UnitTestCase
             $m->shouldReceive('findByTitles')
                 ->withArgs([['dummy']])
                 ->once()
-                ->andReturn(collect([$article]));
+                ->andReturn(new Collection([$article]));
         });
 
         $service = $this->getSUT();
@@ -110,7 +111,7 @@ class ResolveArticleServiceTest extends UnitTestCase
             $m->shouldReceive('findByTitles')
                 ->withArgs([['dummy']])
                 ->once()
-                ->andReturn(collect());
+                ->andReturn(new Collection());
         });
 
         $service = $this->getSUT();

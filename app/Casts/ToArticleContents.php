@@ -14,7 +14,7 @@ class ToArticleContents implements CastsAttributes
     /**
      * 指定された値をキャスト.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  \App\Models\Article  $model
      * @param  string  $key
      * @param  mixed  $value
      * @param  array  $attributes

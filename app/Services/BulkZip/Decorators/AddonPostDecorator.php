@@ -10,12 +10,14 @@ class AddonPostDecorator extends BaseDecorator
 {
     public function canProcess(Model $model): bool
     {
-        return get_class($model) === Article::class
+        return $model instanceof Article
             && $model->post_type === 'addon-post';
     }
 
     /**
      * Zip格納データに変換する.
+     *
+     * @param  Article  $model
      */
     public function process(array $result, Model $model): array
     {
@@ -40,6 +42,11 @@ class AddonPostDecorator extends BaseDecorator
 
     private function content(Article $model): array
     {
+        /**
+         * @var \App\Models\Contents\AddonPostContent $contents
+         */
+        $contents = $model->contents;
+
         return [
             ['ID', $model->id],
             ['タイトル', $model->title],
@@ -52,10 +59,10 @@ class AddonPostDecorator extends BaseDecorator
             ['投稿者', $model->user->name],
             ['カテゴリ', ...$model->categories->map(fn (Category $c) => __("category.{$c->type}.{$c->slug}"))->toArray()],
             ['タグ', ...$model->tags()->pluck('name')->toArray()],
-            ['作者 / 投稿者', $model->contents->author],
-            ['説明', $model->contents->description],
-            ['謝辞・参考にしたアドオン', $model->contents->thanks],
-            ['ライセンス', $model->contents->license],
+            ['作者 / 投稿者', $contents->author],
+            ['説明', $contents->description],
+            ['謝辞・参考にしたアドオン', $contents->thanks],
+            ['ライセンス', $contents->license],
             ['アドオンファイル', $this->toPath($model->id, $model->file->original_name)],
             ['------'],
         ];

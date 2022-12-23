@@ -10,10 +10,9 @@ use Carbon\CarbonImmutable;
 use Closure;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 
 class ArticleRepository extends BaseRepository
@@ -68,6 +67,7 @@ class ArticleRepository extends BaseRepository
     public function findAllForAnalytics(User $user, array $ids, Closure $periodQuery): Collection
     {
         return $this->model
+            ->query()
             ->select('id')
             ->where('user_id', $user->id)
             ->whereIn('id', $ids)
@@ -85,6 +85,7 @@ class ArticleRepository extends BaseRepository
     public function findAllByUser(User $user, array $relations = self::FRONT_RELATIONS): Collection
     {
         return $this->model
+            ->query()
             ->select(['articles.*'])
             ->where('user_id', $user->id)
             ->with($relations)
@@ -92,27 +93,14 @@ class ArticleRepository extends BaseRepository
             ->get();
     }
 
-    private function basicQuery(array $relations = self::FRONT_RELATIONS): Builder
-    {
-        return $this->model
-            ->select(['articles.*'])
-            ->active()
-            ->with($relations)
-            ->orderBy('modified_at', 'desc');
-    }
-
-    private function basicRelationQuery(Relation $query, array $relations = self::FRONT_RELATIONS): Relation
-    {
-        return $query->select(['articles.*'])
-            ->active()
-            ->with($relations)
-            ->orderBy('modified_at', 'desc');
-    }
-
     private function queryAnnouces(): Builder
     {
-        return $this->basicQuery()
-            ->announce();
+        return $this->model
+            ->active()
+            ->announce()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy('modified_at', 'desc');
     }
 
     /**
@@ -127,8 +115,12 @@ class ArticleRepository extends BaseRepository
 
     private function queryPages(): Builder
     {
-        return $this->basicQuery()
-            ->withoutAnnounce();
+        return $this->model
+            ->active()
+            ->withoutAnnounce()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy('modified_at', 'desc');
     }
 
     /**
@@ -144,8 +136,8 @@ class ArticleRepository extends BaseRepository
     private function queryRanking(): Builder
     {
         return $this->model
-            ->select(['articles.*'])
             ->active()
+            ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
             ->rankingOrder();
     }
@@ -160,9 +152,13 @@ class ArticleRepository extends BaseRepository
             : $this->queryRanking()->paginate();
     }
 
-    private function queryByCategory(Category $category): Relation
+    private function queryByCategory(Category $category): Builder
     {
-        return $this->basicRelationQuery($category->articles());
+        return $category->articles()
+            ->active()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy('modified_at', 'desc');
     }
 
     /**
@@ -177,7 +173,11 @@ class ArticleRepository extends BaseRepository
 
     private function queryByPakAddonCategory(Category $pak, Category $addon): Builder
     {
-        return $this->basicQuery()
+        return $this->model
+            ->active()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy('modified_at', 'desc')
             ->whereHas('categories', fn ($query) => $query->where('id', $pak->id))
             ->whereHas('categories', fn ($query) => $query->where('id', $addon->id));
     }
@@ -200,22 +200,17 @@ class ArticleRepository extends BaseRepository
             ->paginate();
     }
 
-    private function queryByTag(Tag $tag): Relation
-    {
-        return $this->basicRelationQuery($tag->articles());
-    }
-
     /**
      * タグを持つ投稿記事一覧.
      */
     public function paginateByTag(Tag $tag): LengthAwarePaginator
     {
-        return $this->queryByTag($tag)->paginate();
-    }
-
-    private function queryByUser(User $user): Relation
-    {
-        return $this->basicRelationQuery($user->articles());
+        return $tag->articles()
+            ->active()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy('modified_at', 'desc')
+            ->paginate();
     }
 
     /**
@@ -223,7 +218,12 @@ class ArticleRepository extends BaseRepository
      */
     public function paginateByUser(User $user): LengthAwarePaginator
     {
-        return $this->queryByUser($user)->paginate();
+        return $user->articles()
+          ->active()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy('modified_at', 'desc')
+            ->paginate();
     }
 
     private function queryBySearch(string $word): Builder
@@ -261,9 +261,9 @@ class ArticleRepository extends BaseRepository
     public function cursorCheckLink(): LazyCollection
     {
         return $this->model
-            ->select('id', 'user_id', 'title', 'post_type', 'contents')
             ->active()
             ->linkCheckTarget()
+            ->select('id', 'user_id', 'title', 'post_type', 'contents')
             ->with('user:id,email')
             ->cursor();
     }
@@ -271,9 +271,9 @@ class ArticleRepository extends BaseRepository
     public function findAllFeedItems(): Collection
     {
         return $this->model
-            ->select('id', 'user_id', 'title', 'slug', 'post_type', 'contents', 'modified_at')
             ->active()
             ->addon()
+            ->select('id', 'user_id', 'title', 'slug', 'post_type', 'contents', 'modified_at')
             ->limit(24)
             ->with('user:id,name')
             ->orderBy('modified_at', 'desc')
@@ -332,8 +332,8 @@ class ArticleRepository extends BaseRepository
     public function fetchAggregatedRanking(CarbonImmutable $datetime): LazyCollection
     {
         return $this->model
-            ->select('articles.*')
             ->addon()
+            ->select('articles.*')
             ->leftJoin('view_counts as d', fn (JoinClause $join) => $join
                 ->on('d.article_id', 'articles.id')
                 ->where('d.type', 1)

@@ -18,7 +18,6 @@ class TwitterChannel
     /**
      * 指定された通知の送信
      *
-     * @param  mixed  $notifiable
      * @return void
      */
     public function send(Article $notifiable, ArticleNotification $notification)

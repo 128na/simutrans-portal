@@ -14,7 +14,7 @@ class ToProfileData implements CastsAttributes
      * @param  string  $key
      * @param  mixed  $value
      * @param  array  $attributes
-     * @return \App\Address
+     * @return ProfileData
      */
     public function get($model, $key, $value, $attributes)
     {
@@ -26,7 +26,7 @@ class ToProfileData implements CastsAttributes
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
-     * @param  \App\Address  $value
+     * @param  ProfileData  $value
      * @param  array  $attributes
      * @return array
      */

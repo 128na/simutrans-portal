@@ -23,7 +23,7 @@ class TagRepository extends BaseRepository
     {
         return $this->model->select('id', 'name')
             ->whereHas('articles', fn ($query) => $query->active())
-            ->popular('articles_count', 'desc')
+            ->popular()
             ->get();
     }
 

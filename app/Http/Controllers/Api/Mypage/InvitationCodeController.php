@@ -53,6 +53,9 @@ class InvitationCodeController extends Controller
 
     public function register(User $user, InviteRequest $request)
     {
+        /**
+         * @var User $invitedUser
+         */
         $invitedUser = $this->userRepository->store([
             'name' => $request->name,
             'email' => $request->email,

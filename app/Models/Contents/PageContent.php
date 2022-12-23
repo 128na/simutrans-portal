@@ -4,14 +4,12 @@ namespace App\Models\Contents;
 
 class PageContent extends Content
 {
-    public $thumbnail;
-
     public $sections;
 
     public function __construct(array $contents)
     {
-        $this->thumbnail = $contents['thumbnail'] ?? null;
         $this->sections = new PageContentsSections($contents['sections'] ?? []);
+        parent::__construct($contents);
     }
 
     public function getDescription()

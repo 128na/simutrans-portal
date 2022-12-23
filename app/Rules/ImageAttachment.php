@@ -30,6 +30,9 @@ class ImageAttachment implements Rule
      */
     public function passes($attribute, $value)
     {
+        /**
+         * @var \App\Models\Attachment
+         */
         $attachment = $this->attachmentRepository->find($value);
 
         if ($attachment && $attachment->is_image) {

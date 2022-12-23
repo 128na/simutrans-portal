@@ -3,8 +3,8 @@
 namespace App\Services\BulkZip;
 
 use App\Exceptions\ZipErrorException;
+use App\Services\BulkZip\Decorators\BaseDecorator;
 use App\Services\Service;
-use App\Services\ZipDecorators\BaseDecorator;
 use ErrorException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\FilesystemAdapter;

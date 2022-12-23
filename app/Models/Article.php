@@ -8,7 +8,9 @@ use App\Models\Article\Ranking;
 use App\Models\Article\TweetLog;
 use App\Models\Article\TweetLogSummary;
 use App\Models\Article\ViewCount;
+use App\Models\Contents\AddonPostContent;
 use App\Traits\Slugable;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -310,14 +312,19 @@ class Article extends Model implements Feedable
 
     public function getHasFileAttribute()
     {
-        return $this->is_addon_post && ! is_null($this->contents->file) && $this->file;
+        return $this->is_addon_post
+            && $this->contents instanceof AddonPostContent
+            && ! is_null($this->contents->file) && $this->file;
     }
 
     public function getFileAttribute()
     {
-        $id = $this->contents->file;
+        if ($this->contents instanceof AddonPostContent) {
+            $id = $this->contents->file;
 
-        return $this->attachments->first(fn ($attachment) => (string) $id == $attachment->id);
+            return $this->attachments->first(fn ($attachment) => (string) $id == $attachment->id);
+        }
+        throw new Exception('invalid post type');
     }
 
     public function getHasFileInfoAttribute()

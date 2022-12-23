@@ -1,0 +1,36 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method App\\\\Casts\\\\ToArticleContents\\:\\:get\\(\\) should return App\\\\Models\\\\Contents\\\\Content but return statement is missing\\.$#"
+			count: 1
+			path: app/Casts/ToArticleContents.php
+
+		-
+			message: "#^Called 'pluck' on Laravel collection, but could have been retrieved as a query\\.$#"
+			count: 1
+			path: app/Handlers/MailHandler.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Controllers\\\\LoginController\\:\\:\\$user_service\\.$#"
+			count: 2
+			path: app/Http/Controllers/LoginController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Middleware\\\\Authenticate\\:\\:redirectTo\\(\\) should return string but return statement is missing\\.$#"
+			count: 1
+			path: app/Http/Middleware/Authenticate.php
+
+		-
+			message: "#^Result of function abort_if \\(void\\) is used\\.$#"
+			count: 5
+			path: app/Http/Middleware/RestrictControl.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Contents\\\\PageContent\\:\\:\\$sections\\.$#"
+			count: 2
+			path: app/Models/Contents/PageContent.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\Contents\\\\PageContent\\:\\:\\$thumbnail\\.$#"
+			count: 1
+			path: app/Models/Contents/PageContent.php

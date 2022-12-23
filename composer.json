@@ -7,11 +7,11 @@
   ],
   "license": "MIT",
   "require": {
-    "php": "^8.0",
-    "guzzlehttp/guzzle": "^7.0.1",
-    "laravel/framework": "^8.75",
-    "laravel/sanctum": "^2.11",
-    "laravel/tinker": "^2.5",
+    "php": "^8.0.2",
+    "guzzlehttp/guzzle": "^7.2",
+    "laravel/framework": "^9.0",
+    "laravel/sanctum": "^3.0",
+    "laravel/tinker": "^2.7",
     "abraham/twitteroauth": "^3",
     "cebe/markdown": "^1.2",
     "doctrine/dbal": "^3.0",
@@ -19,19 +19,20 @@
     "fideloper/proxy": "^4.0",
     "laravel/slack-notification-channel": "^2.4",
     "laravel/ui": "^3",
-    "spatie/flysystem-dropbox": "^1.2",
-    "spatie/laravel-backup": "^6.11",
-    "spatie/laravel-feed": "^3.0",
+    "spatie/flysystem-dropbox": "^2.0",
+    "spatie/laravel-backup": "^8.1",
+    "spatie/laravel-feed": "^4.2",
     "tinify/tinify": "^1.5",
     "yarri/full-text-search-query-like": "^0.2.0"
   },
   "require-dev": {
-    "facade/ignition": "^2.5",
     "fakerphp/faker": "^1.9.1",
+    "laravel/pint": "^1.0",
     "laravel/sail": "^1.0.1",
     "mockery/mockery": "^1.4.4",
-    "nunomaduro/collision": "^5.10",
+    "nunomaduro/collision": "^6.1",
     "phpunit/phpunit": "^9.5.10",
+    "spatie/laravel-ignition": "^1.0",
     "barryvdh/laravel-debugbar": "^3.3",
     "barryvdh/laravel-ide-helper": "^2.10",
     "brianium/paratest": "^6.2",
@@ -45,7 +46,7 @@
     "preferred-install": "dist",
     "sort-packages": true,
     "platform": {
-      "php": "8.0.8"
+      "php": "8.0.25"
     }
   },
   "extra": {

@@ -9,16 +9,16 @@ class TagDescriptionResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
-            'editable' => $this->editable,
-            'createdBy' => $this->createdBy?->name,
-            'createdAt' => $this->created_at->toIso8601String(),
-            'lastModifiedBy' => $this->lastModifiedBy?->name,
-            'lastModifiedAt' => $this->last_modified_at
-                ? $this->last_modified_at->toIso8601String()
-                : $this->updated_at->toIso8601String(),
+            'id' => $this->resource->id,
+            'name' => $this->resource->name,
+            'description' => $this->resource->description,
+            'editable' => $this->resource->editable,
+            'createdBy' => $this->resource->createdBy?->name,
+            'createdAt' => $this->resource->created_at->toIso8601String(),
+            'lastModifiedBy' => $this->resource->lastModifiedBy?->name,
+            'lastModifiedAt' => $this->resource->last_modified_at
+                ? $this->resource->last_modified_at->toIso8601String()
+                : $this->resource->updated_at->toIso8601String(),
         ];
     }
 }

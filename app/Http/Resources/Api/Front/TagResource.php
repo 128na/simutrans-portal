@@ -9,9 +9,9 @@ class TagResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'count' => $this->articles_count,
+            'id' => $this->resource->id,
+            'name' => $this->resource->name,
+            'count' => $this->resource->articles_count,
         ];
     }
 }

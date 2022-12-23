@@ -82,11 +82,6 @@ class Profile extends Model
             : config('attachment.no-avatar'));
     }
 
-    public function getHasFileAttribute()
-    {
-        return ! is_null($this->file);
-    }
-
     public function getHasTwitterAttribute()
     {
         return (bool) $this->data->twitter;

@@ -10,10 +10,10 @@ class BulkZipResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'uuid' => $this->uuid,
-            'generated' => (bool) $this->generated,
-            'url' => $this->when($this->generated, Storage::disk('public')->url($this->path)),
-            'generated_at' => $this->updated_at->toIso8601String(),
+            'uuid' => $this->resource->uuid,
+            'generated' => (bool) $this->resource->generated,
+            'url' => $this->when($this->resource->generated, Storage::disk('public')->url($this->resource->path)),
+            'generated_at' => $this->resource->updated_at->toIso8601String(),
         ];
     }
 }

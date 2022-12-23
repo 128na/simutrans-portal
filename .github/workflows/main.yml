@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [master, develop]
 jobs:
-  cs:
+  pint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,8 +35,8 @@ jobs:
       - name: Composer Install
         if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
         run: composer install
-      - name: phpcs
-        run: composer run cs-check
+      - name: pint
+        run: composer run pint:check
   es:
     runs-on: ubuntu-latest
     steps:

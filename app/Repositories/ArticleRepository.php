@@ -21,7 +21,7 @@ class ArticleRepository extends BaseRepository
     public const MYPAGE_RELATIONS = ['user', 'attachments.fileInfo', 'categories', 'tags', 'tweetLogSummary', 'totalViewCount', 'totalConversionCount'];
     public const FRONT_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags'];
     public const SHOW_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags'];
-    public const PER_PAGE_SIMPLE = 4;
+    public const PER_PAGE_SIMPLE = 6;
 
     /**
      * @var Article

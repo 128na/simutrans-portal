@@ -9,7 +9,7 @@ class ZipErrorException extends Exception
 {
     public function __construct(string $message, ?int $code = null)
     {
-        if (!is_null($code)) {
+        if (! is_null($code)) {
             $message .= ' '.$this->handleCode($code);
         }
         parent::__construct($message);

@@ -14,11 +14,10 @@ class ToArticleContents implements CastsAttributes
     /**
      * 指定された値をキャスト.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param string                              $key
-     * @param mixed                               $value
-     * @param array                               $attributes
-     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  array  $attributes
      * @return \App\Models\Contents\Content
      */
     public function get($model, $key, $value, $attributes)
@@ -40,11 +39,10 @@ class ToArticleContents implements CastsAttributes
     /**
      * 指定された値を保存用に準備.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param string                              $key
-     * @param \App\Models\Contents\Content        $value
-     * @param array                               $attributes
-     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string  $key
+     * @param  \App\Models\Contents\Content  $value
+     * @param  array  $attributes
      * @return array
      */
     public function set($model, $key, $value, $attributes)

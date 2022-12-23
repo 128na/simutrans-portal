@@ -27,6 +27,18 @@ class FrontController extends Controller
     ) {
     }
 
+    public function top()
+    {
+        return [
+            'pak128japan' => ArticleResource::collection($this->articleService->paginateByCategory('pak', '128-japan', true)),
+            'pak128' => ArticleResource::collection($this->articleService->paginateByCategory('pak', '128', true)),
+            'pak64' => ArticleResource::collection($this->articleService->paginateByCategory('pak', '64', true)),
+            'rankings' => ArticleResource::collection($this->articleService->paginateRanking(true)),
+            'pages' => ArticleResource::collection($this->articleService->paginatePages(true)),
+            'announces' => ArticleResource::collection($this->articleService->paginateAnnouces(true)),
+        ];
+    }
+
     public function sidebar()
     {
         return [
@@ -52,7 +64,7 @@ class FrontController extends Controller
 
     public function pages(Request $request)
     {
-        $articles = $this->articleService->paginatePages($request->has('simple'));
+        $articles = $this->articleService->paginatePages();
 
         return ArticleResource::collection($articles)
             ->additional($this->frontDescriptionService->page());
@@ -60,7 +72,7 @@ class FrontController extends Controller
 
     public function announces(Request $request)
     {
-        $articles = $this->articleService->paginateAnnouces($request->has('simple'));
+        $articles = $this->articleService->paginateAnnouces();
 
         return ArticleResource::collection($articles)
             ->additional($this->frontDescriptionService->announces());
@@ -68,15 +80,15 @@ class FrontController extends Controller
 
     public function ranking(Request $request)
     {
-        $articles = $this->articleService->paginateRanking($request->has('simple'));
+        $articles = $this->articleService->paginateRanking();
 
         return ArticleResource::collection($articles)
             ->additional($this->frontDescriptionService->ranking());
     }
 
-    public function category(string $type, string $slug, Request $request)
+    public function category(string $type, string $slug)
     {
-        $articles = $this->articleService->paginateByCategory($type, $slug, $request->has('simple'));
+        $articles = $this->articleService->paginateByCategory($type, $slug);
 
         return ArticleResource::collection($articles)
             ->additional($this->frontDescriptionService->category($type, $slug));

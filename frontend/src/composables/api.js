@@ -18,6 +18,9 @@ export const useFrontApi = () => ({
   fetchSidebar() {
     return axios.get('/api/front/sidebar');
   },
+  fetchTop() {
+    return axios.get('/api/front/top');
+  },
   // list
   fetchCategoryPak(size, slug, page = 1) {
     return axios.get(`/api/front/category/pak/${size}/${slug}`, { params: { page } });

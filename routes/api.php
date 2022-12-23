@@ -30,6 +30,7 @@ Route::POST('/password/email', [ForgotPasswordController::class, 'sendResetLinkE
 Route::prefix('front')->group(function () {
     // キャッシュ有効
     Route::middleware(['cache.headers:public;max_age=600;etag'])->group(function () {
+        Route::get('/top', [FrontController::class, 'top']);
         Route::get('/sidebar', [FrontController::class, 'sidebar']);
         Route::get('/', [FrontController::class, 'index']);
         Route::get('/ranking/', [FrontController::class, 'ranking']);

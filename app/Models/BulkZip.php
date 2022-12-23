@@ -40,6 +40,8 @@ class BulkZip extends Model
 
     public function deleteFileHandler()
     {
-        return Storage::disk('public')->delete($this->path);
+        if ($this->path) {
+            return Storage::disk('public')->delete($this->path);
+        }
     }
 }

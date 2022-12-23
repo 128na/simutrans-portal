@@ -409,7 +409,7 @@ class Article extends Model implements Feedable
             'summary' => $this->contents->getDescription() ?? '',
             'updated' => $this->modified_at->toMutable(), // CarbonImmutableは未対応
             'link' => route('articles.show', $this->slug),
-            'author' => $this->user->name,
+            'authorName' => $this->user->name,
         ]);
     }
 }

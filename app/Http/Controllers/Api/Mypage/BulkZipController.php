@@ -15,7 +15,11 @@ class BulkZipController extends Controller
 
     public function user()
     {
-        $bulkZip = $this->bulkZipService->findOrCreateAndDispatch(Auth::user());
+        /**
+         * @var \App\Models\User
+         */
+        $user = Auth::user();
+        $bulkZip = $this->bulkZipService->findOrCreateAndDispatch($user);
 
         return response(new BulkZipResource($bulkZip), 200);
     }

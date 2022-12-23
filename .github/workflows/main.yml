@@ -64,7 +64,7 @@ jobs:
         if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
         run: composer install
       - name: stan
-        run: composer run stan:check
+        run: composer run stan
   es:
     runs-on: ubuntu-latest
     steps:

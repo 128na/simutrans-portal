@@ -4,10 +4,9 @@ namespace App\Models\Contents;
 
 class PageContent extends Content
 {
-    protected $attributes = [
-        'thumbnail',
-        'sections' => [],
-    ];
+    public $thumbnail;
+
+    public $sections;
 
     public function __construct(array $contents)
     {

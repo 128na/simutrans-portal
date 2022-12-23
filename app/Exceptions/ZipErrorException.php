@@ -9,7 +9,7 @@ class ZipErrorException extends Exception
 {
     public function __construct(string $message, ?int $code = null)
     {
-        if (! is_null($code)) {
+        if (!is_null($code)) {
             $message .= ' '.$this->handleCode($code);
         }
         parent::__construct($message);
@@ -80,5 +80,7 @@ class ZipErrorException extends Exception
             case ZipArchive::ER_CANCELLED:
                 return '操作がキャンセルされました。 libzip ≥ 1.6.0 でビルドした場合、 PHP 7.4.3 以降、PECL zip 1.16.1 以降で利用可能です。';
         }
+
+        return '不明なエラー';
     }
 }

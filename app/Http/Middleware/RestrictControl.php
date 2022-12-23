@@ -14,7 +14,8 @@ class RestrictControl
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return mixed
      */
     public function handle($request, Closure $next, string $type)
@@ -28,15 +29,25 @@ class RestrictControl
     {
         switch ($type) {
             case 'login':
-                return abort_if($this->controllOption->restrictLogin(), 403);
+                abort_if($this->controllOption->restrictLogin(), 403);
+
+                return;
             case 'register':
-                return abort_if($this->controllOption->restrictRegister(), 403);
+                abort_if($this->controllOption->restrictRegister(), 403);
+
+                return;
             case 'update_article':
-                return abort_if($this->controllOption->restrictArticleUpdate(), 403);
+                abort_if($this->controllOption->restrictArticleUpdate(), 403);
+
+                return;
             case 'update_tag':
-                return abort_if($this->controllOption->restrictTagUpdate(), 403);
+                abort_if($this->controllOption->restrictTagUpdate(), 403);
+
+                return;
             case 'invitation_code':
-                return abort_if($this->controllOption->restrictInvitationCode(), 403);
+                abort_if($this->controllOption->restrictInvitationCode(), 403);
+
+                return;
         }
     }
 }

@@ -9,7 +9,6 @@ use App\Models\Article;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
-use App\Repositories\TagRepository;
 use Carbon\CarbonImmutable;
 
 class ArticleEditorService extends Service
@@ -17,7 +16,6 @@ class ArticleEditorService extends Service
     public function __construct(
         private ArticleRepository $articleRepository,
         private CategoryRepository $categoryRepository,
-        private TagRepository $tagRepository,
         private CarbonImmutable $now
     ) {
     }

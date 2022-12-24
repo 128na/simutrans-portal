@@ -5,7 +5,6 @@ namespace App\Console\Commands\TweetLog;
 use App\Services\Twitter\AggregateTweetLogService;
 use App\Services\Twitter\ImportTweetService;
 use App\Services\Twitter\ResolveArticleService;
-use App\Services\Twitter\SearchTweetService;
 use Illuminate\Console\Command;
 
 class Import extends Command
@@ -16,7 +15,6 @@ class Import extends Command
 
     public function __construct(
         private ImportTweetService $importTweetService,
-        private SearchTweetService $searchTweetService,
         private ResolveArticleService $resolveArticleService,
         private AggregateTweetLogService $aggregateTweetLogService
     ) {

@@ -17,9 +17,9 @@ class TwitterV2Api extends TwitterOAuth
     private bool $pkceToken = false;
 
     public function __construct(
-        $consumerKey,
-        $consumerSecret,
-        private $appOnlyBearerToken,
+        string $consumerKey,
+        string $consumerSecret,
+        string $appOnlyBearerToken,
         private OauthTokenRepository $oauthTokenRepository,
         private PKCEService $pKCEService,
     ) {

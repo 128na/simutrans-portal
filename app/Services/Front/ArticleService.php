@@ -7,7 +7,6 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
-use App\Repositories\TagRepository;
 use App\Services\Service;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -17,7 +16,6 @@ class ArticleService extends Service
     public function __construct(
         private ArticleRepository $articleRepository,
         private CategoryRepository $categoryRepository,
-        private TagRepository $tagRepository,
     ) {
     }
 

@@ -31,7 +31,7 @@ class ImageAttachment implements Rule
     public function passes($attribute, $value)
     {
         /**
-         * @var \App\Models\Attachment
+         * @var \App\Models\Attachment|null
          */
         $attachment = $this->attachmentRepository->find($value);
 

@@ -135,15 +135,6 @@ class ZipManager extends Service
         $this->disk->delete($filepath);
     }
 
-    /**
-     * jsonファイル.
-     */
-    private function addJsonFile(array $contents): void
-    {
-        $opt = JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE;
-        $this->addText('contents.json', json_encode($contents, $opt));
-    }
-
     private function open(): void
     {
         $result = $this->zipArchive->open($this->disk->path($this->filepath), ZipArchive::CREATE);

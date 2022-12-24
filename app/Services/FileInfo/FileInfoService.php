@@ -5,7 +5,6 @@ namespace App\Services\FileInfo;
 use App\Models\Attachment;
 use App\Models\Attachment\FileInfo;
 use App\Repositories\Attachment\FileInfoRepository;
-use App\Repositories\AttachmentRepository;
 use App\Services\Service;
 
 class FileInfoService extends Service
@@ -14,7 +13,6 @@ class FileInfoService extends Service
      * @param  \App\Services\FileInfo\Extractors\Extractor[]  $extractors
      */
     public function __construct(
-        private AttachmentRepository $attachmentRepository,
         private FileInfoRepository $fileInfoRepository,
         private ZipArchiveParser $zipArchiveParser,
         private TextService $textService,

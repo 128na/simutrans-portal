@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Mypage;
 
 use App\Http\Controllers\Controller;
-use App\Services\UserService;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +34,7 @@ class ResetPasswordController extends Controller
      *
      * @return void
      */
-    public function __construct(private UserService $userService)
+    public function __construct()
     {
         // $this->middleware('guest');
         $this->redirectTo = route('mypage.index');

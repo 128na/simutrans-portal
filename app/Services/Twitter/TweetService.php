@@ -2,6 +2,8 @@
 
 namespace App\Services\Twitter;
 
+use stdClass;
+use Illuminate\Support\Collection;
 use App\Services\Twitter\Exceptions\TweetFailedException;
 
 class TweetService
@@ -12,7 +14,7 @@ class TweetService
     ) {
     }
 
-    public function post($message = ''): ?TweetDataV1
+    public function post(string $message = ''): ?TweetDataV1
     {
         if ($this->isProd) {
             $params = [
@@ -27,7 +29,10 @@ class TweetService
         return null;
     }
 
-    public function postMedia($mediaPathes = [], $message = ''): ?TweetDataV1
+    /**
+     * @param array<string> $mediaPathes
+     */
+    public function postMedia(array $mediaPathes = [], string $message = ''): ?TweetDataV1
     {
         $mediaPathes = collect($mediaPathes);
 
@@ -46,14 +51,18 @@ class TweetService
         return null;
     }
 
-    private function uploadMedia($mediaPathes)
+    /**
+     * @param Collection<int, string> $mediaPathes
+     * @return Collection<int, stdClass> $mediaPathes
+     */
+    private function uploadMedia(Collection $mediaPathes): Collection
     {
-        return $mediaPathes->map(function ($media_path) {
-            return $this->handleResponse($this->client->upload('media/upload', ['media' => $media_path]));
+        return $mediaPathes->map(function ($mediaPath) {
+            return $this->handleResponse($this->client->upload('media/upload', ['media' => $mediaPath]));
         });
     }
 
-    private function handleResponse($res)
+    private function handleResponse(stdClass $res): stdClass
     {
         if (isset($res->errors)) {
             logger()->error('tweet failed', [$res]);

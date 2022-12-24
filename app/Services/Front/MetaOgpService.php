@@ -13,6 +13,9 @@ class MetaOgpService extends Service
     {
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function show(Article $article): array
     {
         return [
@@ -35,6 +38,9 @@ class MetaOgpService extends Service
         return $str;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function user(User $user): array
     {
         return [
@@ -45,6 +51,9 @@ class MetaOgpService extends Service
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function category(string $type, string $slug): array
     {
         if ($type === 'license') {
@@ -60,6 +69,9 @@ class MetaOgpService extends Service
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function categoryPakAddon(string $pakSlug, string $addonSlug): array
     {
         return [
@@ -68,6 +80,9 @@ class MetaOgpService extends Service
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function categoryPakNoneAddon(string $pakSlug): array
     {
         return [
@@ -76,6 +91,9 @@ class MetaOgpService extends Service
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function tag(Tag $tag): array
     {
         return [

@@ -15,11 +15,17 @@ class SidebarService extends Service
     ) {
     }
 
+    /**
+     * @return Collection<int, \App\Models\UserAddonCount>
+     */
     public function userAddonCounts(): Collection
     {
         return $this->userAddonCountRepository->get();
     }
 
+    /**
+     * @return Collection<int, \App\Models\PakAddonCount>
+     */
     public function pakAddonsCounts(): Collection
     {
         return $this->pakAddonCountRepository->get();

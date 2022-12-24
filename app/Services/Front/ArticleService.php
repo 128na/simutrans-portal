@@ -24,26 +24,41 @@ class ArticleService extends Service
         return $this->articleRepository->loadArticle($article);
     }
 
+    /**
+     * @return LengthAwarePaginator<User>
+     */
     public function paginateByUser(User $user): LengthAwarePaginator
     {
         return $this->articleRepository->paginateByUser($user);
     }
 
+    /**
+     * @return Paginator<User>
+     */
     public function paginatePages(bool $simple = false): Paginator
     {
         return $this->articleRepository->paginatePages($simple);
     }
 
+    /**
+     * @return Paginator<User>
+     */
     public function paginateAnnouces(bool $simple = false): Paginator
     {
         return $this->articleRepository->paginateAnnouces($simple);
     }
 
+    /**
+     * @return Paginator<User>
+     */
     public function paginateRanking(bool $simple = false): Paginator
     {
         return $this->articleRepository->paginateRanking($simple);
     }
 
+    /**
+     * @return Paginator<User>
+     */
     public function paginateByCategory(string $type, string $slug, bool $simple = false): Paginator
     {
         $category = $this->categoryRepository->findOrFailByTypeAndSlug($type, $slug);
@@ -51,6 +66,9 @@ class ArticleService extends Service
         return $this->articleRepository->paginateByCategory($category, $simple);
     }
 
+    /**
+     * @return LengthAwarePaginator<User>
+     */
     public function paginateByPakAddonCategory(string $pakSlug, string $addonSlug): LengthAwarePaginator
     {
         $pak = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
@@ -59,6 +77,9 @@ class ArticleService extends Service
         return $this->articleRepository->paginateByPakAddonCategory($pak, $addon);
     }
 
+    /**
+     * @return LengthAwarePaginator<User>
+     */
     public function paginateByPakNoneAddonCategory(string $pakSlug): LengthAwarePaginator
     {
         $pak = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
@@ -66,11 +87,17 @@ class ArticleService extends Service
         return $this->articleRepository->paginateByPakNoneAddonCategory($pak);
     }
 
+    /**
+     * @return LengthAwarePaginator<User>
+     */
     public function paginateByTag(Tag $tag): LengthAwarePaginator
     {
         return $this->articleRepository->paginateByTag($tag);
     }
 
+    /**
+     * @return LengthAwarePaginator<User>
+     */
     public function paginateBySearch(string $word): LengthAwarePaginator
     {
         return $this->articleRepository->paginateBySearch($word);

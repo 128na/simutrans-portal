@@ -9,6 +9,9 @@ use App\Models\User;
 
 class FrontDescriptionService
 {
+    /**
+     * @return array<string, array<string|UserProfileResource>>
+     */
     public function user(User $user): array
     {
         return ['description' => [
@@ -18,6 +21,9 @@ class FrontDescriptionService
         ]];
     }
 
+    /**
+     * @return array<string, array<string>>
+     */
     public function page(): array
     {
         return ['description' => [
@@ -27,6 +33,9 @@ class FrontDescriptionService
         ]];
     }
 
+    /**
+     * @return array<string, array<string>>
+     */
     public function announces(): array
     {
         return ['description' => [
@@ -36,6 +45,9 @@ class FrontDescriptionService
         ]];
     }
 
+    /**
+     * @return array<string, array<string>>
+     */
     public function ranking(): array
     {
         return ['description' => [
@@ -45,6 +57,9 @@ class FrontDescriptionService
         ]];
     }
 
+    /**
+     * @return array<string, array<string>>
+     */
     public function category(string $type, string $slug): array
     {
         if ($type === 'license') {
@@ -62,6 +77,9 @@ class FrontDescriptionService
         ]];
     }
 
+    /**
+     * @return array<string, array<string>>
+     */
     public function categoryPakAddon(string $pakSlug, string $addonSlug): array
     {
         return ['description' => [
@@ -71,6 +89,9 @@ class FrontDescriptionService
         ]];
     }
 
+    /**
+     * @return array<string, array<string>>
+     */
     public function categoryPakNoneAddon(string $pakSlug): array
     {
         return ['description' => [
@@ -80,6 +101,9 @@ class FrontDescriptionService
         ]];
     }
 
+    /**
+     * @return array<string, array<string|TagDescriptionResource>>
+     */
     public function tag(Tag $tag): array
     {
         return ['description' => [
@@ -89,6 +113,9 @@ class FrontDescriptionService
         ]];
     }
 
+    /**
+     * @return array<string, array<string>>
+     */
     public function search(string $word): array
     {
         return ['description' => [

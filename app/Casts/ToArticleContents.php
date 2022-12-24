@@ -43,10 +43,10 @@ class ToArticleContents implements CastsAttributes
      * @param  string  $key
      * @param  \App\Models\Contents\Content  $value
      * @param  array  $attributes
-     * @return array
+     * @return string
      */
     public function set($model, $key, $value, $attributes)
     {
-        return json_encode($value);
+        return json_encode($value) ?: '';
     }
 }

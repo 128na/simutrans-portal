@@ -14,6 +14,6 @@ class Articles extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection->map(fn ($item) => new Article($item));
+        return $this->collection->map(fn ($item) => new Article($item))->toArray();
     }
 }

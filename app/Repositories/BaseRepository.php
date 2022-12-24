@@ -15,6 +15,8 @@ use Illuminate\Support\Str;
  * 一覧： findAll(By)Hoge
  * ページネーション: paginate(By)Hoge
  * カーソル: cursor(By)Hoge
+ *
+ * @template T
  */
 abstract class BaseRepository
 {
@@ -70,8 +72,11 @@ abstract class BaseRepository
 
     /**
      * リレーションをロード.
+     *
+     * @param  T  $model
+     * @return T
      */
-    public function load(Model $model, array $relations = []): Model
+    public function load($model, array $relations = [])
     {
         return $model->loadMissing($relations);
     }

@@ -26,12 +26,12 @@ class ToProfileData implements CastsAttributes
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
-     * @param  ProfileData  $value
+     * @param  mixed  $value
      * @param  array  $attributes
-     * @return array
+     * @return string
      */
     public function set($model, $key, $value, $attributes)
     {
-        return json_encode($value);
+        return json_encode($value) ?: '';
     }
 }

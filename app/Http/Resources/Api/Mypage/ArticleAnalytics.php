@@ -25,6 +25,6 @@ class ArticleAnalytics extends ResourceCollection
                 $item->viewCounts->pluck('count', 'period'),
                 $item->conversionCounts->pluck('count', 'period'),
             ]
-        );
+        )->toArray();
     }
 }

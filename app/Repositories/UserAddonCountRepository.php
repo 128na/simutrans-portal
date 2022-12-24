@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\UserAddonCount;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class UserAddonCountRepository extends BaseRepository

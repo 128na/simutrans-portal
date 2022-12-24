@@ -25,6 +25,6 @@ class Attachments extends ResourceCollection
                 'url' => $item->url,
                 'fileInfo' => $this->when($item->fileInfo, fn () => $item->fileInfo->data),
             ];
-        });
+        })->toArray();
     }
 }

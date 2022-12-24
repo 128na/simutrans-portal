@@ -6,8 +6,8 @@ use App\Exceptions\ZipErrorException;
 use App\Services\BulkZip\Decorators\BaseDecorator;
 use App\Services\Service;
 use ErrorException;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Str;
 use Throwable;
 use ZipArchive;
@@ -16,7 +16,7 @@ class ZipManager extends Service
 {
     private ZipArchive $zipArchive;
 
-    private FilesystemAdapter $disk;
+    private Filesystem $disk;
 
     private string $filepath;
 
@@ -25,7 +25,7 @@ class ZipManager extends Service
      */
     private array $decorators;
 
-    public function __construct(ZipArchive $zipArchive, FilesystemAdapter $disk, array $decorators)
+    public function __construct(ZipArchive $zipArchive, Filesystem $disk, array $decorators)
     {
         $this->zipArchive = $zipArchive;
         $this->disk = $disk;

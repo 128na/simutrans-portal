@@ -21,6 +21,6 @@ class BulkZipController extends Controller
         $user = Auth::user();
         $bulkZip = $this->bulkZipService->findOrCreateAndDispatch($user);
 
-        return response(new BulkZipResource($bulkZip), 200);
+        return response()->json(new BulkZipResource($bulkZip), 200);
     }
 }

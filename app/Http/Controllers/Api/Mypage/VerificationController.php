@@ -55,7 +55,7 @@ class VerificationController extends Controller
 
     public function notice()
     {
-        return response(view('errors.verification'), 401);
+        return redirect()->route('verification.notice');
     }
 
     public function verifyApi(Request $request)
@@ -72,7 +72,9 @@ class VerificationController extends Controller
         if ($request->user()->hasVerifiedEmail() || $request->user()->markEmailAsVerified()) {
             event(new Verified($request->user()));
 
-            $user = $this->userService->getUser(Auth::user());
+            /** @var \App\Models\User */
+            $user = Auth::user();
+            $user = $this->userService->getUser($user);
 
             return new UserResouce($user);
         }

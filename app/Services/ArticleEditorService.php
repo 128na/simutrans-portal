@@ -92,6 +92,7 @@ class ArticleEditorService extends Service
             'published_at' => $this->getPublishedAt($request),
             'modified_at' => $this->now->toDateTimeString(),
         ];
+        /** @var Article */
         $article = $this->articleRepository->storeByUser($user, $data);
 
         $this->syncRelated($article, $request);

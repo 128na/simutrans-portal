@@ -59,7 +59,7 @@ class PakAddonCountRepository extends BaseRepository
     /**
      * 再集計する.
      */
-    public function recount()
+    public function recount(): void
     {
         DB::transaction(function () {
             DB::statement(self::DELETE_SQL);

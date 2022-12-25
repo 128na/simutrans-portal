@@ -24,6 +24,9 @@ class BulkZipRepository extends BaseRepository
         return $model->bulkZippable()->first();
     }
 
+    /**
+     * @param array<string> $data
+     */
     public function storeByBulkZippable(BulkZippableInterface $model, array $data = []): BulkZip
     {
         /** @var BulkZip */

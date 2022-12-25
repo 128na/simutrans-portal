@@ -21,7 +21,7 @@ class CategoryRepository extends BaseRepository
     /**
      * ユーザーが利用できるカテゴリ一覧を返す.
      */
-    public function findAllByUser(User $user, array $column = ['*'], array $with = []): Collection
+    public function findAllByUser(User $user): Collection
     {
         return $this->model->forUser($user)->get();
     }

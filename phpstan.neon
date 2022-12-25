@@ -8,3 +8,6 @@ parameters:
 
     # Level 9 is the highest level
     level: 6
+
+    # covariant,contravariantが残念な感じになるのでやめる
+    checkGenericClassInNonGenericObjectType: false

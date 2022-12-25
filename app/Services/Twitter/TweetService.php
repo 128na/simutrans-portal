@@ -2,9 +2,9 @@
 
 namespace App\Services\Twitter;
 
-use stdClass;
-use Illuminate\Support\Collection;
 use App\Services\Twitter\Exceptions\TweetFailedException;
+use Illuminate\Support\Collection;
+use stdClass;
 
 class TweetService
 {
@@ -30,7 +30,7 @@ class TweetService
     }
 
     /**
-     * @param array<string> $mediaPathes
+     * @param  array<string>  $mediaPathes
      */
     public function postMedia(array $mediaPathes = [], string $message = ''): ?TweetDataV1
     {
@@ -52,7 +52,7 @@ class TweetService
     }
 
     /**
-     * @param Collection<int, string> $mediaPathes
+     * @param  Collection<int, string>  $mediaPathes
      * @return Collection<int, stdClass> $mediaPathes
      */
     private function uploadMedia(Collection $mediaPathes): Collection

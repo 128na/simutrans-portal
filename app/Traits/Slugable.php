@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 
 /**
  * Slug.
@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 trait Slugable
 {
     /**
-     * @param string $value
-     * @param string $field
+     * @param  string  $value
+     * @param  string  $field
      * @return Model
      */
     public function resolveRouteBinding($value, $field = null)
@@ -25,7 +25,7 @@ trait Slugable
         return $query->where('slug', $slug);
     }
 
-    public function setSlugAttribute(string $value):void
+    public function setSlugAttribute(string $value): void
     {
         $value = urldecode($value);
         $value = strtolower($value);
@@ -38,7 +38,7 @@ trait Slugable
     /**
      * スラッグがユニークか.
      */
-    public function isUniqueSlug():bool
+    public function isUniqueSlug(): bool
     {
         $query = self::where('slug', $this->slug);
         // IDがある＝保存済みなら自身を除く

@@ -14,22 +14,16 @@ use ZipArchive;
 
 class ZipManager extends Service
 {
-    private ZipArchive $zipArchive;
-
-    private Filesystem $disk;
-
     private string $filepath;
 
     /**
-     * @var BaseDecorator[]
+     * @param  array<BaseDecorator>  $decorators
      */
-    private array $decorators;
-
-    public function __construct(ZipArchive $zipArchive, Filesystem $disk, array $decorators)
-    {
-        $this->zipArchive = $zipArchive;
-        $this->disk = $disk;
-        $this->decorators = $decorators;
+    public function __construct(
+        private ZipArchive $zipArchive,
+        private Filesystem $disk,
+        private array $decorators
+    ) {
     }
 
     private function randName(?string $prefix = null, ?string $suffix = null): string
@@ -73,7 +67,8 @@ class ZipManager extends Service
     /**
      * アイテムから情報を取得.
      *
-     * @param  Model[]  $items
+     * @param  array<Model>  $items
+     * @return array<string, mixed>
      */
     private function processItems(array $items): array
     {
@@ -96,6 +91,8 @@ class ZipManager extends Service
 
     /**
      * テキストファイル.
+     *
+     * @param  array<array<mixed>>  $contents
      */
     private function addTextFile(array $contents): void
     {
@@ -115,6 +112,8 @@ class ZipManager extends Service
 
     /**
      * SJIS csvファイル.
+     *
+     * @param  array<array<mixed>>  $contents
      */
     private function addCsvFile(array $contents): void
     {

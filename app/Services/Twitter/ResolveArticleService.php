@@ -16,7 +16,7 @@ class ResolveArticleService
     }
 
     /**
-     * @param array<TweetData> $tweetDataArray
+     * @param  array<TweetData>  $tweetDataArray
      * @return array<TweetData>
      */
     public function resolveByTweetDatas(array $tweetDataArray): array
@@ -28,7 +28,7 @@ class ResolveArticleService
     }
 
     /**
-     * @param array<TweetData> $tweetDataArray
+     * @param  array<TweetData>  $tweetDataArray
      * @return array<TweetData>
      */
     private function resolveById(array $tweetDataArray): array
@@ -46,7 +46,7 @@ class ResolveArticleService
     }
 
     /**
-     * @param array<TweetData> $tweetDataArray
+     * @param  array<TweetData>  $tweetDataArray
      * @return array<TweetData>
      */
     private function resolveByTitle(array $tweetDataArray): array

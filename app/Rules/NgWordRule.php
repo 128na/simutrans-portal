@@ -7,11 +7,15 @@ use Illuminate\Support\Str;
 
 class NgWordRule implements Rule
 {
+    /**
+     * @var array<string>
+     */
     private array $detected = [];
 
     /**
      * Create a new rule instance.
      *
+     * @param  array<string>  $ngWords
      * @return void
      */
     public function __construct(private array $ngWords = [])

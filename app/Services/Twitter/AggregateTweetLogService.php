@@ -15,7 +15,8 @@ class AggregateTweetLogService
 
     /**
      * 値が0のフィールドを更新から除外する.
-     * @param array<string,string|int> $data
+     *
+     * @param  array<string,string|int>  $data
      * @return array<string,string|int>
      */
     private function filterUpdatableFields(array $data): array

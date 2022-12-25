@@ -6,10 +6,13 @@ use App\Http\Requests\Api\Article\BaseRequest;
 use App\Http\Requests\Api\Article\StoreRequest;
 use App\Http\Requests\Api\Article\UpdateRequest;
 use App\Models\Article;
+use App\Models\Category;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 
 class ArticleEditorService extends Service
 {
@@ -20,12 +23,18 @@ class ArticleEditorService extends Service
     ) {
     }
 
-    public function findArticles(User $user)
+    /**
+     * @return Collection<int, Article>
+     */
+    public function findArticles(User $user): Collection
     {
         return $this->articleRepository->findAllByUser($user, ArticleRepository::MYPAGE_RELATIONS);
     }
 
-    public function getOptions(User $user)
+    /**
+     * @return array<string, mixed>
+     */
+    public function getOptions(User $user): array
     {
         return [
             'categories' => $this->getSeparatedCategories($user),
@@ -34,7 +43,10 @@ class ArticleEditorService extends Service
         ];
     }
 
-    public function getSeparatedCategories(User $user)
+    /**
+     * @return SupportCollection<string, mixed>
+     */
+    public function getSeparatedCategories(User $user): SupportCollection
     {
         $categories = $this->categoryRepository->findAllByUser($user);
 
@@ -43,10 +55,14 @@ class ArticleEditorService extends Service
 
     /**
      * タイプ別に分類したカテゴリ一覧を返す.
+     *
+     * @param  Collection<int, Category>  $categories
+     * @return SupportCollection<string, mixed>
      */
-    private function separateCategories($categories)
+    private function separateCategories(Collection $categories): SupportCollection
     {
-        return collect($categories->reduce(function ($list, $item) {
+        /** @return array<string, mixed> */
+        $fn = function (array $list, Category $item): array {
             if (! isset($list[$item->type])) {
                 $list[$item->type] = [];
             }
@@ -58,22 +74,36 @@ class ArticleEditorService extends Service
             ];
 
             return $list;
-        }, []));
+        };
+
+        return collect($categories->reduce($fn, []));
     }
 
-    public function getStatuses()
+    /**
+     * @return SupportCollection<int, mixed>
+     */
+    public function getStatuses(): SupportCollection
     {
-        return collect(config('status'))->map(
-            fn ($item) => [
+        /** @var array<string> */
+        $status = config('status');
+
+        return collect($status)->map(
+            fn ($item): array => [
                 'label' => __("statuses.{$item}"),
                 'value' => $item,
             ]
         )->values();
     }
 
-    public function getPostTypes()
+    /**
+     * @return SupportCollection<int, mixed>
+     */
+    public function getPostTypes(): SupportCollection
     {
-        return collect(config('post_types'))->map(
+        /** @var array<string> */
+        $postTypes = config('post_types');
+
+        return collect($postTypes)->map(
             fn ($item) => [
                 'label' => __("post_types.{$item}"),
                 'value' => $item,
@@ -81,7 +111,7 @@ class ArticleEditorService extends Service
         )->values();
     }
 
-    public function storeArticle(User $user, StoreRequest $request)
+    public function storeArticle(User $user, StoreRequest $request): Article
     {
         $data = [
             'post_type' => $request->input('article.post_type'),
@@ -114,7 +144,7 @@ class ArticleEditorService extends Service
         return null;
     }
 
-    public function updateArticle(Article $article, UpdateRequest $request)
+    public function updateArticle(Article $article, UpdateRequest $request): Article
     {
         $data = [
             'title' => $request->input('article.title'),
@@ -151,7 +181,7 @@ class ArticleEditorService extends Service
         return ! $request->input('without_update_modified_at');
     }
 
-    private function syncRelated(Article $article, BaseRequest $request)
+    private function syncRelated(Article $article, BaseRequest $request): void
     {
         // 添付
         $attachmentIds = collect([

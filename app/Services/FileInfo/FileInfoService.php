@@ -49,6 +49,10 @@ class FileInfoService extends Service
         }
     }
 
+    /**
+     * @param  array<string, array<string, mixed>>  $data
+     * @return array<string, array<string, mixed>>
+     */
     private function handleExtractors(string $filename, string $text, array $data): array
     {
         foreach ($this->extractors as $extractor) {

@@ -2,11 +2,11 @@
 
 namespace App\Services\FileInfo;
 
-use Generator;
-use ZipArchive;
-use App\Services\Service;
 use App\Models\Attachment;
+use App\Services\Service;
+use Generator;
 use Illuminate\Support\LazyCollection;
+use ZipArchive;
 
 class ZipArchiveParser extends Service
 {
@@ -17,12 +17,13 @@ class ZipArchiveParser extends Service
 
     /**
      * テキスト系ファイルをパースする(dat,tab,readme).
+     *
      * @return LazyCollection<string, string>
      */
     public function parseTextContent(Attachment $attachment): LazyCollection
     {
         /** @var Generator<string, string> */
-        $fn = function () use ($attachment):Generator {
+        $fn = function () use ($attachment): Generator {
             try {
                 $this->zipArchive->open($attachment->full_path);
 
@@ -35,6 +36,7 @@ class ZipArchiveParser extends Service
                 $this->zipArchive->close();
             }
         };
+
         return LazyCollection::make($fn);
     }
 }

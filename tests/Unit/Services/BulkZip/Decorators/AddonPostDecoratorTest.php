@@ -53,11 +53,14 @@ class AddonPostDecoratorTest extends UnitTestCase
             $m->shouldReceive('getAttribute')->withArgs(['id'])->andReturn(1);
             $m->shouldReceive('getAttribute')->withArgs(['title'])->andReturn('test title');
             $m->shouldReceive('getAttribute')->withArgs(['slug'])->andReturn('test_slug');
+            $m->shouldReceive('offsetExists')->withArgs(['user'])->andReturn(true);
             $m->shouldReceive('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $m) {
+                $m->shouldReceive('offsetExists')->withArgs(['name'])->andReturn(true);
                 $m->shouldReceive('getAttribute')->withArgs(['name'])->andReturn('test user name');
             }));
             $m->shouldReceive('getAttribute')->withArgs(['categories'])
                 ->andReturn(collect([new Category(['type' => 'test', 'slug' => 'example'])]));
+            $m->shouldReceive('offsetExists')->withArgs(['file'])->andReturn(true);
             $m->shouldReceive('getAttribute')->withArgs(['file'])
                 ->andReturn(new Attachment(['original_name' => 'test.zip', 'path' => '/test/123']));
             $m->shouldReceive('tags')->andReturn($this->mock(BelongsToMany::class, function (MockInterface $m) {

@@ -37,6 +37,7 @@ class ArticleRepository extends BaseRepository
 
     /**
      * 添付ファイルを関連付ける.
+     * @param array<int|string> $attachmentsIds
      */
     public function syncAttachments(Article $article, array $attachmentsIds): void
     {
@@ -47,6 +48,7 @@ class ArticleRepository extends BaseRepository
 
     /**
      * カテゴリを関連付ける.
+     * @param array<int|string> $categoryIds
      */
     public function syncCategories(Article $article, array $categoryIds): void
     {
@@ -55,6 +57,7 @@ class ArticleRepository extends BaseRepository
 
     /**
      * タグを関連付ける.
+     * @param array<int|string> $tagIds
      */
     public function syncTags(Article $article, array $tagIds): void
     {
@@ -63,9 +66,12 @@ class ArticleRepository extends BaseRepository
 
     /**
      * アナリティクス用のデータ取得.
+     * @param array<int|string> $ids
+     * @return Collection<int, Article>
      */
     public function findAllForAnalytics(User $user, array $ids, Closure $periodQuery): Collection
     {
+        /** @var Collection<int, Article> */
         return $this->model
             ->query()
             ->select('id')
@@ -81,9 +87,12 @@ class ArticleRepository extends BaseRepository
 
     /**
      * ユーザーに紐づくデータを返す.
+     * @param array<mixed> $relations
+     * @return Collection<int, Article>
      */
     public function findAllByUser(User $user, array $relations = self::FRONT_RELATIONS): Collection
     {
+        /** @var Collection<int, Article> */
         return $this->model
             ->query()
             ->select(['articles.*'])
@@ -105,9 +114,11 @@ class ArticleRepository extends BaseRepository
 
     /**
      * お知らせ記事一覧.
+     * @return Paginator<Article>
      */
     public function paginateAnnouces(bool $simple = false): Paginator
     {
+        /** @var Paginator<Article> */
         return $simple
             ? $this->queryAnnouces()->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryAnnouces()->paginate();
@@ -125,9 +136,11 @@ class ArticleRepository extends BaseRepository
 
     /**
      * 一般記事一覧.
+     * @return Paginator<Article>
      */
     public function paginatePages(bool $simple = false): Paginator
     {
+        /** @var Paginator<Article> */
         return $simple
             ? $this->queryPages()->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryPages()->paginate();
@@ -144,9 +157,11 @@ class ArticleRepository extends BaseRepository
 
     /**
      * アドオン投稿/紹介のデイリーPVランキング.
+     * @return Paginator<Article>
      */
     public function paginateRanking(bool $simple = false): Paginator
     {
+        /** @var Paginator<Article> */
         return $simple
             ? $this->queryRanking()->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryRanking()->paginate();
@@ -154,6 +169,7 @@ class ArticleRepository extends BaseRepository
 
     /**
      * カテゴリの投稿一覧.
+     * @return Paginator<Article>
      */
     public function paginateByCategory(Category $category, bool $simple = false): Paginator
     {
@@ -181,14 +197,17 @@ class ArticleRepository extends BaseRepository
 
     /**
      * カテゴリ(pak/addon)の投稿一覧.
+     * @return LengthAwarePaginator<Article>
      */
     public function paginateByPakAddonCategory(Category $pak, Category $addon): LengthAwarePaginator
     {
+        /** @var LengthAwarePaginator<Article> */
         return $this->queryByPakAddonCategory($pak, $addon)->paginate();
     }
 
     /**
      * カテゴリ(pak,addon指定なし)の投稿一覧.
+     * @return LengthAwarePaginator<Article>
      */
     public function paginateByPakNoneAddonCategory(Category $pak): LengthAwarePaginator
     {
@@ -203,6 +222,7 @@ class ArticleRepository extends BaseRepository
 
     /**
      * タグを持つ投稿記事一覧.
+     * @return LengthAwarePaginator<Article>
      */
     public function paginateByTag(Tag $tag): LengthAwarePaginator
     {
@@ -216,11 +236,12 @@ class ArticleRepository extends BaseRepository
 
     /**
      * ユーザーの投稿記事一覧.
+     * @return LengthAwarePaginator<Article>
      */
     public function paginateByUser(User $user): LengthAwarePaginator
     {
         return $user->articles()
-          ->active()
+            ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
             ->orderBy('modified_at', 'desc')
@@ -231,7 +252,7 @@ class ArticleRepository extends BaseRepository
     {
         $word = trim($word);
 
-        if (! $word) {
+        if (!$word) {
             return $this->model->select(['articles.*'])
                 ->active()
                 ->with(self::FRONT_RELATIONS)
@@ -253,9 +274,11 @@ class ArticleRepository extends BaseRepository
 
     /**
      * 記事検索結果一覧.
+     * @return LengthAwarePaginator<Article>
      */
     public function paginateBySearch(string $word): LengthAwarePaginator
     {
+        /** @var LengthAwarePaginator<Article> */
         return $this->queryBySearch($word)->paginate();
     }
 
@@ -322,8 +345,13 @@ class ArticleRepository extends BaseRepository
             : $article->delete();
     }
 
+    /**
+     * @param array<string> $titles
+     * @return Collection<int, Article>
+     */
     public function findByTitles(array $titles): Collection
     {
+        /** @var Collection<int, Article> */
         return $this->model->active()->whereIn('title', $titles)->get();
     }
 

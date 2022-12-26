@@ -15,7 +15,7 @@ class ZippableManager extends Service
     }
 
     /**
-     * @return array<\App\Contracts\Models\BulkZippableInterface>
+     * @return array<\App\Models\Article>
      */
     public function getItems(BulkZip $model): array
     {
@@ -27,7 +27,7 @@ class ZippableManager extends Service
     }
 
     /**
-     * @return array<User>
+     * @return array<\App\Models\Article>
      */
     private function getUserItems(User $user): array
     {

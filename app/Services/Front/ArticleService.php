@@ -25,7 +25,7 @@ class ArticleService extends Service
     }
 
     /**
-     * @return LengthAwarePaginator<User>
+     * @return LengthAwarePaginator<Article>
      */
     public function paginateByUser(User $user): LengthAwarePaginator
     {
@@ -33,7 +33,7 @@ class ArticleService extends Service
     }
 
     /**
-     * @return Paginator<User>
+     * @return Paginator<Article>
      */
     public function paginatePages(bool $simple = false): Paginator
     {
@@ -41,7 +41,7 @@ class ArticleService extends Service
     }
 
     /**
-     * @return Paginator<User>
+     * @return Paginator<Article>
      */
     public function paginateAnnouces(bool $simple = false): Paginator
     {
@@ -49,7 +49,7 @@ class ArticleService extends Service
     }
 
     /**
-     * @return Paginator<User>
+     * @return Paginator<Article>
      */
     public function paginateRanking(bool $simple = false): Paginator
     {
@@ -57,7 +57,7 @@ class ArticleService extends Service
     }
 
     /**
-     * @return Paginator<User>
+     * @return Paginator<Article>
      */
     public function paginateByCategory(string $type, string $slug, bool $simple = false): Paginator
     {
@@ -67,7 +67,7 @@ class ArticleService extends Service
     }
 
     /**
-     * @return LengthAwarePaginator<User>
+     * @return LengthAwarePaginator<Article>
      */
     public function paginateByPakAddonCategory(string $pakSlug, string $addonSlug): LengthAwarePaginator
     {
@@ -78,7 +78,7 @@ class ArticleService extends Service
     }
 
     /**
-     * @return LengthAwarePaginator<User>
+     * @return LengthAwarePaginator<Article>
      */
     public function paginateByPakNoneAddonCategory(string $pakSlug): LengthAwarePaginator
     {
@@ -88,7 +88,7 @@ class ArticleService extends Service
     }
 
     /**
-     * @return LengthAwarePaginator<User>
+     * @return LengthAwarePaginator<Article>
      */
     public function paginateByTag(Tag $tag): LengthAwarePaginator
     {
@@ -96,7 +96,7 @@ class ArticleService extends Service
     }
 
     /**
-     * @return LengthAwarePaginator<User>
+     * @return LengthAwarePaginator<Article>
      */
     public function paginateBySearch(string $word): LengthAwarePaginator
     {

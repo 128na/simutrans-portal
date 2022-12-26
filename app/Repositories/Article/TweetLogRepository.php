@@ -20,6 +20,7 @@ class TweetLogRepository extends BaseRepository
     }
 
     /**
+     * @param array<int|string> $articleIds
      * @return LazyCollection<\stdClass>
      */
     public function cursorTweetLogSummary(array $articleIds = []): LazyCollection

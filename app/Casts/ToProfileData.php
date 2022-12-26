@@ -13,7 +13,7 @@ class ToProfileData implements CastsAttributes
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
      * @param  mixed  $value
-     * @param  array  $attributes
+     * @param  array<string>  $attributes
      * @return ProfileData
      */
     public function get($model, $key, $value, $attributes)
@@ -27,7 +27,7 @@ class ToProfileData implements CastsAttributes
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
      * @param  mixed  $value
-     * @param  array  $attributes
+     * @param  array<string>  $attributes
      * @return string
      */
     public function set($model, $key, $value, $attributes)

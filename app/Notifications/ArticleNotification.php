@@ -33,7 +33,7 @@ abstract class ArticleNotification extends Notification
 
     /**
      * @param  Article  $article
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return string
      */
     public function toTwitter($article)
     {

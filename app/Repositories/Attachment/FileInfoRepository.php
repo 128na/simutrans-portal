@@ -5,6 +5,9 @@ namespace App\Repositories\Attachment;
 use App\Models\Attachment\FileInfo;
 use App\Repositories\BaseRepository;
 
+/**
+ * @extends BaseRepository<FileInfo>
+ */
 class FileInfoRepository extends BaseRepository
 {
     /**

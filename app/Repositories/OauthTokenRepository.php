@@ -4,6 +4,9 @@ namespace App\Repositories;
 
 use App\Models\OauthToken;
 
+/**
+ * @extends BaseRepository<OauthToken>
+ */
 class OauthTokenRepository extends BaseRepository
 {
     /**

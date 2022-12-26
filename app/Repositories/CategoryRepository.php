@@ -6,6 +6,9 @@ use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * @extends BaseRepository<Category>
+ */
 class CategoryRepository extends BaseRepository
 {
     /**

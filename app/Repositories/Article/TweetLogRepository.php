@@ -7,6 +7,9 @@ use App\Repositories\BaseRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\LazyCollection;
 
+/**
+ * @extends BaseRepository<TweetLog>
+ */
 class TweetLogRepository extends BaseRepository
 {
     /**

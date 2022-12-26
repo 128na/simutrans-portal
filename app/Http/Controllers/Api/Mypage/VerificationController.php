@@ -62,11 +62,23 @@ class VerificationController extends Controller
 
     public function verifyApi(Request $request): UserResouce
     {
-        if (! hash_equals((string) $request->route('id'), (string) $request->user()->getKey())) {
-            throw new AuthorizationException();
+        $id = $request->route('id');
+        $key = $request->user()->getKey();
+        if (! is_string($id)) {
+            throw new AuthorizationException('id is not string');
+        }
+        if (! is_string($key)) {
+            throw new AuthorizationException('key is not string');
+        }
+        if (! hash_equals($id, $key)) {
+            throw new AuthorizationException('has missmatch');
         }
 
-        if (! hash_equals((string) $request->route('hash'), sha1($request->user()->getEmailForVerification()))) {
+        $hash = $request->route('hash');
+        if (! is_string($hash)) {
+            throw new AuthorizationException('hash is not string');
+        }
+        if (! hash_equals($hash, sha1($request->user()->getEmailForVerification()))) {
             throw new AuthorizationException();
         }
 

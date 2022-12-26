@@ -82,7 +82,7 @@ class Attachment extends Model
 
     public function getTypeAttribute(): string
     {
-        $mime = Storage::disk('public')->mimeType($this->path);
+        $mime = Storage::disk('public')->mimeType($this->path) ?: '';
 
         if (stripos($mime, 'image') !== false) {
             return 'image';
@@ -99,7 +99,7 @@ class Attachment extends Model
 
     public function getIsPngAttribute(): bool
     {
-        $mime = Storage::disk('public')->mimeType($this->path);
+        $mime = Storage::disk('public')->mimeType($this->path) ?: '';
 
         return stripos($mime, 'image/png') !== false;
     }

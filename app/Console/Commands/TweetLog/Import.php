@@ -5,6 +5,7 @@ namespace App\Console\Commands\TweetLog;
 use App\Services\Twitter\AggregateTweetLogService;
 use App\Services\Twitter\ImportTweetService;
 use App\Services\Twitter\ResolveArticleService;
+use Exception;
 use Illuminate\Console\Command;
 
 class Import extends Command
@@ -24,7 +25,7 @@ class Import extends Command
     public function handle(): int
     {
         try {
-            $path = base_path($this->argument('path'));
+            $path = $this->getPath();
             $result = $this->importTweetService->importJson($path);
             $resolved = $this->resolveArticleService->resolveByTweetDatas($result);
             $articleIds = $this->aggregateTweetLogService->firstOrCreateTweetLogs($resolved);
@@ -36,5 +37,15 @@ class Import extends Command
         }
 
         return 0;
+    }
+
+    private function getPath(): string
+    {
+        $path = $this->argument('path');
+        if (! is_string($path)) {
+            throw new Exception('path is not string');
+        }
+
+        return base_path($path);
     }
 }

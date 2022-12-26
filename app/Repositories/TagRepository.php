@@ -5,6 +5,9 @@ namespace App\Repositories;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * @extends BaseRepository<Tag>
+ */
 class TagRepository extends BaseRepository
 {
     private const LIMIT = 10;

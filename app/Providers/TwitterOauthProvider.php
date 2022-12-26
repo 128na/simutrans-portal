@@ -37,7 +37,7 @@ class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
         $this->app->bind(TweetService::class, function () {
             return new TweetService(
                 $this->app->make(TwitterV1Api::class),
-                $this->app->environment(['production']),
+                (bool) $this->app->environment(['production']),
             );
         });
 

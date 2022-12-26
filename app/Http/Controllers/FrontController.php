@@ -12,6 +12,7 @@ use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FrontController extends Controller
@@ -128,6 +129,11 @@ class FrontController extends Controller
         $statuses = [400, 404, 500, 503];
         $status = in_array(intval($status), $statuses, true) ? $status : 404;
 
-        return view("errors.{$status}");
+        $path = "errors.{$status}";
+        if (View::exists($path)) {
+            return view($path);
+        }
+
+        return view('errors.404');
     }
 }

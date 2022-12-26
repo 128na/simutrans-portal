@@ -5,6 +5,9 @@ namespace App\Repositories\Article;
 use App\Models\Article\TweetLogSummary;
 use App\Repositories\BaseRepository;
 
+/**
+ * @extends BaseRepository<TweetLogSummary>
+ */
 class TweetLogSummaryRepository extends BaseRepository
 {
     /**

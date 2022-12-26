@@ -6,6 +6,9 @@ use App\Models\PakAddonCount;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @extends BaseRepository<PakAddonCount>
+ */
 class PakAddonCountRepository extends BaseRepository
 {
     private const DELETE_SQL = 'DELETE FROM pak_addon_counts';

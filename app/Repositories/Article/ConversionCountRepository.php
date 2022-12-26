@@ -5,6 +5,9 @@ namespace App\Repositories\Article;
 use App\Models\Article\ViewCount;
 use App\Repositories\BaseCountRepository;
 
+/**
+ * @extends BaseCountRepository<ViewCount>
+ */
 class ConversionCountRepository extends BaseCountRepository
 {
     /**

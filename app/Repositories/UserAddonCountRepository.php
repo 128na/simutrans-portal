@@ -6,6 +6,9 @@ use App\Models\UserAddonCount;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @extends BaseRepository<UserAddonCount>
+ */
 class UserAddonCountRepository extends BaseRepository
 {
     private const DELETE_SQL = 'DELETE FROM user_addon_counts';

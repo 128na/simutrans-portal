@@ -4,6 +4,9 @@ namespace App\Repositories;
 
 use App\Models\Redirect;
 
+/**
+ * @extends BaseRepository<Redirect>
+ */
 class RedirectRepository extends BaseRepository
 {
     /**

@@ -4,6 +4,9 @@ namespace App\Repositories;
 
 use App\Models\CompressedImage;
 
+/**
+ * @extends BaseRepository<CompressedImage>
+ */
 class CompressedImageRepository extends BaseRepository
 {
     /**

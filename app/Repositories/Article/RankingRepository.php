@@ -7,6 +7,9 @@ use App\Repositories\BaseRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\LazyCollection;
 
+/**
+ * @extends BaseRepository<Ranking>
+ */
 class RankingRepository extends BaseRepository
 {
     /**

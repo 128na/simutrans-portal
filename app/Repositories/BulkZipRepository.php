@@ -6,6 +6,9 @@ use App\Contracts\Models\BulkZippableInterface;
 use App\Models\BulkZip;
 use Illuminate\Support\LazyCollection;
 
+/**
+ * @extends BaseRepository<BulkZip>
+ */
 class BulkZipRepository extends BaseRepository
 {
     /**

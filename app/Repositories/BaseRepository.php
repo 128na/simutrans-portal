@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
 abstract class BaseRepository
 {
     /**
-     * @var Model
+     * @var T
      */
     protected $model;
 
@@ -123,6 +123,7 @@ abstract class BaseRepository
      */
     public function updateOrCreate(array $search, array $data = [])
     {
+        /** @var T */
         return $this->model->updateOrCreate($search, $data);
     }
 

@@ -67,10 +67,10 @@ class VerificationController extends Controller
         if (! is_string($id)) {
             throw new AuthorizationException('id is not string');
         }
-        if (! is_string($key)) {
+        if (! is_numeric($key)) {
             throw new AuthorizationException('key is not string');
         }
-        if (! hash_equals($id, $key)) {
+        if (! hash_equals($id, (string) $key)) {
             throw new AuthorizationException('has missmatch');
         }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ControllOption;
+use Illuminate\Database\Eloquent\Collection;
 
 class ControllOptionController extends Controller
 {
@@ -11,12 +12,18 @@ class ControllOptionController extends Controller
     {
     }
 
-    public function index()
+    /**
+     * @return Collection<int, ControllOption>
+     */
+    public function index(): Collection
     {
         return $this->controllOption->all();
     }
 
-    public function toggle(ControllOption $controllOption)
+    /**
+     * @return Collection<int, ControllOption>
+     */
+    public function toggle(ControllOption $controllOption): Collection
     {
         $controllOption->update(['value' => ! $controllOption->value]);
 

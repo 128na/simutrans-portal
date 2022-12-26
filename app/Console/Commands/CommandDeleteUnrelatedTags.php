@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\Article\JobDeleteUnrelatedTags;
 use Illuminate\Console\Command;
+use Throwable;
 
 class CommandDeleteUnrelatedTags extends Command
 {
@@ -11,9 +12,15 @@ class CommandDeleteUnrelatedTags extends Command
 
     protected $description = '記事に紐づいていないタグを削除する';
 
-    public function handle()
+    public function handle(): int
     {
-        JobDeleteUnrelatedTags::dispatchSync();
+        try {
+            JobDeleteUnrelatedTags::dispatchSync();
+        } catch (Throwable $e) {
+            report($e);
+
+            return 1;
+        }
 
         return 0;
     }

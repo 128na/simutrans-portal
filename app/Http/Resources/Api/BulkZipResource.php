@@ -7,6 +7,10 @@ use Storage;
 
 class BulkZipResource extends JsonResource
 {
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return array<mixed>
+     */
     public function toArray($request)
     {
         return [

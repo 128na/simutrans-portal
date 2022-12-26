@@ -16,7 +16,7 @@ class JobDeleteExpiredBulkzip implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function handle(BulkZipRepository $bulkZipRepository)
+    public function handle(BulkZipRepository $bulkZipRepository): void
     {
         foreach ($bulkZipRepository->cursorExpired() as $bulkZip) {
             logger()->channel('bulkzip')->debug('delete bulkzip', ['id' => $bulkZip->id]);

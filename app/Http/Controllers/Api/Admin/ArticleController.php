@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Admin\ArticleUpdateRequest;
 use App\Jobs\Article\JobUpdateRelated;
 use App\Repositories\ArticleRepository;
+use Illuminate\Database\Eloquent\Collection;
 
 class ArticleController extends Controller
 {
@@ -16,12 +17,18 @@ class ArticleController extends Controller
         $this->articleRepository = $articleRepository;
     }
 
-    public function index()
+    /**
+     * @return Collection<int, \App\Models\Article>
+     */
+    public function index(): Collection
     {
         return $this->articleRepository->findAllWithTrashed();
     }
 
-    public function update(ArticleUpdateRequest $request, int $id)
+    /**
+     * @return Collection<int, \App\Models\Article>
+     */
+    public function update(ArticleUpdateRequest $request, int $id): Collection
     {
         $article = $this->articleRepository->findOrFailWithTrashed($id);
         $this->articleRepository->update($article, $request->validated()['article']);
@@ -31,7 +38,10 @@ class ArticleController extends Controller
         return $this->index();
     }
 
-    public function destroy(int $id)
+    /**
+     * @return Collection<int, \App\Models\Article>
+     */
+    public function destroy(int $id): Collection
     {
         $article = $this->articleRepository->findOrFailWithTrashed($id);
         $this->articleRepository->toggleDelete($article);

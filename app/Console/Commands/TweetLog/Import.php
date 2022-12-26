@@ -21,12 +21,20 @@ class Import extends Command
         parent::__construct();
     }
 
-    public function handle()
+    public function handle(): int
     {
-        $path = base_path($this->argument('path'));
-        $result = $this->importTweetService->importJson($path);
-        $resolved = $this->resolveArticleService->resolveByTweetDatas($result);
-        $articleIds = $this->aggregateTweetLogService->firstOrCreateTweetLogs($resolved);
-        $this->aggregateTweetLogService->updateOrCreateTweetLogSummary($articleIds);
+        try {
+            $path = base_path($this->argument('path'));
+            $result = $this->importTweetService->importJson($path);
+            $resolved = $this->resolveArticleService->resolveByTweetDatas($result);
+            $articleIds = $this->aggregateTweetLogService->firstOrCreateTweetLogs($resolved);
+            $this->aggregateTweetLogService->updateOrCreateTweetLogSummary($articleIds);
+        } catch (\Throwable $e) {
+            report($e);
+
+            return 1;
+        }
+
+        return 0;
     }
 }

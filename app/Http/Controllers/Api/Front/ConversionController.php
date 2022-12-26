@@ -15,25 +15,21 @@ class ConversionController extends Controller
     {
     }
 
-    public function conversion(Article $article)
+    public function conversion(Article $article): void
     {
         abort_unless($article->is_publish, 404);
 
         if (Auth::check() === false || Auth::id() !== $article->user_id) {
             $this->dispatcher->dispatch(new ArticleConversion($article));
         }
-
-        return [];
     }
 
-    public function shown(Article $article)
+    public function shown(Article $article): void
     {
         abort_unless($article->is_publish, 404);
 
         if (Auth::check() === false || Auth::id() !== $article->user_id) {
             $this->dispatcher->dispatch(new ArticleShown($article));
         }
-
-        return [];
     }
 }

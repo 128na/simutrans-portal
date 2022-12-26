@@ -17,7 +17,7 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function index()
+    public function index(): UserResouce|string
     {
         if (Auth::check()) {
             $user = $this->userService->getUser(Auth::user());
@@ -28,7 +28,7 @@ class UserController extends Controller
         return '';
     }
 
-    public function update(UpdateRequest $request)
+    public function update(UpdateRequest $request): UserResouce
     {
         $user = $this->userService->updateUserAndProfile(Auth::user(), $request);
 

@@ -21,11 +21,17 @@ class Update extends Command
         parent::__construct();
     }
 
-    public function handle()
+    public function handle(): int
     {
-        $ranking = $this->articleRepository->fetchAggregatedRanking($this->now);
+        try {
+            $ranking = $this->articleRepository->fetchAggregatedRanking($this->now);
 
-        $this->rankingRepository->recreate($ranking);
+            $this->rankingRepository->recreate($ranking);
+        } catch (\Throwable $e) {
+            report($e);
+
+            return 1;
+        }
 
         return 0;
     }

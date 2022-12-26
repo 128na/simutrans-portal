@@ -40,7 +40,10 @@ class ResetPasswordController extends Controller
         $this->redirectTo = route('mypage.index');
     }
 
-    protected function rules()
+    /**
+     * @return array<mixed>
+     */
+    protected function rules(): array
     {
         return [
             'token' => 'required',
@@ -49,6 +52,9 @@ class ResetPasswordController extends Controller
         ];
     }
 
+    /**
+     * @return array<mixed>
+     */
     protected function credentials(Request $request)
     {
         return $request->only(

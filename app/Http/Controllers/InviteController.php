@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Contracts\Support\Renderable;
 
 class InviteController extends Controller
 {
@@ -10,7 +11,7 @@ class InviteController extends Controller
     {
     }
 
-    public function index(User $user)
+    public function index(User $user): Renderable
     {
         return view('front.spa');
     }

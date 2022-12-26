@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\BulkZipResource;
 use App\Services\BulkZip\BulkZipService;
 use Auth;
+use Illuminate\Http\JsonResponse;
 
 class BulkZipController extends Controller
 {
@@ -13,7 +14,7 @@ class BulkZipController extends Controller
     {
     }
 
-    public function user()
+    public function user(): JsonResponse
     {
         /**
          * @var \App\Models\User

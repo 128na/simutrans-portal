@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\Article\JobCheckDeadLink;
 use Illuminate\Console\Command;
+use Throwable;
 
 class CommandCheckDeadLink extends Command
 {
@@ -11,9 +12,15 @@ class CommandCheckDeadLink extends Command
 
     protected $description = '公開済みのアドオン紹介記事でリンク切れのものを確認する。リンク切れのものはステータスを非公開にする';
 
-    public function handle()
+    public function handle(): int
     {
-        JobCheckDeadLink::dispatchSync();
+        try {
+            JobCheckDeadLink::dispatchSync();
+        } catch (Throwable $e) {
+            report($e);
+
+            return 1;
+        }
 
         return 0;
     }

@@ -20,17 +20,23 @@ class FromZip extends Command
         parent::__construct();
     }
 
-    public function handle()
+    public function handle(): int
     {
-        $cursor = $this->attachmentRepository->cursorZipFileAttachment();
+        try {
+            $cursor = $this->attachmentRepository->cursorZipFileAttachment();
 
-        foreach ($cursor as $attachment) {
-            try {
-                $this->fileInfoService->updateOrCreateFromZip($attachment);
-            } catch (Throwable $e) {
-                report($e);
-                $this->error($e->getMessage());
+            foreach ($cursor as $attachment) {
+                try {
+                    $this->fileInfoService->updateOrCreateFromZip($attachment);
+                } catch (Throwable $e) {
+                    report($e);
+                    $this->error($e->getMessage());
+                }
             }
+        } catch (Throwable $e) {
+            report($e);
+
+            return 1;
         }
 
         return 0;

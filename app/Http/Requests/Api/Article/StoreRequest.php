@@ -8,7 +8,10 @@ use Illuminate\Validation\Rule;
 
 class StoreRequest extends BaseRequest
 {
-    protected function baseRule()
+    /**
+     * @return array<mixed>
+     */
+    protected function baseRule(): array
     {
         return [
             'article.post_type' => ['bail', 'required', Rule::in(config('post_types'))],

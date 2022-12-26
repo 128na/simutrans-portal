@@ -9,8 +9,10 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Services\Front\ArticleService;
 use App\Services\Front\MetaOgpService;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FrontController extends Controller
 {
@@ -23,7 +25,7 @@ class FrontController extends Controller
     /**
      * SPA用フロント.
      */
-    public function fallback()
+    public function fallback(): Renderable
     {
         return view('front.spa');
     }
@@ -31,7 +33,7 @@ class FrontController extends Controller
     /**
      * 記事詳細.
      */
-    public function show(Article $article)
+    public function show(Article $article): Renderable
     {
         abort_unless($article->is_publish, 404);
         $meta = $this->metaOgpService->show($article);
@@ -42,7 +44,7 @@ class FrontController extends Controller
     /**
      * アドオンダウンロード.
      */
-    public function download(Article $article)
+    public function download(Article $article): StreamedResponse
     {
         abort_unless($article->is_publish, 404);
         abort_unless($article->post_type === 'addon-post', 404);
@@ -62,7 +64,7 @@ class FrontController extends Controller
     /**
      * カテゴリ(slug)の投稿一覧画面.
      */
-    public function category(string $type, string $slug)
+    public function category(string $type, string $slug): Renderable
     {
         $this->articleService->validateCategoryByTypeAndSlug($type, $slug);
 
@@ -74,7 +76,7 @@ class FrontController extends Controller
     /**
      * カテゴリ(pak/addon)の投稿一覧画面.
      */
-    public function categoryPakAddon(string $pakSlug, string $addonSlug)
+    public function categoryPakAddon(string $pakSlug, string $addonSlug): Renderable
     {
         $this->articleService->validateCategoryByPakAndAddon($pakSlug, $addonSlug);
         $meta = $this->metaOgpService->categoryPakAddon($pakSlug, $addonSlug);
@@ -85,7 +87,7 @@ class FrontController extends Controller
     /**
      * カテゴリ(pak,addon指定なし)の投稿一覧画面.
      */
-    public function categoryPakNoneAddon(string $pakSlug)
+    public function categoryPakNoneAddon(string $pakSlug): Renderable
     {
         $this->articleService->validateCategoryByTypeAndSlug('pak', $pakSlug);
         $meta = $this->metaOgpService->categoryPakNoneAddon($pakSlug);
@@ -96,7 +98,7 @@ class FrontController extends Controller
     /**
      * タグの投稿一覧画面.
      */
-    public function tag(Tag $tag)
+    public function tag(Tag $tag): Renderable
     {
         $meta = $this->metaOgpService->tag($tag);
 
@@ -106,7 +108,7 @@ class FrontController extends Controller
     /**
      * ユーザーの投稿一覧画面.
      */
-    public function user(User $user)
+    public function user(User $user): Renderable
     {
         $meta = $this->metaOgpService->user($user);
 
@@ -116,12 +118,12 @@ class FrontController extends Controller
     /**
      * 検索結果一覧.
      */
-    public function search(SearchRequest $request)
+    public function search(SearchRequest $request): Renderable
     {
         return view('front.spa');
     }
 
-    public function error(int|string $status)
+    public function error(int|string $status): Renderable
     {
         $statuses = [400, 404, 500, 503];
         $status = in_array(intval($status), $statuses, true) ? $status : 404;

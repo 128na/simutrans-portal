@@ -30,7 +30,7 @@ class JobCreateBulkZip implements ShouldQueue
         BulkZipRepository $bulkZipRepository,
         ZippableManager $zippableManager,
         ZipManager $zipManager
-    ) {
+    ): void {
         // dispatchAfterResponseではfailedメソッドは呼ばれない
         try {
             if ($this->bulkZip->generated) {

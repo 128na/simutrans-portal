@@ -24,7 +24,7 @@ class RestrictControl
         return $next($request);
     }
 
-    private function handleRestrict(string $type)
+    private function handleRestrict(string $type): void
     {
         switch ($type) {
             case 'login':
@@ -45,8 +45,6 @@ class RestrictControl
                 return;
             case 'invitation_code':
                 abort_if($this->controllOption->restrictInvitationCode(), 403);
-
-                return;
         }
     }
 }

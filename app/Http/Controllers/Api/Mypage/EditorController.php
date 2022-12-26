@@ -23,19 +23,22 @@ class EditorController extends Controller
         $this->articleEditorService = $articleEditorService;
     }
 
-    public function index()
+    public function index(): ArticlesResouce
     {
         return new ArticlesResouce(
             $this->articleEditorService->findArticles(Auth::user())
         );
     }
 
-    public function options()
+    /**
+     * @return array<mixed>
+     */
+    public function options(): array
     {
         return $this->articleEditorService->getOptions(Auth::user());
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): ArticlesResouce
     {
         $article = DB::transaction(fn () => $this->articleEditorService->storeArticle(Auth::user(), $request));
         JobUpdateRelated::dispatchAfterResponse();
@@ -47,7 +50,7 @@ class EditorController extends Controller
         return $this->index();
     }
 
-    public function update(UpdateRequest $request, Article $article)
+    public function update(UpdateRequest $request, Article $article): ArticlesResouce
     {
         $notYetPublished = is_null($article->published_at);
         $article = DB::transaction(fn () => $this->articleEditorService->updateArticle($article, $request));

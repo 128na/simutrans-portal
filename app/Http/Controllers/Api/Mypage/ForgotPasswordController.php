@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Mypage;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ForgotPasswordController extends Controller
 {
@@ -31,12 +32,18 @@ class ForgotPasswordController extends Controller
         // $this->middleware('guest');
     }
 
-    protected function sendResetLinkResponse(Request $request, $response)
+    /**
+     * @param  Response  $response
+     */
+    protected function sendResetLinkResponse(Request $request, $response): Response
     {
         return response('');
     }
 
-    protected function sendResetLinkFailedResponse(Request $request, $response)
+    /**
+     * @param  Response  $response
+     */
+    protected function sendResetLinkFailedResponse(Request $request, $response): Response
     {
         // invalid user etc
         return response('');

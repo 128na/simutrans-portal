@@ -20,7 +20,7 @@ class JobDeleteUnrelatedTags implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function handle(TagRepository $tagRepository)
+    public function handle(TagRepository $tagRepository): void
     {
         $tagRepository->deleteUnrelated();
         Cache::flush();

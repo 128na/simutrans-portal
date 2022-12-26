@@ -328,6 +328,8 @@ class ArticleRepository extends BaseRepository
 
     /**
      * 論理削除されているものも含めた一覧.
+     *
+     * @return Collection<int, Article>
      */
     public function findAllWithTrashed(): Collection
     {

@@ -24,7 +24,7 @@ class JobCompressImage implements ShouldQueue
     public function handle(
         AttachmentRepository $attachmentRepository,
         CompressedImageRepository $compressedImageRepository
-    ) {
+    ): void {
         $this->compressedImageRepository = $compressedImageRepository;
 
         foreach ($attachmentRepository->cursorCheckCompress() as $attachment) {
@@ -55,7 +55,7 @@ class JobCompressImage implements ShouldQueue
         return true;
     }
 
-    private function compress(Attachment $attachment)
+    private function compress(Attachment $attachment): void
     {
         \Tinify\setKey(config('app.tinypng_api_key'));
 

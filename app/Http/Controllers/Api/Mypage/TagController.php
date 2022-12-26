@@ -21,14 +21,14 @@ class TagController extends Controller
         $this->tagRepository = $tagRepository;
     }
 
-    public function search(SearchRequest $request)
+    public function search(SearchRequest $request): Tags
     {
         return new Tags($request->name
             ? $this->tagRepository->searchTags($request->name)
             : $this->tagRepository->getTags());
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): Tag
     {
         $tag = $this->tagRepository->store([
             'name' => $request->name,
@@ -38,7 +38,7 @@ class TagController extends Controller
         return new Tag($tag);
     }
 
-    public function update(ModelsTag $tag, UpdateRequest $request)
+    public function update(ModelsTag $tag, UpdateRequest $request): void
     {
         $this->authorize('update', $tag);
         $this->tagRepository->update($tag, [

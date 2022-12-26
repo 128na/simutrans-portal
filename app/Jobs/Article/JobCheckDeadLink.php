@@ -18,7 +18,7 @@ class JobCheckDeadLink implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function handle(ArticleRepository $articleRepository)
+    public function handle(ArticleRepository $articleRepository): void
     {
         $changed = false;
         foreach ($articleRepository->cursorCheckLink() as $article) {

@@ -6,6 +6,9 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UserStoreRequest extends FormRequest
 {
+    /**
+     * @return array<mixed>
+     */
     public function rules()
     {
         return [

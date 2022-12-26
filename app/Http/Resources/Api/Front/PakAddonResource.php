@@ -7,6 +7,10 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class PakAddonResource extends ResourceCollection
 {
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return array<mixed>
+     */
     public function toArray($request)
     {
         return $this->collection
@@ -17,6 +21,7 @@ class PakAddonResource extends ResourceCollection
                 'addon' => __("category.addon.{$p->addon_slug}"),
                 'count' => $p->count,
             ])
-            ->groupBy('pak');
+            ->groupBy('pak')
+            ->toArray();
     }
 }

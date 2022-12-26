@@ -24,7 +24,7 @@ class InvitationCodeController extends Controller
     /**
      * 招待したユーザー一覧.
      */
-    public function index()
+    public function index(): Invites
     {
         $invites = $this->userRepository->getInvites(Auth::user());
 
@@ -34,7 +34,7 @@ class InvitationCodeController extends Controller
     /**
      * 招待コード生成.
      */
-    public function update()
+    public function update(): UserResouce
     {
         $this->userRepository->update(Auth::user(), ['invitation_code' => Str::uuid()]);
 
@@ -44,14 +44,14 @@ class InvitationCodeController extends Controller
     /**
      * 招待コード削除.
      */
-    public function destroy()
+    public function destroy(): UserResouce
     {
         $this->userRepository->update(Auth::user(), ['invitation_code' => null]);
 
         return new UserResouce(Auth::user()->fresh());
     }
 
-    public function register(User $user, InviteRequest $request)
+    public function register(User $user, InviteRequest $request): UserResouce
     {
         /**
          * @var User $invitedUser

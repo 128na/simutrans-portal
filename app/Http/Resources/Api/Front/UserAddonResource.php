@@ -7,6 +7,10 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class UserAddonResource extends ResourceCollection
 {
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return array<mixed>
+     */
     public function toArray($request)
     {
         return $this->collection
@@ -14,6 +18,6 @@ class UserAddonResource extends ResourceCollection
                 'user_id' => $u->user_id,
                 'name' => $u->user_name,
                 'count' => $u->count,
-            ]);
+            ])->toArray();
     }
 }

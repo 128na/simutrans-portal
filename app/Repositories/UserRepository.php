@@ -5,6 +5,9 @@ namespace App\Repositories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * @extends BaseRepository<User>
+ */
 class UserRepository extends BaseRepository
 {
     /**

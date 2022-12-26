@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
  * ページネーション: paginate(By)Hoge
  * カーソル: cursor(By)Hoge
  *
- * @template T
+ * @template T of Model
  */
 abstract class BaseRepository
 {

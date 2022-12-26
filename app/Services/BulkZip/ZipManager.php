@@ -6,6 +6,7 @@ use App\Exceptions\ZipErrorException;
 use App\Services\BulkZip\Decorators\BaseDecorator;
 use App\Services\Service;
 use ErrorException;
+use Exception;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -28,7 +29,7 @@ class ZipManager extends Service
 
     private function randName(?string $prefix = null, ?string $suffix = null): string
     {
-        return $prefix.Str::uuid().$suffix;
+        return $prefix . Str::uuid() . $suffix;
     }
 
     private function isZipFile(string $filepath): bool
@@ -50,12 +51,12 @@ class ZipManager extends Service
         foreach ($result['files'] as $filename => $filepath) {
             if ($this->isZipFile($filepath)) {
                 set_time_limit(60);
-                $this->mergeZip($filepath, 'files/'.$filename);
+                $this->mergeZip($filepath, 'files/' . $filename);
             } else {
-                $this->addFile($filepath, 'files/'.$filename);
+                $this->addFile($filepath, 'files/' . $filename);
             }
         }
-        if (! empty($result['contents'])) {
+        if (!empty($result['contents'])) {
             $this->addTextFile($result['contents']);
             $this->addCsvFile($result['contents']);
             // $this->addJsonFile($result['contents']);
@@ -118,6 +119,9 @@ class ZipManager extends Service
     private function addCsvFile(array $contents): void
     {
         $csv = tmpfile();
+        if ($csv === false) {
+            throw new ZipErrorException('tmpfile faild');
+        }
         foreach ($contents as $rows) {
             foreach ($rows as $row) {
                 if (is_string($row)) {
@@ -163,7 +167,13 @@ class ZipManager extends Service
             $z->open($path);
             for ($i = 0; $i < $z->numFiles; $i++) {
                 $name = $z->getNameIndex($i);
+                if ($name === false) {
+                    throw new ZipErrorException("getNameIndex faild: {$name}");
+                }
                 $rc = $z->getStream($name);
+                if ($rc === false) {
+                    throw new ZipErrorException("getStream faild: {$name}");
+                }
                 $randName = $this->randName();
                 $this->disk->put($randName, $rc);
                 $this->addFile($randName, "{$basedir}/{$name}");

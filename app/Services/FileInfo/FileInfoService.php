@@ -6,6 +6,7 @@ use App\Models\Attachment;
 use App\Models\Attachment\FileInfo;
 use App\Repositories\Attachment\FileInfoRepository;
 use App\Services\Service;
+use Exception;
 
 class FileInfoService extends Service
 {
@@ -25,6 +26,9 @@ class FileInfoService extends Service
         try {
             $filename = $attachment->original_name;
             $text = file_get_contents($attachment->full_path);
+            if ($text === false) {
+                throw new Exception('failed file read');
+            }
             $data = $this->handleExtractors($filename, $text, []);
 
             return $this->fileInfoRepository->updateOrCreate(['attachment_id' => $attachment->id], ['data' => $data]);

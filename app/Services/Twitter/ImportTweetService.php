@@ -15,7 +15,7 @@ class ImportTweetService
      */
     public function importJson(string $path): array
     {
-        $data = json_decode(file_get_contents($path));
+        $data = json_decode(file_get_contents($path) ?: '');
 
         $tweets = [];
         foreach ($data as $d) {

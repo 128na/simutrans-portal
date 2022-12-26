@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Category;
 use App\Models\User;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class CategoryRepository extends BaseRepository
 {

@@ -4,15 +4,15 @@ namespace App\Models\Contents;
 
 class AddonPostContent extends Content
 {
-    public $description;
+    public ?string $description;
 
-    public $file;
+    public ?string $file;
 
-    public $author;
+    public ?string $author;
 
-    public $license;
+    public ?string $license;
 
-    public $thanks;
+    public ?string $thanks;
 
     public function __construct(array $contents)
     {
@@ -24,8 +24,8 @@ class AddonPostContent extends Content
         parent::__construct($contents);
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
-        return $this->description;
+        return $this->description ?? '';
     }
 }

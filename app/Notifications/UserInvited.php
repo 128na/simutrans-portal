@@ -25,7 +25,7 @@ class UserInvited extends Notification
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
-     * @return array
+     * @return array<string>
      */
     public function via($notifiable)
     {
@@ -36,7 +36,7 @@ class UserInvited extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {
@@ -45,21 +45,26 @@ class UserInvited extends Notification
             ->view('emails.invited', ['user' => $notifiable, 'invited' => $this->invited]);
     }
 
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return SlackMessage
+     */
     public function toSlack($notifiable)
     {
         return (new SlackMessage())
-                    ->content("{$this->invited->name}が{$notifiable->name}の招待URLからユーザー登録しました。");
+            ->content("{$this->invited->name}が{$notifiable->name}の招待URLからユーザー登録しました。");
     }
 
     /**
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
+     * @return array<mixed>
      */
     public function toArray($notifiable)
     {
-        return [
-        ];
+        return [];
     }
 }

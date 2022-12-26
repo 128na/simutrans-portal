@@ -10,7 +10,10 @@ use Illuminate\Support\Collection;
 
 class PageContentsSections extends Collection
 {
-    public function __construct($items = [])
+    /**
+     * @param  array<mixed>  $items
+     */
+    public function __construct(array $items = [])
     {
         $items = array_map(function ($item) {
             switch ($item['type']) {

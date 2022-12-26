@@ -4,7 +4,7 @@ namespace App\Models\Contents;
 
 class PageContent extends Content
 {
-    public $sections;
+    public PageContentsSections $sections;
 
     public function __construct(array $contents)
     {
@@ -12,7 +12,7 @@ class PageContent extends Content
         parent::__construct($contents);
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return collect($this->sections)->pluck('text')->implode("\n");
     }

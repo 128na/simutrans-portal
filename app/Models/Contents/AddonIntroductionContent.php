@@ -4,19 +4,19 @@ namespace App\Models\Contents;
 
 class AddonIntroductionContent extends Content
 {
-    public $description;
+    public ?string $description;
 
-    public $link;
+    public ?string $link;
 
-    public $author;
+    public ?string $author;
 
-    public $license;
+    public ?string $license;
 
-    public $thanks;
+    public ?string $thanks;
 
-    public $agreement;
+    public ?string $agreement;
 
-    public $exclude_link_check;
+    public ?string $exclude_link_check;
 
     public function __construct(array $contents)
     {
@@ -30,8 +30,8 @@ class AddonIntroductionContent extends Content
         parent::__construct($contents);
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
-        return $this->description;
+        return $this->description ?? '';
     }
 }

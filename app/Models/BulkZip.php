@@ -39,10 +39,12 @@ class BulkZip extends Model
         return $this->morphTo();
     }
 
-    public function deleteFileHandler()
+    public function deleteFileHandler(): bool
     {
         if ($this->path) {
             return Storage::disk('public')->delete($this->path);
         }
+
+        return false;
     }
 }

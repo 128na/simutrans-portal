@@ -4,12 +4,15 @@ namespace App\Models\Contents;
 
 abstract class Content
 {
-    public $thumbnail;
+    public ?string $thumbnail;
 
+    /**
+     * @param  array<mixed>  $contents
+     */
     public function __construct(array $contents)
     {
         $this->thumbnail = $contents['thumbnail'] ?? null;
     }
 
-    abstract public function getDescription();
+    abstract public function getDescription(): string;
 }

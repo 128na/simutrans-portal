@@ -40,7 +40,7 @@ class Attachment extends Model
         });
     }
 
-    public function deleteFileHandler()
+    public function deleteFileHandler(): ?bool
     {
         return Storage::disk('public')->delete($this->path);
     }

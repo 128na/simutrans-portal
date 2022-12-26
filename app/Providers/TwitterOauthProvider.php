@@ -14,6 +14,9 @@ use Illuminate\Support\ServiceProvider;
 
 class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
 {
+    /**
+     * @return array<class-string>
+     */
     public function provides()
     {
         return [

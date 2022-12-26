@@ -74,7 +74,7 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    private function registerRouteBindings()
+    private function registerRouteBindings(): void
     {
         Route::bind('invitation_code', function ($value) {
             return User::where('invitation_code', $value)->whereNotNull('email_verified_at')->firstOrFail();

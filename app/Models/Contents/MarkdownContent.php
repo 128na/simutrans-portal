@@ -6,7 +6,7 @@ use App\Services\MarkdownService;
 
 class MarkdownContent extends Content
 {
-    public $markdown;
+    public ?string $markdown;
 
     public function __construct(array $contents)
     {
@@ -14,7 +14,7 @@ class MarkdownContent extends Content
         parent::__construct($contents);
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return app(MarkdownService::class)->toEscapedHTML($this->markdown);
     }

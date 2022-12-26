@@ -24,7 +24,7 @@ abstract class ArticleNotification extends Notification
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
-     * @return array
+     * @return array<string>
      */
     public function via($notifiable)
     {
@@ -40,8 +40,8 @@ abstract class ArticleNotification extends Notification
         $url = route('articles.show', $article->slug);
         $now = now()->format('Y/m/d H:i');
         $name = $article->user->profile->has_twitter
-        ? '@'.$article->user->profile->data->twitter
-        : $article->user->name;
+            ? '@'.$article->user->profile->data->twitter
+            : $article->user->name;
         $tags = collect(['Simutrans'])
             ->merge($article->categoryPaks->pluck('name'))
             ->map(fn ($name) => str_replace('.', '', "#$name")) // ドットはハッシュタグに使用できない

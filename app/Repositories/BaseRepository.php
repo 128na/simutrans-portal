@@ -48,7 +48,8 @@ abstract class BaseRepository
 
     /**
      * 保存.
-     * @param array<mixed> $data
+     *
+     * @param  array<mixed>  $data
      */
     public function store(array $data): Model
     {
@@ -57,7 +58,8 @@ abstract class BaseRepository
 
     /**
      * 更新.
-     * @param array<mixed> $data
+     *
+     * @param  array<mixed>  $data
      */
     public function update(Model $model, array $data): void
     {
@@ -76,7 +78,8 @@ abstract class BaseRepository
      * リレーションをロード.
      *
      * @param  T  $model
-     * @param array<string> $relations
+     * @param  array<string>  $relations
+     *
      * @phpstan-return T
      */
     public function load($model, array $relations = [])
@@ -86,7 +89,8 @@ abstract class BaseRepository
 
     /**
      * ユーザーのリレーション経由で保存.
-     * @param array<mixed> $data
+     *
+     * @param  array<mixed>  $data
      */
     public function storeByUser(User $user, array $data): Model
     {
@@ -104,7 +108,7 @@ abstract class BaseRepository
     }
 
     /**
-     * @param array<int|string> $ids
+     * @param  array<int|string>  $ids
      */
     public function findByIds(array $ids): Collection
     {
@@ -112,8 +116,9 @@ abstract class BaseRepository
     }
 
     /**
-     * @param array<mixed> $search
-     * @param array<mixed> $data
+     * @param  array<mixed>  $search
+     * @param  array<mixed>  $data
+     *
      * @phpstan-return T
      */
     public function updateOrCreate(array $search, array $data = [])
@@ -122,8 +127,8 @@ abstract class BaseRepository
     }
 
     /**
-     * @param array<mixed> $search
-     * @param array<mixed> $data
+     * @param  array<mixed>  $search
+     * @param  array<mixed>  $data
      */
     public function firstOrCreate(array $search, array $data = []): Model
     {
@@ -132,10 +137,10 @@ abstract class BaseRepository
 
     /**
      * 一覧取得.
-     * @param array<string> $column
-     * @param array<mixed> $with
+     *
+     * @param  array<string>  $column
+     * @param  array<mixed>  $with
      */
-
     public function findAll(array $column = ['*'], array $with = [], ?int $limit = null): Collection
     {
         return $this->model
@@ -147,8 +152,9 @@ abstract class BaseRepository
 
     /**
      * ページネーションで一覧取得.
-     * @param array<string> $column
-     * @param array<mixed> $with
+     *
+     * @param  array<string>  $column
+     * @param  array<mixed>  $with
      */
     public function paginate(array $column = ['*'], array $with = [], int $perPage = 24): Paginator
     {

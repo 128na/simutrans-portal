@@ -10,7 +10,7 @@ class ArticlePolicy extends BasePolicy
 {
     use HandlesAuthorization;
 
-    public function update(User $user, Article $article)
+    public function update(User $user, Article $article): bool
     {
         return $this->isSameUser($user, $article);
     }

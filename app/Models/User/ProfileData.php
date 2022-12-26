@@ -4,16 +4,19 @@ namespace App\Models\User;
 
 class ProfileData
 {
-    public $avatar;
+    public ?string $avatar;
 
-    public $description;
+    public ?string $description;
 
-    public $website;
+    public ?string $website;
 
-    public $twitter;
+    public ?string $twitter;
 
-    public $gtag;
+    public ?string $gtag;
 
+    /**
+     * @param  array<mixed>  $data
+     */
     public function __construct(array $data)
     {
         $this->avatar = $data['avatar'] ?? null;

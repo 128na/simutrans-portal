@@ -48,42 +48,42 @@ class Category extends Model
     | スコープ
     |--------------------------------------------------------------------------
      */
-    public function scopeType($query, string $type)
+    public function scopeType(Builder $query, string $type): void
     {
-        return $query->where('type', $type);
+        $query->where('type', $type);
     }
 
-    public function scopePost($query)
+    public function scopePost(Builder $query, Category $model): void
     {
-        return $query->type(config('category.type.post'));
+        $model->type(config('category.type.post'));
     }
 
-    public function scopePak($query)
+    public function scopePak(Builder $query, Category $model): void
     {
-        return $query->type(config('category.type.pak'));
+        $model->type(config('category.type.pak'));
     }
 
-    public function scopeAddon($query)
+    public function scopeAddon(Builder $query, Category $model): void
     {
-        return $query->type(config('category.type.addon'));
+        $model->type(config('category.type.addon'));
     }
 
-    public function scopePak128Position($query)
+    public function scopePak128Position(Builder $query, Category $model): void
     {
-        return $query->type(config('category.type.pak128_position'));
+        $model->type(config('category.type.pak128_position'));
     }
 
-    public function scopeLicense($query)
+    public function scopeLicense(Builder $query, Category $model): void
     {
-        return $query->type(config('category.type.license'));
+        $model->type(config('category.type.license'));
     }
 
-    public function scopePage($query)
+    public function scopePage(Builder $query, Category $model): void
     {
-        return $query->type(config('category.type.page'));
+        $model->type(config('category.type.page'));
     }
 
-    public function scopeForUser($query, User $user)
+    public function scopeForUser(Builder $query, User $user): void
     {
         if (! $user->isAdmin()) {
             $query->where('need_admin', 0);

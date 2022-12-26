@@ -4,9 +4,12 @@ namespace App\Models\Contents\Sections;
 
 class Section
 {
-    public $type;
+    public ?string $type;
 
-    public function __construct($section)
+    /**
+     * @param  array<mixed>  $section
+     */
+    public function __construct(array $section)
     {
         $this->type = $section['type'] ?? null;
     }

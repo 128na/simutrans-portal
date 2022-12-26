@@ -16,7 +16,7 @@ class Invites extends ResourceCollection
         return $this->collection->map(fn (User $user) => [
             'id' => $user->id,
             'name' => $user->name,
-            'created_at' => $user->created_at->toIso8601String(),
+            'created_at' => $user->created_at?->toIso8601String(),
         ])->toArray();
     }
 }

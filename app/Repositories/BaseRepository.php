@@ -59,9 +59,10 @@ abstract class BaseRepository
     /**
      * 更新.
      *
+     * @param  T  $model
      * @param  array<mixed>  $data
      */
-    public function update(Model $model, array $data): void
+    public function update($model, array $data): void
     {
         $model->update($data);
     }
@@ -144,11 +145,14 @@ abstract class BaseRepository
      */
     public function findAll(array $column = ['*'], array $with = [], ?int $limit = null): Collection
     {
-        return $this->model
+        $q = $this->model
             ->select($column)
-            ->with($with)
-            ->limit($limit)
-            ->get();
+            ->with($with);
+        if ($limit) {
+            $q->limit($limit);
+        }
+
+        return $q->get();
     }
 
     /**

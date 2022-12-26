@@ -22,7 +22,7 @@ class AttachmentController extends Controller
     public function index(): AttachmentsResource
     {
         return new AttachmentsResource(
-            $this->attachmentRepository->findAllByUser(Auth::user())
+            $this->attachmentRepository->findAllByUser($this->loggedinUser())
         );
     }
 
@@ -30,7 +30,7 @@ class AttachmentController extends Controller
     {
         abort_unless($request->hasFile('file'), 400);
 
-        $attachment = $this->attachmentRepository->createFromFile(Auth::user(), $request->file);
+        $attachment = $this->attachmentRepository->createFromFile($this->loggedinUser(), $request->file);
 
         UpdateFileInfo::dispatchSync($attachment);
 

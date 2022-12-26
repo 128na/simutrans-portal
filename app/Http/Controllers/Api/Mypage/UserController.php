@@ -20,7 +20,7 @@ class UserController extends Controller
     public function index(): UserResouce|string
     {
         if (Auth::check()) {
-            $user = $this->userService->getUser(Auth::user());
+            $user = $this->userService->getUser($this->loggedinUser());
 
             return new UserResouce($user);
         }
@@ -30,7 +30,7 @@ class UserController extends Controller
 
     public function update(UpdateRequest $request): UserResouce
     {
-        $user = $this->userService->updateUserAndProfile(Auth::user(), $request);
+        $user = $this->userService->updateUserAndProfile($this->loggedinUser(), $request);
 
         return new UserResouce($user);
     }

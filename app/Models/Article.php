@@ -61,6 +61,10 @@ class Article extends Model implements Feedable
 
     public function routeNotificationForMail(mixed $notification): string
     {
+        if (! $this->user?->email) {
+            throw new Exception('email not found');
+        }
+
         return $this->user->email;
     }
 
@@ -306,7 +310,7 @@ class Article extends Model implements Feedable
 
     public function getThumbnailUrlAttribute(): string
     {
-        return Storage::disk('public')->url($this->has_thumbnail
+        return Storage::disk('public')->url($this->has_thumbnail && $this->thumbnail
             ? $this->thumbnail->path
             : config('attachment.no-thumbnail'));
     }
@@ -330,7 +334,7 @@ class Article extends Model implements Feedable
 
     public function getHasFileInfoAttribute(): bool
     {
-        return $this->hasFile && $this->file->fileInfo;
+        return $this->hasFile && $this->file && $this->file->fileInfo;
     }
 
     /**
@@ -425,9 +429,9 @@ class Article extends Model implements Feedable
             'id' => $this->id,
             'title' => $this->title,
             'summary' => $this->contents->getDescription(),
-            'updated' => $this->modified_at->toMutable(), // CarbonImmutableは未対応
+            'updated' => $this->modified_at?->toMutable(), // CarbonImmutableは未対応
             'link' => route('articles.show', $this->slug),
-            'authorName' => $this->user->name,
+            'authorName' => $this->user->name ?? '',
         ]);
     }
 }

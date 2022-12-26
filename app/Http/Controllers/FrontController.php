@@ -54,7 +54,7 @@ class FrontController extends Controller
             event(new ArticleConversion($article));
         }
 
-        abort_unless($article->has_file, 404);
+        abort_unless($article->has_file && $article->file, 404);
 
         return Storage::disk('public')->download(
             $article->file->path,

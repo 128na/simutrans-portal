@@ -45,9 +45,10 @@ class ArticleRepository extends BaseRepository
      */
     public function syncAttachments(Article $article, array $attachmentsIds): void
     {
-        $article->attachments()->saveMany(
-            $article->user->myAttachments()->find($attachmentsIds)
-        );
+        if ($article->user) {
+            $attachments = $article->user->myAttachments()->find($attachmentsIds);
+            $article->attachments()->saveMany($attachments);
+        }
     }
 
     /**

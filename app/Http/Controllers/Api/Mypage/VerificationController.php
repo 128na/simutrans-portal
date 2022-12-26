@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\Mypage;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\Mypage\User as UserResouce;
 use App\Services\UserService;
-use Auth;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\VerifiesEmails;
@@ -63,10 +62,15 @@ class VerificationController extends Controller
     public function verifyApi(Request $request): UserResouce
     {
         $id = $request->route('id');
-        $key = $request->user()->getKey();
         if (! is_string($id)) {
             throw new AuthorizationException('id is not string');
         }
+
+        $user = $request->user();
+        if (is_null($user)) {
+            throw new AuthorizationException('user not found');
+        }
+        $key = $user->getKey();
         if (! is_numeric($key)) {
             throw new AuthorizationException('key is not string');
         }
@@ -78,19 +82,15 @@ class VerificationController extends Controller
         if (! is_string($hash)) {
             throw new AuthorizationException('hash is not string');
         }
-        if (! hash_equals($hash, sha1($request->user()->getEmailForVerification()))) {
+        if (! hash_equals($hash, sha1($user->getEmailForVerification()))) {
             throw new AuthorizationException();
         }
 
         // 認証済み、認証OKならユーザーを返す
-        if ($request->user()->hasVerifiedEmail() || $request->user()->markEmailAsVerified()) {
-            event(new Verified($request->user()));
+        if ($user->hasVerifiedEmail() || $user->markEmailAsVerified()) {
+            event(new Verified($user));
 
-            /** @var \App\Models\User */
-            $user = Auth::user();
-            $user = $this->userService->getUser($user);
-
-            return new UserResouce($user);
+            return new UserResouce($this->userService->getUser($user));
         }
         throw new AuthorizationException();
     }

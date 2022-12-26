@@ -14,7 +14,7 @@ class MetaOgpService extends Service
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, string|null>
      */
     public function show(Article $article): array
     {
@@ -39,14 +39,14 @@ class MetaOgpService extends Service
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, string|null>
      */
     public function user(User $user): array
     {
         return [
             'title' => sprintf('%sさんの投稿', $user->name).' - '.config('app.name'),
-            'description' => $this->trimDescription($user->profile->data->description),
-            'image' => $user->profile->avatar_url,
+            'description' => $this->trimDescription($user->profile?->data->description),
+            'image' => $user->profile?->avatar_url,
             'card_type' => 'summary_large_image',
         ];
     }

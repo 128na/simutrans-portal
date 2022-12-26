@@ -48,7 +48,7 @@ class JobCompressImage implements ShouldQueue
         if (! $attachment->is_png) {
             return false;
         }
-        if ($this->compressedImageRepository->existsByPath($attachment->path)) {
+        if ($this->compressedImageRepository && $this->compressedImageRepository->existsByPath($attachment->path)) {
             return false;
         }
 
@@ -67,9 +67,11 @@ class JobCompressImage implements ShouldQueue
             $source = \Tinify\fromFile($disk->path($path));
             $source->toFile($disk->path($path));
 
-            $this->compressedImageRepository->store([
-                'path' => $path,
-            ]);
+            if ($this->compressedImageRepository) {
+                $this->compressedImageRepository->store([
+                    'path' => $path,
+                ]);
+            }
 
             $disk->delete($backup_path);
         } catch (\Throwable $e) {

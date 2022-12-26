@@ -82,7 +82,7 @@ class Profile extends Model
 
     public function getAvatarUrlAttribute(): string
     {
-        return Storage::disk('public')->url($this->has_avatar
+        return Storage::disk('public')->url($this->has_avatar && $this->avatar
             ? $this->avatar->path
             : config('attachment.no-avatar'));
     }

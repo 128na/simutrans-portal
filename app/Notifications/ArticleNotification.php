@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Channels\TwitterChannel;
 use App\Models\Article;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
@@ -37,22 +38,25 @@ abstract class ArticleNotification extends Notification
      */
     public function toTwitter($article)
     {
-        $url = route('articles.show', $article->slug);
-        $now = now()->format('Y/m/d H:i');
-        $name = $article->user->profile->has_twitter
-            ? '@'.$article->user->profile->data->twitter
-            : $article->user->name;
-        $tags = collect(['Simutrans'])
-            ->merge($article->categoryPaks->pluck('name'))
-            ->map(fn ($name) => str_replace('.', '', "#$name")) // ドットはハッシュタグに使用できない
-            ->implode(' ');
+        if ($article->user && $article->user->profile) {
+            $url = route('articles.show', $article->slug);
+            $now = now()->format('Y/m/d H:i');
+            $name = $article->user->profile->has_twitter
+                ? '@'.$article->user->profile->data->twitter
+                : $article->user->name;
+            $tags = collect(['Simutrans'])
+                ->merge($article->categoryPaks->pluck('name'))
+                ->map(fn ($name) => str_replace('.', '', "#$name")) // ドットはハッシュタグに使用できない
+                ->implode(' ');
 
-        $message = __(
-            $this->getMessage(),
-            ['title' => $article->title, 'url' => $url, 'name' => $name, 'at' => $now, 'tags' => $tags]
-        );
+            $message = __(
+                $this->getMessage(),
+                ['title' => $article->title, 'url' => $url, 'name' => $name, 'at' => $now, 'tags' => $tags]
+            );
 
-        return $message;
+            return $message;
+        }
+        throw new Exception('missing user or profile');
     }
 
     abstract protected function getMessage(): string;

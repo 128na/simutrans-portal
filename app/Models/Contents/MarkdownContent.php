@@ -16,6 +16,6 @@ class MarkdownContent extends Content
 
     public function getDescription(): string
     {
-        return app(MarkdownService::class)->toEscapedHTML($this->markdown);
+        return app(MarkdownService::class)->toEscapedHTML($this->markdown ?? '');
     }
 }

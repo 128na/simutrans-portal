@@ -26,7 +26,7 @@ class InvitationCodeController extends Controller
      */
     public function index(): Invites
     {
-        $invites = $this->userRepository->getInvites(Auth::user());
+        $invites = $this->userRepository->getInvites($this->loggedinUser());
 
         return new Invites($invites);
     }
@@ -36,9 +36,9 @@ class InvitationCodeController extends Controller
      */
     public function update(): UserResouce
     {
-        $this->userRepository->update(Auth::user(), ['invitation_code' => Str::uuid()]);
+        $this->userRepository->update($this->loggedinUser(), ['invitation_code' => Str::uuid()]);
 
-        return new UserResouce(Auth::user()->fresh());
+        return new UserResouce($this->loggedinUser()->fresh());
     }
 
     /**
@@ -46,9 +46,9 @@ class InvitationCodeController extends Controller
      */
     public function destroy(): UserResouce
     {
-        $this->userRepository->update(Auth::user(), ['invitation_code' => null]);
+        $this->userRepository->update($this->loggedinUser(), ['invitation_code' => null]);
 
-        return new UserResouce(Auth::user()->fresh());
+        return new UserResouce($this->loggedinUser()->fresh());
     }
 
     public function register(User $user, InviteRequest $request): UserResouce

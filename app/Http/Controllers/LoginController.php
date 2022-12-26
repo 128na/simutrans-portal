@@ -47,7 +47,7 @@ class LoginController extends Controller
     {
         $user->notify(new Loggedin());
 
-        $user = $this->userService->getUser(Auth::user());
+        $user = $this->userService->getUser(Auth::user() ?? $user);
 
         return new UserResouce($user);
     }

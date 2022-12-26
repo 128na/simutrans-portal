@@ -11,7 +11,6 @@ use App\Models\Article;
 use App\Notifications\ArticlePublished;
 use App\Notifications\ArticleUpdated;
 use App\Services\ArticleEditorService;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class EditorController extends Controller
@@ -26,7 +25,7 @@ class EditorController extends Controller
     public function index(): ArticlesResouce
     {
         return new ArticlesResouce(
-            $this->articleEditorService->findArticles(Auth::user())
+            $this->articleEditorService->findArticles($this->loggedinUser())
         );
     }
 
@@ -35,12 +34,12 @@ class EditorController extends Controller
      */
     public function options(): array
     {
-        return $this->articleEditorService->getOptions(Auth::user());
+        return $this->articleEditorService->getOptions($this->loggedinUser());
     }
 
     public function store(StoreRequest $request): ArticlesResouce
     {
-        $article = DB::transaction(fn () => $this->articleEditorService->storeArticle(Auth::user(), $request));
+        $article = DB::transaction(fn () => $this->articleEditorService->storeArticle($this->loggedinUser(), $request));
         JobUpdateRelated::dispatchAfterResponse();
 
         if ($article->is_publish && $request->should_tweet) {

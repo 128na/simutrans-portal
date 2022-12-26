@@ -24,7 +24,7 @@ class AddonPostDecorator extends BaseDecorator
     public function process(array $result, Model $model): array
     {
         // サムネ
-        if ($model->has_thumbnail) {
+        if ($model->has_thumbnail && $model->thumbnail) {
             $result = $this->addFile(
                 $result,
                 $this->toPath($model->id, $model->thumbnail->original_name),
@@ -32,11 +32,13 @@ class AddonPostDecorator extends BaseDecorator
             );
         }
         // アドオンファイル
-        $result = $this->addFile(
-            $result,
-            $this->toPath($model->id, $model->file->original_name),
-            $model->file->path
-        );
+        if ($model->file) {
+            $result = $this->addFile(
+                $result,
+                $this->toPath($model->id, $model->file->original_name),
+                $model->file->path
+            );
+        }
         $result = $this->addContent($result, $this->content($model));
 
         return $result;
@@ -56,19 +58,20 @@ class AddonPostDecorator extends BaseDecorator
             ['ID', $model->id],
             ['タイトル', $model->title],
             ['記事URL', route('articles.show', $model->slug)],
-            ['サムネイル画像', $model->has_thumbnail
-                ? $this->toPath($model->id, $model->thumbnail->original_name)
-                : '無し',
+            [
+                'サムネイル画像', $model->has_thumbnail && $model->thumbnail
+                    ? $this->toPath($model->id, $model->thumbnail->original_name)
+                    : '無し',
             ],
 
-            ['投稿者', $model->user->name],
+            ['投稿者', $model->user->name ?? ''],
             ['カテゴリ', ...$model->categories->map(fn (Category $c) => __("category.{$c->type}.{$c->slug}"))->toArray()],
             ['タグ', ...$model->tags()->pluck('name')->toArray()],
             ['作者 / 投稿者', $contents->author],
             ['説明', $contents->description],
             ['謝辞・参考にしたアドオン', $contents->thanks],
             ['ライセンス', $contents->license],
-            ['アドオンファイル', $this->toPath($model->id, $model->file->original_name)],
+            ['アドオンファイル', $this->toPath($model->id, $model->file->original_name ?? '')],
             ['------'],
         ];
     }

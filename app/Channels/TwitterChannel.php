@@ -24,7 +24,7 @@ class TwitterChannel
     {
         try {
             $message = $notification->toTwitter($notifiable);
-            $tweetData = $notifiable->has_thumbnail
+            $tweetData = $notifiable->has_thumbnail && $notifiable->thumbnail
                 ? $this->tweetService->postMedia([$notifiable->thumbnail->full_path], $message)
                 : $this->tweetService->post($message);
 

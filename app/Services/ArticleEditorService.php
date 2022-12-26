@@ -63,7 +63,7 @@ class ArticleEditorService extends Service
     {
         /** @return array<string, mixed> */
         $fn = function (array $list, Category $item): array {
-            if (! isset($list[$item->type])) {
+            if (!isset($list[$item->type])) {
                 $list[$item->type] = [];
             }
             $list[$item->type][] = [
@@ -127,7 +127,7 @@ class ArticleEditorService extends Service
 
         $this->syncRelated($article, $request);
 
-        return $article->fresh();
+        return $article->fresh() ?? $article;
     }
 
     private function getPublishedAt(StoreRequest|UpdateRequest $request): ?string
@@ -165,20 +165,19 @@ class ArticleEditorService extends Service
 
         $this->syncRelated($article, $request);
 
-        return $article->fresh();
+        return $article->fresh() ?? $article;
     }
 
     private function inactiveToPublish(Article $article, UpdateRequest $request): bool
     {
-        return $article->is_inactive && (
-            $request->input('article.status') === config('status.publish')
+        return $article->is_inactive && ($request->input('article.status') === config('status.publish')
             || $request->input('article.status') === config('status.reservation')
         );
     }
 
     private function shouldUpdateModifiedAt(UpdateRequest $request): bool
     {
-        return ! $request->input('without_update_modified_at');
+        return !$request->input('without_update_modified_at');
     }
 
     private function syncRelated(Article $article, BaseRequest $request): void

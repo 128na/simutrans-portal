@@ -97,18 +97,18 @@ abstract class BaseRepository
         return $user->{$this->getRelationName()}()->create($data);
     }
 
-    public function find(int|string $id): ?Model
+    public function find(int|string|null $id): ?Model
     {
         return $this->model->find($id);
     }
 
-    public function findOrFail(int|string $id): Model
+    public function findOrFail(int|string|null $id): Model
     {
         return $this->model->findOrFail($id);
     }
 
     /**
-     * @param  array<int|string>  $ids
+     * @param  array<int|string|null>  $ids
      */
     public function findByIds(array $ids): Collection
     {

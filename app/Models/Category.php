@@ -53,36 +53,57 @@ class Category extends Model
         $query->where('type', $type);
     }
 
-    public function scopePost(Builder $query, Category $model): void
+    /**
+     * @param  Builder|Category  $query
+     */
+    public function scopePost(Builder $query): void
     {
-        $model->type(config('category.type.post'));
+        $query->type(config('category.type.post'));
     }
 
-    public function scopePak(Builder $query, Category $model): void
+    /**
+     * @param  Builder|Category  $query
+     */
+    public function scopePak(Builder $query): void
     {
-        $model->type(config('category.type.pak'));
+        $query->type(config('category.type.pak'));
     }
 
-    public function scopeAddon(Builder $query, Category $model): void
+    /**
+     * @param  Builder|Category  $query
+     */
+    public function scopeAddon(Builder $query): void
     {
-        $model->type(config('category.type.addon'));
+        $query->type(config('category.type.addon'));
     }
 
-    public function scopePak128Position(Builder $query, Category $model): void
+    /**
+     * @param  Builder|Category  $query
+     */
+    public function scopePak128Position(Builder $query): void
     {
-        $model->type(config('category.type.pak128_position'));
+        $query->type(config('category.type.pak128_position'));
     }
 
-    public function scopeLicense(Builder $query, Category $model): void
+    /**
+     * @param  Builder|Category  $query
+     */
+    public function scopeLicense(Builder $query): void
     {
-        $model->type(config('category.type.license'));
+        $query->type(config('category.type.license'));
     }
 
-    public function scopePage(Builder $query, Category $model): void
+    /**
+     * @param  Builder|Category  $query
+     */
+    public function scopePage(Builder $query): void
     {
-        $model->type(config('category.type.page'));
+        $query->type(config('category.type.page'));
     }
 
+    /**
+     * @param  Builder|Category  $query
+     */
     public function scopeForUser(Builder $query, User $user): void
     {
         if (! $user->isAdmin()) {

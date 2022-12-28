@@ -10,12 +10,11 @@ class ToProfileData implements CastsAttributes
     /**
      * 指定された値をキャスト.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param string                              $key
-     * @param mixed                               $value
-     * @param array                               $attributes
-     *
-     * @return \App\Address
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  array<string>  $attributes
+     * @return ProfileData
      */
     public function get($model, $key, $value, $attributes)
     {
@@ -25,15 +24,14 @@ class ToProfileData implements CastsAttributes
     /**
      * 指定された値を保存用に準備.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param string                              $key
-     * @param \App\Address                        $value
-     * @param array                               $attributes
-     *
-     * @return array
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  array<string>  $attributes
+     * @return string
      */
     public function set($model, $key, $value, $attributes)
     {
-        return json_encode($value);
+        return json_encode($value) ?: '';
     }
 }

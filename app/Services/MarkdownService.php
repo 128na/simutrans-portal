@@ -11,6 +11,7 @@ use HTMLPurifier;
 class MarkdownService extends Service
 {
     private GithubMarkdown $parser;
+
     private HTMLPurifier $purifier;
 
     public function __construct(GithubMarkdown $parser, HTMLPurifier $purifier)
@@ -22,14 +23,14 @@ class MarkdownService extends Service
         $this->purifier = $purifier;
     }
 
-    public function toEscapedHTML(string $markdown)
+    public function toEscapedHTML(string $markdown): string
     {
         $raw = $this->parser->parse($markdown);
 
         return $this->purifier->purify($raw);
     }
 
-    public function toEscapedAllHTML(string $markdown)
+    public function toEscapedAllHTML(string $markdown): string
     {
         $raw = $this->parser->parse($markdown);
 

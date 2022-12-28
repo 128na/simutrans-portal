@@ -3,11 +3,15 @@
 namespace App\Repositories;
 
 use App\Models\Tag;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * @extends BaseRepository<Tag>
+ */
 class TagRepository extends BaseRepository
 {
     private const LIMIT = 10;
+
     /**
      * @var Tag
      */
@@ -22,11 +26,11 @@ class TagRepository extends BaseRepository
     {
         return $this->model->select('id', 'name')
             ->whereHas('articles', fn ($query) => $query->active())
-            ->popular('articles_count', 'desc')
+            ->popular()
             ->get();
     }
 
-    public function searchTags(string $name, int $limit = self::LIMIT)
+    public function searchTags(string $name, int $limit = self::LIMIT): Collection
     {
         return $this->model->select('id', 'name', 'description')
             ->where('name', 'like', "%{$name}%")
@@ -36,7 +40,7 @@ class TagRepository extends BaseRepository
             ->get();
     }
 
-    public function getTags(int $limit = self::LIMIT)
+    public function getTags(int $limit = self::LIMIT): Collection
     {
         return $this->model->select('id', 'name', 'description')->limit($limit)
             ->get();

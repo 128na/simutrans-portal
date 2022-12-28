@@ -7,6 +7,9 @@ use App\Repositories\BaseRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\LazyCollection;
 
+/**
+ * @extends BaseRepository<TweetLog>
+ */
 class TweetLogRepository extends BaseRepository
 {
     /**
@@ -20,6 +23,7 @@ class TweetLogRepository extends BaseRepository
     }
 
     /**
+     * @param  array<int|string>  $articleIds
      * @return LazyCollection<\stdClass>
      */
     public function cursorTweetLogSummary(array $articleIds = []): LazyCollection

@@ -31,25 +31,23 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct(UserService $user_service)
+    public function __construct(private UserService $userService)
     {
         $this->middleware('guest')->except('logout');
-        $this->user_service = $user_service;
     }
 
     /**
      * The user has been authenticated.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param mixed                    $user
-     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
      * @return mixed
      */
     protected function authenticated($request, $user)
     {
         $user->notify(new Loggedin());
 
-        $user = $this->user_service->getUser(Auth::user());
+        $user = $this->userService->getUser(Auth::user() ?? $user);
 
         return new UserResouce($user);
     }

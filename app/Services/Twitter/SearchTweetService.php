@@ -8,6 +8,7 @@ use Illuminate\Support\LazyCollection;
 class SearchTweetService
 {
     public const USE_PKCE_TOKEN = 'USE_PKCE_TOKEN';
+
     public const USE_APP_ONLY_TOKEN = 'USE_APP_ONLY_TOKEN';
 
     public function __construct(private TwitterV2Api $client)
@@ -23,6 +24,8 @@ class SearchTweetService
 
     /**
      * @see https://developer.twitter.com/en/docs/twitter-api/lists/list-tweets/api-reference/get-lists-id-tweets
+     *
+     * @return LazyCollection<int, TweetDataOldFormatSupport>
      */
     public function searchTweetsByTimeline(string $userId, string $token = self::USE_PKCE_TOKEN): LazyCollection
     {
@@ -34,6 +37,10 @@ class SearchTweetService
         return $this->execRequest("users/{$userId}/tweets", $query, $token);
     }
 
+    /**
+     * @param  array<string, mixed>  $query
+     * @return LazyCollection<int, TweetDataOldFormatSupport>
+     */
     private function execRequest(string $endpoint, array $query, string $token): LazyCollection
     {
         if ($token === self::USE_PKCE_TOKEN) {

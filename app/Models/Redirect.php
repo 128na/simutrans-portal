@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Redirect extends Model
@@ -16,8 +17,8 @@ class Redirect extends Model
     | スコープ
     |--------------------------------------------------------------------------
     */
-    public function scopeFrom($query, $from)
+    public function scopeFrom(Builder $query, string $from): void
     {
-        return $query->where('from', $from);
+        $query->where('from', $from);
     }
 }

@@ -10,6 +10,7 @@ use Tests\TestCase;
 class JobDeleteExpiredBulkzipTest extends TestCase
 {
     private BulkZip $bulkzip1;
+
     private BulkZip $bulkzip2;
 
     protected function setUp(): void

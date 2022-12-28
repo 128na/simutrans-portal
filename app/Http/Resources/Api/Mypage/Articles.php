@@ -7,14 +7,11 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class Articles extends ResourceCollection
 {
     /**
-     * Transform the resource collection into an array.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return array
+     * @param  \Illuminate\Http\Request  $request
+     * @return array<mixed>
      */
     public function toArray($request)
     {
-        return $this->collection->map(fn ($item) => new Article($item));
+        return $this->collection->map(fn ($item) => new Article($item))->toArray();
     }
 }

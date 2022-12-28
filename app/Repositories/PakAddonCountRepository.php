@@ -3,12 +3,16 @@
 namespace App\Repositories;
 
 use App\Models\PakAddonCount;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @extends BaseRepository<PakAddonCount>
+ */
 class PakAddonCountRepository extends BaseRepository
 {
     private const DELETE_SQL = 'DELETE FROM pak_addon_counts';
+
     private const INSERT_SQL = "INSERT INTO pak_addon_counts (pak_slug, addon_slug, count) (
         SELECT
             pak.slug pak_slug,
@@ -58,7 +62,7 @@ class PakAddonCountRepository extends BaseRepository
     /**
      * 再集計する.
      */
-    public function recount()
+    public function recount(): void
     {
         DB::transaction(function () {
             DB::statement(self::DELETE_SQL);

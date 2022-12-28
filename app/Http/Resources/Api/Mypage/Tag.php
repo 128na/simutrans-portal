@@ -6,12 +6,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class Tag extends JsonResource
 {
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return array<mixed>
+     */
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
+            'id' => $this->resource->id,
+            'name' => $this->resource->name,
+            'description' => $this->resource->description,
         ];
     }
 }

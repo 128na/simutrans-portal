@@ -22,9 +22,8 @@ class Loggedin extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param mixed $notifiable
-     *
-     * @return array
+     * @param  mixed  $notifiable
+     * @return array<string>
      */
     public function via($notifiable)
     {
@@ -34,8 +33,7 @@ class Loggedin extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param mixed $notifiable
-     *
+     * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -48,13 +46,11 @@ class Loggedin extends Notification
     /**
      * Get the array representation of the notification.
      *
-     * @param mixed $notifiable
-     *
-     * @return array
+     * @param  mixed  $notifiable
+     * @return array<mixed>
      */
     public function toArray($notifiable)
     {
-        return [
-        ];
+        return [];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\RedirectRepository;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
@@ -17,7 +18,7 @@ class RedirectController extends Controller
         $this->redirectRepository = $redirectRepository;
     }
 
-    public function index(Request $request)
+    public function index(Request $request): RedirectResponse
     {
         $path = $this->getRelativePath($request->fullUrl());
         $redirect = $this->redirectRepository->findOrFailByPath($path);

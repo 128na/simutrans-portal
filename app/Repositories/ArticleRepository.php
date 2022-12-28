@@ -10,17 +10,22 @@ use Carbon\CarbonImmutable;
 use Closure;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 
+/**
+ * @extends BaseRepository<Article>
+ */
 class ArticleRepository extends BaseRepository
 {
     public const MYPAGE_RELATIONS = ['user', 'attachments.fileInfo', 'categories', 'tags', 'tweetLogSummary', 'totalViewCount', 'totalConversionCount'];
+
     public const FRONT_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags'];
+
     public const SHOW_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags'];
+
     public const PER_PAGE_SIMPLE = 6;
 
     /**
@@ -35,16 +40,21 @@ class ArticleRepository extends BaseRepository
 
     /**
      * 添付ファイルを関連付ける.
+     *
+     * @param  array<int|string>  $attachmentsIds
      */
     public function syncAttachments(Article $article, array $attachmentsIds): void
     {
-        $article->attachments()->saveMany(
-            $article->user->myAttachments()->find($attachmentsIds)
-        );
+        if ($article->user) {
+            $attachments = $article->user->myAttachments()->find($attachmentsIds);
+            $article->attachments()->saveMany($attachments);
+        }
     }
 
     /**
      * カテゴリを関連付ける.
+     *
+     * @param  array<int|string>  $categoryIds
      */
     public function syncCategories(Article $article, array $categoryIds): void
     {
@@ -53,6 +63,8 @@ class ArticleRepository extends BaseRepository
 
     /**
      * タグを関連付ける.
+     *
+     * @param  array<int|string>  $tagIds
      */
     public function syncTags(Article $article, array $tagIds): void
     {
@@ -61,10 +73,15 @@ class ArticleRepository extends BaseRepository
 
     /**
      * アナリティクス用のデータ取得.
+     *
+     * @param  array<int|string>  $ids
+     * @return Collection<int, Article>
      */
     public function findAllForAnalytics(User $user, array $ids, Closure $periodQuery): Collection
     {
+        /** @var Collection<int, Article> */
         return $this->model
+            ->query()
             ->select('id')
             ->where('user_id', $user->id)
             ->whereIn('id', $ids)
@@ -78,10 +95,15 @@ class ArticleRepository extends BaseRepository
 
     /**
      * ユーザーに紐づくデータを返す.
+     *
+     * @param  array<mixed>  $relations
+     * @return Collection<int, Article>
      */
     public function findAllByUser(User $user, array $relations = self::FRONT_RELATIONS): Collection
     {
+        /** @var Collection<int, Article> */
         return $this->model
+            ->query()
             ->select(['articles.*'])
             ->where('user_id', $user->id)
             ->with($relations)
@@ -89,34 +111,24 @@ class ArticleRepository extends BaseRepository
             ->get();
     }
 
-    private function basicQuery(array $relations = self::FRONT_RELATIONS): Builder
-    {
-        return $this->model
-            ->select(['articles.*'])
-            ->active()
-            ->with($relations)
-            ->orderBy('modified_at', 'desc');
-    }
-
-    private function basicRelationQuery(Relation $query, array $relations = self::FRONT_RELATIONS): Relation
-    {
-        return $query->select(['articles.*'])
-            ->active()
-            ->with($relations)
-            ->orderBy('modified_at', 'desc');
-    }
-
     private function queryAnnouces(): Builder
     {
-        return $this->basicQuery()
-            ->announce();
+        return $this->model
+            ->active()
+            ->announce()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy('modified_at', 'desc');
     }
 
     /**
      * お知らせ記事一覧.
+     *
+     * @return Paginator<Article>
      */
     public function paginateAnnouces(bool $simple = false): Paginator
     {
+        /** @var Paginator<Article> */
         return $simple
             ? $this->queryAnnouces()->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryAnnouces()->paginate();
@@ -124,15 +136,22 @@ class ArticleRepository extends BaseRepository
 
     private function queryPages(): Builder
     {
-        return $this->basicQuery()
-            ->withoutAnnounce();
+        return $this->model
+            ->active()
+            ->withoutAnnounce()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy('modified_at', 'desc');
     }
 
     /**
      * 一般記事一覧.
+     *
+     * @return Paginator<Article>
      */
     public function paginatePages(bool $simple = false): Paginator
     {
+        /** @var Paginator<Article> */
         return $simple
             ? $this->queryPages()->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryPages()->paginate();
@@ -141,93 +160,116 @@ class ArticleRepository extends BaseRepository
     private function queryRanking(): Builder
     {
         return $this->model
-            ->select(['articles.*'])
             ->active()
+            ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
             ->rankingOrder();
     }
 
     /**
      * アドオン投稿/紹介のデイリーPVランキング.
+     *
+     * @return Paginator<Article>
      */
     public function paginateRanking(bool $simple = false): Paginator
     {
+        /** @var Paginator<Article> */
         return $simple
             ? $this->queryRanking()->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryRanking()->paginate();
     }
 
-    private function queryByCategory(Category $category): Relation
-    {
-        return $this->basicRelationQuery($category->articles());
-    }
-
     /**
      * カテゴリの投稿一覧.
+     *
+     * @return Paginator<Article>
      */
     public function paginateByCategory(Category $category, bool $simple = false): Paginator
     {
+        $q = $category->articles()
+            ->active()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy('modified_at', 'desc');
+
         return $simple
-            ? $this->queryByCategory($category)->simplePaginate(self::PER_PAGE_SIMPLE)
-            : $this->queryByCategory($category)->paginate();
+            ? $q->simplePaginate(self::PER_PAGE_SIMPLE)
+            : $q->paginate();
     }
 
     private function queryByPakAddonCategory(Category $pak, Category $addon): Builder
     {
-        return $this->basicQuery()
+        return $this->model
+            ->active()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy('modified_at', 'desc')
             ->whereHas('categories', fn ($query) => $query->where('id', $pak->id))
             ->whereHas('categories', fn ($query) => $query->where('id', $addon->id));
     }
 
     /**
      * カテゴリ(pak/addon)の投稿一覧.
+     *
+     * @return LengthAwarePaginator<Article>
      */
     public function paginateByPakAddonCategory(Category $pak, Category $addon): LengthAwarePaginator
     {
+        /** @var LengthAwarePaginator<Article> */
         return $this->queryByPakAddonCategory($pak, $addon)->paginate();
     }
 
     /**
      * カテゴリ(pak,addon指定なし)の投稿一覧.
+     *
+     * @return LengthAwarePaginator<Article>
      */
     public function paginateByPakNoneAddonCategory(Category $pak): LengthAwarePaginator
     {
-        return $this->queryByCategory($pak)
+        return $pak->articles()
+            ->active()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
             ->whereDoesntHave('categories', fn ($query) => $query->where('type', 'addon'))
+            ->orderBy('modified_at', 'desc')
             ->paginate();
-    }
-
-    private function queryByTag(Tag $tag): Relation
-    {
-        return $this->basicRelationQuery($tag->articles());
     }
 
     /**
      * タグを持つ投稿記事一覧.
+     *
+     * @return LengthAwarePaginator<Article>
      */
     public function paginateByTag(Tag $tag): LengthAwarePaginator
     {
-        return $this->queryByTag($tag)->paginate();
-    }
-
-    private function queryByUser(User $user): Relation
-    {
-        return $this->basicRelationQuery($user->articles());
+        return $tag->articles()
+            ->active()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy('modified_at', 'desc')
+            ->paginate();
     }
 
     /**
      * ユーザーの投稿記事一覧.
+     *
+     * @return LengthAwarePaginator<Article>
      */
     public function paginateByUser(User $user): LengthAwarePaginator
     {
-        return $this->queryByUser($user)->paginate();
+        return $user->articles()
+            ->active()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy('modified_at', 'desc')
+            ->paginate();
     }
 
     private function queryBySearch(string $word): Builder
     {
         $word = trim($word);
 
-        if (!$word) {
+        if (! $word) {
             return $this->model->select(['articles.*'])
                 ->active()
                 ->with(self::FRONT_RELATIONS)
@@ -249,18 +291,21 @@ class ArticleRepository extends BaseRepository
 
     /**
      * 記事検索結果一覧.
+     *
+     * @return LengthAwarePaginator<Article>
      */
     public function paginateBySearch(string $word): LengthAwarePaginator
     {
+        /** @var LengthAwarePaginator<Article> */
         return $this->queryBySearch($word)->paginate();
     }
 
     public function cursorCheckLink(): LazyCollection
     {
         return $this->model
-            ->select('id', 'user_id', 'title', 'post_type', 'contents')
             ->active()
             ->linkCheckTarget()
+            ->select('id', 'user_id', 'title', 'post_type', 'contents')
             ->with('user:id,email')
             ->cursor();
     }
@@ -268,9 +313,9 @@ class ArticleRepository extends BaseRepository
     public function findAllFeedItems(): Collection
     {
         return $this->model
-            ->select('id', 'user_id', 'title', 'slug', 'post_type', 'contents', 'modified_at')
             ->active()
             ->addon()
+            ->select('id', 'user_id', 'title', 'slug', 'post_type', 'contents', 'modified_at')
             ->limit(24)
             ->with('user:id,name')
             ->orderBy('modified_at', 'desc')
@@ -287,6 +332,8 @@ class ArticleRepository extends BaseRepository
 
     /**
      * 論理削除されているものも含めた一覧.
+     *
+     * @return Collection<int, Article>
      */
     public function findAllWithTrashed(): Collection
     {
@@ -318,8 +365,13 @@ class ArticleRepository extends BaseRepository
             : $article->delete();
     }
 
+    /**
+     * @param  array<string>  $titles
+     * @return Collection<int, Article>
+     */
     public function findByTitles(array $titles): Collection
     {
+        /** @var Collection<int, Article> */
         return $this->model->active()->whereIn('title', $titles)->get();
     }
 
@@ -329,8 +381,8 @@ class ArticleRepository extends BaseRepository
     public function fetchAggregatedRanking(CarbonImmutable $datetime): LazyCollection
     {
         return $this->model
-            ->select('articles.*')
             ->addon()
+            ->select('articles.*')
             ->leftJoin('view_counts as d', fn (JoinClause $join) => $join
                 ->on('d.article_id', 'articles.id')
                 ->where('d.type', 1)

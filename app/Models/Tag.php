@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -45,9 +46,9 @@ class Tag extends Model
     | スコープ
     |--------------------------------------------------------------------------
     */
-    public function scopePopular($query)
+    public function scopePopular(Builder $query): void
     {
-        return $query->withCount(['articles' => fn ($query) => $query->active()])
+        $query->withCount(['articles' => fn ($query) => $query->active()])
             ->orderBy('articles_count', 'desc');
     }
 }

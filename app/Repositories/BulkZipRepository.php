@@ -6,6 +6,9 @@ use App\Contracts\Models\BulkZippableInterface;
 use App\Models\BulkZip;
 use Illuminate\Support\LazyCollection;
 
+/**
+ * @extends BaseRepository<BulkZip>
+ */
 class BulkZipRepository extends BaseRepository
 {
     /**
@@ -20,11 +23,16 @@ class BulkZipRepository extends BaseRepository
 
     public function findByBulkZippable(BulkZippableInterface $model): ?BulkZip
     {
+        /** @var BulkZip|null */
         return $model->bulkZippable()->first();
     }
 
+    /**
+     * @param  array<string>  $data
+     */
     public function storeByBulkZippable(BulkZippableInterface $model, array $data = []): BulkZip
     {
+        /** @var BulkZip */
         return $model->bulkZippable()->create($data);
     }
 

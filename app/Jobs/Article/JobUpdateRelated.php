@@ -24,7 +24,7 @@ class JobUpdateRelated implements ShouldQueue
     public function handle(
         PakAddonCountRepository $pakAddonCountRepository,
         UserAddonCountRepository $userAddonCountRepository
-    ) {
+    ): void {
         $pakAddonCountRepository->recount();
         $userAddonCountRepository->recount();
 

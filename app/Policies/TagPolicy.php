@@ -10,7 +10,7 @@ class TagPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 
-    public function update(User $user, Tag $tag)
+    public function update(User $user, Tag $tag): bool
     {
         if ($user->isAdmin()) {
             return true;
@@ -19,7 +19,7 @@ class TagPolicy extends BasePolicy
         return $tag->editable;
     }
 
-    public function toggleEditable(User $user)
+    public function toggleEditable(User $user): bool
     {
         return $user->isAdmin();
     }

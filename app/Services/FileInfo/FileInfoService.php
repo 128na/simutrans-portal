@@ -5,16 +5,15 @@ namespace App\Services\FileInfo;
 use App\Models\Attachment;
 use App\Models\Attachment\FileInfo;
 use App\Repositories\Attachment\FileInfoRepository;
-use App\Repositories\AttachmentRepository;
 use App\Services\Service;
+use Exception;
 
 class FileInfoService extends Service
 {
     /**
-     * @param Extractor[] $extractors
+     * @param  \App\Services\FileInfo\Extractors\Extractor[]  $extractors
      */
     public function __construct(
-        private AttachmentRepository $attachmentRepository,
         private FileInfoRepository $fileInfoRepository,
         private ZipArchiveParser $zipArchiveParser,
         private TextService $textService,
@@ -27,6 +26,9 @@ class FileInfoService extends Service
         try {
             $filename = $attachment->original_name;
             $text = file_get_contents($attachment->full_path);
+            if ($text === false) {
+                throw new Exception('failed file read');
+            }
             $data = $this->handleExtractors($filename, $text, []);
 
             return $this->fileInfoRepository->updateOrCreate(['attachment_id' => $attachment->id], ['data' => $data]);
@@ -51,6 +53,10 @@ class FileInfoService extends Service
         }
     }
 
+    /**
+     * @param  array<string, array<string, mixed>>  $data
+     * @return array<string, array<string, mixed>>
+     */
     private function handleExtractors(string $filename, string $text, array $data): array
     {
         foreach ($this->extractors as $extractor) {

@@ -7,11 +7,8 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class Attachments extends ResourceCollection
 {
     /**
-     * Transform the resource collection into an array.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return array
+     * @param  \Illuminate\Http\Request  $request
+     * @return array<mixed>
      */
     public function toArray($request)
     {
@@ -26,6 +23,6 @@ class Attachments extends ResourceCollection
                 'url' => $item->url,
                 'fileInfo' => $this->when($item->fileInfo, fn () => $item->fileInfo->data),
             ];
-        });
+        })->toArray();
     }
 }

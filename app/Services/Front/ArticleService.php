@@ -7,7 +7,6 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
-use App\Repositories\TagRepository;
 use App\Services\Service;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -17,7 +16,6 @@ class ArticleService extends Service
     public function __construct(
         private ArticleRepository $articleRepository,
         private CategoryRepository $categoryRepository,
-        private TagRepository $tagRepository,
     ) {
     }
 
@@ -26,26 +24,41 @@ class ArticleService extends Service
         return $this->articleRepository->loadArticle($article);
     }
 
+    /**
+     * @return LengthAwarePaginator<Article>
+     */
     public function paginateByUser(User $user): LengthAwarePaginator
     {
         return $this->articleRepository->paginateByUser($user);
     }
 
+    /**
+     * @return Paginator<Article>
+     */
     public function paginatePages(bool $simple = false): Paginator
     {
         return $this->articleRepository->paginatePages($simple);
     }
 
+    /**
+     * @return Paginator<Article>
+     */
     public function paginateAnnouces(bool $simple = false): Paginator
     {
         return $this->articleRepository->paginateAnnouces($simple);
     }
 
+    /**
+     * @return Paginator<Article>
+     */
     public function paginateRanking(bool $simple = false): Paginator
     {
         return $this->articleRepository->paginateRanking($simple);
     }
 
+    /**
+     * @return Paginator<Article>
+     */
     public function paginateByCategory(string $type, string $slug, bool $simple = false): Paginator
     {
         $category = $this->categoryRepository->findOrFailByTypeAndSlug($type, $slug);
@@ -53,6 +66,9 @@ class ArticleService extends Service
         return $this->articleRepository->paginateByCategory($category, $simple);
     }
 
+    /**
+     * @return LengthAwarePaginator<Article>
+     */
     public function paginateByPakAddonCategory(string $pakSlug, string $addonSlug): LengthAwarePaginator
     {
         $pak = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
@@ -61,6 +77,9 @@ class ArticleService extends Service
         return $this->articleRepository->paginateByPakAddonCategory($pak, $addon);
     }
 
+    /**
+     * @return LengthAwarePaginator<Article>
+     */
     public function paginateByPakNoneAddonCategory(string $pakSlug): LengthAwarePaginator
     {
         $pak = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
@@ -68,11 +87,17 @@ class ArticleService extends Service
         return $this->articleRepository->paginateByPakNoneAddonCategory($pak);
     }
 
+    /**
+     * @return LengthAwarePaginator<Article>
+     */
     public function paginateByTag(Tag $tag): LengthAwarePaginator
     {
         return $this->articleRepository->paginateByTag($tag);
     }
 
+    /**
+     * @return LengthAwarePaginator<Article>
+     */
     public function paginateBySearch(string $word): LengthAwarePaginator
     {
         return $this->articleRepository->paginateBySearch($word);

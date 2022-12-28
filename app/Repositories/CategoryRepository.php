@@ -4,8 +4,11 @@ namespace App\Repositories;
 
 use App\Models\Category;
 use App\Models\User;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * @extends BaseRepository<Category>
+ */
 class CategoryRepository extends BaseRepository
 {
     /**
@@ -21,7 +24,7 @@ class CategoryRepository extends BaseRepository
     /**
      * ユーザーが利用できるカテゴリ一覧を返す.
      */
-    public function findAllByUser(User $user, array $column = ['*'], array $with = []): Collection
+    public function findAllByUser(User $user): Collection
     {
         return $this->model->forUser($user)->get();
     }

@@ -11,7 +11,6 @@ use App\Models\Article;
 use App\Notifications\ArticlePublished;
 use App\Notifications\ArticleUpdated;
 use App\Services\ArticleEditorService;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class EditorController extends Controller
@@ -23,21 +22,24 @@ class EditorController extends Controller
         $this->articleEditorService = $articleEditorService;
     }
 
-    public function index()
+    public function index(): ArticlesResouce
     {
         return new ArticlesResouce(
-            $this->articleEditorService->findArticles(Auth::user())
+            $this->articleEditorService->findArticles($this->loggedinUser())
         );
     }
 
-    public function options()
+    /**
+     * @return array<mixed>
+     */
+    public function options(): array
     {
-        return $this->articleEditorService->getOptions(Auth::user());
+        return $this->articleEditorService->getOptions($this->loggedinUser());
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): ArticlesResouce
     {
-        $article = DB::transaction(fn () => $this->articleEditorService->storeArticle(Auth::user(), $request));
+        $article = DB::transaction(fn () => $this->articleEditorService->storeArticle($this->loggedinUser(), $request));
         JobUpdateRelated::dispatchAfterResponse();
 
         if ($article->is_publish && $request->should_tweet) {
@@ -47,7 +49,7 @@ class EditorController extends Controller
         return $this->index();
     }
 
-    public function update(UpdateRequest $request, Article $article)
+    public function update(UpdateRequest $request, Article $article): ArticlesResouce
     {
         $notYetPublished = is_null($article->published_at);
         $article = DB::transaction(fn () => $this->articleEditorService->updateArticle($article, $request));
@@ -61,11 +63,11 @@ class EditorController extends Controller
     private function handleTweet(Article $article, UpdateRequest $request, bool $notYetPublished = true): void
     {
         // 公開以外
-        if (!$article->is_publish) {
+        if (! $article->is_publish) {
             return;
         }
         // ツイートを希望しない
-        if (!$request->should_tweet) {
+        if (! $request->should_tweet) {
             return;
         }
         // 更新日を更新しない

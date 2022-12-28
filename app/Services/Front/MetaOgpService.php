@@ -13,6 +13,9 @@ class MetaOgpService extends Service
     {
     }
 
+    /**
+     * @return array<string, string|null>
+     */
     public function show(Article $article): array
     {
         return [
@@ -26,7 +29,7 @@ class MetaOgpService extends Service
 
     private function trimDescription(?string $str): string
     {
-        if (!$str) {
+        if (! $str) {
             return config('app.meta-description');
         }
         $str = str_replace(["\n", "\r"], '', $str);
@@ -35,16 +38,22 @@ class MetaOgpService extends Service
         return $str;
     }
 
+    /**
+     * @return array<string, string|null>
+     */
     public function user(User $user): array
     {
         return [
             'title' => sprintf('%sさんの投稿', $user->name).' - '.config('app.name'),
-            'description' => $this->trimDescription($user->profile->data->description),
-            'image' => $user->profile->avatar_url,
+            'description' => $this->trimDescription($user->profile?->data->description),
+            'image' => $user->profile?->avatar_url,
             'card_type' => 'summary_large_image',
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function category(string $type, string $slug): array
     {
         if ($type === 'license') {
@@ -60,6 +69,9 @@ class MetaOgpService extends Service
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function categoryPakAddon(string $pakSlug, string $addonSlug): array
     {
         return [
@@ -68,6 +80,9 @@ class MetaOgpService extends Service
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function categoryPakNoneAddon(string $pakSlug): array
     {
         return [
@@ -76,6 +91,9 @@ class MetaOgpService extends Service
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function tag(Tag $tag): array
     {
         return [

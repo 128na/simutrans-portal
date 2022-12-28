@@ -16,13 +16,16 @@ class Profile extends Model
 {
     use HasFactory;
 
+    /** @var array<string> */
     protected $attributes = [
         'data' => '{}',
     ];
+
     protected $fillable = [
         'user_id',
         'data',
     ];
+
     protected $casts = [
         'data' => ToProfileData::class,
     ];
@@ -61,31 +64,30 @@ class Profile extends Model
     | アクセサ
     |--------------------------------------------------------------------------
      */
-    public function getAvatarAttribute()
+    public function getAvatarAttribute(): ?Attachment
     {
-        $id = $this->data->avatar;
+        $id = (int) $this->data->avatar;
 
-        return $this->attachments->first(fn ($attachment) => $id === $attachment->id);
+        if ($id) {
+            return $this->attachments->first(fn (Attachment $attachment) => $id === $attachment->id);
+        }
+
+        return null;
     }
 
-    public function getHasAvatarAttribute()
+    public function getHasAvatarAttribute(): bool
     {
         return (bool) $this->avatar;
     }
 
-    public function getAvatarUrlAttribute()
+    public function getAvatarUrlAttribute(): string
     {
-        return Storage::disk('public')->url($this->has_avatar
+        return Storage::disk('public')->url($this->has_avatar && $this->avatar
             ? $this->avatar->path
             : config('attachment.no-avatar'));
     }
 
-    public function getHasFileAttribute()
-    {
-        return !is_null($this->file);
-    }
-
-    public function getHasTwitterAttribute()
+    public function getHasTwitterAttribute(): bool
     {
         return (bool) $this->data->twitter;
     }

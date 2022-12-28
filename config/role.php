@@ -8,7 +8,7 @@
     | ユーザーのアクセス権限
     |
     */
- return [
-     'admin' => 'admin', // 管理者
-     'user' => 'user',  // 一般ユーザー
- ];
+    return [
+        'admin' => 'admin', // 管理者
+        'user' => 'user',  // 一般ユーザー
+    ];

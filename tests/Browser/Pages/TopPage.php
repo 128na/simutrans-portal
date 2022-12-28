@@ -10,6 +10,7 @@ use Laravel\Dusk\Browser;
 class TopPage extends Page
 {
     private Article $article;
+
     private Category $category;
 
     public function __construct()
@@ -33,7 +34,6 @@ class TopPage extends Page
             ->waitForText($this->article->title)
             ->assertSee($this->article->title)
             ->assertSee('pak128の新着')
-            ->assertSee(__("category.{$this->category->type}.{$this->category->slug}"))
-        ;
+            ->assertSee(__("category.{$this->category->type}.{$this->category->slug}"));
     }
 }

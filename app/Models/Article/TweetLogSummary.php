@@ -12,6 +12,7 @@ class TweetLogSummary extends Model
     use HasFactory;
 
     public $incrementing = false;
+
     protected $primaryKey = 'article_id';
 
     protected $fillable = [

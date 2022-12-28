@@ -7,17 +7,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class Profile extends JsonResource
 {
     /**
-     * Transform the resource into an array.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return array
+     * @param  \Illuminate\Http\Request  $request
+     * @return array<mixed>
      */
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'data' => $this->data,
+            'id' => $this->resource->id,
+            'data' => $this->resource->data,
         ];
     }
 }

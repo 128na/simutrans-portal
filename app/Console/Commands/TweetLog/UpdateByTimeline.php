@@ -21,7 +21,7 @@ class UpdateByTimeline extends Command
         parent::__construct();
     }
 
-    public function handle()
+    public function handle(): int
     {
         try {
             $token = $this->option('with-non-public-metrics')

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\OauthTokenRepository;
 use App\Services\Twitter\PKCEService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -17,7 +18,7 @@ class OauthController extends Controller
     ) {
     }
 
-    public function authoroize()
+    public function authoroize(): RedirectResponse
     {
         $state = $this->pkceService->generateState();
         $codeVerifier = $this->pkceService->generateCodeVerifier();
@@ -30,7 +31,7 @@ class OauthController extends Controller
         return redirect($authUrl);
     }
 
-    public function callback(Request $request)
+    public function callback(Request $request): RedirectResponse
     {
         $this->pkceService->verifyState($request->state, Session::pull('oauth2.twitter.state'));
         $this->pkceService->generateToken($request->code, Session::pull('oauth2.twitter.codeVerifier'));
@@ -40,7 +41,7 @@ class OauthController extends Controller
         return redirect()->route('admin.index');
     }
 
-    public function refresh()
+    public function refresh(): RedirectResponse
     {
         try {
             $token = $this->oauthTokenRepository->getToken('twitter');
@@ -53,7 +54,7 @@ class OauthController extends Controller
         return redirect()->route('admin.index');
     }
 
-    public function revoke()
+    public function revoke(): RedirectResponse
     {
         try {
             $token = $this->oauthTokenRepository->getToken('twitter');

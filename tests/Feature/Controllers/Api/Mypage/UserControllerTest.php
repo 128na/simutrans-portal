@@ -13,6 +13,7 @@ use Tests\ArticleTestCase;
 class UserControllerTest extends ArticleTestCase
 {
     private Attachment $not_image;
+
     private Attachment $user2_avatar;
 
     protected function setUp(): void

@@ -2,10 +2,10 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail as BaseVerifyEmail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
 class VerifyEmail extends BaseVerifyEmail
 {
@@ -23,9 +23,8 @@ class VerifyEmail extends BaseVerifyEmail
     /**
      * Get the notification's delivery channels.
      *
-     * @param mixed $notifiable
-     *
-     * @return array
+     * @param  mixed  $notifiable
+     * @return array<string>
      */
     public function via($notifiable)
     {
@@ -35,9 +34,8 @@ class VerifyEmail extends BaseVerifyEmail
     /**
      * Get the mail representation of the notification.
      *
-     * @param mixed $notifiable
-     *
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @param  mixed  $notifiable
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {
@@ -50,20 +48,18 @@ class VerifyEmail extends BaseVerifyEmail
     /**
      * Get the array representation of the notification.
      *
-     * @param mixed $notifiable
-     *
-     * @return array
+     * @param  mixed  $notifiable
+     * @return array<mixed>
      */
     public function toArray($notifiable)
     {
-        return [
-        ];
+        return [];
     }
 
     /**
      * ユニットテストでの認証URL取得用.
      */
-    public function getVerificationUrl($user)
+    public function getVerificationUrl(User $user): string
     {
         return $this->verificationUrl($user);
     }

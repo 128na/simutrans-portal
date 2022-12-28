@@ -3,8 +3,11 @@
 namespace App\Repositories;
 
 use App\Models\User;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * @extends BaseRepository<User>
+ */
 class UserRepository extends BaseRepository
 {
     /**
@@ -19,6 +22,8 @@ class UserRepository extends BaseRepository
 
     /**
      * 論理削除されているものも含めた一覧.
+     *
+     * @return Collection<int, User>
      */
     public function findAllWithTrashed(): Collection
     {
@@ -56,6 +61,9 @@ class UserRepository extends BaseRepository
             ->first();
     }
 
+    /**
+     * @return Collection<int, User>
+     */
     public function getInvites(User $user): Collection
     {
         return $user->invites()->get();

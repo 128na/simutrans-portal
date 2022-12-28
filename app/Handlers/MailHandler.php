@@ -10,7 +10,7 @@ class MailHandler extends BaseHandler
 {
     protected function send($content, array $records): void
     {
-        $admins = User::select('email')->admin()->get()->pluck('email')->all();
+        $admins = User::select('email')->admin()->pluck('email')->all();
 
         foreach ($records as $record) {
             Mail::raw(

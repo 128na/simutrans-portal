@@ -14,7 +14,7 @@ class AddViewRecord
         $this->viewCountRepository = $viewCountRepository;
     }
 
-    public function handle(ArticleShown $event)
+    public function handle(ArticleShown $event): void
     {
         $this->viewCountRepository->countUp($event->article);
     }

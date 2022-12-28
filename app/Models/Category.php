@@ -48,44 +48,65 @@ class Category extends Model
     | スコープ
     |--------------------------------------------------------------------------
      */
-    public function scopeType($query, string $type)
+    public function scopeType(Builder $query, string $type): void
     {
-        return $query->where('type', $type);
+        $query->where('type', $type);
     }
 
-    public function scopePost($query)
+    /**
+     * @param  Builder|Category  $query
+     */
+    public function scopePost(Builder $query): void
     {
-        return $query->type(config('category.type.post'));
+        $query->type(config('category.type.post'));
     }
 
-    public function scopePak($query)
+    /**
+     * @param  Builder|Category  $query
+     */
+    public function scopePak(Builder $query): void
     {
-        return $query->type(config('category.type.pak'));
+        $query->type(config('category.type.pak'));
     }
 
-    public function scopeAddon($query)
+    /**
+     * @param  Builder|Category  $query
+     */
+    public function scopeAddon(Builder $query): void
     {
-        return $query->type(config('category.type.addon'));
+        $query->type(config('category.type.addon'));
     }
 
-    public function scopePak128Position($query)
+    /**
+     * @param  Builder|Category  $query
+     */
+    public function scopePak128Position(Builder $query): void
     {
-        return $query->type(config('category.type.pak128_position'));
+        $query->type(config('category.type.pak128_position'));
     }
 
-    public function scopeLicense($query)
+    /**
+     * @param  Builder|Category  $query
+     */
+    public function scopeLicense(Builder $query): void
     {
-        return $query->type(config('category.type.license'));
+        $query->type(config('category.type.license'));
     }
 
-    public function scopePage($query)
+    /**
+     * @param  Builder|Category  $query
+     */
+    public function scopePage(Builder $query): void
     {
-        return $query->type(config('category.type.page'));
+        $query->type(config('category.type.page'));
     }
 
-    public function scopeForUser($query, User $user)
+    /**
+     * @param  Builder|Category  $query
+     */
+    public function scopeForUser(Builder $query, User $user): void
     {
-        if (!$user->isAdmin()) {
+        if (! $user->isAdmin()) {
             $query->where('need_admin', 0);
         }
     }

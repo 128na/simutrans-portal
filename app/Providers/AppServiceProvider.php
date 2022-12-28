@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Repositories\Attachment\FileInfoRepository;
-use App\Repositories\AttachmentRepository;
 use App\Services\BulkZip\Decorators\AddonIntroductionDecorator;
 use App\Services\BulkZip\Decorators\AddonPostDecorator;
 use App\Services\BulkZip\ZipManager;
@@ -62,7 +61,6 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(FileInfoService::class, function ($app) {
             return new FileInfoService(
-                $this->app->make(AttachmentRepository::class),
                 $this->app->make(FileInfoRepository::class),
                 $this->app->make(ZipArchiveParser::class),
                 $this->app->make(TextService::class),
@@ -76,7 +74,7 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    private function registerRouteBindings()
+    private function registerRouteBindings(): void
     {
         Route::bind('invitation_code', function ($value) {
             return User::where('invitation_code', $value)->whereNotNull('email_verified_at')->firstOrFail();

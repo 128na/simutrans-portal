@@ -6,17 +6,16 @@ use App\Services\MarkdownService;
 
 class MarkdownContent extends Content
 {
-    public $thumbnail;
-    public $markdown;
+    public ?string $markdown;
 
     public function __construct(array $contents)
     {
-        $this->thumbnail = $contents['thumbnail'] ?? null;
         $this->markdown = $contents['markdown'] ?? null;
+        parent::__construct($contents);
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
-        return app(MarkdownService::class)->toEscapedHTML($this->markdown);
+        return app(MarkdownService::class)->toEscapedHTML($this->markdown ?? '');
     }
 }

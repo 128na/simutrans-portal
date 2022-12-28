@@ -12,6 +12,6 @@ class BasePolicy
 
     protected function isSameUser(User $user, Model $model): bool
     {
-        return $user->id === $model->user_id;
+        return isset($model->user_id) && $user->id === $model->user_id;
     }
 }

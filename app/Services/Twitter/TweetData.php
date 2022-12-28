@@ -12,45 +12,56 @@ class TweetData
      * ツイートID.
      */
     public string $id;
+
     /**
      * ツイート本文.
      */
     public string $text;
+
     /**
      * リツイート回数.
      */
     public int $retweetCount;
+
     /**
      * 返信数.
      */
     public int $replyCount;
+
     /**
      * いいね数.
      */
     public int $likeCount;
+
     /**
      * 引用RT回数.
      */
     public int $quoteCount;
+
     /**
      * ツイート表示回数.
      */
     public int $impressionCount;
+
     /**
      * ツイート内のURLクリック回数.
      */
     public int $urlLinkClicks;
+
     /**
      * ツイートのプロフィールクリック回数.
      */
     public int $userProfileClicks;
+
     /**
      * ツイート日時
      */
     public Carbon $createdAt;
 
     public string $title;
+
     public bool $isNew;
+
     public ?int $articleId = null;
 
     /**
@@ -80,7 +91,7 @@ class TweetData
 
         preg_match($reg, $this->text, $matches);
 
-        if (!isset($matches[1])) {
+        if (! isset($matches[1])) {
             throw new InvalidTweetDataException();
         }
         $this->title = $matches[1];

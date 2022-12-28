@@ -13,11 +13,17 @@ abstract class BaseDecorator
 
     /**
      * Zip格納データに変換する.
+     *
+     * @param  array<array<mixed>>  $result
+     * @return array<array<mixed>>
      */
     abstract public function process(array $result, Model $model): array;
 
     /**
      * ファイルを追加.
+     *
+     * @param  array<array<mixed>>  $result
+     * @return array<array<mixed>>
      */
     protected function addFile(array $result, string $filename, string $filepath): array
     {
@@ -28,6 +34,10 @@ abstract class BaseDecorator
 
     /**
      * テキストコンテンツを追加.
+     *
+     * @param  array<array<mixed>>  $result
+     * @param  array<mixed>  $content
+     * @return array<array<mixed>>
      */
     protected function addContent(array $result, array $content): array
     {

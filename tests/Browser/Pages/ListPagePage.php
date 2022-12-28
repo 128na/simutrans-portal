@@ -27,7 +27,6 @@ class ListPagePage extends Page
     {
         $browser
             ->waitForText($this->article->title)
-            ->assertSee($this->article->title)
-        ;
+            ->assertSee($this->article->title);
     }
 }

@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 abstract class BaseRequest extends FormRequest
 {
+    /**
+     * @return array<mixed>
+     */
     public function rules()
     {
         $post_type = request()->input('article.post_type');
@@ -25,9 +28,15 @@ abstract class BaseRequest extends FormRequest
         }
     }
 
-    abstract protected function baseRule();
+    /**
+     * @return array<mixed>
+     */
+    abstract protected function baseRule(): array;
 
-    protected function addonPost()
+    /**
+     * @return array<mixed>
+     */
+    protected function addonPost(): array
     {
         return [
             'article.categories' => 'present|array',
@@ -44,7 +53,10 @@ abstract class BaseRequest extends FormRequest
         ];
     }
 
-    protected function addonIntroductiuon()
+    /**
+     * @return array<mixed>
+     */
+    protected function addonIntroductiuon(): array
     {
         return [
             'article.categories' => 'present|array',
@@ -63,7 +75,10 @@ abstract class BaseRequest extends FormRequest
         ];
     }
 
-    protected function page()
+    /**
+     * @return array<mixed>
+     */
+    protected function page(): array
     {
         return [
             'article.categories' => 'present|array',
@@ -79,7 +94,10 @@ abstract class BaseRequest extends FormRequest
         ];
     }
 
-    protected function markdown()
+    /**
+     * @return array<mixed>
+     */
+    protected function markdown(): array
     {
         return [
             'article.categories' => 'present|array',

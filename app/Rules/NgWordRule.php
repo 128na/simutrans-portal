@@ -7,11 +7,15 @@ use Illuminate\Support\Str;
 
 class NgWordRule implements Rule
 {
+    /**
+     * @var array<string>
+     */
     private array $detected = [];
 
     /**
      * Create a new rule instance.
      *
+     * @param  array<string>  $ngWords
      * @return void
      */
     public function __construct(private array $ngWords = [])
@@ -21,9 +25,8 @@ class NgWordRule implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param string $attribute
-     * @param mixed  $value
-     *
+     * @param  string  $attribute
+     * @param  mixed  $value
      * @return bool
      */
     public function passes($attribute, $value)

@@ -15,6 +15,7 @@ use App\Services\Front\ArticleService;
 use App\Services\Front\FrontDescriptionService;
 use App\Services\Front\SidebarService;
 use App\Services\Front\TagService;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class FrontController extends Controller
 {
@@ -26,7 +27,10 @@ class FrontController extends Controller
     ) {
     }
 
-    public function top()
+    /**
+     * @return array<AnonymousResourceCollection>
+     */
+    public function top(): array
     {
         return [
             'pak128japan' => ArticleResource::collection($this->articleService->paginateByCategory('pak', '128-japan', true)),
@@ -38,7 +42,10 @@ class FrontController extends Controller
         ];
     }
 
-    public function sidebar()
+    /**
+     * @return array<UserAddonResource|PakAddonResource>
+     */
+    public function sidebar(): array
     {
         return [
             'userAddonCounts' => new UserAddonResource($this->sidebarService->userAddonCounts()),
@@ -46,14 +53,14 @@ class FrontController extends Controller
         ];
     }
 
-    public function show(Article $article)
+    public function show(Article $article): ArticleResource
     {
         abort_unless($article->is_publish, 404);
 
         return new ArticleResource($this->articleService->loadArticle($article));
     }
 
-    public function user(User $user)
+    public function user(User $user): AnonymousResourceCollection
     {
         $articles = $this->articleService->paginateByUser($user);
 
@@ -61,7 +68,7 @@ class FrontController extends Controller
             ->additional($this->frontDescriptionService->user($user));
     }
 
-    public function pages()
+    public function pages(): AnonymousResourceCollection
     {
         $articles = $this->articleService->paginatePages();
 
@@ -69,7 +76,7 @@ class FrontController extends Controller
             ->additional($this->frontDescriptionService->page());
     }
 
-    public function announces()
+    public function announces(): AnonymousResourceCollection
     {
         $articles = $this->articleService->paginateAnnouces();
 
@@ -77,7 +84,7 @@ class FrontController extends Controller
             ->additional($this->frontDescriptionService->announces());
     }
 
-    public function ranking()
+    public function ranking(): AnonymousResourceCollection
     {
         $articles = $this->articleService->paginateRanking();
 
@@ -85,7 +92,7 @@ class FrontController extends Controller
             ->additional($this->frontDescriptionService->ranking());
     }
 
-    public function category(string $type, string $slug)
+    public function category(string $type, string $slug): AnonymousResourceCollection
     {
         $articles = $this->articleService->paginateByCategory($type, $slug);
 
@@ -93,7 +100,7 @@ class FrontController extends Controller
             ->additional($this->frontDescriptionService->category($type, $slug));
     }
 
-    public function categoryPakAddon(string $pakSlug, string $addonSlug)
+    public function categoryPakAddon(string $pakSlug, string $addonSlug): AnonymousResourceCollection
     {
         $articles = $this->articleService->paginateByPakAddonCategory($pakSlug, $addonSlug);
 
@@ -101,7 +108,7 @@ class FrontController extends Controller
             ->additional($this->frontDescriptionService->categoryPakAddon($pakSlug, $addonSlug));
     }
 
-    public function categoryPakNoneAddon(string $pakSlug)
+    public function categoryPakNoneAddon(string $pakSlug): AnonymousResourceCollection
     {
         $articles = $this->articleService->paginateByPakNoneAddonCategory($pakSlug);
 
@@ -109,7 +116,7 @@ class FrontController extends Controller
             ->additional($this->frontDescriptionService->categoryPakNoneAddon($pakSlug));
     }
 
-    public function tag(Tag $tag)
+    public function tag(Tag $tag): AnonymousResourceCollection
     {
         $articles = $this->articleService->paginateByTag($tag);
 
@@ -117,17 +124,17 @@ class FrontController extends Controller
             ->additional($this->frontDescriptionService->tag($tag));
     }
 
-    public function search(SearchRequest $request)
+    public function search(SearchRequest $request): AnonymousResourceCollection
     {
         $word = $request->word ?? '';
 
         $articles = $this->articleService->paginateBySearch($word);
 
         return ArticleResource::collection($articles)
-           ->additional($this->frontDescriptionService->search($word));
+            ->additional($this->frontDescriptionService->search($word));
     }
 
-    public function tags()
+    public function tags(): AnonymousResourceCollection
     {
         $tags = $this->tagService->getAllTags();
 

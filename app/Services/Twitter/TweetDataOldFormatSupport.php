@@ -25,7 +25,7 @@ class TweetDataOldFormatSupport extends TweetData
 
         preg_match($reg, $this->text, $matches);
 
-        if (!isset($matches[1])) {
+        if (! isset($matches[1])) {
             throw new InvalidTweetDataException();
         }
         $this->title = $matches[1];
@@ -38,7 +38,7 @@ class TweetDataOldFormatSupport extends TweetData
 
         preg_match($reg, $this->text, $matches);
 
-        if (!isset($matches[1])) {
+        if (! isset($matches[1])) {
             throw new InvalidTweetDataException();
         }
         $this->title = $matches[1];

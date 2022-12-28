@@ -24,10 +24,10 @@ class ArticlePagePage extends Page
             'attachmentable_id' => $this->article->id,
         ]);
         $this->article->update(['contents' => ['sections' => [
-                ['type' => 'caption', 'caption' => 'DummyCaption'],
-                ['type' => 'text', 'text' => 'DummyText'],
-                ['type' => 'url', 'url' => 'http://example.com'],
-                ['type' => 'image', 'id' => $this->attachment->id],
+            ['type' => 'caption', 'caption' => 'DummyCaption'],
+            ['type' => 'text', 'text' => 'DummyText'],
+            ['type' => 'url', 'url' => 'http://example.com'],
+            ['type' => 'image', 'id' => $this->attachment->id],
         ]]]);
 
         $this->category = Category::inRandomOrder()->first();
@@ -46,7 +46,6 @@ class ArticlePagePage extends Page
             ->assertSee($this->article->title)
             ->assertSee('DummyCaption')
             ->assertSee('DummyText')
-            ->assertSee('http://example.com')
-        ;
+            ->assertSee('http://example.com');
     }
 }

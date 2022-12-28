@@ -7,7 +7,7 @@ class StoreRequest extends SearchRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<mixed>
      */
     public function rules()
     {

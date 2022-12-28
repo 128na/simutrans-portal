@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Api\Mypage;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\Mypage\User as UserResouce;
 use App\Services\UserService;
-use Auth;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class VerificationController extends Controller
 {
@@ -43,7 +44,7 @@ class VerificationController extends Controller
         $this->redirectTo = route('mypage.index');
     }
 
-    public function resendApi(Request $request)
+    public function resendApi(Request $request): Response
     {
         $this->middleware('auth');
         $this->middleware('signed')->only('verify');
@@ -53,28 +54,43 @@ class VerificationController extends Controller
         return response(['status' => true]);
     }
 
-    public function notice()
+    public function notice(): RedirectResponse
     {
-        return response(view('errors.verification'), 401);
+        return redirect()->route('verification.notice');
     }
 
-    public function verifyApi(Request $request)
+    public function verifyApi(Request $request): UserResouce
     {
-        if (!hash_equals((string) $request->route('id'), (string) $request->user()->getKey())) {
-            throw new AuthorizationException();
+        $id = $request->route('id');
+        if (! is_string($id)) {
+            throw new AuthorizationException('id is not string');
         }
 
-        if (!hash_equals((string) $request->route('hash'), sha1($request->user()->getEmailForVerification()))) {
+        $user = $request->user();
+        if (is_null($user)) {
+            throw new AuthorizationException('user not found');
+        }
+        $key = $user->getKey();
+        if (! is_numeric($key)) {
+            throw new AuthorizationException('key is not string');
+        }
+        if (! hash_equals($id, (string) $key)) {
+            throw new AuthorizationException('has missmatch');
+        }
+
+        $hash = $request->route('hash');
+        if (! is_string($hash)) {
+            throw new AuthorizationException('hash is not string');
+        }
+        if (! hash_equals($hash, sha1($user->getEmailForVerification()))) {
             throw new AuthorizationException();
         }
 
         // 認証済み、認証OKならユーザーを返す
-        if ($request->user()->hasVerifiedEmail() || $request->user()->markEmailAsVerified()) {
-            event(new Verified($request->user()));
+        if ($user->hasVerifiedEmail() || $user->markEmailAsVerified()) {
+            event(new Verified($user));
 
-            $user = $this->userService->getUser(Auth::user());
-
-            return new UserResouce($user);
+            return new UserResouce($this->userService->getUser($user));
         }
         throw new AuthorizationException();
     }

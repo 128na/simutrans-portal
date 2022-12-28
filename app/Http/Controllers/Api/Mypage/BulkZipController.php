@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\BulkZipResource;
 use App\Services\BulkZip\BulkZipService;
 use Auth;
+use Illuminate\Http\JsonResponse;
 
 class BulkZipController extends Controller
 {
@@ -13,10 +14,14 @@ class BulkZipController extends Controller
     {
     }
 
-    public function user()
+    public function user(): JsonResponse
     {
-        $bulkZip = $this->bulkZipService->findOrCreateAndDispatch(Auth::user());
+        /**
+         * @var \App\Models\User
+         */
+        $user = Auth::user();
+        $bulkZip = $this->bulkZipService->findOrCreateAndDispatch($user);
 
-        return response(new BulkZipResource($bulkZip), 200);
+        return response()->json(new BulkZipResource($bulkZip), 200);
     }
 }

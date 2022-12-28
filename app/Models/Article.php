@@ -8,8 +8,11 @@ use App\Models\Article\Ranking;
 use App\Models\Article\TweetLog;
 use App\Models\Article\TweetLogSummary;
 use App\Models\Article\ViewCount;
+use App\Models\Contents\AddonPostContent;
 use App\Traits\Slugable;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -41,6 +44,7 @@ class Article extends Model implements Feedable
         'published_at',
         'modified_at',
     ];
+
     protected $casts = [
         'contents' => ToArticleContents::class,
         'published_at' => 'immutable_datetime',
@@ -55,8 +59,12 @@ class Article extends Model implements Feedable
         });
     }
 
-    public function routeNotificationForMail($notification)
+    public function routeNotificationForMail(mixed $notification): string
     {
+        if (! $this->user?->email) {
+            throw new Exception('email not found');
+        }
+
         return $this->user->email;
     }
 
@@ -169,27 +177,27 @@ class Article extends Model implements Feedable
     | スコープ
     |--------------------------------------------------------------------------
      */
-    public function scopeWithUserTrashed($query)
+    public function scopeWithUserTrashed(Builder $query): void
     {
         $query->withoutGlobalScope('WithoutTrashedUser');
     }
 
-    public function scopeUser($query, User $user)
+    public function scopeUser(Builder $query, User $user): void
     {
-        return $query->where('user_id', $user->id);
+        $query->where('user_id', $user->id);
     }
 
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): void
     {
-        return $query->where('status', config('status.publish'));
+        $query->where('status', config('status.publish'));
     }
 
-    public function scopeAddon($query)
+    public function scopeAddon(Builder $query): void
     {
         $query->whereIn('post_type', ['addon-post', 'addon-introduction']);
     }
 
-    public function scopeLinkCheckTarget($query)
+    public function scopeLinkCheckTarget(Builder $query): void
     {
         $query->where('post_type', 'addon-introduction')
             ->where(
@@ -198,35 +206,35 @@ class Article extends Model implements Feedable
             );
     }
 
-    public function scopePage($query)
+    public function scopePage(Builder $query): void
     {
         $query->where('post_type', ['page', 'markdown']);
     }
 
-    public function scopePak($query, $slug)
+    public function scopePak(Builder $query, string $slug): void
     {
         $query->whereHas('categories', fn ($query) => $query->pak()->slug($slug));
     }
 
-    public function scopeAnnounce($query)
+    public function scopeAnnounce(Builder $query): void
     {
         $query->whereIn('post_type', ['page', 'markdown'])
             ->whereHas('categories', fn ($query) => $query->page()->slug('announce'));
     }
 
-    public function scopeWithoutAnnounce($query)
+    public function scopeWithoutAnnounce(Builder $query): void
     {
         $query->whereIn('post_type', ['page', 'markdown'])
             ->whereDoesntHave('categories', fn ($query) => $query->page()->slug('announce'));
     }
 
-    public function scopeRankingOrder($query)
+    public function scopeRankingOrder(Builder $query): void
     {
         $query->join('rankings', 'rankings.article_id', '=', 'articles.id')
             ->orderBy('rankings.rank', 'asc');
     }
 
-    public function scopeCategory($query, Category $category)
+    public function scopeCategory(Builder $query, Category $category): void
     {
         $query->join('article_category', function (JoinClause $join) use ($category) {
             $join->on('article_category.article_id', '=', 'articles.id')
@@ -234,7 +242,7 @@ class Article extends Model implements Feedable
         });
     }
 
-    public function scopePakAddonCategory($query, Category $pak, Category $addon)
+    public function scopePakAddonCategory(Builder $query, Category $pak, Category $addon): void
     {
         $query->join('article_category', function (JoinClause $join) use ($pak) {
             $join->on('article_category.article_id', '=', 'articles.id')
@@ -246,7 +254,7 @@ class Article extends Model implements Feedable
         });
     }
 
-    public function scopeTag($query, Tag $tag)
+    public function scopeTag(Builder $query, Tag $tag): void
     {
         $query->join('article_tag', function (JoinClause $join) use ($tag) {
             $join->on('article_tag.article_id', '=', 'articles.id')
@@ -259,27 +267,27 @@ class Article extends Model implements Feedable
     | アクセサ
     |--------------------------------------------------------------------------
      */
-    public function getIsAddonPostAttribute()
+    public function getIsAddonPostAttribute(): bool
     {
         return $this->post_type === config('post_types.addon-post');
     }
 
-    public function getIsPageAttribute()
+    public function getIsPageAttribute(): bool
     {
         return $this->post_type === config('post_types.page');
     }
 
-    public function getIsPublishAttribute()
+    public function getIsPublishAttribute(): bool
     {
         return $this->status === config('status.publish');
     }
 
-    public function getIsReservationAttribute()
+    public function getIsReservationAttribute(): bool
     {
         return $this->status === config('status.reservation');
     }
 
-    public function getIsInactiveAttribute()
+    public function getIsInactiveAttribute(): bool
     {
         return in_array($this->status, [
             config('status.draft'),
@@ -288,60 +296,74 @@ class Article extends Model implements Feedable
         ]);
     }
 
-    public function getHasThumbnailAttribute()
+    public function getHasThumbnailAttribute(): bool
     {
-        return !is_null($this->contents->thumbnail) && $this->thumbnail;
+        return ! is_null($this->contents->thumbnail) && $this->thumbnail;
     }
 
-    public function getThumbnailAttribute()
+    public function getThumbnailAttribute(): ?Attachment
     {
         $id = $this->contents->thumbnail;
 
         return $this->attachments->first(fn ($attachment) => (string) $id == $attachment->id);
     }
 
-    public function getThumbnailUrlAttribute()
+    public function getThumbnailUrlAttribute(): string
     {
-        return Storage::disk('public')->url($this->has_thumbnail
+        return Storage::disk('public')->url($this->has_thumbnail && $this->thumbnail
             ? $this->thumbnail->path
             : config('attachment.no-thumbnail'));
     }
 
-    public function getHasFileAttribute()
+    public function getHasFileAttribute(): bool
     {
-        return $this->is_addon_post && !is_null($this->contents->file) && $this->file;
+        return $this->is_addon_post
+            && $this->contents instanceof AddonPostContent
+            && ! is_null($this->contents->file) && $this->file;
     }
 
-    public function getFileAttribute()
+    public function getFileAttribute(): ?Attachment
     {
-        $id = $this->contents->file;
+        if ($this->contents instanceof AddonPostContent) {
+            $id = $this->contents->file;
 
-        return $this->attachments->first(fn ($attachment) => (string) $id == $attachment->id);
+            return $this->attachments->first(fn ($attachment) => (string) $id == $attachment->id);
+        }
+        throw new Exception('invalid post type');
     }
 
-    public function getHasFileInfoAttribute()
+    public function getHasFileInfoAttribute(): bool
     {
-        return $this->hasFile && $this->file->fileInfo;
+        return $this->hasFile && $this->file && $this->file->fileInfo;
     }
 
-    public function getCategoryPaksAttribute()
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategoryPaksAttribute(): Collection
     {
         return $this->categories->filter(fn ($category) => $category->type === config('category.type.pak'));
     }
 
+    /**
+     * @return Collection<int, Category>
+     */
     public function getCategoryAddonsAttribute()
     {
         return $this->categories->filter(fn ($category) => $category->type === config('category.type.addon'));
     }
 
+    /**
+     * @return Collection<int, Category>
+     */
     public function getCategoryPak128PositionsAttribute()
     {
         return $this->categories->filter(fn ($category) => $category->type === config('category.type.pak128_position'));
     }
 
-    public function getTodaysConversionRateAttribute()
+    public function getTodaysConversionRateAttribute(): string
     {
-        if (!is_null($this->todaysConversionCount) && $this->todaysViewCount) {
+        if (! is_null($this->todaysConversionCount) && $this->todaysViewCount) {
             $rate = $this->todaysConversionCount->count / $this->todaysViewCount->count * 100;
 
             return sprintf('%.1f %%', $rate);
@@ -350,17 +372,17 @@ class Article extends Model implements Feedable
         return 'N/A';
     }
 
-    public function getMetaDescriptionAttribute()
+    public function getMetaDescriptionAttribute(): string
     {
         return mb_strimwidth($this->contents->getDescription(), 0, 300, '…');
     }
 
-    public function getHeadlineDescriptionAttribute()
+    public function getHeadlineDescriptionAttribute(): string
     {
         return mb_strimwidth($this->contents->getDescription(), 0, 55, '…');
     }
 
-    public function getUrlDecodedSlugAttribute()
+    public function getUrlDecodedSlugAttribute(): string
     {
         return urldecode($this->slug);
     }
@@ -370,24 +392,24 @@ class Article extends Model implements Feedable
     | 一般
     |--------------------------------------------------------------------------
      */
-    public function isAnnounce()
+    public function isAnnounce(): bool
     {
         return $this->categories->some(fn ($category) => $category->type === 'page' && $category->slug === 'announce');
     }
 
-    public function hasCategory($id)
+    public function hasCategory(string|int $id): bool
     {
-        return $this->categories->some(fn ($category) => $category->id === $id);
+        return $this->categories->some(fn ($category) => $category->id === (int) $id);
     }
 
-    public function getImage($id)
+    public function getImage(string|int $id): ?Attachment
     {
         return $this->attachments->first(
-            fn ($attachment) => (string) $id == $attachment->id
+            fn ($attachment) => (int) $id == $attachment->id
         );
     }
 
-    public function getImageUrl($id)
+    public function getImageUrl(int|string $id): string
     {
         $image = $this->getImage($id);
 
@@ -406,10 +428,10 @@ class Article extends Model implements Feedable
         return FeedItem::create([
             'id' => $this->id,
             'title' => $this->title,
-            'summary' => $this->contents->getDescription() ?? '',
-            'updated' => $this->modified_at->toMutable(), // CarbonImmutableは未対応
+            'summary' => $this->contents->getDescription(),
+            'updated' => $this->modified_at?->toMutable(), // CarbonImmutableは未対応
             'link' => route('articles.show', $this->slug),
-            'author' => $this->user->name,
+            'authorName' => $this->user->name ?? '',
         ]);
     }
 }

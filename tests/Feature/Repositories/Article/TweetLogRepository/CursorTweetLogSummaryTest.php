@@ -11,9 +11,13 @@ use Tests\TestCase;
 class CursorTweetLogSummaryTest extends TestCase
 {
     private TweetLogRepository $repository;
+
     private Article $article;
+
     private TweetLog $tweetLog1;
+
     private TweetLog $tweetLog2;
+
     private TweetLog $tweetLog3;
 
     protected function setUp(): void

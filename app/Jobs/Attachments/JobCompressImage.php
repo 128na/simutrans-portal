@@ -24,7 +24,7 @@ class JobCompressImage implements ShouldQueue
     public function handle(
         AttachmentRepository $attachmentRepository,
         CompressedImageRepository $compressedImageRepository
-    ) {
+    ): void {
         $this->compressedImageRepository = $compressedImageRepository;
 
         foreach ($attachmentRepository->cursorCheckCompress() as $attachment) {
@@ -40,22 +40,22 @@ class JobCompressImage implements ShouldQueue
 
     private function shouldCompress(Attachment $attachment): bool
     {
-        if (!$attachment->path_exists) {
+        if (! $attachment->path_exists) {
             logger()->warning('missing path', [$attachment->full_path]);
 
             return false;
         }
-        if (!$attachment->is_png) {
+        if (! $attachment->is_png) {
             return false;
         }
-        if ($this->compressedImageRepository->existsByPath($attachment->path)) {
+        if ($this->compressedImageRepository && $this->compressedImageRepository->existsByPath($attachment->path)) {
             return false;
         }
 
         return true;
     }
 
-    private function compress(Attachment $attachment)
+    private function compress(Attachment $attachment): void
     {
         \Tinify\setKey(config('app.tinypng_api_key'));
 
@@ -67,9 +67,11 @@ class JobCompressImage implements ShouldQueue
             $source = \Tinify\fromFile($disk->path($path));
             $source->toFile($disk->path($path));
 
-            $this->compressedImageRepository->store([
-                'path' => $path,
-            ]);
+            if ($this->compressedImageRepository) {
+                $this->compressedImageRepository->store([
+                    'path' => $path,
+                ]);
+            }
 
             $disk->delete($backup_path);
         } catch (\Throwable $e) {

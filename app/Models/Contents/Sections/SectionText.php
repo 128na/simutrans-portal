@@ -4,9 +4,9 @@ namespace App\Models\Contents\Sections;
 
 class SectionText extends Section
 {
-    public $text;
+    public ?string $text;
 
-    public function __construct($section)
+    public function __construct(array $section)
     {
         parent::__construct($section);
         $this->text = $section['text'] ?? null;

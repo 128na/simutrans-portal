@@ -3,12 +3,16 @@
 namespace App\Repositories;
 
 use App\Models\UserAddonCount;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @extends BaseRepository<UserAddonCount>
+ */
 class UserAddonCountRepository extends BaseRepository
 {
     private const DELETE_SQL = 'DELETE FROM user_addon_counts';
+
     private const INSERT_SQL = "INSERT INTO user_addon_counts (user_id, user_name, count) (
         SELECT
             u.id user_id, u.name user_name, COUNT(a.id) count
@@ -36,7 +40,7 @@ class UserAddonCountRepository extends BaseRepository
     /**
      * 再集計する.
      */
-    public function recount()
+    public function recount(): void
     {
         DB::transaction(function () {
             DB::statement(self::DELETE_SQL);

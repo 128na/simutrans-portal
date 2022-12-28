@@ -13,6 +13,9 @@ class TagService extends Service
     ) {
     }
 
+    /**
+     * @return Collection<int, \App\Models\Tag>
+     */
     public function getAllTags(): Collection
     {
         return $this->tagRepository->getAllTags();

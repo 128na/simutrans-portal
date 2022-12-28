@@ -9,6 +9,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\LazyCollection;
 
+/**
+ * @extends BaseRepository<Attachment>
+ */
 class AttachmentRepository extends BaseRepository
 {
     /**
@@ -23,8 +26,10 @@ class AttachmentRepository extends BaseRepository
 
     public function syncProfile(User $user, int $id): void
     {
-        $user->profile->attachments()
-            ->save($user->myAttachments()->find($id));
+        $attachment = $user->myAttachments()->find($id);
+        if ($user->profile && $attachment) {
+            $user->profile->attachments()->save($attachment);
+        }
     }
 
     public function findAllByUser(User $user): Collection

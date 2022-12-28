@@ -4,9 +4,9 @@ namespace App\Models\Contents\Sections;
 
 class SectionUrl extends Section
 {
-    public $url;
+    public ?string $url;
 
-    public function __construct($section)
+    public function __construct(array $section)
     {
         parent::__construct($section);
         $this->url = $section['url'] ?? null;

@@ -7,11 +7,8 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class ArticleAnalytics extends ResourceCollection
 {
     /**
-     * Transform the resource collection into an array.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return array
+     * @param  \Illuminate\Http\Request  $request
+     * @return array<mixed>
      */
     public function toArray($request)
     {
@@ -26,6 +23,6 @@ class ArticleAnalytics extends ResourceCollection
                 $item->viewCounts->pluck('count', 'period'),
                 $item->conversionCounts->pluck('count', 'period'),
             ]
-        );
+        )->toArray();
     }
 }

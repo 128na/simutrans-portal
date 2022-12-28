@@ -5,6 +5,9 @@ namespace App\Repositories\User;
 use App\Models\User\Profile;
 use App\Repositories\BaseRepository;
 
+/**
+ * @extends BaseRepository<Profile>
+ */
 class ProfileRepository extends BaseRepository
 {
     /**

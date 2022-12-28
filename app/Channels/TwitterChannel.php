@@ -18,15 +18,13 @@ class TwitterChannel
     /**
      * 指定された通知の送信
      *
-     * @param mixed $notifiable
-     *
      * @return void
      */
     public function send(Article $notifiable, ArticleNotification $notification)
     {
         try {
             $message = $notification->toTwitter($notifiable);
-            $tweetData = $notifiable->has_thumbnail
+            $tweetData = $notifiable->has_thumbnail && $notifiable->thumbnail
                 ? $this->tweetService->postMedia([$notifiable->thumbnail->full_path], $message)
                 : $this->tweetService->post($message);
 
@@ -45,7 +43,7 @@ class TwitterChannel
                     'tweet_created_at' => $tweetData->createdAt,
                 ]);
             }
-        } catch (TweetFailedException | InvalidTweetDataException $e) {
+        } catch (TweetFailedException|InvalidTweetDataException $e) {
             report($e);
         }
     }

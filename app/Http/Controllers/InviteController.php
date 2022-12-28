@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Repositories\UserRepository;
+use Illuminate\Contracts\Support\Renderable;
 
 class InviteController extends Controller
 {
-    public function __construct(private UserRepository $userRepository)
+    public function __construct()
     {
     }
 
-    public function index(User $user)
+    public function index(User $user): Renderable
     {
         return view('front.spa');
     }

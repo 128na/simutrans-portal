@@ -11,6 +11,7 @@ use Tests\TestCase;
 class TagControllerTest extends TestCase
 {
     private Tag $tag1;
+
     private Tag $tag2;
 
     protected function setUp(): void

@@ -3,20 +3,17 @@
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
- * @package  Laravel
  * @author   Taylor Otwell <taylor@laravel.com>
  */
-
 define('LARAVEL_START', microtime(true));
 
 /**
  * SSL判定（さくらレンタルサーバー用）
  */
-if ( isset($_SERVER['HTTP_X_SAKURA_FORWARDED_FOR']) ) {
+if (isset($_SERVER['HTTP_X_SAKURA_FORWARDED_FOR'])) {
     $_SERVER['HTTPS'] = 'on';
     $_ENV['HTTPS'] = 'on';
 }
-
 
 /*
 |--------------------------------------------------------------------------

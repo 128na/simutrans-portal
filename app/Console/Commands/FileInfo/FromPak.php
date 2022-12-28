@@ -20,17 +20,23 @@ class FromPak extends Command
         parent::__construct();
     }
 
-    public function handle()
+    public function handle(): int
     {
-        $cursor = $this->attachmentRepository->cursorPakFileAttachment();
+        try {
+            $cursor = $this->attachmentRepository->cursorPakFileAttachment();
 
-        foreach ($cursor as $attachment) {
-            try {
-                $this->fileInfoService->updateOrCreateFromPak($attachment);
-            } catch (Throwable $e) {
-                report($e);
-                $this->error($e->getMessage());
+            foreach ($cursor as $attachment) {
+                try {
+                    $this->fileInfoService->updateOrCreateFromPak($attachment);
+                } catch (Throwable $e) {
+                    report($e);
+                    $this->error($e->getMessage());
+                }
             }
+        } catch (Throwable $e) {
+            report($e);
+
+            return 1;
         }
 
         return 0;

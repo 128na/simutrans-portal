@@ -12,6 +12,7 @@ use Tests\TestCase;
 class ResetPasswordControllerTest extends TestCase
 {
     private PasswordBroker $broker;
+
     private User $user2;
 
     protected function setUp(): void

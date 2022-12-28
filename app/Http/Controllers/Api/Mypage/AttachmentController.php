@@ -19,25 +19,25 @@ class AttachmentController extends Controller
         $this->attachmentRepository = $attachmentRepository;
     }
 
-    public function index()
+    public function index(): AttachmentsResource
     {
         return new AttachmentsResource(
-            $this->attachmentRepository->findAllByUser(Auth::user())
+            $this->attachmentRepository->findAllByUser($this->loggedinUser())
         );
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): AttachmentsResource
     {
         abort_unless($request->hasFile('file'), 400);
 
-        $attachment = $this->attachmentRepository->createFromFile(Auth::user(), $request->file);
+        $attachment = $this->attachmentRepository->createFromFile($this->loggedinUser(), $request->file);
 
         UpdateFileInfo::dispatchSync($attachment);
 
         return $this->index();
     }
 
-    public function destroy(Attachment $attachment)
+    public function destroy(Attachment $attachment): AttachmentsResource
     {
         abort_unless($attachment->user_id === Auth::id(), 403);
 

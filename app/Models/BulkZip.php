@@ -19,6 +19,7 @@ class BulkZip extends Model
         'generated',
         'path',
     ];
+
     protected $hidden = [
         'path',
     ];
@@ -38,8 +39,12 @@ class BulkZip extends Model
         return $this->morphTo();
     }
 
-    public function deleteFileHandler()
+    public function deleteFileHandler(): bool
     {
-        return Storage::disk('public')->delete($this->path);
+        if ($this->path) {
+            return Storage::disk('public')->delete($this->path);
+        }
+
+        return false;
     }
 }

@@ -7,6 +7,7 @@ use App\Models\User\Profile;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -31,12 +32,15 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
         'email_verified_at',
         'password',
     ];
+
     protected $hidden = [
         'password', 'remember_token',
     ];
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
     const TITLE_NG_WORDS = ['#', '@', ':', '//'];
 
     /*
@@ -51,14 +55,14 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
         });
     }
 
-    public function syncRelatedData()
+    public function syncRelatedData(): void
     {
         if ($this->profile()->doesntExist()) {
             $this->profile()->create();
         }
     }
 
-    public function routeNotificationForSlack($notification)
+    public function routeNotificationForSlack(mixed $notification): string
     {
         return config('logging.channels.slack.url');
     }
@@ -134,9 +138,9 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
     | スコープ
     |--------------------------------------------------------------------------
     */
-    public function scopeAdmin($query)
+    public function scopeAdmin(Builder $query): void
     {
-        return $query->where('role', config('role.admin'));
+        $query->where('role', config('role.admin'));
     }
 
     /*
@@ -148,7 +152,7 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
     /**
      * ユーザーが管理者か.
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->role === config('role.admin');
     }

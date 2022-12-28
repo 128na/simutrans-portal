@@ -3,30 +3,27 @@
 namespace App\Services\BulkZip;
 
 use App\Exceptions\ZipErrorException;
+use App\Services\BulkZip\Decorators\BaseDecorator;
 use App\Services\Service;
-use App\Services\ZipDecorators\BaseDecorator;
 use ErrorException;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Str;
 use Throwable;
 use ZipArchive;
 
 class ZipManager extends Service
 {
-    private ZipArchive $zipArchive;
-    private FilesystemAdapter $disk;
     private string $filepath;
-    /**
-     * @var BaseDecorator[]
-     */
-    private array $decorators;
 
-    public function __construct(ZipArchive $zipArchive, FilesystemAdapter $disk, array $decorators)
-    {
-        $this->zipArchive = $zipArchive;
-        $this->disk = $disk;
-        $this->decorators = $decorators;
+    /**
+     * @param  array<BaseDecorator>  $decorators
+     */
+    public function __construct(
+        private ZipArchive $zipArchive,
+        private Filesystem $disk,
+        private array $decorators
+    ) {
     }
 
     private function randName(?string $prefix = null, ?string $suffix = null): string
@@ -42,7 +39,7 @@ class ZipManager extends Service
     }
 
     /**
-     * @param Model[] $items
+     * @param  Model[]  $items
      */
     public function create(array $items): string
     {
@@ -58,7 +55,7 @@ class ZipManager extends Service
                 $this->addFile($filepath, 'files/'.$filename);
             }
         }
-        if (!empty($result['contents'])) {
+        if (! empty($result['contents'])) {
             $this->addTextFile($result['contents']);
             $this->addCsvFile($result['contents']);
             // $this->addJsonFile($result['contents']);
@@ -70,7 +67,8 @@ class ZipManager extends Service
     /**
      * アイテムから情報を取得.
      *
-     * @param Model[] $items
+     * @param  array<Model>  $items
+     * @return array<string, mixed>
      */
     private function processItems(array $items): array
     {
@@ -93,6 +91,8 @@ class ZipManager extends Service
 
     /**
      * テキストファイル.
+     *
+     * @param  array<array<mixed>>  $contents
      */
     private function addTextFile(array $contents): void
     {
@@ -112,10 +112,15 @@ class ZipManager extends Service
 
     /**
      * SJIS csvファイル.
+     *
+     * @param  array<array<mixed>>  $contents
      */
     private function addCsvFile(array $contents): void
     {
         $csv = tmpfile();
+        if ($csv === false) {
+            throw new ZipErrorException('tmpfile faild');
+        }
         foreach ($contents as $rows) {
             foreach ($rows as $row) {
                 if (is_string($row)) {
@@ -130,15 +135,6 @@ class ZipManager extends Service
 
         $this->addFile($filepath, 'contents.csv');
         $this->disk->delete($filepath);
-    }
-
-    /**
-     * jsonファイル.
-     */
-    private function addJsonFile(array $contents): void
-    {
-        $opt = JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE;
-        $this->addText('contents.json', json_encode($contents, $opt));
     }
 
     private function open(): void
@@ -168,9 +164,15 @@ class ZipManager extends Service
         $z = new ZipArchive();
         try {
             $z->open($path);
-            for ($i = 0; $i < $z->numFiles; ++$i) {
+            for ($i = 0; $i < $z->numFiles; $i++) {
                 $name = $z->getNameIndex($i);
+                if ($name === false) {
+                    throw new ZipErrorException("getNameIndex faild: {$name}");
+                }
                 $rc = $z->getStream($name);
+                if ($rc === false) {
+                    throw new ZipErrorException("getStream faild: {$name}");
+                }
                 $randName = $this->randName();
                 $this->disk->put($randName, $rc);
                 $this->addFile($randName, "{$basedir}/{$name}");

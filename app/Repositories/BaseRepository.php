@@ -15,11 +15,13 @@ use Illuminate\Support\Str;
  * 一覧： findAll(By)Hoge
  * ページネーション: paginate(By)Hoge
  * カーソル: cursor(By)Hoge
+ *
+ * @template T of Model
  */
 abstract class BaseRepository
 {
     /**
-     * @var Model
+     * @var T
      */
     protected $model;
 
@@ -46,6 +48,8 @@ abstract class BaseRepository
 
     /**
      * 保存.
+     *
+     * @param  array<mixed>  $data
      */
     public function store(array $data): Model
     {
@@ -54,8 +58,11 @@ abstract class BaseRepository
 
     /**
      * 更新.
+     *
+     * @param  T  $model
+     * @param  array<mixed>  $data
      */
-    public function update(Model $model, array $data): void
+    public function update($model, array $data): void
     {
         $model->update($data);
     }
@@ -70,59 +77,89 @@ abstract class BaseRepository
 
     /**
      * リレーションをロード.
+     *
+     * @param  T  $model
+     * @param  array<string>  $relations
+     *
+     * @phpstan-return T
      */
-    public function load(Model $model, array $relations = []): Model
+    public function load($model, array $relations = [])
     {
         return $model->loadMissing($relations);
     }
 
     /**
      * ユーザーのリレーション経由で保存.
+     *
+     * @param  array<mixed>  $data
      */
     public function storeByUser(User $user, array $data): Model
     {
         return $user->{$this->getRelationName()}()->create($data);
     }
 
-    public function find($id): ?Model
+    public function find(int|string|null $id): ?Model
     {
         return $this->model->find($id);
     }
 
-    public function findOrFail($id): Model
+    public function findOrFail(int|string|null $id): Model
     {
         return $this->model->findOrFail($id);
     }
 
+    /**
+     * @param  array<int|string|null>  $ids
+     */
     public function findByIds(array $ids): Collection
     {
         return $this->model->whereIn('id', $ids)->get();
     }
 
+    /**
+     * @param  array<mixed>  $search
+     * @param  array<mixed>  $data
+     *
+     * @phpstan-return T
+     */
     public function updateOrCreate(array $search, array $data = [])
     {
+        /** @var T */
         return $this->model->updateOrCreate($search, $data);
     }
 
-    public function firstOrCreate(array $search, array $data = [])
+    /**
+     * @param  array<mixed>  $search
+     * @param  array<mixed>  $data
+     */
+    public function firstOrCreate(array $search, array $data = []): Model
     {
         return $this->model->firstOrCreate($search, $data);
     }
 
     /**
      * 一覧取得.
+     *
+     * @param  array<string>  $column
+     * @param  array<mixed>  $with
      */
     public function findAll(array $column = ['*'], array $with = [], ?int $limit = null): Collection
     {
-        return $this->model
+        $q = $this->model
             ->select($column)
-            ->with($with)
-            ->limit($limit)
-            ->get();
+            ->with($with);
+        if ($limit) {
+            $q->limit($limit);
+        }
+
+        return $q->get();
     }
 
     /**
      * ページネーションで一覧取得.
+     *
+     * @param  array<string>  $column
+     * @param  array<mixed>  $with
      */
     public function paginate(array $column = ['*'], array $with = [], int $perPage = 24): Paginator
     {

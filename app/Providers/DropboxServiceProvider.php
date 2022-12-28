@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\ServiceProvider;
 use League\Flysystem\Filesystem;
 use Spatie\Dropbox\Client as DropboxClient;
@@ -30,8 +31,10 @@ class DropboxServiceProvider extends ServiceProvider
             $client = new DropboxClient(
                 $config['authorization_token']
             );
+            $adapter = new DropboxAdapter($client);
+            $driver = new Filesystem($adapter, ['case_sensitive' => false]);
 
-            return new Filesystem(new DropboxAdapter($client));
+            return new FilesystemAdapter($driver, $adapter);
         });
     }
 }

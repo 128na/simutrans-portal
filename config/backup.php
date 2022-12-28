@@ -144,14 +144,14 @@ return [
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,
             ],
         ],
-        [
-            'name' => env('APP_NAME', 'laravel-backup'),
-            'disks' => ['ftp'],
-            'health_checks' => [
-                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 10,
-                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 50000,
-            ],
-        ],
+        // [
+        //     'name' => env('APP_NAME', 'laravel-backup'),
+        //     'disks' => ['ftp'],
+        //     'health_checks' => [
+        //         \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 10,
+        //         \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 50000,
+        //     ],
+        // ],
 
         /*
         [

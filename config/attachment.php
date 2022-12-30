@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 // /public/storage
 return [
     'no-thumbnail' => 'default/image.png',

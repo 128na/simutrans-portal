@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Repositories\BulkZipRepository;
 
 use App\Models\Attachment;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Jobs\Article;
 
 use App\Jobs\Article\JobDeleteUnrelatedTags;

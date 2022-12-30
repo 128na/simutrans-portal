@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'ja' => ['label' => '日本語'],
     'en' => ['label' => 'English'],

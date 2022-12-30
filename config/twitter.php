@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'consumer_key' => env('TWITTER_CONSUMER_KEY'),
     'consumer_secret' => env('TWITTER_CONSUMER_SECRET'),

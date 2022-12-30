@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Services\Twitter;
 
 use App\Services\Twitter\Exceptions\InvalidTweetDataException;

@@ -24,7 +24,7 @@ class AggregateTweetLogService
      */
     private function filterUpdatableFields(array $data): array
     {
-        return array_filter($data, fn ($d) => !is_numeric($d) || $d > 0);
+        return array_filter($data, fn ($d) => ! is_numeric($d) || $d > 0);
     }
 
     /**

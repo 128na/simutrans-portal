@@ -13,7 +13,7 @@ abstract class Content
      */
     public function __construct(array $contents)
     {
-        $this->thumbnail = array_key_exists('thumbnail', $contents) ? (int)$contents['thumbnail'] : null;
+        $this->thumbnail = array_key_exists('thumbnail', $contents) ? (int) $contents['thumbnail'] : null;
     }
 
     abstract public function getDescription(): string;

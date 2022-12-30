@@ -11,6 +11,6 @@ class SectionImage extends Section
     public function __construct(array $section)
     {
         parent::__construct($section);
-        $this->id = array_key_exists('id', $section) ? (int)$section['id'] : null;
+        $this->id = array_key_exists('id', $section) ? (int) $section['id'] : null;
     }
 }

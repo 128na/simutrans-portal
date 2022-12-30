@@ -16,9 +16,9 @@ class AddonIntroductionContent extends Content
 
     public ?string $thanks;
 
-    public ?string $agreement;
+    public ?bool $agreement;
 
-    public ?string $exclude_link_check;
+    public ?bool $exclude_link_check;
 
     public function __construct(array $contents)
     {
@@ -27,8 +27,8 @@ class AddonIntroductionContent extends Content
         $this->author = $contents['author'] ?? null;
         $this->license = $contents['license'] ?? null;
         $this->thanks = $contents['thanks'] ?? null;
-        $this->agreement = $contents['agreement'] ?? false;
-        $this->exclude_link_check = $contents['exclude_link_check'] ?? false;
+        $this->agreement = (bool) ($contents['agreement'] ?? false);
+        $this->exclude_link_check = (bool) ($contents['exclude_link_check'] ?? false);
         parent::__construct($contents);
     }
 

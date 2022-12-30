@@ -8,7 +8,7 @@ class AddonPostContent extends Content
 {
     public ?string $description;
 
-    public ?string $file;
+    public ?int $file;
 
     public ?string $author;
 
@@ -19,7 +19,7 @@ class AddonPostContent extends Content
     public function __construct(array $contents)
     {
         $this->description = $contents['description'] ?? null;
-        $this->file = $contents['file'] ?? null;
+        $this->file = array_key_exists('file', $contents) ? (int)$contents['file'] : null;
         $this->author = $contents['author'] ?? null;
         $this->license = $contents['license'] ?? null;
         $this->thanks = $contents['thanks'] ?? null;

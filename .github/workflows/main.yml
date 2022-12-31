@@ -249,8 +249,6 @@ jobs:
         run: php -r "copy('frontend/.env.dusk.ci', 'frontend/.env');"
       - name: Setup Node
         uses: actions/setup-node@v3
-      - name: Storage link
-        run: php artisan storage:link
       - name: Setup Node
         uses: actions/setup-node@v3
       - name: Cache frontend_node_modules

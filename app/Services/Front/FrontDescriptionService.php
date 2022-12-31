@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Front;
 
 use App\Http\Resources\Api\Front\TagDescriptionResource;

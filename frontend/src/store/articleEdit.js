@@ -85,10 +85,24 @@ const createSection = (type) => {
   }
 };
 
-const unloadListener = (event) => {
-  event.preventDefault();
-  event.returnValue = '';
+const unloadManager = {
+  registered: false,
+  add() {
+    if (this.registered === false) {
+      window.addEventListener('beforeunload', this.listener);
+      this.registered = true;
+    }
+  },
+  remove() {
+    window.removeEventListener('beforeunload', this.listener);
+    this.registered = false;
+  },
+  listener(event) {
+    event.preventDefault();
+    event.returnValue = '';
+  },
 };
+
 // 変更検知用
 let original = null;
 
@@ -115,10 +129,11 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
       article: article.value,
       should_tweet: tweet.value,
     };
+    unloadManager.remove();
     return handlerArticle.handleWithValidate({
       doRequest: () => api.createArticle(params),
       done: (res) => {
-        window.removeEventListener('beforeunload', unloadListener);
+        unloadManager.remove();
         return res.data.data;
       },
       successMessage: '保存しました',
@@ -133,7 +148,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     return handlerArticle.handleWithValidate({
       doRequest: () => api.updateArticle(params),
       done: (res) => {
-        window.removeEventListener('beforeunload', unloadListener);
+        unloadManager.remove();
         return res.data.data;
       },
       successMessage: '更新しました',
@@ -161,29 +176,27 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
 
   watch(article, (v) => {
     if (isModified(v)) {
-      window.addEventListener('beforeunload', unloadListener);
+      unloadManager.add();
     } else {
-      window.removeEventListener('beforeunload', unloadListener);
+      unloadManager.remove();
     }
   }, { deep: true });
 
   onBeforeRouteLeave((to, from, next) => {
     // eslint-disable-next-line no-alert
     if (isModified(article.value) && !window.confirm('保存せずに移動しますか？')) {
-      window.addEventListener('beforeunload', unloadListener);
-      next(false);
+      unloadManager.add(); next(false);
     } else {
-      window.removeEventListener('beforeunload', unloadListener);
+      unloadManager.remove();
       next();
     }
   });
   onBeforeRouteUpdate((to, from, next) => {
     // eslint-disable-next-line no-alert
     if (isModified(article.value) && !window.confirm('保存せずに移動しますか？')) {
-      window.addEventListener('beforeunload', unloadListener);
-      next(false);
+      unloadManager.add(); next(false);
     } else {
-      window.removeEventListener('beforeunload', unloadListener);
+      unloadManager.remove();
       next();
     }
   });

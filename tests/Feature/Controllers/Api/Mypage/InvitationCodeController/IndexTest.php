@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Controllers\Api\Mypage\InvitationCodeController;
 
 use App\Models\User;

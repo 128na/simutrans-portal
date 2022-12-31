@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\FileInfo\Extractors;
 
 use App\Services\Service;

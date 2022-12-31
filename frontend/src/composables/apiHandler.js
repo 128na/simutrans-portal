@@ -20,8 +20,8 @@ export const useApiHandler = () => {
 
   /**
    * エラーをハンドリングする
-   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>void, successMessage:string, failedMessage:string, retryable:boolean, autoRetry:number ,retryCount:number}}
-   * @returns {AxiosResponse<any>|null}
+   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>any, successMessage:string, failedMessage:string, retryable:boolean, autoRetry:number ,retryCount:number}}
+   * @returns {AxiosResponse<any>|any|null}
    */
   const handle = async ({
     doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true, autoRetry = 3, retryCount = 0,
@@ -33,7 +33,7 @@ export const useApiHandler = () => {
         notify.success(successMessage);
       }
       if (done) {
-        await done(res);
+        return await done(res);
       }
       return res;
     } catch (error) {
@@ -87,8 +87,8 @@ export const useApiHandler = () => {
 
   /**
    * ローディング画面とエラーをハンドリングする
-   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>void, successMessage:string, failedMessage:string, retryable:boolean, autoRetry:number ,retryCount:number}}
-   * @returns {AxiosResponse<any>|null}
+   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>any, successMessage:string, failedMessage:string, retryable:boolean, autoRetry:number ,retryCount:number}}
+   * @returns {AxiosResponse<any>|any|null}
    */
   const handleWithLoading = async ({
     doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true, autoRetry = 3, retryCount = 0,
@@ -101,7 +101,7 @@ export const useApiHandler = () => {
         notify.success(successMessage);
       }
       if (done) {
-        await done(res);
+        return await done(res);
       }
       return res;
     } catch (error) {
@@ -156,8 +156,8 @@ export const useApiHandler = () => {
 
   /**
    * ローディング画面とバリデーションエラーをハンドリングする
-   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>void, successMessage:string, failedMessage:string, retryable:boolean, autoRetry:number ,retryCount:number}}
-   * @returns {AxiosResponse<any>|null}
+   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>any, successMessage:string, failedMessage:string, retryable:boolean, autoRetry:number ,retryCount:number}}
+   * @returns {AxiosResponse<any>|any|null}
    */
   const handleWithValidate = async ({
     doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true, autoRetry = 3, retryCount = 0,
@@ -171,7 +171,7 @@ export const useApiHandler = () => {
         notify.success(successMessage);
       }
       if (done) {
-        await done(res);
+        return await done(res);
       }
       return res;
     } catch (error) {

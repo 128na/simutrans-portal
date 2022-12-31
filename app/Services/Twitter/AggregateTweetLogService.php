@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Twitter;
 
 use App\Repositories\Article\TweetLogRepository;
 use App\Repositories\Article\TweetLogSummaryRepository;
+use Carbon\Carbon;
 
 class AggregateTweetLogService
 {
@@ -16,8 +19,8 @@ class AggregateTweetLogService
     /**
      * 値が0のフィールドを更新から除外する.
      *
-     * @param  array<string,string|int>  $data
-     * @return array<string,string|int>
+     * @param  array<string,string|int|Carbon>  $data
+     * @return array<string,string|int|Carbon>
      */
     private function filterUpdatableFields(array $data): array
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Repositories\UserRepository;
 
 use App\Repositories\UserRepository;

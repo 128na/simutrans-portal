@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Services\FileInfo\Extractors;
 
 use App\Services\FileInfo\Extractors\TabExtractor;

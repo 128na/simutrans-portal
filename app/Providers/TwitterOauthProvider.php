@@ -48,8 +48,8 @@ class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
                 $this->app->make(Carbon::class),
                 $this->app->make(Client::class),
                 $this->app->make(OauthTokenRepository::class),
-                config('twitter.client_id') ?? '',
-                config('twitter.client_secret') ?? '',
+                config('twitter.client_id'),
+                config('twitter.client_secret'),
                 route('admin.oauth.twitter.callback'),
             );
         });

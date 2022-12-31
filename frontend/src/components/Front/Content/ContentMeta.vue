@@ -1,8 +1,8 @@
 <template>
   <span class="q-mr-xs q-mb-xs">投稿：{{ publishedAt }}</span>
   <span class="q-mr-xs q-mb-xs">更新：{{ modifiedAt }}</span>
-  <router-link v-if="canEdit" class="q-mr-xs q-mb-xs text-primary" :to="{ name: 'edit', params: { id: article.id } }">
-    編集する</router-link>
+  <router-link v-if="canEdit" class="q-mr-xs q-mb-xs text-primary"
+    :to="{ name: 'edit', params: { id: article.id } }">編集する</router-link>
 </template>
 <script>
 import { defineComponent, computed } from 'vue';

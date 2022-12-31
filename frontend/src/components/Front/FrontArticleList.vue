@@ -23,7 +23,7 @@
               {{ a.user.name }}
             </router-link>
           </q-item-label>
-          <q-item-label caption>
+          <q-item-label caption class="q-pt-sm">
             <content-meta :article="a" />
           </q-item-label>
         </q-item-section>
@@ -39,7 +39,7 @@
         <router-link :to="{ name: 'show', params: { slug: a.slug } }">
           <q-img :to="{ name: 'show', params: { slug: a.slug } }" :src="thumbnailUrl(a)" width="100%" :ratio="16 / 9"
             fit="cover" class="bg-grey-1">
-            <div class="text-h5 absolute-bottom text-center">
+            <div class="text-h5 absolute-full flex flex-center">
               {{ a.title }}
             </div>
           </q-img>

@@ -6,7 +6,7 @@ namespace App\Models\User;
 
 class ProfileData
 {
-    public ?string $avatar;
+    public ?int $avatar;
 
     public ?string $description;
 
@@ -21,7 +21,7 @@ class ProfileData
      */
     public function __construct(array $data)
     {
-        $this->avatar = $data['avatar'] ?? null;
+        $this->avatar = array_key_exists('avatar', $data) ? (int) $data['avatar'] : null;
         $this->description = $data['description'] ?? null;
         $this->website = $data['website'] ?? null;
         $this->twitter = $data['twitter'] ?? null;

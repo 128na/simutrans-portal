@@ -33,7 +33,7 @@ export const useApiHandler = () => {
         notify.success(successMessage);
       }
       if (done) {
-        return await done(res) || res;
+        return await done(res);
       }
       return res;
     } catch (error) {
@@ -101,7 +101,7 @@ export const useApiHandler = () => {
         notify.success(successMessage);
       }
       if (done) {
-        return await done(res) || res;
+        return await done(res);
       }
       return res;
     } catch (error) {
@@ -171,7 +171,7 @@ export const useApiHandler = () => {
         notify.success(successMessage);
       }
       if (done) {
-        return await done(res) || res;
+        return await done(res);
       }
       return res;
     } catch (error) {

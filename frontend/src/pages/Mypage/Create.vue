@@ -99,7 +99,9 @@ export default defineComponent({
         mypage.articles = articles;
         const article = mypage.findArticleBySlug(slug);
         if (article) {
-          router.push({ name: 'edit', params: { id: article.id } });
+          setTimeout(() => {
+            router.push({ name: 'edit', params: { id: article.id } });
+          }, 1000);
         }
       } catch {
         const el = splitterRef.value.$el.querySelector('.q-splitter__before');

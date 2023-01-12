@@ -11,13 +11,13 @@
       </q-item>
       <q-item v-if="pagination" class="flex flex-center">
         <q-pagination :model-value="pagination.current_page" :min="1" :max="pagination.last_page" :max-pages="3"
-          :to-fn="page => ({ query: { page } })" direction-links boundary-links />
+          :to-fn="handlePagination" direction-links boundary-links />
       </q-item>
       <q-separator />
       <front-article-list :articles="articles" />
       <q-item v-if="pagination" class="flex flex-center">
         <q-pagination :model-value="pagination.current_page" :min="1" :max="pagination.last_page" :max-pages="3"
-          :to-fn="page => ({ query: { page } })" direction-links boundary-links />
+          :to-fn="handlePagination" direction-links boundary-links />
       </q-item>
     </q-list>
   </q-page>
@@ -98,11 +98,16 @@ export default defineComponent({
     };
     watch(route, () => { fetchArticles(); }, { deep: true, immediate: true });
 
+    const handlePagination = (page) => ({
+      query: { ...route.query, page },
+    });
+
     return {
       articles,
       description,
       pagination,
       title,
+      handlePagination,
     };
   },
 });

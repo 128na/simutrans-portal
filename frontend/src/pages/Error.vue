@@ -90,7 +90,7 @@ const errors = {
 };
 
 export default defineComponent({
-  name: 'Error',
+  name: 'PageError',
   setup() {
     const color = useColor();
     color.setFront();

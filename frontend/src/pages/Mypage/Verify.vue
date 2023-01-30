@@ -12,7 +12,7 @@ import { useAuthStore } from 'src/store/auth';
 import { useApiHandler } from 'src/composables/apiHandler';
 
 export default defineComponent({
-  name: 'Verify',
+  name: 'PageVerify',
   components: { TextTitle },
   setup() {
     const api = useMypageApi();

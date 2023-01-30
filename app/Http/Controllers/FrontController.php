@@ -131,6 +131,9 @@ class FrontController extends Controller
         $statuses = [400, 404, 500, 503];
         $status = in_array(intval($status), $statuses, true) ? $status : 404;
 
+        /**
+         * @var view-string
+         */
         $path = "errors.{$status}";
         if (View::exists($path)) {
             return view($path);

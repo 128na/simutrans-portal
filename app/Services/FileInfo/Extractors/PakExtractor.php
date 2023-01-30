@@ -30,6 +30,7 @@ class PakExtractor extends Service implements Extractor
      */
     public function extract(string $pakBinary): array
     {
+        /** @var PakBinary */
         $pak = app(PakBinary::class, ['binary' => $pakBinary]);
         $nameKey = pack('H*', '948C');
         $textKey = pack('H*', '54455854');

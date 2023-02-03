@@ -6,9 +6,12 @@ namespace App\Notifications;
 
 use App\Channels\TwitterChannel;
 use App\Models\Article;
+use App\Models\User;
+use App\Models\User\Profile;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Str;
 
 abstract class ArticleNotification extends Notification
 {
@@ -43,9 +46,7 @@ abstract class ArticleNotification extends Notification
         if ($article->user && $article->user->profile) {
             $url = route('articles.show', $article->slug);
             $now = now()->format('Y/m/d H:i');
-            $name = $article->user->profile->has_twitter
-                ? '@'.$article->user->profile->data->twitter
-                : $article->user->name;
+            $name = $this->getDisaplayName($article->user);
             $tags = collect(['Simutrans'])
                 ->merge($article->categoryPaks->pluck('name'))
                 ->map(fn ($name) => str_replace('.', '', "#$name")) // ドットはハッシュタグに使用できない
@@ -62,4 +63,15 @@ abstract class ArticleNotification extends Notification
     }
 
     abstract protected function getMessage(): string;
+
+    private function getDisaplayName(User $user): string
+    {
+        if (!$user->profile->has_twitter) {
+            return $user->name;
+        }
+        if (str_starts_with($user->profile->data->twitter, '@')) {
+            return $user->profile->data->twitter;
+        }
+        return "@{$user->profile->data->twitter}";
+    }
 }

@@ -10,6 +10,7 @@ use App\Repositories\Article\TweetLogRepository;
 use App\Services\Twitter\Exceptions\InvalidTweetDataException;
 use App\Services\Twitter\Exceptions\TweetFailedException;
 use App\Services\Twitter\TweetService;
+use Throwable;
 
 class TwitterChannel
 {
@@ -45,7 +46,9 @@ class TwitterChannel
                     'tweet_created_at' => $tweetData->createdAt,
                 ]);
             }
-        } catch (TweetFailedException|InvalidTweetDataException $e) {
+        } catch (TweetFailedException | InvalidTweetDataException $e) {
+            report($e);
+        } catch (Throwable $e) {
             report($e);
         }
     }

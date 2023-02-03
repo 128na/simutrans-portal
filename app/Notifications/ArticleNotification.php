@@ -64,7 +64,7 @@ abstract class ArticleNotification extends Notification
 
     private function getDisaplayName(User $user): string
     {
-        if (!$user->profile?->has_twitter) {
+        if (! $user->profile?->has_twitter) {
             return $user->name;
         }
         $twitterName = $user->profile?->data->twitter ?? '';

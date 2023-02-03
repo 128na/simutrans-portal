@@ -69,9 +69,10 @@ abstract class ArticleNotification extends Notification
         if (!$user->profile->has_twitter) {
             return $user->name;
         }
-        if (str_starts_with($user->profile->data->twitter, '@')) {
-            return $user->profile->data->twitter;
+        $twitterName = $user->profile->data->twitter;
+        if (str_starts_with($twitterName, '@')) {
+            return $twitterName;
         }
-        return "@{$user->profile->data->twitter}";
+        return "@{$twitterName}";
     }
 }

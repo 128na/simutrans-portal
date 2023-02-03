@@ -7,11 +7,9 @@ namespace App\Notifications;
 use App\Channels\TwitterChannel;
 use App\Models\Article;
 use App\Models\User;
-use App\Models\User\Profile;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Str;
 
 abstract class ArticleNotification extends Notification
 {
@@ -66,13 +64,14 @@ abstract class ArticleNotification extends Notification
 
     private function getDisaplayName(User $user): string
     {
-        if (!$user->profile->has_twitter) {
+        if (!$user->profile?->has_twitter) {
             return $user->name;
         }
-        $twitterName = $user->profile->data->twitter;
+        $twitterName = $user->profile?->data->twitter ?? '';
         if (str_starts_with($twitterName, '@')) {
             return $twitterName;
         }
+
         return "@{$twitterName}";
     }
 }

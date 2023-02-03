@@ -46,7 +46,7 @@ class TwitterChannel
                     'tweet_created_at' => $tweetData->createdAt,
                 ]);
             }
-        } catch (TweetFailedException | InvalidTweetDataException $e) {
+        } catch (TweetFailedException|InvalidTweetDataException $e) {
             report($e);
         } catch (Throwable $e) {
             report($e);

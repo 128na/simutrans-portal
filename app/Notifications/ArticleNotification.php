@@ -67,7 +67,7 @@ abstract class ArticleNotification extends Notification
 
     /**
      * @param  Article  $article
-     * @return string
+     * @return DiscordMessage
      */
     public function toDiscord($article)
     {

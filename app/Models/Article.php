@@ -70,6 +70,11 @@ class Article extends Model implements Feedable
         return $this->user->email;
     }
 
+    public function routeNotificationForDiscord()
+    {
+        return config('services.discord.channel');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | リレーション

@@ -10,6 +10,8 @@ use App\Models\User;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\Discord\DiscordChannel;
+use NotificationChannels\Discord\DiscordMessage;
 
 abstract class ArticleNotification extends Notification
 {
@@ -32,7 +34,10 @@ abstract class ArticleNotification extends Notification
      */
     public function via($notifiable)
     {
-        return [TwitterChannel::class];
+        return [
+            TwitterChannel::class,
+            DiscordChannel::class,
+        ];
     }
 
     /**
@@ -58,6 +63,16 @@ abstract class ArticleNotification extends Notification
             return $message;
         }
         throw new Exception('missing user or profile');
+    }
+
+    /**
+     * @param  Article  $article
+     * @return string
+     */
+    public function toDiscord($article)
+    {
+        return (new DiscordMessage())
+            ->body($this->toTwitter($article));
     }
 
     abstract protected function getMessage(): string;

@@ -14,4 +14,9 @@ return [
     | to have a conventional place to find your various credentials.
     |
     */
+
+    'discord' => [
+        'token' => env('DISCORD_TOKEN'),
+        'channel' => env('DISCORD_CHANNEL'),
+    ],
 ];

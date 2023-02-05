@@ -18,5 +18,8 @@ return [
     'discord' => [
         'token' => env('DISCORD_TOKEN'),
         'channel' => env('DISCORD_CHANNEL'),
+        'domain' => 'https://discord.gg',
+        'max_age' => 300,
+        'max_uses' => 1,
     ],
 ];

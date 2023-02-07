@@ -22,4 +22,9 @@ return [
         'max_age' => 300,
         'max_uses' => 1,
     ],
+    'google_recaptcha' => [
+        'credential' => env('GOOGLE_RECAPTCHA_CREDENTIAL'),
+        'projectName' => env('GOOGLE_RECAPTCHA_PROJECT_NAME'),
+        'siteKey' => env('GOOGLE_RECAPTCHA_SITE_KEY'),
+    ],
 ];

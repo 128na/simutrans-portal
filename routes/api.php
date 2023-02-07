@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Admin\ControllOptionController;
 use App\Http\Controllers\Api\Admin\TagController as AdminTagController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Front\ConversionController;
+use App\Http\Controllers\Api\Front\DiscordController;
 use App\Http\Controllers\Api\Front\FrontController;
 use App\Http\Controllers\Api\Mypage\AnalyticsController;
 use App\Http\Controllers\Api\Mypage\AttachmentController;
@@ -46,6 +47,8 @@ Route::prefix('front')->group(function () {
         Route::get('/tags', [FrontController::class, 'tags']);
         Route::get('/search', [FrontController::class, 'search']);
         Route::get('/articles/{article}', [FrontController::class, 'show']);
+
+        Route::post('/invite-simutrans-interact-meeting', [DiscordController::class, 'index'])->name('discord-invite');
     });
 });
 Route::withoutMiddleware([VerifyCsrfToken::class])->group(function () {

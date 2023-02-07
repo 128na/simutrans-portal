@@ -77,5 +77,8 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('register', function (Request $request) {
             return Limit::perMinute(10)->by($request->ip());
         });
+        RateLimiter::for('discord-invite', function (Request $request) {
+            return Limit::perMinute(1)->perDay(10);
+        });
     }
 }

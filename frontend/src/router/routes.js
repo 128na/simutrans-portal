@@ -1,26 +1,28 @@
-import FrontLayout from 'layouts/FrontLayout.vue';
-import FrontTop from 'pages/Front/Top.vue';
-import FrontShow from 'pages/Front/Show.vue';
-import FrontList from 'pages/Front/List.vue';
-import FrontTags from 'pages/Front/Tags.vue';
+import Layout from 'layouts/FrontLayout.vue';
+import Top from 'pages/Front/Top.vue';
+import Show from 'pages/Front/Show.vue';
+import List from 'pages/Front/List.vue';
+import Tags from 'pages/Front/Tags.vue';
+import DiscordInvite from 'pages/Front/DiscordInvite.vue';
 import Error from 'src/pages/Error.vue';
 
 const routes = [
   {
     path: '/',
-    component: FrontLayout,
+    component: Layout,
     children: [
-      { name: 'top', path: '', component: FrontTop },
-      { name: 'show', path: 'articles/:slug', component: FrontShow },
-      { name: 'categoryPak', path: 'category/pak/:size/:slug', component: FrontList },
-      { name: 'category', path: 'category/:type/:slug', component: FrontList },
-      { name: 'tag', path: 'tag/:id', component: FrontList },
-      { name: 'user', path: 'user/:id', component: FrontList },
-      { name: 'announces', path: 'announces', component: FrontList },
-      { name: 'pages', path: 'pages', component: FrontList },
-      { name: 'ranking', path: 'ranking', component: FrontList },
-      { name: 'search', path: 'search', component: FrontList },
-      { name: 'tags', path: 'tags', component: FrontTags },
+      { name: 'top', path: '', component: Top },
+      { name: 'show', path: 'articles/:slug', component: Show },
+      { name: 'categoryPak', path: 'category/pak/:size/:slug', component: List },
+      { name: 'category', path: 'category/:type/:slug', component: List },
+      { name: 'tag', path: 'tag/:id', component: List },
+      { name: 'user', path: 'user/:id', component: List },
+      { name: 'announces', path: 'announces', component: List },
+      { name: 'pages', path: 'pages', component: List },
+      { name: 'ranking', path: 'ranking', component: List },
+      { name: 'search', path: 'search', component: List },
+      { name: 'tags', path: 'tags', component: Tags },
+      { name: 'discordInvite', path: 'invite-simutrans-interact-meeting', component: DiscordInvite },
     ],
   },
   {

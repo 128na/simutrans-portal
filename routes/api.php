@@ -47,8 +47,10 @@ Route::prefix('front')->group(function () {
         Route::get('/tags', [FrontController::class, 'tags']);
         Route::get('/search', [FrontController::class, 'search']);
         Route::get('/articles/{article}', [FrontController::class, 'show']);
+    });
 
-        Route::post('/invite-simutrans-interact-meeting', [DiscordController::class, 'index'])->name('discord-invite');
+    Route::middleware(['throttle:discordInvite'])->group(function () {
+        Route::post('/invite-simutrans-interact-meeting', [DiscordController::class, 'index']);
     });
 });
 Route::withoutMiddleware([VerifyCsrfToken::class])->group(function () {
@@ -58,7 +60,8 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function () {
 
 // マイページ
 Route::prefix('mypage')->group(function () {
-    Route::post('invite/{invitation_code}', [InvitationCodeController::class, 'register'])->middleware('restrict:invitation_code');
+    Route::post('invite/{invitation_code}', [InvitationCodeController::class, 'register'])
+        ->middleware(['restrict:invitation_code', 'throttle:register']);
     // ログイン必須
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('user', [UserController::class, 'index']);

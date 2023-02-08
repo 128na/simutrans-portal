@@ -52,7 +52,7 @@ export default defineComponent({
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error);
-        errorMessage.value = '現在利用できません';
+        errorMessage.value = '現在利用できません。しばらくしてからお試しください。';
       } finally {
         disable.value = true;
         loading.value = false;

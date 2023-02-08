@@ -22,7 +22,7 @@ class DiscordControllerTest extends TestCase
             $m->shouldReceive('create')->once()->andReturn('dummy');
         });
 
-        $url = '/invite-simutrans-interact-meeting';
+        $url = '/api/front/invite-simutrans-interact-meeting';
         $res = $this->postJson($url);
         $res
             ->assertOk()
@@ -37,7 +37,7 @@ class DiscordControllerTest extends TestCase
         $this->mock(InviteService::class, function (MockInterface $m) {
             $m->shouldReceive('create')->once()->andThrow(new Error('dummy'));
         });
-        $url = '/invite-simutrans-interact-meeting';
+        $url = '/api/front/invite-simutrans-interact-meeting';
         $res = $this->postJson($url);
         $res
             ->assertStatus(400)
@@ -52,7 +52,7 @@ class DiscordControllerTest extends TestCase
         $this->mock(InviteService::class, function (MockInterface $m) {
             $m->shouldReceive('create')->never();
         });
-        $url = '/invite-simutrans-interact-meeting';
+        $url = '/api/front/invite-simutrans-interact-meeting';
         $res = $this->postJson($url);
         $res
             ->assertStatus(400)

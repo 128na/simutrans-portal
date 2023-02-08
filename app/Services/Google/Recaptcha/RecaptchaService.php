@@ -26,12 +26,12 @@ class RecaptchaService extends Service
 
     public function assessment(string $token): void
     {
-        $this->event->setToken($token);
+        $this->event->setToken($token)->setExpectedAction('invite');
 
         $assessment = (new Assessment())->setEvent($this->event);
         $response = $this->client->createAssessment($this->projectName, $assessment);
         $info = $this->getInfo($response);
-        logger()->info('assessment result', $info);
+        logger()->channel('discord-invite')->info('assessment result', $info);
 
         if ($response->getTokenProperties()?->getValid() !== true) {
             throw new RecaptchaFailedException();
@@ -67,6 +67,7 @@ class RecaptchaService extends Service
         if ($response->getRiskAnalysis()?->getScore() < 0.8) {
             throw new RecaptchaHighRiskException('score too low');
         }
+        logger('action', [$response->getTokenProperties()?->getAction(), $response->getEvent()?->getExpectedAction()]);
         if ($response->getTokenProperties()?->getAction() !== $response->getEvent()?->getExpectedAction()) {
             throw new RecaptchaHighRiskException('action mismatch');
         }

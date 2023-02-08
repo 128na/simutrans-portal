@@ -28,6 +28,8 @@ class DiscordController extends Controller
 
             return response()->json(['url' => $this->inviteService->create()], 200);
         } catch (RecaptchaException $e) {
+            report($e);
+
             return response()->json(['url' => null], 400);
         } catch (Throwable $e) {
             report($e);

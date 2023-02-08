@@ -8,6 +8,7 @@
     <p v-else>
       <q-btn :loading="loading" :disable="disable" color="primary" label="発行する" @click="handle" />
     </p>
+    <p v-if="errorMessage">{{ errorMessage }}</p>
 
   </q-page>
 </template>
@@ -36,13 +37,21 @@ export default defineComponent({
     const handle = async () => {
       try {
         loading.value = true;
-        await new Promise((resolve) => { window.grecaptcha.enterprise.ready(resolve); });
+        await new Promise((resolve, reject) => {
+          const t = setTimeout(reject, 5000);
+          window.grecaptcha.enterprise.ready(() => {
+            clearTimeout(t);
+            resolve();
+          });
+        });
         const token = await window.grecaptcha.enterprise.execute(process.env.GOOGLE_RECAPTCHA_SITE_KEY, { action: 'invite' });
 
         const res = await api.discordInvite(token);
 
         url.value = res.data.url;
       } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
         errorMessage.value = '現在利用できません';
       } finally {
         disable.value = true;

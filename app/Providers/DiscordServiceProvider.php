@@ -30,7 +30,7 @@ class DiscordServiceProvider extends ServiceProvider implements DeferrableProvid
     {
         $this->app->bind(InviteService::class, function () {
             return new InviteService(
-                new DiscordClient(['token' => config('services.discord.token')])
+                new DiscordClient(['token' => config('services.discord.token'), 'tokenType' => 'Bot'])
             );
         });
     }

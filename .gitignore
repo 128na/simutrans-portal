@@ -24,6 +24,6 @@ public/mix-manifest.json
 coverage/
 
 *-firebase-adminsdk*.json
-gcp_service_account.json
+credential.json
 .env.dusk.local
 .env.backup

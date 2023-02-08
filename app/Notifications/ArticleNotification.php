@@ -32,7 +32,9 @@ abstract class ArticleNotification extends Notification
      */
     public function via($notifiable)
     {
-        return [TwitterChannel::class];
+        return [
+            TwitterChannel::class,
+        ];
     }
 
     /**

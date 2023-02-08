@@ -14,4 +14,17 @@ return [
     | to have a conventional place to find your various credentials.
     |
     */
+
+    'discord' => [
+        'token' => env('DISCORD_TOKEN'),
+        'channel' => env('DISCORD_CHANNEL'),
+        'domain' => 'https://discord.gg',
+        'max_age' => 300,
+        'max_uses' => 1,
+    ],
+    'google_recaptcha' => [
+        'credential' => env('GOOGLE_RECAPTCHA_CREDENTIAL'),
+        'projectName' => env('GOOGLE_RECAPTCHA_PROJECT_NAME'),
+        'siteKey' => env('GOOGLE_RECAPTCHA_SITE_KEY'),
+    ],
 ];

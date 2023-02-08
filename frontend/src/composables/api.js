@@ -53,6 +53,9 @@ export const useFrontApi = () => ({
   fetchTags() {
     return axios.get('/api/front/tags');
   },
+  discordInvite(token) {
+    return axios.post('/api/front/invite-simutrans-interact-meeting', { token });
+  },
 });
 
 export const useMypageApi = () => ({

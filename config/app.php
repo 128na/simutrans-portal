@@ -191,6 +191,11 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\DropboxServiceProvider::class,
         App\Providers\TwitterOauthProvider::class,
+        App\Providers\DiscordServiceProvider::class,
+        App\Providers\GoogleServiceProvider::class,
+
+        // discord notifiaction
+        NotificationChannels\Discord\DiscordServiceProvider::class,
     ],
 
     /*

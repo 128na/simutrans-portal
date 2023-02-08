@@ -91,5 +91,12 @@ return [
             'level' => 'debug',
             'days' => 365,
         ],
+
+        'discord-invite' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/discord-invite.log'),
+            'level' => 'debug',
+            'days' => 365,
+        ],
     ],
 ];

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Admin\ControllOptionController;
 use App\Http\Controllers\Api\Admin\TagController as AdminTagController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Front\ConversionController;
+use App\Http\Controllers\Api\Front\DiscordController;
 use App\Http\Controllers\Api\Front\FrontController;
 use App\Http\Controllers\Api\Mypage\AnalyticsController;
 use App\Http\Controllers\Api\Mypage\AttachmentController;
@@ -47,6 +48,10 @@ Route::prefix('front')->group(function () {
         Route::get('/search', [FrontController::class, 'search']);
         Route::get('/articles/{article}', [FrontController::class, 'show']);
     });
+
+    Route::middleware(['throttle:discordInvite'])->group(function () {
+        Route::post('/invite-simutrans-interact-meeting', [DiscordController::class, 'index']);
+    });
 });
 Route::withoutMiddleware([VerifyCsrfToken::class])->group(function () {
     Route::post('conversion/{article}', [ConversionController::class, 'conversion']);
@@ -55,7 +60,8 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function () {
 
 // マイページ
 Route::prefix('mypage')->group(function () {
-    Route::post('invite/{invitation_code}', [InvitationCodeController::class, 'register'])->middleware('restrict:invitation_code');
+    Route::post('invite/{invitation_code}', [InvitationCodeController::class, 'register'])
+        ->middleware(['restrict:invitation_code', 'throttle:register']);
     // ログイン必須
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('user', [UserController::class, 'index']);

@@ -27,7 +27,7 @@ class InviteService extends Service
 
         $body = $result->json();
 
-        if (! array_key_exists('code', $body)) {
+        if ($result->status() !== 200 || ! array_key_exists('code', $body)) {
             throw new CreateInviteFailedException();
         }
 

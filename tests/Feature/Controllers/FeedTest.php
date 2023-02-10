@@ -8,20 +8,32 @@ use Tests\ArticleTestCase;
 
 class FeedTest extends ArticleTestCase
 {
-    /**
-     * feedが表示されること.
-     */
-    public function testFeed()
+    protected function setUp(): void
     {
-        $response = $this->get('/feed');
-        $response->assertOk();
+        parent::setUp();
 
         $this->createAddonPost();
         $this->createAddonIntroduction();
         $this->createPage();
         $this->createAnnounce();
+    }
 
-        $response = $this->get('/feed');
+    /**
+     * @dataProvider dataFeed
+     */
+    public function testFeed(string $url)
+    {
+        $response = $this->get($url);
         $response->assertOk();
+    }
+
+    public function dataFeed()
+    {
+        yield 'アドオン一覧' => ['/feed'];
+        yield 'pak128' => ['/feed/pak128'];
+        yield 'pak128Japan' => ['/feed/pak128-japan'];
+        yield 'pak64' => ['/feed/pak64'];
+        yield '一般記事' => ['/feed/page'];
+        yield 'お知らせ' => ['/feed/announce'];
     }
 }

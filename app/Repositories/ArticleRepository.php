@@ -312,18 +312,6 @@ class ArticleRepository extends BaseRepository
             ->cursor();
     }
 
-    public function findAllFeedItems(): Collection
-    {
-        return $this->model
-            ->active()
-            ->addon()
-            ->select('id', 'user_id', 'title', 'slug', 'post_type', 'contents', 'modified_at')
-            ->limit(24)
-            ->with('user:id,name')
-            ->orderBy('modified_at', 'desc')
-            ->get();
-    }
-
     /**
      * 記事表示.
      */

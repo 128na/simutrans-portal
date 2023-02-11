@@ -40,7 +40,7 @@ class DiscordController extends Controller
 
     private function logging(): void
     {
-        logger()->channel('discord-invite')->info('invite', [
+        logger()->channel('audit')->info('invite', [
             request()->server('SERVER_ADDR', 'N/A'),
             request()->server('HTTP_REFERER', 'N/A'),
             request()->server('HTTP_USER_AGENT', 'N/A'),

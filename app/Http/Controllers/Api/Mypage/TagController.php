@@ -49,6 +49,6 @@ class TagController extends Controller
             'last_modified_by' => Auth::id(),
             'last_modified_at' => now(),
         ]);
-        $this->auditLogService->tagDescriptionUpdate($this->loggedinUser(), $tag, $old, $request->string('description') ?? '');
+        $this->auditLogService->tagDescriptionUpdate($this->loggedinUser(), $tag, $old, $request->string('description')->toString());
     }
 }

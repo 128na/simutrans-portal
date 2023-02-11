@@ -60,6 +60,11 @@ class AuditLogService extends Service
         $this->audit->info('ログイン', $this->getUserInfo($user));
     }
 
+    public function userVerified(User $user): void
+    {
+        $this->audit->info('メール認証', $this->getUserInfo($user));
+    }
+
     public function tagDescriptionUpdate(User $user, Tag $tag, ?string $oldDesc, string $newDesc): void
     {
         $this->audit->info('タグ説明更新', array_merge(

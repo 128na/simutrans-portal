@@ -5,7 +5,6 @@
 <script>
 import { useFrontApi } from 'src/composables/api';
 import { defineComponent } from 'vue';
-import gtm from '../../../boot/gtm';
 
 export default defineComponent({
   name: 'ContentLink',
@@ -20,7 +19,6 @@ export default defineComponent({
     return {
       handle() {
         postConversion(props.article.slug);
-        gtm.frontConversionLink();
       },
     };
   },

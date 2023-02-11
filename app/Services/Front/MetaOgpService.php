@@ -103,4 +103,15 @@ class MetaOgpService extends Service
             'description' => $this->trimDescription($tag->description),
         ];
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public function social(): array
+    {
+        return [
+            'title' => 'SNS・通知ツール'.' - '.config('app.name'),
+            'description' => '記事の更新を各種ツールで受け取れます。',
+        ];
+    }
 }

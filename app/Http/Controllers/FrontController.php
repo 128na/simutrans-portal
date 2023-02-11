@@ -33,6 +33,13 @@ class FrontController extends Controller
         return view('front.spa');
     }
 
+    public function social(): Renderable
+    {
+        $meta = $this->metaOgpService->social();
+
+        return view('front.spa', ['meta' => $meta]);
+    }
+
     /**
      * 記事詳細.
      */

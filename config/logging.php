@@ -57,13 +57,6 @@ return [
             'url' => env('DISCORD_WEBHOOK_ERROR'),
         ],
 
-        'discord_backup' => [
-            'driver' => 'custom',
-            'via' => MarvinLabs\DiscordLogger\Logger::class,
-            'level' => 'debug',
-            'url' => env('DISCORD_WEBHOOK_BACKUP'),
-        ],
-
         'discord_notification' => [
             'driver' => 'custom',
             'via' => MarvinLabs\DiscordLogger\Logger::class,

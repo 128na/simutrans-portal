@@ -28,7 +28,6 @@
     "pinia": "^2",
     "quasar": "^2",
     "sanitize-html": "^2",
-    "share-button-links": "^2.3.4",
     "vue": "^3",
     "vue-router": "^4",
     "vue3-apexcharts": "^1"

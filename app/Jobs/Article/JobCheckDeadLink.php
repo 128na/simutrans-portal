@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Jobs\Article;
 
 use App\Models\Article;
+use App\Models\Contents\AddonIntroductionContent;
 use App\Notifications\DeadLinkDetected;
 use App\Repositories\ArticleRepository;
+use App\Services\Logging\AuditLogService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,12 +22,12 @@ class JobCheckDeadLink implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function handle(ArticleRepository $articleRepository): void
+    public function handle(ArticleRepository $articleRepository, AuditLogService $auditLogService): void
     {
         $changed = false;
         foreach ($articleRepository->cursorCheckLink() as $article) {
             if ($this->isLinkDead($article)) {
-                logger()->channel('audit')->info('dead link '.$article->title);
+                $auditLogService->deadLinkDetected($article);
 
                 $articleRepository->update($article, [
                     'status' => config('status.private'),
@@ -44,7 +46,9 @@ class JobCheckDeadLink implements ShouldQueue
 
     private function isLinkDead(Article $article): bool
     {
-        $link = $article->contents->link ?? null;
+        /** @var AddonIntroductionContent */
+        $contents = $article->contents;
+        $link = $contents->link ?? null;
 
         if ($link && ! $this->inBlacklist($link)) {
             return ! $this->isStatusOK($link);

@@ -12,6 +12,7 @@ use App\Models\Category;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
+use App\Services\Logging\AuditLogService;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
@@ -21,7 +22,8 @@ class ArticleEditorService extends Service
     public function __construct(
         private ArticleRepository $articleRepository,
         private CategoryRepository $categoryRepository,
-        private CarbonImmutable $now
+        private CarbonImmutable $now,
+        private AuditLogService $auditLogService,
     ) {
     }
 
@@ -129,7 +131,10 @@ class ArticleEditorService extends Service
 
         $this->syncRelated($article, $request);
 
-        return $article->fresh() ?? $article;
+        $article = $article->fresh() ?? $article;
+        $this->auditLogService->articleCreated($article);
+
+        return $article;
     }
 
     private function getPublishedAt(StoreRequest|UpdateRequest $request): ?string
@@ -167,7 +172,10 @@ class ArticleEditorService extends Service
 
         $this->syncRelated($article, $request);
 
-        return $article->fresh() ?? $article;
+        $article = $article->fresh() ?? $article;
+        $this->auditLogService->articleUpdated($article);
+
+        return $article;
     }
 
     private function inactiveToPublish(Article $article, UpdateRequest $request): bool

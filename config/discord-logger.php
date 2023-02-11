@@ -17,7 +17,7 @@ return [
      * - \MarvinLabs\DiscordLogger\Converters\SimpleRecordConverter::class
      * - \MarvinLabs\DiscordLogger\Converters\RichRecordConverter::class
      */
-    'converter' => \MarvinLabs\DiscordLogger\Converters\RichRecordConverter::class,
+    'converter' => \MarvinLabs\DiscordLogger\Converters\SimpleRecordConverter::class,
 
     /**
      * If enabled, stacktraces will be attached as files. If not, stacktraces will be directly printed out in the
@@ -29,7 +29,7 @@ return [
      * - 'file': stacktrace is always attached as file
      * - 'inline': stacktrace is always inlined with the message, truncated if necessary
      */
-    'stacktrace' => 'inline',
+    'stacktrace' => 'smart',
 
     /*
      * A set of colors to associate to the different log levels when using the `RichRecordConverter`

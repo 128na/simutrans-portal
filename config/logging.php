@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 $prod = env('APP_ENV') === 'production';
+$prod = true;
 
 return [
     /*

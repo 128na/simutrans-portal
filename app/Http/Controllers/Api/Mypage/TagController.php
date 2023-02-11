@@ -12,15 +12,15 @@ use App\Http\Resources\Api\Mypage\Tag;
 use App\Http\Resources\Api\Mypage\Tags;
 use App\Models\Tag as ModelsTag;
 use App\Repositories\TagRepository;
+use App\Services\Logging\AuditLogService;
 use Illuminate\Support\Facades\Auth;
 
 class TagController extends Controller
 {
-    private TagRepository $tagRepository;
-
-    public function __construct(TagRepository $tagRepository)
-    {
-        $this->tagRepository = $tagRepository;
+    public function __construct(
+        private TagRepository $tagRepository,
+        private AuditLogService $auditLogService,
+    ) {
     }
 
     public function search(SearchRequest $request): Tags
@@ -42,16 +42,13 @@ class TagController extends Controller
 
     public function update(ModelsTag $tag, UpdateRequest $request): void
     {
+        $old = $tag->description;
         $this->authorize('update', $tag);
         $this->tagRepository->update($tag, [
             'description' => $request->input('description'),
             'last_modified_by' => Auth::id(),
             'last_modified_at' => now(),
         ]);
-        logger()->channel('audit')->info('update', [
-            'id' => $tag->id,
-            'name' => $tag->name,
-            'description' => $request->input('description'),
-        ]);
+        $this->auditLogService->tagDescriptionUpdate($this->loggedinUser(), $tag, $old, $request->string('description') ?? '');
     }
 }

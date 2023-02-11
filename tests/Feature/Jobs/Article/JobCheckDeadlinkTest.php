@@ -12,6 +12,8 @@ use Tests\TestCase;
 
 class JobCheckDeadlinkTest extends TestCase
 {
+    private $article;
+
     protected function setUp(): void
     {
         parent::setUp();

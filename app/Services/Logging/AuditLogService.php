@@ -90,7 +90,7 @@ class AuditLogService extends Service
         $this->audit->warning('リンク切れ検知', [
             'articleId' => $article->id,
             'articleTitle' => $article->title,
-            'articleUrl' => route('articles.show', [$article->slug]),
+            'articleUrl' => route('articles.show', $article),
             'descUrl' => $contents->link,
         ]);
     }

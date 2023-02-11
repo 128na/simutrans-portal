@@ -3,7 +3,6 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
-import gtm from '../../../boot/gtm';
 
 export default defineComponent({
   name: 'ContentDownload',
@@ -17,7 +16,6 @@ export default defineComponent({
     return {
       handleClick() {
         window.open(`/articles/${props.article.slug}/download`);
-        gtm.frontConversionDownload();
       },
     };
   },

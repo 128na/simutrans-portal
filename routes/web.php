@@ -39,6 +39,7 @@ Route::middleware(['cache.headers:public;max_age=2628000;etag'])->group(function
     Route::get('/user/{user}', [FrontController::class, 'user'])->name('user');
     Route::get('/tags', [FrontController::class, 'fallback'])->name('tags');
     Route::get('/invite-simutrans-interact-meeting', [FrontController::class, 'fallback']);
+    Route::get('/social', [FrontController::class, 'social']);
 });
 // 非ログイン系 reidsキャッシュ無効
 Route::get('/articles/{article}', [FrontController::class, 'show'])->name('articles.show');

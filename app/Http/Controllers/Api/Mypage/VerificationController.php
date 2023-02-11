@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api\Mypage;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\Mypage\User as UserResouce;
+use App\Services\Logging\AuditLogService;
 use App\Services\UserService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
@@ -41,7 +42,7 @@ class VerificationController extends Controller
      *
      * @return void
      */
-    public function __construct(private UserService $userService)
+    public function __construct(private UserService $userService, private AuditLogService $auditLogService)
     {
         $this->redirectTo = route('mypage.index');
     }
@@ -91,6 +92,7 @@ class VerificationController extends Controller
         // 認証済み、認証OKならユーザーを返す
         if ($user->hasVerifiedEmail() || $user->markEmailAsVerified()) {
             event(new Verified($user));
+            $this->auditLogService->userVerified($user);
 
             return new UserResouce($this->userService->getUser($user));
         }

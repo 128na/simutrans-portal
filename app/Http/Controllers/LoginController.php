@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Api\Mypage\User as UserResouce;
 use App\Notifications\Loggedin;
+use App\Services\Logging\AuditLogService;
 use App\Services\UserService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +34,7 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct(private UserService $userService)
+    public function __construct(private UserService $userService, private AuditLogService $auditLogService)
     {
         $this->middleware('guest')->except('logout');
     }
@@ -47,9 +48,11 @@ class LoginController extends Controller
      */
     protected function authenticated($request, $user)
     {
+        $user = Auth::user() ?? $user;
         $user->notify(new Loggedin());
+        $this->auditLogService->userLoggedIn($user);
 
-        $user = $this->userService->getUser(Auth::user() ?? $user);
+        $user = $this->userService->getUser($user);
 
         return new UserResouce($user);
     }

@@ -8,6 +8,7 @@ use App\Models\BulkZip;
 use App\Repositories\BulkZipRepository;
 use App\Services\BulkZip\ZipManager;
 use App\Services\BulkZip\ZippableManager;
+use App\Services\Logging\AuditLogService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -31,14 +32,15 @@ class JobCreateBulkZip implements ShouldQueue
     public function handle(
         BulkZipRepository $bulkZipRepository,
         ZippableManager $zippableManager,
-        ZipManager $zipManager
+        ZipManager $zipManager,
+        AuditLogService $auditLogService,
     ): void {
         // dispatchAfterResponseではfailedメソッドは呼ばれない
         try {
             if ($this->bulkZip->generated) {
                 return;
             }
-            logger()->channel('bulkzip')->debug('JobCreateBulkZip::begin', ['id' => $this->bulkZip->id]);
+            $auditLogService->bulkZipRequest($this->bulkZip);
 
             $begin = microtime(true);
 
@@ -46,7 +48,7 @@ class JobCreateBulkZip implements ShouldQueue
             $path = $zipManager->create($items);
             $bulkZipRepository->update($this->bulkZip, ['generated' => true, 'path' => $path]);
 
-            logger()->channel('bulkzip')->debug(sprintf('JobCreateBulkZip::finished %.2f sec.', microtime(true) - $begin));
+            $auditLogService->bulkZipCreated($this->bulkZip, microtime(true) - $begin);
         } catch (\Throwable $e) {
             logger()->error('JobCreateBulkZip failed', ['id' => $this->bulkZip->id]);
             $this->bulkZip->delete();

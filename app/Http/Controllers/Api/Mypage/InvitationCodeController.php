@@ -11,6 +11,7 @@ use App\Http\Resources\Api\Mypage\User as UserResouce;
 use App\Models\User;
 use App\Notifications\UserInvited;
 use App\Repositories\UserRepository;
+use App\Services\Logging\AuditLogService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,8 +20,10 @@ use Illuminate\Support\Str;
 
 class InvitationCodeController extends Controller
 {
-    public function __construct(private UserRepository $userRepository)
-    {
+    public function __construct(
+        private UserRepository $userRepository,
+        private AuditLogService $auditLogService,
+        ) {
     }
 
     /**
@@ -39,6 +42,7 @@ class InvitationCodeController extends Controller
     public function update(): UserResouce
     {
         $this->userRepository->update($this->loggedinUser(), ['invitation_code' => Str::uuid()]);
+        $this->auditLogService->inviteCodeCreate($this->loggedinUser());
 
         return new UserResouce($this->loggedinUser()->fresh());
     }
@@ -49,6 +53,7 @@ class InvitationCodeController extends Controller
     public function destroy(): UserResouce
     {
         $this->userRepository->update($this->loggedinUser(), ['invitation_code' => null]);
+        $this->auditLogService->inviteCodeDelete($this->loggedinUser());
 
         return new UserResouce($this->loggedinUser()->fresh());
     }
@@ -73,6 +78,7 @@ class InvitationCodeController extends Controller
 
         event(new Registered($invitedUser));
         $user->notify(new UserInvited($invitedUser));
+        $this->auditLogService->userInvited($invitedUser, $user);
 
         return new UserResouce($invitedUser);
     }

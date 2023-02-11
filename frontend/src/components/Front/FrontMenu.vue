@@ -36,7 +36,9 @@
       <q-item-section>プライバシーポリシー</q-item-section>
     </q-item>
     <q-separator />
-    <meta-links />
+    <q-item clickable dense :to="{ name: 'social' }">
+      <q-item-section>SNS・通知ツール</q-item-section>
+    </q-item>
     <q-separator />
     <MetaInfo />
   </q-list>
@@ -46,7 +48,6 @@
 <script>
 import { defineComponent, ref } from 'vue';
 import { useFrontApi } from 'src/composables/api';
-import MetaLinks from 'src/components/Common/MetaLinks.vue';
 import MetaInfo from 'src/components/Common/MetaInfo.vue';
 import LoadingMessage from 'src/components/Common/Text/LoadingMessage.vue';
 import SearchForm from 'src/components/Front/SearchForm.vue';
@@ -83,7 +84,6 @@ export default defineComponent({
     };
   },
   components: {
-    MetaLinks,
     MetaInfo,
     LoadingMessage,
     SearchForm,

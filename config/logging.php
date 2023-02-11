@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Handlers\MailHandler;
+$prod = env('APP_ENV') === 'production';
 
 return [
     /*
@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('LOG_CHANNEL', 'dev'),
+    'default' => 'general',
 
     /*
     |--------------------------------------------------------------------------
@@ -34,67 +34,52 @@ return [
     */
 
     'channels' => [
-        'prod' => [
+        // stack定義
+        // 一般ログ
+        'general' => [
             'driver' => 'stack',
-            'channels' => ['daily', 'slack'],
+            'channels' => $prod ? ['file_daily', 'discord_error'] : ['file_daily'],
             'ignore_exceptions' => false,
         ],
 
-        'dev' => [
+        // ユーザー起点のアクション通知
+        'audit' => [
             'driver' => 'stack',
-            'channels' => ['daily'],
+            'channels' => $prod ? ['file_audit', 'discord_notification'] : ['file_audit'],
             'ignore_exceptions' => false,
         ],
 
-        'mail' => [
-            'driver' => 'monolog',
-            'level' => 'error',
-            'handler' => MailHandler::class,
+        // 各種ログ設定
+        'discord_error' => [
+            'driver' => 'custom',
+            'via' => MarvinLabs\DiscordLogger\Logger::class,
+            'level' => 'warning',
+            'url' => env('DISCORD_WEBHOOK_ERROR'),
         ],
 
-        'daily' => [
+        'discord_notification' => [
+            'driver' => 'custom',
+            'via' => MarvinLabs\DiscordLogger\Logger::class,
+            'level' => 'info',
+            'url' => env('DISCORD_WEBHOOK_NOTIFICATION'),
+        ],
+
+        'file_daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
             'level' => 'debug',
             'days' => 365,
         ],
-        'slack' => [
-            'driver' => 'slack',
-            'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => 'SimutransAddonPortal',
-            'emoji' => ':innocent:',
-            'level' => 'error',
-        ],
-        'slack_debug' => [
-            'driver' => 'slack',
-            'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => 'SimutransAddonPortal',
-            'emoji' => ':innocent:',
-            'level' => 'debug',
-        ],
-        'single' => [
+
+        'file_single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
-        'bulkzip' => [
+        'file_audit' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/bulkzip.log'),
-            'level' => 'debug',
-            'days' => 365,
-        ],
-
-        'tag' => [
-            'driver' => 'daily',
-            'path' => storage_path('logs/tag.log'),
-            'level' => 'debug',
-            'days' => 365,
-        ],
-
-        'discord-invite' => [
-            'driver' => 'daily',
-            'path' => storage_path('logs/discord-invite.log'),
+            'path' => storage_path('logs/audit.log'),
             'level' => 'debug',
             'days' => 365,
         ],

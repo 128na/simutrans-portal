@@ -20,7 +20,7 @@
       </template>
     </dl>
     <content-page :article="article" :attachments="article.attachments" />
-    <content-meta :article="article" />
+    <content-meta :article="article" class="q-pt-md" />
   </article>
 </template>
 <script>

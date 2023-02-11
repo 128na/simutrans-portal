@@ -4,6 +4,7 @@ import Show from 'pages/Front/Show.vue';
 import List from 'pages/Front/List.vue';
 import Tags from 'pages/Front/Tags.vue';
 import DiscordInvite from 'pages/Front/DiscordInvite.vue';
+import Social from 'pages/Front/Social.vue';
 import Error from 'src/pages/Error.vue';
 
 const routes = [
@@ -23,6 +24,7 @@ const routes = [
       { name: 'search', path: 'search', component: List },
       { name: 'tags', path: 'tags', component: Tags },
       { name: 'discordInvite', path: 'invite-simutrans-interact-meeting', component: DiscordInvite },
+      { name: 'social', path: 'social', component: Social },
     ],
   },
   {

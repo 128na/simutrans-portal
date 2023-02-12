@@ -99,9 +99,12 @@ export default defineComponent({
         mypage.articles = articles;
         const article = mypage.findArticleBySlug(slug);
         if (article) {
-          setTimeout(() => {
-            router.push({ name: 'edit', params: { id: article.id } });
-          }, 1000);
+          const t = setInterval(() => {
+            if (editor.unloadManager.registered === false) {
+              router.push({ name: 'edit', params: { id: article.id } });
+              clearInterval(t);
+            }
+          }, 500);
         }
       } catch {
         const el = splitterRef.value.$el.querySelector('.q-splitter__before');

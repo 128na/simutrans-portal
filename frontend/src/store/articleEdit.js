@@ -88,18 +88,18 @@ const createSection = (type) => {
 const unloadManager = {
   registered: false,
   add() {
-    if (this.registered === false) {
-      window.addEventListener('beforeunload', this.listener);
-      this.registered = true;
+    if (unloadManager.registered === false) {
+      window.addEventListener('beforeunload', unloadManager.listener);
+      unloadManager.registered = true;
     }
   },
   remove() {
-    window.removeEventListener('beforeunload', this.listener);
-    this.registered = false;
+    window.removeEventListener('beforeunload', unloadManager.listener);
+    unloadManager.registered = false;
   },
   listener(event) {
     event.preventDefault();
-    event.returnValue = '';
+    event.returnValue = unloadManager.registered ? '' : null;
   },
 };
 
@@ -309,5 +309,6 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     page,
 
     vali,
+    unloadManager,
   };
 });

@@ -53,7 +53,7 @@ return [
         'discord_error' => [
             'driver' => 'custom',
             'via' => MarvinLabs\DiscordLogger\Logger::class,
-            'level' => 'warning',
+            'level' => 'error',
             'url' => env('DISCORD_WEBHOOK_ERROR'),
         ],
 

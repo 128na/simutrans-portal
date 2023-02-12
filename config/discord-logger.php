@@ -49,12 +49,12 @@ return [
      * A set of emojis to associate to the different log levels. Set to null to disable an emoji for a given level
      */
     'emojis' => [
-        'DEBUG' => ':beetle:',
-        'INFO' => ':bulb:',
+        'DEBUG' => ':eyes:',
+        'INFO' => ':information_source:',
         'NOTICE' => ':wink:',
-        'WARNING' => ':flushed:',
-        'ERROR' => ':poop:',
-        'CRITICAL' => ':imp:',
+        'WARNING' => ':warning:',
+        'ERROR' => ':boom:',
+        'CRITICAL' => ':innocent:',
         'ALERT' => ':japanese_ogre:',
         'EMERGENCY' => ':skull:',
     ],

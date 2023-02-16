@@ -15,11 +15,15 @@ class LogConverter extends SimpleRecordConverter
      */
     protected function addMessageContent(Message $message, array $record): void
     {
-        $stacktrace = $this->getStacktrace($record);
-        if ($stacktrace) {
-            $this->makeErrorMessage($message, $record, $stacktrace);
-        } else {
-            $this->makeInfoMesage($message, $record);
+        try {
+            $stacktrace = $this->getStacktrace($record);
+            if ($stacktrace) {
+                $this->makeErrorMessage($message, $record, $stacktrace);
+            } else {
+                $this->makeInfoMesage($message, $record);
+            }
+        } catch (\Throwable $th) {
+            report($th);
         }
     }
 
@@ -60,6 +64,9 @@ class LogConverter extends SimpleRecordConverter
             $embed->description(implode("\n", $rawMessages));
         }
         foreach ($record['context'] as $key => $value) {
+            if (! is_string($value) && ! is_numeric($value)) {
+                $value = json_encode($value);
+            }
             $embed->field((string) $key, (string) $value);
         }
 

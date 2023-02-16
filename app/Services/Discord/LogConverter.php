@@ -60,7 +60,7 @@ class LogConverter extends SimpleRecordConverter
             $embed->description(implode("\n", $rawMessages));
         }
         foreach ($record['context'] as $key => $value) {
-            $embed->field($key, $value);
+            $embed->field((string) $key, (string) $value);
         }
 
         $message->embed($embed);

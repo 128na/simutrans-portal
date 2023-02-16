@@ -1,5 +1,7 @@
 <?php
 
+use App\Services\Discord\LogConverter;
+
 return [
 
     /*
@@ -17,7 +19,7 @@ return [
      * - \MarvinLabs\DiscordLogger\Converters\SimpleRecordConverter::class
      * - \MarvinLabs\DiscordLogger\Converters\RichRecordConverter::class
      */
-    'converter' => \MarvinLabs\DiscordLogger\Converters\SimpleRecordConverter::class,
+    'converter' => LogConverter::class,
 
     /**
      * If enabled, stacktraces will be attached as files. If not, stacktraces will be directly printed out in the

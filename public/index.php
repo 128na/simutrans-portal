@@ -9,14 +9,6 @@ declare(strict_types=1);
  */
 define('LARAVEL_START', microtime(true));
 
-/**
- * SSL判定（さくらレンタルサーバー用）
- */
-if (isset($_SERVER['HTTP_X_SAKURA_FORWARDED_FOR'])) {
-    $_SERVER['HTTPS'] = 'on';
-    $_ENV['HTTPS'] = 'on';
-}
-
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader

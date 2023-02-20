@@ -28,10 +28,18 @@ module.exports = {
     // 'plugin:vue/vue3-recommended', // Priority C: Recommended (Minimizing Arbitrary Choices and Cognitive Overhead)
 
     'airbnb-base',
-    "plugin:cypress/recommended",
     "plugin:chai-friendly/recommended"
   ],
-
+  overrides: [
+    {
+      files: ['**/*.cy.{js,jsx,ts,tsx}'],
+      extends: [
+        // Add Cypress-specific lint rules, globals and Cypress plugin
+        // See https://github.com/cypress-io/eslint-plugin-cypress#rules
+        'plugin:cypress/recommended',
+      ],
+    },
+  ],
   plugins: [
     // https://eslint.vuejs.org/user-guide/#why-doesn-t-it-work-on-vue-files
     // required to lint *.vue files

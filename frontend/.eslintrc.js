@@ -28,7 +28,8 @@ module.exports = {
     // 'plugin:vue/vue3-recommended', // Priority C: Recommended (Minimizing Arbitrary Choices and Cognitive Overhead)
 
     'airbnb-base',
-    "plugin:chai-friendly/recommended"
+    "plugin:chai-friendly/recommended",
+    'plugin:cypress/recommended',
   ],
   overrides: [
     {

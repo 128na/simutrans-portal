@@ -12,9 +12,6 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 /* eslint global-require: 0 */
 const { configure } = require('quasar/wrappers');
 
-const inProduction = process.env.node_env === 'production';
-console.log('node_env', process.env.node_env);
-
 module.exports = configure((ctx) => ({
   // https://quasar.dev/quasar-cli/supporting-ts
   supportTS: false,
@@ -25,7 +22,7 @@ module.exports = configure((ctx) => ({
   // app boot file (/src/boot)
   // --> boot files are part of "main.js"
   // https://quasar.dev/quasar-cli/boot-files
-  boot: inProduction
+  boot: ctx.prod
     ? ['apexcharts', 'sentry']
     : ['apexcharts'],
 

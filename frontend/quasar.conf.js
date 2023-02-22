@@ -13,6 +13,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const { configure } = require('quasar/wrappers');
 
 const inProduction = process.env.node_env === 'production';
+console.log('node_env', process.env.node_env);
 
 module.exports = configure((ctx) => ({
   // https://quasar.dev/quasar-cli/supporting-ts

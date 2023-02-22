@@ -10,7 +10,7 @@
     "fix": "eslint --fix --ext .js,.vue ./",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
     "dev": "quasar dev",
-    "build": "quasar build && npm run spa:copy",
+    "build": "cross-env NODE_ENV=production quasar build && npm run spa:copy",
     "spa:copy": "node ./deployment/spa",
     "test:e2e": "cross-env NODE_ENV=test start-test \"quasar dev\" http-get://localhost:8080 \"cypress open --e2e\"",
     "test:e2e:ci": "cross-env NODE_ENV=test start-test \"quasar dev\" http-get://localhost:8080 \"cypress run --e2e\"",

@@ -333,3 +333,4 @@ jobs:
         run: cd frontend && npm run nr:s
         env:
           NR_USER_KEY: ${{secrets.NR_USER_KEY}}
+          NODE_ENV: production

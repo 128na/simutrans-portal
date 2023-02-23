@@ -116,7 +116,7 @@ class AuditLogService extends Service
     private function getAccessInfo(Request $request): array
     {
         return [
-            'SERVER_ADDR' => $request->server('SERVER_ADDR', 'N/A'),
+            'REMOTE_ADDR' => $request->server('REMOTE_ADDR', 'N/A'),
             'HTTP_REFERER' => $request->server('HTTP_REFERER', 'N/A'),
             'HTTP_USER_AGENT' => $request->server('HTTP_USER_AGENT', 'N/A'),
         ];

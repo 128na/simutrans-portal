@@ -20,24 +20,27 @@ class AuditLogService extends Service
 {
     private LoggerInterface $audit;
 
+    private LoggerInterface $discordInvite;
+
     public function __construct(LogManager $logManager)
     {
         $this->audit = $logManager->channel('audit');
+        $this->discordInvite = $logManager->channel('invite');
     }
 
     public function discordInviteCodeCreate(Request $request): void
     {
-        $this->audit->info('Disocrd招待リンク生成', $this->getAccessInfo($request));
+        $this->discordInvite->info('Disocrd招待リンク生成', $this->getAccessInfo($request));
     }
 
     public function recapchaAssessment(Assessment $assessment): void
     {
-        $this->audit->info('Recaptcha', $this->getAssesmentInfo($assessment));
+        $this->discordInvite->info('Recaptcha', $this->getAssesmentInfo($assessment));
     }
 
     public function discordInviteCodeReject(Request $request): void
     {
-        $this->audit->error('Disocrd招待リンク生成失敗', $this->getAccessInfo($request));
+        $this->discordInvite->error('Disocrd招待リンク生成失敗', $this->getAccessInfo($request));
     }
 
     public function inviteCodeCreate(User $user): void

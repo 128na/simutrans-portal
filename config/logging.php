@@ -49,6 +49,12 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'invite' => [
+            'driver' => 'stack',
+            'channels' => $prod ? ['file_invite', 'discord_invite'] : ['file_invite'],
+            'ignore_exceptions' => false,
+        ],
+
         // 各種ログ設定
         'discord_error' => [
             'driver' => 'custom',
@@ -62,6 +68,13 @@ return [
             'via' => MarvinLabs\DiscordLogger\Logger::class,
             'level' => 'info',
             'url' => env('DISCORD_WEBHOOK_NOTIFICATION'),
+        ],
+
+        'discord_invite' => [
+            'driver' => 'custom',
+            'via' => MarvinLabs\DiscordLogger\Logger::class,
+            'level' => 'info',
+            'url' => env('DISCORD_WEBHOOK_INVITE'),
         ],
 
         'file_daily' => [
@@ -80,6 +93,12 @@ return [
         'file_audit' => [
             'driver' => 'daily',
             'path' => storage_path('logs/audit.log'),
+            'level' => 'debug',
+            'days' => 365,
+        ],
+        'file_invite' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/discord-invite.log'),
             'level' => 'debug',
             'days' => 365,
         ],

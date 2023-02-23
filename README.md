@@ -11,6 +11,7 @@ Simutransのアドオン投稿サイトのPHPアプリケーションです。
 ## Setup
 
 一般的なLAMP環境やdockerコンテナなどをご用意ください。
+フロントエンドは[こちら](frontend/README.md)
 
 ### Required
 
@@ -30,9 +31,6 @@ cp .env.example .env
 composer install
 php artisan key:generate
 php artisan migrate --seed
-
-npm ci
-npm run dev
 ```
 
 ### Test
@@ -46,5 +44,4 @@ composer run test
 
 ```
 composer run cs
-npm run es
 ```

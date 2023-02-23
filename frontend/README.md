@@ -21,6 +21,7 @@ npm run lint
 ```bash
 quasar build
 ```
+ビルドしたアセットはLaravel側(public/js|css)にコピーされます。
 
 ### Customize the configuration
 See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).

@@ -3,39 +3,83 @@
     <TextTitle>SNS・通知ツール</TextTitle>
     <p>記事の更新を各種ツールで受け取れます。</p>
     <TextSubTitle>Twitterアカウント</TextSubTitle>
-    <li>
-      <a href="https://twitter.com/PortalSimutrans" target="_blank" rel="noopener nofollow"
-        class="text-primary">@PortalSimutrans</a>
-      <a class="twitter-timeline" data-width="480" data-height="360" :data-theme="mode"
-        href="https://twitter.com/PortalSimutrans?ref_src=twsrc%5Etfw"></a>
-    </li>
+    <p>記事が投稿・更新されると自動でツイートされます。</p>
+    <a href="https://twitter.com/PortalSimutrans" target="_blank" rel="noopener nofollow"
+      class="text-primary">@PortalSimutrans</a>
+    <a class="twitter-timeline" data-width="480" data-height="360" :data-theme="mode"
+      href="https://twitter.com/PortalSimutrans?ref_src=twsrc%5Etfw"></a>
+
     <TextSubTitle>RSS</TextSubTitle>
-    <li>
-      <a href="/feed" class="text-primary">アドオン新着</a>
-    </li>
-    <li>
-      <a href="/feed/pak128-japan" class="text-primary">Pak128Japanアドオン新着</a>
-    </li>
-    <li>
-      <a href="/feed/pak128" class="text-primary">Pak128アドオン新着</a>
-    </li>
-    <li>
-      <a href="/feed/pak64" class="text-primary">Pak64アドオン新着</a>
-    </li>
-    <li>
-      <a href="/feed/pak64" class="text-primary">一般記事</a>
-    </li>
-    <li>
-      <a href="/feed/pak64" class="text-primary">お知らせ</a>
-    </li>
+    <p>RSSフィーダーやSlackなど各種ツールと連携させると新着情報が入手できます。</p>
+    <q-list bordered separator class="rounded-borders">
+      <q-item href="/feed" target="_blank">
+        <q-item-section>
+          <q-item-label>アドオン新着</q-item-label>
+          <q-item-label caption>全てのアドオン新着順</q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item href="/feed/pak128-japan" target="_blank">
+        <q-item-section>
+          <q-item-label>Pak128Japanアドオン新着</q-item-label>
+          <q-item-label caption>Pak128Japanカテゴリのアドオン新着順</q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item href="/feed/pak128" target="_blank">
+        <q-item-section>
+          <q-item-label>Pak128アドオン新着</q-item-label>
+          <q-item-label caption>Pak128カテゴリのアドオン新着順</q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item href="/feed/pak64" target="_blank">
+        <q-item-section>
+          <q-item-label>Pak64アドオン新着</q-item-label>
+          <q-item-label caption>Pak64カテゴリのアドオン新着順</q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item href="/feed/page" target="_blank">
+        <q-item-section>
+          <q-item-label>一般記事</q-item-label>
+          <q-item-label caption>一般記事新着順</q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item href="/feed/announce" target="_blank">
+        <q-item-section>
+          <q-item-label>お知らせ</q-item-label>
+          <q-item-label caption>お知らせ新着順</q-item-label>
+        </q-item-section>
+      </q-item>
+    </q-list>
+
+    <TextSubTitle>横断検索 Discord Bot(試験運用中)</TextSubTitle>
+    <p>Discordサーバーに追加すると、「!cs 検索したいキーワード」でアドオン検索できます。</p>
+    <q-list bordered separator class="rounded-borders">
+      <q-item href="https://discord.com/oauth2/authorize?client_id=1076747667411054612&scope=bot&permissions=0"
+        target="_blank">
+        <q-item-section>
+          <q-item-label>Botを追加する</q-item-label>
+          <q-item-label caption>サーバーに追加後、Botに反応させたいチャンネルの「チャンネルを見る」、「メッセージを送信」の権限付与が必要です。</q-item-label>
+        </q-item-section>
+      </q-item>
+    </q-list>
+    <TextSubTitle>横断検索 LINE Bot(試験運用中)</TextSubTitle>
+    <p>QRコードから友達登録すると、アドオン検索できます。</p>
+    <q-img src="https://qr-official.line.me/sid/L/866zkymz.png" width="160px" />
+
     <TextSubTitle>その他開発情報など</TextSubTitle>
-    <li>
-      <a href="https://twitter.com/128Na" target="_blank" rel="noopener nofollow" class="text-primary">@128Na</a>
-    </li>
-    <li>
-      <a href="https://github.com/128na/simutrans-portal" target="_blank" rel="noopener nofollow"
-        class="text-primary">Github</a>
-    </li>
+    <q-list bordered separator class="rounded-borders">
+      <q-item href="https://twitter.com/128Na" target="_blank" rel="noopener nofollow">
+        <q-item-section>
+          <q-item-label>@128Na</q-item-label>
+          <q-item-label caption>サイトに関するお問い合わせはこちらまで</q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item href="https://github.com/128na/simutrans-portal" target="_blank" rel="noopener nofollow">
+        <q-item-section>
+          <q-item-label>Github</q-item-label>
+          <q-item-label caption>自力で開発・不具合修正できる人はこちらにどうぞ</q-item-label>
+        </q-item-section>
+      </q-item>
+    </q-list>
   </q-page>
 </template>
 

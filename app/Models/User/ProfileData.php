@@ -21,7 +21,8 @@ class ProfileData
      */
     public function __construct(array $data)
     {
-        $this->avatar = array_key_exists('avatar', $data) ? (int) $data['avatar'] : null;
+        $id = $data['avatar'] ?? null;
+        $this->avatar = $id ? (int) $id : null;
         $this->description = $data['description'] ?? null;
         $this->website = $data['website'] ?? null;
         $this->twitter = $data['twitter'] ?? null;

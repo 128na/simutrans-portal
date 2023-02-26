@@ -19,7 +19,8 @@ class AddonPostContent extends Content
     public function __construct(array $contents)
     {
         $this->description = $contents['description'] ?? null;
-        $this->file = array_key_exists('file', $contents) ? (int) $contents['file'] : null;
+        $id = $contents['file'] ?? null;
+        $this->file = $id ? (int) $id : null;
         $this->author = $contents['author'] ?? null;
         $this->license = $contents['license'] ?? null;
         $this->thanks = $contents['thanks'] ?? null;

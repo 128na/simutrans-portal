@@ -14,7 +14,7 @@ abstract class Content
     public function __construct(array $contents)
     {
         $id = $contents['thumbnail'] ?? null;
-        $this->thumbnail = $id ? ((int) $contents['thumbnail']) : null;
+        $this->thumbnail = $id ? (int) $id : null;
     }
 
     abstract public function getDescription(): string;

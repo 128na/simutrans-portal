@@ -33,7 +33,10 @@ class ZipArchiveParser extends Service
                     $stat = $this->zipArchive->statIndex($i, ZipArchive::FL_ENC_RAW);
                     if ($stat) {
                         $name = $stat['name'];
-                        yield $this->convert($name) => $this->convert($this->zipArchive->getFromIndex($stat['index']));
+                        $text = $this->zipArchive->getFromIndex($stat['index']);
+                        if ($name && $text) {
+                            yield $this->convert($name) => $this->convert($text);
+                        }
                     }
                 }
             } finally {
@@ -47,6 +50,7 @@ class ZipArchiveParser extends Service
     private function convert(string $str): string
     {
         $detected = mb_detect_encoding($str, mb_list_encodings());
+
         return mb_convert_encoding($str, 'UTF-8', $detected ?: 'UTF-8');
     }
 }

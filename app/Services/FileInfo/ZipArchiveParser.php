@@ -33,7 +33,7 @@ class ZipArchiveParser extends Service
                     $stat = $this->zipArchive->statIndex($i, ZipArchive::FL_ENC_RAW);
                     if ($stat) {
                         $name = $stat['name'];
-                        yield $name => $this->zipArchive->getFromIndex($stat['index']);
+                        yield $this->convert($name) => $this->convert($this->zipArchive->getFromIndex($stat['index']));
                     }
                 }
             } finally {
@@ -42,5 +42,18 @@ class ZipArchiveParser extends Service
         };
 
         return LazyCollection::make($fn);
+    }
+
+    private function convert(string $str): string
+    {
+        $detected = mb_detect_encoding($str, [
+            'ASCII',
+            'JIS',
+            'EUC-JP',
+            'eucjp-win',
+            'sjis-win',
+            'UTF-8',
+        ]);
+        return mb_convert_encoding($str, 'UTF-8', $detected ?: 'UTF-8');
     }
 }

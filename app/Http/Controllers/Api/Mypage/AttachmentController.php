@@ -11,6 +11,7 @@ use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
 use App\Repositories\AttachmentRepository;
 use Illuminate\Support\Facades\Auth;
+use Throwable;
 
 class AttachmentController extends Controller
 {
@@ -34,7 +35,11 @@ class AttachmentController extends Controller
 
         $attachment = $this->attachmentRepository->createFromFile($this->loggedinUser(), $request->file);
 
-        UpdateFileInfo::dispatchSync($attachment);
+        try {
+            UpdateFileInfo::dispatchSync($attachment);
+        } catch (Throwable $th) {
+            report($th);
+        }
 
         return $this->index();
     }

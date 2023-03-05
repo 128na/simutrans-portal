@@ -46,14 +46,7 @@ class ZipArchiveParser extends Service
 
     private function convert(string $str): string
     {
-        $detected = mb_detect_encoding($str, [
-            'ASCII',
-            'JIS',
-            'EUC-JP',
-            'eucjp-win',
-            'sjis-win',
-            'UTF-8',
-        ]);
+        $detected = mb_detect_encoding($str, mb_list_encodings());
         return mb_convert_encoding($str, 'UTF-8', $detected ?: 'UTF-8');
     }
 }

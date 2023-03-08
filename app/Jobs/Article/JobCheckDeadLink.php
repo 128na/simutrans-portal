@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs\Article;
 
+use App\Models\Article;
 use App\Services\Article\DeadLinkChecker;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,26 +19,42 @@ class JobCheckDeadLink implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    private bool $changeAnyArticle = false;
+
     public function handle(DeadLinkChecker $deadLinkChecker): void
     {
-        $changeAnyArticle = false;
         foreach ($deadLinkChecker->getArticles() as $article) {
             if ($deadLinkChecker->shouldProcess($article)) {
-                if ($deadLinkChecker->isDead($article)) {
-                    $count = $deadLinkChecker->getFailedCount($article) + 1;
-                    if ($count >= 3) {
-                        $deadLinkChecker->closeArticle($article);
-                        $deadLinkChecker->clearFailedCount($article);
-                        $changeAnyArticle = true;
-                    } else {
-                        $deadLinkChecker->updateFailedCount($article, $count);
-                    }
-                }
+                $this->handleProcess($deadLinkChecker, $article);
             }
         }
 
-        if ($changeAnyArticle) {
+        if ($this->changeAnyArticle) {
             JobUpdateRelated::dispatchSync();
         }
+    }
+
+    private function handleProcess(DeadLinkChecker $deadLinkChecker, Article $article): void
+    {
+        if ($deadLinkChecker->isDead($article) === false) {
+            $deadLinkChecker->clearFailedCount($article);
+
+            return;
+        }
+        $this->handleDead($deadLinkChecker, $article);
+    }
+
+    private function handleDead(DeadLinkChecker $deadLinkChecker, Article $article): void
+    {
+        $count = 1 + $deadLinkChecker->getFailedCount($article);
+        if ($count < 3) {
+            $deadLinkChecker->updateFailedCount($article, $count);
+
+            return;
+        }
+
+        $deadLinkChecker->closeArticle($article);
+        $deadLinkChecker->clearFailedCount($article);
+        $this->changeAnyArticle = true;
     }
 }

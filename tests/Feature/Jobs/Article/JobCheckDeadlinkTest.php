@@ -34,7 +34,12 @@ class JobCheckDeadlinkTest extends TestCase
         Notification::assertNothingSent();
 
         JobCheckDeadLink::dispatchSync();
+        Notification::assertNothingSent();
 
+        JobCheckDeadLink::dispatchSync();
+        Notification::assertNothingSent();
+
+        JobCheckDeadLink::dispatchSync();
         Notification::assertSentTo($this->article, DeadLinkDetected::class);
     }
 

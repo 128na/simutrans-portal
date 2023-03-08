@@ -11,10 +11,11 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Services\Front\ArticleService;
 use App\Services\Front\MetaOgpService;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FrontController extends Controller
@@ -133,19 +134,12 @@ class FrontController extends Controller
         return view('front.spa');
     }
 
-    public function error(int|string $status): Renderable
+    public function error(int|string $status): Response|ResponseFactory
     {
-        $statuses = [400, 404, 500, 503];
-        $status = in_array(intval($status), $statuses, true) ? $status : 404;
+        $status = intval($status);
+        $statuses = [401, 403, 404, 418, 419, 422, 429, 500];
+        $status = in_array($status, $statuses, true) ? $status : 404;
 
-        /**
-         * @var view-string
-         */
-        $path = "errors.{$status}";
-        if (View::exists($path)) {
-            return view($path);
-        }
-
-        return view('errors.404');
+        return response(view('front.spa'), $status);
     }
 }

@@ -13,7 +13,7 @@
             編集
           </q-item-section>
         </q-item>
-        <q-item v-if="row.status === 'publish'" :to="{ name: 'show', params: { slug: row.slug } }" target="_blank"
+        <q-item v-if="row.status === 'publish'" :to="{ name: 'show', params: { slug: decodedSlug } }" target="_blank"
           v-close-popup>
           <q-item-section avatar>
             <q-icon name="launch" />
@@ -51,6 +51,7 @@ import { useNotify } from 'src/composables/notify';
 import { useClipboard } from 'src/composables/clipboard';
 import {
   defineComponent,
+  computed,
 } from 'vue';
 import { useMypageApi } from 'src/composables/api';
 import { useMypageStore } from 'src/store/mypage';
@@ -65,12 +66,14 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const decodedSlug = computed(() => decodeURI(props.row.slug));
+
     const notify = useNotify();
     const clipboad = useClipboard();
     const copy = async () => {
       try {
         emit('close');
-        clipboad.write(`${window.location.origin}/articles/${props.row.slug}`);
+        clipboad.write(`${window.location.origin}/articles/${decodedSlug.value}`);
         notify.success('コピーしました');
       } catch (err) {
         notify.failed('コピーに失敗しました');
@@ -112,7 +115,9 @@ export default defineComponent({
       }
       return notify.failed('更新に失敗しました');
     };
+
     return {
+      decodedSlug,
       copy,
       handleToPrivate,
       handleToPublish,

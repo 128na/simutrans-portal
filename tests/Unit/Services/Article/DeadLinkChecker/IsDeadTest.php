@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services\ArticleEditorService;
+namespace Tests\Unit\Services\Article\DeadLinkChecker;
 
 use App\Models\Article;
 use App\Models\Contents\AddonIntroductionContent;

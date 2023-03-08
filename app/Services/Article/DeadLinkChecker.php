@@ -18,6 +18,7 @@ class DeadLinkChecker extends Service
     public function __construct(
         private ArticleRepository $articleRepository,
         private AuditLogService $auditLogService,
+        private GetHeadersHandler $getHeadersHandler
     ) {
     }
 
@@ -31,9 +32,11 @@ class DeadLinkChecker extends Service
 
     public function shouldProcess(Article $article): bool
     {
+        /** @var AddonIntroductionContent */
+        $contents = $article->contents;
         $link = $this->getLink($article);
 
-        return $link && $this->inBlacklist($link) === false;
+        return $link && $this->inBlacklist($link) === false && $contents->exclude_link_check === false;
     }
 
     private function getLink(Article $article): ?string
@@ -67,9 +70,9 @@ class DeadLinkChecker extends Service
     {
         $url = $this->getLink($article) ?? '';
         for ($i = 0; $i < $retry; $i++) {
-            $info = @get_headers($url) ?: [];
-            foreach ($info as $i) {
-                if (stripos($i, '200 OK') !== false) {
+            $info = $this->getHeadersHandler->getHeaders($url);
+            foreach ($info as $inf) {
+                if (stripos($inf, '200 OK') !== false) {
                     return false;
                 }
             }

@@ -98,6 +98,11 @@
     ],
     "stan:base": [
       "./vendor/bin/phpstan analyse --memory-limit=1G --generate-baseline --allow-empty-baseline"
+    ],
+    "all": [
+      "@pint",
+      "@stan",
+      "@test"
     ]
   }
 }

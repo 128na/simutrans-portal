@@ -32,6 +32,7 @@ class DeadLinkChecker extends Service
     public function shouldProcess(Article $article): bool
     {
         $link = $this->getLink($article);
+
         return $link && $this->inBlacklist($link) === false;
     }
 
@@ -41,6 +42,7 @@ class DeadLinkChecker extends Service
         if ($contents instanceof AddonIntroductionContent) {
             return $contents->link ?? null;
         }
+
         return null;
     }
 
@@ -75,11 +77,13 @@ class DeadLinkChecker extends Service
             sleep($intervalsec);
         }
         $this->auditLogService->deadLinkDetected($article);
+
         return true;
     }
+
     public function getFailedCount(Article $article): int
     {
-        return (int)Cache::get($this->getCacheKey($article), 0);
+        return (int) Cache::get($this->getCacheKey($article), 0);
     }
 
     public function updateFailedCount(Article $article, int $count): void

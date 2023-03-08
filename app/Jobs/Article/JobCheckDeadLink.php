@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs\Article;
 
-use App\Models\Article;
-use App\Models\Contents\AddonIntroductionContent;
-use App\Notifications\DeadLinkDetected;
-use App\Repositories\ArticleRepository;
-use App\Services\Logging\AuditLogService;
+use App\Services\Article\DeadLinkChecker;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -22,74 +18,26 @@ class JobCheckDeadLink implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function handle(ArticleRepository $articleRepository, AuditLogService $auditLogService): void
+    public function handle(DeadLinkChecker $deadLinkChecker): void
     {
-        $changed = false;
-        foreach ($articleRepository->cursorCheckLink() as $article) {
-            if ($this->isLinkDead($article)) {
-                $auditLogService->deadLinkDetected($article);
-
-                $articleRepository->update($article, [
-                    'status' => config('status.private'),
-                ]);
-
-                $article->notify(new DeadLinkDetected());
-                $changed = true;
-                $this->wait();
-            }
-        }
-
-        if ($changed) {
-            JobUpdateRelated::dispatchSync();
-        }
-    }
-
-    private function isLinkDead(Article $article): bool
-    {
-        /** @var AddonIntroductionContent */
-        $contents = $article->contents;
-        $link = $contents->link ?? null;
-
-        if ($link && ! $this->inBlacklist($link)) {
-            return ! $this->isStatusOK($link);
-        }
-
-        return false;
-    }
-
-    private function isStatusOK(string $url, int $retry = 3): bool
-    {
-        for ($i = 0; $i < $retry; $i++) {
-            $info = @get_headers($url) ?: [];
-            foreach ($info as $i) {
-                if (stripos($i, '200 OK') !== false) {
-                    return true;
+        $changeAnyArticle = false;
+        foreach ($deadLinkChecker->getArticles() as $article) {
+            if ($deadLinkChecker->shouldProcess($article)) {
+                if ($deadLinkChecker->isDead($article)) {
+                    $count = $deadLinkChecker->getFailedCount($article) + 1;
+                    if ($count >= 3) {
+                        $deadLinkChecker->closeArticle($article);
+                        $deadLinkChecker->clearFailedCount($article);
+                        $changeAnyArticle = true;
+                    } else {
+                        $deadLinkChecker->updateFailedCount($article, $count);
+                    }
                 }
             }
-            logger('status check', [$url, ...$info]);
-            $this->wait();
         }
 
-        return false;
-    }
-
-    private function inBlacklist(string $url): bool
-    {
-        $blackList = ['getuploader.com'];
-
-        foreach ($blackList as $b) {
-            if (stripos($url, $b) !== false) {
-                logger('blacklist url', [$url]);
-
-                return true;
-            }
+        if ($changeAnyArticle) {
+            JobUpdateRelated::dispatchSync();
         }
-
-        return false;
-    }
-
-    private function wait(): void
-    {
-        sleep(5);
     }
 }

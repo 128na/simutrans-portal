@@ -41,6 +41,9 @@ abstract class BaseGenerator implements ShouldQueue
      */
     protected function putJson(string $filename, array $data): void
     {
-        Storage::disk('public')->put("json/$filename", json_encode($data));
+        $json = json_encode($data);
+        if ($json) {
+            Storage::disk('public')->put("json/$filename", $json);
+        }
     }
 }

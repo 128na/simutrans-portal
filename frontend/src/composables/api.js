@@ -16,10 +16,10 @@ export const useFrontApi = () => ({
   },
   // top
   fetchSidebar() {
-    return axios.get('/api/front/sidebar');
+    return axios.get('/storage/json/sidebar.json');
   },
   fetchTop() {
-    return axios.get('/api/front/top');
+    return axios.get('/storage/json/top.json');
   },
   // list
   fetchCategoryPak(size, slug, page = 1) {

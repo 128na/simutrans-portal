@@ -36,7 +36,7 @@ describe('フロント記事詳細', () => {
       const article = mock();
       beforeEach(() => {
         cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
-        cy.intercept('/api/front/sidebar', mockSidebarResponse).as('front.sidebar');
+        cy.intercept('/storage/json/sidebar.json', mockSidebarResponse).as('front.sidebar');
         cy.intercept('post', `/api/shown/${article.slug}`, { statusCode: 200 }).as('front.shown');
         cy.intercept(`/api/front/articles/${article.slug}`, { statusCode: 200, body: { data: article } }).as('front.article');
 

@@ -13,7 +13,7 @@ const { mockSidebarResponse, createMockArticleData } = require('../../__mocks__/
 describe('Search', () => {
   beforeEach(() => {
     cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
-    cy.intercept('/api/front/sidebar', mockSidebarResponse).as('front.sidebar');
+    cy.intercept('/storage/json/sidebar.json', mockSidebarResponse).as('front.sidebar');
     cy.intercept('/api/front/search?*', {
       statusCode: 200,
       body: {

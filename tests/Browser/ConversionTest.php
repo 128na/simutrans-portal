@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Browser;
 
+use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
@@ -31,6 +32,7 @@ class ConversionTest extends DuskTestCase
             'user_id' => $user->id,
         ]);
         $this->article2->categories()->save($category);
+        JobUpdateRelated::dispatchSync();
     }
 
     public function test()

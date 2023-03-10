@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Jobs\Article;
 
+use App\Jobs\StaticJson\GenerateSidebar;
+use App\Jobs\StaticJson\GenerateTop;
 use App\Repositories\PakAddonCountRepository;
 use App\Repositories\UserAddonCountRepository;
 use Illuminate\Bus\Queueable;
@@ -31,5 +33,8 @@ class JobUpdateRelated implements ShouldQueue
         $userAddonCountRepository->recount();
 
         Cache::flush();
+
+        GenerateSidebar::dispatchSync();
+        GenerateTop::dispatchSync();
     }
 }

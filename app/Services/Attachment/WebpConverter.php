@@ -10,7 +10,6 @@ use App\Services\Service;
 use GdImage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\File\File;
 
 class WebpConverter extends Service
 {
@@ -22,7 +21,7 @@ class WebpConverter extends Service
 
     private const WEBP_QUALITY = 100;
 
-    public function create(User $user, File $file): string
+    public function create(User $user, UploadedFile $file): string
     {
         $image = $this->createFromFile($file);
         $resized = $this->resizeIfNeed($image);
@@ -40,7 +39,14 @@ class WebpConverter extends Service
         $image = $this->createFromAttachment($attachment);
         $resized = $this->resizeIfNeed($image);
 
-        $filepath = $this->getFilepath($attachment->user()->withTrashed()->first());
+        /** @var User|null */
+        $user = $attachment->user()->withTrashed()->first();
+
+        if (is_null($user)) {
+            throw new ConvertFailedException('missing user');
+        }
+
+        $filepath = $this->getFilepath($user);
 
         $this->convertToWeb($filepath, $resized);
 

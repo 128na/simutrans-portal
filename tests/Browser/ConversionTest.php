@@ -56,7 +56,7 @@ class ConversionTest extends DuskTestCase
                 ->visit("/articles/{$this->article1->slug}")
                 ->waitForText($this->article1->title)
                 ->click('@conversion-link');
-            sleep(1);
+            sleep(5);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);
@@ -79,7 +79,7 @@ class ConversionTest extends DuskTestCase
                 ->visit("/articles/{$this->article2->slug}")
                 ->waitForText($this->article2->title)
                 ->click('@conversion-download');
-            sleep(1);
+            sleep(5);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);

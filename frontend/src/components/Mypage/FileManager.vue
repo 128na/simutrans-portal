@@ -30,7 +30,8 @@
       <q-footer elevated class="bg-white">
         <q-toolbar>
           <div class="text-dark">
-            チェックの入っているファイルを再選択すると選択が解除されます。
+            チェックの入っているファイルを再選択すると選択が解除されます。<br>
+            画像は自動でwebpに変換、1280x720より大きい画像はリサイズされます。
           </div>
           <q-space />
           <q-file borderless label-color="primary" type="file" label="新規アップロード" :accept="accept"

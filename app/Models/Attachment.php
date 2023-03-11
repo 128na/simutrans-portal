@@ -130,4 +130,9 @@ class Attachment extends Model
     {
         return Storage::disk('public')->path($this->path);
     }
+
+    public function getFileContentsAttribute(): ?string
+    {
+        return Storage::disk('public')->get($this->path);
+    }
 }

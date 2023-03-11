@@ -43,9 +43,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:run')->dailyAt('3:00')
             ->withoutOverlapping()
             ->onOneServer();
-        $schedule->command('compress:image')->dailyAt('4:00')
-            ->withoutOverlapping()
-            ->onOneServer();
         $schedule->command('delete:tags')->dailyAt('4:00')
             ->withoutOverlapping()
             ->onOneServer();

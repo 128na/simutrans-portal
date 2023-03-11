@@ -12,8 +12,6 @@ return [
 
     'gtag' => env('GTAG'),
 
-    'tinypng_api_key' => env('TINYPNG_API_KEY'),
-
     'cache_lifetime_min' => env('CACHE_LIFETIME_MIN', 180),
 
     'version' => env('APP_VERSION', '0.0'),

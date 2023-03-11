@@ -25,7 +25,6 @@
     "spatie/flysystem-dropbox": "^2.0.6",
     "spatie/laravel-backup": "^8.1.7",
     "spatie/laravel-feed": "^4.2.1",
-    "tinify/tinify": "^1.6.1",
     "yarri/full-text-search-query-like": "^0.2.0"
   },
   "require-dev": {

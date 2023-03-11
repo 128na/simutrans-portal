@@ -42,6 +42,21 @@ class AttachmentRepository extends BaseRepository
             ->get();
     }
 
+    /**
+     * @return LazyCollection<int, Attachment>
+     */
+    public function cursorUnconvertedImages(): LazyCollection
+    {
+        return $this->model
+            ->where(function ($q) {
+                $q->orWhere('original_name', 'like', '%.png')
+                    ->orWhere('original_name', 'like', '%.jpg')
+                    ->orWhere('original_name', 'like', '%.jpeg');
+            })
+            ->where('path', 'not like', '%.webp')
+            ->cursor();
+    }
+
     public function createFromFile(User $user, UploadedFile $file): Attachment
     {
         return $this->model->create([
@@ -49,11 +64,6 @@ class AttachmentRepository extends BaseRepository
             'path' => Storage::disk('public')->putFile('user/'.$user->id, $file),
             'original_name' => $file->getClientOriginalName(),
         ]);
-    }
-
-    public function cursorCheckCompress(): LazyCollection
-    {
-        return $this->model->select('path')->cursor();
     }
 
     /**

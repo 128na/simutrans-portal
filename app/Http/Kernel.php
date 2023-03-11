@@ -40,9 +40,15 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
-        'api' => [
+        'internal_api' => [
             \App\Http\Middleware\CorsHeader::class,
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            'throttle:100,1',
+        ],
+
+        'api' => [
+            \App\Http\Middleware\CorsHeader::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             'throttle:100,1',
         ],

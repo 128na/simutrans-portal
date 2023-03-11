@@ -21,14 +21,28 @@ use Carbon\CarbonImmutable;
 use cebe\markdown\GithubMarkdown;
 use HTMLPurifier;
 use HTMLPurifier_Config;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Storage;
 use ZipArchive;
 
-class AppServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider implements DeferrableProvider
 {
+    /**
+     * @return array<string>
+     */
+    public function provides()
+    {
+        return [
+            ReadmeExtractor::class,
+            MarkdownService::class,
+            ZipManager::class,
+            FileInfoService::class,
+        ];
+    }
+
     /**
      * Register any application services.
      *

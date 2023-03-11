@@ -10,16 +10,16 @@ use App\Http\Resources\Api\Mypage\Attachments as AttachmentsResource;
 use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
 use App\Repositories\AttachmentRepository;
+use App\Services\Attachment\StoreService;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class AttachmentController extends Controller
 {
-    private AttachmentRepository $attachmentRepository;
-
-    public function __construct(AttachmentRepository $attachmentRepository)
-    {
-        $this->attachmentRepository = $attachmentRepository;
+    public function __construct(
+        private AttachmentRepository $attachmentRepository,
+        private StoreService $storeService,
+    ) {
     }
 
     public function index(): AttachmentsResource
@@ -33,7 +33,7 @@ class AttachmentController extends Controller
     {
         abort_unless($request->hasFile('file'), 400);
 
-        $attachment = $this->attachmentRepository->createFromFile($this->loggedinUser(), $request->file);
+        $attachment = $this->storeService->store($this->loggedinUser(), $request->file);
 
         try {
             UpdateFileInfo::dispatchSync($attachment);

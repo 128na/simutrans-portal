@@ -12,6 +12,8 @@ use Google\Cloud\RecaptchaEnterprise\V1\RecaptchaEnterpriseServiceClient;
 
 class RecaptchaService extends Service
 {
+    private const ALLOW_SCORE = 0.5;
+
     public function __construct(
         private RecaptchaEnterpriseServiceClient $client,
         private string $projectName,
@@ -42,7 +44,7 @@ class RecaptchaService extends Service
 
     private function validate(Assessment $response): void
     {
-        if ($response->getRiskAnalysis()?->getScore() < 0.8) {
+        if ($response->getRiskAnalysis()?->getScore() < self::ALLOW_SCORE) {
             throw new RecaptchaHighRiskException('score too low');
         }
         if ($response->getTokenProperties()?->getAction() !== $response->getEvent()?->getExpectedAction()) {

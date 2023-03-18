@@ -68,7 +68,8 @@ return [
          *
          * If you do not want any compressor at all, set it to null.
          */
-        'database_dump_compressor' => null,
+        // 'database_dump_compressor' => null,
+        'database_dump_compressor' => Spatie\DbDumper\Compressors\Bzip2Compressor::class,
 
         'destination' => [
             /*

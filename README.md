@@ -5,24 +5,24 @@ https://simutrans-portal.128-bit.net
 
 ## About
 
-Simutransのアドオン投稿サイトのPHPアプリケーションです。
-
+Simutransのアドオン投稿サイト「Simutrans Addon Portal」のアプリケーションです。
 
 ## Setup
 
 一般的なLAMP環境やdockerコンテナなどをご用意ください。
-フロントエンドは[こちら](frontend/README.md)
+バックエンドはPHP(Laravel)、フロントエンドはSPA(quasar, vue.js)で作成しています。
 
-### Required
+フロントエンドの詳細は[こちら](frontend/README.md)
+
+### Requirements
 
 - PHP:8.0~
-- mysql:8.0~
+- mysql:5.7~
+- node:16~
+    アセットコンパイルを行う場合に必要
 
-### Optional
+### Backend
 
-- node アセットコンパイルを行う場合に必要
-
-### Install
 ```
 git clone https://github.com/128na/simutrans-portal.git
 
@@ -33,15 +33,29 @@ php artisan key:generate
 php artisan migrate --seed
 ```
 
+### Frontend
+
+```bash
+npm install
+npm run build
+```
+
 ### Test
 
 ```
 php artisan dusk:chrome-driver
 composer run test
+
+cd frontend
+npm run test:e2e
 ```
 
-### Formatter
+### Formatter, Static analysis
 
 ```
 composer run cs
+composer run stan
+
+cd frontend
+npm run es
 ```

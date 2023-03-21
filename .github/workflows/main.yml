@@ -158,10 +158,7 @@ jobs:
           path: storage/logs
 
   dusk:
-    runs-on: ${{ matrix.os_version }}
-    strategy:
-      matrix:
-        os_version: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ubuntu-latest
     steps:
       - name: install japanese font
         run: sudo apt-get install -y fonts-ipafont && fc-cache -fv install
@@ -246,10 +243,7 @@ jobs:
           path: storage/logs
 
   cy:
-    runs-on: ${{ matrix.os_version }}
-    strategy:
-      matrix:
-        os_version: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ubuntu-latest
     steps:
       - name: install japanese font
         run: sudo apt-get install -y fonts-ipafont && fc-cache -fv install

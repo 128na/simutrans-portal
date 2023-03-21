@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Admin\TagController as AdminTagController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Front\DiscordController;
 use App\Http\Controllers\Api\Front\FrontController;
+use App\Http\Controllers\Api\Mypage\AiController;
 use App\Http\Controllers\Api\Mypage\AnalyticsController;
 use App\Http\Controllers\Api\Mypage\AttachmentController;
 use App\Http\Controllers\Api\Mypage\BulkZipController;
@@ -63,6 +64,7 @@ Route::prefix('mypage')->group(function () {
         Route::get('attachments', [AttachmentController::class, 'index']);
         Route::get('articles', [EditorController::class, 'index']);
         Route::get('options', [EditorController::class, 'options']);
+        Route::post('ai/description', [AiController::class, 'description']);
     });
     // メール認証必須
     Route::middleware(['auth:sanctum', 'verified'])->group(function () {

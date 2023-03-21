@@ -153,6 +153,11 @@ export const useMypageApi = () => ({
   invite(code, params) {
     return axios.post(`/api/mypage/invite/${code}`, params);
   },
+
+  // ai
+  aiDescription(text) {
+    return axios.post('/api/mypage/ai/description', { text });
+  },
 });
 
 export const useAdminApi = () => ({

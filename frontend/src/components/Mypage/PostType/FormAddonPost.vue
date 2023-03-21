@@ -10,7 +10,8 @@
     :error-message="editor.vali('article.contents.description')" :error="!!editor.vali('article.contents.description')">
     <label-required>説明</label-required>
   </input-countable>
-  <q-btn flat :disabled="!file" @click="handleCopyFromZip">Zipファイル内のreadmeからコピー</q-btn>
+  <q-btn flat color="secondary" :disabled="!file" @click="handleCopyFromZip">Zipファイル内のreadmeから追加する</q-btn>
+  <q-btn flat color="secondary" :disabled="!file" @click="handleAiFromZip">AIでZipファイル内のreadmeから文章生成する</q-btn>
   <input-countable label-slot v-model="editor.article.contents.thanks" :maxLength="2048" bottom-slots
     :error-message="editor.vali('article.contents.thanks')" :error="!!editor.vali('article.contents.thanks')">
     <label-optional>謝辞・参考にしたアドオン</label-optional>
@@ -33,6 +34,8 @@ import LabelOptional from 'src/components/Common/LabelOptional.vue';
 import FormTag from 'src/components/Mypage/ArticleForm/FormTag.vue';
 import FormAddonFile from 'src/components/Mypage/ArticleForm/FormAddonFile.vue';
 import { useMypageStore } from 'src/store/mypage';
+import { useMypageApi } from 'src/composables/api';
+import { useApiHandler } from 'src/composables/apiHandler';
 
 export default defineComponent({
   name: 'FormAddonPost',
@@ -48,22 +51,33 @@ export default defineComponent({
     const editor = useArticleEditStore();
     const mypage = useMypageStore();
     const file = computed(() => (editor.article.contents.file ? mypage.findAttachmentById(editor.article.contents.file) : null));
-    const handleCopyFromZip = () => {
-      /**
-       * @type {Object}
-       */
+    const text = computed(() => {
       const readmes = file.value?.fileInfo?.readmes;
-
-      const text = Object.entries(readmes)
+      return Object.entries(readmes)
         .reduce((t, [filename, readme]) => `${t}\n------\n#${filename}\n${readme.join('')}`, '');
+    });
 
-      editor.article.contents.description += text;
+    const handleCopyFromZip = () => {
+      editor.article.contents.description += text.value;
+    };
+
+    const api = useMypageApi();
+    const handler = useApiHandler();
+    const handleAiFromZip = async () => {
+      handler.handleWithLoading({
+        doRequest: () => api.aiDescription(text.value),
+        done: (res) => {
+          editor.article.contents.description += res.data.description;
+        },
+        failedMessage: '生成に失敗しました',
+      });
     };
 
     return {
       editor,
       file,
       handleCopyFromZip,
+      handleAiFromZip,
     };
   },
 });

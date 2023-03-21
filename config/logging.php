@@ -102,5 +102,11 @@ return [
             'level' => 'debug',
             'days' => 365,
         ],
+        'file_open_ai' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/open-ai.log'),
+            'level' => 'debug',
+            'days' => 365,
+        ],
     ],
 ];

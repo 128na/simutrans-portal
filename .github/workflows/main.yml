@@ -92,6 +92,9 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php_version: [8.0, 8.1, 8.2]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -100,7 +103,7 @@ jobs:
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8"
+          php-version: ${{ matrix.php_version }}
       - name: Cache vendor
         id: cache-composer
         uses: actions/cache@v3
@@ -108,8 +111,9 @@ jobs:
           cache-name: cache-vendor
         with:
           path: ./vendor
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./composer.lock') }}
+          key: ${{ runner.os }}-build-${{ matrix.php_version }}-${{ env.cache-name }}-${{ hashFiles('./composer.lock') }}
           restore-keys: |
+            ${{ runner.os }}-build-${{ matrix.php_version }}-${{ env.cache-name }}-
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-

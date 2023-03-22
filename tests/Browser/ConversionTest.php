@@ -38,9 +38,9 @@ class ConversionTest extends DuskTestCase
     public function test()
     {
         $this->browse(function (Browser $browser) {
-            $dayly = now('UTC')->format('Ymd');
-            $monthly = now('UTC')->format('Ym');
-            $yearly = now('UTC')->format('Y');
+            $dayly = now()->format('Ymd');
+            $monthly = now()->format('Ym');
+            $yearly = now()->format('Y');
             $total = 'total';
 
             $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => 1, 'period' => $dayly]);

@@ -43,51 +43,51 @@ class ConversionTest extends DuskTestCase
             $yearly = now('UTC')->format('Y');
             $total = 'total';
 
-            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '1', 'period' => $dayly]);
-            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '2', 'period' => $monthly]);
-            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '3', 'period' => $yearly]);
-            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => '4', 'period' => $total]);
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article1->id, 'type' => '1', 'period' => $dayly]);
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article1->id, 'type' => '2', 'period' => $monthly]);
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article1->id, 'type' => '3', 'period' => $yearly]);
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article1->id, 'type' => '4', 'period' => $total]);
+            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => 1, 'period' => $dayly]);
+            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => 2, 'period' => $monthly]);
+            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => 3, 'period' => $yearly]);
+            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article1->id, 'type' => 4, 'period' => $total]);
+            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article1->id, 'type' => 1, 'period' => $dayly]);
+            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article1->id, 'type' => 2, 'period' => $monthly]);
+            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article1->id, 'type' => 3, 'period' => $yearly]);
+            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article1->id, 'type' => 4, 'period' => $total]);
 
             $browser
                 ->visit("/articles/{$this->article1->slug}")
                 ->waitForText($this->article1->title)
                 ->click('@conversion-link');
             sleep(5);
-            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
-            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);
-            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);
-            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => '4', 'period' => $total, 'count' => 1]);
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article1->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article1->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article1->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article1->id, 'type' => '4', 'period' => $total, 'count' => 1]);
+            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => 1, 'period' => $dayly, 'count' => 1]);
+            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => 2, 'period' => $monthly, 'count' => 1]);
+            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => 3, 'period' => $yearly, 'count' => 1]);
+            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => 4, 'period' => $total, 'count' => 1]);
+            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article1->id, 'type' => 1, 'period' => $dayly, 'count' => 1]);
+            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article1->id, 'type' => 2, 'period' => $monthly, 'count' => 1]);
+            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article1->id, 'type' => 3, 'period' => $yearly, 'count' => 1]);
+            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article1->id, 'type' => 4, 'period' => $total, 'count' => 1]);
 
-            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article2->id, 'type' => '1', 'period' => $dayly]);
-            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article2->id, 'type' => '2', 'period' => $monthly]);
-            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article2->id, 'type' => '3', 'period' => $yearly]);
-            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article2->id, 'type' => '4', 'period' => $total]);
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article2->id, 'type' => '1', 'period' => $dayly]);
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article2->id, 'type' => '2', 'period' => $monthly]);
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article2->id, 'type' => '3', 'period' => $yearly]);
-            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article2->id, 'type' => '4', 'period' => $total]);
+            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article2->id, 'type' => 1, 'period' => $dayly]);
+            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article2->id, 'type' => 2, 'period' => $monthly]);
+            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article2->id, 'type' => 3, 'period' => $yearly]);
+            $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article2->id, 'type' => 4, 'period' => $total]);
+            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article2->id, 'type' => 1, 'period' => $dayly]);
+            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article2->id, 'type' => 2, 'period' => $monthly]);
+            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article2->id, 'type' => 3, 'period' => $yearly]);
+            $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article2->id, 'type' => 4, 'period' => $total]);
 
             $browser
                 ->visit("/articles/{$this->article2->slug}")
                 ->waitForText($this->article2->title)
                 ->click('@conversion-download');
             sleep(5);
-            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
-            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);
-            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);
-            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => '4', 'period' => $total, 'count' => 1]);
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article2->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article2->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article2->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);
-            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article2->id, 'type' => '4', 'period' => $total, 'count' => 1]);
+            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => 1, 'period' => $dayly, 'count' => 1]);
+            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => 2, 'period' => $monthly, 'count' => 1]);
+            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => 3, 'period' => $yearly, 'count' => 1]);
+            $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => 4, 'period' => $total, 'count' => 1]);
+            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article2->id, 'type' => 1, 'period' => $dayly, 'count' => 1]);
+            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article2->id, 'type' => 2, 'period' => $monthly, 'count' => 1]);
+            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article2->id, 'type' => 3, 'period' => $yearly, 'count' => 1]);
+            $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article2->id, 'type' => 4, 'period' => $total, 'count' => 1]);
         });
     }
 }

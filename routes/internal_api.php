@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\Mypage\TagController;
 use App\Http\Controllers\Api\Mypage\UserController;
 use App\Http\Controllers\Api\Mypage\VerificationController;
 use App\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Route;
 
 // 認証
 Route::POST('/email/resend', [VerificationController::class, 'resendApi']);
@@ -31,7 +32,7 @@ Route::POST('/password/email', [ForgotPasswordController::class, 'sendResetLinkE
 // フロント
 Route::prefix('front')->group(function () {
     // キャッシュ有効
-    Route::middleware(['cache.headers:public;max_age=600;etag'])->group(function () {
+    Route::middleware(['cache.headers:public;max_age=600;etag', 'cache.content'])->group(function () {
         Route::get('/top', [FrontController::class, 'top']);
         Route::get('/sidebar', [FrontController::class, 'sidebar']);
         Route::get('/', [FrontController::class, 'index']);

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use League\Flysystem\Filesystem;
 use Spatie\Dropbox\Client as DropboxClient;
 use Spatie\FlysystemDropbox\DropboxAdapter;
-use Storage;
 
 class DropboxServiceProvider extends ServiceProvider
 {

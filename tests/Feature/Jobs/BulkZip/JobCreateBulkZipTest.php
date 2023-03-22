@@ -6,7 +6,7 @@ namespace Tests\Feature\Jobs\BulkZip;
 
 use App\Jobs\BulkZip\JobCreateBulkZip;
 use App\Models\BulkZip;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class JobCreateBulkZipTest extends TestCase

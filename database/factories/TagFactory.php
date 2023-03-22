@@ -25,6 +25,9 @@ class TagFactory extends Factory
     {
         return [
             'name' => $this->faker->city(),
+            'description' => null,
+            'editable' => true,
+            'created_by' => null,
         ];
     }
 }

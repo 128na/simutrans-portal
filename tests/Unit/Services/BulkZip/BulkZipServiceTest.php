@@ -11,7 +11,7 @@ use App\Models\BulkZip;
 use App\Models\User;
 use App\Repositories\BulkZipRepository;
 use App\Services\BulkZip\BulkZipService;
-use Bus;
+use Illuminate\Support\Facades\Bus;
 use Mockery\MockInterface;
 use Tests\UnitTestCase;
 use TypeError;

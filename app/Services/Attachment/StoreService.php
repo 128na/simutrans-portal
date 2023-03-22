@@ -8,8 +8,8 @@ use App\Models\Attachment;
 use App\Models\User;
 use App\Services\Service;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Storage;
 
 class StoreService extends Service
 {

@@ -21,7 +21,7 @@
     <meta property="og:url" content="{{ $meta['canonical'] ?? url()->current() }}">
 
     {{-- 本番環境以外はnoindex nofollow --}}
-    @unless(\App::environment('production'))
+    @unless(\Illuminate\Support\Facades\App::environment('production'))
         <meta name="robots" content="noindex, nofollow">
     @endunless
     <link rel="canonical" href="{{ $meta['canonical'] ?? url()->current() }}">

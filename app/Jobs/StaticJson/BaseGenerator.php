@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 
 abstract class BaseGenerator implements ShouldQueue
 {
@@ -18,8 +18,8 @@ abstract class BaseGenerator implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function handle(
-    ): void {
+    public function handle(): void
+    {
         $json = $this->getJsonData();
         $filename = $this->getJsonName();
 

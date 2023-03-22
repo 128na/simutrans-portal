@@ -22,7 +22,7 @@ class Cacheable
             $key = $this->getKey($request);
             if ($cached = Cache::get($key, false)) {
                 /** @var string $cached */
-                return response($cached, 200, ['X-Cache-Key' => $key]);
+                return response($cached, 200, ['X-Cache-Key' => $key, 'Content-Encoding' => 'gzip']);
             }
             if ($content = $response->getContent()) {
                 Cache::put($key, gzencode($content, 9), config('app.cache_lifetime_min') * 60);

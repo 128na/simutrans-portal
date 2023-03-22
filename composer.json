@@ -15,6 +15,7 @@
     "fideloper/proxy": "^4.4.2",
     "google/cloud-recaptcha-enterprise": "^1.2.6",
     "guzzlehttp/guzzle": "^7.5",
+    "htmlmin/htmlmin": "^9.0",
     "laravel-notification-channels/discord": "^1.4",
     "laravel/framework": "^9.52.4",
     "laravel/sanctum": "^3.2.1",

@@ -16,7 +16,7 @@ class Cacheable
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse|Response
      */
     public function handle(Request $request, Closure $next)
     {

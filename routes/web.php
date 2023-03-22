@@ -11,7 +11,9 @@ use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
 use Illuminate\Support\Facades\Route;
 
-Route::feeds();
+Route::middleware(['cache.content'])->group(function () {
+    Route::feeds();
+});
 
 // 認証系ルート名保持用
 Route::GET('mypage/verify/{id}/{hash}', [MypageController::class, 'index'])->name('verification.verify');
@@ -27,7 +29,7 @@ Route::POST('login', [LoginController::class, 'login'])->middleware('restrict:lo
 Route::GET('/mypage/invite/{invitation_code}', [InviteController::class, 'index'])->middleware('restrict:invitation_code')->name('invite.index');
 
 // 非ログイン系 reidsキャッシュ有効
-Route::middleware(['cache.headers:public;max_age=2628000;etag'])->group(function () {
+Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content'])->group(function () {
     Route::get('/', [FrontController::class, 'fallback'])->name('index');
     Route::get('/ranking', [FrontController::class, 'fallback'])->name('ranking');
     Route::get('/pages', [FrontController::class, 'fallback'])->name('pages');

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 
@@ -22,17 +24,11 @@ class Cacheable
         $response = $next($request);
         if ($this->shouldCache()) {
             $key = $this->getKey($request);
-
-            /** @var string|false $cached */
-            $cached = Cache::get($key, false);
+            $cached = $this->getCache($key);
             if ($cached) {
-                return response($cached, 200, ['X-Cache-Key' => $key, 'Content-Encoding' => 'gzip']);
+                return $this->responseFromCache($cached, $key);
             }
-
-            $content = $response->getContent();
-            if ($content) {
-                Cache::put($key, gzencode($content, 9), config('app.cache_lifetime_min') * 60);
-            }
+            $this->putCache($response, $key);
         }
 
         return $response;
@@ -46,5 +42,23 @@ class Cacheable
     private function getKey(Request $request): string
     {
         return sha1($request->fullUrl());
+    }
+
+    private function getCache(string $key): ?string
+    {
+        return Cache::has($key) ? Cache::get($key) : null;
+    }
+
+    private function responseFromCache(string $cached, string $key): Response
+    {
+        return response($cached, 200, ['X-Cache-Key' => $key, 'Content-Encoding' => 'gzip']);
+    }
+
+    private function putCache(Response|RedirectResponse $response, string $key): void
+    {
+        $content = $response->getContent();
+        if ($content) {
+            Cache::put($key, gzencode($content, 9), config('app.cache_lifetime_min') * 60);
+        }
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -20,11 +22,15 @@ class Cacheable
         $response = $next($request);
         if ($this->shouldCache()) {
             $key = $this->getKey($request);
-            if ($cached = Cache::get($key, false)) {
-                /** @var string $cached */
+
+            /** @var string|false $cached */
+            $cached = Cache::get($key, false);
+            if ($cached) {
                 return response($cached, 200, ['X-Cache-Key' => $key, 'Content-Encoding' => 'gzip']);
             }
-            if ($content = $response->getContent()) {
+
+            $content = $response->getContent();
+            if ($content) {
                 Cache::put($key, gzencode($content, 9), config('app.cache_lifetime_min') * 60);
             }
         }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -54,7 +55,7 @@ class Cacheable
         return response($cached, 200, ['X-Cache-Key' => $key, 'Content-Encoding' => 'gzip']);
     }
 
-    private function putCache(Response|RedirectResponse $response, string $key): void
+    private function putCache(Response|RedirectResponse|JsonResponse $response, string $key): void
     {
         $content = $response->getContent();
         if ($content) {

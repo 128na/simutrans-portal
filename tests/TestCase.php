@@ -31,7 +31,7 @@ abstract class TestCase extends BaseTestCase
     protected function tearDown(): void
     {
         $disk = Storage::disk('public');
-        User::all()->map(function (User $user) use ($disk) {
+        User::with('myAttachments')->get()->map(function (User $user) use ($disk) {
             $user->myAttachments
                 ->filter(fn (Attachment $a) => Str::startsWith($a->path, 'user/'))
                 ->map(fn (Attachment $a) => $a->delete());

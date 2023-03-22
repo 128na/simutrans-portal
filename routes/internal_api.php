@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\Mypage\TagController;
 use App\Http\Controllers\Api\Mypage\UserController;
 use App\Http\Controllers\Api\Mypage\VerificationController;
 use App\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Route;
 
 // 認証
 Route::POST('/email/resend', [VerificationController::class, 'resendApi']);

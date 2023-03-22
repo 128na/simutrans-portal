@@ -8,8 +8,8 @@ use App\Exceptions\ZipErrorException;
 use App\Services\BulkZip\Decorators\BaseDecorator;
 use App\Services\BulkZip\ZipManager;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Mockery\MockInterface;
-use Storage;
 use Tests\UnitTestCase;
 use ZipArchive;
 

@@ -20,8 +20,8 @@ use cebe\markdown\GithubMarkdown;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
-use Storage;
 use ZipArchive;
 
 class DIServiceProvider extends ServiceProvider implements DeferrableProvider

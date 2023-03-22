@@ -7,8 +7,8 @@ namespace App\Http\Controllers\Api\Mypage;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\BulkZipResource;
 use App\Services\BulkZip\BulkZipService;
-use Auth;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class BulkZipController extends Controller
 {

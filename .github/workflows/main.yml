@@ -320,6 +320,7 @@ jobs:
           cd ${{ secrets.APP_DIR }}
           && git fetch -p
           && git checkout ${{ github.ref }}
+          && sed -i "s/APP_VERSION=.*/APP_VERSION=$( git describe --tags )/" .env
           && php -c ~/www/php.ini ~/bin/composer.phar install --optimize-autoloader --no-dev
           && php -c ~/www/php.ini artisan migrate --force
           && php -c ~/www/php.ini artisan migrate:status

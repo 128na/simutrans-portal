@@ -40,7 +40,7 @@ class Cacheable
 
     private function getKey(Request $request): string
     {
-        return sha1($request->fullUrl());
+        return sprintf('%s-%s', config('app.version'), sha1($request->fullUrl()));
     }
 
     private function getCache(string $key): ?string

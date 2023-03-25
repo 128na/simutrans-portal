@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Adapters\AutoRefreshingDropBoxTokenService;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
@@ -30,8 +31,11 @@ class DropboxServiceProvider extends ServiceProvider
     public function boot()
     {
         Storage::extend('dropbox', function ($app, $config) {
+            $token = new AutoRefreshingDropBoxTokenService;
             $client = new DropboxClient(
-                $config['authorization_token']
+                $token->getToken($config['appKey'],
+                    $config['appSecret'],
+                    $config['refreshToken'])
             );
             $adapter = new DropboxAdapter($client);
             $driver = new Filesystem($adapter, ['case_sensitive' => false]);

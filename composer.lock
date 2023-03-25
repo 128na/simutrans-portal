@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "59e2346df916c8002950f26e2e3874f7",
+    "content-hash": "1583918c016396942b67f697559b8091",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -3009,16 +3009,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.3.9",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "c1e114f74e518daca2729ea8c4bf1167038fa4b5"
+                "reference": "d44a24690f16b8c1808bf13b1bd54ae4c63ea048"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c1e114f74e518daca2729ea8c4bf1167038fa4b5",
-                "reference": "c1e114f74e518daca2729ea8c4bf1167038fa4b5",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/d44a24690f16b8c1808bf13b1bd54ae4c63ea048",
+                "reference": "d44a24690f16b8c1808bf13b1bd54ae4c63ea048",
                 "shasum": ""
             },
             "require": {
@@ -3054,7 +3054,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "2.4-dev"
+                    "dev-main": "2.5-dev"
                 }
             },
             "autoload": {
@@ -3111,7 +3111,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-15T14:07:24+00:00"
+            "time": "2023-03-24T15:16:10+00:00"
         },
         {
             "name": "league/config",
@@ -5721,16 +5721,16 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "3.3.1",
+            "version": "3.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "a530699461d6bcc9d11515ad0c97d683173d85b5"
+                "reference": "c502e8b9005990d03f5ec5cc852e98a27c26056d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/a530699461d6bcc9d11515ad0c97d683173d85b5",
-                "reference": "a530699461d6bcc9d11515ad0c97d683173d85b5",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/c502e8b9005990d03f5ec5cc852e98a27c26056d",
+                "reference": "c502e8b9005990d03f5ec5cc852e98a27c26056d",
                 "shasum": ""
             },
             "require": {
@@ -5798,7 +5798,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-laravel/issues",
-                "source": "https://github.com/getsentry/sentry-laravel/tree/3.3.1"
+                "source": "https://github.com/getsentry/sentry-laravel/tree/3.3.2"
             },
             "funding": [
                 {
@@ -5810,7 +5810,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-03-20T14:21:23+00:00"
+            "time": "2023-03-22T10:51:03+00:00"
         },
         {
             "name": "spatie/db-dumper",
@@ -5952,24 +5952,25 @@
         },
         {
             "name": "spatie/flysystem-dropbox",
-            "version": "2.0.6",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/flysystem-dropbox.git",
-                "reference": "60ac0f929da31aa1321b4b2ac2ca0ba961e4664a"
+                "reference": "01b530218caa99b546f993490e54cd13b67604ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/flysystem-dropbox/zipball/60ac0f929da31aa1321b4b2ac2ca0ba961e4664a",
-                "reference": "60ac0f929da31aa1321b4b2ac2ca0ba961e4664a",
+                "url": "https://api.github.com/repos/spatie/flysystem-dropbox/zipball/01b530218caa99b546f993490e54cd13b67604ff",
+                "reference": "01b530218caa99b546f993490e54cd13b67604ff",
                 "shasum": ""
             },
             "require": {
-                "league/flysystem": "^2.0.4 || ^3.0.0",
+                "league/flysystem": "^3.7.0",
                 "php": "^8.0",
                 "spatie/dropbox-api": "^1.17.1"
             },
             "require-dev": {
+                "pestphp/pest": "^1.22",
                 "phpspec/prophecy-phpunit": "^2.0.1",
                 "phpunit/phpunit": "^9.5.4"
             },
@@ -6003,7 +6004,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/flysystem-dropbox/issues",
-                "source": "https://github.com/spatie/flysystem-dropbox/tree/2.0.6"
+                "source": "https://github.com/spatie/flysystem-dropbox/tree/3.0.0"
             },
             "funding": [
                 {
@@ -6015,7 +6016,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-02-09T16:01:40+00:00"
+            "time": "2023-03-13T12:19:03+00:00"
         },
         {
             "name": "spatie/laravel-backup",
@@ -11129,16 +11130,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.7",
+            "version": "1.10.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "b10ceb526d9607903c5b2673f1fc8775dbe48975"
+                "reference": "0166aef76e066f0dd2adc2799bdadfa1635711e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/b10ceb526d9607903c5b2673f1fc8775dbe48975",
-                "reference": "b10ceb526d9607903c5b2673f1fc8775dbe48975",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/0166aef76e066f0dd2adc2799bdadfa1635711e9",
+                "reference": "0166aef76e066f0dd2adc2799bdadfa1635711e9",
                 "shasum": ""
             },
             "require": {
@@ -11187,7 +11188,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-03-16T15:24:20+00:00"
+            "time": "2023-03-24T10:28:16+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",

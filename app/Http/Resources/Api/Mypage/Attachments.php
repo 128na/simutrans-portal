@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Api\Mypage;
 
+use App\Models\User\Profile;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class Attachments extends ResourceCollection
@@ -23,7 +24,10 @@ class Attachments extends ResourceCollection
                 'original_name' => $item->original_name,
                 'thumbnail' => $item->thumbnail,
                 'url' => $item->url,
-                'fileInfo' => $this->when($item->fileInfo, fn () => $item->fileInfo->data),
+                'fileInfo' => $this->when(
+                    $item->attachmentable_type !== Profile::class && $item->fileInfo,
+                    fn () => $item->fileInfo->data
+                ),
             ];
         })->toArray();
     }

@@ -57,6 +57,7 @@ class TwitterV2Api extends TwitterOAuth
                 return $token;
             }
         } catch (ModelNotFoundException|QueryException|PDOException $e) {
+            report($e);
             throw new PKCETokenNotFoundException();
         }
 
@@ -65,6 +66,7 @@ class TwitterV2Api extends TwitterOAuth
         try {
             return $this->pKCEService->refreshToken($token);
         } catch (ClientException $e) {
+            report($e);
             try {
                 $this->pKCEService->revokeToken($token);
             } finally {

@@ -28,7 +28,7 @@ class InviteService extends Service
         $body = $result->json();
 
         if ($result->status() !== 200 || ! array_key_exists('code', $body)) {
-            throw new CreateInviteFailedException();
+            throw new CreateInviteFailedException($result->body());
         }
 
         return sprintf('%s/%s', config('services.discord.domain'), $body['code']);

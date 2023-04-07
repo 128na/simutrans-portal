@@ -36,7 +36,8 @@ class RecaptchaService extends Service
         $this->auditLogService->recapchaAssessment($response);
 
         if ($response->getTokenProperties()?->getValid() !== true) {
-            throw new RecaptchaFailedException();
+            dd($response);
+            throw new RecaptchaFailedException('token invalid');
         }
 
         $this->validate($response);

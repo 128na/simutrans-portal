@@ -11,7 +11,7 @@ use App\Notifications\DeadLinkDetected;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
-class JobCheckDeadlinkTest extends TestCase
+final class JobCheckDeadlinkTest extends TestCase
 {
     private $article;
 

@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Api\Admin;
 use App\Models\ControllOption;
 use Tests\TestCase;
 
-class ControllOptionControllerTest extends TestCase
+final class ControllOptionControllerTest extends TestCase
 {
     private ControllOption $controllOption;
 

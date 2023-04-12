@@ -8,7 +8,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 
-class FindAllWithTrashedTest extends TestCase
+final class FindAllWithTrashedTest extends TestCase
 {
     private UserRepository $repository;
 

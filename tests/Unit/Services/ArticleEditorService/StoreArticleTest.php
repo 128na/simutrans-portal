@@ -13,7 +13,7 @@ use Carbon\CarbonImmutable;
 use Mockery\MockInterface;
 use Tests\UnitTestCase;
 
-class StoreArticleTest extends UnitTestCase
+final class StoreArticleTest extends UnitTestCase
 {
     private function getSUT(CarbonImmutable $now): ArticleEditorService
     {

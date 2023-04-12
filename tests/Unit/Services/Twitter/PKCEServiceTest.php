@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Tests\UnitTestCase;
 
-class PKCEServiceTest extends UnitTestCase
+final class PKCEServiceTest extends UnitTestCase
 {
     private function getSUT(): PKCEService
     {

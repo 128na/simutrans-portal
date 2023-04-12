@@ -7,7 +7,7 @@ namespace Tests\Unit\Services\FileInfo;
 use App\Services\FileInfo\TextService;
 use Tests\UnitTestCase;
 
-class TextServiceTest extends UnitTestCase
+final class TextServiceTest extends UnitTestCase
 {
     private function getSUT(): TextService
     {

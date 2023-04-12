@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Repositories\UserRepository;
 use Tests\TestCase;
 
-class FindByEmailWithTrashedTest extends TestCase
+final class FindByEmailWithTrashedTest extends TestCase
 {
     private UserRepository $repository;
 

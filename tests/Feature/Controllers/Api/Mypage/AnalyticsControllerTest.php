@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Closure;
 use Tests\ArticleTestCase;
 
-class AnalyticsControllerTest extends ArticleTestCase
+final class AnalyticsControllerTest extends ArticleTestCase
 {
     #[DataProvider('dataValidation')]
     public function testValidation(Closure $fn, string $error_field): void

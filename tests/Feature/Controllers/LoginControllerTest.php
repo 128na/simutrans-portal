@@ -12,7 +12,7 @@ use App\Notifications\Loggedin;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
-class LoginControllerTest extends TestCase
+final class LoginControllerTest extends TestCase
 {
     #[DataProvider('dataValidation')]
     public function testValidation(array $data, ?string $error_field): void

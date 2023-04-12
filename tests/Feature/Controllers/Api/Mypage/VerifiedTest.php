@@ -9,7 +9,7 @@ use Closure;
 use Illuminate\Http\UploadedFile;
 use Tests\ArticleTestCase;
 
-class VerifiedTest extends ArticleTestCase
+final class VerifiedTest extends ArticleTestCase
 {
     protected function setUp(): void
     {

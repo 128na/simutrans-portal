@@ -6,7 +6,7 @@ namespace Tests\Feature\Controllers\Api\Mypage\EditorController;
 
 use Tests\ArticleTestCase;
 
-class IndexTest extends ArticleTestCase
+final class IndexTest extends ArticleTestCase
 {
     public function testIndex(): void
     {

@@ -7,7 +7,7 @@ namespace Tests\Unit\Services\FileInfo\Extractors;
 use App\Services\FileInfo\Extractors\ReadmeExtractor;
 use Tests\UnitTestCase;
 
-class ReadmeExtractorTest extends UnitTestCase
+final class ReadmeExtractorTest extends UnitTestCase
 {
     private function getSUT(): ReadmeExtractor
     {

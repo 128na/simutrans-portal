@@ -9,7 +9,7 @@ use App\Services\Twitter\TweetData;
 use stdClass;
 use Tests\UnitTestCase;
 
-class TweetDataTest extends UnitTestCase
+final class TweetDataTest extends UnitTestCase
 {
     public function test新規投稿(): void
     {

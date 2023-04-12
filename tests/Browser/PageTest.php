@@ -23,7 +23,7 @@ use Tests\Browser\Pages\TagsPage;
 use Tests\Browser\Pages\TopPage;
 use Tests\DuskTestCase;
 
-class PageTest extends DuskTestCase
+final class PageTest extends DuskTestCase
 {
     protected function setUp(): void
     {

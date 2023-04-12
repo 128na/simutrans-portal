@@ -11,7 +11,7 @@ use Error;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
-class DiscordControllerTest extends TestCase
+final class DiscordControllerTest extends TestCase
 {
     public function test_create(): void
     {

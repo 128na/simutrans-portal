@@ -12,7 +12,7 @@ use App\Services\Logging\AuditLogService;
 use Mockery\MockInterface;
 use Tests\UnitTestCase;
 
-class IsDeadTest extends UnitTestCase
+final class IsDeadTest extends UnitTestCase
 {
     private function getSUT(): DeadLinkChecker
     {

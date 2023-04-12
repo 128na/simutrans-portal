@@ -8,7 +8,7 @@ use App\Constants\ControllOptionKeys;
 use App\Models\ControllOption;
 use Tests\ArticleTestCase;
 
-class StoreTest extends ArticleTestCase
+final class StoreTest extends ArticleTestCase
 {
     public function test(): void
     {

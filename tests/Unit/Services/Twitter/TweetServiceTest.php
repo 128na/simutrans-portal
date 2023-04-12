@@ -11,7 +11,7 @@ use Mockery\MockInterface;
 use stdClass;
 use Tests\UnitTestCase;
 
-class TweetServiceTest extends UnitTestCase
+final class TweetServiceTest extends UnitTestCase
 {
     private function getSUT(): TweetService
     {

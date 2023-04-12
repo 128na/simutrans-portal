@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Api\Admin;
 use App\Models\Tag;
 use Tests\TestCase;
 
-class TagControllerTest extends TestCase
+final class TagControllerTest extends TestCase
 {
     private Tag $tag;
 

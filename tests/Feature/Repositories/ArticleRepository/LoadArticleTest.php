@@ -8,7 +8,7 @@ use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use Tests\ArticleTestCase;
 
-class LoadArticleTest extends ArticleTestCase
+final class LoadArticleTest extends ArticleTestCase
 {
     private ArticleRepository $repository;
 

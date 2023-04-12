@@ -10,7 +10,7 @@ use App\Repositories\BulkZipRepository;
 use Illuminate\Support\LazyCollection;
 use Tests\TestCase;
 
-class CursorExpiredTest extends TestCase
+final class CursorExpiredTest extends TestCase
 {
     private BulkZipRepository $bulkZipRepository;
 

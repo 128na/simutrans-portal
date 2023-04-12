@@ -9,7 +9,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Tests\ArticleTestCase;
 
-class PaginateRankingTest extends ArticleTestCase
+final class PaginateRankingTest extends ArticleTestCase
 {
     private ArticleRepository $repository;
 

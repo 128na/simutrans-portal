@@ -9,7 +9,7 @@ use App\Models\Tag;
 use App\Repositories\ArticleRepository;
 use Tests\TestCase;
 
-class SyncTagsTest extends TestCase
+final class SyncTagsTest extends TestCase
 {
     private ArticleRepository $repository;
 

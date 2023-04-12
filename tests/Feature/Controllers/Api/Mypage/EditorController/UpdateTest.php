@@ -8,7 +8,7 @@ use App\Constants\ControllOptionKeys;
 use App\Models\ControllOption;
 use Tests\ArticleTestCase;
 
-class UpdateTest extends ArticleTestCase
+final class UpdateTest extends ArticleTestCase
 {
     protected function setUp(): void
     {

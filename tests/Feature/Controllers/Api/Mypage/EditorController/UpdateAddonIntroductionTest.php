@@ -13,7 +13,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
 use Tests\ArticleTestCase;
 
-class UpdateAddonIntroductionTest extends ArticleTestCase
+final class UpdateAddonIntroductionTest extends ArticleTestCase
 {
     protected function setUp(): void
     {

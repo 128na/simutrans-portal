@@ -8,7 +8,7 @@ use App\Services\Twitter\TweetDataOldFormatSupport;
 use stdClass;
 use Tests\UnitTestCase;
 
-class TweetDataOldFormatSupportTest extends UnitTestCase
+final class TweetDataOldFormatSupportTest extends UnitTestCase
 {
     public function test旧フォーマット1(): void
     {

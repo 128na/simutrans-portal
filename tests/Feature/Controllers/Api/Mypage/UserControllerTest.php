@@ -13,7 +13,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Notification;
 use Tests\ArticleTestCase;
 
-class UserControllerTest extends ArticleTestCase
+final class UserControllerTest extends ArticleTestCase
 {
     private Attachment $not_image;
 

@@ -13,7 +13,7 @@ use Mockery\MockInterface;
 use Tests\UnitTestCase;
 use ZipArchive;
 
-class ZipManagerTest extends UnitTestCase
+final class ZipManagerTest extends UnitTestCase
 {
     public function test(): void
     {

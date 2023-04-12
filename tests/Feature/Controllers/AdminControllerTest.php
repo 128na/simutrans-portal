@@ -6,7 +6,7 @@ namespace Tests\Feature\Controllers;
 
 use Tests\AdminTestCase;
 
-class AdminControllerTest extends AdminTestCase
+final class AdminControllerTest extends AdminTestCase
 {
     private string $url;
 

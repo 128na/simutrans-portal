@@ -8,7 +8,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Support\Collection;
 use Tests\ArticleTestCase;
 
-class FindAllForAnalyticsTest extends ArticleTestCase
+final class FindAllForAnalyticsTest extends ArticleTestCase
 {
     private ArticleRepository $repository;
 

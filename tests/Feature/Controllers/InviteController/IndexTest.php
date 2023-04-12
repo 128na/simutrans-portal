@@ -9,7 +9,7 @@ use App\Models\ControllOption;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class IndexTest extends TestCase
+final class IndexTest extends TestCase
 {
     protected function setUp(): void
     {

@@ -11,7 +11,7 @@ use App\Models\Tag;
 use Closure;
 use Tests\TestCase;
 
-class TagControllerTest extends TestCase
+final class TagControllerTest extends TestCase
 {
     private Tag $tag1;
 

@@ -10,7 +10,7 @@ use App\Models\Tag;
 use App\Models\User;
 use Tests\TestCase;
 
-class FrontControllerTest extends TestCase
+final class FrontControllerTest extends TestCase
 {
     protected function setUp(): void
     {

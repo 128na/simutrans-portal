@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Api\Admin\UserController;
 use App\Models\User;
 use Tests\TestCase;
 
-class DestroyTest extends TestCase
+final class DestroyTest extends TestCase
 {
     private User $admin;
 

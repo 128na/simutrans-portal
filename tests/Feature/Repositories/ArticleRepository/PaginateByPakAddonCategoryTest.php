@@ -9,7 +9,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Tests\ArticleTestCase;
 
-class PaginateByPakAddonCategoryTest extends ArticleTestCase
+final class PaginateByPakAddonCategoryTest extends ArticleTestCase
 {
     private ArticleRepository $repository;
 

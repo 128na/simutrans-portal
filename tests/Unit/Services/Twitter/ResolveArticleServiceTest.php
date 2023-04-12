@@ -15,7 +15,7 @@ use Mockery\MockInterface;
 use stdClass;
 use Tests\UnitTestCase;
 
-class ResolveArticleServiceTest extends UnitTestCase
+final class ResolveArticleServiceTest extends UnitTestCase
 {
     private function getSUT(): ResolveArticleService
     {

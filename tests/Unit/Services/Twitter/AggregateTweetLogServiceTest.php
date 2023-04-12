@@ -14,7 +14,7 @@ use Mockery\MockInterface;
 use stdClass;
 use Tests\UnitTestCase;
 
-class AggregateTweetLogServiceTest extends UnitTestCase
+final class AggregateTweetLogServiceTest extends UnitTestCase
 {
     private function getSUT(): AggregateTweetLogService
     {

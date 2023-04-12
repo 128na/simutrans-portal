@@ -12,7 +12,7 @@ use Mockery\MockInterface;
 use stdClass;
 use Tests\UnitTestCase;
 
-class SearchTweetServiceTest extends UnitTestCase
+final class SearchTweetServiceTest extends UnitTestCase
 {
     private function getSUT(): SearchTweetService
     {

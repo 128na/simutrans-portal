@@ -9,7 +9,7 @@ use App\Models\BulkZip;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
-class JobCreateBulkZipTest extends TestCase
+final class JobCreateBulkZipTest extends TestCase
 {
     private BulkZip $bulkzip;
 

@@ -6,7 +6,7 @@ namespace Tests\Feature\Controllers\Api\Front;
 
 use Tests\ArticleTestCase;
 
-class ConversionControllerTest extends ArticleTestCase
+final class ConversionControllerTest extends ArticleTestCase
 {
     public function testConversion(): void
     {

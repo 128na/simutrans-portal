@@ -16,7 +16,7 @@ use Mockery\MockInterface;
 use Tests\UnitTestCase;
 use TypeError;
 
-class BulkZipServiceTest extends UnitTestCase
+final class BulkZipServiceTest extends UnitTestCase
 {
     public function test(): void
     {

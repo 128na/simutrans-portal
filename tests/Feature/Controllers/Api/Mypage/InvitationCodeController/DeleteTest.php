@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Api\Mypage\InvitationCodeController;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class DeleteTest extends TestCase
+final class DeleteTest extends TestCase
 {
     public function test(): void
     {

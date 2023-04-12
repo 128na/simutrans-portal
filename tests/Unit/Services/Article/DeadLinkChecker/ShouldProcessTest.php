@@ -10,7 +10,7 @@ use App\Services\Article\DeadLinkChecker;
 use Mockery\MockInterface;
 use Tests\UnitTestCase;
 
-class ShouldProcessTest extends UnitTestCase
+final class ShouldProcessTest extends UnitTestCase
 {
     private function getSUT(): DeadLinkChecker
     {

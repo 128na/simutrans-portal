@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Mockery\MockInterface;
 use Tests\UnitTestCase;
 
-class AddonPostDecoratorTest extends UnitTestCase
+final class AddonPostDecoratorTest extends UnitTestCase
 {
     private AddonPostDecorator $decorator;
 

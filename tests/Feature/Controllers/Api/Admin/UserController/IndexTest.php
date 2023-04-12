@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Api\Admin\UserController;
 use App\Models\User;
 use Tests\TestCase;
 
-class IndexTest extends TestCase
+final class IndexTest extends TestCase
 {
     private User $admin;
 

@@ -10,7 +10,7 @@ use App\Repositories\Article\TweetLogRepository;
 use Illuminate\Support\LazyCollection;
 use Tests\TestCase;
 
-class CursorTweetLogSummaryTest extends TestCase
+final class CursorTweetLogSummaryTest extends TestCase
 {
     private TweetLogRepository $repository;
 

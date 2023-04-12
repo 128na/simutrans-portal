@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Api\Mypage\InvitationCodeController;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class UpdateTest extends TestCase
+final class UpdateTest extends TestCase
 {
     public function test新規生成(): void
     {

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class RegisterTest extends TestCase
+final class RegisterTest extends TestCase
 {
     private array $data = [
         'name' => 'example',

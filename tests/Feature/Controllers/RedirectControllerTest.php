@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers;
 use App\Models\Redirect;
 use Tests\TestCase;
 
-class RedirectControllerTest extends TestCase
+final class RedirectControllerTest extends TestCase
 {
     public function test(): void
     {

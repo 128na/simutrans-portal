@@ -13,7 +13,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Tests\ArticleTestCase;
 
-class AttachmentControllerTest extends ArticleTestCase
+final class AttachmentControllerTest extends ArticleTestCase
 {
     public function testIndex(): void
     {

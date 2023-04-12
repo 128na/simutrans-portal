@@ -6,7 +6,7 @@ namespace Tests\Feature\Commands;
 
 use Tests\TestCase;
 
-class CommandCheckDeadLinkTest extends TestCase
+final class CommandCheckDeadLinkTest extends TestCase
 {
     public function test(): void
     {

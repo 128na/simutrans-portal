@@ -13,7 +13,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
 use Tests\ArticleTestCase;
 
-class StoreAddonIntroductionTest extends ArticleTestCase
+final class StoreAddonIntroductionTest extends ArticleTestCase
 {
     #[DataProvider('dataStoreArticleValidation')]
     #[DataProvider('dataArticleValidation')]

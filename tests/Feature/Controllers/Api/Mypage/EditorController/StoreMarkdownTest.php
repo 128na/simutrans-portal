@@ -12,7 +12,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
 use Tests\ArticleTestCase;
 
-class StoreMarkdownTest extends ArticleTestCase
+final class StoreMarkdownTest extends ArticleTestCase
 {
     #[DataProvider('dataStoreArticleValidation')]
     #[DataProvider('dataArticleValidation')]

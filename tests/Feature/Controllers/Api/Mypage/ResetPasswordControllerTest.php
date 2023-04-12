@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
 use Tests\TestCase;
 
-class ResetPasswordControllerTest extends TestCase
+final class ResetPasswordControllerTest extends TestCase
 {
     private PasswordBroker $broker;
 

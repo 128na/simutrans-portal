@@ -9,7 +9,7 @@ use App\Models\PakAddonCount;
 use App\Models\UserAddonCount;
 use Tests\TestCase;
 
-class JobUpdateRelatedTest extends TestCase
+final class JobUpdateRelatedTest extends TestCase
 {
     public function testPakAddonCount(): void
     {

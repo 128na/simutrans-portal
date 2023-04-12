@@ -8,7 +8,7 @@ use App\Models\Article;
 use App\Models\User;
 use Tests\TestCase;
 
-class DestroyTest extends TestCase
+final class DestroyTest extends TestCase
 {
     private User $admin;
 

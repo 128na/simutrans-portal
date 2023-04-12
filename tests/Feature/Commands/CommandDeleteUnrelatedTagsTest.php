@@ -6,7 +6,7 @@ namespace Tests\Feature\Commands;
 
 use Tests\TestCase;
 
-class CommandDeleteUnrelatedTagsTest extends TestCase
+final class CommandDeleteUnrelatedTagsTest extends TestCase
 {
     public function test(): void
     {

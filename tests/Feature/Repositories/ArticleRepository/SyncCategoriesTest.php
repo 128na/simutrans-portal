@@ -9,7 +9,7 @@ use App\Models\Category;
 use App\Repositories\ArticleRepository;
 use Tests\TestCase;
 
-class SyncCategoriesTest extends TestCase
+final class SyncCategoriesTest extends TestCase
 {
     private ArticleRepository $repository;
 

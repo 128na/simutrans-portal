@@ -9,7 +9,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Support\Collection;
 use Tests\ArticleTestCase;
 
-class FindAllByUserTest extends ArticleTestCase
+final class FindAllByUserTest extends ArticleTestCase
 {
     private ArticleRepository $repository;
 

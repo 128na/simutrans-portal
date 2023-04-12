@@ -8,7 +8,7 @@ use App\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
-class VerificationControllerTest extends TestCase
+final class VerificationControllerTest extends TestCase
 {
     public function test確認メール再送(): void
     {

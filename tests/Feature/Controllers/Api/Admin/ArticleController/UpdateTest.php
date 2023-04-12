@@ -8,7 +8,7 @@ use App\Models\Article;
 use App\Models\User;
 use Tests\TestCase;
 
-class UpdateTest extends TestCase
+final class UpdateTest extends TestCase
 {
     private User $admin;
 

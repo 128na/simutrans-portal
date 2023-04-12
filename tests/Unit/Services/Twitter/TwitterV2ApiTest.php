@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Mockery\MockInterface;
 use Tests\UnitTestCase;
 
-class TwitterV2ApiTest extends UnitTestCase
+final class TwitterV2ApiTest extends UnitTestCase
 {
     private function getSUT(): TwitterV2Api
     {

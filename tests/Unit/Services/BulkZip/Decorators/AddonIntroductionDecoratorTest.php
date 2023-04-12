@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Mockery\MockInterface;
 use Tests\UnitTestCase;
 
-class AddonIntroductionDecoratorTest extends UnitTestCase
+final class AddonIntroductionDecoratorTest extends UnitTestCase
 {
     private AddonIntroductionDecorator $decorator;
 

@@ -12,7 +12,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
 use Tests\ArticleTestCase;
 
-class UpdateMarkdownTest extends ArticleTestCase
+final class UpdateMarkdownTest extends ArticleTestCase
 {
     protected function setUp(): void
     {

@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Api\Mypage\InvitationCodeController;
 use App\Models\User;
 use Tests\TestCase;
 
-class IndexTest extends TestCase
+final class IndexTest extends TestCase
 {
     protected function setUp(): void
     {

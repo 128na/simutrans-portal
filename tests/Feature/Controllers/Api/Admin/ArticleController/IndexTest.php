@@ -22,7 +22,7 @@ class IndexTest extends TestCase
 
     protected function setUp(): void
     {
-        parent::setup();
+        parent::setUp();
         $this->admin = User::factory()->admin()->create();
         $this->article1 = Article::factory()->create();
         $this->article2 = Article::factory()->draft()->create();

@@ -21,7 +21,7 @@ class RegisterTest extends TestCase
         'password' => 'example123456',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->user->update(['email' => 'invite@example.com', 'invitation_code' => Str::uuid()]);

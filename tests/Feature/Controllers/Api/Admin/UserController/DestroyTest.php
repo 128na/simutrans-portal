@@ -13,7 +13,7 @@ class DestroyTest extends TestCase
 
     protected function setUp(): void
     {
-        parent::setup();
+        parent::setUp();
         $this->admin = User::factory()->admin()->create();
     }
 

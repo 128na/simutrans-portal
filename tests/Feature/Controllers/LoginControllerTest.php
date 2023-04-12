@@ -39,7 +39,7 @@ class LoginControllerTest extends TestCase
         }
     }
 
-    public function dataValidation()
+    public static function dataValidation()
     {
         yield 'emailがnull' => [['email' => null], 'email'];
         yield 'emailが不正' => [['email' => 'invalid-email'], 'email'];

@@ -34,7 +34,7 @@ class VerifiedTest extends ArticleTestCase
         }
     }
 
-    public function dataVerify()
+    public static function dataVerify()
     {
         yield 'マイページトップ' => ['getJson', fn () => '/api/mypage/user', false];
         yield 'タグ検索（投稿ページ）' => ['getJson', fn () => '/api/mypage/tags', false];
@@ -61,7 +61,7 @@ class VerifiedTest extends ArticleTestCase
         $response->assertStatus($expected_status);
     }
 
-    public function dataVerified()
+    public static function dataVerified()
     {
         yield 'プロフィール更新' => ['postJson', fn () => '/api/mypage/user', 422];
         yield 'タグ作成' => ['postJson', fn () => '/api/mypage/tags', 422];

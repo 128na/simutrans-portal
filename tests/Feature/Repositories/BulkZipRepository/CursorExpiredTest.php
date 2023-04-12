@@ -36,7 +36,7 @@ class CursorExpiredTest extends TestCase
         $this->assertEquals(0, $res->count());
     }
 
-    public function dataNotFound()
+    public static function dataNotFound()
     {
         yield '1日より新しい' => [['created_at' => now()]];
     }

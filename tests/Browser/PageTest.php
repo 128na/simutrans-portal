@@ -40,7 +40,7 @@ class PageTest extends DuskTestCase
         );
     }
 
-    public function dataPages()
+    public static function dataPages()
     {
         yield '記事詳細_アドオン投稿' => [ArticleAddonPostPage::class];
         yield '記事詳細_アドオン紹介' => [ArticleAddonIntroductionPage::class];

@@ -106,7 +106,7 @@ class UserControllerTest extends ArticleTestCase
         Notification::assertNothingSent();
     }
 
-    public function dataValidation()
+    public static function dataValidation()
     {
         $this->refreshApplication();
 

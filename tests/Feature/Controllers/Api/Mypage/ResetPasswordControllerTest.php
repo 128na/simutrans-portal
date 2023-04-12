@@ -41,7 +41,7 @@ class ResetPasswordControllerTest extends TestCase
         Notification::assertNothingSent();
     }
 
-    public function dataValidation()
+    public static function dataValidation()
     {
         yield 'emailがnull' => [['email' => null], 'email'];
         yield 'emailが不正' => [['email' => 'invalid-email'], 'email'];
@@ -92,7 +92,7 @@ class ResetPasswordControllerTest extends TestCase
         }
     }
 
-    public function dataResetValidation()
+    public static function dataResetValidation()
     {
         yield 'tokenがnull' => [['token' => null], 'token'];
         yield 'tokenが不正' => [['token' => 'invalid'], 'email'];

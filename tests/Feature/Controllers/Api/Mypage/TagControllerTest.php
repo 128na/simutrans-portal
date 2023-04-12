@@ -129,7 +129,7 @@ class TagControllerTest extends TestCase
         $res->assertForbidden();
     }
 
-    public function dataValidation()
+    public static function dataValidation()
     {
         yield 'nameがnull' => [fn () => ['name' => null], 'name'];
         yield 'nameが21文字以上' => [fn () => ['name' => str_repeat('a', 21)], 'name'];
@@ -158,7 +158,7 @@ class TagControllerTest extends TestCase
         }
     }
 
-    public function dataUpdateValidation()
+    public static function dataUpdateValidation()
     {
         yield 'descriptionが1024文字以下' => [fn () => ['description' => str_repeat('a', 1024)], null];
         yield 'descriptionが1025文字以上' => [fn () => ['description' => str_repeat('a', 1025)], 'description'];

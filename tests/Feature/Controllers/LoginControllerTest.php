@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use App\Constants\ControllOptionKeys;
 use App\Models\ControllOption;
 use App\Models\User;
@@ -13,9 +14,7 @@ use Tests\TestCase;
 
 class LoginControllerTest extends TestCase
 {
-    /**
-     * @dataProvider dataValidation
-     */
+    #[DataProvider('dataValidation')]
     public function testValidation(array $data, ?string $error_field)
     {
         Notification::fake();

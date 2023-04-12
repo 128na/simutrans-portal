@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Mypage;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Closure;
 use Illuminate\Http\UploadedFile;
 use Tests\ArticleTestCase;
@@ -16,9 +17,7 @@ class VerifiedTest extends ArticleTestCase
         $this->attachment = $this->createFromFile(UploadedFile::fake()->image('thumbnail.jpg', 1), $this->user->id);
     }
 
-    /**
-     * @dataProvider dataVerify
-     */
+    #[DataProvider('dataVerify')]
     public function testメール確認が未完了(string $method, Closure $route, bool $need_verify)
     {
         $this->user->fill(['email_verified_at' => null])->save();
@@ -51,9 +50,7 @@ class VerifiedTest extends ArticleTestCase
         yield '記事更新' => ['postJson', fn () => "/api/mypage/articles/{$this->article->id}", true];
     }
 
-    /**
-     * @dataProvider dataVerified
-     */
+    #[DataProvider('dataVerified')]
     public function testメール確認が完了(string $method, Closure $route, int $expected_status)
     {
         $this->actingAs($this->user);

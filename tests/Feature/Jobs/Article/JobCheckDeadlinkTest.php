@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Jobs\Article;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use App\Jobs\Article\JobCheckDeadLink;
 use App\Models\Article;
 use App\Notifications\DeadLinkDetected;
@@ -58,9 +59,7 @@ class JobCheckDeadlinkTest extends TestCase
         Notification::assertNothingSent();
     }
 
-    /**
-     * @dataProvider dataStatusPrivate
-     */
+    #[DataProvider('dataStatusPrivate')]
     public function test非公開記事はチェックしない(string $status)
     {
         Notification::fake();

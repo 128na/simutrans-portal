@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use PHPUnit\Framework\Attributes\BeforeClass;
 use Database\Seeders\DuskSeeder;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
@@ -29,10 +30,10 @@ abstract class DuskTestCase extends BaseTestCase
     /**
      * Prepare for Dusk test execution.
      *
-     * @beforeClass
      *
      * @return void
      */
+    #[BeforeClass]
     public static function prepare()
     {
         if (! static::runningInSail()) {

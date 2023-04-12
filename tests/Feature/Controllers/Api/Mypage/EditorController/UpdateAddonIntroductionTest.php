@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Mypage\EditorController;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Category;
 use App\Models\Tag;
@@ -21,11 +22,9 @@ class UpdateAddonIntroductionTest extends ArticleTestCase
         $this->article2 = $this->createAddonIntroduction($this->user2);
     }
 
-    /**
-     * @dataProvider dataArticleValidation
-     * @dataProvider dataAddonValidation
-     * @dataProvider dataAddonIntroductionValidation
-     */
+    #[DataProvider('dataArticleValidation')]
+    #[DataProvider('dataAddonValidation')]
+    #[DataProvider('dataAddonIntroductionValidation')]
     public function testValidation(Closure $fn, ?string $error_field)
     {
         Bus::fake();

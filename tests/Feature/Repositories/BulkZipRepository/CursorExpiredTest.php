@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Repositories\BulkZipRepository;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use App\Models\BulkZip;
 use App\Repositories\BulkZipRepository;
 use Illuminate\Support\LazyCollection;
@@ -27,9 +28,7 @@ class CursorExpiredTest extends TestCase
         $this->assertEquals(1, $res->count());
     }
 
-    /**
-     * @dataProvider dataNotFound
-     */
+    #[DataProvider('dataNotFound')]
     public function test_含まれない($data)
     {
         BulkZip::factory()->create($data);

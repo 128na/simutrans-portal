@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Mypage\EditorController;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Category;
 use Closure;
@@ -20,10 +21,8 @@ class UpdateMarkdownTest extends ArticleTestCase
         $this->article2 = $this->createMarkdown($this->user2);
     }
 
-    /**
-     * @dataProvider dataArticleValidation
-     * @dataProvider dataMarkdownValidation
-     */
+    #[DataProvider('dataArticleValidation')]
+    #[DataProvider('dataMarkdownValidation')]
     public function testValidation(Closure $fn, ?string $error_field)
     {
         Bus::fake();

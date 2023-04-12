@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Mypage;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use App\Constants\ControllOptionKeys;
 use App\Models\ControllOption;
 use App\Models\Tag;
@@ -85,9 +86,7 @@ class TagControllerTest extends TestCase
         $res->assertForbidden();
     }
 
-    /**
-     * @dataProvider dataValidation
-     */
+    #[DataProvider('dataValidation')]
     public function testStore(Closure $data, ?string $error_field)
     {
         $url = '/api/mypage/tags';
@@ -138,9 +137,7 @@ class TagControllerTest extends TestCase
         yield '成功' => [fn () => ['name' => 'new_tag'], null];
     }
 
-    /**
-     * @dataProvider dataUpdateValidation
-     */
+    #[DataProvider('dataUpdateValidation')]
     public function testUpdate(Closure $data, ?string $error_field)
     {
         $tag = Tag::factory()->create();

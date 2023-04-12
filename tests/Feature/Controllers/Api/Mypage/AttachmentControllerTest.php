@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Mypage;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
 use App\Models\User;
@@ -58,9 +59,7 @@ class AttachmentControllerTest extends ArticleTestCase
         yield '画像のみで画像' => [fn () => ['only_image' => 1, 'file' => UploadedFile::fake()->image('test.png', 1)], null];
     }
 
-    /**
-     * @dataProvider dataValidation
-     */
+    #[DataProvider('dataValidation')]
     public function testStore(Closure $data, ?string $error_field)
     {
         $url = '/api/mypage/attachments';

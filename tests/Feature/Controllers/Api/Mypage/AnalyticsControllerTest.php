@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Mypage;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Closure;
 use Tests\ArticleTestCase;
 
 class AnalyticsControllerTest extends ArticleTestCase
 {
-    /**
-     * @dataProvider dataValidation
-     */
+    #[DataProvider('dataValidation')]
     public function testValidation(Closure $fn, string $error_field)
     {
         $this->actingAs($this->user);
@@ -68,9 +67,7 @@ class AnalyticsControllerTest extends ArticleTestCase
         ];
     }
 
-    /**
-     * @dataProvider dataValues
-     */
+    #[DataProvider('dataValues')]
     public function testValues(Closure $fn_pv, Closure $fn_cv, array $param)
     {
         $now = now();

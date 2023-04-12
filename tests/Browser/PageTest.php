@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Browser;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use App\Jobs\Article\JobUpdateRelated;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\ArticleAddonIntroductionPage;
@@ -29,9 +30,7 @@ class PageTest extends DuskTestCase
         parent::setUp();
     }
 
-    /**
-     * @dataProvider dataPages
-     */
+    #[DataProvider('dataPages')]
     public function testPages(string $pageClass)
     {
         $page = new $pageClass();

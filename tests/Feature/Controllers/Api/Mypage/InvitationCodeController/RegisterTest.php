@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Mypage\InvitationCodeController;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use App\Constants\ControllOptionKeys;
 use App\Models\ControllOption;
 use App\Notifications\UserInvited;
@@ -57,9 +58,7 @@ class RegisterTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @dataProvider dataValidation
-     */
+    #[DataProvider('dataValidation')]
     public function testValidation(array $data, string $key)
     {
         $response = $this->postJson(

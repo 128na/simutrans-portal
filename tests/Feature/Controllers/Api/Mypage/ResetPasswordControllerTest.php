@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Mypage;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use App\Models\User;
 use App\Notifications\ResetPassword;
 use Illuminate\Auth\Passwords\PasswordBroker;
@@ -24,9 +25,7 @@ class ResetPasswordControllerTest extends TestCase
         $this->user2 = User::factory()->create(['email' => 'other@example.com']);
     }
 
-    /**
-     * @dataProvider dataValidation
-     */
+    #[DataProvider('dataValidation')]
     public function testValidation(array $data, ?string $error_field)
     {
         Notification::fake();
@@ -68,9 +67,7 @@ class ResetPasswordControllerTest extends TestCase
         $res->assertOK();
     }
 
-    /**
-     * @dataProvider dataResetValidation
-     */
+    #[DataProvider('dataResetValidation')]
     public function testResetValidation(array $data, ?string $error_field)
     {
         $token = $this->broker->createToken($this->user);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Mypage;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use App\Models\Attachment;
 use App\Models\User;
 use App\Notifications\VerifyEmail;
@@ -56,9 +57,7 @@ class UserControllerTest extends ArticleTestCase
         ]]);
     }
 
-    /**
-     * @dataProvider dataValidation
-     */
+    #[DataProvider('dataValidation')]
     public function testStore(Closure $data, ?string $error_field)
     {
         Notification::fake();

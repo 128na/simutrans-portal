@@ -29,7 +29,7 @@ class JobCheckDeadlinkTest extends TestCase
         ]);
     }
 
-    public function test実行()
+    public function test実行(): void
     {
         Notification::fake();
         Notification::assertNothingSent();
@@ -44,7 +44,7 @@ class JobCheckDeadlinkTest extends TestCase
         Notification::assertSentTo($this->article, DeadLinkDetected::class);
     }
 
-    public function testオプション無効だとチェックしない()
+    public function testオプション無効だとチェックしない(): void
     {
         Notification::fake();
         $this->article->fill(['contents' => [
@@ -60,7 +60,7 @@ class JobCheckDeadlinkTest extends TestCase
     }
 
     #[DataProvider('dataStatusPrivate')]
-    public function test非公開記事はチェックしない(string $status)
+    public function test非公開記事はチェックしない(string $status): void
     {
         Notification::fake();
         $this->article->fill(['status' => $status])->save();

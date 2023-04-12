@@ -26,7 +26,7 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     #[DataProvider('dataValidation')]
-    public function testValidation(array $data, ?string $error_field)
+    public function testValidation(array $data, ?string $error_field): void
     {
         Notification::fake();
 
@@ -41,14 +41,14 @@ class ResetPasswordControllerTest extends TestCase
         Notification::assertNothingSent();
     }
 
-    public static function dataValidation()
+    public static function dataValidation(): array
     {
         yield 'emailがnull' => [['email' => null], 'email'];
         yield 'emailが不正' => [['email' => 'invalid-email'], 'email'];
         yield '存在しないemail' => [['email' => 'missing-user@exmaple.com'], null];
     }
 
-    public function test確認メール送信()
+    public function test確認メール送信(): void
     {
         Notification::fake();
         $url = '/api/password/email';
@@ -57,7 +57,7 @@ class ResetPasswordControllerTest extends TestCase
         Notification::assertSentTo($this->user, ResetPassword::class);
     }
 
-    public function testPWリセット画面表示()
+    public function testPWリセット画面表示(): void
     {
         $res = $this->get(route('password.reset', ['token' => 123]));
         $res->assertOK();
@@ -68,7 +68,7 @@ class ResetPasswordControllerTest extends TestCase
     }
 
     #[DataProvider('dataResetValidation')]
-    public function testResetValidation(array $data, ?string $error_field)
+    public function testResetValidation(array $data, ?string $error_field): void
     {
         $token = $this->broker->createToken($this->user);
         $data = array_merge([
@@ -92,7 +92,7 @@ class ResetPasswordControllerTest extends TestCase
         }
     }
 
-    public static function dataResetValidation()
+    public static function dataResetValidation(): array
     {
         yield 'tokenがnull' => [['token' => null], 'token'];
         yield 'tokenが不正' => [['token' => 'invalid'], 'email'];

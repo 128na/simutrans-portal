@@ -13,7 +13,7 @@ use Tests\TestCase;
 
 class DiscordControllerTest extends TestCase
 {
-    public function test_create()
+    public function test_create(): void
     {
         $this->mock(RecaptchaService::class, function (MockInterface $m) {
             $m->shouldReceive('assessment')->once()->andReturnNull();
@@ -29,7 +29,7 @@ class DiscordControllerTest extends TestCase
             ->assertJson(['url' => 'dummy']);
     }
 
-    public function test_create_discordエラー時は400レスポンス()
+    public function test_create_discordエラー時は400レスポンス(): void
     {
         $this->mock(RecaptchaService::class, function (MockInterface $m) {
             $m->shouldReceive('assessment')->once()->andReturnNull();
@@ -44,7 +44,7 @@ class DiscordControllerTest extends TestCase
             ->assertJson(['url' => null]);
     }
 
-    public function test_create_recaptchaエラー時は400レスポンス()
+    public function test_create_recaptchaエラー時は400レスポンス(): void
     {
         $this->mock(RecaptchaService::class, function (MockInterface $m) {
             $m->shouldReceive('assessment')->once()->andThrow(new RecaptchaException('dummy'));

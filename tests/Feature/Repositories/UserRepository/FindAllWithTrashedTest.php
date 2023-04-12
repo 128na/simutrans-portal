@@ -18,7 +18,7 @@ class FindAllWithTrashedTest extends TestCase
         $this->repository = app(UserRepository::class);
     }
 
-    public function test()
+    public function test(): void
     {
         $res = $this->repository->findAllWithTrashed();
 
@@ -26,7 +26,7 @@ class FindAllWithTrashedTest extends TestCase
         $this->assertCount(2, $res, '全てのユーザーが取得できること');
     }
 
-    public function test論理削除()
+    public function test論理削除(): void
     {
         $this->user->delete();
         $res = $this->repository->findAllWithTrashed();

@@ -10,7 +10,7 @@ use Tests\UnitTestCase;
 
 class TweetDataOldFormatSupportTest extends UnitTestCase
 {
-    public function test旧フォーマット1()
+    public function test旧フォーマット1(): void
     {
         $publicMetrics = new stdClass();
         $publicMetrics->retweet_count = 1;
@@ -40,7 +40,7 @@ class TweetDataOldFormatSupportTest extends UnitTestCase
         $this->assertTrue($tweetData->createdAt->eq('2022-01-01T23:59:59+09:00'));
     }
 
-    public function test旧フォーマット2()
+    public function test旧フォーマット2(): void
     {
         $publicMetrics = new stdClass();
         $publicMetrics->retweet_count = 1;

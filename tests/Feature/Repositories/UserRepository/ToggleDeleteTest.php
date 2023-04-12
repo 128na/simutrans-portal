@@ -18,7 +18,7 @@ class ToggleDeleteTest extends TestCase
         $this->repository = app(UserRepository::class);
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
@@ -36,7 +36,7 @@ class ToggleDeleteTest extends TestCase
         ]);
     }
 
-    public function testRestore()
+    public function testRestore(): void
     {
         $now = now();
         $user = User::factory()->create(['deleted_at' => $now]);

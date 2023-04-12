@@ -14,13 +14,13 @@ class DatExtractorTest extends UnitTestCase
         return app(DatExtractor::class);
     }
 
-    public function testGetKey()
+    public function testGetKey(): void
     {
         $result = $this->getSUT()->getKey();
         $this->assertEquals('dats', $result);
     }
 
-    public function testIsTarget()
+    public function testIsTarget(): void
     {
         $service = $this->getSUT();
 
@@ -28,7 +28,7 @@ class DatExtractorTest extends UnitTestCase
         $this->assertTrue($service->isTarget('dummy.dat'));
     }
 
-    public function testExtract()
+    public function testExtract(): void
     {
         $service = $this->getSUT();
 

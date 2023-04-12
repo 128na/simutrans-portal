@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class VerificationControllerTest extends TestCase
 {
-    public function test確認メール再送()
+    public function test確認メール再送(): void
     {
         Notification::fake();
         $this->user->fill(['email_verified_at' => null])->save();

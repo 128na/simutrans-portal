@@ -19,7 +19,7 @@ class StoreAddonPostTest extends ArticleTestCase
     #[DataProvider('dataArticleValidation')]
     #[DataProvider('dataAddonValidation')]
     #[DataProvider('dataAddonPostValidation')]
-    public function testValidation(Closure $fn, ?string $error_field)
+    public function testValidation(Closure $fn, ?string $error_field): void
     {
         Bus::fake();
         $url = '/api/mypage/articles';

@@ -32,46 +32,46 @@ class PKCEServiceTest extends UnitTestCase
         );
     }
 
-    public function testGenerateState()
+    public function testGenerateState(): void
     {
         $actual = $this->getSUT()->generateState(32);
         $this->assertEquals(32, strlen($actual));
     }
 
-    public function testGenerateCodeVerifier()
+    public function testGenerateCodeVerifier(): void
     {
         $actual = $this->getSUT()->generateCodeVerifier(32);
         $this->assertTrue(strlen($actual) >= 43);
         $this->assertTrue(strlen($actual) <= 128);
     }
 
-    public function testGenerateCodeChallenge()
+    public function testGenerateCodeChallenge(): void
     {
         $actual = $this->getSUT()->generateCodeChallenge('dummy');
         $this->assertTrue(strlen($actual) >= 43);
         $this->assertTrue(strlen($actual) <= 128);
     }
 
-    public function testGenerateAuthorizeUrl()
+    public function testGenerateAuthorizeUrl(): void
     {
         $actual = $this->getSUT()->generateAuthorizeUrl('dummyState', 'dummyCodeChallange');
         $expected = 'https://twitter.com/i/oauth2/authorize?response_type=code&client_id=dummyClientId&redirect_uri=dummyCallbackUrl&scope=users.read%20tweet.read%20list.read%20offline.access&state=dummyState&code_challenge=dummyCodeChallange&code_challenge_method=S256';
         $this->assertEquals($expected, $actual);
     }
 
-    public function testVerifyState()
+    public function testVerifyState(): void
     {
         $this->getSUT()->verifyState('dummyState', 'dummyState');
         $this->assertTrue(true);
     }
 
-    public function testVerifyState不一致()
+    public function testVerifyState不一致(): void
     {
         $this->expectException(InvalidStateException::class);
         $this->getSUT()->verifyState('dummyState', 'dummyState2');
     }
 
-    public function testGenerateToken()
+    public function testGenerateToken(): void
     {
         $this->mock(Client::class, function (MockInterface $m) {
             $m->shouldReceive('request')->once()->withAnyArgs([
@@ -112,7 +112,7 @@ class PKCEServiceTest extends UnitTestCase
         $this->getSUT()->generateToken('dummyCode', 'dummyCodeVerifier');
     }
 
-    public function testRefreshToken()
+    public function testRefreshToken(): void
     {
         $this->mock(Client::class, function (MockInterface $m) {
             $m->shouldReceive('request')->withAnyArgs([
@@ -151,7 +151,7 @@ class PKCEServiceTest extends UnitTestCase
         $this->getSUT()->refreshToken(new OauthToken(['refresh_token' => 'dummyRefreshToken']));
     }
 
-    public function testRevokeToken()
+    public function testRevokeToken(): void
     {
         $this->mock(Client::class, function (MockInterface $m) {
             $m->shouldReceive('request')->withAnyArgs([
@@ -174,7 +174,7 @@ class PKCEServiceTest extends UnitTestCase
         $this->getSUT()->revokeToken(new OauthToken(['access_token' => 'dummyAccessToken']));
     }
 
-    public function testRevokeTokenAPIエラーでもトークン削除される()
+    public function testRevokeTokenAPIエラーでもトークン削除される(): void
     {
         $this->mock(Client::class, function (MockInterface $m) {
             $m->shouldReceive('request')->once()

@@ -17,7 +17,7 @@ class ShouldProcessTest extends UnitTestCase
         return app(DeadLinkChecker::class);
     }
 
-    public function test()
+    public function test(): void
     {
         /**
          * @var Article
@@ -33,7 +33,7 @@ class ShouldProcessTest extends UnitTestCase
         $this->assertTrue($actual);
     }
 
-    public function test_除外指定時はfalse()
+    public function test_除外指定時はfalse(): void
     {
         /**
          * @var Article
@@ -49,7 +49,7 @@ class ShouldProcessTest extends UnitTestCase
         $this->assertFalse($actual);
     }
 
-    public function test_ブラックリストドメインはfalse()
+    public function test_ブラックリストドメインはfalse(): void
     {
         /**
          * @var Article

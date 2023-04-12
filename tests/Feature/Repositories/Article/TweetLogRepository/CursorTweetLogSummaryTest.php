@@ -33,7 +33,7 @@ class CursorTweetLogSummaryTest extends TestCase
         $this->tweetLog3 = TweetLog::factory()->create();
     }
 
-    public function test()
+    public function test(): void
     {
         $res = $this->repository->cursorTweetLogSummary([$this->article->id]);
         $this->assertInstanceOf(LazyCollection::class, $res);

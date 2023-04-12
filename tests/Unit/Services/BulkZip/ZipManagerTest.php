@@ -15,7 +15,7 @@ use ZipArchive;
 
 class ZipManagerTest extends UnitTestCase
 {
-    public function test()
+    public function test(): void
     {
         /**
          * @var ZipArchive
@@ -49,7 +49,7 @@ class ZipManagerTest extends UnitTestCase
         $this->assertFalse(Storage::disk('public')->exists($result), '実際に出力されていないこと');
     }
 
-    public function testError()
+    public function testError(): void
     {
         $this->expectException(ZipErrorException::class);
 

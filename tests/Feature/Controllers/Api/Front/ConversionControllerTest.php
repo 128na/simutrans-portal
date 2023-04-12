@@ -8,7 +8,7 @@ use Tests\ArticleTestCase;
 
 class ConversionControllerTest extends ArticleTestCase
 {
-    public function testConversion()
+    public function testConversion(): void
     {
         $article = $this->article;
 
@@ -32,7 +32,7 @@ class ConversionControllerTest extends ArticleTestCase
         $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 1]);
     }
 
-    public function testShown()
+    public function testShown(): void
     {
         $article = $this->article;
 

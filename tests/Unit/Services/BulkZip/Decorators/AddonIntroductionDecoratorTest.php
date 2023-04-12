@@ -23,28 +23,28 @@ class AddonIntroductionDecoratorTest extends UnitTestCase
         $this->decorator = new AddonIntroductionDecorator();
     }
 
-    public function test_canProcess_対象()
+    public function test_canProcess_対象(): void
     {
         $model = new Article(['post_type' => 'addon-introduction']);
         $result = $this->decorator->canProcess($model);
         $this->assertTrue($result);
     }
 
-    public function test_canProcess_対象外_Article()
+    public function test_canProcess_対象外_Article(): void
     {
         $model = new Article(['post_type' => 'addon-post']);
         $result = $this->decorator->canProcess($model);
         $this->assertFalse($result);
     }
 
-    public function test_canProcess_対象外_Model()
+    public function test_canProcess_対象外_Model(): void
     {
         $model = User::factory()->make();
         $result = $this->decorator->canProcess($model);
         $this->assertFalse($result);
     }
 
-    public function test_process()
+    public function test_process(): void
     {
         /**
          * @var Article

@@ -79,7 +79,7 @@ class AggregateTweetLogServiceTest extends UnitTestCase
         return [$tweetData];
     }
 
-    public function testUpdateOrCreateTweetLogs()
+    public function testUpdateOrCreateTweetLogs(): void
     {
         $this->mock(TweetLogRepository::class, function (MockInterface $m) {
             $m->shouldReceive('updateOrCreate')->withArgs([
@@ -107,7 +107,7 @@ class AggregateTweetLogServiceTest extends UnitTestCase
         $this->assertEquals(1, $response[0]);
     }
 
-    public function testUpdateOrCreateTweetLogs0値は除外される()
+    public function testUpdateOrCreateTweetLogs0値は除外される(): void
     {
         $this->mock(TweetLogRepository::class, function (MockInterface $m) {
             $m->shouldReceive('updateOrCreate')->withArgs([
@@ -128,7 +128,7 @@ class AggregateTweetLogServiceTest extends UnitTestCase
         $this->assertEquals(1, $response[0]);
     }
 
-    public function testFirstOrCreateTweetLogs()
+    public function testFirstOrCreateTweetLogs(): void
     {
         $this->mock(TweetLogRepository::class, function (MockInterface $m) {
             $m->shouldReceive('firstOrCreate')->withArgs([
@@ -156,7 +156,7 @@ class AggregateTweetLogServiceTest extends UnitTestCase
         $this->assertEquals(1, $response[0]);
     }
 
-    public function testFirstOrCreateTweetLogs0値は除外される()
+    public function testFirstOrCreateTweetLogs0値は除外される(): void
     {
         $this->mock(TweetLogRepository::class, function (MockInterface $m) {
             $m->shouldReceive('firstOrCreate')->withArgs([
@@ -177,7 +177,7 @@ class AggregateTweetLogServiceTest extends UnitTestCase
         $this->assertEquals(1, $response[0]);
     }
 
-    public function testUpdateOrCreateTweetLogSummary()
+    public function testUpdateOrCreateTweetLogSummary(): void
     {
         $this->mock(TweetLogRepository::class, function (MockInterface $m) {
             $m->shouldReceive('cursorTweetLogSummary')->withArgs([[1]])

@@ -28,7 +28,7 @@ class RegisterTest extends TestCase
         $this->user->update(['email' => 'invite@example.com', 'invitation_code' => Str::uuid()]);
     }
 
-    public function test()
+    public function test(): void
     {
         Notification::fake();
         Event::fake();
@@ -47,7 +47,7 @@ class RegisterTest extends TestCase
         );
     }
 
-    public function test機能無効()
+    public function test機能無効(): void
     {
         ControllOption::create(['key' => ControllOptionKeys::INVITATION_CODE, 'value' => false]);
 
@@ -59,7 +59,7 @@ class RegisterTest extends TestCase
     }
 
     #[DataProvider('dataValidation')]
-    public function testValidation(array $data, string $key)
+    public function testValidation(array $data, string $key): void
     {
         $response = $this->postJson(
             "/api/mypage/invite/{$this->user->invitation_code}",
@@ -68,7 +68,7 @@ class RegisterTest extends TestCase
         $response->assertJsonValidationErrorFor($key);
     }
 
-    public static function dataValidation()
+    public static function dataValidation(): array
     {
         yield 'nameが空' => [
             ['name' => ''], 'name',

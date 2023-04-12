@@ -8,7 +8,7 @@ use Tests\ArticleTestCase;
 
 class IndexTest extends ArticleTestCase
 {
-    public function testIndex()
+    public function testIndex(): void
     {
         $url = '/api/mypage/articles';
 
@@ -34,7 +34,7 @@ class IndexTest extends ArticleTestCase
         ]]);
     }
 
-    public function testOptions()
+    public function testOptions(): void
     {
         $url = '/api/mypage/options';
 

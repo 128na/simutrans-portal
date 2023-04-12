@@ -27,7 +27,7 @@ class UserControllerTest extends ArticleTestCase
         $this->user2_avatar = $this->createFromFile(UploadedFile::fake()->image('avatar.jpg', 1), $this->user2->id);
     }
 
-    public function testIndex()
+    public function testIndex(): void
     {
         $url = '/api/mypage/user';
 
@@ -58,7 +58,7 @@ class UserControllerTest extends ArticleTestCase
     }
 
     #[DataProvider('dataValidation')]
-    public function testStore(Closure $data, ?string $error_field)
+    public function testStore(Closure $data, ?string $error_field): void
     {
         Notification::fake();
 
@@ -106,7 +106,7 @@ class UserControllerTest extends ArticleTestCase
         Notification::assertNothingSent();
     }
 
-    public static function dataValidation()
+    public static function dataValidation(): array
     {
         $this->refreshApplication();
 
@@ -149,7 +149,7 @@ class UserControllerTest extends ArticleTestCase
             fn () => ['profile' => ['data' => ['gtag' => 'aaa']]], 'user.profile.data.gtag', ];
     }
 
-    public function testEmailChange()
+    public function testEmailChange(): void
     {
         Notification::fake();
 

@@ -21,7 +21,7 @@ class UpdateTest extends TestCase
         $this->article = Article::factory()->publish()->create();
     }
 
-    public function test()
+    public function test(): void
     {
         $this->actingAs($this->admin);
         $url = "/api/admin/articles/{$this->article->id}";
@@ -34,14 +34,14 @@ class UpdateTest extends TestCase
         ]);
     }
 
-    public function test未ログイン()
+    public function test未ログイン(): void
     {
         $url = "/api/admin/articles/{$this->article->id}";
         $res = $this->putJson($url);
         $res->assertUnauthorized();
     }
 
-    public function test管理者以外()
+    public function test管理者以外(): void
     {
         $this->actingAs($this->user);
         $url = "/api/admin/articles/{$this->article->id}";

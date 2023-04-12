@@ -11,7 +11,7 @@ use Tests\ArticleTestCase;
 class AnalyticsControllerTest extends ArticleTestCase
 {
     #[DataProvider('dataValidation')]
-    public function testValidation(Closure $fn, string $error_field)
+    public function testValidation(Closure $fn, string $error_field): void
     {
         $this->actingAs($this->user);
 
@@ -21,7 +21,7 @@ class AnalyticsControllerTest extends ArticleTestCase
         $res->assertJsonValidationErrors($error_field);
     }
 
-    public static function dataValidation()
+    public static function dataValidation(): array
     {
         yield 'idsがnull' => [fn () => '/api/mypage/analytics?'.http_build_query(['ids' => null]), 'ids'];
         yield 'idsが空' => [fn () => '/api/mypage/analytics?'.http_build_query(['ids' => []]), 'ids'];
@@ -40,14 +40,14 @@ class AnalyticsControllerTest extends ArticleTestCase
         yield 'end_dateがstart_dateよりも過去' => [fn () => '/api/mypage/analytics?'.http_build_query(['start_date' => now(), 'end_date' => now()->modify('-1 day')]), 'end_date'];
     }
 
-    public function testログイン()
+    public function testログイン(): void
     {
         $url = '/api/mypage/analytics';
         $res = $this->getJson($url);
         $res->assertUnauthorized();
     }
 
-    public static function dataValues()
+    public static function dataValues(): array
     {
         $now = now();
         yield 'daily' => [
@@ -68,7 +68,7 @@ class AnalyticsControllerTest extends ArticleTestCase
     }
 
     #[DataProvider('dataValues')]
-    public function testValues(Closure $fn_pv, Closure $fn_cv, array $param)
+    public function testValues(Closure $fn_pv, Closure $fn_cv, array $param): void
     {
         $now = now();
         $this->actingAs($this->user);

@@ -19,7 +19,7 @@ class UpdateArticleTest extends UnitTestCase
         return app(ArticleEditorService::class, ['now' => $now]);
     }
 
-    public function test更新()
+    public function test更新(): void
     {
         $article = new Article();
         $request = new UpdateRequest([
@@ -52,7 +52,7 @@ class UpdateArticleTest extends UnitTestCase
         $this->getSUT($now)->updateArticle($article, $request);
     }
 
-    public function test更新日を更新しない更新()
+    public function test更新日を更新しない更新(): void
     {
         $article = new Article();
         $request = new UpdateRequest([

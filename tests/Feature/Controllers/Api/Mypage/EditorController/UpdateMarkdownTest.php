@@ -23,7 +23,7 @@ class UpdateMarkdownTest extends ArticleTestCase
 
     #[DataProvider('dataArticleValidation')]
     #[DataProvider('dataMarkdownValidation')]
-    public function testValidation(Closure $fn, ?string $error_field)
+    public function testValidation(Closure $fn, ?string $error_field): void
     {
         Bus::fake();
         $url = "/api/mypage/articles/{$this->article->id}";

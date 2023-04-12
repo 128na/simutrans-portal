@@ -45,7 +45,7 @@ class ResolveArticleServiceTest extends UnitTestCase
         return new TweetData($data);
     }
 
-    public function testresolveByTweetDatas登録済み()
+    public function testresolveByTweetDatas登録済み(): void
     {
         $this->mock(TweetLogRepository::class, function (MockInterface $m) {
             $tweetLog = new TweetLog(['article_id' => 456]);
@@ -73,7 +73,7 @@ class ResolveArticleServiceTest extends UnitTestCase
         $this->assertEquals(456, $response[0]->articleId);
     }
 
-    public function testresolveByTweetDatasタイトル一致()
+    public function testresolveByTweetDatasタイトル一致(): void
     {
         $this->mock(TweetLogRepository::class, function (MockInterface $m) {
             $m->shouldReceive('findByIds')
@@ -101,7 +101,7 @@ class ResolveArticleServiceTest extends UnitTestCase
         $this->assertEquals(456, $response[0]->articleId);
     }
 
-    public function testresolveByTweetDatas解決できない()
+    public function testresolveByTweetDatas解決できない(): void
     {
         $this->mock(TweetLogRepository::class, function (MockInterface $m) {
             $m->shouldReceive('findByIds')

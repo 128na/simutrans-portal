@@ -30,13 +30,13 @@ class TwitterV2ApiTest extends UnitTestCase
         );
     }
 
-    public function testIsPkceToken()
+    public function testIsPkceToken(): void
     {
         $client = $this->getSUT();
         $this->assertFalse($client->isPkceToken());
     }
 
-    public function testApplyToken()
+    public function testApplyToken(): void
     {
         $this->mock(OauthTokenRepository::class, function (MockInterface $m) {
             $m->shouldReceive('getToken')->withArgs(['twitter'])->once()->andReturn(new OauthToken(['access_token' => 'dummy']));
@@ -47,7 +47,7 @@ class TwitterV2ApiTest extends UnitTestCase
         $this->assertTrue($client->isPkceToken());
     }
 
-    public function testApplyTokenトークン更新()
+    public function testApplyTokenトークン更新(): void
     {
         $this->mock(OauthTokenRepository::class, function (MockInterface $m) {
             $m->shouldReceive('getToken')->withArgs(['twitter'])->once()->andReturn(new OauthToken(['expired_at' => now()->yesterday()]));
@@ -61,7 +61,7 @@ class TwitterV2ApiTest extends UnitTestCase
         $this->assertTrue($client->isPkceToken());
     }
 
-    public function testApplyTokenトークン無し()
+    public function testApplyTokenトークン無し(): void
     {
         $this->mock(OauthTokenRepository::class, function (MockInterface $m) {
             $m->shouldReceive('getToken')->withArgs(['twitter'])->once()->andThrow(new ModelNotFoundException());
@@ -73,7 +73,7 @@ class TwitterV2ApiTest extends UnitTestCase
         $client->applyPKCEToken();
     }
 
-    public function testApplyTokenトークン更新失敗()
+    public function testApplyTokenトークン更新失敗(): void
     {
         $this->mock(OauthTokenRepository::class, function (MockInterface $m) {
             $m->shouldReceive('getToken')->withArgs(['twitter'])->once()->andReturn(new OauthToken(['expired_at' => now()->yesterday()]));

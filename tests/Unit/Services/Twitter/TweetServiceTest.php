@@ -43,7 +43,7 @@ class TweetServiceTest extends UnitTestCase
         return $res;
     }
 
-    public function testPost()
+    public function testPost(): void
     {
         $this->mock(TwitterV1Api::class, function (MockInterface $m) {
             $m->shouldReceive('post')->withArgs([
@@ -54,7 +54,7 @@ class TweetServiceTest extends UnitTestCase
         $this->getSUT()->post('dummy');
     }
 
-    public function testPost投稿失敗()
+    public function testPost投稿失敗(): void
     {
         $this->mock(TwitterV1Api::class, function (MockInterface $m) {
             $m->shouldReceive('post')->withArgs([
@@ -67,7 +67,7 @@ class TweetServiceTest extends UnitTestCase
         $this->getSUT()->post('dummy');
     }
 
-    public function testPostMedia()
+    public function testPostMedia(): void
     {
         $this->mock(TwitterV1Api::class, function (MockInterface $m) {
             $response = new stdClass();
@@ -85,7 +85,7 @@ class TweetServiceTest extends UnitTestCase
         $this->getSUT()->postMedia(['dummy.png'], 'dummy');
     }
 
-    public function testPostMedia画像アップロード失敗()
+    public function testPostMedia画像アップロード失敗(): void
     {
         $this->mock(TwitterV1Api::class, function (MockInterface $m) {
             $m->shouldReceive('upload')->withArgs([

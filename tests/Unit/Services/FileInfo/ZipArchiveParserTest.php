@@ -17,7 +17,7 @@ class ZipArchiveParserTest extends UnitTestCase
         return app(ZipArchiveParser::class);
     }
 
-    public function test()
+    public function test(): void
     {
         $this->mock(Attachment::class, function (MockInterface $m) {
             $m->shouldReceive('getAttribute')->once()->andReturn('dummy');

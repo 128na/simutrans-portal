@@ -20,13 +20,13 @@ class FeedTest extends ArticleTestCase
     }
 
     #[DataProvider('dataFeed')]
-    public function testFeed(string $url)
+    public function testFeed(string $url): void
     {
         $response = $this->get($url);
         $response->assertOk();
     }
 
-    public static function dataFeed()
+    public static function dataFeed(): array
     {
         yield 'アドオン一覧' => ['/feed'];
         yield 'pak128' => ['/feed/pak128'];

@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class CommandDeleteUnrelatedTagsTest extends TestCase
 {
-    public function test()
+    public function test(): void
     {
         $res = $this->artisan('delete:tags');
         $res->assertExitCode(0);

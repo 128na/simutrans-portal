@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class UpdateTest extends TestCase
 {
-    public function test新規生成()
+    public function test新規生成(): void
     {
         $this->actingAs($this->user);
 
@@ -22,7 +22,7 @@ class UpdateTest extends TestCase
         $this->assertNotNull($response->json('data.invitation_url'));
     }
 
-    public function test再生成()
+    public function test再生成(): void
     {
         $oldUuid = Str::uuid()->toString();
         $this->user->update(['invitation_code' => $oldUuid]);

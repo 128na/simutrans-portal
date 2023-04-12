@@ -11,7 +11,7 @@ use Tests\UnitTestCase;
 
 class TweetDataTest extends UnitTestCase
 {
-    public function test新規投稿()
+    public function test新規投稿(): void
     {
         $publicMetrics = new stdClass();
         $publicMetrics->retweet_count = 1;
@@ -47,7 +47,7 @@ class TweetDataTest extends UnitTestCase
         $this->assertTrue($tweetData->createdAt->eq('2022-01-01T23:59:59+09:00'));
     }
 
-    public function test更新()
+    public function test更新(): void
     {
         $publicMetrics = new stdClass();
         $publicMetrics->retweet_count = 1;
@@ -83,7 +83,7 @@ class TweetDataTest extends UnitTestCase
         $this->assertTrue($tweetData->createdAt->eq('2022-01-01T23:59:59+09:00'));
     }
 
-    public function test不正フォーマット()
+    public function test不正フォーマット(): void
     {
         $publicMetrics = new stdClass();
         $publicMetrics->retweet_count = 1;
@@ -108,7 +108,7 @@ class TweetDataTest extends UnitTestCase
         new TweetData($data);
     }
 
-    public function testNonPublicMetrics無し()
+    public function testNonPublicMetrics無し(): void
     {
         $publicMetrics = new stdClass();
         $publicMetrics->retweet_count = 1;

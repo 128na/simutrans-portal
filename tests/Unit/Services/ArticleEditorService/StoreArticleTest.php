@@ -20,7 +20,7 @@ class StoreArticleTest extends UnitTestCase
         return app(ArticleEditorService::class, ['now' => $now]);
     }
 
-    public function test投稿()
+    public function test投稿(): void
     {
         $user = new User();
         $request = new StoreRequest([
@@ -54,7 +54,7 @@ class StoreArticleTest extends UnitTestCase
         $this->getSUT($now)->storeArticle($user, $request);
     }
 
-    public function test予約投稿()
+    public function test予約投稿(): void
     {
         $user = new User();
         $request = new StoreRequest([
@@ -89,7 +89,7 @@ class StoreArticleTest extends UnitTestCase
         $this->getSUT($now)->storeArticle($user, $request);
     }
 
-    public function testそれ以外()
+    public function testそれ以外(): void
     {
         $user = new User();
         $request = new StoreRequest([

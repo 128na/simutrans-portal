@@ -15,7 +15,7 @@ use Tests\ArticleTestCase;
 
 class AttachmentControllerTest extends ArticleTestCase
 {
-    public function testIndex()
+    public function testIndex(): void
     {
         $url = '/api/mypage/attachments';
 
@@ -28,7 +28,7 @@ class AttachmentControllerTest extends ArticleTestCase
         $res->assertOK();
     }
 
-    public function testFormatImage()
+    public function testFormatImage(): void
     {
         $file = $this->createFromFile(UploadedFile::fake()->image('test.png', 1), $this->user->id);
 
@@ -39,7 +39,7 @@ class AttachmentControllerTest extends ArticleTestCase
         $res->assertOK();
     }
 
-    public function testFormatOther()
+    public function testFormatOther(): void
     {
         $file = $this->createFromFile(UploadedFile::fake()->create('test.zip', 1, 'application/zip'), $this->user->id);
 
@@ -50,7 +50,7 @@ class AttachmentControllerTest extends ArticleTestCase
         $res->assertOK();
     }
 
-    public static function dataValidation()
+    public static function dataValidation(): array
     {
         yield 'fileがnull' => [fn () => ['file' => null], 'file'];
         yield 'fileがファイル以外' => [fn () => ['file' => 'test.zip'], 'file'];
@@ -60,7 +60,7 @@ class AttachmentControllerTest extends ArticleTestCase
     }
 
     #[DataProvider('dataValidation')]
-    public function testStore(Closure $data, ?string $error_field)
+    public function testStore(Closure $data, ?string $error_field): void
     {
         $url = '/api/mypage/attachments';
 
@@ -79,7 +79,7 @@ class AttachmentControllerTest extends ArticleTestCase
         }
     }
 
-    public function testDestroy()
+    public function testDestroy(): void
     {
         /** @var User */
         $user = User::factory()->create();

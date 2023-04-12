@@ -24,7 +24,7 @@ class PaginateByCategoryTest extends ArticleTestCase
         $this->article->categories()->sync([$this->category->id]);
     }
 
-    public function test()
+    public function test(): void
     {
         /**
          * @var LengthAwarePaginator $res
@@ -35,7 +35,7 @@ class PaginateByCategoryTest extends ArticleTestCase
         $this->assertEquals(1, $res->count(), 'カテゴリに紐づく記事のみ取得出来ること');
     }
 
-    public function test公開以外のステータス()
+    public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => 'draft']);
         /**
@@ -47,7 +47,7 @@ class PaginateByCategoryTest extends ArticleTestCase
         $this->assertEquals(0, $res->count(), '非公開記事は取得できないこと');
     }
 
-    public function test論理削除()
+    public function test論理削除(): void
     {
         $this->article->delete();
         /**

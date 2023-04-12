@@ -18,7 +18,7 @@ class VerifiedTest extends ArticleTestCase
     }
 
     #[DataProvider('dataVerify')]
-    public function testメール確認が未完了(string $method, Closure $route, bool $need_verify)
+    public function testメール確認が未完了(string $method, Closure $route, bool $need_verify): void
     {
         $this->user->fill(['email_verified_at' => null])->save();
         $this->actingAs($this->user);
@@ -34,7 +34,7 @@ class VerifiedTest extends ArticleTestCase
         }
     }
 
-    public static function dataVerify()
+    public static function dataVerify(): array
     {
         yield 'マイページトップ' => ['getJson', fn () => '/api/mypage/user', false];
         yield 'タグ検索（投稿ページ）' => ['getJson', fn () => '/api/mypage/tags', false];
@@ -51,7 +51,7 @@ class VerifiedTest extends ArticleTestCase
     }
 
     #[DataProvider('dataVerified')]
-    public function testメール確認が完了(string $method, Closure $route, int $expected_status)
+    public function testメール確認が完了(string $method, Closure $route, int $expected_status): void
     {
         $this->actingAs($this->user);
 
@@ -61,7 +61,7 @@ class VerifiedTest extends ArticleTestCase
         $response->assertStatus($expected_status);
     }
 
-    public static function dataVerified()
+    public static function dataVerified(): array
     {
         yield 'プロフィール更新' => ['postJson', fn () => '/api/mypage/user', 422];
         yield 'タグ作成' => ['postJson', fn () => '/api/mypage/tags', 422];

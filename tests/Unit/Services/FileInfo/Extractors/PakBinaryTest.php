@@ -16,7 +16,7 @@ class PakBinaryTest extends UnitTestCase
         ]);
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $result = $this->getSUT()->get();
         $this->assertEquals(
@@ -25,13 +25,13 @@ class PakBinaryTest extends UnitTestCase
         );
     }
 
-    public function testSeek()
+    public function testSeek(): void
     {
         $this->getSUT()->seek(1);
         $this->assertTrue(true);
     }
 
-    public function testEof()
+    public function testEof(): void
     {
         $pak = $this->getSUT();
         $this->assertFalse($pak->eof());
@@ -39,7 +39,7 @@ class PakBinaryTest extends UnitTestCase
         $this->assertTrue($pak->eof());
     }
 
-    public function testSeekUntil()
+    public function testSeekUntil(): void
     {
         $result = $this->getSUT()->seekUntil(pack('H*', '948C'));
         $this->assertEquals(105, $result);

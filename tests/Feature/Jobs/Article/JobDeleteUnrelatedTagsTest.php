@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class JobDeleteUnrelatedTagsTest extends TestCase
 {
-    public function testTag()
+    public function testTag(): void
     {
         $tag = Tag::factory()->create();
 

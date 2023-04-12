@@ -50,7 +50,7 @@ class SearchTweetServiceTest extends UnitTestCase
         return $response;
     }
 
-    public function testsearchTweetsByTimelinePkce()
+    public function testsearchTweetsByTimelinePkce(): void
     {
         $this->mock(TwitterV2Api::class, function (MockInterface $m) {
             $m->shouldReceive('applyPKCEToken')->once();
@@ -78,7 +78,7 @@ class SearchTweetServiceTest extends UnitTestCase
         $this->assertCount(2, $response);
     }
 
-    public function testsearchTweetsByTimelineAppOnly()
+    public function testsearchTweetsByTimelineAppOnly(): void
     {
         $this->mock(TwitterV2Api::class, function (MockInterface $m) {
             $m->shouldReceive('applyPKCEToken')->never();
@@ -98,7 +98,7 @@ class SearchTweetServiceTest extends UnitTestCase
         $this->assertCount(1, $response);
     }
 
-    public function testPKCEToken無し()
+    public function testPKCEToken無し(): void
     {
         $this->mock(TwitterV2Api::class, function (MockInterface $m) {
             $m->shouldReceive('applyPKCEToken')->once()->andThrow(new PKCETokenNotFoundException());
@@ -110,7 +110,7 @@ class SearchTweetServiceTest extends UnitTestCase
         $service->searchTweetsByTimeline('dummyId', SearchTweetService::USE_PKCE_TOKEN);
     }
 
-    public function testPKCEToken更新失敗()
+    public function testPKCEToken更新失敗(): void
     {
         $this->mock(TwitterV2Api::class, function (MockInterface $m) {
             $m->shouldReceive('applyPKCEToken')->once()->andThrow(new PKCETokenRefreshFailedException());

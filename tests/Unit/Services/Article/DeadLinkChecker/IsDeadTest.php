@@ -19,7 +19,7 @@ class IsDeadTest extends UnitTestCase
         return app(DeadLinkChecker::class);
     }
 
-    public function test_ok()
+    public function test_ok(): void
     {
         /**
          * @var Article
@@ -41,7 +41,7 @@ class IsDeadTest extends UnitTestCase
         $this->assertFalse($actual);
     }
 
-    public function test_2回まで失敗OK()
+    public function test_2回まで失敗OK(): void
     {
         /**
          * @var Article
@@ -65,7 +65,7 @@ class IsDeadTest extends UnitTestCase
         $this->assertFalse($actual);
     }
 
-    public function test_3回失敗でNG()
+    public function test_3回失敗でNG(): void
     {
         /**
          * @var Article

@@ -14,7 +14,7 @@ class ImportTweetServiceTest extends UnitTestCase
         return app(ImportTweetService::class);
     }
 
-    public function testImportJson()
+    public function testImportJson(): void
     {
         $result = $this->getSUT()->importJson(__DIR__.'/dummy.json');
         $this->assertCount(1, $result);

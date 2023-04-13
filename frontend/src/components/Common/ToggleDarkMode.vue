@@ -1,42 +1,37 @@
 <template>
-  <transition mode="out-in">
-    <div v-if="isDark">
-      <q-icon name="dark_mode" size="sm" color="warning" class="cursor-pointer night toggle-day-night" @click="handle"
-        data-cy="btn-dark" />
-    </div>
-    <div v-else>
-      <q-icon name="light_mode" size="sm" color="white" class="cursor-pointer toggle-day-night" @click="handle"
-        data-cy="btn-light" />
-    </div>
-  </transition>
+  <q-btn-toggle v-model="currentMode" toggle-color="primary" :options="modes" />
 </template>
 <script>
 
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, ref } from 'vue';
 import { useQuasar } from 'quasar';
+
+const modes = [
+  { label: '暗', icon: 'dark_mode', value: true },
+  { label: '明', icon: 'light_mode', value: false },
+];
 
 export default defineComponent({
   name: 'ToggleDarkMode',
   setup() {
     const $q = useQuasar();
-    $q.dark.set($q.localStorage.getItem('darkmode') === 'darkmode');
-    return {
-      handle() {
-        $q.dark.toggle();
-        $q.localStorage.set('darkmode', $q.dark.isActive ? 'darkmode' : '');
+    const current = ref($q.localStorage.getItem('darkmode') === 'darkmode');
+    $q.dark.set(current.value);
+
+    const currentMode = computed({
+      get() {
+        return current.value;
       },
-      isDark: computed(() => $q.dark.isActive),
+      set(v) {
+        current.value = v;
+        $q.dark.set(v);
+        $q.localStorage.set('darkmode', v ? 'darkmode' : '');
+      },
+    });
+    return {
+      modes,
+      currentMode,
     };
   },
 });
 </script>
-<style scoped lang="scss">
-.night {
-  text-shadow: $dark 1px 0 10px;
-}
-
-.toggle-day-night {
-  transition: all ease 4s;
-  transform-origin: center 100px;
-}
-</style>

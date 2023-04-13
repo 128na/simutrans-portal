@@ -1,8 +1,5 @@
 <template>
-  <div @click="store.nextMode">
-    <q-icon :name="store.listMode.icon" size="sm" class="cursor-pointer" data-cy="btn-list" />
-    <q-tooltip>{{ store.listMode.tooltip }}</q-tooltip>
-  </div>
+  <q-btn-toggle v-model="store.currentMode" toggle-color="primary" :options="store.listModes" />
 </template>
 <script>
 

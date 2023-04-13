@@ -15,3 +15,17 @@ export const useMenuStore = defineStore('menu', () => {
     toggle,
   };
 });
+
+export const useMenuRightStore = defineStore('menuRight', () => {
+  const $q = useQuasar();
+  const { desktop } = $q.platform.is;
+  const open = ref(desktop);
+  const toggle = () => {
+    open.value = !open.value;
+  };
+
+  return {
+    open,
+    toggle,
+  };
+});

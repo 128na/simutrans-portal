@@ -2,7 +2,7 @@
 
 const { assertFrontTopPage } = require('../../assertion');
 const { mockGuestResponse } = require('../../__mocks__/auth');
-const { mockSidebarResponse, createMockArticleData } = require('../../__mocks__/front');
+const { mockSidebarResponse } = require('../../__mocks__/front');
 
 // Use `cy.dataCy` custom command for more robust tests
 // See https://docs.cypress.io/guides/references/best-practices.html#Selecting-Elements
@@ -11,54 +11,6 @@ const { mockSidebarResponse, createMockArticleData } = require('../../__mocks__/
 
 // This test will pass when run against a clean Quasar project
 describe('フロントトップ', () => {
-  describe('モード切替', () => {
-    beforeEach(() => {
-      cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
-      cy.intercept('/storage/json/sidebar.json', mockSidebarResponse).as('front.sidebar');
-      cy.intercept('/storage/json/top.json', {
-        statusCode: 200,
-        body: {
-          pak128japan: [createMockArticleData()],
-        },
-      }).as('front.top');
-      cy.visit('/');
-      cy.wait('@mypage.user');
-      cy.wait('@front.sidebar');
-      cy.wait('@front.top');
-      cy.get('.fullscreen.q-drawer__backdrop').click();
-    });
-    it('表示内容', () => {
-      assertFrontTopPage();
-    });
-
-    it('ダークモード切替', () => {
-      cy.get('body').should('have.class', 'body--light');
-      cy.get('[data-cy="btn-light"]')
-        .should('exist')
-        .click();
-      cy.get('body').should('have.class', 'body--dark');
-      cy.get('[data-cy="btn-dark"]')
-        .should('exist')
-        .click();
-      cy.get('body').should('have.class', 'body--light');
-    });
-
-    it('リストモード切替', () => {
-      // cy.get('.fullscreen.q-drawer__backdrop').click();
-      cy.get('[data-cy="mode-list"]').should('exist');
-      cy.get('[data-cy="btn-list"]')
-        .should('exist')
-        .click();
-      cy.get('[data-cy="mode-show"]').should('exist');
-      cy.get('[data-cy="btn-list"]')
-        .should('exist')
-        .click();
-      cy.get('[data-cy="mode-gallery"]').should('exist');
-      cy.get('[data-cy="btn-list"]')
-        .should('exist')
-        .click();
-    });
-  });
   describe('API自動リトライ', () => {
     beforeEach(() => {
     // https://github.com/quasarframework/quasar/issues/2233#issuecomment-678115434

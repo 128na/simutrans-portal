@@ -7,7 +7,7 @@
           {{ appName }}
         </q-btn>
         <q-space />
-        <q-btn flat dense round icon="menu" @click="menuRight.toggle" />
+        <q-btn flat dense round icon="settings" @click="menuRight.toggle" />
       </q-toolbar>
     </q-header>
 

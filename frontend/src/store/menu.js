@@ -17,9 +17,7 @@ export const useMenuStore = defineStore('menu', () => {
 });
 
 export const useMenuRightStore = defineStore('menuRight', () => {
-  const $q = useQuasar();
-  const { desktop } = $q.platform.is;
-  const open = ref(desktop);
+  const open = ref(false);
   const toggle = () => {
     open.value = !open.value;
   };

@@ -3,6 +3,11 @@
     <q-item>
       <search-form />
     </q-item>
+    <q-separator />
+    <q-item clickable href="/mypage">
+      <q-item-section>マイページ</q-item-section>
+    </q-item>
+    <q-separator />
     <q-item v-show="handler.loading.value">
       <q-item-section>
         <LoadingMessage />
@@ -25,10 +30,6 @@
       <q-item-section>タグ一覧</q-item-section>
     </q-item>
     <q-separator />
-    <q-item clickable href="/mypage">
-      <q-item-section>マイページ</q-item-section>
-    </q-item>
-    <q-separator />
     <q-item clickable dense :to="{ name: 'show', params: { slug: 'about' } }">
       <q-item-section>サイトの使い方</q-item-section>
     </q-item>
@@ -39,22 +40,22 @@
     <q-item clickable dense :to="{ name: 'social' }">
       <q-item-section>SNS・通知ツール</q-item-section>
     </q-item>
-    <q-separator />
-    <MetaInfo />
   </q-list>
-
 </template>
 
 <script>
 import { defineComponent, ref } from 'vue';
 import { useFrontApi } from 'src/composables/api';
-import MetaInfo from 'src/components/Common/MetaInfo.vue';
 import LoadingMessage from 'src/components/Common/Text/LoadingMessage.vue';
 import SearchForm from 'src/components/Front/SearchForm.vue';
 import { useApiHandler } from 'src/composables/apiHandler';
 
 export default defineComponent({
   name: 'FrontMenu',
+  components: {
+    LoadingMessage,
+    SearchForm,
+  },
   setup() {
     const pakAddonCounts = ref({});
     const userAddonCounts = ref([]);
@@ -82,11 +83,6 @@ export default defineComponent({
       userAddonCounts,
       handler,
     };
-  },
-  components: {
-    MetaInfo,
-    LoadingMessage,
-    SearchForm,
   },
 });
 </script>

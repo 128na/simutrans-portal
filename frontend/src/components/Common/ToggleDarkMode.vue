@@ -1,5 +1,16 @@
 <template>
-  <q-btn-toggle v-model="currentMode" toggle-color="primary" :options="modes" />
+  <q-list>
+    <q-item tag="label" v-ripple v-for="(mode, key) in modes" :key="key">
+      <q-item-section avatar>
+        <q-radio v-model="currentMode" :val="mode.value" />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label>
+          {{ mode.label }}</q-item-label>
+        <q-item-label caption>{{ mode.description }}</q-item-label>
+      </q-item-section>
+    </q-item>
+  </q-list>
 </template>
 <script>
 
@@ -7,8 +18,12 @@ import { defineComponent, computed, ref } from 'vue';
 import { useQuasar } from 'quasar';
 
 const modes = [
-  { label: '暗', icon: 'dark_mode', value: true },
-  { label: '明', icon: 'light_mode', value: false },
+  {
+    label: 'デフォルト', icon: 'light_mode', value: false, description: '白背景に黒文字のありふれた世界。',
+  },
+  {
+    label: 'ダークモード', icon: 'dark_mode', value: true, description: '漆黒の闇で世界を覆い尽くします。',
+  },
 ];
 
 export default defineComponent({

@@ -44,7 +44,6 @@ describe('フロント記事詳細', () => {
         cy.wait('@mypage.user');
         cy.wait('@front.article');
         cy.wait('@front.sidebar');
-        cy.get('.fullscreen.q-drawer__backdrop').click();
       });
       it('表示', () => {
         assertFrontShowPage(article);

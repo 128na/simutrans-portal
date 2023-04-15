@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh Lpr lFf">
+  <q-layout view="hHh LpR lFr">
     <q-header elevated>
       <q-toolbar>
         <q-btn flat dense round icon="menu" @click="menu.toggle" />
@@ -7,36 +7,38 @@
           {{ appName }}
         </q-btn>
         <q-space />
-        <ToggleListMode class="q-mr-md" />
-        <ToggleDarkMode />
+        <q-btn flat dense round icon="settings" @click="menuRight.toggle" />
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="menu.open" show-if-above bordered>
+    <q-drawer v-model="menu.open" bordered>
       <FrontMenu />
     </q-drawer>
 
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <q-drawer side="right" v-model="menuRight.open" bordered>
+      <FrontRightMenu />
+    </q-drawer>
+
   </q-layout>
 </template>
 <script>
 
 import { defineComponent } from 'vue';
-import ToggleDarkMode from 'src/components/Common/ToggleDarkMode.vue';
-import ToggleListMode from 'src/components/Common/ToggleListMode.vue';
-import { useMenuStore } from 'src/store/menu';
+import { useMenuStore, useMenuRightStore } from 'src/store/menu';
 import { useColor } from 'src/composables/color';
 import { useAppInfo } from 'src/composables/appInfo';
 import FrontMenu from 'src/components/Front/FrontMenu.vue';
+import FrontRightMenu from 'src/components/Front/FrontRightMenu.vue';
 
 export default defineComponent({
   name: 'FrontLayout',
   components: {
     FrontMenu,
-    ToggleDarkMode,
-    ToggleListMode,
+    FrontRightMenu,
   },
 
   setup() {
@@ -44,9 +46,11 @@ export default defineComponent({
     useColor().setFront();
 
     const menu = useMenuStore();
+    const menuRight = useMenuRightStore();
     return {
       appName,
       menu,
+      menuRight,
     };
   },
 });

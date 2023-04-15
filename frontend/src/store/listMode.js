@@ -2,25 +2,23 @@ import { defineStore } from 'pinia';
 import { useQuasar } from 'quasar';
 import { computed, ref } from 'vue';
 
-const listModes = {
-  gallery: { icon: 'image', next: 'list', tooltip: 'ギャラリー' },
-  list: { icon: 'list', next: 'show', tooltip: 'リスト' },
-  show: { icon: 'subject', next: 'gallery', tooltip: '詳細' },
-};
 export const useListModeStore = defineStore('listMode', () => {
   const $q = useQuasar();
   const current = ref($q.localStorage.getItem('front.listMode') || 'list');
 
-  const listMode = computed(() => listModes[current.value]);
-  const nextMode = () => {
-    $q.localStorage.set('front.listMode', listMode.value.next);
-    current.value = listMode.value.next;
-  };
-  const is = (mode) => current.value === mode;
+  const currentMode = computed({
+    get() {
+      return current.value;
+    },
+    set(v) {
+      $q.localStorage.set('front.listMode', v);
+      current.value = v;
+    },
+  });
+  const is = (mode) => currentMode.value === mode;
 
   return {
-    listMode,
-    nextMode,
+    currentMode,
     is,
   };
 });

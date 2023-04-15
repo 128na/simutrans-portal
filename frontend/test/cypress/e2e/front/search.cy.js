@@ -25,7 +25,6 @@ describe('Search', () => {
     cy.wait('@mypage.user');
     cy.wait('@front.sidebar');
     cy.wait('@front.search');
-    cy.get('.fullscreen.q-drawer__backdrop').click();
   });
   it('表示内容', () => {
     assertFrontSearchPage('dummy');

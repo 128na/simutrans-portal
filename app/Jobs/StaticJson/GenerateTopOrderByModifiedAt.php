@@ -7,10 +7,11 @@ namespace App\Jobs\StaticJson;
 use App\Http\Resources\Api\Front\ArticleResource;
 use App\Services\Front\ArticleService;
 
-class GenerateTop extends BaseGenerator
+class GenerateTopOrderByModifiedAt extends BaseGenerator
 {
     protected function getJsonData(): array
     {
+        /** @var ArticleService */
         $service = app(ArticleService::class);
 
         return [
@@ -25,6 +26,6 @@ class GenerateTop extends BaseGenerator
 
     protected function getJsonName(): string
     {
-        return 'top.json';
+        return 'top.modified_at.json';
     }
 }

@@ -101,7 +101,7 @@ class ArticleRepository extends BaseRepository
      * @param  array<mixed>  $relations
      * @return Collection<int, Article>
      */
-    public function findAllByUser(User $user, array $relations = self::FRONT_RELATIONS): Collection
+    public function findAllByUser(User $user, array $relations = self::FRONT_RELATIONS, string $order = 'modified_at'): Collection
     {
         /** @var Collection<int, Article> */
         return $this->model
@@ -109,18 +109,18 @@ class ArticleRepository extends BaseRepository
             ->select(['articles.*'])
             ->where('user_id', $user->id)
             ->with($relations)
-            ->orderBy('published_at', 'desc')
+            ->orderBy($order, 'desc')
             ->get();
     }
 
-    private function queryAnnouces(): Builder
+    private function queryAnnouces(string $order): Builder
     {
         return $this->model
             ->active()
             ->announce()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
-            ->orderBy('modified_at', 'desc');
+            ->orderBy($order, 'desc');
     }
 
     /**
@@ -128,22 +128,22 @@ class ArticleRepository extends BaseRepository
      *
      * @return Paginator<Article>
      */
-    public function paginateAnnouces(bool $simple = false): Paginator
+    public function paginateAnnouces(bool $simple = false, string $order = 'modified_at'): Paginator
     {
         /** @var Paginator<Article> */
         return $simple
-            ? $this->queryAnnouces()->simplePaginate(self::PER_PAGE_SIMPLE)
-            : $this->queryAnnouces()->paginate();
+            ? $this->queryAnnouces($order)->simplePaginate(self::PER_PAGE_SIMPLE)
+            : $this->queryAnnouces($order)->paginate();
     }
 
-    private function queryPages(): Builder
+    private function queryPages(string $order): Builder
     {
         return $this->model
             ->active()
             ->withoutAnnounce()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
-            ->orderBy('modified_at', 'desc');
+            ->orderBy($order, 'desc');
     }
 
     /**
@@ -151,12 +151,12 @@ class ArticleRepository extends BaseRepository
      *
      * @return Paginator<Article>
      */
-    public function paginatePages(bool $simple = false): Paginator
+    public function paginatePages(bool $simple = false, string $order = 'modified_at'): Paginator
     {
         /** @var Paginator<Article> */
         return $simple
-            ? $this->queryPages()->simplePaginate(self::PER_PAGE_SIMPLE)
-            : $this->queryPages()->paginate();
+            ? $this->queryPages($order)->simplePaginate(self::PER_PAGE_SIMPLE)
+            : $this->queryPages($order)->paginate();
     }
 
     private function queryRanking(): Builder
@@ -186,28 +186,28 @@ class ArticleRepository extends BaseRepository
      *
      * @return Paginator<Article>
      */
-    public function paginateByCategory(Category $category, bool $simple = false): Paginator
+    public function paginateByCategory(Category $category, bool $simple = false, string $order = 'modified_at'): Paginator
     {
         $q = $category->articles()
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
-            ->orderBy('modified_at', 'desc');
+            ->orderBy($order, 'desc');
 
         return $simple
             ? $q->simplePaginate(self::PER_PAGE_SIMPLE)
             : $q->paginate();
     }
 
-    private function queryByPakAddonCategory(Category $pak, Category $addon): Builder
+    private function queryByPakAddonCategory(Category $pak, Category $addon, string $order): Builder
     {
         return $this->model
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
-            ->orderBy('modified_at', 'desc')
             ->whereHas('categories', fn ($query) => $query->where('id', $pak->id))
-            ->whereHas('categories', fn ($query) => $query->where('id', $addon->id));
+            ->whereHas('categories', fn ($query) => $query->where('id', $addon->id))
+            ->orderBy($order, 'desc');
     }
 
     /**
@@ -215,10 +215,10 @@ class ArticleRepository extends BaseRepository
      *
      * @return LengthAwarePaginator<Article>
      */
-    public function paginateByPakAddonCategory(Category $pak, Category $addon): LengthAwarePaginator
+    public function paginateByPakAddonCategory(Category $pak, Category $addon, string $order = 'modified_at'): LengthAwarePaginator
     {
         /** @var LengthAwarePaginator<Article> */
-        return $this->queryByPakAddonCategory($pak, $addon)->paginate();
+        return $this->queryByPakAddonCategory($pak, $addon, $order)->paginate();
     }
 
     /**
@@ -226,14 +226,14 @@ class ArticleRepository extends BaseRepository
      *
      * @return LengthAwarePaginator<Article>
      */
-    public function paginateByPakNoneAddonCategory(Category $pak): LengthAwarePaginator
+    public function paginateByPakNoneAddonCategory(Category $pak, string $order = 'modified_at'): LengthAwarePaginator
     {
         return $pak->articles()
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
             ->whereDoesntHave('categories', fn ($query) => $query->where('type', 'addon'))
-            ->orderBy('modified_at', 'desc')
+            ->orderBy($order, 'desc')
             ->paginate();
     }
 
@@ -242,13 +242,13 @@ class ArticleRepository extends BaseRepository
      *
      * @return LengthAwarePaginator<Article>
      */
-    public function paginateByTag(Tag $tag): LengthAwarePaginator
+    public function paginateByTag(Tag $tag, string $order = 'modified_at'): LengthAwarePaginator
     {
         return $tag->articles()
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
-            ->orderBy('modified_at', 'desc')
+            ->orderBy($order, 'desc')
             ->paginate();
     }
 
@@ -257,17 +257,17 @@ class ArticleRepository extends BaseRepository
      *
      * @return LengthAwarePaginator<Article>
      */
-    public function paginateByUser(User $user): LengthAwarePaginator
+    public function paginateByUser(User $user, string $order = 'modified_at'): LengthAwarePaginator
     {
         return $user->articles()
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
-            ->orderBy('modified_at', 'desc')
+            ->orderBy($order, 'desc')
             ->paginate();
     }
 
-    private function queryBySearch(string $word): Builder
+    private function queryBySearch(string $word, string $order): Builder
     {
         $word = trim($word);
 
@@ -275,7 +275,7 @@ class ArticleRepository extends BaseRepository
             return $this->model->select(['articles.*'])
                 ->active()
                 ->with(self::FRONT_RELATIONS)
-                ->orderBy('modified_at', 'desc');
+                ->orderBy($order, 'desc');
         }
 
         $likeWord = "%{$word}%";
@@ -288,7 +288,7 @@ class ArticleRepository extends BaseRepository
                 ->orWhereHas('attachments.fileInfo', fn ($q) => $q
                     ->where('data', 'LIKE', $likeWord)))
             ->with(self::FRONT_RELATIONS)
-            ->orderBy('modified_at', 'desc');
+            ->orderBy($order, 'desc');
     }
 
     /**
@@ -296,10 +296,10 @@ class ArticleRepository extends BaseRepository
      *
      * @return LengthAwarePaginator<Article>
      */
-    public function paginateBySearch(string $word): LengthAwarePaginator
+    public function paginateBySearch(string $word, string $order = 'modified_at'): LengthAwarePaginator
     {
         /** @var LengthAwarePaginator<Article> */
-        return $this->queryBySearch($word)->paginate();
+        return $this->queryBySearch($word, $order)->paginate();
     }
 
     public function cursorCheckLink(): LazyCollection

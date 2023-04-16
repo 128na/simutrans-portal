@@ -18,33 +18,33 @@ export const useFrontApi = () => ({
   fetchSidebar() {
     return axios.get('/storage/json/sidebar.json');
   },
-  fetchTop() {
-    return axios.get('/storage/json/top.json');
+  fetchTop(order) {
+    return axios.get(`/storage/json/top.${order}.json`);
   },
   // list
-  fetchCategoryPak(size, slug, page = 1) {
-    return axios.get(`/api/front/category/pak/${size}/${slug}`, { params: { page } });
+  fetchCategoryPak(size, slug, order, page = 1) {
+    return axios.get(`/api/front/category/pak/${size}/${slug}`, { params: { order, page } });
   },
-  fetchCategory(type, slug, page = 1) {
-    return axios.get(`/api/front/category/${type}/${slug}`, { params: { page } });
+  fetchCategory(type, slug, order, page = 1) {
+    return axios.get(`/api/front/category/${type}/${slug}`, { params: { order, page } });
   },
-  fetchTag(id, page = 1) {
-    return axios.get(`/api/front/tag/${id}`, { params: { page } });
+  fetchTag(id, order, page = 1) {
+    return axios.get(`/api/front/tag/${id}`, { params: { order, page } });
   },
-  fetchUser(id, page = 1) {
-    return axios.get(`/api/front/user/${id}`, { params: { page } });
+  fetchUser(id, order, page = 1) {
+    return axios.get(`/api/front/user/${id}`, { params: { order, page } });
   },
-  fetchAnnounces(page = 1) {
-    return axios.get('/api/front/announces', { params: { page } });
+  fetchAnnounces(order, page = 1) {
+    return axios.get('/api/front/announces', { params: { order, page } });
   },
-  fetchPages(page = 1) {
-    return axios.get('/api/front/pages', { params: { page } });
+  fetchPages(order, page = 1) {
+    return axios.get('/api/front/pages', { params: { order, page } });
   },
   fetchRanking(page = 1) {
     return axios.get('/api/front/ranking', { params: { page } });
   },
-  fetchSearch(word, page = 1) {
-    return axios.get('/api/front/search', { params: { word, page } });
+  fetchSearch(order, word, page = 1) {
+    return axios.get('/api/front/search', { params: { word, order, page } });
   },
   // show
   fetchArticle(slug) {

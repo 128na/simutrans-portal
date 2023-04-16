@@ -22,3 +22,24 @@ export const useListModeStore = defineStore('listMode', () => {
     is,
   };
 });
+
+export const useOrderModeStore = defineStore('orderMode', () => {
+  const $q = useQuasar();
+  const current = ref($q.localStorage.getItem('front.orderMode') || 'modified_at');
+
+  const currentMode = computed({
+    get() {
+      return current.value;
+    },
+    set(v) {
+      $q.localStorage.set('front.orderMode', v);
+      current.value = v;
+    },
+  });
+  const is = (mode) => currentMode.value === mode;
+
+  return {
+    currentMode,
+    is,
+  };
+});

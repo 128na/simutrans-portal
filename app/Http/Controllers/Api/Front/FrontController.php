@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\Front;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Article\ListRequest;
 use App\Http\Requests\Api\Article\SearchRequest;
 use App\Http\Resources\Api\Front\ArticleResource;
-use App\Http\Resources\Api\Front\PakAddonResource;
 use App\Http\Resources\Api\Front\TagResource;
-use App\Http\Resources\Api\Front\UserAddonResource;
 use App\Models\Article;
 use App\Models\Tag;
 use App\Models\User;
@@ -29,32 +28,6 @@ class FrontController extends Controller
     ) {
     }
 
-    /**
-     * @return array<AnonymousResourceCollection>
-     */
-    public function top(): array
-    {
-        return [
-            'pak128japan' => ArticleResource::collection($this->articleService->paginateByCategory('pak', '128-japan', true)),
-            'pak128' => ArticleResource::collection($this->articleService->paginateByCategory('pak', '128', true)),
-            'pak64' => ArticleResource::collection($this->articleService->paginateByCategory('pak', '64', true)),
-            'rankings' => ArticleResource::collection($this->articleService->paginateRanking(true)),
-            'pages' => ArticleResource::collection($this->articleService->paginatePages(true)),
-            'announces' => ArticleResource::collection($this->articleService->paginateAnnouces(true)),
-        ];
-    }
-
-    /**
-     * @return array<UserAddonResource|PakAddonResource>
-     */
-    public function sidebar(): array
-    {
-        return [
-            'userAddonCounts' => new UserAddonResource($this->sidebarService->userAddonCounts()),
-            'pakAddonCounts' => new PakAddonResource($this->sidebarService->pakAddonsCounts()),
-        ];
-    }
-
     public function show(Article $article): ArticleResource
     {
         abort_unless($article->is_publish, 404);
@@ -62,25 +35,28 @@ class FrontController extends Controller
         return new ArticleResource($this->articleService->loadArticle($article));
     }
 
-    public function user(User $user): AnonymousResourceCollection
+    public function user(User $user, ListRequest $request): AnonymousResourceCollection
     {
-        $articles = $this->articleService->paginateByUser($user);
+        $order = $request->string('order', 'modified_at')->toString();
+        $articles = $this->articleService->paginateByUser($user, $order);
 
         return ArticleResource::collection($articles)
             ->additional($this->frontDescriptionService->user($user));
     }
 
-    public function pages(): AnonymousResourceCollection
+    public function pages(ListRequest $request): AnonymousResourceCollection
     {
-        $articles = $this->articleService->paginatePages();
+        $order = $request->string('order', 'modified_at')->toString();
+        $articles = $this->articleService->paginatePages(false, $order);
 
         return ArticleResource::collection($articles)
             ->additional($this->frontDescriptionService->page());
     }
 
-    public function announces(): AnonymousResourceCollection
+    public function announces(ListRequest $request): AnonymousResourceCollection
     {
-        $articles = $this->articleService->paginateAnnouces();
+        $order = $request->string('order', 'modified_at')->toString();
+        $articles = $this->articleService->paginateAnnouces(false, $order);
 
         return ArticleResource::collection($articles)
             ->additional($this->frontDescriptionService->announces());
@@ -94,33 +70,37 @@ class FrontController extends Controller
             ->additional($this->frontDescriptionService->ranking());
     }
 
-    public function category(string $type, string $slug): AnonymousResourceCollection
+    public function category(string $type, string $slug, ListRequest $request): AnonymousResourceCollection
     {
-        $articles = $this->articleService->paginateByCategory($type, $slug);
+        $order = $request->string('order', 'modified_at')->toString();
+        $articles = $this->articleService->paginateByCategory($type, $slug, false, $order);
 
         return ArticleResource::collection($articles)
             ->additional($this->frontDescriptionService->category($type, $slug));
     }
 
-    public function categoryPakAddon(string $pakSlug, string $addonSlug): AnonymousResourceCollection
+    public function categoryPakAddon(string $pakSlug, string $addonSlug, ListRequest $request): AnonymousResourceCollection
     {
-        $articles = $this->articleService->paginateByPakAddonCategory($pakSlug, $addonSlug);
+        $order = $request->string('order', 'modified_at')->toString();
+        $articles = $this->articleService->paginateByPakAddonCategory($pakSlug, $addonSlug, $order);
 
         return ArticleResource::collection($articles)
             ->additional($this->frontDescriptionService->categoryPakAddon($pakSlug, $addonSlug));
     }
 
-    public function categoryPakNoneAddon(string $pakSlug): AnonymousResourceCollection
+    public function categoryPakNoneAddon(string $pakSlug, ListRequest $request): AnonymousResourceCollection
     {
-        $articles = $this->articleService->paginateByPakNoneAddonCategory($pakSlug);
+        $order = $request->string('order', 'modified_at')->toString();
+        $articles = $this->articleService->paginateByPakNoneAddonCategory($pakSlug, $order);
 
         return ArticleResource::collection($articles)
             ->additional($this->frontDescriptionService->categoryPakNoneAddon($pakSlug));
     }
 
-    public function tag(Tag $tag): AnonymousResourceCollection
+    public function tag(Tag $tag, ListRequest $request): AnonymousResourceCollection
     {
-        $articles = $this->articleService->paginateByTag($tag);
+        $order = $request->string('order', 'modified_at')->toString();
+        $articles = $this->articleService->paginateByTag($tag, $order);
 
         return ArticleResource::collection($articles)
             ->additional($this->frontDescriptionService->tag($tag));
@@ -128,9 +108,10 @@ class FrontController extends Controller
 
     public function search(SearchRequest $request): AnonymousResourceCollection
     {
-        $word = $request->word ?? '';
+        $word = $request->string('word', '')->toString();
+        $order = $request->string('order', 'modified_at')->toString();
 
-        $articles = $this->articleService->paginateBySearch($word);
+        $articles = $this->articleService->paginateBySearch($word, $order);
 
         return ArticleResource::collection($articles)
             ->additional($this->frontDescriptionService->search($word));

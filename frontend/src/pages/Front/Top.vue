@@ -35,6 +35,7 @@ import FrontArticleList from 'src/components/Front/FrontArticleList.vue';
 import LoadingMessage from 'src/components/Common/Text/LoadingMessage.vue';
 import { useApiHandler } from 'src/composables/apiHandler';
 import { useRoute } from 'vue-router';
+import { useOrderModeStore } from 'src/store/listMode';
 
 export default defineComponent({
   name: 'FrontTop',
@@ -84,13 +85,14 @@ export default defineComponent({
     });
     const route = useRoute();
     const api = useFrontApi();
+    const order = useOrderModeStore();
     const fetch = async () => {
       if (route.name !== 'top') {
         return;
       }
       try {
         await handler.handle({
-          doRequest: () => api.fetchTop(),
+          doRequest: () => api.fetchTop(order.currentMode),
           done: (res) => {
             Object.keys(res.data).forEach((key) => {
               if (contents[key] === undefined || contents[key].articles === undefined) {
@@ -107,6 +109,7 @@ export default defineComponent({
       }
     };
     watch(route, () => { fetch(); }, { deep: true, immediate: true });
+    watch(order, () => { fetch(); });
 
     return {
       contents,

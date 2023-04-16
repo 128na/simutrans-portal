@@ -6,8 +6,6 @@
         <q-btn flat dense no-caps size="lg" href="/">
           {{ appName }}
         </q-btn>
-        <q-space />
-        <ToggleDarkMode />
       </q-toolbar>
     </q-header>
 
@@ -24,7 +22,6 @@
 <script>
 
 import { defineComponent } from 'vue';
-import ToggleDarkMode from 'src/components/Common/ToggleDarkMode.vue';
 import { useColor } from 'src/composables/color';
 import { useMenuStore } from 'src/store/menu';
 import { useAppInfo } from 'src/composables/appInfo';
@@ -37,7 +34,6 @@ export default defineComponent({
 
   components: {
     AdminMenu,
-    ToggleDarkMode,
     LoadingPage,
   },
 

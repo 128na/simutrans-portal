@@ -15,6 +15,10 @@ use Illuminate\Contracts\Pagination\Paginator;
 
 class ArticleService extends Service
 {
+    public const ORDER_BY_PUBLISHED_AT = 'published_at';
+
+    public const ORDER_BY_MODIFIED_AT = 'modified_at';
+
     public function __construct(
         private ArticleRepository $articleRepository,
         private CategoryRepository $categoryRepository,
@@ -29,25 +33,25 @@ class ArticleService extends Service
     /**
      * @return LengthAwarePaginator<Article>
      */
-    public function paginateByUser(User $user): LengthAwarePaginator
+    public function paginateByUser(User $user, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
     {
-        return $this->articleRepository->paginateByUser($user);
+        return $this->articleRepository->paginateByUser($user, $order);
     }
 
     /**
      * @return Paginator<Article>
      */
-    public function paginatePages(bool $simple = false): Paginator
+    public function paginatePages(bool $simple = false, string $order = self::ORDER_BY_MODIFIED_AT): Paginator
     {
-        return $this->articleRepository->paginatePages($simple);
+        return $this->articleRepository->paginatePages($simple, $order);
     }
 
     /**
      * @return Paginator<Article>
      */
-    public function paginateAnnouces(bool $simple = false): Paginator
+    public function paginateAnnouces(bool $simple = false, string $order = self::ORDER_BY_MODIFIED_AT): Paginator
     {
-        return $this->articleRepository->paginateAnnouces($simple);
+        return $this->articleRepository->paginateAnnouces($simple, $order);
     }
 
     /**
@@ -61,48 +65,48 @@ class ArticleService extends Service
     /**
      * @return Paginator<Article>
      */
-    public function paginateByCategory(string $type, string $slug, bool $simple = false): Paginator
+    public function paginateByCategory(string $type, string $slug, bool $simple = false, string $order = self::ORDER_BY_MODIFIED_AT): Paginator
     {
         $category = $this->categoryRepository->findOrFailByTypeAndSlug($type, $slug);
 
-        return $this->articleRepository->paginateByCategory($category, $simple);
+        return $this->articleRepository->paginateByCategory($category, $simple, $order);
     }
 
     /**
      * @return LengthAwarePaginator<Article>
      */
-    public function paginateByPakAddonCategory(string $pakSlug, string $addonSlug): LengthAwarePaginator
+    public function paginateByPakAddonCategory(string $pakSlug, string $addonSlug, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
     {
         $pak = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
         $addon = $this->categoryRepository->findOrFailByTypeAndSlug('addon', $addonSlug);
 
-        return $this->articleRepository->paginateByPakAddonCategory($pak, $addon);
+        return $this->articleRepository->paginateByPakAddonCategory($pak, $addon, $order);
     }
 
     /**
      * @return LengthAwarePaginator<Article>
      */
-    public function paginateByPakNoneAddonCategory(string $pakSlug): LengthAwarePaginator
+    public function paginateByPakNoneAddonCategory(string $pakSlug, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
     {
         $pak = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
 
-        return $this->articleRepository->paginateByPakNoneAddonCategory($pak);
+        return $this->articleRepository->paginateByPakNoneAddonCategory($pak, $order);
     }
 
     /**
      * @return LengthAwarePaginator<Article>
      */
-    public function paginateByTag(Tag $tag): LengthAwarePaginator
+    public function paginateByTag(Tag $tag, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
     {
-        return $this->articleRepository->paginateByTag($tag);
+        return $this->articleRepository->paginateByTag($tag, $order);
     }
 
     /**
      * @return LengthAwarePaginator<Article>
      */
-    public function paginateBySearch(string $word): LengthAwarePaginator
+    public function paginateBySearch(string $word, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
     {
-        return $this->articleRepository->paginateBySearch($word);
+        return $this->articleRepository->paginateBySearch($word, $order);
     }
 
     public function validateCategoryByTypeAndSlug(string $type, string $slug): void

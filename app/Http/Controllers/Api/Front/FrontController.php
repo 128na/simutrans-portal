@@ -14,14 +14,12 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Services\Front\ArticleService;
 use App\Services\Front\FrontDescriptionService;
-use App\Services\Front\SidebarService;
 use App\Services\Front\TagService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class FrontController extends Controller
 {
     public function __construct(
-        private SidebarService $sidebarService,
         private ArticleService $articleService,
         private TagService $tagService,
         private FrontDescriptionService $frontDescriptionService

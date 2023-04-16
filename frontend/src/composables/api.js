@@ -43,7 +43,7 @@ export const useFrontApi = () => ({
   fetchRanking(page = 1) {
     return axios.get('/api/front/ranking', { params: { page } });
   },
-  fetchSearch(order, word, page = 1) {
+  fetchSearch(word, order, page = 1) {
     return axios.get('/api/front/search', { params: { word, order, page } });
   },
   // show

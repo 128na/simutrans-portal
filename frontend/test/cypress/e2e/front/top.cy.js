@@ -24,7 +24,7 @@ describe('フロントトップ', () => {
       });
       cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
       cy.intercept('/storage/json/sidebar.json', mockSidebarResponse).as('front.sidebar');
-      cy.intercept('/storage/json/top.json', {
+      cy.intercept('/storage/json/top.modified_at.json', {
         statusCode: 500,
         body: {},
       }).as('front.topFailed');

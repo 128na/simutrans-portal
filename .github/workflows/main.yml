@@ -337,8 +337,8 @@ jobs:
 
       - name: rsync pwa
         run: >
-          rsync -ah -e "ssh -i /home/runner/.ssh/id_rsa" ./dist/
-          ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/dist
+          rsync -ah -e "ssh -i /home/runner/.ssh/id_rsa" ./frontend/dist/pwa
+          ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/pwa
 
       - name: publish sourcemap to newrelic
         run: cd frontend && npm run nr:s

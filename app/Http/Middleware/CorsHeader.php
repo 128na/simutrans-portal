@@ -24,7 +24,7 @@ class CorsHeader
     {
         $ref = $request->server('HTTP_REFERER');
         // for debug
-        if (str_starts_with($ref, 'https://pwa-dev.128-bit.net')) {
+        if (is_string($ref) && str_starts_with($ref, 'https://pwa-dev.128-bit.net')) {
             return 'https://pwa-dev.128-bit.net';
         }
 

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useMypageApi } from 'src/composables/api';
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
 import { useApiHandler } from 'src/composables/apiHandler';
@@ -85,24 +85,6 @@ const createSection = (type) => {
   }
 };
 
-const unloadManager = {
-  registered: false,
-  add() {
-    if (unloadManager.registered === false) {
-      window.addEventListener('beforeunload', unloadManager.listener);
-      unloadManager.registered = true;
-    }
-  },
-  remove() {
-    window.removeEventListener('beforeunload', unloadManager.listener);
-    unloadManager.registered = false;
-  },
-  listener(event) {
-    event.preventDefault();
-    event.returnValue = unloadManager.registered ? '' : null;
-  },
-};
-
 // 変更検知用
 let original = null;
 
@@ -129,13 +111,9 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
       article: article.value,
       should_tweet: tweet.value,
     };
-    unloadManager.remove();
     return handlerArticle.handleWithValidate({
       doRequest: () => api.createArticle(params),
-      done: (res) => {
-        unloadManager.remove();
-        return res.data.data;
-      },
+      done: (res) => res.data.data,
       successMessage: '保存しました',
     });
   };
@@ -147,10 +125,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     };
     return handlerArticle.handleWithValidate({
       doRequest: () => api.updateArticle(params),
-      done: (res) => {
-        unloadManager.remove();
-        return res.data.data;
-      },
+      done: (res) => res.data.data,
       successMessage: '更新しました',
     });
   };
@@ -173,30 +148,19 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
       article.value.contents.sections.splice(index, 1);
     }
   };
-
-  watch(article, (v) => {
-    if (isModified(v)) {
-      unloadManager.add();
-    } else {
-      unloadManager.remove();
-    }
-  }, { deep: true });
-
   onBeforeRouteLeave((to, from, next) => {
     // eslint-disable-next-line no-alert
     if (isModified(article.value) && !window.confirm('保存せずに移動しますか？')) {
-      unloadManager.add(); next(false);
+      next(false);
     } else {
-      unloadManager.remove();
       next();
     }
   });
   onBeforeRouteUpdate((to, from, next) => {
     // eslint-disable-next-line no-alert
     if (isModified(article.value) && !window.confirm('保存せずに移動しますか？')) {
-      unloadManager.add(); next(false);
+      next(false);
     } else {
-      unloadManager.remove();
       next();
     }
   });
@@ -309,6 +273,5 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     page,
 
     vali,
-    unloadManager,
   };
 });

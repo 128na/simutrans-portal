@@ -2,6 +2,8 @@
   <q-page class="q-pa-md">
     <TextTitle>SNS・通知ツール</TextTitle>
     <p>記事の更新を各種ツールで受け取れます。</p>
+    <TextSubTitle>プッシュ通知</TextSubTitle>
+    <q-btn @click=handleOneSign>有効化</q-btn>
     <TextSubTitle>Twitterアカウント</TextSubTitle>
     <p>記事が投稿・更新されると自動でツイートされます。</p>
     <a href="https://twitter.com/PortalSimutrans" target="_blank" rel="noopener nofollow"
@@ -90,6 +92,13 @@ import { useMeta } from 'src/composables/meta';
 import TextSubTitle from 'src/components/Common/Text/TextSubTitle.vue';
 import { useQuasar } from 'quasar';
 
+const registerTwitterWidget = () => {
+  const script = document.createElement('script');
+  script.setAttribute('src', 'https://platform.twitter.com/widgets.js');
+  script.async = true;
+  document.head.appendChild(script);
+};
+
 export default defineComponent({
   name: 'PageSocial',
   components: {
@@ -103,14 +112,32 @@ export default defineComponent({
     const $q = useQuasar();
 
     onMounted(() => {
-      const script = document.createElement('script');
-      script.setAttribute('src', 'https://platform.twitter.com/widgets.js');
-      script.async = true;
-      document.head.appendChild(script);
+      registerTwitterWidget();
     });
+
+    const handleOneSign = () => {
+      const isPushSupported = window.OneSignal.isPushNotificationsSupported();
+      if (!isPushSupported) {
+        // eslint-disable-next-line no-alert
+        window.alert('このデバイスはプッシュ通知未対応です');
+        return;
+      }
+      window.OneSignal.isPushNotificationsEnabled((isEnabled) => {
+        if (isEnabled) {
+          // eslint-disable-next-line no-alert
+          window.alert('プッシュ通知登録済みです');
+          return;
+        }
+
+        window.OneSignal.push(() => {
+          window.OneSignal.showNativePrompt();
+        });
+      });
+    };
 
     return {
       mode: $q.dark.isActive ? 'dark' : 'light',
+      handleOneSign,
     };
   },
 });

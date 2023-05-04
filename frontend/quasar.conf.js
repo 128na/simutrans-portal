@@ -169,8 +169,8 @@ module.exports = configure((ctx) => ({
 
     manifest: {
       name: 'Simutrans Addon Portal',
-      short_name: 'Simutrans Addon Portal',
-      description: 'A Quasar Framework app',
+      short_name: 'ぽ',
+      description: 'Simutrans Addon Portal',
       display: 'standalone',
       orientation: 'portrait',
       background_color: '#ffffff',

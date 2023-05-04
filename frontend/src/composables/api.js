@@ -158,6 +158,11 @@ export const useMypageApi = () => ({
   aiDescription(text) {
     return axios.post('/api/mypage/ai/description', { text });
   },
+
+  // ログイン履歴
+  fetchLoginHistories() {
+    return axios.get('/api/mypage/login_histories');
+  },
 });
 
 export const useAdminApi = () => ({

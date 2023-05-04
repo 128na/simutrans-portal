@@ -62,6 +62,10 @@ const routes = [
         ,
       },
       {
+        name: 'loginHistory', path: 'login_history', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/LoginHistory.vue')
+        ,
+      },
+      {
         name: 'requiresVerified', path: 'requires-verified', meta: { requiresAuth: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/RequiresVerified.vue')
         ,
       },

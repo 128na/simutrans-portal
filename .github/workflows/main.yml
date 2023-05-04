@@ -306,7 +306,7 @@ jobs:
         if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
         run: cd frontend && npm ci
       - name: Build Assets
-        run: cd frontend && npm run build
+        run: cd frontend && npm run build && npm run build:pwa
 
       - name: Install SSH key
         run: >
@@ -334,6 +334,11 @@ jobs:
         run: >
           rsync -ah -e "ssh -i /home/runner/.ssh/id_rsa" ./public/
           ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/public
+
+      - name: rsync pwa
+        run: >
+          rsync -ah -e "ssh -i /home/runner/.ssh/id_rsa" ./dist/
+          ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/dist
 
       - name: publish sourcemap to newrelic
         run: cd frontend && npm run nr:s

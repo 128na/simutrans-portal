@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Models\User\LoginHistory;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -17,7 +18,7 @@ class Loggedin extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(private LoginHistory $loginHistory)
     {
     }
 
@@ -42,7 +43,7 @@ class Loggedin extends Notification
     {
         return (new MailMessage())
             ->subject('ログイン通知')
-            ->view('emails.loggedin', ['user' => $notifiable]);
+            ->view('emails.loggedin', ['user' => $notifiable, 'loginHistory' => $this->loginHistory]);
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Api\Mypage\User as UserResouce;
+use App\Models\User;
 use App\Notifications\Loggedin;
 use App\Services\Logging\AuditLogService;
 use App\Services\UserService;
@@ -48,8 +49,10 @@ class LoginController extends Controller
      */
     protected function authenticated($request, $user)
     {
+        /** @var User */
         $user = Auth::user() ?? $user;
-        $user->notify(new Loggedin());
+        $loginHistory = $user->loginHistories()->create();
+        $user->notify(new Loggedin($loginHistory));
         $this->auditLogService->userLoggedIn($user);
 
         $user = $this->userService->getUser($user);

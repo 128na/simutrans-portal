@@ -8,33 +8,16 @@
     </q-item>
     <q-separator />
     <template v-if="store.isVerified">
+      <q-item>
+        <q-item-section>記事</q-item-section>
+      </q-item>
       <q-item :to="{ name: 'mypage' }" exact>
         <q-item-section avatar>
           <q-icon name="home" />
         </q-item-section>
-        <q-item-section>マイページ</q-item-section>
+        <q-item-section>記事一覧</q-item-section>
       </q-item>
-      <q-item :to="{ name: 'profile' }">
-        <q-item-section avatar>
-          <q-icon name="person" />
-        </q-item-section>
-        <q-item-section>プロフィール</q-item-section>
-      </q-item>
-      <q-item :to="{ name: 'invitation' }">
-        <q-item-section avatar>
-          <q-icon name="person_add" />
-        </q-item-section>
-        <q-item-section>ユーザー招待</q-item-section>
-      </q-item>
-      <q-item :to="{ name: 'analytics' }">
-        <q-item-section avatar>
-          <q-icon name="timeline" />
-        </q-item-section>
-        <q-item-section>アクセス解析</q-item-section>
-      </q-item>
-      <q-item>
-        <q-item-section>新規投稿</q-item-section>
-      </q-item>
+
       <q-item :to="{ name: 'create', params: { post_type: 'addon-post' } }">
         <q-item-section avatar>
           <q-icon name="article" />
@@ -59,6 +42,35 @@
         </q-item-section>
         <q-item-section>一般記事(markdown)</q-item-section>
       </q-item>
+      <q-item :to="{ name: 'analytics' }">
+        <q-item-section avatar>
+          <q-icon name="timeline" />
+        </q-item-section>
+        <q-item-section>アクセス解析</q-item-section>
+      </q-item>
+
+      <q-item>
+        <q-item-section>ユーザー</q-item-section>
+      </q-item>
+
+      <q-item :to="{ name: 'profile' }">
+        <q-item-section avatar>
+          <q-icon name="person" />
+        </q-item-section>
+        <q-item-section>プロフィール</q-item-section>
+      </q-item>
+      <q-item :to="{ name: 'invitation' }">
+        <q-item-section avatar>
+          <q-icon name="person_add" />
+        </q-item-section>
+        <q-item-section>ユーザー招待</q-item-section>
+      </q-item>
+      <q-item :to="{ name: 'loginHistory' }">
+        <q-item-section avatar>
+          <q-icon name="history" />
+        </q-item-section>
+        <q-item-section>ログイン履歴</q-item-section>
+      </q-item>
     </template>
     <template v-if="store.isLoggedIn">
       <q-item :to="{ name: 'logout' }">
@@ -77,7 +89,6 @@
     <q-separator />
     <MetaInfo />
   </q-list>
-
 </template>
 
 <script>

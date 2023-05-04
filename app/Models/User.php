@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Models\BulkZippableInterface;
+use App\Models\User\LoginHistory;
 use App\Models\User\Profile;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
@@ -133,6 +134,11 @@ class User extends Authenticatable implements MustVerifyEmail, BulkZippableInter
     public function lastModifiedBy(): HasMany
     {
         return $this->hasMany(Tag::class, 'lastModifiedBy');
+    }
+
+    public function loginHistories(): HasMany
+    {
+        return $this->hasMany(LoginHistory::class);
     }
 
     /*

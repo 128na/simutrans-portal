@@ -1,13 +1,9 @@
 import { defineStore } from 'pinia';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
 import { useMypageApi } from 'src/composables/api';
 import { useApiHandler } from 'src/composables/apiHandler';
 
-const unloadListener = (event) => {
-  event.preventDefault();
-  event.returnValue = '';
-};
 // 変更検知用
 let original = null;
 
@@ -29,40 +25,26 @@ export const useProfileEditStore = defineStore('profileEdit', () => {
   const updateUser = async () => {
     const res = await handler.handleWithValidate({
       doRequest: () => api.updateUser(user.value),
-      done: () => {
-        window.removeEventListener('beforeunload', unloadListener);
-      },
+      done: () => {},
       successMessage: '保存しました',
     });
 
     return res.data.data;
   };
 
-  watch(user, (v) => {
-    if (isModified(v)) {
-      window.addEventListener('beforeunload', unloadListener);
-    } else {
-      window.removeEventListener('beforeunload', unloadListener);
-    }
-  }, { deep: true });
-
   onBeforeRouteLeave((to, from, next) => {
     // eslint-disable-next-line no-alert
     if (isModified(user.value) && !window.confirm('保存せずに移動しますか？')) {
-      window.addEventListener('beforeunload', unloadListener);
       next(false);
     } else {
-      window.removeEventListener('beforeunload', unloadListener);
       next();
     }
   });
   onBeforeRouteUpdate((to, from, next) => {
     // eslint-disable-next-line no-alert
     if (isModified(user.value) && !window.confirm('保存せずに移動しますか？')) {
-      window.addEventListener('beforeunload', unloadListener);
       next(false);
     } else {
-      window.removeEventListener('beforeunload', unloadListener);
       next();
     }
   });

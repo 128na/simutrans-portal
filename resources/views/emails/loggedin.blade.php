@@ -9,9 +9,9 @@
 </p>
 <p>
     IPアドレス<br>
-    {{ request()->server('REMOTE_ADDR', '不明') }}<br>
+    {{ $loginHistory->ip ?? '不明' }}<br>
     アクセス元<br>
-    {{ request()->server('HTTP_REFERER', '不明') }}<br>
+    {{ $loginHistory->referer ?? '不明' }}
     ユーザーエージェント（ブラウザ情報）<br>
-    {{ request()->server('HTTP_USER_AGENT', '不明') }}
+    {{ $loginHistory->ua ?? '不明' }}<br>
 </p>

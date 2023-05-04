@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Mypage\BulkZipController;
 use App\Http\Controllers\Api\Mypage\EditorController;
 use App\Http\Controllers\Api\Mypage\ForgotPasswordController;
 use App\Http\Controllers\Api\Mypage\InvitationCodeController;
+use App\Http\Controllers\Api\Mypage\LoginHistoryController;
 use App\Http\Controllers\Api\Mypage\ResetPasswordController;
 use App\Http\Controllers\Api\Mypage\TagController;
 use App\Http\Controllers\Api\Mypage\UserController;
@@ -84,6 +85,8 @@ Route::prefix('mypage')->group(function () {
         Route::get('/invitation_code', [InvitationCodeController::class, 'index']);
         Route::post('/invitation_code', [InvitationCodeController::class, 'update']);
         Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy']);
+        // ログイン履歴
+        Route::get('/login_histories', [LoginHistoryController::class, 'index']);
     });
 });
 // Admin

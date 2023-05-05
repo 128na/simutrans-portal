@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { useMypageApi } from 'src/composables/api';
-import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
 import { useApiHandler } from 'src/composables/apiHandler';
 
 const api = useMypageApi();
@@ -88,11 +87,6 @@ const createSection = (type) => {
 // 変更検知用
 let original = null;
 
-const isModified = (val) => {
-  const current = JSON.stringify(val);
-  return original !== current;
-};
-
 export const useArticleEditStore = defineStore('articleEdit', () => {
   // article
   const article = ref(null);
@@ -148,22 +142,6 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
       article.value.contents.sections.splice(index, 1);
     }
   };
-  onBeforeRouteLeave((to, from, next) => {
-    // eslint-disable-next-line no-alert
-    if (isModified(article.value) && !window.confirm('保存せずに移動しますか？')) {
-      next(false);
-    } else {
-      next();
-    }
-  });
-  onBeforeRouteUpdate((to, from, next) => {
-    // eslint-disable-next-line no-alert
-    if (isModified(article.value) && !window.confirm('保存せずに移動しますか？')) {
-      next(false);
-    } else {
-      next();
-    }
-  });
 
   // option
   const statuses = computed(() => options.value?.statuses);

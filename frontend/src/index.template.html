@@ -16,6 +16,15 @@
   <link rel="icon" type="image/ico" href="favicon.ico">
   <script
     src="https://www.google.com/recaptcha/enterprise.js?render=<%= process.env.GOOGLE_RECAPTCHA_SITE_KEY%>"></script>
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" defer></script>
+  <script>
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function () {
+      OneSignal.init({
+        appId: "<%= process.env.ONESIGNAL_APP_ID%>",
+      });
+    });
+  </script>
 </head>
 
 <body>

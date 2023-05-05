@@ -32,15 +32,8 @@
     <link href="{{ asset(mix('/css/app.css')) }}" rel="stylesheet">
     <script src="https://www.google.com/recaptcha/enterprise.js?render={{ config('services.google_recaptcha.siteKey') }}">
     </script>
-    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" defer></script>
-    <script>
-        window.OneSignal = window.OneSignal || [];
-        OneSignal.push(function() {
-            OneSignal.init({
-                appId: "{{ config('onesignal.app_id') }}",
-            });
-        });
-    </script>
+    @include('onesignal')
+
 </head>
 
 <body>

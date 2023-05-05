@@ -13,7 +13,7 @@ use App\Models\Article;
 use App\Notifications\ArticlePublished;
 use App\Notifications\ArticleUpdated;
 use App\Services\ArticleEditorService;
-use App\Services\OneSignal\SendOneSignal;
+use App\Services\Notification\SendOneSignal;
 use Illuminate\Support\Facades\DB;
 
 class EditorController extends Controller

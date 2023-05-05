@@ -6,7 +6,7 @@ namespace App\Notifications;
 
 use App\Channels\TwitterChannel;
 use App\Models\Article;
-use App\Services\OneSignal\MessageGenerator;
+use App\Services\Notification\MessageGenerator;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 

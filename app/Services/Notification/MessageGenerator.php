@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Services\OneSignal;
+namespace App\Services\Notification;
 
 use App\Models\Article;
 use App\Models\User;

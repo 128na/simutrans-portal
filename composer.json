@@ -9,6 +9,7 @@
   "require": {
     "php": "^8.0.2",
     "abraham/twitteroauth": "^4.0.1",
+    "berkayk/onesignal-laravel": "^2.0",
     "cebe/markdown": "^1.2.1",
     "doctrine/dbal": "^3.6.2",
     "ezyang/htmlpurifier": "^4.16",

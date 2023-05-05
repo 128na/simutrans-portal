@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Models\Article;
+
 class ArticleUpdated extends ArticleNotification
 {
-    protected function getMessage(): string
+    /**
+     * @param  Article  $article
+     * @return string
+     */
+    public function toTwitter($article)
     {
-        return "「:title」更新\n:url\nby :name\nat :at\n:tags";
+        return $this->messageGenerator->buildUpdatedMessage($article);
     }
 }

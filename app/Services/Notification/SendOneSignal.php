@@ -16,17 +16,26 @@ class SendOneSignal extends Service
 
     public function sendArticlePublishedNotification(Article $article): void
     {
-        OneSignalFacade::sendNotificationToAll(
-            $this->messageGenerator->buildPublishedMessage($article),
-            route('articles.show', $article->slug),
-        );
+        if ($this->featureEnabled()) {
+            OneSignalFacade::sendNotificationToAll(
+                $this->messageGenerator->buildPublishedMessage($article),
+                route('articles.show', $article->slug),
+            );
+        }
     }
 
     public function sendArticleUpdatedNotification(Article $article): void
     {
-        OneSignalFacade::sendNotificationToAll(
-            $this->messageGenerator->buildUpdatedMessage($article),
-            route('articles.show', $article->slug),
-        );
+        if ($this->featureEnabled()) {
+            OneSignalFacade::sendNotificationToAll(
+                $this->messageGenerator->buildUpdatedMessage($article),
+                route('articles.show', $article->slug),
+            );
+        }
+    }
+
+    private function featureEnabled(): bool
+    {
+        return config('onesignal.app_id') && config('onesignal.rest_api_key');
     }
 }

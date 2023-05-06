@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>{{ $meta['title'] ?? config('app.name') }}</title>
 
     @production
+        @include('ga')
         @include('newrelic')
     @endproduction
 

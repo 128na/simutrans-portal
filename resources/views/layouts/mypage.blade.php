@@ -8,6 +8,7 @@
     <title>@yield('title') - {{ config('app.name') }}</title>
 
     @production
+        @include('ga')
         @include('newrelic')
     @endproduction
 

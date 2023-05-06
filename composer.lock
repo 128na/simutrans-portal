@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91fb6496f53564aa422c8d24f06548c3",
+    "content-hash": "1aa96765922fb3415df701c1b7908bb8",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -9400,57 +9400,6 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
-        },
-        {
-            "name": "yarri/full-text-search-query-like",
-            "version": "v0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/yarri/FullTextSearchQueryLike.git",
-                "reference": "b5b2384281e49b222b463b6a69cae1e16ad8a5ab"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/yarri/FullTextSearchQueryLike/zipball/b5b2384281e49b222b463b6a69cae1e16ad8a5ab",
-                "reference": "b5b2384281e49b222b463b6a69cae1e16ad8a5ab",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "atk14/tester": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jaromir Tomek",
-                    "homepage": "https://github.com/yarri"
-                }
-            ],
-            "description": "FullTextSearchQueryLike is a PHP class which transforms search strings into clever SQL conditions with the LIKE operator",
-            "homepage": "https://github.com/atk14/FullTextSearchQueryLike",
-            "keywords": [
-                "LIKE operator",
-                "full-text",
-                "fulltext",
-                "like",
-                "sql"
-            ],
-            "support": {
-                "issues": "https://github.com/yarri/FullTextSearchQueryLike/issues",
-                "source": "https://github.com/yarri/FullTextSearchQueryLike/tree/master"
-            },
-            "time": "2019-03-23T08:50:07+00:00"
         }
     ],
     "packages-dev": [

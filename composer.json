@@ -26,8 +26,7 @@
     "sentry/sentry-laravel": "^3.3.3",
     "spatie/flysystem-dropbox": "^3.0.0",
     "spatie/laravel-backup": "^8.1.8",
-    "spatie/laravel-feed": "^4.2.1",
-    "yarri/full-text-search-query-like": "^0.2.0"
+    "spatie/laravel-feed": "^4.2.1"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.8.1",

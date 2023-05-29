@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a43585111533e6787924b9357c5d08e4",
+    "content-hash": "4497e991cc2f9489eb62e642913b79e7",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -10180,35 +10180,37 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v6.25.2",
+            "version": "v7.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "25a595ac3dc82089a91af10dd23b0d58fd3f6d0b"
+                "reference": "836338ec355fc129b09f26f3cbc19de2daf065ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/25a595ac3dc82089a91af10dd23b0d58fd3f6d0b",
-                "reference": "25a595ac3dc82089a91af10dd23b0d58fd3f6d0b",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/836338ec355fc129b09f26f3cbc19de2daf065ad",
+                "reference": "836338ec355fc129b09f26f3cbc19de2daf065ad",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-zip": "*",
-                "illuminate/console": "^6.0|^7.0|^8.0|^9.0",
-                "illuminate/support": "^6.0|^7.0|^8.0|^9.0",
+                "illuminate/console": "^9.0|^10.0",
+                "illuminate/support": "^9.0|^10.0",
                 "nesbot/carbon": "^2.0",
-                "php": "^7.2|^8.0",
+                "php": "^8.0",
                 "php-webdriver/webdriver": "^1.9.0",
-                "symfony/console": "^4.3|^5.0|^6.0",
-                "symfony/finder": "^4.3|^5.0|^6.0",
-                "symfony/process": "^4.3|^5.0|^6.0",
-                "vlucas/phpdotenv": "^3.0|^4.0|^5.2"
+                "symfony/console": "^6.0",
+                "symfony/finder": "^6.0",
+                "symfony/process": "^6.0",
+                "vlucas/phpdotenv": "^5.2"
             },
             "require-dev": {
-                "mockery/mockery": "^1.0",
-                "orchestra/testbench": "^4.16|^5.17.1|^6.12.1|^7.0",
-                "phpunit/phpunit": "^7.5.15|^8.4|^9.0"
+                "mockery/mockery": "^1.4.2",
+                "orchestra/testbench": "^7.0|^8.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.5.10|^10.0.1",
+                "psy/psysh": "^0.11.12"
             },
             "suggest": {
                 "ext-pcntl": "Used to gracefully terminate Dusk when tests are running."
@@ -10216,7 +10218,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "6.x-dev"
+                    "dev-master": "7.x-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -10247,9 +10249,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/dusk/issues",
-                "source": "https://github.com/laravel/dusk/tree/v6.25.2"
+                "source": "https://github.com/laravel/dusk/tree/v7.7.1"
             },
-            "time": "2022-09-29T09:37:07+00:00"
+            "time": "2023-04-13T14:50:22+00:00"
         },
         {
             "name": "laravel/pint",

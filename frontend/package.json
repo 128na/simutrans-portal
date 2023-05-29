@@ -54,7 +54,7 @@
     "fs-extra": "^11",
     "fs-readdir-recursive": "^1",
     "playwright-webkit": "^1",
-    "workbox-webpack-plugin": "^6.5.4"
+    "workbox-webpack-plugin": "^6.6.0"
   },
   "browserslist": [
     "last 15 versions"

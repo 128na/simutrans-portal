@@ -34,7 +34,7 @@
     "brianium/paratest": "^6.4.4",
     "fakerphp/faker": "^1.21.0",
     "filp/whoops": "^2.15.2",
-    "laravel/dusk": "^6.25.2",
+    "laravel/dusk": "^7.7.1",
     "laravel/pint": "^1.5",
     "laravel/sail": "^1.21.4",
     "mockery/mockery": "^1.5.1",

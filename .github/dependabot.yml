@@ -9,11 +9,11 @@ updates:
     directory: "/frontend"
     schedule:
       interval: "daily"
-    reviewers:
+    assignees:
       - "128na"
   - package-ecosystem: "composer"
     directory: "/" 
     schedule:
       interval: "daily"
-    reviewers:
+    assignees:
       - "128na"

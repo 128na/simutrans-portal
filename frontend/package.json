@@ -23,7 +23,7 @@
   "dependencies": {
     "@quasar/extras": "^1",
     "@sentry/tracing": "^7.53.1",
-    "@sentry/vue": "^7.53.1",
+    "@sentry/vue": "^7.54.0",
     "apexcharts": "^3",
     "axios": "^1",
     "core-js": "^3",

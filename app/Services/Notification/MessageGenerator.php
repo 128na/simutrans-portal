@@ -21,6 +21,16 @@ class MessageGenerator extends Service
         return __('notification.article.update', $this->getParams($article));
     }
 
+    public function buildSimplePublishedMessage(Article $article): string
+    {
+        return __('notification.simple_article.create', $this->getParams($article));
+    }
+
+    public function buildSimpleUpdatedMessage(Article $article): string
+    {
+        return __('notification.simple_article.update', $this->getParams($article));
+    }
+
     /**
      * @return array<string>
      */

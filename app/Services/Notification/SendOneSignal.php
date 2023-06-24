@@ -18,7 +18,7 @@ class SendOneSignal extends Service
     {
         if ($this->featureEnabled()) {
             OneSignalFacade::sendNotificationToAll(
-                $this->messageGenerator->buildPublishedMessage($article),
+                $this->messageGenerator->buildSimplePublishedMessage($article),
                 route('articles.show', $article->slug),
             );
         }
@@ -28,7 +28,7 @@ class SendOneSignal extends Service
     {
         if ($this->featureEnabled()) {
             OneSignalFacade::sendNotificationToAll(
-                $this->messageGenerator->buildUpdatedMessage($article),
+                $this->messageGenerator->buildSimpleUpdatedMessage($article),
                 route('articles.show', $article->slug),
             );
         }

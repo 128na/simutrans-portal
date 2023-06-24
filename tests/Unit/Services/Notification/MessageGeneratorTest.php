@@ -48,7 +48,8 @@ class MessageGeneratorTest extends UnitTestCase
         });
         $now = now()->format('Y/m/d H:i');
         $actual = $this->getSUT()->buildPublishedMessage($article);
-        $expected = "新規投稿「dummy_title」\nhttp://localhost:1080/articles/dummy_slug\nby dummy_name\nat $now\n#Simutrans #dummy_pak";
+        $url = config('app.url');
+        $expected = "新規投稿「dummy_title」\n$url/articles/dummy_slug\nby dummy_name\nat $now\n#Simutrans #dummy_pak";
 
         $this->assertEquals($expected, $actual);
     }
@@ -82,7 +83,8 @@ class MessageGeneratorTest extends UnitTestCase
         $article = $this->getMockArticle();
         $now = now()->format('Y/m/d H:i');
         $actual = $this->getSUT()->buildPublishedMessage($article);
-        $expected = "新規投稿「dummy_title」\nhttp://localhost:1080/articles/dummy_slug\nby @dummy_twitter\nat $now\n#Simutrans #dummy_pak";
+        $url = config('app.url');
+        $expected = "新規投稿「dummy_title」\n$url/articles/dummy_slug\nby @dummy_twitter\nat $now\n#Simutrans #dummy_pak";
 
         $this->assertEquals($expected, $actual);
     }
@@ -93,7 +95,8 @@ class MessageGeneratorTest extends UnitTestCase
         $article = $this->getMockArticle();
         $now = now()->format('Y/m/d H:i');
         $actual = $this->getSUT()->buildUpdatedMessage($article);
-        $expected = "「dummy_title」更新\nhttp://localhost:1080/articles/dummy_slug\nby @dummy_twitter\nat $now\n#Simutrans #dummy_pak";
+        $url = config('app.url');
+        $expected = "「dummy_title」更新\n$url/articles/dummy_slug\nby @dummy_twitter\nat $now\n#Simutrans #dummy_pak";
 
         $this->assertEquals($expected, $actual);
     }

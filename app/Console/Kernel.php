@@ -10,18 +10,9 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     /**
-     * The Artisan commands provided by your application.
-     *
-     * @var array<string>
-     */
-    protected $commands = [];
-
-    /**
      * Define the application's command schedule.
-     *
-     * @return void
      */
-    protected function schedule(Schedule $schedule)
+    protected function schedule(Schedule $schedule): void
     {
         // 毎分
         $schedule->command('article:publish-reservation')->everyMinute()
@@ -46,20 +37,12 @@ class Kernel extends ConsoleKernel
         $schedule->command('delete:tags')->dailyAt('4:00')
             ->withoutOverlapping()
             ->onOneServer();
-        // $schedule->command('tweet_log:update_by_timeline -w')->dailyAt('5:00')
-        //     ->withoutOverlapping()
-        //     ->onOneServer();
-        // $schedule->command('tweet_log:update_by_timeline')->dailyAt('5:30')
-        //     ->withoutOverlapping()
-        //     ->onOneServer();
     }
 
     /**
      * Register the commands for the application.
-     *
-     * @return void
      */
-    protected function commands()
+    protected function commands(): void
     {
         $this->load(__DIR__.'/Commands');
 

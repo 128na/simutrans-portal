@@ -23,7 +23,7 @@ class InvitationCodeController extends Controller
     public function __construct(
         private UserRepository $userRepository,
         private AuditLogService $auditLogService,
-        ) {
+    ) {
     }
 
     /**

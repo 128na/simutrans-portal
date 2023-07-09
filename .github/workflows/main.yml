@@ -19,7 +19,7 @@ jobs:
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8"
+          php-version: "8.1"
       - name: Cache vendor
         id: cache-composer
         uses: actions/cache@v3
@@ -47,7 +47,7 @@ jobs:
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8"
+          php-version: "8.1"
       - name: Cache vendor
         id: cache-composer
         uses: actions/cache@v3
@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php_version: [8.0, 8.1, 8.2]
+        php_version: [8.1, 8.2]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -169,7 +169,7 @@ jobs:
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8"
+          php-version: "8.1"
       - name: Cache vendor
         id: cache-composer
         uses: actions/cache@v3

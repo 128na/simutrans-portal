@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services\FileInfo;
+namespace Tests\Unit\Services\Notification;
 
 use App\Models\Article;
 use App\Models\Category;

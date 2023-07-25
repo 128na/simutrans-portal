@@ -16,12 +16,6 @@
       </q-item-section>
       <q-item-section>機能制限</q-item-section>
     </q-item>
-    <q-item :to="{ name: 'admin.token' }">
-      <q-item-section avatar>
-        <q-icon name="key" />
-      </q-item-section>
-      <q-item-section>トークン</q-item-section>
-    </q-item>
     <q-item :to="{ name: 'admin.articles' }">
       <q-item-section avatar>
         <q-icon name="article" />

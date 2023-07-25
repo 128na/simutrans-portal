@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\OauthController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\LoginController;
@@ -52,10 +51,6 @@ Route::get('/articles/{article}/download', [FrontController::class, 'download'])
 
 Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function () {
     Route::get('/admin/', [AdminController::class, 'index'])->name('admin.index');
-    Route::get('/admin/oauth/twitter/authorize', [OauthController::class, 'authoroize'])->name('admin.oauth.twitter.authorize');
-    Route::get('/admin/oauth/twitter/callback', [OauthController::class, 'callback'])->name('admin.oauth.twitter.callback');
-    Route::get('/admin/oauth/twitter/refresh', [OauthController::class, 'refresh'])->name('admin.oauth.twitter.refresh');
-    Route::get('/admin/oauth/twitter/revoke', [OauthController::class, 'revoke'])->name('admin.oauth.twitter.revoke');
 });
 
 Route::get('/error/{status}', [FrontController::class, 'error'])->name('error');

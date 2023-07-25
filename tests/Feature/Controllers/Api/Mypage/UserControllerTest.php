@@ -107,10 +107,8 @@ class UserControllerTest extends ArticleTestCase
         Notification::assertNothingSent();
     }
 
-    public function dataValidation()
+    public static function dataValidation()
     {
-        $this->refreshApplication();
-
         yield 'user.nameがnull' => [
             fn () => ['name' => null], 'user.name', ];
         yield 'user.nameが256文字以上' => [

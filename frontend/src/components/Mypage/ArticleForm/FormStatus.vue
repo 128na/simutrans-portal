@@ -25,15 +25,15 @@ export default defineComponent({
         editor.article.published_at = null;
       }
     };
-    const handleTweet = (val) => {
+    const handleNotify = (val) => {
       // 公開のとき以外は無効にする
       if (val !== 'publish') {
-        editor.tweet = false;
+        editor.shouldNotify = false;
       }
     };
     const handle = (val) => {
       handlePublishedAt(val);
-      handleTweet(val);
+      handleNotify(val);
     };
     return {
       editor,

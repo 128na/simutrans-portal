@@ -24,13 +24,6 @@ export const mockArticlesResponse = {
       metrics: {
         totalViewCount: 1,
         totalConversionCount: 2,
-        totalRetweetCount: 3,
-        totalReplyCount: 4,
-        totalLikeCount: 5,
-        totalQuoteCount: 6,
-        totalImpressionCount: 7,
-        totalUrlLinkClicks: 8,
-        totalUserProfileClicks: 9,
       },
     }],
   },

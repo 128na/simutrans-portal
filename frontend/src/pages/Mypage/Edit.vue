@@ -7,7 +7,7 @@
           <text-title>編集</text-title>
           <article-form />
           <form-without-update-modified-at />
-          <form-tweet />
+          <form-notify>
           <div class="row">
             <q-btn color="primary" @click="handle">保存する</q-btn>
             <q-space />
@@ -37,7 +37,7 @@ import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { useMypageStore } from 'src/store/mypage';
 import { dom } from 'quasar';
 import ArticleForm from 'src/components/Mypage/PostType/ArticleForm.vue';
-import FormTweet from 'src/components/Mypage/ArticleForm/FormTweet.vue';
+import FormNotify from 'src/components/Mypage/ArticleForm/FormNotify.vue';
 import FormWithoutUpdateModifiedAt from 'src/components/Mypage/ArticleForm/FormWithoutUpdateModifiedAt.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import { useMeta } from 'src/composables/meta';
@@ -48,7 +48,7 @@ export default defineComponent({
     ArticleForm,
     LoadingPage,
     FrontArticleShow,
-    FormTweet,
+    FormNotify,
     FormWithoutUpdateModifiedAt,
     TextTitle,
   },

@@ -6,7 +6,7 @@
         <div class="q-gutter-sm">
           <text-title>新規作成</text-title>
           <article-form />
-          <form-tweet />
+          <form-notify />
           <div class="row">
             <q-btn color="primary" @click="handle">保存する</q-btn>
             <q-space />
@@ -36,7 +36,7 @@ import LoadingPage from 'src/components/Common/LoadingPage.vue';
 import FrontArticleShow from 'src/components/Front/FrontArticleShow.vue';
 import { useMypageStore } from 'src/store/mypage';
 import { dom } from 'quasar';
-import FormTweet from 'src/components/Mypage/ArticleForm/FormTweet.vue';
+import FormNotify from 'src/components/Mypage/ArticleForm/FormNotify.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import ArticleForm from 'src/components/Mypage/PostType/ArticleForm.vue';
 import { useMeta } from 'src/composables/meta';
@@ -47,7 +47,7 @@ export default defineComponent({
     ArticleForm,
     LoadingPage,
     FrontArticleShow,
-    FormTweet,
+    FormNotify,
     TextTitle,
   },
   setup() {

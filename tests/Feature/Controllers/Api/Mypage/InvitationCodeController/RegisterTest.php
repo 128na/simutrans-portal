@@ -69,7 +69,7 @@ class RegisterTest extends TestCase
         $response->assertJsonValidationErrorFor($key);
     }
 
-    public function dataValidation()
+    public static function dataValidation()
     {
         yield 'nameが空' => [
             ['name' => ''], 'name',

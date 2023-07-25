@@ -7,7 +7,7 @@
           <text-title>編集</text-title>
           <article-form />
           <form-without-update-modified-at />
-          <form-notify>
+          <form-notify />
           <div class="row">
             <q-btn color="primary" @click="handle">保存する</q-btn>
             <q-space />

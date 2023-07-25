@@ -189,7 +189,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\DropboxServiceProvider::class,
-        App\Providers\TwitterOauthProvider::class,
         App\Providers\GoogleServiceProvider::class,
 
         // discord notifiaction

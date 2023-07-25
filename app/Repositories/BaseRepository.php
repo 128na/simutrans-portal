@@ -145,7 +145,7 @@ abstract class BaseRepository
      * @param  array<string>  $column
      * @param  array<mixed>  $with
      */
-    public function findAll(array $column = ['*'], array $with = [], ?int $limit = null): Collection
+    public function findAll(array $column = ['*'], array $with = [], int $limit = null): Collection
     {
         $q = $this->model
             ->select($column)

@@ -19,7 +19,7 @@ class SearchTweetServiceTest extends UnitTestCase
         return app(SearchTweetService::class);
     }
 
-    private function createMockData(?string $paginationToken = null): stdClass
+    private function createMockData(string $paginationToken = null): stdClass
     {
         $publicMetrics = new stdClass();
         $publicMetrics->retweet_count = 1;

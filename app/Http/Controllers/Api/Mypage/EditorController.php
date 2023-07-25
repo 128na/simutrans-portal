@@ -44,7 +44,7 @@ class EditorController extends Controller
         $article = DB::transaction(fn () => $this->articleEditorService->storeArticle($this->loggedinUser(), $request));
         JobUpdateRelated::dispatchAfterResponse();
 
-        if ($article->is_publish && $request->should_tweet) {
+        if ($article->is_publish && $request->should_notify) {
             $article->notify(new ArticlePublished());
             $this->sendOneSignal->sendArticlePublishedNotification($article);
         }
@@ -69,8 +69,8 @@ class EditorController extends Controller
         if (! $article->is_publish) {
             return;
         }
-        // ツイートを希望しない
-        if (! $request->should_tweet) {
+        // 通知を希望しない
+        if (! $request->should_notify) {
             return;
         }
         // 更新日を更新しない

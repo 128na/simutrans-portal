@@ -14,8 +14,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // 毎分
+        // 毎分 サーバー都合でcron設定としては5分周期
+        $schedule->command('queue:work', ['--max-time' => 240])->everyMinute()
+            ->runInBackground()
+            ->withoutOverlapping()
+            ->onOneServer();
         $schedule->command('article:publish-reservation')->everyMinute()
+            ->runInBackground()
             ->withoutOverlapping()
             ->onOneServer();
 
@@ -26,15 +31,19 @@ class Kernel extends ConsoleKernel
 
         // 毎日
         $schedule->command('check:deadlink')->dailyAt('10:00')
+            ->runInBackground()
             ->withoutOverlapping()
             ->onOneServer();
         $schedule->command('backup:clean')->dailyAt('2:00')
+            ->runInBackground()
             ->withoutOverlapping()
             ->onOneServer();
         $schedule->command('backup:run')->dailyAt('3:00')
+            ->runInBackground()
             ->withoutOverlapping()
             ->onOneServer();
         $schedule->command('delete:tags')->dailyAt('4:00')
+            ->runInBackground()
             ->withoutOverlapping()
             ->onOneServer();
     }

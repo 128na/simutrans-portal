@@ -13,14 +13,12 @@ use App\Models\Article;
 use App\Notifications\ArticlePublished;
 use App\Notifications\ArticleUpdated;
 use App\Services\ArticleEditorService;
-use App\Services\Notification\SendOneSignal;
 use Illuminate\Support\Facades\DB;
 
 class EditorController extends Controller
 {
     public function __construct(
         private ArticleEditorService $articleEditorService,
-        private SendOneSignal $sendOneSignal,
     ) {
     }
 
@@ -46,7 +44,6 @@ class EditorController extends Controller
 
         if ($article->is_publish && $request->should_notify) {
             $article->notify(new ArticlePublished());
-            $this->sendOneSignal->sendArticlePublishedNotification($article);
         }
 
         return $this->index();
@@ -81,10 +78,8 @@ class EditorController extends Controller
         // published_atがnullから初めて変わった場合は新規投稿扱い
         if ($notYetPublished) {
             $article->notify(new ArticlePublished());
-            $this->sendOneSignal->sendArticlePublishedNotification($article);
         } else {
             $article->notify(new ArticleUpdated());
-            $this->sendOneSignal->sendArticleUpdatedNotification($article);
         }
     }
 }

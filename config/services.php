@@ -31,4 +31,10 @@ return [
         'endpoint' => 'https://api.openai.com/v1/completions',
         'key' => env('OPEN_AI_KEY'),
     ],
+    'twitter' => [
+        // STANDALONE APPS > Keys and tokens > Authentication Tokens
+        'bearer_token' => env('TWITTER_BEARER_TOKEN'),
+        'access_token' => env('TWITTER_ACCESS_TOKEN'),
+        'access_secret' => env('TWITTER_ACCESS_SECRET'),
+    ],
 ];

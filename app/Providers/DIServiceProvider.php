@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Repositories\Attachment\FileInfoRepository;
 use App\Services\BulkZip\Decorators\AddonIntroductionDecorator;
 use App\Services\BulkZip\Decorators\AddonPostDecorator;
@@ -36,6 +37,7 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
             MarkdownService::class,
             ZipManager::class,
             FileInfoService::class,
+            TwitterOAuth::class,
         ];
     }
 
@@ -84,5 +86,15 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
                 ]
             );
         });
+
+        $this->app->bind(TwitterOAuth::class, function ($app) {
+            return new TwitterOAuth(
+                config('services.twitter.access_token'),
+                config('services.twitter.access_secret'),
+                null,
+                config('services.twitter.bearer_token'),
+            );
+        });
+
     }
 }

@@ -33,6 +33,8 @@ php artisan key:generate
 php artisan migrate --seed
 ```
 
+メール送信があるため、 `mailpit` などの使用を推奨
+
 ### Frontend
 
 ```bash

@@ -25,7 +25,6 @@ class ProfileFactory extends Factory
     {
         return [
             'description' => 'Hello!',
-            'twitter' => 'twitter_jp',
             'website' => 'http://example.com',
         ];
     }

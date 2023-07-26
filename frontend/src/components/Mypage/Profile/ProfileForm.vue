@@ -26,12 +26,6 @@
       <label-optional>WebサイトURL</label-optional>
     </template>
   </q-input>
-  <q-input label-slot v-model="editor.user.profile.data.twitter" bottom-slots
-    :error-message="editor.vali('user.profile.data.twitter')" :error="!!editor.vali('user.profile.data.twitter')">
-    <template v-slot:label>
-      <label-optional>Twitter ID</label-optional>
-    </template>
-  </q-input>
 </template>
 <script>
 import LabelRequired from 'src/components/Common/LabelRequired.vue';

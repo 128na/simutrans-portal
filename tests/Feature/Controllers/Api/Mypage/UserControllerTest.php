@@ -46,8 +46,6 @@ class UserControllerTest extends ArticleTestCase
                 'data' => [
                     'avatar' => $this->user->profile->data->avatar,
                     'description' => $this->user->profile->data->description,
-                    'twitter' => $this->user->profile->data->twitter,
-                    'website' => $this->user->profile->data->website,
                 ],
             ],
             'admin' => $this->user->isAdmin(),
@@ -70,8 +68,6 @@ class UserControllerTest extends ArticleTestCase
                 'data' => [
                     'avatar' => $this->user->profile->data->avatar,
                     'description' => $this->user->profile->data->description,
-                    'twitter' => $this->user->profile->data->twitter,
-                    'website' => $this->user->profile->data->website,
                 ],
             ],
         ], Closure::bind($data, $this)());
@@ -93,8 +89,6 @@ class UserControllerTest extends ArticleTestCase
                     'data' => [
                         'avatar' => $this->user->profile->data->avatar,
                         'description' => $this->user->profile->data->description,
-                        'twitter' => $this->user->profile->data->twitter,
-                        'website' => $this->user->profile->data->website,
                     ],
                 ],
                 'admin' => $this->user->isAdmin(),
@@ -142,10 +136,6 @@ class UserControllerTest extends ArticleTestCase
             fn () => ['profile' => ['data' => ['website' => 'invalid-url']]], 'user.profile.data.website', ];
         yield 'user.profile.data.websiteが256文字以上' => [
             fn () => ['profile' => ['data' => ['website' => 'http://example.com/'.str_repeat('a', 256)]]], 'user.profile.data.website', ];
-        yield 'user.profile.data.twitterが256文字以上' => [
-            fn () => ['profile' => ['data' => ['twitter' => str_repeat('a', 256)]]], 'user.profile.data.twitter', ];
-        yield 'user.profile.data.fdtagが指定形式以外' => [
-            fn () => ['profile' => ['data' => ['gtag' => 'aaa']]], 'user.profile.data.gtag', ];
     }
 
     public function testEmailChange()
@@ -163,7 +153,6 @@ class UserControllerTest extends ArticleTestCase
                 'data' => [
                     'avatar' => $user->profile->data->avatar,
                     'description' => $user->profile->data->description,
-                    'twitter' => $user->profile->data->twitter,
                     'website' => $user->profile->data->website,
                 ],
             ],
@@ -182,7 +171,6 @@ class UserControllerTest extends ArticleTestCase
                     'avatar' => $user->profile->data->avatar,
                     'description' => $user->profile->data->description,
                     'website' => $user->profile->data->website,
-                    'twitter' => $user->profile->data->twitter,
                 ],
             ],
             'admin' => $user->isAdmin(),

@@ -71,7 +71,6 @@ export default defineComponent({
         avatar_url: avatarUrl.value,
         name: editor.user.name,
         description: editor.user.profile.data.description,
-        twitter: editor.user.profile.data.twitter,
         website: editor.user.profile.data.website,
       },
     }));

@@ -10,6 +10,7 @@ use App\Notifications\ArticlePublished;
 use App\Notifications\ArticleUpdated;
 use App\Services\Notification\MessageGenerator;
 use Berkayk\OneSignal\OneSignalFacade;
+use Exception;
 use Throwable;
 
 class OneSignalChannel
@@ -38,6 +39,7 @@ class OneSignalChannel
         return match (true) {
             $notification instanceof ArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($notifiable),
             $notification instanceof ArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($notifiable),
+            default => throw new Exception(sprintf('unsupport notification "%s" provided', get_class($notification))),
         };
     }
 

@@ -10,6 +10,7 @@ use App\Notifications\ArticleNotification;
 use App\Notifications\ArticlePublished;
 use App\Notifications\ArticleUpdated;
 use App\Services\Notification\MessageGenerator;
+use Exception;
 use Throwable;
 
 class TwitterChannel
@@ -36,6 +37,7 @@ class TwitterChannel
         return match (true) {
             $notification instanceof ArticlePublished => $this->messageGenerator->buildPublishedMessage($notifiable),
             $notification instanceof ArticleUpdated => $this->messageGenerator->buildUpdatedMessage($notifiable),
+            default => throw new Exception(sprintf('unsupport notification "%s" provided', get_class($notification))),
         };
     }
 }

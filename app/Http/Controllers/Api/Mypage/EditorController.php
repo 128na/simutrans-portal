@@ -40,7 +40,7 @@ class EditorController extends Controller
     public function store(StoreRequest $request): ArticlesResouce
     {
         $article = DB::transaction(fn () => $this->articleEditorService->storeArticle($this->loggedinUser(), $request));
-        JobUpdateRelated::dispatchAfterResponse();
+        JobUpdateRelated::dispatch();
 
         if ($article->is_publish && $request->should_notify) {
             $article->notify(new ArticlePublished());
@@ -53,7 +53,7 @@ class EditorController extends Controller
     {
         $notYetPublished = is_null($article->published_at);
         $article = DB::transaction(fn () => $this->articleEditorService->updateArticle($article, $request));
-        JobUpdateRelated::dispatchAfterResponse();
+        JobUpdateRelated::dispatch();
 
         $this->handleNotification($article, $request, $notYetPublished);
 

@@ -33,8 +33,8 @@ class BulkZipServiceTest extends UnitTestCase
         $res = $service->findOrCreateAndDispatch($model);
         $this->assertInstanceOf(BulkZip::class, $res);
 
-        Bus::assertDispatchedAfterResponse(JobCreateBulkZip::class);
-        Bus::assertDispatchedAfterResponse(JobDeleteExpiredBulkzip::class);
+        Bus::assertDispatched(JobCreateBulkZip::class);
+        Bus::assertDispatched(JobDeleteExpiredBulkzip::class);
     }
 
     public function test未対応のモデル()
@@ -59,7 +59,7 @@ class BulkZipServiceTest extends UnitTestCase
         $res = $service->findOrCreateAndDispatch($model);
         $this->assertInstanceOf(BulkZip::class, $res);
 
-        Bus::assertNotDispatchedAfterResponse(JobCreateBulkZip::class);
-        Bus::assertDispatchedAfterResponse(JobDeleteExpiredBulkzip::class);
+        Bus::assertNotDispatched(JobCreateBulkZip::class);
+        Bus::assertDispatched(JobDeleteExpiredBulkzip::class);
     }
 }

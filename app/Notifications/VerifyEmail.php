@@ -7,9 +7,10 @@ namespace App\Notifications;
 use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail as BaseVerifyEmail;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class VerifyEmail extends BaseVerifyEmail
+class VerifyEmail extends BaseVerifyEmail implements ShouldQueue
 {
     use Queueable;
 

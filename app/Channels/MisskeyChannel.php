@@ -13,7 +13,7 @@ use App\Services\Notification\MessageGenerator;
 use Exception;
 use Throwable;
 
-class MisskeyChannel
+class MisskeyChannel extends BaseChannel
 {
     public function __construct(
         private MisskeyApiClient $misskeyApiClient,
@@ -39,5 +39,10 @@ class MisskeyChannel
             $notification instanceof ArticleUpdated => $this->messageGenerator->buildUpdatedMessage($notifiable),
             default => throw new Exception(sprintf('unsupport notification "%s" provided', get_class($notification))),
         };
+    }
+
+    public static function featureEnabled(): bool
+    {
+        return (bool) config('services.misskey.token');
     }
 }

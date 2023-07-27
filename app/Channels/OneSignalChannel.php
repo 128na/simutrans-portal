@@ -13,7 +13,7 @@ use Berkayk\OneSignal\OneSignalFacade;
 use Exception;
 use Throwable;
 
-class OneSignalChannel
+class OneSignalChannel extends BaseChannel
 {
     public function __construct(
         private MessageGenerator $messageGenerator
@@ -23,12 +23,10 @@ class OneSignalChannel
     public function send(Article $notifiable, ArticleNotification $notification): void
     {
         try {
-            if ($this->featureEnabled()) {
-                OneSignalFacade::sendNotificationToAll(
-                    $this->buildMessage($notifiable, $notification),
-                    route('articles.show', $notifiable->slug),
-                );
-            }
+            OneSignalFacade::sendNotificationToAll(
+                $this->buildMessage($notifiable, $notification),
+                route('articles.show', $notifiable->slug),
+            );
         } catch (Throwable $e) {
             report($e);
         }
@@ -43,7 +41,7 @@ class OneSignalChannel
         };
     }
 
-    private function featureEnabled(): bool
+    public static function featureEnabled(): bool
     {
         return config('onesignal.app_id') && config('onesignal.rest_api_key');
     }

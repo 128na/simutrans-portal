@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Channels\BaseChannel;
 use App\Channels\MisskeyChannel;
 use App\Channels\OneSignalChannel;
 use App\Channels\TwitterChannel;
@@ -27,10 +28,16 @@ abstract class ArticleNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return [
+        $enabledFilter =
+            /**
+             * @var class-string<BaseChannel> $className
+             */
+            fn (string $className) => $className::featureEnabled();
+
+        return array_filter([
             MisskeyChannel::class,
             TwitterChannel::class,
             OneSignalChannel::class,
-        ];
+        ], $enabledFilter);
     }
 }

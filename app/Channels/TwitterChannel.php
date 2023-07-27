@@ -13,7 +13,7 @@ use App\Services\Twitter\TwitterV2Api;
 use Exception;
 use Throwable;
 
-class TwitterChannel
+class TwitterChannel extends BaseChannel
 {
     public function __construct(
         private TwitterV2Api $twitterV2Api,
@@ -39,5 +39,10 @@ class TwitterChannel
             $notification instanceof ArticleUpdated => $this->messageGenerator->buildUpdatedMessage($notifiable),
             default => throw new Exception(sprintf('unsupport notification "%s" provided', get_class($notification))),
         };
+    }
+
+    public static function featureEnabled(): bool
+    {
+        return (bool) config('services.twitter.client_id');
     }
 }

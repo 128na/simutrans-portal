@@ -27,7 +27,7 @@ abstract class ArticleNotification extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         return [
-            // TwitterChannel::class,
+            TwitterChannel::class,
             OneSignalChannel::class,
         ];
     }

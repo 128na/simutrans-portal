@@ -97,6 +97,10 @@ const routes = [
         ,
       },
       {
+        name: 'admin.token', path: 'token', meta: { requiresAdmin: true }, component: () => import(/* webpackChunkName: "admin" */ 'pages/Admin/Token.vue')
+        ,
+      },
+      {
         name: 'admin.articles', path: 'articles', meta: { requiresAdmin: true }, component: () => import(/* webpackChunkName: "admin" */ 'pages/Admin/Articles.vue')
         ,
       },

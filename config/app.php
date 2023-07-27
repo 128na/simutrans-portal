@@ -190,6 +190,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\DropboxServiceProvider::class,
         App\Providers\GoogleServiceProvider::class,
+        App\Providers\TwitterOauthProvider::class,
 
         // discord notifiaction
         NotificationChannels\Discord\DiscordServiceProvider::class,

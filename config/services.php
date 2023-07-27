@@ -32,9 +32,13 @@ return [
         'key' => env('OPEN_AI_KEY'),
     ],
     'twitter' => [
+        // STANDALONE APPS > Settings > User authentication settings
+        'client_id' => env('TWITTER_CLIENT_ID'),
+        'client_secret' => env('TWITTER_CLIENT_SECRET'),
         // STANDALONE APPS > Keys and tokens > Authentication Tokens
         'bearer_token' => env('TWITTER_BEARER_TOKEN'),
-        'access_token' => env('TWITTER_ACCESS_TOKEN'),
-        'access_secret' => env('TWITTER_ACCESS_SECRET'),
+        // STANDALONE APPS > Keys and tokens > Consumer Keys
+        'consumer_key' => env('TWITTER_CONSUMER_KEY'),
+        'consumer_secret' => env('TWITTER_CONSUMER_SECRET'),
     ],
 ];

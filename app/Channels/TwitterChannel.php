@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Channels;
 
-use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Models\Article;
 use App\Notifications\ArticleNotification;
 use App\Notifications\ArticlePublished;
 use App\Notifications\ArticleUpdated;
 use App\Services\Notification\MessageGenerator;
+use App\Services\Twitter\TwitterV2Api;
 use Exception;
 use Throwable;
 
 class TwitterChannel
 {
     public function __construct(
-        private TwitterOAuth $twitterOAuth,
+        private TwitterV2Api $twitterV2Api,
         private MessageGenerator $messageGenerator
     ) {
     }
@@ -25,7 +25,7 @@ class TwitterChannel
     {
         try {
             $data = ['text' => $this->buildMessage($notifiable, $notification)];
-            $result = $this->twitterOAuth->post('tweets', $data, true);
+            $result = $this->twitterV2Api->post('tweets', $data, true);
             logger('tweet result', [$result]);
         } catch (Throwable $e) {
             report($e);

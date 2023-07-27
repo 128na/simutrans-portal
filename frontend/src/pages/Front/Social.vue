@@ -3,8 +3,7 @@
     <TextTitle>SNS・通知ツール</TextTitle>
     <p>記事の更新を各種ツールで受け取れます。</p>
     <TextSubTitle>プッシュ通知</TextSubTitle>
-    <p>記事の投稿・更新時にプッシュ通知を受け取れます。<br />
-      ※登録解除はブラウザ設定から権限リセットで可能です。</p>
+      <p>※登録解除はブラウザ設定から権限リセットで可能です。</p>
     <q-list bordered separator class="rounded-borders">
       <q-item @click=handleOneSign clickable>
         <q-item-section>
@@ -12,12 +11,15 @@
         </q-item-section>
       </q-item>
     </q-list>
-    <TextSubTitle>Twitterアカウント</TextSubTitle>
+    <TextSubTitle>Twitter</TextSubTitle>
     <p>記事が投稿・更新されると自動でツイートされます。</p>
     <a href="https://twitter.com/PortalSimutrans" target="_blank" rel="noopener nofollow"
       class="text-primary">@PortalSimutrans</a>
-    <a class="twitter-timeline" data-width="480" data-height="360" :data-theme="mode"
-      href="https://twitter.com/PortalSimutrans?ref_src=twsrc%5Etfw"></a>
+
+    <TextSubTitle>Misskey</TextSubTitle>
+    <p>記事が投稿・更新されると自動でツイートされます。</p>
+    <a href="https://misskey.io/@PortalSimutrans" target="_blank" rel="noopener nofollow"
+      class="text-primary">@PortalSimutrans</a>
 
     <TextSubTitle>RSS</TextSubTitle>
     <p>RSSフィーダーやSlackなど各種ツールと連携させると新着情報が入手できます。</p>

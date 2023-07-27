@@ -3,14 +3,10 @@
     <TextTitle>SNS・通知ツール</TextTitle>
     <p>記事の更新を各種ツールで受け取れます。</p>
     <TextSubTitle>プッシュ通知</TextSubTitle>
-      <p>※登録解除はブラウザ設定から権限リセットで可能です。</p>
-    <q-list bordered separator class="rounded-borders">
-      <q-item @click=handleOneSign clickable>
-        <q-item-section>
-          <q-item-label>登録する</q-item-label>
-        </q-item-section>
-      </q-item>
-    </q-list>
+      <p>※登録解除はブラウザ設定から権限設定から可能です。</p>
+      <q-btn color="primary" @click=handleOneSign>
+        登録する
+      </q-btn>
     <TextSubTitle>Twitter</TextSubTitle>
     <p>記事が投稿・更新されると自動でツイートされます。</p>
     <a href="https://twitter.com/PortalSimutrans" target="_blank" rel="noopener nofollow"

@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // 毎分 サーバー都合でcron設定としては5分周期
-        $schedule->command('queue:work', ['--max-time' => 295])->everyMinute()
+        $schedule->command('queue:cron')->everyMinute()
             ->runInBackground()
             ->withoutOverlapping()
             ->onOneServer();

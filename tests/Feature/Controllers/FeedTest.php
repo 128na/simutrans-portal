@@ -27,7 +27,7 @@ class FeedTest extends ArticleTestCase
         $response->assertOk();
     }
 
-    public function dataFeed()
+    public static function dataFeed()
     {
         yield 'アドオン一覧' => ['/feed'];
         yield 'pak128' => ['/feed/pak128'];

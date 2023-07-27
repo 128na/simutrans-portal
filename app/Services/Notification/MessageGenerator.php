@@ -36,7 +36,7 @@ class MessageGenerator extends Service
      */
     private function getParams(Article $article): array
     {
-        if ($article->user && $article->user->profile) {
+        if ($article->user) {
             $url = route('articles.show', $article->slug);
             $now = now()->format('Y/m/d H:i');
             $name = $this->getDisaplayName($article->user);
@@ -47,19 +47,11 @@ class MessageGenerator extends Service
 
             return ['title' => $article->title, 'url' => $url, 'name' => $name, 'at' => $now, 'tags' => $tags];
         }
-        throw new Exception('missing user or profile');
+        throw new Exception('missing user');
     }
 
     private function getDisaplayName(User $user): string
     {
-        if (! $user->profile?->has_twitter) {
-            return $user->name;
-        }
-        $twitterName = $user->profile?->data->twitter ?? '';
-        if (str_starts_with($twitterName, '@')) {
-            return $twitterName;
-        }
-
-        return "@{$twitterName}";
+        return $user->name;
     }
 }

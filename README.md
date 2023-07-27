@@ -16,9 +16,9 @@ Simutransのアドオン投稿サイト「Simutrans Addon Portal」のアプリ�
 
 ### Requirements
 
-- PHP:8.0~
+- PHP:8.1~
 - mysql:5.7~
-- node:16~
+- node:18~
     アセットコンパイルを行う場合に必要
 
 ### Backend
@@ -32,6 +32,8 @@ composer install
 php artisan key:generate
 php artisan migrate --seed
 ```
+
+メール送信があるため、 `mailpit` などの使用を推奨
 
 ### Frontend
 

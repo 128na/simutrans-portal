@@ -13,14 +13,12 @@ use App\Models\Article;
 use App\Notifications\ArticlePublished;
 use App\Notifications\ArticleUpdated;
 use App\Services\ArticleEditorService;
-use App\Services\Notification\SendOneSignal;
 use Illuminate\Support\Facades\DB;
 
 class EditorController extends Controller
 {
     public function __construct(
         private ArticleEditorService $articleEditorService,
-        private SendOneSignal $sendOneSignal,
     ) {
     }
 
@@ -42,11 +40,10 @@ class EditorController extends Controller
     public function store(StoreRequest $request): ArticlesResouce
     {
         $article = DB::transaction(fn () => $this->articleEditorService->storeArticle($this->loggedinUser(), $request));
-        JobUpdateRelated::dispatchAfterResponse();
+        JobUpdateRelated::dispatch();
 
-        if ($article->is_publish && $request->should_tweet) {
+        if ($article->is_publish && $request->should_notify) {
             $article->notify(new ArticlePublished());
-            $this->sendOneSignal->sendArticlePublishedNotification($article);
         }
 
         return $this->index();
@@ -56,7 +53,7 @@ class EditorController extends Controller
     {
         $notYetPublished = is_null($article->published_at);
         $article = DB::transaction(fn () => $this->articleEditorService->updateArticle($article, $request));
-        JobUpdateRelated::dispatchAfterResponse();
+        JobUpdateRelated::dispatch();
 
         $this->handleNotification($article, $request, $notYetPublished);
 
@@ -69,8 +66,8 @@ class EditorController extends Controller
         if (! $article->is_publish) {
             return;
         }
-        // ツイートを希望しない
-        if (! $request->should_tweet) {
+        // 通知を希望しない
+        if (! $request->should_notify) {
             return;
         }
         // 更新日を更新しない
@@ -81,10 +78,8 @@ class EditorController extends Controller
         // published_atがnullから初めて変わった場合は新規投稿扱い
         if ($notYetPublished) {
             $article->notify(new ArticlePublished());
-            $this->sendOneSignal->sendArticlePublishedNotification($article);
         } else {
             $article->notify(new ArticleUpdated());
-            $this->sendOneSignal->sendArticleUpdatedNotification($article);
         }
     }
 }

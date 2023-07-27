@@ -92,7 +92,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   const article = ref(null);
   const options = ref(null);
   const withoutUpdateModifiedAt = ref(false);
-  const tweet = ref(false);
+  const shouldNotify = ref(false);
   const setArticle = (a) => {
     article.value = JSON.parse(JSON.stringify(a));
     original = JSON.stringify(a);
@@ -103,7 +103,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   const saveArticle = () => {
     const params = {
       article: article.value,
-      should_tweet: tweet.value,
+      should_notify: shouldNotify.value,
     };
     return handlerArticle.handleWithValidate({
       doRequest: () => api.createArticle(params),
@@ -114,7 +114,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   const updateArticle = () => {
     const params = {
       article: article.value,
-      should_tweet: tweet.value,
+      should_notify: shouldNotify.value,
       without_update_modified_at: withoutUpdateModifiedAt.value,
     };
     return handlerArticle.handleWithValidate({
@@ -215,7 +215,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
 
   return {
     article,
-    tweet,
+    shouldNotify,
     withoutUpdateModifiedAt,
     canReservation,
     articleInitialized,

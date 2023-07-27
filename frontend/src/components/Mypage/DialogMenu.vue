@@ -39,7 +39,7 @@
             <q-icon name="lock_open" />
           </q-item-section>
           <q-item-section>
-            記事を公開にする（自動ツイート無し）
+            記事を公開にする（自動通知無し）
           </q-item-section>
         </q-item>
       </q-list>

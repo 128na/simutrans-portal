@@ -6,10 +6,11 @@ namespace App\Notifications;
 
 use App\Models\User\LoginHistory;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class Loggedin extends Notification
+class Loggedin extends Notification implements ShouldQueue
 {
     use Queueable;
 

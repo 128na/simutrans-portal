@@ -26,7 +26,7 @@ class UserTest extends TestCase
         $this->actingAs($this->user);
         $response = $this->getJson($url);
         $response->assertOk();
-        Bus::assertDispatchedAfterResponse(JobCreateBulkZip::class);
+        Bus::assertDispatched(JobCreateBulkZip::class);
     }
 
     public function test作成済み()
@@ -41,7 +41,7 @@ class UserTest extends TestCase
         $this->actingAs($this->user);
         $response = $this->getJson($url);
         $response->assertOk();
-        Bus::assertNotDispatchedAfterResponse(JobCreateBulkZip::class);
+        Bus::assertNotDispatched(JobCreateBulkZip::class);
     }
 
     public function test未ログイン()

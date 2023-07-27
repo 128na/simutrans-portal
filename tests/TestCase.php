@@ -43,7 +43,7 @@ abstract class TestCase extends BaseTestCase
         parent::tearDown();
     }
 
-    public function dataStatus()
+    public static function dataStatus()
     {
         yield '公開' => ['publish', true];
         yield '下書き' => ['draft', false];
@@ -51,7 +51,7 @@ abstract class TestCase extends BaseTestCase
         yield 'ゴミ箱' => ['trash', false];
     }
 
-    public function dataStatusPrivate()
+    public static function dataStatusPrivate()
     {
         yield '下書き' => ['draft'];
         yield '非公開' => ['private'];

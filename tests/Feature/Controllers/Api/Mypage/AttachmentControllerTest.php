@@ -49,7 +49,7 @@ class AttachmentControllerTest extends ArticleTestCase
         $res->assertOK();
     }
 
-    public function dataValidation()
+    public static function dataValidation()
     {
         yield 'fileがnull' => [fn () => ['file' => null], 'file'];
         yield 'fileがファイル以外' => [fn () => ['file' => 'test.zip'], 'file'];

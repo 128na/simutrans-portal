@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Channels\MisskeyChannel;
+use App\Channels\OneSignalChannel;
 use App\Channels\TwitterChannel;
-use App\Models\Article;
-use App\Services\Notification\MessageGenerator;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-abstract class ArticleNotification extends Notification
+abstract class ArticleNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    protected MessageGenerator $messageGenerator;
-
     public function __construct()
     {
-        $this->messageGenerator = app(MessageGenerator::class);
     }
 
     /**
@@ -30,13 +28,9 @@ abstract class ArticleNotification extends Notification
     public function via($notifiable)
     {
         return [
+            MisskeyChannel::class,
             TwitterChannel::class,
+            OneSignalChannel::class,
         ];
     }
-
-    /**
-     * @param  Article  $article
-     * @return string
-     */
-    abstract public function toTwitter($article);
 }

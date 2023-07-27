@@ -18,7 +18,6 @@ class UserProfileResource extends JsonResource
             'name' => $this->resource->name,
             'avatar_url' => $this->resource->profile->avatar_url,
             'description' => $this->resource->profile->data->description,
-            'twitter' => $this->resource->profile->data->twitter,
             'website' => $this->resource->profile->data->website,
         ];
     }

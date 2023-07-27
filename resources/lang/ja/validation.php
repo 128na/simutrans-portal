@@ -193,8 +193,6 @@ return [
         'user.profile.data.avatar' => 'ユーザー画像',
         'user.profile.data.description' => '説明',
         'user.profile.data.website' => 'WebサイトURL',
-        'user.profile.data.twitter' => 'Twitter ID',
-        'user.profile.data.gtag' => 'GA_Measurement_ID',
 
         // analytics
         'ids' => '記事',

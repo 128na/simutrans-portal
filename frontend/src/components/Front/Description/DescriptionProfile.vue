@@ -16,12 +16,9 @@
         {{ description.profile.description || '説明がありません' }}
       </text-pre>
     </q-card-section>
-    <template v-if="description.profile.twitter || description.profile.website">
+    <template v-if="description.profile.website">
       <q-separator />
       <q-card-actions>
-        <q-btn flat color="primary" v-if="description.profile.twitter"
-          :href="`https://twitter.com/${description.profile.twitter}`" rel="noopener noreferrer" target="_blank" no-caps
-          label="Twitter"></q-btn>
         <q-btn flat color="primary" v-if="description.profile.website" :href="description.profile.website"
           rel="noopener noreferrer" target="_blank" no-caps label="Website"></q-btn>
       </q-card-actions>

@@ -9,14 +9,13 @@ use App\Notifications\ArticleNotification;
 use App\Notifications\ArticlePublished;
 use App\Notifications\ArticleUpdated;
 use App\Services\Notification\MessageGenerator;
-use App\Services\Twitter\TwitterV2Api;
+use Berkayk\OneSignal\OneSignalFacade;
 use Exception;
 use Throwable;
 
-class TwitterChannel
+class OneSignalChannel
 {
     public function __construct(
-        private TwitterV2Api $twitterV2Api,
         private MessageGenerator $messageGenerator
     ) {
     }
@@ -24,9 +23,12 @@ class TwitterChannel
     public function send(Article $notifiable, ArticleNotification $notification): void
     {
         try {
-            $data = ['text' => $this->buildMessage($notifiable, $notification)];
-            $result = $this->twitterV2Api->post('tweets', $data, true);
-            logger('tweet', [$result]);
+            if ($this->featureEnabled()) {
+                OneSignalFacade::sendNotificationToAll(
+                    $this->buildMessage($notifiable, $notification),
+                    route('articles.show', $notifiable->slug),
+                );
+            }
         } catch (Throwable $e) {
             report($e);
         }
@@ -35,9 +37,14 @@ class TwitterChannel
     private function buildMessage(Article $notifiable, ArticleNotification $notification): string
     {
         return match (true) {
-            $notification instanceof ArticlePublished => $this->messageGenerator->buildPublishedMessage($notifiable),
-            $notification instanceof ArticleUpdated => $this->messageGenerator->buildUpdatedMessage($notifiable),
+            $notification instanceof ArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($notifiable),
+            $notification instanceof ArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($notifiable),
             default => throw new Exception(sprintf('unsupport notification "%s" provided', get_class($notification))),
         };
+    }
+
+    private function featureEnabled(): bool
+    {
+        return config('onesignal.app_id') && config('onesignal.rest_api_key');
     }
 }

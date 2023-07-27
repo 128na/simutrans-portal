@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Repositories\Attachment\FileInfoRepository;
 use App\Services\BulkZip\Decorators\AddonIntroductionDecorator;
 use App\Services\BulkZip\Decorators\AddonPostDecorator;
@@ -16,6 +17,7 @@ use App\Services\FileInfo\FileInfoService;
 use App\Services\FileInfo\TextService;
 use App\Services\FileInfo\ZipArchiveParser;
 use App\Services\MarkdownService;
+use App\Services\Misskey\MisskeyApiClient;
 use cebe\markdown\GithubMarkdown;
 use HTMLPurifier;
 use HTMLPurifier_Config;
@@ -36,6 +38,8 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
             MarkdownService::class,
             ZipManager::class,
             FileInfoService::class,
+            TwitterOAuth::class,
+            MisskeyApiClient::class,
         ];
     }
 
@@ -84,5 +88,22 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
                 ]
             );
         });
+
+        $this->app->bind(TwitterOAuth::class, function ($app) {
+            return new TwitterOAuth(
+                config('services.twitter.access_token'),
+                config('services.twitter.access_secret'),
+                null,
+                config('services.twitter.bearer_token'),
+            );
+        });
+
+        $this->app->bind(MisskeyApiClient::class, function ($app) {
+            return new MisskeyApiClient(
+                config('services.misskey.base_url'),
+                config('services.misskey.token'),
+            );
+        });
+
     }
 }

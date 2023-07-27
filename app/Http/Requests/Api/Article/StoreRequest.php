@@ -21,7 +21,7 @@ class StoreRequest extends BaseRequest
             'article.title' => ['required', 'unique:articles,title', 'max:255', new NgWordRule(User::TITLE_NG_WORDS)],
             'article.slug' => 'required|unique:articles,slug|max:255',
             'article.published_at' => 'nullable|date|after:+1 hour',
-            'should_tweet' => 'nullable|boolean',
+            'should_notify' => 'nullable|boolean',
         ];
     }
 }

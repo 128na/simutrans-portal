@@ -9,7 +9,7 @@ use ZipArchive;
 
 class ZipErrorException extends Exception
 {
-    public function __construct(string $message, ?int $code = null)
+    public function __construct(string $message, int $code = null)
     {
         if (! is_null($code)) {
             $message .= ' '.$this->handleCode($code);

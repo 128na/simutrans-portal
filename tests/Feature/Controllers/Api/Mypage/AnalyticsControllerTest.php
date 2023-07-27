@@ -22,7 +22,7 @@ class AnalyticsControllerTest extends ArticleTestCase
         $res->assertJsonValidationErrors($error_field);
     }
 
-    public function dataValidation()
+    public static function dataValidation()
     {
         yield 'idsがnull' => [fn () => '/api/mypage/analytics?'.http_build_query(['ids' => null]), 'ids'];
         yield 'idsが空' => [fn () => '/api/mypage/analytics?'.http_build_query(['ids' => []]), 'ids'];
@@ -48,7 +48,7 @@ class AnalyticsControllerTest extends ArticleTestCase
         $res->assertUnauthorized();
     }
 
-    public function dataValues()
+    public static function dataValues()
     {
         $now = now();
         yield 'daily' => [

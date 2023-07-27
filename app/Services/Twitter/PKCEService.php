@@ -54,7 +54,7 @@ class PKCEService
             'response_type' => 'code',
             'client_id' => $this->clientId,
             'redirect_uri' => $this->callbackUrl,
-            'scope' => 'users.read tweet.read list.read offline.access',
+            'scope' => 'tweet.read tweet.write users.read offline.access',
             'state' => $state,
             'code_challenge' => $codeChallange,
             'code_challenge_method' => 'S256',
@@ -81,6 +81,8 @@ class PKCEService
         ]);
 
         $data = json_decode($res->getBody()->getContents(), true);
+
+        logger('generateToken::data', $data);
 
         $token = $this->oauthTokenRepository->updateOrCreate(
             ['application' => 'twitter'],

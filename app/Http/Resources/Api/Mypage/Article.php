@@ -40,13 +40,6 @@ class Article extends JsonResource
             'metrics' => [
                 'totalViewCount' => $this->resource->totalViewCount->count ?? 0,
                 'totalConversionCount' => $this->resource->totalConversionCount->count ?? 0,
-                'totalRetweetCount' => $this->resource->tweetLogSummary?->total_retweet_count ?? 0,
-                'totalReplyCount' => $this->resource->tweetLogSummary?->total_reply_count ?? 0,
-                'totalLikeCount' => $this->resource->tweetLogSummary?->total_like_count ?? 0,
-                'totalQuoteCount' => $this->resource->tweetLogSummary?->total_quote_count ?? 0,
-                'totalImpressionCount' => $this->resource->tweetLogSummary?->total_impression_count ?? 0,
-                'totalUrlLinkClicks' => $this->resource->tweetLogSummary?->total_url_link_clicks ?? 0,
-                'totalUserProfileClicks' => $this->resource->tweetLogSummary?->total_user_profile_clicks ?? 0,
             ],
         ];
     }

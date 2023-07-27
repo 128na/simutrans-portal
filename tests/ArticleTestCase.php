@@ -158,7 +158,7 @@ abstract class ArticleTestCase extends TestCase
     /**
      * 記事投稿共通バリデーション.
      */
-    public function dataStoreArticleValidation()
+    public static function dataStoreArticleValidation()
     {
         yield '投稿形式が空' => [fn () => ['post_type' => ''], 'article.post_type'];
         yield '不正な投稿形式' => [fn () => ['post_type' => 'test_example'], 'article.post_type'];
@@ -167,7 +167,7 @@ abstract class ArticleTestCase extends TestCase
     /**
      * 記事投稿・更新共通バリデーション.
      */
-    public function dataArticleValidation()
+    public static function dataArticleValidation()
     {
         yield 'ステータスが空' => [fn () => ['status' => ''], 'article.status'];
         yield '不正なステータス' => [fn () => ['status' => 'test_example'], 'article.status'];
@@ -193,7 +193,7 @@ abstract class ArticleTestCase extends TestCase
     /**
      * アドオン形式の追加項目.
      */
-    public function dataAddonValidation()
+    public static function dataAddonValidation()
     {
         yield 'タグ名が空' => [fn () => ['tags' => null], 'article.tags'];
         yield '存在しないタグ' => [fn () => ['tags' => [['id' => -1]]], 'article.tags.0.id'];
@@ -206,7 +206,7 @@ abstract class ArticleTestCase extends TestCase
     /**
      * アドオン紹介の追加項目.
      */
-    public function dataAddonIntroductionValidation()
+    public static function dataAddonIntroductionValidation()
     {
         yield 'アドオン作者が空' => [fn () => ['contents' => ['author' => '']], 'article.contents.author'];
         yield 'アドオン作者が256文字以上' => [fn () => ['contents' => ['author' => str_repeat('a', 256)]], 'article.contents.author'];
@@ -217,7 +217,7 @@ abstract class ArticleTestCase extends TestCase
     /**
      * アドオン投稿の追加項目.
      */
-    public function dataAddonPostValidation()
+    public static function dataAddonPostValidation()
     {
         yield 'ファイルIDが空' => [fn () => ['contents' => ['file' => '']], 'article.contents.file'];
         yield '存在しないファイルID' => [fn () => ['contents' => ['file' => 99999]], 'article.contents.file'];
@@ -227,7 +227,7 @@ abstract class ArticleTestCase extends TestCase
     /**
      * マークダウンの追加項目.
      */
-    public function dataMarkdownValidation()
+    public static function dataMarkdownValidation()
     {
         yield 'markdownが無い' => [fn () => ['contents' => ['markdown' => null]], 'article.contents.markdown'];
         yield 'markdownが65536文字以上' => [fn () => ['contents' => ['markdown' => \str_repeat('a', 65536)]], 'article.contents.markdown'];
@@ -236,7 +236,7 @@ abstract class ArticleTestCase extends TestCase
     /**
      * 一般記事.
      */
-    public function dataPageValidation()
+    public static function dataPageValidation()
     {
         yield 'セクションが無い' => [fn () => ['contents' => ['sections' => null]], 'article.contents.sections'];
         yield 'セクションが空' => [fn () => ['contents' => ['sections' => []]], 'article.contents.sections'];

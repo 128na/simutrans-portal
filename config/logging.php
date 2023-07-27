@@ -55,6 +55,12 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'worker' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/worker.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
         // 各種ログ設定
         'discord_error' => [
             'driver' => 'custom',

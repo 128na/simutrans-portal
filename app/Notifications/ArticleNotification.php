@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Channels\MisskeyChannel;
 use App\Channels\OneSignalChannel;
 use App\Channels\TwitterChannel;
 use Illuminate\Bus\Queueable;
@@ -27,6 +28,7 @@ abstract class ArticleNotification extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         return [
+            MisskeyChannel::class,
             TwitterChannel::class,
             OneSignalChannel::class,
         ];

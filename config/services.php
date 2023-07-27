@@ -41,4 +41,8 @@ return [
         'consumer_key' => env('TWITTER_CONSUMER_KEY'),
         'consumer_secret' => env('TWITTER_CONSUMER_SECRET'),
     ],
+    'misskey' => [
+        'base_url' => 'https://misskey.io/api',
+        'token' => env('MISSKEY_TOKEN'),
+    ],
 ];

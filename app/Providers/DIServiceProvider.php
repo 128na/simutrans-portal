@@ -17,6 +17,7 @@ use App\Services\FileInfo\FileInfoService;
 use App\Services\FileInfo\TextService;
 use App\Services\FileInfo\ZipArchiveParser;
 use App\Services\MarkdownService;
+use App\Services\Misskey\MisskeyApiClient;
 use cebe\markdown\GithubMarkdown;
 use HTMLPurifier;
 use HTMLPurifier_Config;
@@ -38,6 +39,7 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
             ZipManager::class,
             FileInfoService::class,
             TwitterOAuth::class,
+            MisskeyApiClient::class,
         ];
     }
 
@@ -93,6 +95,13 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
                 config('services.twitter.access_secret'),
                 null,
                 config('services.twitter.bearer_token'),
+            );
+        });
+
+        $this->app->bind(MisskeyApiClient::class, function ($app) {
+            return new MisskeyApiClient(
+                config('services.misskey.base_url'),
+                config('services.misskey.token'),
             );
         });
 

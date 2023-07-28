@@ -56,9 +56,10 @@ return [
         ],
 
         'worker' => [
-            'driver' => 'single',
+            'driver' => 'daily',
             'path' => storage_path('logs/worker.log'),
             'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 7,
         ],
 
         // 各種ログ設定
@@ -105,12 +106,6 @@ return [
         'file_invite' => [
             'driver' => 'daily',
             'path' => storage_path('logs/discord-invite.log'),
-            'level' => 'debug',
-            'days' => 365,
-        ],
-        'file_open_ai' => [
-            'driver' => 'daily',
-            'path' => storage_path('logs/open-ai.log'),
             'level' => 'debug',
             'days' => 365,
         ],

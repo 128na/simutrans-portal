@@ -27,10 +27,6 @@ return [
         'projectName' => env('GOOGLE_RECAPTCHA_PROJECT_NAME'),
         'siteKey' => env('GOOGLE_RECAPTCHA_SITE_KEY'),
     ],
-    'open_ai' => [
-        'endpoint' => 'https://api.openai.com/v1/completions',
-        'key' => env('OPEN_AI_KEY'),
-    ],
     'twitter' => [
         // STANDALONE APPS > Settings > User authentication settings
         'client_id' => env('TWITTER_CLIENT_ID'),

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 require('dotenv').config();
-const { publishSourcemap } = require('@newrelic/publish-sourcemap');
 const path = require('path');
+const { publishSourcemap } = require('@newrelic/publish-sourcemap');
 const read = require('fs-readdir-recursive');
 
 const uploadSourceMaps = (files) => {

@@ -19,7 +19,7 @@ class WebpConverter extends Service
 
     private const RESIZE_WIDTH = 1280;
 
-    private const WEBP_QUALITY = 100;
+    private const WEBP_QUALITY = IMG_WEBP_LOSSLESS;
 
     public function create(User $user, UploadedFile $file): string
     {

@@ -19,8 +19,6 @@ class WebpConverter extends Service
 
     private const RESIZE_WIDTH = 1280;
 
-    private const WEBP_QUALITY = IMG_WEBP_LOSSLESS;
-
     public function create(User $user, UploadedFile $file): string
     {
         $image = $this->createFromFile($file);
@@ -119,7 +117,8 @@ class WebpConverter extends Service
 
     private function convertToWeb(string $filepath, GdImage $image): void
     {
-        $result = imagewebp($this->convertToTrueColor($image), $this->getSavepath($filepath), self::WEBP_QUALITY);
+        $quality = defined('IMG_WEBP_LOSSLESS') ? IMG_WEBP_LOSSLESS : 100;
+        $result = imagewebp($this->convertToTrueColor($image), $this->getSavepath($filepath), $quality);
         imagedestroy($image);
 
         if ($result === false) {

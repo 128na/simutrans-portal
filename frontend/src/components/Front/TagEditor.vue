@@ -52,7 +52,7 @@ export default defineComponent({
     const description = ref('');
     watch(props, (p) => {
       description.value = p.tag.description;
-    }, { immediate: true });
+    }, { immediate: true, deep: true });
     const dialog = ref(false);
     const auth = useAuthStore();
 

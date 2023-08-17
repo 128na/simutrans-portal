@@ -28,7 +28,9 @@
 </template>
 <script>
 import { useAuthStore } from 'src/store/auth';
-import { defineComponent, ref } from 'vue';
+import {
+  defineComponent, ref, watch,
+} from 'vue';
 import { useMypageApi, useAdminApi } from 'src/composables/api';
 import { useApiHandler } from 'src/composables/apiHandler';
 import InputCountable from '../Common/Input/InputCountable.vue';
@@ -47,7 +49,10 @@ export default defineComponent({
     CustomDialog,
   },
   setup(props) {
-    const description = ref(props.tag.description);
+    const description = ref('');
+    watch(props, (p) => {
+      description.value = p.tag.description;
+    }, { immediate: true, deep: true });
     const dialog = ref(false);
     const auth = useAuthStore();
 

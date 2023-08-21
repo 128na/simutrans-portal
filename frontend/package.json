@@ -42,7 +42,7 @@
     "@quasar/app": "^3",
     "@quasar/quasar-app-extension-testing": "^2",
     "@quasar/quasar-app-extension-testing-e2e-cypress": "^5.1.0",
-    "cypress": "^12.17.3",
+    "cypress": "^12.17.4",
     "dotenv": "^16",
     "eslint": "^8",
     "eslint-config-airbnb-base": "^15",

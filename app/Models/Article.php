@@ -29,10 +29,10 @@ use Spatie\Feed\FeedItem;
 
 class Article extends Model implements Feedable
 {
-    use Notifiable;
     use HasFactory;
-    use SoftDeletes;
+    use Notifiable;
     use Slugable;
+    use SoftDeletes;
 
     protected $fillable = [
         'user_id',

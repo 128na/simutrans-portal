@@ -22,8 +22,8 @@
   },
   "dependencies": {
     "@quasar/extras": "^1",
-    "@sentry/tracing": "^7.73.0",
-    "@sentry/vue": "^7.73.0",
+    "@sentry/tracing": "^7",
+    "@sentry/vue": "^7",
     "apexcharts": "^3",
     "axios": "^1",
     "core-js": "^3",
@@ -41,20 +41,20 @@
     "@newrelic/publish-sourcemap": "^5",
     "@quasar/app": "^3",
     "@quasar/quasar-app-extension-testing": "^2",
-    "@quasar/quasar-app-extension-testing-e2e-cypress": "^5.1.0",
-    "cypress": "^12.17.4",
+    "@quasar/quasar-app-extension-testing-e2e-cypress": "^5",
+    "cypress": "*",
     "dotenv": "^16",
     "eslint": "^8",
     "eslint-config-airbnb-base": "^15",
     "eslint-plugin-chai-friendly": "^0.7",
-    "eslint-plugin-cypress": "^2.14.0",
+    "eslint-plugin-cypress": "^2",
     "eslint-plugin-import": "^2",
     "eslint-plugin-vue": "^9",
     "eslint-webpack-plugin": "^4",
     "fs-extra": "^11",
     "fs-readdir-recursive": "^1",
     "playwright-webkit": "^1",
-    "workbox-webpack-plugin": "^7.0.0"
+    "workbox-webpack-plugin": "^7"
   },
   "browserslist": [
     "last 15 versions"

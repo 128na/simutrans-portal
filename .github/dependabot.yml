@@ -12,7 +12,7 @@ updates:
     assignees:
       - "128na"
     groups:
-      major-patch-update-php:
+      major-patch-update-js:
         update-types:
           - "major"
           - "patch"
@@ -23,7 +23,7 @@ updates:
     assignees:
       - "128na"
     groups:
-      major-patch-update-js:
+      major-patch-update-php:
         update-types:
           - "major"
           - "patch"

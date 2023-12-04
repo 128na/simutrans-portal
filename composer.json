@@ -14,7 +14,7 @@
     "doctrine/dbal": "^3.7.2",
     "ezyang/htmlpurifier": "^4.17",
     "google/cloud-recaptcha-enterprise": "^1.6.0",
-    "guzzlehttp/guzzle": "^7.8",
+    "guzzlehttp/guzzle": "^7.8.1",
     "htmlmin/htmlmin": "dev-master#347d577",
     "laravel-notification-channels/discord": "^1.5",
     "laravel/framework": "^10.34.2",

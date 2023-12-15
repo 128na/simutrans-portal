@@ -307,7 +307,7 @@ class ArticleRepository extends BaseRepository
         return $this->model
             ->active()
             ->linkCheckTarget()
-            ->select('id', 'user_id', 'title', 'post_type', 'contents')
+            ->select('id', 'user_id', 'title', 'slug', 'post_type', 'contents')
             ->with('user:id,email')
             ->cursor();
     }

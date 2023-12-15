@@ -28,3 +28,4 @@ credential.json
 .env.dusk.local
 .env.backup
 .env.testing
+.phpunit.cache/

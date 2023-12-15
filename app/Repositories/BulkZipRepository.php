@@ -40,7 +40,7 @@ class BulkZipRepository extends BaseRepository
 
     public function cursorExpired(): LazyCollection
     {
-        $expiredAt = now()->modify('-1 days');
+        $expiredAt = now()->modify('-24 hours');
 
         return $this->model
             ->whereDate('created_at', '<=', $expiredAt)

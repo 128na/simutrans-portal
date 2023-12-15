@@ -28,7 +28,7 @@ class ZipManager extends Service
     ) {
     }
 
-    private function randName(string $prefix = null, string $suffix = null): string
+    private function randName(?string $prefix = null, ?string $suffix = null): string
     {
         return $prefix.Str::uuid().$suffix;
     }

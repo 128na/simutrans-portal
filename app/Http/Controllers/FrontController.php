@@ -13,6 +13,7 @@ use App\Services\Front\ArticleService;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -44,10 +45,10 @@ class FrontController extends Controller
     /**
      * 記事詳細.
      */
-    public function show(Article $article): Renderable
+    public function show(User $user, Article $article): Renderable
     {
         abort_unless($article->is_publish, 404);
-        $meta = $this->metaOgpService->show($article);
+        $meta = $this->metaOgpService->show($user, $article);
 
         return view('front.spa', ['meta' => $meta]);
     }
@@ -55,7 +56,7 @@ class FrontController extends Controller
     /**
      * アドオンダウンロード.
      */
-    public function download(Article $article): StreamedResponse
+    public function download(User $user, Article $article): StreamedResponse
     {
         abort_unless($article->is_publish, 404);
         abort_unless($article->post_type === 'addon-post', 404);
@@ -141,5 +142,15 @@ class FrontController extends Controller
         $status = in_array($status, $statuses, true) ? $status : 404;
 
         return response(view('front.spa'), $status);
+    }
+
+    public function fallbackShow(Article $article): RedirectResponse
+    {
+        return redirect(route('articles.show', ['user' => $article->user, 'article' => $article->slug]));
+    }
+
+    public function fallbackDownload(Article $article): RedirectResponse
+    {
+        return redirect(route('articles.download', ['user' => $article->user, 'article' => $article->slug]));
     }
 }

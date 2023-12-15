@@ -21,10 +21,6 @@ Route::get('/verification/notice', [MypageController::class, 'index'])->name('ve
 Route::GET('mypage/reset/{token}', [MypageController::class, 'index'])->name('password.reset');
 Route::POST('login', [LoginController::class, 'login'])->middleware('restrict:login')->name('login');
 
-// フロント
-// マイページ
-// Admin
-
 // 招待
 Route::GET('/mypage/invite/{invitation_code}', [InviteController::class, 'index'])->middleware('restrict:invitation_code')->name('invite.index');
 
@@ -44,11 +40,13 @@ Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content']
     Route::get('/social', [FrontController::class, 'social']);
 });
 // 非ログイン系 reidsキャッシュ無効
-Route::get('/articles/{article}', [FrontController::class, 'show'])->name('articles.show');
+Route::get('/articles/{article}', [FrontController::class, 'fallbackShow']);
+Route::get('/articles/{user}/{article}', [FrontController::class, 'show'])->name('articles.show');
 Route::get('/search', [FrontController::class, 'search'])->name('search');
 Route::get('/mypage/', [MypageController::class, 'index'])->name('mypage.index');
 Route::get('/mypage/{any}', [MypageController::class, 'index'])->where('any', '.*');
-Route::get('/articles/{article}/download', [FrontController::class, 'download'])->name('articles.download');
+Route::get('/articles/{article}/download', [FrontController::class, 'fallbackDownload']);
+Route::get('/articles/{user}/{article}/download', [FrontController::class, 'download'])->name('articles.download');
 
 Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function () {
     Route::get('/admin/', [AdminController::class, 'index'])->name('admin.index');

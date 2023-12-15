@@ -29,7 +29,7 @@ class IndexTest extends ArticleTestCase
                 'contents' => json_decode(json_encode($this->article->contents), true),
                 'categories' => $this->article->categories->pluck('id')->toArray(),
                 'tags' => $this->article->tags->pluck('name')->toArray(),
-                'url' => route('articles.show', $this->article->slug),
+                'url' => route('articles.show', ['user' => $this->article->user, 'article' => $this->article->slug]),
             ],
         ]]);
     }

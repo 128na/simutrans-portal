@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Api\Mypage;
 
+use App\Models\Article as ModelsArticle;
 use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -16,6 +17,8 @@ class Article extends JsonResource
      */
     public function toArray($request)
     {
+        assert($this->resource instanceof ModelsArticle);
+
         return [
             'id' => $this->resource->id,
             'title' => $this->resource->title,
@@ -33,10 +36,10 @@ class Article extends JsonResource
                 'id' => $t->id,
                 'name' => $t->name,
             ]),
-            'created_at' => $this->resource->created_at->toIso8601String(),
+            'created_at' => $this->resource->created_at?->toIso8601String(),
             'published_at' => $this->resource->published_at?->toIso8601String(),
             'modified_at' => $this->resource->modified_at?->toIso8601String(),
-            'url' => route('articles.show', $this->resource->slug),
+            'url' => route('articles.show', ['user' => $this->resource->user, 'article' => $this->resource->slug]),
             'metrics' => [
                 'totalViewCount' => $this->resource->totalViewCount->count ?? 0,
                 'totalConversionCount' => $this->resource->totalConversionCount->count ?? 0,

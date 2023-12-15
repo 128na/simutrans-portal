@@ -30,7 +30,7 @@ class ZipManager extends Service
 
     private function randName(?string $prefix = null, ?string $suffix = null): string
     {
-        return $prefix.Str::uuid().$suffix;
+        return $prefix . Str::uuid() . $suffix;
     }
 
     private function isZipFile(string $filepath): bool
@@ -52,12 +52,12 @@ class ZipManager extends Service
         foreach ($result['files'] as $filename => $filepath) {
             if ($this->isZipFile($filepath)) {
                 set_time_limit(60);
-                $this->mergeZip($filepath, 'files/'.$filename);
+                $this->mergeZip($filepath, 'files/' . $filename);
             } else {
-                $this->addFile($filepath, 'files/'.$filename);
+                $this->addFile($filepath, 'files/' . $filename);
             }
         }
-        if (! empty($result['contents'])) {
+        if (!empty($result['contents'])) {
             $this->addTextFile($result['contents']);
             $this->addCsvFile($result['contents']);
             // $this->addJsonFile($result['contents']);

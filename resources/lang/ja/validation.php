@@ -122,6 +122,7 @@ return [
     'string' => ':attributeは文字列を指定してください。',
     'timezone' => ':attributeには、有効なゾーンを指定してください。',
     'unique' => ':attributeの値は既に存在しています。',
+    'uniqueAdmin' => ':attributeの値は既に管理者が使用しています。',
     'uploaded' => ':attributeのアップロードに失敗しました。',
     'url' => ':attributeに正しい形式を指定してください。',
     'uuid' => ':attributeに有効なUUIDを指定してください。',

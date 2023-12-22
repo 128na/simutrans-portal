@@ -13,7 +13,9 @@ use Laravel\Dusk\Browser;
 class ArticlePagePage extends Page
 {
     private Article $article;
+
     private Category $category;
+
     private Attachment $attachment;
 
     public function __construct()

@@ -2,12 +2,12 @@
 <template>
   <template v-if="listMode.is('list')">
     <q-list data-cy="mode-list">
-      <q-item v-for="(a, i) in articles" :key="i" :to="{ name: 'show', params: { slug: a.slug } }" tag="article">
+      <q-item v-for="(a, i) in articles" :key="i" :to="{ name: 'show', params: { user: a.user.id, slug: a.slug } }"
+        tag="article">
         <q-item-section side>
           <q-img :src="thumbnailUrl(a)" :ratio="16 / 9" fit="cover" width="240px" height="135px"
             class="bg-grey-1 gt-sm" />
-          <q-img :src="thumbnailUrl(a)" :ratio="16 / 9" fit="cover" width="160px" height="90px"
-            class="bg-grey-1 lt-md" />
+          <q-img :src="thumbnailUrl(a)" :ratio="16 / 9" fit="cover" width="160px" height="90px" class="bg-grey-1 lt-md" />
         </q-item-section>
         <q-item-section top>
           <q-item-label class="text-h4">
@@ -36,9 +36,9 @@
   <template v-else-if="listMode.is('gallery')">
     <div class="q-col-gutter-md row items-start" data-cy="mode-gallery">
       <article v-for="(a, i) in articles" :key="i" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-        <router-link :to="{ name: 'show', params: { slug: a.slug } }">
-          <q-img :to="{ name: 'show', params: { slug: a.slug } }" :src="thumbnailUrl(a)" width="100%" :ratio="16 / 9"
-            fit="cover" class="bg-grey-1">
+        <router-link :to="{ name: 'show', params: { user: a.user_id, slug: a.slug } }">
+          <q-img :to="{ name: 'show', params: { user: a.user.id, slug: a.slug } }" :src="thumbnailUrl(a)" width="100%"
+            :ratio="16 / 9" fit="cover" class="bg-grey-1">
             <div class="text-h5 absolute-full flex flex-center">
               {{ a.title }}
             </div>

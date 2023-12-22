@@ -13,7 +13,7 @@ const routes = [
     component: Layout,
     children: [
       { name: 'top', path: '', component: Top },
-      { name: 'show', path: 'articles/:slug', component: Show },
+      { name: 'show', path: 'articles/:user/:slug', component: Show },
       { name: 'categoryPak', path: 'category/pak/:size/:slug', component: List },
       { name: 'category', path: 'category/:type/:slug', component: List },
       { name: 'tag', path: 'tag/:id', component: List },

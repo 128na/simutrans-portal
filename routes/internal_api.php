@@ -43,7 +43,7 @@ Route::prefix('front')->group(function () {
         Route::get('/user/{user}', [FrontController::class, 'user']);
         Route::get('/tags', [FrontController::class, 'tags']);
         Route::get('/search', [FrontController::class, 'search']);
-        Route::get('/articles/{article}', [FrontController::class, 'show']);
+        Route::get('/articles/{user}/{article}', [FrontController::class, 'show']);
     });
 
     Route::middleware(['throttle:discordInvite'])->group(function () {

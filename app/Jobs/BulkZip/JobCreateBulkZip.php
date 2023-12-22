@@ -39,6 +39,7 @@ class JobCreateBulkZip implements ShouldQueue
         try {
             if ($this->bulkZip->generated) {
                 dump('generated true');
+
                 return;
             }
             $auditLogService->bulkZipRequest($this->bulkZip);

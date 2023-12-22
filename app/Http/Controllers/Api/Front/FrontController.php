@@ -26,7 +26,7 @@ class FrontController extends Controller
     ) {
     }
 
-    public function show(Article $article): ArticleResource
+    public function show(User $user, Article $article): ArticleResource
     {
         abort_unless($article->is_publish, 404);
 

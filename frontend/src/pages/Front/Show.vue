@@ -31,7 +31,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const api = useFrontApi();
-    api.postShown(route.params.slug);
+    api.postShown(route.params.user, route.params.slug);
 
     const articleCache = useArticleCacheStore();
 
@@ -49,7 +49,7 @@ export default defineComponent({
       }
       try {
         await handler.handleWithLoading({
-          doRequest: () => api.fetchArticle(route.params.slug),
+          doRequest: () => api.fetchArticle(route.params.user, route.params.slug),
           done: (res) => {
             articleCache.addCache(res.data.data);
             setTitle(res.data.data.title);

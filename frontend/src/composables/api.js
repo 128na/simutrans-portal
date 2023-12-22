@@ -8,11 +8,11 @@ export const useFrontApi = () => ({
     return axios.get(url);
   },
   // conversion
-  postConversion(slug) {
-    return axios.post(`/api/conversion/${slug}`);
+  postConversion(userId, slug) {
+    return axios.post(`/api/conversion/${userId}/${slug}`);
   },
-  postShown(slug) {
-    return axios.post(`/api/shown/${slug}`);
+  postShown(userId, slug) {
+    return axios.post(`/api/shown/${userId}/${slug}`);
   },
   // top
   fetchSidebar() {
@@ -47,8 +47,8 @@ export const useFrontApi = () => ({
     return axios.get('/api/front/search', { params: { word, order, page } });
   },
   // show
-  fetchArticle(slug) {
-    return axios.get(`/api/front/articles/${slug}`);
+  fetchArticle(userId, slug) {
+    return axios.get(`/api/front/articles/${userId}/${slug}`);
   },
   fetchTags() {
     return axios.get('/api/front/tags');

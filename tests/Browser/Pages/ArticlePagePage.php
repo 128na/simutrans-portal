@@ -13,6 +13,8 @@ use Laravel\Dusk\Browser;
 class ArticlePagePage extends Page
 {
     private Article $article;
+    private Category $category;
+    private Attachment $attachment;
 
     public function __construct()
     {
@@ -38,7 +40,7 @@ class ArticlePagePage extends Page
 
     public function url()
     {
-        return '/articles/'.urlencode($this->article->slug);
+        return sprintf('/articles/%s/%s', $this->article->user_id, urlencode($this->article->slug));
     }
 
     public function assert(Browser $browser)

@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php_version: [8.2]
+        php_version: [8.2, 8.3]
     steps:
       - name: Checkout
         uses: actions/checkout@v3

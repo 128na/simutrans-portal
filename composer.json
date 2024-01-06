@@ -13,7 +13,7 @@
     "cebe/markdown": "^1.2.1",
     "doctrine/dbal": "^3.7.2",
     "ezyang/htmlpurifier": "^4.17",
-    "google/cloud-recaptcha-enterprise": "^1.7.0",
+    "google/cloud-recaptcha-enterprise": "^1.8.0",
     "guzzlehttp/guzzle": "^7.8.1",
     "htmlmin/htmlmin": "dev-master#347d577",
     "laravel-notification-channels/discord": "^1.5",

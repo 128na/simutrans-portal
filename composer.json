@@ -32,7 +32,7 @@
     "brianium/paratest": "^7.3.1",
     "fakerphp/faker": "^1.23.1",
     "filp/whoops": "^2.15.4",
-    "larastan/larastan": "^2.8",
+    "larastan/larastan": "^2.8.1",
     "laravel/dusk": "^7.12.0",
     "laravel/pint": "^1.13.7",
     "laravel/sail": "^1.26.3",

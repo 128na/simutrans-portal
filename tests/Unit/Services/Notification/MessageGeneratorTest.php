@@ -44,7 +44,7 @@ class MessageGeneratorTest extends UnitTestCase
         $now = now()->format('Y/m/d H:i');
         $actual = $this->getSUT()->buildPublishedMessage($article);
         $url = config('app.url');
-        $expected = "新規投稿「dummy_title」\n$url/articles/1/dummy_slug\nby dummy_name\nat $now\n#Simutrans #dummy_pak";
+        $expected = "新規投稿「dummy_title」\n$url/users/1/dummy_slug\nby dummy_name\nat $now\n#Simutrans #dummy_pak";
 
         $this->assertEquals($expected, $actual);
     }
@@ -75,7 +75,7 @@ class MessageGeneratorTest extends UnitTestCase
         $now = now()->format('Y/m/d H:i');
         $actual = $this->getSUT()->buildUpdatedMessage($article);
         $url = config('app.url');
-        $expected = "「dummy_title」更新\n$url/articles/1/dummy_slug\nby dummy_name\nat $now\n#Simutrans #dummy_pak";
+        $expected = "「dummy_title」更新\n$url/users/1/dummy_slug\nby dummy_name\nat $now\n#Simutrans #dummy_pak";
 
         $this->assertEquals($expected, $actual);
     }

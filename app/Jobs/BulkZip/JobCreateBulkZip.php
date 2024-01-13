@@ -51,7 +51,6 @@ class JobCreateBulkZip implements ShouldQueue
             $auditLogService->bulkZipCreated($this->bulkZip, microtime(true) - $begin);
         } catch (\Throwable $e) {
             logger()->error('JobCreateBulkZip failed', ['id' => $this->bulkZip->id]);
-            dump($e);
             $this->bulkZip->delete();
             report($e);
         }

@@ -24,7 +24,7 @@ class ListUserPage extends Page
 
     public function url()
     {
-        return "/user/{$this->user->id}";
+        return "/users/{$this->user->id}";
     }
 
     public function assert(Browser $browser)

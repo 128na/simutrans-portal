@@ -28,7 +28,7 @@ class ArticleMarkdownPage extends Page
 
     public function url()
     {
-        return sprintf('/articles/%s/%s', $this->article->user_id, urlencode($this->article->slug));
+        return sprintf('/users/%s/%s', $this->article->user_id, urlencode($this->article->slug));
     }
 
     public function assert(Browser $browser)

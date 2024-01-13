@@ -25,6 +25,7 @@ abstract class DuskTestCase extends BaseTestCase
 
         $this->withoutMiddleware(SetCacheHeaders::class);
     }
+
     protected function tearDown(): void
     {
         session()->flush();
@@ -40,7 +41,7 @@ abstract class DuskTestCase extends BaseTestCase
      */
     public static function prepare()
     {
-        if (!static::runningInSail()) {
+        if (! static::runningInSail()) {
             static::startChromeDriver();
         }
     }

@@ -84,7 +84,7 @@ class AddonIntroductionDecoratorTest extends UnitTestCase
 
         $this->assertEquals(1, $contents[0][0][1]);
         $this->assertEquals('test title', $contents[0][1][1]);
-        $this->assertEquals(route('articles.show', ['user' => 1, 'article' => 'test_slug']), $contents[0][2][1]);
+        $this->assertEquals(route('articles.show', ['user' => 1, 'articleSlug' => 'test_slug']), $contents[0][2][1]);
         $this->assertEquals('無し', $contents[0][3][1]);
         $this->assertEquals('test user name', $contents[0][4][1]);
         $this->assertEquals('category.test.example', $contents[0][5][1]);

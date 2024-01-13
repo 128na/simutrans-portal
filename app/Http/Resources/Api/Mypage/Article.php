@@ -39,7 +39,7 @@ class Article extends JsonResource
             'created_at' => $this->resource->created_at?->toIso8601String(),
             'published_at' => $this->resource->published_at?->toIso8601String(),
             'modified_at' => $this->resource->modified_at?->toIso8601String(),
-            'url' => route('articles.show', ['user' => $this->resource->user, 'article' => $this->resource->slug]),
+            'url' => route('articles.show', ['user' => $this->resource->user, 'articleSlug' => $this->resource->slug]),
             'metrics' => [
                 'totalViewCount' => $this->resource->totalViewCount->count ?? 0,
                 'totalConversionCount' => $this->resource->totalConversionCount->count ?? 0,

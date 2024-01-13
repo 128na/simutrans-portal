@@ -37,7 +37,7 @@ class MessageGenerator extends Service
     private function getParams(Article $article): array
     {
         if ($article->user) {
-            $url = route('articles.show', ['user' => $article->user, 'article' => $article->slug]);
+            $url = route('articles.show', ['user' => $article->user, 'articleSlug' => $article->slug]);
             $now = now()->format('Y/m/d H:i');
             $name = $this->getDisaplayName($article->user);
             $tags = collect(['Simutrans'])

@@ -61,7 +61,7 @@ class Article extends Model implements Feedable
 
     public function routeNotificationForMail(mixed $notification): string
     {
-        if (! $this->user?->email) {
+        if (!$this->user?->email) {
             throw new Exception('email not found');
         }
 
@@ -288,7 +288,7 @@ class Article extends Model implements Feedable
 
     public function getHasThumbnailAttribute(): bool
     {
-        return ! is_null($this->contents->thumbnail) && $this->thumbnail;
+        return !is_null($this->contents->thumbnail) && $this->thumbnail;
     }
 
     public function getThumbnailAttribute(): ?Attachment
@@ -309,7 +309,7 @@ class Article extends Model implements Feedable
     {
         return $this->is_addon_post
             && $this->contents instanceof AddonPostContent
-            && ! is_null($this->contents->file) && $this->file;
+            && !is_null($this->contents->file) && $this->file;
     }
 
     public function getFileAttribute(): ?Attachment
@@ -353,7 +353,7 @@ class Article extends Model implements Feedable
 
     public function getTodaysConversionRateAttribute(): string
     {
-        if (! is_null($this->todaysConversionCount) && $this->todaysViewCount) {
+        if (!is_null($this->todaysConversionCount) && $this->todaysViewCount) {
             $rate = $this->todaysConversionCount->count / $this->todaysViewCount->count * 100;
 
             return sprintf('%.1f %%', $rate);
@@ -420,7 +420,7 @@ class Article extends Model implements Feedable
             'title' => $this->title,
             'summary' => $this->contents->getDescription(),
             'updated' => $this->modified_at?->toMutable(), // CarbonImmutableは未対応
-            'link' => route('articles.show', ['user' => $this->user, 'article' => $this->slug]),
+            'link' => route('articles.show', ['user' => $this->user, 'articleSlug' => $this->slug]),
             'authorName' => $this->user->name ?? '',
         ]);
     }

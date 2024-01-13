@@ -38,8 +38,6 @@ class JobCreateBulkZip implements ShouldQueue
         // dispatchAfterResponseではfailedメソッドは呼ばれない
         try {
             if ($this->bulkZip->generated) {
-                dump('generated true');
-
                 return;
             }
             $auditLogService->bulkZipRequest($this->bulkZip);

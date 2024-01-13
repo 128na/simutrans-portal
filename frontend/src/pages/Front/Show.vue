@@ -31,10 +31,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const api = useFrontApi();
-    api.postShown(route.params.user, route.params.slug);
-
     const articleCache = useArticleCacheStore();
-
     const article = computed(() => articleCache.getCache(route.params.slug));
 
     const handler = useApiHandler();
@@ -45,6 +42,7 @@ export default defineComponent({
       }
       if (articleCache.hasCache(route.params.slug)) {
         setTitle(article.value.title);
+        api.postShown(article.value.id);
         return;
       }
       try {
@@ -53,6 +51,7 @@ export default defineComponent({
           done: (res) => {
             articleCache.addCache(res.data.data);
             setTitle(res.data.data.title);
+            api.postShown(res.data.data.id);
           },
           failedMessage: '記事取得に失敗しました',
         });

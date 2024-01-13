@@ -36,14 +36,14 @@ Route::prefix('front')->group(function () {
         Route::get('/ranking/', [FrontController::class, 'ranking']);
         Route::get('/pages', [FrontController::class, 'pages']);
         Route::get('/announces', [FrontController::class, 'announces']);
-        Route::get('/category/pak/{size}/none', [FrontController::class, 'categoryPakNoneAddon']);
-        Route::get('/category/pak/{size}/{slug}', [FrontController::class, 'categoryPakAddon']);
-        Route::get('/category/{type}/{slug}', [FrontController::class, 'category']);
-        Route::get('/tag/{tag}', [FrontController::class, 'tag']);
-        Route::get('/user/{user}', [FrontController::class, 'user']);
+        Route::get('/categories/pak/{size}/none', [FrontController::class, 'categoryPakNoneAddon']);
+        Route::get('/categories/pak/{size}/{slug}', [FrontController::class, 'categoryPakAddon']);
+        Route::get('/categories/{type}/{slug}', [FrontController::class, 'category']);
         Route::get('/tags', [FrontController::class, 'tags']);
+        Route::get('/tags/{tag}', [FrontController::class, 'tag']);
+        Route::get('/users/{user}', [FrontController::class, 'user']);
+        Route::get('/users/{user}/{articleSlug}', [FrontController::class, 'show']);
         Route::get('/search', [FrontController::class, 'search']);
-        Route::get('/articles/{user}/{article}', [FrontController::class, 'show']);
     });
 
     Route::middleware(['throttle:discordInvite'])->group(function () {

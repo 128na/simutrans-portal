@@ -8,7 +8,6 @@ use App\Events\ArticleConversion;
 use App\Events\ArticleShown;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
-use App\Models\User;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +17,7 @@ class ConversionController extends Controller
     {
     }
 
-    public function conversion(User $user, Article $article): void
+    public function conversion(Article $article): void
     {
         abort_unless($article->is_publish, 404);
 
@@ -27,7 +26,7 @@ class ConversionController extends Controller
         }
     }
 
-    public function shown(User $user, Article $article): void
+    public function shown(Article $article): void
     {
         abort_unless($article->is_publish, 404);
 

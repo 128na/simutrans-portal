@@ -8,11 +8,11 @@ export const useFrontApi = () => ({
     return axios.get(url);
   },
   // conversion
-  postConversion(userId, slug) {
-    return axios.post(`/api/conversion/${userId}/${slug}`);
+  postConversion(id) {
+    return axios.post(`/api/conversion/${id}`);
   },
-  postShown(userId, slug) {
-    return axios.post(`/api/shown/${userId}/${slug}`);
+  postShown(id) {
+    return axios.post(`/api/shown/${id}`);
   },
   // top
   fetchSidebar() {
@@ -23,16 +23,16 @@ export const useFrontApi = () => ({
   },
   // list
   fetchCategoryPak(size, slug, order, page = 1) {
-    return axios.get(`/api/front/category/pak/${size}/${slug}`, { params: { order, page } });
+    return axios.get(`/api/front/categories/pak/${size}/${slug}`, { params: { order, page } });
   },
   fetchCategory(type, slug, order, page = 1) {
-    return axios.get(`/api/front/category/${type}/${slug}`, { params: { order, page } });
+    return axios.get(`/api/front/categories/${type}/${slug}`, { params: { order, page } });
   },
   fetchTag(id, order, page = 1) {
-    return axios.get(`/api/front/tag/${id}`, { params: { order, page } });
+    return axios.get(`/api/front/tags/${id}`, { params: { order, page } });
   },
   fetchUser(id, order, page = 1) {
-    return axios.get(`/api/front/user/${id}`, { params: { order, page } });
+    return axios.get(`/api/front/users/${id}`, { params: { order, page } });
   },
   fetchAnnounces(order, page = 1) {
     return axios.get('/api/front/announces', { params: { order, page } });
@@ -47,8 +47,8 @@ export const useFrontApi = () => ({
     return axios.get('/api/front/search', { params: { word, order, page } });
   },
   // show
-  fetchArticle(userId, slug) {
-    return axios.get(`/api/front/articles/${userId}/${slug}`);
+  fetchArticle(userId, articleSlug) {
+    return axios.get(`/api/front/users/${userId}/${articleSlug}`);
   },
   fetchTags() {
     return axios.get('/api/front/tags');

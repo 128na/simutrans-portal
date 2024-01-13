@@ -5,26 +5,15 @@ declare(strict_types=1);
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * Slug.
  */
 trait Slugable
 {
-    /**
-     * @param  string  $value
-     * @param  string  $field
-     * @return Model
-     */
-    public function resolveRouteBinding($value, $field = null)
-    {
-        return $this->slug(urlencode($value))->first() ?? $this->findOrFail($value);
-    }
-
     public function scopeSlug(Builder $query, string $slug): Builder
     {
-        return $query->where('slug', $slug);
+        return $query->where('slug', urlencode($slug));
     }
 
     public function setSlugAttribute(string $value): void

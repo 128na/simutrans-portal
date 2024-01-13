@@ -18,7 +18,7 @@ export default defineComponent({
     const { postConversion } = useFrontApi();
     return {
       handle() {
-        postConversion(props.article.slug);
+        postConversion(props.article.id);
       },
     };
   },

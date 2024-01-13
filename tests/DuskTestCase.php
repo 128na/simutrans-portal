@@ -41,7 +41,7 @@ abstract class DuskTestCase extends BaseTestCase
      */
     public static function prepare()
     {
-        if (! static::runningInSail()) {
+        if (!static::runningInSail()) {
             static::startChromeDriver();
         }
     }
@@ -59,6 +59,7 @@ abstract class DuskTestCase extends BaseTestCase
             return $items->merge([
                 '--disable-gpu',
                 '--headless',
+                '--disable-dev-shm-usage', // https://stackoverflow.com/questions/75605795/laravel-dusk-invalid-session-id-by-testing
             ]);
         })->all());
 

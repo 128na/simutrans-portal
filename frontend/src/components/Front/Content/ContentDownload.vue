@@ -15,7 +15,7 @@ export default defineComponent({
   setup(props) {
     return {
       handleClick() {
-        window.open(`/articles/${props.article.user.id}/${props.article.slug}/download`);
+        window.open(`/articles/${props.article.id}/download`);
       },
     };
   },

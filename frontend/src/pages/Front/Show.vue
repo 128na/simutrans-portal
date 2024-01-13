@@ -47,7 +47,7 @@ export default defineComponent({
       }
       try {
         await handler.handleWithLoading({
-          doRequest: () => api.fetchArticle(route.params.user, route.params.slug),
+          doRequest: () => api.fetchArticle(route.params.id, route.params.slug),
           done: (res) => {
             articleCache.addCache(res.data.data);
             setTitle(res.data.data.title);

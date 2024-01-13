@@ -227,19 +227,19 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v3
         with:
-          name: screenshots
+          name: dsuk-screenshots
           path: tests/Browser/screenshots
       - name: Upload Console Logs
         if: failure()
         uses: actions/upload-artifact@v3
         with:
-          name: console
+          name: dsuk-console
           path: tests/Browser/console
       - name: Upload Laravel Logs
         if: failure()
         uses: actions/upload-artifact@v3
         with:
-          name: DuskLaravelLog
+          name: dsuk-DuskLaravelLog
           path: storage/logs
 
   cy:
@@ -273,6 +273,12 @@ jobs:
         run: cd frontend && npm ci
       - name: Run Cypress
         run: cd frontend && npm run test:e2e:ci
+      - name: Upload Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-videos
+          path: frontend/test/cypress/videos
 
   deploy:
     # tag push -> テスト通過後デプロイ

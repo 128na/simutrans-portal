@@ -24,7 +24,7 @@ export const assertFrontSearchPage = (word) => {
 };
 
 export const assertFrontShowPage = (article) => {
-  assertTitleAndUrl(article.title, `http://localhost:8080/articles/${article.slug}`);
+  assertTitleAndUrl(article.title, `http://localhost:8080/users/${article.user.id}/${article.slug}`);
 };
 
 // mypage

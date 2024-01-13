@@ -43,7 +43,7 @@ abstract class ArticleTestCase extends TestCase
     {
         return Attachment::create([
             'user_id' => $userId,
-            'path' => $file->store('user/' . $userId, 'public'),
+            'path' => $file->store('user/'.$userId, 'public'),
             'original_name' => $file->getClientOriginalName(),
         ]);
     }
@@ -56,10 +56,10 @@ abstract class ArticleTestCase extends TestCase
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'addon-post',
-            'title' => 'test_addon-post' . random_int(1, 999),
+            'title' => 'test_addon-post'.random_int(1, 999),
             'status' => 'publish',
             'contents' => [
-                'description' => 'test addon-post text' . random_int(1, 999),
+                'description' => 'test addon-post text'.random_int(1, 999),
                 'author' => 'test author',
                 'file' => $attachment->id,
             ],
@@ -75,10 +75,10 @@ abstract class ArticleTestCase extends TestCase
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'addon-introduction',
-            'title' => 'test_addon-introduction' . random_int(1, 999),
+            'title' => 'test_addon-introduction'.random_int(1, 999),
             'status' => 'publish',
             'contents' => [
-                'description' => 'test addon-introduction text' . random_int(1, 999),
+                'description' => 'test addon-introduction text'.random_int(1, 999),
                 'author' => 'test author',
                 'link' => 'http://example.com',
             ],

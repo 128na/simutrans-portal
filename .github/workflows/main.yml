@@ -227,20 +227,11 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v3
         with:
-          name: dsuk-screenshots
-          path: tests/Browser/screenshots
-      - name: Upload Console Logs
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: dsuk-console
-          path: tests/Browser/console
-      - name: Upload Laravel Logs
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: dsuk-DuskLaravelLog
-          path: storage/logs
+          name: dsuk
+          path: |
+            tests/Browser/screenshots
+            tests/Browser/console
+            storage/logs
 
   cy:
     runs-on: ubuntu-latest
@@ -277,8 +268,10 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v3
         with:
-          name: cypress-videos
-          path: frontend/test/cypress/videos
+          name: cypress
+          path: |
+            frontend/test/cypress/videos
+            frontend/test/cypress/screenshots
 
   deploy:
     # tag push -> テスト通過後デプロイ

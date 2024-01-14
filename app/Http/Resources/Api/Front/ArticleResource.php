@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Api\Front;
 
+use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -16,6 +17,7 @@ class ArticleResource extends JsonResource
      */
     public function toArray($request)
     {
+        assert($this->resource instanceof Article);
         return [
             'id' => $this->resource->id,
             'title' => $this->resource->title,
@@ -41,6 +43,18 @@ class ArticleResource extends JsonResource
             'modified_at' => $this->resource->modified_at->toIso8601String(),
             'file_info' => $this->when($this->resource->hasFileInfo, fn () => $this->resource->file->fileInfo->data),
             'attachments' => new AttachmentResource($this->resource->attachments),
+            'download' => $this->when($this->resource->isAddonPost, fn () => route('articles.download', [
+                'article' => $this->resource,
+                'download' => 'download' . $this->ext()
+            ])),
         ];
+    }
+
+    private function ext(): string
+    {
+        $file = $this->resource->file;
+        $ext = $file->extension;
+
+        return $ext ? ".{$ext}" : '';
     }
 }

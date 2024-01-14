@@ -30,7 +30,7 @@ class ListPakCategoryPage extends Page
 
     public function url()
     {
-        return "/category/pak/{$this->pak->slug}/{$this->addon->slug}";
+        return "/categories/pak/{$this->pak->slug}/{$this->addon->slug}";
     }
 
     public function assert(Browser $browser)

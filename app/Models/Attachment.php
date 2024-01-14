@@ -142,6 +142,7 @@ class Attachment extends Model
         if (count($tmp) > 1) {
             return array_pop($tmp);
         }
+
         return '';
     }
 }

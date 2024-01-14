@@ -12,7 +12,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 /* eslint global-require: 0 */
 const { configure } = require('quasar/wrappers');
 
-const downloadRegExp = new RegExp('/download(\..+)?$');
+const downloadRegExp = /\/download(\..+)?$'/;
 
 module.exports = configure((ctx) => ({
   // https://quasar.dev/quasar-cli/supporting-ts

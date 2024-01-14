@@ -53,8 +53,7 @@ class ArticleResource extends JsonResource
 
     private function ext(): string
     {
-        $file = $this->resource->file;
-        $ext = $file->extension;
+        $ext = $this->resource?->file?->extension;
 
         return $ext ? ".{$ext}" : '';
     }

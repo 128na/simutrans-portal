@@ -37,12 +37,12 @@ class ArticleResource extends JsonResource
                 'name' => $t->name,
             ]),
             'user' => [
-                'id' => $this->resource->user->id,
-                'name' => $this->resource->user->name,
+                'id' => $this->resource->user?->id,
+                'name' => $this->resource->user?->name,
             ],
             'published_at' => $this->resource->published_at?->toIso8601String() ?? '未投稿',
-            'modified_at' => $this->resource->modified_at->toIso8601String(),
-            'file_info' => $this->when($this->resource->hasFileInfo, fn () => $this->resource->file->fileInfo->data),
+            'modified_at' => $this->resource->modified_at?->toIso8601String(),
+            'file_info' => $this->when($this->resource->hasFileInfo, fn () => $this->resource->file?->fileInfo?->data),
             'attachments' => new AttachmentResource($this->resource->attachments),
             'download' => $this->when($this->resource->isAddonPost, fn () => route('articles.download', [
                 'article' => $this->resource,

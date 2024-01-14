@@ -12,7 +12,6 @@
   </q-input>
 </template>
 <script>
-import { useAppInfo } from 'src/composables/appInfo';
 import LabelRequired from 'src/components/Common/LabelRequired.vue';
 import { useAuthStore } from 'src/store/auth';
 import { computed, defineComponent } from 'vue';
@@ -32,7 +31,6 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const { backendUrl } = useAppInfo();
     const auth = useAuthStore();
     const rawSlug = computed({
       get() { return decodeURI(props.modelValue); },
@@ -41,7 +39,7 @@ export default defineComponent({
         emit('update:model-value', encodeURI(replaced));
       },
     });
-    const url = computed(() => `${backendUrl}/articles/${auth.user.id}/${props.modelValue}`);
+    const url = computed(() => `/users/${auth.user.id}/${props.modelValue}`);
     return {
       rawSlug,
       url,

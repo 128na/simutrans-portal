@@ -149,6 +149,6 @@ class FrontController extends Controller
     {
         $article = Article::slug($slug)->orderBy('id', 'asc')->firstOrFail();
 
-        return redirect(route('articles.show', ['user' => $article->user_id, 'articleSlug' => $article->slug]));
+        return redirect(route('articles.show', ['user' => $article->user_id, 'articleSlug' => $article->slug]), Response::HTTP_MOVED_PERMANENTLY);
     }
 }

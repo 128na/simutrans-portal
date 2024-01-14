@@ -38,9 +38,9 @@ describe('フロント記事詳細', () => {
         cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
         cy.intercept('/storage/json/sidebar.json', mockSidebarResponse).as('front.sidebar');
         cy.intercept('post', `/api/shown/${article.id}`, { statusCode: 200 }).as('front.shown');
-        cy.intercept(`/api/front/users/${article.user_id}/${article.slug}`, { statusCode: 200, body: { data: article } }).as('front.article');
+        cy.intercept(`/api/front/users/${article.user.id}/${article.slug}`, { statusCode: 200, body: { data: article } }).as('front.article');
 
-        cy.visit(`/users/${article.user_id}/${article.slug}`);
+        cy.visit(`/users/${article.user.id}/${article.slug}`);
         cy.wait('@mypage.user');
         cy.wait('@front.article');
         cy.wait('@front.sidebar');

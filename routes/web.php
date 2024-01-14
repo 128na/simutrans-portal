@@ -30,9 +30,9 @@ Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content']
     Route::get('/ranking', [FrontController::class, 'fallback'])->name('ranking');
     Route::get('/pages', [FrontController::class, 'fallback'])->name('pages');
     Route::get('/announces', [FrontController::class, 'fallback'])->name('announces');
-    Route::get('/category/pak/{size}/none', [FrontController::class, 'categoryPakNoneAddon'])->name('category.pak.noneAddon');
-    Route::get('/category/pak/{size}/{slug}', [FrontController::class, 'categoryPakAddon'])->name('category.pak.addon');
-    Route::get('/category/{type}/{slug}', [FrontController::class, 'category'])->name('category');
+    Route::get('/categories/pak/{size}/none', [FrontController::class, 'categoryPakNoneAddon'])->name('category.pak.noneAddon');
+    Route::get('/categories/pak/{size}/{slug}', [FrontController::class, 'categoryPakAddon'])->name('category.pak.addon');
+    Route::get('/categories/{type}/{slug}', [FrontController::class, 'category'])->name('category');
     Route::get('/tags', [FrontController::class, 'fallback'])->name('tags');
     Route::get('/tags/{tag}', [FrontController::class, 'tag'])->name('tag');
     Route::get('/users/{user}', [FrontController::class, 'user'])->name('user');

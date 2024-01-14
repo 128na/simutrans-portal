@@ -33,12 +33,13 @@ class CursorExpiredTest extends TestCase
     public function test_含まれない($data)
     {
         BulkZip::factory()->create($data);
+
         $res = $this->bulkZipRepository->cursorExpired();
         $this->assertEquals(0, $res->count());
     }
 
     public static function dataNotFound()
     {
-        yield '1日より新しい' => [['created_at' => now()]];
+        yield '1日より新しい' => [['created_at' => now('Asia/Tokyo')]];
     }
 }

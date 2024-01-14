@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Repositories\RedirectRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 /**
  * 旧サイト -> 新サイトのリダイレクトを行う.
@@ -26,7 +27,7 @@ class RedirectController extends Controller
         $redirect = $this->redirectRepository->findOrFailByPath($path);
         logger("[redirect]: {$redirect->from} -> {$redirect->to}");
 
-        return redirect($redirect->to, 301);
+        return redirect($redirect->to, Response::HTTP_MOVED_PERMANENTLY);
     }
 
     private function getRelativePath(string $fullUrl): string

@@ -135,4 +135,14 @@ class Attachment extends Model
     {
         return Storage::disk('public')->get($this->path);
     }
+
+    public function getExtensionAttribute(): string
+    {
+        $tmp = explode('.', $this->original_name);
+        if (count($tmp) > 1) {
+            return array_pop($tmp);
+        }
+
+        return '';
+    }
 }

@@ -111,7 +111,7 @@ export default defineComponent({
 
     const { backendUrl } = useAppInfo();
     const handleShow = (article) => {
-      window.open(`${backendUrl}/articles/${article.slug}`);
+      window.open(`${backendUrl}/users/${article.user.id}/${article.slug}`);
     };
 
     const deleteArticle = async (id) => {

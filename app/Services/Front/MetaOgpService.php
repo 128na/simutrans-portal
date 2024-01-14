@@ -18,13 +18,13 @@ class MetaOgpService extends Service
     /**
      * @return array<string, string|null>
      */
-    public function show(Article $article): array
+    public function show(User $user, Article $article): array
     {
         return [
             'title' => $article->title.' - '.config('app.name'),
             'description' => $this->trimDescription($article->contents->getDescription()),
             'image' => $article->has_thumbnail ? $article->thumbnail_url : null,
-            'canonical' => route('articles.show', $article->slug),
+            'canonical' => route('articles.show', ['user' => $user, 'articleSlug' => $article->slug]),
             'card_type' => 'summary_large_image',
         ];
     }

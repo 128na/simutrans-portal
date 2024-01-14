@@ -149,7 +149,7 @@ class FrontControllerTest extends TestCase
     public function testShow()
     {
         $article = Article::factory()->create(['status' => 'publish']);
-        $response = $this->get(route('articles.show', ['article' => $article->slug]));
+        $response = $this->get(route('articles.show', ['user' => $article->user, 'articleSlug' => $article->slug]));
 
         $response->assertOk();
     }
@@ -157,7 +157,7 @@ class FrontControllerTest extends TestCase
     public function testShow非公開()
     {
         $article = Article::factory()->create(['status' => 'private']);
-        $response = $this->get(route('articles.show', ['article' => $article->slug]));
+        $response = $this->get(route('articles.show', ['user' => $article->user, 'articleSlug' => $article->slug]));
 
         $response->assertNotFound();
     }

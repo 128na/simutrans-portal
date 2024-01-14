@@ -179,7 +179,6 @@ abstract class ArticleTestCase extends TestCase
 
         yield 'スラッグが空' => [fn () => ['slug' => ''], 'article.slug'];
         yield 'スラッグが256文字以上' => [fn () => ['slug' => str_repeat('a', 256)], 'article.slug'];
-        yield 'スラッグが重複' => [fn () => ['slug' => $this->article2->slug], 'article.slug'];
 
         yield '存在しないサムネイルID' => [fn () => ['contents' => ['thumbnail' => 99999]], 'article.contents.thumbnail'];
         yield '画像以外' => [fn () => ['contents' => ['thumbnail' => $this->user_file->id]], 'article.contents.thumbnail'];

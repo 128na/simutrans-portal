@@ -51,7 +51,7 @@ class AddonIntroductionDecorator extends BaseDecorator
         return [
             ['ID', $model->id],
             ['タイトル', $model->title],
-            ['記事URL', route('articles.show', $model->slug)],
+            ['記事URL', route('articles.show', ['user' => $model->user, 'articleSlug' => $model->slug])],
             [
                 'サムネイル画像', $model->has_thumbnail && $model->thumbnail
                     ? $this->toPath($model->id, $model->thumbnail->original_name)

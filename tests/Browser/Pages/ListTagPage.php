@@ -27,7 +27,7 @@ class ListTagPage extends Page
 
     public function url()
     {
-        return "/tag/{$this->tag->id}";
+        return "/tags/{$this->tag->id}";
     }
 
     public function assert(Browser $browser)

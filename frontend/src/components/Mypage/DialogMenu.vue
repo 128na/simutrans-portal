@@ -13,8 +13,8 @@
             編集
           </q-item-section>
         </q-item>
-        <q-item v-if="row.status === 'publish'" :to="{ name: 'show', params: { slug: decodedSlug } }" target="_blank"
-          v-close-popup>
+        <q-item v-if="row.status === 'publish'" :to="{ name: 'show', params: { id: auth.user.id, slug: decodedSlug } }"
+          target="_blank" v-close-popup>
           <q-item-section avatar>
             <q-icon name="launch" />
           </q-item-section>
@@ -55,6 +55,7 @@ import {
 } from 'vue';
 import { useMypageApi } from 'src/composables/api';
 import { useMypageStore } from 'src/store/mypage';
+import { useAuthStore } from 'src/store/auth';
 import CustomDialog from '../Common/CustomDialog.vue';
 
 export default defineComponent({
@@ -73,7 +74,7 @@ export default defineComponent({
     const copy = async () => {
       try {
         emit('close');
-        clipboad.write(`${window.location.origin}/articles/${decodedSlug.value}`);
+        clipboad.write(props.row.url);
         notify.success('コピーしました');
       } catch (err) {
         notify.failed('コピーに失敗しました');
@@ -81,6 +82,7 @@ export default defineComponent({
     };
     const api = useMypageApi();
     const store = useMypageStore();
+    const auth = useAuthStore();
     const handleToPrivate = async () => {
       emit('close');
       const article = store.findArticleById(props.row.id);
@@ -117,6 +119,7 @@ export default defineComponent({
     };
 
     return {
+      auth,
       decodedSlug,
       copy,
       handleToPrivate,

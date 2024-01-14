@@ -27,7 +27,7 @@ class ListCategoryPage extends Page
 
     public function url()
     {
-        return "/category/{$this->category->type}/{$this->category->slug}";
+        return "/categories/{$this->category->type}/{$this->category->slug}";
     }
 
     public function assert(Browser $browser)

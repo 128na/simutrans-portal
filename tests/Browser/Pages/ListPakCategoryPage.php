@@ -23,14 +23,14 @@ class ListPakCategoryPage extends Page
         $this->article = Article::factory()->publish()->addonPost()->create([
             'user_id' => $user->id,
         ]);
-        $this->pak = Category::where('type', 'pak')->inRandomOrder()->first();
-        $this->addon = Category::where('type', 'addon')->inRandomOrder()->first();
+        $this->pak = Category::where('type', 'pak')->inRandomOrder()->firstOrFail();
+        $this->addon = Category::where('type', 'addon')->inRandomOrder()->firstOrFail();
         $this->article->categories()->saveMany([$this->pak, $this->addon]);
     }
 
     public function url()
     {
-        return "/category/pak/{$this->pak->slug}/{$this->addon->slug}";
+        return "/categories/pak/{$this->pak->slug}/{$this->addon->slug}";
     }
 
     public function assert(Browser $browser)

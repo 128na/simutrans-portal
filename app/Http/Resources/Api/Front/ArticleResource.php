@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Api\Front;
 
+use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -16,6 +17,8 @@ class ArticleResource extends JsonResource
      */
     public function toArray($request)
     {
+        assert($this->resource instanceof Article);
+
         return [
             'id' => $this->resource->id,
             'title' => $this->resource->title,
@@ -34,13 +37,24 @@ class ArticleResource extends JsonResource
                 'name' => $t->name,
             ]),
             'user' => [
-                'id' => $this->resource->user->id,
-                'name' => $this->resource->user->name,
+                'id' => $this->resource->user?->id,
+                'name' => $this->resource->user?->name,
             ],
             'published_at' => $this->resource->published_at?->toIso8601String() ?? '未投稿',
-            'modified_at' => $this->resource->modified_at->toIso8601String(),
-            'file_info' => $this->when($this->resource->hasFileInfo, fn () => $this->resource->file->fileInfo->data),
+            'modified_at' => $this->resource->modified_at?->toIso8601String(),
+            'file_info' => $this->when($this->resource->hasFileInfo, fn () => $this->resource->file?->fileInfo?->data),
             'attachments' => new AttachmentResource($this->resource->attachments),
+            'download' => $this->when($this->resource->isAddonPost, fn () => route('articles.download', [
+                'article' => $this->resource,
+                'download' => 'download'.$this->ext(),
+            ])),
         ];
+    }
+
+    private function ext(): string
+    {
+        $ext = $this->resource?->file?->extension;
+
+        return $ext ? ".{$ext}" : '';
     }
 }

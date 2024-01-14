@@ -9,7 +9,6 @@ use App\Http\Requests\Api\Article\ListRequest;
 use App\Http\Requests\Api\Article\SearchRequest;
 use App\Http\Resources\Api\Front\ArticleResource;
 use App\Http\Resources\Api\Front\TagResource;
-use App\Models\Article;
 use App\Models\Tag;
 use App\Models\User;
 use App\Services\Front\ArticleService;
@@ -26,8 +25,10 @@ class FrontController extends Controller
     ) {
     }
 
-    public function show(Article $article): ArticleResource
+    public function show(User $user, string $slug): ArticleResource
     {
+        $article = $user->articles()->slug($slug)->firstOrFail();
+
         abort_unless($article->is_publish, 404);
 
         return new ArticleResource($this->articleService->loadArticle($article));

@@ -20,7 +20,7 @@ export const mockArticlesResponse = {
       created_at: '2022-01-02T03:04:05',
       published_at: '2022-02-03T04:05:06',
       modified_at: '2022-03-04T05:06:07',
-      url: 'http://localhost:8080/articles/dummy-slug',
+      url: 'http://localhost:8080/users/1/dummy-slug',
       metrics: {
         totalViewCount: 1,
         totalConversionCount: 2,

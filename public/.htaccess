@@ -5,6 +5,17 @@
 
     RewriteEngine On
 
+    # 旧URL互換リダイレクト設定
+	RewriteBase /
+	# category/pak/{size}/none    -> categories/pak/{size}/none
+	# category/pak/{size}/{slug}  -> categories/pak/{size}/{slug}
+	# category/{type}/{slug}  -> categories/{type}/{slug}
+	RewriteRule ^category/(.+)$  /categories/$1 [L,R=301] 
+	# tag/{tag}   -> tags/{tag}
+	RewriteRule ^tag/(.+)$  /tags/$1 [L,R=301] 
+	# user/{user} -> users/{user}
+	RewriteRule ^user/(.+)$  /users/$1 [L,R=301] 
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

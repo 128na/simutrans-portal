@@ -13,6 +13,7 @@ use App\Services\Front\ArticleService;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -44,10 +45,11 @@ class FrontController extends Controller
     /**
      * 記事詳細.
      */
-    public function show(Article $article): Renderable
+    public function show(User $user, string $slug): Renderable
     {
+        $article = $user->articles()->slug($slug)->firstOrFail();
         abort_unless($article->is_publish, 404);
-        $meta = $this->metaOgpService->show($article);
+        $meta = $this->metaOgpService->show($user, $article);
 
         return view('front.spa', ['meta' => $meta]);
     }
@@ -141,5 +143,12 @@ class FrontController extends Controller
         $status = in_array($status, $statuses, true) ? $status : 404;
 
         return response(view('front.spa'), $status);
+    }
+
+    public function fallbackShow(string $slug): RedirectResponse
+    {
+        $article = Article::slug($slug)->orderBy('id', 'asc')->firstOrFail();
+
+        return redirect(route('articles.show', ['user' => $article->user_id, 'articleSlug' => $article->slug]), Response::HTTP_MOVED_PERMANENTLY);
     }
 }

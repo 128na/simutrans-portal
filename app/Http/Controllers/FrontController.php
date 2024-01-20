@@ -145,9 +145,11 @@ class FrontController extends Controller
         return response(view('front.spa'), $status);
     }
 
-    public function fallbackShow(string $slug): RedirectResponse
+    public function fallbackShow(string $slugOrId): RedirectResponse
     {
-        $article = Article::slug($slug)->orderBy('id', 'asc')->firstOrFail();
+        $article = is_numeric($slugOrId)
+            ? Article::findOrFail($slugOrId)
+            : Article::slug($slugOrId)->orderBy('id', 'asc')->firstOrFail();
 
         return redirect(route('articles.show', ['user' => $article->user_id, 'articleSlug' => $article->slug]), Response::HTTP_MOVED_PERMANENTLY);
     }

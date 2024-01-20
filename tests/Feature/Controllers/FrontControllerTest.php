@@ -168,4 +168,20 @@ class FrontControllerTest extends TestCase
 
         $response->assertOk();
     }
+
+    public function testFallbackShow_slug()
+    {
+        $article = Article::factory()->create(['status' => 'publish']);
+
+        $response = $this->get("/articles/{$article->slug}");
+        $response->assertRedirect("/users/{$article->user_id}/{$article->slug}");
+    }
+
+    public function testFallbackShow_id()
+    {
+        $article = Article::factory()->create(['status' => 'publish']);
+
+        $response = $this->get("/articles/{$article->id}");
+        $response->assertRedirect("/users/{$article->user_id}/{$article->slug}");
+    }
 }

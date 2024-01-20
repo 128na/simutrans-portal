@@ -40,7 +40,7 @@ Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content']
     Route::get('/social', [FrontController::class, 'social']);
 });
 // 非ログイン系 reidsキャッシュ無効
-Route::get('/articles/{articleSlug}', [FrontController::class, 'fallbackShow']);
+Route::get('/articles/{id}', [FrontController::class, 'fallbackShow']);
 Route::get('/search', [FrontController::class, 'search'])->name('search');
 Route::get('/mypage/', [MypageController::class, 'index'])->name('mypage.index');
 Route::get('/mypage/{any}', [MypageController::class, 'index'])->where('any', '.*');

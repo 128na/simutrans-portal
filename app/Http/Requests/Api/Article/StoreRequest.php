@@ -6,6 +6,7 @@ namespace App\Http\Requests\Api\Article;
 
 use App\Models\User;
 use App\Rules\NgWordRule;
+use App\Rules\NotJustNumbers;
 use App\Rules\UniqueSlugByUser;
 use Illuminate\Validation\Rule;
 
@@ -20,7 +21,7 @@ class StoreRequest extends BaseRequest
             'article.post_type' => ['bail', 'required', Rule::in(config('post_types'))],
             'article.status' => ['required', Rule::in(config('status'))],
             'article.title' => ['required', 'unique:articles,title', 'max:255', new NgWordRule(User::TITLE_NG_WORDS)],
-            'article.slug' => ['required', new UniqueSlugByUser, 'max:255'],
+            'article.slug' => ['required', new UniqueSlugByUser, new NotJustNumbers, 'max:255'],
             'article.published_at' => 'nullable|date|after:+1 hour',
             'should_notify' => 'nullable|boolean',
         ];

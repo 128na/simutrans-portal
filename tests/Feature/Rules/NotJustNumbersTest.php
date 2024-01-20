@@ -7,8 +7,8 @@ use Closure;
 use Illuminate\Translation\PotentiallyTranslatedString;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class NotJustNumbersTest extends TestCase
 {

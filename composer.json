@@ -11,7 +11,7 @@
     "abraham/twitteroauth": "^6.2",
     "berkayk/onesignal-laravel": "^2.0",
     "cebe/markdown": "^1.2.1",
-    "doctrine/dbal": "^3.7.2",
+    "doctrine/dbal": "^3.7.3",
     "ezyang/htmlpurifier": "^4.17",
     "google/cloud-recaptcha-enterprise": "^1.8.1",
     "guzzlehttp/guzzle": "^7.8.1",

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Str;
 
-class NgWordRule implements Rule
+class NgWordRule implements ValidationRule
 {
     /**
      * @var array<string>
@@ -25,13 +26,11 @@ class NgWordRule implements Rule
     }
 
     /**
-     * Determine if the validation rule passes.
+     * Run the validation rule.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
+     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         foreach ($this->ngWords as $ngWord) {
             if (Str::contains($value, $ngWord)) {
@@ -39,16 +38,9 @@ class NgWordRule implements Rule
             }
         }
 
-        return empty($this->detected);
-    }
-
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message()
-    {
-        return sprintf('使用できない文字が含まれています。(%s)', implode(',', $this->detected));
+        if (empty($this->detected)) {
+            return;
+        }
+        $fail(sprintf('使用できない文字が含まれています。(%s)', implode(',', $this->detected)));
     }
 }

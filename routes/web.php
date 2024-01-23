@@ -44,7 +44,7 @@ Route::get('/articles/{id}', [FrontController::class, 'fallbackShow']);
 Route::get('/search', [FrontController::class, 'search'])->name('search');
 Route::get('/mypage/', [MypageController::class, 'index'])->name('mypage.index');
 Route::get('/mypage/{any}', [MypageController::class, 'index'])->where('any', '.*');
-Route::get('/users/{user}/{articleSlug}', [FrontController::class, 'show'])->name('articles.show');
+Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show'])->name('articles.show');
 Route::get('/articles/{article}/{download}', [FrontController::class, 'download'])
     ->where('download', '^download(\..+)?$')->name('articles.download');
 

@@ -29,6 +29,7 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
     protected $fillable = [
         'role',
         'name',
+        'nickname',
         'invited_by',
         'invitation_code',
         'email',

@@ -15,9 +15,9 @@ class UserAddonCountRepository extends BaseRepository
 {
     private const DELETE_SQL = 'DELETE FROM user_addon_counts';
 
-    private const INSERT_SQL = "INSERT INTO user_addon_counts (user_id, user_name, count) (
+    private const INSERT_SQL = "INSERT INTO user_addon_counts (user_id, user_name, user_nickname, count) (
         SELECT
-            u.id user_id, u.name user_name, COUNT(a.id) count
+            u.id user_id, u.name user_name, u.nickname user_nickname, COUNT(a.id) count
         FROM
             users u
                 LEFT JOIN
@@ -25,7 +25,7 @@ class UserAddonCountRepository extends BaseRepository
                 AND a.status = 'publish'
                 AND a.deleted_at IS NULL
         WHERE u.deleted_at IS NULL
-        GROUP BY u.id
+        GROUP BY u.id, u.name, u.nickname
         HAVING COUNT(a.id) > 0
         ORDER BY COUNT(a.id) DESC)";
 
@@ -52,6 +52,6 @@ class UserAddonCountRepository extends BaseRepository
 
     public function get(): Collection
     {
-        return $this->model->select('user_id', 'user_name', 'count')->get();
+        return $this->model->select('user_id', 'user_name', 'user_nickname', 'count')->get();
     }
 }

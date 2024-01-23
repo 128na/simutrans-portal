@@ -17,6 +17,7 @@ class User extends JsonResource
         return [
             'id' => $this->resource->id,
             'name' => $this->resource->name,
+            'nickname' => $this->resource->nickname,
             'email' => $this->resource->email,
             'invitation_url' => $this->resource->invitation_code ? route('invite.index', $this->resource->invitation_code) : null,
             'profile' => new Profile($this->resource->profile),

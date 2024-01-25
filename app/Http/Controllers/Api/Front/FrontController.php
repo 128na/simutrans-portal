@@ -25,8 +25,12 @@ class FrontController extends Controller
     ) {
     }
 
-    public function show(User $user, string $slug): ArticleResource
+    public function show(string $userIdOrNickname, string $slug): ArticleResource
     {
+        $user = is_numeric($userIdOrNickname)
+            ? User::findOrFail($userIdOrNickname)
+            : User::where('nickname', $userIdOrNickname)->firstOrFail();
+
         $article = $user->articles()->slug($slug)->firstOrFail();
 
         abort_unless($article->is_publish, 404);
@@ -34,8 +38,12 @@ class FrontController extends Controller
         return new ArticleResource($this->articleService->loadArticle($article));
     }
 
-    public function user(User $user, ListRequest $request): AnonymousResourceCollection
+    public function user(string $userIdOrNickname, ListRequest $request): AnonymousResourceCollection
     {
+        $user = is_numeric($userIdOrNickname)
+            ? User::findOrFail($userIdOrNickname)
+            : User::where('nickname', $userIdOrNickname)->firstOrFail();
+
         $order = $request->string('order', 'modified_at')->toString();
         $articles = $this->articleService->paginateByUser($user, $order);
 

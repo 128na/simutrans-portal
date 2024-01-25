@@ -38,6 +38,7 @@ class ArticleResource extends JsonResource
             ]),
             'user' => [
                 'id' => $this->resource->user?->id,
+                'nickname' => $this->resource->user?->nickname,
                 'name' => $this->resource->user?->name,
             ],
             'published_at' => $this->resource->published_at?->toIso8601String() ?? '未投稿',
@@ -46,7 +47,7 @@ class ArticleResource extends JsonResource
             'attachments' => new AttachmentResource($this->resource->attachments),
             'download' => $this->when($this->resource->isAddonPost, fn () => route('articles.download', [
                 'article' => $this->resource,
-                'download' => 'download'.$this->ext(),
+                'download' => 'download' . $this->ext(),
             ])),
         ];
     }

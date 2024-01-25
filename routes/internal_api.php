@@ -41,8 +41,8 @@ Route::prefix('front')->group(function () {
         Route::get('/categories/{type}/{slug}', [FrontController::class, 'category']);
         Route::get('/tags', [FrontController::class, 'tags']);
         Route::get('/tags/{tag}', [FrontController::class, 'tag']);
-        Route::get('/users/{user}', [FrontController::class, 'user']);
-        Route::get('/users/{user}/{articleSlug}', [FrontController::class, 'show']);
+        Route::get('/users/{userIdOrNickname}', [FrontController::class, 'user']);
+        Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show']);
         Route::get('/search', [FrontController::class, 'search']);
     });
 

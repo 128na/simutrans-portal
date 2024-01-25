@@ -44,7 +44,7 @@ const resolveApi = (api, order, route) => {
     case 'tag':
       return api.fetchTag(route.params.id, order.currentMode, route.query.page);
     case 'user':
-      return api.fetchUser(route.params.id, order.currentMode, route.query.page);
+      return api.fetchUser(route.params.idOrNickname, order.currentMode, route.query.page);
     case 'announces':
       return api.fetchAnnounces(order.currentMode, route.query.page);
     case 'pages':

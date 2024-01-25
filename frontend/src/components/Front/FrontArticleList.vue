@@ -2,7 +2,7 @@
 <template>
   <template v-if="listMode.is('list')">
     <q-list data-cy="mode-list">
-      <q-item v-for="(a, i) in articles" :key="i" :to="{ name: 'show', params: { id: a.user.id, slug: a.slug } }"
+      <q-item v-for="(a, i) in articles" :key="i" :to="{ name: 'show', params: { idOrNickname: a.user.nickname || a.user.id, slug: a.slug } }"
         tag="article">
         <q-item-section side>
           <q-img :src="thumbnailUrl(a)" :ratio="16 / 9" fit="cover" width="240px" height="135px"
@@ -19,7 +19,7 @@
             <tag-list :article="a" />
           </q-item-label>
           <q-item-label caption>
-            <router-link class="default-link" :to="{ name: 'user', params: { id: a.user.id } }">
+            <router-link class="default-link" :to="{ name: 'user', params: { idOrNickname: a.user.nickname || a.user.id } }">
               {{ a.user.name }}
             </router-link>
           </q-item-label>
@@ -36,8 +36,8 @@
   <template v-else-if="listMode.is('gallery')">
     <div class="q-col-gutter-md row items-start" data-cy="mode-gallery">
       <article v-for="(a, i) in articles" :key="i" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-        <router-link :to="{ name: 'show', params: { id: a.user.id, slug: a.slug } }">
-          <q-img :to="{ name: 'show', params: { id: a.user.id, slug: a.slug } }" :src="thumbnailUrl(a)" width="100%"
+        <router-link :to="{ name: 'show', params: { idOrNickname: a.user.nickname || a.user.id, slug: a.slug } }">
+          <q-img :to="{ name: 'show', params: { idOrNickname: a.user.nickname || a.user.id, slug: a.slug } }" :src="thumbnailUrl(a)" width="100%"
             :ratio="16 / 9" fit="cover" class="bg-grey-1">
             <div class="text-h5 absolute-full flex flex-center">
               {{ a.title }}

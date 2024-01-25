@@ -13,8 +13,8 @@ const routes = [
     component: Layout,
     children: [
       { name: 'top', path: '', component: Top },
-      { name: 'user', path: 'users/:id', component: List },
-      { name: 'show', path: 'users/:id/:slug', component: Show },
+      { name: 'user', path: 'users/:idOrNickname', component: List },
+      { name: 'show', path: 'users/:idOrNickname/:slug', component: Show },
       { name: 'categoryPak', path: 'categories/pak/:size/:slug', component: List },
       { name: 'category', path: 'categories/:type/:slug', component: List },
       { name: 'tags', path: 'tags', component: Tags },

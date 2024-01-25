@@ -8,7 +8,7 @@
     <dl>
       <dt>投稿者</dt>
       <dd>
-        <router-link class="default-link" :to="{ name: 'user', params: { id: article.user.id } }">
+        <router-link class="default-link" :to="{ name: 'user', params: { idOrNickname: article.user.nickname || article.user.id } }">
           {{ article.user.name || '未設定' }}
         </router-link>
       </dd>

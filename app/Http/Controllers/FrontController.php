@@ -125,8 +125,12 @@ class FrontController extends Controller
     /**
      * ユーザーの投稿一覧画面.
      */
-    public function user(User $user): Renderable
+    public function user(string $userIdOrNickname): Renderable
     {
+        $user = is_numeric($userIdOrNickname)
+            ? User::findOrFail($userIdOrNickname)
+            : User::where('nickname', $userIdOrNickname)->firstOrFail();
+
         $meta = $this->metaOgpService->user($user);
 
         return view('front.spa', ['meta' => $meta]);

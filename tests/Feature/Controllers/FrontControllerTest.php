@@ -127,14 +127,14 @@ class FrontControllerTest extends TestCase
     public function testUser()
     {
         $user = User::factory()->create();
-        $response = $this->get(route('user', ['user' => $user->id]));
+        $response = $this->get(route('user', ['userIdOrNickname' => $user->id]));
 
         $response->assertOk();
     }
 
     public function testUser存在しない()
     {
-        $response = $this->get(route('user', ['user' => -1]));
+        $response = $this->get(route('user', ['userIdOrNickname' => -1]));
 
         $response->assertNotFound();
     }

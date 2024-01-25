@@ -22,7 +22,7 @@ class UpdateRequest extends FormRequest
 
         return [
             'user.name' => "required|unique:users,name,{$userId}|max:255",
-            'user.nickname' => ['nullable', "unique:users,nickname,{$userId}", 'max:255', new NotJustNumbers],
+            'user.nickname' => ['nullable', "unique:users,nickname,{$userId}", 'max:20', new NotJustNumbers],
             'user.email' => "required|email|unique:users,email,{$userId}|max:255",
             'user.profile' => 'required|array',
             'user.profile.data' => 'required|array',

@@ -35,7 +35,7 @@ Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content']
     Route::get('/categories/{type}/{slug}', [FrontController::class, 'category'])->name('category');
     Route::get('/tags', [FrontController::class, 'fallback'])->name('tags');
     Route::get('/tags/{tag}', [FrontController::class, 'tag'])->name('tag');
-    Route::get('/users/{user}', [FrontController::class, 'user'])->name('user');
+    Route::get('/users/{userIdOrNickname}', [FrontController::class, 'user'])->name('user');
     Route::get('/invite-simutrans-interact-meeting', [FrontController::class, 'fallback']);
     Route::get('/social', [FrontController::class, 'social']);
 });

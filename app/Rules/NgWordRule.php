@@ -41,6 +41,6 @@ class NgWordRule implements ValidationRule
         if (empty($this->detected)) {
             return;
         }
-        $fail(sprintf('使用できない文字が含まれています。(%s)', implode(',', $this->detected)));
+        $fail(sprintf(':attribute に使用できない文字が含まれています。(%s)', implode(',', $this->detected)));
     }
 }

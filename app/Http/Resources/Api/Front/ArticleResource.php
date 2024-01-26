@@ -47,7 +47,7 @@ class ArticleResource extends JsonResource
             'attachments' => new AttachmentResource($this->resource->attachments),
             'download' => $this->when($this->resource->isAddonPost, fn () => route('articles.download', [
                 'article' => $this->resource,
-                'download' => 'download' . $this->ext(),
+                'download' => 'download'.$this->ext(),
             ])),
         ];
     }

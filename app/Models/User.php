@@ -45,8 +45,6 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
         'email_verified_at' => 'datetime',
     ];
 
-    const TITLE_NG_WORDS = ['#', '@', ':', '//'];
-
     /*
     |--------------------------------------------------------------------------
     | 初期化時設定

@@ -99,7 +99,7 @@ export default defineComponent({
                 throw new Error(`missing key:${key}`);
               }
               contents[key].articles = res.data[key];
-              articleCache.addCache(res.data[key]);
+              articleCache.addCaches(res.data[key]);
             });
           },
           failedMessage: '記事取得に失敗しました',

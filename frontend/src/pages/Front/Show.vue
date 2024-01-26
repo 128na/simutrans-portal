@@ -32,7 +32,7 @@ export default defineComponent({
     const route = useRoute();
     const api = useFrontApi();
     const articleCache = useArticleCacheStore();
-    const article = computed(() => articleCache.getCache(route.params.slug));
+    const article = computed(() => articleCache.getCache(route.params.idOrNickname, route.params.slug));
 
     const handler = useApiHandler();
     const { setTitle } = useMeta();
@@ -40,14 +40,14 @@ export default defineComponent({
       if (route.name !== 'show') {
         return;
       }
-      if (articleCache.hasCache(route.params.slug)) {
+      if (articleCache.hasCache(route.params.idOrNickname, route.params.slug)) {
         setTitle(article.value.title);
         api.postShown(article.value.id);
         return;
       }
       try {
         await handler.handleWithLoading({
-          doRequest: () => api.fetchArticle(route.params.id, route.params.slug),
+          doRequest: () => api.fetchArticle(route.params.idOrNickname, route.params.slug),
           done: (res) => {
             articleCache.addCache(res.data.data);
             setTitle(res.data.data.title);

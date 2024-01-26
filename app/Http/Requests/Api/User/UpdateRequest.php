@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api\User;
 
+use App\Constants\NgWords;
 use App\Rules\ImageAttachment;
+use App\Rules\NgWordRule;
 use App\Rules\NotJustNumbers;
+use App\Rules\SluggableString;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,8 +24,8 @@ class UpdateRequest extends FormRequest
         $userId = Auth::id();
 
         return [
-            'user.name' => "required|unique:users,name,{$userId}|max:255",
-            'user.nickname' => ['nullable', "unique:users,nickname,{$userId}", 'max:20', new NotJustNumbers],
+            'user.name' => ['required', "unique:users,name,{$userId}", 'max:255', new NgWordRule(NgWords::USER_NAME)],
+            'user.nickname' => ['nullable', "unique:users,nickname,{$userId}", 'max:20', new NotJustNumbers, new SluggableString],
             'user.email' => "required|email|unique:users,email,{$userId}|max:255",
             'user.profile' => 'required|array',
             'user.profile.data' => 'required|array',

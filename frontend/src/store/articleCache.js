@@ -6,8 +6,8 @@ import { defineStore } from 'pinia';
 export const useArticleCacheStore = defineStore('articleCache', {
   state: () => ({ cached: [] }),
   getters: {
-    hasCache: (state) => (slug) => state.cached.findIndex((c) => c.slug === slug) !== -1,
-    getCache: (state) => (slug) => state.cached.find((c) => c.slug === slug),
+    hasCache: (state) => (idOrNickname, slug) => state.cached.findIndex((c) => (c.user.id === idOrNickname || c.user.nickname === idOrNickname) && c.slug === slug) !== -1,
+    getCache: (state) => (idOrNickname, slug) => state.cached.find((c) => (c.user.id === idOrNickname || c.user.nickname === idOrNickname) && c.slug === slug),
   },
   actions: {
     addCache(article) {

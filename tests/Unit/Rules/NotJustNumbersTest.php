@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Rules;
+namespace Tests\Unit\Rules;
 
 use App\Rules\NotJustNumbers;
 use Closure;

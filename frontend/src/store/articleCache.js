@@ -6,12 +6,24 @@ import { defineStore } from 'pinia';
 export const useArticleCacheStore = defineStore('articleCache', {
   state: () => ({ cached: [] }),
   getters: {
-    hasCache: (state) => (idOrNickname, slug) => state.cached.findIndex((c) => (c.user.id === idOrNickname || c.user.nickname === idOrNickname) && c.slug === slug) !== -1,
-    getCache: (state) => (idOrNickname, slug) => state.cached.find((c) => (c.user.id === idOrNickname || c.user.nickname === idOrNickname) && c.slug === slug),
+    hasCache: (state) => (idOrNickname, slug) => {
+      if (Number.isNaN(Number(idOrNickname))) {
+        return state.cached.findIndex((c) => c.user.nickname === idOrNickname && c.slug === slug) !== -1;
+      }
+      const id = Number(idOrNickname);
+      return state.cached.findIndex((c) => c.user.id === id && c.slug === slug) !== -1;
+    },
+    getCache: (state) => (idOrNickname, slug) => {
+      if (Number.isNaN(Number(idOrNickname))) {
+        return state.cached.find((c) => c.user.nickname === idOrNickname && c.slug === slug);
+      }
+      const id = Number(idOrNickname);
+      return state.cached.find((c) => c.user.id === id && c.slug === slug);
+    },
   },
   actions: {
     addCache(article) {
-      const index = this.cached.findIndex((a) => a.slug === article.slug);
+      const index = this.cached.findIndex((a) => a.id === article.id);
       if (index === -1) {
         this.cached.push(article);
       } else {

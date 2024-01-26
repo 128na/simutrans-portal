@@ -124,10 +124,18 @@ class FrontControllerTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function testUser()
+    public function testUser_id()
     {
         $user = User::factory()->create();
         $response = $this->get(route('user', ['userIdOrNickname' => $user->id]));
+
+        $response->assertOk();
+    }
+
+    public function testUser_nickname()
+    {
+        $user = User::factory()->create(['nickname' => 'dummy']);
+        $response = $this->get(route('user', ['userIdOrNickname' => $user->nickname]));
 
         $response->assertOk();
     }
@@ -146,10 +154,23 @@ class FrontControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testShow()
+    public function testShow_id()
     {
         $article = Article::factory()->create(['status' => 'publish']);
-        $response = $this->get(route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]));
+        $response = $this->get(route('articles.show', [
+            'userIdOrNickname' => $article->user_id, 'articleSlug' => $article->slug,
+        ]));
+
+        $response->assertOk();
+    }
+
+    public function testShow_nickname()
+    {
+        $user = User::factory()->create(['nickname' => 'dummy']);
+        $article = Article::factory()->create(['status' => 'publish', 'user_id' => $user->id]);
+        $response = $this->get(route('articles.show', [
+            'userIdOrNickname' => $user->nickname, 'articleSlug' => $article->slug,
+        ]));
 
         $response->assertOk();
     }

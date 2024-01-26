@@ -45,8 +45,12 @@ class FrontController extends Controller
     /**
      * 記事詳細.
      */
-    public function show(User $user, string $slug): Renderable
+    public function show(string $userIdOrNickname, string $slug): Renderable
     {
+        $user = is_numeric($userIdOrNickname)
+            ? User::findOrFail($userIdOrNickname)
+            : User::where('nickname', $userIdOrNickname)->firstOrFail();
+
         $article = $user->articles()->slug($slug)->firstOrFail();
         abort_unless($article->is_publish, 404);
         $meta = $this->metaOgpService->show($user, $article);
@@ -121,8 +125,12 @@ class FrontController extends Controller
     /**
      * ユーザーの投稿一覧画面.
      */
-    public function user(User $user): Renderable
+    public function user(string $userIdOrNickname): Renderable
     {
+        $user = is_numeric($userIdOrNickname)
+            ? User::findOrFail($userIdOrNickname)
+            : User::where('nickname', $userIdOrNickname)->firstOrFail();
+
         $meta = $this->metaOgpService->user($user);
 
         return view('front.spa', ['meta' => $meta]);
@@ -151,6 +159,6 @@ class FrontController extends Controller
             ? Article::findOrFail($slugOrId)
             : Article::slug($slugOrId)->orderBy('id', 'asc')->firstOrFail();
 
-        return redirect(route('articles.show', ['user' => $article->user_id, 'articleSlug' => $article->slug]), Response::HTTP_MOVED_PERMANENTLY);
+        return redirect(route('articles.show', ['userIdOrNickname' => $article->user?->nickname ?? $article->user_id, 'articleSlug' => $article->slug]), Response::HTTP_MOVED_PERMANENTLY);
     }
 }

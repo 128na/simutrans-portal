@@ -39,6 +39,7 @@ class UserService extends Service
 
         $this->userRepository->update($user, [
             'name' => $request->input('user.name'),
+            'nickname' => $request->input('user.nickname'),
             'email' => $request->input('user.email'),
             'email_verified_at' => $emailChanged
                 ? null

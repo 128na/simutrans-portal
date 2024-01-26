@@ -55,7 +55,9 @@ class AddonIntroductionDecoratorTest extends UnitTestCase
             $m->shouldReceive('getAttribute')->withArgs(['title'])->andReturn('test title');
             $m->shouldReceive('getAttribute')->withArgs(['slug'])->andReturn('test_slug');
             $m->shouldReceive('offsetExists')->withArgs(['user'])->andReturn(true);
+            $m->shouldReceive('getAttribute')->withArgs(['user_id'])->andReturn(1);
             $m->shouldReceive('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $m) {
+                $m->shouldReceive('offsetExists')->withArgs(['nickname'])->andReturn(false);
                 $m->shouldReceive('offsetExists')->withArgs(['name'])->andReturn(true);
                 $m->shouldReceive('getAttribute')->withArgs(['name'])->andReturn('test user name');
                 $m->shouldReceive('getRouteKey')->andReturn(1);
@@ -84,7 +86,7 @@ class AddonIntroductionDecoratorTest extends UnitTestCase
 
         $this->assertEquals(1, $contents[0][0][1]);
         $this->assertEquals('test title', $contents[0][1][1]);
-        $this->assertEquals(route('articles.show', ['user' => 1, 'articleSlug' => 'test_slug']), $contents[0][2][1]);
+        $this->assertEquals(route('articles.show', ['userIdOrNickname' => 1, 'articleSlug' => 'test_slug']), $contents[0][2][1]);
         $this->assertEquals('無し', $contents[0][3][1]);
         $this->assertEquals('test user name', $contents[0][4][1]);
         $this->assertEquals('category.test.example', $contents[0][5][1]);

@@ -191,6 +191,7 @@ return [
         // profile
         'user.email' => 'メールアドレス',
         'user.name' => '名前',
+        'user.nickname' => 'ニックネーム',
         'user.profile.data.avatar' => 'ユーザー画像',
         'user.profile.data.description' => '説明',
         'user.profile.data.website' => 'WebサイトURL',

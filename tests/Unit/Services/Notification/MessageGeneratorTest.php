@@ -29,7 +29,10 @@ class MessageGeneratorTest extends UnitTestCase
         $article = $this->mock(Article::class, function (MockInterface $m) {
             $m->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
             $m->allows('getAttribute')->withArgs(['slug'])->andReturn('dummy_slug');
+            $m->allows('offsetExists')->withArgs(['user'])->andReturn(true);
+            $m->allows('getAttribute')->withArgs(['user_id'])->andReturn(1);
             $m->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $m) {
+                $m->allows('offsetExists')->withArgs(['nickname'])->andReturn(false);
                 $m->allows('getAttribute')->withArgs(['name'])->andReturn('dummy_name');
                 $m->allows('getRouteKey')->andReturn(1);
             }));
@@ -54,7 +57,10 @@ class MessageGeneratorTest extends UnitTestCase
         return $this->mock(Article::class, function (MockInterface $m) {
             $m->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
             $m->allows('getAttribute')->withArgs(['slug'])->andReturn('dummy_slug');
+            $m->allows('getAttribute')->withArgs(['user_id'])->andReturn(1);
+            $m->allows('offsetExists')->withArgs(['user'])->andReturn(true);
             $m->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $m) {
+                $m->allows('offsetExists')->withArgs(['nickname'])->andReturn(false);
                 $m->allows('getAttribute')->withArgs(['name'])->andReturn('dummy_name');
                 $m->allows('getRouteKey')->andReturn(1);
             }));

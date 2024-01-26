@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Api\Mypage;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\UpdateRequest;
 use App\Http\Resources\Api\Mypage\User as UserResouce;
+use App\Jobs\Article\JobUpdateRelated;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,6 +34,7 @@ class UserController extends Controller
     public function update(UpdateRequest $request): UserResouce
     {
         $user = $this->userService->updateUserAndProfile($this->loggedinUser(), $request);
+        JobUpdateRelated::dispatch();
 
         return new UserResouce($user);
     }

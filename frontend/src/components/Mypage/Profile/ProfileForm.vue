@@ -14,6 +14,15 @@
   <small>
     メールアドレスを変更すると新しいメールアドレスへ確認メールが送られます。
   </small>
+  <q-input label-slot v-model="editor.user.nickname" bottom-slots :error-message="editor.vali('user.nickname')"
+    :error="!!editor.vali('user.nickname')">
+    <template v-slot:label>
+      <label-optional>ニックネーム</label-optional>
+    </template>
+  </q-input>
+  <small>
+    設定するとユーザー記事一覧や記事詳細のURLに使用されます。例: users/my-nickname/article123<br />
+  </small>
   <form-avatar />
   <input-countable label-slot v-model="editor.user.profile.data.description" :maxLength="1024" bottom-slots
     :error-message="editor.vali('user.profile.data.description')"

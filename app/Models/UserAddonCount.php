@@ -16,6 +16,7 @@ class UserAddonCount extends Model
     protected $fillable = [
         'user_id',
         'user_name',
+        'user_nickname',
         'count',
     ];
 }

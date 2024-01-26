@@ -25,7 +25,7 @@ class OneSignalChannel extends BaseChannel
         try {
             OneSignalFacade::sendNotificationToAll(
                 $this->buildMessage($notifiable, $notification),
-                route('articles.show', ['user' => $notifiable->user, 'articleSlug' => $notifiable->slug]),
+                route('articles.show', ['userIdOrNickname' => $notifiable->user?->nickname ?? $notifiable->user_id, 'articleSlug' => $notifiable->slug]),
             );
         } catch (Throwable $e) {
             report($e);

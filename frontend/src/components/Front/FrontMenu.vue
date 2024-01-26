@@ -21,7 +21,7 @@
 
     </q-expansion-item>
     <q-expansion-item v-show="!handler.loading.value" expand-separator label="ユーザー一覧">
-      <q-item v-for="(a, index) in userAddonCounts" clickable :to="{ name: 'user', params: { id: a.user_id } }"
+      <q-item v-for="(a, index) in userAddonCounts" clickable :to="{ name: 'user', params: { idOrNickname: a.nickname || a.user_id } }"
         :key="index">
         <q-item-section>{{ a.name }} ({{ a.count }})</q-item-section>
       </q-item>

@@ -29,6 +29,7 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
     protected $fillable = [
         'role',
         'name',
+        'nickname',
         'invited_by',
         'invitation_code',
         'email',
@@ -43,8 +44,6 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    const TITLE_NG_WORDS = ['#', '@', ':', '//'];
 
     /*
     |--------------------------------------------------------------------------

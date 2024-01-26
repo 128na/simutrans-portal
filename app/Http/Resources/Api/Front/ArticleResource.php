@@ -38,6 +38,7 @@ class ArticleResource extends JsonResource
             ]),
             'user' => [
                 'id' => $this->resource->user?->id,
+                'nickname' => $this->resource->user?->nickname,
                 'name' => $this->resource->user?->name,
             ],
             'published_at' => $this->resource->published_at?->toIso8601String() ?? '未投稿',

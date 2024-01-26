@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Rules;
 
 use App\Repositories\AttachmentRepository;
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class ImageAttachment implements Rule
+class ImageAttachment implements ValidationRule
 {
     private AttachmentRepository $attachmentRepository;
-
-    private string $message;
 
     /**
      * Create a new rule instance.
@@ -24,13 +23,11 @@ class ImageAttachment implements Rule
     }
 
     /**
-     * Determine if the validation rule passes.
+     * Run the validation rule.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
+     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         /**
          * @var \App\Models\Attachment|null
@@ -38,21 +35,9 @@ class ImageAttachment implements Rule
         $attachment = $this->attachmentRepository->find($value);
 
         if ($attachment && $attachment->is_image) {
-            return true;
+            return;
         }
         $tranlated_attribute = app('translator')->get('validation.attributes')[$attribute] ?? $attribute;
-        $this->message = __('validation.image', ['attribute' => $tranlated_attribute]);
-
-        return false;
-    }
-
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message()
-    {
-        return $this->message;
+        $fail(__('validation.image', ['attribute' => $tranlated_attribute]));
     }
 }

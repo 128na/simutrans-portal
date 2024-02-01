@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: .env
         run: php -r "copy('.env.ci', '.env');"
       - name: PHP
@@ -22,7 +22,7 @@ jobs:
           php-version: "8.2"
       - name: Cache vendor
         id: cache-composer
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-vendor
         with:
@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: .env
         run: php -r "copy('.env.ci', '.env');"
       - name: PHP
@@ -50,7 +50,7 @@ jobs:
           php-version: "8.2"
       - name: Cache vendor
         id: cache-composer
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-vendor
         with:
@@ -69,12 +69,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
       - name: Cache frontend_node_modules
         id: frontend-cache-npm
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-node-modules
         with:
@@ -97,7 +97,7 @@ jobs:
         php_version: [8.2, 8.3]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: .env
         run: php -r "copy('.env.ci', '.env');"
       - name: PHP
@@ -106,7 +106,7 @@ jobs:
           php-version: ${{ matrix.php_version }}
       - name: Cache vendor
         id: cache-composer
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-vendor
         with:
@@ -121,10 +121,10 @@ jobs:
         if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
         run: composer install
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
       - name: Cache frontend_node_modules
         id: frontend-cache-npm
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-node-modules
         with:
@@ -152,7 +152,7 @@ jobs:
         run: php artisan test -v --env=local --parallel --processes=2
       - name: Upload Laravel Logs
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: TestLaravelLog
           path: storage/logs
@@ -163,7 +163,7 @@ jobs:
       - name: install japanese font
         run: sudo apt-get install -y fonts-ipafont && fc-cache -fv install
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: .env
         run: php -r "copy('.env.dusk.ci', '.env');copy('frontend/.env.dusk.ci', 'frontend/.env');"
       - name: PHP
@@ -172,7 +172,7 @@ jobs:
           php-version: "8.2"
       - name: Cache vendor
         id: cache-composer
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-vendor
         with:
@@ -186,10 +186,10 @@ jobs:
         if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
         run: composer install
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
       - name: Cache frontend_node_modules
         id: frontend-cache-npm
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-node-modules
         with:
@@ -225,7 +225,7 @@ jobs:
           php artisan dusk
       - name: Upload Screenshots
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dsuk
           path: |
@@ -239,17 +239,17 @@ jobs:
       - name: install japanese font
         run: sudo apt-get install -y fonts-ipafont && fc-cache -fv install
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: .env
         run: php -r "copy('frontend/.env.dusk.ci', 'frontend/.env');"
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           # 18だとcypressが起動しない
           node-version: 16
       - name: Cache frontend_node_modules
         id: frontend-cache-npm
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-node-modules
         with:
@@ -266,7 +266,7 @@ jobs:
         run: cd frontend && npm run test:e2e:ci
       - name: Upload Screenshots
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cypress
           path: |
@@ -280,7 +280,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: .env
@@ -288,10 +288,10 @@ jobs:
       - name: set app version
         run: sed -i "s/APP_VERSION=.*/APP_VERSION=$( git describe --tags --abbrev=0 )/" frontend/.env
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
       - name: Cache frontend_node_modules
         id: frontend-cache-npm
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-node-modules
         with:

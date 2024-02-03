@@ -7,7 +7,6 @@ namespace App\Http\Requests\Api\Article;
 use App\Constants\NgWords;
 use App\Rules\NgWordRule;
 use App\Rules\NotJustNumbers;
-use App\Rules\SluggableString;
 use App\Rules\UniqueSlugByUser;
 use Illuminate\Validation\Rule;
 

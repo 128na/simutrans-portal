@@ -23,7 +23,7 @@ class UpdateRequest extends BaseRequest
         return [
             'article.status' => ['required', Rule::in(config('status'))],
             'article.title' => ['required', 'max:255', "unique:articles,title,{$articleId}", new NgWordRule(NgWords::ARTICLE_TITLE)],
-            'article.slug' => ['required', 'max:255', new SluggableString, new NotJustNumbers, new UniqueSlugByUser],
+            'article.slug' => ['required', 'max:255', new NotJustNumbers, new UniqueSlugByUser],
             'should_notify' => 'nullable|boolean',
             'without_update_modified_at' => 'nullable|boolean',
         ];

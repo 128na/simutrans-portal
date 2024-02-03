@@ -22,7 +22,7 @@ class StoreRequest extends BaseRequest
             'article.post_type' => ['bail', 'required', Rule::in(config('post_types'))],
             'article.status' => ['required', Rule::in(config('status'))],
             'article.title' => ['required', 'max:255', 'unique:articles,title', new NgWordRule(NgWords::ARTICLE_TITLE)],
-            'article.slug' => ['required', 'max:255', new SluggableString, new NotJustNumbers, new UniqueSlugByUser],
+            'article.slug' => ['required', 'max:255', new NotJustNumbers, new UniqueSlugByUser],
             'article.published_at' => 'nullable|date|after:+1 hour',
             'should_notify' => 'nullable|boolean',
         ];

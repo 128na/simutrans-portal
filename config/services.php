@@ -41,4 +41,8 @@ return [
         'base_url' => 'https://misskey.io/api',
         'token' => env('MISSKEY_TOKEN'),
     ],
+    'bluesky' => [
+        'user' => env('BLUESKY_USER'),
+        'password' => env('BLUESKY_PASSWORD'),
+    ],
 ];

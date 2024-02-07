@@ -11,4 +11,8 @@ return [
         'create' => "新規投稿「:title」\nby :name",
         'update' => "「:title」更新\nby :name",
     ],
+    'bluesky_article' => [
+        'create' => "新規投稿「:title」\nby :name\nat :at\n:tags",
+        'update' => "「:title」更新\nby :name\nat :at\n:tags",
+    ],
 ];

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
-use App\Channels\BaseChannel;
+use App\Channels\BlueSkyChannel;
 use App\Channels\MisskeyChannel;
 use App\Channels\OneSignalChannel;
 use App\Channels\TwitterChannel;
@@ -30,7 +30,7 @@ abstract class ArticleNotification extends Notification implements ShouldQueue
     {
         $enabledFilter =
             /**
-             * @var class-string<BaseChannel> $className
+             * @var class-string<\App\Channels\BaseChannel> $className
              */
             fn (string $className) => $className::featureEnabled();
 
@@ -38,6 +38,7 @@ abstract class ArticleNotification extends Notification implements ShouldQueue
             MisskeyChannel::class,
             TwitterChannel::class,
             OneSignalChannel::class,
+            BlueSkyChannel::class,
         ], $enabledFilter);
     }
 }

@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Repositories\Attachment\FileInfoRepository;
+use App\Services\BlueSky\BlueSkyApiClient;
 use App\Services\BulkZip\Decorators\AddonIntroductionDecorator;
 use App\Services\BulkZip\Decorators\AddonPostDecorator;
 use App\Services\BulkZip\ZipManager;
@@ -16,6 +17,7 @@ use App\Services\FileInfo\Extractors\TabExtractor;
 use App\Services\FileInfo\FileInfoService;
 use App\Services\FileInfo\TextService;
 use App\Services\FileInfo\ZipArchiveParser;
+use App\Services\Front\MetaOgpService;
 use App\Services\MarkdownService;
 use App\Services\Misskey\MisskeyApiClient;
 use cebe\markdown\GithubMarkdown;
@@ -24,6 +26,8 @@ use HTMLPurifier_Config;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use potibm\Bluesky\BlueskyApi;
+use potibm\Bluesky\BlueskyPostService;
 use ZipArchive;
 
 class DIServiceProvider extends ServiceProvider implements DeferrableProvider
@@ -40,6 +44,7 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
             FileInfoService::class,
             TwitterOAuth::class,
             MisskeyApiClient::class,
+            BlueSkyApiClient::class,
         ];
     }
 
@@ -105,5 +110,11 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
             );
         });
 
+        $this->app->bind(BlueSkyApiClient::class, function ($app) {
+            $api = new BlueskyApi(config('services.bluesky.user'), config('services.bluesky.password'));
+            $service = new BlueskyPostService($api);
+
+            return new BlueSkyApiClient($api, $service, $this->app->make(MetaOgpService::class));
+        });
     }
 }

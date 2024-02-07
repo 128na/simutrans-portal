@@ -16,7 +16,7 @@ class MetaOgpService extends Service
     }
 
     /**
-     * @return array<string, string|null>
+     * @return array{title:string,description:string,image:string|null,canonical:string,card_type:string}
      */
     public function show(User $user, Article $article): array
     {
@@ -41,7 +41,7 @@ class MetaOgpService extends Service
     }
 
     /**
-     * @return array<string, string|null>
+     * @return array{title:string,description:string,image:string|null,card_type:string}
      */
     public function user(User $user): array
     {
@@ -54,7 +54,7 @@ class MetaOgpService extends Service
     }
 
     /**
-     * @return array<string, string>
+     * @return array{title:string,description:string}
      */
     public function category(string $type, string $slug): array
     {
@@ -72,7 +72,7 @@ class MetaOgpService extends Service
     }
 
     /**
-     * @return array<string, string>
+     * @return array{title:string,description:string}
      */
     public function categoryPakAddon(string $pakSlug, string $addonSlug): array
     {
@@ -83,7 +83,7 @@ class MetaOgpService extends Service
     }
 
     /**
-     * @return array<string, string>
+     * @return array{title:string,description:string}
      */
     public function categoryPakNoneAddon(string $pakSlug): array
     {
@@ -94,7 +94,7 @@ class MetaOgpService extends Service
     }
 
     /**
-     * @return array<string, string>
+     * @return array{title:string,description:string}
      */
     public function tag(Tag $tag): array
     {
@@ -105,7 +105,7 @@ class MetaOgpService extends Service
     }
 
     /**
-     * @return array<string, string>
+     * @return array{title:string,description:string}
      */
     public function social(): array
     {

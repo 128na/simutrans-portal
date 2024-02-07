@@ -39,7 +39,7 @@ export default defineComponent({
         emit('update:model-value', encodeURI(replaced));
       },
     });
-    const url = computed(() => `/users/${auth.user.id}/${props.modelValue}`);
+    const url = computed(() => `/users/${auth.user.nickname || auth.user.id}/${props.modelValue}`);
     return {
       rawSlug,
       url,

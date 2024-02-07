@@ -31,16 +31,6 @@ class MessageGenerator extends Service
         return __('notification.simple_article.update', $this->getParams($article));
     }
 
-    public function buildBlueSkyPublishedMessage(Article $article): string
-    {
-        return __('notification.bluesky_article.create', $this->getParams($article));
-    }
-
-    public function buildBlueSkyUpdatedMessage(Article $article): string
-    {
-        return __('notification.bluesky_article.update', $this->getParams($article));
-    }
-
     /**
      * @return array<string>
      */

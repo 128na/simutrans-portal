@@ -36,8 +36,8 @@ class BlueSkyChannel extends BaseChannel
     private function buildMessage(Article $notifiable, ArticleNotification $notification): Post
     {
         $text = match (true) {
-            $notification instanceof ArticlePublished => $this->messageGenerator->buildBlueSkyPublishedMessage($notifiable),
-            $notification instanceof ArticleUpdated => $this->messageGenerator->buildBlueSkyUpdatedMessage($notifiable),
+            $notification instanceof ArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($notifiable),
+            $notification instanceof ArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($notifiable),
             default => throw new Exception(sprintf('unsupport notification "%s" provided', get_class($notification))),
         };
         $post = Post::create($text);

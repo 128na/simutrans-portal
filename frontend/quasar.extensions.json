@@ -5,6 +5,8 @@
     ]
   },
   "@quasar/testing": {
-    "harnesses": []
+    "harnesses": [
+      "e2e-cypress"
+    ]
   }
 }

@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Notifications\ArticleNotification;
 use App\Notifications\ArticlePublished;
 use App\Notifications\ArticleUpdated;
+use App\Services\Attachment\ConvertFailedException;
 use App\Services\BlueSky\BlueSkyApiClient;
 use App\Services\Notification\MessageGenerator;
 use Exception;
@@ -18,8 +19,8 @@ use Throwable;
 class BlueSkyChannel extends BaseChannel
 {
     public function __construct(
-        private BlueSkyApiClient $blueSkyApiClient,
-        private MessageGenerator $messageGenerator,
+        private readonly BlueSkyApiClient $blueSkyApiClient,
+        private readonly MessageGenerator $messageGenerator,
     ) {
     }
 
@@ -45,14 +46,16 @@ class BlueSkyChannel extends BaseChannel
 
         try {
             return $this->blueSkyApiClient->addWebsiteCard($post, $notifiable);
+        } catch (ConvertFailedException $e) {
+            report($e);
         } catch (HttpStatusCodeException $e) {
             // 画像が1MB以上だとエラーになる
             if (! str_contains($e->getMessage(), 'BlobTooLarge')) {
                 report($e);
             }
-
-            return $post;
         }
+
+        return $post;
     }
 
     public static function featureEnabled(): bool

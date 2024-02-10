@@ -7,6 +7,7 @@ namespace App\Services\BlueSky;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\User;
+use App\Services\Attachment\FileSizeBaseResizer;
 use App\Services\Front\MetaOgpService;
 use App\Services\Service;
 use potibm\Bluesky\BlueskyApi;
@@ -23,6 +24,7 @@ class BlueSkyApiClient extends Service
         private BlueskyApi $blueskyApi,
         private BlueskyPostService $blueskyPostService,
         private MetaOgpService $metaOgpService,
+        private FileSizeBaseResizer $fileSizeBaseResizer,
     ) {
     }
 
@@ -44,7 +46,7 @@ class BlueSkyApiClient extends Service
         $thumbnail = null;
         if ($article->hasThumbnail) {
             assert($article->thumbnail instanceof Attachment);
-            $thumbnail = $article->thumbnail->fullPath;
+            $thumbnail = $this->fileSizeBaseResizer->resize($article->thumbnail->fullPath, 10 ** 6);
         }
 
         return $this->blueskyPostService->addWebsiteCard(

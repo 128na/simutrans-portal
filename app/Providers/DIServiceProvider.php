@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Repositories\Attachment\FileInfoRepository;
+use App\Services\Attachment\FileSizeBaseResizer;
 use App\Services\BlueSky\BlueSkyApiClient;
 use App\Services\BulkZip\Decorators\AddonIntroductionDecorator;
 use App\Services\BulkZip\Decorators\AddonPostDecorator;
@@ -114,7 +115,12 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
             $api = new BlueskyApi(config('services.bluesky.user'), config('services.bluesky.password'));
             $service = new BlueskyPostService($api);
 
-            return new BlueSkyApiClient($api, $service, $this->app->make(MetaOgpService::class));
+            return new BlueSkyApiClient(
+                $api,
+                $service,
+                $this->app->make(MetaOgpService::class),
+                $this->app->make(FileSizeBaseResizer::class),
+            );
         });
     }
 }

@@ -72,6 +72,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Node
         uses: actions/setup-node@v4
+        with:
+          check-latest: false
       - name: Cache frontend_node_modules
         id: frontend-cache-npm
         uses: actions/cache@v4
@@ -122,6 +124,8 @@ jobs:
         run: composer install
       - name: Setup Node
         uses: actions/setup-node@v4
+        with:
+          check-latest: false
       - name: Cache frontend_node_modules
         id: frontend-cache-npm
         uses: actions/cache@v4
@@ -187,6 +191,8 @@ jobs:
         run: composer install
       - name: Setup Node
         uses: actions/setup-node@v4
+        with:
+          check-latest: false
       - name: Cache frontend_node_modules
         id: frontend-cache-npm
         uses: actions/cache@v4
@@ -289,6 +295,8 @@ jobs:
         run: sed -i "s/APP_VERSION=.*/APP_VERSION=$( git describe --tags --abbrev=0 )/" frontend/.env
       - name: Setup Node
         uses: actions/setup-node@v4
+        with:
+          check-latest: false
       - name: Cache frontend_node_modules
         id: frontend-cache-npm
         uses: actions/cache@v4

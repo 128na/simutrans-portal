@@ -251,8 +251,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          # 18だとcypressが起動しない
-          node-version: 16
+          check-latest: true
       - name: Cache frontend_node_modules
         id: frontend-cache-npm
         uses: actions/cache@v4

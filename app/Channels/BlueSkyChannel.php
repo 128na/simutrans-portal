@@ -11,6 +11,7 @@ use App\Notifications\ArticleUpdated;
 use App\Services\BlueSky\BlueSkyApiClient;
 use App\Services\Notification\MessageGenerator;
 use Exception;
+use potibm\Bluesky\Exception\HttpStatusCodeException;
 use potibm\Bluesky\Feed\Post;
 use Throwable;
 
@@ -42,7 +43,16 @@ class BlueSkyChannel extends BaseChannel
         };
         $post = Post::create($text);
 
-        return $this->blueSkyApiClient->addWebsiteCard($post, $notifiable);
+        try {
+            return $this->blueSkyApiClient->addWebsiteCard($post, $notifiable);
+        } catch (HttpStatusCodeException $e) {
+            // 画像が1MB以上だとエラーになる
+            if (! str_contains($e->getMessage(), 'BlobTooLarge')) {
+                report($e);
+            }
+
+            return $post;
+        }
     }
 
     public static function featureEnabled(): bool

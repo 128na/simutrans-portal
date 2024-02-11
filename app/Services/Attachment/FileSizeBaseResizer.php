@@ -19,7 +19,7 @@ class FileSizeBaseResizer extends Service
         $im = $this->getImage($inputPath);
         $originalWidth = @imagesx($im);
         logger('FileSizeBaseResizer::resize', compact('originalWidth'));
-        if (!$originalWidth) {
+        if (! $originalWidth) {
             throw new ConvertFailedException('imagesx failed');
         }
         $width = intval($originalWidth / 2);
@@ -30,7 +30,7 @@ class FileSizeBaseResizer extends Service
         do {
             $resized = $this->doResize($im, $width);
             $size = @filesize($resized);
-            if (!$size) {
+            if (! $size) {
                 throw new ConvertFailedException('filesize failed');
             }
             logger('FileSizeBaseResizer::resize', compact('attempt', 'size'));
@@ -67,16 +67,16 @@ class FileSizeBaseResizer extends Service
     private function doResize(GdImage $im, int $width): string
     {
         $resized = @imagescale($im, $width, -1, IMG_BILINEAR_FIXED);
-        if (!$resized) {
+        if (! $resized) {
             throw new ConvertFailedException('imagescale failed');
         }
         $tmpPath = @tempnam(sys_get_temp_dir(), '');
-        if (!$tmpPath) {
+        if (! $tmpPath) {
             throw new ConvertFailedException('tempnam failed');
         }
         $result = @imagewebp($resized, $tmpPath);
         @imagedestroy($resized);
-        if (!$result) {
+        if (! $result) {
             throw new ConvertFailedException('imagewebp failed');
         }
 

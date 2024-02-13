@@ -28,7 +28,7 @@
     "spatie/laravel-feed": "^4.3"
   },
   "require-dev": {
-    "barryvdh/laravel-debugbar": "^3.9.2",
+    "barryvdh/laravel-debugbar": "^3.10.1",
     "barryvdh/laravel-ide-helper": "^2.14",
     "brianium/paratest": "^7.4.1",
     "fakerphp/faker": "^1.23.1",

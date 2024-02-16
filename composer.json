@@ -28,13 +28,13 @@
     "spatie/laravel-feed": "^4.3"
   },
   "require-dev": {
-    "barryvdh/laravel-debugbar": "^3.10.4",
-    "barryvdh/laravel-ide-helper": "^2.15",
+    "barryvdh/laravel-debugbar": "^3.10.5",
+    "barryvdh/laravel-ide-helper": "^2.15.1",
     "brianium/paratest": "^7.4.1",
     "fakerphp/faker": "^1.23.1",
     "filp/whoops": "^2.15.4",
     "larastan/larastan": "^2.9.0",
-    "laravel/dusk": "^7.12.2",
+    "laravel/dusk": "^7.12.3",
     "laravel/pint": "^1.13.11",
     "laravel/sail": "^1.27.4",
     "mockery/mockery": "^1.6.7",

@@ -54,7 +54,7 @@ class LoginControllerTest extends TestCase
         $this->actingAs($this->user);
         $this->assertAuthenticated();
 
-        $url = '/api/logout';
+        $url = '/logout';
         $this->postJson($url);
         $this->assertGuest();
     }

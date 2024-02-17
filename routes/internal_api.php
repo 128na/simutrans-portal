@@ -43,7 +43,7 @@ Route::prefix('front')->group(function () {
 // マイページ
 Route::prefix('mypage')->group(function () {
     Route::post('invite/{invitation_code}', [InvitationCodeController::class, 'register'])
-        ->middleware(['restrict:invitation_code', 'throttle:register']);
+        ->middleware(['restrict:invitation_code', 'throttle:register'])->name('invitation_code');
     // ログイン必須
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('user', [UserController::class, 'index']);

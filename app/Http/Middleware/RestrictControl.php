@@ -21,12 +21,12 @@ class RestrictControl
      */
     public function handle($request, Closure $next, ?string $type = null)
     {
-        $this->handleRestrict($type ?? $request->route()->uri);
+        $this->handleRestrict($type ?? $request->route()?->uri);
 
         return $next($request);
     }
 
-    private function handleRestrict(string $type): void
+    private function handleRestrict(?string $type): void
     {
         match ($type) {
             'login' => abort_if($this->controllOption->restrictLogin(), 403),

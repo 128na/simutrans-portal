@@ -37,8 +37,12 @@ export const useAuthStore = defineStore('auth', () => {
       await handler.handleWithValidate({
         doRequest: () => api.postLogin(params),
         done: (res) => {
-          user.value = res.data.data;
-          router.push(route.query.redirect || { name: 'mypage' });
+          if (res.two_factor) {
+            // todo
+          } else {
+            checkLoggedIn()
+              .then(() => router.push(route.query.redirect || { name: 'mypage' }));
+          }
         },
         successMessage: 'ログインしました',
       });

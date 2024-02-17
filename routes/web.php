@@ -6,7 +6,6 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OauthController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\InviteController;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
 use Illuminate\Support\Facades\Route;
@@ -16,10 +15,7 @@ Route::middleware(['cache.content'])->group(function () {
 });
 
 // 認証系ルート名保持用
-Route::GET('mypage/verify/{id}/{hash}', [MypageController::class, 'index'])->name('verification.verify');
-Route::get('/verification/notice', [MypageController::class, 'index'])->name('verification.notice');
 Route::GET('mypage/reset/{token}', [MypageController::class, 'index'])->name('password.reset');
-Route::POST('login', [LoginController::class, 'login'])->middleware('restrict:login')->name('login');
 
 // 招待
 Route::GET('/mypage/invite/{invitation_code}', [InviteController::class, 'index'])->middleware('restrict:invitation_code')->name('invite.index');

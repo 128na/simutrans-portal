@@ -12,22 +12,11 @@ use App\Http\Controllers\Api\Mypage\AnalyticsController;
 use App\Http\Controllers\Api\Mypage\AttachmentController;
 use App\Http\Controllers\Api\Mypage\BulkZipController;
 use App\Http\Controllers\Api\Mypage\EditorController;
-use App\Http\Controllers\Api\Mypage\ForgotPasswordController;
 use App\Http\Controllers\Api\Mypage\InvitationCodeController;
 use App\Http\Controllers\Api\Mypage\LoginHistoryController;
-use App\Http\Controllers\Api\Mypage\ResetPasswordController;
 use App\Http\Controllers\Api\Mypage\TagController;
 use App\Http\Controllers\Api\Mypage\UserController;
-use App\Http\Controllers\Api\Mypage\VerificationController;
-use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
-
-// 認証
-Route::POST('/email/resend', [VerificationController::class, 'resendApi']);
-Route::GET('/email/verify/{id}/{hash}', [VerificationController::class, 'verifyApi']);
-Route::POST('/email/reset', [ResetPasswordController::class, 'reset']);
-Route::POST('/logout', [LoginController::class, 'logout']);
-Route::POST('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 
 // フロント
 Route::prefix('front')->group(function () {

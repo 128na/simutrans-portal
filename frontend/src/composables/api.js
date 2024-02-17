@@ -67,19 +67,19 @@ export const useMypageApi = () => ({
     return axios.post('/login', params);
   },
   postLogout() {
-    return axios.post('/api/logout');
+    return axios.post('/logout');
   },
   resend() {
-    return axios.post('/api/email/resend');
+    return axios.post('/email/verification-notification');
   },
   forget(params) {
-    return axios.post('/api/password/email', params);
+    return axios.post('/forgot-password', params);
   },
   reset(params) {
-    return axios.post('/api/email/reset', params);
+    return axios.post('/reset-password', params);
   },
   verify(userId, hash, expires, signature) {
-    return axios.get(`/api/email/verify/${userId}/${hash}`, {
+    return axios.get(`/email/verify/${userId}/${hash}`, {
       params: { expires, signature },
     });
   },

@@ -70,10 +70,6 @@ const routes = [
         ,
       },
       {
-        name: 'verify', path: 'verify/:userId/:hash', meta: { requiresAuth: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Verify.vue')
-        ,
-      },
-      {
         name: 'login', path: 'login', meta: { requiresGuest: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Login.vue')
         ,
       },

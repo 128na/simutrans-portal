@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,6 +29,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Date::use(CarbonImmutable::class);
-        Model::shouldBeStrict();
+        Model::shouldBeStrict(! App::isProduction());
     }
 }

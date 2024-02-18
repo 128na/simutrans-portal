@@ -54,6 +54,10 @@ const routes = [
         ,
       },
       {
+        name: 'twoFactorAuthentication', path: 'two-factor-authentication', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/TwoFactorAuthentication.vue')
+        ,
+      },
+      {
         name: 'invitation', path: 'invitation', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Invitation.vue')
         ,
       },

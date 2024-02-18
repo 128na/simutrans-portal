@@ -19,12 +19,14 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 
 class User extends Authenticatable implements BulkZippableInterface, MustVerifyEmail
 {
     use HasFactory;
     use Notifiable;
     use SoftDeletes;
+    use TwoFactorAuthenticatable;
 
     protected $fillable = [
         'role',
@@ -35,14 +37,19 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
         'email',
         'email_verified_at',
         'password',
+        'two_factor_confirmed_at',
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'two_factor_confirmed_at' => 'datetime',
     ];
 
     /*

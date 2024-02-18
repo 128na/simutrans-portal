@@ -64,24 +64,37 @@ export const useMypageApi = () => ({
     return axios.get('/sanctum/csrf-cookie');
   },
   postLogin(params) {
-    return axios.post('/login', params);
+    return axios.post('/auth/login', params);
   },
   postLogout() {
-    return axios.post('/logout');
+    return axios.post('/auth/logout');
   },
   resend() {
-    return axios.post('/email/verification-notification');
+    return axios.post('/auth/email/verification-notification');
   },
   forget(params) {
-    return axios.post('/forgot-password', params);
+    return axios.post('/auth/forgot-password', params);
   },
   reset(params) {
-    return axios.post('/reset-password', params);
+    return axios.post('/auth/reset-password', params);
   },
   verify(userId, hash, expires, signature) {
-    return axios.get(`/email/verify/${userId}/${hash}`, {
+    return axios.get(`/auth/email/verify/${userId}/${hash}`, {
       params: { expires, signature },
     });
+  },
+  // two factor
+  twoFactorAuthentication() {
+    return axios.post('/auth/user/two-factor-authentication');
+  },
+  twoFactorQrCode() {
+    return axios.get('/auth/user/two-factor-qr-code');
+  },
+  confirmedTwoFactorAuthentication(data) {
+    return axios.post('/auth/user/confirmed-two-factor-authentication', data);
+  },
+  challengeTwoFactorAuthentication(data) {
+    return axios.post('/auth/two-factor-challenge', data);
   },
 
   // user profile

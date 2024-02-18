@@ -1,19 +1,27 @@
 <template>
   <q-page class="q-pa-md fit row wrap justify-center">
-    <q-form class="col-md-6 col q-gutter-sm" @submit=auth.attemptLogin(state)>
+    <q-form class="col-md-6 col q-gutter-sm" @submit=handler>
       <text-title>ログイン</text-title>
       <api-error-message :message="auth.handler.validationErrorMessage" />
-      <q-input v-model="state.email" type="email" label="email" autocomplete="email" />
-      <input-password v-model="state.password" label="password" autocomplete="current-password" />
-      <div>
-        <q-checkbox v-model="state.remember" label="ログインしたままにする" />
-      </div>
-      <div>
-        <q-btn label="ログイン" color="primary" type="submit" />
-      </div>
-      <div>
-        <router-link :to="{ name: 'forget' }" class="default-link">パスワードリセット</router-link>
-      </div>
+      <template v-if="auth.requireTFA">
+        <q-input v-model="tfa.code" maxlength="6" label="コード" autocomplete="one-time-code" />
+        <div>
+          <q-btn label="認証" color="primary" type="submit" />
+        </div>
+      </template>
+      <template v-else>
+        <q-input v-model="state.email" type="email" label="email" autocomplete="email" />
+        <input-password v-model="state.password" label="password" autocomplete="current-password" />
+        <div>
+          <q-checkbox v-model="state.remember" label="ログインしたままにする" />
+        </div>
+        <div>
+          <q-btn label="ログイン" color="primary" type="submit" />
+        </div>
+        <div>
+          <router-link :to="{ name: 'forget' }" class="default-link">パスワードリセット</router-link>
+        </div>
+      </template>
     </q-form>
   </q-page>
 </template>
@@ -37,9 +45,21 @@ export default defineComponent({
     meta.setTitle('ログイン');
 
     const state = reactive({ email: '', password: '', remember: true });
+    const tfa = reactive({ code: null });
+
+    const handler = () => {
+      if (auth.requireTFA) {
+        auth.attemptTFA(tfa);
+      } else {
+        auth.attemptLogin(state);
+      }
+    };
 
     return {
-      auth, state,
+      auth,
+      state,
+      tfa,
+      handler,
     };
   },
   components: { ApiErrorMessage, InputPassword, TextTitle },

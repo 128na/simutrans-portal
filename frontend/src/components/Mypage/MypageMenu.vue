@@ -57,7 +57,13 @@
         <q-item-section avatar>
           <q-icon name="person" />
         </q-item-section>
-        <q-item-section>プロフィール</q-item-section>
+        <q-item-section>プロフィール編集</q-item-section>
+      </q-item>
+      <q-item :to="{ name: 'twoFactorAuthentication' }">
+        <q-item-section avatar>
+          <q-icon name="lock" />
+        </q-item-section>
+        <q-item-section>2要素認証</q-item-section>
       </q-item>
       <q-item :to="{ name: 'invitation' }">
         <q-item-section avatar>

@@ -38,12 +38,12 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
         'email_verified_at',
         'password',
         'two_factor_confirmed_at',
+        'two_factor_secret',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
-        'two_factor_secret',
         'two_factor_recovery_codes',
     ];
 

@@ -115,16 +115,21 @@ export const useAuthStore = defineStore('auth', () => {
   };
   const confirmTFACode = async (code) => {
     try {
-      await handler.handleWithValidate({
+      return await handler.handleWithValidate({
         doRequest: () => api.confirmedTwoFactorAuthentication({ code }),
-        done: () => {
+        done: async () => {
           user.value.two_factor = true;
+          const res = await api.twoFactorRecoveryCodes();
+
+          return res.data.join('\n');
         },
         successMessage: '設定が完了しました',
       });
     } catch {
-      // do nothing
+      // バリデーションエラーでもそれっぽい値がセットされる謎
+      await api.deleteTwoFactorAuthentication();
     }
+    return null;
   };
   const attemptTFA = async (params) => {
     try {
@@ -135,6 +140,19 @@ export const useAuthStore = defineStore('auth', () => {
             .then(() => router.push(route.query.redirect || { name: 'mypage' }));
         },
         successMessage: 'ログインしました',
+      });
+    } catch {
+      // do nothing
+    }
+  };
+  const deleteTFA = async () => {
+    try {
+      await handler.handle({
+        doRequest: () => api.deleteTwoFactorAuthentication(),
+        done: () => {
+          user.value.two_factor = false;
+        },
+        successMessage: '無効化しました',
       });
     } catch {
       // do nothing
@@ -158,6 +176,7 @@ export const useAuthStore = defineStore('auth', () => {
     setupTFAQrCode,
     confirmTFACode,
     attemptTFA,
+    deleteTFA,
     requireTFA,
   };
 });

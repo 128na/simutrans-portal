@@ -156,7 +156,7 @@ export const useApiHandler = () => {
 
   /**
    * ローディング画面とバリデーションエラーをハンドリングする
-   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>any, successMessage:string, failedMessage:string, retryable:boolean, autoRetry:number ,retryCount:number}}
+   * @param {{doRequest:()=>AxiosResponse<any>, done:(AxiosResponse:res)=>any, failed:()=>any, successMessage:string, failedMessage:string, retryable:boolean, autoRetry:number ,retryCount:number}}
    * @returns {AxiosResponse<any>|any|null}
    */
   const handleWithValidate = async ({

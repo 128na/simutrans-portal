@@ -96,6 +96,12 @@ export const useMypageApi = () => ({
   challengeTwoFactorAuthentication(data) {
     return axios.post('/auth/two-factor-challenge', data);
   },
+  deleteTwoFactorAuthentication() {
+    return axios.delete('/auth/user/two-factor-authentication');
+  },
+  twoFactorRecoveryCodes() {
+    return axios.get('/auth/user/two-factor-recovery-codes');
+  },
 
   // user profile
   fetchUser() {

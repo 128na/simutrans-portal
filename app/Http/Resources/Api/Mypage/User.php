@@ -24,7 +24,7 @@ class User extends JsonResource
             'admin' => $this->resource->isAdmin(),
             'verified' => (bool) $this->resource->email_verified_at,
             'attachments' => new Attachments($this->resource->profile->attachments),
-            'two_factor' => (bool) $this->resource->two_factor_confirmed_at,
+            'two_factor' => (bool) $this->resource->two_factor_secret,
         ];
     }
 }

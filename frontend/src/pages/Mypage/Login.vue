@@ -5,6 +5,8 @@
       <api-error-message :message="auth.handler.validationErrorMessage" />
       <template v-if="auth.requireTFA">
         <q-input v-model="tfa.code" maxlength="6" label="コード" autocomplete="one-time-code" />
+        <div>または</div>
+        <q-input v-model="tfa.recovery_code" label="リカバリコード" autocomplete="one-time-code" />
         <div>
           <q-btn label="認証" color="primary" type="submit" />
         </div>
@@ -45,7 +47,7 @@ export default defineComponent({
     meta.setTitle('ログイン');
 
     const state = reactive({ email: '', password: '', remember: true });
-    const tfa = reactive({ code: null });
+    const tfa = reactive({ code: null, recovery_code: null });
 
     const handler = () => {
       if (auth.requireTFA) {

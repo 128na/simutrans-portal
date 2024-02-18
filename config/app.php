@@ -194,6 +194,8 @@ return [
 
         // discord notifiaction
         NotificationChannels\Discord\DiscordServiceProvider::class,
+        // auth
+        App\Providers\FortifyServiceProvider::class,
     ],
 
     /*

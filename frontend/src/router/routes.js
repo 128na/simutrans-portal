@@ -54,6 +54,10 @@ const routes = [
         ,
       },
       {
+        name: 'security', path: 'security', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Security.vue')
+        ,
+      },
+      {
         name: 'invitation', path: 'invitation', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Invitation.vue')
         ,
       },
@@ -62,15 +66,7 @@ const routes = [
         ,
       },
       {
-        name: 'loginHistory', path: 'login_history', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/LoginHistory.vue')
-        ,
-      },
-      {
         name: 'requiresVerified', path: 'requires-verified', meta: { requiresAuth: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/RequiresVerified.vue')
-        ,
-      },
-      {
-        name: 'verify', path: 'verify/:userId/:hash', meta: { requiresAuth: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Verify.vue')
         ,
       },
       {

@@ -57,7 +57,7 @@
         <q-item-section avatar>
           <q-icon name="person" />
         </q-item-section>
-        <q-item-section>プロフィール</q-item-section>
+        <q-item-section>プロフィール編集</q-item-section>
       </q-item>
       <q-item :to="{ name: 'invitation' }">
         <q-item-section avatar>
@@ -65,11 +65,11 @@
         </q-item-section>
         <q-item-section>ユーザー招待</q-item-section>
       </q-item>
-      <q-item :to="{ name: 'loginHistory' }">
+      <q-item :to="{ name: 'security' }">
         <q-item-section avatar>
-          <q-icon name="history" />
+          <q-icon name="lock" />
         </q-item-section>
-        <q-item-section>ログイン履歴</q-item-section>
+        <q-item-section>セキュリティ</q-item-section>
       </q-item>
     </template>
     <template v-if="store.isLoggedIn">

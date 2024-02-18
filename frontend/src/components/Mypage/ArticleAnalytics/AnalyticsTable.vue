@@ -47,7 +47,7 @@ const columns = [
   },
   {
     name: 'published_at',
-    field: (row) => DateTime.fromISO(row.published_at).toLocaleString(DateTime.DATETIME_SHORT),
+    field: (row) => (row.published_at ? DateTime.fromISO(row.published_at).toLocaleString(DateTime.DATETIME_SHORT) : '-'),
     label: '投稿日時',
     sortable: true,
     align: 'left',

@@ -91,6 +91,7 @@ module.exports = configure((ctx) => ({
       '/api': { target: 'http://localhost:1080' },
       '/storage': { target: 'http://localhost:1080' },
       '/email/verify': { target: 'http://localhost:1080' },
+      '/auth/': { target: 'http://localhost:1080' },
       '/articles': {
         target: 'http://localhost:1080',
         bypass: (req) => {

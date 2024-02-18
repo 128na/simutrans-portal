@@ -19,34 +19,22 @@ class RestrictControl
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
-    public function handle($request, Closure $next, string $type)
+    public function handle($request, Closure $next, ?string $type = null)
     {
-        $this->handleRestrict($type);
+        $this->handleRestrict($type ?? $request->route()?->uri);
 
         return $next($request);
     }
 
-    private function handleRestrict(string $type): void
+    private function handleRestrict(?string $type): void
     {
-        switch ($type) {
-            case 'login':
-                abort_if($this->controllOption->restrictLogin(), 403);
-
-                return;
-            case 'register':
-                abort_if($this->controllOption->restrictRegister(), 403);
-
-                return;
-            case 'update_article':
-                abort_if($this->controllOption->restrictArticleUpdate(), 403);
-
-                return;
-            case 'update_tag':
-                abort_if($this->controllOption->restrictTagUpdate(), 403);
-
-                return;
-            case 'invitation_code':
-                abort_if($this->controllOption->restrictInvitationCode(), 403);
-        }
+        match ($type) {
+            'auth/login' => abort_if($this->controllOption->restrictLogin(), 403),
+            'register' => abort_if($this->controllOption->restrictRegister(), 403),
+            'update_article' => abort_if($this->controllOption->restrictArticleUpdate(), 403),
+            'update_tag' => abort_if($this->controllOption->restrictTagUpdate(), 403),
+            'invitation_code' => abort_if($this->controllOption->restrictInvitationCode(), 403),
+            default => null,
+        };
     }
 }

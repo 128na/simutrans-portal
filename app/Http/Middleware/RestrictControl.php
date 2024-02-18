@@ -29,7 +29,7 @@ class RestrictControl
     private function handleRestrict(?string $type): void
     {
         match ($type) {
-            'login' => abort_if($this->controllOption->restrictLogin(), 403),
+            'auth/login' => abort_if($this->controllOption->restrictLogin(), 403),
             'register' => abort_if($this->controllOption->restrictRegister(), 403),
             'update_article' => abort_if($this->controllOption->restrictArticleUpdate(), 403),
             'update_tag' => abort_if($this->controllOption->restrictTagUpdate(), 403),

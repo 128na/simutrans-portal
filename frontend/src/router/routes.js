@@ -54,7 +54,7 @@ const routes = [
         ,
       },
       {
-        name: 'twoFactorAuthentication', path: 'two-factor-authentication', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/TwoFactorAuthentication.vue')
+        name: 'security', path: 'security', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Security.vue')
         ,
       },
       {
@@ -63,10 +63,6 @@ const routes = [
       },
       {
         name: 'invite', path: 'invite/:code', meta: { requiresGuest: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Invite.vue')
-        ,
-      },
-      {
-        name: 'loginHistory', path: 'login_history', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/LoginHistory.vue')
         ,
       },
       {

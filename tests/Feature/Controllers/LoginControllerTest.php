@@ -21,7 +21,7 @@ class LoginControllerTest extends TestCase
         Notification::fake();
         $user = User::factory()->create();
 
-        $url = '/login';
+        $url = '/auth/login';
 
         $data = array_merge([
             'email' => $this->user->email,
@@ -54,7 +54,7 @@ class LoginControllerTest extends TestCase
         $this->actingAs($this->user);
         $this->assertAuthenticated();
 
-        $url = '/logout';
+        $url = '/auth/logout';
         $this->postJson($url);
         $this->assertGuest();
     }
@@ -65,7 +65,7 @@ class LoginControllerTest extends TestCase
         $this->actingAs($this->user);
         $this->assertAuthenticated();
 
-        $url = '/login';
+        $url = '/auth/login';
         $data = [
             'email' => $this->user->email,
             'password' => 'password',

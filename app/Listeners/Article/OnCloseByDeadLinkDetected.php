@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Listeners\User;
+namespace App\Listeners\Article;
 
 use App\Events\Article\CloseByDeadLinkDetected;
 use App\Listeners\BaseListener;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Listeners\Tag;
 
-use App\Events\Article\TagDescriptionUpdated;
+use App\Events\Tag\TagDescriptionUpdated;
 use App\Listeners\BaseListener;
 use Illuminate\Log\Logger;
 

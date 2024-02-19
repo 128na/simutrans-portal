@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Listeners\User;
+namespace App\Listeners\Discord;
 
 use App\Events\Discord\DiscordInviteCodeCreated;
 use App\Listeners\BaseListener;

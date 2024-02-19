@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Mypage;
 
-use App\Events\Article\TagDescriptionUpdated;
+use App\Events\Tag\TagDescriptionUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Tag\SearchRequest;
 use App\Http\Requests\Api\Tag\StoreRequest;

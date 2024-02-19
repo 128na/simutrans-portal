@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Article;
 
 use App\Events\Article\CloseByDeadLinkDetected;
-use App\Events\Article\DeadLinkDetectd;
+use App\Events\Article\DeadLinkDetected;
 use App\Models\Article;
 use App\Models\Contents\AddonIntroductionContent;
 use App\Repositories\ArticleRepository;
@@ -78,7 +78,7 @@ class DeadLinkChecker extends Service
             logger('status check failed.', [$url, ...$info]);
             sleep($intervalsec);
         }
-        event(new DeadLinkDetectd($article));
+        event(new DeadLinkDetected($article));
 
         return true;
     }

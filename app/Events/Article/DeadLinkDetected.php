@@ -7,7 +7,7 @@ namespace App\Events\Article;
 use App\Models\Article;
 use Illuminate\Queue\SerializesModels;
 
-class DeadLinkDetectd
+class DeadLinkDetected
 {
     use SerializesModels;
 

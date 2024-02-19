@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Events\Article;
+namespace App\Events\Tag;
 
 use App\Models\Tag;
 use App\Models\User;

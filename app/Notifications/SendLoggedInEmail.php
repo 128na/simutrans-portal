@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Models\User\LoginHistory;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class DeadLinkDetected extends Notification implements ShouldQueue
+class SendLoggedInEmail extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -18,7 +19,7 @@ class DeadLinkDetected extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(public readonly LoginHistory $loginHistory)
     {
     }
 
@@ -42,8 +43,8 @@ class DeadLinkDetected extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage())
-            ->subject("「{$notifiable->title}」のダウンロード先URLがリンク切れになっています")
-            ->view('emails.deadlink-detected', ['article' => $notifiable]);
+            ->subject('ログイン通知')
+            ->view('emails.loggedin', ['user' => $notifiable, 'loginHistory' => $this->loginHistory]);
     }
 
     /**

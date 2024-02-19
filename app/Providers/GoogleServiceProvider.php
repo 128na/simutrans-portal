@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Services\Google\Recaptcha\RecaptchaService;
-use App\Services\Logging\AuditLogService;
 use Google\Cloud\RecaptchaEnterprise\V1\Event;
 use Google\Cloud\RecaptchaEnterprise\V1\RecaptchaEnterpriseServiceClient;
 use Illuminate\Contracts\Support\DeferrableProvider;
@@ -43,7 +42,6 @@ class GoogleServiceProvider extends ServiceProvider implements DeferrableProvide
                 $client,
                 $projectName,
                 app(Event::class),
-                app(AuditLogService::class),
             );
         });
 

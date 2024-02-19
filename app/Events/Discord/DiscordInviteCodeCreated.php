@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Events\User;
+namespace App\Events\Discord;
 
 use App\Models\User;
 use Illuminate\Queue\SerializesModels;
@@ -11,7 +11,7 @@ class DiscordInviteCodeCreated
 {
     use SerializesModels;
 
-    public function __construct(public readonly User $user)
+    public function __construct(public readonly ?User $user = null)
     {
     }
 }

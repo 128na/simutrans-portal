@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Front;
 
-use App\Events\User\DiscordInviteCodeCreated;
+use App\Events\Discord\DiscordInviteCodeCreated;
 use App\Http\Controllers\Controller;
 use App\Services\Discord\InviteService;
 use App\Services\Google\Recaptcha\RecaptchaService;

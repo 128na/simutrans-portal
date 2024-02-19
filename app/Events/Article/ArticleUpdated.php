@@ -11,7 +11,11 @@ class ArticleUpdated
 {
     use SerializesModels;
 
-    public function __construct(public readonly Article $article)
-    {
+    public function __construct(
+        public readonly Article $article,
+        public readonly bool $shouldNotify = false,
+        public readonly bool $withoutUpdateModifiedAt = false,
+        public readonly bool $notYetPublished = true,
+    ) {
     }
 }

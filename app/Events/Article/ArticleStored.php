@@ -11,7 +11,7 @@ class ArticleStored
 {
     use SerializesModels;
 
-    public function __construct(public readonly Article $article)
+    public function __construct(public readonly Article $article, public readonly bool $shouldNotify = false)
     {
     }
 }

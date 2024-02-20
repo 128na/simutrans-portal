@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Google\Recaptcha;
 
-use App\Services\Logging\AuditLogService;
 use App\Services\Service;
 use Google\Cloud\RecaptchaEnterprise\V1\Assessment;
 use Google\Cloud\RecaptchaEnterprise\V1\Event;
@@ -18,7 +17,6 @@ class RecaptchaService extends Service
         private RecaptchaEnterpriseServiceClient $client,
         private string $projectName,
         private Event $event,
-        private AuditLogService $auditLogService
     ) {
     }
 
@@ -33,7 +31,6 @@ class RecaptchaService extends Service
 
         $assessment = (new Assessment())->setEvent($this->event);
         $response = $this->client->createAssessment($this->projectName, $assessment);
-        $this->auditLogService->recapchaAssessment($response);
 
         if ($response->getTokenProperties()?->getValid() !== true) {
             throw new RecaptchaFailedException('token invalid');

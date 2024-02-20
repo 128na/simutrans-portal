@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Channels;
 
 use App\Models\Article;
-use App\Notifications\ArticleNotification;
-use App\Notifications\ArticlePublished;
-use App\Notifications\ArticleUpdated;
+use App\Notifications\SendArticleNotification;
+use App\Notifications\SendArticlePublished;
+use App\Notifications\SendArticleUpdated;
 use App\Services\Notification\MessageGenerator;
 use Berkayk\OneSignal\OneSignalFacade;
 use Exception;
@@ -20,7 +20,7 @@ class OneSignalChannel extends BaseChannel
     ) {
     }
 
-    public function send(Article $notifiable, ArticleNotification $notification): void
+    public function send(Article $notifiable, SendArticleNotification $notification): void
     {
         try {
             OneSignalFacade::sendNotificationToAll(
@@ -32,11 +32,11 @@ class OneSignalChannel extends BaseChannel
         }
     }
 
-    private function buildMessage(Article $notifiable, ArticleNotification $notification): string
+    private function buildMessage(Article $notifiable, SendArticleNotification $notification): string
     {
         return match (true) {
-            $notification instanceof ArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($notifiable),
-            $notification instanceof ArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($notifiable),
+            $notification instanceof SendArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($notifiable),
+            $notification instanceof SendArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($notifiable),
             default => throw new Exception(sprintf('unsupport notification "%s" provided', get_class($notification))),
         };
     }

@@ -2,18 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Listeners;
+namespace App\Listeners\Article;
 
 use App\Events\ArticleConversion;
 use App\Repositories\Article\ConversionCountRepository;
 
 class AddConversionRecord
 {
-    private ConversionCountRepository $conversionCountRepository;
-
-    public function __construct(ConversionCountRepository $conversionCountRepository)
+    public function __construct(private readonly ConversionCountRepository $conversionCountRepository)
     {
-        $this->conversionCountRepository = $conversionCountRepository;
     }
 
     public function handle(ArticleConversion $event): void

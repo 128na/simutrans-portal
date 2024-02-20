@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Channels;
 
 use App\Models\Article;
-use App\Notifications\ArticleNotification;
-use App\Notifications\ArticlePublished;
-use App\Notifications\ArticleUpdated;
+use App\Notifications\SendArticleNotification;
+use App\Notifications\SendArticlePublished;
+use App\Notifications\SendArticleUpdated;
 use App\Services\Attachment\ConvertFailedException;
 use App\Services\BlueSky\BlueSkyApiClient;
 use App\Services\Notification\MessageGenerator;
@@ -24,7 +24,7 @@ class BlueSkyChannel extends BaseChannel
     ) {
     }
 
-    public function send(Article $notifiable, ArticleNotification $notification): void
+    public function send(Article $notifiable, SendArticleNotification $notification): void
     {
         try {
             $post = $this->buildMessage($notifiable, $notification);
@@ -35,11 +35,11 @@ class BlueSkyChannel extends BaseChannel
         }
     }
 
-    private function buildMessage(Article $notifiable, ArticleNotification $notification): Post
+    private function buildMessage(Article $notifiable, SendArticleNotification $notification): Post
     {
         $text = match (true) {
-            $notification instanceof ArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($notifiable),
-            $notification instanceof ArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($notifiable),
+            $notification instanceof SendArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($notifiable),
+            $notification instanceof SendArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($notifiable),
             default => throw new Exception(sprintf('unsupport notification "%s" provided', get_class($notification))),
         };
         $post = Post::create($text);

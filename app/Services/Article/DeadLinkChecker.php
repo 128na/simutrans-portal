@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services\Article;
 
+use App\Events\Article\CloseByDeadLinkDetected;
+use App\Events\Article\DeadLinkDetected;
 use App\Models\Article;
 use App\Models\Contents\AddonIntroductionContent;
-use App\Notifications\DeadLinkDetected;
 use App\Repositories\ArticleRepository;
-use App\Services\Logging\AuditLogService;
 use App\Services\Service;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\LazyCollection;
@@ -17,7 +17,6 @@ class DeadLinkChecker extends Service
 {
     public function __construct(
         private ArticleRepository $articleRepository,
-        private AuditLogService $auditLogService,
         private GetHeadersHandler $getHeadersHandler
     ) {
     }
@@ -79,7 +78,7 @@ class DeadLinkChecker extends Service
             logger('status check failed.', [$url, ...$info]);
             sleep($intervalsec);
         }
-        $this->auditLogService->deadLinkDetected($article);
+        event(new DeadLinkDetected($article));
 
         return true;
     }
@@ -102,7 +101,7 @@ class DeadLinkChecker extends Service
     public function closeArticle(Article $article): void
     {
         $this->articleRepository->update($article, ['status' => config('status.private')]);
-        $article->notify(new DeadLinkDetected());
+        event(new CloseByDeadLinkDetected($article));
     }
 
     private function getCacheKey(Article $article): string

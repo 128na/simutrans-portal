@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Events\Article\ArticleStored;
+use App\Events\Article\ArticleUpdated;
 use App\Http\Requests\Api\Article\BaseRequest;
 use App\Http\Requests\Api\Article\StoreRequest;
 use App\Http\Requests\Api\Article\UpdateRequest;
@@ -12,7 +14,6 @@ use App\Models\Category;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
-use App\Services\Logging\AuditLogService;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
@@ -23,7 +24,6 @@ class ArticleEditorService extends Service
         private ArticleRepository $articleRepository,
         private CategoryRepository $categoryRepository,
         private CarbonImmutable $now,
-        private AuditLogService $auditLogService,
     ) {
     }
 
@@ -132,7 +132,7 @@ class ArticleEditorService extends Service
         $this->syncRelated($article, $request);
 
         $article = $article->fresh() ?? $article;
-        $this->auditLogService->articleCreated($article);
+        event(new ArticleStored($article));
 
         return $article;
     }
@@ -173,7 +173,7 @@ class ArticleEditorService extends Service
         $this->syncRelated($article, $request);
 
         $article = $article->fresh() ?? $article;
-        $this->auditLogService->articleUpdated($article);
+        event(new ArticleUpdated($article));
 
         return $article;
     }

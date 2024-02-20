@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Mypage;
 
+use App\Events\Tag\TagDescriptionUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Tag\SearchRequest;
 use App\Http\Requests\Api\Tag\StoreRequest;
@@ -12,14 +13,12 @@ use App\Http\Resources\Api\Mypage\Tag;
 use App\Http\Resources\Api\Mypage\Tags;
 use App\Models\Tag as ModelsTag;
 use App\Repositories\TagRepository;
-use App\Services\Logging\AuditLogService;
 use Illuminate\Support\Facades\Auth;
 
 class TagController extends Controller
 {
     public function __construct(
         private TagRepository $tagRepository,
-        private AuditLogService $auditLogService,
     ) {
     }
 
@@ -49,6 +48,6 @@ class TagController extends Controller
             'last_modified_by' => Auth::id(),
             'last_modified_at' => now(),
         ]);
-        $this->auditLogService->tagDescriptionUpdate($this->loggedinUser(), $tag, $old, $request->string('description')->toString());
+        event(new TagDescriptionUpdated($tag, $this->loggedinUser(), $old));
     }
 }

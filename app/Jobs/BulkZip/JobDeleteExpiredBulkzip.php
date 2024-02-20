@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Jobs\BulkZip;
 
 use App\Repositories\BulkZipRepository;
-use App\Services\Logging\AuditLogService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -19,11 +18,10 @@ class JobDeleteExpiredBulkzip implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function handle(BulkZipRepository $bulkZipRepository, AuditLogService $auditLogService): void
+    public function handle(BulkZipRepository $bulkZipRepository): void
     {
         foreach ($bulkZipRepository->cursorExpired() as $bulkZip) {
             $bulkZip->delete();
-            $auditLogService->bulkZipDelete($bulkZip);
         }
     }
 }

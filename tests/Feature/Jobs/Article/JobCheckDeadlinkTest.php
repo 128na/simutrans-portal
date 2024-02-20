@@ -6,7 +6,7 @@ namespace Tests\Feature\Jobs\Article;
 
 use App\Jobs\Article\JobCheckDeadLink;
 use App\Models\Article;
-use App\Notifications\DeadLinkDetected;
+use App\Notifications\SendDeadLinkDetectedEmail;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
@@ -40,7 +40,7 @@ class JobCheckDeadlinkTest extends TestCase
         Notification::assertNothingSent();
 
         JobCheckDeadLink::dispatchSync();
-        Notification::assertSentTo($this->article, DeadLinkDetected::class);
+        Notification::assertSentTo($this->article, SendDeadLinkDetectedEmail::class);
     }
 
     public function testオプション無効だとチェックしない()

@@ -16,9 +16,6 @@ class OnDiscordInviteCodeCreated extends BaseListener
 
     public function handle(DiscordInviteCodeCreated $event): void
     {
-        $this->logger->channel('invite')->info('Disocrd招待リンク生成', array_merge(
-            $event->user ? $this->getUserInfo($event->user) : [],
-            $this->getAccessInfo(),
-        ));
+        $this->logger->channel('invite')->info('Disocrd招待リンク生成', $this->getAccessInfo());
     }
 }

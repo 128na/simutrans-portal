@@ -41,7 +41,7 @@ class EditorController extends Controller
     {
         $article = DB::transaction(fn () => $this->articleEditorService->storeArticle($this->loggedinUser(), $request));
         JobUpdateRelated::dispatch();
-        event(new ArticleStored($article, $request->should_notify));
+        event(new ArticleStored($article, $request->boolean('should_notify', false)));
 
         return $this->index();
     }
@@ -51,7 +51,12 @@ class EditorController extends Controller
         $notYetPublished = is_null($article->published_at);
         $article = DB::transaction(fn () => $this->articleEditorService->updateArticle($article, $request));
         JobUpdateRelated::dispatch();
-        event(new ArticleUpdated($article, $request->should_notify, $request->without_update_modified_at, $notYetPublished));
+        event(new ArticleUpdated(
+            $article,
+            $request->boolean('should_notify', false),
+            $request->boolean('without_update_modified_at', false),
+            $notYetPublished
+        ));
 
         return $this->index();
     }

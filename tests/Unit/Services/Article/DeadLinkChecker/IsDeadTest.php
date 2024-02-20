@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services\Article\DeadLinkChecker;
 
+use App\Events\Article\DeadLinkDetected;
 use App\Models\Article;
 use App\Models\Contents\AddonIntroductionContent;
 use App\Services\Article\DeadLinkChecker;
 use App\Services\Article\GetHeadersHandler;
+use Illuminate\Support\Facades\Event;
 use Mockery\MockInterface;
 use Tests\UnitTestCase;
 
@@ -68,12 +70,15 @@ class IsDeadTest extends UnitTestCase
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy']));
         });
+
+        Event::fake();
         $this->mock(GetHeadersHandler::class, function (MockInterface $m) {
             $m->shouldNotReceive('getHeaders')->times(3)->andReturn(['Status Code: 500 Internal Server Error']);
         });
 
         $actual = $this->getSUT()->isDead($article);
 
+        Event::assertDispatched(DeadLinkDetected::class);
         $this->assertTrue($actual);
     }
 }

@@ -37,8 +37,8 @@ class AttachmentController extends Controller
 
         try {
             UpdateFileInfo::dispatchSync($attachment);
-        } catch (Throwable $th) {
-            report($th);
+        } catch (Throwable $throwable) {
+            report($throwable);
         }
 
         return $this->index();

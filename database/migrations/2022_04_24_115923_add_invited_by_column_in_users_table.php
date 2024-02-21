@@ -15,10 +15,9 @@ class AddInvitedByColumnInUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', static function (Blueprint $table) {
             $table->unsignedBigInteger('invited_by')->nullable()->comment('紹介ユーザーID');
             $table->index('invited_by');
-
             $table->uuid('invitation_code')->nullable()->comment('紹介用コード');
             $table->unique('invitation_code');
         });
@@ -31,10 +30,9 @@ class AddInvitedByColumnInUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', static function (Blueprint $table) {
             $table->dropIndex(['invited_by']);
             $table->dropColumn('invited_by');
-
             $table->dropUnique(['invitation_code']);
             $table->dropColumn('invitation_code');
         });

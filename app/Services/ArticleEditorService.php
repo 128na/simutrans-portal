@@ -66,13 +66,14 @@ class ArticleEditorService extends Service
     private function separateCategories(Collection $categories): SupportCollection
     {
         /** @return array<string, mixed> */
-        $fn = function (array $list, Category $item): array {
+        $fn = static function (array $list, Category $item): array {
             if (! isset($list[$item->type])) {
                 $list[$item->type] = [];
             }
+
             $list[$item->type][] = [
                 'id' => $item->id,
-                'name' => __("category.{$item->type}.{$item->slug}"),
+                'name' => __(sprintf('category.%s.%s', $item->type, $item->slug)),
                 'type' => $item->type,
                 'slug' => $item->slug,
             ];
@@ -92,8 +93,8 @@ class ArticleEditorService extends Service
         $status = config('status');
 
         return collect($status)->map(
-            fn ($item): array => [
-                'label' => __("statuses.{$item}"),
+            static fn ($item): array => [
+                'label' => __('statuses.'.$item),
                 'value' => $item,
             ]
         )->values();
@@ -108,8 +109,8 @@ class ArticleEditorService extends Service
         $postTypes = config('post_types');
 
         return collect($postTypes)->map(
-            fn ($item) => [
-                'label' => __("post_types.{$item}"),
+            static fn ($item) => [
+                'label' => __('post_types.'.$item),
                 'value' => $item,
             ]
         )->values();
@@ -162,12 +163,15 @@ class ArticleEditorService extends Service
         if ($article->is_reservation) {
             $data['published_at'] = $this->getPublishedAt($request);
         }
+
         if ($this->inactiveToPublish($article, $request)) {
             $data['published_at'] = $this->getPublishedAt($request);
         }
+
         if ($this->shouldUpdateModifiedAt($request)) {
             $data['modified_at'] = $this->now->toDateTimeString();
         }
+
         $this->articleRepository->update($article, $data);
 
         $this->syncRelated($article, $request);

@@ -18,7 +18,7 @@ class CreateAttachmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('attachments', function (Blueprint $table) {
+        Schema::create('attachments', static function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('attachmentable_id')->nullable()->comment('添付先ID');
@@ -26,7 +26,6 @@ class CreateAttachmentsTable extends Migration
             $table->string('original_name', 255)->comment('オリジナルファイル名');
             $table->string('path', 255)->comment('保存先パス');
             $table->timestamps();
-
             $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
@@ -40,7 +39,7 @@ class CreateAttachmentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('attachments', function (Blueprint $table) {
+        Schema::table('attachments', static function (Blueprint $table) {
             $table->dropForeign(['user_id']);
         });
 

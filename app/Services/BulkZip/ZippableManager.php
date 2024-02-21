@@ -23,7 +23,7 @@ class ZippableManager extends Service
     {
         return match ($model->bulk_zippable_type) {
             User::class => $this->getUserItems($model->bulkZippable),
-            default => throw new Exception("unsupport type provided:{$model->bulk_zippable_type}", 1),
+            default => throw new Exception('unsupport type provided:'.$model->bulk_zippable_type, 1),
         };
     }
 

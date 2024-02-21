@@ -27,8 +27,8 @@ class OneSignalChannel extends BaseChannel
                 $this->buildMessage($notifiable, $notification),
                 route('articles.show', ['userIdOrNickname' => $notifiable->user?->nickname ?? $notifiable->user_id, 'articleSlug' => $notifiable->slug]),
             );
-        } catch (Throwable $e) {
-            report($e);
+        } catch (Throwable $throwable) {
+            report($throwable);
         }
     }
 

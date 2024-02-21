@@ -36,7 +36,7 @@ class DropOauth extends Migration
      */
     public function down()
     {
-        $this->schema->create('oauth_auth_codes', function (Blueprint $table) {
+        $this->schema->create('oauth_auth_codes', static function (Blueprint $table) {
             $table->string('id', 100)->primary();
             $table->unsignedBigInteger('user_id')->index();
             $table->uuid('client_id');
@@ -44,7 +44,7 @@ class DropOauth extends Migration
             $table->boolean('revoked');
             $table->dateTime('expires_at')->nullable();
         });
-        $this->schema->create('oauth_access_tokens', function (Blueprint $table) {
+        $this->schema->create('oauth_access_tokens', static function (Blueprint $table) {
             $table->string('id', 100)->primary();
             $table->unsignedBigInteger('user_id')->nullable()->index();
             $table->uuid('client_id');
@@ -54,13 +54,13 @@ class DropOauth extends Migration
             $table->timestamps();
             $table->dateTime('expires_at')->nullable();
         });
-        $this->schema->create('oauth_refresh_tokens', function (Blueprint $table) {
+        $this->schema->create('oauth_refresh_tokens', static function (Blueprint $table) {
             $table->string('id', 100)->primary();
             $table->string('access_token_id', 100)->index();
             $table->boolean('revoked');
             $table->dateTime('expires_at')->nullable();
         });
-        $this->schema->create('oauth_clients', function (Blueprint $table) {
+        $this->schema->create('oauth_clients', static function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->unsignedBigInteger('user_id')->nullable()->index();
             $table->string('name');
@@ -72,7 +72,7 @@ class DropOauth extends Migration
             $table->boolean('revoked');
             $table->timestamps();
         });
-        $this->schema->create('oauth_personal_access_clients', function (Blueprint $table) {
+        $this->schema->create('oauth_personal_access_clients', static function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('client_id');
             $table->timestamps();

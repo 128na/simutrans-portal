@@ -35,6 +35,7 @@ class PaginateAnnoucesTest extends ArticleTestCase
     {
         $article = $this->createMarkdownAnnounce();
         $article->update(['status' => 'draft']);
+
         $res = $this->repository->paginateAnnouces();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
@@ -45,6 +46,7 @@ class PaginateAnnoucesTest extends ArticleTestCase
     {
         $article = $this->createMarkdownAnnounce();
         $article->delete();
+
         $res = $this->repository->paginateAnnouces();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);

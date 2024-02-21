@@ -20,7 +20,8 @@ trait Slugable
     {
         $value = urldecode($value);
         $value = strtolower($value);
-        $replaces = ['!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '`', '{', '|', '}', ' ', '　', '.'];
+
+        $replaces = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '`', '{', '|', '}', ' ', '　', '.'];
         $value = str_replace($replaces, '-', $value);
         $value = urlencode($value);
         $this->attributes['slug'] = $value;

@@ -14,7 +14,7 @@ class UserTest extends TestCase
 {
     protected function tearDown(): void
     {
-        BulkZip::all()->map(fn ($bz) => $bz->delete());
+        BulkZip::all()->map(static fn ($bz) => $bz->delete());
         parent::tearDown();
     }
 

@@ -15,11 +15,10 @@ class CreateConversionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('conversions', function (Blueprint $table) {
+        Schema::create('conversions', static function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('article_id');
             $table->timestamps();
-
             $table->foreign('article_id')
                 ->references('id')->on('articles')
                 ->onDelete('cascade');
@@ -33,7 +32,7 @@ class CreateConversionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('conversions', function (Blueprint $table) {
+        Schema::table('conversions', static function (Blueprint $table) {
             $table->dropForeign(['article_id']);
         });
         Schema::dropIfExists('conversions');

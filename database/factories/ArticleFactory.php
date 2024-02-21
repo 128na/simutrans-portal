@@ -60,21 +60,21 @@ class ArticleFactory extends Factory
 
     public function publish()
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(static fn (array $attributes) => [
             'status' => 'publish',
         ]);
     }
 
     public function draft()
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(static fn (array $attributes) => [
             'status' => 'draft',
         ]);
     }
 
     public function deleted()
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(static fn (array $attributes) => [
             'deleted_at' => now(),
         ]);
     }

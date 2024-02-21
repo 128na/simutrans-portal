@@ -29,8 +29,8 @@ class Update extends Command
             $ranking = $this->articleRepository->fetchAggregatedRanking($this->now);
 
             $this->rankingRepository->recreate($ranking);
-        } catch (\Throwable $e) {
-            report($e);
+        } catch (\Throwable $throwable) {
+            report($throwable);
 
             return 1;
         }

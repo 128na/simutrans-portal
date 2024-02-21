@@ -22,7 +22,7 @@ class ShouldProcessTest extends UnitTestCase
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, function (MockInterface $m) {
+        $article = $this->mock(Article::class, static function (MockInterface $m) {
             $m->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy']));
@@ -38,7 +38,7 @@ class ShouldProcessTest extends UnitTestCase
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, function (MockInterface $m) {
+        $article = $this->mock(Article::class, static function (MockInterface $m) {
             $m->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy', 'exclude_link_check' => true]));
@@ -54,7 +54,7 @@ class ShouldProcessTest extends UnitTestCase
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, function (MockInterface $m) {
+        $article = $this->mock(Article::class, static function (MockInterface $m) {
             $m->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'https://getuploader.com/dummy']));

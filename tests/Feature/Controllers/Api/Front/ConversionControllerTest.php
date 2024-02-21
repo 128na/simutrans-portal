@@ -22,7 +22,7 @@ class ConversionControllerTest extends ArticleTestCase
         $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly]);
         $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total]);
 
-        $url = "/api/conversion/{$article->id}";
+        $url = '/api/conversion/'.$article->id;
         $response = $this->post($url);
         $response->assertOk();
 
@@ -46,7 +46,7 @@ class ConversionControllerTest extends ArticleTestCase
         $this->assertDatabaseMissing('view_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly]);
         $this->assertDatabaseMissing('view_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total]);
 
-        $url = "/api/shown/{$article->id}";
+        $url = '/api/shown/'.$article->id;
         $response = $this->post($url);
         $response->assertOk();
 

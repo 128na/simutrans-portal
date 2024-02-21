@@ -27,8 +27,8 @@ class TwitterChannel extends BaseChannel
             $data = ['text' => $this->buildMessage($notifiable, $notification)];
             $result = $this->twitterV2Api->post('tweets', $data, true);
             logger('tweet', [$result]);
-        } catch (Throwable $e) {
-            report($e);
+        } catch (Throwable $throwable) {
+            report($throwable);
         }
     }
 

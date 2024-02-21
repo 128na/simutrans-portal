@@ -22,8 +22,8 @@ class LogConverter extends SimpleRecordConverter
             } else {
                 $this->makeInfoMesage($message, $record);
             }
-        } catch (\Throwable $th) {
-            report($th);
+        } catch (\Throwable $throwable) {
+            report($throwable);
         }
     }
 
@@ -63,10 +63,12 @@ class LogConverter extends SimpleRecordConverter
         if ($rawMessages !== []) {
             $embed->description(implode("\n", $rawMessages));
         }
+
         foreach ($record['context'] as $key => $value) {
             if (! is_string($value) && ! is_numeric($value)) {
                 $value = json_encode($value);
             }
+
             $embed->field((string) $key, (string) $value);
         }
 

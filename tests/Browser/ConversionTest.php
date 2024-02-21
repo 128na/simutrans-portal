@@ -53,7 +53,7 @@ class ConversionTest extends DuskTestCase
             $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article1->id, 'type' => 4, 'period' => $total]);
 
             $browser
-                ->visit("/users/{$this->article1->user_id}/{$this->article1->slug}")
+                ->visit(sprintf('/users/%s/%s', $this->article1->user_id, $this->article1->slug))
                 ->waitForText($this->article1->title)
                 ->click('@conversion-link');
             sleep(5);
@@ -76,7 +76,7 @@ class ConversionTest extends DuskTestCase
             $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article2->id, 'type' => 4, 'period' => $total]);
 
             $browser
-                ->visit("/users/{$this->article2->user_id}/{$this->article2->slug}")
+                ->visit(sprintf('/users/%s/%s', $this->article2->user_id, $this->article2->slug))
                 ->waitForText($this->article2->title)
                 ->click('@conversion-download');
             sleep(5);

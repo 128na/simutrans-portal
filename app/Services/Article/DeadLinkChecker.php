@@ -75,9 +75,11 @@ class DeadLinkChecker extends Service
                     return false;
                 }
             }
+
             logger('status check failed.', [$url, ...$info]);
             sleep($intervalsec);
         }
+
         event(new DeadLinkDetected($article));
 
         return true;

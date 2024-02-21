@@ -34,6 +34,7 @@ class ImageAttachment implements ValidationRule
         if ($attachment && $attachment->is_image) {
             return;
         }
+
         $tranlated_attribute = app('translator')->get('validation.attributes')[$attribute] ?? $attribute;
         $fail(__('validation.image', ['attribute' => $tranlated_attribute]));
     }

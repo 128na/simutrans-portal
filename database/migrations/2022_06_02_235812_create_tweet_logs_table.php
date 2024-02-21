@@ -15,7 +15,7 @@ class CreateTweetLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tweet_logs', function (Blueprint $table) {
+        Schema::create('tweet_logs', static function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('article_id')->constrained()->onDelete('cascade');
             $table->text('text');

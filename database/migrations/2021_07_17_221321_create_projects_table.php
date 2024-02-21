@@ -15,7 +15,7 @@ class CreateProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('projects', static function (Blueprint $table) {
             $table->id();
             $table->string('name')->comment('プロジェクト名');
             $table->text('credential')->comment('認証情報');

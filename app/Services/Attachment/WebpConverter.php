@@ -132,11 +132,13 @@ class WebpConverter extends Service
         if ($converted === false) {
             throw new ConvertFailedException('imagecreatetruecolor failed');
         }
+
         $result = imagecopy($converted, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
 
         if ($result === false) {
             throw new ConvertFailedException('imagecopy failed');
         }
+
         imagedestroy($image);
 
         return $converted;

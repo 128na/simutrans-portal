@@ -15,7 +15,7 @@ class AddColumnInTweetLogSummariesTable extends Migration
      */
     public function up()
     {
-        Schema::table('tweet_log_summaries', function (Blueprint $table) {
+        Schema::table('tweet_log_summaries', static function (Blueprint $table) {
             $table->unsignedBigInteger('total_impression_count')->default(0);
             $table->unsignedBigInteger('total_url_link_clicks')->default(0);
             $table->unsignedBigInteger('total_user_profile_clicks')->default(0);
@@ -29,7 +29,7 @@ class AddColumnInTweetLogSummariesTable extends Migration
      */
     public function down()
     {
-        Schema::table('tweet_log_summaries', function (Blueprint $table) {
+        Schema::table('tweet_log_summaries', static function (Blueprint $table) {
             $table->dropColumn([
                 'total_impression_count',
                 'total_url_link_clicks',

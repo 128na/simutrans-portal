@@ -36,6 +36,6 @@ class TopPage extends Page
             ->waitForText($this->article->title)
             ->assertSee($this->article->title)
             ->assertSee('pak128の新着')
-            ->assertSee(__("category.{$this->category->type}.{$this->category->slug}"));
+            ->assertSee(__(sprintf('category.%s.%s', $this->category->type, $this->category->slug)));
     }
 }

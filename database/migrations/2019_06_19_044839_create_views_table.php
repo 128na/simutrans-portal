@@ -18,11 +18,10 @@ class CreateViewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('views', function (Blueprint $table) {
+        Schema::create('views', static function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('article_id');
             $table->timestamps();
-
             $table->foreign('article_id')
                 ->references('id')->on('articles')
                 ->onDelete('cascade');
@@ -36,7 +35,7 @@ class CreateViewsTable extends Migration
      */
     public function down()
     {
-        Schema::table('views', function (Blueprint $table) {
+        Schema::table('views', static function (Blueprint $table) {
             $table->dropForeign(['article_id']);
         });
         Schema::dropIfExists('views');

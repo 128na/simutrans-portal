@@ -15,7 +15,7 @@ class CreateBulkZipsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bulk_zips', function (Blueprint $table) {
+        Schema::create('bulk_zips', static function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
             $table->morphs('bulk_zippable');

@@ -48,7 +48,7 @@ class AttachmentRepository extends BaseRepository
     public function cursorUnconvertedImages(): LazyCollection
     {
         return $this->model
-            ->where(function ($q) {
+            ->where(static function ($q) {
                 $q->orWhere('original_name', 'like', '%.png')
                     ->orWhere('original_name', 'like', '%.jpg')
                     ->orWhere('original_name', 'like', '%.jpeg');

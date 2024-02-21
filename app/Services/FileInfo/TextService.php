@@ -12,7 +12,7 @@ class TextService extends Service
     {
         $bom = pack('H*', 'EFBBBF');
 
-        return preg_replace("/^$bom/", '', $text) ?? $text;
+        return preg_replace(sprintf('/^%s/', $bom), '', $text) ?? $text;
     }
 
     public function encoding(string $text): string

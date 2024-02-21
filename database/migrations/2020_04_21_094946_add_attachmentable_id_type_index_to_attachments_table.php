@@ -15,7 +15,7 @@ class AddAttachmentableIdTypeIndexToAttachmentsTable extends Migration
      */
     public function up()
     {
-        Schema::table('attachments', function (Blueprint $table) {
+        Schema::table('attachments', static function (Blueprint $table) {
             $table->index(['attachmentable_id', 'attachmentable_type']);
         });
     }
@@ -27,7 +27,7 @@ class AddAttachmentableIdTypeIndexToAttachmentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('attachments', function (Blueprint $table) {
+        Schema::table('attachments', static function (Blueprint $table) {
             $table->dropIndex(['attachmentable_id', 'attachmentable_type']);
         });
     }

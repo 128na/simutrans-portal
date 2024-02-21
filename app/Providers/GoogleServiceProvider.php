@@ -30,7 +30,7 @@ class GoogleServiceProvider extends ServiceProvider implements DeferrableProvide
      */
     public function register()
     {
-        $this->app->bind(RecaptchaService::class, function () {
+        $this->app->bind(RecaptchaService::class, static function () {
             $credentials = json_decode(
                 @file_get_contents(base_path(config('services.google_recaptcha.credential'))) ?: '{}',
                 true
@@ -45,7 +45,7 @@ class GoogleServiceProvider extends ServiceProvider implements DeferrableProvide
             );
         });
 
-        $this->app->bind(Event::class, function () {
+        $this->app->bind(Event::class, static function () {
             $event = new Event();
             $event->setSiteKey(config('services.google_recaptcha.siteKey'));
 

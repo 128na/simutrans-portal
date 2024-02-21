@@ -27,6 +27,7 @@ class Cacheable
             if ($cached) {
                 return $this->responseFromCache($cached, $key);
             }
+
             $this->putCache($response, $key);
         }
 

@@ -15,7 +15,7 @@ class AddRedirectColumnInProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::table('projects', function (Blueprint $table) {
+        Schema::table('projects', static function (Blueprint $table) {
             $table->text('redirect');
         });
     }
@@ -27,7 +27,7 @@ class AddRedirectColumnInProjectsTable extends Migration
      */
     public function down()
     {
-        Schema::table('projects', function (Blueprint $table) {
+        Schema::table('projects', static function (Blueprint $table) {
             $table->dropColumn(['redirect']);
         });
     }

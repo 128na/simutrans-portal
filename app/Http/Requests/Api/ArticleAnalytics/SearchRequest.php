@@ -20,7 +20,7 @@ class SearchRequest extends FormRequest
 
         return [
             'ids' => 'required|array|max:50',
-            'ids.*' => "required|exists:articles,id,user_id,{$user_id}",
+            'ids.*' => 'required|exists:articles,id,user_id,'.$user_id,
             'type' => 'required|in:daily,monthly,yearly',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',

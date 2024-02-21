@@ -10,7 +10,7 @@ class CreateRankingsTable extends Migration
 {
     public function up()
     {
-        Schema::create('rankings', function (Blueprint $table) {
+        Schema::create('rankings', static function (Blueprint $table) {
             $table->unsignedInteger('rank')->primary();
             $table->foreignId('article_id')->constrained()->onDelete('cascade');
         });

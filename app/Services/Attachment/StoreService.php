@@ -49,8 +49,8 @@ class StoreService extends Service
                 'path' => $filepath,
                 'original_name' => $file->getClientOriginalName(),
             ]);
-        } catch (ConvertFailedException $e) {
-            report($e);
+        } catch (ConvertFailedException $convertFailedException) {
+            report($convertFailedException);
 
             return $this->storeAsFile($user, $file);
         }

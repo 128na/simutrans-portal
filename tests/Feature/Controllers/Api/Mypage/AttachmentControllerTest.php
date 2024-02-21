@@ -51,11 +51,11 @@ class AttachmentControllerTest extends ArticleTestCase
 
     public static function dataValidation()
     {
-        yield 'fileがnull' => [fn () => ['file' => null], 'file'];
-        yield 'fileがファイル以外' => [fn () => ['file' => 'test.zip'], 'file'];
-        yield '成功' => [fn () => ['file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], null];
-        yield '画像のみで画像以外' => [fn () => ['only_image' => 1, 'file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], 'file'];
-        yield '画像のみで画像' => [fn () => ['only_image' => 1, 'file' => UploadedFile::fake()->image('test.png', 1)], null];
+        yield 'fileがnull' => [static fn () => ['file' => null], 'file'];
+        yield 'fileがファイル以外' => [static fn () => ['file' => 'test.zip'], 'file'];
+        yield '成功' => [static fn () => ['file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], null];
+        yield '画像のみで画像以外' => [static fn () => ['only_image' => 1, 'file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], 'file'];
+        yield '画像のみで画像' => [static fn () => ['only_image' => 1, 'file' => UploadedFile::fake()->image('test.png', 1)], null];
     }
 
     /**
@@ -86,7 +86,7 @@ class AttachmentControllerTest extends ArticleTestCase
         $user = User::factory()->create();
 
         $file = $this->createFromFile(UploadedFile::fake()->image('file.png', 1), $user->id);
-        $url = "/api/mypage/attachments/{$file->id}";
+        $url = '/api/mypage/attachments/'.$file->id;
         $res = $this->deleteJson($url);
         $res->assertUnauthorized();
 
@@ -94,7 +94,7 @@ class AttachmentControllerTest extends ArticleTestCase
 
         $other_user = User::factory()->create();
         $other_file = $this->createFromFile(UploadedFile::fake()->image('file.png', 1), $other_user->id);
-        $url = "/api/mypage/attachments/{$other_file->id}";
+        $url = '/api/mypage/attachments/'.$other_file->id;
         $res = $this->deleteJson($url);
         $res->assertStatus(403);
         $this->assertDatabaseHas('attachments', [
@@ -104,7 +104,7 @@ class AttachmentControllerTest extends ArticleTestCase
             'id' => $other_file->id,
         ]);
 
-        $url = "/api/mypage/attachments/{$file->id}";
+        $url = '/api/mypage/attachments/'.$file->id;
         $res = $this->deleteJson($url);
         $res->assertOK();
 

@@ -22,7 +22,7 @@ class RedirectController extends Controller
     {
         $path = $this->getRelativePath($request->fullUrl());
         $redirect = $this->redirectRepository->findOrFailByPath($path);
-        logger("[redirect]: {$redirect->from} -> {$redirect->to}");
+        logger(sprintf('[redirect]: %s -> %s', $redirect->from, $redirect->to));
 
         return redirect($redirect->to, Response::HTTP_MOVED_PERMANENTLY);
     }

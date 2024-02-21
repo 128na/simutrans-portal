@@ -42,11 +42,12 @@ class MessageGenerator extends Service
             $name = $this->getDisaplayName($article->user);
             $tags = collect(['Simutrans'])
                 ->merge($article->categoryPaks->pluck('name'))
-                ->map(fn ($name) => str_replace('.', '', "#$name")) // ドットはハッシュタグに使用できない
+                ->map(static fn ($name) => str_replace('.', '', '#'.$name)) // ドットはハッシュタグに使用できない
                 ->implode(' ');
 
             return ['title' => $article->title, 'url' => $url, 'name' => $name, 'at' => $now, 'tags' => $tags];
         }
+
         throw new Exception('missing user');
     }
 

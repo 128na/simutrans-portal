@@ -24,10 +24,12 @@ class OnArticleUpdated extends BaseListener
         if (! $event->article->is_publish) {
             return;
         }
+
         // 通知を希望しない
         if (! $event->shouldNotify) {
             return;
         }
+
         // 更新日を更新しない
         if ($event->withoutUpdateModifiedAt) {
             return;

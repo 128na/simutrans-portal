@@ -22,6 +22,7 @@ class FileSizeBaseResizer extends Service
         if ($originalWidth === 0) {
             throw new ConvertFailedException('imagesx failed');
         }
+
         $width = (int) ($originalWidth / 2);
         $min = (int) ($targetFileSize * 0.75);
         $max = $targetFileSize;
@@ -33,19 +34,24 @@ class FileSizeBaseResizer extends Service
             if (! $size) {
                 throw new ConvertFailedException('filesize failed');
             }
+
             logger('FileSizeBaseResizer::resize', ['attempt' => $attempt, 'width' => $width, 'size' => $size]);
             if ($min < $size && $size < $max) {
                 return $resized;
             }
+
             if ($size <= $min) {
                 $width = (int) (($originalWidth + $width) / 2);
             }
+
             if ($size >= $max) {
                 $width = (int) ($width / 2);
             }
+
             @unlink($resized);
             $attempt++;
         } while ($attempt <= $limit);
+
         throw new ConvertFailedException('attempt limit reached');
     }
 
@@ -70,10 +76,12 @@ class FileSizeBaseResizer extends Service
         if (! $resized) {
             throw new ConvertFailedException('imagescale failed');
         }
+
         $tmpPath = @tempnam(sys_get_temp_dir(), '');
         if (! $tmpPath) {
             throw new ConvertFailedException('tempnam failed');
         }
+
         $result = @imagewebp($resized, $tmpPath);
         @imagedestroy($resized);
         if (! $result) {

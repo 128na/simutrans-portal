@@ -57,6 +57,7 @@ class ZipManager extends Service
                 $this->addFile($filepath, 'files/'.$filename);
             }
         }
+
         if (! empty($result['contents'])) {
             $this->addTextFile($result['contents']);
             $this->addCsvFile($result['contents']);
@@ -105,6 +106,7 @@ class ZipManager extends Service
                 if (is_array($row)) {
                     $row = implode("\t", $row);
                 }
+
                 $content[] = $row;
             }
         }
@@ -123,14 +125,17 @@ class ZipManager extends Service
         if ($csv === false) {
             throw new ZipErrorException('tmpfile faild');
         }
+
         foreach ($contents as $rows) {
             foreach ($rows as $row) {
                 if (is_string($row)) {
                     $row = [$row];
                 }
+
                 fputcsv($csv, mb_convert_encoding((array) $row, 'SJIS', 'UTF-8'));
             }
         }
+
         $filepath = $this->randName('bulk_zip/', '.csv');
         $this->disk->put($filepath, $csv);
         fclose($csv);
@@ -143,7 +148,7 @@ class ZipManager extends Service
     {
         $result = $this->zipArchive->open($this->disk->path($this->filepath), ZipArchive::CREATE);
         if ($result !== true) {
-            throw new ZipErrorException("open faild: {$this->filepath}", $result);
+            throw new ZipErrorException('open faild: '.$this->filepath, $result);
         }
     }
 
@@ -155,7 +160,7 @@ class ZipManager extends Service
         $this->close();
 
         if ($result !== true) {
-            throw new ZipErrorException("add file faild: {$filepath}, {$filenameInZip}");
+            throw new ZipErrorException(sprintf('add file faild: %s, %s', $filepath, $filenameInZip));
         }
     }
 
@@ -169,20 +174,23 @@ class ZipManager extends Service
             for ($i = 0; $i < $z->numFiles; $i++) {
                 $name = $z->getNameIndex($i);
                 if ($name === false) {
-                    throw new ZipErrorException("getNameIndex faild: {$name}");
+                    throw new ZipErrorException('getNameIndex faild: '.$name);
                 }
+
                 $rc = $z->getStream($name);
                 if ($rc === false) {
-                    throw new ZipErrorException("getStream faild: {$name}");
+                    throw new ZipErrorException('getStream faild: '.$name);
                 }
+
                 $randName = $this->randName();
                 $this->disk->put($randName, $rc);
-                $this->addFile($randName, "{$basedir}/{$name}");
+                $this->addFile($randName, sprintf('%s/%s', $basedir, $name));
                 $this->disk->delete($randName);
             }
+
             $z->close();
-        } catch (Throwable $e) {
-            report($e);
+        } catch (Throwable $throwable) {
+            report($throwable);
         }
     }
 
@@ -193,7 +201,7 @@ class ZipManager extends Service
         $this->close();
 
         if ($result !== true) {
-            throw new ZipErrorException("add text faild: {$filenameInZip}");
+            throw new ZipErrorException('add text faild: '.$filenameInZip);
         }
     }
 
@@ -205,8 +213,8 @@ class ZipManager extends Service
             if ($res) {
                 throw new ZipErrorException('close faild');
             }
-        } catch (ErrorException $e) {
-            report($e);
+        } catch (ErrorException $errorException) {
+            report($errorException);
         }
     }
 }

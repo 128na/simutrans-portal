@@ -66,7 +66,7 @@ class PakAddonCountRepository extends BaseRepository
      */
     public function recount(): void
     {
-        DB::transaction(function () {
+        DB::transaction(static function () {
             DB::statement(self::DELETE_SQL);
             DB::statement(self::INSERT_SQL);
         });

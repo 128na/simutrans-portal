@@ -28,8 +28,8 @@ class DiscordController extends Controller
             event(new DiscordInviteCodeCreated());
 
             return response()->json(['url' => $url], 200);
-        } catch (Throwable $e) {
-            report($e);
+        } catch (Throwable $throwable) {
+            report($throwable);
 
             return response()->json(['url' => null], 400);
         }

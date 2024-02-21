@@ -20,20 +20,18 @@ class ZipManagerTest extends UnitTestCase
         /**
          * @var ZipArchive
          */
-        $zipArchiveMock = $this->mock(ZipArchive::class, function (MockInterface $m) {
+        $zipArchiveMock = $this->mock(ZipArchive::class, static function (MockInterface $m) {
             $m->shouldReceive('open')->andReturn(true);
             $m->shouldReceive('addFromString')->andReturn(true);
             $m->shouldReceive('close')->andReturn(true);
-
             $m->shouldReceive('open')->andReturn(true);
             $m->shouldReceive('addFile')->andReturn(true);
             $m->shouldReceive('close')->andReturn(true);
-
             $m->shouldReceive('open')->andReturn(true);
             $m->shouldReceive('addFile')->andReturn(true);
             $m->shouldReceive('close')->andReturn(true);
         });
-        $decoratorMock = $this->mock(BaseDecorator::class, function (MockInterface $m) {
+        $decoratorMock = $this->mock(BaseDecorator::class, static function (MockInterface $m) {
             $m->shouldReceive('canProcess')->andReturn(true);
             $m->shouldReceive('process')->andReturn([
                 'contents' => [['test']],
@@ -56,7 +54,7 @@ class ZipManagerTest extends UnitTestCase
         /**
          * @var ZipArchive
          */
-        $zipArchiveMock = $this->mock(ZipArchive::class, function (MockInterface $m) {
+        $zipArchiveMock = $this->mock(ZipArchive::class, static function (MockInterface $m) {
             $m->shouldReceive('open')->andReturn(ZipArchive::ER_OPEN);
         });
         $disk = Storage::fake();

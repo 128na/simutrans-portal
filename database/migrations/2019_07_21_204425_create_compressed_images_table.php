@@ -18,7 +18,7 @@ class CreateCompressedImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('compressed_images', function (Blueprint $table) {
+        Schema::create('compressed_images', static function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('path')->unique();
             $table->timestamps();

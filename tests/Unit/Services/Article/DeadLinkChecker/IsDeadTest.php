@@ -25,12 +25,12 @@ class IsDeadTest extends UnitTestCase
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, function (MockInterface $m) {
+        $article = $this->mock(Article::class, static function (MockInterface $m) {
             $m->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy']));
         });
-        $this->mock(GetHeadersHandler::class, function (MockInterface $m) {
+        $this->mock(GetHeadersHandler::class, static function (MockInterface $m) {
             $m->shouldNotReceive('getHeaders')->once()->andReturn(['Status Code: 200 OK']);
         });
 
@@ -44,12 +44,12 @@ class IsDeadTest extends UnitTestCase
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, function (MockInterface $m) {
+        $article = $this->mock(Article::class, static function (MockInterface $m) {
             $m->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy']));
         });
-        $this->mock(GetHeadersHandler::class, function (MockInterface $m) {
+        $this->mock(GetHeadersHandler::class, static function (MockInterface $m) {
             $m->shouldNotReceive('getHeaders')
                 ->times(2)->andReturn(['Status Code: 500 Internal Server Error'])
                 ->once()->andReturn(['Status Code: 200 OK']);
@@ -65,14 +65,14 @@ class IsDeadTest extends UnitTestCase
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, function (MockInterface $m) {
+        $article = $this->mock(Article::class, static function (MockInterface $m) {
             $m->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy']));
         });
 
         Event::fake();
-        $this->mock(GetHeadersHandler::class, function (MockInterface $m) {
+        $this->mock(GetHeadersHandler::class, static function (MockInterface $m) {
             $m->shouldNotReceive('getHeaders')->times(3)->andReturn(['Status Code: 500 Internal Server Error']);
         });
 

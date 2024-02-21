@@ -18,7 +18,7 @@ class CreateArticlesTable extends Migration
      */
     public function up()
     {
-        Schema::create('articles', function (Blueprint $table) {
+        Schema::create('articles', static function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('title', 255)->comment('タイトル');
@@ -27,7 +27,6 @@ class CreateArticlesTable extends Migration
             $table->json('contents')->comment('コンテンツ');
             $table->string('status', 255)->comment('公開状態');
             $table->timestamps();
-
             $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
@@ -41,7 +40,7 @@ class CreateArticlesTable extends Migration
      */
     public function down()
     {
-        Schema::table('articles', function (Blueprint $table) {
+        Schema::table('articles', static function (Blueprint $table) {
             $table->dropForeign(['user_id']);
         });
         Schema::dropIfExists('articles');

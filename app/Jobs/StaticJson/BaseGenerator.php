@@ -43,7 +43,7 @@ abstract class BaseGenerator implements ShouldQueue
     {
         $json = json_encode($data);
         if ($json) {
-            Storage::disk('public')->put("json/$filename", $json);
+            Storage::disk('public')->put('json/'.$filename, $json);
         }
     }
 }

@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::create('compressed_images', function (Blueprint $table) {
+        Schema::create('compressed_images', static function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('path')->unique();
             $table->timestamps();

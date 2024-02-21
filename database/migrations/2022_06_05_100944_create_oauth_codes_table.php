@@ -15,7 +15,7 @@ class CreateOauthCodesTable extends Migration
      */
     public function up()
     {
-        Schema::create('oauth_tokens', function (Blueprint $table) {
+        Schema::create('oauth_tokens', static function (Blueprint $table) {
             $table->string('application')->primary();
             $table->string('token_type');
             $table->string('scope');

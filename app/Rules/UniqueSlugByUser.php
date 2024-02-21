@@ -40,6 +40,7 @@ class UniqueSlugByUser implements DataAwareRule, ValidationRule
 
             return;
         }
+
         if ($user->isAdmin()) {
             $this->passedForAdmin($value, $fail);
         } else {

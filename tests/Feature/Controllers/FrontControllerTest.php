@@ -194,15 +194,15 @@ class FrontControllerTest extends TestCase
     {
         $article = Article::factory()->create(['status' => 'publish']);
 
-        $response = $this->get("/articles/{$article->slug}");
-        $response->assertRedirect("/users/{$article->user_id}/{$article->slug}");
+        $response = $this->get('/articles/'.$article->slug);
+        $response->assertRedirect(sprintf('/users/%s/%s', $article->user_id, $article->slug));
     }
 
     public function testFallbackShow_id()
     {
         $article = Article::factory()->create(['status' => 'publish']);
 
-        $response = $this->get("/articles/{$article->id}");
-        $response->assertRedirect("/users/{$article->user_id}/{$article->slug}");
+        $response = $this->get('/articles/'.$article->id);
+        $response->assertRedirect(sprintf('/users/%s/%s', $article->user_id, $article->slug));
     }
 }

@@ -26,7 +26,7 @@ class DevSeeder extends Seeder
         Attachment::where('id', '<>', null)->delete();
         User::where('role', config('role.user'))->delete();
 
-        User::factory()->count(20)->create()->each(function ($user) {
+        User::factory()->count(20)->create()->each(static function ($user) {
             $user->articles()->saveMany(
                 Article::factory()->count(random_int(0, 20))->make()
             );
@@ -43,6 +43,7 @@ class DevSeeder extends Seeder
                     $this->addCategories($article);
                     $this->addTags($article);
                 }
+
                 // アドオン紹介
                 if ($article->post_type === 'addon-introduction') {
                     $this->addAddonIntroduction($user, $article);
@@ -119,7 +120,7 @@ class DevSeeder extends Seeder
 
     private function addTags($article)
     {
-        $tags = Tag::factory()->count(random_int(0, 10))->make()->map(fn ($tag) => Tag::firstOrCreate(['name' => $tag->name]));
+        $tags = Tag::factory()->count(random_int(0, 10))->make()->map(static fn ($tag) => Tag::firstOrCreate(['name' => $tag->name]));
         $article->tags()->sync($tags->pluck('id'));
     }
 }

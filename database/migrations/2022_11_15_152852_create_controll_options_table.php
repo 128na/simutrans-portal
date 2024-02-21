@@ -15,7 +15,7 @@ class CreateControllOptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('controll_options', function (Blueprint $table) {
+        Schema::create('controll_options', static function (Blueprint $table) {
             $table->string('key')->primary();
             $table->boolean('value');
             $table->timestamps();

@@ -27,13 +27,13 @@ class ListCategoryPage extends Page
 
     public function url()
     {
-        return "/categories/{$this->category->type}/{$this->category->slug}";
+        return sprintf('/categories/%s/%s', $this->category->type, $this->category->slug);
     }
 
     public function assert(Browser $browser)
     {
         $browser
-            ->waitForText(__("category.{$this->category->type}.{$this->category->slug}"))
+            ->waitForText(__(sprintf('category.%s.%s', $this->category->type, $this->category->slug)))
             ->assertSee($this->article->title);
     }
 }

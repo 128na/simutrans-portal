@@ -18,7 +18,7 @@ class UpdateTest extends ArticleTestCase
 
     public function test()
     {
-        $url = "/api/mypage/articles/{$this->article->id}";
+        $url = '/api/mypage/articles/'.$this->article->id;
 
         $res = $this->postJson($url);
         $res->assertUnauthorized();
@@ -27,7 +27,7 @@ class UpdateTest extends ArticleTestCase
     public function testログイン済み()
     {
         $this->actingAs($this->user);
-        $url = "/api/mypage/articles/{$this->article->id}";
+        $url = '/api/mypage/articles/'.$this->article->id;
 
         $res = $this->postJson($url);
         $res->assertStatus(422);
@@ -37,7 +37,7 @@ class UpdateTest extends ArticleTestCase
     {
         $this->user->update(['email_verified_at' => null]);
         $this->actingAs($this->user);
-        $url = "/api/mypage/articles/{$this->article->id}";
+        $url = '/api/mypage/articles/'.$this->article->id;
 
         $res = $this->postJson($url);
         $res->assertForbidden();
@@ -47,7 +47,7 @@ class UpdateTest extends ArticleTestCase
     {
         ControllOption::create(['key' => ControllOptionKeys::ARTICLE_UPDATE, 'value' => false]);
         $this->actingAs($this->user);
-        $url = "/api/mypage/articles/{$this->article->id}";
+        $url = '/api/mypage/articles/'.$this->article->id;
         $res = $this->postJson($url);
         $res->assertForbidden();
     }

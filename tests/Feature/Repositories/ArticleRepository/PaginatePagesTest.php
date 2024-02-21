@@ -31,6 +31,7 @@ class PaginatePagesTest extends ArticleTestCase
     {
         $article = $this->createPage();
         $article->update(['status' => 'draft']);
+
         $res = $this->repository->paginatePages();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
@@ -41,6 +42,7 @@ class PaginatePagesTest extends ArticleTestCase
     {
         $article = $this->createPage();
         $article->delete();
+
         $res = $this->repository->paginatePages();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);

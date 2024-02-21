@@ -37,7 +37,7 @@ class Attachment extends Model
     {
         parent::boot();
 
-        self::deleting(function ($model) {
+        self::deleting(static function ($model) {
             $model->deleteFileHandler();
         });
     }
@@ -89,9 +89,11 @@ class Attachment extends Model
         if (stripos((string) $mime, 'image') !== false) {
             return 'image';
         }
+
         if (stripos((string) $mime, 'video') !== false) {
             return 'video';
         }
+
         if (stripos((string) $mime, 'text') !== false) {
             return 'text';
         }

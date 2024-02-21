@@ -33,7 +33,7 @@ class DropProjectsTable extends Migration
      */
     public function down()
     {
-        $this->schema->create('projects', function (Blueprint $table) {
+        $this->schema->create('projects', static function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('name')->comment('プロジェクト名');
@@ -41,7 +41,7 @@ class DropProjectsTable extends Migration
             $table->text('credential')->comment('認証情報');
             $table->timestamps();
         });
-        $this->schema->create('project_users', function (Blueprint $table) {
+        $this->schema->create('project_users', static function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');

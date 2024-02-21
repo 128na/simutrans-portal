@@ -15,7 +15,7 @@ class CreatePakAddonCountsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pak_addon_counts', function (Blueprint $table) {
+        Schema::create('pak_addon_counts', static function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('pak_slug', 255);
             $table->string('addon_slug', 255);

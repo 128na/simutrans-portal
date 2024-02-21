@@ -28,6 +28,7 @@ class UpdateFileInfo implements ShouldQueue
         if (str_ends_with((string) $this->attachment->original_name, 'zip')) {
             $fileInfoService->updateOrCreateFromZip($this->attachment);
         }
+
         if (str_ends_with((string) $this->attachment->original_name, 'pak')) {
             $fileInfoService->updateOrCreateFromPak($this->attachment);
         }

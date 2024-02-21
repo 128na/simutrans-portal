@@ -57,7 +57,7 @@ class AddonPostDecoratorTest extends UnitTestCase
             $m->shouldReceive('getAttribute')->withArgs(['slug'])->andReturn('test_slug');
             $m->shouldReceive('getAttribute')->withArgs(['user_id'])->andReturn(1);
             $m->shouldReceive('offsetExists')->withArgs(['user'])->andReturn(true);
-            $m->shouldReceive('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $m) {
+            $m->shouldReceive('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, static function (MockInterface $m) {
                 $m->shouldReceive('offsetExists')->withArgs(['nickname'])->andReturn(false);
                 $m->shouldReceive('offsetExists')->withArgs(['name'])->andReturn(true);
                 $m->shouldReceive('getAttribute')->withArgs(['name'])->andReturn('test user name');
@@ -68,7 +68,7 @@ class AddonPostDecoratorTest extends UnitTestCase
             $m->shouldReceive('offsetExists')->withArgs(['file'])->andReturn(true);
             $m->shouldReceive('getAttribute')->withArgs(['file'])
                 ->andReturn(new Attachment(['original_name' => 'test.zip', 'path' => '/test/123']));
-            $m->shouldReceive('tags')->andReturn($this->mock(BelongsToMany::class, function (MockInterface $m) {
+            $m->shouldReceive('tags')->andReturn($this->mock(BelongsToMany::class, static function (MockInterface $m) {
                 $m->shouldReceive('pluck')
                     ->andReturn(collect(['test tag']));
             }));

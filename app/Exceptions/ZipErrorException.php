@@ -14,6 +14,7 @@ class ZipErrorException extends Exception
         if (! is_null($code)) {
             $message .= ' '.$this->handleCode($code);
         }
+
         parent::__construct($message);
     }
 

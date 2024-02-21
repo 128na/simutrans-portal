@@ -15,10 +15,10 @@ class DiscordControllerTest extends TestCase
 {
     public function test_create()
     {
-        $this->mock(RecaptchaService::class, function (MockInterface $m) {
+        $this->mock(RecaptchaService::class, static function (MockInterface $m) {
             $m->shouldReceive('assessment')->once()->andReturnNull();
         });
-        $this->mock(InviteService::class, function (MockInterface $m) {
+        $this->mock(InviteService::class, static function (MockInterface $m) {
             $m->shouldReceive('create')->once()->andReturn('dummy');
         });
 
@@ -31,10 +31,10 @@ class DiscordControllerTest extends TestCase
 
     public function test_create_discordエラー時は400レスポンス()
     {
-        $this->mock(RecaptchaService::class, function (MockInterface $m) {
+        $this->mock(RecaptchaService::class, static function (MockInterface $m) {
             $m->shouldReceive('assessment')->once()->andReturnNull();
         });
-        $this->mock(InviteService::class, function (MockInterface $m) {
+        $this->mock(InviteService::class, static function (MockInterface $m) {
             $m->shouldReceive('create')->once()->andThrow(new Error('dummy'));
         });
         $url = '/api/front/invite-simutrans-interact-meeting';
@@ -46,10 +46,10 @@ class DiscordControllerTest extends TestCase
 
     public function test_create_recaptchaエラー時は400レスポンス()
     {
-        $this->mock(RecaptchaService::class, function (MockInterface $m) {
+        $this->mock(RecaptchaService::class, static function (MockInterface $m) {
             $m->shouldReceive('assessment')->once()->andThrow(new RecaptchaException('dummy'));
         });
-        $this->mock(InviteService::class, function (MockInterface $m) {
+        $this->mock(InviteService::class, static function (MockInterface $m) {
             $m->shouldReceive('create')->never();
         });
         $url = '/api/front/invite-simutrans-interact-meeting';

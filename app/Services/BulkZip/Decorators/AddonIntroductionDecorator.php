@@ -57,7 +57,7 @@ class AddonIntroductionDecorator extends BaseDecorator
                     : '無し',
             ],
             ['投稿者', $model->user->name ?? ''],
-            ['カテゴリ', ...$model->categories->map(fn (Category $c) => __("category.{$c->type}.{$c->slug}"))->toArray()],
+            ['カテゴリ', ...$model->categories->map(static fn (Category $c) => __(sprintf('category.%s.%s', $c->type, $c->slug)))->toArray()],
             ['タグ', ...$model->tags()->pluck('name')->toArray()],
             ['作者 / 投稿者', $contents->author],
             ['説明', $contents->description],

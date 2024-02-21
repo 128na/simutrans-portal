@@ -35,8 +35,8 @@ class FromZip extends Command
                     $this->error($e->getMessage());
                 }
             }
-        } catch (Throwable $e) {
-            report($e);
+        } catch (Throwable $throwable) {
+            report($throwable);
 
             return 1;
         }

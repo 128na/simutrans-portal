@@ -18,12 +18,10 @@ class CreateArticleCategoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('article_category', function (Blueprint $table) {
+        Schema::create('article_category', static function (Blueprint $table) {
             $table->unsignedBigInteger('article_id');
             $table->unsignedBigInteger('category_id');
-
             $table->index(['article_id', 'category_id']);
-
             $table->foreign('article_id')
                 ->references('id')->on('articles')
                 ->onDelete('cascade');
@@ -40,10 +38,9 @@ class CreateArticleCategoryTable extends Migration
      */
     public function down()
     {
-        Schema::table('article_category', function (Blueprint $table) {
+        Schema::table('article_category', static function (Blueprint $table) {
             $table->dropForeign(['article_id']);
             $table->dropForeign(['category_id']);
-
             $table->dropIndex(['article_id', 'category_id']);
         });
 

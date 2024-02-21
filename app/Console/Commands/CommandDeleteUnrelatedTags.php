@@ -18,8 +18,8 @@ class CommandDeleteUnrelatedTags extends Command
     {
         try {
             JobDeleteUnrelatedTags::dispatchSync();
-        } catch (Throwable $e) {
-            report($e);
+        } catch (Throwable $throwable) {
+            report($throwable);
 
             return 1;
         }

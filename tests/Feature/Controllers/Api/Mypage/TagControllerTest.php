@@ -106,7 +106,7 @@ class TagControllerTest extends TestCase
     public function testUpdate認証()
     {
         $tag = Tag::factory()->create();
-        $url = "/api/mypage/tags/{$tag->id}";
+        $url = '/api/mypage/tags/'.$tag->id;
 
         // 未ログインは401
         $res = $this->postJson($url);
@@ -122,7 +122,7 @@ class TagControllerTest extends TestCase
     public function testUpdate機能制限()
     {
         $tag = Tag::factory()->create();
-        $url = "/api/mypage/tags/{$tag->id}";
+        $url = '/api/mypage/tags/'.$tag->id;
 
         ControllOption::create(['key' => ControllOptionKeys::TAG_UPDATE, 'value' => false]);
         $this->actingAs($this->user);
@@ -132,10 +132,10 @@ class TagControllerTest extends TestCase
 
     public static function dataValidation()
     {
-        yield 'nameがnull' => [fn () => ['name' => null], 'name'];
-        yield 'nameが21文字以上' => [fn () => ['name' => str_repeat('a', 21)], 'name'];
+        yield 'nameがnull' => [static fn () => ['name' => null], 'name'];
+        yield 'nameが21文字以上' => [static fn () => ['name' => str_repeat('a', 21)], 'name'];
         yield 'nameが存在する' => [fn () => ['name' => $this->tag1->name], 'name'];
-        yield '成功' => [fn () => ['name' => 'new_tag'], null];
+        yield '成功' => [static fn () => ['name' => 'new_tag'], null];
     }
 
     /**
@@ -144,7 +144,7 @@ class TagControllerTest extends TestCase
     public function testUpdate(Closure $data, ?string $error_field)
     {
         $tag = Tag::factory()->create();
-        $url = "/api/mypage/tags/{$tag->id}";
+        $url = '/api/mypage/tags/'.$tag->id;
 
         $this->actingAs($this->user);
         $params = Closure::bind($data, $this)();
@@ -163,14 +163,14 @@ class TagControllerTest extends TestCase
 
     public static function dataUpdateValidation()
     {
-        yield 'descriptionが1024文字以下' => [fn () => ['description' => str_repeat('a', 1024)], null];
-        yield 'descriptionが1025文字以上' => [fn () => ['description' => str_repeat('a', 1025)], 'description'];
+        yield 'descriptionが1024文字以下' => [static fn () => ['description' => str_repeat('a', 1024)], null];
+        yield 'descriptionが1025文字以上' => [static fn () => ['description' => str_repeat('a', 1025)], 'description'];
     }
 
     public function testUpdate編集ロック()
     {
         $tag = Tag::factory()->create(['editable' => false]);
-        $url = "/api/mypage/tags/{$tag->id}";
+        $url = '/api/mypage/tags/'.$tag->id;
 
         $this->actingAs($this->user);
         $data = ['description' => 'dummy'];

@@ -36,7 +36,7 @@ class ControllOptionControllerTest extends TestCase
 
     public function testToggle()
     {
-        $url = "/api/admin/controll_options/{$this->controllOption->key}/toggle";
+        $url = sprintf('/api/admin/controll_options/%s/toggle', $this->controllOption->key);
 
         $res = $this->postJson($url);
         $res->assertUnauthorized();
@@ -53,7 +53,7 @@ class ControllOptionControllerTest extends TestCase
 
     public function testToggle値の切替()
     {
-        $url = "/api/admin/controll_options/{$this->controllOption->key}/toggle";
+        $url = sprintf('/api/admin/controll_options/%s/toggle', $this->controllOption->key);
 
         $this->user->update(['role' => 'admin']);
         $this->actingAs($this->user);

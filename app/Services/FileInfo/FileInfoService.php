@@ -31,6 +31,7 @@ class FileInfoService extends Service
             if ($text === false) {
                 throw new Exception('failed file read');
             }
+
             $data = $this->handleExtractors($filename, $text, []);
 
             return $this->fileInfoRepository->updateOrCreate(['attachment_id' => $attachment->id], ['data' => $data]);
@@ -66,6 +67,7 @@ class FileInfoService extends Service
                 if ($extractor->isText()) {
                     $text = $this->handleText($text);
                 }
+
                 $data[$extractor->getKey()][$filename] = $extractor->extract($text);
             }
         }

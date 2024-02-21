@@ -15,7 +15,7 @@ class CreateBookmarksTable extends Migration
      */
     public function up()
     {
-        Schema::create('bookmarks', function (Blueprint $table) {
+        Schema::create('bookmarks', static function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
@@ -23,7 +23,6 @@ class CreateBookmarksTable extends Migration
             $table->string('title')->comment('ブックマーク名');
             $table->text('description')->nullable()->comment('説明');
             $table->timestamps();
-
             $table->index('title');
             $table->index(['is_public', 'updated_at']);
         });

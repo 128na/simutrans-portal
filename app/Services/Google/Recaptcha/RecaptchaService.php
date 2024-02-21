@@ -44,6 +44,7 @@ class RecaptchaService extends Service
         if ($response->getRiskAnalysis()?->getScore() < self::ALLOW_SCORE) {
             throw new RecaptchaHighRiskException('score too low');
         }
+
         if ($response->getTokenProperties()?->getAction() !== $response->getEvent()?->getExpectedAction()) {
             throw new RecaptchaHighRiskException('action mismatch');
         }

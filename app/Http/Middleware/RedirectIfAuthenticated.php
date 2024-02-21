@@ -22,6 +22,7 @@ class RedirectIfAuthenticated
         if ($request->ajax()) {
             return $next($request);
         }
+
         $guards = $guards === [] ? [null] : $guards;
 
         foreach ($guards as $guard) {

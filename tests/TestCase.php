@@ -31,11 +31,11 @@ abstract class TestCase extends BaseTestCase
     protected function tearDown(): void
     {
         $disk = Storage::disk('public');
-        User::with('myAttachments')->get()->map(function (User $user) use ($disk) {
+        User::with('myAttachments')->get()->map(static function (User $user) use ($disk) {
             $user->myAttachments
-                ->filter(fn (Attachment $a) => Str::startsWith($a->path, 'user/'))
-                ->map(fn (Attachment $a) => $a->delete());
-            $dir = "user/$user->id";
+                ->filter(static fn (Attachment $a) => Str::startsWith($a->path, 'user/'))
+                ->map(static fn (Attachment $a) => $a->delete());
+            $dir = 'user/'.$user->id;
             if (count($disk->files($dir)) === 0) {
                 $disk->deleteDirectory($dir);
             }

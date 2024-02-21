@@ -56,21 +56,21 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
      */
     public function register()
     {
-        $this->app->bind(ReadmeExtractor::class, function ($app) {
+        $this->app->bind(ReadmeExtractor::class, static function ($app) {
             $config = HTMLPurifier_Config::createDefault();
             $config->set('HTML.AllowedElements', []);
 
             return new ReadmeExtractor(new HTMLPurifier($config));
         });
 
-        $this->app->bind(MarkdownService::class, function ($app) {
+        $this->app->bind(MarkdownService::class, static function ($app) {
             $config = HTMLPurifier_Config::createDefault();
             $config->set('HTML.AllowedElements', []);
 
             return new MarkdownService($app->make(GithubMarkdown::class), new HTMLPurifier($config));
         });
 
-        $this->app->bind(ZipManager::class, fn ($app) => new ZipManager(
+        $this->app->bind(ZipManager::class, static fn ($app) => new ZipManager(
             new ZipArchive(),
             Storage::disk('public'),
             [
@@ -91,14 +91,14 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
             ]
         ));
 
-        $this->app->bind(TwitterOAuth::class, fn ($app) => new TwitterOAuth(
+        $this->app->bind(TwitterOAuth::class, static fn ($app) => new TwitterOAuth(
             config('services.twitter.access_token'),
             config('services.twitter.access_secret'),
             null,
             config('services.twitter.bearer_token'),
         ));
 
-        $this->app->bind(MisskeyApiClient::class, fn ($app) => new MisskeyApiClient(
+        $this->app->bind(MisskeyApiClient::class, static fn ($app) => new MisskeyApiClient(
             config('services.misskey.base_url'),
             config('services.misskey.token'),
         ));

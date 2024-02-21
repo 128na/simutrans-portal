@@ -32,7 +32,7 @@ class DropRegistrationOrdersTable extends Migration
      */
     public function down()
     {
-        $this->schema->create('registration_orders', function (Blueprint $table) {
+        $this->schema->create('registration_orders', static function (Blueprint $table) {
             $table->id();
             $table->string('email')->unique();
             $table->string('twitter')->comment('Twitterユーザー名');

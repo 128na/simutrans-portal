@@ -21,9 +21,9 @@ class AttachmentRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(Attachment $model)
+    public function __construct(Attachment $attachment)
     {
-        $this->model = $model;
+        $this->model = $attachment;
     }
 
     public function syncProfile(User $user, int $id): void
@@ -57,12 +57,12 @@ class AttachmentRepository extends BaseRepository
             ->cursor();
     }
 
-    public function createFromFile(User $user, UploadedFile $file): Attachment
+    public function createFromFile(User $user, UploadedFile $uploadedFile): Attachment
     {
         return $this->model->create([
             'user_id' => $user->id,
-            'path' => Storage::disk('public')->putFile('user/'.$user->id, $file),
-            'original_name' => $file->getClientOriginalName(),
+            'path' => Storage::disk('public')->putFile('user/'.$user->id, $uploadedFile),
+            'original_name' => $uploadedFile->getClientOriginalName(),
         ]);
     }
 

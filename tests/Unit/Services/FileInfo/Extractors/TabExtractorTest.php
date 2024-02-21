@@ -22,15 +22,15 @@ class TabExtractorTest extends UnitTestCase
 
     public function testIsTarget(): void
     {
-        $service = $this->getSUT();
+        $sUT = $this->getSUT();
 
-        $this->assertFalse($service->isTarget('dummy'));
-        $this->assertTrue($service->isTarget('dummy.tab'));
+        $this->assertFalse($sUT->isTarget('dummy'));
+        $this->assertTrue($sUT->isTarget('dummy.tab'));
     }
 
     public function testExtract(): void
     {
-        $service = $this->getSUT();
+        $sUT = $this->getSUT();
 
         $data = '§example
 hoge
@@ -40,7 +40,7 @@ fuga
 ふが
 ';
 
-        $result = $service->extract($data);
+        $result = $sUT->extract($data);
         $this->assertEquals(['hoge' => 'ほげ', 'fuga' => 'ふが'], $result);
     }
 }

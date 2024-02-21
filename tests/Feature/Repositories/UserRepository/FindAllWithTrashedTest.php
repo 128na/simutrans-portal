@@ -10,17 +10,17 @@ use Tests\TestCase;
 
 class FindAllWithTrashedTest extends TestCase
 {
-    private UserRepository $repository;
+    private UserRepository $userRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(UserRepository::class);
+        $this->userRepository = app(UserRepository::class);
     }
 
     public function test(): void
     {
-        $res = $this->repository->findAllWithTrashed();
+        $res = $this->userRepository->findAllWithTrashed();
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertCount(2, $res, '全てのユーザーが取得できること');
@@ -29,7 +29,7 @@ class FindAllWithTrashedTest extends TestCase
     public function test論理削除(): void
     {
         $this->user->delete();
-        $res = $this->repository->findAllWithTrashed();
+        $res = $this->userRepository->findAllWithTrashed();
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertCount(2, $res, '削除済みユーザーも取得できること');

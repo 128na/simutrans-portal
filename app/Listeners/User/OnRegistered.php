@@ -15,10 +15,10 @@ class OnRegistered extends BaseListener
     {
     }
 
-    public function handle(Registered $event): void
+    public function handle(Registered $registered): void
     {
-        if ($event->user instanceof User) {
-            $this->logger->channel('audit')->info('ユーザー登録', $this->getUserInfo($event->user));
+        if ($registered->user instanceof User) {
+            $this->logger->channel('audit')->info('ユーザー登録', $this->getUserInfo($registered->user));
         }
     }
 }

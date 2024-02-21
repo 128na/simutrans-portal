@@ -10,17 +10,17 @@ use Tests\ArticleTestCase;
 
 class FindAllWithTrashedTest extends ArticleTestCase
 {
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
     }
 
     public function test(): void
     {
-        $res = $this->repository->findAllWithTrashed();
+        $res = $this->articleRepository->findAllWithTrashed();
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(2, $res->count(), '全ての記事が取得できること');
@@ -29,7 +29,7 @@ class FindAllWithTrashedTest extends ArticleTestCase
     public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => 'draft']);
-        $res = $this->repository->findAllWithTrashed();
+        $res = $this->articleRepository->findAllWithTrashed();
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(2, $res->count(), '非公開記事も取得できること');
@@ -38,7 +38,7 @@ class FindAllWithTrashedTest extends ArticleTestCase
     public function test論理削除(): void
     {
         $this->article->delete();
-        $res = $this->repository->findAllWithTrashed();
+        $res = $this->articleRepository->findAllWithTrashed();
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(2, $res->count(), '削除済み記事も取得できること');

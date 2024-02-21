@@ -56,9 +56,9 @@ class PakAddonCountRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(PakAddonCount $model)
+    public function __construct(PakAddonCount $pakAddonCount)
     {
-        $this->model = $model;
+        $this->model = $pakAddonCount;
     }
 
     /**

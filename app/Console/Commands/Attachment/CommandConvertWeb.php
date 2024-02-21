@@ -27,9 +27,9 @@ class CommandConvertWeb extends Command
 
     public function handle(): int
     {
-        $cursor = $this->attachmentRepository->cursorUnconvertedImages();
+        $lazyCollection = $this->attachmentRepository->cursorUnconvertedImages();
 
-        foreach ($cursor as $attachment) {
+        foreach ($lazyCollection as $attachment) {
             try {
                 $this->info(sprintf('convert: %s', $attachment->path));
                 $this->webpConverter->convert($attachment);

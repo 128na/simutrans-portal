@@ -20,24 +20,24 @@ class OneSignalChannel extends BaseChannel
     ) {
     }
 
-    public function send(Article $notifiable, SendArticleNotification $notification): void
+    public function send(Article $article, SendArticleNotification $sendArticleNotification): void
     {
         try {
             OneSignalFacade::sendNotificationToAll(
-                $this->buildMessage($notifiable, $notification),
-                route('articles.show', ['userIdOrNickname' => $notifiable->user?->nickname ?? $notifiable->user_id, 'articleSlug' => $notifiable->slug]),
+                $this->buildMessage($article, $sendArticleNotification),
+                route('articles.show', ['userIdOrNickname' => $article->user?->nickname ?? $article->user_id, 'articleSlug' => $article->slug]),
             );
         } catch (Throwable $throwable) {
             report($throwable);
         }
     }
 
-    private function buildMessage(Article $notifiable, SendArticleNotification $notification): string
+    private function buildMessage(Article $article, SendArticleNotification $sendArticleNotification): string
     {
         return match (true) {
-            $notification instanceof SendArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($notifiable),
-            $notification instanceof SendArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($notifiable),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', $notification::class)),
+            $sendArticleNotification instanceof SendArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($article),
+            $sendArticleNotification instanceof SendArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($article),
+            default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendArticleNotification::class)),
         };
     }
 

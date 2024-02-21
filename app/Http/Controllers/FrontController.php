@@ -139,7 +139,7 @@ class FrontController extends Controller
     /**
      * 検索結果一覧.
      */
-    public function search(SearchRequest $request): Renderable
+    public function search(SearchRequest $searchRequest): Renderable
     {
         return view('front.spa');
     }

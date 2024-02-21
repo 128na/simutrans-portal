@@ -13,11 +13,11 @@ class CreatePakAddonCountsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('pak_addon_counts', static function (Blueprint $table): void {
-            $table->bigIncrements('id');
-            $table->string('pak_slug', 255);
-            $table->string('addon_slug', 255);
-            $table->unsignedBigInteger('count');
+        Schema::create('pak_addon_counts', static function (Blueprint $blueprint): void {
+            $blueprint->bigIncrements('id');
+            $blueprint->string('pak_slug', 255);
+            $blueprint->string('addon_slug', 255);
+            $blueprint->unsignedBigInteger('count');
         });
     }
 

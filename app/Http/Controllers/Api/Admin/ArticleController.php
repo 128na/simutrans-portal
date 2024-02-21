@@ -27,10 +27,10 @@ class ArticleController extends Controller
     /**
      * @return Collection<int, \App\Models\Article>
      */
-    public function update(ArticleUpdateRequest $request, int $id): Collection
+    public function update(ArticleUpdateRequest $articleUpdateRequest, int $id): Collection
     {
         $article = $this->articleRepository->findOrFailWithTrashed($id);
-        $this->articleRepository->update($article, $request->validated()['article']);
+        $this->articleRepository->update($article, $articleUpdateRequest->validated()['article']);
 
         JobUpdateRelated::dispatchSync();
 

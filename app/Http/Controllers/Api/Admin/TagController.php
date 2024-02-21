@@ -14,10 +14,10 @@ class TagController extends Controller
     {
     }
 
-    public function toggleEditable(ModelsTag $tag): void
+    public function toggleEditable(ModelsTag $modelsTag): void
     {
-        $this->tagRepository->update($tag, [
-            'editable' => ! $tag->editable,
+        $this->tagRepository->update($modelsTag, [
+            'editable' => ! $modelsTag->editable,
         ]);
     }
 }

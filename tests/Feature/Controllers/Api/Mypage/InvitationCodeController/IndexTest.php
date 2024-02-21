@@ -20,10 +20,10 @@ class IndexTest extends TestCase
     public function test紹介者無し(): void
     {
         $this->actingAs($this->user);
-        $response = $this->getJson('/api/mypage/invitation_code');
-        $response->assertOk();
+        $testResponse = $this->getJson('/api/mypage/invitation_code');
+        $testResponse->assertOk();
 
-        $data = $response->json('data');
+        $data = $testResponse->json('data');
         $this->assertCount(0, $data);
     }
 
@@ -32,10 +32,10 @@ class IndexTest extends TestCase
         $this->user2->update(['invited_by' => $this->user->id]);
 
         $this->actingAs($this->user);
-        $response = $this->getJson('/api/mypage/invitation_code');
-        $response->assertOk();
+        $testResponse = $this->getJson('/api/mypage/invitation_code');
+        $testResponse->assertOk();
 
-        $data = $response->json('data');
+        $data = $testResponse->json('data');
         $this->assertCount(1, $data);
     }
 }

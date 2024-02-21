@@ -29,11 +29,11 @@ class AttachmentController extends Controller
         );
     }
 
-    public function store(StoreRequest $request): AttachmentsResource
+    public function store(StoreRequest $storeRequest): AttachmentsResource
     {
-        abort_unless($request->hasFile('file'), 400);
+        abort_unless($storeRequest->hasFile('file'), 400);
 
-        $attachment = $this->storeService->store($this->loggedinUser(), $request->file);
+        $attachment = $this->storeService->store($this->loggedinUser(), $storeRequest->file);
 
         try {
             UpdateFileInfo::dispatchSync($attachment);

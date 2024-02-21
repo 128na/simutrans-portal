@@ -33,11 +33,11 @@ class GoogleServiceProvider extends ServiceProvider implements DeferrableProvide
                 @file_get_contents(base_path(config('services.google_recaptcha.credential'))) ?: '{}',
                 true
             );
-            $client = new RecaptchaEnterpriseServiceClient(['credentials' => $credentials]);
-            $projectName = $client->projectName(config('services.google_recaptcha.projectName'));
+            $recaptchaEnterpriseServiceClient = new RecaptchaEnterpriseServiceClient(['credentials' => $credentials]);
+            $projectName = $recaptchaEnterpriseServiceClient->projectName(config('services.google_recaptcha.projectName'));
 
             return new RecaptchaService(
-                $client,
+                $recaptchaEnterpriseServiceClient,
                 $projectName,
                 app(Event::class),
             );

@@ -21,7 +21,7 @@ class SluggableStringTest extends TestCase
         parent::setUp();
         $this->failCalled = false;
 
-        $mock = $this->mock(PotentiallyTranslatedString::class, static fn (MockInterface $m) => $m->allows('translate'));
+        $mock = $this->mock(PotentiallyTranslatedString::class, static fn (MockInterface $mock) => $mock->allows('translate'));
         $this->failClosure = function () use ($mock) {
             $this->failCalled = true;
 

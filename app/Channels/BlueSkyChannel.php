@@ -24,10 +24,10 @@ class BlueSkyChannel extends BaseChannel
     ) {
     }
 
-    public function send(Article $notifiable, SendArticleNotification $notification): void
+    public function send(Article $article, SendArticleNotification $sendArticleNotification): void
     {
         try {
-            $post = $this->buildMessage($notifiable, $notification);
+            $post = $this->buildMessage($article, $sendArticleNotification);
             $result = $this->blueSkyApiClient->send($post);
             logger('blueSky', [$result->getUri()]);
         } catch (Throwable $throwable) {
@@ -35,17 +35,17 @@ class BlueSkyChannel extends BaseChannel
         }
     }
 
-    private function buildMessage(Article $notifiable, SendArticleNotification $notification): Post
+    private function buildMessage(Article $article, SendArticleNotification $sendArticleNotification): Post
     {
         $text = match (true) {
-            $notification instanceof SendArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($notifiable),
-            $notification instanceof SendArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($notifiable),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', $notification::class)),
+            $sendArticleNotification instanceof SendArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($article),
+            $sendArticleNotification instanceof SendArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($article),
+            default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendArticleNotification::class)),
         };
         $post = Post::create($text);
 
         try {
-            return $this->blueSkyApiClient->addWebsiteCard($post, $notifiable);
+            return $this->blueSkyApiClient->addWebsiteCard($post, $article);
         } catch (ConvertFailedException $e) {
             report($e);
         } catch (HttpStatusCodeException $e) {

@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('login_histories', static function (Blueprint $table): void {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('ip')->nullable();
-            $table->string('ua')->nullable();
-            $table->string('referer')->nullable();
-            $table->timestamps();
+        Schema::create('login_histories', static function (Blueprint $blueprint): void {
+            $blueprint->id();
+            $blueprint->foreignId('user_id')->constrained()->onDelete('cascade');
+            $blueprint->string('ip')->nullable();
+            $blueprint->string('ua')->nullable();
+            $blueprint->string('referer')->nullable();
+            $blueprint->timestamps();
         });
     }
 

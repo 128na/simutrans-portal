@@ -13,14 +13,14 @@ class CreateOauthCodesTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('oauth_tokens', static function (Blueprint $table): void {
-            $table->string('application')->primary();
-            $table->string('token_type');
-            $table->string('scope');
-            $table->string('access_token');
-            $table->string('refresh_token');
-            $table->timestamp('expired_at');
-            $table->timestamps();
+        Schema::create('oauth_tokens', static function (Blueprint $blueprint): void {
+            $blueprint->string('application')->primary();
+            $blueprint->string('token_type');
+            $blueprint->string('scope');
+            $blueprint->string('access_token');
+            $blueprint->string('refresh_token');
+            $blueprint->timestamp('expired_at');
+            $blueprint->timestamps();
         });
     }
 

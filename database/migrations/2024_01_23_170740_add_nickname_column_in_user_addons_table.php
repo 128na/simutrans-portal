@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('user_addon_counts', static function (Blueprint $table): void {
-            $table->string('user_nickname')->nullable()->after('user_name')->comment('表示名');
+        Schema::table('user_addon_counts', static function (Blueprint $blueprint): void {
+            $blueprint->string('user_nickname')->nullable()->after('user_name')->comment('表示名');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('user_addon_counts', static function (Blueprint $table): void {
-            $table->dropColumn('user_nickname');
+        Schema::table('user_addon_counts', static function (Blueprint $blueprint): void {
+            $blueprint->dropColumn('user_nickname');
         });
     }
 };

@@ -35,9 +35,9 @@ class ArticleRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(Article $model)
+    public function __construct(Article $article)
     {
-        $this->model = $model;
+        $this->model = $article;
     }
 
     /**
@@ -232,9 +232,9 @@ class ArticleRepository extends BaseRepository
      *
      * @return LengthAwarePaginator<Article>
      */
-    public function paginateByPakNoneAddonCategory(Category $pak, string $order = 'modified_at'): LengthAwarePaginator
+    public function paginateByPakNoneAddonCategory(Category $category, string $order = 'modified_at'): LengthAwarePaginator
     {
-        return $pak->articles()
+        return $category->articles()
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
@@ -379,19 +379,19 @@ class ArticleRepository extends BaseRepository
         return $this->model
             ->addon()
             ->select('articles.*')
-            ->leftJoin('view_counts as d', static fn (JoinClause $join) => $join
+            ->leftJoin('view_counts as d', static fn (JoinClause $joinClause) => $joinClause
                 ->on('d.article_id', 'articles.id')
                 ->where('d.type', 1)
                 ->where('d.period', $datetime->format('Ymd')))
-            ->leftJoin('view_counts as m', static fn (JoinClause $join) => $join
+            ->leftJoin('view_counts as m', static fn (JoinClause $joinClause) => $joinClause
                 ->on('m.article_id', 'articles.id')
                 ->where('m.type', 2)
                 ->where('m.period', $datetime->format('Ym')))
-            ->leftJoin('view_counts as y', static fn (JoinClause $join) => $join
+            ->leftJoin('view_counts as y', static fn (JoinClause $joinClause) => $joinClause
                 ->on('y.article_id', 'articles.id')
                 ->where('y.type', 3)
                 ->where('y.period', $datetime->format('Y')))
-            ->leftJoin('view_counts as t', static fn (JoinClause $join) => $join
+            ->leftJoin('view_counts as t', static fn (JoinClause $joinClause) => $joinClause
                 ->on('t.article_id', 'articles.id')
                 ->where('t.type', 4)
                 ->where('t.period', 'total'))

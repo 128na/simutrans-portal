@@ -15,12 +15,12 @@ class OnArticleStored extends BaseListener
     {
     }
 
-    public function handle(ArticleStored $event): void
+    public function handle(ArticleStored $articleStored): void
     {
-        $this->logger->channel('audit')->info('記事作成', $this->getArticleInfo($event->article));
+        $this->logger->channel('audit')->info('記事作成', $this->getArticleInfo($articleStored->article));
 
-        if ($event->article->is_publish && $event->shouldNotify) {
-            $event->article->notify(new SendArticlePublished());
+        if ($articleStored->article->is_publish && $articleStored->shouldNotify) {
+            $articleStored->article->notify(new SendArticlePublished());
         }
     }
 }

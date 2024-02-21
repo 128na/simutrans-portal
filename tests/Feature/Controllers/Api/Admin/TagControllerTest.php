@@ -37,8 +37,8 @@ class TagControllerTest extends TestCase
         $this->user->update(['role' => 'admin']);
         $this->actingAs($this->user);
 
-        $res = $this->postJson($url);
-        $res->assertOk();
+        $testResponse = $this->postJson($url);
+        $testResponse->assertOk();
         $this->assertDatabaseHas('tags', ['id' => $this->tag->id, 'editable' => 0]);
 
         $this->postJson($url);

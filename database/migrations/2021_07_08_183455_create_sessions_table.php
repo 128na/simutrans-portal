@@ -13,13 +13,13 @@ class CreateSessionsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('sessions', static function (Blueprint $table): void {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->text('payload');
-            $table->integer('last_activity')->index();
+        Schema::create('sessions', static function (Blueprint $blueprint): void {
+            $blueprint->string('id')->primary();
+            $blueprint->foreignId('user_id')->nullable()->index();
+            $blueprint->string('ip_address', 45)->nullable();
+            $blueprint->text('user_agent')->nullable();
+            $blueprint->text('payload');
+            $blueprint->integer('last_activity')->index();
         });
     }
 

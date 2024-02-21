@@ -16,12 +16,12 @@ class CreateProfilesTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('profiles', static function (Blueprint $table): void {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id')->unique();
-            $table->json('data')->comment('プロフィール情報');
-            $table->timestamps();
-            $table->foreign('user_id')
+        Schema::create('profiles', static function (Blueprint $blueprint): void {
+            $blueprint->bigIncrements('id');
+            $blueprint->unsignedBigInteger('user_id')->unique();
+            $blueprint->json('data')->comment('プロフィール情報');
+            $blueprint->timestamps();
+            $blueprint->foreign('user_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
         });
@@ -32,8 +32,8 @@ class CreateProfilesTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('profiles', static function (Blueprint $table): void {
-            $table->dropForeign(['user_id']);
+        Schema::table('profiles', static function (Blueprint $blueprint): void {
+            $blueprint->dropForeign(['user_id']);
         });
         Schema::dropIfExists('profiles');
     }

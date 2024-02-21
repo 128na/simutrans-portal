@@ -167,87 +167,87 @@ class Article extends Model implements Feedable
     | スコープ
     |--------------------------------------------------------------------------
      */
-    public function scopeWithUserTrashed(Builder $query): void
+    public function scopeWithUserTrashed(Builder $builder): void
     {
-        $query->withoutGlobalScope('WithoutTrashedUser');
+        $builder->withoutGlobalScope('WithoutTrashedUser');
     }
 
-    public function scopeUser(Builder $query, User $user): void
+    public function scopeUser(Builder $builder, User $user): void
     {
-        $query->where('user_id', $user->id);
+        $builder->where('user_id', $user->id);
     }
 
-    public function scopeActive(Builder $query): void
+    public function scopeActive(Builder $builder): void
     {
-        $query->where('status', config('status.publish'));
+        $builder->where('status', config('status.publish'));
     }
 
-    public function scopeAddon(Builder $query): void
+    public function scopeAddon(Builder $builder): void
     {
-        $query->whereIn('post_type', ['addon-post', 'addon-introduction']);
+        $builder->whereIn('post_type', ['addon-post', 'addon-introduction']);
     }
 
-    public function scopeLinkCheckTarget(Builder $query): void
+    public function scopeLinkCheckTarget(Builder $builder): void
     {
-        $query->where('post_type', 'addon-introduction')
+        $builder->where('post_type', 'addon-introduction')
             ->where(
                 static fn ($query) => $query->whereNull('contents->exclude_link_check')
                     ->orWhere('contents->exclude_link_check', false)
             );
     }
 
-    public function scopePage(Builder $query): void
+    public function scopePage(Builder $builder): void
     {
-        $query->where('post_type', ['page', 'markdown']);
+        $builder->where('post_type', ['page', 'markdown']);
     }
 
-    public function scopePak(Builder $query, string $slug): void
+    public function scopePak(Builder $builder, string $slug): void
     {
-        $query->whereHas('categories', static fn ($query) => $query->pak()->slug($slug));
+        $builder->whereHas('categories', static fn ($query) => $query->pak()->slug($slug));
     }
 
-    public function scopeAnnounce(Builder $query): void
+    public function scopeAnnounce(Builder $builder): void
     {
-        $query->whereIn('post_type', ['page', 'markdown'])
+        $builder->whereIn('post_type', ['page', 'markdown'])
             ->whereHas('categories', static fn ($query) => $query->page()->slug('announce'));
     }
 
-    public function scopeWithoutAnnounce(Builder $query): void
+    public function scopeWithoutAnnounce(Builder $builder): void
     {
-        $query->whereIn('post_type', ['page', 'markdown'])
+        $builder->whereIn('post_type', ['page', 'markdown'])
             ->whereDoesntHave('categories', static fn ($query) => $query->page()->slug('announce'));
     }
 
-    public function scopeRankingOrder(Builder $query): void
+    public function scopeRankingOrder(Builder $builder): void
     {
-        $query->join('rankings', 'rankings.article_id', '=', 'articles.id')
+        $builder->join('rankings', 'rankings.article_id', '=', 'articles.id')
             ->orderBy('rankings.rank', 'asc');
     }
 
-    public function scopeCategory(Builder $query, Category $category): void
+    public function scopeCategory(Builder $builder, Category $category): void
     {
-        $query->join('article_category', static function (JoinClause $join) use ($category): void {
-            $join->on('article_category.article_id', '=', 'articles.id')
+        $builder->join('article_category', static function (JoinClause $joinClause) use ($category): void {
+            $joinClause->on('article_category.article_id', '=', 'articles.id')
                 ->where('article_category.category_id', $category->id);
         });
     }
 
-    public function scopePakAddonCategory(Builder $query, Category $pak, Category $addon): void
+    public function scopePakAddonCategory(Builder $builder, Category $pak, Category $addon): void
     {
-        $query->join('article_category', static function (JoinClause $join) use ($pak): void {
-            $join->on('article_category.article_id', '=', 'articles.id')
+        $builder->join('article_category', static function (JoinClause $joinClause) use ($pak): void {
+            $joinClause->on('article_category.article_id', '=', 'articles.id')
                 ->where('article_category.category_id', $pak->id);
         });
-        $query->join('article_category', static function (JoinClause $join) use ($addon): void {
-            $join->on('article_category.article_id', '=', 'articles.id')
+        $builder->join('article_category', static function (JoinClause $joinClause) use ($addon): void {
+            $joinClause->on('article_category.article_id', '=', 'articles.id')
                 ->where('article_category.category_id', $addon->id);
         });
     }
 
-    public function scopeTag(Builder $query, Tag $tag): void
+    public function scopeTag(Builder $builder, Tag $tag): void
     {
-        $query->join('article_tag', static function (JoinClause $join) use ($tag): void {
-            $join->on('article_tag.article_id', '=', 'articles.id')
+        $builder->join('article_tag', static function (JoinClause $joinClause) use ($tag): void {
+            $joinClause->on('article_tag.article_id', '=', 'articles.id')
                 ->where('article_tag.tag_id', $tag->id);
         });
     }

@@ -21,14 +21,14 @@ class UserService extends Service
         return $this->userRepository->load($user, ['profile:id,user_id,data']);
     }
 
-    public function updateUserAndProfile(User $user, UpdateRequest $request): User
+    public function updateUserAndProfile(User $user, UpdateRequest $updateRequest): User
     {
-        $emailChanged = $user->email !== $request->input('user.email');
+        $emailChanged = $user->email !== $updateRequest->input('user.email');
 
         $this->userRepository->update($user, [
-            'name' => $request->input('user.name'),
-            'nickname' => $request->input('user.nickname'),
-            'email' => $request->input('user.email'),
+            'name' => $updateRequest->input('user.name'),
+            'nickname' => $updateRequest->input('user.nickname'),
+            'email' => $updateRequest->input('user.email'),
             'email_verified_at' => $emailChanged
                 ? null
                 : $user->email_verified_at,
@@ -36,12 +36,12 @@ class UserService extends Service
 
         if ($user->profile) {
             $this->profileRepository->update($user->profile, [
-                'data' => $request->input('user.profile.data'),
+                'data' => $updateRequest->input('user.profile.data'),
             ]);
         }
 
-        if ($request->filled('user.profile.data.avatar')) {
-            $this->attachmentRepository->syncProfile($user, $request->input('user.profile.data.avatar'));
+        if ($updateRequest->filled('user.profile.data.avatar')) {
+            $this->attachmentRepository->syncProfile($user, $updateRequest->input('user.profile.data.avatar'));
         }
 
         if ($emailChanged) {

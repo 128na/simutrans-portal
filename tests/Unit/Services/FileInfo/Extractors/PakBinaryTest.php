@@ -33,10 +33,10 @@ class PakBinaryTest extends UnitTestCase
 
     public function testEof(): void
     {
-        $pak = $this->getSUT();
-        $this->assertFalse($pak->eof());
-        $pak->seek(PHP_INT_MAX);
-        $this->assertTrue($pak->eof());
+        $sUT = $this->getSUT();
+        $this->assertFalse($sUT->eof());
+        $sUT->seek(PHP_INT_MAX);
+        $this->assertTrue($sUT->eof());
     }
 
     public function testSeekUntil(): void

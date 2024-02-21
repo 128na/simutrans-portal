@@ -13,16 +13,16 @@ class CreateBookmarksTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('bookmarks', static function (Blueprint $table): void {
-            $table->id();
-            $table->uuid('uuid')->unique();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->unsignedTinyInteger('is_public')->default(0)->comment('公開ステータス(0:非公開、1:公開)');
-            $table->string('title')->comment('ブックマーク名');
-            $table->text('description')->nullable()->comment('説明');
-            $table->timestamps();
-            $table->index('title');
-            $table->index(['is_public', 'updated_at']);
+        Schema::create('bookmarks', static function (Blueprint $blueprint): void {
+            $blueprint->id();
+            $blueprint->uuid('uuid')->unique();
+            $blueprint->foreignId('user_id')->constrained()->onDelete('cascade');
+            $blueprint->unsignedTinyInteger('is_public')->default(0)->comment('公開ステータス(0:非公開、1:公開)');
+            $blueprint->string('title')->comment('ブックマーク名');
+            $blueprint->text('description')->nullable()->comment('説明');
+            $blueprint->timestamps();
+            $blueprint->index('title');
+            $blueprint->index(['is_public', 'updated_at']);
         });
     }
 

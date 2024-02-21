@@ -39,12 +39,12 @@ abstract class ArticleTestCase extends TestCase
         $this->user2_file = $this->createFromFile(UploadedFile::fake()->image('other.zip', 1), $this->user2->id);
     }
 
-    protected function createFromFile(UploadedFile $file, int $userId): Attachment
+    protected function createFromFile(UploadedFile $uploadedFile, int $userId): Attachment
     {
         return Attachment::create([
             'user_id' => $userId,
-            'path' => $file->store('user/'.$userId, 'public'),
-            'original_name' => $file->getClientOriginalName(),
+            'path' => $uploadedFile->store('user/'.$userId, 'public'),
+            'original_name' => $uploadedFile->getClientOriginalName(),
         ]);
     }
 

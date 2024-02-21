@@ -40,16 +40,16 @@ class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
         ));
 
         $this->app->bind(TwitterV2Api::class, function (): \App\Services\Twitter\TwitterV2Api {
-            $client = new TwitterV2Api(
+            $twitterV2Api = new TwitterV2Api(
                 config('services.twitter.consumer_key'),
                 config('services.twitter.consumer_secret'),
                 config('services.twitter.bearer_token'),
                 $this->app->make(OauthTokenRepository::class),
                 $this->app->make(PKCEService::class),
             );
-            $client->applyPKCEToken();
+            $twitterV2Api->applyPKCEToken();
 
-            return $client;
+            return $twitterV2Api;
         });
     }
 }

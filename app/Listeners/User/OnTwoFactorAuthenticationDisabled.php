@@ -14,8 +14,8 @@ class OnTwoFactorAuthenticationDisabled extends BaseListener
     {
     }
 
-    public function handle(TwoFactorAuthenticationDisabled $event): void
+    public function handle(TwoFactorAuthenticationDisabled $twoFactorAuthenticationDisabled): void
     {
-        $this->logger->channel('audit')->info('2要素認証無効化', $this->getUserInfo($event->user));
+        $this->logger->channel('audit')->info('2要素認証無効化', $this->getUserInfo($twoFactorAuthenticationDisabled->user));
     }
 }

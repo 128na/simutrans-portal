@@ -70,9 +70,9 @@ class FileSizeBaseResizer extends Service
         return $image;
     }
 
-    private function doResize(GdImage $im, int $width): string
+    private function doResize(GdImage $gdImage, int $width): string
     {
-        $resized = @imagescale($im, $width, -1, IMG_BILINEAR_FIXED);
+        $resized = @imagescale($gdImage, $width, -1, IMG_BILINEAR_FIXED);
         if (! $resized) {
             throw new ConvertFailedException('imagescale failed');
         }

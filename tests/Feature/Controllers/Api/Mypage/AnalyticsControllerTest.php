@@ -18,8 +18,8 @@ class AnalyticsControllerTest extends ArticleTestCase
 
         $url = Closure::bind($fn, $this)();
 
-        $res = $this->getJson($url);
-        $res->assertJsonValidationErrors($error_field);
+        $testResponse = $this->getJson($url);
+        $testResponse->assertJsonValidationErrors($error_field);
     }
 
     public static function dataValidation(): \Generator

@@ -10,9 +10,9 @@ class CreateRankingsTable extends Migration
 {
     public function up(): void
     {
-        Schema::create('rankings', static function (Blueprint $table): void {
-            $table->unsignedInteger('rank')->primary();
-            $table->foreignId('article_id')->constrained()->onDelete('cascade');
+        Schema::create('rankings', static function (Blueprint $blueprint): void {
+            $blueprint->unsignedInteger('rank')->primary();
+            $blueprint->foreignId('article_id')->constrained()->onDelete('cascade');
         });
     }
 

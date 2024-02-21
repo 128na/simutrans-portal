@@ -152,9 +152,9 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
     | スコープ
     |--------------------------------------------------------------------------
     */
-    public function scopeAdmin(Builder $query): void
+    public function scopeAdmin(Builder $builder): void
     {
-        $query->where('role', config('role.admin'));
+        $builder->where('role', config('role.admin'));
     }
 
     /*

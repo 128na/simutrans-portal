@@ -13,16 +13,16 @@ class CreateTweetLogsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('tweet_logs', static function (Blueprint $table): void {
-            $table->string('id')->primary();
-            $table->foreignId('article_id')->constrained()->onDelete('cascade');
-            $table->text('text');
-            $table->unsignedBigInteger('retweet_count');
-            $table->unsignedBigInteger('reply_count');
-            $table->unsignedBigInteger('like_count');
-            $table->unsignedBigInteger('quote_count');
-            $table->timestamp('tweet_created_at');
-            $table->timestamps();
+        Schema::create('tweet_logs', static function (Blueprint $blueprint): void {
+            $blueprint->string('id')->primary();
+            $blueprint->foreignId('article_id')->constrained()->onDelete('cascade');
+            $blueprint->text('text');
+            $blueprint->unsignedBigInteger('retweet_count');
+            $blueprint->unsignedBigInteger('reply_count');
+            $blueprint->unsignedBigInteger('like_count');
+            $blueprint->unsignedBigInteger('quote_count');
+            $blueprint->timestamp('tweet_created_at');
+            $blueprint->timestamps();
         });
     }
 

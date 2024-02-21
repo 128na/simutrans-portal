@@ -56,27 +56,27 @@ class InvitationCodeController extends Controller
         return new UserResouce($this->loggedinUser()->fresh());
     }
 
-    public function register(User $user, InviteRequest $request): UserResouce
+    public function register(User $user, InviteRequest $inviteRequest): UserResouce
     {
         /**
-         * @var User $invitedUser
+         * @var User $model
          */
-        $invitedUser = $this->userRepository->store([
-            'name' => $request->name,
-            'email' => $request->email,
+        $model = $this->userRepository->store([
+            'name' => $inviteRequest->name,
+            'email' => $inviteRequest->email,
             'role' => config('role.user'),
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($inviteRequest->password),
             'invited_by' => $user->id,
         ]);
         // なぜかオブザーバーが発火しない
-        $invitedUser->syncRelatedData();
+        $model->syncRelatedData();
 
-        Auth::login($invitedUser);
+        Auth::login($model);
         Session::regenerate();
 
-        event(new Registered($invitedUser));
-        $user->notify(new UserInvited($invitedUser));
+        event(new Registered($model));
+        $user->notify(new UserInvited($model));
 
-        return new UserResouce($invitedUser);
+        return new UserResouce($model);
     }
 }

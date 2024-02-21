@@ -18,9 +18,9 @@ class MypageControllerTest extends TestCase
 
     public function test(): void
     {
-        $response = $this->get($this->url);
+        $testResponse = $this->get($this->url);
 
-        $response->assertOk();
+        $testResponse->assertOk();
     }
 
     public function testAny(): void

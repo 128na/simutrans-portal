@@ -16,14 +16,14 @@ class CreateArticleCategoryTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('article_category', static function (Blueprint $table): void {
-            $table->unsignedBigInteger('article_id');
-            $table->unsignedBigInteger('category_id');
-            $table->index(['article_id', 'category_id']);
-            $table->foreign('article_id')
+        Schema::create('article_category', static function (Blueprint $blueprint): void {
+            $blueprint->unsignedBigInteger('article_id');
+            $blueprint->unsignedBigInteger('category_id');
+            $blueprint->index(['article_id', 'category_id']);
+            $blueprint->foreign('article_id')
                 ->references('id')->on('articles')
                 ->onDelete('cascade');
-            $table->foreign('category_id')
+            $blueprint->foreign('category_id')
                 ->references('id')->on('categories')
                 ->onDelete('cascade');
         });
@@ -34,10 +34,10 @@ class CreateArticleCategoryTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('article_category', static function (Blueprint $table): void {
-            $table->dropForeign(['article_id']);
-            $table->dropForeign(['category_id']);
-            $table->dropIndex(['article_id', 'category_id']);
+        Schema::table('article_category', static function (Blueprint $blueprint): void {
+            $blueprint->dropForeign(['article_id']);
+            $blueprint->dropForeign(['category_id']);
+            $blueprint->dropIndex(['article_id', 'category_id']);
         });
 
         Schema::dropIfExists('article_category');

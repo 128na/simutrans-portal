@@ -28,9 +28,9 @@ class UserController extends Controller
         return '';
     }
 
-    public function update(UpdateRequest $request): UserResouce
+    public function update(UpdateRequest $updateRequest): UserResouce
     {
-        $user = $this->userService->updateUserAndProfile($this->loggedinUser(), $request);
+        $user = $this->userService->updateUserAndProfile($this->loggedinUser(), $updateRequest);
         JobUpdateRelated::dispatch();
 
         return new UserResouce($user);

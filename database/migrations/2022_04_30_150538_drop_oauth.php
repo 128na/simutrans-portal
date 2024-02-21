@@ -32,46 +32,46 @@ class DropOauth extends Migration
      */
     public function down(): void
     {
-        $this->schema->create('oauth_auth_codes', static function (Blueprint $table): void {
-            $table->string('id', 100)->primary();
-            $table->unsignedBigInteger('user_id')->index();
-            $table->uuid('client_id');
-            $table->text('scopes')->nullable();
-            $table->boolean('revoked');
-            $table->dateTime('expires_at')->nullable();
+        $this->schema->create('oauth_auth_codes', static function (Blueprint $blueprint): void {
+            $blueprint->string('id', 100)->primary();
+            $blueprint->unsignedBigInteger('user_id')->index();
+            $blueprint->uuid('client_id');
+            $blueprint->text('scopes')->nullable();
+            $blueprint->boolean('revoked');
+            $blueprint->dateTime('expires_at')->nullable();
         });
-        $this->schema->create('oauth_access_tokens', static function (Blueprint $table): void {
-            $table->string('id', 100)->primary();
-            $table->unsignedBigInteger('user_id')->nullable()->index();
-            $table->uuid('client_id');
-            $table->string('name')->nullable();
-            $table->text('scopes')->nullable();
-            $table->boolean('revoked');
-            $table->timestamps();
-            $table->dateTime('expires_at')->nullable();
+        $this->schema->create('oauth_access_tokens', static function (Blueprint $blueprint): void {
+            $blueprint->string('id', 100)->primary();
+            $blueprint->unsignedBigInteger('user_id')->nullable()->index();
+            $blueprint->uuid('client_id');
+            $blueprint->string('name')->nullable();
+            $blueprint->text('scopes')->nullable();
+            $blueprint->boolean('revoked');
+            $blueprint->timestamps();
+            $blueprint->dateTime('expires_at')->nullable();
         });
-        $this->schema->create('oauth_refresh_tokens', static function (Blueprint $table): void {
-            $table->string('id', 100)->primary();
-            $table->string('access_token_id', 100)->index();
-            $table->boolean('revoked');
-            $table->dateTime('expires_at')->nullable();
+        $this->schema->create('oauth_refresh_tokens', static function (Blueprint $blueprint): void {
+            $blueprint->string('id', 100)->primary();
+            $blueprint->string('access_token_id', 100)->index();
+            $blueprint->boolean('revoked');
+            $blueprint->dateTime('expires_at')->nullable();
         });
-        $this->schema->create('oauth_clients', static function (Blueprint $table): void {
-            $table->uuid('id')->primary();
-            $table->unsignedBigInteger('user_id')->nullable()->index();
-            $table->string('name');
-            $table->string('secret', 100)->nullable();
-            $table->string('provider')->nullable();
-            $table->text('redirect');
-            $table->boolean('personal_access_client');
-            $table->boolean('password_client');
-            $table->boolean('revoked');
-            $table->timestamps();
+        $this->schema->create('oauth_clients', static function (Blueprint $blueprint): void {
+            $blueprint->uuid('id')->primary();
+            $blueprint->unsignedBigInteger('user_id')->nullable()->index();
+            $blueprint->string('name');
+            $blueprint->string('secret', 100)->nullable();
+            $blueprint->string('provider')->nullable();
+            $blueprint->text('redirect');
+            $blueprint->boolean('personal_access_client');
+            $blueprint->boolean('password_client');
+            $blueprint->boolean('revoked');
+            $blueprint->timestamps();
         });
-        $this->schema->create('oauth_personal_access_clients', static function (Blueprint $table): void {
-            $table->bigIncrements('id');
-            $table->uuid('client_id');
-            $table->timestamps();
+        $this->schema->create('oauth_personal_access_clients', static function (Blueprint $blueprint): void {
+            $blueprint->bigIncrements('id');
+            $blueprint->uuid('client_id');
+            $blueprint->timestamps();
         });
     }
 }

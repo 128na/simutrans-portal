@@ -85,8 +85,8 @@ class AttachmentControllerTest extends ArticleTestCase
         /** @var User */
         $user = User::factory()->create();
 
-        $file = $this->createFromFile(UploadedFile::fake()->image('file.png', 1), $user->id);
-        $url = '/api/mypage/attachments/'.$file->id;
+        $attachment = $this->createFromFile(UploadedFile::fake()->image('file.png', 1), $user->id);
+        $url = '/api/mypage/attachments/'.$attachment->id;
         $res = $this->deleteJson($url);
         $res->assertUnauthorized();
 
@@ -98,22 +98,22 @@ class AttachmentControllerTest extends ArticleTestCase
         $res = $this->deleteJson($url);
         $res->assertStatus(403);
         $this->assertDatabaseHas('attachments', [
-            'id' => $file->id,
+            'id' => $attachment->id,
         ]);
         $this->assertDatabaseHas('attachments', [
             'id' => $other_file->id,
         ]);
 
-        $url = '/api/mypage/attachments/'.$file->id;
+        $url = '/api/mypage/attachments/'.$attachment->id;
         $res = $this->deleteJson($url);
         $res->assertOK();
 
-        $this->assertNull(Attachment::find($file->id));
+        $this->assertNull(Attachment::find($attachment->id));
 
         // IDのみだとなぜか失敗する
         $this->assertDatabaseMissing('attachments', [
-            'id' => $file->id,
-            'user_id' => $file->user_if,
+            'id' => $attachment->id,
+            'user_id' => $attachment->user_if,
             // 'attachmentable_id' => null,
             // 'attachmentable_type' => null,
             // 'original_name' => 'file.png',

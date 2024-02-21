@@ -13,8 +13,8 @@ class AddDeletedAtColumnInArticlesTable extends Migration
      */
     public function up(): void
     {
-        Schema::table('articles', static function (Blueprint $table): void {
-            $table->softDeletes();
+        Schema::table('articles', static function (Blueprint $blueprint): void {
+            $blueprint->softDeletes();
         });
     }
 
@@ -23,8 +23,8 @@ class AddDeletedAtColumnInArticlesTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('articles', static function (Blueprint $table): void {
-            $table->dropSoftDeletes();
+        Schema::table('articles', static function (Blueprint $blueprint): void {
+            $blueprint->dropSoftDeletes();
         });
     }
 }

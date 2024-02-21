@@ -23,8 +23,8 @@ class FeedTest extends ArticleTestCase
      */
     public function testFeed(string $url): void
     {
-        $response = $this->get($url);
-        $response->assertOk();
+        $testResponse = $this->get($url);
+        $testResponse->assertOk();
     }
 
     public static function dataFeed(): \Generator

@@ -16,15 +16,15 @@ class CreateAttachmentsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('attachments', static function (Blueprint $table): void {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('attachmentable_id')->nullable()->comment('添付先ID');
-            $table->string('attachmentable_type', 255)->nullable()->comment('添付先クラス名');
-            $table->string('original_name', 255)->comment('オリジナルファイル名');
-            $table->string('path', 255)->comment('保存先パス');
-            $table->timestamps();
-            $table->foreign('user_id')
+        Schema::create('attachments', static function (Blueprint $blueprint): void {
+            $blueprint->bigIncrements('id');
+            $blueprint->unsignedBigInteger('user_id');
+            $blueprint->unsignedBigInteger('attachmentable_id')->nullable()->comment('添付先ID');
+            $blueprint->string('attachmentable_type', 255)->nullable()->comment('添付先クラス名');
+            $blueprint->string('original_name', 255)->comment('オリジナルファイル名');
+            $blueprint->string('path', 255)->comment('保存先パス');
+            $blueprint->timestamps();
+            $blueprint->foreign('user_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
         });
@@ -35,8 +35,8 @@ class CreateAttachmentsTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('attachments', static function (Blueprint $table): void {
-            $table->dropForeign(['user_id']);
+        Schema::table('attachments', static function (Blueprint $blueprint): void {
+            $blueprint->dropForeign(['user_id']);
         });
 
         Schema::dropIfExists('attachments');

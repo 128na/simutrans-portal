@@ -13,14 +13,14 @@ class CreateTweetLogSummariesTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('tweet_log_summaries', static function (Blueprint $table): void {
-            $table->unsignedBigInteger('article_id')->primary();
-            $table->unsignedBigInteger('total_retweet_count')->default(0);
-            $table->unsignedBigInteger('total_reply_count')->default(0);
-            $table->unsignedBigInteger('total_like_count')->default(0);
-            $table->unsignedBigInteger('total_quote_count')->default(0);
-            $table->timestamps();
-            $table->foreign('article_id')->references('id')->on('articles')->constrained()->onDelete('cascade');
+        Schema::create('tweet_log_summaries', static function (Blueprint $blueprint): void {
+            $blueprint->unsignedBigInteger('article_id')->primary();
+            $blueprint->unsignedBigInteger('total_retweet_count')->default(0);
+            $blueprint->unsignedBigInteger('total_reply_count')->default(0);
+            $blueprint->unsignedBigInteger('total_like_count')->default(0);
+            $blueprint->unsignedBigInteger('total_quote_count')->default(0);
+            $blueprint->timestamps();
+            $blueprint->foreign('article_id')->references('id')->on('articles')->constrained()->onDelete('cascade');
         });
     }
 

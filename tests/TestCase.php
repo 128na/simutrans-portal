@@ -33,8 +33,8 @@ abstract class TestCase extends BaseTestCase
         $disk = Storage::disk('public');
         User::with('myAttachments')->get()->map(static function (User $user) use ($disk): void {
             $user->myAttachments
-                ->filter(static fn (Attachment $a) => Str::startsWith($a->path, 'user/'))
-                ->map(static fn (Attachment $a) => $a->delete());
+                ->filter(static fn (Attachment $attachment) => Str::startsWith($attachment->path, 'user/'))
+                ->map(static fn (Attachment $attachment) => $attachment->delete());
             $dir = 'user/'.$user->id;
             if (count($disk->files($dir)) === 0) {
                 $disk->deleteDirectory($dir);

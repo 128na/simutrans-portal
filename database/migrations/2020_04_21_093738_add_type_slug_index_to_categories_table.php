@@ -13,8 +13,8 @@ class AddTypeSlugIndexToCategoriesTable extends Migration
      */
     public function up(): void
     {
-        Schema::table('categories', static function (Blueprint $table): void {
-            $table->unique(['type', 'slug']);
+        Schema::table('categories', static function (Blueprint $blueprint): void {
+            $blueprint->unique(['type', 'slug']);
         });
     }
 
@@ -23,8 +23,8 @@ class AddTypeSlugIndexToCategoriesTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('categories', static function (Blueprint $table): void {
-            $table->dropUnique(['type', 'slug']);
+        Schema::table('categories', static function (Blueprint $blueprint): void {
+            $blueprint->dropUnique(['type', 'slug']);
         });
     }
 }

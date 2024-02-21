@@ -19,9 +19,9 @@ class TagRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(Tag $model)
+    public function __construct(Tag $tag)
     {
-        $this->model = $model;
+        $this->model = $tag;
     }
 
     public function getAllTags(): Collection

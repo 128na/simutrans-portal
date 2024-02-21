@@ -22,15 +22,15 @@ class DatExtractorTest extends UnitTestCase
 
     public function testIsTarget(): void
     {
-        $service = $this->getSUT();
+        $sUT = $this->getSUT();
 
-        $this->assertFalse($service->isTarget('dummy'));
-        $this->assertTrue($service->isTarget('dummy.dat'));
+        $this->assertFalse($sUT->isTarget('dummy'));
+        $this->assertTrue($sUT->isTarget('dummy.dat'));
     }
 
     public function testExtract(): void
     {
-        $service = $this->getSUT();
+        $sUT = $this->getSUT();
 
         $data = 'obj=building
 name=hoge
@@ -41,7 +41,7 @@ name=fuga
 type=bar
 ';
 
-        $result = $service->extract($data);
+        $result = $sUT->extract($data);
         $this->assertEquals(['hoge', 'fuga'], $result);
     }
 }

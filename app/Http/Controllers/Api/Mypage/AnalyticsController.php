@@ -15,10 +15,10 @@ class AnalyticsController extends Controller
     {
     }
 
-    public function index(SearchRequest $request): ArticleAnalyticsResource
+    public function index(SearchRequest $searchRequest): ArticleAnalyticsResource
     {
         return new ArticleAnalyticsResource(
-            $this->articleAnalyticsService->findArticles($this->loggedinUser(), $request)
+            $this->articleAnalyticsService->findArticles($this->loggedinUser(), $searchRequest)
         );
     }
 }

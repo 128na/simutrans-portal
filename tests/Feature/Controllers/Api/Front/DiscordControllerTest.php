@@ -15,11 +15,11 @@ class DiscordControllerTest extends TestCase
 {
     public function test_create(): void
     {
-        $this->mock(RecaptchaService::class, static function (MockInterface $m): void {
-            $m->shouldReceive('assessment')->once()->andReturnNull();
+        $this->mock(RecaptchaService::class, static function (MockInterface $mock): void {
+            $mock->shouldReceive('assessment')->once()->andReturnNull();
         });
-        $this->mock(InviteService::class, static function (MockInterface $m): void {
-            $m->shouldReceive('create')->once()->andReturn('dummy');
+        $this->mock(InviteService::class, static function (MockInterface $mock): void {
+            $mock->shouldReceive('create')->once()->andReturn('dummy');
         });
 
         $url = '/api/front/invite-simutrans-interact-meeting';
@@ -31,11 +31,11 @@ class DiscordControllerTest extends TestCase
 
     public function test_create_discordエラー時は400レスポンス(): void
     {
-        $this->mock(RecaptchaService::class, static function (MockInterface $m): void {
-            $m->shouldReceive('assessment')->once()->andReturnNull();
+        $this->mock(RecaptchaService::class, static function (MockInterface $mock): void {
+            $mock->shouldReceive('assessment')->once()->andReturnNull();
         });
-        $this->mock(InviteService::class, static function (MockInterface $m): void {
-            $m->shouldReceive('create')->once()->andThrow(new Error('dummy'));
+        $this->mock(InviteService::class, static function (MockInterface $mock): void {
+            $mock->shouldReceive('create')->once()->andThrow(new Error('dummy'));
         });
         $url = '/api/front/invite-simutrans-interact-meeting';
         $res = $this->postJson($url);
@@ -46,11 +46,11 @@ class DiscordControllerTest extends TestCase
 
     public function test_create_recaptchaエラー時は400レスポンス(): void
     {
-        $this->mock(RecaptchaService::class, static function (MockInterface $m): void {
-            $m->shouldReceive('assessment')->once()->andThrow(new RecaptchaException('dummy'));
+        $this->mock(RecaptchaService::class, static function (MockInterface $mock): void {
+            $mock->shouldReceive('assessment')->once()->andThrow(new RecaptchaException('dummy'));
         });
-        $this->mock(InviteService::class, static function (MockInterface $m): void {
-            $m->shouldReceive('create')->never();
+        $this->mock(InviteService::class, static function (MockInterface $mock): void {
+            $mock->shouldReceive('create')->never();
         });
         $url = '/api/front/invite-simutrans-interact-meeting';
         $res = $this->postJson($url);

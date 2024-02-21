@@ -21,10 +21,10 @@ class TwitterChannel extends BaseChannel
     ) {
     }
 
-    public function send(Article $notifiable, SendArticleNotification $notification): void
+    public function send(Article $article, SendArticleNotification $sendArticleNotification): void
     {
         try {
-            $data = ['text' => $this->buildMessage($notifiable, $notification)];
+            $data = ['text' => $this->buildMessage($article, $sendArticleNotification)];
             $result = $this->twitterV2Api->post('tweets', $data, true);
             logger('tweet', [$result]);
         } catch (Throwable $throwable) {
@@ -32,12 +32,12 @@ class TwitterChannel extends BaseChannel
         }
     }
 
-    private function buildMessage(Article $notifiable, SendArticleNotification $notification): string
+    private function buildMessage(Article $article, SendArticleNotification $sendArticleNotification): string
     {
         return match (true) {
-            $notification instanceof SendArticlePublished => $this->messageGenerator->buildPublishedMessage($notifiable),
-            $notification instanceof SendArticleUpdated => $this->messageGenerator->buildUpdatedMessage($notifiable),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', $notification::class)),
+            $sendArticleNotification instanceof SendArticlePublished => $this->messageGenerator->buildPublishedMessage($article),
+            $sendArticleNotification instanceof SendArticleUpdated => $this->messageGenerator->buildUpdatedMessage($article),
+            default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendArticleNotification::class)),
         };
     }
 

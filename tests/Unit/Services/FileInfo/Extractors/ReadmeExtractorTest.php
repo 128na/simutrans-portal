@@ -22,19 +22,19 @@ class ReadmeExtractorTest extends UnitTestCase
 
     public function testIsTarget(): void
     {
-        $service = $this->getSUT();
+        $sUT = $this->getSUT();
 
-        $this->assertFalse($service->isTarget('dummy.txt'));
-        $this->assertTrue($service->isTarget('readme.txt'));
+        $this->assertFalse($sUT->isTarget('dummy.txt'));
+        $this->assertTrue($sUT->isTarget('readme.txt'));
     }
 
     public function testExtract(): void
     {
-        $service = $this->getSUT();
+        $sUT = $this->getSUT();
 
         $data = 'hoge';
 
-        $result = $service->extract($data);
+        $result = $sUT->extract($data);
         $this->assertEquals(['hoge'], $result);
     }
 }

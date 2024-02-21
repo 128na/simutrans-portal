@@ -13,13 +13,13 @@ class AddPublishedAtColumnInArticlesTable extends Migration
      */
     public function up(): void
     {
-        Schema::table('articles', static function (Blueprint $table): void {
-            $table->timestamp('published_at')->nullable()->after('status')->comment('投稿日時');
-            $table->index(['published_at']);
-            $table->index(['status', 'published_at']);
-            $table->timestamp('modified_at')->nullable()->after('published_at')->comment('更新日時');
-            $table->index(['modified_at']);
-            $table->index(['status', 'modified_at']);
+        Schema::table('articles', static function (Blueprint $blueprint): void {
+            $blueprint->timestamp('published_at')->nullable()->after('status')->comment('投稿日時');
+            $blueprint->index(['published_at']);
+            $blueprint->index(['status', 'published_at']);
+            $blueprint->timestamp('modified_at')->nullable()->after('published_at')->comment('更新日時');
+            $blueprint->index(['modified_at']);
+            $blueprint->index(['status', 'modified_at']);
         });
     }
 
@@ -28,13 +28,13 @@ class AddPublishedAtColumnInArticlesTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('articles', static function (Blueprint $table): void {
-            $table->dropIndex(['published_at']);
-            $table->dropIndex(['status', 'published_at']);
-            $table->dropColumn('published_at');
-            $table->dropIndex(['modified_at']);
-            $table->dropIndex(['status', 'modified_at']);
-            $table->dropColumn('modified_at');
+        Schema::table('articles', static function (Blueprint $blueprint): void {
+            $blueprint->dropIndex(['published_at']);
+            $blueprint->dropIndex(['status', 'published_at']);
+            $blueprint->dropColumn('published_at');
+            $blueprint->dropIndex(['modified_at']);
+            $blueprint->dropIndex(['status', 'modified_at']);
+            $blueprint->dropColumn('modified_at');
         });
     }
 }

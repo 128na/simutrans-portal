@@ -21,16 +21,16 @@ class BulkZipServiceTest extends UnitTestCase
     public function test(): void
     {
         Bus::fake();
-        $this->mock(BulkZipRepository::class, static function (MockInterface $m): void {
-            $m->shouldReceive('findByBulkZippable')->andReturn(null);
-            $m->shouldReceive('storeByBulkZippable')->andReturn(new BulkZip());
+        $this->mock(BulkZipRepository::class, static function (MockInterface $mock): void {
+            $mock->shouldReceive('findByBulkZippable')->andReturn(null);
+            $mock->shouldReceive('storeByBulkZippable')->andReturn(new BulkZip());
         });
         /**
          * @var BulkZipService
          */
         $service = app(BulkZipService::class);
-        $model = new User();
-        $res = $service->findOrCreateAndDispatch($model);
+        $user = new User();
+        $res = $service->findOrCreateAndDispatch($user);
         $this->assertInstanceOf(BulkZip::class, $res);
 
         Bus::assertDispatched(JobCreateBulkZip::class);
@@ -41,22 +41,22 @@ class BulkZipServiceTest extends UnitTestCase
     {
         $this->expectException(TypeError::class);
         $service = app(BulkZipService::class);
-        $model = new Attachment();
-        $service->findOrCreateAndDispatch($model);
+        $attachment = new Attachment();
+        $service->findOrCreateAndDispatch($attachment);
     }
 
     public function test作成済みならディスパッチしない(): void
     {
         Bus::fake();
-        $this->mock(BulkZipRepository::class, static function (MockInterface $m): void {
-            $m->shouldReceive('findByBulkZippable')->andReturn(new BulkZip());
+        $this->mock(BulkZipRepository::class, static function (MockInterface $mock): void {
+            $mock->shouldReceive('findByBulkZippable')->andReturn(new BulkZip());
         });
         /**
          * @var BulkZipService
          */
         $service = app(BulkZipService::class);
-        $model = new User();
-        $res = $service->findOrCreateAndDispatch($model);
+        $user = new User();
+        $res = $service->findOrCreateAndDispatch($user);
         $this->assertInstanceOf(BulkZip::class, $res);
 
         Bus::assertNotDispatched(JobCreateBulkZip::class);

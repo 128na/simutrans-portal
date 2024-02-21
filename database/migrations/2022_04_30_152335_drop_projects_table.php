@@ -29,20 +29,20 @@ class DropProjectsTable extends Migration
      */
     public function down(): void
     {
-        $this->schema->create('projects', static function (Blueprint $table): void {
-            $table->id();
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('name')->comment('プロジェクト名');
-            $table->text('redirect');
-            $table->text('credential')->comment('認証情報');
-            $table->timestamps();
+        $this->schema->create('projects', static function (Blueprint $blueprint): void {
+            $blueprint->id();
+            $blueprint->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $blueprint->string('name')->comment('プロジェクト名');
+            $blueprint->text('redirect');
+            $blueprint->text('credential')->comment('認証情報');
+            $blueprint->timestamps();
         });
-        $this->schema->create('project_users', static function (Blueprint $table): void {
-            $table->id();
-            $table->foreignId('project_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('uid')->comment('Firebaseで付与されるUID');
-            $table->timestamps();
+        $this->schema->create('project_users', static function (Blueprint $blueprint): void {
+            $blueprint->id();
+            $blueprint->foreignId('project_id')->constrained()->onDelete('cascade');
+            $blueprint->foreignId('user_id')->constrained()->onDelete('cascade');
+            $blueprint->string('uid')->comment('Firebaseで付与されるUID');
+            $blueprint->timestamps();
         });
     }
 }

@@ -34,9 +34,9 @@ class UserAddonCountRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(UserAddonCount $model)
+    public function __construct(UserAddonCount $userAddonCount)
     {
-        $this->model = $model;
+        $this->model = $userAddonCount;
     }
 
     /**

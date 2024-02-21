@@ -22,12 +22,12 @@ class ArticleAnalyticsService extends Service
     /**
      * @return Collection<int, Article>
      */
-    public function findArticles(User $user, SearchRequest $request): Collection
+    public function findArticles(User $user, SearchRequest $searchRequest): Collection
     {
-        $startDate = new Carbon($request->start_date);
-        $endDate = new Carbon($request->end_date);
-        $type = $request->type;
-        $ids = $request->ids;
+        $startDate = new Carbon($searchRequest->start_date);
+        $endDate = new Carbon($searchRequest->end_date);
+        $type = $searchRequest->type;
+        $ids = $searchRequest->ids;
 
         $periodQuery = $this->getPeriodQuery($type, $startDate, $endDate);
 

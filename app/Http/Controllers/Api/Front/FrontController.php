@@ -38,96 +38,96 @@ class FrontController extends Controller
         return new ArticleResource($this->articleService->loadArticle($article));
     }
 
-    public function user(string $userIdOrNickname, ListRequest $request): AnonymousResourceCollection
+    public function user(string $userIdOrNickname, ListRequest $listRequest): AnonymousResourceCollection
     {
         $user = is_numeric($userIdOrNickname)
             ? User::findOrFail($userIdOrNickname)
             : User::where('nickname', $userIdOrNickname)->firstOrFail();
 
-        $order = $request->string('order', 'modified_at')->toString();
+        $order = $listRequest->string('order', 'modified_at')->toString();
         $articles = $this->articleService->paginateByUser($user, $order);
 
         return ArticleResource::collection($articles)
             ->additional($this->frontDescriptionService->user($user));
     }
 
-    public function pages(ListRequest $request): AnonymousResourceCollection
+    public function pages(ListRequest $listRequest): AnonymousResourceCollection
     {
-        $order = $request->string('order', 'modified_at')->toString();
-        $articles = $this->articleService->paginatePages(false, $order);
+        $order = $listRequest->string('order', 'modified_at')->toString();
+        $paginator = $this->articleService->paginatePages(false, $order);
 
-        return ArticleResource::collection($articles)
+        return ArticleResource::collection($paginator)
             ->additional($this->frontDescriptionService->page());
     }
 
-    public function announces(ListRequest $request): AnonymousResourceCollection
+    public function announces(ListRequest $listRequest): AnonymousResourceCollection
     {
-        $order = $request->string('order', 'modified_at')->toString();
-        $articles = $this->articleService->paginateAnnouces(false, $order);
+        $order = $listRequest->string('order', 'modified_at')->toString();
+        $paginator = $this->articleService->paginateAnnouces(false, $order);
 
-        return ArticleResource::collection($articles)
+        return ArticleResource::collection($paginator)
             ->additional($this->frontDescriptionService->announces());
     }
 
     public function ranking(): AnonymousResourceCollection
     {
-        $articles = $this->articleService->paginateRanking();
+        $paginator = $this->articleService->paginateRanking();
 
-        return ArticleResource::collection($articles)
+        return ArticleResource::collection($paginator)
             ->additional($this->frontDescriptionService->ranking());
     }
 
-    public function category(string $type, string $slug, ListRequest $request): AnonymousResourceCollection
+    public function category(string $type, string $slug, ListRequest $listRequest): AnonymousResourceCollection
     {
-        $order = $request->string('order', 'modified_at')->toString();
-        $articles = $this->articleService->paginateByCategory($type, $slug, false, $order);
+        $order = $listRequest->string('order', 'modified_at')->toString();
+        $paginator = $this->articleService->paginateByCategory($type, $slug, false, $order);
 
-        return ArticleResource::collection($articles)
+        return ArticleResource::collection($paginator)
             ->additional($this->frontDescriptionService->category($type, $slug));
     }
 
-    public function categoryPakAddon(string $pakSlug, string $addonSlug, ListRequest $request): AnonymousResourceCollection
+    public function categoryPakAddon(string $pakSlug, string $addonSlug, ListRequest $listRequest): AnonymousResourceCollection
     {
-        $order = $request->string('order', 'modified_at')->toString();
-        $articles = $this->articleService->paginateByPakAddonCategory($pakSlug, $addonSlug, $order);
+        $order = $listRequest->string('order', 'modified_at')->toString();
+        $lengthAwarePaginator = $this->articleService->paginateByPakAddonCategory($pakSlug, $addonSlug, $order);
 
-        return ArticleResource::collection($articles)
+        return ArticleResource::collection($lengthAwarePaginator)
             ->additional($this->frontDescriptionService->categoryPakAddon($pakSlug, $addonSlug));
     }
 
-    public function categoryPakNoneAddon(string $pakSlug, ListRequest $request): AnonymousResourceCollection
+    public function categoryPakNoneAddon(string $pakSlug, ListRequest $listRequest): AnonymousResourceCollection
     {
-        $order = $request->string('order', 'modified_at')->toString();
-        $articles = $this->articleService->paginateByPakNoneAddonCategory($pakSlug, $order);
+        $order = $listRequest->string('order', 'modified_at')->toString();
+        $lengthAwarePaginator = $this->articleService->paginateByPakNoneAddonCategory($pakSlug, $order);
 
-        return ArticleResource::collection($articles)
+        return ArticleResource::collection($lengthAwarePaginator)
             ->additional($this->frontDescriptionService->categoryPakNoneAddon($pakSlug));
     }
 
-    public function tag(Tag $tag, ListRequest $request): AnonymousResourceCollection
+    public function tag(Tag $tag, ListRequest $listRequest): AnonymousResourceCollection
     {
-        $order = $request->string('order', 'modified_at')->toString();
-        $articles = $this->articleService->paginateByTag($tag, $order);
+        $order = $listRequest->string('order', 'modified_at')->toString();
+        $lengthAwarePaginator = $this->articleService->paginateByTag($tag, $order);
 
-        return ArticleResource::collection($articles)
+        return ArticleResource::collection($lengthAwarePaginator)
             ->additional($this->frontDescriptionService->tag($tag));
     }
 
-    public function search(SearchRequest $request): AnonymousResourceCollection
+    public function search(SearchRequest $searchRequest): AnonymousResourceCollection
     {
-        $word = $request->string('word', '')->toString();
-        $order = $request->string('order', 'modified_at')->toString();
+        $word = $searchRequest->string('word', '')->toString();
+        $order = $searchRequest->string('order', 'modified_at')->toString();
 
-        $articles = $this->articleService->paginateBySearch($word, $order);
+        $lengthAwarePaginator = $this->articleService->paginateBySearch($word, $order);
 
-        return ArticleResource::collection($articles)
+        return ArticleResource::collection($lengthAwarePaginator)
             ->additional($this->frontDescriptionService->search($word));
     }
 
     public function tags(): AnonymousResourceCollection
     {
-        $tags = $this->tagService->getAllTags();
+        $allTags = $this->tagService->getAllTags();
 
-        return TagResource::collection($tags);
+        return TagResource::collection($allTags);
     }
 }

@@ -16,16 +16,16 @@ class CreateArticlesTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('articles', static function (Blueprint $table): void {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->string('title', 255)->comment('タイトル');
-            $table->string('slug', 255)->unique()->comment('スラッグ');
-            $table->string('post_type', 255)->comment('投稿形式');
-            $table->json('contents')->comment('コンテンツ');
-            $table->string('status', 255)->comment('公開状態');
-            $table->timestamps();
-            $table->foreign('user_id')
+        Schema::create('articles', static function (Blueprint $blueprint): void {
+            $blueprint->bigIncrements('id');
+            $blueprint->unsignedBigInteger('user_id');
+            $blueprint->string('title', 255)->comment('タイトル');
+            $blueprint->string('slug', 255)->unique()->comment('スラッグ');
+            $blueprint->string('post_type', 255)->comment('投稿形式');
+            $blueprint->json('contents')->comment('コンテンツ');
+            $blueprint->string('status', 255)->comment('公開状態');
+            $blueprint->timestamps();
+            $blueprint->foreign('user_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
         });
@@ -36,8 +36,8 @@ class CreateArticlesTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('articles', static function (Blueprint $table): void {
-            $table->dropForeign(['user_id']);
+        Schema::table('articles', static function (Blueprint $blueprint): void {
+            $blueprint->dropForeign(['user_id']);
         });
         Schema::dropIfExists('articles');
     }

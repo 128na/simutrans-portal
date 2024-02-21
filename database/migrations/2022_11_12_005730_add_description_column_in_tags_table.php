@@ -13,14 +13,14 @@ class AddDescriptionColumnInTagsTable extends Migration
      */
     public function up(): void
     {
-        Schema::table('tags', static function (Blueprint $table): void {
-            $table->text('description')->nullable()->after('name')->comment('説明');
-            $table->boolean('editable')->after('description')->default(true)->comment('1:編集可,0:編集不可');
-            $table->unsignedBigInteger('created_by')->nullable()->after('editable');
-            $table->unsignedBigInteger('last_modified_by')->nullable()->after('created_by');
-            $table->timestamp('last_modified_at')->nullable()->after('last_modified_by');
-            $table->foreign('created_by')->nullOnDelete()->references('id')->on('users');
-            $table->foreign('last_modified_by')->nullOnDelete()->references('id')->on('users');
+        Schema::table('tags', static function (Blueprint $blueprint): void {
+            $blueprint->text('description')->nullable()->after('name')->comment('説明');
+            $blueprint->boolean('editable')->after('description')->default(true)->comment('1:編集可,0:編集不可');
+            $blueprint->unsignedBigInteger('created_by')->nullable()->after('editable');
+            $blueprint->unsignedBigInteger('last_modified_by')->nullable()->after('created_by');
+            $blueprint->timestamp('last_modified_at')->nullable()->after('last_modified_by');
+            $blueprint->foreign('created_by')->nullOnDelete()->references('id')->on('users');
+            $blueprint->foreign('last_modified_by')->nullOnDelete()->references('id')->on('users');
         });
     }
 
@@ -29,10 +29,10 @@ class AddDescriptionColumnInTagsTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('tags', static function (Blueprint $table): void {
-            $table->dropForeign(['created_by']);
-            $table->dropForeign(['last_modified_by']);
-            $table->dropColumn([
+        Schema::table('tags', static function (Blueprint $blueprint): void {
+            $blueprint->dropForeign(['created_by']);
+            $blueprint->dropForeign(['last_modified_by']);
+            $blueprint->dropColumn([
                 'description',
                 'editable',
                 'created_by',

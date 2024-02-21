@@ -22,13 +22,13 @@ class ShouldProcessTest extends UnitTestCase
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, static function (MockInterface $m): void {
-            $m->allows('getAttribute')
+        $mock = $this->mock(Article::class, static function (MockInterface $mock): void {
+            $mock->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy']));
         });
 
-        $actual = $this->getSUT()->shouldProcess($article);
+        $actual = $this->getSUT()->shouldProcess($mock);
 
         $this->assertTrue($actual);
     }
@@ -38,13 +38,13 @@ class ShouldProcessTest extends UnitTestCase
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, static function (MockInterface $m): void {
-            $m->allows('getAttribute')
+        $mock = $this->mock(Article::class, static function (MockInterface $mock): void {
+            $mock->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy', 'exclude_link_check' => true]));
         });
 
-        $actual = $this->getSUT()->shouldProcess($article);
+        $actual = $this->getSUT()->shouldProcess($mock);
 
         $this->assertFalse($actual);
     }
@@ -54,13 +54,13 @@ class ShouldProcessTest extends UnitTestCase
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, static function (MockInterface $m): void {
-            $m->allows('getAttribute')
+        $mock = $this->mock(Article::class, static function (MockInterface $mock): void {
+            $mock->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'https://getuploader.com/dummy']));
         });
 
-        $actual = $this->getSUT()->shouldProcess($article);
+        $actual = $this->getSUT()->shouldProcess($mock);
 
         $this->assertFalse($actual);
     }

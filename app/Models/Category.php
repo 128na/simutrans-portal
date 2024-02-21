@@ -50,66 +50,66 @@ class Category extends Model
     | スコープ
     |--------------------------------------------------------------------------
      */
-    public function scopeType(Builder $query, string $type): void
+    public function scopeType(Builder $builder, string $type): void
     {
-        $query->where('type', $type);
+        $builder->where('type', $type);
     }
 
     /**
-     * @param  Builder|Category  $query
+     * @param  Builder|Category  $builder
      */
-    public function scopePost(Builder $query): void
+    public function scopePost(Builder $builder): void
     {
-        $query->type(config('category.type.post'));
+        $builder->type(config('category.type.post'));
     }
 
     /**
-     * @param  Builder|Category  $query
+     * @param  Builder|Category  $builder
      */
-    public function scopePak(Builder $query): void
+    public function scopePak(Builder $builder): void
     {
-        $query->type(config('category.type.pak'));
+        $builder->type(config('category.type.pak'));
     }
 
     /**
-     * @param  Builder|Category  $query
+     * @param  Builder|Category  $builder
      */
-    public function scopeAddon(Builder $query): void
+    public function scopeAddon(Builder $builder): void
     {
-        $query->type(config('category.type.addon'));
+        $builder->type(config('category.type.addon'));
     }
 
     /**
-     * @param  Builder|Category  $query
+     * @param  Builder|Category  $builder
      */
-    public function scopePak128Position(Builder $query): void
+    public function scopePak128Position(Builder $builder): void
     {
-        $query->type(config('category.type.pak128_position'));
+        $builder->type(config('category.type.pak128_position'));
     }
 
     /**
-     * @param  Builder|Category  $query
+     * @param  Builder|Category  $builder
      */
-    public function scopeLicense(Builder $query): void
+    public function scopeLicense(Builder $builder): void
     {
-        $query->type(config('category.type.license'));
+        $builder->type(config('category.type.license'));
     }
 
     /**
-     * @param  Builder|Category  $query
+     * @param  Builder|Category  $builder
      */
-    public function scopePage(Builder $query): void
+    public function scopePage(Builder $builder): void
     {
-        $query->type(config('category.type.page'));
+        $builder->type(config('category.type.page'));
     }
 
     /**
-     * @param  Builder|Category  $query
+     * @param  Builder|Category  $builder
      */
-    public function scopeForUser(Builder $query, User $user): void
+    public function scopeForUser(Builder $builder, User $user): void
     {
         if (! $user->isAdmin()) {
-            $query->where('need_admin', 0);
+            $builder->where('need_admin', 0);
         }
     }
 }

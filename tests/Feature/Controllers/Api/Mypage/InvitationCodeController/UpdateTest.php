@@ -15,11 +15,11 @@ class UpdateTest extends TestCase
 
         $this->assertDatabaseHas('users', ['id' => $this->user->id, 'invitation_code' => null]);
 
-        $response = $this->postJson('/api/mypage/invitation_code');
-        $response->assertOk();
+        $testResponse = $this->postJson('/api/mypage/invitation_code');
+        $testResponse->assertOk();
 
         $this->assertDatabaseMissing('users', ['id' => $this->user->id, 'invitation_code' => null]);
-        $this->assertNotNull($response->json('data.invitation_url'));
+        $this->assertNotNull($testResponse->json('data.invitation_url'));
     }
 
     public function test再生成(): void
@@ -30,9 +30,9 @@ class UpdateTest extends TestCase
 
         $this->actingAs($this->user);
 
-        $response = $this->postJson('/api/mypage/invitation_code');
-        $response->assertOk();
+        $testResponse = $this->postJson('/api/mypage/invitation_code');
+        $testResponse->assertOk();
         $this->assertDatabaseMissing('users', ['id' => $this->user->id, 'invitation_code' => $oldUuid]);
-        $this->assertNotNull($response->json('data.invitation_url'));
+        $this->assertNotNull($testResponse->json('data.invitation_url'));
     }
 }

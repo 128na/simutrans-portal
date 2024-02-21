@@ -23,7 +23,7 @@ class ZipManager extends Service
      */
     public function __construct(
         private readonly ZipArchive $zipArchive,
-        private readonly Filesystem $disk,
+        private readonly Filesystem $filesystem,
         private readonly array $decorators
     ) {
     }
@@ -35,7 +35,7 @@ class ZipManager extends Service
 
     private function isZipFile(string $filepath): bool
     {
-        $mime = $this->disk->mimeType($filepath);
+        $mime = $this->filesystem->mimeType($filepath);
 
         return $mime === 'application/zip';
     }
@@ -126,8 +126,8 @@ class ZipManager extends Service
             throw new ZipErrorException('tmpfile faild');
         }
 
-        foreach ($contents as $rows) {
-            foreach ($rows as $row) {
+        foreach ($contents as $content) {
+            foreach ($content as $row) {
                 if (is_string($row)) {
                     $row = [$row];
                 }
@@ -137,16 +137,16 @@ class ZipManager extends Service
         }
 
         $filepath = $this->randName('bulk_zip/', '.csv');
-        $this->disk->put($filepath, $csv);
+        $this->filesystem->put($filepath, $csv);
         fclose($csv);
 
         $this->addFile($filepath, 'contents.csv');
-        $this->disk->delete($filepath);
+        $this->filesystem->delete($filepath);
     }
 
     private function open(): void
     {
-        $result = $this->zipArchive->open($this->disk->path($this->filepath), ZipArchive::CREATE);
+        $result = $this->zipArchive->open($this->filesystem->path($this->filepath), ZipArchive::CREATE);
         if ($result !== true) {
             throw new ZipErrorException('open faild: '.$this->filepath, $result);
         }
@@ -155,7 +155,7 @@ class ZipManager extends Service
     private function addFile(string $filepath, string $filenameInZip = ''): void
     {
         $this->open();
-        $path = $this->disk->path($filepath);
+        $path = $this->filesystem->path($filepath);
         $result = $this->zipArchive->addFile($path, $filenameInZip);
         $this->close();
 
@@ -167,28 +167,28 @@ class ZipManager extends Service
     private function mergeZip(string $filepath, string $filenameInZip = ''): void
     {
         $basedir = str_replace(basename($filenameInZip), '', $filenameInZip);
-        $path = $this->disk->path($filepath);
-        $z = new ZipArchive();
+        $path = $this->filesystem->path($filepath);
+        $zipArchive = new ZipArchive();
         try {
-            $z->open($path);
-            for ($i = 0; $i < $z->numFiles; $i++) {
-                $name = $z->getNameIndex($i);
+            $zipArchive->open($path);
+            for ($i = 0; $i < $zipArchive->numFiles; $i++) {
+                $name = $zipArchive->getNameIndex($i);
                 if ($name === false) {
                     throw new ZipErrorException('getNameIndex faild: '.$name);
                 }
 
-                $rc = $z->getStream($name);
+                $rc = $zipArchive->getStream($name);
                 if ($rc === false) {
                     throw new ZipErrorException('getStream faild: '.$name);
                 }
 
                 $randName = $this->randName();
-                $this->disk->put($randName, $rc);
+                $this->filesystem->put($randName, $rc);
                 $this->addFile($randName, sprintf('%s/%s', $basedir, $name));
-                $this->disk->delete($randName);
+                $this->filesystem->delete($randName);
             }
 
-            $z->close();
+            $zipArchive->close();
         } catch (Throwable $throwable) {
             report($throwable);
         }

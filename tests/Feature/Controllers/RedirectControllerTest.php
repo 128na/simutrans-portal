@@ -15,13 +15,13 @@ class RedirectControllerTest extends TestCase
             'from' => '/foo',
             'to' => '/bar',
         ]);
-        $response = $this->get('/foo');
-        $response->assertRedirect('/bar');
+        $testResponse = $this->get('/foo');
+        $testResponse->assertRedirect('/bar');
     }
 
     public function test404(): void
     {
-        $response = $this->get('/foo');
-        $response->assertNotFound();
+        $testResponse = $this->get('/foo');
+        $testResponse->assertNotFound();
     }
 }

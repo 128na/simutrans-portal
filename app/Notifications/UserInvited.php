@@ -19,7 +19,7 @@ class UserInvited extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(private User $invited)
+    public function __construct(private User $user)
     {
     }
 
@@ -42,7 +42,7 @@ class UserInvited extends Notification implements ShouldQueue
     {
         return (new MailMessage())
             ->subject('ユーザー招待通知')
-            ->view('emails.invited', ['user' => $notifiable, 'invited' => $this->invited]);
+            ->view('emails.invited', ['user' => $notifiable, 'invited' => $this->user]);
     }
 
     /**

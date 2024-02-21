@@ -20,8 +20,8 @@ class JobDeleteExpiredBulkzip implements ShouldQueue
 
     public function handle(BulkZipRepository $bulkZipRepository): void
     {
-        foreach ($bulkZipRepository->cursorExpired() as $bulkZip) {
-            $bulkZip->delete();
+        foreach ($bulkZipRepository->cursorExpired() as $lazyCollection) {
+            $lazyCollection->delete();
         }
     }
 }

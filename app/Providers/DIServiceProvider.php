@@ -55,17 +55,17 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
     public function register(): void
     {
         $this->app->bind(ReadmeExtractor::class, static function ($app): \App\Services\FileInfo\Extractors\ReadmeExtractor {
-            $config = HTMLPurifier_Config::createDefault();
-            $config->set('HTML.AllowedElements', []);
+            $htmlPurifierConfig = HTMLPurifier_Config::createDefault();
+            $htmlPurifierConfig->set('HTML.AllowedElements', []);
 
-            return new ReadmeExtractor(new HTMLPurifier($config));
+            return new ReadmeExtractor(new HTMLPurifier($htmlPurifierConfig));
         });
 
         $this->app->bind(MarkdownService::class, static function ($app): \App\Services\MarkdownService {
-            $config = HTMLPurifier_Config::createDefault();
-            $config->set('HTML.AllowedElements', []);
+            $htmlPurifierConfig = HTMLPurifier_Config::createDefault();
+            $htmlPurifierConfig->set('HTML.AllowedElements', []);
 
-            return new MarkdownService($app->make(GithubMarkdown::class), new HTMLPurifier($config));
+            return new MarkdownService($app->make(GithubMarkdown::class), new HTMLPurifier($htmlPurifierConfig));
         });
 
         $this->app->bind(ZipManager::class, static fn ($app): \App\Services\BulkZip\ZipManager => new ZipManager(
@@ -102,12 +102,12 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
         ));
 
         $this->app->bind(BlueSkyApiClient::class, function ($app): \App\Services\BlueSky\BlueSkyApiClient {
-            $api = new BlueskyApi(config('services.bluesky.user'), config('services.bluesky.password'));
-            $service = new BlueskyPostService($api);
+            $blueskyApi = new BlueskyApi(config('services.bluesky.user'), config('services.bluesky.password'));
+            $blueskyPostService = new BlueskyPostService($blueskyApi);
 
             return new BlueSkyApiClient(
-                $api,
-                $service,
+                $blueskyApi,
+                $blueskyPostService,
                 $this->app->make(MetaOgpService::class),
                 $this->app->make(FileSizeBaseResizer::class),
             );

@@ -22,9 +22,9 @@ class CursorExpiredTest extends TestCase
     public function test(): void
     {
         BulkZip::factory()->create(['created_at' => today()->modify('-1 days')]);
-        $res = $this->bulkZipRepository->cursorExpired();
-        $this->assertInstanceOf(LazyCollection::class, $res);
-        $this->assertEquals(1, $res->count());
+        $lazyCollection = $this->bulkZipRepository->cursorExpired();
+        $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
+        $this->assertEquals(1, $lazyCollection->count());
     }
 
     /**
@@ -34,8 +34,8 @@ class CursorExpiredTest extends TestCase
     {
         BulkZip::factory()->create($data);
 
-        $res = $this->bulkZipRepository->cursorExpired();
-        $this->assertEquals(0, $res->count());
+        $lazyCollection = $this->bulkZipRepository->cursorExpired();
+        $this->assertEquals(0, $lazyCollection->count());
     }
 
     public static function dataNotFound(): \Generator

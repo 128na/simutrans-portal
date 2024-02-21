@@ -31,9 +31,9 @@ class RedirectIfAuthenticated
                 $user = Auth::user();
                 if ($user->isAdmin()) {
                     return redirect()->intended('admin');
-                } else {
-                    return redirect()->intended('mypage');
                 }
+
+                return redirect()->intended('mypage');
             }
         }
 

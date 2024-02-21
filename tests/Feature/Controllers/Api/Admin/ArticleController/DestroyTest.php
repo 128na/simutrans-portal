@@ -10,14 +10,14 @@ use Tests\TestCase;
 
 class DestroyTest extends TestCase
 {
-    private User $admin;
+    private User $user;
 
     private Article $article;
 
     protected function setUp(): void
     {
         parent::setup();
-        $this->admin = User::factory()->admin()->create();
+        $this->user = User::factory()->admin()->create();
         $this->article = Article::factory()->create();
     }
 
@@ -28,7 +28,7 @@ class DestroyTest extends TestCase
             'deleted_at' => null,
         ]);
 
-        $this->actingAs($this->admin);
+        $this->actingAs($this->user);
         $url = '/api/admin/articles/'.$this->article->id;
         $res = $this->deleteJson($url);
         $res->assertOk();
@@ -49,7 +49,7 @@ class DestroyTest extends TestCase
             'id' => $this->article->id,
         ]);
 
-        $this->actingAs($this->admin);
+        $this->actingAs($this->user);
         $url = '/api/admin/articles/'.$this->article->id;
         $res = $this->deleteJson($url);
         $res->assertOk();
@@ -69,7 +69,7 @@ class DestroyTest extends TestCase
 
     public function test管理者以外(): void
     {
-        $this->actingAs($this->admin);
+        $this->actingAs($this->user);
         $url = '/api/admin/articles/'.$this->article->id;
         $res = $this->deleteJson($url);
         $res->assertUnauthorized();

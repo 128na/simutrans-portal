@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class DestroyTest extends TestCase
 {
-    private User $user;
+    protected User $user;
 
     protected function setUp(): void
     {

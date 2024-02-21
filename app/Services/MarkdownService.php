@@ -12,30 +12,23 @@ use HTMLPurifier;
  */
 class MarkdownService extends Service
 {
-    private GithubMarkdown $parser;
-
-    private HTMLPurifier $purifier;
-
-    public function __construct(GithubMarkdown $parser, HTMLPurifier $purifier)
+    public function __construct(private readonly GithubMarkdown $githubMarkdown, private readonly HTMLPurifier $htmlPurifier)
     {
-        $this->parser = $parser;
-        $this->parser->html5 = true;
-        $this->parser->enableNewlines = true;
-
-        $this->purifier = $purifier;
+        $this->githubMarkdown->html5 = true;
+        $this->githubMarkdown->enableNewlines = true;
     }
 
     public function toEscapedHTML(string $markdown): string
     {
-        $raw = $this->parser->parse($markdown);
+        $raw = $this->githubMarkdown->parse($markdown);
 
-        return $this->purifier->purify($raw);
+        return $this->htmlPurifier->purify($raw);
     }
 
     public function toEscapedAllHTML(string $markdown): string
     {
-        $raw = $this->parser->parse($markdown);
+        $raw = $this->githubMarkdown->parse($markdown);
 
-        return $this->purifier->purify($raw);
+        return $this->htmlPurifier->purify($raw);
     }
 }

@@ -11,10 +11,8 @@ class PakAnySeed extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         Category::firstOrCreate([
             'slug' => 'any',

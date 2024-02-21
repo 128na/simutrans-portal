@@ -10,28 +10,24 @@ class CreateFailedJobsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('failed_jobs', function (Blueprint $table) {
-            $table->id();
-            $table->string('uuid')->unique();
-            $table->text('connection');
-            $table->text('queue');
-            $table->longText('payload');
-            $table->longText('exception');
-            $table->timestamp('failed_at')->useCurrent();
+        Schema::create('failed_jobs', static function (Blueprint $blueprint) : void {
+            $blueprint->id();
+            $blueprint->string('uuid')->unique();
+            $blueprint->text('connection');
+            $blueprint->text('queue');
+            $blueprint->longText('payload');
+            $blueprint->longText('exception');
+            $blueprint->timestamp('failed_at')->useCurrent();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('failed_jobs');
     }

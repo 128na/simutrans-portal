@@ -32,8 +32,6 @@ class DatExtractor extends Service implements Extractor
     {
         preg_match_all('/[\s^]name\=(.*)\s/i', $dat, $matches);
 
-        return array_map(function ($text) {
-            return trim($text);
-        }, $matches[1] ?? []);
+        return array_map(static fn($text): string => trim((string) $text), $matches[1] ?? []);
     }
 }

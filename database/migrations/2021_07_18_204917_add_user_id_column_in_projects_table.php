@@ -10,26 +10,22 @@ class AddUserIdColumnInProjectsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+        Schema::table('projects', static function (Blueprint $blueprint) : void {
+            $blueprint->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropColumn(['user_id']);
+        Schema::table('projects', static function (Blueprint $blueprint) : void {
+            $blueprint->dropForeign(['user_id']);
+            $blueprint->dropColumn(['user_id']);
         });
     }
 }

@@ -16,28 +16,28 @@ use Throwable;
 class MisskeyChannel extends BaseChannel
 {
     public function __construct(
-        private MisskeyApiClient $misskeyApiClient,
-        private MessageGenerator $messageGenerator,
+        private readonly MisskeyApiClient $misskeyApiClient,
+        private readonly MessageGenerator $messageGenerator,
     ) {
     }
 
-    public function send(Article $notifiable, SendArticleNotification $notification): void
+    public function send(Article $article, SendArticleNotification $sendArticleNotification): void
     {
         try {
-            $text = $this->buildMessage($notifiable, $notification);
+            $text = $this->buildMessage($article, $sendArticleNotification);
             $result = $this->misskeyApiClient->send($text);
             logger('misskey', [$result]);
-        } catch (Throwable $e) {
-            report($e);
+        } catch (Throwable $throwable) {
+            report($throwable);
         }
     }
 
-    private function buildMessage(Article $notifiable, SendArticleNotification $notification): string
+    private function buildMessage(Article $article, SendArticleNotification $sendArticleNotification): string
     {
         return match (true) {
-            $notification instanceof SendArticlePublished => $this->messageGenerator->buildPublishedMessage($notifiable),
-            $notification instanceof SendArticleUpdated => $this->messageGenerator->buildUpdatedMessage($notifiable),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', get_class($notification))),
+            $sendArticleNotification instanceof SendArticlePublished => $this->messageGenerator->buildPublishedMessage($article),
+            $sendArticleNotification instanceof SendArticleUpdated => $this->messageGenerator->buildUpdatedMessage($article),
+            default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendArticleNotification::class)),
         };
     }
 

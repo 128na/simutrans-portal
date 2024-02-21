@@ -25,30 +25,26 @@ class GoogleServiceProvider extends ServiceProvider implements DeferrableProvide
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->app->bind(RecaptchaService::class, function () {
+        $this->app->bind(RecaptchaService::class, static function () : \App\Services\Google\Recaptcha\RecaptchaService {
             $credentials = json_decode(
                 @file_get_contents(base_path(config('services.google_recaptcha.credential'))) ?: '{}',
                 true
             );
-            $client = new RecaptchaEnterpriseServiceClient(['credentials' => $credentials]);
-            $projectName = $client->projectName(config('services.google_recaptcha.projectName'));
-
+            $recaptchaEnterpriseServiceClient = new RecaptchaEnterpriseServiceClient(['credentials' => $credentials]);
+            $projectName = $recaptchaEnterpriseServiceClient->projectName(config('services.google_recaptcha.projectName'));
             return new RecaptchaService(
-                $client,
+                $recaptchaEnterpriseServiceClient,
                 $projectName,
                 app(Event::class),
             );
         });
 
-        $this->app->bind(Event::class, function () {
+        $this->app->bind(Event::class, static function () : \Google\Cloud\RecaptchaEnterprise\V1\Event {
             $event = new Event();
             $event->setSiteKey(config('services.google_recaptcha.siteKey'));
-
             return $event;
         });
     }

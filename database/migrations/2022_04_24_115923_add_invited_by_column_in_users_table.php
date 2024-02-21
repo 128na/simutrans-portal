@@ -10,33 +10,27 @@ class AddInvitedByColumnInUsersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('invited_by')->nullable()->comment('紹介ユーザーID');
-            $table->index('invited_by');
-
-            $table->uuid('invitation_code')->nullable()->comment('紹介用コード');
-            $table->unique('invitation_code');
+        Schema::table('users', static function (Blueprint $blueprint) : void {
+            $blueprint->unsignedBigInteger('invited_by')->nullable()->comment('紹介ユーザーID');
+            $blueprint->index('invited_by');
+            $blueprint->uuid('invitation_code')->nullable()->comment('紹介用コード');
+            $blueprint->unique('invitation_code');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropIndex(['invited_by']);
-            $table->dropColumn('invited_by');
-
-            $table->dropUnique(['invitation_code']);
-            $table->dropColumn('invitation_code');
+        Schema::table('users', static function (Blueprint $blueprint) : void {
+            $blueprint->dropIndex(['invited_by']);
+            $blueprint->dropColumn('invited_by');
+            $blueprint->dropUnique(['invitation_code']);
+            $blueprint->dropColumn('invitation_code');
         });
     }
 }

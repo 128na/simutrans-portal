@@ -22,9 +22,9 @@ class ZipManager extends Service
      * @param  array<BaseDecorator>  $decorators
      */
     public function __construct(
-        private ZipArchive $zipArchive,
-        private Filesystem $disk,
-        private array $decorators
+        private readonly ZipArchive $zipArchive,
+        private readonly Filesystem $filesystem,
+        private readonly array $decorators
     ) {
     }
 
@@ -35,7 +35,7 @@ class ZipManager extends Service
 
     private function isZipFile(string $filepath): bool
     {
-        $mime = $this->disk->mimeType($filepath);
+        $mime = $this->filesystem->mimeType($filepath);
 
         return $mime === 'application/zip';
     }
@@ -57,6 +57,7 @@ class ZipManager extends Service
                 $this->addFile($filepath, 'files/'.$filename);
             }
         }
+
         if (! empty($result['contents'])) {
             $this->addTextFile($result['contents']);
             $this->addCsvFile($result['contents']);
@@ -105,6 +106,7 @@ class ZipManager extends Service
                 if (is_array($row)) {
                     $row = implode("\t", $row);
                 }
+
                 $content[] = $row;
             }
         }
@@ -123,66 +125,72 @@ class ZipManager extends Service
         if ($csv === false) {
             throw new ZipErrorException('tmpfile faild');
         }
-        foreach ($contents as $rows) {
-            foreach ($rows as $row) {
+
+        foreach ($contents as $content) {
+            foreach ($content as $row) {
                 if (is_string($row)) {
                     $row = [$row];
                 }
-                fputcsv($csv, mb_convert_encoding($row, 'SJIS', 'UTF-8'));
+
+                fputcsv($csv, mb_convert_encoding((string) $row, 'SJIS', 'UTF-8'));
             }
         }
+
         $filepath = $this->randName('bulk_zip/', '.csv');
-        $this->disk->put($filepath, $csv);
+        $this->filesystem->put($filepath, $csv);
         fclose($csv);
 
         $this->addFile($filepath, 'contents.csv');
-        $this->disk->delete($filepath);
+        $this->filesystem->delete($filepath);
     }
 
     private function open(): void
     {
-        $result = $this->zipArchive->open($this->disk->path($this->filepath), ZipArchive::CREATE);
+        $result = $this->zipArchive->open($this->filesystem->path($this->filepath), ZipArchive::CREATE);
         if ($result !== true) {
-            throw new ZipErrorException("open faild: {$this->filepath}", $result);
+            throw new ZipErrorException('open faild: ' . $this->filepath, $result);
         }
     }
 
     private function addFile(string $filepath, string $filenameInZip = ''): void
     {
         $this->open();
-        $path = $this->disk->path($filepath);
+        $path = $this->filesystem->path($filepath);
         $result = $this->zipArchive->addFile($path, $filenameInZip);
         $this->close();
 
         if ($result !== true) {
-            throw new ZipErrorException("add file faild: {$filepath}, {$filenameInZip}");
+            throw new ZipErrorException(sprintf('add file faild: %s, %s', $filepath, $filenameInZip));
         }
     }
 
     private function mergeZip(string $filepath, string $filenameInZip = ''): void
     {
         $basedir = str_replace(basename($filenameInZip), '', $filenameInZip);
-        $path = $this->disk->path($filepath);
-        $z = new ZipArchive();
+        $path = $this->filesystem->path($filepath);
+        $zipArchive = new ZipArchive();
         try {
-            $z->open($path);
-            for ($i = 0; $i < $z->numFiles; $i++) {
-                $name = $z->getNameIndex($i);
+            $zipArchive->open($path);
+            for ($i = 0; $i < $zipArchive->numFiles; ++$i) {
+                $name = $zipArchive->getNameIndex($i);
                 if ($name === false) {
-                    throw new ZipErrorException("getNameIndex faild: {$name}");
+                    throw new ZipErrorException('getNameIndex faild: ' . $name);
                 }
-                $rc = $z->getStream($name);
+
+                $rc = $zipArchive->getStream($name);
                 if ($rc === false) {
-                    throw new ZipErrorException("getStream faild: {$name}");
+                    throw new ZipErrorException('getStream faild: ' . $name);
                 }
+
                 $randName = $this->randName();
-                $this->disk->put($randName, $rc);
-                $this->addFile($randName, "{$basedir}/{$name}");
-                $this->disk->delete($randName);
+                $this->filesystem->put($randName, $rc);
+                $this->addFile($randName, sprintf('%s/%s', $basedir, $name));
+                $this->filesystem->delete($randName);
             }
-            $z->close();
-        } catch (Throwable $e) {
-            report($e);
+
+            $zipArchive->close();
+        } catch (Throwable $throwable) {
+            report($throwable);
         }
     }
 
@@ -193,7 +201,7 @@ class ZipManager extends Service
         $this->close();
 
         if ($result !== true) {
-            throw new ZipErrorException("add text faild: {$filenameInZip}");
+            throw new ZipErrorException('add text faild: ' . $filenameInZip);
         }
     }
 
@@ -205,8 +213,8 @@ class ZipManager extends Service
             if ($res) {
                 throw new ZipErrorException('close faild');
             }
-        } catch (ErrorException $e) {
-            report($e);
+        } catch (ErrorException $errorException) {
+            report($errorException);
         }
     }
 }

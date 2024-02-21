@@ -9,32 +9,32 @@ use Tests\TestCase;
 
 class IndexTest extends TestCase
 {
-    private User $admin;
+    private User $user;
 
     protected function setUp(): void
     {
         parent::setup();
-        $this->admin = User::factory()->admin()->create();
+        $this->user = User::factory()->admin()->create();
     }
 
-    public function test()
+    public function test(): void
     {
-        $this->actingAs($this->admin);
+        $this->actingAs($this->user);
         $url = '/api/admin/users';
         $res = $this->getJson($url);
         $res->assertOk();
-        $res->assertJsonFragment(['name' => $this->admin->name]);
+        $res->assertJsonFragment(['name' => $this->user->name]);
         $res->assertJsonFragment(['name' => $this->user->name]);
     }
 
-    public function test未ログイン()
+    public function test未ログイン(): void
     {
         $url = '/api/admin/users';
         $res = $this->getJson($url);
         $res->assertUnauthorized();
     }
 
-    public function test管理者以外()
+    public function test管理者以外(): void
     {
         $this->actingAs($this->user);
         $url = '/api/admin/users';

@@ -14,6 +14,6 @@ class Tags extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection->map(fn ($item) => new Tag($item))->toArray();
+        return $this->collection->map(static fn($item): \App\Http\Resources\Api\Mypage\Tag => new Tag($item))->toArray();
     }
 }

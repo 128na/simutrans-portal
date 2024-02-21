@@ -10,28 +10,24 @@ class CreateJobsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('jobs', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('queue')->index();
-            $table->longText('payload');
-            $table->unsignedTinyInteger('attempts');
-            $table->unsignedInteger('reserved_at')->nullable();
-            $table->unsignedInteger('available_at');
-            $table->unsignedInteger('created_at');
+        Schema::create('jobs', static function (Blueprint $blueprint) : void {
+            $blueprint->bigIncrements('id');
+            $blueprint->string('queue')->index();
+            $blueprint->longText('payload');
+            $blueprint->unsignedTinyInteger('attempts');
+            $blueprint->unsignedInteger('reserved_at')->nullable();
+            $blueprint->unsignedInteger('available_at');
+            $blueprint->unsignedInteger('created_at');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('jobs');
     }

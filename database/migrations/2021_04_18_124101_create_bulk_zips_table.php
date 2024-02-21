@@ -10,27 +10,23 @@ class CreateBulkZipsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('bulk_zips', function (Blueprint $table) {
-            $table->id();
-            $table->uuid('uuid')->unique();
-            $table->morphs('bulk_zippable');
-            $table->boolean('generated')->default(0)->comment('ファイル生成済みか 0:未生成,1:生成済み');
-            $table->string('path')->nullable()->comment('生成ファイルのパス');
-            $table->timestamps();
+        Schema::create('bulk_zips', static function (Blueprint $blueprint) : void {
+            $blueprint->id();
+            $blueprint->uuid('uuid')->unique();
+            $blueprint->morphs('bulk_zippable');
+            $blueprint->boolean('generated')->default(0)->comment('ファイル生成済みか 0:未生成,1:生成済み');
+            $blueprint->string('path')->nullable()->comment('生成ファイルのパス');
+            $blueprint->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('bulk_zips');
     }

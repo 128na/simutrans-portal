@@ -24,6 +24,7 @@ class AdminCheck
         if ($user && $user->isAdmin()) {
             return $next($request);
         }
+
         abort(401);
     }
 }

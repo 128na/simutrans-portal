@@ -13,24 +13,20 @@ class CreateCompressedImagesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('compressed_images', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('path')->unique();
-            $table->timestamps();
+        Schema::create('compressed_images', static function (Blueprint $blueprint) : void {
+            $blueprint->bigIncrements('id');
+            $blueprint->string('path')->unique();
+            $blueprint->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('compressed_images');
     }

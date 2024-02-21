@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
  */
 class UpdatePublishedAtSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         DB::statement('UPDATE articles SET published_at = created_at, modified_at = updated_at');
     }

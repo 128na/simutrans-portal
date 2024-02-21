@@ -19,7 +19,7 @@ class LoginHistory extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (LoginHistory $loginHistory) {
+        static::creating(static function (LoginHistory $loginHistory) : void {
             $loginHistory->fill([
                 'ip' => request()->server('REMOTE_ADDR'),
                 'ua' => request()->server('HTTP_USER_AGENT'),

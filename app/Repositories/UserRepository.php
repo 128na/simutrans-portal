@@ -17,9 +17,9 @@ class UserRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(User $model)
+    public function __construct(User $user)
     {
-        $this->model = $model;
+        $this->model = $user;
     }
 
     /**
@@ -31,7 +31,7 @@ class UserRepository extends BaseRepository
     {
         return $this->model
             ->withTrashed()
-            ->withCount(['articles' => fn ($q) => $q->withUserTrashed()->withTrashed()])
+            ->withCount(['articles' => static fn($q) => $q->withUserTrashed()->withTrashed()])
             ->get();
     }
 

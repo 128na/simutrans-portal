@@ -23,7 +23,7 @@ class TagControllerTest extends TestCase
         $this->tag2 = Tag::factory()->create(['name' => 'short', 'description' => 'desc2']);
     }
 
-    public function testIndex()
+    public function testIndex(): void
     {
         $url = '/api/mypage/tags';
 
@@ -60,7 +60,7 @@ class TagControllerTest extends TestCase
         $res->assertExactJson(['data' => [['id' => $this->tag2->id, 'name' => $this->tag2->name, 'description' => $this->tag2->description]]]);
     }
 
-    public function testStore認証()
+    public function testStore認証(): void
     {
         $url = '/api/mypage/tags';
 
@@ -75,7 +75,7 @@ class TagControllerTest extends TestCase
         $res->assertForbidden();
     }
 
-    public function testStore機能制限()
+    public function testStore機能制限(): void
     {
         $url = '/api/mypage/tags';
 
@@ -88,7 +88,7 @@ class TagControllerTest extends TestCase
     /**
      * @dataProvider dataValidation
      */
-    public function testStore(Closure $data, ?string $error_field)
+    public function testStore(Closure $data, ?string $error_field): void
     {
         $url = '/api/mypage/tags';
 
@@ -103,10 +103,10 @@ class TagControllerTest extends TestCase
         }
     }
 
-    public function testUpdate認証()
+    public function testUpdate認証(): void
     {
         $tag = Tag::factory()->create();
-        $url = "/api/mypage/tags/{$tag->id}";
+        $url = '/api/mypage/tags/' . $tag->id;
 
         // 未ログインは401
         $res = $this->postJson($url);
@@ -119,10 +119,10 @@ class TagControllerTest extends TestCase
         $res->assertForbidden();
     }
 
-    public function testUpdate機能制限()
+    public function testUpdate機能制限(): void
     {
         $tag = Tag::factory()->create();
-        $url = "/api/mypage/tags/{$tag->id}";
+        $url = '/api/mypage/tags/' . $tag->id;
 
         ControllOption::create(['key' => ControllOptionKeys::TAG_UPDATE, 'value' => false]);
         $this->actingAs($this->user);
@@ -130,21 +130,21 @@ class TagControllerTest extends TestCase
         $res->assertForbidden();
     }
 
-    public static function dataValidation()
+    public static function dataValidation(): \Generator
     {
-        yield 'nameがnull' => [fn () => ['name' => null], 'name'];
-        yield 'nameが21文字以上' => [fn () => ['name' => str_repeat('a', 21)], 'name'];
-        yield 'nameが存在する' => [fn () => ['name' => $this->tag1->name], 'name'];
-        yield '成功' => [fn () => ['name' => 'new_tag'], null];
+        yield 'nameがnull' => [static fn(): array => ['name' => null], 'name'];
+        yield 'nameが21文字以上' => [static fn(): array => ['name' => str_repeat('a', 21)], 'name'];
+        yield 'nameが存在する' => [fn (): array => ['name' => $this->tag1->name], 'name'];
+        yield '成功' => [static fn(): array => ['name' => 'new_tag'], null];
     }
 
     /**
      * @dataProvider dataUpdateValidation
      */
-    public function testUpdate(Closure $data, ?string $error_field)
+    public function testUpdate(Closure $data, ?string $error_field): void
     {
         $tag = Tag::factory()->create();
-        $url = "/api/mypage/tags/{$tag->id}";
+        $url = '/api/mypage/tags/' . $tag->id;
 
         $this->actingAs($this->user);
         $params = Closure::bind($data, $this)();
@@ -161,16 +161,16 @@ class TagControllerTest extends TestCase
         }
     }
 
-    public static function dataUpdateValidation()
+    public static function dataUpdateValidation(): \Generator
     {
-        yield 'descriptionが1024文字以下' => [fn () => ['description' => str_repeat('a', 1024)], null];
-        yield 'descriptionが1025文字以上' => [fn () => ['description' => str_repeat('a', 1025)], 'description'];
+        yield 'descriptionが1024文字以下' => [static fn(): array => ['description' => str_repeat('a', 1024)], null];
+        yield 'descriptionが1025文字以上' => [static fn(): array => ['description' => str_repeat('a', 1025)], 'description'];
     }
 
-    public function testUpdate編集ロック()
+    public function testUpdate編集ロック(): void
     {
         $tag = Tag::factory()->create(['editable' => false]);
-        $url = "/api/mypage/tags/{$tag->id}";
+        $url = '/api/mypage/tags/' . $tag->id;
 
         $this->actingAs($this->user);
         $data = ['description' => 'dummy'];

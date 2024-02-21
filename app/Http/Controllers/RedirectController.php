@@ -14,18 +14,15 @@ use Illuminate\Http\Response;
  */
 class RedirectController extends Controller
 {
-    private RedirectRepository $redirectRepository;
-
-    public function __construct(RedirectRepository $redirectRepository)
+    public function __construct(private readonly RedirectRepository $redirectRepository)
     {
-        $this->redirectRepository = $redirectRepository;
     }
 
     public function index(Request $request): RedirectResponse
     {
         $path = $this->getRelativePath($request->fullUrl());
         $redirect = $this->redirectRepository->findOrFailByPath($path);
-        logger("[redirect]: {$redirect->from} -> {$redirect->to}");
+        logger(sprintf('[redirect]: %s -> %s', $redirect->from, $redirect->to));
 
         return redirect($redirect->to, Response::HTTP_MOVED_PERMANENTLY);
     }

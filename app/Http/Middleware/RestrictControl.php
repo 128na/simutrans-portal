@@ -9,7 +9,7 @@ use Closure;
 
 class RestrictControl
 {
-    public function __construct(private ControllOption $controllOption)
+    public function __construct(private readonly ControllOption $controllOption)
     {
     }
 

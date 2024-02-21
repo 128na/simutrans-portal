@@ -18,9 +18,9 @@ class CategoryRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(Category $model)
+    public function __construct(Category $category)
     {
-        $this->model = $model;
+        $this->model = $category;
     }
 
     /**

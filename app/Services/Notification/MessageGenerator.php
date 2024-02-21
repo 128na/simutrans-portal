@@ -39,19 +39,15 @@ class MessageGenerator extends Service
         if ($article->user) {
             $url = route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]);
             $now = now()->format('Y/m/d H:i');
-            $name = $this->getDisaplayName($article->user);
+            $name = $user->name;
             $tags = collect(['Simutrans'])
                 ->merge($article->categoryPaks->pluck('name'))
-                ->map(fn ($name) => str_replace('.', '', "#$name")) // ドットはハッシュタグに使用できない
+                ->map(static fn($name): string|array => str_replace('.', '', '#' . $name)) // ドットはハッシュタグに使用できない
                 ->implode(' ');
 
             return ['title' => $article->title, 'url' => $url, 'name' => $name, 'at' => $now, 'tags' => $tags];
         }
-        throw new Exception('missing user');
-    }
 
-    private function getDisaplayName(User $user): string
-    {
-        return $user->name;
+        throw new Exception('missing user');
     }
 }

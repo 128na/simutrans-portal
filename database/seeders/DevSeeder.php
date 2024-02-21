@@ -18,15 +18,13 @@ class DevSeeder extends Seeder
 {
     /**
      * テスト用一般ユーザーと記事を作成する.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         Attachment::where('id', '<>', null)->delete();
         User::where('role', config('role.user'))->delete();
 
-        User::factory()->count(20)->create()->each(function ($user) {
+        User::factory()->count(20)->create()->each(static function ($user) : void {
             $user->articles()->saveMany(
                 Article::factory()->count(random_int(0, 20))->make()
             );
@@ -34,29 +32,27 @@ class DevSeeder extends Seeder
 
         // add attachment into article
         foreach (User::with(['articles', 'profile'])->cursor() as $user) {
-            self::addAvatar($user);
+            $this->addAvatar($user);
 
             foreach ($user->articles as $article) {
                 // アドオン投稿
                 if ($article->post_type === 'addon-post') {
-                    self::addAddonPost($user, $article);
-                    self::addCategories($article);
-                    self::addTags($article);
+                    $this->addAddonPost($user, $article);
+                    $this->addCategories($article);
+                    $this->addTags($article);
                 }
+
                 // アドオン紹介
                 if ($article->post_type === 'addon-introduction') {
-                    self::addAddonIntroduction($user, $article);
-                    self::addCategories($article);
-                    self::addTags($article);
-                }
-                // 一般記事
-                if ($article->post_type === 'page') {
+                    $this->addAddonIntroduction($user, $article);
+                    $this->addCategories($article);
+                    $this->addTags($article);
                 }
             }
         }
     }
 
-    private static function addAvatar($user)
+    private function addAvatar($user): void
     {
         $avatar = Attachment::make([
             'user_id' => $user->id,
@@ -66,7 +62,7 @@ class DevSeeder extends Seeder
         $user->profile->attachments()->save($avatar);
     }
 
-    private static function addAddonPost($user, $article)
+    private function addAddonPost($user, $article): void
     {
         // add attachments
         $thumb = Attachment::make([
@@ -91,7 +87,7 @@ class DevSeeder extends Seeder
         $article->save();
     }
 
-    private static function addAddonIntroduction($user, $article)
+    private function addAddonIntroduction($user, $article): void
     {
         // add attachments
         $thumb = Attachment::make([
@@ -110,7 +106,7 @@ class DevSeeder extends Seeder
         $article->save();
     }
 
-    private static function addCategories($article)
+    private function addCategories($article): void
     {
         $ids = collect([]);
         $ids = $ids->merge(Category::pak()->inRandomOrder()->limit(random_int(1, 3))->get()->pluck('id'));
@@ -120,11 +116,9 @@ class DevSeeder extends Seeder
         $article->categories()->sync($ids);
     }
 
-    private static function addTags($article)
+    private function addTags($article): void
     {
-        $tags = Tag::factory()->count(random_int(0, 10))->make()->map(function ($tag) {
-            return Tag::firstOrCreate(['name' => $tag->name]);
-        });
+        $tags = Tag::factory()->count(random_int(0, 10))->make()->map(static fn($tag) => Tag::firstOrCreate(['name' => $tag->name]));
         $article->tags()->sync($tags->pluck('id'));
     }
 }

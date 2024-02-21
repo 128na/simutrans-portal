@@ -10,8 +10,8 @@ use App\Notifications\SendDeadLinkDetectedEmail;
 
 class OnCloseByDeadLinkDetected extends BaseListener
 {
-    public function handle(CloseByDeadLinkDetected $event): void
+    public function handle(CloseByDeadLinkDetected $closeByDeadLinkDetected): void
     {
-        $event->article->notify(new SendDeadLinkDetectedEmail());
+        $closeByDeadLinkDetected->article->notify(new SendDeadLinkDetectedEmail());
     }
 }

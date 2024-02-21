@@ -17,8 +17,8 @@ class ProfileRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(Profile $model)
+    public function __construct(Profile $profile)
     {
-        $this->model = $model;
+        $this->model = $profile;
     }
 }

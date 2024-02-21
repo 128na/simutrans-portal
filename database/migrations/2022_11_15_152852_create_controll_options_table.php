@@ -10,24 +10,20 @@ class CreateControllOptionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('controll_options', function (Blueprint $table) {
-            $table->string('key')->primary();
-            $table->boolean('value');
-            $table->timestamps();
+        Schema::create('controll_options', static function (Blueprint $blueprint) : void {
+            $blueprint->string('key')->primary();
+            $blueprint->boolean('value');
+            $blueprint->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('controll_options');
     }

@@ -23,50 +23,50 @@ class MessageGeneratorTest extends UnitTestCase
         return app(MessageGenerator::class);
     }
 
-    public function testBuildPublishedMessage()
+    public function testBuildPublishedMessage(): void
     {
         /** @var Article */
-        $article = $this->mock(Article::class, function (MockInterface $m) {
-            $m->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
-            $m->allows('getAttribute')->withArgs(['slug'])->andReturn('dummy_slug');
-            $m->allows('offsetExists')->withArgs(['user'])->andReturn(true);
-            $m->allows('getAttribute')->withArgs(['user_id'])->andReturn(1);
-            $m->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $m) {
+        $mock = $this->mock(Article::class, function (MockInterface $mock): void {
+            $mock->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
+            $mock->allows('getAttribute')->withArgs(['slug'])->andReturn('dummy_slug');
+            $mock->allows('offsetExists')->withArgs(['user'])->andReturn(true);
+            $mock->allows('getAttribute')->withArgs(['user_id'])->andReturn(1);
+            $mock->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, static function (MockInterface $m) : void {
                 $m->allows('offsetExists')->withArgs(['nickname'])->andReturn(false);
                 $m->allows('getAttribute')->withArgs(['name'])->andReturn('dummy_name');
                 $m->allows('getRouteKey')->andReturn(1);
             }));
             $m->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
             $m->allows('getAttribute')->withArgs(['categoryPaks'])->andReturn(collect([
-                $this->mock(Category::class, function (MockInterface $m) {
+                $this->mock(Category::class, static function (MockInterface $m) : void {
                     $m->allows('offsetExists')->withArgs(['name'])->andReturn(true);
                     $m->allows('offsetGet')->withArgs(['name'])->andReturn('dummy_pak');
                 }),
             ]));
         });
         $now = now()->format('Y/m/d H:i');
-        $actual = $this->getSUT()->buildPublishedMessage($article);
+        $actual = $this->getSUT()->buildPublishedMessage($mock);
         $url = config('app.url');
-        $expected = "新規投稿「dummy_title」\n$url/users/1/dummy_slug\nby dummy_name\nat $now\n#Simutrans #dummy_pak";
+        $expected = "新規投稿「dummy_title」\n{$url}/users/1/dummy_slug\nby dummy_name\nat {$now}\n#Simutrans #dummy_pak";
 
         $this->assertEquals($expected, $actual);
     }
 
     private function getMockArticle()
     {
-        return $this->mock(Article::class, function (MockInterface $m) {
-            $m->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
-            $m->allows('getAttribute')->withArgs(['slug'])->andReturn('dummy_slug');
-            $m->allows('getAttribute')->withArgs(['user_id'])->andReturn(1);
-            $m->allows('offsetExists')->withArgs(['user'])->andReturn(true);
-            $m->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $m) {
+        return $this->mock(Article::class, function (MockInterface $mock): void {
+            $mock->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
+            $mock->allows('getAttribute')->withArgs(['slug'])->andReturn('dummy_slug');
+            $mock->allows('getAttribute')->withArgs(['user_id'])->andReturn(1);
+            $mock->allows('offsetExists')->withArgs(['user'])->andReturn(true);
+            $mock->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, static function (MockInterface $m) : void {
                 $m->allows('offsetExists')->withArgs(['nickname'])->andReturn(false);
                 $m->allows('getAttribute')->withArgs(['name'])->andReturn('dummy_name');
                 $m->allows('getRouteKey')->andReturn(1);
             }));
             $m->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
             $m->allows('getAttribute')->withArgs(['categoryPaks'])->andReturn(collect([
-                $this->mock(Category::class, function (MockInterface $m) {
+                $this->mock(Category::class, static function (MockInterface $m) : void {
                     $m->allows('offsetExists')->withArgs(['name'])->andReturn(true);
                     $m->allows('offsetGet')->withArgs(['name'])->andReturn('dummy_pak');
                 }),
@@ -74,19 +74,19 @@ class MessageGeneratorTest extends UnitTestCase
         });
     }
 
-    public function testBuildUpdatedMessage()
+    public function testBuildUpdatedMessage(): void
     {
         /** @var Article */
         $article = $this->getMockArticle();
         $now = now()->format('Y/m/d H:i');
         $actual = $this->getSUT()->buildUpdatedMessage($article);
         $url = config('app.url');
-        $expected = "「dummy_title」更新\n$url/users/1/dummy_slug\nby dummy_name\nat $now\n#Simutrans #dummy_pak";
+        $expected = "「dummy_title」更新\n{$url}/users/1/dummy_slug\nby dummy_name\nat {$now}\n#Simutrans #dummy_pak";
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function testBuildSimplePublishedMessage()
+    public function testBuildSimplePublishedMessage(): void
     {
         /** @var Article */
         $article = $this->getMockArticle();
@@ -96,7 +96,7 @@ class MessageGeneratorTest extends UnitTestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testBuildSimpleUpdatedMessage()
+    public function testBuildSimpleUpdatedMessage(): void
     {
         /** @var Article */
         $article = $this->getMockArticle();

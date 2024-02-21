@@ -17,50 +17,50 @@ class ShouldProcessTest extends UnitTestCase
         return app(DeadLinkChecker::class);
     }
 
-    public function test()
+    public function test(): void
     {
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, function (MockInterface $m) {
-            $m->allows('getAttribute')
+        $mock = $this->mock(Article::class, static function (MockInterface $mock) : void {
+            $mock->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy']));
         });
 
-        $actual = $this->getSUT()->shouldProcess($article);
+        $actual = $this->getSUT()->shouldProcess($mock);
 
         $this->assertTrue($actual);
     }
 
-    public function test_除外指定時はfalse()
+    public function test_除外指定時はfalse(): void
     {
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, function (MockInterface $m) {
-            $m->allows('getAttribute')
+        $mock = $this->mock(Article::class, static function (MockInterface $mock) : void {
+            $mock->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy', 'exclude_link_check' => true]));
         });
 
-        $actual = $this->getSUT()->shouldProcess($article);
+        $actual = $this->getSUT()->shouldProcess($mock);
 
         $this->assertFalse($actual);
     }
 
-    public function test_ブラックリストドメインはfalse()
+    public function test_ブラックリストドメインはfalse(): void
     {
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, function (MockInterface $m) {
-            $m->allows('getAttribute')
+        $mock = $this->mock(Article::class, static function (MockInterface $mock) : void {
+            $mock->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'https://getuploader.com/dummy']));
         });
 
-        $actual = $this->getSUT()->shouldProcess($article);
+        $actual = $this->getSUT()->shouldProcess($mock);
 
         $this->assertFalse($actual);
     }

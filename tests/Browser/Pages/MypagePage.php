@@ -13,7 +13,7 @@ class MypagePage extends Page
         return '/mypage';
     }
 
-    public function assert(Browser $browser)
+    public function assert(Browser $browser): void
     {
         $browser->waitForText('ログイン');
         $browser->assertSee('ログイン');

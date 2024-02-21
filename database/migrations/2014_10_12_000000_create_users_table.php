@@ -10,29 +10,25 @@ class CreateUsersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('role')->comment('権限');
-            $table->string('name')->comment('ユーザー名');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+        Schema::create('users', static function (Blueprint $blueprint) : void {
+            $blueprint->bigIncrements('id');
+            $blueprint->string('role')->comment('権限');
+            $blueprint->string('name')->comment('ユーザー名');
+            $blueprint->string('email')->unique();
+            $blueprint->timestamp('email_verified_at')->nullable();
+            $blueprint->string('password');
+            $blueprint->rememberToken();
+            $blueprint->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('users');
     }

@@ -14,22 +14,22 @@ use Illuminate\Support\Str;
 class StoreService extends Service
 {
     public function __construct(
-        private WebpConverter $webpConverter,
+        private readonly WebpConverter $webpConverter,
     ) {
     }
 
-    public function store(User $user, UploadedFile $file): Attachment
+    public function store(User $user, UploadedFile $uploadedFile): Attachment
     {
-        if ($this->isImage($file)) {
-            return $this->storeAsImage($user, $file);
+        if ($this->isImage($uploadedFile)) {
+            return $this->storeAsImage($user, $uploadedFile);
         }
 
-        return $this->storeAsFile($user, $file);
+        return $this->storeAsFile($user, $uploadedFile);
     }
 
-    private function isImage(UploadedFile $file): bool
+    private function isImage(UploadedFile $uploadedFile): bool
     {
-        $mime = $file->getMimeType() ?? '';
+        $mime = $uploadedFile->getMimeType() ?? '';
 
         return Str::contains($mime, [
             'image',
@@ -39,29 +39,29 @@ class StoreService extends Service
         ], false);
     }
 
-    private function storeAsImage(User $user, UploadedFile $file): Attachment
+    private function storeAsImage(User $user, UploadedFile $uploadedFile): Attachment
     {
         try {
-            $filepath = $this->webpConverter->create($user, $file);
+            $filepath = $this->webpConverter->create($user, $uploadedFile);
 
             return Attachment::create([
                 'user_id' => $user->id,
                 'path' => $filepath,
-                'original_name' => $file->getClientOriginalName(),
+                'original_name' => $uploadedFile->getClientOriginalName(),
             ]);
-        } catch (ConvertFailedException $e) {
-            report($e);
+        } catch (ConvertFailedException $convertFailedException) {
+            report($convertFailedException);
 
-            return $this->storeAsFile($user, $file);
+            return $this->storeAsFile($user, $uploadedFile);
         }
     }
 
-    private function storeAsFile(User $user, UploadedFile $file): Attachment
+    private function storeAsFile(User $user, UploadedFile $uploadedFile): Attachment
     {
         return Attachment::create([
             'user_id' => $user->id,
-            'path' => Storage::disk('public')->putFile('user/'.$user->id, $file),
-            'original_name' => $file->getClientOriginalName(),
+            'path' => Storage::disk('public')->putFile('user/'.$user->id, $uploadedFile),
+            'original_name' => $uploadedFile->getClientOriginalName(),
         ]);
     }
 }

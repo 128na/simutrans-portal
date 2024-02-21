@@ -8,15 +8,15 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateRankingsTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('rankings', function (Blueprint $table) {
-            $table->unsignedInteger('rank')->primary();
-            $table->foreignId('article_id')->constrained()->onDelete('cascade');
+        Schema::create('rankings', static function (Blueprint $blueprint) : void {
+            $blueprint->unsignedInteger('rank')->primary();
+            $blueprint->foreignId('article_id')->constrained()->onDelete('cascade');
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('rankings');
     }

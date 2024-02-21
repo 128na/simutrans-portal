@@ -19,22 +19,22 @@ class RankingRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(Ranking $model)
+    public function __construct(Ranking $ranking)
     {
-        $this->model = $model;
+        $this->model = $ranking;
     }
 
-    public function recreate(LazyCollection $articles): void
+    public function recreate(LazyCollection $lazyCollection): void
     {
-        DB::transaction(function () use ($articles) {
+        DB::transaction(function () use ($lazyCollection): void {
             $this->model->query()->delete();
             $rank = 1;
-            foreach ($articles as $article) {
+            foreach ($lazyCollection as $article) {
                 $this->store([
                     'rank' => $rank,
                     'article_id' => $article->id,
                 ]);
-                $rank++;
+                ++$rank;
             }
         });
     }

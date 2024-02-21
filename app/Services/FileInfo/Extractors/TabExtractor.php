@@ -36,14 +36,18 @@ class TabExtractor extends Service implements Extractor
 
         /** @var string|null */
         $line = null;
-        foreach ($tabs as $text) {
-            if (str_starts_with($text, '§') || str_starts_with($text, '#')) {
+        foreach ($tabs as $tab) {
+            if (str_starts_with($tab, '§')) {
                 continue;
             }
+            if (str_starts_with($tab, '#')) {
+                continue;
+            }
+
             if (is_null($line)) {
-                $line = $text;
+                $line = $tab;
             } else {
-                $translate[$line] = $text;
+                $translate[$line] = $tab;
                 $line = null;
             }
         }

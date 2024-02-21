@@ -14,7 +14,7 @@ use Iterator;
  */
 class UpdateCategoryOrder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         foreach ($this->getCategories() as $data) {
             $category = Category::slug($data['slug'])->type($data['type'])->first();
@@ -23,6 +23,7 @@ class UpdateCategoryOrder extends Seeder
                 'order' => $data['order'],
             ]);
         }
+
         JobUpdateRelated::dispatchSync();
     }
 

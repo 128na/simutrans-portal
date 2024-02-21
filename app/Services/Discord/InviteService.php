@@ -15,7 +15,7 @@ class InviteService extends Service
 
     public function create(): string
     {
-        $result = Http::withHeaders(['Authorization' => 'Bot '.config('services.discord.token')])
+        $response = Http::withHeaders(['Authorization' => 'Bot '.config('services.discord.token')])
             ->post(
                 'https://discord.com/api/v10/channels/'.config('services.discord.channel').'/invites',
                 [
@@ -25,10 +25,10 @@ class InviteService extends Service
                 ]
             );
 
-        $body = $result->json();
+        $body = $response->json();
 
-        if ($result->status() !== 200 || ! array_key_exists('code', $body)) {
-            throw new CreateInviteFailedException($result->body());
+        if ($response->status() !== 200 || ! array_key_exists('code', $body)) {
+            throw new CreateInviteFailedException($response->body());
         }
 
         return sprintf('%s/%s', config('services.discord.domain'), $body['code']);

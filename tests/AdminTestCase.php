@@ -23,7 +23,7 @@ abstract class AdminTestCase extends TestCase
         $this->article = Article::factory()->create();
     }
 
-    public static function dataUsers()
+    public static function dataUsers(): \Generator
     {
         yield '未ログイン' => [null, 401];
         yield '一般ユーザー' => ['user', 401];

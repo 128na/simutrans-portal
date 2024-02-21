@@ -16,8 +16,8 @@ use Illuminate\Support\LazyCollection;
 class DeadLinkChecker extends Service
 {
     public function __construct(
-        private ArticleRepository $articleRepository,
-        private GetHeadersHandler $getHeadersHandler
+        private readonly ArticleRepository $articleRepository,
+        private readonly GetHeadersHandler $getHeadersHandler
     ) {
     }
 
@@ -68,16 +68,18 @@ class DeadLinkChecker extends Service
     public function isDead(Article $article, int $retry = 3, int $intervalsec = 1): bool
     {
         $url = $this->getLink($article) ?? '';
-        for ($i = 0; $i < $retry; $i++) {
+        for ($i = 0; $i < $retry; ++$i) {
             $info = $this->getHeadersHandler->getHeaders($url);
             foreach ($info as $inf) {
                 if (stripos($inf, '200 OK') !== false) {
                     return false;
                 }
             }
+
             logger('status check failed.', [$url, ...$info]);
             sleep($intervalsec);
         }
+
         event(new DeadLinkDetected($article));
 
         return true;
@@ -85,7 +87,7 @@ class DeadLinkChecker extends Service
 
     public function getFailedCount(Article $article): int
     {
-        return (int) Cache::get($this->getCacheKey($article), 0);
+        return Cache::get($this->getCacheKey($article), 0);
     }
 
     public function updateFailedCount(Article $article, int $count): void

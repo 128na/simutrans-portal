@@ -15,37 +15,31 @@ class ProdSeeder extends Seeder
 {
     /**
      * 管理者とカテゴリを追加する.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        $admin = self::addAdminUser();
-        self::addItems(config('category.pak'));
-        self::addItems(config('category.addon'));
-        self::addItems(config('category.pak128_position'));
-        self::addItems(config('category.license'));
-        self::addItems(config('category.page'));
+        $this->addAdminUser();
+        $this->addItems(config('category.pak'));
+        $this->addItems(config('category.addon'));
+        $this->addItems(config('category.pak128_position'));
+        $this->addItems(config('category.license'));
+        $this->addItems(config('category.page'));
     }
 
-    private static function addAdminUser()
+    private function addAdminUser()
     {
         if (is_null(config('admin.email'))) {
             throw new \Exception('admin email was empty!');
         }
 
-        $admin = User::firstOrCreate(
+        return User::firstOrCreate(
             ['role' => config('role.admin'), 'name' => config('admin.name'), 'email' => config('admin.email')],
             ['password' => bcrypt(config('admin.password')), 'email_verified_at' => now()]
         );
-
-        return $admin;
     }
 
-    private static function addItems($items)
+    private function addItems($items)
     {
-        return collect($items)->map(function ($item) {
-            return Category::firstOrCreate($item);
-        });
+        return collect($items)->map(static fn($item) => Category::firstOrCreate($item));
     }
 }

@@ -48,9 +48,9 @@ class Tag extends Model
     | スコープ
     |--------------------------------------------------------------------------
     */
-    public function scopePopular(Builder $query): void
+    public function scopePopular(Builder $builder): void
     {
-        $query->withCount(['articles' => fn ($query) => $query->active()])
+        $builder->withCount(['articles' => static fn($query) => $builder->active()])
             ->orderBy('articles_count', 'desc');
     }
 }

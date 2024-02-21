@@ -12,15 +12,15 @@ use Tests\TestCase;
 
 class SyncAttachmentsTest extends TestCase
 {
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
     }
 
-    public function test()
+    public function test(): void
     {
         $article = Article::factory()->create(['user_id' => $this->user->id]);
         $attachment = Attachment::factory()->create([
@@ -35,7 +35,7 @@ class SyncAttachmentsTest extends TestCase
             'attachmentable_id' => null,
         ]);
 
-        $this->repository->syncAttachments($article, [$attachment->id]);
+        $this->articleRepository->syncAttachments($article, [$attachment->id]);
 
         $this->assertDatabaseHas('attachments', [
             'id' => $attachment->id,
@@ -44,7 +44,7 @@ class SyncAttachmentsTest extends TestCase
         ]);
     }
 
-    public function test他人の添付はNG()
+    public function test他人の添付はNG(): void
     {
         $article = Article::factory()->create(['user_id' => $this->user->id]);
         $attachment = Attachment::factory()->create([
@@ -59,7 +59,7 @@ class SyncAttachmentsTest extends TestCase
             'attachmentable_id' => null,
         ]);
 
-        $this->repository->syncAttachments($article, [$attachment->id]);
+        $this->articleRepository->syncAttachments($article, [$attachment->id]);
 
         $this->assertDatabaseHas('attachments', [
             'id' => $attachment->id,

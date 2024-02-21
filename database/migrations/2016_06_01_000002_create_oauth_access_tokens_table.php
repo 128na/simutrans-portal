@@ -27,29 +27,25 @@ class CreateOauthAccessTokensTable extends Migration
 
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        $this->schema->create('oauth_access_tokens', function (Blueprint $table) {
-            $table->string('id', 100)->primary();
-            $table->unsignedBigInteger('user_id')->nullable()->index();
-            $table->uuid('client_id');
-            $table->string('name')->nullable();
-            $table->text('scopes')->nullable();
-            $table->boolean('revoked');
-            $table->timestamps();
-            $table->dateTime('expires_at')->nullable();
+        $this->schema->create('oauth_access_tokens', static function (Blueprint $blueprint) : void {
+            $blueprint->string('id', 100)->primary();
+            $blueprint->unsignedBigInteger('user_id')->nullable()->index();
+            $blueprint->uuid('client_id');
+            $blueprint->string('name')->nullable();
+            $blueprint->text('scopes')->nullable();
+            $blueprint->boolean('revoked');
+            $blueprint->timestamps();
+            $blueprint->dateTime('expires_at')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         $this->schema->dropIfExists('oauth_access_tokens');
     }

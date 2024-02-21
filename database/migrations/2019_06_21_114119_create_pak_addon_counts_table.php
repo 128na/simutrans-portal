@@ -10,25 +10,21 @@ class CreatePakAddonCountsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('pak_addon_counts', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('pak_slug', 255);
-            $table->string('addon_slug', 255);
-            $table->unsignedBigInteger('count');
+        Schema::create('pak_addon_counts', static function (Blueprint $blueprint) : void {
+            $blueprint->bigIncrements('id');
+            $blueprint->string('pak_slug', 255);
+            $blueprint->string('addon_slug', 255);
+            $blueprint->unsignedBigInteger('count');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('pak_addon_counts');
     }

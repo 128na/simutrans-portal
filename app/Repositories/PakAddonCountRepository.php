@@ -56,9 +56,9 @@ class PakAddonCountRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(PakAddonCount $model)
+    public function __construct(PakAddonCount $pakAddonCount)
     {
-        $this->model = $model;
+        $this->model = $pakAddonCount;
     }
 
     /**
@@ -66,7 +66,7 @@ class PakAddonCountRepository extends BaseRepository
      */
     public function recount(): void
     {
-        DB::transaction(function () {
+        DB::transaction(static function () : void {
             DB::statement(self::DELETE_SQL);
             DB::statement(self::INSERT_SQL);
         });

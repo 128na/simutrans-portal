@@ -10,18 +10,18 @@ use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['cache.content'])->group(function () {
+Route::middleware(['cache.content'])->group(static function () : void {
     Route::feeds();
 });
 
 // 認証系ルート名保持用
-Route::GET('mypage/reset/{token}', [MypageController::class, 'index'])->name('password.reset');
+Route::GET('mypage/reset/{token}', (new MypageController())->index(...))->name('password.reset');
 
 // 招待
-Route::GET('/mypage/invite/{invitation_code}', [InviteController::class, 'index'])->middleware('restrict:invitation_code')->name('invite.index');
+Route::GET('/mypage/invite/{invitation_code}', (new InviteController())->index(...))->middleware('restrict:invitation_code')->name('invite.index');
 
 // 非ログイン系 reidsキャッシュ有効
-Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content'])->group(function () {
+Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content'])->group(static function () : void {
     Route::get('/', [FrontController::class, 'fallback'])->name('index');
     Route::get('/ranking', [FrontController::class, 'fallback'])->name('ranking');
     Route::get('/pages', [FrontController::class, 'fallback'])->name('pages');
@@ -38,14 +38,14 @@ Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content']
 // 非ログイン系 reidsキャッシュ無効
 Route::get('/articles/{id}', [FrontController::class, 'fallbackShow']);
 Route::get('/search', [FrontController::class, 'search'])->name('search');
-Route::get('/mypage/', [MypageController::class, 'index'])->name('mypage.index');
-Route::get('/mypage/{any}', [MypageController::class, 'index'])->where('any', '.*');
+Route::get('/mypage/', (new MypageController())->index(...))->name('mypage.index');
+Route::get('/mypage/{any}', (new MypageController())->index(...))->where('any', '.*');
 Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show'])->name('articles.show');
 Route::get('/articles/{article}/{download}', [FrontController::class, 'download'])
     ->where('download', '^download(\..+)?$')->name('articles.download');
 
-Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function () {
-    Route::get('/admin/', [AdminController::class, 'index'])->name('admin.index');
+Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(static function () : void {
+    Route::get('/admin/', (new AdminController())->index(...))->name('admin.index');
     Route::get('/admin/oauth/twitter/authorize', [OauthController::class, 'authoroize'])->name('admin.oauth.twitter.authorize');
     Route::get('/admin/oauth/twitter/callback', [OauthController::class, 'callback'])->name('admin.oauth.twitter.callback');
     Route::get('/admin/oauth/twitter/refresh', [OauthController::class, 'refresh'])->name('admin.oauth.twitter.refresh');

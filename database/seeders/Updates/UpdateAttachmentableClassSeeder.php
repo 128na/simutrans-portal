@@ -13,7 +13,7 @@ class UpdateAttachmentableClassSeeder extends Seeder
     /**
      * Profileクラスの名前空間修正用.
      */
-    public function run()
+    public function run(): void
     {
         Attachment::where('attachmentable_type', 'App\Models\Profile')->update(['attachmentable_type' => Profile::class]);
     }

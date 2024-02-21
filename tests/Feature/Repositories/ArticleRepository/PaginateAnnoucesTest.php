@@ -10,42 +10,44 @@ use Tests\ArticleTestCase;
 
 class PaginateAnnoucesTest extends ArticleTestCase
 {
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
     }
 
-    public function test()
+    public function test(): void
     {
         $this->createAddonPost();
         $this->createPage();
         $this->createMarkdown();
         $this->createMarkdownAnnounce();
 
-        $res = $this->repository->paginateAnnouces();
+        $res = $this->articleRepository->paginateAnnouces();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(1, $res->count(), 'お知らせ記事のみ取得できること');
     }
 
-    public function test公開以外のステータス()
+    public function test公開以外のステータス(): void
     {
         $article = $this->createMarkdownAnnounce();
         $article->update(['status' => 'draft']);
-        $res = $this->repository->paginateAnnouces();
+
+        $res = $this->articleRepository->paginateAnnouces();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(0, $res->count(), '非公開記事は取得できないこと');
     }
 
-    public function test論理削除()
+    public function test論理削除(): void
     {
         $article = $this->createMarkdownAnnounce();
         $article->delete();
-        $res = $this->repository->paginateAnnouces();
+
+        $res = $this->articleRepository->paginateAnnouces();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');

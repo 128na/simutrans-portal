@@ -21,24 +21,24 @@ class RegisterTest extends TestCase
         'password' => 'example123456',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->user->update(['email' => 'invite@example.com', 'invitation_code' => Str::uuid()]);
     }
 
-    public function test()
+    public function test(): void
     {
         Notification::fake();
         Event::fake();
         $this->assertGuest();
 
-        $response = $this->postJson(
-            "/api/mypage/invite/{$this->user->invitation_code}",
+        $testResponse = $this->postJson(
+            '/api/mypage/invite/' . $this->user->invitation_code,
             $this->data
         );
 
-        $response->assertCreated();
+        $testResponse->assertCreated();
         $this->assertAuthenticated();
         Event::assertDispatched(Registered::class);
         Notification::assertSentTo(
@@ -46,30 +46,30 @@ class RegisterTest extends TestCase
         );
     }
 
-    public function test機能無効()
+    public function test機能無効(): void
     {
         ControllOption::create(['key' => ControllOptionKeys::INVITATION_CODE, 'value' => false]);
 
-        $response = $this->postJson(
-            "/api/mypage/invite/{$this->user->invitation_code}",
+        $testResponse = $this->postJson(
+            '/api/mypage/invite/' . $this->user->invitation_code,
             $this->data
         );
-        $response->assertStatus(403);
+        $testResponse->assertStatus(403);
     }
 
     /**
      * @dataProvider dataValidation
      */
-    public function testValidation(array $data, string $key)
+    public function testValidation(array $data, string $key): void
     {
-        $response = $this->postJson(
-            "/api/mypage/invite/{$this->user->invitation_code}",
+        $testResponse = $this->postJson(
+            '/api/mypage/invite/' . $this->user->invitation_code,
             array_merge($this->data, $data)
         );
-        $response->assertJsonValidationErrorFor($key);
+        $testResponse->assertJsonValidationErrorFor($key);
     }
 
-    public static function dataValidation()
+    public static function dataValidation(): \Generator
     {
         yield 'nameが空' => [
             ['name' => ''], 'name',

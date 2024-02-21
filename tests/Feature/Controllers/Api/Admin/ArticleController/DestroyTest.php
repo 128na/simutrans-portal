@@ -10,26 +10,26 @@ use Tests\TestCase;
 
 class DestroyTest extends TestCase
 {
-    private User $admin;
+    private User $user;
 
     private Article $article;
 
     protected function setUp(): void
     {
         parent::setup();
-        $this->admin = User::factory()->admin()->create();
+        $this->user = User::factory()->admin()->create();
         $this->article = Article::factory()->create();
     }
 
-    public function test()
+    public function test(): void
     {
         $this->assertDatabaseHas('articles', [
             'id' => $this->article->id,
             'deleted_at' => null,
         ]);
 
-        $this->actingAs($this->admin);
-        $url = "/api/admin/articles/{$this->article->id}";
+        $this->actingAs($this->user);
+        $url = '/api/admin/articles/' . $this->article->id;
         $res = $this->deleteJson($url);
         $res->assertOk();
 
@@ -42,15 +42,15 @@ class DestroyTest extends TestCase
         ]);
     }
 
-    public function test削除済みなら復活()
+    public function test削除済みなら復活(): void
     {
         $this->article->delete();
         $this->assertDatabaseHas('articles', [
             'id' => $this->article->id,
         ]);
 
-        $this->actingAs($this->admin);
-        $url = "/api/admin/articles/{$this->article->id}";
+        $this->actingAs($this->user);
+        $url = '/api/admin/articles/' . $this->article->id;
         $res = $this->deleteJson($url);
         $res->assertOk();
 
@@ -60,17 +60,17 @@ class DestroyTest extends TestCase
         ]);
     }
 
-    public function test未ログイン()
+    public function test未ログイン(): void
     {
-        $url = "/api/admin/articles/{$this->article->id}";
+        $url = '/api/admin/articles/' . $this->article->id;
         $res = $this->deleteJson($url);
         $res->assertUnauthorized();
     }
 
-    public function test管理者以外()
+    public function test管理者以外(): void
     {
         $this->actingAs($this->user);
-        $url = "/api/admin/articles/{$this->article->id}";
+        $url = '/api/admin/articles/' . $this->article->id;
         $res = $this->deleteJson($url);
         $res->assertUnauthorized();
     }

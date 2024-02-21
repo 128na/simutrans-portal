@@ -30,16 +30,16 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      */
-    public function report(Throwable $exception)
+    public function report(Throwable $throwable): void
     {
-        parent::report($exception);
+        parent::report($throwable);
     }
 
     /**
      * Render an exception into an HTTP response.
      */
-    public function render($request, Throwable $exception)
+    public function render($request, Throwable $throwable)
     {
-        return parent::render($request, $exception);
+        return parent::render($request, $throwable);
     }
 }

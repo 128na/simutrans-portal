@@ -11,7 +11,7 @@ class UserStoreRequest extends FormRequest
     /**
      * @return array<mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'required|max:255',

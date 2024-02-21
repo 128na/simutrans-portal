@@ -11,14 +11,14 @@ use App\Services\ArticleAnalyticsService;
 
 class AnalyticsController extends Controller
 {
-    public function __construct(private ArticleAnalyticsService $articleAnalyticsService)
+    public function __construct(private readonly ArticleAnalyticsService $articleAnalyticsService)
     {
     }
 
-    public function index(SearchRequest $request): ArticleAnalyticsResource
+    public function index(SearchRequest $searchRequest): ArticleAnalyticsResource
     {
         return new ArticleAnalyticsResource(
-            $this->articleAnalyticsService->findArticles($this->loggedinUser(), $request)
+            $this->articleAnalyticsService->findArticles($this->loggedinUser(), $searchRequest)
         );
     }
 }

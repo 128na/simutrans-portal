@@ -20,63 +20,63 @@ class IsDeadTest extends UnitTestCase
         return app(DeadLinkChecker::class);
     }
 
-    public function test_ok()
+    public function test_ok(): void
     {
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, function (MockInterface $m) {
-            $m->allows('getAttribute')
+        $mock = $this->mock(Article::class, static function (MockInterface $mock) : void {
+            $mock->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy']));
         });
-        $this->mock(GetHeadersHandler::class, function (MockInterface $m) {
-            $m->shouldNotReceive('getHeaders')->once()->andReturn(['Status Code: 200 OK']);
+        $this->mock(GetHeadersHandler::class, static function (MockInterface $mock) : void {
+            $mock->shouldNotReceive('getHeaders')->once()->andReturn(['Status Code: 200 OK']);
         });
 
-        $actual = $this->getSUT()->isDead($article);
+        $actual = $this->getSUT()->isDead($mock);
 
         $this->assertFalse($actual);
     }
 
-    public function test_2回まで失敗OK()
+    public function test_2回まで失敗OK(): void
     {
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, function (MockInterface $m) {
-            $m->allows('getAttribute')
+        $mock = $this->mock(Article::class, static function (MockInterface $mock) : void {
+            $mock->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy']));
         });
-        $this->mock(GetHeadersHandler::class, function (MockInterface $m) {
-            $m->shouldNotReceive('getHeaders')
+        $this->mock(GetHeadersHandler::class, static function (MockInterface $mock) : void {
+            $mock->shouldNotReceive('getHeaders')
                 ->times(2)->andReturn(['Status Code: 500 Internal Server Error'])
                 ->once()->andReturn(['Status Code: 200 OK']);
         });
 
-        $actual = $this->getSUT()->isDead($article);
+        $actual = $this->getSUT()->isDead($mock);
 
         $this->assertFalse($actual);
     }
 
-    public function test_3回失敗でNG()
+    public function test_3回失敗でNG(): void
     {
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, function (MockInterface $m) {
-            $m->allows('getAttribute')
+        $mock = $this->mock(Article::class, static function (MockInterface $mock) : void {
+            $mock->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy']));
         });
 
         Event::fake();
-        $this->mock(GetHeadersHandler::class, function (MockInterface $m) {
-            $m->shouldNotReceive('getHeaders')->times(3)->andReturn(['Status Code: 500 Internal Server Error']);
+        $this->mock(GetHeadersHandler::class, static function (MockInterface $mock) : void {
+            $mock->shouldNotReceive('getHeaders')->times(3)->andReturn(['Status Code: 500 Internal Server Error']);
         });
 
-        $actual = $this->getSUT()->isDead($article);
+        $actual = $this->getSUT()->isDead($mock);
 
         Event::assertDispatched(DeadLinkDetected::class);
         $this->assertTrue($actual);

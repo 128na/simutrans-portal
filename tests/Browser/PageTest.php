@@ -36,7 +36,7 @@ class PageTest extends DuskTestCase
     {
         $page = new $pageClass();
         JobUpdateRelated::dispatchSync();
-        $this->browse(static fn (Browser $browser) => $browser
+        $this->browse(fn (Browser $browser) => $browser
             ->visit($page)
         );
     }

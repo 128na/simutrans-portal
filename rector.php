@@ -1,5 +1,6 @@
 <?php
 
+use Rector\CodingStyle\Rector\ArrowFunction\StaticArrowFunctionRector;
 use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\Config\RectorConfig;
 
@@ -26,4 +27,7 @@ return RectorConfig::configure()
     )
     ->withSkip([
         PostIncDecToPreIncDecRector::class, // pintと干渉する
+        StaticArrowFunctionRector::class => [
+            __DIR__.'/tests/Browser/PageTest.php', //  Cannot bind an instance to a static closure
+        ],
     ]);

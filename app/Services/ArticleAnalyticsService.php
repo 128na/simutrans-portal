@@ -15,11 +15,8 @@ use UnexpectedValueException;
 
 class ArticleAnalyticsService extends Service
 {
-    private ArticleRepository $articleRepository;
-
-    public function __construct(ArticleRepository $articleRepository)
+    public function __construct(private readonly ArticleRepository $articleRepository)
     {
-        $this->articleRepository = $articleRepository;
     }
 
     /**
@@ -53,27 +50,21 @@ class ArticleAnalyticsService extends Service
      */
     private function getPeriod(string $type, Carbon $startDate, Carbon $endDate): array
     {
-        switch ($type) {
-            case 'daily':
-                return [$startDate->format('Ymd'), $endDate->format('Ymd')];
-            case 'monthly':
-                return [$startDate->format('Ym'), $endDate->format('Ym')];
-            case 'yearly':
-                return [$startDate->format('Y'), $endDate->format('Y')];
-        }
-        throw new UnexpectedValueException(sprintf('unknown type provided: %s', $type));
+        return match ($type) {
+            'daily' => [$startDate->format('Ymd'), $endDate->format('Ymd')],
+            'monthly' => [$startDate->format('Ym'), $endDate->format('Ym')],
+            'yearly' => [$startDate->format('Y'), $endDate->format('Y')],
+            default => throw new UnexpectedValueException(sprintf('unknown type provided: %s', $type)),
+        };
     }
 
     private function getTypeId(string $type): int
     {
-        switch ($type) {
-            case 'daily':
-                return 1;
-            case 'monthly':
-                return 2;
-            case 'yearly':
-                return 3;
-        }
-        throw new UnexpectedValueException(sprintf('unknown type provided: %s', $type));
+        return match ($type) {
+            'daily' => 1,
+            'monthly' => 2,
+            'yearly' => 3,
+            default => throw new UnexpectedValueException(sprintf('unknown type provided: %s', $type)),
+        };
     }
 }

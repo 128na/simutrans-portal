@@ -19,8 +19,8 @@ class CommandConvertWeb extends Command
     protected $description = 'Command description';
 
     public function __construct(
-        private WebpConverter $webpConverter,
-        private AttachmentRepository $attachmentRepository,
+        private readonly WebpConverter $webpConverter,
+        private readonly AttachmentRepository $attachmentRepository,
     ) {
         parent::__construct();
     }

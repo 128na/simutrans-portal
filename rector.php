@@ -13,13 +13,13 @@ return RectorConfig::configure()
     ])
     ->withPhpSets(php82: true)
     ->withPreparedSets(
-        deadCode: true,
-        codeQuality: true,
-        codingStyle: true,
-        typeDeclarations: true,
-        privatization: true,
-        naming: true,
-        instanceOf: true,
-        earlyReturn: true,
-        strictBooleans: true,
+        deadCode: false,
+        codeQuality: false,
+        codingStyle: false,
+        typeDeclarations: false,
+        privatization: false,
+        naming: false,
+        instanceOf: false,
+        earlyReturn: false,
+        strictBooleans: false,
     );

@@ -22,67 +22,37 @@ class ZipErrorException extends Exception
      */
     private function handleCode(?int $code): string
     {
-        switch ($code) {
-            case ZipArchive::ER_OK:
-                return 'エラーはありません。';
-            case ZipArchive::ER_MULTIDISK:
-                return '複数ディスクの zip アーカイブはサポートされません。';
-            case ZipArchive::ER_RENAME:
-                return '一時ファイルの名前変更に失敗しました。';
-            case ZipArchive::ER_CLOSE:
-                return 'zip アーカイブのクローズに失敗しました。';
-            case ZipArchive::ER_SEEK:
-                return 'シークエラー。';
-            case ZipArchive::ER_READ:
-                return '読み込みエラー。';
-            case ZipArchive::ER_WRITE:
-                return '書き込みエラー。';
-            case ZipArchive::ER_CRC:
-                return 'CRC エラー。';
-            case ZipArchive::ER_ZIPCLOSED:
-                return 'zip アーカイブはクローズされました。';
-            case ZipArchive::ER_NOENT:
-                return 'そのファイルはありません。';
-            case ZipArchive::ER_EXISTS:
-                return 'ファイルが既に存在します。';
-            case ZipArchive::ER_OPEN:
-                return 'ファイルをオープンできません。';
-            case ZipArchive::ER_TMPOPEN:
-                return '一時ファイルの作成に失敗しました。';
-            case ZipArchive::ER_ZLIB:
-                return 'Zlib エラー。';
-            case ZipArchive::ER_MEMORY:
-                return 'メモリの確保に失敗しました。';
-            case ZipArchive::ER_CHANGED:
-                return 'エントリが変更されました。';
-            case ZipArchive::ER_COMPNOTSUPP:
-                return '圧縮方式がサポートされていません。';
-            case ZipArchive::ER_EOF:
-                return '予期せぬ EOF です。';
-            case ZipArchive::ER_INVAL:
-                return '無効な引数です。';
-            case ZipArchive::ER_NOZIP:
-                return 'zip アーカイブではありません。';
-            case ZipArchive::ER_INTERNAL:
-                return '内部エラー。';
-            case ZipArchive::ER_INCONS:
-                return '矛盾した Zip アーカイブです。';
-            case ZipArchive::ER_REMOVE:
-                return 'ファイルを削除できません。';
-            case ZipArchive::ER_DELETED:
-                return 'エントリが削除されました。';
-            case ZipArchive::ER_ENCRNOTSUPP:
-                return '暗号化メソッドはサポートされていません。 PHP 7.4.3 以降、PECL zip 1.16.1 以降で利用可能です。';
-            case ZipArchive::ER_RDONLY:
-                return '読み取り専用のアーカイブです。 PHP 7.4.3 以降、PECL zip 1.16.1 以降で利用可能です。';
-            case ZipArchive::ER_NOPASSWD:
-                return 'パスワードが指定されていません。 PHP 7.4.3 以降、PECL zip 1.16.1 以降で利用可能です。';
-            case ZipArchive::ER_WRONGPASSWD:
-                return '間違ったパスワードが指定されました。 PHP 7.4.3 以降、PECL zip 1.16.1 以降で利用可能です。';
-            case ZipArchive::ER_CANCELLED:
-                return '操作がキャンセルされました。 libzip ≥ 1.6.0 でビルドした場合、 PHP 7.4.3 以降、PECL zip 1.16.1 以降で利用可能です。';
-        }
-
-        return '不明なエラー';
+        return match ($code) {
+            ZipArchive::ER_OK => 'エラーはありません。',
+            ZipArchive::ER_MULTIDISK => '複数ディスクの zip アーカイブはサポートされません。',
+            ZipArchive::ER_RENAME => '一時ファイルの名前変更に失敗しました。',
+            ZipArchive::ER_CLOSE => 'zip アーカイブのクローズに失敗しました。',
+            ZipArchive::ER_SEEK => 'シークエラー。',
+            ZipArchive::ER_READ => '読み込みエラー。',
+            ZipArchive::ER_WRITE => '書き込みエラー。',
+            ZipArchive::ER_CRC => 'CRC エラー。',
+            ZipArchive::ER_ZIPCLOSED => 'zip アーカイブはクローズされました。',
+            ZipArchive::ER_NOENT => 'そのファイルはありません。',
+            ZipArchive::ER_EXISTS => 'ファイルが既に存在します。',
+            ZipArchive::ER_OPEN => 'ファイルをオープンできません。',
+            ZipArchive::ER_TMPOPEN => '一時ファイルの作成に失敗しました。',
+            ZipArchive::ER_ZLIB => 'Zlib エラー。',
+            ZipArchive::ER_MEMORY => 'メモリの確保に失敗しました。',
+            ZipArchive::ER_CHANGED => 'エントリが変更されました。',
+            ZipArchive::ER_COMPNOTSUPP => '圧縮方式がサポートされていません。',
+            ZipArchive::ER_EOF => '予期せぬ EOF です。',
+            ZipArchive::ER_INVAL => '無効な引数です。',
+            ZipArchive::ER_NOZIP => 'zip アーカイブではありません。',
+            ZipArchive::ER_INTERNAL => '内部エラー。',
+            ZipArchive::ER_INCONS => '矛盾した Zip アーカイブです。',
+            ZipArchive::ER_REMOVE => 'ファイルを削除できません。',
+            ZipArchive::ER_DELETED => 'エントリが削除されました。',
+            ZipArchive::ER_ENCRNOTSUPP => '暗号化メソッドはサポートされていません。 PHP 7.4.3 以降、PECL zip 1.16.1 以降で利用可能です。',
+            ZipArchive::ER_RDONLY => '読み取り専用のアーカイブです。 PHP 7.4.3 以降、PECL zip 1.16.1 以降で利用可能です。',
+            ZipArchive::ER_NOPASSWD => 'パスワードが指定されていません。 PHP 7.4.3 以降、PECL zip 1.16.1 以降で利用可能です。',
+            ZipArchive::ER_WRONGPASSWD => '間違ったパスワードが指定されました。 PHP 7.4.3 以降、PECL zip 1.16.1 以降で利用可能です。',
+            ZipArchive::ER_CANCELLED => '操作がキャンセルされました。 libzip ≥ 1.6.0 でビルドした場合、 PHP 7.4.3 以降、PECL zip 1.16.1 以降で利用可能です。',
+            default => '不明なエラー',
+        };
     }
 }

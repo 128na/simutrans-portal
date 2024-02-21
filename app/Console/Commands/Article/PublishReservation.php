@@ -31,8 +31,8 @@ class PublishReservation extends Command
      * @return void
      */
     public function __construct(
-        private ArticleRepository $articleRepository,
-        private CarbonImmutable $now,
+        private readonly ArticleRepository $articleRepository,
+        private readonly CarbonImmutable $now,
     ) {
         parent::__construct();
     }

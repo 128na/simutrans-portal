@@ -11,9 +11,9 @@ use Laravel\Dusk\Browser;
 
 class TopPage extends Page
 {
-    private Article $article;
+    private readonly Article $article;
 
-    private Category $category;
+    private readonly Category $category;
 
     public function __construct()
     {

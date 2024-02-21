@@ -10,7 +10,7 @@ use Laravel\Dusk\Browser;
 
 class ListSearchPage extends Page
 {
-    private Article $article;
+    private readonly Article $article;
 
     public function __construct()
     {

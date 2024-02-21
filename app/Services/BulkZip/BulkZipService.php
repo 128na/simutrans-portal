@@ -13,11 +13,8 @@ use App\Services\Service;
 
 class BulkZipService extends Service
 {
-    private BulkZipRepository $bulkZipRepository;
-
-    public function __construct(BulkZipRepository $bulkZipRepository)
+    public function __construct(private readonly BulkZipRepository $bulkZipRepository)
     {
-        $this->bulkZipRepository = $bulkZipRepository;
     }
 
     public function findOrCreateAndDispatch(BulkZippableInterface $model): BulkZip

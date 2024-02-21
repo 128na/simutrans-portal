@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 class EditorController extends Controller
 {
     public function __construct(
-        private ArticleEditorService $articleEditorService,
+        private readonly ArticleEditorService $articleEditorService,
     ) {
     }
 

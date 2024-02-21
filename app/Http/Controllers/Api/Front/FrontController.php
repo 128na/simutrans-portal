@@ -19,9 +19,9 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class FrontController extends Controller
 {
     public function __construct(
-        private ArticleService $articleService,
-        private TagService $tagService,
-        private FrontDescriptionService $frontDescriptionService
+        private readonly ArticleService $articleService,
+        private readonly TagService $tagService,
+        private readonly FrontDescriptionService $frontDescriptionService
     ) {
     }
 

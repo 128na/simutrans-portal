@@ -22,9 +22,9 @@ class ZipManager extends Service
      * @param  array<BaseDecorator>  $decorators
      */
     public function __construct(
-        private ZipArchive $zipArchive,
-        private Filesystem $disk,
-        private array $decorators
+        private readonly ZipArchive $zipArchive,
+        private readonly Filesystem $disk,
+        private readonly array $decorators
     ) {
     }
 
@@ -128,7 +128,7 @@ class ZipManager extends Service
                 if (is_string($row)) {
                     $row = [$row];
                 }
-                fputcsv($csv, mb_convert_encoding($row, 'SJIS', 'UTF-8'));
+                fputcsv($csv, mb_convert_encoding((array) $row, 'SJIS', 'UTF-8'));
             }
         }
         $filepath = $this->randName('bulk_zip/', '.csv');

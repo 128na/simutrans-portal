@@ -16,8 +16,8 @@ use Illuminate\Support\LazyCollection;
 class DeadLinkChecker extends Service
 {
     public function __construct(
-        private ArticleRepository $articleRepository,
-        private GetHeadersHandler $getHeadersHandler
+        private readonly ArticleRepository $articleRepository,
+        private readonly GetHeadersHandler $getHeadersHandler
     ) {
     }
 

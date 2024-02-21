@@ -11,11 +11,11 @@ use Laravel\Dusk\Browser;
 
 class ListPakCategoryPage extends Page
 {
-    private Article $article;
+    private readonly Article $article;
 
-    private Category $pak;
+    private readonly Category $pak;
 
-    private Category $addon;
+    private readonly Category $addon;
 
     public function __construct()
     {

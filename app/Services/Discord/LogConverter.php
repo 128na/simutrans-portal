@@ -49,7 +49,7 @@ class LogConverter extends SimpleRecordConverter
     {
         $embed = Embed::make();
 
-        $rawMessages = explode("\n", $record['message']);
+        $rawMessages = explode("\n", (string) $record['message']);
 
         $embed
             ->color($this->getRecordColor($record))

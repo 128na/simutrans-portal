@@ -32,19 +32,15 @@ class UserFactory extends Factory
 
     public function admin()
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'role' => 'admin',
-            ];
-        });
+        return $this->state(fn (array $attributes) => [
+            'role' => 'admin',
+        ]);
     }
 
     public function deleted()
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'deleted_at' => now(),
-            ];
-        });
+        return $this->state(fn (array $attributes) => [
+            'deleted_at' => now(),
+        ]);
     }
 }

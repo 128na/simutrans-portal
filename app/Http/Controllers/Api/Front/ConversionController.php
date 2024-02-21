@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ConversionController extends Controller
 {
-    public function __construct(private Dispatcher $dispatcher)
+    public function __construct(private readonly Dispatcher $dispatcher)
     {
     }
 

@@ -13,7 +13,7 @@ use ZipArchive;
 class ZipArchiveParser extends Service
 {
     public function __construct(
-        private ZipArchive $zipArchive,
+        private readonly ZipArchive $zipArchive,
     ) {
     }
 

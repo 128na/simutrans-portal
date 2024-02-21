@@ -25,10 +25,10 @@ class UpdateFileInfo implements ShouldQueue
 
     public function handle(FileInfoService $fileInfoService): void
     {
-        if (str_ends_with($this->attachment->original_name, 'zip')) {
+        if (str_ends_with((string) $this->attachment->original_name, 'zip')) {
             $fileInfoService->updateOrCreateFromZip($this->attachment);
         }
-        if (str_ends_with($this->attachment->original_name, 'pak')) {
+        if (str_ends_with((string) $this->attachment->original_name, 'pak')) {
             $fileInfoService->updateOrCreateFromPak($this->attachment);
         }
     }

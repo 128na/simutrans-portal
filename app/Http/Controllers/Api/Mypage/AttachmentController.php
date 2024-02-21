@@ -17,8 +17,8 @@ use Throwable;
 class AttachmentController extends Controller
 {
     public function __construct(
-        private AttachmentRepository $attachmentRepository,
-        private StoreService $storeService,
+        private readonly AttachmentRepository $attachmentRepository,
+        private readonly StoreService $storeService,
     ) {
     }
 

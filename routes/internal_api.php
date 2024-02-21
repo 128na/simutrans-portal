@@ -73,7 +73,7 @@ Route::prefix('mypage')->group(function () {
         Route::post('/invitation_code', [InvitationCodeController::class, 'update']);
         Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy']);
         // ログイン履歴
-        Route::get('/login_histories', [LoginHistoryController::class, 'index']);
+        Route::get('/login_histories', (new LoginHistoryController())->index(...));
     });
 });
 // Admin

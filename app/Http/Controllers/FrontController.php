@@ -22,8 +22,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class FrontController extends Controller
 {
     public function __construct(
-        private ArticleService $articleService,
-        private MetaOgpService $metaOgpService,
+        private readonly ArticleService $articleService,
+        private readonly MetaOgpService $metaOgpService,
     ) {
     }
 

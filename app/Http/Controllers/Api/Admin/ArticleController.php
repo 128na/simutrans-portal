@@ -12,11 +12,8 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ArticleController extends Controller
 {
-    private ArticleRepository $articleRepository;
-
-    public function __construct(ArticleRepository $articleRepository)
+    public function __construct(private readonly ArticleRepository $articleRepository)
     {
-        $this->articleRepository = $articleRepository;
     }
 
     /**

@@ -12,20 +12,8 @@ use App\Repositories\UserRepository;
 
 class UserService extends Service
 {
-    private UserRepository $userRepository;
-
-    private ProfileRepository $profileRepository;
-
-    private AttachmentRepository $attachmentRepository;
-
-    public function __construct(
-        UserRepository $userRepository,
-        ProfileRepository $profileRepository,
-        AttachmentRepository $attachmentRepository
-    ) {
-        $this->userRepository = $userRepository;
-        $this->profileRepository = $profileRepository;
-        $this->attachmentRepository = $attachmentRepository;
+    public function __construct(private readonly UserRepository $userRepository, private readonly ProfileRepository $profileRepository, private readonly AttachmentRepository $attachmentRepository)
+    {
     }
 
     public function getUser(User $user): User

@@ -11,9 +11,9 @@ use Laravel\Dusk\Browser;
 
 class ListTagPage extends Page
 {
-    private Article $article;
+    private readonly Article $article;
 
-    private Tag $tag;
+    private readonly Tag $tag;
 
     public function __construct()
     {

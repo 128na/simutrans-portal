@@ -21,11 +21,8 @@ class JobCreateBulkZip implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    private BulkZip $bulkZip;
-
-    public function __construct(BulkZip $bulkZip)
+    public function __construct(private BulkZip $bulkZip)
     {
-        $this->bulkZip = $bulkZip;
     }
 
     public function handle(

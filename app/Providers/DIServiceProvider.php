@@ -70,46 +70,38 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
             return new MarkdownService($app->make(GithubMarkdown::class), new HTMLPurifier($config));
         });
 
-        $this->app->bind(ZipManager::class, function ($app) {
-            return new ZipManager(
-                new ZipArchive(),
-                Storage::disk('public'),
-                [
-                    $app->make(AddonPostDecorator::class),
-                    $app->make(AddonIntroductionDecorator::class),
-                ]
-            );
-        });
+        $this->app->bind(ZipManager::class, fn ($app) => new ZipManager(
+            new ZipArchive(),
+            Storage::disk('public'),
+            [
+                $app->make(AddonPostDecorator::class),
+                $app->make(AddonIntroductionDecorator::class),
+            ]
+        ));
 
-        $this->app->bind(FileInfoService::class, function ($app) {
-            return new FileInfoService(
-                $this->app->make(FileInfoRepository::class),
-                $this->app->make(ZipArchiveParser::class),
-                $this->app->make(TextService::class),
-                [
-                    $this->app->make(DatExtractor::class),
-                    $this->app->make(TabExtractor::class),
-                    $this->app->make(PakExtractor::class),
-                    $this->app->make(ReadmeExtractor::class),
-                ]
-            );
-        });
+        $this->app->bind(FileInfoService::class, fn ($app) => new FileInfoService(
+            $this->app->make(FileInfoRepository::class),
+            $this->app->make(ZipArchiveParser::class),
+            $this->app->make(TextService::class),
+            [
+                $this->app->make(DatExtractor::class),
+                $this->app->make(TabExtractor::class),
+                $this->app->make(PakExtractor::class),
+                $this->app->make(ReadmeExtractor::class),
+            ]
+        ));
 
-        $this->app->bind(TwitterOAuth::class, function ($app) {
-            return new TwitterOAuth(
-                config('services.twitter.access_token'),
-                config('services.twitter.access_secret'),
-                null,
-                config('services.twitter.bearer_token'),
-            );
-        });
+        $this->app->bind(TwitterOAuth::class, fn ($app) => new TwitterOAuth(
+            config('services.twitter.access_token'),
+            config('services.twitter.access_secret'),
+            null,
+            config('services.twitter.bearer_token'),
+        ));
 
-        $this->app->bind(MisskeyApiClient::class, function ($app) {
-            return new MisskeyApiClient(
-                config('services.misskey.base_url'),
-                config('services.misskey.token'),
-            );
-        });
+        $this->app->bind(MisskeyApiClient::class, fn ($app) => new MisskeyApiClient(
+            config('services.misskey.base_url'),
+            config('services.misskey.token'),
+        ));
 
         $this->app->bind(BlueSkyApiClient::class, function ($app) {
             $api = new BlueskyApi(config('services.bluesky.user'), config('services.bluesky.password'));

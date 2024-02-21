@@ -32,16 +32,14 @@ class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
      */
     public function register()
     {
-        $this->app->bind(PKCEService::class, function () {
-            return new PKCEService(
-                $this->app->make(Carbon::class),
-                $this->app->make(Client::class),
-                $this->app->make(OauthTokenRepository::class),
-                config('services.twitter.client_id'),
-                config('services.twitter.client_secret'),
-                route('admin.oauth.twitter.callback'),
-            );
-        });
+        $this->app->bind(PKCEService::class, fn () => new PKCEService(
+            $this->app->make(Carbon::class),
+            $this->app->make(Client::class),
+            $this->app->make(OauthTokenRepository::class),
+            config('services.twitter.client_id'),
+            config('services.twitter.client_secret'),
+            route('admin.oauth.twitter.callback'),
+        ));
 
         $this->app->bind(TwitterV2Api::class, function () {
             $client = new TwitterV2Api(

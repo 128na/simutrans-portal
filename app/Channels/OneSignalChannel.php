@@ -16,7 +16,7 @@ use Throwable;
 class OneSignalChannel extends BaseChannel
 {
     public function __construct(
-        private MessageGenerator $messageGenerator
+        private readonly MessageGenerator $messageGenerator
     ) {
     }
 
@@ -37,7 +37,7 @@ class OneSignalChannel extends BaseChannel
         return match (true) {
             $notification instanceof SendArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($notifiable),
             $notification instanceof SendArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($notifiable),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', get_class($notification))),
+            default => throw new Exception(sprintf('unsupport notification "%s" provided', $notification::class)),
         };
     }
 

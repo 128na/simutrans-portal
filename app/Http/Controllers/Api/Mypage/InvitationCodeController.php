@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
 class InvitationCodeController extends Controller
 {
     public function __construct(
-        private UserRepository $userRepository,
+        private readonly UserRepository $userRepository,
     ) {
     }
 

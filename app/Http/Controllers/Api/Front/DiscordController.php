@@ -15,8 +15,8 @@ use Throwable;
 class DiscordController extends Controller
 {
     public function __construct(
-        private InviteService $inviteService,
-        private RecaptchaService $recaptchaService,
+        private readonly InviteService $inviteService,
+        private readonly RecaptchaService $recaptchaService,
     ) {
     }
 

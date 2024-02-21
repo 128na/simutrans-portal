@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class PaginateBySearch extends TestCase
 {
-    public function test_example()
+    public function test_example(): never
     {
         $this->markTestIncomplete();
     }

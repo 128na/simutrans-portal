@@ -15,12 +15,12 @@ use Throwable;
 class PKCEService
 {
     public function __construct(
-        private Carbon $now,
-        private Client $client,
-        private OauthTokenRepository $oauthTokenRepository,
-        private string $clientId,
-        private string $clientSecret,
-        private string $callbackUrl,
+        private readonly Carbon $now,
+        private readonly Client $client,
+        private readonly OauthTokenRepository $oauthTokenRepository,
+        private readonly string $clientId,
+        private readonly string $clientSecret,
+        private readonly string $callbackUrl,
     ) {
     }
 
@@ -134,7 +134,7 @@ class PKCEService
                     'token_type_hint' => 'access_token',
                 ],
             ]);
-        } catch (Throwable $e) {
+        } catch (Throwable) {
         }
 
         $this->oauthTokenRepository->delete($token);

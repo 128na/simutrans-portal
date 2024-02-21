@@ -12,7 +12,7 @@ use Exception;
 
 class ZippableManager extends Service
 {
-    public function __construct(private ArticleRepository $articleRepository)
+    public function __construct(private readonly ArticleRepository $articleRepository)
     {
     }
 
@@ -21,11 +21,10 @@ class ZippableManager extends Service
      */
     public function getItems(BulkZip $model): array
     {
-        switch ($model->bulk_zippable_type) {
-            case User::class:
-                return $this->getUserItems($model->bulkZippable);
-        }
-        throw new Exception("unsupport type provided:{$model->bulk_zippable_type}", 1);
+        return match ($model->bulk_zippable_type) {
+            User::class => $this->getUserItems($model->bulkZippable),
+            default => throw new Exception("unsupport type provided:{$model->bulk_zippable_type}", 1),
+        };
     }
 
     /**

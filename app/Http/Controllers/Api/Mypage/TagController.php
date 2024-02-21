@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
 class TagController extends Controller
 {
     public function __construct(
-        private TagRepository $tagRepository,
+        private readonly TagRepository $tagRepository,
     ) {
     }
 

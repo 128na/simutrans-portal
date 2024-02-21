@@ -16,8 +16,8 @@ use Throwable;
 class MisskeyChannel extends BaseChannel
 {
     public function __construct(
-        private MisskeyApiClient $misskeyApiClient,
-        private MessageGenerator $messageGenerator,
+        private readonly MisskeyApiClient $misskeyApiClient,
+        private readonly MessageGenerator $messageGenerator,
     ) {
     }
 
@@ -37,7 +37,7 @@ class MisskeyChannel extends BaseChannel
         return match (true) {
             $notification instanceof SendArticlePublished => $this->messageGenerator->buildPublishedMessage($notifiable),
             $notification instanceof SendArticleUpdated => $this->messageGenerator->buildUpdatedMessage($notifiable),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', get_class($notification))),
+            default => throw new Exception(sprintf('unsupport notification "%s" provided', $notification::class)),
         };
     }
 

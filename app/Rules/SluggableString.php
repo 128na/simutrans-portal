@@ -14,7 +14,7 @@ class SluggableString implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $matched = preg_match('/\A[\w\d\-_]+\z/', $value, $matches);
+        $matched = preg_match('/\A[\w\d\-_]+\z/', (string) $value, $matches);
         if ($matched !== 1) {
             $fail(':attribute に使用できない文字が含まれています。(英数字、-、_以外)');
         }

@@ -40,7 +40,7 @@ class BlueSkyChannel extends BaseChannel
         $text = match (true) {
             $notification instanceof SendArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($notifiable),
             $notification instanceof SendArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($notifiable),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', get_class($notification))),
+            default => throw new Exception(sprintf('unsupport notification "%s" provided', $notification::class)),
         };
         $post = Post::create($text);
 

@@ -9,7 +9,7 @@ use HTMLPurifier;
 
 class ReadmeExtractor extends Service implements Extractor
 {
-    public function __construct(private HTMLPurifier $purifier)
+    public function __construct(private readonly HTMLPurifier $purifier)
     {
     }
 

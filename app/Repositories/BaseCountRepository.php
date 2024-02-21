@@ -20,7 +20,7 @@ abstract class BaseCountRepository extends BaseRepository
      */
     public function countUp(Article $article, ?CarbonImmutable $datetime = null): void
     {
-        $datetime = $datetime ?? now();
+        $datetime ??= now();
         $sql = $this->buildSql($article, $datetime);
 
         DB::transaction(function () use ($sql) {

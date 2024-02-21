@@ -11,7 +11,7 @@ use Laravel\Dusk\Browser;
 
 class ListAnnouncePage extends Page
 {
-    private Article $article;
+    private readonly Article $article;
 
     public function __construct()
     {

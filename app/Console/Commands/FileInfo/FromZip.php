@@ -16,8 +16,8 @@ class FromZip extends Command
     protected $description = 'Update zip file info';
 
     public function __construct(
-        private AttachmentRepository $attachmentRepository,
-        private FileInfoService $fileInfoService,
+        private readonly AttachmentRepository $attachmentRepository,
+        private readonly FileInfoService $fileInfoService,
     ) {
         parent::__construct();
     }

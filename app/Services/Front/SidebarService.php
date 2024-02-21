@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Collection;
 class SidebarService extends Service
 {
     public function __construct(
-        private PakAddonCountRepository $pakAddonCountRepository,
-        private UserAddonCountRepository $userAddonCountRepository
+        private readonly PakAddonCountRepository $pakAddonCountRepository,
+        private readonly UserAddonCountRepository $userAddonCountRepository
     ) {
     }
 

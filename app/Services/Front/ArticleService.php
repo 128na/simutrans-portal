@@ -20,8 +20,8 @@ class ArticleService extends Service
     public const ORDER_BY_MODIFIED_AT = 'modified_at';
 
     public function __construct(
-        private ArticleRepository $articleRepository,
-        private CategoryRepository $categoryRepository,
+        private readonly ArticleRepository $articleRepository,
+        private readonly CategoryRepository $categoryRepository,
     ) {
     }
 

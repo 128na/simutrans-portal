@@ -22,8 +22,8 @@ class TwitterV2Api extends TwitterOAuth
         string $consumerKey,
         string $consumerSecret,
         string $appOnlyBearerToken,
-        private OauthTokenRepository $oauthTokenRepository,
-        private PKCEService $pKCEService,
+        private readonly OauthTokenRepository $oauthTokenRepository,
+        private readonly PKCEService $pKCEService,
     ) {
         parent::__construct(
             $consumerKey,

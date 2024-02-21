@@ -10,16 +10,13 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class ImageAttachment implements ValidationRule
 {
-    private AttachmentRepository $attachmentRepository;
-
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct(AttachmentRepository $attachmentRepository)
+    public function __construct(private readonly AttachmentRepository $attachmentRepository)
     {
-        $this->attachmentRepository = $attachmentRepository;
     }
 
     /**

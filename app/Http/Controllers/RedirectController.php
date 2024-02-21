@@ -14,11 +14,8 @@ use Illuminate\Http\Response;
  */
 class RedirectController extends Controller
 {
-    private RedirectRepository $redirectRepository;
-
-    public function __construct(RedirectRepository $redirectRepository)
+    public function __construct(private readonly RedirectRepository $redirectRepository)
     {
-        $this->redirectRepository = $redirectRepository;
     }
 
     public function index(Request $request): RedirectResponse

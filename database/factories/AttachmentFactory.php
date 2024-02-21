@@ -46,11 +46,9 @@ class AttachmentFactory extends Factory
 
     public function image()
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'original_name' => 'test.png',
-                'path' => 'default/test.png',
-            ];
-        });
+        return $this->state(fn (array $attributes) => [
+            'original_name' => 'test.png',
+            'path' => 'default/test.png',
+        ]);
     }
 }

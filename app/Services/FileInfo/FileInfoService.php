@@ -16,10 +16,10 @@ class FileInfoService extends Service
      * @param  \App\Services\FileInfo\Extractors\Extractor[]  $extractors
      */
     public function __construct(
-        private FileInfoRepository $fileInfoRepository,
-        private ZipArchiveParser $zipArchiveParser,
-        private TextService $textService,
-        private array $extractors,
+        private readonly FileInfoRepository $fileInfoRepository,
+        private readonly ZipArchiveParser $zipArchiveParser,
+        private readonly TextService $textService,
+        private readonly array $extractors,
     ) {
     }
 
@@ -34,7 +34,7 @@ class FileInfoService extends Service
             $data = $this->handleExtractors($filename, $text, []);
 
             return $this->fileInfoRepository->updateOrCreate(['attachment_id' => $attachment->id], ['data' => $data]);
-        } catch (InvalidEncodingException $e) {
+        } catch (InvalidEncodingException) {
             return $this->fileInfoRepository->updateOrCreate(['attachment_id' => $attachment->id], ['data' => []]);
         }
     }
@@ -50,7 +50,7 @@ class FileInfoService extends Service
             }
 
             return $this->fileInfoRepository->updateOrCreate(['attachment_id' => $attachment->id], ['data' => $data]);
-        } catch (InvalidEncodingException $e) {
+        } catch (InvalidEncodingException) {
             return $this->fileInfoRepository->updateOrCreate(['attachment_id' => $attachment->id], ['data' => []]);
         }
     }

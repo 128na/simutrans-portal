@@ -16,8 +16,8 @@ use Throwable;
 class TwitterChannel extends BaseChannel
 {
     public function __construct(
-        private TwitterV2Api $twitterV2Api,
-        private MessageGenerator $messageGenerator
+        private readonly TwitterV2Api $twitterV2Api,
+        private readonly MessageGenerator $messageGenerator
     ) {
     }
 
@@ -37,7 +37,7 @@ class TwitterChannel extends BaseChannel
         return match (true) {
             $notification instanceof SendArticlePublished => $this->messageGenerator->buildPublishedMessage($notifiable),
             $notification instanceof SendArticleUpdated => $this->messageGenerator->buildUpdatedMessage($notifiable),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', get_class($notification))),
+            default => throw new Exception(sprintf('unsupport notification "%s" provided', $notification::class)),
         };
     }
 

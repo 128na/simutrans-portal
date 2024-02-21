@@ -21,9 +21,9 @@ use Illuminate\Support\Collection as SupportCollection;
 class ArticleEditorService extends Service
 {
     public function __construct(
-        private ArticleRepository $articleRepository,
-        private CategoryRepository $categoryRepository,
-        private CarbonImmutable $now,
+        private readonly ArticleRepository $articleRepository,
+        private readonly CategoryRepository $categoryRepository,
+        private readonly CarbonImmutable $now,
     ) {
     }
 

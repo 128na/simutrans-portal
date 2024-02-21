@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 class StoreService extends Service
 {
     public function __construct(
-        private WebpConverter $webpConverter,
+        private readonly WebpConverter $webpConverter,
     ) {
     }
 

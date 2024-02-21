@@ -364,17 +364,17 @@ class Article extends Model implements Feedable
 
     public function getMetaDescriptionAttribute(): string
     {
-        return mb_strimwidth($this->contents->getDescription(), 0, 300, '…');
+        return mb_strimwidth((string) $this->contents->getDescription(), 0, 300, '…');
     }
 
     public function getHeadlineDescriptionAttribute(): string
     {
-        return mb_strimwidth($this->contents->getDescription(), 0, 55, '…');
+        return mb_strimwidth((string) $this->contents->getDescription(), 0, 55, '…');
     }
 
     public function getUrlDecodedSlugAttribute(): string
     {
-        return urldecode($this->slug);
+        return urldecode((string) $this->slug);
     }
 
     /*

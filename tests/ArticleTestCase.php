@@ -50,7 +50,7 @@ abstract class ArticleTestCase extends TestCase
 
     protected function createAddonPost($user = null)
     {
-        $user = $user ?? $this->user;
+        $user ??= $this->user;
         $file = UploadedFile::fake()->create('file.zip', 1, 'application/zip');
         $attachment = $this->createFromFile($file, $user->id);
         $article = Article::factory()->create([
@@ -71,7 +71,7 @@ abstract class ArticleTestCase extends TestCase
 
     protected function createAddonIntroduction($user = null)
     {
-        $user = $user ?? $this->user;
+        $user ??= $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'addon-introduction',
@@ -89,7 +89,7 @@ abstract class ArticleTestCase extends TestCase
 
     protected function createPage($user = null)
     {
-        $user = $user ?? $this->user;
+        $user ??= $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'page',
@@ -105,7 +105,7 @@ abstract class ArticleTestCase extends TestCase
 
     protected function createMarkdown($user = null)
     {
-        $user = $user ?? $this->user;
+        $user ??= $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'markdown',
@@ -121,7 +121,7 @@ abstract class ArticleTestCase extends TestCase
 
     protected function createAnnounce($user = null)
     {
-        $user = $user ?? $this->user;
+        $user ??= $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'page',
@@ -139,7 +139,7 @@ abstract class ArticleTestCase extends TestCase
 
     protected function createMarkdownAnnounce($user = null)
     {
-        $user = $user ?? $this->user;
+        $user ??= $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'markdown',

@@ -22,7 +22,7 @@ class ArticleResource extends JsonResource
         return [
             'id' => $this->resource->id,
             'title' => $this->resource->title,
-            'slug' => urldecode($this->resource->slug),
+            'slug' => urldecode((string) $this->resource->slug),
             'status' => $this->resource->status,
             'post_type' => $this->resource->post_type,
             'contents' => $this->resource->contents,

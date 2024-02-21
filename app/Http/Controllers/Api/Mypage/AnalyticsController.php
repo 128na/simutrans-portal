@@ -11,7 +11,7 @@ use App\Services\ArticleAnalyticsService;
 
 class AnalyticsController extends Controller
 {
-    public function __construct(private ArticleAnalyticsService $articleAnalyticsService)
+    public function __construct(private readonly ArticleAnalyticsService $articleAnalyticsService)
     {
     }
 

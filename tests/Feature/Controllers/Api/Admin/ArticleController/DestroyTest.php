@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class DestroyTest extends TestCase
 {
-    private User $user;
+    protected User $user;
 
     private Article $article;
 

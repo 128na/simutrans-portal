@@ -26,7 +26,8 @@ jobs:
             -   uses: "ramsey/composer-install@v2"
 
             -   run: vendor/bin/rector --ansi
-            # @todo apply coding standard if used
+
+            -   run: vendor/bin/pint
 
             -
                 # commit only to core contributors who have repository access

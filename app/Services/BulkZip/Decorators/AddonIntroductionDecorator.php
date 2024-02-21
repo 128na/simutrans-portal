@@ -33,9 +33,8 @@ class AddonIntroductionDecorator extends BaseDecorator
                 $model->thumbnail->path
             );
         }
-        $result = $this->addContent($result, $this->content($model));
 
-        return $result;
+        return $this->addContent($result, $this->content($model));
     }
 
     /**

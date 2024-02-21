@@ -25,12 +25,10 @@ class AnnounceSeeder extends Seeder
             throw new \Exception('admin email was empty!');
         }
 
-        $admin = User::firstOrCreate(
+        return User::firstOrCreate(
             ['role' => config('role.admin'), 'name' => config('admin.name'), 'email' => config('admin.email')],
             ['password' => bcrypt(config('admin.password')), 'email_verified_at' => now()]
         );
-
-        return $admin;
     }
 
     /**

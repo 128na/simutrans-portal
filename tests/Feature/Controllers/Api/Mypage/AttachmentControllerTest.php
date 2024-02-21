@@ -29,7 +29,7 @@ class AttachmentControllerTest extends ArticleTestCase
 
     public function testFormatImage()
     {
-        $file = $this->createFromFile(UploadedFile::fake()->image('test.png', 1), $this->user->id);
+        $this->createFromFile(UploadedFile::fake()->image('test.png', 1), $this->user->id);
 
         $url = '/api/mypage/attachments';
         $this->actingAs($this->user);
@@ -40,7 +40,7 @@ class AttachmentControllerTest extends ArticleTestCase
 
     public function testFormatOther()
     {
-        $file = $this->createFromFile(UploadedFile::fake()->create('test.zip', 1, 'application/zip'), $this->user->id);
+        $this->createFromFile(UploadedFile::fake()->create('test.zip', 1, 'application/zip'), $this->user->id);
 
         $url = '/api/mypage/attachments';
         $this->actingAs($this->user);

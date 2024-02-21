@@ -73,7 +73,6 @@ class AddonPostDecoratorTest extends UnitTestCase
                     ->andReturn(collect(['test tag']));
             }));
             $m->shouldReceive('getAttribute')->withArgs(['contents'])->andReturn(new AddonIntroductionContent([
-                'author' => 'test author',
                 'description' => 'test description',
                 'author' => 'test author',
                 'license' => 'test license',

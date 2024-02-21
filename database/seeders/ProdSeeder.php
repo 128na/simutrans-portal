@@ -20,7 +20,7 @@ class ProdSeeder extends Seeder
      */
     public function run()
     {
-        $admin = self::addAdminUser();
+        self::addAdminUser();
         self::addItems(config('category.pak'));
         self::addItems(config('category.addon'));
         self::addItems(config('category.pak128_position'));
@@ -34,12 +34,10 @@ class ProdSeeder extends Seeder
             throw new \Exception('admin email was empty!');
         }
 
-        $admin = User::firstOrCreate(
+        return User::firstOrCreate(
             ['role' => config('role.admin'), 'name' => config('admin.name'), 'email' => config('admin.email')],
             ['password' => bcrypt(config('admin.password')), 'email_verified_at' => now()]
         );
-
-        return $admin;
     }
 
     private static function addItems($items)

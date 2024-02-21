@@ -103,7 +103,9 @@
       "./vendor/bin/phpstan analyse --memory-limit=1G --generate-baseline --allow-empty-baseline"
     ],
     "rector": [
-      "./vendor/bin/rector"
+      "./vendor/bin/rector",
+      "@pint",
+      "@stan"
     ],
     "rector:check": [
       "./vendor/bin/rector --dry-run"

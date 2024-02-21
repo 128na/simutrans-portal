@@ -85,7 +85,7 @@ class DeadLinkChecker extends Service
 
     public function getFailedCount(Article $article): int
     {
-        return (int) Cache::get($this->getCacheKey($article), 0);
+        return Cache::get($this->getCacheKey($article), 0);
     }
 
     public function updateFailedCount(Article $article, int $count): void

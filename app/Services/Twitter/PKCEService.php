@@ -84,7 +84,7 @@ class PKCEService
 
         logger('generateToken::data', $data);
 
-        $token = $this->oauthTokenRepository->updateOrCreate(
+        return $this->oauthTokenRepository->updateOrCreate(
             ['application' => 'twitter'],
             [
                 'token_type' => $data['token_type'],
@@ -94,8 +94,6 @@ class PKCEService
                 'expired_at' => $this->now->addSeconds($data['expires_in']),
             ]
         );
-
-        return $token;
     }
 
     public function refreshToken(OauthToken $token): OauthToken

@@ -41,9 +41,8 @@ class AddonPostDecorator extends BaseDecorator
                 $model->file->path
             );
         }
-        $result = $this->addContent($result, $this->content($model));
 
-        return $result;
+        return $this->addContent($result, $this->content($model));
     }
 
     /**

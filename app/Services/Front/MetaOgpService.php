@@ -35,9 +35,8 @@ class MetaOgpService extends Service
             return config('app.meta-description');
         }
         $str = str_replace(["\n", "\r"], '', $str);
-        $str = mb_strimwidth($str, 0, 200, '…');
 
-        return $str;
+        return mb_strimwidth($str, 0, 200, '…');
     }
 
     /**

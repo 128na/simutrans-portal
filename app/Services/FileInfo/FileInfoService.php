@@ -76,8 +76,7 @@ class FileInfoService extends Service
     private function handleText(string $text): string
     {
         $text = $this->textService->encoding($text);
-        $text = $this->textService->removeBom($text);
 
-        return $text;
+        return $this->textService->removeBom($text);
     }
 }

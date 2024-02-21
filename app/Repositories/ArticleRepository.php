@@ -113,6 +113,9 @@ class ArticleRepository extends BaseRepository
             ->get();
     }
 
+    /**
+     * @return Builder<Article>
+     */
     private function queryAnnouces(string $order): Builder
     {
         return $this->model
@@ -130,12 +133,14 @@ class ArticleRepository extends BaseRepository
      */
     public function paginateAnnouces(bool $simple = false, string $order = 'modified_at'): Paginator
     {
-        /** @var Paginator<Article> */
         return $simple
             ? $this->queryAnnouces($order)->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryAnnouces($order)->paginate();
     }
 
+    /**
+     * @return Builder<Article>
+     */
     private function queryPages(string $order): Builder
     {
         return $this->model
@@ -153,12 +158,14 @@ class ArticleRepository extends BaseRepository
      */
     public function paginatePages(bool $simple = false, string $order = 'modified_at'): Paginator
     {
-        /** @var Paginator<Article> */
         return $simple
             ? $this->queryPages($order)->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryPages($order)->paginate();
     }
 
+    /**
+     * @return Builder<Article>
+     */
     private function queryRanking(): Builder
     {
         return $this->model
@@ -175,7 +182,6 @@ class ArticleRepository extends BaseRepository
      */
     public function paginateRanking(bool $simple = false): Paginator
     {
-        /** @var Paginator<Article> */
         return $simple
             ? $this->queryRanking()->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryRanking()->paginate();

@@ -49,9 +49,6 @@ class DevSeeder extends Seeder
                     self::addCategories($article);
                     self::addTags($article);
                 }
-                // 一般記事
-                if ($article->post_type === 'page') {
-                }
             }
         }
     }

@@ -72,7 +72,8 @@ abstract class ArticleTestCase extends TestCase
     protected function createAddonIntroduction($user = null)
     {
         $user ??= $this->user;
-        $article = Article::factory()->create([
+
+        return Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'addon-introduction',
             'title' => 'test_addon-introduction'.random_int(1, 999),
@@ -83,14 +84,13 @@ abstract class ArticleTestCase extends TestCase
                 'link' => 'http://example.com',
             ],
         ]);
-
-        return $article;
     }
 
     protected function createPage($user = null)
     {
         $user ??= $this->user;
-        $article = Article::factory()->create([
+
+        return Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'page',
             'title' => 'test_page',
@@ -99,14 +99,13 @@ abstract class ArticleTestCase extends TestCase
                 'sections' => [['type' => 'text', 'text' => 'test page text']],
             ],
         ]);
-
-        return $article;
     }
 
     protected function createMarkdown($user = null)
     {
         $user ??= $this->user;
-        $article = Article::factory()->create([
+
+        return Article::factory()->create([
             'user_id' => $user->id,
             'post_type' => 'markdown',
             'title' => 'test_markdown',
@@ -115,8 +114,6 @@ abstract class ArticleTestCase extends TestCase
                 'markdown' => '# test markdown text',
             ],
         ]);
-
-        return $article;
     }
 
     protected function createAnnounce($user = null)

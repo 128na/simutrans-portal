@@ -24,7 +24,7 @@ class Cacheable
         if ($this->shouldCache()) {
             $key = $this->getKey($request);
             $cached = $this->getCache($key);
-            if ($cached) {
+            if ($cached !== null && $cached !== '' && $cached !== '0') {
                 return $this->responseFromCache($cached, $key);
             }
 

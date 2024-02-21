@@ -17,7 +17,7 @@ class LogConverter extends SimpleRecordConverter
     {
         try {
             $stacktrace = $this->getStacktrace($record);
-            if ($stacktrace) {
+            if ($stacktrace !== null && $stacktrace !== '' && $stacktrace !== '0') {
                 $this->makeErrorMessage($message, $record, $stacktrace);
             } else {
                 $this->makeInfoMesage($message, $record);

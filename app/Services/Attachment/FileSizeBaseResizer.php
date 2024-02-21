@@ -31,7 +31,7 @@ class FileSizeBaseResizer extends Service
         do {
             $resized = $this->doResize($im, $width);
             $size = @filesize($resized);
-            if (! $size) {
+            if ($size === 0 || $size === false) {
                 throw new ConvertFailedException('filesize failed');
             }
 
@@ -78,7 +78,7 @@ class FileSizeBaseResizer extends Service
         }
 
         $tmpPath = @tempnam(sys_get_temp_dir(), '');
-        if (! $tmpPath) {
+        if ($tmpPath === '' || $tmpPath === '0' || $tmpPath === false) {
             throw new ConvertFailedException('tempnam failed');
         }
 

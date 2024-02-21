@@ -31,7 +31,7 @@ class MetaOgpService extends Service
 
     private function trimDescription(?string $str): string
     {
-        if (! $str) {
+        if ($str === null || $str === '' || $str === '0') {
             return config('app.meta-description');
         }
 

@@ -22,7 +22,7 @@ return RectorConfig::configure()
         naming: true,
         instanceOf: true,
         earlyReturn: true,
-        strictBooleans: false,
+        strictBooleans: true,
     )
     ->withSkip([
         PostIncDecToPreIncDecRector::class, // pintと干渉する

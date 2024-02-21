@@ -32,9 +32,11 @@ class AttachmentRepository extends BaseRepository
         if (! $user->profile) {
             return;
         }
+
         if (! $attachment) {
             return;
         }
+
         $user->profile->attachments()->save($attachment);
     }
 

@@ -15,18 +15,20 @@ class Attachments extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection->map(fn($item): array => [
-            'id' => $item->id,
-            'attachmentable_type' => class_basename($item->attachmentable_type),
-            'attachmentable_id' => $item->attachmentable_id,
-            'type' => $item->type,
-            'original_name' => $item->original_name,
-            'thumbnail' => $item->thumbnail,
-            'url' => $item->url,
-            'fileInfo' => $this->when(
-                $item->attachmentable_type !== Profile::class && $item->fileInfo,
-                static fn() => $item->fileInfo->data
-            ),
-        ])->toArray();
+        return $this->collection->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'attachmentable_type' => class_basename($item->attachmentable_type),
+                'attachmentable_id' => $item->attachmentable_id,
+                'type' => $item->type,
+                'original_name' => $item->original_name,
+                'thumbnail' => $item->thumbnail,
+                'url' => $item->url,
+                'fileInfo' => $this->when(
+                    $item->attachmentable_type !== Profile::class && $item->fileInfo,
+                    fn () => $item->fileInfo->data
+                ),
+            ];
+        })->toArray();
     }
 }

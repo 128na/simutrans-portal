@@ -9,7 +9,7 @@ use HTMLPurifier;
 
 class ReadmeExtractor extends Service implements Extractor
 {
-    public function __construct(private readonly HTMLPurifier $htmlPurifier)
+    public function __construct(private HTMLPurifier $purifier)
     {
     }
 
@@ -35,6 +35,6 @@ class ReadmeExtractor extends Service implements Extractor
      */
     public function extract(string $text): array
     {
-        return [$this->htmlPurifier->purify($text)];
+        return [$this->purifier->purify($text)];
     }
 }

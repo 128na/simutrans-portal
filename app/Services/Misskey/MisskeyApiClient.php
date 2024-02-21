@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Http;
 class MisskeyApiClient extends Service
 {
     public function __construct(
-        private readonly string $baseUrl,
-        private readonly string $token,
+        private string $baseUrl,
+        private string $token,
     ) {
 
     }

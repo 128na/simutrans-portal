@@ -21,7 +21,6 @@ class RedirectUnlessSSL
         if (! $request->secure() && App::environment('production', 'staging')) {
             return redirect()->secure($request->path());
         }
-
         if (App::environment('ngrok')) {
             URL::forceScheme('https');
         }

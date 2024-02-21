@@ -33,32 +33,33 @@ class AddonIntroductionDecorator extends BaseDecorator
                 $model->thumbnail->path
             );
         }
+        $result = $this->addContent($result, $this->content($model));
 
-        return $this->addContent($result, $this->content($model));
+        return $result;
     }
 
     /**
      * @return array<mixed>
      */
-    private function content(Article $article): array
+    private function content(Article $model): array
     {
         /**
          * @var \App\Models\Contents\AddonIntroductionContent $contents
          */
-        $contents = $article->contents;
+        $contents = $model->contents;
 
         return [
-            ['ID', $article->id],
-            ['タイトル', $article->title],
-            ['記事URL', route('articles.show', ['userIdOrNickname' => $article->user?->nickname ?? $article->user_id, 'articleSlug' => $article->slug])],
+            ['ID', $model->id],
+            ['タイトル', $model->title],
+            ['記事URL', route('articles.show', ['userIdOrNickname' => $model->user?->nickname ?? $model->user_id, 'articleSlug' => $model->slug])],
             [
-                'サムネイル画像', $article->has_thumbnail && $article->thumbnail
-                    ? $this->toPath($article->id, $article->thumbnail->original_name)
+                'サムネイル画像', $model->has_thumbnail && $model->thumbnail
+                    ? $this->toPath($model->id, $model->thumbnail->original_name)
                     : '無し',
             ],
-            ['投稿者', $article->user->name ?? ''],
-            ['カテゴリ', ...$article->categories->map(static fn(Category $category) => __(sprintf('category.%s.%s', $category->type, $category->slug)))->toArray()],
-            ['タグ', ...$article->tags()->pluck('name')->toArray()],
+            ['投稿者', $model->user->name ?? ''],
+            ['カテゴリ', ...$model->categories->map(fn (Category $c) => __("category.{$c->type}.{$c->slug}"))->toArray()],
+            ['タグ', ...$model->tags()->pluck('name')->toArray()],
             ['作者 / 投稿者', $contents->author],
             ['説明', $contents->description],
             ['謝辞・参考にしたアドオン', $contents->thanks],

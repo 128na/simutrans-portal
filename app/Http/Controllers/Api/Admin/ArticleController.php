@@ -12,8 +12,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ArticleController extends Controller
 {
-    public function __construct(private readonly ArticleRepository $articleRepository)
+    private ArticleRepository $articleRepository;
+
+    public function __construct(ArticleRepository $articleRepository)
     {
+        $this->articleRepository = $articleRepository;
     }
 
     /**
@@ -27,10 +30,10 @@ class ArticleController extends Controller
     /**
      * @return Collection<int, \App\Models\Article>
      */
-    public function update(ArticleUpdateRequest $articleUpdateRequest, int $id): Collection
+    public function update(ArticleUpdateRequest $request, int $id): Collection
     {
         $article = $this->articleRepository->findOrFailWithTrashed($id);
-        $this->articleRepository->update($article, $articleUpdateRequest->validated()['article']);
+        $this->articleRepository->update($article, $request->validated()['article']);
 
         JobUpdateRelated::dispatchSync();
 

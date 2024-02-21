@@ -14,27 +14,27 @@ class ReadmeExtractorTest extends UnitTestCase
         return app(ReadmeExtractor::class);
     }
 
-    public function testGetKey(): void
+    public function testGetKey()
     {
         $result = $this->getSUT()->getKey();
         $this->assertEquals('readmes', $result);
     }
 
-    public function testIsTarget(): void
+    public function testIsTarget()
     {
-        $sUT = $this->getSUT();
+        $service = $this->getSUT();
 
-        $this->assertFalse($sUT->isTarget('dummy.txt'));
-        $this->assertTrue($sUT->isTarget('readme.txt'));
+        $this->assertFalse($service->isTarget('dummy.txt'));
+        $this->assertTrue($service->isTarget('readme.txt'));
     }
 
-    public function testExtract(): void
+    public function testExtract()
     {
-        $sUT = $this->getSUT();
+        $service = $this->getSUT();
 
         $data = 'hoge';
 
-        $result = $sUT->extract($data);
+        $result = $service->extract($data);
         $this->assertEquals(['hoge'], $result);
     }
 }

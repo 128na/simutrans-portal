@@ -11,15 +11,15 @@ use Tests\TestCase;
 
 class SyncTagsTest extends TestCase
 {
-    private ArticleRepository $articleRepository;
+    private ArticleRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->articleRepository = app(ArticleRepository::class);
+        $this->repository = app(ArticleRepository::class);
     }
 
-    public function test(): void
+    public function test()
     {
         $article = Article::factory()->create(['user_id' => $this->user->id]);
 
@@ -30,7 +30,7 @@ class SyncTagsTest extends TestCase
             'tag_id' => $tag->id,
         ]);
 
-        $this->articleRepository->syncTags($article, [$tag->id]);
+        $this->repository->syncTags($article, [$tag->id]);
 
         $this->assertDatabaseHas('article_tag', [
             'article_id' => $article->id,

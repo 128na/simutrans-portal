@@ -10,14 +10,17 @@ use App\Repositories\TagRepository;
 
 class TagController extends Controller
 {
-    public function __construct(private readonly TagRepository $tagRepository)
+    private TagRepository $tagRepository;
+
+    public function __construct(TagRepository $tagRepository)
     {
+        $this->tagRepository = $tagRepository;
     }
 
-    public function toggleEditable(ModelsTag $modelsTag): void
+    public function toggleEditable(ModelsTag $tag): void
     {
-        $this->tagRepository->update($modelsTag, [
-            'editable' => ! $modelsTag->editable,
+        $this->tagRepository->update($tag, [
+            'editable' => ! $tag->editable,
         ]);
     }
 }

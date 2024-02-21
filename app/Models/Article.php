@@ -54,7 +54,7 @@ class Article extends Model implements Feedable
     protected static function booted()
     {
         // 論理削除されていないユーザーを持つ
-        static::addGlobalScope('WithoutTrashedUser', static function (Builder $builder) : void {
+        static::addGlobalScope('WithoutTrashedUser', function (Builder $builder) {
             $builder->has('user');
         });
     }
@@ -167,87 +167,87 @@ class Article extends Model implements Feedable
     | スコープ
     |--------------------------------------------------------------------------
      */
-    public function scopeWithUserTrashed(Builder $builder): void
+    public function scopeWithUserTrashed(Builder $query): void
     {
-        $builder->withoutGlobalScope('WithoutTrashedUser');
+        $query->withoutGlobalScope('WithoutTrashedUser');
     }
 
-    public function scopeUser(Builder $builder, User $user): void
+    public function scopeUser(Builder $query, User $user): void
     {
-        $builder->where('user_id', $user->id);
+        $query->where('user_id', $user->id);
     }
 
-    public function scopeActive(Builder $builder): void
+    public function scopeActive(Builder $query): void
     {
-        $builder->where('status', config('status.publish'));
+        $query->where('status', config('status.publish'));
     }
 
-    public function scopeAddon(Builder $builder): void
+    public function scopeAddon(Builder $query): void
     {
-        $builder->whereIn('post_type', ['addon-post', 'addon-introduction']);
+        $query->whereIn('post_type', ['addon-post', 'addon-introduction']);
     }
 
-    public function scopeLinkCheckTarget(Builder $builder): void
+    public function scopeLinkCheckTarget(Builder $query): void
     {
-        $builder->where('post_type', 'addon-introduction')
+        $query->where('post_type', 'addon-introduction')
             ->where(
-                static fn($query) => $builder->whereNull('contents->exclude_link_check')
+                fn ($query) => $query->whereNull('contents->exclude_link_check')
                     ->orWhere('contents->exclude_link_check', false)
             );
     }
 
-    public function scopePage(Builder $builder): void
+    public function scopePage(Builder $query): void
     {
-        $builder->where('post_type', ['page', 'markdown']);
+        $query->where('post_type', ['page', 'markdown']);
     }
 
-    public function scopePak(Builder $builder, string $slug): void
+    public function scopePak(Builder $query, string $slug): void
     {
-        $builder->whereHas('categories', static fn($query) => $builder->pak()->slug($slug));
+        $query->whereHas('categories', fn ($query) => $query->pak()->slug($slug));
     }
 
-    public function scopeAnnounce(Builder $builder): void
+    public function scopeAnnounce(Builder $query): void
     {
-        $builder->whereIn('post_type', ['page', 'markdown'])
-            ->whereHas('categories', static fn($query) => $builder->page()->slug('announce'));
+        $query->whereIn('post_type', ['page', 'markdown'])
+            ->whereHas('categories', fn ($query) => $query->page()->slug('announce'));
     }
 
-    public function scopeWithoutAnnounce(Builder $builder): void
+    public function scopeWithoutAnnounce(Builder $query): void
     {
-        $builder->whereIn('post_type', ['page', 'markdown'])
-            ->whereDoesntHave('categories', static fn($query) => $builder->page()->slug('announce'));
+        $query->whereIn('post_type', ['page', 'markdown'])
+            ->whereDoesntHave('categories', fn ($query) => $query->page()->slug('announce'));
     }
 
-    public function scopeRankingOrder(Builder $builder): void
+    public function scopeRankingOrder(Builder $query): void
     {
-        $builder->join('rankings', 'rankings.article_id', '=', 'articles.id')
+        $query->join('rankings', 'rankings.article_id', '=', 'articles.id')
             ->orderBy('rankings.rank', 'asc');
     }
 
-    public function scopeCategory(Builder $builder, Category $category): void
+    public function scopeCategory(Builder $query, Category $category): void
     {
-        $builder->join('article_category', static function (JoinClause $joinClause) use ($category) : void {
-            $joinClause->on('article_category.article_id', '=', 'articles.id')
+        $query->join('article_category', function (JoinClause $join) use ($category) {
+            $join->on('article_category.article_id', '=', 'articles.id')
                 ->where('article_category.category_id', $category->id);
         });
     }
 
-    public function scopePakAddonCategory(Builder $builder, Category $pak, Category $addon): void
+    public function scopePakAddonCategory(Builder $query, Category $pak, Category $addon): void
     {
-        $builder->join('article_category', static function (JoinClause $joinClause) use ($pak) : void {
-            $joinClause->on('article_category.article_id', '=', 'articles.id')
+        $query->join('article_category', function (JoinClause $join) use ($pak) {
+            $join->on('article_category.article_id', '=', 'articles.id')
                 ->where('article_category.category_id', $pak->id);
         });
-        $builder->join('article_category', static function (JoinClause $joinClause) use ($addon) : void {
-            $joinClause->on('article_category.article_id', '=', 'articles.id')
+        $query->join('article_category', function (JoinClause $join) use ($addon) {
+            $join->on('article_category.article_id', '=', 'articles.id')
                 ->where('article_category.category_id', $addon->id);
         });
     }
 
-    public function scopeTag(Builder $builder, Tag $tag): void
+    public function scopeTag(Builder $query, Tag $tag): void
     {
-        $builder->join('article_tag', static function (JoinClause $joinClause) use ($tag) : void {
-            $joinClause->on('article_tag.article_id', '=', 'articles.id')
+        $query->join('article_tag', function (JoinClause $join) use ($tag) {
+            $join->on('article_tag.article_id', '=', 'articles.id')
                 ->where('article_tag.tag_id', $tag->id);
         });
     }
@@ -295,7 +295,7 @@ class Article extends Model implements Feedable
     {
         $id = $this->contents->thumbnail;
 
-        return $this->attachments->first(static fn($attachment): bool => (string) $id == $attachment->id);
+        return $this->attachments->first(fn ($attachment) => (string) $id == $attachment->id);
     }
 
     public function getThumbnailUrlAttribute(): string
@@ -317,9 +317,8 @@ class Article extends Model implements Feedable
         if ($this->contents instanceof AddonPostContent) {
             $id = $this->contents->file;
 
-            return $this->attachments->first(static fn($attachment): bool => (string) $id == $attachment->id);
+            return $this->attachments->first(fn ($attachment) => (string) $id == $attachment->id);
         }
-
         throw new Exception('invalid post type');
     }
 
@@ -333,7 +332,7 @@ class Article extends Model implements Feedable
      */
     public function getCategoryPaksAttribute(): Collection
     {
-        return $this->categories->filter(static fn($category): bool => $category->type === config('category.type.pak'));
+        return $this->categories->filter(fn ($category) => $category->type === config('category.type.pak'));
     }
 
     /**
@@ -341,7 +340,7 @@ class Article extends Model implements Feedable
      */
     public function getCategoryAddonsAttribute()
     {
-        return $this->categories->filter(static fn($category): bool => $category->type === config('category.type.addon'));
+        return $this->categories->filter(fn ($category) => $category->type === config('category.type.addon'));
     }
 
     /**
@@ -349,7 +348,7 @@ class Article extends Model implements Feedable
      */
     public function getCategoryPak128PositionsAttribute()
     {
-        return $this->categories->filter(static fn($category): bool => $category->type === config('category.type.pak128_position'));
+        return $this->categories->filter(fn ($category) => $category->type === config('category.type.pak128_position'));
     }
 
     public function getTodaysConversionRateAttribute(): string
@@ -365,17 +364,17 @@ class Article extends Model implements Feedable
 
     public function getMetaDescriptionAttribute(): string
     {
-        return mb_strimwidth((string) $this->contents->getDescription(), 0, 300, '…');
+        return mb_strimwidth($this->contents->getDescription(), 0, 300, '…');
     }
 
     public function getHeadlineDescriptionAttribute(): string
     {
-        return mb_strimwidth((string) $this->contents->getDescription(), 0, 55, '…');
+        return mb_strimwidth($this->contents->getDescription(), 0, 55, '…');
     }
 
     public function getUrlDecodedSlugAttribute(): string
     {
-        return urldecode((string) $this->slug);
+        return urldecode($this->slug);
     }
 
     /*
@@ -385,18 +384,18 @@ class Article extends Model implements Feedable
      */
     public function isAnnounce(): bool
     {
-        return $this->categories->some(static fn($category): bool => $category->type === 'page' && $category->slug === 'announce');
+        return $this->categories->some(fn ($category) => $category->type === 'page' && $category->slug === 'announce');
     }
 
     public function hasCategory(string|int $id): bool
     {
-        return $this->categories->some(static fn($category): bool => $category->id === (int) $id);
+        return $this->categories->some(fn ($category) => $category->id === (int) $id);
     }
 
     public function getImage(string|int $id): ?Attachment
     {
         return $this->attachments->first(
-            static fn($attachment): bool => (int) $id == $attachment->id
+            fn ($attachment) => (int) $id == $attachment->id
         );
     }
 
@@ -404,7 +403,7 @@ class Article extends Model implements Feedable
     {
         $image = $this->getImage($id);
 
-        return Storage::disk('public')->url($image instanceof \App\Models\Attachment
+        return Storage::disk('public')->url($image
             ? $image->path
             : config('attachment.no-thumbnail'));
     }

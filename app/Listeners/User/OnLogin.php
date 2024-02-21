@@ -16,12 +16,12 @@ class OnLogin extends BaseListener
     {
     }
 
-    public function handle(Login $login): void
+    public function handle(Login $event): void
     {
-        if ($login->user instanceof User) {
-            $this->logger->channel('audit')->info('ログイン', $this->getUserInfo($login->user));
+        if ($event->user instanceof User) {
+            $this->logger->channel('audit')->info('ログイン', $this->getUserInfo($event->user));
 
-            $login->user->notify(new SendLoggedInEmail($login->user->loginHistories()->create()));
+            $event->user->notify(new SendLoggedInEmail($event->user->loginHistories()->create()));
         }
     }
 }

@@ -20,7 +20,7 @@ class MailHandler extends BaseHandler
         foreach ($records as $record) {
             Mail::raw(
                 $content,
-                static fn($message) => $message->cc($admins)->subject(sprintf('%s @%s', $record->message, $record->channel))
+                fn ($message) => $message->cc($admins)->subject("{$record->message} @{$record->channel}")
             );
         }
     }

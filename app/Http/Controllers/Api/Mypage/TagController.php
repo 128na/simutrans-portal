@@ -18,36 +18,36 @@ use Illuminate\Support\Facades\Auth;
 class TagController extends Controller
 {
     public function __construct(
-        private readonly TagRepository $tagRepository,
+        private TagRepository $tagRepository,
     ) {
     }
 
-    public function search(SearchRequest $searchRequest): Tags
+    public function search(SearchRequest $request): Tags
     {
-        return new Tags($searchRequest->name
-            ? $this->tagRepository->searchTags($searchRequest->name)
+        return new Tags($request->name
+            ? $this->tagRepository->searchTags($request->name)
             : $this->tagRepository->getTags());
     }
 
-    public function store(StoreRequest $storeRequest): Tag
+    public function store(StoreRequest $request): Tag
     {
-        $model = $this->tagRepository->store([
-            'name' => $storeRequest->name,
+        $tag = $this->tagRepository->store([
+            'name' => $request->name,
             'created_by' => Auth::id(),
         ]);
 
-        return new Tag($model);
+        return new Tag($tag);
     }
 
-    public function update(ModelsTag $modelsTag, UpdateRequest $updateRequest): void
+    public function update(ModelsTag $tag, UpdateRequest $request): void
     {
-        $old = $modelsTag->description;
-        $this->authorize('update', $modelsTag);
-        $this->tagRepository->update($modelsTag, [
-            'description' => $updateRequest->input('description'),
+        $old = $tag->description;
+        $this->authorize('update', $tag);
+        $this->tagRepository->update($tag, [
+            'description' => $request->input('description'),
             'last_modified_by' => Auth::id(),
             'last_modified_at' => now(),
         ]);
-        event(new TagDescriptionUpdated($modelsTag, $this->loggedinUser(), $old));
+        event(new TagDescriptionUpdated($tag, $this->loggedinUser(), $old));
     }
 }

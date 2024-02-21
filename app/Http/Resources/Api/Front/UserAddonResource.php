@@ -15,7 +15,7 @@ class UserAddonResource extends ResourceCollection
     public function toArray($request)
     {
         return $this->collection
-            ->map(static fn($u): array => [
+            ->map(fn ($u) => [
                 'user_id' => $u->user_id,
                 'name' => $u->user_name,
                 'nickname' => $u->user_nickname,

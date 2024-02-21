@@ -17,9 +17,9 @@ class ViewCountRepository extends BaseCountRepository
      */
     protected $model;
 
-    public function __construct(ConversionCount $conversionCount)
+    public function __construct(ConversionCount $model)
     {
-        $this->model = $conversionCount;
+        $this->model = $model;
     }
 
     public function getTableName(): string

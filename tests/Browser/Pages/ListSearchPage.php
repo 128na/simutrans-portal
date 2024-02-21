@@ -10,7 +10,7 @@ use Laravel\Dusk\Browser;
 
 class ListSearchPage extends Page
 {
-    private readonly Article $article;
+    private Article $article;
 
     public function __construct()
     {
@@ -26,7 +26,7 @@ class ListSearchPage extends Page
         return '/search?word=dummy';
     }
 
-    public function assert(Browser $browser): void
+    public function assert(Browser $browser)
     {
         $browser
             ->waitForText($this->article->title)

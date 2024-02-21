@@ -21,10 +21,10 @@ use potibm\Bluesky\Response\RecordResponse;
 class BlueSkyApiClient extends Service
 {
     public function __construct(
-        private readonly BlueskyApi $blueskyApi,
-        private readonly BlueskyPostService $blueskyPostService,
-        private readonly MetaOgpService $metaOgpService,
-        private readonly FileSizeBaseResizer $fileSizeBaseResizer,
+        private BlueskyApi $blueskyApi,
+        private BlueskyPostService $blueskyPostService,
+        private MetaOgpService $metaOgpService,
+        private FileSizeBaseResizer $fileSizeBaseResizer,
     ) {
     }
 

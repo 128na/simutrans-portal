@@ -26,15 +26,15 @@ class Article extends JsonResource
             'status' => $this->resource->status,
             'post_type' => $this->resource->post_type,
             'contents' => $this->resource->contents,
-            'categories' => $this->resource->categories->map(static fn(Category $category): array => [
-                'id' => $category->id,
-                'name' => __(sprintf('category.%s.%s', $category->type, $category->slug)),
-                'type' => $category->type,
-                'slug' => $category->slug,
+            'categories' => $this->resource->categories->map(fn (Category $c) => [
+                'id' => $c->id,
+                'name' => __("category.{$c->type}.{$c->slug}"),
+                'type' => $c->type,
+                'slug' => $c->slug,
             ]),
-            'tags' => $this->resource->tags->map(static fn(Tag $tag): array => [
-                'id' => $tag->id,
-                'name' => $tag->name,
+            'tags' => $this->resource->tags->map(fn (Tag $t) => [
+                'id' => $t->id,
+                'name' => $t->name,
             ]),
             'created_at' => $this->resource->created_at?->toIso8601String(),
             'published_at' => $this->resource->published_at?->toIso8601String(),

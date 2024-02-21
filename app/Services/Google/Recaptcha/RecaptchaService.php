@@ -14,15 +14,15 @@ class RecaptchaService extends Service
     private const ALLOW_SCORE = 0.5;
 
     public function __construct(
-        private readonly RecaptchaEnterpriseServiceClient $recaptchaEnterpriseServiceClient,
-        private readonly string $projectName,
-        private readonly Event $event,
+        private RecaptchaEnterpriseServiceClient $client,
+        private string $projectName,
+        private Event $event,
     ) {
     }
 
     public function __destruct()
     {
-        $this->recaptchaEnterpriseServiceClient->close();
+        $this->client->close();
     }
 
     public function assessment(string $token): void
@@ -30,7 +30,7 @@ class RecaptchaService extends Service
         $this->event->setToken($token)->setExpectedAction('invite');
 
         $assessment = (new Assessment())->setEvent($this->event);
-        $response = $this->recaptchaEnterpriseServiceClient->createAssessment($this->projectName, $assessment);
+        $response = $this->client->createAssessment($this->projectName, $assessment);
 
         if ($response->getTokenProperties()?->getValid() !== true) {
             throw new RecaptchaFailedException('token invalid');
@@ -39,13 +39,12 @@ class RecaptchaService extends Service
         $this->validate($response);
     }
 
-    private function validate(Assessment $assessment): void
+    private function validate(Assessment $response): void
     {
-        if ($assessment->getRiskAnalysis()?->getScore() < self::ALLOW_SCORE) {
+        if ($response->getRiskAnalysis()?->getScore() < self::ALLOW_SCORE) {
             throw new RecaptchaHighRiskException('score too low');
         }
-
-        if ($assessment->getTokenProperties()?->getAction() !== $assessment->getEvent()?->getExpectedAction()) {
+        if ($response->getTokenProperties()?->getAction() !== $response->getEvent()?->getExpectedAction()) {
             throw new RecaptchaHighRiskException('action mismatch');
         }
     }

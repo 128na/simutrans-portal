@@ -13,18 +13,20 @@ use App\Services\Service;
 
 class BulkZipService extends Service
 {
-    public function __construct(private readonly BulkZipRepository $bulkZipRepository)
+    private BulkZipRepository $bulkZipRepository;
+
+    public function __construct(BulkZipRepository $bulkZipRepository)
     {
+        $this->bulkZipRepository = $bulkZipRepository;
     }
 
-    public function findOrCreateAndDispatch(BulkZippableInterface $bulkZippable): BulkZip
+    public function findOrCreateAndDispatch(BulkZippableInterface $model): BulkZip
     {
-        $bulkZip = $this->bulkZipRepository->findByBulkZippable($bulkZippable);
+        $bulkZip = $this->bulkZipRepository->findByBulkZippable($model);
         if (is_null($bulkZip)) {
-            $bulkZip = $this->bulkZipRepository->storeByBulkZippable($bulkZippable);
+            $bulkZip = $this->bulkZipRepository->storeByBulkZippable($model);
             JobCreateBulkZip::dispatch($bulkZip);
         }
-
         JobDeleteExpiredBulkzip::dispatch();
 
         return $bulkZip;

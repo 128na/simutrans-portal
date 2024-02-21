@@ -21,25 +21,25 @@ class ZippableManagerTest extends UnitTestCase
         return app(ZippableManager::class);
     }
 
-    public function testUser(): void
+    public function testUser()
     {
-        $this->mock(BulkZip::class, static function (MockInterface $mock) : void {
-            $mock->shouldReceive('getAttribute')->withArgs(['bulk_zippable_type'])->once()->andReturn(User::class);
-            $mock->shouldReceive('getAttribute')->withArgs(['bulkZippable'])->once()->andReturn(new User());
+        $this->mock(BulkZip::class, function (MockInterface $m) {
+            $m->shouldReceive('getAttribute')->withArgs(['bulk_zippable_type'])->once()->andReturn(User::class);
+            $m->shouldReceive('getAttribute')->withArgs(['bulkZippable'])->once()->andReturn(new User());
         });
 
-        $this->mock(ArticleRepository::class, static function (MockInterface $mock) : void {
-            $mock->shouldReceive('findAllByUser')->once()->andReturn(new Collection());
+        $this->mock(ArticleRepository::class, function (MockInterface $m) {
+            $m->shouldReceive('findAllByUser')->once()->andReturn(new Collection());
         });
 
         $res = $this->getSUT()->getItems(app(BulkZip::class));
         $this->assertCount(0, $res);
     }
 
-    public function test未対応モデル(): void
+    public function test未対応モデル()
     {
-        $this->mock(BulkZip::class, static function (MockInterface $mock) : void {
-            $mock->shouldReceive('getAttribute')->withArgs(['bulk_zippable_type'])->twice()->andReturn(stdClass::class);
+        $this->mock(BulkZip::class, function (MockInterface $m) {
+            $m->shouldReceive('getAttribute')->withArgs(['bulk_zippable_type'])->twice()->andReturn(stdClass::class);
         });
 
         $this->expectException(Exception::class);

@@ -10,7 +10,7 @@ use Laravel\Dusk\Browser;
 
 class ListPagePage extends Page
 {
-    private readonly Article $article;
+    private Article $article;
 
     public function __construct()
     {
@@ -25,7 +25,7 @@ class ListPagePage extends Page
         return '/pages';
     }
 
-    public function assert(Browser $browser): void
+    public function assert(Browser $browser)
     {
         $browser
             ->waitForText($this->article->title)

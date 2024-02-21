@@ -10,15 +10,18 @@ class CreateUserAddonCountsTable extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('user_addon_counts', static function (Blueprint $blueprint) : void {
-            $blueprint->bigIncrements('id');
-            $blueprint->unsignedBigInteger('user_id');
-            $blueprint->string('user_name', 255);
-            $blueprint->unsignedBigInteger('count');
-            $blueprint->foreign('user_id')
+        Schema::create('user_addon_counts', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('user_name', 255);
+            $table->unsignedBigInteger('count');
+
+            $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
         });
@@ -26,11 +29,13 @@ class CreateUserAddonCountsTable extends Migration
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::table('user_addon_counts', static function (Blueprint $blueprint) : void {
-            $blueprint->dropForeign(['user_id']);
+        Schema::table('user_addon_counts', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
         });
 
         Schema::dropIfExists('user_addon_counts');

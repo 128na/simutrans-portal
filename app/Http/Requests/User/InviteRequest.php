@@ -13,7 +13,7 @@ class InviteRequest extends FormRequest
      *
      * @return array<mixed>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
             'name' => 'required|max:100',

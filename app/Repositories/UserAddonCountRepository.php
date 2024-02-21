@@ -34,9 +34,9 @@ class UserAddonCountRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(UserAddonCount $userAddonCount)
+    public function __construct(UserAddonCount $model)
     {
-        $this->model = $userAddonCount;
+        $this->model = $model;
     }
 
     /**
@@ -44,7 +44,7 @@ class UserAddonCountRepository extends BaseRepository
      */
     public function recount(): void
     {
-        DB::transaction(static function () : void {
+        DB::transaction(function () {
             DB::statement(self::DELETE_SQL);
             DB::statement(self::INSERT_SQL);
         });

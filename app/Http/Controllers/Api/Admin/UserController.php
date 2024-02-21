@@ -11,8 +11,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 class UserController extends Controller
 {
-    public function __construct(private readonly UserRepository $userRepository)
+    private UserRepository $userRepository;
+
+    public function __construct(UserRepository $userRepository)
     {
+        $this->userRepository = $userRepository;
     }
 
     /**

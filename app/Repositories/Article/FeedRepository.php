@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Collection;
 class FeedRepository
 {
     public function __construct(
-        private readonly Article $article,
-        private readonly Category $category,
+        private Article $article,
+        private Category $category,
     ) {
     }
 

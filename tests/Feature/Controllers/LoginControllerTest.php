@@ -16,7 +16,7 @@ class LoginControllerTest extends TestCase
     /**
      * @dataProvider dataValidation
      */
-    public function testValidation(array $data, ?string $error_field): void
+    public function testValidation(array $data, ?string $error_field)
     {
         Notification::fake();
         $user = User::factory()->create();
@@ -40,7 +40,7 @@ class LoginControllerTest extends TestCase
         }
     }
 
-    public static function dataValidation(): \Generator
+    public static function dataValidation()
     {
         yield 'emailがnull' => [['email' => null], 'email'];
         yield 'emailが不正' => [['email' => 'invalid-email'], 'email'];
@@ -49,7 +49,7 @@ class LoginControllerTest extends TestCase
         yield 'PWがnull' => [['password' => null], 'password'];
     }
 
-    public function testLogout(): void
+    public function testLogout()
     {
         $this->actingAs($this->user);
         $this->assertAuthenticated();
@@ -59,7 +59,7 @@ class LoginControllerTest extends TestCase
         $this->assertGuest();
     }
 
-    public function testLogin機能制限(): void
+    public function testLogin機能制限()
     {
         ControllOption::create(['key' => ControllOptionKeys::LOGIN, 'value' => false]);
         $this->actingAs($this->user);

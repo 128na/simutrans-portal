@@ -20,10 +20,10 @@ class StoreArticleTest extends UnitTestCase
         return app(ArticleEditorService::class, ['now' => $now]);
     }
 
-    public function test投稿(): void
+    public function test投稿()
     {
         $user = new User();
-        $storeRequest = new StoreRequest([
+        $request = new StoreRequest([
             'article' => [
                 'post_type' => 'addon-introduction',
                 'title' => 'dummy title',
@@ -32,10 +32,10 @@ class StoreArticleTest extends UnitTestCase
                 'contents' => 'dummy',
             ],
         ]);
-        $carbonImmutable = new CarbonImmutable();
+        $now = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, static function (MockInterface $mock) use ($user, $carbonImmutable) : void {
-            $mock->shouldReceive('storeByUser')->withArgs([
+        $this->mock(ArticleRepository::class, function (MockInterface $m) use ($user, $now) {
+            $m->shouldReceive('storeByUser')->withArgs([
                 $user,
                 [
                     'post_type' => 'addon-introduction',
@@ -43,21 +43,21 @@ class StoreArticleTest extends UnitTestCase
                     'slug' => 'dummy-slug',
                     'status' => 'publish',
                     'contents' => 'dummy',
-                    'published_at' => $carbonImmutable->toDateTimeString(),
-                    'modified_at' => $carbonImmutable->toDateTimeString(),
+                    'published_at' => $now->toDateTimeString(),
+                    'modified_at' => $now->toDateTimeString(),
                 ],
             ])->once()->andReturn(new Article());
-            $mock->shouldReceive('syncAttachments')->once();
-            $mock->shouldReceive('syncCategories')->once();
-            $mock->shouldReceive('syncTags')->once();
+            $m->shouldReceive('syncAttachments')->once();
+            $m->shouldReceive('syncCategories')->once();
+            $m->shouldReceive('syncTags')->once();
         });
-        $this->getSUT($carbonImmutable)->storeArticle($user, $storeRequest);
+        $this->getSUT($now)->storeArticle($user, $request);
     }
 
-    public function test予約投稿(): void
+    public function test予約投稿()
     {
         $user = new User();
-        $storeRequest = new StoreRequest([
+        $request = new StoreRequest([
             'article' => [
                 'post_type' => 'addon-introduction',
                 'title' => 'dummy title',
@@ -67,10 +67,10 @@ class StoreArticleTest extends UnitTestCase
                 'published_at' => '2022-01-02 03:34:00',
             ],
         ]);
-        $carbonImmutable = new CarbonImmutable();
+        $now = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, static function (MockInterface $mock) use ($user, $carbonImmutable) : void {
-            $mock->shouldReceive('storeByUser')->withArgs([
+        $this->mock(ArticleRepository::class, function (MockInterface $m) use ($user, $now) {
+            $m->shouldReceive('storeByUser')->withArgs([
                 $user,
                 [
                     'post_type' => 'addon-introduction',
@@ -79,20 +79,20 @@ class StoreArticleTest extends UnitTestCase
                     'status' => 'reservation',
                     'contents' => 'dummy',
                     'published_at' => '2022-01-02 03:34:00',
-                    'modified_at' => $carbonImmutable->toDateTimeString(),
+                    'modified_at' => $now->toDateTimeString(),
                 ],
             ])->once()->andReturn(new Article());
-            $mock->shouldReceive('syncAttachments')->once();
-            $mock->shouldReceive('syncCategories')->once();
-            $mock->shouldReceive('syncTags')->once();
+            $m->shouldReceive('syncAttachments')->once();
+            $m->shouldReceive('syncCategories')->once();
+            $m->shouldReceive('syncTags')->once();
         });
-        $this->getSUT($carbonImmutable)->storeArticle($user, $storeRequest);
+        $this->getSUT($now)->storeArticle($user, $request);
     }
 
-    public function testそれ以外(): void
+    public function testそれ以外()
     {
         $user = new User();
-        $storeRequest = new StoreRequest([
+        $request = new StoreRequest([
             'article' => [
                 'post_type' => 'addon-introduction',
                 'title' => 'dummy title',
@@ -101,10 +101,10 @@ class StoreArticleTest extends UnitTestCase
                 'contents' => 'dummy',
             ],
         ]);
-        $carbonImmutable = new CarbonImmutable();
+        $now = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, static function (MockInterface $mock) use ($user, $carbonImmutable) : void {
-            $mock->shouldReceive('storeByUser')->withArgs([
+        $this->mock(ArticleRepository::class, function (MockInterface $m) use ($user, $now) {
+            $m->shouldReceive('storeByUser')->withArgs([
                 $user,
                 [
                     'post_type' => 'addon-introduction',
@@ -113,13 +113,13 @@ class StoreArticleTest extends UnitTestCase
                     'status' => 'draft',
                     'contents' => 'dummy',
                     'published_at' => null,
-                    'modified_at' => $carbonImmutable->toDateTimeString(),
+                    'modified_at' => $now->toDateTimeString(),
                 ],
             ])->once()->andReturn(new Article());
-            $mock->shouldReceive('syncAttachments')->once();
-            $mock->shouldReceive('syncCategories')->once();
-            $mock->shouldReceive('syncTags')->once();
+            $m->shouldReceive('syncAttachments')->once();
+            $m->shouldReceive('syncCategories')->once();
+            $m->shouldReceive('syncTags')->once();
         });
-        $this->getSUT($carbonImmutable)->storeArticle($user, $storeRequest);
+        $this->getSUT($now)->storeArticle($user, $request);
     }
 }

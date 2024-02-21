@@ -10,13 +10,16 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class ImageAttachment implements ValidationRule
 {
+    private AttachmentRepository $attachmentRepository;
+
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct(private readonly AttachmentRepository $attachmentRepository)
+    public function __construct(AttachmentRepository $attachmentRepository)
     {
+        $this->attachmentRepository = $attachmentRepository;
     }
 
     /**
@@ -34,7 +37,6 @@ class ImageAttachment implements ValidationRule
         if ($attachment && $attachment->is_image) {
             return;
         }
-
         $tranlated_attribute = app('translator')->get('validation.attributes')[$attribute] ?? $attribute;
         $fail(__('validation.image', ['attribute' => $tranlated_attribute]));
     }

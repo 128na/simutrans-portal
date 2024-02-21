@@ -19,8 +19,8 @@ class Redirect extends Model
     | スコープ
     |--------------------------------------------------------------------------
     */
-    public function scopeFrom(Builder $builder, string $from): void
+    public function scopeFrom(Builder $query, string $from): void
     {
-        $builder->where('from', $from);
+        $query->where('from', $from);
     }
 }

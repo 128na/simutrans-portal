@@ -10,21 +10,21 @@ use Tests\TestCase;
 
 class UpdateTest extends TestCase
 {
-    private User $user;
+    private User $admin;
 
     private Article $article;
 
     protected function setUp(): void
     {
         parent::setup();
-        $this->user = User::factory()->admin()->create();
+        $this->admin = User::factory()->admin()->create();
         $this->article = Article::factory()->publish()->create();
     }
 
-    public function test(): void
+    public function test()
     {
-        $this->actingAs($this->user);
-        $url = '/api/admin/articles/' . $this->article->id;
+        $this->actingAs($this->admin);
+        $url = "/api/admin/articles/{$this->article->id}";
         $res = $this->putJson($url, ['article' => ['status' => 'draft']]);
         $res->assertOk();
 
@@ -34,17 +34,17 @@ class UpdateTest extends TestCase
         ]);
     }
 
-    public function test未ログイン(): void
+    public function test未ログイン()
     {
-        $url = '/api/admin/articles/' . $this->article->id;
+        $url = "/api/admin/articles/{$this->article->id}";
         $res = $this->putJson($url);
         $res->assertUnauthorized();
     }
 
-    public function test管理者以外(): void
+    public function test管理者以外()
     {
         $this->actingAs($this->user);
-        $url = '/api/admin/articles/' . $this->article->id;
+        $url = "/api/admin/articles/{$this->article->id}";
         $res = $this->putJson($url);
         $res->assertUnauthorized();
     }

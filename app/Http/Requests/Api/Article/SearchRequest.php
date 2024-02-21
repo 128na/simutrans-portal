@@ -11,7 +11,7 @@ class SearchRequest extends BaseRequest
     /**
      * @return array<mixed>
      */
-    public function rules(): array
+    public function rules()
     {
         return array_merge(
             parent::rules(),

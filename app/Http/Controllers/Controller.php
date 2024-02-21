@@ -24,7 +24,6 @@ class Controller extends BaseController
         if ($user) {
             return $user;
         }
-
         throw new Exception('user not found');
     }
 }

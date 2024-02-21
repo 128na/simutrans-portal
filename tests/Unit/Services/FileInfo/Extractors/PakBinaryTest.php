@@ -16,7 +16,7 @@ class PakBinaryTest extends UnitTestCase
         ]);
     }
 
-    public function testGet(): void
+    public function testGet()
     {
         $result = $this->getSUT()->get();
         $this->assertEquals(
@@ -25,21 +25,21 @@ class PakBinaryTest extends UnitTestCase
         );
     }
 
-    public function testSeek(): void
+    public function testSeek()
     {
         $this->getSUT()->seek(1);
         $this->assertTrue(true);
     }
 
-    public function testEof(): void
+    public function testEof()
     {
-        $sUT = $this->getSUT();
-        $this->assertFalse($sUT->eof());
-        $sUT->seek(PHP_INT_MAX);
-        $this->assertTrue($sUT->eof());
+        $pak = $this->getSUT();
+        $this->assertFalse($pak->eof());
+        $pak->seek(PHP_INT_MAX);
+        $this->assertTrue($pak->eof());
     }
 
-    public function testSeekUntil(): void
+    public function testSeekUntil()
     {
         $result = $this->getSUT()->seekUntil(pack('H*', '948C'));
         $this->assertEquals(105, $result);

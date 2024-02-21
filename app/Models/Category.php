@@ -30,7 +30,7 @@ class Category extends Model
     {
         parent::boot();
 
-        static::addGlobalScope('order', static function (Builder $builder) : void {
+        static::addGlobalScope('order', function (Builder $builder) {
             $builder->orderBy('order', 'asc');
         });
     }
@@ -50,66 +50,66 @@ class Category extends Model
     | スコープ
     |--------------------------------------------------------------------------
      */
-    public function scopeType(Builder $builder, string $type): void
+    public function scopeType(Builder $query, string $type): void
     {
-        $builder->where('type', $type);
+        $query->where('type', $type);
     }
 
     /**
-     * @param Builder|Category $builder
+     * @param  Builder|Category  $query
      */
-    public function scopePost(Builder $builder): void
+    public function scopePost(Builder $query): void
     {
-        $builder->type(config('category.type.post'));
+        $query->type(config('category.type.post'));
     }
 
     /**
-     * @param Builder|Category $builder
+     * @param  Builder|Category  $query
      */
-    public function scopePak(Builder $builder): void
+    public function scopePak(Builder $query): void
     {
-        $builder->type(config('category.type.pak'));
+        $query->type(config('category.type.pak'));
     }
 
     /**
-     * @param Builder|Category $builder
+     * @param  Builder|Category  $query
      */
-    public function scopeAddon(Builder $builder): void
+    public function scopeAddon(Builder $query): void
     {
-        $builder->type(config('category.type.addon'));
+        $query->type(config('category.type.addon'));
     }
 
     /**
-     * @param Builder|Category $builder
+     * @param  Builder|Category  $query
      */
-    public function scopePak128Position(Builder $builder): void
+    public function scopePak128Position(Builder $query): void
     {
-        $builder->type(config('category.type.pak128_position'));
+        $query->type(config('category.type.pak128_position'));
     }
 
     /**
-     * @param Builder|Category $builder
+     * @param  Builder|Category  $query
      */
-    public function scopeLicense(Builder $builder): void
+    public function scopeLicense(Builder $query): void
     {
-        $builder->type(config('category.type.license'));
+        $query->type(config('category.type.license'));
     }
 
     /**
-     * @param Builder|Category $builder
+     * @param  Builder|Category  $query
      */
-    public function scopePage(Builder $builder): void
+    public function scopePage(Builder $query): void
     {
-        $builder->type(config('category.type.page'));
+        $query->type(config('category.type.page'));
     }
 
     /**
-     * @param Builder|Category $builder
+     * @param  Builder|Category  $query
      */
-    public function scopeForUser(Builder $builder, User $user): void
+    public function scopeForUser(Builder $query, User $user): void
     {
         if (! $user->isAdmin()) {
-            $builder->where('need_admin', 0);
+            $query->where('need_admin', 0);
         }
     }
 }

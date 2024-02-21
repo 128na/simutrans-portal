@@ -15,8 +15,8 @@ use Throwable;
 class DiscordController extends Controller
 {
     public function __construct(
-        private readonly InviteService $inviteService,
-        private readonly RecaptchaService $recaptchaService,
+        private InviteService $inviteService,
+        private RecaptchaService $recaptchaService,
     ) {
     }
 
@@ -28,8 +28,8 @@ class DiscordController extends Controller
             event(new DiscordInviteCodeCreated());
 
             return response()->json(['url' => $url], 200);
-        } catch (Throwable $throwable) {
-            report($throwable);
+        } catch (Throwable $e) {
+            report($e);
 
             return response()->json(['url' => null], 400);
         }

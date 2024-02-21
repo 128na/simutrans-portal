@@ -11,7 +11,7 @@ class StoreRequest extends SearchRequest
      *
      * @return array<mixed>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
             'name' => 'required|string|max:20|unique:tags,name',

@@ -11,8 +11,9 @@ class TextService extends Service
     public function removeBom(string $text): string
     {
         $bom = pack('H*', 'EFBBBF');
+        $text = preg_replace("/^$bom/", '', $text) ?? $text;
 
-        return preg_replace(sprintf('/^%s/', $bom), '', $text) ?? $text;
+        return $text;
     }
 
     public function encoding(string $text): string

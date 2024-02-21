@@ -11,11 +11,11 @@ use Laravel\Dusk\Browser;
 
 class ListPakCategoryPage extends Page
 {
-    private readonly Article $article;
+    private Article $article;
 
-    private readonly Category $pak;
+    private Category $pak;
 
-    private readonly Category $addon;
+    private Category $addon;
 
     public function __construct()
     {
@@ -30,14 +30,14 @@ class ListPakCategoryPage extends Page
 
     public function url()
     {
-        return sprintf('/categories/pak/%s/%s', $this->pak->slug, $this->addon->slug);
+        return "/categories/pak/{$this->pak->slug}/{$this->addon->slug}";
     }
 
-    public function assert(Browser $browser): void
+    public function assert(Browser $browser)
     {
         $browser
-            ->waitForText(__(sprintf('category.%s.%s', $this->pak->type, $this->pak->slug)))
-            ->waitForText(__(sprintf('category.%s.%s', $this->addon->type, $this->addon->slug)))
+            ->waitForText(__("category.{$this->pak->type}.{$this->pak->slug}"))
+            ->waitForText(__("category.{$this->addon->type}.{$this->addon->slug}"))
             ->assertSee($this->article->title);
     }
 }

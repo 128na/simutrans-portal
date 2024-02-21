@@ -16,8 +16,8 @@ class FromPak extends Command
     protected $description = 'Update pak file info';
 
     public function __construct(
-        private readonly AttachmentRepository $attachmentRepository,
-        private readonly FileInfoService $fileInfoService,
+        private AttachmentRepository $attachmentRepository,
+        private FileInfoService $fileInfoService,
     ) {
         parent::__construct();
     }
@@ -35,8 +35,8 @@ class FromPak extends Command
                     $this->error($e->getMessage());
                 }
             }
-        } catch (Throwable $throwable) {
-            report($throwable);
+        } catch (Throwable $e) {
+            report($e);
 
             return 1;
         }

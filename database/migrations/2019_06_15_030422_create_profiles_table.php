@@ -13,15 +13,18 @@ class CreateProfilesTable extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('profiles', static function (Blueprint $blueprint) : void {
-            $blueprint->bigIncrements('id');
-            $blueprint->unsignedBigInteger('user_id')->unique();
-            $blueprint->json('data')->comment('プロフィール情報');
-            $blueprint->timestamps();
-            $blueprint->foreign('user_id')
+        Schema::create('profiles', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id')->unique();
+            $table->json('data')->comment('プロフィール情報');
+            $table->timestamps();
+
+            $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
         });
@@ -29,11 +32,13 @@ class CreateProfilesTable extends Migration
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::table('profiles', static function (Blueprint $blueprint) : void {
-            $blueprint->dropForeign(['user_id']);
+        Schema::table('profiles', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
         });
         Schema::dropIfExists('profiles');
     }

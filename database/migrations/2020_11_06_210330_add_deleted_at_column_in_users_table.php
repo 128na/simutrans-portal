@@ -10,21 +10,25 @@ class AddDeletedAtColumnInUsersTable extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
-        Schema::table('users', static function (Blueprint $blueprint) : void {
-            $blueprint->softDeletes();
+        Schema::table('users', function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::table('users', static function (Blueprint $blueprint) : void {
-            $blueprint->dropSoftDeletes();
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropSoftDeletes();
         });
     }
 }

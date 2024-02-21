@@ -10,22 +10,22 @@ use Tests\TestCase;
 
 class ToggleDeleteTest extends TestCase
 {
-    private UserRepository $userRepository;
+    private UserRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->userRepository = app(UserRepository::class);
+        $this->repository = app(UserRepository::class);
     }
 
-    public function testDelete(): void
+    public function testDelete()
     {
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
             'deleted_at' => null,
         ]);
 
-        $this->userRepository->toggleDelete($this->user);
+        $this->repository->toggleDelete($this->user);
 
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
@@ -36,7 +36,7 @@ class ToggleDeleteTest extends TestCase
         ]);
     }
 
-    public function testRestore(): void
+    public function testRestore()
     {
         $now = now();
         $user = User::factory()->create(['deleted_at' => $now]);
@@ -46,7 +46,7 @@ class ToggleDeleteTest extends TestCase
             'deleted_at' => $now,
         ]);
 
-        $this->userRepository->toggleDelete($user);
+        $this->repository->toggleDelete($user);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,

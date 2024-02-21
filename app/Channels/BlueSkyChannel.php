@@ -24,28 +24,28 @@ class BlueSkyChannel extends BaseChannel
     ) {
     }
 
-    public function send(Article $article, SendArticleNotification $sendArticleNotification): void
+    public function send(Article $notifiable, SendArticleNotification $notification): void
     {
         try {
-            $post = $this->buildMessage($article, $sendArticleNotification);
+            $post = $this->buildMessage($notifiable, $notification);
             $result = $this->blueSkyApiClient->send($post);
             logger('blueSky', [$result->getUri()]);
-        } catch (Throwable $throwable) {
-            report($throwable);
+        } catch (Throwable $e) {
+            report($e);
         }
     }
 
-    private function buildMessage(Article $article, SendArticleNotification $sendArticleNotification): Post
+    private function buildMessage(Article $notifiable, SendArticleNotification $notification): Post
     {
         $text = match (true) {
-            $sendArticleNotification instanceof SendArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($article),
-            $sendArticleNotification instanceof SendArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($article),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendArticleNotification::class)),
+            $notification instanceof SendArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($notifiable),
+            $notification instanceof SendArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($notifiable),
+            default => throw new Exception(sprintf('unsupport notification "%s" provided', get_class($notification))),
         };
         $post = Post::create($text);
 
         try {
-            return $this->blueSkyApiClient->addWebsiteCard($post, $article);
+            return $this->blueSkyApiClient->addWebsiteCard($post, $notifiable);
         } catch (ConvertFailedException $e) {
             report($e);
         } catch (HttpStatusCodeException $e) {

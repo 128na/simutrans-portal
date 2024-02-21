@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', static function (Blueprint $blueprint) : void {
-            $blueprint->string('nickname')->unique()->nullable()->after('name')->comment('表示名');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('nickname')->unique()->nullable()->after('name')->comment('表示名');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', static function (Blueprint $blueprint) : void {
-            $blueprint->dropColumn('nickname');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('nickname');
         });
     }
 };

@@ -17,13 +17,13 @@ class LogConverter extends SimpleRecordConverter
     {
         try {
             $stacktrace = $this->getStacktrace($record);
-            if ($stacktrace !== null && $stacktrace !== '' && $stacktrace !== '0') {
+            if ($stacktrace) {
                 $this->makeErrorMessage($message, $record, $stacktrace);
             } else {
                 $this->makeInfoMesage($message, $record);
             }
-        } catch (\Throwable $throwable) {
-            report($throwable);
+        } catch (\Throwable $th) {
+            report($th);
         }
     }
 
@@ -49,7 +49,7 @@ class LogConverter extends SimpleRecordConverter
     {
         $embed = Embed::make();
 
-        $rawMessages = explode("\n", (string) $record['message']);
+        $rawMessages = explode("\n", $record['message']);
 
         $embed
             ->color($this->getRecordColor($record))
@@ -60,15 +60,13 @@ class LogConverter extends SimpleRecordConverter
                 array_shift($rawMessages),
             ));
 
-        if ($rawMessages !== []) {
+        if (count($rawMessages)) {
             $embed->description(implode("\n", $rawMessages));
         }
-
         foreach ($record['context'] as $key => $value) {
             if (! is_string($value) && ! is_numeric($value)) {
                 $value = json_encode($value);
             }
-
             $embed->field((string) $key, (string) $value);
         }
 

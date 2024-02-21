@@ -21,7 +21,7 @@ class NgWordRule implements ValidationRule
      * @param  array<string>  $ngWords
      * @return void
      */
-    public function __construct(private readonly array $ngWords = [])
+    public function __construct(private array $ngWords = [])
     {
     }
 
@@ -38,10 +38,9 @@ class NgWordRule implements ValidationRule
             }
         }
 
-        if ($this->detected === []) {
+        if (empty($this->detected)) {
             return;
         }
-
         $fail(sprintf(':attribute に使用できない文字が含まれています。(%s)', implode(',', $this->detected)));
     }
 }

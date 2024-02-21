@@ -11,9 +11,9 @@ use Laravel\Dusk\Browser;
 
 class ListCategoryPage extends Page
 {
-    private readonly Article $article;
+    private Article $article;
 
-    private readonly Category $category;
+    private Category $category;
 
     public function __construct()
     {
@@ -27,13 +27,13 @@ class ListCategoryPage extends Page
 
     public function url()
     {
-        return sprintf('/categories/%s/%s', $this->category->type, $this->category->slug);
+        return "/categories/{$this->category->type}/{$this->category->slug}";
     }
 
-    public function assert(Browser $browser): void
+    public function assert(Browser $browser)
     {
         $browser
-            ->waitForText(__(sprintf('category.%s.%s', $this->category->type, $this->category->slug)))
+            ->waitForText(__("category.{$this->category->type}.{$this->category->slug}"))
             ->assertSee($this->article->title);
     }
 }

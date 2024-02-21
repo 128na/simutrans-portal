@@ -31,11 +31,11 @@ abstract class TestCase extends BaseTestCase
     protected function tearDown(): void
     {
         $disk = Storage::disk('public');
-        User::with('myAttachments')->get()->map(static function (User $user) use ($disk) : void {
+        User::with('myAttachments')->get()->map(function (User $user) use ($disk) {
             $user->myAttachments
-                ->filter(static fn(Attachment $attachment) => Str::startsWith($attachment->path, 'user/'))
-                ->map(static fn(Attachment $attachment) => $attachment->delete());
-            $dir = 'user/' . $user->id;
+                ->filter(fn (Attachment $a) => Str::startsWith($a->path, 'user/'))
+                ->map(fn (Attachment $a) => $a->delete());
+            $dir = "user/$user->id";
             if (count($disk->files($dir)) === 0) {
                 $disk->deleteDirectory($dir);
             }
@@ -43,7 +43,7 @@ abstract class TestCase extends BaseTestCase
         parent::tearDown();
     }
 
-    public static function dataStatus(): \Generator
+    public static function dataStatus()
     {
         yield '公開' => ['publish', true];
         yield '下書き' => ['draft', false];
@@ -51,7 +51,7 @@ abstract class TestCase extends BaseTestCase
         yield 'ゴミ箱' => ['trash', false];
     }
 
-    public static function dataStatusPrivate(): \Generator
+    public static function dataStatusPrivate()
     {
         yield '下書き' => ['draft'];
         yield '非公開' => ['private'];

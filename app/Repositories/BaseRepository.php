@@ -150,7 +150,7 @@ abstract class BaseRepository
         $q = $this->model
             ->select($column)
             ->with($with);
-        if ($limit !== null && $limit !== 0) {
+        if ($limit) {
             $q->limit($limit);
         }
 

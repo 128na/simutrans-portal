@@ -9,7 +9,7 @@ class PakBinary
     private int $position = 0;
 
     public function __construct(
-        private readonly string $binary,
+        private string $binary,
     ) {
     }
 

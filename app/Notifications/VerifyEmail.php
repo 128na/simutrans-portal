@@ -51,9 +51,10 @@ class VerifyEmail extends BaseVerifyEmail implements ShouldQueue
     /**
      * Get the array representation of the notification.
      *
+     * @param  mixed  $notifiable
      * @return array<mixed>
      */
-    public function toArray(mixed $notifiable): array
+    public function toArray($notifiable)
     {
         return [];
     }

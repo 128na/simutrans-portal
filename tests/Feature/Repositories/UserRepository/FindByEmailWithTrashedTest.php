@@ -10,32 +10,32 @@ use Tests\TestCase;
 
 class FindByEmailWithTrashedTest extends TestCase
 {
-    private UserRepository $userRepository;
+    private UserRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->userRepository = app(UserRepository::class);
+        $this->repository = app(UserRepository::class);
     }
 
-    public function test(): void
+    public function test()
     {
-        $res = $this->userRepository->findByEmailWithTrashed($this->user->email);
+        $res = $this->repository->findByEmailWithTrashed($this->user->email);
 
         $this->assertInstanceOf(User::class, $res, 'ユーザーが取得できること');
     }
 
-    public function test論理削除(): void
+    public function test論理削除()
     {
         $this->user->delete();
-        $res = $this->userRepository->findByEmailWithTrashed($this->user->email);
+        $res = $this->repository->findByEmailWithTrashed($this->user->email);
 
         $this->assertInstanceOf(User::class, $res, '削除済みユーザーも取得できること');
     }
 
-    public function test存在しない(): void
+    public function test存在しない()
     {
-        $res = $this->userRepository->findByEmailWithTrashed('test');
+        $res = $this->repository->findByEmailWithTrashed('test');
 
         $this->assertNull($res);
     }

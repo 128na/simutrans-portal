@@ -10,8 +10,10 @@ class DropBookmarkTables extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::dropIfExists('bookmark_items');
         Schema::dropIfExists('bookmarks');
@@ -19,28 +21,32 @@ class DropBookmarkTables extends Migration
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::create('bookmarks', static function (Blueprint $blueprint) : void {
-            $blueprint->id();
-            $blueprint->uuid('uuid')->unique();
-            $blueprint->foreignId('user_id')->constrained()->onDelete('cascade');
-            $blueprint->unsignedTinyInteger('is_public')->default(0)->comment('公開ステータス(0:非公開、1:公開)');
-            $blueprint->string('title')->comment('ブックマーク名');
-            $blueprint->text('description')->nullable()->comment('説明');
-            $blueprint->timestamps();
-            $blueprint->index('title');
-            $blueprint->index(['is_public', 'updated_at']);
+        Schema::create('bookmarks', function (Blueprint $table) {
+            $table->id();
+            $table->uuid('uuid')->unique();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedTinyInteger('is_public')->default(0)->comment('公開ステータス(0:非公開、1:公開)');
+            $table->string('title')->comment('ブックマーク名');
+            $table->text('description')->nullable()->comment('説明');
+            $table->timestamps();
+
+            $table->index('title');
+            $table->index(['is_public', 'updated_at']);
         });
-        Schema::create('bookmark_items', static function (Blueprint $blueprint) : void {
-            $blueprint->id();
-            $blueprint->foreignId('bookmark_id')->constrained()->onDelete('cascade');
-            $blueprint->morphs('bookmark_itemable');
-            $blueprint->text('memo')->nullable()->comment('メモ');
-            $blueprint->unsignedInteger('order')->default(0)->comment('表示順');
-            $blueprint->timestamps();
-            $blueprint->index(['bookmark_id', 'order', 'created_at']);
+        Schema::create('bookmark_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('bookmark_id')->constrained()->onDelete('cascade');
+            $table->morphs('bookmark_itemable');
+            $table->text('memo')->nullable()->comment('メモ');
+            $table->unsignedInteger('order')->default(0)->comment('表示順');
+            $table->timestamps();
+
+            $table->index(['bookmark_id', 'order', 'created_at']);
         });
     }
 }

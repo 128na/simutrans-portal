@@ -24,14 +24,18 @@ class ToArticleContents implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        $value = json_decode((string) $value, true);
-        return match ($model->post_type) {
-            'addon-introduction' => new AddonIntroductionContent($value),
-            'addon-post' => new AddonPostContent($value),
-            'page' => new PageContent($value),
-            'markdown' => new MarkdownContent($value),
-            default => throw new Exception('invalid post type'),
-        };
+        $value = json_decode($value, true);
+        switch ($model->post_type) {
+            case 'addon-introduction':
+                return new AddonIntroductionContent($value);
+            case 'addon-post':
+                return new AddonPostContent($value);
+            case 'page':
+                return new PageContent($value);
+            case 'markdown':
+                return new MarkdownContent($value);
+        }
+        throw new Exception('invalid post type');
     }
 
     /**

@@ -16,9 +16,9 @@ class Update extends Command
     protected $description = 'Update rankings';
 
     public function __construct(
-        private readonly ArticleRepository $articleRepository,
-        private readonly RankingRepository $rankingRepository,
-        private readonly CarbonImmutable $now,
+        private ArticleRepository $articleRepository,
+        private RankingRepository $rankingRepository,
+        private CarbonImmutable $now,
     ) {
         parent::__construct();
     }
@@ -29,8 +29,8 @@ class Update extends Command
             $ranking = $this->articleRepository->fetchAggregatedRanking($this->now);
 
             $this->rankingRepository->recreate($ranking);
-        } catch (\Throwable $throwable) {
-            report($throwable);
+        } catch (\Throwable $e) {
+            report($e);
 
             return 1;
         }

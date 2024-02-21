@@ -21,9 +21,9 @@ use Illuminate\Support\Collection as SupportCollection;
 class ArticleEditorService extends Service
 {
     public function __construct(
-        private readonly ArticleRepository $articleRepository,
-        private readonly CategoryRepository $categoryRepository,
-        private readonly CarbonImmutable $now,
+        private ArticleRepository $articleRepository,
+        private CategoryRepository $categoryRepository,
+        private CarbonImmutable $now,
     ) {
     }
 
@@ -66,17 +66,17 @@ class ArticleEditorService extends Service
     private function separateCategories(Collection $categories): SupportCollection
     {
         /** @return array<string, mixed> */
-        $fn = static function (array $list, Category $category) : array {
-            if (! isset($list[$category->type])) {
-                $list[$category->type] = [];
+        $fn = function (array $list, Category $item): array {
+            if (! isset($list[$item->type])) {
+                $list[$item->type] = [];
             }
-            
-            $list[$category->type][] = [
-                'id' => $category->id,
-                'name' => __(sprintf('category.%s.%s', $category->type, $category->slug)),
-                'type' => $category->type,
-                'slug' => $category->slug,
+            $list[$item->type][] = [
+                'id' => $item->id,
+                'name' => __("category.{$item->type}.{$item->slug}"),
+                'type' => $item->type,
+                'slug' => $item->slug,
             ];
+
             return $list;
         };
 
@@ -92,8 +92,8 @@ class ArticleEditorService extends Service
         $status = config('status');
 
         return collect($status)->map(
-            static fn($item): array => [
-                'label' => __('statuses.' . $item),
+            fn ($item): array => [
+                'label' => __("statuses.{$item}"),
                 'value' => $item,
             ]
         )->values();
@@ -108,28 +108,28 @@ class ArticleEditorService extends Service
         $postTypes = config('post_types');
 
         return collect($postTypes)->map(
-            static fn($item): array => [
-                'label' => __('post_types.' . $item),
+            fn ($item) => [
+                'label' => __("post_types.{$item}"),
                 'value' => $item,
             ]
         )->values();
     }
 
-    public function storeArticle(User $user, StoreRequest $storeRequest): Article
+    public function storeArticle(User $user, StoreRequest $request): Article
     {
         $data = [
-            'post_type' => $storeRequest->input('article.post_type'),
-            'title' => $storeRequest->input('article.title'),
-            'slug' => $storeRequest->input('article.slug'),
-            'status' => $storeRequest->input('article.status'),
-            'contents' => $storeRequest->input('article.contents'),
-            'published_at' => $this->getPublishedAt($storeRequest),
+            'post_type' => $request->input('article.post_type'),
+            'title' => $request->input('article.title'),
+            'slug' => $request->input('article.slug'),
+            'status' => $request->input('article.status'),
+            'contents' => $request->input('article.contents'),
+            'published_at' => $this->getPublishedAt($request),
             'modified_at' => $this->now->toDateTimeString(),
         ];
         /** @var Article */
         $article = $this->articleRepository->storeByUser($user, $data);
 
-        $this->syncRelated($article, $storeRequest);
+        $this->syncRelated($article, $request);
 
         $article = $article->fresh() ?? $article;
         event(new ArticleStored($article));
@@ -151,29 +151,26 @@ class ArticleEditorService extends Service
         return null;
     }
 
-    public function updateArticle(Article $article, UpdateRequest $updateRequest): Article
+    public function updateArticle(Article $article, UpdateRequest $request): Article
     {
         $data = [
-            'title' => $updateRequest->input('article.title'),
-            'slug' => $updateRequest->input('article.slug'),
-            'status' => $updateRequest->input('article.status'),
-            'contents' => $updateRequest->input('article.contents'),
+            'title' => $request->input('article.title'),
+            'slug' => $request->input('article.slug'),
+            'status' => $request->input('article.status'),
+            'contents' => $request->input('article.contents'),
         ];
         if ($article->is_reservation) {
-            $data['published_at'] = $this->getPublishedAt($updateRequest);
+            $data['published_at'] = $this->getPublishedAt($request);
         }
-
-        if ($this->inactiveToPublish($article, $updateRequest)) {
-            $data['published_at'] = $this->getPublishedAt($updateRequest);
+        if ($this->inactiveToPublish($article, $request)) {
+            $data['published_at'] = $this->getPublishedAt($request);
         }
-
-        if ($this->shouldUpdateModifiedAt($updateRequest)) {
+        if ($this->shouldUpdateModifiedAt($request)) {
             $data['modified_at'] = $this->now->toDateTimeString();
         }
-
         $this->articleRepository->update($article, $data);
 
-        $this->syncRelated($article, $updateRequest);
+        $this->syncRelated($article, $request);
 
         $article = $article->fresh() ?? $article;
         event(new ArticleUpdated($article));
@@ -181,36 +178,36 @@ class ArticleEditorService extends Service
         return $article;
     }
 
-    private function inactiveToPublish(Article $article, UpdateRequest $updateRequest): bool
+    private function inactiveToPublish(Article $article, UpdateRequest $request): bool
     {
-        return $article->is_inactive && ($updateRequest->input('article.status') === config('status.publish')
-            || $updateRequest->input('article.status') === config('status.reservation')
+        return $article->is_inactive && ($request->input('article.status') === config('status.publish')
+            || $request->input('article.status') === config('status.reservation')
         );
     }
 
-    private function shouldUpdateModifiedAt(UpdateRequest $updateRequest): bool
+    private function shouldUpdateModifiedAt(UpdateRequest $request): bool
     {
-        return ! $updateRequest->input('without_update_modified_at');
+        return ! $request->input('without_update_modified_at');
     }
 
-    private function syncRelated(Article $article, BaseRequest $baseRequest): void
+    private function syncRelated(Article $article, BaseRequest $request): void
     {
         // 添付
         $attachmentIds = collect([
-            $baseRequest->input('article.contents.thumbnail'),
-            $baseRequest->input('article.contents.file'),
+            $request->input('article.contents.thumbnail'),
+            $request->input('article.contents.file'),
         ])
-            ->merge($baseRequest->input('article.contents.sections.*.id', []))
+            ->merge($request->input('article.contents.sections.*.id', []))
             ->filter()
             ->toArray();
         $this->articleRepository->syncAttachments($article, $attachmentIds);
 
         // カテゴリ
-        $categoryIds = $baseRequest->input('article.categories.*.id', []);
+        $categoryIds = $request->input('article.categories.*.id', []);
         $this->articleRepository->syncCategories($article, $categoryIds);
 
         // タグ
-        $tagIds = $baseRequest->input('article.tags.*.id', []);
+        $tagIds = $request->input('article.tags.*.id', []);
         $this->articleRepository->syncTags($article, $tagIds);
     }
 

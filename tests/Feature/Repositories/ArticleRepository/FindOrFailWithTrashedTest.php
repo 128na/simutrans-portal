@@ -11,24 +11,24 @@ use Tests\ArticleTestCase;
 
 class FindOrFailWithTrashedTest extends ArticleTestCase
 {
-    private ArticleRepository $articleRepository;
+    private ArticleRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->articleRepository = app(ArticleRepository::class);
+        $this->repository = app(ArticleRepository::class);
     }
 
-    public function test(): void
+    public function test()
     {
-        $res = $this->articleRepository->findOrFailWithTrashed($this->article->id);
+        $res = $this->repository->findOrFailWithTrashed($this->article->id);
 
         $this->assertInstanceOf(Article::class, $res);
     }
 
-    public function testNotFound(): void
+    public function testNotFound()
     {
         $this->expectException(ModelNotFoundException::class);
-        $this->articleRepository->findOrFailWithTrashed(0);
+        $this->repository->findOrFailWithTrashed(0);
     }
 }

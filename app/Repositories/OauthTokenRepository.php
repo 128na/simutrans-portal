@@ -16,9 +16,9 @@ class OauthTokenRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(OauthToken $oauthToken)
+    public function __construct(OauthToken $model)
     {
-        $this->model = $oauthToken;
+        $this->model = $model;
     }
 
     public function getToken(string $application): OauthToken

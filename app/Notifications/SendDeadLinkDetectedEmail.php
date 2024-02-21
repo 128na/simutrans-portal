@@ -25,9 +25,10 @@ class SendDeadLinkDetectedEmail extends Notification implements ShouldQueue
     /**
      * Get the notification's delivery channels.
      *
+     * @param  mixed  $notifiable
      * @return array<string>
      */
-    public function via(mixed $notifiable): array
+    public function via($notifiable)
     {
         return ['mail'];
     }
@@ -35,21 +36,23 @@ class SendDeadLinkDetectedEmail extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      *
+     * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail(mixed $notifiable)
+    public function toMail($notifiable)
     {
         return (new MailMessage())
-            ->subject(sprintf('「%s」のダウンロード先URLがリンク切れになっています', $notifiable->title))
+            ->subject("「{$notifiable->title}」のダウンロード先URLがリンク切れになっています")
             ->view('emails.deadlink-detected', ['article' => $notifiable]);
     }
 
     /**
      * Get the array representation of the notification.
      *
+     * @param  mixed  $notifiable
      * @return array<mixed>
      */
-    public function toArray(mixed $notifiable): array
+    public function toArray($notifiable)
     {
         return [];
     }

@@ -20,7 +20,7 @@ class ToProfileData implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        return new ProfileData(json_decode((string) $value, true));
+        return new ProfileData(json_decode($value, true));
     }
 
     /**

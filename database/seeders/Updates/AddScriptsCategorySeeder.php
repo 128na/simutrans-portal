@@ -12,7 +12,7 @@ use Illuminate\Database\Seeder;
  */
 class AddScriptsCategorySeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
         Category::firstOrCreate([
             'slug' => 'scripts',

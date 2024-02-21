@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Session;
 class OauthController extends Controller
 {
     public function __construct(
-        private readonly PKCEService $pkceService,
-        private readonly OauthTokenRepository $oauthTokenRepository,
+        private PKCEService $pkceService,
+        private OauthTokenRepository $oauthTokenRepository,
     ) {
     }
 
@@ -49,7 +49,7 @@ class OauthController extends Controller
             $token = $this->oauthTokenRepository->getToken('twitter');
             $this->pkceService->refreshToken($token);
             Session::flash('success', 'access token refreshed');
-        } catch (ModelNotFoundException) {
+        } catch (ModelNotFoundException $e) {
             Session::flash('error', 'token not found');
         }
 
@@ -62,7 +62,7 @@ class OauthController extends Controller
             $token = $this->oauthTokenRepository->getToken('twitter');
             $this->pkceService->revokeToken($token);
             Session::flash('success', 'access token revoked');
-        } catch (ModelNotFoundException) {
+        } catch (ModelNotFoundException $e) {
             Session::flash('error', 'token not found');
         }
 

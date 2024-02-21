@@ -16,30 +16,28 @@ class OnArticleUpdated extends BaseListener
     {
     }
 
-    public function handle(ArticleUpdated $articleUpdated): void
+    public function handle(ArticleUpdated $event): void
     {
-        $this->logger->channel('audit')->info('記事更新', $this->getArticleInfo($articleUpdated->article));
+        $this->logger->channel('audit')->info('記事更新', $this->getArticleInfo($event->article));
 
         // 公開以外
-        if (! $articleUpdated->article->is_publish) {
+        if (! $event->article->is_publish) {
             return;
         }
-
         // 通知を希望しない
-        if (! $articleUpdated->shouldNotify) {
+        if (! $event->shouldNotify) {
             return;
         }
-
         // 更新日を更新しない
-        if ($articleUpdated->withoutUpdateModifiedAt) {
+        if ($event->withoutUpdateModifiedAt) {
             return;
         }
 
         // published_atがnullから初めて変わった場合は新規投稿扱い
-        if ($articleUpdated->notYetPublished) {
-            $articleUpdated->article->notify(new SendArticlePublished());
+        if ($event->notYetPublished) {
+            $event->article->notify(new SendArticlePublished());
         } else {
-            $articleUpdated->article->notify(new SendArticleUpdated());
+            $event->article->notify(new SendArticleUpdated());
         }
     }
 }

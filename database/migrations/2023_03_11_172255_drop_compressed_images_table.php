@@ -8,21 +8,25 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::dropIfExists('compressed_images');
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::create('compressed_images', static function (Blueprint $blueprint) : void {
-            $blueprint->bigIncrements('id');
-            $blueprint->string('path')->unique();
-            $blueprint->timestamps();
+        Schema::create('compressed_images', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('path')->unique();
+            $table->timestamps();
         });
     }
 };

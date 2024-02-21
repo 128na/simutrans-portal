@@ -11,9 +11,9 @@ use Laravel\Dusk\Browser;
 
 class ListTagPage extends Page
 {
-    private readonly Article $article;
+    private Article $article;
 
-    private readonly Tag $tag;
+    private Tag $tag;
 
     public function __construct()
     {
@@ -27,10 +27,10 @@ class ListTagPage extends Page
 
     public function url()
     {
-        return '/tags/' . $this->tag->id;
+        return "/tags/{$this->tag->id}";
     }
 
-    public function assert(Browser $browser): void
+    public function assert(Browser $browser)
     {
         $browser
             ->waitForText($this->tag->name)

@@ -18,40 +18,34 @@ class FileSizeBaseResizer extends Service
 
         $im = $this->getImage($inputPath);
         $originalWidth = @imagesx($im);
-        logger('FileSizeBaseResizer::resize', ['originalWidth' => $originalWidth, 'filesize' => $filesize]);
-        if ($originalWidth === 0) {
+        logger('FileSizeBaseResizer::resize', compact('originalWidth', 'filesize'));
+        if (! $originalWidth) {
             throw new ConvertFailedException('imagesx failed');
         }
-
-        $width = (int) ($originalWidth / 2);
-        $min = (int) ($targetFileSize * 0.75);
+        $width = intval($originalWidth / 2);
+        $min = intval($targetFileSize * 0.75);
         $max = $targetFileSize;
         $attempt = 0;
         $limit = 20;
         do {
             $resized = $this->doResize($im, $width);
             $size = @filesize($resized);
-            if ($size === 0 || $size === false) {
+            if (! $size) {
                 throw new ConvertFailedException('filesize failed');
             }
-
-            logger('FileSizeBaseResizer::resize', ['attempt' => $attempt, 'width' => $width, 'size' => $size]);
+            logger('FileSizeBaseResizer::resize', compact('attempt', 'width', 'size'));
             if ($min < $size && $size < $max) {
                 return $resized;
             }
-
             if ($size <= $min) {
-                $width = (int) (($originalWidth + $width) / 2);
+                $width = intval(($originalWidth + $width) / 2);
             }
-
             if ($size >= $max) {
-                $width = (int) ($width / 2);
+                $width = intval($width / 2);
             }
-
             @unlink($resized);
-            ++$attempt;
+            $attempt++;
         } while ($attempt <= $limit);
-
         throw new ConvertFailedException('attempt limit reached');
     }
 
@@ -70,18 +64,16 @@ class FileSizeBaseResizer extends Service
         return $image;
     }
 
-    private function doResize(GdImage $gdImage, int $width): string
+    private function doResize(GdImage $im, int $width): string
     {
-        $resized = @imagescale($gdImage, $width, -1, IMG_BILINEAR_FIXED);
+        $resized = @imagescale($im, $width, -1, IMG_BILINEAR_FIXED);
         if (! $resized) {
             throw new ConvertFailedException('imagescale failed');
         }
-
         $tmpPath = @tempnam(sys_get_temp_dir(), '');
-        if ($tmpPath === '' || $tmpPath === '0' || $tmpPath === false) {
+        if (! $tmpPath) {
             throw new ConvertFailedException('tempnam failed');
         }
-
         $result = @imagewebp($resized, $tmpPath);
         @imagedestroy($resized);
         if (! $result) {

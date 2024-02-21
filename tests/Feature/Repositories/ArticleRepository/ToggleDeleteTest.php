@@ -10,15 +10,15 @@ use Tests\TestCase;
 
 class ToggleDeleteTest extends TestCase
 {
-    private ArticleRepository $articleRepository;
+    private ArticleRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->articleRepository = app(ArticleRepository::class);
+        $this->repository = app(ArticleRepository::class);
     }
 
-    public function testDelete(): void
+    public function testDelete()
     {
         $article = Article::factory()->create(['user_id' => $this->user->id]);
 
@@ -27,7 +27,7 @@ class ToggleDeleteTest extends TestCase
             'deleted_at' => null,
         ]);
 
-        $this->articleRepository->toggleDelete($article);
+        $this->repository->toggleDelete($article);
 
         $this->assertDatabaseHas('articles', [
             'id' => $article->id,
@@ -38,7 +38,7 @@ class ToggleDeleteTest extends TestCase
         ]);
     }
 
-    public function testRestore(): void
+    public function testRestore()
     {
         $now = now();
         $article = Article::factory()->create(['user_id' => $this->user->id, 'deleted_at' => $now]);
@@ -48,7 +48,7 @@ class ToggleDeleteTest extends TestCase
             'deleted_at' => $now,
         ]);
 
-        $this->articleRepository->toggleDelete($article);
+        $this->repository->toggleDelete($article);
 
         $this->assertDatabaseHas('articles', [
             'id' => $article->id,

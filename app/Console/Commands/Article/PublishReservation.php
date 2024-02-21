@@ -31,16 +31,18 @@ class PublishReservation extends Command
      * @return void
      */
     public function __construct(
-        private readonly ArticleRepository $articleRepository,
-        private readonly CarbonImmutable $now,
+        private ArticleRepository $articleRepository,
+        private CarbonImmutable $now,
     ) {
         parent::__construct();
     }
 
     /**
      * Execute the console command.
+     *
+     * @return int
      */
-    public function handle(): int
+    public function handle()
     {
         $cusror = $this->articleRepository->cursorReservations($this->now);
         $changed = false;

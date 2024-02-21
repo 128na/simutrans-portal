@@ -19,10 +19,10 @@ class WebpConverter extends Service
 
     private const RESIZE_WIDTH = 1280;
 
-    public function create(User $user, UploadedFile $uploadedFile): string
+    public function create(User $user, UploadedFile $file): string
     {
-        $gdImage = $this->createFromFile($uploadedFile);
-        $resized = $this->resizeIfNeed($gdImage);
+        $image = $this->createFromFile($file);
+        $resized = $this->resizeIfNeed($image);
 
         $filepath = $this->getFilepath($user);
 
@@ -58,9 +58,9 @@ class WebpConverter extends Service
         return sprintf('user/%d/%s.webp', $user->id, Str::uuid());
     }
 
-    private function createFromFile(UploadedFile $uploadedFile): GdImage
+    private function createFromFile(UploadedFile $file): GdImage
     {
-        $data = $uploadedFile->get();
+        $data = $file->get();
         if ($data === false) {
             throw new ConvertFailedException('get file data failed');
         }
@@ -88,20 +88,20 @@ class WebpConverter extends Service
         return $image;
     }
 
-    private function resizeIfNeed(GdImage $gdImage): GdImage
+    private function resizeIfNeed(GdImage $image): GdImage
     {
-        $width = imagesx($gdImage);
-        $height = imagesy($gdImage);
+        $width = imagesx($image);
+        $height = imagesy($image);
         if ($this->shouldResize($width, $height) === false) {
-            return $gdImage;
+            return $image;
         }
 
         $mode = IMG_BILINEAR_FIXED;
         // $mode = IMG_BICUBIC_FIXED;
         // $mode = IMG_MITCHELL; ややぼけた感じになる
         // $mode = IMG_NEAREST_NEIGHBOUR; エッジが立つがサムネ向きではなさそう
-        $resized = imagescale($gdImage, self::RESIZE_WIDTH, -1, $mode);
-        imagedestroy($gdImage);
+        $resized = imagescale($image, self::RESIZE_WIDTH, -1, $mode);
+        imagedestroy($image);
 
         if ($resized instanceof GdImage === false) {
             throw new ConvertFailedException('resdize failed');
@@ -115,31 +115,29 @@ class WebpConverter extends Service
         return $width > self::RESIZE_LIMIT_WIDTH || $height > self::RESIZE_LIMIT_HEIGHT;
     }
 
-    private function convertToWeb(string $filepath, GdImage $gdImage): void
+    private function convertToWeb(string $filepath, GdImage $image): void
     {
         $quality = defined('IMG_WEBP_LOSSLESS') ? IMG_WEBP_LOSSLESS : 100;
-        $result = imagewebp($this->convertToTrueColor($gdImage), $this->getSavepath($filepath), $quality);
-        imagedestroy($gdImage);
+        $result = imagewebp($this->convertToTrueColor($image), $this->getSavepath($filepath), $quality);
+        imagedestroy($image);
 
         if ($result === false) {
             throw new ConvertFailedException('webp failed');
         }
     }
 
-    private function convertToTrueColor(GdImage $gdImage): GdImage
+    private function convertToTrueColor(GdImage $image): GdImage
     {
-        $converted = imagecreatetruecolor(imagesx($gdImage), imagesy($gdImage));
+        $converted = imagecreatetruecolor(imagesx($image), imagesy($image));
         if ($converted === false) {
             throw new ConvertFailedException('imagecreatetruecolor failed');
         }
-
-        $result = imagecopy($converted, $gdImage, 0, 0, 0, 0, imagesx($gdImage), imagesy($gdImage));
+        $result = imagecopy($converted, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
 
         if ($result === false) {
             throw new ConvertFailedException('imagecopy failed');
         }
-
-        imagedestroy($gdImage);
+        imagedestroy($image);
 
         return $converted;
     }

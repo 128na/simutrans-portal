@@ -31,13 +31,13 @@ class MetaOgpService extends Service
 
     private function trimDescription(?string $str): string
     {
-        if ($str === null || $str === '' || $str === '0') {
+        if (! $str) {
             return config('app.meta-description');
         }
-
         $str = str_replace(["\n", "\r"], '', $str);
+        $str = mb_strimwidth($str, 0, 200, '…');
 
-        return mb_strimwidth($str, 0, 200, '…');
+        return $str;
     }
 
     /**
@@ -60,14 +60,14 @@ class MetaOgpService extends Service
     {
         if ($type === 'license') {
             return [
-                'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $type, $slug))).' - '.config('app.name'),
-                'description' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $type, $slug))),
+                'title' => sprintf('%sの投稿', __("category.{$type}.{$slug}")).' - '.config('app.name'),
+                'description' => sprintf('%sの投稿', __("category.{$type}.{$slug}")),
             ];
         }
 
         return [
-            'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $type, $slug))).' - '.config('app.name'),
-            'description' => __(sprintf('category.description.%s.%s', $type, $slug)),
+            'title' => sprintf('%sの投稿', __("category.{$type}.{$slug}")).' - '.config('app.name'),
+            'description' => __("category.description.{$type}.{$slug}"),
         ];
     }
 
@@ -77,8 +77,8 @@ class MetaOgpService extends Service
     public function categoryPakAddon(string $pakSlug, string $addonSlug): array
     {
         return [
-            'title' => sprintf('%s、%sの投稿', __('category.pak.' . $pakSlug), __('category.addon.' . $addonSlug)).' - '.config('app.name'),
-            'description' => __('category.description.addon.' . $addonSlug),
+            'title' => sprintf('%s、%sの投稿', __("category.pak.{$pakSlug}"), __("category.addon.{$addonSlug}")).' - '.config('app.name'),
+            'description' => __("category.description.addon.{$addonSlug}"),
         ];
     }
 
@@ -88,7 +88,7 @@ class MetaOgpService extends Service
     public function categoryPakNoneAddon(string $pakSlug): array
     {
         return [
-            'title' => sprintf('%s、%sの投稿', __('category.pak.' . $pakSlug), __('category.addon.none')).' - '.config('app.name'),
+            'title' => sprintf('%s、%sの投稿', __("category.pak.{$pakSlug}"), __('category.addon.none')).' - '.config('app.name'),
             'description' => __('category.description.addon.none'),
         ];
     }

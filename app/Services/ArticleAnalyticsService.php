@@ -15,19 +15,22 @@ use UnexpectedValueException;
 
 class ArticleAnalyticsService extends Service
 {
-    public function __construct(private readonly ArticleRepository $articleRepository)
+    private ArticleRepository $articleRepository;
+
+    public function __construct(ArticleRepository $articleRepository)
     {
+        $this->articleRepository = $articleRepository;
     }
 
     /**
      * @return Collection<int, Article>
      */
-    public function findArticles(User $user, SearchRequest $searchRequest): Collection
+    public function findArticles(User $user, SearchRequest $request): Collection
     {
-        $startDate = new Carbon($searchRequest->start_date);
-        $endDate = new Carbon($searchRequest->end_date);
-        $type = $searchRequest->type;
-        $ids = $searchRequest->ids;
+        $startDate = new Carbon($request->start_date);
+        $endDate = new Carbon($request->end_date);
+        $type = $request->type;
+        $ids = $request->ids;
 
         $periodQuery = $this->getPeriodQuery($type, $startDate, $endDate);
 
@@ -39,7 +42,7 @@ class ArticleAnalyticsService extends Service
         $period = $this->getPeriod($type, $startDate, $endDate);
         $type_id = $this->getTypeId($type);
 
-        return static function ($query) use ($type_id, $period) : void {
+        return function ($query) use ($type_id, $period) {
             $query->select('article_id', 'count', 'period')
                 ->where('type', $type_id)->whereBetween('period', $period);
         };
@@ -50,21 +53,27 @@ class ArticleAnalyticsService extends Service
      */
     private function getPeriod(string $type, Carbon $startDate, Carbon $endDate): array
     {
-        return match ($type) {
-            'daily' => [$startDate->format('Ymd'), $endDate->format('Ymd')],
-            'monthly' => [$startDate->format('Ym'), $endDate->format('Ym')],
-            'yearly' => [$startDate->format('Y'), $endDate->format('Y')],
-            default => throw new UnexpectedValueException(sprintf('unknown type provided: %s', $type)),
-        };
+        switch ($type) {
+            case 'daily':
+                return [$startDate->format('Ymd'), $endDate->format('Ymd')];
+            case 'monthly':
+                return [$startDate->format('Ym'), $endDate->format('Ym')];
+            case 'yearly':
+                return [$startDate->format('Y'), $endDate->format('Y')];
+        }
+        throw new UnexpectedValueException(sprintf('unknown type provided: %s', $type));
     }
 
     private function getTypeId(string $type): int
     {
-        return match ($type) {
-            'daily' => 1,
-            'monthly' => 2,
-            'yearly' => 3,
-            default => throw new UnexpectedValueException(sprintf('unknown type provided: %s', $type)),
-        };
+        switch ($type) {
+            case 'daily':
+                return 1;
+            case 'monthly':
+                return 2;
+            case 'yearly':
+                return 3;
+        }
+        throw new UnexpectedValueException(sprintf('unknown type provided: %s', $type));
     }
 }

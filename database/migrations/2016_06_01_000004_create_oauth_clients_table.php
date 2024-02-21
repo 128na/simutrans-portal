@@ -37,27 +37,31 @@ class CreateOauthClientsTable extends Migration
 
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
-        $this->schema->create('oauth_clients', static function (Blueprint $blueprint) : void {
-            $blueprint->uuid('id')->primary();
-            $blueprint->unsignedBigInteger('user_id')->nullable()->index();
-            $blueprint->string('name');
-            $blueprint->string('secret', 100)->nullable();
-            $blueprint->string('provider')->nullable();
-            $blueprint->text('redirect');
-            $blueprint->boolean('personal_access_client');
-            $blueprint->boolean('password_client');
-            $blueprint->boolean('revoked');
-            $blueprint->timestamps();
+        $this->schema->create('oauth_clients', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->unsignedBigInteger('user_id')->nullable()->index();
+            $table->string('name');
+            $table->string('secret', 100)->nullable();
+            $table->string('provider')->nullable();
+            $table->text('redirect');
+            $table->boolean('personal_access_client');
+            $table->boolean('password_client');
+            $table->boolean('revoked');
+            $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         $this->schema->dropIfExists('oauth_clients');
     }

@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
 class InvitationCodeController extends Controller
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private UserRepository $userRepository,
     ) {
     }
 
@@ -56,27 +56,27 @@ class InvitationCodeController extends Controller
         return new UserResouce($this->loggedinUser()->fresh());
     }
 
-    public function register(User $user, InviteRequest $inviteRequest): UserResouce
+    public function register(User $user, InviteRequest $request): UserResouce
     {
         /**
-         * @var User $model
+         * @var User $invitedUser
          */
-        $model = $this->userRepository->store([
-            'name' => $inviteRequest->name,
-            'email' => $inviteRequest->email,
+        $invitedUser = $this->userRepository->store([
+            'name' => $request->name,
+            'email' => $request->email,
             'role' => config('role.user'),
-            'password' => Hash::make($inviteRequest->password),
+            'password' => Hash::make($request->password),
             'invited_by' => $user->id,
         ]);
         // なぜかオブザーバーが発火しない
-        $model->syncRelatedData();
+        $invitedUser->syncRelatedData();
 
-        Auth::login($model);
+        Auth::login($invitedUser);
         Session::regenerate();
 
-        event(new Registered($model));
-        $user->notify(new UserInvited($model));
+        event(new Registered($invitedUser));
+        $user->notify(new UserInvited($invitedUser));
 
-        return new UserResouce($model);
+        return new UserResouce($invitedUser);
     }
 }

@@ -13,7 +13,7 @@ class UpdateRequest extends FormRequest
      *
      * @return array<mixed>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
             'description' => 'nullable|string|max:1024',

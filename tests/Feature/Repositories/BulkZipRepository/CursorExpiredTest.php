@@ -19,26 +19,26 @@ class CursorExpiredTest extends TestCase
         $this->bulkZipRepository = app(BulkZipRepository::class);
     }
 
-    public function test(): void
+    public function test()
     {
         BulkZip::factory()->create(['created_at' => today()->modify('-1 days')]);
-        $lazyCollection = $this->bulkZipRepository->cursorExpired();
-        $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
-        $this->assertEquals(1, $lazyCollection->count());
+        $res = $this->bulkZipRepository->cursorExpired();
+        $this->assertInstanceOf(LazyCollection::class, $res);
+        $this->assertEquals(1, $res->count());
     }
 
     /**
      * @dataProvider dataNotFound
      */
-    public function test_含まれない(array $data): void
+    public function test_含まれない($data)
     {
         BulkZip::factory()->create($data);
 
-        $lazyCollection = $this->bulkZipRepository->cursorExpired();
-        $this->assertEquals(0, $lazyCollection->count());
+        $res = $this->bulkZipRepository->cursorExpired();
+        $this->assertEquals(0, $res->count());
     }
 
-    public static function dataNotFound(): \Generator
+    public static function dataNotFound()
     {
         yield '1日より新しい' => [['created_at' => now('Asia/Tokyo')]];
     }

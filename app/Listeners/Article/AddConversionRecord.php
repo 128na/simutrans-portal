@@ -13,8 +13,8 @@ class AddConversionRecord
     {
     }
 
-    public function handle(ArticleConversion $articleConversion): void
+    public function handle(ArticleConversion $event): void
     {
-        $this->conversionCountRepository->countUp($articleConversion->article);
+        $this->conversionCountRepository->countUp($event->article);
     }
 }

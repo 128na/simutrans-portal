@@ -11,10 +11,12 @@ class LoginHistoryController extends Controller
 {
     public function index(): Collection
     {
-        return $this->loggedinUser()
+        $histories = $this->loggedinUser()
             ->loginHistories()
             ->orderBy('id', 'desc')
             ->limit(10)
             ->get();
+
+        return $histories;
     }
 }

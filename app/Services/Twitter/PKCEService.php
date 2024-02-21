@@ -15,12 +15,12 @@ use Throwable;
 class PKCEService
 {
     public function __construct(
-        private readonly Carbon $now,
-        private readonly Client $client,
-        private readonly OauthTokenRepository $oauthTokenRepository,
-        private readonly string $clientId,
-        private readonly string $clientSecret,
-        private readonly string $callbackUrl,
+        private Carbon $now,
+        private Client $client,
+        private OauthTokenRepository $oauthTokenRepository,
+        private string $clientId,
+        private string $clientSecret,
+        private string $callbackUrl,
     ) {
     }
 
@@ -70,7 +70,7 @@ class PKCEService
 
     public function generateToken(string $code, string $codeVerifier): OauthToken
     {
-        $response = $this->client->request('POST', 'https://api.twitter.com/2/oauth2/token', [
+        $res = $this->client->request('POST', 'https://api.twitter.com/2/oauth2/token', [
             'auth' => [$this->clientId, $this->clientSecret],
             'form_params' => [
                 'code' => $code,
@@ -80,11 +80,11 @@ class PKCEService
             ],
         ]);
 
-        $data = json_decode($response->getBody()->getContents(), true);
+        $data = json_decode($res->getBody()->getContents(), true);
 
         logger('generateToken::data', $data);
 
-        return $this->oauthTokenRepository->updateOrCreate(
+        $token = $this->oauthTokenRepository->updateOrCreate(
             ['application' => 'twitter'],
             [
                 'token_type' => $data['token_type'],
@@ -94,21 +94,23 @@ class PKCEService
                 'expired_at' => $this->now->addSeconds($data['expires_in']),
             ]
         );
+
+        return $token;
     }
 
-    public function refreshToken(OauthToken $oauthToken): OauthToken
+    public function refreshToken(OauthToken $token): OauthToken
     {
-        $response = $this->client->request('POST', 'https://api.twitter.com/2/oauth2/token', [
+        $res = $this->client->request('POST', 'https://api.twitter.com/2/oauth2/token', [
             'auth' => [$this->clientId, $this->clientSecret],
             'form_params' => [
-                'refresh_token' => $oauthToken->refresh_token,
+                'refresh_token' => $token->refresh_token,
                 'grant_type' => 'refresh_token',
             ],
         ]);
 
-        $data = json_decode($response->getBody()->getContents(), true);
+        $data = json_decode($res->getBody()->getContents(), true);
 
-        $oauthToken = $this->oauthTokenRepository->updateOrCreate(
+        $token = $this->oauthTokenRepository->updateOrCreate(
             ['application' => 'twitter'],
             [
                 'token_type' => $data['token_type'],
@@ -119,22 +121,22 @@ class PKCEService
             ]
         );
 
-        return $oauthToken;
+        return $token;
     }
 
-    public function revokeToken(OauthToken $oauthToken): void
+    public function revokeToken(OauthToken $token): void
     {
         try {
             $this->client->request('POST', 'https://api.twitter.com/2/oauth2/revoke', [
                 'auth' => [$this->clientId, $this->clientSecret],
                 'form_params' => [
-                    'token' => $oauthToken->access_token,
+                    'token' => $token->access_token,
                     'token_type_hint' => 'access_token',
                 ],
             ]);
-        } catch (Throwable) {
+        } catch (Throwable $e) {
         }
 
-        $this->oauthTokenRepository->delete($oauthToken);
+        $this->oauthTokenRepository->delete($token);
     }
 }

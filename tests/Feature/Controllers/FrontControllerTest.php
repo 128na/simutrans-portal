@@ -17,192 +17,192 @@ class FrontControllerTest extends TestCase
         parent::setUp();
     }
 
-    public function testTop(): void
+    public function testTop()
     {
-        $testResponse = $this->get(route('index'));
+        $response = $this->get(route('index'));
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testRanking(): void
+    public function testRanking()
     {
-        $testResponse = $this->get(route('ranking'));
+        $response = $this->get(route('ranking'));
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testPages(): void
+    public function testPages()
     {
-        $testResponse = $this->get(route('pages'));
+        $response = $this->get(route('pages'));
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testAnnounces(): void
+    public function testAnnounces()
     {
-        $testResponse = $this->get(route('announces'));
+        $response = $this->get(route('announces'));
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testCategoryPakNoneAddon(): void
+    public function testCategoryPakNoneAddon()
     {
         $category = Category::inRandomOrder()->where('type', 'pak')->first();
-        $testResponse = $this->get(route('category.pak.noneAddon', ['size' => $category->slug]));
+        $response = $this->get(route('category.pak.noneAddon', ['size' => $category->slug]));
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testCategoryPakNoneAddon存在しないPak(): void
+    public function testCategoryPakNoneAddon存在しないPak()
     {
-        $testResponse = $this->get(route('category.pak.noneAddon', ['size' => 'missing']));
+        $response = $this->get(route('category.pak.noneAddon', ['size' => 'missing']));
 
-        $testResponse->assertNotFound();
+        $response->assertNotFound();
     }
 
-    public function testCategoryPakAddon(): void
+    public function testCategoryPakAddon()
     {
         $pak = Category::inRandomOrder()->where('type', 'pak')->first();
         $addon = Category::inRandomOrder()->where('type', 'addon')->first();
-        $testResponse = $this->get(route('category.pak.addon', ['size' => $pak->slug, 'slug' => $addon->slug]));
+        $response = $this->get(route('category.pak.addon', ['size' => $pak->slug, 'slug' => $addon->slug]));
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testCategoryPakAddon存在しないPak(): void
+    public function testCategoryPakAddon存在しないPak()
     {
         $addon = Category::inRandomOrder()->where('type', 'addon')->first();
-        $testResponse = $this->get(route('category.pak.addon', ['size' => 'missing', 'slug' => $addon->slug]));
+        $response = $this->get(route('category.pak.addon', ['size' => 'missing', 'slug' => $addon->slug]));
 
-        $testResponse->assertNotFound();
+        $response->assertNotFound();
     }
 
-    public function testCategoryPakAddon存在しないAddon(): void
+    public function testCategoryPakAddon存在しないAddon()
     {
         $pak = Category::inRandomOrder()->where('type', 'pak')->first();
-        $testResponse = $this->get(route('category.pak.addon', ['size' => $pak->slug, 'slug' => 'missing']));
+        $response = $this->get(route('category.pak.addon', ['size' => $pak->slug, 'slug' => 'missing']));
 
-        $testResponse->assertNotFound();
+        $response->assertNotFound();
     }
 
-    public function testCategory(): void
+    public function testCategory()
     {
         $category = Category::inRandomOrder()->first();
-        $testResponse = $this->get(route('category', ['type' => $category->type, 'slug' => $category->slug]));
+        $response = $this->get(route('category', ['type' => $category->type, 'slug' => $category->slug]));
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testCategory存在しないtype(): void
+    public function testCategory存在しないtype()
     {
         $category = Category::inRandomOrder()->first();
-        $testResponse = $this->get(route('category', ['type' => 'missing', 'slug' => $category->slug]));
+        $response = $this->get(route('category', ['type' => 'missing', 'slug' => $category->slug]));
 
-        $testResponse->assertNotFound();
+        $response->assertNotFound();
     }
 
-    public function testCategory存在しないslug(): void
+    public function testCategory存在しないslug()
     {
         $category = Category::inRandomOrder()->first();
-        $testResponse = $this->get(route('category', ['type' => $category->type, 'slug' => 'missing']));
+        $response = $this->get(route('category', ['type' => $category->type, 'slug' => 'missing']));
 
-        $testResponse->assertNotFound();
+        $response->assertNotFound();
     }
 
-    public function testTag(): void
+    public function testTag()
     {
         $tag = Tag::factory()->create();
-        $testResponse = $this->get(route('tag', ['tag' => $tag->id]));
+        $response = $this->get(route('tag', ['tag' => $tag->id]));
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testTag存在しない(): void
+    public function testTag存在しない()
     {
-        $testResponse = $this->get(route('tag', ['tag' => -1]));
+        $response = $this->get(route('tag', ['tag' => -1]));
 
-        $testResponse->assertNotFound();
+        $response->assertNotFound();
     }
 
-    public function testUser_id(): void
+    public function testUser_id()
     {
         $user = User::factory()->create();
-        $testResponse = $this->get(route('user', ['userIdOrNickname' => $user->id]));
+        $response = $this->get(route('user', ['userIdOrNickname' => $user->id]));
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testUser_nickname(): void
+    public function testUser_nickname()
     {
         $user = User::factory()->create(['nickname' => 'dummy']);
-        $testResponse = $this->get(route('user', ['userIdOrNickname' => $user->nickname]));
+        $response = $this->get(route('user', ['userIdOrNickname' => $user->nickname]));
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testUser存在しない(): void
+    public function testUser存在しない()
     {
-        $testResponse = $this->get(route('user', ['userIdOrNickname' => -1]));
+        $response = $this->get(route('user', ['userIdOrNickname' => -1]));
 
-        $testResponse->assertNotFound();
+        $response->assertNotFound();
     }
 
-    public function testTags(): void
+    public function testTags()
     {
-        $testResponse = $this->get(route('tags'));
+        $response = $this->get(route('tags'));
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testShow_id(): void
+    public function testShow_id()
     {
         $article = Article::factory()->create(['status' => 'publish']);
-        $testResponse = $this->get(route('articles.show', [
+        $response = $this->get(route('articles.show', [
             'userIdOrNickname' => $article->user_id, 'articleSlug' => $article->slug,
         ]));
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testShow_nickname(): void
+    public function testShow_nickname()
     {
         $user = User::factory()->create(['nickname' => 'dummy']);
         $article = Article::factory()->create(['status' => 'publish', 'user_id' => $user->id]);
-        $testResponse = $this->get(route('articles.show', [
+        $response = $this->get(route('articles.show', [
             'userIdOrNickname' => $user->nickname, 'articleSlug' => $article->slug,
         ]));
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testShow非公開(): void
+    public function testShow非公開()
     {
         $article = Article::factory()->create(['status' => 'private']);
-        $testResponse = $this->get(route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]));
+        $response = $this->get(route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]));
 
-        $testResponse->assertNotFound();
+        $response->assertNotFound();
     }
 
-    public function testSearch(): void
+    public function testSearch()
     {
-        $testResponse = $this->get(route('search', ['word' => 'foo']));
+        $response = $this->get(route('search', ['word' => 'foo']));
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testFallbackShow_slug(): void
-    {
-        $article = Article::factory()->create(['status' => 'publish']);
-
-        $testResponse = $this->get('/articles/' . $article->slug);
-        $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user_id, $article->slug));
-    }
-
-    public function testFallbackShow_id(): void
+    public function testFallbackShow_slug()
     {
         $article = Article::factory()->create(['status' => 'publish']);
 
-        $testResponse = $this->get('/articles/' . $article->id);
-        $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user_id, $article->slug));
+        $response = $this->get("/articles/{$article->slug}");
+        $response->assertRedirect("/users/{$article->user_id}/{$article->slug}");
+    }
+
+    public function testFallbackShow_id()
+    {
+        $article = Article::factory()->create(['status' => 'publish']);
+
+        $response = $this->get("/articles/{$article->id}");
+        $response->assertRedirect("/users/{$article->user_id}/{$article->slug}");
     }
 }

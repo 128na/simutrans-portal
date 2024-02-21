@@ -18,7 +18,7 @@ class StoreMarkdownTest extends ArticleTestCase
      * @dataProvider dataArticleValidation
      * @dataProvider dataMarkdownValidation
      */
-    public function testValidation(Closure $fn, ?string $error_field): void
+    public function testValidation(Closure $fn, ?string $error_field)
     {
         Bus::fake();
         $url = '/api/mypage/articles';

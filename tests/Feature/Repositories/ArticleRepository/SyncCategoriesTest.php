@@ -11,15 +11,15 @@ use Tests\TestCase;
 
 class SyncCategoriesTest extends TestCase
 {
-    private ArticleRepository $articleRepository;
+    private ArticleRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->articleRepository = app(ArticleRepository::class);
+        $this->repository = app(ArticleRepository::class);
     }
 
-    public function test(): void
+    public function test()
     {
         $article = Article::factory()->create(['user_id' => $this->user->id]);
 
@@ -30,7 +30,7 @@ class SyncCategoriesTest extends TestCase
             'category_id' => $category->id,
         ]);
 
-        $this->articleRepository->syncCategories($article, [$category->id]);
+        $this->repository->syncCategories($article, [$category->id]);
 
         $this->assertDatabaseHas('article_category', [
             'article_id' => $article->id,

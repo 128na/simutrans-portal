@@ -40,7 +40,6 @@ class UniqueSlugByUser implements DataAwareRule, ValidationRule
 
             return;
         }
-
         if ($user->isAdmin()) {
             $this->passedForAdmin($value, $fail);
         } else {
@@ -60,7 +59,7 @@ class UniqueSlugByUser implements DataAwareRule, ValidationRule
             // exclude myself
             ->when(
                 isset($this->data['article']['id']),
-                fn (Builder $builder) => $builder->where('id', '<>', $this->data['article']['id'])
+                fn (Builder $q) => $q->where('id', '<>', $this->data['article']['id'])
             )->exists();
         if ($exists) {
             $fail('validation.unique')->translate();
@@ -92,7 +91,7 @@ class UniqueSlugByUser implements DataAwareRule, ValidationRule
             // exclude myself
             ->when(
                 isset($this->data['article']['id']),
-                fn (Builder $builder) => $builder->where('id', '<>', $this->data['article']['id'])
+                fn (Builder $q) => $q->where('id', '<>', $this->data['article']['id'])
             )->exists();
         if ($existsInMyself) {
             $fail('validation.unique')->translate();

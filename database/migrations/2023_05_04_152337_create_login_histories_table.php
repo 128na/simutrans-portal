@@ -8,23 +8,27 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('login_histories', static function (Blueprint $blueprint) : void {
-            $blueprint->id();
-            $blueprint->foreignId('user_id')->constrained()->onDelete('cascade');
-            $blueprint->string('ip')->nullable();
-            $blueprint->string('ua')->nullable();
-            $blueprint->string('referer')->nullable();
-            $blueprint->timestamps();
+        Schema::create('login_histories', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('ip')->nullable();
+            $table->string('ua')->nullable();
+            $table->string('referer')->nullable();
+            $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('login_histories');
     }

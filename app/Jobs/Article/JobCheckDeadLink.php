@@ -41,7 +41,6 @@ class JobCheckDeadLink implements ShouldQueue
 
             return;
         }
-
         $this->handleDead($deadLinkChecker, $article);
     }
 
@@ -56,7 +55,6 @@ class JobCheckDeadLink implements ShouldQueue
 
         $deadLinkChecker->closeArticle($article);
         $deadLinkChecker->clearFailedCount($article);
-
         $this->changeAnyArticle = true;
     }
 }

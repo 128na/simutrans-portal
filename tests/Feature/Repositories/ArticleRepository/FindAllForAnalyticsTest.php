@@ -10,35 +10,35 @@ use Tests\ArticleTestCase;
 
 class FindAllForAnalyticsTest extends ArticleTestCase
 {
-    private ArticleRepository $articleRepository;
+    private ArticleRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->articleRepository = app(ArticleRepository::class);
+        $this->repository = app(ArticleRepository::class);
     }
 
-    public function test(): void
+    public function test()
     {
-        $res = $this->articleRepository->findAllForAnalytics($this->user, [$this->article->id, $this->article2->id], static fn(): null => null);
+        $res = $this->repository->findAllForAnalytics($this->user, [$this->article->id, $this->article2->id], fn () => null);
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(1, $res->count(), '自身の記事のみ取得できること');
     }
 
-    public function test公開以外のステータス(): void
+    public function test公開以外のステータス()
     {
         $this->article->update(['status' => 'draft']);
-        $res = $this->articleRepository->findAllForAnalytics($this->user, [$this->article->id], static fn(): null => null);
+        $res = $this->repository->findAllForAnalytics($this->user, [$this->article->id], fn () => null);
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(1, $res->count(), '非公開記事も取得できること');
     }
 
-    public function test論理削除(): void
+    public function test論理削除()
     {
         $this->article->delete();
-        $res = $this->articleRepository->findAllForAnalytics($this->user, [$this->article->id], static fn(): null => null);
+        $res = $this->repository->findAllForAnalytics($this->user, [$this->article->id], fn () => null);
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');

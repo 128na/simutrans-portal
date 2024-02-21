@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class IndexTest extends TestCase
 {
-    private User $user;
+    private User $admin;
 
     private Article $article1;
 
@@ -23,16 +23,16 @@ class IndexTest extends TestCase
     protected function setUp(): void
     {
         parent::setup();
-        $this->user = User::factory()->admin()->create();
+        $this->admin = User::factory()->admin()->create();
         $this->article1 = Article::factory()->create();
         $this->article2 = Article::factory()->draft()->create();
         $this->article3 = Article::factory()->deleted()->create();
         $this->article4 = Article::factory()->create(['user_id' => User::factory()->deleted()->create()->id]);
     }
 
-    public function test(): void
+    public function test()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->admin);
         $url = '/api/admin/articles';
         $res = $this->getJson($url);
         $res->assertOk();
@@ -42,14 +42,14 @@ class IndexTest extends TestCase
         $res->assertJsonFragment(['title' => $this->article4->title]);
     }
 
-    public function test未ログイン(): void
+    public function test未ログイン()
     {
         $url = '/api/admin/articles';
         $res = $this->getJson($url);
         $res->assertUnauthorized();
     }
 
-    public function test管理者以外(): void
+    public function test管理者以外()
     {
         $this->actingAs($this->user);
         $url = '/api/admin/articles';

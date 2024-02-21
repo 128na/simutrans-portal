@@ -16,28 +16,28 @@ use Throwable;
 class OneSignalChannel extends BaseChannel
 {
     public function __construct(
-        private readonly MessageGenerator $messageGenerator
+        private MessageGenerator $messageGenerator
     ) {
     }
 
-    public function send(Article $article, SendArticleNotification $sendArticleNotification): void
+    public function send(Article $notifiable, SendArticleNotification $notification): void
     {
         try {
             OneSignalFacade::sendNotificationToAll(
-                $this->buildMessage($article, $sendArticleNotification),
-                route('articles.show', ['userIdOrNickname' => $article->user?->nickname ?? $article->user_id, 'articleSlug' => $article->slug]),
+                $this->buildMessage($notifiable, $notification),
+                route('articles.show', ['userIdOrNickname' => $notifiable->user?->nickname ?? $notifiable->user_id, 'articleSlug' => $notifiable->slug]),
             );
-        } catch (Throwable $throwable) {
-            report($throwable);
+        } catch (Throwable $e) {
+            report($e);
         }
     }
 
-    private function buildMessage(Article $article, SendArticleNotification $sendArticleNotification): string
+    private function buildMessage(Article $notifiable, SendArticleNotification $notification): string
     {
         return match (true) {
-            $sendArticleNotification instanceof SendArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($article),
-            $sendArticleNotification instanceof SendArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($article),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendArticleNotification::class)),
+            $notification instanceof SendArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($notifiable),
+            $notification instanceof SendArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($notifiable),
+            default => throw new Exception(sprintf('unsupport notification "%s" provided', get_class($notification))),
         };
     }
 

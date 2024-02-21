@@ -15,7 +15,10 @@ class BaseListener
      */
     protected function getAccessInfo(?Request $request = null): array
     {
-        $request ??= request();
+        /**
+         * @var Request|null
+         */
+        $request = $request ?? request();
 
         if (! $request) {
             return [];

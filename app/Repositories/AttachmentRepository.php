@@ -21,21 +21,17 @@ class AttachmentRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(Attachment $attachment)
+    public function __construct(Attachment $model)
     {
-        $this->model = $attachment;
+        $this->model = $model;
     }
 
     public function syncProfile(User $user, int $id): void
     {
         $attachment = $user->myAttachments()->find($id);
-        if (!$user->profile) {
-            return;
+        if ($user->profile && $attachment) {
+            $user->profile->attachments()->save($attachment);
         }
-        if (!$attachment) {
-            return;
-        }
-        $user->profile->attachments()->save($attachment);
     }
 
     public function findAllByUser(User $user): Collection
@@ -52,7 +48,7 @@ class AttachmentRepository extends BaseRepository
     public function cursorUnconvertedImages(): LazyCollection
     {
         return $this->model
-            ->where(static function ($q) : void {
+            ->where(function ($q) {
                 $q->orWhere('original_name', 'like', '%.png')
                     ->orWhere('original_name', 'like', '%.jpg')
                     ->orWhere('original_name', 'like', '%.jpeg');
@@ -61,12 +57,12 @@ class AttachmentRepository extends BaseRepository
             ->cursor();
     }
 
-    public function createFromFile(User $user, UploadedFile $uploadedFile): Attachment
+    public function createFromFile(User $user, UploadedFile $file): Attachment
     {
         return $this->model->create([
             'user_id' => $user->id,
-            'path' => Storage::disk('public')->putFile('user/'.$user->id, $uploadedFile),
-            'original_name' => $uploadedFile->getClientOriginalName(),
+            'path' => Storage::disk('public')->putFile('user/'.$user->id, $file),
+            'original_name' => $file->getClientOriginalName(),
         ]);
     }
 

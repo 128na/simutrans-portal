@@ -23,8 +23,10 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
+     *
+     * @return void
      */
-    public function boot(): void
+    public function boot()
     {
         Date::use(CarbonImmutable::class);
         Model::shouldBeStrict(! App::isProduction());

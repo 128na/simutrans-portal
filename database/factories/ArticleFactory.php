@@ -60,73 +60,87 @@ class ArticleFactory extends Factory
 
     public function publish()
     {
-        return $this->state(static fn(array $attributes): array => [
-            'status' => 'publish',
-        ]);
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => 'publish',
+            ];
+        });
     }
 
     public function draft()
     {
-        return $this->state(static fn(array $attributes): array => [
-            'status' => 'draft',
-        ]);
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => 'draft',
+            ];
+        });
     }
 
     public function deleted()
     {
-        return $this->state(static fn(array $attributes): array => [
-            'deleted_at' => now(),
-        ]);
+        return $this->state(function (array $attributes) {
+            return [
+                'deleted_at' => now(),
+            ];
+        });
     }
 
     public function addonPost()
     {
-        return $this->state(fn(array $attributes): array => [
-            'post_type' => 'addon-post',
-            'contents' => [
-                'description' => $this->faker->realText(),
-                'license' => $this->faker->realText(),
-                'thanks' => $this->faker->realText(),
-                'author' => $this->faker->name(),
-            ],
-        ]);
+        return $this->state(function (array $attributes) {
+            return [
+                'post_type' => 'addon-post',
+                'contents' => [
+                    'description' => $this->faker->realText(),
+                    'license' => $this->faker->realText(),
+                    'thanks' => $this->faker->realText(),
+                    'author' => $this->faker->name(),
+                ],
+            ];
+        });
     }
 
     public function addonIntroduction()
     {
-        return $this->state(fn(array $attributes): array => [
-            'post_type' => 'addon-introduction',
-            'contents' => [
-                'description' => $this->faker->realText(),
-                'license' => $this->faker->realText(),
-                'thanks' => $this->faker->realText(),
-                'author' => $this->faker->name(),
-                'link' => $this->faker->url(),
-                'agreement' => true,
-                'exclude_link_check' => false,
-            ],
-        ]);
+        return $this->state(function (array $attributes) {
+            return [
+                'post_type' => 'addon-introduction',
+                'contents' => [
+                    'description' => $this->faker->realText(),
+                    'license' => $this->faker->realText(),
+                    'thanks' => $this->faker->realText(),
+                    'author' => $this->faker->name(),
+                    'link' => $this->faker->url(),
+                    'agreement' => true,
+                    'exclude_link_check' => false,
+                ],
+            ];
+        });
     }
 
     public function page()
     {
-        return $this->state(fn(array $attributes): array => [
-            'post_type' => 'page',
-            'contents' => [
-                'sections' => [
-                    ['type' => 'text', 'text' => $this->faker->realText()],
+        return $this->state(function (array $attributes) {
+            return [
+                'post_type' => 'page',
+                'contents' => [
+                    'sections' => [
+                        ['type' => 'text', 'text' => $this->faker->realText()],
+                    ],
                 ],
-            ],
-        ]);
+            ];
+        });
     }
 
     public function markdown()
     {
-        return $this->state(fn(array $attributes): array => [
-            'post_type' => 'markdown',
-            'contents' => [
-                'markdown' => $this->faker->realText(),
-            ],
-        ]);
+        return $this->state(function (array $attributes) {
+            return [
+                'post_type' => 'markdown',
+                'contents' => [
+                    'markdown' => $this->faker->realText(),
+                ],
+            ];
+        });
     }
 }

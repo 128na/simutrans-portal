@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 class TagService extends Service
 {
     public function __construct(
-        private readonly TagRepository $tagRepository,
+        private TagRepository $tagRepository,
     ) {
     }
 

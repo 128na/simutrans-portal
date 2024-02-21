@@ -9,4 +9,8 @@ use Illuminate\Queue\SerializesModels;
 class DiscordInviteCodeCreated
 {
     use SerializesModels;
+
+    public function __construct()
+    {
+    }
 }

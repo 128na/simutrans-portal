@@ -15,17 +15,19 @@ class RouteServiceProvider extends ServiceProvider
 {
     public const HOME = '/';
 
-    public function boot(): void
+    public function boot()
     {
         $this->configureRateLimiting();
 
-        $this->routes(static function () : void {
+        $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
+
             Route::middleware('internal_api')
                 ->prefix('api')
                 ->group(base_path('routes/internal_api.php'));
+
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
@@ -34,16 +36,22 @@ class RouteServiceProvider extends ServiceProvider
 
     private function registerRouteBindings(): void
     {
-        Route::bind('invitation_code', static fn($value) => User::where('invitation_code', $value)->whereNotNull('email_verified_at')->firstOrFail());
+        Route::bind('invitation_code', function ($value) {
+            return User::where('invitation_code', $value)->whereNotNull('email_verified_at')->firstOrFail();
+        });
     }
 
     protected function configureRateLimiting(): void
     {
-        RateLimiter::for('register', static fn(Request $request) => Limit::perMinute(10)->by($request->ip()));
-        RateLimiter::for('discordInvite', static fn(Request $request): array => [
-            Limit::perMinute(1),
-            Limit::perHour(10),
-            Limit::perDay(50),
-        ]);
+        RateLimiter::for('register', function (Request $request) {
+            return Limit::perMinute(10)->by($request->ip());
+        });
+        RateLimiter::for('discordInvite', function (Request $request) {
+            return [
+                Limit::perMinute(1),
+                Limit::perHour(10),
+                Limit::perDay(50),
+            ];
+        });
     }
 }

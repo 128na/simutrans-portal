@@ -164,6 +164,7 @@ return [
         'article.contents' => '内容',
         'article.contents.thumbnail' => 'サムネイル画像',
         'article.contents.author' => '作者',
+        'article.contents.file' => 'アドオンファイル',
         'article.contents.link' => 'リンク先URL',
         'article.contents.description' => '説明',
         'article.contents.license' => 'ライセンスその他',

@@ -35,7 +35,7 @@ class JobDeleteExpiredBulkzipTest extends TestCase
         parent::tearDown();
     }
 
-    public function test(): void
+    public function test()
     {
         $this->assertDatabaseHas('bulk_zips', ['id' => $this->bulkzip1->id]);
         $this->assertFileExists(Storage::disk('public')->path('testing/dummy1.zip'), 'zipファイルが存在すること');

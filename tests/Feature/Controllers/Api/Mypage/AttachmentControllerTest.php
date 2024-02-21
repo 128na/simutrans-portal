@@ -14,7 +14,7 @@ use Tests\ArticleTestCase;
 
 class AttachmentControllerTest extends ArticleTestCase
 {
-    public function testIndex(): void
+    public function testIndex()
     {
         $url = '/api/mypage/attachments';
 
@@ -27,9 +27,9 @@ class AttachmentControllerTest extends ArticleTestCase
         $res->assertOK();
     }
 
-    public function testFormatImage(): void
+    public function testFormatImage()
     {
-        $this->createFromFile(UploadedFile::fake()->image('test.png', 1), $this->user->id);
+        $file = $this->createFromFile(UploadedFile::fake()->image('test.png', 1), $this->user->id);
 
         $url = '/api/mypage/attachments';
         $this->actingAs($this->user);
@@ -38,9 +38,9 @@ class AttachmentControllerTest extends ArticleTestCase
         $res->assertOK();
     }
 
-    public function testFormatOther(): void
+    public function testFormatOther()
     {
-        $this->createFromFile(UploadedFile::fake()->create('test.zip', 1, 'application/zip'), $this->user->id);
+        $file = $this->createFromFile(UploadedFile::fake()->create('test.zip', 1, 'application/zip'), $this->user->id);
 
         $url = '/api/mypage/attachments';
         $this->actingAs($this->user);
@@ -49,19 +49,19 @@ class AttachmentControllerTest extends ArticleTestCase
         $res->assertOK();
     }
 
-    public static function dataValidation(): \Generator
+    public static function dataValidation()
     {
-        yield 'fileがnull' => [static fn(): array => ['file' => null], 'file'];
-        yield 'fileがファイル以外' => [static fn(): array => ['file' => 'test.zip'], 'file'];
-        yield '成功' => [static fn(): array => ['file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], null];
-        yield '画像のみで画像以外' => [static fn(): array => ['only_image' => 1, 'file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], 'file'];
-        yield '画像のみで画像' => [static fn(): array => ['only_image' => 1, 'file' => UploadedFile::fake()->image('test.png', 1)], null];
+        yield 'fileがnull' => [fn () => ['file' => null], 'file'];
+        yield 'fileがファイル以外' => [fn () => ['file' => 'test.zip'], 'file'];
+        yield '成功' => [fn () => ['file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], null];
+        yield '画像のみで画像以外' => [fn () => ['only_image' => 1, 'file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], 'file'];
+        yield '画像のみで画像' => [fn () => ['only_image' => 1, 'file' => UploadedFile::fake()->image('test.png', 1)], null];
     }
 
     /**
      * @dataProvider dataValidation
      */
-    public function testStore(Closure $data, ?string $error_field): void
+    public function testStore(Closure $data, ?string $error_field)
     {
         $url = '/api/mypage/attachments';
 
@@ -80,13 +80,13 @@ class AttachmentControllerTest extends ArticleTestCase
         }
     }
 
-    public function testDestroy(): void
+    public function testDestroy()
     {
         /** @var User */
         $user = User::factory()->create();
 
-        $attachment = $this->createFromFile(UploadedFile::fake()->image('file.png', 1), $user->id);
-        $url = '/api/mypage/attachments/' . $attachment->id;
+        $file = $this->createFromFile(UploadedFile::fake()->image('file.png', 1), $user->id);
+        $url = "/api/mypage/attachments/{$file->id}";
         $res = $this->deleteJson($url);
         $res->assertUnauthorized();
 
@@ -94,26 +94,26 @@ class AttachmentControllerTest extends ArticleTestCase
 
         $other_user = User::factory()->create();
         $other_file = $this->createFromFile(UploadedFile::fake()->image('file.png', 1), $other_user->id);
-        $url = '/api/mypage/attachments/' . $other_file->id;
+        $url = "/api/mypage/attachments/{$other_file->id}";
         $res = $this->deleteJson($url);
         $res->assertStatus(403);
         $this->assertDatabaseHas('attachments', [
-            'id' => $attachment->id,
+            'id' => $file->id,
         ]);
         $this->assertDatabaseHas('attachments', [
             'id' => $other_file->id,
         ]);
 
-        $url = '/api/mypage/attachments/' . $attachment->id;
+        $url = "/api/mypage/attachments/{$file->id}";
         $res = $this->deleteJson($url);
         $res->assertOK();
 
-        $this->assertNull(Attachment::find($attachment->id));
+        $this->assertNull(Attachment::find($file->id));
 
         // IDのみだとなぜか失敗する
         $this->assertDatabaseMissing('attachments', [
-            'id' => $attachment->id,
-            'user_id' => $attachment->user_if,
+            'id' => $file->id,
+            'user_id' => $file->user_if,
             // 'attachmentable_id' => null,
             // 'attachmentable_type' => null,
             // 'original_name' => 'file.png',

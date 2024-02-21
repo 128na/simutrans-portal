@@ -14,11 +14,11 @@ class UserTest extends TestCase
 {
     protected function tearDown(): void
     {
-        BulkZip::all()->map(static fn($bz) => $bz->delete());
+        BulkZip::all()->map(fn ($bz) => $bz->delete());
         parent::tearDown();
     }
 
-    public function test(): void
+    public function test()
     {
         Bus::fake();
         $url = '/api/mypage/bulk-zip';
@@ -29,7 +29,7 @@ class UserTest extends TestCase
         Bus::assertDispatched(JobCreateBulkZip::class);
     }
 
-    public function test作成済み(): void
+    public function test作成済み()
     {
         Bus::fake();
         BulkZip::factory()->create([
@@ -44,7 +44,7 @@ class UserTest extends TestCase
         Bus::assertNotDispatched(JobCreateBulkZip::class);
     }
 
-    public function test未ログイン(): void
+    public function test未ログイン()
     {
         $url = '/api/mypage/bulk-zip';
 

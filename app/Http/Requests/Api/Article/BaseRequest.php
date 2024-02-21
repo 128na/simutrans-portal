@@ -16,13 +16,18 @@ abstract class BaseRequest extends FormRequest
     public function rules()
     {
         $post_type = request()->input('article.post_type');
-        return match ($post_type) {
-            'addon-post' => array_merge($this->baseRule(), $this->addonPost()),
-            'addon-introduction' => array_merge($this->baseRule(), $this->addonIntroductiuon()),
-            'page' => array_merge($this->baseRule(), $this->page()),
-            'markdown' => array_merge($this->baseRule(), $this->markdown()),
-            default => $this->baseRule(),
-        };
+        switch ($post_type) {
+            case 'addon-post':
+                return array_merge($this->baseRule(), $this->addonPost());
+            case 'addon-introduction':
+                return array_merge($this->baseRule(), $this->addonIntroductiuon());
+            case 'page':
+                return array_merge($this->baseRule(), $this->page());
+            case 'markdown':
+                return array_merge($this->baseRule(), $this->markdown());
+            default:
+                return $this->baseRule();
+        }
     }
 
     /**

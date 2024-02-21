@@ -17,165 +17,165 @@ class FrontControllerTest extends TestCase
         parent::setUp();
     }
 
-    public function testShow_id(): void
+    public function testShow_id()
     {
         $article = Article::factory()->create(['status' => 'publish']);
-        $testResponse = $this->get(sprintf('api/front/users/%s/%s', $article->user_id, $article->slug));
+        $response = $this->get("api/front/users/{$article->user_id}/{$article->slug}");
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testShow_nickname(): void
+    public function testShow_nickname()
     {
         $user = User::factory()->create(['nickname' => 'dummy']);
         $article = Article::factory()->create(['status' => 'publish', 'user_id' => $user->id]);
-        $testResponse = $this->get(sprintf('api/front/users/%s/%s', $user->nickname, $article->slug));
+        $response = $this->get("api/front/users/{$user->nickname}/{$article->slug}");
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testShow非公開(): void
+    public function testShow非公開()
     {
         $article = Article::factory()->create(['status' => 'private']);
-        $testResponse = $this->get(sprintf('api/front/users/%s/%s', $article->user_id, $article->slug));
+        $response = $this->get("api/front/users/{$article->user_id}/{$article->slug}");
 
-        $testResponse->assertNotFound();
+        $response->assertNotFound();
     }
 
-    public function testUser_id(): void
+    public function testUser_id()
     {
         $user = User::factory()->create();
-        $testResponse = $this->get('api/front/users/' . $user->id);
+        $response = $this->get("api/front/users/{$user->id}");
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testUser_nickname(): void
+    public function testUser_nickname()
     {
         $user = User::factory()->create(['nickname' => 'dummy']);
-        $testResponse = $this->get('api/front/users/' . $user->nickname);
+        $response = $this->get("api/front/users/{$user->nickname}");
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testUser存在しない(): void
+    public function testUser存在しない()
     {
-        $testResponse = $this->get('api/front/users/0');
+        $response = $this->get('api/front/users/0');
 
-        $testResponse->assertNotFound();
+        $response->assertNotFound();
     }
 
-    public function testPages(): void
+    public function testPages()
     {
-        $testResponse = $this->get('api/front/pages');
+        $response = $this->get('api/front/pages');
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testAnnounces(): void
+    public function testAnnounces()
     {
-        $testResponse = $this->get('api/front/announces');
+        $response = $this->get('api/front/announces');
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testRanking(): void
+    public function testRanking()
     {
-        $testResponse = $this->get('api/front/ranking');
+        $response = $this->get('api/front/ranking');
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testCategory(): void
-    {
-        $category = Category::inRandomOrder()->first();
-        $testResponse = $this->get(sprintf('api/front/categories/%s/%s', $category->type, $category->slug));
-
-        $testResponse->assertOk();
-    }
-
-    public function testCategory存在しないtype(): void
+    public function testCategory()
     {
         $category = Category::inRandomOrder()->first();
-        $testResponse = $this->get('api/front/categories/missing/' . $category->slug);
+        $response = $this->get("api/front/categories/{$category->type}/{$category->slug}");
 
-        $testResponse->assertNotFound();
+        $response->assertOk();
     }
 
-    public function testCategory存在しないslug(): void
+    public function testCategory存在しないtype()
     {
         $category = Category::inRandomOrder()->first();
-        $testResponse = $this->get(sprintf('api/front/categories/%s/missing', $category->type));
+        $response = $this->get("api/front/categories/missing/{$category->slug}");
 
-        $testResponse->assertNotFound();
+        $response->assertNotFound();
     }
 
-    public function testCategoryPakAddon(): void
+    public function testCategory存在しないslug()
+    {
+        $category = Category::inRandomOrder()->first();
+        $response = $this->get("api/front/categories/{$category->type}/missing");
+
+        $response->assertNotFound();
+    }
+
+    public function testCategoryPakAddon()
     {
         $pak = Category::inRandomOrder()->where('type', 'pak')->first();
         $addon = Category::inRandomOrder()->where('type', 'addon')->first();
-        $testResponse = $this->get(sprintf('api/front/categories/pak/%s/%s', $pak->slug, $addon->slug));
+        $response = $this->get("api/front/categories/pak/{$pak->slug}/{$addon->slug}");
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testCategoryPakAddon存在しないPak(): void
+    public function testCategoryPakAddon存在しないPak()
     {
         $addon = Category::inRandomOrder()->where('type', 'addon')->first();
-        $testResponse = $this->get('api/front/categories/pak/missing/' . $addon->slug);
+        $response = $this->get("api/front/categories/pak/missing/{$addon->slug}");
 
-        $testResponse->assertNotFound();
+        $response->assertNotFound();
     }
 
-    public function testCategoryPakAddon存在しないAddon(): void
+    public function testCategoryPakAddon存在しないAddon()
     {
         $pak = Category::inRandomOrder()->where('type', 'pak')->first();
-        $testResponse = $this->get(sprintf('api/front/categories/pak/%s/missing', $pak->slug));
+        $response = $this->get("api/front/categories/pak/{$pak->slug}/missing");
 
-        $testResponse->assertNotFound();
+        $response->assertNotFound();
     }
 
-    public function testCategoryPakNoneAddon(): void
+    public function testCategoryPakNoneAddon()
     {
         $category = Category::inRandomOrder()->where('type', 'pak')->first();
-        $testResponse = $this->get(sprintf('api/front/categories/pak/%s/none', $category->slug));
+        $response = $this->get("api/front/categories/pak/{$category->slug}/none");
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testCategoryPakNoneAddon存在しないPak(): void
+    public function testCategoryPakNoneAddon存在しないPak()
     {
-        $testResponse = $this->get('api/front/categories/pak/missing/none');
+        $response = $this->get('api/front/categories/pak/missing/none');
 
-        $testResponse->assertNotFound();
+        $response->assertNotFound();
     }
 
-    public function testTag(): void
+    public function testTag()
     {
         $tag = Tag::factory()->create();
-        $testResponse = $this->get('api/front/tags/' . $tag->id);
+        $response = $this->get("api/front/tags/{$tag->id}");
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testTag存在しない(): void
+    public function testTag存在しない()
     {
-        $testResponse = $this->get('api/front/tags/0');
+        $response = $this->get('api/front/tags/0');
 
-        $testResponse->assertNotFound();
+        $response->assertNotFound();
     }
 
-    public function testSearch(): void
+    public function testSearch()
     {
-        $testResponse = $this->get('api/front/search?word=foo');
+        $response = $this->get('api/front/search?word=foo');
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 
-    public function testTags(): void
+    public function testTags()
     {
-        $testResponse = $this->get('api/front/tags');
+        $response = $this->get('api/front/tags');
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Schema;
 class DropOauth extends Migration
 {
     public $schema;
+
     public function __construct()
     {
         $this->schema = Schema::connection($this->getConnection());

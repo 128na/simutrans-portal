@@ -10,6 +10,7 @@ use Tests\TestCase;
 class IndexTest extends TestCase
 {
     public $user2;
+
     protected function setUp(): void
     {
         parent::setUp();

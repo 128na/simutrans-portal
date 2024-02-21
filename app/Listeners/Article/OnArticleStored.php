@@ -21,9 +21,11 @@ class OnArticleStored extends BaseListener
         if (!$articleStored->article->is_publish) {
             return;
         }
+
         if (!$articleStored->shouldNotify) {
             return;
         }
+
         $articleStored->article->notify(new SendArticlePublished());
     }
 }

@@ -27,35 +27,35 @@ class PaginateByCategoryTest extends ArticleTestCase
     public function test(): void
     {
         /**
-         * @var LengthAwarePaginator $res
+         * @var LengthAwarePaginator $paginator
          */
-        $res = $this->articleRepository->paginateByCategory($this->category);
+        $paginator = $this->articleRepository->paginateByCategory($this->category);
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEquals(1, $res->count(), 'カテゴリに紐づく記事のみ取得出来ること');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
+        $this->assertEquals(1, $paginator->count(), 'カテゴリに紐づく記事のみ取得出来ること');
     }
 
     public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => 'draft']);
         /**
-         * @var LengthAwarePaginator $res
+         * @var LengthAwarePaginator $paginator
          */
-        $res = $this->articleRepository->paginateByCategory($this->category);
+        $paginator = $this->articleRepository->paginateByCategory($this->category);
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEquals(0, $res->count(), '非公開記事は取得できないこと');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
+        $this->assertEquals(0, $paginator->count(), '非公開記事は取得できないこと');
     }
 
     public function test論理削除(): void
     {
         $this->article->delete();
         /**
-         * @var LengthAwarePaginator $res
+         * @var LengthAwarePaginator $paginator
          */
-        $res = $this->articleRepository->paginateByCategory($this->category);
+        $paginator = $this->articleRepository->paginateByCategory($this->category);
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
+        $this->assertEquals(0, $paginator->count(), '削除済み記事は取得できないこと');
     }
 }

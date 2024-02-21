@@ -23,27 +23,27 @@ class PaginateRankingTest extends ArticleTestCase
     public function test(): void
     {
         $this->createPage();
-        $paginator = $this->articleRepository->paginateRanking();
+        $res = $this->articleRepository->paginateRanking();
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertEquals(1, $paginator->count());
+        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
+        $this->assertEquals(1, $res->count());
     }
 
     public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => 'draft']);
-        $paginator = $this->articleRepository->paginateRanking();
+        $res = $this->articleRepository->paginateRanking();
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertEquals(0, $paginator->count(), '非公開記事は取得できないこと');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
+        $this->assertEquals(0, $res->count(), '非公開記事は取得できないこと');
     }
 
     public function test論理削除(): void
     {
         $this->article->delete();
-        $paginator = $this->articleRepository->paginateRanking();
+        $res = $this->articleRepository->paginateRanking();
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertEquals(0, $paginator->count(), '削除済み記事は取得できないこと');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
+        $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');
     }
 }

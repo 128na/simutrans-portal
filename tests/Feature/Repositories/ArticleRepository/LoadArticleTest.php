@@ -20,8 +20,8 @@ class LoadArticleTest extends ArticleTestCase
 
     public function test(): void
     {
-        $article = $this->articleRepository->loadArticle($this->article);
+        $res = $this->articleRepository->loadArticle($this->article);
 
-        $this->assertInstanceOf(Article::class, $article);
+        $this->assertInstanceOf(Article::class, $res);
     }
 }

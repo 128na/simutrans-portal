@@ -40,7 +40,6 @@ class TabExtractor extends Service implements Extractor
             if (str_starts_with($tab, '§')) {
                 continue;
             }
-
             if (str_starts_with($tab, '#')) {
                 continue;
             }

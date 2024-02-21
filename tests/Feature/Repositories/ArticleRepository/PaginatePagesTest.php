@@ -21,10 +21,10 @@ class PaginatePagesTest extends ArticleTestCase
     public function test(): void
     {
         $this->createPage();
-        $paginator = $this->articleRepository->paginatePages();
+        $res = $this->articleRepository->paginatePages();
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertEquals(1, $paginator->count(), '一般記事のみ取得出来ること');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
+        $this->assertEquals(1, $res->count(), '一般記事のみ取得出来ること');
     }
 
     public function test公開以外のステータス(): void
@@ -32,10 +32,10 @@ class PaginatePagesTest extends ArticleTestCase
         $article = $this->createPage();
         $article->update(['status' => 'draft']);
 
-        $paginator = $this->articleRepository->paginatePages();
+        $res = $this->articleRepository->paginatePages();
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertEquals(0, $paginator->count(), '非公開記事は取得できないこと');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
+        $this->assertEquals(0, $res->count(), '非公開記事は取得できないこと');
     }
 
     public function test論理削除(): void
@@ -43,9 +43,9 @@ class PaginatePagesTest extends ArticleTestCase
         $article = $this->createPage();
         $article->delete();
 
-        $paginator = $this->articleRepository->paginatePages();
+        $res = $this->articleRepository->paginatePages();
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertEquals(0, $paginator->count(), '削除済み記事は取得できないこと');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
+        $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');
     }
 }

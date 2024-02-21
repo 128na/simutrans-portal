@@ -21,9 +21,9 @@ class FindOrFailWithTrashedTest extends ArticleTestCase
 
     public function test(): void
     {
-        $article = $this->articleRepository->findOrFailWithTrashed($this->article->id);
+        $res = $this->articleRepository->findOrFailWithTrashed($this->article->id);
 
-        $this->assertInstanceOf(Article::class, $article);
+        $this->assertInstanceOf(Article::class, $res);
     }
 
     public function testNotFound(): void

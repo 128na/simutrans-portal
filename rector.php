@@ -1,5 +1,6 @@
 <?php
 
+use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\Config\RectorConfig;
 
 return RectorConfig::configure()
@@ -17,9 +18,12 @@ return RectorConfig::configure()
         codeQuality: true,
         codingStyle: true,
         typeDeclarations: true,
-        privatization: false,
+        privatization: true,
         naming: false,
         instanceOf: false,
         earlyReturn: false,
         strictBooleans: false,
-    );
+    )
+    ->withSkip([
+        PostIncDecToPreIncDecRector::class, // pintと干渉する
+    ]);

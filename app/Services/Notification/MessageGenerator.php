@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\Notification;
 
 use App\Models\Article;
-use App\Models\User;
 use App\Services\Service;
 use Exception;
 
@@ -39,7 +38,7 @@ class MessageGenerator extends Service
         if ($article->user) {
             $url = route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]);
             $now = now()->format('Y/m/d H:i');
-            $name = $this->getDisaplayName($article->user);
+            $name = $article->user->name;
             $tags = collect(['Simutrans'])
                 ->merge($article->categoryPaks->pluck('name'))
                 ->map(static fn ($name): string => str_replace('.', '', '#'.$name)) // ドットはハッシュタグに使用できない
@@ -49,10 +48,5 @@ class MessageGenerator extends Service
         }
 
         throw new Exception('missing user');
-    }
-
-    private function getDisaplayName(User $user): string
-    {
-        return $user->name;
     }
 }

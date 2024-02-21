@@ -17,7 +17,7 @@ class FrontControllerTest extends TestCase
         parent::setUp();
     }
 
-    public function testShow_id()
+    public function testShow_id(): void
     {
         $article = Article::factory()->create(['status' => 'publish']);
         $response = $this->get(sprintf('api/front/users/%s/%s', $article->user_id, $article->slug));
@@ -25,7 +25,7 @@ class FrontControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testShow_nickname()
+    public function testShow_nickname(): void
     {
         $user = User::factory()->create(['nickname' => 'dummy']);
         $article = Article::factory()->create(['status' => 'publish', 'user_id' => $user->id]);
@@ -34,7 +34,7 @@ class FrontControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testShow非公開()
+    public function testShow非公開(): void
     {
         $article = Article::factory()->create(['status' => 'private']);
         $response = $this->get(sprintf('api/front/users/%s/%s', $article->user_id, $article->slug));
@@ -42,7 +42,7 @@ class FrontControllerTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function testUser_id()
+    public function testUser_id(): void
     {
         $user = User::factory()->create();
         $response = $this->get('api/front/users/'.$user->id);
@@ -50,7 +50,7 @@ class FrontControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testUser_nickname()
+    public function testUser_nickname(): void
     {
         $user = User::factory()->create(['nickname' => 'dummy']);
         $response = $this->get('api/front/users/'.$user->nickname);
@@ -58,35 +58,35 @@ class FrontControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testUser存在しない()
+    public function testUser存在しない(): void
     {
         $response = $this->get('api/front/users/0');
 
         $response->assertNotFound();
     }
 
-    public function testPages()
+    public function testPages(): void
     {
         $response = $this->get('api/front/pages');
 
         $response->assertOk();
     }
 
-    public function testAnnounces()
+    public function testAnnounces(): void
     {
         $response = $this->get('api/front/announces');
 
         $response->assertOk();
     }
 
-    public function testRanking()
+    public function testRanking(): void
     {
         $response = $this->get('api/front/ranking');
 
         $response->assertOk();
     }
 
-    public function testCategory()
+    public function testCategory(): void
     {
         $category = Category::inRandomOrder()->first();
         $response = $this->get(sprintf('api/front/categories/%s/%s', $category->type, $category->slug));
@@ -94,7 +94,7 @@ class FrontControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testCategory存在しないtype()
+    public function testCategory存在しないtype(): void
     {
         $category = Category::inRandomOrder()->first();
         $response = $this->get('api/front/categories/missing/'.$category->slug);
@@ -102,7 +102,7 @@ class FrontControllerTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function testCategory存在しないslug()
+    public function testCategory存在しないslug(): void
     {
         $category = Category::inRandomOrder()->first();
         $response = $this->get(sprintf('api/front/categories/%s/missing', $category->type));
@@ -110,7 +110,7 @@ class FrontControllerTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function testCategoryPakAddon()
+    public function testCategoryPakAddon(): void
     {
         $pak = Category::inRandomOrder()->where('type', 'pak')->first();
         $addon = Category::inRandomOrder()->where('type', 'addon')->first();
@@ -119,7 +119,7 @@ class FrontControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testCategoryPakAddon存在しないPak()
+    public function testCategoryPakAddon存在しないPak(): void
     {
         $addon = Category::inRandomOrder()->where('type', 'addon')->first();
         $response = $this->get('api/front/categories/pak/missing/'.$addon->slug);
@@ -127,7 +127,7 @@ class FrontControllerTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function testCategoryPakAddon存在しないAddon()
+    public function testCategoryPakAddon存在しないAddon(): void
     {
         $pak = Category::inRandomOrder()->where('type', 'pak')->first();
         $response = $this->get(sprintf('api/front/categories/pak/%s/missing', $pak->slug));
@@ -135,7 +135,7 @@ class FrontControllerTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function testCategoryPakNoneAddon()
+    public function testCategoryPakNoneAddon(): void
     {
         $category = Category::inRandomOrder()->where('type', 'pak')->first();
         $response = $this->get(sprintf('api/front/categories/pak/%s/none', $category->slug));
@@ -143,14 +143,14 @@ class FrontControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testCategoryPakNoneAddon存在しないPak()
+    public function testCategoryPakNoneAddon存在しないPak(): void
     {
         $response = $this->get('api/front/categories/pak/missing/none');
 
         $response->assertNotFound();
     }
 
-    public function testTag()
+    public function testTag(): void
     {
         $tag = Tag::factory()->create();
         $response = $this->get('api/front/tags/'.$tag->id);
@@ -158,21 +158,21 @@ class FrontControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testTag存在しない()
+    public function testTag存在しない(): void
     {
         $response = $this->get('api/front/tags/0');
 
         $response->assertNotFound();
     }
 
-    public function testSearch()
+    public function testSearch(): void
     {
         $response = $this->get('api/front/search?word=foo');
 
         $response->assertOk();
     }
 
-    public function testTags()
+    public function testTags(): void
     {
         $response = $this->get('api/front/tags');
 

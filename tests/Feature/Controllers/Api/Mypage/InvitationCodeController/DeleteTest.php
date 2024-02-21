@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class DeleteTest extends TestCase
 {
-    public function test()
+    public function test(): void
     {
         $oldUuid = Str::uuid()->toString();
         $this->user->update(['invitation_code' => $oldUuid]);

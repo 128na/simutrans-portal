@@ -13,12 +13,10 @@ class CreateAttachmentsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('attachments', static function (Blueprint $table) {
+        Schema::create('attachments', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('attachmentable_id')->nullable()->comment('添付先ID');
@@ -34,12 +32,10 @@ class CreateAttachmentsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('attachments', static function (Blueprint $table) {
+        Schema::table('attachments', static function (Blueprint $table): void {
             $table->dropForeign(['user_id']);
         });
 

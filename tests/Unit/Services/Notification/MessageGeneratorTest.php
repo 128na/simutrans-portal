@@ -23,22 +23,22 @@ class MessageGeneratorTest extends UnitTestCase
         return app(MessageGenerator::class);
     }
 
-    public function testBuildPublishedMessage()
+    public function testBuildPublishedMessage(): void
     {
         /** @var Article */
-        $article = $this->mock(Article::class, function (MockInterface $m) {
+        $article = $this->mock(Article::class, function (MockInterface $m): void {
             $m->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
             $m->allows('getAttribute')->withArgs(['slug'])->andReturn('dummy_slug');
             $m->allows('offsetExists')->withArgs(['user'])->andReturn(true);
             $m->allows('getAttribute')->withArgs(['user_id'])->andReturn(1);
-            $m->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, static function (MockInterface $m) {
+            $m->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, static function (MockInterface $m): void {
                 $m->allows('offsetExists')->withArgs(['nickname'])->andReturn(false);
                 $m->allows('getAttribute')->withArgs(['name'])->andReturn('dummy_name');
                 $m->allows('getRouteKey')->andReturn(1);
             }));
             $m->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
             $m->allows('getAttribute')->withArgs(['categoryPaks'])->andReturn(collect([
-                $this->mock(Category::class, static function (MockInterface $m) {
+                $this->mock(Category::class, static function (MockInterface $m): void {
                     $m->allows('offsetExists')->withArgs(['name'])->andReturn(true);
                     $m->allows('offsetGet')->withArgs(['name'])->andReturn('dummy_pak');
                 }),
@@ -54,19 +54,19 @@ class MessageGeneratorTest extends UnitTestCase
 
     private function getMockArticle()
     {
-        return $this->mock(Article::class, function (MockInterface $m) {
+        return $this->mock(Article::class, function (MockInterface $m): void {
             $m->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
             $m->allows('getAttribute')->withArgs(['slug'])->andReturn('dummy_slug');
             $m->allows('getAttribute')->withArgs(['user_id'])->andReturn(1);
             $m->allows('offsetExists')->withArgs(['user'])->andReturn(true);
-            $m->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, static function (MockInterface $m) {
+            $m->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, static function (MockInterface $m): void {
                 $m->allows('offsetExists')->withArgs(['nickname'])->andReturn(false);
                 $m->allows('getAttribute')->withArgs(['name'])->andReturn('dummy_name');
                 $m->allows('getRouteKey')->andReturn(1);
             }));
             $m->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
             $m->allows('getAttribute')->withArgs(['categoryPaks'])->andReturn(collect([
-                $this->mock(Category::class, static function (MockInterface $m) {
+                $this->mock(Category::class, static function (MockInterface $m): void {
                     $m->allows('offsetExists')->withArgs(['name'])->andReturn(true);
                     $m->allows('offsetGet')->withArgs(['name'])->andReturn('dummy_pak');
                 }),
@@ -74,7 +74,7 @@ class MessageGeneratorTest extends UnitTestCase
         });
     }
 
-    public function testBuildUpdatedMessage()
+    public function testBuildUpdatedMessage(): void
     {
         /** @var Article */
         $article = $this->getMockArticle();
@@ -86,7 +86,7 @@ class MessageGeneratorTest extends UnitTestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testBuildSimplePublishedMessage()
+    public function testBuildSimplePublishedMessage(): void
     {
         /** @var Article */
         $article = $this->getMockArticle();
@@ -96,7 +96,7 @@ class MessageGeneratorTest extends UnitTestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testBuildSimpleUpdatedMessage()
+    public function testBuildSimpleUpdatedMessage(): void
     {
         /** @var Article */
         $article = $this->getMockArticle();

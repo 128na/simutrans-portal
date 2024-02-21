@@ -10,12 +10,10 @@ class CreateOauthCodesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('oauth_tokens', static function (Blueprint $table) {
+        Schema::create('oauth_tokens', static function (Blueprint $table): void {
             $table->string('application')->primary();
             $table->string('token_type');
             $table->string('scope');
@@ -28,10 +26,8 @@ class CreateOauthCodesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('oauth_tokens');
     }

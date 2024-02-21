@@ -19,7 +19,7 @@ class UpdateRequest extends FormRequest
      *
      * @return array<mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         $userId = Auth::id();
 

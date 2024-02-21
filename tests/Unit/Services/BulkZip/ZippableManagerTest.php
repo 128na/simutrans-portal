@@ -21,14 +21,14 @@ class ZippableManagerTest extends UnitTestCase
         return app(ZippableManager::class);
     }
 
-    public function testUser()
+    public function testUser(): void
     {
-        $this->mock(BulkZip::class, static function (MockInterface $m) {
+        $this->mock(BulkZip::class, static function (MockInterface $m): void {
             $m->shouldReceive('getAttribute')->withArgs(['bulk_zippable_type'])->once()->andReturn(User::class);
             $m->shouldReceive('getAttribute')->withArgs(['bulkZippable'])->once()->andReturn(new User());
         });
 
-        $this->mock(ArticleRepository::class, static function (MockInterface $m) {
+        $this->mock(ArticleRepository::class, static function (MockInterface $m): void {
             $m->shouldReceive('findAllByUser')->once()->andReturn(new Collection());
         });
 
@@ -36,9 +36,9 @@ class ZippableManagerTest extends UnitTestCase
         $this->assertCount(0, $res);
     }
 
-    public function test未対応モデル()
+    public function test未対応モデル(): void
     {
-        $this->mock(BulkZip::class, static function (MockInterface $m) {
+        $this->mock(BulkZip::class, static function (MockInterface $m): void {
             $m->shouldReceive('getAttribute')->withArgs(['bulk_zippable_type'])->twice()->andReturn(stdClass::class);
         });
 

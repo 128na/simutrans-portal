@@ -30,7 +30,7 @@ class TopPage extends Page
         return '/';
     }
 
-    public function assert(Browser $browser)
+    public function assert(Browser $browser): void
     {
         $browser
             ->waitForText($this->article->title)

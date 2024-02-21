@@ -17,10 +17,8 @@ class DropProjectsTable extends Migration
 
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         $this->schema->dropIfExists('project_users');
         $this->schema->dropIfExists('projects');
@@ -28,12 +26,10 @@ class DropProjectsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        $this->schema->create('projects', static function (Blueprint $table) {
+        $this->schema->create('projects', static function (Blueprint $table): void {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('name')->comment('プロジェクト名');
@@ -41,7 +37,7 @@ class DropProjectsTable extends Migration
             $table->text('credential')->comment('認証情報');
             $table->timestamps();
         });
-        $this->schema->create('project_users', static function (Blueprint $table) {
+        $this->schema->create('project_users', static function (Blueprint $table): void {
             $table->id();
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');

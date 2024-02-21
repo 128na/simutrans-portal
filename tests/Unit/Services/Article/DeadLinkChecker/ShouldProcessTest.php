@@ -17,12 +17,12 @@ class ShouldProcessTest extends UnitTestCase
         return app(DeadLinkChecker::class);
     }
 
-    public function test()
+    public function test(): void
     {
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, static function (MockInterface $m) {
+        $article = $this->mock(Article::class, static function (MockInterface $m): void {
             $m->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy']));
@@ -33,12 +33,12 @@ class ShouldProcessTest extends UnitTestCase
         $this->assertTrue($actual);
     }
 
-    public function test_除外指定時はfalse()
+    public function test_除外指定時はfalse(): void
     {
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, static function (MockInterface $m) {
+        $article = $this->mock(Article::class, static function (MockInterface $m): void {
             $m->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy', 'exclude_link_check' => true]));
@@ -49,12 +49,12 @@ class ShouldProcessTest extends UnitTestCase
         $this->assertFalse($actual);
     }
 
-    public function test_ブラックリストドメインはfalse()
+    public function test_ブラックリストドメインはfalse(): void
     {
         /**
          * @var Article
          */
-        $article = $this->mock(Article::class, static function (MockInterface $m) {
+        $article = $this->mock(Article::class, static function (MockInterface $m): void {
             $m->allows('getAttribute')
                 ->withArgs(['contents'])
                 ->andReturn(new AddonIntroductionContent(['link' => 'https://getuploader.com/dummy']));

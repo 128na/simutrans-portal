@@ -30,7 +30,7 @@ class ListTagPage extends Page
         return '/tags/'.$this->tag->id;
     }
 
-    public function assert(Browser $browser)
+    public function assert(Browser $browser): void
     {
         $browser
             ->waitForText($this->tag->name)

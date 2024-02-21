@@ -15,10 +15,8 @@ class ProdSeeder extends Seeder
 {
     /**
      * 管理者とカテゴリを追加する.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->addAdminUser();
         $this->addItems(config('category.pak'));

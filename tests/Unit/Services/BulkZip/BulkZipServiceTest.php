@@ -18,10 +18,10 @@ use TypeError;
 
 class BulkZipServiceTest extends UnitTestCase
 {
-    public function test()
+    public function test(): void
     {
         Bus::fake();
-        $this->mock(BulkZipRepository::class, static function (MockInterface $m) {
+        $this->mock(BulkZipRepository::class, static function (MockInterface $m): void {
             $m->shouldReceive('findByBulkZippable')->andReturn(null);
             $m->shouldReceive('storeByBulkZippable')->andReturn(new BulkZip());
         });
@@ -37,7 +37,7 @@ class BulkZipServiceTest extends UnitTestCase
         Bus::assertDispatched(JobDeleteExpiredBulkzip::class);
     }
 
-    public function test未対応のモデル()
+    public function test未対応のモデル(): void
     {
         $this->expectException(TypeError::class);
         $service = app(BulkZipService::class);
@@ -45,10 +45,10 @@ class BulkZipServiceTest extends UnitTestCase
         $service->findOrCreateAndDispatch($model);
     }
 
-    public function test作成済みならディスパッチしない()
+    public function test作成済みならディスパッチしない(): void
     {
         Bus::fake();
-        $this->mock(BulkZipRepository::class, static function (MockInterface $m) {
+        $this->mock(BulkZipRepository::class, static function (MockInterface $m): void {
             $m->shouldReceive('findByBulkZippable')->andReturn(new BulkZip());
         });
         /**

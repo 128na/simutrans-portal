@@ -19,7 +19,7 @@ class StoreByBulkZippableTest extends TestCase
         $this->bulkZipRepository = app(BulkZipRepository::class);
     }
 
-    public function test()
+    public function test(): void
     {
         /** @var \App\Contracts\Models\BulkZippableInterface */
         $user = User::factory()->create();

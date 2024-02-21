@@ -10,10 +10,8 @@ class DropBookmarkTables extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::dropIfExists('bookmark_items');
         Schema::dropIfExists('bookmarks');
@@ -21,12 +19,10 @@ class DropBookmarkTables extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::create('bookmarks', static function (Blueprint $table) {
+        Schema::create('bookmarks', static function (Blueprint $table): void {
             $table->id();
             $table->uuid('uuid')->unique();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
@@ -37,7 +33,7 @@ class DropBookmarkTables extends Migration
             $table->index('title');
             $table->index(['is_public', 'updated_at']);
         });
-        Schema::create('bookmark_items', static function (Blueprint $table) {
+        Schema::create('bookmark_items', static function (Blueprint $table): void {
             $table->id();
             $table->foreignId('bookmark_id')->constrained()->onDelete('cascade');
             $table->morphs('bookmark_itemable');

@@ -18,7 +18,7 @@ class UserTest extends TestCase
         parent::tearDown();
     }
 
-    public function test()
+    public function test(): void
     {
         Bus::fake();
         $url = '/api/mypage/bulk-zip';
@@ -29,7 +29,7 @@ class UserTest extends TestCase
         Bus::assertDispatched(JobCreateBulkZip::class);
     }
 
-    public function test作成済み()
+    public function test作成済み(): void
     {
         Bus::fake();
         BulkZip::factory()->create([
@@ -44,7 +44,7 @@ class UserTest extends TestCase
         Bus::assertNotDispatched(JobCreateBulkZip::class);
     }
 
-    public function test未ログイン()
+    public function test未ログイン(): void
     {
         $url = '/api/mypage/bulk-zip';
 

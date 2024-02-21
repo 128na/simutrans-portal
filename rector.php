@@ -16,7 +16,7 @@ return RectorConfig::configure()
         deadCode: true,
         codeQuality: true,
         codingStyle: true,
-        typeDeclarations: false,
+        typeDeclarations: true,
         privatization: false,
         naming: false,
         instanceOf: false,

@@ -12,7 +12,7 @@ use Illuminate\Database\Seeder;
  */
 class AddApplicationCategorySeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         Category::firstOrCreate([
             'slug' => 'application',

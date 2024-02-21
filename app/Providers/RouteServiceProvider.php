@@ -15,11 +15,11 @@ class RouteServiceProvider extends ServiceProvider
 {
     public const HOME = '/';
 
-    public function boot()
+    public function boot(): void
     {
         $this->configureRateLimiting();
 
-        $this->routes(static function () {
+        $this->routes(static function (): void {
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
@@ -40,7 +40,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRateLimiting(): void
     {
         RateLimiter::for('register', static fn (Request $request) => Limit::perMinute(10)->by($request->ip()));
-        RateLimiter::for('discordInvite', static fn (Request $request) => [
+        RateLimiter::for('discordInvite', static fn (Request $request): array => [
             Limit::perMinute(1),
             Limit::perHour(10),
             Limit::perDay(50),

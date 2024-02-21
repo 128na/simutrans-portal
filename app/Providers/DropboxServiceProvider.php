@@ -25,14 +25,12 @@ class DropboxServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         // long term tokenが作れなくなっているので都度生成する
         // https://github.com/spatie/flysystem-dropbox/issues/86
-        Storage::extend('dropbox', static function ($app, $config) {
+        Storage::extend('dropbox', static function ($app, array $config): \Illuminate\Filesystem\FilesystemAdapter {
             $token = new AutoRefreshingDropBoxTokenService;
             $client = new DropboxClient(
                 $token->getToken($config['appKey'],

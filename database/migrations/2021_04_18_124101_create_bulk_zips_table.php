@@ -10,12 +10,10 @@ class CreateBulkZipsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('bulk_zips', static function (Blueprint $table) {
+        Schema::create('bulk_zips', static function (Blueprint $table): void {
             $table->id();
             $table->uuid('uuid')->unique();
             $table->morphs('bulk_zippable');
@@ -27,10 +25,8 @@ class CreateBulkZipsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('bulk_zips');
     }

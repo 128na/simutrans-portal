@@ -10,17 +10,15 @@ class CreateConversionCountsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('conversions', static function (Blueprint $table) {
+        Schema::table('conversions', static function (Blueprint $table): void {
             $table->dropForeign(['article_id']);
         });
         Schema::dropIfExists('conversions');
 
-        Schema::create('conversion_counts', static function (Blueprint $table) {
+        Schema::create('conversion_counts', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('article_id');
             $table->unsignedInteger('type')->comment('集計区分 1:日次,2:月次,3:年次,4:全体');
@@ -35,18 +33,16 @@ class CreateConversionCountsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('conversion_counts', static function (Blueprint $table) {
+        Schema::table('conversion_counts', static function (Blueprint $table): void {
             $table->dropForeign(['article_id']);
             $table->dropUnique(['article_id', 'type', 'period']);
         });
         Schema::dropIfExists('conversion_counts');
 
-        Schema::create('conversions', static function (Blueprint $table) {
+        Schema::create('conversions', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('article_id');
             $table->timestamps();

@@ -18,7 +18,7 @@ class FindAllWithTrashedTest extends ArticleTestCase
         $this->repository = app(ArticleRepository::class);
     }
 
-    public function test()
+    public function test(): void
     {
         $res = $this->repository->findAllWithTrashed();
 
@@ -26,7 +26,7 @@ class FindAllWithTrashedTest extends ArticleTestCase
         $this->assertEquals(2, $res->count(), '全ての記事が取得できること');
     }
 
-    public function test公開以外のステータス()
+    public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => 'draft']);
         $res = $this->repository->findAllWithTrashed();
@@ -35,7 +35,7 @@ class FindAllWithTrashedTest extends ArticleTestCase
         $this->assertEquals(2, $res->count(), '非公開記事も取得できること');
     }
 
-    public function test論理削除()
+    public function test論理削除(): void
     {
         $this->article->delete();
         $res = $this->repository->findAllWithTrashed();

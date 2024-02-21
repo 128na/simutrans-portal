@@ -27,7 +27,7 @@ class SendDeadLinkDetectedEmail extends Notification implements ShouldQueue
      *
      * @return array<string>
      */
-    public function via(mixed $notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
@@ -49,7 +49,7 @@ class SendDeadLinkDetectedEmail extends Notification implements ShouldQueue
      *
      * @return array<mixed>
      */
-    public function toArray(mixed $notifiable)
+    public function toArray(mixed $notifiable): array
     {
         return [];
     }

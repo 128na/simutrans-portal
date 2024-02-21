@@ -39,7 +39,7 @@ class ArticleAnalyticsService extends Service
         $period = $this->getPeriod($type, $startDate, $endDate);
         $type_id = $this->getTypeId($type);
 
-        return static function ($query) use ($type_id, $period) {
+        return static function ($query) use ($type_id, $period): void {
             $query->select('article_id', 'count', 'period')
                 ->where('type', $type_id)->whereBetween('period', $period);
         };

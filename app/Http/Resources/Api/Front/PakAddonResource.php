@@ -16,7 +16,7 @@ class PakAddonResource extends ResourceCollection
     public function toArray($request)
     {
         return $this->collection
-            ->map(static fn (PakAddonCount $p) => [
+            ->map(static fn (PakAddonCount $p): array => [
                 'pak_slug' => $p->pak_slug,
                 'addon_slug' => $p->addon_slug,
                 'pak' => __('category.pak.'.$p->pak_slug),

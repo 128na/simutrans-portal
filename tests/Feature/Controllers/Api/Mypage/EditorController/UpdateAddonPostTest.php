@@ -26,7 +26,7 @@ class UpdateAddonPostTest extends ArticleTestCase
      * @dataProvider dataAddonValidation
      * @dataProvider dataAddonPostValidation
      */
-    public function testValidation(Closure $fn, ?string $error_field)
+    public function testValidation(Closure $fn, ?string $error_field): void
     {
         Bus::fake();
         $url = '/api/mypage/articles/'.$this->article->id;

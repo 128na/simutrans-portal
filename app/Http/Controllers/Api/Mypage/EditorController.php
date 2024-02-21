@@ -39,7 +39,7 @@ class EditorController extends Controller
 
     public function store(StoreRequest $request): ArticlesResouce
     {
-        $article = DB::transaction(fn () => $this->articleEditorService->storeArticle($this->loggedinUser(), $request));
+        $article = DB::transaction(fn (): \App\Models\Article => $this->articleEditorService->storeArticle($this->loggedinUser(), $request));
         JobUpdateRelated::dispatch();
         event(new ArticleStored($article, $request->boolean('should_notify', false)));
 
@@ -49,7 +49,7 @@ class EditorController extends Controller
     public function update(UpdateRequest $request, Article $article): ArticlesResouce
     {
         $notYetPublished = is_null($article->published_at);
-        $article = DB::transaction(fn () => $this->articleEditorService->updateArticle($article, $request));
+        $article = DB::transaction(fn (): \App\Models\Article => $this->articleEditorService->updateArticle($article, $request));
         JobUpdateRelated::dispatch();
         event(new ArticleUpdated(
             $article,

@@ -15,7 +15,7 @@ class Attachments extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection->map(fn ($item) => [
+        return $this->collection->map(fn ($item): array => [
             'id' => $item->id,
             'attachmentable_type' => class_basename($item->attachmentable_type),
             'attachmentable_id' => $item->attachmentable_id,

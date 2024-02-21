@@ -43,7 +43,7 @@ class NgWordRuleTest extends TestCase
         $this->assertEquals($expected, $this->failCalled);
     }
 
-    public static function data()
+    public static function data(): \Generator
     {
         yield 'ok' => [['@'], 'test', false];
         yield '1個マッチ' => [['@'], 'test@example', true];

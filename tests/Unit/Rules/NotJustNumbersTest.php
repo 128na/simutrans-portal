@@ -43,7 +43,7 @@ class NotJustNumbersTest extends TestCase
         $this->assertEquals($expected, $this->failCalled);
     }
 
-    public static function data()
+    public static function data(): \Generator
     {
         yield '数字のみ' => ['1', true];
         yield '数字と英字' => ['1a', false];

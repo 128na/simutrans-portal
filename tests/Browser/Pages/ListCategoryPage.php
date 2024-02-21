@@ -30,7 +30,7 @@ class ListCategoryPage extends Page
         return sprintf('/categories/%s/%s', $this->category->type, $this->category->slug);
     }
 
-    public function assert(Browser $browser)
+    public function assert(Browser $browser): void
     {
         $browser
             ->waitForText(__(sprintf('category.%s.%s', $this->category->type, $this->category->slug)))

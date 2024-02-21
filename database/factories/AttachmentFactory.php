@@ -33,7 +33,7 @@ class AttachmentFactory extends Factory
         ];
     }
 
-    public function zipFile()
+    public function zipFile(): array
     {
         return [
             'user_id' => User::factory()->create()->id,
@@ -46,7 +46,7 @@ class AttachmentFactory extends Factory
 
     public function image()
     {
-        return $this->state(static fn (array $attributes) => [
+        return $this->state(static fn (array $attributes): array => [
             'original_name' => 'test.png',
             'path' => 'default/test.png',
         ]);

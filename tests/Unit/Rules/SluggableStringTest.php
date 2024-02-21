@@ -43,7 +43,7 @@ class SluggableStringTest extends TestCase
         $this->assertEquals($expected, $this->failCalled);
     }
 
-    public static function data()
+    public static function data(): \Generator
     {
         yield '数字と英字' => ['test123', false];
         yield 'アンダースコア' => ['test_123', false];

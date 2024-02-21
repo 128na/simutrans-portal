@@ -33,7 +33,7 @@ class ListPakCategoryPage extends Page
         return sprintf('/categories/pak/%s/%s', $this->pak->slug, $this->addon->slug);
     }
 
-    public function assert(Browser $browser)
+    public function assert(Browser $browser): void
     {
         $browser
             ->waitForText(__(sprintf('category.%s.%s', $this->pak->type, $this->pak->slug)))

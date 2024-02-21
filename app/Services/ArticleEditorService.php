@@ -109,7 +109,7 @@ class ArticleEditorService extends Service
         $postTypes = config('post_types');
 
         return collect($postTypes)->map(
-            static fn ($item) => [
+            static fn ($item): array => [
                 'label' => __('post_types.'.$item),
                 'value' => $item,
             ]

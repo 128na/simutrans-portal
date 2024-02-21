@@ -10,12 +10,10 @@ class AddDescriptionColumnInTagsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('tags', static function (Blueprint $table) {
+        Schema::table('tags', static function (Blueprint $table): void {
             $table->text('description')->nullable()->after('name')->comment('説明');
             $table->boolean('editable')->after('description')->default(true)->comment('1:編集可,0:編集不可');
             $table->unsignedBigInteger('created_by')->nullable()->after('editable');
@@ -28,12 +26,10 @@ class AddDescriptionColumnInTagsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('tags', static function (Blueprint $table) {
+        Schema::table('tags', static function (Blueprint $table): void {
             $table->dropForeign(['created_by']);
             $table->dropForeign(['last_modified_by']);
             $table->dropColumn([

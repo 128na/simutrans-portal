@@ -26,7 +26,7 @@ class ListSearchPage extends Page
         return '/search?word=dummy';
     }
 
-    public function assert(Browser $browser)
+    public function assert(Browser $browser): void
     {
         $browser
             ->waitForText($this->article->title)

@@ -10,12 +10,10 @@ class CreateRegistrationOrdersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('registration_orders', static function (Blueprint $table) {
+        Schema::create('registration_orders', static function (Blueprint $table): void {
             $table->id();
             $table->string('email')->unique();
             $table->string('twitter')->comment('Twitterユーザー名');
@@ -30,10 +28,8 @@ class CreateRegistrationOrdersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('registration_orders');
     }

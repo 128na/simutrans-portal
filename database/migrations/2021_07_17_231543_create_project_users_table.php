@@ -10,12 +10,10 @@ class CreateProjectUsersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('project_users', static function (Blueprint $table) {
+        Schema::create('project_users', static function (Blueprint $table): void {
             $table->id();
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
@@ -26,10 +24,8 @@ class CreateProjectUsersTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('project_users');
     }

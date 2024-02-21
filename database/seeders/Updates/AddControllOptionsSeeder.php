@@ -10,7 +10,7 @@ use Illuminate\Database\Seeder;
 
 class AddControllOptionsSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $data = [
             ControllOptionKeys::LOGIN,

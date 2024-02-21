@@ -10,7 +10,7 @@ use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['cache.content'])->group(static function () {
+Route::middleware(['cache.content'])->group(static function (): void {
     Route::feeds();
 });
 
@@ -21,7 +21,7 @@ Route::GET('mypage/reset/{token}', (new MypageController())->index(...))->name('
 Route::GET('/mypage/invite/{invitation_code}', (new InviteController())->index(...))->middleware('restrict:invitation_code')->name('invite.index');
 
 // 非ログイン系 reidsキャッシュ有効
-Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content'])->group(static function () {
+Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content'])->group(static function (): void {
     Route::get('/', [FrontController::class, 'fallback'])->name('index');
     Route::get('/ranking', [FrontController::class, 'fallback'])->name('ranking');
     Route::get('/pages', [FrontController::class, 'fallback'])->name('pages');
@@ -44,7 +44,7 @@ Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, '
 Route::get('/articles/{article}/{download}', [FrontController::class, 'download'])
     ->where('download', '^download(\..+)?$')->name('articles.download');
 
-Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(static function () {
+Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(static function (): void {
     Route::get('/admin/', (new AdminController())->index(...))->name('admin.index');
     Route::get('/admin/oauth/twitter/authorize', [OauthController::class, 'authoroize'])->name('admin.oauth.twitter.authorize');
     Route::get('/admin/oauth/twitter/callback', [OauthController::class, 'callback'])->name('admin.oauth.twitter.callback');

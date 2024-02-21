@@ -14,7 +14,7 @@ use Tests\ArticleTestCase;
 
 class AttachmentControllerTest extends ArticleTestCase
 {
-    public function testIndex()
+    public function testIndex(): void
     {
         $url = '/api/mypage/attachments';
 
@@ -27,7 +27,7 @@ class AttachmentControllerTest extends ArticleTestCase
         $res->assertOK();
     }
 
-    public function testFormatImage()
+    public function testFormatImage(): void
     {
         $this->createFromFile(UploadedFile::fake()->image('test.png', 1), $this->user->id);
 
@@ -38,7 +38,7 @@ class AttachmentControllerTest extends ArticleTestCase
         $res->assertOK();
     }
 
-    public function testFormatOther()
+    public function testFormatOther(): void
     {
         $this->createFromFile(UploadedFile::fake()->create('test.zip', 1, 'application/zip'), $this->user->id);
 
@@ -49,19 +49,19 @@ class AttachmentControllerTest extends ArticleTestCase
         $res->assertOK();
     }
 
-    public static function dataValidation()
+    public static function dataValidation(): \Generator
     {
-        yield 'fileがnull' => [static fn () => ['file' => null], 'file'];
-        yield 'fileがファイル以外' => [static fn () => ['file' => 'test.zip'], 'file'];
-        yield '成功' => [static fn () => ['file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], null];
-        yield '画像のみで画像以外' => [static fn () => ['only_image' => 1, 'file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], 'file'];
-        yield '画像のみで画像' => [static fn () => ['only_image' => 1, 'file' => UploadedFile::fake()->image('test.png', 1)], null];
+        yield 'fileがnull' => [static fn (): array => ['file' => null], 'file'];
+        yield 'fileがファイル以外' => [static fn (): array => ['file' => 'test.zip'], 'file'];
+        yield '成功' => [static fn (): array => ['file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], null];
+        yield '画像のみで画像以外' => [static fn (): array => ['only_image' => 1, 'file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], 'file'];
+        yield '画像のみで画像' => [static fn (): array => ['only_image' => 1, 'file' => UploadedFile::fake()->image('test.png', 1)], null];
     }
 
     /**
      * @dataProvider dataValidation
      */
-    public function testStore(Closure $data, ?string $error_field)
+    public function testStore(Closure $data, ?string $error_field): void
     {
         $url = '/api/mypage/attachments';
 
@@ -80,7 +80,7 @@ class AttachmentControllerTest extends ArticleTestCase
         }
     }
 
-    public function testDestroy()
+    public function testDestroy(): void
     {
         /** @var User */
         $user = User::factory()->create();

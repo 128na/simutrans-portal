@@ -27,12 +27,10 @@ class CreateOauthAuthCodesTable extends Migration
 
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        $this->schema->create('oauth_auth_codes', static function (Blueprint $table) {
+        $this->schema->create('oauth_auth_codes', static function (Blueprint $table): void {
             $table->string('id', 100)->primary();
             $table->unsignedBigInteger('user_id')->index();
             $table->uuid('client_id');
@@ -44,10 +42,8 @@ class CreateOauthAuthCodesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         $this->schema->dropIfExists('oauth_auth_codes');
     }

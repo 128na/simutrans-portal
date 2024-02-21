@@ -14,10 +14,8 @@ class DuskSeeder extends Seeder
 {
     /**
      * 管理者とカテゴリを追加する.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         DB::statement('delete from articles');
         DB::statement('delete from users');

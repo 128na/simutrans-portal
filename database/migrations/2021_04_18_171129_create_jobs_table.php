@@ -10,12 +10,10 @@ class CreateJobsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('jobs', static function (Blueprint $table) {
+        Schema::create('jobs', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('queue')->index();
             $table->longText('payload');
@@ -28,10 +26,8 @@ class CreateJobsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('jobs');
     }

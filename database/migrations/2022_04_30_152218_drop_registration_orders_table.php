@@ -17,22 +17,18 @@ class DropRegistrationOrdersTable extends Migration
 
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         $this->schema->dropIfExists('registration_orders');
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        $this->schema->create('registration_orders', static function (Blueprint $table) {
+        $this->schema->create('registration_orders', static function (Blueprint $table): void {
             $table->id();
             $table->string('email')->unique();
             $table->string('twitter')->comment('Twitterユーザー名');

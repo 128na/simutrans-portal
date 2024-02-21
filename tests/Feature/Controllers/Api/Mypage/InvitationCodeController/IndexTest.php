@@ -17,7 +17,7 @@ class IndexTest extends TestCase
         $this->user2 = User::factory()->create();
     }
 
-    public function test紹介者無し()
+    public function test紹介者無し(): void
     {
         $this->actingAs($this->user);
         $response = $this->getJson('/api/mypage/invitation_code');
@@ -27,7 +27,7 @@ class IndexTest extends TestCase
         $this->assertCount(0, $data);
     }
 
-    public function test紹介者有り()
+    public function test紹介者有り(): void
     {
         $this->user2->update(['invited_by' => $this->user->id]);
 

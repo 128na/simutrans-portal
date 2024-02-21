@@ -35,9 +35,9 @@ class ConversionTest extends DuskTestCase
         JobUpdateRelated::dispatchSync();
     }
 
-    public function test()
+    public function test(): void
     {
-        $this->browse(function (Browser $browser) {
+        $this->browse(function (Browser $browser): void {
             $dayly = now()->format('Ymd');
             $monthly = now()->format('Ym');
             $yearly = now()->format('Y');

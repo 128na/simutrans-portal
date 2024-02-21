@@ -19,9 +19,9 @@ use App\Http\Controllers\Api\Mypage\UserController;
 use Illuminate\Support\Facades\Route;
 
 // フロント
-Route::prefix('front')->group(static function () {
+Route::prefix('front')->group(static function (): void {
     // キャッシュ有効
-    Route::middleware(['cache.headers:public;max_age=600;etag', 'cache.content'])->group(static function () {
+    Route::middleware(['cache.headers:public;max_age=600;etag', 'cache.content'])->group(static function (): void {
         Route::get('/ranking/', [FrontController::class, 'ranking']);
         Route::get('/pages', [FrontController::class, 'pages']);
         Route::get('/announces', [FrontController::class, 'announces']);
@@ -34,17 +34,17 @@ Route::prefix('front')->group(static function () {
         Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show']);
         Route::get('/search', [FrontController::class, 'search']);
     });
-    Route::middleware(['throttle:discordInvite'])->group(static function () {
+    Route::middleware(['throttle:discordInvite'])->group(static function (): void {
         Route::post('/invite-simutrans-interact-meeting', [DiscordController::class, 'index']);
     });
 });
 
 // マイページ
-Route::prefix('mypage')->group(static function () {
+Route::prefix('mypage')->group(static function (): void {
     Route::post('invite/{invitation_code}', [InvitationCodeController::class, 'register'])
         ->middleware(['restrict:invitation_code', 'throttle:register'])->name('invitation_code');
     // ログイン必須
-    Route::middleware(['auth:sanctum'])->group(static function () {
+    Route::middleware(['auth:sanctum'])->group(static function (): void {
         Route::get('user', [UserController::class, 'index']);
         Route::get('tags', [TagController::class, 'search']);
         Route::get('attachments', [AttachmentController::class, 'index']);
@@ -52,14 +52,14 @@ Route::prefix('mypage')->group(static function () {
         Route::get('options', [EditorController::class, 'options']);
     });
     // メール認証必須
-    Route::middleware(['auth:sanctum', 'verified'])->group(static function () {
+    Route::middleware(['auth:sanctum', 'verified'])->group(static function (): void {
         Route::post('user', [UserController::class, 'update']);
         Route::post('tags', [TagController::class, 'store'])->middleware('restrict:update_tag');
         Route::post('tags/{tag}', [TagController::class, 'update'])->middleware('restrict:update_tag');
         Route::post('attachments', [AttachmentController::class, 'store']);
         Route::delete('attachments/{attachment}', [AttachmentController::class, 'destroy']);
         Route::post('articles', [EditorController::class, 'store'])->middleware('restrict:update_article');
-        Route::middleware(['can:update,article', 'restrict:update_article'])->group(static function () {
+        Route::middleware(['can:update,article', 'restrict:update_article'])->group(static function (): void {
             Route::post('articles/{article}', [EditorController::class, 'update']);
         });
         // 記事分析
@@ -75,7 +75,7 @@ Route::prefix('mypage')->group(static function () {
     });
 });
 // Admin
-Route::prefix('admin')->middleware(['auth:sanctum', 'admin', 'verified'])->group(static function () {
+Route::prefix('admin')->middleware(['auth:sanctum', 'admin', 'verified'])->group(static function (): void {
     // ユーザー管理
     Route::get('/users', [AdminUserController::class, 'index']);
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy']);

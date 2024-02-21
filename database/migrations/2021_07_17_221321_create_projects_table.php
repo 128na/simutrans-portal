@@ -10,12 +10,10 @@ class CreateProjectsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('projects', static function (Blueprint $table) {
+        Schema::create('projects', static function (Blueprint $table): void {
             $table->id();
             $table->string('name')->comment('プロジェクト名');
             $table->text('credential')->comment('認証情報');
@@ -25,10 +23,8 @@ class CreateProjectsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('projects');
     }

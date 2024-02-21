@@ -10,12 +10,10 @@ class CreateArticleTagTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('article_tag', static function (Blueprint $table) {
+        Schema::create('article_tag', static function (Blueprint $table): void {
             $table->unsignedBigInteger('article_id');
             $table->unsignedBigInteger('tag_id');
             $table->index(['article_id', 'tag_id']);
@@ -30,12 +28,10 @@ class CreateArticleTagTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('article_tag', static function (Blueprint $table) {
+        Schema::table('article_tag', static function (Blueprint $table): void {
             $table->dropForeign(['article_id']);
             $table->dropForeign(['tag_id']);
             $table->dropIndex(['article_id', 'tag_id']);

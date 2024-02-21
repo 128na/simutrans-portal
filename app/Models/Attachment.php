@@ -37,7 +37,7 @@ class Attachment extends Model
     {
         parent::boot();
 
-        self::deleting(static function ($model) {
+        self::deleting(static function ($model): void {
             $model->deleteFileHandler();
         });
     }

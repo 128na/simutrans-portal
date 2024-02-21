@@ -10,12 +10,10 @@ class CreateTweetLogsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('tweet_logs', static function (Blueprint $table) {
+        Schema::create('tweet_logs', static function (Blueprint $table): void {
             $table->string('id')->primary();
             $table->foreignId('article_id')->constrained()->onDelete('cascade');
             $table->text('text');
@@ -30,10 +28,8 @@ class CreateTweetLogsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('tweet_logs');
     }

@@ -18,7 +18,7 @@ class ToggleDeleteTest extends TestCase
         $this->repository = app(ArticleRepository::class);
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $article = Article::factory()->create(['user_id' => $this->user->id]);
 
@@ -38,7 +38,7 @@ class ToggleDeleteTest extends TestCase
         ]);
     }
 
-    public function testRestore()
+    public function testRestore(): void
     {
         $now = now();
         $article = Article::factory()->create(['user_id' => $this->user->id, 'deleted_at' => $now]);

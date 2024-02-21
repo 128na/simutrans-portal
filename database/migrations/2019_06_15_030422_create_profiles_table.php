@@ -13,12 +13,10 @@ class CreateProfilesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('profiles', static function (Blueprint $table) {
+        Schema::create('profiles', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->unique();
             $table->json('data')->comment('プロフィール情報');
@@ -31,12 +29,10 @@ class CreateProfilesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('profiles', static function (Blueprint $table) {
+        Schema::table('profiles', static function (Blueprint $table): void {
             $table->dropForeign(['user_id']);
         });
         Schema::dropIfExists('profiles');

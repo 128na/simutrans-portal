@@ -10,12 +10,10 @@ class CreateFileInfosTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('file_infos', static function (Blueprint $table) {
+        Schema::create('file_infos', static function (Blueprint $table): void {
             $table->id();
             $table->foreignId('attachment_id')->constrained()->onDelete('cascade');
             $table->json('data');
@@ -25,10 +23,8 @@ class CreateFileInfosTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('file_infos');
     }

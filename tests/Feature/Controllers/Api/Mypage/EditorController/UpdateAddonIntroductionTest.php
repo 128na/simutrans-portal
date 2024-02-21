@@ -26,7 +26,7 @@ class UpdateAddonIntroductionTest extends ArticleTestCase
      * @dataProvider dataAddonValidation
      * @dataProvider dataAddonIntroductionValidation
      */
-    public function testValidation(Closure $fn, ?string $error_field)
+    public function testValidation(Closure $fn, ?string $error_field): void
     {
         Bus::fake();
         $url = '/api/mypage/articles/'.$this->article->id;
@@ -74,7 +74,7 @@ class UpdateAddonIntroductionTest extends ArticleTestCase
         }
     }
 
-    public function test他人の投稿()
+    public function test他人の投稿(): void
     {
         $this->actingAs($this->user);
 

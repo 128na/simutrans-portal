@@ -20,7 +20,7 @@ class SyncAttachmentsTest extends TestCase
         $this->repository = app(ArticleRepository::class);
     }
 
-    public function test()
+    public function test(): void
     {
         $article = Article::factory()->create(['user_id' => $this->user->id]);
         $attachment = Attachment::factory()->create([
@@ -44,7 +44,7 @@ class SyncAttachmentsTest extends TestCase
         ]);
     }
 
-    public function test他人の添付はNG()
+    public function test他人の添付はNG(): void
     {
         $article = Article::factory()->create(['user_id' => $this->user->id]);
         $attachment = Attachment::factory()->create([

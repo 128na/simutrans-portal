@@ -59,7 +59,7 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
     */
     protected static function booted()
     {
-        static::created(static function ($model) {
+        static::created(static function ($model): void {
             $model->syncRelatedData();
         });
     }
@@ -81,12 +81,12 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
     | 通知
     |--------------------------------------------------------------------------
     */
-    public function sendPasswordResetNotification($token)
+    public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetPassword($token));
     }
 
-    public function sendEmailVerificationNotification()
+    public function sendEmailVerificationNotification(): void
     {
         $this->notify(new VerifyEmail());
     }

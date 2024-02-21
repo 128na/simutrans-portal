@@ -17,34 +17,34 @@ class IndexTest extends TestCase
         $this->user->update(['invitation_code' => Str::uuid()]);
     }
 
-    public function test()
+    public function test(): void
     {
         $response = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
         $response->assertOk();
     }
 
-    public function test機能無効()
+    public function test機能無効(): void
     {
         ControllOption::create(['key' => ControllOptionKeys::INVITATION_CODE, 'value' => false]);
         $response = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
         $response->assertForbidden();
     }
 
-    public function test無効なユーザー()
+    public function test無効なユーザー(): void
     {
         $this->user->delete();
         $response = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
         $response->assertNotFound();
     }
 
-    public function testメール未認証のユーザー()
+    public function testメール未認証のユーザー(): void
     {
         $this->user->update(['email_verified_at' => null]);
         $response = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
         $response->assertNotFound();
     }
 
-    public function test存在しないコード()
+    public function test存在しないコード(): void
     {
         $this->user->delete();
         $response = $this->get(route('invite.index', ['invitation_code' => Str::uuid()]));

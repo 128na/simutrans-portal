@@ -17,7 +17,7 @@ class ControllOptionControllerTest extends TestCase
         $this->controllOption = ControllOption::create(['key' => 'dummy', 'value' => true]);
     }
 
-    public function testIndex()
+    public function testIndex(): void
     {
         $url = '/api/admin/controll_options';
 
@@ -34,7 +34,7 @@ class ControllOptionControllerTest extends TestCase
         $res->assertOk();
     }
 
-    public function testToggle()
+    public function testToggle(): void
     {
         $url = sprintf('/api/admin/controll_options/%s/toggle', $this->controllOption->key);
 
@@ -51,7 +51,7 @@ class ControllOptionControllerTest extends TestCase
         $res->assertOk();
     }
 
-    public function testToggle値の切替()
+    public function testToggle値の切替(): void
     {
         $url = sprintf('/api/admin/controll_options/%s/toggle', $this->controllOption->key);
 

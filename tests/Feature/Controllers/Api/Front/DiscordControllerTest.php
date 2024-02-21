@@ -13,12 +13,12 @@ use Tests\TestCase;
 
 class DiscordControllerTest extends TestCase
 {
-    public function test_create()
+    public function test_create(): void
     {
-        $this->mock(RecaptchaService::class, static function (MockInterface $m) {
+        $this->mock(RecaptchaService::class, static function (MockInterface $m): void {
             $m->shouldReceive('assessment')->once()->andReturnNull();
         });
-        $this->mock(InviteService::class, static function (MockInterface $m) {
+        $this->mock(InviteService::class, static function (MockInterface $m): void {
             $m->shouldReceive('create')->once()->andReturn('dummy');
         });
 
@@ -29,12 +29,12 @@ class DiscordControllerTest extends TestCase
             ->assertJson(['url' => 'dummy']);
     }
 
-    public function test_create_discordエラー時は400レスポンス()
+    public function test_create_discordエラー時は400レスポンス(): void
     {
-        $this->mock(RecaptchaService::class, static function (MockInterface $m) {
+        $this->mock(RecaptchaService::class, static function (MockInterface $m): void {
             $m->shouldReceive('assessment')->once()->andReturnNull();
         });
-        $this->mock(InviteService::class, static function (MockInterface $m) {
+        $this->mock(InviteService::class, static function (MockInterface $m): void {
             $m->shouldReceive('create')->once()->andThrow(new Error('dummy'));
         });
         $url = '/api/front/invite-simutrans-interact-meeting';
@@ -44,12 +44,12 @@ class DiscordControllerTest extends TestCase
             ->assertJson(['url' => null]);
     }
 
-    public function test_create_recaptchaエラー時は400レスポンス()
+    public function test_create_recaptchaエラー時は400レスポンス(): void
     {
-        $this->mock(RecaptchaService::class, static function (MockInterface $m) {
+        $this->mock(RecaptchaService::class, static function (MockInterface $m): void {
             $m->shouldReceive('assessment')->once()->andThrow(new RecaptchaException('dummy'));
         });
-        $this->mock(InviteService::class, static function (MockInterface $m) {
+        $this->mock(InviteService::class, static function (MockInterface $m): void {
             $m->shouldReceive('create')->never();
         });
         $url = '/api/front/invite-simutrans-interact-meeting';

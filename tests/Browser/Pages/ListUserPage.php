@@ -27,7 +27,7 @@ class ListUserPage extends Page
         return '/users/'.$this->user->id;
     }
 
-    public function assert(Browser $browser)
+    public function assert(Browser $browser): void
     {
         $browser
             ->waitForText($this->user->name)

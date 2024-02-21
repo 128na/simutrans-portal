@@ -60,28 +60,28 @@ class ArticleFactory extends Factory
 
     public function publish()
     {
-        return $this->state(static fn (array $attributes) => [
+        return $this->state(static fn (array $attributes): array => [
             'status' => 'publish',
         ]);
     }
 
     public function draft()
     {
-        return $this->state(static fn (array $attributes) => [
+        return $this->state(static fn (array $attributes): array => [
             'status' => 'draft',
         ]);
     }
 
     public function deleted()
     {
-        return $this->state(static fn (array $attributes) => [
+        return $this->state(static fn (array $attributes): array => [
             'deleted_at' => now(),
         ]);
     }
 
     public function addonPost()
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'post_type' => 'addon-post',
             'contents' => [
                 'description' => $this->faker->realText(),
@@ -94,7 +94,7 @@ class ArticleFactory extends Factory
 
     public function addonIntroduction()
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'post_type' => 'addon-introduction',
             'contents' => [
                 'description' => $this->faker->realText(),
@@ -110,7 +110,7 @@ class ArticleFactory extends Factory
 
     public function page()
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'post_type' => 'page',
             'contents' => [
                 'sections' => [
@@ -122,7 +122,7 @@ class ArticleFactory extends Factory
 
     public function markdown()
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'post_type' => 'markdown',
             'contents' => [
                 'markdown' => $this->faker->realText(),

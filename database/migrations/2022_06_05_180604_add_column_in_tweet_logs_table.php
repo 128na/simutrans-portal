@@ -10,12 +10,10 @@ class AddColumnInTweetLogsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('tweet_logs', static function (Blueprint $table) {
+        Schema::table('tweet_logs', static function (Blueprint $table): void {
             $table->unsignedBigInteger('impression_count')->default(0);
             $table->unsignedBigInteger('url_link_clicks')->default(0);
             $table->unsignedBigInteger('user_profile_clicks')->default(0);
@@ -24,12 +22,10 @@ class AddColumnInTweetLogsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('tweet_logs', static function (Blueprint $table) {
+        Schema::table('tweet_logs', static function (Blueprint $table): void {
             $table->dropColumn([
                 'impression_count',
                 'url_link_clicks',

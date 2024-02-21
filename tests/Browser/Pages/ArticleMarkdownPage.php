@@ -31,7 +31,7 @@ class ArticleMarkdownPage extends Page
         return sprintf('/users/%s/%s', $this->article->user_id, urlencode((string) $this->article->slug));
     }
 
-    public function assert(Browser $browser)
+    public function assert(Browser $browser): void
     {
         $browser
             ->waitForText($this->article->title)

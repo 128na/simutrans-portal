@@ -41,7 +41,7 @@ class Profile extends Model
     {
         parent::boot();
 
-        self::updated(static function ($model) {
+        self::updated(static function ($model): void {
             Cache::flush();
         });
     }
@@ -71,7 +71,7 @@ class Profile extends Model
         $id = (int) $this->data->avatar;
 
         if ($id !== 0) {
-            return $this->attachments->first(static fn (Attachment $attachment) => $id === $attachment->id);
+            return $this->attachments->first(static fn (Attachment $attachment): bool => $id === $attachment->id);
         }
 
         return null;

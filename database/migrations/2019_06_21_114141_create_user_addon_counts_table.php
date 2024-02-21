@@ -10,12 +10,10 @@ class CreateUserAddonCountsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('user_addon_counts', static function (Blueprint $table) {
+        Schema::create('user_addon_counts', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('user_name', 255);
@@ -28,12 +26,10 @@ class CreateUserAddonCountsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('user_addon_counts', static function (Blueprint $table) {
+        Schema::table('user_addon_counts', static function (Blueprint $table): void {
             $table->dropForeign(['user_id']);
         });
 

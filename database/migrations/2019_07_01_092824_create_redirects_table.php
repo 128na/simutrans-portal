@@ -10,12 +10,10 @@ class CreateRedirectsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('redirects', static function (Blueprint $table) {
+        Schema::create('redirects', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('from')->comment('リダイレクト元');
             $table->string('to')->comment('リダイレクト先');
@@ -26,12 +24,10 @@ class CreateRedirectsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('redirects', static function (Blueprint $table) {
+        Schema::table('redirects', static function (Blueprint $table): void {
             $table->dropUnique(['from', 'to']);
         });
 

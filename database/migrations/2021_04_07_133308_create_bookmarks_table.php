@@ -10,12 +10,10 @@ class CreateBookmarksTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('bookmarks', static function (Blueprint $table) {
+        Schema::create('bookmarks', static function (Blueprint $table): void {
             $table->id();
             $table->uuid('uuid')->unique();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
@@ -30,10 +28,8 @@ class CreateBookmarksTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('bookmarks');
     }

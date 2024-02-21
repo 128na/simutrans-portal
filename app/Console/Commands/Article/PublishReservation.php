@@ -39,10 +39,8 @@ class PublishReservation extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $cusror = $this->articleRepository->cursorReservations($this->now);
         $changed = false;

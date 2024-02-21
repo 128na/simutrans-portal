@@ -18,15 +18,13 @@ class DevSeeder extends Seeder
 {
     /**
      * テスト用一般ユーザーと記事を作成する.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         Attachment::where('id', '<>', null)->delete();
         User::where('role', config('role.user'))->delete();
 
-        User::factory()->count(20)->create()->each(static function ($user) {
+        User::factory()->count(20)->create()->each(static function ($user): void {
             $user->articles()->saveMany(
                 Article::factory()->count(random_int(0, 20))->make()
             );
@@ -54,7 +52,7 @@ class DevSeeder extends Seeder
         }
     }
 
-    private function addAvatar($user)
+    private function addAvatar($user): void
     {
         $avatar = Attachment::make([
             'user_id' => $user->id,
@@ -64,7 +62,7 @@ class DevSeeder extends Seeder
         $user->profile->attachments()->save($avatar);
     }
 
-    private function addAddonPost($user, $article)
+    private function addAddonPost($user, $article): void
     {
         // add attachments
         $thumb = Attachment::make([
@@ -89,7 +87,7 @@ class DevSeeder extends Seeder
         $article->save();
     }
 
-    private function addAddonIntroduction($user, $article)
+    private function addAddonIntroduction($user, $article): void
     {
         // add attachments
         $thumb = Attachment::make([
@@ -108,7 +106,7 @@ class DevSeeder extends Seeder
         $article->save();
     }
 
-    private function addCategories($article)
+    private function addCategories($article): void
     {
         $ids = collect([]);
         $ids = $ids->merge(Category::pak()->inRandomOrder()->limit(random_int(1, 3))->get()->pluck('id'));
@@ -118,7 +116,7 @@ class DevSeeder extends Seeder
         $article->categories()->sync($ids);
     }
 
-    private function addTags($article)
+    private function addTags($article): void
     {
         $tags = Tag::factory()->count(random_int(0, 10))->make()->map(static fn ($tag) => Tag::firstOrCreate(['name' => $tag->name]));
         $article->tags()->sync($tags->pluck('id'));

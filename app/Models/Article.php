@@ -54,7 +54,7 @@ class Article extends Model implements Feedable
     protected static function booted()
     {
         // 論理削除されていないユーザーを持つ
-        static::addGlobalScope('WithoutTrashedUser', static function (Builder $builder) {
+        static::addGlobalScope('WithoutTrashedUser', static function (Builder $builder): void {
             $builder->has('user');
         });
     }
@@ -226,7 +226,7 @@ class Article extends Model implements Feedable
 
     public function scopeCategory(Builder $query, Category $category): void
     {
-        $query->join('article_category', static function (JoinClause $join) use ($category) {
+        $query->join('article_category', static function (JoinClause $join) use ($category): void {
             $join->on('article_category.article_id', '=', 'articles.id')
                 ->where('article_category.category_id', $category->id);
         });
@@ -234,11 +234,11 @@ class Article extends Model implements Feedable
 
     public function scopePakAddonCategory(Builder $query, Category $pak, Category $addon): void
     {
-        $query->join('article_category', static function (JoinClause $join) use ($pak) {
+        $query->join('article_category', static function (JoinClause $join) use ($pak): void {
             $join->on('article_category.article_id', '=', 'articles.id')
                 ->where('article_category.category_id', $pak->id);
         });
-        $query->join('article_category', static function (JoinClause $join) use ($addon) {
+        $query->join('article_category', static function (JoinClause $join) use ($addon): void {
             $join->on('article_category.article_id', '=', 'articles.id')
                 ->where('article_category.category_id', $addon->id);
         });
@@ -246,7 +246,7 @@ class Article extends Model implements Feedable
 
     public function scopeTag(Builder $query, Tag $tag): void
     {
-        $query->join('article_tag', static function (JoinClause $join) use ($tag) {
+        $query->join('article_tag', static function (JoinClause $join) use ($tag): void {
             $join->on('article_tag.article_id', '=', 'articles.id')
                 ->where('article_tag.tag_id', $tag->id);
         });
@@ -295,7 +295,7 @@ class Article extends Model implements Feedable
     {
         $id = $this->contents->thumbnail;
 
-        return $this->attachments->first(static fn ($attachment) => (string) $id == $attachment->id);
+        return $this->attachments->first(static fn ($attachment): bool => (string) $id == $attachment->id);
     }
 
     public function getThumbnailUrlAttribute(): string
@@ -317,7 +317,7 @@ class Article extends Model implements Feedable
         if ($this->contents instanceof AddonPostContent) {
             $id = $this->contents->file;
 
-            return $this->attachments->first(static fn ($attachment) => (string) $id == $attachment->id);
+            return $this->attachments->first(static fn ($attachment): bool => (string) $id == $attachment->id);
         }
 
         throw new Exception('invalid post type');
@@ -333,7 +333,7 @@ class Article extends Model implements Feedable
      */
     public function getCategoryPaksAttribute(): Collection
     {
-        return $this->categories->filter(static fn ($category) => $category->type === config('category.type.pak'));
+        return $this->categories->filter(static fn ($category): bool => $category->type === config('category.type.pak'));
     }
 
     /**
@@ -341,7 +341,7 @@ class Article extends Model implements Feedable
      */
     public function getCategoryAddonsAttribute()
     {
-        return $this->categories->filter(static fn ($category) => $category->type === config('category.type.addon'));
+        return $this->categories->filter(static fn ($category): bool => $category->type === config('category.type.addon'));
     }
 
     /**
@@ -349,7 +349,7 @@ class Article extends Model implements Feedable
      */
     public function getCategoryPak128PositionsAttribute()
     {
-        return $this->categories->filter(static fn ($category) => $category->type === config('category.type.pak128_position'));
+        return $this->categories->filter(static fn ($category): bool => $category->type === config('category.type.pak128_position'));
     }
 
     public function getTodaysConversionRateAttribute(): string
@@ -385,18 +385,18 @@ class Article extends Model implements Feedable
      */
     public function isAnnounce(): bool
     {
-        return $this->categories->some(static fn ($category) => $category->type === 'page' && $category->slug === 'announce');
+        return $this->categories->some(static fn ($category): bool => $category->type === 'page' && $category->slug === 'announce');
     }
 
     public function hasCategory(string|int $id): bool
     {
-        return $this->categories->some(static fn ($category) => $category->id === (int) $id);
+        return $this->categories->some(static fn ($category): bool => $category->id === (int) $id);
     }
 
     public function getImage(string|int $id): ?Attachment
     {
         return $this->attachments->first(
-            static fn ($attachment) => (int) $id == $attachment->id
+            static fn ($attachment): bool => (int) $id == $attachment->id
         );
     }
 

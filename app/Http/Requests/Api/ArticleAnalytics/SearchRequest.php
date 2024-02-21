@@ -14,7 +14,7 @@ class SearchRequest extends FormRequest
      *
      * @return array<mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         $user_id = Auth::id();
 

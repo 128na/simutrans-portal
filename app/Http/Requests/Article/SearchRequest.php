@@ -13,7 +13,7 @@ class SearchRequest extends FormRequest
      *
      * @return array<mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'word' => 'nullable|string|max:100',

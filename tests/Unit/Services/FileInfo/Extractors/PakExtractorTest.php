@@ -14,13 +14,13 @@ class PakExtractorTest extends UnitTestCase
         return app(PakExtractor::class);
     }
 
-    public function testGetKey()
+    public function testGetKey(): void
     {
         $result = $this->getSUT()->getKey();
         $this->assertEquals('paks', $result);
     }
 
-    public function testIsTarget()
+    public function testIsTarget(): void
     {
         $service = $this->getSUT();
 
@@ -28,7 +28,7 @@ class PakExtractorTest extends UnitTestCase
         $this->assertTrue($service->isTarget('dummy.pak'));
     }
 
-    public function testExtract()
+    public function testExtract(): void
     {
         $service = $this->getSUT();
 

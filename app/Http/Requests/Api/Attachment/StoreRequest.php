@@ -13,7 +13,7 @@ class StoreRequest extends FormRequest
      *
      * @return array<mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         if (request()->input('only_image')) {
             return [

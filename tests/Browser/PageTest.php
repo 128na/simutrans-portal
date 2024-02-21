@@ -32,7 +32,7 @@ class PageTest extends DuskTestCase
     /**
      * @dataProvider dataPages
      */
-    public function testPages(string $pageClass)
+    public function testPages(string $pageClass): void
     {
         $page = new $pageClass();
         JobUpdateRelated::dispatchSync();
@@ -41,7 +41,7 @@ class PageTest extends DuskTestCase
         );
     }
 
-    public static function dataPages()
+    public static function dataPages(): \Generator
     {
         yield '記事詳細_アドオン投稿' => [ArticleAddonPostPage::class];
         yield '記事詳細_アドオン紹介' => [ArticleAddonIntroductionPage::class];

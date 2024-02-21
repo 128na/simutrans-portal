@@ -13,12 +13,10 @@ class CreateViewsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('views', static function (Blueprint $table) {
+        Schema::create('views', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('article_id');
             $table->timestamps();
@@ -30,12 +28,10 @@ class CreateViewsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('views', static function (Blueprint $table) {
+        Schema::table('views', static function (Blueprint $table): void {
             $table->dropForeign(['article_id']);
         });
         Schema::dropIfExists('views');

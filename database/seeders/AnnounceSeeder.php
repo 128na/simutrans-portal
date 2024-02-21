@@ -13,7 +13,7 @@ use Illuminate\Database\Seeder;
  */
 class AnnounceSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $admin = $this->addAdminUser();
         $this->addAnounces($admin);
@@ -34,7 +34,7 @@ class AnnounceSeeder extends Seeder
     /**
      * お知らせ記事作成.
      */
-    private function addAnounces($user)
+    private function addAnounces($user): void
     {
         $announce_category = Category::page()->slug('announce')->firstOrFail();
 

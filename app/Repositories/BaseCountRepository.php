@@ -23,7 +23,7 @@ abstract class BaseCountRepository extends BaseRepository
         $datetime ??= now();
         $sql = $this->buildSql($article, $datetime);
 
-        DB::transaction(static function () use ($sql) {
+        DB::transaction(static function () use ($sql): void {
             DB::statement($sql);
         }, 10);
     }

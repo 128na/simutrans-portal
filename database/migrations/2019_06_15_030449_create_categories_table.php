@@ -10,12 +10,10 @@ class CreateCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('categories', static function (Blueprint $table) {
+        Schema::create('categories', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name', 255)->comment('カテゴリ名');
             $table->string('type', 255)->comment('分類');
@@ -28,10 +26,8 @@ class CreateCategoriesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('categories');
     }

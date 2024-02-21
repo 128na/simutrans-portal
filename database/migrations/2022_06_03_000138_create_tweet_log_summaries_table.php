@@ -10,12 +10,10 @@ class CreateTweetLogSummariesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('tweet_log_summaries', static function (Blueprint $table) {
+        Schema::create('tweet_log_summaries', static function (Blueprint $table): void {
             $table->unsignedBigInteger('article_id')->primary();
             $table->unsignedBigInteger('total_retweet_count')->default(0);
             $table->unsignedBigInteger('total_reply_count')->default(0);
@@ -28,10 +26,8 @@ class CreateTweetLogSummariesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('tweet_log_summaries');
     }

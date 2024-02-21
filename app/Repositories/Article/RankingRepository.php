@@ -26,7 +26,7 @@ class RankingRepository extends BaseRepository
 
     public function recreate(LazyCollection $articles): void
     {
-        DB::transaction(function () use ($articles) {
+        DB::transaction(function () use ($articles): void {
             $this->model->query()->delete();
             $rank = 1;
             foreach ($articles as $article) {

@@ -403,7 +403,7 @@ class Article extends Model implements Feedable
     {
         $image = $this->getImage($id);
 
-        return Storage::disk('public')->url($image
+        return Storage::disk('public')->url($image instanceof \App\Models\Attachment
             ? $image->path
             : config('attachment.no-thumbnail'));
     }

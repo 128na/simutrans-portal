@@ -9,6 +9,8 @@ use Tests\TestCase;
 
 class IndexTest extends TestCase
 {
+    public $user2;
+
     public function setUp(): void
     {
         parent::setUp();

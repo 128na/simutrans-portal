@@ -121,7 +121,7 @@ class FrontDescriptionService
     public function search(string $word): array
     {
         return ['description' => [
-            'title' => $word ? sprintf('%sの検索結果', $word) : '全ての記事',
+            'title' => $word !== '' && $word !== '0' ? sprintf('%sの検索結果', $word) : '全ての記事',
         ]];
     }
 }

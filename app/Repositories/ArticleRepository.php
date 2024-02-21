@@ -277,7 +277,7 @@ class ArticleRepository extends BaseRepository
     {
         $word = trim($word);
 
-        if (! $word) {
+        if ($word === '' || $word === '0') {
             return $this->model->select(['articles.*'])
                 ->active()
                 ->with(self::FRONT_RELATIONS)

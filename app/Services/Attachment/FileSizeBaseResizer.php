@@ -18,12 +18,12 @@ class FileSizeBaseResizer extends Service
 
         $im = $this->getImage($inputPath);
         $originalWidth = @imagesx($im);
-        logger('FileSizeBaseResizer::resize', compact('originalWidth', 'filesize'));
-        if (! $originalWidth) {
+        logger('FileSizeBaseResizer::resize', ['originalWidth' => $originalWidth, 'filesize' => $filesize]);
+        if ($originalWidth === 0) {
             throw new ConvertFailedException('imagesx failed');
         }
-        $width = intval($originalWidth / 2);
-        $min = intval($targetFileSize * 0.75);
+        $width = (int) ($originalWidth / 2);
+        $min = (int) ($targetFileSize * 0.75);
         $max = $targetFileSize;
         $attempt = 0;
         $limit = 20;
@@ -33,15 +33,15 @@ class FileSizeBaseResizer extends Service
             if (! $size) {
                 throw new ConvertFailedException('filesize failed');
             }
-            logger('FileSizeBaseResizer::resize', compact('attempt', 'width', 'size'));
+            logger('FileSizeBaseResizer::resize', ['attempt' => $attempt, 'width' => $width, 'size' => $size]);
             if ($min < $size && $size < $max) {
                 return $resized;
             }
             if ($size <= $min) {
-                $width = intval(($originalWidth + $width) / 2);
+                $width = (int) (($originalWidth + $width) / 2);
             }
             if ($size >= $max) {
-                $width = intval($width / 2);
+                $width = (int) ($width / 2);
             }
             @unlink($resized);
             $attempt++;

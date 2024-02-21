@@ -70,7 +70,7 @@ class Profile extends Model
     {
         $id = (int) $this->data->avatar;
 
-        if ($id) {
+        if ($id !== 0) {
             return $this->attachments->first(fn (Attachment $attachment) => $id === $attachment->id);
         }
 

@@ -34,26 +34,26 @@ class DevSeeder extends Seeder
 
         // add attachment into article
         foreach (User::with(['articles', 'profile'])->cursor() as $user) {
-            self::addAvatar($user);
+            $this->addAvatar($user);
 
             foreach ($user->articles as $article) {
                 // アドオン投稿
                 if ($article->post_type === 'addon-post') {
-                    self::addAddonPost($user, $article);
-                    self::addCategories($article);
-                    self::addTags($article);
+                    $this->addAddonPost($user, $article);
+                    $this->addCategories($article);
+                    $this->addTags($article);
                 }
                 // アドオン紹介
                 if ($article->post_type === 'addon-introduction') {
-                    self::addAddonIntroduction($user, $article);
-                    self::addCategories($article);
-                    self::addTags($article);
+                    $this->addAddonIntroduction($user, $article);
+                    $this->addCategories($article);
+                    $this->addTags($article);
                 }
             }
         }
     }
 
-    private static function addAvatar($user)
+    private function addAvatar($user)
     {
         $avatar = Attachment::make([
             'user_id' => $user->id,
@@ -63,7 +63,7 @@ class DevSeeder extends Seeder
         $user->profile->attachments()->save($avatar);
     }
 
-    private static function addAddonPost($user, $article)
+    private function addAddonPost($user, $article)
     {
         // add attachments
         $thumb = Attachment::make([
@@ -88,7 +88,7 @@ class DevSeeder extends Seeder
         $article->save();
     }
 
-    private static function addAddonIntroduction($user, $article)
+    private function addAddonIntroduction($user, $article)
     {
         // add attachments
         $thumb = Attachment::make([
@@ -107,7 +107,7 @@ class DevSeeder extends Seeder
         $article->save();
     }
 
-    private static function addCategories($article)
+    private function addCategories($article)
     {
         $ids = collect([]);
         $ids = $ids->merge(Category::pak()->inRandomOrder()->limit(random_int(1, 3))->get()->pluck('id'));
@@ -117,7 +117,7 @@ class DevSeeder extends Seeder
         $article->categories()->sync($ids);
     }
 
-    private static function addTags($article)
+    private function addTags($article)
     {
         $tags = Tag::factory()->count(random_int(0, 10))->make()->map(fn ($tag) => Tag::firstOrCreate(['name' => $tag->name]));
         $article->tags()->sync($tags->pluck('id'));

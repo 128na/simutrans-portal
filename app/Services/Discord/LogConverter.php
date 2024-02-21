@@ -60,7 +60,7 @@ class LogConverter extends SimpleRecordConverter
                 array_shift($rawMessages),
             ));
 
-        if (count($rawMessages)) {
+        if ($rawMessages !== []) {
             $embed->description(implode("\n", $rawMessages));
         }
         foreach ($record['context'] as $key => $value) {

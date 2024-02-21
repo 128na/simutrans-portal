@@ -146,7 +146,7 @@ class FrontController extends Controller
 
     public function error(int|string $status): Response|ResponseFactory
     {
-        $status = intval($status);
+        $status = (int) $status;
         $statuses = [401, 403, 404, 418, 419, 422, 429, 500];
         $status = in_array($status, $statuses, true) ? $status : 404;
 

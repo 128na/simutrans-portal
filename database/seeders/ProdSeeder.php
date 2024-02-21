@@ -20,15 +20,15 @@ class ProdSeeder extends Seeder
      */
     public function run()
     {
-        self::addAdminUser();
-        self::addItems(config('category.pak'));
-        self::addItems(config('category.addon'));
-        self::addItems(config('category.pak128_position'));
-        self::addItems(config('category.license'));
-        self::addItems(config('category.page'));
+        $this->addAdminUser();
+        $this->addItems(config('category.pak'));
+        $this->addItems(config('category.addon'));
+        $this->addItems(config('category.pak128_position'));
+        $this->addItems(config('category.license'));
+        $this->addItems(config('category.page'));
     }
 
-    private static function addAdminUser()
+    private function addAdminUser()
     {
         if (is_null(config('admin.email'))) {
             throw new \Exception('admin email was empty!');
@@ -40,7 +40,7 @@ class ProdSeeder extends Seeder
         );
     }
 
-    private static function addItems($items)
+    private function addItems($items)
     {
         return collect($items)->map(fn ($item) => Category::firstOrCreate($item));
     }

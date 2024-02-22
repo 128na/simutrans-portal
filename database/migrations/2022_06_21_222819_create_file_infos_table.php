@@ -13,7 +13,7 @@ class CreateFileInfosTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('file_infos', static function (Blueprint $blueprint): void {
+        Schema::create('file_infos', function (Blueprint $blueprint): void {
             $blueprint->id();
             $blueprint->foreignId('attachment_id')->constrained()->onDelete('cascade');
             $blueprint->json('data');

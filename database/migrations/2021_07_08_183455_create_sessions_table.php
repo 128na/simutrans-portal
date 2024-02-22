@@ -13,7 +13,7 @@ class CreateSessionsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('sessions', static function (Blueprint $blueprint): void {
+        Schema::create('sessions', function (Blueprint $blueprint): void {
             $blueprint->string('id')->primary();
             $blueprint->foreignId('user_id')->nullable()->index();
             $blueprint->string('ip_address', 45)->nullable();

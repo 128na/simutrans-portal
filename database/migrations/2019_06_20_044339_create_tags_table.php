@@ -13,7 +13,7 @@ class CreateTagsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('tags', static function (Blueprint $blueprint): void {
+        Schema::create('tags', function (Blueprint $blueprint): void {
             $blueprint->bigIncrements('id');
             $blueprint->string('name', 255)->comment('タグ名');
             $blueprint->timestamps();

@@ -14,7 +14,7 @@ class AlterDefaultValueInTweetLogsTable extends Migration
      */
     public function up(): void
     {
-        Schema::table('tweet_logs', static function (Blueprint $blueprint): void {
+        Schema::table('tweet_logs', function (Blueprint $blueprint): void {
             $blueprint->unsignedBigInteger('retweet_count')->default(0)->change();
             $blueprint->unsignedBigInteger('reply_count')->default(0)->change();
             $blueprint->unsignedBigInteger('like_count')->default(0)->change();
@@ -38,7 +38,7 @@ class AlterDefaultValueInTweetLogsTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('tweet_logs', static function (Blueprint $blueprint): void {
+        Schema::table('tweet_logs', function (Blueprint $blueprint): void {
             $blueprint->unsignedBigInteger('retweet_count')->change();
             $blueprint->unsignedBigInteger('reply_count')->change();
             $blueprint->unsignedBigInteger('like_count')->change();

@@ -13,7 +13,7 @@ class CreateBookmarkItemsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('bookmark_items', static function (Blueprint $blueprint): void {
+        Schema::create('bookmark_items', function (Blueprint $blueprint): void {
             $blueprint->id();
             $blueprint->foreignId('bookmark_id')->constrained()->onDelete('cascade');
             $blueprint->morphs('bookmark_itemable');

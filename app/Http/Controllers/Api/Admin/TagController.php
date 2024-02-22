@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Tag as ModelsTag;
+use App\Models\Tag;
 use App\Repositories\TagRepository;
 
 class TagController extends Controller
@@ -14,10 +14,10 @@ class TagController extends Controller
     {
     }
 
-    public function toggleEditable(ModelsTag $modelsTag): void
+    public function toggleEditable(Tag $tag): void
     {
-        $this->tagRepository->update($modelsTag, [
-            'editable' => ! $modelsTag->editable,
+        $this->tagRepository->update($tag, [
+            'editable' => ! $tag->editable,
         ]);
     }
 }

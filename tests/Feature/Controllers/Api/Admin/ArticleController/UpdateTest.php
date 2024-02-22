@@ -10,20 +10,20 @@ use Tests\TestCase;
 
 class UpdateTest extends TestCase
 {
-    protected User $user;
+    private User $admin;
 
     private Article $article;
 
     protected function setUp(): void
     {
         parent::setup();
-        $this->user = User::factory()->admin()->create();
+        $this->admin = User::factory()->admin()->create();
         $this->article = Article::factory()->publish()->create();
     }
 
     public function test(): void
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->admin);
         $url = '/api/admin/articles/'.$this->article->id;
         $res = $this->putJson($url, ['article' => ['status' => 'draft']]);
         $res->assertOk();

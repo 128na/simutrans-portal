@@ -16,7 +16,7 @@ class CreateViewsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('views', static function (Blueprint $blueprint): void {
+        Schema::create('views', function (Blueprint $blueprint): void {
             $blueprint->bigIncrements('id');
             $blueprint->unsignedBigInteger('article_id');
             $blueprint->timestamps();
@@ -31,7 +31,7 @@ class CreateViewsTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('views', static function (Blueprint $blueprint): void {
+        Schema::table('views', function (Blueprint $blueprint): void {
             $blueprint->dropForeign(['article_id']);
         });
         Schema::dropIfExists('views');

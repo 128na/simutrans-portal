@@ -58,7 +58,7 @@ class BlueSkyChannel extends BaseChannel
         return $post;
     }
 
-    public static function featureEnabled(): bool
+    public function featureEnabled(): bool
     {
         return (bool) config('services.bluesky.user');
     }

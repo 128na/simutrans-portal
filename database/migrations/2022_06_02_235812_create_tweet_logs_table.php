@@ -13,7 +13,7 @@ class CreateTweetLogsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('tweet_logs', static function (Blueprint $blueprint): void {
+        Schema::create('tweet_logs', function (Blueprint $blueprint): void {
             $blueprint->string('id')->primary();
             $blueprint->foreignId('article_id')->constrained()->onDelete('cascade');
             $blueprint->text('text');

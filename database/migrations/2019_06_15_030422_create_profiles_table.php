@@ -16,7 +16,7 @@ class CreateProfilesTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('profiles', static function (Blueprint $blueprint): void {
+        Schema::create('profiles', function (Blueprint $blueprint): void {
             $blueprint->bigIncrements('id');
             $blueprint->unsignedBigInteger('user_id')->unique();
             $blueprint->json('data')->comment('プロフィール情報');
@@ -32,7 +32,7 @@ class CreateProfilesTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('profiles', static function (Blueprint $blueprint): void {
+        Schema::table('profiles', function (Blueprint $blueprint): void {
             $blueprint->dropForeign(['user_id']);
         });
         Schema::dropIfExists('profiles');

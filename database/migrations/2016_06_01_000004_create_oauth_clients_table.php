@@ -40,7 +40,7 @@ class CreateOauthClientsTable extends Migration
      */
     public function up(): void
     {
-        $this->schema->create('oauth_clients', static function (Blueprint $blueprint): void {
+        $this->schema->create('oauth_clients', function (Blueprint $blueprint): void {
             $blueprint->uuid('id')->primary();
             $blueprint->unsignedBigInteger('user_id')->nullable()->index();
             $blueprint->string('name');

@@ -157,8 +157,8 @@ abstract class ArticleTestCase extends TestCase
      */
     public static function dataStoreArticleValidation(): \Generator
     {
-        yield '投稿形式が空' => [static fn (): array => ['post_type' => ''], 'article.post_type'];
-        yield '不正な投稿形式' => [static fn (): array => ['post_type' => 'test_example'], 'article.post_type'];
+        yield '投稿形式が空' => [fn (): array => ['post_type' => ''], 'article.post_type'];
+        yield '不正な投稿形式' => [fn (): array => ['post_type' => 'test_example'], 'article.post_type'];
     }
 
     /**
@@ -166,24 +166,24 @@ abstract class ArticleTestCase extends TestCase
      */
     public static function dataArticleValidation(): \Generator
     {
-        yield 'ステータスが空' => [static fn (): array => ['status' => ''], 'article.status'];
-        yield '不正なステータス' => [static fn (): array => ['status' => 'test_example'], 'article.status'];
+        yield 'ステータスが空' => [fn (): array => ['status' => ''], 'article.status'];
+        yield '不正なステータス' => [fn (): array => ['status' => 'test_example'], 'article.status'];
 
-        yield 'タイトルが空' => [static fn (): array => ['title' => ''], 'article.title'];
-        yield 'タイトルが256文字以上' => [static fn (): array => ['title' => str_repeat('a', 256)], 'article.title'];
+        yield 'タイトルが空' => [fn (): array => ['title' => ''], 'article.title'];
+        yield 'タイトルが256文字以上' => [fn (): array => ['title' => str_repeat('a', 256)], 'article.title'];
         yield 'タイトルが重複' => [fn (): array => ['title' => $this->article2->title], 'article.title'];
-        yield 'タイトルにNG文字' => [static fn (): array => ['title' => '@example'], 'article.title'];
+        yield 'タイトルにNG文字' => [fn (): array => ['title' => '@example'], 'article.title'];
 
-        yield 'スラッグが空' => [static fn (): array => ['slug' => ''], 'article.slug'];
-        yield 'スラッグが256文字以上' => [static fn (): array => ['slug' => str_repeat('a', 256)], 'article.slug'];
+        yield 'スラッグが空' => [fn (): array => ['slug' => ''], 'article.slug'];
+        yield 'スラッグが256文字以上' => [fn (): array => ['slug' => str_repeat('a', 256)], 'article.slug'];
 
-        yield '存在しないサムネイルID' => [static fn (): array => ['contents' => ['thumbnail' => 99999]], 'article.contents.thumbnail'];
+        yield '存在しないサムネイルID' => [fn (): array => ['contents' => ['thumbnail' => 99999]], 'article.contents.thumbnail'];
         yield '画像以外' => [fn (): array => ['contents' => ['thumbnail' => $this->user_file->id]], 'article.contents.thumbnail'];
         yield '他人の投稿したサムネイルID' => [fn (): array => ['contents' => ['thumbnail' => $this->user2_image->id]], 'article.contents.thumbnail'];
 
-        yield 'カテゴリが空' => [static fn (): array => ['categories' => null], 'article.categories'];
-        yield '存在しないカテゴリ' => [static fn (): array => ['categories' => [['id' => 99999]]], 'article.categories.0.id'];
-        yield 'OK' => [static fn (): array => [], null];
+        yield 'カテゴリが空' => [fn (): array => ['categories' => null], 'article.categories'];
+        yield '存在しないカテゴリ' => [fn (): array => ['categories' => [['id' => 99999]]], 'article.categories.0.id'];
+        yield 'OK' => [fn (): array => [], null];
     }
 
     /**
@@ -191,12 +191,12 @@ abstract class ArticleTestCase extends TestCase
      */
     public static function dataAddonValidation(): \Generator
     {
-        yield 'タグ名が空' => [static fn (): array => ['tags' => null], 'article.tags'];
-        yield '存在しないタグ' => [static fn (): array => ['tags' => [['id' => -1]]], 'article.tags.0.id'];
-        yield '説明が空' => [static fn (): array => ['contents' => ['description' => '']], 'article.contents.description'];
-        yield '説明が2049文字以上' => [static fn (): array => ['contents' => ['description' => str_repeat('a', 2049)]], 'article.contents.description'];
-        yield '謝辞が2049文字以上' => [static fn (): array => ['contents' => ['thanks' => str_repeat('a', 2049)]], 'article.contents.thanks'];
-        yield 'ライセンス（その他）が2049文字以上' => [static fn (): array => ['contents' => ['license' => str_repeat('a', 2049)]], 'article.contents.license'];
+        yield 'タグ名が空' => [fn (): array => ['tags' => null], 'article.tags'];
+        yield '存在しないタグ' => [fn (): array => ['tags' => [['id' => -1]]], 'article.tags.0.id'];
+        yield '説明が空' => [fn (): array => ['contents' => ['description' => '']], 'article.contents.description'];
+        yield '説明が2049文字以上' => [fn (): array => ['contents' => ['description' => str_repeat('a', 2049)]], 'article.contents.description'];
+        yield '謝辞が2049文字以上' => [fn (): array => ['contents' => ['thanks' => str_repeat('a', 2049)]], 'article.contents.thanks'];
+        yield 'ライセンス（その他）が2049文字以上' => [fn (): array => ['contents' => ['license' => str_repeat('a', 2049)]], 'article.contents.license'];
     }
 
     /**
@@ -204,10 +204,10 @@ abstract class ArticleTestCase extends TestCase
      */
     public static function dataAddonIntroductionValidation(): \Generator
     {
-        yield 'アドオン作者が空' => [static fn (): array => ['contents' => ['author' => '']], 'article.contents.author'];
-        yield 'アドオン作者が256文字以上' => [static fn (): array => ['contents' => ['author' => str_repeat('a', 256)]], 'article.contents.author'];
-        yield 'リンクが空' => [static fn (): array => ['contents' => ['link' => '']], 'article.contents.link'];
-        yield 'リンクが不正なURL' => [static fn (): array => ['contents' => ['link' => 'not_url']], 'article.contents.link'];
+        yield 'アドオン作者が空' => [fn (): array => ['contents' => ['author' => '']], 'article.contents.author'];
+        yield 'アドオン作者が256文字以上' => [fn (): array => ['contents' => ['author' => str_repeat('a', 256)]], 'article.contents.author'];
+        yield 'リンクが空' => [fn (): array => ['contents' => ['link' => '']], 'article.contents.link'];
+        yield 'リンクが不正なURL' => [fn (): array => ['contents' => ['link' => 'not_url']], 'article.contents.link'];
     }
 
     /**
@@ -215,8 +215,8 @@ abstract class ArticleTestCase extends TestCase
      */
     public static function dataAddonPostValidation(): \Generator
     {
-        yield 'ファイルIDが空' => [static fn (): array => ['contents' => ['file' => '']], 'article.contents.file'];
-        yield '存在しないファイルID' => [static fn (): array => ['contents' => ['file' => 99999]], 'article.contents.file'];
+        yield 'ファイルIDが空' => [fn (): array => ['contents' => ['file' => '']], 'article.contents.file'];
+        yield '存在しないファイルID' => [fn (): array => ['contents' => ['file' => 99999]], 'article.contents.file'];
         yield '他人の投稿したファイルID' => [fn (): array => ['contents' => ['file' => $this->user2_file->id]], 'article.contents.file'];
     }
 
@@ -225,8 +225,8 @@ abstract class ArticleTestCase extends TestCase
      */
     public static function dataMarkdownValidation(): \Generator
     {
-        yield 'markdownが無い' => [static fn (): array => ['contents' => ['markdown' => null]], 'article.contents.markdown'];
-        yield 'markdownが65536文字以上' => [static fn (): array => ['contents' => ['markdown' => \str_repeat('a', 65536)]], 'article.contents.markdown'];
+        yield 'markdownが無い' => [fn (): array => ['contents' => ['markdown' => null]], 'article.contents.markdown'];
+        yield 'markdownが65536文字以上' => [fn (): array => ['contents' => ['markdown' => \str_repeat('a', 65536)]], 'article.contents.markdown'];
     }
 
     /**
@@ -234,20 +234,20 @@ abstract class ArticleTestCase extends TestCase
      */
     public static function dataPageValidation(): \Generator
     {
-        yield 'セクションが無い' => [static fn (): array => ['contents' => ['sections' => null]], 'article.contents.sections'];
-        yield 'セクションが空' => [static fn (): array => ['contents' => ['sections' => []]], 'article.contents.sections'];
+        yield 'セクションが無い' => [fn (): array => ['contents' => ['sections' => null]], 'article.contents.sections'];
+        yield 'セクションが空' => [fn (): array => ['contents' => ['sections' => []]], 'article.contents.sections'];
 
-        yield '本文セクションが空' => [static fn (): array => ['contents' => ['sections' => [['type' => 'text', 'text' => '']]]], 'article.contents.sections.0.text'];
-        yield '本文セクションが2049文字以上' => [static fn (): array => ['contents' => ['sections' => [['type' => 'text', 'text' => str_repeat('a', 2049)]]]], 'article.contents.sections.0.text'];
+        yield '本文セクションが空' => [fn (): array => ['contents' => ['sections' => [['type' => 'text', 'text' => '']]]], 'article.contents.sections.0.text'];
+        yield '本文セクションが2049文字以上' => [fn (): array => ['contents' => ['sections' => [['type' => 'text', 'text' => str_repeat('a', 2049)]]]], 'article.contents.sections.0.text'];
 
-        yield '見出しセクションが空' => [static fn (): array => ['contents' => ['sections' => [['type' => 'caption', 'caption' => '']]]], 'article.contents.sections.0.caption'];
-        yield '見出しセクションが256文字以上' => [static fn (): array => ['contents' => ['sections' => [['type' => 'caption', 'caption' => str_repeat('a', 2049)]]]], 'article.contents.sections.0.caption'];
+        yield '見出しセクションが空' => [fn (): array => ['contents' => ['sections' => [['type' => 'caption', 'caption' => '']]]], 'article.contents.sections.0.caption'];
+        yield '見出しセクションが256文字以上' => [fn (): array => ['contents' => ['sections' => [['type' => 'caption', 'caption' => str_repeat('a', 2049)]]]], 'article.contents.sections.0.caption'];
 
-        yield 'URLセクションが空' => [static fn (): array => ['contents' => ['sections' => [['type' => 'url', 'url' => '']]]], 'article.contents.sections.0.url'];
-        yield 'URLセクションが不正な形式' => [static fn (): array => ['contents' => ['sections' => [['type' => 'url', 'url' => 'not_url']]]], 'article.contents.sections.0.url'];
+        yield 'URLセクションが空' => [fn (): array => ['contents' => ['sections' => [['type' => 'url', 'url' => '']]]], 'article.contents.sections.0.url'];
+        yield 'URLセクションが不正な形式' => [fn (): array => ['contents' => ['sections' => [['type' => 'url', 'url' => 'not_url']]]], 'article.contents.sections.0.url'];
 
-        yield '画像セクションが空' => [static fn (): array => ['contents' => ['sections' => [['type' => 'image', 'id' => '']]]], 'article.contents.sections.0.id'];
-        yield '画像セクションが存在しないID' => [static fn (): array => ['contents' => ['sections' => [['type' => 'image', 'id' => 99999]]]], 'article.contents.sections.0.id'];
+        yield '画像セクションが空' => [fn (): array => ['contents' => ['sections' => [['type' => 'image', 'id' => '']]]], 'article.contents.sections.0.id'];
+        yield '画像セクションが存在しないID' => [fn (): array => ['contents' => ['sections' => [['type' => 'image', 'id' => 99999]]]], 'article.contents.sections.0.id'];
         yield '画像セクションが画像以外' => [fn (): array => ['contents' => ['sections' => [['type' => 'image', 'id' => $this->user_file->id]]]], 'article.contents.sections.0.id'];
         yield '画像セクションが他人の投稿したID' => [fn (): array => ['contents' => ['sections' => [['type' => 'image', 'id' => $this->user2_image->id]]]], 'article.contents.sections.0.id'];
     }

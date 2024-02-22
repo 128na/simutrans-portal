@@ -41,7 +41,7 @@ class TwitterChannel extends BaseChannel
         };
     }
 
-    public static function featureEnabled(): bool
+    public function featureEnabled(): bool
     {
         return (bool) config('services.twitter.client_id');
     }

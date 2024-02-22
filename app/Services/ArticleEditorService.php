@@ -66,7 +66,7 @@ class ArticleEditorService extends Service
     private function separateCategories(Collection $categories): SupportCollection
     {
         /** @return array<string, mixed> */
-        $fn = static function (array $list, Category $category): array {
+        $fn = function (array $list, Category $category): array {
             if (! isset($list[$category->type])) {
                 $list[$category->type] = [];
             }
@@ -93,7 +93,7 @@ class ArticleEditorService extends Service
         $status = config('status');
 
         return collect($status)->map(
-            static fn ($item): array => [
+            fn ($item): array => [
                 'label' => __('statuses.'.$item),
                 'value' => $item,
             ]
@@ -109,7 +109,7 @@ class ArticleEditorService extends Service
         $postTypes = config('post_types');
 
         return collect($postTypes)->map(
-            static fn ($item): array => [
+            fn ($item): array => [
                 'label' => __('post_types.'.$item),
                 'value' => $item,
             ]

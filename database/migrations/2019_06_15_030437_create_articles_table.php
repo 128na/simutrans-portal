@@ -16,7 +16,7 @@ class CreateArticlesTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('articles', static function (Blueprint $blueprint): void {
+        Schema::create('articles', function (Blueprint $blueprint): void {
             $blueprint->bigIncrements('id');
             $blueprint->unsignedBigInteger('user_id');
             $blueprint->string('title', 255)->comment('タイトル');
@@ -36,7 +36,7 @@ class CreateArticlesTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('articles', static function (Blueprint $blueprint): void {
+        Schema::table('articles', function (Blueprint $blueprint): void {
             $blueprint->dropForeign(['user_id']);
         });
         Schema::dropIfExists('articles');

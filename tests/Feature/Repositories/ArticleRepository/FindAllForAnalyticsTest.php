@@ -20,7 +20,7 @@ class FindAllForAnalyticsTest extends ArticleTestCase
 
     public function test(): void
     {
-        $res = $this->articleRepository->findAllForAnalytics($this->user, [$this->article->id, $this->article2->id], static fn (): null => null);
+        $res = $this->articleRepository->findAllForAnalytics($this->user, [$this->article->id, $this->article2->id], fn (): null => null);
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(1, $res->count(), '自身の記事のみ取得できること');
@@ -29,7 +29,7 @@ class FindAllForAnalyticsTest extends ArticleTestCase
     public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => 'draft']);
-        $res = $this->articleRepository->findAllForAnalytics($this->user, [$this->article->id], static fn (): null => null);
+        $res = $this->articleRepository->findAllForAnalytics($this->user, [$this->article->id], fn (): null => null);
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(1, $res->count(), '非公開記事も取得できること');
@@ -38,7 +38,7 @@ class FindAllForAnalyticsTest extends ArticleTestCase
     public function test論理削除(): void
     {
         $this->article->delete();
-        $res = $this->articleRepository->findAllForAnalytics($this->user, [$this->article->id], static fn (): null => null);
+        $res = $this->articleRepository->findAllForAnalytics($this->user, [$this->article->id], fn (): null => null);
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');

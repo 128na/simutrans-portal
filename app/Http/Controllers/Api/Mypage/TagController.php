@@ -9,9 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Tag\SearchRequest;
 use App\Http\Requests\Api\Tag\StoreRequest;
 use App\Http\Requests\Api\Tag\UpdateRequest;
-use App\Http\Resources\Api\Mypage\Tag;
+use App\Http\Resources\Api\Mypage\Tag as ResourcesTag;
 use App\Http\Resources\Api\Mypage\Tags;
-use App\Models\Tag as ModelsTag;
+use App\Models\Tag;
 use App\Repositories\TagRepository;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,25 +29,25 @@ class TagController extends Controller
             : $this->tagRepository->getTags());
     }
 
-    public function store(StoreRequest $storeRequest): Tag
+    public function store(StoreRequest $storeRequest): ResourcesTag
     {
         $model = $this->tagRepository->store([
             'name' => $storeRequest->name,
             'created_by' => Auth::id(),
         ]);
 
-        return new Tag($model);
+        return new ResourcesTag($model);
     }
 
-    public function update(ModelsTag $modelsTag, UpdateRequest $updateRequest): void
+    public function update(Tag $tag, UpdateRequest $updateRequest): void
     {
-        $old = $modelsTag->description;
-        $this->authorize('update', $modelsTag);
-        $this->tagRepository->update($modelsTag, [
+        $old = $tag->description;
+        $this->authorize('update', $tag);
+        $this->tagRepository->update($tag, [
             'description' => $updateRequest->input('description'),
             'last_modified_by' => Auth::id(),
             'last_modified_at' => now(),
         ]);
-        event(new TagDescriptionUpdated($modelsTag, $this->loggedinUser(), $old));
+        event(new TagDescriptionUpdated($tag, $this->loggedinUser(), $old));
     }
 }

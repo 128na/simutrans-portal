@@ -13,7 +13,7 @@ class CreateFailedJobsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('failed_jobs', static function (Blueprint $blueprint): void {
+        Schema::create('failed_jobs', function (Blueprint $blueprint): void {
             $blueprint->id();
             $blueprint->string('uuid')->unique();
             $blueprint->text('connection');

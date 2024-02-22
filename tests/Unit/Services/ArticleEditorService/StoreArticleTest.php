@@ -34,7 +34,7 @@ class StoreArticleTest extends UnitTestCase
         ]);
         $carbonImmutable = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, static function (MockInterface $mock) use ($user, $carbonImmutable): void {
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable): void {
             $mock->shouldReceive('storeByUser')->withArgs([
                 $user,
                 [
@@ -69,7 +69,7 @@ class StoreArticleTest extends UnitTestCase
         ]);
         $carbonImmutable = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, static function (MockInterface $mock) use ($user, $carbonImmutable): void {
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable): void {
             $mock->shouldReceive('storeByUser')->withArgs([
                 $user,
                 [
@@ -103,7 +103,7 @@ class StoreArticleTest extends UnitTestCase
         ]);
         $carbonImmutable = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, static function (MockInterface $mock) use ($user, $carbonImmutable): void {
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable): void {
             $mock->shouldReceive('storeByUser')->withArgs([
                 $user,
                 [

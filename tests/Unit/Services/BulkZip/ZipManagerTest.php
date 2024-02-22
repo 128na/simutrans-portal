@@ -20,7 +20,7 @@ class ZipManagerTest extends UnitTestCase
         /**
          * @var ZipArchive
          */
-        $zipArchiveMock = $this->mock(ZipArchive::class, static function (MockInterface $mock): void {
+        $zipArchiveMock = $this->mock(ZipArchive::class, function (MockInterface $mock): void {
             $mock->shouldReceive('open')->andReturn(true);
             $mock->shouldReceive('addFromString')->andReturn(true);
             $mock->shouldReceive('close')->andReturn(true);
@@ -31,7 +31,7 @@ class ZipManagerTest extends UnitTestCase
             $mock->shouldReceive('addFile')->andReturn(true);
             $mock->shouldReceive('close')->andReturn(true);
         });
-        $decoratorMock = $this->mock(BaseDecorator::class, static function (MockInterface $mock): void {
+        $decoratorMock = $this->mock(BaseDecorator::class, function (MockInterface $mock): void {
             $mock->shouldReceive('canProcess')->andReturn(true);
             $mock->shouldReceive('process')->andReturn([
                 'contents' => [['test']],
@@ -54,7 +54,7 @@ class ZipManagerTest extends UnitTestCase
         /**
          * @var ZipArchive
          */
-        $zipArchiveMock = $this->mock(ZipArchive::class, static function (MockInterface $mock): void {
+        $zipArchiveMock = $this->mock(ZipArchive::class, function (MockInterface $mock): void {
             $mock->shouldReceive('open')->andReturn(ZipArchive::ER_OPEN);
         });
         $filesystem = Storage::fake();

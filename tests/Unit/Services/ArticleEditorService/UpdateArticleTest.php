@@ -34,7 +34,7 @@ class UpdateArticleTest extends UnitTestCase
         ]);
         $carbonImmutable = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, static function (MockInterface $mock) use ($article, $carbonImmutable): void {
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($article, $carbonImmutable): void {
             $mock->shouldReceive('update')->withArgs([
                 $article,
                 [
@@ -67,7 +67,7 @@ class UpdateArticleTest extends UnitTestCase
         ]);
         $carbonImmutable = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, static function (MockInterface $mock) use ($article): void {
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($article): void {
             $mock->shouldReceive('update')->withArgs([
                 $article,
                 [

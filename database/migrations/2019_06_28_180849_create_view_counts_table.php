@@ -16,12 +16,12 @@ class CreateViewCountsTable extends Migration
      */
     public function up(): void
     {
-        Schema::table('views', static function (Blueprint $blueprint): void {
+        Schema::table('views', function (Blueprint $blueprint): void {
             $blueprint->dropForeign(['article_id']);
         });
         Schema::dropIfExists('views');
 
-        Schema::create('view_counts', static function (Blueprint $blueprint): void {
+        Schema::create('view_counts', function (Blueprint $blueprint): void {
             $blueprint->bigIncrements('id');
             $blueprint->unsignedBigInteger('article_id');
             $blueprint->unsignedInteger('type')->comment('集計区分 1:日次,2:月次,3:年次,4:全体');
@@ -39,13 +39,13 @@ class CreateViewCountsTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('view_counts', static function (Blueprint $blueprint): void {
+        Schema::table('view_counts', function (Blueprint $blueprint): void {
             $blueprint->dropForeign(['article_id']);
             $blueprint->dropUnique(['article_id', 'type', 'period']);
         });
         Schema::dropIfExists('view_counts');
 
-        Schema::create('views', static function (Blueprint $blueprint): void {
+        Schema::create('views', function (Blueprint $blueprint): void {
             $blueprint->bigIncrements('id');
             $blueprint->unsignedBigInteger('article_id');
             $blueprint->timestamps();

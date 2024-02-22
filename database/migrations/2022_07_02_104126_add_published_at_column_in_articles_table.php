@@ -13,7 +13,7 @@ class AddPublishedAtColumnInArticlesTable extends Migration
      */
     public function up(): void
     {
-        Schema::table('articles', static function (Blueprint $blueprint): void {
+        Schema::table('articles', function (Blueprint $blueprint): void {
             $blueprint->timestamp('published_at')->nullable()->after('status')->comment('投稿日時');
             $blueprint->index(['published_at']);
             $blueprint->index(['status', 'published_at']);
@@ -28,7 +28,7 @@ class AddPublishedAtColumnInArticlesTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('articles', static function (Blueprint $blueprint): void {
+        Schema::table('articles', function (Blueprint $blueprint): void {
             $blueprint->dropIndex(['published_at']);
             $blueprint->dropIndex(['status', 'published_at']);
             $blueprint->dropColumn('published_at');

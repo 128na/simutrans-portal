@@ -30,7 +30,7 @@ class Category extends Model
     {
         parent::boot();
 
-        static::addGlobalScope('order', static function (Builder $builder): void {
+        static::addGlobalScope('order', function (Builder $builder): void {
             $builder->orderBy('order', 'asc');
         });
     }

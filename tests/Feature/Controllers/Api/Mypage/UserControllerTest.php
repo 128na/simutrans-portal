@@ -108,35 +108,35 @@ class UserControllerTest extends ArticleTestCase
     public static function dataValidation(): \Generator
     {
         yield 'user.nameがnull' => [
-            static fn (): array => ['name' => null], 'user.name',
+            fn (): array => ['name' => null], 'user.name',
         ];
         yield 'user.nameが256文字以上' => [
-            static fn (): array => ['name' => str_repeat('a', 256)], 'user.name',
+            fn (): array => ['name' => str_repeat('a', 256)], 'user.name',
         ];
         yield 'user.nameが存在する' => [
-            static fn (): array => ['name' => 'other name'], 'user.name',
+            fn (): array => ['name' => 'other name'], 'user.name',
         ];
 
         yield 'user.emailがnull' => [
-            static fn (): array => ['email' => null], 'user.email',
+            fn (): array => ['email' => null], 'user.email',
         ];
         yield 'user.emailが不正' => [
-            static fn (): array => ['email' => 'invalid-email'], 'user.email',
+            fn (): array => ['email' => 'invalid-email'], 'user.email',
         ];
         yield 'user.emailが存在する' => [
-            static fn (): array => ['email' => 'other@example.com'], 'user.email',
+            fn (): array => ['email' => 'other@example.com'], 'user.email',
         ];
 
         yield 'user.profileがnull' => [
-            static fn (): array => ['profile' => null], 'user.profile',
+            fn (): array => ['profile' => null], 'user.profile',
         ];
 
         yield 'user.profile.dataがnull' => [
-            static fn (): array => ['profile' => ['data' => null]], 'user.profile.data',
+            fn (): array => ['profile' => ['data' => null]], 'user.profile.data',
         ];
 
         yield 'user.profile.data.avatarが存在しない' => [
-            static fn (): array => ['profile' => ['data' => ['avatar' => 99999]]], 'user.profile.data.avatar',
+            fn (): array => ['profile' => ['data' => ['avatar' => 99999]]], 'user.profile.data.avatar',
         ];
         yield 'user.profile.data.avatarが画像以外' => [
             fn (): array => ['profile' => ['data' => ['avatar' => $this->not_image->id]]], 'user.profile.data.avatar',
@@ -146,13 +146,13 @@ class UserControllerTest extends ArticleTestCase
         ];
 
         yield 'user.profile.data.descriptionが1025文字以上' => [
-            static fn (): array => ['profile' => ['data' => ['description' => str_repeat('a', 1025)]]], 'user.profile.data.description',
+            fn (): array => ['profile' => ['data' => ['description' => str_repeat('a', 1025)]]], 'user.profile.data.description',
         ];
         yield 'user.profile.data.websiteが不正' => [
-            static fn (): array => ['profile' => ['data' => ['website' => 'invalid-url']]], 'user.profile.data.website',
+            fn (): array => ['profile' => ['data' => ['website' => 'invalid-url']]], 'user.profile.data.website',
         ];
         yield 'user.profile.data.websiteが256文字以上' => [
-            static fn (): array => ['profile' => ['data' => ['website' => 'http://example.com/'.str_repeat('a', 256)]]], 'user.profile.data.website',
+            fn (): array => ['profile' => ['data' => ['website' => 'http://example.com/'.str_repeat('a', 256)]]], 'user.profile.data.website',
         ];
     }
 

@@ -16,7 +16,7 @@ class CreateAttachmentsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('attachments', static function (Blueprint $blueprint): void {
+        Schema::create('attachments', function (Blueprint $blueprint): void {
             $blueprint->bigIncrements('id');
             $blueprint->unsignedBigInteger('user_id');
             $blueprint->unsignedBigInteger('attachmentable_id')->nullable()->comment('添付先ID');
@@ -35,7 +35,7 @@ class CreateAttachmentsTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('attachments', static function (Blueprint $blueprint): void {
+        Schema::table('attachments', function (Blueprint $blueprint): void {
             $blueprint->dropForeign(['user_id']);
         });
 

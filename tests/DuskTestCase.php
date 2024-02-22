@@ -31,7 +31,7 @@ abstract class DuskTestCase extends BaseTestCase
      *
      * @beforeClass
      */
-    public static function prepare(): void
+    public function prepare(): void
     {
         if (! static::runningInSail()) {
             static::startChromeDriver();
@@ -47,7 +47,7 @@ abstract class DuskTestCase extends BaseTestCase
     {
         $chromeOptions = (new ChromeOptions())->addArguments(collect([
             $this->shouldStartMaximized() ? '--start-maximized' : '--window-size=1920,1080',
-        ])->unless($this->hasHeadlessDisabled(), static fn ($items) => $items->merge([
+        ])->unless($this->hasHeadlessDisabled(), fn ($items) => $items->merge([
             '--disable-gpu',
             '--headless',
         ]))->all());

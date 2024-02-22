@@ -13,7 +13,7 @@ class CreateConversionsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('conversions', static function (Blueprint $blueprint): void {
+        Schema::create('conversions', function (Blueprint $blueprint): void {
             $blueprint->bigIncrements('id');
             $blueprint->unsignedBigInteger('article_id');
             $blueprint->timestamps();
@@ -28,7 +28,7 @@ class CreateConversionsTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('conversions', static function (Blueprint $blueprint): void {
+        Schema::table('conversions', function (Blueprint $blueprint): void {
             $blueprint->dropForeign(['article_id']);
         });
         Schema::dropIfExists('conversions');

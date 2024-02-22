@@ -13,7 +13,7 @@ class CreateRegistrationOrdersTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('registration_orders', static function (Blueprint $blueprint): void {
+        Schema::create('registration_orders', function (Blueprint $blueprint): void {
             $blueprint->id();
             $blueprint->string('email')->unique();
             $blueprint->string('twitter')->comment('Twitterユーザー名');

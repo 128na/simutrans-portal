@@ -13,7 +13,7 @@ class AddDescriptionColumnInTagsTable extends Migration
      */
     public function up(): void
     {
-        Schema::table('tags', static function (Blueprint $blueprint): void {
+        Schema::table('tags', function (Blueprint $blueprint): void {
             $blueprint->text('description')->nullable()->after('name')->comment('説明');
             $blueprint->boolean('editable')->after('description')->default(true)->comment('1:編集可,0:編集不可');
             $blueprint->unsignedBigInteger('created_by')->nullable()->after('editable');
@@ -29,7 +29,7 @@ class AddDescriptionColumnInTagsTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('tags', static function (Blueprint $blueprint): void {
+        Schema::table('tags', function (Blueprint $blueprint): void {
             $blueprint->dropForeign(['created_by']);
             $blueprint->dropForeign(['last_modified_by']);
             $blueprint->dropColumn([

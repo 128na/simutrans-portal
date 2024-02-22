@@ -132,10 +132,10 @@ class TagControllerTest extends TestCase
 
     public static function dataValidation(): \Generator
     {
-        yield 'nameがnull' => [static fn (): array => ['name' => null], 'name'];
-        yield 'nameが21文字以上' => [static fn (): array => ['name' => str_repeat('a', 21)], 'name'];
+        yield 'nameがnull' => [fn (): array => ['name' => null], 'name'];
+        yield 'nameが21文字以上' => [fn (): array => ['name' => str_repeat('a', 21)], 'name'];
         yield 'nameが存在する' => [fn (): array => ['name' => $this->tag1->name], 'name'];
-        yield '成功' => [static fn (): array => ['name' => 'new_tag'], null];
+        yield '成功' => [fn (): array => ['name' => 'new_tag'], null];
     }
 
     /**
@@ -163,8 +163,8 @@ class TagControllerTest extends TestCase
 
     public static function dataUpdateValidation(): \Generator
     {
-        yield 'descriptionが1024文字以下' => [static fn (): array => ['description' => str_repeat('a', 1024)], null];
-        yield 'descriptionが1025文字以上' => [static fn (): array => ['description' => str_repeat('a', 1025)], 'description'];
+        yield 'descriptionが1024文字以下' => [fn (): array => ['description' => str_repeat('a', 1024)], null];
+        yield 'descriptionが1025文字以上' => [fn (): array => ['description' => str_repeat('a', 1025)], 'description'];
     }
 
     public function testUpdate編集ロック(): void

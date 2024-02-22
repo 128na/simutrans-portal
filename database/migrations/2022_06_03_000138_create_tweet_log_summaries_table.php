@@ -13,7 +13,7 @@ class CreateTweetLogSummariesTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('tweet_log_summaries', static function (Blueprint $blueprint): void {
+        Schema::create('tweet_log_summaries', function (Blueprint $blueprint): void {
             $blueprint->unsignedBigInteger('article_id')->primary();
             $blueprint->unsignedBigInteger('total_retweet_count')->default(0);
             $blueprint->unsignedBigInteger('total_reply_count')->default(0);

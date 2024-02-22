@@ -13,7 +13,7 @@ class CreateArticleTagTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('article_tag', static function (Blueprint $blueprint): void {
+        Schema::create('article_tag', function (Blueprint $blueprint): void {
             $blueprint->unsignedBigInteger('article_id');
             $blueprint->unsignedBigInteger('tag_id');
             $blueprint->index(['article_id', 'tag_id']);
@@ -31,7 +31,7 @@ class CreateArticleTagTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('article_tag', static function (Blueprint $blueprint): void {
+        Schema::table('article_tag', function (Blueprint $blueprint): void {
             $blueprint->dropForeign(['article_id']);
             $blueprint->dropForeign(['tag_id']);
             $blueprint->dropIndex(['article_id', 'tag_id']);

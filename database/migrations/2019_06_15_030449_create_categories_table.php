@@ -13,7 +13,7 @@ class CreateCategoriesTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', static function (Blueprint $blueprint): void {
+        Schema::create('categories', function (Blueprint $blueprint): void {
             $blueprint->bigIncrements('id');
             $blueprint->string('name', 255)->comment('カテゴリ名');
             $blueprint->string('type', 255)->comment('分類');

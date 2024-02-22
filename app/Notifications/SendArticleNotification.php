@@ -31,7 +31,7 @@ abstract class SendArticleNotification extends Notification implements ShouldQue
             /**
              * @var class-string<\App\Channels\BaseChannel> $className
              */
-            static fn (string $className) => $className::featureEnabled();
+            fn (string $className) => $className::featureEnabled();
 
         return array_filter([
             MisskeyChannel::class,

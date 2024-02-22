@@ -32,7 +32,7 @@ class DropOauth extends Migration
      */
     public function down(): void
     {
-        $this->schema->create('oauth_auth_codes', static function (Blueprint $blueprint): void {
+        $this->schema->create('oauth_auth_codes', function (Blueprint $blueprint): void {
             $blueprint->string('id', 100)->primary();
             $blueprint->unsignedBigInteger('user_id')->index();
             $blueprint->uuid('client_id');
@@ -40,7 +40,7 @@ class DropOauth extends Migration
             $blueprint->boolean('revoked');
             $blueprint->dateTime('expires_at')->nullable();
         });
-        $this->schema->create('oauth_access_tokens', static function (Blueprint $blueprint): void {
+        $this->schema->create('oauth_access_tokens', function (Blueprint $blueprint): void {
             $blueprint->string('id', 100)->primary();
             $blueprint->unsignedBigInteger('user_id')->nullable()->index();
             $blueprint->uuid('client_id');
@@ -50,13 +50,13 @@ class DropOauth extends Migration
             $blueprint->timestamps();
             $blueprint->dateTime('expires_at')->nullable();
         });
-        $this->schema->create('oauth_refresh_tokens', static function (Blueprint $blueprint): void {
+        $this->schema->create('oauth_refresh_tokens', function (Blueprint $blueprint): void {
             $blueprint->string('id', 100)->primary();
             $blueprint->string('access_token_id', 100)->index();
             $blueprint->boolean('revoked');
             $blueprint->dateTime('expires_at')->nullable();
         });
-        $this->schema->create('oauth_clients', static function (Blueprint $blueprint): void {
+        $this->schema->create('oauth_clients', function (Blueprint $blueprint): void {
             $blueprint->uuid('id')->primary();
             $blueprint->unsignedBigInteger('user_id')->nullable()->index();
             $blueprint->string('name');
@@ -68,7 +68,7 @@ class DropOauth extends Migration
             $blueprint->boolean('revoked');
             $blueprint->timestamps();
         });
-        $this->schema->create('oauth_personal_access_clients', static function (Blueprint $blueprint): void {
+        $this->schema->create('oauth_personal_access_clients', function (Blueprint $blueprint): void {
             $blueprint->bigIncrements('id');
             $blueprint->uuid('client_id');
             $blueprint->timestamps();

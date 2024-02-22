@@ -21,7 +21,7 @@ class BulkZipServiceTest extends UnitTestCase
     public function test(): void
     {
         Bus::fake();
-        $this->mock(BulkZipRepository::class, static function (MockInterface $mock): void {
+        $this->mock(BulkZipRepository::class, function (MockInterface $mock): void {
             $mock->shouldReceive('findByBulkZippable')->andReturn(null);
             $mock->shouldReceive('storeByBulkZippable')->andReturn(new BulkZip());
         });
@@ -48,7 +48,7 @@ class BulkZipServiceTest extends UnitTestCase
     public function test作成済みならディスパッチしない(): void
     {
         Bus::fake();
-        $this->mock(BulkZipRepository::class, static function (MockInterface $mock): void {
+        $this->mock(BulkZipRepository::class, function (MockInterface $mock): void {
             $mock->shouldReceive('findByBulkZippable')->andReturn(new BulkZip());
         });
         /**

@@ -59,7 +59,7 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
     */
     protected static function booted()
     {
-        static::created(static function ($model): void {
+        static::created(function ($model): void {
             $model->syncRelatedData();
         });
     }

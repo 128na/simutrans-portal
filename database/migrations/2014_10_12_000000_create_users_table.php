@@ -13,7 +13,7 @@ class CreateUsersTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', static function (Blueprint $blueprint): void {
+        Schema::create('users', function (Blueprint $blueprint): void {
             $blueprint->bigIncrements('id');
             $blueprint->string('role')->comment('権限');
             $blueprint->string('name')->comment('ユーザー名');

@@ -31,14 +31,14 @@ class MessageGeneratorTest extends UnitTestCase
             $mock->allows('getAttribute')->withArgs(['slug'])->andReturn('dummy_slug');
             $mock->allows('offsetExists')->withArgs(['user'])->andReturn(true);
             $mock->allows('getAttribute')->withArgs(['user_id'])->andReturn(1);
-            $mock->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, static function (MockInterface $mock): void {
+            $mock->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $mock): void {
                 $mock->allows('offsetExists')->withArgs(['nickname'])->andReturn(false);
                 $mock->allows('getAttribute')->withArgs(['name'])->andReturn('dummy_name');
                 $mock->allows('getRouteKey')->andReturn(1);
             }));
-            $m->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
-            $m->allows('getAttribute')->withArgs(['categoryPaks'])->andReturn(collect([
-                $this->mock(Category::class, static function (MockInterface $mock): void {
+            $mock->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
+            $mock->allows('getAttribute')->withArgs(['categoryPaks'])->andReturn(collect([
+                $this->mock(Category::class, function (MockInterface $mock): void {
                     $mock->allows('offsetExists')->withArgs(['name'])->andReturn(true);
                     $mock->allows('offsetGet')->withArgs(['name'])->andReturn('dummy_pak');
                 }),
@@ -59,14 +59,14 @@ class MessageGeneratorTest extends UnitTestCase
             $mock->allows('getAttribute')->withArgs(['slug'])->andReturn('dummy_slug');
             $mock->allows('getAttribute')->withArgs(['user_id'])->andReturn(1);
             $mock->allows('offsetExists')->withArgs(['user'])->andReturn(true);
-            $mock->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, static function (MockInterface $mock): void {
+            $mock->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $mock): void {
                 $mock->allows('offsetExists')->withArgs(['nickname'])->andReturn(false);
                 $mock->allows('getAttribute')->withArgs(['name'])->andReturn('dummy_name');
                 $mock->allows('getRouteKey')->andReturn(1);
             }));
-            $m->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
-            $m->allows('getAttribute')->withArgs(['categoryPaks'])->andReturn(collect([
-                $this->mock(Category::class, static function (MockInterface $mock): void {
+            $mock->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
+            $mock->allows('getAttribute')->withArgs(['categoryPaks'])->andReturn(collect([
+                $this->mock(Category::class, function (MockInterface $mock): void {
                     $mock->allows('offsetExists')->withArgs(['name'])->andReturn(true);
                     $mock->allows('offsetGet')->withArgs(['name'])->andReturn('dummy_pak');
                 }),

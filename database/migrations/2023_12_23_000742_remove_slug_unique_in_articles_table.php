@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('articles', static function (Blueprint $blueprint): void {
+        Schema::table('articles', function (Blueprint $blueprint): void {
             $blueprint->dropUnique(['slug']);
             $blueprint->index(['slug']);
         });
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('articles', static function (Blueprint $blueprint): void {
+        Schema::table('articles', function (Blueprint $blueprint): void {
             $blueprint->dropIndex(['slug']);
             $blueprint->unique(['slug']);
         });

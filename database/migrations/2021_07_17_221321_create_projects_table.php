@@ -13,7 +13,7 @@ class CreateProjectsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', static function (Blueprint $blueprint): void {
+        Schema::create('projects', function (Blueprint $blueprint): void {
             $blueprint->id();
             $blueprint->string('name')->comment('プロジェクト名');
             $blueprint->text('credential')->comment('認証情報');

@@ -211,8 +211,8 @@ class ArticleRepository extends BaseRepository
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
-            ->whereHas('categories', static fn ($query) => $query->where('id', $pak->id))
-            ->whereHas('categories', static fn ($query) => $query->where('id', $addon->id))
+            ->whereHas('categories', fn ($query) => $query->where('id', $pak->id))
+            ->whereHas('categories', fn ($query) => $query->where('id', $addon->id))
             ->orderBy($order, 'desc');
     }
 
@@ -238,7 +238,7 @@ class ArticleRepository extends BaseRepository
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
-            ->whereDoesntHave('categories', static fn ($query) => $query->where('type', 'addon'))
+            ->whereDoesntHave('categories', fn ($query) => $query->where('type', 'addon'))
             ->orderBy($order, 'desc')
             ->paginate();
     }
@@ -288,10 +288,10 @@ class ArticleRepository extends BaseRepository
 
         return $this->model->select(['articles.*'])
             ->active()
-            ->where(static fn ($q) => $q
+            ->where(fn ($q) => $q
                 ->orWhere('title', 'LIKE', $likeWord)
                 ->orWhere('contents', 'LIKE', $likeWord)
-                ->orWhereHas('attachments.fileInfo', static fn ($q) => $q
+                ->orWhereHas('attachments.fileInfo', fn ($q) => $q
                     ->where('data', 'LIKE', $likeWord)))
             ->with(self::FRONT_RELATIONS)
             ->orderBy($order, 'desc');
@@ -336,7 +336,7 @@ class ArticleRepository extends BaseRepository
         return $this->model
             ->withTrashed()
             ->withUserTrashed()
-            ->with(['user' => static fn ($q) => $q->withTrashed()])
+            ->with(['user' => fn ($q) => $q->withTrashed()])
             ->get();
     }
 
@@ -379,19 +379,19 @@ class ArticleRepository extends BaseRepository
         return $this->model
             ->addon()
             ->select('articles.*')
-            ->leftJoin('view_counts as d', static fn (JoinClause $joinClause) => $joinClause
+            ->leftJoin('view_counts as d', fn (JoinClause $joinClause) => $joinClause
                 ->on('d.article_id', 'articles.id')
                 ->where('d.type', 1)
                 ->where('d.period', $datetime->format('Ymd')))
-            ->leftJoin('view_counts as m', static fn (JoinClause $joinClause) => $joinClause
+            ->leftJoin('view_counts as m', fn (JoinClause $joinClause) => $joinClause
                 ->on('m.article_id', 'articles.id')
                 ->where('m.type', 2)
                 ->where('m.period', $datetime->format('Ym')))
-            ->leftJoin('view_counts as y', static fn (JoinClause $joinClause) => $joinClause
+            ->leftJoin('view_counts as y', fn (JoinClause $joinClause) => $joinClause
                 ->on('y.article_id', 'articles.id')
                 ->where('y.type', 3)
                 ->where('y.period', $datetime->format('Y')))
-            ->leftJoin('view_counts as t', static fn (JoinClause $joinClause) => $joinClause
+            ->leftJoin('view_counts as t', fn (JoinClause $joinClause) => $joinClause
                 ->on('t.article_id', 'articles.id')
                 ->where('t.type', 4)
                 ->where('t.period', 'total'))

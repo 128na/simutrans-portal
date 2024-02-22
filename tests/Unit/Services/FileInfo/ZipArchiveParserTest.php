@@ -19,10 +19,10 @@ class ZipArchiveParserTest extends UnitTestCase
 
     public function test(): void
     {
-        $this->mock(Attachment::class, static function (MockInterface $mock): void {
+        $this->mock(Attachment::class, function (MockInterface $mock): void {
             $mock->shouldReceive('getAttribute')->once()->andReturn('dummy');
         });
-        $this->mock(ZipArchive::class, static function (MockInterface $mock): void {
+        $this->mock(ZipArchive::class, function (MockInterface $mock): void {
             $mock->shouldReceive('open')->once();
             $mock->shouldReceive('close')->once();
         });

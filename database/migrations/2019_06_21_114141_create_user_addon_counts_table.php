@@ -13,7 +13,7 @@ class CreateUserAddonCountsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_addon_counts', static function (Blueprint $blueprint): void {
+        Schema::create('user_addon_counts', function (Blueprint $blueprint): void {
             $blueprint->bigIncrements('id');
             $blueprint->unsignedBigInteger('user_id');
             $blueprint->string('user_name', 255);
@@ -29,7 +29,7 @@ class CreateUserAddonCountsTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('user_addon_counts', static function (Blueprint $blueprint): void {
+        Schema::table('user_addon_counts', function (Blueprint $blueprint): void {
             $blueprint->dropForeign(['user_id']);
         });
 

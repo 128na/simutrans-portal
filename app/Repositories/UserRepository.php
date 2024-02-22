@@ -31,7 +31,7 @@ class UserRepository extends BaseRepository
     {
         return $this->model
             ->withTrashed()
-            ->withCount(['articles' => static fn ($q) => $q->withUserTrashed()->withTrashed()])
+            ->withCount(['articles' => fn ($q) => $q->withUserTrashed()->withTrashed()])
             ->get();
     }
 

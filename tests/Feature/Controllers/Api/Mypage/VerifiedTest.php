@@ -40,40 +40,41 @@ class VerifiedTest extends ArticleTestCase
 
     public static function dataVerify(): \Generator
     {
-        yield 'マイページトップ' => ['getJson', static fn (): string => '/api/mypage/user', false];
-        yield 'タグ検索（投稿ページ）' => ['getJson', static fn (): string => '/api/mypage/tags', false];
-        yield '添付ファイル一覧' => ['getJson', static fn (): string => '/api/mypage/attachments', false];
-        yield '投稿記事一覧' => ['getJson', static fn (): string => '/api/mypage/articles', false];
-        yield '投稿ページオプション' => ['getJson', static fn (): string => '/api/mypage/options', false];
+        yield 'マイページトップ' => ['getJson', fn (): string => '/api/mypage/user', false];
+        yield 'タグ検索（投稿ページ）' => ['getJson', fn (): string => '/api/mypage/tags', false];
+        yield '添付ファイル一覧' => ['getJson', fn (): string => '/api/mypage/attachments', false];
+        yield '投稿記事一覧' => ['getJson', fn (): string => '/api/mypage/articles', false];
+        yield '投稿ページオプション' => ['getJson', fn (): string => '/api/mypage/options', false];
 
-        yield 'プロフィール更新' => ['postJson', static fn (): string => '/api/mypage/user', true];
-        yield 'タグ作成' => ['postJson', static fn (): string => '/api/mypage/tags', true];
-        yield '添付ファイル作成' => ['postJson', static fn (): string => '/api/mypage/attachments', true];
+        yield 'プロフィール更新' => ['postJson', fn (): string => '/api/mypage/user', true];
+        yield 'タグ作成' => ['postJson', fn (): string => '/api/mypage/tags', true];
+        yield '添付ファイル作成' => ['postJson', fn (): string => '/api/mypage/attachments', true];
         yield '添付ファイル削除' => ['deleteJson', fn (): string => '/api/mypage/attachments/'.$this->attachment->id, true];
-        yield '記事投稿' => ['postJson', static fn (): string => '/api/mypage/articles', true];
+        yield '記事投稿' => ['postJson', fn (): string => '/api/mypage/articles', true];
         yield '記事更新' => ['postJson', fn (): string => '/api/mypage/articles/'.$this->article->id, true];
     }
 
     /**
      * @dataProvider dataVerified
      */
-    public function testメール確認が完了(string $method, Closure $route, int $expected_status): void
+    public function testメール確認が完了(string $method, Closure $route, int $expectedStatus): void
     {
         $this->actingAs($this->user);
+        // dump($this->user->id, $this->article->user_id);
 
         $url = Closure::bind($route, $this)();
 
         $response = $this->{$method}($url);
-        $response->assertStatus($expected_status);
+        $response->assertStatus($expectedStatus);
     }
 
     public static function dataVerified(): \Generator
     {
-        yield 'プロフィール更新' => ['postJson', static fn (): string => '/api/mypage/user', 422];
-        yield 'タグ作成' => ['postJson', static fn (): string => '/api/mypage/tags', 422];
-        yield '添付ファイル作成' => ['postJson', static fn (): string => '/api/mypage/attachments', 422];
+        yield 'プロフィール更新' => ['postJson', fn (): string => '/api/mypage/user', 422];
+        yield 'タグ作成' => ['postJson', fn (): string => '/api/mypage/tags', 422];
+        yield '添付ファイル作成' => ['postJson', fn (): string => '/api/mypage/attachments', 422];
         yield '添付ファイル削除' => ['deleteJson', fn (): string => '/api/mypage/attachments/'.$this->attachment->id, 200];
-        yield '記事投稿' => ['postJson', static fn (): string => '/api/mypage/articles', 422];
+        yield '記事投稿' => ['postJson', fn (): string => '/api/mypage/articles', 422];
         yield '記事更新' => ['postJson', fn (): string => '/api/mypage/articles/'.$this->article->id, 422];
     }
 }

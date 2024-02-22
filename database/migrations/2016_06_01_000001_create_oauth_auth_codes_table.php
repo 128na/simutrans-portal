@@ -30,7 +30,7 @@ class CreateOauthAuthCodesTable extends Migration
      */
     public function up(): void
     {
-        $this->schema->create('oauth_auth_codes', static function (Blueprint $blueprint): void {
+        $this->schema->create('oauth_auth_codes', function (Blueprint $blueprint): void {
             $blueprint->string('id', 100)->primary();
             $blueprint->unsignedBigInteger('user_id')->index();
             $blueprint->uuid('client_id');

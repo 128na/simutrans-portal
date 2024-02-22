@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class IndexTest extends TestCase
 {
-    protected User $user;
+    private User $admin;
 
     private Article $article1;
 
@@ -23,7 +23,7 @@ class IndexTest extends TestCase
     protected function setUp(): void
     {
         parent::setup();
-        $this->user = User::factory()->admin()->create();
+        $this->admin = User::factory()->admin()->create();
         $this->article1 = Article::factory()->create();
         $this->article2 = Article::factory()->draft()->create();
         $this->article3 = Article::factory()->deleted()->create();
@@ -32,7 +32,7 @@ class IndexTest extends TestCase
 
     public function test(): void
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->admin);
         $url = '/api/admin/articles';
         $res = $this->getJson($url);
         $res->assertOk();

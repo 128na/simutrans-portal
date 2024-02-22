@@ -50,7 +50,7 @@ class Tag extends Model
     */
     public function scopePopular(Builder $builder): void
     {
-        $builder->withCount(['articles' => static fn ($q) => $q->active()])
+        $builder->withCount(['articles' => fn ($q) => $q->active()])
             ->orderBy('articles_count', 'desc');
     }
 }

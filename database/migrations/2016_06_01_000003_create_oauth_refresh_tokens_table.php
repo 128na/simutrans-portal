@@ -30,7 +30,7 @@ class CreateOauthRefreshTokensTable extends Migration
      */
     public function up(): void
     {
-        $this->schema->create('oauth_refresh_tokens', static function (Blueprint $blueprint): void {
+        $this->schema->create('oauth_refresh_tokens', function (Blueprint $blueprint): void {
             $blueprint->string('id', 100)->primary();
             $blueprint->string('access_token_id', 100)->index();
             $blueprint->boolean('revoked');

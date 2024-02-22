@@ -13,7 +13,7 @@ class CreateBookmarksTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('bookmarks', static function (Blueprint $blueprint): void {
+        Schema::create('bookmarks', function (Blueprint $blueprint): void {
             $blueprint->id();
             $blueprint->uuid('uuid')->unique();
             $blueprint->foreignId('user_id')->constrained()->onDelete('cascade');

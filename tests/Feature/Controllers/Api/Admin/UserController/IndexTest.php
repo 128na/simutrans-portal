@@ -9,17 +9,17 @@ use Tests\TestCase;
 
 class IndexTest extends TestCase
 {
-    protected User $user;
+    private User $admin;
 
     protected function setUp(): void
     {
         parent::setup();
-        $this->user = User::factory()->admin()->create();
+        $this->admin = User::factory()->admin()->create();
     }
 
     public function test(): void
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->admin);
         $url = '/api/admin/users';
         $res = $this->getJson($url);
         $res->assertOk();

@@ -9,17 +9,17 @@ use Tests\TestCase;
 
 class DestroyTest extends TestCase
 {
-    protected User $user;
+    private User $admin;
 
     protected function setUp(): void
     {
         parent::setup();
-        $this->user = User::factory()->admin()->create();
+        $this->admin = User::factory()->admin()->create();
     }
 
     public function test(): void
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->admin);
 
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
@@ -41,7 +41,7 @@ class DestroyTest extends TestCase
     public function test論理削除済みは復活する(): void
     {
         $this->user->delete();
-        $this->actingAs($this->user);
+        $this->actingAs($this->admin);
 
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,

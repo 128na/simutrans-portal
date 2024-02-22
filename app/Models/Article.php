@@ -191,7 +191,7 @@ class Article extends Model implements Feedable
     {
         $builder->where('post_type', 'addon-introduction')
             ->where(
-                static fn ($query) => $query->whereNull('contents->exclude_link_check')
+                fn ($query) => $query->whereNull('contents->exclude_link_check')
                     ->orWhere('contents->exclude_link_check', false)
             );
     }
@@ -203,19 +203,19 @@ class Article extends Model implements Feedable
 
     public function scopePak(Builder $builder, string $slug): void
     {
-        $builder->whereHas('categories', static fn ($query) => $query->pak()->slug($slug));
+        $builder->whereHas('categories', fn ($query) => $query->pak()->slug($slug));
     }
 
     public function scopeAnnounce(Builder $builder): void
     {
         $builder->whereIn('post_type', ['page', 'markdown'])
-            ->whereHas('categories', static fn ($query) => $query->page()->slug('announce'));
+            ->whereHas('categories', fn ($query) => $query->page()->slug('announce'));
     }
 
     public function scopeWithoutAnnounce(Builder $builder): void
     {
         $builder->whereIn('post_type', ['page', 'markdown'])
-            ->whereDoesntHave('categories', static fn ($query) => $query->page()->slug('announce'));
+            ->whereDoesntHave('categories', fn ($query) => $query->page()->slug('announce'));
     }
 
     public function scopeRankingOrder(Builder $builder): void
@@ -295,7 +295,7 @@ class Article extends Model implements Feedable
     {
         $id = $this->contents->thumbnail;
 
-        return $this->attachments->first(static fn ($attachment): bool => (string) $id == $attachment->id);
+        return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
     }
 
     public function getThumbnailUrlAttribute(): string
@@ -317,7 +317,7 @@ class Article extends Model implements Feedable
         if ($this->contents instanceof AddonPostContent) {
             $id = $this->contents->file;
 
-            return $this->attachments->first(static fn ($attachment): bool => (string) $id == $attachment->id);
+            return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
         }
 
         throw new Exception('invalid post type');
@@ -333,7 +333,7 @@ class Article extends Model implements Feedable
      */
     public function getCategoryPaksAttribute(): Collection
     {
-        return $this->categories->filter(static fn ($category): bool => $category->type === config('category.type.pak'));
+        return $this->categories->filter(fn ($category): bool => $category->type === config('category.type.pak'));
     }
 
     /**
@@ -341,7 +341,7 @@ class Article extends Model implements Feedable
      */
     public function getCategoryAddonsAttribute()
     {
-        return $this->categories->filter(static fn ($category): bool => $category->type === config('category.type.addon'));
+        return $this->categories->filter(fn ($category): bool => $category->type === config('category.type.addon'));
     }
 
     /**
@@ -349,7 +349,7 @@ class Article extends Model implements Feedable
      */
     public function getCategoryPak128PositionsAttribute()
     {
-        return $this->categories->filter(static fn ($category): bool => $category->type === config('category.type.pak128_position'));
+        return $this->categories->filter(fn ($category): bool => $category->type === config('category.type.pak128_position'));
     }
 
     public function getTodaysConversionRateAttribute(): string
@@ -385,18 +385,18 @@ class Article extends Model implements Feedable
      */
     public function isAnnounce(): bool
     {
-        return $this->categories->some(static fn ($category): bool => $category->type === 'page' && $category->slug === 'announce');
+        return $this->categories->some(fn ($category): bool => $category->type === 'page' && $category->slug === 'announce');
     }
 
     public function hasCategory(string|int $id): bool
     {
-        return $this->categories->some(static fn ($category): bool => $category->id === (int) $id);
+        return $this->categories->some(fn ($category): bool => $category->id === (int) $id);
     }
 
     public function getImage(string|int $id): ?Attachment
     {
         return $this->attachments->first(
-            static fn ($attachment): bool => (int) $id == $attachment->id
+            fn ($attachment): bool => (int) $id == $attachment->id
         );
     }
 

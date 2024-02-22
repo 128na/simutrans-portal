@@ -20,7 +20,7 @@ class ArticleAnalytics extends ResourceCollection
          * view_counts
          */
         return $this->collection->map(
-            static fn ($item): array => [
+            fn ($item): array => [
                 $item->id,
                 $item->viewCounts->pluck('count', 'period'),
                 $item->conversionCounts->pluck('count', 'period'),

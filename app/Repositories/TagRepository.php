@@ -27,7 +27,7 @@ class TagRepository extends BaseRepository
     public function getAllTags(): Collection
     {
         return $this->model->select('id', 'name')
-            ->whereHas('articles', static fn ($query) => $query->active())
+            ->whereHas('articles', fn ($query) => $query->active())
             ->popular()
             ->get();
     }

@@ -28,7 +28,7 @@ return RectorConfig::configure()
     )
     ->withSkip([
         PostIncDecToPreIncDecRector::class, // pintと干渉する
-        // StaticArrowFunctionRector::class, //  Cannot bind an instance to a static closure()
+        StaticArrowFunctionRector::class, //  Cannot bind an instance to a static closure()
         StaticClosureRector::class, //  Cannot bind an instance to a static closure()
         IssetOnPropertyObjectToPropertyExistsRector::class, // property_exists($model, 'hoge') return false
     ]);

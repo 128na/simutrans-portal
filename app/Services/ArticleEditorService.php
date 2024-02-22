@@ -93,7 +93,7 @@ class ArticleEditorService extends Service
         $status = config('status');
 
         return collect($status)->map(
-            static fn ($item): array => [
+            fn ($item): array => [
                 'label' => __('statuses.'.$item),
                 'value' => $item,
             ]
@@ -109,7 +109,7 @@ class ArticleEditorService extends Service
         $postTypes = config('post_types');
 
         return collect($postTypes)->map(
-            static fn ($item): array => [
+            fn ($item): array => [
                 'label' => __('post_types.'.$item),
                 'value' => $item,
             ]

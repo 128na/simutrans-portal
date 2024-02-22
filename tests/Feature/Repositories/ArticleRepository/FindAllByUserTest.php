@@ -11,37 +11,37 @@ use Tests\ArticleTestCase;
 
 class FindAllByUserTest extends ArticleTestCase
 {
-    private ArticleRepository $articleRepository;
+    private ArticleRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->articleRepository = app(ArticleRepository::class);
+        $this->repository = app(ArticleRepository::class);
     }
 
-    public function test(): void
+    public function test()
     {
         $this->createAddonIntroduction(User::factory()->create());
 
-        $res = $this->articleRepository->findAllByUser($this->user);
+        $res = $this->repository->findAllByUser($this->user);
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(1, $res->count(), 'ユーザーに紐づく記事のみ取得できること');
     }
 
-    public function test公開以外のステータス(): void
+    public function test公開以外のステータス()
     {
         $this->article->update(['status' => 'draft']);
-        $res = $this->articleRepository->findAllByUser($this->user);
+        $res = $this->repository->findAllByUser($this->user);
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(1, $res->count(), '非公開記事も取得できること');
     }
 
-    public function test論理削除(): void
+    public function test論理削除()
     {
         $this->article->delete();
-        $res = $this->articleRepository->findAllByUser($this->user);
+        $res = $this->repository->findAllByUser($this->user);
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');

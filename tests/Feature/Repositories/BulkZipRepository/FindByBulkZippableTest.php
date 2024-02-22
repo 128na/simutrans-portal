@@ -21,7 +21,7 @@ class FindByBulkZippableTest extends TestCase
         $this->bulkZipRepository = app(BulkZipRepository::class);
     }
 
-    public function test(): void
+    public function test()
     {
         /** @var \App\Contracts\Models\BulkZippableInterface */
         $user = User::factory()->create();
@@ -30,7 +30,7 @@ class FindByBulkZippableTest extends TestCase
         $this->assertEquals($bulkZip->id, $res->id);
     }
 
-    public function test無いときはnull(): void
+    public function test無いときはnull()
     {
         /** @var \App\Contracts\Models\BulkZippableInterface */
         $user = User::factory()->create();
@@ -38,7 +38,7 @@ class FindByBulkZippableTest extends TestCase
         $this->assertNull($res);
     }
 
-    public function test未対応モデルはNG(): void
+    public function test未対応モデルはNG()
     {
         $this->expectException(TypeError::class);
         /** @var \App\Contracts\Models\BulkZippableInterface */

@@ -11,37 +11,37 @@ use Tests\TestCase;
 
 class JobCreateBulkZipTest extends TestCase
 {
-    private BulkZip $bulkZip;
+    private BulkZip $bulkzip;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->bulkZip = BulkZip::factory()->create();
+        $this->bulkzip = BulkZip::factory()->create();
     }
 
     protected function tearDown(): void
     {
-        $this->bulkZip->delete();
+        $this->bulkzip->delete();
         parent::tearDown();
     }
 
-    public function test(): void
+    public function test()
     {
         $this->assertDatabaseHas('bulk_zips', [
-            'id' => $this->bulkZip->id,
+            'id' => $this->bulkzip->id,
             'path' => null,
             'generated' => false,
         ]);
 
-        JobCreateBulkZip::dispatchSync($this->bulkZip);
+        JobCreateBulkZip::dispatchSync($this->bulkzip);
 
-        $this->bulkZip->refresh();
+        $this->bulkzip->refresh();
         $this->assertDatabaseHas('bulk_zips', [
-            'id' => $this->bulkZip->id,
+            'id' => $this->bulkzip->id,
             'generated' => true,
         ]);
 
-        $path = Storage::disk('public')->path($this->bulkZip->path);
+        $path = Storage::disk('public')->path($this->bulkzip->path);
         $this->assertFileExists($path, 'zipファイルが存在すること');
     }
 }

@@ -10,18 +10,18 @@ use Tests\ArticleTestCase;
 
 class LoadArticleTest extends ArticleTestCase
 {
-    private ArticleRepository $articleRepository;
+    private ArticleRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->articleRepository = app(ArticleRepository::class);
+        $this->repository = app(ArticleRepository::class);
     }
 
-    public function test(): void
+    public function test()
     {
-        $article = $this->articleRepository->loadArticle($this->article);
+        $res = $this->repository->loadArticle($this->article);
 
-        $this->assertInstanceOf(Article::class, $article);
+        $this->assertInstanceOf(Article::class, $res);
     }
 }

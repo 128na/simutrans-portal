@@ -16,63 +16,64 @@ use Tests\UnitTestCase;
 
 class AddonPostDecoratorTest extends UnitTestCase
 {
-    private AddonPostDecorator $addonPostDecorator;
+    private AddonPostDecorator $decorator;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->addonPostDecorator = new AddonPostDecorator();
+        $this->decorator = new AddonPostDecorator();
     }
 
-    public function test_canProcess_対象(): void
+    public function test_canProcess_対象()
     {
-        $article = new Article(['post_type' => 'addon-post']);
-        $result = $this->addonPostDecorator->canProcess($article);
+        $model = new Article(['post_type' => 'addon-post']);
+        $result = $this->decorator->canProcess($model);
         $this->assertTrue($result);
     }
 
-    public function test_canProcess_対象外_Article(): void
+    public function test_canProcess_対象外_Article()
     {
-        $article = new Article(['post_type' => 'addon-introduction']);
-        $result = $this->addonPostDecorator->canProcess($article);
+        $model = new Article(['post_type' => 'addon-introduction']);
+        $result = $this->decorator->canProcess($model);
         $this->assertFalse($result);
     }
 
-    public function test_canProcess_対象外_Model(): void
+    public function test_canProcess_対象外_Model()
     {
         $model = User::factory()->make();
-        $result = $this->addonPostDecorator->canProcess($model);
+        $result = $this->decorator->canProcess($model);
         $this->assertFalse($result);
     }
 
-    public function test_process(): void
+    public function test_process()
     {
         /**
          * @var Article
          */
-        $mock = $this->mock(Article::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('getAttribute')->withArgs(['has_thumbnail'])->andReturn(false);
-            $mock->shouldReceive('getAttribute')->withArgs(['id'])->andReturn(1);
-            $mock->shouldReceive('getAttribute')->withArgs(['title'])->andReturn('test title');
-            $mock->shouldReceive('getAttribute')->withArgs(['slug'])->andReturn('test_slug');
-            $mock->shouldReceive('getAttribute')->withArgs(['user_id'])->andReturn(1);
-            $mock->shouldReceive('offsetExists')->withArgs(['user'])->andReturn(true);
-            $mock->shouldReceive('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $mock): void {
-                $mock->shouldReceive('offsetExists')->withArgs(['nickname'])->andReturn(false);
-                $mock->shouldReceive('offsetExists')->withArgs(['name'])->andReturn(true);
-                $mock->shouldReceive('getAttribute')->withArgs(['name'])->andReturn('test user name');
-                $mock->shouldReceive('getRouteKey')->andReturn(1);
+        $model = $this->mock(Article::class, function (MockInterface $m) {
+            $m->shouldReceive('getAttribute')->withArgs(['has_thumbnail'])->andReturn(false);
+            $m->shouldReceive('getAttribute')->withArgs(['id'])->andReturn(1);
+            $m->shouldReceive('getAttribute')->withArgs(['title'])->andReturn('test title');
+            $m->shouldReceive('getAttribute')->withArgs(['slug'])->andReturn('test_slug');
+            $m->shouldReceive('getAttribute')->withArgs(['user_id'])->andReturn(1);
+            $m->shouldReceive('offsetExists')->withArgs(['user'])->andReturn(true);
+            $m->shouldReceive('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $m) {
+                $m->shouldReceive('offsetExists')->withArgs(['nickname'])->andReturn(false);
+                $m->shouldReceive('offsetExists')->withArgs(['name'])->andReturn(true);
+                $m->shouldReceive('getAttribute')->withArgs(['name'])->andReturn('test user name');
+                $m->shouldReceive('getRouteKey')->andReturn(1);
             }));
-            $mock->shouldReceive('getAttribute')->withArgs(['categories'])
+            $m->shouldReceive('getAttribute')->withArgs(['categories'])
                 ->andReturn(collect([new Category(['type' => 'test', 'slug' => 'example'])]));
-            $mock->shouldReceive('offsetExists')->withArgs(['file'])->andReturn(true);
-            $mock->shouldReceive('getAttribute')->withArgs(['file'])
+            $m->shouldReceive('offsetExists')->withArgs(['file'])->andReturn(true);
+            $m->shouldReceive('getAttribute')->withArgs(['file'])
                 ->andReturn(new Attachment(['original_name' => 'test.zip', 'path' => '/test/123']));
-            $mock->shouldReceive('tags')->andReturn($this->mock(BelongsToMany::class, function (MockInterface $mock): void {
-                $mock->shouldReceive('pluck')
+            $m->shouldReceive('tags')->andReturn($this->mock(BelongsToMany::class, function (MockInterface $m) {
+                $m->shouldReceive('pluck')
                     ->andReturn(collect(['test tag']));
             }));
-            $mock->shouldReceive('getAttribute')->withArgs(['contents'])->andReturn(new AddonIntroductionContent([
+            $m->shouldReceive('getAttribute')->withArgs(['contents'])->andReturn(new AddonIntroductionContent([
+                'author' => 'test author',
                 'description' => 'test description',
                 'author' => 'test author',
                 'license' => 'test license',
@@ -80,7 +81,7 @@ class AddonPostDecoratorTest extends UnitTestCase
             ]));
         });
         $input = ['contents' => [], 'files' => []];
-        $result = $this->addonPostDecorator->process($input, $mock);
+        $result = $this->decorator->process($input, $model);
 
         $contents = $result['contents'];
 

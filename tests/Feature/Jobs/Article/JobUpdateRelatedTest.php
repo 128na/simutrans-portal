@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 class JobUpdateRelatedTest extends TestCase
 {
-    public function testPakAddonCount(): void
+    public function testPakAddonCount()
     {
         PakAddonCount::create([
             'pak_slug' => 'foo', 'addon_slug' => 'bar', 'count' => 334,
@@ -28,7 +28,7 @@ class JobUpdateRelatedTest extends TestCase
         ]);
     }
 
-    public function testUserAddonCount(): void
+    public function testUserAddonCount()
     {
         UserAddonCount::create([
             'user_id' => $this->user->id, 'user_name' => 'hoge', 'count' => 72,

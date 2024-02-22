@@ -21,7 +21,7 @@ class NgWordRuleTest extends TestCase
         parent::setUp();
         $this->failCalled = false;
 
-        $mock = $this->mock(PotentiallyTranslatedString::class, fn (MockInterface $mock) => $mock->allows('translate'));
+        $mock = $this->mock(PotentiallyTranslatedString::class, fn (MockInterface $m) => $m->allows('translate'));
         $this->failClosure = function () use ($mock) {
             $this->failCalled = true;
 
@@ -43,7 +43,7 @@ class NgWordRuleTest extends TestCase
         $this->assertEquals($expected, $this->failCalled);
     }
 
-    public static function data(): \Generator
+    public static function data()
     {
         yield 'ok' => [['@'], 'test', false];
         yield '1個マッチ' => [['@'], 'test@example', true];

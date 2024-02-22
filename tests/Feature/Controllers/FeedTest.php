@@ -21,13 +21,13 @@ class FeedTest extends ArticleTestCase
     /**
      * @dataProvider dataFeed
      */
-    public function testFeed(string $url): void
+    public function testFeed(string $url)
     {
-        $testResponse = $this->get($url);
-        $testResponse->assertOk();
+        $response = $this->get($url);
+        $response->assertOk();
     }
 
-    public static function dataFeed(): \Generator
+    public static function dataFeed()
     {
         yield 'アドオン一覧' => ['/feed'];
         yield 'pak128' => ['/feed/pak128'];

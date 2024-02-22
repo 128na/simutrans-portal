@@ -30,7 +30,7 @@ class IndexTest extends TestCase
         $this->article4 = Article::factory()->create(['user_id' => User::factory()->deleted()->create()->id]);
     }
 
-    public function test(): void
+    public function test()
     {
         $this->actingAs($this->admin);
         $url = '/api/admin/articles';
@@ -42,14 +42,14 @@ class IndexTest extends TestCase
         $res->assertJsonFragment(['title' => $this->article4->title]);
     }
 
-    public function test未ログイン(): void
+    public function test未ログイン()
     {
         $url = '/api/admin/articles';
         $res = $this->getJson($url);
         $res->assertUnauthorized();
     }
 
-    public function test管理者以外(): void
+    public function test管理者以外()
     {
         $this->actingAs($this->user);
         $url = '/api/admin/articles';

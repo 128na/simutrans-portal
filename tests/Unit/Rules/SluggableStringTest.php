@@ -21,7 +21,7 @@ class SluggableStringTest extends TestCase
         parent::setUp();
         $this->failCalled = false;
 
-        $mock = $this->mock(PotentiallyTranslatedString::class, fn (MockInterface $mock) => $mock->allows('translate'));
+        $mock = $this->mock(PotentiallyTranslatedString::class, fn (MockInterface $m) => $m->allows('translate'));
         $this->failClosure = function () use ($mock) {
             $this->failCalled = true;
 
@@ -43,7 +43,7 @@ class SluggableStringTest extends TestCase
         $this->assertEquals($expected, $this->failCalled);
     }
 
-    public static function data(): \Generator
+    public static function data()
     {
         yield '数字と英字' => ['test123', false];
         yield 'アンダースコア' => ['test_123', false];

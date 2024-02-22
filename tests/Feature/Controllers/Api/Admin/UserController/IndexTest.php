@@ -17,24 +17,24 @@ class IndexTest extends TestCase
         $this->admin = User::factory()->admin()->create();
     }
 
-    public function test(): void
+    public function test()
     {
         $this->actingAs($this->admin);
         $url = '/api/admin/users';
         $res = $this->getJson($url);
         $res->assertOk();
-        $res->assertJsonFragment(['name' => $this->user->name]);
+        $res->assertJsonFragment(['name' => $this->admin->name]);
         $res->assertJsonFragment(['name' => $this->user->name]);
     }
 
-    public function test未ログイン(): void
+    public function test未ログイン()
     {
         $url = '/api/admin/users';
         $res = $this->getJson($url);
         $res->assertUnauthorized();
     }
 
-    public function test管理者以外(): void
+    public function test管理者以外()
     {
         $this->actingAs($this->user);
         $url = '/api/admin/users';

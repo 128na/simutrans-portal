@@ -14,21 +14,21 @@ class TextServiceTest extends UnitTestCase
         return app(TextService::class);
     }
 
-    public function testRemoveBom(): void
+    public function testRemoveBom()
     {
         $text = pack('H*', 'EFBBBF').'dummy';
         $result = $this->getSUT()->removeBom($text);
         $this->assertEquals('dummy', $result);
     }
 
-    public function testEncoding(): void
+    public function testEncoding()
     {
         $text = 'dummy';
         $result = $this->getSUT()->encoding($text);
         $this->assertEquals('dummy', $result);
     }
 
-    public function testEncodingSjis(): void
+    public function testEncodingSjis()
     {
         $text = mb_convert_encoding('dummy', 'SJIS');
         $result = $this->getSUT()->encoding($text);

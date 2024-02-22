@@ -11,32 +11,32 @@ use Tests\TestCase;
 
 class FindOrFailWithTrashedTest extends TestCase
 {
-    private UserRepository $userRepository;
+    private UserRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->userRepository = app(UserRepository::class);
+        $this->repository = app(UserRepository::class);
     }
 
-    public function test(): void
+    public function test()
     {
-        $user = $this->userRepository->findOrFailWithTrashed($this->user->id);
+        $res = $this->repository->findOrFailWithTrashed($this->user->id);
 
-        $this->assertInstanceOf(User::class, $user, 'ユーザーが取得できること');
+        $this->assertInstanceOf(User::class, $res, 'ユーザーが取得できること');
     }
 
-    public function test論理削除(): void
+    public function test論理削除()
     {
         $this->user->delete();
-        $user = $this->userRepository->findOrFailWithTrashed($this->user->id);
+        $res = $this->repository->findOrFailWithTrashed($this->user->id);
 
-        $this->assertInstanceOf(User::class, $user, '削除済みユーザーも取得できること');
+        $this->assertInstanceOf(User::class, $res, '削除済みユーザーも取得できること');
     }
 
-    public function test存在しない(): void
+    public function test存在しない()
     {
         $this->expectException(ModelNotFoundException::class);
-        $this->userRepository->findOrFailWithTrashed(0);
+        $this->repository->findOrFailWithTrashed(0);
     }
 }

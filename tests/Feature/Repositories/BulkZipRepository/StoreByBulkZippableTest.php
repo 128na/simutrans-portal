@@ -19,7 +19,7 @@ class StoreByBulkZippableTest extends TestCase
         $this->bulkZipRepository = app(BulkZipRepository::class);
     }
 
-    public function test(): void
+    public function test()
     {
         /** @var \App\Contracts\Models\BulkZippableInterface */
         $user = User::factory()->create();
@@ -28,8 +28,8 @@ class StoreByBulkZippableTest extends TestCase
             'bulk_zippable_type' => User::class,
         ]);
 
-        $bulkZip = $this->bulkZipRepository->storeByBulkZippable($user);
-        $this->assertInstanceOf(BulkZip::class, $bulkZip);
+        $res = $this->bulkZipRepository->storeByBulkZippable($user);
+        $this->assertInstanceOf(BulkZip::class, $res);
 
         $this->assertDatabaseHas('bulk_zips', [
             'bulk_zippable_id' => $user->id,

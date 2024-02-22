@@ -19,10 +19,10 @@ class UpdateArticleTest extends UnitTestCase
         return app(ArticleEditorService::class, ['now' => $now]);
     }
 
-    public function test更新(): void
+    public function test更新()
     {
         $article = new Article();
-        $updateRequest = new UpdateRequest([
+        $request = new UpdateRequest([
             'article' => [
                 'post_type' => 'addon-introduction',
                 'title' => 'dummy title',
@@ -32,30 +32,30 @@ class UpdateArticleTest extends UnitTestCase
             ],
             'without_update_modified_at' => null,
         ]);
-        $carbonImmutable = new CarbonImmutable();
+        $now = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($article, $carbonImmutable): void {
-            $mock->shouldReceive('update')->withArgs([
+        $this->mock(ArticleRepository::class, function (MockInterface $m) use ($article, $now) {
+            $m->shouldReceive('update')->withArgs([
                 $article,
                 [
                     'title' => 'dummy title',
                     'slug' => 'dummy-slug',
                     'status' => 'publish',
                     'contents' => 'dummy',
-                    'modified_at' => $carbonImmutable->toDateTimeString(),
+                    'modified_at' => $now->toDateTimeString(),
                 ],
             ])->once()->andReturn(new Article());
-            $mock->shouldReceive('syncAttachments')->once();
-            $mock->shouldReceive('syncCategories')->once();
-            $mock->shouldReceive('syncTags')->once();
+            $m->shouldReceive('syncAttachments')->once();
+            $m->shouldReceive('syncCategories')->once();
+            $m->shouldReceive('syncTags')->once();
         });
-        $this->getSUT($carbonImmutable)->updateArticle($article, $updateRequest);
+        $this->getSUT($now)->updateArticle($article, $request);
     }
 
-    public function test更新日を更新しない更新(): void
+    public function test更新日を更新しない更新()
     {
         $article = new Article();
-        $updateRequest = new UpdateRequest([
+        $request = new UpdateRequest([
             'article' => [
                 'post_type' => 'addon-introduction',
                 'title' => 'dummy title',
@@ -65,10 +65,10 @@ class UpdateArticleTest extends UnitTestCase
             ],
             'without_update_modified_at' => '1',
         ]);
-        $carbonImmutable = new CarbonImmutable();
+        $now = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($article): void {
-            $mock->shouldReceive('update')->withArgs([
+        $this->mock(ArticleRepository::class, function (MockInterface $m) use ($article) {
+            $m->shouldReceive('update')->withArgs([
                 $article,
                 [
                     'title' => 'dummy title',
@@ -77,10 +77,10 @@ class UpdateArticleTest extends UnitTestCase
                     'contents' => 'dummy',
                 ],
             ])->once()->andReturn(new Article());
-            $mock->shouldReceive('syncAttachments')->once();
-            $mock->shouldReceive('syncCategories')->once();
-            $mock->shouldReceive('syncTags')->once();
+            $m->shouldReceive('syncAttachments')->once();
+            $m->shouldReceive('syncCategories')->once();
+            $m->shouldReceive('syncTags')->once();
         });
-        $this->getSUT($carbonImmutable)->updateArticle($article, $updateRequest);
+        $this->getSUT($now)->updateArticle($article, $request);
     }
 }

@@ -10,46 +10,44 @@ use Tests\ArticleTestCase;
 
 class PaginateAnnoucesTest extends ArticleTestCase
 {
-    private ArticleRepository $articleRepository;
+    private ArticleRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->articleRepository = app(ArticleRepository::class);
+        $this->repository = app(ArticleRepository::class);
     }
 
-    public function test(): void
+    public function test()
     {
         $this->createAddonPost();
         $this->createPage();
         $this->createMarkdown();
         $this->createMarkdownAnnounce();
 
-        $paginator = $this->articleRepository->paginateAnnouces();
+        $res = $this->repository->paginateAnnouces();
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertEquals(1, $paginator->count(), 'お知らせ記事のみ取得できること');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
+        $this->assertEquals(1, $res->count(), 'お知らせ記事のみ取得できること');
     }
 
-    public function test公開以外のステータス(): void
+    public function test公開以外のステータス()
     {
         $article = $this->createMarkdownAnnounce();
         $article->update(['status' => 'draft']);
+        $res = $this->repository->paginateAnnouces();
 
-        $paginator = $this->articleRepository->paginateAnnouces();
-
-        $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertEquals(0, $paginator->count(), '非公開記事は取得できないこと');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
+        $this->assertEquals(0, $res->count(), '非公開記事は取得できないこと');
     }
 
-    public function test論理削除(): void
+    public function test論理削除()
     {
         $article = $this->createMarkdownAnnounce();
         $article->delete();
+        $res = $this->repository->paginateAnnouces();
 
-        $paginator = $this->articleRepository->paginateAnnouces();
-
-        $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertEquals(0, $paginator->count(), '削除済み記事は取得できないこと');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
+        $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');
     }
 }

@@ -16,25 +16,25 @@ class AdminControllerTest extends AdminTestCase
         $this->url = route('admin.index');
     }
 
-    public function testGuest(): void
+    public function testGuest()
     {
-        $testResponse = $this->get($this->url);
+        $response = $this->get($this->url);
 
-        $testResponse->assertRedirect(route('mypage.index'));
+        $response->assertRedirect(route('mypage.index'));
     }
 
-    public function testUser(): void
+    public function testUser()
     {
         $this->actingAs($this->user);
-        $testResponse = $this->get($this->url);
-        $testResponse->assertUnauthorized();
+        $response = $this->get($this->url);
+        $response->assertUnauthorized();
     }
 
-    public function testAdmin(): void
+    public function testAdmin()
     {
         $this->actingAs($this->admin);
-        $testResponse = $this->get($this->url);
+        $response = $this->get($this->url);
 
-        $testResponse->assertOk();
+        $response->assertOk();
     }
 }

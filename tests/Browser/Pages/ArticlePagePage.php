@@ -12,11 +12,11 @@ use Laravel\Dusk\Browser;
 
 class ArticlePagePage extends Page
 {
-    private readonly Article $article;
+    private Article $article;
 
-    private readonly Category $category;
+    private Category $category;
 
-    private readonly Attachment $attachment;
+    private Attachment $attachment;
 
     public function __construct()
     {
@@ -42,10 +42,10 @@ class ArticlePagePage extends Page
 
     public function url()
     {
-        return sprintf('/users/%s/%s', $this->article->user_id, urlencode((string) $this->article->slug));
+        return sprintf('/users/%s/%s', $this->article->user_id, urlencode($this->article->slug));
     }
 
-    public function assert(Browser $browser): void
+    public function assert(Browser $browser)
     {
         $browser
             ->waitForText($this->article->title)

@@ -17,7 +17,7 @@ class DestroyTest extends TestCase
         $this->admin = User::factory()->admin()->create();
     }
 
-    public function test()
+    public function test(): void
     {
         $this->actingAs($this->admin);
 
@@ -25,7 +25,7 @@ class DestroyTest extends TestCase
             'id' => $this->user->id,
             'deleted_at' => null,
         ]);
-        $url = "/api/admin/users/{$this->user->id}";
+        $url = '/api/admin/users/'.$this->user->id;
         $res = $this->deleteJson($url);
         $res->assertOk();
 
@@ -38,7 +38,7 @@ class DestroyTest extends TestCase
         ]);
     }
 
-    public function test論理削除済みは復活する()
+    public function test論理削除済みは復活する(): void
     {
         $this->user->delete();
         $this->actingAs($this->admin);
@@ -46,7 +46,7 @@ class DestroyTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
         ]);
-        $url = "/api/admin/users/{$this->user->id}";
+        $url = '/api/admin/users/'.$this->user->id;
         $res = $this->deleteJson($url);
         $res->assertOk();
 
@@ -56,17 +56,17 @@ class DestroyTest extends TestCase
         ]);
     }
 
-    public function test未ログイン()
+    public function test未ログイン(): void
     {
-        $url = "/api/admin/users/{$this->user->id}";
+        $url = '/api/admin/users/'.$this->user->id;
         $res = $this->deleteJson($url);
         $res->assertUnauthorized();
     }
 
-    public function test管理者以外()
+    public function test管理者以外(): void
     {
         $this->actingAs($this->user);
-        $url = "/api/admin/users/{$this->user->id}";
+        $url = '/api/admin/users/'.$this->user->id;
         $res = $this->deleteJson($url);
         $res->assertUnauthorized();
     }

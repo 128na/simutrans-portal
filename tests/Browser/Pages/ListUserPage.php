@@ -10,9 +10,9 @@ use Laravel\Dusk\Browser;
 
 class ListUserPage extends Page
 {
-    private Article $article;
+    private readonly Article $article;
 
-    private User $user;
+    private readonly User $user;
 
     public function __construct()
     {
@@ -24,10 +24,10 @@ class ListUserPage extends Page
 
     public function url()
     {
-        return "/users/{$this->user->id}";
+        return '/users/'.$this->user->id;
     }
 
-    public function assert(Browser $browser)
+    public function assert(Browser $browser): void
     {
         $browser
             ->waitForText($this->user->name)

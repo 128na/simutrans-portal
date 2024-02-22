@@ -27,12 +27,12 @@ class PaginateByPakAddonCategoryTest extends ArticleTestCase
         $this->article->categories()->sync([$this->pak->id, $this->addon->id]);
     }
 
-    public function test()
+    public function test(): void
     {
-        tap($this->createAddonIntroduction(), function ($a) {
+        tap($this->createAddonIntroduction(), function ($a): void {
             $a->categories()->sync([$this->pak->id]);
         });
-        tap($this->createAddonIntroduction(), function ($a) {
+        tap($this->createAddonIntroduction(), function ($a): void {
             $a->categories()->sync([$this->addon->id]);
         });
 
@@ -42,7 +42,7 @@ class PaginateByPakAddonCategoryTest extends ArticleTestCase
         $this->assertEquals(1, $res->count(), 'pak,addonカテゴリ両方に紐づく記事のみ取得出来ること');
     }
 
-    public function test公開以外のステータス()
+    public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => 'draft']);
         $res = $this->repository->paginateByPakAddonCategory($this->pak, $this->addon);
@@ -51,7 +51,7 @@ class PaginateByPakAddonCategoryTest extends ArticleTestCase
         $this->assertEquals(0, $res->count(), '非公開記事は取得できないこと');
     }
 
-    public function test論理削除()
+    public function test論理削除(): void
     {
         $this->article->delete();
         $res = $this->repository->paginateByPakAddonCategory($this->pak, $this->addon);

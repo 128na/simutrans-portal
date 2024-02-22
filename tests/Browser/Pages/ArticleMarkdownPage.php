@@ -11,9 +11,9 @@ use Laravel\Dusk\Browser;
 
 class ArticleMarkdownPage extends Page
 {
-    private Article $article;
+    private readonly Article $article;
 
-    private Category $category;
+    private readonly Category $category;
 
     public function __construct()
     {
@@ -28,15 +28,15 @@ class ArticleMarkdownPage extends Page
 
     public function url()
     {
-        return sprintf('/users/%s/%s', $this->article->user_id, urlencode($this->article->slug));
+        return sprintf('/users/%s/%s', $this->article->user_id, urlencode((string) $this->article->slug));
     }
 
-    public function assert(Browser $browser)
+    public function assert(Browser $browser): void
     {
         $browser
             ->waitForText($this->article->title)
             ->assertSee($this->article->title)
             ->assertSee('Hoge')
-            ->assertSee(__("category.{$this->category->type}.{$this->category->slug}"));
+            ->assertSee(__(sprintf('category.%s.%s', $this->category->type, $this->category->slug)));
     }
 }

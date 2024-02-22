@@ -25,7 +25,7 @@ class JobCreateBulkZipTest extends TestCase
         parent::tearDown();
     }
 
-    public function test()
+    public function test(): void
     {
         $this->assertDatabaseHas('bulk_zips', [
             'id' => $this->bulkzip->id,

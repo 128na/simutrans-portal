@@ -23,53 +23,52 @@ class AddonIntroductionDecoratorTest extends UnitTestCase
         $this->decorator = new AddonIntroductionDecorator();
     }
 
-    public function test_canProcess_対象()
+    public function test_canProcess_対象(): void
     {
-        $model = new Article(['post_type' => 'addon-introduction']);
-        $result = $this->decorator->canProcess($model);
+        $article = new Article(['post_type' => 'addon-introduction']);
+        $result = $this->decorator->canProcess($article);
         $this->assertTrue($result);
     }
 
-    public function test_canProcess_対象外_Article()
+    public function test_canProcess_対象外_Article(): void
     {
-        $model = new Article(['post_type' => 'addon-post']);
-        $result = $this->decorator->canProcess($model);
+        $article = new Article(['post_type' => 'addon-post']);
+        $result = $this->decorator->canProcess($article);
         $this->assertFalse($result);
     }
 
-    public function test_canProcess_対象外_Model()
+    public function test_canProcess_対象外_Model(): void
     {
         $model = User::factory()->make();
         $result = $this->decorator->canProcess($model);
         $this->assertFalse($result);
     }
 
-    public function test_process()
+    public function test_process(): void
     {
         /**
          * @var Article
          */
-        $model = $this->mock(Article::class, function (MockInterface $m) {
-            $m->shouldReceive('getAttribute')->withArgs(['has_thumbnail'])->andReturn(false);
-            $m->shouldReceive('getAttribute')->withArgs(['id'])->andReturn(1);
-            $m->shouldReceive('getAttribute')->withArgs(['title'])->andReturn('test title');
-            $m->shouldReceive('getAttribute')->withArgs(['slug'])->andReturn('test_slug');
-            $m->shouldReceive('offsetExists')->withArgs(['user'])->andReturn(true);
-            $m->shouldReceive('getAttribute')->withArgs(['user_id'])->andReturn(1);
-            $m->shouldReceive('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $m) {
+        $mock = $this->mock(Article::class, function (MockInterface $mock): void {
+            $mock->shouldReceive('getAttribute')->withArgs(['has_thumbnail'])->andReturn(false);
+            $mock->shouldReceive('getAttribute')->withArgs(['id'])->andReturn(1);
+            $mock->shouldReceive('getAttribute')->withArgs(['title'])->andReturn('test title');
+            $mock->shouldReceive('getAttribute')->withArgs(['slug'])->andReturn('test_slug');
+            $mock->shouldReceive('offsetExists')->withArgs(['user'])->andReturn(true);
+            $mock->shouldReceive('getAttribute')->withArgs(['user_id'])->andReturn(1);
+            $mock->shouldReceive('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $m): void {
                 $m->shouldReceive('offsetExists')->withArgs(['nickname'])->andReturn(false);
                 $m->shouldReceive('offsetExists')->withArgs(['name'])->andReturn(true);
                 $m->shouldReceive('getAttribute')->withArgs(['name'])->andReturn('test user name');
                 $m->shouldReceive('getRouteKey')->andReturn(1);
             }));
-            $m->shouldReceive('getAttribute')->withArgs(['categories'])
+            $mock->shouldReceive('getAttribute')->withArgs(['categories'])
                 ->andReturn(collect([new Category(['type' => 'test', 'slug' => 'example'])]));
-            $m->shouldReceive('tags')->andReturn($this->mock(BelongsToMany::class, function (MockInterface $m) {
+            $mock->shouldReceive('tags')->andReturn($this->mock(BelongsToMany::class, function (MockInterface $m): void {
                 $m->shouldReceive('pluck')
                     ->andReturn(collect(['test tag']));
             }));
-            $m->shouldReceive('getAttribute')->withArgs(['contents'])->andReturn(new AddonIntroductionContent([
-                'author' => 'test author',
+            $mock->shouldReceive('getAttribute')->withArgs(['contents'])->andReturn(new AddonIntroductionContent([
                 'description' => 'test description',
                 'link' => 'http://example.com',
                 'author' => 'test author',
@@ -80,7 +79,7 @@ class AddonIntroductionDecoratorTest extends UnitTestCase
             ]));
         });
         $input = ['contents' => [], 'files' => []];
-        $result = $this->decorator->process($input, $model);
+        $result = $this->decorator->process($input, $mock);
 
         $contents = $result['contents'];
 

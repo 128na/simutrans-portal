@@ -11,43 +11,43 @@ use Tests\TestCase;
 
 class IndexTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->user->update(['invitation_code' => Str::uuid()]);
     }
 
-    public function test()
+    public function test(): void
     {
-        $response = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
-        $response->assertOk();
+        $testResponse = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
+        $testResponse->assertOk();
     }
 
-    public function test機能無効()
+    public function test機能無効(): void
     {
         ControllOption::create(['key' => ControllOptionKeys::INVITATION_CODE, 'value' => false]);
-        $response = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
-        $response->assertForbidden();
+        $testResponse = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
+        $testResponse->assertForbidden();
     }
 
-    public function test無効なユーザー()
+    public function test無効なユーザー(): void
     {
         $this->user->delete();
-        $response = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
-        $response->assertNotFound();
+        $testResponse = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
+        $testResponse->assertNotFound();
     }
 
-    public function testメール未認証のユーザー()
+    public function testメール未認証のユーザー(): void
     {
         $this->user->update(['email_verified_at' => null]);
-        $response = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
-        $response->assertNotFound();
+        $testResponse = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
+        $testResponse->assertNotFound();
     }
 
-    public function test存在しないコード()
+    public function test存在しないコード(): void
     {
         $this->user->delete();
-        $response = $this->get(route('invite.index', ['invitation_code' => Str::uuid()]));
-        $response->assertNotFound();
+        $testResponse = $this->get(route('invite.index', ['invitation_code' => Str::uuid()]));
+        $testResponse->assertNotFound();
     }
 }

@@ -22,7 +22,7 @@ class VerifiedTest extends ArticleTestCase
     /**
      * @dataProvider dataVerify
      */
-    public function testメール確認が未完了(string $method, Closure $route, bool $need_verify)
+    public function testメール確認が未完了(string $method, Closure $route, bool $need_verify): void
     {
         $this->user->fill(['email_verified_at' => null])->save();
         $this->actingAs($this->user);
@@ -38,26 +38,26 @@ class VerifiedTest extends ArticleTestCase
         }
     }
 
-    public static function dataVerify()
+    public static function dataVerify(): \Generator
     {
-        yield 'マイページトップ' => ['getJson', fn () => '/api/mypage/user', false];
-        yield 'タグ検索（投稿ページ）' => ['getJson', fn () => '/api/mypage/tags', false];
-        yield '添付ファイル一覧' => ['getJson', fn () => '/api/mypage/attachments', false];
-        yield '投稿記事一覧' => ['getJson', fn () => '/api/mypage/articles', false];
-        yield '投稿ページオプション' => ['getJson', fn () => '/api/mypage/options', false];
+        yield 'マイページトップ' => ['getJson', fn (): string => '/api/mypage/user', false];
+        yield 'タグ検索（投稿ページ）' => ['getJson', fn (): string => '/api/mypage/tags', false];
+        yield '添付ファイル一覧' => ['getJson', fn (): string => '/api/mypage/attachments', false];
+        yield '投稿記事一覧' => ['getJson', fn (): string => '/api/mypage/articles', false];
+        yield '投稿ページオプション' => ['getJson', fn (): string => '/api/mypage/options', false];
 
-        yield 'プロフィール更新' => ['postJson', fn () => '/api/mypage/user', true];
-        yield 'タグ作成' => ['postJson', fn () => '/api/mypage/tags', true];
-        yield '添付ファイル作成' => ['postJson', fn () => '/api/mypage/attachments', true];
-        yield '添付ファイル削除' => ['deleteJson', fn () => "/api/mypage/attachments/{$this->attachment->id}", true];
-        yield '記事投稿' => ['postJson', fn () => '/api/mypage/articles', true];
-        yield '記事更新' => ['postJson', fn () => "/api/mypage/articles/{$this->article->id}", true];
+        yield 'プロフィール更新' => ['postJson', fn (): string => '/api/mypage/user', true];
+        yield 'タグ作成' => ['postJson', fn (): string => '/api/mypage/tags', true];
+        yield '添付ファイル作成' => ['postJson', fn (): string => '/api/mypage/attachments', true];
+        yield '添付ファイル削除' => ['deleteJson', fn (): string => '/api/mypage/attachments/'.$this->attachment->id, true];
+        yield '記事投稿' => ['postJson', fn (): string => '/api/mypage/articles', true];
+        yield '記事更新' => ['postJson', fn (): string => '/api/mypage/articles/'.$this->article->id, true];
     }
 
     /**
      * @dataProvider dataVerified
      */
-    public function testメール確認が完了(string $method, Closure $route, int $expected_status)
+    public function testメール確認が完了(string $method, Closure $route, int $expected_status): void
     {
         $this->actingAs($this->user);
 
@@ -67,13 +67,13 @@ class VerifiedTest extends ArticleTestCase
         $response->assertStatus($expected_status);
     }
 
-    public static function dataVerified()
+    public static function dataVerified(): \Generator
     {
-        yield 'プロフィール更新' => ['postJson', fn () => '/api/mypage/user', 422];
-        yield 'タグ作成' => ['postJson', fn () => '/api/mypage/tags', 422];
-        yield '添付ファイル作成' => ['postJson', fn () => '/api/mypage/attachments', 422];
-        yield '添付ファイル削除' => ['deleteJson', fn () => "/api/mypage/attachments/{$this->attachment->id}", 200];
-        yield '記事投稿' => ['postJson', fn () => '/api/mypage/articles', 422];
-        yield '記事更新' => ['postJson', fn () => "/api/mypage/articles/{$this->article->id}", 422];
+        yield 'プロフィール更新' => ['postJson', fn (): string => '/api/mypage/user', 422];
+        yield 'タグ作成' => ['postJson', fn (): string => '/api/mypage/tags', 422];
+        yield '添付ファイル作成' => ['postJson', fn (): string => '/api/mypage/attachments', 422];
+        yield '添付ファイル削除' => ['deleteJson', fn (): string => '/api/mypage/attachments/'.$this->attachment->id, 200];
+        yield '記事投稿' => ['postJson', fn (): string => '/api/mypage/articles', 422];
+        yield '記事更新' => ['postJson', fn (): string => '/api/mypage/articles/'.$this->article->id, 422];
     }
 }

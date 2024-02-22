@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class DeleteTest extends TestCase
 {
-    public function test()
+    public function test(): void
     {
         $oldUuid = Str::uuid()->toString();
         $this->user->update(['invitation_code' => $oldUuid]);
@@ -17,9 +17,9 @@ class DeleteTest extends TestCase
 
         $this->actingAs($this->user);
 
-        $response = $this->deleteJson('/api/mypage/invitation_code');
-        $response->assertOk();
+        $testResponse = $this->deleteJson('/api/mypage/invitation_code');
+        $testResponse->assertOk();
         $this->assertDatabaseHas('users', ['id' => $this->user->id, 'invitation_code' => null]);
-        $this->assertNull($response->json('data.invitation_url'));
+        $this->assertNull($testResponse->json('data.invitation_url'));
     }
 }

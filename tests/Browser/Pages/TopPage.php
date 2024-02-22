@@ -11,9 +11,9 @@ use Laravel\Dusk\Browser;
 
 class TopPage extends Page
 {
-    private Article $article;
+    private readonly Article $article;
 
-    private Category $category;
+    private readonly Category $category;
 
     public function __construct()
     {
@@ -30,12 +30,12 @@ class TopPage extends Page
         return '/';
     }
 
-    public function assert(Browser $browser)
+    public function assert(Browser $browser): void
     {
         $browser
             ->waitForText($this->article->title)
             ->assertSee($this->article->title)
             ->assertSee('pak128の新着')
-            ->assertSee(__("category.{$this->category->type}.{$this->category->slug}"));
+            ->assertSee(__(sprintf('category.%s.%s', $this->category->type, $this->category->slug)));
     }
 }

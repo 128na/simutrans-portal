@@ -9,19 +9,19 @@ use Tests\TestCase;
 
 class RedirectControllerTest extends TestCase
 {
-    public function test()
+    public function test(): void
     {
         Redirect::create([
             'from' => '/foo',
             'to' => '/bar',
         ]);
-        $response = $this->get('/foo');
-        $response->assertRedirect('/bar');
+        $testResponse = $this->get('/foo');
+        $testResponse->assertRedirect('/bar');
     }
 
-    public function test404()
+    public function test404(): void
     {
-        $response = $this->get('/foo');
-        $response->assertNotFound();
+        $testResponse = $this->get('/foo');
+        $testResponse->assertNotFound();
     }
 }

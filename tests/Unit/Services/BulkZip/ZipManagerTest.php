@@ -15,53 +15,53 @@ use ZipArchive;
 
 class ZipManagerTest extends UnitTestCase
 {
-    public function test()
+    public function test(): void
     {
         /**
          * @var ZipArchive
          */
-        $zipArchiveMock = $this->mock(ZipArchive::class, function (MockInterface $m) {
-            $m->shouldReceive('open')->andReturn(true);
-            $m->shouldReceive('addFromString')->andReturn(true);
-            $m->shouldReceive('close')->andReturn(true);
+        $zipArchiveMock = $this->mock(ZipArchive::class, function (MockInterface $mock): void {
+            $mock->shouldReceive('open')->andReturn(true);
+            $mock->shouldReceive('addFromString')->andReturn(true);
+            $mock->shouldReceive('close')->andReturn(true);
 
-            $m->shouldReceive('open')->andReturn(true);
-            $m->shouldReceive('addFile')->andReturn(true);
-            $m->shouldReceive('close')->andReturn(true);
+            $mock->shouldReceive('open')->andReturn(true);
+            $mock->shouldReceive('addFile')->andReturn(true);
+            $mock->shouldReceive('close')->andReturn(true);
 
-            $m->shouldReceive('open')->andReturn(true);
-            $m->shouldReceive('addFile')->andReturn(true);
-            $m->shouldReceive('close')->andReturn(true);
+            $mock->shouldReceive('open')->andReturn(true);
+            $mock->shouldReceive('addFile')->andReturn(true);
+            $mock->shouldReceive('close')->andReturn(true);
         });
-        $decoratorMock = $this->mock(BaseDecorator::class, function (MockInterface $m) {
-            $m->shouldReceive('canProcess')->andReturn(true);
-            $m->shouldReceive('process')->andReturn([
+        $decoratorMock = $this->mock(BaseDecorator::class, function (MockInterface $mock): void {
+            $mock->shouldReceive('canProcess')->andReturn(true);
+            $mock->shouldReceive('process')->andReturn([
                 'contents' => [['test']],
                 'files' => [],
             ]);
         });
-        $disk = Storage::fake();
+        $filesystem = Storage::fake();
         $modelMock = $this->mock(Model::class);
 
-        $zipManager = new ZipManager($zipArchiveMock, $disk, [$decoratorMock]);
+        $zipManager = new ZipManager($zipArchiveMock, $filesystem, [$decoratorMock]);
         $result = $zipManager->create([$modelMock]);
 
         $this->assertFalse(Storage::disk('public')->exists($result), '実際に出力されていないこと');
     }
 
-    public function testError()
+    public function testError(): void
     {
         $this->expectException(ZipErrorException::class);
 
         /**
          * @var ZipArchive
          */
-        $zipArchiveMock = $this->mock(ZipArchive::class, function (MockInterface $m) {
-            $m->shouldReceive('open')->andReturn(ZipArchive::ER_OPEN);
+        $zipArchiveMock = $this->mock(ZipArchive::class, function (MockInterface $mock): void {
+            $mock->shouldReceive('open')->andReturn(ZipArchive::ER_OPEN);
         });
-        $disk = Storage::fake();
+        $filesystem = Storage::fake();
 
-        $zipManager = new ZipManager($zipArchiveMock, $disk, []);
+        $zipManager = new ZipManager($zipArchiveMock, $filesystem, []);
         $zipManager->create([]);
     }
 }

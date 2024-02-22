@@ -14,27 +14,27 @@ class PakExtractorTest extends UnitTestCase
         return app(PakExtractor::class);
     }
 
-    public function testGetKey()
+    public function testGetKey(): void
     {
         $result = $this->getSUT()->getKey();
         $this->assertEquals('paks', $result);
     }
 
-    public function testIsTarget()
+    public function testIsTarget(): void
     {
-        $service = $this->getSUT();
+        $sUT = $this->getSUT();
 
-        $this->assertFalse($service->isTarget('dummy'));
-        $this->assertTrue($service->isTarget('dummy.pak'));
+        $this->assertFalse($sUT->isTarget('dummy'));
+        $this->assertTrue($sUT->isTarget('dummy.pak'));
     }
 
-    public function testExtract()
+    public function testExtract(): void
     {
-        $service = $this->getSUT();
+        $sUT = $this->getSUT();
 
         $data = file_get_contents(__DIR__.'/vehicle.transparent_vehicle.pak');
 
-        $result = $service->extract($data);
+        $result = $sUT->extract($data);
         $this->assertEquals(['transparent_vehicle'], $result);
     }
 }

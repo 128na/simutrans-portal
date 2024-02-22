@@ -19,7 +19,7 @@ class SyncCategoriesTest extends TestCase
         $this->repository = app(ArticleRepository::class);
     }
 
-    public function test()
+    public function test(): void
     {
         $article = Article::factory()->create(['user_id' => $this->user->id]);
 

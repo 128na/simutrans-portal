@@ -16,10 +16,10 @@ class FileInfoService extends Service
      * @param  \App\Services\FileInfo\Extractors\Extractor[]  $extractors
      */
     public function __construct(
-        private FileInfoRepository $fileInfoRepository,
-        private ZipArchiveParser $zipArchiveParser,
-        private TextService $textService,
-        private array $extractors,
+        private readonly FileInfoRepository $fileInfoRepository,
+        private readonly ZipArchiveParser $zipArchiveParser,
+        private readonly TextService $textService,
+        private readonly array $extractors,
     ) {
     }
 
@@ -31,10 +31,11 @@ class FileInfoService extends Service
             if ($text === false) {
                 throw new Exception('failed file read');
             }
+
             $data = $this->handleExtractors($filename, $text, []);
 
             return $this->fileInfoRepository->updateOrCreate(['attachment_id' => $attachment->id], ['data' => $data]);
-        } catch (InvalidEncodingException $e) {
+        } catch (InvalidEncodingException) {
             return $this->fileInfoRepository->updateOrCreate(['attachment_id' => $attachment->id], ['data' => []]);
         }
     }
@@ -50,7 +51,7 @@ class FileInfoService extends Service
             }
 
             return $this->fileInfoRepository->updateOrCreate(['attachment_id' => $attachment->id], ['data' => $data]);
-        } catch (InvalidEncodingException $e) {
+        } catch (InvalidEncodingException) {
             return $this->fileInfoRepository->updateOrCreate(['attachment_id' => $attachment->id], ['data' => []]);
         }
     }
@@ -66,6 +67,7 @@ class FileInfoService extends Service
                 if ($extractor->isText()) {
                     $text = $this->handleText($text);
                 }
+
                 $data[$extractor->getKey()][$filename] = $extractor->extract($text);
             }
         }
@@ -76,8 +78,7 @@ class FileInfoService extends Service
     private function handleText(string $text): string
     {
         $text = $this->textService->encoding($text);
-        $text = $this->textService->removeBom($text);
 
-        return $text;
+        return $this->textService->removeBom($text);
     }
 }

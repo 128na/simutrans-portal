@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 class EditorController extends Controller
 {
     public function __construct(
-        private ArticleEditorService $articleEditorService,
+        private readonly ArticleEditorService $articleEditorService,
     ) {
     }
 
@@ -37,24 +37,24 @@ class EditorController extends Controller
         return $this->articleEditorService->getOptions($this->loggedinUser());
     }
 
-    public function store(StoreRequest $request): ArticlesResouce
+    public function store(StoreRequest $storeRequest): ArticlesResouce
     {
-        $article = DB::transaction(fn () => $this->articleEditorService->storeArticle($this->loggedinUser(), $request));
+        $article = DB::transaction(fn (): \App\Models\Article => $this->articleEditorService->storeArticle($this->loggedinUser(), $storeRequest));
         JobUpdateRelated::dispatch();
-        event(new ArticleStored($article, $request->boolean('should_notify', false)));
+        event(new ArticleStored($article, $storeRequest->boolean('should_notify', false)));
 
         return $this->index();
     }
 
-    public function update(UpdateRequest $request, Article $article): ArticlesResouce
+    public function update(UpdateRequest $updateRequest, Article $article): ArticlesResouce
     {
         $notYetPublished = is_null($article->published_at);
-        $article = DB::transaction(fn () => $this->articleEditorService->updateArticle($article, $request));
+        $article = DB::transaction(fn (): \App\Models\Article => $this->articleEditorService->updateArticle($article, $updateRequest));
         JobUpdateRelated::dispatch();
         event(new ArticleUpdated(
             $article,
-            $request->boolean('should_notify', false),
-            $request->boolean('without_update_modified_at', false),
+            $updateRequest->boolean('should_notify', false),
+            $updateRequest->boolean('without_update_modified_at', false),
             $notYetPublished
         ));
 

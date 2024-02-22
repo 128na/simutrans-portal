@@ -13,11 +13,8 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    private UserService $userService;
-
-    public function __construct(UserService $userService)
+    public function __construct(private readonly UserService $userService)
     {
-        $this->userService = $userService;
     }
 
     public function index(): UserResouce|string
@@ -31,9 +28,9 @@ class UserController extends Controller
         return '';
     }
 
-    public function update(UpdateRequest $request): UserResouce
+    public function update(UpdateRequest $updateRequest): UserResouce
     {
-        $user = $this->userService->updateUserAndProfile($this->loggedinUser(), $request);
+        $user = $this->userService->updateUserAndProfile($this->loggedinUser(), $updateRequest);
         JobUpdateRelated::dispatch();
 
         return new UserResouce($user);

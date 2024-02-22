@@ -18,24 +18,24 @@ class BulkZipRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(BulkZip $model)
+    public function __construct(BulkZip $bulkZip)
     {
-        $this->model = $model;
+        $this->model = $bulkZip;
     }
 
-    public function findByBulkZippable(BulkZippableInterface $model): ?BulkZip
+    public function findByBulkZippable(BulkZippableInterface $bulkZippable): ?BulkZip
     {
         /** @var BulkZip|null */
-        return $model->bulkZippable()->first();
+        return $bulkZippable->bulkZippable()->first();
     }
 
     /**
      * @param  array<string>  $data
      */
-    public function storeByBulkZippable(BulkZippableInterface $model, array $data = []): BulkZip
+    public function storeByBulkZippable(BulkZippableInterface $bulkZippable, array $data = []): BulkZip
     {
         /** @var BulkZip */
-        return $model->bulkZippable()->create($data);
+        return $bulkZippable->bulkZippable()->create($data);
     }
 
     public function cursorExpired(): LazyCollection

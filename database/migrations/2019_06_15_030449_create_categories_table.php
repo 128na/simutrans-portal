@@ -10,28 +10,24 @@ class CreateCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name', 255)->comment('カテゴリ名');
-            $table->string('type', 255)->comment('分類');
-            $table->string('slug', 255)->comment('スラッグ');
-            $table->unsignedTinyInteger('need_admin')->default(0)->comment('管理者専用カテゴリ');
-            $table->unsignedInteger('order')->default(0)->comment('表示順');
-            $table->timestamps();
+        Schema::create('categories', function (Blueprint $blueprint): void {
+            $blueprint->bigIncrements('id');
+            $blueprint->string('name', 255)->comment('カテゴリ名');
+            $blueprint->string('type', 255)->comment('分類');
+            $blueprint->string('slug', 255)->comment('スラッグ');
+            $blueprint->unsignedTinyInteger('need_admin')->default(0)->comment('管理者専用カテゴリ');
+            $blueprint->unsignedInteger('order')->default(0)->comment('表示順');
+            $blueprint->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('categories');
     }

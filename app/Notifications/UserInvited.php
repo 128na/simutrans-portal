@@ -19,17 +19,16 @@ class UserInvited extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(private User $invited)
+    public function __construct(private User $user)
     {
     }
 
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
      * @return array<string>
      */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
@@ -37,23 +36,21 @@ class UserInvited extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
      * @return MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable)
     {
         return (new MailMessage())
             ->subject('ユーザー招待通知')
-            ->view('emails.invited', ['user' => $notifiable, 'invited' => $this->invited]);
+            ->view('emails.invited', ['user' => $notifiable, 'invited' => $this->user]);
     }
 
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed  $notifiable
      * @return array<mixed>
      */
-    public function toArray($notifiable)
+    public function toArray(mixed $notifiable): array
     {
         return [];
     }

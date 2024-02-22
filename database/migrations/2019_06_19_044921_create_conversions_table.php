@@ -10,17 +10,14 @@ class CreateConversionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('conversions', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('article_id');
-            $table->timestamps();
-
-            $table->foreign('article_id')
+        Schema::create('conversions', function (Blueprint $blueprint): void {
+            $blueprint->bigIncrements('id');
+            $blueprint->unsignedBigInteger('article_id');
+            $blueprint->timestamps();
+            $blueprint->foreign('article_id')
                 ->references('id')->on('articles')
                 ->onDelete('cascade');
         });
@@ -28,13 +25,11 @@ class CreateConversionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('conversions', function (Blueprint $table) {
-            $table->dropForeign(['article_id']);
+        Schema::table('conversions', function (Blueprint $blueprint): void {
+            $blueprint->dropForeign(['article_id']);
         });
         Schema::dropIfExists('conversions');
     }

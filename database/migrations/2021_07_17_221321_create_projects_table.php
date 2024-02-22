@@ -10,25 +10,21 @@ class CreateProjectsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->comment('プロジェクト名');
-            $table->text('credential')->comment('認証情報');
-            $table->timestamps();
+        Schema::create('projects', function (Blueprint $blueprint): void {
+            $blueprint->id();
+            $blueprint->string('name')->comment('プロジェクト名');
+            $blueprint->text('credential')->comment('認証情報');
+            $blueprint->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('projects');
     }

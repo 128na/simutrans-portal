@@ -14,11 +14,11 @@ class OnTagDescriptionUpdated extends BaseListener
     {
     }
 
-    public function handle(TagDescriptionUpdated $event): void
+    public function handle(TagDescriptionUpdated $tagDescriptionUpdated): void
     {
         $this->logger->channel('audit')->info('タグ説明更新', array_merge(
-            $this->getUserInfo($event->user),
-            ['tagId' => $event->tag->id, 'tagName' => $event->tag->name, 'old' => $event->old, 'new' => $event->tag->description]
+            $this->getUserInfo($tagDescriptionUpdated->user),
+            ['tagId' => $tagDescriptionUpdated->tag->id, 'tagName' => $tagDescriptionUpdated->tag->name, 'old' => $tagDescriptionUpdated->old, 'new' => $tagDescriptionUpdated->tag->description]
         ));
     }
 }

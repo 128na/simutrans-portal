@@ -20,8 +20,8 @@ class ArticleService extends Service
     public const ORDER_BY_MODIFIED_AT = 'modified_at';
 
     public function __construct(
-        private ArticleRepository $articleRepository,
-        private CategoryRepository $categoryRepository,
+        private readonly ArticleRepository $articleRepository,
+        private readonly CategoryRepository $categoryRepository,
     ) {
     }
 
@@ -77,10 +77,10 @@ class ArticleService extends Service
      */
     public function paginateByPakAddonCategory(string $pakSlug, string $addonSlug, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
     {
-        $pak = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
+        $category = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
         $addon = $this->categoryRepository->findOrFailByTypeAndSlug('addon', $addonSlug);
 
-        return $this->articleRepository->paginateByPakAddonCategory($pak, $addon, $order);
+        return $this->articleRepository->paginateByPakAddonCategory($category, $addon, $order);
     }
 
     /**
@@ -88,9 +88,9 @@ class ArticleService extends Service
      */
     public function paginateByPakNoneAddonCategory(string $pakSlug, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
     {
-        $pak = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
+        $category = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
 
-        return $this->articleRepository->paginateByPakNoneAddonCategory($pak, $order);
+        return $this->articleRepository->paginateByPakNoneAddonCategory($category, $order);
     }
 
     /**

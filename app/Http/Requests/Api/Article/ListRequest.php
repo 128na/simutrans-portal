@@ -13,7 +13,7 @@ class ListRequest extends FormRequest
      *
      * @return array<mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'order' => 'nullable|in:published_at,modified_at',

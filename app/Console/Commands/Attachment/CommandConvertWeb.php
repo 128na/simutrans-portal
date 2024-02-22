@@ -19,20 +19,17 @@ class CommandConvertWeb extends Command
     protected $description = 'Command description';
 
     public function __construct(
-        private WebpConverter $webpConverter,
-        private AttachmentRepository $attachmentRepository,
+        private readonly WebpConverter $webpConverter,
+        private readonly AttachmentRepository $attachmentRepository,
     ) {
         parent::__construct();
     }
 
-    /**
-     * @return int
-     */
-    public function handle()
+    public function handle(): int
     {
-        $cursor = $this->attachmentRepository->cursorUnconvertedImages();
+        $lazyCollection = $this->attachmentRepository->cursorUnconvertedImages();
 
-        foreach ($cursor as $attachment) {
+        foreach ($lazyCollection as $attachment) {
             try {
                 $this->info(sprintf('convert: %s', $attachment->path));
                 $this->webpConverter->convert($attachment);

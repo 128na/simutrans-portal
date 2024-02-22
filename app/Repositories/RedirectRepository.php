@@ -16,9 +16,9 @@ class RedirectRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(Redirect $model)
+    public function __construct(Redirect $redirect)
     {
-        $this->model = $model;
+        $this->model = $redirect;
     }
 
     public function findOrFailByPath(string $path): Redirect

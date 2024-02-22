@@ -66,16 +66,16 @@ class FrontDescriptionService
     {
         if ($type === 'license') {
             return ['description' => [
-                'title' => sprintf('%sの投稿', __("category.{$type}.{$slug}")),
+                'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $type, $slug))),
                 'type' => 'message',
-                'url' => __("category.description.{$type}.{$slug}"),
+                'url' => __(sprintf('category.description.%s.%s', $type, $slug)),
             ]];
         }
 
         return ['description' => [
-            'title' => sprintf('%sの投稿', __("category.{$type}.{$slug}")),
+            'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $type, $slug))),
             'type' => 'message',
-            'message' => __("category.description.{$type}.{$slug}"),
+            'message' => __(sprintf('category.description.%s.%s', $type, $slug)),
         ]];
     }
 
@@ -85,9 +85,9 @@ class FrontDescriptionService
     public function categoryPakAddon(string $pakSlug, string $addonSlug): array
     {
         return ['description' => [
-            'title' => sprintf('%s、%sの投稿', __("category.pak.{$pakSlug}"), __("category.addon.{$addonSlug}")),
+            'title' => sprintf('%s、%sの投稿', __('category.pak.'.$pakSlug), __('category.addon.'.$addonSlug)),
             'type' => 'message',
-            'message' => __("category.description.addon.{$addonSlug}"),
+            'message' => __('category.description.addon.'.$addonSlug),
         ]];
     }
 
@@ -97,7 +97,7 @@ class FrontDescriptionService
     public function categoryPakNoneAddon(string $pakSlug): array
     {
         return ['description' => [
-            'title' => sprintf('%s、%sの投稿', __("category.pak.{$pakSlug}"), __('category.addon.none')),
+            'title' => sprintf('%s、%sの投稿', __('category.pak.'.$pakSlug), __('category.addon.none')),
             'type' => 'message',
             'message' => __('category.description.addon.none'),
         ]];
@@ -121,7 +121,7 @@ class FrontDescriptionService
     public function search(string $word): array
     {
         return ['description' => [
-            'title' => $word ? sprintf('%sの検索結果', $word) : '全ての記事',
+            'title' => $word !== '' && $word !== '0' ? sprintf('%sの検索結果', $word) : '全ての記事',
         ]];
     }
 }

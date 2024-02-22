@@ -15,9 +15,9 @@ class OnDeadLinkDetected extends BaseListener
     {
     }
 
-    public function handle(DeadLinkDetected $event): void
+    public function handle(DeadLinkDetected $deadLinkDetected): void
     {
-        $article = $event->article;
+        $article = $deadLinkDetected->article;
         $contents = $article->contents;
         assert($contents instanceof AddonIntroductionContent);
 

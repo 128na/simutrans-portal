@@ -17,7 +17,7 @@ class PageContentsSections extends Collection
      */
     public function __construct(array $items = [])
     {
-        $items = array_map(function ($item) {
+        $items = array_map(function (array $item) {
             switch ($item['type']) {
                 case 'caption':
                     return new SectionCaption($item);

@@ -27,24 +27,20 @@ class CreateOauthPersonalAccessClientsTable extends Migration
 
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        $this->schema->create('oauth_personal_access_clients', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->uuid('client_id');
-            $table->timestamps();
+        $this->schema->create('oauth_personal_access_clients', function (Blueprint $blueprint): void {
+            $blueprint->bigIncrements('id');
+            $blueprint->uuid('client_id');
+            $blueprint->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         $this->schema->dropIfExists('oauth_personal_access_clients');
     }

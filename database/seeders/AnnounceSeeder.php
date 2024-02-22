@@ -13,7 +13,7 @@ use Illuminate\Database\Seeder;
  */
 class AnnounceSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $admin = $this->addAdminUser();
         $this->addAnounces($admin);
@@ -25,18 +25,16 @@ class AnnounceSeeder extends Seeder
             throw new \Exception('admin email was empty!');
         }
 
-        $admin = User::firstOrCreate(
+        return User::firstOrCreate(
             ['role' => config('role.admin'), 'name' => config('admin.name'), 'email' => config('admin.email')],
             ['password' => bcrypt(config('admin.password')), 'email_verified_at' => now()]
         );
-
-        return $admin;
     }
 
     /**
      * お知らせ記事作成.
      */
-    private function addAnounces($user)
+    private function addAnounces($user): void
     {
         $announce_category = Category::page()->slug('announce')->firstOrFail();
 

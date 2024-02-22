@@ -12,7 +12,7 @@ class ArticleUpdateRequest extends FormRequest
     /**
      * @return array<mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'article.status' => ['nullable', Rule::in(config('status'))],

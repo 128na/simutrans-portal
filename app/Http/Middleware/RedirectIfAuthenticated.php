@@ -22,7 +22,8 @@ class RedirectIfAuthenticated
         if ($request->ajax()) {
             return $next($request);
         }
-        $guards = empty($guards) ? [null] : $guards;
+
+        $guards = $guards === [] ? [null] : $guards;
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
@@ -30,9 +31,9 @@ class RedirectIfAuthenticated
                 $user = Auth::user();
                 if ($user->isAdmin()) {
                     return redirect()->intended('admin');
-                } else {
-                    return redirect()->intended('mypage');
                 }
+
+                return redirect()->intended('mypage');
             }
         }
 

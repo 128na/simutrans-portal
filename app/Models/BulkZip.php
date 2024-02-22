@@ -28,10 +28,10 @@ class BulkZip extends Model
 
     protected static function booted()
     {
-        static::creating(function (self $model) {
+        static::creating(function (self $model): void {
             $model->uuid = (string) Str::uuid();
         });
-        self::deleting(function ($model) {
+        self::deleting(function ($model): void {
             $model->deleteFileHandler();
         });
     }

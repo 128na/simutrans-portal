@@ -17,9 +17,9 @@ class TagControllerTest extends TestCase
         $this->tag = Tag::factory()->create(['editable' => true]);
     }
 
-    public function testtoggleEditable認証()
+    public function testtoggleEditable認証(): void
     {
-        $url = "/api/admin/tags/{$this->tag->id}/toggleEditable";
+        $url = sprintf('/api/admin/tags/%s/toggleEditable', $this->tag->id);
 
         $res = $this->postJson($url);
         $res->assertUnauthorized();
@@ -29,16 +29,16 @@ class TagControllerTest extends TestCase
         $res->assertUnauthorized();
     }
 
-    public function testtoggleEditable()
+    public function testtoggleEditable(): void
     {
         $this->assertDatabaseHas('tags', ['id' => $this->tag->id, 'editable' => 1]);
-        $url = "/api/admin/tags/{$this->tag->id}/toggleEditable";
+        $url = sprintf('/api/admin/tags/%s/toggleEditable', $this->tag->id);
 
         $this->user->update(['role' => 'admin']);
         $this->actingAs($this->user);
 
-        $res = $this->postJson($url);
-        $res->assertOk();
+        $testResponse = $this->postJson($url);
+        $testResponse->assertOk();
         $this->assertDatabaseHas('tags', ['id' => $this->tag->id, 'editable' => 0]);
 
         $this->postJson($url);

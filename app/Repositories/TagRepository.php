@@ -19,9 +19,9 @@ class TagRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(Tag $model)
+    public function __construct(Tag $tag)
     {
-        $this->model = $model;
+        $this->model = $tag;
     }
 
     public function getAllTags(): Collection
@@ -35,8 +35,8 @@ class TagRepository extends BaseRepository
     public function searchTags(string $name, int $limit = self::LIMIT): Collection
     {
         return $this->model->select('id', 'name', 'description')
-            ->where('name', 'like', "%{$name}%")
-            ->orWhere('description', 'like', "%{$name}%")
+            ->where('name', 'like', sprintf('%%%s%%', $name))
+            ->orWhere('description', 'like', sprintf('%%%s%%', $name))
             ->orderByRaw('LENGTH(name) asc')
             ->limit($limit)
             ->get();

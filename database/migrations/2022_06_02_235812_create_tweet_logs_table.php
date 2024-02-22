@@ -10,30 +10,26 @@ class CreateTweetLogsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('tweet_logs', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('article_id')->constrained()->onDelete('cascade');
-            $table->text('text');
-            $table->unsignedBigInteger('retweet_count');
-            $table->unsignedBigInteger('reply_count');
-            $table->unsignedBigInteger('like_count');
-            $table->unsignedBigInteger('quote_count');
-            $table->timestamp('tweet_created_at');
-            $table->timestamps();
+        Schema::create('tweet_logs', function (Blueprint $blueprint): void {
+            $blueprint->string('id')->primary();
+            $blueprint->foreignId('article_id')->constrained()->onDelete('cascade');
+            $blueprint->text('text');
+            $blueprint->unsignedBigInteger('retweet_count');
+            $blueprint->unsignedBigInteger('reply_count');
+            $blueprint->unsignedBigInteger('like_count');
+            $blueprint->unsignedBigInteger('quote_count');
+            $blueprint->timestamp('tweet_created_at');
+            $blueprint->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('tweet_logs');
     }

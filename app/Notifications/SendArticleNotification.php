@@ -23,10 +23,9 @@ abstract class SendArticleNotification extends Notification implements ShouldQue
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
      * @return array<string>
      */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         $enabledFilter =
             /**

@@ -10,24 +10,20 @@ class CreateTagsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('tags', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name', 255)->comment('タグ名');
-            $table->timestamps();
+        Schema::create('tags', function (Blueprint $blueprint): void {
+            $blueprint->bigIncrements('id');
+            $blueprint->string('name', 255)->comment('タグ名');
+            $blueprint->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('tags');
     }

@@ -17,7 +17,7 @@ class ControllOptionControllerTest extends TestCase
         $this->controllOption = ControllOption::create(['key' => 'dummy', 'value' => true]);
     }
 
-    public function testIndex()
+    public function testIndex(): void
     {
         $url = '/api/admin/controll_options';
 
@@ -34,9 +34,9 @@ class ControllOptionControllerTest extends TestCase
         $res->assertOk();
     }
 
-    public function testToggle()
+    public function testToggle(): void
     {
-        $url = "/api/admin/controll_options/{$this->controllOption->key}/toggle";
+        $url = sprintf('/api/admin/controll_options/%s/toggle', $this->controllOption->key);
 
         $res = $this->postJson($url);
         $res->assertUnauthorized();
@@ -51,9 +51,9 @@ class ControllOptionControllerTest extends TestCase
         $res->assertOk();
     }
 
-    public function testToggle値の切替()
+    public function testToggle値の切替(): void
     {
-        $url = "/api/admin/controll_options/{$this->controllOption->key}/toggle";
+        $url = sprintf('/api/admin/controll_options/%s/toggle', $this->controllOption->key);
 
         $this->user->update(['role' => 'admin']);
         $this->actingAs($this->user);

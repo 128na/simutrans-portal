@@ -37,7 +37,7 @@ class Attachment extends Model
     {
         parent::boot();
 
-        self::deleting(function ($model) {
+        self::deleting(function ($model): void {
             $model->deleteFileHandler();
         });
     }
@@ -86,13 +86,15 @@ class Attachment extends Model
     {
         $mime = Storage::disk('public')->mimeType($this->path) ?: '';
 
-        if (stripos($mime, 'image') !== false) {
+        if (stripos((string) $mime, 'image') !== false) {
             return 'image';
         }
-        if (stripos($mime, 'video') !== false) {
+
+        if (stripos((string) $mime, 'video') !== false) {
             return 'video';
         }
-        if (stripos($mime, 'text') !== false) {
+
+        if (stripos((string) $mime, 'text') !== false) {
             return 'text';
         }
 
@@ -103,22 +105,17 @@ class Attachment extends Model
     {
         $mime = Storage::disk('public')->mimeType($this->path) ?: '';
 
-        return stripos($mime, 'image/png') !== false;
+        return stripos((string) $mime, 'image/png') !== false;
     }
 
     public function getThumbnailAttribute(): string
     {
-        switch ($this->type) {
-            case 'image':
-                return Storage::disk('public')->url($this->path);
-            case 'zip':
-                return Storage::disk('public')->url(config('attachment.thumbnail-zip'));
-            case 'movie':
-                return Storage::disk('public')->url(config('attachment.thumbnail-movie'));
-            case 'file':
-            default:
-                return Storage::disk('public')->url(config('attachment.thumbnail-file'));
-        }
+        return match ($this->type) {
+            'image' => Storage::disk('public')->url($this->path),
+            'zip' => Storage::disk('public')->url(config('attachment.thumbnail-zip')),
+            'movie' => Storage::disk('public')->url(config('attachment.thumbnail-movie')),
+            default => Storage::disk('public')->url(config('attachment.thumbnail-file')),
+        };
     }
 
     public function getUrlAttribute(): string
@@ -138,7 +135,7 @@ class Attachment extends Model
 
     public function getExtensionAttribute(): string
     {
-        $tmp = explode('.', $this->original_name);
+        $tmp = explode('.', (string) $this->original_name);
         if (count($tmp) > 1) {
             return array_pop($tmp);
         }

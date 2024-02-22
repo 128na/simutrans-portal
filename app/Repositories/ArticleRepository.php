@@ -35,9 +35,9 @@ class ArticleRepository extends BaseRepository
      */
     protected $model;
 
-    public function __construct(Article $model)
+    public function __construct(Article $article)
     {
-        $this->model = $model;
+        $this->model = $article;
     }
 
     /**
@@ -113,6 +113,9 @@ class ArticleRepository extends BaseRepository
             ->get();
     }
 
+    /**
+     * @return Builder<Article>
+     */
     private function queryAnnouces(string $order): Builder
     {
         return $this->model
@@ -130,12 +133,14 @@ class ArticleRepository extends BaseRepository
      */
     public function paginateAnnouces(bool $simple = false, string $order = 'modified_at'): Paginator
     {
-        /** @var Paginator<Article> */
         return $simple
             ? $this->queryAnnouces($order)->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryAnnouces($order)->paginate();
     }
 
+    /**
+     * @return Builder<Article>
+     */
     private function queryPages(string $order): Builder
     {
         return $this->model
@@ -153,12 +158,14 @@ class ArticleRepository extends BaseRepository
      */
     public function paginatePages(bool $simple = false, string $order = 'modified_at'): Paginator
     {
-        /** @var Paginator<Article> */
         return $simple
             ? $this->queryPages($order)->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryPages($order)->paginate();
     }
 
+    /**
+     * @return Builder<Article>
+     */
     private function queryRanking(): Builder
     {
         return $this->model
@@ -175,7 +182,6 @@ class ArticleRepository extends BaseRepository
      */
     public function paginateRanking(bool $simple = false): Paginator
     {
-        /** @var Paginator<Article> */
         return $simple
             ? $this->queryRanking()->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryRanking()->paginate();
@@ -226,9 +232,9 @@ class ArticleRepository extends BaseRepository
      *
      * @return LengthAwarePaginator<Article>
      */
-    public function paginateByPakNoneAddonCategory(Category $pak, string $order = 'modified_at'): LengthAwarePaginator
+    public function paginateByPakNoneAddonCategory(Category $category, string $order = 'modified_at'): LengthAwarePaginator
     {
-        return $pak->articles()
+        return $category->articles()
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
@@ -271,14 +277,14 @@ class ArticleRepository extends BaseRepository
     {
         $word = trim($word);
 
-        if (! $word) {
+        if ($word === '' || $word === '0') {
             return $this->model->select(['articles.*'])
                 ->active()
                 ->with(self::FRONT_RELATIONS)
                 ->orderBy($order, 'desc');
         }
 
-        $likeWord = "%{$word}%";
+        $likeWord = sprintf('%%%s%%', $word);
 
         return $this->model->select(['articles.*'])
             ->active()
@@ -373,19 +379,19 @@ class ArticleRepository extends BaseRepository
         return $this->model
             ->addon()
             ->select('articles.*')
-            ->leftJoin('view_counts as d', fn (JoinClause $join) => $join
+            ->leftJoin('view_counts as d', fn (JoinClause $joinClause) => $joinClause
                 ->on('d.article_id', 'articles.id')
                 ->where('d.type', 1)
                 ->where('d.period', $datetime->format('Ymd')))
-            ->leftJoin('view_counts as m', fn (JoinClause $join) => $join
+            ->leftJoin('view_counts as m', fn (JoinClause $joinClause) => $joinClause
                 ->on('m.article_id', 'articles.id')
                 ->where('m.type', 2)
                 ->where('m.period', $datetime->format('Ym')))
-            ->leftJoin('view_counts as y', fn (JoinClause $join) => $join
+            ->leftJoin('view_counts as y', fn (JoinClause $joinClause) => $joinClause
                 ->on('y.article_id', 'articles.id')
                 ->where('y.type', 3)
                 ->where('y.period', $datetime->format('Y')))
-            ->leftJoin('view_counts as t', fn (JoinClause $join) => $join
+            ->leftJoin('view_counts as t', fn (JoinClause $joinClause) => $joinClause
                 ->on('t.article_id', 'articles.id')
                 ->where('t.type', 4)
                 ->where('t.period', 'total'))

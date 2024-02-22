@@ -21,11 +21,8 @@ class JobCreateBulkZip implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    private BulkZip $bulkZip;
-
-    public function __construct(BulkZip $bulkZip)
+    public function __construct(private BulkZip $bulkZip)
     {
-        $this->bulkZip = $bulkZip;
     }
 
     public function handle(
@@ -45,10 +42,10 @@ class JobCreateBulkZip implements ShouldQueue
             $path = $zipManager->create($items);
             $bulkZipRepository->update($this->bulkZip, ['generated' => true, 'path' => $path]);
 
-        } catch (\Throwable $e) {
+        } catch (\Throwable $throwable) {
             logger()->error('JobCreateBulkZip failed', ['id' => $this->bulkZip->id]);
             $this->bulkZip->delete();
-            report($e);
+            report($throwable);
         }
     }
 }

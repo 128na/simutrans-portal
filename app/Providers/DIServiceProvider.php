@@ -51,73 +51,63 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->app->bind(ReadmeExtractor::class, function ($app) {
-            $config = HTMLPurifier_Config::createDefault();
-            $config->set('HTML.AllowedElements', []);
+        $this->app->bind(ReadmeExtractor::class, function ($app): \App\Services\FileInfo\Extractors\ReadmeExtractor {
+            $htmlPurifierConfig = HTMLPurifier_Config::createDefault();
+            $htmlPurifierConfig->set('HTML.AllowedElements', []);
 
-            return new ReadmeExtractor(new HTMLPurifier($config));
+            return new ReadmeExtractor(new HTMLPurifier($htmlPurifierConfig));
         });
 
-        $this->app->bind(MarkdownService::class, function ($app) {
-            $config = HTMLPurifier_Config::createDefault();
-            $config->set('HTML.AllowedElements', []);
+        $this->app->bind(MarkdownService::class, function ($app): \App\Services\MarkdownService {
+            $htmlPurifierConfig = HTMLPurifier_Config::createDefault();
+            $htmlPurifierConfig->set('HTML.AllowedElements', []);
 
-            return new MarkdownService($app->make(GithubMarkdown::class), new HTMLPurifier($config));
+            return new MarkdownService($app->make(GithubMarkdown::class), new HTMLPurifier($htmlPurifierConfig));
         });
 
-        $this->app->bind(ZipManager::class, function ($app) {
-            return new ZipManager(
-                new ZipArchive(),
-                Storage::disk('public'),
-                [
-                    $app->make(AddonPostDecorator::class),
-                    $app->make(AddonIntroductionDecorator::class),
-                ]
-            );
-        });
+        $this->app->bind(ZipManager::class, fn ($app): \App\Services\BulkZip\ZipManager => new ZipManager(
+            new ZipArchive(),
+            Storage::disk('public'),
+            [
+                $app->make(AddonPostDecorator::class),
+                $app->make(AddonIntroductionDecorator::class),
+            ]
+        ));
 
-        $this->app->bind(FileInfoService::class, function ($app) {
-            return new FileInfoService(
-                $this->app->make(FileInfoRepository::class),
-                $this->app->make(ZipArchiveParser::class),
-                $this->app->make(TextService::class),
-                [
-                    $this->app->make(DatExtractor::class),
-                    $this->app->make(TabExtractor::class),
-                    $this->app->make(PakExtractor::class),
-                    $this->app->make(ReadmeExtractor::class),
-                ]
-            );
-        });
+        $this->app->bind(FileInfoService::class, fn ($app): \App\Services\FileInfo\FileInfoService => new FileInfoService(
+            $this->app->make(FileInfoRepository::class),
+            $this->app->make(ZipArchiveParser::class),
+            $this->app->make(TextService::class),
+            [
+                $this->app->make(DatExtractor::class),
+                $this->app->make(TabExtractor::class),
+                $this->app->make(PakExtractor::class),
+                $this->app->make(ReadmeExtractor::class),
+            ]
+        ));
 
-        $this->app->bind(TwitterOAuth::class, function ($app) {
-            return new TwitterOAuth(
-                config('services.twitter.access_token'),
-                config('services.twitter.access_secret'),
-                null,
-                config('services.twitter.bearer_token'),
-            );
-        });
+        $this->app->bind(TwitterOAuth::class, fn ($app): \Abraham\TwitterOAuth\TwitterOAuth => new TwitterOAuth(
+            config('services.twitter.access_token'),
+            config('services.twitter.access_secret'),
+            null,
+            config('services.twitter.bearer_token'),
+        ));
 
-        $this->app->bind(MisskeyApiClient::class, function ($app) {
-            return new MisskeyApiClient(
-                config('services.misskey.base_url'),
-                config('services.misskey.token'),
-            );
-        });
+        $this->app->bind(MisskeyApiClient::class, fn ($app): \App\Services\Misskey\MisskeyApiClient => new MisskeyApiClient(
+            config('services.misskey.base_url'),
+            config('services.misskey.token'),
+        ));
 
-        $this->app->bind(BlueSkyApiClient::class, function ($app) {
-            $api = new BlueskyApi(config('services.bluesky.user'), config('services.bluesky.password'));
-            $service = new BlueskyPostService($api);
+        $this->app->bind(BlueSkyApiClient::class, function ($app): \App\Services\BlueSky\BlueSkyApiClient {
+            $blueskyApi = new BlueskyApi(config('services.bluesky.user'), config('services.bluesky.password'));
+            $blueskyPostService = new BlueskyPostService($blueskyApi);
 
             return new BlueSkyApiClient(
-                $api,
-                $service,
+                $blueskyApi,
+                $blueskyPostService,
                 $this->app->make(MetaOgpService::class),
                 $this->app->make(FileSizeBaseResizer::class),
             );

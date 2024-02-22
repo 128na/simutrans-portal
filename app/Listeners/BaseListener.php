@@ -15,14 +15,7 @@ class BaseListener
      */
     protected function getAccessInfo(?Request $request = null): array
     {
-        /**
-         * @var Request|null
-         */
-        $request = $request ?? request();
-
-        if (! $request) {
-            return [];
-        }
+        $request ??= request();
 
         return [
             'REMOTE_ADDR' => $request->server('REMOTE_ADDR', 'N/A'),

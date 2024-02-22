@@ -17,8 +17,8 @@ use Throwable;
 class AttachmentController extends Controller
 {
     public function __construct(
-        private AttachmentRepository $attachmentRepository,
-        private StoreService $storeService,
+        private readonly AttachmentRepository $attachmentRepository,
+        private readonly StoreService $storeService,
     ) {
     }
 
@@ -29,16 +29,16 @@ class AttachmentController extends Controller
         );
     }
 
-    public function store(StoreRequest $request): AttachmentsResource
+    public function store(StoreRequest $storeRequest): AttachmentsResource
     {
-        abort_unless($request->hasFile('file'), 400);
+        abort_unless($storeRequest->hasFile('file'), 400);
 
-        $attachment = $this->storeService->store($this->loggedinUser(), $request->file);
+        $attachment = $this->storeService->store($this->loggedinUser(), $storeRequest->file);
 
         try {
             UpdateFileInfo::dispatchSync($attachment);
-        } catch (Throwable $th) {
-            report($th);
+        } catch (Throwable $throwable) {
+            report($throwable);
         }
 
         return $this->index();

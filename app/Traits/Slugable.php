@@ -11,16 +11,17 @@ use Illuminate\Database\Eloquent\Builder;
  */
 trait Slugable
 {
-    public function scopeSlug(Builder $query, string $slug): Builder
+    public function scopeSlug(Builder $builder, string $slug): Builder
     {
-        return $query->where('slug', urlencode($slug));
+        return $builder->where('slug', urlencode($slug));
     }
 
     public function setSlugAttribute(string $value): void
     {
         $value = urldecode($value);
         $value = strtolower($value);
-        $replaces = ['!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '`', '{', '|', '}', ' ', '　', '.'];
+
+        $replaces = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '`', '{', '|', '}', ' ', '　', '.'];
         $value = str_replace($replaces, '-', $value);
         $value = urlencode($value);
         $this->attributes['slug'] = $value;

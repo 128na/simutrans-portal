@@ -16,14 +16,14 @@ class MypageControllerTest extends TestCase
         $this->url = route('mypage.index');
     }
 
-    public function test()
+    public function test(): void
     {
-        $response = $this->get($this->url);
+        $testResponse = $this->get($this->url);
 
-        $response->assertOk();
+        $testResponse->assertOk();
     }
 
-    public function testAny()
+    public function testAny(): void
     {
         $url = $this->url.'/foo';
         $response = $this->get($url);

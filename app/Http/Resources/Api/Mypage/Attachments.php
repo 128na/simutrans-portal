@@ -25,7 +25,7 @@ class Attachments extends ResourceCollection
             'url' => $item->url,
             'fileInfo' => $this->when(
                 $item->attachmentable_type !== Profile::class && $item->fileInfo,
-                fn () => $item->fileInfo->data
+                static fn () => $item->fileInfo->data
             ),
         ])->toArray();
     }

@@ -40,6 +40,6 @@ class ProdSeeder extends Seeder
 
     private function addItems($items)
     {
-        return collect($items)->map(fn ($item) => Category::firstOrCreate($item));
+        return collect($items)->map(static fn ($item) => Category::firstOrCreate($item));
     }
 }

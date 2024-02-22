@@ -118,7 +118,7 @@ class DevSeeder extends Seeder
 
     private function addTags($article): void
     {
-        $tags = Tag::factory()->count(random_int(0, 10))->make()->map(fn ($tag) => Tag::firstOrCreate(['name' => $tag->name]));
+        $tags = Tag::factory()->count(random_int(0, 10))->make()->map(static fn ($tag) => Tag::firstOrCreate(['name' => $tag->name]));
         $article->tags()->sync($tags->pluck('id'));
     }
 }

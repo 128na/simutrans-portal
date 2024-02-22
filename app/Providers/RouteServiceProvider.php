@@ -34,13 +34,13 @@ class RouteServiceProvider extends ServiceProvider
 
     private function registerRouteBindings(): void
     {
-        Route::bind('invitation_code', fn ($value) => User::where('invitation_code', $value)->whereNotNull('email_verified_at')->firstOrFail());
+        Route::bind('invitation_code', static fn ($value) => User::where('invitation_code', $value)->whereNotNull('email_verified_at')->firstOrFail());
     }
 
     protected function configureRateLimiting(): void
     {
-        RateLimiter::for('register', fn (Request $request) => Limit::perMinute(10)->by($request->ip()));
-        RateLimiter::for('discordInvite', fn (Request $request): array => [
+        RateLimiter::for('register', static fn (Request $request) => Limit::perMinute(10)->by($request->ip()));
+        RateLimiter::for('discordInvite', static fn (Request $request): array => [
             Limit::perMinute(1),
             Limit::perHour(10),
             Limit::perDay(50),

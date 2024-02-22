@@ -19,7 +19,7 @@ class AttachmentResource extends ResourceCollection
             ->map(fn (Attachment $attachment): array => [
                 'id' => $attachment->id,
                 'url' => $this->when($attachment->is_image, $attachment->url),
-                'fileInfo' => $this->when($attachment->fileInfo !== null, fn () => $attachment->fileInfo?->data),
+                'fileInfo' => $this->when($attachment->fileInfo !== null, static fn () => $attachment->fileInfo?->data),
             ])->toArray();
     }
 }

@@ -26,13 +26,13 @@ class Article extends JsonResource
             'status' => $this->resource->status,
             'post_type' => $this->resource->post_type,
             'contents' => $this->resource->contents,
-            'categories' => $this->resource->categories->map(fn (Category $category): array => [
+            'categories' => $this->resource->categories->map(static fn (Category $category): array => [
                 'id' => $category->id,
                 'name' => __(sprintf('category.%s.%s', $category->type, $category->slug)),
                 'type' => $category->type,
                 'slug' => $category->slug,
             ]),
-            'tags' => $this->resource->tags->map(fn (Tag $tag): array => [
+            'tags' => $this->resource->tags->map(static fn (Tag $tag): array => [
                 'id' => $tag->id,
                 'name' => $tag->name,
             ]),

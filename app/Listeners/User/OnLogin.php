@@ -27,11 +27,11 @@ class OnLogin extends BaseListener
 
     private function isNewLogin(): bool
     {
-        $traces = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 20);
+        $trace = json_encode(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 20)) ?: '';
 
         return match (true) {
-            in_array('AuthenticatedSessionController', $traces, true) => true,
-            in_array('TwoFactorAuthenticatedSessionController', $traces, true) => true,
+            str_contains($trace, 'AuthenticatedSessionController') => true,
+            str_contains($trace, 'TwoFactorAuthenticatedSessionController') => true,
             default => false,
         };
     }

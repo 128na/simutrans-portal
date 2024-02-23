@@ -4,9 +4,7 @@
       <text-title>ログイン</text-title>
       <api-error-message :message="auth.handler.validationErrorMessage" />
       <template v-if="auth.requireTFA">
-        <q-input v-model="tfa.code" maxlength="6" label="コード" autocomplete="one-time-code" />
-        <div>または</div>
-        <q-input v-model="tfa.recovery_code" label="リカバリコード" autocomplete="one-time-code" />
+        <q-input v-model="code" label="コードまたはリカバリコード" autocomplete="one-time-code" />
         <div>
           <q-btn label="認証" color="primary" type="submit" />
         </div>
@@ -29,7 +27,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 import ApiErrorMessage from 'src/components/Common/Text/ApiErrorMessage.vue';
 import InputPassword from 'src/components/Common/Input/InputPassword.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
@@ -47,11 +45,14 @@ export default defineComponent({
     meta.setTitle('ログイン');
 
     const state = reactive({ email: '', password: '', remember: true });
-    const tfa = reactive({ code: null, recovery_code: null });
+    const code = ref(null);
 
     const handler = () => {
       if (auth.requireTFA) {
-        auth.attemptTFA(tfa);
+        const param = code.value.length === 6
+          ? { code: code.value }
+          : { recovery_code: code.value };
+        auth.attemptTFA(param);
       } else {
         auth.attemptLogin(state);
       }
@@ -60,7 +61,7 @@ export default defineComponent({
     return {
       auth,
       state,
-      tfa,
+      code,
       handler,
     };
   },

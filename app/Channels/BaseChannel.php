@@ -6,5 +6,5 @@ namespace App\Channels;
 
 abstract class BaseChannel
 {
-    abstract public function featureEnabled(): bool;
+    abstract public static function featureEnabled(): bool;
 }

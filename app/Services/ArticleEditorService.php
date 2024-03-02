@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Events\Article\ArticleStored;
-use App\Events\Article\ArticleUpdated;
 use App\Http\Requests\Api\Article\BaseRequest;
 use App\Http\Requests\Api\Article\StoreRequest;
 use App\Http\Requests\Api\Article\UpdateRequest;
@@ -133,7 +131,6 @@ class ArticleEditorService extends Service
         $this->syncRelated($article, $storeRequest);
 
         $article = $article->fresh() ?? $article;
-        event(new ArticleStored($article));
 
         return $article;
     }
@@ -177,7 +174,6 @@ class ArticleEditorService extends Service
         $this->syncRelated($article, $updateRequest);
 
         $article = $article->fresh() ?? $article;
-        event(new ArticleUpdated($article));
 
         return $article;
     }

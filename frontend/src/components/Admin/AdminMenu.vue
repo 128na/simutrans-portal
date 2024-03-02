@@ -34,10 +34,15 @@
       </q-item-section>
       <q-item-section>ユーザー</q-item-section>
     </q-item>
+    <q-item href="/telescope">
+      <q-item-section avatar>
+        <q-icon name="build" />
+      </q-item-section>
+      <q-item-section>telescope(ローカルのみ)</q-item-section>
+    </q-item>
     <q-separator />
     <MetaInfo />
   </q-list>
-
 </template>
 
 <script>

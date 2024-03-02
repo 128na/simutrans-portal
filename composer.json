@@ -37,6 +37,7 @@
     "laravel/dusk": "^7.13.0",
     "laravel/pint": "^1.14.0",
     "laravel/sail": "^1.28.1",
+    "laravel/telescope": "^4.17",
     "mockery/mockery": "^1.6.7",
     "nunomaduro/collision": "^7.10",
     "phpunit/phpunit": "^10.5.11",
@@ -57,7 +58,9 @@
   },
   "extra": {
     "laravel": {
-      "dont-discover": []
+      "dont-discover": [
+        "laravel/telescope"
+      ]
     }
   },
   "autoload": {

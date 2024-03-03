@@ -27,6 +27,7 @@
     "apexcharts": "^3",
     "axios": "^1",
     "core-js": "^3",
+    "js-file-download": "^0.4.12",
     "luxon": "^3",
     "markdown-it": "^13",
     "pinia": "^2",

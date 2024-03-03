@@ -12,8 +12,6 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 /* eslint global-require: 0 */
 const { configure } = require('quasar/wrappers');
 
-const downloadRegExp = /\/download(\..+)?$'/;
-
 module.exports = configure((ctx) => ({
   // https://quasar.dev/quasar-cli/supporting-ts
   supportTS: false,
@@ -96,7 +94,7 @@ module.exports = configure((ctx) => ({
         target: 'http://localhost:1080',
         bypass: (req) => {
           // downloadのときのみプロキシする
-          if (downloadRegExp.test(req.url)) {
+          if (req.url.endsWith('/download')) {
             return null;
           }
           return req.url;

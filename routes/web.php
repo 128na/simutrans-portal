@@ -41,8 +41,7 @@ Route::get('/search', [FrontController::class, 'search'])->name('search');
 Route::get('/mypage/', (new MypageController())->index(...))->name('mypage.index');
 Route::get('/mypage/{any}', (new MypageController())->index(...))->where('any', '.*');
 Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show'])->name('articles.show');
-Route::get('/articles/{article}/{download}', [FrontController::class, 'download'])
-    ->where('download', '^download(\..+)?$')->name('articles.download');
+Route::post('/articles/{article}/download', [FrontController::class, 'download'])->name('articles.download');
 
 Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function (): void {
     Route::get('/admin/', (new AdminController())->index(...))->name('admin.index');

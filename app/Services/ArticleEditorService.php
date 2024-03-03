@@ -130,9 +130,7 @@ class ArticleEditorService extends Service
 
         $this->syncRelated($article, $storeRequest);
 
-        $article = $article->fresh() ?? $article;
-
-        return $article;
+        return $article->fresh() ?? $article;
     }
 
     private function getPublishedAt(StoreRequest|UpdateRequest $request): ?string

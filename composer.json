@@ -28,7 +28,7 @@
     "spatie/laravel-feed": "^4.4"
   },
   "require-dev": {
-    "barryvdh/laravel-debugbar": "^3.10.6",
+    "barryvdh/laravel-debugbar": "^3.11.0",
     "barryvdh/laravel-ide-helper": "^2.15.1",
     "brianium/paratest": "^7.4.3",
     "fakerphp/faker": "^1.23.1",
@@ -39,7 +39,7 @@
     "laravel/sail": "^1.28.2",
     "mockery/mockery": "^1.6.7",
     "nunomaduro/collision": "^7.10",
-    "phpunit/phpunit": "^10.5.11",
+    "phpunit/phpunit": "^10.5.12",
     "rector/rector": "^1.0.2",
     "spatie/laravel-ignition": "^2.4.2"
   },

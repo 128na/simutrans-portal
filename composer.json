@@ -17,8 +17,8 @@
     "guzzlehttp/guzzle": "^7.8.1",
     "htmlmin/htmlmin": "dev-master#347d577",
     "laravel-notification-channels/discord": "^1.5.1",
-    "laravel/fortify": "^1.20.1",
-    "laravel/framework": "^10.47.0",
+    "laravel/fortify": "^1.21.0",
+    "laravel/framework": "^10.48.2",
     "laravel/sanctum": "^3.3.3",
     "laravel/tinker": "^2.9.0",
     "marvinlabs/laravel-discord-logger": "^1.4.1",
@@ -28,7 +28,7 @@
     "spatie/laravel-feed": "^4.4"
   },
   "require-dev": {
-    "barryvdh/laravel-debugbar": "^3.11.1",
+    "barryvdh/laravel-debugbar": "^3.12.1",
     "barryvdh/laravel-ide-helper": "^2.15.1",
     "brianium/paratest": "^7.4.3",
     "fakerphp/faker": "^1.23.1",
@@ -36,10 +36,10 @@
     "larastan/larastan": "^2.9.2",
     "laravel/dusk": "^7.13.0",
     "laravel/pint": "^1.14.0",
-    "laravel/sail": "^1.28.2",
-    "mockery/mockery": "^1.6.7",
+    "laravel/sail": "^1.29.0",
+    "mockery/mockery": "^1.6.9",
     "nunomaduro/collision": "^7.10",
-    "phpunit/phpunit": "^10.5.12",
+    "phpunit/phpunit": "^10.5.13",
     "rector/rector": "^1.0.2",
     "spatie/laravel-ignition": "^2.4.2"
   },

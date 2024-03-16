@@ -162,6 +162,11 @@ class Article extends Model implements Feedable
         return $this->hasOne(Ranking::class);
     }
 
+    public function screenshots(): BelongsToMany
+    {
+        return $this->belongsToMany(Screenshot::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | スコープ

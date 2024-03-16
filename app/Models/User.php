@@ -147,6 +147,11 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
         return $this->hasMany(LoginHistory::class);
     }
 
+    public function screenshots(): HasMany
+    {
+        return $this->hasMany(Screenshot::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | スコープ

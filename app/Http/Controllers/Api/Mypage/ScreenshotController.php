@@ -25,16 +25,16 @@ class ScreenshotController extends Controller
     ) {
     }
 
-    public function list(Request $request): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
-        return $this->listScreenshot->list($request->user);
+        return $this->listScreenshot->list($request->user());
     }
 
     public function store(StoreRequest $storeRequest): AnonymousResourceCollection
     {
-        $this->storeScreenshot->store($storeRequest->user, $storeRequest->validated());
+        $this->storeScreenshot->store($storeRequest->user(), $storeRequest->validated());
 
-        return $this->list($storeRequest);
+        return $this->index($storeRequest);
     }
 
     public function update(Screenshot $screenshot, UpdateRequest $updateRequest): AnonymousResourceCollection
@@ -42,7 +42,7 @@ class ScreenshotController extends Controller
         $this->authorize('update', $screenshot);
         $this->updateScreenshot->update($screenshot, $updateRequest->validated());
 
-        return $this->list($updateRequest);
+        return $this->index($updateRequest);
     }
 
     public function destroy(Screenshot $screenshot, Request $request): AnonymousResourceCollection
@@ -50,6 +50,6 @@ class ScreenshotController extends Controller
         $this->authorize('destroy', $screenshot);
         $this->destroyScreenshot->destroy($screenshot);
 
-        return $this->list($request);
+        return $this->index($request);
     }
 }

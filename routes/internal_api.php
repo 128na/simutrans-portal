@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\Mypage\BulkZipController;
 use App\Http\Controllers\Api\Mypage\EditorController;
 use App\Http\Controllers\Api\Mypage\InvitationCodeController;
 use App\Http\Controllers\Api\Mypage\LoginHistoryController;
+use App\Http\Controllers\Api\Mypage\ScreenshotController;
 use App\Http\Controllers\Api\Mypage\TagController;
 use App\Http\Controllers\Api\Mypage\UserController;
 use Illuminate\Support\Facades\Route;
@@ -70,6 +71,11 @@ Route::prefix('mypage')->group(function (): void {
         Route::get('/invitation_code', [InvitationCodeController::class, 'index']);
         Route::post('/invitation_code', [InvitationCodeController::class, 'update']);
         Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy']);
+        // スクリーンショット機能
+        Route::get('/screenshots', [ScreenshotController::class, 'index']);
+        Route::post('/screenshots', [ScreenshotController::class, 'store']);
+        Route::put('/screenshots/{screenshot}', [ScreenshotController::class, 'update']);
+        Route::delete('/screenshots/{screenshot}', [ScreenshotController::class, 'destroy']);
         // ログイン履歴
         Route::get('/login_histories', (new LoginHistoryController())->index(...));
     });

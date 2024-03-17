@@ -31,14 +31,14 @@ class AttachmentController extends Controller
 
     public function store(StoreRequest $storeRequest): AttachmentsResource
     {
-        abort_unless($storeRequest->hasFile('file'), 400);
-
-        $attachment = $this->storeService->store($this->loggedinUser(), $storeRequest->file);
-
-        try {
-            UpdateFileInfo::dispatchSync($attachment);
-        } catch (Throwable $throwable) {
-            report($throwable);
+        foreach ($storeRequest->file('files') as $file) {
+            $attachment = $this->storeService->store($this->loggedinUser(), $file);
+            logger('AttachmentController::store', [$attachment->id]);
+            try {
+                UpdateFileInfo::dispatchSync($attachment);
+            } catch (Throwable $throwable) {
+                report($throwable);
+            }
         }
 
         return $this->index();

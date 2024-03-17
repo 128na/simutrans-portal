@@ -14,11 +14,11 @@
           <div class="row">
             <div v-for="file in files" :key="file.id" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
               <q-img :src="file.thumbnail" ratio="1" fit="contain" class="bg-grey-1" @click="handleSelect(file.id)"
-                v-close-popup>
-                <q-icon class="absolute all-pointer-events cursor-pointer" size="32px" name="cancel" color="negative"
-                  style="top: 8px; right: 8px" @click.stop="handleDelete(file.id)" />
+                v-close-popup="!isMultiSelect">
+                <q-btn round icon="close" class="absolute all-pointer-events cursor-pointer"
+                  style="top: 8px; right: 8px" color="negative" size="sm" @click.stop="handleDelete(file.id)" />
                 <div class="text-h5 absolute-bottom text-center">
-                  <q-icon v-show="file.id === modelValue" name="check_circle" size="1.5rem" color="positive" />
+                  <q-btn v-show="isSelected(file.id)" round icon="check" size="sm" color="positive" />
                   {{ file.original_name }}
                 </div>
               </q-img>
@@ -34,8 +34,8 @@
             画像は自動でwebpに変換、1280x720より大きい画像はリサイズされます。
           </div>
           <q-space />
-          <q-file borderless label-color="primary" type="file" label="新規アップロード" :accept="accept"
-            @update:model-value="handleUpload" />
+          <q-file borderless label-color="primary" type="file" label="新規アップロード" :max-file-size="20_000_000"
+            :multiple="isMultiSelect" :max-files="10" :accept="accept" @update:model-value="handleUpload" />
         </q-toolbar>
       </q-footer>
 
@@ -54,7 +54,7 @@ export default defineComponent({
   name: 'FileManager',
   props: {
     modelValue: {
-      type: Number,
+      type: [Number, Array],
       default: null,
     },
     attachmentableType: {
@@ -72,6 +72,9 @@ export default defineComponent({
   setup(props, { emit }) {
     const mypage = useMypageStore();
     const show = ref(false);
+    const isMultiSelect = computed(() => Array.isArray(props.modelValue));
+    const accept = computed(() => (props.onlyImage ? 'image/*' : ''));
+
     const files = computed(() => mypage.attachments
       .filter((a) => (props.onlyImage ? a.type === 'image' : true))
       .filter((a) => {
@@ -84,24 +87,35 @@ export default defineComponent({
         return false;
       }));
 
-    const accept = computed(() => (props.onlyImage ? 'image/*' : ''));
-
     const handleSelect = (id) => {
-      if (props.modelValue === id) {
-        emit('update:model-value', null);
+      if (isMultiSelect.value) {
+        if (props.modelValue.includes(id)) {
+          emit('update:model-value', props.modelValue.filter((v) => v !== id));
+        } else {
+          emit('update:model-value', [...props.modelValue, id]);
+        }
       } else {
-        emit('update:model-value', id);
+        if (props.modelValue === id) {
+          emit('update:model-value', null);
+        } else {
+          emit('update:model-value', id);
+        }
       }
     };
 
     const { storeAttachment, deleteAttachment } = useMypageApi();
     const $q = useQuasar();
     const notify = useNotify();
-    const handleUpload = async (file) => {
+    const handleUpload = async (uploadFiles) => {
       $q.loading.show();
+      if (!Array.isArray(uploadFiles)) {
+        uploadFiles = [uploadFiles];
+      }
       try {
         const formData = new FormData();
-        formData.append('file', file);
+        for (const f of uploadFiles) {
+          formData.append('files[]', f);
+        }
         formData.append('only_image', props.onlyImage ? 1 : 0);
 
         const res = await storeAttachment(formData);
@@ -130,6 +144,14 @@ export default defineComponent({
         $q.loading.hide();
       }
     };
+
+    const isSelected = (id) => {
+      if (isMultiSelect.value) {
+        return props.modelValue.includes(id);
+      }
+      return props.modelValue === id;
+    };
+
     return {
       show,
       files,
@@ -137,6 +159,8 @@ export default defineComponent({
       handleSelect,
       handleUpload,
       handleDelete,
+      isMultiSelect,
+      isSelected,
     };
   },
 });

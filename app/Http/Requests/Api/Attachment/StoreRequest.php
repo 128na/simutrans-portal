@@ -17,13 +17,15 @@ class StoreRequest extends FormRequest
     {
         if (request()->input('only_image')) {
             return [
-                'file' => 'required|file|image',
+                'files' => 'required|array|max:10',
+                'files.*' => 'required|file|image',
                 'only_image' => 'nullable',
             ];
         }
 
         return [
-            'file' => 'required|file',
+            'files' => 'required|array|max:10',
+            'files.*' => 'required|file',
             'only_image' => 'nullable',
         ];
     }

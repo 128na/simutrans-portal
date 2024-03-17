@@ -72,10 +72,10 @@ Route::prefix('mypage')->group(function (): void {
         Route::post('/invitation_code', [InvitationCodeController::class, 'update']);
         Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy']);
         // スクリーンショット機能
-        Route::get('/screenshots', [ScreenshotController::class, 'index']);
-        Route::post('/screenshots', [ScreenshotController::class, 'store']);
-        Route::put('/screenshots/{screenshot}', [ScreenshotController::class, 'update']);
-        Route::delete('/screenshots/{screenshot}', [ScreenshotController::class, 'destroy']);
+        Route::get('/screenshots', (new ScreenshotController())->index(...));
+        Route::post('/screenshots', (new ScreenshotController())->store(...));
+        Route::put('/screenshots/{screenshot}', (new ScreenshotController())->update(...));
+        Route::delete('/screenshots/{screenshot}', (new ScreenshotController())->destroy(...));
         // ログイン履歴
         Route::get('/login_histories', (new LoginHistoryController())->index(...));
     });

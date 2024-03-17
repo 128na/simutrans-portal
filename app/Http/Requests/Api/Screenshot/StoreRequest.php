@@ -19,7 +19,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:256',
-            'description' => 'required|string|max:1024',
+            'description' => 'required|string|max:2048',
             'links' => 'required|array',
             'links.*' => 'url',
             'status' => ['required', Rule::in(ScreenShotStatus::cases())],

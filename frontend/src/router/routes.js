@@ -62,6 +62,10 @@ const routes = [
         ,
       },
       {
+        name: 'screenshot', path: 'screenshot', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Screenshot.vue')
+        ,
+      },
+      {
         name: 'invite', path: 'invite/:code', meta: { requiresGuest: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Invite.vue')
         ,
       },

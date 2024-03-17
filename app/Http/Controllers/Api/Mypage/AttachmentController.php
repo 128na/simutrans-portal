@@ -33,7 +33,6 @@ class AttachmentController extends Controller
     {
         foreach ($storeRequest->file('files') as $file) {
             $attachment = $this->storeService->store($this->loggedinUser(), $file);
-            logger('AttachmentController::store', [$attachment->id]);
             try {
                 UpdateFileInfo::dispatchSync($attachment);
             } catch (Throwable $throwable) {

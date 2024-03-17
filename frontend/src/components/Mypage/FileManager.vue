@@ -5,6 +5,8 @@
         <q-toolbar>
           <q-toolbar-title>ファイル管理</q-toolbar-title>
           <q-space />
+          表示
+          <q-btn-toggle flat :options="displayCols" v-model="displayCol" />
           <q-btn dense flat icon="close" v-close-popup />
         </q-toolbar>
       </q-header>
@@ -12,7 +14,7 @@
       <q-page-container class="bg-white">
         <q-page>
           <div class="row">
-            <div v-for="file in files" :key="file.id" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <div v-for="file in files" :key="file.id" :class="colClass">
               <q-img :src="file.thumbnail" ratio="1" fit="contain" class="bg-grey-1" @click="handleSelect(file.id)"
                 v-close-popup="!isMultiSelect">
                 <q-btn round icon="close" class="absolute all-pointer-events cursor-pointer"
@@ -31,17 +33,18 @@
         <q-toolbar>
           <div class="text-dark">
             チェックの入っているファイルを再選択すると選択が解除されます。<br>
-            画像は自動でwebpに変換、1280x720より大きい画像はリサイズされます。
+            画像は自動でwebpに変換、3840x2160より大きい画像はリサイズされます。
           </div>
           <q-space />
           <q-file borderless label-color="primary" type="file" label="新規アップロード" :max-file-size="20_000_000"
             :multiple="isMultiSelect" :max-files="10" :accept="accept" @update:model-value="handleUpload" />
+          <q-btn v-show="isMultiSelect" color="secondary" v-close-popup>閉じる</q-btn>
         </q-toolbar>
       </q-footer>
 
     </q-layout>
   </q-dialog>
-  <q-btn flat label="選択" color="secondary" @click="show = true" />
+  <q-btn outline label="選択" color="secondary" @click="show = true" />
 </template>
 <script>
 import { useQuasar } from 'quasar';
@@ -49,6 +52,13 @@ import { useMypageApi } from 'src/composables/api';
 import { useNotify } from 'src/composables/notify';
 import { useMypageStore } from 'src/store/mypage';
 import { defineComponent, ref, computed } from 'vue';
+
+const displayCols = [
+  { value: 1, label: '1' },
+  { value: 3, label: '3' },
+  { value: 6, label: '6' },
+  { value: 12, label: '12' },
+];
 
 export default defineComponent({
   name: 'FileManager',
@@ -152,6 +162,9 @@ export default defineComponent({
       return props.modelValue === id;
     };
 
+    const displayCol = ref($q.platform.is.mobile ? 1 : 6);
+    const colClass = computed(() => `col-${12 / displayCol.value}`);
+
     return {
       show,
       files,
@@ -161,6 +174,9 @@ export default defineComponent({
       handleDelete,
       isMultiSelect,
       isSelected,
+      displayCols,
+      displayCol,
+      colClass,
     };
   },
 });

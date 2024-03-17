@@ -17,39 +17,31 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ScreenshotController extends Controller
 {
-    public function __construct(
-        private readonly ListScreenshot $listScreenshot,
-        private readonly StoreScreenshot $storeScreenshot,
-        private readonly UpdateScreenshot $updateScreenshot,
-        private readonly DestroyScreenshot $destroyScreenshot,
-    ) {
-    }
-
-    public function index(Request $request): AnonymousResourceCollection
+    public function index(Request $request, ListScreenshot $listScreenshot): AnonymousResourceCollection
     {
-        return $this->listScreenshot->list($request->user());
+        return $listScreenshot->list($request->user());
     }
 
-    public function store(StoreRequest $storeRequest): AnonymousResourceCollection
+    public function store(StoreRequest $storeRequest, StoreScreenshot $storeScreenshot): AnonymousResourceCollection
     {
-        $this->storeScreenshot->store($storeRequest->user(), $storeRequest->validated());
+        $storeScreenshot->store($storeRequest->user(), $storeRequest->validated());
 
-        return $this->index($storeRequest);
+        return $this->index($storeRequest, app(ListScreenshot::class));
     }
 
-    public function update(Screenshot $screenshot, UpdateRequest $updateRequest): AnonymousResourceCollection
+    public function update(Screenshot $screenshot, UpdateRequest $updateRequest, UpdateScreenshot $updateScreenshot): AnonymousResourceCollection
     {
         $this->authorize('update', $screenshot);
-        $this->updateScreenshot->update($screenshot, $updateRequest->validated());
+        $updateScreenshot->update($screenshot, $updateRequest->validated());
 
-        return $this->index($updateRequest);
+        return $this->index($updateRequest, app(ListScreenshot::class));
     }
 
-    public function destroy(Screenshot $screenshot, Request $request): AnonymousResourceCollection
+    public function destroy(Screenshot $screenshot, Request $request, DestroyScreenshot $destroyScreenshot): AnonymousResourceCollection
     {
         $this->authorize('destroy', $screenshot);
-        $this->destroyScreenshot->destroy($screenshot);
+        $destroyScreenshot->destroy($screenshot);
 
-        return $this->index($request);
+        return $this->index($request, app(ListScreenshot::class));
     }
 }

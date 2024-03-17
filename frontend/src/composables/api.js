@@ -137,6 +137,20 @@ export const useMypageApi = () => ({
     return axios.post(`/api/mypage/tags/${id}`, { description });
   },
 
+  // screenshots
+  fetchScreenshots() {
+    return axios.get('/api/mypage/screenshots');
+  },
+  storeScreenshot(params) {
+    return axios.post('/api/mypage/screenshots', params);
+  },
+  updateScreenshot(screenshotId, params) {
+    return axios.put(`/api/mypage/screenshots/${screenshotId}`, params);
+  },
+  deleteScreenshot(screenshotId) {
+    return axios.delete(`/api/mypage/screenshots/${screenshotId}`);
+  },
+
   // attachments
   fetchAttachments() {
     return axios.get('/api/mypage/attachments');

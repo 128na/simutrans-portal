@@ -1,5 +1,5 @@
 <template>
-  <q-dialog :modelValue="!!editor.screenshot" persistent maximized>
+  <q-dialog :modelValue="!!editor.screenshot" persistent maximized @hide="editor.screenshot = null">
     <q-layout view="hHh lpR fFf">
       <q-header elevated class="bg-dark text-white">
         <q-toolbar>
@@ -21,6 +21,9 @@
             <label-required>説明</label-required>
           </input-countable>
           <label-required>画像（10枚まで）</label-required>
+          <span v-show="editor.vali('screenshot.attachments')" class="text-negative">
+            {{ editor.vali('screenshot.attachments') }}
+          </span>
 
           <div class="row q-gutter-sm">
             <template v-for="attachmentId in editor.screenshot.attachments" :key="attachmentId">
@@ -36,8 +39,10 @@
 
           <FormArticleRelations />
           <FormLinks />
-          <hr />
-          <q-btn color="primary">投稿</q-btn>
+          <FormStatus />
+          <div class="q-mt-lg">
+            <q-btn color="primary" @click="save">投稿</q-btn>
+          </div>
         </q-page>
       </q-page-container>
     </q-layout>
@@ -52,6 +57,7 @@ import FormLinks from 'src/components/Mypage/Screenshot/FormLinks.vue';
 import { useScreenshotEditStore } from 'src/store/screenshotEdit';
 import InputCountable from 'src/components/Common/Input/InputCountable.vue';
 import { useMypageStore } from 'src/store/mypage';
+import FormStatus from './FormStatus.vue';
 
 export default defineComponent({
   name: 'ScreenshotEditor',
@@ -61,15 +67,27 @@ export default defineComponent({
     FileManager,
     FormArticleRelations,
     FormLinks,
+    FormStatus,
   },
   props: {
   },
   setup() {
     const mypage = useMypageStore();
     const editor = useScreenshotEditStore();
+    const save = async () => {
+      try {
+        const data = await editor.save();
+        mypage.screenshots = data;
+        editor.screenshot = null;
+      } catch {
+        // do nothing
+      }
+    };
+
     return {
       mypage,
       editor,
+      save,
     };
   },
 });

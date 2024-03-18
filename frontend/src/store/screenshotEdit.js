@@ -9,7 +9,7 @@ export const useScreenshotEditStore = defineStore('screenshotEdit', () => {
     screenshot.value = JSON.parse(JSON.stringify({
       title: '',
       description: '',
-      status: 'Private',
+      status: 'Publish',
       attachments: [],
       links: [],
       articles: [],
@@ -21,10 +21,11 @@ export const useScreenshotEditStore = defineStore('screenshotEdit', () => {
 
   const api = useMypageApi();
   const handler = useApiHandler();
-  const updateUser = async () => {
+  const save = async () => {
     const res = await handler.handleWithValidate({
-      doRequest: () => null,
-      done: () => { },
+      doRequest: () => (screenshot.value.id
+        ? api.updateScreenshot(screenshot.value.id, { screenshot: screenshot.value })
+        : api.storeScreenshot({ screenshot: screenshot.value })),
       successMessage: '保存しました',
     });
 
@@ -38,5 +39,6 @@ export const useScreenshotEditStore = defineStore('screenshotEdit', () => {
     createScreenshot,
     selectScreenshot,
     vali,
+    save,
   };
 });

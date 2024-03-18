@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Models\Article;
 use App\Models\Screenshot;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -53,5 +54,15 @@ class ScreenshotRepository extends BaseRepository
             $attachments = $screenshot->user->myAttachments()->find($attachmentsIds);
             $screenshot->attachments()->saveMany($attachments);
         }
+    }
+
+    /**
+     * 記事を関連付ける.
+     *
+     * @param  array<int|string>  $attachmentsIds
+     */
+    public function syncArticles(Screenshot $screenshot, array $articleIds): void
+    {
+        $screenshot->articles()->saveMany(Article::find($articleIds));
     }
 }

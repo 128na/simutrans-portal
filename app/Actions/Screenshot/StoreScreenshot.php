@@ -21,11 +21,13 @@ class StoreScreenshot
     {
         $screenshot = $this->screenshotRepository->store([
             'user_id' => $user->id,
-            'title' => $data['title'],
-            'description' => $data['description'],
-            'links' => $data['links'],
-            'status' => $data['status'],
+            'title' => $data['screenshot']['title'],
+            'description' => $data['screenshot']['description'],
+            'links' => $data['screenshot']['links'],
+            'status' => $data['screenshot']['status'],
         ]);
-        $this->screenshotRepository->syncAttachments($screenshot, $data['attachments']);
+        $this->screenshotRepository->syncAttachments($screenshot, $data['screenshot']['attachments']);
+        $articleIds = array_map(fn ($a) => $a['id'], $data['screenshot']['articles']);
+        $this->screenshotRepository->syncArticles($screenshot, $articleIds);
     }
 }

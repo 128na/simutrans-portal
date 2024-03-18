@@ -20,11 +20,11 @@ class UpdateScreenshot
     public function update(Screenshot $screenshot, array $data): void
     {
         $this->screenshotRepository->update($screenshot, [
-            'title' => $data['title'],
-            'description' => $data['description'],
-            'links' => $data['links'],
-            'status' => $data['status'],
+            'title' => $data['screenshot']['title'],
+            'description' => $data['screenshot']['description'],
+            'links' => $data['screenshot']['links'],
+            'status' => $data['screenshot']['status'],
         ]);
-        $this->screenshotRepository->syncAttachments($screenshot, $data['attachments']);
+        $this->screenshotRepository->syncAttachments($screenshot, $data['screenshot']['attachments']);
     }
 }

@@ -1,7 +1,8 @@
 <template>
   <label-optional>関連リンク（10件まで）</label-optional>
   <template v-for="(_, index) in store.screenshot.links" :key="index">
-    <q-input v-model="store.screenshot.links[index]" type="url" :label="`リンク ${index + 1}`">
+    <q-input v-model="store.screenshot.links[index]" type="url" :label="`リンク ${index + 1}`" bottom-slots
+      :error-message="store.vali(`screenshot.links.${index}`)" :error="!!store.vali(`screenshot.links.${index}`)">
 
       <template v-slot:after>
         <q-btn icon="close" round outline color="negative" size="xs" @click="remove(index)" />

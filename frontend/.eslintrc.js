@@ -84,6 +84,8 @@ module.exports = {
     'linebreak-style': 'off',
     'no-lonely-if': 'off',
     'no-restricted-syntax': 'off',
+    'no-console': 'off',
+    'no-alert': 'off',
 
     // level down
     'vue/no-unused-vars': 'warn',

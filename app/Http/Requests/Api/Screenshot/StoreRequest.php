@@ -18,15 +18,15 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:256',
-            'description' => 'required|string|max:2048',
-            'links' => 'required|array',
-            'links.*' => 'url',
-            'status' => ['required', Rule::in(ScreenShotStatus::cases())],
-            'attachments' => 'required|array',
-            'attachments.*' => 'required|exists:attachments,id',
-            'articles' => 'required|array',
-            'articles.*' => 'required|exists:articles,id',
+            'screenshot.title' => 'required|string|max:256',
+            'screenshot.description' => 'required|string|max:2048',
+            'screenshot.status' => ['required', Rule::in(ScreenShotStatus::cases())],
+            'screenshot.attachments' => 'required|array|min:1|max:10',
+            'screenshot.attachments.*' => 'required|exists:attachments,id',
+            'screenshot.links' => 'present|array|max:10',
+            'screenshot.links.*' => 'url',
+            'screenshot.articles' => 'present|array|max:10',
+            'screenshot.articles.*.id' => 'required|exists:articles,id',
         ];
     }
 }

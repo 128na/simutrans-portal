@@ -18,6 +18,9 @@ class ListScreenshot
 
     public function list(User $user): AnonymousResourceCollection
     {
-        return ScreenshotResource::collection($this->screenshotRepository->findAllByUser($user));
+        $screenshots = $this->screenshotRepository->findAllByUser($user);
+        $screenshots->loadMissing(['attachments', 'articles']);
+
+        return ScreenshotResource::collection($screenshots);
     }
 }

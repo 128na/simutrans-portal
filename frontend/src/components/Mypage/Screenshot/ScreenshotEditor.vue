@@ -29,7 +29,6 @@
             <template v-for="attachmentId in editor.screenshot.attachments" :key="attachmentId">
               <div class="">
                 <q-img :src="mypage.findAttachmentById(attachmentId).thumbnail" width="256px" />
-                <div>{{ mypage.findAttachmentById(attachmentId).original_name }}</div>
               </div>
             </template>
           </div>

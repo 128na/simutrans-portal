@@ -31,6 +31,14 @@ export const useScreenshotEditStore = defineStore('screenshotEdit', () => {
 
     return res.data.data;
   };
+  const destroy = async (id) => {
+    const res = await handler.handle({
+      doRequest: () => api.deleteScreenshot(id),
+      successMessage: '削除しました',
+    });
+
+    return res.data.data;
+  };
 
   const vali = (key) => handler.getValidationErrorByKey(key);
 
@@ -40,5 +48,6 @@ export const useScreenshotEditStore = defineStore('screenshotEdit', () => {
     selectScreenshot,
     vali,
     save,
+    destroy,
   };
 });

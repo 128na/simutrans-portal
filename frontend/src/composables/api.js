@@ -56,6 +56,12 @@ export const useFrontApi = () => ({
   discordInvite(token) {
     return axios.post('/api/front/invite-simutrans-interact-meeting', { token });
   },
+  fetchScreenshots(page = 1) {
+    return axios.get(`/api/front/screenshots?page=${page}`);
+  },
+  fetchScreenshot(id) {
+    return axios.get(`/api/front/screenshots/${id}`);
+  },
 });
 
 export const useMypageApi = () => ({

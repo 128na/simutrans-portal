@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Admin\TagController as AdminTagController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Front\DiscordController;
 use App\Http\Controllers\Api\Front\FrontController;
+use App\Http\Controllers\Api\Front\ScreenshotController as FrontScreenshotController;
 use App\Http\Controllers\Api\Mypage\AnalyticsController;
 use App\Http\Controllers\Api\Mypage\AttachmentController;
 use App\Http\Controllers\Api\Mypage\BulkZipController;
@@ -34,6 +35,9 @@ Route::prefix('front')->group(function (): void {
         Route::get('/users/{userIdOrNickname}', [FrontController::class, 'user']);
         Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show']);
         Route::get('/search', [FrontController::class, 'search']);
+
+        Route::get('/screenshots', [FrontScreenshotController::class, 'index']);
+        Route::get('/screenshots/{screenshot}', [FrontScreenshotController::class, 'show']);
     });
     Route::middleware(['throttle:discordInvite'])->group(function (): void {
         Route::post('/invite-simutrans-interact-meeting', [DiscordController::class, 'index']);

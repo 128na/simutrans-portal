@@ -28,7 +28,7 @@ class ScreenshotRepository extends BaseRepository
     /**
      * @return LengthAwarePaginator<Screenshot>
      */
-    public function paginatePublished(): LengthAwarePaginator
+    public function paginatePublish(): LengthAwarePaginator
     {
         return $this->model
             ->publish()

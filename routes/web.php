@@ -8,6 +8,7 @@ use App\Http\Controllers\FrontController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
+use App\Http\Controllers\ScreenshotController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['cache.content'])->group(function (): void {
@@ -34,6 +35,9 @@ Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content']
     Route::get('/users/{userIdOrNickname}', [FrontController::class, 'user'])->name('user');
     Route::get('/invite-simutrans-interact-meeting', [FrontController::class, 'fallback']);
     Route::get('/social', [FrontController::class, 'social']);
+
+    Route::get('/screenshots', [ScreenshotController::class, 'index']);
+    Route::get('/screenshots/{screenshot}', [ScreenshotController::class, 'show']);
 });
 // 非ログイン系 reidsキャッシュ無効
 Route::get('/articles/{id}', [FrontController::class, 'fallbackShow']);

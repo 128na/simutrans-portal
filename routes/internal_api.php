@@ -36,8 +36,8 @@ Route::prefix('front')->group(function (): void {
         Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show']);
         Route::get('/search', [FrontController::class, 'search']);
 
-        Route::get('/screenshots', [FrontScreenshotController::class, 'index']);
-        Route::get('/screenshots/{screenshot}', [FrontScreenshotController::class, 'show']);
+        Route::get('/screenshots', (new FrontScreenshotController())->index(...));
+        Route::get('/screenshots/{screenshot}', (new FrontScreenshotController())->show(...));
     });
     Route::middleware(['throttle:discordInvite'])->group(function (): void {
         Route::post('/invite-simutrans-interact-meeting', [DiscordController::class, 'index']);

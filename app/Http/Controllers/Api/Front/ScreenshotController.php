@@ -16,7 +16,7 @@ class ScreenshotController extends Controller
 {
     public function index(Request $request, ListPublicScreenshot $listPublicScreenshot): AnonymousResourceCollection
     {
-        return $listPublicScreenshot->list($request);
+        return $listPublicScreenshot->list();
     }
 
     public function show(Screenshot $screenshot, ShowPublicScreenshot $showPublicScreenshot): ScreenshotResource

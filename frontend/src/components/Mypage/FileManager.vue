@@ -31,10 +31,19 @@
 
       <q-footer elevated class="bg-white">
         <q-toolbar>
-          <div class="text-dark">
-            チェックの入っているファイルを再選択すると選択が解除されます。<br>
-            画像は自動でwebpに変換、3840x2160より大きい画像はリサイズされます。
-          </div>
+
+          <q-checkbox v-model="autoCrop" class="text-dark q-mr-sm" label="自動トリミング">
+            <q-tooltip>
+              画像アップロードの場合、自動でトリミングします。<br />スクリーンショットのメニューバーをトリミングする時に便利です。
+            </q-tooltip>
+          </q-checkbox>
+          <template v-if="autoCrop">
+            <q-input type="number" min="0" max="128" v-model="crop.top" label="上" />
+            <q-input type="number" min="0" max="128" v-model="crop.bottom" label="下" />
+            <q-input type="number" min="0" max="128" v-model="crop.left" label="左" />
+            <q-input type="number" min="0" max="128" v-model="crop.right" label="右" />
+          </template>
+
           <q-space />
           <q-file borderless label-color="primary" type="file" label="新規アップロード" :max-file-size="20_000_000"
             :multiple="isMultiSelect" :max-files="10" :accept="accept" @update:model-value="handleUpload" />
@@ -84,6 +93,13 @@ export default defineComponent({
     const show = ref(false);
     const isMultiSelect = computed(() => Array.isArray(props.modelValue));
     const accept = computed(() => (props.onlyImage ? 'image/*' : ''));
+    const autoCrop = ref(false);
+    const crop = ref({
+      top: 32,
+      bottom: 17,
+      left: 0,
+      right: 0,
+    });
 
     const files = computed(() => mypage.attachments
       .filter((a) => (props.onlyImage ? a.type === 'image' : true))
@@ -127,6 +143,12 @@ export default defineComponent({
           formData.append('files[]', f);
         }
         formData.append('only_image', props.onlyImage ? 1 : 0);
+        if (autoCrop.value) {
+          formData.append('crop[top]', crop.value.top);
+          formData.append('crop[bottom]', crop.value.bottom);
+          formData.append('crop[left]', crop.value.left);
+          formData.append('crop[right]', crop.value.right);
+        }
 
         const res = await storeAttachment(formData);
         mypage.attachments = res.data.data;
@@ -177,6 +199,8 @@ export default defineComponent({
       displayCols,
       displayCol,
       colClass,
+      autoCrop,
+      crop,
     };
   },
 });

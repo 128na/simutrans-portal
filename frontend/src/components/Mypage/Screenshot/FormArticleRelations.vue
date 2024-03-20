@@ -4,6 +4,10 @@
     <div>
       {{ article.title }}
       <q-btn icon="close" round outline color="negative" size="xs" @click="remove(index)" />
+
+      <div v-show="store.vali(`screenshot.articles.${index}.id`)" class="text-negative">
+        {{ store.vali(`screenshot.articles.${index}.id`) }}
+      </div>
     </div>
   </template>
   <q-btn color="primary" outline label="記事を追加" class="q-my-sm" @click="showDialog" />

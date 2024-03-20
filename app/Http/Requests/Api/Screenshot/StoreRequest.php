@@ -24,9 +24,9 @@ class StoreRequest extends FormRequest
             'screenshot.attachments' => 'required|array|min:1|max:10',
             'screenshot.attachments.*' => 'required|exists:attachments,id',
             'screenshot.links' => 'present|array|max:10',
-            'screenshot.links.*' => 'url',
+            'screenshot.links.*' => 'url|distinct',
             'screenshot.articles' => 'present|array|max:10',
-            'screenshot.articles.*.id' => 'required|exists:articles,id',
+            'screenshot.articles.*.id' => 'required|distinct|exists:articles,id,status,publish',
         ];
     }
 }

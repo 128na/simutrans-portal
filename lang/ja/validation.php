@@ -41,7 +41,7 @@ return [
     'digits' => ':attributeは:digits桁で指定してください。',
     'digits_between' => ':attributeは:min桁から:max桁の間で指定してください。',
     'dimensions' => ':attributeの図形サイズが正しくありません。',
-    'distinct' => ':attributeには異なった値を指定してください。',
+    'distinct' => ':attributeに重複しているものがあります。',
     'email' => ':attributeには、有効なメールアドレスを指定してください。',
     'ends_with' => ':attributeには、:valuesのどれかで終わる値を指定してください。',
     'exists' => '選択された:attributeは正しくありません。',
@@ -124,7 +124,7 @@ return [
     'unique' => ':attributeの値は既に存在しています。',
     'uniqueAdmin' => ':attributeの値は既に管理者が使用しています。',
     'uploaded' => ':attributeのアップロードに失敗しました。',
-    'url' => ':attributeに正しい形式を指定してください。',
+    'url' => ':attributeはURLのみ指定できます。',
     'uuid' => ':attributeに有効なUUIDを指定してください。',
 
     /*

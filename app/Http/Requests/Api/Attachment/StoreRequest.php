@@ -20,6 +20,10 @@ class StoreRequest extends FormRequest
                 'files' => 'required|array|max:10',
                 'files.*' => 'required|file|image',
                 'only_image' => 'nullable',
+                'crop.top' => 'integer|min:0|max:128',
+                'crop.bottom' => 'integer|min:0|max:128',
+                'crop.left' => 'integer|min:0|max:128',
+                'crop.right' => 'integer|min:0|max:128',
             ];
         }
 

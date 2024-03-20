@@ -46,11 +46,11 @@ class StoreArticleTest extends UnitTestCase
                     'contents' => 'dummy',
                     'published_at' => $carbonImmutable->toDateTimeString(),
                     'modified_at' => $carbonImmutable->toDateTimeString(),
-                    'articles' => [],
                 ],
             ])->once()->andReturn(new Article());
             $mock->shouldReceive('syncAttachments')->once();
             $mock->shouldReceive('syncCategories')->once();
+            $mock->shouldReceive('syncArticles')->once();
             $mock->shouldReceive('syncTags')->once();
         });
         $this->getSUT($carbonImmutable)->storeArticle($user, $storeRequest);
@@ -83,11 +83,11 @@ class StoreArticleTest extends UnitTestCase
                     'contents' => 'dummy',
                     'published_at' => '2022-01-02 03:34:00',
                     'modified_at' => $carbonImmutable->toDateTimeString(),
-                    'articles' => [],
                 ],
             ])->once()->andReturn(new Article());
             $mock->shouldReceive('syncAttachments')->once();
             $mock->shouldReceive('syncCategories')->once();
+            $mock->shouldReceive('syncArticles')->once();
             $mock->shouldReceive('syncTags')->once();
         });
         $this->getSUT($carbonImmutable)->storeArticle($user, $storeRequest);
@@ -119,11 +119,11 @@ class StoreArticleTest extends UnitTestCase
                     'contents' => 'dummy',
                     'published_at' => null,
                     'modified_at' => $carbonImmutable->toDateTimeString(),
-                    'articles' => [],
                 ],
             ])->once()->andReturn(new Article());
             $mock->shouldReceive('syncAttachments')->once();
             $mock->shouldReceive('syncCategories')->once();
+            $mock->shouldReceive('syncArticles')->once();
             $mock->shouldReceive('syncTags')->once();
         });
         $this->getSUT($carbonImmutable)->storeArticle($user, $storeRequest);

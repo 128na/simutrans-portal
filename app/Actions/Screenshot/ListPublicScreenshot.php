@@ -18,7 +18,6 @@ class ListPublicScreenshot
     public function list(): AnonymousResourceCollection
     {
         $screenshots = $this->screenshotRepository->paginatePublish();
-        $screenshots->loadMissing(['user', 'attachments.fileInfo', 'articles']);
 
         return ScreenshotResource::collection($screenshots);
     }

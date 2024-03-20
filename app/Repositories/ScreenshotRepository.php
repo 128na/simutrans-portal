@@ -32,6 +32,7 @@ class ScreenshotRepository extends BaseRepository
     {
         return $this->model
             ->publish()
+            ->with(['user', 'attachments.fileInfo', 'articles'])
             ->paginate(100);
     }
 
@@ -40,7 +41,10 @@ class ScreenshotRepository extends BaseRepository
      */
     public function findAllByUser(User $user): Collection
     {
-        return $user->screenshots()->get();
+        return $user
+            ->screenshots()
+            ->with(['attachments', 'articles'])
+            ->get();
     }
 
     /**
@@ -59,7 +63,7 @@ class ScreenshotRepository extends BaseRepository
     /**
      * 記事を関連付ける.
      *
-     * @param  array<int|string>  $attachmentsIds
+     * @param  array<int|string>  $articleIds
      */
     public function syncArticles(Screenshot $screenshot, array $articleIds): void
     {

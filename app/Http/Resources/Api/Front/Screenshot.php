@@ -6,6 +6,8 @@ namespace App\Http\Resources\Api\Front;
 
 use App\Models\Article;
 use App\Models\Screenshot as ModelsScreenshot;
+use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Screenshot extends JsonResource
@@ -17,6 +19,8 @@ class Screenshot extends JsonResource
     public function toArray($request)
     {
         assert($this->resource instanceof ModelsScreenshot);
+        assert($this->resource->user instanceof User);
+        assert($this->resource->updated_at instanceof CarbonImmutable);
 
         return [
             'id' => $this->resource->id,

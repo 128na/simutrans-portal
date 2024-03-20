@@ -31,7 +31,9 @@ class AttachmentController extends Controller
 
     public function store(StoreRequest $storeRequest): AttachmentsResource
     {
-        foreach ($storeRequest->file('files') as $file) {
+        /** @var array<int,\Illuminate\Http\UploadedFile> */
+        $files = $storeRequest->file('files', []);
+        foreach ($files as $file) {
             $attachment = $this->storeService->store($this->loggedinUser(), $file);
             try {
                 UpdateFileInfo::dispatchSync($attachment);

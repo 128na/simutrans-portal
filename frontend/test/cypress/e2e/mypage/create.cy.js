@@ -1,7 +1,9 @@
 /// <reference types="cypress" />
 
 const { mockGuestResponse, mockUserResponse, mockUnverifiedUserResponse } = require('../../__mocks__/auth');
-const { mockOptionsResponse, mockAttachmentsResponse, mockTagsResponse, mockArticlesResponse } = require('../../__mocks__/mypage');
+const {
+  mockOptionsResponse, mockAttachmentsResponse, mockTagsResponse, mockArticlesResponse,
+} = require('../../__mocks__/mypage');
 const {
   assertLoginPage, assertRequiresVerifyPage, assertCreatePage,
 } = require('../../assertion');

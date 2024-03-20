@@ -22,11 +22,11 @@ use Illuminate\Support\LazyCollection;
  */
 class ArticleRepository extends BaseRepository
 {
-    public const MYPAGE_RELATIONS = ['user', 'attachments.fileInfo', 'categories', 'tags', 'totalViewCount', 'totalConversionCount'];
+    public const MYPAGE_RELATIONS = ['user', 'attachments.fileInfo', 'categories', 'tags', 'totalViewCount', 'totalConversionCount', 'articles'];
 
-    public const FRONT_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags'];
+    public const FRONT_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags', 'articles', 'relatedArticles', 'relatedScreenshots'];
 
-    public const SHOW_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags'];
+    public const SHOW_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags', 'articles', 'relatedArticles', 'relatedScreenshots'];
 
     public const PER_PAGE_SIMPLE = 6;
 
@@ -51,6 +51,17 @@ class ArticleRepository extends BaseRepository
             $attachments = $article->user->myAttachments()->find($attachmentsIds);
             $article->attachments()->saveMany($attachments);
         }
+    }
+
+    /**
+     * 記事を関連付ける.
+     *
+     * @param  array<int|string>  $articleIds
+     */
+    public function syncArticles(Article $article, array $articleIds): void
+    {
+        $result = $article->articles()->sync(Article::find($articleIds));
+        logger('syncArticles', $result);
     }
 
     /**

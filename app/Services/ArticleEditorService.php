@@ -199,6 +199,9 @@ class ArticleEditorService extends Service
             ->filter()
             ->toArray();
         $this->articleRepository->syncAttachments($article, $attachmentIds);
+        $articleIds = $baseRequest->input('article.articles.*.id', []);
+        logger('articleIds', [$articleIds]);
+        $this->articleRepository->syncArticles($article, $articleIds);
 
         // カテゴリ
         $categoryIds = $baseRequest->input('article.categories.*.id', []);

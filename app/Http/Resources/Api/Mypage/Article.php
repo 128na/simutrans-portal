@@ -36,6 +36,13 @@ class Article extends JsonResource
                 'id' => $tag->id,
                 'name' => $tag->name,
             ]),
+            'articles' => $this->resource->articles
+                ->filter(fn (ModelsArticle $article): bool => $article->is_publish)
+                ->map(fn (ModelsArticle $article): array => [
+                    'id' => $article->id,
+                    'title' => $article->title,
+                ])
+                ->values(),
             'created_at' => $this->resource->created_at?->toIso8601String(),
             'published_at' => $this->resource->published_at?->toIso8601String(),
             'modified_at' => $this->resource->modified_at?->toIso8601String(),

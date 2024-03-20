@@ -6,6 +6,7 @@ namespace App\Http\Resources\Api\Front;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Screenshot;
 use App\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -41,6 +42,27 @@ class ArticleResource extends JsonResource
                 'nickname' => $this->resource->user?->nickname,
                 'name' => $this->resource->user?->name,
             ],
+            'articles' => $this->resource->articles
+                ->filter(fn (Article $article): bool => $article->is_publish)
+                ->map(fn (Article $article): array => [
+                    'id' => $article->id,
+                    'title' => $article->title,
+                ])
+                ->values(),
+            'relatedArticles' => $this->resource->relatedArticles
+                ->filter(fn (Article $article): bool => $article->is_publish)
+                ->map(fn (Article $article): array => [
+                    'id' => $article->id,
+                    'title' => $article->title,
+                ])
+                ->values(),
+            'relatedScreenshots' => $this->resource->relatedScreenshots
+                ->filter(fn (Screenshot $screenshot): bool => $screenshot->is_publish)
+                ->map(fn (Screenshot $screenshot): array => [
+                    'id' => $screenshot->id,
+                    'title' => $screenshot->title,
+                ])
+                ->values(),
             'published_at' => $this->resource->published_at?->toIso8601String() ?? '未投稿',
             'modified_at' => $this->resource->modified_at?->toIso8601String(),
             'file_info' => $this->when($this->resource->hasFileInfo, fn () => $this->resource->file?->fileInfo?->data),

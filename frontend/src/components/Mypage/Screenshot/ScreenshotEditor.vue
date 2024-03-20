@@ -36,7 +36,13 @@
             <FileManager v-model="editor.screenshot.attachments" :onlyImage="true"></FileManager>
           </div>
 
-          <FormArticleRelations />
+          <FormArticleRelations v-model="editor.screenshot.articles">
+            <template #validate="slotProps">
+              <div v-show="editor.vali(`screenshot.articles.${slotProps.index}.id`)" class="text-negative">
+                {{ editor.vali(`screenshot.articles.${slotProps.index}.id`) }}
+              </div>
+            </template>
+          </FormArticleRelations>
           <FormLinks />
           <FormStatus />
           <div class="q-py-lg">

@@ -1,9 +1,11 @@
 <template>
-  <dt>関連記事</dt>
+  <dt>
+    <slot>関連記事</slot>
+  </dt>
   <dd>
     <template v-for="a in articles" :key="a.id">
       <div>
-        <a :href="`/articles/${a.id}`" target="_blank" rel="noreferrer noopener">{{ a.title }}</a>
+        <a :href="`/articles/${a.id}`" target="_blank" class="text-primary" rel="noreferrer noopener">{{ a.title }}</a>
       </div>
     </template>
   </dd>

@@ -11,6 +11,7 @@ use App\Actions\Screenshot\UpdateScreenshot;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Screenshot\StoreRequest;
 use App\Http\Requests\Api\Screenshot\UpdateRequest;
+use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Screenshot;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -24,6 +25,7 @@ class ScreenshotController extends Controller
     public function store(StoreRequest $storeRequest, StoreScreenshot $storeScreenshot): AnonymousResourceCollection
     {
         $storeScreenshot->store($this->loggedinUser(), $storeRequest->validated());
+        JobUpdateRelated::dispatch();
 
         return $this->index(app(ListScreenshot::class));
     }
@@ -32,6 +34,7 @@ class ScreenshotController extends Controller
     {
         $this->authorize('update', $screenshot);
         $updateScreenshot->update($screenshot, $updateRequest->validated());
+        JobUpdateRelated::dispatch();
 
         return $this->index(app(ListScreenshot::class));
     }
@@ -40,6 +43,7 @@ class ScreenshotController extends Controller
     {
         $this->authorize('destroy', $screenshot);
         $destroyScreenshot->destroy($screenshot);
+        JobUpdateRelated::dispatch();
 
         return $this->index(app(ListScreenshot::class));
     }

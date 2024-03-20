@@ -180,6 +180,8 @@ return [
         'article.contents.file' => 'ファイル',
         'article.published_at' => '投稿日時',
         'article.modified_at' => '最終更新日時',
+        'article.articles' => '関連記事',
+        'article.articles.*.id' => '関連記事',
 
         //auth
         'email' => 'メールアドレス',

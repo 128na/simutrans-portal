@@ -55,8 +55,15 @@ export default defineComponent({
     const editor = useArticleEditStore();
     const auth = useAuthStore();
     if (auth.validateAuth()) {
-      editor.fetchOptions();
-      mypage.fetchAttachments();
+      if (!editor.optionsReady) {
+        editor.fetchOptions();
+      }
+      if (!mypage.articlesReady) {
+        mypage.fetchArticles();
+      }
+      if (!mypage.attachmentsReady) {
+        mypage.fetchAttachments();
+      }
     }
 
     const meta = useMeta();

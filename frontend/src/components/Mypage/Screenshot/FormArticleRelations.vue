@@ -1,13 +1,10 @@
 <template>
   <label-optional>関連記事（10件まで）</label-optional>
-  <template v-for="(article, index) in store.screenshot.articles" :key="index">
+  <template v-for="(article, index) in modelValue" :key="index">
     <div>
       {{ article.title }}
       <q-btn icon="close" round outline color="negative" size="xs" @click="remove(index)" />
-
-      <div v-show="store.vali(`screenshot.articles.${index}.id`)" class="text-negative">
-        {{ store.vali(`screenshot.articles.${index}.id`) }}
-      </div>
+      <slot name="validate" :index="index" />
     </div>
   </template>
   <q-btn color="primary" outline label="記事を追加" class="q-my-sm" @click="showDialog" />
@@ -24,7 +21,7 @@
         <q-page class="q-ma-md">
           <q-btn-toggle v-model="onlyMyArticle" toggle-color="primary" :options="modes" />
 
-          <q-table :rows="articles" :columns="columns" :rows-per-page-options="[20, 50, 100, 0]" title="記事一覧"
+          <q-table :rows="suggestArticles" :columns="columns" :rows-per-page-options="[20, 50, 100, 0]" title="記事一覧"
             rows-per-page-label="表示件数" no-results-label="該当記事がありません"
             :no-data-label="onlyMyArticle ? '記事がありません' : '検索ワードを入力してください'" row-key="id" @row-click.stop="handleClick">
             <template v-slot:top-right>
@@ -43,7 +40,6 @@
 <script>
 import LabelOptional from 'src/components/Common/LabelOptional.vue';
 import { useMypageStore } from 'src/store/mypage';
-import { useScreenshotEditStore } from 'src/store/screenshotEdit';
 import {
   defineComponent, ref, computed, watchEffect,
 } from 'vue';
@@ -92,19 +88,24 @@ export default defineComponent({
   components: {
     LabelOptional,
   },
-  setup() {
+  props: {
+    modelValue: {
+      type: Array,
+      required: true,
+    },
+  },
+  setup(props, { emit }) {
     const mypage = useMypageStore();
-    const store = useScreenshotEditStore();
     const show = ref(false);
     const showDialog = () => {
-      if (store.screenshot.articles.length < MAX_RELATIONS) {
+      if (props.modelValue.length < MAX_RELATIONS) {
         show.value = true;
       }
     };
     const onlyMyArticle = ref(true);
     const searchWord = ref('');
     const searchArticles = ref([]);
-    const articles = computed(() => {
+    const suggestArticles = computed(() => {
       if (onlyMyArticle.value) {
         return mypage.articles.filter((a) => a.status === 'publish' && (searchWord.value ? a.title.includes(searchWord.value) : true));
       }
@@ -118,20 +119,19 @@ export default defineComponent({
       }
     });
     const handleClick = (event, row) => {
-      store.screenshot.articles.push({
+      emit('update:modelValue', [...props.modelValue, {
         id: row.id,
         title: row.title,
-      });
+      }]);
       show.value = false;
     };
 
     const remove = (index) => {
       if (window.confirm('記事へのリンクを削除しますか？')) {
-        store.screenshot.articles.splice(index, 1);
+        emit('update:modelValue', [...props.modelValue.filter((a, i) => i !== index)]);
       }
     };
     return {
-      store,
       remove,
       show,
       showDialog,
@@ -139,7 +139,7 @@ export default defineComponent({
       onlyMyArticle,
       modes,
       searchWord,
-      articles,
+      suggestArticles,
       handleClick,
     };
   },

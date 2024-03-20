@@ -3,7 +3,7 @@
   <dd>
     <template v-for="(l, i) in links" :key="i">
       <div>
-        <a :href="l" target="_blank" rel="noreferrer noopener">{{ l }}</a>
+        <a :href="l" target="_blank" class="text-primary" rel="noreferrer noopener">{{ l }}</a>
       </div>
     </template>
   </dd>

@@ -64,4 +64,9 @@ class Screenshot extends Model
     {
         $builder->where('status', ScreenShotStatus::Publish);
     }
+
+    public function getIsPublishAttribute(): bool
+    {
+        return $this->status === ScreenShotStatus::Publish;
+    }
 }

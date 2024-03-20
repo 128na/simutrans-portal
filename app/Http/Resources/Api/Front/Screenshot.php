@@ -28,10 +28,13 @@ class Screenshot extends JsonResource
             'description' => $this->resource->description,
             'links' => $this->resource->links,
             'attachments' => new AttachmentResource($this->resource->attachments),
-            'articles' => $this->resource->articles->map(fn (Article $article): array => [
-                'id' => $article->id,
-                'title' => $article->title,
-            ]),
+            'articles' => $this->resource->articles
+                ->filter(fn (Article $article): bool => $article->is_publish)
+                ->map(fn (Article $article): array => [
+                    'id' => $article->id,
+                    'title' => $article->title,
+                ])
+                ->values(),
             'user' => [
                 'id' => $this->resource->user->id,
                 'name' => $this->resource->user->name,

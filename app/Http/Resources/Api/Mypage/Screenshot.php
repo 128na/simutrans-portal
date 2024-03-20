@@ -25,10 +25,13 @@ class Screenshot extends JsonResource
             'links' => $this->resource->links,
             'status' => $this->resource->status,
             'attachments' => $this->resource->attachments->pluck('id'),
-            'articles' => $this->resource->articles->map(fn (Article $article): array => [
-                'id' => $article->id,
-                'title' => $article->title,
-            ]),
+            'articles' => $this->resource->articles
+                ->filter(fn (Article $article): bool => $article->is_publish)
+                ->map(fn (Article $article): array => [
+                    'id' => $article->id,
+                    'title' => $article->title,
+                ])
+                ->values(),
         ];
     }
 }

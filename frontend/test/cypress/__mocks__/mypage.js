@@ -25,6 +25,7 @@ export const mockArticlesResponse = {
         totalViewCount: 1,
         totalConversionCount: 2,
       },
+      articles: [],
     }],
   },
 };

@@ -26,6 +26,7 @@ class UpdateScreenshot
             'status' => $data['screenshot']['status'],
         ]);
         $this->screenshotRepository->syncAttachments($screenshot, $data['screenshot']['attachments']);
+
         $articleIds = array_map(fn ($a): mixed => $a['id'], $data['screenshot']['articles']);
         $this->screenshotRepository->syncArticles($screenshot, $articleIds);
     }

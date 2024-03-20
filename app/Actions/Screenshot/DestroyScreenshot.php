@@ -12,6 +12,7 @@ class DestroyScreenshot
     public function destroy(Screenshot $screenshot): void
     {
         $screenshot->attachments->map(fn (Attachment $attachment) => $attachment->delete());
+        $screenshot->articles()->detach();
         $screenshot->delete();
     }
 }

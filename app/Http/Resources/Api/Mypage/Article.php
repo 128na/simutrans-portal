@@ -37,10 +37,10 @@ class Article extends JsonResource
                 'name' => $tag->name,
             ]),
             'articles' => $this->resource->articles
-                ->filter(fn (ModelsArticle $article): bool => $article->is_publish)
-                ->map(fn (ModelsArticle $article): array => [
-                    'id' => $article->id,
-                    'title' => $article->title,
+                ->filter(fn (ModelsArticle $modelsArticle): bool => $modelsArticle->is_publish)
+                ->map(fn (ModelsArticle $modelsArticle): array => [
+                    'id' => $modelsArticle->id,
+                    'title' => $modelsArticle->title,
                 ])
                 ->values(),
             'created_at' => $this->resource->created_at?->toIso8601String(),

@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Screenshot extends Model
 {
@@ -50,9 +50,9 @@ class Screenshot extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function articles(): BelongsToMany
+    public function articles(): MorphToMany
     {
-        return $this->belongsToMany(Article::class);
+        return $this->morphToMany(Article::class, 'articlable');
     }
 
     /*

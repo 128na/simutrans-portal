@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Notifications\Notifiable;
@@ -162,9 +163,14 @@ class Article extends Model implements Feedable
         return $this->hasOne(Ranking::class);
     }
 
-    public function screenshots(): BelongsToMany
+    public function relatedArticles(): MorphToMany
     {
-        return $this->belongsToMany(Screenshot::class);
+        return $this->morphedByMany(Article::class, 'articlable');
+    }
+
+    public function relatedScreenshots(): MorphToMany
+    {
+        return $this->morphedByMany(Screenshot::class, 'articlable');
     }
 
     /*

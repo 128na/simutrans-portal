@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('article_screenshot', function (Blueprint $blueprint): void {
-            $blueprint->id();
+        Schema::create('articlables', function (Blueprint $blueprint): void {
             $blueprint->foreignId('article_id')->constrained()->onDelete('cascade');
-            $blueprint->foreignId('screenshot_id')->constrained()->onDelete('cascade');
-            $blueprint->timestamps();
+            $blueprint->morphs('articlable');
         });
     }
 
@@ -24,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('article_screenshot');
+        Schema::dropIfExists('articlables');
     }
 };

@@ -22,9 +22,9 @@
     </dl>
     <content-markdown :article="article" />
     <RelatedArticles v-if="article.articles.length" :articles="article.articles" />
-    <RelatedArticles v-if="article.relatedArticles.length" :articles="article.relatedArticles">関連付けられた記事
+    <RelatedArticles v-if="article.relatedArticles?.length" :articles="article.relatedArticles">関連付けられた記事
     </RelatedArticles>
-    <RelatedScreenshots v-if="article.relatedScreenshots.length" :screenshots="article.relatedScreenshots" />
+    <RelatedScreenshots v-if="article.relatedScreenshots?.length" :screenshots="article.relatedScreenshots" />
     <content-meta :article="article" />
   </article>
 </template>

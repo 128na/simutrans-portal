@@ -14,6 +14,7 @@ class ImageCropper extends Service
         if (! $im) {
             throw new ConvertFailedException('imagecreatefromgd failed:'.$fullpath);
         }
+
         $cropped = imagecrop($im, [
             'x' => $left,
             'y' => $top,

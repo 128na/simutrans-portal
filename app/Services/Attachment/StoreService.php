@@ -48,11 +48,11 @@ class StoreService extends Service
     private function storeAsImage(User $user, UploadedFile $uploadedFile, array $crop = []): Attachment
     {
         try {
-            $filepath = Storage::disk('public')->put("user/{$user->id}", $uploadedFile);
-            if ($crop && $fullpath = realpath(storage_path("app/public/$filepath"))) {
+            $filepath = Storage::disk('public')->put('user/'.$user->id, $uploadedFile);
+            if ($crop && $fullpath = realpath(storage_path('app/public/'.$filepath))) {
                 try {
                     $this->imageCropper->crop($fullpath, ...$crop);
-                } catch (ConvertFailedException $e) {
+                } catch (ConvertFailedException) {
                     // need not report
                 } catch (\Throwable $th) {
                     report($th);

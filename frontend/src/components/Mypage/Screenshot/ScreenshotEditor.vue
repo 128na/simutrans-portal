@@ -1,5 +1,5 @@
 <template>
-  <q-dialog :modelValue="!!editor.screenshot" persistent maximized @hide="editor.screenshot = null">
+  <q-dialog :modelValue="!!editor.screenshot" persistent maximized @hide="editor.reset">
     <q-layout view="hHh lpR fFf">
       <q-header elevated class="bg-dark text-white">
         <q-toolbar>
@@ -39,8 +39,8 @@
           <FormArticleRelations />
           <FormLinks />
           <FormStatus />
-          <div class="q-mt-lg">
-            <q-btn color="primary" @click="save">投稿</q-btn>
+          <div class="q-py-lg">
+            <q-btn color="primary" @click="save">{{ editor.screenshot.id ? '更新' : '投稿' }}</q-btn>
           </div>
         </q-page>
       </q-page-container>

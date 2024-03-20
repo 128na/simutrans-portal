@@ -1,46 +1,37 @@
 <template>
-  <q-page>
-    <q-list v-if="screenshot">
-      <q-item>
-        <TextTitle>
-          {{ screenshot.title }}
-        </TextTitle>
-      </q-item>
-      <q-item>
-        <TextPre>
-          {{ screenshot.description }}
-        </TextPre>
-      </q-item>
-      <q-item>
-        投稿者：{{ screenshot.user.name }}
-      </q-item>
-      <q-item>
-        投稿日時：{{ screenshot.updated_at }}
-      </q-item>
-      <q-item>
-        関連記事
-        <template v-for="a in screenshot.articles" :key="a.id">
-          <div>{{ a.title }}</div>
-        </template>
-      </q-item>
-      <q-item>
-        関連リンク
-        <template v-for="(l, i) in screenshot.links" :key="i">
-          <div>{{ l }}</div>
-        </template>
-      </q-item>
+  <q-page class="q-ma-md" v-if="screenshot">
+    <TextTitle>
+      {{ screenshot.title }}
+    </TextTitle>
+    <dl>
+      <dt>説明</dt>
+      <dd>
+        <TextPre>{{ screenshot.description }}</TextPre>
+      </dd>
+      <dt>投稿者</dt>
+      <dd>{{ screenshot.user.name }}</dd>
+      <RelatedArticles v-if="screenshot.articles.length" :articles="screenshot.articles" />
+      <RelatedLinks v-if="screenshot.links.length" :links="screenshot.links" />
+      <dt>投稿日時</dt>
+      <dd>{{ screenshot.updated_at }}</dd>
+    </dl>
+    <div class="row">
       <template v-for="a in screenshot.attachments" :key="a.id">
-        <q-item :href="a.url" target="_blank" rel="noreferrer noopener">
-          <q-img :src="a.url" width="100%" />
-        </q-item>
+        <div class="col-12 col-sm-6 q-pa-sm">
+          <a :href="a.url" target="_blank" rel="noreferrer noopener">
+            <q-img :src="a.url" width="" />
+          </a>
+        </div>
       </template>
-    </q-list>
+    </div>
   </q-page>
 </template>
 
 <script>
-import TextPre from 'src/components/Common/Text/TextPre.vue';
+import RelatedArticles from 'src/components/Common/Screenshot/RelatedArticles.vue';
+import RelatedLinks from 'src/components/Common/Screenshot/RelatedLinks.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
+import TextPre from 'src/components/Common/Text/TextPre.vue';
 import { useFrontApi } from 'src/composables/api';
 import { useApiHandler } from 'src/composables/apiHandler';
 import { useMeta } from 'src/composables/meta';
@@ -53,6 +44,8 @@ export default defineComponent({
   components: {
     TextTitle,
     TextPre,
+    RelatedArticles,
+    RelatedLinks,
   },
 
   setup() {

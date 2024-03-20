@@ -41,6 +41,10 @@ export const useScreenshotEditStore = defineStore('screenshotEdit', () => {
   };
 
   const vali = (key) => handler.getValidationErrorByKey(key);
+  const reset = () => {
+    screenshot.value = null;
+    handler.clearValidationErrors();
+  };
 
   return {
     screenshot,
@@ -49,5 +53,6 @@ export const useScreenshotEditStore = defineStore('screenshotEdit', () => {
     vali,
     save,
     destroy,
+    reset,
   };
 });

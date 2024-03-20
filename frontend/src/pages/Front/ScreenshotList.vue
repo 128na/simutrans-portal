@@ -1,21 +1,23 @@
 <template>
-  <q-page>
-    <q-list>
-      <q-item>
-        <div class="row q-gutter-md">
-          <template v-for="s in screenshots" :key="s.id">
-            <router-link :to="{ name: 'screenshotShow', params: { id: s.id } }">
-              <ScreenshotThumbnail :screenshot="s" />
-            </router-link>
-          </template>
+  <q-page class="q-ma-md">
+    <text-title>
+      スクリーンショット一覧
+    </text-title>
+    <div class="row q-gutter-md">
+      <template v-for="s in screenshots" :key="s.id">
+        <div>
+          <div>『{{ s.title }}』 by {{ s.user.name }}</div>
+          <router-link :to="{ name: 'screenshotShow', params: { id: s.id } }">
+            <ScreenshotThumbnail :screenshot="s" />
+          </router-link>
         </div>
-      </q-item>
+      </template>
+    </div>
 
-      <q-item v-if="pagination" class="flex flex-center">
-        <q-pagination :model-value="pagination.current_page" :min="1" :max="pagination.last_page" :max-pages="3"
-          :to-fn="handlePagination" direction-links boundary-links />
-      </q-item>
-    </q-list>
+    <q-item v-if="pagination" class="flex flex-center">
+      <q-pagination :model-value="pagination.current_page" :min="1" :max="pagination.last_page" :max-pages="3"
+        :to-fn="handlePagination" direction-links boundary-links />
+    </q-item>
   </q-page>
 </template>
 
@@ -27,10 +29,12 @@ import { useScreenshotCache } from 'src/store/screenshotCache';
 import { defineComponent, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import ScreenshotThumbnail from 'src/components/Common/Screenshot/ScreenshotThumbnail.vue';
+import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 
 export default defineComponent({
   name: 'ScreenshotList',
   components: {
+    TextTitle,
     ScreenshotThumbnail,
   },
 

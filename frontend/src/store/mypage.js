@@ -38,8 +38,11 @@ export const useMypageStore = defineStore('mypage', () => {
     done: (res) => { articles.value = res.data.data; },
     failedMessage: '記事一覧取得に失敗しました',
   });
+  const ready = computed(() => articles.value && attachments.value);
 
   return {
+    ready,
+
     articles,
     articlesReady,
     findArticleById,

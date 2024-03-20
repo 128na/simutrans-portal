@@ -1,6 +1,6 @@
 <template>
   <q-page v-if="mypage.screenshotsReady && mypage.attachmentsReady" class="q-ma-md">
-    <text-title>投稿スクリーンショット一覧
+    <text-title>スクリーンショット一覧
       <q-btn color="primary" @click="editor.createScreenshot">新規投稿</q-btn>
     </text-title>
     <div class="row q-gutter-md">
@@ -15,7 +15,8 @@
           <ScreenshotThumbnail :screenshot="s" :attachments="mypage.attachments" />
           <div class="q-mt-sm">
             <q-btn-group>
-              <q-btn outline color="primary">表示</q-btn>
+              <q-btn outline color="primary" :href="`./screenshots/${s.id}`" target="_blank">
+                <q-icon name="launch" size="small" />表示</q-btn>
               <q-btn outline color="secondary" @click="editor.selectScreenshot(s)">編集</q-btn>
               <q-btn outline color="negative" @click="destroy(s.id)">削除</q-btn>
             </q-btn-group>

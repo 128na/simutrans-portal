@@ -58,6 +58,7 @@ class UpdateAddonIntroductionTest extends ArticleTestCase
                 ['id' => Category::pak128Position()->first()->id],
                 ['id' => Category::license()->first()->id],
             ],
+            'articles' => [],
         ];
 
         $data = array_merge($data, Closure::bind($fn, $this)());

@@ -30,6 +30,7 @@ class StoreArticleTest extends UnitTestCase
                 'slug' => 'dummy-slug',
                 'status' => 'publish',
                 'contents' => 'dummy',
+                'articles' => [],
             ],
         ]);
         $carbonImmutable = new CarbonImmutable();
@@ -45,6 +46,7 @@ class StoreArticleTest extends UnitTestCase
                     'contents' => 'dummy',
                     'published_at' => $carbonImmutable->toDateTimeString(),
                     'modified_at' => $carbonImmutable->toDateTimeString(),
+                    'articles' => [],
                 ],
             ])->once()->andReturn(new Article());
             $mock->shouldReceive('syncAttachments')->once();
@@ -65,6 +67,7 @@ class StoreArticleTest extends UnitTestCase
                 'status' => 'reservation',
                 'contents' => 'dummy',
                 'published_at' => '2022-01-02 03:34:00',
+                'articles' => [],
             ],
         ]);
         $carbonImmutable = new CarbonImmutable();
@@ -80,6 +83,7 @@ class StoreArticleTest extends UnitTestCase
                     'contents' => 'dummy',
                     'published_at' => '2022-01-02 03:34:00',
                     'modified_at' => $carbonImmutable->toDateTimeString(),
+                    'articles' => [],
                 ],
             ])->once()->andReturn(new Article());
             $mock->shouldReceive('syncAttachments')->once();
@@ -99,6 +103,7 @@ class StoreArticleTest extends UnitTestCase
                 'slug' => 'dummy-slug',
                 'status' => 'draft',
                 'contents' => 'dummy',
+                'articles' => [],
             ],
         ]);
         $carbonImmutable = new CarbonImmutable();
@@ -114,6 +119,7 @@ class StoreArticleTest extends UnitTestCase
                     'contents' => 'dummy',
                     'published_at' => null,
                     'modified_at' => $carbonImmutable->toDateTimeString(),
+                    'articles' => [],
                 ],
             ])->once()->andReturn(new Article());
             $mock->shouldReceive('syncAttachments')->once();

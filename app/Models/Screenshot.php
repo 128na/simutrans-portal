@@ -20,11 +20,13 @@ class Screenshot extends Model
         'description',
         'links',
         'status',
+        'extra',
     ];
 
     protected $casts = [
         'links' => 'array',
         'status' => ScreenShotStatus::class,
+        'extra' => 'array',
     ];
 
     protected static function booted()

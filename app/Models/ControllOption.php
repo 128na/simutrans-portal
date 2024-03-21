@@ -56,4 +56,9 @@ class ControllOption extends Model
     {
         return $this->isRestrict(ControllOptionKeys::TAG_UPDATE);
     }
+
+    public function restrictScreenshptUpdate(): bool
+    {
+        return $this->isRestrict(ControllOptionKeys::SCREENSHOT_UPDATE);
+    }
 }

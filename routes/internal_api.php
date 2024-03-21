@@ -77,9 +77,9 @@ Route::prefix('mypage')->group(function (): void {
         Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy']);
         // スクリーンショット機能
         Route::get('/screenshots', (new ScreenshotController())->index(...));
-        Route::post('/screenshots', (new ScreenshotController())->store(...));
-        Route::put('/screenshots/{screenshot}', (new ScreenshotController())->update(...));
-        Route::delete('/screenshots/{screenshot}', (new ScreenshotController())->destroy(...));
+        Route::post('/screenshots', (new ScreenshotController())->store(...))->middleware('restrict:update_screenshot');
+        Route::put('/screenshots/{screenshot}', (new ScreenshotController())->update(...))->middleware('restrict:update_screenshot');
+        Route::delete('/screenshots/{screenshot}', (new ScreenshotController())->destroy(...))->middleware('restrict:update_screenshot');
         // ログイン履歴
         Route::get('/login_histories', (new LoginHistoryController())->index(...));
     });

@@ -220,5 +220,9 @@ return [
         'screenshot.attachments.*' => '画像',
         'screenshot.articles' => '関連記事',
         'screenshot.articles.*.id' => '関連記事',
+        'screenshot.extra' => '追加情報',
+        'screenshot.extra.attachments.*.id' => '画像ID',
+        'screenshot.extra.attachments.*.order' => '表示順',
+        'screenshot.extra.attachments.*.caption' => 'キャプション',
     ],
 ];

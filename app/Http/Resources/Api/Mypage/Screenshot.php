@@ -32,6 +32,7 @@ class Screenshot extends JsonResource
                     'title' => $article->title,
                 ])
                 ->values(),
+            'extra' => $this->resource->extra,
         ];
     }
 }

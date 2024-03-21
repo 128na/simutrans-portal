@@ -24,6 +24,7 @@ class UpdateScreenshot
             'description' => $data['screenshot']['description'],
             'links' => $data['screenshot']['links'],
             'status' => $data['screenshot']['status'],
+            'extra' => $data['screenshot']['extra'],
         ]);
         $this->screenshotRepository->syncAttachments($screenshot, $data['screenshot']['attachments']);
 

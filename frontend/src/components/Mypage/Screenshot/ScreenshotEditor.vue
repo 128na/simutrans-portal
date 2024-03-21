@@ -24,16 +24,11 @@
           <span v-show="editor.vali('screenshot.attachments')" class="text-negative">
             {{ editor.vali('screenshot.attachments') }}
           </span>
+          <DraggableScreenshots />
 
-          <div class="row q-gutter-sm">
-            <template v-for="attachmentId in editor.screenshot.attachments" :key="attachmentId">
-              <div class="">
-                <q-img :src="mypage.findAttachmentById(attachmentId).thumbnail" width="256px" />
-              </div>
-            </template>
-          </div>
           <div class="q-my-md">
-            <FileManager v-model="editor.screenshot.attachments" :onlyImage="true"></FileManager>
+            <FileManager v-model="editor.screenshot.attachments" :onlyImage="true" attachmentableType="Screenshot"
+              :attachmentableId="editor.screenshot.id"></FileManager>
           </div>
 
           <FormArticleRelations v-model="editor.screenshot.articles">
@@ -63,6 +58,7 @@ import { useScreenshotEditStore } from 'src/store/screenshotEdit';
 import InputCountable from 'src/components/Common/Input/InputCountable.vue';
 import { useMypageStore } from 'src/store/mypage';
 import FormStatus from './FormStatus.vue';
+import DraggableScreenshots from './DraggableScreenshots.vue';
 
 export default defineComponent({
   name: 'ScreenshotEditor',
@@ -73,6 +69,7 @@ export default defineComponent({
     FormArticleRelations,
     FormLinks,
     FormStatus,
+    DraggableScreenshots,
   },
   props: {
   },

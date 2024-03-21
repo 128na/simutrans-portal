@@ -13,6 +13,7 @@ export const useScreenshotEditStore = defineStore('screenshotEdit', () => {
       attachments: [],
       links: [],
       articles: [],
+      extra: { attachments: [] },
     }));
   };
   const selectScreenshot = (select) => {

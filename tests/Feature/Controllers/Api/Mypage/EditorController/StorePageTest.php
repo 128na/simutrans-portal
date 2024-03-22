@@ -45,6 +45,7 @@ class StorePageTest extends ArticleTestCase
             'categories' => [
                 ['id' => Category::page()->first()->id],
             ],
+            'articles' => [],
         ];
 
         $data = array_merge($data, Closure::bind($fn, $this)());

@@ -20,4 +20,7 @@ class ControllOptionKeys
 
     // タグ追加・編集
     public const TAG_UPDATE = 'TAG_UPDATE';
+
+    // スクショ追加・編集
+    public const SCREENSHOT_UPDATE = 'SCREENSHOT_UPDATE';
 }

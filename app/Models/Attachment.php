@@ -22,6 +22,8 @@ class Attachment extends Model
         'attachmentable_type',
         'original_name',
         'path',
+        'caption',
+        'order',
     ];
 
     protected $hidden = [

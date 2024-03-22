@@ -10,7 +10,8 @@
       <dd>{{ article.contents.author || '未設定' }}</dd>
       <dt>投稿者</dt>
       <dd>
-        <router-link class="default-link" :to="{ name: 'user', params: { idOrNickname: article.user.nickname || article.user.id } }">
+        <router-link class="default-link"
+          :to="{ name: 'user', params: { idOrNickname: article.user.nickname || article.user.id } }">
           {{ article.user.name || '未設定' }}
         </router-link>
       </dd>
@@ -42,6 +43,10 @@
           <text-pre>{{ article.contents.license }}</text-pre>
         </dd>
       </template>
+      <RelatedArticles v-if="article.articles.length" :articles="article.articles" />
+      <RelatedArticles v-if="article.relatedArticles?.length" :articles="article.relatedArticles">関連付けられた記事
+      </RelatedArticles>
+      <RelatedScreenshots v-if="article.relatedScreenshots?.length" :screenshots="article.relatedScreenshots" />
       <template v-if="article.contents.file">
         <dt>ファイル一覧</dt>
         <dd>
@@ -66,10 +71,14 @@ import ContentThumbnail from 'src/components/Front/Content/ContentThumbnail.vue'
 import ContentDownload from 'src/components/Front/Content/ContentDownload.vue';
 import ContentFileInfo from 'src/components/Front/Content/ContentFileInfo.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
+import RelatedArticles from 'src/components/Common/Screenshot/RelatedArticles.vue';
+import RelatedScreenshots from 'src/components/Common/Screenshot/RelatedScreenshots.vue';
 
 export default defineComponent({
   name: 'ArticleShowAddonPost',
   components: {
+    RelatedArticles,
+    RelatedScreenshots,
     CategoryList,
     TagList,
     TextPre,

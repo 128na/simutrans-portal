@@ -30,6 +30,7 @@ class StoreArticleTest extends UnitTestCase
                 'slug' => 'dummy-slug',
                 'status' => 'publish',
                 'contents' => 'dummy',
+                'articles' => [],
             ],
         ]);
         $carbonImmutable = new CarbonImmutable();
@@ -49,6 +50,7 @@ class StoreArticleTest extends UnitTestCase
             ])->once()->andReturn(new Article());
             $mock->shouldReceive('syncAttachments')->once();
             $mock->shouldReceive('syncCategories')->once();
+            $mock->shouldReceive('syncArticles')->once();
             $mock->shouldReceive('syncTags')->once();
         });
         $this->getSUT($carbonImmutable)->storeArticle($user, $storeRequest);
@@ -65,6 +67,7 @@ class StoreArticleTest extends UnitTestCase
                 'status' => 'reservation',
                 'contents' => 'dummy',
                 'published_at' => '2022-01-02 03:34:00',
+                'articles' => [],
             ],
         ]);
         $carbonImmutable = new CarbonImmutable();
@@ -84,6 +87,7 @@ class StoreArticleTest extends UnitTestCase
             ])->once()->andReturn(new Article());
             $mock->shouldReceive('syncAttachments')->once();
             $mock->shouldReceive('syncCategories')->once();
+            $mock->shouldReceive('syncArticles')->once();
             $mock->shouldReceive('syncTags')->once();
         });
         $this->getSUT($carbonImmutable)->storeArticle($user, $storeRequest);
@@ -99,6 +103,7 @@ class StoreArticleTest extends UnitTestCase
                 'slug' => 'dummy-slug',
                 'status' => 'draft',
                 'contents' => 'dummy',
+                'articles' => [],
             ],
         ]);
         $carbonImmutable = new CarbonImmutable();
@@ -118,6 +123,7 @@ class StoreArticleTest extends UnitTestCase
             ])->once()->andReturn(new Article());
             $mock->shouldReceive('syncAttachments')->once();
             $mock->shouldReceive('syncCategories')->once();
+            $mock->shouldReceive('syncArticles')->once();
             $mock->shouldReceive('syncTags')->once();
         });
         $this->getSUT($carbonImmutable)->storeArticle($user, $storeRequest);

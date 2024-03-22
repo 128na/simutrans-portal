@@ -27,6 +27,8 @@ class Attachments extends ResourceCollection
                 $item->attachmentable_type !== Profile::class && $item->fileInfo,
                 fn () => $item->fileInfo->data
             ),
+            'caption' => $this->when($item->is_image, $item->caption),
+            'order' => $this->when($item->is_image, $item->order),
         ])->toArray();
     }
 }

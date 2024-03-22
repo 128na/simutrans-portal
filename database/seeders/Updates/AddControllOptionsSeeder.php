@@ -18,6 +18,7 @@ class AddControllOptionsSeeder extends Seeder
             ControllOptionKeys::INVITATION_CODE,
             ControllOptionKeys::ARTICLE_UPDATE,
             ControllOptionKeys::TAG_UPDATE,
+            ControllOptionKeys::SCREENSHOT_UPDATE,
         ];
 
         foreach ($data as $key) {

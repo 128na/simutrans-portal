@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Notifications\Notifiable;
@@ -160,6 +161,30 @@ class Article extends Model implements Feedable
     public function ranking(): HasOne
     {
         return $this->hasOne(Ranking::class);
+    }
+
+    /**
+     * この記事から関連付けた記事
+     */
+    public function articles(): MorphToMany
+    {
+        return $this->morphToMany(Article::class, 'articlable');
+    }
+
+    /**
+     * この記事が関連付けられた記事
+     */
+    public function relatedArticles(): MorphToMany
+    {
+        return $this->morphedByMany(Article::class, 'articlable');
+    }
+
+    /**
+     * この記事が関連付けられたスクリーンショット
+     */
+    public function relatedScreenshots(): MorphToMany
+    {
+        return $this->morphedByMany(Screenshot::class, 'articlable');
     }
 
     /*

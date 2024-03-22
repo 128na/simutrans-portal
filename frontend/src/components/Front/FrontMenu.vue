@@ -21,13 +21,16 @@
 
     </q-expansion-item>
     <q-expansion-item v-show="!handler.loading.value" expand-separator label="ユーザー一覧">
-      <q-item v-for="(a, index) in userAddonCounts" clickable :to="{ name: 'user', params: { idOrNickname: a.nickname || a.user_id } }"
-        :key="index">
+      <q-item v-for="(a, index) in userAddonCounts" clickable
+        :to="{ name: 'user', params: { idOrNickname: a.nickname || a.user_id } }" :key="index">
         <q-item-section>{{ a.name }} ({{ a.count }})</q-item-section>
       </q-item>
     </q-expansion-item>
     <q-item clickable :to="{ name: 'tags' }">
       <q-item-section>タグ一覧</q-item-section>
+    </q-item>
+    <q-item clickable :to="{ name: 'screenshotList' }">
+      <q-item-section>スクリーンショット</q-item-section>
     </q-item>
     <q-separator />
     <q-item clickable dense :to="{ name: 'show', params: { slug: 'about' } }">

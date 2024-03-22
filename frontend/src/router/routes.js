@@ -6,6 +6,8 @@ import Tags from 'pages/Front/Tags.vue';
 import DiscordInvite from 'pages/Front/DiscordInvite.vue';
 import Social from 'pages/Front/Social.vue';
 import Error from 'src/pages/Error.vue';
+import ScreenshotList from 'pages/Front/ScreenshotList.vue';
+import ScreenshotShow from 'pages/Front/ScreenshotShow.vue';
 
 const routes = [
   {
@@ -25,6 +27,8 @@ const routes = [
       { name: 'search', path: 'search', component: List },
       { name: 'discordInvite', path: 'invite-simutrans-interact-meeting', component: DiscordInvite },
       { name: 'social', path: 'social', component: Social },
+      { name: 'screenshotList', path: 'screenshots/', component: ScreenshotList },
+      { name: 'screenshotShow', path: 'screenshots/:id', component: ScreenshotShow },
     ],
   },
   {
@@ -59,6 +63,10 @@ const routes = [
       },
       {
         name: 'invitation', path: 'invitation', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Invitation.vue')
+        ,
+      },
+      {
+        name: 'screenshot', path: 'screenshot', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Screenshot.vue')
         ,
       },
       {

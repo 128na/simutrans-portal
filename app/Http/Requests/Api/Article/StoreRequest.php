@@ -23,6 +23,8 @@ class StoreRequest extends BaseRequest
             'article.title' => ['required', 'max:255', 'unique:articles,title', new NgWordRule(NgWords::ARTICLE_TITLE)],
             'article.slug' => ['required', 'max:255', new NotJustNumbers, new UniqueSlugByUser],
             'article.published_at' => 'nullable|date|after:+1 hour',
+            'article.articles' => 'present|array|max:10',
+            'article.articles.*.id' => 'required|distinct|exists:articles,id,status,publish',
             'should_notify' => 'nullable|boolean',
         ];
     }

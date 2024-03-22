@@ -11,10 +11,20 @@ export const useMypageStore = defineStore('mypage', () => {
   const articles = ref(null);
   const findArticleById = computed(() => (id) => articles.value?.find((a) => a.id === id));
   const findArticleBySlug = computed(() => (slug) => articles.value?.find((a) => a.slug === slug));
-  const articlesReady = computed(() => !!articles.value);
+  const articlesReady = computed(() => Array.isArray(articles.value));
+
+  const screenshots = ref(null);
+  const screenshotsReady = computed(() => Array.isArray(screenshots.value));
+  const findScreenshotById = computed(() => (id) => screenshots.value?.find((a) => a.id === id));
+  const screenshotHandler = useApiHandler();
+  const fetchScreenshots = () => screenshotHandler.handle({
+    doRequest: () => api.fetchScreenshots(),
+    done: (res) => { screenshots.value = res.data.data; },
+    failedMessage: '添付ファイル一覧取得に失敗しました',
+  });
 
   const attachments = ref(null);
-  const attachmentsReady = computed(() => !!attachments.value);
+  const attachmentsReady = computed(() => Array.isArray(attachments.value));
   const findAttachmentById = computed(() => (id) => attachments.value?.find((a) => a.id === id));
   const attachmentHandler = useApiHandler();
   const fetchAttachments = () => attachmentHandler.handle({
@@ -28,19 +38,25 @@ export const useMypageStore = defineStore('mypage', () => {
     done: (res) => { articles.value = res.data.data; },
     failedMessage: '記事一覧取得に失敗しました',
   });
-
   const ready = computed(() => articles.value && attachments.value);
 
   return {
+    ready,
+
     articles,
     articlesReady,
     findArticleById,
     findArticleBySlug,
+    fetchArticles,
+
+    screenshots,
+    screenshotsReady,
+    findScreenshotById,
+    fetchScreenshots,
+
     attachments,
     attachmentsReady,
     findAttachmentById,
     fetchAttachments,
-    fetchArticles,
-    ready,
   };
 });

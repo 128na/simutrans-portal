@@ -17,7 +17,7 @@ class ScreenshotController extends Controller
 
     public function index(): Renderable
     {
-        $meta = $this->metaOgpService->social();
+        $meta = $this->metaOgpService->screenshotIndex();
 
         return view('front.spa', ['meta' => $meta]);
     }
@@ -25,7 +25,7 @@ class ScreenshotController extends Controller
     public function show(Screenshot $screenshot): Renderable
     {
         $this->authorize('showPublic', $screenshot);
-        $meta = $this->metaOgpService->social();
+        $meta = $this->metaOgpService->screenshot($screenshot);
 
         return view('front.spa', ['meta' => $meta]);
     }

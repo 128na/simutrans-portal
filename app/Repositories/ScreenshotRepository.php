@@ -35,7 +35,7 @@ class ScreenshotRepository extends BaseRepository
             ->publish()
             ->with(['user', 'attachments.fileInfo', 'articles'])
             ->orderBy('updated_at', 'desc')
-            ->paginate(100);
+            ->paginate(20);
     }
 
     /**

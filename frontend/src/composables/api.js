@@ -57,7 +57,7 @@ export const useFrontApi = () => ({
     return axios.post('/api/front/invite-simutrans-interact-meeting', { token });
   },
   fetchScreenshots(page = 1) {
-    return axios.get(`/api/front/screenshots?page=${page}`);
+    return axios.get('/api/front/screenshots', { params: { page } });
   },
   fetchScreenshot(id) {
     return axios.get(`/api/front/screenshots/${id}`);

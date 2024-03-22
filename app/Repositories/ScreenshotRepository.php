@@ -61,7 +61,7 @@ class ScreenshotRepository extends BaseRepository
             // add
             $attachments = $screenshot->user->myAttachments()->find($collection->pluck('id'));
             foreach ($attachments as $index => $attachment) {
-                $data = $collection->first(fn ($d) => $d['id'] === $attachment->id);
+                $data = $collection->first(fn ($d): bool => $d['id'] === $attachment->id);
                 if ($data) {
                     $attachment->fill([
                         'caption' => $data['caption'] ?? null,
@@ -69,6 +69,7 @@ class ScreenshotRepository extends BaseRepository
                     ]);
                 }
             }
+
             $screenshot->attachments()->saveMany($attachments);
             //remove
             /** @var Collection<int,Attachment> */

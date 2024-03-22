@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('attachments', function (Blueprint $table) {
-            $table->string('caption')->nullable()->comment('キャプション（画像向け）');
-            $table->unsignedInteger('order')->default(0)->comment('表示順（画像向け）');
+        Schema::table('attachments', function (Blueprint $blueprint): void {
+            $blueprint->string('caption')->nullable()->comment('キャプション（画像向け）');
+            $blueprint->unsignedInteger('order')->default(0)->comment('表示順（画像向け）');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('attachments', function (Blueprint $table) {
+        Schema::table('attachments', function (Blueprint $blueprint): void {
             //
         });
     }

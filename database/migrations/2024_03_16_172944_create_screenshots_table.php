@@ -17,9 +17,10 @@ return new class extends Migration
             $blueprint->string('title')->comment('タイトル');
             $blueprint->text('description')->comment('説明');
             $blueprint->json('links')->comment('リンク先一覧');
-            $blueprint->json('extra')->comment('追加データ');
             $blueprint->string('status')->comment('公開ステータス');
             $blueprint->timestamps();
+
+            $blueprint->index(['status', 'updated_at']);
         });
     }
 

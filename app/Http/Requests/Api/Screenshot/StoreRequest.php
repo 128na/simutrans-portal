@@ -22,15 +22,13 @@ class StoreRequest extends FormRequest
             'screenshot.description' => 'required|string|max:2048',
             'screenshot.status' => ['required', Rule::in(ScreenShotStatus::cases())],
             'screenshot.attachments' => 'required|array|min:1|max:10',
-            'screenshot.attachments.*' => 'required|exists:attachments,id',
+            'screenshot.attachments.*.id' => 'required|exists:attachments,id',
+            'screenshot.attachments.*.order' => 'present|numeric',
+            'screenshot.attachments.*.caption' => 'present|max:50',
             'screenshot.links' => 'present|array|max:10',
             'screenshot.links.*' => 'url|distinct',
             'screenshot.articles' => 'present|array|max:10',
             'screenshot.articles.*.id' => 'required|distinct|exists:articles,id,status,publish',
-            'screenshot.extra' => 'present|array',
-            'screenshot.extra.attachments.*.id' => 'present|numeric',
-            'screenshot.extra.attachments.*.order' => 'present|numeric',
-            'screenshot.extra.attachments.*.caption' => 'present|max:50',
         ];
     }
 }

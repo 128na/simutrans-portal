@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Models\Article;
+use App\Models\Attachment;
 use App\Models\Screenshot;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -33,6 +34,7 @@ class ScreenshotRepository extends BaseRepository
         return $this->model
             ->publish()
             ->with(['user', 'attachments.fileInfo', 'articles'])
+            ->orderBy('updated_at', 'desc')
             ->paginate(100);
     }
 
@@ -50,13 +52,30 @@ class ScreenshotRepository extends BaseRepository
     /**
      * 添付ファイルを関連付ける.
      *
-     * @param  array<int|string>  $attachmentsIds
+     * @param  array<int|array<string,mixed>>  $attachmentsIds
      */
-    public function syncAttachments(Screenshot $screenshot, array $attachmentsIds): void
+    public function syncAttachmentsWith(Screenshot $screenshot, array $attachmentsData): void
     {
         if ($screenshot->user) {
-            $attachments = $screenshot->user->myAttachments()->find($attachmentsIds);
+            $collection = collect($attachmentsData);
+            // add
+            $attachments = $screenshot->user->myAttachments()->find($collection->pluck('id'));
+            foreach ($attachments as $index => $attachment) {
+                $data = $collection->first(fn ($d) => $d['id'] === $attachment->id);
+                if ($data) {
+                    $attachment->fill([
+                        'caption' => $data['caption'] ?? null,
+                        'order' => $data['order'] ?? $index,
+                    ]);
+                }
+            }
             $screenshot->attachments()->saveMany($attachments);
+            //remove
+            /** @var Collection<int,Attachment> */
+            $shouldDetach = $screenshot->attachments()->whereNotIn('id', $collection->pluck('id'))->get();
+            foreach ($shouldDetach as $attachment) {
+                $attachment->attachmentable()->disassociate()->save();
+            }
         }
     }
 

@@ -3,14 +3,14 @@
     <text-title>
       スクリーンショット一覧
     </text-title>
-    <div class="row q-gutter-md">
+    <div class="row q-gutter-md items-center ">
       <template v-for="s in screenshots" :key="s.id">
-        <div>
-          <div>『{{ s.title }}』 by {{ s.user.name }}</div>
+        <figure>
           <router-link :to="{ name: 'screenshotShow', params: { id: s.id } }">
             <ScreenshotThumbnail :screenshot="s" />
           </router-link>
-        </div>
+          <figcaption>『{{ s.title }}』 by {{ s.user.name }}</figcaption>
+        </figure>
       </template>
     </div>
 

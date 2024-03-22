@@ -5,14 +5,14 @@
     </text-title>
     <div class="row q-gutter-md">
       <template v-for="s in mypage.screenshots" :key="s.id">
-        <div>
-          <div>
+        <figure>
+          <ScreenshotThumbnail :screenshot="s" :attachments="mypage.attachments" />
+          <figcaption>
             <q-badge :color="isPublish(s) ? 'positive' : 'negative'">
               {{ isPublish(s) ? "公開" : '非公開' }}
             </q-badge>
-            {{ s.title }}
-          </div>
-          <ScreenshotThumbnail :screenshot="s" :attachments="mypage.attachments" />
+            『{{ s.title }}』
+          </figcaption>
           <div class="q-mt-sm">
             <q-btn-group>
               <q-btn outline color="primary" :href="`./screenshots/${s.id}`" target="_blank">
@@ -21,7 +21,7 @@
               <q-btn outline color="negative" @click="destroy(s.id)">削除</q-btn>
             </q-btn-group>
           </div>
-        </div>
+        </figure>
       </template>
     </div>
     <p v-show="mypage.screenshots.length < 1">スクリーンショットがありません</p>

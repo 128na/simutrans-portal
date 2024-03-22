@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Resources\Api\Mypage;
 
 use App\Models\Article;
+use App\Models\Attachment;
 use App\Models\Screenshot as ModelsScreenshot;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -24,7 +25,14 @@ class Screenshot extends JsonResource
             'description' => $this->resource->description,
             'links' => $this->resource->links,
             'status' => $this->resource->status,
-            'attachments' => $this->resource->attachments->pluck('id'),
+            'attachments' => $this->resource->attachments
+                ->map(fn (Attachment $attachment): array => [
+                    'id' => $attachment->id,
+                    'caption' => $attachment->caption,
+                    'order' => $attachment->order,
+                ])
+                ->sortBy('order')
+                ->values(),
             'articles' => $this->resource->articles
                 ->filter(fn (Article $article): bool => $article->is_publish)
                 ->map(fn (Article $article): array => [
@@ -32,7 +40,6 @@ class Screenshot extends JsonResource
                     'title' => $article->title,
                 ])
                 ->values(),
-            'extra' => $this->resource->extra,
         ];
     }
 }

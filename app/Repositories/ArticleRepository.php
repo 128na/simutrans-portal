@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Models\Article;
+use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
@@ -48,8 +49,16 @@ class ArticleRepository extends BaseRepository
     public function syncAttachments(Article $article, array $attachmentsIds): void
     {
         if ($article->user) {
+            // add
             $attachments = $article->user->myAttachments()->find($attachmentsIds);
             $article->attachments()->saveMany($attachments);
+
+            //remove
+            /** @var Collection<int,Attachment> */
+            $shouldDetach = $article->attachments()->whereNotIn('id', $attachmentsIds)->get();
+            foreach ($shouldDetach as $attachment) {
+                $attachment->attachmentable()->disassociate()->save();
+            }
         }
     }
 

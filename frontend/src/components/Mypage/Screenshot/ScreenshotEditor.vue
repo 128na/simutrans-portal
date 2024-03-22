@@ -24,12 +24,7 @@
           <span v-show="editor.vali('screenshot.attachments')" class="text-negative">
             {{ editor.vali('screenshot.attachments') }}
           </span>
-          <DraggableScreenshots />
-
-          <div class="q-my-md">
-            <FileManager v-model="editor.screenshot.attachments" :onlyImage="true" attachmentableType="Screenshot"
-              :attachmentableId="editor.screenshot.id"></FileManager>
-          </div>
+          <FormAttachments />
 
           <FormArticleRelations v-model="editor.screenshot.articles">
             <template #validate="slotProps">
@@ -51,25 +46,23 @@
 <script>
 import LabelRequired from 'src/components/Common/LabelRequired.vue';
 import { defineComponent } from 'vue';
-import FileManager from 'src/components/Mypage/FileManager.vue';
 import FormArticleRelations from 'src/components/Mypage/Screenshot/FormArticleRelations.vue';
 import FormLinks from 'src/components/Mypage/Screenshot/FormLinks.vue';
 import { useScreenshotEditStore } from 'src/store/screenshotEdit';
 import InputCountable from 'src/components/Common/Input/InputCountable.vue';
 import { useMypageStore } from 'src/store/mypage';
 import FormStatus from './FormStatus.vue';
-import DraggableScreenshots from './DraggableScreenshots.vue';
+import FormAttachments from './FormAttachments.vue';
 
 export default defineComponent({
   name: 'ScreenshotEditor',
   components: {
     InputCountable,
     LabelRequired,
-    FileManager,
     FormArticleRelations,
     FormLinks,
     FormStatus,
-    DraggableScreenshots,
+    FormAttachments,
   },
   props: {
   },

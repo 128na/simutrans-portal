@@ -20,11 +20,11 @@ export default defineComponent({
   },
   setup(props) {
     const attachmentUrl = computed(() => {
-      const attachmentOrId = props.screenshot.attachments[0];
-      if (attachmentOrId?.url) {
-        return attachmentOrId.url;
+      const attachmentOrData = props.screenshot.attachments[0];
+      if (attachmentOrData?.url) {
+        return attachmentOrData.url;
       }
-      return props.attachments.find((a) => a.id === attachmentOrId)?.url;
+      return props.attachments.find((a) => a.id === attachmentOrData.id)?.url;
     });
 
     return {

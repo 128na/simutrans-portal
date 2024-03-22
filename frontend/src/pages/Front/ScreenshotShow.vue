@@ -15,15 +15,14 @@
       <dt>投稿日時</dt>
       <dd>{{ screenshot.updated_at }}</dd>
     </dl>
-    <div class="row">
-      <template v-for="a in screenshot.attachments" :key="a.id">
-        <div class="col-12 col-sm-6 q-pa-sm">
-          <a :href="a.url" target="_blank" rel="noreferrer noopener">
-            <q-img :src="a.url" width="" />
-          </a>
-        </div>
-      </template>
-    </div>
+    <template v-for="a in screenshot.attachments" :key="a.id">
+      <figure>
+        <a :href="a.url" target="_blank" rel="noreferrer noopener">
+          <img :src="a.url" style="max-width:100%;height: auto" />
+        </a>
+        <figcaption v-if="a.caption">{{ a.caption }}</figcaption>
+      </figure>
+    </template>
   </q-page>
 </template>
 

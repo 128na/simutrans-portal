@@ -25,9 +25,8 @@ class StoreScreenshot
             'description' => $data['screenshot']['description'],
             'links' => $data['screenshot']['links'],
             'status' => $data['screenshot']['status'],
-            'extra' => $data['screenshot']['extra'],
         ]);
-        $this->screenshotRepository->syncAttachments($screenshot, $data['screenshot']['attachments']);
+        $this->screenshotRepository->syncAttachmentsWith($screenshot, $data['screenshot']['attachments']);
         $articleIds = array_map(fn ($a): mixed => $a['id'], $data['screenshot']['articles']);
         $this->screenshotRepository->syncArticles($screenshot, $articleIds);
     }

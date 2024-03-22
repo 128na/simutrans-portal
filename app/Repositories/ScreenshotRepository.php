@@ -52,7 +52,7 @@ class ScreenshotRepository extends BaseRepository
     /**
      * 添付ファイルを関連付ける.
      *
-     * @param  array<int|array<string,mixed>>  $attachmentsIds
+     * @param  array<int,array{id:int,caption:?string,order:?int}>  $attachmentsData
      */
     public function syncAttachmentsWith(Screenshot $screenshot, array $attachmentsData): void
     {

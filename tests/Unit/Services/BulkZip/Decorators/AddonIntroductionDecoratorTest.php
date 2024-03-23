@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Services\BulkZip\Decorators;
 
 use App\Enums\ArticlePostType;
+use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Contents\AddonIntroductionContent;
@@ -64,7 +65,7 @@ class AddonIntroductionDecoratorTest extends UnitTestCase
                 $mock->shouldReceive('getRouteKey')->andReturn(1);
             }));
             $mock->shouldReceive('getAttribute')->withArgs(['categories'])
-                ->andReturn(collect([new Category(['type' => 'test', 'slug' => 'example'])]));
+                ->andReturn(collect([new Category(['type' => CategoryType::Addon, 'slug' => 'example'])]));
             $mock->shouldReceive('tags')->andReturn($this->mock(BelongsToMany::class, function (MockInterface $mock): void {
                 $mock->shouldReceive('pluck')
                     ->andReturn(collect(['test tag']));
@@ -89,7 +90,7 @@ class AddonIntroductionDecoratorTest extends UnitTestCase
         $this->assertEquals(route('articles.show', ['userIdOrNickname' => 1, 'articleSlug' => 'test_slug']), $contents[0][2][1]);
         $this->assertEquals('無し', $contents[0][3][1]);
         $this->assertEquals('test user name', $contents[0][4][1]);
-        $this->assertEquals('category.test.example', $contents[0][5][1]);
+        $this->assertEquals('category.addon.example', $contents[0][5][1]);
         $this->assertEquals('test tag', $contents[0][6][1]);
         $this->assertEquals('test author', $contents[0][7][1]);
         $this->assertEquals('test description', $contents[0][8][1]);

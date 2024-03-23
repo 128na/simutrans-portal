@@ -45,7 +45,7 @@ class UpdateTest extends ArticleTestCase
 
     public function test機能制限(): void
     {
-        ControllOption::create(['key' => ControllOptionKey::ArticleUpdate, 'value' => false]);
+        ControllOption::updateOrCreate(['key' => ControllOptionKey::ArticleUpdate], ['value' => false]);
         $this->actingAs($this->user);
         $url = '/api/mypage/articles/'.$this->article->id;
         $res = $this->postJson($url);

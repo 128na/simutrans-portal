@@ -25,7 +25,7 @@ class IndexTest extends TestCase
 
     public function test機能無効(): void
     {
-        ControllOption::create(['key' => ControllOptionKey::InvitationCode, 'value' => false]);
+        ControllOption::updateOrCreate(['key' => ControllOptionKey::InvitationCode], ['value' => false]);
         $testResponse = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
         $testResponse->assertForbidden();
     }

@@ -79,7 +79,7 @@ class TagControllerTest extends TestCase
     {
         $url = '/api/mypage/tags';
 
-        ControllOption::create(['key' => ControllOptionKey::TagUpdate, 'value' => false]);
+        ControllOption::updateOrCreate(['key' => ControllOptionKey::TagUpdate], ['value' => false]);
         $this->actingAs($this->user);
         $res = $this->postJson($url);
         $res->assertForbidden();
@@ -124,7 +124,7 @@ class TagControllerTest extends TestCase
         $tag = Tag::factory()->create();
         $url = '/api/mypage/tags/'.$tag->id;
 
-        ControllOption::create(['key' => ControllOptionKey::TagUpdate, 'value' => false]);
+        ControllOption::updateOrCreate(['key' => ControllOptionKey::TagUpdate], ['value' => false]);
         $this->actingAs($this->user);
         $res = $this->postJson($url);
         $res->assertForbidden();

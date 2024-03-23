@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers;
 use App\Enums\ControllOptionKey;
 use App\Models\ControllOption;
 use App\Models\User;
-use App\Notifications\Loggedin;
+use App\Notifications\SendLoggedInEmail;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
@@ -33,7 +33,7 @@ class LoginControllerTest extends TestCase
         if (is_null($error_field)) {
             $res->assertOK();
             $this->assertAuthenticated();
-            Notification::assertSentTo($user, Loggedin::class);
+            Notification::assertSentTo($user, SendLoggedInEmail::class);
         } else {
             $res->assertJsonValidationErrors($error_field);
             Notification::assertNothingSent();
@@ -61,7 +61,7 @@ class LoginControllerTest extends TestCase
 
     public function testLogin機能制限(): void
     {
-        ControllOption::create(['key' => ControllOptionKey::Login, 'value' => false]);
+        ControllOption::updateOrCreate(['key' => ControllOptionKey::Login], ['value' => false]);
         $this->actingAs($this->user);
         $this->assertAuthenticated();
 

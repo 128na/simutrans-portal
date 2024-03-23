@@ -23,13 +23,13 @@ class AnnounceSeeder extends Seeder
 
     private function addAdminUser()
     {
-        if (is_null(config('admin.email'))) {
-            throw new \Exception('admin email was empty!');
+        if (is_null(env('ADMIN_EMAIL'))) {
+            throw new \Exception('env ADMIN_EMAIL is empty or cached!');
         }
 
         return User::firstOrCreate(
-            ['role' => config('role.admin'), 'name' => config('admin.name'), 'email' => config('admin.email')],
-            ['password' => bcrypt(config('admin.password')), 'email_verified_at' => now()]
+            ['role' => config('role.admin'), 'name' => env('ADMIN_NAME'), 'email' => env('ADMIN_EMAIL')],
+            ['password' => bcrypt(env('ADMIN_PASSWORD')), 'email_verified_at' => now()]
         );
     }
 

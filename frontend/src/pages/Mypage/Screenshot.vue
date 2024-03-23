@@ -15,7 +15,7 @@
           </figcaption>
           <div class="q-mt-sm">
             <q-btn-group>
-              <q-btn outline color="primary" :href="`./screenshots/${s.id}`" target="_blank">
+              <q-btn outline color="primary" :href="`./screenshots/${s.id}`" target="_blank" :disable="!isPublish(s)">
                 <q-icon name="launch" size="small" />表示</q-btn>
               <q-btn outline color="secondary" @click="editor.selectScreenshot(s)">編集</q-btn>
               <q-btn outline color="negative" @click="destroy(s.id)">削除</q-btn>

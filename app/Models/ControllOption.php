@@ -27,9 +27,9 @@ class ControllOption extends Model
         'value' => 'bool',
     ];
 
-    private function isRestrict(ControllOptionKey $key): bool
+    private function isRestrict(ControllOptionKey $controllOptionKey): bool
     {
-        return $this->where(['key' => $key, 'value' => 0])->exists();
+        return $this->where(['key' => $controllOptionKey, 'value' => 0])->exists();
     }
 
     public function restrictLogin(): bool

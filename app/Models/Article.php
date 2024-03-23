@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Casts\ToArticleContents;
+use App\Constants\DefaultThumbnail;
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Models\Article\ConversionCount;
@@ -331,7 +332,7 @@ class Article extends Model implements Feedable
     {
         return Storage::disk('public')->url($this->has_thumbnail && $this->thumbnail
             ? $this->thumbnail->path
-            : config('attachment.no-thumbnail'));
+            : DefaultThumbnail::NO_THUMBNAIL);
     }
 
     public function getHasFileAttribute(): bool
@@ -435,7 +436,7 @@ class Article extends Model implements Feedable
 
         return Storage::disk('public')->url($image instanceof \App\Models\Attachment
             ? $image->path
-            : config('attachment.no-thumbnail'));
+            : DefaultThumbnail::NO_THUMBNAIL);
     }
 
     /**

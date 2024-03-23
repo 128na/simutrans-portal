@@ -55,9 +55,9 @@ class Category extends Model
     | スコープ
     |--------------------------------------------------------------------------
      */
-    public function scopeType(Builder $builder, CategoryType $type): void
+    public function scopeType(Builder $builder, CategoryType $categoryType): void
     {
-        $builder->where('type', $type);
+        $builder->where('type', $categoryType);
     }
 
     /**

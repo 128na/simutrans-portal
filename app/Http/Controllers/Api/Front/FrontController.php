@@ -81,7 +81,7 @@ class FrontController extends Controller
     public function category(string $type, string $slug, ListRequest $listRequest): AnonymousResourceCollection
     {
         $categoryType = CategoryType::tryFrom($type);
-        abort_unless($categoryType, 404);
+        abort_unless($categoryType instanceof CategoryType, 404);
         $order = $listRequest->string('order', 'modified_at')->toString();
         $paginator = $this->articleService->paginateByCategory($categoryType, $slug, false, $order);
 

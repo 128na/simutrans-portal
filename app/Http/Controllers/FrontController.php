@@ -85,7 +85,7 @@ class FrontController extends Controller
     public function category(string $type, string $slug): Renderable
     {
         $categoryType = CategoryType::tryFrom($type);
-        abort_unless($categoryType, 404);
+        abort_unless($categoryType instanceof CategoryType, 404);
         $this->articleService->validateCategoryByTypeAndSlug($categoryType, $slug);
 
         $meta = $this->metaOgpService->category($categoryType, $slug);

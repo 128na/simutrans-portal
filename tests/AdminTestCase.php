@@ -19,7 +19,7 @@ abstract class AdminTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->admin = User::factory()->admin();
+        $this->admin = User::factory()->admin()->create();
         $this->article = Article::factory()->create();
     }
 }

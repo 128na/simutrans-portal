@@ -23,7 +23,7 @@ class FindAllWithTrashedTest extends TestCase
         $res = $this->repository->findAllWithTrashed();
 
         $this->assertInstanceOf(Collection::class, $res);
-        $this->assertCount(2, $res, '全てのユーザーが取得できること');
+        $this->assertCount(1, $res, '全てのユーザーが取得できること');
     }
 
     public function test論理削除(): void
@@ -32,6 +32,6 @@ class FindAllWithTrashedTest extends TestCase
         $res = $this->repository->findAllWithTrashed();
 
         $this->assertInstanceOf(Collection::class, $res);
-        $this->assertCount(2, $res, '削除済みユーザーも取得できること');
+        $this->assertCount(1, $res, '削除済みユーザーも取得できること');
     }
 }

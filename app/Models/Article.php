@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Casts\ToArticleContents;
+use App\Enums\ArticleStatus;
 use App\Models\Article\ConversionCount;
 use App\Models\Article\Ranking;
 use App\Models\Article\ViewCount;
@@ -48,6 +49,7 @@ class Article extends Model implements Feedable
 
     protected $casts = [
         'contents' => ToArticleContents::class,
+        'status' => ArticleStatus::class,
         'published_at' => 'immutable_datetime',
         'modified_at' => 'immutable_datetime',
     ];
@@ -204,7 +206,7 @@ class Article extends Model implements Feedable
 
     public function scopeActive(Builder $builder): void
     {
-        $builder->where('status', config('status.publish'));
+        $builder->where('status', ArticleStatus::Publish);
     }
 
     public function scopeAddon(Builder $builder): void
@@ -294,20 +296,20 @@ class Article extends Model implements Feedable
 
     public function getIsPublishAttribute(): bool
     {
-        return $this->status === config('status.publish');
+        return $this->status === ArticleStatus::Publish;
     }
 
     public function getIsReservationAttribute(): bool
     {
-        return $this->status === config('status.reservation');
+        return $this->status === ArticleStatus::Reservation;
     }
 
     public function getIsInactiveAttribute(): bool
     {
         return in_array($this->status, [
-            config('status.draft'),
-            config('status.private'),
-            config('status.trash'),
+            ArticleStatus::Draft,
+            ArticleStatus::Private,
+            ArticleStatus::Trash,
         ]);
     }
 
@@ -435,7 +437,7 @@ class Article extends Model implements Feedable
     }
 
     /**
-     * @return array{articleId:int,articleTitle:string,articleStatus:string,articleUserName:string}
+     * @return array{articleId:int,articleTitle:string,articleStatus:ArticleStatus,articleUserName:string}
      */
     public function getInfoLogging(): array
     {

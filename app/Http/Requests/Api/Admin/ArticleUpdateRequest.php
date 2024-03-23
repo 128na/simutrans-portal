@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api\Admin;
 
+use App\Enums\ArticleStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -15,7 +16,7 @@ class ArticleUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'article.status' => ['nullable', Rule::in(config('status'))],
+            'article.status' => ['nullable', Rule::in(ArticleStatus::cases())],
         ];
     }
 }

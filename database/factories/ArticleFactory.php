@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -52,7 +53,7 @@ class ArticleFactory extends Factory
             'slug' => $sentence,
             'contents' => $contents[$post_type],
             'post_type' => $post_type,
-            'status' => $this->faker->randomElement(config('status')),
+            'status' => $this->faker->randomElement(ArticleStatus::cases()),
             'published_at' => now(),
             'modified_at' => now(),
         ];

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\ArticleStatus;
 use App\Http\Requests\Api\Article\BaseRequest;
 use App\Http\Requests\Api\Article\StoreRequest;
 use App\Http\Requests\Api\Article\UpdateRequest;
@@ -88,7 +89,7 @@ class ArticleEditorService extends Service
     public function getStatuses(): SupportCollection
     {
         /** @var array<string> */
-        $status = config('status');
+        $status = ArticleStatus::cases();
 
         return collect($status)->map(
             fn ($item): array => [
@@ -136,11 +137,11 @@ class ArticleEditorService extends Service
     private function getPublishedAt(StoreRequest|UpdateRequest $request): ?string
     {
         $status = $request->input('article.status');
-        if ($status === config('status.publish')) {
+        if ($status === ArticleStatus::Publish) {
             return $this->now->toDateTimeString();
         }
 
-        if ($status === config('status.reservation')) {
+        if ($status === ArticleStatus::Reservation) {
             return $request->input('article.published_at');
         }
 
@@ -178,8 +179,8 @@ class ArticleEditorService extends Service
 
     private function inactiveToPublish(Article $article, UpdateRequest $updateRequest): bool
     {
-        return $article->is_inactive && ($updateRequest->input('article.status') === config('status.publish')
-            || $updateRequest->input('article.status') === config('status.reservation')
+        return $article->is_inactive && ($updateRequest->input('article.status') === ArticleStatus::Publish
+            || $updateRequest->input('article.status') === ArticleStatus::Reservation
         );
     }
 

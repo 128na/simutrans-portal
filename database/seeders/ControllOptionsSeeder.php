@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Database\Seeders\Updates;
+namespace Database\Seeders;
 
 use App\Enums\ControllOptionKey;
 use App\Models\ControllOption;
 use Illuminate\Database\Seeder;
 
-class AddControllOptionsSeeder extends Seeder
+class ControllOptionsSeeder extends Seeder
 {
     public function run(): void
     {

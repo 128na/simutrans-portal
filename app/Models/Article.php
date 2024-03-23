@@ -8,6 +8,7 @@ use App\Casts\ToArticleContents;
 use App\Constants\DefaultThumbnail;
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
+use App\Enums\CategoryType;
 use App\Models\Article\ConversionCount;
 use App\Models\Article\Ranking;
 use App\Models\Article\ViewCount;
@@ -363,7 +364,7 @@ class Article extends Model implements Feedable
      */
     public function getCategoryPaksAttribute(): Collection
     {
-        return $this->categories->filter(fn ($category): bool => $category->type === config('category.type.pak'));
+        return $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak);
     }
 
     /**
@@ -371,7 +372,7 @@ class Article extends Model implements Feedable
      */
     public function getCategoryAddonsAttribute()
     {
-        return $this->categories->filter(fn ($category): bool => $category->type === config('category.type.addon'));
+        return $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Addon);
     }
 
     /**
@@ -379,7 +380,7 @@ class Article extends Model implements Feedable
      */
     public function getCategoryPak128PositionsAttribute()
     {
-        return $this->categories->filter(fn ($category): bool => $category->type === config('category.type.pak128_position'));
+        return $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak128Position);
     }
 
     public function getTodaysConversionRateAttribute(): string
@@ -415,7 +416,7 @@ class Article extends Model implements Feedable
      */
     public function isAnnounce(): bool
     {
-        return $this->categories->some(fn ($category): bool => $category->type === 'page' && $category->slug === 'announce');
+        return $this->categories->some(fn ($category): bool => $category->type === CategoryType::Page && $category->slug === 'announce');
     }
 
     public function hasCategory(string|int $id): bool

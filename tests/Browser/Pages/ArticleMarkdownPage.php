@@ -37,6 +37,6 @@ class ArticleMarkdownPage extends Page
             ->waitForText($this->article->title)
             ->assertSee($this->article->title)
             ->assertSee('Hoge')
-            ->assertSee(__(sprintf('category.%s.%s', $this->category->type, $this->category->slug)));
+            ->assertSee(__(sprintf('category.%s.%s', $this->category->type->value, $this->category->slug)));
     }
 }

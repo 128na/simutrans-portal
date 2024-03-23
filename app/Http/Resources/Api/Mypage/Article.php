@@ -28,7 +28,7 @@ class Article extends JsonResource
             'contents' => $this->resource->contents,
             'categories' => $this->resource->categories->map(fn (Category $category): array => [
                 'id' => $category->id,
-                'name' => __(sprintf('category.%s.%s', $category->type, $category->slug)),
+                'name' => __(sprintf('category.%s.%s', $category->type->value, $category->slug)),
                 'type' => $category->type,
                 'slug' => $category->slug,
             ]),

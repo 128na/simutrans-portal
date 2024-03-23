@@ -67,13 +67,13 @@ class ArticleEditorService extends Service
     {
         /** @return array<string, mixed> */
         $fn = function (array $list, Category $category): array {
-            if (! isset($list[$category->type])) {
-                $list[$category->type] = [];
+            if (! isset($list[$category->type->value])) {
+                $list[$category->type->value] = [];
             }
 
-            $list[$category->type][] = [
+            $list[$category->type->value][] = [
                 'id' => $category->id,
-                'name' => __(sprintf('category.%s.%s', $category->type, $category->slug)),
+                'name' => __(sprintf('category.%s.%s', $category->type->value, $category->slug)),
                 'type' => $category->type,
                 'slug' => $category->slug,
             ];

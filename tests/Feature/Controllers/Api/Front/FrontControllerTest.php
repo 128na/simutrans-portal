@@ -89,7 +89,7 @@ class FrontControllerTest extends TestCase
     public function testCategory(): void
     {
         $category = Category::inRandomOrder()->first();
-        $testResponse = $this->get(sprintf('api/front/categories/%s/%s', $category->type, $category->slug));
+        $testResponse = $this->get(sprintf('api/front/categories/%s/%s', $category->type->value, $category->slug));
 
         $testResponse->assertOk();
     }
@@ -105,7 +105,7 @@ class FrontControllerTest extends TestCase
     public function testCategory存在しないslug(): void
     {
         $category = Category::inRandomOrder()->first();
-        $testResponse = $this->get(sprintf('api/front/categories/%s/missing', $category->type));
+        $testResponse = $this->get(sprintf('api/front/categories/%s/missing', $category->type->value));
 
         $testResponse->assertNotFound();
     }

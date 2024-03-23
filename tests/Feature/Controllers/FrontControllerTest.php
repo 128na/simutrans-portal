@@ -88,7 +88,7 @@ class FrontControllerTest extends TestCase
     public function testCategory(): void
     {
         $category = Category::inRandomOrder()->first();
-        $testResponse = $this->get(route('category', ['type' => $category->type, 'slug' => $category->slug]));
+        $testResponse = $this->get(route('category', ['type' => $category->type->value, 'slug' => $category->slug]));
 
         $testResponse->assertOk();
     }
@@ -104,7 +104,7 @@ class FrontControllerTest extends TestCase
     public function testCategory存在しないslug(): void
     {
         $category = Category::inRandomOrder()->first();
-        $testResponse = $this->get(route('category', ['type' => $category->type, 'slug' => 'missing']));
+        $testResponse = $this->get(route('category', ['type' => $category->type->value, 'slug' => 'missing']));
 
         $testResponse->assertNotFound();
     }

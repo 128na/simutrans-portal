@@ -79,7 +79,7 @@ jobs:
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.2"
+          php-version: ${{ matrix.php_version }}
           coverage: none
 
       - uses: "ramsey/composer-install@v2"
@@ -115,7 +115,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: TestLaravelLog
+          name: TestLaravelLog-${{ matrix.php_version }}
           path: storage/logs
 
   dusk:
@@ -181,7 +181,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: dsuk
+          name: DuskScreenshots
           path: |
             tests/Browser/screenshots
             tests/Browser/console
@@ -209,7 +209,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress
+          name: CypressScreenshots
           path: |
             frontend/test/cypress/videos
             frontend/test/cypress/screenshots

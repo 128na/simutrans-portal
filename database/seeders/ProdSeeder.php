@@ -19,6 +19,5 @@ class ProdSeeder extends Seeder
         $this->call(CategorySeeder::class);
         $this->call(ControllOptionsSeeder::class);
         $this->call(AdminSeeder::class);
-        $this->call(AnnounceSeeder::class);
     }
 }

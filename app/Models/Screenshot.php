@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\ScreenShotStatus;
+use App\Enums\ScreenshotStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,7 +25,7 @@ class Screenshot extends Model
 
     protected $casts = [
         'links' => 'array',
-        'status' => ScreenShotStatus::class,
+        'status' => ScreenshotStatus::class,
         'extra' => 'array',
     ];
 
@@ -64,16 +64,16 @@ class Screenshot extends Model
      */
     public function scopePublish(Builder $builder): void
     {
-        $builder->where('status', ScreenShotStatus::Publish);
+        $builder->where('status', ScreenshotStatus::Publish);
     }
 
     public function getIsPublishAttribute(): bool
     {
-        return $this->status === ScreenShotStatus::Publish;
+        return $this->status === ScreenshotStatus::Publish;
     }
 
     /**
-     * @return array{screenshotId:int,screenshotTitle:string,screenshotStatus:ScreenShotStatus,screenshotUserName:string}
+     * @return array{screenshotId:int,screenshotTitle:string,screenshotStatus:ScreenshotStatus,screenshotUserName:string}
      */
     public function getInfoLogging(): array
     {

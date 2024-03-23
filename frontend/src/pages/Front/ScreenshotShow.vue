@@ -18,7 +18,7 @@
     <template v-for="a in screenshot.attachments" :key="a.id">
       <figure>
         <a :href="a.url" target="_blank" rel="noreferrer noopener">
-          <img :src="a.url" style="max-width:100%;height: auto" />
+          <img :src="a.url" style="max-width:100%;height: auto" loading="lazy"/>
         </a>
         <figcaption v-if="a.caption">{{ a.caption }}</figcaption>
       </figure>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services\BulkZip\Decorators;
 
+use App\Enums\ArticlePostType;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Contents\AddonIntroductionContent;
@@ -25,14 +26,14 @@ class AddonIntroductionDecoratorTest extends UnitTestCase
 
     public function test_canProcess_対象(): void
     {
-        $article = new Article(['post_type' => 'addon-introduction']);
+        $article = new Article(['post_type' => ArticlePostType::AddonIntroduction]);
         $result = $this->decorator->canProcess($article);
         $this->assertTrue($result);
     }
 
     public function test_canProcess_対象外_Article(): void
     {
-        $article = new Article(['post_type' => 'addon-post']);
+        $article = new Article(['post_type' => ArticlePostType::AddonPost]);
         $result = $this->decorator->canProcess($article);
         $this->assertFalse($result);
     }

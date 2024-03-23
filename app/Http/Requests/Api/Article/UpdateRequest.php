@@ -21,7 +21,7 @@ class UpdateRequest extends BaseRequest
         $articleId = request()->input('article.id');
 
         return [
-            'article.status' => ['required', Rule::in(ArticleStatus::cases())],
+            'article.status' => ['required', Rule::enum(ArticleStatus::class)],
             'article.title' => ['required', 'max:255', 'unique:articles,title,'.$articleId, new NgWordRule(NgWords::ARTICLE_TITLE)],
             'article.slug' => ['required', 'max:255', new NotJustNumbers, new UniqueSlugByUser],
             'article.articles' => 'present|array|max:10',

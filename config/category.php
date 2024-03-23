@@ -11,11 +11,6 @@ return [
         'license' => 'license',
         'page' => 'page',
     ],
-    'post' => [
-        ['slug' => 'addon-post',         'type' => 'post', 'order' => 00000, 'name' => 'Addon Post'],
-        ['slug' => 'addon-introduction', 'type' => 'post', 'order' => 00010, 'name' => 'Addon Introduction'],
-        ['slug' => 'page',               'type' => 'post', 'order' => 00020, 'name' => 'Post'],
-    ],
     'pak' => [
         ['slug' => 'any',          'type' => 'pak', 'order' => 9000,  'name' => 'Any'],
         ['slug' => '128-japan',    'type' => 'pak', 'order' => 10000, 'name' => 'Pak128.Japan'],

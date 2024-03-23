@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Http\Requests\Api\Article\BaseRequest;
 use App\Http\Requests\Api\Article\StoreRequest;
@@ -105,7 +106,7 @@ class ArticleEditorService extends Service
     public function getPostTypes(): SupportCollection
     {
         /** @var array<string> */
-        $postTypes = config('post_types');
+        $postTypes = ArticlePostType::cases();
 
         return collect($postTypes)->map(
             fn ($item): array => [

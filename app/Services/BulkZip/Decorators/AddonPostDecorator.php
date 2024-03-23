@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BulkZip\Decorators;
 
+use App\Enums\ArticlePostType;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ class AddonPostDecorator extends BaseDecorator
     public function canProcess(Model $model): bool
     {
         return $model instanceof Article
-            && $model->post_type === 'addon-post';
+            && $model->post_type === ArticlePostType::AddonPost;
     }
 
     /**

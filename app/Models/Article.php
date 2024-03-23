@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Casts\ToArticleContents;
+use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Models\Article\ConversionCount;
 use App\Models\Article\Ranking;
@@ -50,6 +51,7 @@ class Article extends Model implements Feedable
     protected $casts = [
         'contents' => ToArticleContents::class,
         'status' => ArticleStatus::class,
+        'post_type' => ArticlePostType::class,
         'published_at' => 'immutable_datetime',
         'modified_at' => 'immutable_datetime',
     ];
@@ -211,12 +213,12 @@ class Article extends Model implements Feedable
 
     public function scopeAddon(Builder $builder): void
     {
-        $builder->whereIn('post_type', ['addon-post', 'addon-introduction']);
+        $builder->whereIn('post_type', [ArticlePostType::AddonPost, ArticlePostType::AddonIntroduction]);
     }
 
     public function scopeLinkCheckTarget(Builder $builder): void
     {
-        $builder->where('post_type', 'addon-introduction')
+        $builder->where('post_type', ArticlePostType::AddonIntroduction)
             ->where(
                 fn ($query) => $query->whereNull('contents->exclude_link_check')
                     ->orWhere('contents->exclude_link_check', false)
@@ -225,7 +227,7 @@ class Article extends Model implements Feedable
 
     public function scopePage(Builder $builder): void
     {
-        $builder->where('post_type', ['page', 'markdown']);
+        $builder->where('post_type', [ArticlePostType::Page, ArticlePostType::Markdown]);
     }
 
     public function scopePak(Builder $builder, string $slug): void
@@ -235,13 +237,13 @@ class Article extends Model implements Feedable
 
     public function scopeAnnounce(Builder $builder): void
     {
-        $builder->whereIn('post_type', ['page', 'markdown'])
+        $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
             ->whereHas('categories', fn ($query) => $query->page()->slug('announce'));
     }
 
     public function scopeWithoutAnnounce(Builder $builder): void
     {
-        $builder->whereIn('post_type', ['page', 'markdown'])
+        $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
             ->whereDoesntHave('categories', fn ($query) => $query->page()->slug('announce'));
     }
 
@@ -286,12 +288,12 @@ class Article extends Model implements Feedable
      */
     public function getIsAddonPostAttribute(): bool
     {
-        return $this->post_type === config('post_types.addon-post');
+        return $this->post_type === ArticlePostType::AddonPost;
     }
 
     public function getIsPageAttribute(): bool
     {
-        return $this->post_type === config('post_types.page');
+        return $this->post_type === ArticlePostType::Page;
     }
 
     public function getIsPublishAttribute(): bool

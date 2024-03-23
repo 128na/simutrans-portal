@@ -16,7 +16,7 @@ class ArticleUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'article.status' => ['nullable', Rule::in(ArticleStatus::cases())],
+            'article.status' => ['nullable', Rule::enum(ArticleStatus::class)],
         ];
     }
 }

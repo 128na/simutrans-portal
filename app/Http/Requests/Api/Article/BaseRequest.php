@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api\Article;
 
+use App\Enums\ArticlePostType;
 use App\Rules\ImageAttachment;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -15,14 +16,13 @@ abstract class BaseRequest extends FormRequest
      */
     public function rules()
     {
-        $post_type = request()->input('article.post_type');
+        $postType = ArticlePostType::from(request()->input('article.post_type'));
 
-        return match ($post_type) {
-            'addon-post' => array_merge($this->baseRule(), $this->addonPost()),
-            'addon-introduction' => array_merge($this->baseRule(), $this->addonIntroductiuon()),
-            'page' => array_merge($this->baseRule(), $this->page()),
-            'markdown' => array_merge($this->baseRule(), $this->markdown()),
-            default => $this->baseRule(),
+        return match ($postType) {
+            ArticlePostType::AddonPost => array_merge($this->baseRule(), $this->addonPost()),
+            ArticlePostType::AddonIntroduction => array_merge($this->baseRule(), $this->addonIntroductiuon()),
+            ArticlePostType::Page => array_merge($this->baseRule(), $this->page()),
+            ArticlePostType::Markdown => array_merge($this->baseRule(), $this->markdown()),
         };
     }
 

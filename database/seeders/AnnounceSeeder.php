@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Models\Category;
 use App\Models\User;
@@ -41,7 +42,7 @@ class AnnounceSeeder extends Seeder
 
         foreach ($this->getAnnouces() as $data) {
             $data = array_merge([
-                'post_type' => config('post_types.page'),
+                'post_type' => ArticlePostType::Page,
                 'status' => ArticleStatus::Publish,
             ], $data);
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\User;
@@ -25,23 +26,23 @@ class ArticleFactory extends Factory
      */
     public function definition()
     {
-        $post_type = $this->faker->randomElement(config('post_types'));
+        $postType = $this->faker->randomElement(array_column(ArticlePostType::cases(), 'value'));
         $contents = [
-            'addon-introduction' => [
+            ArticlePostType::AddonIntroduction->value => [
                 'description' => $this->faker->realText(),
                 'author' => $this->faker->name(),
                 'link' => $this->faker->url(),
             ],
-            'addon-post' => [
+            ArticlePostType::AddonPost->value => [
                 'description' => $this->faker->realText(),
                 'author' => $this->faker->name(),
             ],
-            'page' => [
+            ArticlePostType::Page->value => [
                 'sections' => [
                     ['type' => 'text', 'text' => $this->faker->realText()],
                 ],
             ],
-            'markdown' => [
+            ArticlePostType::Markdown->value => [
                 'markdown' => $this->faker->realText(),
             ],
         ];
@@ -51,9 +52,9 @@ class ArticleFactory extends Factory
             'user_id' => User::factory()->create()->id,
             'title' => $sentence,
             'slug' => $sentence,
-            'contents' => $contents[$post_type],
-            'post_type' => $post_type,
-            'status' => $this->faker->randomElement(ArticleStatus::cases()),
+            'contents' => $contents[$postType],
+            'post_type' => $postType,
+            'status' => $this->faker->randomElement(array_column(ArticleStatus::cases(), 'value')),
             'published_at' => now(),
             'modified_at' => now(),
         ];
@@ -62,14 +63,14 @@ class ArticleFactory extends Factory
     public function publish()
     {
         return $this->state(fn (array $attributes): array => [
-            'status' => 'publish',
+            'status' => ArticleStatus::Publish,
         ]);
     }
 
     public function draft()
     {
         return $this->state(fn (array $attributes): array => [
-            'status' => 'draft',
+            'status' => ArticleStatus::Draft,
         ]);
     }
 
@@ -83,7 +84,7 @@ class ArticleFactory extends Factory
     public function addonPost()
     {
         return $this->state(fn (array $attributes): array => [
-            'post_type' => 'addon-post',
+            'post_type' => ArticlePostType::AddonPost,
             'contents' => [
                 'description' => $this->faker->realText(),
                 'license' => $this->faker->realText(),
@@ -96,7 +97,7 @@ class ArticleFactory extends Factory
     public function addonIntroduction()
     {
         return $this->state(fn (array $attributes): array => [
-            'post_type' => 'addon-introduction',
+            'post_type' => ArticlePostType::AddonIntroduction,
             'contents' => [
                 'description' => $this->faker->realText(),
                 'license' => $this->faker->realText(),
@@ -112,7 +113,7 @@ class ArticleFactory extends Factory
     public function page()
     {
         return $this->state(fn (array $attributes): array => [
-            'post_type' => 'page',
+            'post_type' => ArticlePostType::Page,
             'contents' => [
                 'sections' => [
                     ['type' => 'text', 'text' => $this->faker->realText()],
@@ -124,7 +125,7 @@ class ArticleFactory extends Factory
     public function markdown()
     {
         return $this->state(fn (array $attributes): array => [
-            'post_type' => 'markdown',
+            'post_type' => ArticlePostType::Markdown,
             'contents' => [
                 'markdown' => $this->faker->realText(),
             ],

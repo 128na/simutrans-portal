@@ -64,7 +64,7 @@ class FrontController extends Controller
     public function download(Article $article): StreamedResponse
     {
         abort_unless($article->is_publish, 404);
-        abort_unless($article->post_type === 'addon-post', 404);
+        abort_unless($article->is_addon_post, 404);
 
         if (Auth::check() === false || Auth::id() !== $article->user_id) {
             event(new ArticleConversion($article));

@@ -20,7 +20,7 @@ class StoreRequest extends FormRequest
         return [
             'screenshot.title' => 'required|string|max:256',
             'screenshot.description' => 'required|string|max:2048',
-            'screenshot.status' => ['required', Rule::in(ScreenshotStatus::cases())],
+            'screenshot.status' => ['required', Rule::enum(ScreenshotStatus::class)],
             'screenshot.attachments' => 'required|array|min:1|max:10',
             'screenshot.attachments.*.id' => 'required|exists:attachments,id',
             'screenshot.attachments.*.order' => 'present|numeric',

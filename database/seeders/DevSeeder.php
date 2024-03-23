@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Enums\ArticlePostType;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
@@ -36,14 +37,14 @@ class DevSeeder extends Seeder
 
             foreach ($user->articles as $article) {
                 // アドオン投稿
-                if ($article->post_type === 'addon-post') {
+                if ($article->post_type === ArticlePostType::AddonPost) {
                     $this->addAddonPost($user, $article);
                     $this->addCategories($article);
                     $this->addTags($article);
                 }
 
                 // アドオン紹介
-                if ($article->post_type === 'addon-introduction') {
+                if ($article->post_type === ArticlePostType::AddonIntroduction) {
                     $this->addAddonIntroduction($user, $article);
                     $this->addCategories($article);
                     $this->addTags($article);

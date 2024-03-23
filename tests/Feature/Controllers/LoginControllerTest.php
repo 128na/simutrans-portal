@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers;
 
-use App\Constants\ControllOptionKey;
+use App\Enums\ControllOptionKey;
 use App\Models\ControllOption;
 use App\Models\User;
 use App\Notifications\Loggedin;

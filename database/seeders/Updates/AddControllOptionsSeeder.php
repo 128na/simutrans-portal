@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders\Updates;
 
-use App\Constants\ControllOptionKey;
+use App\Enums\ControllOptionKey;
 use App\Models\ControllOption;
 use Illuminate\Database\Seeder;
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Front;
 
+use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\Screenshot;
 use App\Models\Tag;
@@ -57,18 +58,18 @@ class MetaOgpService extends Service
     /**
      * @return array{title:string,description:string}
      */
-    public function category(string $type, string $slug): array
+    public function category(CategoryType $categoryType, string $slug): array
     {
-        if ($type === 'license') {
+        if ($categoryType === CategoryType::License) {
             return [
-                'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $type, $slug))).' - '.config('app.name'),
-                'description' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $type, $slug))),
+                'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $categoryType->value, $slug))).' - '.config('app.name'),
+                'description' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $categoryType->value, $slug))),
             ];
         }
 
         return [
-            'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $type, $slug))).' - '.config('app.name'),
-            'description' => __(sprintf('category.description.%s.%s', $type, $slug)),
+            'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $categoryType->value, $slug))).' - '.config('app.name'),
+            'description' => __(sprintf('category.description.%s.%s', $categoryType->value, $slug)),
         ];
     }
 

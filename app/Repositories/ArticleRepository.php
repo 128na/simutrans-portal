@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
@@ -428,7 +429,7 @@ class ArticleRepository extends BaseRepository
     public function cursorReservations(CarbonImmutable $date): LazyCollection
     {
         return $this->model
-            ->where('status', config('status.reservation'))
+            ->where('status', ArticleStatus::Reservation)
             ->where('published_at', '<=', $date)
             ->cursor();
     }

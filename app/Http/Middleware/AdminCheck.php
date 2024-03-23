@@ -20,6 +20,7 @@ class AdminCheck
      */
     public function handle($request, Closure $next)
     {
+        /** @var ?\App\Models\User */
         $user = Auth::user();
         if ($user && $user->isAdmin()) {
             return $next($request);

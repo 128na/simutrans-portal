@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\ArticlePostType;
+use App\Enums\ArticleStatus;
 use App\Http\Requests\Api\Article\BaseRequest;
 use App\Http\Requests\Api\Article\StoreRequest;
 use App\Http\Requests\Api\Article\UpdateRequest;
@@ -65,13 +67,13 @@ class ArticleEditorService extends Service
     {
         /** @return array<string, mixed> */
         $fn = function (array $list, Category $category): array {
-            if (! isset($list[$category->type])) {
-                $list[$category->type] = [];
+            if (! isset($list[$category->type->value])) {
+                $list[$category->type->value] = [];
             }
 
-            $list[$category->type][] = [
+            $list[$category->type->value][] = [
                 'id' => $category->id,
-                'name' => __(sprintf('category.%s.%s', $category->type, $category->slug)),
+                'name' => __(sprintf('category.%s.%s', $category->type->value, $category->slug)),
                 'type' => $category->type,
                 'slug' => $category->slug,
             ];
@@ -87,13 +89,13 @@ class ArticleEditorService extends Service
      */
     public function getStatuses(): SupportCollection
     {
-        /** @var array<string> */
-        $status = config('status');
+        /** @var array<ArticleStatus> */
+        $status = ArticleStatus::cases();
 
         return collect($status)->map(
             fn ($item): array => [
-                'label' => __('statuses.'.$item),
-                'value' => $item,
+                'label' => __('statuses.'.$item->value),
+                'value' => $item->value,
             ]
         )->values();
     }
@@ -103,13 +105,13 @@ class ArticleEditorService extends Service
      */
     public function getPostTypes(): SupportCollection
     {
-        /** @var array<string> */
-        $postTypes = config('post_types');
+        /** @var array<ArticlePostType> */
+        $postTypes = ArticlePostType::cases();
 
         return collect($postTypes)->map(
             fn ($item): array => [
-                'label' => __('post_types.'.$item),
-                'value' => $item,
+                'label' => __('post_types.'.$item->value),
+                'value' => $item->value,
             ]
         )->values();
     }
@@ -117,10 +119,10 @@ class ArticleEditorService extends Service
     public function storeArticle(User $user, StoreRequest $storeRequest): Article
     {
         $data = [
-            'post_type' => $storeRequest->input('article.post_type'),
+            'post_type' => ArticlePostType::from((string) $storeRequest->string('article.post_type', '')),
             'title' => $storeRequest->input('article.title'),
             'slug' => $storeRequest->input('article.slug'),
-            'status' => $storeRequest->input('article.status'),
+            'status' => ArticleStatus::from((string) $storeRequest->string('article.status', '')),
             'contents' => $storeRequest->input('article.contents'),
             'published_at' => $this->getPublishedAt($storeRequest),
             'modified_at' => $this->now->toDateTimeString(),
@@ -135,12 +137,12 @@ class ArticleEditorService extends Service
 
     private function getPublishedAt(StoreRequest|UpdateRequest $request): ?string
     {
-        $status = $request->input('article.status');
-        if ($status === config('status.publish')) {
+        $articleStatus = ArticleStatus::from((string) $request->string('article.status', ''));
+        if ($articleStatus === ArticleStatus::Publish) {
             return $this->now->toDateTimeString();
         }
 
-        if ($status === config('status.reservation')) {
+        if ($articleStatus === ArticleStatus::Reservation) {
             return $request->input('article.published_at');
         }
 
@@ -178,9 +180,10 @@ class ArticleEditorService extends Service
 
     private function inactiveToPublish(Article $article, UpdateRequest $updateRequest): bool
     {
-        return $article->is_inactive && ($updateRequest->input('article.status') === config('status.publish')
-            || $updateRequest->input('article.status') === config('status.reservation')
-        );
+        return $article->is_inactive
+            && (ArticleStatus::from((string) $updateRequest->string('article.status', '')) === ArticleStatus::Publish
+            || ArticleStatus::from((string) $updateRequest->string('article.status', '')) === ArticleStatus::Reservation
+            );
     }
 
     private function shouldUpdateModifiedAt(UpdateRequest $updateRequest): bool

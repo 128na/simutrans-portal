@@ -57,14 +57,14 @@ class VerifiedTest extends ArticleTestCase
     /**
      * @dataProvider dataVerified
      */
-    public function testメール確認が完了(string $method, Closure $route, int $expected_status): void
+    public function testメール確認が完了(string $method, Closure $route, int $expectedStatus): void
     {
         $this->actingAs($this->user);
 
         $url = Closure::bind($route, $this)();
 
         $response = $this->{$method}($url);
-        $response->assertStatus($expected_status);
+        $response->assertStatus($expectedStatus);
     }
 
     public static function dataVerified(): \Generator

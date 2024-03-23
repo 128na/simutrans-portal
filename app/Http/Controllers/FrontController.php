@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\CategoryType;
 use App\Events\ArticleConversion;
 use App\Http\Requests\Article\SearchRequest;
 use App\Models\Article;
@@ -64,7 +65,7 @@ class FrontController extends Controller
     public function download(Article $article): StreamedResponse
     {
         abort_unless($article->is_publish, 404);
-        abort_unless($article->post_type === 'addon-post', 404);
+        abort_unless($article->is_addon_post, 404);
 
         if (Auth::check() === false || Auth::id() !== $article->user_id) {
             event(new ArticleConversion($article));
@@ -83,9 +84,11 @@ class FrontController extends Controller
      */
     public function category(string $type, string $slug): Renderable
     {
-        $this->articleService->validateCategoryByTypeAndSlug($type, $slug);
+        $categoryType = CategoryType::tryFrom($type);
+        abort_unless($categoryType instanceof CategoryType, 404);
+        $this->articleService->validateCategoryByTypeAndSlug($categoryType, $slug);
 
-        $meta = $this->metaOgpService->category($type, $slug);
+        $meta = $this->metaOgpService->category($categoryType, $slug);
 
         return view('front.spa', ['meta' => $meta]);
     }
@@ -106,7 +109,7 @@ class FrontController extends Controller
      */
     public function categoryPakNoneAddon(string $pakSlug): Renderable
     {
-        $this->articleService->validateCategoryByTypeAndSlug('pak', $pakSlug);
+        $this->articleService->validateCategoryByTypeAndSlug(CategoryType::Pak, $pakSlug);
         $meta = $this->metaOgpService->categoryPakNoneAddon($pakSlug);
 
         return view('front.spa', ['meta' => $meta]);

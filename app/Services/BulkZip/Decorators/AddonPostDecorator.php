@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BulkZip\Decorators;
 
+use App\Enums\ArticlePostType;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ class AddonPostDecorator extends BaseDecorator
     public function canProcess(Model $model): bool
     {
         return $model instanceof Article
-            && $model->post_type === 'addon-post';
+            && $model->post_type === ArticlePostType::AddonPost;
     }
 
     /**
@@ -67,7 +68,7 @@ class AddonPostDecorator extends BaseDecorator
             ],
 
             ['投稿者', $article->user->name ?? ''],
-            ['カテゴリ', ...$article->categories->map(fn (Category $category) => __(sprintf('category.%s.%s', $category->type, $category->slug)))->toArray()],
+            ['カテゴリ', ...$article->categories->map(fn (Category $category) => __(sprintf('category.%s.%s', $category->type->value, $category->slug)))->toArray()],
             ['タグ', ...$article->tags()->pluck('name')->toArray()],
             ['作者 / 投稿者', $contents->author],
             ['説明', $contents->description],

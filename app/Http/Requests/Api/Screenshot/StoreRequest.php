@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api\Screenshot;
 
-use App\Enums\ScreenShotStatus;
+use App\Enums\ScreenshotStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -20,7 +20,7 @@ class StoreRequest extends FormRequest
         return [
             'screenshot.title' => 'required|string|max:256',
             'screenshot.description' => 'required|string|max:2048',
-            'screenshot.status' => ['required', Rule::in(ScreenShotStatus::cases())],
+            'screenshot.status' => ['required', Rule::enum(ScreenshotStatus::class)],
             'screenshot.attachments' => 'required|array|min:1|max:10',
             'screenshot.attachments.*.id' => 'required|exists:attachments,id',
             'screenshot.attachments.*.order' => 'present|numeric',

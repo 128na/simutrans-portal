@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\CategoryType;
 use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -14,11 +15,15 @@ class Category extends Model
     use Slugable;
 
     protected $fillable = [
-        'name',
         'type',
         'slug',
         'order',
         'need_admin',
+    ];
+
+    protected $casts = [
+        'type' => CategoryType::class,
+        'need_admin' => 'boolean',
     ];
 
     /*
@@ -50,17 +55,9 @@ class Category extends Model
     | スコープ
     |--------------------------------------------------------------------------
      */
-    public function scopeType(Builder $builder, string $type): void
+    public function scopeType(Builder $builder, CategoryType $categoryType): void
     {
-        $builder->where('type', $type);
-    }
-
-    /**
-     * @param  Builder|Category  $builder
-     */
-    public function scopePost(Builder $builder): void
-    {
-        $builder->type(config('category.type.post'));
+        $builder->where('type', $categoryType);
     }
 
     /**
@@ -68,7 +65,7 @@ class Category extends Model
      */
     public function scopePak(Builder $builder): void
     {
-        $builder->type(config('category.type.pak'));
+        $builder->type(CategoryType::Pak);
     }
 
     /**
@@ -76,7 +73,7 @@ class Category extends Model
      */
     public function scopeAddon(Builder $builder): void
     {
-        $builder->type(config('category.type.addon'));
+        $builder->type(CategoryType::Addon);
     }
 
     /**
@@ -84,7 +81,7 @@ class Category extends Model
      */
     public function scopePak128Position(Builder $builder): void
     {
-        $builder->type(config('category.type.pak128_position'));
+        $builder->type(CategoryType::Pak128Position);
     }
 
     /**
@@ -92,7 +89,7 @@ class Category extends Model
      */
     public function scopeLicense(Builder $builder): void
     {
-        $builder->type(config('category.type.license'));
+        $builder->type(CategoryType::License);
     }
 
     /**
@@ -100,7 +97,7 @@ class Category extends Model
      */
     public function scopePage(Builder $builder): void
     {
-        $builder->type(config('category.type.page'));
+        $builder->type(CategoryType::Page);
     }
 
     /**

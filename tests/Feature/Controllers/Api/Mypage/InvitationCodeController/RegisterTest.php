@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Mypage\InvitationCodeController;
 
-use App\Constants\ControllOptionKeys;
+use App\Enums\ControllOptionKey;
 use App\Models\ControllOption;
 use App\Notifications\UserInvited;
 use Illuminate\Auth\Events\Registered;
@@ -48,7 +48,7 @@ class RegisterTest extends TestCase
 
     public function test機能無効(): void
     {
-        ControllOption::create(['key' => ControllOptionKeys::INVITATION_CODE, 'value' => false]);
+        ControllOption::updateOrCreate(['key' => ControllOptionKey::InvitationCode], ['value' => false]);
 
         $testResponse = $this->postJson(
             '/api/mypage/invite/'.$this->user->invitation_code,

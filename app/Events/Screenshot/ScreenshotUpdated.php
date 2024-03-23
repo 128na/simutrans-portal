@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Events\Article;
+namespace App\Events\Screenshot;
 
 use App\Models\Screenshot;
 use Illuminate\Queue\SerializesModels;

@@ -19,6 +19,7 @@ class DuskSeeder extends Seeder
     {
         DB::statement('delete from articles');
         DB::statement('delete from users');
-        $this->call(ProdSeeder::class);
+        $this->call(CategorySeeder::class);
+        $this->call(ControllOptionsSeeder::class);
     }
 }

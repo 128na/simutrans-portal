@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Casts\ToArticleContents;
+use App\Constants\DefaultThumbnail;
+use App\Enums\ArticlePostType;
+use App\Enums\ArticleStatus;
+use App\Enums\CategoryType;
 use App\Models\Article\ConversionCount;
 use App\Models\Article\Ranking;
 use App\Models\Article\ViewCount;
@@ -48,6 +52,8 @@ class Article extends Model implements Feedable
 
     protected $casts = [
         'contents' => ToArticleContents::class,
+        'status' => ArticleStatus::class,
+        'post_type' => ArticlePostType::class,
         'published_at' => 'immutable_datetime',
         'modified_at' => 'immutable_datetime',
     ];
@@ -204,17 +210,17 @@ class Article extends Model implements Feedable
 
     public function scopeActive(Builder $builder): void
     {
-        $builder->where('status', config('status.publish'));
+        $builder->where('status', ArticleStatus::Publish);
     }
 
     public function scopeAddon(Builder $builder): void
     {
-        $builder->whereIn('post_type', ['addon-post', 'addon-introduction']);
+        $builder->whereIn('post_type', [ArticlePostType::AddonPost, ArticlePostType::AddonIntroduction]);
     }
 
     public function scopeLinkCheckTarget(Builder $builder): void
     {
-        $builder->where('post_type', 'addon-introduction')
+        $builder->where('post_type', ArticlePostType::AddonIntroduction)
             ->where(
                 fn ($query) => $query->whereNull('contents->exclude_link_check')
                     ->orWhere('contents->exclude_link_check', false)
@@ -223,7 +229,7 @@ class Article extends Model implements Feedable
 
     public function scopePage(Builder $builder): void
     {
-        $builder->where('post_type', ['page', 'markdown']);
+        $builder->where('post_type', [ArticlePostType::Page, ArticlePostType::Markdown]);
     }
 
     public function scopePak(Builder $builder, string $slug): void
@@ -233,13 +239,13 @@ class Article extends Model implements Feedable
 
     public function scopeAnnounce(Builder $builder): void
     {
-        $builder->whereIn('post_type', ['page', 'markdown'])
+        $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
             ->whereHas('categories', fn ($query) => $query->page()->slug('announce'));
     }
 
     public function scopeWithoutAnnounce(Builder $builder): void
     {
-        $builder->whereIn('post_type', ['page', 'markdown'])
+        $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
             ->whereDoesntHave('categories', fn ($query) => $query->page()->slug('announce'));
     }
 
@@ -284,30 +290,30 @@ class Article extends Model implements Feedable
      */
     public function getIsAddonPostAttribute(): bool
     {
-        return $this->post_type === config('post_types.addon-post');
+        return $this->post_type === ArticlePostType::AddonPost;
     }
 
     public function getIsPageAttribute(): bool
     {
-        return $this->post_type === config('post_types.page');
+        return $this->post_type === ArticlePostType::Page;
     }
 
     public function getIsPublishAttribute(): bool
     {
-        return $this->status === config('status.publish');
+        return $this->status === ArticleStatus::Publish;
     }
 
     public function getIsReservationAttribute(): bool
     {
-        return $this->status === config('status.reservation');
+        return $this->status === ArticleStatus::Reservation;
     }
 
     public function getIsInactiveAttribute(): bool
     {
         return in_array($this->status, [
-            config('status.draft'),
-            config('status.private'),
-            config('status.trash'),
+            ArticleStatus::Draft,
+            ArticleStatus::Private,
+            ArticleStatus::Trash,
         ]);
     }
 
@@ -327,7 +333,7 @@ class Article extends Model implements Feedable
     {
         return Storage::disk('public')->url($this->has_thumbnail && $this->thumbnail
             ? $this->thumbnail->path
-            : config('attachment.no-thumbnail'));
+            : DefaultThumbnail::NO_THUMBNAIL);
     }
 
     public function getHasFileAttribute(): bool
@@ -358,7 +364,7 @@ class Article extends Model implements Feedable
      */
     public function getCategoryPaksAttribute(): Collection
     {
-        return $this->categories->filter(fn ($category): bool => $category->type === config('category.type.pak'));
+        return $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak);
     }
 
     /**
@@ -366,7 +372,7 @@ class Article extends Model implements Feedable
      */
     public function getCategoryAddonsAttribute()
     {
-        return $this->categories->filter(fn ($category): bool => $category->type === config('category.type.addon'));
+        return $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Addon);
     }
 
     /**
@@ -374,7 +380,7 @@ class Article extends Model implements Feedable
      */
     public function getCategoryPak128PositionsAttribute()
     {
-        return $this->categories->filter(fn ($category): bool => $category->type === config('category.type.pak128_position'));
+        return $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak128Position);
     }
 
     public function getTodaysConversionRateAttribute(): string
@@ -410,7 +416,7 @@ class Article extends Model implements Feedable
      */
     public function isAnnounce(): bool
     {
-        return $this->categories->some(fn ($category): bool => $category->type === 'page' && $category->slug === 'announce');
+        return $this->categories->some(fn ($category): bool => $category->type === CategoryType::Page && $category->slug === 'announce');
     }
 
     public function hasCategory(string|int $id): bool
@@ -431,11 +437,11 @@ class Article extends Model implements Feedable
 
         return Storage::disk('public')->url($image instanceof \App\Models\Attachment
             ? $image->path
-            : config('attachment.no-thumbnail'));
+            : DefaultThumbnail::NO_THUMBNAIL);
     }
 
     /**
-     * @return array{articleId:int,articleTitle:string,articleStatus:string,articleUserName:string}
+     * @return array{articleId:int,articleTitle:string,articleStatus:ArticleStatus,articleUserName:string}
      */
     public function getInfoLogging(): array
     {

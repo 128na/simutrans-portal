@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Requests\Api\Article;
 
 use App\Constants\NgWords;
+use App\Enums\ArticlePostType;
+use App\Enums\ArticleStatus;
 use App\Rules\NgWordRule;
 use App\Rules\NotJustNumbers;
 use App\Rules\UniqueSlugByUser;
@@ -18,8 +20,8 @@ class StoreRequest extends BaseRequest
     protected function baseRule(): array
     {
         return [
-            'article.post_type' => ['bail', 'required', Rule::in(config('post_types'))],
-            'article.status' => ['required', Rule::in(config('status'))],
+            'article.post_type' => ['bail', 'required', Rule::enum(ArticlePostType::class)],
+            'article.status' => ['required', Rule::enum(ArticleStatus::class)],
             'article.title' => ['required', 'max:255', 'unique:articles,title', new NgWordRule(NgWords::ARTICLE_TITLE)],
             'article.slug' => ['required', 'max:255', new NotJustNumbers, new UniqueSlugByUser],
             'article.published_at' => 'nullable|date|after:+1 hour',

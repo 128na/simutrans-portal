@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Enums\CategoryType;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -31,11 +32,11 @@ class CategoryRepository extends BaseRepository
         return $this->model->forUser($user)->get();
     }
 
-    public function findOrFailByTypeAndSlug(string $type, string $slug): Category
+    public function findOrFailByTypeAndSlug(CategoryType $categoryType, string $slug): Category
     {
         return $this->model
             ->select('id', 'slug', 'type')
-            ->type($type)
+            ->type($categoryType)
             ->slug($slug)
             ->firstOrFail();
     }

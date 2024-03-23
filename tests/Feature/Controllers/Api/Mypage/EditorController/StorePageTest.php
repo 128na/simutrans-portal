@@ -18,7 +18,7 @@ class StorePageTest extends ArticleTestCase
      * @dataProvider dataArticleValidation
      * @dataProvider dataPageValidation
      */
-    public function testValidation(Closure $fn, ?string $error_field): void
+    public function testValidation(Closure $fn, ?string $errorField): void
     {
         Bus::fake();
         $url = '/api/mypage/articles';
@@ -51,13 +51,13 @@ class StorePageTest extends ArticleTestCase
         $data = array_merge($data, Closure::bind($fn, $this)());
 
         $res = $this->postJson($url, ['article' => $data]);
-        if (is_null($error_field)) {
+        if (is_null($errorField)) {
             $res->assertStatus(200);
             $get_response = json_decode($this->getJson('/api/mypage/articles')->content(), true);
             $res->assertJson($get_response);
             Bus::assertDispatched(JobUpdateRelated::class);
         } else {
-            $res->assertJsonValidationErrors($error_field);
+            $res->assertJsonValidationErrors($errorField);
             Bus::assertNotDispatched(JobUpdateRelated::class);
         }
     }

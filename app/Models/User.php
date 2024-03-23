@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Models\BulkZippableInterface;
+use App\Enums\UserRole;
 use App\Models\User\LoginHistory;
 use App\Models\User\Profile;
 use App\Notifications\ResetPassword;
@@ -48,6 +49,7 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
     ];
 
     protected $casts = [
+        'role' => UserRole::class,
         'email_verified_at' => 'datetime',
         'two_factor_confirmed_at' => 'datetime',
     ];
@@ -159,7 +161,7 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
     */
     public function scopeAdmin(Builder $builder): void
     {
-        $builder->where('role', config('role.admin'));
+        $builder->where('role', UserRole::Admin);
     }
 
     /*
@@ -173,7 +175,7 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
      */
     public function isAdmin(): bool
     {
-        return $this->role === config('role.admin');
+        return $this->role === UserRole::Admin;
     }
 
     /**

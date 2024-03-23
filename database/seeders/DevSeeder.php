@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Enums\ArticlePostType;
+use App\Enums\UserRole;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
@@ -23,7 +24,7 @@ class DevSeeder extends Seeder
     public function run(): void
     {
         Attachment::where('id', '<>', null)->delete();
-        User::where('role', config('role.user'))->delete();
+        User::where('role', UserRole::User)->delete();
 
         User::factory()->count(20)->create()->each(function ($user): void {
             $user->articles()->saveMany(

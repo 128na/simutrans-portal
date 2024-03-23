@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -15,7 +16,7 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'role' => config('role.user'),
+            'role' => UserRole::User,
             'name' => $this->faker->name(),
             'nickname' => null,
             'invited_by' => null,
@@ -33,7 +34,7 @@ class UserFactory extends Factory
     public function admin()
     {
         return $this->state(fn (array $attributes): array => [
-            'role' => 'admin',
+            'role' => UserRole::Admin,
         ]);
     }
 

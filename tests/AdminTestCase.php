@@ -19,14 +19,7 @@ abstract class AdminTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->admin = User::factory()->create(['role' => 'admin']);
+        $this->admin = User::factory()->admin();
         $this->article = Article::factory()->create();
-    }
-
-    public static function dataUsers(): \Generator
-    {
-        yield '未ログイン' => [null, 401];
-        yield '一般ユーザー' => ['user', 401];
-        yield '管理者ユーザー' => ['admin', 200];
     }
 }

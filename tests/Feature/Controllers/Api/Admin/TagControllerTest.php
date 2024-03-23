@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Admin;
 
+use App\Enums\UserRole;
 use App\Models\Tag;
 use Tests\TestCase;
 
@@ -34,7 +35,7 @@ class TagControllerTest extends TestCase
         $this->assertDatabaseHas('tags', ['id' => $this->tag->id, 'editable' => 1]);
         $url = sprintf('/api/admin/tags/%s/toggleEditable', $this->tag->id);
 
-        $this->user->update(['role' => 'admin']);
+        $this->user->update(['role' => UserRole::Admin]);
         $this->actingAs($this->user);
 
         $testResponse = $this->postJson($url);

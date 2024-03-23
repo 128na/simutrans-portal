@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Enums\UserRole;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -33,7 +34,7 @@ class ProdSeeder extends Seeder
         }
 
         return User::firstOrCreate(
-            ['role' => config('role.admin'), 'name' => env('ADMIN_NAME'), 'email' => env('ADMIN_EMAIL')],
+            ['role' => UserRole::Admin, 'name' => env('ADMIN_NAME'), 'email' => env('ADMIN_EMAIL')],
             ['password' => bcrypt(env('ADMIN_PASSWORD')), 'email_verified_at' => now()]
         );
     }

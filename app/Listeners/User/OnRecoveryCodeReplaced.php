@@ -18,7 +18,7 @@ class OnRecoveryCodeReplaced extends BaseListener
     public function handle(RecoveryCodeReplaced $recoveryCodeReplaced): void
     {
         if ($recoveryCodeReplaced->user instanceof User) {
-            $this->logger->channel('audit')->info('リカバリコード使用', $this->getUserInfo($recoveryCodeReplaced->user));
+            $this->logger->channel('audit')->info('リカバリコード使用', $recoveryCodeReplaced->user->getInfoLogging());
         }
     }
 }

@@ -43,6 +43,17 @@ class Tag extends Model
         return $this->belongsTo(User::class, 'last_modified_by');
     }
 
+    /**
+     * @return array{tagId:int,tagName:string}
+     */
+    public function getInfoLogging(): array
+    {
+        return [
+            'tagId' => $this->id,
+            'tagName' => $this->name,
+        ];
+    }
+
     /*
     |--------------------------------------------------------------------------
     | スコープ

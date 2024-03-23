@@ -18,7 +18,7 @@ class OnPasswordReset extends BaseListener
     public function handle(PasswordReset $passwordReset): void
     {
         if ($passwordReset->user instanceof User) {
-            $this->logger->channel('audit')->info('パスワードリセット', $this->getUserInfo($passwordReset->user));
+            $this->logger->channel('audit')->info('パスワードリセット', $passwordReset->user->getInfoLogging());
         }
     }
 }

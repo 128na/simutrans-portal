@@ -18,7 +18,7 @@ class OnArticleUpdated extends BaseListener
 
     public function handle(ArticleUpdated $articleUpdated): void
     {
-        $this->logger->channel('audit')->info('記事更新', $this->getArticleInfo($articleUpdated->article));
+        $this->logger->channel('audit')->info('記事更新', $articleUpdated->article->getInfoLogging());
 
         // 公開以外
         if (! $articleUpdated->article->is_publish) {

@@ -71,4 +71,19 @@ class Screenshot extends Model
     {
         return $this->status === ScreenShotStatus::Publish;
     }
+
+    /**
+     * @return array{screenshotId:int,screenshotTitle:string,screenshotStatus:ScreenShotStatus,screenshotUserName:string}
+     */
+    public function getInfoLogging(): array
+    {
+        $this->loadMissing('user');
+
+        return [
+            'screenshotId' => $this->id,
+            'screenshotTitle' => $this->title,
+            'screenshotStatus' => $this->status,
+            'screenshotUserName' => $this->user?->name ?? '',
+        ];
+    }
 }

@@ -434,6 +434,21 @@ class Article extends Model implements Feedable
             : config('attachment.no-thumbnail'));
     }
 
+    /**
+     * @return array{articleId:int,articleTitle:string,articleStatus:string,articleUserName:string}
+     */
+    public function getInfoLogging(): array
+    {
+        $this->loadMissing('user');
+
+        return [
+            'articleId' => $this->id,
+            'articleTitle' => $this->title,
+            'articleStatus' => $this->status,
+            'articleUserName' => $this->user?->name ?? '',
+        ];
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RSS

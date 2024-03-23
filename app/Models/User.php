@@ -175,4 +175,15 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
     {
         return $this->role === config('role.admin');
     }
+
+    /**
+     * @return array{userId:int,userName:string}
+     */
+    public function getInfoLogging(): array
+    {
+        return [
+            'userId' => $this->id,
+            'userName' => $this->name,
+        ];
+    }
 }

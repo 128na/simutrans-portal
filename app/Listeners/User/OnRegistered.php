@@ -18,7 +18,7 @@ class OnRegistered extends BaseListener
     public function handle(Registered $registered): void
     {
         if ($registered->user instanceof User) {
-            $this->logger->channel('audit')->info('ユーザー登録', $this->getUserInfo($registered->user));
+            $this->logger->channel('audit')->info('ユーザー登録', $registered->user->getInfoLogging());
         }
     }
 }

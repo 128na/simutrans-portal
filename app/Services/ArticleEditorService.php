@@ -137,12 +137,12 @@ class ArticleEditorService extends Service
 
     private function getPublishedAt(StoreRequest|UpdateRequest $request): ?string
     {
-        $status = ArticleStatus::from((string) $request->string('article.status', ''));
-        if ($status === ArticleStatus::Publish) {
+        $articleStatus = ArticleStatus::from((string) $request->string('article.status', ''));
+        if ($articleStatus === ArticleStatus::Publish) {
             return $this->now->toDateTimeString();
         }
 
-        if ($status === ArticleStatus::Reservation) {
+        if ($articleStatus === ArticleStatus::Reservation) {
             return $request->input('article.published_at');
         }
 

@@ -89,7 +89,7 @@ class ArticleEditorService extends Service
      */
     public function getStatuses(): SupportCollection
     {
-        /** @var array<string> */
+        /** @var array<ArticleStatus> */
         $status = ArticleStatus::cases();
 
         return collect($status)->map(
@@ -105,7 +105,7 @@ class ArticleEditorService extends Service
      */
     public function getPostTypes(): SupportCollection
     {
-        /** @var array<string> */
+        /** @var array<ArticlePostType> */
         $postTypes = ArticlePostType::cases();
 
         return collect($postTypes)->map(

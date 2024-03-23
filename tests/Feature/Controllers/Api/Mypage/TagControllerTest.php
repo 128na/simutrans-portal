@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Mypage;
 
-use App\Constants\ControllOptionKeys;
+use App\Constants\ControllOptionKey;
 use App\Models\ControllOption;
 use App\Models\Tag;
 use Closure;
@@ -79,7 +79,7 @@ class TagControllerTest extends TestCase
     {
         $url = '/api/mypage/tags';
 
-        ControllOption::create(['key' => ControllOptionKeys::TAG_UPDATE, 'value' => false]);
+        ControllOption::create(['key' => ControllOptionKey::TagUpdate, 'value' => false]);
         $this->actingAs($this->user);
         $res = $this->postJson($url);
         $res->assertForbidden();
@@ -124,7 +124,7 @@ class TagControllerTest extends TestCase
         $tag = Tag::factory()->create();
         $url = '/api/mypage/tags/'.$tag->id;
 
-        ControllOption::create(['key' => ControllOptionKeys::TAG_UPDATE, 'value' => false]);
+        ControllOption::create(['key' => ControllOptionKey::TagUpdate, 'value' => false]);
         $this->actingAs($this->user);
         $res = $this->postJson($url);
         $res->assertForbidden();

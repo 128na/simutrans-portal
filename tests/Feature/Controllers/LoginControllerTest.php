@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers;
 
-use App\Constants\ControllOptionKeys;
+use App\Constants\ControllOptionKey;
 use App\Models\ControllOption;
 use App\Models\User;
 use App\Notifications\Loggedin;
@@ -61,7 +61,7 @@ class LoginControllerTest extends TestCase
 
     public function testLogin機能制限(): void
     {
-        ControllOption::create(['key' => ControllOptionKeys::LOGIN, 'value' => false]);
+        ControllOption::create(['key' => ControllOptionKey::Login, 'value' => false]);
         $this->actingAs($this->user);
         $this->assertAuthenticated();
 

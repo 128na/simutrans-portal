@@ -94,8 +94,8 @@ class ArticleEditorService extends Service
 
         return collect($status)->map(
             fn ($item): array => [
-                'label' => __('statuses.'.$item),
-                'value' => $item,
+                'label' => __('statuses.'.$item->value),
+                'value' => $item->value,
             ]
         )->values();
     }
@@ -110,8 +110,8 @@ class ArticleEditorService extends Service
 
         return collect($postTypes)->map(
             fn ($item): array => [
-                'label' => __('post_types.'.$item),
-                'value' => $item,
+                'label' => __('post_types.'.$item->value),
+                'value' => $item->value,
             ]
         )->values();
     }
@@ -119,10 +119,10 @@ class ArticleEditorService extends Service
     public function storeArticle(User $user, StoreRequest $storeRequest): Article
     {
         $data = [
-            'post_type' => $storeRequest->input('article.post_type'),
+            'post_type' => ArticlePostType::from((string) $storeRequest->string('article.post_type', '')),
             'title' => $storeRequest->input('article.title'),
             'slug' => $storeRequest->input('article.slug'),
-            'status' => $storeRequest->input('article.status'),
+            'status' => ArticleStatus::from((string) $storeRequest->string('article.status', '')),
             'contents' => $storeRequest->input('article.contents'),
             'published_at' => $this->getPublishedAt($storeRequest),
             'modified_at' => $this->now->toDateTimeString(),
@@ -137,7 +137,7 @@ class ArticleEditorService extends Service
 
     private function getPublishedAt(StoreRequest|UpdateRequest $request): ?string
     {
-        $status = $request->input('article.status');
+        $status = ArticleStatus::from((string) $request->string('article.status', ''));
         if ($status === ArticleStatus::Publish) {
             return $this->now->toDateTimeString();
         }
@@ -180,9 +180,10 @@ class ArticleEditorService extends Service
 
     private function inactiveToPublish(Article $article, UpdateRequest $updateRequest): bool
     {
-        return $article->is_inactive && ($updateRequest->input('article.status') === ArticleStatus::Publish
-            || $updateRequest->input('article.status') === ArticleStatus::Reservation
-        );
+        return $article->is_inactive
+            && (ArticleStatus::from((string) $updateRequest->string('article.status', '')) === ArticleStatus::Publish
+            || ArticleStatus::from((string) $updateRequest->string('article.status', '')) === ArticleStatus::Reservation
+            );
     }
 
     private function shouldUpdateModifiedAt(UpdateRequest $updateRequest): bool

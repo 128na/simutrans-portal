@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Listeners\Article;
+namespace App\Listeners\Screenshot;
 
-use App\Events\Article\ScreenshotStored;
+use App\Events\Screenshot\ScreenshotStored;
 use App\Listeners\BaseListener;
 use Illuminate\Log\Logger;
 

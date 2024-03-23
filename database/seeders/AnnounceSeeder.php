@@ -24,7 +24,7 @@ class AnnounceSeeder extends Seeder
     private function addAdminUser()
     {
         if (is_null(env('ADMIN_EMAIL'))) {
-            throw new \Exception('env ADMIN_EMAIL is empty or cached!');
+            return;
         }
 
         return User::firstOrCreate(

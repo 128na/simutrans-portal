@@ -82,8 +82,10 @@ class FrontController extends Controller
     /**
      * カテゴリ(slug)の投稿一覧画面.
      */
-    public function category(CategoryType $categoryType, string $slug): Renderable
+    public function category(string $type, string $slug): Renderable
     {
+        $categoryType = CategoryType::tryFrom($type);
+        abort_unless($categoryType, 404);
         $this->articleService->validateCategoryByTypeAndSlug($categoryType, $slug);
 
         $meta = $this->metaOgpService->category($categoryType, $slug);

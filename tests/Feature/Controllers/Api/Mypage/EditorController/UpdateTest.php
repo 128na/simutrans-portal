@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Mypage\EditorController;
 
-use App\Constants\ControllOptionKeys;
+use App\Enums\ControllOptionKey;
 use App\Models\ControllOption;
 use Tests\ArticleTestCase;
 
@@ -45,7 +45,7 @@ class UpdateTest extends ArticleTestCase
 
     public function test機能制限(): void
     {
-        ControllOption::create(['key' => ControllOptionKeys::ARTICLE_UPDATE, 'value' => false]);
+        ControllOption::updateOrCreate(['key' => ControllOptionKey::ArticleUpdate], ['value' => false]);
         $this->actingAs($this->user);
         $url = '/api/mypage/articles/'.$this->article->id;
         $res = $this->postJson($url);

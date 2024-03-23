@@ -51,11 +51,12 @@ class AttachmentControllerTest extends ArticleTestCase
 
     public static function dataValidation(): \Generator
     {
-        yield 'fileがnull' => [fn (): array => ['file' => null], 'file'];
-        yield 'fileがファイル以外' => [fn (): array => ['file' => 'test.zip'], 'file'];
-        yield '成功' => [fn (): array => ['file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], null];
-        yield '画像のみで画像以外' => [fn (): array => ['only_image' => 1, 'file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')], 'file'];
-        yield '画像のみで画像' => [fn (): array => ['only_image' => 1, 'file' => UploadedFile::fake()->image('test.png', 1)], null];
+        yield 'filesがnull' => [fn (): array => ['files' => null], 'files'];
+        yield 'filesが空' => [fn (): array => ['files' => []], 'files'];
+        yield 'files.*がファイル以外' => [fn (): array => ['files' => ['test.zip']], 'files.0'];
+        yield '成功' => [fn (): array => ['files' => [UploadedFile::fake()->create('test.zip', 1, 'application/zip')]], null];
+        yield '画像のみで画像以外' => [fn (): array => ['only_image' => 1, 'files' => [UploadedFile::fake()->create('test.zip', 1, 'application/zip')]], 'files.0'];
+        yield '画像のみで画像' => [fn (): array => ['only_image' => 1, 'files' => [UploadedFile::fake()->image('test.png', 1)]], null];
     }
 
     /**

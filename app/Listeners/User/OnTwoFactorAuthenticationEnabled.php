@@ -16,6 +16,6 @@ class OnTwoFactorAuthenticationEnabled extends BaseListener
 
     public function handle(TwoFactorAuthenticationEnabled $twoFactorAuthenticationEnabled): void
     {
-        $this->logger->channel('audit')->info('2要素認証有効化', $this->getUserInfo($twoFactorAuthenticationEnabled->user));
+        $this->logger->channel('audit')->info('2要素認証有効化', $twoFactorAuthenticationEnabled->user->getInfoLogging());
     }
 }

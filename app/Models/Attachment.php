@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Constants\DefaultThumbnail;
 use App\Models\Attachment\FileInfo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +23,8 @@ class Attachment extends Model
         'attachmentable_type',
         'original_name',
         'path',
+        'caption',
+        'order',
     ];
 
     protected $hidden = [
@@ -112,9 +115,9 @@ class Attachment extends Model
     {
         return match ($this->type) {
             'image' => Storage::disk('public')->url($this->path),
-            'zip' => Storage::disk('public')->url(config('attachment.thumbnail-zip')),
-            'movie' => Storage::disk('public')->url(config('attachment.thumbnail-movie')),
-            default => Storage::disk('public')->url(config('attachment.thumbnail-file')),
+            'zip' => Storage::disk('public')->url(DefaultThumbnail::ZIP),
+            'movie' => Storage::disk('public')->url(DefaultThumbnail::MOVIE),
+            default => Storage::disk('public')->url(DefaultThumbnail::FILE),
         };
     }
 

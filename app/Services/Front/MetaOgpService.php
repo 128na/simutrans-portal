@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services\Front;
 
+use App\Enums\CategoryType;
 use App\Models\Article;
+use App\Models\Screenshot;
 use App\Models\Tag;
 use App\Models\User;
 use App\Services\Service;
@@ -56,18 +58,18 @@ class MetaOgpService extends Service
     /**
      * @return array{title:string,description:string}
      */
-    public function category(string $type, string $slug): array
+    public function category(CategoryType $categoryType, string $slug): array
     {
-        if ($type === 'license') {
+        if ($categoryType === CategoryType::License) {
             return [
-                'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $type, $slug))).' - '.config('app.name'),
-                'description' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $type, $slug))),
+                'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $categoryType->value, $slug))).' - '.config('app.name'),
+                'description' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $categoryType->value, $slug))),
             ];
         }
 
         return [
-            'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $type, $slug))).' - '.config('app.name'),
-            'description' => __(sprintf('category.description.%s.%s', $type, $slug)),
+            'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $categoryType->value, $slug))).' - '.config('app.name'),
+            'description' => __(sprintf('category.description.%s.%s', $categoryType->value, $slug)),
         ];
     }
 
@@ -112,6 +114,30 @@ class MetaOgpService extends Service
         return [
             'title' => 'SNS・通知ツール'.' - '.config('app.name'),
             'description' => '記事の更新を各種ツールで受け取れます。',
+        ];
+    }
+
+    /**
+     * @return array{title:string,description:string}
+     */
+    public function screenshotIndex(): array
+    {
+        return [
+            'title' => 'スクリーンショット一覧'.' - '.config('app.name'),
+            'description' => 'ユーザー投稿のスクリーンショット一覧です。',
+        ];
+    }
+
+    /**
+     * @return array{title:string,description:string,image:string|null,card_type:string}
+     */
+    public function screenshot(Screenshot $screenshot): array
+    {
+        return [
+            'title' => sprintf('『%s』by %s', $screenshot->title, $screenshot->user?->name).' - '.config('app.name'),
+            'description' => $this->trimDescription($screenshot->description),
+            'image' => $screenshot->attachments()->orderBy('order', 'asc')->first()?->url,
+            'card_type' => 'summary_large_image',
         ];
     }
 }

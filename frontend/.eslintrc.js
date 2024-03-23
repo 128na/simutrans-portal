@@ -82,6 +82,10 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'prefer-promise-reject-errors': 'off',
     'linebreak-style': 'off',
+    'no-lonely-if': 'off',
+    'no-restricted-syntax': 'off',
+    'no-console': 'off',
+    'no-alert': 'off',
 
     // level down
     'vue/no-unused-vars': 'warn',

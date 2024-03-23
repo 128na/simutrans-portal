@@ -29,6 +29,7 @@ class UpdateArticleTest extends UnitTestCase
                 'slug' => 'dummy-slug',
                 'status' => 'publish',
                 'contents' => 'dummy',
+                'articles' => [],
             ],
             'without_update_modified_at' => null,
         ]);
@@ -47,6 +48,7 @@ class UpdateArticleTest extends UnitTestCase
             ])->once()->andReturn(new Article());
             $mock->shouldReceive('syncAttachments')->once();
             $mock->shouldReceive('syncCategories')->once();
+            $mock->shouldReceive('syncArticles')->once();
             $mock->shouldReceive('syncTags')->once();
         });
         $this->getSUT($carbonImmutable)->updateArticle($article, $updateRequest);
@@ -62,6 +64,7 @@ class UpdateArticleTest extends UnitTestCase
                 'slug' => 'dummy-slug',
                 'status' => 'publish',
                 'contents' => 'dummy',
+                'articles' => [],
             ],
             'without_update_modified_at' => '1',
         ]);
@@ -79,6 +82,7 @@ class UpdateArticleTest extends UnitTestCase
             ])->once()->andReturn(new Article());
             $mock->shouldReceive('syncAttachments')->once();
             $mock->shouldReceive('syncCategories')->once();
+            $mock->shouldReceive('syncArticles')->once();
             $mock->shouldReceive('syncTags')->once();
         });
         $this->getSUT($carbonImmutable)->updateArticle($article, $updateRequest);

@@ -31,12 +31,12 @@ class TagController extends Controller
 
     public function store(StoreRequest $storeRequest): ResourcesTag
     {
-        $model = $this->tagRepository->store([
+        $tag = $this->tagRepository->store([
             'name' => $storeRequest->name,
             'created_by' => Auth::id(),
         ]);
 
-        return new ResourcesTag($model);
+        return new ResourcesTag($tag);
     }
 
     public function update(Tag $tag, UpdateRequest $updateRequest): void

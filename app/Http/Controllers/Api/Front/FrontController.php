@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Front;
 
+use App\Enums\CategoryType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Article\ListRequest;
 use App\Http\Requests\Api\Article\SearchRequest;
@@ -79,11 +80,13 @@ class FrontController extends Controller
 
     public function category(string $type, string $slug, ListRequest $listRequest): AnonymousResourceCollection
     {
+        $categoryType = CategoryType::tryFrom($type);
+        abort_unless($categoryType instanceof CategoryType, 404);
         $order = $listRequest->string('order', 'modified_at')->toString();
-        $paginator = $this->articleService->paginateByCategory($type, $slug, false, $order);
+        $paginator = $this->articleService->paginateByCategory($categoryType, $slug, false, $order);
 
         return ArticleResource::collection($paginator)
-            ->additional($this->frontDescriptionService->category($type, $slug));
+            ->additional($this->frontDescriptionService->category($categoryType, $slug));
     }
 
     public function categoryPakAddon(string $pakSlug, string $addonSlug, ListRequest $listRequest): AnonymousResourceCollection

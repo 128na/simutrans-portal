@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use App\Enums\ArticlePostType;
+use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
@@ -55,9 +57,9 @@ abstract class ArticleTestCase extends TestCase
         $attachment = $this->createFromFile($file, $user->id);
         $article = Article::factory()->create([
             'user_id' => $user->id,
-            'post_type' => 'addon-post',
+            'post_type' => ArticlePostType::AddonPost,
+            'status' => ArticleStatus::Publish,
             'title' => 'test_addon-post'.random_int(1, 999),
-            'status' => 'publish',
             'contents' => [
                 'description' => 'test addon-post text'.random_int(1, 999),
                 'author' => 'test author',
@@ -75,9 +77,9 @@ abstract class ArticleTestCase extends TestCase
 
         return Article::factory()->create([
             'user_id' => $user->id,
-            'post_type' => 'addon-introduction',
+            'post_type' => ArticlePostType::AddonIntroduction,
+            'status' => ArticleStatus::Publish,
             'title' => 'test_addon-introduction'.random_int(1, 999),
-            'status' => 'publish',
             'contents' => [
                 'description' => 'test addon-introduction text'.random_int(1, 999),
                 'author' => 'test author',
@@ -92,9 +94,9 @@ abstract class ArticleTestCase extends TestCase
 
         return Article::factory()->create([
             'user_id' => $user->id,
-            'post_type' => 'page',
+            'post_type' => ArticlePostType::Page,
+            'status' => ArticleStatus::Publish,
             'title' => 'test_page',
-            'status' => 'publish',
             'contents' => [
                 'sections' => [['type' => 'text', 'text' => 'test page text']],
             ],
@@ -107,9 +109,9 @@ abstract class ArticleTestCase extends TestCase
 
         return Article::factory()->create([
             'user_id' => $user->id,
-            'post_type' => 'markdown',
+            'post_type' => ArticlePostType::Markdown,
+            'status' => ArticleStatus::Publish,
             'title' => 'test_markdown',
-            'status' => 'publish',
             'contents' => [
                 'markdown' => '# test markdown text',
             ],
@@ -121,9 +123,9 @@ abstract class ArticleTestCase extends TestCase
         $user ??= $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
-            'post_type' => 'page',
+            'post_type' => ArticlePostType::Page,
+            'status' => ArticleStatus::Publish,
             'title' => 'test_announce',
-            'status' => 'publish',
             'contents' => [
                 'sections' => [['type' => 'text', 'text' => 'test announce text']],
             ],
@@ -139,9 +141,9 @@ abstract class ArticleTestCase extends TestCase
         $user ??= $this->user;
         $article = Article::factory()->create([
             'user_id' => $user->id,
-            'post_type' => 'markdown',
+            'post_type' => ArticlePostType::Markdown,
+            'status' => ArticleStatus::Publish,
             'title' => 'test_markdown',
-            'status' => 'publish',
             'contents' => [
                 'markdown' => '# test markdown text',
             ],

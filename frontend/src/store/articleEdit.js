@@ -19,6 +19,7 @@ const createAddonPost = () => ({
   },
   categories: [],
   tags: [],
+  articles: [],
   published_at: null,
 });
 const createAddonIntroduction = () => ({
@@ -38,6 +39,7 @@ const createAddonIntroduction = () => ({
   },
   categories: [],
   tags: [],
+  articles: [],
   published_at: null,
 });
 const createPage = () => ({
@@ -50,6 +52,7 @@ const createPage = () => ({
     sections: [{ type: 'text', text: '' }],
   },
   categories: [],
+  articles: [],
   published_at: null,
 });
 const createMarkdown = () => ({
@@ -62,6 +65,7 @@ const createMarkdown = () => ({
     markdown: '',
   },
   categories: [],
+  articles: [],
   published_at: null,
 });
 

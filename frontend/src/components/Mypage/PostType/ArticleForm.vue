@@ -11,6 +11,13 @@
   </div>
   <form-thumbnail />
   <component :is="postTypeForm" />
+  <FormArticleRelations v-model="editor.article.articles">
+    <template #validate="slotProps">
+      <div v-show="editor.vali(`article.articles.${slotProps.index}.id`)" class="text-negative">
+        {{ editor.vali(`article.articles.${slotProps.index}.id`) }}
+      </div>
+    </template>
+  </FormArticleRelations>
   <form-status />
   <form-reservation />
 </template>
@@ -29,6 +36,7 @@ import FormAddonPost from 'src/components/Mypage/PostType/FormAddonPost.vue';
 import FormMarkdown from 'src/components/Mypage/PostType/FormMarkdown.vue';
 import FormPage from 'src/components/Mypage/PostType/FormPage.vue';
 import FormThumbnail from 'src/components/Mypage/ArticleForm/FormThumbnail.vue';
+import FormArticleRelations from 'src/components/Mypage/Screenshot/FormArticleRelations.vue';
 
 export default defineComponent({
   name: 'ArticleForm',
@@ -38,6 +46,7 @@ export default defineComponent({
     FormReservation,
     LabelRequired,
     FormThumbnail,
+    FormArticleRelations,
   },
   setup() {
     const editor = useArticleEditStore();

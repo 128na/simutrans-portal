@@ -52,9 +52,11 @@ abstract class BaseRepository
      * 保存.
      *
      * @param  array<mixed>  $data
+     * @return T
      */
-    public function store(array $data): Model
+    public function store(array $data)
     {
+        /** @var T */
         return $this->model->create($data);
     }
 
@@ -82,8 +84,7 @@ abstract class BaseRepository
      *
      * @param  T  $model
      * @param  array<string>  $relations
-     *
-     * @phpstan-return T
+     * @return T
      */
     public function load($model, array $relations = [])
     {
@@ -94,35 +95,46 @@ abstract class BaseRepository
      * ユーザーのリレーション経由で保存.
      *
      * @param  array<mixed>  $data
+     * @return T
      */
-    public function storeByUser(User $user, array $data): Model
+    public function storeByUser(User $user, array $data)
     {
+        /** @var T */
         return $user->{$this->getRelationName()}()->create($data);
     }
 
-    public function find(int|string|null $id): ?Model
+    /**
+     * @return T|null
+     */
+    public function find(int|string|null $id)
     {
+        /** @var T|null */
         return $this->model->find($id);
     }
 
+    /**
+     * @return T
+     */
     public function findOrFail(int|string|null $id): Model
     {
+        /** @var T */
         return $this->model->findOrFail($id);
     }
 
     /**
      * @param  array<int|string|null>  $ids
+     * @return Collection<int,T>
      */
     public function findByIds(array $ids): Collection
     {
+        /** @var Collection<int,T> */
         return $this->model->whereIn('id', $ids)->get();
     }
 
     /**
      * @param  array<mixed>  $search
      * @param  array<mixed>  $data
-     *
-     * @phpstan-return T
+     * @return T
      */
     public function updateOrCreate(array $search, array $data = [])
     {
@@ -133,9 +145,11 @@ abstract class BaseRepository
     /**
      * @param  array<mixed>  $search
      * @param  array<mixed>  $data
+     * @return T
      */
-    public function firstOrCreate(array $search, array $data = []): Model
+    public function firstOrCreate(array $search, array $data = [])
     {
+        /** @var T */
         return $this->model->firstOrCreate($search, $data);
     }
 
@@ -144,6 +158,7 @@ abstract class BaseRepository
      *
      * @param  array<string>  $column
      * @param  array<mixed>  $with
+     * @return Collection<int,T>
      */
     public function findAll(array $column = ['*'], array $with = [], ?int $limit = null): Collection
     {
@@ -154,6 +169,7 @@ abstract class BaseRepository
             $q->limit($limit);
         }
 
+        /** @var Collection<int,T> */
         return $q->get();
     }
 
@@ -162,9 +178,11 @@ abstract class BaseRepository
      *
      * @param  array<string>  $column
      * @param  array<mixed>  $with
+     * @return Paginator<T>
      */
     public function paginate(array $column = ['*'], array $with = [], int $perPage = 24): Paginator
     {
+        /** @var Paginator<T> */
         return $this->model
             ->select($column)
             ->with($with)

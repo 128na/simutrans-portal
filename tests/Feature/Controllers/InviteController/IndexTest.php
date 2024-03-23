@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\InviteController;
 
-use App\Constants\ControllOptionKeys;
+use App\Enums\ControllOptionKey;
 use App\Models\ControllOption;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -25,7 +25,7 @@ class IndexTest extends TestCase
 
     public function test機能無効(): void
     {
-        ControllOption::create(['key' => ControllOptionKeys::INVITATION_CODE, 'value' => false]);
+        ControllOption::updateOrCreate(['key' => ControllOptionKey::InvitationCode], ['value' => false]);
         $testResponse = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
         $testResponse->assertForbidden();
     }

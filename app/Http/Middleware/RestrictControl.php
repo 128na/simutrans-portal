@@ -33,6 +33,7 @@ class RestrictControl
             'register' => abort_if($this->controllOption->restrictRegister(), 403),
             'update_article' => abort_if($this->controllOption->restrictArticleUpdate(), 403),
             'update_tag' => abort_if($this->controllOption->restrictTagUpdate(), 403),
+            'update_screenshot' => abort_if($this->controllOption->restrictScreenshptUpdate(), 403),
             'invitation_code' => abort_if($this->controllOption->restrictInvitationCode(), 403),
             default => null,
         };

@@ -14,14 +14,17 @@ use Illuminate\Support\Str;
 class StoreService extends Service
 {
     public function __construct(
-        private readonly WebpConverter $webpConverter,
+        private readonly ImageCropper $imageCropper,
     ) {
     }
 
-    public function store(User $user, UploadedFile $uploadedFile): Attachment
+    /**
+     * @param  array<int,int>  $crop
+     */
+    public function store(User $user, UploadedFile $uploadedFile, array $crop = []): Attachment
     {
         if ($this->isImage($uploadedFile)) {
-            return $this->storeAsImage($user, $uploadedFile);
+            return $this->storeAsImage($user, $uploadedFile, $crop);
         }
 
         return $this->storeAsFile($user, $uploadedFile);
@@ -39,10 +42,22 @@ class StoreService extends Service
         ], false);
     }
 
-    private function storeAsImage(User $user, UploadedFile $uploadedFile): Attachment
+    /**
+     * @param  array<int,int>  $crop
+     */
+    private function storeAsImage(User $user, UploadedFile $uploadedFile, array $crop = []): Attachment
     {
         try {
-            $filepath = $this->webpConverter->create($user, $uploadedFile);
+            $filepath = Storage::disk('public')->put('user/'.$user->id, $uploadedFile);
+            if ($crop && $fullpath = realpath(storage_path('app/public/'.$filepath))) {
+                try {
+                    $this->imageCropper->crop($fullpath, ...$crop);
+                } catch (ConvertFailedException) {
+                    // need not report
+                } catch (\Throwable $th) {
+                    report($th);
+                }
+            }
 
             return Attachment::create([
                 'user_id' => $user->id,
@@ -60,7 +75,7 @@ class StoreService extends Service
     {
         return Attachment::create([
             'user_id' => $user->id,
-            'path' => Storage::disk('public')->putFile('user/'.$user->id, $uploadedFile),
+            'path' => Storage::disk('public')->put('user/'.$user->id, $uploadedFile),
             'original_name' => $uploadedFile->getClientOriginalName(),
         ]);
     }

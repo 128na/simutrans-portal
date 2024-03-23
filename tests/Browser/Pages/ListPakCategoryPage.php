@@ -36,8 +36,8 @@ class ListPakCategoryPage extends Page
     public function assert(Browser $browser): void
     {
         $browser
-            ->waitForText(__(sprintf('category.%s.%s', $this->pak->type, $this->pak->slug)))
-            ->waitForText(__(sprintf('category.%s.%s', $this->addon->type, $this->addon->slug)))
+            ->waitForText(__(sprintf('category.%s.%s', $this->pak->type->value, $this->pak->slug)))
+            ->waitForText(__(sprintf('category.%s.%s', $this->addon->type->value, $this->addon->slug)))
             ->assertSee($this->article->title);
     }
 }

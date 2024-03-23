@@ -71,8 +71,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'no-reply@simutrans-portal.128-bit.net'),
+        'name' => env('MAIL_FROM_NAME', 'Simutrans Addon Portal'),
     ],
 
     /*

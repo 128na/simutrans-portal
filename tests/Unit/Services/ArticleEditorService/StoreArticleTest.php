@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services\ArticleEditorService;
 
+use App\Enums\ArticlePostType;
+use App\Enums\ArticleStatus;
 use App\Http\Requests\Api\Article\StoreRequest;
 use App\Models\Article;
 use App\Models\User;
@@ -30,6 +32,7 @@ class StoreArticleTest extends UnitTestCase
                 'slug' => 'dummy-slug',
                 'status' => 'publish',
                 'contents' => 'dummy',
+                'articles' => [],
             ],
         ]);
         $carbonImmutable = new CarbonImmutable();
@@ -38,10 +41,10 @@ class StoreArticleTest extends UnitTestCase
             $mock->shouldReceive('storeByUser')->withArgs([
                 $user,
                 [
-                    'post_type' => 'addon-introduction',
+                    'post_type' => ArticlePostType::AddonIntroduction,
                     'title' => 'dummy title',
                     'slug' => 'dummy-slug',
-                    'status' => 'publish',
+                    'status' => ArticleStatus::Publish,
                     'contents' => 'dummy',
                     'published_at' => $carbonImmutable->toDateTimeString(),
                     'modified_at' => $carbonImmutable->toDateTimeString(),
@@ -49,6 +52,7 @@ class StoreArticleTest extends UnitTestCase
             ])->once()->andReturn(new Article());
             $mock->shouldReceive('syncAttachments')->once();
             $mock->shouldReceive('syncCategories')->once();
+            $mock->shouldReceive('syncArticles')->once();
             $mock->shouldReceive('syncTags')->once();
         });
         $this->getSUT($carbonImmutable)->storeArticle($user, $storeRequest);
@@ -65,6 +69,7 @@ class StoreArticleTest extends UnitTestCase
                 'status' => 'reservation',
                 'contents' => 'dummy',
                 'published_at' => '2022-01-02 03:34:00',
+                'articles' => [],
             ],
         ]);
         $carbonImmutable = new CarbonImmutable();
@@ -73,10 +78,10 @@ class StoreArticleTest extends UnitTestCase
             $mock->shouldReceive('storeByUser')->withArgs([
                 $user,
                 [
-                    'post_type' => 'addon-introduction',
+                    'post_type' => ArticlePostType::AddonIntroduction,
                     'title' => 'dummy title',
                     'slug' => 'dummy-slug',
-                    'status' => 'reservation',
+                    'status' => ArticleStatus::Reservation,
                     'contents' => 'dummy',
                     'published_at' => '2022-01-02 03:34:00',
                     'modified_at' => $carbonImmutable->toDateTimeString(),
@@ -84,6 +89,7 @@ class StoreArticleTest extends UnitTestCase
             ])->once()->andReturn(new Article());
             $mock->shouldReceive('syncAttachments')->once();
             $mock->shouldReceive('syncCategories')->once();
+            $mock->shouldReceive('syncArticles')->once();
             $mock->shouldReceive('syncTags')->once();
         });
         $this->getSUT($carbonImmutable)->storeArticle($user, $storeRequest);
@@ -99,6 +105,7 @@ class StoreArticleTest extends UnitTestCase
                 'slug' => 'dummy-slug',
                 'status' => 'draft',
                 'contents' => 'dummy',
+                'articles' => [],
             ],
         ]);
         $carbonImmutable = new CarbonImmutable();
@@ -107,10 +114,10 @@ class StoreArticleTest extends UnitTestCase
             $mock->shouldReceive('storeByUser')->withArgs([
                 $user,
                 [
-                    'post_type' => 'addon-introduction',
+                    'post_type' => ArticlePostType::AddonIntroduction,
                     'title' => 'dummy title',
                     'slug' => 'dummy-slug',
-                    'status' => 'draft',
+                    'status' => ArticleStatus::Draft,
                     'contents' => 'dummy',
                     'published_at' => null,
                     'modified_at' => $carbonImmutable->toDateTimeString(),
@@ -118,6 +125,7 @@ class StoreArticleTest extends UnitTestCase
             ])->once()->andReturn(new Article());
             $mock->shouldReceive('syncAttachments')->once();
             $mock->shouldReceive('syncCategories')->once();
+            $mock->shouldReceive('syncArticles')->once();
             $mock->shouldReceive('syncTags')->once();
         });
         $this->getSUT($carbonImmutable)->storeArticle($user, $storeRequest);

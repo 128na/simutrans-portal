@@ -17,8 +17,9 @@ class OnTagDescriptionUpdated extends BaseListener
     public function handle(TagDescriptionUpdated $tagDescriptionUpdated): void
     {
         $this->logger->channel('audit')->info('タグ説明更新', array_merge(
-            $this->getUserInfo($tagDescriptionUpdated->user),
-            ['tagId' => $tagDescriptionUpdated->tag->id, 'tagName' => $tagDescriptionUpdated->tag->name, 'old' => $tagDescriptionUpdated->old, 'new' => $tagDescriptionUpdated->tag->description]
+            $tagDescriptionUpdated->user->getInfoLogging(),
+            $tagDescriptionUpdated->tag->getInfoLogging(),
+            ['old' => $tagDescriptionUpdated->old, 'new' => $tagDescriptionUpdated->tag->description]
         ));
     }
 }

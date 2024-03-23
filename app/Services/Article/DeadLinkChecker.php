@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Article;
 
+use App\Enums\ArticleStatus;
 use App\Events\Article\CloseByDeadLinkDetected;
 use App\Events\Article\DeadLinkDetected;
 use App\Models\Article;
@@ -102,7 +103,7 @@ class DeadLinkChecker extends Service
 
     public function closeArticle(Article $article): void
     {
-        $this->articleRepository->update($article, ['status' => config('status.private')]);
+        $this->articleRepository->update($article, ['status' => ArticleStatus::Private]);
         event(new CloseByDeadLinkDetected($article));
     }
 

@@ -48,6 +48,12 @@
         </q-item-section>
         <q-item-section>アクセス解析</q-item-section>
       </q-item>
+      <q-item :to="{ name: 'screenshot' }">
+        <q-item-section avatar>
+          <q-icon name="photo_library" />
+        </q-item-section>
+        <q-item-section>スクリーンショット</q-item-section>
+      </q-item>
 
       <q-item>
         <q-item-section>ユーザー</q-item-section>

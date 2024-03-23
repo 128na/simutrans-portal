@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Mypage;
 
+use App\Enums\UserRole;
 use App\Events\User\InviteCodeCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\InviteRequest;
@@ -64,7 +65,7 @@ class InvitationCodeController extends Controller
         $model = $this->userRepository->store([
             'name' => $inviteRequest->name,
             'email' => $inviteRequest->email,
-            'role' => config('role.user'),
+            'role' => UserRole::User,
             'password' => Hash::make($inviteRequest->password),
             'invited_by' => $user->id,
         ]);

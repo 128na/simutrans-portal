@@ -43,7 +43,7 @@ class AttachmentRepository extends BaseRepository
     public function findAllByUser(User $user): Collection
     {
         return $user->myAttachments()
-            ->select('id', 'original_name', 'path', 'attachmentable_id', 'attachmentable_type')
+            ->select('id', 'original_name', 'path', 'attachmentable_id', 'attachmentable_type', 'caption', 'order')
             ->with('fileInfo')
             ->get();
     }
@@ -67,7 +67,7 @@ class AttachmentRepository extends BaseRepository
     {
         return $this->model->create([
             'user_id' => $user->id,
-            'path' => Storage::disk('public')->putFile('user/'.$user->id, $uploadedFile),
+            'path' => Storage::disk('public')->put('user/'.$user->id, $uploadedFile),
             'original_name' => $uploadedFile->getClientOriginalName(),
         ]);
     }

@@ -17,7 +17,7 @@ class OnArticleStored extends BaseListener
 
     public function handle(ArticleStored $articleStored): void
     {
-        $this->logger->channel('audit')->info('記事作成', $this->getArticleInfo($articleStored->article));
+        $this->logger->channel('audit')->info('記事作成', $articleStored->article->getInfoLogging());
         if (! $articleStored->article->is_publish) {
             return;
         }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Front;
 
+use App\Enums\CategoryType;
 use App\Http\Resources\Api\Front\TagDescriptionResource;
 use App\Http\Resources\Api\Front\UserProfileResource;
 use App\Models\Tag;
@@ -62,20 +63,20 @@ class FrontDescriptionService
     /**
      * @return array<string, array<string>>
      */
-    public function category(string $type, string $slug): array
+    public function category(CategoryType $categoryType, string $slug): array
     {
-        if ($type === 'license') {
+        if ($categoryType === CategoryType::License) {
             return ['description' => [
-                'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $type, $slug))),
+                'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $categoryType->value, $slug))),
                 'type' => 'message',
-                'url' => __(sprintf('category.description.%s.%s', $type, $slug)),
+                'url' => __(sprintf('category.description.%s.%s', $categoryType->value, $slug)),
             ]];
         }
 
         return ['description' => [
-            'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $type, $slug))),
+            'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $categoryType->value, $slug))),
             'type' => 'message',
-            'message' => __(sprintf('category.description.%s.%s', $type, $slug)),
+            'message' => __(sprintf('category.description.%s.%s', $categoryType->value, $slug)),
         ]];
     }
 

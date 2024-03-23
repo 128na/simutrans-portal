@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Casts;
 
+use App\Enums\ArticlePostType;
 use App\Models\Contents\AddonIntroductionContent;
 use App\Models\Contents\AddonPostContent;
 use App\Models\Contents\MarkdownContent;
 use App\Models\Contents\PageContent;
-use Exception;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 class ToArticleContents implements CastsAttributes
@@ -27,11 +27,10 @@ class ToArticleContents implements CastsAttributes
         $value = json_decode((string) $value, true);
 
         return match ($model->post_type) {
-            'addon-introduction' => new AddonIntroductionContent($value),
-            'addon-post' => new AddonPostContent($value),
-            'page' => new PageContent($value),
-            'markdown' => new MarkdownContent($value),
-            default => throw new Exception('invalid post type'),
+            ArticlePostType::AddonIntroduction => new AddonIntroductionContent($value),
+            ArticlePostType::AddonPost => new AddonPostContent($value),
+            ArticlePostType::Page => new PageContent($value),
+            ArticlePostType::Markdown => new MarkdownContent($value),
         };
     }
 

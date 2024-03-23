@@ -41,7 +41,7 @@ return [
     'digits' => ':attributeは:digits桁で指定してください。',
     'digits_between' => ':attributeは:min桁から:max桁の間で指定してください。',
     'dimensions' => ':attributeの図形サイズが正しくありません。',
-    'distinct' => ':attributeには異なった値を指定してください。',
+    'distinct' => ':attributeに重複しているものがあります。',
     'email' => ':attributeには、有効なメールアドレスを指定してください。',
     'ends_with' => ':attributeには、:valuesのどれかで終わる値を指定してください。',
     'exists' => '選択された:attributeは正しくありません。',
@@ -124,7 +124,7 @@ return [
     'unique' => ':attributeの値は既に存在しています。',
     'uniqueAdmin' => ':attributeの値は既に管理者が使用しています。',
     'uploaded' => ':attributeのアップロードに失敗しました。',
-    'url' => ':attributeに正しい形式を指定してください。',
+    'url' => ':attributeはURLのみ指定できます。',
     'uuid' => ':attributeに有効なUUIDを指定してください。',
 
     /*
@@ -180,6 +180,8 @@ return [
         'article.contents.file' => 'ファイル',
         'article.published_at' => '投稿日時',
         'article.modified_at' => '最終更新日時',
+        'article.articles' => '関連記事',
+        'article.articles.*.id' => '関連記事',
 
         //auth
         'email' => 'メールアドレス',
@@ -208,5 +210,19 @@ return [
         'scopes' => 'スコープ',
         'scopes.*' => 'スコープ',
         'credential' => '認証情報',
+
+        'screenshot.title' => 'タイトル',
+        'screenshot.description' => '説明',
+        'screenshot.links' => '関連リンク',
+        'screenshot.links.*' => '関連リンク',
+        'screenshot.status' => '公開状態',
+        'screenshot.attachments' => '画像',
+        'screenshot.attachments.*' => '画像',
+        'screenshot.articles' => '関連記事',
+        'screenshot.articles.*.id' => '関連記事',
+        'screenshot.extra' => '追加情報',
+        'screenshot.extra.attachments.*.id' => '画像ID',
+        'screenshot.extra.attachments.*.order' => '表示順',
+        'screenshot.extra.attachments.*.caption' => 'キャプション',
     ],
 ];

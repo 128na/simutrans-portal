@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Enums\ArticleStatus;
 use App\Models\Article;
+use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
@@ -22,11 +24,11 @@ use Illuminate\Support\LazyCollection;
  */
 class ArticleRepository extends BaseRepository
 {
-    public const MYPAGE_RELATIONS = ['user', 'attachments.fileInfo', 'categories', 'tags', 'totalViewCount', 'totalConversionCount'];
+    public const MYPAGE_RELATIONS = ['user', 'attachments.fileInfo', 'categories', 'tags', 'totalViewCount', 'totalConversionCount', 'articles'];
 
-    public const FRONT_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags'];
+    public const FRONT_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags', 'articles', 'relatedArticles', 'relatedScreenshots'];
 
-    public const SHOW_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags'];
+    public const SHOW_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags', 'articles', 'relatedArticles', 'relatedScreenshots'];
 
     public const PER_PAGE_SIMPLE = 6;
 
@@ -48,9 +50,28 @@ class ArticleRepository extends BaseRepository
     public function syncAttachments(Article $article, array $attachmentsIds): void
     {
         if ($article->user) {
+            // add
             $attachments = $article->user->myAttachments()->find($attachmentsIds);
             $article->attachments()->saveMany($attachments);
+
+            //remove
+            /** @var Collection<int,Attachment> */
+            $shouldDetach = $article->attachments()->whereNotIn('id', $attachmentsIds)->get();
+            foreach ($shouldDetach as $attachment) {
+                $attachment->attachmentable()->disassociate()->save();
+            }
         }
+    }
+
+    /**
+     * 記事を関連付ける.
+     *
+     * @param  array<int|string>  $articleIds
+     */
+    public function syncArticles(Article $article, array $articleIds): void
+    {
+        $result = $article->articles()->sync(Article::find($articleIds));
+        logger('syncArticles', $result);
     }
 
     /**
@@ -408,7 +429,7 @@ class ArticleRepository extends BaseRepository
     public function cursorReservations(CarbonImmutable $date): LazyCollection
     {
         return $this->model
-            ->where('status', config('status.reservation'))
+            ->where('status', ArticleStatus::Reservation)
             ->where('published_at', '<=', $date)
             ->cursor();
     }

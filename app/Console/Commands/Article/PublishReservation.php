@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands\Article;
 
+use App\Enums\ArticleStatus;
 use App\Jobs\Article\JobUpdateRelated;
 use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
@@ -46,7 +47,7 @@ class PublishReservation extends Command
         $changed = false;
         foreach ($cusror as $article) {
             $article->update([
-                'status' => config('status.publish'),
+                'status' => ArticleStatus::Publish,
                 'modified_at' => $article->published_at,
             ]);
             $changed = true;

@@ -19,7 +19,7 @@ class OnLogin extends BaseListener
     public function handle(Login $login): void
     {
         if ($login->user instanceof User && $this->isNewLogin()) {
-            $this->logger->channel('audit')->info('ログイン', $this->getUserInfo($login->user));
+            $this->logger->channel('audit')->info('ログイン', $login->user->getInfoLogging());
 
             $login->user->notify(new SendLoggedInEmail($login->user->loginHistories()->create()));
         }

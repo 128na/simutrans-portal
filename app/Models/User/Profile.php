@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\User;
 
 use App\Casts\ToProfileData;
+use App\Constants\DefaultThumbnail;
 use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -86,6 +87,6 @@ class Profile extends Model
     {
         return Storage::disk('public')->url($this->has_avatar && $this->avatar
             ? $this->avatar->path
-            : config('attachment.no-avatar'));
+            : DefaultThumbnail::NO_AVATAR);
     }
 }

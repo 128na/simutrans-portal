@@ -28,7 +28,7 @@ class Article extends JsonResource
             'contents' => $this->resource->contents,
             'categories' => $this->resource->categories->map(fn (Category $category): array => [
                 'id' => $category->id,
-                'name' => __(sprintf('category.%s.%s', $category->type, $category->slug)),
+                'name' => __(sprintf('category.%s.%s', $category->type->value, $category->slug)),
                 'type' => $category->type,
                 'slug' => $category->slug,
             ]),
@@ -36,6 +36,13 @@ class Article extends JsonResource
                 'id' => $tag->id,
                 'name' => $tag->name,
             ]),
+            'articles' => $this->resource->articles
+                ->filter(fn (ModelsArticle $modelsArticle): bool => $modelsArticle->is_publish)
+                ->map(fn (ModelsArticle $modelsArticle): array => [
+                    'id' => $modelsArticle->id,
+                    'title' => $modelsArticle->title,
+                ])
+                ->values(),
             'created_at' => $this->resource->created_at?->toIso8601String(),
             'published_at' => $this->resource->published_at?->toIso8601String(),
             'modified_at' => $this->resource->modified_at?->toIso8601String(),

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Front;
 
+use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\Tag;
 use App\Models\User;
@@ -65,9 +66,9 @@ class ArticleService extends Service
     /**
      * @return Paginator<Article>
      */
-    public function paginateByCategory(string $type, string $slug, bool $simple = false, string $order = self::ORDER_BY_MODIFIED_AT): Paginator
+    public function paginateByCategory(CategoryType $categoryType, string $slug, bool $simple = false, string $order = self::ORDER_BY_MODIFIED_AT): Paginator
     {
-        $category = $this->categoryRepository->findOrFailByTypeAndSlug($type, $slug);
+        $category = $this->categoryRepository->findOrFailByTypeAndSlug($categoryType, $slug);
 
         return $this->articleRepository->paginateByCategory($category, $simple, $order);
     }
@@ -77,8 +78,8 @@ class ArticleService extends Service
      */
     public function paginateByPakAddonCategory(string $pakSlug, string $addonSlug, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
     {
-        $category = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
-        $addon = $this->categoryRepository->findOrFailByTypeAndSlug('addon', $addonSlug);
+        $category = $this->categoryRepository->findOrFailByTypeAndSlug(CategoryType::Pak, $pakSlug);
+        $addon = $this->categoryRepository->findOrFailByTypeAndSlug(CategoryType::Addon, $addonSlug);
 
         return $this->articleRepository->paginateByPakAddonCategory($category, $addon, $order);
     }
@@ -88,7 +89,7 @@ class ArticleService extends Service
      */
     public function paginateByPakNoneAddonCategory(string $pakSlug, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
     {
-        $category = $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
+        $category = $this->categoryRepository->findOrFailByTypeAndSlug(CategoryType::Pak, $pakSlug);
 
         return $this->articleRepository->paginateByPakNoneAddonCategory($category, $order);
     }
@@ -109,14 +110,14 @@ class ArticleService extends Service
         return $this->articleRepository->paginateBySearch($word, $order);
     }
 
-    public function validateCategoryByTypeAndSlug(string $type, string $slug): void
+    public function validateCategoryByTypeAndSlug(CategoryType $categoryType, string $slug): void
     {
-        $this->categoryRepository->findOrFailByTypeAndSlug($type, $slug);
+        $this->categoryRepository->findOrFailByTypeAndSlug($categoryType, $slug);
     }
 
     public function validateCategoryByPakAndAddon(string $pakSlug, string $addonSlug): void
     {
-        $this->categoryRepository->findOrFailByTypeAndSlug('pak', $pakSlug);
-        $this->categoryRepository->findOrFailByTypeAndSlug('addon', $addonSlug);
+        $this->categoryRepository->findOrFailByTypeAndSlug(CategoryType::Pak, $pakSlug);
+        $this->categoryRepository->findOrFailByTypeAndSlug(CategoryType::Addon, $addonSlug);
     }
 }

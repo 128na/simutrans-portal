@@ -36,7 +36,8 @@
     "sass": "^1.72",
     "vue": "^3",
     "vue-router": "^4",
-    "vue3-apexcharts": "^1"
+    "vue3-apexcharts": "^1",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7",

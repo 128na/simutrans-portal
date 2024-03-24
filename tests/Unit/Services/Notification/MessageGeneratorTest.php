@@ -39,8 +39,8 @@ class MessageGeneratorTest extends UnitTestCase
             $mock->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
             $mock->allows('getAttribute')->withArgs(['categoryPaks'])->andReturn(collect([
                 $this->mock(Category::class, function (MockInterface $mock): void {
-                    $mock->allows('offsetExists')->withArgs(['name'])->andReturn(true);
-                    $mock->allows('offsetGet')->withArgs(['name'])->andReturn('dummy_pak');
+                    $mock->allows('offsetExists')->withArgs(['slug'])->andReturn(true);
+                    $mock->allows('offsetGet')->withArgs(['slug'])->andReturn('dummy_pak');
                 }),
             ]));
         });
@@ -67,8 +67,8 @@ class MessageGeneratorTest extends UnitTestCase
             $mock->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
             $mock->allows('getAttribute')->withArgs(['categoryPaks'])->andReturn(collect([
                 $this->mock(Category::class, function (MockInterface $mock): void {
-                    $mock->allows('offsetExists')->withArgs(['name'])->andReturn(true);
-                    $mock->allows('offsetGet')->withArgs(['name'])->andReturn('dummy_pak');
+                    $mock->allows('offsetExists')->withArgs(['slug'])->andReturn(true);
+                    $mock->allows('offsetGet')->withArgs(['slug'])->andReturn('dummy_pak');
                 }),
             ]));
         });

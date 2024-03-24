@@ -40,14 +40,14 @@ class MessageGeneratorTest extends UnitTestCase
             $mock->allows('getAttribute')->withArgs(['categoryPaks'])->andReturn(collect([
                 $this->mock(Category::class, function (MockInterface $mock): void {
                     $mock->allows('offsetExists')->withArgs(['slug'])->andReturn(true);
-                    $mock->allows('offsetGet')->withArgs(['slug'])->andReturn('dummy_pak');
+                    $mock->allows('offsetGet')->withArgs(['slug'])->andReturn('64');
                 }),
             ]));
         });
         $now = now()->format('Y/m/d H:i');
         $actual = $this->getSUT()->buildPublishedMessage($mock);
         $url = config('app.url');
-        $expected = "新規投稿「dummy_title」\n{$url}/users/1/dummy_slug\nby dummy_name\nat {$now}\n#Simutrans #dummy_pak";
+        $expected = "新規投稿「dummy_title」\n{$url}/users/1/dummy_slug\nby dummy_name\nat {$now}\n#Simutrans #pak64";
 
         $this->assertEquals($expected, $actual);
     }
@@ -68,7 +68,7 @@ class MessageGeneratorTest extends UnitTestCase
             $mock->allows('getAttribute')->withArgs(['categoryPaks'])->andReturn(collect([
                 $this->mock(Category::class, function (MockInterface $mock): void {
                     $mock->allows('offsetExists')->withArgs(['slug'])->andReturn(true);
-                    $mock->allows('offsetGet')->withArgs(['slug'])->andReturn('dummy_pak');
+                    $mock->allows('offsetGet')->withArgs(['slug'])->andReturn('64');
                 }),
             ]));
         });
@@ -81,7 +81,7 @@ class MessageGeneratorTest extends UnitTestCase
         $now = now()->format('Y/m/d H:i');
         $actual = $this->getSUT()->buildUpdatedMessage($article);
         $url = config('app.url');
-        $expected = "「dummy_title」更新\n{$url}/users/1/dummy_slug\nby dummy_name\nat {$now}\n#Simutrans #dummy_pak";
+        $expected = "「dummy_title」更新\n{$url}/users/1/dummy_slug\nby dummy_name\nat {$now}\n#Simutrans #pak64";
 
         $this->assertEquals($expected, $actual);
     }

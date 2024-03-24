@@ -39,9 +39,9 @@ class MessageGenerator extends Service
             $url = route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]);
             $now = now()->format('Y/m/d H:i');
             $name = $article->user->name;
-            $tags = collect(['Simutrans'])
-                ->merge($article->categoryPaks->pluck('name'))
-                ->map(fn ($name): string => str_replace('.', '', '#'.$name)) // ドットはハッシュタグに使用できない
+            $tags = collect(['simutrans'])
+                ->merge($article->categoryPaks->pluck('slug'))
+                ->map(fn ($slug): string => __('hash_tag.'.$slug))
                 ->implode(' ');
 
             return ['title' => $article->title, 'url' => $url, 'name' => $name, 'at' => $now, 'tags' => $tags];

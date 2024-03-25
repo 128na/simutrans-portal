@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Screenshot;
 
+use App\Events\Screenshot\ScreenshotStored;
 use App\Models\User;
 use App\Repositories\ScreenshotRepository;
 
@@ -29,5 +30,7 @@ class StoreScreenshot
         $this->screenshotRepository->syncAttachmentsWith($screenshot, $data['screenshot']['attachments']);
         $articleIds = array_map(fn ($a): mixed => $a['id'], $data['screenshot']['articles']);
         $this->screenshotRepository->syncArticles($screenshot, $articleIds);
+
+        ScreenshotStored::dispatch($screenshot);
     }
 }

@@ -48,6 +48,6 @@ class TagController extends Controller
             'last_modified_by' => Auth::id(),
             'last_modified_at' => now(),
         ]);
-        event(new TagDescriptionUpdated($tag, $this->loggedinUser(), $old));
+        TagDescriptionUpdated::dispatch($tag, $this->loggedinUser(), $old);
     }
 }

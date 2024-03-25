@@ -68,7 +68,7 @@ class FrontController extends Controller
         abort_unless($article->is_addon_post, 404);
 
         if (Auth::check() === false || Auth::id() !== $article->user_id) {
-            event(new ArticleConversion($article));
+            ArticleConversion::dispatch($article);
         }
 
         abort_unless($article->has_file && $article->file, 404);

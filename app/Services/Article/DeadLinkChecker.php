@@ -81,7 +81,7 @@ class DeadLinkChecker extends Service
             sleep($intervalsec);
         }
 
-        event(new DeadLinkDetected($article));
+        DeadLinkDetected::dispatch($article);
 
         return true;
     }
@@ -104,7 +104,7 @@ class DeadLinkChecker extends Service
     public function closeArticle(Article $article): void
     {
         $this->articleRepository->update($article, ['status' => ArticleStatus::Private]);
-        event(new CloseByDeadLinkDetected($article));
+        CloseByDeadLinkDetected::dispatch($article);
     }
 
     private function getCacheKey(Article $article): string

@@ -25,7 +25,8 @@ class DiscordController extends Controller
         try {
             $this->recaptchaService->assessment($request->string('token', '')->toString());
             $url = $this->inviteService->create();
-            event(new DiscordInviteCodeCreated());
+
+            DiscordInviteCodeCreated::dispatch();
 
             return response()->json(['url' => $url], 200);
         } catch (Throwable $throwable) {

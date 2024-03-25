@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Screenshot;
 
+use App\Events\Screenshot\ScreenshotUpdated;
 use App\Models\Screenshot;
 use App\Repositories\ScreenshotRepository;
 
@@ -29,5 +30,7 @@ class UpdateScreenshot
 
         $articleIds = array_map(fn ($a): mixed => $a['id'], $data['screenshot']['articles']);
         $this->screenshotRepository->syncArticles($screenshot, $articleIds);
+
+        ScreenshotUpdated::dispatch($screenshot);
     }
 }

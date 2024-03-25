@@ -42,7 +42,7 @@ class InvitationCodeController extends Controller
     public function update(): UserResouce
     {
         $this->userRepository->update($this->loggedinUser(), ['invitation_code' => Str::uuid()]);
-        event(new InviteCodeCreated($this->loggedinUser()));
+        InviteCodeCreated::dispatch($this->loggedinUser());
 
         return new UserResouce($this->loggedinUser()->fresh());
     }

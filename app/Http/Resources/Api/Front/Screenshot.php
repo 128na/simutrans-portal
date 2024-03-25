@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Resources\Api\Front;
 
 use App\Models\Article;
+use App\Models\Attachment;
 use App\Models\Screenshot as ModelsScreenshot;
 use App\Models\User;
 use Carbon\CarbonImmutable;
@@ -27,7 +28,14 @@ class Screenshot extends JsonResource
             'title' => $this->resource->title,
             'description' => $this->resource->description,
             'links' => $this->resource->links,
-            'attachments' => new AttachmentResource($this->resource->attachments),
+            'attachments' => $this->resource->attachments
+                ->sortBy('order')
+                ->values()
+                ->map(fn (Attachment $attachment): array => [
+                    'id' => $attachment->id,
+                    'url' => $attachment->url,
+                    'caption' => $attachment->caption,
+                ]),
             'articles' => $this->resource->articles
                 ->filter(fn (Article $article): bool => $article->is_publish)
                 ->map(fn (Article $article): array => [

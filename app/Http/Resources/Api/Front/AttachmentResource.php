@@ -16,14 +16,12 @@ class AttachmentResource extends ResourceCollection
     public function toArray($request)
     {
         return $this->collection
-            ->sortBy('order')
             ->map(fn (Attachment $attachment): array => [
                 'id' => $attachment->id,
                 'url' => $this->when($attachment->is_image, $attachment->url),
                 'fileInfo' => $this->when($attachment->fileInfo !== null, fn () => $attachment->fileInfo?->data),
                 'caption' => $this->when($attachment->is_image, $attachment->caption),
             ])
-            ->values()
             ->toArray();
     }
 }

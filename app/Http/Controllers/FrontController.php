@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\CategoryType;
+use App\Events\ArticleConversion;
 use App\Http\Requests\Article\SearchRequest;
 use App\Models\Article;
 use App\Models\Tag;
@@ -67,7 +68,7 @@ class FrontController extends Controller
         abort_unless($article->is_addon_post, 404);
 
         if (Auth::check() === false || Auth::id() !== $article->user_id) {
-            ArticleConversion:dispatch($article);
+            ArticleConversion::dispatch($article);
         }
 
         abort_unless($article->has_file && $article->file, 404);

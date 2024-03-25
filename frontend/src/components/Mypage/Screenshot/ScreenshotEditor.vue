@@ -74,6 +74,7 @@ export default defineComponent({
         const data = await editor.save();
         mypage.screenshots = data;
         editor.screenshot = null;
+        mypage.fetchAttachments();
       } catch {
         // do nothing
       }

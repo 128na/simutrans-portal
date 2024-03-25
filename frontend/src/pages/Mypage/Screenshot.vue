@@ -64,6 +64,7 @@ export default defineComponent({
         if (window.confirm('削除しますか？')) {
           const data = await editor.destroy(id);
           mypage.screenshots = data;
+          mypage.fetchAttachments();
         }
       } catch {
         // do nothing

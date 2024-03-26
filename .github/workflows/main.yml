@@ -88,6 +88,8 @@ jobs:
 
       - uses: ./.github/actions/php
       - uses: ./.github/actions/nodejs
+        with:
+          asset-key: "dusk"
       - uses: ./.github/actions/mysql
 
       - name: Storage link
@@ -160,6 +162,8 @@ jobs:
         run: sed -i "s/APP_VERSION=.*/APP_VERSION=$( git describe --tags --abbrev=0 )/" frontend/.env
 
       - uses: ./.github/actions/nodejs
+        with:
+          asset-key: "deploy"
 
       - name: Install SSH key
         run: >

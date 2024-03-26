@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services\BulkZip\Decorators;
+namespace Tests\OldUnit\Services\BulkZip\Decorators;
 
 use App\Enums\ArticlePostType;
 use App\Enums\CategoryType;

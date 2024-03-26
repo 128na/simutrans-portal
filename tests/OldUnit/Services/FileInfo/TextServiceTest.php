@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services\FileInfo;
+namespace Tests\OldUnit\Services\FileInfo;
 
 use App\Services\FileInfo\TextService;
 use Tests\UnitTestCase;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Controllers\Api\Front;
+namespace Tests\OldFeature\Controllers\Api\Front;
 
 use App\Services\Discord\InviteService;
 use App\Services\Google\Recaptcha\RecaptchaException;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services\FileInfo;
+namespace Tests\OldUnit\Services\FileInfo;
 
 use App\Models\Attachment;
 use App\Services\FileInfo\ZipArchiveParser;

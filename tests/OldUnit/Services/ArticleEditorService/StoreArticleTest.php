@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services\ArticleEditorService;
+namespace Tests\OldUnit\Services\ArticleEditorService;
 
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;

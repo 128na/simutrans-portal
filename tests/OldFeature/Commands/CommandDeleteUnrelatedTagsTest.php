@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Commands;
+namespace Tests\OldFeature\Commands;
 
 use Tests\TestCase;
 

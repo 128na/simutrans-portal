@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services\BulkZip;
+namespace Tests\OldUnit\Services\BulkZip;
 
 use App\Models\BulkZip;
 use App\Models\User;

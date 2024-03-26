@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Controllers\Api\Mypage;
+namespace Tests\OldFeature\Controllers\Api\Mypage;
 
 use App\Models\Attachment;
 use Closure;

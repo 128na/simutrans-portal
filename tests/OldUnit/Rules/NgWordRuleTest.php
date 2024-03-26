@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Rules;
+namespace Tests\OldUnit\Rules;
 
 use App\Rules\NgWordRule;
 use Closure;

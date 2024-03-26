@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Controllers\Api\Admin\UserController;
+namespace Tests\OldFeature\Controllers\Api\Admin\UserController;
 
 use App\Models\User;
 use Tests\TestCase;

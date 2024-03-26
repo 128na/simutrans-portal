@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Controllers\Api\Front;
+namespace Tests\OldFeature\Controllers\Api\Front;
 
 use Tests\ArticleTestCase;
 

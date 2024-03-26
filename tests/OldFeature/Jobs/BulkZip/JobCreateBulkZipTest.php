@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Jobs\BulkZip;
+namespace Tests\OldFeature\Jobs\BulkZip;
 
 use App\Jobs\BulkZip\JobCreateBulkZip;
 use App\Models\BulkZip;

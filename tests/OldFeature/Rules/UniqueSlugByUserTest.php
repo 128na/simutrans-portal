@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Rules;
+namespace Tests\OldFeature\Rules;
 
 use App\Models\Article;
 use App\Models\User;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services\BulkZip;
+namespace Tests\OldUnit\Services\BulkZip;
 
 use App\Exceptions\ZipErrorException;
 use App\Services\BulkZip\Decorators\BaseDecorator;

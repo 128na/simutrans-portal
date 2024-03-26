@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Controllers\Api\Mypage\EditorController;
+namespace Tests\OldFeature\Controllers\Api\Mypage\EditorController;
 
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Category;

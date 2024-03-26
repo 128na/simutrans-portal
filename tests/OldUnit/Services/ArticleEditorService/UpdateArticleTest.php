@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services\ArticleEditorService;
+namespace Tests\OldUnit\Services\ArticleEditorService;
 
 use App\Http\Requests\Api\Article\UpdateRequest;
 use App\Models\Article;

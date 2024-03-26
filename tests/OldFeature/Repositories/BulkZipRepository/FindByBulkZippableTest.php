@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Repositories\BulkZipRepository;
+namespace Tests\OldFeature\Repositories\BulkZipRepository;
 
 use App\Models\Attachment;
 use App\Models\BulkZip;

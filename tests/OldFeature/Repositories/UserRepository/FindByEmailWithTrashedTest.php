@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Repositories\UserRepository;
+namespace Tests\OldFeature\Repositories\UserRepository;
 
 use App\Models\User;
 use App\Repositories\UserRepository;

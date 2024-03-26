@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Controllers\Api\Admin\ArticleController;
+namespace Tests\OldFeature\Controllers\Api\Admin\ArticleController;
 
 use App\Models\Article;
 use App\Models\User;

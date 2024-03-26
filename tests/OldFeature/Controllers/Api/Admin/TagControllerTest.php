@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Controllers\Api\Admin;
+namespace Tests\OldFeature\Controllers\Api\Admin;
 
 use App\Enums\UserRole;
 use App\Models\Tag;

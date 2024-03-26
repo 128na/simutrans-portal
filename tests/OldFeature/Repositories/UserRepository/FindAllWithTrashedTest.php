@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Repositories\UserRepository;
+namespace Tests\OldFeature\Repositories\UserRepository;
 
 use App\Repositories\UserRepository;
 use Illuminate\Support\Collection;

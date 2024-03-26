@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Controllers\InviteController;
+namespace Tests\OldFeature\Controllers\InviteController;
 
 use App\Enums\ControllOptionKey;
 use App\Models\ControllOption;

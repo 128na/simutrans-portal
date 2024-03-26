@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Jobs\Article;
+namespace Tests\OldFeature\Jobs\Article;
 
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services\FileInfo\Extractors;
+namespace Tests\OldUnit\Services\FileInfo\Extractors;
 
 use App\Services\FileInfo\Extractors\PakExtractor;
 use Tests\UnitTestCase;

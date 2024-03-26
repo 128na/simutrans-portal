@@ -1,0 +1,12 @@
+name: 'Setup MySQL'
+description: 'Setup MySQL'
+runs:
+  using: "composite"
+  steps:
+  - uses: mirromutth/mysql-action@v1.1
+    with:
+      mysql version: '5.7'
+      mysql database: 'test'
+      mysql root password: 'root'
+      mysql user: 'test'
+      mysql password: 'test'

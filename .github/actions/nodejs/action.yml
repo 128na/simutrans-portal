@@ -9,16 +9,17 @@ runs:
         node-version: 20
         cache-dependency-path: frontend/package-lock.json
 
-    - name: npm ci
-      run: cd frontend && npm ci
-      shell: bash
-
     - name: Cache Asset
       id: cache-asset
       uses: actions/cache@v4
       with:
         path: public
         key: ${{ hashFiles('frontend/package-lock.json') }}-asset
+
+    - name: npm ci
+      if: steps.cache-asset.outputs.cache-hit != 'true'
+      run: cd frontend && npm ci
+      shell: bash
 
     - name: Build Asset
       if: steps.cache-asset.outputs.cache-hit != 'true'

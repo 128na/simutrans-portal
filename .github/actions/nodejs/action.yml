@@ -29,7 +29,3 @@ runs:
       if: steps.cache-asset.outputs.cache-hit != 'true'
       run: cd frontend && npm run build
       shell: bash
-
-    - name: check dir
-      run: ls -la public/
-      shell: bash

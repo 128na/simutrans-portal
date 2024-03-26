@@ -6,7 +6,7 @@ namespace Tests\Feature;
 
 class ExampleTest extends TestCase
 {
-    public function test()
+    public function test(): void
     {
         $this->assertTrue(true);
     }

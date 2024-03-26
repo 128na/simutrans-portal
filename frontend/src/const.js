@@ -54,3 +54,5 @@ export const ANALYTICS_AXES = [
 
 export const BULK_ZIP_RETRY_INTERVAL = 5000;
 export const BULK_ZIP_RETRY_LIMIT = 60;
+
+export const ADMIN_NICKNAME = 'admin';

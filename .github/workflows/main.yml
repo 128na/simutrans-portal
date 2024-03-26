@@ -18,15 +18,9 @@ jobs:
       - name: .env
         run: php -r "copy('.env.ci', '.env');"
 
-      - name: PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.2"
-          coverage: none
+      - uses: ./.github/actions/php
 
-      - uses: "ramsey/composer-install@v3"
-
-      - name: pint
+      - name: Run Pint
         run: composer run pint:check
   stan:
     runs-on: ubuntu-latest
@@ -37,38 +31,27 @@ jobs:
       - name: .env
         run: php -r "copy('.env.ci', '.env');"
 
-      - name: PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.2"
-          coverage: none
+      - uses: ./.github/actions/php
 
-      - uses: "ramsey/composer-install@v3"
-
-      - name: stan
+      - name: Run PHP Stan
         run: composer run stan
   es:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache-dependency-path: frontend/package-lock.json
 
-      - name: npm ci
-        run: cd frontend && npm ci
+      - uses: ./.github/actions/nodejs
 
-      - name: Build Assets
+      - name: Run Lint
         run: cd frontend && npm run lint
 
   test:
+    needs: [es, pint, stan]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php_version: [8.2, 8.3]
+        test_suite: [Unit, Feature, OldUnit, OldFeature]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -76,49 +59,22 @@ jobs:
       - name: .env
         run: php -r "copy('.env.ci', '.env');"
 
-      - name: PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php_version }}
-          coverage: none
-
-      - uses: "ramsey/composer-install@v3"
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: npm ci
-        run: cd frontend && npm ci
-
-      - name: Build Assets
-        run: cd frontend && npm run build
-
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
-
-      - name: Setup database
-        run: |
-          mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test;
-            CREATE DATABASE IF NOT EXISTS test_test_1;
-            CREATE DATABASE IF NOT EXISTS test_test_2'
-
-      - name: chmod 777
-        run: chmod -R 0777 ./
+      - uses: ./.github/actions/php
+      - uses: ./.github/actions/nodejs
+      - uses: ./.github/actions/mysql
 
       - name: Test
-        run: php artisan test -v --env=local --parallel --processes=2
+        run: php artisan test --env=local --testsuite=${{matrix.test_suite}}
 
       - name: Upload Laravel Logs
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: TestLaravelLog-${{ matrix.php_version }}
+          name: TestLaravelLog-${{ matrix.test_suite }}
           path: storage/logs
 
   dusk:
+    needs: [es, pint, stan]
     runs-on: ubuntu-latest
     steps:
       - name: install japanese font
@@ -130,35 +86,11 @@ jobs:
       - name: .env
         run: php -r "copy('.env.dusk.ci', '.env');copy('frontend/.env.dusk.ci', 'frontend/.env');"
 
-      - name: PHP
-        uses: shivammathur/setup-php@v2
+      - uses: ./.github/actions/php
+      - uses: ./.github/actions/nodejs
         with:
-          php-version: "8.2"
-          coverage: none
-
-      - uses: "ramsey/composer-install@v3"
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: npm ci
-        run: cd frontend && npm ci
-
-      - name: Build Assets
-        run: cd frontend && npm run build
-
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
-
-      - name: Setup database
-        run: |
-          mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test;'
-
-      - name: chmod 777
-        run: chmod -R 0777 ./
+          asset-key: "dusk"
+      - uses: ./.github/actions/mysql
 
       - name: Storage link
         run: php artisan storage:link
@@ -188,23 +120,23 @@ jobs:
             storage/logs
 
   cy:
+    needs: [es, pint, stan]
     runs-on: ubuntu-latest
     steps:
       - name: install japanese font
         run: sudo apt-get install -y fonts-ipafont && fc-cache -fv install
+
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: .env
         run: php -r "copy('frontend/.env.dusk.ci', 'frontend/.env');"
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache-dependency-path: frontend/package-lock.json
-      - name: npm ci
-        run: cd frontend && npm ci
+
+      - uses: ./.github/actions/nodejs
+
       - name: Run Cypress
         run: cd frontend && npm run test:e2e:ci
+
       - name: Upload Screenshots
         if: failure()
         uses: actions/upload-artifact@v4
@@ -216,27 +148,22 @@ jobs:
 
   deploy:
     # tag push -> テスト通過後デプロイ
-    needs: [test, es, pint, stan, dusk, cy]
+    needs: [es, pint, stan, test, dusk, cy]
     if: ${{ success() && startsWith( github.ref, 'refs/tags/' ) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+
       - name: .env
         run: php -r "copy('.env.deploy', '.env');copy('frontend/.env.deploy', 'frontend/.env');"
+
       - name: set app version
         run: sed -i "s/APP_VERSION=.*/APP_VERSION=$( git describe --tags --abbrev=0 )/" frontend/.env
-      - name: Setup Node
-        uses: actions/setup-node@v4
+
+      - uses: ./.github/actions/nodejs
         with:
-          node-version: 20
-          cache-dependency-path: frontend/package-lock.json
-      - name: npm ci
-        run: cd frontend && npm ci
-      - name: Build Assets
-        run: cd frontend && npm run build
+          asset-key: "deploy"
 
       - name: Install SSH key
         run: >

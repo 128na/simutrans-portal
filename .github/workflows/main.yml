@@ -47,6 +47,7 @@ jobs:
         run: cd frontend && npm run lint
 
   test:
+    needs: [es, pint, stan]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -73,6 +74,7 @@ jobs:
           path: storage/logs
 
   dusk:
+    needs: [es, pint, stan]
     runs-on: ubuntu-latest
     steps:
       - name: install japanese font
@@ -116,6 +118,7 @@ jobs:
             storage/logs
 
   cy:
+    needs: [es, pint, stan]
     runs-on: ubuntu-latest
     steps:
       - name: install japanese font
@@ -143,7 +146,7 @@ jobs:
 
   deploy:
     # tag push -> テスト通過後デプロイ
-    needs: [test, es, pint, stan, dusk, cy]
+    needs: [es, pint, stan, test, dusk, cy]
     if: ${{ success() && startsWith( github.ref, 'refs/tags/' ) }}
     runs-on: ubuntu-latest
     steps:

@@ -74,7 +74,6 @@ jobs:
           path: storage/logs
 
   dusk:
-    needs: [es, pint, stan]
     runs-on: ubuntu-latest
     steps:
       - name: install japanese font
@@ -120,7 +119,6 @@ jobs:
             storage/logs
 
   cy:
-    needs: [es, pint, stan]
     runs-on: ubuntu-latest
     steps:
       - name: install japanese font

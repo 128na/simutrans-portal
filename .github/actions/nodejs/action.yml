@@ -17,7 +17,7 @@ runs:
         key: ${{ hashFiles('frontend/package-lock.json') }}-asset
 
     - name: npm ci
-      # if: steps.cache-asset.outputs.cache-hit != 'true'
+      if: steps.cache-asset.outputs.cache-hit != 'true'
       run: cd frontend && npm ci
       shell: bash
 

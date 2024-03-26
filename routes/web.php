@@ -46,7 +46,7 @@ Route::get('/mypage/', (new MypageController())->index(...))->name('mypage.index
 Route::get('/mypage/{any}', (new MypageController())->index(...))->where('any', '.*');
 Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show'])->name('articles.show');
 Route::post('/articles/{article}/download', [FrontController::class, 'download'])->name('articles.download');
-Route::middleware(['throttle:external'])->group(function () {
+Route::middleware(['throttle:external'])->group(function (): void {
     Route::get('/articles/{article}/download', [FrontController::class, 'downloadFromExternal']);
 });
 

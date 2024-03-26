@@ -46,8 +46,6 @@ class RouteServiceProvider extends ServiceProvider
             Limit::perDay(50),
         ]);
 
-        RateLimiter::for('external', function (Request $request) {
-            return Limit::perMinute(10);
-        });
+        RateLimiter::for('external', fn (Request $request) => Limit::perMinute(10));
     }
 }

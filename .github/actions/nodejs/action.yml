@@ -12,3 +12,15 @@ runs:
     - name: npm ci
       run: cd frontend && npm ci
       shell: bash
+
+    - name: Cache Asset
+      id: cache-asset
+      uses: actions/cache@v4
+      with:
+        path: public
+        key: ${{ hashFiles('frontend/package-lock.json') }}-asset
+
+    - name: Build Asset
+      if: steps.cache-asset.outputs.cache-hit != 'true'
+      run: cd frontend && npm run build
+      shell: bash

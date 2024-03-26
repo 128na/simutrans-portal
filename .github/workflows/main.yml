@@ -20,7 +20,7 @@ jobs:
 
       - uses: ./.github/actions/php
 
-      - name: pint
+      - name: Run Pint
         run: composer run pint:check
   stan:
     runs-on: ubuntu-latest
@@ -33,7 +33,7 @@ jobs:
 
       - uses: ./.github/actions/php
 
-      - name: stan
+      - name: Run PHP Stan
         run: composer run stan
   es:
     runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
 
       - uses: ./.github/actions/nodejs
 
-      - name: Build Assets
+      - name: Run Lint
         run: cd frontend && npm run lint
 
   test:
@@ -60,17 +60,13 @@ jobs:
 
       - uses: ./.github/actions/php
       - uses: ./.github/actions/nodejs
-
-      - name: Build Assets
-        run: cd frontend && npm run build
-
       - uses: ./.github/actions/mysql
 
       - name: chmod 777
         run: chmod -R 0777 ./
 
       - name: Test
-        run: php artisan test -v --env=local --testsuite=${{matrix.test_suite}}
+        run: php artisan test --env=local --testsuite=${{matrix.test_suite}}
 
       - name: Upload Laravel Logs
         if: failure()
@@ -93,10 +89,6 @@ jobs:
 
       - uses: ./.github/actions/php
       - uses: ./.github/actions/nodejs
-
-      - name: Build Assets
-        run: cd frontend && npm run build
-
       - uses: ./.github/actions/mysql
 
       - name: chmod 777
@@ -171,9 +163,6 @@ jobs:
         run: sed -i "s/APP_VERSION=.*/APP_VERSION=$( git describe --tags --abbrev=0 )/" frontend/.env
 
       - uses: ./.github/actions/nodejs
-
-      - name: Build Assets
-        run: cd frontend && npm run build
 
       - name: Install SSH key
         run: >

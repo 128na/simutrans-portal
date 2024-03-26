@@ -15,6 +15,7 @@ use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -60,7 +61,7 @@ class FrontController extends Controller
     }
 
     /**
-     * アドオンダウンロード.
+     * SPA内からのアドオンダウンロード
      */
     public function download(Article $article): StreamedResponse
     {
@@ -72,6 +73,28 @@ class FrontController extends Controller
         }
 
         abort_unless($article->has_file && $article->file, 404);
+
+        return Storage::disk('public')->download(
+            $article->file->path,
+            $article->file->original_name
+        );
+    }
+
+    /**
+     * 外部からのアドオンダウンロード
+     */
+    public function downloadFromExternal(Article $article, Request $request): StreamedResponse
+    {
+        abort_unless($article->is_publish, 404);
+        abort_unless($article->is_addon_post, 404);
+        abort_unless($article->has_file && $article->file, 404);
+
+        logger('downloadFromExternal', [
+            'articleId' => $article->id,
+            'remoteAddr' => $request->server('REMOTE_ADDR', 'N/A'),
+            'referer' => $request->server('HTTP_REFERER', 'N/A'),
+            'UA' => $request->server('HTTP_USER_AGENT', 'N/A'),
+        ]);
 
         return Storage::disk('public')->download(
             $article->file->path,

@@ -40,10 +40,12 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRateLimiting(): void
     {
         RateLimiter::for('register', fn (Request $request) => Limit::perMinute(10)->by($request->ip()));
-        RateLimiter::for('discordInvite', fn (Request $request): array => [
+        RateLimiter::for('discordInvite', fn (): array => [
             Limit::perMinute(1),
             Limit::perHour(10),
             Limit::perDay(50),
         ]);
+
+        RateLimiter::for('external', fn (Request $request) => Limit::perMinute(10));
     }
 }

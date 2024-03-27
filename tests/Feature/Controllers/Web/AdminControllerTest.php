@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Controllers\Admin;
+namespace Tests\Feature\Controllers\Web;
 
 use App\Enums\UserRole;
 use App\Models\User;

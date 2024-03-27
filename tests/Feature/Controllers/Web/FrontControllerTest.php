@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Controllers;
+namespace Tests\Feature\Controllers\Web;
 
 use App\Enums\CategoryType;
 use App\Models\Article;

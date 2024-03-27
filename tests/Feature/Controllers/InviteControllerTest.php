@@ -2,19 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers\InviteController;
+namespace Tests\Feature\Controllers;
 
 use App\Enums\ControllOptionKey;
 use App\Models\ControllOption;
+use App\Models\User;
 use Illuminate\Support\Str;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
-class IndexTest extends TestCase
+class InviteControllerTest extends TestCase
 {
+    private User $user;
+
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user->update(['invitation_code' => Str::uuid()]);
+
+        $this->user = User::factory()->create(['invitation_code' => Str::uuid()]);
     }
 
     public function test(): void

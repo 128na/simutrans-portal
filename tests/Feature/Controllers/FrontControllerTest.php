@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers;
+namespace Tests\Feature\Controllers;
 
+use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class FrontControllerTest extends TestCase
 {
@@ -47,8 +48,8 @@ class FrontControllerTest extends TestCase
 
     public function testCategoryPakNoneAddon(): void
     {
-        $category = Category::inRandomOrder()->where('type', 'pak')->first();
-        $testResponse = $this->get(route('category.pak.noneAddon', ['size' => $category->slug]));
+        $pak = Category::factory()->create(['type' => CategoryType::Pak]);
+        $testResponse = $this->get(route('category.pak.noneAddon', ['size' => $pak->slug]));
 
         $testResponse->assertOk();
     }
@@ -62,8 +63,8 @@ class FrontControllerTest extends TestCase
 
     public function testCategoryPakAddon(): void
     {
-        $pak = Category::inRandomOrder()->where('type', 'pak')->first();
-        $addon = Category::inRandomOrder()->where('type', 'addon')->first();
+        $pak = Category::factory()->create(['type' => CategoryType::Pak]);
+        $addon = Category::factory()->create(['type' => CategoryType::Addon]);
         $testResponse = $this->get(route('category.pak.addon', ['size' => $pak->slug, 'slug' => $addon->slug]));
 
         $testResponse->assertOk();
@@ -71,7 +72,7 @@ class FrontControllerTest extends TestCase
 
     public function testCategoryPakAddon存在しないPak(): void
     {
-        $addon = Category::inRandomOrder()->where('type', 'addon')->first();
+        $addon = Category::factory()->create(['type' => CategoryType::Addon]);
         $testResponse = $this->get(route('category.pak.addon', ['size' => 'missing', 'slug' => $addon->slug]));
 
         $testResponse->assertNotFound();
@@ -79,7 +80,7 @@ class FrontControllerTest extends TestCase
 
     public function testCategoryPakAddon存在しないAddon(): void
     {
-        $pak = Category::inRandomOrder()->where('type', 'pak')->first();
+        $pak = Category::factory()->create(['type' => CategoryType::Pak]);
         $testResponse = $this->get(route('category.pak.addon', ['size' => $pak->slug, 'slug' => 'missing']));
 
         $testResponse->assertNotFound();
@@ -87,7 +88,7 @@ class FrontControllerTest extends TestCase
 
     public function testCategory(): void
     {
-        $category = Category::inRandomOrder()->first();
+        $category = Category::factory()->create();
         $testResponse = $this->get(route('category', ['type' => $category->type->value, 'slug' => $category->slug]));
 
         $testResponse->assertOk();
@@ -95,7 +96,7 @@ class FrontControllerTest extends TestCase
 
     public function testCategory存在しないtype(): void
     {
-        $category = Category::inRandomOrder()->first();
+        $category = Category::factory()->create();
         $testResponse = $this->get(route('category', ['type' => 'missing', 'slug' => $category->slug]));
 
         $testResponse->assertNotFound();
@@ -103,7 +104,7 @@ class FrontControllerTest extends TestCase
 
     public function testCategory存在しないslug(): void
     {
-        $category = Category::inRandomOrder()->first();
+        $category = Category::factory()->create();
         $testResponse = $this->get(route('category', ['type' => $category->type->value, 'slug' => 'missing']));
 
         $testResponse->assertNotFound();

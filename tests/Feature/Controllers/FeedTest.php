@@ -2,20 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers;
+namespace Tests\Feature\Controllers;
 
-use Tests\ArticleTestCase;
+use Tests\Feature\TestCase;
 
-class FeedTest extends ArticleTestCase
+class FeedTest extends TestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->createAddonPost();
-        $this->createAddonIntroduction();
-        $this->createPage();
-        $this->createAnnounce();
+        $this->seed('ProdSeeder');
     }
 
     /**

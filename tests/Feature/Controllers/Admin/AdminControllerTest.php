@@ -2,18 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers;
+namespace Tests\Feature\Controllers\Admin;
 
-use Tests\AdminTestCase;
+use App\Enums\UserRole;
+use App\Models\User;
+use Tests\Feature\TestCase;
 
-class AdminControllerTest extends AdminTestCase
+class AdminControllerTest extends TestCase
 {
     private string $url;
+
+    private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->url = route('admin.index');
+        $this->user = User::factory()->create();
     }
 
     public function testGuest(): void
@@ -32,7 +37,8 @@ class AdminControllerTest extends AdminTestCase
 
     public function testAdmin(): void
     {
-        $this->actingAs($this->admin);
+        $this->user->update(['role' => UserRole::Admin]);
+        $this->actingAs($this->user);
         $testResponse = $this->get($this->url);
 
         $testResponse->assertOk();

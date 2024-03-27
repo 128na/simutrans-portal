@@ -82,7 +82,7 @@ class ArticleFactory extends Factory
         ]);
     }
 
-    public function addonPost(?Attachment $attachment)
+    public function addonPost(?Attachment $attachment = null)
     {
         return $this->state(fn (array $attributes): array => [
             'post_type' => ArticlePostType::AddonPost,

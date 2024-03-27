@@ -25,8 +25,8 @@ class LoginTest extends TestCase
         $user = User::factory()->create(['password' => bcrypt('password')]);
 
         Notification::fake();
-        $res = $this->postJson($this->url, ['email' => $user->email, 'password' => 'password']);
-        $res->assertOK();
+        $testResponse = $this->postJson($this->url, ['email' => $user->email, 'password' => 'password']);
+        $testResponse->assertOK();
         $this->assertAuthenticated();
         Notification::assertSentTo($user, SendLoggedInEmail::class);
     }
@@ -36,7 +36,7 @@ class LoginTest extends TestCase
         ControllOption::updateOrCreate(['key' => ControllOptionKey::Login], ['value' => false]);
         $user = User::factory()->create(['password' => bcrypt('password')]);
 
-        $res = $this->postJson($this->url, ['email' => $user->email, 'password' => 'password']);
-        $res->assertForbidden();
+        $testResponse = $this->postJson($this->url, ['email' => $user->email, 'password' => 'password']);
+        $testResponse->assertForbidden();
     }
 }

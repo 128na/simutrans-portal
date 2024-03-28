@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers\Web;
+namespace Tests\Feature\Controllers\Web;
 
 use Tests\Feature\TestCase;
 

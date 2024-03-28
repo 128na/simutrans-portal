@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Fortify;
+namespace Tests\Feature\Controllers\Fortify;
 
 use App\Enums\ControllOptionKey;
 use App\Models\ControllOption;

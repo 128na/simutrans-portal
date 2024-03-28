@@ -2,47 +2,58 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers\Api\Admin;
+namespace Tests\Feature\Controllers\Api\Admin\TagController;
 
 use App\Enums\UserRole;
 use App\Models\Tag;
-use Tests\TestCase;
+use App\Models\User;
+use Tests\Feature\TestCase;
 
-class TagControllerTest extends TestCase
+class ToggleEditableTest extends TestCase
 {
+    private User $user;
+
     private Tag $tag;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->user = User::factory()->admin()->create();
         $this->tag = Tag::factory()->create(['editable' => true]);
     }
 
-    public function testtoggleEditable認証(): void
+    public function test_未ログイン(): void
     {
         $url = sprintf('/api/admin/tags/%s/toggleEditable', $this->tag->id);
 
         $res = $this->postJson($url);
         $res->assertUnauthorized();
+    }
+
+    public function test_管理者以外(): void
+    {
+        $url = sprintf('/api/admin/tags/%s/toggleEditable', $this->tag->id);
+
+        $this->user->update(['role' => UserRole::User]);
 
         $this->actingAs($this->user);
         $res = $this->postJson($url);
         $res->assertUnauthorized();
     }
 
-    public function testtoggleEditable(): void
+    public function test_管理者(): void
     {
-        $this->assertDatabaseHas('tags', ['id' => $this->tag->id, 'editable' => 1]);
         $url = sprintf('/api/admin/tags/%s/toggleEditable', $this->tag->id);
 
-        $this->user->update(['role' => UserRole::Admin]);
         $this->actingAs($this->user);
+        $testResponse = $this->postJson($url);
+        $testResponse->assertOk();
+        $tag = Tag::findOrFail($this->tag->id);
+        $this->assertFalse($tag->editable);
 
         $testResponse = $this->postJson($url);
         $testResponse->assertOk();
-        $this->assertDatabaseHas('tags', ['id' => $this->tag->id, 'editable' => 0]);
-
-        $this->postJson($url);
-        $this->assertDatabaseHas('tags', ['id' => $this->tag->id, 'editable' => 1]);
+        $tag = Tag::findOrFail($this->tag->id);
+        $this->assertTrue($tag->editable);
     }
 }

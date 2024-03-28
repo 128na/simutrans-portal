@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers\Api\Admin\ArticleController;
+namespace Tests\Feature\Controllers\Api\Admin\ArticleController;
 
 use App\Models\Article;
 use App\Models\User;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class IndexTest extends TestCase
 {

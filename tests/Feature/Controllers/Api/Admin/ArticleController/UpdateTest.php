@@ -4,26 +4,28 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Admin\ArticleController;
 
+use App\Enums\UserRole;
 use App\Models\Article;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
 class UpdateTest extends TestCase
 {
-    private User $admin;
+    private User $user;
 
     private Article $article;
 
     protected function setUp(): void
     {
         parent::setup();
-        $this->admin = User::factory()->admin()->create();
+
+        $this->user = User::factory()->admin()->create();
         $this->article = Article::factory()->publish()->create();
     }
 
     public function test(): void
     {
-        $this->actingAs($this->admin);
+        $this->actingAs($this->user);
         $url = '/api/admin/articles/'.$this->article->id;
         $res = $this->putJson($url, ['article' => ['status' => 'draft']]);
         $res->assertOk();
@@ -43,6 +45,7 @@ class UpdateTest extends TestCase
 
     public function test管理者以外(): void
     {
+        $this->user->update(['role' => UserRole::User]);
         $this->actingAs($this->user);
         $url = '/api/admin/articles/'.$this->article->id;
         $res = $this->putJson($url);

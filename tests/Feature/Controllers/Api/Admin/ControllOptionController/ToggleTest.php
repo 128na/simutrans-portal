@@ -26,8 +26,8 @@ class ToggleTest extends TestCase
     {
         $url = sprintf('/api/admin/controll_options/%s/toggle', $this->controllOption->key->value);
 
-        $res = $this->postJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->postJson($url);
+        $testResponse->assertUnauthorized();
     }
 
     public function test_管理者(): void
@@ -36,8 +36,8 @@ class ToggleTest extends TestCase
         $url = sprintf('/api/admin/controll_options/%s/toggle', $this->controllOption->key->value);
 
         $this->actingAs($this->user);
-        $res = $this->postJson($url);
-        $res->assertOk();
+        $testResponse = $this->postJson($url);
+        $testResponse->assertOk();
     }
 
     public function test_管理者以外(): void
@@ -46,8 +46,8 @@ class ToggleTest extends TestCase
 
         $this->user->update(['role' => UserRole::User]);
         $this->actingAs($this->user);
-        $res = $this->postJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->postJson($url);
+        $testResponse->assertUnauthorized();
     }
 
     public function testToggle値の切替(): void

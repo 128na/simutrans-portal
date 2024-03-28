@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers;
+namespace Tests\Feature\Controllers\Web;
 
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class MypageControllerTest extends TestCase
 {

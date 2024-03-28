@@ -7,6 +7,7 @@ namespace Database\Factories;
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Models\Article;
+use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -81,7 +82,7 @@ class ArticleFactory extends Factory
         ]);
     }
 
-    public function addonPost()
+    public function addonPost(?Attachment $attachment = null)
     {
         return $this->state(fn (array $attributes): array => [
             'post_type' => ArticlePostType::AddonPost,
@@ -90,6 +91,7 @@ class ArticleFactory extends Factory
                 'license' => $this->faker->realText(),
                 'thanks' => $this->faker->realText(),
                 'author' => $this->faker->name(),
+                'file' => $attachment?->id,
             ],
         ]);
     }

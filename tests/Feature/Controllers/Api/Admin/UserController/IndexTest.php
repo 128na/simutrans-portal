@@ -2,28 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers\Api\Admin\UserController;
+namespace Tests\Feature\Controllers\Api\Admin\UserController;
 
+use App\Enums\UserRole;
 use App\Models\User;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class IndexTest extends TestCase
 {
-    private User $admin;
+    private User $user;
 
     protected function setUp(): void
     {
         parent::setup();
-        $this->admin = User::factory()->admin()->create();
+        $this->user = User::factory()->admin()->create();
     }
 
     public function test(): void
     {
-        $this->actingAs($this->admin);
+        $this->actingAs($this->user);
         $url = '/api/admin/users';
         $res = $this->getJson($url);
         $res->assertOk();
-        $res->assertJsonFragment(['name' => $this->admin->name]);
+        $res->assertJsonFragment(['name' => $this->user->name]);
         $res->assertJsonFragment(['name' => $this->user->name]);
     }
 
@@ -36,6 +37,7 @@ class IndexTest extends TestCase
 
     public function test管理者以外(): void
     {
+        $this->user->update(['role' => UserRole::User]);
         $this->actingAs($this->user);
         $url = '/api/admin/users';
         $res = $this->getJson($url);

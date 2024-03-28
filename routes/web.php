@@ -36,8 +36,8 @@ Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content']
     Route::get('/invite-simutrans-interact-meeting', [FrontController::class, 'fallback']);
     Route::get('/social', [FrontController::class, 'social']);
 
-    Route::get('/screenshots', [ScreenshotController::class, 'index']);
-    Route::get('/screenshots/{screenshot}', [ScreenshotController::class, 'show']);
+    Route::get('/screenshots', [ScreenshotController::class, 'index'])->name('screenshots.index');
+    Route::get('/screenshots/{screenshot}', [ScreenshotController::class, 'show'])->name('screenshots.show');
 });
 // 非ログイン系 reidsキャッシュ無効
 Route::get('/articles/{id}', [FrontController::class, 'fallbackShow']);

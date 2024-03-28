@@ -26,8 +26,8 @@ class ToggleEditableTest extends TestCase
     {
         $url = sprintf('/api/admin/tags/%s/toggleEditable', $this->tag->id);
 
-        $res = $this->postJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->postJson($url);
+        $testResponse->assertUnauthorized();
     }
 
     public function test_管理者以外(): void
@@ -37,8 +37,8 @@ class ToggleEditableTest extends TestCase
         $this->user->update(['role' => UserRole::User]);
 
         $this->actingAs($this->user);
-        $res = $this->postJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->postJson($url);
+        $testResponse->assertUnauthorized();
     }
 
     public function test_管理者(): void
@@ -48,11 +48,13 @@ class ToggleEditableTest extends TestCase
         $this->actingAs($this->user);
         $testResponse = $this->postJson($url);
         $testResponse->assertOk();
+
         $tag = Tag::findOrFail($this->tag->id);
         $this->assertFalse($tag->editable);
 
         $testResponse = $this->postJson($url);
         $testResponse->assertOk();
+
         $tag = Tag::findOrFail($this->tag->id);
         $this->assertTrue($tag->editable);
     }

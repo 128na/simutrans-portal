@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Admin\ArticleController;
 
+use App\Enums\UserRole;
 use App\Models\Article;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
 class IndexTest extends TestCase
 {
-    private User $admin;
+    private User $user;
 
     private Article $article1;
 
@@ -23,7 +24,8 @@ class IndexTest extends TestCase
     protected function setUp(): void
     {
         parent::setup();
-        $this->admin = User::factory()->admin()->create();
+
+        $this->user = User::factory()->admin()->create();
         $this->article1 = Article::factory()->create();
         $this->article2 = Article::factory()->draft()->create();
         $this->article3 = Article::factory()->deleted()->create();
@@ -32,7 +34,7 @@ class IndexTest extends TestCase
 
     public function test(): void
     {
-        $this->actingAs($this->admin);
+        $this->actingAs($this->user);
         $url = '/api/admin/articles';
         $res = $this->getJson($url);
         $res->assertOk();
@@ -51,6 +53,7 @@ class IndexTest extends TestCase
 
     public function test管理者以外(): void
     {
+        $this->user->update(['role' => UserRole::User]);
         $this->actingAs($this->user);
         $url = '/api/admin/articles';
         $res = $this->getJson($url);

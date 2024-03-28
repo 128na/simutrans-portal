@@ -11,6 +11,8 @@ use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\User;
+use Database\Seeders\CategorySeeder;
+use Database\Seeders\ControllOptionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\UploadedFile;
@@ -20,6 +22,14 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setup();
+
+        $this->seed(CategorySeeder::class);
+        $this->seed(ControllOptionsSeeder::class);
+    }
 
     protected function createFromFile(UploadedFile $uploadedFile, int $userId): Attachment
     {

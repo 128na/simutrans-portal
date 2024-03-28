@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\ControllOptionKey;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ControllOption extends Model
 {
-    use HasFactory;
-
     public $incrementing = false;
 
     protected $keyType = 'string';
@@ -24,6 +21,7 @@ class ControllOption extends Model
     ];
 
     protected $casts = [
+        'key' => ControllOptionKey::class,
         'value' => 'bool',
     ];
 

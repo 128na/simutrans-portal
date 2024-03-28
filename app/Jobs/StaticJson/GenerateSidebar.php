@@ -12,6 +12,9 @@ class GenerateSidebar extends BaseGenerator
 {
     protected function getJsonData(): array
     {
+        /**
+         * @var SidebarService
+         */
         $service = app(SidebarService::class);
 
         return [

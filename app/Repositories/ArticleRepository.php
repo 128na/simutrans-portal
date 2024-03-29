@@ -11,7 +11,6 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
 use Carbon\CarbonImmutable;
-use Closure;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -98,10 +97,16 @@ class ArticleRepository extends BaseRepository
      * アナリティクス用のデータ取得.
      *
      * @param  array<int|string>  $ids
+     * @param  array<string>  $period
      * @return Collection<int, Article>
      */
-    public function findAllForAnalytics(User $user, array $ids, Closure $periodQuery): Collection
+    public function findAllForAnalytics(User $user, array $ids, int $typeId, array $period): Collection
     {
+        $periodQuery = function ($query) use ($typeId, $period): void {
+            $query->select('article_id', 'count', 'period')
+                ->where('type', $typeId)->whereBetween('period', $period);
+        };
+
         /** @var Collection<int, Article> */
         return $this->model
             ->query()

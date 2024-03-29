@@ -9,7 +9,6 @@ use App\Models\Article;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable as Carbon;
-use Closure;
 use Illuminate\Database\Eloquent\Collection;
 use UnexpectedValueException;
 
@@ -28,21 +27,10 @@ class ArticleAnalyticsService extends Service
         $endDate = new Carbon($searchRequest->end_date);
         $type = $searchRequest->type;
         $ids = $searchRequest->ids;
-
-        $periodQuery = $this->getPeriodQuery($type, $startDate, $endDate);
-
-        return $this->articleRepository->findAllForAnalytics($user, $ids, $periodQuery);
-    }
-
-    private function getPeriodQuery(string $type, Carbon $startDate, Carbon $endDate): Closure
-    {
+        $typeId = $this->getTypeId($type);
         $period = $this->getPeriod($type, $startDate, $endDate);
-        $type_id = $this->getTypeId($type);
 
-        return function ($query) use ($type_id, $period): void {
-            $query->select('article_id', 'count', 'period')
-                ->where('type', $type_id)->whereBetween('period', $period);
-        };
+        return $this->articleRepository->findAllForAnalytics($user, $ids, $typeId, $period);
     }
 
     /**

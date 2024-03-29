@@ -18,6 +18,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
+use Mockery;
 use Tests\CreatesApplication;
 
 abstract class TestCase extends BaseTestCase
@@ -31,6 +32,12 @@ abstract class TestCase extends BaseTestCase
 
         $this->seed(CategorySeeder::class);
         $this->seed(ControllOptionsSeeder::class);
+    }
+
+    protected function tearDown(): void
+    {
+        Mockery::close();
+        parent::tearDown();
     }
 
     /**

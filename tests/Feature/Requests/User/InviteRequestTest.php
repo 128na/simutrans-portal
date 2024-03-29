@@ -19,10 +19,10 @@ class InviteRequestTest extends TestCase
     }
 
     #[DataProvider('dataValidation')]
-    public function test(array $data, $expectedErrorField): void
+    public function test(array $data, string $expectedErrorField): void
     {
-        $actual = $this->makeValidator(InviteRequest::class, $data)->errors();
-        $this->assertArrayHasKey($expectedErrorField, $actual->toArray());
+        $messageBag = $this->makeValidator(InviteRequest::class, $data)->errors();
+        $this->assertArrayHasKey($expectedErrorField, $messageBag->toArray());
     }
 
     public static function dataValidation(): \Generator

@@ -41,9 +41,9 @@ class ShowTest extends TestCase
     }
 
     #[DataProvider('shouldHideStatuses')]
-    public function test_非公開(ArticleStatus $status): void
+    public function test_非公開(ArticleStatus $articleStatus): void
     {
-        $this->article->update(['status' => $status]);
+        $this->article->update(['status' => $articleStatus]);
         $testResponse = $this->get(sprintf('api/front/users/%s/%s',
             $this->article->user_id,
             $this->article->slug
@@ -52,7 +52,7 @@ class ShowTest extends TestCase
         $testResponse->assertNotFound();
     }
 
-    public static function shouldHideStatuses()
+    public static function shouldHideStatuses(): \Generator
     {
         yield '非公開' => [ArticleStatus::Private];
         yield '下書き' => [ArticleStatus::Draft];

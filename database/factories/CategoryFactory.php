@@ -26,8 +26,8 @@ class CategoryFactory extends Factory
     {
         return [
             'type' => $this->faker->randomElement(CategoryType::cases()),
-            'slug' => 'dummy-'.$this->faker->randomNumber(),
-            'order' => $this->faker->randomNumber(),
+            'slug' => 'dummy-'.$this->faker->randomNumber(3),
+            'order' => $this->faker->randomNumber(1),
             'need_admin' => false,
         ];
     }

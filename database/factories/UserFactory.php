@@ -18,7 +18,7 @@ class UserFactory extends Factory
         return [
             'role' => UserRole::User,
             'name' => $this->faker->name(),
-            'nickname' => 'dummy_'.$this->faker->randomNumber(),
+            'nickname' => 'dummy_'.$this->faker->randomNumber(3),
             'invited_by' => null,
             'invitation_code' => null,
             'email' => $this->faker->unique()->safeEmail(),

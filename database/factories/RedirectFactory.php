@@ -24,8 +24,8 @@ class RedirectFactory extends Factory
     public function definition()
     {
         return [
-            'from' => '/dummy/'.$this->faker->randomNumber(),
-            'to' => '/dummy/'.$this->faker->randomNumber(),
+            'from' => '/dummy/'.$this->faker->randomNumber(3),
+            'to' => '/dummy/'.$this->faker->randomNumber(3),
         ];
     }
 }

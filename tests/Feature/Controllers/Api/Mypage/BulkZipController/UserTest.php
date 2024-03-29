@@ -2,16 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers\Api\Mypage\BulkZipController;
+namespace Tests\Feature\Controllers\Api\Mypage\BulkZipController;
 
 use App\Jobs\BulkZip\JobCreateBulkZip;
 use App\Models\BulkZip;
 use App\Models\User;
 use Illuminate\Support\Facades\Bus;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class UserTest extends TestCase
 {
+    private User $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+    }
+
     protected function tearDown(): void
     {
         BulkZip::all()->map(fn ($bz) => $bz->delete());
@@ -20,10 +28,10 @@ class UserTest extends TestCase
 
     public function test(): void
     {
-        Bus::fake();
         $url = '/api/mypage/bulk-zip';
-
         $this->actingAs($this->user);
+
+        Bus::fake();
         $response = $this->getJson($url);
         $response->assertOk();
         Bus::assertDispatched(JobCreateBulkZip::class);

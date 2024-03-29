@@ -10,6 +10,7 @@ use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
+use App\Models\Screenshot;
 use App\Models\User;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\ControllOptionsSeeder;
@@ -40,11 +41,29 @@ abstract class TestCase extends BaseTestCase
         ]);
     }
 
+    protected function createAttachment(User $user): Attachment
+    {
+        $file = UploadedFile::fake()->create('file.zip', 1, 'application/zip');
+
+        return $this->createFromFile($file, $user->id);
+    }
+
+    protected function createScreenshot(?User $user = null): Screenshot
+    {
+        $user ??= User::factory()->create();
+        $attachment = $this->createAttachment($user);
+        $scrrenshot = Screenshot::factory()->create([
+            'user_id' => $user->id,
+        ]);
+        $scrrenshot->attachments()->save($attachment);
+
+        return $scrrenshot;
+    }
+
     protected function createAddonPost(?User $user = null): Article
     {
         $user ??= User::factory()->create();
-        $file = UploadedFile::fake()->create('file.zip', 1, 'application/zip');
-        $attachment = $this->createFromFile($file, $user->id);
+        $attachment = $this->createAttachment($user);
         $article = Article::factory()->addonPost($attachment)->create([
             'user_id' => $user->id,
             'status' => ArticleStatus::Publish,

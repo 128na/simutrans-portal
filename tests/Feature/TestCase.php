@@ -17,6 +17,7 @@ use Database\Seeders\ControllOptionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Validator;
 use Tests\CreatesApplication;
 
 abstract class TestCase extends BaseTestCase
@@ -30,6 +31,15 @@ abstract class TestCase extends BaseTestCase
 
         $this->seed(CategorySeeder::class);
         $this->seed(ControllOptionsSeeder::class);
+    }
+
+    /**
+     * @param  class-string<\Illuminate\Foundation\Http\FormRequest>  $requestClass
+     * @param  array<mixed>  $data
+     */
+    protected function makeValidator(string $requestClass, array $data): \Illuminate\Validation\Validator
+    {
+        return Validator::make($data, (new $requestClass)->rules());
     }
 
     protected function createFromFile(UploadedFile $uploadedFile, int $userId): Attachment

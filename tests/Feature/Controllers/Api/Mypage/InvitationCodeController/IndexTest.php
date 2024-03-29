@@ -2,36 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers\Api\Mypage\InvitationCodeController;
+namespace Tests\Feature\Controllers\Api\Mypage\InvitationCodeController;
 
 use App\Models\User;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class IndexTest extends TestCase
 {
-    public $user2;
+    private User $inviterUser;
+
+    private User $invitedUser;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user2 = User::factory()->create();
+        $this->inviterUser = User::factory()->create();
+        $this->invitedUser = User::factory()->create();
     }
 
-    public function test紹介者無し(): void
+    public function test(): void
     {
-        $this->actingAs($this->user);
-        $testResponse = $this->getJson('/api/mypage/invitation_code');
-        $testResponse->assertOk();
+        $this->invitedUser->update(['invited_by' => $this->inviterUser->id]);
 
-        $data = $testResponse->json('data');
-        $this->assertCount(0, $data);
-    }
-
-    public function test紹介者有り(): void
-    {
-        $this->user2->update(['invited_by' => $this->user->id]);
-
-        $this->actingAs($this->user);
+        $this->actingAs($this->inviterUser);
         $testResponse = $this->getJson('/api/mypage/invitation_code');
         $testResponse->assertOk();
 

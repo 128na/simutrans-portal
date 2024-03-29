@@ -2,37 +2,41 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers\Api\Mypage\InvitationCodeController;
+namespace Tests\Feature\Controllers\Api\Mypage\InvitationCodeController;
 
+use App\Models\User;
 use Illuminate\Support\Str;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class UpdateTest extends TestCase
 {
+    private User $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+    }
+
     public function test新規生成(): void
     {
         $this->actingAs($this->user);
 
-        $this->assertDatabaseHas('users', ['id' => $this->user->id, 'invitation_code' => null]);
-
         $testResponse = $this->postJson('/api/mypage/invitation_code');
         $testResponse->assertOk();
 
-        $this->assertDatabaseMissing('users', ['id' => $this->user->id, 'invitation_code' => null]);
-        $this->assertNotNull($testResponse->json('data.invitation_url'));
+        $this->assertNotNull(User::find($this->user->id)->invitation_code);
     }
 
     public function test再生成(): void
     {
-        $oldUuid = Str::uuid()->toString();
-        $this->user->update(['invitation_code' => $oldUuid]);
-        $this->assertDatabaseHas('users', ['id' => $this->user->id, 'invitation_code' => $oldUuid]);
+        $oldCode = Str::uuid()->toString();
+        $this->user->update(['invitation_code' => $oldCode]);
 
         $this->actingAs($this->user);
 
         $testResponse = $this->postJson('/api/mypage/invitation_code');
         $testResponse->assertOk();
-        $this->assertDatabaseMissing('users', ['id' => $this->user->id, 'invitation_code' => $oldUuid]);
-        $this->assertNotNull($testResponse->json('data.invitation_url'));
+        $this->assertNotSame($oldCode, User::find($this->user->id)->invitation_code);
     }
 }

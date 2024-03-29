@@ -2,17 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers\Api\Front;
+namespace Tests\Feature\Controllers\Api\Front\DiscordController;
 
 use App\Services\Discord\InviteService;
 use App\Services\Google\Recaptcha\RecaptchaException;
 use App\Services\Google\Recaptcha\RecaptchaService;
 use Error;
 use Mockery\MockInterface;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class IndexTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
     public function test_create(): void
     {
         $this->mock(RecaptchaService::class, function (MockInterface $mock): void {

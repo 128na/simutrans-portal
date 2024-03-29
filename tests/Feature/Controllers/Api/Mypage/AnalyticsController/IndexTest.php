@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers\Api\Mypage;
+namespace Tests\Feature\Controllers\Api\Mypage\AnalyticsController;
 
 use Closure;
-use Tests\ArticleTestCase;
+use Tests\Feature\TestCase;
 
-class AnalyticsControllerTest extends ArticleTestCase
+class IndexTest extends TestCase
 {
     /**
      * @dataProvider dataValidation

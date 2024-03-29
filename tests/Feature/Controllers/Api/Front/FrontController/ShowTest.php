@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers\Api\Front;
+namespace Tests\Feature\Controllers\Api\Front\FrontController;
 
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
-class FrontControllerTest extends TestCase
+class ShowTest extends TestCase
 {
     protected function setUp(): void
     {

@@ -26,20 +26,20 @@ class FindArticlesTest extends TestCase
     }
 
     #[DataProvider('data')]
-    public function test($data, $expected): void
+    public function test(array $data, array $expected): void
     {
         $user = new User();
-        $request = new SearchRequest(['ids' => [1], ...$data]);
-        $this->mock(ArticleRepository::class, function (MockInterface $m) use ($user, $expected) {
-            $m->shouldReceive('findAllForAnalytics')
+        $searchRequest = new SearchRequest(['ids' => [1], ...$data]);
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $expected): void {
+            $mock->shouldReceive('findAllForAnalytics')
                 ->withArgs([$user, [1], ...$expected])
                 ->once()->andReturn(new Collection());
         });
-        $result = $this->getSUT()->findArticles($user, $request);
+        $result = $this->getSUT()->findArticles($user, $searchRequest);
         $this->assertInstanceOf(Collection::class, $result);
     }
 
-    public static function data()
+    public static function data(): \Generator
     {
         yield 'daily' => [
             [

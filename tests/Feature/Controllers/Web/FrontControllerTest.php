@@ -157,7 +157,7 @@ class FrontControllerTest extends TestCase
 
     public function testShow_id(): void
     {
-        $article = Article::factory()->create(['status' => 'publish']);
+        $article = Article::factory()->publish()->create();
         $testResponse = $this->get(route('articles.show', [
             'userIdOrNickname' => $article->user_id, 'articleSlug' => $article->slug,
         ]));
@@ -167,10 +167,9 @@ class FrontControllerTest extends TestCase
 
     public function testShow_nickname(): void
     {
-        $user = User::factory()->create(['nickname' => 'dummy']);
-        $article = Article::factory()->create(['status' => 'publish', 'user_id' => $user->id]);
+        $article = Article::factory()->create(['status' => 'publish']);
         $testResponse = $this->get(route('articles.show', [
-            'userIdOrNickname' => $user->nickname, 'articleSlug' => $article->slug,
+            'userIdOrNickname' => $article->user->nickname, 'articleSlug' => $article->slug,
         ]));
 
         $testResponse->assertOk();
@@ -191,17 +190,34 @@ class FrontControllerTest extends TestCase
         $testResponse->assertOk();
     }
 
-    public function testFallbackShow_slug(): void
+    public function testFallbackShow_slug_ニックネーム設定済み(): void
     {
-        $article = Article::factory()->create(['status' => 'publish']);
+        $article = Article::factory()->publish()->create();
 
+        $testResponse = $this->get('/articles/'.$article->slug);
+        $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user->nickname, $article->slug));
+    }
+
+    public function testFallbackShow_id_ニックネーム設定済み(): void
+    {
+        $article = Article::factory()->publish()->create();
+
+        $testResponse = $this->get('/articles/'.$article->id);
+        $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user->nickname, $article->slug));
+    }
+
+    public function testFallbackShow_slug_ニックネーム未設定(): void
+    {
+        $article = Article::factory()->publish()->create();
+        $article->user->update(['nickname' => null]);
         $testResponse = $this->get('/articles/'.$article->slug);
         $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user_id, $article->slug));
     }
 
-    public function testFallbackShow_id(): void
+    public function testFallbackShow_id_ニックネーム未設定(): void
     {
-        $article = Article::factory()->create(['status' => 'publish']);
+        $article = Article::factory()->publish()->create();
+        $article->user->update(['nickname' => null]);
 
         $testResponse = $this->get('/articles/'.$article->id);
         $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user_id, $article->slug));

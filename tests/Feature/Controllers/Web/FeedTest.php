@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Web;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Feature\TestCase;
 
 class FeedTest extends TestCase
@@ -15,9 +16,7 @@ class FeedTest extends TestCase
         $this->seed('ProdSeeder');
     }
 
-    /**
-     * @dataProvider dataFeed
-     */
+    #[DataProvider('dataFeed')]
     public function testFeed(string $url): void
     {
         $testResponse = $this->get($url);

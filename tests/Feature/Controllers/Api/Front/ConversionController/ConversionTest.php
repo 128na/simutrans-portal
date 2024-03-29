@@ -2,57 +2,41 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers\Api\Front;
+namespace Tests\Feature\Controllers\Api\Front\ConversionController;
 
-use Tests\ArticleTestCase;
+use App\Models\Article;
+use Tests\Feature\TestCase;
 
-class ConversionControllerTest extends ArticleTestCase
+class ConversionTest extends TestCase
 {
-    public function testConversion(): void
+    private Article $article;
+
+    protected function setUp(): void
     {
-        $article = $this->article;
+        parent::setUp();
 
-        $dayly = now()->format('Ymd');
-        $monthly = now()->format('Ym');
-        $yearly = now()->format('Y');
-        $total = 'total';
-
-        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly]);
-        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly]);
-        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly]);
-        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total]);
-
-        $url = '/api/conversion/'.$article->id;
-        $response = $this->post($url);
-        $response->assertOk();
-
-        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
-        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);
-        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);
-        $this->assertDatabaseHas('conversion_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 1]);
+        $this->article = Article::factory()->publish()->create();
     }
 
-    public function testShown(): void
+    public function test(): void
     {
-        $article = $this->article;
-
         $dayly = now()->format('Ymd');
         $monthly = now()->format('Ym');
         $yearly = now()->format('Y');
         $total = 'total';
 
-        $this->assertDatabaseMissing('view_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly]);
-        $this->assertDatabaseMissing('view_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly]);
-        $this->assertDatabaseMissing('view_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly]);
-        $this->assertDatabaseMissing('view_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total]);
+        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article->id, 'type' => '1', 'period' => $dayly]);
+        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article->id, 'type' => '2', 'period' => $monthly]);
+        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article->id, 'type' => '3', 'period' => $yearly]);
+        $this->assertDatabaseMissing('conversion_counts', ['article_id' => $this->article->id, 'type' => '4', 'period' => $total]);
 
-        $url = '/api/shown/'.$article->id;
+        $url = '/api/conversion/'.$this->article->id;
         $response = $this->post($url);
         $response->assertOk();
 
-        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
-        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);
-        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);
-        $this->assertDatabaseHas('view_counts', ['article_id' => $article->id, 'type' => '4', 'period' => $total, 'count' => 1]);
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article->id, 'type' => '3', 'period' => $yearly, 'count' => 1]);
+        $this->assertDatabaseHas('conversion_counts', ['article_id' => $this->article->id, 'type' => '4', 'period' => $total, 'count' => 1]);
     }
 }

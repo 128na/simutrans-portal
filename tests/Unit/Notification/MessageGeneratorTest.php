@@ -8,10 +8,11 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
 use App\Services\Notification\MessageGenerator;
+use Carbon\Carbon;
 use Mockery\MockInterface;
-use Tests\UnitTestCase;
+use Tests\Unit\TestCase;
 
-class MessageGeneratorTest extends UnitTestCase
+class MessageGeneratorTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -20,38 +21,12 @@ class MessageGeneratorTest extends UnitTestCase
 
     private function getSUT(): MessageGenerator
     {
-        return app(MessageGenerator::class);
+        return new MessageGenerator(Carbon::create(2000, 1, 2, 3, 4, 5));
     }
 
-    public function testBuildPublishedMessage(): void
-    {
-        /** @var Article */
-        $mock = $this->mock(Article::class, function (MockInterface $mock): void {
-            $mock->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
-            $mock->allows('getAttribute')->withArgs(['slug'])->andReturn('dummy_slug');
-            $mock->allows('offsetExists')->withArgs(['user'])->andReturn(true);
-            $mock->allows('getAttribute')->withArgs(['user_id'])->andReturn(1);
-            $mock->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $mock): void {
-                $mock->allows('offsetExists')->withArgs(['nickname'])->andReturn(false);
-                $mock->allows('getAttribute')->withArgs(['name'])->andReturn('dummy_name');
-                $mock->allows('getRouteKey')->andReturn(1);
-            }));
-            $mock->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
-            $mock->allows('getAttribute')->withArgs(['categoryPaks'])->andReturn(collect([
-                $this->mock(Category::class, function (MockInterface $mock): void {
-                    $mock->allows('offsetExists')->withArgs(['slug'])->andReturn(true);
-                    $mock->allows('offsetGet')->withArgs(['slug'])->andReturn('64');
-                }),
-            ]));
-        });
-        $now = now()->format('Y/m/d H:i');
-        $actual = $this->getSUT()->buildPublishedMessage($mock);
-        $url = config('app.url');
-        $expected = "新規投稿「dummy_title」\n{$url}/users/1/dummy_slug\nby dummy_name\nat {$now}\n#Simutrans #Pak64";
-
-        $this->assertEquals($expected, $actual);
-    }
-
+    /**
+     * @return Article&MockInterface
+     */
     private function getMockArticle()
     {
         return $this->mock(Article::class, function (MockInterface $mock): void {
@@ -74,12 +49,20 @@ class MessageGeneratorTest extends UnitTestCase
         });
     }
 
+    public function testBuildPublishedMessage(): void
+    {
+        $now = '2000/01/02 03:04';
+        $actual = $this->getSUT()->buildPublishedMessage($this->getMockArticle());
+        $url = config('app.url');
+        $expected = "新規投稿「dummy_title」\n{$url}/users/1/dummy_slug\nby dummy_name\nat {$now}\n#Simutrans #Pak64";
+
+        $this->assertEquals($expected, $actual);
+    }
+
     public function testBuildUpdatedMessage(): void
     {
-        /** @var Article */
-        $article = $this->getMockArticle();
-        $now = now()->format('Y/m/d H:i');
-        $actual = $this->getSUT()->buildUpdatedMessage($article);
+        $now = '2000/01/02 03:04';
+        $actual = $this->getSUT()->buildUpdatedMessage($this->getMockArticle());
         $url = config('app.url');
         $expected = "「dummy_title」更新\n{$url}/users/1/dummy_slug\nby dummy_name\nat {$now}\n#Simutrans #Pak64";
 
@@ -88,9 +71,7 @@ class MessageGeneratorTest extends UnitTestCase
 
     public function testBuildSimplePublishedMessage(): void
     {
-        /** @var Article */
-        $article = $this->getMockArticle();
-        $actual = $this->getSUT()->buildSimplePublishedMessage($article);
+        $actual = $this->getSUT()->buildSimplePublishedMessage($this->getMockArticle());
         $expected = "新規投稿「dummy_title」\nby dummy_name";
 
         $this->assertEquals($expected, $actual);
@@ -98,9 +79,7 @@ class MessageGeneratorTest extends UnitTestCase
 
     public function testBuildSimpleUpdatedMessage(): void
     {
-        /** @var Article */
-        $article = $this->getMockArticle();
-        $actual = $this->getSUT()->buildSimpleUpdatedMessage($article);
+        $actual = $this->getSUT()->buildSimpleUpdatedMessage($this->getMockArticle());
         $expected = "「dummy_title」更新\nby dummy_name";
 
         $this->assertEquals($expected, $actual);

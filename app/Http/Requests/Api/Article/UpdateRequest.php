@@ -18,7 +18,7 @@ class UpdateRequest extends BaseRequest
      */
     protected function baseRule(): array
     {
-        $articleId = request()->input('article.id');
+        $articleId = $this->input('article.id');
 
         return [
             'article.status' => ['required', Rule::enum(ArticleStatus::class)],

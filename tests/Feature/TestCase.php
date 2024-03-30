@@ -46,9 +46,9 @@ abstract class TestCase extends BaseTestCase
      */
     protected function makeValidator(string $requestClass, array $data): \Illuminate\Validation\Validator
     {
-        $request = new $requestClass($data);
+        $rules = (new $requestClass($data))->rules();
 
-        return Validator::make($data, $request->rules());
+        return Validator::make($data, $rules);
     }
 
     protected function createFromFile(UploadedFile $uploadedFile, int $userId): Attachment
@@ -63,6 +63,13 @@ abstract class TestCase extends BaseTestCase
     protected function createAttachment(User $user): Attachment
     {
         $file = UploadedFile::fake()->create('file.zip', 1, 'application/zip');
+
+        return $this->createFromFile($file, $user->id);
+    }
+
+    protected function createImageAttachment(User $user): Attachment
+    {
+        $file = UploadedFile::fake()->image('test.jpg', 1);
 
         return $this->createFromFile($file, $user->id);
     }

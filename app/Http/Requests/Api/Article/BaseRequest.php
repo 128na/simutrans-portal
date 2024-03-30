@@ -16,15 +16,15 @@ abstract class BaseRequest extends FormRequest
      */
     public function rules()
     {
-        $postType = ArticlePostType::tryFrom(request()->input('article.post_type') ?? '');
+        $postType = ArticlePostType::tryFrom($this->input('article.post_type') ?? '');
 
-        return match ($postType) {
-            ArticlePostType::AddonPost => array_merge($this->baseRule(), $this->addonPost()),
-            ArticlePostType::AddonIntroduction => array_merge($this->baseRule(), $this->addonIntroductiuon()),
-            ArticlePostType::Page => array_merge($this->baseRule(), $this->page()),
-            ArticlePostType::Markdown => array_merge($this->baseRule(), $this->markdown()),
-            default => $this->baseRule(),
-        };
+        return array_merge($this->baseRule(), match ($postType) {
+            ArticlePostType::AddonPost => $this->addonPost(),
+            ArticlePostType::AddonIntroduction => $this->addonIntroductiuon(),
+            ArticlePostType::Page => $this->page(),
+            ArticlePostType::Markdown => $this->markdown(),
+            default => [],
+        });
     }
 
     /**
@@ -86,10 +86,10 @@ abstract class BaseRequest extends FormRequest
             'article.contents.thumbnail' => ['nullable', 'exists:attachments,id,user_id,'.Auth::id(), app(ImageAttachment::class)],
             'article.contents.sections' => 'required|array|min:1',
             'article.contents.sections.*.type' => 'required|in:caption,text,url,image',
-            'article.contents.sections.*.caption' => 'required_if:sections.*.type,caption|string|max:255',
-            'article.contents.sections.*.text' => 'required_if:sections.*.type,text|string|max:2048',
-            'article.contents.sections.*.url' => 'required_if:sections.*.type,url|url|max:255',
-            'article.contents.sections.*.id' => ['required_if:sections.*.type,image', 'exists:attachments,id,user_id,'.Auth::id(), app(ImageAttachment::class)],
+            'article.contents.sections.*.caption' => 'required_if:article.contents.sections.*.type,caption|string|max:255',
+            'article.contents.sections.*.text' => 'required_if:article.contents.sections.*.type,text|string|max:2048',
+            'article.contents.sections.*.url' => 'required_if:article.contents.sections.*.type,url|url|max:255',
+            'article.contents.sections.*.id' => ['required_if:article.contents.sections.*.type,image', 'exists:attachments,id,user_id,'.Auth::id(), app(ImageAttachment::class)],
         ];
     }
 

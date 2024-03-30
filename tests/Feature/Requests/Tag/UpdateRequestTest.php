@@ -5,19 +5,15 @@ declare(strict_types=1);
 namespace Tests\Feature\Requests\Tag;
 
 use App\Http\Requests\Api\Tag\UpdateRequest;
-use App\Models\Tag;
 use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Feature\TestCase;
 
 class UpdateRequestTest extends TestCase
 {
-    private Tag $tag;
-
     protected function setUp(): void
     {
         parent::setUp();
-        $this->tag = Tag::factory()->create();
 
     }
 

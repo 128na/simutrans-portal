@@ -6,9 +6,10 @@ namespace Tests\OldFeature\Jobs\Article;
 
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
+use App\Events\Article\CloseByDeadLinkDetected;
 use App\Jobs\Article\JobCheckDeadLink;
 use App\Models\Article;
-use App\Notifications\SendDeadLinkDetectedEmail;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
@@ -24,7 +25,7 @@ class JobCheckDeadlinkTest extends TestCase
             'post_type' => ArticlePostType::AddonIntroduction,
             'status' => ArticleStatus::Publish,
             'contents' => [
-                'link' => config('app.url').'/not_found_url',
+                'link' => '/not_found_url',
                 'exclude_link_check' => false,
             ],
         ]);
@@ -32,17 +33,17 @@ class JobCheckDeadlinkTest extends TestCase
 
     public function test実行(): void
     {
-        Notification::fake();
-        Notification::assertNothingSent();
+        Event::fake();
+        Event::assertNothingDispatched();
 
         JobCheckDeadLink::dispatchSync();
-        Notification::assertNothingSent();
+        Event::assertNotDispatched(CloseByDeadLinkDetected::class);
 
         JobCheckDeadLink::dispatchSync();
-        Notification::assertNothingSent();
+        Event::assertNotDispatched(CloseByDeadLinkDetected::class);
 
         JobCheckDeadLink::dispatchSync();
-        Notification::assertSentTo($this->article, SendDeadLinkDetectedEmail::class);
+        Event::assertDispatched(CloseByDeadLinkDetected::class);
     }
 
     public function testオプション無効だとチェックしない(): void

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Controllers\Api\Mypage;
+namespace Tests\Feature\Controllers\Api\Mypage\AttachmentController;
 
 use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
@@ -10,10 +10,19 @@ use App\Models\User;
 use Closure;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
-use Tests\ArticleTestCase;
+use Tests\Feature\TestCase;
 
-class AttachmentControllerTest extends ArticleTestCase
+class IndexTest extends TestCase
 {
+    private User $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+    }
+
     public function testIndex(): void
     {
         $url = '/api/mypage/attachments';

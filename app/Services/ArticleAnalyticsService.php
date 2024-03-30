@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\ArticleAnalyticsType;
 use App\Http\Requests\Api\ArticleAnalytics\SearchRequest;
 use App\Models\Article;
 use App\Models\User;
@@ -46,12 +47,12 @@ class ArticleAnalyticsService extends Service
         };
     }
 
-    private function getTypeId(string $type): int
+    private function getTypeId(string $type): ArticleAnalyticsType
     {
         return match ($type) {
-            'daily' => 1,
-            'monthly' => 2,
-            'yearly' => 3,
+            'daily' => ArticleAnalyticsType::Daily,
+            'monthly' => ArticleAnalyticsType::Monthly,
+            'yearly' => ArticleAnalyticsType::Yearly,
             default => throw new UnexpectedValueException(sprintf('unknown type provided: %s', $type)),
         };
     }

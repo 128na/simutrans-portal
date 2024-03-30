@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Enums\ArticleAnalyticsType;
 use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\Attachment;
@@ -100,11 +101,11 @@ class ArticleRepository extends BaseRepository
      * @param  array<string>  $period
      * @return Collection<int, Article>
      */
-    public function findAllForAnalytics(User $user, array $ids, int $typeId, array $period): Collection
+    public function findAllForAnalytics(User $user, array $ids, ArticleAnalyticsType $type, array $period): Collection
     {
-        $periodQuery = function ($query) use ($typeId, $period): void {
+        $periodQuery = function ($query) use ($type, $period): void {
             $query->select('article_id', 'count', 'period')
-                ->where('type', $typeId)->whereBetween('period', $period);
+                ->where('type', $type)->whereBetween('period', $period);
         };
 
         /** @var Collection<int, Article> */

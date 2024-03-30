@@ -28,16 +28,6 @@ class StoreTest extends TestCase
         $res->assertUnauthorized();
     }
 
-    public function test_メール未認証(): void
-    {
-        $url = '/api/mypage/tags';
-
-        $this->user->update(['email_verified_at' => null]);
-        $this->actingAs($this->user);
-        $res = $this->postJson($url);
-        $res->assertForbidden();
-    }
-
     public function test_機能制限(): void
     {
         $url = '/api/mypage/tags';

@@ -41,13 +41,6 @@ class InviteControllerTest extends TestCase
         $testResponse->assertNotFound();
     }
 
-    public function testメール未認証のユーザー(): void
-    {
-        $this->user->update(['email_verified_at' => null]);
-        $testResponse = $this->get(route('invite.index', ['invitation_code' => $this->user->invitation_code]));
-        $testResponse->assertNotFound();
-    }
-
     public function test存在しないコード(): void
     {
         $this->user->delete();

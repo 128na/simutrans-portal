@@ -101,11 +101,11 @@ class ArticleRepository extends BaseRepository
      * @param  array<string>  $period
      * @return Collection<int, Article>
      */
-    public function findAllForAnalytics(User $user, array $ids, ArticleAnalyticsType $type, array $period): Collection
+    public function findAllForAnalytics(User $user, array $ids, ArticleAnalyticsType $articleAnalyticsType, array $period): Collection
     {
-        $periodQuery = function ($query) use ($type, $period): void {
+        $periodQuery = function ($query) use ($articleAnalyticsType, $period): void {
             $query->select('article_id', 'count', 'period')
-                ->where('type', $type)->whereBetween('period', $period);
+                ->where('type', $articleAnalyticsType)->whereBetween('period', $period);
         };
 
         /** @var Collection<int, Article> */

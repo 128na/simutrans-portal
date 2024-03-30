@@ -17,7 +17,7 @@ class UpdateRequestTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create(['email' => 'other@example.com']);
+        $this->user = User::factory()->create();
 
     }
 
@@ -43,7 +43,7 @@ class UpdateRequestTest extends TestCase
         ];
         yield 'user.nameが存在する' => [
             fn (self $self): array => ['user' => [
-                'name' => 'other name',
+                'name' => $self->user->name,
             ]], 'user.name',
         ];
 
@@ -59,7 +59,7 @@ class UpdateRequestTest extends TestCase
         ];
         yield 'user.emailが存在する' => [
             fn (self $self): array => ['user' => [
-                'email' => 'other@example.com',
+                'email' => $self->user->email,
             ]], 'user.email',
         ];
 

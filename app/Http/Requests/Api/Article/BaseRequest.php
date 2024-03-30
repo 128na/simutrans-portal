@@ -14,7 +14,7 @@ abstract class BaseRequest extends FormRequest
     /**
      * @return array<mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         $postType = ArticlePostType::tryFrom($this->input('article.post_type') ?? '');
 

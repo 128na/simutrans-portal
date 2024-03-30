@@ -14,7 +14,6 @@ class BotBlock
     private const BAD_ROBOTS = [
         'claudebot',
         'petalbot',
-        'chrome',
     ];
 
     /**

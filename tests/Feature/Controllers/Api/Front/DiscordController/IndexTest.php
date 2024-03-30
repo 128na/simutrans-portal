@@ -21,10 +21,10 @@ class IndexTest extends TestCase
     public function test_create(): void
     {
         $this->mock(RecaptchaService::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('assessment')->once()->andReturnNull();
+            $mock->expects()->assessment('')->once()->andReturnNull();
         });
         $this->mock(InviteService::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('create')->once()->andReturn('dummy');
+            $mock->expects()->create()->once()->andReturn('dummy');
         });
 
         $url = '/api/front/invite-simutrans-interact-meeting';
@@ -37,10 +37,10 @@ class IndexTest extends TestCase
     public function test_create_discordエラー時は400レスポンス(): void
     {
         $this->mock(RecaptchaService::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('assessment')->once()->andReturnNull();
+            $mock->expects()->assessment('')->once()->andReturnNull();
         });
         $this->mock(InviteService::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('create')->once()->andThrow(new Error('dummy'));
+            $mock->expects()->create()->once()->andThrow(new Error('dummy'));
         });
         $url = '/api/front/invite-simutrans-interact-meeting';
         $res = $this->postJson($url);
@@ -52,10 +52,10 @@ class IndexTest extends TestCase
     public function test_create_recaptchaエラー時は400レスポンス(): void
     {
         $this->mock(RecaptchaService::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('assessment')->once()->andThrow(new RecaptchaException('dummy'));
+            $mock->expects()->assessment('')->once()->andThrow(new RecaptchaException('dummy'));
         });
         $this->mock(InviteService::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('create')->never();
+            $mock->expects()->create()->never();
         });
         $url = '/api/front/invite-simutrans-interact-meeting';
         $res = $this->postJson($url);

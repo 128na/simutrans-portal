@@ -21,7 +21,7 @@ class NgWordRuleTest extends TestCase
         parent::setUp();
         $this->failCalled = false;
 
-        $mock = $this->mock(PotentiallyTranslatedString::class, fn (MockInterface $mock) => $mock->allows('translate'));
+        $mock = $this->mock(PotentiallyTranslatedString::class, fn (MockInterface $mock) => $mock->allows()->translate());
         $this->failClosure = function () use ($mock) {
             $this->failCalled = true;
 

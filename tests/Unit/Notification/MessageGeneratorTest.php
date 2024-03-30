@@ -30,20 +30,20 @@ class MessageGeneratorTest extends TestCase
     private function getMockArticle()
     {
         return $this->mock(Article::class, function (MockInterface $mock): void {
-            $mock->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
-            $mock->allows('getAttribute')->withArgs(['slug'])->andReturn('dummy_slug');
-            $mock->allows('getAttribute')->withArgs(['user_id'])->andReturn(1);
-            $mock->allows('offsetExists')->withArgs(['user'])->andReturn(true);
-            $mock->allows('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $mock): void {
-                $mock->allows('offsetExists')->withArgs(['nickname'])->andReturn(false);
-                $mock->allows('getAttribute')->withArgs(['name'])->andReturn('dummy_name');
-                $mock->allows('getRouteKey')->andReturn(1);
+            $mock->allows()->getAttribute('title')->andReturn('dummy_title');
+            $mock->allows()->getAttribute('slug')->andReturn('dummy_slug');
+            $mock->allows()->getAttribute('user_id')->andReturn(1);
+            $mock->allows()->offsetExists('user')->andReturn(true);
+            $mock->allows()->getAttribute('user')->andReturn($this->mock(User::class, function (MockInterface $mock): void {
+                $mock->allows()->offsetExists('nickname')->andReturn(false);
+                $mock->allows()->getAttribute('name')->andReturn('dummy_name');
+                $mock->allows()->getRouteKey();
             }));
-            $mock->allows('getAttribute')->withArgs(['title'])->andReturn('dummy_title');
-            $mock->allows('getAttribute')->withArgs(['categoryPaks'])->andReturn(collect([
+            $mock->allows()->getAttribute('title')->andReturn('dummy_title');
+            $mock->allows()->getAttribute('categoryPaks')->andReturn(collect([
                 $this->mock(Category::class, function (MockInterface $mock): void {
-                    $mock->allows('offsetExists')->withArgs(['slug'])->andReturn(true);
-                    $mock->allows('offsetGet')->withArgs(['slug'])->andReturn('64');
+                    $mock->allows()->offsetExists('slug')->andReturn(true);
+                    $mock->allows()->offsetGet('slug')->andReturn('64');
                 }),
             ]));
         });

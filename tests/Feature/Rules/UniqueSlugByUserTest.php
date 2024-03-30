@@ -25,7 +25,7 @@ class UniqueSlugByUserTest extends TestCase
         $this->user = User::factory()->create();
         $this->failCalled = false;
 
-        $mock = $this->mock(PotentiallyTranslatedString::class, fn (MockInterface $mock) => $mock->allows('translate'));
+        $mock = $this->mock(PotentiallyTranslatedString::class, fn (MockInterface $mock) => $mock->allows()->translate());
         $this->failClosure = function () use ($mock) {
             $this->failCalled = true;
 

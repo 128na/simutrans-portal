@@ -32,9 +32,7 @@ class FindArticlesTest extends TestCase
         $user = new User();
         $searchRequest = new SearchRequest(['ids' => [1], ...$data]);
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $expected): void {
-            $mock->shouldReceive('findAllForAnalytics')
-                ->withArgs([$user, [1], ...$expected])
-                ->once()->andReturn(new Collection());
+            $mock->expects()->findAllForAnalytics($user, [1], ...$expected)->once()->andReturn(new Collection());
         });
         $result = $this->getSUT()->findArticles($user, $searchRequest);
         $this->assertInstanceOf(Collection::class, $result);

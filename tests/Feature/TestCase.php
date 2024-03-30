@@ -46,7 +46,9 @@ abstract class TestCase extends BaseTestCase
      */
     protected function makeValidator(string $requestClass, array $data): \Illuminate\Validation\Validator
     {
-        return Validator::make($data, (new $requestClass)->rules());
+        $request = new $requestClass($data);
+
+        return Validator::make($data, $request->rules());
     }
 
     protected function createFromFile(UploadedFile $uploadedFile, int $userId): Attachment

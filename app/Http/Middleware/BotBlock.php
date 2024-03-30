@@ -14,6 +14,7 @@ class BotBlock
     private const BAD_ROBOTS = [
         'claudebot',
         'petalbot',
+        'chrome',
     ];
 
     /**
@@ -23,7 +24,11 @@ class BotBlock
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $ua = mb_strtolower($request->server('HTTP_USER_AGENT', ''));
+        $ua = $request->server('HTTP_USER_AGENT');
+        if (! is_string($ua)) {
+            return response('', 200)->header('Cache-Control', 'public, max-age=2147483648');
+        }
+        $ua = mb_strtolower($ua);
         foreach (self::BAD_ROBOTS as $bot) {
             if (str_contains($ua, $bot)) {
                 return response('', 200)->header('Cache-Control', 'public, max-age=2147483648');

@@ -151,17 +151,18 @@ class ArticleEditorService extends Service
 
     public function updateArticle(Article $article, UpdateRequest $updateRequest): Article
     {
+        $status = ArticleStatus::from((string) $updateRequest->string('article.status', ''));
         $data = [
             'title' => $updateRequest->input('article.title'),
             'slug' => $updateRequest->input('article.slug'),
-            'status' => $updateRequest->input('article.status'),
+            'status' => $status,
             'contents' => $updateRequest->input('article.contents'),
         ];
         if ($article->is_reservation) {
             $data['published_at'] = $this->getPublishedAt($updateRequest);
         }
 
-        if ($this->inactiveToPublish($article, $updateRequest)) {
+        if ($this->inactiveToPublish($article, $status)) {
             $data['published_at'] = $this->getPublishedAt($updateRequest);
         }
 
@@ -178,12 +179,9 @@ class ArticleEditorService extends Service
         return $article;
     }
 
-    private function inactiveToPublish(Article $article, UpdateRequest $updateRequest): bool
+    private function inactiveToPublish(Article $article, ArticleStatus $status): bool
     {
-        return $article->is_inactive
-            && (ArticleStatus::from((string) $updateRequest->string('article.status', '')) === ArticleStatus::Publish
-            || ArticleStatus::from((string) $updateRequest->string('article.status', '')) === ArticleStatus::Reservation
-            );
+        return $article->is_inactive && ($status === ArticleStatus::Publish || $status === ArticleStatus::Reservation);
     }
 
     private function shouldUpdateModifiedAt(UpdateRequest $updateRequest): bool

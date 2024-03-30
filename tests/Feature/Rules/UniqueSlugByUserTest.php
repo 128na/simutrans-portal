@@ -1,17 +1,20 @@
 <?php
 
-namespace Tests\OldUnit\Rules;
+namespace Tests\Feature\Rules;
 
-use App\Rules\NotJustNumbers;
+use App\Models\User;
+use App\Rules\UniqueSlugByUser;
 use Closure;
 use Illuminate\Translation\PotentiallyTranslatedString;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
-class NotJustNumbersTest extends TestCase
+class UniqueSlugByUserTest extends TestCase
 {
+    private User $user;
+
     private Closure $failClosure;
 
     private bool $failCalled = false;
@@ -19,6 +22,7 @@ class NotJustNumbersTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->user = User::factory()->create();
         $this->failCalled = false;
 
         $mock = $this->mock(PotentiallyTranslatedString::class, fn (MockInterface $mock) => $mock->allows('translate'));
@@ -29,15 +33,17 @@ class NotJustNumbersTest extends TestCase
         };
     }
 
-    private function getSUT(): NotJustNumbers
+    private function getSUT(): UniqueSlugByUser
     {
-        return new NotJustNumbers;
+        return new UniqueSlugByUser();
     }
 
     #[Test]
     #[DataProvider('data')]
-    public function test(string $value, bool $expected): void
+    public function test(Closure $setup, bool $expected): void
     {
+        $value = $setup($this);
+        $this->actingAs($this->user);
         $this->getSUT()
             ->validate('dummy', $value, $this->failClosure);
         $this->assertEquals($expected, $this->failCalled);
@@ -45,8 +51,7 @@ class NotJustNumbersTest extends TestCase
 
     public static function data(): \Generator
     {
-        yield '数字のみ' => ['1', true];
-        yield '数字と英字' => ['1a', false];
-        yield '16進数' => ['0x11', false];
+        yield 'ok' => [fn (self $self) => $self->createImageAttachment(User::factory()->create())->id, false];
+        yield 'ng' => [fn (self $self) => $self->createAttachment(User::factory()->create())->id, true];
     }
 }

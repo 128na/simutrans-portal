@@ -1,16 +1,16 @@
 <?php
 
-namespace Tests\OldUnit\Rules;
+namespace Tests\Unit\Rules;
 
-use App\Rules\NgWordRule;
+use App\Rules\SluggableString;
 use Closure;
 use Illuminate\Translation\PotentiallyTranslatedString;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
-class NgWordRuleTest extends TestCase
+class SluggableStringTest extends TestCase
 {
     private Closure $failClosure;
 
@@ -29,25 +29,26 @@ class NgWordRuleTest extends TestCase
         };
     }
 
-    private function getSUT(array $ngWords): NgWordRule
+    private function getSUT(): SluggableString
     {
-        return new NgWordRule($ngWords);
+        return new SluggableString;
     }
 
     #[Test]
     #[DataProvider('data')]
-    public function test(array $ngWords, string $value, bool $expected): void
+    public function test(string $value, bool $expected): void
     {
-        $this->getSUT($ngWords)
+        $this->getSUT()
             ->validate('dummy', $value, $this->failClosure);
         $this->assertEquals($expected, $this->failCalled);
     }
 
     public static function data(): \Generator
     {
-        yield 'ok' => [['@'], 'test', false];
-        yield '1個マッチ' => [['@'], 'test@example', true];
-        yield '複数個マッチ' => [['@'], 'test@ex@mple', true];
-        yield '複数種類マッチ' => [['@', '#'], '#test@example', true];
+        yield '数字と英字' => ['test123', false];
+        yield 'アンダースコア' => ['test_123', false];
+        yield 'ハイフン' => ['test-123', false];
+        yield 'それ以外の記号' => ['test@123', true];
+        yield 'マルチバイト' => ['testと123', true];
     }
 }

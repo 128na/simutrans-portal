@@ -2,21 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Repositories\UserRepository;
+namespace Tests\Feature\Repositories\UserRepository;
 
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class FindOrFailWithTrashedTest extends TestCase
 {
     private UserRepository $repository;
 
+    private User $user;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->repository = app(UserRepository::class);
+        $this->user = User::factory()->create();
     }
 
     public function test(): void

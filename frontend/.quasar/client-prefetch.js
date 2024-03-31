@@ -4,13 +4,11 @@
  *
  * You are probably looking on adding startup/initialization code.
  * Use "quasar new boot <name>" and add it there.
- * One boot file per concern. Then reference the file(s) in quasar.conf.js > boot:
+ * One boot file per concern. Then reference the file(s) in quasar.config.js > boot:
  * boot: ['file', ...] // do not add ".js" extension to it.
  *
  * Boot files are your "main.js"
  **/
-
-
 
 
 
@@ -28,11 +26,15 @@ let appPrefetch = typeof App.preFetch === 'function'
 function getMatchedComponents (to, router) {
   const route = to
     ? (to.matched ? to : router.resolve(to).route)
-    : router.currentRoute
+    : router.currentRoute.value
 
   if (!route) { return [] }
 
-  return Array.prototype.concat.apply([], route.matched.map(m => {
+  const matched = route.matched.filter(m => m.components !== void 0)
+
+  if (matched.length === 0) { return [] }
+
+  return Array.prototype.concat.apply([], matched.map(m => {
     return Object.keys(m.components).map(key => {
       const comp = m.components[key]
       return {
@@ -43,7 +45,7 @@ function getMatchedComponents (to, router) {
   }))
 }
 
-export function addPreFetchHooks (router, store, publicPath) {
+export function addPreFetchHooks ({ router, publicPath }) {
   // Add router hook for handling preFetch.
   // Doing it after initial route is resolved so that we don't double-fetch
   // the data that we already have. Using router.beforeResolve() so that all
@@ -95,7 +97,7 @@ export function addPreFetchHooks (router, store, publicPath) {
 
     preFetchList.reduce(
       (promise, preFetch) => promise.then(() => hasRedirected === false && preFetch({
-        store,
+        
         currentRoute: to,
         previousRoute: from,
         redirect,

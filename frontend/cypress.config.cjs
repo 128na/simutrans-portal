@@ -1,3 +1,4 @@
+
 const { injectQuasarDevServerConfig } = require('@quasar/quasar-app-extension-testing-e2e-cypress/cct-dev-server');
 const { defineConfig } = require('cypress');
 

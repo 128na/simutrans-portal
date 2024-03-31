@@ -11,7 +11,6 @@ export default defineComponent({
   setup() {
     const pinia = createPinia();
     setActivePinia(pinia);
-    console.log('[App] call setActivePinia');
 
     const auth = useAuthStore();
     auth.checkLoggedIn();

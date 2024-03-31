@@ -15,10 +15,11 @@
 
 import './commands';
 
-// Change this if you have a different entrypoint for the main scss.
-import 'src/css/app.scss';
+
 // Quasar styles
-import 'quasar/src/css/index.sass';
+import 'quasar/src/css/index.sass'; // Or 'quasar/dist/quasar.prod.css' if no CSS preprocessor is installed
+// Change this if you have a different entrypoint for the main scss.
+import 'src/css/app.scss'; // Or 'src/css/app.css' if no CSS preprocessor is installed
 
 // ICON SETS
 // If you use multiple or different icon-sets then the default, be sure to import them here.
@@ -31,7 +32,6 @@ import { Dialog } from 'quasar';
 // Since Cypress v10 we cannot import `config` directly from VTU as Cypress bundles its own version of it
 // See https://github.com/cypress-io/cypress/issues/22611
 import { VueTestUtils } from 'cypress/vue';
-
 const { config } = VueTestUtils;
 
 // Example to import i18n from boot and use as plugin

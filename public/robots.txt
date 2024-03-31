@@ -1,5 +1,3 @@
 User-agent: *
-Disallow: /*/download$
-
-User-agent: *
-Allow: /
+Disallow:
+Sitemap: https://simutrans-portal.128-bit.net/sitemap

@@ -105,14 +105,15 @@ export default defineComponent({
         await handler.handle({
           doRequest: () => api.fetchTop(order.currentMode),
           done: (res) => {
-            console.log({ res });
             pr.value = res.data.pr;
-            Object.keys(res.data.paks).forEach((key) => {
+            // 旧データ形式互換。後日削除OK
+            const paks = res.data.paks || res.data;
+            Object.keys(paks).forEach((key) => {
               if (contents[key] === undefined || contents[key].articles === undefined) {
                 throw new Error(`missing key:${key}`);
               }
-              contents[key].articles = res.data.paks[key];
-              articleCache.addCaches(res.data.paks[key]);
+              contents[key].articles = paks[key];
+              articleCache.addCaches(paks[key]);
             });
           },
           failedMessage: '記事取得に失敗しました',

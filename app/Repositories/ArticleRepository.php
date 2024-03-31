@@ -71,7 +71,7 @@ class ArticleRepository extends BaseRepository
     public function syncArticles(Article $article, array $articleIds): void
     {
         $result = $article->articles()->sync(Article::find($articleIds));
-        logger('syncArticles', $result);
+        logger('[ArticleRepository] syncArticles', $result);
     }
 
     /**

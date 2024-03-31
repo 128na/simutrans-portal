@@ -89,7 +89,7 @@ class FrontController extends Controller
         abort_unless($article->is_addon_post, 404);
         abort_unless($article->has_file && $article->file, 404);
 
-        logger('downloadFromExternal', [
+        logger('[FrontController] downloadFromExternal', [
             'articleId' => $article->id,
             'remoteAddr' => $request->server('REMOTE_ADDR', 'N/A'),
             'referer' => $request->server('HTTP_REFERER', 'N/A'),

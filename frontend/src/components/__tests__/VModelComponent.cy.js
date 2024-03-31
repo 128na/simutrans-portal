@@ -40,8 +40,7 @@ describe('VModelComponent', () => {
     cy.mount(VModelComponent, {
       props: {
         modelValue: text,
-        'onUpdate:modelValue': (emittedValue) =>
-          Cypress.vueWrapper.setProps({ modelValue: emittedValue }),
+        'onUpdate:modelValue': (emittedValue) => Cypress.vueWrapper.setProps({ modelValue: emittedValue }),
       },
     });
 

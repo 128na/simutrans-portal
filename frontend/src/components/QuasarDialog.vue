@@ -37,8 +37,9 @@ export default defineComponent({
 
   setup() {
     // REQUIRED; must be called inside of setup()
-    const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
-      useDialogPluginComponent();
+    const {
+      dialogRef, onDialogHide, onDialogOK, onDialogCancel,
+    } = useDialogPluginComponent();
     // dialogRef      - Vue ref to be applied to QDialog
     // onDialogHide   - Function to be used as handler for @hide on QDialog
     // onDialogOK     - Function to call to settle dialog with "ok" outcome

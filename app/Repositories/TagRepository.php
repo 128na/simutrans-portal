@@ -56,8 +56,7 @@ class TagRepository extends BaseRepository
         $tagIds = $this->model
             ->doesntHave('articles')
             ->pluck('id');
-        $result = $this->model->whereIn('id', $tagIds)->delete();
 
-        return $result;
+        return $this->model->whereIn('id', $tagIds)->delete();
     }
 }

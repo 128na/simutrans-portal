@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Tests\Browser;
 
 use Database\Seeders\DuskSeeder;
 use Facebook\WebDriver\Chrome\ChromeOptions;
@@ -11,8 +11,9 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Http\Middleware\SetCacheHeaders;
 use Laravel\Dusk\TestCase as BaseTestCase;
+use Tests\CreatesApplication;
 
-abstract class DuskTestCase extends BaseTestCase
+abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
     use DatabaseMigrations;

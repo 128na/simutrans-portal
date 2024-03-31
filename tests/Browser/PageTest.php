@@ -21,9 +21,8 @@ use Tests\Browser\Pages\ListUserPage;
 use Tests\Browser\Pages\MypagePage;
 use Tests\Browser\Pages\TagsPage;
 use Tests\Browser\Pages\TopPage;
-use Tests\DuskTestCase;
 
-class PageTest extends DuskTestCase
+class PageTest extends TestCase
 {
     protected function setUp(): void
     {

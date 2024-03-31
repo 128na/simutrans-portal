@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Repositories\BulkZipRepository;
+namespace Tests\Feature\Repositories\BulkZipRepository;
 
 use App\Models\Attachment;
 use App\Models\BulkZip;
 use App\Models\User;
 use App\Repositories\BulkZipRepository;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 use TypeError;
 
 class FindByBulkZippableTest extends TestCase
@@ -23,7 +23,7 @@ class FindByBulkZippableTest extends TestCase
 
     public function test(): void
     {
-        /** @var \App\Contracts\Models\BulkZippableInterface */
+        /** @var User */
         $user = User::factory()->create();
         $bulkZip = BulkZip::factory()->create(['bulk_zippable_id' => $user->id, 'bulk_zippable_type' => User::class]);
         $res = $this->bulkZipRepository->findByBulkZippable($user);
@@ -32,7 +32,7 @@ class FindByBulkZippableTest extends TestCase
 
     public function test無いときはnull(): void
     {
-        /** @var \App\Contracts\Models\BulkZippableInterface */
+        /** @var User */
         $user = User::factory()->create();
         $res = $this->bulkZipRepository->findByBulkZippable($user);
         $this->assertNull($res);

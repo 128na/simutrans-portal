@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs\BulkZip;
 
 use App\Repositories\BulkZipRepository;
+use Carbon\CarbonImmutable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,7 +21,9 @@ class JobDeleteExpiredBulkzip implements ShouldQueue
 
     public function handle(BulkZipRepository $bulkZipRepository): void
     {
-        foreach ($bulkZipRepository->cursorExpired() as $lazyCollection) {
+        $expiredAt = CarbonImmutable::now()->subHours(24);
+
+        foreach ($bulkZipRepository->cursorExpired($expiredAt) as $lazyCollection) {
             $lazyCollection->delete();
         }
     }

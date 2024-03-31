@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Contracts\Models\BulkZippableInterface;
 use App\Models\BulkZip;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\LazyCollection;
 
 /**
@@ -38,12 +39,10 @@ class BulkZipRepository extends BaseRepository
         return $bulkZippable->bulkZippable()->create($data);
     }
 
-    public function cursorExpired(): LazyCollection
+    public function cursorExpired(CarbonImmutable $expiredAt): LazyCollection
     {
-        $expiredAt = now()->modify('-24 hours');
-
         return $this->model
-            ->whereDate('created_at', '<=', $expiredAt)
+            ->where('created_at', '<=', $expiredAt)
             ->cursor();
     }
 }

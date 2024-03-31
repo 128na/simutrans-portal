@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Repositories\BulkZipRepository;
+namespace Tests\Feature\Repositories\BulkZipRepository;
 
 use App\Models\BulkZip;
 use App\Models\User;
 use App\Repositories\BulkZipRepository;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class StoreByBulkZippableTest extends TestCase
 {

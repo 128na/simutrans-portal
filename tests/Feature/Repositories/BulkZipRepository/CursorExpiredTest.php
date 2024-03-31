@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Repositories\BulkZipRepository;
+namespace Tests\Feature\Repositories\BulkZipRepository;
 
 use App\Models\BulkZip;
 use App\Repositories\BulkZipRepository;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\LazyCollection;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class CursorExpiredTest extends TestCase
 {
@@ -21,25 +22,19 @@ class CursorExpiredTest extends TestCase
 
     public function test(): void
     {
-        BulkZip::factory()->create(['created_at' => today()->modify('-1 days')]);
-        $lazyCollection = $this->bulkZipRepository->cursorExpired();
+        $time = CarbonImmutable::create(2020, 1, 2, 3, 4, 5);
+        BulkZip::factory()->create(['created_at' => $time]);
+        $lazyCollection = $this->bulkZipRepository->cursorExpired($time);
         $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
         $this->assertEquals(1, $lazyCollection->count());
     }
 
-    /**
-     * @dataProvider dataNotFound
-     */
-    public function test_含まれない(array $data): void
+    public function test_含まれない(): void
     {
-        BulkZip::factory()->create($data);
+        $time = CarbonImmutable::create(2020, 1, 2, 3, 4, 5);
+        BulkZip::factory()->create(['created_at' => $time]);
 
-        $lazyCollection = $this->bulkZipRepository->cursorExpired();
+        $lazyCollection = $this->bulkZipRepository->cursorExpired($time->subSecond());
         $this->assertEquals(0, $lazyCollection->count());
-    }
-
-    public static function dataNotFound(): \Generator
-    {
-        yield '1日より新しい' => [['created_at' => now('Asia/Tokyo')]];
     }
 }

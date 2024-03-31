@@ -433,4 +433,13 @@ class ArticleRepository extends BaseRepository
             ->where('published_at', '<=', $date)
             ->cursor();
     }
+
+    public function getRandomPr(): ?Article
+    {
+        return $this->model
+            ->active()
+            ->where('pr', 1)
+            ->inRandomOrder()
+            ->first();
+    }
 }

@@ -46,6 +46,7 @@ class Article extends Model implements Feedable
         'post_type',
         'contents',
         'status',
+        'pr',
         'published_at',
         'modified_at',
     ];
@@ -56,6 +57,7 @@ class Article extends Model implements Feedable
         'post_type' => ArticlePostType::class,
         'published_at' => 'immutable_datetime',
         'modified_at' => 'immutable_datetime',
+        'pr' => 'boolean',
     ];
 
     protected static function booted()

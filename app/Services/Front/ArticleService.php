@@ -120,4 +120,9 @@ class ArticleService extends Service
         $this->categoryRepository->findOrFailByTypeAndSlug(CategoryType::Pak, $pakSlug);
         $this->categoryRepository->findOrFailByTypeAndSlug(CategoryType::Addon, $addonSlug);
     }
+
+    public function prArticle(): ?Article
+    {
+        return $this->articleRepository->getRandomPr();
+    }
 }

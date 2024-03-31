@@ -1,5 +1,13 @@
 <template>
   <q-page>
+    <q-list v-if="pr">
+      <q-item :to="{ name: 'show', params: { idOrNickname: pr.user.nickname || pr.user.id, slug: pr.slug } }">
+        <q-item-section>
+          [PR] {{ pr.title }}
+        </q-item-section>
+      </q-item>
+    </q-list>
+    <q-separator />
     <template v-for="(c, i) in contents" :key="i">
       <q-list>
         <q-item :to="c.to">
@@ -26,7 +34,9 @@
 </template>
 
 <script>
-import { defineComponent, watch, reactive } from 'vue';
+import {
+  defineComponent, watch, reactive, ref,
+} from 'vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
 import { useArticleCacheStore } from 'src/store/articleCache';
 import { useFrontApi } from 'src/composables/api';
@@ -51,6 +61,7 @@ export default defineComponent({
     setTitle('top');
 
     const articleCache = useArticleCacheStore();
+    const pr = ref(null);
     const contents = reactive({
       pak128japan: {
         to: { name: 'category', params: { type: 'pak', slug: '128-japan' } },
@@ -94,12 +105,15 @@ export default defineComponent({
         await handler.handle({
           doRequest: () => api.fetchTop(order.currentMode),
           done: (res) => {
-            Object.keys(res.data).forEach((key) => {
+            pr.value = res.data.pr;
+            // 旧データ形式互換。後日削除OK
+            const paks = res.data.paks || res.data;
+            Object.keys(paks).forEach((key) => {
               if (contents[key] === undefined || contents[key].articles === undefined) {
                 throw new Error(`missing key:${key}`);
               }
-              contents[key].articles = res.data[key];
-              articleCache.addCaches(res.data[key]);
+              contents[key].articles = paks[key];
+              articleCache.addCaches(paks[key]);
             });
           },
           failedMessage: '記事取得に失敗しました',
@@ -114,6 +128,7 @@ export default defineComponent({
     return {
       contents,
       handler,
+      pr,
     };
   },
 });

@@ -17,6 +17,7 @@ class ArticleUpdateRequest extends FormRequest
     {
         return [
             'article.status' => ['nullable', Rule::enum(ArticleStatus::class)],
+            'article.pr' => ['nullable', 'boolean'],
         ];
     }
 }

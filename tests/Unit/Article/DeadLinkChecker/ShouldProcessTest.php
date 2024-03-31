@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldUnit\Services\Article\DeadLinkChecker;
+namespace Tests\Unit\Services\Article\DeadLinkChecker;
 
 use App\Models\Article;
 use App\Models\Contents\AddonIntroductionContent;
 use App\Services\Article\DeadLinkChecker;
 use Mockery\MockInterface;
-use Tests\UnitTestCase;
+use Tests\Unit\TestCase;
 
-class ShouldProcessTest extends UnitTestCase
+class ShouldProcessTest extends TestCase
 {
     private function getSUT(): DeadLinkChecker
     {
@@ -23,8 +23,7 @@ class ShouldProcessTest extends UnitTestCase
          * @var Article
          */
         $mock = $this->mock(Article::class, function (MockInterface $mock): void {
-            $mock->allows('getAttribute')
-                ->withArgs(['contents'])
+            $mock->allows()->getAttribute('contents')
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy']));
         });
 
@@ -39,8 +38,7 @@ class ShouldProcessTest extends UnitTestCase
          * @var Article
          */
         $mock = $this->mock(Article::class, function (MockInterface $mock): void {
-            $mock->allows('getAttribute')
-                ->withArgs(['contents'])
+            $mock->allows()->getAttribute('contents')
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy', 'exclude_link_check' => true]));
         });
 
@@ -55,8 +53,7 @@ class ShouldProcessTest extends UnitTestCase
          * @var Article
          */
         $mock = $this->mock(Article::class, function (MockInterface $mock): void {
-            $mock->allows('getAttribute')
-                ->withArgs(['contents'])
+            $mock->allows()->getAttribute('contents')
                 ->andReturn(new AddonIntroductionContent(['link' => 'https://getuploader.com/dummy']));
         });
 

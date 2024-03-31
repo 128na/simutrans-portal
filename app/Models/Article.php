@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Feed\Feedable;
@@ -333,7 +334,7 @@ class Article extends Model implements Feedable
 
     public function getThumbnailUrlAttribute(): string
     {
-        return Storage::disk('public')->url($this->has_thumbnail && $this->thumbnail
+        return $this->getPublicDisk()->url($this->has_thumbnail && $this->thumbnail
             ? $this->thumbnail->path
             : DefaultThumbnail::NO_THUMBNAIL);
     }
@@ -437,7 +438,7 @@ class Article extends Model implements Feedable
     {
         $image = $this->getImage($id);
 
-        return Storage::disk('public')->url($image instanceof \App\Models\Attachment
+        return $this->getPublicDisk()->url($image instanceof \App\Models\Attachment
             ? $image->path
             : DefaultThumbnail::NO_THUMBNAIL);
     }
@@ -472,5 +473,10 @@ class Article extends Model implements Feedable
             'link' => route('articles.show', ['userIdOrNickname' => $this->user?->nickname ?? $this->user_id, 'articleSlug' => $this->slug]),
             'authorName' => $this->user->name ?? '',
         ]);
+    }
+
+    private function getPublicDisk(): FilesystemAdapter
+    {
+        return Storage::disk('public');
     }
 }

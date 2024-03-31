@@ -2,40 +2,45 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Repositories\ArticleRepository;
+namespace Tests\Feature\Repositories\ArticleRepository;
 
+use App\Enums\ArticleStatus;
+use App\Models\Article;
 use App\Models\Article\Ranking;
 use App\Repositories\ArticleRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Tests\ArticleTestCase;
+use Tests\Feature\TestCase;
 
-class PaginateRankingTest extends ArticleTestCase
+class PaginateRankingTest extends TestCase
 {
+    private Article $article;
+
     private ArticleRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(ArticleRepository::class);
+        $this->article = Article::factory()->publish()->create();
         Ranking::create(['rank' => 1, 'article_id' => $this->article->id]);
+        $this->repository = app(ArticleRepository::class);
     }
 
     public function test(): void
     {
-        $this->createPage();
+        Article::factory()->publish()->create();
         $paginator = $this->repository->paginateRanking();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertEquals(1, $paginator->count());
+        $this->assertCount(1, $paginator->items(), 'ランキングリレーションのある記事のみ取得できること');
     }
 
     public function test公開以外のステータス(): void
     {
-        $this->article->update(['status' => 'draft']);
+        $this->article->update(['status' => ArticleStatus::Draft]);
         $paginator = $this->repository->paginateRanking();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertEquals(0, $paginator->count(), '非公開記事は取得できないこと');
+        $this->assertCount(0, $paginator->items(), '非公開記事は取得できないこと');
     }
 
     public function test論理削除(): void
@@ -44,6 +49,6 @@ class PaginateRankingTest extends ArticleTestCase
         $paginator = $this->repository->paginateRanking();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertEquals(0, $paginator->count(), '削除済み記事は取得できないこと');
+        $this->assertCount(0, $paginator->items(), '削除済み記事は取得できないこと');
     }
 }

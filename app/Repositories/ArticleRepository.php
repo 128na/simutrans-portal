@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Enums\ArticleAnalyticsType;
 use App\Enums\ArticleStatus;
+use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
@@ -70,7 +71,7 @@ class ArticleRepository extends BaseRepository
      */
     public function syncArticles(Article $article, array $articleIds): void
     {
-        $result = $article->articles()->sync(Article::find($articleIds));
+        $result = $article->articles()->sync($articleIds);
         logger('[ArticleRepository] syncArticles', $result);
     }
 
@@ -250,7 +251,6 @@ class ArticleRepository extends BaseRepository
      */
     public function paginateByPakAddonCategory(Category $pak, Category $addon, string $order = 'modified_at'): LengthAwarePaginator
     {
-        /** @var LengthAwarePaginator<Article> */
         return $this->queryByPakAddonCategory($pak, $addon, $order)->paginate();
     }
 
@@ -265,7 +265,7 @@ class ArticleRepository extends BaseRepository
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
-            ->whereDoesntHave('categories', fn ($query) => $query->where('type', 'addon'))
+            ->whereDoesntHave('categories', fn ($query) => $query->where('type', CategoryType::Addon))
             ->orderBy($order, 'desc')
             ->paginate();
     }
@@ -389,21 +389,12 @@ class ArticleRepository extends BaseRepository
     }
 
     /**
-     * @param  array<string>  $titles
-     * @return Collection<int, Article>
-     */
-    public function findByTitles(array $titles): Collection
-    {
-        /** @var Collection<int, Article> */
-        return $this->model->active()->whereIn('title', $titles)->get();
-    }
-
-    /**
      * @return LazyCollection<Article>
      */
     public function fetchAggregatedRanking(CarbonImmutable $datetime): LazyCollection
     {
         return $this->model
+            ->active()
             ->addon()
             ->select('articles.*')
             ->leftJoin('view_counts as d', fn (JoinClause $joinClause) => $joinClause
@@ -440,7 +431,7 @@ class ArticleRepository extends BaseRepository
             ->cursor();
     }
 
-    public function getRandomPr(): ?Article
+    public function findRandomPR(): ?Article
     {
         return $this->model
             ->active()

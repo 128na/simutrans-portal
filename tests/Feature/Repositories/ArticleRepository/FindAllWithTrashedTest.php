@@ -2,37 +2,39 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Repositories\ArticleRepository;
+namespace Tests\Feature\Repositories\ArticleRepository;
 
-use App\Models\User;
+use App\Enums\ArticleStatus;
+use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use Illuminate\Support\Collection;
-use Tests\ArticleTestCase;
+use Tests\Feature\TestCase;
 
-class FindAllByUserTest extends ArticleTestCase
+class FindAllWithTrashedTest extends TestCase
 {
     private ArticleRepository $repository;
+
+    private Article $article;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->repository = app(ArticleRepository::class);
+        $this->article = Article::factory()->create();
     }
 
     public function test(): void
     {
-        $this->createAddonIntroduction(User::factory()->create());
-
-        $res = $this->repository->findAllByUser($this->user);
+        $res = $this->repository->findAllWithTrashed();
 
         $this->assertInstanceOf(Collection::class, $res);
-        $this->assertEquals(1, $res->count(), 'ユーザーに紐づく記事のみ取得できること');
+        $this->assertEquals(1, $res->count(), '全ての記事が取得できること');
     }
 
     public function test公開以外のステータス(): void
     {
-        $this->article->update(['status' => 'draft']);
-        $res = $this->repository->findAllByUser($this->user);
+        $this->article->update(['status' => ArticleStatus::Draft]);
+        $res = $this->repository->findAllWithTrashed();
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(1, $res->count(), '非公開記事も取得できること');
@@ -41,9 +43,9 @@ class FindAllByUserTest extends ArticleTestCase
     public function test論理削除(): void
     {
         $this->article->delete();
-        $res = $this->repository->findAllByUser($this->user);
+        $res = $this->repository->findAllWithTrashed();
 
         $this->assertInstanceOf(Collection::class, $res);
-        $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');
+        $this->assertEquals(1, $res->count(), '削除済み記事も取得できること');
     }
 }

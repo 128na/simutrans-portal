@@ -2,60 +2,57 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Repositories\ArticleRepository;
+namespace Tests\Feature\Repositories\ArticleRepository;
 
+use App\Enums\ArticleStatus;
+use App\Models\Article;
 use App\Models\Category;
 use App\Repositories\ArticleRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Tests\ArticleTestCase;
+use Tests\Feature\TestCase;
 
-class PaginateByCategoryTest extends ArticleTestCase
+class PaginateByCategoryTest extends TestCase
 {
     private ArticleRepository $repository;
 
     private Category $category;
+
+    private Article $article;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->repository = app(ArticleRepository::class);
 
-        $this->category = Category::first();
+        $this->category = Category::factory()->create();
+        $this->article = Article::factory()->publish()->create();
         $this->article->categories()->sync([$this->category->id]);
     }
 
     public function test(): void
     {
-        /**
-         * @var LengthAwarePaginator $paginator
-         */
+        Article::factory()->publish()->create();
         $paginator = $this->repository->paginateByCategory($this->category);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertEquals(1, $paginator->count(), 'カテゴリに紐づく記事のみ取得出来ること');
+        $this->assertCount(1, $paginator->items(), 'カテゴリに紐づく記事のみ取得出来ること');
     }
 
     public function test公開以外のステータス(): void
     {
-        $this->article->update(['status' => 'draft']);
-        /**
-         * @var LengthAwarePaginator $paginator
-         */
+        $this->article->update(['status' => ArticleStatus::Draft]);
         $paginator = $this->repository->paginateByCategory($this->category);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertEquals(0, $paginator->count(), '非公開記事は取得できないこと');
+        $this->assertCount(0, $paginator->items(), '非公開記事は取得できないこと');
     }
 
     public function test論理削除(): void
     {
         $this->article->delete();
-        /**
-         * @var LengthAwarePaginator $paginator
-         */
         $paginator = $this->repository->paginateByCategory($this->category);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertEquals(0, $paginator->count(), '削除済み記事は取得できないこと');
+        $this->assertCount(0, $paginator->items(), '削除済み記事は取得できないこと');
     }
 }

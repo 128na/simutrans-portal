@@ -2,20 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Repositories\ArticleRepository;
+namespace Tests\Feature\Repositories\ArticleRepository;
 
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
-use Tests\ArticleTestCase;
+use Tests\Feature\TestCase;
 
-class LoadArticleTest extends ArticleTestCase
+class LoadArticleTest extends TestCase
 {
     private ArticleRepository $repository;
+
+    private Article $article;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->repository = app(ArticleRepository::class);
+        $this->article = Article::factory()->create();
     }
 
     public function test(): void

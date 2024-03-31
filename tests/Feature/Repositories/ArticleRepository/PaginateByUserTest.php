@@ -2,27 +2,31 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Repositories\ArticleRepository;
+namespace Tests\Feature\Repositories\ArticleRepository;
 
-use App\Models\User;
+use App\Enums\ArticleStatus;
+use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Tests\ArticleTestCase;
+use Tests\Feature\TestCase;
 
-class PaginateByUserTest extends ArticleTestCase
+class PaginateByUserTest extends TestCase
 {
     private ArticleRepository $repository;
+
+    private Article $article;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->repository = app(ArticleRepository::class);
+        $this->article = Article::factory()->publish()->create();
     }
 
     public function test(): void
     {
-        $this->createAddonIntroduction(User::factory()->create());
-        $res = $this->repository->paginateByUser($this->user);
+        Article::factory()->publish()->create();
+        $res = $this->repository->paginateByUser($this->article->user);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(1, $res->count(), 'カテゴリに紐づく記事のみ取得出来ること');
@@ -30,8 +34,8 @@ class PaginateByUserTest extends ArticleTestCase
 
     public function test公開以外のステータス(): void
     {
-        $this->article->update(['status' => 'draft']);
-        $res = $this->repository->paginateByUser($this->user);
+        $this->article->update(['status' => ArticleStatus::Draft]);
+        $res = $this->repository->paginateByUser($this->article->user);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(0, $res->count(), '非公開記事は取得できないこと');
@@ -40,7 +44,7 @@ class PaginateByUserTest extends ArticleTestCase
     public function test論理削除(): void
     {
         $this->article->delete();
-        $res = $this->repository->paginateByUser($this->user);
+        $res = $this->repository->paginateByUser($this->article->user);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');

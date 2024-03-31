@@ -2,30 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Repositories\ArticleRepository;
+namespace Tests\Feature\Repositories\ArticleRepository;
 
+use App\Enums\ArticleStatus;
+use App\Models\Article;
 use App\Models\Tag;
 use App\Repositories\ArticleRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Tests\ArticleTestCase;
+use Tests\Feature\TestCase;
 
-class PaginateByTagTest extends ArticleTestCase
+class PaginateByTagTest extends TestCase
 {
     private ArticleRepository $repository;
 
     private Tag $tag;
+
+    private Article $article;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->repository = app(ArticleRepository::class);
 
+        $this->article = Article::factory()->publish()->create();
         $this->tag = Tag::factory()->create();
         $this->article->tags()->sync([$this->tag->id]);
     }
 
     public function test(): void
     {
+        Article::factory()->publish()->create();
         $res = $this->repository->paginateByTag($this->tag);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
@@ -34,7 +40,7 @@ class PaginateByTagTest extends ArticleTestCase
 
     public function test公開以外のステータス(): void
     {
-        $this->article->update(['status' => 'draft']);
+        $this->article->update(['status' => ArticleStatus::Draft]);
         $res = $this->repository->paginateByTag($this->tag);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);

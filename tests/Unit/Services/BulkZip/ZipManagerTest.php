@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldUnit\Services\BulkZip;
+namespace Tests\Unit\Services\BulkZip;
 
 use App\Exceptions\ZipErrorException;
 use App\Services\BulkZip\Decorators\BaseDecorator;
@@ -10,10 +10,10 @@ use App\Services\BulkZip\ZipManager;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Mockery\MockInterface;
-use Tests\UnitTestCase;
+use Tests\Unit\TestCase;
 use ZipArchive;
 
-class ZipManagerTest extends UnitTestCase
+class ZipManagerTest extends TestCase
 {
     public function test(): void
     {
@@ -21,21 +21,14 @@ class ZipManagerTest extends UnitTestCase
          * @var ZipArchive
          */
         $zipArchiveMock = $this->mock(ZipArchive::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('open')->andReturn(true);
-            $mock->shouldReceive('addFromString')->andReturn(true);
-            $mock->shouldReceive('close')->andReturn(true);
-
-            $mock->shouldReceive('open')->andReturn(true);
-            $mock->shouldReceive('addFile')->andReturn(true);
-            $mock->shouldReceive('close')->andReturn(true);
-
-            $mock->shouldReceive('open')->andReturn(true);
-            $mock->shouldReceive('addFile')->andReturn(true);
-            $mock->shouldReceive('close')->andReturn(true);
+            $mock->allows('open')->andReturn(true);
+            $mock->allows('addFromString')->andReturn(true);
+            $mock->allows('addFile')->andReturn(true);
+            $mock->allows()->close()->andReturn(true);
         });
         $decoratorMock = $this->mock(BaseDecorator::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('canProcess')->andReturn(true);
-            $mock->shouldReceive('process')->andReturn([
+            $mock->allows('canProcess')->once()->andReturn(true);
+            $mock->allows('process')->once()->andReturn([
                 'contents' => [['test']],
                 'files' => [],
             ]);

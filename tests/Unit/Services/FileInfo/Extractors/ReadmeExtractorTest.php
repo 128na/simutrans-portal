@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldUnit\Services\FileInfo\Extractors;
+namespace Tests\Unit\Services\FileInfo\Extractors;
 
 use App\Services\FileInfo\Extractors\ReadmeExtractor;
-use Tests\UnitTestCase;
+use Tests\Unit\TestCase;
 
-class ReadmeExtractorTest extends UnitTestCase
+class ReadmeExtractorTest extends TestCase
 {
     private function getSUT(): ReadmeExtractor
     {

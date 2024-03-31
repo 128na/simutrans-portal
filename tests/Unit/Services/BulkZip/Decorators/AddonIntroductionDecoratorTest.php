@@ -2,40 +2,39 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldUnit\Services\BulkZip\Decorators;
+namespace Tests\Unit\Services\BulkZip\Decorators;
 
 use App\Enums\ArticlePostType;
 use App\Enums\CategoryType;
 use App\Models\Article;
-use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Contents\AddonIntroductionContent;
 use App\Models\User;
-use App\Services\BulkZip\Decorators\AddonPostDecorator;
+use App\Services\BulkZip\Decorators\AddonIntroductionDecorator;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Mockery\MockInterface;
-use Tests\UnitTestCase;
+use Tests\Unit\TestCase;
 
-class AddonPostDecoratorTest extends UnitTestCase
+class AddonIntroductionDecoratorTest extends TestCase
 {
-    private AddonPostDecorator $decorator;
+    private AddonIntroductionDecorator $decorator;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->decorator = new AddonPostDecorator();
+        $this->decorator = new AddonIntroductionDecorator();
     }
 
     public function test_canProcess_対象(): void
     {
-        $article = new Article(['post_type' => ArticlePostType::AddonPost]);
+        $article = new Article(['post_type' => ArticlePostType::AddonIntroduction]);
         $result = $this->decorator->canProcess($article);
         $this->assertTrue($result);
     }
 
     public function test_canProcess_対象外_Article(): void
     {
-        $article = new Article(['post_type' => ArticlePostType::AddonIntroduction]);
+        $article = new Article(['post_type' => ArticlePostType::AddonPost]);
         $result = $this->decorator->canProcess($article);
         $this->assertFalse($result);
     }
@@ -53,32 +52,31 @@ class AddonPostDecoratorTest extends UnitTestCase
          * @var Article
          */
         $mock = $this->mock(Article::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('getAttribute')->withArgs(['has_thumbnail'])->andReturn(false);
-            $mock->shouldReceive('getAttribute')->withArgs(['id'])->andReturn(1);
-            $mock->shouldReceive('getAttribute')->withArgs(['title'])->andReturn('test title');
-            $mock->shouldReceive('getAttribute')->withArgs(['slug'])->andReturn('test_slug');
-            $mock->shouldReceive('getAttribute')->withArgs(['user_id'])->andReturn(1);
-            $mock->shouldReceive('offsetExists')->withArgs(['user'])->andReturn(true);
-            $mock->shouldReceive('getAttribute')->withArgs(['user'])->andReturn($this->mock(User::class, function (MockInterface $mock): void {
-                $mock->shouldReceive('offsetExists')->withArgs(['nickname'])->andReturn(false);
-                $mock->shouldReceive('offsetExists')->withArgs(['name'])->andReturn(true);
-                $mock->shouldReceive('getAttribute')->withArgs(['name'])->andReturn('test user name');
-                $mock->shouldReceive('getRouteKey')->andReturn(1);
+            $mock->allows()->getAttribute('has_thumbnail')->andReturn(false);
+            $mock->allows()->getAttribute('id')->andReturn(1);
+            $mock->allows()->getAttribute('title')->andReturn('test title');
+            $mock->allows()->getAttribute('slug')->andReturn('test_slug');
+            $mock->allows()->offsetExists('user')->andReturn(true);
+            $mock->allows()->getAttribute('user_id')->andReturn(1);
+            $mock->allows()->getAttribute('user')->andReturn($this->mock(User::class, function (MockInterface $mock): void {
+                $mock->allows()->offsetExists('nickname')->andReturn(false);
+                $mock->allows()->offsetExists('name')->andReturn(true);
+                $mock->allows()->getAttribute('name')->andReturn('test user name');
+                $mock->allows()->getRouteKey()->andReturn(1);
             }));
-            $mock->shouldReceive('getAttribute')->withArgs(['categories'])
+            $mock->allows()->getAttribute('categories')
                 ->andReturn(collect([new Category(['type' => CategoryType::Addon, 'slug' => 'example'])]));
-            $mock->shouldReceive('offsetExists')->withArgs(['file'])->andReturn(true);
-            $mock->shouldReceive('getAttribute')->withArgs(['file'])
-                ->andReturn(new Attachment(['original_name' => 'test.zip', 'path' => '/test/123']));
-            $mock->shouldReceive('tags')->andReturn($this->mock(BelongsToMany::class, function (MockInterface $mock): void {
-                $mock->shouldReceive('pluck')
-                    ->andReturn(collect(['test tag']));
+            $mock->allows()->tags()->andReturn($this->mock(BelongsToMany::class, function (MockInterface $mock): void {
+                $mock->allows()->pluck('name')->andReturn(collect(['test tag']));
             }));
-            $mock->shouldReceive('getAttribute')->withArgs(['contents'])->andReturn(new AddonIntroductionContent([
+            $mock->allows()->getAttribute('contents')->andReturn(new AddonIntroductionContent([
                 'description' => 'test description',
+                'link' => 'http://example.com',
                 'author' => 'test author',
                 'license' => 'test license',
                 'thanks' => 'test thanks',
+                'agreement' => true,
+                'exclude_link_check' => true,
             ]));
         });
         $input = ['contents' => [], 'files' => []];
@@ -97,6 +95,8 @@ class AddonPostDecoratorTest extends UnitTestCase
         $this->assertEquals('test description', $contents[0][8][1]);
         $this->assertEquals('test thanks', $contents[0][9][1]);
         $this->assertEquals('test license', $contents[0][10][1]);
-        $this->assertEquals('1/test.zip', $contents[0][11][1]);
+        $this->assertEquals('Yes', $contents[0][11][1]);
+        $this->assertEquals('http://example.com', $contents[0][12][1]);
+        $this->assertEquals('No', $contents[0][13][1]);
     }
 }

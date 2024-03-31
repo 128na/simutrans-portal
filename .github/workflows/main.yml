@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        test_suite: [Unit, Feature, OldUnit, OldFeature]
+        test_suite: [Unit, Feature, OldFeature]
     steps:
       - name: Checkout
         uses: actions/checkout@v4

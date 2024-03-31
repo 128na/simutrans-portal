@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Requests\User;
+namespace Tests\Feature\Requests\ArticleAnalytics;
 
 use App\Http\Requests\Api\ArticleAnalytics\SearchRequest;
 use App\Models\Article;

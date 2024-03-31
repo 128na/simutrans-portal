@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldUnit\Services\FileInfo;
+namespace Tests\Unit\Services\FileInfo;
 
 use App\Services\FileInfo\TextService;
-use Tests\UnitTestCase;
+use Tests\Unit\TestCase;
 
-class TextServiceTest extends UnitTestCase
+class TextServiceTest extends TestCase
 {
     private function getSUT(): TextService
     {

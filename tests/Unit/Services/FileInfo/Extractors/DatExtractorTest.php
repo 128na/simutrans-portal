@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldUnit\Services\FileInfo\Extractors;
+namespace Tests\Unit\Services\FileInfo\Extractors;
 
 use App\Services\FileInfo\Extractors\DatExtractor;
-use Tests\UnitTestCase;
+use Tests\Unit\TestCase;
 
-class DatExtractorTest extends UnitTestCase
+class DatExtractorTest extends TestCase
 {
     private function getSUT(): DatExtractor
     {

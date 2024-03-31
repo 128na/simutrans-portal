@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldUnit\Services\BulkZip;
+namespace Tests\Unit\Services\BulkZip;
 
 use App\Jobs\BulkZip\JobCreateBulkZip;
 use App\Jobs\BulkZip\JobDeleteExpiredBulkzip;
@@ -13,23 +13,23 @@ use App\Repositories\BulkZipRepository;
 use App\Services\BulkZip\BulkZipService;
 use Illuminate\Support\Facades\Bus;
 use Mockery\MockInterface;
-use Tests\UnitTestCase;
+use Tests\Unit\TestCase;
 use TypeError;
 
-class BulkZipServiceTest extends UnitTestCase
+class BulkZipServiceTest extends TestCase
 {
     public function test(): void
     {
         Bus::fake();
-        $this->mock(BulkZipRepository::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('findByBulkZippable')->andReturn(null);
-            $mock->shouldReceive('storeByBulkZippable')->andReturn(new BulkZip());
+        $user = new User();
+        $this->mock(BulkZipRepository::class, function (MockInterface $mock) use ($user): void {
+            $mock->expects()->findByBulkZippable($user)->andReturn(null);
+            $mock->expects()->storeByBulkZippable($user)->andReturn(new BulkZip());
         });
         /**
          * @var BulkZipService
          */
         $service = app(BulkZipService::class);
-        $user = new User();
         $res = $service->findOrCreateAndDispatch($user);
         $this->assertInstanceOf(BulkZip::class, $res);
 

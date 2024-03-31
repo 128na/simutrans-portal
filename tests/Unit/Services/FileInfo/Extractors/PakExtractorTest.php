@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldUnit\Services\FileInfo\Extractors;
+namespace Tests\Unit\Services\FileInfo\Extractors;
 
 use App\Services\FileInfo\Extractors\PakExtractor;
-use Tests\UnitTestCase;
+use Tests\Unit\TestCase;
 
-class PakExtractorTest extends UnitTestCase
+class PakExtractorTest extends TestCase
 {
     private function getSUT(): PakExtractor
     {

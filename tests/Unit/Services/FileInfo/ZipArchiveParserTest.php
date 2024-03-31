@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldUnit\Services\FileInfo;
+namespace Tests\Unit\Services\FileInfo;
 
 use App\Models\Attachment;
 use App\Services\FileInfo\ZipArchiveParser;
 use Mockery\MockInterface;
-use Tests\UnitTestCase;
+use Tests\Unit\TestCase;
 use ZipArchive;
 
-class ZipArchiveParserTest extends UnitTestCase
+class ZipArchiveParserTest extends TestCase
 {
     private function getSUT(): ZipArchiveParser
     {
@@ -20,13 +20,14 @@ class ZipArchiveParserTest extends UnitTestCase
     public function test(): void
     {
         $this->mock(Attachment::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('getAttribute')->once()->andReturn('dummy');
+            $mock->expects()->getAttribute('full_path')->once()->andReturn('dummy');
         });
         $this->mock(ZipArchive::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('open')->once();
-            $mock->shouldReceive('close')->once();
+            $mock->expects()->open('dummy')->once();
+            $mock->expects()->close()->once();
         });
         $attachment = app(Attachment::class);
-        $this->getSUT()->parseTextContent($attachment)->toArray();
+        $result = $this->getSUT()->parseTextContent($attachment)->toArray();
+        $this->assertCount(0, $result);
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldUnit\Services\BulkZip;
+namespace Tests\Unit\Services\BulkZip;
 
 use App\Models\BulkZip;
 use App\Models\User;
@@ -12,9 +12,9 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery\MockInterface;
 use stdClass;
-use Tests\UnitTestCase;
+use Tests\Unit\TestCase;
 
-class ZippableManagerTest extends UnitTestCase
+class ZippableManagerTest extends TestCase
 {
     private function getSUT(): ZippableManager
     {
@@ -24,12 +24,12 @@ class ZippableManagerTest extends UnitTestCase
     public function testUser(): void
     {
         $this->mock(BulkZip::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('getAttribute')->withArgs(['bulk_zippable_type'])->once()->andReturn(User::class);
-            $mock->shouldReceive('getAttribute')->withArgs(['bulkZippable'])->once()->andReturn(new User());
+            $mock->expects()->getAttribute('bulk_zippable_type')->once()->andReturn(User::class);
+            $mock->expects()->getAttribute('bulkZippable')->once()->andReturn(new User());
         });
 
         $this->mock(ArticleRepository::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('findAllByUser')->once()->andReturn(new Collection());
+            $mock->expects()->findAllByUser()->once()->andReturn(new Collection());
         });
 
         $res = $this->getSUT()->getItems(app(BulkZip::class));
@@ -39,7 +39,7 @@ class ZippableManagerTest extends UnitTestCase
     public function test未対応モデル(): void
     {
         $this->mock(BulkZip::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('getAttribute')->withArgs(['bulk_zippable_type'])->twice()->andReturn(stdClass::class);
+            $mock->expects()->getAttribute('bulk_zippable_type')->twice()->andReturn(stdClass::class);
         });
 
         $this->expectException(Exception::class);

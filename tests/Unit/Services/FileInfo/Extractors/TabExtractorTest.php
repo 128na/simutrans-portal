@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldUnit\Services\FileInfo\Extractors;
+namespace Tests\Unit\Services\FileInfo\Extractors;
 
 use App\Services\FileInfo\Extractors\TabExtractor;
-use Tests\UnitTestCase;
+use Tests\Unit\TestCase;
 
-class TabExtractorTest extends UnitTestCase
+class TabExtractorTest extends TestCase
 {
     private function getSUT(): TabExtractor
     {

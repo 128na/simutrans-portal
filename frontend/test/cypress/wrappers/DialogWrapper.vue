@@ -15,12 +15,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    Dialog.create({
-      component: props.component,
-
-      // props forwarded to your custom component
-      componentProps: props.componentProps,
-    });
+    Dialog.create(props);
   },
 });
 </script>

@@ -1,7 +1,8 @@
 {
   "@quasar/testing-e2e-cypress": {
-    "port": "8000",
-    "options": []
+    "options": [
+      "scripts"
+    ]
   },
   "@quasar/testing": {
     "harnesses": [

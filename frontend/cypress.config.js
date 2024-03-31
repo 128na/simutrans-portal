@@ -1,4 +1,3 @@
-
 const { injectQuasarDevServerConfig } = require('@quasar/quasar-app-extension-testing-e2e-cypress/cct-dev-server');
 const { defineConfig } = require('cypress');
 
@@ -9,7 +8,7 @@ module.exports = defineConfig({
   video: true,
   e2e: {
     // setupNodeEvents(on, config) {},
-    baseUrl: 'http://localhost:8000/',
+    baseUrl: 'http://localhost:8080/',
     supportFile: 'test/cypress/support/e2e.js',
     specPattern: 'test/cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
   },

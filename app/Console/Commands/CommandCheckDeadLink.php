@@ -21,9 +21,9 @@ class CommandCheckDeadLink extends Command
         } catch (Throwable $throwable) {
             report($throwable);
 
-            return 1;
+            return Command::FAILURE;
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

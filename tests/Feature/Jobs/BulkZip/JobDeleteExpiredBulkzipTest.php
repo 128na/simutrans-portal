@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Jobs\BulkZip;
+namespace Tests\Feature\Jobs\BulkZip;
 
 use App\Jobs\BulkZip\JobDeleteExpiredBulkzip;
 use App\Models\BulkZip;
 use Illuminate\Support\Facades\Storage;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class JobDeleteExpiredBulkzipTest extends TestCase
 {
@@ -37,18 +37,23 @@ class JobDeleteExpiredBulkzipTest extends TestCase
 
     public function test(): void
     {
+        /**
+         * @var \Illuminate\Filesystem\FilesystemAdapter
+         */
+        $disk = Storage::disk('public');
+
         $this->assertDatabaseHas('bulk_zips', ['id' => $this->bulkzip1->id]);
-        $this->assertFileExists(Storage::disk('public')->path('testing/dummy1.zip'), 'zipファイルが存在すること');
+        $this->assertFileExists($disk->path('testing/dummy1.zip'), 'zipファイルが存在すること');
 
         $this->assertDatabaseHas('bulk_zips', ['id' => $this->bulkzip2->id]);
-        $this->assertFileExists(Storage::disk('public')->path('testing/dummy2.zip'), 'zipファイルが存在すること');
+        $this->assertFileExists($disk->path('testing/dummy2.zip'), 'zipファイルが存在すること');
 
         JobDeleteExpiredBulkzip::dispatchSync();
 
         $this->assertDatabaseMissing('bulk_zips', ['id' => $this->bulkzip1->id]);
-        $this->assertFileDoesNotExist(Storage::disk('public')->path('testing/dummy1.zip'), 'zipファイルが削除されていること');
+        $this->assertFileDoesNotExist($disk->path('testing/dummy1.zip'), 'zipファイルが削除されていること');
 
         $this->assertDatabaseHas('bulk_zips', ['id' => $this->bulkzip2->id]);
-        $this->assertFileExists(Storage::disk('public')->path('testing/dummy2.zip'), 'zipファイルが存在すること');
+        $this->assertFileExists($disk->path('testing/dummy2.zip'), 'zipファイルが存在すること');
     }
 }

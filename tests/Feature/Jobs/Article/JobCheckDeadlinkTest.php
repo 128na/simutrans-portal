@@ -2,28 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Jobs\Article;
+namespace Tests\Feature\Jobs\Article;
 
-use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Events\Article\CloseByDeadLinkDetected;
 use App\Jobs\Article\JobCheckDeadLink;
 use App\Models\Article;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class JobCheckDeadlinkTest extends TestCase
 {
-    private $article;
+    private Article $article;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->article = Article::factory()->create([
-            'user_id' => $this->user->id,
-            'post_type' => ArticlePostType::AddonIntroduction,
-            'status' => ArticleStatus::Publish,
+        $this->article = Article::factory()->addonIntroduction()->publish()->create([
             'contents' => [
                 'link' => '/not_found_url',
                 'exclude_link_check' => false,
@@ -61,13 +57,10 @@ class JobCheckDeadlinkTest extends TestCase
         Notification::assertNothingSent();
     }
 
-    /**
-     * @dataProvider dataStatusPrivate
-     */
-    public function test非公開記事はチェックしない(string $status): void
+    public function test非公開記事はチェックしない(): void
     {
         Notification::fake();
-        $this->article->fill(['status' => $status])->save();
+        $this->article->update(['status' => ArticleStatus::Private]);
 
         Notification::assertNothingSent();
 

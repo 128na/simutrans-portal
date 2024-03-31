@@ -2,15 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Jobs\Article;
+namespace Tests\Feature\Jobs\Article;
 
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\PakAddonCount;
+use App\Models\User;
 use App\Models\UserAddonCount;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class JobUpdateRelatedTest extends TestCase
 {
+    private User $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+    }
+
     public function testPakAddonCount(): void
     {
         PakAddonCount::create([

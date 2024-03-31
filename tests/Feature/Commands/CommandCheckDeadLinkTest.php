@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Commands;
+namespace Tests\Feature\Commands;
 
-use Tests\TestCase;
+use Illuminate\Support\Sleep;
+use Tests\Feature\TestCase;
 
 class CommandCheckDeadLinkTest extends TestCase
 {
     public function test(): void
     {
+        Sleep::fake();
         $res = $this->artisan('check:deadlink');
         $res->assertExitCode(0);
     }

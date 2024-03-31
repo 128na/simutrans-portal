@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Jobs\Article;
+namespace Tests\Feature\Jobs\Article;
 
 use App\Jobs\Article\JobDeleteUnrelatedTags;
 use App\Models\Tag;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class JobDeleteUnrelatedTagsTest extends TestCase
 {

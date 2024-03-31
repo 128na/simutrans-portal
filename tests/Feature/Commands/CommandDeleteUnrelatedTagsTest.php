@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Commands;
+namespace Tests\Feature\Commands;
 
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class CommandDeleteUnrelatedTagsTest extends TestCase
 {

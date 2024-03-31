@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Jobs\BulkZip;
+namespace Tests\Feature\Jobs\BulkZip;
 
 use App\Jobs\BulkZip\JobCreateBulkZip;
 use App\Models\BulkZip;
 use Illuminate\Support\Facades\Storage;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class JobCreateBulkZipTest extends TestCase
 {
@@ -41,7 +41,10 @@ class JobCreateBulkZipTest extends TestCase
             'generated' => true,
         ]);
 
-        $path = Storage::disk('public')->path($this->bulkzip->path);
-        $this->assertFileExists($path, 'zipファイルが存在すること');
+        /**
+         * @var \Illuminate\Filesystem\FilesystemAdapter
+         */
+        $disk = Storage::disk('public');
+        $this->assertFileExists($disk->path($this->bulkzip->path), 'zipファイルが存在すること');
     }
 }

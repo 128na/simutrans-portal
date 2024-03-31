@@ -436,6 +436,10 @@ class ArticleRepository extends BaseRepository
 
     public function getRandomPr(): ?Article
     {
-        return $this->model->where('pr', true)->inRandomOrder()->first();
+        return $this->model
+            ->active()
+            ->where('pr', 1)
+            ->inRandomOrder()
+            ->first();
     }
 }

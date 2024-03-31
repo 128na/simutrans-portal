@@ -5,6 +5,8 @@
       <template v-slot="{ props }">
         <q-btn-group>
           <q-btn :disable="props.row.status !== 'publish'" label="表示" @click="handleShow(props.row)" />
+          <q-btn v-if="!!props.row.pr" label="PR解除" @click="handleRemovePR(props.row)" />
+          <q-btn v-else label="PR追加" @click="handleAddPR(props.row)" />
           <q-btn v-if="!!props.row.deleted_at" label="復元" @click="handleRestore(props.row)" />
           <q-btn v-else label="削除" @click="handleDelete(props.row)" />
           <q-btn v-if="props.row.status === 'publish'" label="非公開" @click="handlePrivate(props.row)" />
@@ -30,6 +32,13 @@ const columns = [
     name: 'id',
     label: 'ID',
     field: 'id',
+    sortable: true,
+    align: 'left',
+  },
+  {
+    name: 'pr',
+    label: 'PR',
+    field: (row) => (row.pr ? '✔' : ''),
     sortable: true,
     align: 'left',
   },
@@ -137,14 +146,20 @@ export default defineComponent({
     const handlePrivate = (article) => {
       // eslint-disable-next-line no-alert
       if (window.confirm('ステータスを非公開にしますか')) {
-        updateArticle(article.id, { article: { status: 'private' } });
+        updateArticle(article.id, { article: { status: 'private', pr: article.pr } });
       }
     };
     const handlePublish = (article) => {
       // eslint-disable-next-line no-alert
       if (window.confirm('ステータスを公開にしますか')) {
-        updateArticle(article.id, { article: { status: 'publish' } });
+        updateArticle(article.id, { article: { status: 'publish', pr: article.pr } });
       }
+    };
+    const handleAddPR = (article) => {
+      updateArticle(article.id, { article: { status: article.status, pr: true } });
+    };
+    const handleRemovePR = (article) => {
+      updateArticle(article.id, { article: { status: article.status, pr: false } });
     };
 
     return {
@@ -155,6 +170,8 @@ export default defineComponent({
       handleDelete,
       handlePrivate,
       handlePublish,
+      handleAddPR,
+      handleRemovePR,
     };
   },
 });

@@ -233,6 +233,9 @@ class ArticleRepository extends BaseRepository
             : $q->paginate();
     }
 
+    /**
+     * @return Builder<Article>
+     */
     private function queryByPakAddonCategory(Category $pak, Category $addon, string $order): Builder
     {
         return $this->model
@@ -335,6 +338,11 @@ class ArticleRepository extends BaseRepository
         return $this->queryBySearch($word, $order)->paginate();
     }
 
+    /**
+     * リンク切れチェック対象の記事.
+     *
+     * @return LazyCollection<Article>
+     */
     public function cursorCheckLink(): LazyCollection
     {
         return $this->model
@@ -389,6 +397,8 @@ class ArticleRepository extends BaseRepository
     }
 
     /**
+     * PV数順の記事
+     *
      * @return LazyCollection<Article>
      */
     public function fetchAggregatedRanking(CarbonImmutable $datetime): LazyCollection
@@ -421,6 +431,8 @@ class ArticleRepository extends BaseRepository
     }
 
     /**
+     * 指定時刻を過ぎた予約記事
+     *
      * @return LazyCollection<Article>
      */
     public function cursorReservations(CarbonImmutable $date): LazyCollection
@@ -431,6 +443,9 @@ class ArticleRepository extends BaseRepository
             ->cursor();
     }
 
+    /**
+     * ランダムなPR記事
+     */
     public function findRandomPR(): ?Article
     {
         return $this->model

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\OldFeature\Repositories\ArticleRepository;
+namespace Tests\Feature\Repositories\ArticleRepository;
 
 use App\Models\Article;
 use App\Repositories\ArticleRepository;

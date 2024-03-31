@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Enums\ArticlePostType;
-use App\Enums\ArticleStatus;
 use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\Attachment;
@@ -90,10 +88,7 @@ abstract class TestCase extends BaseTestCase
     {
         $user ??= User::factory()->create();
         $attachment = $this->createAttachment($user);
-        $article = Article::factory()->addonPost($attachment)->create([
-            'user_id' => $user->id,
-            'status' => ArticleStatus::Publish,
-        ]);
+        $article = Article::factory()->addonPost($attachment)->publish()->create(['user_id' => $user->id]);
         $article->attachments()->save($attachment);
 
         return $article;
@@ -103,44 +98,27 @@ abstract class TestCase extends BaseTestCase
     {
         $user ??= User::factory()->create();
 
-        return Article::factory()->addonIntroduction()->create([
-            'user_id' => $user->id,
-            'status' => ArticleStatus::Publish,
-        ]);
+        return Article::factory()->addonIntroduction()->publish()->create(['user_id' => $user->id]);
     }
 
     protected function createPage(?User $user = null): Article
     {
         $user ??= User::factory()->create();
 
-        return Article::factory()->create([
-            'user_id' => $user->id,
-            'post_type' => ArticlePostType::Page,
-            'status' => ArticleStatus::Publish,
-            'title' => 'test_page',
-            'contents' => [
-                'sections' => [['type' => 'text', 'text' => 'test page text']],
-            ],
-        ]);
+        return Article::factory()->page()->publish()->create(['user_id' => $user->id]);
     }
 
     protected function createMarkdown(?User $user = null): Article
     {
         $user ??= User::factory()->create();
 
-        return Article::factory()->markdown()->create([
-            'user_id' => $user->id,
-            'status' => ArticleStatus::Publish,
-        ]);
+        return Article::factory()->markdown()->publish()->create(['user_id' => $user->id]);
     }
 
     protected function createAnnounce(?User $user = null): Article
     {
         $user ??= User::factory()->create();
-        $article = Article::factory()->page()->create([
-            'user_id' => $user->id,
-            'status' => ArticleStatus::Publish,
-        ]);
+        $article = Article::factory()->page()->publish()->create(['user_id' => $user->id]);
         $category = Category::firstOrCreate(['type' => CategoryType::Page, 'slug' => 'announce']);
         $article->categories()->save($category);
 
@@ -150,10 +128,7 @@ abstract class TestCase extends BaseTestCase
     protected function createMarkdownAnnounce(?User $user = null): Article
     {
         $user ??= User::factory()->create();
-        $article = Article::factory()->markdown()->create([
-            'user_id' => $user->id,
-            'status' => ArticleStatus::Publish,
-        ]);
+        $article = Article::factory()->markdown()->publish()->create(['user_id' => $user->id]);
         $category = Category::firstOrCreate(['type' => CategoryType::Page, 'slug' => 'announce']);
         $article->categories()->save($category);
 

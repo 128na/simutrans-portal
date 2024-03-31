@@ -29,14 +29,14 @@ class PaginateByPakAddonCategoryTest extends TestCase
 
         $this->pak = Category::factory()->create(['type' => CategoryType::Pak]);
         $this->addon = Category::factory()->create(['type' => CategoryType::Addon]);
-        $this->article = Article::factory()->create();
+        $this->article = Article::factory()->publish()->create();
         $this->article->categories()->sync([$this->pak->id, $this->addon->id]);
     }
 
     public function test(): void
     {
-        tap(Article::factory()->create(), fn ($a) => $a->categories()->sync([$this->pak->id]));
-        tap(Article::factory()->create(), fn ($a) => $a->categories()->sync([$this->addon->id]));
+        tap(Article::factory()->publish()->create(), fn ($a) => $a->categories()->sync([$this->pak->id]));
+        tap(Article::factory()->publish()->create(), fn ($a) => $a->categories()->sync([$this->addon->id]));
 
         $res = $this->repository->paginateByPakAddonCategory($this->pak, $this->addon);
 

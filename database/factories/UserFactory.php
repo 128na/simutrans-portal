@@ -18,9 +18,9 @@ class UserFactory extends Factory
         return [
             'role' => UserRole::User,
             'name' => $this->faker->name(),
-            'nickname' => null,
+            'nickname' => 'dummy_'.$this->faker->randomNumber(8),
             'invited_by' => null,
-            'invitation_code' => null,
+            'invitation_code' => Str::random(10),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password

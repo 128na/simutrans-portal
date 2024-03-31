@@ -123,6 +123,6 @@ class ArticleService extends Service
 
     public function prArticle(): ?Article
     {
-        return $this->articleRepository->getRandomPr();
+        return $this->articleRepository->findRandomPR();
     }
 }

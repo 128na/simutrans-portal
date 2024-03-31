@@ -6,10 +6,16 @@ namespace App\Services\Notification;
 
 use App\Models\Article;
 use App\Services\Service;
+use Carbon\Carbon;
 use Exception;
 
 class MessageGenerator extends Service
 {
+    public function __construct(private readonly Carbon $carbon)
+    {
+
+    }
+
     public function buildPublishedMessage(Article $article): string
     {
         return __('notification.article.create', $this->getParams($article));
@@ -37,7 +43,7 @@ class MessageGenerator extends Service
     {
         if ($article->user) {
             $url = route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]);
-            $now = now()->format('Y/m/d H:i');
+            $now = $this->carbon->format('Y/m/d H:i');
             $name = $article->user->name;
             $tags = collect(['simutrans'])
                 ->merge($article->categoryPaks->pluck('slug'))

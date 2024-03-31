@@ -16,12 +16,7 @@ jobs:
                   # Must be used to trigger workflow after push
                   token: ${{ secrets.ACCESS_TOKEN }}
 
-            - uses: shivammathur/setup-php@v2
-              with:
-                  php-version: 8.2
-                  coverage: none
-
-            - uses: "ramsey/composer-install@v3"
+            - uses: ./.github/actions/php
 
             - run: vendor/bin/rector --ansi
 

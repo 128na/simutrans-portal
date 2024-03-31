@@ -6,6 +6,7 @@ namespace Tests\Browser;
 
 use App\Jobs\Article\JobUpdateRelated;
 use Laravel\Dusk\Browser;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Browser\Pages\ArticleAddonIntroductionPage;
 use Tests\Browser\Pages\ArticleAddonPostPage;
 use Tests\Browser\Pages\ArticleMarkdownPage;
@@ -20,18 +21,15 @@ use Tests\Browser\Pages\ListUserPage;
 use Tests\Browser\Pages\MypagePage;
 use Tests\Browser\Pages\TagsPage;
 use Tests\Browser\Pages\TopPage;
-use Tests\DuskTestCase;
 
-class PageTest extends DuskTestCase
+class PageTest extends TestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
     }
 
-    /**
-     * @dataProvider dataPages
-     */
+    #[DataProvider('dataPages')]
     public function testPages(string $pageClass): void
     {
         $page = new $pageClass();

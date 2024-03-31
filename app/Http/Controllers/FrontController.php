@@ -14,6 +14,7 @@ use App\Services\Front\ArticleService;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -60,6 +61,11 @@ class FrontController extends Controller
         return view('front.spa', ['meta' => $meta]);
     }
 
+    private function getPublicDisk(): FilesystemAdapter
+    {
+        return Storage::disk('public');
+    }
+
     /**
      * SPA内からのアドオンダウンロード
      */
@@ -74,7 +80,7 @@ class FrontController extends Controller
 
         abort_unless($article->has_file && $article->file, 404);
 
-        return Storage::disk('public')->download(
+        return $this->getPublicDisk()->download(
             $article->file->path,
             $article->file->original_name
         );
@@ -89,14 +95,14 @@ class FrontController extends Controller
         abort_unless($article->is_addon_post, 404);
         abort_unless($article->has_file && $article->file, 404);
 
-        logger('downloadFromExternal', [
+        logger('[FrontController] downloadFromExternal', [
             'articleId' => $article->id,
             'remoteAddr' => $request->server('REMOTE_ADDR', 'N/A'),
             'referer' => $request->server('HTTP_REFERER', 'N/A'),
             'UA' => $request->server('HTTP_USER_AGENT', 'N/A'),
         ]);
 
-        return Storage::disk('public')->download(
+        return $this->getPublicDisk()->download(
             $article->file->path,
             $article->file->original_name
         );

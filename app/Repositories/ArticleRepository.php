@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Enums\ArticleAnalyticsType;
 use App\Enums\ArticleStatus;
+use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
 use Carbon\CarbonImmutable;
-use Closure;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -70,8 +71,8 @@ class ArticleRepository extends BaseRepository
      */
     public function syncArticles(Article $article, array $articleIds): void
     {
-        $result = $article->articles()->sync(Article::find($articleIds));
-        logger('syncArticles', $result);
+        $result = $article->articles()->sync($articleIds);
+        logger('[ArticleRepository] syncArticles', $result);
     }
 
     /**
@@ -98,10 +99,16 @@ class ArticleRepository extends BaseRepository
      * アナリティクス用のデータ取得.
      *
      * @param  array<int|string>  $ids
+     * @param  array<string>  $period
      * @return Collection<int, Article>
      */
-    public function findAllForAnalytics(User $user, array $ids, Closure $periodQuery): Collection
+    public function findAllForAnalytics(User $user, array $ids, ArticleAnalyticsType $articleAnalyticsType, array $period): Collection
     {
+        $periodQuery = function ($query) use ($articleAnalyticsType, $period): void {
+            $query->select('article_id', 'count', 'period')
+                ->where('type', $articleAnalyticsType)->whereBetween('period', $period);
+        };
+
         /** @var Collection<int, Article> */
         return $this->model
             ->query()
@@ -226,6 +233,9 @@ class ArticleRepository extends BaseRepository
             : $q->paginate();
     }
 
+    /**
+     * @return Builder<Article>
+     */
     private function queryByPakAddonCategory(Category $pak, Category $addon, string $order): Builder
     {
         return $this->model
@@ -244,7 +254,6 @@ class ArticleRepository extends BaseRepository
      */
     public function paginateByPakAddonCategory(Category $pak, Category $addon, string $order = 'modified_at'): LengthAwarePaginator
     {
-        /** @var LengthAwarePaginator<Article> */
         return $this->queryByPakAddonCategory($pak, $addon, $order)->paginate();
     }
 
@@ -259,7 +268,7 @@ class ArticleRepository extends BaseRepository
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
-            ->whereDoesntHave('categories', fn ($query) => $query->where('type', 'addon'))
+            ->whereDoesntHave('categories', fn ($query) => $query->where('type', CategoryType::Addon))
             ->orderBy($order, 'desc')
             ->paginate();
     }
@@ -329,6 +338,11 @@ class ArticleRepository extends BaseRepository
         return $this->queryBySearch($word, $order)->paginate();
     }
 
+    /**
+     * リンク切れチェック対象の記事.
+     *
+     * @return LazyCollection<Article>
+     */
     public function cursorCheckLink(): LazyCollection
     {
         return $this->model
@@ -383,21 +397,14 @@ class ArticleRepository extends BaseRepository
     }
 
     /**
-     * @param  array<string>  $titles
-     * @return Collection<int, Article>
-     */
-    public function findByTitles(array $titles): Collection
-    {
-        /** @var Collection<int, Article> */
-        return $this->model->active()->whereIn('title', $titles)->get();
-    }
-
-    /**
+     * PV数順の記事
+     *
      * @return LazyCollection<Article>
      */
     public function fetchAggregatedRanking(CarbonImmutable $datetime): LazyCollection
     {
         return $this->model
+            ->active()
             ->addon()
             ->select('articles.*')
             ->leftJoin('view_counts as d', fn (JoinClause $joinClause) => $joinClause
@@ -424,6 +431,8 @@ class ArticleRepository extends BaseRepository
     }
 
     /**
+     * 指定時刻を過ぎた予約記事
+     *
      * @return LazyCollection<Article>
      */
     public function cursorReservations(CarbonImmutable $date): LazyCollection
@@ -434,7 +443,10 @@ class ArticleRepository extends BaseRepository
             ->cursor();
     }
 
-    public function getRandomPr(): ?Article
+    /**
+     * ランダムなPR記事
+     */
+    public function findRandomPR(): ?Article
     {
         return $this->model
             ->active()

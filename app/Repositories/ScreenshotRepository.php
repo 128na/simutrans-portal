@@ -88,6 +88,6 @@ class ScreenshotRepository extends BaseRepository
     public function syncArticles(Screenshot $screenshot, array $articleIds): void
     {
         $result = $screenshot->articles()->sync(Article::find($articleIds));
-        logger('syncArticles', $result);
+        logger('[ScreenshotRepository] syncArticles', $result);
     }
 }

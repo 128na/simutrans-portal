@@ -13,6 +13,7 @@ use App\Repositories\ArticleRepository;
 use App\Services\Service;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\LazyCollection;
+use Illuminate\Support\Sleep;
 
 class DeadLinkChecker extends Service
 {
@@ -57,7 +58,7 @@ class DeadLinkChecker extends Service
 
         foreach ($blackList as $b) {
             if (stripos($url, $b) !== false) {
-                logger('blacklist url', [$url]);
+                logger('[DeadLinkChecker] blacklist url', [$url]);
 
                 return true;
             }
@@ -77,8 +78,8 @@ class DeadLinkChecker extends Service
                 }
             }
 
-            logger('status check failed.', [$url, ...$info]);
-            sleep($intervalsec);
+            logger('[DeadLinkChecker] status check failed.', [$url, ...$info]);
+            Sleep::for($intervalsec)->second();
         }
 
         DeadLinkDetected::dispatch($article);

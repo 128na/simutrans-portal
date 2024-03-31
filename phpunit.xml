@@ -8,12 +8,6 @@
     <testsuite name="Feature">
       <directory suffix="Test.php">./tests/Feature</directory>
     </testsuite>
-    <testsuite name="OldUnit">
-      <directory suffix="Test.php">./tests/OldUnit</directory>
-    </testsuite>
-    <testsuite name="OldFeature">
-      <directory suffix="Test.php">./tests/OldFeature</directory>
-    </testsuite>
   </testsuites>
   <php>
     <server name="APP_ENV" value="testing"/>

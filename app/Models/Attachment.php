@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 
 class Attachment extends Model
@@ -47,7 +48,7 @@ class Attachment extends Model
 
     public function deleteFileHandler(): ?bool
     {
-        return Storage::disk('public')->delete($this->path);
+        return $this->getPublicDisk()->delete($this->path);
     }
 
     /*
@@ -77,7 +78,7 @@ class Attachment extends Model
      */
     public function getPathExistsAttribute(): bool
     {
-        return Storage::disk('public')->exists($this->path);
+        return $this->getPublicDisk()->exists($this->path);
     }
 
     public function getIsImageAttribute(): bool
@@ -87,7 +88,7 @@ class Attachment extends Model
 
     public function getTypeAttribute(): string
     {
-        $mime = Storage::disk('public')->mimeType($this->path) ?: '';
+        $mime = $this->getPublicDisk()->mimeType($this->path) ?: '';
 
         if (stripos((string) $mime, 'image') !== false) {
             return 'image';
@@ -106,7 +107,7 @@ class Attachment extends Model
 
     public function getIsPngAttribute(): bool
     {
-        $mime = Storage::disk('public')->mimeType($this->path) ?: '';
+        $mime = $this->getPublicDisk()->mimeType($this->path) ?: '';
 
         return stripos((string) $mime, 'image/png') !== false;
     }
@@ -114,26 +115,26 @@ class Attachment extends Model
     public function getThumbnailAttribute(): string
     {
         return match ($this->type) {
-            'image' => Storage::disk('public')->url($this->path),
-            'zip' => Storage::disk('public')->url(DefaultThumbnail::ZIP),
-            'movie' => Storage::disk('public')->url(DefaultThumbnail::MOVIE),
-            default => Storage::disk('public')->url(DefaultThumbnail::FILE),
+            'image' => $this->getPublicDisk()->url($this->path),
+            'zip' => $this->getPublicDisk()->url(DefaultThumbnail::ZIP),
+            'movie' => $this->getPublicDisk()->url(DefaultThumbnail::MOVIE),
+            default => $this->getPublicDisk()->url(DefaultThumbnail::FILE),
         };
     }
 
     public function getUrlAttribute(): string
     {
-        return Storage::disk('public')->url($this->path);
+        return $this->getPublicDisk()->url($this->path);
     }
 
     public function getFullPathAttribute(): string
     {
-        return Storage::disk('public')->path($this->path);
+        return $this->getPublicDisk()->path($this->path);
     }
 
     public function getFileContentsAttribute(): ?string
     {
-        return Storage::disk('public')->get($this->path);
+        return $this->getPublicDisk()->get($this->path);
     }
 
     public function getExtensionAttribute(): string
@@ -144,5 +145,10 @@ class Attachment extends Model
         }
 
         return '';
+    }
+
+    private function getPublicDisk(): FilesystemAdapter
+    {
+        return Storage::disk('public');
     }
 }

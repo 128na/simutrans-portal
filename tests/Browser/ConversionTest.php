@@ -9,9 +9,8 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
 use Laravel\Dusk\Browser;
-use Tests\DuskTestCase;
 
-class ConversionTest extends DuskTestCase
+class ConversionTest extends TestCase
 {
     private Article $article1;
 

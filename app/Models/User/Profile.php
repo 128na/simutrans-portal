@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
@@ -85,8 +86,13 @@ class Profile extends Model
 
     public function getAvatarUrlAttribute(): string
     {
-        return Storage::disk('public')->url($this->has_avatar && $this->avatar
+        return $this->getPublicDisk()->url($this->has_avatar && $this->avatar
             ? $this->avatar->path
             : DefaultThumbnail::NO_AVATAR);
+    }
+
+    private function getPublicDisk(): FilesystemAdapter
+    {
+        return Storage::disk('public');
     }
 }

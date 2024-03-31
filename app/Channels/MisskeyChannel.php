@@ -26,7 +26,7 @@ class MisskeyChannel extends BaseChannel
         try {
             $text = $this->buildMessage($article, $sendArticleNotification);
             $result = $this->misskeyApiClient->send($text);
-            logger('misskey', [$result]);
+            logger('[MisskeyChannel]', [$result]);
         } catch (Throwable $throwable) {
             report($throwable);
         }

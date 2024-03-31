@@ -15,7 +15,7 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        if (request()->input('only_image')) {
+        if ($this->input('only_image')) {
             return [
                 'files' => 'required|array|max:10',
                 'files.*' => 'required|file|image',

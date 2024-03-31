@@ -151,17 +151,18 @@ class ArticleEditorService extends Service
 
     public function updateArticle(Article $article, UpdateRequest $updateRequest): Article
     {
+        $articleStatus = ArticleStatus::from((string) $updateRequest->string('article.status', ''));
         $data = [
             'title' => $updateRequest->input('article.title'),
             'slug' => $updateRequest->input('article.slug'),
-            'status' => $updateRequest->input('article.status'),
+            'status' => $articleStatus,
             'contents' => $updateRequest->input('article.contents'),
         ];
         if ($article->is_reservation) {
             $data['published_at'] = $this->getPublishedAt($updateRequest);
         }
 
-        if ($this->inactiveToPublish($article, $updateRequest)) {
+        if ($this->inactiveToPublish($article, $articleStatus)) {
             $data['published_at'] = $this->getPublishedAt($updateRequest);
         }
 
@@ -178,12 +179,9 @@ class ArticleEditorService extends Service
         return $article;
     }
 
-    private function inactiveToPublish(Article $article, UpdateRequest $updateRequest): bool
+    private function inactiveToPublish(Article $article, ArticleStatus $articleStatus): bool
     {
-        return $article->is_inactive
-            && (ArticleStatus::from((string) $updateRequest->string('article.status', '')) === ArticleStatus::Publish
-            || ArticleStatus::from((string) $updateRequest->string('article.status', '')) === ArticleStatus::Reservation
-            );
+        return $article->is_inactive && ($articleStatus === ArticleStatus::Publish || $articleStatus === ArticleStatus::Reservation);
     }
 
     private function shouldUpdateModifiedAt(UpdateRequest $updateRequest): bool
@@ -203,7 +201,7 @@ class ArticleEditorService extends Service
             ->toArray();
         $this->articleRepository->syncAttachments($article, $attachmentIds);
         $articleIds = $baseRequest->input('article.articles.*.id', []);
-        logger('articleIds', [$articleIds]);
+        logger('[ArticleEditorService] articleIds', [$articleIds]);
         $this->articleRepository->syncArticles($article, $articleIds);
 
         // カテゴリ

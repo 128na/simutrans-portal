@@ -61,7 +61,7 @@ class TwitterV2Api extends TwitterOAuth
             throw new PKCETokenNotFoundException();
         }
 
-        logger('token expired, refresh');
+        logger('[TwitterV2Api] token expired, refresh');
 
         try {
             return $this->pKCEService->refreshToken($token);

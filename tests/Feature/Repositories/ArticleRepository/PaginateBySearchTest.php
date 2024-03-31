@@ -1,0 +1,73 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Repositories\ArticleRepository;
+
+use App\Enums\ArticleStatus;
+use App\Models\Article;
+use App\Models\Attachment\FileInfo;
+use App\Repositories\ArticleRepository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Tests\Feature\TestCase;
+
+class PaginateBySearchTest extends TestCase
+{
+    private ArticleRepository $repository;
+
+    private Article $article;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->repository = app(ArticleRepository::class);
+        $this->article = Article::factory()->publish()->create();
+    }
+
+    public function test(): void
+    {
+        Article::factory()->publish()->create();
+        $res = $this->repository->paginateBySearch($this->article->title);
+
+        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
+        $this->assertEquals(1, $res->count(), 'マッチする記事のみ取得出来ること');
+    }
+
+    public function testコンテンツ(): void
+    {
+        $this->article->update(['contents' => ['description' => 'find me']]);
+        $res = $this->repository->paginateBySearch('find');
+
+        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
+        $this->assertEquals(1, $res->count(), 'コンテンツにマッチする記事が取得出来ること');
+    }
+
+    public function test添付ファイル情報(): void
+    {
+        $attachment = $this->createAttachment($this->article->user);
+        $attachment->fileInfo()->save(new FileInfo(['data' => ['find me']]));
+        $this->article->attachments()->save($attachment);
+        $res = $this->repository->paginateBySearch('find');
+
+        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
+        $this->assertEquals(1, $res->count(), '添付ファイル情報にマッチする記事が取得出来ること');
+    }
+
+    public function test公開以外のステータス(): void
+    {
+        $this->article->update(['status' => ArticleStatus::Draft]);
+        $res = $this->repository->paginateBySearch($this->article->title);
+
+        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
+        $this->assertEquals(0, $res->count(), '非公開記事は取得できないこと');
+    }
+
+    public function test論理削除(): void
+    {
+        $this->article->delete();
+        $res = $this->repository->paginateBySearch($this->article->title);
+
+        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
+        $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');
+    }
+}

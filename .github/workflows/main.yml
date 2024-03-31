@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        test_suite: [Unit, Feature, OldUnit, OldFeature]
+        test_suite: [Unit, Feature, OldFeature]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -74,7 +74,6 @@ jobs:
           path: storage/logs
 
   dusk:
-    needs: [es, pint, stan]
     runs-on: ubuntu-latest
     steps:
       - name: install japanese font
@@ -120,7 +119,6 @@ jobs:
             storage/logs
 
   cy:
-    needs: [es, pint, stan]
     runs-on: ubuntu-latest
     steps:
       - name: install japanese font

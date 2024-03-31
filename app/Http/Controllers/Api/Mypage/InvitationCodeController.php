@@ -31,7 +31,7 @@ class InvitationCodeController extends Controller
      */
     public function index(): Invites
     {
-        $invites = $this->userRepository->getInvites($this->loggedinUser());
+        $invites = $this->userRepository->findInvites($this->loggedinUser());
 
         return new Invites($invites);
     }

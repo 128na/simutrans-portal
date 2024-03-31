@@ -29,7 +29,7 @@ class BlueSkyChannel extends BaseChannel
         try {
             $post = $this->buildMessage($article, $sendArticleNotification);
             $result = $this->blueSkyApiClient->send($post);
-            logger('blueSky', [$result->getUri()]);
+            logger('[BlueSkyChannel]', [$result->getUri()]);
         } catch (Throwable $throwable) {
             report($throwable);
         }

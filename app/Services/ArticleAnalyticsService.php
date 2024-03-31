@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\ArticleAnalyticsType;
 use App\Http\Requests\Api\ArticleAnalytics\SearchRequest;
 use App\Models\Article;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable as Carbon;
-use Closure;
 use Illuminate\Database\Eloquent\Collection;
 use UnexpectedValueException;
 
@@ -28,21 +28,10 @@ class ArticleAnalyticsService extends Service
         $endDate = new Carbon($searchRequest->end_date);
         $type = $searchRequest->type;
         $ids = $searchRequest->ids;
-
-        $periodQuery = $this->getPeriodQuery($type, $startDate, $endDate);
-
-        return $this->articleRepository->findAllForAnalytics($user, $ids, $periodQuery);
-    }
-
-    private function getPeriodQuery(string $type, Carbon $startDate, Carbon $endDate): Closure
-    {
+        $typeId = $this->getTypeId($type);
         $period = $this->getPeriod($type, $startDate, $endDate);
-        $type_id = $this->getTypeId($type);
 
-        return function ($query) use ($type_id, $period): void {
-            $query->select('article_id', 'count', 'period')
-                ->where('type', $type_id)->whereBetween('period', $period);
-        };
+        return $this->articleRepository->findAllForAnalytics($user, $ids, $typeId, $period);
     }
 
     /**
@@ -58,12 +47,12 @@ class ArticleAnalyticsService extends Service
         };
     }
 
-    private function getTypeId(string $type): int
+    private function getTypeId(string $type): ArticleAnalyticsType
     {
         return match ($type) {
-            'daily' => 1,
-            'monthly' => 2,
-            'yearly' => 3,
+            'daily' => ArticleAnalyticsType::Daily,
+            'monthly' => ArticleAnalyticsType::Monthly,
+            'yearly' => ArticleAnalyticsType::Yearly,
             default => throw new UnexpectedValueException(sprintf('unknown type provided: %s', $type)),
         };
     }

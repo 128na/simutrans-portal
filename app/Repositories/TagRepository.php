@@ -53,8 +53,10 @@ class TagRepository extends BaseRepository
      */
     public function deleteUnrelated(): int
     {
-        return $this->model->leftJoin('article_tag', 'tags.id', '=', 'article_tag.tag_id')
-            ->whereNull('article_id')
-            ->delete();
+        $tagIds = $this->model
+            ->doesntHave('articles')
+            ->pluck('id');
+
+        return $this->model->whereIn('id', $tagIds)->delete();
     }
 }

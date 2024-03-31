@@ -55,6 +55,10 @@ Route::prefix('mypage')->group(function (): void {
         Route::get('attachments', [AttachmentController::class, 'index']);
         Route::get('articles', [EditorController::class, 'index']);
         Route::get('options', [EditorController::class, 'options']);
+        Route::get('/invitation_code', [InvitationCodeController::class, 'index']);
+        Route::get('/screenshots', (new ScreenshotController())->index(...));
+        // ログイン履歴
+        Route::get('/login_histories', (new LoginHistoryController())->index(...));
     });
     // メール認証必須
     Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {
@@ -72,16 +76,12 @@ Route::prefix('mypage')->group(function (): void {
         // 一括DL機能
         Route::get('/bulk-zip', [BulkZipController::class, 'user']);
         // 招待機能
-        Route::get('/invitation_code', [InvitationCodeController::class, 'index']);
         Route::post('/invitation_code', [InvitationCodeController::class, 'update']);
         Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy']);
         // スクリーンショット機能
-        Route::get('/screenshots', (new ScreenshotController())->index(...));
         Route::post('/screenshots', (new ScreenshotController())->store(...))->middleware('restrict:update_screenshot');
         Route::put('/screenshots/{screenshot}', (new ScreenshotController())->update(...))->middleware('restrict:update_screenshot');
         Route::delete('/screenshots/{screenshot}', (new ScreenshotController())->destroy(...))->middleware('restrict:update_screenshot');
-        // ログイン履歴
-        Route::get('/login_histories', (new LoginHistoryController())->index(...));
     });
 });
 // Admin

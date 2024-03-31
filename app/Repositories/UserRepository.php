@@ -66,7 +66,7 @@ class UserRepository extends BaseRepository
     /**
      * @return Collection<int, User>
      */
-    public function getInvites(User $user): Collection
+    public function findInvites(User $user): Collection
     {
         return $user->invites()->get();
     }

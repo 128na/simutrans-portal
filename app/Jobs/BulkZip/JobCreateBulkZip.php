@@ -43,7 +43,7 @@ class JobCreateBulkZip implements ShouldQueue
             $bulkZipRepository->update($this->bulkZip, ['generated' => true, 'path' => $path]);
 
         } catch (\Throwable $throwable) {
-            logger()->error('JobCreateBulkZip failed', ['id' => $this->bulkZip->id]);
+            logger()->error('[JobCreateBulkZip] failed', ['id' => $this->bulkZip->id]);
             $this->bulkZip->delete();
             report($throwable);
         }

@@ -1,0 +1,62 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Controllers\Api\Mypage\BulkZipController;
+
+use App\Jobs\BulkZip\JobCreateBulkZip;
+use App\Models\BulkZip;
+use App\Models\User;
+use Illuminate\Support\Facades\Bus;
+use Tests\Feature\TestCase;
+
+class UserTest extends TestCase
+{
+    private User $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+    }
+
+    protected function tearDown(): void
+    {
+        BulkZip::all()->map(fn ($bz) => $bz->delete());
+        parent::tearDown();
+    }
+
+    public function test(): void
+    {
+        $url = '/api/mypage/bulk-zip';
+        $this->actingAs($this->user);
+
+        Bus::fake();
+        $response = $this->getJson($url);
+        $response->assertOk();
+        Bus::assertDispatched(JobCreateBulkZip::class);
+    }
+
+    public function test作成済み(): void
+    {
+        Bus::fake();
+        BulkZip::factory()->create([
+            'bulk_zippable_id' => $this->user->id,
+            'bulk_zippable_type' => User::class,
+        ]);
+        $url = '/api/mypage/bulk-zip';
+
+        $this->actingAs($this->user);
+        $response = $this->getJson($url);
+        $response->assertOk();
+        Bus::assertNotDispatched(JobCreateBulkZip::class);
+    }
+
+    public function test未ログイン(): void
+    {
+        $url = '/api/mypage/bulk-zip';
+
+        $response = $this->getJson($url);
+        $response->assertUnauthorized();
+    }
+}

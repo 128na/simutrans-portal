@@ -82,7 +82,7 @@ class PKCEService
 
         $data = json_decode($response->getBody()->getContents(), true);
 
-        logger('generateToken::data', $data);
+        logger('[PKCEService] generateToken', $data);
 
         return $this->oauthTokenRepository->updateOrCreate(
             ['application' => 'twitter'],

@@ -33,17 +33,17 @@ class FindOrFailWithTrashedTest extends TestCase
     public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => ArticleStatus::Draft]);
-        $res = $this->repository->findOrFailWithTrashed($this->article->id);
+        $article = $this->repository->findOrFailWithTrashed($this->article->id);
 
-        $this->assertInstanceOf(Article::class, $res);
+        $this->assertInstanceOf(Article::class, $article);
     }
 
     public function test論理削除(): void
     {
         $this->article->delete();
-        $res = $this->repository->findOrFailWithTrashed($this->article->id);
+        $article = $this->repository->findOrFailWithTrashed($this->article->id);
 
-        $this->assertInstanceOf(Article::class, $res);
+        $this->assertInstanceOf(Article::class, $article);
     }
 
     public function testNotFound(): void

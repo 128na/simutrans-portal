@@ -193,7 +193,7 @@ return [
         App\Providers\TwitterOauthProvider::class,
 
         // discord notifiaction
-        NotificationChannels\Discord\DiscordServiceProvider::class,
+        // NotificationChannels\Discord\DiscordServiceProvider::class,
         // auth
         App\Providers\FortifyServiceProvider::class,
     ],

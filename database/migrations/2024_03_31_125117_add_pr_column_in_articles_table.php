@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('articles', function (Blueprint $table) {
-            $table->boolean('pr')->default(false)->after('status')->comment('PR記事');
+        Schema::table('articles', function (Blueprint $blueprint): void {
+            $blueprint->boolean('pr')->default(false)->after('status')->comment('PR記事');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('articles', function (Blueprint $table) {
-            $table->dropColumn(['pr']);
+        Schema::table('articles', function (Blueprint $blueprint): void {
+            $blueprint->dropColumn(['pr']);
         });
     }
 };

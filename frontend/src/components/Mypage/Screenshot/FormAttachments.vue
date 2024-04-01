@@ -1,7 +1,7 @@
 <template>
   <draggable v-model="editor.screenshot.attachments" item-key="id" class="row q-gutter-sm">
     <template #item="{ element, index }">
-      <div class="">
+      <div>
         <a :href="mypage.findAttachmentById(element.id)?.url" target="_blank" rel="noreferrer noopener">
           <q-img :src="mypage.findAttachmentById(element.id)?.url" width="256px" />
         </a>
@@ -46,7 +46,10 @@ export default defineComponent({
         return editor.screenshot.attachments.map((a) => a.id);
       },
       set(ids) {
-        editor.screenshot.attachments = ids.map((id) => mypage.findAttachmentById(id));
+        editor.screenshot.attachments = ids.map((id, index) => {
+          const attachment = mypage.findAttachmentById(id);
+          return { ...attachment, caption: editor.screenshot.attachments[index]?.caption ?? '' };
+        });
       },
     });
     watchEffect(() => {

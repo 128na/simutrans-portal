@@ -32,14 +32,19 @@ class StoreService extends Service
 
     private function isImage(UploadedFile $uploadedFile): bool
     {
-        $mime = $uploadedFile->getMimeType() ?? '';
-
-        return Str::contains($mime, [
-            'image',
+        return Str::contains($this->getMime($uploadedFile), [
+            'image/',
             'gif',
             'png',
             'jpeg',
+            'bmp',
+            'webp',
         ], false);
+    }
+
+    private function getMime(UploadedFile $uploadedFile): string
+    {
+        return $uploadedFile->getMimeType() ?? '';
     }
 
     /**
@@ -50,6 +55,7 @@ class StoreService extends Service
         try {
             $filepath = Storage::disk('public')->put('user/'.$user->id, $uploadedFile);
             if ($crop && $fullpath = realpath(storage_path('app/public/'.$filepath))) {
+                logger('crop', $crop);
                 try {
                     $this->imageCropper->crop($fullpath, ...$crop);
                 } catch (ConvertFailedException) {

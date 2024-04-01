@@ -31,12 +31,12 @@ class AttachmentController extends Controller
 
     public function store(StoreRequest $storeRequest): AttachmentsResource
     {
-        $crop = [
+        $crop = $storeRequest->has('crop') ? [
             $storeRequest->integer('crop.top', 0),
             $storeRequest->integer('crop.bottom', 0),
             $storeRequest->integer('crop.left', 0),
             $storeRequest->integer('crop.right', 0),
-        ];
+        ] : [];
 
         /** @var array<int,\Illuminate\Http\UploadedFile> */
         $files = $storeRequest->file('files', []);

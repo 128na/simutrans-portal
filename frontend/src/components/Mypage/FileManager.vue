@@ -169,6 +169,15 @@ export default defineComponent({
       try {
         const res = await deleteAttachment(id);
         mypage.attachments = res.data.data;
+
+        if (isMultiSelect.value) {
+          emit('update:model-value', props.modelValue.filter((v) => v !== id));
+        } else {
+          if (props.modelValue === id) {
+            emit('update:model-value', null);
+          }
+        }
+
         notify.success('削除しました');
       } catch (error) {
         notify.failed('削除に失敗しました');

@@ -93,6 +93,13 @@
       <q-item-section>ログイン</q-item-section>
     </q-item>
     <q-separator />
+    <q-item clickable :href="SUPPORT_SITE_URL" target="_blank">
+      <q-item-section avatar>
+        <q-icon name="help" />
+      </q-item-section>
+      <q-item-section>サイトの使い方</q-item-section>
+    </q-item>
+    <q-separator />
     <MetaInfo />
   </q-list>
 </template>
@@ -101,6 +108,7 @@
 import { useAuthStore } from 'src/store/auth';
 import { defineComponent } from 'vue';
 import MetaInfo from 'src/components/Common/MetaInfo.vue';
+import { SUPPORT_SITE_URL } from 'src/const';
 
 export default defineComponent({
   name: 'MypageMenu',
@@ -113,6 +121,7 @@ export default defineComponent({
     const store = useAuthStore();
     return {
       store,
+      SUPPORT_SITE_URL,
     };
   },
 });

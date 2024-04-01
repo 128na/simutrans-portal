@@ -55,4 +55,5 @@ export const ANALYTICS_AXES = [
 export const BULK_ZIP_RETRY_INTERVAL = 5000;
 export const BULK_ZIP_RETRY_LIMIT = 60;
 
-export const ADMIN_NICKNAME = 'admin';
+export const SUPPORT_SITE_URL = 'https://www.notion.so/simutrans-intro/Simutrans-Addon-Portal-c8d0ab13507d4fedace504eaac1c733e';
+export const PRIVACY_POLICY_URL = 'https://simutrans-intro.notion.site/512f33db6dd94a1ca51d2607408caf33';

@@ -4,23 +4,28 @@ declare(strict_types=1);
 
 namespace App\Services\Attachment;
 
+use App\Enums\CroppableFormat;
 use App\Services\Service;
 
 class ImageCropper extends Service
 {
+    private function getMime(string $fullpath): ?CroppableFormat
+    {
+        return CroppableFormat::tryFrom(mime_content_type($fullpath) ?: '');
+    }
+
     public function crop(string $fullpath, int $top = 0, int $bottom = 0, int $left = 0, int $right = 0): void
     {
-        $type = mime_content_type($fullpath);
-        if (! $type) {
-            throw new ConvertFailedException('mime_content_type failed:'.$fullpath);
+        $mime = $this->getMime($fullpath);
+        if (! $mime) {
+            throw new ConvertFailedException('unsupport format:'.$fullpath);
         }
-        $im = match ($type) {
-            'image/png' => imagecreatefrompng($fullpath),
-            'image/jpeg' => imagecreatefromjpeg($fullpath),
-            'image/gif' => imagecreatefromgif($fullpath),
-            'image/webp' => imagecreatefromwebp($fullpath),
-            'image/bmp' => imagecreatefrombmp($fullpath),
-            default => throw new ConvertFailedException('unsupport format:'.$fullpath),
+        $im = match ($mime) {
+            CroppableFormat::PNG => imagecreatefrompng($fullpath),
+            CroppableFormat::JPEG => imagecreatefromjpeg($fullpath),
+            CroppableFormat::GIF => imagecreatefromgif($fullpath),
+            CroppableFormat::WEBP => imagecreatefromwebp($fullpath),
+            CroppableFormat::BMP => imagecreatefrombmp($fullpath),
         };
 
         if (! $im) {
@@ -38,12 +43,12 @@ class ImageCropper extends Service
             throw new ConvertFailedException('imagecrop failed:'.$fullpath);
         }
 
-        $result = match ($type) {
-            'image/png' => imagepng($cropped, $fullpath, 9),
-            'image/bmp' => imagepng($cropped, $fullpath, 9),
-            'image/jpeg' => imagejpeg($cropped, $fullpath, 100),
-            'image/gif' => imagegif($cropped, $fullpath),
-            'image/webp' => imagewebp($cropped, $fullpath, IMG_WEBP_LOSSLESS),
+        $result = match ($mime) {
+            CroppableFormat::PNG => imagepng($cropped, $fullpath, 9),
+            CroppableFormat::BMP => imagepng($cropped, $fullpath, 9),
+            CroppableFormat::JPEG => imagejpeg($cropped, $fullpath, 100),
+            CroppableFormat::GIF => imagegif($cropped, $fullpath),
+            CroppableFormat::WEBP => imagewebp($cropped, $fullpath, IMG_WEBP_LOSSLESS),
         };
 
         imagedestroy($cropped);

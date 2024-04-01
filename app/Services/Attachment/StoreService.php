@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services\Attachment;
 
+use App\Enums\CroppableFormat;
 use App\Models\Attachment;
 use App\Models\User;
 use App\Services\Service;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class StoreService extends Service
 {
@@ -32,19 +32,12 @@ class StoreService extends Service
 
     private function isImage(UploadedFile $uploadedFile): bool
     {
-        return Str::contains($this->getMime($uploadedFile), [
-            'image/',
-            'gif',
-            'png',
-            'jpeg',
-            'bmp',
-            'webp',
-        ], false);
+        return $this->getMime($uploadedFile) instanceof CroppableFormat;
     }
 
-    private function getMime(UploadedFile $uploadedFile): string
+    private function getMime(UploadedFile $uploadedFile): ?CroppableFormat
     {
-        return $uploadedFile->getMimeType() ?? '';
+        return CroppableFormat::tryFrom($uploadedFile->getMimeType() ?? '');
     }
 
     /**

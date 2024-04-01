@@ -131,6 +131,8 @@ jobs:
         run: php -r "copy('frontend/.env.dusk.ci', 'frontend/.env');"
 
       - uses: ./.github/actions/nodejs
+        with:
+          asset-key: "dusk"
 
       - name: Run Cypress
         run: cd frontend && npm run test:e2e:ci

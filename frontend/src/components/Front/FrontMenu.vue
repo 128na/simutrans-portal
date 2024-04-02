@@ -33,10 +33,10 @@
       <q-item-section>スクリーンショット</q-item-section>
     </q-item>
     <q-separator />
-    <q-item clickable dense :to="{ name: 'show', params: { idOrNickname: adminNickname, slug: 'about' } }">
+    <q-item clickable dense :href="SUPPORT_SITE_URL" target="_blank">
       <q-item-section>サイトの使い方</q-item-section>
     </q-item>
-    <q-item clickable dense :to="{ name: 'show', params: { idOrNickname: adminNickname, slug: 'privacy' } }">
+    <q-item clickable dense :href="PRIVACY_POLICY_URL" target="_blank">
       <q-item-section>プライバシーポリシー</q-item-section>
     </q-item>
     <q-separator />
@@ -52,7 +52,7 @@ import { useFrontApi } from 'src/composables/api';
 import LoadingMessage from 'src/components/Common/Text/LoadingMessage.vue';
 import SearchForm from 'src/components/Front/SearchForm.vue';
 import { useApiHandler } from 'src/composables/apiHandler';
-import { ADMIN_NICKNAME } from 'src/const';
+import { SUPPORT_SITE_URL, PRIVACY_POLICY_URL } from 'src/const';
 
 export default defineComponent({
   name: 'FrontMenu',
@@ -86,7 +86,8 @@ export default defineComponent({
       pakAddonCounts,
       userAddonCounts,
       handler,
-      adminNickname: ADMIN_NICKNAME,
+      SUPPORT_SITE_URL,
+      PRIVACY_POLICY_URL,
     };
   },
 });

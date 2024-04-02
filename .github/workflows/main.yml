@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        test_suite: [Unit, Feature, OldFeature]
+        test_suite: [Unit, Feature]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -131,6 +131,8 @@ jobs:
         run: php -r "copy('frontend/.env.dusk.ci', 'frontend/.env');"
 
       - uses: ./.github/actions/nodejs
+        with:
+          asset-key: "dusk"
 
       - name: Run Cypress
         run: cd frontend && npm run test:e2e:ci

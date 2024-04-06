@@ -30,7 +30,11 @@ class ArticleController extends Controller
     public function update(ArticleUpdateRequest $articleUpdateRequest, int $id): Collection
     {
         $article = $this->articleRepository->findOrFailWithTrashed($id);
-        $this->articleRepository->update($article, $articleUpdateRequest->validated()['article']);
+        /**
+         * @var array{article:array<mixed>}
+         */
+        $validated = $articleUpdateRequest->validated();
+        $this->articleRepository->update($article, $validated['article']);
 
         JobUpdateRelated::dispatchSync();
 

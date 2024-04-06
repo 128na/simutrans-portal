@@ -47,7 +47,14 @@ class Cacheable
 
     private function getCache(string $key): ?string
     {
-        return Cache::has($key) ? Cache::get($key) : null;
+        if (Cache::has($key)) {
+            $data = Cache::get($key);
+            if (is_string($data)) {
+                return $data;
+            }
+        }
+
+        return null;
     }
 
     private function responseFromCache(string $cached, string $key): Response

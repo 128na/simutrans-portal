@@ -16,7 +16,10 @@ class AutoRefreshingDropBoxTokenService
             ],
         ]);
         if ($res->getStatusCode() == 200) {
-            return json_decode($res->getBody(), true)['access_token'];
+            /** @var array{access_token:string} */
+            $data = json_decode($res->getBody(), true);
+
+            return $data['access_token'];
         }
 
         throw new Exception('get refresh token failed: '.$res->getBody());

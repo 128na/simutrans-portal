@@ -8,6 +8,7 @@ use App\Repositories\RedirectRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Config;
 
 /**
  * 旧サイト -> 新サイトのリダイレクトを行う.
@@ -29,6 +30,6 @@ class RedirectController extends Controller
 
     private function getRelativePath(string $fullUrl): string
     {
-        return str_replace(config('app.url'), '', $fullUrl);
+        return str_replace(Config::string('app.url'), '', $fullUrl);
     }
 }

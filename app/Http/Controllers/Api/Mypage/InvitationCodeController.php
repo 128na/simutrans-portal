@@ -67,7 +67,7 @@ class InvitationCodeController extends Controller
             'name' => $inviteRequest->name,
             'email' => $inviteRequest->email,
             'role' => UserRole::User,
-            'password' => Hash::make($inviteRequest->password),
+            'password' => Hash::make((string) $inviteRequest->string('password')),
             'invited_by' => $user->id,
         ]);
         // なぜかオブザーバーが発火しない

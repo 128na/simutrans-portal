@@ -21,19 +21,20 @@ class ToArticleContents implements CastsAttributes
      *
      * @param  \App\Models\Article  $model
      * @param  string  $key
-     * @param  mixed  $value
+     * @param  string  $value
      * @param  array<string>  $attributes
      * @return \App\Models\Contents\Content
      */
     public function get($model, $key, $value, $attributes)
     {
-        $value = json_decode((string) $value, true);
+        /** @var array{thumbnail?:int,sections?:array<int,array{type:string,caption?:string,text?:string,url?:string,id?:int}>,markdown?:string,description?:string,file?:int,author?:string,license?:string,thanks?:string,link?:string,agreement?:bool,exclude_link_check?:bool} */
+        $data = json_decode((string) $value, true);
 
         return match ($model->post_type) {
-            ArticlePostType::AddonIntroduction => new AddonIntroductionContent($value),
-            ArticlePostType::AddonPost => new AddonPostContent($value),
-            ArticlePostType::Page => new PageContent($value),
-            ArticlePostType::Markdown => new MarkdownContent($value),
+            ArticlePostType::AddonIntroduction => new AddonIntroductionContent($data),
+            ArticlePostType::AddonPost => new AddonPostContent($data),
+            ArticlePostType::Page => new PageContent($data),
+            ArticlePostType::Markdown => new MarkdownContent($data),
         };
     }
 

@@ -31,10 +31,10 @@ class FetchAggregatedRankingTest extends TestCase
     {
         Article::factory()->page()->publish()->create();
         $time = CarbonImmutable::create(2000, 1, 2, 3, 4, 5);
-        $res = $this->repository->fetchAggregatedRanking($time);
+        $lazyCollection = $this->repository->fetchAggregatedRanking($time);
 
-        $this->assertInstanceOf(LazyCollection::class, $res);
-        $this->assertCount(2, $res, 'アドオン投稿・紹介記事のみ取得できること');
+        $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
+        $this->assertCount(2, $lazyCollection, 'アドオン投稿・紹介記事のみ取得できること');
     }
 
     public function test公開以外のステータス(): void
@@ -42,10 +42,10 @@ class FetchAggregatedRankingTest extends TestCase
         $this->article1->update(['status' => ArticleStatus::Draft]);
         $this->article2->update(['status' => ArticleStatus::Draft]);
         $time = CarbonImmutable::create(2000, 1, 2, 3, 4, 5);
-        $res = $this->repository->fetchAggregatedRanking($time);
+        $lazyCollection = $this->repository->fetchAggregatedRanking($time);
 
-        $this->assertInstanceOf(LazyCollection::class, $res);
-        $this->assertCount(0, $res, '非公開記事は取得できないこと');
+        $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
+        $this->assertCount(0, $lazyCollection, '非公開記事は取得できないこと');
     }
 
     public function test論理削除(): void
@@ -53,9 +53,9 @@ class FetchAggregatedRankingTest extends TestCase
         $this->article1->delete();
         $this->article2->delete();
         $time = CarbonImmutable::create(2000, 1, 2, 3, 4, 5);
-        $res = $this->repository->fetchAggregatedRanking($time);
+        $lazyCollection = $this->repository->fetchAggregatedRanking($time);
 
-        $this->assertInstanceOf(LazyCollection::class, $res);
-        $this->assertCount(0, $res, '削除済み記事は取得できないこと');
+        $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
+        $this->assertCount(0, $lazyCollection, '削除済み記事は取得できないこと');
     }
 }

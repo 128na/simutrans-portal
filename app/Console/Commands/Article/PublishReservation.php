@@ -43,9 +43,9 @@ class PublishReservation extends Command
      */
     public function handle(): int
     {
-        $cusror = $this->articleRepository->cursorReservations($this->now);
+        $lazyCollection = $this->articleRepository->cursorReservations($this->now);
         $changed = false;
-        foreach ($cusror as $article) {
+        foreach ($lazyCollection as $article) {
             $article->update([
                 'status' => ArticleStatus::Publish,
                 'modified_at' => $article->published_at,

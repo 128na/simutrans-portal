@@ -16,10 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount query()
- * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount whereAddonSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount whereCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount wherePakSlug($value)
  * @mixin \Eloquent
  */
 class PakAddonCount extends Model

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Models\Article;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -39,6 +40,8 @@ class SendDeadLinkDetectedEmail extends Notification implements ShouldQueue
      */
     public function toMail(mixed $notifiable)
     {
+        assert($notifiable instanceof Article);
+
         return (new MailMessage())
             ->subject(sprintf('「%s」のダウンロード先URLがリンク切れになっています', $notifiable->title))
             ->view('emails.deadlink-detected', ['article' => $notifiable]);

@@ -32,14 +32,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static Builder|Screenshot newQuery()
  * @method static Builder|Screenshot publish()
  * @method static Builder|Screenshot query()
- * @method static Builder|Screenshot whereCreatedAt($value)
- * @method static Builder|Screenshot whereDescription($value)
- * @method static Builder|Screenshot whereId($value)
- * @method static Builder|Screenshot whereLinks($value)
- * @method static Builder|Screenshot whereStatus($value)
- * @method static Builder|Screenshot whereTitle($value)
- * @method static Builder|Screenshot whereUpdatedAt($value)
- * @method static Builder|Screenshot whereUserId($value)
  * @mixin \Eloquent
  */
 class Screenshot extends Model

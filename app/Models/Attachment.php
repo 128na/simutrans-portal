@@ -43,16 +43,6 @@ use Illuminate\Support\Facades\Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|Attachment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Attachment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Attachment query()
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereAttachmentableId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereAttachmentableType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereCaption($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereOriginalName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment wherePath($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereUserId($value)
  * @mixin \Eloquent
  */
 class Attachment extends Model

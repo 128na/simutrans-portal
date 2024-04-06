@@ -135,7 +135,7 @@ class MetaOgpService extends Service
     public function screenshot(Screenshot $screenshot): array
     {
         return [
-            'title' => sprintf('『%s』by %s', $screenshot->title, $screenshot->user?->name).' - '.config('app.name'),
+            'title' => sprintf('『%s』by %s', $screenshot->title, $screenshot->user->name).' - '.config('app.name'),
             'description' => $this->trimDescription($screenshot->description),
             'image' => $screenshot->attachments()->orderBy('order', 'asc')->first()?->url,
             'card_type' => 'summary_large_image',

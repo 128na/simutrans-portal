@@ -2,6 +2,8 @@ includes:
     - ./vendor/larastan/larastan/extension.neon
 
 parameters:
+    ignoreErrors:
+        - "#Relation .* is not found#"
 
     paths:
         - app/

@@ -27,5 +27,6 @@ class AdminCheck
         }
 
         abort(401);
+        return null;
     }
 }

@@ -55,12 +55,13 @@ class TagRepository extends BaseRepository
     /**
      * 記事に関連づいていないタグを削除する.
      */
-    public function deleteUnrelated(): int
+    public function deleteUnrelated(): void
     {
+        /** @var int[] */
         $tagIds = $this->model
             ->doesntHave('articles')
             ->pluck('id');
 
-        return $this->model->whereIn('id', $tagIds)->delete();
+        $this->model->whereIn('id', $tagIds)->delete();
     }
 }

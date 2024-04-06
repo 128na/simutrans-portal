@@ -26,6 +26,12 @@ class ImageAttachment implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        if (! is_string($value) && ! is_int($value)) {
+            $fail(':attribute が正しくありません)');
+
+            return;
+        }
+
         /**
          * @var \App\Models\Attachment|null
          */

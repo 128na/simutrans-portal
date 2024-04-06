@@ -17,10 +17,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ControllOption newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ControllOption newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ControllOption query()
- * @method static \Illuminate\Database\Eloquent\Builder|ControllOption whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ControllOption whereKey($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ControllOption whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ControllOption whereValue($value)
  * @mixin \Eloquent
  */
 class ControllOption extends Model

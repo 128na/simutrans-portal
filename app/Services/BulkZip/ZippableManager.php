@@ -21,8 +21,8 @@ class ZippableManager extends Service
      */
     public function getItems(BulkZip $bulkZip): array
     {
-        return match ($bulkZip->bulk_zippable_type) {
-            User::class => $this->getUserItems($bulkZip->bulkZippable),
+        return match (true) {
+            $bulkZip->bulkZippable instanceof User => $this->getUserItems($bulkZip->bulkZippable),
             default => throw new Exception('unsupport type provided:'.$bulkZip->bulk_zippable_type, 1),
         };
     }

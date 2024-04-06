@@ -7,6 +7,7 @@ namespace App\Services\BulkZip\Decorators;
 use App\Enums\ArticlePostType;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Model;
 
 class AddonPostDecorator extends BaseDecorator
@@ -46,7 +47,7 @@ class AddonPostDecorator extends BaseDecorator
     }
 
     /**
-     * @return array<int,array<string[]>>
+     * @return array<int,array<int,string>>
      */
     private function content(Article $article): array
     {
@@ -56,22 +57,20 @@ class AddonPostDecorator extends BaseDecorator
         $contents = $article->contents;
 
         return [
-            ['ID', $article->id],
+            ['ID', (string) $article->id],
             ['タイトル', $article->title],
             ['記事URL', route('articles.show', ['userIdOrNickname' => $article->user?->nickname ?? $article->user_id, 'articleSlug' => $article->slug])],
-            [
-                'サムネイル画像', $article->has_thumbnail && $article->thumbnail
-                    ? $this->toPath($article->id, $article->thumbnail->original_name)
-                    : '無し',
+            ['サムネイル画像', $article->has_thumbnail && $article->thumbnail
+                ? $this->toPath($article->id, $article->thumbnail->original_name)
+                : '無し',
             ],
-
-            ['投稿者', $article->user->name ?? ''],
-            ['カテゴリ', ...$article->categories->map(fn (Category $category) => __(sprintf('category.%s.%s', $category->type->value, $category->slug)))->toArray()],
-            ['タグ', ...$article->tags()->pluck('name')->toArray()],
-            ['作者 / 投稿者', $contents->author],
-            ['説明', $contents->description],
-            ['謝辞・参考にしたアドオン', $contents->thanks],
-            ['ライセンス', $contents->license],
+            ['投稿者', $article->user->name],
+            ['カテゴリ', ...$article->categories->map(fn (Category $category): string => __(sprintf('category.%s.%s', $category->type->value, $category->slug)))],
+            ['タグ', ...$article->tags->map(fn (Tag $tag): string => $tag->name)],
+            ['作者 / 投稿者', $contents->author ?? ''],
+            ['説明', $contents->description ?? ''],
+            ['謝辞・参考にしたアドオン', $contents->thanks ?? ''],
+            ['ライセンス', $contents->license ?? ''],
             ['アドオンファイル', $this->toPath($article->id, $article->file->original_name ?? '')],
             ['------'],
         ];

@@ -20,11 +20,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|ConversionCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ConversionCount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ConversionCount query()
- * @method static \Illuminate\Database\Eloquent\Builder|ConversionCount whereArticleId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ConversionCount whereCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ConversionCount whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ConversionCount wherePeriod($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ConversionCount whereType($value)
  * @mixin \Eloquent
  */
 class ConversionCount extends Model

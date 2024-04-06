@@ -35,13 +35,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Category query()
  * @method static Builder|Category slug(string $slug)
  * @method static Builder|Category type(\App\Enums\CategoryType $categoryType)
- * @method static Builder|Category whereCreatedAt($value)
- * @method static Builder|Category whereId($value)
- * @method static Builder|Category whereNeedAdmin($value)
- * @method static Builder|Category whereOrder($value)
- * @method static Builder|Category whereSlug($value)
- * @method static Builder|Category whereType($value)
- * @method static Builder|Category whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Category extends Model

@@ -17,11 +17,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|FileInfo newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|FileInfo newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|FileInfo query()
- * @method static \Illuminate\Database\Eloquent\Builder|FileInfo whereAttachmentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FileInfo whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FileInfo whereData($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FileInfo whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FileInfo whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class FileInfo extends Model

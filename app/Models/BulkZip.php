@@ -26,14 +26,6 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|BulkZip newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BulkZip newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BulkZip query()
- * @method static \Illuminate\Database\Eloquent\Builder|BulkZip whereBulkZippableId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BulkZip whereBulkZippableType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BulkZip whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BulkZip whereGenerated($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BulkZip whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BulkZip wherePath($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BulkZip whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BulkZip whereUuid($value)
  * @mixin \Eloquent
  */
 class BulkZip extends Model

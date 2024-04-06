@@ -7,18 +7,17 @@ use App\Models\User;
 use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
 class UniqueSlugByUser implements DataAwareRule, ValidationRule
 {
     /**
-     * @var array<string, mixed>
+     * @var array{article?:array{id?:int}}
      */
     protected $data = [];
 
     /**
-     * @param  array<string, mixed>  $data
+     * @param  array{article?:array{id?:int}}  $data
      */
     public function setData(array $data): static
     {
@@ -55,14 +54,13 @@ class UniqueSlugByUser implements DataAwareRule, ValidationRule
      */
     private function passedForAdmin(mixed $value, Closure $fail): void
     {
-        $exists = Article::query()
-            ->where('slug', $value)
-            // exclude myself
-            ->when(
-                isset($this->data['article']['id']),
-                fn (Builder $builder) => $builder->where('id', '<>', $this->data['article']['id'])
-            )->exists();
-        if ($exists) {
+        $builder = Article::query()->where('slug', $value);
+        // exclude myself
+        if (isset($this->data['article']['id'])) {
+            $builder->where('id', '<>', $this->data['article']['id']);
+        }
+
+        if ($builder->exists()) {
             $fail('validation.unique')->translate();
         }
     }
@@ -86,15 +84,13 @@ class UniqueSlugByUser implements DataAwareRule, ValidationRule
             return;
         }
 
-        $existsInMyself = Article::query()
-            ->where('user_id', $user->id)
-            ->where('slug', $value)
-            // exclude myself
-            ->when(
-                isset($this->data['article']['id']),
-                fn (Builder $builder) => $builder->where('id', '<>', $this->data['article']['id'])
-            )->exists();
-        if ($existsInMyself) {
+        $builder = Article::query()->where('user_id', $user->id)->where('slug', $value);
+        // exclude myself
+        if (isset($this->data['article']['id'])) {
+            $builder->where('id', '<>', $this->data['article']['id']);
+        }
+
+        if ($builder->exists()) {
             $fail('validation.unique')->translate();
 
             return;

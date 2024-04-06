@@ -24,10 +24,11 @@ class ArticleAnalyticsService extends Service
      */
     public function findArticles(User $user, SearchRequest $searchRequest): Collection
     {
-        $startDate = new Carbon($searchRequest->start_date);
-        $endDate = new Carbon($searchRequest->end_date);
-        $type = $searchRequest->type;
-        $ids = $searchRequest->ids;
+        $startDate = new Carbon((string) $searchRequest->string('start_date'));
+        $endDate = new Carbon((string) $searchRequest->string('end_date'));
+        $type = (string) $searchRequest->string('type');
+        /** @var int[] */
+        $ids = $searchRequest->input('ids');
         $typeId = $this->getTypeId($type);
         $period = $this->getPeriod($type, $startDate, $endDate);
 

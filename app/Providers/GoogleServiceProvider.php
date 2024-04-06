@@ -8,6 +8,7 @@ use App\Services\Google\Recaptcha\RecaptchaService;
 use Google\Cloud\RecaptchaEnterprise\V1\Event;
 use Google\Cloud\RecaptchaEnterprise\V1\RecaptchaEnterpriseServiceClient;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 
 class GoogleServiceProvider extends ServiceProvider implements DeferrableProvider
@@ -30,11 +31,11 @@ class GoogleServiceProvider extends ServiceProvider implements DeferrableProvide
     {
         $this->app->bind(RecaptchaService::class, function (): \App\Services\Google\Recaptcha\RecaptchaService {
             $credentials = json_decode(
-                @file_get_contents(base_path(config('services.google_recaptcha.credential'))) ?: '{}',
+                @file_get_contents(base_path(Config::string('services.google_recaptcha.credential'))) ?: '{}',
                 true
             );
             $recaptchaEnterpriseServiceClient = new RecaptchaEnterpriseServiceClient(['credentials' => $credentials]);
-            $projectName = $recaptchaEnterpriseServiceClient->projectName(config('services.google_recaptcha.projectName'));
+            $projectName = $recaptchaEnterpriseServiceClient->projectName(Config::string('services.google_recaptcha.projectName'));
 
             return new RecaptchaService(
                 $recaptchaEnterpriseServiceClient,
@@ -45,7 +46,7 @@ class GoogleServiceProvider extends ServiceProvider implements DeferrableProvide
 
         $this->app->bind(Event::class, function (): \Google\Cloud\RecaptchaEnterprise\V1\Event {
             $event = new Event();
-            $event->setSiteKey(config('services.google_recaptcha.siteKey'));
+            $event->setSiteKey(Config::string('services.google_recaptcha.siteKey'));
 
             return $event;
         });

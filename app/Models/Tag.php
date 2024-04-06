@@ -31,15 +31,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Tag newQuery()
  * @method static Builder|Tag popular()
  * @method static Builder|Tag query()
- * @method static Builder|Tag whereCreatedAt($value)
- * @method static Builder|Tag whereCreatedBy($value)
- * @method static Builder|Tag whereDescription($value)
- * @method static Builder|Tag whereEditable($value)
- * @method static Builder|Tag whereId($value)
- * @method static Builder|Tag whereLastModifiedAt($value)
- * @method static Builder|Tag whereLastModifiedBy($value)
- * @method static Builder|Tag whereName($value)
- * @method static Builder|Tag whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Tag extends Model

@@ -22,13 +22,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory query()
- * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory whereIp($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory whereReferer($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory whereUa($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory whereUserId($value)
  * @mixin \Eloquent
  */
 class LoginHistory extends Model

@@ -21,11 +21,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Redirect newModelQuery()
  * @method static Builder|Redirect newQuery()
  * @method static Builder|Redirect query()
- * @method static Builder|Redirect whereCreatedAt($value)
- * @method static Builder|Redirect whereFrom($value)
- * @method static Builder|Redirect whereId($value)
- * @method static Builder|Redirect whereTo($value)
- * @method static Builder|Redirect whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Redirect extends Model

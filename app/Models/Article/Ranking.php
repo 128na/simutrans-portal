@@ -19,8 +19,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Ranking newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Ranking newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Ranking query()
- * @method static \Illuminate\Database\Eloquent\Builder|Ranking whereArticleId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Ranking whereRank($value)
  * @mixin \Eloquent
  */
 class Ranking extends Model

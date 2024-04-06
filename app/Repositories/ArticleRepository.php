@@ -45,17 +45,15 @@ class ArticleRepository extends BaseRepository
      */
     public function syncAttachments(Article $article, array $attachmentsIds): void
     {
-        if ($article->user) {
-            // add
-            $attachments = $article->user->myAttachments()->find($attachmentsIds);
-            $article->attachments()->saveMany($attachments);
+        // add
+        $attachments = $article->user->myAttachments()->find($attachmentsIds);
+        $article->attachments()->saveMany($attachments);
 
-            //remove
-            /** @var Collection<int,Attachment> */
-            $shouldDetach = $article->attachments()->whereNotIn('id', $attachmentsIds)->get();
-            foreach ($shouldDetach as $attachment) {
-                $attachment->attachmentable()->disassociate()->save();
-            }
+        //remove
+        /** @var Collection<int,Attachment> */
+        $shouldDetach = $article->attachments()->whereNotIn('id', $attachmentsIds)->get();
+        foreach ($shouldDetach as $attachment) {
+            $attachment->attachmentable()->disassociate()->save();
         }
     }
 

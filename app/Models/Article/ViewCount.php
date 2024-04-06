@@ -20,11 +20,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|ViewCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ViewCount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ViewCount query()
- * @method static \Illuminate\Database\Eloquent\Builder|ViewCount whereArticleId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ViewCount whereCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ViewCount whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ViewCount wherePeriod($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ViewCount whereType($value)
  * @mixin \Eloquent
  */
 class ViewCount extends Model

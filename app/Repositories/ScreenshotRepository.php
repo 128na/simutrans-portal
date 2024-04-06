@@ -51,27 +51,25 @@ class ScreenshotRepository extends BaseRepository
      */
     public function syncAttachmentsWith(Screenshot $screenshot, array $attachmentsData): void
     {
-        if ($screenshot->user) {
-            $collection = collect($attachmentsData);
-            // add
-            $attachments = $screenshot->user->myAttachments()->find($collection->pluck('id'));
-            foreach ($attachments as $index => $attachment) {
-                $data = $collection->first(fn ($d): bool => $d['id'] === $attachment->id);
-                if ($data) {
-                    $attachment->fill([
-                        'caption' => $data['caption'] ?? null,
-                        'order' => $data['order'] ?? $index,
-                    ]);
-                }
+        $collection = collect($attachmentsData);
+        // add
+        $attachments = $screenshot->user->myAttachments()->find($collection->pluck('id'));
+        foreach ($attachments as $index => $attachment) {
+            $data = $collection->first(fn ($d): bool => $d['id'] === $attachment->id);
+            if ($data) {
+                $attachment->fill([
+                    'caption' => $data['caption'] ?? null,
+                    'order' => $data['order'] ?? $index,
+                ]);
             }
+        }
 
-            $screenshot->attachments()->saveMany($attachments);
-            //remove
-            /** @var Collection<int,Attachment> */
-            $shouldDetach = $screenshot->attachments()->whereNotIn('id', $collection->pluck('id'))->get();
-            foreach ($shouldDetach as $attachment) {
-                $attachment->attachmentable()->disassociate()->save();
-            }
+        $screenshot->attachments()->saveMany($attachments);
+        //remove
+        /** @var Collection<int,Attachment> */
+        $shouldDetach = $screenshot->attachments()->whereNotIn('id', $collection->pluck('id'))->get();
+        foreach ($shouldDetach as $attachment) {
+            $attachment->attachmentable()->disassociate()->save();
         }
     }
 

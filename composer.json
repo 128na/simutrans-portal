@@ -84,36 +84,24 @@
     "post-create-project-cmd": [
       "@php artisan key:generate --ansi"
     ],
-    "test": [
-      "@php artisan test && @php artisan dusk"
+    "all": [
+        "composer dump-autoload",
+        "@php artisan ide-helper:generate",
+        "@rector",
+        "@stan",
+        "@pint"
     ],
     "pint": [
-      "./vendor/bin/pint"
+        "@php ./vendor/bin/pint"
     ],
     "pint:check": [
-      "./vendor/bin/pint --test"
+        "@php ./vendor/bin/pint --test"
     ],
     "stan": [
-      "./vendor/bin/phpstan analyse --memory-limit=1G"
-    ],
-    "stan:clear": [
-      "./vendor/bin/phpstan clear-result-cache"
-    ],
-    "stan:base": [
-      "./vendor/bin/phpstan analyse --memory-limit=1G --generate-baseline --allow-empty-baseline"
+      "@php ./vendor/bin/phpstan analyse --memory-limit=2G"
     ],
     "rector": [
-      "./vendor/bin/rector",
-      "@pint",
-      "@stan"
-    ],
-    "rector:check": [
-      "./vendor/bin/rector --dry-run"
-    ],
-    "all": [
-      "@pint",
-      "@stan",
-      "@test"
+      "@php ./vendor/bin/rector --no-diffs"
     ]
   }
 }

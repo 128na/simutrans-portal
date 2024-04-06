@@ -10,6 +10,38 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $name タグ名
+ * @property string|null $description 説明
+ * @property bool $editable 1:編集可,0:編集不可
+ * @property int|null $created_by
+ * @property int|null $last_modified_by
+ * @property \Carbon\CarbonImmutable|null $last_modified_at
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
+ * @property-read int|null $articles_count
+ * @property-read \App\Models\User|null $createdBy
+ * @property-read \App\Models\User|null $lastModifiedBy
+ * @method static \Database\Factories\TagFactory factory($count = null, $state = [])
+ * @method static Builder|Tag newModelQuery()
+ * @method static Builder|Tag newQuery()
+ * @method static Builder|Tag popular()
+ * @method static Builder|Tag query()
+ * @method static Builder|Tag whereCreatedAt($value)
+ * @method static Builder|Tag whereCreatedBy($value)
+ * @method static Builder|Tag whereDescription($value)
+ * @method static Builder|Tag whereEditable($value)
+ * @method static Builder|Tag whereId($value)
+ * @method static Builder|Tag whereLastModifiedAt($value)
+ * @method static Builder|Tag whereLastModifiedBy($value)
+ * @method static Builder|Tag whereName($value)
+ * @method static Builder|Tag whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Tag extends Model
 {
     use HasFactory;

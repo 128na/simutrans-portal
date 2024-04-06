@@ -9,6 +9,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * 
+ *
+ * @property int $rank
+ * @property int $article_id
+ * @property-read Article $article
+ * @method static \Database\Factories\Article\RankingFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Ranking newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Ranking newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Ranking query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Ranking whereArticleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Ranking whereRank($value)
+ * @mixin \Eloquent
+ */
 class Ranking extends Model
 {
     use HasFactory;

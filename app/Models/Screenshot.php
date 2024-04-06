@@ -10,6 +10,38 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property string $title タイトル
+ * @property string $description 説明
+ * @property array $links リンク先一覧
+ * @property ScreenshotStatus $status 公開ステータス
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
+ * @property-read int|null $articles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
+ * @property-read int|null $attachments_count
+ * @property-read bool $is_publish
+ * @property-read \App\Models\User $user
+ * @method static \Database\Factories\ScreenshotFactory factory($count = null, $state = [])
+ * @method static Builder|Screenshot newModelQuery()
+ * @method static Builder|Screenshot newQuery()
+ * @method static Builder|Screenshot publish()
+ * @method static Builder|Screenshot query()
+ * @method static Builder|Screenshot whereCreatedAt($value)
+ * @method static Builder|Screenshot whereDescription($value)
+ * @method static Builder|Screenshot whereId($value)
+ * @method static Builder|Screenshot whereLinks($value)
+ * @method static Builder|Screenshot whereStatus($value)
+ * @method static Builder|Screenshot whereTitle($value)
+ * @method static Builder|Screenshot whereUpdatedAt($value)
+ * @method static Builder|Screenshot whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Screenshot extends Model
 {
     use HasFactory;

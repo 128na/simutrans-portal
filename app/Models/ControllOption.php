@@ -7,6 +7,22 @@ namespace App\Models;
 use App\Enums\ControllOptionKey;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * 
+ *
+ * @property ControllOptionKey $key
+ * @property bool $value
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|ControllOption newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ControllOption newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ControllOption query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ControllOption whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ControllOption whereKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ControllOption whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ControllOption whereValue($value)
+ * @mixin \Eloquent
+ */
 class ControllOption extends Model
 {
     public $incrementing = false;

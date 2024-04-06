@@ -22,6 +22,72 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property UserRole $role 権限
+ * @property string $name ユーザー名
+ * @property string|null $nickname 表示名
+ * @property string $email
+ * @property \Carbon\CarbonImmutable|null $email_verified_at
+ * @property string $password
+ * @property string|null $two_factor_secret
+ * @property string|null $two_factor_recovery_codes
+ * @property \Carbon\CarbonImmutable|null $two_factor_confirmed_at
+ * @property string|null $remember_token
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property \Carbon\CarbonImmutable|null $deleted_at
+ * @property int|null $invited_by 紹介ユーザーID
+ * @property string|null $invitation_code 紹介用コード
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
+ * @property-read int|null $articles_count
+ * @property-read \App\Models\BulkZip|null $bulkZippable
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $createdTags
+ * @property-read int|null $created_tags_count
+ * @property-read User|null $invited
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $invites
+ * @property-read int|null $invites_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $invitesReclusive
+ * @property-read int|null $invites_reclusive_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $lastModifiedBy
+ * @property-read int|null $last_modified_by_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, LoginHistory> $loginHistories
+ * @property-read int|null $login_histories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $myAttachments
+ * @property-read int|null $my_attachments_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read Profile|null $profile
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Screenshot> $screenshots
+ * @property-read int|null $screenshots_count
+ * @method static Builder|User admin()
+ * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
+ * @method static Builder|User newModelQuery()
+ * @method static Builder|User newQuery()
+ * @method static Builder|User onlyTrashed()
+ * @method static Builder|User query()
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereDeletedAt($value)
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User whereEmailVerifiedAt($value)
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User whereInvitationCode($value)
+ * @method static Builder|User whereInvitedBy($value)
+ * @method static Builder|User whereName($value)
+ * @method static Builder|User whereNickname($value)
+ * @method static Builder|User wherePassword($value)
+ * @method static Builder|User whereRememberToken($value)
+ * @method static Builder|User whereRole($value)
+ * @method static Builder|User whereTwoFactorConfirmedAt($value)
+ * @method static Builder|User whereTwoFactorRecoveryCodes($value)
+ * @method static Builder|User whereTwoFactorSecret($value)
+ * @method static Builder|User whereUpdatedAt($value)
+ * @method static Builder|User withTrashed()
+ * @method static Builder|User withoutTrashed()
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable implements BulkZippableInterface, MustVerifyEmail
 {
     use HasFactory;

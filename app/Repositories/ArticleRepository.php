@@ -33,14 +33,9 @@ class ArticleRepository extends BaseRepository
 
     public const PER_PAGE_SIMPLE = 6;
 
-    /**
-     * @var Article
-     */
-    protected $model;
-
     public function __construct(Article $article)
     {
-        $this->model = $article;
+        parent::__construct($article);
     }
 
     /**

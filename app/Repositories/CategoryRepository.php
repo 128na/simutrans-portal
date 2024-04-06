@@ -14,14 +14,9 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class CategoryRepository extends BaseRepository
 {
-    /**
-     * @var Category
-     */
-    protected $model;
-
     public function __construct(Category $category)
     {
-        $this->model = $category;
+        parent::__construct($category);
     }
 
     /**

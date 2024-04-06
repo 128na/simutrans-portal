@@ -14,14 +14,9 @@ use Illuminate\Support\LazyCollection;
  */
 class RankingRepository extends BaseRepository
 {
-    /**
-     * @var Ranking
-     */
-    protected $model;
-
     public function __construct(Ranking $ranking)
     {
-        $this->model = $ranking;
+        parent::__construct($ranking);
     }
 
     public function recreate(LazyCollection $lazyCollection): void

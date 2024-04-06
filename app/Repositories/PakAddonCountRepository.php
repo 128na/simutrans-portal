@@ -51,14 +51,9 @@ class PakAddonCountRepository extends BaseRepository
         GROUP BY pak.id , addon.id
         ORDER BY pak.order , case addon.order is null when 1 then 2147483647 else addon.order end)";
 
-    /**
-     * @var PakAddonCount
-     */
-    protected $model;
-
     public function __construct(PakAddonCount $pakAddonCount)
     {
-        $this->model = $pakAddonCount;
+        parent::__construct($pakAddonCount);
     }
 
     /**

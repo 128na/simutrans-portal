@@ -16,14 +16,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
  */
 class ScreenshotRepository extends BaseRepository
 {
-    /**
-     * @var Screenshot
-     */
-    protected $model;
-
     public function __construct(Screenshot $screenshot)
     {
-        $this->model = $screenshot;
+        parent::__construct($screenshot);
     }
 
     /**

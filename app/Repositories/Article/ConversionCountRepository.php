@@ -4,22 +4,17 @@ declare(strict_types=1);
 
 namespace App\Repositories\Article;
 
-use App\Models\Article\ViewCount;
+use App\Models\Article\ConversionCount;
 use App\Repositories\BaseCountRepository;
 
 /**
- * @extends BaseCountRepository<ViewCount>
+ * @extends BaseCountRepository<ConversionCount>
  */
 class ConversionCountRepository extends BaseCountRepository
 {
-    /**
-     * @var ViewCount
-     */
-    protected $model;
-
-    public function __construct(ViewCount $viewCount)
+    public function __construct(ConversionCount $conversionCount)
     {
-        $this->model = $viewCount;
+        parent::__construct($conversionCount);
     }
 
     public function getTableName(): string

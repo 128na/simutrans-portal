@@ -14,14 +14,9 @@ class TagRepository extends BaseRepository
 {
     private const LIMIT = 10;
 
-    /**
-     * @var Tag
-     */
-    protected $model;
-
     public function __construct(Tag $tag)
     {
-        $this->model = $tag;
+        parent::__construct($tag);
     }
 
     public function getAllTags(): Collection

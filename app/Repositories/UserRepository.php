@@ -12,14 +12,9 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class UserRepository extends BaseRepository
 {
-    /**
-     * @var User
-     */
-    protected $model;
-
     public function __construct(User $user)
     {
-        $this->model = $user;
+        parent::__construct($user);
     }
 
     /**

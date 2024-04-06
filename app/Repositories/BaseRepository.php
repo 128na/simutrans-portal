@@ -23,9 +23,11 @@ use Illuminate\Support\Str;
 abstract class BaseRepository
 {
     /**
-     * @var T
+     * @param  T  $model
      */
-    protected $model;
+    public function __construct(protected Model $model)
+    {
+    }
 
     /**
      * モデルの複数形名称を返す.

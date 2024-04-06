@@ -16,14 +16,9 @@ use Illuminate\Support\LazyCollection;
  */
 class AttachmentRepository extends BaseRepository
 {
-    /**
-     * @var Attachment
-     */
-    protected $model;
-
     public function __construct(Attachment $attachment)
     {
-        $this->model = $attachment;
+        parent::__construct($attachment);
     }
 
     public function syncProfile(User $user, int $id): void

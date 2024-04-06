@@ -14,14 +14,9 @@ use Illuminate\Support\LazyCollection;
  */
 class BulkZipRepository extends BaseRepository
 {
-    /**
-     * @var BulkZip
-     */
-    protected $model;
-
     public function __construct(BulkZip $bulkZip)
     {
-        $this->model = $bulkZip;
+        parent::__construct($bulkZip);
     }
 
     public function findByBulkZippable(BulkZippableInterface $bulkZippable): ?BulkZip

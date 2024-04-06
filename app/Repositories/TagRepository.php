@@ -19,6 +19,9 @@ class TagRepository extends BaseRepository
         parent::__construct($tag);
     }
 
+    /**
+     * @return Collection<int,Tag>
+     */
     public function getAllTags(): Collection
     {
         return $this->model->select('id', 'name')
@@ -27,6 +30,9 @@ class TagRepository extends BaseRepository
             ->get();
     }
 
+    /**
+     * @return Collection<int,Tag>
+     */
     public function searchTags(string $name, int $limit = self::LIMIT): Collection
     {
         return $this->model->select('id', 'name', 'description')
@@ -37,6 +43,9 @@ class TagRepository extends BaseRepository
             ->get();
     }
 
+    /**
+     * @return Collection<int,Tag>
+     */
     public function getTags(int $limit = self::LIMIT): Collection
     {
         return $this->model->select('id', 'name', 'description')->limit($limit)

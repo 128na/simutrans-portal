@@ -34,6 +34,9 @@ class BulkZipRepository extends BaseRepository
         return $bulkZippable->bulkZippable()->create($data);
     }
 
+    /**
+     * @return LazyCollection<int,BulkZip>
+     */
     public function cursorExpired(CarbonImmutable $expiredAt): LazyCollection
     {
         return $this->model

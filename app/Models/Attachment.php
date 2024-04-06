@@ -56,16 +56,25 @@ class Attachment extends Model
     | リレーション
     |--------------------------------------------------------------------------
      */
+    /**
+     * @return BelongsTo<User,Attachment>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return MorphTo<Model,Attachment>
+     */
     public function attachmentable(): MorphTo
     {
         return $this->morphTo();
     }
 
+    /**
+     * @return HasOne<FileInfo>
+     */
     public function fileInfo(): HasOne
     {
         return $this->hasOne(FileInfo::class);

@@ -40,16 +40,25 @@ class Screenshot extends Model
     | リレーション
     |--------------------------------------------------------------------------
      */
+    /**
+     * @return MorphMany<Attachment>
+     */
     public function attachments(): MorphMany
     {
         return $this->morphMany(Attachment::class, 'attachmentable');
     }
 
+    /**
+     * @return BelongsTo<User,Screenshot>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return MorphToMany<Article>
+     */
     public function articles(): MorphToMany
     {
         return $this->morphToMany(Article::class, 'articlable');
@@ -59,6 +68,9 @@ class Screenshot extends Model
     |--------------------------------------------------------------------------
     | スコープ
     |--------------------------------------------------------------------------
+     */
+    /**
+     * @param  Builder<Screenshot>  $builder
      */
     public function scopePublish(Builder $builder): void
     {

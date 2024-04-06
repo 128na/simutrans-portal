@@ -35,6 +35,9 @@ class AttachmentRepository extends BaseRepository
         $user->profile->attachments()->save($attachment);
     }
 
+    /**
+     * @return Collection<int,Attachment>
+     */
     public function findAllByUser(User $user): Collection
     {
         return $user->myAttachments()
@@ -44,7 +47,7 @@ class AttachmentRepository extends BaseRepository
     }
 
     /**
-     * @return LazyCollection<int, Attachment>
+     * @return LazyCollection<int,Attachment>
      */
     public function cursorUnconvertedImages(): LazyCollection
     {
@@ -68,7 +71,7 @@ class AttachmentRepository extends BaseRepository
     }
 
     /**
-     * @return LazyCollection<Attachment>
+     * @return LazyCollection<int,Attachment>
      */
     public function cursorZipFileAttachment(): LazyCollection
     {
@@ -79,7 +82,7 @@ class AttachmentRepository extends BaseRepository
     }
 
     /**
-     * @return LazyCollection<Attachment>
+     * @return LazyCollection<int,Attachment>
      */
     public function cursorPakFileAttachment(): LazyCollection
     {

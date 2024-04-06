@@ -22,6 +22,9 @@ class Ranking extends Model
         'article_id',
     ];
 
+    /**
+     * @return BelongsTo<Article,Ranking>
+     */
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class);

@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Collection;
 
 class LoginHistoryController extends Controller
 {
+    /**
+     * @return Collection<int,\App\Models\User\LoginHistory>
+     */
     public function index(): Collection
     {
         return $this->loggedinUser()

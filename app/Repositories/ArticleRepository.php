@@ -298,6 +298,9 @@ class ArticleRepository extends BaseRepository
             ->paginate();
     }
 
+    /**
+     * @return Builder<Article>
+     */
     private function queryBySearch(string $word, string $order): Builder
     {
         $word = trim($word);
@@ -336,7 +339,7 @@ class ArticleRepository extends BaseRepository
     /**
      * リンク切れチェック対象の記事.
      *
-     * @return LazyCollection<Article>
+     * @return LazyCollection<int,Article>
      */
     public function cursorCheckLink(): LazyCollection
     {
@@ -394,7 +397,7 @@ class ArticleRepository extends BaseRepository
     /**
      * PV数順の記事
      *
-     * @return LazyCollection<Article>
+     * @return LazyCollection<int,Article>
      */
     public function fetchAggregatedRanking(CarbonImmutable $datetime): LazyCollection
     {
@@ -428,7 +431,7 @@ class ArticleRepository extends BaseRepository
     /**
      * 指定時刻を過ぎた予約記事
      *
-     * @return LazyCollection<Article>
+     * @return LazyCollection<int,Article>
      */
     public function cursorReservations(CarbonImmutable $date): LazyCollection
     {

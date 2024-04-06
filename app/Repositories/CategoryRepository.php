@@ -21,6 +21,8 @@ class CategoryRepository extends BaseRepository
 
     /**
      * ユーザーが利用できるカテゴリ一覧を返す.
+     *
+     * @return Collection<int,Category>
      */
     public function findAllByUser(User $user): Collection
     {

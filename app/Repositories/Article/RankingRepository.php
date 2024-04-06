@@ -19,6 +19,9 @@ class RankingRepository extends BaseRepository
         parent::__construct($ranking);
     }
 
+    /**
+     * @param  LazyCollection<int,\App\Models\Article>  $lazyCollection
+     */
     public function recreate(LazyCollection $lazyCollection): void
     {
         DB::transaction(function () use ($lazyCollection): void {

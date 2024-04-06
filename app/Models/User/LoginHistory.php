@@ -28,6 +28,9 @@ class LoginHistory extends Model
         });
     }
 
+    /**
+     * @return BelongsTo<User,LoginHistory>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

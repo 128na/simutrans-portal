@@ -31,6 +31,9 @@ class ViewCount extends Model
         'count' => 'integer',
     ];
 
+    /**
+     * @return BelongsTo<Article,ViewCount>
+     */
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class);

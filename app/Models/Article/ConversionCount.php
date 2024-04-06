@@ -32,6 +32,9 @@ class ConversionCount extends Model
     | リレーション
     |--------------------------------------------------------------------------
     */
+    /**
+     * @return BelongsTo<Article,ConversionCount>
+     */
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class);

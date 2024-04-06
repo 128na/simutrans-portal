@@ -98,57 +98,91 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
     | リレーション
     |--------------------------------------------------------------------------
     */
+    /**
+     * @return HasMany<Article>
+     */
     public function articles(): HasMany
     {
         return $this->hasMany(Article::class);
     }
 
+    /**
+     * @return HasOne<Profile>
+     */
     public function profile(): HasOne
     {
         return $this->hasOne(Profile::class);
     }
 
-    // 自身が投稿した添付
+    /**
+     * 自身が投稿した添付
+     *
+     * @return HasMany<Attachment>
+     */
     public function myAttachments(): HasMany
     {
         return $this->hasMany(Attachment::class);
     }
 
+    /**
+     * @return MorphOne<BulkZip>
+     */
     public function bulkZippable(): MorphOne
     {
         return $this->morphOne(BulkZip::class, 'bulk_zippable');
     }
 
+    /**
+     * @return BelongsTo<User,User>
+     */
     public function invited(): BelongsTo
     {
         return $this->belongsTo(User::class, 'invited_by');
     }
 
+    /**
+     * @return HasMany<User>
+     */
     public function invites(): HasMany
     {
         return $this->hasMany(User::class, 'invited_by');
     }
 
+    /**
+     * @return HasMany<User>
+     */
     public function invitesReclusive(): HasMany
     {
         return $this->hasMany(User::class, 'invited_by')->with(['invites']);
     }
 
+    /**
+     * @return HasMany<Tag>
+     */
     public function createdTags(): HasMany
     {
         return $this->hasMany(Tag::class, 'created_by');
     }
 
+    /**
+     * @return HasMany<Tag>
+     */
     public function lastModifiedBy(): HasMany
     {
         return $this->hasMany(Tag::class, 'lastModifiedBy');
     }
 
+    /**
+     * @return HasMany<LoginHistory>
+     */
     public function loginHistories(): HasMany
     {
         return $this->hasMany(LoginHistory::class);
     }
 
+    /**
+     * @return HasMany<Screenshot>
+     */
     public function screenshots(): HasMany
     {
         return $this->hasMany(Screenshot::class);
@@ -159,6 +193,9 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
     | スコープ
     |--------------------------------------------------------------------------
     */
+    /**
+     * @param  Builder<User>  $builder
+     */
     public function scopeAdmin(Builder $builder): void
     {
         $builder->where('role', UserRole::Admin);

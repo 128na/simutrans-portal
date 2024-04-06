@@ -10,6 +10,9 @@ use App\Models\Contents\Sections\SectionText;
 use App\Models\Contents\Sections\SectionUrl;
 use Illuminate\Support\Collection;
 
+/**
+ * @extends Collection<int,Sections\Section>
+ */
 class PageContentsSections extends Collection
 {
     /**

@@ -16,6 +16,9 @@ class FeedRepository
     ) {
     }
 
+    /**
+     * @return Collection<int,Article>
+     */
     public function addon(): Collection
     {
         return $this->article
@@ -28,6 +31,9 @@ class FeedRepository
             ->get();
     }
 
+    /**
+     * @return Collection<int,Article>
+     */
     public function pakAddon(string $pakSlug): Collection
     {
         $category = $this->category->pak()->slug($pakSlug)->firstOrFail();
@@ -42,6 +48,9 @@ class FeedRepository
             ->get();
     }
 
+    /**
+     * @return Collection<int,Article>
+     */
     public function page(): Collection
     {
         return $this->article
@@ -53,6 +62,9 @@ class FeedRepository
             ->get();
     }
 
+    /**
+     * @return Collection<int,Article>
+     */
     public function announce(): Collection
     {
         return $this->article

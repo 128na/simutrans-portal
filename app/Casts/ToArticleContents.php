@@ -11,6 +11,9 @@ use App\Models\Contents\MarkdownContent;
 use App\Models\Contents\PageContent;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
+/**
+ * @implements CastsAttributes<\App\Models\Contents\Content,\App\Models\Contents\Content>
+ */
 class ToArticleContents implements CastsAttributes
 {
     /**

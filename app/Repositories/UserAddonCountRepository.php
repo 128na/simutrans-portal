@@ -45,6 +45,9 @@ class UserAddonCountRepository extends BaseRepository
         });
     }
 
+    /**
+     * @return Collection<int,UserAddonCount>
+     */
     public function get(): Collection
     {
         return $this->model->select('user_id', 'user_name', 'user_nickname', 'count')->get();

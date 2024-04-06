@@ -10,4 +10,4 @@ parameters:
     level: 8
 
     # covariant,contravariantが残念な感じになるのでやめる
-    checkGenericClassInNonGenericObjectType: false
+    #checkGenericClassInNonGenericObjectType: false

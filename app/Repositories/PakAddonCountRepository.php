@@ -67,6 +67,9 @@ class PakAddonCountRepository extends BaseRepository
         });
     }
 
+    /**
+     * @return Collection<int,PakAddonCount>
+     */
     public function get(): Collection
     {
         return $this->model->select('pak_slug', 'addon_slug', 'count')->get();

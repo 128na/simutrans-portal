@@ -11,7 +11,7 @@ use MarvinLabs\DiscordLogger\Discord\Message;
 class LogConverter extends SimpleRecordConverter
 {
     /**
-     * @param  array<mixed>  $record
+     * @param  array{datetime:\DateTime,level_name:int,message:string,context:array<int|string,mixed>}  $record
      */
     protected function addMessageContent(Message $message, array $record): void
     {
@@ -28,7 +28,7 @@ class LogConverter extends SimpleRecordConverter
     }
 
     /**
-     * @param  array<mixed>  $record
+     * @param  array{datetime:\DateTime,level_name:int,message:string,context:array<int|string,mixed>}  $record
      */
     private function makeErrorMessage(Message $message, array $record, string $stacktrace): void
     {
@@ -43,7 +43,7 @@ class LogConverter extends SimpleRecordConverter
     }
 
     /**
-     * @param  array<mixed>  $record
+     * @param  array{datetime:\DateTime,level_name:int,message:string,context:array<int|string,mixed>}  $record
      */
     private function makeInfoMesage(Message $message, array $record): void
     {

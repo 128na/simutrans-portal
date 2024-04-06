@@ -10,6 +10,7 @@ use App\Models\Screenshot;
 use App\Models\Tag;
 use App\Models\User;
 use App\Services\Service;
+use Illuminate\Support\Facades\Config;
 
 class MetaOgpService extends Service
 {
@@ -34,7 +35,7 @@ class MetaOgpService extends Service
     private function trimDescription(?string $str): string
     {
         if ($str === null || $str === '' || $str === '0') {
-            return config('app.meta-description');
+            return Config::string('app.meta-description');
         }
 
         $str = str_replace(["\n", "\r"], '', $str);

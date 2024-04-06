@@ -20,9 +20,7 @@ class AddonPostDecorator extends BaseDecorator
     /**
      * Zip格納データに変換する.
      *
-     * @param  array<array<mixed>>  $result
      * @param  Article  $model
-     * @return array<array<mixed>>
      */
     public function process(array $result, Model $model): array
     {
@@ -48,7 +46,7 @@ class AddonPostDecorator extends BaseDecorator
     }
 
     /**
-     * @return array<mixed>
+     * @return array<int,array<string[]>>
      */
     private function content(Article $article): array
     {

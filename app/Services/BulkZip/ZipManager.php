@@ -58,11 +58,8 @@ class ZipManager extends Service
             }
         }
 
-        if (! empty($result['contents'])) {
-            $this->addTextFile($result['contents']);
-            $this->addCsvFile($result['contents']);
-            // $this->addJsonFile($result['contents']);
-        }
+        $this->addTextFile($result['contents']);
+        $this->addCsvFile($result['contents']);
 
         return $this->filepath;
     }
@@ -71,7 +68,7 @@ class ZipManager extends Service
      * アイテムから情報を取得.
      *
      * @param  array<Model>  $items
-     * @return array<string, mixed>
+     * @return array{contents:array<int,array<int,string|string[]>>,files:array<string,string>}
      */
     private function processItems(array $items): array
     {
@@ -95,7 +92,7 @@ class ZipManager extends Service
     /**
      * テキストファイル.
      *
-     * @param  array<array<mixed>>  $contents
+     * @param  array<int,array<int,string|string[]>>  $contents
      */
     private function addTextFile(array $contents): void
     {
@@ -117,7 +114,7 @@ class ZipManager extends Service
     /**
      * SJIS csvファイル.
      *
-     * @param  array<array<mixed>>  $contents
+     * @param  array<int,array<int,string|string[]>>  $contents
      */
     private function addCsvFile(array $contents): void
     {

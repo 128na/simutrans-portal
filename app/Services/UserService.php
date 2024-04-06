@@ -41,7 +41,7 @@ class UserService extends Service
         }
 
         if ($updateRequest->filled('user.profile.data.avatar')) {
-            $this->attachmentRepository->syncProfile($user, $updateRequest->input('user.profile.data.avatar'));
+            $this->attachmentRepository->syncProfile($user, $updateRequest->integer('user.profile.data.avatar'));
         }
 
         if ($emailChanged) {

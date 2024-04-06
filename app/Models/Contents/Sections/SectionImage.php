@@ -15,6 +15,6 @@ class SectionImage extends Section
     {
         parent::__construct($section);
         $id = $section['id'] ?? null;
-        $this->id = $id ? $id : null;
+        $this->id = $id ?: null;
     }
 }

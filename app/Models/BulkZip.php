@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
  * @property string $uuid
  * @property string $bulk_zippable_type
  * @property int $bulk_zippable_id
- * @property int $generated ファイル生成済みか 0:未生成,1:生成済み
+ * @property bool $generated ファイル生成済みか 0:未生成,1:生成済み
  * @property string|null $path 生成ファイルのパス
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
@@ -38,6 +38,10 @@ class BulkZip extends Model
         'bulk_zippable_type',
         'generated',
         'path',
+    ];
+
+    protected $casts = [
+        'generated' => 'boolean',
     ];
 
     protected $hidden = [

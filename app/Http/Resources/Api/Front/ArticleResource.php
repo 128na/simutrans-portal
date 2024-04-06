@@ -38,9 +38,9 @@ class ArticleResource extends JsonResource
                 'name' => $tag->name,
             ]),
             'user' => [
-                'id' => $this->resource->user?->id,
-                'nickname' => $this->resource->user?->nickname,
-                'name' => $this->resource->user?->name,
+                'id' => $this->resource->user->id,
+                'nickname' => $this->resource->user->nickname,
+                'name' => $this->resource->user->name,
             ],
             'articles' => $this->resource->articles
                 ->filter(fn (Article $article): bool => $article->is_publish)

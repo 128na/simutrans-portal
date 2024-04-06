@@ -10,6 +10,11 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class PakAddonResource extends ResourceCollection
 {
     /**
+     * @var \Illuminate\Support\Collection<int,PakAddonCount>
+     */
+    public $collection;
+
+    /**
      * @param  \Illuminate\Http\Request  $request
      * @return array<mixed>
      */

@@ -6,6 +6,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 
 class CorsHeader
 {
@@ -22,6 +23,6 @@ class CorsHeader
 
     private function getAllowOrigin(): string
     {
-        return config('app.url');
+        return Config::string('app.url');
     }
 }

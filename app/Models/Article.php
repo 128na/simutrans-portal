@@ -34,6 +34,8 @@ use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
 
 /**
+ * 
+ *
  * @property int $id
  * @property int $user_id
  * @property string $title タイトル
@@ -101,7 +103,6 @@ use Spatie\Feed\FeedItem;
  * @property-read int|null $yearly_conversion_counts_count
  * @property-read Collection<int, ViewCount> $yearlyViewCounts
  * @property-read int|null $yearly_view_counts_count
- *
  * @method static Builder|Article active()
  * @method static Builder|Article addon()
  * @method static Builder|Article announce()
@@ -123,7 +124,6 @@ use Spatie\Feed\FeedItem;
  * @method static Builder|Article withUserTrashed()
  * @method static Builder|Article withoutAnnounce()
  * @method static Builder|Article withoutTrashed()
- *
  * @mixin \Eloquent
  */
 class Article extends Model implements Feedable

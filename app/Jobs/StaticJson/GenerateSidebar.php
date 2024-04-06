@@ -18,7 +18,7 @@ class GenerateSidebar extends BaseGenerator
         $service = app(SidebarService::class);
 
         return [
-            'userAddonCounts' => new UserAddonResource($service->userAddonCounts()),
+            'userAddonCounts' => UserAddonResource::collection($service->userAddonCounts()),
             'pakAddonCounts' => new PakAddonResource($service->pakAddonsCounts()),
         ];
     }

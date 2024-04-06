@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
 
 class Cacheable
@@ -41,7 +42,7 @@ class Cacheable
 
     private function getKey(Request $request): string
     {
-        return sprintf('%s-%s', config('app.version'), sha1($request->fullUrl()));
+        return sprintf('%s-%s', Config::string('app.version'), sha1($request->fullUrl()));
     }
 
     private function getCache(string $key): ?string
@@ -58,7 +59,7 @@ class Cacheable
     {
         $content = $response->getContent();
         if ($content) {
-            Cache::put($key, gzencode($content, 9), config('app.cache_lifetime_min') * 60);
+            Cache::put($key, gzencode($content, 9), Config::integer('app.cache_lifetime_min') * 60);
         }
     }
 }

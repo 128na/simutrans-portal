@@ -17,8 +17,6 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * 
- *
  * @property int $id
  * @property int $user_id
  * @property \App\Models\User\ProfileData $data プロフィール情報
@@ -30,10 +28,12 @@ use Illuminate\Support\Facades\Storage;
  * @property-read string $avatar_url
  * @property-read bool $has_avatar
  * @property-read User $user
+ *
  * @method static \Database\Factories\User\ProfileFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Profile newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Profile newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Profile query()
+ *
  * @mixin \Eloquent
  */
 class Profile extends Model

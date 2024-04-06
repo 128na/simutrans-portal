@@ -13,9 +13,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $pak_slug
  * @property string $addon_slug
  * @property int $count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount query()
+ *
  * @mixin \Eloquent
  */
 class PakAddonCount extends Model

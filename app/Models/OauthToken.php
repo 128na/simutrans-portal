@@ -7,8 +7,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
- *
  * @property string $application
  * @property string $token_type
  * @property string $scope
@@ -17,9 +15,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\CarbonImmutable $expired_at
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|OauthToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OauthToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OauthToken query()
+ *
  * @mixin \Eloquent
  */
 class OauthToken extends Model

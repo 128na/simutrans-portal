@@ -11,8 +11,6 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
- * 
- *
  * @property int $id
  * @property int $user_id
  * @property string $title タイトル
@@ -27,11 +25,13 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property-read int|null $attachments_count
  * @property-read bool $is_publish
  * @property-read \App\Models\User $user
+ *
  * @method static \Database\Factories\ScreenshotFactory factory($count = null, $state = [])
  * @method static Builder|Screenshot newModelQuery()
  * @method static Builder|Screenshot newQuery()
  * @method static Builder|Screenshot publish()
  * @method static Builder|Screenshot query()
+ *
  * @mixin \Eloquent
  */
 class Screenshot extends Model

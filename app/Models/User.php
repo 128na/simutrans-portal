@@ -24,8 +24,6 @@ use Illuminate\Support\Facades\Config;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
 /**
- * 
- *
  * @property int $id
  * @property UserRole $role 権限
  * @property string $name ユーザー名
@@ -63,6 +61,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property-read Profile|null $profile
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Screenshot> $screenshots
  * @property-read int|null $screenshots_count
+ *
  * @method static Builder|User admin()
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static Builder|User newModelQuery()
@@ -71,6 +70,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @method static Builder|User query()
  * @method static Builder|User withTrashed()
  * @method static Builder|User withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable implements BulkZippableInterface, MustVerifyEmail

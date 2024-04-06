@@ -26,6 +26,6 @@ class AdminCheck
             return $next($request);
         }
 
-        abort(401);
+        return abort(401);
     }
 }

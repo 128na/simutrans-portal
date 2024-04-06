@@ -40,11 +40,13 @@ class OauthController extends Controller
         if (! is_string($state)) {
             throw new InvalidStateException('state is not string');
         }
+
         $this->pkceService->verifyState((string) $request->string('state'), $state);
         $codeVerifier = Session::pull('oauth2.twitter.codeVerifier');
         if (! is_string($codeVerifier)) {
             throw new InvalidStateException('codeVerifier is not string');
         }
+
         $this->pkceService->generateToken((string) $request->string('code'), $codeVerifier);
 
         Session::flash('success', 'access token created');

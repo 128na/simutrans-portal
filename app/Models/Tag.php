@@ -11,8 +11,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * 
- *
  * @property int $id
  * @property string $name タグ名
  * @property string|null $description 説明
@@ -26,11 +24,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read int|null $articles_count
  * @property-read \App\Models\User|null $createdBy
  * @property-read \App\Models\User|null $lastModifiedBy
+ *
  * @method static \Database\Factories\TagFactory factory($count = null, $state = [])
  * @method static Builder|Tag newModelQuery()
  * @method static Builder|Tag newQuery()
  * @method static Builder|Tag popular()
  * @method static Builder|Tag query()
+ *
  * @mixin \Eloquent
  */
 class Tag extends Model

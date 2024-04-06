@@ -15,8 +15,6 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * 
- *
  * @property int $id
  * @property int $user_id
  * @property int|null $attachmentable_id 添付先ID
@@ -39,10 +37,12 @@ use Illuminate\Support\Facades\Storage;
  * @property-read string $type
  * @property-read string $url
  * @property-read \App\Models\User $user
+ *
  * @method static \Database\Factories\AttachmentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Attachment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Attachment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Attachment query()
+ *
  * @mixin \Eloquent
  */
 class Attachment extends Model

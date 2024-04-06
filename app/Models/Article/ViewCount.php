@@ -9,17 +9,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
- *
  * @property int $id
  * @property int $article_id
  * @property int $type 集計区分 1:日次,2:月次,3:年次,4:全体
  * @property string $period 集計期間
  * @property int $count カウント
  * @property-read Article $article
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ViewCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ViewCount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ViewCount query()
+ *
  * @mixin \Eloquent
  */
 class ViewCount extends Model

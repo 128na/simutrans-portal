@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
- * 
- *
  * @property int $id
  * @property string $uuid
  * @property string $bulk_zippable_type
@@ -22,10 +20,12 @@ use Illuminate\Support\Str;
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read Model|\Eloquent $bulkZippable
+ *
  * @method static \Database\Factories\BulkZipFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|BulkZip newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BulkZip newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BulkZip query()
+ *
  * @mixin \Eloquent
  */
 class BulkZip extends Model

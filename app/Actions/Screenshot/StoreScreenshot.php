@@ -16,7 +16,7 @@ class StoreScreenshot
     }
 
     /**
-     * @param  array<mixed>  $data
+     * @param  array{screenshot:array{title:string,description:string,links:string[],status:string,attachments:array<int,array{id:int,caption:string,order:int}>,articles:array<int,array{id:int,title:string}>}}  $data
      */
     public function store(User $user, array $data): void
     {

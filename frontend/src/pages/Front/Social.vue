@@ -7,18 +7,14 @@
     <q-btn color="primary" @click=handleOneSign>
       登録する
     </q-btn>
-    <TextSubTitle>Twitter</TextSubTitle>
-    <p>記事が投稿・更新されると自動でツイートされます。</p>
+    <TextSubTitle>記事投稿・更新通知</TextSubTitle>
+    <p>Twitter</p>
     <a href="https://twitter.com/PortalSimutrans" target="_blank" rel="noopener nofollow"
       class="text-primary">@PortalSimutrans</a>
-
-    <TextSubTitle>Misskey</TextSubTitle>
-    <p>記事が投稿・更新されると自動でツイートされます。</p>
+    <p>Misskey</p>
     <a href="https://misskey.io/@PortalSimutrans" target="_blank" rel="noopener nofollow"
       class="text-primary">@PortalSimutrans</a>
-
-    <TextSubTitle>Bluesky</TextSubTitle>
-    <p>記事が投稿・更新されると自動でツイートされます。</p>
+    <p>Bluesky</p>
     <a href="https://bsky.app/profile/portalsimutrans.bsky.social" target="_blank" rel="noopener nofollow"
       class="text-primary">@PortalSimutrans.bsky.social</a>
 
@@ -63,26 +59,11 @@
       </q-item>
     </q-list>
 
-    <TextSubTitle>横断検索 Discord Bot(試験運用中)</TextSubTitle>
-    <p>Discordサーバーに追加すると、「!cs 検索したいキーワード」でアドオン検索できます。</p>
-    <q-list bordered separator class="rounded-borders">
-      <q-item href="https://discord.com/oauth2/authorize?client_id=1076747667411054612&scope=bot&permissions=0"
-        target="_blank">
-        <q-item-section>
-          <q-item-label>Botを追加する</q-item-label>
-          <q-item-label caption>サーバーに追加後、Botに反応させたいチャンネルの「チャンネルを見る」、「メッセージを送信」の権限付与が必要です。</q-item-label>
-        </q-item-section>
-      </q-item>
-    </q-list>
-    <TextSubTitle>横断検索 LINE Bot(試験運用中)</TextSubTitle>
-    <p>QRコードから友達登録すると、アドオン検索できます。</p>
-    <q-img src="https://qr-official.line.me/sid/L/866zkymz.png" width="160px" />
-
     <TextSubTitle>その他開発情報など</TextSubTitle>
     <q-list bordered separator class="rounded-borders">
       <q-item href="https://twitter.com/128Na" target="_blank" rel="noopener nofollow">
         <q-item-section>
-          <q-item-label>@128Na</q-item-label>
+          <q-item-label>Twitter@128Na</q-item-label>
           <q-item-label caption>サイトに関するお問い合わせはこちらまで</q-item-label>
         </q-item-section>
       </q-item>

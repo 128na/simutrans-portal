@@ -20,6 +20,9 @@ class AddonIntroductionContent extends Content
 
     public ?bool $exclude_link_check;
 
+    /**
+     * @param  array{description?:string,author?:string,license?:string,thanks?:string,link?:string,agreement?:bool,exclude_link_check?:bool}  $contents
+     */
     public function __construct(array $contents)
     {
         $this->description = $contents['description'] ?? null;

@@ -34,8 +34,6 @@ use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
 
 /**
- * 
- *
  * @property int $id
  * @property int $user_id
  * @property string $title タイトル
@@ -103,6 +101,7 @@ use Spatie\Feed\FeedItem;
  * @property-read int|null $yearly_conversion_counts_count
  * @property-read Collection<int, ViewCount> $yearlyViewCounts
  * @property-read int|null $yearly_view_counts_count
+ *
  * @method static Builder|Article active()
  * @method static Builder|Article addon()
  * @method static Builder|Article announce()
@@ -124,6 +123,7 @@ use Spatie\Feed\FeedItem;
  * @method static Builder|Article withUserTrashed()
  * @method static Builder|Article withoutAnnounce()
  * @method static Builder|Article withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Article extends Model implements Feedable
@@ -169,7 +169,7 @@ class Article extends Model implements Feedable
 
     public function routeNotificationForMail(mixed $notification): string
     {
-        if (! $this->user?->email) {
+        if (! $this->user->email) {
             throw new Exception('email not found');
         }
 
@@ -648,7 +648,7 @@ class Article extends Model implements Feedable
             'articleId' => $this->id,
             'articleTitle' => $this->title,
             'articleStatus' => $this->status,
-            'articleUserName' => $this->user?->name ?? '',
+            'articleUserName' => $this->user->name,
         ];
     }
 
@@ -664,7 +664,7 @@ class Article extends Model implements Feedable
             'title' => $this->title,
             'summary' => $this->contents->getDescription(),
             'updated' => $this->modified_at?->toMutable(), // CarbonImmutableは未対応
-            'link' => route('articles.show', ['userIdOrNickname' => $this->user?->nickname ?? $this->user_id, 'articleSlug' => $this->slug]),
+            'link' => route('articles.show', ['userIdOrNickname' => $this->user->nickname ?? $this->user_id, 'articleSlug' => $this->slug]),
             'authorName' => $this->user->name ?? '',
         ]);
     }

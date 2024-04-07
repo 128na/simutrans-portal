@@ -3,8 +3,7 @@ includes:
 
 parameters:
     ignoreErrors:
-        - "#Relation .* is not found#"
-#        - "#PHPDoc .* @mixin contains unknown class Eloquent.#"
+        #- "#PHPDoc .* @mixin contains unknown class Eloquent.#"
 
     paths:
         - app/
@@ -14,3 +13,5 @@ parameters:
 
     # covariant,contravariantが残念な感じになるのでやめる
     #checkGenericClassInNonGenericObjectType: false
+    scanFiles:
+        - _ide_helper_models.php

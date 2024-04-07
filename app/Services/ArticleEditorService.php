@@ -181,7 +181,7 @@ class ArticleEditorService extends Service
 
     private function inactiveToPublish(Article $article, ArticleStatus $articleStatus): bool
     {
-        return $article->is_inactive && ($articleStatus === ArticleStatus::Publish || $articleStatus === ArticleStatus::Reservation);
+        return is_null($article->published_at) && $article->is_inactive && ($articleStatus === ArticleStatus::Publish || $articleStatus === ArticleStatus::Reservation);
     }
 
     private function shouldUpdateModifiedAt(UpdateRequest $updateRequest): bool

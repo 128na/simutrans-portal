@@ -13,7 +13,9 @@ class ScreenshotStored
     use Dispatchable;
     use SerializesModels;
 
-    public function __construct(public readonly Screenshot $screenshot)
-    {
+    public function __construct(
+        public readonly Screenshot $screenshot,
+        public readonly bool $shouldNotify = false,
+    ) {
     }
 }

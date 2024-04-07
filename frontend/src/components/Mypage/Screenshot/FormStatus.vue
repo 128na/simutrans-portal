@@ -1,6 +1,6 @@
 <template>
   <label-required>公開状態</label-required>
-  <q-btn-toggle v-model="store.screenshot.status" :options="options" name="status" />
+  <q-btn-toggle v-model="store.screenshot.status" :options="options" name="status" class="q-mt-sm" />
 </template>
 <script>
 import { defineComponent } from 'vue';

@@ -15,6 +15,7 @@ namespace App\Models{
 /**
  * 
  *
+ * @mixin IdeHelperArticle
  * @property int $id
  * @property int $user_id
  * @property string $title タイトル
@@ -103,16 +104,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Article withUserTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Article withoutAnnounce()
  * @method static \Illuminate\Database\Eloquent\Builder|Article withoutTrashed()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperArticle {}
+	class Article extends \Eloquent implements \Spatie\Feed\Feedable {}
 }
 
 namespace App\Models\Article{
 /**
  * 
  *
+ * @mixin IdeHelperConversionCount
  * @property int $id
  * @property int $article_id
  * @property int $type 集計区分 1:日次,2:月次,3:年次,4:全体
@@ -122,16 +122,15 @@ namespace App\Models\Article{
  * @method static \Illuminate\Database\Eloquent\Builder|ConversionCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ConversionCount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ConversionCount query()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperConversionCount {}
+	class ConversionCount extends \Eloquent {}
 }
 
 namespace App\Models\Article{
 /**
  * 
  *
+ * @mixin IdeHelperRanking
  * @property int $rank
  * @property int $article_id
  * @property-read \App\Models\Article $article
@@ -139,16 +138,15 @@ namespace App\Models\Article{
  * @method static \Illuminate\Database\Eloquent\Builder|Ranking newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Ranking newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Ranking query()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperRanking {}
+	class Ranking extends \Eloquent {}
 }
 
 namespace App\Models\Article{
 /**
  * 
  *
+ * @mixin IdeHelperViewCount
  * @property int $id
  * @property int $article_id
  * @property int $type 集計区分 1:日次,2:月次,3:年次,4:全体
@@ -158,16 +156,15 @@ namespace App\Models\Article{
  * @method static \Illuminate\Database\Eloquent\Builder|ViewCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ViewCount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ViewCount query()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperViewCount {}
+	class ViewCount extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
  * 
  *
+ * @mixin IdeHelperAttachment
  * @property int $id
  * @property int $user_id
  * @property int|null $attachmentable_id 添付先ID
@@ -194,16 +191,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Attachment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Attachment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Attachment query()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperAttachment {}
+	class Attachment extends \Eloquent {}
 }
 
 namespace App\Models\Attachment{
 /**
  * 
  *
+ * @mixin IdeHelperFileInfo
  * @property int $id
  * @property int $attachment_id
  * @property array $data
@@ -212,16 +208,15 @@ namespace App\Models\Attachment{
  * @method static \Illuminate\Database\Eloquent\Builder|FileInfo newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|FileInfo newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|FileInfo query()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperFileInfo {}
+	class FileInfo extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
  * 
  *
+ * @mixin IdeHelperBulkZip
  * @property int $id
  * @property string $uuid
  * @property string $bulk_zippable_type
@@ -235,16 +230,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|BulkZip newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BulkZip newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BulkZip query()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperBulkZip {}
+	class BulkZip extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
  * 
  *
+ * @mixin IdeHelperCategory
  * @property int $id
  * @property \App\Enums\CategoryType $type 分類
  * @property string $slug スラッグ
@@ -266,16 +260,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Category query()
  * @method static \Illuminate\Database\Eloquent\Builder|Category slug(string $slug)
  * @method static \Illuminate\Database\Eloquent\Builder|Category type(\App\Enums\CategoryType $categoryType)
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperCategory {}
+	class Category extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
  * 
  *
+ * @mixin IdeHelperControllOption
  * @property \App\Enums\ControllOptionKey $key
  * @property bool $value
  * @property \Carbon\CarbonImmutable|null $created_at
@@ -283,16 +276,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ControllOption newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ControllOption newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ControllOption query()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperControllOption {}
+	class ControllOption extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
  * 
  *
+ * @mixin IdeHelperOauthToken
  * @property string $application
  * @property string $token_type
  * @property string $scope
@@ -304,16 +296,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|OauthToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OauthToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OauthToken query()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperOauthToken {}
+	class OauthToken extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
  * Pak-アドオン毎の投稿数（メニュー表示用）.
  *
+ * @mixin IdeHelperPakAddonCount
  * @property int $id
  * @property string $pak_slug
  * @property string $addon_slug
@@ -321,16 +312,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount query()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperPakAddonCount {}
+	class PakAddonCount extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
  * 
  *
+ * @mixin IdeHelperRedirect
  * @property int $id
  * @property string $from リダイレクト元
  * @property string $to リダイレクト先
@@ -341,16 +331,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Redirect newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Redirect newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Redirect query()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperRedirect {}
+	class Redirect extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
  * 
  *
+ * @mixin IdeHelperScreenshot
  * @property int $id
  * @property int $user_id
  * @property string $title タイトル
@@ -359,6 +348,7 @@ namespace App\Models{
  * @property \App\Enums\ScreenshotStatus $status 公開ステータス
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property \Carbon\CarbonImmutable $published_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
  * @property-read int|null $articles_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
@@ -372,16 +362,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Screenshot newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Screenshot publish()
  * @method static \Illuminate\Database\Eloquent\Builder|Screenshot query()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperScreenshot {}
+	class Screenshot extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
  * 
  *
+ * @mixin IdeHelperTag
  * @property int $id
  * @property string $name タグ名
  * @property string|null $description 説明
@@ -400,16 +389,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Tag newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tag popular()
  * @method static \Illuminate\Database\Eloquent\Builder|Tag query()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperTag {}
+	class Tag extends \Eloquent {}
 }
 
 namespace App\Models{
 /**
  * 
  *
+ * @mixin IdeHelperUser
  * @property int $id
  * @property \App\Enums\UserRole $role 権限
  * @property string $name ユーザー名
@@ -455,16 +443,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperUser {}
+	class User extends \Eloquent implements \App\Contracts\Models\BulkZippableInterface, \Illuminate\Contracts\Auth\MustVerifyEmail {}
 }
 
 namespace App\Models{
 /**
  * ユーザー毎の投稿数（メニュー表示用）.
  *
+ * @mixin IdeHelperUserAddonCount
  * @property int $id
  * @property int $user_id
  * @property string $user_name
@@ -473,16 +460,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddonCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddonCount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddonCount query()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperUserAddonCount {}
+	class UserAddonCount extends \Eloquent {}
 }
 
 namespace App\Models\User{
 /**
  * 
  *
+ * @mixin IdeHelperLoginHistory
  * @property int $id
  * @property int $user_id
  * @property string|null $ip
@@ -495,16 +481,15 @@ namespace App\Models\User{
  * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory query()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperLoginHistory {}
+	class LoginHistory extends \Eloquent {}
 }
 
 namespace App\Models\User{
 /**
  * 
  *
+ * @mixin IdeHelperProfile
  * @property int $id
  * @property int $user_id
  * @property \App\Models\User\ProfileData $data プロフィール情報
@@ -520,9 +505,7 @@ namespace App\Models\User{
  * @method static \Illuminate\Database\Eloquent\Builder|Profile newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Profile newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Profile query()
- * @mixin \Eloquent
  */
-	#[\AllowDynamicProperties]
-	class IdeHelperProfile {}
+	class Profile extends \Eloquent {}
 }
 

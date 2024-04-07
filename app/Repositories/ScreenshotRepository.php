@@ -29,7 +29,7 @@ class ScreenshotRepository extends BaseRepository
         return $this->model
             ->publish()
             ->with(['user', 'attachments', 'articles'])
-            ->orderBy('updated_at', 'desc')
+            ->orderBy('published_at', 'desc')
             ->paginate(20);
     }
 

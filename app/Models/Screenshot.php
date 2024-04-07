@@ -25,11 +25,13 @@ class Screenshot extends Model
         'description',
         'links',
         'status',
+        'published_at',
     ];
 
     protected $casts = [
         'links' => 'array',
         'status' => ScreenshotStatus::class,
+        'published_at' => 'immutable_datetime',
     ];
 
     protected static function booted()

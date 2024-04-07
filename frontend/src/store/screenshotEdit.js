@@ -5,6 +5,7 @@ import { useApiHandler } from 'src/composables/apiHandler';
 
 export const useScreenshotEditStore = defineStore('screenshotEdit', () => {
   const screenshot = ref(null);
+  const shouldNotify = ref(false);
   const createScreenshot = () => {
     screenshot.value = JSON.parse(JSON.stringify({
       title: '',
@@ -22,10 +23,14 @@ export const useScreenshotEditStore = defineStore('screenshotEdit', () => {
   const api = useMypageApi();
   const handler = useApiHandler();
   const save = async () => {
+    const params = {
+      screenshot: screenshot.value,
+      should_notify: shouldNotify.value,
+    };
     const res = await handler.handleWithValidate({
       doRequest: () => (screenshot.value.id
-        ? api.updateScreenshot(screenshot.value.id, { screenshot: screenshot.value })
-        : api.storeScreenshot({ screenshot: screenshot.value })),
+        ? api.updateScreenshot(screenshot.value.id, params)
+        : api.storeScreenshot(params)),
       successMessage: '保存しました',
     });
 
@@ -47,6 +52,7 @@ export const useScreenshotEditStore = defineStore('screenshotEdit', () => {
   };
 
   return {
+    shouldNotify,
     screenshot,
     createScreenshot,
     selectScreenshot,

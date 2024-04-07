@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Listeners\Screenshot;
 
+use App\Enums\ScreenshotStatus;
 use App\Events\Screenshot\ScreenshotStored;
 use App\Listeners\BaseListener;
 use App\Notifications\SendScreenshotPublished;
@@ -19,6 +20,8 @@ class OnScreenshotStored extends BaseListener
     {
         $this->logger->channel('audit')->info('スクリーンショット作成', $screenshotStored->screenshot->getInfoLogging());
 
-        $screenshotStored->screenshot->notify(new SendScreenshotPublished());
+        if ($screenshotStored->screenshot->status === ScreenshotStatus::Publish && $screenshotStored->shouldNotify) {
+            $screenshotStored->screenshot->notify(new SendScreenshotPublished());
+        }
     }
 }

@@ -15,11 +15,6 @@ use Tests\Unit\TestCase;
 
 class OnScreenshotUpdatedTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     private function getSUT(): OnScreenshotUpdated
     {
         return app(OnScreenshotUpdated::class);

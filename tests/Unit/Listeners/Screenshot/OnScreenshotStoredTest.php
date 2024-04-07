@@ -15,11 +15,6 @@ use Tests\Unit\TestCase;
 
 class OnScreenshotStoredTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     private function getSUT(): OnScreenshotStored
     {
         return app(OnScreenshotStored::class);

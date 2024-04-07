@@ -13,11 +13,6 @@ use Tests\Feature\TestCase;
 
 class FrontControllerTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testTop(): void
     {
         $testResponse = $this->get(route('index'));

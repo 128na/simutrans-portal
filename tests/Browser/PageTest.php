@@ -24,11 +24,6 @@ use Tests\Browser\Pages\TopPage;
 
 class PageTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     #[DataProvider('dataPages')]
     public function testPages(string $pageClass): void
     {

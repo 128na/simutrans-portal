@@ -16,11 +16,6 @@ use Tests\Unit\TestCase;
 
 class FindArticlesTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     protected function getSUT(): ArticleAnalyticsService
     {
         return app(ArticleAnalyticsService::class);

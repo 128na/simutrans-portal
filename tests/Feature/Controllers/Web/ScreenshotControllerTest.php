@@ -9,11 +9,6 @@ use Tests\Feature\TestCase;
 
 class ScreenshotControllerTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testIndex(): void
     {
         $testResponse = $this->get(route('screenshots.index'));

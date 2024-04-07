@@ -16,11 +16,6 @@ use Tests\Unit\TestCase;
 
 class UpdateScreenshotTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     private function getSUT(): UpdateScreenshot
     {
         return app(UpdateScreenshot::class);

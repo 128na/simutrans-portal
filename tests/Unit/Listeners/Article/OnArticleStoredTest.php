@@ -14,11 +14,6 @@ use Tests\Unit\TestCase;
 
 class OnArticleStoredTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     private function getSUT(): OnArticleStored
     {
         return app(OnArticleStored::class);

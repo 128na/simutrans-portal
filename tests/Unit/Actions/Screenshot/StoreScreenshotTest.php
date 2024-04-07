@@ -17,11 +17,6 @@ use Tests\Unit\TestCase;
 
 class StoreScreenshotTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     private function getSUT(): StoreScreenshot
     {
         return app(StoreScreenshot::class);

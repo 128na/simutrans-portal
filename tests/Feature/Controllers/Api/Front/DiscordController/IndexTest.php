@@ -13,11 +13,6 @@ use Tests\Feature\TestCase;
 
 class IndexTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function test_create(): void
     {
         $this->mock(RecaptchaService::class, function (MockInterface $mock): void {

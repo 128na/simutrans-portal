@@ -13,11 +13,6 @@ abstract class TestCase extends TestsTestCase
 {
     use CreatesApplication;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     protected function tearDown(): void
     {
         Mockery::close();

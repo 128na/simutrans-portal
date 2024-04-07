@@ -45,9 +45,9 @@ class OnArticleStoredTest extends TestCase
 
     public static function data(): \Generator
     {
-        yield '公開,投稿通知ON' => [true, true, true];
-        yield '公開,投稿通知OFF' => [true, false, false];
-        yield '公開以外,投稿通知ON' => [false, true, false];
-        yield '公開以外,投稿通知OFF' => [false, false, false];
+        yield '公開,通知ON->投稿通知' => [true, true, true];
+        yield '公開,通知OFF->通知しない' => [true, false, false];
+        yield '公開以外,通知ON->通知しない' => [false, true, false];
+        yield '公開以外,通知OFF->通知しない' => [false, false, false];
     }
 }

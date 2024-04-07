@@ -8,17 +8,13 @@ use App\Events\Article\ArticleUpdated;
 use App\Listeners\Article\OnArticleUpdated;
 use App\Models\Article;
 use App\Notifications\SendArticlePublished;
+use App\Notifications\SendArticleUpdated;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Unit\TestCase;
 
 class OnArticleUpdatedTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     private function getSUT(): OnArticleUpdated
     {
         return app(OnArticleUpdated::class);
@@ -29,16 +25,22 @@ class OnArticleUpdatedTest extends TestCase
         bool $notYetPublished,
         bool $isPublish,
         bool $shouldNotify,
-        bool $expectNotify
+        bool $expectPublishNotify,
+        bool $expectUpdateNotify,
     ): void {
         /** @var Article&MockInterface */
-        $mock = $this->mock(Article::class, function (MockInterface $mock) use ($isPublish, $expectNotify): void {
+        $mock = $this->mock(Article::class, function (MockInterface $mock) use ($isPublish, $expectPublishNotify, $expectUpdateNotify): void {
             $mock->allows()->getAttribute('is_publish')->andReturn($isPublish);
             $mock->allows()->getInfoLogging()->andReturn([]);
-            if ($expectNotify) {
+            if ($expectPublishNotify) {
                 $mock->expects()->notify(SendArticlePublished::class)->once();
             } else {
                 $mock->expects()->notify(SendArticlePublished::class)->never();
+            }
+            if ($expectUpdateNotify) {
+                $mock->expects()->notify(SendArticleUpdated::class)->once();
+            } else {
+                $mock->expects()->notify(SendArticleUpdated::class)->never();
             }
         });
 
@@ -49,13 +51,13 @@ class OnArticleUpdatedTest extends TestCase
 
     public static function data(): \Generator
     {
-        yield '未公開,公開,投稿通知ON' => [true, true, true, true];
-        yield '未公開,公開,投稿通知OF' => [true, true, false, false];
-        yield '未公開,非公開,投稿通知ON' => [true, false, true, false];
-        yield '未公開,非公開,投稿通知OF' => [true, false, false, false];
-        yield '公開済,公開,投稿通知ON' => [false, true, true, false];
-        yield '公開済,公開,投稿通知OF' => [false, true, false, false];
-        yield '公開済,非公開,投稿通知ON' => [false, false, true, false];
-        yield '公開済,非公開,投稿通知OF' => [false, false, false, false];
+        yield '未公開,公開,通知ON->投稿通知' => [true, true, true, true, false];
+        yield '未公開,公開,通知OF->通知しない' => [true, true, false, false, false];
+        yield '未公開,非公開,通知ON->通知しない' => [true, false, true, false, false];
+        yield '未公開,非公開,通知OF->通知しない' => [true, false, false, false, false];
+        yield '公開済,公開,通知ON->更新通知' => [false, true, true, false, true];
+        yield '公開済,公開,通知OF->通知しない' => [false, true, false, false, false];
+        yield '公開済,非公開,通知ON->通知しない' => [false, false, true, false, false];
+        yield '公開済,非公開,通知OF->通知しない' => [false, false, false, false, false];
     }
 }

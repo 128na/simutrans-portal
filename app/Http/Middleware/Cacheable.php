@@ -66,7 +66,7 @@ class Cacheable
     {
         $content = $response->getContent();
         if ($content) {
-            Cache::put($key, gzencode($content, 9), Config::integer('app.cache_lifetime_min') * 60);
+            Cache::put($key, gzencode($content, 9), (int) Config::string('app.cache_lifetime_min') * 60);
         }
     }
 }

@@ -21,17 +21,12 @@ class ToMisskey
 
     public function __invoke(Article $article, SendSNSNotification $sendSNSNotification): void
     {
-        match (true) {
-            $sendSNSNotification instanceof SendArticlePublished => $this->publish($article),
-            $sendSNSNotification instanceof SendArticleUpdated => $this->update($article),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendSNSNotification::class)),
-        };
-    }
-
-    private function publish(Article $article): void
-    {
         try {
-            $text = __('notification.article.create', ($this->getArticleParam)($article));
+            $text = match (true) {
+                $sendSNSNotification instanceof SendArticlePublished => $this->publish($article),
+                $sendSNSNotification instanceof SendArticleUpdated => $this->update($article),
+                default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendSNSNotification::class)),
+            };
             $result = $this->misskeyApiClient->send($text);
             logger('[MisskeyChannel]', [$result]);
         } catch (Throwable $throwable) {
@@ -39,14 +34,13 @@ class ToMisskey
         }
     }
 
-    private function update(Article $article): void
+    private function publish(Article $article): string
     {
-        try {
-            $text = __('notification.article.update', ($this->getArticleParam)($article));
-            $result = $this->misskeyApiClient->send($text);
-            logger('[MisskeyChannel]', [$result]);
-        } catch (Throwable $throwable) {
-            report($throwable);
-        }
+        return __('notification.article.create', ($this->getArticleParam)($article));
+    }
+
+    private function update(Article $article): string
+    {
+        return __('notification.article.update', ($this->getArticleParam)($article));
     }
 }

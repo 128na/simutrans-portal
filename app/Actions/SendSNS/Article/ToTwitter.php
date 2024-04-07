@@ -21,18 +21,12 @@ class ToTwitter
 
     public function __invoke(Article $article, SendSNSNotification $sendSNSNotification): void
     {
-        match (true) {
-            $sendSNSNotification instanceof SendArticlePublished => $this->publish($article),
-            $sendSNSNotification instanceof SendArticleUpdated => $this->update($article),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendSNSNotification::class)),
-        };
-    }
-
-    private function publish(Article $article): void
-    {
-
         try {
-            $data = ['text' => __('notification.article.create', ($this->getArticleParam)($article))];
+            $data = ['text' => match (true) {
+                $sendSNSNotification instanceof SendArticlePublished => $this->publish($article),
+                $sendSNSNotification instanceof SendArticleUpdated => $this->update($article),
+                default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendSNSNotification::class)),
+            }];
             $result = $this->twitterV2Api->post('tweets', $data);
             logger('[TwitterChannel]', [$result]);
         } catch (Throwable $throwable) {
@@ -40,15 +34,13 @@ class ToTwitter
         }
     }
 
-    private function update(Article $article): void
+    private function publish(Article $article): string
     {
+        return __('notification.article.create', ($this->getArticleParam)($article));
+    }
 
-        try {
-            $data = ['text' => __('notification.article.update', ($this->getArticleParam)($article))];
-            $result = $this->twitterV2Api->post('tweets', $data);
-            logger('[TwitterChannel]', [$result]);
-        } catch (Throwable $throwable) {
-            report($throwable);
-        }
+    private function update(Article $article): string
+    {
+        return __('notification.article.update', ($this->getArticleParam)($article));
     }
 }

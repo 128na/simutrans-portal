@@ -24,17 +24,12 @@ class ToBluesky
 
     public function __invoke(Article $article, SendSNSNotification $sendSNSNotification): void
     {
-        match (true) {
-            $sendSNSNotification instanceof SendArticlePublished => $this->publish($article),
-            $sendSNSNotification instanceof SendArticleUpdated => $this->update($article),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendSNSNotification::class)),
-        };
-    }
-
-    private function publish(Article $article): void
-    {
         try {
-            $post = $this->createPost($article, __('notification.simple_article.create', ($this->getArticleParam)($article)));
+            $post = match (true) {
+                $sendSNSNotification instanceof SendArticlePublished => $this->publish($article),
+                $sendSNSNotification instanceof SendArticleUpdated => $this->update($article),
+                default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendSNSNotification::class)),
+            };
             $result = $this->blueSkyApiClient->send($post);
             logger('[BlueSkyChannel]', [$result->getUri()]);
         } catch (Throwable $throwable) {
@@ -42,15 +37,14 @@ class ToBluesky
         }
     }
 
-    private function update(Article $article): void
+    private function publish(Article $article): Post
     {
-        try {
-            $post = $this->createPost($article, __('notification.simple_article.update', ($this->getArticleParam)($article)));
-            $result = $this->blueSkyApiClient->send($post);
-            logger('[BlueSkyChannel]', [$result->getUri()]);
-        } catch (Throwable $throwable) {
-            report($throwable);
-        }
+        return $this->createPost($article, __('notification.simple_article.create', ($this->getArticleParam)($article)));
+    }
+
+    private function update(Article $article): Post
+    {
+        return $this->createPost($article, __('notification.simple_article.update', ($this->getArticleParam)($article)));
     }
 
     private function createPost(Article $article, string $text): Post

@@ -20,18 +20,13 @@ class ToOneSignal
 
     public function __invoke(Article $article, SendSNSNotification $sendSNSNotification): void
     {
-        match (true) {
-            $sendSNSNotification instanceof SendArticlePublished => $this->publish($article),
-            $sendSNSNotification instanceof SendArticleUpdated => $this->update($article),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendSNSNotification::class)),
-        };
-    }
-
-    private function publish(Article $article): void
-    {
         try {
             OneSignalFacade::sendNotificationToAll(
-                __('notification.simple_article.create', ($this->getArticleParam)($article)),
+                match (true) {
+                    $sendSNSNotification instanceof SendArticlePublished => $this->publish($article),
+                    $sendSNSNotification instanceof SendArticleUpdated => $this->update($article),
+                    default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendSNSNotification::class)),
+                },
                 route('articles.show', ['userIdOrNickname' => $article->user?->nickname ?? $article->user_id, 'articleSlug' => $article->slug]),
             );
         } catch (Throwable $throwable) {
@@ -39,15 +34,13 @@ class ToOneSignal
         }
     }
 
-    private function update(Article $article): void
+    private function publish(Article $article): string
     {
-        try {
-            OneSignalFacade::sendNotificationToAll(
-                __('notification.simple_article.update', ($this->getArticleParam)($article)),
-                route('articles.show', ['userIdOrNickname' => $article->user?->nickname ?? $article->user_id, 'articleSlug' => $article->slug]),
-            );
-        } catch (Throwable $throwable) {
-            report($throwable);
-        }
+        return __('notification.simple_article.create', ($this->getArticleParam)($article));
+    }
+
+    private function update(Article $article): string
+    {
+        return __('notification.simple_article.update', ($this->getArticleParam)($article));
     }
 }

@@ -19,9 +19,14 @@ class OnScreenshotStored extends BaseListener
     public function handle(ScreenshotStored $screenshotStored): void
     {
         $this->logger->channel('audit')->info('スクリーンショット作成', $screenshotStored->screenshot->getInfoLogging());
-
-        if ($screenshotStored->screenshot->status === ScreenshotStatus::Publish && $screenshotStored->shouldNotify) {
-            $screenshotStored->screenshot->notify(new SendScreenshotPublished());
+        if ($screenshotStored->screenshot->status !== ScreenshotStatus::Publish) {
+            return;
         }
+
+        if (! $screenshotStored->shouldNotify) {
+            return;
+        }
+
+        $screenshotStored->screenshot->notify(new SendScreenshotPublished());
     }
 }

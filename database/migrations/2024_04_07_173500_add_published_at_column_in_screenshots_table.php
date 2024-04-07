@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('screenshots', function (Blueprint $table) {
-            $table->timestamp('published_at')->index();
+        Schema::table('screenshots', function (Blueprint $blueprint): void {
+            $blueprint->timestamp('published_at')->nullable()->index();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('screenshots', function (Blueprint $table) {
-            $table->dropColumn(['published_at']);
+        Schema::table('screenshots', function (Blueprint $blueprint): void {
+            $blueprint->dropColumn(['published_at']);
         });
     }
 };

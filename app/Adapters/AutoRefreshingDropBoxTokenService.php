@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Adapters;
 
 use Exception;
 
-class AutoRefreshingDropBoxTokenService
+final class AutoRefreshingDropBoxTokenService
 {
     public function getToken(string $key, string $secret, string $refreshToken): string
     {
@@ -17,7 +19,7 @@ class AutoRefreshingDropBoxTokenService
         ]);
         if ($res->getStatusCode() == 200) {
             /** @var array{access_token:string} */
-            $data = json_decode($res->getBody(), true);
+            $data = json_decode((string) $res->getBody(), true);
 
             return $data['access_token'];
         }

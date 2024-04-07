@@ -9,7 +9,7 @@ use App\Models\Redirect;
 /**
  * @extends BaseRepository<Redirect>
  */
-class RedirectRepository extends BaseRepository
+final class RedirectRepository extends BaseRepository
 {
     public function __construct(Redirect $redirect)
     {

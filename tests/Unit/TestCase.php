@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Validator;
 use Mockery;
 use Tests\CreatesApplication;
+use Tests\TestCase as TestsTestCase;
 
-abstract class TestCase extends BaseTestCase
+abstract class TestCase extends TestsTestCase
 {
     use CreatesApplication;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
 
     protected function tearDown(): void
     {

@@ -7,7 +7,7 @@ namespace App\Http\Requests\Api\ArticleAnalytics;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class SearchRequest extends FormRequest
+final class SearchRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

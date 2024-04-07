@@ -8,7 +8,7 @@ use App\Models\Screenshot;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\Support\Renderable;
 
-class ScreenshotController extends Controller
+final class ScreenshotController extends Controller
 {
     public function __construct(
         private readonly MetaOgpService $metaOgpService,

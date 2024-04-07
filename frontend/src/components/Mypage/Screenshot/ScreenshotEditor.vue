@@ -35,6 +35,7 @@
           </FormArticleRelations>
           <FormLinks />
           <FormStatus />
+          <FormNotify />
           <div class="q-py-lg">
             <q-btn color="primary" @click="save">{{ editor.screenshot.id ? '更新' : '投稿' }}</q-btn>
           </div>
@@ -53,6 +54,7 @@ import InputCountable from 'src/components/Common/Input/InputCountable.vue';
 import { useMypageStore } from 'src/store/mypage';
 import FormStatus from './FormStatus.vue';
 import FormAttachments from './FormAttachments.vue';
+import FormNotify from './FormNotify.vue';
 
 export default defineComponent({
   name: 'ScreenshotEditor',
@@ -63,6 +65,7 @@ export default defineComponent({
     FormLinks,
     FormStatus,
     FormAttachments,
+    FormNotify,
   },
   props: {
   },

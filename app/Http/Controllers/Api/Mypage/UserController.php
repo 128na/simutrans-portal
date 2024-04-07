@@ -11,7 +11,7 @@ use App\Jobs\Article\JobUpdateRelated;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+final class UserController extends Controller
 {
     public function __construct(private readonly UserService $userService)
     {

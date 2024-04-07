@@ -15,7 +15,7 @@ use App\Models\Article;
 use App\Services\ArticleEditorService;
 use Illuminate\Support\Facades\DB;
 
-class EditorController extends Controller
+final class EditorController extends Controller
 {
     public function __construct(
         private readonly ArticleEditorService $articleEditorService,
@@ -51,10 +51,11 @@ class EditorController extends Controller
         $notYetPublished = is_null($article->published_at);
         $article = DB::transaction(fn (): \App\Models\Article => $this->articleEditorService->updateArticle($article, $updateRequest));
         JobUpdateRelated::dispatch();
+
+        $shouldNotify = $updateRequest->boolean('should_notify', false) && ! $updateRequest->boolean('without_update_modified_at', false);
         ArticleUpdated::dispatch(
             $article,
-            $updateRequest->boolean('should_notify', false),
-            $updateRequest->boolean('without_update_modified_at', false),
+            $shouldNotify,
             $notYetPublished
         );
 

@@ -12,7 +12,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Tests\Feature\TestCase;
 
-class PaginateByPakNoneAddonCategoryTest extends TestCase
+final class PaginateByPakNoneAddonCategoryTest extends TestCase
 {
     private ArticleRepository $repository;
 

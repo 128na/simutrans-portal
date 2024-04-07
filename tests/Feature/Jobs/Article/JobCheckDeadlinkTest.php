@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Tests\Feature\TestCase;
 
-class JobCheckDeadlinkTest extends TestCase
+final class JobCheckDeadlinkTest extends TestCase
 {
     private Article $article;
 

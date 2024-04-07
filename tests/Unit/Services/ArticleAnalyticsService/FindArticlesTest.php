@@ -14,14 +14,9 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Unit\TestCase;
 
-class FindArticlesTest extends TestCase
+final class FindArticlesTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function getSUT(): ArticleAnalyticsService
+    private function getSUT(): ArticleAnalyticsService
     {
         return app(ArticleAnalyticsService::class);
     }

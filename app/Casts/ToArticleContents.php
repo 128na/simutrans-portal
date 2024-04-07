@@ -14,7 +14,7 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 /**
  * @implements CastsAttributes<\App\Models\Contents\Content,\App\Models\Contents\Content>
  */
-class ToArticleContents implements CastsAttributes
+final class ToArticleContents implements CastsAttributes
 {
     /**
      * 指定された値をキャスト.

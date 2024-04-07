@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands\Attachment;
 
 use App\Repositories\AttachmentRepository;
 use App\Services\Attachment\WebpConverter;
 use Illuminate\Console\Command;
 
-class CommandConvertWeb extends Command
+final class CommandConvertWeb extends Command
 {
     /**
      * @var string

@@ -8,7 +8,7 @@ use App\Models\BulkZip;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 
-class BulkZipResource extends JsonResource
+final class BulkZipResource extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request

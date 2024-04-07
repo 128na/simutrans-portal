@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Models\UserAddonCount;
 use Tests\Feature\TestCase;
 
-class JobUpdateRelatedTest extends TestCase
+final class JobUpdateRelatedTest extends TestCase
 {
     private User $user;
 

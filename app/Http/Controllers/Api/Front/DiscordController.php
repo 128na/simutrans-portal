@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
 
-class DiscordController extends Controller
+final class DiscordController extends Controller
 {
     public function __construct(
         private readonly InviteService $inviteService,

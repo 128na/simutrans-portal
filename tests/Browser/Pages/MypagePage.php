@@ -6,7 +6,7 @@ namespace Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
 
-class MypagePage extends Page
+final class MypagePage extends Page
 {
     public function url()
     {

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Article;
 
-use App\Services\Service;
-
-class GetHeadersHandler extends Service
+final class GetHeadersHandler
 {
     /**
      * @return array<string>

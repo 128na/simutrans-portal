@@ -8,12 +8,12 @@ use App\Models\Article;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class CloseByDeadLinkDetected
+final readonly class CloseByDeadLinkDetected
 {
     use Dispatchable;
     use SerializesModels;
 
-    public function __construct(public readonly Article $article)
+    public function __construct(public Article $article)
     {
     }
 }

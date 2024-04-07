@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class FrontController extends Controller
+final class FrontController extends Controller
 {
     public function __construct(
         private readonly ArticleService $articleService,

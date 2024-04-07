@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace App\Services\Google\Recaptcha;
 
-use App\Services\Service;
 use Google\Cloud\RecaptchaEnterprise\V1\Assessment;
 use Google\Cloud\RecaptchaEnterprise\V1\Event;
 use Google\Cloud\RecaptchaEnterprise\V1\RecaptchaEnterpriseServiceClient;
 
-class RecaptchaService extends Service
+final readonly class RecaptchaService
 {
     private const ALLOW_SCORE = 0.5;
 
     public function __construct(
-        private readonly RecaptchaEnterpriseServiceClient $recaptchaEnterpriseServiceClient,
-        private readonly string $projectName,
-        private readonly Event $event,
+        private RecaptchaEnterpriseServiceClient $recaptchaEnterpriseServiceClient,
+        private string $projectName,
+        private Event $event,
     ) {
     }
 

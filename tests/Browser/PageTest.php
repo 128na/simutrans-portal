@@ -22,13 +22,8 @@ use Tests\Browser\Pages\MypagePage;
 use Tests\Browser\Pages\TagsPage;
 use Tests\Browser\Pages\TopPage;
 
-class PageTest extends TestCase
+final class PageTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     #[DataProvider('dataPages')]
     public function testPages(string $pageClass): void
     {

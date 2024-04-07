@@ -23,7 +23,7 @@ use Illuminate\Support\LazyCollection;
 /**
  * @extends BaseRepository<Article>
  */
-class ArticleRepository extends BaseRepository
+final class ArticleRepository extends BaseRepository
 {
     public const MYPAGE_RELATIONS = ['user', 'attachments.fileInfo', 'categories', 'tags', 'totalViewCount', 'totalConversionCount', 'articles'];
 

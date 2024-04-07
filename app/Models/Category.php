@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * @mixin IdeHelperCategory
  */
-class Category extends Model
+final class Category extends Model
 {
     use HasFactory;
 
@@ -40,11 +40,11 @@ class Category extends Model
     | 初期化時設定
     |--------------------------------------------------------------------------
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
-        static::addGlobalScope('order', function (Builder $builder): void {
+        self::addGlobalScope('order', function (Builder $builder): void {
             $builder->orderBy('order', 'asc');
         });
     }

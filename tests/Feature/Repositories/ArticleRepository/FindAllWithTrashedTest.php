@@ -10,7 +10,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Support\Collection;
 use Tests\Feature\TestCase;
 
-class FindAllWithTrashedTest extends TestCase
+final class FindAllWithTrashedTest extends TestCase
 {
     private ArticleRepository $repository;
 

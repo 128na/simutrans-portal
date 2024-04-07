@@ -15,7 +15,7 @@ use App\Models\Tag;
 use App\Repositories\TagRepository;
 use Illuminate\Support\Facades\Auth;
 
-class TagController extends Controller
+final class TagController extends Controller
 {
     public function __construct(
         private readonly TagRepository $tagRepository,

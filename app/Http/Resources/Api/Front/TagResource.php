@@ -7,7 +7,7 @@ namespace App\Http\Resources\Api\Front;
 use App\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TagResource extends JsonResource
+final class TagResource extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request

@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Fortify;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-class LogoutTest extends TestCase
+final class LogoutTest extends TestCase
 {
     private string $url = '/auth/logout';
 

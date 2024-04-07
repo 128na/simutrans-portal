@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Rules;
 
 use App\Rules\NotJustNumbers;
@@ -10,7 +12,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Unit\TestCase;
 
-class NotJustNumbersTest extends TestCase
+final class NotJustNumbersTest extends TestCase
 {
     private Closure $failClosure;
 

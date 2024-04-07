@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * Duskテスト用シーダー
  */
-class DuskSeeder extends Seeder
+final class DuskSeeder extends Seeder
 {
     /**
      * 管理者とカテゴリを追加する.

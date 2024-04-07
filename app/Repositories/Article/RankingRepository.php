@@ -12,7 +12,7 @@ use Illuminate\Support\LazyCollection;
 /**
  * @extends BaseRepository<Ranking>
  */
-class RankingRepository extends BaseRepository
+final class RankingRepository extends BaseRepository
 {
     public function __construct(Ranking $ranking)
     {

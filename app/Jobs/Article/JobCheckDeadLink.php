@@ -12,7 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class JobCheckDeadLink implements ShouldQueue
+final class JobCheckDeadLink implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

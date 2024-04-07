@@ -9,7 +9,7 @@ use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use Tests\Feature\TestCase;
 
-class FindRandomPRTest extends TestCase
+final class FindRandomPRTest extends TestCase
 {
     private ArticleRepository $repository;
 

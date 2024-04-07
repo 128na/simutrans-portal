@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
-class SendArticlePublished extends SendArticleNotification
+final class SendArticlePublished extends SendSNSNotification
 {
 }

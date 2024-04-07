@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @mixin IdeHelperRanking
  */
-class Ranking extends Model
+final class Ranking extends Model
 {
     use HasFactory;
 

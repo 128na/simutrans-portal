@@ -9,7 +9,7 @@ use App\Models\Category;
 use App\Models\User;
 use Laravel\Dusk\Browser;
 
-class ListPakCategoryPage extends Page
+final class ListPakCategoryPage extends Page
 {
     private readonly Article $article;
 

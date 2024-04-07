@@ -9,7 +9,7 @@ use App\Enums\ArticleStatus;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-class StoreTest extends TestCase
+final class StoreTest extends TestCase
 {
     private User $user;
 

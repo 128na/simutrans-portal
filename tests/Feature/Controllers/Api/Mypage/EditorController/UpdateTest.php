@@ -8,7 +8,7 @@ use App\Enums\ArticleStatus;
 use App\Models\Article;
 use Tests\Feature\TestCase;
 
-class UpdateTest extends TestCase
+final class UpdateTest extends TestCase
 {
     private Article $article;
 

@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Api\Mypage\ScreenshotController;
 use App\Models\Screenshot;
 use Tests\Feature\TestCase;
 
-class DestroyTest extends TestCase
+final class DestroyTest extends TestCase
 {
     private Screenshot $screenshot;
 

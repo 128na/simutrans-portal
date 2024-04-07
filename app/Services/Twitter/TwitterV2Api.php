@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use PDOException;
 
-class TwitterV2Api extends TwitterOAuth
+final class TwitterV2Api extends TwitterOAuth
 {
     private bool $pkceToken = false;
 

@@ -9,13 +9,8 @@ use Illuminate\Http\UploadedFile;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Unit\TestCase;
 
-class StoreRequestTest extends TestCase
+final class StoreRequestTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     #[DataProvider('dataFail')]
     public function testFail(array $data, string $expectedErrorField): void
     {

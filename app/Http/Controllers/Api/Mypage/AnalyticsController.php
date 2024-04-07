@@ -10,7 +10,7 @@ use App\Http\Resources\Api\Mypage\ArticleAnalytic;
 use App\Services\ArticleAnalyticsService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class AnalyticsController extends Controller
+final class AnalyticsController extends Controller
 {
     public function __construct(private readonly ArticleAnalyticsService $articleAnalyticsService)
     {

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors;
 
-use App\Services\Service;
-
-class DatExtractor extends Service implements Extractor
+final class DatExtractor implements Extractor
 {
     public function isText(): bool
     {

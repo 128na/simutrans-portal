@@ -8,7 +8,7 @@ use App\Jobs\Article\JobDeleteUnrelatedTags;
 use App\Models\Tag;
 use Tests\Feature\TestCase;
 
-class JobDeleteUnrelatedTagsTest extends TestCase
+final class JobDeleteUnrelatedTagsTest extends TestCase
 {
     public function testTag(): void
     {

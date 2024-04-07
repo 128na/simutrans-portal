@@ -6,7 +6,7 @@ namespace App\Http\Resources\Api\Mypage;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class Tags extends ResourceCollection
+final class Tags extends ResourceCollection
 {
     /**
      * @param  \Illuminate\Http\Request  $request

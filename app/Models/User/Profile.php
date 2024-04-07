@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Storage;
 /**
  * @mixin IdeHelperProfile
  */
-class Profile extends Model
+final class Profile extends Model
 {
     use HasFactory;
 
@@ -42,7 +42,7 @@ class Profile extends Model
     | 初期化時設定
     |--------------------------------------------------------------------------
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 

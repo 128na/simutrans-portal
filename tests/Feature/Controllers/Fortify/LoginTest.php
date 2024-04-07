@@ -11,14 +11,9 @@ use App\Notifications\SendLoggedInEmail;
 use Illuminate\Support\Facades\Notification;
 use Tests\Feature\TestCase;
 
-class LoginTest extends TestCase
+final class LoginTest extends TestCase
 {
     private string $url = '/auth/login';
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
 
     public function testLogin(): void
     {

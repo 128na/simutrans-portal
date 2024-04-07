@@ -6,6 +6,6 @@ namespace App\Services\FileInfo;
 
 use Exception;
 
-class InvalidEncodingException extends Exception
+final class InvalidEncodingException extends Exception
 {
 }

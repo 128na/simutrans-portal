@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 /**
  * @mixin IdeHelperBulkZip
  */
-class BulkZip extends Model
+final class BulkZip extends Model
 {
     use HasFactory;
 
@@ -33,9 +33,9 @@ class BulkZip extends Model
         'path',
     ];
 
-    protected static function booted()
+    protected static function booted(): void
     {
-        static::creating(function (self $model): void {
+        self::creating(function (self $model): void {
             $model->uuid = (string) Str::uuid();
         });
         self::deleting(function ($model): void {

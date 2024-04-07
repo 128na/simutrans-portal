@@ -4,40 +4,26 @@ declare(strict_types=1);
 
 namespace App\Channels;
 
+use App\Actions\SendSNS\Article\ToMisskey as ArticleToMisskey;
+use App\Actions\SendSNS\Screenshot\ToMisskey as ScreenshotToMisskey;
 use App\Models\Article;
-use App\Notifications\SendArticleNotification;
-use App\Notifications\SendArticlePublished;
-use App\Notifications\SendArticleUpdated;
-use App\Services\Misskey\MisskeyApiClient;
-use App\Services\Notification\MessageGenerator;
+use App\Models\Screenshot;
+use App\Notifications\SendSNSNotification;
 use Exception;
-use Throwable;
+use Illuminate\Database\Eloquent\Model;
 
-class MisskeyChannel extends BaseChannel
+final class MisskeyChannel extends BaseChannel
 {
     public function __construct(
-        private readonly MisskeyApiClient $misskeyApiClient,
-        private readonly MessageGenerator $messageGenerator,
     ) {
     }
 
-    public function send(Article $article, SendArticleNotification $sendArticleNotification): void
+    public function send(Model $model, SendSNSNotification $sendSNSNotification): void
     {
-        try {
-            $text = $this->buildMessage($article, $sendArticleNotification);
-            $result = $this->misskeyApiClient->send($text);
-            logger('[MisskeyChannel]', [$result]);
-        } catch (Throwable $throwable) {
-            report($throwable);
-        }
-    }
-
-    private function buildMessage(Article $article, SendArticleNotification $sendArticleNotification): string
-    {
-        return match (true) {
-            $sendArticleNotification instanceof SendArticlePublished => $this->messageGenerator->buildPublishedMessage($article),
-            $sendArticleNotification instanceof SendArticleUpdated => $this->messageGenerator->buildUpdatedMessage($article),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendArticleNotification::class)),
+        match (true) {
+            $model instanceof Article => app(ArticleToMisskey::class)($model, $sendSNSNotification),
+            $model instanceof Screenshot => app(ScreenshotToMisskey::class)($model, $sendSNSNotification),
+            default => throw new Exception(sprintf('unsupport model "%s" provided', $model::class)),
         };
     }
 

@@ -6,10 +6,10 @@ namespace App\Services\BlueSky;
 
 use App\Models\Article;
 use App\Models\Attachment;
+use App\Models\Screenshot;
 use App\Models\User;
 use App\Services\Attachment\FileSizeBaseResizer;
 use App\Services\Front\MetaOgpService;
-use App\Services\Service;
 use potibm\Bluesky\BlueskyApi;
 use potibm\Bluesky\BlueskyPostService;
 use potibm\Bluesky\Feed\Post;
@@ -18,13 +18,13 @@ use potibm\Bluesky\Response\RecordResponse;
 /**
  * @see https://www.docs.bsky.app/docs
  */
-class BlueSkyApiClient extends Service
+final readonly class BlueSkyApiClient
 {
     public function __construct(
-        private readonly BlueskyApi $blueskyApi,
-        private readonly BlueskyPostService $blueskyPostService,
-        private readonly MetaOgpService $metaOgpService,
-        private readonly FileSizeBaseResizer $fileSizeBaseResizer,
+        private BlueskyApi $blueskyApi,
+        private BlueskyPostService $blueskyPostService,
+        private MetaOgpService $metaOgpService,
+        private FileSizeBaseResizer $fileSizeBaseResizer,
     ) {
     }
 
@@ -48,6 +48,21 @@ class BlueSkyApiClient extends Service
             assert($article->thumbnail instanceof Attachment);
             $thumbnail = $this->fileSizeBaseResizer->resize($article->thumbnail->fullPath, 10 ** 6);
         }
+
+        return $this->blueskyPostService->addWebsiteCard(
+            $post,
+            $ogp['canonical'],
+            $ogp['title'],
+            $ogp['description'],
+            $thumbnail,
+        );
+    }
+
+    public function addWebsiteCardScreenshot(Post $post, Screenshot $screenshot): Post
+    {
+        assert($screenshot->user instanceof User);
+        $ogp = $this->metaOgpService->screenshot($screenshot);
+        $thumbnail = $this->fileSizeBaseResizer->resize($ogp['image'], 10 ** 6);
 
         return $this->blueskyPostService->addWebsiteCard(
             $post,

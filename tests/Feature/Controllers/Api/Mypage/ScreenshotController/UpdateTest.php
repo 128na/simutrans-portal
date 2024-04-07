@@ -8,7 +8,7 @@ use App\Enums\ScreenshotStatus;
 use App\Models\Screenshot;
 use Tests\Feature\TestCase;
 
-class UpdateTest extends TestCase
+final class UpdateTest extends TestCase
 {
     private Screenshot $screenshot;
 
@@ -25,18 +25,20 @@ class UpdateTest extends TestCase
 
         $attachment = $this->createAttachment($this->screenshot->user);
 
-        $response = $this->putJson($url, ['screenshot' => [
-            'title' => 'dummy',
-            'description' => 'dummy',
-            'status' => ScreenshotStatus::Publish->value,
-            'attachments' => [[
-                'id' => $attachment->id,
-                'order' => 1,
-                'caption' => '',
-            ]],
-            'links' => [],
-            'articles' => [],
-        ]]);
+        $response = $this->putJson($url, [
+            'should_notify' => false,
+            'screenshot' => [
+                'title' => 'dummy',
+                'description' => 'dummy',
+                'status' => ScreenshotStatus::Publish->value,
+                'attachments' => [[
+                    'id' => $attachment->id,
+                    'order' => 1,
+                    'caption' => '',
+                ]],
+                'links' => [],
+                'articles' => [],
+            ]]);
         $response->assertOk();
     }
 

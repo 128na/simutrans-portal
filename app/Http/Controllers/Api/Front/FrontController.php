@@ -17,7 +17,7 @@ use App\Services\Front\FrontDescriptionService;
 use App\Services\Front\TagService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class FrontController extends Controller
+final class FrontController extends Controller
 {
     public function __construct(
         private readonly ArticleService $articleService,

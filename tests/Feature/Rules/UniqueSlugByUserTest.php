@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Rules;
 
 use App\Enums\UserRole;
@@ -11,7 +13,7 @@ use Illuminate\Translation\PotentiallyTranslatedString;
 use Mockery\MockInterface;
 use Tests\Feature\TestCase;
 
-class UniqueSlugByUserTest extends TestCase
+final class UniqueSlugByUserTest extends TestCase
 {
     private User $user;
 

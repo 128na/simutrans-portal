@@ -12,7 +12,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-abstract class SendArticleNotification extends Notification implements ShouldQueue
+abstract class SendSNSNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 

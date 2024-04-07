@@ -13,7 +13,7 @@ export default defineComponent({
   components: { LabelOptional },
   setup() {
     const editor = useArticleEditStore();
-    const canNotify = computed(() => editor.article.status === 'publish');
+    const canNotify = computed(() => editor.article.status === 'publish' && !editor.withoutUpdateModifiedAt);
     return {
       editor,
       canNotify,

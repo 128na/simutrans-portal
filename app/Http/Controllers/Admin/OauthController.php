@@ -13,7 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class OauthController extends Controller
+final class OauthController extends Controller
 {
     public function __construct(
         private readonly PKCEService $pkceService,

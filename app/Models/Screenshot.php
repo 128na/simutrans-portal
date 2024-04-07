@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\ScreenshotStatus;
@@ -9,13 +11,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * @mixin IdeHelperScreenshot
  */
-class Screenshot extends Model
+final class Screenshot extends Model
 {
     use HasFactory;
+    use Notifiable;
 
     protected $fillable = [
         'user_id',
@@ -23,17 +27,19 @@ class Screenshot extends Model
         'description',
         'links',
         'status',
+        'published_at',
     ];
 
     protected $casts = [
         'links' => 'array',
         'status' => ScreenshotStatus::class,
+        'published_at' => 'immutable_datetime',
     ];
 
-    protected static function booted()
+    protected static function booted(): void
     {
         // 論理削除されていないユーザーを持つ
-        static::addGlobalScope('WithoutTrashedUser', function (Builder $builder): void {
+        self::addGlobalScope('WithoutTrashedUser', function (Builder $builder): void {
             $builder->has('user');
         });
     }

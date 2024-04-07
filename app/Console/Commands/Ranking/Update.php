@@ -9,7 +9,7 @@ use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Command;
 
-class Update extends Command
+final class Update extends Command
 {
     protected $signature = 'ranking:update';
 

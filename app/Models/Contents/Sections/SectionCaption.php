@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Contents\Sections;
 
-class SectionCaption extends Section
+final class SectionCaption extends Section
 {
     public ?string $caption;
 

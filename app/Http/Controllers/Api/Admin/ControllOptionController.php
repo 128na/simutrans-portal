@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ControllOption;
 use Illuminate\Database\Eloquent\Collection;
 
-class ControllOptionController extends Controller
+final class ControllOptionController extends Controller
 {
     public function __construct(private readonly ControllOption $controllOption)
     {

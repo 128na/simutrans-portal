@@ -9,7 +9,7 @@ use App\Models\Screenshot;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ScreenshotPolicy extends BasePolicy
+final class ScreenshotPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 

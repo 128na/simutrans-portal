@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @mixin IdeHelperPakAddonCount
  */
-class PakAddonCount extends Model
+final class PakAddonCount extends Model
 {
     public $timestamps = false;
 

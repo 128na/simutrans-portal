@@ -13,9 +13,9 @@ use Carbon\CarbonImmutable as Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use UnexpectedValueException;
 
-class ArticleAnalyticsService extends Service
+final readonly class ArticleAnalyticsService
 {
-    public function __construct(private readonly ArticleRepository $articleRepository)
+    public function __construct(private ArticleRepository $articleRepository)
     {
     }
 

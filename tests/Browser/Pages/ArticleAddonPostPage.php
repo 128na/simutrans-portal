@@ -10,7 +10,7 @@ use App\Models\Tag;
 use App\Models\User;
 use Laravel\Dusk\Browser;
 
-class ArticleAddonPostPage extends Page
+final class ArticleAddonPostPage extends Page
 {
     private readonly Article $article;
 

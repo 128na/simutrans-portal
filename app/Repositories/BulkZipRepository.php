@@ -12,7 +12,7 @@ use Illuminate\Support\LazyCollection;
 /**
  * @extends BaseRepository<BulkZip>
  */
-class BulkZipRepository extends BaseRepository
+final class BulkZipRepository extends BaseRepository
 {
     public function __construct(BulkZip $bulkZip)
     {

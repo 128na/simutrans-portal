@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services\Attachment;
 
-use App\Services\Service;
 use GdImage;
 
-class FileSizeBaseResizer extends Service
+final class FileSizeBaseResizer
 {
     public function resize(string $inputPath, int $targetFileSize): string
     {

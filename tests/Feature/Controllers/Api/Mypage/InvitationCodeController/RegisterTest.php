@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Tests\Feature\TestCase;
 
-class RegisterTest extends TestCase
+final class RegisterTest extends TestCase
 {
     private User $inviterUser;
 

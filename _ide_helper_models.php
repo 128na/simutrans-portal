@@ -106,7 +106,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperArticle {}
+	final class IdeHelperArticle {}
 }
 
 namespace App\Models\Article{
@@ -125,7 +125,7 @@ namespace App\Models\Article{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperConversionCount {}
+	final class IdeHelperConversionCount {}
 }
 
 namespace App\Models\Article{
@@ -142,7 +142,7 @@ namespace App\Models\Article{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperRanking {}
+	final class IdeHelperRanking {}
 }
 
 namespace App\Models\Article{
@@ -161,7 +161,7 @@ namespace App\Models\Article{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperViewCount {}
+	final class IdeHelperViewCount {}
 }
 
 namespace App\Models{
@@ -197,7 +197,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperAttachment {}
+	final class IdeHelperAttachment {}
 }
 
 namespace App\Models\Attachment{
@@ -215,7 +215,7 @@ namespace App\Models\Attachment{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperFileInfo {}
+	final class IdeHelperFileInfo {}
 }
 
 namespace App\Models{
@@ -238,7 +238,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperBulkZip {}
+	final class IdeHelperBulkZip {}
 }
 
 namespace App\Models{
@@ -269,7 +269,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperCategory {}
+	final class IdeHelperCategory {}
 }
 
 namespace App\Models{
@@ -286,7 +286,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperControllOption {}
+	final class IdeHelperControllOption {}
 }
 
 namespace App\Models{
@@ -307,7 +307,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperOauthToken {}
+	final class IdeHelperOauthToken {}
 }
 
 namespace App\Models{
@@ -324,7 +324,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperPakAddonCount {}
+	final class IdeHelperPakAddonCount {}
 }
 
 namespace App\Models{
@@ -344,7 +344,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperRedirect {}
+	final class IdeHelperRedirect {}
 }
 
 namespace App\Models{
@@ -359,11 +359,14 @@ namespace App\Models{
  * @property \App\Enums\ScreenshotStatus $status 公開ステータス
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property \Carbon\CarbonImmutable|null $published_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
  * @property-read int|null $articles_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read bool $is_publish
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
  * @property-read \App\Models\User $user
  * @method static \Database\Factories\ScreenshotFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Screenshot newModelQuery()
@@ -373,7 +376,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperScreenshot {}
+	final class IdeHelperScreenshot {}
 }
 
 namespace App\Models{
@@ -401,7 +404,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperTag {}
+	final class IdeHelperTag {}
 }
 
 namespace App\Models{
@@ -456,7 +459,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperUser {}
+	final class IdeHelperUser {}
 }
 
 namespace App\Models{
@@ -474,7 +477,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperUserAddonCount {}
+	final class IdeHelperUserAddonCount {}
 }
 
 namespace App\Models\User{
@@ -496,7 +499,7 @@ namespace App\Models\User{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperLoginHistory {}
+	final class IdeHelperLoginHistory {}
 }
 
 namespace App\Models\User{
@@ -521,6 +524,6 @@ namespace App\Models\User{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	class IdeHelperProfile {}
+	final class IdeHelperProfile {}
 }
 

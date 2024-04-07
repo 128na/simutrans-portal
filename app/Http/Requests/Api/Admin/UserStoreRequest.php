@@ -6,7 +6,7 @@ namespace App\Http\Requests\Api\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserStoreRequest extends FormRequest
+final class UserStoreRequest extends FormRequest
 {
     /**
      * @return array<mixed>

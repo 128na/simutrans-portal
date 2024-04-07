@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace App\Listeners\Tag;
 
 use App\Events\Tag\TagDescriptionUpdated;
-use App\Listeners\BaseListener;
 use Illuminate\Log\Logger;
 
-class OnTagDescriptionUpdated extends BaseListener
+final readonly class OnTagDescriptionUpdated
 {
-    public function __construct(private readonly Logger $logger)
+    public function __construct(private Logger $logger)
     {
     }
 

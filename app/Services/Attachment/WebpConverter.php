@@ -6,12 +6,11 @@ namespace App\Services\Attachment;
 
 use App\Models\Attachment;
 use App\Models\User;
-use App\Services\Service;
 use GdImage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
-class WebpConverter extends Service
+final class WebpConverter
 {
     private const RESIZE_LIMIT_WIDTH = 3840;
 

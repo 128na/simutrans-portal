@@ -9,7 +9,7 @@ use App\Models\Article;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Feature\TestCase;
 
-class ShowTest extends TestCase
+final class ShowTest extends TestCase
 {
     private Article $article;
 

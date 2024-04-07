@@ -7,7 +7,7 @@ namespace App\Http\Resources\Api\Front;
 use App\Models\PakAddonCount;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class PakAddonResource extends ResourceCollection
+final class PakAddonResource extends ResourceCollection
 {
     /**
      * @var \Illuminate\Support\Collection<int,PakAddonCount>

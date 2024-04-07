@@ -18,12 +18,12 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 
-class ArticleEditorService extends Service
+final readonly class ArticleEditorService
 {
     public function __construct(
-        private readonly ArticleRepository $articleRepository,
-        private readonly CategoryRepository $categoryRepository,
-        private readonly CarbonImmutable $now,
+        private ArticleRepository $articleRepository,
+        private CategoryRepository $categoryRepository,
+        private CarbonImmutable $now,
     ) {
     }
 
@@ -181,7 +181,7 @@ class ArticleEditorService extends Service
 
     private function inactiveToPublish(Article $article, ArticleStatus $articleStatus): bool
     {
-        return $article->is_inactive && ($articleStatus === ArticleStatus::Publish || $articleStatus === ArticleStatus::Reservation);
+        return is_null($article->published_at) && $article->is_inactive && ($articleStatus === ArticleStatus::Publish || $articleStatus === ArticleStatus::Reservation);
     }
 
     private function shouldUpdateModifiedAt(UpdateRequest $updateRequest): bool

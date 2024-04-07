@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Api\Front\FrontController;
 use App\Models\Article;
 use Tests\Feature\TestCase;
 
-class SearchTest extends TestCase
+final class SearchTest extends TestCase
 {
     private Article $article;
 

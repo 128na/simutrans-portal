@@ -26,7 +26,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 /**
  * @mixin IdeHelperUser
  */
-class User extends Authenticatable implements BulkZippableInterface, MustVerifyEmail
+final class User extends Authenticatable implements BulkZippableInterface, MustVerifyEmail
 {
     use HasFactory;
     use Notifiable;
@@ -63,9 +63,9 @@ class User extends Authenticatable implements BulkZippableInterface, MustVerifyE
     | 初期化時設定
     |--------------------------------------------------------------------------
     */
-    protected static function booted()
+    protected static function booted(): void
     {
-        static::created(function ($model): void {
+        self::created(function ($model): void {
             $model->syncRelatedData();
         });
     }

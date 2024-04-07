@@ -16,7 +16,7 @@ use App\Services\BulkZip\Decorators\AddonPostDecorator;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
-class AddonPostDecoratorTest extends TestCase
+final class AddonPostDecoratorTest extends TestCase
 {
     private AddonPostDecorator $decorator;
 

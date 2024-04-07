@@ -9,7 +9,7 @@ use App\Models\Article;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-class IndexTest extends TestCase
+final class IndexTest extends TestCase
 {
     private User $user;
 

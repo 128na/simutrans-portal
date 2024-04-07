@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Rules;
 
 use App\Models\Article;
@@ -9,12 +11,12 @@ use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Auth;
 
-class UniqueSlugByUser implements DataAwareRule, ValidationRule
+final class UniqueSlugByUser implements DataAwareRule, ValidationRule
 {
     /**
      * @var array{article?:array{id?:int}}
      */
-    protected $data = [];
+    private array $data = [];
 
     /**
      * @param  array{article?:array{id?:int}}  $data

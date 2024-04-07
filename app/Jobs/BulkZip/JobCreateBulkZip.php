@@ -14,7 +14,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class JobCreateBulkZip implements ShouldQueue
+final class JobCreateBulkZip implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

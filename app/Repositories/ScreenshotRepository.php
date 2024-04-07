@@ -14,7 +14,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 /**
  * @extends BaseRepository<Screenshot>
  */
-class ScreenshotRepository extends BaseRepository
+final class ScreenshotRepository extends BaseRepository
 {
     public function __construct(Screenshot $screenshot)
     {
@@ -29,7 +29,7 @@ class ScreenshotRepository extends BaseRepository
         return $this->model
             ->publish()
             ->with(['user', 'attachments', 'articles'])
-            ->orderBy('updated_at', 'desc')
+            ->orderBy('published_at', 'desc')
             ->paginate(20);
     }
 

@@ -9,7 +9,7 @@ use App\Models\Screenshot;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ScreenshotFactory extends Factory
+final class ScreenshotFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

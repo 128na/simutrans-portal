@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Listeners\User;
 
-use App\Listeners\BaseListener;
 use App\Models\User;
 use App\Notifications\SendLoggedInEmail;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Log\Logger;
 
-class OnLogin extends BaseListener
+final readonly class OnLogin
 {
-    public function __construct(private readonly Logger $logger)
+    public function __construct(private Logger $logger)
     {
     }
 

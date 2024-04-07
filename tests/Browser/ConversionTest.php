@@ -10,7 +10,7 @@ use App\Models\Category;
 use App\Models\User;
 use Laravel\Dusk\Browser;
 
-class ConversionTest extends TestCase
+final class ConversionTest extends TestCase
 {
     private Article $article1;
 

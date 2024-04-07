@@ -9,7 +9,7 @@ use App\Services\FileInfo\FileInfoService;
 use Illuminate\Console\Command;
 use Throwable;
 
-class FromPak extends Command
+final class FromPak extends Command
 {
     protected $signature = 'fileinfo:pak';
 

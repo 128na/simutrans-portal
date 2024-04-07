@@ -15,7 +15,7 @@ use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Screenshot;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class ScreenshotController extends Controller
+final class ScreenshotController extends Controller
 {
     public function index(ListScreenshot $listScreenshot): AnonymousResourceCollection
     {
@@ -25,7 +25,7 @@ class ScreenshotController extends Controller
     public function store(StoreRequest $storeRequest, StoreScreenshot $storeScreenshot): AnonymousResourceCollection
     {
         /**
-         * @var array{screenshot:array{title:string,description:string,links:string[],status:string,attachments:array<int,array{id:int,caption:string,order:int}>,articles:array<int,array{id:int,title:string}>}}
+         * @var array{should_notify:bool,screenshot:array{title:string,description:string,links:string[],status:string,attachments:array<int,array{id:int,caption:string,order:int}>,articles:array<int,array{id:int,title:string}>}}
          */
         $validated = $storeRequest->validated();
         $storeScreenshot->store($this->loggedinUser(), $validated);
@@ -38,7 +38,7 @@ class ScreenshotController extends Controller
     {
         $this->authorize('update', $screenshot);
         /**
-         * @var array{screenshot:array{id:int,title:string,description:string,links:string[],status:string,attachments:array<int,array{id:int,caption:string,order:int}>,articles:array<int,array{id:int,title:string}>}}
+         * @var array{should_notify:bool,screenshot:array{id:int,title:string,description:string,links:string[],status:string,attachments:array<int,array{id:int,caption:string,order:int}>,articles:array<int,array{id:int,title:string}>}}
          */
         $validated = $updateRequest->validated();
         $updateScreenshot->update($screenshot, $validated);

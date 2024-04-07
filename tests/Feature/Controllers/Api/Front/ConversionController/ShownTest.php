@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Api\Front\ConversionController;
 use App\Models\Article;
 use Tests\Feature\TestCase;
 
-class ShownTest extends TestCase
+final class ShownTest extends TestCase
 {
     private Article $article;
 

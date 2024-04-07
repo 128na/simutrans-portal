@@ -9,7 +9,7 @@ use App\Models\Article;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-class DestroyTest extends TestCase
+final class DestroyTest extends TestCase
 {
     private User $user;
 

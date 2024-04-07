@@ -12,7 +12,7 @@ use App\Models\Screenshot;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class ScreenshotController extends Controller
+final class ScreenshotController extends Controller
 {
     public function index(Request $request, ListPublicScreenshot $listPublicScreenshot): AnonymousResourceCollection
     {

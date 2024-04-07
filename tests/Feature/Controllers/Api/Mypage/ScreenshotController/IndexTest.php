@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Api\Mypage\ScreenshotController;
 use App\Models\Screenshot;
 use Tests\Feature\TestCase;
 
-class IndexTest extends TestCase
+final class IndexTest extends TestCase
 {
     private Screenshot $screenshot;
 

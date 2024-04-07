@@ -4,40 +4,26 @@ declare(strict_types=1);
 
 namespace App\Channels;
 
+use App\Actions\SendSNS\Article\ToOneSignal as ArticleToOneSignal;
+use App\Actions\SendSNS\Screenshot\ToOneSignal as ScreenshotToOneSignal;
 use App\Models\Article;
-use App\Notifications\SendArticleNotification;
-use App\Notifications\SendArticlePublished;
-use App\Notifications\SendArticleUpdated;
-use App\Services\Notification\MessageGenerator;
-use Berkayk\OneSignal\OneSignalFacade;
+use App\Models\Screenshot;
+use App\Notifications\SendSNSNotification;
 use Exception;
-use Throwable;
+use Illuminate\Database\Eloquent\Model;
 
-class OneSignalChannel extends BaseChannel
+final class OneSignalChannel extends BaseChannel
 {
     public function __construct(
-        private readonly MessageGenerator $messageGenerator
     ) {
     }
 
-    public function send(Article $article, SendArticleNotification $sendArticleNotification): void
+    public function send(Model $model, SendSNSNotification $sendSNSNotification): void
     {
-        try {
-            OneSignalFacade::sendNotificationToAll(
-                $this->buildMessage($article, $sendArticleNotification),
-                route('articles.show', ['userIdOrNickname' => $article->user?->nickname ?? $article->user_id, 'articleSlug' => $article->slug]),
-            );
-        } catch (Throwable $throwable) {
-            report($throwable);
-        }
-    }
-
-    private function buildMessage(Article $article, SendArticleNotification $sendArticleNotification): string
-    {
-        return match (true) {
-            $sendArticleNotification instanceof SendArticlePublished => $this->messageGenerator->buildSimplePublishedMessage($article),
-            $sendArticleNotification instanceof SendArticleUpdated => $this->messageGenerator->buildSimpleUpdatedMessage($article),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendArticleNotification::class)),
+        match (true) {
+            $model instanceof Article => app(ArticleToOneSignal::class)($model, $sendSNSNotification),
+            $model instanceof Screenshot => app(ScreenshotToOneSignal::class)($model, $sendSNSNotification),
+            default => throw new Exception(sprintf('unsupport model "%s" provided', $model::class)),
         };
     }
 

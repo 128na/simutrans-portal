@@ -36,7 +36,7 @@ use Spatie\Feed\FeedItem;
 /**
  * @mixin IdeHelperArticle
  */
-class Article extends Model implements Feedable
+final class Article extends Model implements Feedable
 {
     use HasFactory;
     use Notifiable;
@@ -69,10 +69,10 @@ class Article extends Model implements Feedable
         'pr' => 'boolean',
     ];
 
-    protected static function booted()
+    protected static function booted(): void
     {
         // 論理削除されていないユーザーを持つ
-        static::addGlobalScope('WithoutTrashedUser', function (Builder $builder): void {
+        self::addGlobalScope('WithoutTrashedUser', function (Builder $builder): void {
             $builder->has('user');
         });
     }

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * @extends BaseRepository<UserAddonCount>
  */
-class UserAddonCountRepository extends BaseRepository
+final class UserAddonCountRepository extends BaseRepository
 {
     private const DELETE_SQL = 'DELETE FROM user_addon_counts';
 

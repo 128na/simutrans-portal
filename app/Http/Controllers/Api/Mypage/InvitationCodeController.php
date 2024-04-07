@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
-class InvitationCodeController extends Controller
+final class InvitationCodeController extends Controller
 {
     public function __construct(
         private readonly UserRepository $userRepository,

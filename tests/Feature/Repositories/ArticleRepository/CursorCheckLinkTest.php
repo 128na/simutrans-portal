@@ -10,7 +10,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Support\LazyCollection;
 use Tests\Feature\TestCase;
 
-class CursorCheckLinkTest extends TestCase
+final class CursorCheckLinkTest extends TestCase
 {
     private ArticleRepository $repository;
 

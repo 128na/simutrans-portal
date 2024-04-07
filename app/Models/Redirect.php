@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @mixin IdeHelperRedirect
  */
-class Redirect extends Model
+final class Redirect extends Model
 {
     use HasFactory;
 

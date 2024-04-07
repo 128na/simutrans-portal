@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Support\Renderable;
 
-class AdminController extends Controller
+final class AdminController extends Controller
 {
     public function index(): Renderable
     {

@@ -10,7 +10,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\LazyCollection;
 use Tests\Feature\TestCase;
 
-class CursorExpiredTest extends TestCase
+final class CursorExpiredTest extends TestCase
 {
     private BulkZipRepository $bulkZipRepository;
 

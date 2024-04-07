@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Constants;
 
-class NgWords
+final class NgWords
 {
     public const ARTICLE_TITLE = ['#', '@', ':', '//'];
 

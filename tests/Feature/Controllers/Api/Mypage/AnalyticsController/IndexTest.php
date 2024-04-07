@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Api\Mypage\AnalyticsController;
 use App\Models\Article;
 use Tests\Feature\TestCase;
 
-class IndexTest extends TestCase
+final class IndexTest extends TestCase
 {
     private Article $article;
 

@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
 /**
  * 本番環境用シーダー
  */
-class ProdSeeder extends Seeder
+final class ProdSeeder extends Seeder
 {
     /**
      * 管理者とカテゴリを追加する.

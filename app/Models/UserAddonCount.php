@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @mixin IdeHelperUserAddonCount
  */
-class UserAddonCount extends Model
+final class UserAddonCount extends Model
 {
     public $timestamps = false;
 

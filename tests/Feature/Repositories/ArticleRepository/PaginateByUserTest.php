@@ -10,7 +10,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Tests\Feature\TestCase;
 
-class PaginateByUserTest extends TestCase
+final class PaginateByUserTest extends TestCase
 {
     private ArticleRepository $repository;
 

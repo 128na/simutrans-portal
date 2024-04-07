@@ -13,13 +13,13 @@ use App\Models\User;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\ControllOptionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
 use Mockery;
 use Tests\CreatesApplication;
+use Tests\TestCase as TestsTestCase;
 
-abstract class TestCase extends BaseTestCase
+abstract class TestCase extends TestsTestCase
 {
     use CreatesApplication;
     use RefreshDatabase;

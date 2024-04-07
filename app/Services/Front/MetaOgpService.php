@@ -9,15 +9,10 @@ use App\Models\Article;
 use App\Models\Screenshot;
 use App\Models\Tag;
 use App\Models\User;
-use App\Services\Service;
 use Illuminate\Support\Facades\Config;
 
-class MetaOgpService extends Service
+final class MetaOgpService
 {
-    public function __construct()
-    {
-    }
-
     /**
      * @return array{title:string,description:string,image:string|null,canonical:string,card_type:string}
      */
@@ -130,14 +125,15 @@ class MetaOgpService extends Service
     }
 
     /**
-     * @return array{title:string,description:string,image:string|null,card_type:string}
+     * @return array{title:string,description:string,canonical:string,image:string,card_type:string}
      */
     public function screenshot(Screenshot $screenshot): array
     {
         return [
             'title' => sprintf('『%s』by %s', $screenshot->title, $screenshot->user->name).' - '.config('app.name'),
             'description' => $this->trimDescription($screenshot->description),
-            'image' => $screenshot->attachments()->orderBy('order', 'asc')->first()?->url,
+            'image' => $screenshot->attachments()->orderBy('order', 'asc')->first()?->url ?? '',
+            'canonical' => route('screenshots.show', $screenshot),
             'card_type' => 'summary_large_image',
         ];
     }

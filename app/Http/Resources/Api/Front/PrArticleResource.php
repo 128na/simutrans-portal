@@ -7,7 +7,7 @@ namespace App\Http\Resources\Api\Front;
 use App\Models\Article;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PrArticleResource extends JsonResource
+final class PrArticleResource extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Rules;
 
 use App\Models\User;
@@ -11,7 +13,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\TestCase;
 
-class ImageAttachmentTest extends TestCase
+final class ImageAttachmentTest extends TestCase
 {
     private Closure $failClosure;
 

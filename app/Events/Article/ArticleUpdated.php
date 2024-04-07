@@ -8,16 +8,15 @@ use App\Models\Article;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ArticleUpdated
+final readonly class ArticleUpdated
 {
     use Dispatchable;
     use SerializesModels;
 
     public function __construct(
-        public readonly Article $article,
-        public readonly bool $shouldNotify = false,
-        public readonly bool $withoutUpdateModifiedAt = false,
-        public readonly bool $notYetPublished = true,
+        public Article $article,
+        public bool $shouldNotify = false,
+        public bool $notYetPublished = true,
     ) {
     }
 }

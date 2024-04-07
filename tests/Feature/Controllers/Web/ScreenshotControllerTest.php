@@ -7,13 +7,8 @@ namespace Tests\Feature\Controllers\Web;
 use App\Models\Screenshot;
 use Tests\Feature\TestCase;
 
-class ScreenshotControllerTest extends TestCase
+final class ScreenshotControllerTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testIndex(): void
     {
         $testResponse = $this->get(route('screenshots.index'));

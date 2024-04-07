@@ -9,7 +9,7 @@ use App\Http\Resources\Api\Front\ArticleResource;
 use App\Http\Resources\Api\Front\PrArticleResource;
 use App\Services\Front\ArticleService;
 
-class GenerateTopOrderByModifiedAt extends BaseGenerator
+final class GenerateTopOrderByModifiedAt extends BaseGenerator
 {
     protected function getJsonData(): array
     {

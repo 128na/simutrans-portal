@@ -10,7 +10,7 @@ use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 use ZipArchive;
 
-class ZipArchiveParserTest extends TestCase
+final class ZipArchiveParserTest extends TestCase
 {
     private function getSUT(): ZipArchiveParser
     {

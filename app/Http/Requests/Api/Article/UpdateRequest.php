@@ -11,7 +11,7 @@ use App\Rules\NotJustNumbers;
 use App\Rules\UniqueSlugByUser;
 use Illuminate\Validation\Rule;
 
-class UpdateRequest extends BaseRequest
+final class UpdateRequest extends BaseRequest
 {
     /**
      * @return array<mixed>

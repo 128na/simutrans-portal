@@ -10,7 +10,7 @@ use App\Services\BulkZip\BulkZipService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
-class BulkZipController extends Controller
+final class BulkZipController extends Controller
 {
     public function __construct(private readonly BulkZipService $bulkZipService)
     {

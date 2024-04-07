@@ -9,7 +9,7 @@ use App\Services\FileInfo\FileInfoService;
 use Illuminate\Console\Command;
 use Throwable;
 
-class FromZip extends Command
+final class FromZip extends Command
 {
     protected $signature = 'fileinfo:zip';
 

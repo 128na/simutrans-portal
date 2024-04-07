@@ -28,7 +28,6 @@ final class VerifiedTest extends TestCase
         $this->actingAs($this->user);
 
         $url = $route($this);
-        dump($url);
         /**
          * @var \Illuminate\Testing\TestResponse
          */

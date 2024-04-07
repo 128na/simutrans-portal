@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Listeners\Screenshot;
 
-use App\Enums\ScreenshotStatus;
+use App\Enums\ScreenshotStatus as S;
 use App\Events\Screenshot\ScreenshotStored;
 use App\Listeners\Screenshot\OnScreenshotStored;
 use App\Models\Screenshot;
@@ -26,7 +26,7 @@ class OnScreenshotStoredTest extends TestCase
     }
 
     #[DataProvider('data')]
-    public function test(ScreenshotStatus $screenshotStatus, bool $shouldNotify, bool $expectNotify): void
+    public function test(S $screenshotStatus, bool $shouldNotify, bool $expectNotify): void
     {
         /** @var Screenshot&MockInterface */
         $mock = $this->mock(Screenshot::class, function (MockInterface $mock) use ($screenshotStatus, $expectNotify): void {
@@ -46,10 +46,9 @@ class OnScreenshotStoredTest extends TestCase
 
     public static function data(): \Generator
     {
-        yield '公開で投稿通知ON' => [ScreenshotStatus::Publish, true, true];
-        yield '公開で投稿通知OFF' => [ScreenshotStatus::Publish, false, false];
-
-        yield '非公開で投稿通知ON' => [ScreenshotStatus::Private, true, false];
-        yield '非公開で投稿通知OFF' => [ScreenshotStatus::Private, false, false];
+        yield '公開,投稿通知ON' => [S::Publish, T, T];
+        yield '公開,投稿通知OFF' => [S::Publish, F, F];
+        yield '非公開,投稿通知ON' => [S::Private, T, F];
+        yield '非公開,投稿通知OFF' => [S::Private, F, F];
     }
 }

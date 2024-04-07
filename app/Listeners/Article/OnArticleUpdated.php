@@ -30,11 +30,6 @@ class OnArticleUpdated extends BaseListener
             return;
         }
 
-        // 更新日を更新しない
-        if ($articleUpdated->withoutUpdateModifiedAt) {
-            return;
-        }
-
         // published_atがnullから初めて変わった場合は新規投稿扱い
         if ($articleUpdated->notYetPublished) {
             $articleUpdated->article->notify(new SendArticlePublished());

@@ -50,14 +50,13 @@ class OnScreenshotUpdatedTest extends TestCase
 
     public static function data(): \Generator
     {
-        yield '未公開,公開,投稿通知ON' => [true, S::Publish, true, true];
-        yield '未公開,公開,投稿通知OF' => [true, S::Publish, false, false];
-        yield '未公開,非公開,投稿通知ON' => [true, S::Private, true, false];
-        yield '未公開,非公開,投稿通知OF' => [true, S::Private, false, false];
-        yield '公開済,公開,投稿通知ON' => [false, S::Publish, true, false];
-        yield '公開済,公開,投稿通知OF' => [false, S::Publish, false, false];
-        yield '公開済,非公開,投稿通知ON' => [false, S::Private, true, false];
-        yield '公開済,非公開,投稿通知OF' => [false, S::Private, false, false];
-
+        yield '未公開,公開,投稿通知ON' => [T, S::Publish, T, T];
+        yield '未公開,公開,投稿通知OF' => [T, S::Publish, F, F];
+        yield '未公開,非公開,投稿通知ON' => [T, S::Private, T, F];
+        yield '未公開,非公開,投稿通知OF' => [T, S::Private, F, F];
+        yield '公開済,公開,投稿通知ON' => [F, S::Publish, T, F];
+        yield '公開済,公開,投稿通知OF' => [F, S::Publish, F, F];
+        yield '公開済,非公開,投稿通知ON' => [F, S::Private, T, F];
+        yield '公開済,非公開,投稿通知OF' => [F, S::Private, F, F];
     }
 }

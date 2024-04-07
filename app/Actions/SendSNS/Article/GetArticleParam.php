@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\SendSNS;
+namespace App\Actions\SendSNS\Article;
 
 use App\Models\Article;
 use Carbon\Carbon;

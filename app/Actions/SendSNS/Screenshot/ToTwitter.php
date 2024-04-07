@@ -2,7 +2,6 @@
 
 namespace App\Actions\SendSNS\Screenshot;
 
-use App\Actions\SendSNS\GetScreenshotParam;
 use App\Models\Screenshot;
 use App\Notifications\SendArticlePublished;
 use App\Notifications\SendArticleUpdated;

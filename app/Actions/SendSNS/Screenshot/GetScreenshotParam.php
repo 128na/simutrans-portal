@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\SendSNS;
+namespace App\Actions\SendSNS\Screenshot;
 
 use App\Models\Screenshot;
 use Carbon\Carbon;

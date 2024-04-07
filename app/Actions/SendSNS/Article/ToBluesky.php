@@ -2,7 +2,6 @@
 
 namespace App\Actions\SendSNS\Article;
 
-use App\Actions\SendSNS\GetArticleParam;
 use App\Models\Article;
 use App\Notifications\SendArticlePublished;
 use App\Notifications\SendArticleUpdated;

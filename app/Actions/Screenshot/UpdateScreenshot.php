@@ -51,8 +51,8 @@ class UpdateScreenshot
     /**
      * 初めて公開ステータスになった？
      */
-    private function shouldPublish(bool $notYetPublished, ?ScreenshotStatus $status): bool
+    private function shouldPublish(bool $notYetPublished, ?ScreenshotStatus $screenshotStatus): bool
     {
-        return $notYetPublished && $status === ScreenshotStatus::Publish;
+        return $notYetPublished && $screenshotStatus === ScreenshotStatus::Publish;
     }
 }

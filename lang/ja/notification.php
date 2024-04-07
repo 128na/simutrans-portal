@@ -13,8 +13,10 @@ return [
     ],
     'screenshot' => [
         'create' => "スクリーンショット投稿『:title』\n:url\nby :name\nat :at\n:tags",
+        'update' => "スクリーンショット更新『:title』\n:url\nby :name\nat :at\n:tags",
     ],
     'simple_screenshot' => [
         'create' => "スクリーンショット投稿『:title』\nby :name",
+        'update' => "スクリーンショット更新『:title』\nby :name",
     ],
 ];

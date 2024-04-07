@@ -24,7 +24,7 @@ class UpdateScreenshotTest extends TestCase
         return app(UpdateScreenshot::class);
     }
 
-    public function test非公開()
+    public function test非公開(): void
     {
         $data = [
             'should_notify' => false,
@@ -41,26 +41,24 @@ class UpdateScreenshotTest extends TestCase
         $screenshot = new Screenshot([
             'status' => ScreenshotStatus::Private,
         ]);
-        $this->mock(ScreenshotRepository::class, function (MockInterface $m) use ($screenshot) {
-            $m->expects()->update($screenshot, [
+        $this->mock(ScreenshotRepository::class, function (MockInterface $mock) use ($screenshot): void {
+            $mock->expects()->update($screenshot, [
                 'title' => 'dummy',
                 'description' => 'dummy',
                 'status' => ScreenshotStatus::Private->value,
                 'links' => [],
             ])->once()->andReturn($screenshot);
-            $m->expects()->syncAttachmentsWith($screenshot, []);
-            $m->expects()->syncArticles($screenshot, []);
+            $mock->expects()->syncAttachmentsWith($screenshot, []);
+            $mock->expects()->syncArticles($screenshot, []);
         });
 
         Event::fake();
         $result = $this->getSUT()->update($screenshot, $data);
         $this->assertNull($result);
-        Event::assertDispatched(ScreenshotUpdated::class, function (ScreenshotUpdated $e) {
-            return $e->shouldNotify === false;
-        });
+        Event::assertDispatched(ScreenshotUpdated::class, fn (ScreenshotUpdated $screenshotUpdated): bool => $screenshotUpdated->shouldNotify === false);
     }
 
-    public function test非公開から公開()
+    public function test非公開から公開(): void
     {
         $data = [
             'should_notify' => true,
@@ -73,33 +71,31 @@ class UpdateScreenshotTest extends TestCase
                 'articles' => [],
             ],
         ];
-        $this->mock(CarbonImmutable::class, function (MockInterface $m) {
-            $m->expects()->toDateTimeString()->andReturn('2020-01-02 03:04:05');
+        $this->mock(CarbonImmutable::class, function (MockInterface $mock): void {
+            $mock->expects()->toDateTimeString()->andReturn('2020-01-02 03:04:05');
         });
         $screenshot = new Screenshot([
             'status' => ScreenshotStatus::Private,
         ]);
-        $this->mock(ScreenshotRepository::class, function (MockInterface $m) use ($screenshot) {
-            $m->expects()->update($screenshot, [
+        $this->mock(ScreenshotRepository::class, function (MockInterface $mock) use ($screenshot): void {
+            $mock->expects()->update($screenshot, [
                 'title' => 'dummy',
                 'description' => 'dummy',
                 'status' => ScreenshotStatus::Publish->value,
                 'links' => [],
                 'published_at' => '2020-01-02 03:04:05',
             ])->once()->andReturn($screenshot);
-            $m->expects()->syncAttachmentsWith($screenshot, []);
-            $m->expects()->syncArticles($screenshot, []);
+            $mock->expects()->syncAttachmentsWith($screenshot, []);
+            $mock->expects()->syncArticles($screenshot, []);
         });
 
         Event::fake();
         $result = $this->getSUT()->update($screenshot, $data);
         $this->assertNull($result);
-        Event::assertDispatched(ScreenshotUpdated::class, function (ScreenshotUpdated $e) {
-            return $e->shouldNotify === true;
-        });
+        Event::assertDispatched(ScreenshotUpdated::class, fn (ScreenshotUpdated $screenshotUpdated): bool => $screenshotUpdated->shouldNotify);
     }
 
-    public function test公開から公開()
+    public function test公開から公開(): void
     {
         $data = [
             'should_notify' => true,
@@ -116,26 +112,24 @@ class UpdateScreenshotTest extends TestCase
             'status' => ScreenshotStatus::Publish,
             'published_at' => '2019-01-02 03:04:05',
         ]);
-        $this->mock(ScreenshotRepository::class, function (MockInterface $m) use ($screenshot) {
-            $m->expects()->update($screenshot, [
+        $this->mock(ScreenshotRepository::class, function (MockInterface $mock) use ($screenshot): void {
+            $mock->expects()->update($screenshot, [
                 'title' => 'dummy',
                 'description' => 'dummy',
                 'status' => ScreenshotStatus::Publish->value,
                 'links' => [],
             ])->once()->andReturn($screenshot);
-            $m->expects()->syncAttachmentsWith($screenshot, []);
-            $m->expects()->syncArticles($screenshot, []);
+            $mock->expects()->syncAttachmentsWith($screenshot, []);
+            $mock->expects()->syncArticles($screenshot, []);
         });
 
         Event::fake();
         $result = $this->getSUT()->update($screenshot, $data);
         $this->assertNull($result);
-        Event::assertDispatched(ScreenshotUpdated::class, function (ScreenshotUpdated $e) {
-            return $e->shouldNotify === true;
-        });
+        Event::assertDispatched(ScreenshotUpdated::class, fn (ScreenshotUpdated $screenshotUpdated): bool => $screenshotUpdated->shouldNotify);
     }
 
-    public function test公開から非公開()
+    public function test公開から非公開(): void
     {
         $data = [
             'should_notify' => true,
@@ -152,22 +146,20 @@ class UpdateScreenshotTest extends TestCase
             'status' => ScreenshotStatus::Publish,
             'published_at' => '2019-01-02 03:04:05',
         ]);
-        $this->mock(ScreenshotRepository::class, function (MockInterface $m) use ($screenshot) {
-            $m->expects()->update($screenshot, [
+        $this->mock(ScreenshotRepository::class, function (MockInterface $mock) use ($screenshot): void {
+            $mock->expects()->update($screenshot, [
                 'title' => 'dummy',
                 'description' => 'dummy',
                 'status' => ScreenshotStatus::Private->value,
                 'links' => [],
             ])->once()->andReturn($screenshot);
-            $m->expects()->syncAttachmentsWith($screenshot, []);
-            $m->expects()->syncArticles($screenshot, []);
+            $mock->expects()->syncAttachmentsWith($screenshot, []);
+            $mock->expects()->syncArticles($screenshot, []);
         });
 
         Event::fake();
         $result = $this->getSUT()->update($screenshot, $data);
         $this->assertNull($result);
-        Event::assertDispatched(ScreenshotUpdated::class, function (ScreenshotUpdated $e) {
-            return $e->shouldNotify === false;
-        });
+        Event::assertDispatched(ScreenshotUpdated::class, fn (ScreenshotUpdated $screenshotUpdated): bool => $screenshotUpdated->shouldNotify === false);
     }
 }

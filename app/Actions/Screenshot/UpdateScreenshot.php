@@ -24,13 +24,14 @@ class UpdateScreenshot
     public function update(Screenshot $screenshot, array $data): void
     {
         $notYetPublished = is_null($screenshot->published_at);
+        $status = ScreenshotStatus::tryFrom($data['screenshot']['status']);
         $updateData = [
             'title' => $data['screenshot']['title'],
             'description' => $data['screenshot']['description'],
             'links' => $data['screenshot']['links'],
             'status' => $data['screenshot']['status'],
         ];
-        if ($this->shouldPublish($notYetPublished, $data['screenshot']['status'])) {
+        if ($this->shouldPublish($notYetPublished, $status)) {
             $updateData['published_at'] = $this->now->toDateTimeString();
         }
 
@@ -42,7 +43,7 @@ class UpdateScreenshot
 
         ScreenshotUpdated::dispatch(
             $screenshot,
-            $data['should_notify'],
+            $status === ScreenshotStatus::Publish && $data['should_notify'],
             $notYetPublished
         );
     }
@@ -50,8 +51,8 @@ class UpdateScreenshot
     /**
      * 初めて公開ステータスになった？
      */
-    private function shouldPublish(bool $notYetPublished, string $status): bool
+    private function shouldPublish(bool $notYetPublished, ?ScreenshotStatus $status): bool
     {
-        return $notYetPublished && ScreenshotStatus::tryFrom($status) === ScreenshotStatus::Publish;
+        return $notYetPublished && $status === ScreenshotStatus::Publish;
     }
 }

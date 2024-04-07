@@ -10,7 +10,7 @@ use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Model;
 
-class AddonPostDecorator extends BaseDecorator
+final class AddonPostDecorator extends BaseDecorator
 {
     public function canProcess(Model $model): bool
     {

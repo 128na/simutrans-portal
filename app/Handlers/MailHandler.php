@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Monolog\Handler\MailHandler as BaseHandler;
 
-class MailHandler extends BaseHandler
+final class MailHandler extends BaseHandler
 {
     /**
      * @param  array<\Monolog\LogRecord>  $records

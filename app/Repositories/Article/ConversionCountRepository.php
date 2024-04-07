@@ -10,7 +10,7 @@ use App\Repositories\BaseCountRepository;
 /**
  * @extends BaseCountRepository<ConversionCount>
  */
-class ConversionCountRepository extends BaseCountRepository
+final class ConversionCountRepository extends BaseCountRepository
 {
     public function __construct(ConversionCount $conversionCount)
     {

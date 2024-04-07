@@ -8,7 +8,7 @@ use App\Enums\UserRole;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-class AdminControllerTest extends TestCase
+final class AdminControllerTest extends TestCase
 {
     private string $url;
 

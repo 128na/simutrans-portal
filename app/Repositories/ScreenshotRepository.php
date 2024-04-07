@@ -14,7 +14,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 /**
  * @extends BaseRepository<Screenshot>
  */
-class ScreenshotRepository extends BaseRepository
+final class ScreenshotRepository extends BaseRepository
 {
     public function __construct(Screenshot $screenshot)
     {

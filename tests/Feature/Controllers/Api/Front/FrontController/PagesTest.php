@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Api\Front\FrontController;
 use App\Models\Article;
 use Tests\Feature\TestCase;
 
-class PagesTest extends TestCase
+final class PagesTest extends TestCase
 {
     private Article $article;
 

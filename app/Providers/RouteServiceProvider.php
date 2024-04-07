@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
-class RouteServiceProvider extends ServiceProvider
+final class RouteServiceProvider extends ServiceProvider
 {
     public const HOME = '/';
 
@@ -37,7 +37,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('invitation_code', fn ($value) => User::where('invitation_code', $value)->whereNotNull('email_verified_at')->firstOrFail());
     }
 
-    protected function configureRateLimiting(): void
+    private function configureRateLimiting(): void
     {
         RateLimiter::for('register', fn (Request $request) => Limit::perMinute(10)->by($request->ip()));
         RateLimiter::for('discordInvite', fn (): array => [

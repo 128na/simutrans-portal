@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Web;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Feature\TestCase;
 
-class FeedTest extends TestCase
+final class FeedTest extends TestCase
 {
     protected function setUp(): void
     {

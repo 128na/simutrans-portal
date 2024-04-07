@@ -10,7 +10,7 @@ use App\Http\Resources\Api\Front\UserProfileResource;
 use App\Models\Tag;
 use App\Models\User;
 
-class FrontDescriptionService
+final class FrontDescriptionService
 {
     /**
      * @return array<string, array<string|UserProfileResource>>

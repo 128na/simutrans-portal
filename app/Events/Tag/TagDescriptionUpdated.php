@@ -9,12 +9,12 @@ use App\Models\User;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class TagDescriptionUpdated
+final readonly class TagDescriptionUpdated
 {
     use Dispatchable;
     use SerializesModels;
 
-    public function __construct(public readonly Tag $tag, public readonly User $user, public readonly ?string $old = null)
+    public function __construct(public Tag $tag, public User $user, public ?string $old = null)
     {
     }
 }

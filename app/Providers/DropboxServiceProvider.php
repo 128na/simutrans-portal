@@ -12,14 +12,12 @@ use League\Flysystem\Filesystem;
 use Spatie\Dropbox\Client as DropboxClient;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 
-class DropboxServiceProvider extends ServiceProvider
+final class DropboxServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
     }
 

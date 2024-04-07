@@ -12,7 +12,7 @@ use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Feature\TestCase;
 
-class StoreRequestTest extends TestCase
+final class StoreRequestTest extends TestCase
 {
     private User $user;
 

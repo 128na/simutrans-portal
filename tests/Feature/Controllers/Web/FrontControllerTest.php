@@ -11,7 +11,7 @@ use App\Models\Tag;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-class FrontControllerTest extends TestCase
+final class FrontControllerTest extends TestCase
 {
     public function testTop(): void
     {

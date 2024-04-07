@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Contents\Sections;
 
-class SectionText extends Section
+final class SectionText extends Section
 {
     public ?string $text;
 

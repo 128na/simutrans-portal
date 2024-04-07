@@ -9,7 +9,7 @@ use App\Jobs\Article\JobUpdateRelated;
 use App\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\Collection;
 
-class UserController extends Controller
+final class UserController extends Controller
 {
     public function __construct(private readonly UserRepository $userRepository)
     {

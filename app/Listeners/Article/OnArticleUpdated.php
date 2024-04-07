@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace App\Listeners\Article;
 
 use App\Events\Article\ArticleUpdated;
-use App\Listeners\BaseListener;
 use App\Notifications\SendArticlePublished;
 use App\Notifications\SendArticleUpdated;
 use Illuminate\Log\Logger;
 
-class OnArticleUpdated extends BaseListener
+final readonly class OnArticleUpdated
 {
-    public function __construct(private readonly Logger $logger)
+    public function __construct(private Logger $logger)
     {
     }
 

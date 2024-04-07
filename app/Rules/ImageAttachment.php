@@ -8,14 +8,14 @@ use App\Repositories\AttachmentRepository;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class ImageAttachment implements ValidationRule
+final readonly class ImageAttachment implements ValidationRule
 {
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct(private readonly AttachmentRepository $attachmentRepository)
+    public function __construct(private AttachmentRepository $attachmentRepository)
     {
     }
 

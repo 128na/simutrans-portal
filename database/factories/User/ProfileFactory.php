@@ -7,7 +7,7 @@ namespace Database\Factories\User;
 use App\Models\User\Profile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ProfileFactory extends Factory
+final class ProfileFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

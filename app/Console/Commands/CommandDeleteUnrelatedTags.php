@@ -8,7 +8,7 @@ use App\Jobs\Article\JobDeleteUnrelatedTags;
 use Illuminate\Console\Command;
 use Throwable;
 
-class CommandDeleteUnrelatedTags extends Command
+final class CommandDeleteUnrelatedTags extends Command
 {
     protected $signature = 'delete:tags';
 

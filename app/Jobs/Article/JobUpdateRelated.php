@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Cache;
 /**
  * サイドバー表示用のデータを更新する.
  */
-class JobUpdateRelated implements ShouldQueue
+final class JobUpdateRelated implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

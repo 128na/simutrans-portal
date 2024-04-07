@@ -7,7 +7,7 @@ namespace Tests\Feature\Commands;
 use Illuminate\Support\Sleep;
 use Tests\Feature\TestCase;
 
-class CommandCheckDeadLinkTest extends TestCase
+final class CommandCheckDeadLinkTest extends TestCase
 {
     public function test(): void
     {

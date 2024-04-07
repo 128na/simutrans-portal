@@ -8,7 +8,7 @@ use App\Models\Attachment as ModelsAttachment;
 use App\Models\User\Profile;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Attachment extends JsonResource
+final class Attachment extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request

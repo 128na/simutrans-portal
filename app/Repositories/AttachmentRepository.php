@@ -14,7 +14,7 @@ use Illuminate\Support\LazyCollection;
 /**
  * @extends BaseRepository<Attachment>
  */
-class AttachmentRepository extends BaseRepository
+final class AttachmentRepository extends BaseRepository
 {
     public function __construct(Attachment $attachment)
     {

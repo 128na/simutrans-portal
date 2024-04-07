@@ -8,7 +8,7 @@ use App\Enums\ScreenshotStatus;
 use App\Models\Screenshot;
 use Tests\Feature\TestCase;
 
-class UpdateTest extends TestCase
+final class UpdateTest extends TestCase
 {
     private Screenshot $screenshot;
 

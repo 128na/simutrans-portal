@@ -11,7 +11,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\LazyCollection;
 use Tests\Feature\TestCase;
 
-class FetchAggregatedRankingTest extends TestCase
+final class FetchAggregatedRankingTest extends TestCase
 {
     private ArticleRepository $repository;
 

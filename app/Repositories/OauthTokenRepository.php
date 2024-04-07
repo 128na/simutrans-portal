@@ -9,7 +9,7 @@ use App\Models\OauthToken;
 /**
  * @extends BaseRepository<OauthToken>
  */
-class OauthTokenRepository extends BaseRepository
+final class OauthTokenRepository extends BaseRepository
 {
     public function __construct(OauthToken $oauthToken)
     {

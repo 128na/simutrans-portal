@@ -15,7 +15,7 @@ use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Screenshot;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class ScreenshotController extends Controller
+final class ScreenshotController extends Controller
 {
     public function index(ListScreenshot $listScreenshot): AnonymousResourceCollection
     {

@@ -9,10 +9,10 @@ use Generator;
 use Illuminate\Support\LazyCollection;
 use ZipArchive;
 
-class ZipArchiveParser
+final readonly class ZipArchiveParser
 {
     public function __construct(
-        private readonly ZipArchive $zipArchive,
+        private ZipArchive $zipArchive,
     ) {
     }
 

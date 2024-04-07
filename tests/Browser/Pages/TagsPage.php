@@ -9,7 +9,7 @@ use App\Models\Tag;
 use App\Models\User;
 use Laravel\Dusk\Browser;
 
-class TagsPage extends Page
+final class TagsPage extends Page
 {
     private readonly Article $article;
 

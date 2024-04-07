@@ -8,7 +8,7 @@ use App\Enums\CategoryType;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class CategoryFactory extends Factory
+final class CategoryFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

@@ -11,7 +11,7 @@ use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Feature\TestCase;
 
-class SearchRequestTest extends TestCase
+final class SearchRequestTest extends TestCase
 {
     private User $user;
 

@@ -9,7 +9,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Tests\Feature\TestCase;
 
-class FindInvitesTest extends TestCase
+final class FindInvitesTest extends TestCase
 {
     private User $user;
 

@@ -7,9 +7,9 @@ namespace App\Listeners\Article;
 use App\Events\ArticleConversion;
 use App\Repositories\Article\ConversionCountRepository;
 
-class AddConversionRecord
+final readonly class AddConversionRecord
 {
-    public function __construct(private readonly ConversionCountRepository $conversionCountRepository)
+    public function __construct(private ConversionCountRepository $conversionCountRepository)
     {
     }
 

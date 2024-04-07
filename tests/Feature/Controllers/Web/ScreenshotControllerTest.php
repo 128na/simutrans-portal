@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Web;
 use App\Models\Screenshot;
 use Tests\Feature\TestCase;
 
-class ScreenshotControllerTest extends TestCase
+final class ScreenshotControllerTest extends TestCase
 {
     public function testIndex(): void
     {

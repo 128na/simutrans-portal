@@ -10,7 +10,7 @@ use GdImage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
-class WebpConverter
+final class WebpConverter
 {
     private const RESIZE_LIMIT_WIDTH = 3840;
 

@@ -6,7 +6,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class CronableQueueWorker extends Command
+final class CronableQueueWorker extends Command
 {
     protected $signature = 'queue:cron';
 

@@ -9,7 +9,7 @@ use App\Models\ControllOption;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-class ToggleTest extends TestCase
+final class ToggleTest extends TestCase
 {
     private User $user;
 

@@ -6,7 +6,7 @@ namespace App\Services\Attachment;
 
 use GdImage;
 
-class FileSizeBaseResizer
+final class FileSizeBaseResizer
 {
     public function resize(string $inputPath, int $targetFileSize): string
     {

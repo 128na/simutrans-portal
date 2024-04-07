@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors;
 
-class TabExtractor implements Extractor
+final class TabExtractor implements Extractor
 {
     public function isText(): bool
     {

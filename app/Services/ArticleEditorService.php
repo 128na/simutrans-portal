@@ -18,12 +18,12 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 
-class ArticleEditorService
+final readonly class ArticleEditorService
 {
     public function __construct(
-        private readonly ArticleRepository $articleRepository,
-        private readonly CategoryRepository $categoryRepository,
-        private readonly CarbonImmutable $now,
+        private ArticleRepository $articleRepository,
+        private CategoryRepository $categoryRepository,
+        private CarbonImmutable $now,
     ) {
     }
 

@@ -8,7 +8,7 @@ use App\Models\Article;
 use App\Models\User;
 use Laravel\Dusk\Browser;
 
-class ListPagePage extends Page
+final class ListPagePage extends Page
 {
     private readonly Article $article;
 

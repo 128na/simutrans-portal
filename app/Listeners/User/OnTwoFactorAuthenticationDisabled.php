@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Listeners\User;
 
-use App\Listeners\BaseListener;
 use Illuminate\Log\Logger;
 use Laravel\Fortify\Events\TwoFactorAuthenticationDisabled;
 
-class OnTwoFactorAuthenticationDisabled extends BaseListener
+final readonly class OnTwoFactorAuthenticationDisabled
 {
-    public function __construct(private readonly Logger $logger)
+    public function __construct(private Logger $logger)
     {
     }
 

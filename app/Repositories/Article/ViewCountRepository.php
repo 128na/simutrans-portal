@@ -10,7 +10,7 @@ use App\Repositories\BaseCountRepository;
 /**
  * @extends BaseCountRepository<ViewCount>
  */
-class ViewCountRepository extends BaseCountRepository
+final class ViewCountRepository extends BaseCountRepository
 {
     public function __construct(ViewCount $viewCount)
     {

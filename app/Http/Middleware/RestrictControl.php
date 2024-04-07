@@ -7,9 +7,9 @@ namespace App\Http\Middleware;
 use App\Models\ControllOption;
 use Closure;
 
-class RestrictControl
+final readonly class RestrictControl
 {
-    public function __construct(private readonly ControllOption $controllOption)
+    public function __construct(private ControllOption $controllOption)
     {
     }
 

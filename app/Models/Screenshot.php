@@ -16,7 +16,7 @@ use Illuminate\Notifications\Notifiable;
 /**
  * @mixin IdeHelperScreenshot
  */
-class Screenshot extends Model
+final class Screenshot extends Model
 {
     use HasFactory;
     use Notifiable;
@@ -36,10 +36,10 @@ class Screenshot extends Model
         'published_at' => 'immutable_datetime',
     ];
 
-    protected static function booted()
+    protected static function booted(): void
     {
         // 論理削除されていないユーザーを持つ
-        static::addGlobalScope('WithoutTrashedUser', function (Builder $builder): void {
+        self::addGlobalScope('WithoutTrashedUser', function (Builder $builder): void {
             $builder->has('user');
         });
     }

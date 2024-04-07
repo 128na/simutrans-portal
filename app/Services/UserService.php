@@ -10,9 +10,9 @@ use App\Repositories\AttachmentRepository;
 use App\Repositories\User\ProfileRepository;
 use App\Repositories\UserRepository;
 
-class UserService
+final readonly class UserService
 {
-    public function __construct(private readonly UserRepository $userRepository, private readonly ProfileRepository $profileRepository, private readonly AttachmentRepository $attachmentRepository)
+    public function __construct(private UserRepository $userRepository, private ProfileRepository $profileRepository, private AttachmentRepository $attachmentRepository)
     {
     }
 

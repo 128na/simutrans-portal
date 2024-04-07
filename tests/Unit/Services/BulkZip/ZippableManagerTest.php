@@ -14,7 +14,7 @@ use Mockery\MockInterface;
 use stdClass;
 use Tests\Unit\TestCase;
 
-class ZippableManagerTest extends TestCase
+final class ZippableManagerTest extends TestCase
 {
     private function getSUT(): ZippableManager
     {

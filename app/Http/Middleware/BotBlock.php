@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class BotBlock
+final class BotBlock
 {
     /**
      * robots.txtを守らない悪い子たち

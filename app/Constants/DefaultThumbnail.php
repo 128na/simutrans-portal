@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Constants;
 
-class DefaultThumbnail
+final class DefaultThumbnail
 {
     public const NO_THUMBNAIL = 'default/image.png';
 

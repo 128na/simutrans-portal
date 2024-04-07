@@ -10,7 +10,7 @@ use App\Repositories\BaseRepository;
 /**
  * @extends BaseRepository<Profile>
  */
-class ProfileRepository extends BaseRepository
+final class ProfileRepository extends BaseRepository
 {
     public function __construct(Profile $profile)
     {

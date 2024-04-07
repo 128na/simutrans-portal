@@ -7,7 +7,7 @@ namespace App\Console\Commands\Article;
 use App\Jobs\Article\JobUpdateRelated;
 use Illuminate\Console\Command;
 
-class GenerateStaticJson extends Command
+final class GenerateStaticJson extends Command
 {
     /**
      * The name and signature of the console command.

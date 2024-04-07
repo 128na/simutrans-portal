@@ -8,7 +8,7 @@ use App\Models\Article;
 use App\Models\Article\Ranking;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class RankingFactory extends Factory
+final class RankingFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

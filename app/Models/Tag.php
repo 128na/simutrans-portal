@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * @mixin IdeHelperTag
  */
-class Tag extends Model
+final class Tag extends Model
 {
     use HasFactory;
 

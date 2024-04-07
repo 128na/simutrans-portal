@@ -9,7 +9,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\Feature\TestCase;
 
-class FindOrFailWithTrashedTest extends TestCase
+final class FindOrFailWithTrashedTest extends TestCase
 {
     private UserRepository $repository;
 

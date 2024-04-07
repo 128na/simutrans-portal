@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 /**
  * DL、掲載先遷移時にコンバージョンをカウントする.
  */
-class ArticleConversion
+final class ArticleConversion
 {
     use Dispatchable;
     use SerializesModels;

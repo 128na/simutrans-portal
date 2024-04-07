@@ -12,7 +12,7 @@ use App\Rules\NotJustNumbers;
 use App\Rules\UniqueSlugByUser;
 use Illuminate\Validation\Rule;
 
-class StoreRequest extends BaseRequest
+final class StoreRequest extends BaseRequest
 {
     /**
      * @return array<mixed>

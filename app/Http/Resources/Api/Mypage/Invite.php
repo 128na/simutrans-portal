@@ -7,7 +7,7 @@ namespace App\Http\Resources\Api\Mypage;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Invite extends JsonResource
+final class Invite extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request

@@ -8,11 +8,11 @@ use App\Repositories\PakAddonCountRepository;
 use App\Repositories\UserAddonCountRepository;
 use Illuminate\Database\Eloquent\Collection;
 
-class SidebarService
+final readonly class SidebarService
 {
     public function __construct(
-        private readonly PakAddonCountRepository $pakAddonCountRepository,
-        private readonly UserAddonCountRepository $userAddonCountRepository
+        private PakAddonCountRepository $pakAddonCountRepository,
+        private UserAddonCountRepository $userAddonCountRepository
     ) {
     }
 

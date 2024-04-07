@@ -8,7 +8,7 @@ use App\Models\Article;
 use App\Models\Tag;
 use Tests\Feature\TestCase;
 
-class TagTest extends TestCase
+final class TagTest extends TestCase
 {
     private Article $article;
 

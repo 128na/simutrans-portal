@@ -6,7 +6,7 @@ namespace App\Http\Requests\Api\Article;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ListRequest extends FormRequest
+final class ListRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

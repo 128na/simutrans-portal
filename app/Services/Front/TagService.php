@@ -7,10 +7,10 @@ namespace App\Services\Front;
 use App\Repositories\TagRepository;
 use Illuminate\Database\Eloquent\Collection;
 
-class TagService
+final readonly class TagService
 {
     public function __construct(
-        private readonly TagRepository $tagRepository,
+        private TagRepository $tagRepository,
     ) {
     }
 

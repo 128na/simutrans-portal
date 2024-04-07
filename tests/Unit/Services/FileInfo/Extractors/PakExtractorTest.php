@@ -7,7 +7,7 @@ namespace Tests\Unit\Services\FileInfo\Extractors;
 use App\Services\FileInfo\Extractors\PakExtractor;
 use Tests\Unit\TestCase;
 
-class PakExtractorTest extends TestCase
+final class PakExtractorTest extends TestCase
 {
     private function getSUT(): PakExtractor
     {

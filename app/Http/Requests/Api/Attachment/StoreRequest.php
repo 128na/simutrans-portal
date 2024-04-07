@@ -6,7 +6,7 @@ namespace App\Http\Requests\Api\Attachment;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+final class StoreRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

@@ -10,11 +10,11 @@ use App\Models\User;
 use App\Repositories\ScreenshotRepository;
 use Carbon\CarbonImmutable;
 
-class StoreScreenshot
+final readonly class StoreScreenshot
 {
     public function __construct(
-        private readonly ScreenshotRepository $screenshotRepository,
-        private readonly CarbonImmutable $now,
+        private ScreenshotRepository $screenshotRepository,
+        private CarbonImmutable $now,
     ) {
     }
 

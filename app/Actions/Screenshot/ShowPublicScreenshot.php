@@ -7,7 +7,7 @@ namespace App\Actions\Screenshot;
 use App\Http\Resources\Api\Front\Screenshot as ScreenshotResource;
 use App\Models\Screenshot;
 
-class ShowPublicScreenshot
+final class ShowPublicScreenshot
 {
     public function show(Screenshot $screenshot): ScreenshotResource
     {

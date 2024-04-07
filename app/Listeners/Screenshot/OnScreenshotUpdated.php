@@ -6,13 +6,12 @@ namespace App\Listeners\Screenshot;
 
 use App\Enums\ScreenshotStatus;
 use App\Events\Screenshot\ScreenshotUpdated;
-use App\Listeners\BaseListener;
 use App\Notifications\SendScreenshotPublished;
 use Illuminate\Log\Logger;
 
-class OnScreenshotUpdated extends BaseListener
+final readonly class OnScreenshotUpdated
 {
-    public function __construct(private readonly Logger $logger)
+    public function __construct(private Logger $logger)
     {
     }
 

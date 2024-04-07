@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api\Tag;
 
-class StoreRequest extends SearchRequest
+use Illuminate\Foundation\Http\FormRequest;
+
+final class StoreRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

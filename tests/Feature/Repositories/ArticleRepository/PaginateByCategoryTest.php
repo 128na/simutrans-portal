@@ -11,7 +11,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Tests\Feature\TestCase;
 
-class PaginateByCategoryTest extends TestCase
+final class PaginateByCategoryTest extends TestCase
 {
     private ArticleRepository $repository;
 

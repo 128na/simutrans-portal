@@ -11,7 +11,7 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Facades\Config;
 
-class MetaOgpService
+final class MetaOgpService
 {
     /**
      * @return array{title:string,description:string,image:string|null,canonical:string,card_type:string}

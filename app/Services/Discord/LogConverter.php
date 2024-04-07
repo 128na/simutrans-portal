@@ -8,7 +8,7 @@ use MarvinLabs\DiscordLogger\Converters\SimpleRecordConverter;
 use MarvinLabs\DiscordLogger\Discord\Embed;
 use MarvinLabs\DiscordLogger\Discord\Message;
 
-class LogConverter extends SimpleRecordConverter
+final class LogConverter extends SimpleRecordConverter
 {
     /**
      * @param  array{datetime:\DateTime,level_name:int,message:string,context:array<int|string,mixed>}  $record

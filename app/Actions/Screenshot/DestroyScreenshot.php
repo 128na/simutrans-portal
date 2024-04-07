@@ -7,7 +7,7 @@ namespace App\Actions\Screenshot;
 use App\Models\Attachment;
 use App\Models\Screenshot;
 
-class DestroyScreenshot
+final class DestroyScreenshot
 {
     public function destroy(Screenshot $screenshot): void
     {

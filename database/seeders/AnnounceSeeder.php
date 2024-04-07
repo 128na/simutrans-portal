@@ -13,7 +13,7 @@ use Illuminate\Database\Seeder;
 /**
  * お知らせ記事.
  */
-class AnnounceSeeder extends Seeder
+final class AnnounceSeeder extends Seeder
 {
     public function run(): void
     {

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @mixin IdeHelperLoginHistory
  */
-class LoginHistory extends Model
+final class LoginHistory extends Model
 {
     use HasFactory;
 
@@ -24,7 +24,7 @@ class LoginHistory extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (LoginHistory $loginHistory): void {
+        self::creating(function (LoginHistory $loginHistory): void {
             $loginHistory->fill([
                 'ip' => request()->server('REMOTE_ADDR'),
                 'ua' => request()->server('HTTP_USER_AGENT'),

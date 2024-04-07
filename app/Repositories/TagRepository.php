@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 /**
  * @extends BaseRepository<Tag>
  */
-class TagRepository extends BaseRepository
+final class TagRepository extends BaseRepository
 {
     private const LIMIT = 10;
 

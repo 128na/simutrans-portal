@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
-class CorsHeader
+final class CorsHeader
 {
     /**
      * @return mixed

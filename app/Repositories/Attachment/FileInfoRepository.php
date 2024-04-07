@@ -10,7 +10,7 @@ use App\Repositories\BaseRepository;
 /**
  * @extends BaseRepository<FileInfo>
  */
-class FileInfoRepository extends BaseRepository
+final class FileInfoRepository extends BaseRepository
 {
     public function __construct(FileInfo $model)
     {

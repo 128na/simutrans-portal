@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Api\Mypage;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Collection;
 
-class LoginHistoryController extends Controller
+final class LoginHistoryController extends Controller
 {
     /**
      * @return Collection<int,\App\Models\User\LoginHistory>

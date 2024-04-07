@@ -18,13 +18,13 @@ use potibm\Bluesky\Response\RecordResponse;
 /**
  * @see https://www.docs.bsky.app/docs
  */
-class BlueSkyApiClient
+final readonly class BlueSkyApiClient
 {
     public function __construct(
-        private readonly BlueskyApi $blueskyApi,
-        private readonly BlueskyPostService $blueskyPostService,
-        private readonly MetaOgpService $metaOgpService,
-        private readonly FileSizeBaseResizer $fileSizeBaseResizer,
+        private BlueskyApi $blueskyApi,
+        private BlueskyPostService $blueskyPostService,
+        private MetaOgpService $metaOgpService,
+        private FileSizeBaseResizer $fileSizeBaseResizer,
     ) {
     }
 

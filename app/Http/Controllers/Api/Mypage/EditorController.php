@@ -15,7 +15,7 @@ use App\Models\Article;
 use App\Services\ArticleEditorService;
 use Illuminate\Support\Facades\DB;
 
-class EditorController extends Controller
+final class EditorController extends Controller
 {
     public function __construct(
         private readonly ArticleEditorService $articleEditorService,

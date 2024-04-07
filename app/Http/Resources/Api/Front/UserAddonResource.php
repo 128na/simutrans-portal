@@ -7,7 +7,7 @@ namespace App\Http\Resources\Api\Front;
 use App\Models\UserAddonCount;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserAddonResource extends JsonResource
+final class UserAddonResource extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request

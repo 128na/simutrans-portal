@@ -7,7 +7,7 @@ namespace App\Http\Resources\Api\Mypage;
 use App\Models\User\Profile as UserProfile;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Profile extends JsonResource
+final class Profile extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request

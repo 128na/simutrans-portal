@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Event;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
-class IsDeadTest extends TestCase
+final class IsDeadTest extends TestCase
 {
     private function getSUT(): DeadLinkChecker
     {

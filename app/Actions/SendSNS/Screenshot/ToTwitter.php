@@ -12,11 +12,11 @@ use App\Services\Twitter\TwitterV2Api;
 use Exception;
 use Throwable;
 
-class ToTwitter
+final readonly class ToTwitter
 {
     public function __construct(
-        private readonly TwitterV2Api $twitterV2Api,
-        private readonly GetScreenshotParam $getScreenshotParam,
+        private TwitterV2Api $twitterV2Api,
+        private GetScreenshotParam $getScreenshotParam,
     ) {
     }
 

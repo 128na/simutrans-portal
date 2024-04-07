@@ -6,6 +6,6 @@ namespace App\Services\Attachment;
 
 use Exception;
 
-class ConvertFailedException extends Exception
+final class ConvertFailedException extends Exception
 {
 }

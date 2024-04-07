@@ -6,7 +6,7 @@ namespace App\Http\Requests\Api\Tag;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+final class UpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

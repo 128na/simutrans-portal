@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Listeners\Article;
 
 use App\Events\Article\DeadLinkDetected;
-use App\Listeners\BaseListener;
 use App\Models\Contents\AddonIntroductionContent;
 use Illuminate\Log\Logger;
 
-class OnDeadLinkDetected extends BaseListener
+final readonly class OnDeadLinkDetected
 {
-    public function __construct(private readonly Logger $logger)
+    public function __construct(private Logger $logger)
     {
     }
 

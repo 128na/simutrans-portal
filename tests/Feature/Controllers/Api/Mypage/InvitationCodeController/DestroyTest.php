@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Tests\Feature\TestCase;
 
-class DestroyTest extends TestCase
+final class DestroyTest extends TestCase
 {
     private User $user;
 

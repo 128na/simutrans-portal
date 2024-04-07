@@ -12,7 +12,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Support\Collection;
 use Tests\Feature\TestCase;
 
-class FindAllForAnalyticsTest extends TestCase
+final class FindAllForAnalyticsTest extends TestCase
 {
     private User $user;
 

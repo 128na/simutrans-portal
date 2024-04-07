@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Api\Mypage\EditorController;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-class OptionsTest extends TestCase
+final class OptionsTest extends TestCase
 {
     private User $user;
 

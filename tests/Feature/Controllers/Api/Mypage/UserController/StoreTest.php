@@ -9,7 +9,7 @@ use App\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Notification;
 use Tests\Feature\TestCase;
 
-class StoreTest extends TestCase
+final class StoreTest extends TestCase
 {
     private User $user;
 

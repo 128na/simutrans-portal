@@ -9,9 +9,9 @@ use App\Models\User;
 use App\Repositories\ArticleRepository;
 use Exception;
 
-class ZippableManager
+final readonly class ZippableManager
 {
-    public function __construct(private readonly ArticleRepository $articleRepository)
+    public function __construct(private ArticleRepository $articleRepository)
     {
     }
 

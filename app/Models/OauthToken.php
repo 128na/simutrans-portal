@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @mixin IdeHelperOauthToken
  */
-class OauthToken extends Model
+final class OauthToken extends Model
 {
     public $incrementing = false;
 

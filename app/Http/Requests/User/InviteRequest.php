@@ -6,7 +6,7 @@ namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class InviteRequest extends FormRequest
+final class InviteRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

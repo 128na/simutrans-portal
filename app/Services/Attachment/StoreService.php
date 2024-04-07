@@ -10,10 +10,10 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-class StoreService
+final readonly class StoreService
 {
     public function __construct(
-        private readonly ImageCropper $imageCropper,
+        private ImageCropper $imageCropper,
     ) {
     }
 

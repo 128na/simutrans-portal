@@ -8,7 +8,7 @@ use App\Http\Resources\Api\Front\PakAddonResource;
 use App\Http\Resources\Api\Front\UserAddonResource;
 use App\Services\Front\SidebarService;
 
-class GenerateSidebar extends BaseGenerator
+final class GenerateSidebar extends BaseGenerator
 {
     protected function getJsonData(): array
     {

@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class BulkZipFactory extends Factory
+final class BulkZipFactory extends Factory
 {
     protected $model = BulkZip::class;
 

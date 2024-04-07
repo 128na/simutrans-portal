@@ -7,7 +7,7 @@ namespace Tests\Unit\Services\FileInfo\Extractors;
 use App\Services\FileInfo\Extractors\DatExtractor;
 use Tests\Unit\TestCase;
 
-class DatExtractorTest extends TestCase
+final class DatExtractorTest extends TestCase
 {
     private function getSUT(): DatExtractor
     {

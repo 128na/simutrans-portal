@@ -10,7 +10,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Support\Collection;
 use Tests\Feature\TestCase;
 
-class FindAllByUserTest extends TestCase
+final class FindAllByUserTest extends TestCase
 {
     private Article $article;
 

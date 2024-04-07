@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @mixin IdeHelperFileInfo
  */
-class FileInfo extends Model
+final class FileInfo extends Model
 {
     protected $fillable = [
         'attachment_id',

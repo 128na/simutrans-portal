@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Storage;
 /**
  * @mixin IdeHelperAttachment
  */
-class Attachment extends Model
+final class Attachment extends Model
 {
     use HasFactory;
 
@@ -40,7 +40,7 @@ class Attachment extends Model
     | イベントハンドラ
     |--------------------------------------------------------------------------
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 

@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Repositories\ArticleRepository;
 use Tests\Feature\TestCase as FeatureTestCase;
 
-class SyncTagsTest extends FeatureTestCase
+final class SyncTagsTest extends FeatureTestCase
 {
     private ArticleRepository $repository;
 

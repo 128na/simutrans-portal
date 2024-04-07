@@ -10,7 +10,7 @@ use App\Jobs\Article\JobUpdateRelated;
 use App\Repositories\ArticleRepository;
 use Illuminate\Database\Eloquent\Collection;
 
-class ArticleController extends Controller
+final class ArticleController extends Controller
 {
     public function __construct(private readonly ArticleRepository $articleRepository)
     {

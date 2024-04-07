@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
 
-class Cacheable
+final class Cacheable
 {
     /**
      * Handle an incoming request.

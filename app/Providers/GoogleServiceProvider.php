@@ -11,7 +11,7 @@ use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 
-class GoogleServiceProvider extends ServiceProvider implements DeferrableProvider
+final class GoogleServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * @return array<class-string>

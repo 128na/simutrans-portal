@@ -32,7 +32,7 @@ use potibm\Bluesky\BlueskyApi;
 use potibm\Bluesky\BlueskyPostService;
 use ZipArchive;
 
-class DIServiceProvider extends ServiceProvider implements DeferrableProvider
+final class DIServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * @return array<string>

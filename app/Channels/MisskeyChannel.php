@@ -12,7 +12,7 @@ use App\Notifications\SendSNSNotification;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 
-class MisskeyChannel extends BaseChannel
+final class MisskeyChannel extends BaseChannel
 {
     public function __construct(
     ) {

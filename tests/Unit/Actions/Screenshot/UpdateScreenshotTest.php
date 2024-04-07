@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Event;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
-class UpdateScreenshotTest extends TestCase
+final class UpdateScreenshotTest extends TestCase
 {
     private function getSUT(): UpdateScreenshot
     {

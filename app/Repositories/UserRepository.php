@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 /**
  * @extends BaseRepository<User>
  */
-class UserRepository extends BaseRepository
+final class UserRepository extends BaseRepository
 {
     public function __construct(User $user)
     {

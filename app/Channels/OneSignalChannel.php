@@ -12,7 +12,7 @@ use App\Notifications\SendSNSNotification;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 
-class OneSignalChannel extends BaseChannel
+final class OneSignalChannel extends BaseChannel
 {
     public function __construct(
     ) {

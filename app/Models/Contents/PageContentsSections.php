@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * @extends Collection<int,Sections\Section>
  */
-class PageContentsSections extends Collection
+final class PageContentsSections extends Collection
 {
     /**
      * @param  array<int,array{type:string,caption?:string,text?:string,url?:string,id?:int}>  $items

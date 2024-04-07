@@ -8,7 +8,7 @@ use App\Models\Article;
 use App\Models\Category;
 use Tests\Feature\TestCase;
 
-class CategoryPakAddonTest extends TestCase
+final class CategoryPakAddonTest extends TestCase
 {
     private Article $article;
 

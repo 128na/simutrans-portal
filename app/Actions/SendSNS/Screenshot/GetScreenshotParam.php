@@ -7,10 +7,10 @@ namespace App\Actions\SendSNS\Screenshot;
 use App\Models\Screenshot;
 use Carbon\Carbon;
 
-class GetScreenshotParam
+final readonly class GetScreenshotParam
 {
     public function __construct(
-        private readonly Carbon $carbon,
+        private Carbon $carbon,
     ) {
     }
 

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 /**
  * @extends BaseRepository<Category>
  */
-class CategoryRepository extends BaseRepository
+final class CategoryRepository extends BaseRepository
 {
     public function __construct(Category $category)
     {

@@ -11,7 +11,7 @@ use Error;
 use Mockery\MockInterface;
 use Tests\Feature\TestCase;
 
-class IndexTest extends TestCase
+final class IndexTest extends TestCase
 {
     public function test_create(): void
     {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Contents;
 
-class PageContent extends Content
+final class PageContent extends Content
 {
     public PageContentsSections $sections;
 

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @mixin IdeHelperConversionCount
  */
-class ConversionCount extends Model
+final class ConversionCount extends Model
 {
     public const TYPE_DAILY = 1;
 

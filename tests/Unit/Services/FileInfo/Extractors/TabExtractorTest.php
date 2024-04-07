@@ -7,7 +7,7 @@ namespace Tests\Unit\Services\FileInfo\Extractors;
 use App\Services\FileInfo\Extractors\TabExtractor;
 use Tests\Unit\TestCase;
 
-class TabExtractorTest extends TestCase
+final class TabExtractorTest extends TestCase
 {
     private function getSUT(): TabExtractor
     {

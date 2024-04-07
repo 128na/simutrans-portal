@@ -7,7 +7,7 @@ namespace Database\Factories;
 use App\Models\Redirect;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class RedirectFactory extends Factory
+final class RedirectFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

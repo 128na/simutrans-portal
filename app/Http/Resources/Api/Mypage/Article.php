@@ -9,7 +9,7 @@ use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Article extends JsonResource
+final class Article extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request

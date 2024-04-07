@@ -7,7 +7,7 @@ namespace App\Services\Discord;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
-class InviteService
+final class InviteService
 {
     public function create(): string
     {

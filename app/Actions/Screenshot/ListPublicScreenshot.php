@@ -8,10 +8,10 @@ use App\Http\Resources\Api\Front\Screenshot as ScreenshotResource;
 use App\Repositories\ScreenshotRepository;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class ListPublicScreenshot
+final readonly class ListPublicScreenshot
 {
     public function __construct(
-        private readonly ScreenshotRepository $screenshotRepository,
+        private ScreenshotRepository $screenshotRepository,
     ) {
     }
 

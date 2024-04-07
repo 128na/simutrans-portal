@@ -6,7 +6,7 @@ namespace App\Services\Attachment;
 
 use App\Enums\CroppableFormat;
 
-class ImageCropper
+final class ImageCropper
 {
     private function getMime(string $fullpath): ?CroppableFormat
     {

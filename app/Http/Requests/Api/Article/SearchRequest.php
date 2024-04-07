@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api\Article;
 
-use App\Http\Requests\Article\SearchRequest as BaseRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class SearchRequest extends BaseRequest
+final class SearchRequest extends FormRequest
 {
     /**
      * @return array<mixed>
      */
     public function rules(): array
     {
-        return array_merge(
-            parent::rules(),
-            [
-                'order' => 'nullable|in:published_at,modified_at',
-            ]
-        );
+        return [
+            'word' => 'nullable|string|max:100',
+            'order' => 'nullable|in:published_at,modified_at',
+        ];
     }
 }

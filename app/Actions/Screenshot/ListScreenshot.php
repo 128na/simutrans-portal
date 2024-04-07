@@ -9,10 +9,10 @@ use App\Models\User;
 use App\Repositories\ScreenshotRepository;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class ListScreenshot
+final readonly class ListScreenshot
 {
     public function __construct(
-        private readonly ScreenshotRepository $screenshotRepository,
+        private ScreenshotRepository $screenshotRepository,
     ) {
     }
 

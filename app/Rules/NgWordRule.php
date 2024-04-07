@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Str;
 
-class NgWordRule implements ValidationRule
+final class NgWordRule implements ValidationRule
 {
     /**
      * @var array<string>

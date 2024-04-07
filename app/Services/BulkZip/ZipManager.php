@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 use Throwable;
 use ZipArchive;
 
-class ZipManager
+final class ZipManager
 {
     private string $filepath;
 

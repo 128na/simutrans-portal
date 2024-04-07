@@ -7,7 +7,7 @@ namespace Tests\Unit\Services\FileInfo\Extractors;
 use App\Services\FileInfo\Extractors\PakBinary;
 use Tests\Unit\TestCase;
 
-class PakBinaryTest extends TestCase
+final class PakBinaryTest extends TestCase
 {
     private function getSUT(): PakBinary
     {

@@ -12,7 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class JobDeleteExpiredBulkzip implements ShouldQueue
+final class JobDeleteExpiredBulkzip implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

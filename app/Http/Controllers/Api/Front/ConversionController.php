@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use Illuminate\Support\Facades\Auth;
 
-class ConversionController extends Controller
+final class ConversionController extends Controller
 {
     public function __construct()
     {

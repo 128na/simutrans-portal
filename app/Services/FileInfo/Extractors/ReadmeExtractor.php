@@ -6,9 +6,9 @@ namespace App\Services\FileInfo\Extractors;
 
 use HTMLPurifier;
 
-class ReadmeExtractor implements Extractor
+final readonly class ReadmeExtractor implements Extractor
 {
-    public function __construct(private readonly HTMLPurifier $htmlPurifier)
+    public function __construct(private HTMLPurifier $htmlPurifier)
     {
     }
 

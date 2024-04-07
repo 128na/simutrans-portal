@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Repositories\BulkZipRepository;
 use Tests\Feature\TestCase;
 
-class StoreByBulkZippableTest extends TestCase
+final class StoreByBulkZippableTest extends TestCase
 {
     private BulkZipRepository $bulkZipRepository;
 

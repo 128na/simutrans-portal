@@ -8,14 +8,14 @@ use App\Models\Screenshot;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ScreenshotStored
+final readonly class ScreenshotStored
 {
     use Dispatchable;
     use SerializesModels;
 
     public function __construct(
-        public readonly Screenshot $screenshot,
-        public readonly bool $shouldNotify = false,
+        public Screenshot $screenshot,
+        public bool $shouldNotify = false,
     ) {
     }
 }

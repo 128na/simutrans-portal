@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Unit\TestCase;
 
-class SluggableStringTest extends TestCase
+final class SluggableStringTest extends TestCase
 {
     private Closure $failClosure;
 

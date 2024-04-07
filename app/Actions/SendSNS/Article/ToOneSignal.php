@@ -12,10 +12,10 @@ use Berkayk\OneSignal\OneSignalFacade;
 use Exception;
 use Throwable;
 
-class ToOneSignal
+final readonly class ToOneSignal
 {
     public function __construct(
-        private readonly GetArticleParam $getArticleParam,
+        private GetArticleParam $getArticleParam,
     ) {
     }
 

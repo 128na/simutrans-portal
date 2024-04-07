@@ -8,7 +8,7 @@ use App\Enums\ScreenshotStatus;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-class StoreTest extends TestCase
+final class StoreTest extends TestCase
 {
     private User $user;
 

@@ -12,11 +12,11 @@ use App\Services\Misskey\MisskeyApiClient;
 use Exception;
 use Throwable;
 
-class ToMisskey
+final readonly class ToMisskey
 {
     public function __construct(
-        private readonly MisskeyApiClient $misskeyApiClient,
-        private readonly GetScreenshotParam $getScreenshotParam,
+        private MisskeyApiClient $misskeyApiClient,
+        private GetScreenshotParam $getScreenshotParam,
     ) {
     }
 

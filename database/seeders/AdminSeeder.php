@@ -11,7 +11,7 @@ use Illuminate\Database\Seeder;
 /**
  * 管理者追加.
  */
-class AdminSeeder extends Seeder
+final class AdminSeeder extends Seeder
 {
     public function run(): void
     {

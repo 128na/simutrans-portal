@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Event;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
-class StoreScreenshotTest extends TestCase
+final class StoreScreenshotTest extends TestCase
 {
     private function getSUT(): StoreScreenshot
     {

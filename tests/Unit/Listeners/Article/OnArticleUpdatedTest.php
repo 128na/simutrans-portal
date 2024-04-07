@@ -13,7 +13,7 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Unit\TestCase;
 
-class OnArticleUpdatedTest extends TestCase
+final class OnArticleUpdatedTest extends TestCase
 {
     private function getSUT(): OnArticleUpdated
     {

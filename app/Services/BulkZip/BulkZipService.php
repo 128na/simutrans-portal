@@ -10,9 +10,9 @@ use App\Jobs\BulkZip\JobDeleteExpiredBulkzip;
 use App\Models\BulkZip;
 use App\Repositories\BulkZipRepository;
 
-class BulkZipService
+final readonly class BulkZipService
 {
-    public function __construct(private readonly BulkZipRepository $bulkZipRepository)
+    public function __construct(private BulkZipRepository $bulkZipRepository)
     {
     }
 

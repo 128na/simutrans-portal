@@ -8,7 +8,7 @@ use App\Jobs\Article\JobCheckDeadLink;
 use Illuminate\Console\Command;
 use Throwable;
 
-class CommandCheckDeadLink extends Command
+final class CommandCheckDeadLink extends Command
 {
     protected $signature = 'check:deadlink';
 

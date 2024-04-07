@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 
-class InviteController extends Controller
+final class InviteController extends Controller
 {
     public function __construct()
     {

@@ -10,7 +10,7 @@ use App\Models\Screenshot;
 use App\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ArticleResource extends JsonResource
+final class ArticleResource extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request

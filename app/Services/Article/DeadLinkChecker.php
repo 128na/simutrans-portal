@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Sleep;
 
-class DeadLinkChecker
+final readonly class DeadLinkChecker
 {
     public function __construct(
-        private readonly ArticleRepository $articleRepository,
-        private readonly GetHeadersHandler $getHeadersHandler
+        private ArticleRepository $articleRepository,
+        private GetHeadersHandler $getHeadersHandler
     ) {
     }
 

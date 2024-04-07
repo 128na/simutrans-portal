@@ -8,7 +8,7 @@ use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use Tests\Feature\TestCase;
 
-class ToggleDeleteTest extends TestCase
+final class ToggleDeleteTest extends TestCase
 {
     private ArticleRepository $repository;
 

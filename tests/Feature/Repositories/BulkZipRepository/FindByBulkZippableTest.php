@@ -11,7 +11,7 @@ use App\Repositories\BulkZipRepository;
 use Tests\Feature\TestCase;
 use TypeError;
 
-class FindByBulkZippableTest extends TestCase
+final class FindByBulkZippableTest extends TestCase
 {
     private BulkZipRepository $bulkZipRepository;
 

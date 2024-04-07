@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Api\Front\FrontController;
 use App\Models\Article\Ranking;
 use Tests\Feature\TestCase;
 
-class RankingTest extends TestCase
+final class RankingTest extends TestCase
 {
     private Ranking $ranking;
 

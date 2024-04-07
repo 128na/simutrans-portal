@@ -8,12 +8,12 @@ use App\Models\Article;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ArticleStored
+final readonly class ArticleStored
 {
     use Dispatchable;
     use SerializesModels;
 
-    public function __construct(public readonly Article $article, public readonly bool $shouldNotify = false)
+    public function __construct(public Article $article, public bool $shouldNotify = false)
     {
     }
 }

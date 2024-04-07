@@ -11,7 +11,7 @@ use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Screenshot extends JsonResource
+final class Screenshot extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request

@@ -15,7 +15,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
 
-class AttachmentController extends Controller
+final class AttachmentController extends Controller
 {
     public function __construct(
         private readonly AttachmentRepository $attachmentRepository,

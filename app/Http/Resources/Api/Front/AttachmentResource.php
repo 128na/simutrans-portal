@@ -7,7 +7,7 @@ namespace App\Http\Resources\Api\Front;
 use App\Models\Attachment;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class AttachmentResource extends ResourceCollection
+final class AttachmentResource extends ResourceCollection
 {
     /**
      * @var \Illuminate\Support\Collection<int,Attachment>

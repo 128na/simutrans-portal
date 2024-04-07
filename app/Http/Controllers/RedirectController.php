@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Config;
 /**
  * 旧サイト -> 新サイトのリダイレクトを行う.
  */
-class RedirectController extends Controller
+final class RedirectController extends Controller
 {
     public function __construct(private readonly RedirectRepository $redirectRepository)
     {

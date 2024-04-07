@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Bus;
 use Tests\Feature\TestCase;
 
-class UserTest extends TestCase
+final class UserTest extends TestCase
 {
     private User $user;
 

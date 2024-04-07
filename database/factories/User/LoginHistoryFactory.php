@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\User\LoginHistory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class LoginHistoryFactory extends Factory
+final class LoginHistoryFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

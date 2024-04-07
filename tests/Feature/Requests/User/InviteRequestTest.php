@@ -9,7 +9,7 @@ use App\Models\User;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Feature\TestCase;
 
-class InviteRequestTest extends TestCase
+final class InviteRequestTest extends TestCase
 {
     protected function setUp(): void
     {

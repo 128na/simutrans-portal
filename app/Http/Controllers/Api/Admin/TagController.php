@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tag;
 use App\Repositories\TagRepository;
 
-class TagController extends Controller
+final class TagController extends Controller
 {
     public function __construct(private readonly TagRepository $tagRepository)
     {

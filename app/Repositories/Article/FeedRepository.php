@@ -22,7 +22,6 @@ class FeedRepository
     public function addon(): Collection
     {
         return $this->article
-            ->query()
             ->active()
             ->addon()
             ->select('id', 'user_id', 'title', 'slug', 'post_type', 'contents', 'modified_at')

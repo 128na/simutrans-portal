@@ -3,7 +3,6 @@ includes:
 
 parameters:
     ignoreErrors:
-        #- "#PHPDoc .* @mixin contains unknown class Eloquent.#"
 
     paths:
         - app/
@@ -13,5 +12,7 @@ parameters:
 
     # covariant,contravariantが残念な感じになるのでやめる
     #checkGenericClassInNonGenericObjectType: false
+
+    # ide-helper連携
     scanFiles:
         - _ide_helper_models.php

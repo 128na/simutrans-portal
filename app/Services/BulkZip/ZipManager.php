@@ -7,8 +7,8 @@ namespace App\Services\BulkZip;
 use App\Exceptions\ZipErrorException;
 use App\Services\BulkZip\Decorators\BaseDecorator;
 use ErrorException;
-use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Str;
 use Throwable;
 use ZipArchive;
@@ -22,7 +22,7 @@ final class ZipManager
      */
     public function __construct(
         private readonly ZipArchive $zipArchive,
-        private readonly Filesystem $filesystem,
+        private readonly FilesystemAdapter $filesystemAdapter,
         private readonly array $decorators
     ) {
     }
@@ -34,7 +34,7 @@ final class ZipManager
 
     private function isZipFile(string $filepath): bool
     {
-        $mime = $this->filesystem->mimeType($filepath);
+        $mime = $this->filesystemAdapter->mimeType($filepath);
 
         return $mime === 'application/zip';
     }
@@ -133,16 +133,16 @@ final class ZipManager
         }
 
         $filepath = $this->randName('bulk_zip/', '.csv');
-        $this->filesystem->put($filepath, $csv);
+        $this->filesystemAdapter->put($filepath, $csv);
         fclose($csv);
 
         $this->addFile($filepath, 'contents.csv');
-        $this->filesystem->delete($filepath);
+        $this->filesystemAdapter->delete($filepath);
     }
 
     private function open(): void
     {
-        $result = $this->zipArchive->open($this->filesystem->path($this->filepath), ZipArchive::CREATE);
+        $result = $this->zipArchive->open($this->filesystemAdapter->path($this->filepath), ZipArchive::CREATE);
         if ($result !== true) {
             throw new ZipErrorException('open faild: '.$this->filepath, $result);
         }
@@ -151,7 +151,7 @@ final class ZipManager
     private function addFile(string $filepath, string $filenameInZip = ''): void
     {
         $this->open();
-        $path = $this->filesystem->path($filepath);
+        $path = $this->filesystemAdapter->path($filepath);
         $result = $this->zipArchive->addFile($path, $filenameInZip);
         $this->close();
 
@@ -163,7 +163,7 @@ final class ZipManager
     private function mergeZip(string $filepath, string $filenameInZip = ''): void
     {
         $basedir = str_replace(basename($filenameInZip), '', $filenameInZip);
-        $path = $this->filesystem->path($filepath);
+        $path = $this->filesystemAdapter->path($filepath);
         $zipArchive = new ZipArchive();
         try {
             $zipArchive->open($path);
@@ -179,9 +179,9 @@ final class ZipManager
                 }
 
                 $randName = $this->randName();
-                $this->filesystem->put($randName, $rc);
+                $this->filesystemAdapter->put($randName, $rc);
                 $this->addFile($randName, sprintf('%s/%s', $basedir, $name));
-                $this->filesystem->delete($randName);
+                $this->filesystemAdapter->delete($randName);
             }
 
             $zipArchive->close();

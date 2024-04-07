@@ -55,21 +55,21 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
      */
     public function register(): void
     {
-        $this->app->bind(ReadmeExtractor::class, function ($app): \App\Services\FileInfo\Extractors\ReadmeExtractor {
+        $this->app->bind(ReadmeExtractor::class, function ($app): ReadmeExtractor {
             $htmlPurifierConfig = HTMLPurifier_Config::createDefault();
             $htmlPurifierConfig->set('HTML.AllowedElements', []);
 
             return new ReadmeExtractor(new HTMLPurifier($htmlPurifierConfig));
         });
 
-        $this->app->bind(MarkdownService::class, function ($app): \App\Services\MarkdownService {
+        $this->app->bind(MarkdownService::class, function ($app): MarkdownService {
             $htmlPurifierConfig = HTMLPurifier_Config::createDefault();
             $htmlPurifierConfig->set('HTML.AllowedElements', []);
 
             return new MarkdownService($app->make(GithubMarkdown::class), new HTMLPurifier($htmlPurifierConfig));
         });
 
-        $this->app->bind(ZipManager::class, fn ($app): \App\Services\BulkZip\ZipManager => new ZipManager(
+        $this->app->bind(ZipManager::class, fn ($app): ZipManager => new ZipManager(
             new ZipArchive(),
             Storage::disk('public'),
             [
@@ -78,7 +78,7 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
             ]
         ));
 
-        $this->app->bind(FileInfoService::class, fn ($app): \App\Services\FileInfo\FileInfoService => new FileInfoService(
+        $this->app->bind(FileInfoService::class, fn ($app): FileInfoService => new FileInfoService(
             $this->app->make(FileInfoRepository::class),
             $this->app->make(ZipArchiveParser::class),
             $this->app->make(TextService::class),
@@ -90,19 +90,19 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
             ]
         ));
 
-        $this->app->bind(TwitterOAuth::class, fn ($app): \Abraham\TwitterOAuth\TwitterOAuth => new TwitterOAuth(
+        $this->app->bind(TwitterOAuth::class, fn ($app): TwitterOAuth => new TwitterOAuth(
             Config::string('services.twitter.access_token'),
             Config::string('services.twitter.access_secret'),
             null,
             Config::string('services.twitter.bearer_token'),
         ));
 
-        $this->app->bind(MisskeyApiClient::class, fn ($app): \App\Services\Misskey\MisskeyApiClient => new MisskeyApiClient(
+        $this->app->bind(MisskeyApiClient::class, fn ($app): MisskeyApiClient => new MisskeyApiClient(
             Config::string('services.misskey.base_url'),
             Config::string('services.misskey.token'),
         ));
 
-        $this->app->bind(BlueSkyApiClient::class, function ($app): \App\Services\BlueSky\BlueSkyApiClient {
+        $this->app->bind(BlueSkyApiClient::class, function ($app): BlueSkyApiClient {
             $blueskyApi = new BlueskyApi(Config::string('services.bluesky.user'), Config::string('services.bluesky.password'));
             $blueskyPostService = new BlueskyPostService($blueskyApi);
 

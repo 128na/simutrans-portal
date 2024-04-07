@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api\Front\DiscordController;
 
 use App\Services\Discord\InviteService;
-use App\Services\Google\Recaptcha\RecaptchaException;
+use App\Services\Google\Recaptcha\RecaptchaFailedException;
 use App\Services\Google\Recaptcha\RecaptchaService;
 use Error;
 use Mockery\MockInterface;
@@ -47,7 +47,7 @@ final class IndexTest extends TestCase
     public function test_create_recaptchaエラー時は400レスポンス(): void
     {
         $this->mock(RecaptchaService::class, function (MockInterface $mock): void {
-            $mock->expects()->assessment('')->once()->andThrow(new RecaptchaException('dummy'));
+            $mock->expects()->assessment('')->once()->andThrow(new RecaptchaFailedException('dummy'));
         });
         $this->mock(InviteService::class, function (MockInterface $mock): void {
             $mock->expects()->create()->never();

@@ -54,11 +54,11 @@ class OnArticleUpdatedTest extends TestCase
     {
         yield '未公開,公開,通知ON->投稿通知' => [true, true, true, true, false];
         yield '未公開,公開,通知OF->通知しない' => [true, true, false, false, false];
-        yield '未公開,非公開,通知ON->通知しない' => [true, false, true, false, false];
-        yield '未公開,非公開,通知OF->通知しない' => [true, false, false, false, false];
+        yield '未公開,公開以外,通知ON->通知しない' => [true, false, true, false, false];
+        yield '未公開,公開以外,通知OF->通知しない' => [true, false, false, false, false];
         yield '公開済,公開,通知ON->更新通知' => [false, true, true, false, true];
         yield '公開済,公開,通知OF->通知しない' => [false, true, false, false, false];
-        yield '公開済,非公開,通知ON->通知しない' => [false, false, true, false, false];
-        yield '公開済,非公開,通知OF->通知しない' => [false, false, false, false, false];
+        yield '公開済,公開以外,通知ON->通知しない' => [false, false, true, false, false];
+        yield '公開済,公開以外,通知OF->通知しない' => [false, false, false, false, false];
     }
 }

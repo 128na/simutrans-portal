@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Listeners\Article;
+namespace Tests\Unit\Listeners\Article;
 
 use App\Events\Article\ArticleUpdated;
 use App\Listeners\Article\OnArticleUpdated;
@@ -42,20 +42,20 @@ class OnArticleUpdatedTest extends TestCase
             }
         });
 
-        $screenshotStored = new ArticleUpdated($mock, $shouldNotify, $notYetPublished);
-        $result = $this->getSUT()->handle($screenshotStored);
+        $articleUpdated = new ArticleUpdated($mock, $shouldNotify, $notYetPublished);
+        $result = $this->getSUT()->handle($articleUpdated);
         $this->assertNull($result);
     }
 
     public static function data(): \Generator
     {
-        yield '未公開,公開,投稿通知ON' => [T, T, T, T];
-        yield '未公開,公開,投稿通知OF' => [T, T, F, F];
-        yield '未公開,非公開,投稿通知ON' => [T, F, T, F];
-        yield '未公開,非公開,投稿通知OF' => [T, F, F, F];
-        yield '公開済,公開,投稿通知ON' => [F, T, T, F];
-        yield '公開済,公開,投稿通知OF' => [F, T, F, F];
-        yield '公開済,非公開,投稿通知ON' => [F, F, T, F];
-        yield '公開済,非公開,投稿通知OF' => [F, F, F, F];
+        yield '未公開,公開,投稿通知ON' => [true, true, true, true];
+        yield '未公開,公開,投稿通知OF' => [true, true, false, false];
+        yield '未公開,非公開,投稿通知ON' => [true, false, true, false];
+        yield '未公開,非公開,投稿通知OF' => [true, false, false, false];
+        yield '公開済,公開,投稿通知ON' => [false, true, true, false];
+        yield '公開済,公開,投稿通知OF' => [false, true, false, false];
+        yield '公開済,非公開,投稿通知ON' => [false, false, true, false];
+        yield '公開済,非公開,投稿通知OF' => [false, false, false, false];
     }
 }

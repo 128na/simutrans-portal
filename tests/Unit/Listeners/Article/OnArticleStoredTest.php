@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Listeners\Article;
+namespace Tests\Unit\Listeners\Article;
 
 use App\Events\Article\ArticleStored;
 use App\Listeners\Article\OnArticleStored;
@@ -38,16 +38,16 @@ class OnArticleStoredTest extends TestCase
             }
         });
 
-        $screenshotStored = new ArticleStored($mock, $shouldNotify);
-        $result = $this->getSUT()->handle($screenshotStored);
+        $articleStored = new ArticleStored($mock, $shouldNotify);
+        $result = $this->getSUT()->handle($articleStored);
         $this->assertNull($result);
     }
 
     public static function data(): \Generator
     {
-        yield '公開,投稿通知ON' => [T, T, T];
-        yield '公開,投稿通知OFF' => [T, F, F];
-        yield '公開以外,投稿通知ON' => [F, T, F];
-        yield '公開以外,投稿通知OFF' => [F, F, F];
+        yield '公開,投稿通知ON' => [true, true, true];
+        yield '公開,投稿通知OFF' => [true, false, false];
+        yield '公開以外,投稿通知ON' => [false, true, false];
+        yield '公開以外,投稿通知OFF' => [false, false, false];
     }
 }

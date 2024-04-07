@@ -6,10 +6,9 @@ namespace App\Services\Front;
 
 use App\Repositories\PakAddonCountRepository;
 use App\Repositories\UserAddonCountRepository;
-use App\Services\Service;
 use Illuminate\Database\Eloquent\Collection;
 
-class SidebarService extends Service
+class SidebarService
 {
     public function __construct(
         private readonly PakAddonCountRepository $pakAddonCountRepository,

@@ -4,16 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services\Discord;
 
-use App\Services\Service;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
-class InviteService extends Service
+class InviteService
 {
-    public function __construct()
-    {
-    }
-
     public function create(): string
     {
         $response = Http::withHeaders(['Authorization' => 'Bot '.Config::string('services.discord.token')])

@@ -10,7 +10,6 @@ use App\Models\Screenshot;
 use App\Models\User;
 use App\Services\Attachment\FileSizeBaseResizer;
 use App\Services\Front\MetaOgpService;
-use App\Services\Service;
 use potibm\Bluesky\BlueskyApi;
 use potibm\Bluesky\BlueskyPostService;
 use potibm\Bluesky\Feed\Post;
@@ -19,7 +18,7 @@ use potibm\Bluesky\Response\RecordResponse;
 /**
  * @see https://www.docs.bsky.app/docs
  */
-class BlueSkyApiClient extends Service
+class BlueSkyApiClient
 {
     public function __construct(
         private readonly BlueskyApi $blueskyApi,

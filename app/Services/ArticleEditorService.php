@@ -18,7 +18,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 
-class ArticleEditorService extends Service
+class ArticleEditorService
 {
     public function __construct(
         private readonly ArticleRepository $articleRepository,

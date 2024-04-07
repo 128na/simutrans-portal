@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services\Google\Recaptcha;
 
-use App\Services\Service;
 use Google\Cloud\RecaptchaEnterprise\V1\Assessment;
 use Google\Cloud\RecaptchaEnterprise\V1\Event;
 use Google\Cloud\RecaptchaEnterprise\V1\RecaptchaEnterpriseServiceClient;
 
-class RecaptchaService extends Service
+class RecaptchaService
 {
     private const ALLOW_SCORE = 0.5;
 

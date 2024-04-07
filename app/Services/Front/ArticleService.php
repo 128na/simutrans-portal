@@ -10,11 +10,10 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
-use App\Services\Service;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 
-class ArticleService extends Service
+class ArticleService
 {
     public const ORDER_BY_PUBLISHED_AT = 'published_at';
 

@@ -7,10 +7,9 @@ namespace App\Services\BulkZip;
 use App\Models\BulkZip;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
-use App\Services\Service;
 use Exception;
 
-class ZippableManager extends Service
+class ZippableManager
 {
     public function __construct(private readonly ArticleRepository $articleRepository)
     {

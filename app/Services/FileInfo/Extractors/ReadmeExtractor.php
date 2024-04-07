@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors;
 
-use App\Services\Service;
 use HTMLPurifier;
 
-class ReadmeExtractor extends Service implements Extractor
+class ReadmeExtractor implements Extractor
 {
     public function __construct(private readonly HTMLPurifier $htmlPurifier)
     {

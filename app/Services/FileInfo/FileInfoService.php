@@ -7,10 +7,9 @@ namespace App\Services\FileInfo;
 use App\Models\Attachment;
 use App\Models\Attachment\FileInfo;
 use App\Repositories\Attachment\FileInfoRepository;
-use App\Services\Service;
 use Exception;
 
-class FileInfoService extends Service
+class FileInfoService
 {
     /**
      * @param  \App\Services\FileInfo\Extractors\Extractor[]  $extractors

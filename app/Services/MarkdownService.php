@@ -10,7 +10,7 @@ use HTMLPurifier;
 /**
  * @see https://github.com/cebe/markdown
  */
-class MarkdownService extends Service
+class MarkdownService
 {
     public function __construct(private readonly GithubMarkdown $githubMarkdown, private readonly HTMLPurifier $htmlPurifier)
     {

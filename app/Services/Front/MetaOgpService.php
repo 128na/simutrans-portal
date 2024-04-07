@@ -9,15 +9,10 @@ use App\Models\Article;
 use App\Models\Screenshot;
 use App\Models\Tag;
 use App\Models\User;
-use App\Services\Service;
 use Illuminate\Support\Facades\Config;
 
-class MetaOgpService extends Service
+class MetaOgpService
 {
-    public function __construct()
-    {
-    }
-
     /**
      * @return array{title:string,description:string,image:string|null,canonical:string,card_type:string}
      */

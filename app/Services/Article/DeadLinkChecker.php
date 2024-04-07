@@ -10,12 +10,11 @@ use App\Events\Article\DeadLinkDetected;
 use App\Models\Article;
 use App\Models\Contents\AddonIntroductionContent;
 use App\Repositories\ArticleRepository;
-use App\Services\Service;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Sleep;
 
-class DeadLinkChecker extends Service
+class DeadLinkChecker
 {
     public function __construct(
         private readonly ArticleRepository $articleRepository,

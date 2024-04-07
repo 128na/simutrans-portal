@@ -6,7 +6,6 @@ namespace App\Services\BulkZip;
 
 use App\Exceptions\ZipErrorException;
 use App\Services\BulkZip\Decorators\BaseDecorator;
-use App\Services\Service;
 use ErrorException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +13,7 @@ use Illuminate\Support\Str;
 use Throwable;
 use ZipArchive;
 
-class ZipManager extends Service
+class ZipManager
 {
     private string $filepath;
 

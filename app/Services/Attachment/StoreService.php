@@ -7,11 +7,10 @@ namespace App\Services\Attachment;
 use App\Enums\CroppableFormat;
 use App\Models\Attachment;
 use App\Models\User;
-use App\Services\Service;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-class StoreService extends Service
+class StoreService
 {
     public function __construct(
         private readonly ImageCropper $imageCropper,

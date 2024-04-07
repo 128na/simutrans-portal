@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace App\Services\FileInfo;
 
 use App\Models\Attachment;
-use App\Services\Service;
 use Generator;
 use Illuminate\Support\LazyCollection;
 use ZipArchive;
 
-class ZipArchiveParser extends Service
+class ZipArchiveParser
 {
     public function __construct(
         private readonly ZipArchive $zipArchive,

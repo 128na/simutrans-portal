@@ -47,7 +47,7 @@ final class Screenshot extends JsonResource
                 'id' => $this->resource->user->id,
                 'name' => $this->resource->user->name,
             ],
-            'updated_at' => $this->resource->updated_at->toDateTimeString(),
+            'published_at' => $this->resource->published_at?->toDateTimeString(),
         ];
     }
 }

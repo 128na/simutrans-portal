@@ -12,13 +12,13 @@
       <dd>{{ screenshot.user.name }}</dd>
       <RelatedArticles v-if="screenshot.articles.length" :articles="screenshot.articles" />
       <RelatedLinks v-if="screenshot.links.length" :links="screenshot.links" />
-      <dt>投稿日時</dt>
-      <dd>{{ screenshot.updated_at }}</dd>
+      <dt>公開日時</dt>
+      <dd>{{ screenshot.published_at }}</dd>
     </dl>
     <template v-for="a in screenshot.attachments" :key="a.id">
       <figure>
         <a :href="a.url" target="_blank" rel="noreferrer noopener">
-          <img :src="a.url" style="max-width:100%;height: auto" loading="lazy"/>
+          <img :src="a.url" style="max-width:100%;height: auto" loading="lazy" />
         </a>
         <figcaption v-if="a.caption">{{ a.caption }}</figcaption>
       </figure>

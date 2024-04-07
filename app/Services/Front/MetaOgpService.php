@@ -130,14 +130,15 @@ class MetaOgpService extends Service
     }
 
     /**
-     * @return array{title:string,description:string,image:string|null,card_type:string}
+     * @return array{title:string,description:string,canonical:string,image:string,card_type:string}
      */
     public function screenshot(Screenshot $screenshot): array
     {
         return [
             'title' => sprintf('『%s』by %s', $screenshot->title, $screenshot->user->name).' - '.config('app.name'),
             'description' => $this->trimDescription($screenshot->description),
-            'image' => $screenshot->attachments()->orderBy('order', 'asc')->first()?->url,
+            'image' => $screenshot->attachments()->orderBy('order', 'asc')->first()?->url ?? '',
+            'canonical' => route('screenshots.show', ['id' => $screenshot->id]),
             'card_type' => 'summary_large_image',
         ];
     }

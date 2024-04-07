@@ -28,18 +28,19 @@
     "spatie/laravel-feed": "^4.4"
   },
   "require-dev": {
-    "fakerphp/faker": "^1.23.1",
-    "nunomaduro/collision": "^8.1.1",
     "barryvdh/laravel-debugbar": "^3.13.3",
     "barryvdh/laravel-ide-helper": "^3",
     "brianium/paratest": "^7.4.3",
+    "dg/bypass-finals": "^1.6",
+    "fakerphp/faker": "^1.23.1",
     "filp/whoops": "^2.15.4",
     "larastan/larastan": "^2.9.2",
     "laravel/dusk": "^8.1.1",
     "laravel/pint": "^1.15.1",
     "laravel/sail": "^1.29.1",
     "mockery/mockery": "^1.6.11",
-    "phpunit/phpunit": ">=10.5.15",
+    "nunomaduro/collision": "^8.1.1",
+    "phpunit/phpunit": "^10.5.17",
     "rector/rector": "^1.0.4",
     "spatie/laravel-ignition": "^2.5.1"
   },

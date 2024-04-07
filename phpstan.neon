@@ -4,7 +4,7 @@ includes:
 parameters:
     ignoreErrors:
         - "#Relation .* is not found#"
-        - "#PHPDoc .* @mixin contains unknown class Eloquent.#"
+#        - "#PHPDoc .* @mixin contains unknown class Eloquent.#"
 
     paths:
         - app/

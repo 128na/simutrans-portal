@@ -15,35 +15,7 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * @property int $id
- * @property int $user_id
- * @property int|null $attachmentable_id 添付先ID
- * @property string|null $attachmentable_type 添付先クラス名
- * @property string $original_name オリジナルファイル名
- * @property string $path 保存先パス
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property string|null $caption キャプション（画像向け）
- * @property int $order 表示順（画像向け）
- * @property-read Model|\Eloquent $attachmentable
- * @property-read FileInfo|null $fileInfo
- * @property-read string $extension
- * @property-read string|null $file_contents
- * @property-read string $full_path
- * @property-read bool $is_image
- * @property-read bool $is_png
- * @property-read bool $path_exists
- * @property-read string $thumbnail
- * @property-read string $type
- * @property-read string $url
- * @property-read \App\Models\User $user
- *
- * @method static \Database\Factories\AttachmentFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment query()
- *
- * @mixin \Eloquent
+ * @mixin IdeHelperAttachment
  */
 class Attachment extends Model
 {

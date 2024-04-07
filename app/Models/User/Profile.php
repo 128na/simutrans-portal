@@ -17,24 +17,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * @property int $id
- * @property int $user_id
- * @property \App\Models\User\ProfileData $data プロフィール情報
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Attachment> $attachments
- * @property-read int|null $attachments_count
- * @property-read \App\Models\Attachment|null $avatar
- * @property-read string $avatar_url
- * @property-read bool $has_avatar
- * @property-read User $user
- *
- * @method static \Database\Factories\User\ProfileFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Profile newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Profile newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Profile query()
- *
- * @mixin \Eloquent
+ * @mixin IdeHelperProfile
  */
 class Profile extends Model
 {

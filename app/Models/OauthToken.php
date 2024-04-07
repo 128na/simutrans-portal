@@ -6,6 +6,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @mixin IdeHelperOauthToken
+ */
 class OauthToken extends Model
 {
     public $incrementing = false;

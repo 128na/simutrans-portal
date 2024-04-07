@@ -6,11 +6,12 @@ namespace App\Http\Controllers\Api\Mypage;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Attachment\StoreRequest;
-use App\Http\Resources\Api\Mypage\Attachments as AttachmentsResource;
+use App\Http\Resources\Api\Mypage\Attachment as MypageAttachment;
 use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
 use App\Repositories\AttachmentRepository;
 use App\Services\Attachment\StoreService;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
 
@@ -22,14 +23,14 @@ class AttachmentController extends Controller
     ) {
     }
 
-    public function index(): AttachmentsResource
+    public function index(): AnonymousResourceCollection
     {
-        return new AttachmentsResource(
+        return MypageAttachment::collection(
             $this->attachmentRepository->findAllByUser($this->loggedinUser())
         );
     }
 
-    public function store(StoreRequest $storeRequest): AttachmentsResource
+    public function store(StoreRequest $storeRequest): AnonymousResourceCollection
     {
         $crop = $storeRequest->has('crop') ? [
             $storeRequest->integer('crop.top', 0),
@@ -52,7 +53,7 @@ class AttachmentController extends Controller
         return $this->index();
     }
 
-    public function destroy(Attachment $attachment): AttachmentsResource
+    public function destroy(Attachment $attachment): AnonymousResourceCollection
     {
         abort_unless($attachment->user_id === Auth::id(), 403);
 

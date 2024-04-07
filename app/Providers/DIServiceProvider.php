@@ -25,6 +25,7 @@ use cebe\markdown\GithubMarkdown;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use potibm\Bluesky\BlueskyApi;
@@ -90,19 +91,19 @@ class DIServiceProvider extends ServiceProvider implements DeferrableProvider
         ));
 
         $this->app->bind(TwitterOAuth::class, fn ($app): \Abraham\TwitterOAuth\TwitterOAuth => new TwitterOAuth(
-            config('services.twitter.access_token'),
-            config('services.twitter.access_secret'),
+            Config::string('services.twitter.access_token'),
+            Config::string('services.twitter.access_secret'),
             null,
-            config('services.twitter.bearer_token'),
+            Config::string('services.twitter.bearer_token'),
         ));
 
         $this->app->bind(MisskeyApiClient::class, fn ($app): \App\Services\Misskey\MisskeyApiClient => new MisskeyApiClient(
-            config('services.misskey.base_url'),
-            config('services.misskey.token'),
+            Config::string('services.misskey.base_url'),
+            Config::string('services.misskey.token'),
         ));
 
         $this->app->bind(BlueSkyApiClient::class, function ($app): \App\Services\BlueSky\BlueSkyApiClient {
-            $blueskyApi = new BlueskyApi(config('services.bluesky.user'), config('services.bluesky.password'));
+            $blueskyApi = new BlueskyApi(Config::string('services.bluesky.user'), Config::string('services.bluesky.password'));
             $blueskyPostService = new BlueskyPostService($blueskyApi);
 
             return new BlueSkyApiClient(

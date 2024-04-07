@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Api\Front;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Models\UserAddonCount;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserAddonResource extends ResourceCollection
+class UserAddonResource extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request
@@ -14,12 +15,12 @@ class UserAddonResource extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection
-            ->map(fn ($u): array => [
-                'user_id' => $u->user_id,
-                'name' => $u->user_name,
-                'nickname' => $u->user_nickname,
-                'count' => $u->count,
-            ])->toArray();
+        assert($this->resource instanceof UserAddonCount);
+
+        return [
+            'user_id' => $this->resource->user_id,
+            'name' => $this->resource->user_name,
+            'nickname' => $this->resource->user_nickname,
+        ];
     }
 }

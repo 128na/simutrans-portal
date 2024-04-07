@@ -11,9 +11,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @mixin IdeHelperCategory
+ */
 class Category extends Model
 {
     use HasFactory;
+
+    /**
+     * @use Slugable<Category>
+     */
     use Slugable;
 
     protected $fillable = [
@@ -47,6 +54,9 @@ class Category extends Model
     | リレーション
     |--------------------------------------------------------------------------
      */
+    /**
+     * @return BelongsToMany<Article>
+     */
     public function articles(): BelongsToMany
     {
         return $this->belongsToMany(Article::class);
@@ -56,6 +66,9 @@ class Category extends Model
     |--------------------------------------------------------------------------
     | スコープ
     |--------------------------------------------------------------------------
+     */
+    /**
+     * @param  Builder<Category>  $builder
      */
     public function scopeType(Builder $builder, CategoryType $categoryType): void
     {

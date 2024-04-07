@@ -14,6 +14,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @mixin IdeHelperAttachment
+ */
 class Attachment extends Model
 {
     use HasFactory;
@@ -56,16 +59,25 @@ class Attachment extends Model
     | リレーション
     |--------------------------------------------------------------------------
      */
+    /**
+     * @return BelongsTo<User,Attachment>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return MorphTo<Model,Attachment>
+     */
     public function attachmentable(): MorphTo
     {
         return $this->morphTo();
     }
 
+    /**
+     * @return HasOne<FileInfo>
+     */
     public function fileInfo(): HasOne
     {
         return $this->hasOne(FileInfo::class);

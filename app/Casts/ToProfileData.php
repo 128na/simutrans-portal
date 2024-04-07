@@ -7,6 +7,9 @@ namespace App\Casts;
 use App\Models\User\ProfileData;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
+/**
+ * @implements CastsAttributes<ProfileData,ProfileData>
+ */
 class ToProfileData implements CastsAttributes
 {
     /**
@@ -14,13 +17,16 @@ class ToProfileData implements CastsAttributes
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
-     * @param  mixed  $value
+     * @param  string  $value
      * @param  array<string>  $attributes
      * @return ProfileData
      */
     public function get($model, $key, $value, $attributes)
     {
-        return new ProfileData(json_decode((string) $value, true));
+        /** @var array{avatar?: int, description?: string, website?: string} */
+        $data = json_decode((string) $value, true);
+
+        return new ProfileData($data);
     }
 
     /**
@@ -28,7 +34,7 @@ class ToProfileData implements CastsAttributes
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
-     * @param  mixed  $value
+     * @param  ProfileData  $value
      * @param  array<string>  $attributes
      * @return string
      */

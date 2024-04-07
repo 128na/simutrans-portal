@@ -8,6 +8,9 @@ use App\Models\Article;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @mixin IdeHelperViewCount
+ */
 class ViewCount extends Model
 {
     public const TYPE_DAILY = 1;
@@ -31,6 +34,9 @@ class ViewCount extends Model
         'count' => 'integer',
     ];
 
+    /**
+     * @return BelongsTo<Article,ViewCount>
+     */
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class);

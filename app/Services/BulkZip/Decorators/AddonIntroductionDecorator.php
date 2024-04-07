@@ -7,6 +7,7 @@ namespace App\Services\BulkZip\Decorators;
 use App\Enums\ArticlePostType;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Model;
 
 class AddonIntroductionDecorator extends BaseDecorator
@@ -20,9 +21,7 @@ class AddonIntroductionDecorator extends BaseDecorator
     /**
      * Zip格納データに変換する.
      *
-     * @param  array<array<mixed>>  $result
      * @param  Article  $model
-     * @return array<array<mixed>>
      */
     public function process(array $result, Model $model): array
     {
@@ -39,7 +38,7 @@ class AddonIntroductionDecorator extends BaseDecorator
     }
 
     /**
-     * @return array<mixed>
+     * @return array<int,array<int,string>>
      */
     private function content(Article $article): array
     {
@@ -49,7 +48,7 @@ class AddonIntroductionDecorator extends BaseDecorator
         $contents = $article->contents;
 
         return [
-            ['ID', $article->id],
+            ['ID', (string) $article->id],
             ['タイトル', $article->title],
             ['記事URL', route('articles.show', ['userIdOrNickname' => $article->user?->nickname ?? $article->user_id, 'articleSlug' => $article->slug])],
             [
@@ -57,15 +56,15 @@ class AddonIntroductionDecorator extends BaseDecorator
                     ? $this->toPath($article->id, $article->thumbnail->original_name)
                     : '無し',
             ],
-            ['投稿者', $article->user->name ?? ''],
-            ['カテゴリ', ...$article->categories->map(fn (Category $category) => __(sprintf('category.%s.%s', $category->type->value, $category->slug)))->toArray()],
-            ['タグ', ...$article->tags()->pluck('name')->toArray()],
-            ['作者 / 投稿者', $contents->author],
-            ['説明', $contents->description],
-            ['謝辞・参考にしたアドオン', $contents->thanks],
-            ['ライセンス', $contents->license],
+            ['投稿者', $article->user->name],
+            ['カテゴリ', ...$article->categories->map(fn (Category $category): string => __(sprintf('category.%s.%s', $category->type->value, $category->slug)))],
+            ['タグ', ...$article->tags->map(fn (Tag $tag): string => $tag->name)],
+            ['作者 / 投稿者', $contents->author ?? ''],
+            ['説明', $contents->description ?? ''],
+            ['謝辞・参考にしたアドオン', $contents->thanks ?? ''],
+            ['ライセンス', $contents->license ?? ''],
             ['掲載許可', $contents->agreement ? 'Yes' : 'No'],
-            ['掲載先URL', $contents->link],
+            ['掲載先URL', $contents->link ?? ''],
             ['リンク切れチェック', $contents->exclude_link_check ? 'No' : 'Yes'],
             ['------'],
         ];

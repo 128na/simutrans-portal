@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * ユーザー毎の投稿数（メニュー表示用）.
+ *
+ * @mixin IdeHelperUserAddonCount
  */
 class UserAddonCount extends Model
 {

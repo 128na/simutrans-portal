@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @mixin IdeHelperRanking
+ */
 class Ranking extends Model
 {
     use HasFactory;
@@ -22,6 +25,9 @@ class Ranking extends Model
         'article_id',
     ];
 
+    /**
+     * @return BelongsTo<Article,Ranking>
+     */
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class);

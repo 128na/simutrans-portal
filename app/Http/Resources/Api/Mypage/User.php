@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Api\Mypage;
 
+use App\Models\User as ModelsUser;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class User extends JsonResource
@@ -14,6 +15,8 @@ class User extends JsonResource
      */
     public function toArray($request)
     {
+        assert($this->resource instanceof ModelsUser);
+
         return [
             'id' => $this->resource->id,
             'name' => $this->resource->name,
@@ -23,7 +26,7 @@ class User extends JsonResource
             'profile' => new Profile($this->resource->profile),
             'admin' => $this->resource->isAdmin(),
             'verified' => (bool) $this->resource->email_verified_at,
-            'attachments' => new Attachments($this->resource->profile->attachments),
+            'attachments' => Attachment::collection($this->resource->profile?->attachments),
             'two_factor' => (bool) $this->resource->two_factor_secret,
         ];
     }

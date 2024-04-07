@@ -14,16 +14,14 @@ class TagRepository extends BaseRepository
 {
     private const LIMIT = 10;
 
-    /**
-     * @var Tag
-     */
-    protected $model;
-
     public function __construct(Tag $tag)
     {
-        $this->model = $tag;
+        parent::__construct($tag);
     }
 
+    /**
+     * @return Collection<int,Tag>
+     */
     public function getAllTags(): Collection
     {
         return $this->model->select('id', 'name')
@@ -32,6 +30,9 @@ class TagRepository extends BaseRepository
             ->get();
     }
 
+    /**
+     * @return Collection<int,Tag>
+     */
     public function searchTags(string $name, int $limit = self::LIMIT): Collection
     {
         return $this->model->select('id', 'name', 'description')
@@ -42,6 +43,9 @@ class TagRepository extends BaseRepository
             ->get();
     }
 
+    /**
+     * @return Collection<int,Tag>
+     */
     public function getTags(int $limit = self::LIMIT): Collection
     {
         return $this->model->select('id', 'name', 'description')->limit($limit)
@@ -51,12 +55,13 @@ class TagRepository extends BaseRepository
     /**
      * 記事に関連づいていないタグを削除する.
      */
-    public function deleteUnrelated(): int
+    public function deleteUnrelated(): void
     {
+        /** @var int[] */
         $tagIds = $this->model
             ->doesntHave('articles')
             ->pluck('id');
 
-        return $this->model->whereIn('id', $tagIds)->delete();
+        $this->model->whereIn('id', $tagIds)->delete();
     }
 }

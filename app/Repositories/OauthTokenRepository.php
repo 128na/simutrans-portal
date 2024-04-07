@@ -11,14 +11,9 @@ use App\Models\OauthToken;
  */
 class OauthTokenRepository extends BaseRepository
 {
-    /**
-     * @var OauthToken
-     */
-    protected $model;
-
     public function __construct(OauthToken $oauthToken)
     {
-        $this->model = $oauthToken;
+        parent::__construct($oauthToken);
     }
 
     public function getToken(string $application): OauthToken

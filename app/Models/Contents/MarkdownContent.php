@@ -10,6 +10,9 @@ class MarkdownContent extends Content
 {
     public ?string $markdown;
 
+    /**
+     * @param  array{markdown?:string}  $contents
+     */
     public function __construct(array $contents)
     {
         $this->markdown = $contents['markdown'] ?? null;

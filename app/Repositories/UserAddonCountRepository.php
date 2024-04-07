@@ -29,14 +29,9 @@ class UserAddonCountRepository extends BaseRepository
         HAVING COUNT(a.id) > 0
         ORDER BY COUNT(a.id) DESC)";
 
-    /**
-     * @var UserAddonCount
-     */
-    protected $model;
-
     public function __construct(UserAddonCount $userAddonCount)
     {
-        $this->model = $userAddonCount;
+        parent::__construct($userAddonCount);
     }
 
     /**
@@ -50,6 +45,9 @@ class UserAddonCountRepository extends BaseRepository
         });
     }
 
+    /**
+     * @return Collection<int,UserAddonCount>
+     */
     public function get(): Collection
     {
         return $this->model->select('user_id', 'user_name', 'user_nickname', 'count')->get();

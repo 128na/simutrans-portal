@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Api\Mypage;
 
-use App\Models\Tag as ModelsTag;
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Tag extends JsonResource
+class Invite extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request
@@ -15,12 +15,12 @@ class Tag extends JsonResource
      */
     public function toArray($request)
     {
-        assert($this->resource instanceof ModelsTag);
+        assert($this->resource instanceof User);
 
         return [
             'id' => $this->resource->id,
             'name' => $this->resource->name,
-            'description' => $this->resource->description,
+            'created_at' => $this->resource->created_at?->toIso8601String(),
         ];
     }
 }

@@ -16,6 +16,9 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @mixin IdeHelperProfile
+ */
 class Profile extends Model
 {
     use HasFactory;
@@ -53,11 +56,17 @@ class Profile extends Model
     | リレーション
     |--------------------------------------------------------------------------
      */
+    /**
+     * @return BelongsTo<User,Profile>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return MorphMany<Attachment>
+     */
     public function attachments(): MorphMany
     {
         return $this->morphMany(Attachment::class, 'attachmentable');

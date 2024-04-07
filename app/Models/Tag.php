@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @mixin IdeHelperTag
+ */
 class Tag extends Model
 {
     use HasFactory;
@@ -28,16 +31,25 @@ class Tag extends Model
         'last_modified_at' => 'datetime',
     ];
 
+    /**
+     * @return BelongsToMany<Article>
+     */
     public function articles(): BelongsToMany
     {
         return $this->belongsToMany(Article::class);
     }
 
+    /**
+     * @return BelongsTo<User,Tag>
+     */
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    /**
+     * @return BelongsTo<User,Tag>
+     */
     public function lastModifiedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'last_modified_by');
@@ -59,6 +71,9 @@ class Tag extends Model
     | スコープ
     |--------------------------------------------------------------------------
     */
+    /**
+     * @param  Builder<Tag>  $builder
+     */
     public function scopePopular(Builder $builder): void
     {
         $builder->withCount(['articles' => fn ($q) => $q->active()])

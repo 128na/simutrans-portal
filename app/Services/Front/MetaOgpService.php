@@ -10,6 +10,7 @@ use App\Models\Screenshot;
 use App\Models\Tag;
 use App\Models\User;
 use App\Services\Service;
+use Illuminate\Support\Facades\Config;
 
 class MetaOgpService extends Service
 {
@@ -34,7 +35,7 @@ class MetaOgpService extends Service
     private function trimDescription(?string $str): string
     {
         if ($str === null || $str === '' || $str === '0') {
-            return config('app.meta-description');
+            return Config::string('app.meta-description');
         }
 
         $str = str_replace(["\n", "\r"], '', $str);
@@ -134,7 +135,7 @@ class MetaOgpService extends Service
     public function screenshot(Screenshot $screenshot): array
     {
         return [
-            'title' => sprintf('『%s』by %s', $screenshot->title, $screenshot->user?->name).' - '.config('app.name'),
+            'title' => sprintf('『%s』by %s', $screenshot->title, $screenshot->user->name).' - '.config('app.name'),
             'description' => $this->trimDescription($screenshot->description),
             'image' => $screenshot->attachments()->orderBy('order', 'asc')->first()?->url,
             'card_type' => 'summary_large_image',

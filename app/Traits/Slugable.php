@@ -8,9 +8,15 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Slug.
+ *
+ * @template T of \Illuminate\Database\Eloquent\Model
  */
 trait Slugable
 {
+    /**
+     * @param  Builder<T>  $builder
+     * @return Builder<T>
+     */
     public function scopeSlug(Builder $builder, string $slug): Builder
     {
         return $builder->where('slug', urlencode($slug));

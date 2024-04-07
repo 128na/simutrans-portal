@@ -8,5 +8,8 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 interface BulkZippableInterface
 {
+    /**
+     * @return MorphOne<\App\Models\BulkZip>
+     */
     public function bulkZippable(): MorphOne;
 }

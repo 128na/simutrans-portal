@@ -33,14 +33,9 @@ class ArticleRepository extends BaseRepository
 
     public const PER_PAGE_SIMPLE = 6;
 
-    /**
-     * @var Article
-     */
-    protected $model;
-
     public function __construct(Article $article)
     {
-        $this->model = $article;
+        parent::__construct($article);
     }
 
     /**
@@ -50,17 +45,15 @@ class ArticleRepository extends BaseRepository
      */
     public function syncAttachments(Article $article, array $attachmentsIds): void
     {
-        if ($article->user) {
-            // add
-            $attachments = $article->user->myAttachments()->find($attachmentsIds);
-            $article->attachments()->saveMany($attachments);
+        // add
+        $attachments = $article->user->myAttachments()->find($attachmentsIds);
+        $article->attachments()->saveMany($attachments);
 
-            //remove
-            /** @var Collection<int,Attachment> */
-            $shouldDetach = $article->attachments()->whereNotIn('id', $attachmentsIds)->get();
-            foreach ($shouldDetach as $attachment) {
-                $attachment->attachmentable()->disassociate()->save();
-            }
+        //remove
+        /** @var Collection<int,Attachment> */
+        $shouldDetach = $article->attachments()->whereNotIn('id', $attachmentsIds)->get();
+        foreach ($shouldDetach as $attachment) {
+            $attachment->attachmentable()->disassociate()->save();
         }
     }
 
@@ -303,6 +296,9 @@ class ArticleRepository extends BaseRepository
             ->paginate();
     }
 
+    /**
+     * @return Builder<Article>
+     */
     private function queryBySearch(string $word, string $order): Builder
     {
         $word = trim($word);
@@ -341,7 +337,7 @@ class ArticleRepository extends BaseRepository
     /**
      * リンク切れチェック対象の記事.
      *
-     * @return LazyCollection<Article>
+     * @return LazyCollection<int,Article>
      */
     public function cursorCheckLink(): LazyCollection
     {
@@ -399,7 +395,7 @@ class ArticleRepository extends BaseRepository
     /**
      * PV数順の記事
      *
-     * @return LazyCollection<Article>
+     * @return LazyCollection<int,Article>
      */
     public function fetchAggregatedRanking(CarbonImmutable $datetime): LazyCollection
     {
@@ -433,7 +429,7 @@ class ArticleRepository extends BaseRepository
     /**
      * 指定時刻を過ぎた予約記事
      *
-     * @return LazyCollection<Article>
+     * @return LazyCollection<int,Article>
      */
     public function cursorReservations(CarbonImmutable $date): LazyCollection
     {

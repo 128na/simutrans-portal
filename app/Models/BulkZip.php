@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+/**
+ * @mixin IdeHelperBulkZip
+ */
 class BulkZip extends Model
 {
     use HasFactory;
@@ -20,6 +23,10 @@ class BulkZip extends Model
         'bulk_zippable_type',
         'generated',
         'path',
+    ];
+
+    protected $casts = [
+        'generated' => 'boolean',
     ];
 
     protected $hidden = [
@@ -36,6 +43,9 @@ class BulkZip extends Model
         });
     }
 
+    /**
+     * @return MorphTo<Model,BulkZip>
+     */
     public function bulkZippable(): MorphTo
     {
         return $this->morphTo();

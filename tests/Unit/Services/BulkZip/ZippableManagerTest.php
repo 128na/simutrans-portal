@@ -25,8 +25,7 @@ class ZippableManagerTest extends TestCase
     {
         $user = new User();
         $this->mock(BulkZip::class, function (MockInterface $mock) use ($user): void {
-            $mock->expects()->getAttribute('bulk_zippable_type')->once()->andReturn(User::class);
-            $mock->expects()->getAttribute('bulkZippable')->once()->andReturn($user);
+            $mock->expects()->getAttribute('bulkZippable')->twice()->andReturn($user);
         });
 
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user): void {
@@ -40,7 +39,7 @@ class ZippableManagerTest extends TestCase
     public function test未対応モデル(): void
     {
         $this->mock(BulkZip::class, function (MockInterface $mock): void {
-            $mock->expects()->getAttribute('bulk_zippable_type')->twice()->andReturn(stdClass::class);
+            $mock->expects()->getAttribute('bulkZippable')->once()->andReturn(stdClass::class);
         });
 
         $this->expectException(Exception::class);

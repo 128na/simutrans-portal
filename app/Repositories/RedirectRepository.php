@@ -11,14 +11,9 @@ use App\Models\Redirect;
  */
 class RedirectRepository extends BaseRepository
 {
-    /**
-     * @var Redirect
-     */
-    protected $model;
-
     public function __construct(Redirect $redirect)
     {
-        $this->model = $redirect;
+        parent::__construct($redirect);
     }
 
     public function findOrFailByPath(string $path): Redirect

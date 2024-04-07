@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
+/**
+ * @mixin IdeHelperScreenshot
+ */
 class Screenshot extends Model
 {
     use HasFactory;
@@ -40,16 +43,25 @@ class Screenshot extends Model
     | リレーション
     |--------------------------------------------------------------------------
      */
+    /**
+     * @return MorphMany<Attachment>
+     */
     public function attachments(): MorphMany
     {
         return $this->morphMany(Attachment::class, 'attachmentable');
     }
 
+    /**
+     * @return BelongsTo<User,Screenshot>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return MorphToMany<Article>
+     */
     public function articles(): MorphToMany
     {
         return $this->morphToMany(Article::class, 'articlable');
@@ -59,6 +71,9 @@ class Screenshot extends Model
     |--------------------------------------------------------------------------
     | スコープ
     |--------------------------------------------------------------------------
+     */
+    /**
+     * @param  Builder<Screenshot>  $builder
      */
     public function scopePublish(Builder $builder): void
     {
@@ -81,7 +96,7 @@ class Screenshot extends Model
             'screenshotId' => $this->id,
             'screenshotTitle' => $this->title,
             'screenshotStatus' => $this->status,
-            'screenshotUserName' => $this->user?->name ?? '',
+            'screenshotUserName' => $this->user->name,
         ];
     }
 }

@@ -2,12 +2,17 @@ includes:
     - ./vendor/larastan/larastan/extension.neon
 
 parameters:
+    ignoreErrors:
 
     paths:
         - app/
 
     # Level 9 is the highest level
-    level: 8
+    level: 9
 
     # covariant,contravariantが残念な感じになるのでやめる
-    checkGenericClassInNonGenericObjectType: false
+    #checkGenericClassInNonGenericObjectType: false
+
+    # ide-helper連携
+    scanFiles:
+        - _ide_helper_models.php

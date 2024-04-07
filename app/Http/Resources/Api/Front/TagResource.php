@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Api\Front;
 
+use App\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TagResource extends JsonResource
@@ -14,6 +15,8 @@ class TagResource extends JsonResource
      */
     public function toArray($request)
     {
+        assert($this->resource instanceof Tag);
+
         return [
             'id' => $this->resource->id,
             'name' => $this->resource->name,

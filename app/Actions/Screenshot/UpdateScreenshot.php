@@ -16,7 +16,7 @@ class UpdateScreenshot
     }
 
     /**
-     * @param  array<mixed>  $data
+     * @param  array{screenshot:array{id:int,title:string,description:string,links:string[],status:string,attachments:array<int,array{id:int,caption:string,order:int}>,articles:array<int,array{id:int,title:string}>}}  $data
      */
     public function update(Screenshot $screenshot, array $data): void
     {
@@ -28,7 +28,7 @@ class UpdateScreenshot
         ]);
         $this->screenshotRepository->syncAttachmentsWith($screenshot, $data['screenshot']['attachments']);
 
-        $articleIds = array_map(fn ($a): mixed => $a['id'], $data['screenshot']['articles']);
+        $articleIds = array_map(fn (array $a): int => $a['id'], $data['screenshot']['articles']);
         $this->screenshotRepository->syncArticles($screenshot, $articleIds);
 
         ScreenshotUpdated::dispatch($screenshot);

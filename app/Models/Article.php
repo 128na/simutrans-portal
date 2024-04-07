@@ -33,11 +33,19 @@ use Illuminate\Support\Facades\Storage;
 use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
 
+/**
+ * @mixin IdeHelperArticle
+ */
 class Article extends Model implements Feedable
 {
     use HasFactory;
     use Notifiable;
+
+    /**
+     * @use Slugable<Article>
+     */
     use Slugable;
+
     use SoftDeletes;
 
     protected $fillable = [
@@ -71,7 +79,7 @@ class Article extends Model implements Feedable
 
     public function routeNotificationForMail(mixed $notification): string
     {
-        if (! $this->user?->email) {
+        if (! $this->user->email) {
             throw new Exception('email not found');
         }
 
@@ -83,31 +91,49 @@ class Article extends Model implements Feedable
     | リレーション
     |--------------------------------------------------------------------------
      */
+    /**
+     * @return MorphMany<Attachment>
+     */
     public function attachments(): MorphMany
     {
         return $this->morphMany(Attachment::class, 'attachmentable');
     }
 
+    /**
+     * @return BelongsToMany<Category>
+     */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }
 
+    /**
+     * @return BelongsToMany<Tag>
+     */
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
     }
 
+    /**
+     * @return BelongsTo<User,Article>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return HasMany<ViewCount>
+     */
     public function viewCounts(): HasMany
     {
         return $this->hasMany(ViewCount::class);
     }
 
+    /**
+     * @return HasOne<ViewCount>
+     */
     public function todaysViewCount(): HasOne
     {
         return $this->hasOne(ViewCount::class)
@@ -115,31 +141,49 @@ class Article extends Model implements Feedable
             ->where('period', now()->format('Ymd'));
     }
 
+    /**
+     * @return HasMany<ViewCount>
+     */
     public function dailyViewCounts(): HasMany
     {
         return $this->hasMany(ViewCount::class)->where('type', ViewCount::TYPE_DAILY);
     }
 
+    /**
+     * @return HasMany<ViewCount>
+     */
     public function monthlyViewCounts(): HasMany
     {
         return $this->hasMany(ViewCount::class)->where('type', ViewCount::TYPE_MONTHLY);
     }
 
+    /**
+     * @return HasMany<ViewCount>
+     */
     public function yearlyViewCounts(): HasMany
     {
         return $this->hasMany(ViewCount::class)->where('type', ViewCount::TYPE_YEARLY);
     }
 
+    /**
+     * @return HasOne<ViewCount>
+     */
     public function totalViewCount(): HasOne
     {
         return $this->hasOne(ViewCount::class)->where('type', ViewCount::TYPE_TOTAL);
     }
 
+    /**
+     * @return HasMany<ConversionCount>
+     */
     public function conversionCounts(): HasMany
     {
         return $this->hasMany(ConversionCount::class);
     }
 
+    /**
+     * @return HasOne<ConversionCount>
+     */
     public function todaysConversionCount(): HasOne
     {
         return $this->hasOne(ConversionCount::class)
@@ -147,26 +191,41 @@ class Article extends Model implements Feedable
             ->where('period', now()->format('Ymd'));
     }
 
+    /**
+     * @return HasMany<ConversionCount>
+     */
     public function dailyConversionCounts(): HasMany
     {
         return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::TYPE_DAILY);
     }
 
+    /**
+     * @return HasMany<ConversionCount>
+     */
     public function monthlyConversionCounts(): HasMany
     {
         return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::TYPE_MONTHLY);
     }
 
+    /**
+     * @return HasMany<ConversionCount>
+     */
     public function yearlyConversionCounts(): HasMany
     {
         return $this->hasMany(ConversionCount::class)->where('type', ConversionCount::TYPE_YEARLY);
     }
 
+    /**
+     * @return HasOne<ConversionCount>
+     */
     public function totalConversionCount(): HasOne
     {
         return $this->hasOne(ConversionCount::class)->where('type', ConversionCount::TYPE_TOTAL);
     }
 
+    /**
+     * @return HasOne<Ranking>
+     */
     public function ranking(): HasOne
     {
         return $this->hasOne(Ranking::class);
@@ -174,6 +233,8 @@ class Article extends Model implements Feedable
 
     /**
      * この記事から関連付けた記事
+     *
+     * @return MorphToMany<Article>
      */
     public function articles(): MorphToMany
     {
@@ -182,6 +243,8 @@ class Article extends Model implements Feedable
 
     /**
      * この記事が関連付けられた記事
+     *
+     * @return MorphToMany<Article>
      */
     public function relatedArticles(): MorphToMany
     {
@@ -190,6 +253,8 @@ class Article extends Model implements Feedable
 
     /**
      * この記事が関連付けられたスクリーンショット
+     *
+     * @return MorphToMany<Screenshot>
      */
     public function relatedScreenshots(): MorphToMany
     {
@@ -201,26 +266,41 @@ class Article extends Model implements Feedable
     | スコープ
     |--------------------------------------------------------------------------
      */
+    /**
+     * @param  Builder<Article>  $builder
+     */
     public function scopeWithUserTrashed(Builder $builder): void
     {
         $builder->withoutGlobalScope('WithoutTrashedUser');
     }
 
+    /**
+     * @param  Builder<Article>  $builder
+     */
     public function scopeUser(Builder $builder, User $user): void
     {
         $builder->where('user_id', $user->id);
     }
 
+    /**
+     * @param  Builder<Article>  $builder
+     */
     public function scopeActive(Builder $builder): void
     {
         $builder->where('status', ArticleStatus::Publish);
     }
 
+    /**
+     * @param  Builder<Article>  $builder
+     */
     public function scopeAddon(Builder $builder): void
     {
         $builder->whereIn('post_type', [ArticlePostType::AddonPost, ArticlePostType::AddonIntroduction]);
     }
 
+    /**
+     * @param  Builder<Article>  $builder
+     */
     public function scopeLinkCheckTarget(Builder $builder): void
     {
         $builder->where('post_type', ArticlePostType::AddonIntroduction)
@@ -230,34 +310,52 @@ class Article extends Model implements Feedable
             );
     }
 
+    /**
+     * @param  Builder<Article>  $builder
+     */
     public function scopePage(Builder $builder): void
     {
         $builder->where('post_type', [ArticlePostType::Page, ArticlePostType::Markdown]);
     }
 
+    /**
+     * @param  Builder<Article>  $builder
+     */
     public function scopePak(Builder $builder, string $slug): void
     {
         $builder->whereHas('categories', fn ($query) => $query->pak()->slug($slug));
     }
 
+    /**
+     * @param  Builder<Article>  $builder
+     */
     public function scopeAnnounce(Builder $builder): void
     {
         $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
             ->whereHas('categories', fn ($query) => $query->page()->slug('announce'));
     }
 
+    /**
+     * @param  Builder<Article>  $builder
+     */
     public function scopeWithoutAnnounce(Builder $builder): void
     {
         $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
             ->whereDoesntHave('categories', fn ($query) => $query->page()->slug('announce'));
     }
 
+    /**
+     * @param  Builder<Article>  $builder
+     */
     public function scopeRankingOrder(Builder $builder): void
     {
         $builder->join('rankings', 'rankings.article_id', '=', 'articles.id')
             ->orderBy('rankings.rank', 'asc');
     }
 
+    /**
+     * @param  Builder<Article>  $builder
+     */
     public function scopeCategory(Builder $builder, Category $category): void
     {
         $builder->join('article_category', function (JoinClause $joinClause) use ($category): void {
@@ -266,6 +364,9 @@ class Article extends Model implements Feedable
         });
     }
 
+    /**
+     * @param  Builder<Article>  $builder
+     */
     public function scopePakAddonCategory(Builder $builder, Category $pak, Category $addon): void
     {
         $builder->join('article_category', function (JoinClause $joinClause) use ($pak): void {
@@ -278,6 +379,9 @@ class Article extends Model implements Feedable
         });
     }
 
+    /**
+     * @param  Builder<Article>  $builder
+     */
     public function scopeTag(Builder $builder, Tag $tag): void
     {
         $builder->join('article_tag', function (JoinClause $joinClause) use ($tag): void {
@@ -454,7 +558,7 @@ class Article extends Model implements Feedable
             'articleId' => $this->id,
             'articleTitle' => $this->title,
             'articleStatus' => $this->status,
-            'articleUserName' => $this->user?->name ?? '',
+            'articleUserName' => $this->user->name,
         ];
     }
 
@@ -470,7 +574,7 @@ class Article extends Model implements Feedable
             'title' => $this->title,
             'summary' => $this->contents->getDescription(),
             'updated' => $this->modified_at?->toMutable(), // CarbonImmutableは未対応
-            'link' => route('articles.show', ['userIdOrNickname' => $this->user?->nickname ?? $this->user_id, 'articleSlug' => $this->slug]),
+            'link' => route('articles.show', ['userIdOrNickname' => $this->user->nickname ?? $this->user_id, 'articleSlug' => $this->slug]),
             'authorName' => $this->user->name ?? '',
         ]);
     }

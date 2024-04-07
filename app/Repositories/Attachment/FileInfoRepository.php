@@ -12,13 +12,8 @@ use App\Repositories\BaseRepository;
  */
 class FileInfoRepository extends BaseRepository
 {
-    /**
-     * @var FileInfo
-     */
-    protected $model;
-
     public function __construct(FileInfo $model)
     {
-        $this->model = $model;
+        parent::__construct($model);
     }
 }

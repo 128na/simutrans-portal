@@ -16,6 +16,9 @@ class AddonPostContent extends Content
 
     public ?string $thanks;
 
+    /**
+     * @param  array{description?:string,file?:int,author?:string,license?:string,thanks?:string}  $contents
+     */
     public function __construct(array $contents)
     {
         $this->description = $contents['description'] ?? null;

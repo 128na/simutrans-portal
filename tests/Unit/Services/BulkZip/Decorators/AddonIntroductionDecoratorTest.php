@@ -9,9 +9,9 @@ use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Contents\AddonIntroductionContent;
+use App\Models\Tag;
 use App\Models\User;
 use App\Services\BulkZip\Decorators\AddonIntroductionDecorator;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
@@ -64,11 +64,8 @@ class AddonIntroductionDecoratorTest extends TestCase
                 $mock->allows()->getAttribute('name')->andReturn('test user name');
                 $mock->allows()->getRouteKey()->andReturn(1);
             }));
-            $mock->allows()->getAttribute('categories')
-                ->andReturn(collect([new Category(['type' => CategoryType::Addon, 'slug' => 'example'])]));
-            $mock->allows()->tags()->andReturn($this->mock(BelongsToMany::class, function (MockInterface $mock): void {
-                $mock->allows()->pluck('name')->andReturn(collect(['test tag']));
-            }));
+            $mock->allows()->getAttribute('categories')->andReturn(collect([new Category(['type' => CategoryType::Addon, 'slug' => 'example'])]));
+            $mock->allows()->getAttribute('tags')->andReturn(collect([new Tag(['name' => 'test tag'])]));
             $mock->allows()->getAttribute('contents')->andReturn(new AddonIntroductionContent([
                 'description' => 'test description',
                 'link' => 'http://example.com',

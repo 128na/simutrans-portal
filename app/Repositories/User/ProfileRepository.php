@@ -12,13 +12,8 @@ use App\Repositories\BaseRepository;
  */
 class ProfileRepository extends BaseRepository
 {
-    /**
-     * @var Profile
-     */
-    protected $model;
-
     public function __construct(Profile $profile)
     {
-        $this->model = $profile;
+        parent::__construct($profile);
     }
 }

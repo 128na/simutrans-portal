@@ -14,14 +14,9 @@ use Illuminate\Support\LazyCollection;
  */
 class BulkZipRepository extends BaseRepository
 {
-    /**
-     * @var BulkZip
-     */
-    protected $model;
-
     public function __construct(BulkZip $bulkZip)
     {
-        $this->model = $bulkZip;
+        parent::__construct($bulkZip);
     }
 
     public function findByBulkZippable(BulkZippableInterface $bulkZippable): ?BulkZip
@@ -39,6 +34,9 @@ class BulkZipRepository extends BaseRepository
         return $bulkZippable->bulkZippable()->create($data);
     }
 
+    /**
+     * @return LazyCollection<int,BulkZip>
+     */
     public function cursorExpired(CarbonImmutable $expiredAt): LazyCollection
     {
         return $this->model

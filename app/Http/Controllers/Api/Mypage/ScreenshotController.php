@@ -24,7 +24,11 @@ class ScreenshotController extends Controller
 
     public function store(StoreRequest $storeRequest, StoreScreenshot $storeScreenshot): AnonymousResourceCollection
     {
-        $storeScreenshot->store($this->loggedinUser(), $storeRequest->validated());
+        /**
+         * @var array{screenshot:array{title:string,description:string,links:string[],status:string,attachments:array<int,array{id:int,caption:string,order:int}>,articles:array<int,array{id:int,title:string}>}}
+         */
+        $validated = $storeRequest->validated();
+        $storeScreenshot->store($this->loggedinUser(), $validated);
         JobUpdateRelated::dispatch();
 
         return $this->index(app(ListScreenshot::class));
@@ -33,7 +37,11 @@ class ScreenshotController extends Controller
     public function update(Screenshot $screenshot, UpdateRequest $updateRequest, UpdateScreenshot $updateScreenshot): AnonymousResourceCollection
     {
         $this->authorize('update', $screenshot);
-        $updateScreenshot->update($screenshot, $updateRequest->validated());
+        /**
+         * @var array{screenshot:array{id:int,title:string,description:string,links:string[],status:string,attachments:array<int,array{id:int,caption:string,order:int}>,articles:array<int,array{id:int,title:string}>}}
+         */
+        $validated = $updateRequest->validated();
+        $updateScreenshot->update($screenshot, $validated);
         JobUpdateRelated::dispatch();
 
         return $this->index(app(ListScreenshot::class));

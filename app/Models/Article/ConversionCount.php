@@ -8,6 +8,9 @@ use App\Models\Article;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @mixin IdeHelperConversionCount
+ */
 class ConversionCount extends Model
 {
     public const TYPE_DAILY = 1;
@@ -32,6 +35,9 @@ class ConversionCount extends Model
     | リレーション
     |--------------------------------------------------------------------------
     */
+    /**
+     * @return BelongsTo<Article,ConversionCount>
+     */
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class);

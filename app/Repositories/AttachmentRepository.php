@@ -16,14 +16,9 @@ use Illuminate\Support\LazyCollection;
  */
 class AttachmentRepository extends BaseRepository
 {
-    /**
-     * @var Attachment
-     */
-    protected $model;
-
     public function __construct(Attachment $attachment)
     {
-        $this->model = $attachment;
+        parent::__construct($attachment);
     }
 
     public function syncProfile(User $user, int $id): void
@@ -40,6 +35,9 @@ class AttachmentRepository extends BaseRepository
         $user->profile->attachments()->save($attachment);
     }
 
+    /**
+     * @return Collection<int,Attachment>
+     */
     public function findAllByUser(User $user): Collection
     {
         return $user->myAttachments()
@@ -49,7 +47,7 @@ class AttachmentRepository extends BaseRepository
     }
 
     /**
-     * @return LazyCollection<int, Attachment>
+     * @return LazyCollection<int,Attachment>
      */
     public function cursorUnconvertedImages(): LazyCollection
     {
@@ -73,7 +71,7 @@ class AttachmentRepository extends BaseRepository
     }
 
     /**
-     * @return LazyCollection<Attachment>
+     * @return LazyCollection<int,Attachment>
      */
     public function cursorZipFileAttachment(): LazyCollection
     {
@@ -84,7 +82,7 @@ class AttachmentRepository extends BaseRepository
     }
 
     /**
-     * @return LazyCollection<Attachment>
+     * @return LazyCollection<int,Attachment>
      */
     public function cursorPakFileAttachment(): LazyCollection
     {

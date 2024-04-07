@@ -85,7 +85,7 @@ class ArticleEditorService extends Service
     }
 
     /**
-     * @return SupportCollection<int, mixed>
+     * @return SupportCollection<int,array{label:string,value:string}>
      */
     public function getStatuses(): SupportCollection
     {
@@ -93,15 +93,15 @@ class ArticleEditorService extends Service
         $status = ArticleStatus::cases();
 
         return collect($status)->map(
-            fn ($item): array => [
-                'label' => __('statuses.'.$item->value),
-                'value' => $item->value,
+            fn (ArticleStatus $articleStatus): array => [
+                'label' => (string) __('statuses.'.$articleStatus->value),
+                'value' => $articleStatus->value,
             ]
         )->values();
     }
 
     /**
-     * @return SupportCollection<int, mixed>
+     * @return SupportCollection<int,array{label:string,value:string}>
      */
     public function getPostTypes(): SupportCollection
     {
@@ -109,9 +109,9 @@ class ArticleEditorService extends Service
         $postTypes = ArticlePostType::cases();
 
         return collect($postTypes)->map(
-            fn ($item): array => [
-                'label' => __('post_types.'.$item->value),
-                'value' => $item->value,
+            fn (ArticlePostType $articlePostType): array => [
+                'label' => (string) __('post_types.'.$articlePostType->value),
+                'value' => $articlePostType->value,
             ]
         )->values();
     }
@@ -143,7 +143,7 @@ class ArticleEditorService extends Service
         }
 
         if ($articleStatus === ArticleStatus::Reservation) {
-            return $request->input('article.published_at');
+            return (string) $request->string('article.published_at');
         }
 
         return null;
@@ -191,24 +191,44 @@ class ArticleEditorService extends Service
 
     private function syncRelated(Article $article, BaseRequest $baseRequest): void
     {
-        // 添付
+        /**
+         * @var int[]
+         */
+        $ids = $baseRequest->input('article.contents.sections.*.id', []);
+
+        /**
+         * 添付
+         *
+         * @var int[]
+         */
         $attachmentIds = collect([
-            $baseRequest->input('article.contents.thumbnail'),
-            $baseRequest->input('article.contents.file'),
+            $baseRequest->integer('article.contents.thumbnail'),
+            $baseRequest->integer('article.contents.file'),
         ])
-            ->merge($baseRequest->input('article.contents.sections.*.id', []))
+            ->merge($ids)
             ->filter()
             ->toArray();
         $this->articleRepository->syncAttachments($article, $attachmentIds);
+        /**
+         * @var int[]
+         */
         $articleIds = $baseRequest->input('article.articles.*.id', []);
         logger('[ArticleEditorService] articleIds', [$articleIds]);
         $this->articleRepository->syncArticles($article, $articleIds);
 
-        // カテゴリ
+        /**
+         * カテゴリ
+         *
+         * @var int[]
+         */
         $categoryIds = $baseRequest->input('article.categories.*.id', []);
         $this->articleRepository->syncCategories($article, $categoryIds);
 
-        // タグ
+        /**
+         * タグ
+         *
+         * @var int[]
+         */
         $tagIds = $baseRequest->input('article.tags.*.id', []);
         $this->articleRepository->syncTags($article, $tagIds);
     }

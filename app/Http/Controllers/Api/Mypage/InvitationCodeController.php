@@ -8,12 +8,13 @@ use App\Enums\UserRole;
 use App\Events\User\InviteCodeCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\InviteRequest;
-use App\Http\Resources\Api\Mypage\Invites;
+use App\Http\Resources\Api\Mypage\Invite;
 use App\Http\Resources\Api\Mypage\User as UserResouce;
 use App\Models\User;
 use App\Notifications\UserInvited;
 use App\Repositories\UserRepository;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -29,11 +30,11 @@ class InvitationCodeController extends Controller
     /**
      * 招待したユーザー一覧.
      */
-    public function index(): Invites
+    public function index(): AnonymousResourceCollection
     {
         $invites = $this->userRepository->findInvites($this->loggedinUser());
 
-        return new Invites($invites);
+        return Invite::collection($invites);
     }
 
     /**
@@ -66,7 +67,7 @@ class InvitationCodeController extends Controller
             'name' => $inviteRequest->name,
             'email' => $inviteRequest->email,
             'role' => UserRole::User,
-            'password' => Hash::make($inviteRequest->password),
+            'password' => Hash::make((string) $inviteRequest->string('password')),
             'invited_by' => $user->id,
         ]);
         // なぜかオブザーバーが発火しない

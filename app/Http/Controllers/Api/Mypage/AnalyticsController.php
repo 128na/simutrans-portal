@@ -6,8 +6,9 @@ namespace App\Http\Controllers\Api\Mypage;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ArticleAnalytics\SearchRequest;
-use App\Http\Resources\Api\Mypage\ArticleAnalytics as ArticleAnalyticsResource;
+use App\Http\Resources\Api\Mypage\ArticleAnalytic;
 use App\Services\ArticleAnalyticsService;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AnalyticsController extends Controller
 {
@@ -15,9 +16,9 @@ class AnalyticsController extends Controller
     {
     }
 
-    public function index(SearchRequest $searchRequest): ArticleAnalyticsResource
+    public function index(SearchRequest $searchRequest): AnonymousResourceCollection
     {
-        return new ArticleAnalyticsResource(
+        return ArticleAnalytic::collection(
             $this->articleAnalyticsService->findArticles($this->loggedinUser(), $searchRequest)
         );
     }

@@ -80,9 +80,12 @@ class PKCEService
             ],
         ]);
 
+        /**
+         * @var array{token_type:string,scope:string,access_token:string,refresh_token:string,expires_in:int}
+         */
         $data = json_decode($response->getBody()->getContents(), true);
 
-        logger('[PKCEService] generateToken', $data);
+        logger('[PKCEService] generateToken', (array) $data);
 
         return $this->oauthTokenRepository->updateOrCreate(
             ['application' => 'twitter'],
@@ -106,6 +109,9 @@ class PKCEService
             ],
         ]);
 
+        /**
+         * @var array{token_type:string,scope:string,access_token:string,refresh_token:string,expires_in:int}
+         */
         $data = json_decode($response->getBody()->getContents(), true);
 
         $oauthToken = $this->oauthTokenRepository->updateOrCreate(

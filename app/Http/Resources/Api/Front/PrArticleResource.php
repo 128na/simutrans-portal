@@ -22,8 +22,8 @@ class PrArticleResource extends JsonResource
             'title' => $this->resource->title,
             'slug' => urldecode((string) $this->resource->slug),
             'user' => [
-                'id' => $this->resource->user?->id,
-                'nickname' => $this->resource->user?->nickname,
+                'id' => $this->resource->user->id,
+                'nickname' => $this->resource->user->nickname,
             ],
         ];
     }

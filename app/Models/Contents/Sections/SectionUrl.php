@@ -8,6 +8,9 @@ class SectionUrl extends Section
 {
     public ?string $url;
 
+    /**
+     * @param  array{type:string,caption?:string,text?:string,url?:string,id?:int}  $section
+     */
     public function __construct(array $section)
     {
         parent::__construct($section);

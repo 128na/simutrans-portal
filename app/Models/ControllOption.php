@@ -7,6 +7,9 @@ namespace App\Models;
 use App\Enums\ControllOptionKey;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @mixin IdeHelperControllOption
+ */
 class ControllOption extends Model
 {
     public $incrementing = false;

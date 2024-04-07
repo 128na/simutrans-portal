@@ -7,7 +7,6 @@ namespace App\Services\Notification;
 use App\Models\Article;
 use App\Services\Service;
 use Carbon\Carbon;
-use Exception;
 
 class MessageGenerator extends Service
 {
@@ -37,22 +36,18 @@ class MessageGenerator extends Service
     }
 
     /**
-     * @return array<string>
+     * @return array<string,string>
      */
     private function getParams(Article $article): array
     {
-        if ($article->user) {
-            $url = route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]);
-            $now = $this->carbon->format('Y/m/d H:i');
-            $name = $article->user->name;
-            $tags = collect(['simutrans'])
-                ->merge($article->categoryPaks->pluck('slug'))
-                ->map(fn ($slug): string => __('hash_tag.'.$slug))
-                ->implode(' ');
+        $url = route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]);
+        $now = $this->carbon->format('Y/m/d H:i');
+        $name = $article->user->name;
+        $tags = collect(['simutrans'])
+            ->merge($article->categoryPaks->pluck('slug'))
+            ->map(fn ($slug): string => __('hash_tag.'.$slug))
+            ->implode(' ');
 
-            return ['title' => $article->title, 'url' => $url, 'name' => $name, 'at' => $now, 'tags' => $tags];
-        }
-
-        throw new Exception('missing user');
+        return ['title' => $article->title, 'url' => $url, 'name' => $name, 'at' => $now, 'tags' => $tags];
     }
 }

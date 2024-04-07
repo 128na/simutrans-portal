@@ -14,18 +14,15 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class CategoryRepository extends BaseRepository
 {
-    /**
-     * @var Category
-     */
-    protected $model;
-
     public function __construct(Category $category)
     {
-        $this->model = $category;
+        parent::__construct($category);
     }
 
     /**
      * ユーザーが利用できるカテゴリ一覧を返す.
+     *
+     * @return Collection<int,Category>
      */
     public function findAllByUser(User $user): Collection
     {

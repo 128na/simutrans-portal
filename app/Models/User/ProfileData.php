@@ -13,7 +13,7 @@ class ProfileData
     public ?string $website;
 
     /**
-     * @param  array<mixed>  $data
+     * @param  array{avatar?:int,description?:string,website?:string}  $data
      */
     public function __construct(array $data)
     {

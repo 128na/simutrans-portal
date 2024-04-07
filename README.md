@@ -22,14 +22,14 @@ Simutrans のアドオン投稿サイト「Simutrans Addon Portal」のアプリ
 
 ### Backend
 
-```
+```bash
 git clone https://github.com/128na/simutrans-portal.git
 
 cd simutrans-portal
 cp .env.example .env
 composer install
 php artisan key:generate
-// .envにDB接続情報など必要項目を設定
+# .envにDB接続情報など必要項目を設定
 php artisan migrate --seed
 ```
 
@@ -38,26 +38,27 @@ php artisan migrate --seed
 ### Frontend
 
 ```bash
+cd frontend
 npm install
 npm run build
 ```
 
-### Test
+## Test, Formatter, etc.
 
+### Backend
+
+```bash
+php artisan test --testsuite=Unit
+php artisan test --testsuite=Feature
+
+composer run all
 ```
-php artisan dusk:chrome-driver
-composer run test
 
+### Frontend
+
+```bash
 cd frontend
 npm run test:e2e
-```
 
-### Formatter, Static analysis
-
-```
-composer run cs
-composer run stan
-
-cd frontend
-npm run es
+npm run lint
 ```

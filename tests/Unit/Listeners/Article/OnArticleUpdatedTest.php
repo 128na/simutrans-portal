@@ -37,6 +37,7 @@ class OnArticleUpdatedTest extends TestCase
             } else {
                 $mock->expects()->notify(SendArticlePublished::class)->never();
             }
+
             if ($expectUpdateNotify) {
                 $mock->expects()->notify(SendArticleUpdated::class)->once();
             } else {

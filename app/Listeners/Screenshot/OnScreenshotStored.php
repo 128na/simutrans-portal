@@ -6,6 +6,7 @@ namespace App\Listeners\Screenshot;
 
 use App\Events\Screenshot\ScreenshotStored;
 use App\Listeners\BaseListener;
+use App\Notifications\SendScreenshotPublished;
 use Illuminate\Log\Logger;
 
 class OnScreenshotStored extends BaseListener
@@ -16,6 +17,8 @@ class OnScreenshotStored extends BaseListener
 
     public function handle(ScreenshotStored $screenshotStored): void
     {
-        $this->logger->channel('audit')->info('スクショ作成', $screenshotStored->screenshot->getInfoLogging());
+        $this->logger->channel('audit')->info('スクリーンショット作成', $screenshotStored->screenshot->getInfoLogging());
+
+        $screenshotStored->screenshot->notify(new SendScreenshotPublished());
     }
 }

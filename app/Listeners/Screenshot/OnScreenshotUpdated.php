@@ -16,6 +16,6 @@ class OnScreenshotUpdated extends BaseListener
 
     public function handle(ScreenshotUpdated $screenshotUpdated): void
     {
-        $this->logger->channel('audit')->info('スクショ作成', $screenshotUpdated->screenshot->getInfoLogging());
+        $this->logger->channel('audit')->info('スクリーンショット更新', $screenshotUpdated->screenshot->getInfoLogging());
     }
 }

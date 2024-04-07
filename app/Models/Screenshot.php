@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * @mixin IdeHelperScreenshot
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 class Screenshot extends Model
 {
     use HasFactory;
+    use Notifiable;
 
     protected $fillable = [
         'user_id',

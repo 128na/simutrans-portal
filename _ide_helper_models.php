@@ -364,6 +364,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read bool $is_publish
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
  * @property-read \App\Models\User $user
  * @method static \Database\Factories\ScreenshotFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Screenshot newModelQuery()

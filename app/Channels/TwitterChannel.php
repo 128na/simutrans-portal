@@ -4,40 +4,23 @@ declare(strict_types=1);
 
 namespace App\Channels;
 
+use App\Actions\SendSNS\Article\ToTwitter;
 use App\Models\Article;
-use App\Notifications\SendArticleNotification;
-use App\Notifications\SendArticlePublished;
-use App\Notifications\SendArticleUpdated;
-use App\Services\Notification\MessageGenerator;
-use App\Services\Twitter\TwitterV2Api;
+use App\Notifications\SendSNSNotification;
 use Exception;
-use Throwable;
+use Illuminate\Database\Eloquent\Model;
 
 class TwitterChannel extends BaseChannel
 {
-    public function __construct(
-        private readonly TwitterV2Api $twitterV2Api,
-        private readonly MessageGenerator $messageGenerator
-    ) {
+    public function __construct()
+    {
     }
 
-    public function send(Article $article, SendArticleNotification $sendArticleNotification): void
+    public function send(Model $model, SendSNSNotification $sendSNSNotification): void
     {
-        try {
-            $data = ['text' => $this->buildMessage($article, $sendArticleNotification)];
-            $result = $this->twitterV2Api->post('tweets', $data);
-            logger('[TwitterChannel]', [$result]);
-        } catch (Throwable $throwable) {
-            report($throwable);
-        }
-    }
-
-    private function buildMessage(Article $article, SendArticleNotification $sendArticleNotification): string
-    {
-        return match (true) {
-            $sendArticleNotification instanceof SendArticlePublished => $this->messageGenerator->buildPublishedMessage($article),
-            $sendArticleNotification instanceof SendArticleUpdated => $this->messageGenerator->buildUpdatedMessage($article),
-            default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendArticleNotification::class)),
+        match (true) {
+            $model instanceof Article => app(ToTwitter::class)($model, $sendSNSNotification),
+            default => throw new Exception(sprintf('unsupport model "%s" provided', $model::class)),
         };
     }
 

@@ -1,0 +1,9 @@
+{
+  "preset": "laravel",
+  "rules": {
+      "declare_strict_types": true,
+      "protected_to_private":true
+  },
+  "exclude": [
+  ]
+}

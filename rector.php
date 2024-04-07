@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Rector\CodeQuality\Rector\Isset_\IssetOnPropertyObjectToPropertyExistsRector;
 use Rector\CodingStyle\Rector\ArrowFunction\StaticArrowFunctionRector;
 use Rector\CodingStyle\Rector\Closure\StaticClosureRector;

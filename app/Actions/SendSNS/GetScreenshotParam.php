@@ -17,7 +17,7 @@ class GetScreenshotParam
      */
     public function __invoke(Screenshot $screenshot): array
     {
-        $url = route('screenshots.show', ['id' => $screenshot->id]);
+        $url = route('screenshots.show', $screenshot);
         $now = $this->carbon->format('Y/m/d H:i');
         $name = $screenshot->user->name;
         $tags = collect(['simutrans'])

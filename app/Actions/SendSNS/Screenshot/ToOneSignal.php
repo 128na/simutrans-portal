@@ -27,7 +27,7 @@ class ToOneSignal
                     $sendSNSNotification instanceof SendArticleUpdated => $this->update($screenshot),
                     default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendSNSNotification::class)),
                 },
-                route('screenshots.show', ['id' => $screenshot->id])
+                route('screenshots.show', $screenshot)
             );
         } catch (Throwable $throwable) {
             report($throwable);

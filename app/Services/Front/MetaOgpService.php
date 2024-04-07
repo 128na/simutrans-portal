@@ -138,7 +138,7 @@ class MetaOgpService extends Service
             'title' => sprintf('『%s』by %s', $screenshot->title, $screenshot->user->name).' - '.config('app.name'),
             'description' => $this->trimDescription($screenshot->description),
             'image' => $screenshot->attachments()->orderBy('order', 'asc')->first()?->url ?? '',
-            'canonical' => route('screenshots.show', ['id' => $screenshot->id]),
+            'canonical' => route('screenshots.show', $screenshot),
             'card_type' => 'summary_large_image',
         ];
     }

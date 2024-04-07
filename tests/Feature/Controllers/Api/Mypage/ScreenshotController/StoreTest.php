@@ -25,18 +25,20 @@ class StoreTest extends TestCase
 
         $attachment = $this->createAttachment($this->user);
 
-        $response = $this->postJson($url, ['screenshot' => [
-            'title' => 'dummy',
-            'description' => 'dummy',
-            'status' => ScreenshotStatus::Publish->value,
-            'attachments' => [[
-                'id' => $attachment->id,
-                'order' => 1,
-                'caption' => '',
-            ]],
-            'links' => [],
-            'articles' => [],
-        ]]);
+        $response = $this->postJson($url, [
+            'should_notify' => false,
+            'screenshot' => [
+                'title' => 'dummy',
+                'description' => 'dummy',
+                'status' => ScreenshotStatus::Publish->value,
+                'attachments' => [[
+                    'id' => $attachment->id,
+                    'order' => 1,
+                    'caption' => '',
+                ]],
+                'links' => [],
+                'articles' => [],
+            ]]);
         $response->assertOk();
     }
 

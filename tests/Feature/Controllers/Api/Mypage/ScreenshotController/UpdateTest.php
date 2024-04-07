@@ -25,18 +25,20 @@ class UpdateTest extends TestCase
 
         $attachment = $this->createAttachment($this->screenshot->user);
 
-        $response = $this->putJson($url, ['screenshot' => [
-            'title' => 'dummy',
-            'description' => 'dummy',
-            'status' => ScreenshotStatus::Publish->value,
-            'attachments' => [[
-                'id' => $attachment->id,
-                'order' => 1,
-                'caption' => '',
-            ]],
-            'links' => [],
-            'articles' => [],
-        ]]);
+        $response = $this->putJson($url, [
+            'should_notify' => false,
+            'screenshot' => [
+                'title' => 'dummy',
+                'description' => 'dummy',
+                'status' => ScreenshotStatus::Publish->value,
+                'attachments' => [[
+                    'id' => $attachment->id,
+                    'order' => 1,
+                    'caption' => '',
+                ]],
+                'links' => [],
+                'articles' => [],
+            ]]);
         $response->assertOk();
     }
 

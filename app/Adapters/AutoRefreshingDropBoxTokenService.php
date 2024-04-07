@@ -19,7 +19,7 @@ class AutoRefreshingDropBoxTokenService
         ]);
         if ($res->getStatusCode() == 200) {
             /** @var array{access_token:string} */
-            $data = json_decode($res->getBody(), true);
+            $data = json_decode((string) $res->getBody(), true);
 
             return $data['access_token'];
         }

@@ -19,17 +19,14 @@ final class GenerateSitemap extends Command
      */
     protected $description = 'Generate the sitemap.';
 
-    /**
-     * @return mixed
-     */
-    public function handle(Create $create)
+    public function handle(Create $create): int
     {
         try {
             $create();
-        } catch (\Throwable $th) {
-            report($th);
-            $this->error($th->getMessage());
-            $this->error($th->getTraceAsString());
+        } catch (\Throwable $throwable) {
+            report($throwable);
+            $this->error($throwable->getMessage());
+            $this->error($throwable->getTraceAsString());
 
             return self::FAILURE;
         }

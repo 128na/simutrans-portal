@@ -13,9 +13,8 @@ final class CreateArticleSitemaps
     public function __invoke(SitemapHandler $sitemapHandler): void
     {
         Article::active()->with('user', 'attachments')
-            ->chunkById(100, function (Collection $articles, int $index) use ($sitemapHandler) {
+            ->chunkById(100, function (Collection $articles, int $index) use ($sitemapHandler): void {
                 $filename = sprintf('articles_%03d.xml', $index);
-                /** @var Article */
                 foreach ($articles as $article) {
                     $url = route('articles.show', [
                         'userIdOrNickname' => $article->user->nickname ?? $article->user_id,

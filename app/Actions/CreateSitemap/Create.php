@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Actions\CreateSitemap;
 
-final class Create
+final readonly class Create
 {
     public function __construct(
-        private readonly SitemapHandler $sitemapHandler,
-        private readonly CreateArticleSitemaps $createArticleSitemaps,
-        private readonly CreateScreenshotSitemaps $createScreenshotSitemaps,
-        private readonly CreateListSitemaps $createListSitemaps,
+        private SitemapHandler $sitemapHandler,
+        private CreateArticleSitemaps $createArticleSitemaps,
+        private CreateScreenshotSitemaps $createScreenshotSitemaps,
+        private CreateListSitemaps $createListSitemaps,
     ) {
 
     }

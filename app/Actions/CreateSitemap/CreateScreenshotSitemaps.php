@@ -13,9 +13,8 @@ final class CreateScreenshotSitemaps
     public function __invoke(SitemapHandler $sitemapHandler): void
     {
         Screenshot::publish()->with('attachments')
-            ->chunkById(100, function (Collection $screenshots, int $index) use ($sitemapHandler) {
+            ->chunkById(100, function (Collection $screenshots, int $index) use ($sitemapHandler): void {
                 $filename = sprintf('screenshot_%03d.xml', $index);
-                /** @var Screenshot */
                 foreach ($screenshots as $screenshot) {
                     $url = route('screenshots.show', $screenshot);
 
@@ -28,6 +27,7 @@ final class CreateScreenshotSitemaps
                         $urlTag->addImage($attachment->url,
                             sprintf('%s', $attachment->caption ?: $screenshot->title));
                     }
+
                     $sitemapHandler->add($filename, $urlTag);
                 }
             });

@@ -15,17 +15,8 @@ final class ActionDIServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(SitemapHandler::class, function () {
-            return new SitemapHandler(
-                Storage::disk('sitemap'),
-            );
-        });
-    }
-
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
+        $this->app->singleton(SitemapHandler::class, fn (): \App\Actions\CreateSitemap\SitemapHandler => new SitemapHandler(
+            Storage::disk('sitemap'),
+        ));
     }
 }

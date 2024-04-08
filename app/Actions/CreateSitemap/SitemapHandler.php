@@ -19,17 +19,17 @@ final class SitemapHandler
     private array $sitemaps = [];
 
     public function __construct(
-        private readonly FilesystemAdapter $filesystem,
+        private readonly FilesystemAdapter $filesystemAdapter,
     ) {
     }
 
     public function destroyAll(): void
     {
-        $files = $this->filesystem->allFiles('/');
+        $files = $this->filesystemAdapter->allFiles('/');
 
         foreach ($files as $file) {
-            if (str_ends_with($file, '.xml')) {
-                $this->filesystem->delete($file);
+            if (str_ends_with((string) $file, '.xml')) {
+                $this->filesystemAdapter->delete($file);
             }
         }
     }
@@ -39,13 +39,14 @@ final class SitemapHandler
         if (! array_key_exists($filename, $this->sitemaps)) {
             $this->sitemaps[$filename] = Sitemap::create();
         }
+
         $this->sitemaps[$filename]->add($url);
     }
 
     public function write(): void
     {
         foreach ($this->sitemaps as $filename => $sitemap) {
-            $sitemap->writeToFile($this->filesystem->path($filename));
+            $sitemap->writeToFile($this->filesystemAdapter->path($filename));
         }
 
         $this->writeIndex();
@@ -53,11 +54,11 @@ final class SitemapHandler
 
     private function writeIndex(): void
     {
-        $index = SitemapIndex::create();
-        array_map(function (string $filename) use ($index) {
-            $index->add(TagsSitemap::create($this->filesystem->url($filename))
+        $sitemapIndex = SitemapIndex::create();
+        array_map(function (string $filename) use ($sitemapIndex): void {
+            $sitemapIndex->add(TagsSitemap::create($this->filesystemAdapter->url($filename))
                 ->setLastModificationDate(CarbonImmutable::now()));
         }, array_keys($this->sitemaps));
-        $index->writeToFile($this->filesystem->path('index.xml'));
+        $sitemapIndex->writeToFile($this->filesystemAdapter->path('index.xml'));
     }
 }

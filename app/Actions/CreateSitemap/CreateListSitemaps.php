@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
 use Generator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 use Spatie\Sitemap\Tags\Url;
 
@@ -26,7 +27,7 @@ final class CreateListSitemaps
     }
 
     /**
-     * @return Generator<string,LazyCollection<int,string>>
+     * @return Generator<string,LazyCollection<int,string>|Collection<int,string>>
      */
     private function getUrlSet(): Generator
     {
@@ -37,7 +38,7 @@ final class CreateListSitemaps
         yield 'tag.xml' => Tag::has('articles')->cursor()
             ->map(fn (Tag $tag) => route('tag', $tag));
         yield 'pak.xml' => $this->getCategoryPakAddon();
-        yield 'misc.xml' => [
+        yield 'misc.xml' => collect([
             '/',
             '/ranking',
             '/tags',
@@ -45,10 +46,13 @@ final class CreateListSitemaps
             '/invite-simutrans-interact-meeting',
             '/mypage',
             route('screenshots.index'),
-        ];
+        ]);
     }
 
-    private function getCategoryPakAddon()
+    /**
+     * @return LazyCollection<int,string>
+     */
+    private function getCategoryPakAddon(): LazyCollection
     {
         return LazyCollection::make(function () {
             $paks = Category::pak()->get();

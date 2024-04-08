@@ -47,6 +47,12 @@ return [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
+        'sitemap' => [
+            'driver' => 'local',
+            'root' => public_path('sitemap'),
+            'visibility' => 'public',
+            'url' => env('APP_URL').'/sitemap',
+        ],
 
         'public' => [
             'driver' => 'local',

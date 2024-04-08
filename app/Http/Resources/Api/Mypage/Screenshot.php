@@ -40,6 +40,7 @@ final class Screenshot extends JsonResource
                     'title' => $article->title,
                 ])
                 ->values(),
+            'published_at' => $this->resource->published_at?->toDateTimeString(),
         ];
     }
 }

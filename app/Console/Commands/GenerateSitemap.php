@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\CreateSitemap\Refresh;
+use App\Actions\CreateSitemap\Create;
 use Illuminate\Console\Command;
 
 final class GenerateSitemap extends Command
@@ -22,14 +22,14 @@ final class GenerateSitemap extends Command
     /**
      * @return mixed
      */
-    public function handle(Refresh $refresh)
+    public function handle(Create $create)
     {
         try {
-            $siteurl = config('app.url');
-            $refresh($siteurl);
+            $create();
         } catch (\Throwable $th) {
             report($th);
             $this->error($th->getMessage());
+            $this->error($th->getTraceAsString());
 
             return self::FAILURE;
         }

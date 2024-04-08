@@ -46,6 +46,10 @@ final class Kernel extends ConsoleKernel
             ->runInBackground()
             ->withoutOverlapping()
             ->onOneServer();
+        $schedule->command('sitemap:generate')->dailyAt('5:00')
+            ->runInBackground()
+            ->withoutOverlapping()
+            ->onOneServer();
     }
 
     /**

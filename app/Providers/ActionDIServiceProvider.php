@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Actions\CreateSitemap\Create;
-use App\Actions\CreateSitemap\Destroy;
+use App\Actions\CreateSitemap\SitemapHandler;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,11 +15,10 @@ final class ActionDIServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(Create::class, function () {
-            return new Create(Storage::disk('sitemap'));
-        });
-        $this->app->singleton(Destroy::class, function () {
-            return new Destroy(Storage::disk('sitemap'));
+        $this->app->singleton(SitemapHandler::class, function () {
+            return new SitemapHandler(
+                Storage::disk('sitemap'),
+            );
         });
     }
 

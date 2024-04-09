@@ -19,6 +19,7 @@ final class Kernel extends ConsoleKernel
             ->runInBackground()
             ->withoutOverlapping()
             ->onOneServer();
+
         $schedule->command('article:publish-reservation')->everyMinute()
             ->runInBackground()
             ->withoutOverlapping()

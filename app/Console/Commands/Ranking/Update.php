@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands\Ranking;
 
+use App\Jobs\Article\JobUpdateRelated;
 use App\Repositories\Article\RankingRepository;
 use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
@@ -29,6 +30,7 @@ final class Update extends Command
             $ranking = $this->articleRepository->fetchAggregatedRanking($this->now);
 
             $this->rankingRepository->recreate($ranking);
+            JobUpdateRelated::dispatchSync();
         } catch (\Throwable $throwable) {
             report($throwable);
 

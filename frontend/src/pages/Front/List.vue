@@ -1,6 +1,7 @@
 <template>
   <q-page>
     <q-list>
+      <PrArticle :pr />
       <q-item v-show="title">
         <q-item-section>
           <text-title>{{ title }}</text-title>
@@ -33,6 +34,7 @@ import { useMeta } from 'src/composables/meta';
 import FrontArticleList from 'src/components/Front/FrontArticleList.vue';
 import DescriptionHandler from 'src/components/Front/Description/DescriptionHandler.vue';
 import { useApiHandler } from 'src/composables/apiHandler';
+import PrArticle from 'src/components/Front/PrArticle.vue';
 import { useOrderModeStore } from 'src/store/listMode';
 
 const resolveApi = (api, order, route) => {
@@ -64,11 +66,13 @@ export default defineComponent({
     FrontArticleList,
     TextTitle,
     DescriptionHandler,
+    PrArticle,
   },
 
   setup() {
     const articles = ref([]);
     const description = ref(null);
+    const pr = ref(null);
     const pagination = ref(null);
 
     const title = ref(null);
@@ -90,6 +94,7 @@ export default defineComponent({
             title.value = res.data.description.title;
             setTitle(title.value);
             description.value = res.data?.description || null;
+            pr.value = res.data?.pr || null;
             articleCache.addCaches(res.data.data);
           },
           failedMessage: '記事取得に失敗しました',
@@ -111,6 +116,7 @@ export default defineComponent({
       pagination,
       title,
       handlePagination,
+      pr,
     };
   },
 });

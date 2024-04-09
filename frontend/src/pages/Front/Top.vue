@@ -1,13 +1,8 @@
 <template>
   <q-page>
-    <q-list v-if="pr">
-      <q-item :to="{ name: 'show', params: { idOrNickname: pr.user.nickname || pr.user.id, slug: pr.slug } }">
-        <q-item-section>
-          [PR] {{ pr.title }}
-        </q-item-section>
-      </q-item>
+    <q-list>
+      <PrArticle :pr />
     </q-list>
-    <q-separator />
     <template v-for="(c, i) in contents" :key="i">
       <q-list>
         <q-item :to="c.to">
@@ -42,6 +37,7 @@ import { useArticleCacheStore } from 'src/store/articleCache';
 import { useFrontApi } from 'src/composables/api';
 import { useMeta } from 'src/composables/meta';
 import FrontArticleList from 'src/components/Front/FrontArticleList.vue';
+import PrArticle from 'src/components/Front/PrArticle.vue';
 import LoadingMessage from 'src/components/Common/Text/LoadingMessage.vue';
 import { useApiHandler } from 'src/composables/apiHandler';
 import { useRoute } from 'vue-router';
@@ -53,6 +49,7 @@ export default defineComponent({
     FrontArticleList,
     TextTitle,
     LoadingMessage,
+    PrArticle,
   },
 
   setup() {

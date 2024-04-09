@@ -15,7 +15,7 @@
   </q-expansion-item>
   <q-table v-model:pagination="pagination" :rows="rows" :columns="columns" :visible-columns="visibleColumns"
     :rows-per-page-options="[20, 50, 100, 0]" rows-per-page-label="表示件数" no-results-label="該当記事がありません"
-    no-data-label="記事がありません" row-key="id" @row-click.stop="handleClick" @row-dblclick.stop="handleDoubleClick">
+    no-data-label="記事がありません" row-key="id">
     <template v-slot:top>
       <div class="q-table__title">記事一覧</div>
       <q-space />
@@ -27,7 +27,8 @@
     </template>
 
     <template v-slot:body="props">
-      <q-tr :props="props" @click="onRowClick(props.row)" :class="colorClass(props)">
+      <q-tr :props="props" :class="colorClass(props)" @click.stop="handleClick(props.row)"
+        @dblclick.stop="handleDoubleClick(props.row)">
         <template v-for="(col) in props.cols" :key="col.name">
           <q-td :props="props">{{
             (typeof col.field) === 'function' ? col.field(props.row) : props.row[col.field]
@@ -90,12 +91,12 @@ export default defineComponent({
     });
     const router = useRouter();
     let timer = null;
-    const handleClick = (event, row) => {
+    const handleClick = (row) => {
       timer = setTimeout(() => {
         dialogRow.value = row;
-      }, 150);
+      }, 300);
     };
-    const handleDoubleClick = (event, row) => {
+    const handleDoubleClick = (row) => {
       if (timer) {
         clearTimeout(timer);
       }

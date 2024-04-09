@@ -25,6 +25,16 @@
         </template>
       </q-input>
     </template>
+
+    <template v-slot:body="props">
+      <q-tr :props="props" @click="onRowClick(props.row)" :class="colorClass(props)">
+        <template v-for="(col) in props.cols" :key="col.name">
+          <q-td :props="props">{{
+            (typeof col.field) === 'function' ? col.field(props.row) : props.row[col.field]
+            }}</q-td>
+        </template>
+      </q-tr>
+    </template>
   </q-table>
   <q-dialog v-model="dialogShow">
     <dialog-menu :row=dialogRow @close="dialogShow = false" />
@@ -91,6 +101,18 @@ export default defineComponent({
       }
       router.push({ name: 'edit', params: { id: row.id } });
     };
+
+    const colorClass = (props) => {
+      if (props.row.status === 'publish') {
+        return '';
+      }
+      if (props.row.status === 'reservation') {
+        return 'bg-blue-2';
+      }
+
+      return 'bg-grey-4';
+    };
+
     return {
       rows,
       columns: ARTICLE_COLUMNS,
@@ -102,6 +124,7 @@ export default defineComponent({
       handleClick,
       handleDoubleClick,
       filter,
+      colorClass,
     };
   },
   components: { DialogMenu },

@@ -25,7 +25,7 @@ export const STATUSES = {
   private: '非公開',
   draft: '下書き',
   reservation: '予約投稿',
-  publish: '公開',
+  publish: '公開済み',
 };
 
 export const ANALYTICS_TYPE_DAILY = 'daily';
@@ -57,3 +57,74 @@ export const BULK_ZIP_RETRY_LIMIT = 60;
 
 export const SUPPORT_SITE_URL = 'https://simutrans-intro.notion.site/Simutrans-Addon-Portal-c8d0ab13507d4fedace504eaac1c733e';
 export const PRIVACY_POLICY_URL = 'https://simutrans-intro.notion.site/512f33db6dd94a1ca51d2607408caf33';
+
+export const ARTICLE_COLUMNS = [
+  {
+    name: 'id',
+    field: 'id',
+    label: 'ID',
+    sortable: true,
+    align: 'center',
+    desc: '記事のID',
+  },
+  {
+    name: 'status',
+    field: (row) => STATUSES[row.status],
+    label: 'ステータス',
+    sortable: true,
+    align: 'left',
+    desc: '記事の公開状態',
+  },
+  {
+    name: 'post_type',
+    field: (row) => POST_TYPES[row.post_type],
+    label: '形式',
+    sortable: true,
+    align: 'left',
+    desc: '記事の形式',
+  },
+  {
+    name: 'title',
+    field: 'title',
+    label: 'タイトル',
+    sortable: true,
+    align: 'left',
+    desc: '記事のタイトル',
+  },
+  {
+    name: 'totalViewCount',
+    field: (row) => row.metrics.totalViewCount,
+    label: 'PV',
+    sortable: true,
+    desc: '記事の個別ページ表示回数。トップや記事一覧での表示回数は含みません。',
+  },
+  {
+    name: 'totalConversionCount',
+    field: (row) => row.metrics.totalConversionCount,
+    label: 'CV',
+    sortable: true,
+    desc: 'アドオンのダウンロード、掲載URLのクリック回数',
+  },
+  {
+    name: 'published_at',
+    field: (row) => (row.published_at ? DateTime.fromISO(row.published_at).toLocaleString(DateTime.DATETIME_SHORT) : '-'),
+    label: '投稿日時',
+    sortable: true,
+    align: 'left',
+    desc: '記事の投稿（予約）日時',
+  },
+  {
+    name: 'modified_at',
+    field: (row) => DateTime.fromISO(row.modified_at).toLocaleString(DateTime.DATETIME_SHORT),
+    label: '最終更新日時',
+    sortable: true,
+    align: 'left',
+    desc: '記事の最終更新日時',
+  },
+];
+
+export const ARTICLE_OPTIONS = ARTICLE_COLUMNS.map((c) => ({
+  label: c.label,
+  value: c.name,
+  desc: c.desc,
+}));

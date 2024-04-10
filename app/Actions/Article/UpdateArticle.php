@@ -20,14 +20,16 @@ final readonly class UpdateArticle
     }
 
     /**
-     * @param  array{should_notify:bool,without_update_modified_at:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at:string,contents:mixed}}  $data
+     * @param  array{should_notify?:bool,without_update_modified_at?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}  $data
      */
     public function __invoke(Article $article, array $data): Article
     {
         $notYetPublished = is_null($article->published_at);
+        $withoutUpdateModifiedAt = $data['without_update_modified_at'] ?? false;
 
         $articleStatus = ArticleStatus::from($data['article']['status']);
-        $publishedAt = $data['article']['published_at'];
+        $publishedAt = $data['article']['published_at'] ?? null;
+
         $newData = [
             'title' => $data['article']['title'],
             'slug' => $data['article']['slug'],
@@ -38,7 +40,6 @@ final readonly class UpdateArticle
             $newData['published_at'] = ($this->decidePublishedAt)($publishedAt, $articleStatus);
         }
 
-        $withoutUpdateModifiedAt = $data['without_update_modified_at'];
         if ($this->shouldUpdateModifiedAt($withoutUpdateModifiedAt)) {
             $newData['modified_at'] = $this->now->toDateTimeString();
         }
@@ -49,7 +50,7 @@ final readonly class UpdateArticle
 
         JobUpdateRelated::dispatch();
 
-        $shouldNotify = $data['should_notify'] && ! $withoutUpdateModifiedAt;
+        $shouldNotify = ($data['should_notify'] ?? false) && ! $withoutUpdateModifiedAt;
         ArticleUpdated::dispatch($article, $shouldNotify, $notYetPublished);
 
         return $article->fresh() ?? $article;

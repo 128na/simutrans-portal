@@ -23,12 +23,12 @@ final readonly class StoreArticle
     }
 
     /**
-     * @param  array{should_notify:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at:string,contents:mixed}}  $data
+     * @param  array{should_notify?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}  $data
      */
     public function __invoke(User $user, array $data): Article
     {
         $articleStatus = ArticleStatus::from($data['article']['status']);
-        $publishedAt = $data['article']['published_at'];
+        $publishedAt = $data['article']['published_at'] ?? null;
         $newData = [
             'post_type' => ArticlePostType::from($data['article']['post_type']),
             'title' => $data['article']['title'],
@@ -44,7 +44,7 @@ final readonly class StoreArticle
         ($this->syncRelatedModels)($article, $data);
 
         JobUpdateRelated::dispatch();
-        ArticleStored::dispatch($article, $data['should_notify']);
+        ArticleStored::dispatch($article, $data['should_notify'] ?? false);
 
         return $article->fresh() ?? $article;
     }

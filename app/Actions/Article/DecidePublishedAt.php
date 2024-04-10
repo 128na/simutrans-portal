@@ -14,7 +14,7 @@ final readonly class DecidePublishedAt
     ) {
     }
 
-    public function __invoke(string $publishedAt, ArticleStatus $articleStatus): ?string
+    public function __invoke(?string $publishedAt, ArticleStatus $articleStatus): ?string
     {
         // 公開なら現在時刻
         if ($articleStatus === ArticleStatus::Publish) {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Front;
 
-use App\Actions\Screenshot\ListPublicScreenshot;
+use App\Actions\Screenshot\ListPublishScreenshot;
 use App\Actions\Screenshot\ShowPublicScreenshot;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\Front\Screenshot as ScreenshotResource;
@@ -14,9 +14,9 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 final class ScreenshotController extends Controller
 {
-    public function index(Request $request, ListPublicScreenshot $listPublicScreenshot): AnonymousResourceCollection
+    public function index(Request $request, ListPublishScreenshot $listPublishScreenshot): AnonymousResourceCollection
     {
-        return $listPublicScreenshot->list();
+        return $listPublishScreenshot->list();
     }
 
     public function show(Screenshot $screenshot, ShowPublicScreenshot $showPublicScreenshot): ScreenshotResource

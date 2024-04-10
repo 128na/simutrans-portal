@@ -48,6 +48,7 @@ final class UpdateTest extends TestCase
             'tags' => [],
             'categories' => [],
             'articles' => [],
+            'published_at' => null,
         ]]);
         $response->assertStatus(200);
     }

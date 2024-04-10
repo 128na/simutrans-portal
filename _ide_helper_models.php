@@ -312,23 +312,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * Pak-アドオン毎の投稿数（メニュー表示用）.
- *
- * @property int $id
- * @property string $pak_slug
- * @property string $addon_slug
- * @property int $count
- * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PakAddonCount query()
- * @mixin \Eloquent
- */
-	#[\AllowDynamicProperties]
-	final class IdeHelperPakAddonCount {}
-}
-
-namespace App\Models{
-/**
  * 
  *
  * @property int $id
@@ -460,24 +443,6 @@ namespace App\Models{
  */
 	#[\AllowDynamicProperties]
 	final class IdeHelperUser {}
-}
-
-namespace App\Models{
-/**
- * ユーザー毎の投稿数（メニュー表示用）.
- *
- * @property int $id
- * @property int $user_id
- * @property string $user_name
- * @property string|null $user_nickname 表示名
- * @property int $count
- * @method static \Illuminate\Database\Eloquent\Builder|UserAddonCount newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|UserAddonCount newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|UserAddonCount query()
- * @mixin \Eloquent
- */
-	#[\AllowDynamicProperties]
-	final class IdeHelperUserAddonCount {}
 }
 
 namespace App\Models\User{

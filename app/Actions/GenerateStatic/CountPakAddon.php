@@ -2,21 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories;
+namespace App\Actions\GenerateStatic;
 
-use App\Models\PakAddonCount;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-/**
- * @extends BaseRepository<PakAddonCount>
- */
-final class PakAddonCountRepository extends BaseRepository
+final class CountPakAddon
 {
-    private const DELETE_SQL = 'DELETE FROM pak_addon_counts';
-
-    private const INSERT_SQL = "INSERT INTO pak_addon_counts (pak_slug, addon_slug, count) (
-        SELECT
+    private const SELECT_SQL = "SELECT
             pak.slug pak_slug,
             case addon.slug is null when 1 then 'none' else addon.slug end addon_slug,
             COUNT(a.id) count
@@ -49,29 +42,30 @@ final class PakAddonCountRepository extends BaseRepository
                 AND pak.id IS NOT NULL
                 AND u.deleted_at IS NULL
         GROUP BY pak.id , addon.id
-        ORDER BY pak.order , case addon.order is null when 1 then 2147483647 else addon.order end)";
-
-    public function __construct(PakAddonCount $pakAddonCount)
-    {
-        parent::__construct($pakAddonCount);
-    }
+        ORDER BY pak.order , case addon.order is null when 1 then 2147483647 else addon.order end";
 
     /**
-     * 再集計する.
+     * @return array<string,array<int,array{pak_slug:string,addon_slug:string,pak:string,addon:string,count:int}>>
      */
-    public function recount(): void
+    public function __invoke(): array
     {
-        DB::transaction(function (): void {
-            DB::statement(self::DELETE_SQL);
-            DB::statement(self::INSERT_SQL);
-        });
-    }
+        /** @var Collection<int,object{pak_slug:string,addon_slug:string,count:int}> */
+        $items = collect(DB::select(self::SELECT_SQL));
 
-    /**
-     * @return Collection<int,PakAddonCount>
-     */
-    public function get(): Collection
-    {
-        return $this->model->select('pak_slug', 'addon_slug', 'count')->get();
+        /**
+         * @param  object{pak_slug:string,addon_slug:string,count:int}  $pakAddonCount
+         */
+        $items = $items->map(fn ($pakAddonCount): array => [
+            'pak_slug' => $pakAddonCount->pak_slug,
+            'addon_slug' => $pakAddonCount->addon_slug,
+            'pak' => __('category.pak.'.$pakAddonCount->pak_slug),
+            'addon' => __('category.addon.'.$pakAddonCount->addon_slug),
+            'count' => $pakAddonCount->count,
+        ]);
+
+        /**
+         * @var array<string,array<int,array{pak_slug:string,addon_slug:string,pak:string,addon:string,count:int}>>
+         */
+        return $items->groupBy('pak')->toArray();
     }
 }

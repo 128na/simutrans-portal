@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Jobs\Article;
 
-use App\Jobs\StaticJson\GenerateSidebar;
-use App\Jobs\StaticJson\GenerateTopOrderByModifiedAt;
-use App\Jobs\StaticJson\GenerateTopOrderByPublishedAt;
-use App\Repositories\PakAddonCountRepository;
-use App\Repositories\UserAddonCountRepository;
+use App\Actions\GenerateStatic\GenerateSidebar;
+use App\Actions\GenerateStatic\GenerateTopOrderByModifiedAt;
+use App\Actions\GenerateStatic\GenerateTopOrderByPublishedAt;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -27,16 +25,14 @@ final class JobUpdateRelated implements ShouldQueue
     use SerializesModels;
 
     public function handle(
-        PakAddonCountRepository $pakAddonCountRepository,
-        UserAddonCountRepository $userAddonCountRepository
+        GenerateSidebar $generateSidebar,
+        GenerateTopOrderByModifiedAt $generateTopOrderByModifiedAt,
+        GenerateTopOrderByPublishedAt $generateTopOrderByPublishedAt,
     ): void {
-        $pakAddonCountRepository->recount();
-        $userAddonCountRepository->recount();
+        $generateSidebar();
+        $generateTopOrderByModifiedAt();
+        $generateTopOrderByPublishedAt();
 
         Cache::flush();
-
-        GenerateSidebar::dispatchSync();
-        GenerateTopOrderByModifiedAt::dispatchSync();
-        GenerateTopOrderByPublishedAt::dispatchSync();
     }
 }

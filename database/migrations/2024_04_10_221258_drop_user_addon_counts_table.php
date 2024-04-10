@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::create('pak_addon_counts', function (Blueprint $blueprint): void {
+        Schema::create('user_addon_counts', function (Blueprint $blueprint): void {
             $blueprint->bigIncrements('id');
             $blueprint->foreignId('user_id');
             $blueprint->string('user_name');

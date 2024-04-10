@@ -51,17 +51,4 @@ final class TagRepository extends BaseRepository
         return $this->model->select('id', 'name', 'description')->limit($limit)
             ->get();
     }
-
-    /**
-     * 記事に関連づいていないタグを削除する.
-     */
-    public function deleteUnrelated(): void
-    {
-        /** @var int[] */
-        $tagIds = $this->model
-            ->doesntHave('articles')
-            ->pluck('id');
-
-        $this->model->whereIn('id', $tagIds)->delete();
-    }
 }

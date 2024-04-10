@@ -2,19 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories;
+namespace App\Actions\GenerateStatic;
 
 use App\Models\PakAddonCount;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
-/**
- * @extends BaseRepository<PakAddonCount>
- */
-final class PakAddonCountRepository extends BaseRepository
+final class RecountPakAddonCount
 {
-    private const DELETE_SQL = 'DELETE FROM pak_addon_counts';
-
     private const INSERT_SQL = "INSERT INTO pak_addon_counts (pak_slug, addon_slug, count) (
         SELECT
             pak.slug pak_slug,
@@ -51,27 +46,14 @@ final class PakAddonCountRepository extends BaseRepository
         GROUP BY pak.id , addon.id
         ORDER BY pak.order , case addon.order is null when 1 then 2147483647 else addon.order end)";
 
-    public function __construct(PakAddonCount $pakAddonCount)
-    {
-        parent::__construct($pakAddonCount);
-    }
-
-    /**
-     * 再集計する.
-     */
-    public function recount(): void
-    {
-        DB::transaction(function (): void {
-            DB::statement(self::DELETE_SQL);
-            DB::statement(self::INSERT_SQL);
-        });
-    }
-
     /**
      * @return Collection<int,PakAddonCount>
      */
-    public function get(): Collection
+    public function __invoke(): Collection
     {
-        return $this->model->select('pak_slug', 'addon_slug', 'count')->get();
+        PakAddonCount::truncate();
+        DB::statement(self::INSERT_SQL);
+
+        return PakAddonCount::select('pak_slug', 'addon_slug', 'count')->get();
     }
 }

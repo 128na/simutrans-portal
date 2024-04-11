@@ -56,8 +56,8 @@ final class StoreArticleTest extends TestCase
                     'modified_at' => $carbonImmutable->toDateTimeString(),
                 ],
             )->once()->andReturn($article);
-            $this->mock(SyncRelatedModels::class, function (MockInterface $m) use ($article, $data) {
-                $m->expects()->__invoke($article, $data);
+            $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
+                $mock->expects()->__invoke($article, $data);
             });
         });
 
@@ -99,8 +99,8 @@ final class StoreArticleTest extends TestCase
                     'modified_at' => $carbonImmutable->toDateTimeString(),
                 ],
             )->once()->andReturn($article);
-            $this->mock(SyncRelatedModels::class, function (MockInterface $m) use ($article, $data) {
-                $m->expects()->__invoke($article, $data);
+            $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
+                $mock->expects()->__invoke($article, $data);
             });
         });
 
@@ -141,8 +141,8 @@ final class StoreArticleTest extends TestCase
                     'modified_at' => $carbonImmutable->toDateTimeString(),
                 ],
             )->once()->andReturn($article);
-            $this->mock(SyncRelatedModels::class, function (MockInterface $m) use ($article, $data) {
-                $m->expects()->__invoke($article, $data);
+            $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
+                $mock->expects()->__invoke($article, $data);
             });
         });
 

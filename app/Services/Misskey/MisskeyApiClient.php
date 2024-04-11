@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Http;
 final readonly class MisskeyApiClient
 {
     public function __construct(
-        private string $baseUrl,
-        private string $token,
+        private readonly string $baseUrl,
+        private readonly string $token,
     ) {
 
     }

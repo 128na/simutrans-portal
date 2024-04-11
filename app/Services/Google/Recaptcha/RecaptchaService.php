@@ -13,9 +13,9 @@ final readonly class RecaptchaService
     private const ALLOW_SCORE = 0.5;
 
     public function __construct(
-        private RecaptchaEnterpriseServiceClient $recaptchaEnterpriseServiceClient,
-        private string $projectName,
-        private Event $event,
+        private readonly RecaptchaEnterpriseServiceClient $recaptchaEnterpriseServiceClient,
+        private readonly string $projectName,
+        private readonly Event $event,
     ) {
     }
 

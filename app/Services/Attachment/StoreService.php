@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 final readonly class StoreService
 {
     public function __construct(
-        private ImageCropper $imageCropper,
+        private readonly ImageCropper $imageCropper,
     ) {
     }
 

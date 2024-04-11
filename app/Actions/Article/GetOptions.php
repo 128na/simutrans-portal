@@ -2,38 +2,27 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Actions\Article;
 
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
-use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
-use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 
-final readonly class ArticleEditorService
+final readonly class GetOptions
 {
     public function __construct(
-        private ArticleRepository $articleRepository,
         private CategoryRepository $categoryRepository,
     ) {
     }
 
     /**
-     * @return Collection<int, Article>
-     */
-    public function findArticles(User $user): Collection
-    {
-        return $this->articleRepository->findAllByUser($user, ArticleRepository::MYPAGE_RELATIONS);
-    }
-
-    /**
      * @return array<string, mixed>
      */
-    public function getOptions(User $user): array
+    public function __invoke(User $user): array
     {
         return [
             'categories' => $this->getSeparatedCategories($user),
@@ -45,7 +34,7 @@ final readonly class ArticleEditorService
     /**
      * @return SupportCollection<string, mixed>
      */
-    public function getSeparatedCategories(User $user): SupportCollection
+    private function getSeparatedCategories(User $user): SupportCollection
     {
         $categories = $this->categoryRepository->findAllByUser($user);
 
@@ -82,7 +71,7 @@ final readonly class ArticleEditorService
     /**
      * @return SupportCollection<int,array{label:string,value:string}>
      */
-    public function getStatuses(): SupportCollection
+    private function getStatuses(): SupportCollection
     {
         /** @var array<ArticleStatus> */
         $status = ArticleStatus::cases();
@@ -98,7 +87,7 @@ final readonly class ArticleEditorService
     /**
      * @return SupportCollection<int,array{label:string,value:string}>
      */
-    public function getPostTypes(): SupportCollection
+    private function getPostTypes(): SupportCollection
     {
         /** @var array<ArticlePostType> */
         $postTypes = ArticlePostType::cases();
@@ -109,10 +98,5 @@ final readonly class ArticleEditorService
                 'value' => $articlePostType->value,
             ]
         )->values();
-    }
-
-    public function loadArticle(Article $article): Article
-    {
-        return $this->articleRepository->loadArticle($article);
     }
 }

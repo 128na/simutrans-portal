@@ -8,11 +8,13 @@ use App\Enums\ArticleStatus;
 use App\Events\Article\ArticleUpdated;
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
+use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
 
 final readonly class UpdateArticle
 {
     public function __construct(
+        private ArticleRepository $articleRepository,
         private CarbonImmutable $now,
         private DecidePublishedAt $decidePublishedAt,
         private SyncRelatedModels $syncRelatedModels,
@@ -44,7 +46,7 @@ final readonly class UpdateArticle
             $newData['modified_at'] = $this->now->toDateTimeString();
         }
 
-        $article->update($newData);
+        $this->articleRepository->update($article, $newData);
 
         ($this->syncRelatedModels)($article, $data);
 

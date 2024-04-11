@@ -10,11 +10,13 @@ use App\Events\Article\ArticleStored;
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
 use App\Models\User;
+use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
 
 final readonly class StoreArticle
 {
     public function __construct(
+        private ArticleRepository $articleRepository,
         private CarbonImmutable $now,
         private DecidePublishedAt $decidePublishedAt,
         private SyncRelatedModels $syncRelatedModels,
@@ -39,7 +41,7 @@ final readonly class StoreArticle
             'modified_at' => $this->now->toDateTimeString(),
         ];
         /** @var Article */
-        $article = $user->articles()->create($newData);
+        $article = $this->articleRepository->storeByUser($user, $newData);
 
         ($this->syncRelatedModels)($article, $data);
 

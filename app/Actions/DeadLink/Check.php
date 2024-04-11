@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions\DeadLink;
 
-use App\Events\Article\DeadLinkDetected;
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
 use App\Models\Contents\AddonIntroductionContent;
@@ -14,11 +13,16 @@ use Illuminate\Support\Sleep;
 
 final class Check
 {
+    private const FAILED_LIMIT = 3;
+
+    private const INTERVAL_SEC = 1;
+
     private bool $changeAnyArticle = false;
 
     public function __construct(
         private readonly ArticleRepository $articleRepository,
         private readonly FailedCountCache $failedCountCache,
+        private readonly InIgnoreList $inIgnoreList,
         private readonly GetHeaders $getHeaders,
     ) {
 
@@ -62,31 +66,14 @@ final class Check
         assert($article->contents instanceof AddonIntroductionContent);
 
         return $article->contents->link
-            && $this->inBlacklist($article->contents->link) === false
+            && ($this->inIgnoreList)($article->contents->link) === false
             && $article->contents->exclude_link_check === false;
     }
 
-    private function inBlacklist(string $url): bool
-    {
-        $blackList = [
-            'getuploader.com',
-        ];
-
-        foreach ($blackList as $b) {
-            if (stripos($url, $b) !== false) {
-                logger('[DeadLinkChecker] blacklist url', [$url]);
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function isDead(Article $article, int $retry = 3, int $intervalsec = 1): bool
+    private function isDead(Article $article): bool
     {
         assert($article->contents instanceof AddonIntroductionContent);
-        for ($i = 0; $i < $retry; $i++) {
+        for ($i = 0; $i < self::FAILED_LIMIT; $i++) {
             if ($article->contents->link !== null && $article->contents->link !== '' && $article->contents->link !== '0') {
                 $info = ($this->getHeaders)($article->contents->link);
                 foreach ($info as $inf) {
@@ -98,10 +85,8 @@ final class Check
                 logger('[DeadLinkChecker] status check failed.', [$article->contents->link, ...$info]);
             }
 
-            Sleep::for($intervalsec)->second();
+            Sleep::for(self::INTERVAL_SEC)->second();
         }
-
-        DeadLinkDetected::dispatch($article);
 
         return true;
     }

@@ -15,7 +15,7 @@ Simutrans のアドオン投稿サイト「Simutrans Addon Portal」のアプリ
 
 ### Requirements
 
--   PHP:8.2~
+-   PHP:8.3~
 -   mysql:5.7~
 -   node:20~
     アセットコンパイルを行う場合に必要

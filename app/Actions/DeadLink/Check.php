@@ -77,7 +77,7 @@ final class Check
             if ($article->contents->link !== null && $article->contents->link !== '' && $article->contents->link !== '0') {
                 $info = ($this->getHeaders)($article->contents->link);
                 foreach ($info as $inf) {
-                    if (stripos($inf, '200 OK') !== false) {
+                    if (mb_stripos($inf, '200 OK') !== false) {
                         return false;
                     }
                 }

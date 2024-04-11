@@ -48,7 +48,7 @@ final class PakExtractor implements Extractor
 
     private function toNumber(string $binary): int
     {
-        $chars = array_reverse(str_split($binary, 2));
+        $chars = array_reverse(mb_str_split($binary, 2));
 
         $result = 0;
         $order = 0;

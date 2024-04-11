@@ -13,7 +13,7 @@ final class InIgnoreList
     public function __invoke(string $url): bool
     {
         foreach (self::IGNORE_LIST as $domain) {
-            if (stripos($url, $domain) !== false) {
+            if (mb_stripos($url, $domain) !== false) {
                 return true;
             }
         }

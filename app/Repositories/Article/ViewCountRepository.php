@@ -17,6 +17,7 @@ final class ViewCountRepository extends BaseCountRepository
         parent::__construct($viewCount);
     }
 
+    #[\Override]
     public function getTableName(): string
     {
         return 'view_counts';

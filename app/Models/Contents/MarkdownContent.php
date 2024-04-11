@@ -19,6 +19,7 @@ final class MarkdownContent extends Content
         parent::__construct($contents);
     }
 
+    #[\Override]
     public function getDescription(): string
     {
         return app(MarkdownService::class)->toEscapedHTML($this->markdown ?? '');

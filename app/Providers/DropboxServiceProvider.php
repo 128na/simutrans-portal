@@ -17,6 +17,7 @@ final class DropboxServiceProvider extends ServiceProvider
     /**
      * Register services.
      */
+    #[\Override]
     public function register(): void
     {
     }

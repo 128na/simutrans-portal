@@ -15,6 +15,7 @@ final class FindRandomPRTest extends TestCase
 
     private Article $article;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

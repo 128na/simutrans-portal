@@ -9,6 +9,7 @@ use Illuminate\Support\Sleep;
 
 abstract class TestCase extends BaseTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

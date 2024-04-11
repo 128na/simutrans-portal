@@ -13,6 +13,7 @@ final class UserFactory extends Factory
 {
     protected $model = User::class;
 
+    #[\Override]
     public function definition()
     {
         return [

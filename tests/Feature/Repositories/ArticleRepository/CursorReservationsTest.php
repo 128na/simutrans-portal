@@ -17,6 +17,7 @@ final class CursorReservationsTest extends TestCase
 
     private Article $article;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

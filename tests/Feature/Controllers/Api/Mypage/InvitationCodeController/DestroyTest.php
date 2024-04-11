@@ -14,6 +14,7 @@ final class DestroyTest extends TestCase
 
     private string $code;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

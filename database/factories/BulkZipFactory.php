@@ -13,6 +13,7 @@ final class BulkZipFactory extends Factory
 {
     protected $model = BulkZip::class;
 
+    #[\Override]
     public function definition()
     {
         $type = $this->faker->randomElement([User::class]);

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
  */
 final class TagRepository extends BaseRepository
 {
-    private const LIMIT = 10;
+    private const int LIMIT = 10;
 
     public function __construct(Tag $tag)
     {

@@ -19,6 +19,7 @@ final class PaginateByTagTest extends TestCase
 
     private Article $article;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

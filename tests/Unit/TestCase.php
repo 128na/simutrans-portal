@@ -13,6 +13,7 @@ abstract class TestCase extends TestsTestCase
 {
     use CreatesApplication;
 
+    #[\Override]
     protected function tearDown(): void
     {
         Mockery::close();

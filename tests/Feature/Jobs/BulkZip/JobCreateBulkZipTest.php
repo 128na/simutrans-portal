@@ -13,12 +13,14 @@ final class JobCreateBulkZipTest extends TestCase
 {
     private BulkZip $bulkZip;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->bulkZip = BulkZip::factory()->create();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $this->bulkZip->delete();

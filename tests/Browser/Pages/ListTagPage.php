@@ -25,11 +25,13 @@ final class ListTagPage extends Page
         $this->article->tags()->save($this->tag);
     }
 
+    #[\Override]
     public function url()
     {
         return '/tags/'.$this->tag->id;
     }
 
+    #[\Override]
     public function assert(Browser $browser): void
     {
         $browser

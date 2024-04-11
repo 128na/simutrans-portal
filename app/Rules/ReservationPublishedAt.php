@@ -27,6 +27,7 @@ final class ReservationPublishedAt implements DataAwareRule, ValidationRule
     /**
      * @param  array{article?:array{status?:string,published_at?:string}}  $data
      */
+    #[\Override]
     public function setData(array $data): static
     {
         $this->data = $data;
@@ -39,6 +40,7 @@ final class ReservationPublishedAt implements DataAwareRule, ValidationRule
      *
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
+    #[\Override]
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (! is_string($value)) {

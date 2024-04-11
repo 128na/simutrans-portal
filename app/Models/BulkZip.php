@@ -50,6 +50,7 @@ final class BulkZip extends Model
         return false;
     }
 
+    #[\Override]
     protected static function booted(): void
     {
         self::creating(function (self $model): void {

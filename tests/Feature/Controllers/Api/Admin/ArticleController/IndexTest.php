@@ -21,6 +21,7 @@ final class IndexTest extends TestCase
 
     private Article $article4;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setup();

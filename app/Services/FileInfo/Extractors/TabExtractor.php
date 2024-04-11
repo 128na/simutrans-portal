@@ -6,16 +6,19 @@ namespace App\Services\FileInfo\Extractors;
 
 final class TabExtractor implements Extractor
 {
+    #[\Override]
     public function isText(): bool
     {
         return true;
     }
 
+    #[\Override]
     public function getKey(): string
     {
         return 'tabs';
     }
 
+    #[\Override]
     public function isTarget(string $filename): bool
     {
         return str_ends_with($filename, '.tab');
@@ -26,6 +29,7 @@ final class TabExtractor implements Extractor
      *
      * @return string[]
      */
+    #[\Override]
     public function extract(string $tab): array
     {
         $tabs = explode("\n", str_replace(["\r\n", "\r"], "\n", $tab));

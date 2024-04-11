@@ -19,6 +19,7 @@ final class ImageAttachmentTest extends TestCase
 
     private bool $failCalled = false;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

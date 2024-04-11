@@ -6,7 +6,7 @@ namespace App\Constants;
 
 final class NgWords
 {
-    public const ARTICLE_TITLE = ['#', '@', ':', '//'];
+    public const array ARTICLE_TITLE = ['#', '@', ':', '//'];
 
-    public const USER_NAME = ['#', '@', ':', '//'];
+    public const array USER_NAME = ['#', '@', ':', '//'];
 }

@@ -13,6 +13,7 @@ final class MailHandler extends BaseHandler
     /**
      * @param  array<\Monolog\LogRecord>  $records
      */
+    #[\Override]
     protected function send(string $content, array $records): void
     {
         $admins = User::select('email')->admin()->pluck('email')->all();

@@ -559,6 +559,7 @@ final class Article extends Model implements Feedable
     | RSS
     |--------------------------------------------------------------------------
      */
+    #[\Override]
     public function toFeedItem(): FeedItem
     {
         return FeedItem::create([
@@ -571,6 +572,7 @@ final class Article extends Model implements Feedable
         ]);
     }
 
+    #[\Override]
     protected static function booted(): void
     {
         // 論理削除されていないユーザーを持つ

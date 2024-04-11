@@ -35,6 +35,7 @@ final class AddonIntroductionContent extends Content
         parent::__construct($contents);
     }
 
+    #[\Override]
     public function getDescription(): string
     {
         return $this->description ?? '';

@@ -25,6 +25,7 @@ final class ArticleFactory extends Factory
      *
      * @return array
      */
+    #[\Override]
     public function definition()
     {
         $postType = $this->faker->randomElement(array_column(ArticlePostType::cases(), 'value'));

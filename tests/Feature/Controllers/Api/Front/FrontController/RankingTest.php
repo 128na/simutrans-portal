@@ -11,6 +11,7 @@ final class RankingTest extends TestCase
 {
     private Ranking $ranking;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

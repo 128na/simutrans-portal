@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 final class AddonIntroductionDecorator extends BaseDecorator
 {
+    #[\Override]
     public function canProcess(Model $model): bool
     {
         return $model instanceof Article
@@ -23,6 +24,7 @@ final class AddonIntroductionDecorator extends BaseDecorator
      *
      * @param  Article  $model
      */
+    #[\Override]
     public function process(array $result, Model $model): array
     {
         // サムネ

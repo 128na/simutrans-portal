@@ -40,11 +40,13 @@ final class ArticlePagePage extends Page
         $this->article->categories()->save($this->category);
     }
 
+    #[\Override]
     public function url()
     {
         return sprintf('/users/%s/%s', $this->article->user_id, urlencode((string) $this->article->slug));
     }
 
+    #[\Override]
     public function assert(Browser $browser): void
     {
         $browser

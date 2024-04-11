@@ -13,9 +13,9 @@ use Illuminate\Support\Sleep;
 
 final class Check
 {
-    private const FAILED_LIMIT = 3;
+    private const int FAILED_LIMIT = 3;
 
-    private const INTERVAL_SEC = 1;
+    private const int INTERVAL_SEC = 1;
 
     private bool $changeAnyArticle = false;
 

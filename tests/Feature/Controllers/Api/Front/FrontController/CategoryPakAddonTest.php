@@ -16,6 +16,7 @@ final class CategoryPakAddonTest extends TestCase
 
     private Category $addonCategory;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

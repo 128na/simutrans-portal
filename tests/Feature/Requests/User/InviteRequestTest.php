@@ -11,6 +11,7 @@ use Tests\Feature\TestCase;
 
 final class InviteRequestTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

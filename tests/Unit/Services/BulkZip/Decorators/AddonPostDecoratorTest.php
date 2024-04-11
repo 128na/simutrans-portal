@@ -20,6 +20,7 @@ final class AddonPostDecoratorTest extends TestCase
 {
     private AddonPostDecorator $addonPostDecorator;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -19,6 +19,7 @@ final class AddonIntroductionDecoratorTest extends TestCase
 {
     private AddonIntroductionDecorator $addonIntroductionDecorator;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

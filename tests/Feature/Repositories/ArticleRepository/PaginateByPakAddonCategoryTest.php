@@ -22,6 +22,7 @@ final class PaginateByPakAddonCategoryTest extends TestCase
 
     private Category $addon;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

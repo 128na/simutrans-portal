@@ -15,9 +15,9 @@ use Illuminate\Contracts\Pagination\Paginator;
 
 final readonly class ArticleService
 {
-    public const ORDER_BY_PUBLISHED_AT = 'published_at';
+    public const string ORDER_BY_PUBLISHED_AT = 'published_at';
 
-    public const ORDER_BY_MODIFIED_AT = 'modified_at';
+    public const string ORDER_BY_MODIFIED_AT = 'modified_at';
 
     public function __construct(
         private readonly ArticleRepository $articleRepository,

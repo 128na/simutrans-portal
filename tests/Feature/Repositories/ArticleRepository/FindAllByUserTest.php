@@ -16,6 +16,7 @@ final class FindAllByUserTest extends TestCase
 
     private ArticleRepository $articleRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

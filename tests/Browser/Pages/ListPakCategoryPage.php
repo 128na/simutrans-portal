@@ -28,11 +28,13 @@ final class ListPakCategoryPage extends Page
         $this->article->categories()->saveMany([$this->pak, $this->addon]);
     }
 
+    #[\Override]
     public function url()
     {
         return sprintf('/categories/pak/%s/%s', $this->pak->slug, $this->addon->slug);
     }
 
+    #[\Override]
     public function assert(Browser $browser): void
     {
         $browser

@@ -15,6 +15,7 @@ final class GenerateTopOrderByModifiedAt extends BaseGenerator
     {
     }
 
+    #[\Override]
     protected function getJsonData(): array
     {
         $pr = $this->articleService->prArticle();
@@ -32,6 +33,7 @@ final class GenerateTopOrderByModifiedAt extends BaseGenerator
         ];
     }
 
+    #[\Override]
     protected function getJsonName(): string
     {
         return 'top.modified_at.json';

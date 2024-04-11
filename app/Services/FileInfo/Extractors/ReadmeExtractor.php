@@ -12,16 +12,19 @@ final readonly class ReadmeExtractor implements Extractor
     {
     }
 
+    #[\Override]
     public function isText(): bool
     {
         return true;
     }
 
+    #[\Override]
     public function getKey(): string
     {
         return 'readmes';
     }
 
+    #[\Override]
     public function isTarget(string $filename): bool
     {
         return str_contains($filename, 'readme');
@@ -32,6 +35,7 @@ final readonly class ReadmeExtractor implements Extractor
      *
      * @return string[]
      */
+    #[\Override]
     public function extract(string $text): array
     {
         return [$this->htmlPurifier->purify($text)];

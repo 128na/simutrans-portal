@@ -17,6 +17,7 @@ final class UpdateRequest extends BaseRequest
     /**
      * @return array<mixed>
      */
+    #[\Override]
     protected function baseRule(): array
     {
         $articleId = $this->input('article.id');

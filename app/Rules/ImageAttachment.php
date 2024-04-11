@@ -24,6 +24,7 @@ final readonly class ImageAttachment implements ValidationRule
      *
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
+    #[\Override]
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (! is_string($value) && ! is_int($value)) {

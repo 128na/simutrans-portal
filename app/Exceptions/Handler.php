@@ -23,6 +23,7 @@ final class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+    #[\Override]
     public function register(): void
     {
     }
@@ -30,6 +31,7 @@ final class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      */
+    #[\Override]
     public function report(Throwable $throwable): void
     {
         parent::report($throwable);
@@ -38,6 +40,7 @@ final class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      */
+    #[\Override]
     public function render($request, Throwable $throwable)
     {
         return parent::render($request, $throwable);

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 final class CountUserAddon
 {
-    private const SELECT_SQL = "SELECT
+    private const string SELECT_SQL = "SELECT
             u.id user_id, u.name user_name, u.nickname user_nickname, COUNT(a.id) count
         FROM
             users u

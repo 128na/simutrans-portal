@@ -28,11 +28,13 @@ final class ArticleAddonIntroductionPage extends Page
         $this->article->tags()->save($this->tag);
     }
 
+    #[\Override]
     public function url()
     {
         return sprintf('/users/%s/%s', $this->article->user_id, urlencode((string) $this->article->slug));
     }
 
+    #[\Override]
     public function assert(Browser $browser): void
     {
         $browser

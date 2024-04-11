@@ -27,6 +27,7 @@ final class MisskeyChannel extends BaseChannel
         };
     }
 
+    #[\Override]
     public static function featureEnabled(): bool
     {
         return (bool) config('services.misskey.token');

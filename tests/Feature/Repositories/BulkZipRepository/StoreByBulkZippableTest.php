@@ -13,6 +13,7 @@ final class StoreByBulkZippableTest extends TestCase
 {
     private BulkZipRepository $bulkZipRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

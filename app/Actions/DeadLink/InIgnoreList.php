@@ -6,7 +6,7 @@ namespace App\Actions\DeadLink;
 
 final class InIgnoreList
 {
-    private const IGNORE_LIST = [
+    private const array IGNORE_LIST = [
         'getuploader.com',
     ];
 

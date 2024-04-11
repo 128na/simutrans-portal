@@ -19,6 +19,7 @@ final class FetchAggregatedRankingTest extends TestCase
 
     private Article $article2;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

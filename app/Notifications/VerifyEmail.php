@@ -29,6 +29,7 @@ final class VerifyEmail extends BaseVerifyEmail implements ShouldQueue
      * @param  mixed  $notifiable
      * @return array<string>
      */
+    #[\Override]
     public function via($notifiable)
     {
         return ['mail'];
@@ -40,6 +41,7 @@ final class VerifyEmail extends BaseVerifyEmail implements ShouldQueue
      * @param  mixed  $notifiable
      * @return MailMessage
      */
+    #[\Override]
     public function toMail($notifiable)
     {
         return (new MailMessage())

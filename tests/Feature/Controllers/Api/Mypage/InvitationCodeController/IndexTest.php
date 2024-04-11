@@ -13,6 +13,7 @@ final class IndexTest extends TestCase
 
     private User $invitedUser;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

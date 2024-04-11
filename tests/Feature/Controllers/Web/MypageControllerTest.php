@@ -10,6 +10,7 @@ final class MypageControllerTest extends TestCase
 {
     private string $url;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

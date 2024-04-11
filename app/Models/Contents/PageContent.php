@@ -17,6 +17,7 @@ final class PageContent extends Content
         parent::__construct($contents);
     }
 
+    #[\Override]
     public function getDescription(): string
     {
         return collect($this->sections)->pluck('text')->implode("\n");

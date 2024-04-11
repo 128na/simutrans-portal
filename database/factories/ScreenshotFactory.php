@@ -23,6 +23,7 @@ final class ScreenshotFactory extends Factory
      *
      * @return array
      */
+    #[\Override]
     public function definition()
     {
         return [

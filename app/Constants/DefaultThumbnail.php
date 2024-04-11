@@ -6,13 +6,13 @@ namespace App\Constants;
 
 final class DefaultThumbnail
 {
-    public const NO_THUMBNAIL = 'default/image.png';
+    public const string NO_THUMBNAIL = 'default/image.png';
 
-    public const NO_AVATAR = 'default/avatar.png';
+    public const string NO_AVATAR = 'default/avatar.png';
 
-    public const FILE = 'default/file.png';
+    public const string FILE = 'default/file.png';
 
-    public const ZIP = 'default/zip.png';
+    public const string ZIP = 'default/zip.png';
 
-    public const MOVIE = 'default/movie.png';
+    public const string MOVIE = 'default/movie.png';
 }

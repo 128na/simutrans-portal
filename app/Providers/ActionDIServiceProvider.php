@@ -13,6 +13,7 @@ final class ActionDIServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+    #[\Override]
     public function register(): void
     {
         $this->app->singleton(SitemapHandler::class, fn (): \App\Actions\CreateSitemap\SitemapHandler => new SitemapHandler(

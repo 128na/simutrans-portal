@@ -12,6 +12,7 @@ final class StoreTest extends TestCase
 {
     private User $user;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

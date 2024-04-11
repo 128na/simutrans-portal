@@ -12,7 +12,7 @@ use App\Repositories\ArticleRepository;
 
 final readonly class OnDead
 {
-    private const FAILED_LIMIT = 3;
+    private const int FAILED_LIMIT = 3;
 
     public function __construct(
         private ArticleRepository $articleRepository,

@@ -16,6 +16,7 @@ final class SyncTagsTest extends FeatureTestCase
 
     private User $user;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

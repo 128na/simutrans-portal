@@ -17,6 +17,7 @@ final class ConversionCountRepository extends BaseCountRepository
         parent::__construct($conversionCount);
     }
 
+    #[\Override]
     public function getTableName(): string
     {
         return 'conversion_counts';

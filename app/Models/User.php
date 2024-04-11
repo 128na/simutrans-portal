@@ -75,11 +75,13 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     | 通知
     |--------------------------------------------------------------------------
     */
+    #[\Override]
     public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetPassword($token));
     }
 
+    #[\Override]
     public function sendEmailVerificationNotification(): void
     {
         $this->notify(new VerifyEmail());
@@ -119,6 +121,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     /**
      * @return MorphOne<BulkZip>
      */
+    #[\Override]
     public function bulkZippable(): MorphOne
     {
         return $this->morphOne(BulkZip::class, 'bulk_zippable');
@@ -223,6 +226,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     | 初期化時設定
     |--------------------------------------------------------------------------
     */
+    #[\Override]
     protected static function booted(): void
     {
         self::created(function ($model): void {

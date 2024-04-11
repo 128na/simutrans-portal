@@ -14,6 +14,7 @@ final class FindByEmailWithTrashedTest extends TestCase
 
     private UserRepository $userRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

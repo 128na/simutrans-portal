@@ -10,7 +10,7 @@ use Google\Cloud\RecaptchaEnterprise\V1\RecaptchaEnterpriseServiceClient;
 
 final readonly class RecaptchaService
 {
-    private const ALLOW_SCORE = 0.5;
+    private const float ALLOW_SCORE = 0.5;
 
     public function __construct(
         private readonly RecaptchaEnterpriseServiceClient $recaptchaEnterpriseServiceClient,

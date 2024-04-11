@@ -18,7 +18,7 @@
     "guzzlehttp/guzzle": "^7.8.1",
     "laravel-notification-channels/discord": "^1.6",
     "laravel/fortify": "^1.21.1",
-    "laravel/framework": "^11.2.0",
+    "laravel/framework": "^11.3.1",
     "laravel/sanctum": "^4.0.1",
     "laravel/tinker": "^2.9",
     "marvinlabs/laravel-discord-logger": "^1.4.2",
@@ -29,7 +29,7 @@
     "spatie/laravel-sitemap": "^7.2"
   },
   "require-dev": {
-    "barryvdh/laravel-debugbar": "^3.13.3",
+    "barryvdh/laravel-debugbar": "^3.13.4",
     "barryvdh/laravel-ide-helper": "^3",
     "brianium/paratest": "^7.4.3",
     "dg/bypass-finals": "^1.6",

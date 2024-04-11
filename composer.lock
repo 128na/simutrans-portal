@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4c0a485dda00047c7705bf35de8b49f",
+    "content-hash": "ee320cd0882fd13106d2e0dec892a40a",
     "packages": [
         {
             "name": "abordage/html-min",
@@ -12435,11 +12435,11 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.2"
+        "php": "^8.3"
     },
     "platform-dev": [],
     "platform-overrides": {
-        "php": "8.2.11"
+        "php": "8.3.2"
     },
     "plugin-api-version": "2.6.0"
 }

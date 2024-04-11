@@ -35,20 +35,6 @@ final class Attachment extends Model
         'path',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | イベントハンドラ
-    |--------------------------------------------------------------------------
-     */
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        self::deleting(function ($model): void {
-            $model->deleteFileHandler();
-        });
-    }
-
     public function deleteFileHandler(): ?bool
     {
         return $this->getPublicDisk()->delete($this->path);
@@ -157,6 +143,20 @@ final class Attachment extends Model
         }
 
         return '';
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | イベントハンドラ
+    |--------------------------------------------------------------------------
+     */
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::deleting(function ($model): void {
+            $model->deleteFileHandler();
+        });
     }
 
     private function getPublicDisk(): FilesystemAdapter

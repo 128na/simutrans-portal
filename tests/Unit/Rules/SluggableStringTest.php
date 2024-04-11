@@ -31,11 +31,6 @@ final class SluggableStringTest extends TestCase
         };
     }
 
-    private function getSUT(): SluggableString
-    {
-        return new SluggableString;
-    }
-
     #[Test]
     #[DataProvider('data')]
     public function test(string $value, bool $expected): void
@@ -52,5 +47,10 @@ final class SluggableStringTest extends TestCase
         yield 'ハイフン' => ['test-123', false];
         yield 'それ以外の記号' => ['test@123', true];
         yield 'マルチバイト' => ['testと123', true];
+    }
+
+    private function getSUT(): SluggableString
+    {
+        return new SluggableString;
     }
 }

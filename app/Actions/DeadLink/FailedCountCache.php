@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Cache;
 
 final class FailedCountCache
 {
-    private function getKey(Article $article): string
-    {
-        return sprintf('dead_link_check_count_%d', $article->id);
-    }
-
     public function get(Article $article): int
     {
         $item = Cache::get($this->getKey($article), 0);
@@ -30,5 +25,10 @@ final class FailedCountCache
     public function clear(Article $article): void
     {
         Cache::forget($this->getKey($article));
+    }
+
+    private function getKey(Article $article): string
+    {
+        return sprintf('dead_link_check_count_%d', $article->id);
     }
 }

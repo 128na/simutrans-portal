@@ -21,14 +21,14 @@ final class ViewCount extends Model
 
     public const TYPE_TOTAL = 4;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'article_id',
         'type',
         'period',
         'count',
     ];
-
-    public $timestamps = false;
 
     protected $casts = [
         'count' => 'integer',

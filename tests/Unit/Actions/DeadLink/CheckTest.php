@@ -18,11 +18,6 @@ use Tests\Unit\TestCase;
 
 final class CheckTest extends TestCase
 {
-    private function getSUT(): Check
-    {
-        return app(Check::class);
-    }
-
     public function test_200(): void
     {
         $article = $this->mock(Article::class, function (MockInterface $mock): void {
@@ -121,5 +116,10 @@ final class CheckTest extends TestCase
         Queue::fake();
         $this->getSUT()($fn);
         Queue::assertNothingPushed();
+    }
+
+    private function getSUT(): Check
+    {
+        return app(Check::class);
     }
 }

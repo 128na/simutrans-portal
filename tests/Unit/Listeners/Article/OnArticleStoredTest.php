@@ -14,11 +14,6 @@ use Tests\Unit\TestCase;
 
 final class OnArticleStoredTest extends TestCase
 {
-    private function getSUT(): OnArticleStored
-    {
-        return app(OnArticleStored::class);
-    }
-
     #[DataProvider('data')]
     public function test(bool $isPublish, bool $shouldNotify, bool $expectNotify): void
     {
@@ -44,5 +39,10 @@ final class OnArticleStoredTest extends TestCase
         yield '公開,通知OFF->通知しない' => [true, false, false];
         yield '公開以外,通知ON->通知しない' => [false, true, false];
         yield '公開以外,通知OFF->通知しない' => [false, false, false];
+    }
+
+    private function getSUT(): OnArticleStored
+    {
+        return app(OnArticleStored::class);
     }
 }

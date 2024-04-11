@@ -30,27 +30,6 @@ abstract class BaseRepository
     }
 
     /**
-     * モデルの複数形名称を返す.
-     */
-    protected function plural(): string
-    {
-        return Str::plural(class_basename($this->model));
-    }
-
-    /**
-     * モデルの単数形名称を返す.
-     */
-    protected function singular(): string
-    {
-        return Str::singular(class_basename($this->model));
-    }
-
-    protected function getRelationName(): string
-    {
-        return $this->plural();
-    }
-
-    /**
      * 保存.
      *
      * @param  array<mixed>  $data
@@ -189,5 +168,26 @@ abstract class BaseRepository
             ->select($column)
             ->with($with)
             ->paginate($perPage);
+    }
+
+    /**
+     * モデルの複数形名称を返す.
+     */
+    protected function plural(): string
+    {
+        return Str::plural(class_basename($this->model));
+    }
+
+    /**
+     * モデルの単数形名称を返す.
+     */
+    protected function singular(): string
+    {
+        return Str::singular(class_basename($this->model));
+    }
+
+    protected function getRelationName(): string
+    {
+        return $this->plural();
     }
 }

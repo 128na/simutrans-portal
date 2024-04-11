@@ -58,18 +58,6 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
         'two_factor_confirmed_at' => 'datetime',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | 初期化時設定
-    |--------------------------------------------------------------------------
-    */
-    protected static function booted(): void
-    {
-        self::created(function ($model): void {
-            $model->syncRelatedData();
-        });
-    }
-
     public function syncRelatedData(): void
     {
         if ($this->profile()->doesntExist()) {
@@ -228,5 +216,17 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
             'userId' => $this->id,
             'userName' => $this->name,
         ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | 初期化時設定
+    |--------------------------------------------------------------------------
+    */
+    protected static function booted(): void
+    {
+        self::created(function ($model): void {
+            $model->syncRelatedData();
+        });
     }
 }

@@ -9,11 +9,6 @@ use Tests\Unit\TestCase;
 
 final class DatExtractorTest extends TestCase
 {
-    private function getSUT(): DatExtractor
-    {
-        return app(DatExtractor::class);
-    }
-
     public function testGetKey(): void
     {
         $result = $this->getSUT()->getKey();
@@ -43,5 +38,10 @@ type=bar
 
         $result = $sUT->extract($data);
         $this->assertEquals(['hoge', 'fuga'], $result);
+    }
+
+    private function getSUT(): DatExtractor
+    {
+        return app(DatExtractor::class);
     }
 }

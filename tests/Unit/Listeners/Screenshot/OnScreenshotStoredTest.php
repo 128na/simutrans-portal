@@ -15,11 +15,6 @@ use Tests\Unit\TestCase;
 
 final class OnScreenshotStoredTest extends TestCase
 {
-    private function getSUT(): OnScreenshotStored
-    {
-        return app(OnScreenshotStored::class);
-    }
-
     #[DataProvider('data')]
     public function test(S $s, bool $shouldNotify, bool $expectNotify): void
     {
@@ -45,5 +40,10 @@ final class OnScreenshotStoredTest extends TestCase
         yield '公開,通知OFF->通知しない' => [S::Publish, false, false];
         yield '非公開,通知ON->通知しない' => [S::Private, true, false];
         yield '非公開,通知OFF->通知しない' => [S::Private, false, false];
+    }
+
+    private function getSUT(): OnScreenshotStored
+    {
+        return app(OnScreenshotStored::class);
     }
 }

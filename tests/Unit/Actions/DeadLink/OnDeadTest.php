@@ -16,11 +16,6 @@ use Tests\Unit\TestCase;
 
 final class OnDeadTest extends TestCase
 {
-    private function getSUT(): OnDead
-    {
-        return app(OnDead::class);
-    }
-
     public function test_2回目まで(): void
     {
         $article = new Article();
@@ -50,5 +45,10 @@ final class OnDeadTest extends TestCase
         $actual = $this->getSUT()($article);
         $this->assertTrue($actual);
         Event::assertDispatched(DeadLinkDetected::class);
+    }
+
+    private function getSUT(): OnDead
+    {
+        return app(OnDead::class);
     }
 }

@@ -9,11 +9,6 @@ use Tests\Unit\TestCase;
 
 final class PakExtractorTest extends TestCase
 {
-    private function getSUT(): PakExtractor
-    {
-        return app(PakExtractor::class);
-    }
-
     public function testGetKey(): void
     {
         $result = $this->getSUT()->getKey();
@@ -36,5 +31,10 @@ final class PakExtractorTest extends TestCase
 
         $result = $sUT->extract($data);
         $this->assertEquals(['transparent_vehicle'], $result);
+    }
+
+    private function getSUT(): PakExtractor
+    {
+        return app(PakExtractor::class);
     }
 }

@@ -16,11 +16,6 @@ use Tests\Unit\TestCase;
 
 final class UpdateScreenshotTest extends TestCase
 {
-    private function getSUT(): UpdateScreenshot
-    {
-        return app(UpdateScreenshot::class);
-    }
-
     public function test非公開(): void
     {
         $data = [
@@ -158,5 +153,10 @@ final class UpdateScreenshotTest extends TestCase
         $result = $this->getSUT()->update($screenshot, $data);
         $this->assertNull($result);
         Event::assertDispatched(ScreenshotUpdated::class, fn (ScreenshotUpdated $screenshotUpdated): bool => $screenshotUpdated->shouldNotify === false);
+    }
+
+    private function getSUT(): UpdateScreenshot
+    {
+        return app(UpdateScreenshot::class);
     }
 }

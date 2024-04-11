@@ -32,11 +32,6 @@ final class ReservationPublishedAtTest extends TestCase
         };
     }
 
-    private function getSUT(): ReservationPublishedAt
-    {
-        return new ReservationPublishedAt(CarbonImmutable::create(2020, 01, 02, 03, 04, 05));
-    }
-
     #[Test]
     #[DataProvider('data')]
     public function test(string $value, array $data, bool $expected): void
@@ -52,5 +47,10 @@ final class ReservationPublishedAtTest extends TestCase
         yield '予約でない' => ['', ['article' => ['status' => 'publish']], false];
         yield '予約で1時間以内' => ['2020-01-02T03:04:05.000+09:00', ['article' => ['status' => 'reservation']], true];
         yield '予約で1時間より先' => ['2020-01-02T04:04:05.000+09:00', ['article' => ['status' => 'reservation']], false];
+    }
+
+    private function getSUT(): ReservationPublishedAt
+    {
+        return new ReservationPublishedAt(CarbonImmutable::create(2020, 01, 02, 03, 04, 05));
     }
 }

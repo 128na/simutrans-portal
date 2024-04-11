@@ -69,14 +69,6 @@ final class Article extends Model implements Feedable
         'pr' => 'boolean',
     ];
 
-    protected static function booted(): void
-    {
-        // 論理削除されていないユーザーを持つ
-        self::addGlobalScope('WithoutTrashedUser', function (Builder $builder): void {
-            $builder->has('user');
-        });
-    }
-
     public function routeNotificationForMail(mixed $notification): string
     {
         if (! $this->user->email) {
@@ -577,6 +569,14 @@ final class Article extends Model implements Feedable
             'link' => route('articles.show', ['userIdOrNickname' => $this->user->nickname ?? $this->user_id, 'articleSlug' => $this->slug]),
             'authorName' => $this->user->name ?? '',
         ]);
+    }
+
+    protected static function booted(): void
+    {
+        // 論理削除されていないユーザーを持つ
+        self::addGlobalScope('WithoutTrashedUser', function (Builder $builder): void {
+            $builder->has('user');
+        });
     }
 
     private function getPublicDisk(): FilesystemAdapter

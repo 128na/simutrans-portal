@@ -32,11 +32,6 @@ final class ImageAttachmentTest extends TestCase
         };
     }
 
-    private function getSUT(): ImageAttachment
-    {
-        return app(ImageAttachment::class);
-    }
-
     #[Test]
     #[DataProvider('data')]
     public function test(Closure $setup, bool $expected): void
@@ -51,5 +46,10 @@ final class ImageAttachmentTest extends TestCase
     {
         yield 'ok' => [fn (self $self) => $self->createImageAttachment(User::factory()->create())->id, false];
         yield 'ng' => [fn (self $self) => $self->createAttachment(User::factory()->create())->id, true];
+    }
+
+    private function getSUT(): ImageAttachment
+    {
+        return app(ImageAttachment::class);
     }
 }

@@ -16,11 +16,6 @@ use Tests\Unit\TestCase;
 
 final class ZippableManagerTest extends TestCase
 {
-    private function getSUT(): ZippableManager
-    {
-        return app(ZippableManager::class);
-    }
-
     public function testUser(): void
     {
         $user = new User();
@@ -45,5 +40,10 @@ final class ZippableManagerTest extends TestCase
         $this->expectException(Exception::class);
 
         $this->getSUT()->getItems(app(BulkZip::class));
+    }
+
+    private function getSUT(): ZippableManager
+    {
+        return app(ZippableManager::class);
     }
 }

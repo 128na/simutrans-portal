@@ -16,11 +16,6 @@ use Tests\Unit\TestCase;
 
 final class FindArticlesTest extends TestCase
 {
-    private function getSUT(): FindArticles
-    {
-        return app(FindArticles::class);
-    }
-
     #[DataProvider('data')]
     public function test(array $data, array $expected): void
     {
@@ -65,5 +60,10 @@ final class FindArticlesTest extends TestCase
                 ArticleAnalyticsType::Yearly, ['2020', '2023'],
             ],
         ];
+    }
+
+    private function getSUT(): FindArticles
+    {
+        return app(FindArticles::class);
     }
 }

@@ -8,11 +8,6 @@ use App\Enums\CroppableFormat;
 
 final class ImageCropper
 {
-    private function getMime(string $fullpath): ?CroppableFormat
-    {
-        return CroppableFormat::tryFrom(mime_content_type($fullpath) ?: '');
-    }
-
     public function crop(string $fullpath, int $top = 0, int $bottom = 0, int $left = 0, int $right = 0): void
     {
         $mime = $this->getMime($fullpath);
@@ -55,5 +50,10 @@ final class ImageCropper
         if (! $result) {
             throw new ConvertFailedException('imagepng failed:'.$fullpath);
         }
+    }
+
+    private function getMime(string $fullpath): ?CroppableFormat
+    {
+        return CroppableFormat::tryFrom(mime_content_type($fullpath) ?: '');
     }
 }

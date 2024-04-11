@@ -31,11 +31,6 @@ final class NotJustNumbersTest extends TestCase
         };
     }
 
-    private function getSUT(): NotJustNumbers
-    {
-        return new NotJustNumbers;
-    }
-
     #[Test]
     #[DataProvider('data')]
     public function test(string $value, bool $expected): void
@@ -50,5 +45,10 @@ final class NotJustNumbersTest extends TestCase
         yield '数字のみ' => ['1', true];
         yield '数字と英字' => ['1a', false];
         yield '16進数' => ['0x11', false];
+    }
+
+    private function getSUT(): NotJustNumbers
+    {
+        return new NotJustNumbers;
     }
 }

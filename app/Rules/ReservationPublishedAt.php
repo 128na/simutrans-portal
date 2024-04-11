@@ -13,16 +13,16 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 final class ReservationPublishedAt implements DataAwareRule, ValidationRule
 {
+    /**
+     * @var array{article?:array{status?:string,published_at?:string}}
+     */
+    private array $data = [];
+
     public function __construct(
         private readonly CarbonImmutable $now
     ) {
 
     }
-
-    /**
-     * @var array{article?:array{status?:string,published_at?:string}}
-     */
-    private array $data = [];
 
     /**
      * @param  array{article?:array{status?:string,published_at?:string}}  $data

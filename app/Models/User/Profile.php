@@ -39,20 +39,6 @@ final class Profile extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | 初期化時設定
-    |--------------------------------------------------------------------------
-     */
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        self::updated(function ($model): void {
-            Cache::flush();
-        });
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | リレーション
     |--------------------------------------------------------------------------
      */
@@ -98,6 +84,20 @@ final class Profile extends Model
         return $this->getPublicDisk()->url($this->has_avatar && $this->avatar
             ? $this->avatar->path
             : DefaultThumbnail::NO_AVATAR);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | 初期化時設定
+    |--------------------------------------------------------------------------
+     */
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::updated(function ($model): void {
+            Cache::flush();
+        });
     }
 
     private function getPublicDisk(): FilesystemAdapter

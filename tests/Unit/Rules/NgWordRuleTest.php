@@ -31,11 +31,6 @@ final class NgWordRuleTest extends TestCase
         };
     }
 
-    private function getSUT(array $ngWords): NgWordRule
-    {
-        return new NgWordRule($ngWords);
-    }
-
     #[Test]
     #[DataProvider('data')]
     public function test(array $ngWords, string $value, bool $expected): void
@@ -51,5 +46,10 @@ final class NgWordRuleTest extends TestCase
         yield '1個マッチ' => [['@'], 'test@example', true];
         yield '複数個マッチ' => [['@'], 'test@ex@mple', true];
         yield '複数種類マッチ' => [['@', '#'], '#test@example', true];
+    }
+
+    private function getSUT(array $ngWords): NgWordRule
+    {
+        return new NgWordRule($ngWords);
     }
 }

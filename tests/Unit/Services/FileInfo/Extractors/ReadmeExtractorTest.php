@@ -9,11 +9,6 @@ use Tests\Unit\TestCase;
 
 final class ReadmeExtractorTest extends TestCase
 {
-    private function getSUT(): ReadmeExtractor
-    {
-        return app(ReadmeExtractor::class);
-    }
-
     public function testGetKey(): void
     {
         $result = $this->getSUT()->getKey();
@@ -36,5 +31,10 @@ final class ReadmeExtractorTest extends TestCase
 
         $result = $sUT->extract($data);
         $this->assertEquals(['hoge'], $result);
+    }
+
+    private function getSUT(): ReadmeExtractor
+    {
+        return app(ReadmeExtractor::class);
     }
 }

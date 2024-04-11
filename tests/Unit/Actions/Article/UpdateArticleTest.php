@@ -20,11 +20,6 @@ use Tests\Unit\TestCase;
 
 final class UpdateArticleTest extends TestCase
 {
-    private function getSUT(CarbonImmutable $now): UpdateArticle
-    {
-        return app(UpdateArticle::class, ['now' => $now]);
-    }
-
     public function test更新(): void
     {
         $article = new Article();
@@ -102,5 +97,10 @@ final class UpdateArticleTest extends TestCase
         $this->assertNotNull($result);
         Queue::assertPushed(JobUpdateRelated::class);
         Event::assertDispatched(ArticleUpdated::class);
+    }
+
+    private function getSUT(CarbonImmutable $now): UpdateArticle
+    {
+        return app(UpdateArticle::class, ['now' => $now]);
     }
 }

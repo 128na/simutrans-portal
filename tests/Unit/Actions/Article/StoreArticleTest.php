@@ -21,11 +21,6 @@ use Tests\Unit\TestCase;
 
 final class StoreArticleTest extends TestCase
 {
-    private function getSUT(CarbonImmutable $now): StoreArticle
-    {
-        return app(StoreArticle::class, ['now' => $now]);
-    }
-
     public function test投稿(): void
     {
         $user = new User();
@@ -152,5 +147,10 @@ final class StoreArticleTest extends TestCase
         $this->assertNotNull($result);
         Queue::assertPushed(JobUpdateRelated::class);
         Event::assertDispatched(ArticleStored::class);
+    }
+
+    private function getSUT(CarbonImmutable $now): StoreArticle
+    {
+        return app(StoreArticle::class, ['now' => $now]);
     }
 }

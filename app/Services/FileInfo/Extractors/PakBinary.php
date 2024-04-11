@@ -15,7 +15,7 @@ final class PakBinary
 
     public function readChar(int $bytes): string
     {
-        $chars = mb_substr($this->binary, $this->position, $bytes);
+        $chars = substr($this->binary, $this->position, $bytes);
         $this->position += $bytes;
 
         return $chars;
@@ -23,7 +23,7 @@ final class PakBinary
 
     public function get(): string
     {
-        return mb_substr($this->binary, $this->position);
+        return substr($this->binary, $this->position);
     }
 
     public function seek(int $bytes): void
@@ -33,17 +33,17 @@ final class PakBinary
 
     public function eof(): bool
     {
-        return $this->position >= mb_strlen($this->binary);
+        return $this->position >= strlen($this->binary);
     }
 
     public function seekUntil(string $target): int
     {
-        $pos = mb_stripos($this->get(), $target);
+        $pos = stripos($this->get(), $target);
 
         if ($pos) {
             $this->position += $pos;
         } else {
-            $this->position = mb_strlen($this->binary);
+            $this->position = strlen($this->binary);
         }
 
         return $this->position;

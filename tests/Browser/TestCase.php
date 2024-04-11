@@ -32,7 +32,7 @@ abstract class TestCase extends BaseTestCase
      *
      * @beforeClass
      */
-    public static function prepare(): void
+    final public static function prepare(): void
     {
         if (! static::runningInSail()) {
             static::startChromeDriver();

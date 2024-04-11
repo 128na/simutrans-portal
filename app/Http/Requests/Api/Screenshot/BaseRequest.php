@@ -15,7 +15,7 @@ abstract class BaseRequest extends FormRequest
      *
      * @return array<mixed>
      */
-    public function rules(): array
+    final public function rules(): array
     {
         return [
             'screenshot.title' => 'required|string|max:256',

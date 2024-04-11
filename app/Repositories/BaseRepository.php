@@ -56,7 +56,7 @@ abstract class BaseRepository
      * @param  array<mixed>  $data
      * @return T
      */
-    public function store(array $data)
+    final public function store(array $data)
     {
         /** @var T */
         return $this->model->create($data);
@@ -68,7 +68,7 @@ abstract class BaseRepository
      * @param  T  $model
      * @param  array<mixed>  $data
      */
-    public function update($model, array $data): void
+    final public function update($model, array $data): void
     {
         $model->update($data);
     }
@@ -76,7 +76,7 @@ abstract class BaseRepository
     /**
      * 削除.
      */
-    public function delete(Model $model): void
+    final public function delete(Model $model): void
     {
         $model->delete();
     }
@@ -88,7 +88,7 @@ abstract class BaseRepository
      * @param  array<string>  $relations
      * @return T
      */
-    public function load($model, array $relations = [])
+    final public function load($model, array $relations = [])
     {
         return $model->loadMissing($relations);
     }
@@ -99,7 +99,7 @@ abstract class BaseRepository
      * @param  array<mixed>  $data
      * @return T
      */
-    public function storeByUser(User $user, array $data)
+    final public function storeByUser(User $user, array $data)
     {
         /** @var T */
         return $user->{$this->getRelationName()}()->create($data);
@@ -108,7 +108,7 @@ abstract class BaseRepository
     /**
      * @return T|null
      */
-    public function find(int|string|null $id)
+    final public function find(int|string|null $id)
     {
         /** @var T|null */
         return $this->model->find($id);
@@ -117,7 +117,7 @@ abstract class BaseRepository
     /**
      * @return T
      */
-    public function findOrFail(int|string|null $id): Model
+    final public function findOrFail(int|string|null $id): Model
     {
         /** @var T */
         return $this->model->findOrFail($id);
@@ -127,7 +127,7 @@ abstract class BaseRepository
      * @param  array<int|string|null>  $ids
      * @return Collection<int,T>
      */
-    public function findByIds(array $ids): Collection
+    final public function findByIds(array $ids): Collection
     {
         /** @var Collection<int,T> */
         return $this->model->whereIn('id', $ids)->get();
@@ -138,7 +138,7 @@ abstract class BaseRepository
      * @param  array<mixed>  $data
      * @return T
      */
-    public function updateOrCreate(array $search, array $data = [])
+    final public function updateOrCreate(array $search, array $data = [])
     {
         /** @var T */
         return $this->model->updateOrCreate($search, $data);
@@ -149,7 +149,7 @@ abstract class BaseRepository
      * @param  array<mixed>  $data
      * @return T
      */
-    public function firstOrCreate(array $search, array $data = [])
+    final public function firstOrCreate(array $search, array $data = [])
     {
         /** @var T */
         return $this->model->firstOrCreate($search, $data);
@@ -162,7 +162,7 @@ abstract class BaseRepository
      * @param  array<mixed>  $with
      * @return Collection<int,T>
      */
-    public function findAll(array $column = ['*'], array $with = [], ?int $limit = null): Collection
+    final public function findAll(array $column = ['*'], array $with = [], ?int $limit = null): Collection
     {
         $q = $this->model
             ->select($column)
@@ -182,7 +182,7 @@ abstract class BaseRepository
      * @param  array<mixed>  $with
      * @return Paginator<T>
      */
-    public function paginate(array $column = ['*'], array $with = [], int $perPage = 24): Paginator
+    final public function paginate(array $column = ['*'], array $with = [], int $perPage = 24): Paginator
     {
         /** @var Paginator<T> */
         return $this->model

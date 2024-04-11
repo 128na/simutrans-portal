@@ -13,6 +13,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Throwable;
 
 final class JobCreateBulkZip implements ShouldQueue
 {
@@ -21,7 +22,7 @@ final class JobCreateBulkZip implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct(private BulkZip $bulkZip)
+    public function __construct(private readonly BulkZip $bulkZip)
     {
     }
 
@@ -30,21 +31,20 @@ final class JobCreateBulkZip implements ShouldQueue
         ZippableManager $zippableManager,
         ZipManager $zipManager,
     ): void {
-        // dispatchAfterResponseではfailedメソッドは呼ばれない
-        try {
-            if ($this->bulkZip->generated) {
-                return;
-            }
+        if ($this->bulkZip->generated) {
+            return;
+        }
 
-            $begin = microtime(true);
+        $items = $zippableManager->getItems($this->bulkZip);
+        $path = $zipManager->create($items);
+        $bulkZipRepository->update($this->bulkZip, ['generated' => true, 'path' => $path]);
+    }
 
-            $items = $zippableManager->getItems($this->bulkZip);
-            $path = $zipManager->create($items);
-            $bulkZipRepository->update($this->bulkZip, ['generated' => true, 'path' => $path]);
-
-        } catch (\Throwable $throwable) {
-            logger()->error('[JobCreateBulkZip] failed', ['id' => $this->bulkZip->id]);
-            $this->bulkZip->delete();
+    public function failed(?Throwable $throwable): void
+    {
+        logger()->error('[JobCreateBulkZip] failed', ['id' => $this->bulkZip->id]);
+        $this->bulkZip->delete();
+        if ($throwable instanceof \Throwable) {
             report($throwable);
         }
     }

@@ -25,7 +25,7 @@ abstract class BaseRepository
     /**
      * @param  T  $model
      */
-    public function __construct(protected Model $model)
+    public function __construct(protected readonly Model $model)
     {
     }
 

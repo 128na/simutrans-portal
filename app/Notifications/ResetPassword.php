@@ -18,7 +18,7 @@ final class ResetPassword extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(public string $token)
+    public function __construct(public readonly string $token)
     {
     }
 

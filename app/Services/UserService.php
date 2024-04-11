@@ -12,8 +12,11 @@ use App\Repositories\UserRepository;
 
 final readonly class UserService
 {
-    public function __construct(private UserRepository $userRepository, private ProfileRepository $profileRepository, private AttachmentRepository $attachmentRepository)
-    {
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly ProfileRepository $profileRepository,
+        private readonly AttachmentRepository $attachmentRepository,
+    ) {
     }
 
     public function getUser(User $user): User

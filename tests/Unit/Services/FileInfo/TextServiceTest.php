@@ -9,11 +9,6 @@ use Tests\Unit\TestCase;
 
 final class TextServiceTest extends TestCase
 {
-    private function getSUT(): TextService
-    {
-        return app(TextService::class);
-    }
-
     public function testRemoveBom(): void
     {
         $text = pack('H*', 'EFBBBF').'dummy';
@@ -33,5 +28,10 @@ final class TextServiceTest extends TestCase
         $text = mb_convert_encoding('dummy', 'SJIS');
         $result = $this->getSUT()->encoding($text);
         $this->assertEquals('dummy', $result);
+    }
+
+    private function getSUT(): TextService
+    {
+        return app(TextService::class);
     }
 }

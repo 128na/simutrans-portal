@@ -2,30 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services\ArticleEditorService;
+namespace Tests\Unit\Actions\Article;
 
+use App\Actions\Article\StoreArticle;
+use App\Actions\Article\SyncRelatedModels;
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
-use App\Http\Requests\Api\Article\StoreRequest;
+use App\Events\Article\ArticleStored;
+use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
-use App\Services\ArticleEditorService;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Queue;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
 final class StoreArticleTest extends TestCase
 {
-    private function getSUT(CarbonImmutable $now): ArticleEditorService
-    {
-        return app(ArticleEditorService::class, ['now' => $now]);
-    }
-
     public function test投稿(): void
     {
         $user = new User();
-        $storeRequest = new StoreRequest([
+        $data = [
+            'should_notify' => true,
             'article' => [
                 'post_type' => ArticlePostType::AddonIntroduction->value,
                 'title' => 'dummy title',
@@ -34,10 +34,10 @@ final class StoreArticleTest extends TestCase
                 'contents' => 'dummy',
                 'articles' => [],
             ],
-        ]);
+        ];
         $carbonImmutable = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable): void {
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
             $article = new Article();
             $mock->expects()->storeByUser(
                 $user,
@@ -51,19 +51,23 @@ final class StoreArticleTest extends TestCase
                     'modified_at' => $carbonImmutable->toDateTimeString(),
                 ],
             )->once()->andReturn($article);
-            $mock->expects()->syncAttachments($article, [])->once();
-            $mock->expects()->syncCategories($article, [])->once();
-            $mock->expects()->syncArticles($article, [])->once();
-            $mock->expects()->syncTags($article, [])->once();
+            $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
+                $mock->expects()->__invoke($article, $data);
+            });
         });
-        $result = $this->getSUT($carbonImmutable)->storeArticle($user, $storeRequest);
+
+        Queue::fake();
+        Event::fake();
+        $result = $this->getSUT($carbonImmutable)($user, $data);
         $this->assertNotNull($result);
+        Queue::assertPushed(JobUpdateRelated::class);
+        Event::assertDispatched(ArticleStored::class);
     }
 
     public function test予約投稿(): void
     {
         $user = new User();
-        $storeRequest = new StoreRequest([
+        $data = [
             'article' => [
                 'post_type' => ArticlePostType::AddonIntroduction->value,
                 'title' => 'dummy title',
@@ -73,10 +77,10 @@ final class StoreArticleTest extends TestCase
                 'published_at' => '2022-01-02 03:34:00',
                 'articles' => [],
             ],
-        ]);
+        ];
         $carbonImmutable = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable): void {
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
             $article = new Article();
             $mock->expects()->storeByUser(
                 $user,
@@ -90,19 +94,23 @@ final class StoreArticleTest extends TestCase
                     'modified_at' => $carbonImmutable->toDateTimeString(),
                 ],
             )->once()->andReturn($article);
-            $mock->expects()->syncAttachments($article, [])->once();
-            $mock->expects()->syncCategories($article, [])->once();
-            $mock->expects()->syncArticles($article, [])->once();
-            $mock->expects()->syncTags($article, [])->once();
+            $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
+                $mock->expects()->__invoke($article, $data);
+            });
         });
-        $result = $this->getSUT($carbonImmutable)->storeArticle($user, $storeRequest);
+
+        Queue::fake();
+        Event::fake();
+        $result = $this->getSUT($carbonImmutable)($user, $data);
         $this->assertNotNull($result);
+        Queue::assertPushed(JobUpdateRelated::class);
+        Event::assertDispatched(ArticleStored::class);
     }
 
     public function testそれ以外(): void
     {
         $user = new User();
-        $storeRequest = new StoreRequest([
+        $data = [
             'article' => [
                 'post_type' => ArticlePostType::AddonIntroduction->value,
                 'title' => 'dummy title',
@@ -111,10 +119,10 @@ final class StoreArticleTest extends TestCase
                 'contents' => 'dummy',
                 'articles' => [],
             ],
-        ]);
+        ];
         $carbonImmutable = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable): void {
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
             $article = new Article();
             $mock->expects()->storeByUser(
                 $user,
@@ -128,12 +136,21 @@ final class StoreArticleTest extends TestCase
                     'modified_at' => $carbonImmutable->toDateTimeString(),
                 ],
             )->once()->andReturn($article);
-            $mock->expects()->syncAttachments($article, [])->once();
-            $mock->expects()->syncCategories($article, [])->once();
-            $mock->expects()->syncArticles($article, [])->once();
-            $mock->expects()->syncTags($article, [])->once();
+            $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
+                $mock->expects()->__invoke($article, $data);
+            });
         });
-        $result = $this->getSUT($carbonImmutable)->storeArticle($user, $storeRequest);
+
+        Queue::fake();
+        Event::fake();
+        $result = $this->getSUT($carbonImmutable)($user, $data);
         $this->assertNotNull($result);
+        Queue::assertPushed(JobUpdateRelated::class);
+        Event::assertDispatched(ArticleStored::class);
+    }
+
+    private function getSUT(CarbonImmutable $now): StoreArticle
+    {
+        return app(StoreArticle::class, ['now' => $now]);
     }
 }

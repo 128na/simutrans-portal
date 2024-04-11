@@ -12,8 +12,10 @@ use HTMLPurifier;
  */
 final readonly class MarkdownService
 {
-    public function __construct(private GithubMarkdown $githubMarkdown, private HTMLPurifier $htmlPurifier)
-    {
+    public function __construct(
+        private readonly GithubMarkdown $githubMarkdown,
+        private readonly HTMLPurifier $htmlPurifier,
+    ) {
         $this->githubMarkdown->html5 = true;
         $this->githubMarkdown->enableNewlines = true;
     }

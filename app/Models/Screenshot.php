@@ -36,14 +36,6 @@ final class Screenshot extends Model
         'published_at' => 'immutable_datetime',
     ];
 
-    protected static function booted(): void
-    {
-        // 論理削除されていないユーザーを持つ
-        self::addGlobalScope('WithoutTrashedUser', function (Builder $builder): void {
-            $builder->has('user');
-        });
-    }
-
     /*
     |--------------------------------------------------------------------------
     | リレーション
@@ -104,5 +96,13 @@ final class Screenshot extends Model
             'screenshotStatus' => $this->status,
             'screenshotUserName' => $this->user->name,
         ];
+    }
+
+    protected static function booted(): void
+    {
+        // 論理削除されていないユーザーを持つ
+        self::addGlobalScope('WithoutTrashedUser', function (Builder $builder): void {
+            $builder->has('user');
+        });
     }
 }

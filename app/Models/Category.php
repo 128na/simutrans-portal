@@ -37,20 +37,6 @@ final class Category extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | 初期化時設定
-    |--------------------------------------------------------------------------
-     */
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        self::addGlobalScope('order', function (Builder $builder): void {
-            $builder->orderBy('order', 'asc');
-        });
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | リレーション
     |--------------------------------------------------------------------------
      */
@@ -123,5 +109,19 @@ final class Category extends Model
         if (! $user->isAdmin()) {
             $builder->where('need_admin', 0);
         }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | 初期化時設定
+    |--------------------------------------------------------------------------
+     */
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::addGlobalScope('order', function (Builder $builder): void {
+            $builder->orderBy('order', 'asc');
+        });
     }
 }

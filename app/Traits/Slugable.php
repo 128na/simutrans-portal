@@ -25,7 +25,7 @@ trait Slugable
     public function setSlugAttribute(string $value): void
     {
         $value = urldecode($value);
-        $value = strtolower($value);
+        $value = mb_strtolower($value);
 
         $replaces = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '`', '{', '|', '}', ' ', '　', '.'];
         $value = str_replace($replaces, '-', $value);

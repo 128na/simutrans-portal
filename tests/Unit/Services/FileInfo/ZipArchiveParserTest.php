@@ -12,11 +12,6 @@ use ZipArchive;
 
 final class ZipArchiveParserTest extends TestCase
 {
-    private function getSUT(): ZipArchiveParser
-    {
-        return app(ZipArchiveParser::class);
-    }
-
     public function test(): void
     {
         $this->mock(Attachment::class, function (MockInterface $mock): void {
@@ -29,5 +24,10 @@ final class ZipArchiveParserTest extends TestCase
         $attachment = app(Attachment::class);
         $result = $this->getSUT()->parseTextContent($attachment)->toArray();
         $this->assertCount(0, $result);
+    }
+
+    private function getSUT(): ZipArchiveParser
+    {
+        return app(ZipArchiveParser::class);
     }
 }

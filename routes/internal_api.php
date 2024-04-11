@@ -53,8 +53,8 @@ Route::prefix('mypage')->group(function (): void {
         Route::get('user', [UserController::class, 'index']);
         Route::get('tags', [TagController::class, 'search']);
         Route::get('attachments', [AttachmentController::class, 'index']);
-        Route::get('articles', [EditorController::class, 'index']);
-        Route::get('options', [EditorController::class, 'options']);
+        Route::get('articles', (new EditorController())->index(...));
+        Route::get('options', (new EditorController())->options(...));
         Route::get('/invitation_code', [InvitationCodeController::class, 'index']);
         Route::get('/screenshots', (new ScreenshotController())->index(...));
         // ログイン履歴
@@ -67,12 +67,12 @@ Route::prefix('mypage')->group(function (): void {
         Route::post('tags/{tag}', [TagController::class, 'update'])->middleware('restrict:update_tag');
         Route::post('attachments', [AttachmentController::class, 'store']);
         Route::delete('attachments/{attachment}', [AttachmentController::class, 'destroy']);
-        Route::post('articles', [EditorController::class, 'store'])->middleware('restrict:update_article');
+        Route::post('articles', (new EditorController())->store(...))->middleware('restrict:update_article');
         Route::middleware(['can:update,article', 'restrict:update_article'])->group(function (): void {
-            Route::post('articles/{article}', [EditorController::class, 'update']);
+            Route::post('articles/{article}', (new EditorController())->update(...));
         });
         // 記事分析
-        Route::get('analytics', [AnalyticsController::class, 'index']);
+        Route::get('analytics', (new AnalyticsController())->index(...));
         // 一括DL機能
         Route::get('/bulk-zip', [BulkZipController::class, 'user']);
         // 招待機能

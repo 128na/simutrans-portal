@@ -9,11 +9,6 @@ use Tests\Unit\TestCase;
 
 final class TabExtractorTest extends TestCase
 {
-    private function getSUT(): TabExtractor
-    {
-        return app(TabExtractor::class);
-    }
-
     public function testGetKey(): void
     {
         $result = $this->getSUT()->getKey();
@@ -42,5 +37,10 @@ fuga
 
         $result = $sUT->extract($data);
         $this->assertEquals(['hoge' => 'ほげ', 'fuga' => 'ふが'], $result);
+    }
+
+    private function getSUT(): TabExtractor
+    {
+        return app(TabExtractor::class);
     }
 }

@@ -12,7 +12,7 @@ use ZipArchive;
 final readonly class ZipArchiveParser
 {
     public function __construct(
-        private ZipArchive $zipArchive,
+        private readonly ZipArchive $zipArchive,
     ) {
     }
 

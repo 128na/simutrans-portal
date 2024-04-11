@@ -15,11 +15,6 @@ use Tests\Unit\TestCase;
 
 final class OnScreenshotUpdatedTest extends TestCase
 {
-    private function getSUT(): OnScreenshotUpdated
-    {
-        return app(OnScreenshotUpdated::class);
-    }
-
     #[DataProvider('data')]
     public function test(
         bool $notYetPublished,
@@ -53,5 +48,10 @@ final class OnScreenshotUpdatedTest extends TestCase
         yield '公開済,公開,通知OF->通知しない' => [false, S::Publish, false, false];
         yield '公開済,非公開,通知ON->通知しない' => [false, S::Private, true, false];
         yield '公開済,非公開,通知OF->通知しない' => [false, S::Private, false, false];
+    }
+
+    private function getSUT(): OnScreenshotUpdated
+    {
+        return app(OnScreenshotUpdated::class);
     }
 }

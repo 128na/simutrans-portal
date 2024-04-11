@@ -61,11 +61,6 @@ final class FrontController extends Controller
         return view('front.spa', ['meta' => $meta]);
     }
 
-    private function getPublicDisk(): FilesystemAdapter
-    {
-        return Storage::disk('public');
-    }
-
     /**
      * SPA内からのアドオンダウンロード
      */
@@ -192,5 +187,10 @@ final class FrontController extends Controller
             : Article::slug($slugOrId)->orderBy('id', 'asc')->firstOrFail();
 
         return redirect(route('articles.show', ['userIdOrNickname' => $article->user?->nickname ?? $article->user_id, 'articleSlug' => $article->slug]), Response::HTTP_MOVED_PERMANENTLY);
+    }
+
+    private function getPublicDisk(): FilesystemAdapter
+    {
+        return Storage::disk('public');
     }
 }

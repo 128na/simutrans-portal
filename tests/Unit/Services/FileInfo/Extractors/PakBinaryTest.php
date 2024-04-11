@@ -9,13 +9,6 @@ use Tests\Unit\TestCase;
 
 final class PakBinaryTest extends TestCase
 {
-    private function getSUT(): PakBinary
-    {
-        return app(PakBinary::class, [
-            'binary' => file_get_contents(__DIR__.'/vehicle.transparent_vehicle.pak'),
-        ]);
-    }
-
     public function testGet(): void
     {
         $result = $this->getSUT()->get();
@@ -43,5 +36,12 @@ final class PakBinaryTest extends TestCase
     {
         $result = $this->getSUT()->seekUntil(pack('H*', '948C'));
         $this->assertEquals(105, $result);
+    }
+
+    private function getSUT(): PakBinary
+    {
+        return app(PakBinary::class, [
+            'binary' => file_get_contents(__DIR__.'/vehicle.transparent_vehicle.pak'),
+        ]);
     }
 }

@@ -17,11 +17,6 @@ use Tests\Unit\TestCase;
 
 final class StoreScreenshotTest extends TestCase
 {
-    private function getSUT(): StoreScreenshot
-    {
-        return app(StoreScreenshot::class);
-    }
-
     public function test非公開(): void
     {
         $data = [
@@ -97,5 +92,10 @@ final class StoreScreenshotTest extends TestCase
         $result = $this->getSUT()->store($user, $data);
         $this->assertNull($result);
         Event::assertDispatched(ScreenshotStored::class, fn (ScreenshotStored $screenshotStored): bool => $screenshotStored->shouldNotify);
+    }
+
+    private function getSUT(): StoreScreenshot
+    {
+        return app(StoreScreenshot::class);
     }
 }

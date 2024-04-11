@@ -22,6 +22,14 @@ final class LoginHistory extends Model
         'referer',
     ];
 
+    /**
+     * @return BelongsTo<User,LoginHistory>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     protected static function booted(): void
     {
         self::creating(function (LoginHistory $loginHistory): void {
@@ -31,13 +39,5 @@ final class LoginHistory extends Model
                 'referer' => request()->server('HTTP_REFERER'),
             ]);
         });
-    }
-
-    /**
-     * @return BelongsTo<User,LoginHistory>
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 }

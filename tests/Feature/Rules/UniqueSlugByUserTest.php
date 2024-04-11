@@ -35,11 +35,6 @@ final class UniqueSlugByUserTest extends TestCase
         };
     }
 
-    private function getSUT(): UniqueSlugByUser
-    {
-        return new UniqueSlugByUser();
-    }
-
     public function test_一般投稿、編集中記事と重複_OK(): void
     {
         $article = Article::factory()->create(['user_id' => $this->user->id]);
@@ -116,5 +111,10 @@ final class UniqueSlugByUserTest extends TestCase
         $this->getSUT()
             ->validate('dummy', $article->slug, $this->failClosure);
         $this->assertTrue($this->failCalled);
+    }
+
+    private function getSUT(): UniqueSlugByUser
+    {
+        return new UniqueSlugByUser();
     }
 }

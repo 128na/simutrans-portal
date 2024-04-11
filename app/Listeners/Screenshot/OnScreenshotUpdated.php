@@ -11,7 +11,7 @@ use Illuminate\Log\Logger;
 
 final readonly class OnScreenshotUpdated
 {
-    public function __construct(private Logger $logger)
+    public function __construct(private readonly Logger $logger)
     {
     }
 

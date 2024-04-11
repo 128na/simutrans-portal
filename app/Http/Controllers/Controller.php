@@ -22,6 +22,8 @@ abstract class Controller extends BaseController
     {
         $user = Auth::user();
         if ($user) {
+            assert($user instanceof User);
+
             return $user;
         }
 

@@ -28,11 +28,6 @@ final class ControllOption extends Model
         'value' => 'bool',
     ];
 
-    private function isRestrict(ControllOptionKey $controllOptionKey): bool
-    {
-        return $this->where(['key' => $controllOptionKey, 'value' => 0])->exists();
-    }
-
     public function restrictLogin(): bool
     {
         return $this->isRestrict(ControllOptionKey::Login);
@@ -61,5 +56,10 @@ final class ControllOption extends Model
     public function restrictScreenshptUpdate(): bool
     {
         return $this->isRestrict(ControllOptionKey::ScreenshotUpdate);
+    }
+
+    private function isRestrict(ControllOptionKey $controllOptionKey): bool
+    {
+        return $this->where(['key' => $controllOptionKey, 'value' => 0])->exists();
     }
 }

@@ -58,18 +58,6 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
         'two_factor_confirmed_at' => 'datetime',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | 初期化時設定
-    |--------------------------------------------------------------------------
-    */
-    protected static function booted(): void
-    {
-        self::created(function ($model): void {
-            $model->syncRelatedData();
-        });
-    }
-
     public function syncRelatedData(): void
     {
         if ($this->profile()->doesntExist()) {
@@ -141,7 +129,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
      */
     public function invited(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'invited_by');
+        return $this->belongsTo(self::class, 'invited_by');
     }
 
     /**
@@ -149,7 +137,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
      */
     public function invites(): HasMany
     {
-        return $this->hasMany(User::class, 'invited_by');
+        return $this->hasMany(self::class, 'invited_by');
     }
 
     /**
@@ -157,7 +145,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
      */
     public function invitesReclusive(): HasMany
     {
-        return $this->hasMany(User::class, 'invited_by')->with(['invites']);
+        return $this->hasMany(self::class, 'invited_by')->with(['invites']);
     }
 
     /**
@@ -228,5 +216,17 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
             'userId' => $this->id,
             'userName' => $this->name,
         ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | 初期化時設定
+    |--------------------------------------------------------------------------
+    */
+    protected static function booted(): void
+    {
+        self::created(function ($model): void {
+            $model->syncRelatedData();
+        });
     }
 }

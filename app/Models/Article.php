@@ -69,14 +69,6 @@ final class Article extends Model implements Feedable
         'pr' => 'boolean',
     ];
 
-    protected static function booted(): void
-    {
-        // 論理削除されていないユーザーを持つ
-        self::addGlobalScope('WithoutTrashedUser', function (Builder $builder): void {
-            $builder->has('user');
-        });
-    }
-
     public function routeNotificationForMail(mixed $notification): string
     {
         if (! $this->user->email) {
@@ -238,7 +230,7 @@ final class Article extends Model implements Feedable
      */
     public function articles(): MorphToMany
     {
-        return $this->morphToMany(Article::class, 'articlable');
+        return $this->morphToMany(self::class, 'articlable');
     }
 
     /**
@@ -248,7 +240,7 @@ final class Article extends Model implements Feedable
      */
     public function relatedArticles(): MorphToMany
     {
-        return $this->morphedByMany(Article::class, 'articlable');
+        return $this->morphedByMany(self::class, 'articlable');
     }
 
     /**
@@ -526,12 +518,12 @@ final class Article extends Model implements Feedable
         return $this->categories->some(fn ($category): bool => $category->type === CategoryType::Page && $category->slug === 'announce');
     }
 
-    public function hasCategory(string|int $id): bool
+    public function hasCategory(int|string $id): bool
     {
         return $this->categories->some(fn ($category): bool => $category->id === (int) $id);
     }
 
-    public function getImage(string|int $id): ?Attachment
+    public function getImage(int|string $id): ?Attachment
     {
         return $this->attachments->first(
             fn ($attachment): bool => (int) $id == $attachment->id
@@ -577,6 +569,14 @@ final class Article extends Model implements Feedable
             'link' => route('articles.show', ['userIdOrNickname' => $this->user->nickname ?? $this->user_id, 'articleSlug' => $this->slug]),
             'authorName' => $this->user->name ?? '',
         ]);
+    }
+
+    protected static function booted(): void
+    {
+        // 論理削除されていないユーザーを持つ
+        self::addGlobalScope('WithoutTrashedUser', function (Builder $builder): void {
+            $builder->has('user');
+        });
     }
 
     private function getPublicDisk(): FilesystemAdapter

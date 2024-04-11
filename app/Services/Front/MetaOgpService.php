@@ -27,17 +27,6 @@ final class MetaOgpService
         ];
     }
 
-    private function trimDescription(?string $str): string
-    {
-        if ($str === null || $str === '' || $str === '0') {
-            return Config::string('app.meta-description');
-        }
-
-        $str = str_replace(["\n", "\r"], '', $str);
-
-        return mb_strimwidth($str, 0, 200, '…');
-    }
-
     /**
      * @return array{title:string,description:string,image:string|null,card_type:string}
      */
@@ -136,5 +125,16 @@ final class MetaOgpService
             'canonical' => route('screenshots.show', $screenshot),
             'card_type' => 'summary_large_image',
         ];
+    }
+
+    private function trimDescription(?string $str): string
+    {
+        if ($str === null || $str === '' || $str === '0') {
+            return Config::string('app.meta-description');
+        }
+
+        $str = str_replace(["\n", "\r"], '', $str);
+
+        return mb_strimwidth($str, 0, 200, '…');
     }
 }

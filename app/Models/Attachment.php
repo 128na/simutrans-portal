@@ -35,20 +35,6 @@ final class Attachment extends Model
         'path',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | イベントハンドラ
-    |--------------------------------------------------------------------------
-     */
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        self::deleting(function ($model): void {
-            $model->deleteFileHandler();
-        });
-    }
-
     public function deleteFileHandler(): ?bool
     {
         return $this->getPublicDisk()->delete($this->path);
@@ -102,15 +88,15 @@ final class Attachment extends Model
     {
         $mime = $this->getPublicDisk()->mimeType($this->path) ?: '';
 
-        if (stripos((string) $mime, 'image') !== false) {
+        if (mb_stripos((string) $mime, 'image') !== false) {
             return 'image';
         }
 
-        if (stripos((string) $mime, 'video') !== false) {
+        if (mb_stripos((string) $mime, 'video') !== false) {
             return 'video';
         }
 
-        if (stripos((string) $mime, 'text') !== false) {
+        if (mb_stripos((string) $mime, 'text') !== false) {
             return 'text';
         }
 
@@ -121,7 +107,7 @@ final class Attachment extends Model
     {
         $mime = $this->getPublicDisk()->mimeType($this->path) ?: '';
 
-        return stripos((string) $mime, 'image/png') !== false;
+        return mb_stripos((string) $mime, 'image/png') !== false;
     }
 
     public function getThumbnailAttribute(): string
@@ -157,6 +143,20 @@ final class Attachment extends Model
         }
 
         return '';
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | イベントハンドラ
+    |--------------------------------------------------------------------------
+     */
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::deleting(function ($model): void {
+            $model->deleteFileHandler();
+        });
     }
 
     private function getPublicDisk(): FilesystemAdapter

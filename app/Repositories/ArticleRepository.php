@@ -135,19 +135,6 @@ final class ArticleRepository extends BaseRepository
     }
 
     /**
-     * @return Builder<Article>
-     */
-    private function queryAnnouces(string $order): Builder
-    {
-        return $this->model
-            ->active()
-            ->announce()
-            ->select(['articles.*'])
-            ->with(self::FRONT_RELATIONS)
-            ->orderBy($order, 'desc');
-    }
-
-    /**
      * お知らせ記事一覧.
      *
      * @return Paginator<Article>
@@ -160,19 +147,6 @@ final class ArticleRepository extends BaseRepository
     }
 
     /**
-     * @return Builder<Article>
-     */
-    private function queryPages(string $order): Builder
-    {
-        return $this->model
-            ->active()
-            ->withoutAnnounce()
-            ->select(['articles.*'])
-            ->with(self::FRONT_RELATIONS)
-            ->orderBy($order, 'desc');
-    }
-
-    /**
      * 一般記事一覧.
      *
      * @return Paginator<Article>
@@ -182,18 +156,6 @@ final class ArticleRepository extends BaseRepository
         return $simple
             ? $this->queryPages($order)->simplePaginate(self::PER_PAGE_SIMPLE)
             : $this->queryPages($order)->paginate();
-    }
-
-    /**
-     * @return Builder<Article>
-     */
-    private function queryRanking(): Builder
-    {
-        return $this->model
-            ->active()
-            ->select(['articles.*'])
-            ->with(self::FRONT_RELATIONS)
-            ->rankingOrder();
     }
 
     /**
@@ -224,20 +186,6 @@ final class ArticleRepository extends BaseRepository
         return $simple
             ? $q->simplePaginate(self::PER_PAGE_SIMPLE)
             : $q->paginate();
-    }
-
-    /**
-     * @return Builder<Article>
-     */
-    private function queryByPakAddonCategory(Category $pak, Category $addon, string $order): Builder
-    {
-        return $this->model
-            ->active()
-            ->select(['articles.*'])
-            ->with(self::FRONT_RELATIONS)
-            ->whereHas('categories', fn ($query) => $query->where('id', $pak->id))
-            ->whereHas('categories', fn ($query) => $query->where('id', $addon->id))
-            ->orderBy($order, 'desc');
     }
 
     /**
@@ -294,33 +242,6 @@ final class ArticleRepository extends BaseRepository
             ->with(self::FRONT_RELATIONS)
             ->orderBy($order, 'desc')
             ->paginate();
-    }
-
-    /**
-     * @return Builder<Article>
-     */
-    private function queryBySearch(string $word, string $order): Builder
-    {
-        $word = trim($word);
-
-        if ($word === '' || $word === '0') {
-            return $this->model->select(['articles.*'])
-                ->active()
-                ->with(self::FRONT_RELATIONS)
-                ->orderBy($order, 'desc');
-        }
-
-        $likeWord = sprintf('%%%s%%', $word);
-
-        return $this->model->select(['articles.*'])
-            ->active()
-            ->where(fn ($q) => $q
-                ->orWhere('title', 'LIKE', $likeWord)
-                ->orWhere('contents', 'LIKE', $likeWord)
-                ->orWhereHas('attachments.fileInfo', fn ($q) => $q
-                    ->where('data', 'LIKE', $likeWord)))
-            ->with(self::FRONT_RELATIONS)
-            ->orderBy($order, 'desc');
     }
 
     /**
@@ -449,5 +370,84 @@ final class ArticleRepository extends BaseRepository
             ->where('pr', 1)
             ->inRandomOrder()
             ->first();
+    }
+
+    /**
+     * @return Builder<Article>
+     */
+    private function queryAnnouces(string $order): Builder
+    {
+        return $this->model
+            ->active()
+            ->announce()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy($order, 'desc');
+    }
+
+    /**
+     * @return Builder<Article>
+     */
+    private function queryPages(string $order): Builder
+    {
+        return $this->model
+            ->active()
+            ->withoutAnnounce()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy($order, 'desc');
+    }
+
+    /**
+     * @return Builder<Article>
+     */
+    private function queryRanking(): Builder
+    {
+        return $this->model
+            ->active()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->rankingOrder();
+    }
+
+    /**
+     * @return Builder<Article>
+     */
+    private function queryByPakAddonCategory(Category $pak, Category $addon, string $order): Builder
+    {
+        return $this->model
+            ->active()
+            ->select(['articles.*'])
+            ->with(self::FRONT_RELATIONS)
+            ->whereHas('categories', fn ($query) => $query->where('id', $pak->id))
+            ->whereHas('categories', fn ($query) => $query->where('id', $addon->id))
+            ->orderBy($order, 'desc');
+    }
+
+    /**
+     * @return Builder<Article>
+     */
+    private function queryBySearch(string $word, string $order): Builder
+    {
+        $word = trim($word);
+
+        if ($word === '' || $word === '0') {
+            return $this->model->select(['articles.*'])
+                ->active()
+                ->with(self::FRONT_RELATIONS)
+                ->orderBy($order, 'desc');
+        }
+
+        $likeWord = sprintf('%%%s%%', $word);
+
+        return $this->model->select(['articles.*'])
+            ->active()
+            ->where(fn ($q) => $q
+                ->orWhere('title', 'LIKE', $likeWord)
+                ->orWhere('contents', 'LIKE', $likeWord)
+                ->orWhereHas('attachments.fileInfo', fn ($q) => $q
+                    ->where('data', 'LIKE', $likeWord)))
+            ->with(self::FRONT_RELATIONS)
+            ->orderBy($order, 'desc');
     }
 }

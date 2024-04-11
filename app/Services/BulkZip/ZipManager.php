@@ -27,18 +27,6 @@ final class ZipManager
     ) {
     }
 
-    private function randName(?string $prefix = null, ?string $suffix = null): string
-    {
-        return $prefix.Str::uuid().$suffix;
-    }
-
-    private function isZipFile(string $filepath): bool
-    {
-        $mime = $this->filesystemAdapter->mimeType($filepath);
-
-        return $mime === 'application/zip';
-    }
-
     /**
      * @param  Model[]  $items
      */
@@ -61,6 +49,18 @@ final class ZipManager
         $this->addCsvFile($result['contents']);
 
         return $this->filepath;
+    }
+
+    private function randName(?string $prefix = null, ?string $suffix = null): string
+    {
+        return $prefix.Str::uuid().$suffix;
+    }
+
+    private function isZipFile(string $filepath): bool
+    {
+        $mime = $this->filesystemAdapter->mimeType($filepath);
+
+        return $mime === 'application/zip';
     }
 
     /**

@@ -33,16 +33,6 @@ final class BulkZip extends Model
         'path',
     ];
 
-    protected static function booted(): void
-    {
-        self::creating(function (self $model): void {
-            $model->uuid = (string) Str::uuid();
-        });
-        self::deleting(function ($model): void {
-            $model->deleteFileHandler();
-        });
-    }
-
     /**
      * @return MorphTo<Model,BulkZip>
      */
@@ -58,5 +48,15 @@ final class BulkZip extends Model
         }
 
         return false;
+    }
+
+    protected static function booted(): void
+    {
+        self::creating(function (self $model): void {
+            $model->uuid = (string) Str::uuid();
+        });
+        self::deleting(function ($model): void {
+            $model->deleteFileHandler();
+        });
     }
 }

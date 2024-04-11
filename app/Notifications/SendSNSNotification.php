@@ -25,7 +25,7 @@ abstract class SendSNSNotification extends Notification implements ShouldQueue
      *
      * @return array<string>
      */
-    public function via(mixed $notifiable): array
+    final public function via(mixed $notifiable): array
     {
         $enabledFilter =
             /**

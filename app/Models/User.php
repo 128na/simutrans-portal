@@ -129,7 +129,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
      */
     public function invited(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'invited_by');
+        return $this->belongsTo(self::class, 'invited_by');
     }
 
     /**
@@ -137,7 +137,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
      */
     public function invites(): HasMany
     {
-        return $this->hasMany(User::class, 'invited_by');
+        return $this->hasMany(self::class, 'invited_by');
     }
 
     /**
@@ -145,7 +145,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
      */
     public function invitesReclusive(): HasMany
     {
-        return $this->hasMany(User::class, 'invited_by')->with(['invites']);
+        return $this->hasMany(self::class, 'invited_by')->with(['invites']);
     }
 
     /**

@@ -72,7 +72,7 @@ Route::prefix('mypage')->group(function (): void {
             Route::post('articles/{article}', (new EditorController())->update(...));
         });
         // 記事分析
-        Route::get('analytics', [AnalyticsController::class, 'index']);
+        Route::get('analytics', (new AnalyticsController())->index(...));
         // 一括DL機能
         Route::get('/bulk-zip', [BulkZipController::class, 'user']);
         // 招待機能

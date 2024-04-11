@@ -12,7 +12,7 @@ use Tests\Feature\TestCase as FeatureTestCase;
 
 final class SyncTagsTest extends FeatureTestCase
 {
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     private User $user;
 
@@ -20,7 +20,7 @@ final class SyncTagsTest extends FeatureTestCase
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
     }
 
     public function test(): void
@@ -35,7 +35,7 @@ final class SyncTagsTest extends FeatureTestCase
             $article->tags()->pluck('id')->toArray()
         );
 
-        $this->repository->syncTags($article, [$shouldAddTag->id]);
+        $this->articleRepository->syncTags($article, [$shouldAddTag->id]);
 
         $this->assertSame(
             [$shouldAddTag->id],

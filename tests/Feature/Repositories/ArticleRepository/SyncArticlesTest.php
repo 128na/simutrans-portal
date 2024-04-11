@@ -11,7 +11,7 @@ use Tests\Feature\TestCase;
 
 final class SyncArticlesTest extends TestCase
 {
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     private User $user;
 
@@ -19,7 +19,7 @@ final class SyncArticlesTest extends TestCase
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
     }
 
     public function test(): void
@@ -33,7 +33,7 @@ final class SyncArticlesTest extends TestCase
             [$shouldRemoveArticle->id],
             $article->articles()->pluck('id')->toArray()
         );
-        $this->repository->syncArticles($article, [$shouldAddArticle->id]);
+        $this->articleRepository->syncArticles($article, [$shouldAddArticle->id]);
         $this->assertSame(
             [$shouldAddArticle->id],
             $article->articles()->pluck('id')->toArray()

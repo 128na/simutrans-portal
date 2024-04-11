@@ -12,20 +12,20 @@ use Tests\Feature\TestCase;
 
 final class FindOrFailWithTrashedTest extends TestCase
 {
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     private Article $article;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
         $this->article = Article::factory()->create();
     }
 
     public function test(): void
     {
-        $article = $this->repository->findOrFailWithTrashed($this->article->id);
+        $article = $this->articleRepository->findOrFailWithTrashed($this->article->id);
 
         $this->assertInstanceOf(Article::class, $article);
     }
@@ -33,7 +33,7 @@ final class FindOrFailWithTrashedTest extends TestCase
     public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => ArticleStatus::Draft]);
-        $article = $this->repository->findOrFailWithTrashed($this->article->id);
+        $article = $this->articleRepository->findOrFailWithTrashed($this->article->id);
 
         $this->assertInstanceOf(Article::class, $article);
     }
@@ -41,7 +41,7 @@ final class FindOrFailWithTrashedTest extends TestCase
     public function test論理削除(): void
     {
         $this->article->delete();
-        $article = $this->repository->findOrFailWithTrashed($this->article->id);
+        $article = $this->articleRepository->findOrFailWithTrashed($this->article->id);
 
         $this->assertInstanceOf(Article::class, $article);
     }
@@ -49,6 +49,6 @@ final class FindOrFailWithTrashedTest extends TestCase
     public function testNotFound(): void
     {
         $this->expectException(ModelNotFoundException::class);
-        $this->repository->findOrFailWithTrashed(0);
+        $this->articleRepository->findOrFailWithTrashed(0);
     }
 }

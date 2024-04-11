@@ -14,20 +14,20 @@ final class FindAllByUserTest extends TestCase
 {
     private Article $article;
 
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->article = Article::factory()->create();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
     }
 
     public function test(): void
     {
         Article::factory()->create();
 
-        $res = $this->repository->findAllByUser($this->article->user);
+        $res = $this->articleRepository->findAllByUser($this->article->user);
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(1, $res->count(), '自身の記事のみ取得できること');
         $this->assertSame($this->article->title, $res->first()->title);
@@ -36,7 +36,7 @@ final class FindAllByUserTest extends TestCase
     public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => ArticleStatus::Draft]);
-        $res = $this->repository->findAllByUser($this->article->user);
+        $res = $this->articleRepository->findAllByUser($this->article->user);
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(1, $res->count(), '非公開記事も取得できること');
@@ -45,7 +45,7 @@ final class FindAllByUserTest extends TestCase
     public function test論理削除(): void
     {
         $this->article->delete();
-        $res = $this->repository->findAllByUser($this->article->user);
+        $res = $this->articleRepository->findAllByUser($this->article->user);
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');

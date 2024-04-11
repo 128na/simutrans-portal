@@ -13,21 +13,21 @@ use Tests\Feature\TestCase;
 
 final class PaginateBySearchTest extends TestCase
 {
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     private Article $article;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
         $this->article = Article::factory()->publish()->create();
     }
 
     public function test(): void
     {
         Article::factory()->publish()->create();
-        $res = $this->repository->paginateBySearch($this->article->title);
+        $res = $this->articleRepository->paginateBySearch($this->article->title);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(1, $res->count(), 'マッチする記事のみ取得出来ること');
@@ -36,7 +36,7 @@ final class PaginateBySearchTest extends TestCase
     public function testコンテンツ(): void
     {
         $this->article->update(['contents' => ['description' => 'find me']]);
-        $res = $this->repository->paginateBySearch('find');
+        $res = $this->articleRepository->paginateBySearch('find');
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(1, $res->count(), 'コンテンツにマッチする記事が取得出来ること');
@@ -47,7 +47,7 @@ final class PaginateBySearchTest extends TestCase
         $attachment = $this->createAttachment($this->article->user);
         $attachment->fileInfo()->save(new FileInfo(['data' => ['find me']]));
         $this->article->attachments()->save($attachment);
-        $res = $this->repository->paginateBySearch('find');
+        $res = $this->articleRepository->paginateBySearch('find');
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(1, $res->count(), '添付ファイル情報にマッチする記事が取得出来ること');
@@ -56,7 +56,7 @@ final class PaginateBySearchTest extends TestCase
     public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => ArticleStatus::Draft]);
-        $res = $this->repository->paginateBySearch($this->article->title);
+        $res = $this->articleRepository->paginateBySearch($this->article->title);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(0, $res->count(), '非公開記事は取得できないこと');
@@ -65,7 +65,7 @@ final class PaginateBySearchTest extends TestCase
     public function test論理削除(): void
     {
         $this->article->delete();
-        $res = $this->repository->paginateBySearch($this->article->title);
+        $res = $this->articleRepository->paginateBySearch($this->article->title);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');

@@ -18,32 +18,32 @@ use Tests\Unit\TestCase;
 
 final class AddonPostDecoratorTest extends TestCase
 {
-    private AddonPostDecorator $decorator;
+    private AddonPostDecorator $addonPostDecorator;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->decorator = new AddonPostDecorator();
+        $this->addonPostDecorator = new AddonPostDecorator();
     }
 
     public function test_canProcess_対象(): void
     {
         $article = new Article(['post_type' => ArticlePostType::AddonPost]);
-        $result = $this->decorator->canProcess($article);
+        $result = $this->addonPostDecorator->canProcess($article);
         $this->assertTrue($result);
     }
 
     public function test_canProcess_対象外_Article(): void
     {
         $article = new Article(['post_type' => ArticlePostType::AddonIntroduction]);
-        $result = $this->decorator->canProcess($article);
+        $result = $this->addonPostDecorator->canProcess($article);
         $this->assertFalse($result);
     }
 
     public function test_canProcess_対象外_Model(): void
     {
         $model = User::factory()->make();
-        $result = $this->decorator->canProcess($model);
+        $result = $this->addonPostDecorator->canProcess($model);
         $this->assertFalse($result);
     }
 
@@ -78,7 +78,7 @@ final class AddonPostDecoratorTest extends TestCase
             ]));
         });
         $input = ['contents' => [], 'files' => []];
-        $result = $this->decorator->process($input, $mock);
+        $result = $this->addonPostDecorator->process($input, $mock);
 
         $contents = $result['contents'];
 

@@ -18,12 +18,12 @@ final class FindAllForAnalyticsTest extends TestCase
 
     private Article $article;
 
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
         $this->user = User::factory()->create();
         $this->article = Article::factory()->create(['user_id' => $this->user->id]);
     }
@@ -31,7 +31,7 @@ final class FindAllForAnalyticsTest extends TestCase
     public function test(): void
     {
         $othersArticle = Article::factory()->create();
-        $res = $this->repository->findAllForAnalytics(
+        $res = $this->articleRepository->findAllForAnalytics(
             $this->user,
             [$this->article->id, $othersArticle->id],
             ArticleAnalyticsType::Daily,
@@ -45,7 +45,7 @@ final class FindAllForAnalyticsTest extends TestCase
     public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => ArticleStatus::Draft]);
-        $res = $this->repository->findAllForAnalytics(
+        $res = $this->articleRepository->findAllForAnalytics(
             $this->user,
             [$this->article->id],
             ArticleAnalyticsType::Daily,
@@ -59,7 +59,7 @@ final class FindAllForAnalyticsTest extends TestCase
     public function test論理削除(): void
     {
         $this->article->delete();
-        $res = $this->repository->findAllForAnalytics(
+        $res = $this->articleRepository->findAllForAnalytics(
             $this->user,
             [$this->article->id],
             ArticleAnalyticsType::Daily,

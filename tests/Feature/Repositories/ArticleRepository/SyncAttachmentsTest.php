@@ -12,7 +12,7 @@ use Tests\Feature\TestCase;
 
 final class SyncAttachmentsTest extends TestCase
 {
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     private User $user;
 
@@ -20,7 +20,7 @@ final class SyncAttachmentsTest extends TestCase
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
     }
 
     public function test(): void
@@ -42,7 +42,7 @@ final class SyncAttachmentsTest extends TestCase
             $article->attachments()->pluck('id')->toArray()
         );
 
-        $this->repository->syncAttachments($article, [$shouldAddAttachment->id]);
+        $this->articleRepository->syncAttachments($article, [$shouldAddAttachment->id]);
 
         $this->assertSame(
             [$shouldAddAttachment->id],
@@ -65,7 +65,7 @@ final class SyncAttachmentsTest extends TestCase
             'attachmentable_id' => null,
         ]);
 
-        $this->repository->syncAttachments($article, [$attachment->id]);
+        $this->articleRepository->syncAttachments($article, [$attachment->id]);
 
         $this->assertDatabaseHas('attachments', [
             'id' => $attachment->id,

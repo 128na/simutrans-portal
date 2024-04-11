@@ -11,33 +11,33 @@ use Tests\Feature\TestCase;
 
 final class JobCreateBulkZipTest extends TestCase
 {
-    private BulkZip $bulkzip;
+    private BulkZip $bulkZip;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->bulkzip = BulkZip::factory()->create();
+        $this->bulkZip = BulkZip::factory()->create();
     }
 
     protected function tearDown(): void
     {
-        $this->bulkzip->delete();
+        $this->bulkZip->delete();
         parent::tearDown();
     }
 
     public function test(): void
     {
         $this->assertDatabaseHas('bulk_zips', [
-            'id' => $this->bulkzip->id,
+            'id' => $this->bulkZip->id,
             'path' => null,
             'generated' => false,
         ]);
 
-        JobCreateBulkZip::dispatchSync($this->bulkzip);
+        JobCreateBulkZip::dispatchSync($this->bulkZip);
 
-        $this->bulkzip->refresh();
+        $this->bulkZip->refresh();
         $this->assertDatabaseHas('bulk_zips', [
-            'id' => $this->bulkzip->id,
+            'id' => $this->bulkZip->id,
             'generated' => true,
         ]);
 
@@ -45,6 +45,6 @@ final class JobCreateBulkZipTest extends TestCase
          * @var \Illuminate\Filesystem\FilesystemAdapter
          */
         $disk = Storage::disk('public');
-        $this->assertFileExists($disk->path($this->bulkzip->path), 'zipファイルが存在すること');
+        $this->assertFileExists($disk->path($this->bulkZip->path), 'zipファイルが存在すること');
     }
 }

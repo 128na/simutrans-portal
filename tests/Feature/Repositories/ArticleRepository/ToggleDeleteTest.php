@@ -10,14 +10,14 @@ use Tests\Feature\TestCase;
 
 final class ToggleDeleteTest extends TestCase
 {
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     private Article $article;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
         $this->article = Article::factory()->create();
     }
 
@@ -25,7 +25,7 @@ final class ToggleDeleteTest extends TestCase
     {
         $this->assertFalse($this->article->trashed());
 
-        $this->repository->toggleDelete($this->article);
+        $this->articleRepository->toggleDelete($this->article);
 
         $this->assertTrue($this->article->fresh()->trashed());
     }
@@ -35,7 +35,7 @@ final class ToggleDeleteTest extends TestCase
         $this->article->delete();
         $this->assertTrue($this->article->fresh()->trashed());
 
-        $this->repository->toggleDelete($this->article);
+        $this->articleRepository->toggleDelete($this->article);
 
         $this->assertFalse($this->article->fresh()->trashed());
     }

@@ -17,7 +17,7 @@ final class UserController extends Controller
     {
     }
 
-    public function index(): UserResouce|string
+    public function index(): string|UserResouce
     {
         if (Auth::check()) {
             $user = $this->userService->getUser($this->loggedinUser());

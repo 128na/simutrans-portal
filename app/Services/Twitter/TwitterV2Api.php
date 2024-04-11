@@ -56,7 +56,7 @@ final class TwitterV2Api extends TwitterOAuth
             if (! $token->isExpired()) {
                 return $token;
             }
-        } catch (ModelNotFoundException|QueryException|PDOException $e) {
+        } catch (ModelNotFoundException|PDOException|QueryException $e) {
             report($e);
             throw new PKCETokenNotFoundException();
         }

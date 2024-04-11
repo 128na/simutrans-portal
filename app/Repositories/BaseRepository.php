@@ -87,7 +87,7 @@ abstract class BaseRepository
     /**
      * @return T|null
      */
-    final public function find(int|string|null $id)
+    final public function find(null|int|string $id)
     {
         /** @var T|null */
         return $this->model->find($id);
@@ -96,7 +96,7 @@ abstract class BaseRepository
     /**
      * @return T
      */
-    final public function findOrFail(int|string|null $id): Model
+    final public function findOrFail(null|int|string $id): Model
     {
         /** @var T */
         return $this->model->findOrFail($id);

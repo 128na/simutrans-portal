@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Article;
+namespace App\Actions\DeadLink;
 
-final class GetHeadersHandler
+final class GetHeaders
 {
     /**
      * @return array<string>
      */
-    public function getHeaders(string $url): array
+    public function __invoke(string $url): array
     {
         return @get_headers($url) ?: [];
     }

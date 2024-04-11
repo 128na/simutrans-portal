@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services\ArticleAnalyticsService;
+namespace Tests\Unit\Actions\Analytics;
 
+use App\Actions\Analytics\FindArticles;
 use App\Enums\ArticleAnalyticsType;
 use App\Http\Requests\Api\ArticleAnalytics\SearchRequest;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
-use App\Services\ArticleAnalyticsService;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -16,9 +16,9 @@ use Tests\Unit\TestCase;
 
 final class FindArticlesTest extends TestCase
 {
-    private function getSUT(): ArticleAnalyticsService
+    private function getSUT(): FindArticles
     {
-        return app(ArticleAnalyticsService::class);
+        return app(FindArticles::class);
     }
 
     #[DataProvider('data')]
@@ -29,7 +29,7 @@ final class FindArticlesTest extends TestCase
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $expected): void {
             $mock->expects()->findAllForAnalytics($user, [1], ...$expected)->once()->andReturn(new Collection());
         });
-        $result = $this->getSUT()->findArticles($user, $searchRequest);
+        $result = $this->getSUT()($user, $searchRequest);
         $this->assertInstanceOf(Collection::class, $result);
     }
 

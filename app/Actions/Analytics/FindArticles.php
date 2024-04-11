@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Actions\Analytics;
 
 use App\Enums\ArticleAnalyticsType;
 use App\Http\Requests\Api\ArticleAnalytics\SearchRequest;
@@ -13,16 +13,16 @@ use Carbon\CarbonImmutable as Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use UnexpectedValueException;
 
-final readonly class ArticleAnalyticsService
+final readonly class FindArticles
 {
     public function __construct(private ArticleRepository $articleRepository)
     {
     }
 
     /**
-     * @return Collection<int, Article>
+     * @return Collection<int,Article>
      */
-    public function findArticles(User $user, SearchRequest $searchRequest): Collection
+    public function __invoke(User $user, SearchRequest $searchRequest): Collection
     {
         $startDate = new Carbon((string) $searchRequest->string('start_date'));
         $endDate = new Carbon((string) $searchRequest->string('end_date'));

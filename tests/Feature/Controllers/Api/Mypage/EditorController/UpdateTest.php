@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Mypage\EditorController;
 
+use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Models\Article;
 use Tests\Feature\TestCase;
@@ -33,6 +34,7 @@ final class UpdateTest extends TestCase
         $this->actingAs($this->article->user);
 
         $response = $this->postJson($url, ['article' => [
+            'post_type' => ArticlePostType::AddonIntroduction->value,
             'status' => ArticleStatus::Publish->value,
             'title' => 'test title ',
             'slug' => 'test-slug',

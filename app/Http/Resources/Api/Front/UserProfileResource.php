@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Api\Front;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 final class UserProfileResource extends JsonResource
@@ -12,9 +13,10 @@ final class UserProfileResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array<mixed>
      */
+    #[\Override]
     public function toArray($request)
     {
-        assert($this->resource instanceof \stdClass);
+        assert($this->resource instanceof User);
 
         return [
             'name' => $this->resource->name,

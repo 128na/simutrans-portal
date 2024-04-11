@@ -13,19 +13,20 @@ final class FindInvitesTest extends TestCase
 {
     private User $user;
 
-    private UserRepository $repository;
+    private UserRepository $userRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(UserRepository::class);
+        $this->userRepository = app(UserRepository::class);
         $this->user = User::factory()->create();
     }
 
     public function test(): void
     {
         User::factory()->create(['invited_by' => $this->user->id]);
-        $res = $this->repository->findInvites($this->user);
+        $res = $this->userRepository->findInvites($this->user);
 
         $this->assertInstanceOf(Collection::class, $res, 'ユーザーが取得できること');
         $this->assertCount(1, $res);
@@ -34,7 +35,7 @@ final class FindInvitesTest extends TestCase
     public function test対象無し(): void
     {
         $this->user->delete();
-        $res = $this->repository->findInvites($this->user);
+        $res = $this->userRepository->findInvites($this->user);
 
         $this->assertInstanceOf(Collection::class, $res);
         $this->assertCount(0, $res);

@@ -23,11 +23,13 @@ final class ListAnnouncePage extends Page
         $this->article->categories()->save($category);
     }
 
+    #[\Override]
     public function url()
     {
         return '/announces';
     }
 
+    #[\Override]
     public function assert(Browser $browser): void
     {
         $browser

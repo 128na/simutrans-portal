@@ -30,6 +30,7 @@ final class LoginHistory extends Model
         return $this->belongsTo(User::class);
     }
 
+    #[\Override]
     protected static function booted(): void
     {
         self::creating(function (LoginHistory $loginHistory): void {

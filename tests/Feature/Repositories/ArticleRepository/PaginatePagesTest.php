@@ -14,19 +14,20 @@ final class PaginatePagesTest extends TestCase
 {
     private Article $article;
 
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->article = Article::factory()->page()->publish()->create();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
     }
 
     public function test(): void
     {
         Article::factory()->addonIntroduction()->create();
-        $paginator = $this->repository->paginatePages();
+        $paginator = $this->articleRepository->paginatePages();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
         $this->assertCount(1, $paginator->items(), '一般記事のみ取得出来ること');
@@ -36,7 +37,7 @@ final class PaginatePagesTest extends TestCase
     {
         $this->article->update(['status' => ArticleStatus::Draft]);
 
-        $paginator = $this->repository->paginatePages();
+        $paginator = $this->articleRepository->paginatePages();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
         $this->assertCount(0, $paginator->items(), '非公開記事は取得できないこと');
@@ -46,7 +47,7 @@ final class PaginatePagesTest extends TestCase
     {
         $this->article->delete();
 
-        $paginator = $this->repository->paginatePages();
+        $paginator = $this->articleRepository->paginatePages();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
         $this->assertCount(0, $paginator->items(), '削除済み記事は取得できないこと');

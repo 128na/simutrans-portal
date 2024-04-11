@@ -9,6 +9,7 @@ use Tests\Feature\TestCase;
 
 final class FeedTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

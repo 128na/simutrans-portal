@@ -10,14 +10,15 @@ use Tests\Feature\TestCase;
 
 final class ToggleDeleteTest extends TestCase
 {
-    private UserRepository $repository;
+    private UserRepository $userRepository;
 
     private User $user;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(UserRepository::class);
+        $this->userRepository = app(UserRepository::class);
         $this->user = User::factory()->create();
     }
 
@@ -25,7 +26,7 @@ final class ToggleDeleteTest extends TestCase
     {
         $this->assertFalse($this->user->trashed(), '削除されていない');
 
-        $this->repository->toggleDelete($this->user);
+        $this->userRepository->toggleDelete($this->user);
 
         $this->assertTrue($this->user->fresh()->trashed(), '削除されている');
     }
@@ -35,7 +36,7 @@ final class ToggleDeleteTest extends TestCase
         $this->user->delete();
         $this->assertTrue($this->user->fresh()->trashed(), '削除されている');
 
-        $this->repository->toggleDelete($this->user);
+        $this->userRepository->toggleDelete($this->user);
 
         $this->assertFalse($this->user->fresh()->trashed(), '削除されていない');
     }

@@ -14,12 +14,14 @@ final class UserTest extends TestCase
 {
     private User $user;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->user = User::factory()->create();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         BulkZip::all()->map(fn ($bz) => $bz->delete());

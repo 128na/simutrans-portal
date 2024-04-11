@@ -7,7 +7,6 @@ use Rector\CodingStyle\Rector\ArrowFunction\StaticArrowFunctionRector;
 use Rector\CodingStyle\Rector\Closure\StaticClosureRector;
 use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\Config\RectorConfig;
-use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector;
 
 return RectorConfig::configure()
@@ -19,7 +18,7 @@ return RectorConfig::configure()
         __DIR__.'/routes',
         __DIR__.'/tests',
     ])
-    ->withPhpSets(php82: true)
+    ->withPhpSets(php83: true)
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
@@ -36,6 +35,5 @@ return RectorConfig::configure()
         StaticArrowFunctionRector::class, //  Cannot bind an instance to a static closure()
         StaticClosureRector::class, //  Cannot bind an instance to a static closure()
         IssetOnPropertyObjectToPropertyExistsRector::class, // property_exists($model, 'hoge') return false
-        RenamePropertyToMatchTypeRector::class => [__DIR__.'/tests'], // $admin->$userがNG
         ReturnTypeFromStrictTypedCallRector::class => [__DIR__.'/app/Repositories/BaseRepository.php'], // Generics壊れる
     ]);

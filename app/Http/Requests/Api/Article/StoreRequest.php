@@ -18,6 +18,7 @@ final class StoreRequest extends BaseRequest
     /**
      * @return array<mixed>
      */
+    #[\Override]
     protected function baseRule(): array
     {
         return [

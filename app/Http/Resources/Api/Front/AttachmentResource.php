@@ -18,6 +18,7 @@ final class AttachmentResource extends ResourceCollection
      * @param  \Illuminate\Http\Request  $request
      * @return array<mixed>
      */
+    #[\Override]
     public function toArray($request)
     {
         return $this->collection

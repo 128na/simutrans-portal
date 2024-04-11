@@ -98,6 +98,7 @@ final class Screenshot extends Model
         ];
     }
 
+    #[\Override]
     protected static function booted(): void
     {
         // 論理削除されていないユーザーを持つ

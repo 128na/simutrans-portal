@@ -15,20 +15,21 @@ final class PaginateRankingTest extends TestCase
 {
     private Article $article;
 
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->article = Article::factory()->publish()->create();
         Ranking::create(['rank' => 1, 'article_id' => $this->article->id]);
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
     }
 
     public function test(): void
     {
         Article::factory()->publish()->create();
-        $paginator = $this->repository->paginateRanking();
+        $paginator = $this->articleRepository->paginateRanking();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
         $this->assertCount(1, $paginator->items(), 'ランキングリレーションのある記事のみ取得できること');
@@ -37,7 +38,7 @@ final class PaginateRankingTest extends TestCase
     public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => ArticleStatus::Draft]);
-        $paginator = $this->repository->paginateRanking();
+        $paginator = $this->articleRepository->paginateRanking();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
         $this->assertCount(0, $paginator->items(), '非公開記事は取得できないこと');
@@ -46,7 +47,7 @@ final class PaginateRankingTest extends TestCase
     public function test論理削除(): void
     {
         $this->article->delete();
-        $paginator = $this->repository->paginateRanking();
+        $paginator = $this->articleRepository->paginateRanking();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
         $this->assertCount(0, $paginator->items(), '削除済み記事は取得できないこと');

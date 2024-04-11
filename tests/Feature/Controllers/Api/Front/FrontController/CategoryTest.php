@@ -14,6 +14,7 @@ final class CategoryTest extends TestCase
 
     private Category $category;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

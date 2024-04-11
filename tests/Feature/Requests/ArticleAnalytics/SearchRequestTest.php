@@ -17,6 +17,7 @@ final class SearchRequestTest extends TestCase
 
     private Article $othersArticle;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

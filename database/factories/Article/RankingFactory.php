@@ -22,6 +22,7 @@ final class RankingFactory extends Factory
      *
      * @return array
      */
+    #[\Override]
     public function definition()
     {
         return [

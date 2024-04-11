@@ -15,6 +15,7 @@ final class ToggleTest extends TestCase
 
     private ControllOption $controllOption;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

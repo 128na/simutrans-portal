@@ -13,7 +13,7 @@ final class BotBlock
     /**
      * robots.txtを守らない悪い子たち
      */
-    private const BAD_ROBOTS = [
+    private const array BAD_ROBOTS = [
         'claudebot',
         'petalbot',
     ];

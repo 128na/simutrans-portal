@@ -13,6 +13,7 @@ abstract class Page extends BasePage
      *
      * @return array
      */
+    #[\Override]
     final public static function siteElements()
     {
         return [

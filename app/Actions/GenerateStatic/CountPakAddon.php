@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 final class CountPakAddon
 {
-    private const SELECT_SQL = "SELECT
+    private const string SELECT_SQL = "SELECT
             pak.slug pak_slug,
             case addon.slug is null when 1 then 'none' else addon.slug end addon_slug,
             COUNT(a.id) count

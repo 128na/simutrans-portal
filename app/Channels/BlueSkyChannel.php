@@ -27,6 +27,7 @@ final class BlueSkyChannel extends BaseChannel
         };
     }
 
+    #[\Override]
     public static function featureEnabled(): bool
     {
         return (bool) config('services.bluesky.user');

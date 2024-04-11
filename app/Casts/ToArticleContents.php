@@ -25,6 +25,7 @@ final class ToArticleContents implements CastsAttributes
      * @param  array<string>  $attributes
      * @return \App\Models\Contents\Content
      */
+    #[\Override]
     public function get($model, $key, $value, $attributes)
     {
         /** @var array{thumbnail?:int,sections?:array<int,array{type:string,caption?:string,text?:string,url?:string,id?:int}>,markdown?:string,description?:string,file?:int,author?:string,license?:string,thanks?:string,link?:string,agreement?:bool,exclude_link_check?:bool} */
@@ -47,6 +48,7 @@ final class ToArticleContents implements CastsAttributes
      * @param  array<string>  $attributes
      * @return string
      */
+    #[\Override]
     public function set($model, $key, $value, $attributes)
     {
         return json_encode($value) ?: '';

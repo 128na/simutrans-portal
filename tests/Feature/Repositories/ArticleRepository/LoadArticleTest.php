@@ -10,20 +10,21 @@ use Tests\Feature\TestCase;
 
 final class LoadArticleTest extends TestCase
 {
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     private Article $article;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
         $this->article = Article::factory()->create();
     }
 
     public function test(): void
     {
-        $article = $this->repository->loadArticle($this->article);
+        $article = $this->articleRepository->loadArticle($this->article);
 
         $this->assertInstanceOf(Article::class, $article);
     }

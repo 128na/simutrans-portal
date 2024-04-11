@@ -25,11 +25,13 @@ final class ListCategoryPage extends Page
         $this->article->categories()->save($this->category);
     }
 
+    #[\Override]
     public function url()
     {
         return sprintf('/categories/%s/%s', $this->category->type->value, $this->category->slug);
     }
 
+    #[\Override]
     public function assert(Browser $browser): void
     {
         $browser

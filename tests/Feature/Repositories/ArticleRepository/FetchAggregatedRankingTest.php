@@ -13,16 +13,17 @@ use Tests\Feature\TestCase;
 
 final class FetchAggregatedRankingTest extends TestCase
 {
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     private Article $article1;
 
     private Article $article2;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
         $this->article1 = Article::factory()->addonIntroduction()->publish()->create();
         $this->article2 = Article::factory()->addonPost()->publish()->create();
     }
@@ -31,7 +32,7 @@ final class FetchAggregatedRankingTest extends TestCase
     {
         Article::factory()->page()->publish()->create();
         $time = CarbonImmutable::create(2000, 1, 2, 3, 4, 5);
-        $lazyCollection = $this->repository->fetchAggregatedRanking($time);
+        $lazyCollection = $this->articleRepository->fetchAggregatedRanking($time);
 
         $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
         $this->assertCount(2, $lazyCollection, 'アドオン投稿・紹介記事のみ取得できること');
@@ -42,7 +43,7 @@ final class FetchAggregatedRankingTest extends TestCase
         $this->article1->update(['status' => ArticleStatus::Draft]);
         $this->article2->update(['status' => ArticleStatus::Draft]);
         $time = CarbonImmutable::create(2000, 1, 2, 3, 4, 5);
-        $lazyCollection = $this->repository->fetchAggregatedRanking($time);
+        $lazyCollection = $this->articleRepository->fetchAggregatedRanking($time);
 
         $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
         $this->assertCount(0, $lazyCollection, '非公開記事は取得できないこと');
@@ -53,7 +54,7 @@ final class FetchAggregatedRankingTest extends TestCase
         $this->article1->delete();
         $this->article2->delete();
         $time = CarbonImmutable::create(2000, 1, 2, 3, 4, 5);
-        $lazyCollection = $this->repository->fetchAggregatedRanking($time);
+        $lazyCollection = $this->articleRepository->fetchAggregatedRanking($time);
 
         $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
         $this->assertCount(0, $lazyCollection, '削除済み記事は取得できないこと');

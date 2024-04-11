@@ -12,18 +12,19 @@ final class FindByEmailWithTrashedTest extends TestCase
 {
     private User $user;
 
-    private UserRepository $repository;
+    private UserRepository $userRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(UserRepository::class);
+        $this->userRepository = app(UserRepository::class);
         $this->user = User::factory()->create();
     }
 
     public function test(): void
     {
-        $res = $this->repository->findByEmailWithTrashed($this->user->email);
+        $res = $this->userRepository->findByEmailWithTrashed($this->user->email);
 
         $this->assertInstanceOf(User::class, $res, 'ユーザーが取得できること');
     }
@@ -31,14 +32,14 @@ final class FindByEmailWithTrashedTest extends TestCase
     public function test論理削除(): void
     {
         $this->user->delete();
-        $res = $this->repository->findByEmailWithTrashed($this->user->email);
+        $res = $this->userRepository->findByEmailWithTrashed($this->user->email);
 
         $this->assertInstanceOf(User::class, $res, '削除済みユーザーも取得できること');
     }
 
     public function test存在しない(): void
     {
-        $res = $this->repository->findByEmailWithTrashed('test');
+        $res = $this->userRepository->findByEmailWithTrashed('test');
 
         $this->assertNull($res);
     }

@@ -18,6 +18,7 @@ final class TwitterOauthProvider extends ServiceProvider implements DeferrablePr
     /**
      * @return array<class-string>
      */
+    #[\Override]
     public function provides()
     {
         return [
@@ -29,6 +30,7 @@ final class TwitterOauthProvider extends ServiceProvider implements DeferrablePr
     /**
      * Register any application services.
      */
+    #[\Override]
     public function register(): void
     {
         $this->app->bind(PKCEService::class, fn (): \App\Services\Twitter\PKCEService => new PKCEService(

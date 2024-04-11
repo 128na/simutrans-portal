@@ -12,6 +12,7 @@ final class UpdateTest extends TestCase
 {
     private Screenshot $screenshot;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

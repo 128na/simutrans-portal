@@ -20,11 +20,13 @@ final class ListPagePage extends Page
         ]);
     }
 
+    #[\Override]
     public function url()
     {
         return '/pages';
     }
 
+    #[\Override]
     public function assert(Browser $browser): void
     {
         $browser

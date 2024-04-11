@@ -11,6 +11,7 @@ final class OptionsTest extends TestCase
 {
     private User $user;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

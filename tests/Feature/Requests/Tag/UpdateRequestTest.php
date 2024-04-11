@@ -11,6 +11,7 @@ use Tests\Feature\TestCase;
 
 final class UpdateRequestTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

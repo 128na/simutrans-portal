@@ -14,19 +14,20 @@ final class PaginateAnnoucesTest extends TestCase
 {
     private Article $article;
 
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->article = $this->createAnnounce();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
     }
 
     public function test(): void
     {
         Article::factory()->page()->create();
-        $paginator = $this->repository->paginateAnnouces();
+        $paginator = $this->articleRepository->paginateAnnouces();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
         $this->assertCount(1, $paginator->items(), 'お知らせ記事のみ取得できること');
@@ -36,7 +37,7 @@ final class PaginateAnnoucesTest extends TestCase
     {
         $this->article->update(['status' => ArticleStatus::Draft]);
 
-        $paginator = $this->repository->paginateAnnouces();
+        $paginator = $this->articleRepository->paginateAnnouces();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
         $this->assertCount(0, $paginator->items(), '非公開記事は取得できないこと');
@@ -46,7 +47,7 @@ final class PaginateAnnoucesTest extends TestCase
     {
         $this->article->delete();
 
-        $paginator = $this->repository->paginateAnnouces();
+        $paginator = $this->articleRepository->paginateAnnouces();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
         $this->assertCount(0, $paginator->items(), '削除済み記事は取得できないこと');

@@ -16,6 +16,7 @@ final class GoogleServiceProvider extends ServiceProvider implements DeferrableP
     /**
      * @return array<class-string>
      */
+    #[\Override]
     public function provides()
     {
         return [
@@ -27,6 +28,7 @@ final class GoogleServiceProvider extends ServiceProvider implements DeferrableP
     /**
      * Register any application services.
      */
+    #[\Override]
     public function register(): void
     {
         $this->app->bind(RecaptchaService::class, function (): \App\Services\Google\Recaptcha\RecaptchaService {

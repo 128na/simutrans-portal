@@ -27,6 +27,7 @@ final class TwitterChannel extends BaseChannel
         };
     }
 
+    #[\Override]
     public static function featureEnabled(): bool
     {
         return (bool) config('services.twitter.client_id');

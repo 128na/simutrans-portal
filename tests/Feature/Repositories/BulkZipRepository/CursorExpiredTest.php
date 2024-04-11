@@ -14,6 +14,7 @@ final class CursorExpiredTest extends TestCase
 {
     private BulkZipRepository $bulkZipRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

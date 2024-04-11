@@ -13,16 +13,17 @@ use Tests\Feature\TestCase;
 
 final class PaginateByTagTest extends TestCase
 {
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     private Tag $tag;
 
     private Article $article;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
 
         $this->article = Article::factory()->publish()->create();
         $this->tag = Tag::factory()->create();
@@ -32,7 +33,7 @@ final class PaginateByTagTest extends TestCase
     public function test(): void
     {
         Article::factory()->publish()->create();
-        $res = $this->repository->paginateByTag($this->tag);
+        $res = $this->articleRepository->paginateByTag($this->tag);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(1, $res->count(), 'カテゴリに紐づく記事のみ取得出来ること');
@@ -41,7 +42,7 @@ final class PaginateByTagTest extends TestCase
     public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => ArticleStatus::Draft]);
-        $res = $this->repository->paginateByTag($this->tag);
+        $res = $this->articleRepository->paginateByTag($this->tag);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(0, $res->count(), '非公開記事は取得できないこと');
@@ -50,7 +51,7 @@ final class PaginateByTagTest extends TestCase
     public function test論理削除(): void
     {
         $this->article->delete();
-        $res = $this->repository->paginateByTag($this->tag);
+        $res = $this->articleRepository->paginateByTag($this->tag);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
         $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');

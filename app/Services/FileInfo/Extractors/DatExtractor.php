@@ -6,16 +6,19 @@ namespace App\Services\FileInfo\Extractors;
 
 final class DatExtractor implements Extractor
 {
+    #[\Override]
     public function isText(): bool
     {
         return true;
     }
 
+    #[\Override]
     public function getKey(): string
     {
         return 'dats';
     }
 
+    #[\Override]
     public function isTarget(string $filename): bool
     {
         return str_ends_with($filename, '.dat');
@@ -26,6 +29,7 @@ final class DatExtractor implements Extractor
      *
      * @return string[]
      */
+    #[\Override]
     public function extract(string $dat): array
     {
         preg_match_all('/[\s^]name\=(.*)\s/i', $dat, $matches);

@@ -7,18 +7,17 @@
   ],
   "license": "MIT",
   "require": {
-    "php": "^8.2",
+    "php": "^8.3",
     "abordage/laravel-html-min": "^0.2.1",
     "abraham/twitteroauth": "^7",
     "berkayk/onesignal-laravel": "^2.1.0",
     "cebe/markdown": "^1.2.1",
-    "doctrine/dbal": ">=4.0.1",
     "ezyang/htmlpurifier": "^4.17",
     "google/cloud-recaptcha-enterprise": "^1.10.0",
     "guzzlehttp/guzzle": "^7.8.1",
     "laravel-notification-channels/discord": "^1.6",
     "laravel/fortify": "^1.21.1",
-    "laravel/framework": "^11.2.0",
+    "laravel/framework": "^11.3.1",
     "laravel/sanctum": "^4.0.1",
     "laravel/tinker": "^2.9",
     "marvinlabs/laravel-discord-logger": "^1.4.2",
@@ -29,16 +28,14 @@
     "spatie/laravel-sitemap": "^7.2"
   },
   "require-dev": {
-    "barryvdh/laravel-debugbar": "^3.13.3",
+    "barryvdh/laravel-debugbar": "^3.13.4",
     "barryvdh/laravel-ide-helper": "^3",
-    "brianium/paratest": "^7.4.3",
     "dg/bypass-finals": "^1.6",
     "fakerphp/faker": "^1.23.1",
     "filp/whoops": "^2.15.4",
     "larastan/larastan": "^2.9.2",
     "laravel/dusk": "^8.1.1",
     "laravel/pint": "^1.15.1",
-    "laravel/sail": "^1.29.1",
     "mockery/mockery": "^1.6.11",
     "nunomaduro/collision": "^8.1.1",
     "phpunit/phpunit": "^10.5.17",
@@ -50,7 +47,7 @@
     "preferred-install": "dist",
     "sort-packages": true,
     "platform": {
-      "php": "8.2.11"
+      "php": "8.3.2"
     },
     "allow-plugins": {
       "pestphp/pest-plugin": true,

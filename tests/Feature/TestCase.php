@@ -24,6 +24,7 @@ abstract class TestCase extends TestsTestCase
     use CreatesApplication;
     use RefreshDatabase;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setup();
@@ -32,6 +33,7 @@ abstract class TestCase extends TestsTestCase
         $this->seed(ControllOptionsSeeder::class);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         Mockery::close();

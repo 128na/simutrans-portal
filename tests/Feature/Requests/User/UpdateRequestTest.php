@@ -14,6 +14,7 @@ final class UpdateRequestTest extends TestCase
 {
     private User $user;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

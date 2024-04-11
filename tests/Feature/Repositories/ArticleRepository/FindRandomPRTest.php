@@ -11,20 +11,21 @@ use Tests\Feature\TestCase;
 
 final class FindRandomPRTest extends TestCase
 {
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     private Article $article;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
         $this->article = Article::factory()->publish()->create(['pr' => true]);
     }
 
     public function test(): void
     {
-        $res = $this->repository->findRandomPR();
+        $res = $this->articleRepository->findRandomPR();
 
         $this->assertInstanceOf(Article::class, $res);
     }
@@ -32,7 +33,7 @@ final class FindRandomPRTest extends TestCase
     public function testPR以外(): void
     {
         $this->article->update(['pr' => false]);
-        $res = $this->repository->findRandomPR();
+        $res = $this->articleRepository->findRandomPR();
 
         $this->assertNull($res);
     }
@@ -40,7 +41,7 @@ final class FindRandomPRTest extends TestCase
     public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => ArticleStatus::Draft]);
-        $res = $this->repository->findRandomPR();
+        $res = $this->articleRepository->findRandomPR();
 
         $this->assertNull($res);
     }
@@ -48,7 +49,7 @@ final class FindRandomPRTest extends TestCase
     public function test論理削除(): void
     {
         $this->article->delete();
-        $res = $this->repository->findRandomPR();
+        $res = $this->articleRepository->findRandomPR();
 
         $this->assertNull($res);
     }

@@ -22,11 +22,13 @@ final class ListUserPage extends Page
         ]);
     }
 
+    #[\Override]
     public function url()
     {
         return '/users/'.$this->user->id;
     }
 
+    #[\Override]
     public function assert(Browser $browser): void
     {
         $browser

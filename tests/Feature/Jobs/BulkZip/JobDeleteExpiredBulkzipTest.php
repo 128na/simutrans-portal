@@ -15,6 +15,7 @@ final class JobDeleteExpiredBulkzipTest extends TestCase
 
     private BulkZip $bulkzip2;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -28,6 +29,7 @@ final class JobDeleteExpiredBulkzipTest extends TestCase
         $this->bulkzip2 = BulkZip::factory()->create(['path' => $path2]);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $this->bulkzip1->delete();

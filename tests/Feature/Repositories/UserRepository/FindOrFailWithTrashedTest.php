@@ -11,20 +11,21 @@ use Tests\Feature\TestCase;
 
 final class FindOrFailWithTrashedTest extends TestCase
 {
-    private UserRepository $repository;
+    private UserRepository $userRepository;
 
     private User $user;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = app(UserRepository::class);
+        $this->userRepository = app(UserRepository::class);
         $this->user = User::factory()->create();
     }
 
     public function test(): void
     {
-        $user = $this->repository->findOrFailWithTrashed($this->user->id);
+        $user = $this->userRepository->findOrFailWithTrashed($this->user->id);
 
         $this->assertInstanceOf(User::class, $user, 'ユーザーが取得できること');
     }
@@ -32,7 +33,7 @@ final class FindOrFailWithTrashedTest extends TestCase
     public function test論理削除(): void
     {
         $this->user->delete();
-        $user = $this->repository->findOrFailWithTrashed($this->user->id);
+        $user = $this->userRepository->findOrFailWithTrashed($this->user->id);
 
         $this->assertInstanceOf(User::class, $user, '削除済みユーザーも取得できること');
     }
@@ -40,6 +41,6 @@ final class FindOrFailWithTrashedTest extends TestCase
     public function test存在しない(): void
     {
         $this->expectException(ModelNotFoundException::class);
-        $this->repository->findOrFailWithTrashed(0);
+        $this->userRepository->findOrFailWithTrashed(0);
     }
 }

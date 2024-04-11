@@ -18,6 +18,7 @@ final class RegisterTest extends TestCase
 {
     private User $inviterUser;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

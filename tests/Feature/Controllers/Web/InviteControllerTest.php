@@ -14,6 +14,7 @@ final class InviteControllerTest extends TestCase
 {
     private User $user;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -15,6 +15,7 @@ final class ToggleEditableTest extends TestCase
 
     private Tag $tag;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

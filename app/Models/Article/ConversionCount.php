@@ -13,13 +13,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 final class ConversionCount extends Model
 {
-    public const TYPE_DAILY = 1;
+    public const int TYPE_DAILY = 1;
 
-    public const TYPE_MONTHLY = 2;
+    public const int TYPE_MONTHLY = 2;
 
-    public const TYPE_YEARLY = 3;
+    public const int TYPE_YEARLY = 3;
 
-    public const TYPE_TOTAL = 4;
+    public const int TYPE_TOTAL = 4;
 
     public $timestamps = false;
 

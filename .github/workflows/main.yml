@@ -65,7 +65,7 @@ jobs:
       - uses: ./.github/actions/mysql
 
       - name: Test
-        run: php artisan test --env=local --testsuite=${{matrix.test_suite}}
+        run: php artisan test --env=local --testsuite=${{ matrix.test_suite }}
 
       - name: Upload Laravel Logs
         if: failure()
@@ -169,9 +169,9 @@ jobs:
       - name: Install SSH key
         run: >
           mkdir -p ~/.ssh
-          && echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa
+          && echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           && chmod 0600 ~/.ssh/id_rsa
-          && echo "${{secrets.KNOWN_HOSTS}}" >> ~/.ssh/known_hosts
+          && echo "${{ secrets.KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
       - name: Deploy
         run: >
           ssh -i /home/runner/.ssh/id_rsa ${{ secrets.USER }}@${{ secrets.HOST }} "
@@ -196,4 +196,4 @@ jobs:
       - name: publish sourcemap to newrelic
         run: cd frontend && npm run nr:s
         env:
-          NR_USER_KEY: ${{secrets.NR_USER_KEY}}
+          NR_USER_KEY: ${{ secrets.NR_USER_KEY }}

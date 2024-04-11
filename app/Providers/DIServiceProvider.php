@@ -37,6 +37,7 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
     /**
      * @return array<string>
      */
+    #[\Override]
     public function provides()
     {
         return [
@@ -53,6 +54,7 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
     /**
      * Register any application services.
      */
+    #[\Override]
     public function register(): void
     {
         $this->app->bind(ReadmeExtractor::class, function ($app): ReadmeExtractor {

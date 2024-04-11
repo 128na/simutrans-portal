@@ -22,6 +22,7 @@ final class CategoryFactory extends Factory
      *
      * @return array
      */
+    #[\Override]
     public function definition()
     {
         return [

@@ -15,6 +15,7 @@ final class UpdateTest extends TestCase
 
     private Article $article;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setup();

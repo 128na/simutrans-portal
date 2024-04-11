@@ -13,6 +13,7 @@ final class PrArticleResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array<mixed>
      */
+    #[\Override]
     public function toArray($request)
     {
         assert($this->resource instanceof Article);

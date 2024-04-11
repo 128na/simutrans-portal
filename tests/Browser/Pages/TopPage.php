@@ -25,11 +25,13 @@ final class TopPage extends Page
         $this->article->categories()->save($this->category);
     }
 
+    #[\Override]
     public function url()
     {
         return '/';
     }
 
+    #[\Override]
     public function assert(Browser $browser): void
     {
         $browser

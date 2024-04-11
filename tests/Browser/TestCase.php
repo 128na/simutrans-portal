@@ -20,6 +20,7 @@ abstract class TestCase extends BaseTestCase
 
     protected $seeder = DuskSeeder::class;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -44,6 +45,7 @@ abstract class TestCase extends BaseTestCase
      *
      * @return \Facebook\WebDriver\Remote\RemoteWebDriver
      */
+    #[\Override]
     protected function driver()
     {
         $chromeOptions = (new ChromeOptions())->addArguments(collect([

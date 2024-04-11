@@ -12,11 +12,11 @@ use Illuminate\Support\Str;
 
 final class WebpConverter
 {
-    private const RESIZE_LIMIT_WIDTH = 3840;
+    private const int RESIZE_LIMIT_WIDTH = 3840;
 
-    private const RESIZE_LIMIT_HEIGHT = 2160;
+    private const int RESIZE_LIMIT_HEIGHT = 2160;
 
-    private const RESIZE_WIDTH = 3840;
+    private const int RESIZE_WIDTH = 3840;
 
     public function create(User $user, UploadedFile $uploadedFile): string
     {

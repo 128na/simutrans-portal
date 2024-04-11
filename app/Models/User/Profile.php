@@ -91,6 +91,7 @@ final class Profile extends Model
     | 初期化時設定
     |--------------------------------------------------------------------------
      */
+    #[\Override]
     protected static function boot(): void
     {
         parent::boot();

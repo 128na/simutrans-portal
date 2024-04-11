@@ -21,11 +21,13 @@ final class ListSearchPage extends Page
         ]);
     }
 
+    #[\Override]
     public function url()
     {
         return '/search?word=dummy';
     }
 
+    #[\Override]
     public function assert(Browser $browser): void
     {
         $browser

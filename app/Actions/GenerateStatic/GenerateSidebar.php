@@ -13,6 +13,7 @@ final class GenerateSidebar extends BaseGenerator
     ) {
     }
 
+    #[\Override]
     protected function getJsonData(): array
     {
         ($this->deleteUnrelatedTags)();
@@ -23,6 +24,7 @@ final class GenerateSidebar extends BaseGenerator
         ];
     }
 
+    #[\Override]
     protected function getJsonName(): string
     {
         return 'sidebar.json';

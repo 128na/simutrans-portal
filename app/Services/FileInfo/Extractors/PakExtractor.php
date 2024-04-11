@@ -6,16 +6,19 @@ namespace App\Services\FileInfo\Extractors;
 
 final class PakExtractor implements Extractor
 {
+    #[\Override]
     public function isText(): bool
     {
         return false;
     }
 
+    #[\Override]
     public function getKey(): string
     {
         return 'paks';
     }
 
+    #[\Override]
     public function isTarget(string $filename): bool
     {
         return str_ends_with($filename, '.pak');
@@ -26,6 +29,7 @@ final class PakExtractor implements Extractor
      *
      * @return string[]
      */
+    #[\Override]
     public function extract(string $pakBinary): array
     {
         /** @var PakBinary */

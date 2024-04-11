@@ -18,6 +18,7 @@ final class NgWordRuleTest extends TestCase
 
     private bool $failCalled = false;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

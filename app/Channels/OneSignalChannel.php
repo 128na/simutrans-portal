@@ -27,6 +27,7 @@ final class OneSignalChannel extends BaseChannel
         };
     }
 
+    #[\Override]
     public static function featureEnabled(): bool
     {
         return config('onesignal.app_id') && config('onesignal.rest_api_key');

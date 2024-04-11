@@ -14,6 +14,7 @@ final class IndexTest extends TestCase
 
     private Tag $tag;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

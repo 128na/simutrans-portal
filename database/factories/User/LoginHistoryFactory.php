@@ -22,6 +22,7 @@ final class LoginHistoryFactory extends Factory
      *
      * @return array
      */
+    #[\Override]
     public function definition()
     {
         return [

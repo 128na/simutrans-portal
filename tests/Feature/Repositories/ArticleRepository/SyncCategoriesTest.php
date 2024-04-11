@@ -12,15 +12,16 @@ use Tests\Feature\TestCase;
 
 final class SyncCategoriesTest extends TestCase
 {
-    private ArticleRepository $repository;
+    private ArticleRepository $articleRepository;
 
     private User $user;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        $this->repository = app(ArticleRepository::class);
+        $this->articleRepository = app(ArticleRepository::class);
     }
 
     public function test(): void
@@ -36,7 +37,7 @@ final class SyncCategoriesTest extends TestCase
             $article->categories()->pluck('id')->toArray()
         );
 
-        $this->repository->syncCategories($article, [$shouldAddCategory->id]);
+        $this->articleRepository->syncCategories($article, [$shouldAddCategory->id]);
 
         $this->assertSame(
             [$shouldAddCategory->id],

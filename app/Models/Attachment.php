@@ -150,6 +150,7 @@ final class Attachment extends Model
     | イベントハンドラ
     |--------------------------------------------------------------------------
      */
+    #[\Override]
     protected static function boot(): void
     {
         parent::boot();

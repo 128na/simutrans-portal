@@ -13,7 +13,7 @@ use Illuminate\Database\Seeder;
  */
 final class CategorySeeder extends Seeder
 {
-    private const CATEGORIES = [
+    private const array CATEGORIES = [
         // pak
         ['slug' => 'any',          'type' => CategoryType::Pak, 'order' => 9000],
         ['slug' => '128-japan',    'type' => CategoryType::Pak, 'order' => 10000],

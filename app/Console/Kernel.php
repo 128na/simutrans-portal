@@ -44,10 +44,6 @@ final class Kernel extends ConsoleKernel
             ->runInBackground()
             ->withoutOverlapping()
             ->onOneServer();
-        $schedule->command('delete:tags')->dailyAt('4:00')
-            ->runInBackground()
-            ->withoutOverlapping()
-            ->onOneServer();
         $schedule->command('sitemap:generate')->dailyAt('5:00')
             ->runInBackground()
             ->withoutOverlapping()

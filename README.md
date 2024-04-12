@@ -31,6 +31,9 @@ composer install
 php artisan key:generate
 # .envにDB接続情報など必要項目を設定
 php artisan migrate --seed
+# 管理者作成
+php artisan tinker
+App\Models\User::create(['role'=>'admin', 'name'=>'your name', 'email'=>'your email', 'password'=>bcrypt('your passowrd')]);
 ```
 
 メール送信があるため、 `mailpit` などの使用を推奨

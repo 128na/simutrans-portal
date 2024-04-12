@@ -22,9 +22,9 @@ final class ActionDIServiceProvider extends ServiceProvider
         $this->app->singleton(SitemapHandler::class, fn (): SitemapHandler => new SitemapHandler(
             Storage::disk('sitemap'),
         ));
-        $this->app->singleton(Store::class, fn (Application $app): Store => new Store(
+        $this->app->singleton(Store::class, fn (Application $application): Store => new Store(
             Storage::disk('public'),
-            $app->make(CropImage::class)
+            $application->make(CropImage::class)
         ));
     }
 }

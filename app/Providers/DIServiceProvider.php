@@ -6,8 +6,8 @@ namespace App\Providers;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Repositories\Attachment\FileInfoRepository;
-use App\Services\Attachment\FileSizeBaseResizer;
 use App\Services\BlueSky\BlueSkyApiClient;
+use App\Services\BlueSky\ResizeByFileSize;
 use App\Services\BulkZip\Decorators\AddonIntroductionDecorator;
 use App\Services\BulkZip\Decorators\AddonPostDecorator;
 use App\Services\BulkZip\ZipManager;
@@ -112,7 +112,7 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
                 $blueskyApi,
                 $blueskyPostService,
                 $this->app->make(MetaOgpService::class),
-                $this->app->make(FileSizeBaseResizer::class),
+                $this->app->make(ResizeByFileSize::class),
             );
         });
     }

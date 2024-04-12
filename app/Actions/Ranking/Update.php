@@ -6,7 +6,6 @@ namespace App\Actions\Ranking;
 
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
-use App\Models\Article\Ranking;
 use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
@@ -24,8 +23,7 @@ final readonly class Update
 
     public function __invoke(): void
     {
-        Ranking::truncate();
-
+        DB::statement('delete from rankings');
         $this->articleRepository->chunkAggregatedRanking($this->now, self::SIZE, function (Collection $articles, int $round): void {
             $ranks = $articles
                 ->map(fn (Article $article, int $index): array => [

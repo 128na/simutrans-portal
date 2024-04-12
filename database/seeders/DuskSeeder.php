@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Article;
-use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Duskテスト用シーダー
@@ -15,8 +14,8 @@ final class DuskSeeder extends Seeder
 {
     public function run(): void
     {
-        Article::truncate();
-        User::truncate();
+        DB::statement('delete from articles');
+        DB::statement('delete from users');
         $this->call(CategorySeeder::class);
         $this->call(ControllOptionsSeeder::class);
     }

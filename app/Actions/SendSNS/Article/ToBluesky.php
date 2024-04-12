@@ -8,8 +8,8 @@ use App\Models\Article;
 use App\Notifications\SendArticlePublished;
 use App\Notifications\SendArticleUpdated;
 use App\Notifications\SendSNSNotification;
-use App\Services\Attachment\ConvertFailedException;
 use App\Services\BlueSky\BlueSkyApiClient;
+use App\Services\BlueSky\ResizeFailedException;
 use Exception;
 use potibm\Bluesky\Exception\HttpStatusCodeException;
 use potibm\Bluesky\Feed\Post;
@@ -54,7 +54,7 @@ final readonly class ToBluesky
 
         try {
             return $this->blueSkyApiClient->addWebsiteCard($post, $article);
-        } catch (ConvertFailedException $e) {
+        } catch (ResizeFailedException $e) {
             report($e);
         } catch (HttpStatusCodeException $e) {
             // 画像が1MB以上だとエラーになる

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Attachment;
+namespace App\Actions\StoreAttachment;
 
 use App\Enums\CroppableFormat;
 
-final class ImageCropper
+final class CropImage
 {
-    public function crop(string $fullpath, int $top = 0, int $bottom = 0, int $left = 0, int $right = 0): void
+    public function __invoke(string $fullpath, int $top = 0, int $bottom = 0, int $left = 0, int $right = 0): void
     {
         $mime = $this->getMime($fullpath);
         if (! $mime instanceof \App\Enums\CroppableFormat) {

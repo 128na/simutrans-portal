@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Attachment;
+namespace App\Services\BlueSky;
 
 use GdImage;
 
-final class FileSizeBaseResizer
+final class ResizeByFileSize
 {
-    public function resize(string $inputPath, int $targetFileSize): string
+    public function __invoke(string $inputPath, int $targetFileSize): string
     {
         $filesize = @filesize($inputPath);
         if ($filesize < $targetFileSize) {
@@ -19,7 +19,7 @@ final class FileSizeBaseResizer
         $originalWidth = @imagesx($im);
         logger('[FileSizeBaseResizer] resize', ['originalWidth' => $originalWidth, 'filesize' => $filesize]);
         if ($originalWidth === 0) {
-            throw new ConvertFailedException('imagesx failed');
+            throw new ResizeFailedException('imagesx failed');
         }
 
         $width = (int) ($originalWidth / 2);
@@ -31,7 +31,7 @@ final class FileSizeBaseResizer
             $resized = $this->doResize($im, $width);
             $size = @filesize($resized);
             if ($size === 0 || $size === false) {
-                throw new ConvertFailedException('filesize failed');
+                throw new ResizeFailedException('filesize failed');
             }
 
             logger('[FileSizeBaseResizer] resize', ['attempt' => $attempt, 'width' => $width, 'size' => $size]);
@@ -51,19 +51,19 @@ final class FileSizeBaseResizer
             $attempt++;
         } while ($attempt <= $limit);
 
-        throw new ConvertFailedException('attempt limit reached');
+        throw new ResizeFailedException('attempt limit reached');
     }
 
     private function getImage(string $path): GdImage
     {
         $data = @file_get_contents($path);
         if ($data === false) {
-            throw new ConvertFailedException('file_get_contents failed');
+            throw new ResizeFailedException('file_get_contents failed');
         }
 
         $image = imagecreatefromstring($data);
         if ($image instanceof GdImage === false) {
-            throw new ConvertFailedException('getImage failed');
+            throw new ResizeFailedException('getImage failed');
         }
 
         return $image;
@@ -73,18 +73,18 @@ final class FileSizeBaseResizer
     {
         $resized = @imagescale($gdImage, $width, -1, IMG_BILINEAR_FIXED);
         if (! $resized) {
-            throw new ConvertFailedException('imagescale failed');
+            throw new ResizeFailedException('imagescale failed');
         }
 
         $tmpPath = @tempnam(sys_get_temp_dir(), '');
         if ($tmpPath === '' || $tmpPath === '0' || $tmpPath === false) {
-            throw new ConvertFailedException('tempnam failed');
+            throw new ResizeFailedException('tempnam failed');
         }
 
         $result = @imagewebp($resized, $tmpPath);
         @imagedestroy($resized);
         if (! $result) {
-            throw new ConvertFailedException('imagewebp failed');
+            throw new ResizeFailedException('imagewebp failed');
         }
 
         return $tmpPath;

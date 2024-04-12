@@ -14,14 +14,14 @@ final class GenerateStaticJson extends Command
      *
      * @var string
      */
-    protected $signature = 'json:generate';
+    protected $signature = 'article:json';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'フロント表示用のjsonを生成する';
+    protected $description = 'フロント表示用のjsonを生成する。手動実行用';
 
     /**
      * Create a new command instance.

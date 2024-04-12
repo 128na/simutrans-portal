@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Article;
 
 use App\Actions\DeadLink\Check;
 use App\Actions\DeadLink\OnDead;
 use Illuminate\Console\Command;
 use Throwable;
 
-final class DeadLinkChecker extends Command
+final class CheckDeadLink extends Command
 {
     protected $signature = 'check:deadlink';
 

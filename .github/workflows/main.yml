@@ -186,7 +186,7 @@ jobs:
           && php -c ~/www/php.ini artisan optimize
           && php -c ~/www/php.ini artisan event:cache
           && php -c ~/www/php.ini artisan view:cache
-          && php -c ~/www/php.ini artisan json:generate"
+          && php -c ~/www/php.ini artisan article:json"
 
       - name: rsync assets
         run: >

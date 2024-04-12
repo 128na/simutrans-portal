@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Attachment;
+namespace App\Actions\StoreAttachment;
 
 use Exception;
 

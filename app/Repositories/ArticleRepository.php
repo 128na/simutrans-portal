@@ -13,6 +13,7 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
 use Carbon\CarbonImmutable;
+use Closure;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -316,14 +317,14 @@ final class ArticleRepository extends BaseRepository
     /**
      * PV数順の記事
      *
-     * @return LazyCollection<int,Article>
+     * @param  Closure(\Illuminate\Support\Collection<int,Article> $article, int $index):void  $fn
      */
-    public function fetchAggregatedRanking(CarbonImmutable $datetime): LazyCollection
+    public function chunkAggregatedRanking(CarbonImmutable $datetime, int $size, Closure $fn): void
     {
-        return $this->model
+        $this->model
             ->active()
             ->addon()
-            ->select('articles.*')
+            ->select('articles.id')
             ->leftJoin('view_counts as d', fn (JoinClause $joinClause) => $joinClause
                 ->on('d.article_id', 'articles.id')
                 ->where('d.type', 1)
@@ -344,7 +345,7 @@ final class ArticleRepository extends BaseRepository
             ->orderBy('m.count', 'desc')
             ->orderBy('y.count', 'desc')
             ->orderBy('t.count', 'desc')
-            ->cursor();
+            ->chunk($size, $fn);
     }
 
     /**

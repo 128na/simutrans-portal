@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Mypage;
 
+use App\Actions\StoreAttachment\Store;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Attachment\StoreRequest;
 use App\Http\Resources\Api\Mypage\Attachment as MypageAttachment;
 use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
 use App\Repositories\AttachmentRepository;
-use App\Services\Attachment\StoreService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
@@ -19,7 +19,6 @@ final class AttachmentController extends Controller
 {
     public function __construct(
         private readonly AttachmentRepository $attachmentRepository,
-        private readonly StoreService $storeService,
     ) {
     }
 
@@ -30,7 +29,7 @@ final class AttachmentController extends Controller
         );
     }
 
-    public function store(StoreRequest $storeRequest): AnonymousResourceCollection
+    public function store(StoreRequest $storeRequest, Store $store): AnonymousResourceCollection
     {
         $crop = $storeRequest->has('crop') ? [
             $storeRequest->integer('crop.top', 0),
@@ -42,7 +41,7 @@ final class AttachmentController extends Controller
         /** @var array<int,\Illuminate\Http\UploadedFile> */
         $files = $storeRequest->file('files', []);
         foreach ($files as $file) {
-            $attachment = $this->storeService->store($this->loggedinUser(), $file, $crop);
+            $attachment = $store($this->loggedinUser(), $file, $crop);
             try {
                 UpdateFileInfo::dispatchSync($attachment);
             } catch (Throwable $throwable) {

@@ -2,25 +2,27 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Attachment;
+namespace App\Actions\StoreAttachment;
 
 use App\Enums\CroppableFormat;
 use App\Models\Attachment;
 use App\Models\User;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 
-final readonly class StoreService
+final readonly class Store
 {
     public function __construct(
-        private readonly ImageCropper $imageCropper,
+        private readonly FilesystemAdapter $filesystemAdapter,
+        private readonly CropImage $cropImage,
     ) {
+
     }
 
     /**
      * @param  array<int,int>  $crop
      */
-    public function store(User $user, UploadedFile $uploadedFile, array $crop = []): Attachment
+    public function __invoke(User $user, UploadedFile $uploadedFile, array $crop = []): Attachment
     {
         if ($this->isImage($uploadedFile)) {
             return $this->storeAsImage($user, $uploadedFile, $crop);
@@ -45,11 +47,10 @@ final readonly class StoreService
     private function storeAsImage(User $user, UploadedFile $uploadedFile, array $crop = []): Attachment
     {
         try {
-            $filepath = Storage::disk('public')->put('user/'.$user->id, $uploadedFile);
+            $filepath = $this->filesystemAdapter->put('user/'.$user->id, $uploadedFile);
             if ($crop && $fullpath = realpath(storage_path('app/public/'.$filepath))) {
-                logger('crop', $crop);
                 try {
-                    $this->imageCropper->crop($fullpath, ...$crop);
+                    ($this->cropImage)($fullpath, ...$crop);
                 } catch (ConvertFailedException) {
                     // need not report
                 } catch (\Throwable $th) {
@@ -73,7 +74,7 @@ final readonly class StoreService
     {
         return Attachment::create([
             'user_id' => $user->id,
-            'path' => Storage::disk('public')->put('user/'.$user->id, $uploadedFile),
+            'path' => $this->filesystemAdapter->put('user/'.$user->id, $uploadedFile),
             'original_name' => $uploadedFile->getClientOriginalName(),
         ]);
     }

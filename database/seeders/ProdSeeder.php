@@ -18,6 +18,5 @@ final class ProdSeeder extends Seeder
     {
         $this->call(CategorySeeder::class);
         $this->call(ControllOptionsSeeder::class);
-        $this->call(AdminSeeder::class);
     }
 }

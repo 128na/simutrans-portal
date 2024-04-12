@@ -27,7 +27,7 @@ final class Kernel extends ConsoleKernel
             ->onOneServer();
 
         // 毎時
-        $schedule->command('ranking:update')->hourly()
+        $schedule->command('article:ranking')->hourly()
             ->withoutOverlapping()
             ->onOneServer();
 

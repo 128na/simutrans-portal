@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\DB;
  */
 final class DuskSeeder extends Seeder
 {
-    /**
-     * 管理者とカテゴリを追加する.
-     */
     public function run(): void
     {
         DB::statement('delete from articles');

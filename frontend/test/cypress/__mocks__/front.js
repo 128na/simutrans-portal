@@ -27,7 +27,9 @@ export const createMockArticleData = (params = {}) => ({
 export const mockSidebarResponse = {
   statusCode: 200,
   body: {
-    userAddonCounts: [{ user_id: 1, name: 'dummy user', count: 72 }],
+    userAddonCounts: [{
+      user_id: 1, user_nickname: null, user_name: 'dummy user', count: 72,
+    }],
     pakAddonCounts: {
       DummyPak: [{
         pak_slug: 'dummy-pak', addon_slug: 'dummy-addon', pak: 'Dummy Pak', addon: 'Dummy Addon', count: 334,

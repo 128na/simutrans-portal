@@ -26,7 +26,7 @@ final class FindAllByUserTest extends TestCase
 
         $result = $this->categoryRepository->findAllByUser($user);
 
-        $this->assertTrue($result->every(fn (Category $c) => $c->need_admin === false));
+        $this->assertTrue($result->every(fn (Category $category): bool => $category->need_admin === false));
     }
 
     public function test_管理者は管理者用カテゴリも含む(): void
@@ -35,6 +35,6 @@ final class FindAllByUserTest extends TestCase
 
         $result = $this->categoryRepository->findAllByUser($user);
 
-        $this->assertTrue($result->some(fn (Category $c) => $c->need_admin === true));
+        $this->assertTrue($result->some(fn (Category $category): bool => $category->need_admin === true));
     }
 }

@@ -30,9 +30,9 @@ final class GetTokenTest extends TestCase
             'refresh_token' => '456',
             'expired_at' => now(),
         ]);
-        $result = $this->oauthTokenRepository->getToken($token->application);
+        $oauthToken = $this->oauthTokenRepository->getToken($token->application);
 
-        $this->assertSame($token->application, $result->application);
+        $this->assertSame($token->application, $oauthToken->application);
     }
 
     public function test_存在しないトークンはエラー(): void

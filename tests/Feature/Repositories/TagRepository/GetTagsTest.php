@@ -22,9 +22,9 @@ final class GetTagsTest extends TestCase
     public function test(): void
     {
         $tag = Tag::factory()->create();
-        $result = $this->tagRepository->getTags();
+        $tags = $this->tagRepository->getTags();
 
-        $this->assertCount(1, $result);
-        $this->assertSame($tag->id, $result[0]->id);
+        $this->assertCount(1, $tags);
+        $this->assertSame($tag->id, $tags[0]->id);
     }
 }

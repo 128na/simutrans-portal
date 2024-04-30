@@ -482,7 +482,6 @@ namespace App\Models\User{
  * @property-read string $avatar_url
  * @property-read bool $has_avatar
  * @property-read \App\Models\User $user
- * @method static \Database\Factories\User\ProfileFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Profile newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Profile newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Profile query()

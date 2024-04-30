@@ -60,7 +60,7 @@ final class CategorySeeder extends Seeder
         ['slug' => 'mit-license', 'type' => CategoryType::License, 'order' => 40200],
         ['slug' => 'others',      'type' => CategoryType::License, 'order' => 49000],
         // page
-        ['slug' => 'announce', 'type' => CategoryType::Page, 'order' => 50000],
+        ['slug' => 'announce', 'type' => CategoryType::Page, 'order' => 50000, 'need_admin' => true],
         ['slug' => 'common',   'type' => CategoryType::Page, 'order' => 50010],
         ['slug' => 'others',   'type' => CategoryType::Page, 'order' => 59000],
     ];
@@ -73,6 +73,7 @@ final class CategorySeeder extends Seeder
                 'type' => $category['type'],
             ], [
                 'order' => $category['order'],
+                'need_admin' => $category['need_admin'] ?? false,
             ]);
         }
     }

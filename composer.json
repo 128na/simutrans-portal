@@ -30,16 +30,16 @@
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.13.5",
     "barryvdh/laravel-ide-helper": "^3",
-    "dg/bypass-finals": "^1.6",
+    "dg/bypass-finals": "^1.7",
     "fakerphp/faker": "^1.23.1",
     "filp/whoops": "^2.15.4",
     "larastan/larastan": "^2.9.6",
     "laravel/dusk": "^8.2.0",
     "laravel/pint": "^1.15.3",
-    "mockery/mockery": "^1.6.11",
+    "mockery/mockery": "^1.6.12",
     "nunomaduro/collision": "^8.1.1",
     "phpunit/phpunit": "^10.5.20",
-    "rector/rector": "^1.0.5",
+    "rector/rector": "^1.1.0",
     "spatie/laravel-ignition": "^2.7.0"
   },
   "config": {

@@ -77,7 +77,7 @@ final class ResizeByFileSize
         }
 
         $tmpPath = @tempnam(sys_get_temp_dir(), '');
-        if ($tmpPath === '' || $tmpPath === '0' || $tmpPath === false) {
+        if ($tmpPath === false) {
             throw new ResizeFailedException('tempnam failed');
         }
 

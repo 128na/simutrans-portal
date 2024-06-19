@@ -34,6 +34,6 @@ final class DatExtractor implements Extractor
     {
         preg_match_all('/[\s^]name\=(.*)\s/i', $dat, $matches);
 
-        return array_map(fn ($text): string => trim((string) $text), $matches[1] ?? []);
+        return array_map(fn ($text): string => trim($text), $matches[1] ?? []);
     }
 }

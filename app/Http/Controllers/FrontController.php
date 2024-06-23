@@ -27,8 +27,7 @@ final class FrontController extends Controller
     public function __construct(
         private readonly ArticleService $articleService,
         private readonly MetaOgpService $metaOgpService,
-    ) {
-    }
+    ) {}
 
     /**
      * SPA用フロント.

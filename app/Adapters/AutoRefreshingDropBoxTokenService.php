@@ -11,19 +11,19 @@ final class AutoRefreshingDropBoxTokenService
     public function getToken(string $key, string $secret, string $refreshToken): string
     {
         $client = new \GuzzleHttp\Client();
-        $res = $client->request('POST', sprintf('https://%s:%s@api.dropbox.com/oauth2/token', $key, $secret), [
+        $response = $client->request('POST', sprintf('https://%s:%s@api.dropbox.com/oauth2/token', $key, $secret), [
             'form_params' => [
                 'grant_type' => 'refresh_token',
                 'refresh_token' => $refreshToken,
             ],
         ]);
-        if ($res->getStatusCode() == 200) {
+        if ($response->getStatusCode() == 200) {
             /** @var array{access_token:string} */
-            $data = json_decode((string) $res->getBody(), true);
+            $data = json_decode((string) $response->getBody(), true);
 
             return $data['access_token'];
         }
 
-        throw new Exception('get refresh token failed: '.$res->getBody());
+        throw new Exception('get refresh token failed: '.$response->getBody());
     }
 }

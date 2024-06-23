@@ -27,8 +27,8 @@ final class DestroyTest extends TestCase
         $this->actingAs($this->user);
 
         $url = '/api/admin/users/'.$this->targetUser->id;
-        $res = $this->deleteJson($url);
-        $res->assertOk();
+        $testResponse = $this->deleteJson($url);
+        $testResponse->assertOk();
 
         $user = User::withTrashed()->findOrFail($this->targetUser->id);
         $this->assertTrue($user->trashed(), '論理削除されている');
@@ -40,8 +40,8 @@ final class DestroyTest extends TestCase
 
         $this->actingAs($this->user);
         $url = '/api/admin/users/'.$this->targetUser->id;
-        $res = $this->deleteJson($url);
-        $res->assertOk();
+        $testResponse = $this->deleteJson($url);
+        $testResponse->assertOk();
 
         $user = User::withTrashed()->findOrFail($this->targetUser->id);
         $this->assertFalse($user->trashed(), '論理削除されていない');
@@ -50,8 +50,8 @@ final class DestroyTest extends TestCase
     public function test未ログイン(): void
     {
         $url = '/api/admin/users/'.$this->targetUser->id;
-        $res = $this->deleteJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->deleteJson($url);
+        $testResponse->assertUnauthorized();
     }
 
     public function test管理者以外(): void
@@ -59,7 +59,7 @@ final class DestroyTest extends TestCase
         $this->user->update(['role' => UserRole::User]);
         $this->actingAs($this->user);
         $url = '/api/admin/users/'.$this->targetUser->id;
-        $res = $this->deleteJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->deleteJson($url);
+        $testResponse->assertUnauthorized();
     }
 }

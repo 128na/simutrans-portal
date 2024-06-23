@@ -11,8 +11,7 @@ final readonly class SyncRelatedModels
 {
     public function __construct(
         private ArticleRepository $articleRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * @param  array<mixed>  $data

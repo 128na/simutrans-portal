@@ -12,8 +12,7 @@ final class ScreenshotController extends Controller
 {
     public function __construct(
         private readonly MetaOgpService $metaOgpService,
-    ) {
-    }
+    ) {}
 
     public function index(): Renderable
     {

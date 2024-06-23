@@ -10,9 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 final class ControllOptionController extends Controller
 {
-    public function __construct(private readonly ControllOption $controllOption)
-    {
-    }
+    public function __construct(private readonly ControllOption $controllOption) {}
 
     /**
      * @return Collection<int, ControllOption>

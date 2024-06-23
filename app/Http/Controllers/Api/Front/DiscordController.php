@@ -17,8 +17,7 @@ final class DiscordController extends Controller
     public function __construct(
         private readonly InviteService $inviteService,
         private readonly RecaptchaService $recaptchaService,
-    ) {
-    }
+    ) {}
 
     public function index(Request $request): JsonResponse
     {

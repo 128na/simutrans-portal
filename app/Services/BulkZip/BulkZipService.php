@@ -12,9 +12,7 @@ use App\Repositories\BulkZipRepository;
 
 final readonly class BulkZipService
 {
-    public function __construct(private readonly BulkZipRepository $bulkZipRepository)
-    {
-    }
+    public function __construct(private readonly BulkZipRepository $bulkZipRepository) {}
 
     public function findOrCreateAndDispatch(BulkZippableInterface $bulkZippable): BulkZip
     {

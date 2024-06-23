@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\Listeners\Discord;
 
-use App\Events\Discord\DiscordInviteCodeCreated;
 use Illuminate\Log\Logger;
 
 final readonly class OnDiscordInviteCodeCreated
 {
-    public function __construct(private readonly Logger $logger)
-    {
-    }
+    public function __construct(private readonly Logger $logger) {}
 
-    public function handle(DiscordInviteCodeCreated $discordInviteCodeCreated): void
+    public function handle(): void
     {
         $this->logger->channel('invite')->info('Disocrd招待リンク生成', $this->getAccessInfo());
     }

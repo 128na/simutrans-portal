@@ -40,8 +40,8 @@ final class StoreTest extends TestCase
 
         $this->actingAs($this->user);
 
-        $res = $this->postJson($url, ['user' => $data]);
-        $res->assertOK();
+        $testResponse = $this->postJson($url, ['user' => $data]);
+        $testResponse->assertOK();
 
         Notification::assertNothingSent();
     }
@@ -64,8 +64,8 @@ final class StoreTest extends TestCase
         $this->actingAs($this->user);
 
         $url = '/api/mypage/user';
-        $res = $this->postJson($url, ['user' => $data]);
-        $res->assertOk();
+        $testResponse = $this->postJson($url, ['user' => $data]);
+        $testResponse->assertOk();
 
         $this->assertEquals($this->user->fresh()->email, 'new@example.com');
 

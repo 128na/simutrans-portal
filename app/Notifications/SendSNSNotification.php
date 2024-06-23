@@ -16,9 +16,7 @@ abstract class SendSNSNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * Get the notification's delivery channels.

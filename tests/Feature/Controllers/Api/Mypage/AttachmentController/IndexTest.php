@@ -24,15 +24,15 @@ final class IndexTest extends TestCase
         $url = '/api/mypage/attachments';
         $this->actingAs($this->user);
 
-        $res = $this->getJson($url);
-        $res->assertOK();
+        $testResponse = $this->getJson($url);
+        $testResponse->assertOK();
     }
 
     public function test_未ログイン(): void
     {
         $url = '/api/mypage/attachments';
 
-        $res = $this->getJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->getJson($url);
+        $testResponse->assertUnauthorized();
     }
 }

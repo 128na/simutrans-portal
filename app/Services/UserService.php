@@ -16,8 +16,7 @@ final readonly class UserService
         private readonly UserRepository $userRepository,
         private readonly ProfileRepository $profileRepository,
         private readonly AttachmentRepository $attachmentRepository,
-    ) {
-    }
+    ) {}
 
     public function getUser(User $user): User
     {

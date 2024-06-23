@@ -9,9 +9,7 @@ use Laravel\Fortify\Events\TwoFactorAuthenticationEnabled;
 
 final readonly class OnTwoFactorAuthenticationEnabled
 {
-    public function __construct(private readonly Logger $logger)
-    {
-    }
+    public function __construct(private readonly Logger $logger) {}
 
     public function handle(TwoFactorAuthenticationEnabled $twoFactorAuthenticationEnabled): void
     {

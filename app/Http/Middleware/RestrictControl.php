@@ -9,9 +9,7 @@ use Closure;
 
 final readonly class RestrictControl
 {
-    public function __construct(private ControllOption $controllOption)
-    {
-    }
+    public function __construct(private ControllOption $controllOption) {}
 
     /**
      * Handle an incoming request.

@@ -22,8 +22,8 @@ final class IndexTest extends TestCase
     {
         $url = '/api/mypage/user';
 
-        $res = $this->getJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->getJson($url);
+        $testResponse->assertUnauthorized();
     }
 
     public function test(): void
@@ -32,7 +32,7 @@ final class IndexTest extends TestCase
 
         $this->actingAs($this->user);
 
-        $res = $this->getJson($url);
-        $res->assertOK();
+        $testResponse = $this->getJson($url);
+        $testResponse->assertOK();
     }
 }

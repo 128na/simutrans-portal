@@ -22,8 +22,7 @@ final readonly class ArticleService
     public function __construct(
         private readonly ArticleRepository $articleRepository,
         private readonly CategoryRepository $categoryRepository,
-    ) {
-    }
+    ) {}
 
     public function loadArticle(Article $article): Article
     {

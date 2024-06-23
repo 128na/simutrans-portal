@@ -23,8 +23,8 @@ final class IndexTest extends TestCase
         });
 
         $url = '/api/front/invite-simutrans-interact-meeting';
-        $res = $this->postJson($url);
-        $res
+        $testResponse = $this->postJson($url);
+        $testResponse
             ->assertOk()
             ->assertJson(['url' => 'dummy']);
     }
@@ -38,8 +38,8 @@ final class IndexTest extends TestCase
             $mock->expects()->create()->once()->andThrow(new Error('dummy'));
         });
         $url = '/api/front/invite-simutrans-interact-meeting';
-        $res = $this->postJson($url);
-        $res
+        $testResponse = $this->postJson($url);
+        $testResponse
             ->assertStatus(400)
             ->assertJson(['url' => null]);
     }
@@ -53,8 +53,8 @@ final class IndexTest extends TestCase
             $mock->expects()->create()->never();
         });
         $url = '/api/front/invite-simutrans-interact-meeting';
-        $res = $this->postJson($url);
-        $res
+        $testResponse = $this->postJson($url);
+        $testResponse
             ->assertStatus(400)
             ->assertJson(['url' => null]);
     }

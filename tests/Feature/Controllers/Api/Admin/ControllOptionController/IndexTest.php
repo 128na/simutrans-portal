@@ -23,8 +23,8 @@ final class IndexTest extends TestCase
     {
         $url = '/api/admin/controll_options';
 
-        $res = $this->getJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->getJson($url);
+        $testResponse->assertUnauthorized();
     }
 
     public function test_管理者(): void
@@ -32,8 +32,8 @@ final class IndexTest extends TestCase
         $url = '/api/admin/controll_options';
 
         $this->actingAs($this->user);
-        $res = $this->getJson($url);
-        $res->assertOk();
+        $testResponse = $this->getJson($url);
+        $testResponse->assertOk();
     }
 
     public function test_管理者以外(): void
@@ -42,7 +42,7 @@ final class IndexTest extends TestCase
 
         $this->user->update(['role' => UserRole::User]);
         $this->actingAs($this->user);
-        $res = $this->getJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->getJson($url);
+        $testResponse->assertUnauthorized();
     }
 }

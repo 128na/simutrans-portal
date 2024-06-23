@@ -26,7 +26,7 @@ final class UpdateTest extends TestCase
 
         $attachment = $this->createAttachment($this->screenshot->user);
 
-        $response = $this->putJson($url, [
+        $testResponse = $this->putJson($url, [
             'should_notify' => false,
             'screenshot' => [
                 'title' => 'dummy',
@@ -40,14 +40,14 @@ final class UpdateTest extends TestCase
                 'links' => [],
                 'articles' => [],
             ]]);
-        $response->assertOk();
+        $testResponse->assertOk();
     }
 
     public function test未ログイン(): void
     {
         $url = '/api/mypage/screenshots/'.$this->screenshot->id;
 
-        $response = $this->putJson($url);
-        $response->assertUnauthorized();
+        $testResponse = $this->putJson($url);
+        $testResponse->assertUnauthorized();
     }
 }

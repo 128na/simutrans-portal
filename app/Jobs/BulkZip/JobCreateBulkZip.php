@@ -22,9 +22,7 @@ final class JobCreateBulkZip implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct(private readonly BulkZip $bulkZip)
-    {
-    }
+    public function __construct(private readonly BulkZip $bulkZip) {}
 
     public function handle(
         BulkZipRepository $bulkZipRepository,

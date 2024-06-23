@@ -21,9 +21,7 @@ final class NgWordRule implements ValidationRule
      * @param  array<string>  $ngWords
      * @return void
      */
-    public function __construct(private readonly array $ngWords = [])
-    {
-    }
+    public function __construct(private readonly array $ngWords = []) {}
 
     /**
      * Run the validation rule.

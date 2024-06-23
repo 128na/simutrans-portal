@@ -19,9 +19,7 @@ final class VerifyEmail extends BaseVerifyEmail implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * Get the notification's delivery channels.

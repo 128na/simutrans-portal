@@ -15,9 +15,7 @@ use Illuminate\Support\Facades\Config;
  */
 final class RedirectController extends Controller
 {
-    public function __construct(private readonly RedirectRepository $redirectRepository)
-    {
-    }
+    public function __construct(private readonly RedirectRepository $redirectRepository) {}
 
     public function index(Request $request): RedirectResponse
     {

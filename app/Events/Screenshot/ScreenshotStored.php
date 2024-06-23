@@ -16,6 +16,5 @@ final readonly class ScreenshotStored
     public function __construct(
         public Screenshot $screenshot,
         public bool $shouldNotify = false,
-    ) {
-    }
+    ) {}
 }

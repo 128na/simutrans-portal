@@ -24,8 +24,8 @@ final class UpdateTest extends TestCase
     {
         $url = '/api/mypage/articles/'.$this->article->id;
 
-        $response = $this->postJson($url);
-        $response->assertUnauthorized();
+        $testResponse = $this->postJson($url);
+        $testResponse->assertUnauthorized();
     }
 
     public function test(): void
@@ -34,7 +34,7 @@ final class UpdateTest extends TestCase
 
         $this->actingAs($this->article->user);
 
-        $response = $this->postJson($url, ['article' => [
+        $testResponse = $this->postJson($url, ['article' => [
             'post_type' => ArticlePostType::AddonIntroduction->value,
             'status' => ArticleStatus::Publish->value,
             'title' => 'test title ',
@@ -53,6 +53,6 @@ final class UpdateTest extends TestCase
             'articles' => [],
             'published_at' => null,
         ]]);
-        $response->assertStatus(200);
+        $testResponse->assertStatus(200);
     }
 }

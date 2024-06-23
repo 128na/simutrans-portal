@@ -29,10 +29,10 @@ final class StoreTest extends TestCase
         $this->actingAs($this->user);
 
         Queue::fake();
-        $res = $this->postJson($url, ['files' => [
+        $testResponse = $this->postJson($url, ['files' => [
             UploadedFile::fake()->create('test.zip', 1, 'application/zip'),
         ]]);
-        $res->assertOK();
+        $testResponse->assertOK();
         Queue::assertPushed(UpdateFileInfo::class);
     }
 
@@ -40,7 +40,7 @@ final class StoreTest extends TestCase
     {
         $url = '/api/mypage/attachments';
 
-        $res = $this->postJson($url, []);
-        $res->assertUnauthorized();
+        $testResponse = $this->postJson($url, []);
+        $testResponse->assertUnauthorized();
     }
 }

@@ -30,8 +30,8 @@ final class BulkZipServiceTest extends TestCase
          * @var BulkZipService
          */
         $service = app(BulkZipService::class);
-        $res = $service->findOrCreateAndDispatch($user);
-        $this->assertInstanceOf(BulkZip::class, $res);
+        $bulkZip = $service->findOrCreateAndDispatch($user);
+        $this->assertInstanceOf(BulkZip::class, $bulkZip);
 
         Bus::assertDispatched(JobCreateBulkZip::class);
         Bus::assertDispatched(JobDeleteExpiredBulkzip::class);
@@ -56,8 +56,8 @@ final class BulkZipServiceTest extends TestCase
          */
         $service = app(BulkZipService::class);
         $user = new User();
-        $res = $service->findOrCreateAndDispatch($user);
-        $this->assertInstanceOf(BulkZip::class, $res);
+        $bulkZip = $service->findOrCreateAndDispatch($user);
+        $this->assertInstanceOf(BulkZip::class, $bulkZip);
 
         Bus::assertNotDispatched(JobCreateBulkZip::class);
         Bus::assertDispatched(JobDeleteExpiredBulkzip::class);

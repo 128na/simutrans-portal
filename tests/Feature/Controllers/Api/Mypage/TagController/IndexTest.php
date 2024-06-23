@@ -27,9 +27,9 @@ final class IndexTest extends TestCase
         $url = '/api/mypage/tags';
         $this->actingAs($this->user);
 
-        $res = $this->getJson($url);
-        $res->assertOK();
-        $res->assertExactJson(['data' => [
+        $testResponse = $this->getJson($url);
+        $testResponse->assertOK();
+        $testResponse->assertExactJson(['data' => [
             ['id' => $this->tag->id, 'name' => $this->tag->name, 'description' => $this->tag->description],
         ]]);
     }
@@ -38,7 +38,7 @@ final class IndexTest extends TestCase
     {
         $url = '/api/mypage/tags';
 
-        $res = $this->getJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->getJson($url);
+        $testResponse->assertUnauthorized();
     }
 }

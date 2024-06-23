@@ -20,9 +20,7 @@ final class ReservationPublishedAt implements DataAwareRule, ValidationRule
 
     public function __construct(
         private readonly CarbonImmutable $now
-    ) {
-
-    }
+    ) {}
 
     /**
      * @param  array{article?:array{status?:string,published_at?:string}}  $data

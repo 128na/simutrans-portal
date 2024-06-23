@@ -12,9 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 final class BulkZipController extends Controller
 {
-    public function __construct(private readonly BulkZipService $bulkZipService)
-    {
-    }
+    public function __construct(private readonly BulkZipService $bulkZipService) {}
 
     public function user(): JsonResponse
     {

@@ -14,9 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 
 final class TwitterChannel extends BaseChannel
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function send(Model $model, SendSNSNotification $sendSNSNotification): void
     {

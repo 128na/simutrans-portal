@@ -17,8 +17,7 @@ final readonly class ToTwitter
     public function __construct(
         private TwitterV2Api $twitterV2Api,
         private GetScreenshotParam $getScreenshotParam,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Screenshot $screenshot, SendSNSNotification $sendSNSNotification): void
     {

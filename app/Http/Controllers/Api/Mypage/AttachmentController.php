@@ -19,8 +19,7 @@ final class AttachmentController extends Controller
 {
     public function __construct(
         private readonly AttachmentRepository $attachmentRepository,
-    ) {
-    }
+    ) {}
 
     public function index(): AnonymousResourceCollection
     {

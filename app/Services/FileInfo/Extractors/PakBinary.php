@@ -10,8 +10,7 @@ final class PakBinary
 
     public function __construct(
         private readonly string $binary,
-    ) {
-    }
+    ) {}
 
     public function readChar(int $bytes): string
     {

@@ -15,8 +15,7 @@ final readonly class UpdateScreenshot
     public function __construct(
         private ScreenshotRepository $screenshotRepository,
         private CarbonImmutable $now,
-    ) {
-    }
+    ) {}
 
     /**
      * @param  array{should_notify:bool,screenshot:array{id:int,title:string,description:string,links:string[],status:string,attachments:array<int,array{id:int,caption:string,order:int}>,articles:array<int,array{id:int,title:string}>}}  $data

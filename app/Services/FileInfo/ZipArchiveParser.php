@@ -13,8 +13,7 @@ final readonly class ZipArchiveParser
 {
     public function __construct(
         private readonly ZipArchive $zipArchive,
-    ) {
-    }
+    ) {}
 
     /**
      * テキスト系ファイルをパースする(dat,tab,readme).

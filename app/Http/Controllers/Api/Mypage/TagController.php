@@ -19,8 +19,7 @@ final class TagController extends Controller
 {
     public function __construct(
         private readonly TagRepository $tagRepository,
-    ) {
-    }
+    ) {}
 
     public function search(SearchRequest $searchRequest): Tags
     {

@@ -23,16 +23,16 @@ final class IndexTest extends TestCase
         $url = '/api/mypage/screenshots';
         $this->actingAs($this->screenshot->user);
 
-        $response = $this->getJson($url);
-        $response->assertOk();
-        $response->assertSee($this->screenshot->title);
+        $testResponse = $this->getJson($url);
+        $testResponse->assertOk();
+        $testResponse->assertSee($this->screenshot->title);
     }
 
     public function test未ログイン(): void
     {
         $url = '/api/mypage/screenshots';
 
-        $response = $this->getJson($url);
-        $response->assertUnauthorized();
+        $testResponse = $this->getJson($url);
+        $testResponse->assertUnauthorized();
     }
 }

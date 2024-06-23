@@ -23,17 +23,17 @@ final class IndexTest extends TestCase
     {
         $this->actingAs($this->user);
         $url = '/api/admin/users';
-        $res = $this->getJson($url);
-        $res->assertOk();
-        $res->assertJsonFragment(['name' => $this->user->name]);
-        $res->assertJsonFragment(['name' => $this->user->name]);
+        $testResponse = $this->getJson($url);
+        $testResponse->assertOk();
+        $testResponse->assertJsonFragment(['name' => $this->user->name]);
+        $testResponse->assertJsonFragment(['name' => $this->user->name]);
     }
 
     public function test未ログイン(): void
     {
         $url = '/api/admin/users';
-        $res = $this->getJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->getJson($url);
+        $testResponse->assertUnauthorized();
     }
 
     public function test管理者以外(): void
@@ -41,7 +41,7 @@ final class IndexTest extends TestCase
         $this->user->update(['role' => UserRole::User]);
         $this->actingAs($this->user);
         $url = '/api/admin/users';
-        $res = $this->getJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->getJson($url);
+        $testResponse->assertUnauthorized();
     }
 }

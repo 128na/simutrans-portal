@@ -13,8 +13,7 @@ final readonly class FeedRepository
     public function __construct(
         private Article $article,
         private Category $category,
-    ) {
-    }
+    ) {}
 
     /**
      * @return Collection<int,Article>

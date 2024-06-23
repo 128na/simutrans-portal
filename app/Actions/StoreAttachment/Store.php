@@ -15,9 +15,7 @@ final readonly class Store
     public function __construct(
         private readonly FilesystemAdapter $filesystemAdapter,
         private readonly CropImage $cropImage,
-    ) {
-
-    }
+    ) {}
 
     /**
      * @param  array<int,int>  $crop

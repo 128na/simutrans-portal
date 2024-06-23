@@ -9,9 +9,7 @@ use Illuminate\Log\Logger;
 
 final readonly class OnTagDescriptionUpdated
 {
-    public function __construct(private readonly Logger $logger)
-    {
-    }
+    public function __construct(private readonly Logger $logger) {}
 
     public function handle(TagDescriptionUpdated $tagDescriptionUpdated): void
     {

@@ -23,15 +23,15 @@ final class DestroyTest extends TestCase
         $url = '/api/mypage/screenshots/'.$this->screenshot->id;
         $this->actingAs($this->screenshot->user);
 
-        $response = $this->deleteJson($url);
-        $response->assertOk();
+        $testResponse = $this->deleteJson($url);
+        $testResponse->assertOk();
     }
 
     public function test未ログイン(): void
     {
         $url = '/api/mypage/screenshots/'.$this->screenshot->id;
 
-        $response = $this->deleteJson($url);
-        $response->assertUnauthorized();
+        $testResponse = $this->deleteJson($url);
+        $testResponse->assertUnauthorized();
     }
 }

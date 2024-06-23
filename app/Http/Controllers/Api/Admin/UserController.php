@@ -11,9 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 final class UserController extends Controller
 {
-    public function __construct(private readonly UserRepository $userRepository)
-    {
-    }
+    public function __construct(private readonly UserRepository $userRepository) {}
 
     /**
      * @return Collection<int, \App\Models\User>

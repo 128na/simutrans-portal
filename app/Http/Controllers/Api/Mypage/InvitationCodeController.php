@@ -24,8 +24,7 @@ final class InvitationCodeController extends Controller
 {
     public function __construct(
         private readonly UserRepository $userRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * 招待したユーザー一覧.

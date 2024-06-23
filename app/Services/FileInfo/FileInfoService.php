@@ -19,8 +19,7 @@ final readonly class FileInfoService
         private readonly ZipArchiveParser $zipArchiveParser,
         private readonly TextService $textService,
         private readonly array $extractors,
-    ) {
-    }
+    ) {}
 
     public function updateOrCreateFromPak(Attachment $attachment): FileInfo
     {

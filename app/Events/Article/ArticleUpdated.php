@@ -17,6 +17,5 @@ final readonly class ArticleUpdated
         public Article $article,
         public bool $shouldNotify = false,
         public bool $notYetPublished = true,
-    ) {
-    }
+    ) {}
 }

@@ -24,8 +24,7 @@ final readonly class BlueSkyApiClient
         private readonly BlueskyPostService $blueskyPostService,
         private readonly MetaOgpService $metaOgpService,
         private readonly ResizeByFileSize $resizeByFileSize,
-    ) {
-    }
+    ) {}
 
     /**
      * @see https://github.com/potibm/phluesky

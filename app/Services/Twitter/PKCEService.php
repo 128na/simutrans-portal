@@ -21,8 +21,7 @@ final readonly class PKCEService
         private readonly string $clientId,
         private readonly string $clientSecret,
         private readonly string $callbackUrl,
-    ) {
-    }
+    ) {}
 
     public function generateState(int $length = 32): string
     {

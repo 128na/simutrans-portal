@@ -20,9 +20,7 @@ final readonly class StoreArticle
         private CarbonImmutable $now,
         private DecidePublishedAt $decidePublishedAt,
         private SyncRelatedModels $syncRelatedModels,
-    ) {
-
-    }
+    ) {}
 
     /**
      * @param  array{should_notify?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}  $data

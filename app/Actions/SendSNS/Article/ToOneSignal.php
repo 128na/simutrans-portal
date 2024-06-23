@@ -16,8 +16,7 @@ final readonly class ToOneSignal
 {
     public function __construct(
         private GetArticleParam $getArticleParam,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Article $article, SendSNSNotification $sendSNSNotification): void
     {

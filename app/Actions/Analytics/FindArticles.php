@@ -15,9 +15,7 @@ use UnexpectedValueException;
 
 final readonly class FindArticles
 {
-    public function __construct(private ArticleRepository $articleRepository)
-    {
-    }
+    public function __construct(private ArticleRepository $articleRepository) {}
 
     /**
      * @return Collection<int,Article>
@@ -29,10 +27,10 @@ final readonly class FindArticles
         $type = (string) $searchRequest->string('type');
         /** @var int[] */
         $ids = $searchRequest->input('ids');
-        $typeId = $this->getTypeId($type);
+        $articleAnalyticsType = $this->getTypeId($type);
         $period = $this->getPeriod($type, $startDate, $endDate);
 
-        return $this->articleRepository->findAllForAnalytics($user, $ids, $typeId, $period);
+        return $this->articleRepository->findAllForAnalytics($user, $ids, $articleAnalyticsType, $period);
     }
 
     /**

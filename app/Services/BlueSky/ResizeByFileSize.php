@@ -15,12 +15,9 @@ final class ResizeByFileSize
             return $inputPath;
         }
 
-        $im = $this->getImage($inputPath);
-        $originalWidth = @imagesx($im);
+        $gdImage = $this->getImage($inputPath);
+        $originalWidth = @imagesx($gdImage);
         logger('[FileSizeBaseResizer] resize', ['originalWidth' => $originalWidth, 'filesize' => $filesize]);
-        if ($originalWidth === 0) {
-            throw new ResizeFailedException('imagesx failed');
-        }
 
         $width = (int) ($originalWidth / 2);
         $min = (int) ($targetFileSize * 0.75);
@@ -28,7 +25,7 @@ final class ResizeByFileSize
         $attempt = 0;
         $limit = 20;
         do {
-            $resized = $this->doResize($im, $width);
+            $resized = $this->doResize($gdImage, $width);
             $size = @filesize($resized);
             if ($size === 0 || $size === false) {
                 throw new ResizeFailedException('filesize failed');

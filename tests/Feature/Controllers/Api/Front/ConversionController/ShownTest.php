@@ -32,8 +32,8 @@ final class ShownTest extends TestCase
         $this->assertDatabaseMissing('view_counts', ['article_id' => $this->article->id, 'type' => '4', 'period' => $total]);
 
         $url = '/api/shown/'.$this->article->id;
-        $response = $this->post($url);
-        $response->assertOk();
+        $testResponse = $this->post($url);
+        $testResponse->assertOk();
 
         $this->assertDatabaseHas('view_counts', ['article_id' => $this->article->id, 'type' => '1', 'period' => $dayly, 'count' => 1]);
         $this->assertDatabaseHas('view_counts', ['article_id' => $this->article->id, 'type' => '2', 'period' => $monthly, 'count' => 1]);

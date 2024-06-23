@@ -26,7 +26,7 @@ final class StoreTest extends TestCase
 
         $attachment = $this->createAttachment($this->user);
 
-        $response = $this->postJson($url, [
+        $testResponse = $this->postJson($url, [
             'should_notify' => false,
             'screenshot' => [
                 'title' => 'dummy',
@@ -40,14 +40,14 @@ final class StoreTest extends TestCase
                 'links' => [],
                 'articles' => [],
             ]]);
-        $response->assertOk();
+        $testResponse->assertOk();
     }
 
     public function test未ログイン(): void
     {
         $url = '/api/mypage/screenshots';
 
-        $response = $this->postJson($url);
-        $response->assertUnauthorized();
+        $testResponse = $this->postJson($url);
+        $testResponse->assertUnauthorized();
     }
 }

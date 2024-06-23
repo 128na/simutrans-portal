@@ -11,8 +11,7 @@ final readonly class GetArticleParam
 {
     public function __construct(
         private Carbon $carbon,
-    ) {
-    }
+    ) {}
 
     /**
      * @return array<string,string>

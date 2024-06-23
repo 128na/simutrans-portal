@@ -24,8 +24,7 @@ final class FrontController extends Controller
         private readonly ArticleService $articleService,
         private readonly TagService $tagService,
         private readonly FrontDescriptionService $frontDescriptionService
-    ) {
-    }
+    ) {}
 
     public function show(string $userIdOrNickname, string $slug): ArticleResource
     {
@@ -47,10 +46,10 @@ final class FrontController extends Controller
             : User::where('nickname', $userIdOrNickname)->firstOrFail();
 
         $order = $listRequest->string('order', 'modified_at')->toString();
-        $articles = $this->articleService->paginateByUser($user, $order);
+        $lengthAwarePaginator = $this->articleService->paginateByUser($user, $order);
         $pr = $this->articleService->prArticle();
 
-        return ArticleResource::collection($articles)
+        return ArticleResource::collection($lengthAwarePaginator)
             ->additional([
                 'pr' => $pr instanceof \App\Models\Article ? new PrArticleResource($pr) : null,
                 ...$this->frontDescriptionService->user($user),

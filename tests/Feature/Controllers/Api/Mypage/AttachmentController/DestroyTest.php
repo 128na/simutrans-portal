@@ -30,8 +30,8 @@ final class DestroyTest extends TestCase
         $url = '/api/mypage/attachments/'.$attachment->id;
 
         $this->actingAs($this->user);
-        $res = $this->deleteJson($url);
-        $res->assertStatus(403);
+        $testResponse = $this->deleteJson($url);
+        $testResponse->assertStatus(403);
     }
 
     public function test(): void
@@ -39,8 +39,8 @@ final class DestroyTest extends TestCase
         $url = '/api/mypage/attachments/'.$this->attachment->id;
 
         $this->actingAs($this->user);
-        $res = $this->deleteJson($url);
-        $res->assertOK();
+        $testResponse = $this->deleteJson($url);
+        $testResponse->assertOK();
 
         $this->assertNull(Attachment::find($this->attachment->id));
     }
@@ -49,7 +49,7 @@ final class DestroyTest extends TestCase
     {
         $url = '/api/mypage/attachments/'.$this->attachment->id;
 
-        $res = $this->deleteJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->deleteJson($url);
+        $testResponse->assertUnauthorized();
     }
 }

@@ -16,8 +16,7 @@ final readonly class GetOptions
 {
     public function __construct(
         private CategoryRepository $categoryRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * @return array<string, mixed>

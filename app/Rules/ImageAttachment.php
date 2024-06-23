@@ -15,9 +15,7 @@ final readonly class ImageAttachment implements ValidationRule
      *
      * @return void
      */
-    public function __construct(private readonly AttachmentRepository $attachmentRepository)
-    {
-    }
+    public function __construct(private readonly AttachmentRepository $attachmentRepository) {}
 
     /**
      * Run the validation rule.

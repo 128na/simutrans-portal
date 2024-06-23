@@ -17,6 +17,5 @@ final readonly class ScreenshotUpdated
         public Screenshot $screenshot,
         public bool $shouldNotify = false,
         public bool $notYetPublished = true,
-    ) {
-    }
+    ) {}
 }

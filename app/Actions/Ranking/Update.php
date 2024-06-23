@@ -18,8 +18,7 @@ final readonly class Update
     public function __construct(
         private ArticleRepository $articleRepository,
         private CarbonImmutable $now,
-    ) {
-    }
+    ) {}
 
     public function __invoke(): void
     {

@@ -13,7 +13,5 @@ final readonly class CloseByDeadLinkDetected
     use Dispatchable;
     use SerializesModels;
 
-    public function __construct(public Article $article)
-    {
-    }
+    public function __construct(public Article $article) {}
 }

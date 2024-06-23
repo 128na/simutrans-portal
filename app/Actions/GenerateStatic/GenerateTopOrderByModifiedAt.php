@@ -11,9 +11,7 @@ use App\Services\Front\ArticleService;
 
 final class GenerateTopOrderByModifiedAt extends BaseGenerator
 {
-    public function __construct(private readonly ArticleService $articleService)
-    {
-    }
+    public function __construct(private readonly ArticleService $articleService) {}
 
     #[\Override]
     protected function getJsonData(): array

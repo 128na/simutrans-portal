@@ -6,6 +6,4 @@ namespace App\Services\BlueSky;
 
 use Exception;
 
-final class ResizeFailedException extends Exception
-{
-}
+final class ResizeFailedException extends Exception {}

@@ -19,9 +19,7 @@ final class UserInvited extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(private readonly User $user)
-    {
-    }
+    public function __construct(private readonly User $user) {}
 
     /**
      * Get the notification's delivery channels.

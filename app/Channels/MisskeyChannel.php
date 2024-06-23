@@ -15,8 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 final class MisskeyChannel extends BaseChannel
 {
     public function __construct(
-    ) {
-    }
+    ) {}
 
     public function send(Model $model, SendSNSNotification $sendSNSNotification): void
     {

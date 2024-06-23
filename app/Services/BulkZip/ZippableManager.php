@@ -11,9 +11,7 @@ use Exception;
 
 final readonly class ZippableManager
 {
-    public function __construct(private readonly ArticleRepository $articleRepository)
-    {
-    }
+    public function __construct(private readonly ArticleRepository $articleRepository) {}
 
     /**
      * @return array<\App\Models\Article>

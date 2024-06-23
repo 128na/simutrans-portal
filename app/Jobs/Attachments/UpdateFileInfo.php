@@ -19,9 +19,7 @@ final class UpdateFileInfo implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct(private readonly Attachment $attachment)
-    {
-    }
+    public function __construct(private readonly Attachment $attachment) {}
 
     public function handle(FileInfoService $fileInfoService): void
     {

@@ -38,7 +38,7 @@ final class IndexTest extends TestCase
     public function test未ログイン(): void
     {
         $url = '/api/mypage/analytics';
-        $res = $this->getJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->getJson($url);
+        $testResponse->assertUnauthorized();
     }
 }

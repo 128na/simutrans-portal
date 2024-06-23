@@ -28,8 +28,8 @@ final class UpdateTest extends TestCase
     {
         $url = '/api/mypage/tags/'.$this->tag->id;
 
-        $res = $this->postJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->postJson($url);
+        $testResponse->assertUnauthorized();
     }
 
     public function test_機能制限(): void
@@ -38,8 +38,8 @@ final class UpdateTest extends TestCase
 
         ControllOption::updateOrCreate(['key' => ControllOptionKey::TagUpdate], ['value' => false]);
         $this->actingAs($this->user);
-        $res = $this->postJson($url);
-        $res->assertForbidden();
+        $testResponse = $this->postJson($url);
+        $testResponse->assertForbidden();
     }
 
     public function test(): void
@@ -47,8 +47,8 @@ final class UpdateTest extends TestCase
         $url = '/api/mypage/tags/'.$this->tag->id;
 
         $this->actingAs($this->user);
-        $res = $this->postJson($url, ['description' => 'dummy']);
-        $res->assertOk();
+        $testResponse = $this->postJson($url, ['description' => 'dummy']);
+        $testResponse->assertOk();
         $this->assertSame('dummy', Tag::find($this->tag->id)->description);
     }
 
@@ -59,7 +59,7 @@ final class UpdateTest extends TestCase
 
         $this->actingAs($this->user);
         $data = ['description' => 'dummy'];
-        $res = $this->postJson($url, $data);
-        $res->assertForbidden();
+        $testResponse = $this->postJson($url, $data);
+        $testResponse->assertForbidden();
     }
 }

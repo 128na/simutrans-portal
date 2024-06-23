@@ -20,8 +20,7 @@ final class SitemapHandler
 
     public function __construct(
         private readonly FilesystemAdapter $filesystemAdapter,
-    ) {
-    }
+    ) {}
 
     public function destroyAll(): void
     {

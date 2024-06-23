@@ -18,8 +18,7 @@ final readonly class UpdateArticle
         private CarbonImmutable $now,
         private DecidePublishedAt $decidePublishedAt,
         private SyncRelatedModels $syncRelatedModels,
-    ) {
-    }
+    ) {}
 
     /**
      * @param  array{should_notify?:bool,without_update_modified_at?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}  $data

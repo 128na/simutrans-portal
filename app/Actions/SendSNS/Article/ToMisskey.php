@@ -17,8 +17,7 @@ final readonly class ToMisskey
     public function __construct(
         private MisskeyApiClient $misskeyApiClient,
         private GetArticleParam $getArticleParam,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Article $article, SendSNSNotification $sendSNSNotification): void
     {

@@ -46,10 +46,10 @@ final class CursorCheckLinkTest extends TestCase
             'contents' => $contents,
         ]);
 
-        $res = $this->articleRepository->cursorCheckLink();
+        $lazyCollection = $this->articleRepository->cursorCheckLink();
 
-        $this->assertInstanceOf(LazyCollection::class, $res);
-        $this->assertEquals(0, $res->count(), 'チェック無効の記事は取得できないこと');
+        $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
+        $this->assertEquals(0, $lazyCollection->count(), 'チェック無効の記事は取得できないこと');
     }
 
     public function test公開以外のステータス(): void

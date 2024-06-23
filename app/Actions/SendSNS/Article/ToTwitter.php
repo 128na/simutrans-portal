@@ -17,8 +17,7 @@ final readonly class ToTwitter
     public function __construct(
         private TwitterV2Api $twitterV2Api,
         private GetArticleParam $getArticleParam,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Article $article, SendSNSNotification $sendSNSNotification): void
     {

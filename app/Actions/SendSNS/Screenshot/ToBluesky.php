@@ -20,8 +20,7 @@ final readonly class ToBluesky
     public function __construct(
         private BlueSkyApiClient $blueSkyApiClient,
         private GetScreenshotParam $getScreenshotParam,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Screenshot $screenshot, SendSNSNotification $sendSNSNotification): void
     {

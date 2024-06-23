@@ -16,8 +16,7 @@ final readonly class RecaptchaService
         private readonly RecaptchaEnterpriseServiceClient $recaptchaEnterpriseServiceClient,
         private readonly string $projectName,
         private readonly Event $event,
-    ) {
-    }
+    ) {}
 
     public function __destruct()
     {

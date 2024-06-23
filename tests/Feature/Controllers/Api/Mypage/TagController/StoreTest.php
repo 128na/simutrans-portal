@@ -25,8 +25,8 @@ final class StoreTest extends TestCase
     {
         $url = '/api/mypage/tags';
 
-        $res = $this->postJson($url);
-        $res->assertUnauthorized();
+        $testResponse = $this->postJson($url);
+        $testResponse->assertUnauthorized();
     }
 
     public function test_機能制限(): void
@@ -35,8 +35,8 @@ final class StoreTest extends TestCase
 
         ControllOption::updateOrCreate(['key' => ControllOptionKey::TagUpdate], ['value' => false]);
         $this->actingAs($this->user);
-        $res = $this->postJson($url);
-        $res->assertForbidden();
+        $testResponse = $this->postJson($url);
+        $testResponse->assertForbidden();
     }
 
     public function test(): void
@@ -44,8 +44,8 @@ final class StoreTest extends TestCase
         $url = '/api/mypage/tags';
 
         $this->actingAs($this->user);
-        $res = $this->postJson($url, ['name' => 'example']);
-        $res->assertCreated();
+        $testResponse = $this->postJson($url, ['name' => 'example']);
+        $testResponse->assertCreated();
         $this->assertTrue(Tag::where('name', 'example')->exists());
     }
 }

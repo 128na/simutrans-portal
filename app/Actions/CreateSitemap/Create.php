@@ -11,9 +11,7 @@ final readonly class Create
         private CreateArticleSitemaps $createArticleSitemaps,
         private CreateScreenshotSitemaps $createScreenshotSitemaps,
         private CreateListSitemaps $createListSitemaps,
-    ) {
-
-    }
+    ) {}
 
     public function __invoke(): void
     {

@@ -24,9 +24,7 @@ final class Check
         private readonly FailedCountCache $failedCountCache,
         private readonly InIgnoreList $inIgnoreList,
         private readonly GetHeaders $getHeaders,
-    ) {
-
-    }
+    ) {}
 
     /**
      * @param  callable(Article $article):bool  $onDead

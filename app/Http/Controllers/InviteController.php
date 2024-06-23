@@ -9,9 +9,7 @@ use Illuminate\Contracts\Support\Renderable;
 
 final class InviteController extends Controller
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function index(User $user): Renderable
     {

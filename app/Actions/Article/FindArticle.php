@@ -12,8 +12,7 @@ final readonly class FindArticle
 {
     public function __construct(
         private ArticleRepository $articleRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke(User $user): ArticlesResouce
     {

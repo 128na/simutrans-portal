@@ -10,9 +10,7 @@ use Illuminate\Log\Logger;
 
 final readonly class OnDeadLinkDetected
 {
-    public function __construct(private readonly Logger $logger)
-    {
-    }
+    public function __construct(private readonly Logger $logger) {}
 
     public function handle(DeadLinkDetected $deadLinkDetected): void
     {

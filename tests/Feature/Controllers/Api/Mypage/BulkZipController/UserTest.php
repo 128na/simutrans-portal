@@ -34,8 +34,8 @@ final class UserTest extends TestCase
         $this->actingAs($this->user);
 
         Bus::fake();
-        $response = $this->getJson($url);
-        $response->assertOk();
+        $testResponse = $this->getJson($url);
+        $testResponse->assertOk();
         Bus::assertDispatched(JobCreateBulkZip::class);
     }
 
@@ -49,8 +49,8 @@ final class UserTest extends TestCase
         $url = '/api/mypage/bulk-zip';
 
         $this->actingAs($this->user);
-        $response = $this->getJson($url);
-        $response->assertOk();
+        $testResponse = $this->getJson($url);
+        $testResponse->assertOk();
         Bus::assertNotDispatched(JobCreateBulkZip::class);
     }
 
@@ -58,7 +58,7 @@ final class UserTest extends TestCase
     {
         $url = '/api/mypage/bulk-zip';
 
-        $response = $this->getJson($url);
-        $response->assertUnauthorized();
+        $testResponse = $this->getJson($url);
+        $testResponse->assertUnauthorized();
     }
 }

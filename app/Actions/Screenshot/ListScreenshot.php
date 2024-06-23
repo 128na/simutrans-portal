@@ -13,8 +13,7 @@ final readonly class ListScreenshot
 {
     public function __construct(
         private ScreenshotRepository $screenshotRepository,
-    ) {
-    }
+    ) {}
 
     public function list(User $user): AnonymousResourceCollection
     {

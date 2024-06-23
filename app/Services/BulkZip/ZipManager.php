@@ -24,8 +24,7 @@ final class ZipManager
         private readonly ZipArchive $zipArchive,
         private readonly FilesystemAdapter $filesystemAdapter,
         private readonly array $decorators
-    ) {
-    }
+    ) {}
 
     /**
      * @param  Model[]  $items

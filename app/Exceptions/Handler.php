@@ -24,9 +24,7 @@ final class Handler extends ExceptionHandler
     ];
 
     #[\Override]
-    public function register(): void
-    {
-    }
+    public function register(): void {}
 
     /**
      * Report or log an exception.

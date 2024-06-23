@@ -11,8 +11,7 @@ final readonly class DecidePublishedAt
 {
     public function __construct(
         private CarbonImmutable $now,
-    ) {
-    }
+    ) {}
 
     public function __invoke(?string $publishedAt, ArticleStatus $articleStatus): ?string
     {

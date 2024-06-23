@@ -16,8 +16,7 @@ final readonly class ToOneSignal
 {
     public function __construct(
         private GetScreenshotParam $getScreenshotParam,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Screenshot $screenshot, SendSNSNotification $sendSNSNotification): void
     {

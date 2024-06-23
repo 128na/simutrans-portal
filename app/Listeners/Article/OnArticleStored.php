@@ -10,9 +10,7 @@ use Illuminate\Log\Logger;
 
 final readonly class OnArticleStored
 {
-    public function __construct(private readonly Logger $logger)
-    {
-    }
+    public function __construct(private readonly Logger $logger) {}
 
     public function handle(ArticleStored $articleStored): void
     {

@@ -12,9 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 final class ArticleController extends Controller
 {
-    public function __construct(private readonly ArticleRepository $articleRepository)
-    {
-    }
+    public function __construct(private readonly ArticleRepository $articleRepository) {}
 
     /**
      * @return Collection<int, \App\Models\Article>

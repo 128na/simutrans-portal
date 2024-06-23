@@ -10,8 +10,7 @@ final class GenerateSidebar extends BaseGenerator
         private readonly DeleteUnrelatedTags $deleteUnrelatedTags,
         private readonly CountPakAddon $countPakAddon,
         private readonly CountUserAddon $countUserAddon,
-    ) {
-    }
+    ) {}
 
     #[\Override]
     protected function getJsonData(): array

@@ -17,8 +17,7 @@ final readonly class OnDead
     public function __construct(
         private ArticleRepository $articleRepository,
         private FailedCountCache $failedCountCache,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Article $article): bool
     {

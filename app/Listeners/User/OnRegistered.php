@@ -10,9 +10,7 @@ use Illuminate\Log\Logger;
 
 final readonly class OnRegistered
 {
-    public function __construct(private readonly Logger $logger)
-    {
-    }
+    public function __construct(private readonly Logger $logger) {}
 
     public function handle(Registered $registered): void
     {

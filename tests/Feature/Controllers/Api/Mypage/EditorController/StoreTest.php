@@ -24,8 +24,8 @@ final class StoreTest extends TestCase
     {
         $url = '/api/mypage/articles';
 
-        $response = $this->postJson($url);
-        $response->assertUnauthorized();
+        $testResponse = $this->postJson($url);
+        $testResponse->assertUnauthorized();
     }
 
     public function test(): void
@@ -34,7 +34,7 @@ final class StoreTest extends TestCase
 
         $this->actingAs($this->user);
 
-        $response = $this->postJson($url, ['article' => [
+        $testResponse = $this->postJson($url, ['article' => [
             'post_type' => ArticlePostType::AddonIntroduction->value,
             'status' => ArticleStatus::Publish->value,
             'title' => 'test title ',
@@ -52,6 +52,6 @@ final class StoreTest extends TestCase
             'categories' => [],
             'articles' => [],
         ]]);
-        $response->assertStatus(200);
+        $testResponse->assertStatus(200);
     }
 }

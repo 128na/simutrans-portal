@@ -11,8 +11,7 @@ final readonly class TagService
 {
     public function __construct(
         private readonly TagRepository $tagRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * @return Collection<int, \App\Models\Tag>

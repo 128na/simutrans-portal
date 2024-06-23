@@ -18,8 +18,7 @@ final class OauthController extends Controller
     public function __construct(
         private readonly PKCEService $pkceService,
         private readonly OauthTokenRepository $oauthTokenRepository,
-    ) {
-    }
+    ) {}
 
     public function authoroize(): RedirectResponse
     {

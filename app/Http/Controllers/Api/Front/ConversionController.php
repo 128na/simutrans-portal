@@ -12,9 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 final class ConversionController extends Controller
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function conversion(Article $article): void
     {

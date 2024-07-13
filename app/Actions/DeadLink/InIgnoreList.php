@@ -8,6 +8,7 @@ final class InIgnoreList
 {
     private const array IGNORE_LIST = [
         'getuploader.com',
+        'wikiwiki.jp',
     ];
 
     public function __invoke(string $url): bool

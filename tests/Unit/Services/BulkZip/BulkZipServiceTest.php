@@ -29,8 +29,8 @@ final class BulkZipServiceTest extends TestCase
         /**
          * @var BulkZipService
          */
-        $service = app(BulkZipService::class);
-        $bulkZip = $service->findOrCreateAndDispatch($user);
+        $bulkZipService = app(BulkZipService::class);
+        $bulkZip = $bulkZipService->findOrCreateAndDispatch($user);
         $this->assertInstanceOf(BulkZip::class, $bulkZip);
 
         Bus::assertDispatched(JobCreateBulkZip::class);
@@ -40,9 +40,9 @@ final class BulkZipServiceTest extends TestCase
     public function test未対応のモデル(): void
     {
         $this->expectException(TypeError::class);
-        $service = app(BulkZipService::class);
+        $bulkZipService = app(BulkZipService::class);
         $attachment = new Attachment();
-        $service->findOrCreateAndDispatch($attachment);
+        $bulkZipService->findOrCreateAndDispatch($attachment);
     }
 
     public function test作成済みならディスパッチしない(): void
@@ -54,9 +54,9 @@ final class BulkZipServiceTest extends TestCase
         /**
          * @var BulkZipService
          */
-        $service = app(BulkZipService::class);
+        $bulkZipService = app(BulkZipService::class);
         $user = new User();
-        $bulkZip = $service->findOrCreateAndDispatch($user);
+        $bulkZip = $bulkZipService->findOrCreateAndDispatch($user);
         $this->assertInstanceOf(BulkZip::class, $bulkZip);
 
         Bus::assertNotDispatched(JobCreateBulkZip::class);

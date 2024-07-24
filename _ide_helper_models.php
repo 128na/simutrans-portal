@@ -40,9 +40,9 @@ namespace App\Models{
  * @property-read int|null $daily_conversion_counts_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ViewCount> $dailyViewCounts
  * @property-read int|null $daily_view_counts_count
- * @property-read \App\Models\Collection<int, Category> $category_addons
- * @property-read \App\Models\Collection<int, Category> $category_pak128_positions
- * @property-read \App\Models\Collection<int, Category> $category_paks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $category_addons
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $category_pak128_positions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $category_paks
  * @property-read \App\Models\Attachment|null $file
  * @property-read bool $has_file
  * @property-read bool $has_file_info
@@ -178,7 +178,7 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property string|null $caption キャプション（画像向け）
  * @property int $order 表示順（画像向け）
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $attachmentable
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent|null $attachmentable
  * @property-read \App\Models\Attachment\FileInfo|null $fileInfo
  * @property-read string $extension
  * @property-read string|null $file_contents

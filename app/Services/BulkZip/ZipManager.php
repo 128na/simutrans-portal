@@ -204,7 +204,7 @@ final class ZipManager
     {
         try {
             // CIエラー対策 ZipArchive::close(): Failure to create temporary file: No such file or directory
-            $res = $this->zipArchive->close() !== true;
+            $res = ! $this->zipArchive->close();
             if ($res) {
                 throw new ZipErrorException('close faild');
             }

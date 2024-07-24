@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Storage;
  */
 final class Attachment extends Model
 {
+    /** @use HasFactory<\Database\Factories\AttachmentFactory> */
     use HasFactory;
 
     protected $fillable = [

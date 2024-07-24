@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
  */
 final class BulkZip extends Model
 {
+    /** @use HasFactory<\Database\Factories\BulkZipFactory> */
     use HasFactory;
 
     protected $fillable = [

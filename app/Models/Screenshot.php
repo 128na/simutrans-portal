@@ -18,7 +18,9 @@ use Illuminate\Notifications\Notifiable;
  */
 final class Screenshot extends Model
 {
+    /** @use HasFactory<\Database\Factories\ScreenshotFactory> */
     use HasFactory;
+
     use Notifiable;
 
     protected $fillable = [

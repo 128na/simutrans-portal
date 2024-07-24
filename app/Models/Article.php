@@ -38,7 +38,9 @@ use Spatie\Feed\FeedItem;
  */
 final class Article extends Model implements Feedable
 {
+    /** @use HasFactory<\Database\Factories\ArticleFactory> */
     use HasFactory;
+
     use Notifiable;
 
     /**

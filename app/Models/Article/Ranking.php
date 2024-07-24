@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 final class Ranking extends Model
 {
+    /** @use HasFactory<\Database\Factories\Article\RankingFactory> */
     use HasFactory;
 
     public $incrementing = false;

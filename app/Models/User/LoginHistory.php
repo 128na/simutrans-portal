@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 final class LoginHistory extends Model
 {
+    /** @use HasFactory<\Database\Factories\User\LoginHistoryFactory> */
     use HasFactory;
 
     protected $fillable = [

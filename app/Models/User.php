@@ -28,7 +28,9 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  */
 final class User extends Authenticatable implements BulkZippableInterface, MustVerifyEmail
 {
+    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
+
     use Notifiable;
     use SoftDeletes;
     use TwoFactorAuthenticatable;

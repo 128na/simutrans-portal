@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 final class Redirect extends Model
 {
+    /** @use HasFactory<\Database\Factories\RedirectFactory> */
     use HasFactory;
 
     protected $fillable = [

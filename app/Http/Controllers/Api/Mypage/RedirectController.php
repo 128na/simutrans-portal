@@ -22,6 +22,7 @@ final class RedirectController extends Controller
     {
         $this->authorize('update', $redirect);
         $deleteRedirect($redirect);
+
         return RedirectResource::collection($findMyRedirects($this->loggedinUser()));
     }
 }

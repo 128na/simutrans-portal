@@ -32,6 +32,7 @@ final class UpdateRequest extends BaseRequest
             'article.articles.*.id' => 'required|distinct|exists:articles,id,status,publish',
             'should_notify' => 'nullable|boolean',
             'without_update_modified_at' => 'nullable|boolean',
+            'follow_redirect' => 'nullable|boolean',
         ];
     }
 }

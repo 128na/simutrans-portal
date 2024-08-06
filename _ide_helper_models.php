@@ -319,6 +319,8 @@ namespace App\Models{
  * @property string $to リダイレクト先
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property int|null $user_id
+ * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\RedirectFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Redirect from(string $from)
  * @method static \Illuminate\Database\Eloquent\Builder|Redirect newModelQuery()
@@ -429,6 +431,8 @@ namespace App\Models{
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \App\Models\User\Profile|null $profile
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Redirect> $redirects
+ * @property-read int|null $redirects_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Screenshot> $screenshots
  * @property-read int|null $screenshots_count
  * @method static \Illuminate\Database\Eloquent\Builder|User admin()

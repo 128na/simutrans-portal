@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Article\DoRedirectIfExists;
 use App\Enums\CategoryType;
 use App\Events\ArticleConversion;
 use App\Http\Requests\Article\SearchRequest;
@@ -47,13 +48,17 @@ final class FrontController extends Controller
     /**
      * 記事詳細.
      */
-    public function show(string $userIdOrNickname, string $slug): Renderable
+    public function show(string $userIdOrNickname, string $slug, Request $request, DoRedirectIfExists $doRedirectIfExists): RedirectResponse|Renderable
     {
         $user = is_numeric($userIdOrNickname)
             ? User::findOrFail($userIdOrNickname)
             : User::where('nickname', $userIdOrNickname)->firstOrFail();
 
-        $article = $user->articles()->slug($slug)->firstOrFail();
+        $article = $user->articles()->slug($slug)->first();
+        if ($article === null) {
+            return $doRedirectIfExists($request->fullUrl());
+        }
+
         abort_unless($article->is_publish, 404);
         $meta = $this->metaOgpService->show($user, $article);
 

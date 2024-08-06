@@ -6,8 +6,7 @@
     </template>
   </q-input>
   <div>
-    <form-slug v-model="editor.article.slug" :title="editor.article.title" bottom-slots
-      :error-message="editor.vali('article.slug')" :error="!!editor.vali('article.slug')" />
+    <form-slug v-model="editor.article.slug" :title="editor.article.title" />
   </div>
   <form-thumbnail />
   <component :is="postTypeForm" />

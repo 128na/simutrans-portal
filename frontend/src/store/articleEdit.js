@@ -97,11 +97,19 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   const options = ref(null);
   const withoutUpdateModifiedAt = ref(false);
   const shouldNotify = ref(false);
+  const followRedirect = ref(false);
   const setArticle = (a) => {
     article.value = JSON.parse(JSON.stringify(a));
     original = JSON.stringify(a);
   };
   const articleInitialized = computed(() => !!article.value);
+  const slugChanged = computed(() => {
+    const oldSlug = JSON.parse(original).slug;
+    const newSlug = article.value.slug;
+    console.log({ oldSlug, newSlug });
+
+    return oldSlug !== newSlug;
+  });
 
   const handlerArticle = useApiHandler();
   const saveArticle = () => {
@@ -120,6 +128,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
       article: article.value,
       should_notify: shouldNotify.value,
       without_update_modified_at: withoutUpdateModifiedAt.value,
+      follow_redirect: followRedirect.value,
     };
     return handlerArticle.handleWithValidate({
       doRequest: () => api.updateArticle(params),
@@ -222,6 +231,8 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     shouldNotify,
     withoutUpdateModifiedAt,
     canReservation,
+    slugChanged,
+    followRedirect,
     articleInitialized,
     setArticle,
     clearArticle,

@@ -18,15 +18,20 @@ final readonly class UpdateArticle
         private CarbonImmutable $now,
         private DecidePublishedAt $decidePublishedAt,
         private SyncRelatedModels $syncRelatedModels,
+        private AddRedirect $addRedirect,
     ) {}
 
     /**
-     * @param  array{should_notify?:bool,without_update_modified_at?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}  $data
+     * @param  array{should_notify?:bool,without_update_modified_at?:bool,follow_redirect?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}  $data
      */
     public function __invoke(Article $article, array $data): Article
     {
         $notYetPublished = is_null($article->published_at);
         $withoutUpdateModifiedAt = $data['without_update_modified_at'] ?? false;
+        $followRedirect = $data['follow_redirect'] ?? false;
+        if ($followRedirect) {
+            $oldSlug = $article->slug;
+        }
 
         $articleStatus = ArticleStatus::from($data['article']['status']);
         $publishedAt = $data['article']['published_at'] ?? null;
@@ -48,6 +53,10 @@ final readonly class UpdateArticle
         $this->articleRepository->update($article, $newData);
 
         ($this->syncRelatedModels)($article, $data);
+
+        if ($followRedirect && $oldSlug !== $data['article']['slug']) {
+            ($this->addRedirect)($article->user, $oldSlug, $data['article']['slug']);
+        }
 
         JobUpdateRelated::dispatch();
 

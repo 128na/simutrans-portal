@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,14 +21,14 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::create('screenshots', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreignId('user_id');
-            $table->text('description');
-            $table->json('links');
-            $table->string('status');
-            $table->timestamps();
-            $table->timestamp('published_at');
+        Schema::create('screenshots', function (Blueprint $blueprint): void {
+            $blueprint->bigIncrements('id');
+            $blueprint->foreignId('user_id');
+            $blueprint->text('description');
+            $blueprint->json('links');
+            $blueprint->string('status');
+            $blueprint->timestamps();
+            $blueprint->timestamp('published_at');
         });
     }
 };

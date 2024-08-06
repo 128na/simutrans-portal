@@ -163,7 +163,7 @@ final class ZipManager
     {
         $basedir = str_replace(basename($filenameInZip), '', $filenameInZip);
         $path = $this->filesystemAdapter->path($filepath);
-        $zipArchive = new ZipArchive();
+        $zipArchive = new ZipArchive;
         try {
             $zipArchive->open($path);
             for ($i = 0; $i < $zipArchive->numFiles; $i++) {

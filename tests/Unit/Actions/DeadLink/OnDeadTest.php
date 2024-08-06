@@ -18,7 +18,7 @@ final class OnDeadTest extends TestCase
 {
     public function test_2回目まで(): void
     {
-        $article = new Article();
+        $article = new Article;
         $this->mock(FailedCountCache::class, function (MockInterface $mock) use ($article): void {
             $mock->expects()->get($article)->once()->andReturn(1);
             $mock->expects()->update($article, 2)->once();
@@ -32,7 +32,7 @@ final class OnDeadTest extends TestCase
 
     public function test_3回目(): void
     {
-        $article = new Article();
+        $article = new Article;
         $this->mock(FailedCountCache::class, function (MockInterface $mock) use ($article): void {
             $mock->expects()->get($article)->once()->andReturn(2);
             $mock->expects()->clear($article)->once();

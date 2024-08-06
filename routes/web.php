@@ -16,10 +16,10 @@ Route::middleware(['cache.content'])->group(function (): void {
 });
 
 // 認証系ルート名保持用
-Route::GET('mypage/reset/{token}', (new MypageController())->index(...))->name('password.reset');
+Route::GET('mypage/reset/{token}', (new MypageController)->index(...))->name('password.reset');
 
 // 招待
-Route::GET('/mypage/invite/{invitation_code}', (new InviteController())->index(...))->middleware('restrict:invitation_code')->name('invite.index');
+Route::GET('/mypage/invite/{invitation_code}', (new InviteController)->index(...))->middleware('restrict:invitation_code')->name('invite.index');
 
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content'])->group(function (): void {
@@ -42,8 +42,8 @@ Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content']
 // 非ログイン系 reidsキャッシュ無効
 Route::get('/articles/{id}', [FrontController::class, 'fallbackShow']);
 Route::get('/search', [FrontController::class, 'search'])->name('search');
-Route::get('/mypage/', (new MypageController())->index(...))->name('mypage.index');
-Route::get('/mypage/{any}', (new MypageController())->index(...))->where('any', '.*');
+Route::get('/mypage/', (new MypageController)->index(...))->name('mypage.index');
+Route::get('/mypage/{any}', (new MypageController)->index(...))->where('any', '.*');
 Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show'])->name('articles.show');
 Route::post('/articles/{article}/download', [FrontController::class, 'download'])->name('articles.download');
 Route::middleware(['throttle:external'])->group(function (): void {
@@ -51,7 +51,7 @@ Route::middleware(['throttle:external'])->group(function (): void {
 });
 
 Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function (): void {
-    Route::get('/admin/', (new AdminController())->index(...))->name('admin.index');
+    Route::get('/admin/', (new AdminController)->index(...))->name('admin.index');
     Route::get('/admin/oauth/twitter/authorize', [OauthController::class, 'authoroize'])->name('admin.oauth.twitter.authorize');
     Route::get('/admin/oauth/twitter/callback', [OauthController::class, 'callback'])->name('admin.oauth.twitter.callback');
     Route::get('/admin/oauth/twitter/refresh', [OauthController::class, 'refresh'])->name('admin.oauth.twitter.refresh');

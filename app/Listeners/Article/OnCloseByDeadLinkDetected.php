@@ -11,6 +11,6 @@ final class OnCloseByDeadLinkDetected
 {
     public function handle(CloseByDeadLinkDetected $closeByDeadLinkDetected): void
     {
-        $closeByDeadLinkDetected->article->notify(new SendDeadLinkDetectedEmail());
+        $closeByDeadLinkDetected->article->notify(new SendDeadLinkDetectedEmail);
     }
 }

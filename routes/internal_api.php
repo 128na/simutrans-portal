@@ -36,8 +36,8 @@ Route::prefix('front')->group(function (): void {
         Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show']);
         Route::get('/search', [FrontController::class, 'search']);
 
-        Route::get('/screenshots', (new FrontScreenshotController())->index(...));
-        Route::get('/screenshots/{screenshot}', (new FrontScreenshotController())->show(...));
+        Route::get('/screenshots', (new FrontScreenshotController)->index(...));
+        Route::get('/screenshots/{screenshot}', (new FrontScreenshotController)->show(...));
     });
     Route::middleware(['throttle:discordInvite'])->group(function (): void {
         Route::post('/invite-simutrans-interact-meeting', [DiscordController::class, 'index']);
@@ -53,12 +53,12 @@ Route::prefix('mypage')->group(function (): void {
         Route::get('user', [UserController::class, 'index']);
         Route::get('tags', [TagController::class, 'search']);
         Route::get('attachments', [AttachmentController::class, 'index']);
-        Route::get('articles', (new EditorController())->index(...));
-        Route::get('options', (new EditorController())->options(...));
+        Route::get('articles', (new EditorController)->index(...));
+        Route::get('options', (new EditorController)->options(...));
         Route::get('/invitation_code', [InvitationCodeController::class, 'index']);
-        Route::get('/screenshots', (new ScreenshotController())->index(...));
+        Route::get('/screenshots', (new ScreenshotController)->index(...));
         // ログイン履歴
-        Route::get('/login_histories', (new LoginHistoryController())->index(...));
+        Route::get('/login_histories', (new LoginHistoryController)->index(...));
     });
     // メール認証必須
     Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {
@@ -67,21 +67,21 @@ Route::prefix('mypage')->group(function (): void {
         Route::post('tags/{tag}', [TagController::class, 'update'])->middleware('restrict:update_tag');
         Route::post('attachments', [AttachmentController::class, 'store']);
         Route::delete('attachments/{attachment}', [AttachmentController::class, 'destroy']);
-        Route::post('articles', (new EditorController())->store(...))->middleware('restrict:update_article');
+        Route::post('articles', (new EditorController)->store(...))->middleware('restrict:update_article');
         Route::middleware(['can:update,article', 'restrict:update_article'])->group(function (): void {
-            Route::post('articles/{article}', (new EditorController())->update(...));
+            Route::post('articles/{article}', (new EditorController)->update(...));
         });
         // 記事分析
-        Route::get('analytics', (new AnalyticsController())->index(...));
+        Route::get('analytics', (new AnalyticsController)->index(...));
         // 一括DL機能
         Route::get('/bulk-zip', [BulkZipController::class, 'user']);
         // 招待機能
         Route::post('/invitation_code', [InvitationCodeController::class, 'update']);
         Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy']);
         // スクリーンショット機能
-        Route::post('/screenshots', (new ScreenshotController())->store(...))->middleware('restrict:update_screenshot');
-        Route::put('/screenshots/{screenshot}', (new ScreenshotController())->update(...))->middleware('restrict:update_screenshot');
-        Route::delete('/screenshots/{screenshot}', (new ScreenshotController())->destroy(...))->middleware('restrict:update_screenshot');
+        Route::post('/screenshots', (new ScreenshotController)->store(...))->middleware('restrict:update_screenshot');
+        Route::put('/screenshots/{screenshot}', (new ScreenshotController)->update(...))->middleware('restrict:update_screenshot');
+        Route::delete('/screenshots/{screenshot}', (new ScreenshotController)->destroy(...))->middleware('restrict:update_screenshot');
     });
 });
 // Admin

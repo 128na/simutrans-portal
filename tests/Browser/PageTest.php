@@ -27,7 +27,7 @@ final class PageTest extends TestCase
     #[DataProvider('dataPages')]
     public function testPages(string $pageClass): void
     {
-        $page = new $pageClass();
+        $page = new $pageClass;
         JobUpdateRelated::dispatchSync();
         $this->browse(fn (Browser $browser) => $browser
             ->visit($page)

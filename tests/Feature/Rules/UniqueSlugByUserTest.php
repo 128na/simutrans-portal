@@ -116,6 +116,6 @@ final class UniqueSlugByUserTest extends TestCase
 
     private function getSUT(): UniqueSlugByUser
     {
-        return new UniqueSlugByUser();
+        return new UniqueSlugByUser;
     }
 }

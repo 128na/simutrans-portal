@@ -38,7 +38,7 @@ final class SendLoggedInEmail extends Notification implements ShouldQueue
      */
     public function toMail(mixed $notifiable)
     {
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject('ログイン通知')
             ->view('emails.loggedin', ['user' => $notifiable, 'loginHistory' => $this->loginHistory]);
     }

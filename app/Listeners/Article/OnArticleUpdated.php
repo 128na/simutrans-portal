@@ -29,9 +29,9 @@ final readonly class OnArticleUpdated
 
         // published_atがnullから初めて変わった場合は新規投稿扱い
         if ($articleUpdated->notYetPublished) {
-            $articleUpdated->article->notify(new SendArticlePublished());
+            $articleUpdated->article->notify(new SendArticlePublished);
         } else {
-            $articleUpdated->article->notify(new SendArticleUpdated());
+            $articleUpdated->article->notify(new SendArticleUpdated);
         }
     }
 }

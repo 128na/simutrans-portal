@@ -24,6 +24,6 @@ final readonly class OnScreenshotStored
             return;
         }
 
-        $screenshotStored->screenshot->notify(new SendScreenshotPublished());
+        $screenshotStored->screenshot->notify(new SendScreenshotPublished);
     }
 }

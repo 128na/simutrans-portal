@@ -35,7 +35,7 @@ final class StoreScreenshotTest extends TestCase
             $mock->allows()->getAttribute('id')->andReturn(1);
         });
         $this->mock(ScreenshotRepository::class, function (MockInterface $mock): void {
-            $screenshot = new Screenshot();
+            $screenshot = new Screenshot;
             $mock->expects()->store([
                 'user_id' => 1,
                 'title' => 'dummy',
@@ -75,7 +75,7 @@ final class StoreScreenshotTest extends TestCase
             $mock->expects()->toDateTimeString()->once()->andReturn('2020-01-02 03:04:05');
         });
         $this->mock(ScreenshotRepository::class, function (MockInterface $mock): void {
-            $screenshot = new Screenshot();
+            $screenshot = new Screenshot;
             $mock->expects()->store([
                 'user_id' => 1,
                 'title' => 'dummy',

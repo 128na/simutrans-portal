@@ -10,7 +10,7 @@ final class AutoRefreshingDropBoxTokenService
 {
     public function getToken(string $key, string $secret, string $refreshToken): string
     {
-        $client = new \GuzzleHttp\Client();
+        $client = new \GuzzleHttp\Client;
         $response = $client->request('POST', sprintf('https://%s:%s@api.dropbox.com/oauth2/token', $key, $secret), [
             'form_params' => [
                 'grant_type' => 'refresh_token',

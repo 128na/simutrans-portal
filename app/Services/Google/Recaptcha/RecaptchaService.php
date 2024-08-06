@@ -27,7 +27,7 @@ final readonly class RecaptchaService
     {
         $this->event->setToken($token)->setExpectedAction('invite');
 
-        $assessment = (new Assessment())->setEvent($this->event);
+        $assessment = (new Assessment)->setEvent($this->event);
         $response = $this->recaptchaEnterpriseServiceClient->createAssessment($this->projectName, $assessment);
 
         if ($response->getTokenProperties()?->getValid() !== true) {

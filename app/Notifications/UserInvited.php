@@ -38,7 +38,7 @@ final class UserInvited extends Notification implements ShouldQueue
      */
     public function toMail(mixed $notifiable)
     {
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject('ユーザー招待通知')
             ->view('emails.invited', ['user' => $notifiable, 'invited' => $this->user]);
     }

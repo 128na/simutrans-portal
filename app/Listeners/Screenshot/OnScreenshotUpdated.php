@@ -29,7 +29,7 @@ final readonly class OnScreenshotUpdated
 
         // published_atがnullから初めて変わった場合は新規投稿扱い
         if ($screenshotUpdated->notYetPublished) {
-            $screenshotUpdated->screenshot->notify(new SendScreenshotPublished());
+            $screenshotUpdated->screenshot->notify(new SendScreenshotPublished);
         }
     }
 }

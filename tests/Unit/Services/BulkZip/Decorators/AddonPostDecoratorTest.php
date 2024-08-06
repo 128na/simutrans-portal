@@ -24,7 +24,7 @@ final class AddonPostDecoratorTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->addonPostDecorator = new AddonPostDecorator();
+        $this->addonPostDecorator = new AddonPostDecorator;
     }
 
     public function test_canProcess_対象(): void

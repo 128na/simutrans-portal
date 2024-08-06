@@ -18,13 +18,13 @@ final class ZippableManagerTest extends TestCase
 {
     public function testUser(): void
     {
-        $user = new User();
+        $user = new User;
         $this->mock(BulkZip::class, function (MockInterface $mock) use ($user): void {
             $mock->expects()->getAttribute('bulkZippable')->twice()->andReturn($user);
         });
 
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user): void {
-            $mock->expects()->findAllByUser($user, [])->once()->andReturn(new Collection());
+            $mock->expects()->findAllByUser($user, [])->once()->andReturn(new Collection);
         });
 
         $res = $this->getSUT()->getItems(app(BulkZip::class));

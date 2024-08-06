@@ -23,7 +23,7 @@ final class AddonIntroductionDecoratorTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->addonIntroductionDecorator = new AddonIntroductionDecorator();
+        $this->addonIntroductionDecorator = new AddonIntroductionDecorator;
     }
 
     public function test_canProcess_対象(): void

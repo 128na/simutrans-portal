@@ -23,6 +23,6 @@ final readonly class OnArticleStored
             return;
         }
 
-        $articleStored->article->notify(new SendArticlePublished());
+        $articleStored->article->notify(new SendArticlePublished);
     }
 }

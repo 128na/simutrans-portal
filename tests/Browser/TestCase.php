@@ -48,7 +48,7 @@ abstract class TestCase extends BaseTestCase
     #[\Override]
     protected function driver()
     {
-        $chromeOptions = (new ChromeOptions())->addArguments(collect([
+        $chromeOptions = (new ChromeOptions)->addArguments(collect([
             $this->shouldStartMaximized() ? '--start-maximized' : '--window-size=1920,1080',
         ])->unless($this->hasHeadlessDisabled(), fn ($items) => $items->merge([
             '--disable-gpu',

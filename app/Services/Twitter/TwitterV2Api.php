@@ -58,7 +58,7 @@ final class TwitterV2Api extends TwitterOAuth
             }
         } catch (ModelNotFoundException|PDOException|QueryException $e) {
             report($e);
-            throw new PKCETokenNotFoundException();
+            throw new PKCETokenNotFoundException;
         }
 
         logger('[TwitterV2Api] token expired, refresh');
@@ -70,7 +70,7 @@ final class TwitterV2Api extends TwitterOAuth
             try {
                 $this->pKCEService->revokeToken($token);
             } finally {
-                throw new PKCETokenRefreshFailedException();
+                throw new PKCETokenRefreshFailedException;
             }
         }
     }

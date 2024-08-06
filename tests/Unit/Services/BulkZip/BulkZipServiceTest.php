@@ -21,10 +21,10 @@ final class BulkZipServiceTest extends TestCase
     public function test(): void
     {
         Bus::fake();
-        $user = new User();
+        $user = new User;
         $this->mock(BulkZipRepository::class, function (MockInterface $mock) use ($user): void {
             $mock->expects()->findByBulkZippable($user)->andReturn(null);
-            $mock->expects()->storeByBulkZippable($user)->andReturn(new BulkZip());
+            $mock->expects()->storeByBulkZippable($user)->andReturn(new BulkZip);
         });
         /**
          * @var BulkZipService
@@ -41,7 +41,7 @@ final class BulkZipServiceTest extends TestCase
     {
         $this->expectException(TypeError::class);
         $bulkZipService = app(BulkZipService::class);
-        $attachment = new Attachment();
+        $attachment = new Attachment;
         $bulkZipService->findOrCreateAndDispatch($attachment);
     }
 
@@ -49,13 +49,13 @@ final class BulkZipServiceTest extends TestCase
     {
         Bus::fake();
         $this->mock(BulkZipRepository::class, function (MockInterface $mock): void {
-            $mock->shouldReceive('findByBulkZippable')->andReturn(new BulkZip());
+            $mock->shouldReceive('findByBulkZippable')->andReturn(new BulkZip);
         });
         /**
          * @var BulkZipService
          */
         $bulkZipService = app(BulkZipService::class);
-        $user = new User();
+        $user = new User;
         $bulkZip = $bulkZipService->findOrCreateAndDispatch($user);
         $this->assertInstanceOf(BulkZip::class, $bulkZip);
 

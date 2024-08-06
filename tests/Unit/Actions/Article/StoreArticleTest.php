@@ -23,7 +23,7 @@ final class StoreArticleTest extends TestCase
 {
     public function test投稿(): void
     {
-        $user = new User();
+        $user = new User;
         $data = [
             'should_notify' => true,
             'article' => [
@@ -35,10 +35,10 @@ final class StoreArticleTest extends TestCase
                 'articles' => [],
             ],
         ];
-        $carbonImmutable = new CarbonImmutable();
+        $carbonImmutable = new CarbonImmutable;
 
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
-            $article = new Article();
+            $article = new Article;
             $mock->expects()->storeByUser(
                 $user,
                 [
@@ -66,7 +66,7 @@ final class StoreArticleTest extends TestCase
 
     public function test予約投稿(): void
     {
-        $user = new User();
+        $user = new User;
         $data = [
             'article' => [
                 'post_type' => ArticlePostType::AddonIntroduction->value,
@@ -78,10 +78,10 @@ final class StoreArticleTest extends TestCase
                 'articles' => [],
             ],
         ];
-        $carbonImmutable = new CarbonImmutable();
+        $carbonImmutable = new CarbonImmutable;
 
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
-            $article = new Article();
+            $article = new Article;
             $mock->expects()->storeByUser(
                 $user,
                 [
@@ -109,7 +109,7 @@ final class StoreArticleTest extends TestCase
 
     public function testそれ以外(): void
     {
-        $user = new User();
+        $user = new User;
         $data = [
             'article' => [
                 'post_type' => ArticlePostType::AddonIntroduction->value,
@@ -120,10 +120,10 @@ final class StoreArticleTest extends TestCase
                 'articles' => [],
             ],
         ];
-        $carbonImmutable = new CarbonImmutable();
+        $carbonImmutable = new CarbonImmutable;
 
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
-            $article = new Article();
+            $article = new Article;
             $mock->expects()->storeByUser(
                 $user,
                 [

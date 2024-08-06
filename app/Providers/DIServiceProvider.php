@@ -72,7 +72,7 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
         });
 
         $this->app->bind(ZipManager::class, fn ($app): ZipManager => new ZipManager(
-            new ZipArchive(),
+            new ZipArchive,
             Storage::disk('public'),
             [
                 $app->make(AddonPostDecorator::class),

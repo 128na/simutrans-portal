@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Mypage\BulkZipController;
 use App\Http\Controllers\Api\Mypage\EditorController;
 use App\Http\Controllers\Api\Mypage\InvitationCodeController;
 use App\Http\Controllers\Api\Mypage\LoginHistoryController;
+use App\Http\Controllers\Api\Mypage\RedirectController;
 use App\Http\Controllers\Api\Mypage\ScreenshotController;
 use App\Http\Controllers\Api\Mypage\TagController;
 use App\Http\Controllers\Api\Mypage\UserController;
@@ -59,6 +60,9 @@ Route::prefix('mypage')->group(function (): void {
         Route::get('/screenshots', (new ScreenshotController)->index(...));
         // ログイン履歴
         Route::get('/login_histories', (new LoginHistoryController)->index(...));
+        // リダイレクト
+        Route::get('/redirects', [RedirectController::class, 'index']);
+        Route::delete('/redirects/{redirect}', [RedirectController::class, 'destroy']);
     });
     // メール認証必須
     Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {

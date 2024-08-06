@@ -183,9 +183,9 @@ final class FrontControllerTest extends TestCase
     {
         $article = Article::factory()->publish()->create();
 
-        $from = '/users/' . $article->user_id . '/dummy';
-        $to = '/users/' . $article->user_id . $article->slug;
-        Redirect::create(['user_id' => $article->user_id, 'from' =>  $from, 'to' =>  $to]);
+        $from = '/users/'.$article->user_id.'/dummy';
+        $to = '/users/'.$article->user_id.$article->slug;
+        Redirect::create(['user_id' => $article->user_id, 'from' => $from, 'to' => $to]);
         $testResponse = $this->get(route('articles.show', ['userIdOrNickname' => $article->user_id, 'articleSlug' => 'dummy']));
 
         $testResponse->assertRedirect($to);
@@ -202,7 +202,7 @@ final class FrontControllerTest extends TestCase
     {
         $article = Article::factory()->publish()->create();
 
-        $testResponse = $this->get('/articles/' . $article->slug);
+        $testResponse = $this->get('/articles/'.$article->slug);
         $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user->nickname, $article->slug));
     }
 
@@ -210,7 +210,7 @@ final class FrontControllerTest extends TestCase
     {
         $article = Article::factory()->publish()->create();
 
-        $testResponse = $this->get('/articles/' . $article->id);
+        $testResponse = $this->get('/articles/'.$article->id);
         $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user->nickname, $article->slug));
     }
 
@@ -218,7 +218,7 @@ final class FrontControllerTest extends TestCase
     {
         $article = Article::factory()->publish()->create();
         $article->user->update(['nickname' => null]);
-        $testResponse = $this->get('/articles/' . $article->slug);
+        $testResponse = $this->get('/articles/'.$article->slug);
         $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user_id, $article->slug));
     }
 
@@ -227,7 +227,7 @@ final class FrontControllerTest extends TestCase
         $article = Article::factory()->publish()->create();
         $article->user->update(['nickname' => null]);
 
-        $testResponse = $this->get('/articles/' . $article->id);
+        $testResponse = $this->get('/articles/'.$article->id);
         $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user_id, $article->slug));
     }
 }

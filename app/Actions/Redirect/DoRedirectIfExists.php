@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Article;
+namespace App\Actions\Redirect;
 
 use App\Repositories\RedirectRepository;
 use Illuminate\Http\RedirectResponse;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Article;
+namespace App\Actions\Redirect;
 
 use App\Models\User;
 use App\Repositories\RedirectRepository;

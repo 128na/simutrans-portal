@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Actions\Article\DoRedirectIfExists;
+use App\Actions\Redirect\DoRedirectIfExists;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Article;
 
+use App\Actions\Redirect\AddRedirect;
 use App\Enums\ArticleStatus;
 use App\Events\Article\ArticleUpdated;
 use App\Jobs\Article\JobUpdateRelated;

@@ -46,7 +46,6 @@
       <RelatedArticles v-if="article.articles.length" :articles="article.articles" />
       <RelatedArticles v-if="article.relatedArticles?.length" :articles="article.relatedArticles">関連付けられた記事
       </RelatedArticles>
-      <RelatedScreenshots v-if="article.relatedScreenshots?.length" :screenshots="article.relatedScreenshots" />
       <template v-if="article.contents.agreement">
         <dt>
           掲載許可
@@ -73,14 +72,12 @@ import ContentLink from 'src/components/Front/Content/ContentLink.vue';
 import ContentMeta from 'src/components/Front/Content/ContentMeta.vue';
 import ContentThumbnail from 'src/components/Front/Content/ContentThumbnail.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
-import RelatedArticles from 'src/components/Common/Screenshot/RelatedArticles.vue';
-import RelatedScreenshots from 'src/components/Common/Screenshot/RelatedScreenshots.vue';
+import RelatedArticles from 'src/components/Common/RelatedArticles.vue';
 
 export default defineComponent({
   name: 'ArticleShowAddonIntroduction',
   components: {
     RelatedArticles,
-    RelatedScreenshots,
     CategoryList,
     TagList,
     ContentAgreement,

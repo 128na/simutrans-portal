@@ -30,9 +30,4 @@ enum ControllOptionKey: string
      * タグ追加・編集
      **/
     case TagUpdate = 'TAG_UPDATE';
-
-    /**
-     * スクショ追加・編集
-     **/
-    case ScreenshotUpdate = 'SCREENSHOT_UPDATE';
 }

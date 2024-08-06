@@ -18,7 +18,6 @@ final class ControllOptionsSeeder extends Seeder
             ControllOptionKey::InvitationCode,
             ControllOptionKey::ArticleUpdate,
             ControllOptionKey::TagUpdate,
-            ControllOptionKey::ScreenshotUpdate,
         ];
 
         foreach ($data as $key) {

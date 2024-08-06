@@ -210,17 +210,5 @@ return [
         'scopes' => 'スコープ',
         'scopes.*' => 'スコープ',
         'credential' => '認証情報',
-
-        'screenshot.title' => 'タイトル',
-        'screenshot.description' => '説明',
-        'screenshot.links' => '関連リンク',
-        'screenshot.links.*' => '関連リンク',
-        'screenshot.status' => '公開状態',
-        'screenshot.attachments' => '画像',
-        'screenshot.attachments.*.id' => '画像',
-        'screenshot.attachments.*.order' => '表示順',
-        'screenshot.attachments.*.caption' => 'キャプション',
-        'screenshot.articles' => '関連記事',
-        'screenshot.articles.*.id' => '関連記事',
     ],
 ];

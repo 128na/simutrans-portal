@@ -56,12 +56,6 @@ export const useFrontApi = () => ({
   discordInvite(token) {
     return axios.post('/api/front/invite-simutrans-interact-meeting', { token });
   },
-  fetchScreenshots(page = 1) {
-    return axios.get('/api/front/screenshots', { params: { page } });
-  },
-  fetchScreenshot(id) {
-    return axios.get(`/api/front/screenshots/${id}`);
-  },
 });
 
 export const useMypageApi = () => ({
@@ -141,20 +135,6 @@ export const useMypageApi = () => ({
   },
   updateTag(id, description) {
     return axios.post(`/api/mypage/tags/${id}`, { description });
-  },
-
-  // screenshots
-  fetchScreenshots() {
-    return axios.get('/api/mypage/screenshots');
-  },
-  storeScreenshot(params) {
-    return axios.post('/api/mypage/screenshots', params);
-  },
-  updateScreenshot(screenshotId, params) {
-    return axios.put(`/api/mypage/screenshots/${screenshotId}`, params);
-  },
-  deleteScreenshot(screenshotId) {
-    return axios.delete(`/api/mypage/screenshots/${screenshotId}`);
   },
 
   fetchRedirects() {

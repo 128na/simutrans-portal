@@ -53,11 +53,6 @@ final class ControllOption extends Model
         return $this->isRestrict(ControllOptionKey::TagUpdate);
     }
 
-    public function restrictScreenshptUpdate(): bool
-    {
-        return $this->isRestrict(ControllOptionKey::ScreenshotUpdate);
-    }
-
     private function isRestrict(ControllOptionKey $controllOptionKey): bool
     {
         return $this->where(['key' => $controllOptionKey, 'value' => 0])->exists();

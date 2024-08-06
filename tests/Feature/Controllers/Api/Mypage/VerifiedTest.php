@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api\Mypage;
 
 use App\Models\Article;
-use App\Models\Screenshot;
 use App\Models\Tag;
 use App\Models\User;
 use Closure;
@@ -57,9 +56,5 @@ final class VerifiedTest extends TestCase
         // 招待機能
         yield '招待コード発行' => ['postJson', fn (self $self): string => '/api/mypage/invitation_code'];
         yield '招待コード削除' => ['deleteJson', fn (self $self): string => '/api/mypage/invitation_code'];
-        // スクリーンショット機能
-        yield 'スクリーンショット登録' => ['postJson', fn (self $self): string => '/api/mypage/screenshots'];
-        yield 'スクリーンショット更新' => ['putJson', fn (self $self): string => '/api/mypage/screenshots/'.Screenshot::factory()->create(['user_id' => $self->user->id])->id];
-        yield 'スクリーンショット削除' => ['deleteJson', fn (self $self): string => '/api/mypage/screenshots/'.Screenshot::factory()->create(['user_id' => $self->user->id])->id];
     }
 }

@@ -46,7 +46,6 @@
       <RelatedArticles v-if="article.articles.length" :articles="article.articles" />
       <RelatedArticles v-if="article.relatedArticles?.length" :articles="article.relatedArticles">関連付けられた記事
       </RelatedArticles>
-      <RelatedScreenshots v-if="article.relatedScreenshots?.length" :screenshots="article.relatedScreenshots" />
       <template v-if="article.contents.file">
         <dt>ファイル一覧</dt>
         <dd>
@@ -71,14 +70,12 @@ import ContentThumbnail from 'src/components/Front/Content/ContentThumbnail.vue'
 import ContentDownload from 'src/components/Front/Content/ContentDownload.vue';
 import ContentFileInfo from 'src/components/Front/Content/ContentFileInfo.vue';
 import TextTitle from 'src/components/Common/Text/TextTitle.vue';
-import RelatedArticles from 'src/components/Common/Screenshot/RelatedArticles.vue';
-import RelatedScreenshots from 'src/components/Common/Screenshot/RelatedScreenshots.vue';
+import RelatedArticles from 'src/components/Common/RelatedArticles.vue';
 
 export default defineComponent({
   name: 'ArticleShowAddonPost',
   components: {
     RelatedArticles,
-    RelatedScreenshots,
     CategoryList,
     TagList,
     TextPre,

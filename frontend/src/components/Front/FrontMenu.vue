@@ -29,9 +29,6 @@
     <q-item clickable :to="{ name: 'tags' }">
       <q-item-section>タグ一覧</q-item-section>
     </q-item>
-    <q-item clickable :to="{ name: 'screenshotList' }">
-      <q-item-section>スクリーンショット</q-item-section>
-    </q-item>
     <q-separator />
     <q-item clickable dense :href="SUPPORT_SITE_URL" target="_blank">
       <q-item-section>サイトの使い方</q-item-section>

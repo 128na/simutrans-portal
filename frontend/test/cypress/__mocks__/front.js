@@ -17,7 +17,6 @@ export const createMockArticleData = (params = {}) => ({
   attachments: [],
   articles: [],
   relatedArticles: [],
-  relatedScreenshots: [],
   user: { id: 1, name: 'dummy user' },
   published_at: '2022-01-02T03:04:05.000000Z',
   modified_at: '2022-01-02T03:04:05.000000Z',
@@ -49,7 +48,6 @@ export const mockArtcile = (params = {}) => ({
   attachments: [],
   articles: [],
   relatedArticles: [],
-  relatedScreenshots: [],
   user: { id: 1, name: 'dummy user' },
   published_at: '2022-01-02T03:04:05.000000Z',
   modified_at: '2022-01-02T03:04:05.000000Z',
@@ -69,7 +67,6 @@ export const mockAddonPost = () => mockArtcile({
   attachments: [{ id: 1, url: 'http://example.com' }],
   articles: [],
   relatedArticles: [],
-  relatedScreenshots: [],
 });
 
 export const mockAddonIntroduction = () => mockArtcile({
@@ -85,7 +82,6 @@ export const mockAddonIntroduction = () => mockArtcile({
   },
   articles: [],
   relatedArticles: [],
-  relatedScreenshots: [],
 });
 
 export const mockPage = () => mockArtcile({
@@ -102,7 +98,6 @@ export const mockPage = () => mockArtcile({
   attachments: [{ id: 1, url: 'https://placehold.jp/150x150.png' }],
   articles: [],
   relatedArticles: [],
-  relatedScreenshots: [],
 });
 
 export const mockMarkdown = () => mockArtcile({
@@ -113,5 +108,4 @@ export const mockMarkdown = () => mockArtcile({
   },
   articles: [],
   relatedArticles: [],
-  relatedScreenshots: [],
 });

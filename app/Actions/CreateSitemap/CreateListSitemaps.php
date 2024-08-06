@@ -45,7 +45,6 @@ final class CreateListSitemaps
             '/social',
             '/invite-simutrans-interact-meeting',
             '/mypage',
-            route('screenshots.index'),
         ]);
     }
 

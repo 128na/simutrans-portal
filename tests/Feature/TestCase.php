@@ -8,7 +8,6 @@ use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\Category;
-use App\Models\Screenshot;
 use App\Models\User;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\ControllOptionsSeeder;
@@ -72,18 +71,6 @@ abstract class TestCase extends TestsTestCase
         $file = UploadedFile::fake()->image('test.jpg', 1);
 
         return $this->createFromFile($file, $user->id);
-    }
-
-    protected function createScreenshot(?User $user = null): Screenshot
-    {
-        $user ??= User::factory()->create();
-        $attachment = $this->createAttachment($user);
-        $scrrenshot = Screenshot::factory()->create([
-            'user_id' => $user->id,
-        ]);
-        $scrrenshot->attachments()->save($attachment);
-
-        return $scrrenshot;
     }
 
     protected function createAddonPost(?User $user = null): Article

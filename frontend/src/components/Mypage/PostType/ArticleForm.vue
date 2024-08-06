@@ -35,7 +35,7 @@ import FormAddonPost from 'src/components/Mypage/PostType/FormAddonPost.vue';
 import FormMarkdown from 'src/components/Mypage/PostType/FormMarkdown.vue';
 import FormPage from 'src/components/Mypage/PostType/FormPage.vue';
 import FormThumbnail from 'src/components/Mypage/ArticleForm/FormThumbnail.vue';
-import FormArticleRelations from 'src/components/Mypage/Screenshot/FormArticleRelations.vue';
+import FormArticleRelations from 'src/components/Mypage/ArticleForm/FormArticleRelations.vue';
 
 export default defineComponent({
   name: 'ArticleForm',

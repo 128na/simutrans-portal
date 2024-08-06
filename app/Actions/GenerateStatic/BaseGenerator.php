@@ -31,9 +31,9 @@ abstract class BaseGenerator
      */
     protected function putJson(string $filename, array $data): void
     {
-        $json = json_encode($data);
+        $json = json_encode($data, JSON_UNESCAPED_UNICODE);
         if ($json) {
-            Storage::disk('public')->put('json/'.$filename, $json);
+            Storage::disk('public')->put('json/' . $filename, $json);
         }
     }
 }

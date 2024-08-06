@@ -160,7 +160,7 @@ return [
         'article.post_type' => '投稿形式',
         'article.status' => '公開状態',
         'article.title' => 'タイトル',
-        'article.slug' => 'パーマリンク',
+        'article.slug' => '記事URL',
         'article.contents' => '内容',
         'article.contents.thumbnail' => 'サムネイル画像',
         'article.contents.author' => '作者',

@@ -104,9 +104,12 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
   };
   const articleInitialized = computed(() => !!article.value);
   const slugChanged = computed(() => {
-    const oldSlug = JSON.parse(original).slug;
+    const org = JSON.parse(original);
+    if (!org.published_at) {
+      return false;
+    }
+    const oldSlug = org.slug;
     const newSlug = article.value.slug;
-    console.log({ oldSlug, newSlug });
 
     return oldSlug !== newSlug;
   });

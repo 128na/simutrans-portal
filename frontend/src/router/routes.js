@@ -70,6 +70,10 @@ const routes = [
         ,
       },
       {
+        name: 'redirect', path: 'redirect', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Redirect.vue')
+        ,
+      },
+      {
         name: 'invite', path: 'invite/:code', meta: { requiresGuest: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Invite.vue')
         ,
       },

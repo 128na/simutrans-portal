@@ -54,6 +54,12 @@
         </q-item-section>
         <q-item-section>スクリーンショット</q-item-section>
       </q-item>
+      <q-item :to="{ name: 'redirect' }">
+        <q-item-section avatar>
+          <q-icon name="cable" />
+        </q-item-section>
+        <q-item-section>設定済みリダイレクト</q-item-section>
+      </q-item>
 
       <q-item>
         <q-item-section>ユーザー</q-item-section>

@@ -2,7 +2,7 @@
   <q-input label-slot v-model="rawSlug" bottom-slots :error-message="editor.vali('article.slug')"
     :error="!!editor.vali('article.slug')">
     <template v-slot:label>
-      <label-required>パーマリンク</label-required>
+      <label-required>記事URL</label-required>
     </template>
     <template v-slot:append>
       <q-btn flat color="secondary" @click="rawSlug = title">タイトルからコピー</q-btn>
@@ -14,7 +14,7 @@
   <div v-if="editor.slugChanged">
     <q-checkbox v-model="editor.followRedirect" class="text-dark q-mr-sm" label="リダイレクト追加">
       <q-tooltip>
-        古いパーマリンクからのアクセスを新しいパーマリンクへ転送します。<br />SNS通知など古いリンクを修正できない場合にリンク切れしなくなります。
+        古い記事URLからのアクセスを新しい記事URLへ転送します。<br />SNS通知など古いリンクを修正できない場合にリンク切れしなくなります。
       </q-tooltip>
     </q-checkbox>
   </div>

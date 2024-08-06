@@ -157,6 +157,13 @@ export const useMypageApi = () => ({
     return axios.delete(`/api/mypage/screenshots/${screenshotId}`);
   },
 
+  fetchRedirects() {
+    return axios.get('/api/mypage/redirects');
+  },
+  deleteRedirect(redirectId) {
+    return axios.delete(`/api/mypage/redirects/${redirectId}`);
+  },
+
   // attachments
   fetchAttachments() {
     return axios.get('/api/mypage/attachments');

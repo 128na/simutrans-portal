@@ -25,7 +25,9 @@ final readonly class ReadmeExtractor implements Extractor
     #[\Override]
     public function isTarget(string $filename): bool
     {
-        return str_contains($filename, 'readme');
+        return str_contains($filename, 'readme') && (
+            str_contains($filename, '.txt') || str_contains($filename, '.md') || str_contains($filename, '.html')
+        );
     }
 
     /**

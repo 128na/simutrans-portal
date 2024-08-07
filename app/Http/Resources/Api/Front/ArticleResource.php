@@ -6,7 +6,6 @@ namespace App\Http\Resources\Api\Front;
 
 use App\Models\Article;
 use App\Models\Category;
-use App\Models\Screenshot;
 use App\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -55,13 +54,6 @@ final class ArticleResource extends JsonResource
                 ->map(fn (Article $article): array => [
                     'id' => $article->id,
                     'title' => $article->title,
-                ])
-                ->values(),
-            'relatedScreenshots' => $this->resource->relatedScreenshots
-                ->filter(fn (Screenshot $screenshot): bool => $screenshot->is_publish)
-                ->map(fn (Screenshot $screenshot): array => [
-                    'id' => $screenshot->id,
-                    'title' => $screenshot->title,
                 ])
                 ->values(),
             'published_at' => $this->resource->published_at?->toIso8601String() ?? '未投稿',

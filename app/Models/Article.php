@@ -245,16 +245,6 @@ final class Article extends Model implements Feedable
         return $this->morphedByMany(self::class, 'articlable');
     }
 
-    /**
-     * この記事が関連付けられたスクリーンショット
-     *
-     * @return MorphToMany<Screenshot>
-     */
-    public function relatedScreenshots(): MorphToMany
-    {
-        return $this->morphedByMany(Screenshot::class, 'articlable');
-    }
-
     /*
     |--------------------------------------------------------------------------
     | スコープ

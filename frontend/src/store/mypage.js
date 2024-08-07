@@ -13,16 +13,6 @@ export const useMypageStore = defineStore('mypage', () => {
   const findArticleBySlug = computed(() => (slug) => articles.value?.find((a) => a.slug === slug));
   const articlesReady = computed(() => Array.isArray(articles.value));
 
-  const screenshots = ref(null);
-  const screenshotsReady = computed(() => Array.isArray(screenshots.value));
-  const findScreenshotById = computed(() => (id) => screenshots.value?.find((a) => a.id === id));
-  const screenshotHandler = useApiHandler();
-  const fetchScreenshots = () => screenshotHandler.handle({
-    doRequest: () => api.fetchScreenshots(),
-    done: (res) => { screenshots.value = res.data.data; },
-    failedMessage: '添付ファイル一覧取得に失敗しました',
-  });
-
   const attachments = ref(null);
   const attachmentsReady = computed(() => Array.isArray(attachments.value));
   const findAttachmentById = computed(() => (id) => attachments.value?.find((a) => a.id === id));
@@ -48,11 +38,6 @@ export const useMypageStore = defineStore('mypage', () => {
     findArticleById,
     findArticleBySlug,
     fetchArticles,
-
-    screenshots,
-    screenshotsReady,
-    findScreenshotById,
-    fetchScreenshots,
 
     attachments,
     attachmentsReady,

@@ -28,9 +28,9 @@ final class ArticleRepository extends BaseRepository
 {
     public const array MYPAGE_RELATIONS = ['user', 'attachments.fileInfo', 'categories', 'tags', 'totalViewCount', 'totalConversionCount', 'articles'];
 
-    public const array FRONT_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags', 'articles', 'relatedArticles', 'relatedScreenshots'];
+    public const array FRONT_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags', 'articles', 'relatedArticles'];
 
-    public const array SHOW_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags', 'articles', 'relatedArticles', 'relatedScreenshots'];
+    public const array SHOW_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags', 'articles', 'relatedArticles'];
 
     public const int PER_PAGE_SIMPLE = 6;
 

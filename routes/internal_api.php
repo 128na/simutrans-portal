@@ -8,14 +8,13 @@ use App\Http\Controllers\Api\Admin\TagController as AdminTagController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Front\DiscordController;
 use App\Http\Controllers\Api\Front\FrontController;
-use App\Http\Controllers\Api\Front\ScreenshotController as FrontScreenshotController;
 use App\Http\Controllers\Api\Mypage\AnalyticsController;
 use App\Http\Controllers\Api\Mypage\AttachmentController;
 use App\Http\Controllers\Api\Mypage\BulkZipController;
 use App\Http\Controllers\Api\Mypage\EditorController;
 use App\Http\Controllers\Api\Mypage\InvitationCodeController;
 use App\Http\Controllers\Api\Mypage\LoginHistoryController;
-use App\Http\Controllers\Api\Mypage\ScreenshotController;
+use App\Http\Controllers\Api\Mypage\RedirectController;
 use App\Http\Controllers\Api\Mypage\TagController;
 use App\Http\Controllers\Api\Mypage\UserController;
 use Illuminate\Support\Facades\Route;
@@ -35,9 +34,6 @@ Route::prefix('front')->group(function (): void {
         Route::get('/users/{userIdOrNickname}', [FrontController::class, 'user']);
         Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show']);
         Route::get('/search', [FrontController::class, 'search']);
-
-        Route::get('/screenshots', (new FrontScreenshotController)->index(...));
-        Route::get('/screenshots/{screenshot}', (new FrontScreenshotController)->show(...));
     });
     Route::middleware(['throttle:discordInvite'])->group(function (): void {
         Route::post('/invite-simutrans-interact-meeting', [DiscordController::class, 'index']);
@@ -56,9 +52,11 @@ Route::prefix('mypage')->group(function (): void {
         Route::get('articles', (new EditorController)->index(...));
         Route::get('options', (new EditorController)->options(...));
         Route::get('/invitation_code', [InvitationCodeController::class, 'index']);
-        Route::get('/screenshots', (new ScreenshotController)->index(...));
         // ログイン履歴
         Route::get('/login_histories', (new LoginHistoryController)->index(...));
+        // リダイレクト
+        Route::get('/redirects', [RedirectController::class, 'index']);
+        Route::delete('/redirects/{redirect}', [RedirectController::class, 'destroy']);
     });
     // メール認証必須
     Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {
@@ -78,10 +76,6 @@ Route::prefix('mypage')->group(function (): void {
         // 招待機能
         Route::post('/invitation_code', [InvitationCodeController::class, 'update']);
         Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy']);
-        // スクリーンショット機能
-        Route::post('/screenshots', (new ScreenshotController)->store(...))->middleware('restrict:update_screenshot');
-        Route::put('/screenshots/{screenshot}', (new ScreenshotController)->update(...))->middleware('restrict:update_screenshot');
-        Route::delete('/screenshots/{screenshot}', (new ScreenshotController)->destroy(...))->middleware('restrict:update_screenshot');
     });
 });
 // Admin

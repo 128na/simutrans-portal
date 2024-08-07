@@ -9,7 +9,6 @@ final readonly class Create
     public function __construct(
         private SitemapHandler $sitemapHandler,
         private CreateArticleSitemaps $createArticleSitemaps,
-        private CreateScreenshotSitemaps $createScreenshotSitemaps,
         private CreateListSitemaps $createListSitemaps,
     ) {}
 
@@ -17,7 +16,6 @@ final readonly class Create
     {
         $this->sitemapHandler->destroyAll();
         ($this->createArticleSitemaps)($this->sitemapHandler);
-        ($this->createScreenshotSitemaps)($this->sitemapHandler);
         ($this->createListSitemaps)($this->sitemapHandler);
 
         $this->sitemapHandler->write();

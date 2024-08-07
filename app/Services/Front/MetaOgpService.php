@@ -6,7 +6,6 @@ namespace App\Services\Front;
 
 use App\Enums\CategoryType;
 use App\Models\Article;
-use App\Models\Screenshot;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Facades\Config;
@@ -99,31 +98,6 @@ final class MetaOgpService
         return [
             'title' => 'SNS・通知ツール'.' - '.config('app.name'),
             'description' => '記事の更新を各種ツールで受け取れます。',
-        ];
-    }
-
-    /**
-     * @return array{title:string,description:string}
-     */
-    public function screenshotIndex(): array
-    {
-        return [
-            'title' => 'スクリーンショット一覧'.' - '.config('app.name'),
-            'description' => 'ユーザー投稿のスクリーンショット一覧です。',
-        ];
-    }
-
-    /**
-     * @return array{title:string,description:string,canonical:string,image:string,card_type:string}
-     */
-    public function screenshot(Screenshot $screenshot): array
-    {
-        return [
-            'title' => sprintf('『%s』by %s', $screenshot->title, $screenshot->user->name).' - '.config('app.name'),
-            'description' => $this->trimDescription($screenshot->description),
-            'image' => $screenshot->attachments()->orderBy('order', 'asc')->first()?->url ?? '',
-            'canonical' => route('screenshots.show', $screenshot),
-            'card_type' => 'summary_large_image',
         ];
     }
 

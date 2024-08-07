@@ -67,8 +67,6 @@ namespace App\Models{
  * @property-read \App\Models\Article\Ranking|null $ranking
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Article> $relatedArticles
  * @property-read int|null $related_articles_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Screenshot> $relatedScreenshots
- * @property-read int|null $related_screenshots_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
  * @property-read \App\Models\Article\ConversionCount|null $todaysConversionCount
@@ -319,6 +317,8 @@ namespace App\Models{
  * @property string $to リダイレクト先
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property int|null $user_id
+ * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\RedirectFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Redirect from(string $from)
  * @method static \Illuminate\Database\Eloquent\Builder|Redirect newModelQuery()
@@ -328,38 +328,6 @@ namespace App\Models{
  */
 	#[\AllowDynamicProperties]
 	final class IdeHelperRedirect {}
-}
-
-namespace App\Models{
-/**
- * 
- *
- * @property int $id
- * @property int $user_id
- * @property string $title タイトル
- * @property string $description 説明
- * @property array $links リンク先一覧
- * @property \App\Enums\ScreenshotStatus $status 公開ステータス
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property \Carbon\CarbonImmutable|null $published_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
- * @property-read int|null $articles_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
- * @property-read int|null $attachments_count
- * @property-read bool $is_publish
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
- * @property-read int|null $notifications_count
- * @property-read \App\Models\User $user
- * @method static \Database\Factories\ScreenshotFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Screenshot newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Screenshot newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Screenshot publish()
- * @method static \Illuminate\Database\Eloquent\Builder|Screenshot query()
- * @mixin \Eloquent
- */
-	#[\AllowDynamicProperties]
-	final class IdeHelperScreenshot {}
 }
 
 namespace App\Models{
@@ -429,8 +397,8 @@ namespace App\Models{
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \App\Models\User\Profile|null $profile
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Screenshot> $screenshots
- * @property-read int|null $screenshots_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Redirect> $redirects
+ * @property-read int|null $redirects_count
  * @method static \Illuminate\Database\Eloquent\Builder|User admin()
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()

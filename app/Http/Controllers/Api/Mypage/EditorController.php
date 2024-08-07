@@ -45,7 +45,7 @@ final class EditorController extends Controller
     public function update(UpdateRequest $updateRequest, Article $article, UpdateArticle $updateArticle, FindArticle $findArticle): ArticlesResouce
     {
         /**
-         * @var array{should_notify?:bool,without_update_modified_at?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}
+         * @var array{should_notify?:bool,without_update_modified_at?:bool,follow_redirect?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}
          */
         $data = $updateRequest->validated();
 

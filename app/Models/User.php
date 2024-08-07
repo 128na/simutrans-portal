@@ -178,11 +178,11 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     }
 
     /**
-     * @return HasMany<Screenshot>
+     * @return HasMany<Redirect>
      */
-    public function screenshots(): HasMany
+    public function redirects(): HasMany
     {
-        return $this->hasMany(Screenshot::class);
+        return $this->hasMany(Redirect::class);
     }
 
     /*

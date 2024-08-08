@@ -114,6 +114,16 @@ CREATE TABLE `cache` (
   UNIQUE KEY `cache_key_unique` (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `cache_locks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cache_locks` (
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` int NOT NULL,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -251,17 +261,6 @@ CREATE TABLE `oauth_tokens` (
   PRIMARY KEY (`application`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `pak_addon_counts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `pak_addon_counts` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `pak_slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `addon_slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `count` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `password_resets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -324,8 +323,11 @@ CREATE TABLE `redirects` (
   `to` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'リダイレクト先',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `user_id` bigint unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `redirects_from_to_unique` (`from`,`to`)
+  UNIQUE KEY `redirects_from_to_unique` (`from`,`to`),
+  KEY `redirects_user_id_foreign` (`user_id`),
+  CONSTRAINT `redirects_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `screenshots`;
@@ -340,9 +342,11 @@ CREATE TABLE `screenshots` (
   `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '公開ステータス',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `published_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `screenshots_user_id_foreign` (`user_id`),
   KEY `screenshots_status_updated_at_index` (`status`,`updated_at`),
+  KEY `screenshots_published_at_index` (`published_at`),
   CONSTRAINT `screenshots_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -419,20 +423,6 @@ CREATE TABLE `tweet_logs` (
   PRIMARY KEY (`id`),
   KEY `tweet_logs_article_id_foreign` (`article_id`),
   CONSTRAINT `tweet_logs_article_id_foreign` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `user_addon_counts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user_addon_counts` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint unsigned NOT NULL,
-  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_nickname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '表示名',
-  `count` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_addon_counts_user_id_foreign` (`user_id`),
-  CONSTRAINT `user_addon_counts_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `users`;
@@ -549,3 +539,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (224,'2024_03_16_22
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (225,'2024_03_22_155518_add_column_in_attachments_table',28);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (226,'2024_03_23_172212_drop_category_name_in_categories_table',29);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (228,'2024_03_31_125117_add_pr_column_in_articles_table',30);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (229,'2024_04_07_173500_add_published_at_column_in_screenshots_table',31);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (230,'2024_04_08_014906_create_cache_table',31);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (231,'2024_04_10_221250_drop_pak_addon_counts_table',31);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (232,'2024_04_10_221258_drop_user_addon_counts_table',31);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (233,'2024_08_06_155542_add_user_id_in_redirects_table',31);

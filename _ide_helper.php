@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 11.19.0.
+ * Generated for Laravel 11.21.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -1364,6 +1364,17 @@ namespace Illuminate\Support\Facades {
                         return $instance->build($concrete);
         }
                     /**
+         * Resolve a dependency based on an attribute.
+         *
+         * @param \ReflectionAttribute $attribute
+         * @return mixed 
+         * @static 
+         */        public static function resolveFromAttribute($attribute)
+        {            //Method inherited from \Illuminate\Container\Container         
+                        /** @var \Illuminate\Foundation\Application $instance */
+                        return $instance->resolveFromAttribute($attribute);
+        }
+                    /**
          * Register a new before resolving callback for all types.
          *
          * @param \Closure|string $abstract
@@ -1410,6 +1421,18 @@ namespace Illuminate\Support\Facades {
         {            //Method inherited from \Illuminate\Container\Container         
                         /** @var \Illuminate\Foundation\Application $instance */
                         $instance->afterResolvingAttribute($attribute, $callback);
+        }
+                    /**
+         * Fire all of the after resolving attribute callbacks.
+         *
+         * @param \ReflectionAttribute[] $abstract
+         * @param mixed $object
+         * @return void 
+         * @static 
+         */        public static function fireAfterResolvingAttributeCallbacks($attributes, $object)
+        {            //Method inherited from \Illuminate\Container\Container         
+                        /** @var \Illuminate\Foundation\Application $instance */
+                        $instance->fireAfterResolvingAttributeCallbacks($attributes, $object);
         }
                     /**
          * Get the container's bindings.
@@ -3345,7 +3368,7 @@ namespace Illuminate\Support\Facades {
      * 
      *
      * @see \Illuminate\Cache\CacheManager
-     * @mixin \Illuminate\Cache\Repository
+     * @see \Illuminate\Cache\Repository
      */        class Cache {
                     /**
          * Get a cache store instance by name, wrapped in a repository.
@@ -4480,6 +4503,34 @@ namespace Illuminate\Support\Facades {
                         return $instance->pushHidden($key, ...$values);
         }
                     /**
+         * Determine if the given value is in the given stack.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param bool $strict
+         * @return bool 
+         * @throws \RuntimeException
+         * @static 
+         */        public static function stackContains($key, $value, $strict = false)
+        {
+                        /** @var \Illuminate\Log\Context\Repository $instance */
+                        return $instance->stackContains($key, $value, $strict);
+        }
+                    /**
+         * Determine if the given value is in the given hidden stack.
+         *
+         * @param string $key
+         * @param mixed $value
+         * @param bool $strict
+         * @return bool 
+         * @throws \RuntimeException
+         * @static 
+         */        public static function hiddenStackContains($key, $value, $strict = false)
+        {
+                        /** @var \Illuminate\Log\Context\Repository $instance */
+                        return $instance->hiddenStackContains($key, $value, $strict);
+        }
+                    /**
          * Determine if the repository is empty.
          *
          * @return bool 
@@ -5309,6 +5360,39 @@ namespace Illuminate\Support\Facades {
                         return $instance->macroCall($method, $parameters);
         }
                     /**
+         * Get a human-readable name for the given connection driver.
+         *
+         * @return string 
+         * @static 
+         */        public static function getDriverTitle()
+        {
+                        /** @var \Illuminate\Database\MySqlConnection $instance */
+                        return $instance->getDriverTitle();
+        }
+                    /**
+         * Run an insert statement against the database.
+         *
+         * @param string $query
+         * @param array $bindings
+         * @param string|null $sequence
+         * @return bool 
+         * @static 
+         */        public static function insert($query, $bindings = [], $sequence = null)
+        {
+                        /** @var \Illuminate\Database\MySqlConnection $instance */
+                        return $instance->insert($query, $bindings, $sequence);
+        }
+                    /**
+         * Get the connection's last insert ID.
+         *
+         * @return string|int|null 
+         * @static 
+         */        public static function getLastInsertId()
+        {
+                        /** @var \Illuminate\Database\MySqlConnection $instance */
+                        return $instance->getLastInsertId();
+        }
+                    /**
          * Determine if the connected database is a MariaDB database.
          *
          * @return bool 
@@ -5481,18 +5565,6 @@ namespace Illuminate\Support\Facades {
                         return $instance->cursor($query, $bindings, $useReadPdo);
         }
                     /**
-         * Run an insert statement against the database.
-         *
-         * @param string $query
-         * @param array $bindings
-         * @return bool 
-         * @static 
-         */        public static function insert($query, $bindings = [])
-        {            //Method inherited from \Illuminate\Database\Connection         
-                        /** @var \Illuminate\Database\MySqlConnection $instance */
-                        return $instance->insert($query, $bindings);
-        }
-                    /**
          * Run an update statement against the database.
          *
          * @param string $query
@@ -5550,6 +5622,16 @@ namespace Illuminate\Support\Facades {
         {            //Method inherited from \Illuminate\Database\Connection         
                         /** @var \Illuminate\Database\MySqlConnection $instance */
                         return $instance->unprepared($query);
+        }
+                    /**
+         * Get the number of open connections for the database.
+         *
+         * @return int|null 
+         * @static 
+         */        public static function threadCount()
+        {            //Method inherited from \Illuminate\Database\Connection         
+                        /** @var \Illuminate\Database\MySqlConnection $instance */
+                        return $instance->threadCount();
         }
                     /**
          * Execute the given callback in "dry run" mode.
@@ -6222,8 +6304,8 @@ namespace Illuminate\Support\Facades {
                     /**
          * Register an event listener with the dispatcher.
          *
-         * @param \Closure|string|array $events
-         * @param \Closure|string|array|null $listener
+         * @param \Illuminate\Events\Queued\Closure|\Closure|string|array $events
+         * @param \Illuminate\Events\Queued\Closure|\Closure|string|array|null $listener
          * @return void 
          * @static 
          */        public static function listen($events, $listener = null)
@@ -7594,6 +7676,18 @@ namespace Illuminate\Support\Facades {
         {
                         /** @var \Illuminate\Hashing\HashManager $instance */
                         return $instance->getDefaultDriver();
+        }
+                    /**
+         * Verifies that the configuration is less than or equal to what is configured.
+         *
+         * @param array $value
+         * @return bool 
+         * @internal 
+         * @static 
+         */        public static function verifyConfiguration($value)
+        {
+                        /** @var \Illuminate\Hashing\HashManager $instance */
+                        return $instance->verifyConfiguration($value);
         }
                     /**
          * Get a driver instance.
@@ -10161,77 +10255,6 @@ namespace Illuminate\Support\Facades {
                         return $instance->setConnectionName($name);
         }
                     /**
-         * Release a reserved job back onto the queue after (n) seconds.
-         *
-         * @param string $queue
-         * @param \Illuminate\Queue\Jobs\DatabaseJobRecord $job
-         * @param int $delay
-         * @return mixed 
-         * @static 
-         */        public static function release($queue, $job, $delay)
-        {
-                        /** @var \Illuminate\Queue\DatabaseQueue $instance */
-                        return $instance->release($queue, $job, $delay);
-        }
-                    /**
-         * Delete a reserved job from the queue.
-         *
-         * @param string $queue
-         * @param string $id
-         * @return void 
-         * @throws \Throwable
-         * @static 
-         */        public static function deleteReserved($queue, $id)
-        {
-                        /** @var \Illuminate\Queue\DatabaseQueue $instance */
-                        $instance->deleteReserved($queue, $id);
-        }
-                    /**
-         * Delete a reserved job from the reserved queue and release it.
-         *
-         * @param string $queue
-         * @param \Illuminate\Queue\Jobs\DatabaseJob $job
-         * @param int $delay
-         * @return void 
-         * @static 
-         */        public static function deleteAndRelease($queue, $job, $delay)
-        {
-                        /** @var \Illuminate\Queue\DatabaseQueue $instance */
-                        $instance->deleteAndRelease($queue, $job, $delay);
-        }
-                    /**
-         * Delete all of the jobs from the queue.
-         *
-         * @param string $queue
-         * @return int 
-         * @static 
-         */        public static function clear($queue)
-        {
-                        /** @var \Illuminate\Queue\DatabaseQueue $instance */
-                        return $instance->clear($queue);
-        }
-                    /**
-         * Get the queue or return the default.
-         *
-         * @param string|null $queue
-         * @return string 
-         * @static 
-         */        public static function getQueue($queue)
-        {
-                        /** @var \Illuminate\Queue\DatabaseQueue $instance */
-                        return $instance->getQueue($queue);
-        }
-                    /**
-         * Get the underlying database instance.
-         *
-         * @return \Illuminate\Database\Connection 
-         * @static 
-         */        public static function getDatabase()
-        {
-                        /** @var \Illuminate\Queue\DatabaseQueue $instance */
-                        return $instance->getDatabase();
-        }
-                    /**
          * Get the maximum number of attempts for an object-based queue handler.
          *
          * @param mixed $job
@@ -10239,7 +10262,7 @@ namespace Illuminate\Support\Facades {
          * @static 
          */        public static function getJobTries($job)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Illuminate\Queue\DatabaseQueue $instance */
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
                         return $instance->getJobTries($job);
         }
                     /**
@@ -10250,7 +10273,7 @@ namespace Illuminate\Support\Facades {
          * @static 
          */        public static function getJobBackoff($job)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Illuminate\Queue\DatabaseQueue $instance */
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
                         return $instance->getJobBackoff($job);
         }
                     /**
@@ -10261,7 +10284,7 @@ namespace Illuminate\Support\Facades {
          * @static 
          */        public static function getJobExpiration($job)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Illuminate\Queue\DatabaseQueue $instance */
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
                         return $instance->getJobExpiration($job);
         }
                     /**
@@ -10272,7 +10295,7 @@ namespace Illuminate\Support\Facades {
          * @static 
          */        public static function createPayloadUsing($callback)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        \Illuminate\Queue\DatabaseQueue::createPayloadUsing($callback);
+                        \Illuminate\Queue\SyncQueue::createPayloadUsing($callback);
         }
                     /**
          * Get the container instance being used by the connection.
@@ -10281,7 +10304,7 @@ namespace Illuminate\Support\Facades {
          * @static 
          */        public static function getContainer()
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Illuminate\Queue\DatabaseQueue $instance */
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
                         return $instance->getContainer();
         }
                     /**
@@ -10292,7 +10315,7 @@ namespace Illuminate\Support\Facades {
          * @static 
          */        public static function setContainer($container)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Illuminate\Queue\DatabaseQueue $instance */
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
                         $instance->setContainer($container);
         }
             }
@@ -17776,6 +17799,39 @@ namespace Illuminate\Support\Facades {
                         return $instance->usePreloadTagAttributes($attributes);
         }
                     /**
+         * Use the "waterfall" prefetching strategy.
+         *
+         * @param int|null $concurrency
+         * @return \Illuminate\Foundation\Vite 
+         * @static 
+         */        public static function useWaterfallPrefetching($concurrency = null)
+        {
+                        /** @var \Illuminate\Foundation\Vite $instance */
+                        return $instance->useWaterfallPrefetching($concurrency);
+        }
+                    /**
+         * Use the "aggressive" prefetching strategy.
+         *
+         * @return \Illuminate\Foundation\Vite 
+         * @static 
+         */        public static function useAggressivePrefetching()
+        {
+                        /** @var \Illuminate\Foundation\Vite $instance */
+                        return $instance->useAggressivePrefetching();
+        }
+                    /**
+         * Set the prefetching strategy.
+         *
+         * @param \Illuminate\Foundation\'waterfall'|\Illuminate\Foundation\'aggressive'|null $strategy
+         * @param array $config
+         * @return \Illuminate\Foundation\Vite 
+         * @static 
+         */        public static function usePrefetchStrategy($strategy, $config = [])
+        {
+                        /** @var \Illuminate\Foundation\Vite $instance */
+                        return $instance->usePrefetchStrategy($strategy, $config);
+        }
+                    /**
          * Generate React refresh runtime script.
          *
          * @return \Illuminate\Support\HtmlString|void 
@@ -21812,7 +21868,7 @@ namespace  {
                             /**
              * Add a "where" clause to the query for multiple columns with "and" conditions between them.
              *
-             * @param string[] $columns
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|string[] $columns
              * @param mixed $operator
              * @param mixed $value
              * @param string $boolean
@@ -21826,8 +21882,8 @@ namespace  {
                             /**
              * Add an "or where" clause to the query for multiple columns with "and" conditions between them.
              *
-             * @param string[] $columns
-             * @param string $operator
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|string[] $columns
+             * @param mixed $operator
              * @param mixed $value
              * @return \Illuminate\Database\Query\Builder 
              * @static 
@@ -21839,8 +21895,8 @@ namespace  {
                             /**
              * Add a "where" clause to the query for multiple columns with "or" conditions between them.
              *
-             * @param string[] $columns
-             * @param string $operator
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|string[] $columns
+             * @param mixed $operator
              * @param mixed $value
              * @param string $boolean
              * @return \Illuminate\Database\Query\Builder 
@@ -21853,8 +21909,8 @@ namespace  {
                             /**
              * Add an "or where" clause to the query for multiple columns with "or" conditions between them.
              *
-             * @param string[] $columns
-             * @param string $operator
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|string[] $columns
+             * @param mixed $operator
              * @param mixed $value
              * @return \Illuminate\Database\Query\Builder 
              * @static 
@@ -21866,8 +21922,8 @@ namespace  {
                             /**
              * Add a "where not" clause to the query for multiple columns where none of the conditions should be true.
              *
-             * @param string[] $columns
-             * @param string $operator
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|string[] $columns
+             * @param mixed $operator
              * @param mixed $value
              * @param string $boolean
              * @return \Illuminate\Database\Query\Builder 
@@ -21880,8 +21936,8 @@ namespace  {
                             /**
              * Add an "or where not" clause to the query for multiple columns where none of the conditions should be true.
              *
-             * @param string[] $columns
-             * @param string $operator
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|string[] $columns
+             * @param mixed $operator
              * @param mixed $value
              * @return \Illuminate\Database\Query\Builder 
              * @static 

@@ -8,6 +8,7 @@ use App\Http\Controllers\FrontController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
+use App\Http\Middleware\ExcludePaths;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['cache.content'])->group(function (): void {
@@ -56,4 +57,6 @@ Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function (): voi
 
 Route::get('/error/{status}', [FrontController::class, 'error'])->name('error');
 
-Route::fallback([RedirectController::class, 'index']);
+Route::middleware([ExcludePaths::class])->group(function (): void {
+    Route::fallback([RedirectController::class, 'index']);
+});

@@ -38,8 +38,8 @@
     "laravel/pint": "^1.17.3",
     "mockery/mockery": "^1.6.12",
     "nunomaduro/collision": "^8.4.0",
-    "phpunit/phpunit": "^10.5.32",
-    "rector/rector": "^1.2.4",
+    "phpunit/phpunit": "^10.5.33",
+    "rector/rector": "^1.2.5",
     "spatie/laravel-ignition": "^2.8.0"
   },
   "config": {

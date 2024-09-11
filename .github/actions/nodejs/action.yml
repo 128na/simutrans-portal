@@ -1,10 +1,10 @@
-name: 'Setup nodejs'
-description: 'Setup nodejs'
+name: "Setup nodejs"
+description: "Setup nodejs"
 inputs:
   asset-key:
-    description: 'アセットキャッシュのキー'
+    description: "アセットキャッシュのキー"
     required: false
-    default: 'asset'
+    default: "asset"
 runs:
   using: "composite"
   steps:
@@ -12,7 +12,7 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version: 20
-        cache-dependency-path: '**/package-lock.json'
+        cache-dependency-path: "**/package-lock.json"
 
     - name: npm install
       run: cd frontend && npm install

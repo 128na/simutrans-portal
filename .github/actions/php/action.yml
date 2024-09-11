@@ -1,5 +1,5 @@
-name: 'Setup php'
-description: 'Setup php'
+name: "Setup php"
+description: "Setup php"
 runs:
   using: "composite"
   steps:

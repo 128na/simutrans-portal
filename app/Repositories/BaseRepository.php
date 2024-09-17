@@ -136,7 +136,7 @@ abstract class BaseRepository
      * 一覧取得.
      *
      * @param  array<string>  $column
-     * @param  array<mixed>  $with
+     * @param  array<int,string>  $with
      * @return Collection<int,T>
      */
     final public function findAll(array $column = ['*'], array $with = [], ?int $limit = null): Collection
@@ -156,7 +156,7 @@ abstract class BaseRepository
      * ページネーションで一覧取得.
      *
      * @param  array<string>  $column
-     * @param  array<mixed>  $with
+     * @param  array<int,string>  $with
      * @return Paginator<T>
      */
     final public function paginate(array $column = ['*'], array $with = [], int $perPage = 24): Paginator

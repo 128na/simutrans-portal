@@ -120,7 +120,7 @@ final class ArticleRepository extends BaseRepository
     /**
      * ユーザーに紐づくデータを返す.
      *
-     * @param  array<mixed>  $relations
+     * @param  array<int,string>  $relations
      * @return Collection<int, Article>
      */
     public function findAllByUser(User $user, array $relations = self::FRONT_RELATIONS, string $order = 'modified_at'): Collection

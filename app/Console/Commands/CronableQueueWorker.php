@@ -15,7 +15,10 @@ final class CronableQueueWorker extends Command
     public function handle(): int
     {
         logger()->channel('worker')->info('start');
-        $this->call('queue:work', ['--max-time' => 295]);
+        $this->call('queue:work', [
+            '--max-time' => 295,
+            '--sleep' => 30,
+        ]);
         logger()->channel('worker')->info('end');
 
         return 0;

@@ -11,12 +11,12 @@ const { mockSidebarResponse } = require('../../__mocks__/front');
 
 // This test will pass when run against a clean Quasar project
 describe('フロントトップ', () => {
-  describe('API自動リトライ', () => {
+  describe('API自動リトライしない', () => {
     beforeEach(() => {
-    // https://github.com/quasarframework/quasar/issues/2233#issuecomment-678115434
+      // https://github.com/quasarframework/quasar/issues/2233#issuecomment-678115434
       const resizeObserverLoopErrRe = /^[^(ResizeObserver loop limit exceeded)]/;
       cy.on('uncaught:exception', (err) => {
-      /* returning false here prevents Cypress from failing the test */
+        /* returning false here prevents Cypress from failing the test */
         if (resizeObserverLoopErrRe.test(err.message)) {
           return false;
         }
@@ -31,8 +31,6 @@ describe('フロントトップ', () => {
       cy.visit('/');
       cy.wait('@mypage.user');
       cy.wait('@front.sidebar');
-      cy.wait('@front.topFailed');
-      cy.wait('@front.topFailed');
       cy.wait('@front.topFailed');
     });
     it('表示内容', () => {

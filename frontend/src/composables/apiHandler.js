@@ -24,7 +24,7 @@ export const useApiHandler = () => {
    * @returns {AxiosResponse<any>|any|null}
    */
   const handle = async ({
-    doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true, autoRetry = 3, retryCount = 0,
+    doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true, autoRetry = 0, retryCount = 0,
   }) => {
     try {
       loading.value = true;
@@ -91,7 +91,7 @@ export const useApiHandler = () => {
    * @returns {AxiosResponse<any>|any|null}
    */
   const handleWithLoading = async ({
-    doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true, autoRetry = 3, retryCount = 0,
+    doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true, autoRetry = 0, retryCount = 0,
   }) => {
     try {
       loading.value = true;
@@ -160,7 +160,7 @@ export const useApiHandler = () => {
    * @returns {AxiosResponse<any>|any|null}
    */
   const handleWithValidate = async ({
-    doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true, autoRetry = 3, retryCount = 0,
+    doRequest, done, successMessage = null, failedMessage = 'エラーが発生しました', retryable = true, autoRetry = 0, retryCount = 0,
   }) => {
     try {
       loading.value = true;

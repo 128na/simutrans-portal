@@ -7,8 +7,7 @@
     <title>@yield('title') - {{ config('app.name') }}</title>
 
     @production
-        @include('ga')
-        @include('newrelic')
+    @include('ga')
     @endproduction
 
     <script defer src="{{ asset(mix('/js/vendor.js')) }}"></script>

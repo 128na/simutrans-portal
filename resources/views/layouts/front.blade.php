@@ -7,8 +7,7 @@
     <title>{{ $meta['title'] ?? config('app.name') }}</title>
 
     @production
-        @include('ga')
-        @include('newrelic')
+    @include('ga')
     @endproduction
 
     <meta name="twitter:card" content="{{ $meta['card_type'] ?? 'summary_large_image' }}">
@@ -22,7 +21,7 @@
 
     {{-- 本番環境以外はnoindex nofollow --}}
     @unless (\Illuminate\Support\Facades\App::environment('production'))
-        <meta name="robots" content="noindex, nofollow">
+    <meta name="robots" content="noindex, nofollow">
     @endunless
     <link rel="canonical" href="{{ $meta['canonical'] ?? url()->current() }}">
     <link rel=icon type=image/ico href=/favicon.ico>

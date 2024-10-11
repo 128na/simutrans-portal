@@ -17,13 +17,10 @@
     "test:component": "cross-env NODE_ENV=test cypress open --component",
     "test:component:ci": "cross-env NODE_ENV=test cypress run --component",
     "ncu:check": "npx ncu",
-    "ncu:update": "npx ncu -u",
-    "nr:s": "node ./deployment/sourcemap"
+    "ncu:update": "npx ncu -u"
   },
   "dependencies": {
     "@quasar/extras": "^1",
-    "@sentry/tracing": "^7",
-    "@sentry/vue": "^7",
     "apexcharts": "^3",
     "axios": "^1",
     "core-js": "^3",
@@ -41,7 +38,6 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7",
-    "@newrelic/publish-sourcemap": "^5",
     "@quasar/app-webpack": "^3",
     "@quasar/quasar-app-extension-testing": "^2",
     "@quasar/quasar-app-extension-testing-e2e-cypress": "^6",

@@ -174,8 +174,3 @@ jobs:
         run: >
           rsync -ah -e "ssh -i /home/runner/.ssh/id_rsa" ./public/
           ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/public
-
-      - name: publish sourcemap to newrelic
-        run: cd frontend && npm run nr:s
-        env:
-          NR_USER_KEY: ${{ secrets.NR_USER_KEY }}

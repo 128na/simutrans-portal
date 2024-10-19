@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\CreateSitemap;
 
+use App\Enums\SitemapPriority;
 use App\Models\Article;
 use Closure;
 use Illuminate\Support\Collection;
@@ -21,9 +22,7 @@ final class CreateArticleSitemaps
                     'articleSlug' => $article->slug,
                 ]);
 
-                $urlTag = Url::create($url)
-                    ->setChangeFrequency('monthly')
-                    ->setPriority(0.7);
+                $urlTag = Url::create($url);
 
                 if ($article->published_at) {
                     $urlTag->setLastModificationDate($article->published_at);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions\CreateSitemap;
 
-use App\Enums\SitemapPriority;
 use App\Models\Article;
 use Closure;
 use Illuminate\Support\Collection;

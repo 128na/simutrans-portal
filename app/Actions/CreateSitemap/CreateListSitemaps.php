@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions\CreateSitemap;
 
-use App\Enums\SitemapPriority;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
@@ -30,11 +29,11 @@ final class CreateListSitemaps
     private function getUrlSet(): Generator
     {
         yield 'user.xml' => User::has('articles')->cursor()
-            ->map(fn(User $user) => route('user', ['userIdOrNickname' => $user->nickname ?? $user->id]));
+            ->map(fn (User $user) => route('user', ['userIdOrNickname' => $user->nickname ?? $user->id]));
         yield 'category.xml' => Category::has('articles')->cursor()
-            ->map(fn(Category $category) => route('category', ['type' => $category->type->value, 'slug' => $category->slug]));
+            ->map(fn (Category $category) => route('category', ['type' => $category->type->value, 'slug' => $category->slug]));
         yield 'tag.xml' => Tag::has('articles')->cursor()
-            ->map(fn(Tag $tag) => route('tag', $tag));
+            ->map(fn (Tag $tag) => route('tag', $tag));
         yield 'pak.xml' => $this->getCategoryPakAddon();
         yield 'misc.xml' => collect([
             '/',

@@ -40,7 +40,7 @@ final readonly class ImageAttachment implements ValidationRule
             return;
         }
 
-        $tranlated_attribute = app('translator')->get('validation.attributes')[$attribute] ?? $attribute;
+        $tranlated_attribute = app(\Illuminate\Contracts\Translation\Translator::class)->get('validation.attributes')[$attribute] ?? $attribute;
         $fail(__('validation.image', ['attribute' => $tranlated_attribute]));
     }
 }

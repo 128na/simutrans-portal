@@ -36,7 +36,7 @@ final class ConversionCount extends Model
     |--------------------------------------------------------------------------
     */
     /**
-     * @return BelongsTo<Article,ConversionCount>
+     * @return BelongsTo<Article,$this>
      */
     public function article(): BelongsTo
     {

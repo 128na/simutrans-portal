@@ -24,7 +24,7 @@ final class Redirect extends Model
     ];
 
     /**
-     * @return BelongsTo<User,Redirect>
+     * @return BelongsTo<User,$this>
      */
     public function user(): BelongsTo
     {

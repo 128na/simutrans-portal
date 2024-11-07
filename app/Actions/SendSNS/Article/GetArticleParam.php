@@ -21,8 +21,7 @@ final readonly class GetArticleParam
         $url = route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]);
         $now = $this->carbon->format('Y/m/d H:i');
         $name = $article->user->name;
-        $tags = collect(['simutrans'])
-            ->merge($article->categoryPaks->pluck('slug'))
+        $tags = collect(['simutrans', ...$article->categoryPaks->pluck('slug')])
             ->map(fn ($slug): string => __('hash_tag.'.$slug))
             ->implode(' ');
 

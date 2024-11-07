@@ -35,7 +35,7 @@ final class BulkZip extends Model
     ];
 
     /**
-     * @return MorphTo<Model,BulkZip>
+     * @return MorphTo<Model,$this>
      */
     public function bulkZippable(): MorphTo
     {

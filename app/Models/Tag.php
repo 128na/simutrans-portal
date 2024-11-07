@@ -33,7 +33,7 @@ final class Tag extends Model
     ];
 
     /**
-     * @return BelongsToMany<Article>
+     * @return BelongsToMany<Article,$this>
      */
     public function articles(): BelongsToMany
     {
@@ -41,7 +41,7 @@ final class Tag extends Model
     }
 
     /**
-     * @return BelongsTo<User,Tag>
+     * @return BelongsTo<User,$this>
      */
     public function createdBy(): BelongsTo
     {
@@ -49,7 +49,7 @@ final class Tag extends Model
     }
 
     /**
-     * @return BelongsTo<User,Tag>
+     * @return BelongsTo<User,$this>
      */
     public function lastModifiedBy(): BelongsTo
     {

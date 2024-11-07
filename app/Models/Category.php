@@ -42,7 +42,7 @@ final class Category extends Model
     |--------------------------------------------------------------------------
      */
     /**
-     * @return BelongsToMany<Article>
+     * @return BelongsToMany<Article,$this>
      */
     public function articles(): BelongsToMany
     {

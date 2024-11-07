@@ -24,7 +24,7 @@ final class LoginHistory extends Model
     ];
 
     /**
-     * @return BelongsTo<User,LoginHistory>
+     * @return BelongsTo<User,$this>
      */
     public function user(): BelongsTo
     {

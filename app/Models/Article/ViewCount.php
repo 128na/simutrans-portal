@@ -35,7 +35,7 @@ final class ViewCount extends Model
     ];
 
     /**
-     * @return BelongsTo<Article,ViewCount>
+     * @return BelongsTo<Article,$this>
      */
     public function article(): BelongsTo
     {

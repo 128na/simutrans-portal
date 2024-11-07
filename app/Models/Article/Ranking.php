@@ -27,7 +27,7 @@ final class Ranking extends Model
     ];
 
     /**
-     * @return BelongsTo<Article,Ranking>
+     * @return BelongsTo<Article,$this>
      */
     public function article(): BelongsTo
     {

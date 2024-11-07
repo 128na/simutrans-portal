@@ -80,27 +80,27 @@ namespace App\Models{
  * @property-read int|null $yearly_conversion_counts_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ViewCount> $yearlyViewCounts
  * @property-read int|null $yearly_view_counts_count
- * @method static \Illuminate\Database\Eloquent\Builder|Article active()
- * @method static \Illuminate\Database\Eloquent\Builder|Article addon()
- * @method static \Illuminate\Database\Eloquent\Builder|Article announce()
- * @method static \Illuminate\Database\Eloquent\Builder|Article category(\App\Models\Category $category)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article active()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article addon()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article announce()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article category(\App\Models\Category $category)
  * @method static \Database\Factories\ArticleFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Article linkCheckTarget()
- * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Article newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Article onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Article page()
- * @method static \Illuminate\Database\Eloquent\Builder|Article pak(string $slug)
- * @method static \Illuminate\Database\Eloquent\Builder|Article pakAddonCategory(\App\Models\Category $pak, \App\Models\Category $addon)
- * @method static \Illuminate\Database\Eloquent\Builder|Article query()
- * @method static \Illuminate\Database\Eloquent\Builder|Article rankingOrder()
- * @method static \Illuminate\Database\Eloquent\Builder|Article slug(string $slug)
- * @method static \Illuminate\Database\Eloquent\Builder|Article tag(\App\Models\Tag $tag)
- * @method static \Illuminate\Database\Eloquent\Builder|Article user(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder|Article withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Article withUserTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Article withoutAnnounce()
- * @method static \Illuminate\Database\Eloquent\Builder|Article withoutTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article linkCheckTarget()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article page()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article pak(string $slug)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article pakAddonCategory(\App\Models\Category $pak, \App\Models\Category $addon)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article rankingOrder()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article slug(string $slug)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article tag(\App\Models\Tag $tag)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article user(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withUserTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withoutAnnounce()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withoutTrashed()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -117,9 +117,9 @@ namespace App\Models\Article{
  * @property string $period 集計期間
  * @property int $count カウント
  * @property-read \App\Models\Article $article
- * @method static \Illuminate\Database\Eloquent\Builder|ConversionCount newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ConversionCount newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ConversionCount query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversionCount newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversionCount newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversionCount query()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -134,9 +134,9 @@ namespace App\Models\Article{
  * @property int $article_id
  * @property-read \App\Models\Article $article
  * @method static \Database\Factories\Article\RankingFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Ranking newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Ranking newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Ranking query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ranking newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ranking newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ranking query()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -153,9 +153,9 @@ namespace App\Models\Article{
  * @property string $period 集計期間
  * @property int $count カウント
  * @property-read \App\Models\Article $article
- * @method static \Illuminate\Database\Eloquent\Builder|ViewCount newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ViewCount newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ViewCount query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount query()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -189,9 +189,9 @@ namespace App\Models{
  * @property-read string $url
  * @property-read \App\Models\User $user
  * @method static \Database\Factories\AttachmentFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment query()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -207,9 +207,9 @@ namespace App\Models\Attachment{
  * @property array $data
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|FileInfo newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|FileInfo newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|FileInfo query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FileInfo newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FileInfo newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FileInfo query()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -230,9 +230,9 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $bulkZippable
  * @method static \Database\Factories\BulkZipFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|BulkZip newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BulkZip newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BulkZip query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BulkZip newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BulkZip newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BulkZip query()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -252,18 +252,18 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
  * @property-read int|null $articles_count
- * @method static \Illuminate\Database\Eloquent\Builder|Category addon()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category addon()
  * @method static \Database\Factories\CategoryFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Category forUser(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder|Category license()
- * @method static \Illuminate\Database\Eloquent\Builder|Category newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Category page()
- * @method static \Illuminate\Database\Eloquent\Builder|Category pak()
- * @method static \Illuminate\Database\Eloquent\Builder|Category pak128Position()
- * @method static \Illuminate\Database\Eloquent\Builder|Category query()
- * @method static \Illuminate\Database\Eloquent\Builder|Category slug(string $slug)
- * @method static \Illuminate\Database\Eloquent\Builder|Category type(\App\Enums\CategoryType $categoryType)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category forUser(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category license()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category page()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category pak()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category pak128Position()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category slug(string $slug)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Category type(\App\Enums\CategoryType $categoryType)
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -278,9 +278,9 @@ namespace App\Models{
  * @property bool $value
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|ControllOption newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ControllOption newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ControllOption query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ControllOption newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ControllOption newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ControllOption query()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -299,9 +299,9 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable $expired_at
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|OauthToken newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OauthToken newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OauthToken query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|OauthToken newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|OauthToken newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|OauthToken query()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -320,10 +320,10 @@ namespace App\Models{
  * @property int|null $user_id
  * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\RedirectFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Redirect from(string $from)
- * @method static \Illuminate\Database\Eloquent\Builder|Redirect newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Redirect newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Redirect query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Redirect from(string $from)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Redirect newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Redirect newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Redirect query()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -348,10 +348,10 @@ namespace App\Models{
  * @property-read \App\Models\User|null $createdBy
  * @property-read \App\Models\User|null $lastModifiedBy
  * @method static \Database\Factories\TagFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Tag newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Tag newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Tag popular()
- * @method static \Illuminate\Database\Eloquent\Builder|Tag query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Tag newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Tag newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Tag popular()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Tag query()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -399,14 +399,14 @@ namespace App\Models{
  * @property-read \App\Models\User\Profile|null $profile
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Redirect> $redirects
  * @property-read int|null $redirects_count
- * @method static \Illuminate\Database\Eloquent\Builder|User admin()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User admin()
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|User query()
- * @method static \Illuminate\Database\Eloquent\Builder|User withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutTrashed()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -426,9 +426,9 @@ namespace App\Models\User{
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \App\Models\User $user
  * @method static \Database\Factories\User\LoginHistoryFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|LoginHistory query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginHistory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginHistory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginHistory query()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
@@ -450,9 +450,9 @@ namespace App\Models\User{
  * @property-read string $avatar_url
  * @property-read bool $has_avatar
  * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|Profile newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Profile newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Profile query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile query()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]

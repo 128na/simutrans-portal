@@ -40,7 +40,7 @@ final class Profile extends Model
     |--------------------------------------------------------------------------
      */
     /**
-     * @return BelongsTo<User,Profile>
+     * @return BelongsTo<User,$this>
      */
     public function user(): BelongsTo
     {
@@ -48,7 +48,7 @@ final class Profile extends Model
     }
 
     /**
-     * @return MorphMany<Attachment>
+     * @return MorphMany<Attachment,$this>
      */
     public function attachments(): MorphMany
     {

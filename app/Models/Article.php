@@ -86,7 +86,7 @@ final class Article extends Model implements Feedable
     |--------------------------------------------------------------------------
      */
     /**
-     * @return MorphMany<Attachment>
+     * @return MorphMany<Attachment,$this>
      */
     public function attachments(): MorphMany
     {
@@ -94,7 +94,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return BelongsToMany<Category>
+     * @return BelongsToMany<Category,$this>
      */
     public function categories(): BelongsToMany
     {
@@ -102,7 +102,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return BelongsToMany<Tag>
+     * @return BelongsToMany<Tag,$this>
      */
     public function tags(): BelongsToMany
     {
@@ -110,7 +110,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return BelongsTo<User,Article>
+     * @return BelongsTo<User,$this>
      */
     public function user(): BelongsTo
     {
@@ -118,7 +118,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return HasMany<ViewCount>
+     * @return HasMany<ViewCount,$this>
      */
     public function viewCounts(): HasMany
     {
@@ -126,7 +126,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return HasOne<ViewCount>
+     * @return HasOne<ViewCount,$this>
      */
     public function todaysViewCount(): HasOne
     {
@@ -136,7 +136,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return HasMany<ViewCount>
+     * @return HasMany<ViewCount,$this>
      */
     public function dailyViewCounts(): HasMany
     {
@@ -144,7 +144,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return HasMany<ViewCount>
+     * @return HasMany<ViewCount,$this>
      */
     public function monthlyViewCounts(): HasMany
     {
@@ -152,7 +152,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return HasMany<ViewCount>
+     * @return HasMany<ViewCount,$this>
      */
     public function yearlyViewCounts(): HasMany
     {
@@ -160,7 +160,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return HasOne<ViewCount>
+     * @return HasOne<ViewCount,$this>
      */
     public function totalViewCount(): HasOne
     {
@@ -168,7 +168,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return HasMany<ConversionCount>
+     * @return HasMany<ConversionCount,$this>
      */
     public function conversionCounts(): HasMany
     {
@@ -176,7 +176,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return HasOne<ConversionCount>
+     * @return HasOne<ConversionCount,$this>
      */
     public function todaysConversionCount(): HasOne
     {
@@ -186,7 +186,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return HasMany<ConversionCount>
+     * @return HasMany<ConversionCount,$this>
      */
     public function dailyConversionCounts(): HasMany
     {
@@ -194,7 +194,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return HasMany<ConversionCount>
+     * @return HasMany<ConversionCount,$this>
      */
     public function monthlyConversionCounts(): HasMany
     {
@@ -202,7 +202,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return HasMany<ConversionCount>
+     * @return HasMany<ConversionCount,$this>
      */
     public function yearlyConversionCounts(): HasMany
     {
@@ -210,7 +210,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return HasOne<ConversionCount>
+     * @return HasOne<ConversionCount,$this>
      */
     public function totalConversionCount(): HasOne
     {
@@ -218,7 +218,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return HasOne<Ranking>
+     * @return HasOne<Ranking,$this>
      */
     public function ranking(): HasOne
     {
@@ -228,7 +228,7 @@ final class Article extends Model implements Feedable
     /**
      * この記事から関連付けた記事
      *
-     * @return MorphToMany<Article>
+     * @return MorphToMany<Article,$this>
      */
     public function articles(): MorphToMany
     {
@@ -238,7 +238,7 @@ final class Article extends Model implements Feedable
     /**
      * この記事が関連付けられた記事
      *
-     * @return MorphToMany<Article>
+     * @return MorphToMany<Article,$this>
      */
     public function relatedArticles(): MorphToMany
     {

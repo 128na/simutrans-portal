@@ -47,7 +47,7 @@ final class Attachment extends Model
     |--------------------------------------------------------------------------
      */
     /**
-     * @return BelongsTo<User,Attachment>
+     * @return BelongsTo<User,$this>
      */
     public function user(): BelongsTo
     {
@@ -55,7 +55,7 @@ final class Attachment extends Model
     }
 
     /**
-     * @return MorphTo<Model,Attachment>
+     * @return MorphTo<Model,$this>
      */
     public function attachmentable(): MorphTo
     {
@@ -63,7 +63,7 @@ final class Attachment extends Model
     }
 
     /**
-     * @return HasOne<FileInfo>
+     * @return HasOne<FileInfo,$this>
      */
     public function fileInfo(): HasOne
     {

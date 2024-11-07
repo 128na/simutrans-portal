@@ -95,7 +95,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     |--------------------------------------------------------------------------
     */
     /**
-     * @return HasMany<Article>
+     * @return HasMany<Article,$this>
      */
     public function articles(): HasMany
     {
@@ -103,7 +103,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     }
 
     /**
-     * @return HasOne<Profile>
+     * @return HasOne<Profile,$this>
      */
     public function profile(): HasOne
     {
@@ -113,7 +113,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     /**
      * 自身が投稿した添付
      *
-     * @return HasMany<Attachment>
+     * @return HasMany<Attachment,$this>
      */
     public function myAttachments(): HasMany
     {
@@ -121,7 +121,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     }
 
     /**
-     * @return MorphOne<BulkZip>
+     * @return MorphOne<BulkZip,$this>
      */
     #[\Override]
     public function bulkZippable(): MorphOne
@@ -130,7 +130,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     }
 
     /**
-     * @return BelongsTo<User,User>
+     * @return BelongsTo<User,$this>
      */
     public function invited(): BelongsTo
     {
@@ -138,7 +138,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     }
 
     /**
-     * @return HasMany<User>
+     * @return HasMany<User,$this>
      */
     public function invites(): HasMany
     {
@@ -146,7 +146,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     }
 
     /**
-     * @return HasMany<User>
+     * @return HasMany<User,$this>
      */
     public function invitesReclusive(): HasMany
     {
@@ -154,7 +154,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     }
 
     /**
-     * @return HasMany<Tag>
+     * @return HasMany<Tag,$this>
      */
     public function createdTags(): HasMany
     {
@@ -162,7 +162,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     }
 
     /**
-     * @return HasMany<Tag>
+     * @return HasMany<Tag,$this>
      */
     public function lastModifiedBy(): HasMany
     {
@@ -170,7 +170,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     }
 
     /**
-     * @return HasMany<LoginHistory>
+     * @return HasMany<LoginHistory,$this>
      */
     public function loginHistories(): HasMany
     {
@@ -178,7 +178,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     }
 
     /**
-     * @return HasMany<Redirect>
+     * @return HasMany<Redirect,$this>
      */
     public function redirects(): HasMany
     {

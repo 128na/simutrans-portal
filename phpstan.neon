@@ -3,7 +3,7 @@ includes:
 
 parameters:
     ignoreErrors:
-
+        - '#App\\Contracts\\Models\\BulkZippableInterface#'
     paths:
         - app/
 

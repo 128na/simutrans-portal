@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 11.27.2.
+ * Generated for Laravel 11.30.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -838,7 +838,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Get the service providers that have been loaded.
          *
-         * @return array<string, boolean> 
+         * @return array<string, bool> 
          * @static 
          */        public static function getLoadedProviders()
         {
@@ -2705,17 +2705,31 @@ namespace Illuminate\Support\Facades {
                         $instance->aliasInclude($path, $alias);
         }
                     /**
-         * Register a handler for custom directives.
+         * Register a handler for custom directives, binding the handler to the compiler.
          *
          * @param string $name
          * @param callable $handler
          * @return void 
          * @throws \InvalidArgumentException
          * @static 
-         */        public static function directive($name, $handler)
+         */        public static function bindDirective($name, $handler)
         {
                         /** @var \Illuminate\View\Compilers\BladeCompiler $instance */
-                        $instance->directive($name, $handler);
+                        $instance->bindDirective($name, $handler);
+        }
+                    /**
+         * Register a handler for custom directives.
+         *
+         * @param string $name
+         * @param callable $handler
+         * @param bool $bind
+         * @return void 
+         * @throws \InvalidArgumentException
+         * @static 
+         */        public static function directive($name, $handler, $bind = false)
+        {
+                        /** @var \Illuminate\View\Compilers\BladeCompiler $instance */
+                        $instance->directive($name, $handler, $bind);
         }
                     /**
          * Get the list of custom directives.
@@ -3723,7 +3737,7 @@ namespace Illuminate\Support\Facades {
          * @template TCacheValue
          * @param string $key
          * @param \Illuminate\Cache\array{  0: \DateTimeInterface|\DateInterval|int, 1: \DateTimeInterface|\DateInterval|int }  $ttl
-         * @param \Illuminate\Cache\(callable():  TCacheValue)  $callback
+         * @param (callable(): TCacheValue) $callback
          * @param \Illuminate\Cache\array{  seconds?: int, owner?: string }|null  $lock
          * @return \Illuminate\Cache\TCacheValue 
          * @static 
@@ -4111,7 +4125,7 @@ namespace Illuminate\Support\Facades {
          * Get the specified string configuration value.
          *
          * @param string $key
-         * @param \Illuminate\Config\(\Closure():(string|\Illuminate\Config\null))|string|null $default
+         * @param (\Closure():(string|null))|string|null $default
          * @return string 
          * @static 
          */        public static function string($key, $default = null)
@@ -4123,7 +4137,7 @@ namespace Illuminate\Support\Facades {
          * Get the specified integer configuration value.
          *
          * @param string $key
-         * @param \Illuminate\Config\(\Closure():(int|\Illuminate\Config\null))|int|null $default
+         * @param (\Closure():(int|null))|int|null $default
          * @return int 
          * @static 
          */        public static function integer($key, $default = null)
@@ -4135,7 +4149,7 @@ namespace Illuminate\Support\Facades {
          * Get the specified float configuration value.
          *
          * @param string $key
-         * @param \Illuminate\Config\(\Closure():(float|\Illuminate\Config\null))|float|null $default
+         * @param (\Closure():(float|null))|float|null $default
          * @return float 
          * @static 
          */        public static function float($key, $default = null)
@@ -4147,7 +4161,7 @@ namespace Illuminate\Support\Facades {
          * Get the specified boolean configuration value.
          *
          * @param string $key
-         * @param \Illuminate\Config\(\Closure():(bool|\Illuminate\Config\null))|bool|null $default
+         * @param (\Closure():(bool|null))|bool|null $default
          * @return bool 
          * @static 
          */        public static function boolean($key, $default = null)
@@ -4159,7 +4173,7 @@ namespace Illuminate\Support\Facades {
          * Get the specified array configuration value.
          *
          * @param string $key
-         * @param \Illuminate\Config\(\Closure():(array<array-key, mixed>|\Illuminate\Config\null))|\Illuminate\Config\array<array-key,  mixed>|null  $default
+         * @param (\Closure():(array<array-key, mixed>|null))|array<array-key, mixed>|null $default
          * @return array<array-key, mixed> 
          * @static 
          */        public static function array($key, $default = null)
@@ -4625,9 +4639,9 @@ namespace Illuminate\Support\Facades {
          *
          * @template TWhenParameter
          * @template TWhenReturnType
-         * @param \Illuminate\Log\Context\(\Closure($this):  TWhenParameter)|TWhenParameter|null  $value
-         * @param \Illuminate\Log\Context\(callable($this,  TWhenParameter): TWhenReturnType)|null  $callback
-         * @param \Illuminate\Log\Context\(callable($this,  TWhenParameter): TWhenReturnType)|null  $default
+         * @param (\Closure($this): TWhenParameter)|\Illuminate\Log\Context\TWhenParameter|null $value
+         * @param (callable($this, TWhenParameter): TWhenReturnType)|null $callback
+         * @param (callable($this, TWhenParameter): TWhenReturnType)|null $default
          * @return $this|\Illuminate\Log\Context\TWhenReturnType 
          * @static 
          */        public static function when($value = null, $callback = null, $default = null)
@@ -4640,9 +4654,9 @@ namespace Illuminate\Support\Facades {
          *
          * @template TUnlessParameter
          * @template TUnlessReturnType
-         * @param \Illuminate\Log\Context\(\Closure($this):  TUnlessParameter)|TUnlessParameter|null  $value
-         * @param \Illuminate\Log\Context\(callable($this,  TUnlessParameter): TUnlessReturnType)|null  $callback
-         * @param \Illuminate\Log\Context\(callable($this,  TUnlessParameter): TUnlessReturnType)|null  $default
+         * @param (\Closure($this): TUnlessParameter)|\Illuminate\Log\Context\TUnlessParameter|null $value
+         * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $callback
+         * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $default
          * @return $this|\Illuminate\Log\Context\TUnlessReturnType 
          * @static 
          */        public static function unless($value = null, $callback = null, $default = null)
@@ -7202,9 +7216,9 @@ namespace Illuminate\Support\Facades {
          *
          * @template TWhenParameter
          * @template TWhenReturnType
-         * @param \Illuminate\Filesystem\(\Closure($this):  TWhenParameter)|TWhenParameter|null  $value
-         * @param \Illuminate\Filesystem\(callable($this,  TWhenParameter): TWhenReturnType)|null  $callback
-         * @param \Illuminate\Filesystem\(callable($this,  TWhenParameter): TWhenReturnType)|null  $default
+         * @param (\Closure($this): TWhenParameter)|\Illuminate\Filesystem\TWhenParameter|null $value
+         * @param (callable($this, TWhenParameter): TWhenReturnType)|null $callback
+         * @param (callable($this, TWhenParameter): TWhenReturnType)|null $default
          * @return $this|\Illuminate\Filesystem\TWhenReturnType 
          * @static 
          */        public static function when($value = null, $callback = null, $default = null)
@@ -7217,9 +7231,9 @@ namespace Illuminate\Support\Facades {
          *
          * @template TUnlessParameter
          * @template TUnlessReturnType
-         * @param \Illuminate\Filesystem\(\Closure($this):  TUnlessParameter)|TUnlessParameter|null  $value
-         * @param \Illuminate\Filesystem\(callable($this,  TUnlessParameter): TUnlessReturnType)|null  $callback
-         * @param \Illuminate\Filesystem\(callable($this,  TUnlessParameter): TUnlessReturnType)|null  $default
+         * @param (\Closure($this): TUnlessParameter)|\Illuminate\Filesystem\TUnlessParameter|null $value
+         * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $callback
+         * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $default
          * @return $this|\Illuminate\Filesystem\TUnlessReturnType 
          * @static 
          */        public static function unless($value = null, $callback = null, $default = null)
@@ -7947,6 +7961,16 @@ namespace Illuminate\Support\Facades {
         {
                         /** @var \Illuminate\Http\Client\Factory $instance */
                         return $instance->preventStrayRequests($prevent);
+        }
+                    /**
+         * Determine if stray requests are being prevented.
+         *
+         * @return bool 
+         * @static 
+         */        public static function preventingStrayRequests()
+        {
+                        /** @var \Illuminate\Http\Client\Factory $instance */
+                        return $instance->preventingStrayRequests();
         }
                     /**
          * Indicate that an exception should not be thrown if any request is not faked.
@@ -11424,6 +11448,7 @@ namespace Illuminate\Support\Facades {
          * @param array $files The request files ($_FILES)
          * @param array $server The server parameters ($_SERVER)
          * @param string|resource|null $content The raw body data
+         * @throws BadRequestException When the URI is invalid
          * @static 
          */        public static function create($uri, $method = 'GET', $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
@@ -14054,8 +14079,8 @@ namespace Illuminate\Support\Facades {
                     /**
          * Call the given Closure with this instance then return the instance.
          *
-         * @param \Illuminate\Routing\(callable($this):  mixed)|null  $callback
-         * @return \Illuminate\Routing\($callback is null ? \Illuminate\Support\HigherOrderTapProxy : $this)
+         * @param (callable($this): mixed)|null $callback
+         * @return ($callback is null ? \Illuminate\Support\HigherOrderTapProxy : $this)
          * @static 
          */        public static function tap($callback = null)
         {
@@ -16154,9 +16179,9 @@ namespace Illuminate\Support\Facades {
          *
          * @template TWhenParameter
          * @template TWhenReturnType
-         * @param \Illuminate\Filesystem\(\Closure($this):  TWhenParameter)|TWhenParameter|null  $value
-         * @param \Illuminate\Filesystem\(callable($this,  TWhenParameter): TWhenReturnType)|null  $callback
-         * @param \Illuminate\Filesystem\(callable($this,  TWhenParameter): TWhenReturnType)|null  $default
+         * @param (\Closure($this): TWhenParameter)|\Illuminate\Filesystem\TWhenParameter|null $value
+         * @param (callable($this, TWhenParameter): TWhenReturnType)|null $callback
+         * @param (callable($this, TWhenParameter): TWhenReturnType)|null $default
          * @return $this|\Illuminate\Filesystem\TWhenReturnType 
          * @static 
          */        public static function when($value = null, $callback = null, $default = null)
@@ -16169,9 +16194,9 @@ namespace Illuminate\Support\Facades {
          *
          * @template TUnlessParameter
          * @template TUnlessReturnType
-         * @param \Illuminate\Filesystem\(\Closure($this):  TUnlessParameter)|TUnlessParameter|null  $value
-         * @param \Illuminate\Filesystem\(callable($this,  TUnlessParameter): TUnlessReturnType)|null  $callback
-         * @param \Illuminate\Filesystem\(callable($this,  TUnlessParameter): TUnlessReturnType)|null  $default
+         * @param (\Closure($this): TUnlessParameter)|\Illuminate\Filesystem\TUnlessParameter|null $value
+         * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $callback
+         * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $default
          * @return $this|\Illuminate\Filesystem\TUnlessReturnType 
          * @static 
          */        public static function unless($value = null, $callback = null, $default = null)
@@ -17857,6 +17882,17 @@ namespace Illuminate\Support\Facades {
                         return $instance->withEntryPoints($entryPoints);
         }
                     /**
+         * Merge additional Vite entry points with the current set.
+         *
+         * @param array $entryPoints
+         * @return \Illuminate\Foundation\Vite 
+         * @static 
+         */        public static function mergeEntryPoints($entryPoints)
+        {
+                        /** @var \Illuminate\Foundation\Vite $instance */
+                        return $instance->mergeEntryPoints($entryPoints);
+        }
+                    /**
          * Set the filename for the manifest file.
          *
          * @param string $filename
@@ -17913,7 +17949,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Use the given callback to resolve attributes for script tags.
          *
-         * @param \Illuminate\Foundation\(callable(string,  string, ?array, ?array): array)|array  $attributes
+         * @param (callable(string, string, ?array, ?array): array)|array $attributes
          * @return \Illuminate\Foundation\Vite 
          * @static 
          */        public static function useScriptTagAttributes($attributes)
@@ -17924,7 +17960,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Use the given callback to resolve attributes for style tags.
          *
-         * @param \Illuminate\Foundation\(callable(string,  string, ?array, ?array): array)|array  $attributes
+         * @param (callable(string, string, ?array, ?array): array)|array $attributes
          * @return \Illuminate\Foundation\Vite 
          * @static 
          */        public static function useStyleTagAttributes($attributes)
@@ -17935,7 +17971,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Use the given callback to resolve attributes for preload tags.
          *
-         * @param \Illuminate\Foundation\(callable(string,  string, ?array, ?array): (array|false))|array|false  $attributes
+         * @param (callable(string, string, ?array, ?array): (array|false))|array|false $attributes
          * @return \Illuminate\Foundation\Vite 
          * @static 
          */        public static function usePreloadTagAttributes($attributes)
@@ -19492,7 +19528,7 @@ namespace  {
                             /**
              * Add a basic where clause to the query.
              *
-             * @param \Illuminate\Database\Eloquent\(\Closure(static):  mixed)|string|array|\Illuminate\Contracts\Database\Query\Expression  $column
+             * @param (\Closure(static): mixed)|string|array|\Illuminate\Contracts\Database\Query\Expression $column
              * @param mixed $operator
              * @param mixed $value
              * @param string $boolean
@@ -19506,7 +19542,7 @@ namespace  {
                             /**
              * Add a basic where clause to the query, and return the first result.
              *
-             * @param \Illuminate\Database\Eloquent\(\Closure(static):  mixed)|string|array|\Illuminate\Contracts\Database\Query\Expression  $column
+             * @param (\Closure(static): mixed)|string|array|\Illuminate\Contracts\Database\Query\Expression $column
              * @param mixed $operator
              * @param mixed $value
              * @param string $boolean
@@ -19520,7 +19556,7 @@ namespace  {
                             /**
              * Add an "or where" clause to the query.
              *
-             * @param \Illuminate\Database\Eloquent\(\Closure(static):  mixed)|array|string|\Illuminate\Contracts\Database\Query\Expression  $column
+             * @param (\Closure(static): mixed)|array|string|\Illuminate\Contracts\Database\Query\Expression $column
              * @param mixed $operator
              * @param mixed $value
              * @return \Illuminate\Database\Eloquent\Builder|static 
@@ -19533,7 +19569,7 @@ namespace  {
                             /**
              * Add a basic "where not" clause to the query.
              *
-             * @param \Illuminate\Database\Eloquent\(\Closure(static):  mixed)|string|array|\Illuminate\Contracts\Database\Query\Expression  $column
+             * @param (\Closure(static): mixed)|string|array|\Illuminate\Contracts\Database\Query\Expression $column
              * @param mixed $operator
              * @param mixed $value
              * @param string $boolean
@@ -19547,7 +19583,7 @@ namespace  {
                             /**
              * Add an "or where not" clause to the query.
              *
-             * @param \Illuminate\Database\Eloquent\(\Closure(static):  mixed)|array|string|\Illuminate\Contracts\Database\Query\Expression  $column
+             * @param (\Closure(static): mixed)|array|string|\Illuminate\Contracts\Database\Query\Expression $column
              * @param mixed $operator
              * @param mixed $value
              * @return \Illuminate\Database\Eloquent\Builder|static 
@@ -19607,7 +19643,7 @@ namespace  {
              *
              * @param mixed $id
              * @param array|string $columns
-             * @return \Illuminate\Database\Eloquent\($id is (\Illuminate\Contracts\Support\Arrayable<array-key, mixed>|array<mixed>) ? \Illuminate\Database\Eloquent\Collection<int, TModel> : TModel|null)
+             * @return ($id is (\Illuminate\Contracts\Support\Arrayable<array-key, mixed>|array<mixed>) ? \Illuminate\Database\Eloquent\Collection<int, TModel> : TModel|null)
              * @static 
              */            public static function find($id, $columns = [])
             {
@@ -19631,7 +19667,7 @@ namespace  {
              *
              * @param mixed $id
              * @param array|string $columns
-             * @return \Illuminate\Database\Eloquent\($id is (\Illuminate\Contracts\Support\Arrayable<array-key, mixed>|array<mixed>) ? \Illuminate\Database\Eloquent\Collection<int, TModel> : TModel)
+             * @return ($id is (\Illuminate\Contracts\Support\Arrayable<array-key, mixed>|array<mixed>) ? \Illuminate\Database\Eloquent\Collection<int, TModel> : TModel)
              * @throws \Illuminate\Database\Eloquent\ModelNotFoundException<TModel>
              * @static 
              */            public static function findOrFail($id, $columns = [])
@@ -19644,7 +19680,7 @@ namespace  {
              *
              * @param mixed $id
              * @param array|string $columns
-             * @return \Illuminate\Database\Eloquent\($id is (\Illuminate\Contracts\Support\Arrayable<array-key, mixed>|array<mixed>) ? \Illuminate\Database\Eloquent\Collection<int, TModel> : TModel)
+             * @return ($id is (\Illuminate\Contracts\Support\Arrayable<array-key, mixed>|array<mixed>) ? \Illuminate\Database\Eloquent\Collection<int, TModel> : TModel)
              * @static 
              */            public static function findOrNew($id, $columns = [])
             {
@@ -19656,9 +19692,9 @@ namespace  {
              *
              * @template TValue
              * @param mixed $id
-             * @param \Illuminate\Database\Eloquent\(\Closure():  TValue)|list<string>|string  $columns
-             * @param \Illuminate\Database\Eloquent\(\Closure():  TValue)|null  $callback
-             * @return \Illuminate\Database\Eloquent\( $id is (\Illuminate\Contracts\Support\Arrayable<array-key, mixed>|array<mixed>)
+             * @param (\Closure(): TValue)|\Illuminate\Database\Eloquent\list<string>|string $columns
+             * @param (\Closure(): TValue)|null $callback
+             * @return ( $id is (\Illuminate\Contracts\Support\Arrayable<array-key, mixed>|array<mixed>)
              *     ? \Illuminate\Database\Eloquent\Collection<int, TModel>
              *     : TModel|TValue
              * )
@@ -19732,8 +19768,8 @@ namespace  {
              * Execute the query and get the first result or call a callback.
              *
              * @template TValue
-             * @param \Illuminate\Database\Eloquent\(\Closure():  TValue)|list<string>  $columns
-             * @param \Illuminate\Database\Eloquent\(\Closure():  TValue)|null  $callback
+             * @param (\Closure(): TValue)|\Illuminate\Database\Eloquent\list<string> $columns
+             * @param (\Closure(): TValue)|null $callback
              * @return \Illuminate\Database\Eloquent\TModel|\Illuminate\Database\Eloquent\TValue 
              * @static 
              */            public static function firstOr($columns = [], $callback = null)
@@ -20003,7 +20039,7 @@ namespace  {
                             /**
              * Set the relationships that should be eager loaded while removing any previously added eager loading specifications.
              *
-             * @param \Illuminate\Database\Eloquent\array<array-key, array|(\Closure(\Illuminate\Database\Eloquent\Relations\Relation<*,*,*>):  mixed)|string>|string  $relations
+             * @param array<array-key, array|(\Closure(\Illuminate\Database\Eloquent\Relations\Relation<*,*,*>): mixed)|string>|string $relations
              * @return \Illuminate\Database\Eloquent\Builder|static 
              * @static 
              */            public static function withOnly($relations)
@@ -20196,7 +20232,7 @@ namespace  {
              * Chunk the results of the query.
              *
              * @param int $count
-             * @param \Illuminate\Database\Eloquent\callable(\Illuminate\Support\Collection<int, TValue>,  int): mixed  $callback
+             * @param \Illuminate\Database\Eloquent\callable(\Illuminate\Support\Collection<int, TValue>, int):  mixed  $callback
              * @return bool 
              * @static 
              */            public static function chunk($count, $callback)
@@ -20220,7 +20256,7 @@ namespace  {
                             /**
              * Execute a callback over each item while chunking.
              *
-             * @param \Illuminate\Database\Eloquent\callable(TValue,  int): mixed  $callback
+             * @param \Illuminate\Database\Eloquent\callable(TValue, int):  mixed  $callback
              * @param int $count
              * @return bool 
              * @throws \RuntimeException
@@ -20234,7 +20270,7 @@ namespace  {
              * Chunk the results of a query by comparing IDs.
              *
              * @param int $count
-             * @param \Illuminate\Database\Eloquent\callable(\Illuminate\Support\Collection<int, TValue>,  int): mixed  $callback
+             * @param \Illuminate\Database\Eloquent\callable(\Illuminate\Support\Collection<int, TValue>, int):  mixed  $callback
              * @param string|null $column
              * @param string|null $alias
              * @return bool 
@@ -20248,7 +20284,7 @@ namespace  {
              * Chunk the results of a query by comparing IDs in descending order.
              *
              * @param int $count
-             * @param \Illuminate\Database\Eloquent\callable(\Illuminate\Support\Collection<int, TValue>,  int): mixed  $callback
+             * @param \Illuminate\Database\Eloquent\callable(\Illuminate\Support\Collection<int, TValue>, int):  mixed  $callback
              * @param string|null $column
              * @param string|null $alias
              * @return bool 
@@ -20262,7 +20298,7 @@ namespace  {
              * Chunk the results of a query by comparing IDs in a given order.
              *
              * @param int $count
-             * @param \Illuminate\Database\Eloquent\callable(\Illuminate\Support\Collection<int, TValue>,  int): mixed  $callback
+             * @param \Illuminate\Database\Eloquent\callable(\Illuminate\Support\Collection<int, TValue>, int):  mixed  $callback
              * @param string|null $column
              * @param string|null $alias
              * @param bool $descending
@@ -20277,7 +20313,7 @@ namespace  {
                             /**
              * Execute a callback over each item while chunking by ID.
              *
-             * @param \Illuminate\Database\Eloquent\callable(TValue,  int): mixed  $callback
+             * @param \Illuminate\Database\Eloquent\callable(TValue, int):  mixed  $callback
              * @param int $count
              * @param string|null $column
              * @param string|null $alias
@@ -20368,9 +20404,9 @@ namespace  {
              *
              * @template TWhenParameter
              * @template TWhenReturnType
-             * @param \Illuminate\Database\Eloquent\(\Closure($this):  TWhenParameter)|TWhenParameter|null  $value
-             * @param \Illuminate\Database\Eloquent\(callable($this,  TWhenParameter): TWhenReturnType)|null  $callback
-             * @param \Illuminate\Database\Eloquent\(callable($this,  TWhenParameter): TWhenReturnType)|null  $default
+             * @param (\Closure($this): TWhenParameter)|\Illuminate\Database\Eloquent\TWhenParameter|null $value
+             * @param (callable($this, TWhenParameter): TWhenReturnType)|null $callback
+             * @param (callable($this, TWhenParameter): TWhenReturnType)|null $default
              * @return $this|\Illuminate\Database\Eloquent\TWhenReturnType 
              * @static 
              */            public static function when($value = null, $callback = null, $default = null)
@@ -20383,9 +20419,9 @@ namespace  {
              *
              * @template TUnlessParameter
              * @template TUnlessReturnType
-             * @param \Illuminate\Database\Eloquent\(\Closure($this):  TUnlessParameter)|TUnlessParameter|null  $value
-             * @param \Illuminate\Database\Eloquent\(callable($this,  TUnlessParameter): TUnlessReturnType)|null  $callback
-             * @param \Illuminate\Database\Eloquent\(callable($this,  TUnlessParameter): TUnlessReturnType)|null  $default
+             * @param (\Closure($this): TUnlessParameter)|\Illuminate\Database\Eloquent\TUnlessParameter|null $value
+             * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $callback
+             * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $default
              * @return $this|\Illuminate\Database\Eloquent\TUnlessReturnType 
              * @static 
              */            public static function unless($value = null, $callback = null, $default = null)
@@ -20396,7 +20432,7 @@ namespace  {
                             /**
              * Add a relationship count / exists condition to the query.
              *
-             * @param \Illuminate\Database\Eloquent\Relations\Relation<*,  *, *>|string  $relation
+             * @param \Illuminate\Database\Eloquent\Relations\Relation<*, *, *>|string $relation
              * @param string $operator
              * @param int $count
              * @param string $boolean
@@ -20412,7 +20448,7 @@ namespace  {
                             /**
              * Add a relationship count / exists condition to the query with an "or".
              *
-             * @param \Illuminate\Database\Eloquent\Relations\Relation<*,  *, *>|string  $relation
+             * @param \Illuminate\Database\Eloquent\Relations\Relation<*, *, *>|string $relation
              * @param string $operator
              * @param int $count
              * @return \Illuminate\Database\Eloquent\Builder|static 
@@ -20425,7 +20461,7 @@ namespace  {
                             /**
              * Add a relationship count / exists condition to the query.
              *
-             * @param \Illuminate\Database\Eloquent\Relations\Relation<*,  *, *>|string  $relation
+             * @param \Illuminate\Database\Eloquent\Relations\Relation<*, *, *>|string $relation
              * @param string $boolean
              * @param \Closure|null $callback
              * @return \Illuminate\Database\Eloquent\Builder|static 
@@ -20438,7 +20474,7 @@ namespace  {
                             /**
              * Add a relationship count / exists condition to the query with an "or".
              *
-             * @param \Illuminate\Database\Eloquent\Relations\Relation<*,  *, *>|string  $relation
+             * @param \Illuminate\Database\Eloquent\Relations\Relation<*, *, *>|string $relation
              * @return \Illuminate\Database\Eloquent\Builder|static 
              * @static 
              */            public static function orDoesntHave($relation)
@@ -20449,7 +20485,7 @@ namespace  {
                             /**
              * Add a relationship count / exists condition to the query with where clauses.
              *
-             * @param \Illuminate\Database\Eloquent\Relations\Relation<*,  *, *>|string  $relation
+             * @param \Illuminate\Database\Eloquent\Relations\Relation<*, *, *>|string $relation
              * @param \Closure|null $callback
              * @param string $operator
              * @param int $count
@@ -20465,7 +20501,7 @@ namespace  {
              * 
              * Also load the relationship with same condition.
              *
-             * @param \Illuminate\Database\Eloquent\Relations\Relation<*,  *, *>|string  $relation
+             * @param \Illuminate\Database\Eloquent\Relations\Relation<*, *, *>|string $relation
              * @param \Closure|null $callback
              * @param string $operator
              * @param int $count
@@ -20479,7 +20515,7 @@ namespace  {
                             /**
              * Add a relationship count / exists condition to the query with where clauses and an "or".
              *
-             * @param \Illuminate\Database\Eloquent\Relations\Relation<*,  *, *>|string  $relation
+             * @param \Illuminate\Database\Eloquent\Relations\Relation<*, *, *>|string $relation
              * @param \Closure|null $callback
              * @param string $operator
              * @param int $count
@@ -20493,7 +20529,7 @@ namespace  {
                             /**
              * Add a relationship count / exists condition to the query with where clauses.
              *
-             * @param \Illuminate\Database\Eloquent\Relations\Relation<*,  *, *>|string  $relation
+             * @param \Illuminate\Database\Eloquent\Relations\Relation<*, *, *>|string $relation
              * @param \Closure|null $callback
              * @return \Illuminate\Database\Eloquent\Builder|static 
              * @static 
@@ -20505,7 +20541,7 @@ namespace  {
                             /**
              * Add a relationship count / exists condition to the query with where clauses and an "or".
              *
-             * @param \Illuminate\Database\Eloquent\Relations\Relation<*,  *, *>|string  $relation
+             * @param \Illuminate\Database\Eloquent\Relations\Relation<*, *, *>|string $relation
              * @param \Closure|null $callback
              * @return \Illuminate\Database\Eloquent\Builder|static 
              * @static 
@@ -20629,7 +20665,7 @@ namespace  {
                             /**
              * Add a basic where clause to a relationship query.
              *
-             * @param \Illuminate\Database\Eloquent\Relations\Relation<*,  *, *>|string  $relation
+             * @param \Illuminate\Database\Eloquent\Relations\Relation<*, *, *>|string $relation
              * @param \Closure|string|array|\Illuminate\Contracts\Database\Query\Expression $column
              * @param mixed $operator
              * @param mixed $value
@@ -20643,7 +20679,7 @@ namespace  {
                             /**
              * Add an "or where" clause to a relationship query.
              *
-             * @param \Illuminate\Database\Eloquent\Relations\Relation<*,  *, *>|string  $relation
+             * @param \Illuminate\Database\Eloquent\Relations\Relation<*, *, *>|string $relation
              * @param \Closure|string|array|\Illuminate\Contracts\Database\Query\Expression $column
              * @param mixed $operator
              * @param mixed $value

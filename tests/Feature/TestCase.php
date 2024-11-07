@@ -43,7 +43,7 @@ abstract class TestCase extends TestsTestCase
      * @param  class-string<\Illuminate\Foundation\Http\FormRequest>  $requestClass
      * @param  array<mixed>  $data
      */
-    protected function makeValidator(string $requestClass, array $data): \Illuminate\Validation\Validator
+    protected function makeValidator(string $requestClass, array $data): \Illuminate\Contracts\Validation\Validator
     {
         $rules = (new $requestClass($data))->rules();
 

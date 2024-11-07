@@ -7,6 +7,9 @@ namespace Database\Factories;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tag>
+ */
 final class TagFactory extends Factory
 {
     /**
@@ -25,7 +28,7 @@ final class TagFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->city(),
+            'name' => fake()->city(),
             'description' => null,
             'editable' => true,
             'created_by' => null,

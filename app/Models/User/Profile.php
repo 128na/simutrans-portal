@@ -30,10 +30,6 @@ final class Profile extends Model
         'data',
     ];
 
-    protected $casts = [
-        'data' => ToProfileData::class,
-    ];
-
     /*
     |--------------------------------------------------------------------------
     | リレーション
@@ -96,6 +92,14 @@ final class Profile extends Model
         self::updated(function ($model): void {
             Cache::flush();
         });
+    }
+
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'data' => ToProfileData::class,
+        ];
     }
 
     private function getPublicDisk(): FilesystemAdapter

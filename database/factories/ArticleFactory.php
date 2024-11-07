@@ -11,6 +11,9 @@ use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Article>
+ */
 final class ArticleFactory extends Factory
 {
     /**
@@ -28,27 +31,27 @@ final class ArticleFactory extends Factory
     #[\Override]
     public function definition()
     {
-        $postType = $this->faker->randomElement(array_column(ArticlePostType::cases(), 'value'));
+        $postType = fake()->randomElement(array_column(ArticlePostType::cases(), 'value'));
         $contents = [
             ArticlePostType::AddonIntroduction->value => [
-                'description' => $this->faker->realText(),
-                'author' => $this->faker->name(),
-                'link' => $this->faker->url(),
+                'description' => fake()->realText(),
+                'author' => fake()->name(),
+                'link' => fake()->url(),
             ],
             ArticlePostType::AddonPost->value => [
-                'description' => $this->faker->realText(),
-                'author' => $this->faker->name(),
+                'description' => fake()->realText(),
+                'author' => fake()->name(),
             ],
             ArticlePostType::Page->value => [
                 'sections' => [
-                    ['type' => 'text', 'text' => $this->faker->realText()],
+                    ['type' => 'text', 'text' => fake()->realText()],
                 ],
             ],
             ArticlePostType::Markdown->value => [
-                'markdown' => $this->faker->realText(),
+                'markdown' => fake()->realText(),
             ],
         ];
-        $sentence = $this->faker->sentence();
+        $sentence = fake()->sentence();
 
         return [
             'user_id' => User::factory()->create()->id,
@@ -56,7 +59,7 @@ final class ArticleFactory extends Factory
             'slug' => $sentence,
             'contents' => $contents[$postType],
             'post_type' => $postType,
-            'status' => $this->faker->randomElement(array_column(ArticleStatus::cases(), 'value')),
+            'status' => fake()->randomElement(array_column(ArticleStatus::cases(), 'value')),
             'published_at' => now(),
             'modified_at' => now(),
         ];
@@ -88,10 +91,10 @@ final class ArticleFactory extends Factory
         return $this->state(fn (array $attributes): array => [
             'post_type' => ArticlePostType::AddonPost,
             'contents' => [
-                'description' => $this->faker->realText(),
-                'license' => $this->faker->realText(),
-                'thanks' => $this->faker->realText(),
-                'author' => $this->faker->name(),
+                'description' => fake()->realText(),
+                'license' => fake()->realText(),
+                'thanks' => fake()->realText(),
+                'author' => fake()->name(),
                 'file' => $attachment?->id,
             ],
         ]);
@@ -102,11 +105,11 @@ final class ArticleFactory extends Factory
         return $this->state(fn (array $attributes): array => [
             'post_type' => ArticlePostType::AddonIntroduction,
             'contents' => [
-                'description' => $this->faker->realText(),
-                'license' => $this->faker->realText(),
-                'thanks' => $this->faker->realText(),
-                'author' => $this->faker->name(),
-                'link' => $this->faker->url(),
+                'description' => fake()->realText(),
+                'license' => fake()->realText(),
+                'thanks' => fake()->realText(),
+                'author' => fake()->name(),
+                'link' => fake()->url(),
                 'agreement' => true,
                 'exclude_link_check' => false,
             ],
@@ -119,7 +122,7 @@ final class ArticleFactory extends Factory
             'post_type' => ArticlePostType::Page,
             'contents' => [
                 'sections' => [
-                    ['type' => 'text', 'text' => $this->faker->realText()],
+                    ['type' => 'text', 'text' => fake()->realText()],
                 ],
             ],
         ]);
@@ -130,7 +133,7 @@ final class ArticleFactory extends Factory
         return $this->state(fn (array $attributes): array => [
             'post_type' => ArticlePostType::Markdown,
             'contents' => [
-                'markdown' => $this->faker->realText(),
+                'markdown' => fake()->realText(),
             ],
         ]);
     }

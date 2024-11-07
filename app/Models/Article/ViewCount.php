@@ -30,15 +30,19 @@ final class ViewCount extends Model
         'count',
     ];
 
-    protected $casts = [
-        'count' => 'integer',
-    ];
-
     /**
      * @return BelongsTo<Article,$this>
      */
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class);
+    }
+
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'count' => 'integer',
+        ];
     }
 }

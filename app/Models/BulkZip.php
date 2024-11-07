@@ -26,10 +26,6 @@ final class BulkZip extends Model
         'path',
     ];
 
-    protected $casts = [
-        'generated' => 'boolean',
-    ];
-
     protected $hidden = [
         'path',
     ];
@@ -60,5 +56,13 @@ final class BulkZip extends Model
         self::deleting(function ($model): void {
             $model->deleteFileHandler();
         });
+    }
+
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'generated' => 'boolean',
+        ];
     }
 }

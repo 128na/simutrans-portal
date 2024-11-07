@@ -7,6 +7,9 @@ namespace Database\Factories;
 use App\Models\Redirect;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Redirect>
+ */
 final class RedirectFactory extends Factory
 {
     /**
@@ -25,8 +28,8 @@ final class RedirectFactory extends Factory
     public function definition()
     {
         return [
-            'from' => '/dummy/'.$this->faker->randomNumber(8),
-            'to' => '/dummy/'.$this->faker->randomNumber(8),
+            'from' => '/dummy/'.fake()->randomNumber(8),
+            'to' => '/dummy/'.fake()->randomNumber(8),
         ];
     }
 }

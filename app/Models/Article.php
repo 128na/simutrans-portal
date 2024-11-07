@@ -62,15 +62,6 @@ final class Article extends Model implements Feedable
         'modified_at',
     ];
 
-    protected $casts = [
-        'contents' => ToArticleContents::class,
-        'status' => ArticleStatus::class,
-        'post_type' => ArticlePostType::class,
-        'published_at' => 'immutable_datetime',
-        'modified_at' => 'immutable_datetime',
-        'pr' => 'boolean',
-    ];
-
     public function routeNotificationForMail(mixed $notification): string
     {
         if (! $this->user->email) {
@@ -571,6 +562,19 @@ final class Article extends Model implements Feedable
         self::addGlobalScope('WithoutTrashedUser', function (Builder $builder): void {
             $builder->has('user');
         });
+    }
+
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'contents' => ToArticleContents::class,
+            'status' => ArticleStatus::class,
+            'post_type' => ArticlePostType::class,
+            'published_at' => 'immutable_datetime',
+            'modified_at' => 'immutable_datetime',
+            'pr' => 'boolean',
+        ];
     }
 
     private function getPublicDisk(): FilesystemAdapter

@@ -27,11 +27,6 @@ final class Tag extends Model
         'last_modified_at',
     ];
 
-    protected $casts = [
-        'editable' => 'boolean',
-        'last_modified_at' => 'datetime',
-    ];
-
     /**
      * @return BelongsToMany<Article,$this>
      */
@@ -79,5 +74,14 @@ final class Tag extends Model
     {
         $builder->withCount(['articles' => fn ($q) => $q->active()])
             ->orderBy('articles_count', 'desc');
+    }
+
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'editable' => 'boolean',
+            'last_modified_at' => 'datetime',
+        ];
     }
 }

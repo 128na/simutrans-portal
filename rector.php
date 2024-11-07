@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Rector\CodeQuality\Rector\Isset_\IssetOnPropertyObjectToPropertyExistsRector;
 use Rector\Config\RectorConfig;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector;
+use RectorLaravel\Set\LaravelLevelSetList;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -30,4 +31,7 @@ return RectorConfig::configure()
     ->withSkip([
         IssetOnPropertyObjectToPropertyExistsRector::class, // property_exists($model, 'hoge') return false
         ReturnTypeFromStrictTypedCallRector::class => [__DIR__.'/app/Repositories/BaseRepository.php'], // Generics壊れる
+    ])
+    ->withSets([
+        LaravelLevelSetList::UP_TO_LARAVEL_110,
     ]);

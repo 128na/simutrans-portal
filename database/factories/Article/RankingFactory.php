@@ -8,6 +8,9 @@ use App\Models\Article;
 use App\Models\Article\Ranking;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Article\Ranking>
+ */
 final class RankingFactory extends Factory
 {
     /**
@@ -26,7 +29,7 @@ final class RankingFactory extends Factory
     public function definition()
     {
         return [
-            'rank' => $this->faker->randomNumber(1),
+            'rank' => fake()->randomNumber(1),
             'article_id' => Article::factory()->publish()->create()->id,
         ];
     }

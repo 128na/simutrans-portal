@@ -9,6 +9,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BulkZip>
+ */
 final class BulkZipFactory extends Factory
 {
     protected $model = BulkZip::class;
@@ -16,7 +19,7 @@ final class BulkZipFactory extends Factory
     #[\Override]
     public function definition()
     {
-        $type = $this->faker->randomElement([User::class]);
+        $type = fake()->randomElement([User::class]);
 
         return [
             'uuid' => Str::uuid()->toString(),

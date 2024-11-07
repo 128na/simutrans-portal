@@ -8,6 +8,9 @@ use App\Models\User;
 use App\Models\User\LoginHistory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User\LoginHistory>
+ */
 final class LoginHistoryFactory extends Factory
 {
     /**

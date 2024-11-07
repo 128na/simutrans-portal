@@ -31,11 +31,6 @@ final class Category extends Model
         'need_admin',
     ];
 
-    protected $casts = [
-        'type' => CategoryType::class,
-        'need_admin' => 'boolean',
-    ];
-
     /*
     |--------------------------------------------------------------------------
     | リレーション
@@ -125,5 +120,14 @@ final class Category extends Model
         self::addGlobalScope('order', function (Builder $builder): void {
             $builder->orderBy('order', 'asc');
         });
+    }
+
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'type' => CategoryType::class,
+            'need_admin' => 'boolean',
+        ];
     }
 }

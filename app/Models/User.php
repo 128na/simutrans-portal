@@ -54,12 +54,6 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
         'two_factor_recovery_codes',
     ];
 
-    protected $casts = [
-        'role' => UserRole::class,
-        'email_verified_at' => 'datetime',
-        'two_factor_confirmed_at' => 'datetime',
-    ];
-
     public function syncRelatedData(): void
     {
         if ($this->profile()->doesntExist()) {
@@ -234,5 +228,15 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
         self::created(function ($model): void {
             $model->syncRelatedData();
         });
+    }
+
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'role' => UserRole::class,
+            'email_verified_at' => 'datetime',
+            'two_factor_confirmed_at' => 'datetime',
+        ];
     }
 }

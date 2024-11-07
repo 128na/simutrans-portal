@@ -8,6 +8,9 @@ use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Attachment>
+ */
 final class AttachmentFactory extends Factory
 {
     /**

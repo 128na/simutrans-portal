@@ -16,7 +16,11 @@ final class FileInfo extends Model
         'data',
     ];
 
-    protected $casts = [
-        'data' => 'json',
-    ];
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'data' => 'json',
+        ];
+    }
 }

@@ -26,12 +26,16 @@ final class OauthToken extends Model
         'expired_at',
     ];
 
-    protected $casts = [
-        'expired_at' => 'datetime',
-    ];
-
     public function isExpired(): bool
     {
         return now()->greaterThan($this->expired_at);
+    }
+
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'expired_at' => 'datetime',
+        ];
     }
 }

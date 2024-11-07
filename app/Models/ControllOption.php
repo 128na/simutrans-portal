@@ -23,11 +23,6 @@ final class ControllOption extends Model
         'value',
     ];
 
-    protected $casts = [
-        'key' => ControllOptionKey::class,
-        'value' => 'bool',
-    ];
-
     public function restrictLogin(): bool
     {
         return $this->isRestrict(ControllOptionKey::Login);
@@ -51,6 +46,15 @@ final class ControllOption extends Model
     public function restrictTagUpdate(): bool
     {
         return $this->isRestrict(ControllOptionKey::TagUpdate);
+    }
+
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'key' => ControllOptionKey::class,
+            'value' => 'bool',
+        ];
     }
 
     private function isRestrict(ControllOptionKey $controllOptionKey): bool

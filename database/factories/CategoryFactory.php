@@ -8,6 +8,9 @@ use App\Enums\CategoryType;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
+ */
 final class CategoryFactory extends Factory
 {
     /**
@@ -26,9 +29,9 @@ final class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'type' => $this->faker->randomElement(CategoryType::cases()),
-            'slug' => 'dummy-'.$this->faker->randomNumber(8),
-            'order' => $this->faker->randomNumber(1),
+            'type' => fake()->randomElement(CategoryType::cases()),
+            'slug' => 'dummy-'.fake()->randomNumber(8),
+            'order' => fake()->randomNumber(1),
             'need_admin' => false,
         ];
     }

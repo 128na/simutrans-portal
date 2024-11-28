@@ -24,7 +24,7 @@ final class MypageControllerTest extends TestCase
         $testResponse->assertOk();
     }
 
-    public function testAny(): void
+    public function test_any(): void
     {
         $url = $this->url.'/foo';
         $testResponse = $this->get($url);

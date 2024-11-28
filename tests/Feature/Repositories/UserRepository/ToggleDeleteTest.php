@@ -22,7 +22,7 @@ final class ToggleDeleteTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    public function testDelete(): void
+    public function test_delete(): void
     {
         $this->assertFalse($this->user->trashed(), '削除されていない');
 
@@ -31,7 +31,7 @@ final class ToggleDeleteTest extends TestCase
         $this->assertTrue($this->user->fresh()->trashed(), '削除されている');
     }
 
-    public function testRestore(): void
+    public function test_restore(): void
     {
         $this->user->delete();
         $this->assertTrue($this->user->fresh()->trashed(), '削除されている');

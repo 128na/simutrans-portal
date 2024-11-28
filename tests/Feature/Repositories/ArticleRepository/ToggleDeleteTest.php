@@ -22,7 +22,7 @@ final class ToggleDeleteTest extends TestCase
         $this->article = Article::factory()->create();
     }
 
-    public function testDelete(): void
+    public function test_delete(): void
     {
         $this->assertFalse($this->article->trashed());
 
@@ -31,7 +31,7 @@ final class ToggleDeleteTest extends TestCase
         $this->assertTrue($this->article->fresh()->trashed());
     }
 
-    public function testRestore(): void
+    public function test_restore(): void
     {
         $this->article->delete();
         $this->assertTrue($this->article->fresh()->trashed());

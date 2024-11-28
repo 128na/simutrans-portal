@@ -25,7 +25,7 @@ use Tests\Browser\Pages\TopPage;
 final class PageTest extends TestCase
 {
     #[DataProvider('dataPages')]
-    public function testPages(string $pageClass): void
+    public function test_pages(string $pageClass): void
     {
         $page = new $pageClass;
         JobUpdateRelated::dispatchSync();

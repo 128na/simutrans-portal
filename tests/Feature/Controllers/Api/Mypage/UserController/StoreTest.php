@@ -20,7 +20,7 @@ final class StoreTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    public function testStore(): void
+    public function test_store(): void
     {
         Notification::fake();
 

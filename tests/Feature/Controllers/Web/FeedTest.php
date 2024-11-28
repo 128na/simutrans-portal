@@ -18,7 +18,7 @@ final class FeedTest extends TestCase
     }
 
     #[DataProvider('dataFeed')]
-    public function testFeed(string $url): void
+    public function test_feed(string $url): void
     {
         $testResponse = $this->get($url);
         $testResponse->assertOk();

@@ -51,7 +51,7 @@ final class ToggleTest extends TestCase
         $testResponse->assertUnauthorized();
     }
 
-    public function testToggle値の切替(): void
+    public function test_toggle値の切替(): void
     {
         $url = sprintf('/api/admin/controll_options/%s/toggle', $this->controllOption->key->value);
 

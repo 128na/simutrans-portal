@@ -30,7 +30,7 @@ final class FindRandomPRTest extends TestCase
         $this->assertInstanceOf(Article::class, $res);
     }
 
-    public function testPR以外(): void
+    public function test_p_r以外(): void
     {
         $this->article->update(['pr' => false]);
         $res = $this->articleRepository->findRandomPR();

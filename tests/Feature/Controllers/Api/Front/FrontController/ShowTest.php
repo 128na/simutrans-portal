@@ -20,7 +20,7 @@ final class ShowTest extends TestCase
         $this->article = Article::factory()->publish()->create();
     }
 
-    public function test_ユーザーID_スラッグ(): void
+    public function test_ユーザー_i_d_スラッグ(): void
     {
         $testResponse = $this->get(sprintf('api/front/users/%s/%s',
             $this->article->user_id,

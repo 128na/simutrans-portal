@@ -22,21 +22,21 @@ final class AdminControllerTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    public function testGuest(): void
+    public function test_guest(): void
     {
         $testResponse = $this->get($this->url);
 
         $testResponse->assertRedirect(route('mypage.index'));
     }
 
-    public function testUser(): void
+    public function test_user(): void
     {
         $this->actingAs($this->user);
         $testResponse = $this->get($this->url);
         $testResponse->assertUnauthorized();
     }
 
-    public function testAdmin(): void
+    public function test_admin(): void
     {
         $this->user->update(['role' => UserRole::Admin]);
         $this->actingAs($this->user);

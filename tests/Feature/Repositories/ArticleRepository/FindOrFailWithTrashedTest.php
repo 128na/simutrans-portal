@@ -47,7 +47,7 @@ final class FindOrFailWithTrashedTest extends TestCase
         $this->assertInstanceOf(Article::class, $article);
     }
 
-    public function testNotFound(): void
+    public function test_not_found(): void
     {
         $this->expectException(ModelNotFoundException::class);
         $this->articleRepository->findOrFailWithTrashed(0);

@@ -1,12 +1,17 @@
 name: "Setup php"
 description: "Setup php"
+inputs:
+  php-version:
+    description: "PHPバージョン"
+    required: false
+    default: "8.3"
 runs:
   using: "composite"
   steps:
     - name: PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: "8.3"
+        php-version: ${{ inputs.php-version }}
         coverage: none
 
     - uses: "ramsey/composer-install@v3"

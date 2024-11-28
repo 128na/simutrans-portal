@@ -16,7 +16,7 @@ use Tests\Unit\TestCase;
 
 final class ZippableManagerTest extends TestCase
 {
-    public function testUser(): void
+    public function test_user(): void
     {
         $user = new User;
         $this->mock(BulkZip::class, function (MockInterface $mock) use ($user): void {

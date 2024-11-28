@@ -31,7 +31,7 @@ final class CategoryPakNoneAddonTest extends TestCase
         $testResponse->assertSee($this->article->title);
     }
 
-    public function test存在しないPak(): void
+    public function test存在しない_pak(): void
     {
         $testResponse = $this->get('api/front/categories/pak/missing/none');
 

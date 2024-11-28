@@ -11,7 +11,7 @@ final class LogoutTest extends TestCase
 {
     private string $url = '/auth/logout';
 
-    public function testLogout(): void
+    public function test_logout(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);

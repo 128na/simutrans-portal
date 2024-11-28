@@ -19,7 +19,7 @@ final class UpdateRequestTest extends TestCase
     }
 
     #[DataProvider('dataFail')]
-    public function testFail(Closure $setup, string $expectedErrorField): void
+    public function test_fail(Closure $setup, string $expectedErrorField): void
     {
         $data = $setup($this);
         $messageBag = $this->makeValidator(UpdateRequest::class, $data)->errors();
@@ -27,7 +27,7 @@ final class UpdateRequestTest extends TestCase
     }
 
     #[DataProvider('dataPass')]
-    public function testPass(Closure $setup): void
+    public function test_pass(Closure $setup): void
     {
         $data = $setup($this);
         $messageBag = $this->makeValidator(UpdateRequest::class, $data)->errors();

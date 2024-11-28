@@ -9,7 +9,7 @@ use Tests\Unit\TestCase;
 
 final class PakBinaryTest extends TestCase
 {
-    public function testGet(): void
+    public function test_get(): void
     {
         $result = $this->getSUT()->get();
         $this->assertEquals(
@@ -18,13 +18,13 @@ final class PakBinaryTest extends TestCase
         );
     }
 
-    public function testSeek(): void
+    public function test_seek(): void
     {
         $this->getSUT()->seek(1);
         $this->assertTrue(true);
     }
 
-    public function testEof(): void
+    public function test_eof(): void
     {
         $sUT = $this->getSUT();
         $this->assertFalse($sUT->eof());
@@ -32,7 +32,7 @@ final class PakBinaryTest extends TestCase
         $this->assertTrue($sUT->eof());
     }
 
-    public function testSeekUntil(): void
+    public function test_seek_until(): void
     {
         $result = $this->getSUT()->seekUntil(pack('H*', '948C'));
         $this->assertEquals(105, $result);

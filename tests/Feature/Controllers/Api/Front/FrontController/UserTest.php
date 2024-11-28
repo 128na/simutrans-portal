@@ -18,7 +18,7 @@ final class UserTest extends TestCase
         $this->article = Article::factory()->publish()->create();
     }
 
-    public function test_ユーザーID(): void
+    public function test_ユーザー_id(): void
     {
         $testResponse = $this->get('api/front/users/'.$this->article->user->id);
 

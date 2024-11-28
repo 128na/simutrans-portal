@@ -14,35 +14,35 @@ use Tests\Feature\TestCase;
 
 final class FrontControllerTest extends TestCase
 {
-    public function testTop(): void
+    public function test_top(): void
     {
         $testResponse = $this->get(route('index'));
 
         $testResponse->assertOk();
     }
 
-    public function testRanking(): void
+    public function test_ranking(): void
     {
         $testResponse = $this->get(route('ranking'));
 
         $testResponse->assertOk();
     }
 
-    public function testPages(): void
+    public function test_pages(): void
     {
         $testResponse = $this->get(route('pages'));
 
         $testResponse->assertOk();
     }
 
-    public function testAnnounces(): void
+    public function test_announces(): void
     {
         $testResponse = $this->get(route('announces'));
 
         $testResponse->assertOk();
     }
 
-    public function testCategoryPakNoneAddon(): void
+    public function test_category_pak_none_addon(): void
     {
         $pak = Category::factory()->create(['type' => CategoryType::Pak]);
         $testResponse = $this->get(route('category.pak.noneAddon', ['size' => $pak->slug]));
@@ -50,14 +50,14 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertOk();
     }
 
-    public function testCategoryPakNoneAddon存在しないPak(): void
+    public function test_category_pak_none_addon存在しない_pak(): void
     {
         $testResponse = $this->get(route('category.pak.noneAddon', ['size' => 'missing']));
 
         $testResponse->assertNotFound();
     }
 
-    public function testCategoryPakAddon(): void
+    public function test_category_pak_addon(): void
     {
         $pak = Category::factory()->create(['type' => CategoryType::Pak]);
         $addon = Category::factory()->create(['type' => CategoryType::Addon]);
@@ -66,7 +66,7 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertOk();
     }
 
-    public function testCategoryPakAddon存在しないPak(): void
+    public function test_category_pak_addon存在しない_pak(): void
     {
         $addon = Category::factory()->create(['type' => CategoryType::Addon]);
         $testResponse = $this->get(route('category.pak.addon', ['size' => 'missing', 'slug' => $addon->slug]));
@@ -74,7 +74,7 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertNotFound();
     }
 
-    public function testCategoryPakAddon存在しないAddon(): void
+    public function test_category_pak_addon存在しない_addon(): void
     {
         $pak = Category::factory()->create(['type' => CategoryType::Pak]);
         $testResponse = $this->get(route('category.pak.addon', ['size' => $pak->slug, 'slug' => 'missing']));
@@ -82,7 +82,7 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertNotFound();
     }
 
-    public function testCategory(): void
+    public function test_category(): void
     {
         $category = Category::factory()->create();
         $testResponse = $this->get(route('category', ['type' => $category->type->value, 'slug' => $category->slug]));
@@ -90,7 +90,7 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertOk();
     }
 
-    public function testCategory存在しないtype(): void
+    public function test_category存在しないtype(): void
     {
         $category = Category::factory()->create();
         $testResponse = $this->get(route('category', ['type' => 'missing', 'slug' => $category->slug]));
@@ -98,7 +98,7 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertNotFound();
     }
 
-    public function testCategory存在しないslug(): void
+    public function test_category存在しないslug(): void
     {
         $category = Category::factory()->create();
         $testResponse = $this->get(route('category', ['type' => $category->type->value, 'slug' => 'missing']));
@@ -106,7 +106,7 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertNotFound();
     }
 
-    public function testTag(): void
+    public function test_tag(): void
     {
         $tag = Tag::factory()->create();
         $testResponse = $this->get(route('tag', ['tag' => $tag->id]));
@@ -114,14 +114,14 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertOk();
     }
 
-    public function testTag存在しない(): void
+    public function test_tag存在しない(): void
     {
         $testResponse = $this->get(route('tag', ['tag' => -1]));
 
         $testResponse->assertNotFound();
     }
 
-    public function testUser_id(): void
+    public function test_user_id(): void
     {
         $user = User::factory()->create();
         $testResponse = $this->get(route('user', ['userIdOrNickname' => $user->id]));
@@ -129,7 +129,7 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertOk();
     }
 
-    public function testUser_nickname(): void
+    public function test_user_nickname(): void
     {
         $user = User::factory()->create(['nickname' => 'dummy']);
         $testResponse = $this->get(route('user', ['userIdOrNickname' => $user->nickname]));
@@ -137,21 +137,21 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertOk();
     }
 
-    public function testUser存在しない(): void
+    public function test_user存在しない(): void
     {
         $testResponse = $this->get(route('user', ['userIdOrNickname' => -1]));
 
         $testResponse->assertNotFound();
     }
 
-    public function testTags(): void
+    public function test_tags(): void
     {
         $testResponse = $this->get(route('tags'));
 
         $testResponse->assertOk();
     }
 
-    public function testShow_id(): void
+    public function test_show_id(): void
     {
         $article = Article::factory()->publish()->create();
         $testResponse = $this->get(route('articles.show', [
@@ -161,7 +161,7 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertOk();
     }
 
-    public function testShow_nickname(): void
+    public function test_show_nickname(): void
     {
         $article = Article::factory()->create(['status' => 'publish']);
         $testResponse = $this->get(route('articles.show', [
@@ -171,7 +171,7 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertOk();
     }
 
-    public function testShow非公開(): void
+    public function test_show非公開(): void
     {
         $article = Article::factory()->create(['status' => 'private']);
         $testResponse = $this->get(route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]));
@@ -179,7 +179,7 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertNotFound();
     }
 
-    public function testShow_リダイレクトあり(): void
+    public function test_show_リダイレクトあり(): void
     {
         $article = Article::factory()->publish()->create();
 
@@ -191,14 +191,14 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertRedirect($to);
     }
 
-    public function testSearch(): void
+    public function test_search(): void
     {
         $testResponse = $this->get(route('search', ['word' => 'foo']));
 
         $testResponse->assertOk();
     }
 
-    public function testFallbackShow_slug_ニックネーム設定済み(): void
+    public function test_fallback_show_slug_ニックネーム設定済み(): void
     {
         $article = Article::factory()->publish()->create();
 
@@ -206,7 +206,7 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user->nickname, $article->slug));
     }
 
-    public function testFallbackShow_id_ニックネーム設定済み(): void
+    public function test_fallback_show_id_ニックネーム設定済み(): void
     {
         $article = Article::factory()->publish()->create();
 
@@ -214,7 +214,7 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user->nickname, $article->slug));
     }
 
-    public function testFallbackShow_slug_ニックネーム未設定(): void
+    public function test_fallback_show_slug_ニックネーム未設定(): void
     {
         $article = Article::factory()->publish()->create();
         $article->user->update(['nickname' => null]);
@@ -222,7 +222,7 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user_id, $article->slug));
     }
 
-    public function testFallbackShow_id_ニックネーム未設定(): void
+    public function test_fallback_show_id_ニックネーム未設定(): void
     {
         $article = Article::factory()->publish()->create();
         $article->user->update(['nickname' => null]);

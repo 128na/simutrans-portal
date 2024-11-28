@@ -39,7 +39,7 @@ final class FindByBulkZippableTest extends TestCase
         $this->assertNull($res);
     }
 
-    public function test未対応モデルはNG(): void
+    public function test未対応モデルは_ng(): void
     {
         $this->expectException(TypeError::class);
         /** @var \App\Contracts\Models\BulkZippableInterface */

@@ -51,7 +51,7 @@ final class SyncAttachmentsTest extends TestCase
         );
     }
 
-    public function test他人の添付はNG(): void
+    public function test他人の添付は_ng(): void
     {
         $article = Article::factory()->create(['user_id' => $this->user->id]);
         $attachment = Attachment::factory()->create([

@@ -12,14 +12,14 @@ use Tests\Unit\TestCase;
 final class StoreRequestTest extends TestCase
 {
     #[DataProvider('dataFail')]
-    public function testFail(array $data, string $expectedErrorField): void
+    public function test_fail(array $data, string $expectedErrorField): void
     {
         $messageBag = $this->makeValidator(StoreRequest::class, $data)->errors();
         $this->assertArrayHasKey($expectedErrorField, $messageBag->toArray());
     }
 
     #[DataProvider('dataPass')]
-    public function testPass(array $data): void
+    public function test_pass(array $data): void
     {
         $messageBag = $this->makeValidator(StoreRequest::class, $data)->errors();
         $this->assertCount(0, $messageBag->toArray());

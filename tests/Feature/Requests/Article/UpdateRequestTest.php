@@ -24,7 +24,7 @@ final class UpdateRequestTest extends TestCase
     }
 
     #[DataProvider('dataFail')]
-    public function testFail(ArticlePostType $articlePostType, Closure $setup, string $expectedErrorField): void
+    public function test_fail(ArticlePostType $articlePostType, Closure $setup, string $expectedErrorField): void
     {
         $article = match ($articlePostType) {
             ArticlePostType::AddonIntroduction => $this->createAddonIntroduction($this->user),

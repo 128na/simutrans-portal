@@ -9,21 +9,21 @@ use Tests\Unit\TestCase;
 
 final class TextServiceTest extends TestCase
 {
-    public function testRemoveBom(): void
+    public function test_remove_bom(): void
     {
         $text = pack('H*', 'EFBBBF').'dummy';
         $result = $this->getSUT()->removeBom($text);
         $this->assertEquals('dummy', $result);
     }
 
-    public function testEncoding(): void
+    public function test_encoding(): void
     {
         $text = 'dummy';
         $result = $this->getSUT()->encoding($text);
         $this->assertEquals('dummy', $result);
     }
 
-    public function testEncodingSjis(): void
+    public function test_encoding_sjis(): void
     {
         $text = mb_convert_encoding('dummy', 'SJIS');
         $result = $this->getSUT()->encoding($text);

@@ -37,14 +37,14 @@ final class CategoryPakAddonTest extends TestCase
         $testResponse->assertSee($this->article->title);
     }
 
-    public function test存在しないPak(): void
+    public function test存在しない_pak(): void
     {
         $testResponse = $this->get('api/front/categories/pak/missing/'.$this->addonCategory->slug);
 
         $testResponse->assertNotFound();
     }
 
-    public function test存在しないAddon(): void
+    public function test存在しない_addon(): void
     {
         $testResponse = $this->get(sprintf('api/front/categories/pak/%s/missing', $this->pakCategory->slug));
 

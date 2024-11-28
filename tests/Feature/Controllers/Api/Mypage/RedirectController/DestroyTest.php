@@ -31,7 +31,7 @@ final class DestroyTest extends TestCase
         $testResponse->assertJsonMissing(['from' => 'foo/2']);
     }
 
-    public function test_userがNull(): void
+    public function test_userが_null(): void
     {
         $this->actingAs($this->user);
 

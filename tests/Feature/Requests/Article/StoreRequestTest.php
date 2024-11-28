@@ -24,7 +24,7 @@ final class StoreRequestTest extends TestCase
     }
 
     #[DataProvider('dataFail')]
-    public function testFail(?ArticlePostType $articlePostType, Closure $setup, string $expectedErrorField): void
+    public function test_fail(?ArticlePostType $articlePostType, Closure $setup, string $expectedErrorField): void
     {
         $data = ['article' => ['post_type' => $articlePostType?->value, ...$setup($this)]];
 

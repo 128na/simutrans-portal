@@ -36,7 +36,7 @@ final class UniqueSlugByUserTest extends TestCase
         };
     }
 
-    public function test_一般投稿、編集中記事と重複_OK(): void
+    public function test_一般投稿、編集中記事と重複_ok(): void
     {
         $article = Article::factory()->create(['user_id' => $this->user->id]);
         $this->actingAs($this->user);
@@ -46,7 +46,7 @@ final class UniqueSlugByUserTest extends TestCase
         $this->assertFalse($this->failCalled);
     }
 
-    public function test_一般投稿、自身の既存記事と重複_NG(): void
+    public function test_一般投稿、自身の既存記事と重複_ng(): void
     {
         $article = Article::factory()->create(['user_id' => $this->user->id]);
         $this->actingAs($this->user);
@@ -55,7 +55,7 @@ final class UniqueSlugByUserTest extends TestCase
         $this->assertTrue($this->failCalled);
     }
 
-    public function test_一般投稿、他者の記事と重複_OK(): void
+    public function test_一般投稿、他者の記事と重複_ok(): void
     {
         $article = Article::factory()->create(['user_id' => User::factory()->create()->id]);
         $this->actingAs($this->user);
@@ -64,7 +64,7 @@ final class UniqueSlugByUserTest extends TestCase
         $this->assertFalse($this->failCalled);
     }
 
-    public function test_一般投稿、管理者の記事と重複_NG(): void
+    public function test_一般投稿、管理者の記事と重複_ng(): void
     {
         $article = Article::factory()->create(['user_id' => User::factory()->admin()->create()->id]);
         $this->actingAs($this->user);
@@ -73,7 +73,7 @@ final class UniqueSlugByUserTest extends TestCase
         $this->assertTrue($this->failCalled);
     }
 
-    public function test_管理者投稿、編集中の記事と重複_OK(): void
+    public function test_管理者投稿、編集中の記事と重複_ok(): void
     {
         $this->user->update(['role' => UserRole::Admin]);
         $article = Article::factory()->create(['user_id' => $this->user->id]);
@@ -84,7 +84,7 @@ final class UniqueSlugByUserTest extends TestCase
         $this->assertFalse($this->failCalled);
     }
 
-    public function test_管理者投稿、自身の他記事と重複_NG(): void
+    public function test_管理者投稿、自身の他記事と重複_ng(): void
     {
         $this->user->update(['role' => UserRole::Admin]);
         $article = Article::factory()->create(['user_id' => $this->user->id]);
@@ -94,7 +94,7 @@ final class UniqueSlugByUserTest extends TestCase
         $this->assertTrue($this->failCalled);
     }
 
-    public function test_管理者投稿、他者の記事と重複_NG(): void
+    public function test_管理者投稿、他者の記事と重複_ng(): void
     {
         $this->user->update(['role' => UserRole::Admin]);
         $article = Article::factory()->create();
@@ -104,7 +104,7 @@ final class UniqueSlugByUserTest extends TestCase
         $this->assertTrue($this->failCalled);
     }
 
-    public function test_管理者投稿、管理者の記事と重複_NG(): void
+    public function test_管理者投稿、管理者の記事と重複_ng(): void
     {
         $this->user->update(['role' => UserRole::Admin]);
         $article = Article::factory()->create(['user_id' => User::factory()->admin()->create()->id]);

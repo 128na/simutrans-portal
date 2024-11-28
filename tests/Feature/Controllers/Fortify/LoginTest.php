@@ -15,7 +15,7 @@ final class LoginTest extends TestCase
 {
     private string $url = '/auth/login';
 
-    public function testLogin(): void
+    public function test_login(): void
     {
         $user = User::factory()->create(['password' => bcrypt('password')]);
 
@@ -26,7 +26,7 @@ final class LoginTest extends TestCase
         Notification::assertSentTo($user, SendLoggedInEmail::class);
     }
 
-    public function testLogin機能制限(): void
+    public function test_login機能制限(): void
     {
         ControllOption::updateOrCreate(['key' => ControllOptionKey::Login], ['value' => false]);
         $user = User::factory()->create(['password' => bcrypt('password')]);

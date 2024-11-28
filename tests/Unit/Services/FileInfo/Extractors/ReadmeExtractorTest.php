@@ -9,13 +9,13 @@ use Tests\Unit\TestCase;
 
 final class ReadmeExtractorTest extends TestCase
 {
-    public function testGetKey(): void
+    public function test_get_key(): void
     {
         $result = $this->getSUT()->getKey();
         $this->assertEquals('readmes', $result);
     }
 
-    public function testIsTarget(): void
+    public function test_is_target(): void
     {
         $sUT = $this->getSUT();
 
@@ -23,7 +23,7 @@ final class ReadmeExtractorTest extends TestCase
         $this->assertTrue($sUT->isTarget('readme.txt'));
     }
 
-    public function testExtract(): void
+    public function test_extract(): void
     {
         $sUT = $this->getSUT();
 

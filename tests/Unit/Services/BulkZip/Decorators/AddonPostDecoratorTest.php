@@ -27,21 +27,21 @@ final class AddonPostDecoratorTest extends TestCase
         $this->addonPostDecorator = new AddonPostDecorator;
     }
 
-    public function test_canProcess_対象(): void
+    public function test_can_process_対象(): void
     {
         $article = new Article(['post_type' => ArticlePostType::AddonPost]);
         $result = $this->addonPostDecorator->canProcess($article);
         $this->assertTrue($result);
     }
 
-    public function test_canProcess_対象外_Article(): void
+    public function test_can_process_対象外_article(): void
     {
         $article = new Article(['post_type' => ArticlePostType::AddonIntroduction]);
         $result = $this->addonPostDecorator->canProcess($article);
         $this->assertFalse($result);
     }
 
-    public function test_canProcess_対象外_Model(): void
+    public function test_can_process_対象外_model(): void
     {
         $model = User::factory()->make();
         $result = $this->addonPostDecorator->canProcess($model);

@@ -28,6 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        php-version: ["8.3", "8.4"]
         test_suite: [Unit, Feature]
     continue-on-error: true
     steps:
@@ -38,6 +39,8 @@ jobs:
         run: php -r "copy('.env.ci', '.env');"
 
       - uses: ./.github/actions/php
+        with:
+          php-version: ${{ matrix.php-version }}
       - uses: ./.github/actions/nodejs
       - uses: ./.github/actions/mysql
         if: matrix.test_suite == 'Feature'

@@ -27,7 +27,9 @@ export default defineComponent({
       async handleClick() {
         const res = await axios.post(link.value, {}, { responseType: 'blob' });
         // attachment; filename=original_filename.ext
-        const filename = res.headers['content-disposition'].replace('attachment; filename=', '');
+        const filename = res.headers['content-disposition']
+          .replace('attachment; filename=', '')
+          .replace(/^"|"$/g, '');
         fileDownload(res.data, filename);
       },
     };

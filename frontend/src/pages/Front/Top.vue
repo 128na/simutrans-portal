@@ -24,6 +24,11 @@
         </template>
         <q-separator />
       </q-list>
+      <q-card>
+        <q-card-section>
+          記事一覧は{{ meta.created_at }}時点のデータです。
+        </q-card-section>
+      </q-card>
     </template>
   </q-page>
 </template>
@@ -59,6 +64,7 @@ export default defineComponent({
 
     const articleCache = useArticleCacheStore();
     const pr = ref(null);
+    const meta = ref({});
     const contents = reactive({
       pak128japan: {
         to: { name: 'category', params: { type: 'pak', slug: '128-japan' } },
@@ -103,6 +109,7 @@ export default defineComponent({
           doRequest: () => api.fetchTop(order.currentMode),
           done: (res) => {
             pr.value = res.data.pr;
+            meta.value = res.data.meta || {};
             // 旧データ形式互換。後日削除OK
             const paks = res.data.paks || res.data;
             Object.keys(paks).forEach((key) => {
@@ -126,6 +133,7 @@ export default defineComponent({
       contents,
       handler,
       pr,
+      meta,
     };
   },
 });

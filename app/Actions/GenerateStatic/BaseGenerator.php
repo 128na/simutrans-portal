@@ -11,6 +11,7 @@ abstract class BaseGenerator
     public function __invoke(): void
     {
         $json = $this->getJsonData();
+        $json['meta'] = ['created_at' => now()->toDateTimeString()];
         $filename = $this->getJsonName();
 
         $this->putJson($filename, $json);
@@ -33,7 +34,7 @@ abstract class BaseGenerator
     {
         $json = json_encode($data, JSON_UNESCAPED_UNICODE);
         if ($json) {
-            Storage::disk('public')->put('json/'.$filename, $json);
+            Storage::disk('public')->put('json/' . $filename, $json);
         }
     }
 }

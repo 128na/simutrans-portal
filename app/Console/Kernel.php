@@ -9,7 +9,8 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 final class Kernel extends ConsoleKernel
 {
-    private const EXPIRES_AT = 10;
+    private const int EXPIRES_AT = 10;
+
     /**
      * Define the application's command schedule.
      */
@@ -52,7 +53,7 @@ final class Kernel extends ConsoleKernel
     #[\Override]
     protected function commands(): void
     {
-        $this->load(__DIR__ . '/Commands');
+        $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
     }

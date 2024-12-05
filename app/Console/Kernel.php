@@ -30,6 +30,9 @@ final class Kernel extends ConsoleKernel
         $schedule->command('article:ranking')->hourly()
             ->withoutOverlapping()
             ->onOneServer();
+        $schedule->command('article:json')->hourly()
+            ->withoutOverlapping()
+            ->onOneServer();
 
         // 毎日
         $schedule->command('check:deadlink')->dailyAt('10:00')
@@ -56,7 +59,7 @@ final class Kernel extends ConsoleKernel
     #[\Override]
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

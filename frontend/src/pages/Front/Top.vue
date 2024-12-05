@@ -24,12 +24,12 @@
         </template>
         <q-separator />
       </q-list>
-      <q-card>
-        <q-card-section>
-          記事一覧は{{ meta.created_at }}時点のデータです。
-        </q-card-section>
-      </q-card>
     </template>
+    <q-card>
+      <q-card-section>
+        記事一覧は{{ meta.created_at }}時点のデータです。
+      </q-card-section>
+    </q-card>
   </q-page>
 </template>
 

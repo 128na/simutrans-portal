@@ -2,7 +2,7 @@
     <a href="{{ config('app.url') }}">{{ config('app.name') }}</a>
 </h3>
 <p>
-    {{ $user->name }}が{{ now()->format('Y/m/d H:i') }}にログインしました。
+    {{ $user->name }}が{{ $loginHistory->created_at->format('Y/m/d H:i') }}にログインしました。
 </p>
 <p>
     == ログイン情報 ==

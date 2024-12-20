@@ -54,7 +54,7 @@ final class Kernel extends ConsoleKernel
             ->appendOutputTo($output);
         $schedule->command('queue:work', [
             '--stop-when-empty',
-            '--max-time' => (int)(self::CRON_INTERVAL / 2),
+            '--max-time' => self::CRON_INTERVAL / 2,
         ])->everyMinute()
             ->appendOutputTo($output);
 

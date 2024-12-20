@@ -365,130 +365,128 @@ final class Article extends Model implements Feedable
         });
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | アクセサ
-    |--------------------------------------------------------------------------
-     */
-    public function getIsAddonPostAttribute(): bool
+    private function isAddonPost(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->post_type === ArticlePostType::AddonPost;
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $this->post_type === ArticlePostType::AddonPost);
     }
 
-    public function getIsPageAttribute(): bool
+    private function isPage(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->post_type === ArticlePostType::Page;
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $this->post_type === ArticlePostType::Page);
     }
 
-    public function getIsPublishAttribute(): bool
+    private function isPublish(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->status === ArticleStatus::Publish;
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $this->status === ArticleStatus::Publish);
     }
 
-    public function getIsReservationAttribute(): bool
+    private function isReservation(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->status === ArticleStatus::Reservation;
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $this->status === ArticleStatus::Reservation);
     }
 
-    public function getIsInactiveAttribute(): bool
+    private function isInactive(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return in_array($this->status, [
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => in_array($this->status, [
             ArticleStatus::Draft,
             ArticleStatus::Private,
             ArticleStatus::Trash,
-        ]);
+        ]));
     }
 
-    public function getHasThumbnailAttribute(): bool
+    private function hasThumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return ! is_null($this->contents->thumbnail) && $this->thumbnail;
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => ! is_null($this->contents->thumbnail) && $this->thumbnail);
     }
 
-    public function getThumbnailAttribute(): ?Attachment
+    private function thumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        $id = $this->contents->thumbnail;
-
-        return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
-    }
-
-    public function getThumbnailUrlAttribute(): string
-    {
-        return $this->getPublicDisk()->url($this->has_thumbnail && $this->thumbnail
-            ? $this->thumbnail->path
-            : DefaultThumbnail::NO_THUMBNAIL);
-    }
-
-    public function getHasFileAttribute(): bool
-    {
-        return $this->is_addon_post
-            && $this->contents instanceof AddonPostContent
-            && ! is_null($this->contents->file) && $this->file;
-    }
-
-    public function getFileAttribute(): ?Attachment
-    {
-        if ($this->contents instanceof AddonPostContent) {
-            $id = $this->contents->file;
-
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            $id = $this->contents->thumbnail;
             return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
-        }
-
-        throw new Exception('invalid post type');
+        });
     }
 
-    public function getHasFileInfoAttribute(): bool
+    private function thumbnailUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->hasFile && $this->file && $this->file->fileInfo;
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->getPublicDisk()->url($this->has_thumbnail && $this->thumbnail
+            ? $this->thumbnail->path
+            : DefaultThumbnail::NO_THUMBNAIL));
+    }
+
+    private function hasFile(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $this->is_addon_post
+            && $this->contents instanceof AddonPostContent
+            && ! is_null($this->contents->file) && $this->file);
+    }
+
+    private function file(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            if ($this->contents instanceof AddonPostContent) {
+                $id = $this->contents->file;
+    
+                return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
+            }
+            throw new Exception('invalid post type');
+        });
+    }
+
+    private function hasFileInfo(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $this->hasFile && $this->file && $this->file->fileInfo);
     }
 
     /**
      * @return Collection<int, Category>
      */
-    public function getCategoryPaksAttribute(): Collection
+    private function categoryPaks(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak));
     }
 
     /**
      * @return Collection<int, Category>
      */
-    public function getCategoryAddonsAttribute()
+    private function categoryAddons(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Addon);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Addon));
     }
 
     /**
      * @return Collection<int, Category>
      */
-    public function getCategoryPak128PositionsAttribute()
+    private function categoryPak128Positions(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak128Position);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak128Position));
     }
 
-    public function getTodaysConversionRateAttribute(): string
+    private function todaysConversionRate(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        if (! is_null($this->todaysConversionCount) && $this->todaysViewCount) {
-            $rate = $this->todaysConversionCount->count / $this->todaysViewCount->count * 100;
-
-            return sprintf('%.1f %%', $rate);
-        }
-
-        return 'N/A';
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {
+            if (! is_null($this->todaysConversionCount) && $this->todaysViewCount) {
+                $rate = $this->todaysConversionCount->count / $this->todaysViewCount->count * 100;
+    
+                return sprintf('%.1f %%', $rate);
+            }
+            return 'N/A';
+        });
     }
 
-    public function getMetaDescriptionAttribute(): string
+    private function metaDescription(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return mb_strimwidth((string) $this->contents->getDescription(), 0, 300, '…');
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): string => mb_strimwidth((string) $this->contents->getDescription(), 0, 300, '…'));
     }
 
-    public function getHeadlineDescriptionAttribute(): string
+    private function headlineDescription(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return mb_strimwidth((string) $this->contents->getDescription(), 0, 55, '…');
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): string => mb_strimwidth((string) $this->contents->getDescription(), 0, 55, '…'));
     }
 
-    public function getUrlDecodedSlugAttribute(): string
+    private function urlDecodedSlug(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return urldecode((string) $this->slug);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): string => urldecode((string) $this->slug));
     }
 
     /*

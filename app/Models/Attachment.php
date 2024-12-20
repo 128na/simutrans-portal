@@ -70,80 +70,75 @@ final class Attachment extends Model
         return $this->hasOne(FileInfo::class);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | アクセサ
-    |--------------------------------------------------------------------------
-     */
-    public function getPathExistsAttribute(): bool
+    private function pathExists(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->getPublicDisk()->exists($this->path);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->getPublicDisk()->exists($this->path));
     }
 
-    public function getIsImageAttribute(): bool
+    private function isImage(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->type === 'image';
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $this->type === 'image');
     }
 
-    public function getTypeAttribute(): string
+    private function type(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        $mime = $this->getPublicDisk()->mimeType($this->path) ?: '';
-
-        if (mb_stripos((string) $mime, 'image') !== false) {
-            return 'image';
-        }
-
-        if (mb_stripos((string) $mime, 'video') !== false) {
-            return 'video';
-        }
-
-        if (mb_stripos((string) $mime, 'text') !== false) {
-            return 'text';
-        }
-
-        return 'file';
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {
+            $mime = $this->getPublicDisk()->mimeType($this->path) ?: '';
+            if (mb_stripos((string) $mime, 'image') !== false) {
+                return 'image';
+            }
+            if (mb_stripos((string) $mime, 'video') !== false) {
+                return 'video';
+            }
+            if (mb_stripos((string) $mime, 'text') !== false) {
+                return 'text';
+            }
+            return 'file';
+        });
     }
 
-    public function getIsPngAttribute(): bool
+    private function isPng(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        $mime = $this->getPublicDisk()->mimeType($this->path) ?: '';
-
-        return mb_stripos((string) $mime, 'image/png') !== false;
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): bool {
+            $mime = $this->getPublicDisk()->mimeType($this->path) ?: '';
+            return mb_stripos((string) $mime, 'image/png') !== false;
+        });
     }
 
-    public function getThumbnailAttribute(): string
+    private function thumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return match ($this->type) {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => match ($this->type) {
             'image' => $this->getPublicDisk()->url($this->path),
             'zip' => $this->getPublicDisk()->url(DefaultThumbnail::ZIP),
             'movie' => $this->getPublicDisk()->url(DefaultThumbnail::MOVIE),
             default => $this->getPublicDisk()->url(DefaultThumbnail::FILE),
-        };
+        });
     }
 
-    public function getUrlAttribute(): string
+    private function url(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->getPublicDisk()->url($this->path);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->getPublicDisk()->url($this->path));
     }
 
-    public function getFullPathAttribute(): string
+    private function fullPath(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->getPublicDisk()->path($this->path);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->getPublicDisk()->path($this->path));
     }
 
-    public function getFileContentsAttribute(): ?string
+    private function fileContents(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->getPublicDisk()->get($this->path);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->getPublicDisk()->get($this->path));
     }
 
-    public function getExtensionAttribute(): string
+    private function extension(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        $tmp = explode('.', (string) $this->original_name);
-        if (count($tmp) > 1) {
-            return array_pop($tmp);
-        }
-
-        return '';
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {
+            $tmp = explode('.', (string) $this->original_name);
+            if (count($tmp) > 1) {
+                return array_pop($tmp);
+            }
+            return '';
+        });
     }
 
     /*

@@ -51,24 +51,24 @@ final class Profile extends Model
         return $this->morphMany(Attachment::class, 'attachmentable');
     }
 
-    private function avatar(): \Illuminate\Database\Eloquent\Casts\Attribute
+    public function avatar(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
             $id = (int) $this->data->avatar;
             if ($id !== 0) {
-                return $this->attachments->first(fn (Attachment $attachment): bool => $id === $attachment->id);
+                return $this->attachments->first(fn(Attachment $attachment): bool => $id === $attachment->id);
             }
 
             return null;
         });
     }
 
-    private function hasAvatar(): \Illuminate\Database\Eloquent\Casts\Attribute
+    public function hasAvatar(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => (bool) $this->avatar);
     }
 
-    private function avatarUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
+    public function avatarUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->getPublicDisk()->url($this->has_avatar && $this->avatar
             ? $this->avatar->path
@@ -98,7 +98,7 @@ final class Profile extends Model
         ];
     }
 
-    private function getPublicDisk(): FilesystemAdapter
+    public function getPublicDisk(): FilesystemAdapter
     {
         return Storage::disk('public');
     }

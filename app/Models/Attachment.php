@@ -70,17 +70,17 @@ final class Attachment extends Model
         return $this->hasOne(FileInfo::class);
     }
 
-    private function pathExists(): \Illuminate\Database\Eloquent\Casts\Attribute
+    public function pathExists(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->getPublicDisk()->exists($this->path));
     }
 
-    private function isImage(): \Illuminate\Database\Eloquent\Casts\Attribute
+    public function isImage(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $this->type === 'image');
     }
 
-    private function type(): \Illuminate\Database\Eloquent\Casts\Attribute
+    public function type(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {
             $mime = $this->getPublicDisk()->mimeType($this->path) ?: '';
@@ -100,7 +100,7 @@ final class Attachment extends Model
         });
     }
 
-    private function isPng(): \Illuminate\Database\Eloquent\Casts\Attribute
+    public function isPng(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): bool {
             $mime = $this->getPublicDisk()->mimeType($this->path) ?: '';
@@ -108,7 +108,7 @@ final class Attachment extends Model
         });
     }
 
-    private function thumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
+    public function thumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => match ($this->type) {
             'image' => $this->getPublicDisk()->url($this->path),
@@ -118,22 +118,22 @@ final class Attachment extends Model
         });
     }
 
-    private function url(): \Illuminate\Database\Eloquent\Casts\Attribute
+    public function url(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->getPublicDisk()->url($this->path));
     }
 
-    private function fullPath(): \Illuminate\Database\Eloquent\Casts\Attribute
+    public function fullPath(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->getPublicDisk()->path($this->path));
     }
 
-    private function fileContents(): \Illuminate\Database\Eloquent\Casts\Attribute
+    public function fileContents(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->getPublicDisk()->get($this->path));
     }
 
-    private function extension(): \Illuminate\Database\Eloquent\Casts\Attribute
+    public function extension(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {
             $tmp = explode('.', (string) $this->original_name);
@@ -160,7 +160,7 @@ final class Attachment extends Model
         });
     }
 
-    private function getPublicDisk(): FilesystemAdapter
+    public function getPublicDisk(): FilesystemAdapter
     {
         return Storage::disk('public');
     }

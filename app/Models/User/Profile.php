@@ -56,7 +56,7 @@ final class Profile extends Model
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
             $id = (int) $this->data->avatar;
             if ($id !== 0) {
-                return $this->attachments->first(fn(Attachment $attachment): bool => $id === $attachment->id);
+                return $this->attachments->first(fn (Attachment $attachment): bool => $id === $attachment->id);
             }
 
             return null;
@@ -65,14 +65,19 @@ final class Profile extends Model
 
     public function hasAvatar(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => (bool) $this->avatar);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => (bool) $this->avatar);
     }
 
     public function avatarUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->getPublicDisk()->url($this->has_avatar && $this->avatar
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->url($this->has_avatar && $this->avatar
             ? $this->avatar->path
             : DefaultThumbnail::NO_AVATAR));
+    }
+
+    public function getPublicDisk(): FilesystemAdapter
+    {
+        return Storage::disk('public');
     }
 
     /*
@@ -96,10 +101,5 @@ final class Profile extends Model
         return [
             'data' => ToProfileData::class,
         ];
-    }
-
-    public function getPublicDisk(): FilesystemAdapter
-    {
-        return Storage::disk('public');
     }
 }

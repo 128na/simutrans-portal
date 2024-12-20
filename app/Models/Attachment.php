@@ -87,12 +87,15 @@ final class Attachment extends Model
             if (mb_stripos((string) $mime, 'image') !== false) {
                 return 'image';
             }
+
             if (mb_stripos((string) $mime, 'video') !== false) {
                 return 'video';
             }
+
             if (mb_stripos((string) $mime, 'text') !== false) {
                 return 'text';
             }
+
             return 'file';
         });
     }
@@ -137,6 +140,7 @@ final class Attachment extends Model
             if (count($tmp) > 1) {
                 return array_pop($tmp);
             }
+
             return '';
         });
     }

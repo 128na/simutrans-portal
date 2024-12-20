@@ -1,2 +1,751 @@
 parameters:
-	ignoreErrors: []
+	ignoreErrors:
+		-
+			message: '#^PHPDoc tag @var with type array\<App\\Enums\\ArticlePostType\> is not subtype of native type array\{App\\Enums\\ArticlePostType\:\:AddonPost, App\\Enums\\ArticlePostType\:\:AddonIntroduction, App\\Enums\\ArticlePostType\:\:Page, App\\Enums\\ArticlePostType\:\:Markdown\}\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Actions/Article/GetOptions.php
+
+		-
+			message: '#^PHPDoc tag @var with type array\<App\\Enums\\ArticleStatus\> is not subtype of native type array\{App\\Enums\\ArticleStatus\:\:Publish, App\\Enums\\ArticleStatus\:\:Reservation, App\\Enums\\ArticleStatus\:\:Draft, App\\Enums\\ArticleStatus\:\:Trash, App\\Enums\\ArticleStatus\:\:Private\}\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Actions/Article/GetOptions.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$is_inactive\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Actions/Article/UpdateArticle.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$is_reservation\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Actions/Article/UpdateArticle.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$has_thumbnail\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Actions/CreateSitemap/CreateArticleSitemaps.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$thumbnail_url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Actions/CreateSitemap/CreateArticleSitemaps.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$categoryPaks\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Actions/SendSNS/Article/GetArticleParam.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>nickname" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Actions/SendSNS/Article/ToOneSignal.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$is_publish\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Api/Front/ConversionController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$is_publish\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/Front/FrontController.php
+
+		-
+			message: '#^Call to function assert\(\) with true will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Http/Controllers/Controller.php
+
+		-
+			message: '#^Instanceof between App\\Models\\User and App\\Models\\User will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: app/Http/Controllers/Controller.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$file\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/FrontController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$has_file\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/FrontController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$is_addon_post\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/FrontController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$is_publish\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Controllers/FrontController.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>nickname" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Controllers/FrontController.php
+
+		-
+			message: '#^Binary operation "\." between ''unique\:articles…'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Http/Requests/Api/Article/UpdateRequest.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$file\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/Front/ArticleResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$hasFileInfo\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/Front/ArticleResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$is_publish\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/Api/Front/ArticleResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Attachment\:\:\$is_image\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/Api/Front/AttachmentResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Attachment\:\:\$url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/Front/AttachmentResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\\Profile\:\:\$avatar_url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/Front/UserProfileResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$is_publish\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/Mypage/Article.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>nickname" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Resources/Api/Mypage/Article.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Attachment\:\:\$is_image\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/Api/Mypage/Attachment.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Attachment\:\:\$thumbnail\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/Mypage/Attachment.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Attachment\:\:\$type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/Mypage/Attachment.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Attachment\:\:\$url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Api/Mypage/Attachment.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$is_publish\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Listeners/Article/OnArticleStored.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$is_publish\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Listeners/Article/OnArticleUpdated.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$file\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Models/Article.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$hasFile\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$has_thumbnail\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$is_addon_post\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$thumbnail\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:categoryAddons\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:categoryAddons\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:categoryPak128Positions\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:categoryPak128Positions\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:categoryPaks\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:categoryPaks\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:file\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:file\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:hasFile\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:hasFile\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:hasFileInfo\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:hasFileInfo\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:hasThumbnail\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:hasThumbnail\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:headlineDescription\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:headlineDescription\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:isAddonPost\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:isAddonPost\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:isInactive\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:isInactive\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:isPage\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:isPage\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:isPublish\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:isPublish\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:isReservation\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:isReservation\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:metaDescription\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:metaDescription\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:thumbnail\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:thumbnail\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:thumbnailUrl\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:thumbnailUrl\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:todaysConversionRate\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:todaysConversionRate\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:urlDecodedSlug\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:urlDecodedSlug\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^PHPDoc tag @return with type Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Category\> is incompatible with native type Illuminate\\Database\\Eloquent\\Casts\\Attribute\.$#'
+			identifier: return.phpDocType
+			count: 3
+			path: app/Models/Article.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Attachment\:\:\$type\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:deleteFileHandler\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:extension\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:extension\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:fileContents\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:fileContents\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:fullPath\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:fullPath\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:isImage\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:isImage\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:isPng\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:isPng\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:pathExists\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:pathExists\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:thumbnail\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:thumbnail\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:type\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:type\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:url\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Method App\\Models\\Attachment\:\:url\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Attachment.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\\Profile\:\:\$avatar\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Models/User/Profile.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\\Profile\:\:\$has_avatar\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/User/Profile.php
+
+		-
+			message: '#^Method App\\Models\\User\\Profile\:\:avatar\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/User/Profile.php
+
+		-
+			message: '#^Method App\\Models\\User\\Profile\:\:avatar\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User/Profile.php
+
+		-
+			message: '#^Method App\\Models\\User\\Profile\:\:avatarUrl\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/User/Profile.php
+
+		-
+			message: '#^Method App\\Models\\User\\Profile\:\:avatarUrl\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User/Profile.php
+
+		-
+			message: '#^Method App\\Models\\User\\Profile\:\:hasAvatar\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Models/User/Profile.php
+
+		-
+			message: '#^Method App\\Models\\User\\Profile\:\:hasAvatar\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User/Profile.php
+
+		-
+			message: '#^PHPDoc type array\<string\> of property App\\Models\\User\\Profile\:\:\$attributes is not covariant with PHPDoc type array\<string, mixed\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$attributes\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Models/User/Profile.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Attachment\:\:\$is_image\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Rules/ImageAttachment.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$hasThumbnail\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/BlueSky/BlueSkyApiClient.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$thumbnail\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/BlueSky/BlueSkyApiClient.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Attachment\:\:\$fullPath\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/BlueSky/BlueSkyApiClient.php
+
+		-
+			message: '#^Call to function assert\(\) with true will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Services/BlueSky/BlueSkyApiClient.php
+
+		-
+			message: '#^Instanceof between App\\Models\\User and App\\Models\\User will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: app/Services/BlueSky/BlueSkyApiClient.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$has_thumbnail\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/BulkZip/Decorators/AddonIntroductionDecorator.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$thumbnail\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/BulkZip/Decorators/AddonIntroductionDecorator.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>nickname" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/BulkZip/Decorators/AddonIntroductionDecorator.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$file\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/BulkZip/Decorators/AddonPostDecorator.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$has_thumbnail\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/BulkZip/Decorators/AddonPostDecorator.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$thumbnail\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/BulkZip/Decorators/AddonPostDecorator.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>nickname" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/BulkZip/Decorators/AddonPostDecorator.php
+
+		-
+			message: '#^Call to function array_key_exists\(\) with ''code'' and array\{code\: int\} will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Services/Discord/InviteService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Attachment\:\:\$full_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/FileInfo/FileInfoService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Attachment\:\:\$full_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/FileInfo/ZipArchiveParser.php
+
+		-
+			message: '#^PHPDoc tag @var with type Generator\<string, string, mixed, mixed\> is not subtype of native type Closure\(\)\: Generator\<string, string, mixed, void\>\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Services/FileInfo/ZipArchiveParser.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$has_thumbnail\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Front/MetaOgpService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$thumbnail_url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Front/MetaOgpService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\\Profile\:\:\$avatar_url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Front/MetaOgpService.php
+
+		-
+			message: '#^Binary operation "\." between ''SNS・通知ツール \- '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Services/Front/MetaOgpService.php
+
+		-
+			message: '#^Binary operation "\." between non\-falsy\-string and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 7
+			path: app/Services/Front/MetaOgpService.php

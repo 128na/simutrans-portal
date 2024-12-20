@@ -40,24 +40,6 @@ namespace App\Models{
  * @property-read int|null $daily_conversion_counts_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ViewCount> $dailyViewCounts
  * @property-read int|null $daily_view_counts_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $category_addons
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $category_pak128_positions
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $category_paks
- * @property-read \App\Models\Attachment|null $file
- * @property-read bool $has_file
- * @property-read bool $has_file_info
- * @property-read bool $has_thumbnail
- * @property-read string $headline_description
- * @property-read bool $is_addon_post
- * @property-read bool $is_inactive
- * @property-read bool $is_page
- * @property-read bool $is_publish
- * @property-read bool $is_reservation
- * @property-read string $meta_description
- * @property-read \App\Models\Attachment|null $thumbnail
- * @property-read string $thumbnail_url
- * @property-read string $todays_conversion_rate
- * @property-read string $url_decoded_slug
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ConversionCount> $monthlyConversionCounts
  * @property-read int|null $monthly_conversion_counts_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ViewCount> $monthlyViewCounts
@@ -178,15 +160,6 @@ namespace App\Models{
  * @property int $order 表示順（画像向け）
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent|null $attachmentable
  * @property-read \App\Models\Attachment\FileInfo|null $fileInfo
- * @property-read string $extension
- * @property-read string|null $file_contents
- * @property-read string $full_path
- * @property-read bool $is_image
- * @property-read bool $is_png
- * @property-read bool $path_exists
- * @property-read string $thumbnail
- * @property-read string $type
- * @property-read string $url
  * @property-read \App\Models\User $user
  * @method static \Database\Factories\AttachmentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment newModelQuery()
@@ -446,9 +419,6 @@ namespace App\Models\User{
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
- * @property-read \App\Models\Attachment|null $avatar
- * @property-read string $avatar_url
- * @property-read bool $has_avatar
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile newQuery()

@@ -426,9 +426,10 @@ final class Article extends Model implements Feedable
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
             if ($this->contents instanceof AddonPostContent) {
                 $id = $this->contents->file;
-    
+
                 return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
             }
+
             throw new Exception('invalid post type');
         });
     }
@@ -467,9 +468,10 @@ final class Article extends Model implements Feedable
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {
             if (! is_null($this->todaysConversionCount) && $this->todaysViewCount) {
                 $rate = $this->todaysConversionCount->count / $this->todaysViewCount->count * 100;
-    
+
                 return sprintf('%.1f %%', $rate);
             }
+
             return 'N/A';
         });
     }

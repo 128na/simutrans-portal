@@ -58,6 +58,7 @@ final class Profile extends Model
             if ($id !== 0) {
                 return $this->attachments->first(fn (Attachment $attachment): bool => $id === $attachment->id);
             }
+
             return null;
         });
     }

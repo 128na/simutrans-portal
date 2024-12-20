@@ -34,7 +34,7 @@ abstract class BaseGenerator
     {
         $json = json_encode($data, JSON_UNESCAPED_UNICODE);
         if ($json) {
-            Storage::disk('public')->put('json/' . $filename, $json);
+            Storage::disk('public')->put('json/'.$filename, $json);
         }
     }
 }

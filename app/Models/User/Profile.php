@@ -51,32 +51,33 @@ final class Profile extends Model
         return $this->morphMany(Attachment::class, 'attachmentable');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | アクセサ
-    |--------------------------------------------------------------------------
-     */
-    public function getAvatarAttribute(): ?Attachment
+    public function avatar(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        $id = (int) $this->data->avatar;
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            $id = (int) $this->data->avatar;
+            if ($id !== 0) {
+                return $this->attachments->first(fn (Attachment $attachment): bool => $id === $attachment->id);
+            }
 
-        if ($id !== 0) {
-            return $this->attachments->first(fn (Attachment $attachment): bool => $id === $attachment->id);
-        }
-
-        return null;
+            return null;
+        });
     }
 
-    public function getHasAvatarAttribute(): bool
+    public function hasAvatar(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return (bool) $this->avatar;
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => (bool) $this->avatar);
     }
 
-    public function getAvatarUrlAttribute(): string
+    public function avatarUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return $this->getPublicDisk()->url($this->has_avatar && $this->avatar
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->url($this->has_avatar && $this->avatar
             ? $this->avatar->path
-            : DefaultThumbnail::NO_AVATAR);
+            : DefaultThumbnail::NO_AVATAR));
+    }
+
+    public function getPublicDisk(): FilesystemAdapter
+    {
+        return Storage::disk('public');
     }
 
     /*
@@ -100,10 +101,5 @@ final class Profile extends Model
         return [
             'data' => ToProfileData::class,
         ];
-    }
-
-    private function getPublicDisk(): FilesystemAdapter
-    {
-        return Storage::disk('public');
     }
 }

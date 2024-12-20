@@ -14,15 +14,6 @@ final class Kernel extends ConsoleKernel
      */
     private const int CRON_INTERVAL = 2;
 
-    private function getLogPath(): string
-    {
-        return storage_path(sprintf(
-            'logs%sschedule-%s.log',
-            DIRECTORY_SEPARATOR,
-            now()->toDateString()
-        ));
-    }
-
     /**
      * Define the application's command schedule.
      */
@@ -54,7 +45,7 @@ final class Kernel extends ConsoleKernel
             ->appendOutputTo($output);
         $schedule->command('queue:work', [
             '--stop-when-empty',
-            '--max-time' => (int)(self::CRON_INTERVAL / 2),
+            '--max-time' => self::CRON_INTERVAL / 2,
         ])->everyMinute()
             ->appendOutputTo($output);
 
@@ -67,8 +58,17 @@ final class Kernel extends ConsoleKernel
     #[\Override]
     protected function commands(): void
     {
-        $this->load(__DIR__ . '/Commands');
+        $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
+    }
+
+    private function getLogPath(): string
+    {
+        return storage_path(sprintf(
+            'logs%sschedule-%s.log',
+            DIRECTORY_SEPARATOR,
+            now()->toDateString()
+        ));
     }
 }

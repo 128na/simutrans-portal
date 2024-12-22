@@ -447,7 +447,7 @@ namespace App\Models\User{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read mixed $avatar
- * @property-read mixed $avatar_url
+ * @property-read string $avatar_url
  * @property-read bool $has_avatar
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile newModelQuery()

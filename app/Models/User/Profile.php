@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use \Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * @mixin IdeHelperProfile
@@ -51,26 +52,26 @@ final class Profile extends Model
         return $this->morphMany(Attachment::class, 'attachmentable');
     }
 
-    public function avatar(): \Illuminate\Database\Eloquent\Casts\Attribute
+    public function avatar(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             $id = (int) $this->data->avatar;
             if ($id !== 0) {
-                return $this->attachments->first(fn (Attachment $attachment): bool => $id === $attachment->id);
+                return $this->attachments->first(fn(Attachment $attachment): bool => $id === $attachment->id);
             }
 
             return null;
         });
     }
 
-    public function hasAvatar(): \Illuminate\Database\Eloquent\Casts\Attribute
+    public function hasAvatar(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => (bool) $this->avatar);
+        return Attribute::make(get: fn(): bool => (bool) $this->avatar);
     }
 
-    public function avatarUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
+    public function avatarUrl(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->url($this->has_avatar && $this->avatar
+        return Attribute::make(get: fn(): string => $this->getPublicDisk()->url($this->has_avatar && $this->avatar
             ? $this->avatar->path
             : DefaultThumbnail::NO_AVATAR));
     }

@@ -12,7 +12,7 @@ final class PakExtractorTest extends TestCase
     public function test_get_key(): void
     {
         $result = $this->getSUT()->getKey();
-        $this->assertEquals('paks', $result);
+        $this->assertSame('paks', $result);
     }
 
     public function test_is_target(): void
@@ -30,7 +30,7 @@ final class PakExtractorTest extends TestCase
         $data = file_get_contents(__DIR__.'/vehicle.transparent_vehicle.pak');
 
         $result = $sUT->extract($data);
-        $this->assertEquals(['transparent_vehicle'], $result);
+        $this->assertSame(['transparent_vehicle'], $result);
     }
 
     private function getSUT(): PakExtractor

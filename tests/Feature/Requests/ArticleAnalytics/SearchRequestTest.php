@@ -15,14 +15,12 @@ final class SearchRequestTest extends TestCase
 {
     private User $user;
 
-    private Article $othersArticle;
-
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        $this->othersArticle = Article::factory()->create([]);
+        Article::factory()->create([]);
     }
 
     #[DataProvider('dataValidation')]

@@ -805,7 +805,7 @@ namespace Illuminate\Support\Facades {
          * @param int $code
          * @param string $message
          * @param array $headers
-         * @return \Illuminate\Foundation\never 
+         * @return never 
          * @throws \Symfony\Component\HttpKernel\Exception\HttpException
          * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
          * @static 
@@ -1252,7 +1252,7 @@ namespace Illuminate\Support\Facades {
          * Resolve all of the bindings for a given tag.
          *
          * @param string $tag
-         * @return \Illuminate\Container\iterable 
+         * @return iterable 
          * @static 
          */        public static function tagged($tag)
         {            //Method inherited from \Illuminate\Container\Container         
@@ -3598,10 +3598,10 @@ namespace Illuminate\Support\Facades {
                     /**
          * Obtains multiple cache items by their unique keys.
          *
-         * @return \Illuminate\Cache\iterable 
-         * @param \Psr\SimpleCache\iterable<string> $keys A list of keys that can be obtained in a single operation.
+         * @return iterable 
+         * @param iterable<string> $keys A list of keys that can be obtained in a single operation.
          * @param mixed $default Default value to return for keys that do not exist.
-         * @return \Psr\SimpleCache\iterable<string, mixed> A list of key => value pairs. Cache keys that do not exist or are stale will have $default as value.
+         * @return iterable<string, mixed> A list of key => value pairs. Cache keys that do not exist or are stale will have $default as value.
          * @throws \Psr\SimpleCache\InvalidArgumentException
          *   MUST be thrown if $keys is neither an array nor a Traversable,
          *   or if any of the $keys are not a legal value.
@@ -3670,7 +3670,7 @@ namespace Illuminate\Support\Facades {
          * Persists a set of key => value pairs in the cache, with an optional TTL.
          *
          * @return bool 
-         * @param \Psr\SimpleCache\iterable $values A list of key => value pairs for a multiple-set operation.
+         * @param iterable $values A list of key => value pairs for a multiple-set operation.
          * @param null|int|\DateInterval $ttl Optional. The TTL value of this item. If no value is sent and
          *                                       the driver supports TTL then the library may set a default value
          *                                       for it or let the driver take care of that.
@@ -3740,7 +3740,7 @@ namespace Illuminate\Support\Facades {
          * @param string $key
          * @param \Closure|\DateTimeInterface|\DateInterval|int|null $ttl
          * @param \Closure():  TCacheValue  $callback
-         * @return \Illuminate\Cache\TCacheValue 
+         * @return TCacheValue 
          * @static 
          */        public static function remember($key, $ttl, $callback)
         {
@@ -3753,7 +3753,7 @@ namespace Illuminate\Support\Facades {
          * @template TCacheValue
          * @param string $key
          * @param \Closure():  TCacheValue  $callback
-         * @return \Illuminate\Cache\TCacheValue 
+         * @return TCacheValue 
          * @static 
          */        public static function sear($key, $callback)
         {
@@ -3766,7 +3766,7 @@ namespace Illuminate\Support\Facades {
          * @template TCacheValue
          * @param string $key
          * @param \Closure():  TCacheValue  $callback
-         * @return \Illuminate\Cache\TCacheValue 
+         * @return TCacheValue 
          * @static 
          */        public static function rememberForever($key, $callback)
         {
@@ -3781,7 +3781,7 @@ namespace Illuminate\Support\Facades {
          * @param \Illuminate\Cache\array{  0: \DateTimeInterface|\DateInterval|int, 1: \DateTimeInterface|\DateInterval|int }  $ttl
          * @param (callable(): TCacheValue) $callback
          * @param \Illuminate\Cache\array{  seconds?: int, owner?: string }|null  $lock
-         * @return \Illuminate\Cache\TCacheValue 
+         * @return TCacheValue 
          * @static 
          */        public static function flexible($key, $ttl, $callback, $lock = null)
         {
@@ -3817,7 +3817,7 @@ namespace Illuminate\Support\Facades {
          * Deletes multiple cache items in a single operation.
          *
          * @return bool 
-         * @param \Psr\SimpleCache\iterable<string> $keys A list of string-based keys to be deleted.
+         * @param iterable<string> $keys A list of string-based keys to be deleted.
          * @return bool True if the items were successfully removed. False if there was an error.
          * @throws \Psr\SimpleCache\InvalidArgumentException
          *   MUST be thrown if $keys is neither an array nor a Traversable,
@@ -4705,10 +4705,10 @@ namespace Illuminate\Support\Facades {
          *
          * @template TWhenParameter
          * @template TWhenReturnType
-         * @param (\Closure($this): TWhenParameter)|\Illuminate\Log\Context\TWhenParameter|null $value
+         * @param (\Closure($this): TWhenParameter)|TWhenParameter|null $value
          * @param (callable($this, TWhenParameter): TWhenReturnType)|null $callback
          * @param (callable($this, TWhenParameter): TWhenReturnType)|null $default
-         * @return $this|\Illuminate\Log\Context\TWhenReturnType 
+         * @return $this|TWhenReturnType 
          * @static 
          */        public static function when($value = null, $callback = null, $default = null)
         {
@@ -4720,10 +4720,10 @@ namespace Illuminate\Support\Facades {
          *
          * @template TUnlessParameter
          * @template TUnlessReturnType
-         * @param (\Closure($this): TUnlessParameter)|\Illuminate\Log\Context\TUnlessParameter|null $value
+         * @param (\Closure($this): TUnlessParameter)|TUnlessParameter|null $value
          * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $callback
          * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $default
-         * @return $this|\Illuminate\Log\Context\TUnlessReturnType 
+         * @return $this|TUnlessReturnType 
          * @static 
          */        public static function unless($value = null, $callback = null, $default = null)
         {
@@ -6311,8 +6311,8 @@ namespace Illuminate\Support\Facades {
          * Set the table prefix and return the grammar.
          *
          * @template TGrammar of \Illuminate\Database\Grammar
-         * @param \Illuminate\Database\TGrammar $grammar
-         * @return \Illuminate\Database\TGrammar 
+         * @param TGrammar $grammar
+         * @return TGrammar 
          * @static 
          */        public static function withTablePrefix($grammar)
         {            //Method inherited from \Illuminate\Database\Connection         
@@ -6359,7 +6359,7 @@ namespace Illuminate\Support\Facades {
          * Execute a Closure within a transaction.
          * @param (\Closure(static): TReturn) $callback
          * @param int $attempts
-         * @return \Illuminate\Database\TReturn 
+         * @return TReturn 
          * @throws \Throwable
          * @static 
          */        public static function transaction($callback, $attempts = 1)
@@ -6433,8 +6433,8 @@ namespace Illuminate\Support\Facades {
                     /**
          * Register an event listener with the dispatcher.
          *
-         * @param \Illuminate\Events\Queued\Closure|callable|array|\Illuminate\Events\class-string|string $events
-         * @param \Illuminate\Events\Queued\Closure|callable|array|\Illuminate\Events\class-string|null $listener
+         * @param \Illuminate\Events\Queued\Closure|callable|array|class-string|string $events
+         * @param \Illuminate\Events\Queued\Closure|callable|array|class-string|null $listener
          * @return void 
          * @static 
          */        public static function listen($events, $listener = null)
@@ -7317,10 +7317,10 @@ namespace Illuminate\Support\Facades {
          *
          * @template TWhenParameter
          * @template TWhenReturnType
-         * @param (\Closure($this): TWhenParameter)|\Illuminate\Filesystem\TWhenParameter|null $value
+         * @param (\Closure($this): TWhenParameter)|TWhenParameter|null $value
          * @param (callable($this, TWhenParameter): TWhenReturnType)|null $callback
          * @param (callable($this, TWhenParameter): TWhenReturnType)|null $default
-         * @return $this|\Illuminate\Filesystem\TWhenReturnType 
+         * @return $this|TWhenReturnType 
          * @static 
          */        public static function when($value = null, $callback = null, $default = null)
         {
@@ -7332,10 +7332,10 @@ namespace Illuminate\Support\Facades {
          *
          * @template TUnlessParameter
          * @template TUnlessReturnType
-         * @param (\Closure($this): TUnlessParameter)|\Illuminate\Filesystem\TUnlessParameter|null $value
+         * @param (\Closure($this): TUnlessParameter)|TUnlessParameter|null $value
          * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $callback
          * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $default
-         * @return $this|\Illuminate\Filesystem\TUnlessReturnType 
+         * @return $this|TUnlessReturnType 
          * @static 
          */        public static function unless($value = null, $callback = null, $default = null)
         {
@@ -7493,7 +7493,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Determine if all of the given abilities should be granted for the current user.
          *
-         * @param \Illuminate\Auth\Access\iterable|\BackedEnum|string $ability
+         * @param iterable|\BackedEnum|string $ability
          * @param array|mixed $arguments
          * @return bool 
          * @static 
@@ -7505,7 +7505,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Determine if any of the given abilities should be denied for the current user.
          *
-         * @param \Illuminate\Auth\Access\iterable|\BackedEnum|string $ability
+         * @param iterable|\BackedEnum|string $ability
          * @param array|mixed $arguments
          * @return bool 
          * @static 
@@ -7517,7 +7517,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Determine if all of the given abilities should be granted for the current user.
          *
-         * @param \Illuminate\Auth\Access\iterable|\BackedEnum|string $abilities
+         * @param iterable|\BackedEnum|string $abilities
          * @param array|mixed $arguments
          * @return bool 
          * @static 
@@ -7529,7 +7529,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Determine if any one of the given abilities should be granted for the current user.
          *
-         * @param \Illuminate\Auth\Access\iterable|\BackedEnum|string $abilities
+         * @param iterable|\BackedEnum|string $abilities
          * @param array|mixed $arguments
          * @return bool 
          * @static 
@@ -7541,7 +7541,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Determine if all of the given abilities should be denied for the current user.
          *
-         * @param \Illuminate\Auth\Access\iterable|\BackedEnum|string $abilities
+         * @param iterable|\BackedEnum|string $abilities
          * @param array|mixed $arguments
          * @return bool 
          * @static 
@@ -11616,7 +11616,7 @@ namespace Illuminate\Support\Facades {
          * You should only list the reverse proxies that you manage directly.
          *
          * @param array $proxies A list of trusted proxies, the string 'REMOTE_ADDR' will be replaced with $_SERVER['REMOTE_ADDR'] and 'PRIVATE_SUBNETS' by IpUtils::PRIVATE_SUBNETS
-         * @param \Symfony\Component\HttpFoundation\int-mask-of<Request::HEADER_*> $trustedHeaderSet A bit field to set which headers to trust from your proxies
+         * @param int-mask-of<Request::HEADER_*> $trustedHeaderSet A bit field to set which headers to trust from your proxies
          * @static 
          */        public static function setTrustedProxies($proxies, $trustedHeaderSet)
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request         
@@ -12700,7 +12700,7 @@ namespace Illuminate\Support\Facades {
          * Dump the given arguments and terminate execution.
          *
          * @param mixed $args
-         * @return \Illuminate\Http\never 
+         * @return never 
          * @static 
          */        public static function dd(...$args)
         {
@@ -12904,8 +12904,8 @@ namespace Illuminate\Support\Facades {
          *
          * @template TEnum of \BackedEnum
          * @param string $key
-         * @param \Illuminate\Http\class-string<TEnum> $enumClass
-         * @return \Illuminate\Http\TEnum|null 
+         * @param class-string<TEnum> $enumClass
+         * @return TEnum|null 
          * @static 
          */        public static function enum($key, $enumClass)
         {
@@ -12917,8 +12917,8 @@ namespace Illuminate\Support\Facades {
          *
          * @template TEnum of \BackedEnum
          * @param string $key
-         * @param \Illuminate\Http\class-string<TEnum> $enumClass
-         * @return \Illuminate\Http\TEnum[] 
+         * @param class-string<TEnum> $enumClass
+         * @return TEnum[] 
          * @static 
          */        public static function enums($key, $enumClass)
         {
@@ -12963,10 +12963,10 @@ namespace Illuminate\Support\Facades {
          *
          * @template TWhenParameter
          * @template TWhenReturnType
-         * @param (\Closure($this): TWhenParameter)|\Illuminate\Http\TWhenParameter|null $value
+         * @param (\Closure($this): TWhenParameter)|TWhenParameter|null $value
          * @param (callable($this, TWhenParameter): TWhenReturnType)|null $callback
          * @param (callable($this, TWhenParameter): TWhenReturnType)|null $default
-         * @return $this|\Illuminate\Http\TWhenReturnType 
+         * @return $this|TWhenReturnType 
          * @static 
          */        public static function when($value = null, $callback = null, $default = null)
         {
@@ -12978,10 +12978,10 @@ namespace Illuminate\Support\Facades {
          *
          * @template TUnlessParameter
          * @template TUnlessReturnType
-         * @param (\Closure($this): TUnlessParameter)|\Illuminate\Http\TUnlessParameter|null $value
+         * @param (\Closure($this): TUnlessParameter)|TUnlessParameter|null $value
          * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $callback
          * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $default
-         * @return $this|\Illuminate\Http\TUnlessReturnType 
+         * @return $this|TUnlessReturnType 
          * @static 
          */        public static function unless($value = null, $callback = null, $default = null)
         {
@@ -16486,10 +16486,10 @@ namespace Illuminate\Support\Facades {
          *
          * @template TWhenParameter
          * @template TWhenReturnType
-         * @param (\Closure($this): TWhenParameter)|\Illuminate\Filesystem\TWhenParameter|null $value
+         * @param (\Closure($this): TWhenParameter)|TWhenParameter|null $value
          * @param (callable($this, TWhenParameter): TWhenReturnType)|null $callback
          * @param (callable($this, TWhenParameter): TWhenReturnType)|null $default
-         * @return $this|\Illuminate\Filesystem\TWhenReturnType 
+         * @return $this|TWhenReturnType 
          * @static 
          */        public static function when($value = null, $callback = null, $default = null)
         {
@@ -16501,10 +16501,10 @@ namespace Illuminate\Support\Facades {
          *
          * @template TUnlessParameter
          * @template TUnlessReturnType
-         * @param (\Closure($this): TUnlessParameter)|\Illuminate\Filesystem\TUnlessParameter|null $value
+         * @param (\Closure($this): TUnlessParameter)|TUnlessParameter|null $value
          * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $callback
          * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $default
-         * @return $this|\Illuminate\Filesystem\TUnlessReturnType 
+         * @return $this|TUnlessReturnType 
          * @static 
          */        public static function unless($value = null, $callback = null, $default = null)
         {
@@ -19344,7 +19344,7 @@ namespace Spatie\LaravelIgnition\Facades {
                     /**
          * 
          *
-         * @param \Spatie\FlareClient\class-string $exceptionClass
+         * @param class-string $exceptionClass
          * @static 
          */        public static function overrideGrouping($exceptionClass, $type = 'exception_message_and_class')
         {
@@ -19418,7 +19418,7 @@ namespace Spatie\LaravelIgnition\Facades {
                     /**
          * 
          *
-         * @param \Spatie\FlareClient\FlareMiddleware\FlareMiddleware|array<FlareMiddleware>|\Spatie\FlareClient\class-string<FlareMiddleware>|callable $middleware
+         * @param \Spatie\FlareClient\FlareMiddleware\FlareMiddleware|array<FlareMiddleware>|class-string<FlareMiddleware>|callable $middleware
          * @return \Spatie\FlareClient\Flare 
          * @static 
          */        public static function registerMiddleware($middleware)
@@ -20020,7 +20020,7 @@ namespace  {
              *
              * @template TValue
              * @param mixed $id
-             * @param (\Closure(): TValue)|\Illuminate\Database\Eloquent\list<string>|string $columns
+             * @param (\Closure(): TValue)|list<string>|string $columns
              * @param (\Closure(): TValue)|null $callback
              * @return ( $id is (\Illuminate\Contracts\Support\Arrayable<array-key, mixed>|array<mixed>)
              *     ? \Illuminate\Database\Eloquent\Collection<int, TModel>
@@ -20096,9 +20096,9 @@ namespace  {
              * Execute the query and get the first result or call a callback.
              *
              * @template TValue
-             * @param (\Closure(): TValue)|\Illuminate\Database\Eloquent\list<string> $columns
+             * @param (\Closure(): TValue)|list<string> $columns
              * @param (\Closure(): TValue)|null $callback
-             * @return \Illuminate\Database\Eloquent\TModel|\Illuminate\Database\Eloquent\TValue 
+             * @return \Illuminate\Database\Eloquent\TModel|TValue 
              * @static 
              */            public static function firstOr($columns = [], $callback = null)
             {
@@ -20413,7 +20413,7 @@ namespace  {
              *
              * @template TModelValue
              * @param \Closure():  TModelValue  $scope
-             * @return \Illuminate\Database\Eloquent\TModelValue 
+             * @return TModelValue 
              * @static 
              */            public static function withSavepointIfNeeded($scope)
             {
@@ -20507,8 +20507,8 @@ namespace  {
              * Set a model instance for the model being queried.
              *
              * @template TModelNew of \Illuminate\Database\Eloquent\Model
-             * @param \Illuminate\Database\Eloquent\TModelNew $model
-             * @return \Illuminate\Database\Eloquent\static<TModelNew> 
+             * @param TModelNew $model
+             * @return static<TModelNew> 
              * @static 
              */            public static function setModel($model)
             {
@@ -20743,10 +20743,10 @@ namespace  {
              *
              * @template TWhenParameter
              * @template TWhenReturnType
-             * @param (\Closure($this): TWhenParameter)|\Illuminate\Database\Eloquent\TWhenParameter|null $value
+             * @param (\Closure($this): TWhenParameter)|TWhenParameter|null $value
              * @param (callable($this, TWhenParameter): TWhenReturnType)|null $callback
              * @param (callable($this, TWhenParameter): TWhenReturnType)|null $default
-             * @return $this|\Illuminate\Database\Eloquent\TWhenReturnType 
+             * @return $this|TWhenReturnType 
              * @static 
              */            public static function when($value = null, $callback = null, $default = null)
             {
@@ -20758,10 +20758,10 @@ namespace  {
              *
              * @template TUnlessParameter
              * @template TUnlessReturnType
-             * @param (\Closure($this): TUnlessParameter)|\Illuminate\Database\Eloquent\TUnlessParameter|null $value
+             * @param (\Closure($this): TUnlessParameter)|TUnlessParameter|null $value
              * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $callback
              * @param (callable($this, TUnlessParameter): TUnlessReturnType)|null $default
-             * @return $this|\Illuminate\Database\Eloquent\TUnlessReturnType 
+             * @return $this|TUnlessReturnType 
              * @static 
              */            public static function unless($value = null, $callback = null, $default = null)
             {
@@ -21816,7 +21816,7 @@ namespace  {
              * Add a where between statement to the query.
              *
              * @param \Illuminate\Contracts\Database\Query\Expression|string $column
-             * @param \Illuminate\Database\Query\iterable $values
+             * @param iterable $values
              * @param string $boolean
              * @param bool $not
              * @return \Illuminate\Database\Eloquent\Builder<static> 
@@ -21844,7 +21844,7 @@ namespace  {
              * Add an or where between statement to the query.
              *
              * @param \Illuminate\Contracts\Database\Query\Expression|string $column
-             * @param \Illuminate\Database\Query\iterable $values
+             * @param iterable $values
              * @return \Illuminate\Database\Eloquent\Builder<static> 
              * @static 
              */            public static function orWhereBetween($column, $values)
@@ -21868,7 +21868,7 @@ namespace  {
              * Add a where not between statement to the query.
              *
              * @param \Illuminate\Contracts\Database\Query\Expression|string $column
-             * @param \Illuminate\Database\Query\iterable $values
+             * @param iterable $values
              * @param string $boolean
              * @return \Illuminate\Database\Eloquent\Builder<static> 
              * @static 
@@ -21894,7 +21894,7 @@ namespace  {
              * Add an or where not between statement to the query.
              *
              * @param \Illuminate\Contracts\Database\Query\Expression|string $column
-             * @param \Illuminate\Database\Query\iterable $values
+             * @param iterable $values
              * @return \Illuminate\Database\Eloquent\Builder<static> 
              * @static 
              */            public static function orWhereNotBetween($column, $values)
@@ -22602,7 +22602,7 @@ namespace  {
              * Add a "having between " clause to the query.
              *
              * @param string $column
-             * @param \Illuminate\Database\Query\iterable $values
+             * @param iterable $values
              * @param string $boolean
              * @param bool $not
              * @return \Illuminate\Database\Eloquent\Builder<static> 
@@ -23345,7 +23345,7 @@ namespace  {
                             /**
              * Die and dump the current SQL and bindings.
              *
-             * @return \Illuminate\Database\Query\never 
+             * @return never 
              * @static 
              */            public static function dd()
             {
@@ -23355,7 +23355,7 @@ namespace  {
                             /**
              * Die and dump the current SQL with embedded bindings.
              *
-             * @return \Illuminate\Database\Query\never 
+             * @return never 
              * @static 
              */            public static function ddRawSql()
             {

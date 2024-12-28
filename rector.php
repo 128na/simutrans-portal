@@ -28,6 +28,12 @@ return RectorConfig::configure()
         instanceOf: true,
         earlyReturn: true,
         strictBooleans: true,
+        carbon: true,
+        rectorPreset: true,
+        phpunitCodeQuality: true,
+        doctrineCodeQuality: true,
+        symfonyCodeQuality: true,
+        symfonyConfigs: true,
     )
     ->withSkip([
         IssetOnPropertyObjectToPropertyExistsRector::class, // property_exists($model, 'hoge') return false
@@ -35,14 +41,14 @@ return RectorConfig::configure()
     ])
     ->withSets([
         LaravelLevelSetList::UP_TO_LARAVEL_110,
-        LaravelSetList::LARAVEL_ARRAYACCESS_TO_METHOD_CALL,
-        LaravelSetList::LARAVEL_ARRAY_STR_FUNCTION_TO_STATIC_CALL,
-        LaravelSetList::LARAVEL_CODE_QUALITY,
-        LaravelSetList::LARAVEL_COLLECTION,
-        LaravelSetList::LARAVEL_CONTAINER_STRING_TO_FULLY_QUALIFIED_NAME,
+        // LaravelSetList::LARAVEL_ARRAYACCESS_TO_METHOD_CALL,
+        // LaravelSetList::LARAVEL_ARRAY_STR_FUNCTION_TO_STATIC_CALL,
+        // LaravelSetList::LARAVEL_CODE_QUALITY,
+        // LaravelSetList::LARAVEL_COLLECTION,
+        // LaravelSetList::LARAVEL_CONTAINER_STRING_TO_FULLY_QUALIFIED_NAME,
         // LaravelSetList::LARAVEL_ELOQUENT_MAGIC_METHOD_TO_QUERY_BUILDER, 完全クラス名が冗長なのでなし
-        LaravelSetList::LARAVEL_FACADE_ALIASES_TO_FULL_NAMES,
+        // LaravelSetList::LARAVEL_FACADE_ALIASES_TO_FULL_NAMES,
         // LaravelSetList::LARAVEL_IF_HELPERS, phpstanがちょくちょくエラーになるので
-        LaravelSetList::LARAVEL_LEGACY_FACTORIES_TO_CLASSES,
+        // LaravelSetList::LARAVEL_LEGACY_FACTORIES_TO_CLASSES,
         // LaravelSetList::LARAVEL_STATIC_TO_INJECTION, ぶっ壊れる
     ]);

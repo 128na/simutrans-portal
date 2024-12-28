@@ -29,7 +29,7 @@ final class FindAllWithTrashedTest extends TestCase
         $res = $this->articleRepository->findAllWithTrashed();
 
         $this->assertInstanceOf(Collection::class, $res);
-        $this->assertEquals(1, $res->count(), '全ての記事が取得できること');
+        $this->assertCount(1, $res, '全ての記事が取得できること');
     }
 
     public function test公開以外のステータス(): void
@@ -38,7 +38,7 @@ final class FindAllWithTrashedTest extends TestCase
         $res = $this->articleRepository->findAllWithTrashed();
 
         $this->assertInstanceOf(Collection::class, $res);
-        $this->assertEquals(1, $res->count(), '非公開記事も取得できること');
+        $this->assertCount(1, $res, '非公開記事も取得できること');
     }
 
     public function test論理削除(): void
@@ -47,6 +47,6 @@ final class FindAllWithTrashedTest extends TestCase
         $res = $this->articleRepository->findAllWithTrashed();
 
         $this->assertInstanceOf(Collection::class, $res);
-        $this->assertEquals(1, $res->count(), '削除済み記事も取得できること');
+        $this->assertCount(1, $res, '削除済み記事も取得できること');
     }
 }

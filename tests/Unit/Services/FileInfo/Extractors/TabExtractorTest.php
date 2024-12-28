@@ -12,7 +12,7 @@ final class TabExtractorTest extends TestCase
     public function test_get_key(): void
     {
         $result = $this->getSUT()->getKey();
-        $this->assertEquals('tabs', $result);
+        $this->assertSame('tabs', $result);
     }
 
     public function test_is_target(): void
@@ -36,7 +36,7 @@ fuga
 ';
 
         $result = $sUT->extract($data);
-        $this->assertEquals(['hoge' => 'ほげ', 'fuga' => 'ふが'], $result);
+        $this->assertSame(['hoge' => 'ほげ', 'fuga' => 'ふが'], $result);
     }
 
     private function getSUT(): TabExtractor

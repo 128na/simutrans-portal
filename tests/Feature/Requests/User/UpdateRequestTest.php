@@ -12,13 +12,11 @@ use Tests\Feature\TestCase;
 
 final class UpdateRequestTest extends TestCase
 {
-    private User $user;
-
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create();
+        User::factory()->create();
 
     }
 

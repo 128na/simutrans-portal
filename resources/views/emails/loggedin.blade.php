@@ -1,3 +1,8 @@
+<?php
+
+declare(strict_types=1);
+
+?>
 <h3>
     <a href="{{ config('app.url') }}">{{ config('app.name') }}</a>
 </h3>
@@ -15,3 +20,4 @@
     ユーザーエージェント（ブラウザ情報）<br>
     {{ $loginHistory->ua ?? '不明' }}<br>
 </p>
+<?php 

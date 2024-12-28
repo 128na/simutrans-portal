@@ -395,9 +395,3 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: app/Services/Front/MetaOgpService.php
-
-		-
-			message: '#^Method App\\Services\\Front\\MetaOgpService\:\:user\(\) should return array\{title\: string, description\: string, image\: string\|null, card_type\: string\} but returns array\{title\: non\-falsy\-string, description\: string, image\: mixed, card_type\: ''summary_large_image''\}\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Front/MetaOgpService.php

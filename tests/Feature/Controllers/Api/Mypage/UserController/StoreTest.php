@@ -67,7 +67,7 @@ final class StoreTest extends TestCase
         $testResponse = $this->postJson($url, ['user' => $data]);
         $testResponse->assertOk();
 
-        $this->assertEquals($this->user->fresh()->email, 'new@example.com');
+        $this->assertEquals('new@example.com', $this->user->fresh()->email);
 
         Notification::assertSentTo($this->user, VerifyEmail::class);
     }

@@ -10,17 +10,15 @@ use Tests\Feature\TestCase;
 
 final class TagsTest extends TestCase
 {
-    private Article $article;
-
     private Tag $tag;
 
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->article = Article::factory()->publish()->create();
+        $article = Article::factory()->publish()->create();
         $this->tag = Tag::factory()->create();
-        $this->article->tags()->save($this->tag);
+        $article->tags()->save($this->tag);
     }
 
     public function test(): void

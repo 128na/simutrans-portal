@@ -12,7 +12,7 @@ final class DatExtractorTest extends TestCase
     public function test_get_key(): void
     {
         $result = $this->getSUT()->getKey();
-        $this->assertEquals('dats', $result);
+        $this->assertSame('dats', $result);
     }
 
     public function test_is_target(): void
@@ -37,7 +37,7 @@ type=bar
 ';
 
         $result = $sUT->extract($data);
-        $this->assertEquals(['hoge', 'fuga'], $result);
+        $this->assertSame(['hoge', 'fuga'], $result);
     }
 
     private function getSUT(): DatExtractor

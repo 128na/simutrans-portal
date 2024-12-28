@@ -10,7 +10,7 @@
     "php": "^8.3|~8.4",
     "abordage/laravel-html-min": "^0.2.1",
     "abraham/twitteroauth": "^7",
-    "berkayk/onesignal-laravel": "^2.1.0",
+    "berkayk/onesignal-laravel": "^2.2.0",
     "cebe/markdown": "^1.2.1",
     "ezyang/htmlpurifier": "^4.18",
     "google/cloud-recaptcha-enterprise": "^1.17.2",
@@ -28,7 +28,7 @@
     "spatie/laravel-sitemap": "^7.3.0"
   },
   "require-dev": {
-    "barryvdh/laravel-debugbar": "^3.14.9",
+    "barryvdh/laravel-debugbar": "^3.14.10",
     "barryvdh/laravel-ide-helper": "^3.3.0",
     "dg/bypass-finals": "^1.8",
     "driftingly/rector-laravel": "^2",
@@ -39,8 +39,8 @@
     "laravel/pint": "^1.18.3",
     "mockery/mockery": "^1.6.12",
     "nunomaduro/collision": "^8.5.0",
-    "phpunit/phpunit": "^10.5.39",
-    "rector/rector": "^2.0.3",
+    "phpunit/phpunit": "^10.5.40",
+    "rector/rector": "^2.0.4",
     "spatie/laravel-ignition": "^2.9.0"
   },
   "config": {

@@ -75,5 +75,6 @@ final class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin' => \App\Http\Middleware\AdminCheck::class,
         'restrict' => \App\Http\Middleware\RestrictControl::class,
+        'botblock' => \App\Http\Middleware\BotBlock::class,
     ];
 }

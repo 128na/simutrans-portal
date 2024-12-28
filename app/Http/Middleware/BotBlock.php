@@ -12,10 +12,12 @@ final class BotBlock
 {
     /**
      * robots.txtを守らない悪い子たち
+     * 小文字で書く
      */
     private const array BAD_ROBOTS = [
         'claudebot',
         'petalbot',
+        'bingbot',
     ];
 
     /**
@@ -33,7 +35,7 @@ final class BotBlock
         $ua = mb_strtolower($ua);
         foreach (self::BAD_ROBOTS as $bot) {
             if (str_contains($ua, $bot)) {
-                return response('', 200)->header('Cache-Control', 'public, max-age=2147483648');
+                abort(403);
             }
         }
 

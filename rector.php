@@ -7,6 +7,7 @@ use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Assign\RemoveUnusedVariableAssignRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\NarrowUnusedSetUpDefinedPropertyRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector;
+use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 use RectorLaravel\Set\LaravelLevelSetList;
 use RectorLaravel\Set\LaravelSetList;
 
@@ -42,6 +43,7 @@ return RectorConfig::configure()
         ReturnTypeFromStrictTypedCallRector::class => [__DIR__.'/app/Repositories/BaseRepository.php'], // Generics壊れる
         RemoveUnusedVariableAssignRector::class => [__DIR__.'/tests'], // $selfでのアクセスが壊れるので
         NarrowUnusedSetUpDefinedPropertyRector::class => [__DIR__.'/tests'], // $selfでのアクセスが壊れるので
+        DeclareStrictTypesRector::class => [__DIR__.'/resources/views'],
     ])
     ->withSets([
         LaravelLevelSetList::UP_TO_LARAVEL_110,

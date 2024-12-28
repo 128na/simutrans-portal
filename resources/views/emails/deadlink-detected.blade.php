@@ -1,8 +1,3 @@
-<?php
-
-declare(strict_types=1);
-
-?>
 <h3>
     <a href="{{ config('app.url') }}">{{ config('app.name') }}</a>
 </h3>
@@ -17,4 +12,3 @@ declare(strict_types=1);
     マイページ：
     <a href="{{ route('mypage.index') }}">{{ route('mypage.index') }}</a>
 </p>
-<?php 

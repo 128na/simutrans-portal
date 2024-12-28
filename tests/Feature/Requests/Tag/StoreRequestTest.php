@@ -12,12 +12,13 @@ use Tests\Feature\TestCase;
 
 final class StoreRequestTest extends TestCase
 {
+    public Tag $tag;
+
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        Tag::factory()->create();
-
+        $this->tag = Tag::factory()->create();
     }
 
     #[DataProvider('dataFail')]

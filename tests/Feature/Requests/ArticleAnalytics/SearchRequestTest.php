@@ -13,6 +13,8 @@ use Tests\Feature\TestCase;
 
 final class SearchRequestTest extends TestCase
 {
+    public Article $othersArticle;
+
     private User $user;
 
     #[\Override]
@@ -20,7 +22,7 @@ final class SearchRequestTest extends TestCase
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        Article::factory()->create([]);
+        $this->othersArticle = Article::factory()->create([]);
     }
 
     #[DataProvider('dataValidation')]

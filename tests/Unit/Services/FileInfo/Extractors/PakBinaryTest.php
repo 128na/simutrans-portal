@@ -35,7 +35,7 @@ final class PakBinaryTest extends TestCase
     public function test_seek_until(): void
     {
         $result = $this->getSUT()->seekUntil(pack('H*', '948C'));
-        $this->assertEquals(105, $result);
+        $this->assertSame(105, $result);
     }
 
     private function getSUT(): PakBinary

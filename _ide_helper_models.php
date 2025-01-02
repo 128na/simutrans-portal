@@ -34,16 +34,16 @@ namespace App\Models{
  * @property-read int|null $attachments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
+ * @property-read mixed $category_addons
+ * @property-read mixed $category_pak128_positions
+ * @property-read mixed $category_paks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ConversionCount> $conversionCounts
  * @property-read int|null $conversion_counts_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ConversionCount> $dailyConversionCounts
  * @property-read int|null $daily_conversion_counts_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ViewCount> $dailyViewCounts
  * @property-read int|null $daily_view_counts_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $category_addons
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $category_pak128_positions
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $category_paks
- * @property-read \App\Models\Attachment|null $file
+ * @property-read mixed $file
  * @property-read bool $has_file
  * @property-read bool $has_file_info
  * @property-read bool $has_thumbnail
@@ -54,10 +54,6 @@ namespace App\Models{
  * @property-read bool $is_publish
  * @property-read bool $is_reservation
  * @property-read string $meta_description
- * @property-read \App\Models\Attachment|null $thumbnail
- * @property-read string $thumbnail_url
- * @property-read string $todays_conversion_rate
- * @property-read string $url_decoded_slug
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ConversionCount> $monthlyConversionCounts
  * @property-read int|null $monthly_conversion_counts_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ViewCount> $monthlyViewCounts
@@ -69,10 +65,14 @@ namespace App\Models{
  * @property-read int|null $related_articles_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
+ * @property-read mixed $thumbnail
+ * @property-read mixed $thumbnail_url
  * @property-read \App\Models\Article\ConversionCount|null $todaysConversionCount
+ * @property-read string $todays_conversion_rate
  * @property-read \App\Models\Article\ViewCount|null $todaysViewCount
  * @property-read \App\Models\Article\ConversionCount|null $totalConversionCount
  * @property-read \App\Models\Article\ViewCount|null $totalViewCount
+ * @property-read string $url_decoded_slug
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ViewCount> $viewCounts
  * @property-read int|null $view_counts_count
@@ -177,16 +177,16 @@ namespace App\Models{
  * @property string|null $caption キャプション（画像向け）
  * @property int $order 表示順（画像向け）
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent|null $attachmentable
- * @property-read \App\Models\Attachment\FileInfo|null $fileInfo
  * @property-read string $extension
- * @property-read string|null $file_contents
- * @property-read string $full_path
+ * @property-read mixed $file_contents
+ * @property-read \App\Models\Attachment\FileInfo|null $fileInfo
+ * @property-read mixed $full_path
  * @property-read bool $is_image
  * @property-read bool $is_png
- * @property-read bool $path_exists
- * @property-read string $thumbnail
+ * @property-read mixed $path_exists
+ * @property-read mixed $thumbnail
  * @property-read string $type
- * @property-read string $url
+ * @property-read mixed $url
  * @property-read \App\Models\User $user
  * @method static \Database\Factories\AttachmentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment newModelQuery()
@@ -446,7 +446,7 @@ namespace App\Models\User{
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
- * @property-read \App\Models\Attachment|null $avatar
+ * @property-read mixed $avatar
  * @property-read string $avatar_url
  * @property-read bool $has_avatar
  * @property-read \App\Models\User $user

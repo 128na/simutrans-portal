@@ -3,7 +3,8 @@
     window.OneSignal = window.OneSignal || [];
     OneSignal.push(function() {
         OneSignal.init({
-            appId: "{{ config('onesignal.app_id') }}",
-        });
+            appId: "{{ config('onesignal.app_id') }}"
+        , });
     });
+
 </script>

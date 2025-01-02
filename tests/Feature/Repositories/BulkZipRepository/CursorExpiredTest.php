@@ -27,7 +27,7 @@ final class CursorExpiredTest extends TestCase
         BulkZip::factory()->create(['created_at' => $time]);
         $lazyCollection = $this->bulkZipRepository->cursorExpired($time);
         $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
-        $this->assertEquals(1, $lazyCollection->count());
+        $this->assertCount(1, $lazyCollection);
     }
 
     public function test_含まれない(): void
@@ -36,6 +36,6 @@ final class CursorExpiredTest extends TestCase
         BulkZip::factory()->create(['created_at' => $time]);
 
         $lazyCollection = $this->bulkZipRepository->cursorExpired($time->subSecond());
-        $this->assertEquals(0, $lazyCollection->count());
+        $this->assertCount(0, $lazyCollection);
     }
 }

@@ -38,7 +38,7 @@ final class NotJustNumbersTest extends TestCase
     {
         $this->getSUT()
             ->validate('dummy', $value, $this->failClosure);
-        $this->assertEquals($expected, $this->failCalled);
+        $this->assertSame($expected, $this->failCalled);
     }
 
     public static function data(): \Generator

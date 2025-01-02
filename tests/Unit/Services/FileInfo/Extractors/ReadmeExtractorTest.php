@@ -12,7 +12,7 @@ final class ReadmeExtractorTest extends TestCase
     public function test_get_key(): void
     {
         $result = $this->getSUT()->getKey();
-        $this->assertEquals('readmes', $result);
+        $this->assertSame('readmes', $result);
     }
 
     public function test_is_target(): void
@@ -30,7 +30,7 @@ final class ReadmeExtractorTest extends TestCase
         $data = 'hoge';
 
         $result = $sUT->extract($data);
-        $this->assertEquals(['hoge'], $result);
+        $this->assertSame(['hoge'], $result);
     }
 
     private function getSUT(): ReadmeExtractor

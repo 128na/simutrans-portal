@@ -9,4 +9,5 @@
     gtag('js', new Date());
 
     gtag('config', 'G-6D7PBPQ0JN');
+
 </script>

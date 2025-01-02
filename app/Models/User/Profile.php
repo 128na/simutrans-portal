@@ -8,6 +8,7 @@ use App\Casts\ToProfileData;
 use App\Constants\DefaultThumbnail;
 use App\Models\Attachment;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -51,32 +52,33 @@ final class Profile extends Model
         return $this->morphMany(Attachment::class, 'attachmentable');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | アクセサ
-    |--------------------------------------------------------------------------
-     */
-    public function getAvatarAttribute(): ?Attachment
+    public function avatar(): Attribute
     {
-        $id = (int) $this->data->avatar;
+        return Attribute::make(get: function () {
+            $id = (int) $this->data->avatar;
+            if ($id !== 0) {
+                return $this->attachments->first(fn (Attachment $attachment): bool => $id === $attachment->id);
+            }
 
-        if ($id !== 0) {
-            return $this->attachments->first(fn (Attachment $attachment): bool => $id === $attachment->id);
-        }
-
-        return null;
+            return null;
+        });
     }
 
-    public function getHasAvatarAttribute(): bool
+    public function hasAvatar(): Attribute
     {
-        return (bool) $this->avatar;
+        return Attribute::make(get: fn (): bool => (bool) $this->avatar);
     }
 
-    public function getAvatarUrlAttribute(): string
+    public function avatarUrl(): Attribute
     {
-        return $this->getPublicDisk()->url($this->has_avatar && $this->avatar
+        return Attribute::make(get: fn (): string => $this->getPublicDisk()->url($this->has_avatar && $this->avatar
             ? $this->avatar->path
-            : DefaultThumbnail::NO_AVATAR);
+            : DefaultThumbnail::NO_AVATAR));
+    }
+
+    public function getPublicDisk(): FilesystemAdapter
+    {
+        return Storage::disk('public');
     }
 
     /*
@@ -100,10 +102,5 @@ final class Profile extends Model
         return [
             'data' => ToProfileData::class,
         ];
-    }
-
-    private function getPublicDisk(): FilesystemAdapter
-    {
-        return Storage::disk('public');
     }
 }

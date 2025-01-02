@@ -31,7 +31,7 @@ final class PaginateBySearchTest extends TestCase
         $res = $this->articleRepository->paginateBySearch($this->article->title);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEquals(1, $res->count(), 'マッチする記事のみ取得出来ること');
+        $this->assertCount(1, $res, 'マッチする記事のみ取得出来ること');
     }
 
     public function testコンテンツ(): void
@@ -40,7 +40,7 @@ final class PaginateBySearchTest extends TestCase
         $res = $this->articleRepository->paginateBySearch('find');
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEquals(1, $res->count(), 'コンテンツにマッチする記事が取得出来ること');
+        $this->assertCount(1, $res, 'コンテンツにマッチする記事が取得出来ること');
     }
 
     public function test添付ファイル情報(): void
@@ -51,7 +51,7 @@ final class PaginateBySearchTest extends TestCase
         $res = $this->articleRepository->paginateBySearch('find');
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEquals(1, $res->count(), '添付ファイル情報にマッチする記事が取得出来ること');
+        $this->assertCount(1, $res, '添付ファイル情報にマッチする記事が取得出来ること');
     }
 
     public function test公開以外のステータス(): void
@@ -60,7 +60,7 @@ final class PaginateBySearchTest extends TestCase
         $res = $this->articleRepository->paginateBySearch($this->article->title);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEquals(0, $res->count(), '非公開記事は取得できないこと');
+        $this->assertCount(0, $res, '非公開記事は取得できないこと');
     }
 
     public function test論理削除(): void
@@ -69,6 +69,6 @@ final class PaginateBySearchTest extends TestCase
         $res = $this->articleRepository->paginateBySearch($this->article->title);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');
+        $this->assertCount(0, $res, '削除済み記事は取得できないこと');
     }
 }

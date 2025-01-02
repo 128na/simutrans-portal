@@ -13,21 +13,21 @@ final class TextServiceTest extends TestCase
     {
         $text = pack('H*', 'EFBBBF').'dummy';
         $result = $this->getSUT()->removeBom($text);
-        $this->assertEquals('dummy', $result);
+        $this->assertSame('dummy', $result);
     }
 
     public function test_encoding(): void
     {
         $text = 'dummy';
         $result = $this->getSUT()->encoding($text);
-        $this->assertEquals('dummy', $result);
+        $this->assertSame('dummy', $result);
     }
 
     public function test_encoding_sjis(): void
     {
         $text = mb_convert_encoding('dummy', 'SJIS');
         $result = $this->getSUT()->encoding($text);
-        $this->assertEquals('dummy', $result);
+        $this->assertSame('dummy', $result);
     }
 
     private function getSUT(): TextService

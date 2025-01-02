@@ -12,14 +12,12 @@ final class DestroyTest extends TestCase
 {
     private User $user;
 
-    private string $code;
-
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->code = Str::uuid()->toString();
-        $this->user = User::factory()->create(['invitation_code' => $this->code]);
+        $code = Str::uuid()->toString();
+        $this->user = User::factory()->create(['invitation_code' => $code]);
     }
 
     public function test(): void

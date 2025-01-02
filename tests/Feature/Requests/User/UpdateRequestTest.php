@@ -12,14 +12,13 @@ use Tests\Feature\TestCase;
 
 final class UpdateRequestTest extends TestCase
 {
-    private User $user;
+    public User $user;
 
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->user = User::factory()->create();
-
     }
 
     #[DataProvider('dataValidation')]
@@ -35,77 +34,93 @@ final class UpdateRequestTest extends TestCase
         yield 'user.nameがnull' => [
             fn (self $self): array => ['user' => [
                 'name' => null,
-            ]], 'user.name',
+            ]],
+            'user.name',
         ];
         yield 'user.nameが256文字以上' => [
             fn (self $self): array => ['user' => [
                 'name' => str_repeat('a', 256),
-            ]], 'user.name',
+            ]],
+            'user.name',
         ];
         yield 'user.nameが存在する' => [
             fn (self $self): array => ['user' => [
                 'name' => $self->user->name,
-            ]], 'user.name',
+            ]],
+            'user.name',
         ];
 
         yield 'user.emailがnull' => [
             fn (self $self): array => ['user' => [
                 'email' => null,
-            ]], 'user.email',
+            ]],
+            'user.email',
         ];
         yield 'user.emailが不正' => [
             fn (self $self): array => ['user' => [
                 'email' => 'invalid-email',
-            ]], 'user.email',
+            ]],
+            'user.email',
         ];
         yield 'user.emailが存在する' => [
             fn (self $self): array => ['user' => [
                 'email' => $self->user->email,
-            ]], 'user.email',
+            ]],
+            'user.email',
         ];
 
         yield 'user.profileがnull' => [
             fn (self $self): array => ['user' => [
                 'profile' => null,
-            ]], 'user.profile',
+            ]],
+            'user.profile',
         ];
 
         yield 'user.profile.dataがnull' => [
             fn (self $self): array => ['user' => [
                 'profile' => ['data' => null],
-            ]], 'user.profile.data',
+            ]],
+            'user.profile.data',
         ];
 
         yield 'user.profile.data.avatarが存在しない' => [
             fn (self $self): array => ['user' => [
                 'profile' => ['data' => ['avatar' => 99999]],
-            ]], 'user.profile.data.avatar',
+            ]],
+            'user.profile.data.avatar',
         ];
         yield 'user.profile.data.avatarが画像以外' => [
             fn (self $self): array => ['user' => [
                 'profile' => ['data' => ['avatar' => $self->createAttachment($self->user)->id]],
-            ]], 'user.profile.data.avatar',
+            ]],
+            'user.profile.data.avatar',
         ];
         yield 'user.profile.data.avatarが他人のアップロードした画像' => [
             fn (self $self): array => ['user' => [
                 'profile' => ['data' => ['avatar' => $self->createAttachment(User::factory()->create())->id]],
-            ]], 'user.profile.data.avatar',
+            ]],
+            'user.profile.data.avatar',
         ];
 
         yield 'user.profile.data.descriptionが1025文字以上' => [
             fn (self $self): array => ['user' => [
                 'profile' => ['data' => ['description' => str_repeat('a', 1025)]],
-            ]], 'user.profile.data.description',
+            ]],
+            'user.profile.data.description',
         ];
         yield 'user.profile.data.websiteが不正' => [
-            fn (self $self): array => ['user' => [
-                'profile' => ['data' => ['website' => 'invalid-url']]],
-            ], 'user.profile.data.website',
+            fn (self $self): array => [
+                'user' => [
+                    'profile' => ['data' => ['website' => 'invalid-url']],
+                ],
+            ],
+            'user.profile.data.website',
         ];
         yield 'user.profile.data.websiteが256文字以上' => [
             fn (self $self): array => ['user' => [
                 'profile' => ['data' => ['website' => 'http://example.com/'.str_repeat('a', 256)]],
-            ]], 'user.profile.data.website',
+            ]],
+            'user.profile.data.website',
         ];
     }
 }

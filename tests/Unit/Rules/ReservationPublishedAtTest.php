@@ -40,7 +40,7 @@ final class ReservationPublishedAtTest extends TestCase
         $this->getSUT()
             ->setData($data)
             ->validate('dummy', $value, $this->failClosure);
-        $this->assertEquals($expected, $this->failCalled);
+        $this->assertSame($expected, $this->failCalled);
     }
 
     public static function data(): \Generator

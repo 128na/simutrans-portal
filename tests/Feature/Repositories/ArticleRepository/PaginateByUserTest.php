@@ -30,7 +30,7 @@ final class PaginateByUserTest extends TestCase
         $res = $this->articleRepository->paginateByUser($this->article->user);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEquals(1, $res->count(), 'カテゴリに紐づく記事のみ取得出来ること');
+        $this->assertCount(1, $res, 'カテゴリに紐づく記事のみ取得出来ること');
     }
 
     public function test公開以外のステータス(): void
@@ -39,7 +39,7 @@ final class PaginateByUserTest extends TestCase
         $res = $this->articleRepository->paginateByUser($this->article->user);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEquals(0, $res->count(), '非公開記事は取得できないこと');
+        $this->assertCount(0, $res, '非公開記事は取得できないこと');
     }
 
     public function test論理削除(): void
@@ -48,6 +48,6 @@ final class PaginateByUserTest extends TestCase
         $res = $this->articleRepository->paginateByUser($this->article->user);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEquals(0, $res->count(), '削除済み記事は取得できないこと');
+        $this->assertCount(0, $res, '削除済み記事は取得できないこと');
     }
 }

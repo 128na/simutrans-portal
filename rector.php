@@ -13,12 +13,12 @@ use RectorLaravel\Set\LaravelSetList;
 
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__ . '/app',
-        __DIR__ . '/database',
-        __DIR__ . '/lang',
-        __DIR__ . '/resources',
-        __DIR__ . '/routes',
-        __DIR__ . '/tests',
+        __DIR__.'/app',
+        __DIR__.'/database',
+        __DIR__.'/lang',
+        __DIR__.'/resources',
+        __DIR__.'/routes',
+        __DIR__.'/tests',
     ])
     ->withPhpSets(php83: true)
     ->withPreparedSets(
@@ -40,10 +40,10 @@ return RectorConfig::configure()
     )
     ->withSkip([
         IssetOnPropertyObjectToPropertyExistsRector::class, // property_exists($model, 'hoge') return false
-        ReturnTypeFromStrictTypedCallRector::class => [__DIR__ . '/app/Repositories/BaseRepository.php'], // Generics壊れる
-        RemoveUnusedVariableAssignRector::class => [__DIR__ . '/tests'], // $selfでのアクセスが壊れるので
-        NarrowUnusedSetUpDefinedPropertyRector::class => [__DIR__ . '/tests'], // $selfでのアクセスが壊れるので
-        DeclareStrictTypesRector::class => [__DIR__ . '/resources/views'], // bladeファイルも declare がつくので
+        ReturnTypeFromStrictTypedCallRector::class => [__DIR__.'/app/Repositories/BaseRepository.php'], // Generics壊れる
+        RemoveUnusedVariableAssignRector::class => [__DIR__.'/tests'], // $selfでのアクセスが壊れるので
+        NarrowUnusedSetUpDefinedPropertyRector::class => [__DIR__.'/tests'], // $selfでのアクセスが壊れるので
+        DeclareStrictTypesRector::class => [__DIR__.'/resources/views'], // bladeファイルも declare がつくので
     ])
     ->withSets([
         LaravelLevelSetList::UP_TO_LARAVEL_110,

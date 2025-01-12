@@ -22,14 +22,14 @@
     "laravel/tinker": "^2.10",
     "marvinlabs/laravel-discord-logger": "^1.4.2",
     "potibm/phluesky": "^0.3.0",
-    "spatie/flysystem-dropbox": "^3.0.1",
+    "spatie/flysystem-dropbox": "^3.0.2",
     "spatie/laravel-backup": "^8.8.2",
     "spatie/laravel-feed": "^4.4",
-    "spatie/laravel-sitemap": "^7.3.0"
+    "spatie/laravel-sitemap": "^7.3.1"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.14.10",
-    "barryvdh/laravel-ide-helper": "^3.4.0",
+    "barryvdh/laravel-ide-helper": "^3.5.3",
     "dg/bypass-finals": "^1.8",
     "driftingly/rector-laravel": "^2.0.1",
     "fakerphp/faker": "^1.24.1",
@@ -40,7 +40,7 @@
     "mockery/mockery": "^1.6.12",
     "nunomaduro/collision": "^8.5.0",
     "phpunit/phpunit": "^10.5.40",
-    "rector/rector": "^2.0.5",
+    "rector/rector": "^2.0.6",
     "spatie/laravel-ignition": "^2.9.0"
   },
   "config": {

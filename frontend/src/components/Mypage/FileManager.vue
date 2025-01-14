@@ -45,8 +45,12 @@
           </template>
 
           <q-space />
-          <q-file borderless label-color="primary" type="file" label="新規アップロード" :max-file-size="20_000_000"
-            :multiple="isMultiSelect" :max-files="10" :accept="accept" @update:model-value="handleUpload" />
+          <div class="text-dark q-pa-sm">
+            合計{{ isMultiSelect ? maxFiles : 1 }}ファイル、{{ maxUploadSizeMB }}MBまで
+          </div>
+          <q-file borderless label-color="primary" type="file" label="新規アップロード"
+            :max-file-size="maxUploadSizeMB * 1024 * 1024" :multiple="isMultiSelect" :max-files="maxFiles"
+            :accept="accept" @update:model-value="handleUpload" @rejected="onRejected" />
           <q-btn v-show="isMultiSelect" color="secondary" v-close-popup>閉じる</q-btn>
         </q-toolbar>
       </q-footer>
@@ -68,6 +72,8 @@ const displayCols = [
   { value: 6, label: '6' },
   { value: 12, label: '12' },
 ];
+const maxFiles = 5;
+const maxUploadSizeMB = 50;
 
 export default defineComponent({
   name: 'FileManager',
@@ -196,6 +202,22 @@ export default defineComponent({
     const displayCol = ref($q.platform.is.mobile ? 1 : 6);
     const colClass = computed(() => `col-${12 / displayCol.value}`);
 
+    const onRejected = (fs) => {
+      let message = 'アップロードできないファイルが含まれています';
+      console.log(fs);
+
+      fs.forEach((f) => {
+        if (f.failedPropValidation && f.failedPropValidation === 'max-file-size') {
+          message = `${maxUploadSizeMB}MB以上のファイルが含まれています`;
+        }
+        if (f.failedPropValidation && f.failedPropValidation === 'max-files') {
+          message = `ファイル数は${maxFiles}以内にしてください`;
+        }
+      });
+
+      notify.failed(message);
+    };
+
     return {
       show,
       files,
@@ -210,6 +232,9 @@ export default defineComponent({
       colClass,
       autoCrop,
       crop,
+      onRejected,
+      maxFiles,
+      maxUploadSizeMB,
     };
   },
 });

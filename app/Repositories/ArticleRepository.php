@@ -50,7 +50,7 @@ final class ArticleRepository extends BaseRepository
         $attachments = $article->user->myAttachments()->find($attachmentsIds);
         $article->attachments()->saveMany($attachments);
 
-        //remove
+        // remove
         /** @var Collection<int,Attachment> */
         $shouldDetach = $article->attachments()->whereNotIn('id', $attachmentsIds)->get();
         foreach ($shouldDetach as $attachment) {

@@ -35,6 +35,6 @@ final class FindAllByUserTest extends TestCase
 
         $result = $this->categoryRepository->findAllByUser($user);
 
-        $this->assertTrue($result->some(fn (Category $category): bool => $category->need_admin === true));
+        $this->assertTrue($result->contains(fn (Category $category): bool => $category->need_admin === true));
     }
 }

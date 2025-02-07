@@ -156,7 +156,7 @@ return [
      */
 
     'attributes' => [
-        //article
+        // article
         'article.post_type' => '投稿形式',
         'article.status' => '公開状態',
         'article.title' => 'タイトル',
@@ -183,7 +183,7 @@ return [
         'article.articles' => '関連記事',
         'article.articles.*.id' => '関連記事',
 
-        //auth
+        // auth
         'email' => 'メールアドレス',
         'name' => '名前',
         'password' => 'パスワード',

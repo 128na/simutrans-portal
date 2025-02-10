@@ -36,7 +36,7 @@ final class FindByBulkZippableTest extends TestCase
         /** @var User */
         $user = User::factory()->create();
         $res = $this->bulkZipRepository->findByBulkZippable($user);
-        $this->assertNull($res);
+        $this->assertNotInstanceOf(\App\Models\BulkZip::class, $res);
     }
 
     public function test未対応モデルは_ng(): void

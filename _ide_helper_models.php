@@ -44,6 +44,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ViewCount> $dailyViewCounts
  * @property-read int|null $daily_view_counts_count
  * @property-read mixed $file
+ * @property-read \App\Models\TFactory|null $use_factory
  * @property-read bool $has_file
  * @property-read bool $has_file_info
  * @property-read bool $has_thumbnail
@@ -133,6 +134,7 @@ namespace App\Models\Article{
  * @property int $rank
  * @property int $article_id
  * @property-read \App\Models\Article $article
+ * @property-read \App\Models\Article\TFactory|null $use_factory
  * @method static \Database\Factories\Article\RankingFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Ranking newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Ranking newQuery()
@@ -176,11 +178,12 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property string|null $caption キャプション（画像向け）
  * @property int $order 表示順（画像向け）
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent|null $attachmentable
+ * @property-read \Illuminate\Database\Eloquent\Model|null $attachmentable
  * @property-read string $extension
  * @property-read mixed $file_contents
  * @property-read \App\Models\Attachment\FileInfo|null $fileInfo
  * @property-read mixed $full_path
+ * @property-read \App\Models\TFactory|null $use_factory
  * @property-read bool $is_image
  * @property-read bool $is_png
  * @property-read mixed $path_exists
@@ -204,7 +207,7 @@ namespace App\Models\Attachment{
  *
  * @property int $id
  * @property int $attachment_id
- * @property array $data
+ * @property array<array-key, mixed> $data
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FileInfo newModelQuery()
@@ -228,7 +231,8 @@ namespace App\Models{
  * @property string|null $path 生成ファイルのパス
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $bulkZippable
+ * @property-read \Illuminate\Database\Eloquent\Model $bulkZippable
+ * @property-read \App\Models\TFactory|null $use_factory
  * @method static \Database\Factories\BulkZipFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BulkZip newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BulkZip newQuery()
@@ -252,6 +256,7 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
  * @property-read int|null $articles_count
+ * @property-read \App\Models\TFactory|null $use_factory
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category addon()
  * @method static \Database\Factories\CategoryFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category forUser(\App\Models\User $user)
@@ -318,6 +323,7 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property int|null $user_id
+ * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\RedirectFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Redirect from(string $from)
@@ -346,6 +352,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
  * @property-read int|null $articles_count
  * @property-read \App\Models\User|null $createdBy
+ * @property-read \App\Models\TFactory|null $use_factory
  * @property-read \App\Models\User|null $lastModifiedBy
  * @method static \Database\Factories\TagFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tag newModelQuery()
@@ -383,6 +390,7 @@ namespace App\Models{
  * @property-read \App\Models\BulkZip|null $bulkZippable
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $createdTags
  * @property-read int|null $created_tags_count
+ * @property-read \App\Models\TFactory|null $use_factory
  * @property-read User|null $invited
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $invites
  * @property-read int|null $invites_count
@@ -424,6 +432,7 @@ namespace App\Models\User{
  * @property string|null $referer
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property-read \App\Models\User\TFactory|null $use_factory
  * @property-read \App\Models\User $user
  * @method static \Database\Factories\User\LoginHistoryFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginHistory newModelQuery()

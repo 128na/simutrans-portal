@@ -42,6 +42,7 @@ final class CursorCheckLinkTest extends TestCase
     {
         $contents = $this->article->contents;
         $contents->exclude_link_check = true;
+
         $this->article->update([
             'contents' => $contents,
         ]);

@@ -35,7 +35,7 @@ final class FindRandomPRTest extends TestCase
         $this->article->update(['pr' => false]);
         $res = $this->articleRepository->findRandomPR();
 
-        $this->assertNull($res);
+        $this->assertNotInstanceOf(\App\Models\Article::class, $res);
     }
 
     public function test公開以外のステータス(): void
@@ -43,7 +43,7 @@ final class FindRandomPRTest extends TestCase
         $this->article->update(['status' => ArticleStatus::Draft]);
         $res = $this->articleRepository->findRandomPR();
 
-        $this->assertNull($res);
+        $this->assertNotInstanceOf(\App\Models\Article::class, $res);
     }
 
     public function test論理削除(): void
@@ -51,6 +51,6 @@ final class FindRandomPRTest extends TestCase
         $this->article->delete();
         $res = $this->articleRepository->findRandomPR();
 
-        $this->assertNull($res);
+        $this->assertNotInstanceOf(\App\Models\Article::class, $res);
     }
 }

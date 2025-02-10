@@ -218,6 +218,7 @@ final class FrontControllerTest extends TestCase
     {
         $article = Article::factory()->publish()->create();
         $article->user->update(['nickname' => null]);
+
         $testResponse = $this->get('/articles/'.$article->slug);
         $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user_id, $article->slug));
     }

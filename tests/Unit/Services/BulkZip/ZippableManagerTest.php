@@ -28,7 +28,7 @@ final class ZippableManagerTest extends TestCase
         });
 
         $res = $this->getSUT()->getItems(app(BulkZip::class));
-        $this->assertCount(0, $res);
+        $this->assertEmpty($res);
     }
 
     public function test未対応モデル(): void

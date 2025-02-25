@@ -38,6 +38,6 @@ final class FindInvitesTest extends TestCase
         $res = $this->userRepository->findInvites($this->user);
 
         $this->assertInstanceOf(Collection::class, $res);
-        $this->assertCount(0, $res);
+        $this->assertEmpty($res);
     }
 }

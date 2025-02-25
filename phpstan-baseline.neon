@@ -13,12 +13,6 @@ parameters:
 			path: app/Actions/Article/GetOptions.php
 
 		-
-			message: '#^Parameter \#1 \$url of method Spatie\\Sitemap\\Tags\\Url\:\:addImage\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Actions/CreateSitemap/CreateArticleSitemaps.php
-
-		-
 			message: '#^Access to an undefined property App\\Models\\Article\:\:\$categoryPaks\.$#'
 			identifier: property.notFound
 			count: 1
@@ -43,38 +37,14 @@ parameters:
 			path: app/Http/Controllers/Controller.php
 
 		-
-			message: '#^Cannot access property \$original_name on mixed\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: app/Http/Controllers/FrontController.php
-
-		-
-			message: '#^Cannot access property \$path on mixed\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: app/Http/Controllers/FrontController.php
-
-		-
 			message: '#^Using nullsafe property access "\?\-\>nickname" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1
 			path: app/Http/Controllers/FrontController.php
 
 		-
-			message: '#^Binary operation "\." between ''unique\:articles…'' and mixed results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: app/Http/Requests/Api/Article/UpdateRequest.php
-
-		-
 			message: '#^Access to an undefined property App\\Models\\Article\:\:\$hasFileInfo\.$#'
 			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/Api/Front/ArticleResource.php
-
-		-
-			message: '#^Cannot access property \$fileInfo on mixed\.$#'
-			identifier: property.nonObject
 			count: 1
 			path: app/Http/Resources/Api/Front/ArticleResource.php
 
@@ -91,14 +61,14 @@ parameters:
 			path: app/Models/Article.php
 
 		-
-			message: '#^Cannot access property \$fileInfo on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\:\:page\(\)\.$#'
+			identifier: method.notFound
+			count: 2
 			path: app/Models/Article.php
 
 		-
-			message: '#^Cannot access property \$path on mixed\.$#'
-			identifier: property.nonObject
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\:\:pak\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: app/Models/Article.php
 
@@ -277,12 +247,6 @@ parameters:
 			path: app/Models/Attachment.php
 
 		-
-			message: '#^Cannot access property \$path on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Models/User/Profile.php
-
-		-
 			message: '#^Method App\\Models\\User\\Profile\:\:avatar\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
 			identifier: missingType.generics
 			count: 1
@@ -305,6 +269,12 @@ parameters:
 			identifier: property.phpDocType
 			count: 1
 			path: app/Models/User/Profile.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\:\:active\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Repositories/TagRepository.php
 
 		-
 			message: '#^Access to an undefined property App\\Models\\Article\:\:\$hasThumbnail\.$#'
@@ -331,34 +301,10 @@ parameters:
 			path: app/Services/BlueSky/BlueSkyApiClient.php
 
 		-
-			message: '#^Cannot access property \$original_name on mixed\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: app/Services/BulkZip/Decorators/AddonIntroductionDecorator.php
-
-		-
-			message: '#^Cannot access property \$path on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Services/BulkZip/Decorators/AddonIntroductionDecorator.php
-
-		-
 			message: '#^Using nullsafe property access "\?\-\>nickname" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1
 			path: app/Services/BulkZip/Decorators/AddonIntroductionDecorator.php
-
-		-
-			message: '#^Cannot access property \$original_name on mixed\.$#'
-			identifier: property.nonObject
-			count: 4
-			path: app/Services/BulkZip/Decorators/AddonPostDecorator.php
-
-		-
-			message: '#^Cannot access property \$path on mixed\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: app/Services/BulkZip/Decorators/AddonPostDecorator.php
 
 		-
 			message: '#^Using nullsafe property access "\?\-\>nickname" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
@@ -373,25 +319,7 @@ parameters:
 			path: app/Services/Discord/InviteService.php
 
 		-
-			message: '#^Parameter \#1 \$filename of function file_get_contents expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/FileInfo/FileInfoService.php
-
-		-
 			message: '#^PHPDoc tag @var with type Generator\<string, string, mixed, mixed\> is not subtype of native type Closure\(\)\: Generator\<string, string, mixed, void\>\.$#'
 			identifier: varTag.nativeType
 			count: 1
 			path: app/Services/FileInfo/ZipArchiveParser.php
-
-		-
-			message: '#^Parameter \#1 \$filename of method ZipArchive\:\:open\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/FileInfo/ZipArchiveParser.php
-
-		-
-			message: '#^Method App\\Services\\Front\\MetaOgpService\:\:show\(\) should return array\{title\: string, description\: string, image\: string\|null, canonical\: string, card_type\: string\} but returns array\{title\: non\-falsy\-string, description\: string, image\: mixed, canonical\: string, card_type\: ''summary_large_image''\}\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Services/Front/MetaOgpService.php

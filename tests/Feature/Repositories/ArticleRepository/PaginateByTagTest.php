@@ -45,7 +45,7 @@ final class PaginateByTagTest extends TestCase
         $res = $this->articleRepository->paginateByTag($this->tag);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertCount(0, $res, '非公開記事は取得できないこと');
+        $this->assertEmpty($res, '非公開記事は取得できないこと');
     }
 
     public function test論理削除(): void
@@ -54,6 +54,6 @@ final class PaginateByTagTest extends TestCase
         $res = $this->articleRepository->paginateByTag($this->tag);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertCount(0, $res, '削除済み記事は取得できないこと');
+        $this->assertEmpty($res, '削除済み記事は取得できないこと');
     }
 }

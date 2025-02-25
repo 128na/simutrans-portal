@@ -43,7 +43,7 @@ final class CursorReservationsTest extends TestCase
         $lazyCollection = $this->articleRepository->cursorReservations($time);
 
         $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
-        $this->assertCount(0, $lazyCollection, '公開時刻前の予約投稿記事は取得できないこと');
+        $this->assertEmpty($lazyCollection, '公開時刻前の予約投稿記事は取得できないこと');
     }
 
     public function test公開以外のステータス(): void
@@ -53,7 +53,7 @@ final class CursorReservationsTest extends TestCase
         $lazyCollection = $this->articleRepository->cursorReservations($time);
 
         $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
-        $this->assertCount(0, $lazyCollection, '非公開記事は取得できないこと');
+        $this->assertEmpty($lazyCollection, '非公開記事は取得できないこと');
     }
 
     public function test論理削除(): void
@@ -63,6 +63,6 @@ final class CursorReservationsTest extends TestCase
         $lazyCollection = $this->articleRepository->cursorReservations($time);
 
         $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
-        $this->assertCount(0, $lazyCollection, '削除済み記事は取得できないこと');
+        $this->assertEmpty($lazyCollection, '削除済み記事は取得できないこと');
     }
 }

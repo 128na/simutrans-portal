@@ -23,7 +23,7 @@ final class ZipArchiveParserTest extends TestCase
         });
         $attachment = app(Attachment::class);
         $result = $this->getSUT()->parseTextContent($attachment)->toArray();
-        $this->assertCount(0, $result);
+        $this->assertEmpty($result);
     }
 
     private function getSUT(): ZipArchiveParser

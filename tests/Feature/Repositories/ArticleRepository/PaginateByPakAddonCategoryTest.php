@@ -51,7 +51,7 @@ final class PaginateByPakAddonCategoryTest extends TestCase
         $res = $this->articleRepository->paginateByPakAddonCategory($this->pak, $this->addon);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertCount(0, $res->items(), '非公開記事は取得できないこと');
+        $this->assertEmpty($res->items(), '非公開記事は取得できないこと');
     }
 
     public function test論理削除(): void
@@ -60,6 +60,6 @@ final class PaginateByPakAddonCategoryTest extends TestCase
         $res = $this->articleRepository->paginateByPakAddonCategory($this->pak, $this->addon);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertCount(0, $res->items(), '削除済み記事は取得できないこと');
+        $this->assertEmpty($res->items(), '削除済み記事は取得できないこと');
     }
 }

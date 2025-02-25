@@ -68,6 +68,6 @@ final class FindAllForAnalyticsTest extends TestCase
         );
 
         $this->assertInstanceOf(Collection::class, $res);
-        $this->assertCount(0, $res, '削除済み記事は取得できないこと');
+        $this->assertEmpty($res, '削除済み記事は取得できないこと');
     }
 }

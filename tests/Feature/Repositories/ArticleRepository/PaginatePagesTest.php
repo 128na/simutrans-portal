@@ -40,7 +40,7 @@ final class PaginatePagesTest extends TestCase
         $paginator = $this->articleRepository->paginatePages();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertCount(0, $paginator->items(), '非公開記事は取得できないこと');
+        $this->assertEmpty($paginator->items(), '非公開記事は取得できないこと');
     }
 
     public function test論理削除(): void
@@ -50,6 +50,6 @@ final class PaginatePagesTest extends TestCase
         $paginator = $this->articleRepository->paginatePages();
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginator);
-        $this->assertCount(0, $paginator->items(), '削除済み記事は取得できないこと');
+        $this->assertEmpty($paginator->items(), '削除済み記事は取得できないこと');
     }
 }

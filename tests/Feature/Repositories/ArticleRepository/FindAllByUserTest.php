@@ -49,6 +49,6 @@ final class FindAllByUserTest extends TestCase
         $res = $this->articleRepository->findAllByUser($this->article->user);
 
         $this->assertInstanceOf(Collection::class, $res);
-        $this->assertCount(0, $res, '削除済み記事は取得できないこと');
+        $this->assertEmpty($res, '削除済み記事は取得できないこと');
     }
 }

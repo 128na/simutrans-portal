@@ -36,6 +36,6 @@ final class CursorExpiredTest extends TestCase
         BulkZip::factory()->create(['created_at' => $time]);
 
         $lazyCollection = $this->bulkZipRepository->cursorExpired($time->subSecond());
-        $this->assertCount(0, $lazyCollection);
+        $this->assertEmpty($lazyCollection);
     }
 }

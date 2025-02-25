@@ -22,7 +22,7 @@ final class StoreRequestTest extends TestCase
     public function test_pass(array $data): void
     {
         $messageBag = $this->makeValidator(StoreRequest::class, $data)->errors();
-        $this->assertCount(0, $messageBag->toArray());
+        $this->assertEmpty($messageBag->toArray());
     }
 
     public static function dataFail(): \Generator

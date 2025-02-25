@@ -39,6 +39,6 @@ final class FindAllByUserTest extends TestCase
 
         $result = $this->attachmentRepository->findAllByUser($user);
 
-        $this->assertCount(0, $result);
+        $this->assertEmpty($result);
     }
 }

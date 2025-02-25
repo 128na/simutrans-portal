@@ -31,7 +31,7 @@ final class UpdateRequestTest extends TestCase
     {
         $data = $setup($this);
         $messageBag = $this->makeValidator(UpdateRequest::class, $data)->errors();
-        $this->assertCount(0, $messageBag->toArray());
+        $this->assertEmpty($messageBag->toArray());
     }
 
     public static function dataFail(): \Generator

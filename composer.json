@@ -8,7 +8,7 @@
   "license": "MIT",
   "require": {
     "php": "^8.3|~8.4",
-    "abordage/laravel-html-min": "^0.2.1",
+    "abordage/laravel-html-min": "^0.2.2",
     "abraham/twitteroauth": "^7",
     "berkayk/onesignal-laravel": "^2.4.1",
     "cebe/markdown": "^1.2.1",
@@ -17,7 +17,7 @@
     "guzzlehttp/guzzle": "^7.9.2",
     "laravel-notification-channels/discord": "^1.6",
     "laravel/fortify": "^1.25.4",
-    "laravel/framework": "^11.43.2",
+    "laravel/framework": "^11.44.0",
     "laravel/sanctum": "^4.0.8",
     "laravel/tinker": "^2.10.1",
     "marvinlabs/laravel-discord-logger": "^1.4.2",
@@ -28,7 +28,7 @@
     "spatie/laravel-sitemap": "^7.3.5"
   },
   "require-dev": {
-    "barryvdh/laravel-debugbar": "^3.15.0",
+    "barryvdh/laravel-debugbar": "^3.15.2",
     "barryvdh/laravel-ide-helper": "^3.5.5",
     "dg/bypass-finals": "^1.9",
     "driftingly/rector-laravel": "^2.0.2",

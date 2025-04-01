@@ -71,7 +71,7 @@ final class Check
     private function isDead(Article $article): bool
     {
         assert($article->contents instanceof AddonIntroductionContent);
-        for ($i = 0; $i < self::FAILED_LIMIT; $i++) {
+        for ($i = 0; $i < self::FAILED_LIMIT; ++$i) {
             if ($article->contents->link !== null && $article->contents->link !== '' && $article->contents->link !== '0') {
                 $info = ($this->getHeaders)($article->contents->link);
                 foreach ($info as $inf) {

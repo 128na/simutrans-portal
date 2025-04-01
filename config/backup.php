@@ -24,13 +24,22 @@ return [
                  *
                  * Directories used by the backup process will automatically be excluded.
                  */
-                'exclude' => [
-                ],
+                'exclude' => [],
 
                 /*
                  * Determines if symlinks should be followed.
                  */
-                'follow_links' => false,
+                'follow_links' => false,                /*
+                * Determines if it should avoid unreadable folders.
+                */
+                'ignore_unreadable_directories' => false,
+
+                /*
+                * This path is used to make directories in resulting zip-file relative
+                * Set to `null` to include complete absolute path
+                * Example: base_path()
+                */
+                'relative_path' => null,
             ],
 
             /*

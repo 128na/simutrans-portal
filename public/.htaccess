@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
     # disable bots
-    RewriteCond %{HTTP_USER_AGENT} (SentryUptimeBot|opensiteexplorer|mj12bot|YandexBot|cincrawdata|DuckDuckBot|ImagesiftBot|linkfluence|AhrefsBot|InternetMeasurement|CensysInspect|Go\-http\-client|SummalyBot|ALittle) [NC]
+    RewriteCond %{HTTP_USER_AGENT} (SentryUptimeBot|Bytespider|SemrushBot|Go\-http\-client|python\-requests) [NC]
     RewriteRule .* - [F,L]
     # disable cloud attack
     RewriteCond %{REMOTE_HOST} (compute\.amazonaws\.com|googleusercontent\.com|xvps\.ne\.jp) [NC]

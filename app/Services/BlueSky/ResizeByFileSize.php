@@ -45,7 +45,7 @@ final class ResizeByFileSize
             }
 
             @unlink($resized);
-            ++$attempt;
+            $attempt++;
         } while ($attempt <= $limit);
 
         throw new ResizeFailedException('attempt limit reached');

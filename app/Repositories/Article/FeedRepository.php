@@ -37,7 +37,8 @@ final readonly class FeedRepository
     {
         $category = $this->category->pak()->slug($pakSlug)->firstOrFail();
 
-        return $category->articles()
+        return $category
+            ->articles()
             ->select('id', 'user_id', 'title', 'slug', 'post_type', 'contents', 'modified_at')
             ->active()
             ->select('id', 'user_id', 'title', 'slug', 'post_type', 'contents', 'modified_at')

@@ -166,7 +166,7 @@ final class ZipManager
         $zipArchive = new ZipArchive;
         try {
             $zipArchive->open($path);
-            for ($i = 0; $i < $zipArchive->numFiles; ++$i) {
+            for ($i = 0; $i < $zipArchive->numFiles; $i++) {
                 $name = $zipArchive->getNameIndex($i);
                 if ($name === false) {
                     throw new ZipErrorException('getNameIndex faild: '.$name);

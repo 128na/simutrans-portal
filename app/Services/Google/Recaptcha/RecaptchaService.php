@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Services\Google\Recaptcha;
 
 use Google\Cloud\RecaptchaEnterprise\V1\Assessment;
+use Google\Cloud\RecaptchaEnterprise\V1\Client\RecaptchaEnterpriseServiceClient;
+use Google\Cloud\RecaptchaEnterprise\V1\CreateAssessmentRequest;
 use Google\Cloud\RecaptchaEnterprise\V1\Event;
-use Google\Cloud\RecaptchaEnterprise\V1\RecaptchaEnterpriseServiceClient;
 
 final readonly class RecaptchaService
 {
@@ -28,7 +29,10 @@ final readonly class RecaptchaService
         $this->event->setToken($token)->setExpectedAction('invite');
 
         $assessment = (new Assessment)->setEvent($this->event);
-        $response = $this->recaptchaEnterpriseServiceClient->createAssessment($this->projectName, $assessment);
+        $createAssessmentRequest = (new CreateAssessmentRequest)
+            ->setParent($this->projectName)
+            ->setAssessment($assessment);
+        $response = $this->recaptchaEnterpriseServiceClient->createAssessment($createAssessmentRequest);
 
         if ($response->getTokenProperties()?->getValid() !== true) {
             throw new RecaptchaFailedException('token invalid');

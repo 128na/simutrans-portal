@@ -28,7 +28,7 @@ final class Tag extends Model
     ];
 
     /**
-     * @return BelongsToMany<Article,$this>
+     * @return BelongsToMany<Article,$this,\Illuminate\Database\Eloquent\Relations\Pivot>
      */
     public function articles(): BelongsToMany
     {

@@ -138,7 +138,7 @@ final class ArticleRepository extends BaseRepository
     /**
      * お知らせ記事一覧.
      *
-     * @return Paginator<Article>
+     * @return Paginator<int,Article>
      */
     public function paginateAnnouces(bool $simple = false, string $order = 'modified_at'): Paginator
     {
@@ -150,7 +150,7 @@ final class ArticleRepository extends BaseRepository
     /**
      * 一般記事一覧.
      *
-     * @return Paginator<Article>
+     * @return Paginator<int,Article>
      */
     public function paginatePages(bool $simple = false, string $order = 'modified_at'): Paginator
     {
@@ -162,7 +162,7 @@ final class ArticleRepository extends BaseRepository
     /**
      * アドオン投稿/紹介のデイリーPVランキング.
      *
-     * @return Paginator<Article>
+     * @return Paginator<int,Article>
      */
     public function paginateRanking(bool $simple = false): Paginator
     {
@@ -174,7 +174,7 @@ final class ArticleRepository extends BaseRepository
     /**
      * カテゴリの投稿一覧.
      *
-     * @return Paginator<Article>
+     * @return Paginator<int,Article>
      */
     public function paginateByCategory(Category $category, bool $simple = false, string $order = 'modified_at'): Paginator
     {
@@ -192,7 +192,7 @@ final class ArticleRepository extends BaseRepository
     /**
      * カテゴリ(pak/addon)の投稿一覧.
      *
-     * @return LengthAwarePaginator<Article>
+     * @return LengthAwarePaginator<int,Article>
      */
     public function paginateByPakAddonCategory(Category $pak, Category $addon, string $order = 'modified_at'): LengthAwarePaginator
     {
@@ -202,7 +202,7 @@ final class ArticleRepository extends BaseRepository
     /**
      * カテゴリ(pak,addon指定なし)の投稿一覧.
      *
-     * @return LengthAwarePaginator<Article>
+     * @return LengthAwarePaginator<int,Article>
      */
     public function paginateByPakNoneAddonCategory(Category $category, string $order = 'modified_at'): LengthAwarePaginator
     {
@@ -218,7 +218,7 @@ final class ArticleRepository extends BaseRepository
     /**
      * タグを持つ投稿記事一覧.
      *
-     * @return LengthAwarePaginator<Article>
+     * @return LengthAwarePaginator<int,Article>
      */
     public function paginateByTag(Tag $tag, string $order = 'modified_at'): LengthAwarePaginator
     {
@@ -233,7 +233,7 @@ final class ArticleRepository extends BaseRepository
     /**
      * ユーザーの投稿記事一覧.
      *
-     * @return LengthAwarePaginator<Article>
+     * @return LengthAwarePaginator<int,Article>
      */
     public function paginateByUser(User $user, string $order = 'modified_at'): LengthAwarePaginator
     {
@@ -248,11 +248,11 @@ final class ArticleRepository extends BaseRepository
     /**
      * 記事検索結果一覧.
      *
-     * @return LengthAwarePaginator<Article>
+     * @return LengthAwarePaginator<int,Article>
      */
     public function paginateBySearch(string $word, string $order = 'modified_at'): LengthAwarePaginator
     {
-        /** @var LengthAwarePaginator<Article> */
+        /** @var LengthAwarePaginator<int,Article> */
         return $this->queryBySearch($word, $order)->paginate();
     }
 

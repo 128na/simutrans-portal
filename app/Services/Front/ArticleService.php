@@ -30,7 +30,7 @@ final readonly class ArticleService
     }
 
     /**
-     * @return LengthAwarePaginator<Article>
+     * @return LengthAwarePaginator<int,Article>
      */
     public function paginateByUser(User $user, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
     {
@@ -38,7 +38,7 @@ final readonly class ArticleService
     }
 
     /**
-     * @return Paginator<Article>
+     * @return Paginator<int,Article>
      */
     public function paginatePages(bool $simple = false, string $order = self::ORDER_BY_MODIFIED_AT): Paginator
     {
@@ -46,7 +46,7 @@ final readonly class ArticleService
     }
 
     /**
-     * @return Paginator<Article>
+     * @return Paginator<int,Article>
      */
     public function paginateAnnouces(bool $simple = false, string $order = self::ORDER_BY_MODIFIED_AT): Paginator
     {
@@ -54,7 +54,7 @@ final readonly class ArticleService
     }
 
     /**
-     * @return Paginator<Article>
+     * @return Paginator<int,Article>
      */
     public function paginateRanking(bool $simple = false): Paginator
     {
@@ -62,7 +62,7 @@ final readonly class ArticleService
     }
 
     /**
-     * @return Paginator<Article>
+     * @return Paginator<int,Article>
      */
     public function paginateByCategory(CategoryType $categoryType, string $slug, bool $simple = false, string $order = self::ORDER_BY_MODIFIED_AT): Paginator
     {
@@ -72,7 +72,7 @@ final readonly class ArticleService
     }
 
     /**
-     * @return LengthAwarePaginator<Article>
+     * @return LengthAwarePaginator<int,Article>
      */
     public function paginateByPakAddonCategory(string $pakSlug, string $addonSlug, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
     {
@@ -83,7 +83,7 @@ final readonly class ArticleService
     }
 
     /**
-     * @return LengthAwarePaginator<Article>
+     * @return LengthAwarePaginator<int,Article>
      */
     public function paginateByPakNoneAddonCategory(string $pakSlug, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
     {
@@ -93,7 +93,7 @@ final readonly class ArticleService
     }
 
     /**
-     * @return LengthAwarePaginator<Article>
+     * @return LengthAwarePaginator<int,Article>
      */
     public function paginateByTag(Tag $tag, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
     {
@@ -101,7 +101,7 @@ final readonly class ArticleService
     }
 
     /**
-     * @return LengthAwarePaginator<Article>
+     * @return LengthAwarePaginator<int,Article>
      */
     public function paginateBySearch(string $word, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
     {

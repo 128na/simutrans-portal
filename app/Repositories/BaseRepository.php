@@ -157,11 +157,11 @@ abstract class BaseRepository
      *
      * @param  array<string>  $column
      * @param  array<int,string>  $with
-     * @return Paginator<T>
+     * @return Paginator<int,T>
      */
     final public function paginate(array $column = ['*'], array $with = [], int $perPage = 24): Paginator
     {
-        /** @var Paginator<T> */
+        /** @var Paginator<int,T> */
         return $this->model
             ->select($column)
             ->with($with)

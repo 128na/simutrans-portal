@@ -1,6 +1,5 @@
-<h3>
-    <a href="{{ config('app.url') }}">{{ config('app.name') }}</a>
-</h3>
+@include('emails.header', ['name' => $user->name])
+
 <p>
     「{{ $article->title }}」のダウンロード先URLがリンク切れになっていることを検出しました。
 </p>
@@ -12,3 +11,4 @@
     マイページ：
     <a href="{{ route('mypage.index') }}">{{ route('mypage.index') }}</a>
 </p>
+@include('emails.footer')

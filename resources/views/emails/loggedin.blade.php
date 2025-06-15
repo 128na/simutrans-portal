@@ -1,8 +1,7 @@
-<h3>
-    <a href="{{ config('app.url') }}">{{ config('app.name') }}</a>
-</h3>
+@include('emails.header', ['name' => $user->name])
+
 <p>
-    {{ $user->name }}が{{ $loginHistory->created_at->format('Y/m/d H:i') }}にログインしました。
+    ご利用のアカウントで{{ $loginHistory->created_at->format('Y/m/d H:i') }}にログインがありました。
 </p>
 <p>
     == ログイン情報 ==
@@ -11,7 +10,8 @@
     IPアドレス<br>
     {{ $loginHistory->ip ?? '不明' }}<br>
     アクセス元<br>
-    {{ $loginHistory->referer ?? '不明' }}
+    {{ $loginHistory->referer ?? '不明' }}<br>
     ユーザーエージェント（ブラウザ情報）<br>
     {{ $loginHistory->ua ?? '不明' }}<br>
 </p>
+@include('emails.footer')

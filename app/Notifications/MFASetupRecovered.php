@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
-use App\Models\User;
-use Illuminate\Auth\Notifications\VerifyEmail as BaseVerifyEmail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
-final class VerifyEmail extends BaseVerifyEmail implements ShouldQueue
+final class MFASetupRecovered extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -24,11 +23,9 @@ final class VerifyEmail extends BaseVerifyEmail implements ShouldQueue
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
      * @return array<string>
      */
-    #[\Override]
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
@@ -36,16 +33,13 @@ final class VerifyEmail extends BaseVerifyEmail implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
      * @return MailMessage
      */
-    #[\Override]
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable)
     {
         return (new MailMessage)
-            ->subject('登録メールアドレスの確認')
-            ->view('emails.verify')
-            ->action('メールアドレスを確認する', $this->verificationUrl($notifiable));
+            ->subject('二要素認証設定失敗のお知らせ')
+            ->view('emails.mfa-recovered', ['user' => $notifiable]);
     }
 
     /**
@@ -56,13 +50,5 @@ final class VerifyEmail extends BaseVerifyEmail implements ShouldQueue
     public function toArray(mixed $notifiable): array
     {
         return [];
-    }
-
-    /**
-     * ユニットテストでの認証URL取得用.
-     */
-    public function getVerificationUrl(User $user): string
-    {
-        return $this->verificationUrl($user);
     }
 }

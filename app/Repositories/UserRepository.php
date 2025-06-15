@@ -57,4 +57,16 @@ final class UserRepository extends BaseRepository
     {
         return $user->invites()->get();
     }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function findIncompleteMFAUsers(): Collection
+    {
+        return $this->model
+            ->whereNotNull('two_factor_secret')
+            ->whereNull('two_factor_confirmed_at')
+            ->where('updated_at', '<', now()->subMinutes(15))
+            ->get();
+    }
 }

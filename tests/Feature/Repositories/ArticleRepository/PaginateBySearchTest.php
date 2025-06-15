@@ -28,19 +28,19 @@ final class PaginateBySearchTest extends TestCase
     public function test(): void
     {
         Article::factory()->publish()->create();
-        $res = $this->articleRepository->paginateBySearch($this->article->title);
+        $lengthAwarePaginator = $this->articleRepository->paginateBySearch($this->article->title);
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertCount(1, $res, 'マッチする記事のみ取得出来ること');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $lengthAwarePaginator);
+        $this->assertCount(1, $lengthAwarePaginator, 'マッチする記事のみ取得出来ること');
     }
 
     public function testコンテンツ(): void
     {
         $this->article->update(['contents' => ['description' => 'find me']]);
-        $res = $this->articleRepository->paginateBySearch('find');
+        $lengthAwarePaginator = $this->articleRepository->paginateBySearch('find');
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertCount(1, $res, 'コンテンツにマッチする記事が取得出来ること');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $lengthAwarePaginator);
+        $this->assertCount(1, $lengthAwarePaginator, 'コンテンツにマッチする記事が取得出来ること');
     }
 
     public function test添付ファイル情報(): void
@@ -48,27 +48,27 @@ final class PaginateBySearchTest extends TestCase
         $attachment = $this->createAttachment($this->article->user);
         $attachment->fileInfo()->save(new FileInfo(['data' => ['find me']]));
         $this->article->attachments()->save($attachment);
-        $res = $this->articleRepository->paginateBySearch('find');
+        $lengthAwarePaginator = $this->articleRepository->paginateBySearch('find');
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertCount(1, $res, '添付ファイル情報にマッチする記事が取得出来ること');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $lengthAwarePaginator);
+        $this->assertCount(1, $lengthAwarePaginator, '添付ファイル情報にマッチする記事が取得出来ること');
     }
 
     public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => ArticleStatus::Draft]);
-        $res = $this->articleRepository->paginateBySearch($this->article->title);
+        $lengthAwarePaginator = $this->articleRepository->paginateBySearch($this->article->title);
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEmpty($res, '非公開記事は取得できないこと');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $lengthAwarePaginator);
+        $this->assertEmpty($lengthAwarePaginator, '非公開記事は取得できないこと');
     }
 
     public function test論理削除(): void
     {
         $this->article->delete();
-        $res = $this->articleRepository->paginateBySearch($this->article->title);
+        $lengthAwarePaginator = $this->articleRepository->paginateBySearch($this->article->title);
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEmpty($res, '削除済み記事は取得できないこと');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $lengthAwarePaginator);
+        $this->assertEmpty($lengthAwarePaginator, '削除済み記事は取得できないこと');
     }
 }

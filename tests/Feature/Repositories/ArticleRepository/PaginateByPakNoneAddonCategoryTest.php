@@ -36,26 +36,26 @@ final class PaginateByPakNoneAddonCategoryTest extends TestCase
         $addon = Category::factory()->create(['type' => CategoryType::Addon]);
         tap(Article::factory()->create(), fn ($a) => $a->categories()->sync([$this->category->id, $addon->id]));
 
-        $res = $this->articleRepository->paginateByPakNoneAddonCategory($this->category);
-        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertCount(1, $res->items(), 'pak,addonカテゴリ両方に紐づく記事のみ取得出来ること');
+        $lengthAwarePaginator = $this->articleRepository->paginateByPakNoneAddonCategory($this->category);
+        $this->assertInstanceOf(LengthAwarePaginator::class, $lengthAwarePaginator);
+        $this->assertCount(1, $lengthAwarePaginator->items(), 'pak,addonカテゴリ両方に紐づく記事のみ取得出来ること');
     }
 
     public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => ArticleStatus::Draft]);
-        $res = $this->articleRepository->paginateByPakNoneAddonCategory($this->category);
+        $lengthAwarePaginator = $this->articleRepository->paginateByPakNoneAddonCategory($this->category);
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEmpty($res->items(), '非公開記事は取得できないこと');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $lengthAwarePaginator);
+        $this->assertEmpty($lengthAwarePaginator->items(), '非公開記事は取得できないこと');
     }
 
     public function test論理削除(): void
     {
         $this->article->delete();
-        $res = $this->articleRepository->paginateByPakNoneAddonCategory($this->category);
+        $lengthAwarePaginator = $this->articleRepository->paginateByPakNoneAddonCategory($this->category);
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEmpty($res->items(), '削除済み記事は取得できないこと');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $lengthAwarePaginator);
+        $this->assertEmpty($lengthAwarePaginator->items(), '削除済み記事は取得できないこと');
     }
 }

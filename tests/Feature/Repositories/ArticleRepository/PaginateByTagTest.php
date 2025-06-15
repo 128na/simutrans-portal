@@ -33,27 +33,27 @@ final class PaginateByTagTest extends TestCase
     public function test(): void
     {
         Article::factory()->publish()->create();
-        $res = $this->articleRepository->paginateByTag($this->tag);
+        $lengthAwarePaginator = $this->articleRepository->paginateByTag($this->tag);
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertCount(1, $res, 'カテゴリに紐づく記事のみ取得出来ること');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $lengthAwarePaginator);
+        $this->assertCount(1, $lengthAwarePaginator, 'カテゴリに紐づく記事のみ取得出来ること');
     }
 
     public function test公開以外のステータス(): void
     {
         $this->article->update(['status' => ArticleStatus::Draft]);
-        $res = $this->articleRepository->paginateByTag($this->tag);
+        $lengthAwarePaginator = $this->articleRepository->paginateByTag($this->tag);
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEmpty($res, '非公開記事は取得できないこと');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $lengthAwarePaginator);
+        $this->assertEmpty($lengthAwarePaginator, '非公開記事は取得できないこと');
     }
 
     public function test論理削除(): void
     {
         $this->article->delete();
-        $res = $this->articleRepository->paginateByTag($this->tag);
+        $lengthAwarePaginator = $this->articleRepository->paginateByTag($this->tag);
 
-        $this->assertInstanceOf(LengthAwarePaginator::class, $res);
-        $this->assertEmpty($res, '削除済み記事は取得できないこと');
+        $this->assertInstanceOf(LengthAwarePaginator::class, $lengthAwarePaginator);
+        $this->assertEmpty($lengthAwarePaginator, '削除済み記事は取得できないこと');
     }
 }

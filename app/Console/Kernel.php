@@ -39,6 +39,8 @@ final class Kernel extends ConsoleKernel
             ->appendOutputTo($output);
         $schedule->command('article:json')->hourly()
             ->appendOutputTo($output);
+        $schedule->command('app:mfa-setup-auto-recovery')->hourly()
+            ->appendOutputTo($output);
 
         // 毎分 サーバー都合でcron設定としては2分周期
         $schedule->command('article:publish-reservation')->everyMinute()

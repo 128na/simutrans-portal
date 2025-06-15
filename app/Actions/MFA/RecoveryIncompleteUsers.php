@@ -9,9 +9,9 @@ use App\Models\User;
 use App\Notifications\MFASetupRecovered;
 use App\Repositories\UserRepository;
 
-final class RecoveryIncompleteUsers
+final readonly class RecoveryIncompleteUsers
 {
-    public function __construct(private readonly UserRepository $userRepository) {}
+    public function __construct(private UserRepository $userRepository) {}
 
     public function __invoke(): void
     {

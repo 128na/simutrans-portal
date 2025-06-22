@@ -2,6 +2,9 @@
     # disable bots
     RewriteCond %{HTTP_USER_AGENT} (SentryUptimeBot) [NC]
     RewriteRule .* - [F,L]
+    # disable cloud attack
+    # RewriteCond %{REMOTE_HOST} (compute\.amazonaws\.com|googleusercontent\.com|xvps\.ne\.jp) [NC]
+    RewriteRule .* - [F,L]
 
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes

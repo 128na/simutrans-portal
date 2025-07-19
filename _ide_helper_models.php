@@ -13,8 +13,6 @@
 
 namespace App\Models{
 /**
- * 
- *
  * @property int $id
  * @property int $user_id
  * @property string $title タイトル
@@ -97,7 +95,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article slug(string $slug)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article tag(\App\Models\Tag $tag)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article user(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withUserTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withoutAnnounce()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withoutTrashed()
@@ -109,8 +107,6 @@ namespace App\Models{
 
 namespace App\Models\Article{
 /**
- * 
- *
  * @property int $id
  * @property int $article_id
  * @property int $type 集計区分 1:日次,2:月次,3:年次,4:全体
@@ -128,8 +124,6 @@ namespace App\Models\Article{
 
 namespace App\Models\Article{
 /**
- * 
- *
  * @property int $rank
  * @property int $article_id
  * @property-read \App\Models\Article $article
@@ -145,8 +139,6 @@ namespace App\Models\Article{
 
 namespace App\Models\Article{
 /**
- * 
- *
  * @property int $id
  * @property int $article_id
  * @property int $type 集計区分 1:日次,2:月次,3:年次,4:全体
@@ -164,8 +156,6 @@ namespace App\Models\Article{
 
 namespace App\Models{
 /**
- * 
- *
  * @property int $id
  * @property int $user_id
  * @property int|null $attachmentable_id 添付先ID
@@ -200,8 +190,6 @@ namespace App\Models{
 
 namespace App\Models\Attachment{
 /**
- * 
- *
  * @property int $id
  * @property int $attachment_id
  * @property array<array-key, mixed> $data
@@ -218,8 +206,6 @@ namespace App\Models\Attachment{
 
 namespace App\Models{
 /**
- * 
- *
  * @property int $id
  * @property string $uuid
  * @property string $bulk_zippable_type
@@ -241,8 +227,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
- *
  * @property int $id
  * @property \App\Enums\CategoryType $type 分類
  * @property string $slug スラッグ
@@ -272,8 +256,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
- *
  * @property \App\Enums\ControllOptionKey $key
  * @property bool $value
  * @property \Carbon\CarbonImmutable|null $created_at
@@ -289,8 +271,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
- *
  * @property string $application
  * @property string $token_type
  * @property string $scope
@@ -310,8 +290,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
- *
  * @property int $id
  * @property string $from リダイレクト元
  * @property string $to リダイレクト先
@@ -332,8 +310,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
- *
  * @property int $id
  * @property string $name タグ名
  * @property string|null $description 説明
@@ -360,8 +336,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
- *
  * @property int $id
  * @property \App\Enums\UserRole $role 権限
  * @property string $name ユーザー名
@@ -405,7 +379,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutTrashed()
  * @mixin \Eloquent
  */
@@ -415,8 +389,6 @@ namespace App\Models{
 
 namespace App\Models\User{
 /**
- * 
- *
  * @property int $id
  * @property int $user_id
  * @property string|null $ip
@@ -437,8 +409,6 @@ namespace App\Models\User{
 
 namespace App\Models\User{
 /**
- * 
- *
  * @property int $id
  * @property int $user_id
  * @property \App\Models\User\ProfileData $data プロフィール情報

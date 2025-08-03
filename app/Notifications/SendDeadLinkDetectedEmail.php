@@ -42,7 +42,7 @@ final class SendDeadLinkDetectedEmail extends Notification implements ShouldQueu
 
         return (new MailMessage)
             ->subject(sprintf('「%s」のダウンロード先URLがリンク切れになっています', $notifiable->title))
-            ->view('emails.deadlink-detected', ['article' => $notifiable]);
+            ->view('emails.deadlink-detected', ['article' => $notifiable, 'user' => $notifiable->user]);
     }
 
     /**

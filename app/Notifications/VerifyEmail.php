@@ -44,7 +44,7 @@ final class VerifyEmail extends BaseVerifyEmail implements ShouldQueue
     {
         return (new MailMessage)
             ->subject('登録メールアドレスの確認')
-            ->view('emails.verify')
+            ->view('emails.verify', ['user' => $notifiable])
             ->action('メールアドレスを確認する', $this->verificationUrl($notifiable));
     }
 

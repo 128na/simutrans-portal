@@ -39,7 +39,7 @@ final class ResetPassword extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->subject('パスワードリセットがリクエストされました')
-            ->view('emails.reset')
+            ->view('emails.reset', ['user' => $notifiable])
             ->action('パスワードリセット画面を開く', route('password.reset', $this->token));
     }
 

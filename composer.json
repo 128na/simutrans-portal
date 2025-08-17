@@ -17,7 +17,7 @@
     "google/cloud-recaptcha-enterprise": ">=2.1.2",
     "guzzlehttp/guzzle": ">=7.9.3",
     "laravel/fortify": "^1.28.0",
-    "laravel/framework": "^12.22.1",
+    "laravel/framework": "^12.24.0",
     "laravel/sanctum": ">=4.2.0",
     "laravel/tinker": "^2.10.1",
     "marvinlabs/laravel-discord-logger": "^1.4.3",
@@ -39,8 +39,8 @@
     "laravel/pint": "^1.24.0",
     "mockery/mockery": "^1.6.12",
     "nunomaduro/collision": "^8.8.2",
-    "phpunit/phpunit": "^11.5.29",
-    "rector/rector": "^2.1.2",
+    "phpunit/phpunit": "^11.5.33",
+    "rector/rector": "^2.1.4",
     "spatie/laravel-ignition": "^2.9.1"
   },
   "config": {

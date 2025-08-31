@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7",
-    "@quasar/app-webpack": "^3",
+    "@quasar/app-webpack": "^4",
     "@quasar/quasar-app-extension-testing": "^2",
     "@quasar/quasar-app-extension-testing-e2e-cypress": "^6",
     "cypress": "^13",

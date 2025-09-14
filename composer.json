@@ -34,13 +34,13 @@
     "driftingly/rector-laravel": "^2.0.7",
     "fakerphp/faker": "^1.24.1",
     "filp/whoops": "^2.18.4",
-    "larastan/larastan": "^3.6.1",
+    "larastan/larastan": "^3.7.1",
     "laravel/dusk": "^8.3.3",
     "laravel/pint": "^1.24.0",
     "mockery/mockery": "^1.6.12",
     "nunomaduro/collision": "^8.8.2",
-    "phpunit/phpunit": "^11.5.36",
-    "rector/rector": "^2.1.6",
+    "phpunit/phpunit": "^11.5.38",
+    "rector/rector": "^2.1.7",
     "spatie/laravel-ignition": "^2.9.1"
   },
   "config": {

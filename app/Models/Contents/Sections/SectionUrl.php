@@ -6,7 +6,7 @@ namespace App\Models\Contents\Sections;
 
 final class SectionUrl extends Section
 {
-    public ?string $url;
+    public null|string $url;
 
     /**
      * @param  array{type:string,caption?:string,text?:string,url?:string,id?:int}  $section

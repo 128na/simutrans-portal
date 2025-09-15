@@ -6,11 +6,11 @@ namespace App\Models\User;
 
 final class ProfileData
 {
-    public ?int $avatar;
+    public null|int $avatar;
 
-    public ?string $description;
+    public null|string $description;
 
-    public ?string $website;
+    public null|string $website;
 
     /**
      * @param  array{avatar?:int,description?:string,website?:string}  $data
@@ -18,7 +18,7 @@ final class ProfileData
     public function __construct(array $data)
     {
         $id = $data['avatar'] ?? null;
-        $this->avatar = $id ? (int) $id : null;
+        $this->avatar = $id ? ((int) $id) : null;
         $this->description = $data['description'] ?? null;
         $this->website = $data['website'] ?? null;
     }

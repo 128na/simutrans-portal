@@ -23,19 +23,18 @@ final class AttachmentController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
-        return MypageAttachment::collection(
-            $this->attachmentRepository->findAllByUser($this->loggedinUser())
-        );
+        return MypageAttachment::collection($this->attachmentRepository->findAllByUser($this->loggedinUser()));
     }
 
     public function store(StoreRequest $storeRequest, Store $store): AnonymousResourceCollection
     {
-        $crop = $storeRequest->has('crop') ? [
-            $storeRequest->integer('crop.top', 0),
-            $storeRequest->integer('crop.bottom', 0),
-            $storeRequest->integer('crop.left', 0),
-            $storeRequest->integer('crop.right', 0),
-        ] : [];
+        $crop = $storeRequest->has('crop')
+            ? [
+                $storeRequest->integer('crop.top', 0),
+                $storeRequest->integer('crop.bottom', 0),
+                $storeRequest->integer('crop.left', 0),
+                $storeRequest->integer('crop.right', 0),
+            ] : [];
 
         /** @var array<int,\Illuminate\Http\UploadedFile> */
         $files = $storeRequest->file('files', []);

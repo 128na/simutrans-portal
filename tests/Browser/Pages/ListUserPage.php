@@ -17,22 +17,23 @@ final class ListUserPage extends Page
     public function __construct()
     {
         $this->user = User::factory()->create();
-        $this->article = Article::factory()->publish()->addonPost()->create([
-            'user_id' => $this->user->id,
-        ]);
+        $this->article = Article::factory()
+            ->publish()
+            ->addonPost()
+            ->create([
+                'user_id' => $this->user->id,
+            ]);
     }
 
     #[\Override]
     public function url()
     {
-        return '/users/'.$this->user->id;
+        return '/users/' . $this->user->id;
     }
 
     #[\Override]
     public function assert(Browser $browser): void
     {
-        $browser
-            ->waitForText($this->user->name)
-            ->assertSee($this->article->title);
+        $browser->waitForText($this->user->name)->assertSee($this->article->title);
     }
 }

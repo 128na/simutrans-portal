@@ -21,7 +21,10 @@ final class ArticleAddonIntroductionPage extends Page
     public function __construct()
     {
         $user = User::factory()->create();
-        $this->article = Article::factory()->publish()->addonIntroduction()->create(['user_id' => $user->id]);
+        $this->article = Article::factory()
+            ->publish()
+            ->addonIntroduction()
+            ->create(['user_id' => $user->id]);
         $this->category = Category::inRandomOrder()->first();
         $this->article->categories()->save($this->category);
         $this->tag = Tag::factory()->create();

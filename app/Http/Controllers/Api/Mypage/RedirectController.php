@@ -18,8 +18,11 @@ final class RedirectController extends Controller
         return RedirectResource::collection($findMyRedirects($this->loggedinUser()));
     }
 
-    public function destroy(Redirect $redirect, DeleteRedirect $deleteRedirect, FindMyRedirects $findMyRedirects): AnonymousResourceCollection
-    {
+    public function destroy(
+        Redirect $redirect,
+        DeleteRedirect $deleteRedirect,
+        FindMyRedirects $findMyRedirects,
+    ): AnonymousResourceCollection {
         $this->authorize('update', $redirect);
         $deleteRedirect($redirect);
 

@@ -36,7 +36,7 @@ final class FindAllForAnalyticsTest extends TestCase
             $this->user,
             [$this->article->id, $othersArticle->id],
             ArticleAnalyticsType::Daily,
-            ['20000101', '21000101']
+            ['20000101', '21000101'],
         );
 
         $this->assertInstanceOf(Collection::class, $res);
@@ -50,7 +50,7 @@ final class FindAllForAnalyticsTest extends TestCase
             $this->user,
             [$this->article->id],
             ArticleAnalyticsType::Daily,
-            ['20000101', '21000101']
+            ['20000101', '21000101'],
         );
 
         $this->assertInstanceOf(Collection::class, $res);
@@ -64,7 +64,7 @@ final class FindAllForAnalyticsTest extends TestCase
             $this->user,
             [$this->article->id],
             ArticleAnalyticsType::Daily,
-            ['20000101', '21000101']
+            ['20000101', '21000101'],
         );
 
         $this->assertInstanceOf(Collection::class, $res);

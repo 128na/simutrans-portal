@@ -20,7 +20,7 @@ final class SearchTest extends TestCase
 
     public function test(): void
     {
-        $testResponse = $this->get('api/front/search?word='.$this->article->title);
+        $testResponse = $this->get('api/front/search?word=' . $this->article->title);
 
         $testResponse->assertOk();
         $testResponse->assertSee($this->article->title);

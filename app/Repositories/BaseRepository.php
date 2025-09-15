@@ -25,7 +25,9 @@ abstract class BaseRepository
     /**
      * @param  T  $model
      */
-    public function __construct(protected readonly Model $model) {}
+    public function __construct(
+        protected readonly Model $model,
+    ) {}
 
     /**
      * 保存.
@@ -139,11 +141,9 @@ abstract class BaseRepository
      * @param  array<int,string>  $with
      * @return Collection<int,T>
      */
-    final public function findAll(array $column = ['*'], array $with = [], ?int $limit = null): Collection
+    final public function findAll(array $column = ['*'], array $with = [], null|int $limit = null): Collection
     {
-        $q = $this->model
-            ->select($column)
-            ->with($with);
+        $q = $this->model->select($column)->with($with);
         if ($limit !== null && $limit !== 0) {
             $q->limit($limit);
         }

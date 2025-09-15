@@ -22,10 +22,9 @@ final readonly class MisskeyApiClient
      */
     public function send(string $text): Response
     {
-        return Http::withHeader('Content-Type', 'application/json')
-            ->post($this->baseUrl.'/notes/create', [
-                'i' => $this->token,
-                'text' => $text,
-            ]);
+        return Http::withHeader('Content-Type', 'application/json')->post($this->baseUrl . '/notes/create', [
+            'i' => $this->token,
+            'text' => $text,
+        ]);
     }
 }

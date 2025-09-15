@@ -24,7 +24,7 @@ final class StoreRequestTest extends TestCase
     }
 
     #[DataProvider('dataFail')]
-    public function test_fail(?ArticlePostType $articlePostType, Closure $setup, string $expectedErrorField): void
+    public function test_fail(null|ArticlePostType $articlePostType, Closure $setup, string $expectedErrorField): void
     {
         $data = ['article' => ['post_type' => $articlePostType?->value, ...$setup($this)]];
 
@@ -185,8 +185,10 @@ final class StoreRequestTest extends TestCase
         // ];
         yield 'Page URLセクションが空' => [
             ArticlePostType::Page,
-            fn (self $self): array => ['contents' => ['sections' => [['type' => 'url', 'url' => '']]]], 'article.contents.sections.0.url',
+            fn(self $self): array => ['contents' => ['sections' => [['type' => 'url', 'url' => '']]]],
+            'article.contents.sections.0.url',
         ];
+
         // yield 'Page URLセクションが不正な形式' => [
         //     ArticlePostType::Page,
         //     fn (self $self): array => ['contents' => ['sections' => [['type' => 'url', 'url' => 'not_url']]]], 'article.contents.sections.0.url',

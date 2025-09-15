@@ -14,8 +14,6 @@ final class AnalyticsController extends Controller
 {
     public function index(SearchRequest $searchRequest, FindArticles $findArticles): AnonymousResourceCollection
     {
-        return ArticleAnalytic::collection(
-            $findArticles($this->loggedinUser(), $searchRequest)
-        );
+        return ArticleAnalytic::collection($findArticles($this->loggedinUser(), $searchRequest));
     }
 }

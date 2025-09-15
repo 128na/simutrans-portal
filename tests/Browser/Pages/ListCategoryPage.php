@@ -18,9 +18,12 @@ final class ListCategoryPage extends Page
     public function __construct()
     {
         $user = User::factory()->create();
-        $this->article = Article::factory()->publish()->addonPost()->create([
-            'user_id' => $user->id,
-        ]);
+        $this->article = Article::factory()
+            ->publish()
+            ->addonPost()
+            ->create([
+                'user_id' => $user->id,
+            ]);
         $this->category = Category::inRandomOrder()->first();
         $this->article->categories()->save($this->category);
     }

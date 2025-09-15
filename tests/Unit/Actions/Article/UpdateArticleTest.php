@@ -22,7 +22,7 @@ final class UpdateArticleTest extends TestCase
 {
     public function test更新(): void
     {
-        $article = new Article;
+        $article = new Article();
         $data = [
             'article' => [
                 'post_type' => ArticlePostType::AddonIntroduction->value,
@@ -34,19 +34,24 @@ final class UpdateArticleTest extends TestCase
             ],
             'without_update_modified_at' => false,
         ];
-        $carbonImmutable = new CarbonImmutable;
+        $carbonImmutable = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($article, $carbonImmutable, $data): void {
-            $mock->expects()->update(
-                $article,
-                [
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use (
+            $article,
+            $carbonImmutable,
+            $data,
+        ): void {
+            $mock
+                ->expects()
+                ->update($article, [
                     'title' => 'dummy title',
                     'slug' => 'dummy-slug',
                     'status' => ArticleStatus::Publish,
                     'contents' => 'dummy',
                     'modified_at' => $carbonImmutable->toDateTimeString(),
-                ],
-            )->once()->andReturn($article);
+                ])
+                ->once()
+                ->andReturn($article);
             $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
                 $mock->expects()->__invoke($article, $data);
             });
@@ -62,7 +67,7 @@ final class UpdateArticleTest extends TestCase
 
     public function test更新日を更新しない更新(): void
     {
-        $article = new Article;
+        $article = new Article();
         $data = [
             'article' => [
                 'post_type' => ArticlePostType::AddonIntroduction->value,
@@ -74,18 +79,19 @@ final class UpdateArticleTest extends TestCase
             ],
             'without_update_modified_at' => true,
         ];
-        $carbonImmutable = new CarbonImmutable;
+        $carbonImmutable = new CarbonImmutable();
 
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($article, $data): void {
-            $mock->expects()->update(
-                $article,
-                [
+            $mock
+                ->expects()
+                ->update($article, [
                     'title' => 'dummy title',
                     'slug' => 'dummy-slug',
                     'status' => ArticleStatus::Publish,
                     'contents' => 'dummy',
-                ],
-            )->once()->andReturn($article);
+                ])
+                ->once()
+                ->andReturn($article);
             $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
                 $mock->expects()->__invoke($article, $data);
             });

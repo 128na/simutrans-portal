@@ -23,11 +23,14 @@ final readonly class Update
     public function __invoke(): void
     {
         DB::statement('delete from rankings');
-        $this->articleRepository->chunkAggregatedRanking($this->now, self::SIZE, function (Collection $articles, int $round): void {
+        $this->articleRepository->chunkAggregatedRanking($this->now, self::SIZE, function (
+            Collection $articles,
+            int $round,
+        ): void {
             $ranks = $articles
-                ->map(fn (Article $article, int $index): array => [
+                ->map(fn(Article $article, int $index): array => [
                     'article_id' => $article->id,
-                    'rank' => 1 + $index + self::SIZE * ($round - 1),
+                    'rank' => 1 + $index + (self::SIZE * ($round - 1)),
                 ])
                 ->all();
 

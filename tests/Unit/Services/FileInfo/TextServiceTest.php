@@ -11,7 +11,7 @@ final class TextServiceTest extends TestCase
 {
     public function test_remove_bom(): void
     {
-        $text = pack('H*', 'EFBBBF').'dummy';
+        $text = pack('H*', 'EFBBBF') . 'dummy';
         $result = $this->getSUT()->removeBom($text);
         $this->assertSame('dummy', $result);
     }

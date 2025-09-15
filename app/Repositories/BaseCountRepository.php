@@ -18,7 +18,7 @@ abstract class BaseCountRepository extends BaseRepository
     /**
      * 日次、月次、年次、全体の合計をカウントアップする.
      */
-    final public function countUp(Article $article, ?CarbonImmutable $datetime = null): void
+    final public function countUp(Article $article, null|CarbonImmutable $datetime = null): void
     {
         $datetime ??= now();
         $sql = $this->buildSql($article, $datetime);

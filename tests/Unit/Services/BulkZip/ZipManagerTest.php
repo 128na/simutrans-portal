@@ -28,10 +28,13 @@ final class ZipManagerTest extends TestCase
         });
         $decoratorMock = $this->mock(BaseDecorator::class, function (MockInterface $mock): void {
             $mock->allows('canProcess')->once()->andReturn(true);
-            $mock->allows('process')->once()->andReturn([
-                'contents' => [['test']],
-                'files' => [],
-            ]);
+            $mock
+                ->allows('process')
+                ->once()
+                ->andReturn([
+                    'contents' => [['test']],
+                    'files' => [],
+                ]);
         });
         $filesystem = Storage::fake();
         $modelMock = $this->mock(Model::class);

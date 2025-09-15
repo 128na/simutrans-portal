@@ -20,7 +20,7 @@ final class UserTest extends TestCase
 
     public function test_ユーザー_id(): void
     {
-        $testResponse = $this->get('api/front/users/'.$this->article->user->id);
+        $testResponse = $this->get('api/front/users/' . $this->article->user->id);
 
         $testResponse->assertOk();
         $testResponse->assertSee($this->article->title);
@@ -28,7 +28,7 @@ final class UserTest extends TestCase
 
     public function test_ニックネーム(): void
     {
-        $testResponse = $this->get('api/front/users/'.$this->article->user->nickname);
+        $testResponse = $this->get('api/front/users/' . $this->article->user->nickname);
 
         $testResponse->assertOk();
     }
@@ -36,7 +36,7 @@ final class UserTest extends TestCase
     public function test削除ユーザー(): void
     {
         $this->article->user->delete();
-        $testResponse = $this->get('api/front/users/'.$this->article->user->id);
+        $testResponse = $this->get('api/front/users/' . $this->article->user->id);
 
         $testResponse->assertNotFound();
     }

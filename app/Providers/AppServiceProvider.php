@@ -16,7 +16,9 @@ final class AppServiceProvider extends ServiceProvider
      * Register any application services.
      */
     #[\Override]
-    public function register(): void {}
+    public function register(): void
+    {
+    }
 
     /**
      * Bootstrap any application services.
@@ -24,6 +26,6 @@ final class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Date::use(CarbonImmutable::class);
-        Model::shouldBeStrict(! App::isProduction());
+        Model::shouldBeStrict(!App::isProduction());
     }
 }

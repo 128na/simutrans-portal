@@ -28,7 +28,10 @@ final class UniqueSlugByUserTest extends TestCase
         $this->user = User::factory()->create();
         $this->failCalled = false;
 
-        $mock = $this->mock(PotentiallyTranslatedString::class, fn (MockInterface $mock) => $mock->allows()->translate());
+        $mock = $this->mock(
+            PotentiallyTranslatedString::class,
+            fn(MockInterface $mock) => $mock->allows()->translate(),
+        );
         $this->failClosure = function () use ($mock) {
             $this->failCalled = true;
 
@@ -40,9 +43,11 @@ final class UniqueSlugByUserTest extends TestCase
     {
         $article = Article::factory()->create(['user_id' => $this->user->id]);
         $this->actingAs($this->user);
-        $this->getSUT()
-            ->setData(['article' => ['id' => $article->id]])
-            ->validate('dummy', $article->slug, $this->failClosure);
+        $this->getSUT()->setData(['article' => ['id' => $article->id]])->validate(
+            'dummy',
+            $article->slug,
+            $this->failClosure,
+        );
         $this->assertFalse($this->failCalled);
     }
 
@@ -50,8 +55,7 @@ final class UniqueSlugByUserTest extends TestCase
     {
         $article = Article::factory()->create(['user_id' => $this->user->id]);
         $this->actingAs($this->user);
-        $this->getSUT()
-            ->validate('dummy', $article->slug, $this->failClosure);
+        $this->getSUT()->validate('dummy', $article->slug, $this->failClosure);
         $this->assertTrue($this->failCalled);
     }
 
@@ -59,8 +63,7 @@ final class UniqueSlugByUserTest extends TestCase
     {
         $article = Article::factory()->create(['user_id' => User::factory()->create()->id]);
         $this->actingAs($this->user);
-        $this->getSUT()
-            ->validate('dummy', $article->slug, $this->failClosure);
+        $this->getSUT()->validate('dummy', $article->slug, $this->failClosure);
         $this->assertFalse($this->failCalled);
     }
 
@@ -68,8 +71,7 @@ final class UniqueSlugByUserTest extends TestCase
     {
         $article = Article::factory()->create(['user_id' => User::factory()->admin()->create()->id]);
         $this->actingAs($this->user);
-        $this->getSUT()
-            ->validate('dummy', $article->slug, $this->failClosure);
+        $this->getSUT()->validate('dummy', $article->slug, $this->failClosure);
         $this->assertTrue($this->failCalled);
     }
 
@@ -78,9 +80,11 @@ final class UniqueSlugByUserTest extends TestCase
         $this->user->update(['role' => UserRole::Admin]);
         $article = Article::factory()->create(['user_id' => $this->user->id]);
         $this->actingAs($this->user);
-        $this->getSUT()
-            ->setData(['article' => ['id' => $article->id]])
-            ->validate('dummy', $article->slug, $this->failClosure);
+        $this->getSUT()->setData(['article' => ['id' => $article->id]])->validate(
+            'dummy',
+            $article->slug,
+            $this->failClosure,
+        );
         $this->assertFalse($this->failCalled);
     }
 
@@ -89,8 +93,7 @@ final class UniqueSlugByUserTest extends TestCase
         $this->user->update(['role' => UserRole::Admin]);
         $article = Article::factory()->create(['user_id' => $this->user->id]);
         $this->actingAs($this->user);
-        $this->getSUT()
-            ->validate('dummy', $article->slug, $this->failClosure);
+        $this->getSUT()->validate('dummy', $article->slug, $this->failClosure);
         $this->assertTrue($this->failCalled);
     }
 
@@ -99,8 +102,7 @@ final class UniqueSlugByUserTest extends TestCase
         $this->user->update(['role' => UserRole::Admin]);
         $article = Article::factory()->create();
         $this->actingAs($this->user);
-        $this->getSUT()
-            ->validate('dummy', $article->slug, $this->failClosure);
+        $this->getSUT()->validate('dummy', $article->slug, $this->failClosure);
         $this->assertTrue($this->failCalled);
     }
 
@@ -109,13 +111,12 @@ final class UniqueSlugByUserTest extends TestCase
         $this->user->update(['role' => UserRole::Admin]);
         $article = Article::factory()->create(['user_id' => User::factory()->admin()->create()->id]);
         $this->actingAs($this->user);
-        $this->getSUT()
-            ->validate('dummy', $article->slug, $this->failClosure);
+        $this->getSUT()->validate('dummy', $article->slug, $this->failClosure);
         $this->assertTrue($this->failCalled);
     }
 
     private function getSUT(): UniqueSlugByUser
     {
-        return new UniqueSlugByUser;
+        return new UniqueSlugByUser();
     }
 }

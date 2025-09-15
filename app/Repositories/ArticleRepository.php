@@ -26,11 +26,33 @@ use Illuminate\Support\LazyCollection;
  */
 final class ArticleRepository extends BaseRepository
 {
-    public const array MYPAGE_RELATIONS = ['user', 'attachments.fileInfo', 'categories', 'tags', 'totalViewCount', 'totalConversionCount', 'articles'];
+    public const array MYPAGE_RELATIONS = [
+        'user',
+        'attachments.fileInfo',
+        'categories',
+        'tags',
+        'totalViewCount',
+        'totalConversionCount',
+        'articles',
+    ];
 
-    public const array FRONT_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags', 'articles', 'relatedArticles'];
+    public const array FRONT_RELATIONS = [
+        'user.profile',
+        'attachments.fileInfo',
+        'categories',
+        'tags',
+        'articles',
+        'relatedArticles',
+    ];
 
-    public const array SHOW_RELATIONS = ['user.profile', 'attachments.fileInfo', 'categories', 'tags', 'articles', 'relatedArticles'];
+    public const array SHOW_RELATIONS = [
+        'user.profile',
+        'attachments.fileInfo',
+        'categories',
+        'tags',
+        'articles',
+        'relatedArticles',
+    ];
 
     public const int PER_PAGE_SIMPLE = 6;
 
@@ -96,11 +118,17 @@ final class ArticleRepository extends BaseRepository
      * @param  array<string>  $period
      * @return Collection<int, Article>
      */
-    public function findAllForAnalytics(User $user, array $ids, ArticleAnalyticsType $articleAnalyticsType, array $period): Collection
-    {
+    public function findAllForAnalytics(
+        User $user,
+        array $ids,
+        ArticleAnalyticsType $articleAnalyticsType,
+        array $period,
+    ): Collection {
         $periodQuery = function ($query) use ($articleAnalyticsType, $period): void {
-            $query->select('article_id', 'count', 'period')
-                ->where('type', $articleAnalyticsType)->whereBetween('period', $period);
+            $query->select('article_id', 'count', 'period')->where('type', $articleAnalyticsType)->whereBetween(
+                'period',
+                $period,
+            );
         };
 
         /** @var Collection<int, Article> */
@@ -123,8 +151,11 @@ final class ArticleRepository extends BaseRepository
      * @param  array<int,string>  $relations
      * @return Collection<int, Article>
      */
-    public function findAllByUser(User $user, array $relations = self::FRONT_RELATIONS, string $order = 'modified_at'): Collection
-    {
+    public function findAllByUser(
+        User $user,
+        array $relations = self::FRONT_RELATIONS,
+        string $order = 'modified_at',
+    ): Collection {
         /** @var Collection<int, Article> */
         return $this->model
             ->query()
@@ -176,17 +207,19 @@ final class ArticleRepository extends BaseRepository
      *
      * @return Paginator<int,Article>
      */
-    public function paginateByCategory(Category $category, bool $simple = false, string $order = 'modified_at'): Paginator
-    {
-        $q = $category->articles()
+    public function paginateByCategory(
+        Category $category,
+        bool $simple = false,
+        string $order = 'modified_at',
+    ): Paginator {
+        $q = $category
+            ->articles()
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
             ->orderBy($order, 'desc');
 
-        return $simple
-            ? $q->simplePaginate(self::PER_PAGE_SIMPLE)
-            : $q->paginate();
+        return $simple ? $q->simplePaginate(self::PER_PAGE_SIMPLE) : $q->paginate();
     }
 
     /**
@@ -194,8 +227,11 @@ final class ArticleRepository extends BaseRepository
      *
      * @return LengthAwarePaginator<int,Article>
      */
-    public function paginateByPakAddonCategory(Category $pak, Category $addon, string $order = 'modified_at'): LengthAwarePaginator
-    {
+    public function paginateByPakAddonCategory(
+        Category $pak,
+        Category $addon,
+        string $order = 'modified_at',
+    ): LengthAwarePaginator {
         return $this->queryByPakAddonCategory($pak, $addon, $order)->paginate();
     }
 
@@ -204,13 +240,16 @@ final class ArticleRepository extends BaseRepository
      *
      * @return LengthAwarePaginator<int,Article>
      */
-    public function paginateByPakNoneAddonCategory(Category $category, string $order = 'modified_at'): LengthAwarePaginator
-    {
-        return $category->articles()
+    public function paginateByPakNoneAddonCategory(
+        Category $category,
+        string $order = 'modified_at',
+    ): LengthAwarePaginator {
+        return $category
+            ->articles()
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
-            ->whereDoesntHave('categories', fn ($query) => $query->where('type', CategoryType::Addon))
+            ->whereDoesntHave('categories', fn($query) => $query->where('type', CategoryType::Addon))
             ->orderBy($order, 'desc')
             ->paginate();
     }
@@ -222,7 +261,8 @@ final class ArticleRepository extends BaseRepository
      */
     public function paginateByTag(Tag $tag, string $order = 'modified_at'): LengthAwarePaginator
     {
-        return $tag->articles()
+        return $tag
+            ->articles()
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
@@ -237,7 +277,8 @@ final class ArticleRepository extends BaseRepository
      */
     public function paginateByUser(User $user, string $order = 'modified_at'): LengthAwarePaginator
     {
-        return $user->articles()
+        return $user
+            ->articles()
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
@@ -289,7 +330,7 @@ final class ArticleRepository extends BaseRepository
         return $this->model
             ->withTrashed()
             ->withUserTrashed()
-            ->with(['user' => fn ($q) => $q->withTrashed()])
+            ->with(['user' => fn($q) => $q->withTrashed()])
             ->get();
     }
 
@@ -309,9 +350,7 @@ final class ArticleRepository extends BaseRepository
      */
     public function toggleDelete(Article $article): void
     {
-        $article->trashed()
-            ? $article->restore()
-            : $article->delete();
+        $article->trashed() ? $article->restore() : $article->delete();
     }
 
     /**
@@ -325,22 +364,22 @@ final class ArticleRepository extends BaseRepository
             ->active()
             ->addon()
             ->select('articles.id')
-            ->leftJoin('view_counts as d', fn (JoinClause $joinClause) => $joinClause
-                ->on('d.article_id', 'articles.id')
-                ->where('d.type', 1)
-                ->where('d.period', $datetime->format('Ymd')))
-            ->leftJoin('view_counts as m', fn (JoinClause $joinClause) => $joinClause
-                ->on('m.article_id', 'articles.id')
-                ->where('m.type', 2)
-                ->where('m.period', $datetime->format('Ym')))
-            ->leftJoin('view_counts as y', fn (JoinClause $joinClause) => $joinClause
-                ->on('y.article_id', 'articles.id')
-                ->where('y.type', 3)
-                ->where('y.period', $datetime->format('Y')))
-            ->leftJoin('view_counts as t', fn (JoinClause $joinClause) => $joinClause
-                ->on('t.article_id', 'articles.id')
-                ->where('t.type', 4)
-                ->where('t.period', 'total'))
+            ->leftJoin('view_counts as d', fn(JoinClause $joinClause) => $joinClause->on(
+                'd.article_id',
+                'articles.id',
+            )->where('d.type', 1)->where('d.period', $datetime->format('Ymd')))
+            ->leftJoin('view_counts as m', fn(JoinClause $joinClause) => $joinClause->on(
+                'm.article_id',
+                'articles.id',
+            )->where('m.type', 2)->where('m.period', $datetime->format('Ym')))
+            ->leftJoin('view_counts as y', fn(JoinClause $joinClause) => $joinClause->on(
+                'y.article_id',
+                'articles.id',
+            )->where('y.type', 3)->where('y.period', $datetime->format('Y')))
+            ->leftJoin('view_counts as t', fn(JoinClause $joinClause) => $joinClause->on(
+                't.article_id',
+                'articles.id',
+            )->where('t.type', 4)->where('t.period', 'total'))
             ->orderBy('d.count', 'desc')
             ->orderBy('m.count', 'desc')
             ->orderBy('y.count', 'desc')
@@ -364,7 +403,7 @@ final class ArticleRepository extends BaseRepository
     /**
      * ランダムなPR記事
      */
-    public function findRandomPR(): ?Article
+    public function findRandomPR(): null|Article
     {
         return $this->model
             ->active()
@@ -420,8 +459,8 @@ final class ArticleRepository extends BaseRepository
             ->active()
             ->select(['articles.*'])
             ->with(self::FRONT_RELATIONS)
-            ->whereHas('categories', fn ($query) => $query->where('id', $pak->id))
-            ->whereHas('categories', fn ($query) => $query->where('id', $addon->id))
+            ->whereHas('categories', fn($query) => $query->where('id', $pak->id))
+            ->whereHas('categories', fn($query) => $query->where('id', $addon->id))
             ->orderBy($order, 'desc');
     }
 
@@ -433,7 +472,8 @@ final class ArticleRepository extends BaseRepository
         $word = trim($word);
 
         if ($word === '' || $word === '0') {
-            return $this->model->select(['articles.*'])
+            return $this->model
+                ->select(['articles.*'])
                 ->active()
                 ->with(self::FRONT_RELATIONS)
                 ->orderBy($order, 'desc');
@@ -441,13 +481,14 @@ final class ArticleRepository extends BaseRepository
 
         $likeWord = sprintf('%%%s%%', $word);
 
-        return $this->model->select(['articles.*'])
+        return $this->model
+            ->select(['articles.*'])
             ->active()
-            ->where(fn ($q) => $q
-                ->orWhere('title', 'LIKE', $likeWord)
-                ->orWhere('contents', 'LIKE', $likeWord)
-                ->orWhereHas('attachments.fileInfo', fn ($q) => $q
-                    ->where('data', 'LIKE', $likeWord)))
+            ->where(fn($q) => $q->orWhere('title', 'LIKE', $likeWord)->orWhere(
+                'contents',
+                'LIKE',
+                $likeWord,
+            )->orWhereHas('attachments.fileInfo', fn($q) => $q->where('data', 'LIKE', $likeWord)))
             ->with(self::FRONT_RELATIONS)
             ->orderBy($order, 'desc');
     }

@@ -35,7 +35,10 @@ final readonly class FeedRepository
      */
     public function pakAddon(string $pakSlug): Collection
     {
-        $category = $this->category->pak()->slug($pakSlug)->firstOrFail();
+        $category = $this->category
+            ->pak()
+            ->slug($pakSlug)
+            ->firstOrFail();
 
         return $category
             ->articles()

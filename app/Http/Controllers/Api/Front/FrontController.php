@@ -23,7 +23,7 @@ final class FrontController extends Controller
     public function __construct(
         private readonly ArticleService $articleService,
         private readonly TagService $tagService,
-        private readonly FrontDescriptionService $frontDescriptionService
+        private readonly FrontDescriptionService $frontDescriptionService,
     ) {}
 
     public function show(string $userIdOrNickname, string $slug): ArticleResource
@@ -49,11 +49,10 @@ final class FrontController extends Controller
         $lengthAwarePaginator = $this->articleService->paginateByUser($user, $order);
         $pr = $this->articleService->prArticle();
 
-        return ArticleResource::collection($lengthAwarePaginator)
-            ->additional([
-                'pr' => $pr instanceof \App\Models\Article ? new PrArticleResource($pr) : null,
-                ...$this->frontDescriptionService->user($user),
-            ]);
+        return ArticleResource::collection($lengthAwarePaginator)->additional([
+            'pr' => ($pr instanceof \App\Models\Article) ? new PrArticleResource($pr) : null,
+            ...$this->frontDescriptionService->user($user),
+        ]);
     }
 
     public function pages(ListRequest $listRequest): AnonymousResourceCollection
@@ -62,11 +61,10 @@ final class FrontController extends Controller
         $paginator = $this->articleService->paginatePages(false, $order);
         $pr = $this->articleService->prArticle();
 
-        return ArticleResource::collection($paginator)
-            ->additional([
-                'pr' => $pr instanceof \App\Models\Article ? new PrArticleResource($pr) : null,
-                ...$this->frontDescriptionService->page(),
-            ]);
+        return ArticleResource::collection($paginator)->additional([
+            'pr' => ($pr instanceof \App\Models\Article) ? new PrArticleResource($pr) : null,
+            ...$this->frontDescriptionService->page(),
+        ]);
     }
 
     public function announces(ListRequest $listRequest): AnonymousResourceCollection
@@ -75,11 +73,10 @@ final class FrontController extends Controller
         $paginator = $this->articleService->paginateAnnouces(false, $order);
         $pr = $this->articleService->prArticle();
 
-        return ArticleResource::collection($paginator)
-            ->additional([
-                'pr' => $pr instanceof \App\Models\Article ? new PrArticleResource($pr) : null,
-                ...$this->frontDescriptionService->announces(),
-            ]);
+        return ArticleResource::collection($paginator)->additional([
+            'pr' => ($pr instanceof \App\Models\Article) ? new PrArticleResource($pr) : null,
+            ...$this->frontDescriptionService->announces(),
+        ]);
     }
 
     public function ranking(): AnonymousResourceCollection
@@ -87,11 +84,10 @@ final class FrontController extends Controller
         $paginator = $this->articleService->paginateRanking();
         $pr = $this->articleService->prArticle();
 
-        return ArticleResource::collection($paginator)
-            ->additional([
-                'pr' => $pr instanceof \App\Models\Article ? new PrArticleResource($pr) : null,
-                ...$this->frontDescriptionService->ranking(),
-            ]);
+        return ArticleResource::collection($paginator)->additional([
+            'pr' => ($pr instanceof \App\Models\Article) ? new PrArticleResource($pr) : null,
+            ...$this->frontDescriptionService->ranking(),
+        ]);
     }
 
     public function category(string $type, string $slug, ListRequest $listRequest): AnonymousResourceCollection
@@ -102,24 +98,25 @@ final class FrontController extends Controller
         $paginator = $this->articleService->paginateByCategory($categoryType, $slug, false, $order);
         $pr = $this->articleService->prArticle();
 
-        return ArticleResource::collection($paginator)
-            ->additional([
-                'pr' => $pr instanceof \App\Models\Article ? new PrArticleResource($pr) : null,
-                ...$this->frontDescriptionService->category($categoryType, $slug),
-            ]);
+        return ArticleResource::collection($paginator)->additional([
+            'pr' => ($pr instanceof \App\Models\Article) ? new PrArticleResource($pr) : null,
+            ...$this->frontDescriptionService->category($categoryType, $slug),
+        ]);
     }
 
-    public function categoryPakAddon(string $pakSlug, string $addonSlug, ListRequest $listRequest): AnonymousResourceCollection
-    {
+    public function categoryPakAddon(
+        string $pakSlug,
+        string $addonSlug,
+        ListRequest $listRequest,
+    ): AnonymousResourceCollection {
         $order = $listRequest->string('order', 'modified_at')->toString();
         $lengthAwarePaginator = $this->articleService->paginateByPakAddonCategory($pakSlug, $addonSlug, $order);
         $pr = $this->articleService->prArticle();
 
-        return ArticleResource::collection($lengthAwarePaginator)
-            ->additional([
-                'pr' => $pr instanceof \App\Models\Article ? new PrArticleResource($pr) : null,
-                ...$this->frontDescriptionService->categoryPakAddon($pakSlug, $addonSlug),
-            ]);
+        return ArticleResource::collection($lengthAwarePaginator)->additional([
+            'pr' => ($pr instanceof \App\Models\Article) ? new PrArticleResource($pr) : null,
+            ...$this->frontDescriptionService->categoryPakAddon($pakSlug, $addonSlug),
+        ]);
     }
 
     public function categoryPakNoneAddon(string $pakSlug, ListRequest $listRequest): AnonymousResourceCollection
@@ -128,11 +125,10 @@ final class FrontController extends Controller
         $lengthAwarePaginator = $this->articleService->paginateByPakNoneAddonCategory($pakSlug, $order);
         $pr = $this->articleService->prArticle();
 
-        return ArticleResource::collection($lengthAwarePaginator)
-            ->additional([
-                'pr' => $pr instanceof \App\Models\Article ? new PrArticleResource($pr) : null,
-                ...$this->frontDescriptionService->categoryPakNoneAddon($pakSlug),
-            ]);
+        return ArticleResource::collection($lengthAwarePaginator)->additional([
+            'pr' => ($pr instanceof \App\Models\Article) ? new PrArticleResource($pr) : null,
+            ...$this->frontDescriptionService->categoryPakNoneAddon($pakSlug),
+        ]);
     }
 
     public function tag(Tag $tag, ListRequest $listRequest): AnonymousResourceCollection
@@ -141,11 +137,10 @@ final class FrontController extends Controller
         $lengthAwarePaginator = $this->articleService->paginateByTag($tag, $order);
         $pr = $this->articleService->prArticle();
 
-        return ArticleResource::collection($lengthAwarePaginator)
-            ->additional([
-                'pr' => $pr instanceof \App\Models\Article ? new PrArticleResource($pr) : null,
-                ...$this->frontDescriptionService->tag($tag),
-            ]);
+        return ArticleResource::collection($lengthAwarePaginator)->additional([
+            'pr' => ($pr instanceof \App\Models\Article) ? new PrArticleResource($pr) : null,
+            ...$this->frontDescriptionService->tag($tag),
+        ]);
     }
 
     public function search(SearchRequest $searchRequest): AnonymousResourceCollection
@@ -156,11 +151,10 @@ final class FrontController extends Controller
         $lengthAwarePaginator = $this->articleService->paginateBySearch($word, $order);
         $pr = $this->articleService->prArticle();
 
-        return ArticleResource::collection($lengthAwarePaginator)
-            ->additional([
-                'pr' => $pr instanceof \App\Models\Article ? new PrArticleResource($pr) : null,
-                ...$this->frontDescriptionService->search($word),
-            ]);
+        return ArticleResource::collection($lengthAwarePaginator)->additional([
+            'pr' => ($pr instanceof \App\Models\Article) ? new PrArticleResource($pr) : null,
+            ...$this->frontDescriptionService->search($word),
+        ]);
     }
 
     public function tags(): AnonymousResourceCollection

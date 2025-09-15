@@ -18,9 +18,12 @@ final class TagsPage extends Page
     public function __construct()
     {
         $user = User::factory()->create();
-        $this->article = Article::factory()->publish()->addonPost()->create([
-            'user_id' => $user->id,
-        ]);
+        $this->article = Article::factory()
+            ->publish()
+            ->addonPost()
+            ->create([
+                'user_id' => $user->id,
+            ]);
         $this->tag = Tag::factory()->create();
         $this->article->tags()->save($this->tag);
     }
@@ -34,8 +37,6 @@ final class TagsPage extends Page
     #[\Override]
     public function assert(Browser $browser): void
     {
-        $browser
-            ->waitForText($this->tag->name)
-            ->assertSee($this->tag->name);
+        $browser->waitForText($this->tag->name)->assertSee($this->tag->name);
     }
 }

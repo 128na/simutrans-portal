@@ -19,5 +19,7 @@ final class ArticleShown
     /**
      * 新しいイベントインスタンスの生成.
      */
-    public function __construct(public Article $article) {}
+    public function __construct(
+        public Article $article,
+    ) {}
 }

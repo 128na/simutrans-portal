@@ -64,8 +64,12 @@ final readonly class ArticleService
     /**
      * @return Paginator<int,Article>
      */
-    public function paginateByCategory(CategoryType $categoryType, string $slug, bool $simple = false, string $order = self::ORDER_BY_MODIFIED_AT): Paginator
-    {
+    public function paginateByCategory(
+        CategoryType $categoryType,
+        string $slug,
+        bool $simple = false,
+        string $order = self::ORDER_BY_MODIFIED_AT,
+    ): Paginator {
         $category = $this->categoryRepository->findOrFailByTypeAndSlug($categoryType, $slug);
 
         return $this->articleRepository->paginateByCategory($category, $simple, $order);
@@ -74,8 +78,11 @@ final readonly class ArticleService
     /**
      * @return LengthAwarePaginator<int,Article>
      */
-    public function paginateByPakAddonCategory(string $pakSlug, string $addonSlug, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
-    {
+    public function paginateByPakAddonCategory(
+        string $pakSlug,
+        string $addonSlug,
+        string $order = self::ORDER_BY_MODIFIED_AT,
+    ): LengthAwarePaginator {
         $category = $this->categoryRepository->findOrFailByTypeAndSlug(CategoryType::Pak, $pakSlug);
         $addon = $this->categoryRepository->findOrFailByTypeAndSlug(CategoryType::Addon, $addonSlug);
 
@@ -85,8 +92,10 @@ final readonly class ArticleService
     /**
      * @return LengthAwarePaginator<int,Article>
      */
-    public function paginateByPakNoneAddonCategory(string $pakSlug, string $order = self::ORDER_BY_MODIFIED_AT): LengthAwarePaginator
-    {
+    public function paginateByPakNoneAddonCategory(
+        string $pakSlug,
+        string $order = self::ORDER_BY_MODIFIED_AT,
+    ): LengthAwarePaginator {
         $category = $this->categoryRepository->findOrFailByTypeAndSlug(CategoryType::Pak, $pakSlug);
 
         return $this->articleRepository->paginateByPakNoneAddonCategory($category, $order);
@@ -119,7 +128,7 @@ final readonly class ArticleService
         $this->categoryRepository->findOrFailByTypeAndSlug(CategoryType::Addon, $addonSlug);
     }
 
-    public function prArticle(): ?Article
+    public function prArticle(): null|Article
     {
         return $this->articleRepository->findRandomPR();
     }

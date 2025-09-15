@@ -11,8 +11,7 @@ final class DeleteUnrelatedTags
     public function __invoke(): void
     {
         /** @var int[] */
-        $tagIds = Tag::doesntHave('articles')
-            ->pluck('id');
+        $tagIds = Tag::doesntHave('articles')->pluck('id');
 
         Tag::whereIn('id', $tagIds)->delete();
     }

@@ -35,7 +35,7 @@ final class SitemapHandler
 
     public function add(string $filename, Url $url): void
     {
-        if (! array_key_exists($filename, $this->sitemaps)) {
+        if (!array_key_exists($filename, $this->sitemaps)) {
             $this->sitemaps[$filename] = Sitemap::create();
         }
 
@@ -55,8 +55,9 @@ final class SitemapHandler
     {
         $sitemapIndex = SitemapIndex::create();
         array_map(function (string $filename) use ($sitemapIndex): void {
-            $sitemapIndex->add(TagsSitemap::create($this->filesystemAdapter->url($filename))
-                ->setLastModificationDate(CarbonImmutable::now()));
+            $sitemapIndex->add(TagsSitemap::create($this->filesystemAdapter->url(
+                $filename,
+            ))->setLastModificationDate(CarbonImmutable::now()));
         }, array_keys($this->sitemaps));
         $sitemapIndex->writeToFile($this->filesystemAdapter->path('index.xml'));
     }

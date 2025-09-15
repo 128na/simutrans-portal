@@ -50,7 +50,7 @@ final readonly class GetOptions
     {
         /** @return array<string, mixed> */
         $fn = function (array $list, Category $category): array {
-            if (! isset($list[$category->type->value])) {
+            if (!isset($list[$category->type->value])) {
                 $list[$category->type->value] = [];
             }
 
@@ -75,12 +75,12 @@ final readonly class GetOptions
         /** @var array<ArticleStatus> */
         $status = ArticleStatus::cases();
 
-        return collect($status)->map(
-            fn (ArticleStatus $articleStatus): array => [
-                'label' => (string) __('statuses.'.$articleStatus->value),
+        return collect($status)
+            ->map(fn(ArticleStatus $articleStatus): array => [
+                'label' => (string) __('statuses.' . $articleStatus->value),
                 'value' => $articleStatus->value,
-            ]
-        )->values();
+            ])
+            ->values();
     }
 
     /**
@@ -91,11 +91,11 @@ final readonly class GetOptions
         /** @var array<ArticlePostType> */
         $postTypes = ArticlePostType::cases();
 
-        return collect($postTypes)->map(
-            fn (ArticlePostType $articlePostType): array => [
-                'label' => (string) __('post_types.'.$articlePostType->value),
+        return collect($postTypes)
+            ->map(fn(ArticlePostType $articlePostType): array => [
+                'label' => (string) __('post_types.' . $articlePostType->value),
                 'value' => $articlePostType->value,
-            ]
-        )->values();
+            ])
+            ->values();
     }
 }

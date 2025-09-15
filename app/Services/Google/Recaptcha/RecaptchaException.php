@@ -6,4 +6,6 @@ namespace App\Services\Google\Recaptcha;
 
 use Exception;
 
-abstract class RecaptchaException extends Exception {}
+abstract class RecaptchaException extends Exception
+{
+}

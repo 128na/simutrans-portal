@@ -13,7 +13,7 @@ final readonly class DecidePublishedAt
         private CarbonImmutable $now,
     ) {}
 
-    public function __invoke(?string $publishedAt, ArticleStatus $articleStatus): ?string
+    public function __invoke(null|string $publishedAt, ArticleStatus $articleStatus): null|string
     {
         // 公開なら現在時刻
         if ($articleStatus === ArticleStatus::Publish) {

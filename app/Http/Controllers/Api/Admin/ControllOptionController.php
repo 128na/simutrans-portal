@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\Collection;
 
 final class ControllOptionController extends Controller
 {
-    public function __construct(private readonly ControllOption $controllOption) {}
+    public function __construct(
+        private readonly ControllOption $controllOption,
+    ) {}
 
     /**
      * @return Collection<int, ControllOption>
@@ -25,7 +27,7 @@ final class ControllOptionController extends Controller
      */
     public function toggle(ControllOption $controllOption): Collection
     {
-        $controllOption->update(['value' => ! $controllOption->value]);
+        $controllOption->update(['value' => !$controllOption->value]);
 
         return $this->index();
     }

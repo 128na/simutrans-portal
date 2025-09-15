@@ -27,7 +27,7 @@ final class UpdateTest extends TestCase
     public function test(): void
     {
         $this->actingAs($this->user);
-        $url = '/api/admin/articles/'.$this->article->id;
+        $url = '/api/admin/articles/' . $this->article->id;
         $testResponse = $this->putJson($url, ['article' => ['status' => 'draft']]);
         $testResponse->assertOk();
 
@@ -39,7 +39,7 @@ final class UpdateTest extends TestCase
 
     public function test未ログイン(): void
     {
-        $url = '/api/admin/articles/'.$this->article->id;
+        $url = '/api/admin/articles/' . $this->article->id;
         $testResponse = $this->putJson($url);
         $testResponse->assertUnauthorized();
     }
@@ -48,7 +48,7 @@ final class UpdateTest extends TestCase
     {
         $this->user->update(['role' => UserRole::User]);
         $this->actingAs($this->user);
-        $url = '/api/admin/articles/'.$this->article->id;
+        $url = '/api/admin/articles/' . $this->article->id;
         $testResponse = $this->putJson($url);
         $testResponse->assertUnauthorized();
     }

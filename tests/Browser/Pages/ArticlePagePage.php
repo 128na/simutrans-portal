@@ -21,14 +21,19 @@ final class ArticlePagePage extends Page
     public function __construct()
     {
         $user = User::factory()->create();
-        $this->article = Article::factory()->publish()->page()->create([
-            'user_id' => $user->id,
-        ]);
-        $this->attachment = Attachment::factory()->image()->create([
-            'user_id' => $user->id,
-            'attachmentable_type' => Article::class,
-            'attachmentable_id' => $this->article->id,
-        ]);
+        $this->article = Article::factory()
+            ->publish()
+            ->page()
+            ->create([
+                'user_id' => $user->id,
+            ]);
+        $this->attachment = Attachment::factory()
+            ->image()
+            ->create([
+                'user_id' => $user->id,
+                'attachmentable_type' => Article::class,
+                'attachmentable_id' => $this->article->id,
+            ]);
         $this->article->update(['contents' => ['sections' => [
             ['type' => 'caption', 'caption' => 'DummyCaption'],
             ['type' => 'text', 'text' => 'DummyText'],

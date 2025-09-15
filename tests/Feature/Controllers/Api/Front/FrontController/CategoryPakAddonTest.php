@@ -28,9 +28,10 @@ final class CategoryPakAddonTest extends TestCase
 
     public function test(): void
     {
-        $testResponse = $this->get(sprintf('api/front/categories/pak/%s/%s',
+        $testResponse = $this->get(sprintf(
+            'api/front/categories/pak/%s/%s',
             $this->pakCategory->slug,
-            $this->addonCategory->slug
+            $this->addonCategory->slug,
         ));
 
         $testResponse->assertOk();
@@ -39,7 +40,7 @@ final class CategoryPakAddonTest extends TestCase
 
     public function test存在しない_pak(): void
     {
-        $testResponse = $this->get('api/front/categories/pak/missing/'.$this->addonCategory->slug);
+        $testResponse = $this->get('api/front/categories/pak/missing/' . $this->addonCategory->slug);
 
         $testResponse->assertNotFound();
     }

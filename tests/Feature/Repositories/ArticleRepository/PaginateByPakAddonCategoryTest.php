@@ -36,8 +36,8 @@ final class PaginateByPakAddonCategoryTest extends TestCase
 
     public function test(): void
     {
-        tap(Article::factory()->publish()->create(), fn ($a) => $a->categories()->sync([$this->pak->id]));
-        tap(Article::factory()->publish()->create(), fn ($a) => $a->categories()->sync([$this->addon->id]));
+        tap(Article::factory()->publish()->create(), fn($a) => $a->categories()->sync([$this->pak->id]));
+        tap(Article::factory()->publish()->create(), fn($a) => $a->categories()->sync([$this->addon->id]));
 
         $lengthAwarePaginator = $this->articleRepository->paginateByPakAddonCategory($this->pak, $this->addon);
 

@@ -16,8 +16,6 @@ final readonly class FindArticle
 
     public function __invoke(User $user): ArticlesResouce
     {
-        return new ArticlesResouce(
-            $this->articleRepository->findAllByUser($user, ArticleRepository::MYPAGE_RELATIONS)
-        );
+        return new ArticlesResouce($this->articleRepository->findAllByUser($user, ArticleRepository::MYPAGE_RELATIONS));
     }
 }

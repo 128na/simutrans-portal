@@ -30,26 +30,33 @@ final class EditorController extends Controller
         return $getOptions($this->loggedinUser());
     }
 
-    public function store(StoreRequest $storeRequest, StoreArticle $storeArticle, FindArticle $findArticle): ArticlesResouce
-    {
+    public function store(
+        StoreRequest $storeRequest,
+        StoreArticle $storeArticle,
+        FindArticle $findArticle,
+    ): ArticlesResouce {
         /**
          * @var array{should_notify?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}
          */
         $data = $storeRequest->validated();
 
-        DB::transaction(fn (): Article => $storeArticle($this->loggedinUser(), $data));
+        DB::transaction(fn(): Article => $storeArticle($this->loggedinUser(), $data));
 
         return $this->index($findArticle);
     }
 
-    public function update(UpdateRequest $updateRequest, Article $article, UpdateArticle $updateArticle, FindArticle $findArticle): ArticlesResouce
-    {
+    public function update(
+        UpdateRequest $updateRequest,
+        Article $article,
+        UpdateArticle $updateArticle,
+        FindArticle $findArticle,
+    ): ArticlesResouce {
         /**
          * @var array{should_notify?:bool,without_update_modified_at?:bool,follow_redirect?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}
          */
         $data = $updateRequest->validated();
 
-        DB::transaction(fn (): Article => $updateArticle($article, $data));
+        DB::transaction(fn(): Article => $updateArticle($article, $data));
 
         return $this->index($findArticle);
     }

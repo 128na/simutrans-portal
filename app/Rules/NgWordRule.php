@@ -21,7 +21,9 @@ final class NgWordRule implements ValidationRule
      * @param  array<string>  $ngWords
      * @return void
      */
-    public function __construct(private readonly array $ngWords = []) {}
+    public function __construct(
+        private readonly array $ngWords = [],
+    ) {}
 
     /**
      * Run the validation rule.
@@ -31,7 +33,7 @@ final class NgWordRule implements ValidationRule
     #[\Override]
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (! is_string($value)) {
+        if (!is_string($value)) {
             $fail(sprintf(':attribute に使用できない文字が含まれています。(%s)', implode(',', $this->detected)));
 
             return;

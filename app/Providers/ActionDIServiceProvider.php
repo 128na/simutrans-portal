@@ -19,12 +19,16 @@ final class ActionDIServiceProvider extends ServiceProvider
     #[\Override]
     public function register(): void
     {
-        $this->app->singleton(SitemapHandler::class, fn (): SitemapHandler => new SitemapHandler(
-            Storage::disk('sitemap'),
-        ));
-        $this->app->singleton(Store::class, fn (Application $application): Store => new Store(
-            Storage::disk('public'),
-            $application->make(CropImage::class)
-        ));
+        $this->app->singleton(
+            SitemapHandler::class,
+            fn(): SitemapHandler => new SitemapHandler(Storage::disk('sitemap')),
+        );
+        $this->app->singleton(
+            Store::class,
+            fn(Application $application): Store => new Store(
+                Storage::disk('public'),
+                $application->make(CropImage::class),
+            ),
+        );
     }
 }

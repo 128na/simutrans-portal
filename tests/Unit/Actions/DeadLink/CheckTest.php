@@ -21,7 +21,9 @@ final class CheckTest extends TestCase
     public function test_200(): void
     {
         $article = $this->mock(Article::class, function (MockInterface $mock): void {
-            $mock->allows()->getAttribute('contents')
+            $mock
+                ->allows()
+                ->getAttribute('contents')
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy', 'exclude_link_check' => false]));
         });
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($article): void {
@@ -34,7 +36,7 @@ final class CheckTest extends TestCase
             $mock->expects()->clear($article)->once();
         });
 
-        $fn = fn (): false => false;
+        $fn = fn(): false => false;
 
         Queue::fake();
         $this->getSUT()($fn);
@@ -44,22 +46,28 @@ final class CheckTest extends TestCase
     public function test_200以外x2(): void
     {
         $article = $this->mock(Article::class, function (MockInterface $mock): void {
-            $mock->allows()->getAttribute('contents')
+            $mock
+                ->allows()
+                ->getAttribute('contents')
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy', 'exclude_link_check' => false]));
         });
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($article): void {
             $mock->expects()->cursorCheckLink()->once()->andReturn(LazyCollection::make([$article]));
         });
         $this->mock(GetHeaders::class, function (MockInterface $mock): void {
-            $mock->expects()->__invoke('dummy')
-                ->times(2)->andReturn(['Status Code: 500 Internal Server Error'])
-                ->once()->andReturn(['Status Code: 200 OK']);
+            $mock
+                ->expects()
+                ->__invoke('dummy')
+                ->times(2)
+                ->andReturn(['Status Code: 500 Internal Server Error'])
+                ->once()
+                ->andReturn(['Status Code: 200 OK']);
         });
         $this->mock(FailedCountCache::class, function (MockInterface $mock) use ($article): void {
             $mock->expects()->clear($article)->once();
         });
 
-        $fn = fn (): true => true;
+        $fn = fn(): true => true;
 
         Queue::fake();
         $this->getSUT()($fn);
@@ -69,7 +77,9 @@ final class CheckTest extends TestCase
     public function test_200以外x3(): void
     {
         $article = $this->mock(Article::class, function (MockInterface $mock): void {
-            $mock->allows()->getAttribute('contents')
+            $mock
+                ->allows()
+                ->getAttribute('contents')
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy', 'exclude_link_check' => false]));
         });
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($article): void {
@@ -79,7 +89,7 @@ final class CheckTest extends TestCase
             $mock->expects()->__invoke('dummy')->times(3)->andReturn(['Status Code: 500 Internal Server Error']);
         });
 
-        $fn = fn (): true => true;
+        $fn = fn(): true => true;
 
         Queue::fake();
         $this->getSUT()($fn);
@@ -89,13 +99,15 @@ final class CheckTest extends TestCase
     public function test_除外指定時(): void
     {
         $article = $this->mock(Article::class, function (MockInterface $mock): void {
-            $mock->allows()->getAttribute('contents')
+            $mock
+                ->allows()
+                ->getAttribute('contents')
                 ->andReturn(new AddonIntroductionContent(['link' => 'dummy', 'exclude_link_check' => true]));
         });
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($article): void {
             $mock->expects()->cursorCheckLink()->once()->andReturn(LazyCollection::make([$article]));
         });
-        $fn = fn (): true => true;
+        $fn = fn(): true => true;
 
         Queue::fake();
         $this->getSUT()($fn);
@@ -106,12 +118,14 @@ final class CheckTest extends TestCase
     {
         $this->mock(ArticleRepository::class, function (MockInterface $m): void {
             $article = $this->mock(Article::class, function (MockInterface $mock): void {
-                $mock->allows()->getAttribute('contents')
+                $mock
+                    ->allows()
+                    ->getAttribute('contents')
                     ->andReturn(new AddonIntroductionContent(['link' => 'https://getuploader.com/dummy']));
             });
             $m->expects()->cursorCheckLink()->once()->andReturn(LazyCollection::make([$article]));
         });
-        $fn = fn (): true => true;
+        $fn = fn(): true => true;
 
         Queue::fake();
         $this->getSUT()($fn);

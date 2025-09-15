@@ -155,7 +155,8 @@ final class FrontControllerTest extends TestCase
     {
         $article = Article::factory()->publish()->create();
         $testResponse = $this->get(route('articles.show', [
-            'userIdOrNickname' => $article->user_id, 'articleSlug' => $article->slug,
+            'userIdOrNickname' => $article->user_id,
+            'articleSlug' => $article->slug,
         ]));
 
         $testResponse->assertOk();
@@ -165,7 +166,8 @@ final class FrontControllerTest extends TestCase
     {
         $article = Article::factory()->create(['status' => 'publish']);
         $testResponse = $this->get(route('articles.show', [
-            'userIdOrNickname' => $article->user->nickname, 'articleSlug' => $article->slug,
+            'userIdOrNickname' => $article->user->nickname,
+            'articleSlug' => $article->slug,
         ]));
 
         $testResponse->assertOk();
@@ -174,7 +176,10 @@ final class FrontControllerTest extends TestCase
     public function test_show非公開(): void
     {
         $article = Article::factory()->create(['status' => 'private']);
-        $testResponse = $this->get(route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]));
+        $testResponse = $this->get(route('articles.show', [
+            'userIdOrNickname' => $article->user->nickname ?? $article->user_id,
+            'articleSlug' => $article->slug,
+        ]));
 
         $testResponse->assertNotFound();
     }
@@ -183,10 +188,13 @@ final class FrontControllerTest extends TestCase
     {
         $article = Article::factory()->publish()->create();
 
-        $from = '/users/'.$article->user_id.'/dummy';
-        $to = '/users/'.$article->user_id.$article->slug;
+        $from = '/users/' . $article->user_id . '/dummy';
+        $to = '/users/' . $article->user_id . $article->slug;
         Redirect::create(['user_id' => $article->user_id, 'from' => $from, 'to' => $to]);
-        $testResponse = $this->get(route('articles.show', ['userIdOrNickname' => $article->user_id, 'articleSlug' => 'dummy']));
+        $testResponse = $this->get(route('articles.show', [
+            'userIdOrNickname' => $article->user_id,
+            'articleSlug' => 'dummy',
+        ]));
 
         $testResponse->assertRedirect($to);
     }
@@ -202,7 +210,7 @@ final class FrontControllerTest extends TestCase
     {
         $article = Article::factory()->publish()->create();
 
-        $testResponse = $this->get('/articles/'.$article->slug);
+        $testResponse = $this->get('/articles/' . $article->slug);
         $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user->nickname, $article->slug));
     }
 
@@ -210,7 +218,7 @@ final class FrontControllerTest extends TestCase
     {
         $article = Article::factory()->publish()->create();
 
-        $testResponse = $this->get('/articles/'.$article->id);
+        $testResponse = $this->get('/articles/' . $article->id);
         $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user->nickname, $article->slug));
     }
 
@@ -219,7 +227,7 @@ final class FrontControllerTest extends TestCase
         $article = Article::factory()->publish()->create();
         $article->user->update(['nickname' => null]);
 
-        $testResponse = $this->get('/articles/'.$article->slug);
+        $testResponse = $this->get('/articles/' . $article->slug);
         $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user_id, $article->slug));
     }
 
@@ -228,7 +236,7 @@ final class FrontControllerTest extends TestCase
         $article = Article::factory()->publish()->create();
         $article->user->update(['nickname' => null]);
 
-        $testResponse = $this->get('/articles/'.$article->id);
+        $testResponse = $this->get('/articles/' . $article->id);
         $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user_id, $article->slug));
     }
 }

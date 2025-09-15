@@ -18,9 +18,12 @@ final class ListTagPage extends Page
     public function __construct()
     {
         $user = User::factory()->create();
-        $this->article = Article::factory()->publish()->addonPost()->create([
-            'user_id' => $user->id,
-        ]);
+        $this->article = Article::factory()
+            ->publish()
+            ->addonPost()
+            ->create([
+                'user_id' => $user->id,
+            ]);
         $this->tag = Tag::factory()->create();
         $this->article->tags()->save($this->tag);
     }
@@ -28,14 +31,12 @@ final class ListTagPage extends Page
     #[\Override]
     public function url()
     {
-        return '/tags/'.$this->tag->id;
+        return '/tags/' . $this->tag->id;
     }
 
     #[\Override]
     public function assert(Browser $browser): void
     {
-        $browser
-            ->waitForText($this->tag->name)
-            ->assertSee($this->article->title);
+        $browser->waitForText($this->tag->name)->assertSee($this->article->title);
     }
 }

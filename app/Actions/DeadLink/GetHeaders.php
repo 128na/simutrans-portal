@@ -11,6 +11,6 @@ final class GetHeaders
      */
     public function __invoke(string $url): array
     {
-        return @get_headers($url) ?: [];
+        return (@get_headers($url)) ?: [];
     }
 }

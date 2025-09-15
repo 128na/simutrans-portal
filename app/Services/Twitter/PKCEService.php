@@ -49,15 +49,21 @@ final readonly class PKCEService
      */
     public function generateAuthorizeUrl(string $state, string $codeChallange): string
     {
-        return 'https://twitter.com/i/oauth2/authorize?'.http_build_query([
-            'response_type' => 'code',
-            'client_id' => $this->clientId,
-            'redirect_uri' => $this->callbackUrl,
-            'scope' => 'tweet.read tweet.write users.read offline.access',
-            'state' => $state,
-            'code_challenge' => $codeChallange,
-            'code_challenge_method' => 'S256',
-        ], '', null, PHP_QUERY_RFC3986);
+        return 'https://twitter.com/i/oauth2/authorize?' .
+        http_build_query(
+            [
+                'response_type' => 'code',
+                'client_id' => $this->clientId,
+                'redirect_uri' => $this->callbackUrl,
+                'scope' => 'tweet.read tweet.write users.read offline.access',
+                'state' => $state,
+                'code_challenge' => $codeChallange,
+                'code_challenge_method' => 'S256',
+            ],
+            '',
+            null,
+            PHP_QUERY_RFC3986,
+        );
     }
 
     public function verifyState(string $expected, string $actual): void
@@ -94,7 +100,7 @@ final readonly class PKCEService
                 'access_token' => $data['access_token'],
                 'refresh_token' => $data['refresh_token'],
                 'expired_at' => $this->now->addSeconds($data['expires_in']),
-            ]
+            ],
         );
     }
 
@@ -121,7 +127,7 @@ final readonly class PKCEService
                 'access_token' => $data['access_token'],
                 'refresh_token' => $data['refresh_token'],
                 'expired_at' => $this->now->addSeconds($data['expires_in']),
-            ]
+            ],
         );
 
         return $oauthToken;

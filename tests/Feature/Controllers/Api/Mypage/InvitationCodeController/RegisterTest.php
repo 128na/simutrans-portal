@@ -31,14 +31,11 @@ final class RegisterTest extends TestCase
         Event::fake();
         $this->assertGuest();
 
-        $testResponse = $this->postJson(
-            '/api/mypage/invite/'.$this->inviterUser->invitation_code,
-            [
-                'name' => 'example',
-                'email' => 'example@example.com',
-                'password' => 'example123456',
-            ]
-        );
+        $testResponse = $this->postJson('/api/mypage/invite/' . $this->inviterUser->invitation_code, [
+            'name' => 'example',
+            'email' => 'example@example.com',
+            'password' => 'example123456',
+        ]);
 
         $testResponse->assertCreated();
         $this->assertAuthenticated();
@@ -50,10 +47,7 @@ final class RegisterTest extends TestCase
     {
         ControllOption::updateOrCreate(['key' => ControllOptionKey::InvitationCode], ['value' => false]);
 
-        $testResponse = $this->postJson(
-            '/api/mypage/invite/'.$this->inviterUser->invitation_code,
-            []
-        );
+        $testResponse = $this->postJson('/api/mypage/invite/' . $this->inviterUser->invitation_code, []);
         $testResponse->assertStatus(403);
     }
 }

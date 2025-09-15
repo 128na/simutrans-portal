@@ -64,7 +64,7 @@ final class Article extends Model implements Feedable
 
     public function routeNotificationForMail(mixed $notification): string
     {
-        if (! $this->user->email) {
+        if (!$this->user->email) {
             throw new Exception('email not found');
         }
 
@@ -72,9 +72,9 @@ final class Article extends Model implements Feedable
     }
 
     /*
-    |--------------------------------------------------------------------------
-    | リレーション
-    |--------------------------------------------------------------------------
+     * |--------------------------------------------------------------------------
+     * | リレーション
+     * |--------------------------------------------------------------------------
      */
     /**
      * @return MorphMany<Attachment,$this>
@@ -121,9 +121,10 @@ final class Article extends Model implements Feedable
      */
     public function todaysViewCount(): HasOne
     {
-        return $this->hasOne(ViewCount::class)
-            ->where('type', ViewCount::TYPE_DAILY)
-            ->where('period', now()->format('Ymd'));
+        return $this->hasOne(ViewCount::class)->where('type', ViewCount::TYPE_DAILY)->where(
+            'period',
+            now()->format('Ymd'),
+        );
     }
 
     /**
@@ -171,9 +172,10 @@ final class Article extends Model implements Feedable
      */
     public function todaysConversionCount(): HasOne
     {
-        return $this->hasOne(ConversionCount::class)
-            ->where('type', ConversionCount::TYPE_DAILY)
-            ->where('period', now()->format('Ymd'));
+        return $this->hasOne(ConversionCount::class)->where('type', ConversionCount::TYPE_DAILY)->where(
+            'period',
+            now()->format('Ymd'),
+        );
     }
 
     /**
@@ -237,9 +239,9 @@ final class Article extends Model implements Feedable
     }
 
     /*
-    |--------------------------------------------------------------------------
-    | スコープ
-    |--------------------------------------------------------------------------
+     * |--------------------------------------------------------------------------
+     * | スコープ
+     * |--------------------------------------------------------------------------
      */
     /**
      * @param  Builder<Article>  $builder
@@ -278,10 +280,13 @@ final class Article extends Model implements Feedable
      */
     public function scopeLinkCheckTarget(Builder $builder): void
     {
-        $builder->where('post_type', ArticlePostType::AddonIntroduction)
+        $builder
+            ->where('post_type', ArticlePostType::AddonIntroduction)
             ->where(
-                fn ($query) => $query->whereNull('contents->exclude_link_check')
-                    ->orWhere('contents->exclude_link_check', false)
+                fn($query) => $query->whereNull('contents->exclude_link_check')->orWhere(
+                    'contents->exclude_link_check',
+                    false,
+                ),
             );
     }
 
@@ -300,7 +305,7 @@ final class Article extends Model implements Feedable
      */
     public function scopePak(Builder $builder, string $slug): void
     {
-        $builder->whereHas('categories', fn ($query) => $query->pak()->slug($slug));
+        $builder->whereHas('categories', fn($query) => $query->pak()->slug($slug));
     }
 
     /**
@@ -308,8 +313,10 @@ final class Article extends Model implements Feedable
      */
     public function scopeAnnounce(Builder $builder): void
     {
-        $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
-            ->whereHas('categories', fn ($query) => $query->page()->slug('announce'));
+        $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])->whereHas(
+            'categories',
+            fn($query) => $query->page()->slug('announce'),
+        );
     }
 
     /**
@@ -317,8 +324,10 @@ final class Article extends Model implements Feedable
      */
     public function scopeWithoutAnnounce(Builder $builder): void
     {
-        $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
-            ->whereDoesntHave('categories', fn ($query) => $query->page()->slug('announce'));
+        $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])->whereDoesntHave(
+            'categories',
+            fn($query) => $query->page()->slug('announce'),
+        );
     }
 
     /**
@@ -326,8 +335,7 @@ final class Article extends Model implements Feedable
      */
     public function scopeRankingOrder(Builder $builder): void
     {
-        $builder->join('rankings', 'rankings.article_id', '=', 'articles.id')
-            ->orderBy('rankings.rank', 'asc');
+        $builder->join('rankings', 'rankings.article_id', '=', 'articles.id')->orderBy('rankings.rank', 'asc');
     }
 
     /**
@@ -336,8 +344,10 @@ final class Article extends Model implements Feedable
     public function scopeCategory(Builder $builder, Category $category): void
     {
         $builder->join('article_category', function (JoinClause $joinClause) use ($category): void {
-            $joinClause->on('article_category.article_id', '=', 'articles.id')
-                ->where('article_category.category_id', $category->id);
+            $joinClause->on('article_category.article_id', '=', 'articles.id')->where(
+                'article_category.category_id',
+                $category->id,
+            );
         });
     }
 
@@ -347,12 +357,16 @@ final class Article extends Model implements Feedable
     public function scopePakAddonCategory(Builder $builder, Category $pak, Category $addon): void
     {
         $builder->join('article_category', function (JoinClause $joinClause) use ($pak): void {
-            $joinClause->on('article_category.article_id', '=', 'articles.id')
-                ->where('article_category.category_id', $pak->id);
+            $joinClause->on('article_category.article_id', '=', 'articles.id')->where(
+                'article_category.category_id',
+                $pak->id,
+            );
         });
         $builder->join('article_category', function (JoinClause $joinClause) use ($addon): void {
-            $joinClause->on('article_category.article_id', '=', 'articles.id')
-                ->where('article_category.category_id', $addon->id);
+            $joinClause->on('article_category.article_id', '=', 'articles.id')->where(
+                'article_category.category_id',
+                $addon->id,
+            );
         });
     }
 
@@ -362,34 +376,41 @@ final class Article extends Model implements Feedable
     public function scopeTag(Builder $builder, Tag $tag): void
     {
         $builder->join('article_tag', function (JoinClause $joinClause) use ($tag): void {
-            $joinClause->on('article_tag.article_id', '=', 'articles.id')
-                ->where('article_tag.tag_id', $tag->id);
+            $joinClause->on('article_tag.article_id', '=', 'articles.id')->where('article_tag.tag_id', $tag->id);
         });
     }
 
     public function isAddonPost(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->post_type === ArticlePostType::AddonPost);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn(): bool => $this->post_type === ArticlePostType::AddonPost,
+        );
     }
 
     public function isPage(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->post_type === ArticlePostType::Page);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn(): bool => $this->post_type === ArticlePostType::Page,
+        );
     }
 
     public function isPublish(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->status === ArticleStatus::Publish);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn(): bool => $this->status === ArticleStatus::Publish,
+        );
     }
 
     public function isReservation(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->status === ArticleStatus::Reservation);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn(): bool => $this->status === ArticleStatus::Reservation,
+        );
     }
 
     public function isInactive(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => in_array($this->status, [
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => in_array($this->status, [
             ArticleStatus::Draft,
             ArticleStatus::Private,
             ArticleStatus::Trash,
@@ -398,7 +419,9 @@ final class Article extends Model implements Feedable
 
     public function hasThumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => ! is_null($this->contents->thumbnail) && $this->thumbnail);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn(): bool => !is_null($this->contents->thumbnail) && $this->thumbnail,
+        );
     }
 
     public function thumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
@@ -406,22 +429,27 @@ final class Article extends Model implements Feedable
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
             $id = $this->contents->thumbnail;
 
-            return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
+            return $this->attachments->first(fn($attachment): bool => ((string) $id) == $attachment->id);
         });
     }
 
     public function thumbnailUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->url($this->has_thumbnail && $this->thumbnail
-            ? $this->thumbnail->path
-            : DefaultThumbnail::NO_THUMBNAIL));
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->getPublicDisk()->url(
+            $this->has_thumbnail && $this->thumbnail ? $this->thumbnail->path : DefaultThumbnail::NO_THUMBNAIL,
+        ));
     }
 
     public function hasFile(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->is_addon_post
-            && $this->contents instanceof AddonPostContent
-            && ! is_null($this->contents->file) && $this->file);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn(): bool => (
+                $this->is_addon_post &&
+                $this->contents instanceof AddonPostContent &&
+                !is_null($this->contents->file) &&
+                $this->file
+            ),
+        );
     }
 
     public function file(): \Illuminate\Database\Eloquent\Casts\Attribute
@@ -430,7 +458,7 @@ final class Article extends Model implements Feedable
             if ($this->contents instanceof AddonPostContent) {
                 $id = $this->contents->file;
 
-                return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
+                return $this->attachments->first(fn($attachment): bool => ((string) $id) == $attachment->id);
             }
 
             throw new Exception('invalid post type');
@@ -439,7 +467,9 @@ final class Article extends Model implements Feedable
 
     public function hasFileInfo(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->hasFile && $this->file && $this->file->fileInfo);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn(): bool => $this->hasFile && $this->file && $this->file->fileInfo,
+        );
     }
 
     /**
@@ -447,7 +477,9 @@ final class Article extends Model implements Feedable
      */
     public function categoryPaks(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak));
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->categories->filter(
+            fn($category): bool => $category->type === CategoryType::Pak,
+        ));
     }
 
     /**
@@ -455,7 +487,9 @@ final class Article extends Model implements Feedable
      */
     public function categoryAddons(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Addon));
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->categories->filter(
+            fn($category): bool => $category->type === CategoryType::Addon,
+        ));
     }
 
     /**
@@ -463,14 +497,16 @@ final class Article extends Model implements Feedable
      */
     public function categoryPak128Positions(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak128Position));
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->categories->filter(
+            fn($category): bool => $category->type === CategoryType::Pak128Position,
+        ));
     }
 
     public function todaysConversionRate(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {
-            if (! is_null($this->todaysConversionCount) && $this->todaysViewCount) {
-                $rate = $this->todaysConversionCount->count / $this->todaysViewCount->count * 100;
+            if (!is_null($this->todaysConversionCount) && $this->todaysViewCount) {
+                $rate = ($this->todaysConversionCount->count / $this->todaysViewCount->count) * 100;
 
                 return sprintf('%.1f %%', $rate);
             }
@@ -481,48 +517,58 @@ final class Article extends Model implements Feedable
 
     public function metaDescription(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): string => mb_strimwidth((string) $this->contents->getDescription(), 0, 300, '…'));
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): string => mb_strimwidth(
+            (string) $this->contents->getDescription(),
+            0,
+            300,
+            '…',
+        ));
     }
 
     public function headlineDescription(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): string => mb_strimwidth((string) $this->contents->getDescription(), 0, 55, '…'));
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): string => mb_strimwidth(
+            (string) $this->contents->getDescription(),
+            0,
+            55,
+            '…',
+        ));
     }
 
     public function urlDecodedSlug(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): string => urldecode((string) $this->slug));
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): string => urldecode((string) $this->slug));
     }
 
     /*
-    |--------------------------------------------------------------------------
-    | 一般
-    |--------------------------------------------------------------------------
+     * |--------------------------------------------------------------------------
+     * | 一般
+     * |--------------------------------------------------------------------------
      */
     public function isAnnounce(): bool
     {
-        return $this->categories->some(fn ($category): bool => $category->type === CategoryType::Page && $category->slug === 'announce');
+        return $this->categories->some(
+            fn($category): bool => $category->type === CategoryType::Page && $category->slug === 'announce',
+        );
     }
 
     public function hasCategory(int|string $id): bool
     {
-        return $this->categories->some(fn ($category): bool => $category->id === (int) $id);
+        return $this->categories->some(fn($category): bool => $category->id === ((int) $id));
     }
 
-    public function getImage(int|string $id): ?Attachment
+    public function getImage(int|string $id): null|Attachment
     {
-        return $this->attachments->first(
-            fn ($attachment): bool => (int) $id == $attachment->id
-        );
+        return $this->attachments->first(fn($attachment): bool => ((int) $id) == $attachment->id);
     }
 
     public function getImageUrl(int|string $id): string
     {
         $image = $this->getImage($id);
 
-        return $this->getPublicDisk()->url($image instanceof \App\Models\Attachment
-            ? $image->path
-            : DefaultThumbnail::NO_THUMBNAIL);
+        return $this->getPublicDisk()->url(
+            ($image instanceof \App\Models\Attachment) ? $image->path : DefaultThumbnail::NO_THUMBNAIL,
+        );
     }
 
     /**
@@ -541,9 +587,9 @@ final class Article extends Model implements Feedable
     }
 
     /*
-    |--------------------------------------------------------------------------
-    | RSS
-    |--------------------------------------------------------------------------
+     * |--------------------------------------------------------------------------
+     * | RSS
+     * |--------------------------------------------------------------------------
      */
     #[\Override]
     public function toFeedItem(): FeedItem
@@ -553,7 +599,10 @@ final class Article extends Model implements Feedable
             'title' => $this->title,
             'summary' => $this->contents->getDescription(),
             'updated' => $this->modified_at?->toMutable(), // CarbonImmutableは未対応
-            'link' => route('articles.show', ['userIdOrNickname' => $this->user->nickname ?? $this->user_id, 'articleSlug' => $this->slug]),
+            'link' => route('articles.show', [
+                'userIdOrNickname' => $this->user->nickname ?? $this->user_id,
+                'articleSlug' => $this->slug,
+            ]),
             'authorName' => $this->user->name ?? '',
         ]);
     }

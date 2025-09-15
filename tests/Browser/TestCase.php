@@ -35,7 +35,7 @@ abstract class TestCase extends BaseTestCase
      */
     final public static function prepare(): void
     {
-        if (! static::runningInSail()) {
+        if (!static::runningInSail()) {
             static::startChromeDriver();
         }
     }
@@ -48,19 +48,20 @@ abstract class TestCase extends BaseTestCase
     #[\Override]
     protected function driver()
     {
-        $chromeOptions = (new ChromeOptions)->addArguments(collect([
-            $this->shouldStartMaximized() ? '--start-maximized' : '--window-size=1920,1080',
-        ])->unless($this->hasHeadlessDisabled(), fn ($items) => $items->merge([
-            '--disable-gpu',
-            '--headless',
-        ]))->all());
+        $chromeOptions = new ChromeOptions()->addArguments(
+            collect([
+                $this->shouldStartMaximized() ? '--start-maximized' : '--window-size=1920,1080',
+            ])
+                ->unless($this->hasHeadlessDisabled(), fn($items) => $items->merge([
+                    '--disable-gpu',
+                    '--headless',
+                ]))
+                ->all(),
+        );
 
         return RemoteWebDriver::create(
             $_ENV['DUSK_DRIVER_URL'] ?? 'http://localhost:9515',
-            DesiredCapabilities::chrome()->setCapability(
-                ChromeOptions::CAPABILITY,
-                $chromeOptions
-            )
+            DesiredCapabilities::chrome()->setCapability(ChromeOptions::CAPABILITY, $chromeOptions),
         );
     }
 
@@ -70,8 +71,7 @@ abstract class TestCase extends BaseTestCase
     #[\Override]
     protected function hasHeadlessDisabled(): bool
     {
-        return isset($_SERVER['DUSK_HEADLESS_DISABLED']) ||
-            isset($_ENV['DUSK_HEADLESS_DISABLED']);
+        return isset($_SERVER['DUSK_HEADLESS_DISABLED']) || isset($_ENV['DUSK_HEADLESS_DISABLED']);
     }
 
     /**
@@ -80,7 +80,6 @@ abstract class TestCase extends BaseTestCase
     #[\Override]
     protected function shouldStartMaximized(): bool
     {
-        return isset($_SERVER['DUSK_START_MAXIMIZED']) ||
-            isset($_ENV['DUSK_START_MAXIMIZED']);
+        return isset($_SERVER['DUSK_START_MAXIMIZED']) || isset($_ENV['DUSK_START_MAXIMIZED']);
     }
 }

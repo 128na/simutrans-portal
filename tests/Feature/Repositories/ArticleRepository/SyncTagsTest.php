@@ -31,16 +31,10 @@ final class SyncTagsTest extends FeatureTestCase
         $shouldRemoveTag = Tag::factory()->create();
         $article->tags()->save($shouldRemoveTag);
 
-        $this->assertSame(
-            [$shouldRemoveTag->id],
-            $article->tags()->pluck('id')->toArray()
-        );
+        $this->assertSame([$shouldRemoveTag->id], $article->tags()->pluck('id')->toArray());
 
         $this->articleRepository->syncTags($article, [$shouldAddTag->id]);
 
-        $this->assertSame(
-            [$shouldAddTag->id],
-            $article->tags()->pluck('id')->toArray()
-        );
+        $this->assertSame([$shouldAddTag->id], $article->tags()->pluck('id')->toArray());
     }
 }

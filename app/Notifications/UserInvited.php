@@ -19,7 +19,9 @@ final class UserInvited extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(private readonly User $user) {}
+    public function __construct(
+        private readonly User $user,
+    ) {}
 
     /**
      * Get the notification's delivery channels.
@@ -38,9 +40,10 @@ final class UserInvited extends Notification implements ShouldQueue
      */
     public function toMail(mixed $notifiable)
     {
-        return (new MailMessage)
-            ->subject('ユーザー招待通知')
-            ->view('emails.invited', ['user' => $notifiable, 'invited' => $this->user]);
+        return new MailMessage()->subject('ユーザー招待通知')->view('emails.invited', [
+            'user' => $notifiable,
+            'invited' => $this->user,
+        ]);
     }
 
     /**

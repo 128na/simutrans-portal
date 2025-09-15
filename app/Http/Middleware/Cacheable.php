@@ -45,7 +45,7 @@ final class Cacheable
         return sprintf('%s-%s', Config::string('app.version'), sha1($request->fullUrl()));
     }
 
-    private function getCache(string $key): ?string
+    private function getCache(string $key): null|string
     {
         if (Cache::has($key)) {
             $data = Cache::get($key);
@@ -66,7 +66,7 @@ final class Cacheable
     {
         $content = $response->getContent();
         if ($content) {
-            Cache::put($key, gzencode($content, 9), (int) Config::string('app.cache_lifetime_min') * 60);
+            Cache::put($key, gzencode($content, 9), ((int) Config::string('app.cache_lifetime_min')) * 60);
         }
     }
 }

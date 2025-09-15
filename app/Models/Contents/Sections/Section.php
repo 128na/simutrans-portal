@@ -6,7 +6,7 @@ namespace App\Models\Contents\Sections;
 
 abstract class Section
 {
-    public ?string $type;
+    public null|string $type;
 
     /**
      * @param  array<mixed>  $section

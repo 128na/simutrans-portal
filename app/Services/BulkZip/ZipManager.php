@@ -23,7 +23,7 @@ final class ZipManager
     public function __construct(
         private readonly ZipArchive $zipArchive,
         private readonly FilesystemAdapter $filesystemAdapter,
-        private readonly array $decorators
+        private readonly array $decorators,
     ) {}
 
     /**
@@ -38,9 +38,9 @@ final class ZipManager
         foreach ($result['files'] as $filename => $filepath) {
             if ($this->isZipFile($filepath)) {
                 set_time_limit(60);
-                $this->mergeZip($filepath, 'files/'.$filename);
+                $this->mergeZip($filepath, 'files/' . $filename);
             } else {
-                $this->addFile($filepath, 'files/'.$filename);
+                $this->addFile($filepath, 'files/' . $filename);
             }
         }
 
@@ -50,9 +50,9 @@ final class ZipManager
         return $this->filepath;
     }
 
-    private function randName(?string $prefix = null, ?string $suffix = null): string
+    private function randName(null|string $prefix = null, null|string $suffix = null): string
     {
-        return $prefix.Str::uuid().$suffix;
+        return $prefix . Str::uuid() . $suffix;
     }
 
     private function isZipFile(string $filepath): bool
@@ -143,7 +143,7 @@ final class ZipManager
     {
         $result = $this->zipArchive->open($this->filesystemAdapter->path($this->filepath), ZipArchive::CREATE);
         if ($result !== true) {
-            throw new ZipErrorException('open faild: '.$this->filepath, $result);
+            throw new ZipErrorException('open faild: ' . $this->filepath, $result);
         }
     }
 
@@ -163,18 +163,18 @@ final class ZipManager
     {
         $basedir = str_replace(basename($filenameInZip), '', $filenameInZip);
         $path = $this->filesystemAdapter->path($filepath);
-        $zipArchive = new ZipArchive;
+        $zipArchive = new ZipArchive();
         try {
             $zipArchive->open($path);
             for ($i = 0; $i < $zipArchive->numFiles; $i++) {
                 $name = $zipArchive->getNameIndex($i);
                 if ($name === false) {
-                    throw new ZipErrorException('getNameIndex faild: '.$name);
+                    throw new ZipErrorException('getNameIndex faild: ' . $name);
                 }
 
                 $rc = $zipArchive->getStream($name);
                 if ($rc === false) {
-                    throw new ZipErrorException('getStream faild: '.$name);
+                    throw new ZipErrorException('getStream faild: ' . $name);
                 }
 
                 $randName = $this->randName();
@@ -196,7 +196,7 @@ final class ZipManager
         $this->close();
 
         if ($result !== true) {
-            throw new ZipErrorException('add text faild: '.$filenameInZip);
+            throw new ZipErrorException('add text faild: ' . $filenameInZip);
         }
     }
 
@@ -204,7 +204,7 @@ final class ZipManager
     {
         try {
             // CIエラー対策 ZipArchive::close(): Failure to create temporary file: No such file or directory
-            $res = ! $this->zipArchive->close();
+            $res = !$this->zipArchive->close();
             if ($res) {
                 throw new ZipErrorException('close faild');
             }

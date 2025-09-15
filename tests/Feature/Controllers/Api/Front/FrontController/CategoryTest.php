@@ -25,9 +25,10 @@ final class CategoryTest extends TestCase
 
     public function test(): void
     {
-        $testResponse = $this->get(sprintf('api/front/categories/%s/%s',
+        $testResponse = $this->get(sprintf(
+            'api/front/categories/%s/%s',
             $this->category->type->value,
-            $this->category->slug
+            $this->category->slug,
         ));
 
         $testResponse->assertOk();
@@ -36,7 +37,7 @@ final class CategoryTest extends TestCase
 
     public function test存在しないtype(): void
     {
-        $testResponse = $this->get('api/front/categories/missing/'.$this->category->slug);
+        $testResponse = $this->get('api/front/categories/missing/' . $this->category->slug);
 
         $testResponse->assertNotFound();
     }

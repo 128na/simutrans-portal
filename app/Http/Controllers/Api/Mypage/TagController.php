@@ -23,9 +23,11 @@ final class TagController extends Controller
 
     public function search(SearchRequest $searchRequest): Tags
     {
-        return new Tags($searchRequest->name
-            ? $this->tagRepository->searchTags((string) $searchRequest->string('name'))
-            : $this->tagRepository->getTags());
+        return new Tags(
+            $searchRequest->name
+                ? $this->tagRepository->searchTags((string) $searchRequest->string('name'))
+                : $this->tagRepository->getTags(),
+        );
     }
 
     public function store(StoreRequest $storeRequest): ResourcesTag

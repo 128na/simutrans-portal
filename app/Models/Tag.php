@@ -63,17 +63,16 @@ final class Tag extends Model
     }
 
     /*
-    |--------------------------------------------------------------------------
-    | スコープ
-    |--------------------------------------------------------------------------
-    */
+     * |--------------------------------------------------------------------------
+     * | スコープ
+     * |--------------------------------------------------------------------------
+     */
     /**
      * @param  Builder<Tag>  $builder
      */
     public function scopePopular(Builder $builder): void
     {
-        $builder->withCount(['articles' => fn ($q) => $q->active()])
-            ->orderBy('articles_count', 'desc');
+        $builder->withCount(['articles' => fn($q) => $q->active()])->orderBy('articles_count', 'desc');
     }
 
     #[\Override]

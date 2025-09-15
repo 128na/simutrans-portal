@@ -16,9 +16,12 @@ final class ListAnnouncePage extends Page
     public function __construct()
     {
         $user = User::factory()->create();
-        $this->article = Article::factory()->publish()->page()->create([
-            'user_id' => $user->id,
-        ]);
+        $this->article = Article::factory()
+            ->publish()
+            ->page()
+            ->create([
+                'user_id' => $user->id,
+            ]);
         $category = Category::where('type', 'page')->where('slug', 'announce')->firstOrFail();
         $this->article->categories()->save($category);
     }
@@ -32,8 +35,6 @@ final class ListAnnouncePage extends Page
     #[\Override]
     public function assert(Browser $browser): void
     {
-        $browser
-            ->waitForText($this->article->title)
-            ->assertSee($this->article->title);
+        $browser->waitForText($this->article->title)->assertSee($this->article->title);
     }
 }

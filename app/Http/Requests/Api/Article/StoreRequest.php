@@ -25,7 +25,7 @@ final class StoreRequest extends BaseRequest
             'article.post_type' => ['bail', 'required', Rule::enum(ArticlePostType::class)],
             'article.status' => ['required', Rule::enum(ArticleStatus::class)],
             'article.title' => ['required', 'max:255', 'unique:articles,title', new NgWordRule(NgWords::ARTICLE_TITLE)],
-            'article.slug' => ['required', 'max:255', new NotJustNumbers, new UniqueSlugByUser],
+            'article.slug' => ['required', 'max:255', new NotJustNumbers(), new UniqueSlugByUser()],
             'article.contents' => 'required|array',
             'article.published_at' => ['nullable', 'date', app(ReservationPublishedAt::class)],
             'article.articles' => 'present|array|max:10',

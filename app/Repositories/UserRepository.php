@@ -26,7 +26,7 @@ final class UserRepository extends BaseRepository
     {
         return $this->model
             ->withTrashed()
-            ->withCount(['articles' => fn ($q) => $q->withUserTrashed()->withTrashed()])
+            ->withCount(['articles' => fn($q) => $q->withUserTrashed()->withTrashed()])
             ->get();
     }
 
@@ -35,9 +35,7 @@ final class UserRepository extends BaseRepository
      */
     public function findOrFailWithTrashed(int $id): User
     {
-        return $this->model
-            ->withTrashed()
-            ->findOrFail($id);
+        return $this->model->withTrashed()->findOrFail($id);
     }
 
     /**
@@ -45,9 +43,7 @@ final class UserRepository extends BaseRepository
      */
     public function toggleDelete(User $user): void
     {
-        $user->trashed()
-            ? $user->restore()
-            : $user->delete();
+        $user->trashed() ? $user->restore() : $user->delete();
     }
 
     /**

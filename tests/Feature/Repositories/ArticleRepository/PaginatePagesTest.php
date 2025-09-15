@@ -20,7 +20,10 @@ final class PaginatePagesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->article = Article::factory()->page()->publish()->create();
+        $this->article = Article::factory()
+            ->page()
+            ->publish()
+            ->create();
         $this->articleRepository = app(ArticleRepository::class);
     }
 

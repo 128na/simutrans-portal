@@ -55,11 +55,11 @@ final class CountPakAddon
         /**
          * @param  object{pak_slug:string,addon_slug:string,count:int}  $pakAddonCount
          */
-        $items = $items->map(fn ($pakAddonCount): array => [
+        $items = $items->map(fn($pakAddonCount): array => [
             'pak_slug' => $pakAddonCount->pak_slug,
             'addon_slug' => $pakAddonCount->addon_slug,
-            'pak' => __('category.pak.'.$pakAddonCount->pak_slug),
-            'addon' => __('category.addon.'.$pakAddonCount->addon_slug),
+            'pak' => __('category.pak.' . $pakAddonCount->pak_slug),
+            'addon' => __('category.addon.' . $pakAddonCount->addon_slug),
             'count' => $pakAddonCount->count,
         ]);
 

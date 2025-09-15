@@ -45,7 +45,7 @@ abstract class TestCase extends TestsTestCase
      */
     protected function makeValidator(string $requestClass, array $data): \Illuminate\Contracts\Validation\Validator
     {
-        $rules = (new $requestClass($data))->rules();
+        $rules = new $requestClass($data)->rules();
 
         return Validator::make($data, $rules);
     }
@@ -54,7 +54,7 @@ abstract class TestCase extends TestsTestCase
     {
         return Attachment::factory()->create([
             'user_id' => $userId,
-            'path' => $uploadedFile->store('user/'.$userId, 'public'),
+            'path' => $uploadedFile->store('user/' . $userId, 'public'),
             'original_name' => $uploadedFile->getClientOriginalName(),
         ]);
     }
@@ -73,51 +73,69 @@ abstract class TestCase extends TestsTestCase
         return $this->createFromFile($file, $user->id);
     }
 
-    protected function createAddonPost(?User $user = null): Article
+    protected function createAddonPost(null|User $user = null): Article
     {
         $user ??= User::factory()->create();
         $attachment = $this->createAttachment($user);
-        $article = Article::factory()->addonPost($attachment)->publish()->create(['user_id' => $user->id]);
+        $article = Article::factory()
+            ->addonPost($attachment)
+            ->publish()
+            ->create(['user_id' => $user->id]);
         $article->attachments()->save($attachment);
 
         return $article;
     }
 
-    protected function createAddonIntroduction(?User $user = null): Article
+    protected function createAddonIntroduction(null|User $user = null): Article
     {
         $user ??= User::factory()->create();
 
-        return Article::factory()->addonIntroduction()->publish()->create(['user_id' => $user->id]);
+        return Article::factory()
+            ->addonIntroduction()
+            ->publish()
+            ->create(['user_id' => $user->id]);
     }
 
-    protected function createPage(?User $user = null): Article
+    protected function createPage(null|User $user = null): Article
     {
         $user ??= User::factory()->create();
 
-        return Article::factory()->page()->publish()->create(['user_id' => $user->id]);
+        return Article::factory()
+            ->page()
+            ->publish()
+            ->create(['user_id' => $user->id]);
     }
 
-    protected function createMarkdown(?User $user = null): Article
+    protected function createMarkdown(null|User $user = null): Article
     {
         $user ??= User::factory()->create();
 
-        return Article::factory()->markdown()->publish()->create(['user_id' => $user->id]);
+        return Article::factory()
+            ->markdown()
+            ->publish()
+            ->create(['user_id' => $user->id]);
     }
 
-    protected function createAnnounce(?User $user = null): Article
+    protected function createAnnounce(null|User $user = null): Article
     {
         $user ??= User::factory()->create();
-        $article = Article::factory()->page()->publish()->create(['user_id' => $user->id]);
+        $article = Article::factory()
+            ->page()
+            ->publish()
+            ->create(['user_id' => $user->id]);
         $category = Category::firstOrCreate(['type' => CategoryType::Page, 'slug' => 'announce']);
         $article->categories()->save($category);
 
         return $article;
     }
 
-    protected function createMarkdownAnnounce(?User $user = null): Article
+    protected function createMarkdownAnnounce(null|User $user = null): Article
     {
         $user ??= User::factory()->create();
-        $article = Article::factory()->markdown()->publish()->create(['user_id' => $user->id]);
+        $article = Article::factory()
+            ->markdown()
+            ->publish()
+            ->create(['user_id' => $user->id]);
         $category = Category::firstOrCreate(['type' => CategoryType::Page, 'slug' => 'announce']);
         $article->categories()->save($category);
 

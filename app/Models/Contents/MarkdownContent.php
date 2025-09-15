@@ -8,7 +8,7 @@ use App\Services\MarkdownService;
 
 final class MarkdownContent extends Content
 {
-    public ?string $markdown;
+    public null|string $markdown;
 
     /**
      * @param  array{markdown?:string}  $contents

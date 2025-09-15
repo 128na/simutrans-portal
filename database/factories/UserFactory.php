@@ -22,7 +22,7 @@ final class UserFactory extends Factory
         return [
             'role' => UserRole::User,
             'name' => fake()->name(),
-            'nickname' => 'dummy_'.fake()->randomNumber(8),
+            'nickname' => 'dummy_' . fake()->randomNumber(8),
             'invited_by' => null,
             'invitation_code' => Str::random(10),
             'email' => fake()->unique()->safeEmail(),
@@ -37,14 +37,14 @@ final class UserFactory extends Factory
 
     public function admin()
     {
-        return $this->state(fn (array $attributes): array => [
+        return $this->state(fn(array $attributes): array => [
             'role' => UserRole::Admin,
         ]);
     }
 
     public function deleted()
     {
-        return $this->state(fn (array $attributes): array => [
+        return $this->state(fn(array $attributes): array => [
             'deleted_at' => now(),
         ]);
     }

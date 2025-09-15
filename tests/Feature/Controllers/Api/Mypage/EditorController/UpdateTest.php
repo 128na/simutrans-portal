@@ -22,7 +22,7 @@ final class UpdateTest extends TestCase
 
     public function test_未ログイン(): void
     {
-        $url = '/api/mypage/articles/'.$this->article->id;
+        $url = '/api/mypage/articles/' . $this->article->id;
 
         $testResponse = $this->postJson($url);
         $testResponse->assertUnauthorized();
@@ -30,7 +30,7 @@ final class UpdateTest extends TestCase
 
     public function test(): void
     {
-        $url = '/api/mypage/articles/'.$this->article->id;
+        $url = '/api/mypage/articles/' . $this->article->id;
 
         $this->actingAs($this->article->user);
 

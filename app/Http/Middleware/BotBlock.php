@@ -28,7 +28,7 @@ final class BotBlock
     public function handle(Request $request, Closure $next): Response
     {
         $ua = $request->server('HTTP_USER_AGENT');
-        if (! is_string($ua)) {
+        if (!is_string($ua)) {
             return response('', 200)->header('Cache-Control', 'public, max-age=2147483648');
         }
 

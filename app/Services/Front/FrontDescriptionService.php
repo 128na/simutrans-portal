@@ -86,9 +86,9 @@ final class FrontDescriptionService
     public function categoryPakAddon(string $pakSlug, string $addonSlug): array
     {
         return ['description' => [
-            'title' => sprintf('%s、%sの投稿', __('category.pak.'.$pakSlug), __('category.addon.'.$addonSlug)),
+            'title' => sprintf('%s、%sの投稿', __('category.pak.' . $pakSlug), __('category.addon.' . $addonSlug)),
             'type' => 'message',
-            'message' => __('category.description.addon.'.$addonSlug),
+            'message' => __('category.description.addon.' . $addonSlug),
         ]];
     }
 
@@ -98,7 +98,7 @@ final class FrontDescriptionService
     public function categoryPakNoneAddon(string $pakSlug): array
     {
         return ['description' => [
-            'title' => sprintf('%s、%sの投稿', __('category.pak.'.$pakSlug), __('category.addon.none')),
+            'title' => sprintf('%s、%sの投稿', __('category.pak.' . $pakSlug), __('category.addon.none')),
             'type' => 'message',
             'message' => __('category.description.addon.none'),
         ]];

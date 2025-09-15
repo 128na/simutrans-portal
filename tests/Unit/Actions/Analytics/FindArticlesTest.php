@@ -19,10 +19,10 @@ final class FindArticlesTest extends TestCase
     #[DataProvider('data')]
     public function test(array $data, array $expected): void
     {
-        $user = new User;
+        $user = new User();
         $searchRequest = new SearchRequest(['ids' => [1], ...$data]);
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $expected): void {
-            $mock->expects()->findAllForAnalytics($user, [1], ...$expected)->once()->andReturn(new Collection);
+            $mock->expects()->findAllForAnalytics($user, [1], ...$expected)->once()->andReturn(new Collection());
         });
         $result = $this->getSUT()($user, $searchRequest);
         $this->assertInstanceOf(Collection::class, $result);
@@ -37,7 +37,8 @@ final class FindArticlesTest extends TestCase
                 'end_date' => '2023-04-05',
             ],
             [
-                ArticleAnalyticsType::Daily, ['20200102', '20230405'],
+                ArticleAnalyticsType::Daily,
+                ['20200102', '20230405'],
             ],
         ];
         yield 'monthly' => [
@@ -47,7 +48,8 @@ final class FindArticlesTest extends TestCase
                 'end_date' => '2023-04-05',
             ],
             [
-                ArticleAnalyticsType::Monthly, ['202001', '202304'],
+                ArticleAnalyticsType::Monthly,
+                ['202001', '202304'],
             ],
         ];
         yield 'yearly' => [
@@ -57,7 +59,8 @@ final class FindArticlesTest extends TestCase
                 'end_date' => '2023-04-05',
             ],
             [
-                ArticleAnalyticsType::Yearly, ['2020', '2023'],
+                ArticleAnalyticsType::Yearly,
+                ['2020', '2023'],
             ],
         ];
     }

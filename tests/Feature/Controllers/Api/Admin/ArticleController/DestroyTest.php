@@ -27,7 +27,7 @@ final class DestroyTest extends TestCase
     public function test論理削除済みでなければ論理削除(): void
     {
         $this->actingAs($this->user);
-        $url = '/api/admin/articles/'.$this->article->id;
+        $url = '/api/admin/articles/' . $this->article->id;
         $testResponse = $this->deleteJson($url);
         $testResponse->assertOk();
 
@@ -40,7 +40,7 @@ final class DestroyTest extends TestCase
         $this->article->delete();
 
         $this->actingAs($this->user);
-        $url = '/api/admin/articles/'.$this->article->id;
+        $url = '/api/admin/articles/' . $this->article->id;
         $testResponse = $this->deleteJson($url);
         $testResponse->assertOk();
 
@@ -50,7 +50,7 @@ final class DestroyTest extends TestCase
 
     public function test未ログイン(): void
     {
-        $url = '/api/admin/articles/'.$this->article->id;
+        $url = '/api/admin/articles/' . $this->article->id;
         $testResponse = $this->deleteJson($url);
         $testResponse->assertUnauthorized();
     }
@@ -59,7 +59,7 @@ final class DestroyTest extends TestCase
     {
         $this->user->update(['role' => UserRole::User]);
         $this->actingAs($this->user);
-        $url = '/api/admin/articles/'.$this->article->id;
+        $url = '/api/admin/articles/' . $this->article->id;
         $testResponse = $this->deleteJson($url);
         $testResponse->assertUnauthorized();
     }

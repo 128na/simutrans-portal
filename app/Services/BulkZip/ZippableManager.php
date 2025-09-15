@@ -11,7 +11,9 @@ use Exception;
 
 final readonly class ZippableManager
 {
-    public function __construct(private readonly ArticleRepository $articleRepository) {}
+    public function __construct(
+        private readonly ArticleRepository $articleRepository,
+    ) {}
 
     /**
      * @return array<\App\Models\Article>
@@ -20,7 +22,7 @@ final readonly class ZippableManager
     {
         return match (true) {
             $bulkZip->bulkZippable instanceof User => $this->getUserItems($bulkZip->bulkZippable),
-            default => throw new Exception('unsupport type provided:'.$bulkZip->bulk_zippable_type, 1),
+            default => throw new Exception('unsupport type provided:' . $bulkZip->bulk_zippable_type, 1),
         };
     }
 
@@ -29,7 +31,8 @@ final readonly class ZippableManager
      */
     private function getUserItems(User $user): array
     {
-        return $this->articleRepository->findAllByUser($user, [])
+        return $this->articleRepository
+            ->findAllByUser($user, [])
             ->load(['categories', 'tags', 'attachments', 'user'])
             ->all();
     }

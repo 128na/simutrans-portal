@@ -23,12 +23,14 @@ final class IndexTest extends TestCase
     {
         $this->actingAs($this->article->user);
 
-        $url = '/api/mypage/analytics?'.http_build_query([
-            'ids' => [$this->article->id],
-            'type' => 'daily',
-            'start_date' => now()->yesterday()->toDateTimeString(),
-            'end_date' => now()->toDateTimeString(),
-        ]);
+        $url =
+            '/api/mypage/analytics?' .
+            http_build_query([
+                'ids' => [$this->article->id],
+                'type' => 'daily',
+                'start_date' => now()->yesterday()->toDateTimeString(),
+                'end_date' => now()->toDateTimeString(),
+            ]);
 
         $testResponse = $this->getJson($url);
         $testResponse->assertOk();

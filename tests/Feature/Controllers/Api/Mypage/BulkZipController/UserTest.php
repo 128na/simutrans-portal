@@ -24,7 +24,7 @@ final class UserTest extends TestCase
     #[\Override]
     protected function tearDown(): void
     {
-        BulkZip::all()->map(fn ($bz) => $bz->delete());
+        BulkZip::all()->map(fn($bz) => $bz->delete());
         parent::tearDown();
     }
 

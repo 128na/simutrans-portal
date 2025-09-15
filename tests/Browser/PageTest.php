@@ -27,11 +27,9 @@ final class PageTest extends TestCase
     #[DataProvider('dataPages')]
     public function test_pages(string $pageClass): void
     {
-        $page = new $pageClass;
+        $page = new $pageClass();
         JobUpdateRelated::dispatchSync();
-        $this->browse(fn (Browser $browser) => $browser
-            ->visit($page)
-        );
+        $this->browse(fn(Browser $browser) => $browser->visit($page));
     }
 
     public static function dataPages(): \Generator

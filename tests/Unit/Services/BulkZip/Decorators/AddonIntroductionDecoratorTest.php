@@ -23,7 +23,7 @@ final class AddonIntroductionDecoratorTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->addonIntroductionDecorator = new AddonIntroductionDecorator;
+        $this->addonIntroductionDecorator = new AddonIntroductionDecorator();
     }
 
     public function test_can_process_対象(): void
@@ -59,23 +59,32 @@ final class AddonIntroductionDecoratorTest extends TestCase
             $mock->allows()->getAttribute('slug')->andReturn('test_slug');
             $mock->allows()->offsetExists('user')->andReturn(true);
             $mock->allows()->getAttribute('user_id')->andReturn(1);
-            $mock->allows()->getAttribute('user')->andReturn($this->mock(User::class, function (MockInterface $mock): void {
-                $mock->allows()->offsetExists('nickname')->andReturn(false);
-                $mock->allows()->offsetExists('name')->andReturn(true);
-                $mock->allows()->getAttribute('name')->andReturn('test user name');
-                $mock->allows()->getRouteKey()->andReturn(1);
-            }));
-            $mock->allows()->getAttribute('categories')->andReturn(collect([new Category(['type' => CategoryType::Addon, 'slug' => 'example'])]));
+            $mock
+                ->allows()
+                ->getAttribute('user')
+                ->andReturn($this->mock(User::class, function (MockInterface $mock): void {
+                    $mock->allows()->offsetExists('nickname')->andReturn(false);
+                    $mock->allows()->offsetExists('name')->andReturn(true);
+                    $mock->allows()->getAttribute('name')->andReturn('test user name');
+                    $mock->allows()->getRouteKey()->andReturn(1);
+                }));
+            $mock
+                ->allows()
+                ->getAttribute('categories')
+                ->andReturn(collect([new Category(['type' => CategoryType::Addon, 'slug' => 'example'])]));
             $mock->allows()->getAttribute('tags')->andReturn(collect([new Tag(['name' => 'test tag'])]));
-            $mock->allows()->getAttribute('contents')->andReturn(new AddonIntroductionContent([
-                'description' => 'test description',
-                'link' => 'http://example.com',
-                'author' => 'test author',
-                'license' => 'test license',
-                'thanks' => 'test thanks',
-                'agreement' => true,
-                'exclude_link_check' => true,
-            ]));
+            $mock
+                ->allows()
+                ->getAttribute('contents')
+                ->andReturn(new AddonIntroductionContent([
+                    'description' => 'test description',
+                    'link' => 'http://example.com',
+                    'author' => 'test author',
+                    'license' => 'test license',
+                    'thanks' => 'test thanks',
+                    'agreement' => true,
+                    'exclude_link_check' => true,
+                ]));
         });
         $input = ['contents' => [], 'files' => []];
         $result = $this->addonIntroductionDecorator->process($input, $mock);
@@ -84,7 +93,10 @@ final class AddonIntroductionDecoratorTest extends TestCase
 
         $this->assertEquals(1, $contents[0][0][1]);
         $this->assertEquals('test title', $contents[0][1][1]);
-        $this->assertEquals(route('articles.show', ['userIdOrNickname' => 1, 'articleSlug' => 'test_slug']), $contents[0][2][1]);
+        $this->assertEquals(route('articles.show', [
+            'userIdOrNickname' => 1,
+            'articleSlug' => 'test_slug',
+        ]), $contents[0][2][1]);
         $this->assertEquals('無し', $contents[0][3][1]);
         $this->assertEquals('test user name', $contents[0][4][1]);
         $this->assertEquals('category.addon.example', $contents[0][5][1]);

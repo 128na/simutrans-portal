@@ -30,7 +30,7 @@ final class CategoryFactory extends Factory
     {
         return [
             'type' => fake()->randomElement(CategoryType::cases()),
-            'slug' => 'dummy-'.fake()->randomNumber(8),
+            'slug' => 'dummy-' . fake()->randomNumber(8),
             'order' => fake()->randomNumber(1),
             'need_admin' => false,
         ];

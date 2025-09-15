@@ -10,7 +10,9 @@ use Illuminate\Log\Logger;
 
 final readonly class OnPasswordReset
 {
-    public function __construct(private readonly Logger $logger) {}
+    public function __construct(
+        private readonly Logger $logger,
+    ) {}
 
     public function handle(PasswordReset $passwordReset): void
     {

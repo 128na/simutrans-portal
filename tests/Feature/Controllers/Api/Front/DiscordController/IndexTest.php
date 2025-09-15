@@ -24,9 +24,7 @@ final class IndexTest extends TestCase
 
         $url = '/api/front/invite-simutrans-interact-meeting';
         $testResponse = $this->postJson($url);
-        $testResponse
-            ->assertOk()
-            ->assertJson(['url' => 'dummy']);
+        $testResponse->assertOk()->assertJson(['url' => 'dummy']);
     }
 
     public function test_create_discordエラー時は400レスポンス(): void
@@ -39,9 +37,7 @@ final class IndexTest extends TestCase
         });
         $url = '/api/front/invite-simutrans-interact-meeting';
         $testResponse = $this->postJson($url);
-        $testResponse
-            ->assertStatus(400)
-            ->assertJson(['url' => null]);
+        $testResponse->assertStatus(400)->assertJson(['url' => null]);
     }
 
     public function test_create_recaptchaエラー時は400レスポンス(): void
@@ -54,8 +50,6 @@ final class IndexTest extends TestCase
         });
         $url = '/api/front/invite-simutrans-interact-meeting';
         $testResponse = $this->postJson($url);
-        $testResponse
-            ->assertStatus(400)
-            ->assertJson(['url' => null]);
+        $testResponse->assertStatus(400)->assertJson(['url' => null]);
     }
 }

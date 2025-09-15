@@ -6,15 +6,15 @@ namespace App\Models\Contents;
 
 final class AddonPostContent extends Content
 {
-    public ?string $description;
+    public null|string $description;
 
-    public ?int $file;
+    public null|int $file;
 
-    public ?string $author;
+    public null|string $author;
 
-    public ?string $license;
+    public null|string $license;
 
-    public ?string $thanks;
+    public null|string $thanks;
 
     /**
      * @param  array{description?:string,file?:int,author?:string,license?:string,thanks?:string}  $contents
@@ -23,7 +23,7 @@ final class AddonPostContent extends Content
     {
         $this->description = $contents['description'] ?? null;
         $id = $contents['file'] ?? null;
-        $this->file = $id ? (int) $id : null;
+        $this->file = $id ? ((int) $id) : null;
         $this->author = $contents['author'] ?? null;
         $this->license = $contents['license'] ?? null;
         $this->thanks = $contents['thanks'] ?? null;

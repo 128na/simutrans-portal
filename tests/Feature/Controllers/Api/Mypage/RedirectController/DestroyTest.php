@@ -24,7 +24,7 @@ final class DestroyTest extends TestCase
         $this->actingAs($this->user);
 
         $redirect = Redirect::create(['user_id' => $this->user->id, 'from' => 'foo/2', 'to' => 'bar/2']);
-        $url = '/api/mypage/redirects/'.$redirect->id;
+        $url = '/api/mypage/redirects/' . $redirect->id;
 
         $testResponse = $this->deleteJson($url);
         $testResponse->assertOk();
@@ -36,7 +36,7 @@ final class DestroyTest extends TestCase
         $this->actingAs($this->user);
 
         $redirect = Redirect::create(['user_id' => null, 'from' => 'foo/1', 'to' => 'bar/1']);
-        $url = '/api/mypage/redirects/'.$redirect->id;
+        $url = '/api/mypage/redirects/' . $redirect->id;
 
         $testResponse = $this->deleteJson($url);
         $testResponse->assertForbidden();
@@ -47,7 +47,7 @@ final class DestroyTest extends TestCase
         $this->actingAs($this->user);
 
         $redirect = Redirect::create(['user_id' => User::factory()->create()->id, 'from' => 'foo/3', 'to' => 'bar/3']);
-        $url = '/api/mypage/redirects/'.$redirect->id;
+        $url = '/api/mypage/redirects/' . $redirect->id;
 
         $testResponse = $this->deleteJson($url);
         $testResponse->assertForbidden();
@@ -56,7 +56,7 @@ final class DestroyTest extends TestCase
     public function test未ログイン(): void
     {
         $redirect = Redirect::create(['user_id' => $this->user->id, 'from' => 'foo/2', 'to' => 'bar/2']);
-        $url = '/api/mypage/redirects/'.$redirect->id;
+        $url = '/api/mypage/redirects/' . $redirect->id;
 
         $testResponse = $this->deleteJson($url);
         $testResponse->assertUnauthorized();

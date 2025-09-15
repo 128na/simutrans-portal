@@ -27,13 +27,13 @@ final class ArticleResource extends JsonResource
             'status' => $this->resource->status,
             'post_type' => $this->resource->post_type,
             'contents' => $this->resource->contents,
-            'categories' => $this->resource->categories->map(fn (Category $category): array => [
+            'categories' => $this->resource->categories->map(fn(Category $category): array => [
                 'id' => $category->id,
                 'name' => __(sprintf('category.%s.%s', $category->type->value, $category->slug)),
                 'type' => $category->type,
                 'slug' => $category->slug,
             ]),
-            'tags' => $this->resource->tags->map(fn (Tag $tag): array => [
+            'tags' => $this->resource->tags->map(fn(Tag $tag): array => [
                 'id' => $tag->id,
                 'name' => $tag->name,
             ]),
@@ -42,23 +42,25 @@ final class ArticleResource extends JsonResource
                 'nickname' => $this->resource->user->nickname,
                 'name' => $this->resource->user->name,
             ],
-            'articles' => $this->resource->articles
-                ->filter(fn (Article $article): bool => $article->is_publish)
-                ->map(fn (Article $article): array => [
+            'articles' => $this->resource
+                ->articles
+                ->filter(fn(Article $article): bool => $article->is_publish)
+                ->map(fn(Article $article): array => [
                     'id' => $article->id,
                     'title' => $article->title,
                 ])
                 ->values(),
-            'relatedArticles' => $this->resource->relatedArticles
-                ->filter(fn (Article $article): bool => $article->is_publish)
-                ->map(fn (Article $article): array => [
+            'relatedArticles' => $this->resource
+                ->relatedArticles
+                ->filter(fn(Article $article): bool => $article->is_publish)
+                ->map(fn(Article $article): array => [
                     'id' => $article->id,
                     'title' => $article->title,
                 ])
                 ->values(),
             'published_at' => $this->resource->published_at?->toIso8601String() ?? '未投稿',
             'modified_at' => $this->resource->modified_at?->toIso8601String(),
-            'file_info' => $this->when($this->resource->hasFileInfo, fn () => $this->resource->file?->fileInfo?->data),
+            'file_info' => $this->when($this->resource->hasFileInfo, fn() => $this->resource->file?->fileInfo?->data),
             'attachments' => new AttachmentResource($this->resource->attachments),
         ];
     }

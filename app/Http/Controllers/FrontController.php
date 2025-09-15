@@ -48,8 +48,12 @@ final class FrontController extends Controller
     /**
      * 記事詳細.
      */
-    public function show(string $userIdOrNickname, string $slug, Request $request, DoRedirectIfExists $doRedirectIfExists): RedirectResponse|Renderable
-    {
+    public function show(
+        string $userIdOrNickname,
+        string $slug,
+        Request $request,
+        DoRedirectIfExists $doRedirectIfExists,
+    ): RedirectResponse|Renderable {
         $user = is_numeric($userIdOrNickname)
             ? User::findOrFail($userIdOrNickname)
             : User::where('nickname', $userIdOrNickname)->firstOrFail();
@@ -79,10 +83,7 @@ final class FrontController extends Controller
 
         abort_unless($article->has_file && $article->file, 404);
 
-        return $this->getPublicDisk()->download(
-            $article->file->path,
-            $article->file->original_name
-        );
+        return $this->getPublicDisk()->download($article->file->path, $article->file->original_name);
     }
 
     /**
@@ -101,10 +102,7 @@ final class FrontController extends Controller
             'UA' => $request->server('HTTP_USER_AGENT', 'N/A'),
         ]);
 
-        return $this->getPublicDisk()->download(
-            $article->file->path,
-            $article->file->original_name
-        );
+        return $this->getPublicDisk()->download($article->file->path, $article->file->original_name);
     }
 
     /**
@@ -190,7 +188,10 @@ final class FrontController extends Controller
             ? Article::findOrFail($slugOrId)
             : Article::slug($slugOrId)->orderBy('id', 'asc')->firstOrFail();
 
-        return redirect(route('articles.show', ['userIdOrNickname' => $article->user?->nickname ?? $article->user_id, 'articleSlug' => $article->slug]), Response::HTTP_MOVED_PERMANENTLY);
+        return redirect(route('articles.show', [
+            'userIdOrNickname' => $article->user?->nickname ?? $article->user_id,
+            'articleSlug' => $article->slug,
+        ]), Response::HTTP_MOVED_PERMANENTLY);
     }
 
     private function getPublicDisk(): FilesystemAdapter

@@ -11,7 +11,9 @@ use App\Services\Front\ArticleService;
 
 final class GenerateTopOrderByModifiedAt extends BaseGenerator
 {
-    public function __construct(private readonly ArticleService $articleService) {}
+    public function __construct(
+        private readonly ArticleService $articleService,
+    ) {}
 
     #[\Override]
     protected function getJsonData(): array
@@ -20,14 +22,26 @@ final class GenerateTopOrderByModifiedAt extends BaseGenerator
 
         return [
             'paks' => [
-                'pak128japan' => ArticleResource::collection($this->articleService->paginateByCategory(CategoryType::Pak, '128-japan', true)),
-                'pak128' => ArticleResource::collection($this->articleService->paginateByCategory(CategoryType::Pak, '128', true)),
-                'pak64' => ArticleResource::collection($this->articleService->paginateByCategory(CategoryType::Pak, '64', true)),
+                'pak128japan' => ArticleResource::collection($this->articleService->paginateByCategory(
+                    CategoryType::Pak,
+                    '128-japan',
+                    true,
+                )),
+                'pak128' => ArticleResource::collection($this->articleService->paginateByCategory(
+                    CategoryType::Pak,
+                    '128',
+                    true,
+                )),
+                'pak64' => ArticleResource::collection($this->articleService->paginateByCategory(
+                    CategoryType::Pak,
+                    '64',
+                    true,
+                )),
                 'rankings' => ArticleResource::collection($this->articleService->paginateRanking(true)),
                 'pages' => ArticleResource::collection($this->articleService->paginatePages(true)),
                 'announces' => ArticleResource::collection($this->articleService->paginateAnnouces(true)),
             ],
-            'pr' => $pr instanceof \App\Models\Article ? new PrArticleResource($pr) : null,
+            'pr' => ($pr instanceof \App\Models\Article) ? new PrArticleResource($pr) : null,
         ];
     }
 

@@ -24,7 +24,11 @@ final class OnArticleUpdatedTest extends TestCase
         bool $expectUpdateNotify,
     ): void {
         /** @var Article&MockInterface */
-        $mock = $this->mock(Article::class, function (MockInterface $mock) use ($isPublish, $expectPublishNotify, $expectUpdateNotify): void {
+        $mock = $this->mock(Article::class, function (MockInterface $mock) use (
+            $isPublish,
+            $expectPublishNotify,
+            $expectUpdateNotify,
+        ): void {
             $mock->allows()->getAttribute('is_publish')->andReturn($isPublish);
             $mock->allows()->getInfoLogging()->andReturn([]);
             if ($expectPublishNotify) {

@@ -33,7 +33,6 @@ final class ToggleTest extends TestCase
 
     public function test_管理者(): void
     {
-
         $url = sprintf('/api/admin/controll_options/%s/toggle', $this->controllOption->key->value);
 
         $this->actingAs($this->user);

@@ -27,7 +27,7 @@ final class DestroyTest extends TestCase
     {
         $othersUser = User::factory()->create();
         $attachment = $this->createAttachment($othersUser);
-        $url = '/api/mypage/attachments/'.$attachment->id;
+        $url = '/api/mypage/attachments/' . $attachment->id;
 
         $this->actingAs($this->user);
         $testResponse = $this->deleteJson($url);
@@ -36,7 +36,7 @@ final class DestroyTest extends TestCase
 
     public function test(): void
     {
-        $url = '/api/mypage/attachments/'.$this->attachment->id;
+        $url = '/api/mypage/attachments/' . $this->attachment->id;
 
         $this->actingAs($this->user);
         $testResponse = $this->deleteJson($url);
@@ -47,7 +47,7 @@ final class DestroyTest extends TestCase
 
     public function test_未ログイン(): void
     {
-        $url = '/api/mypage/attachments/'.$this->attachment->id;
+        $url = '/api/mypage/attachments/' . $this->attachment->id;
 
         $testResponse = $this->deleteJson($url);
         $testResponse->assertUnauthorized();

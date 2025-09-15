@@ -20,9 +20,12 @@ final class ListPakCategoryPage extends Page
     public function __construct()
     {
         $user = User::factory()->create();
-        $this->article = Article::factory()->publish()->addonPost()->create([
-            'user_id' => $user->id,
-        ]);
+        $this->article = Article::factory()
+            ->publish()
+            ->addonPost()
+            ->create([
+                'user_id' => $user->id,
+            ]);
         $this->pak = Category::where('type', 'pak')->inRandomOrder()->firstOrFail();
         $this->addon = Category::where('type', 'addon')->inRandomOrder()->firstOrFail();
         $this->article->categories()->saveMany([$this->pak, $this->addon]);

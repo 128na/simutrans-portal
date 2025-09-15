@@ -25,8 +25,10 @@ final class GetAllTagsTest extends TestCase
         Tag::factory()->create();
         $tag1 = Tag::factory()->create();
         $tag2 = Tag::factory()->create();
-        tap(Article::factory()->publish()->create(), fn (Article $article) => $article->tags()->save($tag2));
-        tap(Article::factory()->publish()->create(), fn (Article $article) => $article->tags()->saveMany([$tag1, $tag2]));
+        tap(Article::factory()->publish()->create(), fn(Article $article) => $article->tags()->save($tag2));
+        tap(Article::factory()->publish()->create(), fn(Article $article) => $article
+            ->tags()
+            ->saveMany([$tag1, $tag2]));
         $allTags = $this->tagRepository->getAllTags();
 
         $this->assertCount(2, $allTags);

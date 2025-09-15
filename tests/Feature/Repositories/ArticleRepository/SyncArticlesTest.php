@@ -30,14 +30,8 @@ final class SyncArticlesTest extends TestCase
         $shouldRemoveArticle = Article::factory()->create();
         $article->articles()->save($shouldRemoveArticle);
 
-        $this->assertSame(
-            [$shouldRemoveArticle->id],
-            $article->articles()->pluck('id')->toArray()
-        );
+        $this->assertSame([$shouldRemoveArticle->id], $article->articles()->pluck('id')->toArray());
         $this->articleRepository->syncArticles($article, [$shouldAddArticle->id]);
-        $this->assertSame(
-            [$shouldAddArticle->id],
-            $article->articles()->pluck('id')->toArray()
-        );
+        $this->assertSame([$shouldAddArticle->id], $article->articles()->pluck('id')->toArray());
     }
 }

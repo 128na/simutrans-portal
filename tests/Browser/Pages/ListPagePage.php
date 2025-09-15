@@ -15,9 +15,12 @@ final class ListPagePage extends Page
     public function __construct()
     {
         $user = User::factory()->create();
-        $this->article = Article::factory()->publish()->page()->create([
-            'user_id' => $user->id,
-        ]);
+        $this->article = Article::factory()
+            ->publish()
+            ->page()
+            ->create([
+                'user_id' => $user->id,
+            ]);
     }
 
     #[\Override]
@@ -29,8 +32,6 @@ final class ListPagePage extends Page
     #[\Override]
     public function assert(Browser $browser): void
     {
-        $browser
-            ->waitForText($this->article->title)
-            ->assertSee($this->article->title);
+        $browser->waitForText($this->article->title)->assertSee($this->article->title);
     }
 }

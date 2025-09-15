@@ -22,10 +22,7 @@ final class ShowTest extends TestCase
 
     public function test_ユーザー_i_d_スラッグ(): void
     {
-        $testResponse = $this->get(sprintf('api/front/users/%s/%s',
-            $this->article->user_id,
-            $this->article->slug
-        ));
+        $testResponse = $this->get(sprintf('api/front/users/%s/%s', $this->article->user_id, $this->article->slug));
 
         $testResponse->assertOk();
         $testResponse->assertSee($this->article->title);
@@ -33,9 +30,10 @@ final class ShowTest extends TestCase
 
     public function test_ニックネーム_スラッグ(): void
     {
-        $testResponse = $this->get(sprintf('api/front/users/%s/%s',
+        $testResponse = $this->get(sprintf(
+            'api/front/users/%s/%s',
             $this->article->user->nickname,
-            $this->article->slug
+            $this->article->slug,
         ));
 
         $testResponse->assertOk();
@@ -45,10 +43,7 @@ final class ShowTest extends TestCase
     public function test_非公開(ArticleStatus $articleStatus): void
     {
         $this->article->update(['status' => $articleStatus]);
-        $testResponse = $this->get(sprintf('api/front/users/%s/%s',
-            $this->article->user_id,
-            $this->article->slug
-        ));
+        $testResponse = $this->get(sprintf('api/front/users/%s/%s', $this->article->user_id, $this->article->slug));
 
         $testResponse->assertNotFound();
     }

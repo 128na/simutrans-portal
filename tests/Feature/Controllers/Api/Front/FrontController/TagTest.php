@@ -25,7 +25,7 @@ final class TagTest extends TestCase
 
     public function test(): void
     {
-        $testResponse = $this->get('api/front/tags/'.$this->tag->id);
+        $testResponse = $this->get('api/front/tags/' . $this->tag->id);
 
         $testResponse->assertOk();
         $testResponse->assertSee($this->article->title);

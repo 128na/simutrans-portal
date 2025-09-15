@@ -19,7 +19,7 @@ final class BulkZipRepository extends BaseRepository
         parent::__construct($bulkZip);
     }
 
-    public function findByBulkZippable(BulkZippableInterface $bulkZippable): ?BulkZip
+    public function findByBulkZippable(BulkZippableInterface $bulkZippable): null|BulkZip
     {
         /** @var BulkZip|null */
         return $bulkZippable->bulkZippable()->first();
@@ -39,8 +39,6 @@ final class BulkZipRepository extends BaseRepository
      */
     public function cursorExpired(CarbonImmutable $expiredAt): LazyCollection
     {
-        return $this->model
-            ->where('created_at', '<=', $expiredAt)
-            ->cursor();
+        return $this->model->where('created_at', '<=', $expiredAt)->cursor();
     }
 }

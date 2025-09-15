@@ -33,14 +33,12 @@ final class LogConverter extends SimpleRecordConverter
      */
     private function makeErrorMessage(Message $message, array $record, string $stacktrace): void
     {
-        $message
-            ->content(sprintf(
-                '[%s] %s: %s',
-                $record['datetime']->format('Y-m-d H:i:s'),
-                $record['level_name'],
-                $record['message'],
-            ))
-            ->file($stacktrace, $this->getStacktraceFilename($record) ?? '');
+        $message->content(sprintf(
+            '[%s] %s: %s',
+            $record['datetime']->format('Y-m-d H:i:s'),
+            $record['level_name'],
+            $record['message'],
+        ))->file($stacktrace, $this->getStacktraceFilename($record) ?? '');
     }
 
     /**
@@ -66,7 +64,7 @@ final class LogConverter extends SimpleRecordConverter
         }
 
         foreach ($record['context'] as $key => $value) {
-            if (! is_string($value) && ! is_numeric($value)) {
+            if (!is_string($value) && !is_numeric($value)) {
                 $value = json_encode($value);
             }
 

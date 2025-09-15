@@ -15,8 +15,7 @@ final class AddonIntroductionDecorator extends BaseDecorator
     #[\Override]
     public function canProcess(Model $model): bool
     {
-        return $model instanceof Article
-            && $model->post_type === ArticlePostType::AddonIntroduction;
+        return $model instanceof Article && $model->post_type === ArticlePostType::AddonIntroduction;
     }
 
     /**
@@ -32,7 +31,7 @@ final class AddonIntroductionDecorator extends BaseDecorator
             $result = $this->addFile(
                 $result,
                 $this->toPath($model->id, $model->thumbnail->original_name),
-                $model->thumbnail->path
+                $model->thumbnail->path,
             );
         }
 
@@ -52,15 +51,29 @@ final class AddonIntroductionDecorator extends BaseDecorator
         return [
             ['ID', (string) $article->id],
             ['タイトル', $article->title],
-            ['記事URL', route('articles.show', ['userIdOrNickname' => $article->user?->nickname ?? $article->user_id, 'articleSlug' => $article->slug])],
             [
-                'サムネイル画像', $article->has_thumbnail && $article->thumbnail
+                '記事URL',
+                route('articles.show', [
+                    'userIdOrNickname' => $article->user?->nickname ?? $article->user_id,
+                    'articleSlug' => $article->slug,
+                ]),
+            ],
+            [
+                'サムネイル画像',
+                $article->has_thumbnail && $article->thumbnail
                     ? $this->toPath($article->id, $article->thumbnail->original_name)
                     : '無し',
             ],
             ['投稿者', $article->user->name],
-            ['カテゴリ', ...$article->categories->map(fn (Category $category): string => __(sprintf('category.%s.%s', $category->type->value, $category->slug)))],
-            ['タグ', ...$article->tags->map(fn (Tag $tag): string => $tag->name)],
+            [
+                'カテゴリ',
+                ...$article->categories->map(fn(Category $category): string => __(sprintf(
+                    'category.%s.%s',
+                    $category->type->value,
+                    $category->slug,
+                ))),
+            ],
+            ['タグ', ...$article->tags->map(fn(Tag $tag): string => $tag->name)],
             ['作者 / 投稿者', $contents->author ?? ''],
             ['説明', $contents->description ?? ''],
             ['謝辞・参考にしたアドオン', $contents->thanks ?? ''],

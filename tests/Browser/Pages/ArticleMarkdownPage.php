@@ -18,10 +18,13 @@ final class ArticleMarkdownPage extends Page
     public function __construct()
     {
         $user = User::factory()->create();
-        $this->article = Article::factory()->publish()->markdown()->create([
-            'user_id' => $user->id,
-            'contents' => ['markdown' => '# Hoge'],
-        ]);
+        $this->article = Article::factory()
+            ->publish()
+            ->markdown()
+            ->create([
+                'user_id' => $user->id,
+                'contents' => ['markdown' => '# Hoge'],
+            ]);
         $this->category = Category::inRandomOrder()->first();
         $this->article->categories()->save($this->category);
     }

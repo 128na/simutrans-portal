@@ -18,9 +18,12 @@ final class TopPage extends Page
     public function __construct()
     {
         $user = User::factory()->create();
-        $this->article = Article::factory()->publish()->addonPost()->create([
-            'user_id' => $user->id,
-        ]);
+        $this->article = Article::factory()
+            ->publish()
+            ->addonPost()
+            ->create([
+                'user_id' => $user->id,
+            ]);
         $this->category = Category::where('type', 'pak')->where('slug', '128')->first();
         $this->article->categories()->save($this->category);
     }

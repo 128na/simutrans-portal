@@ -29,25 +29,32 @@ final class InviteRequestTest extends TestCase
     public static function dataValidation(): \Generator
     {
         yield 'nameが空' => [
-            ['name' => ''], 'name',
+            ['name' => ''],
+            'name',
         ];
         yield 'nameが101文字以上' => [
-            ['name' => str_repeat('a', 101)], 'name',
+            ['name' => str_repeat('a', 101)],
+            'name',
         ];
         yield 'emailが空' => [
-            ['email' => ''], 'email',
+            ['email' => ''],
+            'email',
         ];
         yield 'emailが不正' => [
-            ['email' => 'a'], 'email',
+            ['email' => 'a'],
+            'email',
         ];
         yield 'emailが重複' => [
-            ['email' => 'test@example.com'], 'email',
+            ['email' => 'test@example.com'],
+            'email',
         ];
         yield 'passwordが空' => [
-            ['password' => ''], 'password',
+            ['password' => ''],
+            'password',
         ];
         yield 'passwordが10文字以下' => [
-            ['password' => str_repeat('a', 10)], 'password',
+            ['password' => str_repeat('a', 10)],
+            'password',
         ];
     }
 }

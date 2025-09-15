@@ -15,7 +15,10 @@ final class PagesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->article = Article::factory()->publish()->page()->create();
+        $this->article = Article::factory()
+            ->publish()
+            ->page()
+            ->create();
     }
 
     public function test(): void

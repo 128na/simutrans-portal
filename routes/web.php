@@ -11,6 +11,40 @@ use App\Http\Controllers\RedirectController;
 use App\Http\Middleware\ExcludePaths;
 use Illuminate\Support\Facades\Route;
 
+/*
+    /                               トップ
+    /categories/pak/{size}          各pak別新着記事一覧（64,128,128jp,その他）
+    /categories/pak/{size}/{slug}   各pak、カテゴリ別記事一覧
+    /users/                         ユーザー一覧
+    /users/{userIdOrNickname}       ユーザー別記事一覧
+    /tags                           タグ一覧
+    /articles/{id}                  記事詳細
+    /users/{userIdOrNickname}/{articleSlug} 記事詳細(canonical)
+    /search                         検索
+
+    /invite-simutrans-interact-meeting
+
+    /mypage
+
+
+    /admin
+*/
+
+Route::get('/', [\App\Http\Controllers\v2\FrontController::class, 'top'])->name('index');
+Route::get('/pak128-japan', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('pak.128japan');
+Route::get('/pak128', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('pak.128');
+Route::get('/pak64', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('pak.64');
+Route::get('/pak-others', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('pak.others');
+
+Route::get('/announces', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('announces');
+Route::get('/social', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('social');
+Route::get('/simutrans-interact-meeting', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('sim');
+Route::get('/search', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('search');
+Route::get('/tags', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('tags');
+Route::get('/users', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('users');
+
+
+
 Route::middleware(['cache.content'])->group(function (): void {
     Route::feeds();
 });
@@ -23,22 +57,22 @@ Route::GET('/mypage/invite/{invitation_code}', (new InviteController)->index(...
 
 // 非ログイン系 reidsキャッシュ有効
 Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content'])->group(function (): void {
-    Route::get('/', [FrontController::class, 'fallback'])->name('index');
+    // Route::get('/', [FrontController::class, 'fallback'])->name('index');
     Route::get('/ranking', [FrontController::class, 'fallback'])->name('ranking');
     Route::get('/pages', [FrontController::class, 'fallback'])->name('pages');
-    Route::get('/announces', [FrontController::class, 'fallback'])->name('announces');
+    // Route::get('/announces', [FrontController::class, 'fallback'])->name('announces');
     Route::get('/categories/pak/{size}/none', [FrontController::class, 'categoryPakNoneAddon'])->name('category.pak.noneAddon');
     Route::get('/categories/pak/{size}/{slug}', [FrontController::class, 'categoryPakAddon'])->name('category.pak.addon');
     Route::get('/categories/{type}/{slug}', [FrontController::class, 'category'])->name('category');
-    Route::get('/tags', [FrontController::class, 'fallback'])->name('tags');
+    // Route::get('/tags', [FrontController::class, 'fallback'])->name('tags');
     Route::get('/tags/{tag}', [FrontController::class, 'tag'])->name('tag');
     Route::get('/users/{userIdOrNickname}', [FrontController::class, 'user'])->name('user');
     Route::get('/invite-simutrans-interact-meeting', [FrontController::class, 'fallback']);
-    Route::get('/social', [FrontController::class, 'social']);
+    // Route::get('/social', [FrontController::class, 'social']);
 });
 // 非ログイン系 reidsキャッシュ無効
 Route::get('/articles/{id}', [FrontController::class, 'fallbackShow']);
-Route::get('/search', [FrontController::class, 'search'])->name('search');
+// Route::get('/search', [FrontController::class, 'search'])->name('search');
 Route::get('/mypage/', (new MypageController)->index(...))->name('mypage.index');
 Route::get('/mypage/{any}', (new MypageController)->index(...))->where('any', '.*');
 Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show'])->name('articles.show');

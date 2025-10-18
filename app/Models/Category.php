@@ -52,6 +52,13 @@ final class Category extends Model
     /**
      * @param  Builder<Category>  $builder
      */
+    public function scopeOrder(Builder $builder): void
+    {
+        $builder->orderBy('order', 'asc');
+    }
+    /**
+     * @param  Builder<Category>  $builder
+     */
     public function scopeType(Builder $builder, CategoryType $categoryType): void
     {
         $builder->where('type', $categoryType);
@@ -116,10 +123,6 @@ final class Category extends Model
     protected static function boot(): void
     {
         parent::boot();
-
-        self::addGlobalScope('order', function (Builder $builder): void {
-            $builder->orderBy('order', 'asc');
-        });
     }
 
     #[\Override]

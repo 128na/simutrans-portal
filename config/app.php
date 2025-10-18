@@ -9,6 +9,8 @@ return [
         様々なWikiや個人サイト、アップローダーに掲載・投稿されているアドオン情報もまとめて確認できます。
         主にpak64, pak128, pak128.japanのアドオンが投稿・紹介されています。',
     'meta-image' => 'storage/default/ogp-image.png',
+    'support_site_url' => 'https://simutrans-intro.notion.site/Simutrans-Addon-Portal-c8d0ab13507d4fedace504eaac1c733e',
+    'privacy_policy_url' => 'https://simutrans-intro.notion.site/512f33db6dd94a1ca51d2607408caf33',
 
     'gtag' => env('GTAG'),
 

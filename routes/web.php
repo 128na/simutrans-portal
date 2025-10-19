@@ -40,9 +40,6 @@ Route::get('/announces', [\App\Http\Controllers\v2\FrontController::class, 'anno
 Route::get('/social', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('social');
 Route::get('/simutrans-interact-meeting', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('sim');
 Route::get('/search', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('search');
-Route::get('/tags', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('tags');
-Route::get('/users', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('users');
-
 
 
 Route::middleware(['cache.content'])->group(function (): void {

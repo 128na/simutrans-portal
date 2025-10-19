@@ -6,11 +6,10 @@
     <div class="group relative grow">
         <h3 class="mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
             <a href="{{ route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user->id, 'articleSlug' => $article->slug]) }}">
-                <span class="absolute inset-0"></span>
                 {{$article->title}}
             </a>
         </h3>
-        <p class="mt-5 line-clamp-3 text-sm/6 text-gray-600">{{$article->metaDescription}}</p>
+        <p class="mt-5 line-clamp-3 text-sm/6 text-gray-600 break-all">{{$article->metaDescription}}</p>
     </div>
     <div class="text-xs mt-2 flex flex-wrap gap-2">
         @foreach($article->categories as $category)

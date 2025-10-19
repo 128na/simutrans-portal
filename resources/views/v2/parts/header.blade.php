@@ -34,22 +34,6 @@
                     <div class="p-4">
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('users')}}" class="block font-semibold text-gray-900">
-                                    ユーザー一覧
-                                    <span class="absolute inset-0"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                            <div class="flex-auto">
-                                <a href="{{route('tags')}}" class="block font-semibold text-gray-900">
-                                    タグ一覧
-                                    <span class="absolute inset-0"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                            <div class="flex-auto">
                                 <a href="{{route('search')}}" class="block font-semibold text-gray-900">
                                     検索
                                     <span class="absolute inset-0"></span>
@@ -113,8 +97,6 @@
                                 <a href="{{route('pak.128')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">pak128</a>
                                 <a href="{{route('pak.64')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">pak64</a>
                                 <a href="{{route('pak.others')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">他pak</a>
-                                <a href="{{route('users')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ユーザー一覧</a>
-                                <a href="{{route('tags')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">タグ一覧</a>
                                 <a href="{{route('search')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">検索</a>
                                 <a href="{{ route('social') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">SNS・通知ツール</a>
                                 <a href="{{config('app.support_site_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">サイトの使い方</a>

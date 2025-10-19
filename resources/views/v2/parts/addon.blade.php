@@ -3,7 +3,7 @@
     <a href="{{ route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user->id, 'articleSlug' => $article->slug]) }}">
         <img class="mb-6 rounded-lg shadow-xl" src="{{ $article->thumbnailUrl }}" />
     </a>
-    <div class="group relative grow">
+    <div class="group relative ">
         <h3 class="mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
             <a href="{{ route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user->id, 'articleSlug' => $article->slug]) }}">
                 {{$article->title}}
@@ -20,7 +20,7 @@
         @endforeach
     </div>
 
-    <div class="mt-8 flex items-center gap-x-4 justify-self-end">
+    <div class="mt-8 flex items-end gap-x-4 grow justify-self-end">
         <img src="{{$article->user->profile->avatarUrl}}" alt="user's avatar" class="size-10 rounded-full bg-gray-50" />
         <div class="text-sm/6">
             <p class="font-semibold text-gray-900 break-all">

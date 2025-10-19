@@ -7,5 +7,10 @@
         @foreach($articles as $article)
         @include('v2.parts.addon', ['article' => $article])
         @endforeach
+
+        {{ $articles->links() }}
+    </div>
+    <div class="mt-10 border-t border-gray-200 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
+        {{ $articles->links() }}
     </div>
 </div>

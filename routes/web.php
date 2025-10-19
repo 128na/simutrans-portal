@@ -35,8 +35,9 @@ Route::get('/pak128-japan', [\App\Http\Controllers\v2\FrontController::class, 'p
 Route::get('/pak128', [\App\Http\Controllers\v2\FrontController::class, 'pak128'])->name('pak.128');
 Route::get('/pak64', [\App\Http\Controllers\v2\FrontController::class, 'pak64'])->name('pak.64');
 Route::get('/pak-others', [\App\Http\Controllers\v2\FrontController::class, 'pakOthers'])->name('pak.others');
-
 Route::get('/announces', [\App\Http\Controllers\v2\FrontController::class, 'announces'])->name('announces');
+Route::get('/users/{userIdOrNickname}/{articleSlug}', [\App\Http\Controllers\v2\FrontController::class, 'show'])->name('articles.show');
+
 Route::get('/social', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('social');
 Route::get('/simutrans-interact-meeting', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('sim');
 Route::get('/search', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('search');
@@ -72,7 +73,7 @@ Route::get('/articles/{id}', [FrontController::class, 'fallbackShow']);
 // Route::get('/search', [FrontController::class, 'search'])->name('search');
 Route::get('/mypage/', (new MypageController)->index(...))->name('mypage.index');
 Route::get('/mypage/{any}', (new MypageController)->index(...))->where('any', '.*');
-Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show'])->name('articles.show');
+// Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show'])->name('articles.show');
 Route::post('/articles/{article}/download', [FrontController::class, 'download'])->name('articles.download');
 Route::middleware(['botblock', 'throttle:external'])->group(function (): void {
     Route::get('/articles/{article}/download', [FrontController::class, 'downloadFromExternal']);

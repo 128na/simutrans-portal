@@ -7,9 +7,9 @@ namespace App\Http\Controllers\v2;
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Enums\CategoryType;
+use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\DB;
 
 final class FrontController extends Controller
 {
@@ -54,9 +54,39 @@ final class FrontController extends Controller
         ]);
     }
 
+    public function show(string $userIdOrNickname, string $slug)
+    {
+
+        return view('v2.show.index', [
+            'article' => $this->get($userIdOrNickname, $slug),
+        ]);
+    }
+
     public function fallback(Request $request)
     {
         return view('v2.top');
+    }
+
+    private function get(string $userIdOrNickname, string $slug): Article
+    {
+        $query = \App\Models\Article::query()
+            ->select(['articles.*'])
+            ->withoutGlobalScopes()
+            ->join('users', 'articles.user_id', '=', 'users.id')
+            ->where('articles.status', ArticleStatus::Publish)
+            ->where('articles.slug', urlencode($slug))
+            ->whereNull('articles.deleted_at')
+            ->whereNull('users.deleted_at')
+            ->orderBy('articles.published_at', 'desc')
+            ->with('categories', 'tags', 'attachments', 'user.profile.attachments');
+
+        if (is_numeric($userIdOrNickname)) {
+            $query->where('articles.user_id', $userIdOrNickname);
+        } else {
+            $query->where('users.nickname', $userIdOrNickname);
+        }
+
+        return $query->firstOrFail();
     }
 
     private function getLatest(string $pak): \Illuminate\Contracts\Pagination\LengthAwarePaginator

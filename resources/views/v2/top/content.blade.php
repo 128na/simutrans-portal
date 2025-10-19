@@ -25,23 +25,36 @@
         <div class="lg:mx-auto lg:grid lg:w-full lg:px-8">
             <div class="lg:pr-4">
                 <div class=" text-base/7 text-gray-600 ">
-                    <h2 class="text-2xl font-bold tracking-tight text-gray-900">新着記事</h2>
-                    @foreach($latest as $article)
-                    @include('v2.parts.article-one-liner', ['article' => $article])
+                    <h2 class="text-2xl font-bold tracking-tight text-gray-900">お知らせ</h2>
+                    @foreach($announces as $article)
+                    @include('v2.parts.announce-one-liner', ['article' => $article])
                     @endforeach
+                    <p class="mt-3">
+                        <a href="{{ route('announces') }}" class="font-bold">一覧<span aria-hidden="true">→</span></a>
+                    </p>
                 </div>
             </div>
         </div>
         <div class="lg:mx-auto lg:grid lg:w-full lg:px-8">
             <div class="lg:pr-4">
                 <div class=" text-base/7 text-gray-600 ">
-                    <h2 class="text-2xl font-bold tracking-tight text-gray-900">お知らせ</h2>
-                    @foreach($announces as $article)
-                    @include('v2.parts.article-one-liner', ['article' => $article])
-                    @endforeach
+                    <h2 class="text-2xl font-bold tracking-tight text-gray-900">関連サイト</h2>
                     <p class="mt-3">
-                        <a href="{{ route('announces') }}" class="font-bold">一覧<span aria-hidden="true">→</span></a>
+                        <a class="mr-1 decoration-sky-600 text-sky-600 underline" href="https://forum.simutrans.com/">International Simutrans Forum</a>
                     </p>
+                    <p class="mt-3">
+                        <a class="mr-1 decoration-sky-600 text-sky-600 underline" href="https://japanese.simutrans.com/index.php">Simutrans日本語化･解説</a>
+                    </p>
+                    <p class="mt-3">
+                        <a class="mr-1 decoration-sky-600 text-sky-600 underline" href="https://wikiwiki.jp/twitrans/">Simutrans的な実験室</a>
+                    </p>
+                    <p class="mt-3">
+                        <a class="mr-1 decoration-sky-600 text-sky-600 underline" href="https://cross-search.128-bit.net/">Simutrans 横断検索</a>
+                    </p>
+                    <p class="mt-3">
+                        <a class="mr-1 decoration-sky-600 text-sky-600 underline" href="{{route('sim')}}">シムトランス交流会議</a>
+                    </p>
+
                 </div>
             </div>
         </div>

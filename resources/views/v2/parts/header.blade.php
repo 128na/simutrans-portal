@@ -5,7 +5,7 @@
         <div class="flex lg:flex-1">
             <a href="#" class="-m-1.5 p-1.5">
                 <span class="sr-only">{{config('app.name')}}</span>
-                <img src="{{Vite::asset('resources/icon/logo.svg')}}" alt="" class="h-8 w-auto" />
+                <img src="{{asset('v2/logo.svg')}}" alt="" class="h-8 w-auto" />
             </a>
         </div>
         <div class="flex lg:hidden">
@@ -58,14 +58,6 @@
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('sim')}}" class="block font-semibold text-gray-900">
-                                    シムトランス交流会議
-                                    <span class="absolute inset-0"></span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                            <div class="flex-auto">
                                 <a href="{{ route('social') }}" class="block font-semibold text-gray-900">
                                     SNS・通知ツール
                                     <span class="absolute inset-0"></span>
@@ -105,7 +97,7 @@
                     <div class="flex items-center justify-between">
                         <a href="#" class="-m-1.5 p-1.5">
                             <span class="sr-only">{{config('app.name')}}</span>
-                            <img src="{{Vite::asset('resources/icon/logo.svg')}}" alt="" class="h-8 w-auto" />
+                            <img src="{{asset('v2/logo.svg')}}" alt="" class="h-8 w-auto" />
                         </a>
                         <button type="button" command="close" commandfor="mobile-menu" class="-m-2.5 rounded-md p-2.5 text-gray-700">
                             <span class="sr-only">Close menu</span>
@@ -124,7 +116,6 @@
                                 <a href="{{route('users')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ユーザー一覧</a>
                                 <a href="{{route('tags')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">タグ一覧</a>
                                 <a href="{{route('search')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">検索</a>
-                                <a href="{{route('sim')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">シムトランス交流会議</a>
                                 <a href="{{ route('social') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">SNS・通知ツール</a>
                                 <a href="{{config('app.support_site_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">サイトの使い方</a>
                                 <a href="{{config('app.privacy_policy_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">プライバシーポリシー</a>

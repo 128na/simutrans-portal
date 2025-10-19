@@ -15,8 +15,7 @@ final class FrontController extends Controller
 {
     public function top()
     {
-        return view('v2.top', [
-            'latest' => $this->getLatest(),
+        return view('v2.top.index', [
             'announces' => $this->getAnnounces(),
         ]);
     }
@@ -44,21 +43,19 @@ final class FrontController extends Controller
 
     private function getAnnounces(): \Illuminate\Database\Eloquent\Collection
     {
-        $rows = DB::table('articles')
+        return \App\Models\Article::query()
+            ->withoutGlobalScopes()
+            ->join('article_category as ac', 'articles.id', '=', 'ac.article_id')
+            ->join('categories as c', 'ac.category_id', '=', 'c.id')
+            ->join('users', 'articles.user_id', '=', 'users.id')
             ->where('articles.status', ArticleStatus::Publish)
             ->whereIn('articles.post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
             ->whereNull('articles.deleted_at')
-            ->join('article_category as ac', 'articles.id', '=', 'ac.article_id')
-            ->join('categories as c', 'ac.category_id', '=', 'c.id')
             ->where('c.type', CategoryType::Page)
             ->where('c.slug', 'announce')
-            ->join('users', 'articles.user_id', '=', 'users.id')
             ->whereNull('users.deleted_at')
             ->orderBy('articles.published_at', 'desc')
             ->limit(3)
             ->get(['articles.*', 'users.nickname as user_nickname']);
-
-        return \App\Models\Article::hydrate($rows->toArray())
-            ->load('categories', 'tags');
     }
 }

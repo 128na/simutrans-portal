@@ -23,6 +23,7 @@ return [
         '192-comic' => 'Pak192.Comic',
         '256-extended' => 'Pak256(Extended)',
         'others' => 'その他',
+        'other-pak' => '他pak',
     ],
     'addon' => [
         'trains' => '鉄道車両',

@@ -3,7 +3,7 @@
 <header class="bg-white">
     <nav aria-label="Global" class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 border-b border-gray-200">
         <div class="flex lg:flex-1">
-            <a href="#" class="-m-1.5 p-1.5">
+            <a href="/" class="-m-1.5 p-1.5">
                 <span class="sr-only">{{config('app.name')}}</span>
                 <img src="{{asset('v2/logo.svg')}}" alt="" class="h-8 w-auto" />
             </a>

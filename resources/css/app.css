@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+@theme {
+  --color-tag: #757575;
+  --color-category: #607d8b;
+}

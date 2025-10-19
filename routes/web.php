@@ -31,12 +31,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [\App\Http\Controllers\v2\FrontController::class, 'top'])->name('index');
-Route::get('/pak128-japan', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('pak.128japan');
-Route::get('/pak128', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('pak.128');
-Route::get('/pak64', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('pak.64');
-Route::get('/pak-others', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('pak.others');
+Route::get('/pak128-japan', [\App\Http\Controllers\v2\FrontController::class, 'pak128jp'])->name('pak.128japan');
+Route::get('/pak128', [\App\Http\Controllers\v2\FrontController::class, 'pak128'])->name('pak.128');
+Route::get('/pak64', [\App\Http\Controllers\v2\FrontController::class, 'pak64'])->name('pak.64');
+Route::get('/pak-others', [\App\Http\Controllers\v2\FrontController::class, 'pakOthers'])->name('pak.others');
 
-Route::get('/announces', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('announces');
+Route::get('/announces', [\App\Http\Controllers\v2\FrontController::class, 'announces'])->name('announces');
 Route::get('/social', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('social');
 Route::get('/simutrans-interact-meeting', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('sim');
 Route::get('/search', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('search');

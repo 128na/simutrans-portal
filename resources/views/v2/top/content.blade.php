@@ -13,7 +13,7 @@
         </svg>
     </div>
     <div class="mx-auto grid gap-y-16 lg:mx-0 lg:max-w-none lg:gap-y-10">
-        <div class="lg:mx-auto lg:grid lg:w-full lg:px-8">
+        <div class="lg:mx-auto lg:grid lg:w-full">
             <div class="lg:pr-4">
                 <h1 class="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">{{ config('app.name') }}</h1>
                 <p class="mt-6 text-xl/8 text-gray-700">
@@ -22,7 +22,7 @@
                 </p>
             </div>
         </div>
-        <div class="lg:mx-auto lg:grid lg:w-full lg:px-8">
+        <div class="lg:mx-auto lg:grid lg:w-full">
             <div class="lg:pr-4">
                 <div class=" text-base/7 text-gray-600 ">
                     <h2 class="text-2xl font-bold tracking-tight text-gray-900">お知らせ</h2>
@@ -35,24 +35,24 @@
                 </div>
             </div>
         </div>
-        <div class="lg:mx-auto lg:grid lg:w-full lg:px-8">
+        <div class="lg:mx-auto lg:grid lg:w-full">
             <div class="lg:pr-4">
                 <div class=" text-base/7 text-gray-600 ">
                     <h2 class="text-2xl font-bold tracking-tight text-gray-900">関連サイト</h2>
                     <p class="mt-3">
-                        <a class="mr-1 decoration-sky-600 text-sky-600 underline" href="https://forum.simutrans.com/">International Simutrans Forum</a>
+                        @include('v2.parts.link-external', ['url' => 'https://forum.simutrans.com/', 'title' => 'International Simutrans Forum'])
                     </p>
                     <p class="mt-3">
-                        <a class="mr-1 decoration-sky-600 text-sky-600 underline" href="https://japanese.simutrans.com/index.php">Simutrans日本語化･解説</a>
+                        @include('v2.parts.link-external', ['url' => 'https://japanese.simutrans.com/index.php', 'title' => 'Simutrans日本語化･解説'])
                     </p>
                     <p class="mt-3">
-                        <a class="mr-1 decoration-sky-600 text-sky-600 underline" href="https://wikiwiki.jp/twitrans/">Simutrans的な実験室</a>
+                        @include('v2.parts.link-external', ['url' => 'https://wikiwiki.jp/twitrans/', 'title' => 'Simutrans的な実験室'])
                     </p>
                     <p class="mt-3">
-                        <a class="mr-1 decoration-sky-600 text-sky-600 underline" href="https://cross-search.128-bit.net/">Simutrans 横断検索</a>
+                        @include('v2.parts.link-external', ['url' => 'https://cross-search.128-bit.net/', 'title' => 'Simutrans 横断検索'])
                     </p>
                     <p class="mt-3">
-                        <a class="mr-1 decoration-sky-600 text-sky-600 underline" href="{{route('sim')}}">シムトランス交流会議</a>
+                        @include('v2.parts.link-external', ['url' => route('sim'), 'title' => 'シムトランス交流会議'])
                     </p>
 
                 </div>

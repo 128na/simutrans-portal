@@ -1,6 +1,6 @@
 <article class="flex flex-col sm:flex-row gap-6 items-start">
     <a href="{{ route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user->id, 'articleSlug' => $article->slug]) }}" class="flex-shrink-0">
-        <img class="w-full sm:w-80 h-48 object-cover rounded-lg shadow-lg" src="{{ $article->thumbnailUrl }}" alt="">
+        <img class="w-full sm:w-80 h-45 object-cover rounded-lg shadow-lg" src="{{ $article->thumbnailUrl }}" alt="">
     </a>
 
     <div class="flex flex-col justify-between flex-1">

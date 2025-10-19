@@ -11,7 +11,8 @@ Pak128と車両のスケールが異なるほか、産業の種類も異なる�
 公式の @include('v2.parts.link-external', ['url' => 'https://forum.simutrans.com/index.php?board=42.0', 'title' => 'Pak64']) はもっとも古くから存在します。<br>
 @include('v2.parts.link-external', ['url' => 'https://github.com/wa-st/pak-nippon/releases', 'title' => 'Pak.nippon']) など各種派生版のアドオンも含まれています。
 @break
-@case('other')
-その他のPakバリアントで、独自の特徴とスタイルを持っています。
+@case('other-pak')
+Pak64, 128, 128.Japan以外のpakセット向けアドオンの一覧です。<br>
+設定ファイルやメニューバーなど、pakセットに関係なく使えるコンテンツも含まれます。
 @break
 @endswitch

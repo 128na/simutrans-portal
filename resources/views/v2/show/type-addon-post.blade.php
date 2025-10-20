@@ -5,29 +5,32 @@ $fileInfo = $article->file?->fileInfo;
 <pre class="whitespace-pre-wrap text-gray-800">{{$contents->description}}</pre>
 
 <h3 class="text-2xl font-semibold text-brand sm:text-2xl my-8">詳細情報</h3>
-<table>
-    <tbody>
-        <tr>
-            <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">作者</td>
-            <td class="border border-gray-300 px-4 py-2">{{ $contents->author ?? $article->user->name }}</td>
-        </tr>
-        <tr>
-            <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">公開日時</td>
-            <td class="border border-gray-300 px-4 py-2">{{ $article->published_at->format('Y/m/d H:i:s') }}</td>
-        </tr>
-        <tr>
-            <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">最終更新日時</td>
-            <td class="border border-gray-300 px-4 py-2">{{ $article->modified_at->format('Y/m/d H:i:s') }}</td>
-        </tr>
-        <tr>
-            <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">ダウンロード</td>
-            <td class="border border-gray-300 px-4 py-2">
-                @include('v2.parts.link', [
-                'url' => route('articles.download', ['article' => $article->id]), 'title' => $article->file->original_name ?? 'download'])
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="overflow-x-auto">
+    <table class="border-collapse whitespace-nowrap">
+        <tbody>
+            <tr>
+                <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">作者</td>
+                <td class="border border-gray-300 px-4 py-2">{{ $contents->author ?? $article->user->name }}</td>
+            </tr>
+            <tr>
+                <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">公開日時</td>
+                <td class="border border-gray-300 px-4 py-2">{{ $article->published_at->format('Y/m/d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">最終更新日時</td>
+                <td class="border border-gray-300 px-4 py-2">{{ $article->modified_at->format('Y/m/d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">ダウンロード</td>
+                <td class="border border-gray-300 px-4 py-2">
+                    @include('v2.parts.link', [
+                    'url' => route('articles.download', ['article' => $article->id]), 'title' => $article->file->original_name ?? 'download'])
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 
 @if(($fileInfo->data['dats'] ?? false) || ($fileInfo->data['tabs'] ?? false))
 <h3 class="text-xl font-semibold sm:text-xl my-8">ファイル情報</h3>
@@ -68,21 +71,23 @@ $fileInfo = $article->file?->fileInfo;
         @foreach($fileInfo->data['tabs'] as $filename => $translateMap)
         <li class="mb-1">{{ $filename }}</li>
         <li class="mb-6">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">アドオン名</th>
-                        <th class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">翻訳テキスト</th>
-                    </tr>
-                <tbody>
-                    @foreach($translateMap as $addonName => $translateName)
-                    <tr>
-                        <td class="border border-gray-300 px-4 py-2">{{$addonName}}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ $translateName }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="overflow-x-auto">
+                <table class="border-collapse whitespace-nowrap">
+                    <thead>
+                        <tr>
+                            <th class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">アドオン名</th>
+                            <th class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">翻訳テキスト</th>
+                        </tr>
+                    <tbody>
+                        @foreach($translateMap as $addonName => $translateName)
+                        <tr>
+                            <td class="border border-gray-300 px-4 py-2">{{$addonName}}</td>
+                            <td class="border border-gray-300 px-4 py-2">{{ $translateName }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </li>
         @endforeach
     </ul>

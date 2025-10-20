@@ -1,6 +1,6 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8 mb-32">
-    <h2 class="text-4xl font-semibold text-pretty text-gray-900 sm:text-5xl mb-8">{{$article->title}}</h2>
-    <div class="text-sm">
+    <h2 class="text-4xl font-semibold text-pretty text-gray-900 sm:text-5xl mb-8 break-words">{{$article->title}}</h2>
+    <div class="text-sm flex flex-wrap gap-2">
         @include('v2.parts.categories', ['categories' => $article->categories])
         @include('v2.parts.tags', ['tags' => $article->tags])
     </div>

@@ -418,6 +418,11 @@ final class Article extends Model implements Feedable
         });
     }
 
+    public function getAttachment(string|int $id): ?Attachment
+    {
+        return $this->attachments->first(fn($attachment): bool => (string) $id == $attachment->id);
+    }
+
     public function thumbnailUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->getPublicDisk()->url($this->has_thumbnail && $this->thumbnail

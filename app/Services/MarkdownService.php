@@ -24,13 +24,25 @@ final readonly class MarkdownService
     {
         $raw = $this->githubMarkdown->parse($markdown);
 
-        return $this->htmlPurifier->purify($raw);
-    }
+        $pure = $this->htmlPurifier->purify($raw);
+        $html = preg_replace_callback(
+            '/<a\s+([^>]+)>/i',
+            function ($matches) {
+                $attrs = $matches[1];
 
-    public function toEscapedAllHTML(string $markdown): string
-    {
-        $raw = $this->githubMarkdown->parse($markdown);
+                if (!preg_match('/target=/', $attrs)) {
+                    $attrs .= ' target="_blank"';
+                }
+                if (!preg_match('/rel=/', $attrs)) {
+                    $attrs .= ' rel="noopener noreferrer"';
+                }
 
-        return $this->htmlPurifier->purify($raw);
+                return "<a {$attrs}>";
+            },
+            $pure
+
+        );
+
+        return $html ?? '';
     }
 }

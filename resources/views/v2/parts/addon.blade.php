@@ -1,4 +1,4 @@
-<article class="flex flex-col sm:flex-row gap-6 items-start">
+<article class="flex flex-col sm:flex-row gap-6 items-center">
     <a href="{{ route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user->id, 'articleSlug' => $article->slug]) }}" class="flex-shrink-0">
         <img class="w-full sm:w-80 h-45 object-cover rounded-lg shadow-lg" src="{{ $article->thumbnailUrl }}" alt="">
     </a>
@@ -18,12 +18,8 @@
             </p>
         </div>
         <div class="text-xs mt-2 flex flex-wrap gap-2">
-            @foreach($article->categories as $category)
-            <a href="{{ route('search', ['categoryIds' => [$category->id]]) }}" class="rounded bg-category px-2 py-1 text-white">@lang("category.{$category->type->value}.{$category->slug}")</a>
-            @endforeach
-            @foreach($article->tags as $tag)
-            <a href="{{ route('search', ['tagIds' => [$tag->id]]) }}" class="rounded bg-tag px-2 py-1 text-white">{{$tag->name}}</a>
-            @endforeach
+            @include('v2.parts.categories', ['categories' => $article->categories])
+            @include('v2.parts.tags', ['tags' => $article->tags])
         </div>
 
         <div class="mt-4 flex items-center gap-x-3">

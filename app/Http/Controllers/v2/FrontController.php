@@ -78,7 +78,7 @@ final class FrontController extends Controller
             ->whereNull('articles.deleted_at')
             ->whereNull('users.deleted_at')
             ->orderBy('articles.published_at', 'desc')
-            ->with('categories', 'tags', 'attachments', 'user.profile.attachments');
+            ->with('categories', 'tags', 'attachments.fileInfo', 'user.profile.attachments', 'articles.user', 'relatedArticles.user');
 
         if (is_numeric($userIdOrNickname)) {
             $query->where('articles.user_id', $userIdOrNickname);

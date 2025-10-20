@@ -6,6 +6,7 @@ namespace App\Services;
 
 use cebe\markdown\GithubMarkdown;
 use HTMLPurifier;
+use HTMLPurifier_Config;
 
 /**
  * @see https://github.com/cebe/markdown
@@ -44,5 +45,16 @@ final readonly class MarkdownService
         );
 
         return $html ?? '';
+    }
+
+    public function toEscapedText(string $markdown): string
+    {
+        $raw = $this->githubMarkdown->parse($markdown);
+
+        $htmlPurifierConfig = HTMLPurifier_Config::createDefault();
+        $htmlPurifierConfig->set('HTML.AllowedElements', []);
+        $pure = $this->htmlPurifier->purify($raw, $htmlPurifierConfig);
+
+        return $pure;
     }
 }

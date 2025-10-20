@@ -38,7 +38,7 @@
         <div class="lg:mx-auto lg:grid lg:w-full">
             <div class="lg:pr-4">
                 <div class=" text-base/7 text-gray-600 ">
-                    <h2 class="text-2xl font-bold tracking-tight text-gray-900">関連サイト</h2>
+                    <h2 class="text-2xl font-bold tracking-tight text-gray-900">アドオン関連サイト</h2>
                     <p class="mt-3">
                         @include('v2.parts.link-external', ['url' => 'https://forum.simutrans.com/', 'title' => 'International Simutrans Forum'])
                     </p>

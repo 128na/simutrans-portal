@@ -37,11 +37,11 @@ Route::get('/pak64', [\App\Http\Controllers\v2\FrontController::class, 'pak64'])
 Route::get('/pak-others', [\App\Http\Controllers\v2\FrontController::class, 'pakOthers'])->name('pak.others');
 Route::get('/announces', [\App\Http\Controllers\v2\FrontController::class, 'announces'])->name('announces');
 Route::get('/users/{userIdOrNickname}/{articleSlug}', [\App\Http\Controllers\v2\FrontController::class, 'show'])->name('articles.show');
+Route::get('/search', [\App\Http\Controllers\v2\FrontController::class, 'search'])->name('search');
 
 Route::get('/articles/{article}/download', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('articles.download');
 Route::get('/social', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('social');
 Route::get('/simutrans-interact-meeting', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('sim');
-Route::get('/search', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('search');
 
 
 Route::middleware(['cache.content'])->group(function (): void {

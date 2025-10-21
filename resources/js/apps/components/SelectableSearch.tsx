@@ -6,38 +6,42 @@ export type Option = {
 };
 
 type Props = {
+  name: string;
   options: Option[];
   selectedIds: number[];
   labelKey?: string;
   placeholder?: string;
-  onChange?: (ids: number[]) => void;
 };
 
 export const SelectableSearch = ({
+  name,
   options,
-  selectedIds,
+  selectedIds: initialSelected,
   labelKey = "name",
   placeholder = "検索...",
-  onChange,
 }: Props) => {
   const [criteria, setCriteria] = useState("");
+  const [selectedIds, setSelectedIds] = useState<number[]>(initialSelected);
 
   const add = (id: number) => {
     if (!selectedIds.includes(id)) {
-      const updated = [...selectedIds, id];
-      onChange?.(updated);
+      setSelectedIds([...selectedIds, id]);
     }
   };
 
   const remove = (id: number) => {
-    const updated = selectedIds.filter((uid) => uid !== id);
-    onChange?.(updated);
+    setSelectedIds(selectedIds.filter((uid) => uid !== id));
   };
 
   const selectedItems = options.filter((o) => selectedIds.includes(o.id));
 
   return (
     <div className="p-4 space-y-4">
+      {/* hidden inputs for form submission */}
+      {selectedIds.map((id) => (
+        <input key={id} type="hidden" name={`${name}[]`} value={id} />
+      ))}
+
       <div>
         <div className="mb-2">選択中：</div>
         <div className="flex flex-wrap gap-2">
@@ -69,7 +73,8 @@ export const SelectableSearch = ({
         {options
           .filter(
             (o) =>
-              o[labelKey].includes(criteria) && !selectedIds.includes(o.id),
+              o[labelKey].toLowerCase().includes(criteria.toLowerCase()) &&
+              !selectedIds.includes(o.id),
           )
           .map((o) => (
             <div

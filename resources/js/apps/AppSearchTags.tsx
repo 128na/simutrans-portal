@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { SelectableSearch } from "./components/SelectableSearch";
 
@@ -9,14 +8,12 @@ if (app) {
   const options = JSON.parse(app.dataset.options || "[]");
 
   const App = () => {
-    const [tagIds, setTagIds] = useState<number[]>(initialTagIds);
-
     return (
       <SelectableSearch
+        name="tagIds"
         options={options}
-        selectedIds={tagIds}
+        selectedIds={initialTagIds}
         labelKey="name"
-        onChange={setTagIds}
       />
     );
   };

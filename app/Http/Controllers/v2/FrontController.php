@@ -77,6 +77,11 @@ final class FrontController extends Controller
         ]);
     }
 
+    public function social()
+    {
+        return view('v2.social.index', []);
+    }
+
     public function fallback(Request $request)
     {
         return view('v2.top');

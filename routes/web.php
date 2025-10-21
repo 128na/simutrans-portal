@@ -38,9 +38,9 @@ Route::get('/pak-others', [\App\Http\Controllers\v2\FrontController::class, 'pak
 Route::get('/announces', [\App\Http\Controllers\v2\FrontController::class, 'announces'])->name('announces');
 Route::get('/users/{userIdOrNickname}/{articleSlug}', [\App\Http\Controllers\v2\FrontController::class, 'show'])->name('articles.show');
 Route::get('/search', [\App\Http\Controllers\v2\FrontController::class, 'search'])->name('search');
+Route::get('/social', [\App\Http\Controllers\v2\FrontController::class, 'social'])->name('social');
 
 Route::get('/articles/{article}/download', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('articles.download');
-Route::get('/social', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('social');
 Route::get('/simutrans-interact-meeting', [\App\Http\Controllers\v2\FrontController::class, 'fallback'])->name('sim');
 
 

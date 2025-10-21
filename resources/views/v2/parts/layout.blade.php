@@ -28,7 +28,6 @@
     @vite('resources/css/app.css')
     <script src="https://www.google.com/recaptcha/enterprise.js?render={{ config('services.google_recaptcha.siteKey') }}">
     </script>
-    @include('onesignal')
 
 </head>
 

@@ -4,7 +4,6 @@
     OneSignalDeferred.push(async function(OneSignal) {
         await OneSignal.init({
             appId: "{{ config('onesignal.app_id') }}"
-            , safari_web_id: "web.onesignal.auto.4bf12d4e-2e1c-4e2f-be7e-e4e315c9ca64"
             , notifyButton: {
                 enable: true
             , }

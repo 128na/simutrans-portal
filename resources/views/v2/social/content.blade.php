@@ -10,20 +10,6 @@
             , allowLocalhostAsSecureOrigin: true
         , });
     });
-    const handleOneSign = async () => {
-        if (!window.OneSignalDeferred.isPushNotificationsSupported()) {
-            window.alert('このデバイスはプッシュ通知未対応です');
-            return;
-        }
-
-        // 既に通知許可済みならフラグ切替のみ
-        if (await window.OneSignalDeferred.isPushNotificationsEnabled()) {
-            window.alert('登録済みです。');
-            return;
-        }
-
-        window.OneSignalDeferred.showNativePrompt();
-    };
 
 </script>
 

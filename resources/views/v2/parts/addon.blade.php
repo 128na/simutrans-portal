@@ -1,4 +1,4 @@
-<article class="flex flex-col sm:flex-row gap-6 items-center">
+<article class="flex flex-col sm:flex-row gap-6 items-start">
     <a href="{{ route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user->id, 'articleSlug' => $article->slug]) }}" class="flex-shrink-0">
         <img class="w-full sm:w-80 h-45 object-cover rounded-lg shadow-lg" src="{{ $article->thumbnailUrl }}" alt="">
     </a>
@@ -23,15 +23,7 @@
         </div>
 
         <div class="mt-4 flex items-center gap-x-3">
-            <img src="{{$article->user->profile->avatarUrl}}" alt="user avatar" class="w-10 h-10 rounded-full bg-gray-50" />
-            <div class="text-sm">
-                <p class="font-semibold text-gray-900">
-                    <a href="{{ route('search', ['userIds' => [$article->user_id]]) }}">
-                        {{$article->user->name}}
-                    </a>
-                </p>
-                <p class="text-gray-600">{{$article->user->profile->data->description}}</p>
-            </div>
+            @include('v2.parts.user-profile', ['user' => $article->user])
         </div>
     </div>
 </article>

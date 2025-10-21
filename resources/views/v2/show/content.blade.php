@@ -21,4 +21,6 @@
     @endforeach
     @endif
 
+    <h3 class="text-xl font-semibold sm:text-xl my-8">投稿者</h3>
+    @include('v2.parts.user-profile', ['user' => $article->user])
 </div>

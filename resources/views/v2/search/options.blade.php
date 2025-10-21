@@ -46,12 +46,7 @@
                 </svg>
             </button>
             <el-disclosure id="search-users" {{ $condition['userIds'] ?? [] ? '' : 'hidden' }} class="mb-4 block space-y-2 gap-y-2">
-                @foreach($options['users'] as $user)
-                <label class="mr-2 inline-block">
-                    <input class="accent-brand" type="checkbox" name="userIds[]" value="{{ $user->id }}" {{ in_array($user->id, $condition['userIds'] ?? []) ? 'checked' : '' }} />
-                    {{ $user->name }}
-                </label>
-                @endforeach
+                <div id="app-search-users" data-user-ids='@json($condition["userIds"] ?? [])' data-options='@json($options["users"] ?? [])'>Loading...</div>
             </el-disclosure>
 
             <button type="button" command="--toggle" commandfor="search-tags" class="my-2 p-2 flex w-full items-center justify-between bg-gray-100">
@@ -61,6 +56,7 @@
                 </svg>
             </button>
             <el-disclosure id="search-tags" {{ $condition['tagIds'] ?? [] ? '' : 'hidden' }} class="mb-4 block space-y-2 gap-y-2">
+                <div id="app-search-tags" data-tag-ids='@json($condition["tagIds"] ?? [])' data-options='@json($options["tags"] ?? [])'>Loading...</div>
                 @foreach($options['tags'] as $tag)
                 <label class="mr-2 inline-block">
                     <input class="accent-brand" type="checkbox" name="tagIds[]" value="{{ $tag->id }}" {{ in_array($tag->id, $condition['tagIds'] ?? []) ? 'checked' : '' }} />

@@ -107,16 +107,23 @@ final class FrontController extends Controller
     private function getSearchOptions(): array
     {
         return [
-            'categories' => Category::all(),
-            'tags' => Tag::all(),
+            'categories' => Category::query()
+                ->select(['categories.id', 'categories.type', 'categories.slug'])
+                ->orderBy('order', 'asc')
+                ->get(),
+            'tags' => Tag::query()
+                ->select(['tags.id', 'tags.name'])
+                ->orderBy('name', 'asc')
+                ->get(),
             'users' => User::query()
-                ->select(['users.*'])
+                ->select(['users.id', 'users.nickname', 'users.name'])
                 ->whereExists(
                     fn($q) => $q->selectRaw(1)
                         ->from('articles as a')
                         ->whereColumn('a.user_id', 'users.id')
                         ->where('a.status', ArticleStatus::Publish)
                 )
+                ->orderBy('name', 'asc')
                 ->get(),
             'postTypes' => ArticlePostType::cases(),
         ];

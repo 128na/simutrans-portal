@@ -1,2 +1,3 @@
-import '@tailwindplus/elements';
-import './apps/app1';
+import "@tailwindplus/elements";
+import "./apps/AppSearchUsers";
+import "./apps/AppSearchTags";

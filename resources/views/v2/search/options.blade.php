@@ -1,5 +1,4 @@
 <form method="GET" action="{{ route('search') }}">
-    @csrf
     <div class="flex flex-col gap-y-4 sm:flex-row sm:items-center sm:gap-x-4">
         <input type="text" name="word" value="{{ $condition['word'] ?? '' }}" placeholder="キーワードを入力" class="w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500 sm:w-64" />
         <button type="submit" class="rounded-md bg-brand px-4 py-2 text-white cursor-pointer">

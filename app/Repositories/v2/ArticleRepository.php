@@ -36,6 +36,16 @@ final class ArticleRepository
         return $query->firstOrFail();
     }
 
+    /**
+     * @param array{
+     *     word?: string,
+     *     userIds?: int[],
+     *     categoryIds?: int[],
+     *     tagIds?: int[],
+     *     postTypes?: string[]
+     * } $condition
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<int,Article>
+     */
     public function search(array $condition): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         if ($condition === []) {
@@ -104,6 +114,9 @@ final class ArticleRepository
         return $baseQuery->paginate(30);
     }
 
+    /**
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<int,Article>
+     */
     public function getLatest(string $pak): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         return $this->model->query()
@@ -123,6 +136,9 @@ final class ArticleRepository
             ->paginate(30);
     }
 
+    /**
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<int,Article>
+     */
     public function getLatestOther(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         $excludeSlugs = ['64', '128', '128-japan'];
@@ -147,6 +163,9 @@ final class ArticleRepository
             ->paginate(30);
     }
 
+    /**
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<int,Article>
+     */
     public function getAnnounces(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         return $this->queryAnnounces()
@@ -154,6 +173,9 @@ final class ArticleRepository
             ->paginate(30);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection<int,Article>
+     */
     public function getTopAnnounces(): \Illuminate\Database\Eloquent\Collection
     {
         return $this->queryAnnounces()

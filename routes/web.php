@@ -4,31 +4,15 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OauthController;
-use App\Http\Controllers\FrontController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Middleware\ExcludePaths;
 use Illuminate\Support\Facades\Route;
 
-/*
-    /                               トップ
-    /categories/pak/{size}          各pak別新着記事一覧（64,128,128jp,その他）
-    /categories/pak/{size}/{slug}   各pak、カテゴリ別記事一覧
-    /users/                         ユーザー一覧
-    /users/{userIdOrNickname}       ユーザー別記事一覧
-    /tags                           タグ一覧
-    /articles/{id}                  記事詳細
-    /users/{userIdOrNickname}/{articleSlug} 記事詳細(canonical)
-    /search                         検索
-
-    /invite-simutrans-interact-meeting
-
-    /mypage
-
-
-    /admin
-*/
+Route::middleware(['cache.content'])->group(function (): void {
+    Route::feeds();
+});
 
 // 一覧系
 Route::get('/pak128-japan', [\App\Http\Controllers\v2\FrontController::class, 'pak128jp'])->name('pak.128japan');
@@ -50,41 +34,14 @@ Route::get('/articles/{id}', [\App\Http\Controllers\v2\FrontController::class, '
 Route::get('/articles/{article}/download', [\App\Http\Controllers\v2\FrontController::class, 'download'])->name('articles.download');
 Route::get('/redirect/{name}', [\App\Http\Controllers\v2\FrontMiscController::class, 'redirect'])->name('redirect');
 
-Route::middleware(['cache.content'])->group(function (): void {
-    Route::feeds();
-});
-
 // 認証系ルート名保持用
 Route::GET('mypage/reset/{token}', (new MypageController)->index(...))->name('password.reset');
 
 // 招待
 Route::GET('/mypage/invite/{invitation_code}', (new InviteController)->index(...))->middleware('restrict:invitation_code')->name('invite.index');
 
-// 非ログイン系 reidsキャッシュ有効
-Route::middleware(['cache.headers:public;max_age=2628000;etag', 'cache.content'])->group(function (): void {
-    // Route::get('/', [FrontController::class, 'fallback'])->name('index');
-    // Route::get('/ranking', [FrontController::class, 'fallback'])->name('ranking');
-    // Route::get('/pages', [FrontController::class, 'fallback'])->name('pages');
-    // Route::get('/announces', [FrontController::class, 'fallback'])->name('announces');
-    // Route::get('/categories/pak/{size}/none', [FrontController::class, 'categoryPakNoneAddon'])->name('category.pak.noneAddon');
-    // Route::get('/categories/pak/{size}/{slug}', [FrontController::class, 'categoryPakAddon'])->name('category.pak.addon');
-    // Route::get('/categories/{type}/{slug}', [FrontController::class, 'category'])->name('category');
-    // Route::get('/tags', [FrontController::class, 'fallback'])->name('tags');
-    // Route::get('/tags/{tag}', [FrontController::class, 'tag'])->name('tag');
-    // Route::get('/users/{userIdOrNickname}', [FrontController::class, 'user'])->name('user');
-    // Route::get('/invite-simutrans-interact-meeting', [FrontController::class, 'fallback']);
-    // Route::get('/social', [FrontController::class, 'social']);
-});
-// 非ログイン系 reidsキャッシュ無効
-// Route::get('/articles/{id}', [FrontController::class, 'fallbackShow'])->name('articles.fallbackShow');
-// Route::get('/search', [FrontController::class, 'search'])->name('search');
 Route::get('/mypage/', (new MypageController)->index(...))->name('mypage.index');
 Route::get('/mypage/{any}', (new MypageController)->index(...))->where('any', '.*');
-// Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show'])->name('articles.show');
-// Route::post('/articles/{article}/download', [FrontController::class, 'download'])->name('articles.download');
-// Route::middleware(['botblock', 'throttle:external'])->group(function (): void {
-//     Route::get('/articles/{article}/download', [FrontController::class, 'downloadFromExternal']);
-// });
 
 Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function (): void {
     Route::get('/admin/', (new AdminController)->index(...))->name('admin.index');
@@ -93,8 +50,6 @@ Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function (): voi
     Route::get('/admin/oauth/twitter/refresh', [OauthController::class, 'refresh'])->name('admin.oauth.twitter.refresh');
     Route::get('/admin/oauth/twitter/revoke', [OauthController::class, 'revoke'])->name('admin.oauth.twitter.revoke');
 });
-
-// Route::get('/error/{status}', [FrontController::class, 'error'])->name('error');
 
 Route::middleware([ExcludePaths::class])->group(function (): void {
     Route::fallback([RedirectController::class, 'index']);

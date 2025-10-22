@@ -5,30 +5,35 @@ declare(strict_types=1);
 namespace App\Http\Controllers\v2;
 
 use App\Enums\ArticlePostType;
-use App\Enums\ArticleStatus;
 use App\Models\Article;
-use App\Models\Category;
-use App\Models\Tag;
-use App\Models\User;
 use App\Repositories\v2\ArticleRepository;
+use App\Repositories\v2\CategoryRepository;
+use App\Repositories\v2\TagRepository;
+use App\Repositories\v2\UserRepository;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 final class FrontController extends Controller
 {
     public function __construct(
-        private readonly ArticleRepository $articleRepository
+        private readonly ArticleRepository $articleRepository,
+        private readonly CategoryRepository $categoryRepository,
+        private readonly TagRepository $tagRepository,
+        private readonly UserRepository $userRepository,
     ) {}
 
-    public function top(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    public function top(): \Illuminate\Contracts\View\View
     {
         return view('v2.top.index', [
             'announces' => $this->articleRepository->getTopAnnounces(),
         ]);
     }
 
-    public function pak128jp(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    public function pak128jp(): \Illuminate\Contracts\View\View
     {
         return view('v2.pak.index', [
             'pak' => '128-japan',
@@ -36,7 +41,7 @@ final class FrontController extends Controller
         ]);
     }
 
-    public function pak128(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    public function pak128(): \Illuminate\Contracts\View\View
     {
         return view('v2.pak.index', [
             'pak' => '128',
@@ -44,7 +49,7 @@ final class FrontController extends Controller
         ]);
     }
 
-    public function pak64(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    public function pak64(): \Illuminate\Contracts\View\View
     {
         return view('v2.pak.index', [
             'pak' => '64',
@@ -52,7 +57,7 @@ final class FrontController extends Controller
         ]);
     }
 
-    public function pakOthers(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    public function pakOthers(): \Illuminate\Contracts\View\View
     {
         return view('v2.pak.index', [
             'pak' => 'other-pak',
@@ -60,14 +65,14 @@ final class FrontController extends Controller
         ]);
     }
 
-    public function announces(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    public function announces(): \Illuminate\Contracts\View\View
     {
         return view('v2.announce.index', [
             'articles' => $this->articleRepository->getAnnounces(),
         ]);
     }
 
-    public function show(string $userIdOrNickname, string $slug): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    public function show(string $userIdOrNickname, string $slug): \Illuminate\Contracts\View\View
     {
         $article = $this->articleRepository->findOrFail($userIdOrNickname, $slug);
         if (Auth::check() === false || Auth::id() !== $article->user_id) {
@@ -79,27 +84,32 @@ final class FrontController extends Controller
         ]);
     }
 
-    public function search(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    public function search(Request $request): \Illuminate\Contracts\View\View
     {
         $condition = $request->all();
 
         return view('v2.search.index', [
             'condition' => $condition,
-            'options' => $this->getSearchOptions(),
+            'options' => [
+                'categories' => $this->categoryRepository->getForSearch(),
+                'tags' => $this->tagRepository->getForSearch(),
+                'users' => $this->userRepository->getForSearch(),
+                'postTypes' => ArticlePostType::cases(),
+            ],
             'articles' => $this->articleRepository->search($condition),
         ]);
     }
 
-    public function fallbackShow(string $slugOrId): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    public function fallbackShow(string $slugOrId): \Illuminate\Http\RedirectResponse
     {
         $article = is_numeric($slugOrId)
             ? Article::findOrFail($slugOrId)
             : Article::slug($slugOrId)->orderBy('id', 'asc')->firstOrFail();
 
-        return redirect(route('articles.show', ['userIdOrNickname' => $article->user?->nickname ?? $article->user_id, 'articleSlug' => $article->slug]), 302);
+        return redirect(route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]), 302);
     }
 
-    public function download(Article $article)
+    public function download(Article $article): StreamedResponse
     {
         abort_unless($article->is_publish, 404);
         abort_unless($article->is_addon_post, 404);
@@ -115,28 +125,8 @@ final class FrontController extends Controller
         );
     }
 
-    private function getSearchOptions(): array
+    private function getPublicDisk(): FilesystemAdapter
     {
-        return [
-            'categories' => Category::query()
-                ->select(['categories.id', 'categories.type', 'categories.slug'])
-                ->orderBy('order', 'asc')
-                ->get(),
-            'tags' => Tag::query()
-                ->select(['tags.id', 'tags.name'])
-                ->orderBy('name', 'asc')
-                ->get(),
-            'users' => User::query()
-                ->select(['users.id', 'users.nickname', 'users.name'])
-                ->whereExists(
-                    fn ($q) => $q->selectRaw(1)
-                        ->from('articles as a')
-                        ->whereColumn('a.user_id', 'users.id')
-                        ->where('a.status', ArticleStatus::Publish)
-                )
-                ->orderBy('name', 'asc')
-                ->get(),
-            'postTypes' => ArticlePostType::cases(),
-        ];
+        return Storage::disk('public');
     }
 }

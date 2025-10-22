@@ -17,12 +17,12 @@ final class DiscordController extends Controller
         private readonly RecaptchaService $recaptchaService,
     ) {}
 
-    public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    public function index(): \Illuminate\Contracts\View\View
     {
         return view('v2.discord.index');
     }
 
-    public function generate(Request $request)
+    public function generate(Request $request): \Illuminate\Contracts\View\View
     {
         try {
             $recaptchaToken = $request->input('recaptchaToken', '');

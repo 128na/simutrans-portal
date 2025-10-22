@@ -26,8 +26,6 @@
     <link rel=icon type=image/ico href=/favicon.ico>
     @vite('resources/js/app.ts')
     @vite('resources/css/app.css')
-    <script src="https://www.google.com/recaptcha/enterprise.js?render={{ config('services.google_recaptcha.siteKey') }}">
-    </script>
 
 </head>
 

@@ -40,14 +40,15 @@ Route::get('/announces', [\App\Http\Controllers\v2\FrontController::class, 'anno
 
 // 特殊ページ
 Route::get('/', [\App\Http\Controllers\v2\FrontController::class, 'top'])->name('index');
-Route::get('/social', [\App\Http\Controllers\v2\FrontController::class, 'social'])->name('social');
-Route::get('/invite-simutrans-interact-meeting', [\App\Http\Controllers\v2\FrontController::class, 'fallback']);
+Route::get('/social', [\App\Http\Controllers\v2\FrontMiscController::class, 'social'])->name('social');
+Route::get('/invite-simutrans-interact-meeting', [\App\Http\Controllers\v2\DiscordController::class, 'index'])->name('discord.index');
+Route::post('/invite-simutrans-interact-meeting', [\App\Http\Controllers\v2\DiscordController::class, 'generate'])->name('discord.generate');
 
 // 個別記事関連
 Route::get('/users/{userIdOrNickname}/{articleSlug}', [\App\Http\Controllers\v2\FrontController::class, 'show'])->name('articles.show');
 Route::get('/articles/{id}', [\App\Http\Controllers\v2\FrontController::class, 'fallbackShow'])->name('articles.fallbackShow');
 Route::get('/articles/{article}/download', [\App\Http\Controllers\v2\FrontController::class, 'download'])->name('articles.download');
-Route::get('/redirect/{name}', [\App\Http\Controllers\v2\FrontController::class, 'redirect'])->name('redirect');
+Route::get('/redirect/{name}', [\App\Http\Controllers\v2\FrontMiscController::class, 'redirect'])->name('redirect');
 
 
 

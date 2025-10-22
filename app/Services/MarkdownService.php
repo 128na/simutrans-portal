@@ -28,7 +28,7 @@ final readonly class MarkdownService
         $pure = $this->htmlPurifier->purify($raw);
         $html = preg_replace_callback(
             '/<a\s+([^>]+)>/i',
-            function ($matches): string {
+            function (array $matches): string {
                 $attrs = $matches[1];
 
                 if (in_array(preg_match('/target=/', $attrs), [0, false], true)) {

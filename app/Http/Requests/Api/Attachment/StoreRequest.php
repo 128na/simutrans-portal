@@ -28,9 +28,9 @@ final class StoreRequest extends FormRequest
         }
 
         return [
-            'files' => 'required|array|max:10',
-            'files.*' => 'required|file',
-            'only_image' => 'nullable',
+            'files' => ['required', 'array', 'max:10'],
+            'files.*' => ['required', 'file'],
+            'only_image' => ['nullable'],
         ];
     }
 }

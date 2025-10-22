@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Jobs\BulkZip;
 
-use App\Jobs\BulkZip\JobDeleteExpiredBulkzip;
 use App\Models\BulkZip;
 use Illuminate\Support\Facades\Storage;
 use Tests\Feature\TestCase;
@@ -50,7 +49,7 @@ final class JobDeleteExpiredBulkzipTest extends TestCase
         $this->assertDatabaseHas('bulk_zips', ['id' => $this->bulkzip2->id]);
         $this->assertFileExists($disk->path('testing/dummy2.zip'), 'zipファイルが存在すること');
 
-        JobDeleteExpiredBulkzip::dispatchSync();
+        dispatch_sync(new \App\Jobs\BulkZip\JobDeleteExpiredBulkzip);
 
         $this->assertDatabaseMissing('bulk_zips', ['id' => $this->bulkzip1->id]);
         $this->assertFileDoesNotExist($disk->path('testing/dummy1.zip'), 'zipファイルが削除されていること');

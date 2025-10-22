@@ -9,7 +9,7 @@ use Illuminate\Log\Logger;
 
 final readonly class OnTwoFactorAuthenticationIncomplete
 {
-    public function __construct(private readonly Logger $logger) {}
+    public function __construct(private Logger $logger) {}
 
     public function handle(TwoFactorAuthenticationIncomplete $twoFactorAuthenticationIncomplete): void
     {

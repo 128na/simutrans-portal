@@ -50,9 +50,6 @@ Route::get('/articles/{id}', [\App\Http\Controllers\v2\FrontController::class, '
 Route::get('/articles/{article}/download', [\App\Http\Controllers\v2\FrontController::class, 'download'])->name('articles.download');
 Route::get('/redirect/{name}', [\App\Http\Controllers\v2\FrontMiscController::class, 'redirect'])->name('redirect');
 
-
-
-
 Route::middleware(['cache.content'])->group(function (): void {
     Route::feeds();
 });

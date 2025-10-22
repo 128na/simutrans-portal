@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Admin\ArticleUpdateRequest;
-use App\Jobs\Article\JobUpdateRelated;
 use App\Repositories\ArticleRepository;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -34,7 +33,7 @@ final class ArticleController extends Controller
         $validated = $articleUpdateRequest->validated();
         $this->articleRepository->update($article, $validated['article']);
 
-        JobUpdateRelated::dispatchSync();
+        dispatch_sync(new \App\Jobs\Article\JobUpdateRelated);
 
         return $this->index();
     }
@@ -47,7 +46,7 @@ final class ArticleController extends Controller
         $article = $this->articleRepository->findOrFailWithTrashed($id);
         $this->articleRepository->toggleDelete($article);
 
-        JobUpdateRelated::dispatchSync();
+        dispatch_sync(new \App\Jobs\Article\JobUpdateRelated);
 
         return $this->index();
     }

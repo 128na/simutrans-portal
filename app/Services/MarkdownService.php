@@ -14,8 +14,8 @@ use HTMLPurifier_Config;
 final readonly class MarkdownService
 {
     public function __construct(
-        private readonly GithubMarkdown $githubMarkdown,
-        private readonly HTMLPurifier $htmlPurifier,
+        private GithubMarkdown $githubMarkdown,
+        private HTMLPurifier $htmlPurifier,
     ) {
         $this->githubMarkdown->html5 = true;
         $this->githubMarkdown->enableNewlines = true;
@@ -28,17 +28,18 @@ final readonly class MarkdownService
         $pure = $this->htmlPurifier->purify($raw);
         $html = preg_replace_callback(
             '/<a\s+([^>]+)>/i',
-            function ($matches) {
+            function ($matches): string {
                 $attrs = $matches[1];
 
-                if (!preg_match('/target=/', $attrs)) {
+                if (in_array(preg_match('/target=/', $attrs), [0, false], true)) {
                     $attrs .= ' target="_blank"';
                 }
-                if (!preg_match('/rel=/', $attrs)) {
+
+                if (in_array(preg_match('/rel=/', $attrs), [0, false], true)) {
                     $attrs .= ' rel="noopener noreferrer"';
                 }
 
-                return "<a {$attrs}>";
+                return sprintf('<a %s>', $attrs);
             },
             $pure
 
@@ -53,8 +54,7 @@ final readonly class MarkdownService
 
         $htmlPurifierConfig = HTMLPurifier_Config::createDefault();
         $htmlPurifierConfig->set('HTML.AllowedElements', []);
-        $pure = $this->htmlPurifier->purify($raw, $htmlPurifierConfig);
 
-        return $pure;
+        return $this->htmlPurifier->purify($raw, $htmlPurifierConfig);
     }
 }

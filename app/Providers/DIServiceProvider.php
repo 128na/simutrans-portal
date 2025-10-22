@@ -71,7 +71,7 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
             return new MarkdownService($app->make(GithubMarkdown::class), new HTMLPurifier($htmlPurifierConfig));
         });
 
-        $this->app->bind(ZipManager::class, fn($app): ZipManager => new ZipManager(
+        $this->app->bind(ZipManager::class, fn ($app): ZipManager => new ZipManager(
             new ZipArchive,
             Storage::disk('public'),
             [
@@ -80,7 +80,7 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
             ]
         ));
 
-        $this->app->bind(FileInfoService::class, fn($app): FileInfoService => new FileInfoService(
+        $this->app->bind(FileInfoService::class, fn ($app): FileInfoService => new FileInfoService(
             $this->app->make(FileInfoRepository::class),
             $this->app->make(ZipArchiveParser::class),
             $this->app->make(TextService::class),
@@ -92,14 +92,14 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
             ]
         ));
 
-        $this->app->bind(TwitterOAuth::class, fn($app): TwitterOAuth => new TwitterOAuth(
+        $this->app->bind(TwitterOAuth::class, fn ($app): TwitterOAuth => new TwitterOAuth(
             Config::string('services.twitter.access_token'),
             Config::string('services.twitter.access_secret'),
             null,
             Config::string('services.twitter.bearer_token'),
         ));
 
-        $this->app->bind(MisskeyApiClient::class, fn($app): MisskeyApiClient => new MisskeyApiClient(
+        $this->app->bind(MisskeyApiClient::class, fn ($app): MisskeyApiClient => new MisskeyApiClient(
             Config::string('services.misskey.base_url'),
             Config::string('services.misskey.token'),
         ));

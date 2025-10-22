@@ -8,7 +8,7 @@ use HTMLPurifier;
 
 final readonly class ReadmeExtractor implements Extractor
 {
-    public function __construct(private readonly HTMLPurifier $htmlPurifier) {}
+    public function __construct(private HTMLPurifier $htmlPurifier) {}
 
     #[\Override]
     public function isText(): bool

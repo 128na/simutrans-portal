@@ -52,14 +52,15 @@ final class Category extends Model
     /**
      * @param  Builder<Category>  $builder
      */
-    public function scopeOrder(Builder $builder): void
+    protected function scopeOrder(Builder $builder): void
     {
         $builder->orderBy('order', 'asc');
     }
+
     /**
      * @param  Builder<Category>  $builder
      */
-    public function scopeType(Builder $builder, CategoryType $categoryType): void
+    protected function scopeType(Builder $builder, CategoryType $categoryType): void
     {
         $builder->where('type', $categoryType);
     }
@@ -67,7 +68,7 @@ final class Category extends Model
     /**
      * @param  Builder|Category  $builder
      */
-    public function scopePak(Builder $builder): void
+    protected function scopePak(Builder $builder): void
     {
         $builder->type(CategoryType::Pak);
     }
@@ -75,7 +76,7 @@ final class Category extends Model
     /**
      * @param  Builder|Category  $builder
      */
-    public function scopeAddon(Builder $builder): void
+    protected function scopeAddon(Builder $builder): void
     {
         $builder->type(CategoryType::Addon);
     }
@@ -83,7 +84,7 @@ final class Category extends Model
     /**
      * @param  Builder|Category  $builder
      */
-    public function scopePak128Position(Builder $builder): void
+    protected function scopePak128Position(Builder $builder): void
     {
         $builder->type(CategoryType::Pak128Position);
     }
@@ -91,7 +92,7 @@ final class Category extends Model
     /**
      * @param  Builder|Category  $builder
      */
-    public function scopeLicense(Builder $builder): void
+    protected function scopeLicense(Builder $builder): void
     {
         $builder->type(CategoryType::License);
     }
@@ -99,7 +100,7 @@ final class Category extends Model
     /**
      * @param  Builder|Category  $builder
      */
-    public function scopePage(Builder $builder): void
+    protected function scopePage(Builder $builder): void
     {
         $builder->type(CategoryType::Page);
     }
@@ -107,7 +108,7 @@ final class Category extends Model
     /**
      * @param  Builder|Category  $builder
      */
-    public function scopeForUser(Builder $builder, User $user): void
+    protected function scopeForUser(Builder $builder, User $user): void
     {
         if (! $user->isAdmin()) {
             $builder->where('need_admin', 0);

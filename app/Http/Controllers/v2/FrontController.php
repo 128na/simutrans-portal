@@ -6,8 +6,6 @@ namespace App\Http\Controllers\v2;
 
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
-use App\Events\ArticleConversion;
-use App\Events\ArticleShown;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
@@ -20,36 +18,41 @@ use Illuminate\Support\Facades\Auth;
 final class FrontController extends Controller
 {
     public function __construct(
-        private ArticleRepository $articleRepository
+        private readonly ArticleRepository $articleRepository
     ) {}
-    public function top()
+
+    public function top(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         return view('v2.top.index', [
             'announces' => $this->articleRepository->getTopAnnounces(),
         ]);
     }
-    public function pak128jp()
+
+    public function pak128jp(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         return view('v2.pak.index', [
             'pak' => '128-japan',
             'articles' => $this->articleRepository->getLatest('128-japan'),
         ]);
     }
-    public function pak128()
+
+    public function pak128(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         return view('v2.pak.index', [
             'pak' => '128',
             'articles' => $this->articleRepository->getLatest('128'),
         ]);
     }
-    public function pak64()
+
+    public function pak64(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         return view('v2.pak.index', [
             'pak' => '64',
             'articles' => $this->articleRepository->getLatest('64'),
         ]);
     }
-    public function pakOthers()
+
+    public function pakOthers(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         return view('v2.pak.index', [
             'pak' => 'other-pak',
@@ -57,25 +60,26 @@ final class FrontController extends Controller
         ]);
     }
 
-    public function announces()
+    public function announces(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         return view('v2.announce.index', [
             'articles' => $this->articleRepository->getAnnounces(),
         ]);
     }
 
-    public function show(string $userIdOrNickname, string $slug)
+    public function show(string $userIdOrNickname, string $slug): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         $article = $this->articleRepository->findOrFail($userIdOrNickname, $slug);
         if (Auth::check() === false || Auth::id() !== $article->user_id) {
-            ArticleShown::dispatch($article);
+            event(new \App\Events\ArticleShown($article));
         }
 
         return view('v2.show.index', [
             'article' => $article,
         ]);
     }
-    public function search(Request $request)
+
+    public function search(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         $condition = $request->all();
 
@@ -86,7 +90,7 @@ final class FrontController extends Controller
         ]);
     }
 
-    public function fallbackShow(string $slugOrId)
+    public function fallbackShow(string $slugOrId): \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         $article = is_numeric($slugOrId)
             ? Article::findOrFail($slugOrId)
@@ -102,7 +106,7 @@ final class FrontController extends Controller
         abort_unless($article->has_file && $article->file, 404);
 
         if (Auth::check() === false || Auth::id() !== $article->user_id) {
-            ArticleConversion::dispatch($article);
+            event(new \App\Events\ArticleConversion($article));
         }
 
         return $this->getPublicDisk()->download(
@@ -110,7 +114,6 @@ final class FrontController extends Controller
             $article->file->original_name
         );
     }
-
 
     private function getSearchOptions(): array
     {
@@ -126,7 +129,7 @@ final class FrontController extends Controller
             'users' => User::query()
                 ->select(['users.id', 'users.nickname', 'users.name'])
                 ->whereExists(
-                    fn($q) => $q->selectRaw(1)
+                    fn ($q) => $q->selectRaw(1)
                         ->from('articles as a')
                         ->whereColumn('a.user_id', 'users.id')
                         ->where('a.status', ArticleStatus::Publish)

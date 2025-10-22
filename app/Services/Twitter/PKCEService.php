@@ -15,12 +15,12 @@ use Throwable;
 final readonly class PKCEService
 {
     public function __construct(
-        private readonly Carbon $now,
-        private readonly Client $client,
-        private readonly OauthTokenRepository $oauthTokenRepository,
-        private readonly string $clientId,
-        private readonly string $clientSecret,
-        private readonly string $callbackUrl,
+        private Carbon $now,
+        private Client $client,
+        private OauthTokenRepository $oauthTokenRepository,
+        private string $clientId,
+        private string $clientSecret,
+        private string $callbackUrl,
     ) {}
 
     public function generateState(int $length = 32): string

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions\DeadLink;
 
-use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
 use App\Models\Contents\AddonIntroductionContent;
 use App\Repositories\ArticleRepository;
@@ -47,7 +46,7 @@ final class Check
         }
 
         if ($this->changeAnyArticle) {
-            JobUpdateRelated::dispatchSync();
+            dispatch_sync(new \App\Jobs\Article\JobUpdateRelated);
         }
     }
 

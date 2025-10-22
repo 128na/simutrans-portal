@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Actions\Redirect\DoRedirectIfExists;
 use App\Enums\CategoryType;
-use App\Events\ArticleConversion;
 use App\Http\Requests\Article\SearchRequest;
 use App\Models\Article;
 use App\Models\Tag;
@@ -74,7 +73,7 @@ final class FrontController extends Controller
         abort_unless($article->is_addon_post, 404);
 
         if (Auth::check() === false || Auth::id() !== $article->user_id) {
-            ArticleConversion::dispatch($article);
+            event(new \App\Events\ArticleConversion($article));
         }
 
         abort_unless($article->has_file && $article->file, 404);

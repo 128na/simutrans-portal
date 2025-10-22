@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\Article\JobUpdateRelated;
 use App\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -29,7 +28,7 @@ final class UserController extends Controller
         $user = $this->userRepository->findOrFailWithTrashed($id);
         $this->userRepository->toggleDelete($user);
 
-        JobUpdateRelated::dispatchSync();
+        dispatch_sync(new \App\Jobs\Article\JobUpdateRelated);
 
         return $this->index();
     }

@@ -22,7 +22,7 @@ final class ZipArchiveParserTest extends TestCase
             $mock->expects()->close()->once();
         });
         $attachment = app(Attachment::class);
-        $result = $this->getSUT()->parseTextContent($attachment)->toArray();
+        $result = $this->getSUT()->parseTextContent($attachment)->all();
         $this->assertEmpty($result);
     }
 

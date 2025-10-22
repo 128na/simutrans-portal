@@ -56,7 +56,7 @@ abstract class TestCase extends BaseTestCase
         ]))->all());
 
         return RemoteWebDriver::create(
-            $_ENV['DUSK_DRIVER_URL'] ?? 'http://localhost:9515',
+            \Illuminate\Support\Env::get('DUSK_DRIVER_URL', 'http://localhost:9515'),
             DesiredCapabilities::chrome()->setCapability(
                 ChromeOptions::CAPABILITY,
                 $chromeOptions
@@ -71,7 +71,7 @@ abstract class TestCase extends BaseTestCase
     protected function hasHeadlessDisabled(): bool
     {
         return isset($_SERVER['DUSK_HEADLESS_DISABLED']) ||
-            isset($_ENV['DUSK_HEADLESS_DISABLED']);
+            isset(\Illuminate\Support\Env::get('DUSK_HEADLESS_DISABLED'));
     }
 
     /**
@@ -81,6 +81,6 @@ abstract class TestCase extends BaseTestCase
     protected function shouldStartMaximized(): bool
     {
         return isset($_SERVER['DUSK_START_MAXIMIZED']) ||
-            isset($_ENV['DUSK_START_MAXIMIZED']);
+            isset(\Illuminate\Support\Env::get('DUSK_START_MAXIMIZED'));
     }
 }

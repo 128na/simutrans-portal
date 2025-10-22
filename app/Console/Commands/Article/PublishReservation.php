@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Commands\Article;
 
 use App\Enums\ArticleStatus;
-use App\Jobs\Article\JobUpdateRelated;
 use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Command;
@@ -54,7 +53,7 @@ final class PublishReservation extends Command
         }
 
         if ($changed) {
-            JobUpdateRelated::dispatchSync();
+            dispatch_sync(new \App\Jobs\Article\JobUpdateRelated);
         }
 
         return 0;

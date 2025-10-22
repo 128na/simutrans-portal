@@ -36,9 +36,6 @@ final class ArticleRepository
         return $query->firstOrFail();
     }
 
-    /**
-     * @param array $condition
-     */
     public function search(array $condition): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         if ($condition === []) {
@@ -59,12 +56,12 @@ final class ArticleRepository
         $word = $condition['word'] ?? '';
         if ($word) {
             $likeWord = sprintf('%%%s%%', $word);
-            $baseQuery->where(fn($q) => $q
+            $baseQuery->where(fn ($q) => $q
                 ->orWhere('title', 'LIKE', $likeWord)
                 ->orWhere('contents', 'LIKE', $likeWord)
                 ->orWhereHas(
                     'attachments.fileInfo',
-                    fn($q) => $q
+                    fn ($q) => $q
                         ->where('data', 'LIKE', $likeWord)
                 ));
         }
@@ -78,7 +75,7 @@ final class ArticleRepository
         // カテゴリ(AND)
         $categoryIds = $condition['categoryIds'] ?? [];
         if ($categoryIds !== []) {
-            $baseQuery->whereIn('articles.id', function ($q) use ($categoryIds) {
+            $baseQuery->whereIn('articles.id', function ($q) use ($categoryIds): void {
                 $q->select('article_id')
                     ->from('article_category')
                     ->whereIn('category_id', $categoryIds)
@@ -90,7 +87,7 @@ final class ArticleRepository
         // タグ(OR)
         $tagIds = $condition['tagIds'] ?? [];
         if ($tagIds !== []) {
-            $baseQuery->whereExists(function ($q) use ($tagIds) {
+            $baseQuery->whereExists(function ($q) use ($tagIds): void {
                 $q->selectRaw(1)
                     ->from('article_tag as at')
                     ->whereColumn('at.article_id', 'articles.id')
@@ -137,7 +134,7 @@ final class ArticleRepository
             ->where('articles.status', ArticleStatus::Publish)
             ->whereNull('articles.deleted_at')
             ->whereNull('users.deleted_at')
-            ->whereNotExists(function ($q) use ($excludeSlugs) {
+            ->whereNotExists(function ($q) use ($excludeSlugs): void {
                 $q->selectRaw(1)
                     ->from('article_category as ac')
                     ->join('categories as c', 'ac.category_id', '=', 'c.id')
@@ -148,6 +145,20 @@ final class ArticleRepository
             ->orderByDesc('articles.published_at')
             ->with(['categories', 'tags', 'attachments', 'user.profile.attachments'])
             ->paginate(30);
+    }
+
+    public function getAnnounces(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        return $this->queryAnnounces()
+            ->with(['categories', 'tags', 'attachments', 'user.profile.attachments'])
+            ->paginate(30);
+    }
+
+    public function getTopAnnounces(): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->queryAnnounces()
+            ->limit(3)
+            ->get();
     }
 
     /**
@@ -168,19 +179,5 @@ final class ArticleRepository
             ->where('c.slug', 'announce')
             ->whereNull('users.deleted_at')
             ->orderBy('articles.published_at', 'desc');
-    }
-
-    public function getAnnounces(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
-    {
-        return $this->queryAnnounces()
-            ->with(['categories', 'tags', 'attachments', 'user.profile.attachments'])
-            ->paginate(30);
-    }
-
-    public function getTopAnnounces(): \Illuminate\Database\Eloquent\Collection
-    {
-        return $this->queryAnnounces()
-            ->limit(3)
-            ->get();
     }
 }

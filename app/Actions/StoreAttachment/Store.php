@@ -13,8 +13,8 @@ use Illuminate\Http\UploadedFile;
 final readonly class Store
 {
     public function __construct(
-        private readonly FilesystemAdapter $filesystemAdapter,
-        private readonly CropImage $cropImage,
+        private FilesystemAdapter $filesystemAdapter,
+        private CropImage $cropImage,
     ) {}
 
     /**

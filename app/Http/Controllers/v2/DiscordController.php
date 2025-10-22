@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\v2;
 
-use App\Events\Discord\DiscordInviteCodeCreated;
 use App\Services\Discord\InviteService;
 use App\Services\Google\Recaptcha\RecaptchaService;
-use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Throwable;
 
 final class DiscordController extends Controller
@@ -17,7 +16,8 @@ final class DiscordController extends Controller
         private readonly InviteService $inviteService,
         private readonly RecaptchaService $recaptchaService,
     ) {}
-    public function index()
+
+    public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         return view('v2.discord.index');
     }
@@ -26,12 +26,13 @@ final class DiscordController extends Controller
     {
         try {
             $recaptchaToken = $request->input('recaptchaToken', '');
-            $this->recaptchaService->assessment((string)$recaptchaToken);
+            $this->recaptchaService->assessment((string) $recaptchaToken);
             $url = $this->inviteService->create();
 
-            DiscordInviteCodeCreated::dispatch();
+            event(new \App\Events\Discord\DiscordInviteCodeCreated);
+
             return view('v2.discord.index', ['url' => $url]);
-        } catch (Throwable $throwable) {
+        } catch (Throwable) {
             abort(400);
         }
     }

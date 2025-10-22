@@ -16,7 +16,7 @@ final class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => 'nullable|string|max:1024',
+            'description' => ['nullable', 'string', 'max:1024'],
         ];
     }
 }

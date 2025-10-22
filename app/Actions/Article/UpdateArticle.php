@@ -6,8 +6,6 @@ namespace App\Actions\Article;
 
 use App\Actions\Redirect\AddRedirect;
 use App\Enums\ArticleStatus;
-use App\Events\Article\ArticleUpdated;
-use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
@@ -59,10 +57,10 @@ final readonly class UpdateArticle
             ($this->addRedirect)($article->user, $oldSlug, $data['article']['slug']);
         }
 
-        JobUpdateRelated::dispatch();
+        dispatch(new \App\Jobs\Article\JobUpdateRelated);
 
         $shouldNotify = ($data['should_notify'] ?? false) && ! $withoutUpdateModifiedAt;
-        ArticleUpdated::dispatch($article, $shouldNotify, $notYetPublished);
+        event(new \App\Events\Article\ArticleUpdated($article, $shouldNotify, $notYetPublished));
 
         return $article->fresh() ?? $article;
     }

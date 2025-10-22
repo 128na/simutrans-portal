@@ -20,8 +20,8 @@ final readonly class ArticleService
     public const string ORDER_BY_MODIFIED_AT = 'modified_at';
 
     public function __construct(
-        private readonly ArticleRepository $articleRepository,
-        private readonly CategoryRepository $categoryRepository,
+        private ArticleRepository $articleRepository,
+        private CategoryRepository $categoryRepository,
     ) {}
 
     public function loadArticle(Article $article): Article

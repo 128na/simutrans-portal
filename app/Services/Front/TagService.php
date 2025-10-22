@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 final readonly class TagService
 {
     public function __construct(
-        private readonly TagRepository $tagRepository,
+        private TagRepository $tagRepository,
     ) {}
 
     /**

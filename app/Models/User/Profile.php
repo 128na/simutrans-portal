@@ -52,7 +52,12 @@ final class Profile extends Model
         return $this->morphMany(Attachment::class, 'attachmentable');
     }
 
-    public function avatar(): Attribute
+    public function getPublicDisk(): FilesystemAdapter
+    {
+        return Storage::disk('public');
+    }
+
+    protected function avatar(): Attribute
     {
         return Attribute::make(get: function () {
             $id = (int) $this->data->avatar;
@@ -64,21 +69,16 @@ final class Profile extends Model
         });
     }
 
-    public function hasAvatar(): Attribute
+    protected function hasAvatar(): Attribute
     {
         return Attribute::make(get: fn (): bool => (bool) $this->avatar);
     }
 
-    public function avatarUrl(): Attribute
+    protected function avatarUrl(): Attribute
     {
         return Attribute::make(get: fn (): string => $this->getPublicDisk()->url($this->has_avatar && $this->avatar
             ? $this->avatar->path
             : DefaultThumbnail::NO_AVATAR));
-    }
-
-    public function getPublicDisk(): FilesystemAdapter
-    {
-        return Storage::disk('public');
     }
 
     /*

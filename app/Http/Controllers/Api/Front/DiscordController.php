@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Front;
 
-use App\Events\Discord\DiscordInviteCodeCreated;
 use App\Http\Controllers\Controller;
 use App\Services\Discord\InviteService;
 use App\Services\Google\Recaptcha\RecaptchaService;
@@ -25,7 +24,7 @@ final class DiscordController extends Controller
             $this->recaptchaService->assessment($request->string('token', '')->toString());
             $url = $this->inviteService->create();
 
-            DiscordInviteCodeCreated::dispatch();
+            event(new \App\Events\Discord\DiscordInviteCodeCreated);
 
             return response()->json(['url' => $url], 200);
         } catch (Throwable $throwable) {

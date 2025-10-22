@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\Mypage;
 
 use App\Enums\UserRole;
-use App\Events\User\InviteCodeCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\InviteRequest;
 use App\Http\Resources\Api\Mypage\Invite;
@@ -42,7 +41,7 @@ final class InvitationCodeController extends Controller
     public function update(): UserResouce
     {
         $this->userRepository->update($this->loggedinUser(), ['invitation_code' => Str::uuid()]);
-        InviteCodeCreated::dispatch($this->loggedinUser());
+        event(new \App\Events\User\InviteCodeCreated($this->loggedinUser()));
 
         return new UserResouce($this->loggedinUser()->fresh());
     }

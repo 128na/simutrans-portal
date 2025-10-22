@@ -103,7 +103,7 @@ final class MetaOgpService
 
     private function trimDescription(?string $str): string
     {
-        if ($str === null || $str === '' || $str === '0') {
+        if (in_array($str, [null, '', '0'], true)) {
             return Config::string('app.meta-description');
         }
 

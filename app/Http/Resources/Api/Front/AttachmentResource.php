@@ -28,6 +28,6 @@ final class AttachmentResource extends ResourceCollection
                 'fileInfo' => $this->when($attachment->fileInfo !== null, fn () => $attachment->fileInfo?->data),
                 'caption' => $this->when($attachment->is_image, $attachment->caption),
             ])
-            ->toArray();
+            ->all();
     }
 }

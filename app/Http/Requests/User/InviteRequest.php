@@ -16,9 +16,9 @@ final class InviteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:100',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:11',
+            'name' => ['required', 'max:100'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required', 'min:11'],
         ];
     }
 }

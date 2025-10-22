@@ -52,7 +52,7 @@
                         @include('v2.parts.link-external', ['url' => 'https://cross-search.128-bit.net/', 'title' => 'Simutrans 横断検索'])
                     </p>
                     <p class="mt-3">
-                        @include('v2.parts.link-external', ['url' => route('sim'), 'title' => 'シムトランス交流会議'])
+                        @include('v2.parts.link-external', ['url' => route('redirect', ['name' => 'simutrans-interact-meeting']), 'title' => 'シムトランス交流会議'])
                     </p>
 
                 </div>

@@ -7,6 +7,8 @@ namespace App\Http\Controllers\v2;
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Enums\CategoryType;
+use App\Events\ArticleConversion;
+use App\Events\ArticleShown;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
@@ -14,6 +16,8 @@ use App\Models\User;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Response;
 
 final class FrontController extends Controller
 {
@@ -61,9 +65,13 @@ final class FrontController extends Controller
 
     public function show(string $userIdOrNickname, string $slug)
     {
+        $article = $this->get($userIdOrNickname, $slug);
+        if (Auth::check() === false || Auth::id() !== $article->user_id) {
+            ArticleShown::dispatch($article);
+        }
 
         return view('v2.show.index', [
-            'article' => $this->get($userIdOrNickname, $slug),
+            'article' => $article,
         ]);
     }
     public function search(Request $request)
@@ -80,6 +88,43 @@ final class FrontController extends Controller
     public function social()
     {
         return view('v2.social.index', []);
+    }
+
+    // 特定ページへの固定リダイレクト
+    const REDIRECT_MAP = [
+        'simutrans-interact-meeting' => 1212,
+    ];
+    public function redirect(string $name)
+    {
+        if (array_key_exists($name, self::REDIRECT_MAP)) {
+            return redirect()
+                ->route('articles.fallbackShow', ['id' => self::REDIRECT_MAP[$name]], 302);
+        }
+    }
+
+    public function fallbackShow(string $slugOrId)
+    {
+        $article = is_numeric($slugOrId)
+            ? Article::findOrFail($slugOrId)
+            : Article::slug($slugOrId)->orderBy('id', 'asc')->firstOrFail();
+
+        return redirect(route('articles.show', ['userIdOrNickname' => $article->user?->nickname ?? $article->user_id, 'articleSlug' => $article->slug]), 302);
+    }
+
+    public function download(Article $article)
+    {
+        abort_unless($article->is_publish, 404);
+        abort_unless($article->is_addon_post, 404);
+        abort_unless($article->has_file && $article->file, 404);
+
+        if (Auth::check() === false || Auth::id() !== $article->user_id) {
+            ArticleConversion::dispatch($article);
+        }
+
+        return $this->getPublicDisk()->download(
+            $article->file->path,
+            $article->file->original_name
+        );
     }
 
     public function fallback(Request $request)

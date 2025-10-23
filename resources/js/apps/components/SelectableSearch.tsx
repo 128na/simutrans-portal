@@ -43,7 +43,6 @@ export const SelectableSearch = ({
       ))}
 
       <div>
-        <div className="mb-2">選択中：</div>
         <div className="flex flex-wrap gap-2">
           {selectedItems.map((item) => (
             <span

@@ -46,11 +46,11 @@ $fileInfo = $article->file?->fileInfo;
 <el-disclosure id="dat-file" hidden class="mt-2 block space-y-2">
     <ul class="list-none">
         @foreach($fileInfo->data['dats'] as $filename => $addonNames)
-        <li class="mb-1">{{ $filename }}</li>
+        <li class="mb-1 break-all">{{ $filename }}</li>
         <li class="mb-6">
-            <ul class="list-disc text-gray-400 ml-8">
+            <ul class="list-disc text-gray-400 ml-8 break-all">
                 @foreach($addonNames as $addonName)
-                <li><span class="text-black">{{ $addonName }}</span></li>
+                <li><span class="text-black break-all">{{ $addonName }}</span></li>
                 @endforeach
             </ul>
         </li>
@@ -69,7 +69,7 @@ $fileInfo = $article->file?->fileInfo;
 <el-disclosure id="tab-file" hidden class="mt-2 block space-y-2">
     <ul class="list-none">
         @foreach($fileInfo->data['tabs'] as $filename => $translateMap)
-        <li class="mb-1">{{ $filename }}</li>
+        <li class="mb-1 break-all">{{ $filename }}</li>
         <li class="mb-6">
             <div class="overflow-x-auto">
                 <table class="border-collapse whitespace-nowrap">

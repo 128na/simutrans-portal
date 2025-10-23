@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\v2;
 
+use App\Actions\Redirect\DoRedirectIfExists;
 use App\Enums\ArticlePostType;
 use App\Models\Article;
 use App\Repositories\v2\ArticleRepository;
@@ -72,9 +73,13 @@ final class FrontController extends Controller
         ]);
     }
 
-    public function show(string $userIdOrNickname, string $slug): \Illuminate\Contracts\View\View
+    public function show(string $userIdOrNickname, string $slug, Request $request, DoRedirectIfExists $doRedirectIfExists): \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
     {
-        $article = $this->articleRepository->findOrFail($userIdOrNickname, $slug);
+        $article = $this->articleRepository->first($userIdOrNickname, $slug);
+        if ($article === null) {
+            return $doRedirectIfExists($request->fullUrl());
+        }
+
         if (Auth::check() === false || Auth::id() !== $article->user_id) {
             event(new \App\Events\ArticleShown($article));
         }

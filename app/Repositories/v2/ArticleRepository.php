@@ -14,7 +14,7 @@ final class ArticleRepository
 {
     public function __construct(public Article $model) {}
 
-    public function findOrFail(string $userIdOrNickname, string $slug): Article
+    public function first(string $userIdOrNickname, string $slug): ?Article
     {
         $query = $this->model->query()
             ->select(['articles.*'])
@@ -33,7 +33,7 @@ final class ArticleRepository
             $query->where('users.nickname', $userIdOrNickname);
         }
 
-        return $query->firstOrFail();
+        return $query->first();
     }
 
     /**
@@ -66,12 +66,12 @@ final class ArticleRepository
         $word = $condition['word'] ?? '';
         if ($word) {
             $likeWord = sprintf('%%%s%%', $word);
-            $baseQuery->where(fn ($q) => $q
+            $baseQuery->where(fn($q) => $q
                 ->orWhere('title', 'LIKE', $likeWord)
                 ->orWhere('contents', 'LIKE', $likeWord)
                 ->orWhereHas(
                     'attachments.fileInfo',
-                    fn ($q) => $q
+                    fn($q) => $q
                         ->where('data', 'LIKE', $likeWord)
                 ));
         }

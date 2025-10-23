@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Filesystem\FilesystemAdapter;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -62,7 +61,7 @@ final class Profile extends Model
         return Attribute::make(get: function () {
             $id = (int) $this->data->avatar;
             if ($id !== 0) {
-                return $this->attachments->first(fn(Attachment $attachment): bool => $id === $attachment->id);
+                return $this->attachments->first(fn (Attachment $attachment): bool => $id === $attachment->id);
             }
 
             return null;
@@ -71,12 +70,12 @@ final class Profile extends Model
 
     protected function hasAvatar(): Attribute
     {
-        return Attribute::make(get: fn(): bool => (bool) $this->avatar);
+        return Attribute::make(get: fn (): bool => (bool) $this->avatar);
     }
 
     protected function avatarUrl(): Attribute
     {
-        return Attribute::make(get: fn(): string => $this->getPublicDisk()->url($this->has_avatar && $this->avatar
+        return Attribute::make(get: fn (): string => $this->getPublicDisk()->url($this->has_avatar && $this->avatar
             ? $this->avatar->path
             : DefaultThumbnail::NO_AVATAR));
     }

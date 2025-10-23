@@ -13,8 +13,7 @@
             編集
           </q-item-section>
         </q-item>
-        <q-item v-if="row.status === 'publish'" :to="{ name: 'show', params: { idOrNickname: auth.user.nickname || auth.user.id, slug: decodedSlug } }"
-          target="_blank" v-close-popup>
+        <q-item v-if="row.status === 'publish'" :href="row.url" target="_blank" rel="noopener noreferrer" v-close-popup>
           <q-item-section avatar>
             <q-icon name="launch" />
           </q-item-section>

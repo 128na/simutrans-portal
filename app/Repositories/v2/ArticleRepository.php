@@ -66,12 +66,12 @@ final class ArticleRepository
         $word = $condition['word'] ?? '';
         if ($word) {
             $likeWord = sprintf('%%%s%%', $word);
-            $baseQuery->where(fn($q) => $q
+            $baseQuery->where(fn ($q) => $q
                 ->orWhere('title', 'LIKE', $likeWord)
                 ->orWhere('contents', 'LIKE', $likeWord)
                 ->orWhereHas(
                     'attachments.fileInfo',
-                    fn($q) => $q
+                    fn ($q) => $q
                         ->where('data', 'LIKE', $likeWord)
                 ));
         }

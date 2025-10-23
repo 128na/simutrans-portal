@@ -21,6 +21,7 @@ Route::get('/pak64', [\App\Http\Controllers\v2\FrontController::class, 'pak64'])
 Route::get('/pak-others', [\App\Http\Controllers\v2\FrontController::class, 'pakOthers'])->name('pak.others');
 Route::get('/search', [\App\Http\Controllers\v2\FrontController::class, 'search'])->name('search');
 Route::get('/announces', [\App\Http\Controllers\v2\FrontController::class, 'announces'])->name('announces');
+Route::get('/pages', [\App\Http\Controllers\v2\FrontController::class, 'pages'])->name('pages');
 
 // 特殊ページ
 Route::get('/', [\App\Http\Controllers\v2\FrontController::class, 'top'])->name('index');

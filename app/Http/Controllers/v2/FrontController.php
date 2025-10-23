@@ -74,9 +74,17 @@ final class FrontController extends Controller
 
     public function announces(): \Illuminate\Contracts\View\View
     {
-        return view('v2.announce.index', [
+        return view('v2.announces.index', [
             'articles' => $this->articleRepository->getAnnounces(),
-            'meta' => $this->metaOgpService->announce(),
+            'meta' => $this->metaOgpService->announces(),
+        ]);
+    }
+
+    public function pages(): \Illuminate\Contracts\View\View
+    {
+        return view('v2.pages.index', [
+            'articles' => $this->articleRepository->getPages(),
+            'meta' => $this->metaOgpService->pages(),
         ]);
     }
 

@@ -66,12 +66,12 @@ final class ArticleRepository
         $word = $condition['word'] ?? '';
         if ($word) {
             $likeWord = sprintf('%%%s%%', $word);
-            $baseQuery->where(fn ($q) => $q
+            $baseQuery->where(fn($q) => $q
                 ->orWhere('title', 'LIKE', $likeWord)
                 ->orWhere('contents', 'LIKE', $likeWord)
                 ->orWhereHas(
                     'attachments.fileInfo',
-                    fn ($q) => $q
+                    fn($q) => $q
                         ->where('data', 'LIKE', $likeWord)
                 ));
         }
@@ -129,6 +129,28 @@ final class ArticleRepository
             ->where('c.slug', $pak)
             ->where('articles.status', ArticleStatus::Publish)
             ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
+            ->whereNull('articles.deleted_at')
+            ->whereNull('users.deleted_at')
+            ->orderBy('articles.published_at', 'desc')
+            ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
+            ->paginate(30);
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<int,Article>
+     */
+    public function getPages(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        return $this->model->query()
+            ->select(['articles.*'])
+            ->withoutGlobalScopes()
+            ->join('users', 'articles.user_id', '=', 'users.id')
+            ->join('article_category as ac', 'articles.id', '=', 'ac.article_id')
+            ->join('categories as c', 'ac.category_id', '=', 'c.id')
+            ->where('c.type', CategoryType::Page)
+            ->where('c.slug', '!=', 'announce')
+            ->where('articles.status', ArticleStatus::Publish)
+            ->whereIn('articles.post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
             ->whereNull('articles.deleted_at')
             ->whereNull('users.deleted_at')
             ->orderBy('articles.published_at', 'desc')

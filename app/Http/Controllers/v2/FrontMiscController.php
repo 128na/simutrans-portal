@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\v2;
 
+use App\Services\Front\MetaOgpService;
 use Illuminate\Routing\Controller;
 
 final class FrontMiscController extends Controller
 {
+    public function __construct(
+        private readonly MetaOgpService $metaOgpService,
+    ) {}
     // 特定ページへの固定リダイレクト
     public const array REDIRECT_MAP = [
         'simutrans-interact-meeting' => 1212,
@@ -15,7 +19,9 @@ final class FrontMiscController extends Controller
 
     public function social(): \Illuminate\Contracts\View\View
     {
-        return view('v2.social.index', []);
+        return view('v2.social.index', [
+            'meta' => $this->metaOgpService->social(),
+        ]);
     }
 
     public function redirect(string $name): \Illuminate\Http\RedirectResponse

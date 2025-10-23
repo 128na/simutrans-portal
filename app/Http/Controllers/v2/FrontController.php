@@ -11,6 +11,7 @@ use App\Repositories\v2\ArticleRepository;
 use App\Repositories\v2\CategoryRepository;
 use App\Repositories\v2\TagRepository;
 use App\Repositories\v2\UserRepository;
+use App\Services\Front\MetaOgpService;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -25,6 +26,7 @@ final class FrontController extends Controller
         private readonly CategoryRepository $categoryRepository,
         private readonly TagRepository $tagRepository,
         private readonly UserRepository $userRepository,
+        private readonly MetaOgpService $metaOgpService,
     ) {}
 
     public function top(): \Illuminate\Contracts\View\View
@@ -39,6 +41,7 @@ final class FrontController extends Controller
         return view('v2.pak.index', [
             'pak' => '128-japan',
             'articles' => $this->articleRepository->getLatest('128-japan'),
+            'meta' => $this->metaOgpService->pak('128-japan'),
         ]);
     }
 
@@ -47,6 +50,7 @@ final class FrontController extends Controller
         return view('v2.pak.index', [
             'pak' => '128',
             'articles' => $this->articleRepository->getLatest('128'),
+            'meta' => $this->metaOgpService->pak('128'),
         ]);
     }
 
@@ -55,6 +59,7 @@ final class FrontController extends Controller
         return view('v2.pak.index', [
             'pak' => '64',
             'articles' => $this->articleRepository->getLatest('64'),
+            'meta' => $this->metaOgpService->pak('64'),
         ]);
     }
 
@@ -63,6 +68,7 @@ final class FrontController extends Controller
         return view('v2.pak.index', [
             'pak' => 'other-pak',
             'articles' => $this->articleRepository->getLatestOther(),
+            'meta' => $this->metaOgpService->pak('others'),
         ]);
     }
 
@@ -70,6 +76,7 @@ final class FrontController extends Controller
     {
         return view('v2.announce.index', [
             'articles' => $this->articleRepository->getAnnounces(),
+            'meta' => $this->metaOgpService->announce(),
         ]);
     }
 
@@ -86,6 +93,7 @@ final class FrontController extends Controller
 
         return view('v2.show.index', [
             'article' => $article,
+            'meta' => $this->metaOgpService->show($article->user, $article),
         ]);
     }
 
@@ -102,6 +110,7 @@ final class FrontController extends Controller
                 'postTypes' => ArticlePostType::cases(),
             ],
             'articles' => $this->articleRepository->search($condition),
+            'meta' => $this->metaOgpService->search(),
         ]);
     }
 

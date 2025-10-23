@@ -7,6 +7,8 @@
     <label-optional>Pak128用描画位置</label-optional>
     <q-option-group v-model="selected" :options="editor.pak128Position" type="checkbox" inline />
   </template>
+  <label-optional>緩急坂</label-optional>
+  <q-option-group v-model="selected" :options="editor.doubleSlope" type="checkbox" inline />
   <label-optional>ライセンス</label-optional>
   <q-option-group v-model="selected" :options="editor.license" type="checkbox" inline />
 </template>

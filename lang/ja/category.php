@@ -12,6 +12,7 @@ return [
         'pak128_position' => 'Pak128用描画位置',
         'license' => 'ライセンス',
         'page' => 'カテゴリ',
+        'double_slope' => '緩急坂',
     ],
     'pak' => [
         'any' => 'Pak問わず',
@@ -51,6 +52,10 @@ return [
     'pak128_position' => [
         'old' => '旧描画位置（主に112.3以前）',
         'new' => '新描画位置（主に120.0以降）',
+    ],
+    'double_slope' => [
+        'double' => '急坂',
+        'half' => '緩坂',
     ],
     'license' => [
         'cc-by' => 'CC BY',

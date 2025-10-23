@@ -32,7 +32,5 @@ final class JobUpdateRelated implements ShouldQueue
         $generateSidebar();
         $generateTopOrderByModifiedAt();
         $generateTopOrderByPublishedAt();
-
-        Cache::flush();
     }
 }

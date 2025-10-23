@@ -24,8 +24,8 @@ return [
     ],
     'google_recaptcha' => [
         'credential' => env('GOOGLE_RECAPTCHA_CREDENTIAL', 'dummy-credential.json'),
-        'projectName' => env('GOOGLE_RECAPTCHA_PROJECT_NAME'),
-        'siteKey' => env('GOOGLE_RECAPTCHA_SITE_KEY'),
+        'projectName' => env('GOOGLE_RECAPTCHA_PROJECT_NAME', 'dummy-project-name'),
+        'siteKey' => env('GOOGLE_RECAPTCHA_SITE_KEY', 'dummy-site-key'),
     ],
     'twitter' => [
         // STANDALONE APPS > Settings > User authentication settings

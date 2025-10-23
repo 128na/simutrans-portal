@@ -23,7 +23,7 @@ return [
         'max_uses' => 1,
     ],
     'google_recaptcha' => [
-        'credential' => env('GOOGLE_RECAPTCHA_CREDENTIAL'),
+        'credential' => env('GOOGLE_RECAPTCHA_CREDENTIAL', 'dummy-credential.json'),
         'projectName' => env('GOOGLE_RECAPTCHA_PROJECT_NAME'),
         'siteKey' => env('GOOGLE_RECAPTCHA_SITE_KEY'),
     ],

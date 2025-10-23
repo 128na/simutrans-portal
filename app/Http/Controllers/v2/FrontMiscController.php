@@ -9,13 +9,14 @@ use Illuminate\Routing\Controller;
 
 final class FrontMiscController extends Controller
 {
-    public function __construct(
-        private readonly MetaOgpService $metaOgpService,
-    ) {}
     // 特定ページへの固定リダイレクト
     public const array REDIRECT_MAP = [
         'simutrans-interact-meeting' => 1212,
     ];
+
+    public function __construct(
+        private readonly MetaOgpService $metaOgpService,
+    ) {}
 
     public function social(): \Illuminate\Contracts\View\View
     {

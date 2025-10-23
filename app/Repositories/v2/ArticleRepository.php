@@ -170,6 +170,7 @@ final class ArticleRepository
             ->withoutGlobalScopes()
             ->join('users', 'articles.user_id', '=', 'users.id')
             ->where('articles.status', ArticleStatus::Publish)
+            ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
             ->whereNull('articles.deleted_at')
             ->whereNull('users.deleted_at')
             ->whereNotExists(function ($q) use ($excludeSlugs): void {

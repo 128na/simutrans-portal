@@ -41,7 +41,6 @@ final readonly class FeedRepository
             ->articles()
             ->select('id', 'user_id', 'title', 'slug', 'post_type', 'contents', 'modified_at')
             ->active()
-            ->select('id', 'user_id', 'title', 'slug', 'post_type', 'contents', 'modified_at')
             ->limit(24)
             ->with('user:id,name')
             ->orderBy('modified_at', 'desc')

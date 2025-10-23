@@ -76,7 +76,7 @@ final class FrontController extends Controller
     public function show(string $userIdOrNickname, string $slug, Request $request, DoRedirectIfExists $doRedirectIfExists): \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
     {
         $article = $this->articleRepository->first($userIdOrNickname, $slug);
-        if ($article === null) {
+        if (! $article instanceof \App\Models\Article) {
             return $doRedirectIfExists($request->fullUrl());
         }
 

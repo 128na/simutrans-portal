@@ -15,7 +15,7 @@ runs:
         cache-dependency-path: "**/package-lock.json"
 
     - name: npm install
-      run: cd frontend && npm install
+      run: npm ci && cd frontend && npm ci
       shell: bash
 
     - name: Cache Asset
@@ -27,5 +27,5 @@ runs:
 
     - name: Build Asset
       if: steps.cache-asset.outputs.cache-hit != 'true'
-      run: cd frontend && npm run build
+      run: npm run build && cd frontend && npm run build
       shell: bash

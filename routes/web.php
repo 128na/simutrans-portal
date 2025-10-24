@@ -10,9 +10,7 @@ use App\Http\Controllers\RedirectController;
 use App\Http\Middleware\ExcludePaths;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['cache.content'])->group(function (): void {
-    Route::feeds();
-});
+Route::feeds();
 
 // 一覧系
 Route::get('/pak128-japan', [\App\Http\Controllers\v2\FrontController::class, 'pak128jp'])->name('pak.128japan');

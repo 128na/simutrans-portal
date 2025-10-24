@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands\Article;
 
-use App\Jobs\Article\JobUpdateRelated;
 use Illuminate\Console\Command;
 
 final class GenerateStaticJson extends Command
@@ -38,7 +37,7 @@ final class GenerateStaticJson extends Command
      */
     public function handle(): int
     {
-        JobUpdateRelated::dispatchSync();
+        dispatch_sync(new \App\Jobs\Article\JobUpdateRelated);
 
         return 0;
     }

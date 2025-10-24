@@ -1,32 +1,6 @@
-import Layout from 'layouts/FrontLayout.vue';
-import Top from 'pages/Front/Top.vue';
-import Show from 'pages/Front/Show.vue';
-import List from 'pages/Front/List.vue';
-import Tags from 'pages/Front/Tags.vue';
-import DiscordInvite from 'pages/Front/DiscordInvite.vue';
-import Social from 'pages/Front/Social.vue';
 import Error from 'src/pages/Error.vue';
 
 const routes = [
-  {
-    path: '/',
-    component: Layout,
-    children: [
-      { name: 'top', path: '', component: Top },
-      { name: 'user', path: 'users/:idOrNickname', component: List },
-      { name: 'show', path: 'users/:idOrNickname/:slug', component: Show },
-      { name: 'categoryPak', path: 'categories/pak/:size/:slug', component: List },
-      { name: 'category', path: 'categories/:type/:slug', component: List },
-      { name: 'tags', path: 'tags', component: Tags },
-      { name: 'tag', path: 'tags/:id', component: List },
-      { name: 'announces', path: 'announces', component: List },
-      { name: 'pages', path: 'pages', component: List },
-      { name: 'ranking', path: 'ranking', component: List },
-      { name: 'search', path: 'search', component: List },
-      { name: 'discordInvite', path: 'invite-simutrans-interact-meeting', component: DiscordInvite },
-      { name: 'social', path: 'social', component: Social },
-    ],
-  },
   {
     path: '/mypage',
     component: () => import(/* webpackChunkName: "mypage" */'layouts/MypageLayout.vue'),
@@ -120,7 +94,7 @@ const routes = [
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
-    component: Error,
+    redirect: { name: 'mypage' },
   },
 ];
 

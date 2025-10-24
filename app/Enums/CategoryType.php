@@ -25,6 +25,11 @@ enum CategoryType: string
     case Pak128Position = 'pak128_position';
 
     /**
+     * 緩急坂の種類
+     */
+    case DoubleSlope = 'double_slope';
+
+    /**
      * ライセンスの種類
      */
     case License = 'license';

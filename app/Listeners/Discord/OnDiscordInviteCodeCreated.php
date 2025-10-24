@@ -8,7 +8,7 @@ use Illuminate\Log\Logger;
 
 final readonly class OnDiscordInviteCodeCreated
 {
-    public function __construct(private readonly Logger $logger) {}
+    public function __construct(private Logger $logger) {}
 
     public function handle(): void
     {

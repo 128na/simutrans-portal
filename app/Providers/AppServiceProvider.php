@@ -7,6 +7,7 @@ namespace App\Providers;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,5 +26,6 @@ final class AppServiceProvider extends ServiceProvider
     {
         Date::use(CarbonImmutable::class);
         Model::shouldBeStrict(! App::isProduction());
+        Blade::directive('markdown', fn ($expression): string => sprintf('<?php echo app('.\App\Services\MarkdownService::class.'::class)->toEscapedHTML(%s); ?>', $expression));
     }
 }

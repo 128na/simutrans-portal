@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions\Ranking;
 
-use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
@@ -34,6 +33,6 @@ final readonly class Update
             DB::table('rankings')->insertOrIgnore($ranks);
         });
 
-        JobUpdateRelated::dispatchSync();
+        dispatch_sync(new \App\Jobs\Article\JobUpdateRelated);
     }
 }

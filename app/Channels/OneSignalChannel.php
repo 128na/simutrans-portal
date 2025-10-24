@@ -12,8 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 
 final class OneSignalChannel extends BaseChannel
 {
-    public function __construct() {}
-
     public function send(Model $model, SendSNSNotification $sendSNSNotification): void
     {
         match (true) {

@@ -15,6 +15,6 @@ final class Tags extends ResourceCollection
     #[\Override]
     public function toArray($request)
     {
-        return $this->collection->map(fn ($item): \App\Http\Resources\Api\Mypage\Tag => new Tag($item))->toArray();
+        return $this->collection->map(fn ($item): \App\Http\Resources\Api\Mypage\Tag => new Tag($item))->all();
     }
 }

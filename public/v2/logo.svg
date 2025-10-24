@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
+    <style>
+        text {
+        font-family: Arial, sans-serif;
+        font-size: 40px;
+        font-weight: 600;
+        }
+        .s {
+        fill: rgb(42, 134, 234);
+        }
+        .a {
+        fill: #121212;
+        font-size: 30px;
+        }
+    </style>
+    <text x="0" y="30" class="s fill-brand">Simutrans</text>
+    <text x="0" y="60" class="a">Addon Portal</text>
+</svg>

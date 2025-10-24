@@ -48,6 +48,9 @@ final class CategorySeeder extends Seeder
         // pak128_position
         ['slug' => 'old', 'type' => CategoryType::Pak128Position, 'order' => 30000],
         ['slug' => 'new', 'type' => CategoryType::Pak128Position, 'order' => 30010],
+        // double_slope
+        ['slug' => 'double', 'type' => CategoryType::DoubleSlope, 'order' => 31000],
+        ['slug' => 'half',   'type' => CategoryType::DoubleSlope, 'order' => 31010],
         // license
         ['slug' => 'cc-by',       'type' => CategoryType::License, 'order' => 40000],
         ['slug' => 'cc-BY-nc',    'type' => CategoryType::License, 'order' => 40001],

@@ -50,7 +50,7 @@ final class OauthController extends Controller
 
         Session::flash('success', 'access token created');
 
-        return redirect()->route('admin.index');
+        return to_route('admin.index');
     }
 
     public function refresh(): RedirectResponse
@@ -63,7 +63,7 @@ final class OauthController extends Controller
             Session::flash('error', 'token not found');
         }
 
-        return redirect()->route('admin.index');
+        return to_route('admin.index');
     }
 
     public function revoke(): RedirectResponse
@@ -76,6 +76,6 @@ final class OauthController extends Controller
             Session::flash('error', 'token not found');
         }
 
-        return redirect()->route('admin.index');
+        return to_route('admin.index');
     }
 }

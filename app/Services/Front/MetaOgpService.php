@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services\Front;
 
-use App\Enums\CategoryType;
 use App\Models\Article;
-use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Lang;
 
 final class MetaOgpService
 {
@@ -27,66 +26,46 @@ final class MetaOgpService
     }
 
     /**
-     * @return array{title:string,description:string,image:string|null,card_type:string}
+     * @return array{title:string,description:string}
      */
-    public function user(User $user): array
+    public function pak(string $name): array
     {
         return [
-            'title' => sprintf('%sさんの投稿', $user->name).' - '.Config::string('app.name'),
-            'description' => $this->trimDescription($user->profile?->data->description),
-            'image' => $user->profile?->avatar_url,
-            'card_type' => 'summary_large_image',
+            'title' => Lang::get('category.pak.'.$name).' - '.Config::string('app.name'),
+            'description' => Lang::get('category.description.pak.'.$name),
         ];
     }
 
     /**
      * @return array{title:string,description:string}
      */
-    public function category(CategoryType $categoryType, string $slug): array
+    public function announces(): array
     {
-        if ($categoryType === CategoryType::License) {
-            return [
-                'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $categoryType->value, $slug))).' - '.Config::string('app.name'),
-                'description' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $categoryType->value, $slug))),
-            ];
-        }
-
         return [
-            'title' => sprintf('%sの投稿', __(sprintf('category.%s.%s', $categoryType->value, $slug))).' - '.Config::string('app.name'),
-            'description' => __(sprintf('category.description.%s.%s', $categoryType->value, $slug)),
+            'title' => 'お知らせ'.' - '.Config::string('app.name'),
+            'description' => '運営からのお知らせです。',
         ];
     }
 
     /**
      * @return array{title:string,description:string}
      */
-    public function categoryPakAddon(string $pakSlug, string $addonSlug): array
+    public function pages(): array
     {
         return [
-            'title' => sprintf('%s、%sの投稿', __('category.pak.'.$pakSlug), __('category.addon.'.$addonSlug)).' - '.Config::string('app.name'),
-            'description' => __('category.description.addon.'.$addonSlug),
+            'title' => '記事'.' - '.Config::string('app.name'),
+            'description' => 'アドオン以外の記事です。',
         ];
     }
 
     /**
      * @return array{title:string,description:string}
      */
-    public function categoryPakNoneAddon(string $pakSlug): array
+    public function search(): array
     {
         return [
-            'title' => sprintf('%s、%sの投稿', __('category.pak.'.$pakSlug), __('category.addon.none')).' - '.Config::string('app.name'),
-            'description' => __('category.description.addon.none'),
-        ];
-    }
-
-    /**
-     * @return array{title:string,description:string}
-     */
-    public function tag(Tag $tag): array
-    {
-        return [
-            'title' => sprintf('%sタグを含む投稿', $tag->name).' - '.Config::string('app.name'),
-            'description' => $this->trimDescription($tag->description),
+            'title' => '検索'.' - '.Config::string('app.name'),
+            'description' => '記事の検索結果です。',
         ];
     }
 
@@ -97,13 +76,13 @@ final class MetaOgpService
     {
         return [
             'title' => 'SNS・通知ツール'.' - '.Config::string('app.name'),
-            'description' => '記事の更新を各種ツールで受け取れます。',
+            'description' => '記事投稿や更新通知を受け取ることができるSNSアカウントやツールです。',
         ];
     }
 
     private function trimDescription(?string $str): string
     {
-        if ($str === null || $str === '' || $str === '0') {
+        if (in_array($str, [null, '', '0'], true)) {
             return Config::string('app.meta-description');
         }
 

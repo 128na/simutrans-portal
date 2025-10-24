@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Web;
 
-use App\Enums\CategoryType;
 use App\Models\Article;
-use App\Models\Category;
 use App\Models\Redirect;
-use App\Models\Tag;
-use App\Models\User;
 use Tests\Feature\TestCase;
 
 final class FrontControllerTest extends TestCase
@@ -21,16 +17,30 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertOk();
     }
 
-    public function test_ranking(): void
+    public function test_pak128_japan(): void
     {
-        $testResponse = $this->get(route('ranking'));
+        $testResponse = $this->get(route('pak.128japan'));
 
         $testResponse->assertOk();
     }
 
-    public function test_pages(): void
+    public function test_pak128(): void
     {
-        $testResponse = $this->get(route('pages'));
+        $testResponse = $this->get(route('pak.128'));
+
+        $testResponse->assertOk();
+    }
+
+    public function test_pak64(): void
+    {
+        $testResponse = $this->get(route('pak.64'));
+
+        $testResponse->assertOk();
+    }
+
+    public function test_pak_others(): void
+    {
+        $testResponse = $this->get(route('pak.others'));
 
         $testResponse->assertOk();
     }
@@ -42,111 +52,9 @@ final class FrontControllerTest extends TestCase
         $testResponse->assertOk();
     }
 
-    public function test_category_pak_none_addon(): void
+    public function test_pages(): void
     {
-        $pak = Category::factory()->create(['type' => CategoryType::Pak]);
-        $testResponse = $this->get(route('category.pak.noneAddon', ['size' => $pak->slug]));
-
-        $testResponse->assertOk();
-    }
-
-    public function test_category_pak_none_addon存在しない_pak(): void
-    {
-        $testResponse = $this->get(route('category.pak.noneAddon', ['size' => 'missing']));
-
-        $testResponse->assertNotFound();
-    }
-
-    public function test_category_pak_addon(): void
-    {
-        $pak = Category::factory()->create(['type' => CategoryType::Pak]);
-        $addon = Category::factory()->create(['type' => CategoryType::Addon]);
-        $testResponse = $this->get(route('category.pak.addon', ['size' => $pak->slug, 'slug' => $addon->slug]));
-
-        $testResponse->assertOk();
-    }
-
-    public function test_category_pak_addon存在しない_pak(): void
-    {
-        $addon = Category::factory()->create(['type' => CategoryType::Addon]);
-        $testResponse = $this->get(route('category.pak.addon', ['size' => 'missing', 'slug' => $addon->slug]));
-
-        $testResponse->assertNotFound();
-    }
-
-    public function test_category_pak_addon存在しない_addon(): void
-    {
-        $pak = Category::factory()->create(['type' => CategoryType::Pak]);
-        $testResponse = $this->get(route('category.pak.addon', ['size' => $pak->slug, 'slug' => 'missing']));
-
-        $testResponse->assertNotFound();
-    }
-
-    public function test_category(): void
-    {
-        $category = Category::factory()->create();
-        $testResponse = $this->get(route('category', ['type' => $category->type->value, 'slug' => $category->slug]));
-
-        $testResponse->assertOk();
-    }
-
-    public function test_category存在しないtype(): void
-    {
-        $category = Category::factory()->create();
-        $testResponse = $this->get(route('category', ['type' => 'missing', 'slug' => $category->slug]));
-
-        $testResponse->assertNotFound();
-    }
-
-    public function test_category存在しないslug(): void
-    {
-        $category = Category::factory()->create();
-        $testResponse = $this->get(route('category', ['type' => $category->type->value, 'slug' => 'missing']));
-
-        $testResponse->assertNotFound();
-    }
-
-    public function test_tag(): void
-    {
-        $tag = Tag::factory()->create();
-        $testResponse = $this->get(route('tag', ['tag' => $tag->id]));
-
-        $testResponse->assertOk();
-    }
-
-    public function test_tag存在しない(): void
-    {
-        $testResponse = $this->get(route('tag', ['tag' => -1]));
-
-        $testResponse->assertNotFound();
-    }
-
-    public function test_user_id(): void
-    {
-        $user = User::factory()->create();
-        $testResponse = $this->get(route('user', ['userIdOrNickname' => $user->id]));
-
-        $testResponse->assertOk();
-    }
-
-    public function test_user_nickname(): void
-    {
-        $user = User::factory()->create(['nickname' => 'dummy']);
-        $testResponse = $this->get(route('user', ['userIdOrNickname' => $user->nickname]));
-
-        $testResponse->assertOk();
-    }
-
-    public function test_user存在しない(): void
-    {
-        $testResponse = $this->get(route('user', ['userIdOrNickname' => -1]));
-
-        $testResponse->assertNotFound();
-    }
-
-    public function test_tags(): void
-    {
-        $testResponse = $this->get(route('tags'));
+        $testResponse = $this->get(route('pages'));
 
         $testResponse->assertOk();
     }
@@ -155,7 +63,8 @@ final class FrontControllerTest extends TestCase
     {
         $article = Article::factory()->publish()->create();
         $testResponse = $this->get(route('articles.show', [
-            'userIdOrNickname' => $article->user_id, 'articleSlug' => $article->slug,
+            'userIdOrNickname' => $article->user_id,
+            'articleSlug' => $article->slug,
         ]));
 
         $testResponse->assertOk();
@@ -165,7 +74,8 @@ final class FrontControllerTest extends TestCase
     {
         $article = Article::factory()->create(['status' => 'publish']);
         $testResponse = $this->get(route('articles.show', [
-            'userIdOrNickname' => $article->user->nickname, 'articleSlug' => $article->slug,
+            'userIdOrNickname' => $article->user->nickname,
+            'articleSlug' => $article->slug,
         ]));
 
         $testResponse->assertOk();

@@ -14,26 +14,6 @@ use Illuminate\Database\Eloquent\Builder;
 trait Slugable
 {
     /**
-     * @param  Builder<T>  $builder
-     * @return Builder<T>
-     */
-    public function scopeSlug(Builder $builder, string $slug): Builder
-    {
-        return $builder->where('slug', urlencode($slug));
-    }
-
-    public function setSlugAttribute(string $value): void
-    {
-        $value = urldecode($value);
-        $value = mb_strtolower($value);
-
-        $replaces = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '`', '{', '|', '}', ' ', '　', '.'];
-        $value = str_replace($replaces, '-', $value);
-        $value = urlencode($value);
-        $this->attributes['slug'] = $value;
-    }
-
-    /**
      * スラッグがユニークか.
      */
     public function isUniqueSlug(): bool
@@ -45,5 +25,25 @@ trait Slugable
         }
 
         return $query->doesntExist();
+    }
+
+    /**
+     * @param  Builder<T>  $builder
+     * @return Builder<T>
+     */
+    protected function scopeSlug(Builder $builder, string $slug): Builder
+    {
+        return $builder->where('slug', urlencode($slug));
+    }
+
+    protected function setSlugAttribute(string $value): void
+    {
+        $value = urldecode($value);
+        $value = mb_strtolower($value);
+
+        $replaces = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '`', '{', '|', '}', ' ', '　', '.'];
+        $value = str_replace($replaces, '-', $value);
+        $value = urlencode($value);
+        $this->attributes['slug'] = $value;
     }
 }

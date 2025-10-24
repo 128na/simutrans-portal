@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Browser;
 
-use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
@@ -32,7 +31,7 @@ final class ConversionTest extends TestCase
             'user_id' => $user->id,
         ]);
         $this->article2->categories()->save($category);
-        JobUpdateRelated::dispatchSync();
+        dispatch_sync(new \App\Jobs\Article\JobUpdateRelated);
     }
 
     public function test(): void
@@ -56,7 +55,7 @@ final class ConversionTest extends TestCase
                 ->visit(sprintf('/users/%s/%s', $this->article1->user_id, $this->article1->slug))
                 ->waitForText($this->article1->title)
                 ->click('@conversion-link');
-            sleep(5);
+            \Illuminate\Support\Sleep::sleep(5);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => 1, 'period' => $dayly, 'count' => 1]);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => 2, 'period' => $monthly, 'count' => 1]);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article1->id, 'type' => 3, 'period' => $yearly, 'count' => 1]);
@@ -79,7 +78,7 @@ final class ConversionTest extends TestCase
                 ->visit(sprintf('/users/%s/%s', $this->article2->user_id, $this->article2->slug))
                 ->waitForText($this->article2->title)
                 ->click('@conversion-download');
-            sleep(5);
+            \Illuminate\Support\Sleep::sleep(5);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => 1, 'period' => $dayly, 'count' => 1]);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => 2, 'period' => $monthly, 'count' => 1]);
             $this->assertDatabaseHas('view_counts', ['article_id' => $this->article2->id, 'type' => 3, 'period' => $yearly, 'count' => 1]);

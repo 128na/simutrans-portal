@@ -16,7 +16,7 @@ final class ListRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order' => 'nullable|in:published_at,modified_at',
+            'order' => ['nullable', 'in:published_at,modified_at'],
         ];
     }
 }

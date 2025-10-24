@@ -9,7 +9,7 @@ use App\Repositories\Article\ViewCountRepository;
 
 final readonly class AddViewRecord
 {
-    public function __construct(private readonly ViewCountRepository $viewCountRepository) {}
+    public function __construct(private ViewCountRepository $viewCountRepository) {}
 
     public function handle(ArticleShown $articleShown): void
     {

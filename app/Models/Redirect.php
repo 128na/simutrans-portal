@@ -39,7 +39,7 @@ final class Redirect extends Model
     /**
      * @param  Builder<Redirect>  $builder
      */
-    public function scopeFrom(Builder $builder, string $from): void
+    protected function scopeFrom(Builder $builder, string $from): void
     {
         $builder->where('from', $from);
     }

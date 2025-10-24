@@ -66,7 +66,7 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
 
         $this->app->bind(MarkdownService::class, function ($app): MarkdownService {
             $htmlPurifierConfig = HTMLPurifier_Config::createDefault();
-            $htmlPurifierConfig->set('HTML.AllowedElements', []);
+            $htmlPurifierConfig->set('HTML.AllowedElements', config('services.markdown.allowed_elements', []));
 
             return new MarkdownService($app->make(GithubMarkdown::class), new HTMLPurifier($htmlPurifierConfig));
         });

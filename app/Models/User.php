@@ -182,19 +182,6 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
 
     /*
     |--------------------------------------------------------------------------
-    | スコープ
-    |--------------------------------------------------------------------------
-    */
-    /**
-     * @param  Builder<User>  $builder
-     */
-    public function scopeAdmin(Builder $builder): void
-    {
-        $builder->where('role', UserRole::Admin);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | 一般
     |--------------------------------------------------------------------------
     */
@@ -216,6 +203,19 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
             'userId' => $this->id,
             'userName' => $this->name,
         ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | スコープ
+    |--------------------------------------------------------------------------
+    */
+    /**
+     * @param  Builder<User>  $builder
+     */
+    protected function scopeAdmin(Builder $builder): void
+    {
+        $builder->where('role', UserRole::Admin);
     }
 
     /*

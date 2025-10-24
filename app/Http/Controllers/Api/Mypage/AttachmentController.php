@@ -8,7 +8,6 @@ use App\Actions\StoreAttachment\Store;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Attachment\StoreRequest;
 use App\Http\Resources\Api\Mypage\Attachment as MypageAttachment;
-use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
 use App\Repositories\AttachmentRepository;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -42,7 +41,7 @@ final class AttachmentController extends Controller
         foreach ($files as $file) {
             $attachment = $store($this->loggedinUser(), $file, $crop);
             try {
-                UpdateFileInfo::dispatchSync($attachment);
+                dispatch_sync(new \App\Jobs\Attachments\UpdateFileInfo($attachment));
             } catch (Throwable $throwable) {
                 report($throwable);
             }

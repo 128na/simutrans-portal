@@ -15,10 +15,10 @@ final readonly class FileInfoService
      * @param  \App\Services\FileInfo\Extractors\Extractor[]  $extractors
      */
     public function __construct(
-        private readonly FileInfoRepository $fileInfoRepository,
-        private readonly ZipArchiveParser $zipArchiveParser,
-        private readonly TextService $textService,
-        private readonly array $extractors,
+        private FileInfoRepository $fileInfoRepository,
+        private ZipArchiveParser $zipArchiveParser,
+        private TextService $textService,
+        private array $extractors,
     ) {}
 
     public function updateOrCreateFromPak(Attachment $attachment): FileInfo

@@ -14,13 +14,6 @@ final class MFASetupRecovered extends Notification implements ShouldQueue
     use Queueable;
 
     /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct() {}
-
-    /**
      * Get the notification's delivery channels.
      *
      * @return array<string>

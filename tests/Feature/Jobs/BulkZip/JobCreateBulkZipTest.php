@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Jobs\BulkZip;
 
-use App\Jobs\BulkZip\JobCreateBulkZip;
 use App\Models\BulkZip;
 use Illuminate\Support\Facades\Storage;
 use Tests\Feature\TestCase;
@@ -35,7 +34,7 @@ final class JobCreateBulkZipTest extends TestCase
             'generated' => false,
         ]);
 
-        JobCreateBulkZip::dispatchSync($this->bulkZip);
+        dispatch_sync(new \App\Jobs\BulkZip\JobCreateBulkZip($this->bulkZip));
 
         $this->bulkZip->refresh();
         $this->assertDatabaseHas('bulk_zips', [

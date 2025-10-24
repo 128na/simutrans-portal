@@ -236,262 +236,9 @@ final class Article extends Model implements Feedable
         return $this->morphedByMany(self::class, 'articlable');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | スコープ
-    |--------------------------------------------------------------------------
-     */
-    /**
-     * @param  Builder<Article>  $builder
-     */
-    public function scopeWithUserTrashed(Builder $builder): void
+    public function getAttachment(int|string $id): ?Attachment
     {
-        $builder->withoutGlobalScope('WithoutTrashedUser');
-    }
-
-    /**
-     * @param  Builder<Article>  $builder
-     */
-    public function scopeUser(Builder $builder, User $user): void
-    {
-        $builder->where('user_id', $user->id);
-    }
-
-    /**
-     * @param  Builder<Article>  $builder
-     */
-    public function scopeActive(Builder $builder): void
-    {
-        $builder->where('status', ArticleStatus::Publish);
-    }
-
-    /**
-     * @param  Builder<Article>  $builder
-     */
-    public function scopeAddon(Builder $builder): void
-    {
-        $builder->whereIn('post_type', [ArticlePostType::AddonPost, ArticlePostType::AddonIntroduction]);
-    }
-
-    /**
-     * @param  Builder<Article>  $builder
-     */
-    public function scopeLinkCheckTarget(Builder $builder): void
-    {
-        $builder->where('post_type', ArticlePostType::AddonIntroduction)
-            ->where(
-                fn ($query) => $query->whereNull('contents->exclude_link_check')
-                    ->orWhere('contents->exclude_link_check', false)
-            );
-    }
-
-    /**
-     * @param  Builder<Article>  $builder
-     */
-    public function scopePage(Builder $builder): void
-    {
-        $builder->where('post_type', [ArticlePostType::Page, ArticlePostType::Markdown]);
-    }
-
-    /**
-     * @param  Builder<Article>  $builder
-     *
-     * @implements Builder<Article>
-     */
-    public function scopePak(Builder $builder, string $slug): void
-    {
-        $builder->whereHas('categories', fn ($query) => $query->pak()->slug($slug));
-    }
-
-    /**
-     * @param  Builder<Article>  $builder
-     */
-    public function scopeAnnounce(Builder $builder): void
-    {
-        $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
-            ->whereHas('categories', fn ($query) => $query->page()->slug('announce'));
-    }
-
-    /**
-     * @param  Builder<Article>  $builder
-     */
-    public function scopeWithoutAnnounce(Builder $builder): void
-    {
-        $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
-            ->whereDoesntHave('categories', fn ($query) => $query->page()->slug('announce'));
-    }
-
-    /**
-     * @param  Builder<Article>  $builder
-     */
-    public function scopeRankingOrder(Builder $builder): void
-    {
-        $builder->join('rankings', 'rankings.article_id', '=', 'articles.id')
-            ->orderBy('rankings.rank', 'asc');
-    }
-
-    /**
-     * @param  Builder<Article>  $builder
-     */
-    public function scopeCategory(Builder $builder, Category $category): void
-    {
-        $builder->join('article_category', function (JoinClause $joinClause) use ($category): void {
-            $joinClause->on('article_category.article_id', '=', 'articles.id')
-                ->where('article_category.category_id', $category->id);
-        });
-    }
-
-    /**
-     * @param  Builder<Article>  $builder
-     */
-    public function scopePakAddonCategory(Builder $builder, Category $pak, Category $addon): void
-    {
-        $builder->join('article_category', function (JoinClause $joinClause) use ($pak): void {
-            $joinClause->on('article_category.article_id', '=', 'articles.id')
-                ->where('article_category.category_id', $pak->id);
-        });
-        $builder->join('article_category', function (JoinClause $joinClause) use ($addon): void {
-            $joinClause->on('article_category.article_id', '=', 'articles.id')
-                ->where('article_category.category_id', $addon->id);
-        });
-    }
-
-    /**
-     * @param  Builder<Article>  $builder
-     */
-    public function scopeTag(Builder $builder, Tag $tag): void
-    {
-        $builder->join('article_tag', function (JoinClause $joinClause) use ($tag): void {
-            $joinClause->on('article_tag.article_id', '=', 'articles.id')
-                ->where('article_tag.tag_id', $tag->id);
-        });
-    }
-
-    public function isAddonPost(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->post_type === ArticlePostType::AddonPost);
-    }
-
-    public function isPage(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->post_type === ArticlePostType::Page);
-    }
-
-    public function isPublish(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->status === ArticleStatus::Publish);
-    }
-
-    public function isReservation(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->status === ArticleStatus::Reservation);
-    }
-
-    public function isInactive(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => in_array($this->status, [
-            ArticleStatus::Draft,
-            ArticleStatus::Private,
-            ArticleStatus::Trash,
-        ]));
-    }
-
-    public function hasThumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => ! is_null($this->contents->thumbnail) && $this->thumbnail);
-    }
-
-    public function thumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
-            $id = $this->contents->thumbnail;
-
-            return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
-        });
-    }
-
-    public function thumbnailUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->url($this->has_thumbnail && $this->thumbnail
-            ? $this->thumbnail->path
-            : DefaultThumbnail::NO_THUMBNAIL));
-    }
-
-    public function hasFile(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->is_addon_post
-            && $this->contents instanceof AddonPostContent
-            && ! is_null($this->contents->file) && $this->file);
-    }
-
-    public function file(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
-            if ($this->contents instanceof AddonPostContent) {
-                $id = $this->contents->file;
-
-                return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
-            }
-
-            throw new Exception('invalid post type');
-        });
-    }
-
-    public function hasFileInfo(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->hasFile && $this->file && $this->file->fileInfo);
-    }
-
-    /**
-     * @return Collection<int, Category>
-     */
-    public function categoryPaks(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak));
-    }
-
-    /**
-     * @return Collection<int, Category>
-     */
-    public function categoryAddons(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Addon));
-    }
-
-    /**
-     * @return Collection<int, Category>
-     */
-    public function categoryPak128Positions(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak128Position));
-    }
-
-    public function todaysConversionRate(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {
-            if (! is_null($this->todaysConversionCount) && $this->todaysViewCount) {
-                $rate = $this->todaysConversionCount->count / $this->todaysViewCount->count * 100;
-
-                return sprintf('%.1f %%', $rate);
-            }
-
-            return 'N/A';
-        });
-    }
-
-    public function metaDescription(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): string => mb_strimwidth((string) $this->contents->getDescription(), 0, 300, '…'));
-    }
-
-    public function headlineDescription(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): string => mb_strimwidth((string) $this->contents->getDescription(), 0, 55, '…'));
-    }
-
-    public function urlDecodedSlug(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): string => urldecode((string) $this->slug));
+        return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
     }
 
     /*
@@ -561,6 +308,272 @@ final class Article extends Model implements Feedable
     public function getPublicDisk(): FilesystemAdapter
     {
         return Storage::disk('public');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | スコープ
+    |--------------------------------------------------------------------------
+     */
+    /**
+     * @param  Builder<Article>  $builder
+     */
+    protected function scopeWithUserTrashed(Builder $builder): void
+    {
+        $builder->withoutGlobalScope('WithoutTrashedUser');
+    }
+
+    /**
+     * @param  Builder<Article>  $builder
+     */
+    protected function scopeUser(Builder $builder, User $user): void
+    {
+        $builder->where('user_id', $user->id);
+    }
+
+    /**
+     * @param  Builder<Article>  $builder
+     */
+    protected function scopeLatest(Builder $builder): void
+    {
+        $builder->latest('published_at');
+    }
+
+    /**
+     * @param  Builder<Article>  $builder
+     */
+    protected function scopeActive(Builder $builder): void
+    {
+        $builder->where('status', ArticleStatus::Publish);
+    }
+
+    /**
+     * @param  Builder<Article>  $builder
+     */
+    protected function scopeAddon(Builder $builder): void
+    {
+        $builder->whereIn('post_type', [ArticlePostType::AddonPost, ArticlePostType::AddonIntroduction]);
+    }
+
+    /**
+     * @param  Builder<Article>  $builder
+     */
+    protected function scopeLinkCheckTarget(Builder $builder): void
+    {
+        $builder->where('post_type', ArticlePostType::AddonIntroduction)
+            ->where(
+                fn ($query) => $query->whereNull('contents->exclude_link_check')
+                    ->orWhere('contents->exclude_link_check', false)
+            );
+    }
+
+    /**
+     * @param  Builder<Article>  $builder
+     */
+    protected function scopePage(Builder $builder): void
+    {
+        $builder->where('post_type', [ArticlePostType::Page, ArticlePostType::Markdown]);
+    }
+
+    /**
+     * @param  Builder<Article>  $builder
+     *
+     * @implements Builder<Article>
+     */
+    protected function scopePak(Builder $builder, string $slug): void
+    {
+        $builder->whereHas('categories', fn ($query) => $query->pak()->slug($slug));
+    }
+
+    /**
+     * @param  Builder<Article>  $builder
+     */
+    protected function scopeAnnounce(Builder $builder): void
+    {
+        $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
+            ->whereHas('categories', fn ($query) => $query->page()->slug('announce'));
+    }
+
+    /**
+     * @param  Builder<Article>  $builder
+     */
+    protected function scopeWithoutAnnounce(Builder $builder): void
+    {
+        $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
+            ->whereDoesntHave('categories', fn ($query) => $query->page()->slug('announce'));
+    }
+
+    /**
+     * @param  Builder<Article>  $builder
+     */
+    protected function scopeRankingOrder(Builder $builder): void
+    {
+        $builder->join('rankings', 'rankings.article_id', '=', 'articles.id')
+            ->orderBy('rankings.rank', 'asc');
+    }
+
+    /**
+     * @param  Builder<Article>  $builder
+     */
+    protected function scopeCategory(Builder $builder, Category $category): void
+    {
+        $builder->join('article_category', function (JoinClause $joinClause) use ($category): void {
+            $joinClause->on('article_category.article_id', '=', 'articles.id')
+                ->where('article_category.category_id', $category->id);
+        });
+    }
+
+    /**
+     * @param  Builder<Article>  $builder
+     */
+    protected function scopePakAddonCategory(Builder $builder, Category $pak, Category $addon): void
+    {
+        $builder->join('article_category', function (JoinClause $joinClause) use ($pak): void {
+            $joinClause->on('article_category.article_id', '=', 'articles.id')
+                ->where('article_category.category_id', $pak->id);
+        });
+        $builder->join('article_category', function (JoinClause $joinClause) use ($addon): void {
+            $joinClause->on('article_category.article_id', '=', 'articles.id')
+                ->where('article_category.category_id', $addon->id);
+        });
+    }
+
+    /**
+     * @param  Builder<Article>  $builder
+     */
+    protected function scopeTag(Builder $builder, Tag $tag): void
+    {
+        $builder->join('article_tag', function (JoinClause $joinClause) use ($tag): void {
+            $joinClause->on('article_tag.article_id', '=', 'articles.id')
+                ->where('article_tag.tag_id', $tag->id);
+        });
+    }
+
+    protected function isAddonPost(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->post_type === ArticlePostType::AddonPost);
+    }
+
+    protected function isPage(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->post_type === ArticlePostType::Page);
+    }
+
+    protected function isPublish(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->status === ArticleStatus::Publish);
+    }
+
+    protected function isReservation(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->status === ArticleStatus::Reservation);
+    }
+
+    protected function isInactive(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => in_array($this->status, [
+            ArticleStatus::Draft,
+            ArticleStatus::Private,
+            ArticleStatus::Trash,
+        ]));
+    }
+
+    protected function hasThumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => ! is_null($this->contents->thumbnail) && $this->thumbnail);
+    }
+
+    protected function thumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            $id = $this->contents->thumbnail;
+
+            return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
+        });
+    }
+
+    protected function thumbnailUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->url($this->has_thumbnail && $this->thumbnail
+            ? $this->thumbnail->path
+            : DefaultThumbnail::NO_THUMBNAIL));
+    }
+
+    protected function hasFile(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->is_addon_post
+            && $this->contents instanceof AddonPostContent
+            && ! is_null($this->contents->file) && $this->file);
+    }
+
+    protected function file(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+            if ($this->contents instanceof AddonPostContent) {
+                $id = $this->contents->file;
+
+                return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
+            }
+
+            throw new Exception('invalid post type');
+        });
+    }
+
+    protected function hasFileInfo(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->hasFile && $this->file && $this->file->fileInfo);
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    protected function categoryPaks(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak));
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    protected function categoryAddons(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Addon));
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    protected function categoryPak128Positions(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak128Position));
+    }
+
+    protected function todaysConversionRate(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {
+            if (! is_null($this->todaysConversionCount) && $this->todaysViewCount) {
+                $rate = $this->todaysConversionCount->count / $this->todaysViewCount->count * 100;
+
+                return sprintf('%.1f %%', $rate);
+            }
+
+            return 'N/A';
+        });
+    }
+
+    protected function metaDescription(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): string => mb_strimwidth((string) $this->contents->getDescription(), 0, 300, '…'));
+    }
+
+    protected function headlineDescription(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): string => mb_strimwidth((string) $this->contents->getDescription(), 0, 55, '…'));
+    }
+
+    protected function urlDecodedSlug(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): string => urldecode((string) $this->slug));
     }
 
     #[\Override]

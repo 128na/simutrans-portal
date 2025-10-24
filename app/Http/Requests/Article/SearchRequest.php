@@ -16,7 +16,7 @@ final class SearchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'word' => 'nullable|string|max:100',
+            'word' => ['nullable', 'string', 'max:100'],
         ];
     }
 }

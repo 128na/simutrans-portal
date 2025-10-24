@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Browser;
 
-use App\Jobs\Article\JobUpdateRelated;
 use Laravel\Dusk\Browser;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Browser\Pages\ArticleAddonIntroductionPage;
@@ -28,7 +27,7 @@ final class PageTest extends TestCase
     public function test_pages(string $pageClass): void
     {
         $page = new $pageClass;
-        JobUpdateRelated::dispatchSync();
+        dispatch_sync(new \App\Jobs\Article\JobUpdateRelated);
         $this->browse(fn (Browser $browser) => $browser
             ->visit($page)
         );

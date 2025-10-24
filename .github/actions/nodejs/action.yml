@@ -15,7 +15,7 @@ runs:
         cache-dependency-path: "**/package-lock.json"
 
     - name: npm install
-      run: cd frontend && npm install
+      run: npm ci && cd frontend && npm ci
       shell: bash
 
     - name: Cache Asset
@@ -23,9 +23,9 @@ runs:
       uses: actions/cache@v4
       with:
         path: public
-        key: ${{ inputs.asset-key }}-${{ hashFiles('frontend/src/**/*', 'frontend/public/**/*', 'frontend/*' ) }}
+        key: ${{ inputs.asset-key }}-${{ hashFiles('frontend/src/**/*', 'frontend/public/**/*', 'frontend/*', 'resources/*' ) }}
 
     - name: Build Asset
       if: steps.cache-asset.outputs.cache-hit != 'true'
-      run: cd frontend && npm run build
+      run: npm run build && cd frontend && npm run build
       shell: bash

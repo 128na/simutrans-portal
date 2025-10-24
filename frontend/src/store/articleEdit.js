@@ -187,23 +187,19 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     }
   };
 
-  // preview
-  const split = ref(50);
-  const togglePreview = () => {
-    split.value = split.value ? 0 : 50;
-  };
-
   // category
   const getCategory = computed(() => (id) => options.value?.categories?.addon?.find((c) => c.id === id)
     || options.value?.categories?.license?.find((c) => c.id === id)
     || options.value?.categories?.page?.find((c) => c.id === id)
     || options.value?.categories?.pak?.find((c) => c.id === id)
-    || options.value?.categories?.pak128_position?.find((c) => c.id === id));
+    || options.value?.categories?.pak128_position?.find((c) => c.id === id)
+    || options.value?.categories?.double_slope?.find((c) => c.id === id));
   const pak128CategoryId = computed(() => options.value?.categories?.pak?.find((c) => c.name === 'Pak128')?.id);
   const includesPak128 = computed(() => article.value?.categories?.some((c) => c.id === pak128CategoryId.value));
   const pak = computed(() => options.value?.categories?.pak?.map((c) => Object.create({ label: c.name, value: c.id })));
   const addon = computed(() => options.value?.categories?.addon?.map((c) => Object.create({ label: c.name, value: c.id })));
   const pak128Position = computed(() => options.value?.categories?.pak128_position?.map((c) => Object.create({ label: c.name, value: c.id })));
+  const doubleSlope = computed(() => options.value?.categories?.double_slope?.map((c) => Object.create({ label: c.name, value: c.id })));
   const license = computed(() => options.value?.categories?.license?.map((c) => Object.create({ label: c.name, value: c.id })));
   const page = computed(() => options.value?.categories?.page?.map((c) => Object.create({ label: c.name, value: c.id })));
 
@@ -255,9 +251,6 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     ready,
     handlerOption,
 
-    split,
-    togglePreview,
-
     categories,
     getCategory,
     pak128CategoryId,
@@ -265,6 +258,7 @@ export const useArticleEditStore = defineStore('articleEdit', () => {
     pak,
     addon,
     pak128Position,
+    doubleSlope,
     license,
     page,
 

@@ -1,5 +1,8 @@
 <template>
   <label-optional>サムネイル画像</label-optional>
+  <q-img v-if=thumbnailUrl :src="thumbnailUrl" :ratio="16 / 9" fit="cover" width="320px" height="180px"
+    class="bg-grey-1" />
+
   <q-input :model-value="filename" readonly bottom-slots :error-message="editor.vali('article.contents.thumbnail')"
     :error="!!editor.vali('article.contents.thumbnail')">
     <template v-slot:after>
@@ -30,9 +33,15 @@ export default defineComponent({
 
       return file?.original_name || 'ファイルが見つかりません';
     });
+
+    const thumbnailUrl = computed(() => {
+      const attachmentId = parseInt(editor.article.contents.thumbnail, 10);
+      return mypage.attachments?.find((a) => a.id === attachmentId)?.url;
+    });
     return {
       editor,
       filename,
+      thumbnailUrl,
     };
   },
 });

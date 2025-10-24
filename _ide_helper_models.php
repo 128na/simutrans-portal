@@ -58,7 +58,6 @@ namespace App\Models{
  * @property-read int|null $monthly_view_counts_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
- * @property-read \App\Models\Article\Ranking|null $ranking
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Article> $relatedArticles
  * @property-read int|null $related_articles_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
@@ -92,7 +91,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article pak(string $slug)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article pakAddonCategory(\App\Models\Category $pak, \App\Models\Category $addon)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article rankingOrder()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article slug(string $slug)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article tag(\App\Models\Tag $tag)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article user(\App\Models\User $user)
@@ -121,21 +119,6 @@ namespace App\Models\Article{
  */
 	#[\AllowDynamicProperties]
 	final class IdeHelperConversionCount {}
-}
-
-namespace App\Models\Article{
-/**
- * @property int $rank
- * @property int $article_id
- * @property-read \App\Models\Article $article
- * @method static \Database\Factories\Article\RankingFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Ranking newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Ranking newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Ranking query()
- * @mixin \Eloquent
- */
-	#[\AllowDynamicProperties]
-	final class IdeHelperRanking {}
 }
 
 namespace App\Models\Article{

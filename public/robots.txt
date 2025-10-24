@@ -1,4 +1,3 @@
 User-agent: SentryUptimeBot
 Disallow: *
 User-agent: *
-sitemap: https://simutrans-portal.128-bit.net/sitemap/index.xml

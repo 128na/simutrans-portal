@@ -37,12 +37,6 @@ parameters:
 			path: app/Http/Controllers/Controller.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\Article\:\:\$hasFileInfo\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/Api/Front/ArticleResource.php
-
-		-
 			message: '#^Using nullsafe property access "\?\-\>nickname" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1

@@ -24,8 +24,7 @@
     "potibm/phluesky": ">=0.6.1",
     "spatie/flysystem-dropbox": "^3.0.2",
     "spatie/laravel-backup": ">=9.3.5",
-    "spatie/laravel-feed": "^4.4.2",
-    "spatie/laravel-sitemap": "^7.3.7"
+    "spatie/laravel-feed": "^4.4.2"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.16.0",

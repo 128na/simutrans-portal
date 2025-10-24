@@ -5,8 +5,6 @@ includes:
 parameters:
     ignoreErrors:
         - '#App\\Contracts\\Models\\BulkZippableInterface#'
-        # generics 3パラメータ対応していないので直らない
-        - '#Pivot#'
     paths:
         - app/
 

@@ -10,7 +10,6 @@ use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Enums\CategoryType;
 use App\Models\Article\ConversionCount;
-use App\Models\Article\Ranking;
 use App\Models\Article\ViewCount;
 use App\Models\Contents\AddonPostContent;
 use App\Traits\Slugable;
@@ -209,14 +208,6 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return HasOne<Ranking,$this>
-     */
-    public function ranking(): HasOne
-    {
-        return $this->hasOne(Ranking::class);
-    }
-
-    /**
      * この記事から関連付けた記事
      *
      * @return MorphToMany<Article,$this>
@@ -401,15 +392,6 @@ final class Article extends Model implements Feedable
     {
         $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
             ->whereDoesntHave('categories', fn ($query) => $query->page()->slug('announce'));
-    }
-
-    /**
-     * @param  Builder<Article>  $builder
-     */
-    protected function scopeRankingOrder(Builder $builder): void
-    {
-        $builder->join('rankings', 'rankings.article_id', '=', 'articles.id')
-            ->orderBy('rankings.rank', 'asc');
     }
 
     /**

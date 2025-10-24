@@ -31,14 +31,8 @@ final class Kernel extends ConsoleKernel
             ->appendOutputTo($output);
         $schedule->command('backup:run')->dailyAt('3:00')
             ->appendOutputTo($output);
-        $schedule->command('sitemap:generate')->dailyAt('5:00')
-            ->appendOutputTo($output);
 
         // 毎時
-        $schedule->command('article:ranking')->hourly()
-            ->appendOutputTo($output);
-        $schedule->command('article:json')->hourly()
-            ->appendOutputTo($output);
         $schedule->command('app:mfa-setup-auto-recovery')->hourly()
             ->appendOutputTo($output);
 

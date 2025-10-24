@@ -36,7 +36,7 @@ export default defineComponent({
 
     const thumbnailUrl = computed(() => {
       const attachmentId = parseInt(editor.article.contents.thumbnail, 10);
-      return mypage.attachments.find((a) => a.id === attachmentId)?.url;
+      return mypage.attachments?.find((a) => a.id === attachmentId)?.url;
     });
     return {
       editor,

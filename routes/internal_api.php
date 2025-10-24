@@ -6,8 +6,6 @@ use App\Http\Controllers\Api\Admin\ArticleController;
 use App\Http\Controllers\Api\Admin\ControllOptionController;
 use App\Http\Controllers\Api\Admin\TagController as AdminTagController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
-use App\Http\Controllers\Api\Front\DiscordController;
-use App\Http\Controllers\Api\Front\FrontController;
 use App\Http\Controllers\Api\Mypage\AnalyticsController;
 use App\Http\Controllers\Api\Mypage\AttachmentController;
 use App\Http\Controllers\Api\Mypage\BulkZipController;
@@ -18,27 +16,6 @@ use App\Http\Controllers\Api\Mypage\RedirectController;
 use App\Http\Controllers\Api\Mypage\TagController;
 use App\Http\Controllers\Api\Mypage\UserController;
 use Illuminate\Support\Facades\Route;
-
-// フロント
-Route::prefix('front')->group(function (): void {
-    // キャッシュ有効
-    Route::middleware(['cache.headers:public;max_age=600;etag', 'cache.content'])->group(function (): void {
-        Route::get('/ranking/', [FrontController::class, 'ranking']);
-        Route::get('/pages', [FrontController::class, 'pages']);
-        Route::get('/announces', [FrontController::class, 'announces']);
-        Route::get('/categories/pak/{size}/none', [FrontController::class, 'categoryPakNoneAddon']);
-        Route::get('/categories/pak/{size}/{slug}', [FrontController::class, 'categoryPakAddon']);
-        Route::get('/categories/{type}/{slug}', [FrontController::class, 'category']);
-        Route::get('/tags', [FrontController::class, 'tags']);
-        Route::get('/tags/{tag}', [FrontController::class, 'tag']);
-        Route::get('/users/{userIdOrNickname}', [FrontController::class, 'user']);
-        Route::get('/users/{userIdOrNickname}/{articleSlug}', [FrontController::class, 'show']);
-        Route::get('/search', [FrontController::class, 'search']);
-    });
-    Route::middleware(['throttle:discordInvite'])->group(function (): void {
-        Route::post('/invite-simutrans-interact-meeting', [DiscordController::class, 'index']);
-    });
-});
 
 // マイページ
 Route::prefix('mypage')->group(function (): void {

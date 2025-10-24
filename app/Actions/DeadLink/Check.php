@@ -71,7 +71,7 @@ final class Check
     {
         assert($article->contents instanceof AddonIntroductionContent);
         for ($i = 0; $i < self::FAILED_LIMIT; $i++) {
-            if ($article->contents->link !== null && $article->contents->link !== '' && $article->contents->link !== '0') {
+            if (! in_array($article->contents->link, [null, '', '0'], true)) {
                 $info = ($this->getHeaders)($article->contents->link);
                 foreach ($info as $inf) {
                     if (mb_stripos($inf, '200 OK') !== false) {

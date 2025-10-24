@@ -26,6 +26,6 @@ final class AppServiceProvider extends ServiceProvider
     {
         Date::use(CarbonImmutable::class);
         Model::shouldBeStrict(! App::isProduction());
-        Blade::directive('markdown', fn ($expression): string => sprintf('<?php echo app('.\App\Services\MarkdownService::class.'::class)->toEscapedHTML(%s); ?>', $expression));
+        Blade::directive('markdown', fn (string $expression): string => sprintf('<?php echo app('.\App\Services\MarkdownService::class.'::class)->toEscapedHTML(%s); ?>', $expression));
     }
 }

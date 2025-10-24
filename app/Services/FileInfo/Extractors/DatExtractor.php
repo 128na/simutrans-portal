@@ -37,6 +37,6 @@ final class DatExtractor implements Extractor
             return [];
         }
 
-        return array_map(fn (string $text): string => trim($text), $matches[1]);
+        return array_map(trim(...), $matches[1]);
     }
 }

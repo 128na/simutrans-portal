@@ -44,10 +44,6 @@ const routes = [
         ,
       },
       {
-        name: 'login', path: 'login', meta: { requiresGuest: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Login.vue')
-        ,
-      },
-      {
         name: 'logout', path: 'logout', meta: { requiresAuth: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Logout.vue')
         ,
       },

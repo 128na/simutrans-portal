@@ -62,7 +62,7 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = null;
       requireTFA.value = false;
     } finally {
-      router.push({ name: 'login' });
+      window.location.href = '/';
     }
   };
 

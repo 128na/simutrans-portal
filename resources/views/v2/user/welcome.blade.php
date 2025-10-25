@@ -3,8 +3,8 @@
 @section('content')
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div>
-        <h2 class="text-4xl font-semibold text-pretty text-gray-900 sm:text-5xl">ユーザー登録完了</h2>
-        <p class="mt-2 text-lg/8 text-gray-600">
+        <h2 class="text-3xl font-semibold text-pretty text-gray-900">ユーザー登録完了</h2>
+        <p class="mt-2 text-md text-gray-600">
             ようこそ「{{$inviter->name}}」さん。
         </p>
     </div>
@@ -14,7 +14,7 @@
             登録したメールアドレスへ後ほど送られてくるメールからメールアドレスの確認を行ってください。
         </p>
         <p class="">
-            ログインは @include('v2.parts.link', ['url' => route('mypage.index'), 'title' => 'マイページ']) からできます。<br>
+            ログインは @include('v2.parts.link', ['url' => route('login'), 'title' => 'マイページ']) からできます。<br>
         </p>
     </div>
 </div>

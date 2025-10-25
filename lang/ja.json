@@ -1,15 +1,15 @@
 {
-  "-- fortify validation messages --":"",
-  "The :attribute must be at least :length characters and contain at least one uppercase character.":":attribute は :length 文字以上で、少なくとも1つの大文字を含めてください。",
-  "The :attribute must be at least :length characters and contain at least one number.":":attribute は :length 文字以上で、少なくとも1つの数字を含めてください。",
-  "The :attribute must be at least :length characters and contain at least one special character.":":attribute は :length 文字以上で、少なくとも1つの記号を含めてください。",
-  "The :attribute must be at least :length characters and contain at least one uppercase character and one number.":":attribute は :length 文字以上で、少なくとも1つの大文字と1つの数字を含めてください。",
-  "The :attribute must be at least :length characters and contain at least one uppercase character and one special character.":":attribute は :length 文字以上で、少なくとも1つの大文字と1つの記号を含めてください。",
-  "The :attribute must be at least :length characters and contain at least one uppercase character, one number, and one special character.":":attribute は :length 文字以上で、少なくとも1つの大文字、1つの数字、および1つの記号を含めてください。",
-  "The :attribute must be at least :length characters and contain at least one special character and one number.":":attribute は :length 文字以上で、少なくとも1つの記号と1つの数字を含めてください。",
-  "The :attribute must be at least :length characters.":":attribute は :length 文字以上必要です。",
-  "The provided password does not match your current password.":"指定されたパスワードは現在のパスワードと一致しません。",
-  "The provided two factor authentication code was invalid.":"指定された2要素認証コードが無効です。",
-  "The provided two factor recovery code was invalid.":"指定された2要素リカバリ コードが無効です。",
-  "The provided password was incorrect.":"指定されたパスワードが正しくありません"
+  "-- fortify validation messages --": "",
+  "The :attribute must be at least :length characters and contain at least one uppercase character.": ":attribute は :length 文字以上で、少なくとも1つの大文字を含めてください。",
+  "The :attribute must be at least :length characters and contain at least one number.": ":attribute は :length 文字以上で、少なくとも1つの数字を含めてください。",
+  "The :attribute must be at least :length characters and contain at least one special character.": ":attribute は :length 文字以上で、少なくとも1つの記号を含めてください。",
+  "The :attribute must be at least :length characters and contain at least one uppercase character and one number.": ":attribute は :length 文字以上で、少なくとも1つの大文字と1つの数字を含めてください。",
+  "The :attribute must be at least :length characters and contain at least one uppercase character and one special character.": ":attribute は :length 文字以上で、少なくとも1つの大文字と1つの記号を含めてください。",
+  "The :attribute must be at least :length characters and contain at least one uppercase character, one number, and one special character.": ":attribute は :length 文字以上で、少なくとも1つの大文字、1つの数字、および1つの記号を含めてください。",
+  "The :attribute must be at least :length characters and contain at least one special character and one number.": ":attribute は :length 文字以上で、少なくとも1つの記号と1つの数字を含めてください。",
+  "The :attribute must be at least :length characters.": ":attribute は :length 文字以上必要です。",
+  "The provided password does not match your current password.": "指定されたパスワードは現在のパスワードと一致しません。",
+  "The provided two factor authentication code was invalid.": "指定された二要素認証コードが無効です。",
+  "The provided two factor recovery code was invalid.": "指定された二要素リカバリ コードが無効です。",
+  "The provided password was incorrect.": "指定されたパスワードが正しくありません"
 }

@@ -32,8 +32,7 @@ final class RedirectIfAuthenticated
                 if ($user->isAdmin()) {
                     return redirect()->intended('admin');
                 }
-
-                return redirect()->intended('mypage');
+                return redirect()->intended(route('auth.login'));
             }
         }
 

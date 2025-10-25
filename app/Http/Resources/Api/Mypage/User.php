@@ -23,7 +23,7 @@ final class User extends JsonResource
             'name' => $this->resource->name,
             'nickname' => $this->resource->nickname,
             'email' => $this->resource->email,
-            'invitation_url' => $this->resource->invitation_code ? route('invite.index', $this->resource->invitation_code) : null,
+            'invitation_url' => $this->resource->invitation_code ? route('user.invite', $this->resource->invitation_code) : null,
             'profile' => new Profile($this->resource->profile),
             'admin' => $this->resource->isAdmin(),
             'verified' => (bool) $this->resource->email_verified_at,

@@ -1,15 +1,15 @@
 <template>
-  <text-title>2要素認証</text-title>
+  <text-title>二要素認証</text-title>
   <template v-if="store.user.two_factor">
     <div>設定済み</div>
     <q-btn class="q-mb-sm" color="negative" @click="deleteTFA">無効化する</q-btn>
     <template v-if="recoveryCodes">
-      <div>2要素認証ができなくなった時のためのリカバリコードを保存してください。ページを閉じるとコードは再表示されません。</div>
+      <div>二要素認証ができなくなった時のためのリカバリコードを保存してください。ページを閉じるとコードは再表示されません。</div>
       <q-input v-model="recoveryCodes" label="リカバリコード" readonly autogrow filled type="textarea" />
     </template>
   </template>
   <template v-else>
-    <q-btn @click="setupTFA" class="q-mb-sm" color="primary">2要素認証を設定する</q-btn>
+    <q-btn @click="setupTFA" class="q-mb-sm" color="primary">二要素認証を設定する</q-btn>
     <template v-if="qrCode">
       <div v-html="qrCode" class="q-mb-sm" />
       <api-error-message :message="store.handler.validationErrorMessage" />

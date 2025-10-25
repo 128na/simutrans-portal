@@ -1,14 +1,14 @@
 @extends('v2.parts.layout')
 
 @section('content')
-<div class="mx-auto max-w-7xl p-6 lg:px-8">
+<div class="mx-auto max-w-xl p-6 lg:px-8">
     <div>
-        <h2 class="text-4xl font-semibold text-pretty text-gray-900 sm:text-5xl">ユーザー登録</h2>
-        <p class="mt-2 text-lg/8 text-gray-600">
+        <h2 class="text-3xl font-semibold text-pretty text-gray-900">ユーザー登録</h2>
+        <p class="mt-2 text-md text-gray-600">
             このコードは「{{$invitee->name}}」さんからの招待コードです。
         </p>
     </div>
-    <form action="{{route('invite.registration', $invitee->invitation_code)}}" method="POST">
+    <form action="{{route('user.registration', $invitee->invitation_code)}}" method="POST">
         @csrf
         <div class="mt-10 flex flex-col gap-y-6 border-t border-gray-200 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
             <div>

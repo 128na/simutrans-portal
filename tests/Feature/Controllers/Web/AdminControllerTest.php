@@ -26,7 +26,7 @@ final class AdminControllerTest extends TestCase
     {
         $testResponse = $this->get($this->url);
 
-        $testResponse->assertRedirect(route('mypage.index'));
+        $testResponse->assertRedirect(route('login'));
     }
 
     public function test_user(): void

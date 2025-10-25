@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::feeds();
 
+
 // 一覧系
 Route::get('/pak128-japan', [\App\Http\Controllers\v2\FrontController::class, 'pak128jp'])->name('pak.128japan');
 Route::get('/pak128', [\App\Http\Controllers\v2\FrontController::class, 'pak128'])->name('pak.128');
@@ -19,6 +20,7 @@ Route::get('/pak-others', [\App\Http\Controllers\v2\FrontController::class, 'pak
 Route::get('/search', [\App\Http\Controllers\v2\FrontController::class, 'search'])->name('search');
 Route::get('/announces', [\App\Http\Controllers\v2\FrontController::class, 'announces'])->name('announces');
 Route::get('/pages', [\App\Http\Controllers\v2\FrontController::class, 'pages'])->name('pages');
+
 
 // 特殊ページ
 Route::get('/', [\App\Http\Controllers\v2\FrontController::class, 'top'])->name('index');
@@ -35,14 +37,22 @@ Route::get('/redirect/{name}', [\App\Http\Controllers\v2\FrontMiscController::cl
 // 認証系ルート名保持用
 Route::GET('mypage/reset/{token}', (new MypageController)->index(...))->name('password.reset');
 
-// 招待
+// 認証・招待
 Route::middleware(['restrict:invitation_code'])->group(function (): void {
-    Route::get('/invite/{invitation_code}', [\App\Http\Controllers\v2\InviteController::class, 'index'])->name('invite.index');
-    Route::post('/invite/{invitation_code}', [\App\Http\Controllers\v2\InviteController::class, 'registration'])->name('invite.registration');
+    Route::get('/invite/{invitation_code}', [\App\Http\Controllers\v2\UserController::class, 'showInvite'])->name('user.invite');
+    Route::post('/invite/{invitation_code}', [\App\Http\Controllers\v2\UserController::class, 'registration'])->name('user.registration');
+});
+Route::GET('/login', [\App\Http\Controllers\v2\UserController::class, 'showLogin'])->name('login');
+Route::GET('/login/2fa', [\App\Http\Controllers\v2\UserController::class, 'showTwoFactor'])->name('two-factor.login');
+
+
+Route::middleware(['auth:sanctum'])->group(function (): void {
+    Route::get('/mypage/', (new MypageController)->index(...))->name('mypage.index');
+    Route::get('/mypage/{any}', (new MypageController)->index(...))->where('any', '.*');
 });
 
-Route::get('/mypage/', (new MypageController)->index(...))->name('mypage.index');
-Route::get('/mypage/{any}', (new MypageController)->index(...))->where('any', '.*');
+
+
 
 Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function (): void {
     Route::get('/admin/', (new AdminController)->index(...))->name('admin.index');

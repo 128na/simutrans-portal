@@ -32,7 +32,7 @@ final class FrontController extends Controller
     public function top(): \Illuminate\Contracts\View\View
     {
         return view('v2.top.index', [
-            'announces' => $this->articleRepository->getTopAnnounces(),
+            'announces' => $this->articleRepository->getAnnounces(3),
         ]);
     }
 

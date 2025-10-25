@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use App\Repositories\Article\FeedRepository;
+use App\Services\FeedService;
 
 return [
     'feeds' => [
         'addon' => [
             'url' => '/feed',
             'title' => '全てのアドオン',
-            'items' => [FeedRepository::class, 'addon'],
+            'items' => [FeedService::class, 'pakAll'],
             'description' => '更新日順',
             'language' => 'ja-JP',
             'format' => 'atom',
@@ -19,7 +19,7 @@ return [
             'url' => '/feed/pak128',
             'title' => 'Pak128',
             'description' => '更新日順',
-            'items' => [FeedRepository::class, 'pakAddon', 'pakSlug' => '128'],
+            'items' => [FeedService::class, 'latestPak', 'pak' => '128'],
             'language' => 'ja-JP',
             'format' => 'atom',
             'view' => 'feed::atom',
@@ -27,7 +27,7 @@ return [
         'addon.pak128-japan' => [
             'url' => '/feed/pak128-japan',
             'title' => 'Pak128.Japan',
-            'items' => [FeedRepository::class, 'pakAddon', 'pakSlug' => '128-japan'],
+            'items' => [FeedService::class, 'latestPak', 'pak' => '128-japan'],
             'description' => '更新日順',
             'language' => 'ja-JP',
             'format' => 'atom',
@@ -36,7 +36,7 @@ return [
         'addon.pak64' => [
             'url' => '/feed/pak64',
             'title' => 'Pak64',
-            'items' => [FeedRepository::class, 'pakAddon', 'pakSlug' => '64'],
+            'items' => [FeedService::class, 'latestPak', 'pak' => '64'],
             'description' => '更新日順',
             'language' => 'ja-JP',
             'format' => 'atom',
@@ -44,8 +44,8 @@ return [
         ],
         'page' => [
             'url' => '/feed/page',
-            'title' => '一般記事',
-            'items' => [FeedRepository::class, 'page'],
+            'title' => '記事',
+            'items' => [FeedService::class, 'page'],
             'description' => '更新日順',
             'language' => 'ja-JP',
             'format' => 'atom',
@@ -54,7 +54,7 @@ return [
         'announce' => [
             'url' => '/feed/announce',
             'title' => 'お知らせ記事',
-            'items' => [FeedRepository::class, 'announce'],
+            'items' => [FeedService::class, 'announce'],
             'description' => '更新日順',
             'language' => 'ja-JP',
             'format' => 'atom',

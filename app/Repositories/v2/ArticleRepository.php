@@ -8,7 +8,7 @@ use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Enums\CategoryType;
 use App\Models\Article;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 final class ArticleRepository
 {
@@ -24,7 +24,7 @@ final class ArticleRepository
             ->where('articles.slug', urlencode($slug))
             ->whereNull('articles.deleted_at')
             ->whereNull('users.deleted_at')
-            ->orderBy('articles.published_at', 'desc')
+            ->orderBy('articles.modified_at', 'desc')
             ->with('categories', 'tags', 'attachments.fileInfo', 'user.profile.attachments', 'articles.user', 'relatedArticles.user');
 
         if (is_numeric($userIdOrNickname)) {
@@ -44,9 +44,9 @@ final class ArticleRepository
      *     tagIds?: int[],
      *     postTypes?: string[]
      * } $condition
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<int,Article>
+     * @return LengthAwarePaginator<int,Article>
      */
-    public function search(array $condition): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function search(array $condition, int $limit = 24): LengthAwarePaginator
     {
         if ($condition === []) {
             return new \Illuminate\Pagination\LengthAwarePaginator([], 0, 30);
@@ -59,7 +59,7 @@ final class ArticleRepository
             ->where('articles.status', ArticleStatus::Publish)
             ->whereNull('articles.deleted_at')
             ->whereNull('users.deleted_at')
-            ->orderByDesc('articles.published_at')
+            ->orderByDesc('articles.modified_at')
             ->with('categories', 'tags', 'attachments', 'user.profile.attachments');
 
         // キーワード
@@ -111,13 +111,31 @@ final class ArticleRepository
             $baseQuery->whereIn('articles.post_type', $postTypes);
         }
 
-        return $baseQuery->paginate(30);
+        return $baseQuery->paginate($limit);
     }
 
     /**
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<int,Article>
+     * @return LengthAwarePaginator<int,Article>
      */
-    public function getLatest(string $pak): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function getLatestAllPak(int $limit = 24): LengthAwarePaginator
+    {
+        return $this->model->query()
+            ->select(['articles.*'])
+            ->withoutGlobalScopes()
+            ->join('users', 'articles.user_id', '=', 'users.id')
+            ->where('articles.status', ArticleStatus::Publish)
+            ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
+            ->whereNull('articles.deleted_at')
+            ->whereNull('users.deleted_at')
+            ->orderBy('articles.modified_at', 'desc')
+            ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
+            ->paginate($limit);
+    }
+
+    /**
+     * @return LengthAwarePaginator<int,Article>
+     */
+    public function getLatest(string $pak, int $limit = 24): LengthAwarePaginator
     {
         return $this->model->query()
             ->select(['articles.*'])
@@ -131,15 +149,15 @@ final class ArticleRepository
             ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
             ->whereNull('articles.deleted_at')
             ->whereNull('users.deleted_at')
-            ->orderBy('articles.published_at', 'desc')
+            ->orderBy('articles.modified_at', 'desc')
             ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
-            ->paginate(30);
+            ->paginate($limit);
     }
 
     /**
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<int,Article>
+     * @return LengthAwarePaginator<int,Article>
      */
-    public function getPages(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function getPages(int $limit = 24): LengthAwarePaginator
     {
         return $this->model->query()
             ->select(['articles.*'])
@@ -153,15 +171,15 @@ final class ArticleRepository
             ->whereIn('articles.post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
             ->whereNull('articles.deleted_at')
             ->whereNull('users.deleted_at')
-            ->orderBy('articles.published_at', 'desc')
+            ->orderBy('articles.modified_at', 'desc')
             ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
-            ->paginate(30);
+            ->paginate($limit);
     }
 
     /**
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<int,Article>
+     * @return LengthAwarePaginator<int,Article>
      */
-    public function getLatestOther(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function getLatestOther(int $limit = 24): LengthAwarePaginator
     {
         $excludeSlugs = ['64', '128', '128-japan'];
 
@@ -181,35 +199,15 @@ final class ArticleRepository
                     ->where('c.type', CategoryType::Pak)
                     ->whereIn('c.slug', $excludeSlugs);
             })
-            ->orderByDesc('articles.published_at')
+            ->orderByDesc('articles.modified_at')
             ->with(['categories', 'tags', 'attachments', 'user.profile.attachments'])
-            ->paginate(30);
+            ->paginate($limit);
     }
 
     /**
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<int,Article>
+     * @return LengthAwarePaginator<int,Article>
      */
-    public function getAnnounces(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
-    {
-        return $this->queryAnnounces()
-            ->with(['categories', 'tags', 'attachments', 'user.profile.attachments'])
-            ->paginate(30);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Collection<int,Article>
-     */
-    public function getTopAnnounces(): \Illuminate\Database\Eloquent\Collection
-    {
-        return $this->queryAnnounces()
-            ->limit(3)
-            ->get();
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Builder<Article>
-     */
-    private function queryAnnounces(): Builder
+    public function getAnnounces(int $limit = 24): LengthAwarePaginator
     {
         return $this->model->query()
             ->select('articles.*', 'users.nickname as user_nickname')
@@ -223,6 +221,8 @@ final class ArticleRepository
             ->where('c.type', CategoryType::Page)
             ->where('c.slug', 'announce')
             ->whereNull('users.deleted_at')
-            ->orderBy('articles.published_at', 'desc');
+            ->orderBy('articles.modified_at', 'desc')
+            ->with(['categories', 'tags', 'attachments', 'user.profile.attachments'])
+            ->paginate($limit);
     }
 }

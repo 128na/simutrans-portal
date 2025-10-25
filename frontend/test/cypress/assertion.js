@@ -33,7 +33,7 @@ export const assertMypageTopPage = () => {
 };
 
 export const assertLoginPage = () => {
-  assertTitleAndUrl('ログイン', 'http://localhost:8080/mypage/login');
+  assertTitleAndUrl('ログイン', 'http://localhost:8080/login');
 };
 
 export const assertRequiresVerifyPage = () => {

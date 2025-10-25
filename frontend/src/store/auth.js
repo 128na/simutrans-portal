@@ -77,13 +77,13 @@ export const useAuthStore = defineStore('auth', () => {
     }
     if (route.meta.requiresAuth) {
       if (!isLoggedIn.value) {
-        router.push({ replace: true, name: 'login', query: { redirect: route.href } });
+        window.location.href = '/login';
         return false;
       }
     }
     if (route.meta.requiresVerified) {
       if (!isLoggedIn.value) {
-        router.push({ replace: true, name: 'login', query: { redirect: route.href } });
+        window.location.href = '/login';
         return false;
       }
       if (!isVerified.value) {

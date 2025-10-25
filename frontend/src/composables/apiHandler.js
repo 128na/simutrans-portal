@@ -40,9 +40,7 @@ export const useApiHandler = () => {
       switch (error.response.status) {
         case 401:
         case 419:
-          notify.info('ログイン期限が切れました。再度ログインしてください');
-          auth.setUser(null);
-          router.push({ name: 'login' });
+          window.location.href = '/login';
           throw error;
         case 403:
         case 404:
@@ -108,9 +106,7 @@ export const useApiHandler = () => {
       switch (error.response.status) {
         case 401:
         case 419:
-          notify.info('ログイン期限が切れました。再度ログインしてください');
-          auth.setUser(null);
-          router.push({ name: 'login' });
+          window.location.href = '/login';
           throw error;
         case 403:
         case 404:
@@ -178,9 +174,7 @@ export const useApiHandler = () => {
       switch (error.response.status) {
         case 401:
         case 419:
-          notify.info('ログイン期限が切れました。再度ログインしてください');
-          auth.setUser(null);
-          router.push({ name: 'login' });
+          window.location.href = '/login';
           throw error;
         case 403:
         case 404:

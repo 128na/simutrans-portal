@@ -39,4 +39,14 @@ final class UserController extends Controller
     {
         return view('v2.user.two-factor');
     }
+
+    public function showForgotPassword(): \Illuminate\Contracts\View\View|RedirectResponse
+    {
+        return view('v2.user.forget-password');
+    }
+
+    public function showResetPassword(string $token): \Illuminate\Contracts\View\View|RedirectResponse
+    {
+        return view('v2.user.reset-password', ['token' => $token]);
+    }
 }

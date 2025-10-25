@@ -1,5 +1,6 @@
 @extends('v2.parts.layout')
 
+@section('max-w', 'max-w-xl')
 @section('content')
 <div class="mx-auto max-w-xl p-6 lg:px-8">
     <div>

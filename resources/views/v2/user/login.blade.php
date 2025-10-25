@@ -28,6 +28,9 @@
                     ログイン
                 </button>
             </div>
+            <div>
+                @include('v2.parts.link', ['url' => route('forgot-password'), 'title' => 'パスワードをリセットするには？'])
+            </div>
         </div>
     </form>
 </div>

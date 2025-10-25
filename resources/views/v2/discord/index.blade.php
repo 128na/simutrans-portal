@@ -1,5 +1,6 @@
 @extends('v2.parts.layout')
 
+@section('max-w', 'max-w-7xl')
 @section('content')
 <script src="https://www.google.com/recaptcha/enterprise.js?render={{ config('services.google_recaptcha.siteKey') }}">
 </script>

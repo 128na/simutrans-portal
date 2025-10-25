@@ -1,5 +1,6 @@
 @extends('v2.parts.layout')
 
+@section('max-w', 'max-w-7xl')
 @section('content')
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <div class="mx-auto max-w-7xl p-6 lg:px-8">

@@ -32,7 +32,8 @@ final class RedirectIfAuthenticated
                 if ($user->isAdmin()) {
                     return redirect()->intended('admin');
                 }
-                return redirect()->intended(route('auth.login'));
+
+                return redirect()->intended(route(\Illuminate\Auth\Events\Login::class));
             }
         }
 

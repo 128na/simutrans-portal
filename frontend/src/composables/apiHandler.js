@@ -4,7 +4,6 @@ import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
 // eslint-disable-next-line no-unused-vars
 import { AxiosResponse } from 'axios';
-import { useAuthStore } from 'src/store/auth';
 
 export const useApiHandler = () => {
   const validationErrors = ref({});
@@ -12,7 +11,6 @@ export const useApiHandler = () => {
   const notify = useNotify();
   const router = useRouter();
   const $q = useQuasar();
-  const auth = useAuthStore();
 
   const validationErrorMessage = computed(() => Object.values(validationErrors.value).map((m) => m.join('、')).join('\n'));
   const getValidationErrorByKey = (key) => validationErrors.value?.[key]?.join('、');

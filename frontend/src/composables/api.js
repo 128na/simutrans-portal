@@ -23,12 +23,6 @@ export const useMypageApi = () => ({
   resend() {
     return axios.post('/auth/email/verification-notification');
   },
-  forget(params) {
-    return axios.post('/auth/forgot-password', params);
-  },
-  reset(params) {
-    return axios.post('/auth/reset-password', params);
-  },
   verify(userId, hash, expires, signature) {
     return axios.get(`/auth/email/verify/${userId}/${hash}`, {
       params: { expires, signature },

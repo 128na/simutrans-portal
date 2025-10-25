@@ -6,9 +6,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "mypage" */'layouts/MypageLayout.vue'),
     children: [
       {
-        name: 'reset', path: 'reset/:token', meta: { requiresGuest: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Reset.vue'),
-      },
-      {
         name: 'mypage', path: '', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Top.vue'),
       },
       {
@@ -47,7 +44,6 @@ const routes = [
         name: 'logout', path: 'logout', meta: { requiresAuth: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Logout.vue')
         ,
       },
-      { name: 'forget', path: 'forget', component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Forget.vue') },
     ],
   },
   {

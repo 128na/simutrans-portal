@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OauthController;
-use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Middleware\ExcludePaths;
@@ -37,7 +36,10 @@ Route::get('/redirect/{name}', [\App\Http\Controllers\v2\FrontMiscController::cl
 Route::GET('mypage/reset/{token}', (new MypageController)->index(...))->name('password.reset');
 
 // 招待
-Route::GET('/mypage/invite/{invitation_code}', (new InviteController)->index(...))->middleware('restrict:invitation_code')->name('invite.index');
+Route::middleware(['restrict:invitation_code'])->group(function (): void {
+    Route::get('/invite/{invitation_code}', [\App\Http\Controllers\v2\InviteController::class, 'index'])->name('invite.index');
+    Route::post('/invite/{invitation_code}', [\App\Http\Controllers\v2\InviteController::class, 'registration'])->name('invite.registration');
+});
 
 Route::get('/mypage/', (new MypageController)->index(...))->name('mypage.index');
 Route::get('/mypage/{any}', (new MypageController)->index(...))->where('any', '.*');

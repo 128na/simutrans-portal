@@ -14,8 +14,8 @@ return [
     |
      */
 
-    'accepted' => ':attributeを承認してください。',
-    'accepted_if' => ':otherが:valueの場合、:attributeを承認してください。',
+    'accepted' => ':attributeを確認してください。',
+    'accepted_if' => ':otherが:valueの場合、:attributeを確認してください。',
     'active_url' => ':attributeが有効なURLではありません。',
     'after' => ':attributeには、:dateより後の日付を指定してください。',
     'after_or_equal' => ':attributeには、:date以降の日付を指定してください。',
@@ -187,6 +187,7 @@ return [
         'email' => 'メールアドレス',
         'name' => '名前',
         'password' => 'パスワード',
+        'agreement' => 'プライバシーポリシーへの同意',
         'description' => '説明',
 
         // profile

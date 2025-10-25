@@ -28,4 +28,18 @@ final class UserRepository
             ->orderBy('name', 'asc')
             ->get();
     }
+
+    /**
+     * @param array{
+     *     name: string,
+     *     email: string,
+     *     role: \App\Enums\UserRole::User,
+     *     password: string,
+     *     invited_by?: int,
+     * } $data
+     */
+    public function store(array $data): User
+    {
+        return $this->model->create($data);
+    }
 }

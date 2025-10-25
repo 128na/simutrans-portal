@@ -15,15 +15,3 @@ export const useMenuStore = defineStore('menu', () => {
     toggle,
   };
 });
-
-export const useMenuRightStore = defineStore('menuRight', () => {
-  const open = ref(false);
-  const toggle = () => {
-    open.value = !open.value;
-  };
-
-  return {
-    open,
-    toggle,
-  };
-});

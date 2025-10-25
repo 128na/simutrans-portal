@@ -40,10 +40,6 @@ const routes = [
         ,
       },
       {
-        name: 'invite', path: 'invite/:code', meta: { requiresGuest: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Invite.vue')
-        ,
-      },
-      {
         name: 'requiresVerified', path: 'requires-verified', meta: { requiresAuth: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/RequiresVerified.vue')
         ,
       },

@@ -30,7 +30,7 @@
 </head>
 
 <body>
-    @include('v2.parts.mypage-header')
+    @include('v2.mypage.header')
     @include('v2.parts.session-message')
     @yield('content')
 </body>

@@ -39,19 +39,19 @@ final class VerifiedTest extends TestCase
     {
         // API
         // ユーザー
-        yield 'プロフィール更新' => ['postJson', fn(self $self): string => '/api/mypage/user'];
+        yield 'プロフィール更新' => ['postJson', fn (self $self): string => '/api/mypage/user'];
         // タグ
-        yield 'タグ投稿' => ['postJson', fn(self $self): string => '/api/mypage/tags'];
-        yield 'タグ更新' => ['postJson', fn(self $self): string => '/api/mypage/tags/' . Tag::factory()->create()->id];
+        yield 'タグ投稿' => ['postJson', fn (self $self): string => '/api/mypage/tags'];
+        yield 'タグ更新' => ['postJson', fn (self $self): string => '/api/mypage/tags/'.Tag::factory()->create()->id];
         // ファイル
-        yield '添付ファイル作成' => ['postJson', fn(self $self): string => '/api/mypage/attachments'];
-        yield '添付ファイル削除' => ['deleteJson', fn(self $self): string => '/api/mypage/attachments/' . $self->createAttachment($self->user)->id];
+        yield '添付ファイル作成' => ['postJson', fn (self $self): string => '/api/mypage/attachments'];
+        yield '添付ファイル削除' => ['deleteJson', fn (self $self): string => '/api/mypage/attachments/'.$self->createAttachment($self->user)->id];
         // 記事
-        yield '記事投稿' => ['postJson', fn(self $self): string => '/api/mypage/articles'];
-        yield '記事更新' => ['postJson', fn(self $self): string => '/api/mypage/articles/' . Article::factory()->create(['user_id' => $self->user->id])->id];
+        yield '記事投稿' => ['postJson', fn (self $self): string => '/api/mypage/articles'];
+        yield '記事更新' => ['postJson', fn (self $self): string => '/api/mypage/articles/'.Article::factory()->create(['user_id' => $self->user->id])->id];
         // 分析
-        yield '分析対象一覧' => ['getJson', fn(self $self): string => '/api/mypage/analytics'];
+        yield '分析対象一覧' => ['getJson', fn (self $self): string => '/api/mypage/analytics'];
         // 一括DL機能
-        yield 'zip作成' => ['getJson', fn(self $self): string => '/api/mypage/bulk-zip'];
+        yield 'zip作成' => ['getJson', fn (self $self): string => '/api/mypage/bulk-zip'];
     }
 }

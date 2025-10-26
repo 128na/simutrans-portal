@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,13 +13,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('view_counts', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');
-            $table->index(['user_id', 'type', 'period', 'count']);
-            $table->index(['article_id', 'type', 'period', 'count']);
-            $table->index(['type', 'period', 'article_id', 'count']);
-            $table->dropUnique(['article_id', 'type', 'period']);
-            $table->dropUnique(['type', 'period', 'article_id']);
+        Schema::table('view_counts', function (Blueprint $blueprint): void {
+            $blueprint->unsignedBigInteger('user_id');
+            $blueprint->index(['user_id', 'type', 'period', 'count']);
+            $blueprint->index(['article_id', 'type', 'period', 'count']);
+            $blueprint->index(['type', 'period', 'article_id', 'count']);
+            $blueprint->dropUnique(['article_id', 'type', 'period']);
+            $blueprint->dropUnique(['type', 'period', 'article_id']);
         });
     }
 
@@ -26,13 +28,13 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('view_counts', function (Blueprint $table) {
-            $table->unique(['article_id', 'type', 'period']);
-            $table->unique(['type', 'period', 'article_id']);
-            $table->dropIndex(['user_id', 'type', 'period', 'count']);
-            $table->dropIndex(['article_id', 'type', 'period', 'count']);
-            $table->dropIndex(['type', 'period', 'article_id', 'count']);
-            $table->dropColumn('user_id');
+        Schema::table('view_counts', function (Blueprint $blueprint): void {
+            $blueprint->unique(['article_id', 'type', 'period']);
+            $blueprint->unique(['type', 'period', 'article_id']);
+            $blueprint->dropIndex(['user_id', 'type', 'period', 'count']);
+            $blueprint->dropIndex(['article_id', 'type', 'period', 'count']);
+            $blueprint->dropIndex(['type', 'period', 'article_id', 'count']);
+            $blueprint->dropColumn('user_id');
         });
     }
 };

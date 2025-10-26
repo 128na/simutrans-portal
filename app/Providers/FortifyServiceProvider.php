@@ -32,11 +32,11 @@ final class FortifyServiceProvider extends ServiceProvider
         Fortify::loginView('v2.user.login');
         Fortify::requestPasswordResetLinkView('v2.user.forgot-password');
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower((string) $request->string(Fortify::username())) . '|' . $request->ip());
+            $throttleKey = Str::transliterate(Str::lower((string) $request->string(Fortify::username())).'|'.$request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
 
-        RateLimiter::for('two-factor', fn(Request $request) => Limit::perMinute(5)->by($request->session()->get('login.id')));
+        RateLimiter::for('two-factor', fn (Request $request) => Limit::perMinute(5)->by($request->session()->get('login.id')));
     }
 }

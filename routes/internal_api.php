@@ -10,7 +10,6 @@ use App\Http\Controllers\Api\Mypage\AnalyticsController;
 use App\Http\Controllers\Api\Mypage\AttachmentController;
 use App\Http\Controllers\Api\Mypage\BulkZipController;
 use App\Http\Controllers\Api\Mypage\EditorController;
-use App\Http\Controllers\Api\Mypage\LoginHistoryController;
 use App\Http\Controllers\Api\Mypage\RedirectController;
 use App\Http\Controllers\Api\Mypage\TagController;
 use App\Http\Controllers\Api\Mypage\UserController;

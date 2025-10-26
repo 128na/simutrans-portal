@@ -21,6 +21,7 @@ final class ArticleController extends Controller
             'meta' => $this->metaOgpService->mypage(),
         ]);
     }
+
     public function create(): \Illuminate\Contracts\View\View
     {
         return view('v2.mypage.index', [
@@ -28,6 +29,7 @@ final class ArticleController extends Controller
             'meta' => $this->metaOgpService->mypage(),
         ]);
     }
+
     public function edit(): \Illuminate\Contracts\View\View
     {
         return view('v2.mypage.index', [

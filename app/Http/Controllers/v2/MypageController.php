@@ -22,6 +22,7 @@ final class MypageController extends Controller
             'meta' => $this->metaOgpService->mypage(),
         ]);
     }
+
     public function loginHistories(): \Illuminate\Contracts\View\View
     {
         return view('v2.mypage.login-histories', [
@@ -29,6 +30,7 @@ final class MypageController extends Controller
             'meta' => $this->metaOgpService->mypage(),
         ]);
     }
+
     public function invite(): \Illuminate\Contracts\View\View
     {
         return view('v2.mypage.invite', [
@@ -57,6 +59,7 @@ final class MypageController extends Controller
             'meta' => $this->metaOgpService->mypage(),
         ]);
     }
+
     public function profile(): \Illuminate\Contracts\View\View
     {
         return view('v2.mypage.index', [
@@ -64,6 +67,7 @@ final class MypageController extends Controller
             'meta' => $this->metaOgpService->mypage(),
         ]);
     }
+
     public function redirects(): \Illuminate\Contracts\View\View
     {
         return view('v2.mypage.index', [
@@ -71,6 +75,7 @@ final class MypageController extends Controller
             'meta' => $this->metaOgpService->mypage(),
         ]);
     }
+
     public function analytics(): \Illuminate\Contracts\View\View
     {
         return view('v2.mypage.index', [

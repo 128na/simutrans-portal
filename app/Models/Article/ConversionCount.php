@@ -43,6 +43,7 @@ final class ConversionCount extends Model
     {
         return $this->belongsTo(Article::class);
     }
+
     /**
      * @return BelongsTo<User,$this>
      */

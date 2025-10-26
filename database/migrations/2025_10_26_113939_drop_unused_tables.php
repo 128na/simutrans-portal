@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -31,10 +33,10 @@ return new class extends Migration
             CONSTRAINT `rankings_article_id_foreign` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         */
-        Schema::create('rankings', function (Blueprint $table): void {
-            $table->increments('rank');
-            $table->unsignedBigInteger('article_id');
-            $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
+        Schema::create('rankings', function (Blueprint $blueprint): void {
+            $blueprint->increments('rank');
+            $blueprint->unsignedBigInteger('article_id');
+            $blueprint->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
         });
 
         /*
@@ -47,12 +49,12 @@ return new class extends Migration
             PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         */
-        Schema::create('pak_addon_counts', function (Blueprint $table): void {
-            $table->increments('id');
-            $table->unsignedBigInteger('user_id');
-            $table->string('user_name');
-            $table->string('user_nickname');
-            $table->unsignedInteger('count');
+        Schema::create('pak_addon_counts', function (Blueprint $blueprint): void {
+            $blueprint->increments('id');
+            $blueprint->unsignedBigInteger('user_id');
+            $blueprint->string('user_name');
+            $blueprint->string('user_nickname');
+            $blueprint->unsignedInteger('count');
         });
 
         /*
@@ -71,18 +73,18 @@ return new class extends Migration
             CONSTRAINT `tweet_log_summaries_article_id_foreign` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         */
-        Schema::create('tweet_log_summaries', function (Blueprint $table): void {
-            $table->unsignedBigInteger('article_id');
-            $table->unsignedBigInteger('total_retweet_count');
-            $table->unsignedBigInteger('total_reply_count');
-            $table->unsignedBigInteger('total_like_count');
-            $table->unsignedBigInteger('total_quote_count');
-            $table->unsignedBigInteger('total_impression_count');
-            $table->unsignedBigInteger('total_url_link_clicks');
-            $table->unsignedBigInteger('total_user_profile_clicks');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
-            $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
+        Schema::create('tweet_log_summaries', function (Blueprint $blueprint): void {
+            $blueprint->unsignedBigInteger('article_id');
+            $blueprint->unsignedBigInteger('total_retweet_count');
+            $blueprint->unsignedBigInteger('total_reply_count');
+            $blueprint->unsignedBigInteger('total_like_count');
+            $blueprint->unsignedBigInteger('total_quote_count');
+            $blueprint->unsignedBigInteger('total_impression_count');
+            $blueprint->unsignedBigInteger('total_url_link_clicks');
+            $blueprint->unsignedBigInteger('total_user_profile_clicks');
+            $blueprint->timestamp('created_at');
+            $blueprint->timestamp('updated_at');
+            $blueprint->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
         });
 
         /*
@@ -105,21 +107,21 @@ return new class extends Migration
         CONSTRAINT `tweet_logs_article_id_foreign` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         */
-        Schema::create('tweet_logs', function (Blueprint $table): void {
-            $table->string('id');
-            $table->unsignedBigInteger('article_id');
-            $table->text('text');
-            $table->unsignedBigInteger('retweet_count');
-            $table->unsignedBigInteger('reply_count');
-            $table->unsignedBigInteger('like_count');
-            $table->unsignedBigInteger('quote_count');
-            $table->unsignedBigInteger('impression_count');
-            $table->unsignedBigInteger('url_link_clicks');
-            $table->unsignedBigInteger('user_profile_clicks');
-            $table->timestamp('tweet_created_at');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
-            $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
+        Schema::create('tweet_logs', function (Blueprint $blueprint): void {
+            $blueprint->string('id');
+            $blueprint->unsignedBigInteger('article_id');
+            $blueprint->text('text');
+            $blueprint->unsignedBigInteger('retweet_count');
+            $blueprint->unsignedBigInteger('reply_count');
+            $blueprint->unsignedBigInteger('like_count');
+            $blueprint->unsignedBigInteger('quote_count');
+            $blueprint->unsignedBigInteger('impression_count');
+            $blueprint->unsignedBigInteger('url_link_clicks');
+            $blueprint->unsignedBigInteger('user_profile_clicks');
+            $blueprint->timestamp('tweet_created_at');
+            $blueprint->timestamp('created_at');
+            $blueprint->timestamp('updated_at');
+            $blueprint->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
         });
     }
 };

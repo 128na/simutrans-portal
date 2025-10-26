@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Contracts\Models\BulkZippableInterface;
 use App\Enums\UserRole;
-use App\Models\Article\ConversionCount;
 use App\Models\Article\ViewCount;
 use App\Models\User\LoginHistory;
 use App\Models\User\Profile;

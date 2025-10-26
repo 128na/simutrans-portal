@@ -9,13 +9,13 @@
         <p class="mt-2 text-lg/8 text-gray-600">記事投稿や更新通知を受け取ることができるSNSアカウントやツールです。</p>
     </div>
     <div class="mt-10 border-t border-gray-200 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
-        <h3 class="text-xl font-semibold sm:text-xl my-8">プッシュ通知</h3>
+        <h4 class="text-xl font-semibold sm:text-xl my-8">プッシュ通知</h4>
         <div class="text-gray-600">
             スマホやPCにプッシュ通知ができます。右下のアイコンから登録・解除ができます。
         </div>
 
 
-        <h3 class="text-xl font-semibold sm:text-xl my-8">SNSアカウント</h3>
+        <h4 class="text-xl font-semibold sm:text-xl my-8">SNSアカウント</h4>
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">
                 <tbody>
@@ -43,7 +43,7 @@
                 </tbody>
             </table>
         </div>
-        <h3 class="text-xl font-semibold sm:text-xl my-8">RSS</h3>
+        <h4 class="text-xl font-semibold sm:text-xl my-8">RSS</h4>
         <div class="overflow-x-auto mb-4">
             <table class="border-collapse whitespace-nowrap">
                 <tbody>
@@ -64,7 +64,7 @@
         <div class="text-gray-600">
             RSSフィーダーやSlackなど各種ツールと連携させると新着情報が入手できます。
         </div>
-        <h3 class="text-xl font-semibold sm:text-xl my-8">その他開発情報など</h3>
+        <h4 class="text-xl font-semibold sm:text-xl my-8">その他開発情報など</h4>
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">
                 <tbody>

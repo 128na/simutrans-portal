@@ -10,7 +10,6 @@ use App\Http\Controllers\Api\Mypage\AnalyticsController;
 use App\Http\Controllers\Api\Mypage\AttachmentController;
 use App\Http\Controllers\Api\Mypage\BulkZipController;
 use App\Http\Controllers\Api\Mypage\EditorController;
-use App\Http\Controllers\Api\Mypage\InvitationCodeController;
 use App\Http\Controllers\Api\Mypage\LoginHistoryController;
 use App\Http\Controllers\Api\Mypage\RedirectController;
 use App\Http\Controllers\Api\Mypage\TagController;
@@ -26,9 +25,7 @@ Route::prefix('mypage')->group(function (): void {
         Route::get('attachments', [AttachmentController::class, 'index']);
         Route::get('articles', (new EditorController)->index(...));
         Route::get('options', (new EditorController)->options(...));
-        Route::get('/invitation_code', [InvitationCodeController::class, 'index']);
-        // ログイン履歴
-        Route::get('/login_histories', (new LoginHistoryController)->index(...));
+
         // リダイレクト
         Route::get('/redirects', [RedirectController::class, 'index']);
         Route::delete('/redirects/{redirect}', [RedirectController::class, 'destroy']);
@@ -48,9 +45,6 @@ Route::prefix('mypage')->group(function (): void {
         Route::get('analytics', (new AnalyticsController)->index(...));
         // 一括DL機能
         Route::get('/bulk-zip', [BulkZipController::class, 'user']);
-        // 招待機能
-        Route::post('/invitation_code', [InvitationCodeController::class, 'update']);
-        Route::delete('/invitation_code', [InvitationCodeController::class, 'destroy']);
     });
 });
 // Admin

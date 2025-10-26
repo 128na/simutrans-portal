@@ -12,20 +12,20 @@
     @include("v2.show.type-{$article->post_type->value}")
 
     @if($article->articles->isNotEmpty())
-    <h3 class="text-xl font-semibold sm:text-xl my-8">関連記事</h3>
+    <h4 class="text-xl font-semibold sm:text-xl my-8">関連記事</h4>
     @foreach($article->articles as $a)
     @include('v2.parts.link', ['url' => route('articles.show', ['userIdOrNickname' => $a->user->nickname ?? $a->user->id, 'articleSlug' => $a->slug]), 'title' => $a->title])
     @endforeach
     @endif
 
     @if($article->relatedArticles->isNotEmpty())
-    <h3 class="text-xl font-semibold text-gray-800 sm:text-xl my-8">関連付けられた記事</h3>
+    <h4 class="text-xl font-semibold text-gray-800 sm:text-xl my-8">関連付けられた記事</h4>
     @foreach($article->relatedArticles as $a)
     @include('v2.parts.link', ['url' => route('articles.show', ['userIdOrNickname' => $a->user->nickname ?? $a->user->id, 'articleSlug' => $a->slug]), 'title' => $a->title])
     @endforeach
     @endif
 
-    <h3 class="text-xl font-semibold sm:text-xl my-8">投稿者</h3>
+    <h4 class="text-xl font-semibold sm:text-xl my-8">投稿者</h4>
     @include('v2.parts.user-profile', ['user' => $article->user])
 </div>
 

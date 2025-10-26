@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Article;
 
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -44,5 +45,12 @@ final class ViewCount extends Model
         return [
             'count' => 'integer',
         ];
+    }
+    /**
+     * @return BelongsTo<User,$this>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

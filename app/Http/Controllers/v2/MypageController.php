@@ -23,22 +23,6 @@ final class MypageController extends Controller
         ]);
     }
 
-    public function loginHistories(): \Illuminate\Contracts\View\View
-    {
-        return view('v2.mypage.login-histories', [
-            'loginHistories' => Auth::user()->loginHistories()->orderBy('created_at', 'desc')->limit(10)->get(),
-            'meta' => $this->metaOgpService->mypage(),
-        ]);
-    }
-
-    public function invite(): \Illuminate\Contracts\View\View
-    {
-        return view('v2.mypage.invite', [
-            'user' => Auth::user()->loadMissing('invites'),
-            'meta' => $this->metaOgpService->mypage(),
-        ]);
-    }
-
     public function verifyEmail(): \Illuminate\Contracts\View\View
     {
         return view('v2.mypage.verify-email', [
@@ -60,23 +44,15 @@ final class MypageController extends Controller
         ]);
     }
 
+    public function loginHistories(): \Illuminate\Contracts\View\View
+    {
+        return view('v2.mypage.login-histories', [
+            'loginHistories' => Auth::user()->loginHistories()->orderBy('created_at', 'desc')->limit(10)->get(),
+            'meta' => $this->metaOgpService->mypage(),
+        ]);
+    }
+
     public function profile(): \Illuminate\Contracts\View\View
-    {
-        return view('v2.mypage.index', [
-            'user' => Auth::user(),
-            'meta' => $this->metaOgpService->mypage(),
-        ]);
-    }
-
-    public function redirects(): \Illuminate\Contracts\View\View
-    {
-        return view('v2.mypage.index', [
-            'user' => Auth::user(),
-            'meta' => $this->metaOgpService->mypage(),
-        ]);
-    }
-
-    public function analytics(): \Illuminate\Contracts\View\View
     {
         return view('v2.mypage.index', [
             'user' => Auth::user(),

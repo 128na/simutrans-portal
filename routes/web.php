@@ -48,15 +48,18 @@ Route::middleware(['auth'])->group(function (): void {
     Route::get('/mypage/verify-required', [\App\Http\Controllers\v2\MypageController::class, 'verifyNotice'])->name('verification.notice');
 
     Route::middleware(['verified'])->group(function (): void {
-        Route::get('/mypage/redirects', [\App\Http\Controllers\v2\MypageController::class, 'redirects'])->name('mypage.redirects');
-        Route::get('/mypage/login-histories', [\App\Http\Controllers\v2\MypageController::class, 'loginHistories'])->name('mypage.login-histories');
-        Route::get('/mypage/profile', [\App\Http\Controllers\v2\MypageController::class, 'profile'])->name('mypage.profile');
         Route::get('/mypage/two-factor', [\App\Http\Controllers\v2\MypageController::class, 'twoFactor'])->name('mypage.two-factor');
+        Route::get('/mypage/login-histories', [\App\Http\Controllers\v2\MypageController::class, 'loginHistories'])->name('mypage.login-histories');
+
+        Route::get('/mypage/redirects', [\App\Http\Controllers\v2\RedirectController::class, 'index'])->name('mypage.redirects');
+        Route::delete('/mypage/redirects/{redirect}', [\App\Http\Controllers\v2\RedirectController::class, 'destroy'])->name('mypage.redirects.destroy');
+
+        Route::get('/mypage/profile', [\App\Http\Controllers\v2\ProfileController::class, 'index'])->name('mypage.profile');
+        Route::get('/mypage/analytics', [\App\Http\Controllers\v2\AnalyticsController::class, 'index'])->name('mypage.analytics');
 
         Route::get('/mypage/articles', [\App\Http\Controllers\v2\ArticleController::class, 'index'])->name('mypage.articles.index');
         Route::get('/mypage/articles/create', [\App\Http\Controllers\v2\ArticleController::class, 'create'])->name('mypage.articles.create');
         Route::get('/mypage/articles/edit/{article}', [\App\Http\Controllers\v2\ArticleController::class, 'edit'])->name('mypage.articles.edit');
-        Route::get('/mypage/analytics', [\App\Http\Controllers\v2\AnalyticsController::class, 'index'])->name('mypage.analytics');
 
         Route::get('/mypage/invite', [\App\Http\Controllers\v2\InviteController::class, 'index'])->name('mypage.invite');
         Route::post('/mypage/invite', [\App\Http\Controllers\v2\InviteController::class, 'createOrUpdate']);

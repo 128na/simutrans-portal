@@ -1,4 +1,4 @@
-@extends('v2.parts.mypage-layout')
+@extends('v2.mypage.layout')
 @section('max-w', 'max-w-7xl')
 @section('content')
 <div class="mx-auto max-w-7xl p-6 lg:px-8">

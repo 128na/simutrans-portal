@@ -26,7 +26,7 @@ final class MypageController extends Controller
     public function verifyEmail(): \Illuminate\Contracts\View\View
     {
         return view('v2.mypage.verify-email', [
-            'meta' => $this->metaOgpService->mypage(),
+            'meta' => $this->metaOgpService->verifyEmail(),
         ]);
     }
 
@@ -40,7 +40,7 @@ final class MypageController extends Controller
     {
         return view('v2.mypage.two-factor', [
             'user' => Auth::user(),
-            'meta' => $this->metaOgpService->mypage(),
+            'meta' => $this->metaOgpService->twoFactor(),
         ]);
     }
 
@@ -48,15 +48,7 @@ final class MypageController extends Controller
     {
         return view('v2.mypage.login-histories', [
             'loginHistories' => Auth::user()->loginHistories()->orderBy('created_at', 'desc')->limit(10)->get(),
-            'meta' => $this->metaOgpService->mypage(),
-        ]);
-    }
-
-    public function profile(): \Illuminate\Contracts\View\View
-    {
-        return view('v2.mypage.index', [
-            'user' => Auth::user(),
-            'meta' => $this->metaOgpService->mypage(),
+            'meta' => $this->metaOgpService->loginHistories(),
         ]);
     }
 }

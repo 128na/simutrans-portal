@@ -57,6 +57,13 @@
                                 </a>
                             </div>
                         </div>
+                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
+                            <div class="flex-auto">
+                                <a href="{{route('mypage.tags')}}" class="block font-semibold text-gray-900">
+                                    タグの編集
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </el-popover>
             </div>
@@ -136,6 +143,9 @@
                                 <a href="{{route('mypage.articles.create')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">作成</a>
                                 <a href="{{route('mypage.analytics')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">アクセス解析</a>
                                 <a href="{{route('mypage.redirects')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">記事のリダイレクト設定</a>
+                                <a href="{{route('mypage.tags')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">タグの編集</a>
+                            </div>
+                            <div class="space-y-2 py-6">
                                 <a href="{{route('mypage.profile')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">プロフィール</a>
                                 <a href="{{route('mypage.invite')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ユーザー招待</a>
                                 <a href="{{route('mypage.login-histories')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ログイン履歴</a>

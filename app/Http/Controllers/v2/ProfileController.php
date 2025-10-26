@@ -18,7 +18,7 @@ final class ProfileController extends Controller
     {
         return view('v2.mypage.index', [
             'user' => Auth::user(),
-            'meta' => $this->metaOgpService->mypage(),
+            'meta' => $this->metaOgpService->profile(),
         ]);
     }
 }

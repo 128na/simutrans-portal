@@ -3,8 +3,8 @@
 @section('content')
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div>
-        <h2 class="text-3xl font-semibold text-pretty text-gray-900 sm:text-3xl">メールアドレス検証</h2>
-        <p class="mt-2 text-lg/8 text-gray-600">
+        <h2 class="text-3xl font-semibold text-pretty text-gray-900 sm:text-3xl">メールアドレスの検証</h2>
+        <p class="mt-2 text-gray-600">
             登録に使用したメールアドレスが有効なものか検証します。
         </p>
     </div>

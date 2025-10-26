@@ -12,6 +12,11 @@ final class TagPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 
+    public function store(User $user, Tag $tag): bool
+    {
+        return true;
+    }
+
     public function update(User $user, Tag $tag): bool
     {
         if ($user->isAdmin()) {

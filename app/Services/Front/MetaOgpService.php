@@ -17,7 +17,7 @@ final class MetaOgpService
     public function show(User $user, Article $article): array
     {
         return [
-            'title' => $article->title.' - '.Config::string('app.name'),
+            'title' => $article->title . ' - ' . Config::string('app.name'),
             'description' => $this->trimDescription($article->contents->getDescription()),
             'image' => $article->has_thumbnail ? $article->thumbnail_url : null,
             'canonical' => route('articles.show', ['userIdOrNickname' => $user->nickname ?? $user->id, 'articleSlug' => $article->slug]),
@@ -31,8 +31,8 @@ final class MetaOgpService
     public function pak(string $name): array
     {
         return [
-            'title' => Lang::get('category.pak.'.$name).' - '.Config::string('app.name'),
-            'description' => Lang::get('category.description.pak.'.$name),
+            'title' => Lang::get('category.pak.' . $name) . ' - ' . Config::string('app.name'),
+            'description' => Lang::get('category.description.pak.' . $name),
         ];
     }
 
@@ -42,7 +42,7 @@ final class MetaOgpService
     public function announces(): array
     {
         return [
-            'title' => 'お知らせ'.' - '.Config::string('app.name'),
+            'title' => 'お知らせ' . ' - ' . Config::string('app.name'),
             'description' => '運営からのお知らせです。',
         ];
     }
@@ -53,7 +53,7 @@ final class MetaOgpService
     public function pages(): array
     {
         return [
-            'title' => '記事'.' - '.Config::string('app.name'),
+            'title' => '記事' . ' - ' . Config::string('app.name'),
             'description' => 'アドオン以外の記事です。',
         ];
     }
@@ -64,7 +64,7 @@ final class MetaOgpService
     public function search(): array
     {
         return [
-            'title' => '検索'.' - '.Config::string('app.name'),
+            'title' => '検索' . ' - ' . Config::string('app.name'),
             'description' => '記事の検索結果です。',
         ];
     }
@@ -75,8 +75,59 @@ final class MetaOgpService
     public function social(): array
     {
         return [
-            'title' => 'SNS・通知ツール'.' - '.Config::string('app.name'),
+            'title' => 'SNS・通知ツール' . ' - ' . Config::string('app.name'),
             'description' => '記事投稿や更新通知を受け取ることができるSNSアカウントやツールです。',
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function discord(): array
+    {
+        return [
+            'title' => 'Discord招待リンクの発行' . ' - ' . Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function login(): array
+    {
+        return [
+            'title' => 'ログイン' . ' - ' . Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function registration(): array
+    {
+        return [
+            'title' => 'ユーザー登録' . ' - ' . Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function resetPassword(): array
+    {
+        return [
+            'title' => 'パスワードリセット' . ' - ' . Config::string('app.name'),
+        ];
+    }
+
+
+    /**
+     * @return array{title:string}
+     */
+    public function mypage(): array
+    {
+        return [
+            'title' => 'マイページ' . ' - ' . Config::string('app.name'),
         ];
     }
 

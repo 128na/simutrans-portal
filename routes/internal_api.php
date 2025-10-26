@@ -10,7 +10,6 @@ use App\Http\Controllers\Api\Mypage\AnalyticsController;
 use App\Http\Controllers\Api\Mypage\AttachmentController;
 use App\Http\Controllers\Api\Mypage\BulkZipController;
 use App\Http\Controllers\Api\Mypage\EditorController;
-use App\Http\Controllers\Api\Mypage\RedirectController;
 use App\Http\Controllers\Api\Mypage\TagController;
 use App\Http\Controllers\Api\Mypage\UserController;
 use Illuminate\Support\Facades\Route;
@@ -24,10 +23,6 @@ Route::prefix('mypage')->group(function (): void {
         Route::get('attachments', [AttachmentController::class, 'index']);
         Route::get('articles', (new EditorController)->index(...));
         Route::get('options', (new EditorController)->options(...));
-
-        // リダイレクト
-        Route::get('/redirects', [RedirectController::class, 'index']);
-        Route::delete('/redirects/{redirect}', [RedirectController::class, 'destroy']);
     });
     // メール認証必須
     Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {

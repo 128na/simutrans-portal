@@ -20,14 +20,16 @@ final class RedirectController extends Controller
     {
         return view('v2.mypage.redirects', [
             'redirects' => Auth::user()->redirects()->get(),
-            'meta' => $this->metaOgpService->mypage(),
+            'meta' => $this->metaOgpService->redirects(),
         ]);
     }
+
     public function destroy(Redirect $redirect): RedirectResponse
     {
         if (Auth::user()->cannot('update', $redirect)) {
             return abort(403);
         }
+
         $redirect->delete();
 
         return to_route('mypage.redirects')->with('status', '削除しました');

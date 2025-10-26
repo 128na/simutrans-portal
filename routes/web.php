@@ -54,16 +54,24 @@ Route::middleware(['auth'])->group(function (): void {
         Route::get('/mypage/redirects', [\App\Http\Controllers\v2\RedirectController::class, 'index'])->name('mypage.redirects');
         Route::delete('/mypage/redirects/{redirect}', [\App\Http\Controllers\v2\RedirectController::class, 'destroy'])->name('mypage.redirects.destroy');
 
+        Route::get('/mypage/invite', [\App\Http\Controllers\v2\InviteController::class, 'index'])->name('mypage.invite');
+        Route::post('/mypage/invite', [\App\Http\Controllers\v2\InviteController::class, 'createOrUpdate']);
+        Route::delete('/mypage/invite', [\App\Http\Controllers\v2\InviteController::class, 'revoke']);
+
+        Route::get('/mypage/tags', [\App\Http\Controllers\v2\TagController::class, 'index'])->name('mypage.tags');
+        Route::post('/mypage/tags', [\App\Http\Controllers\v2\TagController::class, 'store']);
+        Route::post('/mypage/tags/{tag}', [\App\Http\Controllers\v2\TagController::class, 'update']);
+
         Route::get('/mypage/profile', [\App\Http\Controllers\v2\ProfileController::class, 'index'])->name('mypage.profile');
+        Route::post('/mypage/profile', [\App\Http\Controllers\v2\ProfileController::class, 'update']);
+
         Route::get('/mypage/analytics', [\App\Http\Controllers\v2\AnalyticsController::class, 'index'])->name('mypage.analytics');
 
         Route::get('/mypage/articles', [\App\Http\Controllers\v2\ArticleController::class, 'index'])->name('mypage.articles.index');
         Route::get('/mypage/articles/create', [\App\Http\Controllers\v2\ArticleController::class, 'create'])->name('mypage.articles.create');
+        Route::post('/mypage/articles/create', [\App\Http\Controllers\v2\ArticleController::class, 'store']);
         Route::get('/mypage/articles/edit/{article}', [\App\Http\Controllers\v2\ArticleController::class, 'edit'])->name('mypage.articles.edit');
-
-        Route::get('/mypage/invite', [\App\Http\Controllers\v2\InviteController::class, 'index'])->name('mypage.invite');
-        Route::post('/mypage/invite', [\App\Http\Controllers\v2\InviteController::class, 'createOrUpdate']);
-        Route::delete('/mypage/invite', [\App\Http\Controllers\v2\InviteController::class, 'revoke']);
+        Route::post('/mypage/articles/edit/{article}', [\App\Http\Controllers\v2\ArticleController::class, 'update']);
     });
 });
 

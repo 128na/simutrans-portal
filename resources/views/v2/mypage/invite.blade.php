@@ -4,7 +4,7 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div>
         <h2 class="text-3xl font-semibold text-pretty text-gray-900 sm:text-3xl">招待</h2>
-        <p class="mt-2 text-lg/8 text-gray-600">
+        <p class="mt-2 text-gray-600">
             招待リンクの発行と招待したユーザーを確認できます。
         </p>
     </div>
@@ -26,7 +26,7 @@
                         リンクをコピー
                     </button>
                     <button type="submit" class="rounded-md bg-brand px-4 sm:py-2 py-4 text-white cursor-pointer">
-                        再生成
+                        再発行
                     </button>
                     <button type="submit" class="rounded-md bg-red-500 px-4 sm:py-2 py-4 text-white cursor-pointer" form="revoke">
                         削除
@@ -34,7 +34,7 @@
                 </div>
                 @else
                 <button type="submit" class="rounded-md bg-brand px-4 sm:py-2 py-4 text-white cursor-pointer">
-                    生成
+                    発行
                 </button>
                 @endif
             </form>

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\v2;
 
 use App\Services\Front\MetaOgpService;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,11 +15,12 @@ final class AnalyticsController extends Controller
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
-    public function index(): \Illuminate\Contracts\View\View
+    public function index(Request $request): \Illuminate\Contracts\View\View
     {
+        // TODO: analytics logic
         return view('v2.mypage.index', [
             'user' => Auth::user(),
-            'meta' => $this->metaOgpService->mypage(),
+            'meta' => $this->metaOgpService->analytics(),
         ]);
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\v2;
 
 use App\Services\Front\MetaOgpService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -19,29 +20,23 @@ final class InviteController extends Controller
     {
         return view('v2.mypage.invite', [
             'user' => Auth::user()->loadMissing('invites'),
-            'meta' => $this->metaOgpService->mypage(),
+            'meta' => $this->metaOgpService->invite(),
         ]);
     }
 
-    public function createOrUpdate(): \Illuminate\Contracts\View\View
+    public function createOrUpdate(): RedirectResponse
     {
         Auth::user()->update(['invitation_code' => Str::uuid()]);
         event(new \App\Events\User\InviteCodeCreated(Auth::user()));
 
-        return view('v2.mypage.invite', [
-            'user' => Auth::user()->loadMissing('invites'),
-            'meta' => $this->metaOgpService->mypage(),
-        ]);
+        return to_route('mypage.invite')->with('status', '招待コードを発行しました');
     }
 
-    public function revoke(): \Illuminate\Contracts\View\View
+    public function revoke(): RedirectResponse
     {
         Auth::user()->update(['invitation_code' => null]);
         event(new \App\Events\User\InviteCodeCreated(Auth::user()));
 
-        return view('v2.mypage.invite', [
-            'user' => Auth::user()->loadMissing('invites'),
-            'meta' => $this->metaOgpService->mypage(),
-        ]);
+        return to_route('mypage.invite')->with('status', '招待コードを削除しました');
     }
 }

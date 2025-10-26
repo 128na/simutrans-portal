@@ -141,6 +141,116 @@ final class MetaOgpService
         ];
     }
 
+    /**
+     * @return array{title:string}
+     */
+    public function verifyEmail(): array
+    {
+        return [
+            'title' => 'メールアドレスの検証'.' - '.Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function twoFactor(): array
+    {
+        return [
+            'title' => '二要素認証の設定'.' - '.Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function loginHistories(): array
+    {
+        return [
+            'title' => 'ログイン履歴'.' - '.Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function redirects(): array
+    {
+        return [
+            'title' => 'リダイレクトの設定'.' - '.Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function invite(): array
+    {
+        return [
+            'title' => 'リダイレクトの設定'.' - '.Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function profile(): array
+    {
+        return [
+            'title' => 'プロフィールの編集'.' - '.Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function analytics(): array
+    {
+        return [
+            'title' => 'アナリティクス'.' - '.Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function articleIndex(): array
+    {
+        return [
+            'title' => '記事一覧'.' - '.Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function articleEdit(): array
+    {
+        return [
+            'title' => '記事の編集'.' - '.Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function articleCreate(): array
+    {
+        return [
+            'title' => '記事の作成'.' - '.Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function tags(): array
+    {
+        return [
+            'title' => 'タグ'.' - '.Config::string('app.name'),
+        ];
+    }
+
     private function trimDescription(?string $str): string
     {
         if (in_array($str, [null, '', '0'], true)) {

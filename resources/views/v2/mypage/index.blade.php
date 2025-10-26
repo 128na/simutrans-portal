@@ -6,7 +6,7 @@
         <h2 class="text-3xl font-semibold text-pretty text-gray-900 sm:text-3xl">マイページ</h2>
     </div>
     <div class="mt-10 flex flex-col gap-y-4 border-t border-gray-200 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
-        <h3 class="text-2xl font-semibold text-brand sm:text-2xl my-4">投稿サマリ</h3>
+        <h3 class="text-2xl font-semibold text-brand sm:text-2xl my-4">アクティビティ</h3>
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">
                 <tbody>
@@ -23,6 +23,11 @@
                     <tr>
                         <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">今月の合計CV数</td>
                         <td class="border border-gray-300 px-4 py-2">{{$user->currentMonthConversionCount?->count ?? 0}} 件</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">作成したタグ</td>
+                        <td class="border border-gray-300 px-4 py-2">{{$user->createdTags()->count()}} 件</td>
+                        <td class="border border-gray-300 px-4 py-2">@include('v2.parts.link', ['url' => route('mypage.tags'), 'title' => 'タグの編集'])</td>
                     </tr>
                 </tbody>
             </table>

@@ -1,6 +1,8 @@
 /// <reference types="cypress" />
 
-const { mockGuestResponse, mockUserResponse, mockUnverifiedUserResponse } = require('../../__mocks__/auth');
+const {
+  mockGuestResponse, mockUserResponse, mockUnverifiedUserResponse, mockTopResponse,
+} = require('../../__mocks__/auth');
 const {
   mockArticlesResponse, mockOptionsResponse, mockAttachmentsResponse, mockTagsResponse,
 } = require('../../__mocks__/mypage');
@@ -16,6 +18,7 @@ const {
 describe('編集画面', () => {
   describe('未ログイン', () => {
     beforeEach(() => {
+      cy.intercept('/', mockTopResponse).as('top');
       cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
       cy.intercept('/sanctum/csrf-cookie', { statusCode: 200 }).as('csrf');
       cy.visit('/mypage/edit/1');

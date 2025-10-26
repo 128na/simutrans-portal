@@ -1,3 +1,4 @@
+export const mockTopResponse = { statusCode: 200 };
 export const mockGuestResponse = { statusCode: 401 };
 export const mockUserResponse = {
   statusCode: 200,

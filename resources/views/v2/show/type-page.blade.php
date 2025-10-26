@@ -1,7 +1,7 @@
 @foreach($article->contents->sections as $section)
 @switch($section->type)
 @case('caption')
-<h3 class="text-xl font-semibold sm:text-xl my-8">{{ $section->caption }}</h3>
+<h4 class="text-xl font-semibold sm:text-xl my-8">{{ $section->caption }}</h4>
 @break
 
 @case('text')

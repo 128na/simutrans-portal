@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OauthController;
-use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Middleware\ExcludePaths;
 use Illuminate\Support\Facades\Route;
@@ -43,9 +42,26 @@ Route::GET('/login/2fa', [\App\Http\Controllers\v2\UserController::class, 'showT
 Route::GET('/forgot-password', [\App\Http\Controllers\v2\UserController::class, 'showForgotPassword'])->name('forgot-password');
 Route::GET('/reset-password/{token}', [\App\Http\Controllers\v2\UserController::class, 'showResetPassword'])->name('reset-password');
 
-Route::middleware(['auth:sanctum'])->group(function (): void {
-    Route::get('/mypage/', (new MypageController)->index(...))->name('mypage.index');
-    Route::get('/mypage/{any}', (new MypageController)->index(...))->where('any', '.*');
+Route::middleware(['auth'])->group(function (): void {
+    Route::get('/mypage/', [\App\Http\Controllers\v2\MypageController::class, 'index'])->name('mypage.index');
+    Route::get('/mypage/verify-email', [\App\Http\Controllers\v2\MypageController::class, 'verifyEmail'])->name('mypage.verify-email');
+    Route::get('/mypage/verify-required', [\App\Http\Controllers\v2\MypageController::class, 'verifyNotice'])->name('verification.notice');
+
+    Route::middleware(['verified'])->group(function (): void {
+        Route::get('/mypage/redirects', [\App\Http\Controllers\v2\MypageController::class, 'redirects'])->name('mypage.redirects');
+        Route::get('/mypage/login-histories', [\App\Http\Controllers\v2\MypageController::class, 'loginHistories'])->name('mypage.login-histories');
+        Route::get('/mypage/profile', [\App\Http\Controllers\v2\MypageController::class, 'profile'])->name('mypage.profile');
+        Route::get('/mypage/two-factor', [\App\Http\Controllers\v2\MypageController::class, 'twoFactor'])->name('mypage.two-factor');
+
+        Route::get('/mypage/articles', [\App\Http\Controllers\v2\ArticleController::class, 'index'])->name('mypage.articles.index');
+        Route::get('/mypage/articles/create', [\App\Http\Controllers\v2\ArticleController::class, 'create'])->name('mypage.articles.create');
+        Route::get('/mypage/articles/edit/{article}', [\App\Http\Controllers\v2\ArticleController::class, 'edit'])->name('mypage.articles.edit');
+        Route::get('/mypage/analytics', [\App\Http\Controllers\v2\AnalyticsController::class, 'index'])->name('mypage.analytics');
+
+        Route::get('/mypage/invite', [\App\Http\Controllers\v2\InviteController::class, 'index'])->name('mypage.invite');
+        Route::post('/mypage/invite', [\App\Http\Controllers\v2\InviteController::class, 'createOrUpdate']);
+        Route::delete('/mypage/invite', [\App\Http\Controllers\v2\InviteController::class, 'revoke']);
+    });
 });
 
 Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function (): void {

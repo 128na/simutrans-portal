@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Contracts\Models\BulkZippableInterface;
 use App\Enums\UserRole;
+use App\Models\Article\ConversionCount;
+use App\Models\Article\ViewCount;
 use App\Models\User\LoginHistory;
 use App\Models\User\Profile;
 use App\Notifications\ResetPassword;
@@ -178,6 +180,16 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     public function redirects(): HasMany
     {
         return $this->hasMany(Redirect::class);
+    }
+
+    /**
+     * @return HasOne<ViewCount,$this>
+     */
+    public function currentMonthViewCount(): HasOne
+    {
+        return $this->hasOne(ViewCount::class)
+            ->where('type', ViewCount::TYPE_MONTHLY)
+            ->where('period', now()->format('Ym'));
     }
 
     /*

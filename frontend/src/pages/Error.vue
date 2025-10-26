@@ -26,7 +26,7 @@ const errors = {
   401: {
     status: 401,
     message: 'ログイン期限が切れています。再度ログインしてください',
-    to: { name: 'login' },
+    to: '/login',
     label: 'ログイン',
     background: '/images/404.png',
     position: '0 0',
@@ -58,7 +58,7 @@ const errors = {
   419: {
     status: 419,
     message: '認証トークンの期限が切れました。再度ログインしてください。',
-    to: { name: 'login' },
+    to: '/login',
     label: 'トップ',
     background: '/images/404.png',
     position: '0 0',
@@ -66,7 +66,7 @@ const errors = {
   422: {
     status: 422,
     message: '入力に問題があります。内容を確認して再度お試しください',
-    to: { name: 'login' },
+    to: '/login',
     label: 'ログイン',
     background: '/images/404.png',
     position: '0 0',

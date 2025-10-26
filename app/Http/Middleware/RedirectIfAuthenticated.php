@@ -33,7 +33,7 @@ final class RedirectIfAuthenticated
                     return redirect()->intended('admin');
                 }
 
-                return redirect()->intended('mypage');
+                return redirect()->intended(route(\Illuminate\Auth\Events\Login::class));
             }
         }
 

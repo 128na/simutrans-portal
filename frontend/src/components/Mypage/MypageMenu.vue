@@ -86,12 +86,6 @@
         <q-item-section>ログアウト</q-item-section>
       </q-item>
     </template>
-    <q-item v-else :to="{ name: 'login' }">
-      <q-item-section avatar>
-        <q-icon name="login" />
-      </q-item-section>
-      <q-item-section>ログイン</q-item-section>
-    </q-item>
     <q-separator />
     <q-item clickable :href="SUPPORT_SITE_URL" target="_blank">
       <q-item-section avatar>

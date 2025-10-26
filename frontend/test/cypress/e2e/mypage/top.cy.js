@@ -1,9 +1,11 @@
 /// <reference types="cypress" />
 
-const { mockGuestResponse, mockUserResponse, mockUnverifiedUserResponse } = require('../../__mocks__/auth');
+const {
+  mockUserResponse, mockUnverifiedUserResponse,
+} = require('../../__mocks__/auth');
 const { mockArticlesResponse } = require('../../__mocks__/mypage');
 const {
-  assertBodyHas, assertLoginPage, assertMypageTopPage, assertRequiresVerifyPage,
+  assertBodyHas, assertMypageTopPage, assertRequiresVerifyPage,
 } = require('../../assertion');
 
 // Use `cy.dataCy` custom command for more robust tests
@@ -13,17 +15,6 @@ const {
 
 // This test will pass when run against a clean Quasar project
 describe('マイページトップ', () => {
-  describe('未ログイン', () => {
-    beforeEach(() => {
-      cy.intercept('/api/mypage/user', mockGuestResponse).as('mypage.user');
-      cy.intercept('/sanctum/csrf-cookie', { statusCode: 200 }).as('csrf');
-      cy.visit('/mypage');
-      cy.wait('@mypage.user');
-    });
-    it('ログインページへ遷移する', () => {
-      assertLoginPage();
-    });
-  });
   describe('ログイン済み', () => {
     beforeEach(() => {
       cy.intercept('/api/mypage/user', mockUserResponse).as('mypage.user');

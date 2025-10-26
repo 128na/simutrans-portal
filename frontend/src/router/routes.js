@@ -6,9 +6,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "mypage" */'layouts/MypageLayout.vue'),
     children: [
       {
-        name: 'reset', path: 'reset/:token', meta: { requiresGuest: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Reset.vue'),
-      },
-      {
         name: 'mypage', path: '', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Top.vue'),
       },
       {
@@ -40,22 +37,13 @@ const routes = [
         ,
       },
       {
-        name: 'invite', path: 'invite/:code', meta: { requiresGuest: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Invite.vue')
-        ,
-      },
-      {
         name: 'requiresVerified', path: 'requires-verified', meta: { requiresAuth: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/RequiresVerified.vue')
-        ,
-      },
-      {
-        name: 'login', path: 'login', meta: { requiresGuest: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Login.vue')
         ,
       },
       {
         name: 'logout', path: 'logout', meta: { requiresAuth: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Logout.vue')
         ,
       },
-      { name: 'forget', path: 'forget', component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Forget.vue') },
     ],
   },
   {

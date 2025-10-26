@@ -4,57 +4,8 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.withCredentials = true;
 
 export const useFrontApi = () => ({
-  get(url) {
-    return axios.get(url);
-  },
-  // conversion
-  postConversion(id) {
-    return axios.post(`/api/conversion/${id}`);
-  },
-  postShown(id) {
-    return axios.post(`/api/shown/${id}`);
-  },
-  // top
-  fetchSidebar() {
-    return axios.get('/storage/json/sidebar.json');
-  },
-  fetchTop(order) {
-    return axios.get(`/storage/json/top.${order}.json`);
-  },
-  // list
-  fetchCategoryPak(size, slug, order, page = 1) {
-    return axios.get(`/api/front/categories/pak/${size}/${slug}`, { params: { order, page } });
-  },
-  fetchCategory(type, slug, order, page = 1) {
-    return axios.get(`/api/front/categories/${type}/${slug}`, { params: { order, page } });
-  },
-  fetchTag(id, order, page = 1) {
-    return axios.get(`/api/front/tags/${id}`, { params: { order, page } });
-  },
-  fetchUser(id, order, page = 1) {
-    return axios.get(`/api/front/users/${id}`, { params: { order, page } });
-  },
-  fetchAnnounces(order, page = 1) {
-    return axios.get('/api/front/announces', { params: { order, page } });
-  },
-  fetchPages(order, page = 1) {
-    return axios.get('/api/front/pages', { params: { order, page } });
-  },
-  fetchRanking(page = 1) {
-    return axios.get('/api/front/ranking', { params: { page } });
-  },
   fetchSearch(word, order, page = 1) {
     return axios.get('/api/front/search', { params: { word, order, page } });
-  },
-  // show
-  fetchArticle(userId, articleSlug) {
-    return axios.get(`/api/front/users/${userId}/${articleSlug}`);
-  },
-  fetchTags() {
-    return axios.get('/api/front/tags');
-  },
-  discordInvite(token) {
-    return axios.post('/api/front/invite-simutrans-interact-meeting', { token });
   },
 });
 
@@ -71,12 +22,6 @@ export const useMypageApi = () => ({
   },
   resend() {
     return axios.post('/auth/email/verification-notification');
-  },
-  forget(params) {
-    return axios.post('/auth/forgot-password', params);
-  },
-  reset(params) {
-    return axios.post('/auth/reset-password', params);
   },
   verify(userId, hash, expires, signature) {
     return axios.get(`/auth/email/verify/${userId}/${hash}`, {
@@ -175,9 +120,6 @@ export const useMypageApi = () => ({
   },
   deleteInvitationCode() {
     return axios.delete('/api/mypage/invitation_code');
-  },
-  invite(code, params) {
-    return axios.post(`/api/mypage/invite/${code}`, params);
   },
 
   // ログイン履歴

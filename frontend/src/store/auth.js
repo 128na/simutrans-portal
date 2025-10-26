@@ -62,7 +62,7 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = null;
       requireTFA.value = false;
     } finally {
-      router.push({ name: 'login' });
+      window.location.href = '/';
     }
   };
 
@@ -77,13 +77,13 @@ export const useAuthStore = defineStore('auth', () => {
     }
     if (route.meta.requiresAuth) {
       if (!isLoggedIn.value) {
-        router.push({ replace: true, name: 'login', query: { redirect: route.href } });
+        window.location.href = '/login';
         return false;
       }
     }
     if (route.meta.requiresVerified) {
       if (!isLoggedIn.value) {
-        router.push({ replace: true, name: 'login', query: { redirect: route.href } });
+        window.location.href = '/login';
         return false;
       }
       if (!isVerified.value) {

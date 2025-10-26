@@ -13,6 +13,6 @@ final readonly class OnTwoFactorAuthenticationIncomplete
 
     public function handle(TwoFactorAuthenticationIncomplete $twoFactorAuthenticationIncomplete): void
     {
-        $this->logger->channel('audit')->info('2要素認証未完了', $twoFactorAuthenticationIncomplete->user->getInfoLogging());
+        $this->logger->channel('audit')->info('二要素認証未完了', $twoFactorAuthenticationIncomplete->user->getInfoLogging());
     }
 }

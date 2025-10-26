@@ -31,6 +31,13 @@
 
 <body>
     @include('v2.parts.header')
+    @if (session('status'))
+    <div class="mx-auto @yield('max-w', 'max-w-xl') p-6 lg:px-8">
+        <p class="p-4 text-sm text-green-900 rounded-lg bg-green-50 border border-green-300 ">
+            {{ session('status') }}
+        </p>
+    </div>
+    @endif
     @yield('content')
 </body>
 

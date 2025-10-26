@@ -19,8 +19,6 @@ use Illuminate\Support\Facades\Route;
 
 // マイページ
 Route::prefix('mypage')->group(function (): void {
-    Route::post('invite/{invitation_code}', [InvitationCodeController::class, 'register'])
-        ->middleware(['restrict:invitation_code', 'throttle:register'])->name('invitation_code');
     // ログイン必須
     Route::middleware(['auth:sanctum'])->group(function (): void {
         Route::get('user', [UserController::class, 'index']);

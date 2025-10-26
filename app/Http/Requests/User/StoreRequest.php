@@ -6,7 +6,7 @@ namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-final class InviteRequest extends FormRequest
+final class StoreRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -19,6 +19,7 @@ final class InviteRequest extends FormRequest
             'name' => ['required', 'max:100'],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'min:11'],
+            'agreement' => ['accepted'],
         ];
     }
 }

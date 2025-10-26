@@ -80,6 +80,56 @@ final class MetaOgpService
         ];
     }
 
+    /**
+     * @return array{title:string}
+     */
+    public function discord(): array
+    {
+        return [
+            'title' => 'Discord招待リンクの発行'.' - '.Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function login(): array
+    {
+        return [
+            'title' => 'ログイン'.' - '.Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function registration(): array
+    {
+        return [
+            'title' => 'ユーザー登録'.' - '.Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function resetPassword(): array
+    {
+        return [
+            'title' => 'パスワードリセット'.' - '.Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function mypage(): array
+    {
+        return [
+            'title' => 'マイページ'.' - '.Config::string('app.name'),
+        ];
+    }
+
     private function trimDescription(?string $str): string
     {
         if (in_array($str, [null, '', '0'], true)) {

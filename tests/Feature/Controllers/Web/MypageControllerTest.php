@@ -14,7 +14,7 @@ final class MypageControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->url = route('mypage.index');
+        $this->url = route('login');
     }
 
     public function test(): void
@@ -28,6 +28,6 @@ final class MypageControllerTest extends TestCase
     {
         $url = $this->url.'/foo';
         $testResponse = $this->get($url);
-        $testResponse->assertOk();
+        $testResponse->assertNotFound();
     }
 }

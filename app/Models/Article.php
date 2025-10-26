@@ -309,7 +309,8 @@ final class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    protected function scopeWithUserTrashed(Builder $builder): void
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function withUserTrashed(Builder $builder): void
     {
         $builder->withoutGlobalScope('WithoutTrashedUser');
     }
@@ -325,7 +326,8 @@ final class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    protected function scopeLatest(Builder $builder): void
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function latest(Builder $builder): void
     {
         $builder->latest('published_at');
     }
@@ -333,7 +335,8 @@ final class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    protected function scopeActive(Builder $builder): void
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function active(Builder $builder): void
     {
         $builder->where('status', ArticleStatus::Publish);
     }
@@ -341,7 +344,8 @@ final class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    protected function scopeAddon(Builder $builder): void
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function addon(Builder $builder): void
     {
         $builder->whereIn('post_type', [ArticlePostType::AddonPost, ArticlePostType::AddonIntroduction]);
     }
@@ -349,7 +353,8 @@ final class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    protected function scopeLinkCheckTarget(Builder $builder): void
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function linkCheckTarget(Builder $builder): void
     {
         $builder->where('post_type', ArticlePostType::AddonIntroduction)
             ->where(
@@ -361,7 +366,8 @@ final class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    protected function scopePage(Builder $builder): void
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function page(Builder $builder): void
     {
         $builder->where('post_type', [ArticlePostType::Page, ArticlePostType::Markdown]);
     }
@@ -371,7 +377,8 @@ final class Article extends Model implements Feedable
      *
      * @implements Builder<Article>
      */
-    protected function scopePak(Builder $builder, string $slug): void
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function pak(Builder $builder, string $slug): void
     {
         $builder->whereHas('categories', fn ($query) => $query->pak()->slug($slug));
     }
@@ -379,7 +386,8 @@ final class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    protected function scopeAnnounce(Builder $builder): void
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function announce(Builder $builder): void
     {
         $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
             ->whereHas('categories', fn ($query) => $query->page()->slug('announce'));
@@ -388,7 +396,8 @@ final class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    protected function scopeWithoutAnnounce(Builder $builder): void
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function withoutAnnounce(Builder $builder): void
     {
         $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
             ->whereDoesntHave('categories', fn ($query) => $query->page()->slug('announce'));
@@ -397,7 +406,8 @@ final class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    protected function scopeCategory(Builder $builder, Category $category): void
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function category(Builder $builder, Category $category): void
     {
         $builder->join('article_category', function (JoinClause $joinClause) use ($category): void {
             $joinClause->on('article_category.article_id', '=', 'articles.id')
@@ -408,7 +418,8 @@ final class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    protected function scopePakAddonCategory(Builder $builder, Category $pak, Category $addon): void
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function pakAddonCategory(Builder $builder, Category $pak, Category $addon): void
     {
         $builder->join('article_category', function (JoinClause $joinClause) use ($pak): void {
             $joinClause->on('article_category.article_id', '=', 'articles.id')
@@ -423,7 +434,8 @@ final class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    protected function scopeTag(Builder $builder, Tag $tag): void
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function tag(Builder $builder, Tag $tag): void
     {
         $builder->join('article_tag', function (JoinClause $joinClause) use ($tag): void {
             $joinClause->on('article_tag.article_id', '=', 'articles.id')

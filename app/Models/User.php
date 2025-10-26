@@ -224,7 +224,8 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     /**
      * @param  Builder<User>  $builder
      */
-    protected function scopeAdmin(Builder $builder): void
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function admin(Builder $builder): void
     {
         $builder->where('role', UserRole::Admin);
     }

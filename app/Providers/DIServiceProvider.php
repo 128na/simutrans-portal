@@ -57,14 +57,14 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
     #[\Override]
     public function register(): void
     {
-        $this->app->bind(ReadmeExtractor::class, function ($app): ReadmeExtractor {
+        $this->app->bind(function ($app): \App\Services\FileInfo\Extractors\ReadmeExtractor {
             $htmlPurifierConfig = HTMLPurifier_Config::createDefault();
             $htmlPurifierConfig->set('HTML.AllowedElements', []);
 
             return new ReadmeExtractor(new HTMLPurifier($htmlPurifierConfig));
         });
 
-        $this->app->bind(MarkdownService::class, function ($app): MarkdownService {
+        $this->app->bind(function ($app): \App\Services\MarkdownService {
             $htmlPurifierConfig = HTMLPurifier_Config::createDefault();
             $htmlPurifierConfig->set('HTML.AllowedElements', config('services.markdown.allowed_elements', []));
 
@@ -104,7 +104,7 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
             Config::string('services.misskey.token'),
         ));
 
-        $this->app->bind(BlueSkyApiClient::class, function ($app): BlueSkyApiClient {
+        $this->app->bind(function ($app): \App\Services\BlueSky\BlueSkyApiClient {
             $blueskyApi = new BlueskyApi(Config::string('services.bluesky.user'), Config::string('services.bluesky.password'));
             $blueskyPostService = new BlueskyPostService($blueskyApi);
 

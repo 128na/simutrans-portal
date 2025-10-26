@@ -17,7 +17,7 @@ return RectorConfig::configure()
         __DIR__.'/lang',
         __DIR__.'/resources',
         __DIR__.'/routes',
-        __DIR__.'/tests',
+        // __DIR__ . '/tests',
     ])
     ->withPhpSets(php83: true)
     ->withPreparedSets(
@@ -40,10 +40,11 @@ return RectorConfig::configure()
         IssetOnPropertyObjectToPropertyExistsRector::class, // property_exists($model, 'hoge') return false
         ReturnTypeFromStrictTypedCallRector::class => [__DIR__.'/app/Repositories/BaseRepository.php'], // Generics壊れる
         RemoveUnusedVariableAssignRector::class => [__DIR__.'/tests'], // $selfでのアクセスが壊れるので
+        // NewlineAfterStatementRector::class => [__DIR__ . '/tests'], // $selfでのアクセスが壊れるので
         DeclareStrictTypesRector::class => [__DIR__.'/resources/views'], // bladeファイルも declare がつくので
     ])
     ->withSets([
-        LaravelLevelSetList::UP_TO_LARAVEL_110,
+        LaravelLevelSetList::UP_TO_LARAVEL_120,
 
         LaravelSetList::LARAVEL_ARRAYACCESS_TO_METHOD_CALL,
         LaravelSetList::LARAVEL_ARRAY_STR_FUNCTION_TO_STATIC_CALL,

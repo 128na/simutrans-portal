@@ -24,7 +24,7 @@
     @endunless
     <link rel="canonical" href="{{ $meta['canonical'] ?? url()->current() }}">
     <link rel=icon type=image/ico href=/favicon.ico>
-    @vite('resources/css/app.css')
+    @vite('resources/css/front.css')
 
 </head>
 @php

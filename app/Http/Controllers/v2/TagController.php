@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\v2;
 
 use App\Models\Tag;
+use App\Repositories\v2\TagRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
@@ -13,13 +14,14 @@ use Illuminate\Support\Facades\Auth;
 final class TagController extends Controller
 {
     public function __construct(
+        private readonly TagRepository $tagRepository,
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
     public function index(): \Illuminate\Contracts\View\View
     {
         return view('v2.mypage.tags', [
-            'tags' => Tag::all(),
+            'tags' => $this->tagRepository->getForEdit(),
             'meta' => $this->metaOgpService->tags(),
         ]);
     }

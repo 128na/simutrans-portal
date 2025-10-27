@@ -9,8 +9,9 @@ export default defineConfig({
     tailwindcss(),
     laravel({
       input: [
-        "resources/css/app.css",
+        "resources/css/front.css",
         "resources/js/front.ts",
+        "resources/css/mypage.css",
         "resources/js/mypage.ts",
       ],
       refresh: true,

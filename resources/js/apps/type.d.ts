@@ -1,0 +1,17 @@
+type Tag = {
+  id: number;
+  name: string;
+  description: string | null;
+  editable: boolean;
+  created_by: SimpleUser | null;
+  last_modified_by: SimpleUser | null;
+  last_modified_at: string;
+  created_at: string;
+  updated_at: string;
+  articles_count: number;
+};
+
+type SimpleUser = {
+  id: number;
+  name: string;
+};

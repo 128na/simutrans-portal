@@ -10,7 +10,6 @@
         </p>
     </div>
     <div class="mt-10 flex flex-col gap-y-12 border-t border-gray-200 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
-
+        <div id="app-tag-edit" data-tags='@json($tags)'></div>
     </div>
-</div>
-@endsection
+    @endsection

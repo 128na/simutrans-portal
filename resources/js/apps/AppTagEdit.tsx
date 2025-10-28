@@ -10,6 +10,15 @@ if (app) {
 
   const App = () => {
     const [selectedTag, setSelectedTag] = useState<Tag | NewTag | null>(null);
+    const updateTag = (tag: Tag) => {
+      const index = tags.findIndex((t) => t.id === tag.id);
+      if (index !== -1) {
+        tags[index] = tag;
+      } else {
+        tags.push(tag);
+      }
+      setSelectedTag(null);
+    };
     return (
       <>
         <TagTable
@@ -17,7 +26,11 @@ if (app) {
           limit={15}
           onClick={(tag) => setSelectedTag(tag)}
         />
-        <TagModal tag={selectedTag} onClose={() => setSelectedTag(null)} />
+        <TagModal
+          tag={selectedTag}
+          onClose={() => setSelectedTag(null)}
+          onSave={updateTag}
+        />
       </>
     );
   };

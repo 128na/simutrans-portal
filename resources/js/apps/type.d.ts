@@ -5,7 +5,7 @@ type Tag = {
   editable: boolean;
   created_by: SimpleUser | null;
   last_modified_by: SimpleUser | null;
-  last_modified_at: string;
+  last_modified_at: string | null;
   created_at: string;
   updated_at: string;
   articles_count: number;

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Input from "../elements/Input";
 
 export type Option = {
   id: number;
@@ -60,12 +61,11 @@ export const SelectableSearch = ({
         </div>
       </div>
 
-      <input
+      <Input
         type="text"
         value={criteria}
         onChange={(e) => setCriteria(e.target.value)}
         placeholder={placeholder}
-        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
       />
 
       <div className="max-h-40 overflow-y-auto border border-gray-300 rounded-lg p-2 bg-white">

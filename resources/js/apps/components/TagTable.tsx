@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Pagination } from "./Pagination";
 import { compareTagValues, tagFilter } from "../libs/tagTool";
+import Button from "../elements/Button";
+import Input from "../elements/Input";
 
 type Props = {
   tags: Tag[];
@@ -42,22 +44,20 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
     <div className="relative overflow-x-auto">
       <div className="gap-4 flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between py-4">
         <div>
-          <button
+          <Button
             onClick={() =>
               onClick?.({ id: null, name: criteria, description: null })
             }
-            className="px-4 py-2 bg-brand text-white rounded-lg cursor-pointer"
           >
             作成
-          </button>
+          </Button>
         </div>
         <div>
-          <input
+          <Input
             type="text"
             value={criteria}
             onChange={(e) => setCriteria(e.target.value)}
             placeholder="検索"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2"
           />
         </div>
         <div className="grow"></div>

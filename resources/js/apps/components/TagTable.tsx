@@ -3,6 +3,7 @@ import { Pagination } from "./Pagination";
 import { compareTagValues, tagFilter } from "../libs/tagTool";
 import Button from "../elements/Button";
 import Input from "../elements/Input";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   tags: Tag[];
@@ -14,6 +15,15 @@ type Sort = {
   column: keyof Tag;
   order: "asc" | "desc";
 };
+
+const headers: { name: string; key: keyof Tag; width: string }[] = [
+  { name: "タグ名", key: "name", width: "w-2/12" },
+  { name: "説明", key: "description", width: "w-3/12" },
+  { name: "記事数", key: "articles_count", width: "w-1/12" },
+  { name: "作成者", key: "created_by", width: "w-2/12" },
+  { name: "最終更新者", key: "last_modified_by", width: "w-2/12" },
+  { name: "最終更新日", key: "last_modified_at", width: "w-2/12" },
+];
 
 export const TagTable = ({ tags, limit, onClick }: Props) => {
   const [criteria, setCriteria] = useState("");
@@ -70,42 +80,15 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
       <table className="table-fixed w-full text-sm text-left">
         <thead>
           <tr className="text-xs text-gray-700 bg-gray-50">
-            <th
-              onClick={() => handleSort("name")}
-              className="px-6 py-3 cursor-pointer w-2/12"
-            >
-              タグ名
-            </th>
-            <th
-              onClick={() => handleSort("description")}
-              className="px-6 py-3 cursor-pointer w-3/12"
-            >
-              説明
-            </th>
-            <th
-              onClick={() => handleSort("articles_count")}
-              className="px-6 py-3 cursor-pointer w-1/12"
-            >
-              記事数
-            </th>
-            <th
-              onClick={() => handleSort("created_by")}
-              className="px-6 py-3 cursor-pointer w-2/12"
-            >
-              作成者
-            </th>
-            <th
-              onClick={() => handleSort("last_modified_by")}
-              className="px-6 py-3 cursor-pointer w-2/12"
-            >
-              最終更新者
-            </th>
-            <th
-              onClick={() => handleSort("last_modified_at")}
-              className="px-6 py-3 cursor-pointer w-2/12"
-            >
-              最終更新日
-            </th>
+            {headers.map((header) => (
+              <th
+                key={header.key}
+                onClick={() => handleSort(header.key)}
+                className={twMerge("px-6 py-3 cursor-pointer", header.width)}
+              >
+                {header.name}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
@@ -114,9 +97,10 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
             .map((tag) => (
               <tr
                 key={tag.id}
-                className={`bg-white border-b border-gray-200 ${
-                  tag.editable ? "cursor-pointer hover:bg-gray-100" : ""
-                }`}
+                className={twMerge(
+                  "bg-white border-b border-gray-200",
+                  tag.editable ? "cursor-pointer hover:bg-gray-100" : "",
+                )}
                 onClick={() => onClick?.(tag)}
               >
                 <td className="px-6 py-4 font-medium">{tag.name}</td>

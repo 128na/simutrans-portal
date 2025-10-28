@@ -14,6 +14,14 @@ use App\Http\Controllers\Api\Mypage\TagController;
 use App\Http\Controllers\Api\Mypage\UserController;
 use Illuminate\Support\Facades\Route;
 
+Route::middleware(['auth:sanctum'])->group(function (): void {
+    Route::middleware(['restrict:update_tag'])->group(function (): void {
+
+        Route::post('v2/tags', [\App\Http\Controllers\v2\TagController::class, 'store']);
+        Route::post('v2/tags/{tag}', [\App\Http\Controllers\v2\TagController::class, 'update']);
+    });
+});
+
 // マイページ
 Route::prefix('mypage')->group(function (): void {
     // ログイン必須

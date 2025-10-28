@@ -129,7 +129,7 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
                   {tag.last_modified_by?.name ?? "-"}
                 </td>
                 <td className="px-6 py-4">
-                  {tag.last_modified_at.slice(0, 10)}
+                  {tag.last_modified_at?.slice(0, 10)}
                 </td>
               </tr>
             ))}

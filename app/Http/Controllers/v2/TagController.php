@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\v2;
 
+use App\Http\Requests\Api\Tag\StoreRequest;
+use App\Http\Requests\Api\Tag\UpdateRequest;
 use App\Models\Tag;
 use App\Repositories\v2\TagRepository;
 use App\Services\Front\MetaOgpService;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,25 +27,31 @@ final class TagController extends Controller
         ]);
     }
 
-    public function store(Tag $tag): RedirectResponse
+    public function store(StoreRequest $storeRequest): Tag
     {
-        if (Auth::user()->cannot('store', $tag)) {
-            return abort(403);
-        }
+        $tag = $this->tagRepository->store([
+            'name' => $storeRequest->input('name'),
+            'description' => $storeRequest->input('description'),
+            'created_by' => Auth::id(),
+            'last_modified_by' => Auth::id(),
+            'last_modified_at' => now(),
+        ]);
 
-        // TODO: store
-
-        return to_route('mypage.tags')->with('status', '作成しました');
+        return $this->tagRepository->load($tag);
     }
 
-    public function update(Tag $tag): RedirectResponse
+    public function update(Tag $tag, UpdateRequest $updateRequest): Tag
     {
+        $old = $tag->description;
         if (Auth::user()->cannot('update', $tag)) {
             return abort(403);
         }
-
-        // TODO: update
-
-        return to_route('mypage.tags')->with('status', '更新しました');
+        $tag = $this->tagRepository->update($tag, [
+            'description' => $updateRequest->input('description'),
+            'last_modified_by' => Auth::id(),
+            'last_modified_at' => now(),
+        ]);
+        event(new \App\Events\Tag\TagDescriptionUpdated($tag, Auth::user(), $old));
+        return $this->tagRepository->load($tag);
     }
 }

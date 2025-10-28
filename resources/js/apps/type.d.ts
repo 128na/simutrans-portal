@@ -10,6 +10,11 @@ type Tag = {
   updated_at: string;
   articles_count: number;
 };
+type NewTag = {
+  id: null;
+  name: null | string;
+  description: null | string;
+};
 
 type SimpleUser = {
   id: number;

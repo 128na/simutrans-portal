@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-import { CloseIcon } from "../svg/CloseIcon";
 import axios from "axios";
+import Input from "../elements/Input";
+import Textarea from "../elements/Textarea";
+import Button from "../elements/Button";
+import ButtonOutline from "../elements/ButtonOuline";
+import ButtonClose from "../elements/ButtonClose";
 
 type Props = {
   tag: Tag | NewTag | null;
@@ -36,6 +40,7 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
         onSave(res.data as Tag);
       }
     } catch (error) {
+      // TODO: エラー表示
       console.log("error", error);
     }
   };
@@ -52,51 +57,32 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
             <h3 className="text-lg font-semibold text-gray-900 ">
               {tag.id ? "タグ編集" : "タグ新規作成"}
             </h3>
-            <button
-              onClick={onClose}
-              type="button"
-              className="text-gray-400 hover:text-gray-900 rounded-lg text-sm p-1.5"
-            >
-              <CloseIcon />
-            </button>
+            <ButtonClose onClick={onClose} />
           </div>
 
           <div className="grid gap-x-4 mb-4">
-            <label className="block text-sm/6 font-semibold text-gray-900">
+            <Input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              disabled={!!tag.id}
+              className={!!tag.id ? "bg-gray-100" : ""}
+            >
               タグ名
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                disabled={!!tag.id}
-                className="block w-full border border-gray-300 rounded-lg px-4 py-2"
-              />
-            </label>
+            </Input>
 
-            <label className="block text-sm/6 font-semibold text-gray-900">
+            <Textarea
+              rows={4}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            >
               説明
-              <textarea
-                rows={4}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="block w-full border border-gray-300 rounded-lg px-4 py-2"
-              />
-            </label>
+            </Textarea>
           </div>
 
           <div className="flex justify-end space-x-2">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 rounded-lg border text-gray-700 hover:bg-gray-100"
-            >
-              キャンセル
-            </button>
-            <button
-              onClick={handleSave}
-              className="px-4 py-2  bg-brand text-white rounded-lg hover:bg-brand/90"
-            >
-              保存
-            </button>
+            <ButtonOutline onClick={onClose}>キャンセル</ButtonOutline>
+            <Button onClick={handleSave}>保存</Button>
           </div>
         </div>
       </div>

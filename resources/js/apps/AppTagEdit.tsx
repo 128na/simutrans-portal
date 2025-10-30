@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
-import { TagTable } from "./components/TagTable";
-import { TagModal } from "./components/TagModal";
+import { TagTable } from "@/apps/features/tags/TagTable";
+import { TagModal } from "@/apps/features/tags/TagModal";
 import { useState } from "react";
 
 const app = document.getElementById("app-tag-edit");

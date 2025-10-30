@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Input from "../elements/Input";
+import Input from "@/apps/components/ui/Input";
 
 export type Option = {
   id: number;

@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import Input from "../elements/Input";
-import Textarea from "../elements/Textarea";
-import Button from "../elements/Button";
-import ButtonOutline from "../elements/ButtonOuline";
-import ButtonClose from "../elements/ButtonClose";
+import axios, { AxiosError } from "axios";
+import Input from "@/apps/components/ui/Input";
+import Textarea from "@/apps/components/ui/Textarea";
+import Button from "@/apps/components/ui/Button";
+import ButtonOutline from "@/apps/components/ui/ButtonOuline";
+import ButtonClose from "@/apps/components/ui/ButtonClose";
+import { useAxiosErrorState } from "../../state/errorState";
+import TextError from "@/apps/components/ui/TextError";
+import TextSub from "@/apps/components/ui/TextSub";
 
 type Props = {
   tag: Tag | NewTag | null;
@@ -15,6 +18,7 @@ type Props = {
 export const TagModal = ({ tag, onClose, onSave }: Props) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const { error, setError, getError, hasError } = useAxiosErrorState();
 
   // tag が変わったときにフォームを更新
   useEffect(() => {
@@ -40,8 +44,10 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
         onSave(res.data as Tag);
       }
     } catch (error) {
-      // TODO: エラー表示
       console.log("error", error);
+      if (error instanceof AxiosError) {
+        setError(error);
+      }
     }
   };
 
@@ -68,9 +74,14 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
               disabled={!!tag.id}
               className={!!tag.id ? "bg-gray-100" : ""}
             >
-              タグ名
+              名前
             </Input>
-
+            {tag.id ? (
+              <TextSub className="mb-2">タグ名は編集できません。</TextSub>
+            ) : null}
+            <TextError className="mb-2">
+              {getError("name")?.join("\n")}
+            </TextError>
             <Textarea
               rows={4}
               value={description}
@@ -78,6 +89,9 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
             >
               説明
             </Textarea>
+            <TextError className="mb-2">
+              {getError("description")?.join("\n")}
+            </TextError>
           </div>
 
           <div className="flex justify-end space-x-2">

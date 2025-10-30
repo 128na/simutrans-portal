@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { SelectableSearch } from "./components/SelectableSearch";
+import { SelectableSearch } from "@/apps/components/form/SelectableSearch";
 
 const app = document.getElementById("app-search-tags");
 

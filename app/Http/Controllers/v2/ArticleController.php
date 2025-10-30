@@ -18,8 +18,14 @@ final class ArticleController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View
     {
-        return view('v2.mypage.index', [
-            'user' => Auth::user(),
+        $user = Auth::user();
+        return view('v2.mypage.articles', [
+            'user' => $user->only(['id', 'name', 'nickname']),
+            'articles' => $user
+                ->articles()
+                ->select('id', 'title', 'slug', 'status', 'post_type', 'published_at', 'modified_at')
+                ->with('attachments', 'totalConversionCount', 'totalViewCount')
+                ->get(),
             'meta' => $this->metaOgpService->articleIndex(),
         ]);
     }

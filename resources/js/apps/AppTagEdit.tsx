@@ -9,7 +9,7 @@ if (app) {
   const tags = JSON.parse(app.dataset.tags || "[]") as Tag[];
 
   const App = () => {
-    const [selectedTag, setSelectedTag] = useState<Tag | NewTag | null>(null);
+    const [selected, setSelected] = useState<Tag | NewTag | null>(null);
     const updateTag = (tag: Tag) => {
       const index = tags.findIndex((t) => t.id === tag.id);
       if (index !== -1) {
@@ -17,18 +17,14 @@ if (app) {
       } else {
         tags.push(tag);
       }
-      setSelectedTag(null);
+      setSelected(null);
     };
     return (
       <>
-        <TagTable
-          tags={tags}
-          limit={15}
-          onClick={(tag) => setSelectedTag(tag)}
-        />
+        <TagTable tags={tags} limit={15} onClick={(tag) => setSelected(tag)} />
         <TagModal
-          tag={selectedTag}
-          onClose={() => setSelectedTag(null)}
+          tag={selected}
+          onClose={() => setSelected(null)}
           onSave={updateTag}
         />
       </>

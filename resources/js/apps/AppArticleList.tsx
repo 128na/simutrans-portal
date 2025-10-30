@@ -1,5 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { ArticleTable } from "./features/articles/ArticleTable";
+import { ArticleModal } from "./features/articles/ArticleModal";
+import { useState } from "react";
 
 const app = document.getElementById("app-article-list");
 
@@ -8,18 +10,18 @@ if (app) {
   const articles = JSON.parse(app.dataset.articles || "[]");
   console.log({ user, articles });
 
-  const onArticleClick = (article: ListingArticle) => {
-    console.log({ article });
-  };
-
   const App = () => {
+    const [selected, setSelected] = useState<ListingArticle | null>(null);
     return (
-      <ArticleTable
-        user={user}
-        articles={articles}
-        limit={15}
-        onClick={onArticleClick}
-      />
+      <>
+        <ArticleTable
+          user={user}
+          articles={articles}
+          limit={15}
+          onClick={setSelected}
+        />
+        <ArticleModal article={selected} onClose={() => setSelected(null)} />
+      </>
     );
   };
 

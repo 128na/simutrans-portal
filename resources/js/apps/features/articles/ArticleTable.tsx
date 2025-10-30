@@ -28,6 +28,8 @@ const headers: DataTableHeader<keyof ListingArticle>[] = [
   { name: "タイトル", key: "title", width: "w-4/12", sortable: true },
   { name: "ステータス", key: "status", width: "w-2/12", sortable: true },
   { name: "投稿形式", key: "post_type", width: "w-2/12", sortable: true },
+  { name: "公開日時", key: "published_at", width: "w-2/12", sortable: true },
+  { name: "更新日時", key: "modified_at", width: "w-2/12", sortable: true },
   { name: "PV数", key: "total_view_count", width: "w-1/12", sortable: true },
   {
     name: "CV数",
@@ -35,8 +37,6 @@ const headers: DataTableHeader<keyof ListingArticle>[] = [
     width: "w-1/12",
     sortable: true,
   },
-  { name: "公開日時", key: "published_at", width: "w-2/12", sortable: true },
-  { name: "更新日時", key: "modified_at", width: "w-2/12", sortable: true },
 ];
 
 export const ArticleTable = ({ articles, limit, onClick }: Props) => {
@@ -105,12 +105,6 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
             <td className="px-6 py-4">{StatusText[article.status]}</td>
             <td className="px-6 py-4">{PostTypeText[article.post_type]}</td>
             <td className="px-6 py-4">
-              {article.total_view_count?.count ?? 0}
-            </td>
-            <td className="px-6 py-4">
-              {article.total_conversion_count?.count ?? 0}
-            </td>
-            <td className="px-6 py-4">
               {article.published_at
                 ? format(new Date(article.published_at), "yyyy/MM/dd H:mm")
                 : "-"}
@@ -118,6 +112,12 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
             </td>
             <td className="px-6 py-4">
               {format(new Date(article.modified_at), "yyyy/MM/dd H:mm")}
+            </td>
+            <td className="px-6 py-4">
+              {article.total_view_count?.count ?? 0}
+            </td>
+            <td className="px-6 py-4">
+              {article.total_conversion_count?.count ?? 0}
             </td>
           </tr>
         )}

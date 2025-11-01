@@ -4,26 +4,6 @@ import { match, P } from "ts-pattern";
 import { JSX, useState } from "react";
 import { SelectPostType } from "./features/articles/SelectPostType";
 
-export type NewArticle = {
-  id: null;
-  user_id: number;
-  title: null | string;
-  slug: null | string;
-  post_type: null | "addon-post" | "addon-introduction" | "page" | "markdown";
-  status: "publish" | "reservation" | "draft" | "trash" | "private";
-  published_at: string | null;
-  modified_at: string | null;
-  created_at: string | null;
-  updated_at: string | null;
-  contents:
-    | null
-    | ContentAddonPost
-    | ContentAddonIntroduction
-    | ContentPage
-    | ContentMarkdown;
-};
-type PostType = NewArticle["post_type"];
-
 const app = document.getElementById("app-article-create");
 
 if (app) {
@@ -40,13 +20,13 @@ if (app) {
     modified_at: null,
     created_at: null,
     updated_at: null,
-  } as NewArticle;
+  } as Article.Creating;
   const article = deepCopy(newArticle);
 
   const App = () => {
-    const [postType, setPostType] = useState<PostType>(null);
+    const [postType, setPostType] = useState<PostType | null>(null);
 
-    return match<PostType>(postType)
+    return match<PostType | null>(postType)
       .returnType<JSX.Element>()
       .with("page", () => <div>page</div>)
       .with("markdown", () => <div>markdown</div>)

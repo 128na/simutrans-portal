@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios, { AxiosError } from "axios";
 import Input from "@/apps/components/ui/Input";
 import Textarea from "@/apps/components/ui/Textarea";
@@ -10,26 +10,15 @@ import TextError from "@/apps/components/ui/TextError";
 import TextSub from "@/apps/components/ui/TextSub";
 
 type Props = {
-  tag: Tag | NewTag | null;
+  tag: Tag.Listing | Tag.Creating | null;
   onClose?: () => void;
-  onSave?: (tag: Tag) => void;
+  onSave?: (tag: Tag.Listing) => void;
 };
 
 export const TagModal = ({ tag, onClose, onSave }: Props) => {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const { error, setError, getError, hasError } = useAxiosErrorState();
-
-  // tag が変わったときにフォームを更新
-  useEffect(() => {
-    if (tag) {
-      setName(tag.name ?? "");
-      setDescription(tag.description ?? "");
-    } else {
-      setName("");
-      setDescription("");
-    }
-  }, [tag]);
+  const [name, setName] = useState(tag?.name ?? "");
+  const [description, setDescription] = useState(tag?.description ?? "");
+  const { setError, getError } = useAxiosErrorState();
 
   // tag が null の場合はモーダルを非表示にする
   if (!tag) return null;
@@ -41,7 +30,7 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
         : await axios.post(`/api/v2/tags`, { name, description });
       console.log({ res });
       if ((res.status === 200 || res.status === 201) && onSave) {
-        onSave(res.data as Tag);
+        onSave(res.data as Tag.Listing);
       }
     } catch (error) {
       console.log("error", error);
@@ -72,7 +61,7 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               disabled={!!tag.id}
-              className={!!tag.id ? "bg-gray-100" : ""}
+              className={tag.id ? "bg-gray-100" : ""}
             >
               名前
             </Input>

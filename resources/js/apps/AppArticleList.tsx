@@ -10,7 +10,7 @@ if (app) {
   const articles = JSON.parse(app.dataset.articles || "[]");
 
   const App = () => {
-    const [selected, setSelected] = useState<ListingArticle | null>(null);
+    const [selected, setSelected] = useState<Article.Listing | null>(null);
     return (
       <>
         <ArticleTable articles={articles} limit={15} onClick={setSelected} />

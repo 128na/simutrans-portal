@@ -1,9 +1,5 @@
-import { NewArticle } from "@/apps/AppArticleCreate";
-
 type Props = {
-  onClick: (
-    postType: "page" | "markdown" | "addon-post" | "addon-introduction",
-  ) => void;
+  onClick: (postType: PostType) => void;
 };
 export const SelectPostType = ({ onClick }: Props) => {
   return (

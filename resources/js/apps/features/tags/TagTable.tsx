@@ -7,17 +7,17 @@ import { twMerge } from "tailwind-merge";
 import { DataTable, DataTableHeader } from "@/apps/components/layout/DataTable";
 
 type Props = {
-  tags: Tag[];
+  tags: Tag.Listing[];
   limit: number;
-  onClick?: (tag: Tag | NewTag) => void;
+  onClick?: (tag: Tag.Listing | Tag.Creating) => void;
 };
 
 type Sort = {
-  column: keyof Tag;
+  column: keyof Tag.Listing;
   order: "asc" | "desc";
 };
 
-const headers: DataTableHeader<keyof Tag>[] = [
+const headers: DataTableHeader<keyof Tag.Listing>[] = [
   { name: "タグ名", key: "name", width: "w-2/12", sortable: true },
   { name: "説明", key: "description", width: "w-3/12", sortable: true },
   { name: "記事数", key: "articles_count", width: "w-1/12", sortable: true },
@@ -43,7 +43,7 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
     return sort.order === "asc" ? result : -result;
   });
 
-  const onSort = (column: keyof Tag) => {
+  const onSort = (column: keyof Tag.Listing) => {
     setSort((prev) =>
       prev.column === column
         ? { column, order: prev.order === "asc" ? "desc" : "asc" }

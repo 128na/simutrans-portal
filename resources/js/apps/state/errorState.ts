@@ -5,12 +5,9 @@ type ValidationError = {
   errors: Record<string, string[]>;
   message: string;
 };
-type OtherError = {};
 
 export const useAxiosErrorState = () => {
-  const [error, setError] = useState<AxiosError<
-    ValidationError | OtherError
-  > | null>(null);
+  const [error, setError] = useState<AxiosError<ValidationError> | null>(null);
 
   const hasError = (key: string) => {
     const data = error?.response?.data;

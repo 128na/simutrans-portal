@@ -32,51 +32,57 @@ final class ArticleController extends Controller
 
     public function create(): \Illuminate\Contracts\View\View
     {
-        if (Auth::user()->cannot('store', Article::class)) {
+        $user = Auth::user();
+        if ($user->cannot('store', Article::class)) {
             return abort(403);
         }
 
-        return view('v2.mypage.index', [
-            'user' => Auth::user(),
+        return view('v2.mypage.article-create', [
+            'user' => $user->only(['id', 'name', 'nickname', 'role']),
+            'attachments' => $user->myAttachments()->with('fileInfo')->get(),
             'meta' => $this->metaOgpService->articleCreate(),
         ]);
     }
 
     public function store(Request $request): \Illuminate\Contracts\View\View
     {
-        if (Auth::user()->cannot('store', Article::class)) {
+        $user = Auth::user();
+        if ($user->cannot('store', Article::class)) {
             return abort(403);
         }
 
         // TODO: store logic
         return view('v2.mypage.index', [
-            'user' => Auth::user(),
+            'user' => $user,
             'meta' => $this->metaOgpService->articleCreate(),
         ]);
     }
 
     public function edit(Article $article): \Illuminate\Contracts\View\View
     {
-        if (Auth::user()->cannot('update', $article)) {
+        $user = Auth::user();
+        if ($user->cannot('update', $article)) {
             return abort(403);
         }
 
-        // TODO: edit logic
-        return view('v2.mypage.index', [
-            'user' => Auth::user(),
+        return view('v2.mypage.article-edit', [
+            'user' => $user->only(['id', 'name', 'nickname', 'role']),
+            'article' => $article,
+            'attachments' => $user->myAttachments()->with('fileInfo')->get(),
             'meta' => $this->metaOgpService->articleEdit(),
         ]);
     }
 
     public function update(Request $request, Article $article): \Illuminate\Contracts\View\View
     {
-        if (Auth::user()->cannot('update', $article)) {
+        $user = Auth::user();
+        if ($user->cannot('update', $article)) {
             return abort(403);
         }
 
         // TODO: update logic
         return view('v2.mypage.index', [
-            'user' => Auth::user(),
+            'user' => $user,
             'meta' => $this->metaOgpService->articleEdit(),
         ]);
     }

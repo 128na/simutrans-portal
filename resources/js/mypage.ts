@@ -4,3 +4,4 @@ import "./js-apps/confirm";
 import "./js-apps/copy";
 import "./apps/AppTagEdit";
 import "./apps/AppArticleList";
+import "./apps/AppArticleCreate";

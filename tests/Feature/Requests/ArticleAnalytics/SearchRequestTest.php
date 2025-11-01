@@ -13,9 +13,9 @@ use Tests\Feature\TestCase;
 
 final class SearchRequestTest extends TestCase
 {
-    public Article $othersArticle;
-
     private User $user;
+
+    private Article $othersArticle;
 
     #[\Override]
     protected function setUp(): void

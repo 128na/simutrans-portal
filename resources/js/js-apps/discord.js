@@ -9,7 +9,9 @@ if (siteKey && app && recaptchaToken && form) {
 
     try {
       // reCAPTCHAトークンを取得
-      const token = await window.grecaptcha.enterprise.execute(siteKey, { action: "invite" });
+      const token = await window.grecaptcha.enterprise.execute(siteKey, {
+        action: "invite",
+      });
       recaptchaToken.value = token;
 
       // トークンをセットしたあとに送信

@@ -25,23 +25,7 @@ const routes = [
         ,
       },
       {
-        name: 'security', path: 'security', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Security.vue')
-        ,
-      },
-      {
-        name: 'invitation', path: 'invitation', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Invitation.vue')
-        ,
-      },
-      {
         name: 'redirect', path: 'redirect', meta: { requiresVerified: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Redirect.vue')
-        ,
-      },
-      {
-        name: 'requiresVerified', path: 'requires-verified', meta: { requiresAuth: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/RequiresVerified.vue')
-        ,
-      },
-      {
-        name: 'logout', path: 'logout', meta: { requiresAuth: true }, component: () => import(/* webpackChunkName: "mypage" */'pages/Mypage/Logout.vue')
         ,
       },
     ],

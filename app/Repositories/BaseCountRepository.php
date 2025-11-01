@@ -41,12 +41,12 @@ abstract class BaseCountRepository extends BaseRepository
         $yearly = $datetime->format('Y');
         $total = 'total';
 
-        return "INSERT INTO {$table}(article_id, type, period, count)
+        return "INSERT INTO {$table}(user_id, article_id, type, period, count)
             VALUES
-                ({$article->id}, 1,'{$dayly}', 1),
-                ({$article->id}, 2,'{$monthly}', 1),
-                ({$article->id}, 3,'{$yearly}', 1),
-                ({$article->id}, 4,'{$total}', 1)
+                ({$article->user_id}, {$article->id}, 1,'{$dayly}', 1),
+                ({$article->user_id}, {$article->id}, 2,'{$monthly}', 1),
+                ({$article->user_id}, {$article->id}, 3,'{$yearly}', 1),
+                ({$article->user_id}, {$article->id}, 4,'{$total}', 1)
             ON DUPLICATE KEY UPDATE
                 count = count + 1;";
     }

@@ -12,7 +12,7 @@ use Tests\Feature\TestCase;
 
 final class StoreRequestTest extends TestCase
 {
-    public Tag $tag;
+    private Tag $tag;
 
     #[\Override]
     protected function setUp(): void

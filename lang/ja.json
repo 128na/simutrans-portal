@@ -11,5 +11,13 @@
   "The provided password does not match your current password.": "指定されたパスワードは現在のパスワードと一致しません。",
   "The provided two factor authentication code was invalid.": "指定された二要素認証コードが無効です。",
   "The provided two factor recovery code was invalid.": "指定された二要素リカバリ コードが無効です。",
-  "The provided password was incorrect.": "指定されたパスワードが正しくありません"
+  "The provided password was incorrect.": "指定されたパスワードが正しくありません",
+  "-- fortify status messages https://github.com/laravel/fortify/blob/master/src/Fortify.php --": "",
+  "password-updated": "パスワードを更新しました。",
+  "profile-information-updated": "プロフィールを更新しました。",
+  "recovery-codes-generated": "リカバリコードを生成しました。",
+  "two-factor-authentication-confirmed": "二要素認証の確認が完了しました。",
+  "two-factor-authentication-disabled": "二要素認証を無効にしました。",
+  "two-factor-authentication-enabled": "二要素認証設定用のQRコードを生成しました。",
+  "verification-link-sent": "確認メールを送信しました。"
 }

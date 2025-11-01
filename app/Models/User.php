@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Contracts\Models\BulkZippableInterface;
 use App\Enums\UserRole;
+use App\Models\Article\ViewCount;
 use App\Models\User\LoginHistory;
 use App\Models\User\Profile;
 use App\Notifications\ResetPassword;
@@ -53,6 +54,7 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
         'password',
         'remember_token',
         'two_factor_recovery_codes',
+        'two_factor_secret',
     ];
 
     public function syncRelatedData(): void
@@ -180,6 +182,16 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
         return $this->hasMany(Redirect::class);
     }
 
+    /**
+     * @return HasOne<ViewCount,$this>
+     */
+    public function currentMonthViewCount(): HasOne
+    {
+        return $this->hasOne(ViewCount::class)
+            ->where('type', ViewCount::TYPE_MONTHLY)
+            ->where('period', now()->format('Ym'));
+    }
+
     /*
     |--------------------------------------------------------------------------
     | 一般
@@ -213,7 +225,8 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     /**
      * @param  Builder<User>  $builder
      */
-    protected function scopeAdmin(Builder $builder): void
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function admin(Builder $builder): void
     {
         $builder->where('role', UserRole::Admin);
     }

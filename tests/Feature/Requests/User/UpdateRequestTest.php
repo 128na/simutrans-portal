@@ -12,7 +12,7 @@ use Tests\Feature\TestCase;
 
 final class UpdateRequestTest extends TestCase
 {
-    public User $user;
+    private User $user;
 
     #[\Override]
     protected function setUp(): void

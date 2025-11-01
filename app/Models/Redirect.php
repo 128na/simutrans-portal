@@ -39,7 +39,8 @@ final class Redirect extends Model
     /**
      * @param  Builder<Redirect>  $builder
      */
-    protected function scopeFrom(Builder $builder, string $from): void
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function from(Builder $builder, string $from): void
     {
         $builder->where('from', $from);
     }

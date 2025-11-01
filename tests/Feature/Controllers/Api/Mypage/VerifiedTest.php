@@ -53,8 +53,5 @@ final class VerifiedTest extends TestCase
         yield '分析対象一覧' => ['getJson', fn (self $self): string => '/api/mypage/analytics'];
         // 一括DL機能
         yield 'zip作成' => ['getJson', fn (self $self): string => '/api/mypage/bulk-zip'];
-        // 招待機能
-        yield '招待コード発行' => ['postJson', fn (self $self): string => '/api/mypage/invitation_code'];
-        yield '招待コード削除' => ['deleteJson', fn (self $self): string => '/api/mypage/invitation_code'];
     }
 }

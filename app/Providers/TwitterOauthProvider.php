@@ -42,7 +42,7 @@ final class TwitterOauthProvider extends ServiceProvider implements DeferrablePr
             route('admin.oauth.twitter.callback'),
         ));
 
-        $this->app->bind(TwitterV2Api::class, function (): \App\Services\Twitter\TwitterV2Api {
+        $this->app->bind(function (): \App\Services\Twitter\TwitterV2Api {
             $twitterV2Api = new TwitterV2Api(
                 Config::string('services.twitter.consumer_key'),
                 Config::string('services.twitter.consumer_secret'),

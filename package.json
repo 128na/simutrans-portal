@@ -35,6 +35,7 @@
     "flowbite": "^3.1.2",
     "react": "^19",
     "react-dom": "^19",
-    "tailwind-merge": "^3"
+    "tailwind-merge": "^3",
+    "ts-pattern": "^5.9.0"
   }
 }

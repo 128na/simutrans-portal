@@ -82,45 +82,45 @@ type Content = {
   thumbnail: number;
 };
 type ContentAddonPost = Content & {
-  description: string;
-  file: number;
+  description: string | null;
+  file: number | null;
   author: string | null;
   license: string | null;
   thanks: string | null;
 };
 type ContentAddonIntroduction = Content & {
-  description: string;
-  link: string;
-  author: string;
+  description: string | null;
+  link: string | null;
+  author: string | null;
   license: string | null;
   thanks: string | null;
   agreement: boolean;
   exclude_link_check: boolean;
 };
 type ContentMarkdown = Content & {
-  markdown: string;
+  markdown: string | null;
 };
 type ContentPage = Content & {
   sections: (SectionText | SectionImage | SectionCaption | SectionUrl)[];
 };
 
 type Section = {
-  type: string;
+  type: string | null;
 };
 type SectionText = Section & {
   type: "text";
-  text: string;
+  text: string | null;
 };
 type SectionImage = Section & {
   type: "image";
-  image: number;
+  image: number | null;
 };
 type SectionUrl = Section & {
   type: "url";
-  url: string;
+  url: string | null;
 };
 
 type SectionCaption = Section & {
   type: "caption";
-  caption: string;
+  caption: string | null;
 };

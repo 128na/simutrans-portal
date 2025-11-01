@@ -66,3 +66,7 @@ export const StatusClass = {
   trash: "bg-gray-200 hover:bg-gray-300",
   private: "bg-gray-200 hover:bg-gray-300",
 } satisfies Record<ListingArticle["status"], string>;
+
+export const deepCopy = <T>(obj: T): T => {
+  return JSON.parse(JSON.stringify(obj));
+};

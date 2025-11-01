@@ -11,9 +11,9 @@ import {
   StatusText,
 } from "./articleUtil";
 import { format } from "date-fns";
+import Button from "@/apps/components/ui/Button";
 
 type Props = {
-  user: User;
   articles: ListingArticle[];
   limit: number;
   onClick?: (article: ListingArticle) => void;
@@ -67,9 +67,16 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
     );
   };
 
+  const createUrl = `${import.meta.env.VITE_APP_URL}/mypage/articles/create`;
+
   return (
     <div className="relative overflow-x-auto">
       <div className="gap-4 flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between py-4">
+        <div>
+          <Button onClick={() => (window.location.href = createUrl)}>
+            作成
+          </Button>
+        </div>
         <div>
           <Input
             type="text"

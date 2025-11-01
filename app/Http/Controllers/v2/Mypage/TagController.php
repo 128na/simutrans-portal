@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\v2;
+namespace App\Http\Controllers\v2\Mypage;
 
 use App\Http\Requests\Api\Tag\StoreRequest;
 use App\Http\Requests\Api\Tag\UpdateRequest;

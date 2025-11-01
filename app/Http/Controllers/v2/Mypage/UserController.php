@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\v2;
+namespace App\Http\Controllers\v2\Mypage;
 
 use App\Actions\User\Registration;
 use App\Http\Controllers\Controller;

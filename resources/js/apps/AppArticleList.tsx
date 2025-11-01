@@ -14,13 +14,12 @@ if (app) {
     const [selected, setSelected] = useState<ListingArticle | null>(null);
     return (
       <>
-        <ArticleTable
+        <ArticleTable articles={articles} limit={15} onClick={setSelected} />
+        <ArticleModal
           user={user}
-          articles={articles}
-          limit={15}
-          onClick={setSelected}
+          article={selected}
+          onClose={() => setSelected(null)}
         />
-        <ArticleModal article={selected} onClose={() => setSelected(null)} />
       </>
     );
   };

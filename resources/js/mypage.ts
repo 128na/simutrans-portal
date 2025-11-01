@@ -5,3 +5,4 @@ import "./js-apps/copy";
 import "./apps/AppTagEdit";
 import "./apps/AppArticleList";
 import "./apps/AppArticleCreate";
+import "./apps/AppArticleEdit";

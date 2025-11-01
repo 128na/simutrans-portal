@@ -70,3 +70,57 @@ export const StatusClass = {
 export const deepCopy = <T>(obj: T): T => {
   return JSON.parse(JSON.stringify(obj));
 };
+
+export const createContents = (postType: PostType) => {
+  switch (postType) {
+    case "page":
+      return {
+        type: "page",
+        thumbnail: null,
+        sections: [],
+      } as ContentPage;
+    case "addon-post":
+      return {
+        type: "addon-post",
+        thumbnail: null,
+        description: null,
+        file: null,
+        author: null,
+        license: null,
+        thanks: null,
+      } as ContentAddonPost;
+    case "addon-introduction":
+      return {
+        type: "addon-introduction",
+        thumbnail: null,
+        description: null,
+        link: null,
+        author: null,
+        license: null,
+        thanks: null,
+        agreement: false,
+        exclude_link_check: false,
+      } as ContentAddonIntroduction;
+    case "markdown":
+      return {
+        type: "markdown",
+        thumbnail: null,
+        markdown: null,
+      } as ContentMarkdown;
+  }
+};
+export const createArticle = (postType: PostType, user: User.WithRole) => {
+  return {
+    id: null,
+    user_id: user.id,
+    title: "",
+    slug: "",
+    post_type: postType,
+    status: "draft",
+    contents: createContents(postType),
+    published_at: null,
+    modified_at: null,
+    created_at: null,
+    updated_at: null,
+  } as Article.Editing;
+};

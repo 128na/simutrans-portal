@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers\v2\Mypage;
 
 use App\Models\Article;
+use App\Repositories\v2\ArticleRepository;
+use App\Repositories\v2\CategoryRepository;
+use App\Repositories\v2\TagRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -13,6 +16,9 @@ use Illuminate\Support\Facades\Auth;
 final class ArticleController extends Controller
 {
     public function __construct(
+        private readonly ArticleRepository $articleRepository,
+        private readonly CategoryRepository $categoryRepository,
+        private readonly TagRepository $tagRepository,
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
@@ -39,7 +45,10 @@ final class ArticleController extends Controller
 
         return view('v2.mypage.article-create', [
             'user' => $user->only(['id', 'name', 'nickname', 'role']),
-            'attachments' => $user->myAttachments()->with('fileInfo')->get(),
+            'attachments' => $user->myAttachments()->with('fileInfo')->get()->each->makeVisible(['path']),
+            'categories' => $this->categoryRepository->getForSearch()->groupBy('type'),
+            'tags' => $this->tagRepository->getForEdit(),
+            'relationalArticles' => $this->articleRepository->getForEdit(),
             'meta' => $this->metaOgpService->articleCreate(),
         ]);
     }
@@ -67,8 +76,11 @@ final class ArticleController extends Controller
 
         return view('v2.mypage.article-edit', [
             'user' => $user->only(['id', 'name', 'nickname', 'role']),
-            'article' => $article,
-            'attachments' => $user->myAttachments()->with('fileInfo')->get(),
+            'article' => $article->load('categories', 'tags', 'articles'),
+            'attachments' => $user->myAttachments()->with('fileInfo')->get()->each->makeVisible(['path']),
+            'categories' => $this->categoryRepository->getForSearch()->groupBy('type'),
+            'tags' => $this->tagRepository->getForEdit(),
+            'relationalArticles' => $this->articleRepository->getForEdit($article),
             'meta' => $this->metaOgpService->articleEdit(),
         ]);
     }

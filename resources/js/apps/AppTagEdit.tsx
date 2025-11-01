@@ -6,7 +6,9 @@ import { useState } from "react";
 const app = document.getElementById("app-tag-edit");
 
 if (app) {
-  const tags = JSON.parse(app.dataset.tags || "[]") as Tag.Listing[];
+  const tags = JSON.parse(
+    document.getElementById("data-tags")?.textContent || "[]",
+  ) as Tag.Listing[];
 
   const App = () => {
     const [selected, setSelected] = useState<Tag.Listing | Tag.Creating | null>(

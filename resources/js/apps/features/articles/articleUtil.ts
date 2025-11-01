@@ -35,9 +35,9 @@ export const compareArticleValues = (a: unknown, b: unknown): number => {
 };
 
 export const articleFilter = (
-  articles: ListingArticle[],
+  articles: Article.Listing[],
   criteria: string,
-): ListingArticle[] => {
+) => {
   const q = criteria.toLowerCase();
   return articles.filter((t) => {
     return t.title.toLowerCase().includes(q);
@@ -49,7 +49,7 @@ export const PostTypeText = {
   "addon-introduction": "アドオン紹介",
   page: "記事",
   markdown: "記事（マークダウン）",
-} satisfies Record<ListingArticle["post_type"], string>;
+} satisfies Record<PostType, string>;
 
 export const StatusText = {
   publish: "公開中",
@@ -57,7 +57,7 @@ export const StatusText = {
   draft: "下書き",
   trash: "ゴミ箱",
   private: "非公開",
-} satisfies Record<ListingArticle["status"], string>;
+} satisfies Record<Status, string>;
 
 export const StatusClass = {
   publish: "bg-white hover:bg-gray-100",
@@ -65,7 +65,7 @@ export const StatusClass = {
   draft: "bg-orange-100 hover:bg-orange-200",
   trash: "bg-gray-200 hover:bg-gray-300",
   private: "bg-gray-200 hover:bg-gray-300",
-} satisfies Record<ListingArticle["status"], string>;
+} satisfies Record<Status, string>;
 
 export const deepCopy = <T>(obj: T): T => {
   return JSON.parse(JSON.stringify(obj));

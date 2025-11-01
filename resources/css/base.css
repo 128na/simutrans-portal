@@ -6,23 +6,56 @@
   --color-category: #607d8b;
 }
 
-.markdown-body h1 { @apply text-2xl font-semibold text-brand sm:text-2xl my-8; }
-.markdown-body h2 { @apply text-xl font-semibold sm:text-xl my-8; }
-.markdown-body h3 { @apply text-xl sm:text-xl my-4 p-4 flex w-full items-center justify-between bg-gray-100; }
-.markdown-body h4 { @apply text-xl font-semibold sm:text-xl my-8; }
-.markdown-body h5 { @apply text-xl font-semibold sm:text-xl my-8; }
-.markdown-body h6 { @apply text-xl font-semibold sm:text-xl my-8; }
+.markdown-body h1 {
+  @apply text-2xl font-semibold text-brand sm:text-2xl my-8;
+}
+.markdown-body h2 {
+  @apply text-xl font-semibold sm:text-xl my-8;
+}
+.markdown-body h3 {
+  @apply text-xl sm:text-xl my-4 p-4 flex w-full items-center justify-between bg-gray-100;
+}
+.markdown-body h4 {
+  @apply text-xl font-semibold sm:text-xl my-8;
+}
+.markdown-body h5 {
+  @apply text-xl font-semibold sm:text-xl my-8;
+}
+.markdown-body h6 {
+  @apply text-xl font-semibold sm:text-xl my-8;
+}
 
-.markdown-body p { @apply text-base leading-relaxed mb-4; }
-.markdown-body a { @apply decoration-sky-600 text-sky-600 underline; }
-.markdown-body img { @apply mt-6 mb-12 rounded-lg shadow-md; }
+.markdown-body p {
+  @apply text-base leading-relaxed mb-4;
+}
+.markdown-body a {
+  @apply decoration-sky-600 text-sky-600 underline;
+}
+.markdown-body img {
+  @apply mt-6 mb-12 rounded-lg shadow-md;
+}
 
-.markdown-body code { @apply block bg-gray-100 rounded p-2 text-sm font-mono; }
-.markdown-body pre { @apply bg-gray-100 rounded p-4 my-6 overflow-x-auto; }
+.markdown-body code {
+  @apply block bg-gray-100 rounded p-2 text-sm font-mono;
+}
+.markdown-body pre {
+  @apply bg-gray-100 rounded p-4 my-6 overflow-x-auto;
+}
 
-.markdown-body table { @apply border-collapse my-6; }
-.markdown-body th, td { @apply border border-gray-300 px-4 py-2; }
-.markdown-body th { @apply bg-gray-500 text-white; }
+.markdown-body table {
+  @apply border-collapse my-6;
+}
+.markdown-body th,
+td {
+  @apply border border-gray-300 px-4 py-2;
+}
+.markdown-body th {
+  @apply bg-gray-500 text-white;
+}
 
-.markdown-body ul { @apply list-disc list-inside mb-4; }
-.markdown-body ol { @apply list-decimal list-inside mb-4; }
+.markdown-body ul {
+  @apply list-disc list-inside mb-4;
+}
+.markdown-body ol {
+  @apply list-decimal list-inside mb-4;
+}

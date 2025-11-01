@@ -1,25 +1,89 @@
-type Tag = {
-  id: number;
-  name: string;
-  description: string | null;
-  editable: boolean;
-  created_by: SimpleUser | null;
-  last_modified_by: SimpleUser | null;
-  last_modified_at: string | null;
-  created_at: string;
-  updated_at: string;
-  articles_count: number;
-};
-type NewTag = {
-  id: null;
-  name: null | string;
-  description: null | string;
-};
+namespace Tag {
+  type Listing = {
+    id: number;
+    name: string;
+    description: string | null;
+    editable: boolean;
+    created_by: User.Minimum | null;
+    last_modified_by: User.Minimum | null;
+    last_modified_at: string | null;
+    created_at: string;
+    updated_at: string;
+    articles_count: number;
+  };
+  type Creating = {
+    id: null;
+    name: null | string;
+    description: null | string;
+  };
+}
 
-type SimpleUser = {
-  id: number;
-  name: string;
-};
+namespace User {
+  type Minimum = {
+    id: number;
+    name: string;
+  };
+  type Listing = {
+    id: number;
+    name: string;
+    nickname: string | null;
+  };
+  type WithRole = {
+    id: number;
+    name: string;
+    nickname: string | null;
+    role: "admin" | "user";
+  };
+}
+
+namespace Article {
+  type Listing = {
+    id: number;
+    user_id: number;
+    title: string;
+    slug: string;
+    post_type: PostType;
+    status: Status;
+    attachments: Attachment[];
+    total_conversion_count: Count | null;
+    total_view_count: Count | null;
+    published_at: string | null;
+    modified_at: string;
+  };
+  type Editing = {
+    id: number;
+    user_id: number;
+    title: string;
+    slug: string;
+    post_type: PostType;
+    status: Status;
+    contents:
+      | ContentAddonPost
+      | ContentAddonIntroduction
+      | ContentPage
+      | ContentMarkdown;
+    published_at: string | null;
+    modified_at: string;
+    created_at: string;
+    updated_at: string;
+  };
+  type Creating = {
+    id: null;
+    user_id: number;
+    title: string | null;
+    slug: string | null;
+    post_type: PostType | null;
+    status: Status;
+    contents:
+      | null
+      | ContentAddonPost
+      | ContentAddonIntroduction
+      | ContentPage
+      | ContentMarkdown;
+    published_at: string | null;
+    modified_at: null;
+  };
+}
 
 type Count = {
   id: number;
@@ -30,19 +94,8 @@ type Count = {
   count: number;
 };
 
-type ListingArticle = {
-  id: number;
-  user_id: number;
-  title: string;
-  slug: string;
-  post_type: "addon-post" | "addon-introduction" | "page" | "markdown";
-  status: "publish" | "reservation" | "draft" | "trash" | "private";
-  attachments: Attachment[];
-  total_conversion_count: Count | null;
-  total_view_count: Count | null;
-  published_at: string | null;
-  modified_at: string;
-};
+type PostType = "addon-post" | "addon-introduction" | "page" | "markdown";
+type Status = "publish" | "reservation" | "draft" | "trash" | "private";
 
 type Attachment = {
   id: number;
@@ -52,28 +105,6 @@ type Attachment = {
   caption: string | null;
   original_name: string;
   order: number;
-  created_at: string;
-  updated_at: string;
-};
-
-type User = SimpleUser & {
-  nickname: string | null;
-};
-
-type EditArticle = {
-  id: number;
-  user_id: number;
-  title: string;
-  slug: string;
-  post_type: "addon-post" | "addon-introduction" | "page" | "markdown";
-  status: "publish" | "reservation" | "draft" | "trash" | "private";
-  contents:
-    | ContentAddonPost
-    | ContentAddonIntroduction
-    | ContentPage
-    | ContentMarkdown;
-  published_at: string | null;
-  modified_at: string;
   created_at: string;
   updated_at: string;
 };

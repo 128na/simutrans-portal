@@ -3,8 +3,7 @@ import Input from "@/apps/components/ui/Input";
 
 export type Option = {
   id: number;
-  [key: string]: any;
-};
+} & Record<string, string>;
 
 type Props = {
   name: string;

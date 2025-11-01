@@ -1,8 +1,8 @@
 import ButtonClose from "@/apps/components/ui/ButtonClose";
 
 type Props = {
-  user: User;
-  article: ListingArticle | null;
+  user: User.WithRole;
+  article: Article.Listing | null;
   onClose?: () => void;
 };
 

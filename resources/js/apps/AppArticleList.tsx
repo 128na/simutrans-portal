@@ -6,8 +6,12 @@ import { useState } from "react";
 const app = document.getElementById("app-article-list");
 
 if (app) {
-  const user = JSON.parse(app.dataset.user || "{}");
-  const articles = JSON.parse(app.dataset.articles || "[]");
+  const user = JSON.parse(
+    document.getElementById("data-user")?.textContent || "{}",
+  ) as User.WithRole;
+  const articles = JSON.parse(
+    document.getElementById("data-articles")?.textContent || "{}",
+  ) as Article.Listing[];
 
   const App = () => {
     const [selected, setSelected] = useState<Article.Listing | null>(null);

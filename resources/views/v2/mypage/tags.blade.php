@@ -9,7 +9,11 @@
             タグの削除はできません。紐づく記事が１つもなくなると数日後に自動削除されます。
         </p>
     </div>
+    <script id="data-tags" type="application/json">
+        @json($tags)
+
+    </script>
     <div class="mt-10 flex flex-col gap-y-12 border-t border-gray-200 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
-        <div id="app-tag-edit" data-tags='@json($tags)'></div>
+        <div id="app-tag-edit"></div>
     </div>
     @endsection

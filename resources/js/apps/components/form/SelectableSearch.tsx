@@ -1,13 +1,9 @@
 import { useState } from "react";
 import Input from "@/apps/components/ui/Input";
 
-export type Option = {
-  id: number;
-} & Record<string, string>;
-
 type Props = {
   name: string;
-  options: Option[];
+  options: SearchOption[];
   selectedIds: number[];
   labelKey?: string;
   placeholder?: string;
@@ -71,7 +67,7 @@ export const SelectableSearch = ({
         {options
           .filter(
             (o) =>
-              o[labelKey].toLowerCase().includes(criteria.toLowerCase()) &&
+              o[labelKey]?.toLowerCase().includes(criteria.toLowerCase()) &&
               !selectedIds.includes(o.id),
           )
           .map((o) => (

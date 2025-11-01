@@ -1,38 +1,64 @@
 import { createRoot } from "react-dom/client";
-import { deepCopy } from "./features/articles/articleUtil";
-import { match, P } from "ts-pattern";
-import { JSX, useState } from "react";
+import { match } from "ts-pattern";
+import { useEffect, useState } from "react";
 import { SelectPostType } from "./features/articles/SelectPostType";
+import { AddonIntroduction } from "./features/articles/postType/AddonIntroduction";
+import { AddonPost } from "./features/articles/postType/AddonPost";
+import { Markdown } from "./features/articles/postType/Markdown";
+import { Page } from "./features/articles/postType/Page";
+import { createArticle } from "./features/articles/articleUtil";
 
 const app = document.getElementById("app-article-create");
 
 if (app) {
-  const user = JSON.parse(app.dataset.user || "{}");
-  const newArticle = {
-    id: null,
-    user_id: user.id,
-    title: null,
-    slug: null,
-    post_type: null,
-    status: "draft",
-    contents: null,
-    published_at: null,
-    modified_at: null,
-    created_at: null,
-    updated_at: null,
-  } as Article.Creating;
-  const article = deepCopy(newArticle);
+  const user = JSON.parse(
+    document.getElementById("data-user")?.textContent || "{}",
+  );
+  const attachments = JSON.parse(
+    document.getElementById("data-attachments")?.textContent || "[]",
+  );
+  const categories = JSON.parse(
+    document.getElementById("data-categories")?.textContent || "[]",
+  );
+  const tags = JSON.parse(
+    document.getElementById("data-tags")?.textContent || "[]",
+  );
+  const relationalArticles = JSON.parse(
+    document.getElementById("data-relational-articles")?.textContent || "[]",
+  );
 
   const App = () => {
     const [postType, setPostType] = useState<PostType | null>(null);
+    const [article, setArticle] = useState<Article.Editing | null>(null);
 
-    return match<PostType | null>(postType)
-      .returnType<JSX.Element>()
-      .with("page", () => <div>page</div>)
-      .with("markdown", () => <div>markdown</div>)
-      .with("addon-post", () => <div>addon-post</div>)
-      .with("addon-introduction", () => <div>addon-introduction</div>)
-      .with(P._, () => <SelectPostType onClick={setPostType} />)
+    // postTypeが変更されたときのみ初期化
+    useEffect(() => {
+      if (postType && !article) {
+        setArticle(createArticle(postType, user));
+      }
+    }, [postType]);
+
+    if (!postType || !article) {
+      return <SelectPostType onClick={setPostType} />;
+    }
+
+    return match(postType)
+      .with("page", () => (
+        <Page user={user} article={article} onChange={setArticle} />
+      ))
+      .with("markdown", () => (
+        <Markdown user={user} article={article} onChange={setArticle} />
+      ))
+      .with("addon-post", () => (
+        <AddonPost user={user} article={article} onChange={setArticle} />
+      ))
+      .with("addon-introduction", () => (
+        <AddonIntroduction
+          user={user}
+          article={article}
+          onChange={setArticle}
+        />
+      ))
       .exhaustive();
   };
 

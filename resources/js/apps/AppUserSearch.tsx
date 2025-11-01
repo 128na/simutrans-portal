@@ -5,7 +5,9 @@ const app = document.getElementById("app-search-users");
 
 if (app) {
   const initialUserIds = JSON.parse(app.dataset.userIds || "[]").map(Number);
-  const options = JSON.parse(app.dataset.options || "[]");
+  const options = JSON.parse(
+    document.getElementById("data-options")?.textContent || "{}",
+  ).users as SearchOption[];
 
   const App = () => {
     return (

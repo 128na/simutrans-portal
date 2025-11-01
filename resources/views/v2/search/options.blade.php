@@ -5,6 +5,10 @@
             検索
         </button>
     </div>
+    <script id="data-options" type="application/json">
+        @json($options)
+
+    </script>
     <div>
         <button type="button" command="--toggle" commandfor="search-options" class="my-2 p-2 sm:py-2 py-4 flex w-full items-center justify-between bg-gray-100 cursor-pointer">
             詳細条件
@@ -45,7 +49,7 @@
                 </svg>
             </button>
             <el-disclosure id="search-users" {{ $condition['userIds'] ?? [] ? '' : 'hidden' }} class="mb-4 block space-y-2 gap-y-2">
-                <div id="app-search-users" data-user-ids='@json($condition["userIds"] ?? [])' data-options='@json($options["users"] ?? [])'>Loading...</div>
+                <div id="app-search-users" data-user-ids='@json($condition["userIds"] ?? [])'>Loading...</div>
             </el-disclosure>
 
             <button type="button" command="--toggle" commandfor="search-tags" class="my-2 p-2 sm:py-2 py-4 flex w-full items-center justify-between bg-gray-100 cursor-pointer">
@@ -55,7 +59,7 @@
                 </svg>
             </button>
             <el-disclosure id="search-tags" {{ $condition['tagIds'] ?? [] ? '' : 'hidden' }} class="mb-4 block space-y-2 gap-y-2">
-                <div id="app-search-tags" data-tag-ids='@json($condition["tagIds"] ?? [])' data-options='@json($options["tags"] ?? [])'>Loading...</div>
+                <div id="app-search-tags" data-tag-ids='@json($condition["tagIds"] ?? [])'>Loading...</div>
             </el-disclosure>
         </el-disclosure>
     </div>

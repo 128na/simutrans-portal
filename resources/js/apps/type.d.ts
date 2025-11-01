@@ -1,4 +1,8 @@
 namespace Tag {
+  type Search = {
+    id: number;
+    name: string;
+  };
   type Listing = {
     id: number;
     name: string;
@@ -15,6 +19,24 @@ namespace Tag {
     id: null;
     name: null | string;
     description: null | string;
+  };
+}
+type CategoryType =
+  | "pak"
+  | "addon"
+  | "pak128_position"
+  | "license"
+  | "page"
+  | "double_slope";
+
+namespace Category {
+  type Search = {
+    id: number;
+    type: CategoryType;
+    slug: string;
+  };
+  type Grouping = {
+    [K in CategoryType]: Search[];
   };
 }
 
@@ -37,6 +59,13 @@ namespace User {
 }
 
 namespace Article {
+  type Relational = {
+    id: number;
+    user_id: number;
+    user_name: string;
+    title: string;
+    slug: string;
+  };
   type Listing = {
     id: number;
     user_id: number;
@@ -51,7 +80,7 @@ namespace Article {
     modified_at: string;
   };
   type Editing = {
-    id: number;
+    id: number | null;
     user_id: number;
     title: string;
     slug: string;
@@ -63,25 +92,9 @@ namespace Article {
       | ContentPage
       | ContentMarkdown;
     published_at: string | null;
-    modified_at: string;
-    created_at: string;
-    updated_at: string;
-  };
-  type Creating = {
-    id: null;
-    user_id: number;
-    title: string | null;
-    slug: string | null;
-    post_type: PostType | null;
-    status: Status;
-    contents:
-      | null
-      | ContentAddonPost
-      | ContentAddonIntroduction
-      | ContentPage
-      | ContentMarkdown;
-    published_at: string | null;
-    modified_at: null;
+    modified_at: string | null;
+    created_at: string | null;
+    updated_at: string | null;
   };
 }
 
@@ -103,14 +116,37 @@ type Attachment = {
   attachmentable_id: number;
   attachmentable_type: "App\\Models\\Article" | "App\\Models\\Profile";
   caption: string | null;
+  path: string;
   original_name: string;
   order: number;
+  file_info: FileInfo | null;
+  created_at: string;
+  updated_at: string;
+};
+
+type FileInfo = {
+  id: number;
+  attachment_id: number;
+  data: {
+    readmes?: {
+      [string]: string[];
+    };
+    paks?: {
+      [string]: string[];
+    };
+    dats?: {
+      [string]: string[];
+    };
+    tabs?: {
+      [string]: { [string]: string };
+    };
+  };
   created_at: string;
   updated_at: string;
 };
 
 type Content = {
-  thumbnail: number;
+  thumbnail: number | null;
 };
 type ContentAddonPost = Content & {
   description: string | null;
@@ -154,4 +190,18 @@ type SectionUrl = Section & {
 type SectionCaption = Section & {
   type: "caption";
   caption: string | null;
+};
+
+type SearchOption = {
+  id: number;
+} & Record<string, string | null>;
+
+type ArticleEditProps = {
+  user: User.Listing;
+  article: Article.Editing;
+  categories: Category.Grouping;
+  tags: Tag.Search[];
+  attachments: Attachment[];
+  relationalArticles: Article.Relational;
+  onChange: (article: Article.Editing) => void;
 };

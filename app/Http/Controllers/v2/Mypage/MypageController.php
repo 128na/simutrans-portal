@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\v2;
+namespace App\Http\Controllers\v2\Mypage;
 
 use App\Services\Front\MetaOgpService;
 use Illuminate\Http\RedirectResponse;

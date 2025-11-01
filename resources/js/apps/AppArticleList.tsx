@@ -8,7 +8,6 @@ const app = document.getElementById("app-article-list");
 if (app) {
   const user = JSON.parse(app.dataset.user || "{}");
   const articles = JSON.parse(app.dataset.articles || "[]");
-  console.log({ user, articles });
 
   const App = () => {
     const [selected, setSelected] = useState<ListingArticle | null>(null);

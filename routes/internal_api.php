@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->group(function (): void {
     Route::middleware(['restrict:update_tag'])->group(function (): void {
 
-        Route::post('v2/tags', [\App\Http\Controllers\v2\TagController::class, 'store']);
-        Route::post('v2/tags/{tag}', [\App\Http\Controllers\v2\TagController::class, 'update']);
+        Route::post('v2/tags', [\App\Http\Controllers\v2\Mypage\TagController::class, 'store']);
+        Route::post('v2/tags/{tag}', [\App\Http\Controllers\v2\Mypage\TagController::class, 'update']);
     });
 });
 

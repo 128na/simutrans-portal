@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\v2\Mypage;
 
+use App\Http\Resources\v2\ArticleEdit;
 use App\Models\Article;
 use App\Repositories\v2\ArticleRepository;
 use App\Repositories\v2\CategoryRepository;
@@ -76,7 +77,7 @@ final class ArticleController extends Controller
 
         return view('v2.mypage.article-edit', [
             'user' => $user->only(['id', 'name', 'nickname', 'role']),
-            'article' => $article->load('categories', 'tags', 'articles'),
+            'article' => new ArticleEdit($article->load('categories', 'tags', 'articles', 'attachments')),
             'attachments' => $user->myAttachments()->with('fileInfo')->get()->each->makeVisible(['path']),
             'categories' => $this->categoryRepository->getForSearch()->groupBy('type'),
             'tags' => $this->tagRepository->getForEdit(),

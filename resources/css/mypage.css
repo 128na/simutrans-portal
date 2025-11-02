@@ -1,4 +1,4 @@
-@import "./base.css";
+@import "./front.css";
 @import "flowbite/src/themes/default";
 
 @plugin "flowbite/plugin";

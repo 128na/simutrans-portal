@@ -1,5 +1,5 @@
 namespace Tag {
-  type Search = {
+  type Search = SearchableOption & {
     id: number;
     name: string;
   };
@@ -34,6 +34,7 @@ namespace Category {
     id: number;
     type: CategoryType;
     slug: string;
+    need_admin: boolean;
   };
   type Grouping = {
     [K in CategoryType]: Search[];
@@ -59,7 +60,7 @@ namespace User {
 }
 
 namespace Article {
-  type Relational = {
+  type Relational = SearchableOption & {
     id: number;
     user_id: number;
     user_name: string;
@@ -91,6 +92,10 @@ namespace Article {
       | ContentAddonIntroduction
       | ContentPage
       | ContentMarkdown;
+    categories: number[];
+    tags: number[];
+    articles: number[];
+    attachments: number[];
     published_at: string | null;
     modified_at: string | null;
     created_at: string | null;
@@ -192,7 +197,7 @@ type SectionCaption = Section & {
   caption: string | null;
 };
 
-type SearchOption = {
+type SearchableOption = {
   id: number;
 } & Record<string, string | null>;
 
@@ -202,6 +207,6 @@ type ArticleEditProps = {
   categories: Category.Grouping;
   tags: Tag.Search[];
   attachments: Attachment[];
-  relationalArticles: Article.Relational;
+  relationalArticles: Article.Relational[];
   onChange: (article: Article.Editing) => void;
 };

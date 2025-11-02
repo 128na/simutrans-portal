@@ -37,6 +37,7 @@ if (app) {
     const [article, setArticle] = useState<Article.Editing>(
       JSON.parse(document.getElementById("data-article")?.textContent || "[]"),
     );
+    console.log({ article });
     const props = {
       ...{ article, user, attachments, categories, tags, relationalArticles },
       onChange: setArticle,

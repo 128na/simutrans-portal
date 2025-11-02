@@ -1,4 +1,5 @@
 import { twMerge } from "tailwind-merge";
+import Label from "./Label";
 export default function Input({
   children,
   className,
@@ -6,13 +7,7 @@ export default function Input({
   ...props
 }: React.InputHTMLAttributes<HTMLInputElement> & { labelClassName?: string }) {
   return (
-    <label
-      className={twMerge(
-        `block text-sm text-gray-900`,
-        children ? "mb-2" : "",
-        labelClassName,
-      )}
-    >
+    <Label className={labelClassName}>
       {children}
       <input
         className={twMerge(
@@ -21,6 +16,6 @@ export default function Input({
         )}
         {...props}
       />
-    </label>
+    </Label>
   );
 }

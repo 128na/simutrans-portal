@@ -17,7 +17,7 @@ final class CategoryRepository
     public function getForSearch(): Collection
     {
         return $this->model->query()
-            ->select(['categories.id', 'categories.type', 'categories.slug'])
+            ->select(['categories.id', 'categories.type', 'categories.slug', 'categories.need_admin'])
             ->orderBy('order', 'asc')
             ->get();
     }

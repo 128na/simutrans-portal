@@ -32,6 +32,7 @@ final class TagRepository
             ->leftJoin('article_tag as at', 'tags.id', '=', 'at.tag_id')
             ->groupBy('tags.id')
             ->with('createdBy:id,name', 'lastModifiedBy:id,name')
+            ->orderBy('name', 'asc')
             ->get();
     }
 

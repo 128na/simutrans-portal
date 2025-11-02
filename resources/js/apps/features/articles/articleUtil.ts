@@ -124,3 +124,7 @@ export const createArticle = (postType: PostType, user: User.WithRole) => {
     updated_at: null,
   } as Article.Editing;
 };
+
+export const typedKeys = <T extends object>(obj: T): (keyof T)[] => {
+  return Object.keys(obj) as (keyof T)[];
+};

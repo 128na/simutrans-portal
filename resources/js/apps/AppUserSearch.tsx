@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { SelectableSearch } from "@/apps/components/form/SelectableSearch";
+import { useState } from "react";
 
 const app = document.getElementById("app-search-users");
 
@@ -7,16 +8,23 @@ if (app) {
   const initialUserIds = JSON.parse(app.dataset.userIds || "[]").map(Number);
   const options = JSON.parse(
     document.getElementById("data-options")?.textContent || "{}",
-  ).users as SearchOption[];
+  ).users as SearchableOption[];
 
   const App = () => {
+    const [selectedIds, setSelectedIds] = useState<number[]>(initialUserIds);
     return (
-      <SelectableSearch
-        name="userIds"
-        options={options}
-        selectedIds={initialUserIds}
-        labelKey="name"
-      />
+      <div className="p-4">
+        {/* hidden inputs for form submission */}
+        {selectedIds.map((id) => (
+          <input key={id} type="hidden" name="userIds[]" value={id} />
+        ))}
+        <SelectableSearch
+          labelKey="name"
+          options={options}
+          selectedIds={selectedIds}
+          onChange={setSelectedIds}
+        />
+      </div>
     );
   };
 

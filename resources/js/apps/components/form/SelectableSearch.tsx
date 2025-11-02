@@ -1,43 +1,43 @@
 import { useState } from "react";
 import Input from "@/apps/components/ui/Input";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
-  name: string;
-  options: SearchOption[];
+  options: SearchableOption[];
   selectedIds: number[];
   labelKey?: string;
   placeholder?: string;
+  onChange?: (selectedIds: number[]) => void;
+  render?: (option: SearchableOption) => string;
+  className?: string;
 };
 
 export const SelectableSearch = ({
-  name,
   options,
-  selectedIds: initialSelected,
+  selectedIds,
   labelKey = "name",
   placeholder = "検索...",
+  className,
+  onChange,
+  render,
 }: Props) => {
   const [criteria, setCriteria] = useState("");
-  const [selectedIds, setSelectedIds] = useState<number[]>(initialSelected);
 
   const add = (id: number) => {
-    if (!selectedIds.includes(id)) {
-      setSelectedIds([...selectedIds, id]);
+    if (onChange) {
+      onChange([...selectedIds, id]);
     }
   };
 
   const remove = (id: number) => {
-    setSelectedIds(selectedIds.filter((uid) => uid !== id));
+    if (onChange) {
+      onChange(selectedIds.filter((uid) => uid !== id));
+    }
   };
 
   const selectedItems = options.filter((o) => selectedIds.includes(o.id));
-
   return (
-    <div className="p-4 space-y-4">
-      {/* hidden inputs for form submission */}
-      {selectedIds.map((id) => (
-        <input key={id} type="hidden" name={`${name}[]`} value={id} />
-      ))}
-
+    <div className="space-y-4">
       <div>
         <div className="flex flex-wrap gap-2">
           {selectedItems.map((item) => (
@@ -57,17 +57,25 @@ export const SelectableSearch = ({
       </div>
 
       <Input
+        className={className}
         type="text"
         value={criteria}
         onChange={(e) => setCriteria(e.target.value)}
         placeholder={placeholder}
       />
 
-      <div className="max-h-40 overflow-y-auto border border-gray-300 rounded-lg p-2 bg-white">
+      <div
+        className={twMerge(
+          "max-h-40 overflow-y-auto border border-gray-300 rounded-lg p-2 bg-white",
+          className,
+        )}
+      >
         {options
           .filter(
             (o) =>
-              o[labelKey]?.toLowerCase().includes(criteria.toLowerCase()) &&
+              (render ? render(o) : o[labelKey])
+                ?.toLowerCase()
+                .includes(criteria.toLowerCase()) &&
               !selectedIds.includes(o.id),
           )
           .map((o) => (
@@ -76,7 +84,7 @@ export const SelectableSearch = ({
               className="py-1.5 px-2 rounded cursor-pointer hover:bg-gray-100"
               onClick={() => add(o.id)}
             >
-              {o[labelKey]}
+              {render ? render(o) : o[labelKey]}
             </div>
           ))}
       </div>

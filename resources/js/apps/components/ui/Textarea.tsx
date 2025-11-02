@@ -1,4 +1,5 @@
 import { twMerge } from "tailwind-merge";
+import Label from "./Label";
 export default function Textarea({
   children,
   className,
@@ -8,13 +9,7 @@ export default function Textarea({
   labelClassName?: string;
 }) {
   return (
-    <label
-      className={twMerge(
-        `block text-sm text-gray-900`,
-        children ? "mb-2" : "",
-        labelClassName,
-      )}
-    >
+    <Label className={labelClassName}>
       {children}
       <textarea
         className={twMerge(
@@ -23,6 +18,6 @@ export default function Textarea({
         )}
         {...props}
       />
-    </label>
+    </Label>
   );
 }

@@ -17,7 +17,7 @@
     "google/cloud-recaptcha-enterprise": ">=2.2.1",
     "guzzlehttp/guzzle": ">=7.10.0",
     "laravel/fortify": "^1.31.2",
-    "laravel/framework": "^12.35.1",
+    "laravel/framework": "^12.36.1",
     "laravel/sanctum": ">=4.2.0",
     "laravel/tinker": "^2.10.1",
     "marvinlabs/laravel-discord-logger": "^1.4.3",
@@ -30,7 +30,7 @@
     "barryvdh/laravel-debugbar": "^3.16.0",
     "barryvdh/laravel-ide-helper": "^3.6.0",
     "dg/bypass-finals": "^1.9",
-    "driftingly/rector-laravel": "^2.1.1",
+    "driftingly/rector-laravel": "^2.1.2",
     "fakerphp/faker": "^1.24.1",
     "filp/whoops": "^2.18.4",
     "larastan/larastan": "^3.7.2",
@@ -38,8 +38,8 @@
     "laravel/pint": "^1.25.1",
     "mockery/mockery": "^1.6.12",
     "nunomaduro/collision": "^8.8.2",
-    "phpunit/phpunit": "^11.5.42",
-    "rector/rector": "^2.2.5",
+    "phpunit/phpunit": "^11.5.43",
+    "rector/rector": "^2.2.7",
     "spatie/laravel-ignition": "^2.9.1"
   },
   "config": {

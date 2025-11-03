@@ -76,14 +76,7 @@ export const AttachmentTable = ({
     <div className="relative overflow-x-auto">
       <div className="gap-4 flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between py-4">
         <div>
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-          >
-            アップロード
-          </Button>
+          <Button>アップロード</Button>
         </div>
         <div>
           <Input
@@ -112,17 +105,15 @@ export const AttachmentTable = ({
             key={attachment.id}
             className={twMerge(
               "bg-white border-b border-gray-200 cursor-pointer",
-              selected
-                ? selected === attachment.id && "bg-brand/20 hover:bg-brand/30"
+              selected === attachment.id
+                ? "bg-brand/20 hover:bg-brand/30"
                 : "hover:bg-gray-100",
             )}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
+            onClick={() =>
               onSelectAttachment?.(
                 selected === attachment.id ? null : attachment,
-              );
-            }}
+              )
+            }
           >
             <td className="px-6 py-4 ">
               <Image attachmentId={attachment.id} attachments={[attachment]} />

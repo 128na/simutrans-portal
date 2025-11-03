@@ -71,22 +71,22 @@ export const AddonIntroduction = ({
           attachmentId={article.contents.thumbnail}
           attachments={attachments}
         />
-        <Accordion title="画像の選択・アップロード">
-          <div className="pl-4 grid gap-4">
-            <AttachmentEdit
-              attachments={attachments}
-              attachmentableId={article.id}
-              selected={article.contents.thumbnail}
-              onSelectAttachment={(attachmentId) => {
-                onChange({
-                  ...article,
-                  contents: { ...contents, thumbnail: attachmentId },
-                });
-              }}
-            />
-          </div>
-        </Accordion>
       </Label>
+      <Accordion title="画像の選択・アップロード">
+        <div className="pl-4 grid gap-4">
+          <AttachmentEdit
+            attachments={attachments}
+            attachmentableId={article.id}
+            selected={article.contents.thumbnail}
+            onSelectAttachment={(attachmentId) => {
+              onChange({
+                ...article,
+                contents: { ...contents, thumbnail: attachmentId },
+              });
+            }}
+          />
+        </div>
+      </Accordion>
       <Input
         labelClassName="font-medium"
         className="font-normal"

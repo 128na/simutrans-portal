@@ -10,21 +10,11 @@ export const Accordion = ({ title, children, defaultOpen = false }: Props) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div
-      onClick={(e) => {
-        // イベント伝搬で開閉が誤作動することがある
-        e.stopPropagation();
-        e.preventDefault();
-      }}
-    >
+    <>
       <button
         type="button"
         className="my-2 p-2 sm:py-2 py-4 flex w-full bg-gray-100 cursor-pointer"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setIsOpen(!isOpen);
-        }}
+        onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
       >
         <svg
@@ -43,6 +33,6 @@ export const Accordion = ({ title, children, defaultOpen = false }: Props) => {
         {title}
       </button>
       {isOpen && children}
-    </div>
+    </>
   );
 };

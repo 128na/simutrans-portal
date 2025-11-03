@@ -39,13 +39,7 @@ export function DataTable<T, K extends string>({
           {headers.map((header) => (
             <th
               key={header.key}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (header?.sortable) {
-                  onSort(header.key);
-                }
-              }}
+              onClick={() => header?.sortable && onSort(header.key)}
               className={twMerge(
                 "px-3 py-3",
                 header.width,

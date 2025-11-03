@@ -5,7 +5,6 @@ import { AddonIntroduction } from "./features/articles/postType/AddonIntroductio
 import { AddonPost } from "./features/articles/postType/AddonPost";
 import { Markdown } from "./features/articles/postType/Markdown";
 import { Page } from "./features/articles/postType/Page";
-import { on } from "events";
 
 const app = document.getElementById("app-article-edit");
 

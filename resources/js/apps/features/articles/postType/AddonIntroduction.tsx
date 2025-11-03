@@ -77,7 +77,7 @@ export const AddonIntroduction = ({
               attachments={attachments}
               attachmentableId={article.id}
               selected={article.contents.thumbnail}
-              onClick={(attachmentId) => {
+              onSelectAttachment={(attachmentId) => {
                 onChange({
                   ...article,
                   contents: { ...contents, thumbnail: attachmentId },

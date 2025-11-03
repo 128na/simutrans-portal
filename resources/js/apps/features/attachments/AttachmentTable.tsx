@@ -76,7 +76,14 @@ export const AttachmentTable = ({
     <div className="relative overflow-x-auto">
       <div className="gap-4 flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between py-4">
         <div>
-          <Button>アップロード</Button>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
+            アップロード
+          </Button>
         </div>
         <div>
           <Input
@@ -111,6 +118,7 @@ export const AttachmentTable = ({
             )}
             onClick={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               onSelectAttachment?.(
                 selected === attachment.id ? null : attachment,
               );

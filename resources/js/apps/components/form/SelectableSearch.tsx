@@ -36,6 +36,12 @@ export const SelectableSearch = ({
   };
 
   const selectedItems = options.filter((o) => selectedIds.includes(o.id));
+  const filteredItems = options.filter(
+    (o) =>
+      (render ? render(o) : o[labelKey])
+        ?.toLowerCase()
+        .includes(criteria.toLowerCase()) && !selectedIds.includes(o.id),
+  );
   return (
     <div className="space-y-4">
       <div>
@@ -57,7 +63,7 @@ export const SelectableSearch = ({
       </div>
 
       <Input
-        className={className}
+        className={twMerge(className, "mb-2")}
         type="text"
         value={criteria}
         onChange={(e) => setCriteria(e.target.value)}
@@ -70,15 +76,10 @@ export const SelectableSearch = ({
           className,
         )}
       >
-        {options
-          .filter(
-            (o) =>
-              (render ? render(o) : o[labelKey])
-                ?.toLowerCase()
-                .includes(criteria.toLowerCase()) &&
-              !selectedIds.includes(o.id),
-          )
-          .map((o) => (
+        {filteredItems.length < 1 ? (
+          <div>該当なし</div>
+        ) : (
+          filteredItems.map((o) => (
             <div
               key={o.id}
               className="py-1.5 px-2 rounded cursor-pointer hover:bg-gray-100"
@@ -86,7 +87,8 @@ export const SelectableSearch = ({
             >
               {render ? render(o) : o[labelKey]}
             </div>
-          ))}
+          ))
+        )}
       </div>
     </div>
   );

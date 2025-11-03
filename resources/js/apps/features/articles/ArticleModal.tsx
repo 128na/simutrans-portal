@@ -10,7 +10,6 @@ export const ArticleModal = ({ user, article, onClose }: Props) => {
   // article が null の場合はモーダルを非表示にする
   if (!article) return null;
 
-  console.log(import.meta.env.VITE_APP_URL);
   const editUrl = `${import.meta.env.VITE_APP_URL}/mypage/articles/edit/${article.id}`;
   const showUrl = `${import.meta.env.VITE_APP_URL}/users/${user.nickname ?? user.id}/${decodeURI(article.slug)}`;
 

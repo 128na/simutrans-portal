@@ -28,7 +28,6 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
       const res = tag.id
         ? await axios.post(`/api/v2/tags/${tag.id}`, { description })
         : await axios.post(`/api/v2/tags`, { name, description });
-      console.log({ res });
       if ((res.status === 200 || res.status === 201) && onSave) {
         onSave(res.data as Tag.Listing);
       }

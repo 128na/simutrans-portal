@@ -7,6 +7,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 export default function Button({ children, className, ...props }: ButtonProps) {
   return (
     <button
+      type="button"
       className={twMerge(
         `
         px-4 py-2

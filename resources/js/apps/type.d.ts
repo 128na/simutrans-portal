@@ -3,7 +3,7 @@ namespace Tag {
     id: number;
     name: string;
   };
-  type Listing = {
+  type Listing = Search & {
     id: number;
     name: string;
     description: string | null;
@@ -114,19 +114,21 @@ type Count = {
 
 type PostType = "addon-post" | "addon-introduction" | "page" | "markdown";
 type Status = "publish" | "reservation" | "draft" | "trash" | "private";
+type AttachmentableType = "Article" | "Profile";
 
-type Attachment = {
+type Attachment = SearchableOption & {
   id: number;
   user_id: number;
   attachmentable_id: number;
-  attachmentable_type: "App\\Models\\Article" | "App\\Models\\Profile";
-  caption: string | null;
-  path: string;
+  attachmentable_type: AttachmentableType;
+  type: "image" | "video" | "text" | "file";
   original_name: string;
-  order: number;
-  file_info: FileInfo | null;
+  thumbnail: string;
+  url: string;
+  file_info?: FileInfo;
+  caption?: string;
+  order?: number;
   created_at: string;
-  updated_at: string;
 };
 
 type FileInfo = {
@@ -205,8 +207,10 @@ type ArticleEditProps = {
   user: User.Listing;
   article: Article.Editing;
   categories: Category.Grouping;
-  tags: Tag.Search[];
+  tags: Tag.Listing[];
   attachments: Attachment[];
   relationalArticles: Article.Relational[];
   onChange: (article: Article.Editing) => void;
+  onChangeTags: (tags: Tag.Listing[]) => void;
+  onChangeAttachments: (attachments: Attachment[]) => void;
 };

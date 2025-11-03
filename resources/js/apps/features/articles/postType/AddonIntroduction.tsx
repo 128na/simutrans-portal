@@ -6,13 +6,20 @@ import Label from "@/apps/components/ui/Label";
 import { Accordion } from "@/apps/components/ui/Accordion";
 import Select from "@/apps/components/ui/Select";
 import { t } from "@/lang/translate";
+import { Image } from "../../../components/ui/Image";
+import { TagEdit } from "../../tags/TagEdit";
+import { AttachmentEdit } from "../../attachments/AttachmentEdit";
+import { useState } from "react";
 
 export const AddonIntroduction = ({
   article,
   categories,
   tags,
+  attachments,
   relationalArticles,
   onChange,
+  onChangeTags,
+  onChangeAttachments,
 }: ArticleEditProps) => {
   const contents = article.contents as ContentAddonIntroduction;
 
@@ -58,7 +65,28 @@ export const AddonIntroduction = ({
       >
         記事URL
       </Input>
-      サムネ
+      <Label className="font-medium">
+        サムネイル
+        <Image
+          attachmentId={article.contents.thumbnail}
+          attachments={attachments}
+        />
+        <Accordion title="画像の選択・アップロード">
+          <div className="pl-4 grid gap-4">
+            <AttachmentEdit
+              attachments={attachments}
+              attachmentableId={article.id}
+              selected={article.contents.thumbnail}
+              onClick={(attachmentId) => {
+                onChange({
+                  ...article,
+                  contents: { ...contents, thumbnail: attachmentId },
+                });
+              }}
+            />
+          </div>
+        </Accordion>
+      </Label>
       <Input
         labelClassName="font-medium"
         className="font-normal"
@@ -108,56 +136,74 @@ export const AddonIntroduction = ({
         only={["pak", "addon", "pak128_position", "license", "double_slope"]}
         onSelect={onCategoryChange}
       />
-      <Accordion title="その他の項目">
-        <Textarea
-          labelClassName="font-medium"
-          className="font-normal"
-          value={contents.thanks || ""}
-          rows={3}
-          onChange={(e) =>
-            onChange({
-              ...article,
-              contents: { ...contents, thanks: e.target.value },
-            })
-          }
-        >
-          謝辞
-        </Textarea>
-        <Textarea
-          labelClassName="font-medium"
-          className="font-normal"
-          value={contents.license || ""}
-          rows={3}
-          onChange={(e) =>
-            onChange({
-              ...article,
-              contents: { ...contents, license: e.target.value },
-            })
-          }
-        >
-          ライセンス
-        </Textarea>
-        <Label className="font-medium">
-          タグ
-          <SelectableSearch
+      <Accordion
+        title="その他の項目"
+        defaultOpen={
+          !!(
+            contents.thanks ||
+            contents.license ||
+            article.tags.length ||
+            article.articles.length
+          )
+        }
+      >
+        <div className="pl-4 grid gap-4">
+          <Textarea
+            labelClassName="font-medium"
             className="font-normal"
-            labelKey="name"
-            options={tags}
-            selectedIds={article.tags}
-            onChange={onTagChange}
-          />
-        </Label>
-        <Label className="font-medium">
-          関連記事
-          <SelectableSearch
+            value={contents.thanks || ""}
+            rows={3}
+            onChange={(e) =>
+              onChange({
+                ...article,
+                contents: { ...contents, thanks: e.target.value },
+              })
+            }
+          >
+            謝辞
+          </Textarea>
+          <Textarea
+            labelClassName="font-medium"
             className="font-normal"
-            labelKey="title"
-            options={relationalArticles}
-            selectedIds={article.articles}
-            onChange={onRelationalChange}
-            render={(o) => `${o.title} (${o.user_name})`}
-          />
-        </Label>
+            value={contents.license || ""}
+            rows={3}
+            onChange={(e) =>
+              onChange({
+                ...article,
+                contents: { ...contents, license: e.target.value },
+              })
+            }
+          >
+            ライセンス
+          </Textarea>
+          <Label className="font-medium">
+            タグ
+            <SelectableSearch
+              className="font-normal"
+              labelKey="name"
+              options={tags}
+              selectedIds={article.tags}
+              onChange={onTagChange}
+            />
+          </Label>
+          <Accordion title="タグの作成・編集">
+            <div className="pl-4 grid gap-4">
+              <TagEdit tags={tags} onChangeTags={onChangeTags} />
+            </div>
+          </Accordion>
+
+          <Label className="font-medium">
+            関連記事
+            <SelectableSearch
+              className="font-normal"
+              labelKey="title"
+              options={relationalArticles}
+              selectedIds={article.articles}
+              onChange={onRelationalChange}
+              render={(o) => `${o.title} (${o.user_name})`}
+            />
+          </Label>
+        </div>
       </Accordion>
       <Select
         options={options}

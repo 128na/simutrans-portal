@@ -14,7 +14,7 @@ export default function Select({
   options: Record<string, string>;
 }) {
   return (
-    <Label className={labelClassName}>
+    <Label className={twMerge(labelClassName, children ? "" : "mb-0")}>
       {children}
       <select
         value={value} // ← ここが重要！

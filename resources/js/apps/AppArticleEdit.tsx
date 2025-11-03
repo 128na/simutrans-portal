@@ -5,6 +5,7 @@ import { AddonIntroduction } from "./features/articles/postType/AddonIntroductio
 import { AddonPost } from "./features/articles/postType/AddonPost";
 import { Markdown } from "./features/articles/postType/Markdown";
 import { Page } from "./features/articles/postType/Page";
+import { on } from "events";
 
 const app = document.getElementById("app-article-edit");
 
@@ -12,14 +13,8 @@ if (app) {
   const user = JSON.parse(
     document.getElementById("data-user")?.textContent || "{}",
   ) as User.Listing;
-  const attachments = JSON.parse(
-    document.getElementById("data-attachments")?.textContent || "[]",
-  );
   const categories = JSON.parse(
     document.getElementById("data-categories")?.textContent || "[]",
-  );
-  const tags = JSON.parse(
-    document.getElementById("data-tags")?.textContent || "[]",
   );
   const relationalArticles = JSON.parse(
     document.getElementById("data-relational-articles")?.textContent || "[]",
@@ -27,9 +22,7 @@ if (app) {
 
   console.log({
     user,
-    attachments,
     categories,
-    tags,
     relationalArticles,
   });
 
@@ -37,10 +30,21 @@ if (app) {
     const [article, setArticle] = useState<Article.Editing>(
       JSON.parse(document.getElementById("data-article")?.textContent || "[]"),
     );
-    console.log({ article });
+    const [attachments, setAttachments] = useState<Attachment[]>(
+      JSON.parse(
+        document.getElementById("data-attachments")?.textContent || "[]",
+      ),
+    );
+    const [tags, setTags] = useState<Tag.Listing[]>(
+      JSON.parse(document.getElementById("data-tags")?.textContent || "[]"),
+    );
+
+    console.log({ article, tags, attachments });
     const props = {
       ...{ article, user, attachments, categories, tags, relationalArticles },
       onChange: setArticle,
+      onChangeAttachments: setAttachments,
+      onChangeTags: setTags,
     };
     return match<PostType>(article.post_type)
       .returnType<JSX.Element>()

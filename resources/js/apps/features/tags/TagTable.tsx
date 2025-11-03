@@ -34,11 +34,11 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
   });
   const [current, setCurrent] = useState(1);
 
-  const filteredTags = tagFilter(tags, criteria);
+  const filtered = tagFilter(tags, criteria);
 
-  const totalPages = Math.ceil(filteredTags.length / limit);
+  const totalPages = Math.ceil(filtered.length / limit);
 
-  const sortedTags = [...filteredTags].sort((a, b) => {
+  const sorted = [...filtered].sort((a, b) => {
     const result = compareTagValues(a[sort.column], b[sort.column]);
     return sort.order === "asc" ? result : -result;
   });
@@ -80,7 +80,7 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
       </div>
       <DataTable
         headers={headers}
-        data={sortedTags}
+        data={sorted}
         sort={sort}
         limit={limit}
         current={current}

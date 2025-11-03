@@ -9,7 +9,7 @@ export default function Textarea({
   labelClassName?: string;
 }) {
   return (
-    <Label className={labelClassName}>
+    <Label className={twMerge(labelClassName, children ? "" : "mb-0")}>
       {children}
       <textarea
         className={twMerge(

@@ -36,7 +36,7 @@
                     <tr>
                         <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">作成したタグ</td>
                         <td class="border border-gray-300 px-4 py-2">{{$summary->tag_count ?? 0}} 件</td>
-                        <td class="border border-gray-300 px-4 py-2">@include('v2.parts.link', ['url' => route('mypage.tags'), 'title' => 'タグの編集'])</td>
+                        <td class="border border-gray-300 px-4 py-2">@include('v2.parts.link', ['url' => route('mypage.tags'), 'title' => 'タグ編集'])</td>
                     </tr>
                 </tbody>
             </table>
@@ -48,7 +48,7 @@
                     <tr>
                         <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">ユーザー名</td>
                         <td class="border border-gray-300 px-4 py-2">{{$user->name}}</td>
-                        <td class="border border-gray-300 px-4 py-2" rowspan="2">@include('v2.parts.link', ['url' => route('mypage.profile'), 'title' => 'プロフィールの編集'])</td>
+                        <td class="border border-gray-300 px-4 py-2" rowspan="2">@include('v2.parts.link', ['url' => route('mypage.profile'), 'title' => 'プロフィール編集'])</td>
                     </tr>
                     <tr>
                         <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">ニックネーム</td>
@@ -89,7 +89,7 @@
                     <tr>
                         <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">最終ログイン日時</td>
                         <td class="border border-gray-300 px-4 py-2">{{$user->loginHistories()->latest()->first()?->created_at->format('Y/m/d H:i:s')}}</td>
-                        <td class="border border-gray-300 px-4 py-2">@include('v2.parts.link', ['url' => route('mypage.login-histories'), 'title' => 'ログイン履歴の確認'])</td>
+                        <td class="border border-gray-300 px-4 py-2">@include('v2.parts.link', ['url' => route('mypage.login-histories'), 'title' => 'ログイン履歴'])</td>
                     </tr>
 
                 </tbody>

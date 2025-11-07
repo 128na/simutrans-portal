@@ -39,6 +39,7 @@ if (app) {
     );
 
     console.log({ article, tags, attachments });
+
     const props = {
       ...{ article, user, attachments, categories, tags, relationalArticles },
       onChange: setArticle,

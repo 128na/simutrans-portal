@@ -47,10 +47,9 @@ final class ArticleController extends Controller
 
         return view('v2.mypage.article-create', [
             'user' => $user->only(['id', 'name', 'nickname', 'role']),
-            'attachments' => $user->myAttachments()->with('fileInfo')->get()->each->makeVisible(['path']),
+            'attachments' => Attachment::collection($user->myAttachments()->with('fileInfo')->get()),
             'categories' => $this->categoryRepository->getForSearch()->groupBy('type'),
             'tags' => $this->tagRepository->getForEdit(),
-            'relationalArticles' => $this->articleRepository->getForEdit(),
             'meta' => $this->metaOgpService->articleCreate(),
         ]);
     }

@@ -14,12 +14,14 @@ use App\Http\Controllers\Api\Mypage\TagController;
 use App\Http\Controllers\Api\Mypage\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth:sanctum'])->group(function (): void {
+Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {
     Route::middleware(['restrict:update_tag'])->group(function (): void {
-
         Route::post('v2/tags', [\App\Http\Controllers\v2\Mypage\TagController::class, 'store']);
         Route::post('v2/tags/{tag}', [\App\Http\Controllers\v2\Mypage\TagController::class, 'update']);
     });
+
+    Route::post('v2/attachments', [\App\Http\Controllers\v2\Mypage\AttachmentController::class, 'store']);
+    Route::delete('v2/attachments/{attachment}', [\App\Http\Controllers\v2\Mypage\AttachmentController::class, 'destroy']);
 });
 
 // マイページ
@@ -37,8 +39,6 @@ Route::prefix('mypage')->group(function (): void {
         Route::post('user', [UserController::class, 'update']);
         Route::post('tags', [TagController::class, 'store'])->middleware('restrict:update_tag');
         Route::post('tags/{tag}', [TagController::class, 'update'])->middleware('restrict:update_tag');
-        Route::post('attachments', [AttachmentController::class, 'store']);
-        Route::delete('attachments/{attachment}', [AttachmentController::class, 'destroy']);
         Route::post('articles', (new EditorController)->store(...))->middleware('restrict:update_article');
         Route::middleware(['can:update,article', 'restrict:update_article'])->group(function (): void {
             Route::post('articles/{article}', (new EditorController)->update(...));

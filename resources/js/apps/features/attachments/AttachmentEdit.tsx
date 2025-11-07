@@ -5,6 +5,8 @@ type Props = {
   selected: number | null;
   attachmentableId: number | null;
   onSelectAttachment?: (attachmentId: number | null) => void;
+  onAddAttachment?: (attachment: Attachment) => void;
+  onChangeAttachments?: (attachments: Attachment[]) => void;
 };
 
 export const AttachmentEdit = ({
@@ -12,6 +14,7 @@ export const AttachmentEdit = ({
   attachmentableId,
   selected,
   onSelectAttachment,
+  onChangeAttachments,
 }: Props) => {
   return (
     <AttachmentTable
@@ -21,6 +24,7 @@ export const AttachmentEdit = ({
       attachmentableId={attachmentableId}
       attachmentableType="Article"
       onSelectAttachment={(a) => onSelectAttachment?.(a?.id ?? null)}
+      onChangeAttachments={(attachments) => onChangeAttachments?.(attachments)}
     />
   );
 };

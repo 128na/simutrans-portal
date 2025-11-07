@@ -9,7 +9,6 @@ import { t } from "@/lang/translate";
 import { Image } from "../../../components/ui/Image";
 import { TagEdit } from "../../tags/TagEdit";
 import { AttachmentEdit } from "../../attachments/AttachmentEdit";
-import { useState } from "react";
 
 export const AddonIntroduction = ({
   article,
@@ -84,6 +83,7 @@ export const AddonIntroduction = ({
                 contents: { ...contents, thumbnail: attachmentId },
               });
             }}
+            onChangeAttachments={onChangeAttachments}
           />
         </div>
       </Accordion>

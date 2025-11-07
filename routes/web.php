@@ -16,6 +16,7 @@ Route::get('/pak128-japan', [\App\Http\Controllers\v2\FrontController::class, 'p
 Route::get('/pak128', [\App\Http\Controllers\v2\FrontController::class, 'pak128'])->name('pak.128');
 Route::get('/pak64', [\App\Http\Controllers\v2\FrontController::class, 'pak64'])->name('pak.64');
 Route::get('/pak-others', [\App\Http\Controllers\v2\FrontController::class, 'pakOthers'])->name('pak.others');
+Route::get('/users', [\App\Http\Controllers\v2\FrontController::class, 'users'])->name('users');
 Route::get('/search', [\App\Http\Controllers\v2\FrontController::class, 'search'])->name('search');
 Route::get('/announces', [\App\Http\Controllers\v2\FrontController::class, 'announces'])->name('announces');
 Route::get('/pages', [\App\Http\Controllers\v2\FrontController::class, 'pages'])->name('pages');

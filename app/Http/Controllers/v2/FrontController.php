@@ -105,6 +105,14 @@ final class FrontController extends Controller
         ]);
     }
 
+    public function users(): \Illuminate\Contracts\View\View
+    {
+        return view('v2.users.index', [
+            'users' => $this->userRepository->getForList(),
+            'meta' => $this->metaOgpService->users(),
+        ]);
+    }
+
     public function search(Request $request): \Illuminate\Contracts\View\View
     {
         $condition = $request->all();

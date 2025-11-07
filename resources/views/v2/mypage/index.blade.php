@@ -12,21 +12,30 @@
                 <tbody>
                     <tr>
                         <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">投稿記事</td>
-                        <td class="border border-gray-300 px-4 py-2">{{$user->articles()->count()}} 件</td>
+                        <td class="border border-gray-300 px-4 py-2">{{$summary->article_count ?? 0}} 件</td>
                         <td class="border border-gray-300 px-4 py-2">@include('v2.parts.link', ['url' => route('mypage.articles.index'), 'title' => '記事一覧'])</td>
                     </tr>
                     <tr>
+                        <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">投稿ファイル数</td>
+                        <td class="border border-gray-300 px-4 py-2">{{$summary->attachment_count ?? 0}} 件</td>
+                        <td class="border border-gray-300 px-4 py-2" rowspan="2">@include('v2.parts.link', ['url' => route('mypage.articles.index'), 'title' => 'ファイル管理'])</td>
+                    </tr>
+                    <tr>
+                        <td class=" border border-gray-300 px-4 py-2 bg-gray-500 text-white">ファイルストレージ使用量</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ round(($summary->total_attachment_size ?? 0)/1024/1024,1) }} MB</td>
+                    </tr>
+                    <tr>
                         <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">今月の合計PV数</td>
-                        <td class="border border-gray-300 px-4 py-2">{{$user->currentMonthViewCount?->count ?? 0}} 件</td>
+                        <td class="border border-gray-300 px-4 py-2">{{$summary->total_view_count ?? 0}} 件</td>
                         <td class="border border-gray-300 px-4 py-2" rowspan="2">@include('v2.parts.link', ['url' => route('mypage.analytics'), 'title' => 'アナリティクス'])</td>
                     </tr>
                     <tr>
                         <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">今月の合計CV数</td>
-                        <td class="border border-gray-300 px-4 py-2">{{$user->currentMonthConversionCount?->count ?? 0}} 件</td>
+                        <td class="border border-gray-300 px-4 py-2">{{$summary->total_conversion_count ?? 0}} 件</td>
                     </tr>
                     <tr>
                         <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">作成したタグ</td>
-                        <td class="border border-gray-300 px-4 py-2">{{$user->createdTags()->count()}} 件</td>
+                        <td class="border border-gray-300 px-4 py-2">{{$summary->tag_count ?? 0}} 件</td>
                         <td class="border border-gray-300 px-4 py-2">@include('v2.parts.link', ['url' => route('mypage.tags'), 'title' => 'タグの編集'])</td>
                     </tr>
                 </tbody>

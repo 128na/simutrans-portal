@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\v2\Mypage;
 
+use App\Repositories\v2\UserRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 final class MypageController extends Controller
 {
     public function __construct(
+        private readonly UserRepository $userRepository,
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
@@ -19,6 +21,7 @@ final class MypageController extends Controller
     {
         return view('v2.mypage.index', [
             'user' => Auth::user(),
+            'summary' => $this->userRepository->getSummary(Auth::user()),
             'meta' => $this->metaOgpService->mypage(),
         ]);
     }

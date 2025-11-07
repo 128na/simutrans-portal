@@ -111,6 +111,7 @@ namespace App\Models\Article{
  * @property int $type 集計区分 1:日次,2:月次,3:年次,4:全体
  * @property string $period 集計期間
  * @property int $count カウント
+ * @property int $user_id
  * @property-read \App\Models\Article $article
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversionCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversionCount newQuery()
@@ -128,6 +129,7 @@ namespace App\Models\Article{
  * @property int $type 集計区分 1:日次,2:月次,3:年次,4:全体
  * @property string $period 集計期間
  * @property int $count カウント
+ * @property int $user_id
  * @property-read \App\Models\Article $article
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount newQuery()

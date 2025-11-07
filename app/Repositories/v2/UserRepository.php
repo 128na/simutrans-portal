@@ -7,7 +7,6 @@ namespace App\Repositories\v2;
 use App\Enums\ArticleStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 
 final class UserRepository
 {
@@ -21,7 +20,7 @@ final class UserRepository
         return $this->model->query()
             ->select(['users.id', 'users.nickname', 'users.name'])
             ->whereExists(
-                fn($q) => $q->selectRaw(1)
+                fn ($q) => $q->selectRaw(1)
                     ->from('articles as a')
                     ->whereColumn('a.user_id', 'users.id')
                     ->where('a.status', ArticleStatus::Publish)
@@ -30,7 +29,6 @@ final class UserRepository
             ->get();
     }
 
-
     /**
      * @return Collection<int,User>
      */
@@ -38,7 +36,7 @@ final class UserRepository
     {
         return $this->model->query()
             ->select(['users.id', 'users.name'])
-            ->join('articles', function ($join) {
+            ->join('articles', function ($join): void {
                 $join->on('articles.user_id', '=', 'users.id')
                     ->where('articles.status', ArticleStatus::Publish);
             })

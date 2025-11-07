@@ -152,6 +152,7 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property string|null $caption キャプション（画像向け）
  * @property int $order 表示順（画像向け）
+ * @property int $size ファイルサイズ(byte)
  * @property-read \Illuminate\Database\Eloquent\Model|null $attachmentable
  * @property-read string $extension
  * @property-read mixed $file_contents

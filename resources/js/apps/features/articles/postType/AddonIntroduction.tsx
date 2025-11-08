@@ -9,34 +9,25 @@ import { t } from "@/lang/translate";
 import { Image } from "../../../components/ui/Image";
 import { TagEdit } from "../../tags/TagEdit";
 import { AttachmentEdit } from "../../attachments/AttachmentEdit";
+import TextBadge from "@/apps/components/ui/TextBadge";
+import { addHours, format } from "date-fns";
+import { Upload } from "@/apps/components/form/Upload";
+import { useArticleEditor } from "@/apps/state/useArticleEditor";
 
-export const AddonIntroduction = ({
-  article,
-  categories,
-  tags,
-  attachments,
-  relationalArticles,
-  onChange,
-  onChangeTags,
-  onChangeAttachments,
-}: ArticleEditProps) => {
+export const AddonIntroduction = () => {
+  const article = useArticleEditor((s) => s.article);
+  const update = useArticleEditor((s) => s.update);
+
   const contents = article.contents as ContentAddonIntroduction;
+  const updateContents = useArticleEditor((s) => s.updateContents);
 
-  const onCategoryChange = (category: Category.Search) => {
-    const idx = article.categories.findIndex((c) => c === category.id);
-    if (idx >= 0) {
-      article.categories.splice(idx, 1);
-    } else {
-      article.categories.push(category.id);
-    }
-    onChange({ ...article });
-  };
-  const onTagChange = (tagIds: number[]) => {
-    onChange({ ...article, tags: tagIds });
-  };
-  const onRelationalChange = (articleIds: number[]) => {
-    onChange({ ...article, articles: articleIds });
-  };
+  const attachments = useArticleEditor((s) => s.attachments);
+
+  const tags = useArticleEditor((s) => s.tags);
+  const updateTags = useArticleEditor((s) => s.updateTags);
+
+  const categories = useArticleEditor((s) => s.categories);
+  const relationalArticles = useArticleEditor((s) => s.relationalArticles);
 
   const options = {
     publish: t("statuses.publish"),
@@ -52,16 +43,18 @@ export const AddonIntroduction = ({
         labelClassName="font-medium"
         className="font-normal"
         value={article.title || ""}
-        onChange={(e) => onChange({ ...article, title: e.target.value })}
+        onChange={(e) => update((draft) => (draft.title = e.target.value))}
       >
+        <TextBadge color="red">必須</TextBadge>
         タイトル
       </Input>
       <Input
         labelClassName="font-medium"
         className="font-normal"
         value={article.slug || ""}
-        onChange={(e) => onChange({ ...article, slug: e.target.value })}
+        onChange={(e) => update((draft) => (draft.slug = e.target.value))}
       >
+        <TextBadge color="red">必須</TextBadge>
         記事URL
       </Input>
       <Label className="font-medium">
@@ -71,47 +64,39 @@ export const AddonIntroduction = ({
           attachments={attachments}
         />
       </Label>
-      <Accordion title="画像の選択・アップロード">
+      <Upload
+        onUploaded={(a) => {
+          useArticleEditor.setState((state) => {
+            // アップロードした画像を同時にセットする
+            state.attachments.unshift(a);
+            state.article.contents.thumbnail = a.id;
+          });
+        }}
+      />
+      <Accordion title="アップロード済みの画像から選択する">
         <div className="pl-4 grid gap-4">
           <AttachmentEdit
             attachments={attachments}
             attachmentableId={article.id}
             selected={article.contents.thumbnail}
-            onSelectAttachment={(attachmentId) => {
-              onChange({
-                ...article,
-                contents: { ...contents, thumbnail: attachmentId },
-              });
-            }}
-            onChangeAttachments={onChangeAttachments}
+            onSelectAttachment={(attachmentId) =>
+              updateContents((draft) => (draft.thumbnail = attachmentId))
+            }
           />
         </div>
       </Accordion>
-      <Input
-        labelClassName="font-medium"
-        className="font-normal"
-        value={contents.author || ""}
-        onChange={(e) =>
-          onChange({
-            ...article,
-            contents: { ...contents, author: e.target.value },
-          })
-        }
-      >
-        作者
-      </Input>
       <Textarea
         labelClassName="font-medium"
         className="font-normal"
         value={contents.description || ""}
         rows={9}
         onChange={(e) =>
-          onChange({
-            ...article,
-            contents: { ...contents, description: e.target.value },
-          })
+          updateContents<ContentAddonIntroduction>(
+            (draft) => (draft.description = e.target.value),
+          )
         }
       >
+        <TextBadge color="red">必須</TextBadge>
         説明
       </Textarea>
       <Input
@@ -120,12 +105,12 @@ export const AddonIntroduction = ({
         type="url"
         value={contents.link || ""}
         onChange={(e) =>
-          onChange({
-            ...article,
-            contents: { ...contents, link: e.target.value },
-          })
+          updateContents<ContentAddonIntroduction>(
+            (draft) => (draft.link = e.target.value),
+          )
         }
       >
+        <TextBadge color="red">必須</TextBadge>
         リンク先
       </Input>
       <SelectCategories
@@ -134,7 +119,9 @@ export const AddonIntroduction = ({
         categories={categories}
         selected={article.categories}
         only={["pak", "addon", "pak128_position", "license", "double_slope"]}
-        onSelect={onCategoryChange}
+        onChange={(categoryIds) =>
+          update((draft) => (draft.categories = categoryIds))
+        }
       />
       <Accordion
         title="その他の項目"
@@ -148,16 +135,27 @@ export const AddonIntroduction = ({
         }
       >
         <div className="pl-4 grid gap-4">
+          <Input
+            labelClassName="font-medium"
+            className="font-normal"
+            value={contents.author || ""}
+            onChange={(e) =>
+              updateContents<ContentAddonIntroduction>(
+                (draft) => (draft.author = e.target.value),
+              )
+            }
+          >
+            作者
+          </Input>
           <Textarea
             labelClassName="font-medium"
             className="font-normal"
             value={contents.thanks || ""}
             rows={3}
             onChange={(e) =>
-              onChange({
-                ...article,
-                contents: { ...contents, thanks: e.target.value },
-              })
+              updateContents<ContentAddonIntroduction>(
+                (draft) => (draft.thanks = e.target.value),
+              )
             }
           >
             謝辞
@@ -168,10 +166,9 @@ export const AddonIntroduction = ({
             value={contents.license || ""}
             rows={3}
             onChange={(e) =>
-              onChange({
-                ...article,
-                contents: { ...contents, license: e.target.value },
-              })
+              updateContents<ContentAddonIntroduction>(
+                (draft) => (draft.license = e.target.value),
+              )
             }
           >
             ライセンス
@@ -183,12 +180,17 @@ export const AddonIntroduction = ({
               labelKey="name"
               options={tags}
               selectedIds={article.tags}
-              onChange={onTagChange}
+              onChange={(tagIds) => update((draft) => (draft.tags = tagIds))}
             />
           </Label>
           <Accordion title="タグの作成・編集">
             <div className="pl-4 grid gap-4">
-              <TagEdit tags={tags} onChangeTags={onChangeTags} />
+              <TagEdit
+                tags={tags}
+                onChangeTags={(tags) => {
+                  updateTags(tags);
+                }}
+              />
             </div>
           </Accordion>
 
@@ -199,7 +201,9 @@ export const AddonIntroduction = ({
               labelKey="title"
               options={relationalArticles}
               selectedIds={article.articles}
-              onChange={onRelationalChange}
+              onChange={(articleIds) =>
+                update((draft) => (draft.articles = articleIds))
+              }
               render={(o) => `${o.title} (${o.user_name})`}
             />
           </Label>
@@ -209,11 +213,23 @@ export const AddonIntroduction = ({
         options={options}
         value={article.status}
         onChange={(e) =>
-          onChange({ ...article, status: e.target.value as Status })
+          update((draft) => (draft.status = e.target.value as Status))
         }
       >
         ステータス
       </Select>
+      {article.status === "reservation" && (
+        <Input
+          type="datetime-local"
+          value={article.published_at ?? ""}
+          min={format(addHours(new Date(), 1), "yyyy-MM-dd'T'HH:mm")}
+          onChange={(e) =>
+            update((draft) => (draft.published_at = e.target.value))
+          }
+        >
+          予約日時
+        </Input>
+      )}
     </div>
   );
 };

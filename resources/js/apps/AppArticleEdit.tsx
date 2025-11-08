@@ -1,58 +1,67 @@
 import { createRoot } from "react-dom/client";
 import { match } from "ts-pattern";
-import { JSX, useState } from "react";
+import { JSX, useEffect } from "react";
 import { AddonIntroduction } from "./features/articles/postType/AddonIntroduction";
 import { AddonPost } from "./features/articles/postType/AddonPost";
 import { Markdown } from "./features/articles/postType/Markdown";
 import { Page } from "./features/articles/postType/Page";
+import Button from "./components/ui/Button";
+import Checkbox from "./components/ui/Checkbox";
+import Label from "./components/ui/Label";
+import { useArticleEditor } from "./state/useArticleEditor";
 
-const app = document.getElementById("app-article-edit");
+const el = (id: string) => document.getElementById(id);
+const app = el("app-article-edit");
 
 if (app) {
-  const user = JSON.parse(
-    document.getElementById("data-user")?.textContent || "{}",
-  ) as User.Listing;
-  const categories = JSON.parse(
-    document.getElementById("data-categories")?.textContent || "[]",
-  );
-  const relationalArticles = JSON.parse(
-    document.getElementById("data-relational-articles")?.textContent || "[]",
-  );
-
-  console.log({
-    user,
-    categories,
-    relationalArticles,
-  });
-
   const App = () => {
-    const [article, setArticle] = useState<Article.Editing>(
-      JSON.parse(document.getElementById("data-article")?.textContent || "[]"),
-    );
-    const [attachments, setAttachments] = useState<Attachment[]>(
-      JSON.parse(
-        document.getElementById("data-attachments")?.textContent || "[]",
-      ),
-    );
-    const [tags, setTags] = useState<Tag.Listing[]>(
-      JSON.parse(document.getElementById("data-tags")?.textContent || "[]"),
-    );
+    const init = useArticleEditor((s) => s.init);
 
-    console.log({ article, tags, attachments });
+    useEffect(() => {
+      init({
+        user: JSON.parse(el("data-user")!.textContent!),
+        article: JSON.parse(el("data-article")!.textContent!),
+        attachments: JSON.parse(el("data-attachments")!.textContent!),
+        tags: JSON.parse(el("data-tags")!.textContent!),
+        categories: JSON.parse(el("data-categories")!.textContent!),
+        relationalArticles: JSON.parse(
+          el("data-relational-articles")!.textContent!,
+        ),
+        shouldNotfy: false,
+      });
+    }, []);
 
-    const props = {
-      ...{ article, user, attachments, categories, tags, relationalArticles },
-      onChange: setArticle,
-      onChangeAttachments: setAttachments,
-      onChangeTags: setTags,
-    };
-    return match<PostType>(article.post_type)
-      .returnType<JSX.Element>()
-      .with("page", () => <Page {...props} />)
-      .with("markdown", () => <Markdown {...props} />)
-      .with("addon-post", () => <AddonPost {...props} />)
-      .with("addon-introduction", () => <AddonIntroduction {...props} />)
-      .exhaustive();
+    const article = useArticleEditor((s) => s.article);
+    const shouldNotfy = useArticleEditor((s) => s.shouldNotfy);
+    const updateShouldNotify = useArticleEditor((s) => s.updateShouldNotify);
+
+    if (!article || !article.post_type) return null;
+
+    return (
+      <>
+        {match<PostType>(article.post_type)
+          .returnType<JSX.Element>()
+          .with("page", () => <Page />)
+          .with("markdown", () => <Markdown />)
+          .with("addon-post", () => <AddonPost />)
+          .with("addon-introduction", () => <AddonIntroduction />)
+          .exhaustive()}
+        {article.status === "publish" && (
+          <div className="mt-2">
+            <Label>公開時のSNS通知</Label>
+            <Checkbox
+              checked={shouldNotfy}
+              onChange={() => updateShouldNotify(!shouldNotfy)}
+            >
+              通知する
+            </Checkbox>
+          </div>
+        )}
+        <div className="mt-2">
+          <Button>保存</Button>
+        </div>
+      </>
+    );
   };
 
   createRoot(app).render(<App />);

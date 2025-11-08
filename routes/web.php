@@ -62,6 +62,8 @@ Route::middleware(['auth'])->group(function (): void {
         Route::post('/mypage/tags', [\App\Http\Controllers\v2\Mypage\TagController::class, 'store']);
         Route::post('/mypage/tags/{tag}', [\App\Http\Controllers\v2\Mypage\TagController::class, 'update']);
 
+        Route::get('/mypage/attachments', [\App\Http\Controllers\v2\Mypage\MypageController::class, 'index'])->name('mypage.attachments');
+
         Route::get('/mypage/profile', [\App\Http\Controllers\v2\Mypage\ProfileController::class, 'index'])->name('mypage.profile');
         Route::post('/mypage/profile', [\App\Http\Controllers\v2\Mypage\ProfileController::class, 'update']);
 

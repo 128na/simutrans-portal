@@ -12,12 +12,16 @@ export const TagEdit = ({ tags, onChangeTags }: Props) => {
     null,
   );
   const updateTag = (tag: Tag.Listing) => {
-    const index = tags.findIndex((t) => t.id === tag.id);
-    if (index !== -1) {
-      onChangeTags([...tags.slice(0, index), tag, ...tags.slice(index + 1)]);
+    const idx = tags.findIndex((t) => t.id === tag.id);
+
+    let next: Tag.Listing[];
+    if (idx >= 0) {
+      next = tags.map((t) => (t.id !== tag.id ? t : tag));
     } else {
-      onChangeTags([...tags, tag]);
+      next = [tag, ...tags];
     }
+    console.log({ next, idx, tag });
+    onChangeTags(next);
     setSelected(null);
   };
   return (

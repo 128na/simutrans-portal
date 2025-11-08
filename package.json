@@ -32,6 +32,7 @@
     "clsx": "^2",
     "date-fns": "^4.1.0",
     "flowbite": "^3.1.2",
+    "immer": "^10.2.0",
     "laravel-vite-plugin": "",
     "react": "^19",
     "react-dom": "^19",
@@ -39,6 +40,7 @@
     "tailwindcss": "^4",
     "ts-pattern": "^5.9.0",
     "typescript": "^5",
-    "vite": "^7"
+    "vite": "^7",
+    "zustand": "^5.0.8"
   }
 }

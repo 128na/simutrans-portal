@@ -7,7 +7,7 @@ import { DataTable, DataTableHeader } from "@/apps/components/layout/DataTable";
 import { format } from "date-fns";
 import { Image } from "@/apps/components/ui/Image";
 import { t } from "@/lang/translate";
-import { Upload } from "@/apps/components/form/Upload";
+import TextSub from "@/apps/components/ui/TextSub";
 
 type Props = {
   attachments: Attachment[];
@@ -16,7 +16,6 @@ type Props = {
   attachmentableType: AttachmentableType | null;
   selected: number | null;
   onSelectAttachment?: (attachment: Attachment | null) => void;
-  onChangeAttachments?: (attachments: Attachment[]) => void;
 };
 
 type Sort = {
@@ -43,7 +42,6 @@ export const AttachmentTable = ({
   limit,
   selected,
   onSelectAttachment,
-  onChangeAttachments,
 }: Props) => {
   const [criteria, setCriteria] = useState("");
   const [sort, setSort] = useState<Sort>({
@@ -73,17 +71,10 @@ export const AttachmentTable = ({
         : { column, order: "asc" },
     );
   };
-  const onUploaded = (attachment: Attachment) => {
-    console.log({ attachment });
-    onChangeAttachments?.([attachment, ...attachments]);
-  };
 
   return (
     <div className="relative overflow-x-auto">
       <div className="gap-4 flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between py-4">
-        <div>
-          <Upload onUploaded={onUploaded} />
-        </div>
         <div>
           <Input
             type="text"
@@ -99,6 +90,7 @@ export const AttachmentTable = ({
           onChange={setCurrent}
         />
       </div>
+      <TextSub>不要ファイルの削除はファイル管理からできます。</TextSub>
       <DataTable
         headers={headers}
         data={sorted}

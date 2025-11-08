@@ -1,3 +1,3 @@
-export const AddonPost = ({ user, article, onChange }: ArticleEditProps) => {
+export const AddonPost = () => {
   return <div>addon-post</div>;
 };

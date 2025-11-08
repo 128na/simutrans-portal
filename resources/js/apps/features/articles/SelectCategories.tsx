@@ -8,7 +8,7 @@ type Props = {
   selected: number[];
   only?: CategoryType[];
   showAdmin?: boolean;
-  onSelect: (category: Category.Search) => void;
+  onChange: (categoryIds: number[]) => void;
   typeClassName?: string;
   className?: string;
 };
@@ -20,7 +20,7 @@ export const SelectCategories = ({
   showAdmin,
   typeClassName,
   className,
-  onSelect,
+  onChange,
 }: Props) => {
   const pak128Id = categories["pak"].find((c) => c.slug === "128")?.id;
   const toolIds = categories["addon"]
@@ -46,6 +46,19 @@ export const SelectCategories = ({
     return !c.need_admin;
   };
 
+  const handle = (categoryId: number) => {
+    const idx = selected.findIndex((id) => id === categoryId);
+
+    let next: number[];
+    if (idx >= 0) {
+      next = selected.filter((id) => id !== categoryId);
+    } else {
+      next = [...selected, categoryId];
+    }
+
+    onChange(next);
+  };
+
   return typedKeys(categories)
     .filter(categoryGroupFilter)
     .map((type) => (
@@ -59,7 +72,7 @@ export const SelectCategories = ({
             key={category.id}
             value={category.id}
             checked={selected.includes(category.id)}
-            onChange={() => onSelect(category)}
+            onChange={() => handle(category.id)}
           >
             {t(`category.${category.type}.${category.slug}`)}
           </Checkbox>

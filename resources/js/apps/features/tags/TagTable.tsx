@@ -5,6 +5,7 @@ import Button from "@/apps/components/ui/Button";
 import Input from "@/apps/components/ui/Input";
 import { twMerge } from "tailwind-merge";
 import { DataTable, DataTableHeader } from "@/apps/components/layout/DataTable";
+import TextSub from "@/apps/components/ui/TextSub";
 
 type Props = {
   tags: Tag.Listing[];
@@ -78,6 +79,7 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
           onChange={setCurrent}
         />
       </div>
+      <TextSub>紐づく記事が無いタグは数日後に自動的に削除されます。</TextSub>
       <DataTable
         headers={headers}
         data={sorted}

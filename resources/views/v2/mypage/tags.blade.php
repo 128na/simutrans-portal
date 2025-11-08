@@ -5,8 +5,7 @@
     <div>
         <h2 class="text-3xl font-semibold text-pretty text-gray-900 sm:text-3xl">タグの編集</h2>
         <p class="mt-2 text-gray-600">
-            作成済みタグの説明文を編集できます。<br />
-            タグの削除はできません。紐づく記事が１つもなくなると数日後に自動削除されます。
+            タグの作成、作成済みタグの説明文を編集できます。
         </p>
     </div>
     <script id="data-tags" type="application/json">

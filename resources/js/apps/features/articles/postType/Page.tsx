@@ -1,3 +1,3 @@
-export const Page = ({ user, article, onChange }: ArticleEditProps) => {
+export const Page = () => {
   return <div>page</div>;
 };

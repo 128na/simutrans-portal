@@ -29,9 +29,9 @@ final class ArticleEdit extends JsonResource
             'tags' => $this->resource->tags->pluck('id'),
             'articles' => $this->resource->articles->pluck('id'),
             'attachments' => $this->resource->attachments->pluck('id'),
-            'created_at' => $this->resource->created_at?->toIso8601String(),
-            'published_at' => $this->resource->published_at?->toIso8601String(),
-            'modified_at' => $this->resource->modified_at?->toIso8601String(),
+            'created_at' => $this->resource->created_at?->format('Y-m-d\TH:i'),
+            'published_at' => $this->resource->published_at?->format('Y-m-d\TH:i'),
+            'modified_at' => $this->resource->modified_at?->format('Y-m-d\TH:i'),
         ];
     }
 }

@@ -80,18 +80,22 @@ namespace Article {
     published_at: string | null;
     modified_at: string;
   };
-  type Editing = {
+  type Editing =
+    | ({
+        post_type: "addon-introduction";
+        contents: ContentAddonIntroduction;
+      } & BaseEditing)
+    | ({ post_type: "addon-post"; contents: ContentAddonPost } & BaseEditing)
+    | ({ post_type: "page"; contents: ContentPage } & BaseEditing)
+    | ({ post_type: "markdown"; contents: ContentMarkdown } & BaseEditing);
+
+  type BaseEditing = {
     id: number | null;
     user_id: number;
     title: string;
     slug: string;
     post_type: PostType;
     status: Status;
-    contents:
-      | ContentAddonPost
-      | ContentAddonIntroduction
-      | ContentPage
-      | ContentMarkdown;
     categories: number[];
     tags: number[];
     articles: number[];
@@ -202,15 +206,3 @@ type SectionCaption = Section & {
 type SearchableOption = {
   id: number;
 } & Record<string, string | null>;
-
-type ArticleEditProps = {
-  user: User.Listing;
-  article: Article.Editing;
-  categories: Category.Grouping;
-  tags: Tag.Listing[];
-  attachments: Attachment[];
-  relationalArticles: Article.Relational[];
-  onChange: (article: Article.Editing) => void;
-  onChangeTags: (tags: Tag.Listing[]) => void;
-  onChangeAttachments: (attachments: Attachment[]) => void;
-};

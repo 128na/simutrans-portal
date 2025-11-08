@@ -50,6 +50,7 @@ final class ArticleController extends Controller
             'attachments' => Attachment::collection($user->myAttachments()->with('fileInfo')->get()),
             'categories' => $this->categoryRepository->getForSearch()->groupBy('type'),
             'tags' => $this->tagRepository->getForEdit(),
+            'relationalArticles' => $this->articleRepository->getForEdit(),
             'meta' => $this->metaOgpService->articleCreate(),
         ]);
     }

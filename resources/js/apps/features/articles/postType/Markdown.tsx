@@ -1,3 +1,3 @@
-export const Markdown = ({ user, article, onChange }: ArticleEditProps) => {
+export const Markdown = () => {
   return <div>markdown</div>;
 };

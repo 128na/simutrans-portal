@@ -4,16 +4,24 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\v2\Mypage;
 
+use App\Actions\Article\StoreArticle;
+use App\Actions\Article\UpdateArticle;
+use App\Http\Requests\Api\Article\StoreRequest;
+use App\Http\Requests\Api\Article\UpdateRequest;
 use App\Http\Resources\v2\ArticleEdit;
 use App\Http\Resources\v2\Attachment;
+use App\Http\Resources\v2\Tag;
 use App\Models\Article;
 use App\Repositories\v2\ArticleRepository;
 use App\Repositories\v2\CategoryRepository;
 use App\Repositories\v2\TagRepository;
 use App\Services\Front\MetaOgpService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 final class ArticleController extends Controller
 {
@@ -49,24 +57,27 @@ final class ArticleController extends Controller
             'user' => $user->only(['id', 'name', 'nickname', 'role']),
             'attachments' => Attachment::collection($user->myAttachments()->with('fileInfo')->get()),
             'categories' => $this->categoryRepository->getForSearch()->groupBy('type'),
-            'tags' => $this->tagRepository->getForEdit(),
+            'tags' => Tag::collection($this->tagRepository->getForEdit()),
             'relationalArticles' => $this->articleRepository->getForEdit(),
             'meta' => $this->metaOgpService->articleCreate(),
         ]);
     }
 
-    public function store(Request $request): \Illuminate\Contracts\View\View
+    public function store(StoreRequest $storeRequest, StoreArticle $storeArticle): JsonResponse
     {
         $user = Auth::user();
         if ($user->cannot('store', Article::class)) {
             return abort(403);
         }
 
-        // TODO: store logic
-        return view('v2.mypage.index', [
-            'user' => $user,
-            'meta' => $this->metaOgpService->articleCreate(),
-        ]);
+        /**
+         * @var array{should_notify?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}
+         */
+        $data = $storeRequest->validated();
+
+        $article = DB::transaction(fn(): Article => $storeArticle($user, $data));
+
+        return response()->json(['article_id' => $article->id], 200);
     }
 
     public function edit(Article $article): \Illuminate\Contracts\View\View
@@ -87,17 +98,20 @@ final class ArticleController extends Controller
         ]);
     }
 
-    public function update(Request $request, Article $article): \Illuminate\Contracts\View\View
+    public function update(UpdateRequest $updateRequest, Article $article, UpdateArticle $updateArticle): JsonResponse
     {
         $user = Auth::user();
         if ($user->cannot('update', $article)) {
             return abort(403);
         }
 
-        // TODO: update logic
-        return view('v2.mypage.index', [
-            'user' => $user,
-            'meta' => $this->metaOgpService->articleEdit(),
-        ]);
+        /**
+         * @var array{should_notify?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}
+         */
+        $data = $updateRequest->validated();
+
+        $article = DB::transaction(fn(): Article => $updateArticle($article, $data));
+
+        return response()->json(['article_id' => $article->id], 200);
     }
 }

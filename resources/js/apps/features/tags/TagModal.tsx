@@ -29,7 +29,7 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
         ? await axios.post(`/api/v2/tags/${tag.id}`, { description })
         : await axios.post(`/api/v2/tags`, { name, description });
       if ((res.status === 200 || res.status === 201) && onSave) {
-        onSave(res.data as Tag.Listing);
+        onSave(res.data.data as Tag.Listing);
       }
     } catch (error) {
       console.log("error", error);

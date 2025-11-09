@@ -1,0 +1,43 @@
+import { match } from "ts-pattern";
+import { JSX } from "react";
+import { useArticleEditor } from "@/apps/state/useArticleEditor";
+import { Page } from "./postType/Page";
+import { Markdown } from "./postType/Markdown";
+import { AddonPost } from "./postType/AddonPost";
+import { AddonIntroduction } from "./postType/AddonIntroduction";
+import Label from "@/apps/components/ui/Label";
+import Checkbox from "@/apps/components/ui/Checkbox";
+import Button from "@/apps/components/ui/Button";
+export const ArticleEditor = () => {
+  const article = useArticleEditor((s) => s.article);
+  const shouldNotfy = useArticleEditor((s) => s.shouldNotfy);
+  const updateShouldNotify = useArticleEditor((s) => s.updateShouldNotify);
+
+  if (!article || !article.post_type) return null;
+
+  return (
+    <>
+      {match<PostType>(article.post_type)
+        .returnType<JSX.Element>()
+        .with("page", () => <Page />)
+        .with("markdown", () => <Markdown />)
+        .with("addon-post", () => <AddonPost />)
+        .with("addon-introduction", () => <AddonIntroduction />)
+        .exhaustive()}
+      {article.status === "publish" && (
+        <div className="mt-2">
+          <Label>公開時のSNS通知</Label>
+          <Checkbox
+            checked={shouldNotfy}
+            onChange={() => updateShouldNotify(!shouldNotfy)}
+          >
+            通知する
+          </Checkbox>
+        </div>
+      )}
+      <div className="mt-2">
+        <Button>保存</Button>
+      </div>
+    </>
+  );
+};

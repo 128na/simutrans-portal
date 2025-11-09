@@ -13,7 +13,10 @@
                     <tr>
                         <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">投稿記事</td>
                         <td class="border border-gray-300 px-4 py-2">{{$summary->article_count ?? 0}} 件</td>
-                        <td class="border border-gray-300 px-4 py-2">@include('v2.parts.link', ['url' => route('mypage.articles.index'), 'title' => '記事一覧'])</td>
+                        <td class="border border-gray-300 px-4 py-2">
+                            @include('v2.parts.link', ['url' => route('mypage.articles.index'), 'title' => '記事一覧']),
+                            @include('v2.parts.link', ['url' => route('mypage.articles.create'), 'title' => '作成'])
+                        </td>
                     </tr>
                     <tr>
                         <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">投稿ファイル数</td>

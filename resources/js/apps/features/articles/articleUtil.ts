@@ -133,11 +133,3 @@ export const createArticle = (postType: PostType, user: User.WithRole) => {
 export const typedKeys = <T extends object>(obj: T): (keyof T)[] => {
   return Object.keys(obj) as (keyof T)[];
 };
-
-export const statusText = {
-  publish: t("statuses.publish"),
-  reservation: t("statuses.reservation"),
-  draft: t("statuses.draft"),
-  private: t("statuses.private"),
-  trash: t("statuses.trash"),
-};

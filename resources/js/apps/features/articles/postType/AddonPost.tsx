@@ -12,6 +12,8 @@ import { StatusForm } from "../form/StatusForm";
 import { Upload } from "@/apps/components/form/Upload";
 import { AttachmentEdit } from "../../attachments/AttachmentEdit";
 import TextSub from "@/apps/components/ui/TextSub";
+import { useAxiosError } from "@/apps/state/useAxiosError";
+import TextError from "@/apps/components/ui/TextError";
 
 export const AddonPost = () => {
   const article = useArticleEditor((s) => s.article);
@@ -28,10 +30,15 @@ export const AddonPost = () => {
 
   const attachments = useArticleEditor((s) => s.attachments);
 
+  const { getError } = useAxiosError();
+
   return (
     <div className="grid gap-4">
       <CommonForm />
       <Label className="font-medium">ファイル</Label>
+      <TextError className="mb-2">
+        {getError("article.contents.file")}
+      </TextError>
       <TextSub>
         {(contents.file &&
           attachments.find((a) => a.id === contents.file)?.original_name) ??
@@ -75,6 +82,9 @@ export const AddonPost = () => {
       >
         <TextBadge color="red">必須</TextBadge>
         説明
+        <TextError className="mb-2">
+          {getError("article.contents.description")}
+        </TextError>
       </Textarea>
 
       <SelectCategories
@@ -110,6 +120,9 @@ export const AddonPost = () => {
             }
           >
             作者
+            <TextError className="mb-2">
+              {getError("article.contents.author")}
+            </TextError>
           </Input>
           <Textarea
             labelClassName="font-medium"
@@ -123,6 +136,9 @@ export const AddonPost = () => {
             }
           >
             謝辞
+            <TextError className="mb-2">
+              {getError("article.contents.thanks")}
+            </TextError>
           </Textarea>
           <Textarea
             labelClassName="font-medium"
@@ -136,6 +152,9 @@ export const AddonPost = () => {
             }
           >
             ライセンス
+            <TextError className="mb-2">
+              {getError("article.contents.license")}
+            </TextError>
           </Textarea>
           <Label className="font-medium">
             タグ

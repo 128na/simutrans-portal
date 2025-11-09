@@ -192,7 +192,7 @@ type SectionText = Section & {
 };
 type SectionImage = Section & {
   type: "image";
-  image: number | null;
+  id: number | null;
 };
 type SectionUrl = Section & {
   type: "url";

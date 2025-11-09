@@ -8,12 +8,14 @@ import { AddonIntroduction } from "./postType/AddonIntroduction";
 import Label from "@/apps/components/ui/Label";
 import Checkbox from "@/apps/components/ui/Checkbox";
 import Button from "@/apps/components/ui/Button";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { useAxiosError } from "@/apps/state/useAxiosError";
 export const ArticleEditor = () => {
   const article = useArticleEditor((s) => s.article);
   const shouldNotfy = useArticleEditor((s) => s.shouldNotfy);
   const updateShouldNotify = useArticleEditor((s) => s.updateShouldNotify);
 
+  const { setError } = useAxiosError();
   const url = article.id
     ? `/api/v2/articles/${article.id}`
     : "/api/v2/articles";
@@ -25,7 +27,10 @@ export const ArticleEditor = () => {
       });
       window.location.href = `/mypage/articles/edit/${res.data.article_id}?updated=1`;
     } catch (error) {
-      console.log({ error });
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data);
+        setError(error.response?.data);
+      }
     }
   };
   if (!article || !article.post_type) return null;
@@ -41,13 +46,16 @@ export const ArticleEditor = () => {
         .exhaustive()}
       {article.status === "publish" && (
         <div className="mt-2">
-          <Label>公開時のSNS通知</Label>
-          <Checkbox
-            checked={shouldNotfy}
-            onChange={() => updateShouldNotify(!shouldNotfy)}
-          >
-            通知する
-          </Checkbox>
+          <Label>
+            <div className="font-medium">公開時のSNS通知</div>
+
+            <Checkbox
+              checked={shouldNotfy}
+              onChange={() => updateShouldNotify(!shouldNotfy)}
+            >
+              通知する
+            </Checkbox>
+          </Label>
         </div>
       )}
       <div className="mt-2">

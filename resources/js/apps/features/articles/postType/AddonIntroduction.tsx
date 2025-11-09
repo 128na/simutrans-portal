@@ -9,6 +9,9 @@ import TextBadge from "@/apps/components/ui/TextBadge";
 import { useArticleEditor } from "@/apps/state/useArticleEditor";
 import { CommonForm } from "../form/CommonForm";
 import { StatusForm } from "../form/StatusForm";
+import Checkbox from "@/apps/components/ui/Checkbox";
+import { useAxiosError } from "@/apps/state/useAxiosError";
+import TextError from "@/apps/components/ui/TextError";
 
 export const AddonIntroduction = () => {
   const article = useArticleEditor((s) => s.article);
@@ -22,6 +25,8 @@ export const AddonIntroduction = () => {
 
   const categories = useArticleEditor((s) => s.categories);
   const relationalArticles = useArticleEditor((s) => s.relationalArticles);
+
+  const { getError } = useAxiosError();
 
   return (
     <div className="grid gap-4">
@@ -39,6 +44,9 @@ export const AddonIntroduction = () => {
       >
         <TextBadge color="red">必須</TextBadge>
         説明
+        <TextError className="mb-2">
+          {getError("article.contents.description")}
+        </TextError>
       </Textarea>
       <Input
         labelClassName="font-medium"
@@ -53,7 +61,26 @@ export const AddonIntroduction = () => {
       >
         <TextBadge color="red">必須</TextBadge>
         リンク先
+        <TextError className="mb-2">
+          {getError("article.contents.link")}
+        </TextError>
       </Input>
+      <Label>
+        <div className="font-medium">掲載許可</div>
+        <Checkbox
+          checked={contents.agreement}
+          onChange={() =>
+            updateContents<ContentAddonIntroduction>(
+              (draft) => (draft.agreement = !draft.agreement),
+            )
+          }
+        >
+          取得済み
+          <TextError className="mb-2">
+            {getError("article.contents.agreement")}
+          </TextError>
+        </Checkbox>
+      </Label>
       <SelectCategories
         typeClassName="font-medium"
         className="font-normal"
@@ -87,6 +114,9 @@ export const AddonIntroduction = () => {
             }
           >
             作者
+            <TextError className="mb-2">
+              {getError("article.contents.author")}
+            </TextError>
           </Input>
           <Textarea
             labelClassName="font-medium"
@@ -100,6 +130,9 @@ export const AddonIntroduction = () => {
             }
           >
             謝辞
+            <TextError className="mb-2">
+              {getError("article.contents.thanks")}
+            </TextError>
           </Textarea>
           <Textarea
             labelClassName="font-medium"
@@ -113,7 +146,27 @@ export const AddonIntroduction = () => {
             }
           >
             ライセンス
+            <TextError className="mb-2">
+              {getError("article.contents.license")}
+            </TextError>
           </Textarea>
+          <Label>
+            <div className="font-medium">リンク切れチェック</div>
+            <TextError className="mb-2">
+              {getError("article.contents.exclude_link_check")}
+            </TextError>
+            <Checkbox
+              checked={contents.exclude_link_check}
+              onChange={() =>
+                updateContents<ContentAddonIntroduction>(
+                  (draft) =>
+                    (draft.exclude_link_check = !draft.exclude_link_check),
+                )
+              }
+            >
+              有効にする
+            </Checkbox>
+          </Label>
           <Label className="font-medium">
             タグ
             <SelectableSearch

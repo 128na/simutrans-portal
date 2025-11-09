@@ -7,6 +7,8 @@ import { AttachmentEdit } from "../../attachments/AttachmentEdit";
 import { useArticleEditor } from "@/apps/state/useArticleEditor";
 import { Image } from "@/apps/components/ui/Image";
 import TextSub from "@/apps/components/ui/TextSub";
+import TextError from "@/apps/components/ui/TextError";
+import { useAxiosError } from "@/apps/state/useAxiosError";
 
 export const CommonForm = () => {
   const article = useArticleEditor((s) => s.article);
@@ -15,6 +17,8 @@ export const CommonForm = () => {
   const updateContents = useArticleEditor((s) => s.updateContents);
 
   const attachments = useArticleEditor((s) => s.attachments);
+
+  const { getError } = useAxiosError();
 
   return (
     <>
@@ -26,6 +30,7 @@ export const CommonForm = () => {
       >
         <TextBadge color="red">必須</TextBadge>
         タイトル
+        <TextError className="mb-2">{getError("article.title")}</TextError>
       </Input>
       <Input
         labelClassName="font-medium"
@@ -35,9 +40,13 @@ export const CommonForm = () => {
       >
         <TextBadge color="red">必須</TextBadge>
         記事URL
+        <TextError className="mb-2">{getError("article.slug")}</TextError>
       </Input>
       <Label className="font-medium">
         サムネイル
+        <TextError className="mb-2">
+          {getError("article.contents.thumbnail")}
+        </TextError>
         <Image
           attachmentId={article.contents.thumbnail}
           attachments={attachments}
@@ -49,7 +58,6 @@ export const CommonForm = () => {
             ?.original_name) ??
           "未選択"}
       </TextSub>
-
       <Upload
         accept="image/*"
         onUploaded={(a) => {

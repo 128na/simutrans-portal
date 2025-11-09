@@ -7,6 +7,8 @@ import TextBadge from "@/apps/components/ui/TextBadge";
 import { useArticleEditor } from "@/apps/state/useArticleEditor";
 import { CommonForm } from "../form/CommonForm";
 import { StatusForm } from "../form/StatusForm";
+import TextError from "@/apps/components/ui/TextError";
+import { useAxiosError } from "@/apps/state/useAxiosError";
 
 export const Markdown = () => {
   const article = useArticleEditor((s) => s.article);
@@ -18,6 +20,8 @@ export const Markdown = () => {
   const categories = useArticleEditor((s) => s.categories);
   const relationalArticles = useArticleEditor((s) => s.relationalArticles);
 
+  const { getError } = useAxiosError();
+
   return (
     <div className="grid gap-4">
       <CommonForm />
@@ -25,7 +29,7 @@ export const Markdown = () => {
         labelClassName="font-medium"
         className="font-normal"
         value={contents.markdown || ""}
-        rows={25}
+        rows={15}
         onChange={(e) =>
           updateContents<ContentMarkdown>((draft) => {
             draft.markdown = e.target.value;
@@ -34,6 +38,9 @@ export const Markdown = () => {
       >
         <TextBadge color="red">必須</TextBadge>
         本文
+        <TextError className="mb-2">
+          {getError("article.contents.markdown")}
+        </TextError>
       </Textarea>
       <SelectCategories
         typeClassName="font-medium"

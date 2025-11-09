@@ -32,7 +32,6 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
         onSave(res.data.data as Tag.Listing);
       }
     } catch (error) {
-      console.log("error", error);
       if (error instanceof AxiosError) {
         setError(error);
       }

@@ -28,7 +28,6 @@ export const ArticleEditor = () => {
       window.location.href = `/mypage/articles/edit/${res.data.article_id}?updated=1`;
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log(error.response?.data);
         setError(error.response?.data);
       }
     }

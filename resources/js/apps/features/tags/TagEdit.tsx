@@ -20,7 +20,6 @@ export const TagEdit = ({ tags, onChangeTags }: Props) => {
     } else {
       next = [tag, ...tags];
     }
-    console.log({ next, idx, tag });
     onChangeTags(next);
     setSelected(null);
   };

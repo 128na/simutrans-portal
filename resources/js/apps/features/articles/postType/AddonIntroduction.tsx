@@ -4,15 +4,11 @@ import { SelectCategories } from "../SelectCategories";
 import { SelectableSearch } from "@/apps/components/form/SelectableSearch";
 import Label from "@/apps/components/ui/Label";
 import { Accordion } from "@/apps/components/ui/Accordion";
-import Select from "@/apps/components/ui/Select";
-import { t } from "@/lang/translate";
-import { Image } from "../../../components/ui/Image";
 import { TagEdit } from "../../tags/TagEdit";
-import { AttachmentEdit } from "../../attachments/AttachmentEdit";
 import TextBadge from "@/apps/components/ui/TextBadge";
-import { addHours, format } from "date-fns";
-import { Upload } from "@/apps/components/form/Upload";
 import { useArticleEditor } from "@/apps/state/useArticleEditor";
+import { CommonForm } from "../form/CommonForm";
+import { StatusForm } from "../form/StatusForm";
 
 export const AddonIntroduction = () => {
   const article = useArticleEditor((s) => s.article);
@@ -21,70 +17,15 @@ export const AddonIntroduction = () => {
   const contents = article.contents as ContentAddonIntroduction;
   const updateContents = useArticleEditor((s) => s.updateContents);
 
-  const attachments = useArticleEditor((s) => s.attachments);
-
   const tags = useArticleEditor((s) => s.tags);
   const updateTags = useArticleEditor((s) => s.updateTags);
 
   const categories = useArticleEditor((s) => s.categories);
   const relationalArticles = useArticleEditor((s) => s.relationalArticles);
 
-  const options = {
-    publish: t("statuses.publish"),
-    reservation: t("statuses.reservation"),
-    draft: t("statuses.draft"),
-    private: t("statuses.private"),
-    trash: t("statuses.trash"),
-  };
-
   return (
     <div className="grid gap-4">
-      <Input
-        labelClassName="font-medium"
-        className="font-normal"
-        value={article.title || ""}
-        onChange={(e) => update((draft) => (draft.title = e.target.value))}
-      >
-        <TextBadge color="red">必須</TextBadge>
-        タイトル
-      </Input>
-      <Input
-        labelClassName="font-medium"
-        className="font-normal"
-        value={article.slug || ""}
-        onChange={(e) => update((draft) => (draft.slug = e.target.value))}
-      >
-        <TextBadge color="red">必須</TextBadge>
-        記事URL
-      </Input>
-      <Label className="font-medium">
-        サムネイル
-        <Image
-          attachmentId={article.contents.thumbnail}
-          attachments={attachments}
-        />
-      </Label>
-      <Upload
-        onUploaded={(a) => {
-          useArticleEditor.setState((state) => {
-            // アップロードした画像を同時にセットする
-            state.attachments.unshift(a);
-            state.article.contents.thumbnail = a.id;
-          });
-        }}
-      />
-      <Accordion title="アップロード済みの画像から選択する">
-        <div className="pl-4 grid gap-4">
-          <AttachmentEdit
-            attachments={attachments}
-            attachmentableId={article.id}
-            selected={article.contents.thumbnail}
-            onSelectAttachment={(attachmentId) =>
-              updateContents((draft) => (draft.thumbnail = attachmentId))
-            }
-          />
-        </div>
-      </Accordion>
+      <CommonForm />
       <Textarea
         labelClassName="font-medium"
         className="font-normal"
@@ -209,27 +150,7 @@ export const AddonIntroduction = () => {
           </Label>
         </div>
       </Accordion>
-      <Select
-        options={options}
-        value={article.status}
-        onChange={(e) =>
-          update((draft) => (draft.status = e.target.value as Status))
-        }
-      >
-        ステータス
-      </Select>
-      {article.status === "reservation" && (
-        <Input
-          type="datetime-local"
-          value={article.published_at ?? ""}
-          min={format(addHours(new Date(), 1), "yyyy-MM-dd'T'HH:mm")}
-          onChange={(e) =>
-            update((draft) => (draft.published_at = e.target.value))
-          }
-        >
-          予約日時
-        </Input>
-      )}
+      <StatusForm />
     </div>
   );
 };

@@ -182,8 +182,9 @@ type ContentPage = Content & {
   sections: (SectionText | SectionImage | SectionCaption | SectionUrl)[];
 };
 
+type SectionType = "text" | "image" | "caption" | "url";
 type Section = {
-  type: string | null;
+  type: SectionType | null;
 };
 type SectionText = Section & {
   type: "text";
@@ -197,7 +198,6 @@ type SectionUrl = Section & {
   type: "url";
   url: string | null;
 };
-
 type SectionCaption = Section & {
   type: "caption";
   caption: string | null;

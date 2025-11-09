@@ -4,6 +4,7 @@ import Button from "./Button";
 
 export default function InputFile({
   className,
+  children,
   ...props
 }: React.InputHTMLAttributes<HTMLInputElement>) {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -15,7 +16,7 @@ export default function InputFile({
           fileRef.current?.click();
         }}
       >
-        アップロード
+        {children ?? "アップロード"}
       </Button>
 
       <input

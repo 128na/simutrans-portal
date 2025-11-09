@@ -10,9 +10,8 @@ export const Upload = ({ onUploaded, ...props }: Prop) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // FormData にファイルを詰める
     const formData = new FormData();
-    formData.append("file", file); // ← バックエンド側のパラメータ名に合わせる
+    formData.append("file", file);
 
     try {
       const response = await axios.post("/api/v2/attachments", formData, {
@@ -21,19 +20,12 @@ export const Upload = ({ onUploaded, ...props }: Prop) => {
         },
       });
 
-      console.log("アップロード完了", response.data.data);
       onUploaded?.(response.data.data);
     } catch (error) {
+      // TODO: エラーハンドリング
       console.error("アップロード失敗", error);
     }
   };
 
-  return (
-    <InputFile
-      onChange={onUpload}
-      multiple={false}
-      accept="image/*"
-      {...props}
-    />
-  );
+  return <InputFile onChange={onUpload} multiple={false} {...props} />;
 };

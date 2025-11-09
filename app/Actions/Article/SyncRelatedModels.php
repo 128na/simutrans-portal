@@ -32,15 +32,15 @@ final readonly class SyncRelatedModels
 
         $this->articleRepository->syncAttachments($article, $attachmentIds);
         /** @var int[] */
-        $articleIds = data_get($data, 'article.articles.*.id', []);
+        $articleIds = data_get($data, 'article.articles', []);
         $this->articleRepository->syncArticles($article, $articleIds);
 
         /** @var int[] */
-        $categoryIds = data_get($data, 'article.categories.*.id', []);
+        $categoryIds = data_get($data, 'article.categories', []);
         $this->articleRepository->syncCategories($article, $categoryIds);
 
         /** @var int[] */
-        $tagIds = data_get($data, 'article.tags.*.id', []);
+        $tagIds = data_get($data, 'article.tags', []);
         $this->articleRepository->syncTags($article, $tagIds);
     }
 }

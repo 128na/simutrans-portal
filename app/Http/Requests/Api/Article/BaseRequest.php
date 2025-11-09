@@ -39,12 +39,12 @@ abstract class BaseRequest extends FormRequest
     {
         return [
             'article.categories' => 'present|array',
-            'article.categories.*.id' => 'required|exists:categories,id',
+            'article.categories.*' => 'required|exists:categories,id',
             'article.tags' => 'present|array',
-            'article.tags.*.id' => 'required|exists:tags,id',
-            'article.contents.thumbnail' => ['nullable', 'exists:attachments,id,user_id,'.Auth::id(), app(ImageAttachment::class)],
+            'article.tags.*' => 'required|exists:tags,id',
+            'article.contents.thumbnail' => ['nullable', 'exists:attachments,id,user_id,' . Auth::id(), app(ImageAttachment::class)],
             'article.contents.author' => 'nullable|max:255',
-            'article.contents.file' => 'required|exists:attachments,id,user_id,'.Auth::id(),
+            'article.contents.file' => 'required|exists:attachments,id,user_id,' . Auth::id(),
             'article.contents.description' => 'required|string|max:2048',
             'article.contents.thanks' => 'nullable|string|max:2048',
             'article.contents.license' => 'nullable|string|max:2048',
@@ -58,10 +58,10 @@ abstract class BaseRequest extends FormRequest
     {
         return [
             'article.categories' => 'present|array',
-            'article.categories.*.id' => 'required|exists:categories,id',
+            'article.categories.*' => 'required|exists:categories,id',
             'article.tags' => 'present|array',
-            'article.tags.*.id' => 'required|exists:tags,id',
-            'article.contents.thumbnail' => ['nullable', 'exists:attachments,id,user_id,'.Auth::id(), app(ImageAttachment::class)],
+            'article.tags.*' => 'required|exists:tags,id',
+            'article.contents.thumbnail' => ['nullable', 'exists:attachments,id,user_id,' . Auth::id(), app(ImageAttachment::class)],
             'article.contents.author' => 'required|max:255',
             'article.contents.link' => 'required|url|max:255',
             'article.contents.description' => 'required|string|max:2048',
@@ -79,14 +79,14 @@ abstract class BaseRequest extends FormRequest
     {
         return [
             'article.categories' => 'present|array',
-            'article.categories.*.id' => 'required|exists:categories,id,type,page',
-            'article.contents.thumbnail' => ['nullable', 'exists:attachments,id,user_id,'.Auth::id(), app(ImageAttachment::class)],
+            'article.categories.*' => 'required|exists:categories,id,type,page',
+            'article.contents.thumbnail' => ['nullable', 'exists:attachments,id,user_id,' . Auth::id(), app(ImageAttachment::class)],
             'article.contents.sections' => 'required|array|min:1',
             'article.contents.sections.*.type' => 'required|in:caption,text,url,image',
             'article.contents.sections.*.caption' => 'required_if:article.contents.sections.*.type,caption|string|max:255',
             'article.contents.sections.*.text' => 'required_if:article.contents.sections.*.type,text|string|max:2048',
             'article.contents.sections.*.url' => 'required_if:article.contents.sections.*.type,url|url|max:255',
-            'article.contents.sections.*.id' => ['required_if:article.contents.sections.*.type,image', 'exists:attachments,id,user_id,'.Auth::id(), app(ImageAttachment::class)],
+            'article.contents.sections.*.id' => ['required_if:article.contents.sections.*.type,image', 'exists:attachments,id,user_id,' . Auth::id(), app(ImageAttachment::class)],
         ];
     }
 
@@ -97,8 +97,8 @@ abstract class BaseRequest extends FormRequest
     {
         return [
             'article.categories' => 'present|array',
-            'article.categories.*.id' => 'required|exists:categories,id,type,page',
-            'article.contents.thumbnail' => ['nullable', 'exists:attachments,id,user_id,'.Auth::id(), app(ImageAttachment::class)],
+            'article.categories.*' => 'required|exists:categories,id,type,page',
+            'article.contents.thumbnail' => ['nullable', 'exists:attachments,id,user_id,' . Auth::id(), app(ImageAttachment::class)],
             'article.contents.markdown' => 'required|string|max:65535',
         ];
     }

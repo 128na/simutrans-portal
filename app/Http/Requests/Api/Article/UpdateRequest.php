@@ -24,12 +24,12 @@ final class UpdateRequest extends BaseRequest
 
         return [
             'article.status' => ['required', Rule::enum(ArticleStatus::class)],
-            'article.title' => ['required', 'max:255', 'unique:articles,title,'.$articleId, new NgWordRule(NgWords::ARTICLE_TITLE)],
+            'article.title' => ['required', 'max:255', 'unique:articles,title,' . $articleId, new NgWordRule(NgWords::ARTICLE_TITLE)],
             'article.slug' => ['required', 'max:255', new NotJustNumbers, new UniqueSlugByUser],
             'article.contents' => 'required|array',
             'article.published_at' => ['nullable', 'date', app(ReservationPublishedAt::class)],
             'article.articles' => 'present|array|max:10',
-            'article.articles.*.id' => 'required|distinct|exists:articles,id,status,publish',
+            'article.articles.*' => 'required|distinct|exists:articles,id,status,publish',
             'should_notify' => 'nullable|boolean',
             'without_update_modified_at' => 'nullable|boolean',
             'follow_redirect' => 'nullable|boolean',

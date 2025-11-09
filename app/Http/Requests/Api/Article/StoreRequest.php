@@ -29,7 +29,7 @@ final class StoreRequest extends BaseRequest
             'article.contents' => 'required|array',
             'article.published_at' => ['nullable', 'date', app(ReservationPublishedAt::class)],
             'article.articles' => 'present|array|max:10',
-            'article.articles.*.id' => 'required|distinct|exists:articles,id,status,publish',
+            'article.articles.*' => 'required|distinct|exists:articles,id,status,publish',
             'should_notify' => 'nullable|boolean',
         ];
     }

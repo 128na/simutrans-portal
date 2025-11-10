@@ -14,6 +14,7 @@ type Props = {
   limit: number;
   attachmentableId: number | null;
   attachmentableType: AttachmentableType | null;
+  types: AttachmentType[];
   selected: number | null;
   onSelectAttachment?: (attachment: Attachment | null) => void;
 };
@@ -39,6 +40,7 @@ export const AttachmentTable = ({
   attachments,
   attachmentableId,
   attachmentableType,
+  types,
   limit,
   selected,
   onSelectAttachment,
@@ -53,6 +55,7 @@ export const AttachmentTable = ({
   const filtered = attachmentFilter(
     attachments,
     criteria,
+    types,
     attachmentableId,
     attachmentableType,
   );

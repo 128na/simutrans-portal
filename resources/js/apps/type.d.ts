@@ -120,12 +120,14 @@ type PostType = "addon-post" | "addon-introduction" | "page" | "markdown";
 type Status = "publish" | "reservation" | "draft" | "trash" | "private";
 type AttachmentableType = "Article" | "Profile";
 
+type AttachmentType = "image" | "video" | "text" | "file";
+
 type Attachment = SearchableOption & {
   id: number;
   user_id: number;
   attachmentable_id: number;
   attachmentable_type: AttachmentableType;
-  type: "image" | "video" | "text" | "file";
+  type: AttachmentType;
   original_name: string;
   thumbnail: string;
   url: string;

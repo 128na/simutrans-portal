@@ -54,6 +54,7 @@ export const SectionImage = ({
                 attachments={attachments}
                 attachmentableId={articleId}
                 selected={section.id}
+                types={["image"]}
                 onSelectAttachment={(attachmentId) => {
                   onSelectAttachment(attachmentId);
                   close();

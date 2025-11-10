@@ -26,11 +26,15 @@ export const compareAttachmentValues = (a: unknown, b: unknown): number => {
 export const attachmentFilter = (
   attachments: Attachment[],
   criteria: string,
+  types: AttachmentType[],
   attachmentableId: number | null,
   attachmentableType: AttachmentableType | null,
 ): Attachment[] => {
   const q = criteria.toLowerCase();
   return attachments.filter((a) => {
+    if (types?.includes(a.type) === false) {
+      return false;
+    }
     // 添付先が指定されているときは他記事に紐づくものを除外する
     if (
       attachmentableId &&

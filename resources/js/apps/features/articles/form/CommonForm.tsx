@@ -83,6 +83,7 @@ export const CommonForm = () => {
                 attachments={attachments}
                 attachmentableId={article.id}
                 selected={article.contents.thumbnail}
+                types={["image"]}
                 onSelectAttachment={(attachmentId) => {
                   updateContents((draft) => (draft.thumbnail = attachmentId));
                   close();

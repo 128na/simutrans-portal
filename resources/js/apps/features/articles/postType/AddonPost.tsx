@@ -38,10 +38,12 @@ export const AddonPost = () => {
       <CommonForm />
 
       <div>
-        <Label className="font-medium">ファイル</Label>
-        <TextError className="mb-2">
-          {getError("article.contents.file")}
-        </TextError>
+        <Label className="font-medium">
+          ファイル
+          <TextError className="mb-2">
+            {getError("article.contents.file")}
+          </TextError>
+        </Label>
         <TextSub>
           {(contents.file &&
             attachments.find((a) => a.id === contents.file)?.original_name) ??
@@ -69,6 +71,7 @@ export const AddonPost = () => {
                 attachments={attachments}
                 attachmentableId={article.id}
                 selected={contents.file}
+                types={["file"]}
                 onSelectAttachment={(attachmentId) => {
                   updateContents<ContentAddonPost>(
                     (draft) => (draft.file = attachmentId),

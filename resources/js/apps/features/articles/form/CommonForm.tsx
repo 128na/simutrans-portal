@@ -1,5 +1,4 @@
 import { Upload } from "@/apps/components/form/Upload";
-import { Accordion } from "@/apps/components/ui/Accordion";
 import Input from "@/apps/components/ui/Input";
 import Label from "@/apps/components/ui/Label";
 import TextBadge from "@/apps/components/ui/TextBadge";
@@ -9,6 +8,7 @@ import { Image } from "@/apps/components/ui/Image";
 import TextSub from "@/apps/components/ui/TextSub";
 import TextError from "@/apps/components/ui/TextError";
 import { useAxiosError } from "@/apps/state/useAxiosError";
+import { Modal } from "@/apps/components/ui/Modal";
 
 export const CommonForm = () => {
   const article = useArticleEditor((s) => s.article);
@@ -32,6 +32,7 @@ export const CommonForm = () => {
         タイトル
         <TextError className="mb-2">{getError("article.title")}</TextError>
       </Input>
+
       <Input
         labelClassName="font-medium"
         className="font-normal"
@@ -42,46 +43,55 @@ export const CommonForm = () => {
         記事URL
         <TextError className="mb-2">{getError("article.slug")}</TextError>
       </Input>
-      <Label className="font-medium">
-        サムネイル
-        <TextError className="mb-2">
-          {getError("article.contents.thumbnail")}
-        </TextError>
-        <Image
-          attachmentId={article.contents.thumbnail}
-          attachments={attachments}
-        />
-      </Label>
-      <TextSub>
-        {(article.contents.thumbnail &&
-          attachments.find((a) => a.id === article.contents.thumbnail)
-            ?.original_name) ??
-          "未選択"}
-      </TextSub>
-      <Upload
-        accept="image/*"
-        onUploaded={(a) => {
-          useArticleEditor.setState((state) => {
-            // アップロードした画像を同時にセットする
-            state.attachments.unshift(a);
-            state.article.contents.thumbnail = a.id;
-          });
-        }}
-      >
-        画像をアップロード
-      </Upload>
-      <Accordion title="アップロード済みの画像から選択する">
-        <div className="pl-4 grid gap-4">
-          <AttachmentEdit
+
+      <div>
+        <Label className="font-medium">
+          サムネイル
+          <TextError className="mb-2">
+            {getError("article.contents.thumbnail")}
+          </TextError>
+          <Image
+            attachmentId={article.contents.thumbnail}
             attachments={attachments}
-            attachmentableId={article.id}
-            selected={article.contents.thumbnail}
-            onSelectAttachment={(attachmentId) =>
-              updateContents((draft) => (draft.thumbnail = attachmentId))
-            }
           />
+        </Label>
+        <TextSub>
+          {(article.contents.thumbnail &&
+            attachments.find((a) => a.id === article.contents.thumbnail)
+              ?.original_name) ??
+            "未選択"}
+        </TextSub>
+        <div className="space-x-2">
+          <Upload
+            accept="image/*"
+            onUploaded={(a) => {
+              useArticleEditor.setState((state) => {
+                // アップロードした画像を同時にセットする
+                state.attachments.unshift(a);
+                state.article.contents.thumbnail = a.id;
+              });
+            }}
+          >
+            画像をアップロード
+          </Upload>
+          <Modal
+            buttonTitle="アップロード済みの画像から選択"
+            title="画像を選択"
+          >
+            {({ close }) => (
+              <AttachmentEdit
+                attachments={attachments}
+                attachmentableId={article.id}
+                selected={article.contents.thumbnail}
+                onSelectAttachment={(attachmentId) => {
+                  updateContents((draft) => (draft.thumbnail = attachmentId));
+                  close();
+                }}
+              />
+            )}
+          </Modal>
         </div>
-      </Accordion>
+      </div>
     </>
   );
 };

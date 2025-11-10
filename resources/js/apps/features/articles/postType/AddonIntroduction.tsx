@@ -12,6 +12,7 @@ import { StatusForm } from "../form/StatusForm";
 import Checkbox from "@/apps/components/ui/Checkbox";
 import { useAxiosError } from "@/apps/state/useAxiosError";
 import TextError from "@/apps/components/ui/TextError";
+import { Modal } from "@/apps/components/ui/Modal";
 
 export const AddonIntroduction = () => {
   const article = useArticleEditor((s) => s.article);
@@ -167,26 +168,26 @@ export const AddonIntroduction = () => {
               有効にする
             </Checkbox>
           </Label>
-          <Label className="font-medium">
-            タグ
-            <SelectableSearch
-              className="font-normal"
-              labelKey="name"
-              options={tags}
-              selectedIds={article.tags}
-              onChange={(tagIds) => update((draft) => (draft.tags = tagIds))}
-            />
-          </Label>
-          <Accordion title="タグの作成・編集">
-            <div className="pl-4 grid gap-4">
+          <div>
+            <Label>
+              <div className="font-medium">タグ</div>
+              <SelectableSearch
+                className="font-normal"
+                labelKey="name"
+                options={tags}
+                selectedIds={article.tags}
+                onChange={(tagIds) => update((draft) => (draft.tags = tagIds))}
+              />
+            </Label>
+            <Modal buttonTitle="タグの作成・編集" title="タグの作成・編集">
               <TagEdit
                 tags={tags}
                 onChangeTags={(tags) => {
                   updateTags(tags);
                 }}
               />
-            </div>
-          </Accordion>
+            </Modal>
+          </div>
 
           <Label className="font-medium">
             関連記事

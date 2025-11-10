@@ -10,7 +10,7 @@ export default function InputFile({
   const fileRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div>
+    <>
       <Button
         onClick={() => {
           fileRef.current?.click();
@@ -25,6 +25,6 @@ export default function InputFile({
         className={twMerge("hidden", className)}
         {...props}
       />
-    </div>
+    </>
   );
 }

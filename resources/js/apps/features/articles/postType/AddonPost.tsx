@@ -14,6 +14,7 @@ import { AttachmentEdit } from "../../attachments/AttachmentEdit";
 import TextSub from "@/apps/components/ui/TextSub";
 import { useAxiosError } from "@/apps/state/useAxiosError";
 import TextError from "@/apps/components/ui/TextError";
+import { Modal } from "@/apps/components/ui/Modal";
 
 export const AddonPost = () => {
   const article = useArticleEditor((s) => s.article);
@@ -35,39 +36,50 @@ export const AddonPost = () => {
   return (
     <div className="grid gap-4">
       <CommonForm />
-      <Label className="font-medium">ファイル</Label>
-      <TextError className="mb-2">
-        {getError("article.contents.file")}
-      </TextError>
-      <TextSub>
-        {(contents.file &&
-          attachments.find((a) => a.id === contents.file)?.original_name) ??
-          "未選択"}
-      </TextSub>
-      <Upload
-        onUploaded={(a) => {
-          useArticleEditor.setState((state) => {
-            state.attachments.unshift(a);
-            if ("file" in state.article.contents) {
-              state.article.contents.file = a.id;
-            }
-          });
-        }}
-      >
-        ファイルをアップロード
-      </Upload>
-      <Accordion title="アップロード済みのファイルから選択する">
-        <div className="pl-4 grid gap-4">
-          <AttachmentEdit
-            attachments={attachments}
-            attachmentableId={article.id}
-            selected={contents.file}
-            onSelectAttachment={(attachmentId) =>
-              updateContents((draft) => (draft.thumbnail = attachmentId))
-            }
-          />
+
+      <div>
+        <Label className="font-medium">ファイル</Label>
+        <TextError className="mb-2">
+          {getError("article.contents.file")}
+        </TextError>
+        <TextSub>
+          {(contents.file &&
+            attachments.find((a) => a.id === contents.file)?.original_name) ??
+            "未選択"}
+        </TextSub>
+        <div className="space-x-2">
+          <Upload
+            onUploaded={(a) => {
+              useArticleEditor.setState((state) => {
+                state.attachments.unshift(a);
+                if ("file" in state.article.contents) {
+                  state.article.contents.file = a.id;
+                }
+              });
+            }}
+          >
+            ファイルをアップロード
+          </Upload>
+          <Modal
+            buttonTitle="アップロード済みのファイルから選択"
+            title="ファイルを選択"
+          >
+            {({ close }) => (
+              <AttachmentEdit
+                attachments={attachments}
+                attachmentableId={article.id}
+                selected={contents.file}
+                onSelectAttachment={(attachmentId) => {
+                  updateContents<ContentAddonPost>(
+                    (draft) => (draft.file = attachmentId),
+                  );
+                  close();
+                }}
+              />
+            )}
+          </Modal>
         </div>
-      </Accordion>
+      </div>
 
       <Textarea
         labelClassName="font-medium"
@@ -97,6 +109,7 @@ export const AddonPost = () => {
           update((draft) => (draft.categories = categoryIds))
         }
       />
+
       <Accordion
         title="その他の項目"
         defaultOpen={
@@ -124,6 +137,7 @@ export const AddonPost = () => {
               {getError("article.contents.author")}
             </TextError>
           </Input>
+
           <Textarea
             labelClassName="font-medium"
             className="font-normal"
@@ -140,6 +154,7 @@ export const AddonPost = () => {
               {getError("article.contents.thanks")}
             </TextError>
           </Textarea>
+
           <Textarea
             labelClassName="font-medium"
             className="font-normal"
@@ -156,26 +171,27 @@ export const AddonPost = () => {
               {getError("article.contents.license")}
             </TextError>
           </Textarea>
-          <Label className="font-medium">
-            タグ
-            <SelectableSearch
-              className="font-normal"
-              labelKey="name"
-              options={tags}
-              selectedIds={article.tags}
-              onChange={(tagIds) => update((draft) => (draft.tags = tagIds))}
-            />
-          </Label>
-          <Accordion title="タグの作成・編集">
-            <div className="pl-4 grid gap-4">
+
+          <div>
+            <Label>
+              <div className="font-medium">タグ</div>
+              <SelectableSearch
+                className="font-normal"
+                labelKey="name"
+                options={tags}
+                selectedIds={article.tags}
+                onChange={(tagIds) => update((draft) => (draft.tags = tagIds))}
+              />
+            </Label>
+            <Modal buttonTitle="タグの作成・編集" title="タグの作成・編集">
               <TagEdit
                 tags={tags}
                 onChangeTags={(tags) => {
                   updateTags(tags);
                 }}
               />
-            </div>
-          </Accordion>
+            </Modal>
+          </div>
 
           <Label className="font-medium">
             関連記事

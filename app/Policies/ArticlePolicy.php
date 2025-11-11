@@ -16,6 +16,7 @@ final class ArticlePolicy extends BasePolicy
     {
         return true;
     }
+
     public function update(User $user, Article $article): bool
     {
         return $this->isSameUser($user, $article);

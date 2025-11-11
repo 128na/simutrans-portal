@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Resources\Api\Mypage;
+namespace App\Http\Resources\v2;
 
 use App\Models\User as ModelsUser;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -23,12 +23,11 @@ final class User extends JsonResource
             'name' => $this->resource->name,
             'nickname' => $this->resource->nickname,
             'email' => $this->resource->email,
-            'invitation_url' => $this->resource->invitation_code ? route('user.invite', $this->resource->invitation_code) : null,
-            'profile' => new Profile($this->resource->profile),
-            'admin' => $this->resource->isAdmin(),
-            'verified' => (bool) $this->resource->email_verified_at,
-            'attachments' => Attachment::collection($this->resource->profile?->attachments),
-            'two_factor' => (bool) $this->resource->two_factor_secret,
+            'profile' => [
+                'id' => $this->resource->profile->id,
+                'data' => $this->resource->profile->data,
+            ],
+            'role' => $this->resource->role,
         ];
     }
 }

@@ -26,6 +26,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {
         Route::post('v2/articles', [\App\Http\Controllers\v2\Mypage\ArticleController::class, 'store']);
         Route::post('v2/articles/{article}', [\App\Http\Controllers\v2\Mypage\ArticleController::class, 'update']);
     });
+
+    Route::post('v2/profile', [\App\Http\Controllers\v2\Mypage\ProfileController::class, 'update']);
 });
 
 // マイページ

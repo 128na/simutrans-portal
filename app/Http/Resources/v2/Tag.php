@@ -23,11 +23,11 @@ final class Tag extends JsonResource
             'name' => $this->resource->name,
             'description' => $this->resource->description,
             'editable' => $this->resource->editable ?? true,
-            'created_by' => $this->when($this->resource->createdBy, fn() => [
+            'created_by' => $this->when($this->resource->createdBy, fn(): array => [
                 'id' => $this->resource->createdBy->id,
                 'name' => $this->resource->createdBy->name,
             ]),
-            'last_modified_by' => $this->when($this->resource->lastModifiedBy, fn() => [
+            'last_modified_by' => $this->when($this->resource->lastModifiedBy, fn(): array => [
                 'id' => $this->resource->lastModifiedBy->id,
                 'name' => $this->resource->lastModifiedBy->name,
             ]),

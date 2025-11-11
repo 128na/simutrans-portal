@@ -22,6 +22,7 @@ final class TagRepository
             ->orderBy('name', 'asc')
             ->get();
     }
+
     /**
      * @return Collection<int,Tag>
      */
@@ -43,15 +44,17 @@ final class TagRepository
             ->loadMissing('createdBy:id,name', 'lastModifiedBy:id,name')
         ;
     }
+
     /**
-     * @param {name:string,description:string|null, last_modified_at:Carbon\Carbon, last_modified_by:int}
+     * @param array{name:string,description:string|null,last_modified_at:\Carbon\Carbon,last_modified_by:int} $data
      */
     public function store(array $data): Tag
     {
         return $this->model->create($data);
     }
+
     /**
-     * @param {description:string|null, last_modified_at:Carbon\Carbon, last_modified_by:int}
+     * @param array{description:string|null,last_modified_at:\Carbon\Carbon,last_modified_by:int} $data
      */
     public function update(Tag $tag, array $data): Tag
     {

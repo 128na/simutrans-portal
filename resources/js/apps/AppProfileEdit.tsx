@@ -1,0 +1,29 @@
+import { createRoot } from "react-dom/client";
+import { useState } from "react";
+import { UserEdit } from "./features/user/UserEdit";
+
+const app = document.getElementById("app-profile-edit");
+
+if (app) {
+  const App = () => {
+    const [user, setUser] = useState<User.ForEdit>(
+      JSON.parse(document.getElementById("data-user")?.textContent || "{}"),
+    );
+    const [attachments, setAttachments] = useState<Attachment[]>(
+      JSON.parse(
+        document.getElementById("data-attachments")?.textContent || "[]",
+      ),
+    );
+
+    const props = {
+      user,
+      onChangeUser: setUser,
+      attachments,
+      onChangeAttachments: setAttachments,
+    };
+
+    return <UserEdit {...props} />;
+  };
+
+  createRoot(app).render(<App />);
+}

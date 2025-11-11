@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('attachments', function (Blueprint $table) {
-            $table->unsignedBigInteger('size')->default('0')->comment('ファイルサイズ(byte)');
+        Schema::table('attachments', function (Blueprint $blueprint): void {
+            $blueprint->unsignedBigInteger('size')->default('0')->comment('ファイルサイズ(byte)');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('attachments', function (Blueprint $table) {
-            $table->dropColumn('size');
+        Schema::table('attachments', function (Blueprint $blueprint): void {
+            $blueprint->dropColumn('size');
         });
     }
 };

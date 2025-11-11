@@ -21,6 +21,7 @@ if (app) {
           el("data-relational-articles")!.textContent!,
         ),
         shouldNotfy: false,
+        // TODO: 更新時通知しないやつ
       });
     }, []);
 

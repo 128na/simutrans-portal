@@ -47,6 +47,7 @@ final class TagController extends Controller
         if (Auth::user()->cannot('update', $tag)) {
             return abort(403);
         }
+
         $tag = $this->tagRepository->update($tag, [
             'description' => $updateRequest->input('description'),
             'last_modified_by' => Auth::id(),

@@ -46,16 +46,22 @@ namespace User {
     id: number;
     name: string;
   };
-  type Listing = {
-    id: number;
-    name: string;
+  type Listing = Minimum & {
     nickname: string | null;
   };
-  type WithRole = {
-    id: number;
-    name: string;
-    nickname: string | null;
+  type WithRole = Listing & {
     role: "admin" | "user";
+  };
+  type ForEdit = WithRole & {
+    email: string;
+    profile: {
+      id: number;
+      data: {
+        avatar: number | null;
+        description: string | null;
+        website: string[];
+      };
+    };
   };
 }
 

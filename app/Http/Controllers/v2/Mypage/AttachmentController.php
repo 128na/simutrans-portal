@@ -40,6 +40,7 @@ final class AttachmentController extends Controller
         if (!$file) {
             abort(400);
         }
+
         $attachment = $store(Auth::user(), $file, []);
         try {
             dispatch_sync(new \App\Jobs\Attachments\UpdateFileInfo($attachment));

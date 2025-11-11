@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Actions\GenerateStatic\DeleteUnrelatedTags;
@@ -24,15 +26,16 @@ class RemoveUnusedTagsCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(DeleteUnrelatedTags $action)
+    public function handle(DeleteUnrelatedTags $deleteUnrelatedTags): int
     {
         try {
-            $action();
-        } catch (\Throwable $th) {
-            report($th);
-            $this->error($th->getMessage());
+            $deleteUnrelatedTags();
+        } catch (\Throwable $throwable) {
+            report($throwable);
+            $this->error($throwable->getMessage());
             return Command::FAILURE;
         }
+
         return Command::SUCCESS;
     }
 }

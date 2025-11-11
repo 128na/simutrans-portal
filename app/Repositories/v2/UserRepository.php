@@ -14,7 +14,6 @@ final class UserRepository
     public function __construct(public User $model) {}
 
     /**
-     * @param User $user
      * @return object{
      *     article_count: int|null,
      *     attachment_count: int|null,
@@ -66,7 +65,7 @@ final class UserRepository
             )
             ->selectSub(
                 DB::table('tags')
-                    ->where(function ($q) use ($userId) {
+                    ->where(function ($q) use ($userId): void {
                         $q->where('created_by', $userId)
                             ->orWhere('last_modified_by', $userId);
                     })

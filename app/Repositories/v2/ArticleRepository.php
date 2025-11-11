@@ -27,7 +27,7 @@ final class ArticleRepository
             ->when($article, fn($q) => $q->where('articles.id', '!=', $article->id))
             ->whereNull('articles.deleted_at')
             ->whereNull('u.deleted_at')
-            ->orderBy('articles.modified_at', 'desc')
+            ->latest('articles.modified_at')
             ->get();
     }
 

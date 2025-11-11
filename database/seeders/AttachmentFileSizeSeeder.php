@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Models\Attachment;
@@ -12,12 +14,14 @@ class AttachmentFileSizeSeeder extends Seeder
 
     public function run(): void
     {
-        Attachment::chunkById(200, function ($attachments) {
+        Attachment::chunkById(200, function ($attachments): void {
             $updates = [];
 
             foreach ($attachments as $attachment) {
                 $path = $attachment->fullPath;
-                if (!is_file($path)) continue;
+                if (!is_file($path)) {
+                    continue;
+                }
 
                 $updates[] = [
                     'id' => $attachment->id,
@@ -25,8 +29,8 @@ class AttachmentFileSizeSeeder extends Seeder
                 ];
             }
 
-            foreach ($updates as $row) {
-                Attachment::where('id', $row['id'])->update(['size' => $row['size']]);
+            foreach ($updates as $update) {
+                Attachment::where('id', $update['id'])->update(['size' => $update['size']]);
             }
         });
     }

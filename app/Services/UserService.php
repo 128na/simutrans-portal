@@ -37,8 +37,14 @@ final readonly class UserService
         ]);
 
         if ($user->profile) {
+
+
             $this->profileRepository->update($user->profile, [
-                'data' => $updateRequest->input('user.profile.data'),
+                'data' => [
+                    'avatar' => $updateRequest->input('user.profile.data.avatar'),
+                    'description' => $updateRequest->input('user.profile.data.description'),
+                    'website' => array_values(array_filter($updateRequest->input('user.profile.data.website')))
+                ]
             ]);
         }
 

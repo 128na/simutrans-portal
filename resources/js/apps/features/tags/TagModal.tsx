@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 import Input from "@/apps/components/ui/Input";
 import Textarea from "@/apps/components/ui/Textarea";
 import Button from "@/apps/components/ui/Button";
-import ButtonOutline from "@/apps/components/ui/ButtonOuline";
+import ButtonOutline from "@/apps/components/ui/ButtonOutline";
 import ButtonClose from "@/apps/components/ui/ButtonClose";
 import { useAxiosErrorState } from "../../state/errorState";
 import TextError from "@/apps/components/ui/TextError";

@@ -127,10 +127,15 @@ type Attachment = SearchableOption & {
   user_id: number;
   attachmentable_id: number;
   attachmentable_type: AttachmentableType;
+  attachmentable: {
+    id: number;
+    title: string;
+  } | null;
   type: AttachmentType;
   original_name: string;
   thumbnail: string;
   url: string;
+  size: number;
   file_info?: FileInfo;
   caption?: string;
   order?: number;

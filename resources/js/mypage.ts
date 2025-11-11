@@ -6,3 +6,4 @@ import "./apps/AppTagEdit";
 import "./apps/AppArticleList";
 import "./apps/AppArticleCreate";
 import "./apps/AppArticleEdit";
+import "./apps/AppAttachmentManage";

@@ -2,13 +2,13 @@ import { Upload } from "@/apps/components/form/Upload";
 import Input from "@/apps/components/ui/Input";
 import Label from "@/apps/components/ui/Label";
 import TextBadge from "@/apps/components/ui/TextBadge";
-import { AttachmentEdit } from "../../attachments/AttachmentEdit";
 import { useArticleEditor } from "@/apps/state/useArticleEditor";
 import { Image } from "@/apps/components/ui/Image";
 import TextSub from "@/apps/components/ui/TextSub";
 import TextError from "@/apps/components/ui/TextError";
 import { useAxiosError } from "@/apps/state/useAxiosError";
 import { Modal } from "@/apps/components/ui/Modal";
+import { AttachmentEdit } from "../../attachments/AttachmentEdit";
 
 export const CommonForm = () => {
   const article = useArticleEditor((s) => s.article);
@@ -87,6 +87,11 @@ export const CommonForm = () => {
                 onSelectAttachment={(attachmentId) => {
                   updateContents((draft) => (draft.thumbnail = attachmentId));
                   close();
+                }}
+                onChangeAttachments={(attachments) => {
+                  useArticleEditor.setState((state) => {
+                    state.attachments = attachments;
+                  });
                 }}
               />
             )}

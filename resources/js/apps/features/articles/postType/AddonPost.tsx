@@ -10,11 +10,11 @@ import { useArticleEditor } from "@/apps/state/useArticleEditor";
 import { CommonForm } from "../form/CommonForm";
 import { StatusForm } from "../form/StatusForm";
 import { Upload } from "@/apps/components/form/Upload";
-import { AttachmentEdit } from "../../attachments/AttachmentEdit";
 import TextSub from "@/apps/components/ui/TextSub";
 import { useAxiosError } from "@/apps/state/useAxiosError";
 import TextError from "@/apps/components/ui/TextError";
 import { Modal } from "@/apps/components/ui/Modal";
+import { AttachmentEdit } from "../../attachments/AttachmentEdit";
 
 export const AddonPost = () => {
   const article = useArticleEditor((s) => s.article);
@@ -77,6 +77,11 @@ export const AddonPost = () => {
                     (draft) => (draft.file = attachmentId),
                   );
                   close();
+                }}
+                onChangeAttachments={(attachments) => {
+                  useArticleEditor.setState((state) => {
+                    state.attachments = attachments;
+                  });
                 }}
               />
             )}

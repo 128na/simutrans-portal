@@ -75,7 +75,7 @@ final class MetaOgpService
     public function users(): array
     {
         return [
-            'title' => '投稿ユーザー一覧'.' - '.Config::string('app.name'),
+            'title' => '投稿ユーザー一覧' . ' - ' . Config::string('app.name'),
             'description' => 'アドオン投稿や紹介記事のあるユーザー一覧です。',
         ];
     }
@@ -248,6 +248,16 @@ final class MetaOgpService
     {
         return [
             'title' => 'タグの編集' . ' - ' . Config::string('app.name'),
+        ];
+    }
+
+    /**
+     * @return array{title:string}
+     */
+    public function attachments(): array
+    {
+        return [
+            'title' => 'ファイルの編集' . ' - ' . Config::string('app.name'),
         ];
     }
 

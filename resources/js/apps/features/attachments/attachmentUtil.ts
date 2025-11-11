@@ -23,13 +23,13 @@ export const compareAttachmentValues = (a: unknown, b: unknown): number => {
   return 0;
 };
 
-export const attachmentFilter = (
-  attachments: Attachment[],
+export const attachmentFilter = <T extends Attachment>(
+  attachments: T[],
   criteria: string,
   types: AttachmentType[],
   attachmentableId: number | null,
   attachmentableType: AttachmentableType | null,
-): Attachment[] => {
+): T[] => {
   const q = criteria.toLowerCase();
   return attachments.filter((a) => {
     if (types?.includes(a.type) === false) {
@@ -48,4 +48,11 @@ export const attachmentFilter = (
     }
     return a.original_name.toLowerCase().includes(q);
   });
+};
+
+export const displaySize = (bytes: number): string => {
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+  if (bytes === 0) return "0 Byte";
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  return Math.round(bytes / Math.pow(1024, i)) + " " + sizes[i];
 };

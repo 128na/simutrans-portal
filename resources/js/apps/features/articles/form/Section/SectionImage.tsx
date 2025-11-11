@@ -59,6 +59,11 @@ export const SectionImage = ({
                   onSelectAttachment(attachmentId);
                   close();
                 }}
+                onChangeAttachments={(attachments) => {
+                  useArticleEditor.setState((state) => {
+                    state.attachments = attachments;
+                  });
+                }}
               />
             )}
           </Modal>

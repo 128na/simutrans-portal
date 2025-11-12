@@ -1,5 +1,4 @@
 import { Upload } from "@/apps/components/form/Upload";
-import { Image } from "@/apps/components/ui/Image";
 import Label from "@/apps/components/ui/Label";
 import { Modal } from "@/apps/components/ui/Modal";
 import TextError from "@/apps/components/ui/TextError";
@@ -11,7 +10,6 @@ import Input from "@/apps/components/ui/Input";
 import TextBadge from "@/apps/components/ui/TextBadge";
 import Textarea from "@/apps/components/ui/Textarea";
 import Button from "@/apps/components/ui/Button";
-import ButtonClose from "@/apps/components/ui/ButtonClose";
 import axios, { AxiosError } from "axios";
 
 type Props = {
@@ -20,7 +18,7 @@ type Props = {
   attachments: Attachment[];
   onChangeAttachments: (attachments: Attachment[]) => void;
 };
-export const UserEdit = ({
+export const ProfileEdit = ({
   user,
   onChangeUser,
   attachments,
@@ -74,6 +72,7 @@ export const UserEdit = ({
         表示名
         <TextError className="mb-2">{getError("user.name")}</TextError>
       </Input>
+
       <Input
         labelClassName="font-medium"
         type="email"
@@ -85,15 +84,22 @@ export const UserEdit = ({
         メールアドレス
         <TextError className="mb-2">{getError("user.email")}</TextError>
       </Input>
-      <Input
-        labelClassName="font-medium"
-        className="font-normal"
-        value={user.nickname || ""}
-        onChange={(e) => onChangeUser({ ...user, nickname: e.target.value })}
-      >
-        ニックネーム
-        <TextError className="mb-2">{getError("user.nickname")}</TextError>
-      </Input>
+
+      <div>
+        <Input
+          labelClassName="font-medium"
+          className="font-normal"
+          value={user.nickname || ""}
+          onChange={(e) => onChangeUser({ ...user, nickname: e.target.value })}
+        >
+          ニックネーム
+          <TextError className="mb-2">{getError("user.nickname")}</TextError>
+        </Input>
+        <TextSub>
+          設定すると記事URLがユーザーIDの代わりに使用されます。 例：
+          /users/my-nickname/my-article
+        </TextSub>
+      </div>
       <div>
         <Label className="font-medium">
           アバター画像

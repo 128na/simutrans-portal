@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { useState } from "react";
-import { UserEdit } from "./features/user/UserEdit";
+import { ProfileEdit } from "./features/user/ProfileEdit";
 
 const app = document.getElementById("app-profile-edit");
 
@@ -22,7 +22,7 @@ if (app) {
       onChangeAttachments: setAttachments,
     };
 
-    return <UserEdit {...props} />;
+    return <ProfileEdit {...props} />;
   };
 
   createRoot(app).render(<App />);

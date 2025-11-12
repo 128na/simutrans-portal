@@ -8,6 +8,7 @@ use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Enums\CategoryType;
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -27,6 +28,20 @@ final class ArticleRepository
             ->when($article, fn($q) => $q->where('articles.id', '!=', $article->id))
             ->whereNull('articles.deleted_at')
             ->whereNull('u.deleted_at')
+            ->latest('articles.modified_at')
+            ->get();
+    }
+
+    /**
+     * @return Collection<int,Article>
+     */
+    public function getForAnalyticsList(User $user): Collection
+    {
+        return $this->model->query()
+            ->select(['articles.id', 'articles.title', 'articles.published_at', 'articles.modified_at'])
+            ->where('articles.status', ArticleStatus::Publish)
+            ->where('articles.user_id', $user->id)
+            ->whereNull('articles.deleted_at')
             ->latest('articles.modified_at')
             ->get();
     }

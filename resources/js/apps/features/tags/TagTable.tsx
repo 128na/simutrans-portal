@@ -39,7 +39,7 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
 
   const totalPages = Math.ceil(filtered.length / limit);
 
-  const sorted = [...filtered].sort((a, b) => {
+  const sorted = filtered.sort((a, b) => {
     const result = compareTagValues(a[sort.column], b[sort.column]);
     return sort.order === "asc" ? result : -result;
   });

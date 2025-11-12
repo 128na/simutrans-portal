@@ -1,4 +1,3 @@
-import { t } from "@/lang/translate";
 import { compareAsc, parseISO } from "date-fns";
 export const compareArticleValues = (a: unknown, b: unknown): number => {
   // null を末尾扱いにする
@@ -39,8 +38,24 @@ export const articleFilter = (
   articles: Article.Listing[],
   criteria: string,
 ) => {
-  const q = criteria.toLowerCase();
+  const q = criteria.trim().toLowerCase();
+  if (!q) return articles;
+
+  return articles.filter((t) => t.title.toLowerCase().includes(q));
+};
+
+export const analyticsFilter = (
+  articles: Article.Analytics[],
+  criteria: string,
+  selected: number[],
+) => {
+  const q = criteria.trim().toLowerCase();
+  if (!q) return articles;
+
   return articles.filter((t) => {
+    if (selected.includes(t.id)) {
+      return true;
+    }
     return t.title.toLowerCase().includes(q);
   });
 };

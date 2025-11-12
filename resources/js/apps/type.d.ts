@@ -66,6 +66,12 @@ namespace User {
 }
 
 namespace Article {
+  type Analytics = SearchableOption & {
+    id: number;
+    title: string;
+    published_at: string;
+    modified_at: string;
+  };
   type Relational = SearchableOption & {
     id: number;
     user_id: number;

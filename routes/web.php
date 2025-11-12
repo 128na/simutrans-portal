@@ -37,6 +37,7 @@ Route::middleware(['restrict:invitation_code'])->group(function (): void {
     Route::get('/invite/{invitation_code}', [\App\Http\Controllers\v2\Mypage\UserController::class, 'showInvite'])->name('user.invite');
     Route::post('/invite/{invitation_code}', [\App\Http\Controllers\v2\Mypage\UserController::class, 'registration'])->name('user.registration');
 });
+
 Route::GET('/login', [\App\Http\Controllers\v2\Mypage\UserController::class, 'showLogin'])->name('login');
 Route::GET('/login/2fa', [\App\Http\Controllers\v2\Mypage\UserController::class, 'showTwoFactor'])->name('two-factor.login');
 Route::GET('/forgot-password', [\App\Http\Controllers\v2\Mypage\UserController::class, 'showForgotPassword'])->name('forgot-password');

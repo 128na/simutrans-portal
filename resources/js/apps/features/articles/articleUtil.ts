@@ -6,8 +6,8 @@ export const compareArticleValues = (a: unknown, b: unknown): number => {
   if (b == null) return -1;
 
   if (typeof a === "object" || typeof b === "object") {
-    const aCount = a as Count | null;
-    const bCount = b as Count | null;
+    const aCount = a as ArticleList.Count | null;
+    const bCount = b as ArticleList.Count | null;
     return (aCount?.count ?? 0) - (bCount?.count ?? 0);
   }
 
@@ -35,7 +35,7 @@ export const compareArticleValues = (a: unknown, b: unknown): number => {
 };
 
 export const articleFilter = (
-  articles: Article.Listing[],
+  articles: ArticleList.Article[],
   criteria: string,
 ) => {
   const q = criteria.trim().toLowerCase();
@@ -44,50 +44,34 @@ export const articleFilter = (
   return articles.filter((t) => t.title.toLowerCase().includes(q));
 };
 
-export const analyticsFilter = (
-  articles: Article.Analytics[],
-  criteria: string,
-  selected: number[],
-) => {
-  const q = criteria.trim().toLowerCase();
-  if (!q) return articles;
-
-  return articles.filter((t) => {
-    if (selected.includes(t.id)) {
-      return true;
-    }
-    return t.title.toLowerCase().includes(q);
-  });
-};
-
-export const PostTypeText = {
+export const PostTypeText: Record<Article.PostType, string> = {
   "addon-post": "アドオン投稿",
   "addon-introduction": "アドオン紹介",
   page: "記事",
   markdown: "記事（マークダウン）",
-} satisfies Record<PostType, string>;
+};
 
-export const StatusText = {
+export const StatusText: Record<Article.Status, string> = {
   publish: "公開中",
   reservation: "予約中",
   draft: "下書き",
   trash: "ゴミ箱",
   private: "非公開",
-} satisfies Record<Status, string>;
+};
 
-export const StatusClass = {
+export const StatusClass: Record<Article.Status, string> = {
   publish: "bg-white hover:bg-gray-100",
   reservation: "bg-green-100 hover:bg-green-200",
   draft: "bg-orange-100 hover:bg-orange-200",
   trash: "bg-gray-200 hover:bg-gray-300",
   private: "bg-gray-200 hover:bg-gray-300",
-} satisfies Record<Status, string>;
+};
 
 export const deepCopy = <T>(obj: T): T => {
   return JSON.parse(JSON.stringify(obj));
 };
 
-export const createContents = (postType: PostType) => {
+export const createContents = (postType: Article.PostType) => {
   switch (postType) {
     case "page":
       return {
@@ -125,7 +109,10 @@ export const createContents = (postType: PostType) => {
       } as ContentMarkdown;
   }
 };
-export const createArticle = (postType: PostType, user: User.WithRole) => {
+export const createArticle = (
+  postType: Article.PostType,
+  user: ArticleEdit.User,
+) => {
   return {
     id: null,
     user_id: user.id,
@@ -142,7 +129,7 @@ export const createArticle = (postType: PostType, user: User.WithRole) => {
     modified_at: null,
     created_at: null,
     updated_at: null,
-  } as Article.Editing;
+  } as ArticleEdit.Article;
 };
 
 export const typedKeys = <T extends object>(obj: T): (keyof T)[] => {

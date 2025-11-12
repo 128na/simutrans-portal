@@ -6,7 +6,7 @@ import { twMerge } from "tailwind-merge";
 type Props = {
   categories: Category.Grouping;
   selected: number[];
-  only?: CategoryType[];
+  only?: Category.Type[];
   showAdmin?: boolean;
   onChange: (categoryIds: number[]) => void;
   typeClassName?: string;
@@ -26,7 +26,7 @@ export const SelectCategories = ({
   const toolIds = categories["addon"]
     .filter((c) => c.slug.includes("-tools"))
     .map((c) => c.id);
-  const categoryGroupFilter = (type: CategoryType): boolean => {
+  const categoryGroupFilter = (type: Category.Type): boolean => {
     // pak.128 選択時のみ pak128_position を表示
     if (type === "pak128_position") {
       return pak128Id && selected.includes(pak128Id) ? true : false;

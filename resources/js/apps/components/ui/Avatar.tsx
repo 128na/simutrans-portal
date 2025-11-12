@@ -1,6 +1,6 @@
 type Props = {
   attachmentId: number | null;
-  attachments: Attachment[];
+  attachments: AttachmentEdit.Attachment[];
   defaultUrl?: string;
 };
 

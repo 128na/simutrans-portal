@@ -17,7 +17,7 @@ export const StatusForm = () => {
         options={StatusText}
         value={article.status}
         onChange={(e) =>
-          update((draft) => (draft.status = e.target.value as Status))
+          update((draft) => (draft.status = e.target.value as Article.Status))
         }
       >
         ステータス

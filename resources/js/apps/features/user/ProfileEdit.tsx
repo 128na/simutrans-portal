@@ -13,10 +13,10 @@ import Button from "@/apps/components/ui/Button";
 import axios, { AxiosError } from "axios";
 
 type Props = {
-  user: User.ForEdit;
-  onChangeUser: (user: User.ForEdit) => void;
-  attachments: Attachment[];
-  onChangeAttachments: (attachments: Attachment[]) => void;
+  user: ProfileEdit.User;
+  onChangeUser: (user: ProfileEdit.User) => void;
+  attachments: AttachmentEdit.Attachment[];
+  onChangeAttachments: (attachments: AttachmentEdit.Attachment[]) => void;
 };
 export const ProfileEdit = ({
   user,

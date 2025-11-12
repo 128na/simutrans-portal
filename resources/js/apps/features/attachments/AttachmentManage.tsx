@@ -1,8 +1,8 @@
 import { AttachmentTable } from "./AttachmentTable";
 
 type Props = {
-  attachments: Attachment[];
-  onChangeAttachments?: (attachments: Attachment[]) => void;
+  attachments: AttachmentEdit.Attachment[];
+  onChangeAttachments?: (attachments: AttachmentEdit.Attachment[]) => void;
 };
 
 export const AttachmentManage = ({

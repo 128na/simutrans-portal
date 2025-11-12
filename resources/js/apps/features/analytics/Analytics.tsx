@@ -1,19 +1,17 @@
-import { useState } from "react";
 import { AnalyticsTable } from "./AnalyticsTable";
+import { AnalyticsOption } from "./AnalyticsOption";
+import { AnalyticsGraph } from "./AnalyticsGraph";
 
 type Props = {
-  articles: Article.Analytics[];
+  articles: Analytics.Article[];
 };
 
 export const Analytics = ({ articles }: Props) => {
-  const [selected, setSelected] = useState<number[]>([]);
-
-  const props = {
-    articles,
-    selected,
-    onChangeSelected: setSelected,
-    limit: 15,
-  };
-
-  return <AnalyticsTable {...props} />;
+  return (
+    <div className="space-y-4">
+      <AnalyticsGraph />
+      <AnalyticsOption />
+      <AnalyticsTable articles={articles} limit={15} />
+    </div>
+  );
 };

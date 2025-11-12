@@ -2,35 +2,35 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 type ArticleEditorState = {
-  user: User.WithRole;
-  article: Article.Editing;
-  attachments: Attachment[];
-  tags: Tag.Listing[];
+  user: ArticleEdit.User;
+  article: ArticleEdit.Article;
+  attachments: AttachmentEdit.Attachment[];
+  tags: TagEdit.Tag[];
   categories: Category.Grouping;
-  relationalArticles: Article.Relational[];
+  relationalArticles: ArticleEdit.Relational[];
   shouldNotfy: boolean;
 
   init: (initial: {
-    user: User.WithRole;
-    article: Article.Editing;
-    attachments: Attachment[];
-    tags: Tag.Listing[];
+    user: ArticleEdit.User;
+    article: ArticleEdit.Article;
+    attachments: AttachmentEdit.Attachment[];
+    tags: TagEdit.Tag[];
     categories: Category.Grouping;
-    relationalArticles: Article.Relational[];
+    relationalArticles: ArticleEdit.Relational[];
     shouldNotfy: boolean;
   }) => void;
 
-  update: (fn: (draft: Article.Editing) => void) => void;
+  update: (fn: (draft: ArticleEdit.Article) => void) => void;
   updateContents: <T = Content>(fn: (draft: T) => void) => void;
-  updateAttachments: (attachments: Attachment[]) => void;
-  updateTags: (tags: Tag.Listing[]) => void;
+  updateAttachments: (attachments: AttachmentEdit.Attachment[]) => void;
+  updateTags: (tags: TagEdit.Tag[]) => void;
   updateShouldNotify: (shouldNotify: boolean) => void;
 };
 
 export const useArticleEditor = create<ArticleEditorState>()(
   immer((set) => ({
-    user: {} as User.WithRole,
-    article: {} as Article.Editing,
+    user: {} as ArticleEdit.User,
+    article: {} as ArticleEdit.Article,
     attachments: [],
     tags: [],
     categories: {} as Category.Grouping,
@@ -59,12 +59,12 @@ export const useArticleEditor = create<ArticleEditorState>()(
         if (state.article.contents) fn(state.article.contents as T);
       });
     },
-    updateAttachments(attachments: Attachment[]) {
+    updateAttachments(attachments: AttachmentEdit.Attachment[]) {
       set((state) => {
         state.attachments = attachments;
       });
     },
-    updateTags(tags: Tag.Listing[]) {
+    updateTags(tags: TagEdit.Tag[]) {
       set((state) => {
         state.tags = tags;
       });

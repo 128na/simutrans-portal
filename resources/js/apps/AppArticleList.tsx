@@ -8,13 +8,13 @@ const app = document.getElementById("app-article-list");
 if (app) {
   const user = JSON.parse(
     document.getElementById("data-user")?.textContent || "{}",
-  ) as User.WithRole;
+  ) as ArticleList.User;
   const articles = JSON.parse(
     document.getElementById("data-articles")?.textContent || "{}",
-  ) as Article.Listing[];
+  ) as ArticleList.Article[];
 
   const App = () => {
-    const [selected, setSelected] = useState<Article.Listing | null>(null);
+    const [selected, setSelected] = useState<ArticleList.Article | null>(null);
     return (
       <>
         <ArticleTable articles={articles} limit={15} onClick={setSelected} />

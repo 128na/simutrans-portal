@@ -8,17 +8,17 @@ import { DataTable, DataTableHeader } from "@/apps/components/layout/DataTable";
 import TextSub from "@/apps/components/ui/TextSub";
 
 type Props = {
-  tags: Tag.Listing[];
+  tags: TagEdit.Tag[];
   limit: number;
-  onClick?: (tag: Tag.Listing | Tag.Creating) => void;
+  onClick?: (tag: TagEdit.Tag | TagEdit.Creating) => void;
 };
 
 type Sort = {
-  column: keyof Tag.Listing;
+  column: keyof TagEdit.Tag;
   order: "asc" | "desc";
 };
 
-const headers: DataTableHeader<keyof Tag.Listing>[] = [
+const headers: DataTableHeader<keyof TagEdit.Tag>[] = [
   { name: "タグ名", key: "name", width: "w-2/12", sortable: true },
   { name: "説明", key: "description", width: "w-3/12", sortable: true },
   { name: "記事数", key: "articles_count", width: "w-1/12", sortable: true },
@@ -44,7 +44,7 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
     return sort.order === "asc" ? result : -result;
   });
 
-  const onSort = (column: keyof Tag.Listing) => {
+  const onSort = (column: keyof TagEdit.Tag) => {
     setSort((prev) =>
       prev.column === column
         ? { column, order: prev.order === "asc" ? "desc" : "asc" }

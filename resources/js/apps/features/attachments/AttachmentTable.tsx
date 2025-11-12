@@ -17,22 +17,22 @@ import axios from "axios";
 import ButtonDanger from "@/apps/components/ui/ButtonDanger";
 
 type Props = {
-  attachments: Attachment[];
+  attachments: AttachmentEdit.Attachment[];
   limit: number;
   attachmentableId: number | null;
-  attachmentableType: AttachmentableType | null;
-  types: AttachmentType[];
+  attachmentableType: AttachmentEdit.AttachmentableType | null;
+  types: AttachmentEdit.Type[];
   selected: number | null;
-  onSelectAttachment?: (attachment: Attachment | null) => void;
-  onChangeAttachments?: (attachments: Attachment[]) => void;
+  onSelectAttachment?: (attachment: AttachmentEdit.Attachment | null) => void;
+  onChangeAttachments?: (attachments: AttachmentEdit.Attachment[]) => void;
 };
 
 type Sort = {
-  column: keyof Attachment;
+  column: keyof AttachmentEdit.Attachment;
   order: "asc" | "desc";
 };
 
-const headers: DataTableHeader<keyof Attachment>[] = [
+const headers: DataTableHeader<keyof AttachmentEdit.Attachment>[] = [
   { name: "サムネイル", key: "thumbnail", width: "w-2/12", sortable: false },
   { name: "ファイル名", key: "original_name", width: "w-3/12", sortable: true },
   { name: "形式", key: "type", width: "w-1/12", sortable: true },
@@ -84,7 +84,7 @@ export const AttachmentTable = ({
     return sort.order === "asc" ? result : -result;
   });
 
-  const onSort = (column: keyof Tag.Listing) => {
+  const onSort = (column: keyof TagEdit.Tag) => {
     setSort((prev) =>
       prev.column === column
         ? { column, order: prev.order === "asc" ? "desc" : "asc" }

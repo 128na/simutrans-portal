@@ -36,7 +36,7 @@ export const ArticleEditor = () => {
 
   return (
     <>
-      {match<PostType>(article.post_type)
+      {match<Article.PostType>(article.post_type)
         .returnType<JSX.Element>()
         .with("page", () => <Page />)
         .with("markdown", () => <Markdown />)

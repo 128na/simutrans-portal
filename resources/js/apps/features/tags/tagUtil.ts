@@ -7,8 +7,8 @@ export const compareTagValues = (a: unknown, b: unknown): number => {
 
   // SimpleUser型
   if (typeof a === "object" && typeof b === "object") {
-    const aUser = a as User.Minimum;
-    const bUser = b as User.Minimum;
+    const aUser = a as TagEdit.User;
+    const bUser = b as TagEdit.User;
     return aUser.name.localeCompare(bUser.name);
   }
 
@@ -36,9 +36,9 @@ export const compareTagValues = (a: unknown, b: unknown): number => {
 };
 
 export const tagFilter = (
-  tags: Tag.Listing[],
+  tags: TagEdit.Tag[],
   criteria: string,
-): Tag.Listing[] => {
+): TagEdit.Tag[] => {
   const q = criteria.toLowerCase();
   return tags.filter((t) => {
     return (

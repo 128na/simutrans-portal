@@ -1,5 +1,5 @@
 type Props = {
-  onClick: (postType: PostType) => void;
+  onClick: (postType: Article.PostType) => void;
 };
 export const SelectPostType = ({ onClick }: Props) => {
   return (

@@ -15,7 +15,7 @@ if (app) {
     useEffect(() => {
       init({
         user: JSON.parse(el("data-user")!.textContent!),
-        article: {} as Article.Editing,
+        article: {} as ArticleEdit.Article,
         attachments: JSON.parse(el("data-attachments")!.textContent!),
         tags: JSON.parse(el("data-tags")!.textContent!),
         categories: JSON.parse(el("data-categories")!.textContent!),
@@ -29,7 +29,7 @@ if (app) {
     const article = useArticleEditor((s) => s.article);
     const user = useArticleEditor((s) => s.user);
 
-    const [postType, setPostType] = useState<PostType | null>(null);
+    const [postType, setPostType] = useState<Article.PostType | null>(null);
     // postTypeが変更されたときのみ初期化
     useEffect(() => {
       if (postType) {

@@ -23,12 +23,12 @@ export const compareAttachmentValues = (a: unknown, b: unknown): number => {
   return 0;
 };
 
-export const attachmentFilter = <T extends Attachment>(
+export const attachmentFilter = <T extends AttachmentEdit.Attachment>(
   attachments: T[],
   criteria: string,
-  types: AttachmentType[],
+  types: AttachmentEdit.Type[],
   attachmentableId: number | null,
-  attachmentableType: AttachmentableType | null,
+  attachmentableType: AttachmentEdit.AttachmentableType | null,
 ): T[] => {
   const q = criteria.toLowerCase();
   return attachments.filter((a) => {

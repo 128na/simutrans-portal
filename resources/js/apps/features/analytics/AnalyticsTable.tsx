@@ -3,35 +3,32 @@ import { Pagination } from "@/apps/components/layout/Pagination";
 import Input from "@/apps/components/ui/Input";
 import { twMerge } from "tailwind-merge";
 import { DataTable, DataTableHeader } from "@/apps/components/layout/DataTable";
-import { analyticsFilter, compareArticleValues } from "../articles/articleUtil";
+import { compareArticleValues } from "../articles/articleUtil";
+import { useAnalyticsStore } from "@/apps/state/useAnalyticsStore";
+import { analyticsFilter } from "./analyticsUtil";
 
 type Props = {
-  articles: Article.Analytics[];
-  selected: number[];
-  onChangeSelected: (selected: number[]) => void;
+  articles: Analytics.Article[];
   limit: number;
 };
 
 type Sort = {
-  column: keyof Article.Analytics;
+  column: keyof Analytics.Article;
   order: "asc" | "desc";
 };
 
-const headers: DataTableHeader<keyof Article.Analytics>[] = [
+const headers: DataTableHeader<keyof Analytics.Article>[] = [
   { name: "タイトル", key: "title", width: "w-2/6", sortable: true },
   { name: "投稿日", key: "published_at", width: "w-2/6", sortable: true },
   { name: "更新日", key: "modified_at", width: "w-2/6", sortable: true },
 ];
 
-export const AnalyticsTable = ({
-  articles,
-  selected,
-  onChangeSelected,
-  limit,
-}: Props) => {
+export const AnalyticsTable = ({ articles, limit }: Props) => {
+  const { selected, set } = useAnalyticsStore();
+
   const [criteria, setCriteria] = useState("");
   const [sort, setSort] = useState<Sort>({
-    column: "last_modified_at",
+    column: "modified_at",
     order: "desc",
   });
   const [current, setCurrent] = useState(1);
@@ -45,7 +42,7 @@ export const AnalyticsTable = ({
     return sort.order === "asc" ? result : -result;
   });
 
-  const onSort = (column: keyof Article.Analytics) => {
+  const onSort = (column: keyof Analytics.Article) => {
     setSort((prev) =>
       prev.column === column
         ? { column, order: prev.order === "asc" ? "desc" : "asc" }
@@ -56,13 +53,13 @@ export const AnalyticsTable = ({
   const onClick = (articleId: number) => {
     const idx = selected.indexOf(articleId);
     if (idx >= 0) {
-      onChangeSelected(selected.filter((id) => id !== articleId));
+      set({ selected: selected.filter((id) => id !== articleId) });
     } else {
       if (selected.length >= 10) {
         alert("選択できるのは10記事までです。");
         return;
       }
-      onChangeSelected([...selected, articleId]);
+      set({ selected: [...selected, articleId] });
     }
   };
 

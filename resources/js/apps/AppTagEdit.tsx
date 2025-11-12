@@ -6,7 +6,7 @@ const app = document.getElementById("app-tag-edit");
 
 if (app) {
   const App = () => {
-    const [tags, setTags] = useState<Tag.Listing[]>(
+    const [tags, setTags] = useState<TagEdit.Tag[]>(
       JSON.parse(document.getElementById("data-tags")?.textContent || "[]"),
     );
 

@@ -6,10 +6,10 @@ const app = document.getElementById("app-profile-edit");
 
 if (app) {
   const App = () => {
-    const [user, setUser] = useState<User.ForEdit>(
+    const [user, setUser] = useState<ProfileEdit.User>(
       JSON.parse(document.getElementById("data-user")?.textContent || "{}"),
     );
-    const [attachments, setAttachments] = useState<Attachment[]>(
+    const [attachments, setAttachments] = useState<AttachmentEdit.Attachment[]>(
       JSON.parse(
         document.getElementById("data-attachments")?.textContent || "[]",
       ),

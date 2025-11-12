@@ -12,7 +12,7 @@ type Props = {
   section: SectionImage;
   articleId: number | null;
   idx: number;
-  onUploaded: (a: Attachment) => void;
+  onUploaded: (a: AttachmentEdit.Attachment) => void;
   onSelectAttachment: (id: number | null) => void;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 

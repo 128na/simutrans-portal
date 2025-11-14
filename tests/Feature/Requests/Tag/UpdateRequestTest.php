@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Requests\Tag;
 
-use App\Http\Requests\Api\Tag\UpdateRequest;
+use App\Http\Requests\Tag\UpdateRequest;
 use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Feature\TestCase;
@@ -15,7 +15,6 @@ final class UpdateRequestTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
     }
 
     #[DataProvider('dataFail')]
@@ -36,11 +35,11 @@ final class UpdateRequestTest extends TestCase
 
     public static function dataFail(): \Generator
     {
-        yield 'descriptionが1025文字以上' => [fn (): array => ['description' => str_repeat('a', 1025)], 'description'];
+        yield 'descriptionが1025文字以上' => [fn(): array => ['description' => str_repeat('a', 1025)], 'description'];
     }
 
     public static function dataPass(): \Generator
     {
-        yield 'descriptionが1024文字以下' => [fn (): array => ['description' => str_repeat('a', 1024)]];
+        yield 'descriptionが1024文字以下' => [fn(): array => ['description' => str_repeat('a', 1024)]];
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Requests\Attachment;
 
-use App\Http\Requests\Api\Attachment\StoreRequest;
+use App\Http\Requests\Attachment\StoreRequest;
 use Illuminate\Http\UploadedFile;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Unit\TestCase;

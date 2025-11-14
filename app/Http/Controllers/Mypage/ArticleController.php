@@ -6,8 +6,8 @@ namespace App\Http\Controllers\Mypage;
 
 use App\Actions\Article\StoreArticle;
 use App\Actions\Article\UpdateArticle;
-use App\Http\Requests\Api\Article\StoreRequest;
-use App\Http\Requests\Api\Article\UpdateRequest;
+use App\Http\Requests\Article\StoreRequest;
+use App\Http\Requests\Article\UpdateRequest;
 use App\Http\Resources\v2\ArticleEdit;
 use App\Http\Resources\v2\Attachment;
 use App\Http\Resources\v2\Tag;

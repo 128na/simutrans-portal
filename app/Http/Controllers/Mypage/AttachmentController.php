@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Mypage;
 
 use App\Actions\StoreAttachment\Store;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Attachment\StoreRequest;
+use App\Http\Requests\Attachment\StoreRequest;
 use App\Http\Resources\v2\Attachment as V2Attachment;
 use App\Models\Attachment;
 use App\Services\Front\MetaOgpService;

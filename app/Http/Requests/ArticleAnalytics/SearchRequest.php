@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Api\ArticleAnalytics;
+namespace App\Http\Requests\ArticleAnalytics;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ final class SearchRequest extends FormRequest
 
         return [
             'ids' => ['required', 'array', 'max:50'],
-            'ids.*' => 'required|exists:articles,id,user_id,'.$userId,
+            'ids.*' => 'required|exists:articles,id,user_id,' . $userId,
             'type' => ['required', 'in:daily,monthly,yearly'],
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date', 'after:start_date'],

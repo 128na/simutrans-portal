@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Http\Requests\Api\User\UpdateRequest;
+use App\Http\Requests\User\UpdateRequest;
 use App\Models\User;
 use App\Repositories\AttachmentRepository;
 use App\Repositories\User\ProfileRepository;

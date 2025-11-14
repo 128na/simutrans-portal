@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Requests\Article;
 
 use App\Enums\ArticlePostType;
-use App\Http\Requests\Api\Article\StoreRequest;
+use App\Http\Requests\Article\StoreRequest;
 use App\Models\Article;
 use App\Models\User;
 use Closure;
@@ -185,7 +185,8 @@ final class StoreRequestTest extends TestCase
         // ];
         yield 'Page URLセクションが空' => [
             ArticlePostType::Page,
-            fn (self $self): array => ['contents' => ['sections' => [['type' => 'url', 'url' => '']]]], 'article.contents.sections.0.url',
+            fn(self $self): array => ['contents' => ['sections' => [['type' => 'url', 'url' => '']]]],
+            'article.contents.sections.0.url',
         ];
         // yield 'Page URLセクションが不正な形式' => [
         //     ArticlePostType::Page,

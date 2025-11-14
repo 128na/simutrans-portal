@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Article;
+namespace App\Http\Requests\Tag;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-final class SearchRequest extends FormRequest
+final class UpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,7 +16,7 @@ final class SearchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'word' => ['nullable', 'string', 'max:100'],
+            'description' => ['nullable', 'string', 'max:1024'],
         ];
     }
 }

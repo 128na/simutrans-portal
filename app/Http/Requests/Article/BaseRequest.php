@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Api\Article;
+namespace App\Http\Requests\Article;
 
 use App\Enums\ArticlePostType;
 use App\Rules\ImageAttachment;

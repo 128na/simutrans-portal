@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Api\User;
+namespace App\Http\Requests\User;
 
 use App\Constants\NgWords;
 use App\Rules\ImageAttachment;

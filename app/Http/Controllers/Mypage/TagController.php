@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Mypage;
 
-use App\Http\Requests\Api\Tag\StoreRequest;
-use App\Http\Requests\Api\Tag\UpdateRequest;
+use App\Http\Requests\Tag\StoreRequest;
+use App\Http\Requests\Tag\UpdateRequest;
 use App\Http\Resources\v2\Tag as MypageTag;
 use App\Models\Tag;
 use App\Repositories\v2\TagRepository;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Mypage;
 
-use App\Http\Requests\Api\User\UpdateRequest;
+use App\Http\Requests\User\UpdateRequest;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Attachment;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -16,10 +16,7 @@ final class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'max:100'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'min:11'],
-            'agreement' => ['accepted'],
+            'file' => ['required', 'file'],
         ];
     }
 }

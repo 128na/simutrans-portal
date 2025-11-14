@@ -27,6 +27,7 @@ final class UserRepository
     {
         $userId = $user->id;
         $period = now()->format('Ym');
+
         return DB::query()
             ->selectSub(
                 DB::table('articles')
@@ -83,7 +84,7 @@ final class UserRepository
         return $this->model->query()
             ->select(['users.id', 'users.nickname', 'users.name'])
             ->whereExists(
-                fn($q) => $q->selectRaw(1)
+                fn ($q) => $q->selectRaw(1)
                     ->from('articles as a')
                     ->whereColumn('a.user_id', 'users.id')
                     ->where('a.status', ArticleStatus::Publish)

@@ -41,12 +41,11 @@ final class TagRepository
     {
         return $tag
             ->loadCount('articles')
-            ->loadMissing('createdBy:id,name', 'lastModifiedBy:id,name')
-        ;
+            ->loadMissing('createdBy:id,name', 'lastModifiedBy:id,name');
     }
 
     /**
-     * @param array{name:string,description:string|null,last_modified_at:\Carbon\Carbon,last_modified_by:int} $data
+     * @param  array{name:string,description:string|null,last_modified_at:\Carbon\CarbonImmutable,last_modified_by:int}  $data
      */
     public function store(array $data): Tag
     {
@@ -54,10 +53,10 @@ final class TagRepository
     }
 
     /**
-     * @param array{description:string|null,last_modified_at:\Carbon\Carbon,last_modified_by:int} $data
+     * @param  array{description:string|null,last_modified_at:\Carbon\CarbonImmutable,last_modified_by:int}  $data
      */
     public function update(Tag $tag, array $data): Tag
     {
-        return tap($tag, fn($t) => $t->update($data));
+        return tap($tag, fn ($t) => $t->update($data));
     }
 }

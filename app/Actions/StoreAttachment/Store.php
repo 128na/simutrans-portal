@@ -45,8 +45,8 @@ final readonly class Store
     private function storeAsImage(User $user, UploadedFile $uploadedFile, array $crop = []): Attachment
     {
         try {
-            $filepath = $this->filesystemAdapter->put('user/' . $user->id, $uploadedFile);
-            if ($crop && $fullpath = realpath(storage_path('app/public/' . $filepath))) {
+            $filepath = $this->filesystemAdapter->put('user/'.$user->id, $uploadedFile);
+            if ($crop && $fullpath = realpath(storage_path('app/public/'.$filepath))) {
                 try {
                     ($this->cropImage)($fullpath, ...$crop);
                 } catch (ConvertFailedException) {
@@ -73,7 +73,7 @@ final readonly class Store
     {
         return Attachment::create([
             'user_id' => $user->id,
-            'path' => $this->filesystemAdapter->put('user/' . $user->id, $uploadedFile),
+            'path' => $this->filesystemAdapter->put('user/'.$user->id, $uploadedFile),
             'original_name' => $uploadedFile->getClientOriginalName(),
             'size' => $uploadedFile->getSize(),
         ]);

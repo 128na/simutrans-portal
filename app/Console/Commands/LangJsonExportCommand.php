@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
 
-class LangJsonExportCommand extends Command
+final class LangJsonExportCommand extends Command
 {
     /**
      * @var string
@@ -28,19 +28,20 @@ class LangJsonExportCommand extends Command
             App::setLocale($locale);
             $translations = [];
 
-            $langPath = base_path('lang/' . $locale);
-            if (!is_dir($langPath)) {
+            $langPath = base_path('lang/'.$locale);
+            if (! is_dir($langPath)) {
                 $this->warn(sprintf("⚠️  Locale '%s' not found in resources/lang/", $locale));
+
                 continue;
             }
 
-            foreach (glob($langPath . '/*.php') as $file) {
+            foreach (glob($langPath.'/*.php') as $file) {
                 $filename = basename($file, '.php');
                 $translations[$filename] = require $file;
             }
 
             $jsonPath = resource_path(sprintf('js/lang/%s.json', $locale));
-            if (!is_dir(dirname($jsonPath))) {
+            if (! is_dir(dirname($jsonPath))) {
                 mkdir(dirname($jsonPath), 0755, true);
             }
 
@@ -49,10 +50,11 @@ class LangJsonExportCommand extends Command
                 json_encode(Arr::dot($translations), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
             );
 
-            $this->info('✅ Generated: ' . $jsonPath);
+            $this->info('✅ Generated: '.$jsonPath);
         }
 
         $this->info('✨ Language export completed.');
+
         return Command::SUCCESS;
     }
 }

@@ -7,7 +7,7 @@ namespace App\Console\Commands;
 use App\Actions\GenerateStatic\DeleteUnrelatedTags;
 use Illuminate\Console\Command;
 
-class RemoveUnusedTagsCommand extends Command
+final class RemoveUnusedTagsCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -33,6 +33,7 @@ class RemoveUnusedTagsCommand extends Command
         } catch (\Throwable $throwable) {
             report($throwable);
             $this->error($throwable->getMessage());
+
             return Command::FAILURE;
         }
 

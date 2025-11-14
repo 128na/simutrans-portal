@@ -25,7 +25,7 @@ final class ArticleRepository
             ->select(['articles.id', 'articles.title', 'articles.user_id', 'u.name as user_name'])
             ->join('users as u', 'articles.user_id', '=', 'u.id')
             ->where('articles.status', ArticleStatus::Publish)
-            ->when($article, fn($q) => $q->where('articles.id', '!=', $article->id))
+            ->when($article, fn ($q) => $q->where('articles.id', '!=', $article->id))
             ->whereNull('articles.deleted_at')
             ->whereNull('u.deleted_at')
             ->latest('articles.modified_at')
@@ -98,12 +98,12 @@ final class ArticleRepository
         $word = $condition['word'] ?? '';
         if ($word) {
             $likeWord = sprintf('%%%s%%', $word);
-            $baseQuery->where(fn($q) => $q
+            $baseQuery->where(fn ($q) => $q
                 ->orWhere('title', 'LIKE', $likeWord)
                 ->orWhere('contents', 'LIKE', $likeWord)
                 ->orWhereHas(
                     'attachments.fileInfo',
-                    fn($q) => $q
+                    fn ($q) => $q
                         ->where('data', 'LIKE', $likeWord)
                 ));
         }

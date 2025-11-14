@@ -24,6 +24,7 @@ final class DeleteUnrelatedTags
 
         if (empty($tagIds)) {
             logger('nothing to be deleted tags');
+
             return;
         }
 

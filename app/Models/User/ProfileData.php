@@ -23,7 +23,7 @@ final class ProfileData
         $website = $data['website'] ?? null;
         if (is_null($website)) {
             $website = [];
-        } else if (is_string($website)) {
+        } elseif (is_string($website)) {
             $website = [$website];
         }
 

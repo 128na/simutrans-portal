@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Actions\User;
 
-use App\Http\Requests\Article\UpdateRequest;
+use App\Http\Requests\User\UpdateRequest;
 use App\Models\User;
 use App\Repositories\AttachmentRepository;
 use App\Repositories\User\ProfileRepository;
 use App\Repositories\UserRepository;
 
-final class UpdateProfile
+final readonly class UpdateProfile
 {
     public function __construct(
         private UserRepository $userRepository,
@@ -18,8 +18,7 @@ final class UpdateProfile
         private AttachmentRepository $attachmentRepository,
     ) {}
 
-
-    public function updateUserAndProfile(User $user, UpdateRequest $updateRequest): User
+    public function __invoke(User $user, UpdateRequest $updateRequest): User
     {
         $emailChanged = $user->email !== $updateRequest->input('user.email');
 
@@ -34,13 +33,12 @@ final class UpdateProfile
 
         if ($user->profile) {
 
-
             $this->profileRepository->update($user->profile, [
                 'data' => [
                     'avatar' => $updateRequest->input('user.profile.data.avatar'),
                     'description' => $updateRequest->input('user.profile.data.description'),
-                    'website' => array_values(array_filter($updateRequest->input('user.profile.data.website')))
-                ]
+                    'website' => array_values(array_filter($updateRequest->input('user.profile.data.website'))),
+                ],
             ]);
         }
 

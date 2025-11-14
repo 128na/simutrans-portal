@@ -25,7 +25,6 @@ final class OauthController extends Controller
         return view('v2.admin.index');
     }
 
-
     public function authoroize(): RedirectResponse
     {
         $state = $this->pkceService->generateState();

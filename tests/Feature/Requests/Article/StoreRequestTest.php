@@ -185,7 +185,7 @@ final class StoreRequestTest extends TestCase
         // ];
         yield 'Page URLセクションが空' => [
             ArticlePostType::Page,
-            fn(self $self): array => ['contents' => ['sections' => [['type' => 'url', 'url' => '']]]],
+            fn (self $self): array => ['contents' => ['sections' => [['type' => 'url', 'url' => '']]]],
             'article.contents.sections.0.url',
         ];
         // yield 'Page URLセクションが不正な形式' => [

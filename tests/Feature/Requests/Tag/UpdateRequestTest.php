@@ -35,11 +35,11 @@ final class UpdateRequestTest extends TestCase
 
     public static function dataFail(): \Generator
     {
-        yield 'descriptionが1025文字以上' => [fn(): array => ['description' => str_repeat('a', 1025)], 'description'];
+        yield 'descriptionが1025文字以上' => [fn (): array => ['description' => str_repeat('a', 1025)], 'description'];
     }
 
     public static function dataPass(): \Generator
     {
-        yield 'descriptionが1024文字以下' => [fn(): array => ['description' => str_repeat('a', 1024)]];
+        yield 'descriptionが1024文字以下' => [fn (): array => ['description' => str_repeat('a', 1024)]];
     }
 }

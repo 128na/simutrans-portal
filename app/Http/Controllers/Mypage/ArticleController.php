@@ -33,6 +33,7 @@ final class ArticleController extends Controller
     public function index(): \Illuminate\Contracts\View\View
     {
         $user = Auth::user();
+
         return view('v2.mypage.articles', [
             'user' => $user->only(['id', 'name', 'nickname']),
             'articles' => $user
@@ -73,7 +74,7 @@ final class ArticleController extends Controller
          */
         $data = $storeRequest->validated();
 
-        $article = DB::transaction(fn(): Article => $storeArticle($user, $data));
+        $article = DB::transaction(fn (): Article => $storeArticle($user, $data));
 
         return response()->json(['article_id' => $article->id], 200);
     }
@@ -108,7 +109,7 @@ final class ArticleController extends Controller
          */
         $data = $updateRequest->validated();
 
-        $article = DB::transaction(fn(): Article => $updateArticle($article, $data));
+        $article = DB::transaction(fn (): Article => $updateArticle($article, $data));
 
         return response()->json(['article_id' => $article->id], 200);
     }

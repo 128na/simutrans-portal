@@ -35,9 +35,9 @@ final class AttachmentController extends Controller
             return abort(403);
         }
 
-        /** @var Illuminate\Http\UploadedFile|null */
+        /** @var \Illuminate\Http\UploadedFile|null */
         $file = $storeRequest->file('file');
-        if (!$file) {
+        if (! $file) {
             abort(400);
         }
 

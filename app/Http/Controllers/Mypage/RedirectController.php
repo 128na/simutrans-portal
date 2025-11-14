@@ -21,6 +21,7 @@ final class RedirectController extends Controller
     public function index(FindMyRedirects $findMyRedirects): \Illuminate\Contracts\View\View
     {
         $user = Auth::user();
+
         return view('v2.mypage.redirects', [
             'redirects' => $findMyRedirects($user),
             'meta' => $this->metaOgpService->redirects(),
@@ -33,6 +34,7 @@ final class RedirectController extends Controller
         if ($user->cannot('update', $redirect)) {
             return abort(403);
         }
+
         $deleteRedirect($redirect);
 
         return to_route('mypage.redirects')->with('status', '削除しました');

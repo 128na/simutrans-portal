@@ -54,6 +54,7 @@ final class TagController extends Controller
             'last_modified_at' => now(),
         ]);
         event(new \App\Events\Tag\TagDescriptionUpdated($tag, Auth::user(), $old));
+
         return new TagEdit($this->tagRepository->load($tag));
     }
 }

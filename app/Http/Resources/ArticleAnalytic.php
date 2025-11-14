@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Resources\Api\Mypage;
+namespace App\Http\Resources\;
 
 use App\Models\Article;
 use Illuminate\Http\Resources\Json\JsonResource;

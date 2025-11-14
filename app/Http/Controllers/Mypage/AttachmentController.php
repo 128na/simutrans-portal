@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Mypage;
 use App\Actions\StoreAttachment\Store;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Attachment\StoreRequest;
-use App\Http\Resources\v2\Attachment as V2Attachment;
+use App\Http\Resources\AttachmentEdit;
 use App\Models\Attachment;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Support\Facades\Auth;
@@ -24,12 +24,12 @@ final class AttachmentController extends Controller
         $user = Auth::user();
 
         return view('v2.mypage.attachments', [
-            'attachments' => V2Attachment::collection($user->myAttachments()->with('fileInfo', 'attachmentable')->get()),
+            'attachments' => AttachmentEdit::collection($user->myAttachments()->with('fileInfo', 'attachmentable')->get()),
             'meta' => $this->metaOgpService->attachments(),
         ]);
     }
 
-    public function store(StoreRequest $storeRequest, Store $store): V2Attachment
+    public function store(StoreRequest $storeRequest, Store $store): AttachmentEdit
     {
         if (Auth::user()->cannot('store', Attachment::class)) {
             return abort(403);
@@ -48,7 +48,7 @@ final class AttachmentController extends Controller
             report($throwable);
         }
 
-        return new V2Attachment($attachment);
+        return new AttachmentEdit($attachment);
     }
 
     public function destroy(Attachment $attachment): \Illuminate\Http\Response

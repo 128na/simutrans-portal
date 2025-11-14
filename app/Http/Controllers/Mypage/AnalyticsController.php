@@ -9,7 +9,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Actions\Analytics\FindArticles;
 use App\Http\Requests\ArticleAnalytics\SearchRequest;
-use App\Http\Resources\Api\Mypage\ArticleAnalytic;
+use App\Http\Resources\ArticleAnalytic;
 use App\Repositories\v2\ArticleRepository;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 

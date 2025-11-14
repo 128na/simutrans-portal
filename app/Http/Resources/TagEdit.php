@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Resources\v2;
+namespace App\Http\Resources;
 
-use App\Models\Tag as ModelsTag;
+use App\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-final class Tag extends JsonResource
+final class TagEdit extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request
@@ -16,7 +16,7 @@ final class Tag extends JsonResource
     #[\Override]
     public function toArray($request)
     {
-        assert($this->resource instanceof ModelsTag);
+        assert($this->resource instanceof Tag);
 
         return [
             'id' => $this->resource->id,

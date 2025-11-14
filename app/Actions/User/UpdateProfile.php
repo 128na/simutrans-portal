@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Actions\User;
 
-use App\Http\Requests\User\UpdateRequest;
+use App\Http\Requests\Article\UpdateRequest;
 use App\Models\User;
 use App\Repositories\AttachmentRepository;
 use App\Repositories\User\ProfileRepository;
 use App\Repositories\UserRepository;
 
-final readonly class UserService
+final class UpdateProfile
 {
     public function __construct(
         private UserRepository $userRepository,
@@ -18,10 +18,6 @@ final readonly class UserService
         private AttachmentRepository $attachmentRepository,
     ) {}
 
-    public function getUser(User $user): User
-    {
-        return $this->userRepository->load($user, ['profile:id,user_id,data']);
-    }
 
     public function updateUserAndProfile(User $user, UpdateRequest $updateRequest): User
     {

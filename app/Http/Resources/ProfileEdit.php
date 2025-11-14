@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Resources\v2;
+namespace App\Http\Resources;
 
-use App\Models\User as ModelsUser;
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-final class User extends JsonResource
+final class ProfileEdit extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request
@@ -16,7 +16,7 @@ final class User extends JsonResource
     #[\Override]
     public function toArray($request)
     {
-        assert($this->resource instanceof ModelsUser);
+        assert($this->resource instanceof User);
 
         return [
             'id' => $this->resource->id,

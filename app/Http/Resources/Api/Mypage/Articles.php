@@ -15,6 +15,6 @@ final class Articles extends ResourceCollection
     #[\Override]
     public function toArray($request)
     {
-        return $this->collection->map(fn ($item): \App\Http\Resources\Api\Mypage\Article => new Article($item))->all();
+        return $this->collection->map(fn($item): \App\Http\Resources\ArticleList => new Article($item))->all();
     }
 }

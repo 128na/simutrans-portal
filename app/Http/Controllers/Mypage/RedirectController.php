@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Mypage;
 
+use App\Actions\Redirect\DeleteRedirect;
+use App\Actions\Redirect\FindMyRedirects;
 use App\Models\Redirect;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Http\RedirectResponse;
@@ -16,21 +18,22 @@ final class RedirectController extends Controller
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
-    public function index(): \Illuminate\Contracts\View\View
+    public function index(FindMyRedirects $findMyRedirects): \Illuminate\Contracts\View\View
     {
+        $user = Auth::user();
         return view('v2.mypage.redirects', [
-            'redirects' => Auth::user()->redirects()->get(),
+            'redirects' => $findMyRedirects($user),
             'meta' => $this->metaOgpService->redirects(),
         ]);
     }
 
-    public function destroy(Redirect $redirect): RedirectResponse
+    public function destroy(Redirect $redirect, DeleteRedirect $deleteRedirect): RedirectResponse
     {
-        if (Auth::user()->cannot('update', $redirect)) {
+        $user = Auth::user();
+        if ($user->cannot('update', $redirect)) {
             return abort(403);
         }
-
-        $redirect->delete();
+        $deleteRedirect($redirect);
 
         return to_route('mypage.redirects')->with('status', '削除しました');
     }

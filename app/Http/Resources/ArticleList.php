@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Resources\Api\Mypage;
+namespace App\Http\Resources;
 
 use App\Models\Article as ModelsArticle;
 use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-final class Article extends JsonResource
+final class ArticleList extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request
@@ -27,19 +27,19 @@ final class Article extends JsonResource
             'status' => $this->resource->status,
             'post_type' => $this->resource->post_type,
             'contents' => $this->resource->contents,
-            'categories' => $this->resource->categories->map(fn (Category $category): array => [
+            'categories' => $this->resource->categories->map(fn(Category $category): array => [
                 'id' => $category->id,
                 'name' => __(sprintf('category.%s.%s', $category->type->value, $category->slug)),
                 'type' => $category->type,
                 'slug' => $category->slug,
             ]),
-            'tags' => $this->resource->tags->map(fn (Tag $tag): array => [
+            'tags' => $this->resource->tags->map(fn(Tag $tag): array => [
                 'id' => $tag->id,
                 'name' => $tag->name,
             ]),
             'articles' => $this->resource->articles
-                ->filter(fn (ModelsArticle $modelsArticle): bool => $modelsArticle->is_publish)
-                ->map(fn (ModelsArticle $modelsArticle): array => [
+                ->filter(fn(ModelsArticle $modelsArticle): bool => $modelsArticle->is_publish)
+                ->map(fn(ModelsArticle $modelsArticle): array => [
                     'id' => $modelsArticle->id,
                     'title' => $modelsArticle->title,
                 ])

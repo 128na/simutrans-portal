@@ -8,9 +8,9 @@ use App\Actions\Article\StoreArticle;
 use App\Actions\Article\UpdateArticle;
 use App\Http\Requests\Article\StoreRequest;
 use App\Http\Requests\Article\UpdateRequest;
-use App\Http\Resources\v2\ArticleEdit;
-use App\Http\Resources\v2\Attachment;
-use App\Http\Resources\v2\Tag;
+use App\Http\Resources\ArticleEdit;
+use App\Http\Resources\AttachmentEdit;
+use App\Http\Resources\TagEdit;
 use App\Models\Article;
 use App\Repositories\v2\ArticleRepository;
 use App\Repositories\v2\CategoryRepository;
@@ -53,9 +53,9 @@ final class ArticleController extends Controller
 
         return view('v2.mypage.article-create', [
             'user' => $user->only(['id', 'name', 'nickname', 'role']),
-            'attachments' => Attachment::collection($user->myAttachments()->with('fileInfo')->get()),
+            'attachments' => AttachmentEdit::collection($user->myAttachments()->with('fileInfo')->get()),
             'categories' => $this->categoryRepository->getForSearch()->groupBy('type'),
-            'tags' => Tag::collection($this->tagRepository->getForEdit()),
+            'tags' => TagEdit::collection($this->tagRepository->getForEdit()),
             'relationalArticles' => $this->articleRepository->getForEdit(),
             'meta' => $this->metaOgpService->articleCreate(),
         ]);
@@ -88,7 +88,7 @@ final class ArticleController extends Controller
         return view('v2.mypage.article-edit', [
             'user' => $user->only(['id', 'name', 'nickname', 'role']),
             'article' => new ArticleEdit($article->load('categories', 'tags', 'articles', 'attachments')),
-            'attachments' => Attachment::collection($user->myAttachments()->with('fileInfo')->get()),
+            'attachments' => AttachmentEdit::collection($user->myAttachments()->with('fileInfo')->get()),
             'categories' => $this->categoryRepository->getForSearch()->groupBy('type'),
             'tags' => $this->tagRepository->getForEdit(),
             'relationalArticles' => $this->articleRepository->getForEdit($article),

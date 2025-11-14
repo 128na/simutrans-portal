@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Resources\v2;
+namespace App\Http\Resources;
 
 use App\Models\Article;
-use App\Models\Attachment as ModelsAttachment;
+use App\Models\Attachment;
 use App\Models\User\Profile;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-final class Attachment extends JsonResource
+final class AttachmentEdit extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request
@@ -18,7 +18,7 @@ final class Attachment extends JsonResource
     #[\Override]
     public function toArray($request)
     {
-        assert($this->resource instanceof ModelsAttachment);
+        assert($this->resource instanceof Attachment);
 
         return [
             'id' => $this->resource->id,

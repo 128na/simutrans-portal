@@ -8,11 +8,6 @@ use App\Models\Article;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
-/**
- * @extends BaseRepository<T>
- *
- * @template T of \Illuminate\Database\Eloquent\Model
- */
 abstract class BaseCountRepository
 {
     /**

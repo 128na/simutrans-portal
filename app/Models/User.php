@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\Models\BulkZippableInterface;
 use App\Enums\UserRole;
 use App\Models\Article\ViewCount;
 use App\Models\User\LoginHistory;
@@ -17,7 +16,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -27,7 +25,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 /**
  * @mixin IdeHelperUser
  */
-final class User extends Authenticatable implements BulkZippableInterface, MustVerifyEmail
+final class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
@@ -115,15 +113,6 @@ final class User extends Authenticatable implements BulkZippableInterface, MustV
     public function myAttachments(): HasMany
     {
         return $this->hasMany(Attachment::class);
-    }
-
-    /**
-     * @return MorphOne<BulkZip,$this>
-     */
-    #[\Override]
-    public function bulkZippable(): MorphOne
-    {
-        return $this->morphOne(BulkZip::class, 'bulk_zippable');
     }
 
     /**

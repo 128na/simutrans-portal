@@ -28,7 +28,7 @@ final class ArticleRepository
             ->select(['articles.id', 'articles.title', 'articles.user_id', 'u.name as user_name'])
             ->join('users as u', 'articles.user_id', '=', 'u.id')
             ->where('articles.status', ArticleStatus::Publish)
-            ->when($article, fn($q) => $q->where('articles.id', '!=', $article->id))
+            ->when($article, fn ($q) => $q->where('articles.id', '!=', $article->id))
             ->whereNull('articles.deleted_at')
             ->whereNull('u.deleted_at')
             ->latest('articles.modified_at')
@@ -101,12 +101,12 @@ final class ArticleRepository
         $word = $condition['word'] ?? '';
         if ($word) {
             $likeWord = sprintf('%%%s%%', $word);
-            $baseQuery->where(fn($q) => $q
+            $baseQuery->where(fn ($q) => $q
                 ->orWhere('title', 'LIKE', $likeWord)
                 ->orWhere('contents', 'LIKE', $likeWord)
                 ->orWhereHas(
                     'attachments.fileInfo',
-                    fn($q) => $q
+                    fn ($q) => $q
                         ->where('data', 'LIKE', $likeWord)
                 ));
         }
@@ -289,16 +289,24 @@ final class ArticleRepository
             ->get();
     }
 
+    /**
+     * @param  mixed[]  $data
+     */
     public function store(array $data): Article
     {
         return $this->model->create($data);
     }
 
+    /**
+     * @param  mixed[]  $data
+     */
     public function update(Article $article, array $data): Article
     {
         $article->update($data);
+
         return $article;
     }
+
     /**
      * 添付ファイルを関連付ける.
      *
@@ -311,7 +319,7 @@ final class ArticleRepository
         $article->attachments()->saveMany($attachments);
 
         // remove
-        /** @var Collection<int,Attachment> */
+        /** @var Collection<int,\App\Models\Attachment> */
         $shouldDetach = $article->attachments()->whereNotIn('id', $attachmentsIds)->get();
         foreach ($shouldDetach as $attachment) {
             $attachment->attachmentable()->disassociate()->save();

@@ -204,7 +204,6 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Model $bulkZippable
- * @method static \Database\Factories\BulkZipFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BulkZip newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BulkZip newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BulkZip query()
@@ -344,7 +343,6 @@ namespace App\Models{
  * @property string|null $invitation_code 紹介用コード
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
  * @property-read int|null $articles_count
- * @property-read \App\Models\BulkZip|null $bulkZippable
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $createdTags
  * @property-read int|null $created_tags_count
  * @property-read \App\Models\Article\ViewCount|null $currentMonthViewCount

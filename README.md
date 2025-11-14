@@ -11,14 +11,12 @@ Simutrans のアドオン投稿サイト「Simutrans Addon Portal」のアプリ
 一般的な LAMP 環境や docker コンテナなどをご用意ください。
 バックエンドは PHP(Laravel)、フロントエンドは SPA(quasar, vue.js)で作成しています。
 
-フロントエンドの詳細は[こちら](frontend/README.md)
-
 ### Requirements
 
--   PHP:8.3~
--   mysql:5.7~
--   node:20~
-    アセットコンパイルを行う場合に必要
+- PHP:8.3~
+- mysql:5.7~
+- node:20~
+  アセットコンパイルを行う場合に必要
 
 ### Backend
 
@@ -38,14 +36,6 @@ App\Models\User::create(['role'=>'admin', 'name'=>'your name', 'email'=>'your em
 
 メール送信があるため、 `mailpit` などの使用を推奨
 
-### Frontend
-
-```bash
-cd frontend
-npm install
-npm run build
-```
-
 ## Test, Formatter, etc.
 
 ### Backend
@@ -55,13 +45,4 @@ php artisan test --testsuite=Unit
 php artisan test --testsuite=Feature
 
 composer run all
-```
-
-### Frontend
-
-```bash
-cd frontend
-npm run test:e2e
-
-npm run lint
 ```

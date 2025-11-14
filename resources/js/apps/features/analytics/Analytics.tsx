@@ -9,7 +9,7 @@ type Props = {
 export const Analytics = ({ articles }: Props) => {
   return (
     <div className="space-y-4">
-      <AnalyticsGraph />
+      <AnalyticsGraph articles={articles} />
       <AnalyticsOption />
       <AnalyticsTable articles={articles} limit={15} />
     </div>

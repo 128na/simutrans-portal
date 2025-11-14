@@ -18,4 +18,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {
     });
 
     Route::post('v2/profile', [\App\Http\Controllers\v2\Mypage\ProfileController::class, 'update']);
+    Route::post('v2/analytics', [\App\Http\Controllers\v2\Mypage\AnalyticsController::class, 'show']);
 });

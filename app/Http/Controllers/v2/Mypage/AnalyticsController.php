@@ -31,8 +31,9 @@ final class AnalyticsController extends Controller
 
     public function show(SearchRequest $searchRequest, FindArticles $findArticles): AnonymousResourceCollection
     {
+        $user = Auth::user();
         return ArticleAnalytic::collection(
-            $findArticles($this->loggedinUser(), $searchRequest)
+            $findArticles($user, $searchRequest)
         );
     }
 }

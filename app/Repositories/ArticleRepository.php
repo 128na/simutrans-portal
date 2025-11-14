@@ -152,7 +152,7 @@ final class ArticleRepository extends BaseRepository
         return $this->model
             ->withTrashed()
             ->withUserTrashed()
-            ->with(['user' => fn ($q) => $q->withTrashed()])
+            ->with(['user' => fn($q) => $q->withTrashed()])
             ->get();
     }
 

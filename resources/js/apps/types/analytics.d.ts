@@ -10,11 +10,19 @@ namespace Analytics {
     start_date: Date;
     end_date: Date;
     type: Type;
-    mode: Mode;
+    axes: Axis[];
     selected: number[];
     set: (partial: Partial<FilterState>) => void;
   };
-
   type Type = "daily" | "monthly" | "yearly";
-  type Mode = "line" | "sum";
+  type Axis = "cv" | "pv";
+
+  type ArticleAnalytic = [
+    ArtcileId,
+    Record<Period, Count>,
+    Record<Period, Count>,
+  ];
+  type ArtcileId = number;
+  type Period = number;
+  type Count = number;
 }

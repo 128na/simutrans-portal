@@ -7,7 +7,7 @@ namespace App\Actions\User;
 use App\Enums\UserRole;
 use App\Models\User;
 use App\Notifications\UserInvited;
-use App\Repositories\v2\UserRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 

@@ -8,7 +8,7 @@ use App\Http\Requests\Tag\StoreRequest;
 use App\Http\Requests\Tag\UpdateRequest;
 use App\Http\Resources\TagEdit;
 use App\Models\Tag;
-use App\Repositories\v2\TagRepository;
+use App\Repositories\TagRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;

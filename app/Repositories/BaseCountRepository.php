@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
  *
  * @template T of \Illuminate\Database\Eloquent\Model
  */
-abstract class BaseCountRepository extends BaseRepository
+abstract class BaseCountRepository
 {
     /**
      * 日次、月次、年次、全体の合計をカウントアップする.

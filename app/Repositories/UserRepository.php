@@ -4,58 +4,124 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Enums\ArticleStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
-/**
- * @extends BaseRepository<User>
- */
-final class UserRepository extends BaseRepository
+final class UserRepository
 {
-    public function __construct(User $user)
+    public function __construct(public User $model) {}
+
+    /**
+     * @return object{
+     *     article_count: int|null,
+     *     attachment_count: int|null,
+     *     total_attachment_size: int|null,
+     *     total_conversion_count: int|null,
+     *     total_view_count: int|null,
+     *     tag_count: int|null
+     * }
+     */
+    public function getSummary(User $user): object
     {
-        parent::__construct($user);
+        $userId = $user->id;
+        $period = now()->format('Ym');
+
+        return DB::query()
+            ->selectSub(
+                DB::table('articles')
+                    ->where('user_id', $userId)
+                    ->whereNull('deleted_at')
+                    ->selectRaw('COUNT(*)'),
+                'article_count'
+            )
+            ->selectSub(
+                DB::table('attachments')
+                    ->where('user_id', $userId)
+                    ->selectRaw('COUNT(*)'),
+                'attachment_count'
+            )
+            ->selectSub(
+                DB::table('attachments')
+                    ->where('user_id', $userId)
+                    ->selectRaw('SUM(size)'),
+                'total_attachment_size'
+            )
+            ->selectSub(
+                DB::table('conversion_counts')
+                    ->where('user_id', $userId)
+                    ->where('type', 2)
+                    ->where('period', $period)
+                    ->selectRaw('SUM(count)'),
+                'total_conversion_count'
+            )
+            ->selectSub(
+                DB::table('view_counts')
+                    ->where('user_id', $userId)
+                    ->where('type', 2)
+                    ->where('period', $period)
+                    ->selectRaw('SUM(count)'),
+                'total_view_count'
+            )
+            ->selectSub(
+                DB::table('tags')
+                    ->where(function ($q) use ($userId): void {
+                        $q->where('created_by', $userId)
+                            ->orWhere('last_modified_by', $userId);
+                    })
+                    ->selectRaw('COUNT(*)'),
+                'tag_count'
+            )
+            ->first();
     }
 
     /**
-     * 論理削除されているものも含めた一覧.
-     *
-     * @return Collection<int, User>
+     * @return Collection<int,User>
      */
-    public function findAllWithTrashed(): Collection
+    public function getForSearch(): Collection
     {
-        return $this->model
-            ->withTrashed()
-            ->withCount(['articles' => fn ($q) => $q->withUserTrashed()->withTrashed()])
+        return $this->model->query()
+            ->select(['users.id', 'users.nickname', 'users.name'])
+            ->whereExists(
+                fn($q) => $q->selectRaw(1)
+                    ->from('articles as a')
+                    ->whereColumn('a.user_id', 'users.id')
+                    ->where('a.status', ArticleStatus::Publish)
+            )
+            ->orderBy('name', 'asc')
             ->get();
     }
 
     /**
-     * 論理削除されているものも含めて探す.
+     * @return Collection<int,User>
      */
-    public function findOrFailWithTrashed(int $id): User
+    public function getForList(): Collection
     {
-        return $this->model
-            ->withTrashed()
-            ->findOrFail($id);
+        return $this->model->query()
+            ->select(['users.id', 'users.name'])
+            ->join('articles', function ($join): void {
+                $join->on('articles.user_id', '=', 'users.id')
+                    ->where('articles.status', ArticleStatus::Publish);
+            })
+            ->groupBy('users.id')
+            ->orderByRaw('COUNT(articles.id) DESC')
+            ->withCount('articles')
+            ->get();
     }
 
     /**
-     * 論理削除状態を切り替える.
+     * @param array{
+     *     name: string,
+     *     email: string,
+     *     role: \App\Enums\UserRole::User,
+     *     password: string,
+     *     invited_by?: int,
+     * } $data
      */
-    public function toggleDelete(User $user): void
+    public function store(array $data): User
     {
-        $user->trashed()
-            ? $user->restore()
-            : $user->delete();
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function findInvites(User $user): Collection
-    {
-        return $user->invites()->get();
+        return $this->model->create($data);
     }
 
     /**

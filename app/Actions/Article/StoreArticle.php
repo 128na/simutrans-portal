@@ -28,6 +28,7 @@ final readonly class StoreArticle
         $articleStatus = ArticleStatus::from($data['article']['status']);
         $publishedAt = $data['article']['published_at'] ?? null;
         $newData = [
+            'user_id' => $user->id,
             'post_type' => ArticlePostType::from($data['article']['post_type']),
             'title' => $data['article']['title'],
             'slug' => $data['article']['slug'],
@@ -37,7 +38,7 @@ final readonly class StoreArticle
             'modified_at' => $this->now->toDateTimeString(),
         ];
         /** @var Article */
-        $article = $this->articleRepository->storeByUser($user, $newData);
+        $article = $this->articleRepository->store($newData);
 
         ($this->syncRelatedModels)($article, $data);
 

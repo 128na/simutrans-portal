@@ -20,7 +20,7 @@ final readonly class ZippableManager
     {
         return match (true) {
             $bulkZip->bulkZippable instanceof User => $this->getUserItems($bulkZip->bulkZippable),
-            default => throw new Exception('unsupport type provided:'.$bulkZip->bulk_zippable_type, 1),
+            default => throw new Exception('unsupport type provided:' . $bulkZip->bulk_zippable_type, 1),
         };
     }
 

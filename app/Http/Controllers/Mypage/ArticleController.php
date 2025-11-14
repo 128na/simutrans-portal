@@ -12,9 +12,9 @@ use App\Http\Resources\ArticleEdit;
 use App\Http\Resources\AttachmentEdit;
 use App\Http\Resources\TagEdit;
 use App\Models\Article;
-use App\Repositories\v2\ArticleRepository;
-use App\Repositories\v2\CategoryRepository;
-use App\Repositories\v2\TagRepository;
+use App\Repositories\ArticleRepository;
+use App\Repositories\CategoryRepository;
+use App\Repositories\TagRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -74,7 +74,7 @@ final class ArticleController extends Controller
          */
         $data = $storeRequest->validated();
 
-        $article = DB::transaction(fn (): Article => $storeArticle($user, $data));
+        $article = DB::transaction(fn(): Article => $storeArticle($user, $data));
 
         return response()->json(['article_id' => $article->id], 200);
     }
@@ -109,7 +109,7 @@ final class ArticleController extends Controller
          */
         $data = $updateRequest->validated();
 
-        $article = DB::transaction(fn (): Article => $updateArticle($article, $data));
+        $article = DB::transaction(fn(): Article => $updateArticle($article, $data));
 
         return response()->json(['article_id' => $article->id], 200);
     }

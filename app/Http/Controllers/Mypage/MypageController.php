@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Mypage;
 
-use App\Repositories\v2\UserRepository;
+use App\Repositories\UserRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;

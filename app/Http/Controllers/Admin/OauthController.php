@@ -20,6 +20,12 @@ final class OauthController extends Controller
         private readonly OauthTokenRepository $oauthTokenRepository,
     ) {}
 
+    public function index(): \Illuminate\Contracts\View\View
+    {
+        return view('v2.admin.index');
+    }
+
+
     public function authoroize(): RedirectResponse
     {
         $state = $this->pkceService->generateState();

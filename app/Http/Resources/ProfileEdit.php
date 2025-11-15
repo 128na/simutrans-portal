@@ -9,12 +9,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 final class ProfileEdit extends JsonResource
 {
-    /**
-     * @param  \Illuminate\Http\Request  $request
-     * @return array<mixed>
-     */
     #[\Override]
-    public function toArray($request)
+    public function toArray(null|\Illuminate\Http\Request $request): array
     {
         assert($this->resource instanceof User);
 

@@ -11,12 +11,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 final class AttachmentEdit extends JsonResource
 {
-    /**
-     * @param  \Illuminate\Http\Request  $request
-     * @return array<mixed>
-     */
     #[\Override]
-    public function toArray($request)
+    public function toArray(null|\Illuminate\Http\Request $request): array
     {
         assert($this->resource instanceof Attachment);
 
@@ -31,11 +27,11 @@ final class AttachmentEdit extends JsonResource
             'size' => $this->resource->size,
             'fileInfo' => $this->when(
                 $this->resource->attachmentable_type !== Profile::class && $this->resource->fileInfo,
-                fn() => $this->resource->fileInfo?->data,
+                fn(): mixed => $this->resource->fileInfo?->data,
             ),
             'caption' => $this->when($this->resource->is_image, $this->resource->caption),
             'order' => $this->when($this->resource->is_image, $this->resource->order),
-            'attachmentable' => $this->whenLoaded('attachmentable', function () {
+            'attachmentable' => $this->whenLoaded('attachmentable', function (): ?array {
                 $attachmentable = $this->resource->attachmentable;
 
                 return $attachmentable instanceof Article ? $attachmentable->only(['id', 'title']) : null;

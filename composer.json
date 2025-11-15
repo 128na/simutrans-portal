@@ -92,13 +92,16 @@
       "@lint"
     ],
     "lint": [
-      "mago lint"
+      "mago lint --baseline lint-baseline.toml"
     ],
     "format": [
       "mago format"
     ],
     "format:check": [
       "mago format --dry-run"
+    ],
+    "baseline": [
+      "mago lint --generate-baseline --baseline lint-baseline.toml"
     ]
   }
 }

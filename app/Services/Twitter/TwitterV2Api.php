@@ -64,9 +64,11 @@ final class TwitterV2Api extends TwitterOAuth
             report($clientException);
             try {
                 $this->pKCEService->revokeToken($token);
-            } finally {
-                throw new PKCETokenRefreshFailedException();
+            } catch (\Throwable $e) {
+                report($e);
             }
+
+            throw new PKCETokenRefreshFailedException();
         }
     }
 }

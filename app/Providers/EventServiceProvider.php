@@ -22,16 +22,10 @@ final class EventServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Register any events for your application.
+     * Whether to auto-discover events.
      */
     #[\Override]
-    public function boot(): void
-    {
-        parent::boot();
-    }
-
-    #[\Override]
-    public function shouldDiscoverEvents()
+    public function shouldDiscoverEvents(): bool
     {
         return true;
     }

@@ -27,7 +27,7 @@ final class UserFactory extends Factory
             'invitation_code' => Str::random(10),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => bcrypt('password'),
             'two_factor_confirmed_at' => null,
             'two_factor_secret' => null,
             'remember_token' => Str::random(10),
@@ -35,14 +35,14 @@ final class UserFactory extends Factory
         ];
     }
 
-    public function admin()
+    public function admin(): \Illuminate\Database\Eloquent\Factories\Factory
     {
         return $this->state(fn(array $attributes): array => [
             'role' => UserRole::Admin,
         ]);
     }
 
-    public function deleted()
+    public function deleted(): \Illuminate\Database\Eloquent\Factories\Factory
     {
         return $this->state(fn(array $attributes): array => [
             'deleted_at' => now(),

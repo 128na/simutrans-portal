@@ -10,24 +10,33 @@ final class ResizeByFileSize
 {
     public function __invoke(string $inputPath, int $targetFileSize): string
     {
-        $filesize = @filesize($inputPath);
-        if ($filesize < $targetFileSize) {
+        $filesize = filesize($inputPath);
+        if ($filesize === false || $filesize < $targetFileSize) {
             return $inputPath;
         }
 
         $gdImage = $this->getImage($inputPath);
-        $originalWidth = @imagesx($gdImage);
+        $originalWidth = imagesx($gdImage);
+        if ($originalWidth === false) {
+            throw new ResizeFailedException('imagesx failed');
+        }
         logger('[FileSizeBaseResizer] resize', ['originalWidth' => $originalWidth, 'filesize' => $filesize]);
 
+        return $this->findResized($gdImage, $originalWidth, $targetFileSize);
+    }
+
+    private function findResized(GdImage $gdImage, int $originalWidth, int $targetFileSize): string
+    {
         $width = (int) ($originalWidth / 2);
         $min = (int) ($targetFileSize * 0.75);
         $max = $targetFileSize;
         $attempt = 0;
         $limit = 20;
+
         do {
             $resized = $this->doResize($gdImage, $width);
-            $size = @filesize($resized);
-            if ($size === 0 || $size === false) {
+            $size = filesize($resized);
+            if ($size === false || $size === 0) {
                 throw new ResizeFailedException('filesize failed');
             }
 
@@ -36,15 +45,14 @@ final class ResizeByFileSize
                 return $resized;
             }
 
+            $width = (int) ($width / 2);
             if ($size <= $min) {
                 $width = (int) (($originalWidth + $width) / 2);
             }
 
-            if ($size >= $max) {
-                $width = (int) ($width / 2);
+            if (is_file($resized)) {
+                unlink($resized);
             }
-
-            @unlink($resized);
             $attempt++;
         } while ($attempt <= $limit);
 
@@ -53,7 +61,7 @@ final class ResizeByFileSize
 
     private function getImage(string $path): GdImage
     {
-        $data = @file_get_contents($path);
+        $data = file_get_contents($path);
         if ($data === false) {
             throw new ResizeFailedException('file_get_contents failed');
         }
@@ -68,19 +76,18 @@ final class ResizeByFileSize
 
     private function doResize(GdImage $gdImage, int $width): string
     {
-        $resized = @imagescale($gdImage, $width, -1, IMG_BILINEAR_FIXED);
-        if (!$resized) {
+        $resized = imagescale($gdImage, $width, -1, IMG_BILINEAR_FIXED);
+        if ($resized === false) {
             throw new ResizeFailedException('imagescale failed');
         }
 
-        $tmpPath = @tempnam(sys_get_temp_dir(), '');
+        $tmpPath = tempnam(sys_get_temp_dir(), '');
         if ($tmpPath === false) {
             throw new ResizeFailedException('tempnam failed');
         }
-
-        $result = @imagewebp($resized, $tmpPath);
-        @imagedestroy($resized);
-        if (!$result) {
+        $result = imagewebp($resized, $tmpPath);
+        imagedestroy($resized);
+        if ($result === false) {
             throw new ResizeFailedException('imagewebp failed');
         }
 

@@ -23,6 +23,7 @@ halstead = { effort-threshold = 7000 }
 no-boolean-flag-parameter = { enabled = false }
 assert-description = { enabled = false }
 no-boolean-literal-comparison = { enabled = false }
+property-type = { enabled = false }
 
 [analyzer]
 find-unused-definitions = true

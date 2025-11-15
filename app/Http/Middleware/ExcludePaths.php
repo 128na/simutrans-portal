@@ -9,10 +9,7 @@ use Illuminate\Http\Request;
 
 final class ExcludePaths
 {
-    /**
-     * @return mixed
-     */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): \Symfony\Component\HttpFoundation\Response
     {
         $excludedPaths = [
             '*.php',

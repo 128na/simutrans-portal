@@ -16,8 +16,8 @@ return [
     */
 
     'discord' => [
-        'token' => env('DISCORD_TOKEN'),
-        'channel' => env('DISCORD_CHANNEL'),
+        'token' => env('DISCORD_TOKEN', 'dummy-token'),
+        'channel' => env('DISCORD_CHANNEL', 'dummy-channel'),
         'domain' => 'https://discord.gg',
         'max_age' => 300,
         'max_uses' => 1,
@@ -29,21 +29,21 @@ return [
     ],
     'twitter' => [
         // STANDALONE APPS > Settings > User authentication settings
-        'client_id' => env('TWITTER_CLIENT_ID'),
-        'client_secret' => env('TWITTER_CLIENT_SECRET'),
+        'client_id' => env('TWITTER_CLIENT_ID', 'dummy-client-id'),
+        'client_secret' => env('TWITTER_CLIENT_SECRET', 'dummy-client-secret'),
         // STANDALONE APPS > Keys and tokens > Authentication Tokens
-        'bearer_token' => env('TWITTER_BEARER_TOKEN'),
+        'bearer_token' => env('TWITTER_BEARER_TOKEN', 'dummy-bearer-token'),
         // STANDALONE APPS > Keys and tokens > Consumer Keys
-        'consumer_key' => env('TWITTER_CONSUMER_KEY'),
-        'consumer_secret' => env('TWITTER_CONSUMER_SECRET'),
+        'consumer_key' => env('TWITTER_CONSUMER_KEY', 'dummy-consumer-key'),
+        'consumer_secret' => env('TWITTER_CONSUMER_SECRET', 'dummy-consumer-secret'),
     ],
     'misskey' => [
         'base_url' => 'https://misskey.io/api',
-        'token' => env('MISSKEY_TOKEN'),
+        'token' => env('MISSKEY_TOKEN', 'dummy-token'),
     ],
     'bluesky' => [
-        'user' => env('BLUESKY_USER'),
-        'password' => env('BLUESKY_PASSWORD'),
+        'user' => env('BLUESKY_USER', 'dummy-user'),
+        'password' => env('BLUESKY_PASSWORD', 'dummy-password'),
     ],
     'markdown' => [
         'allowed_elements' => [

@@ -60,8 +60,8 @@ final class ArticleFactory extends Factory
             'contents' => $contents[$postType],
             'post_type' => $postType,
             'status' => fake()->randomElement(array_column(ArticleStatus::cases(), 'value')),
-            'published_at' => now(),
-            'modified_at' => now(),
+            'published_at' => now()->subDays(2),
+            'modified_at' => now()->subDays(1),
         ];
     }
 

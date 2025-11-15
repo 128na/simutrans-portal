@@ -1,3 +1,4 @@
+/* eslint no-undef: 0 */
 window.OneSignalDeferred = window.OneSignalDeferred || [];
 OneSignalDeferred.push(async function (OneSignal) {
   await OneSignal.init({

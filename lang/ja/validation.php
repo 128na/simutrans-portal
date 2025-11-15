@@ -197,6 +197,7 @@ return [
         'user.profile.data.avatar' => 'ユーザー画像',
         'user.profile.data.description' => '説明',
         'user.profile.data.website' => 'WebサイトURL',
+        'user.profile.data.website.*' => 'WebサイトURL',
 
         // analytics
         'ids' => '記事',

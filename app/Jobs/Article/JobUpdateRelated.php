@@ -12,7 +12,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * サイドバー表示用のデータを更新する.
+ * 記事更新に連動する関連データを更新する.
  */
 final class JobUpdateRelated implements ShouldQueue
 {

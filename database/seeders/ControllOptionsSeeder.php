@@ -12,16 +12,8 @@ final class ControllOptionsSeeder extends Seeder
 {
     public function run(): void
     {
-        $data = [
-            ControllOptionKey::Login,
-            ControllOptionKey::Register,
-            ControllOptionKey::InvitationCode,
-            ControllOptionKey::ArticleUpdate,
-            ControllOptionKey::TagUpdate,
-        ];
-
-        foreach ($data as $key) {
-            ControllOption::updateOrCreate(['key' => $key], ['value' => true]);
+        foreach (ControllOptionKey::cases() as $option) {
+            ControllOption::updateOrCreate(['key' => $option->value], ['value' => true]);
         }
     }
 }

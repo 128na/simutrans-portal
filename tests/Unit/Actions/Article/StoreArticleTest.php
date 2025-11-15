@@ -39,9 +39,9 @@ final class StoreArticleTest extends TestCase
 
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
             $article = new Article;
-            $mock->expects()->storeByUser(
-                $user,
+            $mock->expects()->store(
                 [
+                    'user_id' => $user->id,
                     'post_type' => ArticlePostType::AddonIntroduction,
                     'title' => 'dummy title',
                     'slug' => 'dummy-slug',
@@ -82,9 +82,9 @@ final class StoreArticleTest extends TestCase
 
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
             $article = new Article;
-            $mock->expects()->storeByUser(
-                $user,
+            $mock->expects()->store(
                 [
+                    'user_id' => $user->id,
                     'post_type' => ArticlePostType::AddonIntroduction,
                     'title' => 'dummy title',
                     'slug' => 'dummy-slug',
@@ -124,9 +124,9 @@ final class StoreArticleTest extends TestCase
 
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
             $article = new Article;
-            $mock->expects()->storeByUser(
-                $user,
+            $mock->expects()->store(
                 [
+                    'user_id' => $user->id,
                     'post_type' => ArticlePostType::AddonIntroduction,
                     'title' => 'dummy title',
                     'slug' => 'dummy-slug',

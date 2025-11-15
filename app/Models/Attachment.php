@@ -30,6 +30,7 @@ final class Attachment extends Model
         'path',
         'caption',
         'order',
+        'size',
     ];
 
     protected $hidden = [

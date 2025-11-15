@@ -113,6 +113,7 @@ namespace App\Models\Article{
  * @property int $count カウント
  * @property int $user_id
  * @property-read \App\Models\Article $article
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversionCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversionCount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversionCount query()
@@ -131,6 +132,7 @@ namespace App\Models\Article{
  * @property int $count カウント
  * @property int $user_id
  * @property-read \App\Models\Article $article
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount query()
@@ -152,6 +154,7 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property string|null $caption キャプション（画像向け）
  * @property int $order 表示順（画像向け）
+ * @property int $size ファイルサイズ(byte)
  * @property-read \Illuminate\Database\Eloquent\Model|null $attachmentable
  * @property-read string $extension
  * @property-read mixed $file_contents
@@ -201,7 +204,6 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Model $bulkZippable
- * @method static \Database\Factories\BulkZipFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BulkZip newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BulkZip newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BulkZip query()
@@ -341,9 +343,9 @@ namespace App\Models{
  * @property string|null $invitation_code 紹介用コード
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
  * @property-read int|null $articles_count
- * @property-read \App\Models\BulkZip|null $bulkZippable
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $createdTags
  * @property-read int|null $created_tags_count
+ * @property-read \App\Models\Article\ViewCount|null $currentMonthViewCount
  * @property-read User|null $invited
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $invites
  * @property-read int|null $invites_count

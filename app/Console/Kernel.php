@@ -27,6 +27,8 @@ final class Kernel extends ConsoleKernel
         // 毎日
         $schedule->command('check:deadlink')->dailyAt('10:00')
             ->appendOutputTo($output);
+        $schedule->command('app:remove-unused-tags')->dailyAt('09:00')
+            ->appendOutputTo($output);
         $schedule->command('backup:clean')->dailyAt('2:00')
             ->appendOutputTo($output);
         $schedule->command('backup:run')->dailyAt('3:00')

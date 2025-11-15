@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Requests\ArticleAnalytics;
 
-use App\Http\Requests\Api\ArticleAnalytics\SearchRequest;
+use App\Http\Requests\ArticleAnalytics\SearchRequest;
 use App\Models\Article;
 use App\Models\User;
 use Closure;
@@ -13,9 +13,9 @@ use Tests\Feature\TestCase;
 
 final class SearchRequestTest extends TestCase
 {
-    public Article $othersArticle;
-
     private User $user;
+
+    private Article $othersArticle;
 
     #[\Override]
     protected function setUp(): void

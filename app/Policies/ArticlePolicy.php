@@ -12,6 +12,11 @@ final class ArticlePolicy extends BasePolicy
 {
     use HandlesAuthorization;
 
+    public function store(User $user): bool
+    {
+        return true;
+    }
+
     public function update(User $user, Article $article): bool
     {
         return $this->isSameUser($user, $article);

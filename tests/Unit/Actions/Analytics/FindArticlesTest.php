@@ -6,7 +6,7 @@ namespace Tests\Unit\Actions\Analytics;
 
 use App\Actions\Analytics\FindArticles;
 use App\Enums\ArticleAnalyticsType;
-use App\Http\Requests\Api\ArticleAnalytics\SearchRequest;
+use App\Http\Requests\ArticleAnalytics\SearchRequest;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
 use Illuminate\Database\Eloquent\Collection;
@@ -37,7 +37,8 @@ final class FindArticlesTest extends TestCase
                 'end_date' => '2023-04-05',
             ],
             [
-                ArticleAnalyticsType::Daily, ['20200102', '20230405'],
+                ArticleAnalyticsType::Daily,
+                ['20200102', '20230405'],
             ],
         ];
         yield 'monthly' => [
@@ -47,7 +48,8 @@ final class FindArticlesTest extends TestCase
                 'end_date' => '2023-04-05',
             ],
             [
-                ArticleAnalyticsType::Monthly, ['202001', '202304'],
+                ArticleAnalyticsType::Monthly,
+                ['202001', '202304'],
             ],
         ];
         yield 'yearly' => [
@@ -57,7 +59,8 @@ final class FindArticlesTest extends TestCase
                 'end_date' => '2023-04-05',
             ],
             [
-                ArticleAnalyticsType::Yearly, ['2020', '2023'],
+                ArticleAnalyticsType::Yearly,
+                ['2020', '2023'],
             ],
         ];
     }

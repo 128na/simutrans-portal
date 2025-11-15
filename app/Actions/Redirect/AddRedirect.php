@@ -20,7 +20,8 @@ final readonly class AddRedirect
         $from = route('articles.show', ['userIdOrNickname' => $user->nickname ?? $user->id, 'articleSlug' => $oldSlug]);
         $to = route('articles.show', ['userIdOrNickname' => $user->nickname ?? $user->id, 'articleSlug' => $newSlug]);
 
-        $this->redirectRepository->storeByUser($user, [
+        $this->redirectRepository->store([
+            'user_id' => $user->id,
             'from' => str_replace($base, '', $from),
             'to' => str_replace($base, '', $to),
         ]);

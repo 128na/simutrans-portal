@@ -60,6 +60,7 @@ final readonly class Store
                 'user_id' => $user->id,
                 'path' => $filepath,
                 'original_name' => $uploadedFile->getClientOriginalName(),
+                'size' => $uploadedFile->getSize(),
             ]);
         } catch (ConvertFailedException $convertFailedException) {
             report($convertFailedException);
@@ -74,6 +75,7 @@ final readonly class Store
             'user_id' => $user->id,
             'path' => $this->filesystemAdapter->put('user/'.$user->id, $uploadedFile),
             'original_name' => $uploadedFile->getClientOriginalName(),
+            'size' => $uploadedFile->getSize(),
         ]);
     }
 }

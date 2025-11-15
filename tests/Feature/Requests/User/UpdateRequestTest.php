@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Requests\User;
 
-use App\Http\Requests\Api\User\UpdateRequest;
+use App\Http\Requests\User\UpdateRequest;
 use App\Models\User;
 use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -12,7 +12,7 @@ use Tests\Feature\TestCase;
 
 final class UpdateRequestTest extends TestCase
 {
-    public User $user;
+    private User $user;
 
     #[\Override]
     protected function setUp(): void

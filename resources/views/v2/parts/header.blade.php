@@ -80,7 +80,7 @@
 
         </el-popover-group>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="{{ route('login') }}" class="text-sm/6 font-semibold text-gray-900">Mypage <span aria-hidden="true">&rarr;</span></a>
+            <a href="{{ route('login') }}" class="text-sm/6 font-semibold text-gray-900">マイページ <span aria-hidden="true">&rarr;</span></a>
         </div>
     </nav>
     <el-dialog>
@@ -110,11 +110,11 @@
                                 <a href="{{route('pages')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">一般記事</a>
                                 <a href="{{route('search')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">検索</a>
                                 <a href="{{ route('social') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">SNS・通知ツール</a>
-                                <a href="{{config('app.support_site_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">サイトの使い方</a>
-                                <a href="{{config('app.privacy_policy_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">プライバシーポリシー</a>
+                                <a href="{{config('app.support_site_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50" target="_blank" rel="noopener">サイトの使い方</a>
+                                <a href="{{config('app.privacy_policy_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50" target="_blank" rel="noopener">プライバシーポリシー</a>
                             </div>
                             <div class="py-6">
-                                <a href="{{ route('login') }}" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Mypage</a>
+                                <a href="{{ route('login') }}" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">マイページ</a>
                             </div>
                         </div>
                     </div>

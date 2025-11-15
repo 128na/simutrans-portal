@@ -33,7 +33,7 @@ $fileInfo = $article->file?->fileInfo;
 
 
 @if(($fileInfo->data['dats'] ?? false) || ($fileInfo->data['tabs'] ?? false))
-<h3 class="text-xl font-semibold sm:text-xl my-8">ファイル情報</h3>
+<h4 class="text-xl font-semibold sm:text-xl my-8">ファイル情報</h4>
 
 @if($fileInfo->data['dats']?? false)
 <button type="button" command="--toggle" commandfor="dat-file" class="text-xl sm:text-xl my-4 p-4 flex w-full items-center justify-between bg-gray-100 cursor-pointer">
@@ -96,11 +96,11 @@ $fileInfo = $article->file?->fileInfo;
 @endif
 
 @if($contents->thanks)
-<h3 class="text-xl font-semibold sm:text-xl my-8">謝辞</h3>
+<h4 class="text-xl font-semibold sm:text-xl my-8">謝辞</h4>
 <pre class="whitespace-pre-wrap text-gray-800">{{$contents->thanks}}</pre>
 @endif
 
 @if($contents->license)
-<h3 class="text-xl font-semibold sm:text-xl my-8">参考にしたアドオン</h3>
+<h4 class="text-xl font-semibold sm:text-xl my-8">参考にしたアドオン</h4>
 <pre class="whitespace-pre-wrap text-gray-800">{{$contents->license}}</pre>
 @endif

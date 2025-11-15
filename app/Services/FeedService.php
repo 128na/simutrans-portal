@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Article;
-use App\Repositories\v2\ArticleRepository;
+use App\Repositories\ArticleRepository;
 use Illuminate\Support\Collection;
 
 /**

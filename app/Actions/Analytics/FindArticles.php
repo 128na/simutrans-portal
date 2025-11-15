@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Analytics;
 
 use App\Enums\ArticleAnalyticsType;
-use App\Http\Requests\Api\ArticleAnalytics\SearchRequest;
+use App\Http\Requests\ArticleAnalytics\SearchRequest;
 use App\Models\Article;
 use App\Models\User;
 use App\Repositories\ArticleRepository;

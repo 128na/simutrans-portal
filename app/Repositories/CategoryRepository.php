@@ -4,37 +4,21 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Enums\CategoryType;
 use App\Models\Category;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
-/**
- * @extends BaseRepository<Category>
- */
-final class CategoryRepository extends BaseRepository
+final class CategoryRepository
 {
-    public function __construct(Category $category)
-    {
-        parent::__construct($category);
-    }
+    public function __construct(public Category $model) {}
 
     /**
-     * ユーザーが利用できるカテゴリ一覧を返す.
-     *
      * @return Collection<int,Category>
      */
-    public function findAllByUser(User $user): Collection
+    public function getForSearch(): Collection
     {
-        return $this->model->forUser($user)->get();
-    }
-
-    public function findOrFailByTypeAndSlug(CategoryType $categoryType, string $slug): Category
-    {
-        return $this->model
-            ->select('id', 'slug', 'type')
-            ->type($categoryType)
-            ->slug($slug)
-            ->firstOrFail();
+        return $this->model->query()
+            ->select(['categories.id', 'categories.type', 'categories.slug', 'categories.need_admin'])
+            ->orderBy('order', 'asc')
+            ->get();
     }
 }

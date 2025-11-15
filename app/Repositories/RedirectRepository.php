@@ -7,15 +7,9 @@ namespace App\Repositories;
 use App\Models\Redirect;
 use Illuminate\Database\Eloquent\Collection;
 
-/**
- * @extends BaseRepository<Redirect>
- */
-final class RedirectRepository extends BaseRepository
+final class RedirectRepository
 {
-    public function __construct(Redirect $redirect)
-    {
-        parent::__construct($redirect);
-    }
+    public function __construct(public Redirect $model) {}
 
     public function findOrFailByPath(string $path): Redirect
     {
@@ -28,5 +22,13 @@ final class RedirectRepository extends BaseRepository
     public function findByUser(int $userId): Collection
     {
         return $this->model->where('user_id', $userId)->get();
+    }
+
+    /**
+     * @param  array{user_id:number,from:string,to:string}  $data
+     */
+    public function store(array $data): Redirect
+    {
+        return $this->model->create($data);
     }
 }

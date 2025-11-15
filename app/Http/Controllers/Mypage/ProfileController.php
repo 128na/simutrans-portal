@@ -1,0 +1,40 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers\Mypage;
+
+use App\Actions\User\UpdateProfile;
+use App\Http\Requests\User\UpdateRequest;
+use App\Http\Resources\AttachmentEdit;
+use App\Http\Resources\ProfileEdit;
+use App\Services\Front\MetaOgpService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+
+final class ProfileController extends Controller
+{
+    public function __construct(
+        private readonly MetaOgpService $metaOgpService,
+    ) {}
+
+    public function index(): \Illuminate\Contracts\View\View
+    {
+        $user = Auth::user();
+
+        return view('v2.mypage.profile', [
+            'user' => new ProfileEdit($user->load('profile')),
+            'attachments' => AttachmentEdit::collection($user->myAttachments()->with('fileInfo')->get()),
+            'meta' => $this->metaOgpService->profile(),
+        ]);
+    }
+
+    public function update(UpdateRequest $updateRequest, UpdateProfile $updateProfile): JsonResponse
+    {
+        $user = Auth::user();
+        $updateProfile($user, $updateRequest);
+
+        return response()->json();
+    }
+}

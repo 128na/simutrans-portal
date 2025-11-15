@@ -25,19 +25,13 @@
     <link rel="canonical" href="{{ $meta['canonical'] ?? url()->current() }}">
     <link rel=icon type=image/ico href=/favicon.ico>
     @vite('resources/js/front.ts')
-    @vite('resources/css/app.css')
+    @vite('resources/css/front.css')
 
 </head>
 
 <body>
     @include('v2.parts.header')
-    @if (session('status'))
-    <div class="mx-auto @yield('max-w', 'max-w-xl') p-6 lg:px-8">
-        <p class="p-4 text-sm text-green-900 rounded-lg bg-green-50 border border-green-300 ">
-            {{ session('status') }}
-        </p>
-    </div>
-    @endif
+    @include('v2.parts.session-message')
     @yield('content')
 </body>
 

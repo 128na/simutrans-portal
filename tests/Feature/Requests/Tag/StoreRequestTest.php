@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Requests\Tag;
 
-use App\Http\Requests\Api\Tag\StoreRequest;
+use App\Http\Requests\Tag\StoreRequest;
 use App\Models\Tag;
 use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -12,7 +12,7 @@ use Tests\Feature\TestCase;
 
 final class StoreRequestTest extends TestCase
 {
-    public Tag $tag;
+    private Tag $tag;
 
     #[\Override]
     protected function setUp(): void

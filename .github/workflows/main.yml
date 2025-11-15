@@ -9,22 +9,35 @@ on:
   pull_request:
     branches: [master, develop]
 jobs:
-  stan:
+  mago:
+    name: Run Mago Checks
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: .env
-        run: php -r "copy('.env.ci', '.env');"
+      - name: Setup PHP with Composer cache
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4" # Or your project's version
+          coverage: none
+          tools: composer
+        env:
+          COMPOSER_ALLOW_SUPERUSER: 1
 
-      - uses: ./.github/actions/php
+      - name: Install Composer Dependencies
+        run: composer install --prefer-dist --no-progress
 
-      - name: Run PHP Stan
-        run: composer run stan
+      - name: Setup Mago
+        uses: nhedger/setup-mago@v1
 
+      - name: Run Mago
+        run: |
+          mago format --dry-run
+          mago lint --reporting-format=github
+          mago analyze --reporting-format=github
   test:
-    needs: [stan]
+    needs: [mago]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -58,7 +71,7 @@ jobs:
   deploy:
     # tag push -> テスト通過後デプロイ
     needs:
-      - stan
+      - mago
       - test
       # - dusk
       # - cy

@@ -25,12 +25,7 @@ final class TwitterV2Api extends TwitterOAuth
         private readonly OauthTokenRepository $oauthTokenRepository,
         private readonly PKCEService $pKCEService,
     ) {
-        parent::__construct(
-            $consumerKey,
-            $consumerSecret,
-            null,
-            $appOnlyBearerToken
-        );
+        parent::__construct($consumerKey, $consumerSecret, null, $appOnlyBearerToken);
     }
 
     public function isPkceToken(): bool
@@ -40,7 +35,7 @@ final class TwitterV2Api extends TwitterOAuth
 
     public function applyPKCEToken(): void
     {
-        if (! $this->pkceToken) {
+        if (!$this->pkceToken) {
             $token = $this->getPKCEToken();
 
             $this->setBearer($token->access_token);
@@ -53,12 +48,12 @@ final class TwitterV2Api extends TwitterOAuth
         try {
             $token = $this->oauthTokenRepository->getToken('twitter');
 
-            if (! $token->isExpired()) {
+            if (!$token->isExpired()) {
                 return $token;
             }
         } catch (ModelNotFoundException|PDOException|QueryException $e) {
             report($e);
-            throw new PKCETokenNotFoundException;
+            throw new PKCETokenNotFoundException();
         }
 
         logger('[TwitterV2Api] token expired, refresh');
@@ -70,7 +65,7 @@ final class TwitterV2Api extends TwitterOAuth
             try {
                 $this->pKCEService->revokeToken($token);
             } finally {
-                throw new PKCETokenRefreshFailedException;
+                throw new PKCETokenRefreshFailedException();
             }
         }
     }

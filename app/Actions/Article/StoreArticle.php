@@ -42,7 +42,7 @@ final readonly class StoreArticle
 
         ($this->syncRelatedModels)($article, $data);
 
-        dispatch(new \App\Jobs\Article\JobUpdateRelated);
+        dispatch(new \App\Jobs\Article\JobUpdateRelated());
         event(new \App\Events\Article\ArticleStored($article, $data['should_notify'] ?? false));
 
         return $article->fresh() ?? $article;

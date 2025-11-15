@@ -31,16 +31,14 @@ final class AttachmentEdit extends JsonResource
             'size' => $this->resource->size,
             'fileInfo' => $this->when(
                 $this->resource->attachmentable_type !== Profile::class && $this->resource->fileInfo,
-                fn () => $this->resource->fileInfo?->data
+                fn() => $this->resource->fileInfo?->data,
             ),
             'caption' => $this->when($this->resource->is_image, $this->resource->caption),
             'order' => $this->when($this->resource->is_image, $this->resource->order),
             'attachmentable' => $this->whenLoaded('attachmentable', function () {
                 $attachmentable = $this->resource->attachmentable;
 
-                return $attachmentable instanceof Article
-                    ? $attachmentable->only(['id', 'title'])
-                    : null;
+                return $attachmentable instanceof Article ? $attachmentable->only(['id', 'title']) : null;
             }),
             'created_at' => $this->resource->created_at?->toIso8601String(),
         ];

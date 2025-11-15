@@ -21,12 +21,15 @@ final class CursorCheckLinkTest extends TestCase
     {
         parent::setUp();
         $this->articleRepository = app(ArticleRepository::class);
-        $this->article = Article::factory()->addonIntroduction()->publish()->create([
-            'contents' => [
-                'link' => '/not_found_url',
-                'exclude_link_check' => false,
-            ],
-        ]);
+        $this->article = Article::factory()
+            ->addonIntroduction()
+            ->publish()
+            ->create([
+                'contents' => [
+                    'link' => '/not_found_url',
+                    'exclude_link_check' => false,
+                ],
+            ]);
     }
 
     public function test(): void

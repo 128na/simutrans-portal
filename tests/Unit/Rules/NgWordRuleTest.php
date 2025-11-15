@@ -24,7 +24,7 @@ final class NgWordRuleTest extends TestCase
         parent::setUp();
         $this->failCalled = false;
 
-        $mock = $this->mock(PotentiallyTranslatedString::class, fn (MockInterface $mock) => $mock->allows()->translate());
+        $mock = $this->mock(PotentiallyTranslatedString::class, fn(MockInterface $mock) => $mock->allows()->translate());
         $this->failClosure = function () use ($mock) {
             $this->failCalled = true;
 
@@ -36,8 +36,7 @@ final class NgWordRuleTest extends TestCase
     #[DataProvider('data')]
     public function test(array $ngWords, string $value, bool $expected): void
     {
-        $this->getSUT($ngWords)
-            ->validate('dummy', $value, $this->failClosure);
+        $this->getSUT($ngWords)->validate('dummy', $value, $this->failClosure);
         $this->assertSame($expected, $this->failCalled);
     }
 

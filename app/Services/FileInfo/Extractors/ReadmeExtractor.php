@@ -8,7 +8,9 @@ use HTMLPurifier;
 
 final readonly class ReadmeExtractor implements Extractor
 {
-    public function __construct(private HTMLPurifier $htmlPurifier) {}
+    public function __construct(
+        private HTMLPurifier $htmlPurifier,
+    ) {}
 
     #[\Override]
     public function isText(): bool
@@ -25,8 +27,9 @@ final readonly class ReadmeExtractor implements Extractor
     #[\Override]
     public function isTarget(string $filename): bool
     {
-        return str_contains($filename, 'readme') && (
-            str_contains($filename, '.txt') || str_contains($filename, '.md') || str_contains($filename, '.html')
+        return (
+            str_contains($filename, 'readme')
+            && (str_contains($filename, '.txt') || str_contains($filename, '.md') || str_contains($filename, '.html'))
         );
     }
 

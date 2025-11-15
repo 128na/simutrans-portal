@@ -25,7 +25,7 @@ final class UpdateTest extends TestCase
 
     public function test_未ログイン(): void
     {
-        $url = '/api/v2/articles/'.$this->article->id;
+        $url = '/api/v2/articles/' . $this->article->id;
 
         $testResponse = $this->postJson($url);
         $testResponse->assertUnauthorized();
@@ -34,7 +34,7 @@ final class UpdateTest extends TestCase
     public function test_更新通知する(): void
     {
         Notification::fake();
-        $url = '/api/v2/articles/'.$this->article->id;
+        $url = '/api/v2/articles/' . $this->article->id;
         $oldModifiedAt = $this->article->modified_at->toAtomString();
 
         $this->actingAs($this->article->user);
@@ -50,18 +50,15 @@ final class UpdateTest extends TestCase
         $this->assertNotEquals(
             $this->article->modified_at->toAtomString(),
             $oldModifiedAt,
-            '更新日が更新されていること'
+            '更新日が更新されていること',
         );
-        Notification::assertSentTo(
-            $this->article,
-            SendArticleUpdated::class
-        );
+        Notification::assertSentTo($this->article, SendArticleUpdated::class);
     }
 
     public function test_更新通知しない(): void
     {
         Notification::fake();
-        $url = '/api/v2/articles/'.$this->article->id;
+        $url = '/api/v2/articles/' . $this->article->id;
         $oldModifiedAt = $this->article->modified_at->toAtomString();
 
         $this->actingAs($this->article->user);
@@ -77,18 +74,15 @@ final class UpdateTest extends TestCase
         $this->assertEquals(
             $this->article->modified_at->toAtomString(),
             $oldModifiedAt,
-            '更新日が更新されていないこと'
+            '更新日が更新されていないこと',
         );
-        Notification::assertNotSentTo(
-            $this->article,
-            SendArticleUpdated::class
-        );
+        Notification::assertNotSentTo($this->article, SendArticleUpdated::class);
     }
 
     public function test_初めて公開になるときは更新でなく投稿通知(): void
     {
         Notification::fake();
-        $url = '/api/v2/articles/'.$this->article->id;
+        $url = '/api/v2/articles/' . $this->article->id;
         $this->article->update(['published_at' => null]);
 
         $this->actingAs($this->article->user);
@@ -101,10 +95,7 @@ final class UpdateTest extends TestCase
         $testResponse->assertStatus(200);
 
         $this->article->refresh();
-        Notification::assertSentTo(
-            $this->article,
-            SendArticlePublished::class
-        );
+        Notification::assertSentTo($this->article, SendArticlePublished::class);
     }
 
     private function createArticle(): array

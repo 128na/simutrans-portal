@@ -11,7 +11,9 @@ use Illuminate\Log\Logger;
 
 final readonly class OnLogin
 {
-    public function __construct(private Logger $logger) {}
+    public function __construct(
+        private Logger $logger,
+    ) {}
 
     public function handle(Login $login): void
     {

@@ -8,7 +8,9 @@ use Illuminate\Log\Logger;
 
 final readonly class OnDiscordInviteCodeCreated
 {
-    public function __construct(private Logger $logger) {}
+    public function __construct(
+        private Logger $logger,
+    ) {}
 
     public function handle(): void
     {
@@ -20,7 +22,6 @@ final readonly class OnDiscordInviteCodeCreated
      */
     private function getAccessInfo(): array
     {
-
         return [
             'REMOTE_ADDR' => request()->server('REMOTE_ADDR', 'N/A'),
             'HTTP_REFERER' => request()->server('HTTP_REFERER', 'N/A'),

@@ -24,7 +24,9 @@ final class AttachmentController extends Controller
         $user = Auth::user();
 
         return view('v2.mypage.attachments', [
-            'attachments' => AttachmentEdit::collection($user->myAttachments()->with('fileInfo', 'attachmentable')->get()),
+            'attachments' => AttachmentEdit::collection(
+                $user->myAttachments()->with('fileInfo', 'attachmentable')->get(),
+            ),
             'meta' => $this->metaOgpService->attachments(),
         ]);
     }
@@ -37,7 +39,7 @@ final class AttachmentController extends Controller
 
         /** @var \Illuminate\Http\UploadedFile|null */
         $file = $storeRequest->file('file');
-        if (! $file) {
+        if (!$file) {
             abort(400);
         }
 

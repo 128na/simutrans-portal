@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Repositories\Article;
 
-use App\Repositories\BaseCountRepository;
+use App\Repositories\AbstractBaseCountRepository;
 
-final class ViewCountRepository extends BaseCountRepository
+final class ViewCountRepository extends AbstractBaseCountRepository
 {
     #[\Override]
     public function getTableName(): string

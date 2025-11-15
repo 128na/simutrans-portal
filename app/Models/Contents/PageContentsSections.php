@@ -22,12 +22,12 @@ final class PageContentsSections extends Collection
      */
     public function __construct(array $items = [])
     {
-        $items = array_map(fn (array $item): Section => match ($item['type']) {
+        $items = array_map(fn(array $item): Section => match ($item['type']) {
             'caption' => new SectionCaption($item),
             'text' => new SectionText($item),
             'url' => new SectionUrl($item),
             'image' => new SectionImage($item),
-            default => throw new Exception('unsupport type:'.$item['type']),
+            default => throw new Exception('unsupport type:' . $item['type']),
         }, $items);
         parent::__construct($items);
     }

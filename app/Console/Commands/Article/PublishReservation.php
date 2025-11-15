@@ -53,7 +53,7 @@ final class PublishReservation extends Command
         }
 
         if ($changed) {
-            dispatch_sync(new \App\Jobs\Article\JobUpdateRelated);
+            dispatch_sync(new \App\Jobs\Article\JobUpdateRelated());
         }
 
         return 0;

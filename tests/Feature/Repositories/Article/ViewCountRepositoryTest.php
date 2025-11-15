@@ -28,9 +28,7 @@ final class ViewCountRepositoryTest extends TestCase
 
         $this->viewCountRepository->countUp($article);
 
-        $counts = DB::table('view_counts')
-            ->where('article_id', $article->id)
-            ->get();
+        $counts = DB::table('view_counts')->where('article_id', $article->id)->get();
 
         $this->assertCount(4, $counts);
         $this->assertNotEmpty($counts->where('type', 1)); // daily

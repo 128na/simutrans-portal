@@ -15,7 +15,9 @@ final readonly class ImageAttachment implements ValidationRule
      *
      * @return void
      */
-    public function __construct(private AttachmentRepository $attachmentRepository) {}
+    public function __construct(
+        private AttachmentRepository $attachmentRepository,
+    ) {}
 
     /**
      * Run the validation rule.
@@ -25,7 +27,7 @@ final readonly class ImageAttachment implements ValidationRule
     #[\Override]
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (! is_string($value) && ! is_int($value)) {
+        if (!is_string($value) && !is_int($value)) {
             $fail(':attribute が正しくありません)');
 
             return;
@@ -40,7 +42,9 @@ final readonly class ImageAttachment implements ValidationRule
             return;
         }
 
-        $tranlated_attribute = app(\Illuminate\Contracts\Translation\Translator::class)->get('validation.attributes')[$attribute] ?? $attribute;
+        $tranlated_attribute =
+            app(\Illuminate\Contracts\Translation\Translator::class)->get('validation.attributes')[$attribute]
+            ?? $attribute;
         $fail(__('validation.image', ['attribute' => $tranlated_attribute]));
     }
 }

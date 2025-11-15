@@ -19,7 +19,7 @@ final class MetaOgpServiceTest extends TestCase
         $article = Article::factory()->create(['user_id' => $user->id, 'title' => 'Test Title', 'slug' => 'test-slug']);
 
         // set thumbnail attributes on the model instance (no DB column required)
-        $sut = new MetaOgpService;
+        $sut = new MetaOgpService();
 
         // Default factory-created article usually has no thumbnail -> image should be null
         $meta = $sut->show($user, $article);
@@ -56,7 +56,7 @@ final class MetaOgpServiceTest extends TestCase
     {
         config(['app.name' => 'SimuPortal']);
 
-        $sut = new MetaOgpService;
+        $sut = new MetaOgpService();
 
         $pak = $sut->pak('pak128');
         $this->assertArrayHasKey('title', $pak);

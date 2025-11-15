@@ -39,14 +39,14 @@ final class Check
                 }
 
                 $changed = $onDead($article);
-                if (! $this->changeAnyArticle && $changed) {
+                if (!$this->changeAnyArticle && $changed) {
                     $this->changeAnyArticle = true;
                 }
             }
         }
 
         if ($this->changeAnyArticle) {
-            dispatch_sync(new \App\Jobs\Article\JobUpdateRelated);
+            dispatch_sync(new \App\Jobs\Article\JobUpdateRelated());
         }
     }
 
@@ -62,16 +62,18 @@ final class Check
     {
         assert($article->contents instanceof AddonIntroductionContent);
 
-        return $article->contents->link
+        return (
+            $article->contents->link
             && ($this->inIgnoreList)($article->contents->link) === false
-            && $article->contents->exclude_link_check === false;
+            && $article->contents->exclude_link_check === false
+        );
     }
 
     private function isDead(Article $article): bool
     {
         assert($article->contents instanceof AddonIntroductionContent);
         for ($i = 0; $i < self::FAILED_LIMIT; $i++) {
-            if (! in_array($article->contents->link, [null, '', '0'], true)) {
+            if (!in_array($article->contents->link, [null, '', '0'], true)) {
                 $info = ($this->getHeaders)($article->contents->link);
                 foreach ($info as $inf) {
                     if (mb_stripos($inf, '200 OK') !== false) {

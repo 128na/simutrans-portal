@@ -18,7 +18,9 @@ final class ResetPassword extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(public readonly string $token) {}
+    public function __construct(
+        public readonly string $token,
+    ) {}
 
     /**
      * Get the notification's delivery channels.
@@ -37,7 +39,7 @@ final class ResetPassword extends Notification implements ShouldQueue
      */
     public function toMail(mixed $notifiable)
     {
-        return (new MailMessage)
+        return new MailMessage()
             ->subject('パスワードリセットがリクエストされました')
             ->view('emails.reset', ['user' => $notifiable])
             ->action('パスワードリセット画面を開く', route('reset-password', $this->token));

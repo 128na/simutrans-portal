@@ -29,7 +29,11 @@ final class IndexTest extends TestCase
 
     public function test_ログイン時に分析ページを表示(): void
     {
-        Article::factory()->for($this->user)->count(3)->publish()->create();
+        Article::factory()
+            ->for($this->user)
+            ->count(3)
+            ->publish()
+            ->create();
 
         $url = '/mypage/analytics';
 

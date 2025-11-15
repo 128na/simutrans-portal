@@ -31,9 +31,9 @@ final class Profile extends Model
     ];
 
     /*
-    |--------------------------------------------------------------------------
-    | リレーション
-    |--------------------------------------------------------------------------
+     |--------------------------------------------------------------------------
+     | リレーション
+     |--------------------------------------------------------------------------
      */
     /**
      * @return BelongsTo<User,$this>
@@ -61,7 +61,7 @@ final class Profile extends Model
         return Attribute::make(get: function () {
             $id = (int) $this->data->avatar;
             if ($id !== 0) {
-                return $this->attachments->first(fn (Attachment $attachment): bool => $id === $attachment->id);
+                return $this->attachments->first(fn(Attachment $attachment): bool => $id === $attachment->id);
             }
 
             return null;
@@ -70,20 +70,20 @@ final class Profile extends Model
 
     protected function hasAvatar(): Attribute
     {
-        return Attribute::make(get: fn (): bool => (bool) $this->avatar);
+        return Attribute::make(get: fn(): bool => (bool) $this->avatar);
     }
 
     protected function avatarUrl(): Attribute
     {
-        return Attribute::make(get: fn (): string => $this->getPublicDisk()->url($this->has_avatar && $this->avatar
-            ? $this->avatar->path
-            : DefaultThumbnail::NO_AVATAR));
+        return Attribute::make(get: fn(): string => $this->getPublicDisk()->url(
+            $this->has_avatar && $this->avatar ? $this->avatar->path : DefaultThumbnail::NO_AVATAR,
+        ));
     }
 
     /*
-    |--------------------------------------------------------------------------
-    | 初期化時設定
-    |--------------------------------------------------------------------------
+     |--------------------------------------------------------------------------
+     | 初期化時設定
+     |--------------------------------------------------------------------------
      */
     #[\Override]
     protected static function boot(): void

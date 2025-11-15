@@ -32,7 +32,7 @@ final class MFASetupAutoRecovery extends Command
         try {
             $recoveryIncompleteUsers();
         } catch (\Throwable $throwable) {
-            $this->error('MFA Setup Auto Recovery failed: '.$throwable->getMessage());
+            $this->error('MFA Setup Auto Recovery failed: ' . $throwable->getMessage());
             Log::error('MFA Setup Auto Recovery failed', [
                 'error' => $throwable->getMessage(),
                 'trace' => $throwable->getTraceAsString(),

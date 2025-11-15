@@ -9,10 +9,15 @@ use Laravel\Fortify\Events\TwoFactorAuthenticationDisabled;
 
 final readonly class OnTwoFactorAuthenticationDisabled
 {
-    public function __construct(private Logger $logger) {}
+    public function __construct(
+        private Logger $logger,
+    ) {}
 
     public function handle(TwoFactorAuthenticationDisabled $twoFactorAuthenticationDisabled): void
     {
-        $this->logger->channel('audit')->info('二要素認証無効化', $twoFactorAuthenticationDisabled->user->getInfoLogging());
+        $this->logger->channel('audit')->info(
+            '二要素認証無効化',
+            $twoFactorAuthenticationDisabled->user->getInfoLogging(),
+        );
     }
 }

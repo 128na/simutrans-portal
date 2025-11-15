@@ -50,7 +50,7 @@ final class AttachmentFactory extends Factory
 
     public function image()
     {
-        return $this->state(fn (array $attributes): array => [
+        return $this->state(fn(array $attributes): array => [
             'original_name' => 'test.png',
             'path' => 'default/test.png',
         ]);

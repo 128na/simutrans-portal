@@ -88,10 +88,14 @@ final class FrontController extends Controller
         ]);
     }
 
-    public function show(string $userIdOrNickname, string $slug, Request $request, DoRedirectIfExists $doRedirectIfExists): \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
-    {
+    public function show(
+        string $userIdOrNickname,
+        string $slug,
+        Request $request,
+        DoRedirectIfExists $doRedirectIfExists,
+    ): \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse {
         $article = $this->articleRepository->first($userIdOrNickname, $slug);
-        if (! $article instanceof \App\Models\Article) {
+        if (!$article instanceof \App\Models\Article) {
             return $doRedirectIfExists($request->fullUrl());
         }
 
@@ -136,7 +140,10 @@ final class FrontController extends Controller
             ? Article::findOrFail($slugOrId)
             : Article::slug($slugOrId)->orderBy('id', 'asc')->firstOrFail();
 
-        return redirect(route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]), 302);
+        return redirect(route('articles.show', [
+            'userIdOrNickname' => $article->user->nickname ?? $article->user_id,
+            'articleSlug' => $article->slug,
+        ]), 302);
     }
 
     public function download(Article $article): StreamedResponse
@@ -149,10 +156,7 @@ final class FrontController extends Controller
             event(new \App\Events\ArticleConversion($article));
         }
 
-        return $this->getPublicDisk()->download(
-            $article->file->path,
-            $article->file->original_name
-        );
+        return $this->getPublicDisk()->download($article->file->path, $article->file->original_name);
     }
 
     private function getPublicDisk(): FilesystemAdapter

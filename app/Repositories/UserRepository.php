@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\DB;
 
 final class UserRepository
 {
-    public function __construct(public User $model) {}
+    public function __construct(
+        public User $model,
+    ) {}
 
     /**
      * @return object{
@@ -34,19 +36,12 @@ final class UserRepository
                     ->where('user_id', $userId)
                     ->whereNull('deleted_at')
                     ->selectRaw('COUNT(*)'),
-                'article_count'
+                'article_count',
             )
+            ->selectSub(DB::table('attachments')->where('user_id', $userId)->selectRaw('COUNT(*)'), 'attachment_count')
             ->selectSub(
-                DB::table('attachments')
-                    ->where('user_id', $userId)
-                    ->selectRaw('COUNT(*)'),
-                'attachment_count'
-            )
-            ->selectSub(
-                DB::table('attachments')
-                    ->where('user_id', $userId)
-                    ->selectRaw('SUM(size)'),
-                'total_attachment_size'
+                DB::table('attachments')->where('user_id', $userId)->selectRaw('SUM(size)'),
+                'total_attachment_size',
             )
             ->selectSub(
                 DB::table('conversion_counts')
@@ -54,7 +49,7 @@ final class UserRepository
                     ->where('type', 2)
                     ->where('period', $period)
                     ->selectRaw('SUM(count)'),
-                'total_conversion_count'
+                'total_conversion_count',
             )
             ->selectSub(
                 DB::table('view_counts')
@@ -62,16 +57,15 @@ final class UserRepository
                     ->where('type', 2)
                     ->where('period', $period)
                     ->selectRaw('SUM(count)'),
-                'total_view_count'
+                'total_view_count',
             )
             ->selectSub(
                 DB::table('tags')
                     ->where(function ($q) use ($userId): void {
-                        $q->where('created_by', $userId)
-                            ->orWhere('last_modified_by', $userId);
+                        $q->where('created_by', $userId)->orWhere('last_modified_by', $userId);
                     })
                     ->selectRaw('COUNT(*)'),
-                'tag_count'
+                'tag_count',
             )
             ->first();
     }
@@ -81,13 +75,15 @@ final class UserRepository
      */
     public function getForSearch(): Collection
     {
-        return $this->model->query()
+        return $this->model
+            ->query()
             ->select(['users.id', 'users.nickname', 'users.name'])
             ->whereExists(
-                fn ($q) => $q->selectRaw(1)
+                fn($q) => $q
+                    ->selectRaw(1)
                     ->from('articles as a')
                     ->whereColumn('a.user_id', 'users.id')
-                    ->where('a.status', ArticleStatus::Publish)
+                    ->where('a.status', ArticleStatus::Publish),
             )
             ->orderBy('name', 'asc')
             ->get();
@@ -98,11 +94,11 @@ final class UserRepository
      */
     public function getForList(): Collection
     {
-        return $this->model->query()
+        return $this->model
+            ->query()
             ->select(['users.id', 'users.name'])
             ->join('articles', function ($join): void {
-                $join->on('articles.user_id', '=', 'users.id')
-                    ->where('articles.status', ArticleStatus::Publish);
+                $join->on('articles.user_id', '=', 'users.id')->where('articles.status', ArticleStatus::Publish);
             })
             ->groupBy('users.id')
             ->orderByRaw('COUNT(articles.id) DESC')

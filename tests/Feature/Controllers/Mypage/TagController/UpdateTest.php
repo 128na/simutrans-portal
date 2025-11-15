@@ -26,7 +26,7 @@ final class UpdateTest extends TestCase
 
     public function test_未ログイン(): void
     {
-        $url = '/api/v2/tags/'.$this->tag->id;
+        $url = '/api/v2/tags/' . $this->tag->id;
 
         $testResponse = $this->postJson($url);
         $testResponse->assertUnauthorized();
@@ -34,7 +34,7 @@ final class UpdateTest extends TestCase
 
     public function test_機能制限(): void
     {
-        $url = '/api/v2/tags/'.$this->tag->id;
+        $url = '/api/v2/tags/' . $this->tag->id;
 
         ControllOption::updateOrCreate(['key' => ControllOptionKey::TagUpdate], ['value' => false]);
         $this->actingAs($this->user);
@@ -44,7 +44,7 @@ final class UpdateTest extends TestCase
 
     public function test(): void
     {
-        $url = '/api/v2/tags/'.$this->tag->id;
+        $url = '/api/v2/tags/' . $this->tag->id;
 
         $this->actingAs($this->user);
         $testResponse = $this->postJson($url, ['description' => 'dummy']);
@@ -55,7 +55,7 @@ final class UpdateTest extends TestCase
     public function test編集ロック(): void
     {
         $this->tag->update(['editable' => false]);
-        $url = '/api/v2/tags/'.$this->tag->id;
+        $url = '/api/v2/tags/' . $this->tag->id;
 
         $this->actingAs($this->user);
         $data = ['description' => 'dummy'];

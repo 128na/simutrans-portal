@@ -9,10 +9,15 @@ use Illuminate\Log\Logger;
 
 final readonly class OnTwoFactorAuthenticationIncomplete
 {
-    public function __construct(private Logger $logger) {}
+    public function __construct(
+        private Logger $logger,
+    ) {}
 
     public function handle(TwoFactorAuthenticationIncomplete $twoFactorAuthenticationIncomplete): void
     {
-        $this->logger->channel('audit')->info('二要素認証未完了', $twoFactorAuthenticationIncomplete->user->getInfoLogging());
+        $this->logger->channel('audit')->info(
+            '二要素認証未完了',
+            $twoFactorAuthenticationIncomplete->user->getInfoLogging(),
+        );
     }
 }

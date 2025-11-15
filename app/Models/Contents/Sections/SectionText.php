@@ -6,7 +6,7 @@ namespace App\Models\Contents\Sections;
 
 final class SectionText extends Section
 {
-    public ?string $text;
+    public null|string $text;
 
     /**
      * @param  array{type:string,caption?:string,text?:string,url?:string,id?:int}  $section

@@ -10,19 +10,21 @@ use Illuminate\Log\Logger;
 
 final readonly class OnArticleStored
 {
-    public function __construct(private Logger $logger) {}
+    public function __construct(
+        private Logger $logger,
+    ) {}
 
     public function handle(ArticleStored $articleStored): void
     {
         $this->logger->channel('audit')->info('記事作成', $articleStored->article->getInfoLogging());
-        if (! $articleStored->article->is_publish) {
+        if (!$articleStored->article->is_publish) {
             return;
         }
 
-        if (! $articleStored->shouldNotify) {
+        if (!$articleStored->shouldNotify) {
             return;
         }
 
-        $articleStored->article->notify(new SendArticlePublished);
+        $articleStored->article->notify(new SendArticlePublished());
     }
 }

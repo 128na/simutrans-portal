@@ -38,17 +38,11 @@ final class SyncAttachmentsTest extends TestCase
             'attachmentable_id' => $article->id,
         ]);
 
-        $this->assertSame(
-            [$shouldRemoveAttachment->id],
-            $article->attachments()->pluck('id')->toArray()
-        );
+        $this->assertSame([$shouldRemoveAttachment->id], $article->attachments()->pluck('id')->toArray());
 
         $this->articleRepository->syncAttachments($article, [$shouldAddAttachment->id]);
 
-        $this->assertSame(
-            [$shouldAddAttachment->id],
-            $article->attachments()->pluck('id')->toArray()
-        );
+        $this->assertSame([$shouldAddAttachment->id], $article->attachments()->pluck('id')->toArray());
     }
 
     public function test他人の添付は_ng(): void

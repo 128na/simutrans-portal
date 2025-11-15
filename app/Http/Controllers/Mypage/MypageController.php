@@ -35,8 +35,10 @@ final class MypageController extends Controller
 
     public function verifyNotice(): RedirectResponse
     {
-        return to_route('mypage.verify-email')
-            ->with('error', 'この機能を使うにはメールアドレスの認証を完了させる必要があります。');
+        return to_route('mypage.verify-email')->with(
+            'error',
+            'この機能を使うにはメールアドレスの認証を完了させる必要があります。',
+        );
     }
 
     public function twoFactor(): \Illuminate\Contracts\View\View
@@ -50,7 +52,11 @@ final class MypageController extends Controller
     public function loginHistories(): \Illuminate\Contracts\View\View
     {
         return view('v2.mypage.login-histories', [
-            'loginHistories' => Auth::user()->loginHistories()->orderBy('created_at', 'desc')->limit(10)->get(),
+            'loginHistories' => Auth::user()
+                ->loginHistories()
+                ->orderBy('created_at', 'desc')
+                ->limit(10)
+                ->get(),
             'meta' => $this->metaOgpService->loginHistories(),
         ]);
     }

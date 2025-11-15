@@ -45,10 +45,7 @@ final class StoreTest extends TestCase
         $testResponse->assertStatus(200);
 
         $article = Article::find($testResponse->json('article_id'));
-        Notification::assertSentTo(
-            $article,
-            SendArticlePublished::class
-        );
+        Notification::assertSentTo($article, SendArticlePublished::class);
     }
 
     public function test_投稿通知しない(): void
@@ -65,10 +62,7 @@ final class StoreTest extends TestCase
         $testResponse->assertStatus(200);
 
         $article = Article::find($testResponse->json('article_id'));
-        Notification::assertNotSentTo(
-            $article,
-            SendArticlePublished::class
-        );
+        Notification::assertNotSentTo($article, SendArticlePublished::class);
     }
 
     private function createArticle(): array

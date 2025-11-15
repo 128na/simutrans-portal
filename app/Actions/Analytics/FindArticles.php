@@ -15,7 +15,9 @@ use UnexpectedValueException;
 
 final readonly class FindArticles
 {
-    public function __construct(private ArticleRepository $articleRepository) {}
+    public function __construct(
+        private ArticleRepository $articleRepository,
+    ) {}
 
     /**
      * @return Collection<int,Article>

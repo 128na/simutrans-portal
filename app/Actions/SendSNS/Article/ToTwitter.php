@@ -25,7 +25,10 @@ final readonly class ToTwitter
             $data = ['text' => match (true) {
                 $sendSNSNotification instanceof SendArticlePublished => $this->publish($article),
                 $sendSNSNotification instanceof SendArticleUpdated => $this->update($article),
-                default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendSNSNotification::class)),
+                default => throw new Exception(sprintf(
+                    'unsupport notification "%s" provided',
+                    $sendSNSNotification::class,
+                )),
             }];
             $result = $this->twitterV2Api->post('tweets', $data);
             logger('[TwitterChannel]', [$result]);

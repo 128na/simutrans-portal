@@ -14,7 +14,11 @@ final class CountUserIdSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::statement('UPDATE view_counts AS c JOIN articles AS a ON c.article_id = a.id SET c.user_id = a.user_id WHERE c.user_id=0');
-        DB::statement('UPDATE conversion_counts AS c JOIN articles AS a ON c.article_id = a.id SET c.user_id = a.user_id WHERE c.user_id=0');
+        DB::statement(
+            'UPDATE view_counts AS c JOIN articles AS a ON c.article_id = a.id SET c.user_id = a.user_id WHERE c.user_id=0',
+        );
+        DB::statement(
+            'UPDATE conversion_counts AS c JOIN articles AS a ON c.article_id = a.id SET c.user_id = a.user_id WHERE c.user_id=0',
+        );
     }
 }

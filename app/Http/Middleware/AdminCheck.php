@@ -18,7 +18,7 @@ final class AdminCheck
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next): mixed
     {
         /** @var ?\App\Models\User */
         $user = Auth::user();

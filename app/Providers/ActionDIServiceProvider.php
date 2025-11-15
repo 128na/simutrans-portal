@@ -18,9 +18,12 @@ final class ActionDIServiceProvider extends ServiceProvider
     #[\Override]
     public function register(): void
     {
-        $this->app->singleton(Store::class, fn (Application $application): Store => new Store(
-            Storage::disk('public'),
-            $application->make(CropImage::class)
-        ));
+        $this->app->singleton(
+            Store::class,
+            fn(Application $application): Store => new Store(
+                Storage::disk('public'),
+                $application->make(CropImage::class),
+            ),
+        );
     }
 }

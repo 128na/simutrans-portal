@@ -34,8 +34,6 @@ final class AnalyticsController extends Controller
     {
         $user = Auth::user();
 
-        return ArticleAnalytic::collection(
-            $findArticles($user, $searchRequest)
-        );
+        return ArticleAnalytic::collection($findArticles($user, $searchRequest));
     }
 }

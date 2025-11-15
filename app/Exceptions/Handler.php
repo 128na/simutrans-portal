@@ -12,8 +12,7 @@ final class Handler extends ExceptionHandler
     /**
      * A list of the exception types that are not reported.
      */
-    protected $dontReport = [
-    ];
+    protected $dontReport = [];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
@@ -24,7 +23,9 @@ final class Handler extends ExceptionHandler
     ];
 
     #[\Override]
-    public function register(): void {}
+    public function register(): void
+    {
+    }
 
     /**
      * Report or log an exception.

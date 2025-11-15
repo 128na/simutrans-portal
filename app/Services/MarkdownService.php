@@ -41,8 +41,7 @@ final readonly class MarkdownService
 
                 return sprintf('<a %s>', $attrs);
             },
-            $pure
-
+            $pure,
         );
 
         return $html ?? '';

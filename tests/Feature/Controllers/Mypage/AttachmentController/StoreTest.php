@@ -29,7 +29,11 @@ final class StoreTest extends TestCase
         $this->actingAs($this->user);
 
         Queue::fake();
-        $testResponse = $this->postJson($url, ['file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')]);
+        $testResponse = $this->postJson($url, ['file' => UploadedFile::fake()->create(
+            'test.zip',
+            1,
+            'application/zip',
+        )]);
         $testResponse->assertCreated();
         Queue::assertPushed(UpdateFileInfo::class);
     }

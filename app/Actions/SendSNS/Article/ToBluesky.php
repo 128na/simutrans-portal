@@ -28,7 +28,10 @@ final readonly class ToBluesky
             $post = match (true) {
                 $sendSNSNotification instanceof SendArticlePublished => $this->publish($article),
                 $sendSNSNotification instanceof SendArticleUpdated => $this->update($article),
-                default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendSNSNotification::class)),
+                default => throw new Exception(sprintf(
+                    'unsupport notification "%s" provided',
+                    $sendSNSNotification::class,
+                )),
             };
             $result = $this->blueSkyApiClient->send($post);
             logger('[BlueSkyChannel]', [$result->getUri()]);
@@ -39,12 +42,18 @@ final readonly class ToBluesky
 
     private function publish(Article $article): Post
     {
-        return $this->createPost($article, __('notification.simple_article.create', ($this->getArticleParam)($article)));
+        return $this->createPost($article, __(
+            'notification.simple_article.create',
+            ($this->getArticleParam)($article),
+        ));
     }
 
     private function update(Article $article): Post
     {
-        return $this->createPost($article, __('notification.simple_article.update', ($this->getArticleParam)($article)));
+        return $this->createPost($article, __(
+            'notification.simple_article.update',
+            ($this->getArticleParam)($article),
+        ));
     }
 
     private function createPost(Article $article, string $text): Post
@@ -57,7 +66,7 @@ final readonly class ToBluesky
             report($e);
         } catch (HttpStatusCodeException $e) {
             // 画像が1MB以上だとエラーになる
-            if (! str_contains($e->getMessage(), 'BlobTooLarge')) {
+            if (!str_contains($e->getMessage(), 'BlobTooLarge')) {
                 report($e);
             }
         }

@@ -27,7 +27,7 @@ final class PakExtractorTest extends TestCase
     {
         $sUT = $this->getSUT();
 
-        $data = file_get_contents(__DIR__.'/vehicle.transparent_vehicle.pak');
+        $data = file_get_contents(__DIR__ . '/vehicle.transparent_vehicle.pak');
 
         $result = $sUT->extract($data);
         $this->assertSame(['transparent_vehicle'], $result);

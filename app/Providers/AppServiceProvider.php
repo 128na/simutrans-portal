@@ -17,7 +17,9 @@ final class AppServiceProvider extends ServiceProvider
      * Register any application services.
      */
     #[\Override]
-    public function register(): void {}
+    public function register(): void
+    {
+    }
 
     /**
      * Bootstrap any application services.
@@ -25,7 +27,10 @@ final class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Date::use(CarbonImmutable::class);
-        Model::shouldBeStrict(! App::isProduction());
-        Blade::directive('markdown', fn (string $expression): string => sprintf('<?php echo app('.\App\Services\MarkdownService::class.'::class)->toEscapedHTML(%s); ?>', $expression));
+        Model::shouldBeStrict(!App::isProduction());
+        Blade::directive('markdown', fn(string $expression): string => sprintf(
+            '<?php echo app(' . \App\Services\MarkdownService::class . '::class)->toEscapedHTML(%s); ?>',
+            $expression,
+        ));
     }
 }

@@ -41,13 +41,13 @@ final class OauthController extends Controller
     public function callback(Request $request): RedirectResponse
     {
         $state = Session::pull('oauth2.twitter.state');
-        if (! is_string($state)) {
+        if (!is_string($state)) {
             throw new InvalidStateException('state is not string');
         }
 
         $this->pkceService->verifyState((string) $request->string('state'), $state);
         $codeVerifier = Session::pull('oauth2.twitter.codeVerifier');
-        if (! is_string($codeVerifier)) {
+        if (!is_string($codeVerifier)) {
             throw new InvalidStateException('codeVerifier is not string');
         }
 

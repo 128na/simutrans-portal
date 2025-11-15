@@ -21,9 +21,8 @@ final class JobUpdateRelated implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function handle(
-        DeleteUnrelatedTags $deleteUnrelatedTags,
-    ): void {
+    public function handle(DeleteUnrelatedTags $deleteUnrelatedTags): void
+    {
         $deleteUnrelatedTags();
     }
 }

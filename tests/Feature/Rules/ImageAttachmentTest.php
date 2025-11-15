@@ -25,7 +25,7 @@ final class ImageAttachmentTest extends TestCase
         parent::setUp();
         $this->failCalled = false;
 
-        $mock = $this->mock(PotentiallyTranslatedString::class, fn (MockInterface $mock) => $mock->allows()->translate());
+        $mock = $this->mock(PotentiallyTranslatedString::class, fn(MockInterface $mock) => $mock->allows()->translate());
         $this->failClosure = function () use ($mock) {
             $this->failCalled = true;
 
@@ -38,15 +38,14 @@ final class ImageAttachmentTest extends TestCase
     public function test(Closure $setup, bool $expected): void
     {
         $value = $setup($this);
-        $this->getSUT()
-            ->validate('dummy', $value, $this->failClosure);
+        $this->getSUT()->validate('dummy', $value, $this->failClosure);
         $this->assertSame($expected, $this->failCalled);
     }
 
     public static function data(): \Generator
     {
-        yield 'ok' => [fn (self $self) => $self->createImageAttachment(User::factory()->create())->id, false];
-        yield 'ng' => [fn (self $self) => $self->createAttachment(User::factory()->create())->id, true];
+        yield 'ok' => [fn(self $self) => $self->createImageAttachment(User::factory()->create())->id, false];
+        yield 'ng' => [fn(self $self) => $self->createAttachment(User::factory()->create())->id, true];
     }
 
     private function getSUT(): ImageAttachment

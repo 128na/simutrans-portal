@@ -69,7 +69,7 @@ final class ResizeByFileSize
     private function doResize(GdImage $gdImage, int $width): string
     {
         $resized = @imagescale($gdImage, $width, -1, IMG_BILINEAR_FIXED);
-        if (! $resized) {
+        if (!$resized) {
             throw new ResizeFailedException('imagescale failed');
         }
 
@@ -80,7 +80,7 @@ final class ResizeByFileSize
 
         $result = @imagewebp($resized, $tmpPath);
         @imagedestroy($resized);
-        if (! $result) {
+        if (!$result) {
             throw new ResizeFailedException('imagewebp failed');
         }
 

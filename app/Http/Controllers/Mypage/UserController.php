@@ -26,8 +26,11 @@ final class UserController extends Controller
         ]);
     }
 
-    public function registration(User $user, StoreRequest $storeRequest, Registration $registration): \Illuminate\Contracts\View\View
-    {
+    public function registration(
+        User $user,
+        StoreRequest $storeRequest,
+        Registration $registration,
+    ): \Illuminate\Contracts\View\View {
         $data = $storeRequest->validated();
         $inviter = $registration($data, $user);
 

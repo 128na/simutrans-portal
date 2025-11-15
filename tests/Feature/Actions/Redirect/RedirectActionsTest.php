@@ -23,24 +23,29 @@ final class RedirectActionsTest extends TestCase
         $new = 'new-slug';
 
         $this->mock(RedirectRepository::class, function (MockInterface $mock) use ($user, $old, $new): void {
-            $expectedFromSuffix = '/users/'.$user->nickname.'/'.$old;
-            $expectedToSuffix = '/users/'.$user->nickname.'/'.$new;
+            $expectedFromSuffix = '/users/' . $user->nickname . '/' . $old;
+            $expectedToSuffix = '/users/' . $user->nickname . '/' . $new;
 
-            $mock->shouldReceive('store')->once()->withArgs(function (array $arg) use ($user, $expectedFromSuffix, $expectedToSuffix): bool {
-                return isset($arg['user_id'])
-                    && $arg['user_id'] === $user->id
-                    && isset($arg['from'])
-                    && str_ends_with($arg['from'], $expectedFromSuffix)
-                    && isset($arg['to'])
-                    && str_ends_with($arg['to'], $expectedToSuffix);
-            });
+            $mock
+                ->shouldReceive('store')
+                ->once()
+                ->withArgs(function (array $arg) use ($user, $expectedFromSuffix, $expectedToSuffix): bool {
+                    return (
+                        isset($arg['user_id'])
+                        && $arg['user_id'] === $user->id
+                        && isset($arg['from'])
+                        && str_ends_with($arg['from'], $expectedFromSuffix)
+                        && isset($arg['to'])
+                        && str_ends_with($arg['to'], $expectedToSuffix)
+                    );
+                });
         });
 
         // Ensure app.url is set so route() returns full URL (it will be stripped in AddRedirect)
         config(['app.url' => 'http://localhost']);
 
         $sut = app(AddRedirect::class);
-        ($sut)($user, $old, $new);
+        $sut($user, $old, $new);
 
         // satisfy PHPUnit that this test performed an assertion (mock expectations cover behavior)
         $this->assertTrue(true);
@@ -50,8 +55,8 @@ final class RedirectActionsTest extends TestCase
     {
         $redirect = Redirect::factory()->create();
 
-        $sut = new DeleteRedirect;
-        ($sut)($redirect);
+        $sut = new DeleteRedirect();
+        $sut($redirect);
 
         $this->assertNull(Redirect::find($redirect->id));
     }
@@ -61,15 +66,15 @@ final class RedirectActionsTest extends TestCase
         config(['app.url' => 'http://localhost']);
 
         $user = User::factory()->create(['nickname' => uniqid('bob_')]);
-        $from = '/users/'.$user->nickname.'/old';
-        $to = '/users/'.$user->nickname.'/new';
+        $from = '/users/' . $user->nickname . '/old';
+        $to = '/users/' . $user->nickname . '/new';
 
         $redirect = Redirect::factory()->create(['user_id' => $user->id, 'from' => $from, 'to' => $to]);
 
         $sut = app(DoRedirectIfExists::class);
 
-        $full = config('app.url').$from;
-        $response = ($sut)($full);
+        $full = config('app.url') . $from;
+        $response = $sut($full);
 
         $this->assertSame(301, $response->getStatusCode());
         $location = $response->headers->get('Location');
@@ -87,7 +92,7 @@ final class RedirectActionsTest extends TestCase
         Redirect::factory()->create(['user_id' => $other->id]);
 
         $sut = app(FindMyRedirects::class);
-        $collection = ($sut)($user);
+        $collection = $sut($user);
 
         $this->assertCount(2, $collection);
         $this->assertContainsOnlyInstancesOf(Redirect::class, $collection->all());

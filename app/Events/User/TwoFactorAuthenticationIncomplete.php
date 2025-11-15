@@ -13,5 +13,7 @@ final readonly class TwoFactorAuthenticationIncomplete
     use Dispatchable;
     use SerializesModels;
 
-    public function __construct(public User $user) {}
+    public function __construct(
+        public User $user,
+    ) {}
 }

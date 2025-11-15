@@ -8,12 +8,12 @@ use App\Models\Article;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
-abstract class BaseCountRepository
+abstract class AbstractBaseCountRepository
 {
     /**
      * 日次、月次、年次、全体の合計をカウントアップする.
      */
-    final public function countUp(Article $article, ?CarbonImmutable $datetime = null): void
+    final public function countUp(Article $article, null|CarbonImmutable $datetime = null): void
     {
         $datetime ??= now();
         $sql = $this->buildSql($article, $datetime);

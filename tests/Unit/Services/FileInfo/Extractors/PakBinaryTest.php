@@ -12,10 +12,7 @@ final class PakBinaryTest extends TestCase
     public function test_get(): void
     {
         $result = $this->getSUT()->get();
-        $this->assertEquals(
-            file_get_contents(__DIR__.'/vehicle.transparent_vehicle.pak'),
-            $result
-        );
+        $this->assertEquals(file_get_contents(__DIR__ . '/vehicle.transparent_vehicle.pak'), $result);
     }
 
     public function test_seek(): void
@@ -41,7 +38,7 @@ final class PakBinaryTest extends TestCase
     private function getSUT(): PakBinary
     {
         return app(PakBinary::class, [
-            'binary' => file_get_contents(__DIR__.'/vehicle.transparent_vehicle.pak'),
+            'binary' => file_get_contents(__DIR__ . '/vehicle.transparent_vehicle.pak'),
         ]);
     }
 }

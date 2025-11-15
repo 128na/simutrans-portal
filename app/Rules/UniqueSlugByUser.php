@@ -38,7 +38,7 @@ final class UniqueSlugByUser implements DataAwareRule, ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $user = Auth::user();
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             $fail('user not logged in');
 
             return;

@@ -19,7 +19,7 @@ final class ReservationPublishedAt implements DataAwareRule, ValidationRule
     private array $data = [];
 
     public function __construct(
-        private readonly CarbonImmutable $now
+        private readonly CarbonImmutable $now,
     ) {}
 
     /**
@@ -41,11 +41,11 @@ final class ReservationPublishedAt implements DataAwareRule, ValidationRule
     #[\Override]
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (! is_string($value)) {
+        if (!is_string($value)) {
             return;
         }
 
-        if (! isset($this->data['article']['status'])) {
+        if (!isset($this->data['article']['status'])) {
             return;
         }
 

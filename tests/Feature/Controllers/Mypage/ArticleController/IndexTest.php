@@ -29,7 +29,10 @@ final class IndexTest extends TestCase
 
     public function test_ログイン時に記事一覧ページを表示(): void
     {
-        Article::factory()->for($this->user)->count(3)->create();
+        Article::factory()
+            ->for($this->user)
+            ->count(3)
+            ->create();
 
         $url = '/mypage/articles';
 

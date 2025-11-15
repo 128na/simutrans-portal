@@ -30,7 +30,7 @@ final class MFASetupRecovered extends Notification implements ShouldQueue
      */
     public function toMail(mixed $notifiable)
     {
-        return (new MailMessage)
+        return new MailMessage()
             ->subject('二要素認証設定失敗のお知らせ')
             ->view('emails.mfa-recovered', ['user' => $notifiable]);
     }

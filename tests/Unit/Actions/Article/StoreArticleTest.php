@@ -23,7 +23,7 @@ final class StoreArticleTest extends TestCase
 {
     public function test投稿(): void
     {
-        $user = new User;
+        $user = new User();
         $data = [
             'should_notify' => true,
             'article' => [
@@ -35,12 +35,17 @@ final class StoreArticleTest extends TestCase
                 'articles' => [],
             ],
         ];
-        $carbonImmutable = new CarbonImmutable;
+        $carbonImmutable = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
-            $article = new Article;
-            $mock->expects()->store(
-                [
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use (
+            $user,
+            $carbonImmutable,
+            $data,
+        ): void {
+            $article = new Article();
+            $mock
+                ->expects()
+                ->store([
                     'user_id' => $user->id,
                     'post_type' => ArticlePostType::AddonIntroduction,
                     'title' => 'dummy title',
@@ -49,8 +54,9 @@ final class StoreArticleTest extends TestCase
                     'contents' => 'dummy',
                     'published_at' => $carbonImmutable->toDateTimeString(),
                     'modified_at' => $carbonImmutable->toDateTimeString(),
-                ],
-            )->once()->andReturn($article);
+                ])
+                ->once()
+                ->andReturn($article);
             $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
                 $mock->expects()->__invoke($article, $data);
             });
@@ -66,7 +72,7 @@ final class StoreArticleTest extends TestCase
 
     public function test予約投稿(): void
     {
-        $user = new User;
+        $user = new User();
         $data = [
             'article' => [
                 'post_type' => ArticlePostType::AddonIntroduction->value,
@@ -78,12 +84,17 @@ final class StoreArticleTest extends TestCase
                 'articles' => [],
             ],
         ];
-        $carbonImmutable = new CarbonImmutable;
+        $carbonImmutable = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
-            $article = new Article;
-            $mock->expects()->store(
-                [
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use (
+            $user,
+            $carbonImmutable,
+            $data,
+        ): void {
+            $article = new Article();
+            $mock
+                ->expects()
+                ->store([
                     'user_id' => $user->id,
                     'post_type' => ArticlePostType::AddonIntroduction,
                     'title' => 'dummy title',
@@ -92,8 +103,9 @@ final class StoreArticleTest extends TestCase
                     'contents' => 'dummy',
                     'published_at' => '2022-01-02 03:34:00',
                     'modified_at' => $carbonImmutable->toDateTimeString(),
-                ],
-            )->once()->andReturn($article);
+                ])
+                ->once()
+                ->andReturn($article);
             $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
                 $mock->expects()->__invoke($article, $data);
             });
@@ -109,7 +121,7 @@ final class StoreArticleTest extends TestCase
 
     public function testそれ以外(): void
     {
-        $user = new User;
+        $user = new User();
         $data = [
             'article' => [
                 'post_type' => ArticlePostType::AddonIntroduction->value,
@@ -120,12 +132,17 @@ final class StoreArticleTest extends TestCase
                 'articles' => [],
             ],
         ];
-        $carbonImmutable = new CarbonImmutable;
+        $carbonImmutable = new CarbonImmutable();
 
-        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
-            $article = new Article;
-            $mock->expects()->store(
-                [
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use (
+            $user,
+            $carbonImmutable,
+            $data,
+        ): void {
+            $article = new Article();
+            $mock
+                ->expects()
+                ->store([
                     'user_id' => $user->id,
                     'post_type' => ArticlePostType::AddonIntroduction,
                     'title' => 'dummy title',
@@ -134,8 +151,9 @@ final class StoreArticleTest extends TestCase
                     'contents' => 'dummy',
                     'published_at' => null,
                     'modified_at' => $carbonImmutable->toDateTimeString(),
-                ],
-            )->once()->andReturn($article);
+                ])
+                ->once()
+                ->andReturn($article);
             $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
                 $mock->expects()->__invoke($article, $data);
             });

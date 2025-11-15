@@ -20,11 +20,11 @@ final class AttachmentRepository extends BaseRepository
     public function syncProfile(User $user, int $id): void
     {
         $attachment = $user->myAttachments()->find($id);
-        if (! $user->profile) {
+        if (!$user->profile) {
             return;
         }
 
-        if (! $attachment) {
+        if (!$attachment) {
             return;
         }
 

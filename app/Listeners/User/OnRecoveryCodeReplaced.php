@@ -10,7 +10,9 @@ use Laravel\Fortify\Events\RecoveryCodeReplaced;
 
 final readonly class OnRecoveryCodeReplaced
 {
-    public function __construct(private Logger $logger) {}
+    public function __construct(
+        private Logger $logger,
+    ) {}
 
     public function handle(RecoveryCodeReplaced $recoveryCodeReplaced): void
     {

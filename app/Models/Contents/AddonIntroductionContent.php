@@ -6,19 +6,19 @@ namespace App\Models\Contents;
 
 final class AddonIntroductionContent extends Content
 {
-    public ?string $description;
+    public null|string $description;
 
-    public ?string $link;
+    public null|string $link;
 
-    public ?string $author;
+    public null|string $author;
 
-    public ?string $license;
+    public null|string $license;
 
-    public ?string $thanks;
+    public null|string $thanks;
 
-    public ?bool $agreement;
+    public null|bool $agreement;
 
-    public ?bool $exclude_link_check;
+    public null|bool $exclude_link_check;
 
     /**
      * @param  array{description?:string,author?:string,license?:string,thanks?:string,link?:string,agreement?:bool,exclude_link_check?:bool}  $contents

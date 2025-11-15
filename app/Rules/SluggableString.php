@@ -17,7 +17,7 @@ final class SluggableString implements ValidationRule
     #[\Override]
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (! is_string($value)) {
+        if (!is_string($value)) {
             $fail(':attribute に使用できない文字が含まれています。(英数字、-、_以外)');
 
             return;

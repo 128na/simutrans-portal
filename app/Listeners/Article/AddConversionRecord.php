@@ -9,7 +9,9 @@ use App\Repositories\Article\ConversionCountRepository;
 
 final readonly class AddConversionRecord
 {
-    public function __construct(private ConversionCountRepository $conversionCountRepository) {}
+    public function __construct(
+        private ConversionCountRepository $conversionCountRepository,
+    ) {}
 
     public function handle(ArticleConversion $articleConversion): void
     {

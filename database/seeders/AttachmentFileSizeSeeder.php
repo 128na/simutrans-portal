@@ -19,7 +19,7 @@ final class AttachmentFileSizeSeeder extends Seeder
 
             foreach ($attachments as $attachment) {
                 $path = $attachment->fullPath;
-                if (! is_file($path)) {
+                if (!is_file($path)) {
                     continue;
                 }
 

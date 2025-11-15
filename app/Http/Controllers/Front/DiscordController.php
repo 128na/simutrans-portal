@@ -33,7 +33,7 @@ final class DiscordController extends Controller
             $this->recaptchaService->assessment((string) $recaptchaToken);
             $url = $this->inviteService->create();
 
-            event(new \App\Events\Discord\DiscordInviteCodeCreated);
+            event(new \App\Events\Discord\DiscordInviteCodeCreated());
 
             return view('v2.discord.index', [
                 'url' => $url,

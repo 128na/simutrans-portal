@@ -13,5 +13,8 @@ final readonly class ArticleStored
     use Dispatchable;
     use SerializesModels;
 
-    public function __construct(public Article $article, public bool $shouldNotify = false) {}
+    public function __construct(
+        public Article $article,
+        public bool $shouldNotify = false,
+    ) {}
 }

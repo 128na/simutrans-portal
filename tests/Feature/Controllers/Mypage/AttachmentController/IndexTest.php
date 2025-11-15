@@ -29,7 +29,10 @@ final class IndexTest extends TestCase
 
     public function test_ログイン時にアタッチメント一覧ページを表示(): void
     {
-        Attachment::factory()->for($this->user)->count(3)->create();
+        Attachment::factory()
+            ->for($this->user)
+            ->count(3)
+            ->create();
 
         $url = '/mypage/attachments';
 

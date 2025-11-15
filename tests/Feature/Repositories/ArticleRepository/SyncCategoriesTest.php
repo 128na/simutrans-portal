@@ -32,16 +32,10 @@ final class SyncCategoriesTest extends TestCase
         $shouldRemoveCategory = Category::factory()->create();
         $article->categories()->save($shouldRemoveCategory);
 
-        $this->assertSame(
-            [$shouldRemoveCategory->id],
-            $article->categories()->pluck('id')->toArray()
-        );
+        $this->assertSame([$shouldRemoveCategory->id], $article->categories()->pluck('id')->toArray());
 
         $this->articleRepository->syncCategories($article, [$shouldAddCategory->id]);
 
-        $this->assertSame(
-            [$shouldAddCategory->id],
-            $article->categories()->pluck('id')->toArray()
-        );
+        $this->assertSame([$shouldAddCategory->id], $article->categories()->pluck('id')->toArray());
     }
 }

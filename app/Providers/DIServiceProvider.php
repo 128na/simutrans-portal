@@ -65,32 +65,44 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
             return new MarkdownService($app->make(GithubMarkdown::class), new HTMLPurifier($htmlPurifierConfig));
         });
 
-        $this->app->bind(FileInfoService::class, fn ($app): FileInfoService => new FileInfoService(
-            $this->app->make(FileInfoRepository::class),
-            $this->app->make(ZipArchiveParser::class),
-            $this->app->make(TextService::class),
-            [
-                $this->app->make(DatExtractor::class),
-                $this->app->make(TabExtractor::class),
-                $this->app->make(PakExtractor::class),
-                $this->app->make(ReadmeExtractor::class),
-            ]
-        ));
+        $this->app->bind(
+            FileInfoService::class,
+            fn($app): FileInfoService => new FileInfoService(
+                $this->app->make(FileInfoRepository::class),
+                $this->app->make(ZipArchiveParser::class),
+                $this->app->make(TextService::class),
+                [
+                    $this->app->make(DatExtractor::class),
+                    $this->app->make(TabExtractor::class),
+                    $this->app->make(PakExtractor::class),
+                    $this->app->make(ReadmeExtractor::class),
+                ],
+            ),
+        );
 
-        $this->app->bind(TwitterOAuth::class, fn ($app): TwitterOAuth => new TwitterOAuth(
-            Config::string('services.twitter.access_token'),
-            Config::string('services.twitter.access_secret'),
-            null,
-            Config::string('services.twitter.bearer_token'),
-        ));
+        $this->app->bind(
+            TwitterOAuth::class,
+            fn($app): TwitterOAuth => new TwitterOAuth(
+                Config::string('services.twitter.access_token'),
+                Config::string('services.twitter.access_secret'),
+                null,
+                Config::string('services.twitter.bearer_token'),
+            ),
+        );
 
-        $this->app->bind(MisskeyApiClient::class, fn ($app): MisskeyApiClient => new MisskeyApiClient(
-            Config::string('services.misskey.base_url'),
-            Config::string('services.misskey.token'),
-        ));
+        $this->app->bind(
+            MisskeyApiClient::class,
+            fn($app): MisskeyApiClient => new MisskeyApiClient(
+                Config::string('services.misskey.base_url'),
+                Config::string('services.misskey.token'),
+            ),
+        );
 
         $this->app->bind(function ($app): \App\Services\BlueSky\BlueSkyApiClient {
-            $blueskyApi = new BlueskyApi(Config::string('services.bluesky.user'), Config::string('services.bluesky.password'));
+            $blueskyApi = new BlueskyApi(
+                Config::string('services.bluesky.user'),
+                Config::string('services.bluesky.password'),
+            );
             $blueskyPostService = new BlueskyPostService($blueskyApi);
 
             return new BlueSkyApiClient(

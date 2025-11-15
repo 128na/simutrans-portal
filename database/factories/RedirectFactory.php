@@ -28,8 +28,8 @@ final class RedirectFactory extends Factory
     public function definition()
     {
         return [
-            'from' => '/dummy/'.fake()->randomNumber(8),
-            'to' => '/dummy/'.fake()->randomNumber(8),
+            'from' => '/dummy/' . fake()->randomNumber(8),
+            'to' => '/dummy/' . fake()->randomNumber(8),
         ];
     }
 }

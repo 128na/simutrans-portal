@@ -11,7 +11,9 @@ use App\Repositories\UserRepository;
 
 final readonly class RecoveryIncompleteUsers
 {
-    public function __construct(private UserRepository $userRepository) {}
+    public function __construct(
+        private UserRepository $userRepository,
+    ) {}
 
     public function __invoke(): void
     {
@@ -28,6 +30,6 @@ final readonly class RecoveryIncompleteUsers
             'two_factor_recovery_codes' => null,
         ]);
         event(new TwoFactorAuthenticationIncomplete($user));
-        $user->notify(new MFASetupRecovered);
+        $user->notify(new MFASetupRecovered());
     }
 }

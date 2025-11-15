@@ -26,13 +26,10 @@ final readonly class UpdateProfile
             'name' => $updateRequest->input('user.name'),
             'nickname' => $updateRequest->input('user.nickname'),
             'email' => $updateRequest->input('user.email'),
-            'email_verified_at' => $emailChanged
-                ? null
-                : $user->email_verified_at,
+            'email_verified_at' => $emailChanged ? null : $user->email_verified_at,
         ]);
 
         if ($user->profile) {
-
             $this->profileRepository->update($user->profile, [
                 'data' => [
                     'avatar' => $updateRequest->input('user.profile.data.avatar'),

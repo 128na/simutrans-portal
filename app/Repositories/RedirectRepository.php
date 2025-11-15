@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Collection;
 
 final class RedirectRepository
 {
-    public function __construct(public Redirect $model) {}
+    public function __construct(
+        public Redirect $model,
+    ) {}
 
     public function findOrFailByPath(string $path): Redirect
     {

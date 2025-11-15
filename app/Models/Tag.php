@@ -63,18 +63,17 @@ final class Tag extends Model
     }
 
     /*
-    |--------------------------------------------------------------------------
-    | スコープ
-    |--------------------------------------------------------------------------
-    */
+     |--------------------------------------------------------------------------
+     | スコープ
+     |--------------------------------------------------------------------------
+     */
     /**
      * @param  Builder<Tag>  $builder
      */
     #[\Illuminate\Database\Eloquent\Attributes\Scope]
     protected function popular(Builder $builder): void
     {
-        $builder->withCount(['articles' => fn ($q) => $q->active()])
-            ->orderBy('articles_count', 'desc');
+        $builder->withCount(['articles' => fn($q) => $q->active()])->orderBy('articles_count', 'desc');
     }
 
     #[\Override]

@@ -57,9 +57,9 @@ final readonly class UpdateArticle
             ($this->addRedirect)($article->user, $oldSlug, $data['article']['slug']);
         }
 
-        dispatch(new \App\Jobs\Article\JobUpdateRelated);
+        dispatch(new \App\Jobs\Article\JobUpdateRelated());
 
-        $shouldNotify = ($data['should_notify'] ?? false) && ! $withoutUpdateModifiedAt;
+        $shouldNotify = ($data['should_notify'] ?? false) && !$withoutUpdateModifiedAt;
         event(new \App\Events\Article\ArticleUpdated($article, $shouldNotify, $notYetPublished));
 
         return $article->fresh() ?? $article;
@@ -70,13 +70,15 @@ final readonly class UpdateArticle
      */
     private function inactiveToPublish(Article $article, ArticleStatus $articleStatus): bool
     {
-        return is_null($article->published_at)
+        return (
+            is_null($article->published_at)
             && $article->is_inactive
-            && ($articleStatus === ArticleStatus::Publish || $articleStatus === ArticleStatus::Reservation);
+            && ($articleStatus === ArticleStatus::Publish || $articleStatus === ArticleStatus::Reservation)
+        );
     }
 
     private function shouldUpdateModifiedAt(bool $withoutUpdateModifiedAt): bool
     {
-        return ! $withoutUpdateModifiedAt;
+        return !$withoutUpdateModifiedAt;
     }
 }

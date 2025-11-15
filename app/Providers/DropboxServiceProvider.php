@@ -18,7 +18,9 @@ final class DropboxServiceProvider extends ServiceProvider
      * Register services.
      */
     #[\Override]
-    public function register(): void {}
+    public function register(): void
+    {
+    }
 
     /**
      * Bootstrap services.
@@ -28,12 +30,12 @@ final class DropboxServiceProvider extends ServiceProvider
         // long term tokenが作れなくなっているので都度生成する
         // https://github.com/spatie/flysystem-dropbox/issues/86
         Storage::extend('dropbox', function ($app, array $config): \Illuminate\Filesystem\FilesystemAdapter {
-            $autoRefreshingDropBoxTokenService = new AutoRefreshingDropBoxTokenService;
-            $client = new DropboxClient(
-                $autoRefreshingDropBoxTokenService->getToken($config['appKey'],
-                    $config['appSecret'],
-                    $config['refreshToken'])
-            );
+            $autoRefreshingDropBoxTokenService = new AutoRefreshingDropBoxTokenService();
+            $client = new DropboxClient($autoRefreshingDropBoxTokenService->getToken(
+                $config['appKey'],
+                $config['appSecret'],
+                $config['refreshToken'],
+            ));
             $dropboxAdapter = new DropboxAdapter($client);
             $filesystem = new Filesystem($dropboxAdapter, ['case_sensitive' => false]);
 

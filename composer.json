@@ -88,24 +88,17 @@
       "composer dump-autoload",
       "@php artisan ide-helper:generate",
       "@php artisan ide-helper:models -WMR",
-      "@rector",
-      "@stan",
-      "@pint"
+      "@format",
+      "@lint"
     ],
-    "pint": [
-      "@php ./vendor/bin/pint"
+    "lint": [
+      "mago lint"
     ],
-    "pint:check": [
-      "@php ./vendor/bin/pint --test"
+    "format": [
+      "mago format"
     ],
-    "stan": [
-      "@php ./vendor/bin/phpstan analyse --memory-limit=2G"
-    ],
-    "stan:clear": [
-      "@php ./vendor/bin/phpstan clear-result-cache"
-    ],
-    "rector": [
-      "@php ./vendor/bin/rector --no-diffs"
+    "format:check": [
+      "mago format --dry-run"
     ]
   }
 }

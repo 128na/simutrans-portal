@@ -9,7 +9,9 @@ use Closure;
 
 final readonly class RestrictControl
 {
-    public function __construct(private ControllOption $controllOption) {}
+    public function __construct(
+        private ControllOption $controllOption,
+    ) {}
 
     /**
      * Handle an incoming request.
@@ -17,14 +19,14 @@ final readonly class RestrictControl
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
-    public function handle($request, Closure $next, ?string $type = null)
+    public function handle($request, Closure $next, null|string $type = null)
     {
         $this->handleRestrict($type ?? $request->route()?->uri);
 
         return $next($request);
     }
 
-    private function handleRestrict(?string $type): void
+    private function handleRestrict(null|string $type): void
     {
         match ($type) {
             'auth/login' => abort_if($this->controllOption->restrictLogin(), 403),

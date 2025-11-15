@@ -26,9 +26,7 @@ final readonly class SyncRelatedModels
             data_get($data, 'article.contents.thumbnail'),
             data_get($data, 'article.contents.file'),
             ...$ids,
-        ])
-            ->filter()
-            ->toArray();
+        ])->filter()->toArray();
 
         $this->articleRepository->syncAttachments($article, $attachmentIds);
         /** @var int[] */

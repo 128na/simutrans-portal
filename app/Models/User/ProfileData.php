@@ -6,9 +6,9 @@ namespace App\Models\User;
 
 final class ProfileData
 {
-    public ?int $avatar;
+    public null|int $avatar;
 
-    public ?string $description;
+    public null|string $description;
 
     /**
      * @var string[]

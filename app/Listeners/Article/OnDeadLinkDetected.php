@@ -10,7 +10,9 @@ use Illuminate\Log\Logger;
 
 final readonly class OnDeadLinkDetected
 {
-    public function __construct(private Logger $logger) {}
+    public function __construct(
+        private Logger $logger,
+    ) {}
 
     public function handle(DeadLinkDetected $deadLinkDetected): void
     {
@@ -21,7 +23,10 @@ final readonly class OnDeadLinkDetected
         $this->logger->channel('audit')->warning('リンク切れ検知', [
             'articleId' => $article->id,
             'articleTitle' => $article->title,
-            'articleUrl' => route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]),
+            'articleUrl' => route('articles.show', [
+                'userIdOrNickname' => $article->user->nickname ?? $article->user_id,
+                'articleSlug' => $article->slug,
+            ]),
             'descUrl' => $contents->link,
         ]);
     }

@@ -25,26 +25,22 @@ final class Kernel extends ConsoleKernel
         $output = $this->getLogPath();
 
         // 毎日
-        $schedule->command('check:deadlink')->dailyAt('10:00')
-            ->appendOutputTo($output);
-        $schedule->command('app:remove-unused-tags')->dailyAt('09:00')
-            ->appendOutputTo($output);
-        $schedule->command('backup:clean')->dailyAt('2:00')
-            ->appendOutputTo($output);
-        $schedule->command('backup:run')->dailyAt('3:00')
-            ->appendOutputTo($output);
+        $schedule->command('check:deadlink')->dailyAt('10:00')->appendOutputTo($output);
+        $schedule->command('app:remove-unused-tags')->dailyAt('09:00')->appendOutputTo($output);
+        $schedule->command('backup:clean')->dailyAt('2:00')->appendOutputTo($output);
+        $schedule->command('backup:run')->dailyAt('3:00')->appendOutputTo($output);
 
         // 毎時
-        $schedule->command('app:mfa-setup-auto-recovery')->hourly()
-            ->appendOutputTo($output);
+        $schedule->command('app:mfa-setup-auto-recovery')->hourly()->appendOutputTo($output);
 
         // 毎分 サーバー都合でcron設定としては2分周期
-        $schedule->command('article:publish-reservation')->everyMinute()
-            ->appendOutputTo($output);
-        $schedule->command('queue:work', [
-            '--stop-when-empty',
-            '--max-time' => self::CRON_INTERVAL / 2,
-        ])->everyMinute()
+        $schedule->command('article:publish-reservation')->everyMinute()->appendOutputTo($output);
+        $schedule
+            ->command('queue:work', [
+                '--stop-when-empty',
+                '--max-time' => self::CRON_INTERVAL / 2,
+            ])
+            ->everyMinute()
             ->appendOutputTo($output);
 
         logger()->channel('worker')->info('Kernel::schedule end', ['startAt' => $startAt]);
@@ -56,17 +52,13 @@ final class Kernel extends ConsoleKernel
     #[\Override]
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
 
     private function getLogPath(): string
     {
-        return storage_path(sprintf(
-            'logs%sschedule-%s.log',
-            DIRECTORY_SEPARATOR,
-            now()->toDateString()
-        ));
+        return storage_path(sprintf('logs%sschedule-%s.log', DIRECTORY_SEPARATOR, now()->toDateString()));
     }
 }

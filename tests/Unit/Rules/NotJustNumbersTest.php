@@ -24,7 +24,7 @@ final class NotJustNumbersTest extends TestCase
         parent::setUp();
         $this->failCalled = false;
 
-        $mock = $this->mock(PotentiallyTranslatedString::class, fn (MockInterface $mock) => $mock->allows()->translate());
+        $mock = $this->mock(PotentiallyTranslatedString::class, fn(MockInterface $mock) => $mock->allows()->translate());
         $this->failClosure = function () use ($mock) {
             $this->failCalled = true;
 
@@ -36,8 +36,7 @@ final class NotJustNumbersTest extends TestCase
     #[DataProvider('data')]
     public function test(string $value, bool $expected): void
     {
-        $this->getSUT()
-            ->validate('dummy', $value, $this->failClosure);
+        $this->getSUT()->validate('dummy', $value, $this->failClosure);
         $this->assertSame($expected, $this->failCalled);
     }
 
@@ -50,6 +49,6 @@ final class NotJustNumbersTest extends TestCase
 
     private function getSUT(): NotJustNumbers
     {
-        return new NotJustNumbers;
+        return new NotJustNumbers();
     }
 }

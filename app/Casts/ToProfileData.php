@@ -22,8 +22,12 @@ final class ToProfileData implements CastsAttributes
      * @return ProfileData
      */
     #[\Override]
-    public function get($model, $key, $value, $attributes): ProfileData
-    {
+    public function get(
+        \Illuminate\Database\Eloquent\Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): ProfileData {
         /** @var array{avatar?: int, description?: string, website?: string} */
         $data = json_decode((string) $value, true);
 
@@ -40,8 +44,12 @@ final class ToProfileData implements CastsAttributes
      * @return string
      */
     #[\Override]
-    public function set($model, $key, $value, $attributes): string
-    {
+    public function set(
+        \Illuminate\Database\Eloquent\Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): string {
         $encoded = json_encode($value);
         return $encoded !== false ? $encoded : '';
     }

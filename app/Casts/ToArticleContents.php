@@ -26,8 +26,12 @@ final class ToArticleContents implements CastsAttributes
      * @return \App\Models\Contents\Content
      */
     #[\Override]
-    public function get($model, $key, $value, $attributes): \App\Models\Contents\Content
-    {
+    public function get(
+        \Illuminate\Database\Eloquent\Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): \App\Models\Contents\Content {
         /** @var array{thumbnail?:int,sections?:array<int,array{type:string,caption?:string,text?:string,url?:string,id?:int}>,markdown?:string,description?:string,file?:int,author?:string,license?:string,thanks?:string,link?:string,agreement?:bool,exclude_link_check?:bool} */
         $data = json_decode((string) $value, true);
 
@@ -49,8 +53,12 @@ final class ToArticleContents implements CastsAttributes
      * @return string
      */
     #[\Override]
-    public function set($model, $key, $value, $attributes): string
-    {
+    public function set(
+        \Illuminate\Database\Eloquent\Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): string {
         $encoded = json_encode($value);
         return $encoded !== false ? $encoded : '';
     }

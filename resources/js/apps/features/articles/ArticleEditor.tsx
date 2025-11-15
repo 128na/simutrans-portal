@@ -12,7 +12,7 @@ import axios, { AxiosError } from "axios";
 import { useAxiosError } from "@/apps/state/useAxiosError";
 export const ArticleEditor = () => {
   const article = useArticleEditor((s) => s.article);
-  const shouldNotfy = useArticleEditor((s) => s.shouldNotfy);
+  const shouldNotify = useArticleEditor((s) => s.shouldNotify);
   const updateShouldNotify = useArticleEditor((s) => s.updateShouldNotify);
   const withoutUpdateModifiedAt = useArticleEditor(
     (s) => s.withoutUpdateModifiedAt,
@@ -26,7 +26,7 @@ export const ArticleEditor = () => {
     try {
       const res = await axios.post(url, {
         article,
-        should_notify: shouldNotfy,
+        should_notify: shouldNotify,
         without_update_modified_at: withoutUpdateModifiedAt,
       });
       window.location.href = `/mypage/articles/edit/${res.data.article_id}?updated=1`;
@@ -57,7 +57,7 @@ export const ArticleEditor = () => {
               useArticleEditor.setState((state) => {
                 // 更新日時を変えないときはSNS通知も不要なはずなのでOFFにする
                 if (!withoutUpdateModifiedAt) {
-                  state.shouldNotfy = false;
+                  state.shouldNotify = false;
                 }
                 state.withoutUpdateModifiedAt = !withoutUpdateModifiedAt;
               });
@@ -73,8 +73,8 @@ export const ArticleEditor = () => {
             <div className="font-medium">公開時のSNS通知</div>
 
             <Checkbox
-              checked={shouldNotfy}
-              onChange={() => updateShouldNotify(!shouldNotfy)}
+              checked={shouldNotify}
+              onChange={() => updateShouldNotify(!shouldNotify)}
             >
               通知する
             </Checkbox>

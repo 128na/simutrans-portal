@@ -8,7 +8,7 @@ type ArticleEditorState = {
   tags: TagEdit.Tag[];
   categories: Category.Grouping;
   relationalArticles: ArticleEdit.Relational[];
-  shouldNotfy: boolean;
+  shouldNotify: boolean;
   withoutUpdateModifiedAt: boolean;
 
   init: (initial: {
@@ -18,7 +18,7 @@ type ArticleEditorState = {
     tags: TagEdit.Tag[];
     categories: Category.Grouping;
     relationalArticles: ArticleEdit.Relational[];
-    shouldNotfy: boolean;
+    shouldNotify: boolean;
     withoutUpdateModifiedAt: boolean;
   }) => void;
 
@@ -37,7 +37,7 @@ export const useArticleEditor = create<ArticleEditorState>()(
     tags: [],
     categories: {} as Category.Grouping,
     relationalArticles: [],
-    shouldNotfy: false,
+    shouldNotify: false,
     withoutUpdateModifiedAt: false,
 
     init(initial) {
@@ -48,7 +48,7 @@ export const useArticleEditor = create<ArticleEditorState>()(
         tags: structuredClone(initial.tags),
         categories: initial.categories,
         relationalArticles: initial.relationalArticles,
-        shouldNotfy: initial.shouldNotfy,
+        shouldNotify: initial.shouldNotify,
         withoutUpdateModifiedAt: initial.withoutUpdateModifiedAt,
       });
     },
@@ -73,9 +73,9 @@ export const useArticleEditor = create<ArticleEditorState>()(
         state.tags = tags;
       });
     },
-    updateShouldNotify(shouldNotfy: boolean) {
+    updateShouldNotify(shouldNotify: boolean) {
       set((state) => {
-        state.shouldNotfy = shouldNotfy;
+        state.shouldNotify = shouldNotify;
       });
     },
   })),

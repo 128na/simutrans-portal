@@ -20,7 +20,7 @@ jobs:
         with:
           php-version: 8.3
 
-          - name: Run Mago
+      - name: Run Mago
         run: |
           vendor/bin/mago format --dry-run
           vendor/bin/mago lint --reporting-format=github

@@ -35,7 +35,7 @@ abstract class BaseRepository
      * @param  array<mixed>  $data
      * @return T
      */
-    final public function store(array $data)
+    final public function store(array $data): Model
     {
         /** @var T */
         return $this->model->create($data);
@@ -67,7 +67,7 @@ abstract class BaseRepository
      * @param  array<string>  $relations
      * @return T
      */
-    final public function load($model, array $relations = [])
+    final public function load(Model $model, array $relations = []): Model
     {
         return $model->loadMissing($relations);
     }
@@ -78,7 +78,7 @@ abstract class BaseRepository
      * @param  array<mixed>  $data
      * @return T
      */
-    final public function storeByUser(User $user, array $data)
+    final public function storeByUser(User $user, array $data): Model
     {
         /** @var T */
         return $user->{$this->getRelationName()}()->create($data);
@@ -87,7 +87,7 @@ abstract class BaseRepository
     /**
      * @return T|null
      */
-    final public function find(null|int|string $id)
+    final public function find(null|int|string $id): null|Model
     {
         /** @var T|null */
         return $this->model->find($id);
@@ -117,7 +117,7 @@ abstract class BaseRepository
      * @param  array<mixed>  $data
      * @return T
      */
-    final public function updateOrCreate(array $search, array $data = [])
+    final public function updateOrCreate(array $search, array $data = []): Model
     {
         /** @var T */
         return $this->model->updateOrCreate($search, $data);
@@ -128,7 +128,7 @@ abstract class BaseRepository
      * @param  array<mixed>  $data
      * @return T
      */
-    final public function firstOrCreate(array $search, array $data = [])
+    final public function firstOrCreate(array $search, array $data = []): Model
     {
         /** @var T */
         return $this->model->firstOrCreate($search, $data);

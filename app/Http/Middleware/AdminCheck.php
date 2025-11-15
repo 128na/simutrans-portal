@@ -13,8 +13,10 @@ use Illuminate\Support\Facades\Auth;
  */
 final class AdminCheck
 {
-    public function handle(Request $request, Closure $next): \Symfony\Component\HttpFoundation\Response|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
-    {
+    public function handle(
+        Request $request,
+        Closure $next,
+    ): \Symfony\Component\HttpFoundation\Response|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse {
         /** @var ?\App\Models\User */
         $user = Auth::user();
         if ($user && $user->isAdmin()) {

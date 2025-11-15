@@ -22,9 +22,7 @@ jobs:
 
       - name: Run Mago
         run: |
-          vendor/bin/mago format --dry-run
-          vendor/bin/mago lint --reporting-format=github
-          vendor/bin/mago analyze --reporting-format=github
+          composer run all:ci
   test:
     needs: [mago]
     runs-on: ubuntu-latest

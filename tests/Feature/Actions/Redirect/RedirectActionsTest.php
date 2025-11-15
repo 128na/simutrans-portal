@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Actions\Redirect;
+namespace Tests\Feature\Actions\Redirect;
 
 use App\Actions\Redirect\AddRedirect;
 use App\Actions\Redirect\DeleteRedirect;
@@ -12,7 +12,7 @@ use App\Models\Redirect;
 use App\Models\User;
 use App\Repositories\RedirectRepository;
 use Mockery\MockInterface;
-use Tests\Unit\TestCase;
+use Tests\Feature\TestCase;
 
 final class RedirectActionsTest extends TestCase
 {
@@ -23,8 +23,8 @@ final class RedirectActionsTest extends TestCase
         $new = 'new-slug';
 
         $this->mock(RedirectRepository::class, function (MockInterface $mock) use ($user, $old, $new): void {
-            $expectedFromSuffix = '/users/'.$user->nickname.'/'.$old;
-            $expectedToSuffix = '/users/'.$user->nickname.'/'.$new;
+            $expectedFromSuffix = '/users/' . $user->nickname . '/' . $old;
+            $expectedToSuffix = '/users/' . $user->nickname . '/' . $new;
 
             $mock->shouldReceive('store')->once()->withArgs(function (array $arg) use ($user, $expectedFromSuffix, $expectedToSuffix): bool {
                 return isset($arg['user_id'])
@@ -61,14 +61,14 @@ final class RedirectActionsTest extends TestCase
         config(['app.url' => 'http://localhost']);
 
         $user = User::factory()->create(['nickname' => uniqid('bob_')]);
-        $from = '/users/'.$user->nickname.'/old';
-        $to = '/users/'.$user->nickname.'/new';
+        $from = '/users/' . $user->nickname . '/old';
+        $to = '/users/' . $user->nickname . '/new';
 
         $redirect = Redirect::factory()->create(['user_id' => $user->id, 'from' => $from, 'to' => $to]);
 
         $sut = app(DoRedirectIfExists::class);
 
-        $full = config('app.url').$from;
+        $full = config('app.url') . $from;
         $response = ($sut)($full);
 
         $this->assertSame(301, $response->getStatusCode());

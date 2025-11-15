@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services\Front;
+namespace Tests\Feature\Services\Front;
 
 use App\Models\Article;
 use App\Models\User;
 use App\Services\Front\MetaOgpService;
-use Tests\Unit\TestCase;
+use Tests\Feature\TestCase;
 
 final class MetaOgpServiceTest extends TestCase
 {

@@ -92,7 +92,7 @@
       "@php artisan ide-helper:generate",
       "@php artisan ide-helper:models -WMR",
       "vendor/bin/mago format --dry-run",
-      "vendor/bin/mago lint --reporting-format=github"
+      "vendor/bin/mago lint --baseline lint-baseline.toml --reporting-format=github"
     ],
     "lint": [
       "vendor/bin/mago lint --baseline lint-baseline.toml"

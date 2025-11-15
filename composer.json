@@ -89,16 +89,16 @@
     ],
     "all:ci": [
       "vendor/bin/mago format --dry-run",
-      "vendor/bin/mago lint --baseline lint-baseline.toml --reporting-format=github"
+      "vendor/bin/mago lint --baseline=./lint-baseline.toml --reporting-format=github"
     ],
     "lint": [
-      "vendor/bin/mago lint --baseline lint-baseline.toml"
+      "vendor/bin/mago lint --baseline=./lint-baseline.toml"
     ],
     "format": [
       "vendor/bin/mago format"
     ],
     "baseline": [
-      "vendor/bin/mago lint --generate-baseline --baseline lint-baseline.toml"
+      "vendor/bin/mago lint --generate-baseline --baseline=./lint-baseline.toml"
     ]
   }
 }

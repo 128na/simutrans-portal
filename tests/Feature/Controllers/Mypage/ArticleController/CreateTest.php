@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Mypage\ArticleController;
 
-use App\Models\Article;
 use App\Models\User;
 use Tests\Feature\TestCase;
 

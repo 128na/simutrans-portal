@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Admin;
 
 use App\Enums\UserRole;
-use App\Models\OauthToken;
 use App\Models\User;
 use App\Services\Twitter\Exceptions\InvalidStateException;
 use Illuminate\Support\Facades\Session;

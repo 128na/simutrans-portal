@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Mypage\ArticleController;
 
-use App\Enums\ArticlePostType;
 use App\Models\Article;
 use App\Models\User;
 use Tests\Feature\TestCase;
@@ -12,6 +11,7 @@ use Tests\Feature\TestCase;
 final class EditTest extends TestCase
 {
     private User $user;
+
     private Article $article;
 
     #[\Override]
@@ -24,7 +24,7 @@ final class EditTest extends TestCase
 
     public function test_未ログイン(): void
     {
-        $url = '/mypage/articles/edit/' . $this->article->id;
+        $url = '/mypage/articles/edit/'.$this->article->id;
 
         $testResponse = $this->get($url);
         $testResponse->assertRedirect('/login');
@@ -32,7 +32,7 @@ final class EditTest extends TestCase
 
     public function test_ログイン時に記事編集ページを表示(): void
     {
-        $url = '/mypage/articles/edit/' . $this->article->id;
+        $url = '/mypage/articles/edit/'.$this->article->id;
 
         $this->actingAs($this->user);
 
@@ -45,7 +45,7 @@ final class EditTest extends TestCase
         $otherUser = User::factory()->create();
         $otherArticle = Article::factory()->for($otherUser)->addonIntroduction()->create();
 
-        $url = '/mypage/articles/edit/' . $otherArticle->id;
+        $url = '/mypage/articles/edit/'.$otherArticle->id;
 
         $this->actingAs($this->user);
 
@@ -55,7 +55,7 @@ final class EditTest extends TestCase
 
     public function test_編集対象の記事情報が正しく渡される(): void
     {
-        $url = '/mypage/articles/edit/' . $this->article->id;
+        $url = '/mypage/articles/edit/'.$this->article->id;
 
         $this->actingAs($this->user);
 

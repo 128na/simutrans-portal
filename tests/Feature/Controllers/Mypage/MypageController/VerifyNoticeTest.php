@@ -26,7 +26,7 @@ final class VerifyNoticeTest extends TestCase
         $testResponse->assertRedirect('/login');
     }
 
-    public function test_ログイン時にverifyEmailにリダイレクト(): void
+    public function test_ログイン時にverify_emailにリダイレクト(): void
     {
         $url = '/mypage/verify-required';
 

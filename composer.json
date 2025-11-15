@@ -87,14 +87,18 @@
       "@format",
       "@lint"
     ],
+    "all:ci": [
+      "composer dump-autoload",
+      "@php artisan ide-helper:generate",
+      "@php artisan ide-helper:models -WMR",
+      "vendor/bin/mago format --dry-run",
+      "vendor/bin/mago lint --reporting-format=github"
+    ],
     "lint": [
       "vendor/bin/mago lint --baseline lint-baseline.toml"
     ],
     "format": [
       "vendor/bin/mago format"
-    ],
-    "format:check": [
-      "vendor/bin/mago format --dry-run"
     ],
     "baseline": [
       "vendor/bin/mago lint --generate-baseline --baseline lint-baseline.toml"

@@ -26,6 +26,7 @@ no-boolean-literal-comparison = { enabled = false }
 property-type = { enabled = false }
 
 [analyzer]
+excludes = ["tests/"]
 find-unused-definitions = true
 find-unused-expressions = false
 analyze-dead-code = false

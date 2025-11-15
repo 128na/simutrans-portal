@@ -329,36 +329,6 @@ start_line = 10
 end_line = 10
 
 [[entries.'app\Providers\DIServiceProvider.php'.issues]]
-code = "parameter-type"
-start_line = 53
-end_line = 53
-
-[[entries.'app\Providers\DIServiceProvider.php'.issues]]
-code = "parameter-type"
-start_line = 60
-end_line = 60
-
-[[entries.'app\Providers\DIServiceProvider.php'.issues]]
-code = "parameter-type"
-start_line = 69
-end_line = 69
-
-[[entries.'app\Providers\DIServiceProvider.php'.issues]]
-code = "parameter-type"
-start_line = 84
-end_line = 84
-
-[[entries.'app\Providers\DIServiceProvider.php'.issues]]
-code = "parameter-type"
-start_line = 94
-end_line = 94
-
-[[entries.'app\Providers\DIServiceProvider.php'.issues]]
-code = "parameter-type"
-start_line = 100
-end_line = 100
-
-[[entries.'app\Providers\DIServiceProvider.php'.issues]]
 code = "return-type"
 start_line = 34
 end_line = 45

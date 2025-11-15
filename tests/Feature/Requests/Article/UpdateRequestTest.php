@@ -104,8 +104,8 @@ final class UpdateRequestTest extends TestCase
         ];
         yield 'AddonIntroduction 存在しないカテゴリ' => [
             ArticlePostType::AddonIntroduction,
-            fn (self $self): array => ['categories' => [['id' => 99999]]],
-            'article.categories.0.id',
+            fn (self $self): array => ['categories' => [99999]],
+            'article.categories.0',
         ];
         yield 'AddonIntroduction タグ名がnull' => [
             ArticlePostType::AddonIntroduction,
@@ -114,8 +114,8 @@ final class UpdateRequestTest extends TestCase
         ];
         yield 'AddonIntroduction 存在しないタグ' => [
             ArticlePostType::AddonIntroduction,
-            fn (self $self): array => ['tags' => [['id' => -1]]],
-            'article.tags.0.id',
+            fn (self $self): array => ['tags' => [99999]],
+            'article.tags.0',
         ];
         yield 'AddonIntroduction 説明が空' => [
             ArticlePostType::AddonIntroduction,

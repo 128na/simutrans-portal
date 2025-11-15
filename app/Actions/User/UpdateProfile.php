@@ -37,7 +37,7 @@ final readonly class UpdateProfile
                 'data' => [
                     'avatar' => $updateRequest->input('user.profile.data.avatar'),
                     'description' => $updateRequest->input('user.profile.data.description'),
-                    'website' => array_values(array_filter($updateRequest->input('user.profile.data.website'))),
+                    'website' => array_values(array_filter($updateRequest->input('user.profile.data.website', []))),
                 ],
             ]);
         }

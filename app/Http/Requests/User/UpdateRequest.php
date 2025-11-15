@@ -31,7 +31,7 @@ final class UpdateRequest extends FormRequest
             'user.profile.data' => ['required', 'array'],
             'user.profile.data.avatar' => ['nullable', 'exists:attachments,id,user_id,'.$userId, app(ImageAttachment::class)],
             'user.profile.data.description' => ['nullable', 'max:1024'],
-            'user.profile.data.website' => ['required', 'array', 'max:10'],
+            'user.profile.data.website' => ['nullable', 'array', 'max:10'],
             'user.profile.data.website.*' => ['nullable', 'url', 'max:255'],
         ];
     }

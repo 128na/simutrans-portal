@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eba7218e221c30514539e0a5beecd6a7",
+    "content-hash": "5b933230e4275566d5f4a1e39af4f8bb",
     "packages": [
         {
             "name": "abordage/html-min",
@@ -8607,16 +8607,16 @@
         },
         {
             "name": "carthage-software/mago",
-            "version": "0.26.1",
+            "version": "1.0.0-beta.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/carthage-software/mago.git",
-                "reference": "baad2c067e7be59af500683769b72ac356eac10f"
+                "reference": "4fda6c12b126cf159d999fae36e87ecd2fd20957"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carthage-software/mago/zipball/baad2c067e7be59af500683769b72ac356eac10f",
-                "reference": "baad2c067e7be59af500683769b72ac356eac10f",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/4fda6c12b126cf159d999fae36e87ecd2fd20957",
+                "reference": "4fda6c12b126cf159d999fae36e87ecd2fd20957",
                 "shasum": ""
             },
             "require": {
@@ -8654,7 +8654,7 @@
             ],
             "support": {
                 "issues": "https://github.com/carthage-software/mago/issues",
-                "source": "https://github.com/carthage-software/mago/tree/0.26.1"
+                "source": "https://github.com/carthage-software/mago/tree/1.0.0-beta.28"
             },
             "funding": [
                 {
@@ -8662,7 +8662,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-06-29T23:11:29+00:00"
+            "time": "2025-10-12T02:41:50+00:00"
         },
         {
             "name": "composer/class-map-generator",
@@ -11399,7 +11399,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "carthage-software/mago": 10
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

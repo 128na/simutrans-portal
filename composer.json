@@ -29,7 +29,7 @@
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.16.0",
     "barryvdh/laravel-ide-helper": "^3.6.0",
-    "carthage-software/mago": "^0.26.1",
+    "carthage-software/mago": "1.0.0-beta.28",
     "dg/bypass-finals": "^1.9",
     "fakerphp/faker": "^1.24.1",
     "filp/whoops": "^2.18.4",

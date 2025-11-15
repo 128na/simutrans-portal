@@ -196,26 +196,6 @@ namespace App\Models\Attachment{
 namespace App\Models{
 /**
  * @property int $id
- * @property string $uuid
- * @property string $bulk_zippable_type
- * @property int $bulk_zippable_id
- * @property bool $generated ファイル生成済みか 0:未生成,1:生成済み
- * @property string|null $path 生成ファイルのパス
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model $bulkZippable
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BulkZip newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BulkZip newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BulkZip query()
- * @mixin \Eloquent
- */
-	#[\AllowDynamicProperties]
-	final class IdeHelperBulkZip {}
-}
-
-namespace App\Models{
-/**
- * @property int $id
  * @property \App\Enums\CategoryType $type 分類
  * @property string $slug スラッグ
  * @property bool $need_admin 管理者専用カテゴリ

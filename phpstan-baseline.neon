@@ -1,18 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^PHPDoc tag @var with type array\<App\\Enums\\ArticlePostType\> is not subtype of native type array\{App\\Enums\\ArticlePostType\:\:AddonPost, App\\Enums\\ArticlePostType\:\:AddonIntroduction, App\\Enums\\ArticlePostType\:\:Page, App\\Enums\\ArticlePostType\:\:Markdown\}\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: app/Actions/Article/GetOptions.php
-
-		-
-			message: '#^PHPDoc tag @var with type array\<App\\Enums\\ArticleStatus\> is not subtype of native type array\{App\\Enums\\ArticleStatus\:\:Publish, App\\Enums\\ArticleStatus\:\:Reservation, App\\Enums\\ArticleStatus\:\:Draft, App\\Enums\\ArticleStatus\:\:Trash, App\\Enums\\ArticleStatus\:\:Private\}\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: app/Actions/Article/GetOptions.php
-
-		-
 			message: '#^Access to an undefined property App\\Models\\Article\:\:\$categoryPaks\.$#'
 			identifier: property.notFound
 			count: 1
@@ -35,12 +23,6 @@ parameters:
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: app/Http/Controllers/Controller.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>nickname" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: app/Http/Resources/Api/Mypage/Article.php
 
 		-
 			message: '#^Access to an undefined property App\\Models\\Article\:\:\$hasFile\.$#'
@@ -259,12 +241,6 @@ parameters:
 			path: app/Models/User/Profile.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\:\:active\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Repositories/TagRepository.php
-
-		-
 			message: '#^Access to an undefined property App\\Models\\Article\:\:\$hasThumbnail\.$#'
 			identifier: property.notFound
 			count: 1
@@ -287,18 +263,6 @@ parameters:
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: app/Services/BlueSky/BlueSkyApiClient.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>nickname" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: app/Services/BulkZip/Decorators/AddonIntroductionDecorator.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>nickname" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: app/Services/BulkZip/Decorators/AddonPostDecorator.php
 
 		-
 			message: '#^Call to function array_key_exists\(\) with ''code'' and array\{code\: int\} will always evaluate to true\.$#'

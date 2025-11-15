@@ -22,7 +22,7 @@ final class ToProfileData implements CastsAttributes
      * @return ProfileData
      */
     #[\Override]
-    public function get($model, $key, $value, $attributes)
+    public function get($model, $key, $value, $attributes): ProfileData
     {
         /** @var array{avatar?: int, description?: string, website?: string} */
         $data = json_decode((string) $value, true);

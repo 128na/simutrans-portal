@@ -71,6 +71,10 @@ jobs:
       - name: .env
         run: php -r "copy('.env.deploy', '.env');"
 
+
+      - uses: ./.github/actions/php
+        with:
+          php-version: 8.3
       - uses: ./.github/actions/nodejs
         with:
           asset-key: "deploy"

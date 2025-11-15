@@ -60,35 +60,35 @@ final class ArticleFactory extends Factory
             'contents' => $contents[$postType],
             'post_type' => $postType,
             'status' => fake()->randomElement(array_column(ArticleStatus::cases(), 'value')),
-            'published_at' => now(),
-            'modified_at' => now(),
+            'published_at' => now()->subDays(2),
+            'modified_at' => now()->subDays(1),
         ];
     }
 
     public function publish()
     {
-        return $this->state(fn (array $attributes): array => [
+        return $this->state(fn(array $attributes): array => [
             'status' => ArticleStatus::Publish,
         ]);
     }
 
     public function draft()
     {
-        return $this->state(fn (array $attributes): array => [
+        return $this->state(fn(array $attributes): array => [
             'status' => ArticleStatus::Draft,
         ]);
     }
 
     public function deleted()
     {
-        return $this->state(fn (array $attributes): array => [
+        return $this->state(fn(array $attributes): array => [
             'deleted_at' => now(),
         ]);
     }
 
     public function addonPost(?Attachment $attachment = null)
     {
-        return $this->state(fn (array $attributes): array => [
+        return $this->state(fn(array $attributes): array => [
             'post_type' => ArticlePostType::AddonPost,
             'contents' => [
                 'description' => fake()->realText(),
@@ -102,7 +102,7 @@ final class ArticleFactory extends Factory
 
     public function addonIntroduction()
     {
-        return $this->state(fn (array $attributes): array => [
+        return $this->state(fn(array $attributes): array => [
             'post_type' => ArticlePostType::AddonIntroduction,
             'contents' => [
                 'description' => fake()->realText(),
@@ -118,7 +118,7 @@ final class ArticleFactory extends Factory
 
     public function page()
     {
-        return $this->state(fn (array $attributes): array => [
+        return $this->state(fn(array $attributes): array => [
             'post_type' => ArticlePostType::Page,
             'contents' => [
                 'sections' => [
@@ -130,7 +130,7 @@ final class ArticleFactory extends Factory
 
     public function markdown()
     {
-        return $this->state(fn (array $attributes): array => [
+        return $this->state(fn(array $attributes): array => [
             'post_type' => ArticlePostType::Markdown,
             'contents' => [
                 'markdown' => fake()->realText(),

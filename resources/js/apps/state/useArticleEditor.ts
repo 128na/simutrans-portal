@@ -9,6 +9,7 @@ type ArticleEditorState = {
   categories: Category.Grouping;
   relationalArticles: ArticleEdit.Relational[];
   shouldNotfy: boolean;
+  withoutUpdateModifiedAt: boolean;
 
   init: (initial: {
     user: ArticleEdit.User;
@@ -18,6 +19,7 @@ type ArticleEditorState = {
     categories: Category.Grouping;
     relationalArticles: ArticleEdit.Relational[];
     shouldNotfy: boolean;
+    withoutUpdateModifiedAt: boolean;
   }) => void;
 
   update: (fn: (draft: ArticleEdit.Article) => void) => void;
@@ -36,6 +38,7 @@ export const useArticleEditor = create<ArticleEditorState>()(
     categories: {} as Category.Grouping,
     relationalArticles: [],
     shouldNotfy: false,
+    withoutUpdateModifiedAt: false,
 
     init(initial) {
       set({
@@ -46,6 +49,7 @@ export const useArticleEditor = create<ArticleEditorState>()(
         categories: initial.categories,
         relationalArticles: initial.relationalArticles,
         shouldNotfy: initial.shouldNotfy,
+        withoutUpdateModifiedAt: initial.withoutUpdateModifiedAt,
       });
     },
 

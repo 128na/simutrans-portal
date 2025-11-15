@@ -14,6 +14,9 @@ export const ArticleEditor = () => {
   const article = useArticleEditor((s) => s.article);
   const shouldNotfy = useArticleEditor((s) => s.shouldNotfy);
   const updateShouldNotify = useArticleEditor((s) => s.updateShouldNotify);
+  const withoutUpdateModifiedAt = useArticleEditor(
+    (s) => s.withoutUpdateModifiedAt,
+  );
 
   const { setError } = useAxiosError();
   const url = article.id
@@ -23,7 +26,8 @@ export const ArticleEditor = () => {
     try {
       const res = await axios.post(url, {
         article,
-        should_notfy: shouldNotfy,
+        should_notify: shouldNotfy,
+        without_update_modified_at: withoutUpdateModifiedAt,
       });
       window.location.href = `/mypage/articles/edit/${res.data.article_id}?updated=1`;
     } catch (error) {
@@ -43,6 +47,26 @@ export const ArticleEditor = () => {
         .with("addon-post", () => <AddonPost />)
         .with("addon-introduction", () => <AddonIntroduction />)
         .exhaustive()}
+      <div className="mt-2">
+        <Label>
+          <div className="font-medium">保存時の更新日時</div>
+
+          <Checkbox
+            checked={withoutUpdateModifiedAt}
+            onChange={() => {
+              useArticleEditor.setState((state) => {
+                // 更新日時を変えないときはSNS通知も不要なはずなのでOFFにする
+                if (!withoutUpdateModifiedAt) {
+                  state.shouldNotfy = false;
+                }
+                state.withoutUpdateModifiedAt = !withoutUpdateModifiedAt;
+              });
+            }}
+          >
+            更新しない
+          </Checkbox>
+        </Label>
+      </div>
       {article.status === "publish" && (
         <div className="mt-2">
           <Label>

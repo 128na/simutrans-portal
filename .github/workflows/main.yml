@@ -16,20 +16,14 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup PHP with Composer cache
-        uses: shivammathur/setup-php@v2
+      - uses: ./.github/actions/php
         with:
-          php-version: "8.4" # Or your project's version
-          coverage: none
-          tools: composer
-        env:
-          COMPOSER_ALLOW_SUPERUSER: 1
+          php-version: 8.3
 
-      - name: Install Composer Dependencies
-        run: composer install --prefer-dist --no-progress
-
-      - name: Setup Mago
-        uses: nhedger/setup-mago
+      - name: Download Mago CLI
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://carthage.software/mago.sh | bash
+          tar -xzf mago-cli.tar.gz
       - name: Run Mago
         run: |
           mago format --dry-run

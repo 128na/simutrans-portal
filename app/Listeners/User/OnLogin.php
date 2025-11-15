@@ -26,7 +26,8 @@ final readonly class OnLogin
 
     private function isNewLogin(): bool
     {
-        $trace = json_encode(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 20)) ?: '';
+        $trace = json_encode(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 20));
+        $trace = $trace !== false ? $trace : '';
 
         return match (true) {
             str_contains($trace, 'AuthenticatedSessionController') => true,

@@ -1,13 +1,3 @@
-[[entries.'app\Actions\DeadLink\GetHeaders.php'.issues]]
-code = "no-else-clause"
-start_line = 24
-end_line = 26
-
-[[entries.'app\Actions\DeadLink\GetHeaders.php'.issues]]
-code = "prefer-arrow-function"
-start_line = 13
-end_line = 13
-
 [[entries.'app\Actions\Fortify\PasswordValidationRules.php'.issues]]
 code = "trait-name"
 start_line = 8
@@ -27,21 +17,6 @@ end_line = 27
 code = "no-redundant-nullsafe"
 start_line = 33
 end_line = 33
-
-[[entries.'app\Actions\StoreAttachment\CropImage.php'.issues]]
-code = "no-shorthand-ternary"
-start_line = 56
-end_line = 56
-
-[[entries.'app\Actions\StoreAttachment\Store.php'.issues]]
-code = "no-empty-catch-clause"
-start_line = 51
-end_line = 53
-
-[[entries.'app\Casts\ToArticleContents.php'.issues]]
-code = "no-shorthand-ternary"
-start_line = 53
-end_line = 53
 
 [[entries.'app\Casts\ToArticleContents.php'.issues]]
 code = "parameter-type"
@@ -88,16 +63,6 @@ code = "return-type"
 start_line = 27
 end_line = 39
 
-[[entries.'app\Casts\ToArticleContents.php'.issues]]
-code = "return-type"
-start_line = 50
-end_line = 54
-
-[[entries.'app\Casts\ToProfileData.php'.issues]]
-code = "no-shorthand-ternary"
-start_line = 44
-end_line = 44
-
 [[entries.'app\Casts\ToProfileData.php'.issues]]
 code = "parameter-type"
 start_line = 24
@@ -142,11 +107,6 @@ end_line = 42
 code = "return-type"
 start_line = 23
 end_line = 30
-
-[[entries.'app\Casts\ToProfileData.php'.issues]]
-code = "return-type"
-start_line = 41
-end_line = 45
 
 [[entries.'app\Channels\BaseChannel.php'.issues]]
 code = "class-name"
@@ -308,11 +268,6 @@ code = "no-else-clause"
 start_line = 34
 end_line = 36
 
-[[entries.'app\Listeners\User\OnLogin.php'.issues]]
-code = "no-shorthand-ternary"
-start_line = 28
-end_line = 28
-
 [[entries.'app\Models\Article.php'.issues]]
 code = "cyclomatic-complexity"
 start_line = 37
@@ -464,19 +419,9 @@ start_line = 37
 end_line = 644
 
 [[entries.'app\Models\Attachment.php'.issues]]
-code = "no-shorthand-ternary"
-start_line = 91
-end_line = 91
-
-[[entries.'app\Models\Attachment.php'.issues]]
-code = "no-shorthand-ternary"
-start_line = 111
-end_line = 111
-
-[[entries.'app\Models\Attachment.php'.issues]]
 code = "parameter-type"
-start_line = 164
-end_line = 164
+start_line = 166
+end_line = 166
 
 [[entries.'app\Models\Attachment.php'.issues]]
 code = "return-type"
@@ -485,28 +430,28 @@ end_line = 80
 
 [[entries.'app\Models\Attachment.php'.issues]]
 code = "return-type"
-start_line = 119
-end_line = 124
+start_line = 121
+end_line = 126
 
 [[entries.'app\Models\Attachment.php'.issues]]
 code = "return-type"
-start_line = 129
-end_line = 129
+start_line = 131
+end_line = 131
 
 [[entries.'app\Models\Attachment.php'.issues]]
 code = "return-type"
-start_line = 134
-end_line = 134
+start_line = 136
+end_line = 136
 
 [[entries.'app\Models\Attachment.php'.issues]]
 code = "return-type"
-start_line = 139
-end_line = 139
+start_line = 141
+end_line = 141
 
 [[entries.'app\Models\Attachment.php'.issues]]
 code = "too-many-methods"
 start_line = 19
-end_line = 168
+end_line = 170
 
 [[entries.'app\Models\BulkZip.php'.issues]]
 code = "parameter-type"
@@ -677,16 +622,6 @@ end_line = 39
 code = "return-type"
 start_line = 41
 end_line = 43
-
-[[entries.'app\Providers\GoogleServiceProvider.php'.issues]]
-code = "no-error-control-operator"
-start_line = 35
-end_line = 35
-
-[[entries.'app\Providers\GoogleServiceProvider.php'.issues]]
-code = "no-shorthand-ternary"
-start_line = 35
-end_line = 35
 
 [[entries.'app\Providers\GoogleServiceProvider.php'.issues]]
 code = "return-type"

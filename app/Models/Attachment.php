@@ -89,7 +89,8 @@ final class Attachment extends Model
     protected function type(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {
-            $mime = $this->getPublicDisk()->mimeType($this->path) ?: '';
+            $mime = $this->getPublicDisk()->mimeType($this->path);
+            $mime = $mime !== false ? $mime : '';
             if (mb_stripos((string) $mime, 'image') !== false) {
                 return 'image';
             }
@@ -109,7 +110,8 @@ final class Attachment extends Model
     protected function isPng(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): bool {
-            $mime = $this->getPublicDisk()->mimeType($this->path) ?: '';
+            $mime = $this->getPublicDisk()->mimeType($this->path);
+            $mime = $mime !== false ? $mime : '';
 
             return mb_stripos((string) $mime, 'image/png') !== false;
         });

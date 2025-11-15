@@ -71,7 +71,7 @@ final class Tag extends Model
      * @param  Builder<Tag>  $builder
      */
     #[\Illuminate\Database\Eloquent\Attributes\Scope]
-    protected function popular(Builder $builder): void
+    protected function popular(\Illuminate\Database\Eloquent\Builder $builder): void
     {
         $builder->withCount(['articles' => fn($q) => $q->active()])->orderBy('articles_count', 'desc');
     }

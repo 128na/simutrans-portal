@@ -49,7 +49,7 @@ final class BulkZip extends Model
         self::creating(function (self $model): void {
             $model->uuid = (string) Str::uuid();
         });
-        self::deleting(function ($model): void {
+        self::deleting(function (\Illuminate\Database\Eloquent\Model $model): void {
             $model->deleteFileHandler();
         });
     }

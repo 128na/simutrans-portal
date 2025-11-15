@@ -164,7 +164,7 @@ final class Attachment extends Model
     {
         parent::boot();
 
-        self::deleting(function ($model): void {
+        self::deleting(function (\Illuminate\Database\Eloquent\Model $model): void {
             $model->deleteFileHandler();
         });
     }

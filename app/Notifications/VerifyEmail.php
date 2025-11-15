@@ -21,7 +21,7 @@ final class VerifyEmail extends BaseVerifyEmail implements ShouldQueue
      * @return array<string>
      */
     #[\Override]
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
@@ -33,7 +33,7 @@ final class VerifyEmail extends BaseVerifyEmail implements ShouldQueue
      * @return MailMessage
      */
     #[\Override]
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): MailMessage
     {
         return new MailMessage()
             ->subject('登録メールアドレスの確認')

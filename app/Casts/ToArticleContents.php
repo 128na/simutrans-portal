@@ -49,8 +49,9 @@ final class ToArticleContents implements CastsAttributes
      * @return string
      */
     #[\Override]
-    public function set($model, $key, $value, $attributes)
+    public function set($model, $key, $value, $attributes): string
     {
-        return json_encode($value) ?: '';
+        $encoded = json_encode($value);
+        return $encoded !== false ? $encoded : '';
     }
 }

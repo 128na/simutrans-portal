@@ -32,10 +32,19 @@ final class GoogleServiceProvider extends ServiceProvider implements DeferrableP
     public function register(): void
     {
         $this->app->bind(function (): \App\Services\Google\Recaptcha\RecaptchaService {
-            $credentials = json_decode(
-                @file_get_contents(base_path(Config::string('services.google_recaptcha.credential'))) ?: '{}',
-                true,
-            );
+            $credentialPath = base_path(Config::string('services.google_recaptcha.credential'));
+            $credentials = [];
+
+            if (is_file($credentialPath) && is_readable($credentialPath)) {
+                $contents = file_get_contents($credentialPath);
+                if ($contents !== false) {
+                    $decoded = json_decode($contents, true);
+                    if (is_array($decoded)) {
+                        $credentials = $decoded;
+                    }
+                }
+            }
+
             $recaptchaEnterpriseServiceClient = new RecaptchaEnterpriseServiceClient(['credentials' => $credentials]);
             $projectName = $recaptchaEnterpriseServiceClient->projectName(Config::string(
                 'services.google_recaptcha.projectName',

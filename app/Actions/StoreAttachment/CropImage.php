@@ -54,6 +54,7 @@ final class CropImage
 
     private function getMime(string $fullpath): null|CroppableFormat
     {
-        return CroppableFormat::tryFrom(mime_content_type($fullpath) ?: '');
+        $type = mime_content_type($fullpath);
+        return CroppableFormat::tryFrom($type !== false ? $type : '');
     }
 }

@@ -49,8 +49,8 @@ final readonly class Store
             if ($crop && ($fullpath = realpath(storage_path('app/public/' . $filepath)))) {
                 try {
                     ($this->cropImage)($fullpath, ...$crop);
-                } catch (ConvertFailedException) {
-                    // need not report
+                } catch (ConvertFailedException $e) {
+                    report($e);
                 } catch (\Throwable $th) {
                     report($th);
                 }

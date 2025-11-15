@@ -45,7 +45,7 @@ abstract class TestCase extends TestsTestCase
      */
     protected function makeValidator(string $requestClass, array $data): \Illuminate\Contracts\Validation\Validator
     {
-        $rules = new $requestClass($data)->rules();
+        $rules = (new $requestClass($data))->rules();
 
         return Validator::make($data, $rules);
     }

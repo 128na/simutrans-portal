@@ -51,14 +51,14 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
     #[\Override]
     public function register(): void
     {
-        $this->app->bind(function ($app): \App\Services\FileInfo\Extractors\ReadmeExtractor {
+        $this->app->bind(function (\Illuminate\Contracts\Container\Container $app): \App\Services\FileInfo\Extractors\ReadmeExtractor {
             $htmlPurifierConfig = HTMLPurifier_Config::createDefault();
             $htmlPurifierConfig->set('HTML.AllowedElements', []);
 
             return new ReadmeExtractor(new HTMLPurifier($htmlPurifierConfig));
         });
 
-        $this->app->bind(function ($app): \App\Services\MarkdownService {
+        $this->app->bind(function (\Illuminate\Contracts\Container\Container $app): \App\Services\MarkdownService {
             $htmlPurifierConfig = HTMLPurifier_Config::createDefault();
             $htmlPurifierConfig->set('HTML.AllowedElements', config('services.markdown.allowed_elements', []));
 
@@ -67,7 +67,7 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
 
         $this->app->bind(
             FileInfoService::class,
-            fn($app): FileInfoService => new FileInfoService(
+            fn(\Illuminate\Contracts\Container\Container $app): FileInfoService => new FileInfoService(
                 $this->app->make(FileInfoRepository::class),
                 $this->app->make(ZipArchiveParser::class),
                 $this->app->make(TextService::class),
@@ -82,7 +82,7 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
 
         $this->app->bind(
             TwitterOAuth::class,
-            fn($app): TwitterOAuth => new TwitterOAuth(
+            fn(\Illuminate\Contracts\Container\Container $app): TwitterOAuth => new TwitterOAuth(
                 Config::string('services.twitter.access_token'),
                 Config::string('services.twitter.access_secret'),
                 null,
@@ -92,13 +92,13 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
 
         $this->app->bind(
             MisskeyApiClient::class,
-            fn($app): MisskeyApiClient => new MisskeyApiClient(
+            fn(\Illuminate\Contracts\Container\Container $app): MisskeyApiClient => new MisskeyApiClient(
                 Config::string('services.misskey.base_url'),
                 Config::string('services.misskey.token'),
             ),
         );
 
-        $this->app->bind(function ($app): \App\Services\BlueSky\BlueSkyApiClient {
+        $this->app->bind(function (\Illuminate\Contracts\Container\Container $app): \App\Services\BlueSky\BlueSkyApiClient {
             $blueskyApi = new BlueskyApi(
                 Config::string('services.bluesky.user'),
                 Config::string('services.bluesky.password'),

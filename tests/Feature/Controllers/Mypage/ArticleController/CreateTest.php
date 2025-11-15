@@ -35,12 +35,5 @@ final class CreateTest extends TestCase
 
         $testResponse = $this->get($url);
         $testResponse->assertStatus(200);
-        // $testResponse->assertViewIs('v2.mypage.article-create');
-        // $testResponse->assertViewHas('user');
-        // $testResponse->assertViewHas('attachments');
-        // $testResponse->assertViewHas('categories');
-        // $testResponse->assertViewHas('tags');
-        // $testResponse->assertViewHas('relationalArticles');
-        // $testResponse->assertViewHas('meta');
     }
 }

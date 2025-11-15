@@ -20,15 +20,11 @@ jobs:
         with:
           php-version: 8.3
 
-      - name: Download Mago CLI
+          - name: Run Mago
         run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://carthage.software/mago.sh | bash -s -- --version=1.0.0
-          tar -xzf mago-cli.tar.gz
-      - name: Run Mago
-        run: |
-          mago format --dry-run
-          mago lint --reporting-format=github
-          mago analyze --reporting-format=github
+          vendor/bin/mago format --dry-run
+          vendor/bin/mago lint --reporting-format=github
+          vendor/bin/mago analyze --reporting-format=github
   test:
     needs: [mago]
     runs-on: ubuntu-latest

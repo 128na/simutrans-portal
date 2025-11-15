@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b13c0150f7660378f7abe1657f2b7753",
+    "content-hash": "eba7218e221c30514539e0a5beecd6a7",
     "packages": [
         {
             "name": "abordage/html-min",
@@ -8604,6 +8604,65 @@
                 "source": "https://github.com/barryvdh/ReflectionDocBlock/tree/v2.4.0"
             },
             "time": "2025-07-17T06:07:30+00:00"
+        },
+        {
+            "name": "carthage-software/mago",
+            "version": "0.26.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/carthage-software/mago.git",
+                "reference": "baad2c067e7be59af500683769b72ac356eac10f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/baad2c067e7be59af500683769b72ac356eac10f",
+                "reference": "baad2c067e7be59af500683769b72ac356eac10f",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^2.6",
+                "php": "~8.1 || ~8.2 || ~8.3 || ~8.4"
+            },
+            "require-dev": {
+                "composer/composer": "^2.8"
+            },
+            "bin": [
+                "composer/bin/mago"
+            ],
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Mago\\MagoPlugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mago\\": "composer/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT OR Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Saif Eddin Gmati",
+                    "email": "azjezz@carthage.software"
+                }
+            ],
+            "description": "Mago is a toolchain for PHP that aims to provide a set of tools to help developers write better code.",
+            "keywords": [
+                "dev"
+            ],
+            "support": {
+                "issues": "https://github.com/carthage-software/mago/issues",
+                "source": "https://github.com/carthage-software/mago/tree/0.26.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/azjezz",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-06-29T23:11:29+00:00"
         },
         {
             "name": "composer/class-map-generator",

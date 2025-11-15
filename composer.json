@@ -29,6 +29,7 @@
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.16.0",
     "barryvdh/laravel-ide-helper": "^3.6.0",
+    "carthage-software/mago": "^0.26.1",
     "dg/bypass-finals": "^1.9",
     "fakerphp/faker": "^1.24.1",
     "filp/whoops": "^2.18.4",
@@ -45,6 +46,7 @@
       "php": "8.3.2"
     },
     "allow-plugins": {
+      "carthage-software/mago": true,
       "pestphp/pest-plugin": true,
       "php-http/discovery": true
     }
@@ -86,16 +88,16 @@
       "@lint"
     ],
     "lint": [
-      "mago lint --baseline lint-baseline.toml"
+      "vendor/bin/mago lint --baseline lint-baseline.toml"
     ],
     "format": [
-      "mago format"
+      "vendor/bin/mago format"
     ],
     "format:check": [
-      "mago format --dry-run"
+      "vendor/bin/mago format --dry-run"
     ],
     "baseline": [
-      "mago lint --generate-baseline --baseline lint-baseline.toml"
+      "vendor/bin/mago lint --generate-baseline --baseline lint-baseline.toml"
     ]
   }
 }

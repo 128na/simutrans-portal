@@ -38,7 +38,7 @@ final class SendLoggedInEmail extends Notification implements ShouldQueue
      *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail(mixed $notifiable)
+    public function toMail(mixed $notifiable): \Illuminate\Notifications\Messages\MailMessage
     {
         return new MailMessage()
             ->subject('ログイン通知')

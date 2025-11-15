@@ -36,7 +36,7 @@ final class SendDeadLinkDetectedEmail extends Notification implements ShouldQueu
      *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail(mixed $notifiable)
+    public function toMail(mixed $notifiable): \Illuminate\Notifications\Messages\MailMessage
     {
         assert($notifiable instanceof Article);
 

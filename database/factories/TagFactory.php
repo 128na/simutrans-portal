@@ -25,7 +25,7 @@ final class TagFactory extends Factory
      * @return array
      */
     #[\Override]
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => fake()->city(),

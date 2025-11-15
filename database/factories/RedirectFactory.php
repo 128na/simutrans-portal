@@ -25,7 +25,7 @@ final class RedirectFactory extends Factory
      * @return array
      */
     #[\Override]
-    public function definition()
+    public function definition(): array
     {
         return [
             'from' => '/dummy/' . fake()->randomNumber(8),

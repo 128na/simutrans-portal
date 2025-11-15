@@ -26,7 +26,7 @@ final class LoginHistoryFactory extends Factory
      * @return array
      */
     #[\Override]
-    public function definition()
+    public function definition(): array
     {
         return [
             'user_id' => User::factory()->create()->id,

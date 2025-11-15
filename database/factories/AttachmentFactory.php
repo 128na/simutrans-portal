@@ -26,7 +26,7 @@ final class AttachmentFactory extends Factory
      * @return array
      */
     #[\Override]
-    public function definition()
+    public function definition(): array
     {
         return [
             'user_id' => User::factory()->create()->id,
@@ -48,7 +48,7 @@ final class AttachmentFactory extends Factory
         ];
     }
 
-    public function image()
+    public function image(): \Illuminate\Database\Eloquent\Factories\Factory
     {
         return $this->state(fn(array $attributes): array => [
             'original_name' => 'test.png',

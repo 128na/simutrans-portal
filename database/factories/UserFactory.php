@@ -17,7 +17,7 @@ final class UserFactory extends Factory
     protected $model = User::class;
 
     #[\Override]
-    public function definition()
+    public function definition(): array
     {
         return [
             'role' => UserRole::User,

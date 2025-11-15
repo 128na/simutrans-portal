@@ -29,7 +29,7 @@ final class ArticleFactory extends Factory
      * @return array
      */
     #[\Override]
-    public function definition()
+    public function definition(): array
     {
         $postType = fake()->randomElement(array_column(ArticlePostType::cases(), 'value'));
         $contents = [
@@ -65,28 +65,28 @@ final class ArticleFactory extends Factory
         ];
     }
 
-    public function publish()
+    public function publish(): \Illuminate\Database\Eloquent\Factories\Factory
     {
         return $this->state(fn(array $attributes): array => [
             'status' => ArticleStatus::Publish,
         ]);
     }
 
-    public function draft()
+    public function draft(): \Illuminate\Database\Eloquent\Factories\Factory
     {
         return $this->state(fn(array $attributes): array => [
             'status' => ArticleStatus::Draft,
         ]);
     }
 
-    public function deleted()
+    public function deleted(): \Illuminate\Database\Eloquent\Factories\Factory
     {
         return $this->state(fn(array $attributes): array => [
             'deleted_at' => now(),
         ]);
     }
 
-    public function addonPost(null|Attachment $attachment = null)
+    public function addonPost(null|Attachment $attachment = null): \Illuminate\Database\Eloquent\Factories\Factory
     {
         return $this->state(fn(array $attributes): array => [
             'post_type' => ArticlePostType::AddonPost,
@@ -100,7 +100,7 @@ final class ArticleFactory extends Factory
         ]);
     }
 
-    public function addonIntroduction()
+    public function addonIntroduction(): \Illuminate\Database\Eloquent\Factories\Factory
     {
         return $this->state(fn(array $attributes): array => [
             'post_type' => ArticlePostType::AddonIntroduction,
@@ -116,7 +116,7 @@ final class ArticleFactory extends Factory
         ]);
     }
 
-    public function page()
+    public function page(): \Illuminate\Database\Eloquent\Factories\Factory
     {
         return $this->state(fn(array $attributes): array => [
             'post_type' => ArticlePostType::Page,
@@ -128,7 +128,7 @@ final class ArticleFactory extends Factory
         ]);
     }
 
-    public function markdown()
+    public function markdown(): \Illuminate\Database\Eloquent\Factories\Factory
     {
         return $this->state(fn(array $attributes): array => [
             'post_type' => ArticlePostType::Markdown,

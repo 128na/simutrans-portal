@@ -26,7 +26,7 @@ final class CategoryFactory extends Factory
      * @return array
      */
     #[\Override]
-    public function definition()
+    public function definition(): array
     {
         return [
             'type' => fake()->randomElement(CategoryType::cases()),

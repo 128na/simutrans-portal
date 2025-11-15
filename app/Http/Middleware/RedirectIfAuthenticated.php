@@ -17,8 +17,11 @@ final class RedirectIfAuthenticated
      * @param  string|null  ...$guards
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, ...$guards)
-    {
+    public function handle(
+        Request $request,
+        Closure $next,
+        null|string ...$guards,
+    ): \Symfony\Component\HttpFoundation\Response|\Illuminate\Http\RedirectResponse {
         if ($request->ajax()) {
             return $next($request);
         }

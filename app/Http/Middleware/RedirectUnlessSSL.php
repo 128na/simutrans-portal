@@ -16,7 +16,7 @@ final class RedirectUnlessSSL
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(\Illuminate\Http\Request $request, Closure $next): \Symfony\Component\HttpFoundation\Response
     {
         if (!$request->secure() && App::environment('production', 'staging')) {
             return redirect()->secure($request->path());

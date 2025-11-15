@@ -31,7 +31,7 @@ final class AttachmentEdit extends JsonResource
             ),
             'caption' => $this->when($this->resource->is_image, $this->resource->caption),
             'order' => $this->when($this->resource->is_image, $this->resource->order),
-            'attachmentable' => $this->whenLoaded('attachmentable', function (): ?array {
+            'attachmentable' => $this->whenLoaded('attachmentable', function (): null|array {
                 $attachmentable = $this->resource->attachmentable;
 
                 return $attachmentable instanceof Article ? $attachmentable->only(['id', 'title']) : null;

@@ -22,7 +22,7 @@ jobs:
 
       - name: Download Mago CLI
         run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://carthage.software/mago.sh | bash
+          curl --proto '=https' --tlsv1.2 -sSf https://carthage.software/mago.sh | bash -s -- --version=1.0.0
           tar -xzf mago-cli.tar.gz
       - name: Run Mago
         run: |

@@ -19,8 +19,11 @@ final readonly class RestrictControl
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
-    public function handle($request, Closure $next, null|string $type = null)
-    {
+    public function handle(
+        \Illuminate\Http\Request $request,
+        Closure $next,
+        null|string $type = null,
+    ): \Symfony\Component\HttpFoundation\Response {
         $this->handleRestrict($type ?? $request->route()?->uri);
 
         return $next($request);

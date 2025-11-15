@@ -19,7 +19,7 @@ final class FailedCountCache
 
     public function update(Article $article, int $count): void
     {
-        Cache::put($this->getKey($article), $count);
+        Cache::put($this->getKey($article), $count, now()->addDays(7));
     }
 
     public function clear(Article $article): void

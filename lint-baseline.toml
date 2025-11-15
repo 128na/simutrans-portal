@@ -303,25 +303,10 @@ code = "no-else-clause"
 start_line = 25
 end_line = 27
 
-[[entries.'app\Notifications\MFASetupRecovered.php'.issues]]
-code = "return-type"
-start_line = 30
-end_line = 35
-
-[[entries.'app\Notifications\ResetPassword.php'.issues]]
-code = "return-type"
-start_line = 39
-end_line = 45
-
 [[entries.'app\Notifications\SendSNSNotification.php'.issues]]
 code = "class-name"
 start_line = 14
 end_line = 14
-
-[[entries.'app\Notifications\SendSNSNotification.php'.issues]]
-code = "return-type"
-start_line = 29
-end_line = 29
 
 [[entries.'app\Policies\BasePolicy.php'.issues]]
 code = "class-name"

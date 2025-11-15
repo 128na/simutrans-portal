@@ -16,15 +16,15 @@
     "ezyang/htmlpurifier": "^4.19",
     "google/cloud-recaptcha-enterprise": ">=2.2.1",
     "guzzlehttp/guzzle": ">=7.10.0",
-    "laravel/fortify": "^1.31.2",
-    "laravel/framework": "^12.37.0",
+    "laravel/fortify": "^1.31.3",
+    "laravel/framework": "^12.38.1",
     "laravel/sanctum": ">=4.2.0",
     "laravel/tinker": "^2.10.1",
     "marvinlabs/laravel-discord-logger": "^1.4.3",
     "potibm/phluesky": ">=0.6.1",
     "spatie/flysystem-dropbox": "^3.0.2",
     "spatie/laravel-backup": ">=9.3.6",
-    "spatie/laravel-feed": "^4.4.2"
+    "spatie/laravel-feed": "^4.4.3"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.16.0",
@@ -39,8 +39,8 @@
     "laravel/pint": "^1.25.1",
     "mockery/mockery": "^1.6.12",
     "nunomaduro/collision": "^8.8.2",
-    "phpunit/phpunit": "^11.5.43",
-    "rector/rector": "^2.2.7",
+    "phpunit/phpunit": "^11.5.44",
+    "rector/rector": "^2.2.8",
     "spatie/laravel-ignition": "^2.9.1"
   },
   "config": {

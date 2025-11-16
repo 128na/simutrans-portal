@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs\Article;
 
+use App\Actions\ArticleSearchIndex\UpdateOrCreateAction;
 use App\Actions\GenerateStatic\DeleteUnrelatedTags;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -21,9 +22,15 @@ final class JobUpdateRelated implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    public function __construct(private readonly ?int $articleId = null) {}
+
     public function handle(
         DeleteUnrelatedTags $deleteUnrelatedTags,
+        UpdateOrCreateAction $updateOrCreateAction,
     ): void {
         $deleteUnrelatedTags();
+        if ($this->articleId) {
+            $updateOrCreateAction($this->articleId);
+        }
     }
 }

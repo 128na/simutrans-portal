@@ -60,6 +60,7 @@ namespace App\Models{
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Article> $relatedArticles
  * @property-read int|null $related_articles_count
+ * @property-read \App\Models\Article\ArticleSearchIndex|null $seachIndex
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
  * @property-read mixed $thumbnail
@@ -102,6 +103,22 @@ namespace App\Models{
  */
 	#[\AllowDynamicProperties]
 	final class IdeHelperArticle {}
+}
+
+namespace App\Models\Article{
+/**
+ * @property int $article_id
+ * @property string|null $text
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property-read \App\Models\Article|null $article
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleSearchIndex newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleSearchIndex newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleSearchIndex query()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	final class IdeHelperArticleSearchIndex {}
 }
 
 namespace App\Models\Article{

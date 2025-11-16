@@ -98,17 +98,15 @@ final class ArticleRepository
             ->with('categories', 'tags', 'attachments', 'user.profile.attachments');
 
         // キーワード
-        $word = $condition['word'] ?? '';
-        if ($word) {
-            $likeWord = sprintf('%%%s%%', $word);
-            $baseQuery->where(fn ($q) => $q
-                ->orWhere('title', 'LIKE', $likeWord)
-                ->orWhere('contents', 'LIKE', $likeWord)
-                ->orWhereHas(
-                    'attachments.fileInfo',
-                    fn ($q) => $q
-                        ->where('data', 'LIKE', $likeWord)
-                ));
+        $rawWord = $condition['word'] ?? '';
+        $words = array_filter(explode(
+            ' ',
+            str_replace(['　', ',', '、', '・'], ' ', $rawWord)
+        ));
+        if ($words !== []) {
+            $queryString = implode(' ', array_map(fn (string $w): string => '+'.$w, $words));
+            $baseQuery->join('article_search_index as idx', 'idx.article_id', '=', 'articles.id')
+                ->whereRaw('MATCH(idx.text) AGAINST (? IN BOOLEAN MODE)', [$queryString]);
         }
 
         // ユーザー(OR)

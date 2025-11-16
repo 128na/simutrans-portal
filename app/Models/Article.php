@@ -9,6 +9,7 @@ use App\Constants\DefaultThumbnail;
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Enums\CategoryType;
+use App\Models\Article\ArticleSearchIndex;
 use App\Models\Article\ConversionCount;
 use App\Models\Article\ViewCount;
 use App\Models\Contents\AddonPostContent;
@@ -227,9 +228,12 @@ final class Article extends Model implements Feedable
         return $this->morphedByMany(self::class, 'articlable');
     }
 
-    public function getAttachment(int|string $id): ?Attachment
+    /**
+     * @return HasOne<ArticleSearchIndex,$this>
+     */
+    public function seachIndex(): HasOne
     {
-        return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
+        return $this->hasOne(ArticleSearchIndex::class, 'article_id', 'id');
     }
 
     /*
@@ -276,6 +280,11 @@ final class Article extends Model implements Feedable
             'articleStatus' => $this->status,
             'articleUserName' => $this->user->name,
         ];
+    }
+
+    public function getAttachment(int|string $id): ?Attachment
+    {
+        return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
     }
 
     /*

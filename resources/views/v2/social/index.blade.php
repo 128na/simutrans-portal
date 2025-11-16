@@ -51,10 +51,9 @@
                     <tr>
                         <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">{{ $feed['title'] }}</td>
                         <td class="border border-gray-300 px-4 py-2">
-                            @include('v2.parts.link', [
-                            'url' => $feed['url'],
-                            'title' => '🛜'
-                            ])
+                            <a href="{{ $feed['url'] }}" target="_blank" rel="noopener noreferrer">
+                                <img src="{{ asset('storage/social/feed.png') }}" alt="RSS Feed" class="inline-block h-[1em] align-text-bottom">
+                            </a>
                         </td>
                     </tr>
                     @endforeach

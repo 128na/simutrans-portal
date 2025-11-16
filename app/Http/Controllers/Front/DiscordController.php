@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Front;
 
-use App\Services\Discord\InviteService;
+use App\Actions\DiscordInvite\GenerateInviteCodeAction;
 use App\Services\Front\MetaOgpService;
-use App\Services\Google\Recaptcha\RecaptchaService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Throwable;
@@ -14,8 +13,6 @@ use Throwable;
 final class DiscordController extends Controller
 {
     public function __construct(
-        private readonly InviteService $inviteService,
-        private readonly RecaptchaService $recaptchaService,
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
@@ -26,14 +23,12 @@ final class DiscordController extends Controller
         ]);
     }
 
-    public function generate(Request $request): \Illuminate\Contracts\View\View
+    public function generate(Request $request, GenerateInviteCodeAction $generateInviteCodeAction): \Illuminate\Contracts\View\View
     {
+
         try {
             $recaptchaToken = $request->input('recaptchaToken', '');
-            $this->recaptchaService->assessment((string) $recaptchaToken);
-            $url = $this->inviteService->create();
-
-            event(new \App\Events\Discord\DiscordInviteCodeCreated);
+            $url = $generateInviteCodeAction($recaptchaToken);
 
             return view('v2.discord.index', [
                 'url' => $url,

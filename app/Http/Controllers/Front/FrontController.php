@@ -4,27 +4,25 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Front;
 
+use App\Actions\FrontArticle\DownloadAction;
+use App\Actions\FrontArticle\FallbackShowAction;
+use App\Actions\FrontArticle\SearchAction;
 use App\Actions\Redirect\DoRedirectIfExists;
-use App\Enums\ArticlePostType;
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
-use App\Repositories\CategoryRepository;
-use App\Repositories\TagRepository;
 use App\Repositories\UserRepository;
 use App\Services\Front\MetaOgpService;
-use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 final class FrontController extends Controller
 {
     public function __construct(
         private readonly ArticleRepository $articleRepository,
-        private readonly CategoryRepository $categoryRepository,
-        private readonly TagRepository $tagRepository,
         private readonly UserRepository $userRepository,
         private readonly MetaOgpService $metaOgpService,
     ) {}
@@ -113,50 +111,23 @@ final class FrontController extends Controller
         ]);
     }
 
-    public function search(Request $request): \Illuminate\Contracts\View\View
+    public function search(Request $request, SearchAction $searchAction): View
     {
         $condition = $request->all();
 
         return view('v2.search.index', [
-            'condition' => $condition,
-            'options' => [
-                'categories' => $this->categoryRepository->getForSearch(),
-                'tags' => $this->tagRepository->getForSearch(),
-                'users' => $this->userRepository->getForSearch(),
-                'postTypes' => ArticlePostType::cases(),
-            ],
-            'articles' => $this->articleRepository->search($condition),
+            ...$searchAction($condition),
             'meta' => $this->metaOgpService->search(),
         ]);
     }
 
-    public function fallbackShow(string $slugOrId): \Illuminate\Http\RedirectResponse
+    public function fallbackShow(string $slugOrId, FallbackShowAction $fallbackShowAction): RedirectResponse
     {
-        $article = is_numeric($slugOrId)
-            ? Article::findOrFail($slugOrId)
-            : Article::slug($slugOrId)->orderBy('id', 'asc')->firstOrFail();
-
-        return redirect(route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]), 302);
+        return $fallbackShowAction($slugOrId);
     }
 
-    public function download(Article $article): StreamedResponse
+    public function download(Article $article, DownloadAction $downloadAction): StreamedResponse
     {
-        abort_unless($article->is_publish, 404);
-        abort_unless($article->is_addon_post, 404);
-        abort_unless($article->has_file && $article->file, 404);
-
-        if (Auth::check() === false || Auth::id() !== $article->user_id) {
-            event(new \App\Events\ArticleConversion($article));
-        }
-
-        return $this->getPublicDisk()->download(
-            $article->file->path,
-            $article->file->original_name
-        );
-    }
-
-    private function getPublicDisk(): FilesystemAdapter
-    {
-        return Storage::disk('public');
+        return $downloadAction($article, Auth::user());
     }
 }

@@ -1,6 +1,18 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Parameter \#1 \$boolean of function abort_unless expects bool, App\\Models\\User\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Actions/FrontArticle/DownloadAction.php
+
+		-
+			message: '#^Method App\\Actions\\FrontArticle\\SearchAction\:\:__invoke\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Actions/FrontArticle/SearchAction.php
+
+		-
 			message: '#^Access to an undefined property App\\Models\\Article\:\:\$categoryPaks\.$#'
 			identifier: property.notFound
 			count: 1
@@ -11,6 +23,18 @@ parameters:
 			identifier: nullsafe.neverNull
 			count: 1
 			path: app/Actions/SendSNS/Article/ToOneSignal.php
+
+		-
+			message: '#^Parameter \#1 \$state of callable App\\Actions\\Oauth\\CallbackAction expects string, Illuminate\\Support\\Stringable given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Admin/OauthController.php
+
+		-
+			message: '#^Parameter \#2 \$code of callable App\\Actions\\Oauth\\CallbackAction expects string, Illuminate\\Support\\Stringable given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Admin/OauthController.php
 
 		-
 			message: '#^Call to function assert\(\) with true will always evaluate to true\.$#'

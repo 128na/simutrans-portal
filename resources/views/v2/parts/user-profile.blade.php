@@ -8,7 +8,8 @@
         </p>
         <p class="text-gray-600 break-all">{{$user->profile->data->description}}</p>
         @foreach ($user->profile->data->website as $website)
-        @include('v2.parts.link-external', ['url' => $website])
+        @dump($website)
+        @includeIf('v2.parts.link-external', ['url' => $website])
         @endforeach
     </div>
 </div>

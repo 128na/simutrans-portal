@@ -36,9 +36,8 @@ final class AppServiceProvider extends ServiceProvider
     {
         Blade::directive(
             'markdown',
-            fn(string $expression): string =>
-            sprintf(
-                '<?php echo app(' . \App\Services\MarkdownService::class . '::class)->toEscapedHTML(%s); ?>',
+            fn (string $expression): string => sprintf(
+                '<?php echo app('.\App\Services\MarkdownService::class.'::class)->toEscapedHTML(%s); ?>',
                 $expression
             )
         );
@@ -46,21 +45,24 @@ final class AppServiceProvider extends ServiceProvider
 
     private function registerSlowQueryLogging(): void
     {
-        DB::listen(function ($query) {
+        DB::listen(function ($query): void {
             if ($query->time > 1000) {
                 Log::channel('slowquery')->warning('over 1sec', [
                     'sql' => $query->sql,
                     'bindings' => $query->bindings,
                     'time' => $query->time,
                 ]);
+
                 return;
             }
+
             if ($query->time > 100) {
                 Log::channel('slowquery')->info('over 100ms', [
                     'sql' => $query->sql,
                     'bindings' => $query->bindings,
                     'time' => $query->time,
                 ]);
+
                 return;
             }
         });

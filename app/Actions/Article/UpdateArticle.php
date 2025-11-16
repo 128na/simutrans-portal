@@ -57,7 +57,7 @@ final readonly class UpdateArticle
             ($this->addRedirect)($article->user, $oldSlug, $data['article']['slug']);
         }
 
-        dispatch(new \App\Jobs\Article\JobUpdateRelated);
+        dispatch(new \App\Jobs\Article\JobUpdateRelated($article->id));
 
         $shouldNotify = ($data['should_notify'] ?? false) && ! $withoutUpdateModifiedAt;
         event(new \App\Events\Article\ArticleUpdated($article, $shouldNotify, $notYetPublished));

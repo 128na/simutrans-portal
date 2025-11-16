@@ -34,6 +34,11 @@ return [
     */
 
     'channels' => [
+        'slowquery' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/slowquery.log'),
+            'level' => 'info',
+        ],
         // stack定義
         // 一般ログ
         'general' => [

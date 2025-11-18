@@ -33,13 +33,13 @@ type Sort = {
 };
 
 const headers: DataTableHeader<keyof AttachmentEdit.Attachment>[] = [
-  { name: "サムネイル", key: "thumbnail", width: "w-2/12", sortable: false },
+  { name: "サムネイル", key: "thumbnail", width: "w-3/12", sortable: false },
   { name: "ファイル名", key: "original_name", width: "w-3/12", sortable: true },
   { name: "形式", key: "type", width: "w-1/12", sortable: true },
   {
     name: "利用先",
     key: "attachmentable_id",
-    width: "w-1/12",
+    width: "w-2/12",
     sortable: true,
   },
   { name: "サイズ", key: "size", width: "w-1/12", sortable: true },
@@ -109,7 +109,7 @@ export const AttachmentTable = ({
   };
 
   return (
-    <div className="relative overflow-x-auto">
+    <>
       <div className="gap-4 flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between py-4">
         <div>
           <Input
@@ -126,63 +126,65 @@ export const AttachmentTable = ({
           onChange={setCurrent}
         />
       </div>
-      <TextSub>
-        利用先の無いファイルのみ削除できます。利用先の記事でファイルを差し替えてから削除してください。
-      </TextSub>
-      <DataTable
-        headers={headers}
-        data={sorted}
-        sort={sort}
-        limit={limit}
-        current={current}
-        onSort={onSort}
-        renderRow={(a) => (
-          <tr
-            key={a.id}
-            className={twMerge(
-              "bg-white border-b border-gray-200",
-              onSelectAttachment &&
-                (selected === a.id
-                  ? "cursor-pointer bg-brand/20 hover:bg-brand/30"
-                  : "cursor-pointer hover:bg-gray-100"),
-            )}
-            onClick={() => onSelectAttachment?.(selected === a.id ? null : a)}
-          >
-            <td className="px-6 py-4 ">
-              <Image attachmentId={a.id} attachments={[a]} />
-            </td>
-            <td className="px-6 py-4 font-medium">{a.original_name}</td>
-            <td className="px-6 py-4">{t(`attachments.type.${a.type}`)}</td>
-            <td className="px-6 py-4">
-              {a.attachmentable_type === "Profile" ? (
-                <Link href="/mypage/profile">プロフィール</Link>
-              ) : (
-                a.attachmentable?.title && (
-                  <Link href={`/mypage/articles/edit/${a.attachmentable_id}`}>
-                    {a.attachmentable?.title}
-                  </Link>
-                )
+      <div className="relative overflow-x-auto">
+        <TextSub>
+          利用先の無いファイルのみ削除できます。利用先の記事でファイルを差し替えてから削除してください。
+        </TextSub>
+        <DataTable
+          headers={headers}
+          data={sorted}
+          sort={sort}
+          limit={limit}
+          current={current}
+          onSort={onSort}
+          renderRow={(a) => (
+            <tr
+              key={a.id}
+              className={twMerge(
+                "bg-white border-b border-gray-200",
+                onSelectAttachment &&
+                  (selected === a.id
+                    ? "cursor-pointer bg-brand/20 hover:bg-brand/30"
+                    : "cursor-pointer hover:bg-gray-100"),
               )}
-            </td>
-            <td className="px-6 py-4">{displaySize(a.size)}</td>
-            <td className="px-6 py-4">
-              {format(new Date(a.created_at), "yyyy/MM/dd H:mm")}
-            </td>
-            <td className="px-6 py-4">
-              {a.attachmentable_id === null && a.id !== selected && (
-                <ButtonDanger
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDelete(a.id);
-                  }}
-                >
-                  削除
-                </ButtonDanger>
-              )}
-            </td>
-          </tr>
-        )}
-      />
-    </div>
+              onClick={() => onSelectAttachment?.(selected === a.id ? null : a)}
+            >
+              <td className="px-6 py-4 ">
+                <Image attachmentId={a.id} attachments={[a]} />
+              </td>
+              <td className="px-6 py-4 font-medium">{a.original_name}</td>
+              <td className="px-6 py-4">{t(`attachments.type.${a.type}`)}</td>
+              <td className="px-6 py-4">
+                {a.attachmentable_type === "Profile" ? (
+                  <Link href="/mypage/profile">プロフィール</Link>
+                ) : (
+                  a.attachmentable?.title && (
+                    <Link href={`/mypage/articles/edit/${a.attachmentable_id}`}>
+                      {a.attachmentable?.title}
+                    </Link>
+                  )
+                )}
+              </td>
+              <td className="px-6 py-4">{displaySize(a.size)}</td>
+              <td className="px-6 py-4">
+                {format(new Date(a.created_at), "yyyy/MM/dd H:mm")}
+              </td>
+              <td className="px-6 py-4">
+                {a.attachmentable_id === null && a.id !== selected && (
+                  <ButtonDanger
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(a.id);
+                    }}
+                  >
+                    削除
+                  </ButtonDanger>
+                )}
+              </td>
+            </tr>
+          )}
+        />
+      </div>
+    </>
   );
 };

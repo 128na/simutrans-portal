@@ -65,6 +65,12 @@ final class UserRepository
                 'total_view_count'
             )
             ->selectSub(
+                DB::table('redirects')
+                    ->where('user_id', $userId)
+                    ->selectRaw('COUNT(*)'),
+                'redirect_count'
+            )
+            ->selectSub(
                 DB::table('tags')
                     ->where(function ($q) use ($userId): void {
                         $q->where('created_by', $userId)
@@ -84,7 +90,7 @@ final class UserRepository
         return $this->model->query()
             ->select(['users.id', 'users.nickname', 'users.name'])
             ->whereExists(
-                fn ($q) => $q->selectRaw(1)
+                fn($q) => $q->selectRaw(1)
                     ->from('articles as a')
                     ->whereColumn('a.user_id', 'users.id')
                     ->where('a.status', ArticleStatus::Publish)

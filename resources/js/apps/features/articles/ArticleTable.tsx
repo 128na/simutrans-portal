@@ -70,7 +70,7 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
   const createUrl = `${import.meta.env.VITE_APP_URL}/mypage/articles/create`;
 
   return (
-    <div className="relative overflow-x-auto">
+    <>
       <div className="gap-4 flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between py-4">
         <div>
           <Button onClick={() => (window.location.href = createUrl)}>
@@ -92,43 +92,45 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
           onChange={setCurrent}
         />
       </div>
-      <DataTable
-        headers={headers}
-        data={sortedArticles}
-        sort={sort}
-        limit={limit}
-        current={current}
-        onSort={onSort}
-        renderRow={(article) => (
-          <tr
-            key={article.id}
-            className={twMerge(
-              "bg-white border-b border-gray-200 cursor-pointer",
-              StatusClass[article.status],
-            )}
-            onClick={() => onClick?.(article)}
-          >
-            <td className="px-6 py-4 font-medium">{article.title}</td>
-            <td className="px-6 py-4">{StatusText[article.status]}</td>
-            <td className="px-6 py-4">{PostTypeText[article.post_type]}</td>
-            <td className="px-6 py-4">
-              {article.published_at
-                ? format(new Date(article.published_at), "yyyy/MM/dd H:mm")
-                : "-"}
-              {article.status === "reservation" && "（予約）"}
-            </td>
-            <td className="px-6 py-4">
-              {format(new Date(article.modified_at), "yyyy/MM/dd H:mm")}
-            </td>
-            <td className="px-6 py-4">
-              {article.total_view_count?.count ?? 0}
-            </td>
-            <td className="px-6 py-4">
-              {article.total_conversion_count?.count ?? 0}
-            </td>
-          </tr>
-        )}
-      />
-    </div>
+      <div className="relative overflow-x-auto">
+        <DataTable
+          headers={headers}
+          data={sortedArticles}
+          sort={sort}
+          limit={limit}
+          current={current}
+          onSort={onSort}
+          renderRow={(article) => (
+            <tr
+              key={article.id}
+              className={twMerge(
+                "bg-white border-b border-gray-200 cursor-pointer",
+                StatusClass[article.status],
+              )}
+              onClick={() => onClick?.(article)}
+            >
+              <td className="px-6 py-4 font-medium">{article.title}</td>
+              <td className="px-6 py-4">{StatusText[article.status]}</td>
+              <td className="px-6 py-4">{PostTypeText[article.post_type]}</td>
+              <td className="px-6 py-4">
+                {article.published_at
+                  ? format(new Date(article.published_at), "yyyy/MM/dd H:mm")
+                  : "-"}
+                {article.status === "reservation" && "（予約）"}
+              </td>
+              <td className="px-6 py-4">
+                {format(new Date(article.modified_at), "yyyy/MM/dd H:mm")}
+              </td>
+              <td className="px-6 py-4">
+                {article.total_view_count?.count ?? 0}
+              </td>
+              <td className="px-6 py-4">
+                {article.total_conversion_count?.count ?? 0}
+              </td>
+            </tr>
+          )}
+        />
+      </div>
+    </>
   );
 };

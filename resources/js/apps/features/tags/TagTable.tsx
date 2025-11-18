@@ -53,7 +53,7 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
   };
 
   return (
-    <div className="relative overflow-x-auto">
+    <>
       <div className="gap-4 flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between py-4">
         <div>
           <Button
@@ -80,33 +80,37 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
         />
       </div>
       <TextSub>紐づく記事が無いタグは数日後に自動的に削除されます。</TextSub>
-      <DataTable
-        headers={headers}
-        data={sorted}
-        sort={sort}
-        limit={limit}
-        current={current}
-        onSort={onSort}
-        renderRow={(tag) => (
-          <tr
-            key={tag.id}
-            className={twMerge(
-              "bg-white border-b border-gray-200",
-              tag.editable && "cursor-pointer hover:bg-gray-100",
-            )}
-            onClick={() => onClick?.(tag)}
-          >
-            <td className="px-6 py-4 font-medium">{tag.name}</td>
-            <td className="px-6 py-4 whitespace-pre-wrap">
-              {tag.description ?? "-"}
-            </td>
-            <td className="px-6 py-4">{tag.articles_count}</td>
-            <td className="px-6 py-4">{tag.created_by?.name ?? "-"}</td>
-            <td className="px-6 py-4">{tag.last_modified_by?.name ?? "-"}</td>
-            <td className="px-6 py-4">{tag.last_modified_at?.slice(0, 10)}</td>
-          </tr>
-        )}
-      />
-    </div>
+      <div className="relative overflow-x-auto">
+        <DataTable
+          headers={headers}
+          data={sorted}
+          sort={sort}
+          limit={limit}
+          current={current}
+          onSort={onSort}
+          renderRow={(tag) => (
+            <tr
+              key={tag.id}
+              className={twMerge(
+                "bg-white border-b border-gray-200",
+                tag.editable && "cursor-pointer hover:bg-gray-100",
+              )}
+              onClick={() => onClick?.(tag)}
+            >
+              <td className="px-6 py-4 font-medium">{tag.name}</td>
+              <td className="px-6 py-4 whitespace-pre-wrap">
+                {tag.description ?? "-"}
+              </td>
+              <td className="px-6 py-4">{tag.articles_count}</td>
+              <td className="px-6 py-4">{tag.created_by?.name ?? "-"}</td>
+              <td className="px-6 py-4">{tag.last_modified_by?.name ?? "-"}</td>
+              <td className="px-6 py-4">
+                {tag.last_modified_at?.slice(0, 10)}
+              </td>
+            </tr>
+          )}
+        />
+      </div>
+    </>
   );
 };

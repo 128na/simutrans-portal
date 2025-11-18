@@ -45,15 +45,22 @@
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.analytics')}}" class="block font-semibold text-gray-900">
-                                    アクセス解析
+                                <a href="{{route('mypage.redirects')}}" class="block font-semibold text-gray-900">
+                                    記事のリダイレクト設定
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.redirects')}}" class="block font-semibold text-gray-900">
-                                    記事のリダイレクト設定
+                                <a href="{{route('mypage.attachments')}}" class="block font-semibold text-gray-900">
+                                    ファイル管理
+                                </a>
+                            </div>
+                        </div>
+                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
+                            <div class="flex-auto">
+                                <a href="{{route('mypage.analytics')}}" class="block font-semibold text-gray-900">
+                                    アナリティクス
                                 </a>
                             </div>
                         </div>
@@ -86,6 +93,13 @@
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
+                                <a href="{{route('mypage.two-factor')}}" class="block font-semibold text-gray-900">
+                                    二要素認証
+                                </a>
+                            </div>
+                        </div>
+                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
+                            <div class="flex-auto">
                                 <a href="{{route('mypage.invite')}}" class="block font-semibold text-gray-900">
                                     ユーザー招待
                                 </a>
@@ -95,13 +109,6 @@
                             <div class="flex-auto">
                                 <a href="{{route('mypage.login-histories')}}" class="block font-semibold text-gray-900">
                                     ログイン履歴
-                                </a>
-                            </div>
-                        </div>
-                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                            <div class="flex-auto">
-                                <a href="{{route('mypage.two-factor')}}" class="block font-semibold text-gray-900">
-                                    二要素認証
                                 </a>
                             </div>
                         </div>
@@ -141,15 +148,16 @@
                                 <a href="{{route('mypage.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">マイページ</a>
                                 <a href="{{route('mypage.articles.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">一覧</a>
                                 <a href="{{route('mypage.articles.create')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">作成</a>
-                                <a href="{{route('mypage.analytics')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">アクセス解析</a>
                                 <a href="{{route('mypage.redirects')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">記事のリダイレクト設定</a>
+                                <a href="{{route('mypage.attachments')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ファイル管理</a>
+                                <a href="{{route('mypage.analytics')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">アナリティクス</a>
                                 <a href="{{route('mypage.tags')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">タグの編集</a>
                             </div>
                             <div class="space-y-2 py-6">
                                 <a href="{{route('mypage.profile')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">プロフィール</a>
+                                <a href="{{route('mypage.two-factor')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">二要素認証</a>
                                 <a href="{{route('mypage.invite')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ユーザー招待</a>
                                 <a href="{{route('mypage.login-histories')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ログイン履歴</a>
-                                <a href="{{route('mypage.two-factor')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">二要素認証</a>
                                 <a href="{{config('app.support_site_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50" target="_blank" rel="noopener">サイトの使い方</a>
                             </div>
                             <div class="py-6">

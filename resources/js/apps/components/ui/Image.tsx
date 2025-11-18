@@ -13,6 +13,9 @@ export const Image = ({
   const url = attachment ? attachment.thumbnail : defaultUrl;
 
   return (
-    <img className="w-80 h-45 object-cover rounded-lg shadow-lg" src={url} />
+    <img
+      className="w-80 h-45 object-cover rounded-lg shadow-lg min-w-[64px] min-h-[36px]"
+      src={url}
+    />
   );
 };

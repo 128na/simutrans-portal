@@ -18,9 +18,9 @@ type Sort = {
 };
 
 const headers: DataTableHeader<keyof Analytics.Article>[] = [
-  { name: "タイトル", key: "title", width: "w-2/6", sortable: true },
-  { name: "投稿日", key: "published_at", width: "w-2/6", sortable: true },
-  { name: "更新日", key: "modified_at", width: "w-2/6", sortable: true },
+  { name: "タイトル", key: "title", width: "w-2/4", sortable: true },
+  { name: "投稿日", key: "published_at", width: "w-1/4", sortable: true },
+  { name: "更新日", key: "modified_at", width: "w-1/4", sortable: true },
 ];
 
 export const AnalyticsTable = ({ articles, limit }: Props) => {
@@ -64,7 +64,7 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
   };
 
   return (
-    <div className="relative overflow-x-auto">
+    <>
       <div className="gap-4 flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between py-4">
         <div>
           <Input
@@ -81,30 +81,34 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
           onChange={setCurrent}
         />
       </div>
-      <DataTable
-        headers={headers}
-        data={sorted}
-        sort={sort}
-        limit={limit}
-        current={current}
-        onSort={onSort}
-        renderRow={(article) => (
-          <tr
-            key={article.id}
-            className={twMerge(
-              "bg-white border-b border-gray-200",
-              selected.includes(article.id)
-                ? "cursor-pointer bg-brand/20 hover:bg-brand/30"
-                : "cursor-pointer hover:bg-gray-100",
-            )}
-            onClick={() => onClick(article.id)}
-          >
-            <td className="px-6 py-4 font-medium">{article.title}</td>
-            <td className="px-6 py-4">{article.published_at?.slice(0, 10)}</td>
-            <td className="px-6 py-4">{article.modified_at?.slice(0, 10)}</td>
-          </tr>
-        )}
-      />
-    </div>
+      <div className="relative overflow-x-auto">
+        <DataTable
+          headers={headers}
+          data={sorted}
+          sort={sort}
+          limit={limit}
+          current={current}
+          onSort={onSort}
+          renderRow={(article) => (
+            <tr
+              key={article.id}
+              className={twMerge(
+                "bg-white border-b border-gray-200",
+                selected.includes(article.id)
+                  ? "cursor-pointer bg-brand/20 hover:bg-brand/30"
+                  : "cursor-pointer hover:bg-gray-100",
+              )}
+              onClick={() => onClick(article.id)}
+            >
+              <td className="px-6 py-4 font-medium">{article.title}</td>
+              <td className="px-6 py-4">
+                {article.published_at?.slice(0, 10)}
+              </td>
+              <td className="px-6 py-4">{article.modified_at?.slice(0, 10)}</td>
+            </tr>
+          )}
+        />
+      </div>
+    </>
   );
 };

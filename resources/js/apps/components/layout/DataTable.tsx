@@ -33,7 +33,7 @@ export function DataTable<T, K extends string>({
   renderRow,
 }: Props<T, K>) {
   return (
-    <table className="table-fixed w-full text-sm text-left">
+    <table className="table-fixed text-sm text-left min-w-[960px]">
       <thead>
         <tr className="text-xs text-gray-700 bg-gray-50">
           {headers.map((header) => (

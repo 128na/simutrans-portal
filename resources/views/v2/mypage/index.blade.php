@@ -19,6 +19,11 @@
                         </td>
                     </tr>
                     <tr>
+                        <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">記事リダイレクト設定数</td>
+                        <td class="border border-gray-300 px-4 py-2">{{$summary->redirect_count ?? 0}} 件</td>
+                        <td class="border border-gray-300 px-4 py-2">@include('v2.parts.link', ['url' => route('mypage.redirects'), 'title' => 'リダイレクト設定'])</td>
+                    </tr>
+                    <tr>
                         <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">投稿ファイル数</td>
                         <td class="border border-gray-300 px-4 py-2">{{$summary->attachment_count ?? 0}} 件</td>
                         <td class="border border-gray-300 px-4 py-2" rowspan="2">@include('v2.parts.link', ['url' => route('mypage.attachments'), 'title' => 'ファイル管理'])</td>

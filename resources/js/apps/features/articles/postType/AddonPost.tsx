@@ -13,7 +13,7 @@ import { Upload } from "@/apps/components/form/Upload";
 import TextSub from "@/apps/components/ui/TextSub";
 import { useAxiosError } from "@/apps/state/useAxiosError";
 import TextError from "@/apps/components/ui/TextError";
-import { Modal } from "@/apps/components/ui/Modal";
+import { ModalFull } from "@/apps/components/ui/ModalFull";
 import { AttachmentEdit } from "../../attachments/AttachmentEdit";
 
 export const AddonPost = () => {
@@ -62,7 +62,7 @@ export const AddonPost = () => {
           >
             ファイルをアップロード
           </Upload>
-          <Modal
+          <ModalFull
             buttonTitle="アップロード済みのファイルから選択"
             title="ファイルを選択"
           >
@@ -85,7 +85,7 @@ export const AddonPost = () => {
                 }}
               />
             )}
-          </Modal>
+          </ModalFull>
         </div>
       </div>
 
@@ -191,14 +191,14 @@ export const AddonPost = () => {
                 onChange={(tagIds) => update((draft) => (draft.tags = tagIds))}
               />
             </Label>
-            <Modal buttonTitle="タグの作成・編集" title="タグの作成・編集">
+            <ModalFull buttonTitle="タグの作成・編集" title="タグの作成・編集">
               <TagEdit
                 tags={tags}
                 onChangeTags={(tags) => {
                   updateTags(tags);
                 }}
               />
-            </Modal>
+            </ModalFull>
           </div>
 
           <Label className="font-medium">

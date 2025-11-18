@@ -1,6 +1,6 @@
 import { Upload } from "@/apps/components/form/Upload";
 import Label from "@/apps/components/ui/Label";
-import { Modal } from "@/apps/components/ui/Modal";
+import { ModalFull } from "@/apps/components/ui/ModalFull";
 import TextError from "@/apps/components/ui/TextError";
 import TextSub from "@/apps/components/ui/TextSub";
 import { useAxiosError } from "@/apps/state/useAxiosError";
@@ -136,7 +136,7 @@ export const ProfileEdit = ({
           >
             画像をアップロード
           </Upload>
-          <Modal
+          <ModalFull
             buttonTitle="アップロード済みの画像から選択"
             title="画像を選択"
           >
@@ -162,7 +162,7 @@ export const ProfileEdit = ({
                 onChangeAttachments={onChangeAttachments}
               />
             )}
-          </Modal>
+          </ModalFull>
         </div>
       </div>
       <Textarea

@@ -1,7 +1,7 @@
 import { Upload } from "@/apps/components/form/Upload";
 import { Image } from "@/apps/components/ui/Image";
 import Label from "@/apps/components/ui/Label";
-import { Modal } from "@/apps/components/ui/Modal";
+import { ModalFull } from "@/apps/components/ui/ModalFull";
 import TextError from "@/apps/components/ui/TextError";
 import TextSub from "@/apps/components/ui/TextSub";
 import { AttachmentEdit } from "@/apps/features/attachments/AttachmentEdit";
@@ -45,7 +45,7 @@ export const SectionImage = ({
           <Upload accept="image/*" onUploaded={onUploaded}>
             画像をアップロード
           </Upload>
-          <Modal
+          <ModalFull
             buttonTitle="アップロード済みの画像から選択"
             title="画像を選択"
           >
@@ -66,7 +66,7 @@ export const SectionImage = ({
                 }}
               />
             )}
-          </Modal>
+          </ModalFull>
         </div>
       </div>
     </>

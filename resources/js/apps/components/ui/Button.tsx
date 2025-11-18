@@ -12,6 +12,7 @@ export default function Button({ children, className, ...props }: ButtonProps) {
         `
         px-4 py-2
         bg-brand
+        text-md
         text-white
         rounded-lg
         cursor-pointer

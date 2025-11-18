@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { twMerge } from "tailwind-merge";
-import Button from "./Button";
+import ButtonSub from "./ButtonSub";
 
 export default function InputFile({
   className,
@@ -11,13 +11,13 @@ export default function InputFile({
 
   return (
     <>
-      <Button
+      <ButtonSub
         onClick={() => {
           fileRef.current?.click();
         }}
       >
         {children ?? "アップロード"}
-      </Button>
+      </ButtonSub>
 
       <input
         ref={fileRef}

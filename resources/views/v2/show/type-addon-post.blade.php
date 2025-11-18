@@ -2,7 +2,7 @@
 $contents = $article->contents;
 $fileInfo = $article->file?->fileInfo;
 @endphp
-<pre class="whitespace-pre-wrap text-gray-800">{{$contents->description}}</pre>
+<pre class="whitespace-pre-wrap text-gray-800 break-all">{{$contents->description}}</pre>
 
 <h3 class="text-2xl font-semibold text-brand sm:text-2xl my-8">詳細情報</h3>
 <div class="overflow-x-auto">

@@ -1,3 +1,3 @@
-<div class="markdown-body">
+<div class="markdown-body break-all">
     @markdown($article->contents->markdown)
 </div>

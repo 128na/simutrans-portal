@@ -1,11 +1,11 @@
 @foreach($article->contents->sections as $section)
 @switch($section->type)
 @case('caption')
-<h4 class="text-xl font-semibold sm:text-xl my-8">{{ $section->caption }}</h4>
+<h4 class="text-xl font-semibold sm:text-xl my-8 break-all">{{ $section->caption }}</h4>
 @break
 
 @case('text')
-<pre class="whitespace-pre-wrap text-gray-800">{{ $section->text }}</pre>
+<pre class="whitespace-pre-wrap text-gray-800 break-all">{{ $section->text }}</pre>
 @break
 
 @case('url')

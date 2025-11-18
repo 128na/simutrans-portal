@@ -21,6 +21,7 @@
             <a href="{{route('pak.128')}}" class="text-sm/6 font-semibold text-gray-900">pak128</a>
             <a href="{{route('pak.64')}}" class="text-sm/6 font-semibold text-gray-900">pak64</a>
             <a href="{{route('users')}}" class="text-sm/6 font-semibold text-gray-900">ユーザ一覧</a>
+            {{-- /* TODO タグ一覧 */ --}}
             <a href="{{route('search')}}" class="text-sm/6 font-semibold text-gray-900">検索</a>
 
             <div class="relative">

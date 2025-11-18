@@ -42,6 +42,8 @@ export const CommonForm = () => {
         <TextBadge color="red">必須</TextBadge>
         記事URL
         <TextError className="mb-2">{getError("article.slug")}</TextError>
+        {/* TODO URLでコードして表示・エンコードして登録 */}
+        {/* TODO リダイレクト追加 */}
       </Input>
 
       <div>

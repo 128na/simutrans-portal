@@ -13,7 +13,7 @@
                     {{$article->title}}
                 </a>
             </h3>
-            <p class="mt-3 text-sm text-gray-600 line-clamp-3">
+            <p class="mt-3 text-sm text-gray-600 line-clamp-3 break-all">
                 {{$article->metaDescription}}
             </p>
         </div>

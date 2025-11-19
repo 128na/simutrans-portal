@@ -68,8 +68,6 @@ export function AnalyticsGraph({ articles }: Props) {
   // 日付順にソート。過去データが十分にないと順序が狂うことがあるため
   data.sort((a, b) => (a.name < b.name ? -1 : 1));
 
-  console.log(data);
-
   // 積算なら過去値も加えて加算する
   if (mode === "cumulative") {
     const cumulativeData: DataSet = [];

@@ -49,7 +49,6 @@ export const ProfileEdit = ({
       const res = await axios.post("/api/v2/profile", {
         user,
       });
-      console.log(res);
       if (res.status === 200) {
         window.location.href = `/mypage/profile?updated=1`;
       }

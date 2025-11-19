@@ -1,4 +1,4 @@
-import Button from "@/apps/components/ui/Button";
+import ButtonSub from "@/apps/components/ui/ButtonSub";
 import Checkbox from "@/apps/components/ui/Checkbox";
 import Input from "@/apps/components/ui/Input";
 import Label from "@/apps/components/ui/Label";
@@ -6,25 +6,30 @@ import Select from "@/apps/components/ui/Select";
 import { useAnalyticsStore } from "@/apps/state/useAnalyticsStore";
 import { format, subMonths, subYears } from "date-fns";
 
-const TYPES: Record<Analytics.Type, string> = {
+const TYPES = {
   daily: "日次",
   monthly: "月次",
   yearly: "年次",
-};
+} as const satisfies Record<Analytics.Type, string>;
 
-const AXES: { value: Analytics.Axis; label: string }[] = [
+const MODES = {
+  periodic: "期間別",
+  cumulative: "累積",
+} as const satisfies Record<Analytics.Mode, string>;
+
+const AXES = [
   { value: "pv", label: "ページ表示回数 (PV)" },
   { value: "cv", label: "DL・リンククリック回数 (CV)" },
-];
+] as const satisfies { value: Analytics.Axis; label: string }[];
 
 export function AnalyticsOption() {
-  const { start_date, end_date, type, axes, set } = useAnalyticsStore();
+  const { start_date, end_date, type, axes, mode, set } = useAnalyticsStore();
 
   return (
     <>
-      <Label>期間</Label>
+      <Label>期間プリセット</Label>
       <div className="gap-2 flex items-end">
-        <Button
+        <ButtonSub
           onClick={() =>
             set({
               start_date: subMonths(new Date(), 3),
@@ -34,8 +39,8 @@ export function AnalyticsOption() {
           }
         >
           3ヵ月
-        </Button>
-        <Button
+        </ButtonSub>
+        <ButtonSub
           onClick={() =>
             set({
               start_date: subMonths(new Date(), 12),
@@ -45,8 +50,8 @@ export function AnalyticsOption() {
           }
         >
           12ヵ月
-        </Button>
-        <Button
+        </ButtonSub>
+        <ButtonSub
           onClick={() =>
             set({
               start_date: subYears(new Date(), 3),
@@ -56,7 +61,7 @@ export function AnalyticsOption() {
           }
         >
           3年
-        </Button>
+        </ButtonSub>
       </div>
       <div className="gap-2 flex items-end">
         <Input
@@ -77,6 +82,13 @@ export function AnalyticsOption() {
           value={type}
           onChange={(e) => set({ type: e.target.value as Analytics.Type })}
           options={TYPES}
+        >
+          間隔
+        </Select>
+        <Select
+          value={mode}
+          onChange={(e) => set({ mode: e.target.value as Analytics.Mode })}
+          options={MODES}
         >
           間隔
         </Select>

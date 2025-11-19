@@ -7,5 +7,6 @@ export const useAnalyticsStore = create<Analytics.FilterState>((set) => ({
   type: "daily",
   axes: ["cv", "pv"],
   selected: [],
+  mode: "periodic",
   set: (partial) => set((state) => ({ ...state, ...partial })),
 }));

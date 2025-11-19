@@ -11,18 +11,19 @@ namespace Analytics {
     end_date: Date;
     type: Type;
     axes: Axis[];
+    mode: Mode;
     selected: number[];
     set: (partial: Partial<FilterState>) => void;
   };
   type Type = "daily" | "monthly" | "yearly";
   type Axis = "cv" | "pv";
+  type Mode = "periodic" | "cumulative";
 
-  type ArticleAnalytic = [
-    ArtcileId,
-    Record<Period, Count>,
-    Record<Period, Count>,
-  ];
-  type ArtcileId = number;
-  type Period = number;
-  type Count = number;
+  type ArticleAnalytic = {
+    id: number;
+    viewCounts: Record<Period, number>;
+    conversionCounts: Record<Period, number>;
+    pastViewCount: number;
+    pastConversionCount: number;
+  };
 }

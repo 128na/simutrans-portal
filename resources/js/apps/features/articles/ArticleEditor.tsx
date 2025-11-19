@@ -83,7 +83,7 @@ export const ArticleEditor = () => {
           </Label>
         </div>
       )}
-      <div className="mt-2">
+      <div className="border-t border-gray-200 pt-4">
         <Button onClick={save}>保存</Button>
       </div>
     </>

@@ -19,9 +19,11 @@ final class ArticleAnalytic extends JsonResource
         assert($this->resource instanceof Article);
 
         return [
-            $this->resource->id,
-            $this->resource->viewCounts->pluck('count', 'period'),
-            $this->resource->conversionCounts->pluck('count', 'period'),
+            'id' => $this->resource->id,
+            'viewCounts' => $this->resource->viewCounts->pluck('count', 'period'),
+            'conversionCounts' => $this->resource->conversionCounts->pluck('count', 'period'),
+            'pastViewCount' => (int)$this->resource->past_view_count ?? 0,
+            'pastConversionCount' => (int)$this->resource->past_conversion_count ?? 0,
         ];
     }
 }

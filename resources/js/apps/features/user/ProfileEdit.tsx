@@ -11,6 +11,7 @@ import TextBadge from "@/apps/components/ui/TextBadge";
 import Textarea from "@/apps/components/ui/Textarea";
 import Button from "@/apps/components/ui/Button";
 import axios, { AxiosError } from "axios";
+import ButtonSub from "@/apps/components/ui/ButtonSub";
 
 type Props = {
   user: ProfileEdit.User;
@@ -195,7 +196,7 @@ export const ProfileEdit = ({
         </Label>
         <TextSub>SNSなども登録できます。</TextSub>
         <div>
-          <Button onClick={addWebsite}>Webサイトを追加</Button>
+          <ButtonSub onClick={addWebsite}>Webサイトを追加</ButtonSub>
         </div>
         {user.profile.data.website.map((website, idx) => {
           return (
@@ -220,7 +221,6 @@ export const ProfileEdit = ({
                 });
               }}
             >
-              Webサイト {idx + 1}
               <TextError className="mb-2">
                 {getError(`user.profile.data.website.${idx}`)}
               </TextError>
@@ -228,8 +228,7 @@ export const ProfileEdit = ({
           );
         })}
       </div>
-
-      <div>
+      <div className="border-t border-gray-200 pt-4">
         <Button onClick={save}>保存</Button>
       </div>
     </div>

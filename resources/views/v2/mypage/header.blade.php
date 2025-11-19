@@ -32,14 +32,14 @@
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
                                 <a href="{{route('mypage.articles.index')}}" class="block font-semibold text-gray-900">
-                                    一覧
+                                    記事一覧
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
                                 <a href="{{route('mypage.articles.create')}}" class="block font-semibold text-gray-900">
-                                    作成
+                                    記事作成
                                 </a>
                             </div>
                         </div>
@@ -146,8 +146,8 @@
                             <div class="space-y-2 py-6">
                                 <a href="{{route('index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">トップページ</a>
                                 <a href="{{route('mypage.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">マイページ</a>
-                                <a href="{{route('mypage.articles.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">一覧</a>
-                                <a href="{{route('mypage.articles.create')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">作成</a>
+                                <a href="{{route('mypage.articles.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">記事一覧</a>
+                                <a href="{{route('mypage.articles.create')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">記事作成</a>
                                 <a href="{{route('mypage.redirects')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">記事のリダイレクト設定</a>
                                 <a href="{{route('mypage.attachments')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ファイル管理</a>
                                 <a href="{{route('mypage.analytics')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">アナリティクス</a>

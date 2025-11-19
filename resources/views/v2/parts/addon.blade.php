@@ -5,9 +5,10 @@
 
     <div class="flex flex-col justify-between flex-1">
         <div>
-            <time datetime="{{$article->published_at->format('Y/m/d')}}" class="text-sm text-gray-500">
-                {{$article->published_at->format('Y/m/d')}}
-            </time>
+            <div class="text-sm text-gray-500">
+                {{$article->modified_at->format('Y/m/d')}}
+                ({{$article->published_at->format('Y/m/d')}} 投稿)
+            </div>
             <h3 class="mt-2 text-xl font-semibold text-gray-900 hover:text-gray-600">
                 <a href="{{ route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user->id, 'articleSlug' => $article->slug]) }}">
                     {{$article->title}}

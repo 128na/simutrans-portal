@@ -13,7 +13,7 @@ export default function ButtonSub({
   return (
     <Button
       type="button"
-      className={twMerge(className, "text-white bg-gray-500 hover:bg-gray-600")}
+      className={twMerge(className, "text-white bg-gray-500 hover:bg-gray-400")}
       {...props}
     >
       {children}

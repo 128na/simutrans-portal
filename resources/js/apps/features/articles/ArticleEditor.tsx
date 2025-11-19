@@ -17,6 +17,7 @@ export const ArticleEditor = () => {
   const withoutUpdateModifiedAt = useArticleEditor(
     (s) => s.withoutUpdateModifiedAt,
   );
+  const followRedirect = useArticleEditor((s) => s.followRedirect);
 
   const { setError } = useAxiosError();
   const url = article.id
@@ -28,6 +29,7 @@ export const ArticleEditor = () => {
         article,
         should_notify: shouldNotify,
         without_update_modified_at: withoutUpdateModifiedAt,
+        follow_redirect: followRedirect,
       });
       window.location.href = `/mypage/articles/edit/${res.data.article_id}?updated=1`;
     } catch (error) {

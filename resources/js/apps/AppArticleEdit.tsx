@@ -20,8 +20,9 @@ if (app) {
         relationalArticles: JSON.parse(
           el("data-relational-articles")!.textContent!,
         ),
-        shouldNotfy: false,
+        shouldNotify: false,
         withoutUpdateModifiedAt: false,
+        followRedirect: false,
       });
     }, []);
 

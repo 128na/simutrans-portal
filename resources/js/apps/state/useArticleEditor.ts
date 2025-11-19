@@ -2,16 +2,22 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 type ArticleEditorState = {
+  initialArticle: ArticleEdit.Article;
   user: ArticleEdit.User;
   article: ArticleEdit.Article;
   attachments: AttachmentEdit.Attachment[];
   tags: TagEdit.Tag[];
   categories: Category.Grouping;
   relationalArticles: ArticleEdit.Relational[];
+  /** 保存時にSNS通知するか */
   shouldNotify: boolean;
+  /** 記事更新時に更新日を更新しないか */
   withoutUpdateModifiedAt: boolean;
+  /** URL変更時にリダイレクト追加するか */
+  followRedirect: boolean;
 
   init: (initial: {
+    initialArticle: ArticleEdit.Article;
     user: ArticleEdit.User;
     article: ArticleEdit.Article;
     attachments: AttachmentEdit.Attachment[];
@@ -20,6 +26,7 @@ type ArticleEditorState = {
     relationalArticles: ArticleEdit.Relational[];
     shouldNotify: boolean;
     withoutUpdateModifiedAt: boolean;
+    followRedirect: boolean;
   }) => void;
 
   update: (fn: (draft: ArticleEdit.Article) => void) => void;
@@ -27,10 +34,13 @@ type ArticleEditorState = {
   updateAttachments: (attachments: AttachmentEdit.Attachment[]) => void;
   updateTags: (tags: TagEdit.Tag[]) => void;
   updateShouldNotify: (shouldNotify: boolean) => void;
+  updateWithoutUpdateModifiedAt: (withoutUpdateModifiedAt: boolean) => void;
+  updateFollowRedirect: (followRedirect: boolean) => void;
 };
 
 export const useArticleEditor = create<ArticleEditorState>()(
   immer((set) => ({
+    initialArticle: {} as ArticleEdit.Article,
     user: {} as ArticleEdit.User,
     article: {} as ArticleEdit.Article,
     attachments: [],
@@ -39,9 +49,11 @@ export const useArticleEditor = create<ArticleEditorState>()(
     relationalArticles: [],
     shouldNotify: false,
     withoutUpdateModifiedAt: false,
+    followRedirect: false,
 
     init(initial) {
       set({
+        initialArticle: initial.article,
         user: initial.user,
         article: structuredClone(initial.article),
         attachments: structuredClone(initial.attachments),
@@ -50,6 +62,7 @@ export const useArticleEditor = create<ArticleEditorState>()(
         relationalArticles: initial.relationalArticles,
         shouldNotify: initial.shouldNotify,
         withoutUpdateModifiedAt: initial.withoutUpdateModifiedAt,
+        followRedirect: initial.followRedirect,
       });
     },
 
@@ -78,5 +91,28 @@ export const useArticleEditor = create<ArticleEditorState>()(
         state.shouldNotify = shouldNotify;
       });
     },
+    updateWithoutUpdateModifiedAt(withoutUpdateModifiedAt: boolean) {
+      set((state) => {
+        state.withoutUpdateModifiedAt = withoutUpdateModifiedAt;
+      });
+    },
+    updateFollowRedirect(followRedirect: boolean) {
+      set((state) => {
+        state.followRedirect = followRedirect;
+      });
+    },
   })),
 );
+
+export const useIsArticleUpdated = () =>
+  useArticleEditor(
+    (state) =>
+      JSON.stringify(state.initialArticle) !== JSON.stringify(state.article),
+  );
+
+export const useIsSlugUpdated = () =>
+  useArticleEditor(
+    (state) =>
+      state.initialArticle.slug &&
+      state.initialArticle.slug !== state.article.slug,
+  );

@@ -2,18 +2,30 @@ import { Upload } from "@/apps/components/form/Upload";
 import Input from "@/apps/components/ui/Input";
 import Label from "@/apps/components/ui/Label";
 import TextBadge from "@/apps/components/ui/TextBadge";
-import { useArticleEditor } from "@/apps/state/useArticleEditor";
+import {
+  useArticleEditor,
+  useIsSlugUpdated,
+} from "@/apps/state/useArticleEditor";
 import { Image } from "@/apps/components/ui/Image";
 import TextSub from "@/apps/components/ui/TextSub";
 import TextError from "@/apps/components/ui/TextError";
 import { useAxiosError } from "@/apps/state/useAxiosError";
 import { ModalFull } from "@/apps/components/ui/ModalFull";
 import { AttachmentEdit } from "../../attachments/AttachmentEdit";
+import Checkbox from "@/apps/components/ui/Checkbox";
+
+const regReplace =
+  /(!|"|#|\$|%|&|'|\(|\)|\*|\+|,|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\s|\.)+/gi;
 
 export const CommonForm = () => {
   const article = useArticleEditor((s) => s.article);
   const update = useArticleEditor((s) => s.update);
 
+  const user = useArticleEditor((s) => s.user);
+
+  const followRedirect = useArticleEditor((s) => s.followRedirect);
+  const updateFollowRedirect = useArticleEditor((s) => s.updateFollowRedirect);
+  const isSlugUpdated = useIsSlugUpdated();
   const updateContents = useArticleEditor((s) => s.updateContents);
 
   const attachments = useArticleEditor((s) => s.attachments);
@@ -33,18 +45,46 @@ export const CommonForm = () => {
         <TextError className="mb-2">{getError("article.title")}</TextError>
       </Input>
 
-      <Input
-        labelClassName="font-medium"
-        className="font-normal"
-        value={article.slug || ""}
-        onChange={(e) => update((draft) => (draft.slug = e.target.value))}
-      >
-        <TextBadge color="red">必須</TextBadge>
-        記事URL
-        <TextError className="mb-2">{getError("article.slug")}</TextError>
-        {/* TODO URLでコードして表示・エンコードして登録 */}
-        {/* TODO リダイレクト追加 */}
-      </Input>
+      <div>
+        <Input
+          labelClassName="font-medium"
+          className="font-normal"
+          value={decodeURI(article.slug || "")}
+          onChange={(e) =>
+            update((draft) => {
+              const replaced = e.target.value
+                .toLowerCase()
+                .replace(regReplace, "-");
+              draft.slug = encodeURI(replaced);
+            })
+          }
+        >
+          <TextBadge color="red">必須</TextBadge>
+          記事URL
+          <TextError className="mb-2">{getError("article.slug")}</TextError>
+        </Input>
+        <TextSub>
+          URLプレビュー: /users/{user.nickname ?? user.id}/{article.slug || ""}
+        </TextSub>
+      </div>
+      {isSlugUpdated && (
+        <div>
+          <Label className="font-medium mb-1">リダイレクト設定</Label>
+          <Checkbox
+            checked={followRedirect}
+            onChange={() => {
+              updateFollowRedirect(!followRedirect);
+            }}
+          >
+            追加する
+          </Checkbox>
+          <TextSub>
+            記事URLを変更したとき、古い記事URLからのアクセスを新しい記事URLへ転送します。
+            <br />
+            SNS通知など古いリンクを修正できない場合にリンク切れしなくなります。
+          </TextSub>
+        </div>
+      )}
 
       <div>
         <Label className="font-medium">

@@ -22,8 +22,8 @@
                     @forelse($redirects as $redirect)
                     <tr>
                         <td class="border border-gray-300 px-4 py-2">{{$redirect->created_at->format('Y/m/d H:i:s')}}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{$redirect->from}}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{$redirect->to}}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{urldecode($redirect->from)}}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{urldecode($redirect->to)}}</td>
                         <td class="border border-gray-300 px-4 py-2">
                             <form method="POST" action="{{route('mypage.redirects.destroy', [$redirect->id])}}" class="js-confirm" data-text="リダイレクト設定を削除しますか？">
                                 @csrf

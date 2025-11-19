@@ -13,7 +13,6 @@ use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\LazyCollection;
 
 final class ArticleRepository
@@ -29,7 +28,7 @@ final class ArticleRepository
             ->select(['articles.id', 'articles.title', 'articles.user_id', 'u.name as user_name'])
             ->join('users as u', 'articles.user_id', '=', 'u.id')
             ->where('articles.status', ArticleStatus::Publish)
-            ->when($article, fn($q) => $q->where('articles.id', '!=', $article->id))
+            ->when($article, fn ($q) => $q->where('articles.id', '!=', $article->id))
             ->whereNull('articles.deleted_at')
             ->whereNull('u.deleted_at')
             ->latest('articles.modified_at')
@@ -105,7 +104,7 @@ final class ArticleRepository
             str_replace(['　', ',', '、', '・'], ' ', $rawWord)
         ));
         if ($words !== []) {
-            $queryString = implode(' ', array_map(fn(string $w): string => '+' . $w, $words));
+            $queryString = implode(' ', array_map(fn (string $w): string => '+'.$w, $words));
             $baseQuery->join('article_search_index as idx', 'idx.article_id', '=', 'articles.id')
                 ->whereRaw('MATCH(idx.text) AGAINST (? IN BOOLEAN MODE)', [$queryString]);
         }
@@ -274,7 +273,7 @@ final class ArticleRepository
                 ->where('type', $articleAnalyticsType)->whereBetween('period', $period);
         };
         [$from, $to] = $period;
-        $sumQuery = function ($q) use ($articleAnalyticsType, $from) {
+        $sumQuery = function ($q) use ($articleAnalyticsType, $from): void {
             $q->where('type', $articleAnalyticsType)
                 ->where('period', '<', $from);
         };

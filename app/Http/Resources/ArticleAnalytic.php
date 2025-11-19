@@ -22,8 +22,8 @@ final class ArticleAnalytic extends JsonResource
             'id' => $this->resource->id,
             'viewCounts' => $this->resource->viewCounts->pluck('count', 'period'),
             'conversionCounts' => $this->resource->conversionCounts->pluck('count', 'period'),
-            'pastViewCount' => (int)$this->resource->past_view_count ?? 0,
-            'pastConversionCount' => (int)$this->resource->past_conversion_count ?? 0,
+            'pastViewCount' => (int) $this->resource->past_view_count,
+            'pastConversionCount' => (int) $this->resource->past_conversion_count,
         ];
     }
 }

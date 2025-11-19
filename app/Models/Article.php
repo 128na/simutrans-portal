@@ -34,6 +34,9 @@ use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
 
 /**
+ * @property-read int|null $past_view_count
+ * @property-read int|null $past_conversion_count
+ *
  * @mixin IdeHelperArticle
  */
 final class Article extends Model implements Feedable

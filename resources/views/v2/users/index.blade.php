@@ -13,7 +13,7 @@
         @foreach($users as $user)
         <div>
             @include('v2.parts.link', [
-            'url' => route('search', ['userIds' => [$user['id']]]),
+            'url' => route('users.show', ['userIdOrNickname' => $user['nickname'] ?? $user['id']]),
             'title' => "{$user['name']} ({$user['articles_count']})"
             ])
         </div>

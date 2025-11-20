@@ -111,7 +111,7 @@ final class UserRepository
     public function getForList(): Collection
     {
         return $this->model->query()
-            ->select(['users.id', 'users.name'])
+            ->select(['users.id', 'users.name', 'users.nickname'])
             ->join('articles', function ($join): void {
                 $join->on('articles.user_id', '=', 'users.id')
                     ->where('articles.status', ArticleStatus::Publish);

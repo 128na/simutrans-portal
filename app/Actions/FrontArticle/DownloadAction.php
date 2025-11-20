@@ -18,7 +18,7 @@ final class DownloadAction
         abort_unless($article->is_addon_post, 404);
         abort_unless($article->has_file && $article->file, 404);
 
-        if ($user && $user->id !== $article->user_id) {
+        if ($user instanceof \App\Models\User && $user->id !== $article->user_id) {
             event(new \App\Events\ArticleConversion($article));
         }
 

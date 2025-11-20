@@ -9,24 +9,20 @@ use App\Actions\FrontArticle\FallbackShowAction;
 use App\Actions\FrontArticle\SearchAction;
 use App\Actions\Redirect\DoRedirectIfExists;
 use App\Models\Article;
-use App\Models\Tag;
 use App\Repositories\ArticleRepository;
-use App\Repositories\TagRepository;
-use App\Repositories\UserRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-final class FrontController extends Controller
+final class ArticleController extends Controller
 {
     public function __construct(
         private readonly ArticleRepository $articleRepository,
-        private readonly TagRepository $tagRepository,
-        private readonly UserRepository $userRepository,
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
@@ -89,6 +85,16 @@ final class FrontController extends Controller
         ]);
     }
 
+    public function search(Request $request, SearchAction $searchAction): View
+    {
+        $condition = $request->all();
+
+        return view('v2.search.index', [
+            ...$searchAction($condition),
+            'meta' => $this->metaOgpService->frontSearch(),
+        ]);
+    }
+
     public function show(string $userIdOrNickname, string $slug, Request $request, DoRedirectIfExists $doRedirectIfExists): RedirectResponse|View
     {
         $article = $this->articleRepository->first($userIdOrNickname, $slug);
@@ -106,52 +112,6 @@ final class FrontController extends Controller
         ]);
     }
 
-    public function users(): View
-    {
-        return view('v2.users.index', [
-            'users' => $this->userRepository->getForList(),
-            'meta' => $this->metaOgpService->frontUsers(),
-        ]);
-    }
-
-    public function user(string $userIdOrNickname): View
-    {
-        $user = $this->userRepository->firstOrFailByIdOrNickname($userIdOrNickname);
-
-        return view('v2.users.show', [
-            'user' => $user,
-            'articles' => $this->articleRepository->getByUser($user->id),
-            'meta' => $this->metaOgpService->frontUser($user),
-        ]);
-    }
-
-    public function tags(): View
-    {
-        return view('v2.tags.index', [
-            'tags' => $this->tagRepository->getForList(),
-            'meta' => $this->metaOgpService->frontTags(),
-        ]);
-    }
-
-    public function tag(Tag $tag): View
-    {
-        return view('v2.tags.show', [
-            'tag' => $tag,
-            'articles' => $this->articleRepository->getByTag($tag->id),
-            'meta' => $this->metaOgpService->frontTag($tag),
-        ]);
-    }
-
-    public function search(Request $request, SearchAction $searchAction): View
-    {
-        $condition = $request->all();
-
-        return view('v2.search.index', [
-            ...$searchAction($condition),
-            'meta' => $this->metaOgpService->frontSearch(),
-        ]);
-    }
-
     public function fallbackShow(string $slugOrId, FallbackShowAction $fallbackShowAction): RedirectResponse
     {
         return $fallbackShowAction($slugOrId);
@@ -159,6 +119,10 @@ final class FrontController extends Controller
 
     public function download(Article $article, DownloadAction $downloadAction): StreamedResponse
     {
+        if (Gate::denies('download', $article)) {
+            abort(404);
+        }
+
         return $downloadAction($article, Auth::user());
     }
 }

@@ -32,7 +32,8 @@ final class AttachmentController extends Controller
 
     public function store(StoreRequest $storeRequest, Store $store): AttachmentEdit
     {
-        if (Auth::user()->cannot('store', Attachment::class)) {
+        $user = Auth::user();
+        if ($user->cannot('store', Attachment::class)) {
             return abort(403);
         }
 
@@ -42,7 +43,7 @@ final class AttachmentController extends Controller
             abort(400);
         }
 
-        $attachment = $store(Auth::user(), $file, []);
+        $attachment = $store($user, $file, []);
         try {
             dispatch_sync(new \App\Jobs\Attachments\UpdateFileInfo($attachment));
         } catch (Throwable $throwable) {
@@ -54,7 +55,8 @@ final class AttachmentController extends Controller
 
     public function destroy(Attachment $attachment): \Illuminate\Http\Response
     {
-        if (Auth::user()->cannot('update', $attachment)) {
+        $user = Auth::user();
+        if ($user->cannot('update', $attachment)) {
             return abort(403);
         }
 

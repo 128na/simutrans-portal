@@ -21,4 +21,9 @@ final class ArticlePolicy extends BasePolicy
     {
         return $this->isSameUser($user, $article);
     }
+
+    public function download(?User $user, Article $article): bool
+    {
+        return $article->is_publish && $article->is_addon_post && $article->has_file && $article->file;
+    }
 }

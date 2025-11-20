@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Mypage;
 
+use App\Repositories\LoginHistoryRepository;
 use App\Repositories\UserRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
@@ -15,14 +16,17 @@ final class MypageController extends Controller
 {
     public function __construct(
         private readonly UserRepository $userRepository,
+        private readonly LoginHistoryRepository $loginHistoryRepository,
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
     public function index(): View
     {
+        $user = Auth::user();
+
         return view('v2.mypage.index', [
-            'user' => Auth::user(),
-            'summary' => $this->userRepository->getSummary(Auth::user()),
+            'user' => $user,
+            'summary' => $this->userRepository->getSummary($user),
             'meta' => $this->metaOgpService->mypage(),
         ]);
     }
@@ -42,16 +46,20 @@ final class MypageController extends Controller
 
     public function twoFactor(): View
     {
+        $user = Auth::user();
+
         return view('v2.mypage.two-factor', [
-            'user' => Auth::user(),
+            'user' => $user,
             'meta' => $this->metaOgpService->mypageTwoFactor(),
         ]);
     }
 
     public function loginHistories(): View
     {
+        $user = Auth::user();
+
         return view('v2.mypage.login-histories', [
-            'loginHistories' => Auth::user()->loginHistories()->orderBy('created_at', 'desc')->limit(10)->get(),
+            'loginHistories' => $this->loginHistoryRepository->getByUser($user->id),
             'meta' => $this->metaOgpService->mypageLoginHistories(),
         ]);
     }

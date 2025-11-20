@@ -14,6 +14,7 @@ final class TagRepository
 
     /**
      * 検索用のタグ一覧を取得する
+     *
      * @return Collection<int,Tag>
      */
     public function getForSearch(): Collection
@@ -26,6 +27,7 @@ final class TagRepository
 
     /**
      * 編集用のタグ一覧を取得する
+     *
      * @return Collection<int,Tag>
      */
     public function getForEdit(): Collection
@@ -39,9 +41,9 @@ final class TagRepository
             ->get();
     }
 
-
     /**
      * 一覧表示用のタグ一覧を取得する
+     *
      * @return Collection<int,Tag>
      */
     public function getForList(): Collection
@@ -75,6 +77,6 @@ final class TagRepository
      */
     public function update(Tag $tag, array $data): Tag
     {
-        return tap($tag, fn($t) => $t->update($data));
+        return tap($tag, fn ($t) => $t->update($data));
     }
 }

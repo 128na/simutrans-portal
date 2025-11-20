@@ -18,7 +18,7 @@ final class MetaOgpService
     public function frontArticleShow(User $user, Article $article): array
     {
         return [
-            'title' => $article->title . ' - ' . Config::string('app.name'),
+            'title' => $article->title.' - '.Config::string('app.name'),
             'description' => $this->trimDescription($article->contents->getDescription()),
             'image' => $article->has_thumbnail ? $article->thumbnail_url : null,
             'canonical' => route('articles.show', ['userIdOrNickname' => $user->nickname ?? $user->id, 'articleSlug' => $article->slug]),
@@ -32,8 +32,8 @@ final class MetaOgpService
     public function frontPak(string $name): array
     {
         return [
-            'title' => Lang::get('category.pak.' . $name) . ' - ' . Config::string('app.name'),
-            'description' => Lang::get('category.description.pak.' . $name),
+            'title' => Lang::get('category.pak.'.$name).' - '.Config::string('app.name'),
+            'description' => Lang::get('category.description.pak.'.$name),
         ];
     }
 
@@ -43,7 +43,7 @@ final class MetaOgpService
     public function frontAnnounces(): array
     {
         return [
-            'title' => 'お知らせ' . ' - ' . Config::string('app.name'),
+            'title' => 'お知らせ'.' - '.Config::string('app.name'),
             'description' => '運営からのお知らせです。',
         ];
     }
@@ -54,7 +54,7 @@ final class MetaOgpService
     public function frontPages(): array
     {
         return [
-            'title' => '記事' . ' - ' . Config::string('app.name'),
+            'title' => '記事'.' - '.Config::string('app.name'),
             'description' => 'アドオン以外の記事です。',
         ];
     }
@@ -65,7 +65,7 @@ final class MetaOgpService
     public function frontTag(Tag $tag): array
     {
         return [
-            'title' => sprintf('タグ「%s」の記事', $tag->name) . ' - ' . Config::string('app.name'),
+            'title' => sprintf('タグ「%s」の記事', $tag->name).' - '.Config::string('app.name'),
             'description' => sprintf('タグ「%s」の記事一覧です。', $tag->name),
         ];
     }
@@ -76,7 +76,7 @@ final class MetaOgpService
     public function frontTags(): array
     {
         return [
-            'title' => 'タグ一覧 - ' . config('app.name'),
+            'title' => 'タグ一覧 - '.config('app.name'),
             'description' => '登録されているタグ一覧です。',
         ];
     }
@@ -87,8 +87,8 @@ final class MetaOgpService
     public function frontUser(User $user): array
     {
         return [
-            'title' => $user->name . 'さんの記事' . ' - ' . Config::string('app.name'),
-            'description' => $user->name . 'さんの記事一覧です。',
+            'title' => $user->name.'さんの記事'.' - '.Config::string('app.name'),
+            'description' => $user->name.'さんの記事一覧です。',
         ];
     }
 
@@ -98,7 +98,7 @@ final class MetaOgpService
     public function frontUsers(): array
     {
         return [
-            'title' => '投稿ユーザー一覧' . ' - ' . Config::string('app.name'),
+            'title' => '投稿ユーザー一覧'.' - '.Config::string('app.name'),
             'description' => 'アドオン投稿や紹介記事のあるユーザー一覧です。',
         ];
     }
@@ -109,7 +109,7 @@ final class MetaOgpService
     public function frontSearch(): array
     {
         return [
-            'title' => '検索' . ' - ' . Config::string('app.name'),
+            'title' => '検索'.' - '.Config::string('app.name'),
             'description' => '記事の検索結果です。',
         ];
     }
@@ -120,7 +120,7 @@ final class MetaOgpService
     public function frontSocial(): array
     {
         return [
-            'title' => 'SNS・通知ツール' . ' - ' . Config::string('app.name'),
+            'title' => 'SNS・通知ツール'.' - '.Config::string('app.name'),
             'description' => '記事投稿や更新通知を受け取ることができるSNSアカウントやツールです。',
         ];
     }
@@ -131,7 +131,7 @@ final class MetaOgpService
     public function frontDiscord(): array
     {
         return [
-            'title' => 'Discord招待リンクの発行' . ' - ' . Config::string('app.name'),
+            'title' => 'Discord招待リンクの発行'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -141,7 +141,7 @@ final class MetaOgpService
     public function mypageLogin(): array
     {
         return [
-            'title' => 'ログイン' . ' - ' . Config::string('app.name'),
+            'title' => 'ログイン'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -151,7 +151,7 @@ final class MetaOgpService
     public function mypageRegistration(): array
     {
         return [
-            'title' => 'ユーザー登録' . ' - ' . Config::string('app.name'),
+            'title' => 'ユーザー登録'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -161,7 +161,7 @@ final class MetaOgpService
     public function mypageResetPassword(): array
     {
         return [
-            'title' => 'パスワードリセット' . ' - ' . Config::string('app.name'),
+            'title' => 'パスワードリセット'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -171,7 +171,7 @@ final class MetaOgpService
     public function mypage(): array
     {
         return [
-            'title' => 'マイページ' . ' - ' . Config::string('app.name'),
+            'title' => 'マイページ'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -181,7 +181,7 @@ final class MetaOgpService
     public function mypageVerifyEmail(): array
     {
         return [
-            'title' => 'メールアドレスの検証' . ' - ' . Config::string('app.name'),
+            'title' => 'メールアドレスの検証'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -191,7 +191,7 @@ final class MetaOgpService
     public function mypageTwoFactor(): array
     {
         return [
-            'title' => '二要素認証の設定' . ' - ' . Config::string('app.name'),
+            'title' => '二要素認証の設定'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -201,7 +201,7 @@ final class MetaOgpService
     public function mypageLoginHistories(): array
     {
         return [
-            'title' => 'ログイン履歴' . ' - ' . Config::string('app.name'),
+            'title' => 'ログイン履歴'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -211,7 +211,7 @@ final class MetaOgpService
     public function mypageRedirects(): array
     {
         return [
-            'title' => 'リダイレクトの設定' . ' - ' . Config::string('app.name'),
+            'title' => 'リダイレクトの設定'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -221,7 +221,7 @@ final class MetaOgpService
     public function mypageInvite(): array
     {
         return [
-            'title' => '招待コードの発行' . ' - ' . Config::string('app.name'),
+            'title' => '招待コードの発行'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -231,7 +231,7 @@ final class MetaOgpService
     public function mypageProfile(): array
     {
         return [
-            'title' => 'プロフィールの編集' . ' - ' . Config::string('app.name'),
+            'title' => 'プロフィールの編集'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -241,7 +241,7 @@ final class MetaOgpService
     public function mypageAnalytics(): array
     {
         return [
-            'title' => 'アナリティクス' . ' - ' . Config::string('app.name'),
+            'title' => 'アナリティクス'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -251,7 +251,7 @@ final class MetaOgpService
     public function mypageArticles(): array
     {
         return [
-            'title' => '記事一覧' . ' - ' . Config::string('app.name'),
+            'title' => '記事一覧'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -261,7 +261,7 @@ final class MetaOgpService
     public function mypageArticleEdit(): array
     {
         return [
-            'title' => '記事の編集' . ' - ' . Config::string('app.name'),
+            'title' => '記事の編集'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -271,7 +271,7 @@ final class MetaOgpService
     public function mypageArticleCreate(): array
     {
         return [
-            'title' => '記事の作成' . ' - ' . Config::string('app.name'),
+            'title' => '記事の作成'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -281,7 +281,7 @@ final class MetaOgpService
     public function mypageTags(): array
     {
         return [
-            'title' => 'タグの編集' . ' - ' . Config::string('app.name'),
+            'title' => 'タグの編集'.' - '.Config::string('app.name'),
         ];
     }
 
@@ -291,7 +291,7 @@ final class MetaOgpService
     public function mypageAttachments(): array
     {
         return [
-            'title' => 'ファイルの編集' . ' - ' . Config::string('app.name'),
+            'title' => 'ファイルの編集'.' - '.Config::string('app.name'),
         ];
     }
 

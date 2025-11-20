@@ -27,7 +27,7 @@ final readonly class ZipArchiveParser
             try {
                 $this->zipArchive->open($attachment->full_path);
 
-                for ($i = 0; $i < $this->zipArchive->numFiles; ++$i) {
+                for ($i = 0; $i < $this->zipArchive->numFiles; $i++) {
                     $stat = $this->zipArchive->statIndex($i, ZipArchive::FL_ENC_RAW);
                     if ($stat) {
                         $name = $stat['name'];

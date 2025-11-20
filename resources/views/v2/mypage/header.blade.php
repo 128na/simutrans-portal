@@ -17,7 +17,7 @@
             </button>
         </div>
         <el-popover-group class="hidden lg:flex lg:gap-x-12">
-            <a href="{{route('index')}}" class="text-sm/6 font-semibold text-gray-900">トップページ</a>
+            <a href="{{route('index')}}" class="text-sm/6 font-semibold text-gray-900">トップ</a>
             <a href="{{route('mypage.index')}}" class="text-sm/6 font-semibold text-gray-900">マイページ</a>
             <div class="relative">
                 <button popovertarget="desktop-menu-article" class="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 cursor-pointer">
@@ -144,7 +144,7 @@
                     <div class="mt-6 flow-root">
                         <div class="-my-6 divide-y divide-gray-500/10">
                             <div class="space-y-2 py-6">
-                                <a href="{{route('index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">トップページ</a>
+                                <a href="{{route('index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">トップ</a>
                                 <a href="{{route('mypage.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">マイページ</a>
                                 <a href="{{route('mypage.articles.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">記事一覧</a>
                                 <a href="{{route('mypage.articles.create')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">記事作成</a>

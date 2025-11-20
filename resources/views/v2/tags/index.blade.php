@@ -13,8 +13,8 @@
         @foreach($tags as $tag)
         <div>
             @include('v2.parts.link', [
-            'url' => route('search', ['tagIds' => [$tag['id']]]),
-            'title' => "{$tag['name']} ({$tag['articles_count']})"
+            'url' => route('tags.show', ['tag' => $tag]),
+            'title' => "{$tag->name} ({$tag->articles_count})"
             ])
         </div>
         @endforeach

@@ -16,6 +16,7 @@ use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
 use App\Services\Front\MetaOgpService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +31,7 @@ final class ArticleController extends Controller
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
-    public function index(): \Illuminate\Contracts\View\View
+    public function index(): View
     {
         $user = Auth::user();
 
@@ -41,11 +42,11 @@ final class ArticleController extends Controller
                 ->select('id', 'title', 'slug', 'status', 'post_type', 'published_at', 'modified_at')
                 ->with('attachments', 'totalConversionCount', 'totalViewCount')
                 ->get(),
-            'meta' => $this->metaOgpService->articleIndex(),
+            'meta' => $this->metaOgpService->mypageArticles(),
         ]);
     }
 
-    public function create(): \Illuminate\Contracts\View\View
+    public function create(): View
     {
         $user = Auth::user();
         if ($user->cannot('store', Article::class)) {
@@ -58,7 +59,7 @@ final class ArticleController extends Controller
             'categories' => $this->categoryRepository->getForSearch()->groupBy('type'),
             'tags' => TagEdit::collection($this->tagRepository->getForEdit()),
             'relationalArticles' => $this->articleRepository->getForEdit(),
-            'meta' => $this->metaOgpService->articleCreate(),
+            'meta' => $this->metaOgpService->mypageArticleCreate(),
         ]);
     }
 
@@ -74,12 +75,12 @@ final class ArticleController extends Controller
          */
         $data = $storeRequest->validated();
 
-        $article = DB::transaction(fn (): Article => $storeArticle($user, $data));
+        $article = DB::transaction(fn(): Article => $storeArticle($user, $data));
 
         return response()->json(['article_id' => $article->id], 200);
     }
 
-    public function edit(Article $article): \Illuminate\Contracts\View\View
+    public function edit(Article $article): View
     {
         $user = Auth::user();
         if ($user->cannot('update', $article)) {
@@ -93,7 +94,7 @@ final class ArticleController extends Controller
             'categories' => $this->categoryRepository->getForSearch()->groupBy('type'),
             'tags' => $this->tagRepository->getForEdit(),
             'relationalArticles' => $this->articleRepository->getForEdit($article),
-            'meta' => $this->metaOgpService->articleEdit(),
+            'meta' => $this->metaOgpService->mypageArticleEdit(),
         ]);
     }
 
@@ -109,7 +110,7 @@ final class ArticleController extends Controller
          */
         $data = $updateRequest->validated();
 
-        $article = DB::transaction(fn (): Article => $updateArticle($article, $data));
+        $article = DB::transaction(fn(): Article => $updateArticle($article, $data));
 
         return response()->json(['article_id' => $article->id], 200);
     }

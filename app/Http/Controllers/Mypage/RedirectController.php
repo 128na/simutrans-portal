@@ -8,6 +8,7 @@ use App\Actions\Redirect\DeleteRedirect;
 use App\Actions\Redirect\FindMyRedirects;
 use App\Models\Redirect;
 use App\Services\Front\MetaOgpService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -18,13 +19,13 @@ final class RedirectController extends Controller
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
-    public function index(FindMyRedirects $findMyRedirects): \Illuminate\Contracts\View\View
+    public function index(FindMyRedirects $findMyRedirects): View
     {
         $user = Auth::user();
 
         return view('v2.mypage.redirects', [
             'redirects' => $findMyRedirects($user),
-            'meta' => $this->metaOgpService->redirects(),
+            'meta' => $this->metaOgpService->mypageRedirects(),
         ]);
     }
 

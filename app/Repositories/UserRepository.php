@@ -14,6 +14,8 @@ final class UserRepository
     public function __construct(public User $model) {}
 
     /**
+     * マイページのサマリ表示用
+     *
      * @return object{
      *     article_count: int|null,
      *     attachment_count: int|null,
@@ -83,6 +85,8 @@ final class UserRepository
     }
 
     /**
+     * 投稿記事を持つユーザー一覧取得
+     *
      * @return Collection<int,User>
      */
     public function getForSearch(): Collection
@@ -90,7 +94,7 @@ final class UserRepository
         return $this->model->query()
             ->select(['users.id', 'users.nickname', 'users.name'])
             ->whereExists(
-                fn ($q) => $q->selectRaw(1)
+                fn($q) => $q->selectRaw(1)
                     ->from('articles as a')
                     ->whereColumn('a.user_id', 'users.id')
                     ->where('a.status', ArticleStatus::Publish)
@@ -100,6 +104,8 @@ final class UserRepository
     }
 
     /**
+     * 投稿記事を持つユーザー一覧取得（記事件数つき）
+     *
      * @return Collection<int,User>
      */
     public function getForList(): Collection
@@ -117,13 +123,7 @@ final class UserRepository
     }
 
     /**
-     * @param array{
-     *     name: string,
-     *     email: string,
-     *     role: \App\Enums\UserRole::User,
-     *     password: string,
-     *     invited_by?: int,
-     * } $data
+     * @param  mixed[]  $data
      */
     public function store(array $data): User
     {
@@ -141,6 +141,8 @@ final class UserRepository
     }
 
     /**
+     * MFA設定が未完了のユーザー一覧を取得
+     *
      * @return Collection<int, User>
      */
     public function findIncompleteMFAUsers(): Collection
@@ -150,5 +152,21 @@ final class UserRepository
             ->whereNull('two_factor_confirmed_at')
             ->where('updated_at', '<', now()->subMinutes(15))
             ->get();
+    }
+
+    /**
+     * idまたはnicknameでユーザーを取得
+     */
+    public function firstOrFailByIdOrNickname(string $userIdOrNickname): User
+    {
+        return $this->model
+            ->where(function ($q) use ($userIdOrNickname): void {
+                if (is_numeric($userIdOrNickname)) {
+                    $q->where('id', (int) $userIdOrNickname);
+                } else {
+                    $q->where('nickname', $userIdOrNickname);
+                }
+            })
+            ->firstOrFail();
     }
 }

@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div>
-                <button type="submit" class="rounded-md bg-brand px-8 sm:py-2 py-4 text-white cursor-pointer w-full sm:w-64">
+                <button type="submit" class="rounded-md bg-brand px-8 sm:py-2 py-4 text-white cursor-pointer hover:bg-brand/90 w-full sm:w-64">
                     ログイン
                 </button>
             </div>

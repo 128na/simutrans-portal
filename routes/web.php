@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Route;
 Route::feeds();
 
 // 一覧系
-Route::get('/users', [\App\Http\Controllers\Front\FrontController::class, 'users'])->name('users');
 Route::get('/pak128-japan', [\App\Http\Controllers\Front\FrontController::class, 'pak128jp'])->name('pak.128japan');
 Route::get('/pak128', [\App\Http\Controllers\Front\FrontController::class, 'pak128'])->name('pak.128');
 Route::get('/pak64', [\App\Http\Controllers\Front\FrontController::class, 'pak64'])->name('pak.64');
@@ -19,14 +18,20 @@ Route::get('/search', [\App\Http\Controllers\Front\FrontController::class, 'sear
 Route::get('/announces', [\App\Http\Controllers\Front\FrontController::class, 'announces'])->name('announces');
 Route::get('/pages', [\App\Http\Controllers\Front\FrontController::class, 'pages'])->name('pages');
 
+Route::get('/tags', [\App\Http\Controllers\Front\FrontController::class, 'tags'])->name('tags.index');
+Route::get('/tags/{tag}', [\App\Http\Controllers\Front\FrontController::class, 'tag'])->name('tags.show');
+
 // 特殊ページ
 Route::get('/', [\App\Http\Controllers\Front\FrontController::class, 'top'])->name('index');
 Route::get('/social', [\App\Http\Controllers\Front\FrontMiscController::class, 'social'])->name('social');
 Route::get('/invite-simutrans-interact-meeting', [\App\Http\Controllers\Front\DiscordController::class, 'index'])->name('discord.index');
 Route::post('/invite-simutrans-interact-meeting', [\App\Http\Controllers\Front\DiscordController::class, 'generate'])->name('discord.generate');
 
-// 個別記事関連
+// ユーザー別
+Route::get('/users', [\App\Http\Controllers\Front\FrontController::class, 'users'])->name('users.index');
+Route::get('/users/{userIdOrNickname}', [\App\Http\Controllers\Front\FrontController::class, 'user'])->name('users.show');
 Route::get('/users/{userIdOrNickname}/{articleSlug}', [\App\Http\Controllers\Front\FrontController::class, 'show'])->name('articles.show');
+// 記事詳細・ダウンロード
 Route::get('/articles/{id}', [\App\Http\Controllers\Front\FrontController::class, 'fallbackShow'])->name('articles.fallbackShow');
 Route::get('/articles/{article}/download', [\App\Http\Controllers\Front\FrontController::class, 'download'])->name('articles.download');
 Route::get('/redirect/{name}', [\App\Http\Controllers\Front\FrontMiscController::class, 'redirect'])->name('redirect');

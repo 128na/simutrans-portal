@@ -26,7 +26,7 @@ final class AnalyticsController extends Controller
 
         return view('v2.mypage.analytics', [
             'articles' => $this->articleRepository->getForAnalyticsList($user),
-            'meta' => $this->metaOgpService->analytics(),
+            'meta' => $this->metaOgpService->mypageAnalytics(),
         ]);
     }
 

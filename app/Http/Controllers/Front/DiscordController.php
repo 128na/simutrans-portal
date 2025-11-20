@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Actions\DiscordInvite\GenerateInviteCodeAction;
 use App\Services\Front\MetaOgpService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Throwable;
@@ -16,14 +17,14 @@ final class DiscordController extends Controller
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
-    public function index(): \Illuminate\Contracts\View\View
+    public function index(): View
     {
         return view('v2.discord.index', [
-            'meta' => $this->metaOgpService->discord(),
+            'meta' => $this->metaOgpService->frontDiscord(),
         ]);
     }
 
-    public function generate(Request $request, GenerateInviteCodeAction $generateInviteCodeAction): \Illuminate\Contracts\View\View
+    public function generate(Request $request, GenerateInviteCodeAction $generateInviteCodeAction): View
     {
 
         try {
@@ -32,7 +33,7 @@ final class DiscordController extends Controller
 
             return view('v2.discord.index', [
                 'url' => $url,
-                'meta' => $this->metaOgpService->discord(),
+                'meta' => $this->metaOgpService->frontDiscord(),
             ]);
         } catch (Throwable) {
             abort(400);

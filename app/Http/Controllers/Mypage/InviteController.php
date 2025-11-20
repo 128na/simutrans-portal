@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Mypage;
 
 use App\Services\Front\MetaOgpService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -16,11 +17,11 @@ final class InviteController extends Controller
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
-    public function index(): \Illuminate\Contracts\View\View
+    public function index(): View
     {
         return view('v2.mypage.invite', [
             'user' => Auth::user()->loadMissing('invites'),
-            'meta' => $this->metaOgpService->invite(),
+            'meta' => $this->metaOgpService->mypageInvite(),
         ]);
     }
 

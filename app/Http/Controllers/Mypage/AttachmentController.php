@@ -10,6 +10,7 @@ use App\Http\Requests\Attachment\StoreRequest;
 use App\Http\Resources\AttachmentEdit;
 use App\Models\Attachment;
 use App\Services\Front\MetaOgpService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
 
@@ -19,13 +20,13 @@ final class AttachmentController extends Controller
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
-    public function index(): \Illuminate\Contracts\View\View
+    public function index(): View
     {
         $user = Auth::user();
 
         return view('v2.mypage.attachments', [
             'attachments' => AttachmentEdit::collection($user->myAttachments()->with('fileInfo', 'attachmentable')->get()),
-            'meta' => $this->metaOgpService->attachments(),
+            'meta' => $this->metaOgpService->mypageAttachments(),
         ]);
     }
 

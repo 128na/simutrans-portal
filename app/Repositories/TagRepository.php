@@ -13,6 +13,7 @@ final class TagRepository
     public function __construct(public Tag $model) {}
 
     /**
+     * 検索用のタグ一覧を取得する
      * @return Collection<int,Tag>
      */
     public function getForSearch(): Collection
@@ -24,6 +25,7 @@ final class TagRepository
     }
 
     /**
+     * 編集用のタグ一覧を取得する
      * @return Collection<int,Tag>
      */
     public function getForEdit(): Collection
@@ -34,6 +36,22 @@ final class TagRepository
             ->groupBy('tags.id')
             ->with('createdBy:id,name', 'lastModifiedBy:id,name')
             ->orderBy('name', 'asc')
+            ->get();
+    }
+
+
+    /**
+     * 一覧表示用のタグ一覧を取得する
+     * @return Collection<int,Tag>
+     */
+    public function getForList(): Collection
+    {
+        return $this->model->query()
+            ->select(['tags.id', 'tags.name'])
+            ->join('article_tag', 'tags.id', '=', 'article_tag.tag_id')
+            ->groupBy('tags.id')
+            ->orderByRaw('COUNT(article_tag.article_id) DESC')
+            ->withCount('articles')
             ->get();
     }
 
@@ -57,6 +75,6 @@ final class TagRepository
      */
     public function update(Tag $tag, array $data): Tag
     {
-        return tap($tag, fn ($t) => $t->update($data));
+        return tap($tag, fn($t) => $t->update($data));
     }
 }

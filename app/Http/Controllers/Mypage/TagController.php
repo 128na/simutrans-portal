@@ -10,6 +10,7 @@ use App\Http\Resources\TagEdit;
 use App\Models\Tag;
 use App\Repositories\TagRepository;
 use App\Services\Front\MetaOgpService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,11 +21,11 @@ final class TagController extends Controller
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
-    public function index(): \Illuminate\Contracts\View\View
+    public function index(): View
     {
         return view('v2.mypage.tags', [
             'tags' => TagEdit::collection($this->tagRepository->getForEdit()),
-            'meta' => $this->metaOgpService->tags(),
+            'meta' => $this->metaOgpService->mypageTags(),
         ]);
     }
 

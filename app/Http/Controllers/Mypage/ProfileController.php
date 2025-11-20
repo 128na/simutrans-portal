@@ -9,6 +9,7 @@ use App\Http\Requests\User\UpdateRequest;
 use App\Http\Resources\AttachmentEdit;
 use App\Http\Resources\ProfileEdit;
 use App\Services\Front\MetaOgpService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -19,14 +20,14 @@ final class ProfileController extends Controller
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
-    public function index(): \Illuminate\Contracts\View\View
+    public function index(): View
     {
         $user = Auth::user();
 
         return view('v2.mypage.profile', [
             'user' => new ProfileEdit($user->load('profile')),
             'attachments' => AttachmentEdit::collection($user->myAttachments()->with('fileInfo')->get()),
-            'meta' => $this->metaOgpService->profile(),
+            'meta' => $this->metaOgpService->mypageProfile(),
         ]);
     }
 

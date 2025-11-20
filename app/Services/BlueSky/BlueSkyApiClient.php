@@ -39,7 +39,7 @@ final readonly class BlueSkyApiClient
     public function addWebsiteCard(Post $post, Article $article): Post
     {
         assert($article->user instanceof User);
-        $ogp = $this->metaOgpService->show($article->user, $article);
+        $ogp = $this->metaOgpService->frontArticleShow($article->user, $article);
         $thumbnail = null;
         if ($article->hasThumbnail) {
             assert($article->thumbnail instanceof Attachment);

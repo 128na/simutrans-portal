@@ -20,9 +20,8 @@
             <a href="{{route('pak.128japan')}}" class="text-sm/6 font-semibold text-gray-900">pak128.japan</a>
             <a href="{{route('pak.128')}}" class="text-sm/6 font-semibold text-gray-900">pak128</a>
             <a href="{{route('pak.64')}}" class="text-sm/6 font-semibold text-gray-900">pak64</a>
-            <a href="{{route('users')}}" class="text-sm/6 font-semibold text-gray-900">ユーザ一覧</a>
-            {{-- /* TODO タグ一覧 */ --}}
-            <a href="{{route('search')}}" class="text-sm/6 font-semibold text-gray-900">検索</a>
+            <a href="{{route('users.index')}}" class="text-sm/6 font-semibold text-gray-900">ユーザ一覧</a>
+            <a href="{{route('tags.index')}}" class="text-sm/6 font-semibold text-gray-900">タグ一覧</a>
 
             <div class="relative">
                 <button popovertarget="desktop-menu-misc" class="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 cursor-pointer">
@@ -46,6 +45,14 @@
                             <div class="flex-auto">
                                 <a href="{{route('pages')}}" class="block font-semibold text-gray-900">
                                     一般記事
+                                    <span class="absolute inset-0"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
+                            <div class="flex-auto">
+                                <a href="{{route('search')}}" class="block font-semibold text-gray-900">
+                                    検索
                                     <span class="absolute inset-0"></span>
                                 </a>
                             </div>
@@ -107,7 +114,8 @@
                                 <a href="{{route('pak.128')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">pak128</a>
                                 <a href="{{route('pak.64')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">pak64</a>
                                 <a href="{{route('pak.others')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">他pak</a>
-                                <a href="{{route('users')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ユーザー一覧</a>
+                                <a href="{{route('users.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ユーザー一覧</a>
+                                <a href="{{route('tags.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">タグ一覧</a>
                                 <a href="{{route('pages')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">一般記事</a>
                                 <a href="{{route('search')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">検索</a>
                                 <a href="{{ route('social') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">SNS・通知ツール</a>

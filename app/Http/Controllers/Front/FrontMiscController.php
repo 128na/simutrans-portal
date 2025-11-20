@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Front;
 
 use App\Services\Front\MetaOgpService;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 
 final class FrontMiscController extends Controller
@@ -18,14 +20,14 @@ final class FrontMiscController extends Controller
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
-    public function social(): \Illuminate\Contracts\View\View
+    public function social(): View
     {
         return view('v2.social.index', [
-            'meta' => $this->metaOgpService->social(),
+            'meta' => $this->metaOgpService->frontSocial(),
         ]);
     }
 
-    public function redirect(string $name): \Illuminate\Http\RedirectResponse
+    public function redirect(string $name): RedirectResponse
     {
         if (array_key_exists($name, self::REDIRECT_MAP)) {
             return to_route('articles.fallbackShow', ['id' => self::REDIRECT_MAP[$name]], 302);

@@ -20,6 +20,8 @@ final class ArticleRepository
     public function __construct(public Article $model) {}
 
     /**
+     * 編集用記事一覧取得
+     *
      * @return Collection<int,Article>
      */
     public function getForEdit(?Article $article = null): Collection
@@ -36,6 +38,8 @@ final class ArticleRepository
     }
 
     /**
+     * アナリティクス用記事一覧取得
+     *
      * @return Collection<int,Article>
      */
     public function getForAnalyticsList(User $user): Collection
@@ -49,6 +53,9 @@ final class ArticleRepository
             ->get();
     }
 
+    /**
+     * 個別記事取得
+     */
     public function first(string $userIdOrNickname, string $slug): ?Article
     {
         $query = $this->model->query()
@@ -72,6 +79,8 @@ final class ArticleRepository
     }
 
     /**
+     * 検索
+     *
      * @param array{
      *     word?: string,
      *     userIds?: int[],
@@ -148,6 +157,8 @@ final class ArticleRepository
     }
 
     /**
+     * 新着記事一覧取得(PAK全体)
+     *
      * @return LengthAwarePaginator<int,Article>
      */
     public function getLatestAllPak(int $limit = 24): LengthAwarePaginator
@@ -166,6 +177,8 @@ final class ArticleRepository
     }
 
     /**
+     * 新着記事一覧取得(PAKごと)
+     *
      * @return LengthAwarePaginator<int,Article>
      */
     public function getLatest(string $pak, int $limit = 24): LengthAwarePaginator
@@ -188,6 +201,8 @@ final class ArticleRepository
     }
 
     /**
+     * 一般記事一覧取得
+     *
      * @return LengthAwarePaginator<int,Article>
      */
     public function getPages(int $limit = 24): LengthAwarePaginator
@@ -210,6 +225,8 @@ final class ArticleRepository
     }
 
     /**
+     * その他のPAK記事一覧取得
+     *
      * @return LengthAwarePaginator<int,Article>
      */
     public function getLatestOther(int $limit = 24): LengthAwarePaginator
@@ -238,6 +255,8 @@ final class ArticleRepository
     }
 
     /**
+     * アナウンス記事一覧取得
+     *
      * @return LengthAwarePaginator<int,Article>
      */
     public function getAnnounces(int $limit = 24): LengthAwarePaginator
@@ -256,6 +275,49 @@ final class ArticleRepository
             ->whereNull('users.deleted_at')
             ->orderBy('articles.modified_at', 'desc')
             ->with(['categories', 'tags', 'attachments', 'user.profile.attachments'])
+            ->paginate($limit);
+    }
+
+    /**
+     * タグ別記事一覧取得
+     *
+     * @return LengthAwarePaginator<int,Article>
+     */
+    public function getByTag(int $tagId, int $limit = 24): LengthAwarePaginator
+    {
+        return $this->model->query()
+            ->select(['articles.*'])
+            ->withoutGlobalScopes()
+            ->join('users', 'articles.user_id', '=', 'users.id')
+            ->join('article_tag', 'articles.id', '=', 'article_tag.article_id')
+            ->where('article_tag.tag_id', $tagId)
+            ->where('articles.status', ArticleStatus::Publish)
+            ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
+            ->whereNull('articles.deleted_at')
+            ->whereNull('users.deleted_at')
+            ->orderBy('articles.modified_at', 'desc')
+            ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
+            ->paginate($limit);
+    }
+
+    /**
+     * ユーザー別記事一覧取得
+     *
+     * @return LengthAwarePaginator<int,Article>
+     */
+    public function getByUser(int $userId, int $limit = 24): LengthAwarePaginator
+    {
+        return $this->model->query()
+            ->select(['articles.*'])
+            ->withoutGlobalScopes()
+            ->join('users', 'articles.user_id', '=', 'users.id')
+            ->where('articles.user_id', $userId)
+            ->where('articles.status', ArticleStatus::Publish)
+            ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
+            ->whereNull('articles.deleted_at')
+            ->whereNull('users.deleted_at')
+            ->orderBy('articles.modified_at', 'desc')
+            ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
             ->paginate($limit);
     }
 

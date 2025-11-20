@@ -2,7 +2,7 @@
     <img src="{{$user->profile->avatarUrl}}" alt="user avatar" class="w-10 h-10 rounded-full bg-gray-50" />
     <div class="text-sm">
         <p class="font-semibold text-gray-900 break-all">
-            <a href="{{ route('search', ['userIds' => [$user->id]]) }}">
+            <a href="{{ route('users.show', ['userIdOrNickname' => $user->nickname ?? $user->id]) }}">
                 {{$user->name}}
             </a>
         </p>

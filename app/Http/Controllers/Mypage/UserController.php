@@ -22,7 +22,7 @@ final class UserController extends Controller
     {
         return view('v2.user.invite', [
             'invitee' => $user,
-            'meta' => $this->metaOgpService->registration(),
+            'meta' => $this->metaOgpService->mypageRegistration(),
         ]);
     }
 
@@ -33,7 +33,7 @@ final class UserController extends Controller
 
         return view('v2.user.welcome', [
             'inviter' => $inviter,
-            'meta' => $this->metaOgpService->login(),
+            'meta' => $this->metaOgpService->mypageLogin(),
         ]);
     }
 
@@ -44,21 +44,21 @@ final class UserController extends Controller
         }
 
         return view('v2.user.login', [
-            'meta' => $this->metaOgpService->login(),
+            'meta' => $this->metaOgpService->mypageLogin(),
         ]);
     }
 
     public function showTwoFactor(): \Illuminate\Contracts\View\View|RedirectResponse
     {
         return view('v2.user.two-factor', [
-            'meta' => $this->metaOgpService->login(),
+            'meta' => $this->metaOgpService->mypageLogin(),
         ]);
     }
 
     public function showForgotPassword(): \Illuminate\Contracts\View\View|RedirectResponse
     {
         return view('v2.user.forget-password', [
-            'meta' => $this->metaOgpService->login(),
+            'meta' => $this->metaOgpService->mypageLogin(),
         ]);
     }
 
@@ -66,7 +66,7 @@ final class UserController extends Controller
     {
         return view('v2.user.reset-password', [
             'token' => $token,
-            'meta' => $this->metaOgpService->resetPassword(),
+            'meta' => $this->metaOgpService->mypageResetPassword(),
         ]);
     }
 }

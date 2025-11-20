@@ -59,7 +59,7 @@ final class PakExtractor implements Extractor
         foreach ($chars as $char) {
             $unpacked = unpack('v', $char) ?: [];
             $result += (array_shift($unpacked) ?: 0) * (16 ** $order);
-            $order++;
+            ++$order;
         }
 
         return $result;

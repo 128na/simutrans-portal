@@ -14,14 +14,18 @@
     @if($article->articles->isNotEmpty())
     <h4 class="text-xl font-semibold sm:text-xl my-8">関連記事</h4>
     @foreach($article->articles as $a)
-    @include('v2.parts.link', ['url' => route('articles.show', ['userIdOrNickname' => $a->user->nickname ?? $a->user->id, 'articleSlug' => $a->slug]), 'title' => $a->title])
+    <div>
+        @include('v2.parts.link', ['url' => route('articles.show', ['userIdOrNickname' => $a->user->nickname ?? $a->user->id, 'articleSlug' => $a->slug]), 'title' => $a->title])
+    </div>
     @endforeach
     @endif
 
     @if($article->relatedArticles->isNotEmpty())
     <h4 class="text-xl font-semibold text-gray-800 sm:text-xl my-8">関連付けられた記事</h4>
     @foreach($article->relatedArticles as $a)
-    @include('v2.parts.link', ['url' => route('articles.show', ['userIdOrNickname' => $a->user->nickname ?? $a->user->id, 'articleSlug' => $a->slug]), 'title' => $a->title])
+    <div>
+        @include('v2.parts.link', ['url' => route('articles.show', ['userIdOrNickname' => $a->user->nickname ?? $a->user->id, 'articleSlug' => $a->slug]), 'title' => $a->title])
+    </div>
     @endforeach
     @endif
 

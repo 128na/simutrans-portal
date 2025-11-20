@@ -22,7 +22,7 @@ final class MetaOgpServiceTest extends TestCase
         $sut = new MetaOgpService;
 
         // Default factory-created article usually has no thumbnail -> image should be null
-        $meta = $sut->show($user, $article);
+        $meta = $sut->frontArticleShow($user, $article);
         $this->assertArrayHasKey('title', $meta);
         $this->assertArrayHasKey('description', $meta);
         $this->assertArrayHasKey('image', $meta);
@@ -47,7 +47,7 @@ final class MetaOgpServiceTest extends TestCase
         $contentsArr['thumbnail'] = $attachment->id;
         $article->update(['contents' => $contentsArr]);
 
-        $meta2 = $sut->show($user, $article);
+        $meta2 = $sut->frontArticleShow($user, $article);
         $this->assertIsString($meta2['image']);
         $this->assertStringContainsString($attachment->path, $meta2['image']);
     }
@@ -58,11 +58,11 @@ final class MetaOgpServiceTest extends TestCase
 
         $sut = new MetaOgpService;
 
-        $pak = $sut->pak('pak128');
+        $pak = $sut->frontPak('pak128');
         $this->assertArrayHasKey('title', $pak);
         $this->assertStringContainsString(config('app.name'), $pak['title']);
 
-        $ann = $sut->announces();
+        $ann = $sut->frontAnnounces();
         $this->assertArrayHasKey('title', $ann);
         $this->assertStringContainsString(config('app.name'), $ann['title']);
     }

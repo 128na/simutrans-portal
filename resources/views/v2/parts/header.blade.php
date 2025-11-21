@@ -20,8 +20,9 @@
             <a href="{{route('pak.128japan')}}" class="text-sm/6 font-semibold text-gray-900">pak128.japan</a>
             <a href="{{route('pak.128')}}" class="text-sm/6 font-semibold text-gray-900">pak128</a>
             <a href="{{route('pak.64')}}" class="text-sm/6 font-semibold text-gray-900">pak64</a>
-            <a href="{{route('users.index')}}" class="text-sm/6 font-semibold text-gray-900">ユーザ一覧</a>
-            <a href="{{route('tags.index')}}" class="text-sm/6 font-semibold text-gray-900">タグ一覧</a>
+            <a href="{{route('users.index')}}" class="text-sm/6 font-semibold text-gray-900">ユーザ</a>
+            <a href="{{route('categories.index')}}" class="text-sm/6 font-semibold text-gray-900">カテゴリ</a>
+            <a href="{{route('tags.index')}}" class="text-sm/6 font-semibold text-gray-900">タグ</a>
 
             <div class="relative">
                 <button popovertarget="desktop-menu-misc" class="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 cursor-pointer">
@@ -115,6 +116,7 @@
                                 <a href="{{route('pak.64')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">pak64</a>
                                 <a href="{{route('pak.others')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">他pak</a>
                                 <a href="{{route('users.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ユーザー一覧</a>
+                                <a href="{{route('categories.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">カテゴリ一覧</a>
                                 <a href="{{route('tags.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">タグ一覧</a>
                                 <a href="{{route('pages')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">一般記事</a>
                                 <a href="{{route('search')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">検索</a>

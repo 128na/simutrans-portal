@@ -21,6 +21,9 @@ Route::get('/pages', [\App\Http\Controllers\Front\ArticleController::class, 'pag
 Route::get('/tags', [\App\Http\Controllers\Front\TagController::class, 'tags'])->name('tags.index');
 Route::get('/tags/{tag}', [\App\Http\Controllers\Front\TagController::class, 'tag'])->name('tags.show');
 
+Route::get('/categories', [\App\Http\Controllers\Front\CategoryController::class, 'categories'])->name('categories.index');
+Route::get('/categories/pak/{pak}/{addon}', [\App\Http\Controllers\Front\CategoryController::class, 'categoryPakAddon'])->name('categories.pakAddon');
+
 // 特殊ページ
 Route::get('/', [\App\Http\Controllers\Front\ArticleController::class, 'top'])->name('index');
 Route::get('/social', [\App\Http\Controllers\Front\FrontMiscController::class, 'social'])->name('social');

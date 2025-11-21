@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Front;
 
 use App\Models\Article;
+use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Facades\Config;
@@ -56,6 +57,36 @@ final class MetaOgpService
         return [
             'title' => '記事'.' - '.Config::string('app.name'),
             'description' => 'アドオン以外の記事です。',
+        ];
+    }
+
+    /**
+     * @return array{title:string,description:string}
+     */
+    public function frontPakAddon(Category $pak, Category $addon): array
+    {
+        return [
+            'title' => sprintf(
+                '%s / %s の記事'.' - '.Config::string('app.name'),
+                __('categories.pak.'.$pak->slug),
+                __('categories.addon.'.$addon->slug)
+            ),
+            'description' => sprintf(
+                '%s / %s の記事一覧です。',
+                __('categories.pak.'.$pak->slug),
+                __('categories.addon.'.$addon->slug)
+            ),
+        ];
+    }
+
+    /**
+     * @return array{title:string,description:string}
+     */
+    public function frontPakAddonList(): array
+    {
+        return [
+            'title' => 'Pak別アドオン一覧 - '.config('app.name'),
+            'description' => '主なPakごとのアドオン一覧です。',
         ];
     }
 

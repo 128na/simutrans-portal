@@ -301,6 +301,30 @@ final class ArticleRepository
     }
 
     /**
+     * タグ別記事一覧取得
+     *
+     * @return LengthAwarePaginator<int,Article>
+     */
+    public function getForPakAddon(int $pakId, int $addonId, int $limit = 24): LengthAwarePaginator
+    {
+        return $this->model->query()
+            ->select(['articles.*'])
+            ->withoutGlobalScopes()
+            ->join('users', 'articles.user_id', '=', 'users.id')
+            ->join('article_category as pak', 'pak.article_id', '=', 'articles.id')
+            ->join('article_category as addon', 'addon.article_id', '=', 'articles.id')
+            ->where('pak.category_id', $pakId)
+            ->where('addon.category_id', $addonId)
+            ->where('articles.status', ArticleStatus::Publish)
+            ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
+            ->whereNull('articles.deleted_at')
+            ->whereNull('users.deleted_at')
+            ->orderBy('articles.modified_at', 'desc')
+            ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
+            ->paginate($limit);
+    }
+
+    /**
      * ユーザー別記事一覧取得
      *
      * @return LengthAwarePaginator<int,Article>

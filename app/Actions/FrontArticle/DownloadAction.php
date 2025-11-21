@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\FrontArticle;
 
+use App\Events\ArticleConversion;
 use App\Models\Article;
 use App\Models\User;
 use Illuminate\Filesystem\FilesystemAdapter;
@@ -14,8 +15,9 @@ final class DownloadAction
 {
     public function __invoke(Article $article, ?User $user): StreamedResponse
     {
-        if ($user instanceof \App\Models\User && $user->id !== $article->user_id) {
-            event(new \App\Events\ArticleConversion($article));
+        // ログインしていて自身の記事ならカウントしない
+        if (is_null($user) || $user->id !== $article->user_id) {
+            event(new ArticleConversion($article));
         }
 
         return $this->getPublicDisk()->download(

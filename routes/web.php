@@ -37,6 +37,7 @@ Route::get('/users/{userIdOrNickname}/{articleSlug}', [\App\Http\Controllers\Fro
 // 記事詳細・ダウンロード
 Route::get('/articles/{id}', [\App\Http\Controllers\Front\ArticleController::class, 'fallbackShow'])->name('articles.fallbackShow');
 Route::get('/articles/{article}/download', [\App\Http\Controllers\Front\ArticleController::class, 'download'])->name('articles.download');
+Route::get('/articles/{article}/conversion', [\App\Http\Controllers\Front\ArticleController::class, 'conversion'])->name('articles.conversion');
 Route::get('/redirect/{name}', [\App\Http\Controllers\Front\FrontMiscController::class, 'redirect'])->name('redirect');
 
 // 認証・招待

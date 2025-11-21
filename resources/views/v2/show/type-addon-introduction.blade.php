@@ -27,7 +27,8 @@ $contents = $article->contents;
                 <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">掲載URL</td>
                 <td class="border border-gray-300 px-4 py-2">
                     @include('v2.parts.link-external', [
-                    'url' => $contents->link, 'title' => $contents->link])
+                    'url' => route('articles.conversion', ['article' => $article->id]),
+                    'title' => $contents->link])
                 </td>
             </tr>
         </tbody>

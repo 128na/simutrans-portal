@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Enums\ArticlePostType;
 use App\Models\Article;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -24,6 +25,11 @@ final class ArticlePolicy extends BasePolicy
 
     public function download(?User $user, Article $article): bool
     {
-        return $article->is_publish && $article->is_addon_post && $article->has_file && $article->file;
+        return $article->is_publish && $article->post_type === ArticlePostType::AddonPost && $article->has_file && $article->file;
+    }
+
+    public function conversion(?User $user, Article $article): bool
+    {
+        return $article->is_publish && $article->post_type === ArticlePostType::AddonIntroduction;
     }
 }

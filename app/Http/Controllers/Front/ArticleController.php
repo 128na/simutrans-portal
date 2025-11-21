@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Front;
 
+use App\Actions\FrontArticle\ConversionAction;
 use App\Actions\FrontArticle\DownloadAction;
 use App\Actions\FrontArticle\FallbackShowAction;
 use App\Actions\FrontArticle\SearchAction;
 use App\Actions\Redirect\DoRedirectIfExists;
 use App\Models\Article;
+use App\Models\Contents\AddonIntroductionContent;
 use App\Repositories\ArticleRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -124,5 +127,19 @@ final class ArticleController extends Controller
         }
 
         return $downloadAction($article, Auth::user());
+    }
+
+    public function conversion(Article $article, ConversionAction $conversionAction): RedirectResponse
+    {
+        if (Gate::allows('conversion', $article)) {
+            $conversionAction($article, Auth::user());
+        }
+
+        assert($article->contents instanceof AddonIntroductionContent);
+        if ($article->contents->link) {
+            return redirect($article->contents->link, Response::HTTP_FOUND);
+        }
+
+        abort(404);
     }
 }

@@ -20,7 +20,7 @@
             <a href="{{route('pak.128japan')}}" class="text-sm/6 font-semibold text-gray-900">pak128.japan</a>
             <a href="{{route('pak.128')}}" class="text-sm/6 font-semibold text-gray-900">pak128</a>
             <a href="{{route('pak.64')}}" class="text-sm/6 font-semibold text-gray-900">pak64</a>
-            <a href="{{route('users.index')}}" class="text-sm/6 font-semibold text-gray-900">ユーザ</a>
+            <a href="{{route('users.index')}}" class="text-sm/6 font-semibold text-gray-900">ユーザー</a>
             <a href="{{route('categories.index')}}" class="text-sm/6 font-semibold text-gray-900">カテゴリ</a>
             <a href="{{route('tags.index')}}" class="text-sm/6 font-semibold text-gray-900">タグ</a>
 

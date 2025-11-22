@@ -2,9 +2,10 @@ import LinkExternal from "@/apps/components/ui/LinkExternal";
 
 type Props = {
   url: string;
+  preview: boolean;
 };
 
-export const ProfileLink = ({ url }: Props) => {
+export const ProfileLink = ({ url, preview }: Props) => {
   const starts = (prefix: string) => url.startsWith(prefix);
 
   const items = [
@@ -51,7 +52,7 @@ export const ProfileLink = ({ url }: Props) => {
   if (found) {
     return (
       <span className="mr-1">
-        <a href={url} target="_blank" rel="noopener noreferrer">
+        <a href={preview ? "#" : url} target="_blank" rel="noopener noreferrer">
           <img
             src={found.src}
             alt={found.alt}
@@ -72,5 +73,5 @@ export const ProfileLink = ({ url }: Props) => {
     }
   })();
 
-  return <LinkExternal href={url}>{host}</LinkExternal>;
+  return <LinkExternal href={preview ? "#" : url}>{host}</LinkExternal>;
 };

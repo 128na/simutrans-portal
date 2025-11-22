@@ -1,12 +1,13 @@
 type Props = {
-  tags: ArticleShow.Tag[];
+  tags: TagEdit.Tag[];
+  preview?: boolean;
 };
-export const Tags = ({ tags }: Props) => {
+export const Tags = ({ tags, preview }: Props) => {
   return (
     <>
       {tags.map((tag) => (
         <a
-          href={`/tags/${tag.id}`}
+          href={preview ? "#" : `/tags/${tag.id}`}
           key={tag.id}
           className="rounded bg-tag px-2.5 py-0.5 text-white inline-block"
         >

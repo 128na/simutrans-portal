@@ -10,6 +10,7 @@ use App\Actions\FrontArticle\FallbackShowAction;
 use App\Actions\FrontArticle\SearchAction;
 use App\Actions\Redirect\DoRedirectIfExists;
 use App\Http\Resources\ArticleShow;
+use App\Http\Resources\ArticleList;
 use App\Models\Article;
 use App\Models\Contents\AddonIntroductionContent;
 use App\Repositories\ArticleRepository;
@@ -41,7 +42,7 @@ final class ArticleController extends Controller
     {
         return view('v2.pak.index', [
             'pak' => '128-japan',
-            'articles' => $this->articleRepository->getLatest('128-japan'),
+            'articles' => ArticleList::collection($this->articleRepository->getLatest('128-japan')),
             'meta' => $this->metaOgpService->frontPak('128-japan'),
         ]);
     }
@@ -50,7 +51,7 @@ final class ArticleController extends Controller
     {
         return view('v2.pak.index', [
             'pak' => '128',
-            'articles' => $this->articleRepository->getLatest('128'),
+            'articles' => ArticleList::collection($this->articleRepository->getLatest('128')),
             'meta' => $this->metaOgpService->frontPak('128'),
         ]);
     }
@@ -59,7 +60,7 @@ final class ArticleController extends Controller
     {
         return view('v2.pak.index', [
             'pak' => '64',
-            'articles' => $this->articleRepository->getLatest('64'),
+            'articles' => ArticleList::collection($this->articleRepository->getLatest('64')),
             'meta' => $this->metaOgpService->frontPak('64'),
         ]);
     }
@@ -68,7 +69,7 @@ final class ArticleController extends Controller
     {
         return view('v2.pak.index', [
             'pak' => 'other-pak',
-            'articles' => $this->articleRepository->getLatestOther(),
+            'articles' => ArticleList::collection($this->articleRepository->getLatestOther()),
             'meta' => $this->metaOgpService->frontPak('others'),
         ]);
     }
@@ -76,7 +77,7 @@ final class ArticleController extends Controller
     public function announces(): View
     {
         return view('v2.announces.index', [
-            'articles' => $this->articleRepository->getAnnounces(),
+            'articles' => ArticleList::collection($this->articleRepository->getAnnounces()),
             'meta' => $this->metaOgpService->frontAnnounces(),
         ]);
     }
@@ -84,7 +85,7 @@ final class ArticleController extends Controller
     public function pages(): View
     {
         return view('v2.pages.index', [
-            'articles' => $this->articleRepository->getPages(),
+            'articles' => ArticleList::collection($this->articleRepository->getPages()),
             'meta' => $this->metaOgpService->frontPages(),
         ]);
     }

@@ -6,7 +6,6 @@ import {
   useArticleEditor,
   useIsSlugUpdated,
 } from "@/apps/state/useArticleEditor";
-import { Image } from "@/apps/components/ui/Image";
 import TextSub from "@/apps/components/ui/TextSub";
 import TextError from "@/apps/components/ui/TextError";
 import { useAxiosError } from "@/apps/state/useAxiosError";
@@ -92,10 +91,6 @@ export const CommonForm = () => {
           <TextError className="mb-2">
             {getError("article.contents.thumbnail")}
           </TextError>
-          <Image
-            attachmentId={article.contents.thumbnail}
-            attachments={attachments}
-          />
         </Label>
         <TextSub>
           {(article.contents.thumbnail &&

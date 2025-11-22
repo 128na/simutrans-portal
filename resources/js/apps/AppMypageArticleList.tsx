@@ -8,13 +8,15 @@ const app = document.getElementById("app-article-list");
 if (app) {
   const user = JSON.parse(
     document.getElementById("data-user")?.textContent || "{}",
-  ) as ArticleList.User;
+  ) as MypageArticleListUser;
   const articles = JSON.parse(
     document.getElementById("data-articles")?.textContent || "{}",
-  ) as ArticleList.Article[];
+  ) as MypageArticleListArticle[];
 
   const App = () => {
-    const [selected, setSelected] = useState<ArticleList.Article | null>(null);
+    const [selected, setSelected] = useState<MypageArticleListArticle | null>(
+      null,
+    );
     return (
       <>
         <ArticleTable articles={articles} limit={15} onClick={setSelected} />

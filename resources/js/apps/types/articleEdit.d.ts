@@ -25,22 +25,29 @@ namespace ArticleEdit {
     updated_at: string | null;
   };
 
-  type Relational = SearchableOption & {
-    id: number;
-    user_id: number;
-    user_name: string;
-    title: string;
-    slug: string;
-  };
+  type Relational = ArticleShow.RelationaArticle &
+    SearchableOption & {
+      id: number;
+      user_id: number;
+      user_name: string;
+      title: string;
+      slug: string;
+    };
 
   type User = {
     id: number;
     name: string;
     nickname: string | null;
-    role: Role;
+    role: User.Role;
+    profile: {
+      data: {
+        avatar: number | null;
+        website: string[];
+        description: string | null;
+      };
+      attachments: ArticleShow.Attachment[];
+    };
   };
-
-  type Role = "admin" | "user";
 }
 
 type Content = {

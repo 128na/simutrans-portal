@@ -3,8 +3,9 @@ import { ProfileLink } from "./ProfileLink";
 
 type Props = {
   user: ArticleShow.User;
+  preview?: boolean;
 };
-export const ProfileShow = ({ user }: Props) => {
+export const ProfileShow = ({ user, preview }: Props) => {
   return (
     <div className="flex items-center gap-x-3">
       <Avatar
@@ -20,7 +21,13 @@ export const ProfileShow = ({ user }: Props) => {
         </p>
 
         {user.profile.data.website.map((website) =>
-          website ? <ProfileLink key={website} url={website} /> : null,
+          website ? (
+            <ProfileLink
+              key={website}
+              url={website}
+              preview={preview ?? false}
+            />
+          ) : null,
         )}
       </div>
     </div>

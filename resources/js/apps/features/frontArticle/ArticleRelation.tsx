@@ -4,9 +4,10 @@ import { TitleH4 } from "./TitleH4";
 type Props = {
   title: string;
   articles: ArticleShow.RelationaArticle[];
+  preview: boolean;
 };
 
-export const ArticleRelation = ({ title, articles }: Props) => {
+export const ArticleRelation = ({ title, articles, preview }: Props) => {
   if (articles.length === 0) {
     return null;
   }
@@ -16,7 +17,10 @@ export const ArticleRelation = ({ title, articles }: Props) => {
       <TitleH4>{title}</TitleH4>
       {articles.map((relatedArticle) => (
         <div>
-          <Link href={`/articles/${relatedArticle.id}`} key={relatedArticle.id}>
+          <Link
+            href={preview ? "#" : `/articles/${relatedArticle.id}`}
+            key={relatedArticle.id}
+          >
             {relatedArticle.title}
           </Link>
         </div>

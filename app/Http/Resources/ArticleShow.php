@@ -42,7 +42,8 @@ final class ArticleShow extends JsonResource
             ],
             'categories' => $this->resource->categories->map(fn ($category): array => [
                 'id' => $category->id,
-                'name' => __(sprintf('category.%s.%s', $category->type->value, $category->slug)),
+                'type' => $category->type->value,
+                'slug' => $category->slug,
             ]),
             'tags' => $this->resource->tags->map(fn ($tag): array => [
                 'id' => $tag->id,

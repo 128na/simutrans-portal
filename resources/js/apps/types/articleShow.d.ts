@@ -14,7 +14,7 @@ namespace ArticleShow {
     slug: string;
     post_type: Article.PostType;
     user: User;
-    categories: Category[];
+    categories: Category.Search[];
     tags: Tag[];
     articles: RelationaArticle[];
     relatedArticles: RelationaArticle[];
@@ -31,11 +31,10 @@ namespace ArticleShow {
     fileInfo: FileInfo | null;
   };
 
-  type Tag = {
+  type TagShowable = {
     id: number;
     name: string;
   };
-  type Category = Tag;
 
   type RelationaArticle = {
     id: number;
@@ -46,6 +45,7 @@ namespace ArticleShow {
     id: number;
     name: string;
     nickname: string | null;
+    role: User.Role;
     profile: {
       data: {
         avatar: number | null;

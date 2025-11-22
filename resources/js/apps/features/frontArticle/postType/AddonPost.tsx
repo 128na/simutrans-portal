@@ -1,16 +1,17 @@
 import Link from "@/apps/components/ui/Link";
-import { TitleH4 } from "../TitleH4";
-import { TitleH3 } from "../TitleH3";
-import { TextPre } from "../TextPre";
+import { TitleH4 } from "../../frontArticle/TitleH4";
+import { TitleH3 } from "../../frontArticle/TitleH3";
+import { TextPre } from "../../frontArticle/TextPre";
 import { formatArticleDate } from "../../articles/articleUtil";
 import { Accordion } from "@/apps/components/ui/Accordion";
 import React from "react";
 
 type Props = {
   article: ArticleShow.Article;
+  preview: boolean;
 };
 
-export const AddonPost = ({ article }: Props) => {
+export const AddonPost = ({ article, preview }: Props) => {
   const contents = article.contents as ContentAddonPost;
   const file = article.attachments.find((att) => att.id === contents.file) as
     | ArticleShow.Attachment
@@ -21,7 +22,7 @@ export const AddonPost = ({ article }: Props) => {
 
   return (
     <div>
-      <TextPre>{contents.description}</TextPre>
+      <TextPre>{contents.description || "(本文)"}</TextPre>
 
       <TitleH3>詳細情報</TitleH3>
 
@@ -60,7 +61,7 @@ export const AddonPost = ({ article }: Props) => {
                 ダウンロード
               </td>
               <td className="border border-gray-300 px-4 py-2">
-                <Link href={file ? `/articles/${article.id}/download` : "#"}>
+                <Link href={preview ? "#" : `/articles/${article.id}/download`}>
                   {file?.original_name ?? "download"}
                 </Link>
               </td>

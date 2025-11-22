@@ -1,5 +1,4 @@
 import { Upload } from "@/apps/components/form/Upload";
-import { Image } from "@/apps/components/ui/Image";
 import Label from "@/apps/components/ui/Label";
 import { ModalFull } from "@/apps/components/ui/ModalFull";
 import TextError from "@/apps/components/ui/TextError";
@@ -34,7 +33,6 @@ export const SectionImage = ({
           <TextError className="mb-2">
             {getError(`article.contents.sections.${idx}.id`)}
           </TextError>
-          <Image attachmentId={section.id} attachments={attachments} />
         </Label>
         <TextSub>
           {(section.id &&

@@ -11,6 +11,7 @@ use App\Http\Requests\Article\UpdateRequest;
 use App\Http\Resources\ArticleEdit;
 use App\Http\Resources\AttachmentEdit;
 use App\Http\Resources\TagEdit;
+use App\Http\Resources\UserShow;
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
@@ -54,7 +55,7 @@ final class ArticleController extends Controller
         }
 
         return view('v2.mypage.article-create', [
-            'user' => $user->only(['id', 'name', 'nickname', 'role']),
+            'user' => new UserShow($user),
             'attachments' => AttachmentEdit::collection($user->myAttachments()->with('fileInfo')->get()),
             'categories' => $this->categoryRepository->getForSearch()->groupBy('type'),
             'tags' => TagEdit::collection($this->tagRepository->getForEdit()),
@@ -88,7 +89,7 @@ final class ArticleController extends Controller
         }
 
         return view('v2.mypage.article-edit', [
-            'user' => $user->only(['id', 'name', 'nickname', 'role']),
+            'user' => new UserShow($user),
             'article' => new ArticleEdit($article->load('categories', 'tags', 'articles', 'attachments')),
             'attachments' => AttachmentEdit::collection($user->myAttachments()->with('fileInfo')->get()),
             'categories' => $this->categoryRepository->getForSearch()->groupBy('type'),

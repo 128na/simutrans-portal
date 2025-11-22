@@ -1,17 +1,18 @@
 import LinkExternal from "@/apps/components/ui/LinkExternal";
 import { formatArticleDate } from "../../articles/articleUtil";
-import { TextPre } from "../TextPre";
-import { TitleH3 } from "../TitleH3";
-import { TitleH4 } from "../TitleH4";
+import { TextPre } from "../../frontArticle/TextPre";
+import { TitleH3 } from "../../frontArticle/TitleH3";
+import { TitleH4 } from "../../frontArticle/TitleH4";
 
 type Props = {
   article: ArticleShow.Article;
+  preview: boolean;
 };
-export const AddonIntroduction = ({ article }: Props) => {
+export const AddonIntroduction = ({ article, preview }: Props) => {
   const contents = article.contents as ContentAddonIntroduction;
   return (
     <div>
-      <TextPre>{contents.description}</TextPre>
+      <TextPre>{contents.description || "(本文)"}</TextPre>
 
       <TitleH3>詳細情報</TitleH3>
       <div className="overflow-x-auto">
@@ -55,9 +56,7 @@ export const AddonIntroduction = ({ article }: Props) => {
               </td>
               <td className="border border-gray-300 px-4 py-2">
                 <LinkExternal
-                  href={
-                    contents.link ? `/articles/${article.id}/conversion` : "#"
-                  }
+                  href={preview ? "#" : `/articles/${article.id}/conversion`}
                 >
                   {contents.link ?? "未設定"}
                 </LinkExternal>

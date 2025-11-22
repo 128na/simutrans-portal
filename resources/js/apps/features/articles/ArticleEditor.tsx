@@ -10,6 +10,7 @@ import Checkbox from "@/apps/components/ui/Checkbox";
 import Button from "@/apps/components/ui/Button";
 import axios, { AxiosError } from "axios";
 import { useAxiosError } from "@/apps/state/useAxiosError";
+import { ArticlePreview } from "./ArticlePreview";
 export const ArticleEditor = () => {
   const article = useArticleEditor((s) => s.article);
   const shouldNotify = useArticleEditor((s) => s.shouldNotify);
@@ -42,47 +43,54 @@ export const ArticleEditor = () => {
 
   return (
     <>
-      {match<Article.PostType>(article.post_type)
-        .returnType<JSX.Element>()
-        .with("page", () => <Page />)
-        .with("markdown", () => <Markdown />)
-        .with("addon-post", () => <AddonPost />)
-        .with("addon-introduction", () => <AddonIntroduction />)
-        .exhaustive()}
-      <div className="mt-2">
-        <Label>
-          <div className="font-medium">保存時の更新日時</div>
+      <div className="flex flex-col gap-y-0 lg:grid lg:grid-cols-2 h-[calc(100vh-300px)]">
+        <div className="overflow-y-auto pr-4">
+          {match<Article.PostType>(article.post_type)
+            .returnType<JSX.Element>()
+            .with("page", () => <Page />)
+            .with("markdown", () => <Markdown />)
+            .with("addon-post", () => <AddonPost />)
+            .with("addon-introduction", () => <AddonIntroduction />)
+            .exhaustive()}
+          <div className="mt-2">
+            <Label>
+              <div className="font-medium">保存時の更新日時</div>
 
-          <Checkbox
-            checked={withoutUpdateModifiedAt}
-            onChange={() => {
-              useArticleEditor.setState((state) => {
-                // 更新日時を変えないときはSNS通知も不要なはずなのでOFFにする
-                if (!withoutUpdateModifiedAt) {
-                  state.shouldNotify = false;
-                }
-                state.withoutUpdateModifiedAt = !withoutUpdateModifiedAt;
-              });
-            }}
-          >
-            更新しない
-          </Checkbox>
-        </Label>
-      </div>
-      {article.status === "publish" && (
-        <div className="mt-2">
-          <Label>
-            <div className="font-medium">公開時のSNS通知</div>
+              <Checkbox
+                checked={withoutUpdateModifiedAt}
+                onChange={() => {
+                  useArticleEditor.setState((state) => {
+                    // 更新日時を変えないときはSNS通知も不要なはずなのでOFFにする
+                    if (!withoutUpdateModifiedAt) {
+                      state.shouldNotify = false;
+                    }
+                    state.withoutUpdateModifiedAt = !withoutUpdateModifiedAt;
+                  });
+                }}
+              >
+                更新しない
+              </Checkbox>
+            </Label>
+          </div>
+          {article.status === "publish" && (
+            <div className="mt-2">
+              <Label>
+                <div className="font-medium">公開時のSNS通知</div>
 
-            <Checkbox
-              checked={shouldNotify}
-              onChange={() => updateShouldNotify(!shouldNotify)}
-            >
-              通知する
-            </Checkbox>
-          </Label>
+                <Checkbox
+                  checked={shouldNotify}
+                  onChange={() => updateShouldNotify(!shouldNotify)}
+                >
+                  通知する
+                </Checkbox>
+              </Label>
+            </div>
+          )}
         </div>
-      )}
+        <div className="overflow-y-auto pl-4 border-t border-gray-200 pt-4 lg:border-t-0">
+          <ArticlePreview />
+        </div>
+      </div>
       <div className="border-t border-gray-200 pt-4">
         <Button onClick={save}>保存</Button>
       </div>

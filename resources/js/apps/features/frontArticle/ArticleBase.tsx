@@ -13,13 +13,14 @@ import { AddonIntroduction } from "./postType/AddonIntroduction";
 
 type Props = {
   article: ArticleShow.Article;
+  preview?: boolean;
 };
-export const ArticleBase = ({ article }: Props) => {
+export const ArticleBase = ({ article, preview = false }: Props) => {
   return (
     <>
       <div className="text-sm flex flex-wrap gap-2">
-        <Categories categories={article.categories} />
-        <Tags tags={article.tags} />
+        <Categories categories={article.categories} preview={preview} />
+        <Tags tags={article.tags} preview={preview} />
       </div>
       <Thumbnail
         attachmentId={article.contents.thumbnail}
@@ -27,21 +28,30 @@ export const ArticleBase = ({ article }: Props) => {
       />
       {match<Article.PostType>(article.post_type)
         .returnType<JSX.Element>()
-        .with("page", () => <Page article={article} />)
-        .with("markdown", () => <Markdown article={article} />)
-        .with("addon-post", () => <AddonPost article={article} />)
+        .with("page", () => <Page article={article} preview={preview} />)
+        .with("markdown", () => (
+          <Markdown article={article} preview={preview} />
+        ))
+        .with("addon-post", () => (
+          <AddonPost article={article} preview={preview} />
+        ))
         .with("addon-introduction", () => (
-          <AddonIntroduction article={article} />
+          <AddonIntroduction article={article} preview={preview} />
         ))
         .exhaustive()}
 
-      <ArticleRelation title="関連記事" articles={article.articles} />
+      <ArticleRelation
+        title="関連記事"
+        articles={article.articles}
+        preview={preview}
+      />
       <ArticleRelation
         title="関連付けられた記事"
         articles={article.relatedArticles}
+        preview={preview}
       />
       <TitleH4>投稿者</TitleH4>
-      <ProfileShow user={article.user} />
+      <ProfileShow user={article.user} preview={preview} />
     </>
   );
 };

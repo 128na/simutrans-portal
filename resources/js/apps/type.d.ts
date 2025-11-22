@@ -21,3 +21,7 @@ namespace Article {
   type PostType = "addon-post" | "addon-introduction" | "page" | "markdown";
   type Status = "publish" | "reservation" | "draft" | "trash" | "private";
 }
+
+namespace User {
+  type Role = "admin" | "user";
+}

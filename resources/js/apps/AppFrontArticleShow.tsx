@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { ArticleBase } from "./features/articleShow/ArticleBase";
+import { ArticleBase } from "./features/frontArticle/ArticleBase";
 
 const app = document.getElementById("app-article-show");
 
@@ -9,7 +9,6 @@ if (app) {
       document.getElementById("data-article")?.textContent || "{}",
     );
 
-    console.log(article);
     return <ArticleBase article={article} />;
   };
 

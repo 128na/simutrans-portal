@@ -1,4 +1,4 @@
-import { compareAsc, parseISO } from "date-fns";
+import { compareAsc, format, parseISO } from "date-fns";
 export const compareArticleValues = (a: unknown, b: unknown): number => {
   // null を末尾扱いにする
   if (a == null && b == null) return 0;
@@ -134,4 +134,10 @@ export const createArticle = (
 
 export const typedKeys = <T extends object>(obj: T): (keyof T)[] => {
   return Object.keys(obj) as (keyof T)[];
+};
+
+export const formatArticleDate = (dateStr: string | null) => {
+  if (!dateStr) return "-";
+  const date = new Date(dateStr);
+  return format(date, "yyyy/MM/dd HH:mm");
 };

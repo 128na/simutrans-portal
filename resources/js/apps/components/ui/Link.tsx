@@ -8,7 +8,7 @@ export default function Link({
     <a {...props}>
       <span
         className={twMerge(
-          "underline decoration-gray-400 break-all",
+          "text-gray-700 hover:text-gray-500 decoration-gray-400 underline break-all",
           className,
         )}
       >

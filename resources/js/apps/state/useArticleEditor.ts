@@ -17,7 +17,6 @@ type ArticleEditorState = {
   followRedirect: boolean;
 
   init: (initial: {
-    initialArticle: ArticleEdit.Article;
     user: ArticleEdit.User;
     article: ArticleEdit.Article;
     attachments: AttachmentEdit.Attachment[];

@@ -8,13 +8,13 @@ export default function LinkExternal({
     <a {...props}>
       <span
         className={twMerge(
-          "decoration-sky-600 text-sky-600 underline break-all",
+          "decoration-sky-600 text-brand hover:text-brand/70 underline break-all",
           className,
         )}
       >
         {children}
       </span>
-      <span className="text-sm text-gray-500">↗</span>
+      <span className="text-xs text-gray-500">↗</span>
     </a>
   );
 }

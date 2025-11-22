@@ -1,0 +1,47 @@
+import { Categories } from "./Categories";
+import { Tags } from "./Tags";
+import { Thumbnail } from "@/apps/components/ui/Thumbnail";
+import { TitleH4 } from "./TitleH4";
+import { ArticleRelation } from "./ArticleRelation";
+import { ProfileShow } from "./ProfileShow";
+import { match } from "ts-pattern";
+import { JSX } from "react";
+import { Page } from "./postType/Page";
+import { Markdown } from "./postType/Markdown";
+import { AddonPost } from "./postType/AddonPost";
+import { AddonIntroduction } from "./postType/AddonIntroduction";
+
+type Props = {
+  article: ArticleShow.Article;
+};
+export const ArticleBase = ({ article }: Props) => {
+  return (
+    <>
+      <div className="text-sm flex flex-wrap gap-2">
+        <Categories categories={article.categories} />
+        <Tags tags={article.tags} />
+      </div>
+      <Thumbnail
+        attachmentId={article.contents.thumbnail}
+        attachments={article.attachments}
+      />
+      {match<Article.PostType>(article.post_type)
+        .returnType<JSX.Element>()
+        .with("page", () => <Page article={article} />)
+        .with("markdown", () => <Markdown article={article} />)
+        .with("addon-post", () => <AddonPost article={article} />)
+        .with("addon-introduction", () => (
+          <AddonIntroduction article={article} />
+        ))
+        .exhaustive()}
+
+      <ArticleRelation title="関連記事" articles={article.articles} />
+      <ArticleRelation
+        title="関連付けられた記事"
+        articles={article.relatedArticles}
+      />
+      <TitleH4>投稿者</TitleH4>
+      <ProfileShow user={article.user} />
+    </>
+  );
+};

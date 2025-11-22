@@ -9,6 +9,7 @@ use App\Actions\FrontArticle\DownloadAction;
 use App\Actions\FrontArticle\FallbackShowAction;
 use App\Actions\FrontArticle\SearchAction;
 use App\Actions\Redirect\DoRedirectIfExists;
+use App\Http\Resources\ArticleShow;
 use App\Models\Article;
 use App\Models\Contents\AddonIntroductionContent;
 use App\Repositories\ArticleRepository;
@@ -110,7 +111,7 @@ final class ArticleController extends Controller
         }
 
         return view('v2.show.index', [
-            'article' => $article,
+            'article' => new ArticleShow($article),
             'meta' => $this->metaOgpService->frontArticleShow($article->user, $article),
         ]);
     }

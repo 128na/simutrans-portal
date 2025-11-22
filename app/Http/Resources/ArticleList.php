@@ -25,7 +25,7 @@ final class ArticleList extends JsonResource
             'id' => $this->resource->id,
             'title' => $this->resource->title,
             'url' => route('articles.show', ['userIdOrNickname' => $this->resource->user->nickname ?? $this->resource->id, 'articleSlug' => $this->resource->slug]),
-            'thumbnail' => $this->resource->thumbnail->url,
+            'thumbnail' => $this->resource->thumbnail_url,
             'description' => $this->resource->contents->getDescription(),
             'categories' => $this->resource->categories->map(fn (Category $category): array => [
                 'id' => $category->id,

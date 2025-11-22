@@ -93,7 +93,7 @@ final class ArticleRepository
     public function search(array $condition, int $limit = 24): LengthAwarePaginator
     {
         if ($condition === []) {
-            return new \Illuminate\Pagination\LengthAwarePaginator([], 0, 30);
+            return new LengthAwarePaginator([], 0, 30);
         }
 
         $baseQuery = $this->model->query()

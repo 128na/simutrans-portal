@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Front;
 
+use App\Http\Resources\ArticleList;
 use App\Repositories\ArticleRepository;
 use App\Repositories\UserRepository;
 use App\Services\Front\MetaOgpService;
@@ -32,7 +33,7 @@ final class UserController extends Controller
 
         return view('v2.users.show', [
             'user' => $user,
-            'articles' => $this->articleRepository->getByUser($user->id),
+            'articles' => ArticleList::collection($this->articleRepository->getByUser($user->id)),
             'meta' => $this->metaOgpService->frontUser($user),
         ]);
     }

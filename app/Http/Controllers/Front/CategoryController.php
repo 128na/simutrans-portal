@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Front;
 
 use App\Enums\CategoryType;
+use App\Http\Resources\ArticleList;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Services\Front\MetaOgpService;
@@ -35,7 +36,7 @@ final class CategoryController extends Controller
         return view('v2.categories.show', [
             'pak' => $category,
             'addon' => $addon,
-            'articles' => $this->articleRepository->getForPakAddon($category->id, $addon->id),
+            'articles' => ArticleList::collection($this->articleRepository->getForPakAddon($category->id, $addon->id)),
             'meta' => $this->metaOgpService->frontPakAddon($category, $addon),
         ]);
     }

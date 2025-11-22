@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Front;
 
+use App\Http\Resources\ArticleList;
 use App\Models\Tag;
 use App\Repositories\ArticleRepository;
 use App\Repositories\TagRepository;
@@ -31,7 +32,7 @@ final class TagController extends Controller
     {
         return view('v2.tags.show', [
             'tag' => $tag,
-            'articles' => $this->articleRepository->getByTag($tag->id),
+            'articles' => ArticleList::collection($this->articleRepository->getByTag($tag->id)),
             'meta' => $this->metaOgpService->frontTag($tag),
         ]);
     }

@@ -4,6 +4,7 @@ import { TitleH4 } from "../TitleH4";
 import { TitleH3 } from "../TitleH3";
 import { TextPre } from "../TextPre";
 import { formatArticleDate } from "../../articles/articleUtil";
+import { Accordion } from "@/apps/components/ui/Accordion";
 
 type Props = {
   article: ArticleShow.Article;
@@ -76,94 +77,72 @@ export const AddonPost = ({ article }: Props) => {
           <TitleH4>ファイル情報</TitleH4>
 
           {dats && (
-            <>
-              <button
-                type="button"
-                onClick={() => setOpenDat(!openDat)}
-                className="text-xl sm:text-xl my-4 p-4 flex w-full items-center justify-between bg-gray-100 cursor-pointer"
-              >
-                Datファイル
-                <ChevronIcon open={openDat} />
-              </button>
-
-              {openDat && (
-                <div className="mt-2 block space-y-2">
-                  <ul className="list-none">
-                    {Object.entries(dats).map(([filename, addonNames]) => (
-                      <React.Fragment key={filename}>
-                        <li className="mb-1 break-all">{filename}</li>
-                        <li className="mb-6">
-                          <ul className="list-disc text-gray-400 ml-8 break-all">
-                            {addonNames.map((name: string) => (
-                              <li key={name}>
-                                <span className="text-black break-all">
-                                  {name}
-                                </span>
-                              </li>
-                            ))}
-                          </ul>
-                        </li>
-                      </React.Fragment>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </>
+            <Accordion title="Datファイル">
+              <div className="mt-2 block space-y-2">
+                <ul className="list-none">
+                  {Object.entries(dats).map(([filename, addonNames]) => (
+                    <React.Fragment key={filename}>
+                      <li className="mb-1 break-all">{filename}</li>
+                      <li className="mb-6">
+                        <ul className="list-disc text-gray-400 ml-8 break-all">
+                          {addonNames.map((name: string) => (
+                            <li key={name}>
+                              <span className="text-black break-all">
+                                {name}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </li>
+                    </React.Fragment>
+                  ))}
+                </ul>
+              </div>
+            </Accordion>
           )}
 
           {tabs && (
-            <>
-              <button
-                type="button"
-                onClick={() => setOpenTab(!openTab)}
-                className="text-xl sm:text-xl my-4 p-4 flex w-full items-center justify-between bg-gray-100 cursor-pointer"
-              >
-                Tabファイル
-                <ChevronIcon open={openTab} />
-              </button>
-
-              {openTab && (
-                <div className="mt-2 block space-y-2">
-                  <ul className="list-none">
-                    {Object.entries(tabs).map(([filename, translateMap]) => (
-                      <React.Fragment key={filename}>
-                        <li className="mb-1 break-all">{filename}</li>
-                        <li className="mb-6">
-                          <div className="overflow-x-auto">
-                            <table className="border-collapse whitespace-nowrap">
-                              <thead>
-                                <tr>
-                                  <th className="border border-gray-300 px-4 py-2 bg-gray-500 text-white">
-                                    アドオン名
-                                  </th>
-                                  <th className="border border-gray-300 px-4 py-2 bg-gray-500 text-white">
-                                    翻訳テキスト
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {Object.entries(translateMap).map(
-                                  ([addonName, translateName]) => (
-                                    <tr key={addonName}>
-                                      <td className="border border-gray-300 px-4 py-2">
-                                        {addonName}
-                                      </td>
-                                      <td className="border border-gray-300 px-4 py-2">
-                                        {translateName}
-                                      </td>
-                                    </tr>
-                                  ),
-                                )}
-                              </tbody>
-                            </table>
-                          </div>
-                        </li>
-                      </React.Fragment>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </>
+            <Accordion title="Tabファイル">
+              <div className="mt-2 block space-y-2">
+                <ul className="list-none">
+                  {Object.entries(tabs).map(([filename, translateMap]) => (
+                    <React.Fragment key={filename}>
+                      <li className="mb-1 break-all">{filename}</li>
+                      <li className="mb-6">
+                        <div className="overflow-x-auto">
+                          <table className="border-collapse whitespace-nowrap">
+                            <thead>
+                              <tr>
+                                <th className="border border-gray-300 px-4 py-2 bg-gray-500 text-white">
+                                  アドオン名
+                                </th>
+                                <th className="border border-gray-300 px-4 py-2 bg-gray-500 text-white">
+                                  翻訳テキスト
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {Object.entries(translateMap).map(
+                                ([addonName, translateName]) => (
+                                  <tr key={addonName}>
+                                    <td className="border border-gray-300 px-4 py-2">
+                                      {addonName}
+                                    </td>
+                                    <td className="border border-gray-300 px-4 py-2">
+                                      {translateName}
+                                    </td>
+                                  </tr>
+                                ),
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+                      </li>
+                    </React.Fragment>
+                  ))}
+                </ul>
+              </div>
+            </Accordion>
           )}
         </>
       )}
@@ -184,22 +163,3 @@ export const AddonPost = ({ article }: Props) => {
     </div>
   );
 };
-
-/* ------------------ ICON ------------------ */
-
-const ChevronIcon: React.FC<{ open: boolean }> = ({ open }) => (
-  <svg
-    viewBox="0 0 20 20"
-    fill="currentColor"
-    aria-hidden="true"
-    className={`size-5 flex-none transition-transform ${
-      open ? "rotate-180" : ""
-    }`}
-  >
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-    />
-  </svg>
-);

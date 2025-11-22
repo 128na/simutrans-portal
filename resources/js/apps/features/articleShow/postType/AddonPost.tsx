@@ -1,10 +1,10 @@
 import Link from "@/apps/components/ui/Link";
-import React, { useState } from "react";
 import { TitleH4 } from "../TitleH4";
 import { TitleH3 } from "../TitleH3";
 import { TextPre } from "../TextPre";
 import { formatArticleDate } from "../../articles/articleUtil";
 import { Accordion } from "@/apps/components/ui/Accordion";
+import React from "react";
 
 type Props = {
   article: ArticleShow.Article;
@@ -18,9 +18,6 @@ export const AddonPost = ({ article }: Props) => {
   const fileInfo = file?.fileInfo as ArticleShow.FileInfo | undefined;
   const dats = fileInfo?.data?.dats;
   const tabs = fileInfo?.data?.tabs;
-
-  const [openDat, setOpenDat] = useState(false);
-  const [openTab, setOpenTab] = useState(false);
 
   return (
     <div>

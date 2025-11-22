@@ -27,12 +27,12 @@ final class ArticleList extends JsonResource
             'url' => route('articles.show', ['userIdOrNickname' => $this->resource->user->nickname ?? $this->resource->id, 'articleSlug' => $this->resource->slug]),
             'thumbnail' => $this->resource->thumbnail->url,
             'description' => $this->resource->contents->getDescription(),
-            'categories' => $this->resource->categories->map(fn(Category $category): array => [
+            'categories' => $this->resource->categories->map(fn (Category $category): array => [
                 'id' => $category->id,
                 'type' => $category->type,
                 'slug' => $category->slug,
             ]),
-            'tags' => $this->resource->tags->map(fn(Tag $tag): array => [
+            'tags' => $this->resource->tags->map(fn (Tag $tag): array => [
                 'id' => $tag->id,
                 'name' => $tag->name,
             ]),
@@ -40,9 +40,9 @@ final class ArticleList extends JsonResource
                 'id' => $this->resource->user->id,
                 'name' => $this->resource->user->name,
                 'nickname' => $this->resource->user->nickname,
-                'profile' => $this->when($this->resource->user->profile instanceof Profile, fn(): array => [
+                'profile' => $this->when($this->resource->user->profile instanceof Profile, fn (): array => [
                     'data' => $this->resource->user->profile->data,
-                    'attachments' => $this->resource->user->profile->attachments->map(fn($attachment): array => [
+                    'attachments' => $this->resource->user->profile->attachments->map(fn ($attachment): array => [
                         'id' => $attachment->id,
                         'thumbnail' => $attachment->thumbnail,
                         'original_name' => $attachment->original_name,

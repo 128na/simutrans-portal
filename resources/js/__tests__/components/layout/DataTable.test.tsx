@@ -174,7 +174,7 @@ describe("DataTable コンポーネント", () => {
   });
 
   it("カスタム幅が適用される", () => {
-    const { container } = render(
+    render(
       <DataTable
         headers={mockHeaders}
         data={mockData}

@@ -250,24 +250,24 @@ final class BaseRepositoryTest extends TestCase
     {
         $result = $this->repository->publicPlural();
 
-        // class_basename returns 'Tag', Str::plural converts to 'tags' (lowercase)
-        $this->assertEquals('tags', $result);
+        // class_basename returns 'Tag', Str::plural preserves case and returns 'Tags'
+        $this->assertEquals('Tags', $result);
     }
 
     public function test_singular_単数形の名前を返す(): void
     {
         $result = $this->repository->publicSingular();
 
-        // class_basename returns 'Tag', Str::singular keeps it as 'tag' (lowercase)
-        $this->assertEquals('tag', $result);
+        // class_basename returns 'Tag', Str::singular preserves case and returns 'Tag'
+        $this->assertEquals('Tag', $result);
     }
 
     public function test_get_relation_name_リレーション名を返す(): void
     {
         $result = $this->repository->publicGetRelationName();
 
-        // getRelationName calls plural() which returns lowercase
-        $this->assertEquals('tags', $result);
+        // getRelationName calls plural() which returns 'Tags'
+        $this->assertEquals('Tags', $result);
     }
 }
 

@@ -6,9 +6,6 @@ type TwoColumnProps = {
 };
 
 export default function TwoColumn({ children, grow = "none" }: TwoColumnProps) {
-  if (children.length !== 2) {
-    throw new Error("TwoColumn must have two children");
-  }
   const [left, right] = children;
   const leftGrow = grow === "left" ? "flex-grow" : "";
   const rightGrow = grow === "right" ? "flex-grow" : "";

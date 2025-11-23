@@ -12,6 +12,7 @@ import { useAxiosError } from "@/apps/state/useAxiosError";
 import { ModalFull } from "@/apps/components/ui/ModalFull";
 import { AttachmentEdit } from "../../attachments/AttachmentEdit";
 import Checkbox from "@/apps/components/ui/Checkbox";
+import ButtonSub from "@/apps/components/ui/ButtonSub";
 
 const regReplace =
   /(!|"|#|\$|%|&|'|\(|\)|\*|\+|,|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\s|\.)+/gi;
@@ -30,6 +31,9 @@ export const CommonForm = () => {
   const attachments = useArticleEditor((s) => s.attachments);
 
   const { getError } = useAxiosError();
+
+  const escape = (str: string) =>
+    encodeURI(str.toLowerCase().replace(regReplace, "-"));
 
   return (
     <>
@@ -50,12 +54,7 @@ export const CommonForm = () => {
           className="font-normal"
           value={decodeURI(article.slug || "")}
           onChange={(e) =>
-            update((draft) => {
-              const replaced = e.target.value
-                .toLowerCase()
-                .replace(regReplace, "-");
-              draft.slug = encodeURI(replaced);
-            })
+            update((draft) => (draft.slug = escape(e.target.value)))
           }
         >
           <TextBadge className="bg-red-500">必須</TextBadge>
@@ -65,6 +64,14 @@ export const CommonForm = () => {
         <TextSub>
           URLプレビュー: /users/{user.nickname ?? user.id}/{article.slug || ""}
         </TextSub>
+        <ButtonSub
+          disabled={!article.title}
+          onClick={() => {
+            update((draft) => (draft.slug = escape(draft.title || "")));
+          }}
+        >
+          タイトルから入力
+        </ButtonSub>
       </div>
       {isSlugUpdated && (
         <div>

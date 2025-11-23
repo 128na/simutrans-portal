@@ -15,6 +15,7 @@ import { useAxiosError } from "@/apps/state/useAxiosError";
 import TextError from "@/apps/components/ui/TextError";
 import { ModalFull } from "@/apps/components/ui/ModalFull";
 import { AttachmentEdit } from "../../attachments/AttachmentEdit";
+import ButtonSub from "@/apps/components/ui/ButtonSub";
 
 export const AddonPost = () => {
   const article = useArticleEditor((s) => s.article);
@@ -31,6 +32,9 @@ export const AddonPost = () => {
 
   const attachments = useArticleEditor((s) => s.attachments);
 
+  const file = attachments.find((a) => a.id === contents.file);
+  console.log(file);
+
   const { getError } = useAxiosError();
 
   return (
@@ -42,11 +46,7 @@ export const AddonPost = () => {
           ファイル
           <TextError>{getError("article.contents.file")}</TextError>
         </Label>
-        <TextSub>
-          {(contents.file &&
-            attachments.find((a) => a.id === contents.file)?.original_name) ??
-            "未選択"}
-        </TextSub>
+        <TextSub>{(contents.file && file?.original_name) ?? "未選択"}</TextSub>
         <div className="space-x-2">
           <Upload
             onUploaded={(a) => {
@@ -87,21 +87,39 @@ export const AddonPost = () => {
         </div>
       </div>
 
-      <Textarea
-        labelClassName="font-medium"
-        className="font-normal"
-        value={contents.description || ""}
-        rows={9}
-        onChange={(e) =>
-          updateContents<ArticleContent.AddonPost>(
-            (draft) => (draft.description = e.target.value),
-          )
-        }
-      >
-        <TextBadge className="bg-red-500">必須</TextBadge>
-        説明
-        <TextError>{getError("article.contents.description")}</TextError>
-      </Textarea>
+      <div>
+        <Textarea
+          labelClassName="font-medium"
+          className="font-normal"
+          value={contents.description || ""}
+          rows={9}
+          onChange={(e) =>
+            updateContents<ArticleContent.AddonPost>(
+              (draft) => (draft.description = e.target.value),
+            )
+          }
+        >
+          <TextBadge className="bg-red-500">必須</TextBadge>
+          説明
+          <TextError>{getError("article.contents.description")}</TextError>
+        </Textarea>
+        <ButtonSub
+          disabled={!file?.fileInfo?.data.readmes}
+          onClick={() => {
+            const text = Object.entries(file?.fileInfo?.data.readmes ?? {})
+              .map(
+                ([filename, readme]) =>
+                  `\n--------\n${filename}\n--------\n${readme.join("\n")}\n--------\n`,
+              )
+              .join("\n");
+            updateContents<ArticleContent.AddonPost>(
+              (draft) => (draft.description += text),
+            );
+          }}
+        >
+          Readmeファイルから入力
+        </ButtonSub>
+      </div>
 
       <SelectCategories
         typeClassName="font-medium"

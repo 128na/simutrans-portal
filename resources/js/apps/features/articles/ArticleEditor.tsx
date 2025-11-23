@@ -43,8 +43,8 @@ export const ArticleEditor = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-y-0 lg:grid lg:grid-cols-2 h-[calc(100vh-300px)]">
-        <div className="overflow-y-auto pr-4">
+      <div className="flex flex-col gap-y-0 lg:grid lg:grid-cols-2 h-[calc(100vh-200px)]">
+        <div className="overflow-y-auto pr-4 pb-10">
           {match<ArticlePostType>(article.post_type)
             .returnType<JSX.Element>()
             .with("page", () => <Page />)
@@ -87,7 +87,7 @@ export const ArticleEditor = () => {
             </div>
           )}
         </div>
-        <div className="overflow-y-auto pl-4 border-t border-gray-200 pt-4 lg:border-t-0">
+        <div className="overflow-y-auto pl-4 pb-10 border-t border-gray-200 pt-4 lg:border-t-0 hidden lg:block">
           <ArticlePreview />
         </div>
       </div>

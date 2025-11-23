@@ -227,7 +227,7 @@ namespace Attachment {
     thumbnail: string;
     original_name: string;
     url: string;
-    fileInfo?: FileInfo | null;
+    fileInfo?: FileInfo.Show | null;
   };
 
   type MypageEdit = {
@@ -244,7 +244,7 @@ namespace Attachment {
     thumbnail: string;
     url: string;
     size: number;
-    fileInfo?: FileInfo.Show;
+    fileInfo?: FileInfo.MypageEdit;
     caption?: string;
     order?: number;
     created_at: string;

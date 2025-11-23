@@ -205,7 +205,9 @@ describe("articleUtil", () => {
     });
 
     it("addon-post タイプのコンテンツを作成できる", () => {
-      const content = createContents("addon-post") as ArticleContent.AddonPost & {
+      const content = createContents(
+        "addon-post"
+      ) as ArticleContent.AddonPost & {
         type: string;
       };
       expect(content.type).toBe("addon-post");

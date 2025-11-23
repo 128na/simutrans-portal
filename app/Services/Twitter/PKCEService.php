@@ -63,7 +63,7 @@ final readonly class PKCEService
     public function verifyState(string $expected, string $actual): void
     {
         if ($expected !== $actual) {
-            throw new InvalidStateException('state mismach!');
+            throw new InvalidStateException('state mismatch!');
         }
     }
 

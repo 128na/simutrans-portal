@@ -9,7 +9,10 @@ use App\Repositories\OauthTokenRepository;
 use App\Services\Twitter\Exceptions\InvalidStateException;
 use App\Services\Twitter\PKCEService;
 use Carbon\Carbon;
+use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
@@ -105,7 +108,7 @@ final class PKCEServiceTest extends TestCase
     public function test_verify_state_throws_exception_on_mismatch(): void
     {
         $this->expectException(InvalidStateException::class);
-        $this->expectExceptionMessage('state mismach!');
+        $this->expectExceptionMessage('state mismatch!');
 
         $sut = $this->getSUT();
         $expected = 'expected_state';
@@ -254,7 +257,7 @@ final class PKCEServiceTest extends TestCase
 
     public function test_refresh_token_failure_throws_exception(): void
     {
-        $this->expectException(\GuzzleHttp\Exception\ClientException::class);
+        $this->expectException(ClientException::class);
 
         $now = Carbon::parse('2024-01-01 00:00:00');
 
@@ -270,9 +273,9 @@ final class PKCEServiceTest extends TestCase
         $mockClient = $this->mock(Client::class, function (MockInterface $mock): void {
             $mock->expects('request')
                 ->once()
-                ->andThrow(new \GuzzleHttp\Exception\ClientException(
+                ->andThrow(new ClientException(
                     'Invalid refresh token',
-                    new \GuzzleHttp\Psr7\Request('POST', 'test'),
+                    new Request('POST', 'test'),
                     new Response(401, [], json_encode(['error' => 'invalid_grant']))
                 ));
         });
@@ -338,7 +341,7 @@ final class PKCEServiceTest extends TestCase
         $mockClient = $this->mock(Client::class, function (MockInterface $mock): void {
             $mock->expects('request')
                 ->once()
-                ->andThrow(new \Exception('API error'));
+                ->andThrow(new Exception('API error'));
         });
 
         $mockRepository = $this->mock(OauthTokenRepository::class, function (MockInterface $mock) use ($token): void {

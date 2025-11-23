@@ -6,8 +6,8 @@ export const compareArticleValues = (a: unknown, b: unknown): number => {
   if (b == null) return -1;
 
   if (typeof a === "object" || typeof b === "object") {
-    const aCount = a as MypageArticleListCount | null;
-    const bCount = b as MypageArticleListCount | null;
+    const aCount = a as MypageArticleList.Count | null;
+    const bCount = b as MypageArticleList.Count | null;
     return (aCount?.count ?? 0) - (bCount?.count ?? 0);
   }
 
@@ -35,7 +35,7 @@ export const compareArticleValues = (a: unknown, b: unknown): number => {
 };
 
 export const articleFilter = (
-  articles: MypageArticleListArticle[],
+  articles: MypageArticleList.Article[],
   criteria: string,
 ) => {
   const q = criteria.trim().toLowerCase();

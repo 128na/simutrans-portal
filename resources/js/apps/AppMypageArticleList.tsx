@@ -8,13 +8,13 @@ const app = document.getElementById("app-article-list");
 if (app) {
   const user = JSON.parse(
     document.getElementById("data-user")?.textContent || "{}",
-  ) as MypageArticleListUser;
+  ) as MypageArticleList.User;
   const articles = JSON.parse(
     document.getElementById("data-articles")?.textContent || "{}",
-  ) as MypageArticleListArticle[];
+  ) as MypageArticleList.Article[];
 
   const App = () => {
-    const [selected, setSelected] = useState<MypageArticleListArticle | null>(
+    const [selected, setSelected] = useState<MypageArticleList.Article | null>(
       null,
     );
     return (

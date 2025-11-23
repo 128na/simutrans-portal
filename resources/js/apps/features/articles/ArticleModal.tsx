@@ -1,8 +1,8 @@
 import { Modal } from "@/apps/components/ui/Modal";
 
 type Props = {
-  user: MypageArticleListUser;
-  article: MypageArticleListArticle | null;
+  user: MypageArticleList.User;
+  article: MypageArticleList.Article | null;
   onClose?: () => void;
 };
 

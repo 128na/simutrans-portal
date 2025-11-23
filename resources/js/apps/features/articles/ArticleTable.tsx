@@ -14,17 +14,17 @@ import { format } from "date-fns";
 import Button from "@/apps/components/ui/Button";
 
 type Props = {
-  articles: MypageArticleListArticle[];
+  articles: MypageArticleList.Article[];
   limit: number;
-  onClick?: (article: MypageArticleListArticle) => void;
+  onClick?: (article: MypageArticleList.Article) => void;
 };
 
 type Sort = {
-  column: keyof MypageArticleListArticle;
+  column: keyof MypageArticleList.Article;
   order: "asc" | "desc";
 };
 
-const headers: DataTableHeader<keyof MypageArticleListArticle>[] = [
+const headers: DataTableHeader<keyof MypageArticleList.Article>[] = [
   { name: "タイトル", key: "title", width: "w-4/12", sortable: true },
   { name: "ステータス", key: "status", width: "w-2/12", sortable: true },
   { name: "投稿形式", key: "post_type", width: "w-2/12", sortable: true },
@@ -59,7 +59,7 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
     return sort.order === "asc" ? result : -result;
   });
 
-  const onSort = (column: keyof MypageArticleListArticle) => {
+  const onSort = (column: keyof MypageArticleList.Article) => {
     setSort((prev) =>
       prev.column === column
         ? { column, order: prev.order === "asc" ? "desc" : "asc" }

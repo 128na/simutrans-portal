@@ -19,21 +19,6 @@ use Tests\Unit\TestCase;
 
 final class PKCEServiceTest extends TestCase
 {
-    private function getSUT(
-        ?Carbon $now = null,
-        ?Client $client = null,
-        ?OauthTokenRepository $repository = null,
-    ): PKCEService {
-        return new PKCEService(
-            now: $now ?? Carbon::parse('2024-01-01 00:00:00'),
-            client: $client ?? $this->mock(Client::class),
-            oauthTokenRepository: $repository ?? $this->mock(OauthTokenRepository::class),
-            clientId: 'test_client_id',
-            clientSecret: 'test_client_secret',
-            callbackUrl: 'https://example.com/callback',
-        );
-    }
-
     public function test_generate_state_returns_random_string(): void
     {
         $sut = $this->getSUT();
@@ -81,7 +66,7 @@ final class PKCEServiceTest extends TestCase
         $sut = $this->getSUT();
         $state = 'test_state';
         $challenge = 'test_challenge';
-        
+
         $url = $sut->generateAuthorizeUrl($state, $challenge);
 
         $this->assertStringContainsString('https://twitter.com/i/oauth2/authorize', $url);
@@ -356,5 +341,20 @@ final class PKCEServiceTest extends TestCase
 
         // Should not throw exception - gracefully handles API failure
         $this->assertTrue(true);
+    }
+
+    private function getSUT(
+        ?Carbon $now = null,
+        ?Client $client = null,
+        ?OauthTokenRepository $repository = null,
+    ): PKCEService {
+        return new PKCEService(
+            now: $now ?? Carbon::parse('2024-01-01 00:00:00'),
+            client: $client ?? $this->mock(Client::class),
+            oauthTokenRepository: $repository ?? $this->mock(OauthTokenRepository::class),
+            clientId: 'test_client_id',
+            clientSecret: 'test_client_secret',
+            callbackUrl: 'https://example.com/callback',
+        );
     }
 }

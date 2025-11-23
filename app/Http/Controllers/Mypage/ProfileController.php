@@ -6,8 +6,8 @@ namespace App\Http\Controllers\Mypage;
 
 use App\Actions\User\UpdateProfile;
 use App\Http\Requests\User\UpdateRequest;
-use App\Http\Resources\AttachmentEdit;
-use App\Http\Resources\ProfileEdit;
+use App\Http\Resources\Mypage\AttachmentEdit;
+use App\Http\Resources\Mypage\ProfileEdit;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;

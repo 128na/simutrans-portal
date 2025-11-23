@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\FrontArticle;
 
 use App\Enums\ArticlePostType;
-use App\Http\Resources\ArticleList;
+use App\Http\Resources\Frontend\ArticleList;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;

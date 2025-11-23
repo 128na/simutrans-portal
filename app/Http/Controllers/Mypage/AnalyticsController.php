@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Mypage;
 
 use App\Actions\Analytics\FindArticles;
 use App\Http\Requests\ArticleAnalytics\SearchRequest;
-use App\Http\Resources\ArticleAnalytic;
+use App\Http\Resources\Mypage\ArticleAnalytic;
 use App\Repositories\ArticleRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;

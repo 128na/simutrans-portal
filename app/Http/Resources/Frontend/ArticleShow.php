@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Frontend;
 
 use App\Models\Article as ModelsArticle;
 use App\Models\Attachment\FileInfo;
@@ -63,7 +63,10 @@ final class ArticleShow extends JsonResource
                 'thumbnail' => $attachment->thumbnail,
                 'url' => $attachment->url,
                 'fileInfo' => $this->when($attachment->fileInfo instanceof FileInfo, fn (): array => [
-                    'data' => $attachment->fileInfo->data,
+                    'data' => [
+                        'dates' => $attachment->fileInfo->getDats(),
+                        'tabs' => $attachment->fileInfo->getTabs(),
+                    ],
                 ]),
             ]),
             'published_at' => $this->resource->published_at?->format('Y/m/d H:i'),

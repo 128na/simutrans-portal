@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Front;
 
-use App\Http\Resources\ArticleList;
+use App\Http\Resources\Frontend\ArticleList;
 use App\Models\Tag;
 use App\Repositories\ArticleRepository;
 use App\Repositories\TagRepository;

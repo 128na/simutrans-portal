@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Mypage;
 use App\Actions\StoreAttachment\Store;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Attachment\StoreRequest;
-use App\Http\Resources\AttachmentEdit;
+use App\Http\Resources\Mypage\AttachmentEdit;
 use App\Models\Attachment;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;

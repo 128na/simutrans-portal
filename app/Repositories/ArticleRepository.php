@@ -12,6 +12,7 @@ use App\Models\Article;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\LazyCollection;
 
@@ -27,12 +28,14 @@ final class ArticleRepository
     public function getForEdit(?Article $article = null): Collection
     {
         return $this->model->query()
-            ->select(['articles.id', 'articles.title', 'articles.user_id', 'u.name as user_name'])
-            ->join('users as u', 'articles.user_id', '=', 'u.id')
+            ->select(['articles.id', 'articles.title', 'articles.user_id', 'users.name as user_name'])
+            ->join('users', function (JoinClause $joinClause): void {
+                $joinClause->on('users.id', '=', 'articles.user_id')
+                    ->whereNull('users.deleted_at');
+            })
             ->where('articles.status', ArticleStatus::Publish)
             ->when($article, fn ($q) => $q->where('articles.id', '!=', $article->id))
             ->whereNull('articles.deleted_at')
-            ->whereNull('u.deleted_at')
             ->latest('articles.modified_at')
             ->get();
     }
@@ -61,11 +64,13 @@ final class ArticleRepository
         $query = $this->model->query()
             ->select(['articles.*'])
             ->withoutGlobalScopes()
-            ->join('users', 'articles.user_id', '=', 'users.id')
+            ->join('users', function (JoinClause $joinClause): void {
+                $joinClause->on('users.id', '=', 'articles.user_id')
+                    ->whereNull('users.deleted_at');
+            })
             ->where('articles.status', ArticleStatus::Publish)
             ->where('articles.slug', urlencode($slug))
             ->whereNull('articles.deleted_at')
-            ->whereNull('users.deleted_at')
             ->orderBy('articles.modified_at', 'desc')
             ->with('categories', 'tags', 'attachments.fileInfo', 'user.profile.attachments', 'articles.user', 'relatedArticles.user');
 
@@ -98,11 +103,14 @@ final class ArticleRepository
 
         $baseQuery = $this->model->query()
             ->select(['articles.*'])
+            ->distinct()
             ->withoutGlobalScopes()
-            ->join('users', 'articles.user_id', '=', 'users.id')
+            ->join('users', function (JoinClause $joinClause): void {
+                $joinClause->on('users.id', '=', 'articles.user_id')
+                    ->whereNull('users.deleted_at');
+            })
             ->where('articles.status', ArticleStatus::Publish)
             ->whereNull('articles.deleted_at')
-            ->whereNull('users.deleted_at')
             ->orderByDesc('articles.modified_at')
             ->with('categories', 'tags', 'attachments', 'user.profile.attachments');
 
@@ -114,8 +122,10 @@ final class ArticleRepository
         ));
         if ($words !== []) {
             $queryString = implode(' ', array_map(fn (string $w): string => '+'.$w, $words));
-            $baseQuery->join('article_search_index as idx', 'idx.article_id', '=', 'articles.id')
-                ->whereRaw('MATCH(idx.text) AGAINST (? IN BOOLEAN MODE)', [$queryString]);
+            $baseQuery->join('article_search_index as idx', function (JoinClause $joinClause) use ($queryString): void {
+                $joinClause->on('idx.article_id', '=', 'articles.id')
+                    ->whereRaw('MATCH(idx.text) AGAINST (? IN BOOLEAN MODE)', [$queryString]);
+            });
         }
 
         // ユーザー(OR)
@@ -165,12 +175,15 @@ final class ArticleRepository
     {
         return $this->model->query()
             ->select(['articles.*'])
+            ->distinct()
             ->withoutGlobalScopes()
-            ->join('users', 'articles.user_id', '=', 'users.id')
+            ->join('users', function (JoinClause $joinClause): void {
+                $joinClause->on('users.id', '=', 'articles.user_id')
+                    ->whereNull('users.deleted_at');
+            })
             ->where('articles.status', ArticleStatus::Publish)
             ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
             ->whereNull('articles.deleted_at')
-            ->whereNull('users.deleted_at')
             ->orderBy('articles.modified_at', 'desc')
             ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
             ->paginate($limit);
@@ -185,16 +198,21 @@ final class ArticleRepository
     {
         return $this->model->query()
             ->select(['articles.*'])
+            ->distinct()
             ->withoutGlobalScopes()
-            ->join('users', 'articles.user_id', '=', 'users.id')
-            ->join('article_category as ac', 'articles.id', '=', 'ac.article_id')
-            ->join('categories as c', 'ac.category_id', '=', 'c.id')
-            ->where('c.type', CategoryType::Pak)
-            ->where('c.slug', $pak)
+            ->join('users', function (JoinClause $joinClause): void {
+                $joinClause->on('users.id', '=', 'articles.user_id')
+                    ->whereNull('users.deleted_at');
+            })
+            ->join('article_category', 'articles.id', '=', 'article_category.article_id')
+            ->join('categories', function (JoinClause $joinClause) use ($pak): void {
+                $joinClause->on('article_category.category_id', '=', 'categories.id')
+                    ->where('categories.type', CategoryType::Pak)
+                    ->where('categories.slug', $pak);
+            })
             ->where('articles.status', ArticleStatus::Publish)
             ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
             ->whereNull('articles.deleted_at')
-            ->whereNull('users.deleted_at')
             ->orderBy('articles.modified_at', 'desc')
             ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
             ->paginate($limit);
@@ -209,16 +227,21 @@ final class ArticleRepository
     {
         return $this->model->query()
             ->select(['articles.*'])
+            ->distinct()
             ->withoutGlobalScopes()
-            ->join('users', 'articles.user_id', '=', 'users.id')
-            ->join('article_category as ac', 'articles.id', '=', 'ac.article_id')
-            ->join('categories as c', 'ac.category_id', '=', 'c.id')
-            ->where('c.type', CategoryType::Page)
-            ->where('c.slug', '!=', 'announce')
+            ->join('users', function (JoinClause $joinClause): void {
+                $joinClause->on('users.id', '=', 'articles.user_id')
+                    ->whereNull('users.deleted_at');
+            })
+            ->join('article_category', 'articles.id', '=', 'article_category.article_id')
+            ->join('categories', function (JoinClause $joinClause): void {
+                $joinClause->on('article_category.category_id', '=', 'categories.id')
+                    ->where('categories.type', CategoryType::Page)
+                    ->where('categories.slug', '!=', 'announce');
+            })
             ->where('articles.status', ArticleStatus::Publish)
             ->whereIn('articles.post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
             ->whereNull('articles.deleted_at')
-            ->whereNull('users.deleted_at')
             ->orderBy('articles.modified_at', 'desc')
             ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
             ->paginate($limit);
@@ -236,11 +259,13 @@ final class ArticleRepository
         return $this->model->query()
             ->select('articles.*')
             ->withoutGlobalScopes()
-            ->join('users', 'articles.user_id', '=', 'users.id')
+            ->join('users', function (JoinClause $joinClause): void {
+                $joinClause->on('users.id', '=', 'articles.user_id')
+                    ->whereNull('users.deleted_at');
+            })
             ->where('articles.status', ArticleStatus::Publish)
             ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
             ->whereNull('articles.deleted_at')
-            ->whereNull('users.deleted_at')
             ->whereNotExists(function ($q) use ($excludeSlugs): void {
                 $q->selectRaw(1)
                     ->from('article_category as ac')
@@ -263,16 +288,21 @@ final class ArticleRepository
     {
         return $this->model->query()
             ->select('articles.*', 'users.nickname as user_nickname')
+            ->distinct()
             ->withoutGlobalScopes()
-            ->join('article_category as ac', 'articles.id', '=', 'ac.article_id')
-            ->join('categories as c', 'ac.category_id', '=', 'c.id')
-            ->join('users', 'articles.user_id', '=', 'users.id')
+            ->join('users', function (JoinClause $joinClause): void {
+                $joinClause->on('users.id', '=', 'articles.user_id')
+                    ->whereNull('users.deleted_at');
+            })
+            ->join('article_category', 'articles.id', '=', 'article_category.article_id')
+            ->join('categories', function (JoinClause $joinClause): void {
+                $joinClause->on('article_category.category_id', '=', 'categories.id')
+                    ->where('categories.type', CategoryType::Page)
+                    ->where('categories.slug', 'announce');
+            })
             ->where('articles.status', ArticleStatus::Publish)
             ->whereIn('articles.post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
             ->whereNull('articles.deleted_at')
-            ->where('c.type', CategoryType::Page)
-            ->where('c.slug', 'announce')
-            ->whereNull('users.deleted_at')
             ->orderBy('articles.modified_at', 'desc')
             ->with(['categories', 'tags', 'attachments', 'user.profile.attachments'])
             ->paginate($limit);
@@ -287,14 +317,19 @@ final class ArticleRepository
     {
         return $this->model->query()
             ->select(['articles.*'])
+            ->distinct()
             ->withoutGlobalScopes()
-            ->join('users', 'articles.user_id', '=', 'users.id')
-            ->join('article_tag', 'articles.id', '=', 'article_tag.article_id')
-            ->where('article_tag.tag_id', $tagId)
+            ->join('users', function (JoinClause $joinClause): void {
+                $joinClause->on('users.id', '=', 'articles.user_id')
+                    ->whereNull('users.deleted_at');
+            })
+            ->join('article_tag', function (JoinClause $joinClause) use ($tagId): void {
+                $joinClause->on('articles.id', '=', 'article_tag.article_id')
+                    ->where('article_tag.tag_id', $tagId);
+            })
             ->where('articles.status', ArticleStatus::Publish)
             ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
             ->whereNull('articles.deleted_at')
-            ->whereNull('users.deleted_at')
             ->orderBy('articles.modified_at', 'desc')
             ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
             ->paginate($limit);
@@ -309,16 +344,23 @@ final class ArticleRepository
     {
         return $this->model->query()
             ->select(['articles.*'])
+            ->distinct()
             ->withoutGlobalScopes()
-            ->join('users', 'articles.user_id', '=', 'users.id')
-            ->join('article_category as pak', 'pak.article_id', '=', 'articles.id')
-            ->join('article_category as addon', 'addon.article_id', '=', 'articles.id')
-            ->where('pak.category_id', $pakId)
-            ->where('addon.category_id', $addonId)
+            ->join('users', function (JoinClause $joinClause): void {
+                $joinClause->on('users.id', '=', 'articles.user_id')
+                    ->whereNull('users.deleted_at');
+            })
+            ->join('article_category as pak', function (JoinClause $joinClause) use ($pakId): void {
+                $joinClause->on('pak.article_id', '=', 'articles.id')
+                    ->where('pak.category_id', $pakId);
+            })
+            ->join('article_category as addon', function (JoinClause $joinClause) use ($addonId): void {
+                $joinClause->on('addon.article_id', '=', 'articles.id')
+                    ->where('addon.category_id', $addonId);
+            })
             ->where('articles.status', ArticleStatus::Publish)
             ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
             ->whereNull('articles.deleted_at')
-            ->whereNull('users.deleted_at')
             ->orderBy('articles.modified_at', 'desc')
             ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
             ->paginate($limit);
@@ -333,13 +375,15 @@ final class ArticleRepository
     {
         return $this->model->query()
             ->select(['articles.*'])
+            ->distinct()
             ->withoutGlobalScopes()
-            ->join('users', 'articles.user_id', '=', 'users.id')
-            ->where('articles.user_id', $userId)
+            ->join('users', function (JoinClause $joinClause): void {
+                $joinClause->on('users.id', '=', 'articles.user_id')
+                    ->whereNull('users.deleted_at');
+            })->where('articles.user_id', $userId)
             ->where('articles.status', ArticleStatus::Publish)
             ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
             ->whereNull('articles.deleted_at')
-            ->whereNull('users.deleted_at')
             ->orderBy('articles.modified_at', 'desc')
             ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
             ->paginate($limit);

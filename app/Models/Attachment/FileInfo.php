@@ -16,6 +16,22 @@ final class FileInfo extends Model
         'data',
     ];
 
+    /**
+     * @return array<string,string[]>
+     */
+    public function getDats(): array
+    {
+        return $this->data['dats'] ?? [];
+    }
+
+    /**
+     * @return array<string,array<string,string>>
+     */
+    public function getTabs(): array
+    {
+        return $this->data['tabs'] ?? [];
+    }
+
     #[\Override]
     protected function casts(): array
     {

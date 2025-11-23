@@ -36,8 +36,8 @@ final class TagRepository
             ->select('tags.*', DB::raw('COUNT(at.article_id) AS articles_count'))
             ->leftJoin('article_tag as at', 'tags.id', '=', 'at.tag_id')
             ->groupBy('tags.id')
-            ->with('createdBy:id,name', 'lastModifiedBy:id,name')
             ->orderBy('name', 'asc')
+            ->with('createdBy:id,name', 'lastModifiedBy:id,name')
             ->get();
     }
 

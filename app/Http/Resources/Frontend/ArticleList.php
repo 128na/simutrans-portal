@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Frontend;
 
 use App\Models\Article as ModelsArticle;
 use App\Models\Category;
@@ -24,7 +24,10 @@ final class ArticleList extends JsonResource
         return [
             'id' => $this->resource->id,
             'title' => $this->resource->title,
-            'url' => route('articles.show', ['userIdOrNickname' => $this->resource->user->nickname ?? $this->resource->id, 'articleSlug' => $this->resource->slug]),
+            'url' => route('articles.show', [
+                'userIdOrNickname' => $this->resource->user->nickname ?? $this->resource->user_id,
+                'articleSlug' => $this->resource->slug,
+            ]),
             'thumbnail' => $this->resource->thumbnail_url,
             'description' => $this->resource->contents->getDescription(),
             'categories' => $this->resource->categories->map(fn (Category $category): array => [

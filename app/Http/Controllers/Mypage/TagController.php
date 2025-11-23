@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Mypage;
 
 use App\Http\Requests\Tag\StoreRequest;
 use App\Http\Requests\Tag\UpdateRequest;
-use App\Http\Resources\TagEdit;
+use App\Http\Resources\Mypage\TagEdit;
 use App\Models\Tag;
 use App\Repositories\TagRepository;
 use App\Services\Front\MetaOgpService;

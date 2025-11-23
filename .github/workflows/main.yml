@@ -19,6 +19,10 @@ jobs:
       - uses: ./.github/actions/php
       - uses: ./.github/actions/nodejs
 
+      # ビルド時に生成される resources/js/lang/ja.json がキャッシュされないので再実行が必要
+      - name: Run Build
+        run: npm run build
+
       - name: Run TypeScript Check
         run: npm run typecheck
 

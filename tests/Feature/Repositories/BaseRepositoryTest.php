@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Repositories;
 
+use App\Enums\ArticlePostType;
+use App\Enums\ArticleStatus;
+use App\Models\Article;
 use App\Models\Tag;
 use App\Models\User;
 use App\Repositories\BaseRepository;
@@ -216,20 +219,31 @@ final class BaseRepositoryTest extends TestCase
         $this->assertEquals($user->id, $result->createdBy->id);
     }
 
+    /**
+     * storeByUser はリレーション名がモデルの複数形と一致する必要がある
+     * Tag の場合、User::Tags() ではなく User::createdTags() なので、
+     * このメソッドは Tag モデルでは動作しない。
+     * ここでは Article を使用してテストする（User::articles() が存在する）
+     */
     public function test_storeByUser_ユーザー経由での作成(): void
     {
         $user = User::factory()->create();
+        $articleRepository = new TestableRepository(new Article);
+        
         $data = [
-            'name' => 'User Tag',
-            'description' => 'Created by user',
+            'post_type' => ArticlePostType::Page,
+            'title' => 'Test Article',
+            'slug' => 'test-article-'.time(),
+            'status' => ArticleStatus::Publish,
+            'contents' => 'Test contents',
         ];
 
-        $result = $this->repository->storeByUser($user, $data);
+        $result = $articleRepository->storeByUser($user, $data);
 
-        $this->assertInstanceOf(Tag::class, $result);
-        $this->assertEquals('User Tag', $result->name);
-        $this->assertEquals($user->id, $result->created_by);
-        $this->assertDatabaseHas('tags', ['name' => 'User Tag', 'created_by' => $user->id]);
+        $this->assertInstanceOf(Article::class, $result);
+        $this->assertEquals('Test Article', $result->title);
+        $this->assertEquals($user->id, $result->user_id);
+        $this->assertDatabaseHas('articles', ['title' => 'Test Article', 'user_id' => $user->id]);
     }
 
     public function test_plural_複数形の名前を返す(): void

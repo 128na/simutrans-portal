@@ -40,14 +40,14 @@ final class BaseRepositoryTest extends TestCase
         $this->assertEquals('Test Tag', $result->name);
     }
 
-    public function test_find_存在しないIDの場合nullを返す(): void
+    public function test_find_存在しない_i_dの場合nullを返す(): void
     {
         $result = $this->repository->find(99999);
 
         $this->assertNull($result);
     }
 
-    public function test_findOrFail_正常系(): void
+    public function test_find_or_fail_正常系(): void
     {
         $tag = Tag::factory()->create(['name' => 'Test Tag']);
 
@@ -57,7 +57,7 @@ final class BaseRepositoryTest extends TestCase
         $this->assertEquals($tag->id, $result->id);
     }
 
-    public function test_findOrFail_存在しないIDの場合例外をスロー(): void
+    public function test_find_or_fail_存在しない_i_dの場合例外をスロー(): void
     {
         $this->expectException(ModelNotFoundException::class);
 
@@ -102,7 +102,7 @@ final class BaseRepositoryTest extends TestCase
         $this->assertDatabaseMissing('tags', ['id' => $tagId]);
     }
 
-    public function test_findByIds_複数のIDで検索(): void
+    public function test_find_by_ids_複数の_i_dで検索(): void
     {
         $tag1 = Tag::factory()->create(['name' => 'Tag 1']);
         $tag2 = Tag::factory()->create(['name' => 'Tag 2']);
@@ -116,7 +116,7 @@ final class BaseRepositoryTest extends TestCase
         $this->assertFalse($result->contains($tag3));
     }
 
-    public function test_findAll_全件取得(): void
+    public function test_find_all_全件取得(): void
     {
         Tag::factory()->count(3)->create();
 
@@ -125,7 +125,7 @@ final class BaseRepositoryTest extends TestCase
         $this->assertCount(3, $result);
     }
 
-    public function test_findAll_limit指定(): void
+    public function test_find_all_limit指定(): void
     {
         Tag::factory()->count(5)->create();
 
@@ -134,7 +134,7 @@ final class BaseRepositoryTest extends TestCase
         $this->assertCount(2, $result);
     }
 
-    public function test_findAll_特定カラムのみ取得(): void
+    public function test_find_all_特定カラムのみ取得(): void
     {
         Tag::factory()->create(['name' => 'Test Tag', 'description' => 'Description']);
 
@@ -158,7 +158,7 @@ final class BaseRepositoryTest extends TestCase
         $this->assertEquals(30, $result->total());
     }
 
-    public function test_updateOrCreate_新規作成(): void
+    public function test_update_or_create_新規作成(): void
     {
         $data = [
             'name' => 'New Tag',
@@ -172,7 +172,7 @@ final class BaseRepositoryTest extends TestCase
         $this->assertDatabaseHas('tags', ['name' => 'New Tag']);
     }
 
-    public function test_updateOrCreate_既存レコードの更新(): void
+    public function test_update_or_create_既存レコードの更新(): void
     {
         $tag = Tag::factory()->create(['name' => 'Existing Tag', 'description' => 'Old']);
 
@@ -186,7 +186,7 @@ final class BaseRepositoryTest extends TestCase
         $this->assertDatabaseHas('tags', ['name' => 'Existing Tag', 'description' => 'Updated']);
     }
 
-    public function test_firstOrCreate_既存レコードを取得(): void
+    public function test_first_or_create_既存レコードを取得(): void
     {
         $tag = Tag::factory()->create(['name' => 'Existing Tag']);
 
@@ -196,7 +196,7 @@ final class BaseRepositoryTest extends TestCase
         $this->assertCount(1, Tag::where('name', 'Existing Tag')->get());
     }
 
-    public function test_firstOrCreate_新規作成(): void
+    public function test_first_or_create_新規作成(): void
     {
         $result = $this->repository->firstOrCreate(
             ['name' => 'New Tag'],
@@ -225,11 +225,11 @@ final class BaseRepositoryTest extends TestCase
      * このメソッドは Tag モデルでは動作しない。
      * ここでは Article を使用してテストする（User::articles() が存在する）
      */
-    public function test_storeByUser_ユーザー経由での作成(): void
+    public function test_store_by_user_ユーザー経由での作成(): void
     {
         $user = User::factory()->create();
         $articleRepository = new TestableRepository(new Article);
-        
+
         $data = [
             'post_type' => ArticlePostType::Page,
             'title' => 'Test Article',
@@ -260,7 +260,7 @@ final class BaseRepositoryTest extends TestCase
         $this->assertEquals('Tag', $result);
     }
 
-    public function test_getRelationName_リレーション名を返す(): void
+    public function test_get_relation_name_リレーション名を返す(): void
     {
         $result = $this->repository->publicGetRelationName();
 
@@ -272,7 +272,7 @@ final class BaseRepositoryTest extends TestCase
  * テスト用の BaseRepository 実装
  * protected メソッドを public にしてテストできるようにする
  */
-class TestableRepository extends BaseRepository
+final class TestableRepository extends BaseRepository
 {
     public function publicPlural(): string
     {

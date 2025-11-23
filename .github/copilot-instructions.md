@@ -8,6 +8,14 @@
 - フロントエンド: React + TypeScript + Vite（旧 README の Quasar/Vue 表記は古い）。フロントエンドのルート: `resources/js/`。
 - DB: MySQL（`.env.example` を参照）。テスト: PHPUnit / `php artisan test`。CI カバレッジ: `coverage.128-bit.net`。
 
+## ディレクトリ（簡易スナップショット）
+
+- `app/` — Laravel のアプリケーションコード（Models, Http/Controllers, Services 等）
+- `resources/js/` — フロントエンド (React + TypeScript + Vite)。エントリ: `resources/js/front.ts`, `resources/js/mypage.ts`。
+- `routes/` — ルーティング定義 (`web.php`, `api.php`, `internal_api.php`)
+- `public/` — 公開フォルダとコンパイル済みアセット（`public/build`）
+- `tests/` — PHPUnit テスト（`tests/Unit`, `tests/Feature`）
+
 ## 便利なコマンド
 
 - バックエンド依存をインストール: `composer install`
@@ -66,6 +74,9 @@
 ## 注意事項（特に気をつける点）
 
 - README の Quasar/Vue 記述は古い。現在は React + Vite なので UI 開発は `resources/js/apps` 側を確認。
+
+（注）`README.md` をこのリポジトリ構成に合わせて更新しました。フロントエンドは React + TypeScript + Vite です。
+
 - ルートと `backend/` に `credential.json` が複数あるため、どの環境向けかを確認すること。
 - 多くのフロントエンドファイルは `.tsx`（TypeScript）なので、props を変更する場合は `apps/types` を必ず更新。
 
@@ -104,6 +115,24 @@
 - **ドキュメント:** README や該当する型定義、API の説明を必要に応じて更新する。
 - **PR 説明:** 変更内容、レビュアが落とすべきコマンド（例: `npm run build`, `composer run stan`）、マイグレーションや手動手順があれば記載する。
 - **CI の確認:** CI がグリーン（`composer run all` 相当のチェックを含む）になるまでマージしない。
+
+## 未実装のテスト候補
+
+以下はリポジトリ走査により「テストで直接参照されていない」可能性が高いクラス／機能の候補です。自動検出のため誤検知があり得ます。優先度は概ね重要度と外部依存の有無で分けています。
+
+- **`App\Services\MarkdownService`**: Markdown の変換・サニタイズ。推奨テスト名例: `test_render_basic`, `test_escape_xss`, `test_links_and_images`。
+- **`App\Services\Twitter\TwitterV2Api`**: Twitter API クライアント。推奨: 成功・HTTPエラー・例外処理のモック化テスト。
+- **`App\Services\Twitter\PKCEService`**: PKCE/OAuth トークン管理。推奨: `test_create_pkce`, `test_refresh_token_error`。
+- **`App\Services\Misskey\MisskeyApiClient`**: Misskey クライアント。推奨: API レスポンスの正規化テスト。
+- **`App\Services\FeedService`**: フィード集約・生成ロジック。推奨: 入力→出力の期待値テスト。
+- **`App\Services\FileInfo\FileInfoService`**: Extractor との連携を検証する統合テスト（Extractors は個別にテスト済み）。
+- **`App\Adapters\AutoRefreshingDropBoxTokenService`**: トークン自動更新フロー。推奨: 期限切れトークンからの自動更新シナリオをモックで検証。
+- **`App\Services\BlueSky\BlueSkyApiClient`**: BlueSky API クライアントの成功/失敗パス検証。
+- **`App\Services\Discord\LogConverter`**: ログ変換ユーティリティの入出力テスト。
+- **`App\Listeners\User\OnLogin`**, **`OnRegistered`** 等の一部リスナー: イベント → リスナーの動作確認テスト。
+- **`app/Console/Commands/*`** のコマンド類: 実行時の副作用（DB 更新・ジョブ投入など）を検証する Feature テスト。
+
+実際のカバレッジを把握するには `phpunit --coverage-text`（または CI のカバレッジレポート）を実行し、網羅されていないファイルやメソッドを確認してください。
 
 ---
 

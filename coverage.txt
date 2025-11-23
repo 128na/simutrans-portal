@@ -1,0 +1,325 @@
+PHPUnit 11.5.44 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.4.6 with Xdebug 3.4.7
+Configuration: C:\dev\simutrans-portal\phpunit.xml
+
+...............................................................  63 / 366 ( 17%)
+............................................................... 126 / 366 ( 34%)
+............................................................... 189 / 366 ( 51%)
+............................................................... 252 / 366 ( 68%)
+............................................................... 315 / 366 ( 86%)
+...................................................             366 / 366 (100%)
+
+Time: 01:10.964, Memory: 160.00 MB
+
+OK (366 tests, 520 assertions)
+
+
+Code Coverage Report:
+  2025-11-23 18:24:58
+
+ Summary:
+  Classes: 37.32% (78/209)
+  Methods: 58.04% (390/672)
+  Lines:   63.04% (1825/2895)
+
+App\Actions\Analytics\FindArticles
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 20/ 20)
+App\Actions\ArticleSearchIndex\UpdateOrCreateAction
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
+App\Actions\Article\DecidePublishedAt
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  6/  6)
+App\Actions\Article\StoreArticle
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 18/ 18)
+App\Actions\Article\SyncRelatedModels
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 16/ 16)
+App\Actions\Article\UpdateArticle
+  Methods:  75.00% ( 3/ 4)   Lines:  93.33% ( 28/ 30)
+App\Actions\DeadLink\Check
+  Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 26/ 26)
+App\Actions\DeadLink\InIgnoreList
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  4/  4)
+App\Actions\DeadLink\OnDead
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 10/ 10)
+App\Actions\DiscordInvite\GenerateInviteCodeAction
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  5/  5)
+App\Actions\FrontArticle\FallbackShowAction
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  7/  7)
+App\Actions\FrontArticle\SearchAction
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 11/ 11)
+App\Actions\GenerateStatic\DeleteUnrelatedTags
+  Methods:   0.00% ( 0/ 1)   Lines:  85.71% ( 12/ 14)
+App\Actions\Oauth\AuthoroizeAction
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
+App\Actions\Oauth\CallbackAction
+  Methods:  50.00% ( 1/ 2)   Lines:  10.00% (  1/ 10)
+App\Actions\Oauth\RefreshAction
+  Methods:  50.00% ( 1/ 2)   Lines:  66.67% (  4/  6)
+App\Actions\Oauth\RevokeAction
+  Methods:  50.00% ( 1/ 2)   Lines:  66.67% (  4/  6)
+App\Actions\Redirect\AddRedirect
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
+App\Actions\Redirect\DeleteRedirect
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Actions\Redirect\DoRedirectIfExists
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% (  6/  6)
+App\Actions\Redirect\FindMyRedirects
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  2/  2)
+App\Actions\StoreAttachment\Store
+  Methods:  66.67% ( 4/ 6)   Lines:  40.74% ( 11/ 27)
+App\Actions\User\Registration
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 11/ 11)
+App\Actions\User\UpdateProfile
+  Methods:  50.00% ( 1/ 2)   Lines:  95.45% ( 21/ 22)
+App\Casts\ToArticleContents
+  Methods:  50.00% ( 1/ 2)   Lines:  87.50% (  7/  8)
+App\Casts\ToProfileData
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  3/  3)
+App\Channels\BlueSkyChannel
+  Methods:  50.00% ( 1/ 2)   Lines:  33.33% (  1/  3)
+App\Channels\MisskeyChannel
+  Methods:  50.00% ( 1/ 2)   Lines:  33.33% (  1/  3)
+App\Channels\OneSignalChannel
+  Methods:  50.00% ( 1/ 2)   Lines:  33.33% (  1/  3)
+App\Channels\TwitterChannel
+  Methods:  50.00% ( 1/ 2)   Lines:  33.33% (  1/  3)
+App\Console\Commands\Article\PublishReservation
+  Methods:  50.00% ( 1/ 2)   Lines:   8.33% (  1/ 12)
+App\Console\Kernel
+  Methods:  33.33% ( 1/ 3)   Lines:   7.14% (  2/ 28)
+App\Events\ArticleShown
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Events\Article\ArticleStored
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Events\Article\ArticleUpdated
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Events\Article\CloseByDeadLinkDetected
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Events\Article\DeadLinkDetected
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Events\Tag\TagDescriptionUpdated
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Events\User\InviteCodeCreated
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Exceptions\Handler
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% (  3/  3)
+App\Http\Controllers\Admin\OauthController
+  Methods:  80.00% ( 4/ 5)   Lines:  90.91% ( 10/ 11)
+App\Http\Controllers\Front\ArticleController
+  Methods:  84.62% (11/13)   Lines:  83.93% ( 47/ 56)
+App\Http\Controllers\Front\DiscordController
+  Methods:  66.67% ( 2/ 3)   Lines:  83.33% ( 10/ 12)
+App\Http\Controllers\Front\FrontMiscController
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% (  7/  7)
+App\Http\Controllers\Front\TagController
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 10/ 10)
+App\Http\Controllers\Front\UserController
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 11/ 11)
+App\Http\Controllers\Mypage\AnalyticsController
+  Methods:  66.67% ( 2/ 3)   Lines:  60.00% (  6/ 10)
+App\Http\Controllers\Mypage\ArticleController
+  Methods:  50.00% ( 3/ 6)   Lines:  93.48% ( 43/ 46)
+App\Http\Controllers\Mypage\AttachmentController
+  Methods:  75.00% ( 3/ 4)   Lines:  81.82% ( 18/ 22)
+App\Http\Controllers\Mypage\InviteController
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 14/ 14)
+App\Http\Controllers\Mypage\MypageController
+  Methods: 100.00% ( 6/ 6)   Lines: 100.00% ( 22/ 22)
+App\Http\Controllers\Mypage\ProfileController
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 10/ 10)
+App\Http\Controllers\Mypage\TagController
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 23/ 23)
+App\Http\Controllers\Mypage\UserController
+  Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 26/ 26)
+App\Http\Controllers\RedirectController
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Http\Middleware\AdminCheck
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  4/  4)
+App\Http\Middleware\Authenticate
+  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  2/  3)
+App\Http\Middleware\CorsHeader
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  5/  5)
+App\Http\Middleware\ExcludePaths
+  Methods:   0.00% ( 0/ 1)   Lines:  87.50% (  7/  8)
+App\Http\Middleware\RedirectIfAuthenticated
+  Methods:   0.00% ( 0/ 1)   Lines:  50.00% (  5/ 10)
+App\Http\Middleware\RedirectUnlessSSL
+  Methods:   0.00% ( 0/ 1)   Lines:  60.00% (  3/  5)
+App\Http\Middleware\RestrictControl
+  Methods:  66.67% ( 2/ 3)   Lines:  90.91% ( 10/ 11)
+App\Http\Requests\ArticleAnalytics\SearchRequest
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  8/  8)
+App\Http\Requests\Article\BaseRequest
+  Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 51/ 51)
+App\Http\Requests\Article\StoreRequest
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 11/ 11)
+App\Http\Requests\Article\UpdateRequest
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 13/ 13)
+App\Http\Requests\Attachment\StoreRequest
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
+App\Http\Requests\Tag\StoreRequest
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
+App\Http\Requests\Tag\UpdateRequest
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
+App\Http\Requests\User\StoreRequest
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  6/  6)
+App\Http\Requests\User\UpdateRequest
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 12/ 12)
+App\Http\Resources\Frontend\ArticleShow
+  Methods:   0.00% ( 0/ 1)   Lines:  90.57% ( 48/ 53)
+App\Http\Resources\Mypage\ArticleEdit
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 16/ 16)
+App\Http\Resources\Mypage\AttachmentEdit
+  Methods:   0.00% ( 0/ 1)   Lines:  83.33% ( 20/ 24)
+App\Http\Resources\Mypage\ProfileEdit
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 12/ 12)
+App\Http\Resources\Mypage\TagEdit
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 17/ 17)
+App\Http\Resources\Mypage\UserShow
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 17/ 17)
+App\Jobs\Article\JobUpdateRelated
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  4/  4)
+App\Jobs\Attachments\UpdateFileInfo
+  Methods:  50.00% ( 1/ 2)   Lines:  20.00% (  1/  5)
+App\Listeners\Article\AddViewRecord
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  2/  2)
+App\Listeners\Article\OnArticleStored
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
+App\Listeners\Article\OnArticleUpdated
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
+App\Listeners\Tag\OnTagDescriptionUpdated
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  6/  6)
+App\Listeners\User\OnLogin
+  Methods:  66.67% ( 2/ 3)   Lines:  87.50% (  7/  8)
+App\Listeners\User\OnRegistered
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  3/  3)
+App\Models\Article
+  Methods:  52.46% (32/61)   Lines:  49.25% ( 66/134)
+App\Models\Article\ViewCount
+  Methods:  33.33% ( 1/ 3)   Lines:  60.00% (  3/  5)
+App\Models\Attachment
+  Methods:  53.33% ( 8/15)   Lines:  57.50% ( 23/ 40)
+App\Models\Attachment\FileInfo
+  Methods:  33.33% ( 1/ 3)   Lines:  60.00% (  3/  5)
+App\Models\Category
+  Methods:  18.18% ( 2/11)   Lines:  33.33% (  5/ 15)
+App\Models\Contents\AddonIntroductionContent
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
+App\Models\Contents\AddonPostContent
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  8/  8)
+App\Models\Contents\Content
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
+App\Models\ControllOption
+  Methods:  85.71% ( 6/ 7)   Lines:  90.00% (  9/ 10)
+App\Models\OauthToken
+  Methods:  50.00% ( 1/ 2)   Lines:  75.00% (  3/  4)
+App\Models\Redirect
+  Methods:  50.00% ( 1/ 2)   Lines:  50.00% (  1/  2)
+App\Models\Tag
+  Methods:  83.33% ( 5/ 6)   Lines:  84.62% ( 11/ 13)
+App\Models\User
+  Methods:  60.00% (12/20)   Lines:  68.75% ( 22/ 32)
+App\Models\User\LoginHistory
+  Methods:  50.00% ( 1/ 2)   Lines:  87.50% (  7/  8)
+App\Models\User\Profile
+  Methods:  37.50% ( 3/ 8)   Lines:  29.41% (  5/ 17)
+App\Models\User\ProfileData
+  Methods:   0.00% ( 0/ 1)   Lines:  77.78% (  7/  9)
+App\Notifications\SendLoggedInEmail
+  Methods:  50.00% ( 2/ 4)   Lines:  33.33% (  2/  6)
+App\Notifications\SendSNSNotification
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  8/  8)
+App\Notifications\UserInvited
+  Methods:  75.00% ( 3/ 4)   Lines:  83.33% (  5/  6)
+App\Notifications\VerifyEmail
+  Methods:  50.00% ( 2/ 4)   Lines:  71.43% (  5/  7)
+App\Policies\ArticlePolicy
+  Methods:  50.00% ( 2/ 4)   Lines:  50.00% (  2/  4)
+App\Policies\AttachmentPolicy
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  2/  2)
+App\Policies\BasePolicy
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Policies\TagPolicy
+  Methods:   0.00% ( 0/ 3)   Lines:  40.00% (  2/  5)
+App\Providers\ActionDIServiceProvider
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  4/  4)
+App\Providers\AppServiceProvider
+  Methods:  75.00% ( 3/ 4)   Lines:  78.57% ( 22/ 28)
+App\Providers\DIServiceProvider
+  Methods:   0.00% ( 0/ 2)   Lines:  61.22% ( 30/ 49)
+App\Providers\DropboxServiceProvider
+  Methods:  50.00% ( 1/ 2)   Lines:  25.00% (  3/ 12)
+App\Providers\EventServiceProvider
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  2/  2)
+App\Providers\FortifyServiceProvider
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
+App\Providers\GoogleServiceProvider
+  Methods:   0.00% ( 0/ 2)   Lines:  18.18% (  4/ 22)
+App\Providers\RouteServiceProvider
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 20/ 20)
+App\Providers\TwitterOauthProvider
+  Methods:   0.00% ( 0/ 2)   Lines:  43.48% ( 10/ 23)
+App\Repositories\ArticleRepository
+  Methods:  90.91% (20/22)   Lines:  86.33% (240/278)
+App\Repositories\Article\ConversionCountRepository
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Repositories\Article\ViewCountRepository
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Repositories\AttachmentRepository
+  Methods:  50.00% ( 1/ 2)   Lines:  85.71% (  6/  7)
+App\Repositories\Attachment\FileInfoRepository
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Repositories\BaseCountRepository
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 16/ 16)
+App\Repositories\BaseRepository
+  Methods:  31.25% ( 5/16)   Lines:  20.83% (  5/ 24)
+App\Repositories\CategoryRepository
+  Methods:  50.00% ( 2/ 4)   Lines:  16.13% (  5/ 31)
+App\Repositories\LoginHistoryRepository
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  5/  5)
+App\Repositories\OauthTokenRepository
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  2/  2)
+App\Repositories\RedirectRepository
+  Methods:  75.00% ( 3/ 4)   Lines:  75.00% (  3/  4)
+App\Repositories\TagRepository
+  Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 24/ 24)
+App\Repositories\UserRepository
+  Methods:  87.50% ( 7/ 8)   Lines:  94.44% ( 85/ 90)
+App\Repositories\User\ProfileRepository
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+App\Rules\ImageAttachment
+  Methods:  50.00% ( 1/ 2)   Lines:  77.78% (  7/  9)
+App\Rules\NgWordRule
+  Methods:  50.00% ( 1/ 2)   Lines:  80.00% (  8/ 10)
+App\Rules\NotJustNumbers
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
+App\Rules\ReservationPublishedAt
+  Methods:  66.67% ( 2/ 3)   Lines:  84.62% ( 11/ 13)
+App\Rules\SluggableString
+  Methods:   0.00% ( 0/ 1)   Lines:  66.67% (  4/  6)
+App\Rules\UniqueSlugByUser
+  Methods:  75.00% ( 3/ 4)   Lines:  92.86% ( 26/ 28)
+App\Services\FeedService
+  Methods: 100.00% ( 5/ 5)   Lines: 100.00% (  5/  5)
+App\Services\FileInfo\Extractors\DatExtractor
+  Methods:  50.00% ( 2/ 4)   Lines:  71.43% (  5/  7)
+App\Services\FileInfo\Extractors\PakBinary
+  Methods: 100.00% ( 6/ 6)   Lines: 100.00% ( 12/ 12)
+App\Services\FileInfo\Extractors\PakExtractor
+  Methods:  80.00% ( 4/ 5)   Lines:  95.65% ( 22/ 23)
+App\Services\FileInfo\Extractors\ReadmeExtractor
+  Methods:  80.00% ( 4/ 5)   Lines:  85.71% (  6/  7)
+App\Services\FileInfo\Extractors\TabExtractor
+  Methods:  75.00% ( 3/ 4)   Lines:  93.75% ( 15/ 16)
+App\Services\FileInfo\TextService
+  Methods:  50.00% ( 1/ 2)   Lines:  87.50% (  7/  8)
+App\Services\FileInfo\ZipArchiveParser
+  Methods:  33.33% ( 1/ 3)   Lines:  46.67% (  7/ 15)
+App\Services\Front\MetaOgpService
+  Methods:  86.67% (26/30)   Lines:  82.46% ( 94/114)
+App\Services\MarkdownService
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 21/ 21)
+App\Services\Twitter\PKCEService
+  Methods:  55.56% ( 5/ 9)   Lines:  21.54% ( 14/ 65)
+App\Traits\Slugable
+  Methods:  66.67% ( 2/ 3)   Lines:  63.64% (  7/ 11)

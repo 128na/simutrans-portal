@@ -9,7 +9,7 @@ Simutrans のアドオン投稿サイト「Simutrans Addon Portal」のアプリ
 ## Setup
 
 一般的な LAMP 環境や docker コンテナなどをご用意ください。
-バックエンドは PHP(Laravel)、フロントエンドは SPA(quasar, vue.js)で作成しています。
+バックエンドは PHP (Laravel)、フロントエンドは React + TypeScript + Vite で作成しています（フロントエンドのルートは `resources/js/`）。
 
 ### Requirements
 
@@ -35,6 +35,21 @@ App\Models\User::create(['role'=>'admin', 'name'=>'your name', 'email'=>'your em
 ```
 
 メール送信があるため、 `mailpit` などの使用を推奨
+
+### Frontend
+
+フロントエンドは `resources/js/` 以下にあり、React + TypeScript + Vite 構成です。以下は一般的なセットアップと実行手順です（プロジェクトルートで実行します）。
+
+```pwsh
+# フロントエンド依存をインストール
+npm ci
+
+# ローカル開発サーバを起動（Vite）
+npm run dev
+
+# 本番用アセットのビルド
+npm run build
+```
 
 ## Test, Formatter, etc.
 

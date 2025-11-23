@@ -19,9 +19,7 @@ export const SectionText = ({ section, idx, ...props }: Props) => {
       {...props}
     >
       テキスト
-      <TextError className="mb-2">
-        {getError(`article.contents.sections.${idx}.text`)}
-      </TextError>
+      <TextError>{getError(`article.contents.sections.${idx}.text`)}</TextError>
     </Textarea>
   );
 };

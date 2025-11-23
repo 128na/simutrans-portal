@@ -36,11 +36,9 @@ export const Markdown = () => {
           })
         }
       >
-        <TextBadge color="red">必須</TextBadge>
+        <TextBadge className="bg-red-500">必須</TextBadge>
         本文
-        <TextError className="mb-2">
-          {getError("article.contents.markdown")}
-        </TextError>
+        <TextError>{getError("article.contents.markdown")}</TextError>
       </Textarea>
       <SelectCategories
         typeClassName="font-medium"

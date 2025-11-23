@@ -57,7 +57,7 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
         {tag.id ? (
           <TextSub className="mb-2">タグ名は編集できません。</TextSub>
         ) : null}
-        <TextError className="mb-2">{getError("name")?.join("\n")}</TextError>
+        <TextError>{getError("name")?.join("\n")}</TextError>
         <Textarea
           rows={4}
           value={description}
@@ -65,9 +65,7 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
         >
           説明
         </Textarea>
-        <TextError className="mb-2">
-          {getError("description")?.join("\n")}
-        </TextError>
+        <TextError>{getError("description")?.join("\n")}</TextError>
       </div>
 
       <div className="flex justify-end space-x-2">

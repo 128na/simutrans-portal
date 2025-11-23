@@ -4,6 +4,7 @@ type Props = {
   attachments: Attachment.MypageEdit[];
   selected: number | null;
   attachmentableId: number | null;
+  attachmentableType?: AttachmentableType;
   types?: AttachmentType[];
   onSelectAttachment?: (attachmentId: number | null) => void;
   onChangeAttachments?: (attachments: Attachment.MypageEdit[]) => void;
@@ -12,6 +13,7 @@ type Props = {
 export const AttachmentEdit = ({
   attachments,
   attachmentableId,
+  attachmentableType = "Article",
   selected,
   types = ["image", "file", "video", "text"],
   onSelectAttachment,
@@ -23,7 +25,7 @@ export const AttachmentEdit = ({
       limit={15}
       selected={selected}
       attachmentableId={attachmentableId}
-      attachmentableType="Article"
+      attachmentableType={attachmentableType}
       types={types}
       onSelectAttachment={(a) => onSelectAttachment?.(a?.id ?? null)}
       onChangeAttachments={onChangeAttachments}

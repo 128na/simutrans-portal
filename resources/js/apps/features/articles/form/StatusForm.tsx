@@ -21,7 +21,7 @@ export const StatusForm = () => {
         }
       >
         ステータス
-        <TextError className="mb-2">{getError("article.status")}</TextError>
+        <TextError>{getError("article.status")}</TextError>
       </Select>
       {article.status === "reservation" && (
         <Input
@@ -33,9 +33,7 @@ export const StatusForm = () => {
           }
         >
           予約日時
-          <TextError className="mb-2">
-            {getError("article.published_at")}
-          </TextError>
+          <TextError>{getError("article.published_at")}</TextError>
         </Input>
       )}
     </>

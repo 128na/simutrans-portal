@@ -40,9 +40,7 @@ export const AddonPost = () => {
       <div>
         <Label className="font-medium">
           ファイル
-          <TextError className="mb-2">
-            {getError("article.contents.file")}
-          </TextError>
+          <TextError>{getError("article.contents.file")}</TextError>
         </Label>
         <TextSub>
           {(contents.file &&
@@ -100,11 +98,9 @@ export const AddonPost = () => {
           )
         }
       >
-        <TextBadge color="red">必須</TextBadge>
+        <TextBadge className="bg-red-500">必須</TextBadge>
         説明
-        <TextError className="mb-2">
-          {getError("article.contents.description")}
-        </TextError>
+        <TextError>{getError("article.contents.description")}</TextError>
       </Textarea>
 
       <SelectCategories
@@ -141,9 +137,7 @@ export const AddonPost = () => {
             }
           >
             作者
-            <TextError className="mb-2">
-              {getError("article.contents.author")}
-            </TextError>
+            <TextError>{getError("article.contents.author")}</TextError>
           </Input>
 
           <Textarea
@@ -158,9 +152,7 @@ export const AddonPost = () => {
             }
           >
             謝辞
-            <TextError className="mb-2">
-              {getError("article.contents.thanks")}
-            </TextError>
+            <TextError>{getError("article.contents.thanks")}</TextError>
           </Textarea>
 
           <Textarea
@@ -175,9 +167,7 @@ export const AddonPost = () => {
             }
           >
             ライセンス
-            <TextError className="mb-2">
-              {getError("article.contents.license")}
-            </TextError>
+            <TextError>{getError("article.contents.license")}</TextError>
           </Textarea>
 
           <div>

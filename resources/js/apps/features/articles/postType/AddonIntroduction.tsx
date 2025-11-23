@@ -43,11 +43,9 @@ export const AddonIntroduction = () => {
           )
         }
       >
-        <TextBadge color="red">必須</TextBadge>
+        <TextBadge className="bg-red-500">必須</TextBadge>
         説明
-        <TextError className="mb-2">
-          {getError("article.contents.description")}
-        </TextError>
+        <TextError>{getError("article.contents.description")}</TextError>
       </Textarea>
       <Input
         labelClassName="font-medium"
@@ -60,11 +58,9 @@ export const AddonIntroduction = () => {
           )
         }
       >
-        <TextBadge color="red">必須</TextBadge>
+        <TextBadge className="bg-red-500">必須</TextBadge>
         リンク先
-        <TextError className="mb-2">
-          {getError("article.contents.link")}
-        </TextError>
+        <TextError>{getError("article.contents.link")}</TextError>
       </Input>
       <Label>
         <div className="font-medium">掲載許可</div>
@@ -77,9 +73,7 @@ export const AddonIntroduction = () => {
           }
         >
           取得済み
-          <TextError className="mb-2">
-            {getError("article.contents.agreement")}
-          </TextError>
+          <TextError>{getError("article.contents.agreement")}</TextError>
         </Checkbox>
       </Label>
       <SelectCategories
@@ -115,9 +109,7 @@ export const AddonIntroduction = () => {
             }
           >
             作者
-            <TextError className="mb-2">
-              {getError("article.contents.author")}
-            </TextError>
+            <TextError>{getError("article.contents.author")}</TextError>
           </Input>
           <Textarea
             labelClassName="font-medium"
@@ -131,9 +123,7 @@ export const AddonIntroduction = () => {
             }
           >
             謝辞
-            <TextError className="mb-2">
-              {getError("article.contents.thanks")}
-            </TextError>
+            <TextError>{getError("article.contents.thanks")}</TextError>
           </Textarea>
           <Textarea
             labelClassName="font-medium"
@@ -147,13 +137,11 @@ export const AddonIntroduction = () => {
             }
           >
             ライセンス
-            <TextError className="mb-2">
-              {getError("article.contents.license")}
-            </TextError>
+            <TextError>{getError("article.contents.license")}</TextError>
           </Textarea>
           <Label>
             <div className="font-medium">リンク切れチェック</div>
-            <TextError className="mb-2">
+            <TextError>
               {getError("article.contents.exclude_link_check")}
             </TextError>
             <Checkbox

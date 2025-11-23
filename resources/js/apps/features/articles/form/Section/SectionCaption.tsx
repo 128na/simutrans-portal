@@ -17,7 +17,7 @@ export const SectionCaption = ({ section, idx, ...props }: Props) => {
       {...props}
     >
       見出し
-      <TextError className="mb-2">
+      <TextError>
         {getError(`article.contents.sections.${idx}.caption`)}
       </TextError>
     </Input>

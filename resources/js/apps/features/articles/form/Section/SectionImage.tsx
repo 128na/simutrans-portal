@@ -30,7 +30,7 @@ export const SectionImage = ({
       <div>
         <Label className="font-medium">
           画像
-          <TextError className="mb-2">
+          <TextError>
             {getError(`article.contents.sections.${idx}.id`)}
           </TextError>
         </Label>

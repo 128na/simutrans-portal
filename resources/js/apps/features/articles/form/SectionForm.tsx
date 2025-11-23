@@ -6,6 +6,8 @@ import { SectionText } from "./Section/SectionText";
 import { SectionImage } from "./Section/SectionImage";
 import { SectionUrl } from "./Section/SectionUrl";
 import Label from "@/apps/components/ui/Label";
+import TwoColumn from "@/apps/components/ui/TwoColumn";
+import ButtonDanger from "@/apps/components/ui/ButtonDanger";
 
 const template = {
   caption: { type: "caption", caption: "" } as ArticleContent.Section.Caption,
@@ -19,9 +21,17 @@ export const SectionForm = () => {
   const contents = article.contents as ArticleContent.Page;
   const updateContents = useArticleEditor((s) => s.updateContents);
 
-  const add = (type: SectionType) => () => {
+  const add = (type: SectionType) => {
     updateContents<ArticleContent.Page>((draft) => {
       draft.sections.push(template[type]);
+    });
+  };
+  const remove = (index: number) => {
+    if (!window.confirm("削除しますか？")) {
+      return;
+    }
+    updateContents<ArticleContent.Page>((draft) => {
+      draft.sections = [...draft.sections.filter((_, i) => i !== index)];
     });
   };
 
@@ -29,7 +39,7 @@ export const SectionForm = () => {
     <div className="space-y-4">
       {contents.sections.map((section, idx) => {
         return (
-          <div key={idx}>
+          <TwoColumn key={idx} grow="left">
             {match(section)
               .with({ type: "caption" }, (s) => (
                 <SectionCaption
@@ -107,15 +117,16 @@ export const SectionForm = () => {
                 />
               ))
               .exhaustive()}
-          </div>
+            <ButtonDanger onClick={() => remove(idx)}>削除</ButtonDanger>
+          </TwoColumn>
         );
       })}
       <div className="space-x-2">
         <Label>項目の追加</Label>
-        <Button onClick={add("caption")}>見出し</Button>
-        <Button onClick={add("text")}>テキスト</Button>
-        <Button onClick={add("image")}>画像</Button>
-        <Button onClick={add("url")}>URL</Button>
+        <Button onClick={() => add("caption")}>見出し</Button>
+        <Button onClick={() => add("text")}>テキスト</Button>
+        <Button onClick={() => add("image")}>画像</Button>
+        <Button onClick={() => add("url")}>URL</Button>
       </div>
     </div>
   );

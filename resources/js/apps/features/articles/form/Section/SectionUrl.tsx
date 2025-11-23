@@ -19,9 +19,7 @@ export const SectionUrl = ({ section, idx, ...props }: Props) => {
       {...props}
     >
       URL
-      <TextError className="mb-2">
-        {getError(`article.contents.sections.${idx}.url`)}
-      </TextError>
+      <TextError>{getError(`article.contents.sections.${idx}.url`)}</TextError>
     </Input>
   );
 };

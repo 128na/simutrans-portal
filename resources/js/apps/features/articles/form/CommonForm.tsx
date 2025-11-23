@@ -39,9 +39,9 @@ export const CommonForm = () => {
         value={article.title || ""}
         onChange={(e) => update((draft) => (draft.title = e.target.value))}
       >
-        <TextBadge color="red">必須</TextBadge>
+        <TextBadge className="bg-red-500">必須</TextBadge>
         タイトル
-        <TextError className="mb-2">{getError("article.title")}</TextError>
+        <TextError>{getError("article.title")}</TextError>
       </Input>
 
       <div>
@@ -58,9 +58,9 @@ export const CommonForm = () => {
             })
           }
         >
-          <TextBadge color="red">必須</TextBadge>
+          <TextBadge className="bg-red-500">必須</TextBadge>
           記事URL
-          <TextError className="mb-2">{getError("article.slug")}</TextError>
+          <TextError>{getError("article.slug")}</TextError>
         </Input>
         <TextSub>
           URLプレビュー: /users/{user.nickname ?? user.id}/{article.slug || ""}
@@ -88,9 +88,7 @@ export const CommonForm = () => {
       <div>
         <Label className="font-medium">
           サムネイル
-          <TextError className="mb-2">
-            {getError("article.contents.thumbnail")}
-          </TextError>
+          <TextError>{getError("article.contents.thumbnail")}</TextError>
         </Label>
         <TextSub>
           {(article.contents.thumbnail &&

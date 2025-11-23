@@ -1,5 +1,7 @@
 import { useArticleEditor } from "@/apps/state/useArticleEditor";
 import { ArticleBase } from "../frontend/ArticleBase";
+import TextBadge from "@/apps/components/ui/TextBadge";
+import TextSub from "@/apps/components/ui/TextSub";
 
 function toArticleShow(
   article: Article.MypageEdit,
@@ -74,9 +76,12 @@ export const ArticlePreview = () => {
 
   return (
     <div>
-      <p className="p-4 mb-4 text-sm text-yellow-900 rounded-lg bg-yellow-50 border border-yellow-300 ">
-        プレビュー表示ではリンクやボタンが反応しないようになっています。（マークダウン形式を除く）
-      </p>
+      <div className="mt-2 mb-8">
+        <TextBadge className="bg-yellow-500">プレビュー表示</TextBadge>
+        <TextSub>
+          プレビュー表示ではリンクやボタンが反応しないようになっています。（マークダウン形式を除く）
+        </TextSub>
+      </div>
 
       <h2 className="text-4xl font-semibold text-pretty text-gray-900 sm:text-5xl mb-8 break-words">
         {article.title || "(タイトル)"}

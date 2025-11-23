@@ -12,6 +12,8 @@ import Textarea from "@/apps/components/ui/Textarea";
 import Button from "@/apps/components/ui/Button";
 import axios, { AxiosError } from "axios";
 import ButtonSub from "@/apps/components/ui/ButtonSub";
+import TwoColumn from "@/apps/components/ui/TwoColumn";
+import ButtonDanger from "@/apps/components/ui/ButtonDanger";
 
 type Props = {
   user: User.MypageEdit;
@@ -44,6 +46,22 @@ export const ProfileEdit = ({
     });
   };
 
+  const removeWebsite = (index: number) => {
+    if (!window.confirm("削除しますか？")) {
+      return;
+    }
+    onChangeUser({
+      ...user,
+      profile: {
+        ...user.profile,
+        data: {
+          ...user.profile.data,
+          website: [...user.profile.data.website.filter((_, i) => i !== index)],
+        },
+      },
+    });
+  };
+
   const save = async () => {
     try {
       const res = await axios.post("/api/v2/profile", {
@@ -68,9 +86,9 @@ export const ProfileEdit = ({
         value={user.name}
         onChange={(e) => onChangeUser({ ...user, name: e.target.value })}
       >
-        <TextBadge color="red">必須</TextBadge>
+        <TextBadge className="bg-red-500">必須</TextBadge>
         表示名
-        <TextError className="mb-2">{getError("user.name")}</TextError>
+        <TextError>{getError("user.name")}</TextError>
       </Input>
 
       <Input
@@ -80,9 +98,9 @@ export const ProfileEdit = ({
         value={user.email}
         onChange={(e) => onChangeUser({ ...user, email: e.target.value })}
       >
-        <TextBadge color="red">必須</TextBadge>
+        <TextBadge className="bg-red-500">必須</TextBadge>
         メールアドレス
-        <TextError className="mb-2">{getError("user.email")}</TextError>
+        <TextError>{getError("user.email")}</TextError>
       </Input>
 
       <div>
@@ -93,7 +111,7 @@ export const ProfileEdit = ({
           onChange={(e) => onChangeUser({ ...user, nickname: e.target.value })}
         >
           ニックネーム
-          <TextError className="mb-2">{getError("user.nickname")}</TextError>
+          <TextError>{getError("user.nickname")}</TextError>
         </Input>
         <TextSub>
           設定すると記事URLがユーザーIDの代わりに使用されます。 例：
@@ -103,9 +121,7 @@ export const ProfileEdit = ({
       <div>
         <Label className="font-medium">
           アバター画像
-          <TextError className="mb-2">
-            {getError("user.profile.data.avatar")}
-          </TextError>
+          <TextError>{getError("user.profile.data.avatar")}</TextError>
           <Avatar
             attachmentId={user.profile.data.avatar}
             attachments={attachments}
@@ -144,6 +160,7 @@ export const ProfileEdit = ({
               <AttachmentEdit
                 attachments={attachments}
                 attachmentableId={user.profile.id}
+                attachmentableType="Profile"
                 selected={user.profile.data.avatar}
                 types={["image"]}
                 onSelectAttachment={(attachmentId) => {
@@ -183,11 +200,9 @@ export const ProfileEdit = ({
           });
         }}
       >
-        <TextBadge color="red">必須</TextBadge>
+        <TextBadge className="bg-red-500">必須</TextBadge>
         説明
-        <TextError className="mb-2">
-          {getError("user.profile.data.description")}
-        </TextError>
+        <TextError>{getError("user.profile.data.description")}</TextError>
       </Textarea>
       <div>
         <Label>
@@ -199,31 +214,35 @@ export const ProfileEdit = ({
         </div>
         {user.profile.data.website.map((website, idx) => {
           return (
-            <Input
-              key={idx}
-              type="url"
-              labelClassName="font-medium"
-              className="font-normal"
-              value={website}
-              onChange={(e) => {
-                onChangeUser({
-                  ...user,
-                  profile: {
-                    ...user.profile,
-                    data: {
-                      ...user.profile.data,
-                      website: user.profile.data.website.map((w, i) =>
-                        i === idx ? e.target.value : w,
-                      ),
+            <TwoColumn grow="left" key={idx}>
+              <Input
+                type="url"
+                labelClassName="font-medium mb-0"
+                className="font-normal"
+                value={website}
+                onChange={(e) => {
+                  onChangeUser({
+                    ...user,
+                    profile: {
+                      ...user.profile,
+                      data: {
+                        ...user.profile.data,
+                        website: user.profile.data.website.map((w, i) =>
+                          i === idx ? e.target.value : w,
+                        ),
+                      },
                     },
-                  },
-                });
-              }}
-            >
-              <TextError className="mb-2">
-                {getError(`user.profile.data.website.${idx}`)}
-              </TextError>
-            </Input>
+                  });
+                }}
+              >
+                <TextError>
+                  {getError(`user.profile.data.website.${idx}`)}
+                </TextError>
+              </Input>
+              <ButtonDanger onClick={() => removeWebsite(idx)}>
+                削除
+              </ButtonDanger>
+            </TwoColumn>
           );
         })}
       </div>

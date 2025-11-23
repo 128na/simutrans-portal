@@ -142,7 +142,7 @@ namespace User {
     name: string;
     email: string;
     nickname: string | null;
-    profile: Profile.Show;
+    profile: Profile.Edit;
   };
 
   type MypageShow = {
@@ -163,6 +163,14 @@ namespace Profile {
       website: string[];
     };
     attachments: Attachment[];
+  };
+  type Edit = {
+    id: number;
+    data: {
+      avatar: number | null;
+      description: string | null;
+      website: string[];
+    };
   };
 }
 

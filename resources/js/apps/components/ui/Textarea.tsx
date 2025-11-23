@@ -8,12 +8,16 @@ export default function Textarea({
 }: React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   labelClassName?: string;
 }) {
+  const hasChildren = Array.isArray(children)
+    ? children.length > 0
+    : !!children;
   return (
-    <Label className={twMerge(labelClassName, children ? "" : "mb-0")}>
+    <Label className={labelClassName}>
       {children}
       <textarea
         className={twMerge(
           "w-full border border-gray-300 rounded-lg px-4 py-2",
+          hasChildren ? "mt-1" : "mb-0",
           className,
         )}
         {...props}

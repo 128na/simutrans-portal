@@ -149,13 +149,14 @@ final class PKCEServiceTest extends TestCase
                 ->once()
                 ->with(
                     ['application' => 'twitter'],
-                    [
-                        'token_type' => 'bearer',
-                        'scope' => 'tweet.read tweet.write users.read offline.access',
-                        'access_token' => 'access_token_abc',
-                        'refresh_token' => 'refresh_token_xyz',
-                        'expired_at' => \Mockery::type(Carbon::class),
-                    ]
+                    \Mockery::on(function ($arg) {
+                        return is_array($arg)
+                            && $arg['token_type'] === 'bearer'
+                            && $arg['scope'] === 'tweet.read tweet.write users.read offline.access'
+                            && $arg['access_token'] === 'access_token_abc'
+                            && $arg['refresh_token'] === 'refresh_token_xyz'
+                            && $arg['expired_at'] instanceof Carbon;
+                    })
                 )
                 ->andReturn($expectedToken);
         });
@@ -221,13 +222,14 @@ final class PKCEServiceTest extends TestCase
                 ->once()
                 ->with(
                     ['application' => 'twitter'],
-                    [
-                        'token_type' => 'bearer',
-                        'scope' => 'tweet.read tweet.write users.read offline.access',
-                        'access_token' => 'new_access_token',
-                        'refresh_token' => 'new_refresh_token',
-                        'expired_at' => \Mockery::type(Carbon::class),
-                    ]
+                    \Mockery::on(function ($arg) {
+                        return is_array($arg)
+                            && $arg['token_type'] === 'bearer'
+                            && $arg['scope'] === 'tweet.read tweet.write users.read offline.access'
+                            && $arg['access_token'] === 'new_access_token'
+                            && $arg['refresh_token'] === 'new_refresh_token'
+                            && $arg['expired_at'] instanceof Carbon;
+                    })
                 )
                 ->andReturn($refreshedToken);
         });

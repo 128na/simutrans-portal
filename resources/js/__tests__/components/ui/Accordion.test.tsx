@@ -18,7 +18,7 @@ describe("Accordion コンポーネント", () => {
     render(
       <Accordion title="タイトル" defaultOpen={true}>
         内容
-      </Accordion>,
+      </Accordion>
     );
     expect(screen.getByText("内容")).toBeInTheDocument();
   });
@@ -39,7 +39,7 @@ describe("Accordion コンポーネント", () => {
     render(
       <Accordion title="タイトル" defaultOpen={true}>
         内容
-      </Accordion>,
+      </Accordion>
     );
     expect(screen.getByText("内容")).toBeInTheDocument();
 

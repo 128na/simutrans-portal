@@ -32,7 +32,7 @@ describe("Thumbnail コンポーネント", () => {
         attachmentId={1}
         attachments={mockAttachments}
         openFullSize={true}
-      />,
+      />
     );
     const link = screen.getByRole("link");
     expect(link).toBeInTheDocument();

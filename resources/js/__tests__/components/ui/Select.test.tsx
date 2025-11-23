@@ -23,15 +23,9 @@ describe("Select コンポーネント", () => {
 
   it("オプションが表示される", () => {
     render(<Select options={mockOptions} />);
-    expect(
-      screen.getByRole("option", { name: "オプション1" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("option", { name: "オプション2" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("option", { name: "オプション3" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "オプション1" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "オプション2" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "オプション3" })).toBeInTheDocument();
   });
 
   it("選択ができる", async () => {
@@ -43,9 +37,7 @@ describe("Select コンポーネント", () => {
   });
 
   it("初期値が設定される", () => {
-    render(
-      <Select options={mockOptions} value="option2" onChange={() => {}} />,
-    );
+    render(<Select options={mockOptions} value="option2" onChange={() => {}} />);
     expect(screen.getByRole("combobox")).toHaveValue("option2");
   });
 
@@ -63,7 +55,7 @@ describe("Select コンポーネント", () => {
     render(
       <Select options={mockOptions} labelClassName="custom-label-class">
         ラベル
-      </Select>,
+      </Select>
     );
     const label = screen.getByText("ラベル");
     expect(label).toHaveClass("custom-label-class");
@@ -76,7 +68,7 @@ describe("Select コンポーネント", () => {
       <Select
         options={mockOptions}
         onChange={(e) => (value = e.target.value)}
-      />,
+      />
     );
     const select = screen.getByRole("combobox");
     await user.selectOptions(select, "option3");

@@ -18,7 +18,7 @@ describe("Link コンポーネント", () => {
     render(
       <Link href="/test" className="custom-class">
         リンク
-      </Link>,
+      </Link>
     );
     const span = screen.getByText("リンク");
     expect(span).toHaveClass("custom-class");
@@ -35,7 +35,7 @@ describe("Link コンポーネント", () => {
     render(
       <Link href="/test" target="_blank">
         リンク
-      </Link>,
+      </Link>
     );
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("target", "_blank");
@@ -45,7 +45,7 @@ describe("Link コンポーネント", () => {
     render(
       <Link href="/test" rel="noopener">
         リンク
-      </Link>,
+      </Link>
     );
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("rel", "noopener");

@@ -35,17 +35,14 @@ describe("Checkbox コンポーネント", () => {
     const user = userEvent.setup();
     let checked = false;
     const Component = () => (
-      <Checkbox
-        checked={checked}
-        onChange={(e) => (checked = e.target.checked)}
-      >
+      <Checkbox checked={checked} onChange={(e) => (checked = e.target.checked)}>
         チェックボックス
       </Checkbox>
     );
     const { rerender } = render(<Component />);
     const checkbox = screen.getByRole("checkbox");
     expect(checkbox).not.toBeChecked();
-
+    
     await user.click(checkbox);
     rerender(<Component />);
     expect(checked).toBe(true);

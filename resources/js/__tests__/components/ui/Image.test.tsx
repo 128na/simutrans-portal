@@ -36,7 +36,7 @@ describe("Image コンポーネント", () => {
         attachmentId={null}
         attachments={mockAttachments}
         defaultUrl="/custom-default.jpg"
-      />,
+      />
     );
     const img = screen.getByRole("img");
     expect(img).toHaveAttribute("src", "/custom-default.jpg");
@@ -54,7 +54,7 @@ describe("Image コンポーネント", () => {
         attachmentId={1}
         attachments={mockAttachments}
         openFullSize={true}
-      />,
+      />
     );
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("href", "/storage/images/image1.jpg");
@@ -68,7 +68,7 @@ describe("Image コンポーネント", () => {
         attachmentId={1}
         attachments={mockAttachments}
         openFullSize={false}
-      />,
+      />
     );
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });
@@ -79,7 +79,7 @@ describe("Image コンポーネント", () => {
         attachmentId={1}
         attachments={mockAttachments}
         className="custom-class"
-      />,
+      />
     );
     const img = screen.getByRole("img");
     expect(img).toHaveClass("custom-class");

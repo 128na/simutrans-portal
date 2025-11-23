@@ -23,7 +23,7 @@ describe("LinkExternal コンポーネント", () => {
     render(
       <LinkExternal href="https://example.com" className="custom-class">
         リンク
-      </LinkExternal>,
+      </LinkExternal>
     );
     const span = screen.getByText("リンク");
     expect(span).toHaveClass("custom-class");
@@ -40,7 +40,7 @@ describe("LinkExternal コンポーネント", () => {
     render(
       <LinkExternal href="https://example.com" target="_blank">
         リンク
-      </LinkExternal>,
+      </LinkExternal>
     );
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("target", "_blank");

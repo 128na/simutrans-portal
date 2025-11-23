@@ -32,7 +32,7 @@ describe("TextError コンポーネント", () => {
         エラー1
         <br />
         エラー2
-      </TextError>,
+      </TextError>
     );
     expect(screen.getByText(/エラー1/)).toBeInTheDocument();
   });

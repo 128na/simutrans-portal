@@ -1,5 +1,5 @@
 type Props = {
-  tags: TagEdit.Tag[];
+  tags: Tag.MypageEdit[] | Tag.Show[];
   preview?: boolean;
 };
 export const Tags = ({ tags, preview }: Props) => {

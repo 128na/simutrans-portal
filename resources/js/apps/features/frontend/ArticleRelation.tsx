@@ -3,7 +3,7 @@ import { TitleH4 } from "./TitleH4";
 
 type Props = {
   title: string;
-  articles: ArticleShow.RelationaArticle[];
+  articles: Article.Relational[];
   preview: boolean;
 };
 

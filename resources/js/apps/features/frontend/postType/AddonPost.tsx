@@ -1,22 +1,22 @@
 import Link from "@/apps/components/ui/Link";
-import { TitleH4 } from "../../frontArticle/TitleH4";
-import { TitleH3 } from "../../frontArticle/TitleH3";
-import { TextPre } from "../../frontArticle/TextPre";
+import { TitleH4 } from "../TitleH4";
+import { TitleH3 } from "../TitleH3";
+import { TextPre } from "../TextPre";
 import { formatArticleDate } from "../../articles/articleUtil";
 import { Accordion } from "@/apps/components/ui/Accordion";
 import React from "react";
 
 type Props = {
-  article: ArticleShow.Article;
+  article: Article.Show;
   preview: boolean;
 };
 
 export const AddonPost = ({ article, preview }: Props) => {
-  const contents = article.contents as ContentAddonPost;
+  const contents = article.contents as ArticleContent.AddonPost;
   const file = article.attachments.find((att) => att.id === contents.file) as
-    | ArticleShow.Attachment
+    | Attachment.Show
     | undefined;
-  const fileInfo = file?.fileInfo as ArticleShow.FileInfo | undefined;
+  const fileInfo = file?.fileInfo as FileInfo.Show | undefined;
   const dats = fileInfo?.data?.dats;
   const tabs = fileInfo?.data?.tabs;
 

@@ -2,7 +2,7 @@ import { Avatar } from "@/apps/components/ui/Avatar";
 import { ProfileLink } from "./ProfileLink";
 
 type Props = {
-  user: ArticleShow.User;
+  user: User.MypageEdit | User.Show;
   preview?: boolean;
 };
 export const ProfileShow = ({ user, preview }: Props) => {

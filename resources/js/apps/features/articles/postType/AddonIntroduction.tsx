@@ -18,7 +18,7 @@ export const AddonIntroduction = () => {
   const article = useArticleEditor((s) => s.article);
   const update = useArticleEditor((s) => s.update);
 
-  const contents = article.contents as ContentAddonIntroduction;
+  const contents = article.contents as ArticleContent.AddonIntroduction;
   const updateContents = useArticleEditor((s) => s.updateContents);
 
   const tags = useArticleEditor((s) => s.tags);
@@ -38,7 +38,7 @@ export const AddonIntroduction = () => {
         value={contents.description || ""}
         rows={9}
         onChange={(e) =>
-          updateContents<ContentAddonIntroduction>(
+          updateContents<ArticleContent.AddonIntroduction>(
             (draft) => (draft.description = e.target.value),
           )
         }
@@ -55,7 +55,7 @@ export const AddonIntroduction = () => {
         type="url"
         value={contents.link || ""}
         onChange={(e) =>
-          updateContents<ContentAddonIntroduction>(
+          updateContents<ArticleContent.AddonIntroduction>(
             (draft) => (draft.link = e.target.value),
           )
         }
@@ -71,7 +71,7 @@ export const AddonIntroduction = () => {
         <Checkbox
           checked={contents.agreement}
           onChange={() =>
-            updateContents<ContentAddonIntroduction>(
+            updateContents<ArticleContent.AddonIntroduction>(
               (draft) => (draft.agreement = !draft.agreement),
             )
           }
@@ -109,7 +109,7 @@ export const AddonIntroduction = () => {
             className="font-normal"
             value={contents.author || ""}
             onChange={(e) =>
-              updateContents<ContentAddonIntroduction>(
+              updateContents<ArticleContent.AddonIntroduction>(
                 (draft) => (draft.author = e.target.value),
               )
             }
@@ -125,7 +125,7 @@ export const AddonIntroduction = () => {
             value={contents.thanks || ""}
             rows={3}
             onChange={(e) =>
-              updateContents<ContentAddonIntroduction>(
+              updateContents<ArticleContent.AddonIntroduction>(
                 (draft) => (draft.thanks = e.target.value),
               )
             }
@@ -141,7 +141,7 @@ export const AddonIntroduction = () => {
             value={contents.license || ""}
             rows={3}
             onChange={(e) =>
-              updateContents<ContentAddonIntroduction>(
+              updateContents<ArticleContent.AddonIntroduction>(
                 (draft) => (draft.license = e.target.value),
               )
             }
@@ -159,7 +159,7 @@ export const AddonIntroduction = () => {
             <Checkbox
               checked={contents.exclude_link_check}
               onChange={() =>
-                updateContents<ContentAddonIntroduction>(
+                updateContents<ArticleContent.AddonIntroduction>(
                   (draft) =>
                     (draft.exclude_link_check = !draft.exclude_link_check),
                 )

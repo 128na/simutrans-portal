@@ -8,19 +8,19 @@ import { SectionUrl } from "./Section/SectionUrl";
 import Label from "@/apps/components/ui/Label";
 
 const template = {
-  caption: { type: "caption", caption: "" } as SectionCaption,
-  text: { type: "text", text: "" } as SectionText,
-  image: { type: "image", id: null } as SectionImage,
-  url: { type: "url", url: "" } as SectionUrl,
+  caption: { type: "caption", caption: "" } as ArticleContent.Section.Caption,
+  text: { type: "text", text: "" } as ArticleContent.Section.Text,
+  image: { type: "image", id: null } as ArticleContent.Section.Image,
+  url: { type: "url", url: "" } as ArticleContent.Section.Url,
 };
 
 export const SectionForm = () => {
   const article = useArticleEditor((s) => s.article);
-  const contents = article.contents as ContentPage;
+  const contents = article.contents as ArticleContent.Page;
   const updateContents = useArticleEditor((s) => s.updateContents);
 
   const add = (type: SectionType) => () => {
-    updateContents<ContentPage>((draft) => {
+    updateContents<ArticleContent.Page>((draft) => {
       draft.sections.push(template[type]);
     });
   };
@@ -36,7 +36,7 @@ export const SectionForm = () => {
                   idx={idx}
                   section={s}
                   onChange={(e) =>
-                    updateContents<ContentPage>((draft) => {
+                    updateContents<ArticleContent.Page>((draft) => {
                       if ("caption" in draft.sections[idx]) {
                         draft.sections[idx].caption = e.currentTarget.value;
                       }
@@ -49,7 +49,7 @@ export const SectionForm = () => {
                   idx={idx}
                   section={s}
                   onChange={(e) =>
-                    updateContents<ContentPage>((draft) => {
+                    updateContents<ArticleContent.Page>((draft) => {
                       if ("text" in draft.sections[idx]) {
                         draft.sections[idx].text = e.currentTarget.value;
                       }
@@ -62,7 +62,7 @@ export const SectionForm = () => {
                   idx={idx}
                   section={s}
                   onChange={(e) =>
-                    updateContents<ContentPage>((draft) => {
+                    updateContents<ArticleContent.Page>((draft) => {
                       if ("url" in draft.sections[idx]) {
                         draft.sections[idx].url = e.currentTarget.value;
                       }
@@ -98,7 +98,7 @@ export const SectionForm = () => {
                     });
                   }}
                   onChange={(e) =>
-                    updateContents<ContentPage>((draft) => {
+                    updateContents<ArticleContent.Page>((draft) => {
                       if ("id" in draft.sections[idx]) {
                         draft.sections[idx].id = Number(e.currentTarget.value);
                       }

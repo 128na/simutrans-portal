@@ -12,7 +12,7 @@ import { AddonPost } from "./postType/AddonPost";
 import { AddonIntroduction } from "./postType/AddonIntroduction";
 
 type Props = {
-  article: ArticleShow.Article;
+  article: Article.Show;
   preview?: boolean;
 };
 export const ArticleBase = ({ article, preview = false }: Props) => {
@@ -26,7 +26,7 @@ export const ArticleBase = ({ article, preview = false }: Props) => {
         attachmentId={article.contents.thumbnail}
         attachments={article.attachments}
       />
-      {match<Article.PostType>(article.post_type)
+      {match<ArticlePostType>(article.post_type)
         .returnType<JSX.Element>()
         .with("page", () => <Page article={article} preview={preview} />)
         .with("markdown", () => (

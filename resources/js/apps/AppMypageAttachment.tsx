@@ -6,7 +6,7 @@ const app = document.getElementById("app-attachment-edit");
 
 if (app) {
   const App = () => {
-    const [attachments, setAttachments] = useState<AttachmentEdit.Attachment[]>(
+    const [attachments, setAttachments] = useState<Attachment.MypageEdit[]>(
       JSON.parse(
         document.getElementById("data-attachments")?.textContent || "[]",
       ),

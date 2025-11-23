@@ -14,10 +14,10 @@ import axios, { AxiosError } from "axios";
 import ButtonSub from "@/apps/components/ui/ButtonSub";
 
 type Props = {
-  user: ProfileEdit.User;
-  onChangeUser: (user: ProfileEdit.User) => void;
-  attachments: AttachmentEdit.Attachment[];
-  onChangeAttachments: (attachments: AttachmentEdit.Attachment[]) => void;
+  user: User.MypageEdit;
+  onChangeUser: (user: User.MypageEdit) => void;
+  attachments: Attachment.MypageEdit[];
+  onChangeAttachments: (attachments: Attachment.MypageEdit[]) => void;
 };
 export const ProfileEdit = ({
   user,

@@ -3,7 +3,7 @@ import TextError from "@/apps/components/ui/TextError";
 import { useAxiosError } from "@/apps/state/useAxiosError";
 
 type Props = {
-  section: SectionText;
+  section: ArticleContent.Section.Text;
   idx: number;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 

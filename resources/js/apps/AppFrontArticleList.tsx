@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { ArticleList } from "./features/frontArticle/ArticleList";
+import { ArticleList } from "./features/frontend/ArticleList";
 
 const app = document.getElementById("app-article-list");
 

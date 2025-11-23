@@ -14,7 +14,7 @@ export const Markdown = () => {
   const article = useArticleEditor((s) => s.article);
   const update = useArticleEditor((s) => s.update);
 
-  const contents = article.contents as ContentMarkdown;
+  const contents = article.contents as ArticleContent.Markdown;
   const updateContents = useArticleEditor((s) => s.updateContents);
 
   const categories = useArticleEditor((s) => s.categories);
@@ -31,7 +31,7 @@ export const Markdown = () => {
         value={contents.markdown || ""}
         rows={15}
         onChange={(e) =>
-          updateContents<ContentMarkdown>((draft) => {
+          updateContents<ArticleContent.Markdown>((draft) => {
             draft.markdown = e.target.value;
           })
         }

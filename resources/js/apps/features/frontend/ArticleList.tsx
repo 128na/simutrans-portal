@@ -3,7 +3,7 @@ import { ProfileShow } from "./ProfileShow";
 import { Tags } from "./Tags";
 
 type Props = {
-  articles: ArticleList.Article[];
+  articles: Article.List[];
 };
 
 export const ArticleList = ({ articles }: Props) => {

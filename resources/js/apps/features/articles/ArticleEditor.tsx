@@ -45,7 +45,7 @@ export const ArticleEditor = () => {
     <>
       <div className="flex flex-col gap-y-0 lg:grid lg:grid-cols-2 h-[calc(100vh-300px)]">
         <div className="overflow-y-auto pr-4">
-          {match<Article.PostType>(article.post_type)
+          {match<ArticlePostType>(article.post_type)
             .returnType<JSX.Element>()
             .with("page", () => <Page />)
             .with("markdown", () => <Markdown />)

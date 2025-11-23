@@ -1,15 +1,15 @@
 import LinkExternal from "@/apps/components/ui/LinkExternal";
-import { TextPre } from "../../frontArticle/TextPre";
-import { TitleH4 } from "../../frontArticle/TitleH4";
+import { TextPre } from "../TextPre";
+import { TitleH4 } from "../TitleH4";
 import { Thumbnail } from "@/apps/components/ui/Thumbnail";
 
 type Props = {
-  article: ArticleShow.Article;
+  article: Article.Show;
   preview: boolean;
 };
 
 export const Page = ({ article, preview }: Props) => {
-  const contents = article.contents as ContentPage;
+  const contents = article.contents as ArticleContent.Page;
   return (
     <>
       {contents.sections.map((section, index) => {

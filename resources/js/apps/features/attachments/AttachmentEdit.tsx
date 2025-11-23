@@ -1,12 +1,12 @@
 import { AttachmentTable } from "./AttachmentTable";
 
 type Props = {
-  attachments: AttachmentEdit.Attachment[];
+  attachments: Attachment.MypageEdit[];
   selected: number | null;
   attachmentableId: number | null;
-  types?: AttachmentEdit.Type[];
+  types?: AttachmentType[];
   onSelectAttachment?: (attachmentId: number | null) => void;
-  onChangeAttachments?: (attachments: AttachmentEdit.Attachment[]) => void;
+  onChangeAttachments?: (attachments: Attachment.MypageEdit[]) => void;
 };
 
 export const AttachmentEdit = ({

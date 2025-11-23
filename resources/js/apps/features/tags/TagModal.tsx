@@ -10,9 +10,9 @@ import TextSub from "@/apps/components/ui/TextSub";
 import { Modal } from "@/apps/components/ui/Modal";
 
 type Props = {
-  tag: TagEdit.Tag | TagEdit.Creating | null;
+  tag: Tag.MypageEdit | Tag.New | null;
   onClose?: () => void;
-  onSave?: (tag: TagEdit.Tag) => void;
+  onSave?: (tag: Tag.MypageEdit) => void;
 };
 
 export const TagModal = ({ tag, onClose, onSave }: Props) => {
@@ -29,7 +29,7 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
         ? await axios.post(`/api/v2/tags/${tag.id}`, { description })
         : await axios.post(`/api/v2/tags`, { name, description });
       if ((res.status === 200 || res.status === 201) && onSave) {
-        onSave(res.data.data as TagEdit.Tag);
+        onSave(res.data.data as Tag.MypageEdit);
       }
     } catch (error) {
       if (error instanceof AxiosError) {

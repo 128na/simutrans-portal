@@ -38,7 +38,7 @@ export const SelectableSearch = ({
   const selectedItems = options.filter((o) => selectedIds.includes(o.id));
   const filteredItems = options.filter(
     (o) =>
-      (render ? render(o) : o[labelKey])
+      String(render ? render(o) : o[labelKey])
         ?.toLowerCase()
         .includes(criteria.toLowerCase()) && !selectedIds.includes(o.id),
   );
@@ -52,7 +52,7 @@ export const SelectableSearch = ({
               className="bg-brand text-white px-2 py-1 rounded cursor-pointer"
               onClick={() => remove(item.id)}
             >
-              {item[labelKey]}
+              {String(item[labelKey])}
               <span className="ml-2">✕</span>
             </span>
           ))}
@@ -85,7 +85,7 @@ export const SelectableSearch = ({
               className="py-1.5 px-2 rounded cursor-pointer hover:bg-gray-100"
               onClick={() => add(o.id)}
             >
-              {render ? render(o) : o[labelKey]}
+              {String(render ? render(o) : o[labelKey])}
             </div>
           ))
         )}

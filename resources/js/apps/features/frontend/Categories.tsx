@@ -1,7 +1,7 @@
 import { t } from "@/lang/translate";
 
 type Props = {
-  categories: Category.Search[];
+  categories: Category.Show[];
   preview?: boolean;
 };
 export const Categories = ({ categories, preview }: Props) => {

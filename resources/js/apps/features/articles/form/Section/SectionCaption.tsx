@@ -3,7 +3,7 @@ import TextError from "@/apps/components/ui/TextError";
 import { useAxiosError } from "@/apps/state/useAxiosError";
 
 type Props = {
-  section: SectionCaption;
+  section: ArticleContent.Section.Caption;
   idx: number;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 

@@ -1,14 +1,14 @@
 import { useArticleEditor } from "@/apps/state/useArticleEditor";
-import { ArticleBase } from "../frontArticle/ArticleBase";
+import { ArticleBase } from "../frontend/ArticleBase";
 
 function toArticleShow(
-  article: ArticleEdit.Article,
-  user: ArticleEdit.User,
+  article: Article.MypageEdit,
+  user: User.MypageShow,
   categories: Category.Grouping,
-  tags: TagEdit.Tag[],
-  attachments: AttachmentEdit.Attachment[],
-  relationalArticles: ArticleEdit.Relational[],
-): ArticleShow.Article {
+  tags: Tag.MypageEdit[],
+  attachments: Attachment.MypageEdit[],
+  relationalArticles: Article.MypageRelational[],
+): Article.Show {
   const base = {
     id: article.id,
     title: article.title,
@@ -21,7 +21,7 @@ function toArticleShow(
           .flat()
           .find((item) => item.id === id),
       )
-      .filter((c): c is Category.Search => c !== undefined),
+      .filter((c): c is Category.MypageEdit => c !== undefined),
     tags: article.tags
       .map((id) => tags.find((t) => t.id === id))
       .filter((t) => t !== undefined),

@@ -6,6 +6,7 @@
     "build": "vite build",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --fix",
+    "check": "npm run typecheck && npm run lint",
     "format": "prettier --write resources/"
   },
   "devDependencies": {

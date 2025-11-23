@@ -2,7 +2,7 @@ import { Image } from "./Image";
 
 type Props = {
   attachmentId: number | null;
-  attachments: AttachmentEdit.Attachment[];
+  attachments: Attachment.MypageEdit[] | Attachment.Show[];
   defaultUrl?: string;
 };
 

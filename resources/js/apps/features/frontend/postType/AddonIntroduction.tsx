@@ -1,15 +1,15 @@
 import LinkExternal from "@/apps/components/ui/LinkExternal";
 import { formatArticleDate } from "../../articles/articleUtil";
-import { TextPre } from "../../frontArticle/TextPre";
-import { TitleH3 } from "../../frontArticle/TitleH3";
-import { TitleH4 } from "../../frontArticle/TitleH4";
+import { TextPre } from "../TextPre";
+import { TitleH3 } from "../TitleH3";
+import { TitleH4 } from "../TitleH4";
 
 type Props = {
-  article: ArticleShow.Article;
+  article: Article.Show;
   preview: boolean;
 };
 export const AddonIntroduction = ({ article, preview }: Props) => {
-  const contents = article.contents as ContentAddonIntroduction;
+  const contents = article.contents as ArticleContent.AddonIntroduction;
   return (
     <div>
       <TextPre>{contents.description || "(本文)"}</TextPre>

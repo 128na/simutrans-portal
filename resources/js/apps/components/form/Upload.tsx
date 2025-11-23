@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import InputFile from "../ui/InputFile";
 
 type Prop = {
-  onUploaded?: (attachment: AttachmentEdit.Attachment) => void;
+  onUploaded?: (attachment: Attachment.MypageEdit) => void;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 export const Upload = ({ onUploaded, ...props }: Prop) => {

@@ -2,13 +2,13 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 type ArticleEditorState = {
-  initialArticle: ArticleEdit.Article;
-  user: ArticleEdit.User;
-  article: ArticleEdit.Article;
-  attachments: AttachmentEdit.Attachment[];
-  tags: TagEdit.Tag[];
+  initialArticle: Article.MypageEdit;
+  user: User.MypageShow;
+  article: Article.MypageEdit;
+  attachments: Attachment.MypageEdit[];
+  tags: Tag.MypageEdit[];
   categories: Category.Grouping;
-  relationalArticles: ArticleEdit.Relational[];
+  relationalArticles: Article.MypageRelational[];
   /** 保存時にSNS通知するか */
   shouldNotify: boolean;
   /** 記事更新時に更新日を更新しないか */
@@ -17,21 +17,21 @@ type ArticleEditorState = {
   followRedirect: boolean;
 
   init: (initial: {
-    user: ArticleEdit.User;
-    article: ArticleEdit.Article;
-    attachments: AttachmentEdit.Attachment[];
-    tags: TagEdit.Tag[];
+    user: User.MypageShow;
+    article: Article.MypageEdit;
+    attachments: Attachment.MypageEdit[];
+    tags: Tag.MypageEdit[];
     categories: Category.Grouping;
-    relationalArticles: ArticleEdit.Relational[];
+    relationalArticles: Article.MypageRelational[];
     shouldNotify: boolean;
     withoutUpdateModifiedAt: boolean;
     followRedirect: boolean;
   }) => void;
 
-  update: (fn: (draft: ArticleEdit.Article) => void) => void;
-  updateContents: <T = Content>(fn: (draft: T) => void) => void;
-  updateAttachments: (attachments: AttachmentEdit.Attachment[]) => void;
-  updateTags: (tags: TagEdit.Tag[]) => void;
+  update: (fn: (draft: Article.MypageEdit) => void) => void;
+  updateContents: <T = ArticleContent.Base>(fn: (draft: T) => void) => void;
+  updateAttachments: (attachments: Attachment.MypageEdit[]) => void;
+  updateTags: (tags: Tag.MypageEdit[]) => void;
   updateShouldNotify: (shouldNotify: boolean) => void;
   updateWithoutUpdateModifiedAt: (withoutUpdateModifiedAt: boolean) => void;
   updateFollowRedirect: (followRedirect: boolean) => void;
@@ -39,9 +39,9 @@ type ArticleEditorState = {
 
 export const useArticleEditor = create<ArticleEditorState>()(
   immer((set) => ({
-    initialArticle: {} as ArticleEdit.Article,
-    user: {} as ArticleEdit.User,
-    article: {} as ArticleEdit.Article,
+    initialArticle: {} as Article.MypageEdit,
+    user: {} as User.MypageShow,
+    article: {} as Article.MypageEdit,
     attachments: [],
     tags: [],
     categories: {} as Category.Grouping,
@@ -75,12 +75,12 @@ export const useArticleEditor = create<ArticleEditorState>()(
         if (state.article.contents) fn(state.article.contents as T);
       });
     },
-    updateAttachments(attachments: AttachmentEdit.Attachment[]) {
+    updateAttachments(attachments: Attachment.MypageEdit[]) {
       set((state) => {
         state.attachments = attachments;
       });
     },
-    updateTags(tags: TagEdit.Tag[]) {
+    updateTags(tags: Tag.MypageEdit[]) {
       set((state) => {
         state.tags = tags;
       });

@@ -19,7 +19,7 @@ type Props<T, K extends string> = {
   sort: Sort;
   limit: number;
   current: number;
-  onSort: (key: K) => void; // ✅ stringではなく、headersのkeyに限定
+  onSort: (key: K) => void;
   renderRow: (item: T) => ReactNode;
 };
 

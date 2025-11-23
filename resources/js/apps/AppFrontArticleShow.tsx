@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { ArticleBase } from "./features/frontArticle/ArticleBase";
+import { ArticleBase } from "./features/frontend/ArticleBase";
 
 const app = document.getElementById("app-article-show");
 

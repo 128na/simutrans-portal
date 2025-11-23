@@ -3,18 +3,18 @@ import { TagModal } from "@/apps/features/tags/TagModal";
 import { useState } from "react";
 
 type Props = {
-  tags: TagEdit.Tag[];
-  onChangeTags: (tags: TagEdit.Tag[]) => void;
+  tags: Tag.MypageEdit[];
+  onChangeTags: (tags: Tag.MypageEdit[]) => void;
 };
 
 export const TagEdit = ({ tags, onChangeTags }: Props) => {
-  const [selected, setSelected] = useState<
-    TagEdit.Tag | TagEdit.Creating | null
-  >(null);
-  const updateTag = (tag: TagEdit.Tag) => {
+  const [selected, setSelected] = useState<Tag.MypageEdit | Tag.New | null>(
+    null,
+  );
+  const updateTag = (tag: Tag.MypageEdit) => {
     const idx = tags.findIndex((t) => t.id === tag.id);
 
-    let next: TagEdit.Tag[];
+    let next: Tag.MypageEdit[];
     if (idx >= 0) {
       next = tags.map((t) => (t.id !== tag.id ? t : tag));
     } else {

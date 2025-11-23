@@ -8,10 +8,10 @@ import { useArticleEditor } from "@/apps/state/useArticleEditor";
 import { useAxiosError } from "@/apps/state/useAxiosError";
 
 type Props = {
-  section: SectionImage;
+  section: ArticleContent.Section.Image;
   articleId: number | null;
   idx: number;
-  onUploaded: (a: AttachmentEdit.Attachment) => void;
+  onUploaded: (a: Attachment.MypageEdit) => void;
   onSelectAttachment: (id: number | null) => void;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 

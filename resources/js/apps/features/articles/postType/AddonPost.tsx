@@ -20,7 +20,7 @@ export const AddonPost = () => {
   const article = useArticleEditor((s) => s.article);
   const update = useArticleEditor((s) => s.update);
 
-  const contents = article.contents as ContentAddonPost;
+  const contents = article.contents as ArticleContent.AddonPost;
   const updateContents = useArticleEditor((s) => s.updateContents);
 
   const tags = useArticleEditor((s) => s.tags);
@@ -73,7 +73,7 @@ export const AddonPost = () => {
                 selected={contents.file}
                 types={["file"]}
                 onSelectAttachment={(attachmentId) => {
-                  updateContents<ContentAddonPost>(
+                  updateContents<ArticleContent.AddonPost>(
                     (draft) => (draft.file = attachmentId),
                   );
                   close();
@@ -95,7 +95,7 @@ export const AddonPost = () => {
         value={contents.description || ""}
         rows={9}
         onChange={(e) =>
-          updateContents<ContentAddonPost>(
+          updateContents<ArticleContent.AddonPost>(
             (draft) => (draft.description = e.target.value),
           )
         }
@@ -135,7 +135,7 @@ export const AddonPost = () => {
             className="font-normal"
             value={contents.author || ""}
             onChange={(e) =>
-              updateContents<ContentAddonPost>(
+              updateContents<ArticleContent.AddonPost>(
                 (draft) => (draft.author = e.target.value),
               )
             }
@@ -152,7 +152,7 @@ export const AddonPost = () => {
             value={contents.thanks || ""}
             rows={3}
             onChange={(e) =>
-              updateContents<ContentAddonPost>(
+              updateContents<ArticleContent.AddonPost>(
                 (draft) => (draft.thanks = e.target.value),
               )
             }
@@ -169,7 +169,7 @@ export const AddonPost = () => {
             value={contents.license || ""}
             rows={3}
             onChange={(e) =>
-              updateContents<ContentAddonPost>(
+              updateContents<ArticleContent.AddonPost>(
                 (draft) => (draft.license = e.target.value),
               )
             }

@@ -2,7 +2,7 @@ import MarkdownIt from "markdown-it";
 import sanitizeHtml from "sanitize-html";
 
 type Props = {
-  article: ArticleShow.Article;
+  article: Article.Show;
   preview: boolean;
 };
 const markdown = new MarkdownIt({
@@ -30,7 +30,7 @@ const sanitize = (content: string) =>
   });
 
 export const Markdown = ({ article }: Props) => {
-  const contents = article.contents as ContentMarkdown;
+  const contents = article.contents as ArticleContent.Markdown;
 
   return (
     <div className="markdown-body break-all">

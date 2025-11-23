@@ -6,8 +6,8 @@ export const compareArticleValues = (a: unknown, b: unknown): number => {
   if (b == null) return -1;
 
   if (typeof a === "object" || typeof b === "object") {
-    const aCount = a as MypageArticleList.Count | null;
-    const bCount = b as MypageArticleList.Count | null;
+    const aCount = a as Count | null;
+    const bCount = b as Count | null;
     return (aCount?.count ?? 0) - (bCount?.count ?? 0);
   }
 
@@ -35,7 +35,7 @@ export const compareArticleValues = (a: unknown, b: unknown): number => {
 };
 
 export const articleFilter = (
-  articles: MypageArticleList.Article[],
+  articles: Article.MypageShow[],
   criteria: string,
 ) => {
   const q = criteria.trim().toLowerCase();
@@ -44,14 +44,14 @@ export const articleFilter = (
   return articles.filter((t) => t.title.toLowerCase().includes(q));
 };
 
-export const PostTypeText: Record<Article.PostType, string> = {
+export const PostTypeText: Record<ArticlePostType, string> = {
   "addon-post": "アドオン投稿",
   "addon-introduction": "アドオン紹介",
   page: "記事",
   markdown: "記事（マークダウン）",
 };
 
-export const StatusText: Record<Article.Status, string> = {
+export const StatusText: Record<ArticleStatus, string> = {
   publish: "公開中",
   reservation: "予約中",
   draft: "下書き",
@@ -59,7 +59,7 @@ export const StatusText: Record<Article.Status, string> = {
   private: "非公開",
 };
 
-export const StatusClass: Record<Article.Status, string> = {
+export const StatusClass: Record<ArticleStatus, string> = {
   publish: "bg-white hover:bg-gray-100",
   reservation: "bg-green-100 hover:bg-green-200",
   draft: "bg-orange-100 hover:bg-orange-200",
@@ -71,14 +71,14 @@ export const deepCopy = <T>(obj: T): T => {
   return JSON.parse(JSON.stringify(obj));
 };
 
-export const createContents = (postType: Article.PostType) => {
+export const createContents = (postType: ArticlePostType) => {
   switch (postType) {
     case "page":
       return {
         type: "page",
         thumbnail: null,
         sections: [],
-      } as ContentPage;
+      } as ArticleContent.Page;
     case "addon-post":
       return {
         type: "addon-post",
@@ -88,7 +88,7 @@ export const createContents = (postType: Article.PostType) => {
         author: null,
         license: null,
         thanks: null,
-      } as ContentAddonPost;
+      } as ArticleContent.AddonPost;
     case "addon-introduction":
       return {
         type: "addon-introduction",
@@ -100,18 +100,20 @@ export const createContents = (postType: Article.PostType) => {
         thanks: null,
         agreement: false,
         exclude_link_check: false,
-      } as ContentAddonIntroduction;
+      } as ArticleContent.AddonIntroduction;
     case "markdown":
       return {
         type: "markdown",
         thumbnail: null,
         markdown: null,
-      } as ContentMarkdown;
+      } as ArticleContent.Markdown;
+    default:
+      throw new Error("invalid post type");
   }
 };
 export const createArticle = (
-  postType: Article.PostType,
-  user: ArticleEdit.User,
+  postType: ArticlePostType,
+  user: User.MypageShow,
 ) => {
   return {
     id: null,
@@ -129,7 +131,7 @@ export const createArticle = (
     modified_at: null,
     created_at: null,
     updated_at: null,
-  } as ArticleEdit.Article;
+  } as Article.MypageEdit;
 };
 
 export const typedKeys = <T extends object>(obj: T): (keyof T)[] => {

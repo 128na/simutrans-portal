@@ -1,22 +1,16 @@
 import { twMerge } from "tailwind-merge";
 
-type Props = {
-  attachmentId: number | null;
-  attachments: Attachment.MypageEdit[] | Attachment.Show[];
-  defaultUrl?: string;
-  className?: string;
-};
-
 export const Image = ({
   attachmentId,
   attachments,
   defaultUrl = "/storage/default/image.png",
+  openFullSize = false,
   className,
-}: Props) => {
+}: Ui.ImageProps) => {
   const attachment = attachments.find((a) => a.id === attachmentId);
   const url = attachment ? attachment.thumbnail : defaultUrl;
 
-  return (
+  const img = (
     <img
       className={twMerge(
         className ??
@@ -24,5 +18,13 @@ export const Image = ({
       )}
       src={url}
     />
+  );
+
+  return openFullSize ? (
+    <a href={attachment?.url} target="_blank" rel="noopener noreferrer">
+      {img}
+    </a>
+  ) : (
+    img
   );
 };

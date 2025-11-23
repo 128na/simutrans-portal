@@ -25,6 +25,7 @@ export const ArticleBase = ({ article, preview = false }: Props) => {
       <Thumbnail
         attachmentId={article.contents.thumbnail}
         attachments={article.attachments}
+        openFullSize={preview ? false : true}
       />
       {match<ArticlePostType>(article.post_type)
         .returnType<JSX.Element>()

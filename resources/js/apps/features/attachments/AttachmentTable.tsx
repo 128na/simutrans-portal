@@ -150,7 +150,12 @@ export const AttachmentTable = ({
               onClick={() => onSelectAttachment?.(selected === a.id ? null : a)}
             >
               <td className="px-6 py-4 ">
-                <Image attachmentId={a.id} attachments={[a]} />
+                <Image
+                  attachmentId={a.id}
+                  attachments={[a]}
+                  // ファイル管理からの操作のみ、ファイル選択と干渉しないので画像リンクにする
+                  openFullSize={attachmentableId ? false : true}
+                />
               </td>
               <td className="px-6 py-4 font-medium">{a.original_name}</td>
               <td className="px-6 py-4">{t(`attachments.type.${a.type}`)}</td>

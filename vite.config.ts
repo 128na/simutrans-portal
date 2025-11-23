@@ -22,6 +22,21 @@ export default defineConfig({
   esbuild: {
     jsx: "automatic",
   },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./resources/js/test/setup.ts",
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json", "html"],
+      include: ["resources/js/**/*.{ts,tsx}"],
+      exclude: [
+        "resources/js/test/**",
+        "resources/js/**/*.d.ts",
+        "resources/js/vite-env.d.ts",
+      ],
+    },
+  },
 });
 
 function LaravelLangWatcher() {

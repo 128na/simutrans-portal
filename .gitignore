@@ -25,3 +25,6 @@ yarn-error.log
 
 credential.json
 mix-manifest.json
+
+# Vitest
+coverage/

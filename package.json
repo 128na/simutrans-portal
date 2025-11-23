@@ -20,6 +20,7 @@
     "@types/markdown-it": "^14",
     "@types/node": "^24",
     "@types/sanitize-html": "^2",
+    "@vitest/coverage-v8": "^4.0.13",
     "@vitest/ui": "^4.0.13",
     "babel-plugin-react-compiler": "^1",
     "eslint": "^9",

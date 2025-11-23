@@ -130,7 +130,7 @@ export const AddonPost = ({ article, preview }: Props) => {
                                       {translateName}
                                     </td>
                                   </tr>
-                                ),
+                                )
                               )}
                             </tbody>
                           </table>

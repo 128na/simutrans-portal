@@ -6,7 +6,7 @@ const app = document.getElementById("app-article-show");
 if (app) {
   const App = () => {
     const article = JSON.parse(
-      document.getElementById("data-article")?.textContent || "{}",
+      document.getElementById("data-article")?.textContent || "{}"
     );
 
     return <ArticleBase article={article} />;

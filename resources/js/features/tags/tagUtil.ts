@@ -37,7 +37,7 @@ export const compareTagValues = (a: unknown, b: unknown): number => {
 
 export const tagFilter = (
   tags: Tag.MypageEdit[],
-  criteria: string,
+  criteria: string
 ): Tag.MypageEdit[] => {
   const q = criteria.toLowerCase();
   return tags.filter((t) => {

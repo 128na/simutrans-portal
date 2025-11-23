@@ -7,7 +7,7 @@ const app = document.getElementById("app-tag-edit");
 if (app) {
   const App = () => {
     const [tags, setTags] = useState<Tag.MypageEdit[]>(
-      JSON.parse(document.getElementById("data-tags")?.textContent || "[]"),
+      JSON.parse(document.getElementById("data-tags")?.textContent || "[]")
     );
 
     return <TagEdit tags={tags} onChangeTags={setTags} />;

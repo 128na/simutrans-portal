@@ -16,7 +16,7 @@ export default function Input({
         className={twMerge(
           "w-full border border-gray-300 rounded-lg px-4 py-2 invalid:border-red-500 invalid:bg-red-100",
           hasChildren ? "mt-1" : "mb-0",
-          className,
+          className
         )}
         {...props}
       />

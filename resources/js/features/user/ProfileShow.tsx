@@ -34,7 +34,7 @@ export const ProfileShow = ({ user, attachments, preview }: Props) => {
               url={website}
               preview={preview ?? false}
             />
-          ) : null,
+          ) : null
         )}
       </div>
     </div>

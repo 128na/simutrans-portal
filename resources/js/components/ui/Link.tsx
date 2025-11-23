@@ -9,7 +9,7 @@ export default function Link({
       <span
         className={twMerge(
           "text-gray-700 hover:text-gray-500 decoration-gray-400 underline break-all",
-          className,
+          className
         )}
       >
         {children}

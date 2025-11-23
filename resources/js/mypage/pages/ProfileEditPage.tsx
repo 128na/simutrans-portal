@@ -7,12 +7,12 @@ const app = document.getElementById("app-profile-edit");
 if (app) {
   const App = () => {
     const [user, setUser] = useState<User.MypageEdit>(
-      JSON.parse(document.getElementById("data-user")?.textContent || "{}"),
+      JSON.parse(document.getElementById("data-user")?.textContent || "{}")
     );
     const [attachments, setAttachments] = useState<Attachment.MypageEdit[]>(
       JSON.parse(
-        document.getElementById("data-attachments")?.textContent || "[]",
-      ),
+        document.getElementById("data-attachments")?.textContent || "[]"
+      )
     );
 
     const props = {

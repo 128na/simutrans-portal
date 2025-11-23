@@ -46,7 +46,7 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
     setSort((prev) =>
       prev.column === column
         ? { column, order: prev.order === "asc" ? "desc" : "asc" }
-        : { column, order: "asc" },
+        : { column, order: "asc" }
     );
   };
 
@@ -96,7 +96,7 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
                 "bg-white border-b border-gray-200",
                 selected.includes(article.id)
                   ? "cursor-pointer bg-brand/20 hover:bg-brand/30"
-                  : "cursor-pointer hover:bg-gray-100",
+                  : "cursor-pointer hover:bg-gray-100"
               )}
               onClick={() => onClick(article.id)}
             >

@@ -10,7 +10,7 @@ export const ArticleEdit = () => {
   const article = useArticleEditor((s) => s.article);
   const shouldNotify = useArticleEditor((s) => s.shouldNotify);
   const withoutUpdateModifiedAt = useArticleEditor(
-    (s) => s.withoutUpdateModifiedAt,
+    (s) => s.withoutUpdateModifiedAt
   );
   const followRedirect = useArticleEditor((s) => s.followRedirect);
 

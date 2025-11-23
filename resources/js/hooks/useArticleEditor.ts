@@ -100,18 +100,18 @@ export const useArticleEditor = create<ArticleEditorState>()(
         state.followRedirect = followRedirect;
       });
     },
-  })),
+  }))
 );
 
 export const useIsArticleUpdated = () =>
   useArticleEditor(
     (state) =>
-      JSON.stringify(state.initialArticle) !== JSON.stringify(state.article),
+      JSON.stringify(state.initialArticle) !== JSON.stringify(state.article)
   );
 
 export const useIsSlugUpdated = () =>
   useArticleEditor(
     (state) =>
       state.initialArticle.slug &&
-      state.initialArticle.slug !== state.article.slug,
+      state.initialArticle.slug !== state.article.slug
   );

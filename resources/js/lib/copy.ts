@@ -8,5 +8,5 @@ document.querySelectorAll(".js-clipboard").forEach((el) =>
     } catch (error) {
       console.error(error);
     }
-  }),
+  })
 );

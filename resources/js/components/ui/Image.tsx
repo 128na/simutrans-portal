@@ -14,7 +14,7 @@ export const Image = ({
     <img
       className={twMerge(
         className ??
-          "w-80 h-45 object-cover rounded-lg shadow-lg min-w-[64px] min-h-[36px]",
+          "w-80 h-45 object-cover rounded-lg shadow-lg min-w-[64px] min-h-[36px]"
       )}
       src={url}
     />

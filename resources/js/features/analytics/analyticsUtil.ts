@@ -1,7 +1,7 @@
 export const analyticsFilter = (
   articles: Analytics.Article[],
   criteria: string,
-  selected: number[],
+  selected: number[]
 ) => {
   const q = criteria.trim().toLowerCase();
   if (!q) return articles;

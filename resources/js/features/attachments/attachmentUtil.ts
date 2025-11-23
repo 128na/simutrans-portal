@@ -28,7 +28,7 @@ export const attachmentFilter = <T extends Attachment.MypageEdit>(
   criteria: string,
   types: AttachmentType[],
   attachmentableId: number | null,
-  attachmentableType: AttachmentableType | null,
+  attachmentableType: AttachmentableType | null
 ): T[] => {
   const q = criteria.toLowerCase();
   return attachments.filter((a) => {

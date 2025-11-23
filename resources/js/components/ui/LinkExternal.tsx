@@ -9,7 +9,7 @@ export default function LinkExternal({
       <span
         className={twMerge(
           "decoration-sky-600 text-brand hover:text-brand/70 underline break-all",
-          className,
+          className
         )}
       >
         {children}

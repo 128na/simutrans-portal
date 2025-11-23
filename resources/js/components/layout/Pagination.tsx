@@ -26,7 +26,7 @@ export const Pagination = ({ total, current, onChange }: PaginationProps) => {
             className={twMerge(
               baseClass,
               "ms-0 border-e-0 rounded-s-lg",
-              current === 1 ? "" : "hover:bg-gray-100 cursor-pointer",
+              current === 1 ? "" : "hover:bg-gray-100 cursor-pointer"
             )}
             onClick={() => onChange(Math.max(1, current - 1))}
             disabled={current === 1}
@@ -49,7 +49,7 @@ export const Pagination = ({ total, current, onChange }: PaginationProps) => {
                 "cursor-pointer",
                 current === p
                   ? "bg-blue-50 text-blue-600 hover:text-blue-700"
-                  : "hover:bg-gray-100",
+                  : "hover:bg-gray-100"
               )}
               onClick={() => onChange(p)}
             >
@@ -69,7 +69,7 @@ export const Pagination = ({ total, current, onChange }: PaginationProps) => {
             className={twMerge(
               baseClass,
               "rounded-e-lg",
-              current === total ? "" : "hover:bg-gray-100 cursor-pointer",
+              current === total ? "" : "hover:bg-gray-100 cursor-pointer"
             )}
             onClick={() => onChange(Math.min(total, current + 1))}
             disabled={current === total}

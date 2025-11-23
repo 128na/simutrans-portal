@@ -32,7 +32,9 @@ describe("ButtonOutline コンポーネント", () => {
   it("onClick ハンドラーが動作する", async () => {
     const user = userEvent.setup();
     let clicked = false;
-    render(<ButtonOutline onClick={() => (clicked = true)}>テスト</ButtonOutline>);
+    render(
+      <ButtonOutline onClick={() => (clicked = true)}>テスト</ButtonOutline>
+    );
     const button = screen.getByRole("button");
     await user.click(button);
     expect(clicked).toBe(true);

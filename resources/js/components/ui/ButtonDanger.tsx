@@ -18,7 +18,7 @@ export default function ButtonDanger({
         bg-red-600
         hover:bg-red-700
         `,
-        className,
+        className
       )}
       {...props}
     >

@@ -9,7 +9,7 @@ type Props = {
 
 export const TagEdit = ({ tags, onChangeTags }: Props) => {
   const [selected, setSelected] = useState<Tag.MypageEdit | Tag.New | null>(
-    null,
+    null
   );
   const updateTag = (tag: Tag.MypageEdit) => {
     const idx = tags.findIndex((t) => t.id === tag.id);

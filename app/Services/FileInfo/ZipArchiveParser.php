@@ -32,7 +32,7 @@ final readonly class ZipArchiveParser
                     if ($stat) {
                         $name = $stat['name'];
                         $text = $this->zipArchive->getFromIndex($stat['index']);
-                        if ($name && $text) {
+                        if ($name && $text !== false && $text !== '') {
                             yield $this->convert($name) => $this->convert($text);
                         }
                     }

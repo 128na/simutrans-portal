@@ -1,6 +1,6 @@
+import Button from "@/components/ui/Button";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import Button from "../../apps/components/ui/Button";
 
 describe("Button コンポーネント", () => {
   it("子要素がレンダリングされる", () => {

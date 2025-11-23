@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import userEvent from "@testing-library/user-event";
-import { ArticleTable } from "../../apps/features/articles/ArticleTable";
+import { ArticleTable } from "@/features/articles/ArticleTable";
 
 describe("ArticleTable コンポーネント", () => {
   const mockArticles: Article.MypageShow[] = [

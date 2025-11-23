@@ -20,6 +20,8 @@ export const AddonPost = ({ article, preview }: Props) => {
   const dats = fileInfo?.data?.dats;
   const tabs = fileInfo?.data?.tabs;
 
+  console.log(dats, tabs);
+
   return (
     <div>
       <TextPre>{contents.description || "(本文)"}</TextPre>
@@ -74,7 +76,7 @@ export const AddonPost = ({ article, preview }: Props) => {
         <>
           <TitleH4>ファイル情報</TitleH4>
 
-          {dats && (
+          {dats && Object.keys(dats).length > 0 && (
             <Accordion title="Datファイル">
               <div className="mt-2 block space-y-2">
                 <ul className="list-none">
@@ -99,7 +101,7 @@ export const AddonPost = ({ article, preview }: Props) => {
             </Accordion>
           )}
 
-          {tabs && (
+          {tabs && Object.keys(tabs).length > 0 && (
             <Accordion title="Tabファイル">
               <div className="mt-2 block space-y-2">
                 <ul className="list-none">

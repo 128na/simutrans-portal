@@ -64,7 +64,7 @@ final class ArticleShow extends JsonResource
                 'url' => $attachment->url,
                 'fileInfo' => $this->when($attachment->fileInfo instanceof FileInfo, fn (): array => [
                     'data' => [
-                        'dates' => $attachment->fileInfo->getDats(),
+                        'dats' => $attachment->fileInfo->getDats(),
                         'tabs' => $attachment->fileInfo->getTabs(),
                     ],
                 ]),

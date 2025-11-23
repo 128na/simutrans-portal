@@ -72,7 +72,7 @@ export const AddonPost = () => {
                 types={["file"]}
                 onSelectAttachment={(attachmentId) => {
                   updateContents<ArticleContent.AddonPost>(
-                    (draft) => (draft.file = attachmentId),
+                    (draft) => (draft.file = attachmentId)
                   );
                   close();
                 }}
@@ -95,7 +95,7 @@ export const AddonPost = () => {
           rows={9}
           onChange={(e) =>
             updateContents<ArticleContent.AddonPost>(
-              (draft) => (draft.description = e.target.value),
+              (draft) => (draft.description = e.target.value)
             )
           }
         >
@@ -109,11 +109,11 @@ export const AddonPost = () => {
             const text = Object.entries(file?.fileInfo?.data.readmes ?? {})
               .map(
                 ([filename, readme]) =>
-                  `\n--------\n${filename}\n--------\n${readme.join("\n")}\n--------\n`,
+                  `\n--------\n${filename}\n--------\n${readme.join("\n")}\n--------\n`
               )
               .join("\n");
             updateContents<ArticleContent.AddonPost>(
-              (draft) => (draft.description += text),
+              (draft) => (draft.description += text)
             );
           }}
         >
@@ -150,7 +150,7 @@ export const AddonPost = () => {
             value={contents.author || ""}
             onChange={(e) =>
               updateContents<ArticleContent.AddonPost>(
-                (draft) => (draft.author = e.target.value),
+                (draft) => (draft.author = e.target.value)
               )
             }
           >
@@ -165,7 +165,7 @@ export const AddonPost = () => {
             rows={3}
             onChange={(e) =>
               updateContents<ArticleContent.AddonPost>(
-                (draft) => (draft.thanks = e.target.value),
+                (draft) => (draft.thanks = e.target.value)
               )
             }
           >
@@ -180,7 +180,7 @@ export const AddonPost = () => {
             rows={3}
             onChange={(e) =>
               updateContents<ArticleContent.AddonPost>(
-                (draft) => (draft.license = e.target.value),
+                (draft) => (draft.license = e.target.value)
               )
             }
           >

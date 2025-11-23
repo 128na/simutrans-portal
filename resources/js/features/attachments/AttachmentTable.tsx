@@ -74,7 +74,7 @@ export const AttachmentTable = ({
     criteria,
     types,
     attachmentableId,
-    attachmentableType,
+    attachmentableType
   );
 
   const totalPages = Math.ceil(filtered.length / limit);
@@ -88,7 +88,7 @@ export const AttachmentTable = ({
     setSort((prev) =>
       prev.column === column
         ? { column, order: prev.order === "asc" ? "desc" : "asc" }
-        : { column, order: "asc" },
+        : { column, order: "asc" }
     );
   };
 
@@ -98,7 +98,7 @@ export const AttachmentTable = ({
         const res = await axios.delete(`/api/v2/attachments/${attachmentId}`);
         if (res.status === 200) {
           onChangeAttachments?.(
-            attachments.filter((a) => a.id !== attachmentId),
+            attachments.filter((a) => a.id !== attachmentId)
           );
         }
       } catch (error) {
@@ -145,7 +145,7 @@ export const AttachmentTable = ({
                 onSelectAttachment &&
                   (selected === a.id
                     ? "cursor-pointer bg-brand/20 hover:bg-brand/30"
-                    : "cursor-pointer hover:bg-gray-100"),
+                    : "cursor-pointer hover:bg-gray-100")
               )}
               onClick={() => onSelectAttachment?.(selected === a.id ? null : a)}
             >

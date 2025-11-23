@@ -9,7 +9,7 @@ function toArticleShow(
   categories: Category.Grouping,
   tags: Tag.MypageEdit[],
   attachments: Attachment.MypageEdit[],
-  relationalArticles: Article.MypageRelational[],
+  relationalArticles: Article.MypageRelational[]
 ): Article.Show {
   const base = {
     id: article.id,
@@ -21,7 +21,7 @@ function toArticleShow(
       .map((id) =>
         Object.values(categories)
           .flat()
-          .find((item) => item.id === id),
+          .find((item) => item.id === id)
       )
       .filter((c): c is Category.MypageEdit => c !== undefined),
     tags: article.tags
@@ -94,7 +94,7 @@ export const ArticlePreview = () => {
           categories,
           tags,
           attachments,
-          relationalArticles,
+          relationalArticles
         )}
         preview={true}
       />

@@ -18,7 +18,7 @@ export default function TextError({
         `
         text-sm text-red-600
         `,
-        className,
+        className
       )}
       {...props}
     >

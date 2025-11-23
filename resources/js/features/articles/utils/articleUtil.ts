@@ -36,7 +36,7 @@ export const compareArticleValues = (a: unknown, b: unknown): number => {
 
 export const articleFilter = (
   articles: Article.MypageShow[],
-  criteria: string,
+  criteria: string
 ) => {
   const q = criteria.trim().toLowerCase();
   if (!q) return articles;
@@ -113,7 +113,7 @@ export const createContents = (postType: ArticlePostType) => {
 };
 export const createArticle = (
   postType: ArticlePostType,
-  user: User.MypageShow,
+  user: User.MypageShow
 ) => {
   return {
     id: null,

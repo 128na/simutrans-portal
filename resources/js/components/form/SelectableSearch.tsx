@@ -40,7 +40,7 @@ export const SelectableSearch = ({
     (o) =>
       String(render ? render(o) : o[labelKey])
         ?.toLowerCase()
-        .includes(criteria.toLowerCase()) && !selectedIds.includes(o.id),
+        .includes(criteria.toLowerCase()) && !selectedIds.includes(o.id)
   );
   return (
     <div className="space-y-4">
@@ -73,7 +73,7 @@ export const SelectableSearch = ({
       <div
         className={twMerge(
           "max-h-40 overflow-y-auto border border-gray-300 rounded-lg p-2 bg-white",
-          className,
+          className
         )}
       >
         {filteredItems.length < 1 ? (

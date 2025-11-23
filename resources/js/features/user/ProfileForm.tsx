@@ -233,7 +233,7 @@ export const ProfileForm = ({
                       data: {
                         ...user.profile.data,
                         website: user.profile.data.website.map((w, i) =>
-                          i === idx ? e.target.value : w,
+                          i === idx ? e.target.value : w
                         ),
                       },
                     },

@@ -25,7 +25,7 @@ export const Upload = ({ onUploaded, ...props }: Prop) => {
       console.error("アップロード失敗", error);
       if (error instanceof AxiosError) {
         alert(
-          `アップロードに失敗しました：${error.response?.data.message ?? "不明なエラー"}`,
+          `アップロードに失敗しました：${error.response?.data.message ?? "不明なエラー"}`
         );
       }
     }

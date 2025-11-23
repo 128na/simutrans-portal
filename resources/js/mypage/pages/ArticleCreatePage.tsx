@@ -20,7 +20,7 @@ if (app) {
         tags: JSON.parse(el("data-tags")!.textContent!),
         categories: JSON.parse(el("data-categories")!.textContent!),
         relationalArticles: JSON.parse(
-          el("data-relational-articles")!.textContent!,
+          el("data-relational-articles")!.textContent!
         ),
         shouldNotify: false,
         withoutUpdateModifiedAt: false,

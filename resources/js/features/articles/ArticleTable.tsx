@@ -54,7 +54,7 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
   const sortedArticles = [...filtereArticles].sort((a, b) => {
     const result = compareArticleValues(
       a[sort.column] ?? 0,
-      b[sort.column] ?? 0,
+      b[sort.column] ?? 0
     );
     return sort.order === "asc" ? result : -result;
   });
@@ -63,7 +63,7 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
     setSort((prev) =>
       prev.column === column
         ? { column, order: prev.order === "asc" ? "desc" : "asc" }
-        : { column, order: "asc" },
+        : { column, order: "asc" }
     );
   };
 
@@ -105,7 +105,7 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
               key={article.id}
               className={twMerge(
                 "bg-white border-b border-gray-200 cursor-pointer",
-                StatusClass[article.status],
+                StatusClass[article.status]
               )}
               onClick={() => onClick?.(article)}
             >

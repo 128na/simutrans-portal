@@ -18,7 +18,7 @@ export default function Textarea({
         className={twMerge(
           "w-full border border-gray-300 rounded-lg px-4 py-2",
           hasChildren ? "mt-1" : "mb-0",
-          className,
+          className
         )}
         {...props}
       />

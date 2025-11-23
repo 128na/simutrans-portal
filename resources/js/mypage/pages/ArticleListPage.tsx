@@ -7,10 +7,10 @@ const app = document.getElementById("app-article-list");
 
 if (app) {
   const user = JSON.parse(
-    document.getElementById("data-user")?.textContent || "{}",
+    document.getElementById("data-user")?.textContent || "{}"
   ) as User.MypageShow;
   const articles = JSON.parse(
-    document.getElementById("data-articles")?.textContent || "{}",
+    document.getElementById("data-articles")?.textContent || "{}"
   ) as Article.MypageShow[];
 
   const App = () => {

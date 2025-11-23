@@ -12,7 +12,7 @@ export const ArticleForm = () => {
   const shouldNotify = useArticleEditor((s) => s.shouldNotify);
   const updateShouldNotify = useArticleEditor((s) => s.updateShouldNotify);
   const withoutUpdateModifiedAt = useArticleEditor(
-    (s) => s.withoutUpdateModifiedAt,
+    (s) => s.withoutUpdateModifiedAt
   );
 
   if (!article || !article.post_type) return null;

@@ -10,13 +10,13 @@ export function getTranslation(key: string, locale = "ja"): string {
 export function t(
   key: string,
   vars?: Record<string, string>,
-  locale = "ja",
+  locale = "ja"
 ): string {
   const template = getTranslation(key, locale);
   return vars
     ? Object.entries(vars).reduce(
         (acc, [k, v]) => acc.replaceAll(`:${k}`, v),
-        template,
+        template
       )
     : template;
 }

@@ -48,7 +48,7 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
     setSort((prev) =>
       prev.column === column
         ? { column, order: prev.order === "asc" ? "desc" : "asc" }
-        : { column, order: "asc" },
+        : { column, order: "asc" }
     );
   };
 
@@ -93,7 +93,7 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
               key={tag.id}
               className={twMerge(
                 "bg-white border-b border-gray-200",
-                tag.editable && "cursor-pointer hover:bg-gray-100",
+                tag.editable && "cursor-pointer hover:bg-gray-100"
               )}
               onClick={() => onClick?.(tag)}
             >

@@ -8,8 +8,8 @@ if (app) {
   const App = () => {
     const [attachments, setAttachments] = useState<Attachment.MypageEdit[]>(
       JSON.parse(
-        document.getElementById("data-attachments")?.textContent || "[]",
-      ),
+        document.getElementById("data-attachments")?.textContent || "[]"
+      )
     );
 
     return (

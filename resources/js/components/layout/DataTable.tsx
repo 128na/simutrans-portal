@@ -43,7 +43,7 @@ export function DataTable<T, K extends string>({
               className={twMerge(
                 "px-3 py-3",
                 header.width,
-                header.sortable && "cursor-pointer",
+                header.sortable && "cursor-pointer"
               )}
             >
               {header.name}

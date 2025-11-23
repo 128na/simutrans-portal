@@ -20,7 +20,7 @@ export default function Button({ children, className, ...props }: ButtonProps) {
         disabled:bg-gray-300
         disabled:cursor-not-allowed
         `,
-        className,
+        className
       )}
       {...props}
     >

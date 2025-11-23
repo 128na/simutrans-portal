@@ -3,7 +3,7 @@ import { Analytics } from "../../features/analytics/Analytics";
 
 const app = document.getElementById("app-analytics");
 const articles = JSON.parse(
-  document.getElementById("data-articles")?.textContent || "[]",
+  document.getElementById("data-articles")?.textContent || "[]"
 );
 if (app) {
   const App = () => {

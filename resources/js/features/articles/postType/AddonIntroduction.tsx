@@ -39,7 +39,7 @@ export const AddonIntroduction = () => {
         rows={9}
         onChange={(e) =>
           updateContents<ArticleContent.AddonIntroduction>(
-            (draft) => (draft.description = e.target.value),
+            (draft) => (draft.description = e.target.value)
           )
         }
       >
@@ -54,7 +54,7 @@ export const AddonIntroduction = () => {
         value={contents.link || ""}
         onChange={(e) =>
           updateContents<ArticleContent.AddonIntroduction>(
-            (draft) => (draft.link = e.target.value),
+            (draft) => (draft.link = e.target.value)
           )
         }
       >
@@ -68,7 +68,7 @@ export const AddonIntroduction = () => {
           checked={contents.agreement}
           onChange={() =>
             updateContents<ArticleContent.AddonIntroduction>(
-              (draft) => (draft.agreement = !draft.agreement),
+              (draft) => (draft.agreement = !draft.agreement)
             )
           }
         >
@@ -104,7 +104,7 @@ export const AddonIntroduction = () => {
             value={contents.author || ""}
             onChange={(e) =>
               updateContents<ArticleContent.AddonIntroduction>(
-                (draft) => (draft.author = e.target.value),
+                (draft) => (draft.author = e.target.value)
               )
             }
           >
@@ -118,7 +118,7 @@ export const AddonIntroduction = () => {
             rows={3}
             onChange={(e) =>
               updateContents<ArticleContent.AddonIntroduction>(
-                (draft) => (draft.thanks = e.target.value),
+                (draft) => (draft.thanks = e.target.value)
               )
             }
           >
@@ -132,7 +132,7 @@ export const AddonIntroduction = () => {
             rows={3}
             onChange={(e) =>
               updateContents<ArticleContent.AddonIntroduction>(
-                (draft) => (draft.license = e.target.value),
+                (draft) => (draft.license = e.target.value)
               )
             }
           >
@@ -149,7 +149,7 @@ export const AddonIntroduction = () => {
               onChange={() =>
                 updateContents<ArticleContent.AddonIntroduction>(
                   (draft) =>
-                    (draft.exclude_link_check = !draft.exclude_link_check),
+                    (draft.exclude_link_check = !draft.exclude_link_check)
                 )
               }
             >

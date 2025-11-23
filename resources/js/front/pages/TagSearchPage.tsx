@@ -7,7 +7,7 @@ const app = document.getElementById("app-search-tags");
 if (app) {
   const initialTagIds = JSON.parse(app.dataset.tagIds || "[]").map(Number);
   const options = JSON.parse(
-    document.getElementById("data-options")?.textContent || "{}",
+    document.getElementById("data-options")?.textContent || "{}"
   ).tags as SearchableOption[];
 
   const App = () => {

@@ -9,5 +9,5 @@ document.querySelectorAll("form.js-confirm").forEach((el) =>
     } catch (error) {
       console.error(error);
     }
-  }),
+  })
 );

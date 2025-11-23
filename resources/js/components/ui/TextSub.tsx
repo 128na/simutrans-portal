@@ -14,7 +14,7 @@ export default function TextSub({ children, className, ...props }: HTMLProps) {
         `
         text-sm text-gray-600 break-all
         `,
-        className,
+        className
       )}
       {...props}
     >

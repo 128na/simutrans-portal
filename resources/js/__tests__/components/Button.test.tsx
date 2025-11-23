@@ -6,7 +6,7 @@ describe("Button コンポーネント", () => {
   it("子要素がレンダリングされる", () => {
     render(<Button>クリック</Button>);
     expect(
-      screen.getByRole("button", { name: "クリック" }),
+      screen.getByRole("button", { name: "クリック" })
     ).toBeInTheDocument();
   });
 

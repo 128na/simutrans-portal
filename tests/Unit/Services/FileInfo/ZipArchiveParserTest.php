@@ -198,7 +198,7 @@ final class ZipArchiveParserTest extends TestCase
             $mock->expects()->close()->once();
         });
         $attachment = app(Attachment::class);
-        
+
         try {
             $this->getSUT()->parseTextContent($attachment)->all();
             $this->fail('Expected exception was not thrown');

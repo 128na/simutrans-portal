@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { useEffect } from "react";
 import { useArticleEditor } from "./state/useArticleEditor";
-import { ArticleEditor } from "./features/articles/ArticleEditor";
+import { ArticleEdit } from "./features/articles/ArticleEdit";
 
 const el = (id: string) => document.getElementById(id);
 const app = el("app-article-edit");
@@ -26,7 +26,7 @@ if (app) {
       });
     }, []);
 
-    return <ArticleEditor />;
+    return <ArticleEdit />;
   };
 
   createRoot(app).render(<App />);

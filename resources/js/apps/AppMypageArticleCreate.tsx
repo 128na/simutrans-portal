@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { SelectPostType } from "./features/articles/SelectPostType";
 import { createArticle } from "./features/articles/articleUtil";
 import { useArticleEditor } from "./state/useArticleEditor";
-import { ArticleEditor } from "./features/articles/ArticleEditor";
+import { ArticleEdit } from "./features/articles/ArticleEdit";
 
 const el = (id: string) => document.getElementById(id);
 const app = el("app-article-create");
@@ -44,7 +44,7 @@ if (app) {
     if (!postType || !article || !article.post_type) {
       return <SelectPostType onClick={setPostType} />;
     }
-    return <ArticleEditor />;
+    return <ArticleEdit />;
   };
 
   createRoot(app).render(<App />);

@@ -41,6 +41,7 @@ describe("ModalFull コンポーネント", () => {
 
     const closeButtons = screen.getAllByRole("button");
     const closeButton = closeButtons.find((btn) => btn.querySelector("svg"));
+    expect(closeButton).toBeDefined();
     await user.click(closeButton!);
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
@@ -61,6 +62,7 @@ describe("ModalFull コンポーネント", () => {
     // 閉じる
     const closeButtons = screen.getAllByRole("button");
     const closeButton = closeButtons.find((btn) => btn.querySelector("svg"));
+    expect(closeButton).toBeDefined();
     await user.click(closeButton!);
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });

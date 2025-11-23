@@ -1,5 +1,5 @@
 import { match } from "ts-pattern";
-import { JSX } from "react";
+import { JSX, useRef } from "react";
 import { useArticleEditor } from "@/apps/state/useArticleEditor";
 import { Page } from "./postType/Page";
 import { Markdown } from "./postType/Markdown";
@@ -12,6 +12,7 @@ import axios, { AxiosError } from "axios";
 import { useAxiosError } from "@/apps/state/useAxiosError";
 import { ArticlePreview } from "./ArticlePreview";
 export const ArticleEditor = () => {
+  const contentRef = useRef<HTMLDivElement>(null);
   const article = useArticleEditor((s) => s.article);
   const shouldNotify = useArticleEditor((s) => s.shouldNotify);
   const updateShouldNotify = useArticleEditor((s) => s.updateShouldNotify);
@@ -36,6 +37,7 @@ export const ArticleEditor = () => {
     } catch (error) {
       if (error instanceof AxiosError) {
         setError(error.response?.data);
+        contentRef.current?.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
   };
@@ -44,7 +46,7 @@ export const ArticleEditor = () => {
   return (
     <>
       <div className="flex flex-col gap-y-0 lg:grid lg:grid-cols-2 h-[calc(100vh-200px)]">
-        <div className="overflow-y-auto pr-4 pb-10">
+        <div ref={contentRef} className="overflow-y-auto pr-4 pb-10">
           {match<ArticlePostType>(article.post_type)
             .returnType<JSX.Element>()
             .with("page", () => <Page />)

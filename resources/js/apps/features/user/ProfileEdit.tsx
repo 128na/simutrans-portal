@@ -14,6 +14,7 @@ import axios, { AxiosError } from "axios";
 import ButtonSub from "@/apps/components/ui/ButtonSub";
 import TwoColumn from "@/apps/components/ui/TwoColumn";
 import ButtonDanger from "@/apps/components/ui/ButtonDanger";
+import { useRef } from "react";
 
 type Props = {
   user: User.MypageEdit;
@@ -27,6 +28,7 @@ export const ProfileEdit = ({
   attachments,
   onChangeAttachments,
 }: Props) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const { getError, setError } = useAxiosError();
 
   const addWebsite = () => {
@@ -74,12 +76,16 @@ export const ProfileEdit = ({
       console.log(error);
       if (error instanceof AxiosError) {
         setError(error.response?.data);
+        containerRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
       }
     }
   };
 
   return (
-    <div className="grid gap-4">
+    <div ref={containerRef} className="grid gap-4">
       <Input
         labelClassName="font-medium"
         className="font-normal"
@@ -200,7 +206,6 @@ export const ProfileEdit = ({
           });
         }}
       >
-        <TextBadge className="bg-red-500">必須</TextBadge>
         説明
         <TextError>{getError("user.profile.data.description")}</TextError>
       </Textarea>

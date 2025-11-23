@@ -15,7 +15,7 @@ final class ZipArchiveParserTest extends TestCase
     public function test_parse_text_content_with_empty_zip(): void
     {
         $this->mock(Attachment::class, function (MockInterface $mock): void {
-            $mock->expects()->getAttribute('full_path')->once()->andReturn('dummy');
+            $mock->full_path = 'dummy';
         });
         $this->mock(ZipArchive::class, function (MockInterface $mock): void {
             $mock->expects()->open('dummy')->once();
@@ -30,7 +30,7 @@ final class ZipArchiveParserTest extends TestCase
     public function test_parse_text_content_reads_single_file(): void
     {
         $this->mock(Attachment::class, function (MockInterface $mock): void {
-            $mock->expects()->getAttribute('full_path')->once()->andReturn('test.zip');
+            $mock->full_path = 'test.zip';
         });
         $this->mock(ZipArchive::class, function (MockInterface $mock): void {
             $mock->expects()->open('test.zip')->once();
@@ -52,7 +52,7 @@ final class ZipArchiveParserTest extends TestCase
     public function test_parse_text_content_reads_multiple_files(): void
     {
         $this->mock(Attachment::class, function (MockInterface $mock): void {
-            $mock->expects()->getAttribute('full_path')->once()->andReturn('test.zip');
+            $mock->full_path = 'test.zip';
         });
         $this->mock(ZipArchive::class, function (MockInterface $mock): void {
             $mock->expects()->open('test.zip')->once();
@@ -88,7 +88,7 @@ final class ZipArchiveParserTest extends TestCase
     public function test_parse_text_content_skips_files_with_null_stat(): void
     {
         $this->mock(Attachment::class, function (MockInterface $mock): void {
-            $mock->expects()->getAttribute('full_path')->once()->andReturn('test.zip');
+            $mock->full_path = 'test.zip';
         });
         $this->mock(ZipArchive::class, function (MockInterface $mock): void {
             $mock->expects()->open('test.zip')->once();
@@ -111,7 +111,7 @@ final class ZipArchiveParserTest extends TestCase
     public function test_parse_text_content_skips_files_with_empty_name(): void
     {
         $this->mock(Attachment::class, function (MockInterface $mock): void {
-            $mock->expects()->getAttribute('full_path')->once()->andReturn('test.zip');
+            $mock->full_path = 'test.zip';
         });
         $this->mock(ZipArchive::class, function (MockInterface $mock): void {
             $mock->expects()->open('test.zip')->once();
@@ -137,7 +137,7 @@ final class ZipArchiveParserTest extends TestCase
     public function test_parse_text_content_skips_files_with_false_content(): void
     {
         $this->mock(Attachment::class, function (MockInterface $mock): void {
-            $mock->expects()->getAttribute('full_path')->once()->andReturn('test.zip');
+            $mock->full_path = 'test.zip';
         });
         $this->mock(ZipArchive::class, function (MockInterface $mock): void {
             $mock->expects()->open('test.zip')->once();
@@ -163,7 +163,7 @@ final class ZipArchiveParserTest extends TestCase
     public function test_parse_text_content_handles_encoding_conversion(): void
     {
         $this->mock(Attachment::class, function (MockInterface $mock): void {
-            $mock->expects()->getAttribute('full_path')->once()->andReturn('test.zip');
+            $mock->full_path = 'test.zip';
         });
         $this->mock(ZipArchive::class, function (MockInterface $mock): void {
             $mock->expects()->open('test.zip')->once();
@@ -189,7 +189,7 @@ final class ZipArchiveParserTest extends TestCase
     public function test_parse_text_content_ensures_close_is_called_on_exception(): void
     {
         $this->mock(Attachment::class, function (MockInterface $mock): void {
-            $mock->expects()->getAttribute('full_path')->once()->andReturn('test.zip');
+            $mock->full_path = 'test.zip';
         });
         $this->mock(ZipArchive::class, function (MockInterface $mock): void {
             $mock->expects()->open('test.zip')->once();
@@ -210,7 +210,7 @@ final class ZipArchiveParserTest extends TestCase
     public function test_parse_text_content_with_directories(): void
     {
         $this->mock(Attachment::class, function (MockInterface $mock): void {
-            $mock->expects()->getAttribute('full_path')->once()->andReturn('test.zip');
+            $mock->full_path = 'test.zip';
         });
         $this->mock(ZipArchive::class, function (MockInterface $mock): void {
             $mock->expects()->open('test.zip')->once();

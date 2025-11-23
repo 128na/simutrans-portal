@@ -7,14 +7,14 @@ describe("InputFile コンポーネント", () => {
   it("アップロードボタンが表示される", () => {
     render(<InputFile />);
     expect(
-      screen.getByRole("button", { name: "アップロード" })
+      screen.getByRole("button", { name: "アップロード" }),
     ).toBeInTheDocument();
   });
 
   it("カスタムボタンテキストが表示される", () => {
     render(<InputFile>ファイルを選択</InputFile>);
     expect(
-      screen.getByRole("button", { name: "ファイルを選択" })
+      screen.getByRole("button", { name: "ファイルを選択" }),
     ).toBeInTheDocument();
   });
 
@@ -53,10 +53,10 @@ describe("InputFile コンポーネント", () => {
     const user = userEvent.setup();
     let files: FileList | null = null;
     const { container } = render(
-      <InputFile onChange={(e) => (files = e.target.files)} />
+      <InputFile onChange={(e) => (files = e.target.files)} />,
     );
     const fileInput = container.querySelector(
-      'input[type="file"]'
+      'input[type="file"]',
     ) as HTMLInputElement;
 
     const file = new File(["test"], "test.txt", { type: "text/plain" });

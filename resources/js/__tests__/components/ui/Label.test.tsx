@@ -12,7 +12,7 @@ describe("Label コンポーネント", () => {
     render(
       <Label>
         <span>子要素</span>
-      </Label>
+      </Label>,
     );
     expect(screen.getByText("子要素")).toBeInTheDocument();
   });

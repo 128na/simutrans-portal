@@ -30,7 +30,7 @@ describe("Avatar コンポーネント", () => {
         attachmentId={null}
         attachments={mockAttachments}
         defaultUrl="/custom-avatar.png"
-      />
+      />,
     );
     const img = screen.getByRole("img");
     expect(img).toHaveAttribute("src", "/custom-avatar.png");
@@ -50,7 +50,7 @@ describe("Avatar コンポーネント", () => {
         attachmentId={1}
         attachments={mockAttachments}
         openFullSize={true}
-      />
+      />,
     );
     const link = screen.getByRole("link");
     expect(link).toBeInTheDocument();

@@ -8,7 +8,7 @@ describe("ModalFull コンポーネント", () => {
     render(
       <ModalFull buttonTitle="開く" title="テストモーダル">
         モーダルコンテンツ
-      </ModalFull>
+      </ModalFull>,
     );
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "開く" })).toBeInTheDocument();
@@ -19,7 +19,7 @@ describe("ModalFull コンポーネント", () => {
     render(
       <ModalFull buttonTitle="開く" title="テストモーダル">
         モーダルコンテンツ
-      </ModalFull>
+      </ModalFull>,
     );
     const openButton = screen.getByRole("button", { name: "開く" });
     await user.click(openButton);
@@ -33,7 +33,7 @@ describe("ModalFull コンポーネント", () => {
     render(
       <ModalFull buttonTitle="開く" title="テストモーダル">
         モーダルコンテンツ
-      </ModalFull>
+      </ModalFull>,
     );
     const openButton = screen.getByRole("button", { name: "開く" });
     await user.click(openButton);
@@ -51,7 +51,7 @@ describe("ModalFull コンポーネント", () => {
     render(
       <ModalFull buttonTitle="開く" title="テストモーダル">
         モーダルコンテンツ
-      </ModalFull>
+      </ModalFull>,
     );
     const openButton = screen.getByRole("button", { name: "開く" });
 
@@ -75,7 +75,7 @@ describe("ModalFull コンポーネント", () => {
         buttonClass="custom-button-class"
       >
         内容
-      </ModalFull>
+      </ModalFull>,
     );
     const button = screen.getByRole("button");
     expect(button).toHaveClass("custom-button-class");
@@ -90,7 +90,7 @@ describe("ModalFull コンポーネント", () => {
         modalClass="custom-modal-class"
       >
         内容
-      </ModalFull>
+      </ModalFull>,
     );
     const openButton = screen.getByRole("button", { name: "開く" });
     await user.click(openButton);
@@ -103,7 +103,7 @@ describe("ModalFull コンポーネント", () => {
     render(
       <ModalFull buttonTitle="開く" title="テストモーダル">
         {({ close }) => <button onClick={close}>カスタム閉じる</button>}
-      </ModalFull>
+      </ModalFull>,
     );
     const openButton = screen.getByRole("button", { name: "開く" });
     await user.click(openButton);

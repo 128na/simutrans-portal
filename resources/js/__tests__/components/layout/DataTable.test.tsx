@@ -40,7 +40,7 @@ describe("DataTable コンポーネント", () => {
         current={1}
         onSort={() => {}}
         renderRow={mockRenderRow}
-      />
+      />,
     );
     expect(screen.getByRole("table")).toBeInTheDocument();
   });
@@ -55,7 +55,7 @@ describe("DataTable コンポーネント", () => {
         current={1}
         onSort={() => {}}
         renderRow={mockRenderRow}
-      />
+      />,
     );
     expect(screen.getByText("ID")).toBeInTheDocument();
     expect(screen.getByText("名前")).toBeInTheDocument();
@@ -72,7 +72,7 @@ describe("DataTable コンポーネント", () => {
         current={1}
         onSort={() => {}}
         renderRow={mockRenderRow}
-      />
+      />,
     );
     expect(screen.getByText("太郎")).toBeInTheDocument();
     expect(screen.getByText("花子")).toBeInTheDocument();
@@ -91,7 +91,7 @@ describe("DataTable コンポーネント", () => {
         current={1}
         onSort={onSort}
         renderRow={mockRenderRow}
-      />
+      />,
     );
     const nameHeader = screen.getByText("名前");
     await user.click(nameHeader);
@@ -110,7 +110,7 @@ describe("DataTable コンポーネント", () => {
         current={1}
         onSort={onSort}
         renderRow={mockRenderRow}
-      />
+      />,
     );
     const ageHeader = screen.getByText("年齢");
     await user.click(ageHeader);
@@ -127,7 +127,7 @@ describe("DataTable コンポーネント", () => {
         current={1}
         onSort={() => {}}
         renderRow={mockRenderRow}
-      />
+      />,
     );
     expect(screen.getByText("▲")).toBeInTheDocument();
   });
@@ -142,7 +142,7 @@ describe("DataTable コンポーネント", () => {
         current={1}
         onSort={() => {}}
         renderRow={mockRenderRow}
-      />
+      />,
     );
     expect(screen.getByText("▼")).toBeInTheDocument();
   });
@@ -163,7 +163,7 @@ describe("DataTable コンポーネント", () => {
         current={2}
         onSort={() => {}}
         renderRow={mockRenderRow}
-      />
+      />,
     );
 
     // 2ページ目は11-20のデータ
@@ -183,7 +183,7 @@ describe("DataTable コンポーネント", () => {
         current={1}
         onSort={() => {}}
         renderRow={mockRenderRow}
-      />
+      />,
     );
     const idHeader = screen.getByText("ID").closest("th");
     expect(idHeader).toHaveClass("w-20");
@@ -199,7 +199,7 @@ describe("DataTable コンポーネント", () => {
         current={1}
         onSort={() => {}}
         renderRow={mockRenderRow}
-      />
+      />,
     );
     const nameHeader = screen.getByText("名前").closest("th");
     expect(nameHeader).toHaveClass("cursor-pointer");

@@ -32,7 +32,7 @@ describe("TextBadge コンポーネント", () => {
       <>
         <TextBadge>バッジ1</TextBadge>
         <TextBadge>バッジ2</TextBadge>
-      </>
+      </>,
     );
     expect(screen.getByText("バッジ1")).toBeInTheDocument();
     expect(screen.getByText("バッジ2")).toBeInTheDocument();

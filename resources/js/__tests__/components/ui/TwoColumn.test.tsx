@@ -8,7 +8,7 @@ describe("TwoColumn コンポーネント", () => {
       <TwoColumn>
         <div>左側</div>
         <div>右側</div>
-      </TwoColumn>
+      </TwoColumn>,
     );
     expect(screen.getByText("左側")).toBeInTheDocument();
     expect(screen.getByText("右側")).toBeInTheDocument();
@@ -19,7 +19,7 @@ describe("TwoColumn コンポーネント", () => {
       <TwoColumn>
         <div>左</div>
         <div>右</div>
-      </TwoColumn>
+      </TwoColumn>,
     );
     const wrapper = container.querySelector(".flex");
     const columns = wrapper?.querySelectorAll(":scope > div");
@@ -32,7 +32,7 @@ describe("TwoColumn コンポーネント", () => {
       <TwoColumn grow="left">
         <div>左</div>
         <div>右</div>
-      </TwoColumn>
+      </TwoColumn>,
     );
     const wrapper = container.querySelector(".flex");
     const columns = wrapper?.querySelectorAll(":scope > div");
@@ -45,7 +45,7 @@ describe("TwoColumn コンポーネント", () => {
       <TwoColumn grow="right">
         <div>左</div>
         <div>右</div>
-      </TwoColumn>
+      </TwoColumn>,
     );
     const wrapper = container.querySelector(".flex");
     const columns = wrapper?.querySelectorAll(":scope > div");
@@ -61,7 +61,7 @@ describe("TwoColumn コンポーネント", () => {
           <p>説明</p>
         </div>
         <button>ボタン</button>
-      </TwoColumn>
+      </TwoColumn>,
     );
     expect(screen.getByText("タイトル")).toBeInTheDocument();
     expect(screen.getByText("説明")).toBeInTheDocument();

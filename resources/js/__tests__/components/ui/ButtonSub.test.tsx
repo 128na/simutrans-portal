@@ -7,7 +7,7 @@ describe("ButtonSub コンポーネント", () => {
   it("基本的なレンダリング", () => {
     render(<ButtonSub>サブボタン</ButtonSub>);
     expect(
-      screen.getByRole("button", { name: "サブボタン" })
+      screen.getByRole("button", { name: "サブボタン" }),
     ).toBeInTheDocument();
   });
 

@@ -23,7 +23,7 @@ describe("Modal コンポーネント", () => {
     render(
       <Modal title="テスト" onClose={onClose}>
         内容
-      </Modal>
+      </Modal>,
     );
     const closeButton = screen.getByRole("button");
     await user.click(closeButton);
@@ -36,7 +36,7 @@ describe("Modal コンポーネント", () => {
     render(
       <Modal title="テスト" onClose={onClose}>
         内容
-      </Modal>
+      </Modal>,
     );
     const backdrop = screen.getByRole("dialog");
     await user.click(backdrop);
@@ -49,7 +49,7 @@ describe("Modal コンポーネント", () => {
     render(
       <Modal title="テスト" onClose={onClose}>
         内容
-      </Modal>
+      </Modal>,
     );
     const content = screen.getByText("内容");
     await user.click(content);
@@ -60,7 +60,7 @@ describe("Modal コンポーネント", () => {
     const { container } = render(
       <Modal title="テスト" modalClass="custom-modal-class">
         内容
-      </Modal>
+      </Modal>,
     );
     const modalDiv = container.querySelector(".custom-modal-class");
     expect(modalDiv).toBeInTheDocument();
@@ -72,7 +72,7 @@ describe("Modal コンポーネント", () => {
     render(
       <Modal title="テスト" onClose={onClose}>
         {() => <button onClick={onClose}>カスタム閉じる</button>}
-      </Modal>
+      </Modal>,
     );
     const customCloseButton = screen.getByRole("button", {
       name: "カスタム閉じる",

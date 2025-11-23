@@ -37,10 +37,10 @@ describe("articleUtil", () => {
 
     it("日付文字列の比較ができる", () => {
       expect(
-        compareArticleValues("2024-01-01 00:00:00", "2024-12-31 00:00:00")
+        compareArticleValues("2024-01-01 00:00:00", "2024-12-31 00:00:00"),
       ).toBeLessThan(0);
       expect(
-        compareArticleValues("2024-12-31 00:00:00", "2024-01-01 00:00:00")
+        compareArticleValues("2024-12-31 00:00:00", "2024-01-01 00:00:00"),
       ).toBeGreaterThan(0);
     });
 

@@ -196,32 +196,40 @@ describe("articleUtil", () => {
 
   describe("createContents", () => {
     it("page タイプのコンテンツを作成できる", () => {
-      const content = createContents("page");
+      const content = createContents("page") as ArticleContent.Page & {
+        type: string;
+      };
       expect(content.type).toBe("page");
       expect(content.thumbnail).toBeNull();
-      expect((content as ArticleContent.Page).sections).toEqual([]);
+      expect(content.sections).toEqual([]);
     });
 
     it("addon-post タイプのコンテンツを作成できる", () => {
-      const content = createContents("addon-post");
+      const content = createContents("addon-post") as ArticleContent.AddonPost & {
+        type: string;
+      };
       expect(content.type).toBe("addon-post");
       expect(content.thumbnail).toBeNull();
-      expect((content as ArticleContent.AddonPost).description).toBeNull();
-      expect((content as ArticleContent.AddonPost).file).toBeNull();
+      expect(content.description).toBeNull();
+      expect(content.file).toBeNull();
     });
 
     it("addon-introduction タイプのコンテンツを作成できる", () => {
-      const content = createContents("addon-introduction");
+      const content = createContents(
+        "addon-introduction"
+      ) as ArticleContent.AddonIntroduction & { type: string };
       expect(content.type).toBe("addon-introduction");
       expect(content.thumbnail).toBeNull();
-      expect((content as ArticleContent.AddonIntroduction).link).toBeNull();
+      expect(content.link).toBeNull();
     });
 
     it("markdown タイプのコンテンツを作成できる", () => {
-      const content = createContents("markdown");
+      const content = createContents("markdown") as ArticleContent.Markdown & {
+        type: string;
+      };
       expect(content.type).toBe("markdown");
       expect(content.thumbnail).toBeNull();
-      expect((content as ArticleContent.Markdown).markdown).toBeNull();
+      expect(content.markdown).toBeNull();
     });
   });
 });

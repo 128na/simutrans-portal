@@ -36,6 +36,8 @@ jobs:
       - uses: ./.github/actions/nodejs
 
       - name: Run Vitest
+        env:
+          LARAVEL_BYPASS_ENV_CHECK: 1
         run: npm test -- --run
 
       - name: Upload Coverage

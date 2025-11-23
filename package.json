@@ -4,6 +4,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --fix",
     "check": "npm run typecheck && npm run lint",
@@ -11,18 +14,25 @@
   },
   "devDependencies": {
     "@laravel/vite-plugin-wayfinder": "^0.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/markdown-it": "^14",
     "@types/node": "^24",
     "@types/sanitize-html": "^2",
+    "@vitest/coverage-v8": "^4.0.13",
+    "@vitest/ui": "^4.0.13",
     "babel-plugin-react-compiler": "^1",
     "eslint": "^9",
     "eslint-config-prettier": "^10",
     "eslint-plugin-react": "^7",
     "eslint-plugin-react-hooks": "^7",
+    "jsdom": "^27.2.0",
     "prettier": "^3",
     "prettier-plugin-organize-imports": "^4",
     "prettier-plugin-tailwindcss": "^0",
-    "typescript-eslint": "^8"
+    "typescript-eslint": "^8",
+    "vitest": "^4.0.13"
   },
   "dependencies": {
     "@eslint/js": "^9",

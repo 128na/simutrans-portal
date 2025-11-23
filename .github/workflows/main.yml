@@ -9,6 +9,48 @@ on:
   pull_request:
     branches: [master, develop]
 jobs:
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/php
+      - uses: ./.github/actions/nodejs
+
+      # ビルド時に生成される resources/js/lang/ja.json がキャッシュされないので再実行が必要
+      - name: Run Build
+        run: npm run build
+
+      - name: Run TypeScript Check
+        run: npm run typecheck
+
+      - name: Run ESLint
+        run: npm run lint
+
+  vitest:
+    needs: [lint]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/php
+      - uses: ./.github/actions/nodejs
+
+      - name: Run Vitest
+        env:
+          LARAVEL_BYPASS_ENV_CHECK: 1
+        run: npm test -- --run
+
+      - name: Upload Coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vitest-coverage
+          path: coverage
+
   stan:
     runs-on: ubuntu-latest
     steps:
@@ -22,7 +64,6 @@ jobs:
 
       - name: Run PHP Stan
         run: composer run stan
-
   test:
     needs: [stan]
     runs-on: ubuntu-latest
@@ -58,10 +99,8 @@ jobs:
   deploy:
     # tag push -> テスト通過後デプロイ
     needs:
-      - stan
+      - vitest
       - test
-      # - dusk
-      # - cy
     if: ${{ success() && startsWith( github.ref, 'refs/tags/' ) }}
     runs-on: ubuntu-latest
     steps:

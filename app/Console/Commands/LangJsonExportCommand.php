@@ -40,7 +40,7 @@ final class LangJsonExportCommand extends Command
                 $translations[$filename] = require $file;
             }
 
-            $jsonPath = resource_path(sprintf('js/lang/%s.json', $locale));
+            $jsonPath = resource_path(sprintf('js/utils/%s.json', $locale));
             if (! is_dir(dirname($jsonPath))) {
                 mkdir(dirname($jsonPath), 0755, true);
             }

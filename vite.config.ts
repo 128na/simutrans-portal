@@ -22,6 +22,21 @@ export default defineConfig({
   esbuild: {
     jsx: "automatic",
   },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./resources/js/__tests__/setup.ts",
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json", "html"],
+      include: ["resources/js/**/*.{ts,tsx}"],
+      exclude: [
+        "resources/js/__tests__/**",
+        "resources/js/**/*.d.ts",
+        "resources/js/vite-env.d.ts",
+      ],
+    },
+  },
 });
 
 function LaravelLangWatcher() {
@@ -29,7 +44,7 @@ function LaravelLangWatcher() {
     name: "laravel-lang-watcher",
     buildStart() {
       // Check if language files already exist to avoid unnecessary PHP execution
-      if (fs.existsSync("resources/js/lang/ja.json")) {
+      if (fs.existsSync("resources/js/utils/ja.json")) {
         return;
       }
       executeLangExport();

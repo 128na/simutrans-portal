@@ -1,7 +1,7 @@
 import "@tailwindplus/elements";
-import "./apps/AppFrontUserSearch";
-import "./apps/AppFrontTagSearch";
-import "./apps/AppFrontArticleShow";
-import "./apps/AppFrontArticleList";
-import "./js-apps/discord";
-import "./js-apps/onesignal";
+import "./front/pages/UserSearchPage";
+import "./front/pages/TagSearchPage";
+import "./front/pages/ArticleShowPage";
+import "./front/pages/ArticleListPage";
+import "./lib/discord";
+import "./lib/onesignal";

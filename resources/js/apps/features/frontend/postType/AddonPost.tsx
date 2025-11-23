@@ -20,8 +20,6 @@ export const AddonPost = ({ article, preview }: Props) => {
   const dats = fileInfo?.data?.dats;
   const tabs = fileInfo?.data?.tabs;
 
-  console.log(dats, tabs);
-
   return (
     <div>
       <TextPre>{contents.description || "(本文)"}</TextPre>

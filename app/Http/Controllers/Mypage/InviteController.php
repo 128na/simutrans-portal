@@ -21,7 +21,7 @@ final class InviteController extends Controller
     {
         $user = Auth::user();
 
-        return view('v2.mypage.invite', [
+        return view('mypage.invite', [
             'user' => $user->loadMissing('invites'),
             'meta' => $this->metaOgpService->mypageInvite(),
         ]);

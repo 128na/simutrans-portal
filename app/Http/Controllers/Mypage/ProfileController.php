@@ -24,7 +24,7 @@ final class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        return view('v2.mypage.profile', [
+        return view('mypage.profile', [
             'user' => new ProfileEdit($user->load('profile')),
             'attachments' => AttachmentEdit::collection($user->myAttachments()->with('fileInfo')->get()),
             'meta' => $this->metaOgpService->mypageProfile(),

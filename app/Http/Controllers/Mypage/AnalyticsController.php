@@ -24,7 +24,7 @@ final class AnalyticsController extends Controller
     {
         $user = Auth::user();
 
-        return view('v2.mypage.analytics', [
+        return view('mypage.analytics', [
             'articles' => $this->articleRepository->getForAnalyticsList($user),
             'meta' => $this->metaOgpService->mypageAnalytics(),
         ]);

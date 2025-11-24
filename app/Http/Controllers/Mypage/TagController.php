@@ -23,7 +23,7 @@ final class TagController extends Controller
 
     public function index(): View
     {
-        return view('v2.mypage.tags', [
+        return view('mypage.tags', [
             'tags' => TagEdit::collection($this->tagRepository->getForEdit()),
             'meta' => $this->metaOgpService->mypageTags(),
         ]);

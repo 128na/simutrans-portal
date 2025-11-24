@@ -22,7 +22,7 @@ final class CategoryController extends Controller
 
     public function categories(): View
     {
-        return view('v2.categories.index', [
+        return view('pages.categories.index', [
             'pakAddonCategories' => $this->categoryRepository->getForPakAddonList(),
             'meta' => $this->metaOgpService->frontPakAddonList(),
         ]);
@@ -33,7 +33,7 @@ final class CategoryController extends Controller
         $category = $this->categoryRepository->getByTypeSlug(CategoryType::Pak, $pakSlug);
         $addon = $this->categoryRepository->getByTypeSlug(CategoryType::Addon, $addonSlug);
 
-        return view('v2.categories.show', [
+        return view('pages.categories.show', [
             'pak' => $category,
             'addon' => $addon,
             'articles' => ArticleList::collection($this->articleRepository->getForPakAddon($category->id, $addon->id)),

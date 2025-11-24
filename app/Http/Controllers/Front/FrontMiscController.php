@@ -22,7 +22,7 @@ final class FrontMiscController extends Controller
 
     public function social(): View
     {
-        return view('v2.social.index', [
+        return view('pages.social.index', [
             'meta' => $this->metaOgpService->frontSocial(),
         ]);
     }

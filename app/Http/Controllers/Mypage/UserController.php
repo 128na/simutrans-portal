@@ -20,7 +20,7 @@ final class UserController extends Controller
 
     public function showInvite(User $user): \Illuminate\Contracts\View\View
     {
-        return view('v2.user.invite', [
+        return view('auth.invite', [
             'invitee' => $user,
             'meta' => $this->metaOgpService->mypageRegistration(),
         ]);
@@ -31,7 +31,7 @@ final class UserController extends Controller
         $data = $storeRequest->validated();
         $inviter = $registration($data, $user);
 
-        return view('v2.user.welcome', [
+        return view('auth.welcome', [
             'inviter' => $inviter,
             'meta' => $this->metaOgpService->mypageLogin(),
         ]);
@@ -43,28 +43,28 @@ final class UserController extends Controller
             return to_route('mypage.index');
         }
 
-        return view('v2.user.login', [
+        return view('auth.login', [
             'meta' => $this->metaOgpService->mypageLogin(),
         ]);
     }
 
     public function showTwoFactor(): \Illuminate\Contracts\View\View|RedirectResponse
     {
-        return view('v2.user.two-factor', [
+        return view('auth.two-factor', [
             'meta' => $this->metaOgpService->mypageLogin(),
         ]);
     }
 
     public function showForgotPassword(): \Illuminate\Contracts\View\View|RedirectResponse
     {
-        return view('v2.user.forget-password', [
+        return view('auth.forget-password', [
             'meta' => $this->metaOgpService->mypageLogin(),
         ]);
     }
 
     public function showResetPassword(string $token): \Illuminate\Contracts\View\View|RedirectResponse
     {
-        return view('v2.user.reset-password', [
+        return view('auth.reset-password', [
             'token' => $token,
             'meta' => $this->metaOgpService->mypageResetPassword(),
         ]);

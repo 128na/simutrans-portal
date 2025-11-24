@@ -32,6 +32,14 @@
 
 - `routes/` — `web.php`, `api.php`, `internal_api.php` にルーティング定義。コントローラの境界がわかる。
 - `app/` — Laravel のアプリコード（`Models`, `Repositories`, `Services`, `Http/Controllers`）。ビジネスロジックは `Repositories` / `Services` に分離されることが多い。
+- `app/Http/Controllers/` — コントローラーは機能別に整理されている：
+    - `Auth/` — 認証関連（LoginController, RegisterController, TwoFactorController, PasswordController）
+    - `Pages/` — 公開ページ（TopController, UserController, TagController, CategoryController, SocialController, DiscordController）
+        - `Pages/Article/` — 記事関連（IndexController, ShowController, DownloadController, PakController）
+    - `Mypage/` — マイページ（DashboardController, ProfileController, AnalyticsController, AttachmentController, TagController, RedirectController, InviteController）
+        - `Mypage/Article/` — 記事管理（IndexController, CreateController, EditController）
+    - `Admin/` — 管理画面（OauthController）
+    - `RedirectController` — 旧URL→新URLリダイレクト・固定リダイレクト
 - `resources/js/` — フロントエンドソース。エントリ: `resources/js/front.ts`, `resources/js/mypage.ts`。
 - `resources/js/apps/` — React アプリ本体。構成パターン:
     - UI コンポーネント: `components/ui/*`
@@ -39,6 +47,9 @@
     - 機能別フォルダ: `features/*`（例: `features/articles`, `features/tags`）
     - グローバル状態: `apps/state/*`（Zustand を使用、例: `useAnalyticsStore.ts`）
     - 型定義: `apps/types/*` — API 変更や props 変更時に更新が必要。
+- `resources/views/` — Blade テンプレート（詳細は README.md 参照）
+    - `layouts/` — レイアウト、`components/` — UIコンポーネント
+    - `pages/` — ページテンプレート、`auth/` — 認証画面、`mypage/` — マイページ
 - `public/`, `public/build` — コンパイル済みアセット。手動編集しないこと。
 
 ## フロントエンド特有の注意点
@@ -100,6 +111,7 @@
 ## 迷ったら最初に見る場所
 
 - フロントエンドの UI バグ: `resources/js/apps/components` と `resources/js/apps/features` を確認。
+- コントローラーの場所: `Auth/`, `Pages/`, `Mypage/`, `Admin/` ディレクトリで機能別に分類されている。
 - API の契約不一致: `routes/api.php` と該当コントローラ (`app/Http/Controllers`) を確認。
 - CI や静的解析エラー: ローカルで `composer run stan` と `composer run pint` を実行して再現する。
 

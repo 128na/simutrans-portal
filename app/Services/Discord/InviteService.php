@@ -30,7 +30,6 @@ final class InviteService
             throw new CreateInviteFailedException($response->body());
         }
 
-        /** @var array{code: mixed} $body After validation, we know 'code' key exists */
         return sprintf('%s/%s', Config::string('services.discord.domain'), $body['code']);
     }
 }

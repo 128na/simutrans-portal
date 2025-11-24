@@ -22,7 +22,7 @@ final class InviteService
             );
 
         /**
-         * @var array{code:int}
+         * @var array<string, mixed>
          */
         $body = $response->json();
 

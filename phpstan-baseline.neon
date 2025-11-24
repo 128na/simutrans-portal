@@ -1,50 +1,290 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Method App\\Actions\\FrontArticle\\SearchAction\:\:__invoke\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
+			message: '#^Parameter \#1 \$user of class Illuminate\\Auth\\Events\\PasswordReset constructor expects Illuminate\\Contracts\\Auth\\Authenticatable, App\\Models\\User given\.$#'
+			identifier: argument.type
 			count: 1
-			path: app/Actions/FrontArticle/SearchAction.php
+			path: app/Actions/Fortify/ResetUserPassword.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\Article\:\:\$categoryPaks\.$#'
-			identifier: property.notFound
+			message: '#^Call to an undefined method App\\Models\\User\:\:notify\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/MFA/RecoveryIncompleteUsers.php
+
+		-
+			message: '#^Call to method pluck\(\) on an unknown class App\\Models\\Collection\.$#'
+			identifier: class.notFound
 			count: 1
 			path: app/Actions/SendSNS/Article/GetArticleParam.php
 
 		-
-			message: '#^Using nullsafe property access "\?\-\>nickname" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
 			count: 1
-			path: app/Actions/SendSNS/Article/ToOneSignal.php
+			path: app/Actions/SendSNS/Article/GetArticleParam.php
 
 		-
-			message: '#^Parameter \#1 \$state of callable App\\Actions\\Oauth\\CallbackAction expects string, Illuminate\\Support\\Stringable given\.$#'
+			message: '#^Call to an undefined method App\\Models\\User\:\:notify\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Actions/User/Registration.php
+
+		-
+			message: '#^Parameter \#1 \$user of class Illuminate\\Auth\\Events\\Registered constructor expects Illuminate\\Contracts\\Auth\\Authenticatable, App\\Models\\User given\.$#'
 			identifier: argument.type
 			count: 1
-			path: app/Http/Controllers/Admin/OauthController.php
+			path: app/Actions/User/Registration.php
 
 		-
-			message: '#^Parameter \#2 \$code of callable App\\Actions\\Oauth\\CallbackAction expects string, Illuminate\\Support\\Stringable given\.$#'
-			identifier: argument.type
+			message: '#^Call to an undefined method App\\Models\\User\:\:cannot\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Http/Controllers/Mypage/Article/CreateController.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:myAttachments\(\)\.$#'
+			identifier: method.notFound
 			count: 1
-			path: app/Http/Controllers/Admin/OauthController.php
+			path: app/Http/Controllers/Mypage/Article/CreateController.php
 
 		-
-			message: '#^Call to function assert\(\) with true will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
+			message: '#^Call to an undefined method App\\Models\\User\:\:cannot\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Http/Controllers/Mypage/Article/EditController.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:myAttachments\(\)\.$#'
+			identifier: method.notFound
 			count: 1
-			path: app/Http/Controllers/Controller.php
+			path: app/Http/Controllers/Mypage/Article/EditController.php
 
 		-
-			message: '#^Instanceof between App\\Models\\User and App\\Models\\User will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
+			message: '#^Call to an undefined method App\\Models\\User\:\:articles\(\)\.$#'
+			identifier: method.notFound
 			count: 1
-			path: app/Http/Controllers/Controller.php
+			path: app/Http/Controllers/Mypage/Article/IndexController.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\Article\:\:\$hasFile\.$#'
-			identifier: property.notFound
+			message: '#^Call to an undefined method App\\Models\\User\:\:cannot\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Http/Controllers/Mypage/AttachmentController.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:myAttachments\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Mypage/AttachmentController.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:myAttachments\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Mypage/ProfileController.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:cannot\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Mypage/RedirectController.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:cannot\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Mypage/TagController.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:isAdmin\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Middleware/AdminCheck.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:isAdmin\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Middleware/RedirectIfAuthenticated.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\ControllOption\:\:restrictArticleUpdate\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Middleware/RestrictControl.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\ControllOption\:\:restrictInvitationCode\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Middleware/RestrictControl.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\ControllOption\:\:restrictLogin\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Middleware/RestrictControl.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\ControllOption\:\:restrictRegister\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Middleware/RestrictControl.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\ControllOption\:\:restrictTagUpdate\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Middleware/RestrictControl.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Attachment\\FileInfo\:\:getDats\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/Frontend/ArticleShow.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Attachment\\FileInfo\:\:getTabs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/Frontend/ArticleShow.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Article\:\:getInfoLogging\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Listeners/Article/OnArticleStored.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Article\:\:notify\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Listeners/Article/OnArticleStored.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Article\:\:getInfoLogging\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Listeners/Article/OnArticleUpdated.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Article\:\:notify\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Listeners/Article/OnArticleUpdated.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Article\:\:notify\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Listeners/Article/OnCloseByDeadLinkDetected.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Tag\:\:getInfoLogging\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Listeners/Tag/OnTagDescriptionUpdated.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:getInfoLogging\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Listeners/Tag/OnTagDescriptionUpdated.php
+
+		-
+			message: '#^Instanceof between Illuminate\\Contracts\\Auth\\Authenticatable and App\\Models\\User will always evaluate to false\.$#'
+			identifier: instanceof.alwaysFalse
+			count: 1
+			path: app/Listeners/User/OnLogin.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: app/Listeners/User/OnLogin.php
+
+		-
+			message: '#^Instanceof between Illuminate\\Contracts\\Auth\\Authenticatable and App\\Models\\User will always evaluate to false\.$#'
+			identifier: instanceof.alwaysFalse
+			count: 1
+			path: app/Listeners/User/OnPasswordReset.php
+
+		-
+			message: '#^Instanceof between Illuminate\\Contracts\\Auth\\Authenticatable and App\\Models\\User will always evaluate to false\.$#'
+			identifier: instanceof.alwaysFalse
+			count: 1
+			path: app/Listeners/User/OnRecoveryCodeReplaced.php
+
+		-
+			message: '#^Instanceof between Illuminate\\Contracts\\Auth\\Authenticatable and App\\Models\\User will always evaluate to false\.$#'
+			identifier: instanceof.alwaysFalse
+			count: 1
+			path: app/Listeners/User/OnRegistered.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:getInfoLogging\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Listeners/User/OnTwoFactorAuthenticationDisabled.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:getInfoLogging\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Listeners/User/OnTwoFactorAuthenticationEnabled.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:getInfoLogging\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Listeners/User/OnTwoFactorAuthenticationIncomplete.php
+
+		-
+			message: '#^Access to undefined constant App\\Models\\Article\\ConversionCount\:\:TYPE_DAILY\.$#'
+			identifier: classConstant.notFound
+			count: 2
+			path: app/Models/Article.php
+
+		-
+			message: '#^Access to undefined constant App\\Models\\Article\\ConversionCount\:\:TYPE_MONTHLY\.$#'
+			identifier: classConstant.notFound
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Access to undefined constant App\\Models\\Article\\ConversionCount\:\:TYPE_TOTAL\.$#'
+			identifier: classConstant.notFound
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Access to undefined constant App\\Models\\Article\\ConversionCount\:\:TYPE_YEARLY\.$#'
+			identifier: classConstant.notFound
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Access to undefined constant App\\Models\\Article\\ViewCount\:\:TYPE_DAILY\.$#'
+			identifier: classConstant.notFound
+			count: 2
+			path: app/Models/Article.php
+
+		-
+			message: '#^Access to undefined constant App\\Models\\Article\\ViewCount\:\:TYPE_MONTHLY\.$#'
+			identifier: classConstant.notFound
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Access to undefined constant App\\Models\\Article\\ViewCount\:\:TYPE_TOTAL\.$#'
+			identifier: classConstant.notFound
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Access to undefined constant App\\Models\\Article\\ViewCount\:\:TYPE_YEARLY\.$#'
+			identifier: classConstant.notFound
 			count: 1
 			path: app/Models/Article.php
 
@@ -61,235 +301,325 @@ parameters:
 			path: app/Models/Article.php
 
 		-
-			message: '#^Method App\\Models\\Article\:\:categoryAddons\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
+			message: '#^Call to function in_array\(\) with string and array\{App\\Enums\\ArticleStatus\:\:Draft, App\\Enums\\ArticleStatus\:\:Private, App\\Enums\\ArticleStatus\:\:Trash\} will always evaluate to false\.$#'
+			identifier: function.impossibleType
 			count: 1
 			path: app/Models/Article.php
 
 		-
-			message: '#^Method App\\Models\\Article\:\:categoryPak128Positions\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
+			message: '#^Cannot access property \$thumbnail on string\.$#'
+			identifier: property.nonObject
+			count: 2
 			path: app/Models/Article.php
 
 		-
-			message: '#^Method App\\Models\\Article\:\:categoryPaks\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Method App\\Models\\Article\:\:file\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Method App\\Models\\Article\:\:hasFile\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Method App\\Models\\Article\:\:hasFileInfo\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Method App\\Models\\Article\:\:hasThumbnail\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Method App\\Models\\Article\:\:headlineDescription\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Method App\\Models\\Article\:\:isAddonPost\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Method App\\Models\\Article\:\:isInactive\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Method App\\Models\\Article\:\:isPage\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Method App\\Models\\Article\:\:isPublish\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Method App\\Models\\Article\:\:isReservation\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Method App\\Models\\Article\:\:metaDescription\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Method App\\Models\\Article\:\:thumbnail\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Method App\\Models\\Article\:\:thumbnailUrl\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Method App\\Models\\Article\:\:todaysConversionRate\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Method App\\Models\\Article\:\:urlDecodedSlug\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^PHPDoc tag @return with type Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Category\> is incompatible with native type Illuminate\\Database\\Eloquent\\Casts\\Attribute\.$#'
-			identifier: return.phpDocType
+			message: '#^Cannot call method getDescription\(\) on string\.$#'
+			identifier: method.nonObject
 			count: 3
 			path: app/Models/Article.php
 
 		-
-			message: '#^Method App\\Models\\Attachment\:\:deleteFileHandler\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
+			message: '#^Cannot call method toMutable\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Instanceof between string and App\\Models\\Contents\\AddonPostContent will always evaluate to false\.$#'
+			identifier: instanceof.alwaysFalse
+			count: 2
+			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\Article\:\:getInfoLogging\(\) should return array\{articleId\: int, articleTitle\: string, articleStatus\: App\\Enums\\ArticleStatus, articleUserName\: string\} but returns array\{articleId\: int, articleTitle\: string, articleStatus\: string, articleUserName\: string\}\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperArticle\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Relation ''categories'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Models/Article.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 2
+			path: app/Models/Article.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\ArticlePostType\:\:AddonPost will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\ArticlePostType\:\:Page will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\ArticleStatus\:\:Publish will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\ArticleStatus\:\:Reservation will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\Article\\IdeHelperArticleSearchIndex\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/Article/ArticleSearchIndex.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\Article\\IdeHelperConversionCount\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/Article/ConversionCount.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\Article\\IdeHelperViewCount\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/Article/ViewCount.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperAttachment\.$#'
+			identifier: class.notFound
 			count: 1
 			path: app/Models/Attachment.php
 
 		-
-			message: '#^Method App\\Models\\Attachment\:\:extension\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
+			message: '#^Offset ''dats'' on string on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
 			count: 1
-			path: app/Models/Attachment.php
+			path: app/Models/Attachment/FileInfo.php
 
 		-
-			message: '#^Method App\\Models\\Attachment\:\:fileContents\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
+			message: '#^Offset ''tabs'' on string on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
 			count: 1
-			path: app/Models/Attachment.php
+			path: app/Models/Attachment/FileInfo.php
 
 		-
-			message: '#^Method App\\Models\\Attachment\:\:fullPath\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
+			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\Attachment\\IdeHelperFileInfo\.$#'
+			identifier: class.notFound
 			count: 1
-			path: app/Models/Attachment.php
+			path: app/Models/Attachment/FileInfo.php
 
 		-
-			message: '#^Method App\\Models\\Attachment\:\:isImage\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
+			message: '#^Call to an undefined method App\\Models\\User\:\:isAdmin\(\)\.$#'
+			identifier: method.notFound
 			count: 1
-			path: app/Models/Attachment.php
+			path: app/Models/Category.php
 
 		-
-			message: '#^Method App\\Models\\Attachment\:\:isPng\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/Attachment.php
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Category\>\:\:type\(\)\.$#'
+			identifier: method.notFound
+			count: 5
+			path: app/Models/Category.php
 
 		-
-			message: '#^Method App\\Models\\Attachment\:\:pathExists\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
+			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperCategory\.$#'
+			identifier: class.notFound
 			count: 1
-			path: app/Models/Attachment.php
+			path: app/Models/Category.php
 
 		-
-			message: '#^Method App\\Models\\Attachment\:\:thumbnail\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
+			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperControllOption\.$#'
+			identifier: class.notFound
 			count: 1
-			path: app/Models/Attachment.php
+			path: app/Models/ControllOption.php
 
 		-
-			message: '#^Method App\\Models\\Attachment\:\:type\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
+			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperOauthToken\.$#'
+			identifier: class.notFound
 			count: 1
-			path: app/Models/Attachment.php
+			path: app/Models/OauthToken.php
 
 		-
-			message: '#^Method App\\Models\\Attachment\:\:url\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
+			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperRedirect\.$#'
+			identifier: class.notFound
 			count: 1
-			path: app/Models/Attachment.php
+			path: app/Models/Redirect.php
 
 		-
-			message: '#^Method App\\Models\\User\\Profile\:\:avatar\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
+			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperTag\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/Tag.php
+
+		-
+			message: '#^Access to undefined constant App\\Models\\Article\\ViewCount\:\:TYPE_MONTHLY\.$#'
+			identifier: classConstant.notFound
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperUser\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Relation ''invites'' is not found in App\\Models\\User model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\UserRole\:\:Admin will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\User\\IdeHelperLoginHistory\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/User/LoginHistory.php
+
+		-
+			message: '#^Cannot access property \$avatar on string\.$#'
+			identifier: property.nonObject
 			count: 1
 			path: app/Models/User/Profile.php
 
 		-
-			message: '#^Method App\\Models\\User\\Profile\:\:avatarUrl\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
+			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\User\\IdeHelperProfile\.$#'
+			identifier: class.notFound
 			count: 1
 			path: app/Models/User/Profile.php
 
 		-
-			message: '#^Method App\\Models\\User\\Profile\:\:hasAvatar\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/User/Profile.php
+			message: '#^Call to an undefined method App\\Models\\User\:\:isAdmin\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Policies/TagPolicy.php
 
 		-
-			message: '#^PHPDoc type array\<string\> of property App\\Models\\User\\Profile\:\:\$attributes is not covariant with PHPDoc type array\<string, mixed\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$attributes\.$#'
-			identifier: property.phpDocType
+			message: '#^Call to an undefined method App\\Models\\Article\:\:articles\(\)\.$#'
+			identifier: method.notFound
 			count: 1
-			path: app/Models/User/Profile.php
+			path: app/Repositories/ArticleRepository.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\Article\:\:\$hasThumbnail\.$#'
-			identifier: property.notFound
+			message: '#^Call to an undefined method App\\Models\\Article\:\:attachments\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Article\:\:categories\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Article\:\:tags\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Attachment\:\:attachmentable\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:myAttachments\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Article\>\:\:select\(\) invoked with 2 parameters, 0\-1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Article\>\:\:select\(\) invoked with 6 parameters, 0\-1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Relation ''categories'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
+			count: 8
+			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Relation ''conversionCounts'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Relation ''viewCounts'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:myAttachments\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Repositories/AttachmentRepository.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\\Profile\:\:attachments\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Repositories/AttachmentRepository.php
+
+		-
+			message: '#^Method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Tag\>\:\:select\(\) invoked with 2 parameters, 0\-1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: app/Repositories/TagRepository.php
+
+		-
+			message: '#^Relation ''createdBy'' is not found in App\\Models\\Tag model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/TagRepository.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\User\:\:isAdmin\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Rules/UniqueSlugByUser.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
 			count: 1
 			path: app/Services/BlueSky/BlueSkyApiClient.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\Attachment\:\:\$fullPath\.$#'
-			identifier: property.notFound
+			message: '#^Call to an undefined method App\\Models\\OauthToken\:\:isExpired\(\)\.$#'
+			identifier: method.notFound
 			count: 1
-			path: app/Services/BlueSky/BlueSkyApiClient.php
-
-		-
-			message: '#^Call to function assert\(\) with true will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: app/Services/BlueSky/BlueSkyApiClient.php
-
-		-
-			message: '#^Instanceof between App\\Models\\User and App\\Models\\User will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: app/Services/BlueSky/BlueSkyApiClient.php
-
-		-
-			message: '#^Call to function array_key_exists\(\) with ''code'' and array\{code\: int\} will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: app/Services/Discord/InviteService.php
-
-		-
-			message: '#^PHPDoc tag @var with type Generator\<string, string, mixed, mixed\> is not subtype of native type Closure\(\)\: Generator\<string, string, mixed, void\>\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: app/Services/FileInfo/ZipArchiveParser.php
+			path: app/Services/Twitter/TwitterV2Api.php

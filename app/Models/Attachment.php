@@ -15,6 +15,8 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 
 /**
+ * @property-read string $fullPath
+ *
  * @mixin IdeHelperAttachment
  */
 final class Attachment extends Model
@@ -37,7 +39,7 @@ final class Attachment extends Model
         'path',
     ];
 
-    public function deleteFileHandler(): ?bool
+    public function deleteFileHandler(): bool
     {
         return $this->getPublicDisk()->delete($this->path);
     }
@@ -76,16 +78,25 @@ final class Attachment extends Model
         return Storage::disk('public');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     */
     protected function pathExists(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->exists($this->path));
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     */
     protected function isImage(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->type === 'image');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     */
     protected function type(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {
@@ -106,6 +117,9 @@ final class Attachment extends Model
         });
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     */
     protected function isPng(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): bool {
@@ -115,6 +129,9 @@ final class Attachment extends Model
         });
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     */
     protected function thumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => match ($this->type) {
@@ -125,21 +142,33 @@ final class Attachment extends Model
         });
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     */
     protected function url(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->url($this->path));
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     */
     protected function fullPath(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->path($this->path));
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string|null, never>
+     */
     protected function fileContents(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->get($this->path));
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     */
     protected function extension(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {

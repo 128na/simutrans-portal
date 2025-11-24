@@ -6,7 +6,6 @@ namespace App\Services\BlueSky;
 
 use App\Models\Article;
 use App\Models\Attachment;
-use App\Models\User;
 use App\Services\Front\MetaOgpService;
 use potibm\Bluesky\BlueskyApi;
 use potibm\Bluesky\BlueskyPostService;
@@ -38,11 +37,13 @@ final readonly class BlueSkyApiClient
      */
     public function addWebsiteCard(Post $post, Article $article): Post
     {
-        assert($article->user instanceof User);
+        if (! $article->user) {
+            throw new \RuntimeException('Article user is required');
+        }
+
         $ogp = $this->metaOgpService->frontArticleShow($article->user, $article);
         $thumbnail = null;
-        if ($article->hasThumbnail) {
-            assert($article->thumbnail instanceof Attachment);
+        if ($article->hasThumbnail && $article->thumbnail instanceof Attachment) {
             $thumbnail = ($this->resizeByFileSize)($article->thumbnail->fullPath, 10 ** 6);
         }
 

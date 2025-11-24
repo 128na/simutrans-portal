@@ -19,6 +19,10 @@ final class InviteService
             throw new CreateInviteFailedException('Discord is not configured');
         }
 
+        // hasDiscord() がtrueなので、これらは確実にnullではない
+        assert($this->config->discordToken !== null);
+        assert($this->config->discordChannel !== null);
+
         $response = Http::withHeaders(['Authorization' => 'Bot '.$this->config->discordToken])
             ->post(
                 'https://discord.com/api/v10/channels/'.$this->config->discordChannel.'/invites',

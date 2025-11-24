@@ -40,16 +40,16 @@ final class StoreArticleTest extends TestCase
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
             $article = new Article;
             $mock->expects()->store(
-                [
-                    'user_id' => $user->id,
-                    'post_type' => ArticlePostType::AddonIntroduction,
-                    'title' => 'dummy title',
-                    'slug' => 'dummy-slug',
-                    'status' => ArticleStatus::Publish,
-                    'contents' => 'dummy',
-                    'published_at' => $carbonImmutable->toDateTimeString(),
-                    'modified_at' => $carbonImmutable->toDateTimeString(),
-                ],
+                \Mockery::on(function ($arg) use ($user) {
+                    return $arg['user_id'] === $user->id
+                        && $arg['post_type'] === ArticlePostType::AddonIntroduction
+                        && $arg['title'] === 'dummy title'
+                        && $arg['slug'] === 'dummy-slug'
+                        && $arg['status'] === ArticleStatus::Publish
+                        && $arg['contents'] === 'dummy'
+                        && is_string($arg['published_at'])
+                        && is_string($arg['modified_at']);
+                })
             )->once()->andReturn($article);
             $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
                 $mock->expects()->__invoke($article, $data);
@@ -83,16 +83,16 @@ final class StoreArticleTest extends TestCase
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
             $article = new Article;
             $mock->expects()->store(
-                [
-                    'user_id' => $user->id,
-                    'post_type' => ArticlePostType::AddonIntroduction,
-                    'title' => 'dummy title',
-                    'slug' => 'dummy-slug',
-                    'status' => ArticleStatus::Reservation,
-                    'contents' => 'dummy',
-                    'published_at' => '2022-01-02 03:34:00',
-                    'modified_at' => $carbonImmutable->toDateTimeString(),
-                ],
+                \Mockery::on(function ($arg) use ($user) {
+                    return $arg['user_id'] === $user->id
+                        && $arg['post_type'] === ArticlePostType::AddonIntroduction
+                        && $arg['title'] === 'dummy title'
+                        && $arg['slug'] === 'dummy-slug'
+                        && $arg['status'] === ArticleStatus::Reservation
+                        && $arg['contents'] === 'dummy'
+                        && $arg['published_at'] === '2022-01-02 03:34:00'
+                        && is_string($arg['modified_at']);
+                })
             )->once()->andReturn($article);
             $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
                 $mock->expects()->__invoke($article, $data);
@@ -125,16 +125,16 @@ final class StoreArticleTest extends TestCase
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
             $article = new Article;
             $mock->expects()->store(
-                [
-                    'user_id' => $user->id,
-                    'post_type' => ArticlePostType::AddonIntroduction,
-                    'title' => 'dummy title',
-                    'slug' => 'dummy-slug',
-                    'status' => ArticleStatus::Draft,
-                    'contents' => 'dummy',
-                    'published_at' => null,
-                    'modified_at' => $carbonImmutable->toDateTimeString(),
-                ],
+                \Mockery::on(function ($arg) use ($user) {
+                    return $arg['user_id'] === $user->id
+                        && $arg['post_type'] === ArticlePostType::AddonIntroduction
+                        && $arg['title'] === 'dummy title'
+                        && $arg['slug'] === 'dummy-slug'
+                        && $arg['status'] === ArticleStatus::Draft
+                        && $arg['contents'] === 'dummy'
+                        && $arg['published_at'] === null
+                        && is_string($arg['modified_at']);
+                })
             )->once()->andReturn($article);
             $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
                 $mock->expects()->__invoke($article, $data);

@@ -34,7 +34,12 @@ export type {
 } from "./Article";
 
 // User
-export type { UserRole, UserShow, UserMypageEdit, UserMypageShow } from "./User";
+export type {
+  UserRole,
+  UserShow,
+  UserMypageEdit,
+  UserMypageShow,
+} from "./User";
 
 // Profile
 export type { ProfileShow, ProfileEdit } from "./Profile";

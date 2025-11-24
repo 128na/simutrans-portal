@@ -1,13 +1,13 @@
 /**
  * グローバル型定義
  * Global type definitions
- * 
+ *
  * 後方互換性のため、既存のnamespace形式を維持しつつ、
  * 新しい構造化された型定義も利用可能にしています。
- * 
+ *
  * For backward compatibility, we maintain existing namespace format
  * while also making new structured type definitions available.
- * 
+ *
  * 新しいコードでは以下のようにインポートして使用してください:
  * For new code, import types like this:
  * import type { ArticleList, UserShow } from '@/types/models';
@@ -158,4 +158,3 @@ declare global {
   type SectionCaption = _SectionCaption;
   type SectionUrl = _SectionUrl;
 }
-

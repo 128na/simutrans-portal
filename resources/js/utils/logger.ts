@@ -3,7 +3,9 @@
  * 開発環境ではコンソールに出力し、本番環境では何もしない
  */
 
-const isDevelopment = import.meta.env.DEV;
+import { env } from '@/lib/env';
+
+const isDevelopment = env.isDevelopment;
 
 export const logger = {
   /**

@@ -12,6 +12,7 @@ import {
 } from "./utils/articleUtil";
 import { format } from "date-fns";
 import Button from "@/components/ui/Button";
+import { env } from "@/lib/env";
 
 type Props = {
   articles: Article.MypageShow[];
@@ -67,7 +68,7 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
     );
   };
 
-  const createUrl = `${import.meta.env.VITE_APP_URL}/mypage/articles/create`;
+  const createUrl = `${env.appUrl}/mypage/articles/create`;
 
   return (
     <>

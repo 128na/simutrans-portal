@@ -11,12 +11,12 @@ use OpenApi\Attributes as OA;
  *     schema="Error",
  *     title="エラー",
  *     description="エラーレスポンス",
- *     @OA\Property(property="message", type="string", example="エラーが発生しました", description="エラーメッセージ"),
+ *     @OA\Property(property="message", type="string", example="An error occurred", description="エラーメッセージ"),
  *     @OA\Property(
  *         property="errors",
  *         type="object",
  *         description="バリデーションエラー詳細",
- *         example={"field": {"フィールドは必須です"}}
+ *         example={"field": {"The field is required"}}
  *     )
  * )
  */

@@ -60,7 +60,7 @@ jobs:
         run: npm install -g @stoplight/spectral-cli
       
       - name: Validate OpenAPI specification
-        run: spectral lint storage/api-docs/api-docs.json --ruleset https://raw.githubusercontent.com/stoplightio/spectral/develop/src/rulesets/oas/index.ts
+        run: spectral lint storage/api-docs/api-docs.json --ruleset spectral:oas
         continue-on-error: true
       
       - name: Upload OpenAPI documentation artifact

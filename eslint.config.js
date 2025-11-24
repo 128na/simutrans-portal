@@ -23,7 +23,9 @@ export default [
       'react/prop-types': 'off',
       'react/no-unescaped-entities': 'off',
       'react-hooks/exhaustive-deps': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn'
+      '@typescript-eslint/no-unused-vars': 'warn',
+      // console.log/debug を禁止（将来の混入を防ぐ）
+      'no-console': 'error',
     },
     settings: {
       react: {
@@ -32,7 +34,14 @@ export default [
     },
   },
   {
-    ignores: ['vendor', 'node_modules', 'public', 'bootstrap/ssr', 'tailwind.config.js'],
+    // logger.ts では console の使用を許可
+    files: ['**/utils/logger.ts'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
+  {
+    ignores: ['vendor', 'node_modules', 'public', 'bootstrap/ssr', 'tailwind.config.js', 'vite.config.ts'],
   },
   prettier, // Turn off all rules that might conflict with Prettier
 ];

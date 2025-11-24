@@ -5,8 +5,9 @@ document.querySelectorAll(".js-clipboard").forEach((el) =>
       const el = ev.target as HTMLElement;
       await navigator.clipboard.writeText(el.dataset.text ?? "");
       alert("クリップボードにコピーしました");
-    } catch (error) {
-      console.error(error);
+    } catch {
+      // クリップボードへのコピーに失敗
+      alert("クリップボードへのコピーに失敗しました");
     }
   })
 );

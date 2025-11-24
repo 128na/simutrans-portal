@@ -6,8 +6,8 @@ document.querySelectorAll("form.js-confirm").forEach((el) =>
       if (window.confirm(form.dataset.text ?? "実行しますか？")) {
         form.submit();
       }
-    } catch (error) {
-      console.error(error);
+    } catch {
+      // フォーム送信のエラーは無視（通常発生しない）
     }
   })
 );

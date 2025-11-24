@@ -33,7 +33,6 @@ export const AddonPost = () => {
   const attachments = useArticleEditor((s) => s.attachments);
 
   const file = attachments.find((a) => a.id === contents.file);
-  console.log(file);
 
   const { getError } = useAxiosError();
 

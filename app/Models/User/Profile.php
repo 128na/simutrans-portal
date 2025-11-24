@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Storage;
  */
 final class Profile extends Model
 {
-    /** @var array<string> */
+    /** @var array<string, mixed> */
     protected $attributes = [
         'data' => '{}',
     ];
@@ -56,6 +56,9 @@ final class Profile extends Model
         return Storage::disk('public');
     }
 
+    /**
+     * @return Attribute<Attachment|null, never>
+     */
     protected function avatar(): Attribute
     {
         return Attribute::make(get: function () {
@@ -68,11 +71,17 @@ final class Profile extends Model
         });
     }
 
+    /**
+     * @return Attribute<bool, never>
+     */
     protected function hasAvatar(): Attribute
     {
         return Attribute::make(get: fn (): bool => (bool) $this->avatar);
     }
 
+    /**
+     * @return Attribute<string, never>
+     */
     protected function avatarUrl(): Attribute
     {
         return Attribute::make(get: fn (): string => $this->getPublicDisk()->url($this->has_avatar && $this->avatar

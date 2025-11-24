@@ -36,6 +36,12 @@ use Spatie\Feed\FeedItem;
 /**
  * @property-read int|null $past_view_count
  * @property-read int|null $past_conversion_count
+ * @property-read bool $hasFile
+ * @property-read Collection<int, Category> $categoryPaks
+ * @property-read bool $hasThumbnail
+ *
+ * @method static Builder<Article> page()
+ * @method static Builder<Article> pak(string $slug)
  *
  * @mixin IdeHelperArticle
  */
@@ -455,26 +461,41 @@ final class Article extends Model implements Feedable
         });
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     */
     protected function isAddonPost(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->post_type === ArticlePostType::AddonPost);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     */
     protected function isPage(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->post_type === ArticlePostType::Page);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     */
     protected function isPublish(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->status === ArticleStatus::Publish);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     */
     protected function isReservation(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->status === ArticleStatus::Reservation);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     */
     protected function isInactive(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => in_array($this->status, [
@@ -484,11 +505,17 @@ final class Article extends Model implements Feedable
         ]));
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     */
     protected function hasThumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => ! is_null($this->contents->thumbnail) && $this->thumbnail);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<Attachment|null, never>
+     */
     protected function thumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
@@ -498,6 +525,9 @@ final class Article extends Model implements Feedable
         });
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     */
     protected function thumbnailUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->url($this->has_thumbnail && $this->thumbnail
@@ -505,6 +535,9 @@ final class Article extends Model implements Feedable
             : DefaultThumbnail::NO_THUMBNAIL));
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     */
     protected function hasFile(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->is_addon_post
@@ -512,6 +545,9 @@ final class Article extends Model implements Feedable
             && ! is_null($this->contents->file) && $this->file);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<Attachment|null, never>
+     */
     protected function file(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
@@ -525,13 +561,16 @@ final class Article extends Model implements Feedable
         });
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     */
     protected function hasFileInfo(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->hasFile && $this->file && $this->file->fileInfo);
     }
 
     /**
-     * @return Collection<int, Category>
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<Collection<int, Category>, never>
      */
     protected function categoryPaks(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
@@ -539,7 +578,7 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return Collection<int, Category>
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<Collection<int, Category>, never>
      */
     protected function categoryAddons(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
@@ -547,13 +586,16 @@ final class Article extends Model implements Feedable
     }
 
     /**
-     * @return Collection<int, Category>
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<Collection<int, Category>, never>
      */
     protected function categoryPak128Positions(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak128Position));
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     */
     protected function todaysConversionRate(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {
@@ -567,16 +609,25 @@ final class Article extends Model implements Feedable
         });
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     */
     protected function metaDescription(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): string => mb_strimwidth((string) $this->contents->getDescription(), 0, 300, '…'));
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     */
     protected function headlineDescription(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): string => mb_strimwidth((string) $this->contents->getDescription(), 0, 55, '…'));
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     */
     protected function urlDecodedSlug(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): string => urldecode((string) $this->slug));

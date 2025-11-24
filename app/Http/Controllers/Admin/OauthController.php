@@ -30,7 +30,7 @@ final class OauthController extends Controller
     {
         $stringable = $request->string('state');
         $code = $request->string('code');
-        $callbackAction($stringable, $code);
+        $callbackAction($stringable->toString(), $code->toString());
 
         return to_route('admin.index');
     }

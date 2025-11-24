@@ -35,9 +35,7 @@ abstract class Controller extends BaseController
     protected function loggedinUser(): User
     {
         $user = Auth::user();
-        if ($user) {
-            assert($user instanceof User);
-
+        if ($user instanceof User) {
             return $user;
         }
 

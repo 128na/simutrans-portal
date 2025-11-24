@@ -22,6 +22,7 @@ final readonly class SearchAction
 
     /**
      * @param  mixed[]  $condition
+     * @return array{condition: mixed[], options: array{categories: mixed, tags: mixed, users: mixed, postTypes: array<ArticlePostType>}, articles: mixed}
      */
     public function __invoke(array $condition): array
     {

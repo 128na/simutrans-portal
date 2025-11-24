@@ -22,7 +22,7 @@ final readonly class ZipArchiveParser
      */
     public function parseTextContent(Attachment $attachment): LazyCollection
     {
-        /** @var Generator<string, string> */
+        /** @var \Closure(): Generator<string, string, mixed, void> */
         $fn = function () use ($attachment): Generator {
             try {
                 $this->zipArchive->open($attachment->full_path);

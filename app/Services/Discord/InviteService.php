@@ -7,28 +7,28 @@ namespace App\Services\Discord;
 use App\Config\EnvironmentConfig;
 use Illuminate\Support\Facades\Http;
 
-final class InviteService
+final readonly class InviteService
 {
     public function __construct(
-        private readonly EnvironmentConfig $config
+        private EnvironmentConfig $environmentConfig
     ) {}
 
     public function create(): string
     {
-        if (! $this->config->hasDiscord()) {
+        if (! $this->environmentConfig->hasDiscord()) {
             throw new CreateInviteFailedException('Discord is not configured');
         }
 
         // hasDiscord() がtrueなので、これらは確実にnullではない
-        assert($this->config->discordToken !== null);
-        assert($this->config->discordChannel !== null);
+        assert($this->environmentConfig->discordToken !== null);
+        assert($this->environmentConfig->discordChannel !== null);
 
-        $response = Http::withHeaders(['Authorization' => 'Bot '.$this->config->discordToken])
+        $response = Http::withHeaders(['Authorization' => 'Bot '.$this->environmentConfig->discordToken])
             ->post(
-                'https://discord.com/api/v10/channels/'.$this->config->discordChannel.'/invites',
+                'https://discord.com/api/v10/channels/'.$this->environmentConfig->discordChannel.'/invites',
                 [
-                    'max_age' => $this->config->discordMaxAge,
-                    'max_uses' => $this->config->discordMaxUses,
+                    'max_age' => $this->environmentConfig->discordMaxAge,
+                    'max_uses' => $this->environmentConfig->discordMaxUses,
                     'unique' => true,
                 ]
             );
@@ -42,6 +42,6 @@ final class InviteService
             throw new CreateInviteFailedException($response->body());
         }
 
-        return sprintf('%s/%s', $this->config->discordDomain, $body['code']);
+        return sprintf('%s/%s', $this->environmentConfig->discordDomain, $body['code']);
     }
 }

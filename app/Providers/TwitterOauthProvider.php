@@ -10,7 +10,6 @@ use App\Services\Twitter\TwitterV2Api;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Support\DeferrableProvider;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 
 final class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
@@ -43,11 +42,11 @@ final class TwitterOauthProvider extends ServiceProvider implements DeferrablePr
         ));
 
         $this->app->bind(function (): \App\Services\Twitter\TwitterV2Api {
-            $config = $this->app->make(\App\Config\EnvironmentConfig::class);
+            $environmentConfig = $this->app->make(\App\Config\EnvironmentConfig::class);
             $twitterV2Api = new TwitterV2Api(
-                $config->twitterConsumerKey ?? '',
-                $config->twitterConsumerSecret ?? '',
-                $config->twitterBearerToken ?? '',
+                $environmentConfig->twitterConsumerKey ?? '',
+                $environmentConfig->twitterConsumerSecret ?? '',
+                $environmentConfig->twitterBearerToken ?? '',
                 $this->app->make(OauthTokenRepository::class),
                 $this->app->make(PKCEService::class),
             );

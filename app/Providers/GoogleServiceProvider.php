@@ -8,7 +8,6 @@ use App\Services\Google\Recaptcha\RecaptchaService;
 use Google\Cloud\RecaptchaEnterprise\V1\Client\RecaptchaEnterpriseServiceClient;
 use Google\Cloud\RecaptchaEnterprise\V1\Event;
 use Illuminate\Contracts\Support\DeferrableProvider;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 
 final class GoogleServiceProvider extends ServiceProvider implements DeferrableProvider
@@ -32,13 +31,13 @@ final class GoogleServiceProvider extends ServiceProvider implements DeferrableP
     public function register(): void
     {
         $this->app->bind(function (): \App\Services\Google\Recaptcha\RecaptchaService {
-            $config = $this->app->make(\App\Config\EnvironmentConfig::class);
+            $environmentConfig = $this->app->make(\App\Config\EnvironmentConfig::class);
             $credentials = json_decode(
-                @file_get_contents(base_path($config->googleRecaptchaCredential ?? '')) ?: '{}',
+                @file_get_contents(base_path($environmentConfig->googleRecaptchaCredential ?? '')) ?: '{}',
                 true
             );
             $recaptchaEnterpriseServiceClient = new RecaptchaEnterpriseServiceClient(['credentials' => $credentials]);
-            $projectName = $recaptchaEnterpriseServiceClient->projectName($config->googleRecaptchaProjectName ?? '');
+            $projectName = $recaptchaEnterpriseServiceClient->projectName($environmentConfig->googleRecaptchaProjectName ?? '');
 
             return new RecaptchaService(
                 $recaptchaEnterpriseServiceClient,
@@ -48,9 +47,9 @@ final class GoogleServiceProvider extends ServiceProvider implements DeferrableP
         });
 
         $this->app->bind(function (): \Google\Cloud\RecaptchaEnterprise\V1\Event {
-            $config = $this->app->make(\App\Config\EnvironmentConfig::class);
+            $environmentConfig = $this->app->make(\App\Config\EnvironmentConfig::class);
             $event = new Event;
-            $event->setSiteKey($config->googleRecaptchaSiteKey ?? '');
+            $event->setSiteKey($environmentConfig->googleRecaptchaSiteKey ?? '');
 
             return $event;
         });

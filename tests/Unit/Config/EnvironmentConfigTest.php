@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 final class EnvironmentConfigTest extends TestCase
 {
-    public function test_fromEnv_creates_instance_with_correct_values(): void
+    public function test_from_env_creates_instance_with_correct_values(): void
     {
         Config::set('app.name', 'Test App');
         Config::set('app.env', 'testing');
@@ -26,7 +26,7 @@ final class EnvironmentConfigTest extends TestCase
         $this->assertSame('http://test.local', $config->appUrl);
     }
 
-    public function test_hasTwitter_returns_true_when_all_credentials_set(): void
+    public function test_has_twitter_returns_true_when_all_credentials_set(): void
     {
         Config::set('services.twitter.bearer_token', 'test-bearer');
         Config::set('services.twitter.client_id', 'test-client-id');
@@ -39,7 +39,7 @@ final class EnvironmentConfigTest extends TestCase
         $this->assertTrue($config->hasTwitter());
     }
 
-    public function test_hasTwitter_returns_false_when_credentials_missing(): void
+    public function test_has_twitter_returns_false_when_credentials_missing(): void
     {
         Config::set('services.twitter.bearer_token', null);
         Config::set('services.twitter.client_id', null);
@@ -52,7 +52,7 @@ final class EnvironmentConfigTest extends TestCase
         $this->assertFalse($config->hasTwitter());
     }
 
-    public function test_hasDiscord_returns_true_when_credentials_set(): void
+    public function test_has_discord_returns_true_when_credentials_set(): void
     {
         Config::set('services.discord.token', 'test-token');
         Config::set('services.discord.channel', 'test-channel');
@@ -62,7 +62,7 @@ final class EnvironmentConfigTest extends TestCase
         $this->assertTrue($config->hasDiscord());
     }
 
-    public function test_hasDiscord_returns_false_when_credentials_missing(): void
+    public function test_has_discord_returns_false_when_credentials_missing(): void
     {
         Config::set('services.discord.token', null);
         Config::set('services.discord.channel', null);
@@ -72,7 +72,7 @@ final class EnvironmentConfigTest extends TestCase
         $this->assertFalse($config->hasDiscord());
     }
 
-    public function test_hasGoogleRecaptcha_returns_true_when_credentials_set(): void
+    public function test_has_google_recaptcha_returns_true_when_credentials_set(): void
     {
         Config::set('services.google_recaptcha.projectName', 'test-project');
         Config::set('services.google_recaptcha.siteKey', 'test-site-key');
@@ -83,7 +83,7 @@ final class EnvironmentConfigTest extends TestCase
         $this->assertTrue($config->hasGoogleRecaptcha());
     }
 
-    public function test_hasOneSignal_returns_true_when_credentials_set(): void
+    public function test_has_one_signal_returns_true_when_credentials_set(): void
     {
         Config::set('onesignal.app_id', 'test-app-id');
         Config::set('onesignal.rest_api_key', 'test-api-key');
@@ -93,7 +93,7 @@ final class EnvironmentConfigTest extends TestCase
         $this->assertTrue($config->hasOneSignal());
     }
 
-    public function test_hasDropbox_returns_true_when_token_set(): void
+    public function test_has_dropbox_returns_true_when_token_set(): void
     {
         Config::set('filesystems.disks.dropbox.authorization_token', 'test-token');
 
@@ -102,7 +102,7 @@ final class EnvironmentConfigTest extends TestCase
         $this->assertTrue($config->hasDropbox());
     }
 
-    public function test_hasMisskey_returns_true_when_token_set(): void
+    public function test_has_misskey_returns_true_when_token_set(): void
     {
         Config::set('services.misskey.token', 'test-token');
 
@@ -111,7 +111,7 @@ final class EnvironmentConfigTest extends TestCase
         $this->assertTrue($config->hasMisskey());
     }
 
-    public function test_hasBlueSky_returns_true_when_credentials_set(): void
+    public function test_has_blue_sky_returns_true_when_credentials_set(): void
     {
         Config::set('services.bluesky.user', 'test-user');
         Config::set('services.bluesky.password', 'test-password');
@@ -121,7 +121,7 @@ final class EnvironmentConfigTest extends TestCase
         $this->assertTrue($config->hasBlueSky());
     }
 
-    public function test_hasGoogleAnalytics_returns_true_when_gtag_set(): void
+    public function test_has_google_analytics_returns_true_when_gtag_set(): void
     {
         Config::set('app.gtag', 'G-XXXXXXXXXX');
 
@@ -130,7 +130,7 @@ final class EnvironmentConfigTest extends TestCase
         $this->assertTrue($config->hasGoogleAnalytics());
     }
 
-    public function test_hasSlackLogging_returns_true_when_webhook_url_set(): void
+    public function test_has_slack_logging_returns_true_when_webhook_url_set(): void
     {
         Config::set('logging.channels.slack.url', 'https://hooks.slack.com/test');
 

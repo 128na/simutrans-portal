@@ -23478,6 +23478,23 @@ namespace Berkayk\OneSignal {
             }
     }
 
+namespace L5Swagger {
+    /**
+     */
+    class L5SwaggerFacade {
+        /**
+         * @throws L5SwaggerException
+         * @static
+         */
+        public static function generateDocs()
+        {
+            /** @var \L5Swagger\Generator $instance */
+            return $instance->generateDocs();
+        }
+
+            }
+    }
+
 namespace Spatie\LaravelIgnition\Facades {
     /**
      * @see \Spatie\FlareClient\Flare
@@ -28882,6 +28899,7 @@ namespace  {
     class HtmlMin extends \Abordage\LaravelHtmlMin\Facades\HtmlMin {}
     class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
     class OneSignal extends \Berkayk\OneSignal\OneSignalFacade {}
+    class L5Swagger extends \L5Swagger\L5SwaggerFacade {}
     class Flare extends \Spatie\LaravelIgnition\Facades\Flare {}
     class Signal extends \Spatie\SignalAwareCommand\Facades\Signal {}
 }

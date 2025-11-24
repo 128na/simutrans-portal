@@ -96,14 +96,21 @@ final class CreateController extends Controller
      *         response=400,
      *         description="バリデーションエラー",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/Error")
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="message", type="string", example="Validation error"),
+     *             @OA\Property(property="errors", type="object")
+     *         )
      *     ),
      *
      *     @OA\Response(
      *         response=403,
      *         description="権限エラー",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/Error")
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="message", type="string", example="Forbidden")
+     *         )
      *     )
      * )
      */
@@ -119,7 +126,7 @@ final class CreateController extends Controller
          */
         $data = $storeRequest->validated();
 
-        $article = DB::transaction(fn (): Article => $storeArticle($user, $data));
+        $article = DB::transaction(fn(): Article => $storeArticle($user, $data));
 
         return response()->json(['article_id' => $article->id], 200);
     }

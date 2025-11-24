@@ -106,21 +106,31 @@ final class EditController extends Controller
      *         response=400,
      *         description="バリデーションエラー",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/Error")
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="message", type="string", example="Validation error"),
+     *             @OA\Property(property="errors", type="object")
+     *         )
      *     ),
      *
      *     @OA\Response(
      *         response=403,
      *         description="権限エラー",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/Error")
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="message", type="string", example="Forbidden")
+     *         )
      *     ),
      *
      *     @OA\Response(
      *         response=404,
-     *         description="記事が見つかりません",
+     *         description="記事が見つからない",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/Error")
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="message", type="string", example="Not found")
+     *         )
      *     )
      * )
      */
@@ -136,7 +146,7 @@ final class EditController extends Controller
          */
         $data = $updateRequest->validated();
 
-        $article = DB::transaction(fn (): Article => $updateArticle($article, $data));
+        $article = DB::transaction(fn(): Article => $updateArticle($article, $data));
 
         return response()->json(['article_id' => $article->id], 200);
     }

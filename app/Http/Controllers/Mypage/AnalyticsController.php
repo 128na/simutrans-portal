@@ -35,7 +35,7 @@ final class AnalyticsController extends Controller
      * アナリティクスデータを取得
      *
      * @OA\Post(
-     *     path="/v2/analytics",
+     *     path="/internal-api/mypage/analytics/search",
      *     summary="アナリティクスの取得",
      *     description="記事のアナリティクスデータを取得します",
      *     tags={"Analytics"},
@@ -46,7 +46,8 @@ final class AnalyticsController extends Controller
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="article_ids", type="array", description="記事ID配列", @OA\Items(type="integer")),
+     *             @OA\Property(property="ids", type="array", description="記事ID配列", @OA\Items(type="integer")),
+     *             @OA\Property(property="type", type="string", enum={"daily", "monthly", "yearly"}, example="daily", description="集計タイプ"),
      *             @OA\Property(property="start_date", type="string", format="date", example="2024-01-01", description="開始日"),
      *             @OA\Property(property="end_date", type="string", format="date", example="2024-12-31", description="終了日")
      *         )
@@ -57,15 +58,14 @@ final class AnalyticsController extends Controller
      *         description="取得成功",
      *
      *         @OA\JsonContent(
-     *             type="array",
+     *             type="object",
      *
-     *             @OA\Items(
-     *
+     *             @OA\Property(property="data", type="array", @OA\Items(
      *                 @OA\Property(property="article_id", type="integer", example=1),
      *                 @OA\Property(property="title", type="string", example="記事タイトル"),
      *                 @OA\Property(property="views", type="integer", example=100),
      *                 @OA\Property(property="downloads", type="integer", example=50)
-     *             )
+     *             ))
      *         )
      *     ),
      *
@@ -73,14 +73,21 @@ final class AnalyticsController extends Controller
      *         response=400,
      *         description="バリデーションエラー",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/Error")
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="message", type="string", example="Validation error"),
+     *             @OA\Property(property="errors", type="object")
+     *         )
      *     ),
      *
      *     @OA\Response(
      *         response=403,
      *         description="権限エラー",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/Error")
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="message", type="string", example="Forbidden")
+     *         )
      *     )
      * )
      */

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Rector\CodeQuality\Rector\Isset_\IssetOnPropertyObjectToPropertyExistsRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Assign\RemoveUnusedVariableAssignRector;
+use Rector\Transform\Rector\String_\StringToClassConstantRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector;
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 use RectorLaravel\Set\LaravelLevelSetList;
@@ -42,6 +43,7 @@ return RectorConfig::configure()
         RemoveUnusedVariableAssignRector::class => [__DIR__.'/tests'], // $selfでのアクセスが壊れるので
         // NewlineAfterStatementRector::class => [__DIR__ . '/tests'], // $selfでのアクセスが壊れるので
         DeclareStrictTypesRector::class => [__DIR__.'/resources/views'], // bladeファイルも declare がつくので
+        StringToClassConstantRector::class, // view('auth.login') が誤って変換されるため
     ])
     ->withSets([
         LaravelLevelSetList::UP_TO_LARAVEL_120,
@@ -50,7 +52,7 @@ return RectorConfig::configure()
         LaravelSetList::LARAVEL_ARRAY_STR_FUNCTION_TO_STATIC_CALL,
         LaravelSetList::LARAVEL_CODE_QUALITY,
         LaravelSetList::LARAVEL_COLLECTION,
-        // LaravelSetList::LARAVEL_CONTAINER_STRING_TO_FULLY_QUALIFIED_NAME, // view('auth.login') が誤って変換されるため無効化
+        LaravelSetList::LARAVEL_CONTAINER_STRING_TO_FULLY_QUALIFIED_NAME,
         LaravelSetList::LARAVEL_FACADE_ALIASES_TO_FULL_NAMES,
         LaravelSetList::LARAVEL_LEGACY_FACTORIES_TO_CLASSES,
 

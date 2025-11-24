@@ -19,7 +19,7 @@ export const ProfileShow = ({ user, attachments, preview }: Props) => {
       />
       <div className="text-sm">
         <p className="font-semibold text-gray-900 break-all">
-          <a href={`/users/${user.nickname ?? user.id}`}>
+          <a href={preview ? "#" : `/users/${user.nickname ?? user.id}`}>
             {user.name ?? "(名前がありません)"}
           </a>
         </p>

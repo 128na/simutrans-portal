@@ -84,7 +84,7 @@ final readonly class EnvironmentConfig
             appEnv: Config::string('app.env'),
             appDebug: Config::boolean('app.debug'),
             appUrl: Config::string('app.url'),
-            assetUrl: Config::string('app.asset_url'),
+            assetUrl: Config::string('app.asset_url', ''),
 
             // データベース設定
             dbHost: Config::string('database.connections.mysql.host', '127.0.0.1'),
@@ -94,7 +94,7 @@ final readonly class EnvironmentConfig
             dbPassword: Config::string('database.connections.mysql.password', ''),
 
             // ログ設定
-            logSlackWebhookUrl: Config::string('logging.channels.slack.url'),
+            logSlackWebhookUrl: Config::string('logging.channels.slack.url', ''),
 
             // メール設定
             mailMailer: Config::string('mail.default', 'smtp'),
@@ -102,39 +102,39 @@ final readonly class EnvironmentConfig
             mailPort: Config::integer('mail.mailers.smtp.port', 1025),
 
             // Twitter設定
-            twitterBearerToken: Config::string('services.twitter.bearer_token'),
-            twitterClientId: Config::string('services.twitter.client_id'),
-            twitterClientSecret: Config::string('services.twitter.client_secret'),
-            twitterConsumerKey: Config::string('services.twitter.consumer_key'),
-            twitterConsumerSecret: Config::string('services.twitter.consumer_secret'),
+            twitterBearerToken: Config::string('services.twitter.bearer_token', ''),
+            twitterClientId: Config::string('services.twitter.client_id', ''),
+            twitterClientSecret: Config::string('services.twitter.client_secret', ''),
+            twitterConsumerKey: Config::string('services.twitter.consumer_key', ''),
+            twitterConsumerSecret: Config::string('services.twitter.consumer_secret', ''),
 
             // Discord設定
-            discordToken: Config::string('services.discord.token'),
-            discordChannel: Config::string('services.discord.channel'),
+            discordToken: Config::string('services.discord.token', ''),
+            discordChannel: Config::string('services.discord.channel', ''),
             discordDomain: Config::string('services.discord.domain', 'https://discord.gg'),
             discordMaxAge: Config::integer('services.discord.max_age', 300),
             discordMaxUses: Config::integer('services.discord.max_uses', 1),
 
             // Google設定
-            googleRecaptchaProjectName: Config::string('services.google_recaptcha.projectName'),
-            googleRecaptchaSiteKey: Config::string('services.google_recaptcha.siteKey'),
-            googleRecaptchaCredential: Config::string('services.google_recaptcha.credential'),
-            gtag: Config::string('app.gtag'),
+            googleRecaptchaProjectName: Config::string('services.google_recaptcha.projectName', ''),
+            googleRecaptchaSiteKey: Config::string('services.google_recaptcha.siteKey', ''),
+            googleRecaptchaCredential: Config::string('services.google_recaptcha.credential', ''),
+            gtag: Config::string('app.gtag', ''),
 
             // OneSignal設定
-            onesignalAppId: Config::string('onesignal.app_id'),
-            onesignalRestApiKey: Config::string('onesignal.rest_api_key'),
+            onesignalAppId: Config::string('onesignal.app_id', ''),
+            onesignalRestApiKey: Config::string('onesignal.rest_api_key', ''),
 
             // Dropbox設定
-            dropboxAuthorizationToken: Config::string('filesystems.disks.dropbox.authorization_token'),
+            dropboxAuthorizationToken: Config::string('filesystems.disks.dropbox.authorization_token', ''),
 
             // Misskey設定
             misskeyBaseUrl: Config::string('services.misskey.base_url', 'https://misskey.io/api'),
-            misskeyToken: Config::string('services.misskey.token'),
+            misskeyToken: Config::string('services.misskey.token', ''),
 
             // BlueSky設定
-            blueskyUser: Config::string('services.bluesky.user'),
-            blueskyPassword: Config::string('services.bluesky.password'),
+            blueskyUser: Config::string('services.bluesky.user', ''),
+            blueskyPassword: Config::string('services.bluesky.password', ''),
         );
     }
 
@@ -143,11 +143,11 @@ final readonly class EnvironmentConfig
      */
     public function hasTwitter(): bool
     {
-        return $this->twitterBearerToken !== null
-            && $this->twitterClientId !== null
-            && $this->twitterClientSecret !== null
-            && $this->twitterConsumerKey !== null
-            && $this->twitterConsumerSecret !== null;
+        return $this->twitterBearerToken !== null && $this->twitterBearerToken !== ''
+            && $this->twitterClientId !== null && $this->twitterClientId !== ''
+            && $this->twitterClientSecret !== null && $this->twitterClientSecret !== ''
+            && $this->twitterConsumerKey !== null && $this->twitterConsumerKey !== ''
+            && $this->twitterConsumerSecret !== null && $this->twitterConsumerSecret !== '';
     }
 
     /**
@@ -155,7 +155,8 @@ final readonly class EnvironmentConfig
      */
     public function hasDiscord(): bool
     {
-        return $this->discordToken !== null && $this->discordChannel !== null;
+        return $this->discordToken !== null && $this->discordToken !== ''
+            && $this->discordChannel !== null && $this->discordChannel !== '';
     }
 
     /**
@@ -163,9 +164,9 @@ final readonly class EnvironmentConfig
      */
     public function hasGoogleRecaptcha(): bool
     {
-        return $this->googleRecaptchaProjectName !== null
-            && $this->googleRecaptchaSiteKey !== null
-            && $this->googleRecaptchaCredential !== null;
+        return $this->googleRecaptchaProjectName !== null && $this->googleRecaptchaProjectName !== ''
+            && $this->googleRecaptchaSiteKey !== null && $this->googleRecaptchaSiteKey !== ''
+            && $this->googleRecaptchaCredential !== null && $this->googleRecaptchaCredential !== '';
     }
 
     /**
@@ -173,7 +174,8 @@ final readonly class EnvironmentConfig
      */
     public function hasOneSignal(): bool
     {
-        return $this->onesignalAppId !== null && $this->onesignalRestApiKey !== null;
+        return $this->onesignalAppId !== null && $this->onesignalAppId !== ''
+            && $this->onesignalRestApiKey !== null && $this->onesignalRestApiKey !== '';
     }
 
     /**
@@ -181,7 +183,7 @@ final readonly class EnvironmentConfig
      */
     public function hasDropbox(): bool
     {
-        return $this->dropboxAuthorizationToken !== null;
+        return $this->dropboxAuthorizationToken !== null && $this->dropboxAuthorizationToken !== '';
     }
 
     /**
@@ -189,7 +191,7 @@ final readonly class EnvironmentConfig
      */
     public function hasMisskey(): bool
     {
-        return $this->misskeyToken !== null;
+        return $this->misskeyToken !== null && $this->misskeyToken !== '';
     }
 
     /**
@@ -197,7 +199,8 @@ final readonly class EnvironmentConfig
      */
     public function hasBlueSky(): bool
     {
-        return $this->blueskyUser !== null && $this->blueskyPassword !== null;
+        return $this->blueskyUser !== null && $this->blueskyUser !== ''
+            && $this->blueskyPassword !== null && $this->blueskyPassword !== '';
     }
 
     /**
@@ -205,7 +208,7 @@ final readonly class EnvironmentConfig
      */
     public function hasGoogleAnalytics(): bool
     {
-        return $this->gtag !== null;
+        return $this->gtag !== null && $this->gtag !== '';
     }
 
     /**
@@ -213,6 +216,6 @@ final readonly class EnvironmentConfig
      */
     public function hasSlackLogging(): bool
     {
-        return $this->logSlackWebhookUrl !== null;
+        return $this->logSlackWebhookUrl !== null && $this->logSlackWebhookUrl !== '';
     }
 }

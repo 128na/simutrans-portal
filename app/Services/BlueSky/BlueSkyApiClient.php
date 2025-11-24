@@ -6,7 +6,6 @@ namespace App\Services\BlueSky;
 
 use App\Models\Article;
 use App\Models\Attachment;
-use App\Models\User;
 use App\Services\Front\MetaOgpService;
 use potibm\Bluesky\BlueskyApi;
 use potibm\Bluesky\BlueskyPostService;
@@ -38,7 +37,7 @@ final readonly class BlueSkyApiClient
      */
     public function addWebsiteCard(Post $post, Article $article): Post
     {
-        if (! $article->user instanceof User) {
+        if (! $article->user) {
             throw new \RuntimeException('Article user is required');
         }
 

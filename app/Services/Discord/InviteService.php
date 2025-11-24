@@ -26,7 +26,7 @@ final class InviteService
          */
         $body = $response->json();
 
-        if ($response->status() !== 200 || ! is_array($body) || ! array_key_exists('code', $body)) {
+        if ($response->status() !== 200 || ! array_key_exists('code', $body)) {
             throw new CreateInviteFailedException($response->body());
         }
 

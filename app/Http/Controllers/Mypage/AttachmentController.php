@@ -24,7 +24,7 @@ final class AttachmentController extends Controller
     {
         $user = Auth::user();
 
-        return view('v2.mypage.attachments', [
+        return view('mypage.attachments', [
             'attachments' => AttachmentEdit::collection($user->myAttachments()->with('fileInfo', 'attachmentable')->get()),
             'meta' => $this->metaOgpService->mypageAttachments(),
         ]);

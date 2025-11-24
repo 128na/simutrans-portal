@@ -24,7 +24,7 @@ final class MypageController extends Controller
     {
         $user = Auth::user();
 
-        return view('v2.mypage.index', [
+        return view('mypage.index', [
             'user' => $user,
             'summary' => $this->userRepository->getSummary($user),
             'meta' => $this->metaOgpService->mypage(),
@@ -33,7 +33,7 @@ final class MypageController extends Controller
 
     public function verifyEmail(): View
     {
-        return view('v2.mypage.verify-email', [
+        return view('mypage.verify-email', [
             'meta' => $this->metaOgpService->mypageVerifyEmail(),
         ]);
     }
@@ -48,7 +48,7 @@ final class MypageController extends Controller
     {
         $user = Auth::user();
 
-        return view('v2.mypage.two-factor', [
+        return view('mypage.two-factor', [
             'user' => $user,
             'meta' => $this->metaOgpService->mypageTwoFactor(),
         ]);
@@ -58,7 +58,7 @@ final class MypageController extends Controller
     {
         $user = Auth::user();
 
-        return view('v2.mypage.login-histories', [
+        return view('mypage.login-histories', [
             'loginHistories' => $this->loginHistoryRepository->getByUser($user->id),
             'meta' => $this->metaOgpService->mypageLoginHistories(),
         ]);

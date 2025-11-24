@@ -22,7 +22,7 @@ final class TagController extends Controller
 
     public function tags(): View
     {
-        return view('v2.tags.index', [
+        return view('pages.tags.index', [
             'tags' => $this->tagRepository->getForList(),
             'meta' => $this->metaOgpService->frontTags(),
         ]);
@@ -30,7 +30,7 @@ final class TagController extends Controller
 
     public function tag(Tag $tag): View
     {
-        return view('v2.tags.show', [
+        return view('pages.tags.show', [
             'tag' => $tag,
             'articles' => ArticleList::collection($this->articleRepository->getByTag($tag->id)),
             'meta' => $this->metaOgpService->frontTag($tag),

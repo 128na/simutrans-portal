@@ -15,6 +15,8 @@ export default defineConfig({
         "resources/js/front.ts",
         "resources/css/mypage.css",
         "resources/js/mypage.ts",
+        "resources/css/admin.css",
+        "resources/js/admin.ts",
       ],
       refresh: true,
     }),
@@ -63,7 +65,7 @@ function executeLangExport() {
     if (err) {
       console.warn(
         "Warning: Language export failed. Ensure 'composer install' is run before 'npm run build'.",
-        err.message,
+        err.message
       );
     }
   });

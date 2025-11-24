@@ -23,7 +23,7 @@ final class RedirectController extends Controller
     {
         $user = Auth::user();
 
-        return view('v2.mypage.redirects', [
+        return view('mypage.redirects', [
             'redirects' => $findMyRedirects($user),
             'meta' => $this->metaOgpService->mypageRedirects(),
         ]);

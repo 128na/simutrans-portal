@@ -21,7 +21,7 @@ final class UserController extends Controller
 
     public function users(): View
     {
-        return view('v2.users.index', [
+        return view('pages.users.index', [
             'users' => $this->userRepository->getForList(),
             'meta' => $this->metaOgpService->frontUsers(),
         ]);
@@ -31,7 +31,7 @@ final class UserController extends Controller
     {
         $user = $this->userRepository->firstOrFailByIdOrNickname($userIdOrNickname);
 
-        return view('v2.users.show', [
+        return view('pages.users.show', [
             'user' => $user,
             'articles' => ArticleList::collection($this->articleRepository->getByUser($user->id)),
             'meta' => $this->metaOgpService->frontUser($user),

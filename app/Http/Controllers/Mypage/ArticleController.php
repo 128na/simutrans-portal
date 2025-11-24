@@ -36,7 +36,7 @@ final class ArticleController extends Controller
     {
         $user = Auth::user();
 
-        return view('v2.mypage.articles', [
+        return view('mypage.articles', [
             'user' => $user->only(['id', 'name', 'nickname']),
             'articles' => $user
                 ->articles()
@@ -54,7 +54,7 @@ final class ArticleController extends Controller
             return abort(403);
         }
 
-        return view('v2.mypage.article-create', [
+        return view('mypage.article-create', [
             'user' => new UserShow($user),
             'attachments' => AttachmentEdit::collection($user->myAttachments()->with('fileInfo')->get()),
             'categories' => $this->categoryRepository->getForSearch()->groupBy('type'),
@@ -88,7 +88,7 @@ final class ArticleController extends Controller
             return abort(403);
         }
 
-        return view('v2.mypage.article-edit', [
+        return view('mypage.article-edit', [
             'user' => new UserShow($user),
             'article' => new ArticleEdit($article->load('categories', 'tags', 'articles', 'attachments')),
             'attachments' => AttachmentEdit::collection($user->myAttachments()->with('fileInfo')->get()),

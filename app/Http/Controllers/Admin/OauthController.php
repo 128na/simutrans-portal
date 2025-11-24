@@ -16,7 +16,7 @@ final class OauthController extends Controller
 {
     public function index(): \Illuminate\Contracts\View\View
     {
-        return view('v2.admin.index');
+        return view('admin.index');
     }
 
     public function authoroize(AuthoroizeAction $authoroizeAction): RedirectResponse

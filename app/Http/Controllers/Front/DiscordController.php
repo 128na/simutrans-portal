@@ -19,7 +19,7 @@ final class DiscordController extends Controller
 
     public function index(): View
     {
-        return view('v2.discord.index', [
+        return view('pages.discord.index', [
             'meta' => $this->metaOgpService->frontDiscord(),
         ]);
     }
@@ -31,7 +31,7 @@ final class DiscordController extends Controller
             $recaptchaToken = $request->input('recaptchaToken', '');
             $url = $generateInviteCodeAction($recaptchaToken);
 
-            return view('v2.discord.index', [
+            return view('pages.discord.index', [
                 'url' => $url,
                 'meta' => $this->metaOgpService->frontDiscord(),
             ]);

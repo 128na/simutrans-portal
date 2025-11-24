@@ -33,14 +33,14 @@ final class ArticleController extends Controller
 
     public function top(): View
     {
-        return view('v2.top.index', [
+        return view('pages.top.index', [
             'announces' => $this->articleRepository->getAnnounces(3),
         ]);
     }
 
     public function pak128jp(): View
     {
-        return view('v2.pak.index', [
+        return view('pages.pak.index', [
             'pak' => '128-japan',
             'articles' => ArticleList::collection($this->articleRepository->getLatest('128-japan')),
             'meta' => $this->metaOgpService->frontPak('128-japan'),
@@ -49,7 +49,7 @@ final class ArticleController extends Controller
 
     public function pak128(): View
     {
-        return view('v2.pak.index', [
+        return view('pages.pak.index', [
             'pak' => '128',
             'articles' => ArticleList::collection($this->articleRepository->getLatest('128')),
             'meta' => $this->metaOgpService->frontPak('128'),
@@ -58,7 +58,7 @@ final class ArticleController extends Controller
 
     public function pak64(): View
     {
-        return view('v2.pak.index', [
+        return view('pages.pak.index', [
             'pak' => '64',
             'articles' => ArticleList::collection($this->articleRepository->getLatest('64')),
             'meta' => $this->metaOgpService->frontPak('64'),
@@ -67,7 +67,7 @@ final class ArticleController extends Controller
 
     public function pakOthers(): View
     {
-        return view('v2.pak.index', [
+        return view('pages.pak.index', [
             'pak' => 'other-pak',
             'articles' => ArticleList::collection($this->articleRepository->getLatestOther()),
             'meta' => $this->metaOgpService->frontPak('others'),
@@ -76,7 +76,7 @@ final class ArticleController extends Controller
 
     public function announces(): View
     {
-        return view('v2.announces.index', [
+        return view('pages.announces.index', [
             'articles' => ArticleList::collection($this->articleRepository->getAnnounces()),
             'meta' => $this->metaOgpService->frontAnnounces(),
         ]);
@@ -84,7 +84,7 @@ final class ArticleController extends Controller
 
     public function pages(): View
     {
-        return view('v2.pages.index', [
+        return view('pages.static.index', [
             'articles' => ArticleList::collection($this->articleRepository->getPages()),
             'meta' => $this->metaOgpService->frontPages(),
         ]);
@@ -94,7 +94,7 @@ final class ArticleController extends Controller
     {
         $condition = $request->all();
 
-        return view('v2.search.index', [
+        return view('pages.search.index', [
             ...$searchAction($condition),
             'meta' => $this->metaOgpService->frontSearch(),
         ]);
@@ -111,7 +111,7 @@ final class ArticleController extends Controller
             event(new \App\Events\ArticleShown($article));
         }
 
-        return view('v2.show.index', [
+        return view('pages.show.index', [
             'article' => new ArticleShow($article),
             'meta' => $this->metaOgpService->frontArticleShow($article->user, $article),
         ]);

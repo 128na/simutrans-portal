@@ -87,19 +87,19 @@ final readonly class EnvironmentConfig
             assetUrl: Config::string('app.asset_url', null),
             
             // データベース設定
-            dbHost: Config::string('database.connections.mysql.host'),
-            dbPort: Config::integer('database.connections.mysql.port'),
-            dbDatabase: Config::string('database.connections.mysql.database'),
-            dbUsername: Config::string('database.connections.mysql.username'),
-            dbPassword: Config::string('database.connections.mysql.password'),
+            dbHost: Config::string('database.connections.mysql.host', '127.0.0.1'),
+            dbPort: Config::integer('database.connections.mysql.port', 3306),
+            dbDatabase: Config::string('database.connections.mysql.database', 'forge'),
+            dbUsername: Config::string('database.connections.mysql.username', 'forge'),
+            dbPassword: Config::string('database.connections.mysql.password', ''),
             
             // ログ設定
             logSlackWebhookUrl: Config::string('logging.channels.slack.url', null),
             
             // メール設定
-            mailMailer: Config::string('mail.mailer'),
-            mailHost: Config::string('mail.host'),
-            mailPort: Config::integer('mail.port'),
+            mailMailer: Config::string('mail.default', 'smtp'),
+            mailHost: Config::string('mail.mailers.smtp.host', 'localhost'),
+            mailPort: Config::integer('mail.mailers.smtp.port', 1025),
             
             // Twitter設定
             twitterBearerToken: Config::string('services.twitter.bearer_token', null),
@@ -111,9 +111,9 @@ final readonly class EnvironmentConfig
             // Discord設定
             discordToken: Config::string('services.discord.token', null),
             discordChannel: Config::string('services.discord.channel', null),
-            discordDomain: Config::string('services.discord.domain'),
-            discordMaxAge: Config::integer('services.discord.max_age'),
-            discordMaxUses: Config::integer('services.discord.max_uses'),
+            discordDomain: Config::string('services.discord.domain', 'https://discord.gg'),
+            discordMaxAge: Config::integer('services.discord.max_age', 300),
+            discordMaxUses: Config::integer('services.discord.max_uses', 1),
             
             // Google設定
             googleRecaptchaProjectName: Config::string('services.google_recaptcha.projectName', null),
@@ -129,7 +129,7 @@ final readonly class EnvironmentConfig
             dropboxAuthorizationToken: Config::string('filesystems.disks.dropbox.authorization_token', null),
             
             // Misskey設定
-            misskeyBaseUrl: Config::string('services.misskey.base_url'),
+            misskeyBaseUrl: Config::string('services.misskey.base_url', 'https://misskey.io/api'),
             misskeyToken: Config::string('services.misskey.token', null),
             
             // BlueSky設定

@@ -36,6 +36,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: .env
+        run: php -r "copy('.env.ci', '.env');"
+
       - uses: ./.github/actions/php
       - uses: ./.github/actions/nodejs
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Mypage\Article;
 
-use App\Repositories\ArticleRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller;
@@ -13,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 final class IndexController extends Controller
 {
     public function __construct(
-        private readonly ArticleRepository $articleRepository,
         private readonly MetaOgpService $metaOgpService,
     ) {}
 

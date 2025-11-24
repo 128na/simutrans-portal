@@ -15,14 +15,14 @@ final class PasswordController extends Controller
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
-    public function showForgotPassword(): View|RedirectResponse
+    public function showForgotPassword(): RedirectResponse|View
     {
         return view('auth.forget-password', [
             'meta' => $this->metaOgpService->mypageLogin(),
         ]);
     }
 
-    public function showResetPassword(string $token): View|RedirectResponse
+    public function showResetPassword(string $token): RedirectResponse|View
     {
         return view('auth.reset-password', [
             'token' => $token,

@@ -16,7 +16,7 @@ final class LoginController extends Controller
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
-    public function showLogin(): View|RedirectResponse
+    public function showLogin(): RedirectResponse|View
     {
         if (Auth::check()) {
             return to_route('mypage.index');

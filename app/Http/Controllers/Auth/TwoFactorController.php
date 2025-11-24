@@ -15,7 +15,7 @@ final class TwoFactorController extends Controller
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
-    public function showTwoFactor(): View|RedirectResponse
+    public function showTwoFactor(): RedirectResponse|View
     {
         return view('auth.two-factor', [
             'meta' => $this->metaOgpService->mypageLogin(),

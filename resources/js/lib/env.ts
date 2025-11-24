@@ -9,7 +9,7 @@
  * アプリケーション起動時に必須の環境変数が存在するかチェック
  */
 function validateRequiredEnv(): void {
-  const required = ["VITE_API_URL", "VITE_APP_URL"] as const;
+  const required = ["VITE_APP_URL"] as const;
 
   for (const key of required) {
     if (!import.meta.env[key]) {
@@ -27,7 +27,6 @@ validateRequiredEnv();
  */
 export const env = {
   // 必須環境変数
-  apiUrl: import.meta.env.VITE_API_URL,
   appUrl: import.meta.env.VITE_APP_URL,
 
   // オプション環境変数

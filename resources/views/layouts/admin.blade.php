@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
 @push('styles')
-@vite('resources/js/admin.ts')
-@vite('resources/css/admin.css')
+@vite('resources/js/mypage.ts')
+@vite('resources/css/mypage.css')
 @endpush
 
 @section('header')

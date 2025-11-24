@@ -159,7 +159,7 @@ final class Attachment extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string|false, never>
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string|null, never>
      */
     protected function fileContents(): \Illuminate\Database\Eloquent\Casts\Attribute
     {

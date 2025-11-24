@@ -7,14 +7,13 @@ namespace App\Repositories;
 use App\Models\Attachment;
 use App\Models\User;
 
-/**
- * @extends BaseRepository<Attachment>
- */
-final class AttachmentRepository extends BaseRepository
+final readonly class AttachmentRepository
 {
-    public function __construct(Attachment $attachment)
+    public function __construct(private Attachment $attachment) {}
+
+    public function find(null|int|string $id): ?Attachment
     {
-        parent::__construct($attachment);
+        return $this->attachment->find($id);
     }
 
     public function syncProfile(User $user, int $id): void

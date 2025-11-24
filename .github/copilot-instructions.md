@@ -171,6 +171,55 @@ const [user, setUser] = useState<User.Show>();
 
 **詳細**: `docs/architecture-services-and-actions.md` を参照してください。
 
+### Repository パターン
+
+**重要**: このプロジェクトでは Repository に継承を使用しません。各 Repository は独立したクラスとして実装します。
+
+- **基本方針**:
+  - `BaseRepository` や `BaseCountRepository` は**非推奨**で、継承してはいけません
+  - 各 Repository は必要なメソッドのみを実装する
+  - モデルは `private readonly` プロパティとしてコンストラクタで受け取る
+  - 共通処理が必要な場合は、トレイトやヘルパー関数を検討する
+
+- **実装パターン**:
+  ```php
+  final class ArticleRepository
+  {
+      public function __construct(public Article $model) {}
+      
+      // 必要なメソッドのみを実装
+      public function find(int $id): ?Article
+      {
+          return $this->model->find($id);
+      }
+      
+      // ドメイン固有のメソッド
+      public function findBySlug(string $slug): ?Article
+      {
+          return $this->model->where('slug', $slug)->first();
+      }
+  }
+  ```
+
+- **命名規則**:
+  - 単体取得: `find()`, `findOrFail()`, `findBy{条件}()`
+  - 一覧取得: `getFor{用途}()`, `getBy{条件}()`
+  - 作成: `store()`
+  - 更新: `update()`
+  - 削除: `delete()`
+  - 関連付け: `sync{関連名}()`
+
+- **推奨しないパターン**:
+  - ❌ BaseRepository を継承する
+  - ❌ 使わないメソッドを実装する
+  - ❌ 汎用的すぎる抽象化
+
+- **推奨するパターン**:
+  - ✅ 各 Repository は独立したクラス
+  - ✅ 実際に使用するメソッドのみを実装
+  - ✅ ドメイン固有のメソッド名を使用
+  - ✅ テストで必要なメソッドも実装する（テストファーストの場合）
+
 ## 外部連携 / 依存サービス
 
 - `composer.json` に OneSignal、Discord、Dropbox、ReCAPTCHA、Google API などが含まれる。これら周りの変更は慎重に。

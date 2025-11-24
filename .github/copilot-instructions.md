@@ -57,7 +57,44 @@
 - React + TypeScript + Vite 構成。`tsconfig.json` と `vite.config.ts` の設定に注意。
 - コンポーネントは小さく保ち、ビジネスロジックは `features/` や `state/` に置く流れ。
 - HTTP クライアントは `axios` を利用（`resources/js/apps/*`）。エラー処理は `state/useAxiosError.ts` を参照。
-- UI 変更時は `resources/js/apps/types/*.d.ts` の更新を忘れずに。型を更新したら `npm run build` でビルド確認。
+- UI 変更時は `resources/js/types/*.d.ts` の更新を忘れずに。型を更新したら `npm run build` でビルド確認。
+
+### 型定義の配置ルール
+
+型定義は `resources/js/types/` 配下に体系的に整理されています：
+
+- **`types/models/`** - Laravel モデルに対応する TypeScript 型
+  - `Article.ts`, `User.ts`, `Tag.ts`, `Category.ts`, `Attachment.ts` など
+  - 公開ページ用（`Show`）とマイページ用（`MypageEdit`, `MypageShow`）を区別
+- **`types/api/`** - API リクエスト/レスポンスの型
+  - `article.d.ts`, `user.d.ts`, `tag.d.ts` など
+  - エンドポイントごとに整理
+- **`types/utils/`** - ユーティリティ型
+  - `response.d.ts` - `ApiResponse<T>`, `PaginatedResponse<T>`, `ValidationError`, `ErrorResponse`
+  - `pagination.d.ts` - ページネーション関連型
+- **`types/components/`** - コンポーネント共通Props型
+  - `ui.d.ts` - UI コンポーネント型
+  - `form.d.ts` - フォーム関連型
+- **`types/index.d.ts`** - グローバル型定義と後方互換性レイヤー
+
+**新しいコードでの使用方法:**
+```typescript
+// 明示的にインポート（推奨）
+import type { ArticleList, UserShow } from '@/types/models';
+import type { ArticleListResponse } from '@/types/api';
+import type { PaginatedResponse } from '@/types/utils';
+
+const [articles, setArticles] = useState<ArticleList[]>([]);
+```
+
+**既存コードとの互換性:**
+```typescript
+// グローバル名前空間での使用（後方互換性のため残されている）
+const [articles, setArticles] = useState<Article.List[]>([]);
+const [user, setUser] = useState<User.Show>();
+```
+
+両方の記法がサポートされていますが、新しいコードでは明示的なインポートを推奨します。
 
 ## バックエンド特有の注意点
 
@@ -121,7 +158,10 @@
 - **静的解析:** PHP 側は `composer run stan` を実行して問題がないか確認する。
 - **依存とビルド:** `composer install` と `npm ci` が通り、フロント変更があれば `npm run build` でビルドが成功すること。
 - **テスト:** `php artisan test --testsuite=Unit` と `php artisan test --testsuite=Feature` を通す。Dusk テストは CI 設定が整っている場合のみ実行確認。
-- **型の更新:** フロントエンドで props/API を変更したら `resources/js/apps/types/*.d.ts` を必ず更新する。
+- **型の更新:** フロントエンドで props/API を変更したら `resources/js/types/` 配下の型定義を必ず更新する。
+  - モデル変更: `types/models/*.ts`
+  - API 変更: `types/api/*.d.ts`
+  - コンポーネント Props: `types/components/*.d.ts`
 - **API 契約:** API（`routes/api.php` / コントローラ）を変更した場合、フロントエンドの `axios` 呼び出しと型も合わせて更新し、マイグレーション手順や互換情報を PR 説明に明記する。
 - **機密情報:** `credential.json` や `.env` のような秘密情報をコミットしない。必要な設定は環境変数で管理すること。
 - **ドキュメント:** README や該当する型定義、API の説明を必要に応じて更新する。

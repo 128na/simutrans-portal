@@ -49,7 +49,101 @@ npm run dev
 
 # 本番用アセットのビルド
 npm run build
+
+# TypeScript型チェック
+npm run typecheck
+
+# Lint（自動修正）
+npm run lint
+
+# コードフォーマット
+npm run format
 ```
+
+### Type Definitions
+
+フロントエンドの型定義は `resources/js/types/` 配下に体系的に整理されています。
+
+#### ディレクトリ構造
+
+```
+resources/js/types/
+├── api/                    # API レスポンス型
+│   ├── article.d.ts       # 記事API型
+│   ├── user.d.ts          # ユーザーAPI型
+│   ├── tag.d.ts           # タグAPI型
+│   ├── category.d.ts      # カテゴリAPI型
+│   ├── attachment.d.ts    # 添付ファイルAPI型
+│   ├── analytics.d.ts     # アナリティクスAPI型
+│   └── index.ts           # 一括エクスポート
+│
+├── models/                 # ドメインモデル型（Laravel Modelに対応）
+│   ├── Article.ts         # Article モデル型
+│   ├── User.ts            # User モデル型
+│   ├── Profile.ts         # Profile モデル型
+│   ├── Tag.ts             # Tag モデル型
+│   ├── Category.ts        # Category モデル型
+│   ├── Attachment.ts      # Attachment モデル型
+│   ├── FileInfo.ts        # FileInfo モデル型
+│   ├── Count.ts           # Count モデル型
+│   ├── Common.ts          # 共通型
+│   └── index.ts           # 一括エクスポート
+│
+├── components/             # コンポーネント共通Props型
+│   ├── ui.d.ts            # UI コンポーネント型
+│   ├── form.d.ts          # フォーム関連型
+│   └── index.ts           # 一括エクスポート
+│
+├── utils/                  # ユーティリティ型
+│   ├── pagination.d.ts    # ページネーション型
+│   ├── response.d.ts      # 共通レスポンス型
+│   └── index.ts           # 一括エクスポート
+│
+├── analytics.d.ts          # 既存（後方互換性のため残されている）
+└── index.d.ts              # 全体のエクスポート + 後方互換性レイヤー
+```
+
+#### 使用方法
+
+**新しいコード（推奨）:**
+
+```typescript
+// 明示的にインポート
+import type { ArticleList, UserShow } from '@/types/models';
+import type { ArticleListResponse } from '@/types/api';
+import type { PaginatedResponse } from '@/types/utils';
+
+const [articles, setArticles] = useState<ArticleList[]>([]);
+const [user, setUser] = useState<UserShow>();
+```
+
+**既存コード（後方互換性）:**
+
+```typescript
+// グローバル名前空間での使用（既存コードとの互換性のため残されている）
+const [articles, setArticles] = useState<Article.List[]>([]);
+const [user, setUser] = useState<User.Show>();
+```
+
+両方の記法がサポートされていますが、新しいコードでは明示的なインポートを推奨します。
+
+#### 主要な型
+
+**モデル型 (`types/models/`):**
+- Laravel のモデルと対応する TypeScript 型
+- 公開ページ用（`Show`）とマイページ用（`MypageEdit`, `MypageShow`）を区別
+- 例: `ArticleList`, `ArticleShow`, `ArticleMypageEdit`
+
+**API型 (`types/api/`):**
+- APIリクエスト/レスポンスの型定義
+- 例: `ArticleListResponse`, `ArticleSaveRequest`, `TagCreateRequest`
+
+**ユーティリティ型 (`types/utils/`):**
+- `ApiResponse<T>` - 基本的なAPIレスポンスラッパー
+- `PaginatedResponse<T>` - Laravel のページネーション構造
+- `ValidationError` - バリデーションエラー（422エラー）
+- `ErrorResponse` - 標準エラーレスポンス
+
 
 ## Test, Formatter, etc.
 

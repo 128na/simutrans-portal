@@ -143,6 +143,61 @@ const [user, setUser] = useState<User.Show>();
     - `composer run pint`, `composer run stan` で個別にフォーマット／解析可能。
 - DB セットアップ: `php artisan migrate --seed`。管理者ユーザー作成は `README.md` の例（`php artisan tinker`）を参照。
 
+### 環境変数の型安全なアクセス
+
+環境変数は `EnvironmentConfig` クラスを使用して型安全にアクセスできます：
+
+```php
+use App\Config\EnvironmentConfig;
+
+class SomeService
+{
+    public function __construct(
+        private readonly EnvironmentConfig $config
+    ) {}
+
+    public function example(): void
+    {
+        // 型安全なアクセス（IDE補完が効く）
+        $appName = $this->config->appName;  // string
+        $isDebug = $this->config->appDebug;  // bool
+        $dbPort = $this->config->dbPort;    // int
+
+        // サービスの有効性チェック
+        if ($this->config->hasTwitter()) {
+            $token = $this->config->twitterBearerToken;  // string
+        }
+    }
+}
+```
+
+**重要な点:**
+- 必須環境変数は非null型（`string`, `bool`, `int`）
+- オプション環境変数は nullable 型（`?string`）
+- ダミー値（`dummy-*`）は自動的に `null` として扱われる
+- サービス有効性チェックメソッド（`hasTwitter()`, `hasDiscord()` など）を使用
+- `EnvironmentConfig` はシングルトンとして登録済み（DI で取得可能）
+
+**フロントエンド側の環境変数:**
+
+`resources/js/lib/env.ts` の `env` オブジェクトを使用：
+
+```typescript
+import { env } from '@/lib/env';
+
+// 型安全なアクセス（IDE補完が効く）
+const apiUrl = env.apiUrl;  // string
+const appName = env.appName;  // string
+const isDev = env.isDevelopment;  // boolean
+
+// オプション値のチェック
+if (env.recaptchaSiteKey) {
+  // reCAPTCHAが有効
+}
+```
+
+**重要:** `import.meta.env` を直接使用せず、`env` オブジェクトを経由すること。
+
 ## 外部連携 / 依存サービス
 
 - `composer.json` に OneSignal、Discord、Dropbox、ReCAPTCHA、Google API などが含まれる。これら周りの変更は慎重に。

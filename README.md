@@ -36,6 +36,65 @@ App\Models\User::create(['role'=>'admin', 'name'=>'your name', 'email'=>'your em
 
 メール送信があるため、 `mailpit` などの使用を推奨
 
+### Environment Variables
+
+環境変数は型安全にアクセスできるように設計されています。
+
+#### Backend (PHP)
+
+`EnvironmentConfig` クラスを使用して型安全に環境変数にアクセスできます：
+
+```php
+use App\Config\EnvironmentConfig;
+
+class SomeService
+{
+    public function __construct(
+        private readonly EnvironmentConfig $config
+    ) {}
+
+    public function example(): void
+    {
+        // 型安全なアクセス（IDE補完が効く）
+        $appName = $this->config->appName;  // string
+        $isDebug = $this->config->appDebug;  // bool
+        $dbPort = $this->config->dbPort;    // int
+
+        // サービスの有効性チェック
+        if ($this->config->hasTwitter()) {
+            $token = $this->config->twitterBearerToken;  // string
+        }
+    }
+}
+```
+
+#### Frontend (TypeScript)
+
+`env` モジュールを使用して型安全に環境変数にアクセスできます：
+
+```typescript
+import { env } from '@/lib/env';
+
+// 型安全なアクセス（IDE補完が効く）
+const apiUrl = env.apiUrl;  // string
+const appName = env.appName;  // string
+const isDev = env.isDevelopment;  // boolean
+
+// オプション値のチェック
+if (env.recaptchaSiteKey) {
+  // reCAPTCHAが有効
+}
+```
+
+#### 環境変数の分類
+
+`.env.example` を参照してください。環境変数は以下のように分類されています：
+
+- **必須**: アプリケーション動作に必要（APP_*, DB_*）
+- **オプション**: 外部サービス連携用（TWITTER_*, DISCORD_*, など）
+
+詳細は `.env.example` のコメントを参照してください。
+
 ### Frontend
 
 フロントエンドは `resources/js/` 以下にあり、React + TypeScript + Vite 構成です。以下は一般的なセットアップと実行手順です（プロジェクトルートで実行します）。

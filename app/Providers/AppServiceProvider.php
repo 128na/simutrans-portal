@@ -19,7 +19,13 @@ final class AppServiceProvider extends ServiceProvider
      * Register any application services.
      */
     #[\Override]
-    public function register(): void {}
+    public function register(): void
+    {
+        // 型安全な環境変数アクセスを提供するシングルトン
+        $this->app->singleton(\App\Config\EnvironmentConfig::class, function (): \App\Config\EnvironmentConfig {
+            return \App\Config\EnvironmentConfig::fromEnv();
+        });
+    }
 
     /**
      * Bootstrap any application services.

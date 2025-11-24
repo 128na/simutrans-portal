@@ -18,6 +18,7 @@ export declare namespace Analytics {
   type Type = "daily" | "monthly" | "yearly";
   type Axis = "cv" | "pv";
   type Mode = "periodic" | "cumulative";
+  type Period = string; // Date period string (e.g., "2024-01", "2024-01-15")
 
   type ArticleAnalytic = {
     id: number;

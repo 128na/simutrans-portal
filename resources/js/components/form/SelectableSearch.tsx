@@ -9,7 +9,7 @@ type SearchableItem = {
 type Props<T extends SearchableItem = SearchableItem> = {
   options: T[];
   selectedIds: number[];
-  labelKey?: string;
+  labelKey?: keyof T & string;
   placeholder?: string;
   onChange?: (selectedIds: number[]) => void;
   render?: (option: T) => string;
@@ -19,7 +19,7 @@ type Props<T extends SearchableItem = SearchableItem> = {
 export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
   options,
   selectedIds,
-  labelKey = "name",
+  labelKey = "name" as keyof T & string,
   placeholder = "検索...",
   className,
   onChange,
@@ -39,12 +39,20 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
     }
   };
 
+  // Helper function to safely get label value
+  const getLabel = (item: T): string => {
+    if (render) {
+      return render(item);
+    }
+    const value = item[labelKey];
+    return String(value ?? "");
+  };
+
   const selectedItems = options.filter((o) => selectedIds.includes(o.id));
   const filteredItems = options.filter(
     (o) =>
-      String(render ? render(o) : (o as Record<string, unknown>)[labelKey])
-        ?.toLowerCase()
-        .includes(criteria.toLowerCase()) && !selectedIds.includes(o.id)
+      getLabel(o).toLowerCase().includes(criteria.toLowerCase()) &&
+      !selectedIds.includes(o.id)
   );
   return (
     <div className="space-y-4">
@@ -56,7 +64,7 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
               className="bg-brand text-white px-2 py-1 rounded cursor-pointer"
               onClick={() => remove(item.id)}
             >
-              {String(item[labelKey as keyof T])}
+              {getLabel(item)}
               <span className="ml-2">✕</span>
             </span>
           ))}
@@ -89,7 +97,7 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
               className="py-1.5 px-2 rounded cursor-pointer hover:bg-gray-100"
               onClick={() => add(o.id)}
             >
-              {String(render ? render(o) : (o as Record<string, unknown>)[labelKey])}
+              {getLabel(o)}
             </div>
           ))
         )}

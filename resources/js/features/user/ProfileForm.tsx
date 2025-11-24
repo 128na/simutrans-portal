@@ -73,7 +73,6 @@ export const ProfileForm = ({
         window.location.href = `/mypage/profile?updated=1`;
       }
     } catch (error) {
-      console.log(error);
       if (error instanceof AxiosError) {
         setError(error.response?.data);
         containerRef.current?.scrollIntoView({

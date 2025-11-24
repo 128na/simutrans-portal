@@ -22,11 +22,12 @@ export const Upload = ({ onUploaded, ...props }: Prop) => {
 
       onUploaded?.(response.data.data);
     } catch (error) {
-      console.error("アップロード失敗", error);
       if (error instanceof AxiosError) {
         alert(
           `アップロードに失敗しました：${error.response?.data.message ?? "不明なエラー"}`
         );
+      } else {
+        alert("アップロードに失敗しました");
       }
     }
   };

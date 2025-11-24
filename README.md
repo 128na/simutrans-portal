@@ -235,6 +235,17 @@ app/Http/Controllers/
 
 各コントローラーは単一責任の原則に従い、明確な責務を持っています。
 
+### Services と Actions
+
+`Services/` と `Actions/` の責務分離については、以下のドキュメントを参照してください：
+
+- **[Services と Actions の役割分担ガイドライン](docs/architecture-services-and-actions.md)** - 詳細なアーキテクチャ説明
+- **[配置判断フローチャート](docs/decision-flowchart-services-actions.md)** - 新しいクラスの配置を判断するガイド
+
+**要約:**
+- **Services** - 外部API連携、インフラ層、汎用ユーティリティ（技術的な関心事）
+- **Actions** - ユースケース、ビジネスロジック（ビジネスの関心事）
+
 ### Views (Blade Templates)
 
 Blade テンプレートは、フロントエンド（React + TypeScript）の構造に倣った配置になっています：

@@ -143,6 +143,34 @@ const [user, setUser] = useState<User.Show>();
     - `composer run pint`, `composer run stan` で個別にフォーマット／解析可能。
 - DB セットアップ: `php artisan migrate --seed`。管理者ユーザー作成は `README.md` の例（`php artisan tinker`）を参照。
 
+### Services と Actions の責務分離
+
+**重要**: 新しいコードを作成する際は、`Services` と `Actions` の責務を明確に区別してください。
+
+- **Services (app/Services/)**: 技術的な関心事を扱う
+  - 外部APIとの通信（Twitter, Discord, BlueSky, Misskey, Google等）
+  - インフラ層のラッパー（ファイルシステム、キャッシュ、メール等）
+  - 汎用的なユーティリティ（Markdown変換、Feed生成等）
+  - 複数のドメインから利用される基盤機能
+  - 特徴: ステートレス、副作用が明確、モック化しやすい
+  - 命名規則: `{機能名}Service` または `{サービス名}ApiClient`
+
+- **Actions (app/Actions/)**: ビジネスの関心事を扱う
+  - 1つの具体的なユースケースを表現（記事作成、ユーザー登録等）
+  - アプリケーション固有のビジネスルール
+  - 複数のRepository/Serviceを組み合わせた処理
+  - 単一責任の原則（SRP）に従う：1クラス = 1ユースケース
+  - 特徴: `__invoke()` または `execute()` メソッド1つ、ドメインロジックに集中
+  - 命名規則: 動詞で始める（`StoreArticle`, `UpdateArticle`）または `{動詞}{対象}Action`
+
+**判断フロー**:
+1. 外部APIやインフラと通信する？ → `Services/`
+2. 複数のドメインで再利用される？ → `Services/`
+3. 特定のユースケースを表現する？ → `Actions/`
+4. 純粋なドメインロジック？ → `Actions/`（または将来的に `Domain/`）
+
+**詳細**: `docs/architecture-services-and-actions.md` を参照してください。
+
 ## 外部連携 / 依存サービス
 
 - `composer.json` に OneSignal、Discord、Dropbox、ReCAPTCHA、Google API などが含まれる。これら周りの変更は慎重に。

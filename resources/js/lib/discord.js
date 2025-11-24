@@ -16,8 +16,7 @@ if (siteKey && app && recaptchaToken && form) {
 
       // トークンをセットしたあとに送信
       form.submit();
-    } catch (err) {
-      console.error("reCAPTCHA エラー:", err);
+    } catch {
       alert("reCAPTCHAの認証に失敗しました。もう一度お試しください。");
     }
   });

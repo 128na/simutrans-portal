@@ -101,8 +101,7 @@ export const AttachmentTable = ({
             attachments.filter((a) => a.id !== attachmentId)
           );
         }
-      } catch (error) {
-        console.log(error);
+      } catch {
         alert("削除に失敗しました");
       }
     }

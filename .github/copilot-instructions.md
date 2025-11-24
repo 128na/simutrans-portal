@@ -40,21 +40,55 @@
         - `Mypage/Article/` — 記事管理（IndexController, CreateController, EditController）
     - `Admin/` — 管理画面（OauthController）
     - `RedirectController` — 旧URL→新URLリダイレクト・固定リダイレクト
-- `resources/js/` — フロントエンドソース。エントリ: `resources/js/front.ts`, `resources/js/mypage.ts`。
-- `resources/js/apps/` — React アプリ本体。構成パターン:
-    - UI コンポーネント: `components/ui/*`
-    - レイアウト系: `components/layout/*`
-    - 機能別フォルダ: `features/*`（例: `features/articles`, `features/tags`）
-    - グローバル状態: `apps/state/*`（Zustand を使用、例: `useAnalyticsStore.ts`）
-    - 型定義: `apps/types/*` — API 変更や props 変更時に更新が必要。
-- `resources/views/` — Blade テンプレート（詳細は README.md 参照）
-    - `layouts/` — レイアウト、`components/` — UIコンポーネント
-    - `pages/` — ページテンプレート、`auth/` — 認証画面、`mypage/` — マイページ
+- `resources/js/` — フロントエンドソース。エントリ: `front.ts`, `mypage.ts`。
+  - `components/` — 再利用可能なUIコンポーネント
+    - `ui/` — 小さなUIパーツ（Button, Input, Modal等）
+    - `layout/` — レイアウト系コンポーネント（Header, Pagination等）
+    - `form/` — フォーム関連コンポーネント
+  - `features/` — 機能別コンポーネント
+    - `articles/` — 記事関連機能
+    - `tags/` — タグ機能
+    - `analytics/` — アナリティクス
+    - `attachments/` — 添付ファイル
+    - `user/` — ユーザー機能
+  - `front/` — フロントページ用コンポーネント
+  - `mypage/` — マイページ用コンポーネント
+  - `hooks/` — カスタムフック
+  - `lib/` — ユーティリティ・ヘルパー
+  - `types/` — 型定義（API 変更や props 変更時に更新が必要）
+  - `utils/` — 汎用関数
+  - `__tests__/` — テストファイル
+- `resources/views/` — Blade テンプレート
+  - `layouts/` — レイアウトテンプレート
+    - `base.blade.php` — 共通ベース
+    - `front.blade.php`, `mypage.blade.php`, `admin.blade.php` — 各エントリポイント
+  - `components/` — 再利用可能なUIコンポーネント
+    - `ui/` — 小さなUIパーツ（link, session-message等）
+    - `layout/` — レイアウト系（header等）
+    - `partials/` — 部分テンプレート（ga, meta-tags等）
+  - `pages/` — 公開ページテンプレート
+    - `top/` — トップページ
+    - `users/` — ユーザーページ
+    - `tags/` — タグページ
+    - `categories/` — カテゴリページ
+    - `pak/` — Pakページ
+    - `search/` — 検索ページ
+    - `social/` — ソーシャルページ
+    - `discord/` — Discordページ
+    - `announces/` — お知らせページ
+    - `show/` — 記事詳細ページ
+    - `static/` — 静的ページ
+  - `auth/` — 認証画面（login, register, password reset等）
+  - `mypage/` — マイページ
+  - `admin/` — 管理画面
+  - `emails/` — メールテンプレート
+  - `errors/` — エラーページ
 - `public/`, `public/build` — コンパイル済みアセット。手動編集しないこと。
 
 ## フロントエンド特有の注意点
 
 - React + TypeScript + Vite 構成。`tsconfig.json` と `vite.config.ts` の設定に注意。
+
 - コンポーネントは小さく保ち、ビジネスロジックは `features/` や `state/` に置く流れ。
 - HTTP クライアントは `axios` を利用（`resources/js/apps/*`）。エラー処理は `state/useAxiosError.ts` を参照。
 - UI 変更時は `resources/js/types/*.d.ts` の更新を忘れずに。型を更新したら `npm run build` でビルド確認。
@@ -126,12 +160,8 @@ const [user, setUser] = useState<User.Show>();
 
 ## 注意事項（特に気をつける点）
 
-- README の Quasar/Vue 記述は古い。現在は React + Vite なので UI 開発は `resources/js/apps` 側を確認。
-
-（注）`README.md` をこのリポジトリ構成に合わせて更新しました。フロントエンドは React + TypeScript + Vite です。
-
-- ルートと `backend/` に `credential.json` が複数あるため、どの環境向けかを確認すること。
-- 多くのフロントエンドファイルは `.tsx`（TypeScript）なので、props を変更する場合は `apps/types` を必ず更新。
+- ルートに `credential.json` があるため、どの環境向けかを確認すること。
+- 多くのフロントエンドファイルは `.tsx`（TypeScript）なので、props を変更する場合は `types/` を必ず更新。
 
 ## 例 — 迅速な編集ワークフロー
 
@@ -152,7 +182,7 @@ const [user, setUser] = useState<User.Show>();
 
 ## 迷ったら最初に見る場所
 
-- フロントエンドの UI バグ: `resources/js/apps/components` と `resources/js/apps/features` を確認。
+- フロントエンドの UI バグ: `resources/js/components` と `resources/js/features` を確認。
 - コントローラーの場所: `Auth/`, `Pages/`, `Mypage/`, `Admin/` ディレクトリで機能別に分類されている。
 - API の契約不一致: `routes/api.php` と該当コントローラ (`app/Http/Controllers`) を確認。
 - CI や静的解析エラー: ローカルで `composer run stan` と `composer run pint` を実行して再現する。

@@ -2,17 +2,21 @@ import { useState } from "react";
 import Input from "@/components/ui/Input";
 import { twMerge } from "tailwind-merge";
 
-type Props = {
-  options: SearchableOption[];
+type SearchableItem = {
+  id: number;
+};
+
+type Props<T extends SearchableItem = SearchableItem> = {
+  options: T[];
   selectedIds: number[];
   labelKey?: string;
   placeholder?: string;
   onChange?: (selectedIds: number[]) => void;
-  render?: (option: SearchableOption) => string;
+  render?: (option: T) => string;
   className?: string;
 };
 
-export const SelectableSearch = ({
+export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
   options,
   selectedIds,
   labelKey = "name",
@@ -20,7 +24,7 @@ export const SelectableSearch = ({
   className,
   onChange,
   render,
-}: Props) => {
+}: Props<T>) => {
   const [criteria, setCriteria] = useState("");
 
   const add = (id: number) => {
@@ -38,7 +42,7 @@ export const SelectableSearch = ({
   const selectedItems = options.filter((o) => selectedIds.includes(o.id));
   const filteredItems = options.filter(
     (o) =>
-      String(render ? render(o) : o[labelKey])
+      String(render ? render(o) : (o as Record<string, unknown>)[labelKey])
         ?.toLowerCase()
         .includes(criteria.toLowerCase()) && !selectedIds.includes(o.id)
   );
@@ -52,7 +56,7 @@ export const SelectableSearch = ({
               className="bg-brand text-white px-2 py-1 rounded cursor-pointer"
               onClick={() => remove(item.id)}
             >
-              {String(item[labelKey])}
+              {String(item[labelKey as keyof T])}
               <span className="ml-2">✕</span>
             </span>
           ))}
@@ -85,7 +89,7 @@ export const SelectableSearch = ({
               className="py-1.5 px-2 rounded cursor-pointer hover:bg-gray-100"
               onClick={() => add(o.id)}
             >
-              {String(render ? render(o) : o[labelKey])}
+              {String(render ? render(o) : (o as Record<string, unknown>)[labelKey])}
             </div>
           ))
         )}

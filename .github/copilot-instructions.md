@@ -58,6 +58,11 @@
 - コンポーネントは小さく保ち、ビジネスロジックは `features/` や `state/` に置く流れ。
 - HTTP クライアントは `axios` を利用（`resources/js/apps/*`）。エラー処理は `state/useAxiosError.ts` を参照。
 - UI 変更時は `resources/js/types/*.d.ts` の更新を忘れずに。型を更新したら `npm run build` でビルド確認。
+- **ロギング方針**: 
+  - `console.log`, `console.error`, `console.warn` の直接使用は禁止（ESLint の `no-console` ルールで検出）
+  - 開発時のデバッグには `resources/js/utils/logger.ts` の logger を使用
+  - logger は開発環境でのみコンソール出力、本番環境では何も出力しない
+  - 例外: `logger.ts` 自体と `vite.config.ts`（ビルドツール）のみ console の使用を許可
 
 ### 型定義の配置ルール
 

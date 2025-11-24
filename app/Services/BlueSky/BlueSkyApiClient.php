@@ -41,6 +41,7 @@ final readonly class BlueSkyApiClient
         if (! $article->user instanceof User) {
             throw new \RuntimeException('Article user is required');
         }
+
         $ogp = $this->metaOgpService->frontArticleShow($article->user, $article);
         $thumbnail = null;
         if ($article->hasThumbnail && $article->thumbnail instanceof Attachment) {

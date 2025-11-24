@@ -13,6 +13,7 @@ use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use OpenApi\Attributes as OA;
 
 final class TagController extends Controller
 {
@@ -29,6 +30,40 @@ final class TagController extends Controller
         ]);
     }
 
+    /**
+     * 新しいタグを作成
+     *
+     * @OA\Post(
+     *     path="/v2/tags",
+     *     summary="タグの作成",
+     *     description="新しいタグを作成します",
+     *     tags={"Tags"},
+     *     security={{"sanctum": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "description"},
+     *             @OA\Property(property="name", type="string", example="pak128.japan", description="タグ名"),
+     *             @OA\Property(property="description", type="string", example="pak128.japan用アドオン", description="説明")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="作成成功",
+     *         @OA\JsonContent(ref="#/components/schemas/Tag")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="バリデーションエラー",
+     *         @OA\JsonContent(ref="#/components/schemas/Error")
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="権限エラー",
+     *         @OA\JsonContent(ref="#/components/schemas/Error")
+     *     )
+     * )
+     */
     public function store(StoreRequest $storeRequest): TagEdit
     {
         $tag = $this->tagRepository->store([
@@ -42,6 +77,51 @@ final class TagController extends Controller
         return new TagEdit($this->tagRepository->load($tag));
     }
 
+    /**
+     * タグを更新
+     *
+     * @OA\Post(
+     *     path="/v2/tags/{tag}",
+     *     summary="タグの更新",
+     *     description="既存のタグを更新します",
+     *     tags={"Tags"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="tag",
+     *         in="path",
+     *         required=true,
+     *         description="タグID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"description"},
+     *             @OA\Property(property="description", type="string", example="更新された説明", description="説明")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="更新成功",
+     *         @OA\JsonContent(ref="#/components/schemas/Tag")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="バリデーションエラー",
+     *         @OA\JsonContent(ref="#/components/schemas/Error")
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="権限エラー",
+     *         @OA\JsonContent(ref="#/components/schemas/Error")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="タグが見つかりません",
+     *         @OA\JsonContent(ref="#/components/schemas/Error")
+     *     )
+     * )
+     */
     public function update(Tag $tag, UpdateRequest $updateRequest): TagEdit
     {
         $old = $tag->description;

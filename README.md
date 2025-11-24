@@ -64,6 +64,53 @@ composer run all
 
 ## Directory Structure
 
+### Controllers
+
+コントローラーは機能と責務に基づいて整理されています：
+
+```
+app/Http/Controllers/
+├── Auth/                          # 認証関連
+│   ├── LoginController.php       # ログイン画面表示
+│   ├── TwoFactorController.php   # 2FA画面表示
+│   ├── RegisterController.php    # 新規登録・招待
+│   └── PasswordController.php    # パスワードリセット
+│
+├── Pages/                         # 公開ページ
+│   ├── TopController.php         # トップページ
+│   ├── Article/                  # 記事関連
+│   │   ├── IndexController.php   # 一覧（検索・お知らせ・固定ページ）
+│   │   ├── ShowController.php    # 詳細表示・フォールバック
+│   │   ├── DownloadController.php # ダウンロード・変換
+│   │   └── PakController.php     # Pak別一覧
+│   ├── UserController.php        # ユーザー一覧・詳細
+│   ├── TagController.php         # タグ一覧・詳細
+│   ├── CategoryController.php    # カテゴリ一覧・詳細
+│   ├── SocialController.php      # SNS連携ページ
+│   └── DiscordController.php     # Discord招待
+│
+├── Mypage/                        # マイページ
+│   ├── DashboardController.php   # ダッシュボード・ログイン履歴・2FA設定
+│   ├── ProfileController.php     # プロフィール編集
+│   ├── AnalyticsController.php   # アナリティクス
+│   ├── Article/                  # 記事管理
+│   │   ├── IndexController.php   # 記事一覧
+│   │   ├── CreateController.php  # 記事作成
+│   │   └── EditController.php    # 記事編集
+│   ├── AttachmentController.php  # 添付ファイル管理
+│   ├── TagController.php         # タグ管理
+│   ├── RedirectController.php    # リダイレクト管理
+│   └── InviteController.php      # 招待管理
+│
+├── Admin/                         # 管理画面
+│   └── OauthController.php       # OAuth管理
+│
+├── Controller.php                 # ベースコントローラー
+└── RedirectController.php         # 旧URL→新URLリダイレクト・固定リダイレクト
+```
+
+各コントローラーは単一責任の原則に従い、明確な責務を持っています。
+
 ### Views (Blade Templates)
 
 Blade テンプレートは、フロントエンド（React + TypeScript）の構造に倣った配置になっています：

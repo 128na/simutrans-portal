@@ -6,13 +6,13 @@ namespace App\Repositories;
 
 use App\Models\OauthToken;
 
-final class OauthTokenRepository
+final readonly class OauthTokenRepository
 {
-    public function __construct(private readonly OauthToken $model) {}
+    public function __construct(private OauthToken $oauthToken) {}
 
     public function getToken(string $application): OauthToken
     {
-        return $this->model->where('application', $application)->firstOrFail();
+        return $this->oauthToken->where('application', $application)->firstOrFail();
     }
 
     /**
@@ -21,7 +21,7 @@ final class OauthTokenRepository
      */
     public function updateOrCreate(array $search, array $data = []): OauthToken
     {
-        return $this->model->updateOrCreate($search, $data);
+        return $this->oauthToken->updateOrCreate($search, $data);
     }
 
     public function delete(OauthToken $oauthToken): void

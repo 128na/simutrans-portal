@@ -7,13 +7,13 @@ namespace App\Repositories;
 use App\Models\Attachment;
 use App\Models\User;
 
-final class AttachmentRepository
+final readonly class AttachmentRepository
 {
-    public function __construct(private readonly Attachment $model) {}
+    public function __construct(private Attachment $attachment) {}
 
-    public function find(int|string|null $id): ?Attachment
+    public function find(null|int|string $id): ?Attachment
     {
-        return $this->model->find($id);
+        return $this->attachment->find($id);
     }
 
     public function syncProfile(User $user, int $id): void

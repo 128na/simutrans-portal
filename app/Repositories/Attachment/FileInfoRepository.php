@@ -6,9 +6,9 @@ namespace App\Repositories\Attachment;
 
 use App\Models\Attachment\FileInfo;
 
-final class FileInfoRepository
+final readonly class FileInfoRepository
 {
-    public function __construct(private readonly FileInfo $model) {}
+    public function __construct(private FileInfo $model) {}
 
     /**
      * @param  array<mixed>  $data
@@ -27,7 +27,7 @@ final class FileInfoRepository
         return $this->model->updateOrCreate($search, $data);
     }
 
-    public function find(int|string|null $id): ?FileInfo
+    public function find(null|int|string $id): ?FileInfo
     {
         return $this->model->find($id);
     }

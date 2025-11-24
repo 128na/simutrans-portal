@@ -6,16 +6,16 @@ namespace App\Repositories\User;
 
 use App\Models\User\Profile;
 
-final class ProfileRepository
+final readonly class ProfileRepository
 {
-    public function __construct(private readonly Profile $model) {}
+    public function __construct(private Profile $profile) {}
 
     /**
      * @param  array<mixed>  $data
      */
     public function store(array $data): Profile
     {
-        return $this->model->create($data);
+        return $this->profile->create($data);
     }
 
     /**
@@ -26,9 +26,9 @@ final class ProfileRepository
         $profile->update($data);
     }
 
-    public function find(int|string|null $id): ?Profile
+    public function find(null|int|string $id): ?Profile
     {
-        return $this->model->find($id);
+        return $this->profile->find($id);
     }
 
     public function delete(Profile $profile): void

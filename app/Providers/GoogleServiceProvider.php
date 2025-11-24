@@ -32,12 +32,13 @@ final class GoogleServiceProvider extends ServiceProvider implements DeferrableP
     public function register(): void
     {
         $this->app->bind(function (): \App\Services\Google\Recaptcha\RecaptchaService {
+            $config = $this->app->make(\App\Config\EnvironmentConfig::class);
             $credentials = json_decode(
-                @file_get_contents(base_path(Config::string('services.google_recaptcha.credential'))) ?: '{}',
+                @file_get_contents(base_path($config->googleRecaptchaCredential ?? '')) ?: '{}',
                 true
             );
             $recaptchaEnterpriseServiceClient = new RecaptchaEnterpriseServiceClient(['credentials' => $credentials]);
-            $projectName = $recaptchaEnterpriseServiceClient->projectName(Config::string('services.google_recaptcha.projectName'));
+            $projectName = $recaptchaEnterpriseServiceClient->projectName($config->googleRecaptchaProjectName ?? '');
 
             return new RecaptchaService(
                 $recaptchaEnterpriseServiceClient,
@@ -47,8 +48,9 @@ final class GoogleServiceProvider extends ServiceProvider implements DeferrableP
         });
 
         $this->app->bind(function (): \Google\Cloud\RecaptchaEnterprise\V1\Event {
+            $config = $this->app->make(\App\Config\EnvironmentConfig::class);
             $event = new Event;
-            $event->setSiteKey(Config::string('services.google_recaptcha.siteKey'));
+            $event->setSiteKey($config->googleRecaptchaSiteKey ?? '');
 
             return $event;
         });

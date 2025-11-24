@@ -85,12 +85,13 @@ final class DIServiceProvider extends ServiceProvider implements DeferrableProvi
         ));
 
         $this->app->bind(MisskeyApiClient::class, fn ($app): MisskeyApiClient => new MisskeyApiClient(
-            Config::string('services.misskey.base_url'),
-            Config::string('services.misskey.token'),
+            $app->make(\App\Config\EnvironmentConfig::class)->misskeyBaseUrl,
+            $app->make(\App\Config\EnvironmentConfig::class)->misskeyToken ?? '',
         ));
 
         $this->app->bind(function ($app): \App\Services\BlueSky\BlueSkyApiClient {
-            $blueskyApi = new BlueskyApi(Config::string('services.bluesky.user'), Config::string('services.bluesky.password'));
+            $config = $app->make(\App\Config\EnvironmentConfig::class);
+            $blueskyApi = new BlueskyApi($config->blueskyUser ?? '', $config->blueskyPassword ?? '');
             $blueskyPostService = new BlueskyPostService($blueskyApi);
 
             return new BlueSkyApiClient(

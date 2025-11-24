@@ -4,19 +4,27 @@ declare(strict_types=1);
 
 namespace App\Services\Discord;
 
-use Illuminate\Support\Facades\Config;
+use App\Config\EnvironmentConfig;
 use Illuminate\Support\Facades\Http;
 
 final class InviteService
 {
+    public function __construct(
+        private readonly EnvironmentConfig $config
+    ) {}
+
     public function create(): string
     {
-        $response = Http::withHeaders(['Authorization' => 'Bot '.Config::string('services.discord.token')])
+        if (! $this->config->hasDiscord()) {
+            throw new CreateInviteFailedException('Discord is not configured');
+        }
+
+        $response = Http::withHeaders(['Authorization' => 'Bot '.$this->config->discordToken])
             ->post(
-                'https://discord.com/api/v10/channels/'.Config::string('services.discord.channel').'/invites',
+                'https://discord.com/api/v10/channels/'.$this->config->discordChannel.'/invites',
                 [
-                    'max_age' => Config::integer('services.discord.max_age'),
-                    'max_uses' => Config::integer('services.discord.max_uses'),
+                    'max_age' => $this->config->discordMaxAge,
+                    'max_uses' => $this->config->discordMaxUses,
                     'unique' => true,
                 ]
             );
@@ -30,6 +38,6 @@ final class InviteService
             throw new CreateInviteFailedException($response->body());
         }
 
-        return sprintf('%s/%s', Config::string('services.discord.domain'), $body['code']);
+        return sprintf('%s/%s', $this->config->discordDomain, $body['code']);
     }
 }

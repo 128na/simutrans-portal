@@ -95,7 +95,7 @@ final class AttachmentController extends Controller
             abort(400);
         }
 
-        $attachment = $store($user, $file, []);
+        $attachment = $store($user, $file);
         try {
             dispatch_sync(new \App\Jobs\Attachments\UpdateFileInfo($attachment));
         } catch (Throwable $throwable) {

@@ -126,7 +126,7 @@ final class CreateController extends Controller
          */
         $data = $storeRequest->validated();
 
-        $article = DB::transaction(fn(): Article => $storeArticle($user, $data));
+        $article = DB::transaction(fn (): Article => $storeArticle($user, $data));
 
         return response()->json(['article_id' => $article->id], 200);
     }

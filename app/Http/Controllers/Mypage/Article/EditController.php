@@ -146,7 +146,7 @@ final class EditController extends Controller
          */
         $data = $updateRequest->validated();
 
-        $article = DB::transaction(fn(): Article => $updateArticle($article, $data));
+        $article = DB::transaction(fn (): Article => $updateArticle($article, $data));
 
         return response()->json(['article_id' => $article->id], 200);
     }

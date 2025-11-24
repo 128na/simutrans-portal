@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\StoreAttachment;
 
-use App\Enums\CroppableFormat;
+use App\Enums\ImageFormat;
 use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Filesystem\FilesystemAdapter;
@@ -14,16 +14,12 @@ final readonly class Store
 {
     public function __construct(
         private FilesystemAdapter $filesystemAdapter,
-        private CropImage $cropImage,
     ) {}
 
-    /**
-     * @param  array<int,int>  $crop
-     */
-    public function __invoke(User $user, UploadedFile $uploadedFile, array $crop = []): Attachment
+    public function __invoke(User $user, UploadedFile $uploadedFile): Attachment
     {
         if ($this->isImage($uploadedFile)) {
-            return $this->storeAsImage($user, $uploadedFile, $crop);
+            return $this->storeAsImage($user, $uploadedFile);
         }
 
         return $this->storeAsFile($user, $uploadedFile);
@@ -31,30 +27,18 @@ final readonly class Store
 
     private function isImage(UploadedFile $uploadedFile): bool
     {
-        return $this->getMime($uploadedFile) instanceof CroppableFormat;
+        return $this->getMime($uploadedFile) instanceof ImageFormat;
     }
 
-    private function getMime(UploadedFile $uploadedFile): ?CroppableFormat
+    private function getMime(UploadedFile $uploadedFile): ?ImageFormat
     {
-        return CroppableFormat::tryFrom($uploadedFile->getMimeType() ?? '');
+        return ImageFormat::tryFrom($uploadedFile->getMimeType() ?? '');
     }
 
-    /**
-     * @param  array<int,int>  $crop
-     */
-    private function storeAsImage(User $user, UploadedFile $uploadedFile, array $crop = []): Attachment
+    private function storeAsImage(User $user, UploadedFile $uploadedFile): Attachment
     {
         try {
             $filepath = $this->filesystemAdapter->put('user/'.$user->id, $uploadedFile);
-            if ($crop && $fullpath = realpath(storage_path('app/public/'.$filepath))) {
-                try {
-                    ($this->cropImage)($fullpath, ...$crop);
-                } catch (ConvertFailedException) {
-                    // need not report
-                } catch (\Throwable $th) {
-                    report($th);
-                }
-            }
 
             return Attachment::create([
                 'user_id' => $user->id,

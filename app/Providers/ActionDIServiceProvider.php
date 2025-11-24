@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Actions\StoreAttachment\CropImage;
 use App\Actions\StoreAttachment\Store;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Storage;
@@ -19,8 +18,7 @@ final class ActionDIServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(Store::class, fn (Application $application): Store => new Store(
-            Storage::disk('public'),
-            $application->make(CropImage::class)
+            Storage::disk('public')
         ));
     }
 }

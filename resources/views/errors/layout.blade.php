@@ -6,7 +6,7 @@
     <title>{{ $meta['title'] ?? config('app.name') }}</title>
 
     @production
-    @include('ga')
+    @include('components.partials.ga')
     @endproduction
 
     <meta name="twitter:card" content="{{ $meta['card_type'] ?? 'summary_large_image' }}">

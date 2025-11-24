@@ -26,14 +26,14 @@ final class ConversionCountRepository
     private function buildSql(Article $article, CarbonImmutable $datetime): string
     {
         $table = 'conversion_counts';
-        $dayly = $datetime->format('Ymd');
+        $daily = $datetime->format('Ymd');
         $monthly = $datetime->format('Ym');
         $yearly = $datetime->format('Y');
         $total = 'total';
 
         return "INSERT INTO {$table}(user_id, article_id, type, period, count)
             VALUES
-                ({$article->user_id}, {$article->id}, 1,'{$dayly}', 1),
+                ({$article->user_id}, {$article->id}, 1,'{$daily}', 1),
                 ({$article->user_id}, {$article->id}, 2,'{$monthly}', 1),
                 ({$article->user_id}, {$article->id}, 3,'{$yearly}', 1),
                 ({$article->user_id}, {$article->id}, 4,'{$total}', 1)

@@ -6,6 +6,7 @@ namespace App\Actions\DeadLink;
 
 use App\Enums\ArticleStatus;
 use App\Models\Article;
+use App\Repositories\ArticleLinkCheckHistoryRepository;
 use App\Repositories\ArticleRepository;
 
 final readonly class OnDead
@@ -14,23 +15,24 @@ final readonly class OnDead
 
     public function __construct(
         private ArticleRepository $articleRepository,
-        private FailedCountCache $failedCountCache,
+        private ArticleLinkCheckHistoryRepository $articleLinkCheckHistoryRepository,
     ) {}
 
     public function __invoke(Article $article): bool
     {
         event(new \App\Events\Article\DeadLinkDetected($article));
-        $count = 1 + $this->failedCountCache->get($article);
-        if ($count < self::FAILED_LIMIT) {
-            $this->failedCountCache->update($article, $count);
 
+        $this->articleLinkCheckHistoryRepository->increment($article);
+        $count = $this->articleLinkCheckHistoryRepository->get($article);
+
+        if ($count < self::FAILED_LIMIT) {
             return false;
         }
 
         $this->articleRepository->update($article, ['status' => ArticleStatus::Private]);
 
         event(new \App\Events\Article\CloseByDeadLinkDetected($article));
-        $this->failedCountCache->clear($article);
+        $this->articleLinkCheckHistoryRepository->clear($article);
 
         return true;
     }

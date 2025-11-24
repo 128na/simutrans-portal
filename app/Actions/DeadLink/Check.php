@@ -6,6 +6,7 @@ namespace App\Actions\DeadLink;
 
 use App\Models\Article;
 use App\Models\Contents\AddonIntroductionContent;
+use App\Repositories\ArticleLinkCheckHistoryRepository;
 use App\Repositories\ArticleRepository;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Sleep;
@@ -20,7 +21,7 @@ final class Check
 
     public function __construct(
         private readonly ArticleRepository $articleRepository,
-        private readonly FailedCountCache $failedCountCache,
+        private readonly ArticleLinkCheckHistoryRepository $articleLinkCheckHistoryRepository,
         private readonly InIgnoreList $inIgnoreList,
         private readonly GetHeaders $getHeaders,
     ) {}
@@ -33,7 +34,7 @@ final class Check
         foreach ($this->getArticles() as $article) {
             if ($this->shouldProcess($article)) {
                 if ($this->isDead($article) === false) {
-                    $this->failedCountCache->clear($article);
+                    $this->articleLinkCheckHistoryRepository->clear($article);
 
                     continue;
                 }

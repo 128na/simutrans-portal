@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions\DeadLink;
 
 use App\Actions\DeadLink\Check;
-use App\Actions\DeadLink\FailedCountCache;
 use App\Actions\DeadLink\GetHeaders;
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
 use App\Models\Contents\AddonIntroductionContent;
+use App\Repositories\ArticleLinkCheckHistoryRepository;
 use App\Repositories\ArticleRepository;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\LazyCollection;
@@ -30,7 +30,7 @@ final class CheckTest extends TestCase
         $this->mock(GetHeaders::class, function (MockInterface $mock): void {
             $mock->expects()->__invoke('dummy')->once()->andReturn(['Status Code: 200 OK']);
         });
-        $this->mock(FailedCountCache::class, function (MockInterface $mock) use ($article): void {
+        $this->mock(ArticleLinkCheckHistoryRepository::class, function (MockInterface $mock) use ($article): void {
             $mock->expects()->clear($article)->once();
         });
 
@@ -55,7 +55,7 @@ final class CheckTest extends TestCase
                 ->times(2)->andReturn(['Status Code: 500 Internal Server Error'])
                 ->once()->andReturn(['Status Code: 200 OK']);
         });
-        $this->mock(FailedCountCache::class, function (MockInterface $mock) use ($article): void {
+        $this->mock(ArticleLinkCheckHistoryRepository::class, function (MockInterface $mock) use ($article): void {
             $mock->expects()->clear($article)->once();
         });
 

@@ -109,6 +109,23 @@ namespace App\Models{
 	final class Article extends \Eloquent implements \Spatie\Feed\Feedable {}
 }
 
+namespace App\Models{
+/**
+ * @property int $id
+ * @property int $article_id
+ * @property int $failed_count
+ * @property \Illuminate\Support\Carbon $last_checked_at
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property-read Article $article
+ * @mixin IdeHelperArticleLinkCheckHistory
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleLinkCheckHistory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleLinkCheckHistory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleLinkCheckHistory query()
+ */
+	final class ArticleLinkCheckHistory extends \Eloquent {}
+}
+
 namespace App\Models\Article{
 /**
  * @mixin IdeHelperArticleSearchIndex

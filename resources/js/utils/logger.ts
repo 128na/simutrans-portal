@@ -31,7 +31,7 @@ export const logger = {
   },
 
   /**
-   * 警告ログ（開発・本番共通）
+   * 警告ログ（開発環境のみ）
    */
   warn: (message: string, ...args: unknown[]) => {
     if (isDevelopment) {

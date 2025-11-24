@@ -27,7 +27,8 @@ export const Upload = ({ onUploaded, ...props }: Prop) => {
           `アップロードに失敗しました：${error.response?.data.message ?? "不明なエラー"}`
         );
       } else {
-        alert("アップロードに失敗しました");
+        // 予期しないエラー
+        alert("アップロードに失敗しました：予期しないエラーが発生しました");
       }
     }
   };

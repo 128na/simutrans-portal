@@ -11,6 +11,7 @@ use OpenApi\Attributes as OA;
  *     schema="Article",
  *     title="記事",
  *     description="記事情報",
+ *
  *     @OA\Property(property="id", type="integer", example=1, description="記事ID"),
  *     @OA\Property(property="title", type="string", example="新しいアドオン", description="タイトル"),
  *     @OA\Property(property="slug", type="string", example="new-addon", description="スラッグ"),

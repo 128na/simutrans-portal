@@ -41,9 +41,12 @@ final class ProfileController extends Controller
      *     description="ユーザーのプロフィール情報を更新します",
      *     tags={"Profile"},
      *     security={{"sanctum": {}}},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="nickname", type="string", example="新しいニックネーム", description="表示名"),
      *             @OA\Property(
      *                 property="profile",
@@ -53,21 +56,27 @@ final class ProfileController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="更新成功",
+     *
      *         @OA\JsonContent(
      *             type="object"
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=400,
      *         description="バリデーションエラー",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/Error")
      *     ),
+     *
      *     @OA\Response(
      *         response=403,
      *         description="権限エラー",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/Error")
      *     )
      * )

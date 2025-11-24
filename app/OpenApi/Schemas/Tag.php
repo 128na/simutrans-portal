@@ -11,6 +11,7 @@ use OpenApi\Attributes as OA;
  *     schema="Tag",
  *     title="タグ",
  *     description="タグ情報",
+ *
  *     @OA\Property(property="id", type="integer", example=1, description="タグID"),
  *     @OA\Property(property="name", type="string", example="pak128.japan", description="タグ名"),
  *     @OA\Property(property="description", type="string", example="pak128.japan用アドオン", description="説明"),

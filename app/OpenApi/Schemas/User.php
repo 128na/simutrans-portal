@@ -11,6 +11,7 @@ use OpenApi\Attributes as OA;
  *     schema="User",
  *     title="ユーザー",
  *     description="ユーザー情報",
+ *
  *     @OA\Property(property="id", type="integer", example=1, description="ユーザーID"),
  *     @OA\Property(property="name", type="string", example="user123", description="ユーザー名"),
  *     @OA\Property(property="nickname", type="string", example="ニックネーム", description="表示名"),
@@ -25,7 +26,9 @@ use OpenApi\Attributes as OA;
  *             property="attachments",
  *             type="array",
  *             description="プロフィール添付ファイル",
+ *
  *             @OA\Items(
+ *
  *                 @OA\Property(property="id", type="integer"),
  *                 @OA\Property(property="thumbnail", type="string"),
  *                 @OA\Property(property="original_name", type="string"),

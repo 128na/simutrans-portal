@@ -11,6 +11,7 @@ use OpenApi\Attributes as OA;
  *     schema="Category",
  *     title="カテゴリ",
  *     description="カテゴリ情報",
+ *
  *     @OA\Property(property="id", type="integer", example=1, description="カテゴリID"),
  *     @OA\Property(property="type", type="string", example="addon", description="カテゴリタイプ"),
  *     @OA\Property(property="slug", type="string", example="vehicles", description="スラッグ"),

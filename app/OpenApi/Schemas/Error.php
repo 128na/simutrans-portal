@@ -11,6 +11,7 @@ use OpenApi\Attributes as OA;
  *     schema="Error",
  *     title="エラー",
  *     description="エラーレスポンス",
+ *
  *     @OA\Property(property="message", type="string", example="An error occurred", description="エラーメッセージ"),
  *     @OA\Property(
  *         property="errors",

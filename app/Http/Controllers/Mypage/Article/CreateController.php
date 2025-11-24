@@ -56,10 +56,13 @@ final class CreateController extends Controller
      *     description="新しい記事を作成します",
      *     tags={"Articles"},
      *     security={{"sanctum": {}}},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             required={"article"},
+     *
      *             @OA\Property(
      *                 property="article",
      *                 type="object",
@@ -78,21 +81,28 @@ final class CreateController extends Controller
      *             @OA\Property(property="should_notify", type="boolean", example=true, description="通知するかどうか")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="作成成功",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="article_id", type="integer", example=1, description="作成された記事ID")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=400,
      *         description="バリデーションエラー",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/Error")
      *     ),
+     *
      *     @OA\Response(
      *         response=403,
      *         description="権限エラー",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/Error")
      *     )
      * )

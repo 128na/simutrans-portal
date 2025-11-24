@@ -11,6 +11,7 @@ use OpenApi\Attributes as OA;
  *     schema="Attachment",
  *     title="添付ファイル",
  *     description="添付ファイル情報",
+ *
  *     @OA\Property(property="id", type="integer", example=1, description="添付ファイルID"),
  *     @OA\Property(property="attachmentable_type", type="string", example="Article", description="関連エンティティタイプ"),
  *     @OA\Property(property="attachmentable_id", type="integer", example=1, description="関連エンティティID"),

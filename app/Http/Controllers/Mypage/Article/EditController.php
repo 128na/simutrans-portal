@@ -52,7 +52,7 @@ final class EditController extends Controller
      * 記事を更新
      *
      * @OA\Post(
-     *     path="/v2/articles/{article}",
+     *     path="/api/v2/articles/{article}",
      *     summary="記事の更新",
      *     description="既存の記事を更新します",
      *     tags={"Articles"},

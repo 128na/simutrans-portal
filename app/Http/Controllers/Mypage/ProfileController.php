@@ -36,7 +36,7 @@ final class ProfileController extends Controller
      * プロフィールを更新
      *
      * @OA\Post(
-     *     path="/v2/profile",
+     *     path="/api/v2/profile",
      *     summary="プロフィールの更新",
      *     description="ユーザーのプロフィール情報を更新します",
      *     tags={"Profile"},

@@ -35,7 +35,7 @@ final class AttachmentController extends Controller
      * 添付ファイルをアップロード
      *
      * @OA\Post(
-     *     path="/v2/attachments",
+     *     path="/api/v2/attachments",
      *     summary="添付ファイルのアップロード",
      *     description="新しい添付ファイルをアップロードします",
      *     tags={"Attachments"},
@@ -109,7 +109,7 @@ final class AttachmentController extends Controller
      * 添付ファイルを削除
      *
      * @OA\Delete(
-     *     path="/v2/attachments/{attachment}",
+     *     path="/api/v2/attachments/{attachment}",
      *     summary="添付ファイルの削除",
      *     description="指定された添付ファイルを削除します",
      *     tags={"Attachments"},

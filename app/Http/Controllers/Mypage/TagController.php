@@ -34,7 +34,7 @@ final class TagController extends Controller
      * 新しいタグを作成
      *
      * @OA\Post(
-     *     path="/v2/tags",
+     *     path="/api/v2/tags",
      *     summary="タグの作成",
      *     description="新しいタグを作成します",
      *     tags={"Tags"},
@@ -90,7 +90,7 @@ final class TagController extends Controller
      * タグを更新
      *
      * @OA\Post(
-     *     path="/v2/tags/{tag}",
+     *     path="/api/v2/tags/{tag}",
      *     summary="タグの更新",
      *     description="既存のタグを更新します",
      *     tags={"Tags"},

@@ -64,21 +64,26 @@ Authorization: Bearer {token}
 ### エンドポイント一覧
 
 #### タグ管理
+
 - `POST /v2/tags` - タグの作成
 - `POST /v2/tags/{tag}` - タグの更新
 
 #### 添付ファイル管理
+
 - `POST /v2/attachments` - 添付ファイルのアップロード
 - `DELETE /v2/attachments/{attachment}` - 添付ファイルの削除
 
 #### 記事管理
+
 - `POST /v2/articles` - 記事の作成
 - `POST /v2/articles/{article}` - 記事の更新
 
 #### プロフィール管理
+
 - `POST /v2/profile` - プロフィールの更新
 
 #### アナリティクス
+
 - `POST /v2/analytics` - アナリティクスデータの取得
 
 ## アノテーションの追加
@@ -92,7 +97,7 @@ use OpenApi\Attributes as OA;
 
 /**
  * @OA\Post(
- *     path="/v2/example",
+ *     path="/api/v2/example",
  *     summary="例のエンドポイント",
  *     description="エンドポイントの説明",
  *     tags={"Example"},
@@ -142,12 +147,14 @@ npx openapi-typescript http://localhost:8000/api-docs.json -o resources/js/types
 ### ドキュメントが生成されない
 
 1. キャッシュをクリアする：
+
 ```bash
 php artisan config:clear
 php artisan cache:clear
 ```
 
 2. 再度生成を実行：
+
 ```bash
 php artisan l5-swagger:generate
 ```

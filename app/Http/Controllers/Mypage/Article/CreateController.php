@@ -51,7 +51,7 @@ final class CreateController extends Controller
      * 新しい記事を作成
      *
      * @OA\Post(
-     *     path="/v2/articles",
+     *     path="/api/v2/articles",
      *     summary="記事の作成",
      *     description="新しい記事を作成します",
      *     tags={"Articles"},

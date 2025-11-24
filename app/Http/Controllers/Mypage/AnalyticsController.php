@@ -35,7 +35,7 @@ final class AnalyticsController extends Controller
      * アナリティクスデータを取得
      *
      * @OA\Post(
-     *     path="/internal-api/mypage/analytics/search",
+     *     path="/api/v2/mypage/analytics/search",
      *     summary="アナリティクスの取得",
      *     description="記事のアナリティクスデータを取得します",
      *     tags={"Analytics"},

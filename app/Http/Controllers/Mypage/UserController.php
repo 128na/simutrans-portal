@@ -43,7 +43,7 @@ final class UserController extends Controller
             return to_route('mypage.index');
         }
 
-        return view('auth.login', [
+        return view(\Illuminate\Auth\Events\Login::class, [
             'meta' => $this->metaOgpService->mypageLogin(),
         ]);
     }

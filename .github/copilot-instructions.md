@@ -31,7 +31,7 @@
 ### フロントエンド
 
 - **[resources/js/README.md](../resources/js/README.md)** - フロントエンドディレクトリ構成の詳細
-- **[resources/js/**tests**/README.md](../resources/js/__tests__/README.md)** - フロントエンドテストのセットアップ
+- [resources/js/**tests**/README.md](../resources/js/__tests__/README.md) - フロントエンドテストのセットアップ
 
 ### API・その他
 
@@ -236,7 +236,16 @@ final class ArticleRepository
   - コンポーネント Props: `types/components/*.d.ts`
 - **API 契約:** API（`routes/api.php` / コントローラ）を変更した場合、フロントエンドの `axios` 呼び出しと型も合わせて更新し、マイグレーション手順や互換情報を PR 説明に明記する。
 - **機密情報:** `credential.json` や `.env` のような秘密情報をコミットしない。必要な設定は環境変数で管理すること。
-- **ドキュメント:** README や該当する型定義、API の説明を必要に応じて更新する。
+- **ドキュメントの同期:** コード変更時は関連するREADMEやドキュメントも確認し、差異があれば更新する。
+  - 新しい Action/Service/Repository を追加 → 該当ディレクトリの README を更新
+  - Enum の値を追加/変更 → `app/Enums/README.md` を更新
+  - 新しいコマンドを追加 → `app/Console/README.md` を更新
+  - 新しいジョブを追加 → `app/Jobs/README.md` を更新
+  - 新しいイベント/リスナーを追加 → `app/Events/README.md` を更新
+  - マイグレーションを追加 → `database/README.md` の「最近の主要マイグレーション」を更新
+  - ルートを追加/変更 → `routes/README.md` を更新
+  - フロントエンドの構造を変更 → `resources/js/README.md` を更新
+  - テスト方針を変更 → 該当する README（`resources/js/__tests__/README.md` 等）を更新
 - **PR 説明:** 変更内容、レビュアが落とすべきコマンド（例: `npm run build`, `composer run stan`）、マイグレーションや手動手順があれば記載する。
 - **CI の確認:** CI がグリーン（`composer run all` 相当のチェックを含む）になるまでマージしない。
 
@@ -244,16 +253,32 @@ final class ArticleRepository
 
 以下はリポジトリ走査により「テストで直接参照されていない」可能性が高いクラス／機能の候補です。自動検出のため誤検知があり得ます。優先度は概ね重要度と外部依存の有無で分けています。
 
-- **`App\Services\MarkdownService`**: Markdown の変換・サニタイズ。推奨テスト名例: `test_render_basic`, `test_escape_xss`, `test_links_and_images`。
+### Services（外部API・インフラ層）
+
 - **`App\Services\Twitter\TwitterV2Api`**: Twitter API クライアント。推奨: 成功・HTTPエラー・例外処理のモック化テスト。
 - **`App\Services\Misskey\MisskeyApiClient`**: Misskey クライアント。推奨: API レスポンスの正規化テスト。
+- **`App\Services\BlueSky\BlueSkyApiClient`**: BlueSky API クライアントの成功/失敗パス検証。
+- **`App\Services\Discord\LogConverter`**: ログ変換ユーティリティの入出力テスト。
 - **`App\Services\FeedService`**: フィード集約・生成ロジック。推奨: 入力→出力の期待値テスト。
 - **`App\Services\FileInfo\FileInfoService`**: Extractor との連携を検証する統合テスト（Extractors は個別にテスト済み）。
 - **`App\Adapters\AutoRefreshingDropBoxTokenService`**: トークン自動更新フロー。推奨: 期限切れトークンからの自動更新シナリオをモックで検証。
-- **`App\Services\BlueSky\BlueSkyApiClient`**: BlueSky API クライアントの成功/失敗パス検証。
-- **`App\Services\Discord\LogConverter`**: ログ変換ユーティリティの入出力テスト。
-- **`App\Listeners\User\OnLogin`**, **`OnRegistered`** 等の一部リスナー: イベント → リスナーの動作確認テスト。
-- **`app/Console/Commands/*`** のコマンド類: 実行時の副作用（DB 更新・ジョブ投入など）を検証する Feature テスト。
+
+### Listeners（イベント駆動）
+
+- **`App\Listeners\User\OnLogin`**: ログイン時のログイン履歴記録の動作確認。
+- **`App\Listeners\User\OnRegistered`**: ユーザー登録時のウェルカムメール送信などの動作確認。
+- **`App\Listeners\User\OnPasswordReset`**: パスワードリセット時の動作確認。
+- **`App\Listeners\User\On*TwoFactor*`**: 2FA有効化・無効化時の動作確認。
+- **`App\Listeners\Discord\*`**: Discord関連リスナーの動作確認。
+- **`App\Listeners\Tag\*`**: タグ関連リスナーの動作確認。
+
+### Commands（Artisanコマンド）
+
+- **`App\Console\Commands\Article\CheckDeadLink`**: デッドリンクチェック実行時の副作用（DB更新・ジョブ投入）検証。
+- **`App\Console\Commands\Article\PublishReservation`**: 予約投稿の公開処理の検証。
+- **`App\Console\Commands\LangJsonExportCommand`**: 翻訳JSONエクスポート結果の検証。
+- **`App\Console\Commands\MFASetupAutoRecovery`**: 2FA自動リカバリ設定の検証。
+- **`App\Console\Commands\RemoveUnusedTagsCommand`**: 未使用タグ削除の検証。
 
 実際のカバレッジを把握するには `phpunit --coverage-text`（または CI のカバレッジレポート）を実行し、網羅されていないファイルやメソッドを確認してください。
 

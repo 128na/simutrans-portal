@@ -29,6 +29,7 @@
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.16.1",
     "barryvdh/laravel-ide-helper": "^3.6.0",
+    "darkaonline/l5-swagger": "^8.6",
     "dg/bypass-finals": "^1.9",
     "driftingly/rector-laravel": "^2.1.3",
     "fakerphp/faker": "^1.24.1",

@@ -109,9 +109,9 @@ resources/js/types/
 
 ```typescript
 // 明示的にインポート
-import type { ArticleList, UserShow } from '@/types/models';
-import type { ArticleListResponse } from '@/types/api';
-import type { PaginatedResponse } from '@/types/utils';
+import type { ArticleList, UserShow } from "@/types/models";
+import type { ArticleListResponse } from "@/types/api";
+import type { PaginatedResponse } from "@/types/utils";
 
 const [articles, setArticles] = useState<ArticleList[]>([]);
 const [user, setUser] = useState<UserShow>();
@@ -130,20 +130,22 @@ const [user, setUser] = useState<User.Show>();
 #### 主要な型
 
 **モデル型 (`types/models/`):**
+
 - Laravel のモデルと対応する TypeScript 型
 - 公開ページ用（`Show`）とマイページ用（`MypageEdit`, `MypageShow`）を区別
 - 例: `ArticleList`, `ArticleShow`, `ArticleMypageEdit`
 
 **API型 (`types/api/`):**
+
 - APIリクエスト/レスポンスの型定義
 - 例: `ArticleListResponse`, `ArticleSaveRequest`, `TagCreateRequest`
 
 **ユーティリティ型 (`types/utils/`):**
+
 - `ApiResponse<T>` - 基本的なAPIレスポンスラッパー
 - `PaginatedResponse<T>` - Laravel のページネーション構造
 - `ValidationError` - バリデーションエラー（422エラー）
 - `ErrorResponse` - 標準エラーレスポンス
-
 
 ## Test, Formatter, etc.
 
@@ -235,16 +237,32 @@ app/Http/Controllers/
 
 各コントローラーは単一責任の原則に従い、明確な責務を持っています。
 
-### Services と Actions
+### アーキテクチャドキュメント
+
+#### Services と Actions
 
 `Services/` と `Actions/` の責務分離については、以下のドキュメントを参照してください：
 
 - **[Services と Actions の役割分担ガイドライン](docs/architecture-services-and-actions.md)** - 詳細なアーキテクチャ説明
 - **[配置判断フローチャート](docs/decision-flowchart-services-actions.md)** - 新しいクラスの配置を判断するガイド
+- **[Actions README](app/Actions/README.md)** - Actionsの実装パターン
+- **[Services README](docs/architecture-services-and-actions.md)** - Servicesの詳細
 
 **要約:**
+
 - **Services** - 外部API連携、インフラ層、汎用ユーティリティ（技術的な関心事）
 - **Actions** - ユースケース、ビジネスロジック（ビジネスの関心事）
+
+#### その他の主要コンポーネント
+
+- **[Repositories](app/Repositories/README.md)** - データアクセス層（継承なし設計）
+- **[Models](app/Models/README.md)** - Eloquent Model（リレーション、Casts、Scopes）
+- **[Enums](app/Enums/README.md)** - 型安全な列挙型（7種類）
+- **[Console Commands](app/Console/README.md)** - Artisanコマンド
+- **[Jobs](app/Jobs/README.md)** - キュージョブ（非同期処理）
+- **[Events & Listeners](app/Events/README.md)** - イベント駆動アーキテクチャ
+- **[Routes](routes/README.md)** - ルーティング定義（web, api, internal_api）
+- **[Database](database/README.md)** - マイグレーション、Seeder、Factory
 
 ### Views (Blade Templates)
 
@@ -282,4 +300,3 @@ resources/views/
 ├── emails/              # メールテンプレート
 └── errors/              # エラーページ
 ```
-

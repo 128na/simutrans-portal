@@ -1,4 +1,5 @@
 ## 環境変数
+
 deployジョブの動作に必要。テストのみなら無しでもOK。
 
 ```
@@ -13,8 +14,3 @@ USER
 APP_DIR
 デプロイディレクトリ
 ```
-
-## カバレッジ出力
-
-masterマージ時に実行される
-https://coverage.128-bit.net/simutrans-portal/

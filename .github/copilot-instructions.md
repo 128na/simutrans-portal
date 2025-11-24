@@ -2,11 +2,50 @@
 
 このリポジトリで AI コーディングエージェントがすぐに作業に入れるように、実用的な注意点を短くまとめています。
 
+---
+
+## 📚 関連ドキュメント
+
+詳細なドキュメントは以下を参照してください：
+
+### 全体構造
+
+- **[README.md](../README.md)** - プロジェクト概要、セットアップ手順、ディレクトリ構造の詳細
+
+### アーキテクチャ
+
+- **[docs/README-services-actions.md](../docs/README-services-actions.md)** - Services と Actions アーキテクチャの完全ガイド
+- **[app/Actions/README.md](../app/Actions/README.md)** - Actions 実装パターン
+- **[app/Repositories/README.md](../app/Repositories/README.md)** - Repositories（継承なし設計）
+- **[app/Models/README.md](../app/Models/README.md)** - Eloquent Models（リレーション、Casts、Scopes）
+- **[app/Enums/README.md](../app/Enums/README.md)** - 型安全な列挙型（7種類）
+
+### 機能別
+
+- **[app/Console/README.md](../app/Console/README.md)** - Artisanコマンド
+- **[app/Jobs/README.md](../app/Jobs/README.md)** - キュージョブ（非同期処理）
+- **[app/Events/README.md](../app/Events/README.md)** - イベント駆動アーキテクチャ
+- **[routes/README.md](../routes/README.md)** - ルーティング定義（web, api, internal_api）
+- **[database/README.md](../database/README.md)** - マイグレーション、Seeder、Factory
+
+### フロントエンド
+
+- **[resources/js/README.md](../resources/js/README.md)** - フロントエンドディレクトリ構成の詳細
+- **[resources/js/**tests**/README.md](../resources/js/__tests__/README.md)** - フロントエンドテストのセットアップ
+
+### API・その他
+
+- **[app/OpenApi/README.md](../app/OpenApi/README.md)** - OpenAPI/Swagger ドキュメント
+- **[tests/Unit/Services/Twitter/README.md](../tests/Unit/Services/Twitter/README.md)** - Twitter PKCE Service のテストドキュメント
+- **[.github/workflows/README.md](../.github/workflows/README.md)** - CI/CD 設定と環境変数
+
+---
+
 ## プロジェクト概要
 
 - バックエンド: Laravel (PHP 8.3+, Laravel 12)。主要入口: `artisan` と `composer.json`。
 - フロントエンド: React + TypeScript + Vite（旧 README の Quasar/Vue 表記は古い）。フロントエンドのルート: `resources/js/`。
-- DB: MySQL（`.env.example` を参照）。テスト: PHPUnit / `php artisan test`。CI カバレッジ: `coverage.128-bit.net`。
+- DB: MySQL（`.env.example` を参照）。テスト: PHPUnit / `php artisan test`。
 
 ## ディレクトリ（簡易スナップショット）
 
@@ -30,210 +69,123 @@
 
 ## 主要な配置とパターン（まずここを確認）
 
-- `routes/` — `web.php`, `api.php`, `internal_api.php` にルーティング定義。コントローラの境界がわかる。
-- `app/` — Laravel のアプリコード（`Models`, `Repositories`, `Services`, `Http/Controllers`）。ビジネスロジックは `Repositories` / `Services` に分離されることが多い。
-- `app/Http/Controllers/` — コントローラーは機能別に整理されている：
-    - `Auth/` — 認証関連（LoginController, RegisterController, TwoFactorController, PasswordController）
-    - `Pages/` — 公開ページ（TopController, UserController, TagController, CategoryController, SocialController, DiscordController）
-        - `Pages/Article/` — 記事関連（IndexController, ShowController, DownloadController, PakController）
-    - `Mypage/` — マイページ（DashboardController, ProfileController, AnalyticsController, AttachmentController, TagController, RedirectController, InviteController）
-        - `Mypage/Article/` — 記事管理（IndexController, CreateController, EditController）
-    - `Admin/` — 管理画面（OauthController）
-    - `RedirectController` — 旧URL→新URLリダイレクト・固定リダイレクト
-- `resources/js/` — フロントエンドソース。エントリ: `front.ts`, `mypage.ts`。
-  - `components/` — 再利用可能なUIコンポーネント
-    - `ui/` — 小さなUIパーツ（Button, Input, Modal等）
-    - `layout/` — レイアウト系コンポーネント（Header, Pagination等）
-    - `form/` — フォーム関連コンポーネント
-  - `features/` — 機能別コンポーネント
-    - `articles/` — 記事関連機能
-    - `tags/` — タグ機能
-    - `analytics/` — アナリティクス
-    - `attachments/` — 添付ファイル
-    - `user/` — ユーザー機能
-  - `front/` — フロントページ用コンポーネント
-  - `mypage/` — マイページ用コンポーネント
-  - `hooks/` — カスタムフック
-  - `lib/` — ユーティリティ・ヘルパー
-  - `types/` — 型定義（API 変更や props 変更時に更新が必要）
-  - `utils/` — 汎用関数
-  - `__tests__/` — テストファイル
+**詳細は [README.md](../README.md) の "Directory Structure" セクションを参照してください。**
+
+### クイックリファレンス
+
+- `routes/` — ルーティング定義 (`web.php`, `api.php`, `internal_api.php`)
+- `app/Http/Controllers/` — 機能別に整理（Auth/, Pages/, Mypage/, Admin/）
+- `app/Services/` と `app/Actions/` — 技術的関心事とビジネスロジックの分離（詳細: [docs/README-services-actions.md](../docs/README-services-actions.md)）
+- `app/Repositories/` — データアクセス層（継承を使わず独立したクラス）
+- `resources/js/` — フロントエンド React + TypeScript（詳細: [resources/js/README.md](../resources/js/README.md)）
 - `resources/views/` — Blade テンプレート
-  - `layouts/` — レイアウトテンプレート
-    - `base.blade.php` — 共通ベース
-    - `front.blade.php`, `mypage.blade.php`, `admin.blade.php` — 各エントリポイント
-  - `components/` — 再利用可能なUIコンポーネント
-    - `ui/` — 小さなUIパーツ（link, session-message等）
-    - `layout/` — レイアウト系（header等）
-    - `partials/` — 部分テンプレート（ga, meta-tags等）
-  - `pages/` — 公開ページテンプレート
-    - `top/` — トップページ
-    - `users/` — ユーザーページ
-    - `tags/` — タグページ
-    - `categories/` — カテゴリページ
-    - `pak/` — Pakページ
-    - `search/` — 検索ページ
-    - `social/` — ソーシャルページ
-    - `discord/` — Discordページ
-    - `announces/` — お知らせページ
-    - `show/` — 記事詳細ページ
-    - `static/` — 静的ページ
-  - `auth/` — 認証画面（login, register, password reset等）
-  - `mypage/` — マイページ
-  - `admin/` — 管理画面
-  - `emails/` — メールテンプレート
-  - `errors/` — エラーページ
-- `public/`, `public/build` — コンパイル済みアセット。手動編集しないこと。
+- `public/build/` — コンパイル済みアセット（手動編集禁止）
 
 ## フロントエンド特有の注意点
 
-- React + TypeScript + Vite 構成。`tsconfig.json` と `vite.config.ts` の設定に注意。
+**詳細は [resources/js/README.md](../resources/js/README.md) を参照してください。**
 
-- コンポーネントは小さく保ち、ビジネスロジックは `features/` や `state/` に置く流れ。
-- HTTP クライアントは `axios` を利用（`resources/js/apps/*`）。エラー処理は `state/useAxiosError.ts` を参照。
-- UI 変更時は `resources/js/types/*.d.ts` の更新を忘れずに。型を更新したら `npm run build` でビルド確認。
-- **ロギング方針**: 
-  - `console.log`, `console.error`, `console.warn` の直接使用は禁止（ESLint の `no-console` ルールで検出）
-  - 開発時のデバッグには `resources/js/utils/logger.ts` の logger を使用
-  - logger は開発環境でのみコンソール出力、本番環境では何も出力しない
-  - 例外: `logger.ts` 自体と `vite.config.ts`（ビルドツール）のみ console の使用を許可
+### 重要ポイント
+
+### 重要ポイント
+
+- React + TypeScript + Vite 構成
+- エントリポイント: `front.ts`, `mypage.ts`
+- HTTP クライアント: `axios`（エラー処理は `state/useAxiosError.ts`）
+- ロギング: `resources/js/utils/logger.ts` を使用（console.log 直接使用禁止）
+- テスト: Vitest + React Testing Library（詳細: [resources/js/**tests**/README.md](../resources/js/__tests__/README.md)）
 
 ### 型定義の配置ルール
 
-型定義は `resources/js/types/` 配下に体系的に整理されています：
+**詳細は [README.md](../README.md) の "Type Definitions" セクションを参照してください。**
+
+型定義は `resources/js/types/` 配下に体系的に整理：
 
 - **`types/models/`** - Laravel モデルに対応する TypeScript 型
-  - `Article.ts`, `User.ts`, `Tag.ts`, `Category.ts`, `Attachment.ts` など
-  - 公開ページ用（`Show`）とマイページ用（`MypageEdit`, `MypageShow`）を区別
 - **`types/api/`** - API リクエスト/レスポンスの型
-  - `article.d.ts`, `user.d.ts`, `tag.d.ts` など
-  - エンドポイントごとに整理
-- **`types/utils/`** - ユーティリティ型
-  - `response.d.ts` - `ApiResponse<T>`, `PaginatedResponse<T>`, `ValidationError`, `ErrorResponse`
-  - `pagination.d.ts` - ページネーション関連型
+- **`types/utils/`** - ユーティリティ型（response, pagination）
 - **`types/components/`** - コンポーネント共通Props型
-  - `ui.d.ts` - UI コンポーネント型
-  - `form.d.ts` - フォーム関連型
-- **`types/index.d.ts`** - グローバル型定義と後方互換性レイヤー
 
-**新しいコードでの使用方法:**
+**推奨:** 新しいコードでは明示的なインポートを使用
+
 ```typescript
-// 明示的にインポート（推奨）
-import type { ArticleList, UserShow } from '@/types/models';
-import type { ArticleListResponse } from '@/types/api';
-import type { PaginatedResponse } from '@/types/utils';
-
-const [articles, setArticles] = useState<ArticleList[]>([]);
+import type { ArticleList, UserShow } from "@/types/models";
+import type { ArticleListResponse } from "@/types/api";
 ```
-
-**既存コードとの互換性:**
-```typescript
-// グローバル名前空間での使用（後方互換性のため残されている）
-const [articles, setArticles] = useState<Article.List[]>([]);
-const [user, setUser] = useState<User.Show>();
-```
-
-両方の記法がサポートされていますが、新しいコードでは明示的なインポートを推奨します。
 
 ## バックエンド特有の注意点
 
-- Laravel の慣習に従う。コントローラは薄く、`Repositories` / `Services` にロジックがあることが多い。
-- Composer スクリプト:
-    - `composer run all` はリポジトリ全体チェックの定番（IDE ヘルパー生成、rector、phpstan、pint を実行）。
-    - `composer run pint`, `composer run stan` で個別にフォーマット／解析可能。
-- DB セットアップ: `php artisan migrate --seed`。管理者ユーザー作成は `README.md` の例（`php artisan tinker`）を参照。
+### Composer スクリプト
+
+- `composer run all` — 全チェック（ide-helper, rector, phpstan, pint）
+- `composer run pint` — コード整形
+- `composer run stan` — 静的解析
 
 ### Services と Actions の責務分離
 
-**重要**: 新しいコードを作成する際は、`Services` と `Actions` の責務を明確に区別してください。
+**重要**: 新しいコードを作成する際は、責務を明確に区別してください。
 
-- **Services (app/Services/)**: 技術的な関心事を扱う
-  - 外部APIとの通信（Twitter, Discord, BlueSky, Misskey, Google等）
+**詳細は [docs/README-services-actions.md](../docs/README-services-actions.md) を参照してください。**
+
+#### クイックガイド
+
+- **Services (app/Services/)**: 技術的な関心事
+  - 外部API通信（Twitter, Discord, BlueSky, Misskey, Google等）
   - インフラ層のラッパー（ファイルシステム、キャッシュ、メール等）
   - 汎用的なユーティリティ（Markdown変換、Feed生成等）
-  - 複数のドメインから利用される基盤機能
-  - 特徴: ステートレス、副作用が明確、モック化しやすい
-  - 命名規則: `{機能名}Service` または `{サービス名}ApiClient`
+  - 命名: `{機能名}Service` または `{サービス名}ApiClient`
 
-- **Actions (app/Actions/)**: ビジネスの関心事を扱う
-  - 1つの具体的なユースケースを表現（記事作成、ユーザー登録等）
+- **Actions (app/Actions/)**: ビジネスの関心事
+  - 1つの具体的なユースケース（記事作成、ユーザー登録等）
   - アプリケーション固有のビジネスルール
-  - 複数のRepository/Serviceを組み合わせた処理
-  - 単一責任の原則（SRP）に従う：1クラス = 1ユースケース
-  - 特徴: `__invoke()` または `execute()` メソッド1つ、ドメインロジックに集中
-  - 命名規則: 動詞で始める（`StoreArticle`, `UpdateArticle`）または `{動詞}{対象}Action`
+  - 単一責任の原則（1クラス = 1ユースケース）
+  - 命名: 動詞で始める（`StoreArticle`, `UpdateArticle`）
 
 **判断フロー**:
+
 1. 外部APIやインフラと通信する？ → `Services/`
 2. 複数のドメインで再利用される？ → `Services/`
 3. 特定のユースケースを表現する？ → `Actions/`
-4. 純粋なドメインロジック？ → `Actions/`（または将来的に `Domain/`）
-
-**詳細**: `docs/architecture-services-and-actions.md` を参照してください。
 
 ### Repository パターン
 
-**重要**: このプロジェクトでは Repository に継承を使用しません。各 Repository は独立したクラスとして実装します。
+**重要**: Repository に継承を使用しません。各 Repository は独立したクラスです。
 
-- **基本方針**:
-  - `BaseRepository` や `BaseCountRepository` は**非推奨**で、継承してはいけません
-  - 各 Repository は必要なメソッドのみを実装する
-  - モデルは `private readonly` プロパティとしてコンストラクタで受け取る
-  - 共通処理が必要な場合は、トレイトやヘルパー関数を検討する
+- `BaseRepository` は**非推奨**（継承禁止）
+- 必要なメソッドのみを実装
+- モデルは `private readonly` プロパティとして受け取る
 
-- **実装パターン**:
-  ```php
-  final class ArticleRepository
-  {
-      public function __construct(public Article $model) {}
-      
-      // 必要なメソッドのみを実装
-      public function find(int $id): ?Article
-      {
-          return $this->model->find($id);
-      }
-      
-      // ドメイン固有のメソッド
-      public function findBySlug(string $slug): ?Article
-      {
-          return $this->model->where('slug', $slug)->first();
-      }
-  }
-  ```
+```php
+final class ArticleRepository
+{
+    public function __construct(public Article $model) {}
 
-- **命名規則**:
-  - 単体取得: `find()`, `findOrFail()`, `findBy{条件}()`
-  - 一覧取得: `getFor{用途}()`, `getBy{条件}()`
-  - 作成: `store()`
-  - 更新: `update()`
-  - 削除: `delete()`
-  - 関連付け: `sync{関連名}()`
+    public function find(int $id): ?Article
+    {
+        return $this->model->find($id);
+    }
+}
+```
 
-- **推奨しないパターン**:
-  - ❌ BaseRepository を継承する
-  - ❌ 使わないメソッドを実装する
-  - ❌ 汎用的すぎる抽象化
+## テストとCI/CD
 
-- **推奨するパターン**:
-  - ✅ 各 Repository は独立したクラス
-  - ✅ 実際に使用するメソッドのみを実装
-  - ✅ ドメイン固有のメソッド名を使用
-  - ✅ テストで必要なメソッドも実装する（テストファーストの場合）
+### テスト実行
 
-## 外部連携 / 依存サービス
+- バックエンド: `php artisan test --testsuite=Unit` / `--testsuite=Feature`
+- フロントエンド: `npm test` / `npm run test:coverage`
+- 参考: [resources/js/**tests**/README.md](../resources/js/__tests__/README.md)、[tests/Unit/Services/Twitter/README.md](../tests/Unit/Services/Twitter/README.md)
 
-- `composer.json` に OneSignal、Discord、Dropbox、ReCAPTCHA、Google API などが含まれる。これら周りの変更は慎重に。
-- CI/デプロイで使う環境変数（`.github/workflows` で参照）: `SSH_KEY`, `KNOWN_HOSTS`, `HOST`, `USER`, `APP_DIR`。
+### CI/CD
 
-## テストとブラウザ自動化
+- 環境変数: `SSH_KEY`, `KNOWN_HOSTS`, `HOST`, `USER`, `APP_DIR`
+- 詳細: [.github/workflows/README.md](../.github/workflows/README.md)
 
-- Laravel Dusk が導入されている（`laravel/dusk`）。ブラウザテストは chromedriver や CI 上の Docker ブラウザが必要になる可能性あり。
-- ユニット・機能テストは `php artisan test` または `vendor/bin/phpunit` で実行。
+## API ドキュメント
 
-## コードレビューと整形ルール
-
-- PHP: `pint`（コード整形）と `phpstan`（静的解析）を利用。PR 前に `composer run all` を推奨。
-- JS/TS: `eslint` と `prettier` を利用。`npm run lint` / `npm run format` を使う。
+- パッケージ: darkaonline/l5-swagger（OpenAPI 3.0）
+- 生成: `php artisan l5-swagger:generate`
+- 閲覧: http://localhost:8000/api/documentation（開発環境）
+- 詳細: [app/OpenApi/README.md](../app/OpenApi/README.md)
 
 ## 注意事項（特に気をつける点）
 
@@ -244,25 +196,33 @@ const [user, setUser] = useState<User.Show>();
 
 1. ブランチを pull して依存をインストール:
 
-- `composer install`
-- `npm ci`
+   ```bash
+   composer install
+   npm ci
+   ```
 
 2. 開発サーバを立ち上げる:
 
-- `php artisan serve`（もしくは LAMP / Docker）
-- `npm run dev`
+   ```bash
+   php artisan serve
+   npm run dev
+   ```
 
 3. UI を変更したら型を確認し、ビルドと整形を実行:
-
-- `npm run build`
-- `composer run pint`
+   ```bash
+   npm run build
+   composer run pint
+   ```
 
 ## 迷ったら最初に見る場所
 
-- フロントエンドの UI バグ: `resources/js/components` と `resources/js/features` を確認。
-- コントローラーの場所: `Auth/`, `Pages/`, `Mypage/`, `Admin/` ディレクトリで機能別に分類されている。
-- API の契約不一致: `routes/api.php` と該当コントローラ (`app/Http/Controllers`) を確認。
-- CI や静的解析エラー: ローカルで `composer run stan` と `composer run pint` を実行して再現する。
+- **フロントエンドの UI バグ**: `resources/js/components` と `resources/js/features` を確認 → [resources/js/README.md](../resources/js/README.md)
+- **コントローラーの配置**: `Auth/`, `Pages/`, `Mypage/`, `Admin/` で機能別分類 → [README.md](../README.md)
+- **Services/Actions の判断**: [docs/README-services-actions.md](../docs/README-services-actions.md) の判断フローチャート
+- **API の契約不一致**: `routes/api.php` と該当コントローラを確認 → [app/OpenApi/README.md](../app/OpenApi/README.md)
+- **型定義の場所**: `resources/js/types/` 配下 → [README.md](../README.md) の Type Definitions
+- **テストの書き方**: [resources/js/**tests**/README.md](../resources/js/__tests__/README.md)、[tests/Unit/Services/Twitter/README.md](../tests/Unit/Services/Twitter/README.md)
+- **CI エラー**: [.github/workflows/README.md](../.github/workflows/README.md)
 
 ## PR チェックリスト
 
@@ -286,7 +246,6 @@ const [user, setUser] = useState<User.Show>();
 
 - **`App\Services\MarkdownService`**: Markdown の変換・サニタイズ。推奨テスト名例: `test_render_basic`, `test_escape_xss`, `test_links_and_images`。
 - **`App\Services\Twitter\TwitterV2Api`**: Twitter API クライアント。推奨: 成功・HTTPエラー・例外処理のモック化テスト。
-- **`App\Services\Twitter\PKCEService`**: PKCE/OAuth トークン管理。推奨: `test_create_pkce`, `test_refresh_token_error`。
 - **`App\Services\Misskey\MisskeyApiClient`**: Misskey クライアント。推奨: API レスポンスの正規化テスト。
 - **`App\Services\FeedService`**: フィード集約・生成ロジック。推奨: 入力→出力の期待値テスト。
 - **`App\Services\FileInfo\FileInfoService`**: Extractor との連携を検証する統合テスト（Extractors は個別にテスト済み）。
@@ -298,9 +257,15 @@ const [user, setUser] = useState<User.Show>();
 
 実際のカバレッジを把握するには `phpunit --coverage-text`（または CI のカバレッジレポート）を実行し、網羅されていないファイルやメソッドを確認してください。
 
+**参考**: テストの実装例は以下を参照してください：
+
+- Twitter PKCE Service: [tests/Unit/Services/Twitter/README.md](../tests/Unit/Services/Twitter/README.md)
+- フロントエンドテスト: [resources/js/**tests**/README.md](../resources/js/__tests__/README.md)
+
 ---
 
 ## テスト実装方針
 
-- ユニットテスト: `tests/Unit` に配置。主にサービスなどDBに依存しない、もしくはモックに置換可能なロジックのテスト
-- 機能テスト: `tests/Feature` に配置。主にController, Repositoryを中心にデータベースに依存するテスト
+- **ユニットテスト**: `tests/Unit` に配置。主にサービスなどDBに依存しない、もしくはモックに置換可能なロジックのテスト
+- **機能テスト**: `tests/Feature` に配置。主にController, Repositoryを中心にデータベースに依存するテスト
+- **フロントエンドテスト**: `resources/js/__tests__/` に配置。Vitest + React Testing Library を使用

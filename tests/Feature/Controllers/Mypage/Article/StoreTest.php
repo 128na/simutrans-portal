@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Controllers\Mypage\ArticleController;
+namespace Tests\Feature\Controllers\Mypage\Article;
 
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;

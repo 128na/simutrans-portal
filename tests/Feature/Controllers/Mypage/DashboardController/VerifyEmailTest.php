@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Controllers\Mypage\ArticleController;
+namespace Tests\Feature\Controllers\Mypage\DashboardController;
 
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-final class CreateTest extends TestCase
+final class VerifyEmailTest extends TestCase
 {
     private User $user;
 
@@ -20,15 +20,15 @@ final class CreateTest extends TestCase
 
     public function test_未ログイン(): void
     {
-        $url = '/mypage/articles/create';
+        $url = '/mypage/verify-email';
 
         $testResponse = $this->get($url);
         $testResponse->assertRedirect('/login');
     }
 
-    public function test_ログイン時に記事作成ページを表示(): void
+    public function test_ログイン時にメール認証ページを表示(): void
     {
-        $url = '/mypage/articles/create';
+        $url = '/mypage/verify-email';
 
         $this->actingAs($this->user);
 

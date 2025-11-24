@@ -17,7 +17,7 @@ final class EnvironmentConfigTest extends TestCase
         $this->config = EnvironmentConfig::fromEnv();
     }
 
-    public function test_fromEnv_creates_instance(): void
+    public function test_from_env_creates_instance(): void
     {
         $this->assertInstanceOf(EnvironmentConfig::class, $this->config);
     }
@@ -47,56 +47,56 @@ final class EnvironmentConfigTest extends TestCase
         );
     }
 
-    public function test_hasTwitter_returns_false_when_credentials_are_incomplete(): void
+    public function test_has_twitter_returns_false_when_credentials_are_incomplete(): void
     {
         // テスト環境ではTwitter認証情報がダミー値なので false になるはず
         $hasTwitter = $this->config->hasTwitter();
         $this->assertIsBool($hasTwitter);
     }
 
-    public function test_hasDiscord_returns_false_when_credentials_are_incomplete(): void
+    public function test_has_discord_returns_false_when_credentials_are_incomplete(): void
     {
         // テスト環境ではDiscord認証情報がダミー値なので false になるはず
         $hasDiscord = $this->config->hasDiscord();
         $this->assertIsBool($hasDiscord);
     }
 
-    public function test_hasOneSignal_returns_boolean(): void
+    public function test_has_one_signal_returns_boolean(): void
     {
         $this->assertIsBool($this->config->hasOneSignal());
     }
 
-    public function test_hasDropbox_returns_boolean(): void
+    public function test_has_dropbox_returns_boolean(): void
     {
         $this->assertIsBool($this->config->hasDropbox());
     }
 
-    public function test_hasRecaptcha_returns_boolean(): void
+    public function test_has_recaptcha_returns_boolean(): void
     {
         $this->assertIsBool($this->config->hasRecaptcha());
     }
 
-    public function test_hasMisskey_returns_boolean(): void
+    public function test_has_misskey_returns_boolean(): void
     {
         $this->assertIsBool($this->config->hasMisskey());
     }
 
-    public function test_hasBlueSky_returns_boolean(): void
+    public function test_has_blue_sky_returns_boolean(): void
     {
         $this->assertIsBool($this->config->hasBlueSky());
     }
 
-    public function test_hasGoogleAnalytics_returns_boolean(): void
+    public function test_has_google_analytics_returns_boolean(): void
     {
         $this->assertIsBool($this->config->hasGoogleAnalytics());
     }
 
-    public function test_isProduction_returns_boolean(): void
+    public function test_is_production_returns_boolean(): void
     {
         $this->assertIsBool($this->config->isProduction());
     }
 
-    public function test_isDevelopment_returns_boolean(): void
+    public function test_is_development_returns_boolean(): void
     {
         $this->assertIsBool($this->config->isDevelopment());
     }

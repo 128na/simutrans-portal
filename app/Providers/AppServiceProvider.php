@@ -22,9 +22,7 @@ final class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         // 型安全な環境変数アクセスを提供するシングルトン
-        $this->app->singleton(\App\Config\EnvironmentConfig::class, function (): \App\Config\EnvironmentConfig {
-            return \App\Config\EnvironmentConfig::fromEnv();
-        });
+        $this->app->singleton(fn (): \App\Config\EnvironmentConfig => \App\Config\EnvironmentConfig::fromEnv());
     }
 
     /**

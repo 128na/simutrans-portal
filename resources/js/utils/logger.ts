@@ -3,7 +3,7 @@
  * 開発環境ではコンソールに出力し、本番環境では何もしない
  */
 
-import { env } from '@/lib/env';
+import { env } from "@/lib/env";
 
 const isDevelopment = env.isDevelopment;
 

@@ -23,9 +23,9 @@ interface EnvironmentVariables {
  */
 function validateRequiredEnv(): void {
   const required: Array<keyof ImportMetaEnv> = [
-    'VITE_API_URL',
-    'VITE_APP_URL',
-    'VITE_APP_NAME',
+    "VITE_API_URL",
+    "VITE_APP_URL",
+    "VITE_APP_NAME",
   ];
 
   const missing: string[] = [];
@@ -38,8 +38,8 @@ function validateRequiredEnv(): void {
 
   if (missing.length > 0) {
     throw new Error(
-      `Missing required environment variables: ${missing.join(', ')}\n` +
-        'Please check your .env file and ensure all required variables are set.'
+      `Missing required environment variables: ${missing.join(", ")}\n` +
+        "Please check your .env file and ensure all required variables are set."
     );
   }
 }

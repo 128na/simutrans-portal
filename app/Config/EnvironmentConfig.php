@@ -1,0 +1,218 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Config;
+
+use Illuminate\Support\Facades\Config;
+
+/**
+ * 型安全な環境変数アクセスクラス
+ * 
+ * 環境変数を型安全にアクセスするための読み取り専用設定クラス。
+ * 実行時エラーを防ぎ、IDEの補完サポートを提供します。
+ */
+final readonly class EnvironmentConfig
+{
+    public function __construct(
+        // アプリケーション設定（必須）
+        public string $appName,
+        public string $appEnv,
+        public bool $appDebug,
+        public string $appUrl,
+        public ?string $assetUrl,
+        
+        // データベース設定（必須）
+        public string $dbHost,
+        public int $dbPort,
+        public string $dbDatabase,
+        public string $dbUsername,
+        public string $dbPassword,
+        
+        // ログ設定（オプション）
+        public ?string $logSlackWebhookUrl,
+        
+        // メール設定（必須）
+        public string $mailMailer,
+        public string $mailHost,
+        public int $mailPort,
+        
+        // Twitter設定（オプション）
+        public ?string $twitterBearerToken,
+        public ?string $twitterClientId,
+        public ?string $twitterClientSecret,
+        public ?string $twitterConsumerKey,
+        public ?string $twitterConsumerSecret,
+        
+        // Discord設定（オプション）
+        public ?string $discordToken,
+        public ?string $discordChannel,
+        public string $discordDomain,
+        public int $discordMaxAge,
+        public int $discordMaxUses,
+        
+        // Google設定（オプション）
+        public ?string $googleRecaptchaProjectName,
+        public ?string $googleRecaptchaSiteKey,
+        public ?string $googleRecaptchaCredential,
+        public ?string $gtag,
+        
+        // OneSignal設定（オプション）
+        public ?string $onesignalAppId,
+        public ?string $onesignalRestApiKey,
+        
+        // Dropbox設定（オプション）
+        public ?string $dropboxAuthorizationToken,
+        
+        // Misskey設定（オプション）
+        public string $misskeyBaseUrl,
+        public ?string $misskeyToken,
+        
+        // BlueSky設定（オプション）
+        public ?string $blueskyUser,
+        public ?string $blueskyPassword,
+    ) {}
+    
+    /**
+     * 環境変数から EnvironmentConfig インスタンスを生成
+     */
+    public static function fromEnv(): self
+    {
+        return new self(
+            // アプリケーション設定
+            appName: Config::string('app.name'),
+            appEnv: Config::string('app.env'),
+            appDebug: Config::boolean('app.debug'),
+            appUrl: Config::string('app.url'),
+            assetUrl: Config::string('app.asset_url', null),
+            
+            // データベース設定
+            dbHost: Config::string('database.connections.mysql.host'),
+            dbPort: Config::integer('database.connections.mysql.port'),
+            dbDatabase: Config::string('database.connections.mysql.database'),
+            dbUsername: Config::string('database.connections.mysql.username'),
+            dbPassword: Config::string('database.connections.mysql.password'),
+            
+            // ログ設定
+            logSlackWebhookUrl: Config::string('logging.channels.slack.url', null),
+            
+            // メール設定
+            mailMailer: Config::string('mail.mailer'),
+            mailHost: Config::string('mail.host'),
+            mailPort: Config::integer('mail.port'),
+            
+            // Twitter設定
+            twitterBearerToken: Config::string('services.twitter.bearer_token', null),
+            twitterClientId: Config::string('services.twitter.client_id', null),
+            twitterClientSecret: Config::string('services.twitter.client_secret', null),
+            twitterConsumerKey: Config::string('services.twitter.consumer_key', null),
+            twitterConsumerSecret: Config::string('services.twitter.consumer_secret', null),
+            
+            // Discord設定
+            discordToken: Config::string('services.discord.token', null),
+            discordChannel: Config::string('services.discord.channel', null),
+            discordDomain: Config::string('services.discord.domain'),
+            discordMaxAge: Config::integer('services.discord.max_age'),
+            discordMaxUses: Config::integer('services.discord.max_uses'),
+            
+            // Google設定
+            googleRecaptchaProjectName: Config::string('services.google_recaptcha.projectName', null),
+            googleRecaptchaSiteKey: Config::string('services.google_recaptcha.siteKey', null),
+            googleRecaptchaCredential: Config::string('services.google_recaptcha.credential', null),
+            gtag: Config::string('app.gtag', null),
+            
+            // OneSignal設定
+            onesignalAppId: Config::string('onesignal.app_id', null),
+            onesignalRestApiKey: Config::string('onesignal.rest_api_key', null),
+            
+            // Dropbox設定
+            dropboxAuthorizationToken: Config::string('filesystems.disks.dropbox.authorization_token', null),
+            
+            // Misskey設定
+            misskeyBaseUrl: Config::string('services.misskey.base_url'),
+            misskeyToken: Config::string('services.misskey.token', null),
+            
+            // BlueSky設定
+            blueskyUser: Config::string('services.bluesky.user', null),
+            blueskyPassword: Config::string('services.bluesky.password', null),
+        );
+    }
+    
+    /**
+     * Twitter連携が有効かチェック
+     */
+    public function hasTwitter(): bool
+    {
+        return $this->twitterBearerToken !== null 
+            && $this->twitterClientId !== null 
+            && $this->twitterClientSecret !== null
+            && $this->twitterConsumerKey !== null
+            && $this->twitterConsumerSecret !== null;
+    }
+    
+    /**
+     * Discord連携が有効かチェック
+     */
+    public function hasDiscord(): bool
+    {
+        return $this->discordToken !== null && $this->discordChannel !== null;
+    }
+    
+    /**
+     * Google reCAPTCHA が有効かチェック
+     */
+    public function hasGoogleRecaptcha(): bool
+    {
+        return $this->googleRecaptchaProjectName !== null 
+            && $this->googleRecaptchaSiteKey !== null 
+            && $this->googleRecaptchaCredential !== null;
+    }
+    
+    /**
+     * OneSignal プッシュ通知が有効かチェック
+     */
+    public function hasOneSignal(): bool
+    {
+        return $this->onesignalAppId !== null && $this->onesignalRestApiKey !== null;
+    }
+    
+    /**
+     * Dropbox バックアップが有効かチェック
+     */
+    public function hasDropbox(): bool
+    {
+        return $this->dropboxAuthorizationToken !== null;
+    }
+    
+    /**
+     * Misskey連携が有効かチェック
+     */
+    public function hasMisskey(): bool
+    {
+        return $this->misskeyToken !== null;
+    }
+    
+    /**
+     * BlueSky連携が有効かチェック
+     */
+    public function hasBlueSky(): bool
+    {
+        return $this->blueskyUser !== null && $this->blueskyPassword !== null;
+    }
+    
+    /**
+     * Google Analytics (gtag) が有効かチェック
+     */
+    public function hasGoogleAnalytics(): bool
+    {
+        return $this->gtag !== null;
+    }
+    
+    /**
+     * Slack通知が有効かチェック
+     */
+    public function hasSlackLogging(): bool
+    {
+        return $this->logSlackWebhookUrl !== null;
+    }
+}

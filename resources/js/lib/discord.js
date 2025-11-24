@@ -1,17 +1,21 @@
-const siteKey = import.meta.env.VITE_GOOGLE_RECAPTCHA_SITE_KEY;
+import { env, hasGoogleRecaptcha } from "./env";
+
 const app = document.getElementById("inviteDiscord");
 const form = document.getElementById("inviteForm");
 const recaptchaToken = document.getElementById("recaptchaToken");
 
-if (siteKey && app && recaptchaToken && form) {
+if (hasGoogleRecaptcha() && app && recaptchaToken && form) {
   app.addEventListener("click", async (ev) => {
     ev.preventDefault();
 
     try {
       // reCAPTCHAトークンを取得
-      const token = await window.grecaptcha.enterprise.execute(siteKey, {
-        action: "invite",
-      });
+      const token = await window.grecaptcha.enterprise.execute(
+        env.googleRecaptchaSiteKey,
+        {
+          action: "invite",
+        }
+      );
       recaptchaToken.value = token;
 
       // トークンをセットしたあとに送信

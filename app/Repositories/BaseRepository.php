@@ -19,6 +19,8 @@ use Illuminate\Support\Str;
  * カーソル: cursor(By)Hoge
  *
  * @template T of Model
+ *
+ * @deprecated このクラスは非推奨です。継承せず、各Repositoryで必要なメソッドを個別に実装してください。
  */
 abstract class BaseRepository
 {

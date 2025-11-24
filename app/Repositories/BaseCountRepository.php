@@ -8,6 +8,9 @@ use App\Models\Article;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @deprecated このクラスは非推奨です。ViewCountRepositoryとConversionCountRepositoryに機能がインライン化されました。
+ */
 abstract class BaseCountRepository
 {
     /**

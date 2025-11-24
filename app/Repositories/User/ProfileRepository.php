@@ -5,15 +5,34 @@ declare(strict_types=1);
 namespace App\Repositories\User;
 
 use App\Models\User\Profile;
-use App\Repositories\BaseRepository;
 
-/**
- * @extends BaseRepository<Profile>
- */
-final class ProfileRepository extends BaseRepository
+final class ProfileRepository
 {
-    public function __construct(Profile $profile)
+    public function __construct(private readonly Profile $model) {}
+
+    /**
+     * @param  array<mixed>  $data
+     */
+    public function store(array $data): Profile
     {
-        parent::__construct($profile);
+        return $this->model->create($data);
+    }
+
+    /**
+     * @param  array<mixed>  $data
+     */
+    public function update(Profile $profile, array $data): void
+    {
+        $profile->update($data);
+    }
+
+    public function find(int|string|null $id): ?Profile
+    {
+        return $this->model->find($id);
+    }
+
+    public function delete(Profile $profile): void
+    {
+        $profile->delete();
     }
 }

@@ -35,7 +35,7 @@ final class LangJsonExportCommand extends Command
                 continue;
             }
 
-            foreach (glob($langPath.'/*.php') as $file) {
+            foreach (glob($langPath.'/*.php') ?: [] as $file) {
                 $filename = basename($file, '.php');
                 $translations[$filename] = require $file;
             }

@@ -27,6 +27,7 @@ final class RegisterController extends Controller
 
     public function registration(User $user, StoreRequest $storeRequest, Registration $registration): View
     {
+        /** @var array{name: string, email: string, password: string} $data */
         $data = $storeRequest->validated();
         $inviter = $registration($data, $user);
 

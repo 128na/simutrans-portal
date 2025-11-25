@@ -48,7 +48,8 @@ final readonly class ZipArchiveParser
     private function convert(string $str): string
     {
         $detected = mb_detect_encoding($str, mb_list_encodings());
+        $result = mb_convert_encoding($str, 'UTF-8', $detected ?: 'UTF-8');
 
-        return mb_convert_encoding($str, 'UTF-8', $detected ?: 'UTF-8');
+        return $result === false ? $str : $result;
     }
 }

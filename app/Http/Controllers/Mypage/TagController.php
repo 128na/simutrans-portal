@@ -75,11 +75,14 @@ final class TagController extends Controller
      */
     public function store(StoreRequest $storeRequest): TagEdit
     {
+        /** @var int $userId */
+        $userId = Auth::id();
+
         $tag = $this->tagRepository->store([
-            'name' => $storeRequest->input('name'),
-            'description' => $storeRequest->input('description'),
-            'created_by' => Auth::id(),
-            'last_modified_by' => Auth::id(),
+            'name' => (string) $storeRequest->input('name'),
+            'description' => $storeRequest->input('description') ? (string) $storeRequest->input('description') : null,
+            'created_by' => $userId,
+            'last_modified_by' => $userId,
             'last_modified_at' => now(),
         ]);
 
@@ -151,9 +154,12 @@ final class TagController extends Controller
             return abort(403);
         }
 
+        /** @var int $userId */
+        $userId = Auth::id();
+
         $tag = $this->tagRepository->update($tag, [
-            'description' => $updateRequest->input('description'),
-            'last_modified_by' => Auth::id(),
+            'description' => $updateRequest->input('description') ? (string) $updateRequest->input('description') : null,
+            'last_modified_by' => $userId,
             'last_modified_at' => now(),
         ]);
         event(new \App\Events\Tag\TagDescriptionUpdated($tag, Auth::user(), $old));

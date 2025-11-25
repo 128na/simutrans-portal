@@ -22,6 +22,7 @@ final class UserRepository
      *     total_attachment_size: int|null,
      *     total_conversion_count: int|null,
      *     total_view_count: int|null,
+     *     redirect_count: int|null,
      *     tag_count: int|null
      * }
      */
@@ -81,7 +82,7 @@ final class UserRepository
                     ->selectRaw('COUNT(*)'),
                 'tag_count'
             )
-            ->first();
+            ->firstOrFail();
     }
 
     /**

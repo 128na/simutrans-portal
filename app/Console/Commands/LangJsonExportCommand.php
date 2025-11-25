@@ -22,7 +22,7 @@ final class LangJsonExportCommand extends Command
 
     public function handle(): int
     {
-        $locales = explode(',', $this->option('locales'));
+        $locales = explode(',', (string) $this->option('locales'));
 
         foreach ($locales as $locale) {
             App::setLocale($locale);

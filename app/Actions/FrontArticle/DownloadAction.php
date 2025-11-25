@@ -20,9 +20,14 @@ final class DownloadAction
             event(new ArticleConversion($article));
         }
 
+        $file = $article->file;
+        if ($file === null) {
+            abort(404);
+        }
+
         return $this->getPublicDisk()->download(
-            $article->file->path,
-            $article->file->original_name
+            $file->path,
+            $file->original_name
         );
     }
 

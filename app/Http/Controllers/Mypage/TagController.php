@@ -150,8 +150,12 @@ final class TagController extends Controller
     public function update(Tag $tag, UpdateRequest $updateRequest): TagEdit
     {
         $old = $tag->description;
-        if (Auth::user()->cannot('update', $tag)) {
-            return abort(403);
+        $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
+        if ($user->cannot('update', $tag)) {
+            abort(403);
         }
 
         /** @var int $userId */
@@ -162,7 +166,7 @@ final class TagController extends Controller
             'last_modified_by' => $userId,
             'last_modified_at' => now(),
         ]);
-        event(new \App\Events\Tag\TagDescriptionUpdated($tag, Auth::user(), $old));
+        event(new \App\Events\Tag\TagDescriptionUpdated($tag, $user, $old));
 
         return new TagEdit($this->tagRepository->load($tag));
     }

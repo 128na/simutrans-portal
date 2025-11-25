@@ -30,15 +30,20 @@ final class ArticleShow extends JsonResource
                 'id' => $this->resource->user->id,
                 'name' => $this->resource->user->name,
                 'nickname' => $this->resource->user->nickname,
-                'profile' => $this->when($this->resource->user->profile instanceof Profile, fn (): array => [
-                    'data' => $this->resource->user->profile->data,
-                    'attachments' => $this->resource->user->profile->attachments->map(fn ($attachment): array => [
-                        'id' => $attachment->id,
-                        'thumbnail' => $attachment->thumbnail,
-                        'original_name' => $attachment->original_name,
-                        'url' => $attachment->url,
-                    ]),
-                ]),
+                'profile' => $this->when($this->resource->user->profile instanceof Profile, function (): array {
+                    /** @var Profile $profile */
+                    $profile = $this->resource->user->profile;
+
+                    return [
+                        'data' => $profile->data,
+                        'attachments' => $profile->attachments->map(fn ($attachment): array => [
+                            'id' => $attachment->id,
+                            'thumbnail' => $attachment->thumbnail,
+                            'original_name' => $attachment->original_name,
+                            'url' => $attachment->url,
+                        ]),
+                    ];
+                }),
             ],
             'categories' => $this->resource->categories->map(fn ($category): array => [
                 'id' => $category->id,
@@ -62,12 +67,17 @@ final class ArticleShow extends JsonResource
                 'original_name' => $attachment->original_name,
                 'thumbnail' => $attachment->thumbnail,
                 'url' => $attachment->url,
-                'fileInfo' => $this->when($attachment->fileInfo instanceof FileInfo, fn (): array => [
-                    'data' => [
-                        'dats' => $attachment->fileInfo->getDats(),
-                        'tabs' => $attachment->fileInfo->getTabs(),
-                    ],
-                ]),
+                'fileInfo' => $this->when($attachment->fileInfo instanceof FileInfo, function () use ($attachment): array {
+                    /** @var FileInfo $fileInfo */
+                    $fileInfo = $attachment->fileInfo;
+
+                    return [
+                        'data' => [
+                            'dats' => $fileInfo->getDats(),
+                            'tabs' => $fileInfo->getTabs(),
+                        ],
+                    ];
+                }),
             ]),
             'published_at' => $this->resource->published_at?->format('Y/m/d H:i'),
             'modified_at' => $this->resource->modified_at?->format('Y/m/d H:i'),

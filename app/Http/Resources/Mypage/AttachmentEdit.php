@@ -30,10 +30,15 @@ final class AttachmentEdit extends JsonResource
             'url' => $this->resource->url,
             'size' => $this->resource->size,
             'fileInfo' => $this->when(
-                $this->resource->attachmentable_type !== Profile::class && $this->resource->fileInfo,
-                fn (): array => [
-                    'data' => $this->resource->fileInfo->data,
-                ],
+                $this->resource->attachmentable_type !== Profile::class && $this->resource->fileInfo !== null,
+                function (): array {
+                    /** @var \App\Models\Attachment\FileInfo $fileInfo */
+                    $fileInfo = $this->resource->fileInfo;
+
+                    return [
+                        'data' => $fileInfo->data,
+                    ];
+                },
             ),
             'caption' => $this->when($this->resource->is_image, $this->resource->caption),
             'order' => $this->when($this->resource->is_image, $this->resource->order),

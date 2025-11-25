@@ -33,8 +33,11 @@ final class CreateController extends Controller
     public function create(): View
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
         if ($user->cannot('store', Article::class)) {
-            return abort(403);
+            abort(403);
         }
 
         return view('mypage.article-create', [
@@ -117,8 +120,11 @@ final class CreateController extends Controller
     public function store(StoreRequest $storeRequest, StoreArticle $storeArticle): JsonResponse
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
         if ($user->cannot('store', Article::class)) {
-            return abort(403);
+            abort(403);
         }
 
         /**

@@ -33,8 +33,11 @@ final class EditController extends Controller
     public function edit(Article $article): View
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
         if ($user->cannot('update', $article)) {
-            return abort(403);
+            abort(403);
         }
 
         return view('mypage.article-edit', [
@@ -137,8 +140,11 @@ final class EditController extends Controller
     public function update(UpdateRequest $updateRequest, Article $article, UpdateArticle $updateArticle): JsonResponse
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
         if ($user->cannot('update', $article)) {
-            return abort(403);
+            abort(403);
         }
 
         /**

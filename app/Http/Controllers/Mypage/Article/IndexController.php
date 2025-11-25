@@ -18,6 +18,9 @@ final class IndexController extends Controller
     public function index(): View
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
 
         return view('mypage.articles', [
             'user' => $user->only(['id', 'name', 'nickname']),

@@ -34,7 +34,7 @@ final class ArticleRepository
                     ->whereNull('users.deleted_at');
             })
             ->where('articles.status', ArticleStatus::Publish)
-            ->when($article, fn ($q) => $q->where('articles.id', '!=', $article->id))
+            ->when($article !== null, fn ($q) => $q->where('articles.id', '!=', $article->id))
             ->whereNull('articles.deleted_at')
             ->latest('articles.modified_at')
             ->get();

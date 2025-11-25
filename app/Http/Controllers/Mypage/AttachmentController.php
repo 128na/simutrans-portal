@@ -24,6 +24,9 @@ final class AttachmentController extends Controller
     public function index(): View
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
 
         return view('mypage.attachments', [
             'attachments' => AttachmentEdit::collection($user->myAttachments()->with('fileInfo', 'attachmentable')->get()),
@@ -85,8 +88,11 @@ final class AttachmentController extends Controller
     public function store(StoreRequest $storeRequest, Store $store): AttachmentEdit
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
         if ($user->cannot('store', Attachment::class)) {
-            return abort(403);
+            abort(403);
         }
 
         /** @var \Illuminate\Http\UploadedFile|null */
@@ -146,8 +152,11 @@ final class AttachmentController extends Controller
     public function destroy(Attachment $attachment): \Illuminate\Http\Response
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
         if ($user->cannot('update', $attachment)) {
-            return abort(403);
+            abort(403);
         }
 
         $attachment->delete();

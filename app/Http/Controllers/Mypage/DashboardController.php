@@ -23,6 +23,9 @@ final class DashboardController extends Controller
     public function index(): View
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
 
         return view('mypage.index', [
             'user' => $user,
@@ -57,6 +60,9 @@ final class DashboardController extends Controller
     public function loginHistories(): View
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
 
         return view('mypage.login-histories', [
             'loginHistories' => $this->loginHistoryRepository->getByUser($user->id),

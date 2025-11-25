@@ -8,8 +8,8 @@ parameters:
     paths:
         - app/
 
-    # Level 9 is the highest level
-    level: 7
+    # Level 8 (Level 9 is the highest level)
+    level: 8
 
     # covariant,contravariantが残念な感じになるのでやめる
     #checkGenericClassInNonGenericObjectType: false

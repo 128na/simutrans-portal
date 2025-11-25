@@ -22,6 +22,9 @@ final class RedirectController extends Controller
     public function index(FindMyRedirects $findMyRedirects): View
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
 
         return view('mypage.redirects', [
             'redirects' => $findMyRedirects($user),
@@ -32,8 +35,12 @@ final class RedirectController extends Controller
     public function destroy(Redirect $redirect, DeleteRedirect $deleteRedirect): RedirectResponse
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
+
         if ($user->cannot('update', $redirect)) {
-            return abort(403);
+            abort(403);
         }
 
         $deleteRedirect($redirect);

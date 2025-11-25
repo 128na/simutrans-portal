@@ -20,6 +20,9 @@ final class InviteController extends Controller
     public function index(): View
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
 
         return view('mypage.invite', [
             'user' => $user->loadMissing('invites'),
@@ -30,6 +33,10 @@ final class InviteController extends Controller
     public function createOrUpdate(): RedirectResponse
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
+
         $user->update(['invitation_code' => Str::uuid()]);
         event(new \App\Events\User\InviteCodeCreated($user));
 
@@ -39,6 +46,10 @@ final class InviteController extends Controller
     public function revoke(): RedirectResponse
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
+
         $user->update(['invitation_code' => null]);
         event(new \App\Events\User\InviteCodeCreated($user));
 

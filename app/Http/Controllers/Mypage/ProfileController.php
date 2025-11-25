@@ -24,6 +24,9 @@ final class ProfileController extends Controller
     public function index(): View
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
 
         return view('mypage.profile', [
             'user' => new ProfileEdit($user->load('profile')),
@@ -84,6 +87,10 @@ final class ProfileController extends Controller
     public function update(UpdateRequest $updateRequest, UpdateProfile $updateProfile): JsonResponse
     {
         $user = Auth::user();
+        if ($user === null) {
+            abort(401);
+        }
+
         $updateProfile($user, $updateRequest);
 
         return response()->json();

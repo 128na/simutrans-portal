@@ -25,8 +25,8 @@ final class ProfileEdit extends JsonResource
             'email' => $this->resource->email,
             'role' => $this->resource->role,
             'profile' => [
-                'id' => $this->resource->profile->id,
-                'data' => $this->resource->profile->data,
+                'id' => $this->resource->profile?->id,
+                'data' => $this->resource->profile?->data,
             ],
         ];
     }

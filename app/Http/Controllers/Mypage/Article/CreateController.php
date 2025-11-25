@@ -36,6 +36,7 @@ final class CreateController extends Controller
         if ($user === null) {
             abort(401);
         }
+
         if ($user->cannot('store', Article::class)) {
             abort(403);
         }
@@ -123,6 +124,7 @@ final class CreateController extends Controller
         if ($user === null) {
             abort(401);
         }
+
         if ($user->cannot('store', Article::class)) {
             abort(403);
         }

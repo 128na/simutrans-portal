@@ -91,6 +91,7 @@ final class AttachmentController extends Controller
         if ($user === null) {
             abort(401);
         }
+
         if ($user->cannot('store', Attachment::class)) {
             abort(403);
         }
@@ -155,6 +156,7 @@ final class AttachmentController extends Controller
         if ($user === null) {
             abort(401);
         }
+
         if ($user->cannot('update', $attachment)) {
             abort(403);
         }

@@ -38,6 +38,7 @@ final class RedirectController extends Controller
         if ($user === null) {
             abort(401);
         }
+
         if ($user->cannot('update', $redirect)) {
             abort(403);
         }

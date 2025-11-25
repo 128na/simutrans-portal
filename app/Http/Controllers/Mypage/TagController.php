@@ -154,6 +154,7 @@ final class TagController extends Controller
         if ($user === null) {
             abort(401);
         }
+
         if ($user->cannot('update', $tag)) {
             abort(403);
         }

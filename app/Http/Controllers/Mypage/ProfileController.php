@@ -90,6 +90,7 @@ final class ProfileController extends Controller
         if ($user === null) {
             abort(401);
         }
+
         $updateProfile($user, $updateRequest);
 
         return response()->json();

@@ -36,6 +36,7 @@ final class InviteController extends Controller
         if ($user === null) {
             abort(401);
         }
+
         $user->update(['invitation_code' => Str::uuid()]);
         event(new \App\Events\User\InviteCodeCreated($user));
 
@@ -48,6 +49,7 @@ final class InviteController extends Controller
         if ($user === null) {
             abort(401);
         }
+
         $user->update(['invitation_code' => null]);
         event(new \App\Events\User\InviteCodeCreated($user));
 

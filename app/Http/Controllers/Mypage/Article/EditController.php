@@ -36,6 +36,7 @@ final class EditController extends Controller
         if ($user === null) {
             abort(401);
         }
+
         if ($user->cannot('update', $article)) {
             abort(403);
         }
@@ -143,6 +144,7 @@ final class EditController extends Controller
         if ($user === null) {
             abort(401);
         }
+
         if ($user->cannot('update', $article)) {
             abort(403);
         }

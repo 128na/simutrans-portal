@@ -22,6 +22,7 @@ final class UserRepository
      *     total_attachment_size: int|null,
      *     total_conversion_count: int|null,
      *     total_view_count: int|null,
+     *     redirect_count: int|null,
      *     tag_count: int|null
      * }
      */
@@ -30,7 +31,8 @@ final class UserRepository
         $userId = $user->id;
         $period = now()->format('Ym');
 
-        return DB::query()
+        /** @var object{article_count: int|null, attachment_count: int|null, total_attachment_size: int|null, total_conversion_count: int|null, total_view_count: int|null, redirect_count: int|null, tag_count: int|null} $result */
+        $result = DB::query()
             ->selectSub(
                 DB::table('articles')
                     ->where('user_id', $userId)
@@ -81,7 +83,9 @@ final class UserRepository
                     ->selectRaw('COUNT(*)'),
                 'tag_count'
             )
-            ->first();
+            ->firstOrFail();
+
+        return $result;
     }
 
     /**

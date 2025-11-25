@@ -65,7 +65,7 @@ final class TagRepository
     }
 
     /**
-     * @param  array{name:string,description:string|null,last_modified_at:\Carbon\CarbonImmutable,last_modified_by:int}  $data
+     * @param  array{name:string,description:string|null,created_by:int,last_modified_at:\Carbon\CarbonImmutable,last_modified_by:int}  $data
      */
     public function store(array $data): Tag
     {

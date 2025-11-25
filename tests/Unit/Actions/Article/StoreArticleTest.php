@@ -37,7 +37,7 @@ final class StoreArticleTest extends TestCase
         ];
         $carbonImmutable = new CarbonImmutable;
 
-        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $data): void {
             $article = new Article;
             $mock->expects()->store(
                 \Mockery::on(function ($arg) use ($user) {
@@ -80,7 +80,7 @@ final class StoreArticleTest extends TestCase
         ];
         $carbonImmutable = new CarbonImmutable;
 
-        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $data): void {
             $article = new Article;
             $mock->expects()->store(
                 \Mockery::on(function ($arg) use ($user) {
@@ -122,7 +122,7 @@ final class StoreArticleTest extends TestCase
         ];
         $carbonImmutable = new CarbonImmutable;
 
-        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $carbonImmutable, $data): void {
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $data): void {
             $article = new Article;
             $mock->expects()->store(
                 \Mockery::on(function ($arg) use ($user) {

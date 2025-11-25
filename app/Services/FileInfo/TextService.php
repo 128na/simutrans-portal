@@ -20,6 +20,7 @@ final class TextService
         if ($encoded === false) {
             throw new InvalidEncodingException($text);
         }
+
         $result = json_encode([$encoded]);
 
         if ($result === false) {

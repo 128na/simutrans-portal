@@ -54,7 +54,8 @@
     "allow-plugins": {
       "pestphp/pest-plugin": true,
       "php-http/discovery": true
-    }
+    },
+    "secure-http": false
   },
   "extra": {
     "laravel": {

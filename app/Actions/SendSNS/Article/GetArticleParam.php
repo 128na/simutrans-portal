@@ -23,7 +23,7 @@ final readonly class GetArticleParam
         $name = $article->user->name;
         $tags = collect(['simutrans', ...$article->categoryPaks->pluck('slug')])
             ->map(function (mixed $slug): string {
-                $key = 'hash_tag.'.(string) $slug;
+                $key = 'hash_tag.'.$slug;
 
                 return (string) __($key);
             })

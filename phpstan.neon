@@ -8,8 +8,8 @@ parameters:
     paths:
         - app/
 
-    # Level 8 (Level 9 is the highest level)
-    level: 8
+    # Level 9 (最高レベル - mixed型の使用が制限される)
+    level: 9
 
     # covariant,contravariantが残念な感じになるのでやめる
     #checkGenericClassInNonGenericObjectType: false

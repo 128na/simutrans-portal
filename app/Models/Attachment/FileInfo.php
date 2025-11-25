@@ -21,7 +21,10 @@ final class FileInfo extends Model
      */
     public function getDats(): array
     {
-        return $this->data['dats'] ?? [];
+        /** @var array<string,string[]> */
+        $dats = $this->data['dats'] ?? [];
+
+        return $dats;
     }
 
     /**
@@ -29,7 +32,10 @@ final class FileInfo extends Model
      */
     public function getTabs(): array
     {
-        return $this->data['tabs'] ?? [];
+        /** @var array<string,array<string,string>> */
+        $tabs = $this->data['tabs'] ?? [];
+
+        return $tabs;
     }
 
     #[\Override]

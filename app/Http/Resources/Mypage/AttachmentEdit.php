@@ -11,6 +11,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 final class AttachmentEdit extends JsonResource
 {
+    /** @var Attachment */
+    public $resource;
+
     /**
      * @param  \Illuminate\Http\Request  $request
      * @return array<mixed>
@@ -18,8 +21,6 @@ final class AttachmentEdit extends JsonResource
     #[\Override]
     public function toArray($request)
     {
-        assert($this->resource instanceof Attachment);
-
         return [
             'id' => $this->resource->id,
             'attachmentable_type' => class_basename($this->resource->attachmentable_type ?? ''),

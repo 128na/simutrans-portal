@@ -13,6 +13,6 @@ abstract class Section
      */
     public function __construct(array $section)
     {
-        $this->type = $section['type'] ?? null;
+        $this->type = isset($section['type']) && is_string($section['type']) ? $section['type'] : null;
     }
 }

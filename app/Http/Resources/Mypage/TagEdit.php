@@ -9,6 +9,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 final class TagEdit extends JsonResource
 {
+    /** @var Tag */
+    public $resource;
+
     /**
      * @param  \Illuminate\Http\Request  $request
      * @return array<mixed>
@@ -16,8 +19,6 @@ final class TagEdit extends JsonResource
     #[\Override]
     public function toArray($request)
     {
-        assert($this->resource instanceof Tag);
-
         return [
             'id' => $this->resource->id,
             'name' => $this->resource->name,

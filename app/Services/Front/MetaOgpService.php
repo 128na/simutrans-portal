@@ -85,7 +85,7 @@ final class MetaOgpService
     public function frontPakAddonList(): array
     {
         return [
-            'title' => 'Pak別アドオン一覧 - '.config('app.name'),
+            'title' => 'Pak別アドオン一覧 - '.Config::string('app.name'),
             'description' => '主なPakごとのアドオン一覧です。',
         ];
     }
@@ -107,7 +107,7 @@ final class MetaOgpService
     public function frontTags(): array
     {
         return [
-            'title' => 'タグ一覧 - '.config('app.name'),
+            'title' => 'タグ一覧 - '.Config::string('app.name'),
             'description' => '登録されているタグ一覧です。',
         ];
     }

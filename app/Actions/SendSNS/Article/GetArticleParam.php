@@ -22,7 +22,7 @@ final readonly class GetArticleParam
         $now = $this->carbon->format('Y/m/d H:i');
         $name = $article->user->name;
         $tags = collect(['simutrans', ...$article->categoryPaks->pluck('slug')])
-            ->map(fn ($slug): string => __('hash_tag.'.$slug))
+            ->map(fn (string $slug): string => (string) __('hash_tag.'.$slug))
             ->implode(' ');
 
         return ['title' => $article->title, 'url' => $url, 'name' => $name, 'at' => $now, 'tags' => $tags];

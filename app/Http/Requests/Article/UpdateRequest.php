@@ -20,7 +20,7 @@ final class UpdateRequest extends BaseRequest
     #[\Override]
     protected function baseRule(): array
     {
-        $articleId = $this->input('article.id');
+        $articleId = $this->integer('article.id');
 
         return [
             'article.status' => ['required', Rule::enum(ArticleStatus::class)],

@@ -21,8 +21,8 @@ final readonly class SearchAction
     ) {}
 
     /**
-     * @param  mixed[]  $condition
-     * @return array{condition: mixed[], options: array{categories: mixed, tags: mixed, users: mixed, postTypes: array<ArticlePostType>}, articles: mixed}
+     * @param  array{word?: string, userIds?: array<int>, categoryIds?: array<int>, tagIds?: array<int>, postTypes?: array<string>}  $condition
+     * @return array{condition: array{word?: string, userIds?: array<int>, categoryIds?: array<int>, tagIds?: array<int>, postTypes?: array<string>}, options: array{categories: mixed, tags: mixed, users: mixed, postTypes: array<ArticlePostType>}, articles: mixed}
      */
     public function __invoke(array $condition): array
     {

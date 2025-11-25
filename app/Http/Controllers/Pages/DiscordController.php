@@ -28,7 +28,7 @@ final class DiscordController extends Controller
     {
 
         try {
-            $recaptchaToken = $request->input('recaptchaToken', '');
+            $recaptchaToken = $request->string('recaptchaToken', '')->value();
             $url = $generateInviteCodeAction($recaptchaToken);
 
             return view('pages.discord.index', [

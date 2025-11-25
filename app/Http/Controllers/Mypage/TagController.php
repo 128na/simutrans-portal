@@ -79,8 +79,8 @@ final class TagController extends Controller
         $userId = Auth::id();
 
         $tag = $this->tagRepository->store([
-            'name' => (string) $storeRequest->input('name'),
-            'description' => $storeRequest->input('description') ? (string) $storeRequest->input('description') : null,
+            'name' => $storeRequest->string('name')->value(),
+            'description' => $storeRequest->filled('description') ? $storeRequest->string('description')->value() : null,
             'created_by' => $userId,
             'last_modified_by' => $userId,
             'last_modified_at' => now(),
@@ -163,7 +163,7 @@ final class TagController extends Controller
         $userId = Auth::id();
 
         $tag = $this->tagRepository->update($tag, [
-            'description' => $updateRequest->input('description') ? (string) $updateRequest->input('description') : null,
+            'description' => $updateRequest->filled('description') ? $updateRequest->string('description')->value() : null,
             'last_modified_by' => $userId,
             'last_modified_at' => now(),
         ]);

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8464b2b69fda934fd25da709481fb1fa",
+    "content-hash": "64d6bb4af019566dcb2063f06b852469",
     "packages": [
         {
             "name": "abordage/html-min",

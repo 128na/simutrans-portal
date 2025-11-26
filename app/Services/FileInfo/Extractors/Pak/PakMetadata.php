@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak;
 
+use App\Services\FileInfo\Extractors\Pak\TypeParsers\BuildingParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\TypeParserInterface;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\VehicleParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\WayParser;
@@ -93,6 +94,7 @@ final readonly class PakMetadata
             $parsers = [
                 new VehicleParser,
                 new WayParser,
+                new BuildingParser,
             ];
         }
 

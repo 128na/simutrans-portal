@@ -71,6 +71,7 @@ export type {
   PakMetadata,
   VehicleData,
   WayData,
+  BuildingData,
 } from "./FileInfo";
 
 // Count

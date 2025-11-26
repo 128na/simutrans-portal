@@ -1,4 +1,6 @@
-import { Component, type ErrorInfo, type ReactNode } from "react";
+import { type ReactNode } from "react";
+import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
+import type { ErrorInfo } from "react";
 import { handleError } from "@/lib/errorHandler";
 
 interface Props {
@@ -10,10 +12,17 @@ interface Props {
   name?: string;
 }
 
-interface State {
-  /** エラーが発生したかどうか */
-  hasError: boolean;
-}
+/**
+ * デフォルトのフォールバックUI
+ */
+const DefaultFallback = () => (
+  <div className="p-4 text-center text-gray-600">
+    <p>エラーが発生しました</p>
+    <p className="text-sm mt-2">
+      ページを再読み込みしてください。問題が続く場合はお問い合わせください。
+    </p>
+  </div>
+);
 
 /**
  * Reactエラーバウンダリーコンポーネント
@@ -28,44 +37,21 @@ interface State {
  * </ErrorBoundary>
  * ```
  */
-export class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  /**
-   * エラーが発生した際に状態を更新する
-   */
-  static getDerivedStateFromError(): State {
-    return { hasError: true };
-  }
-
-  /**
-   * エラー情報をログに記録する
-   */
-  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+export const ErrorBoundary = ({ children, fallback, name }: Props) => {
+  const handleOnError = (error: Error, info: ErrorInfo) => {
     handleError(error, {
-      component: this.props.name || "ErrorBoundary",
-      action: errorInfo.componentStack?.slice(0, 500) || "render",
+      component: name || "ErrorBoundary",
+      action: info.componentStack?.slice(0, 500) || "render",
       silent: true, // UIレンダリングエラーなのでalertは表示しない
     });
-  }
+  };
 
-  render(): ReactNode {
-    if (this.state.hasError) {
-      return (
-        this.props.fallback || (
-          <div className="p-4 text-center text-gray-600">
-            <p>エラーが発生しました</p>
-            <p className="text-sm mt-2">
-              ページを再読み込みしてください。問題が続く場合はお問い合わせください。
-            </p>
-          </div>
-        )
-      );
-    }
-
-    return this.props.children;
-  }
-}
+  return (
+    <ReactErrorBoundary
+      fallback={fallback ?? <DefaultFallback />}
+      onError={handleOnError}
+    >
+      {children}
+    </ReactErrorBoundary>
+  );
+};

@@ -51,6 +51,7 @@
     "markdown-it": "^14",
     "react": "^19",
     "react-dom": "^19",
+    "react-error-boundary": "^6.0.0",
     "recharts": "^3.4",
     "sanitize-html": "^2",
     "tailwind-merge": "^3",

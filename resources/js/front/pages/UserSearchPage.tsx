@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { SelectableSearch } from "../../components/form/SelectableSearch";
 import { useState } from "react";
+import { ErrorBoundary } from "../../components/ErrorBoundary";
 
 const app = document.getElementById("app-search-users");
 
@@ -28,5 +29,9 @@ if (app) {
     );
   };
 
-  createRoot(app).render(<App />);
+  createRoot(app).render(
+    <ErrorBoundary name="UserSearchPage">
+      <App />
+    </ErrorBoundary>
+  );
 }

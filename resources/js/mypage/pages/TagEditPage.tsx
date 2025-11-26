@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { useState } from "react";
 import { TagEdit } from "../../features/tags/TagEdit";
+import { ErrorBoundary } from "../../components/ErrorBoundary";
 
 const app = document.getElementById("app-tag-edit");
 
@@ -13,5 +14,9 @@ if (app) {
     return <TagEdit tags={tags} onChangeTags={setTags} />;
   };
 
-  createRoot(app).render(<App />);
+  createRoot(app).render(
+    <ErrorBoundary name="TagEditPage">
+      <App />
+    </ErrorBoundary>
+  );
 }

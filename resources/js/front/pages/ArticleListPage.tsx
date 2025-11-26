@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { ArticleList } from "../../features/articles/components/ArticleList";
+import { ErrorBoundary } from "../../components/ErrorBoundary";
 
 const app = document.getElementById("app-article-list");
 
@@ -12,5 +13,9 @@ if (app) {
     return <ArticleList articles={articles} />;
   };
 
-  createRoot(app).render(<App />);
+  createRoot(app).render(
+    <ErrorBoundary name="ArticleListPage">
+      <App />
+    </ErrorBoundary>
+  );
 }

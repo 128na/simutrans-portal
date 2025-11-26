@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Commands\Article;
+namespace App\Console\Commands\Attachment;
 
 use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 final class ReparsePakFilesCommand extends Command
 {
-    protected $signature = 'article:reparse-pak-files
+    protected $signature = 'attachment:reparse-pak-files
                             {--limit= : Limit the number of files to process}
                             {--dry-run : Simulate the operation without making changes}';
 

@@ -166,8 +166,8 @@ Complete implementation of Simutrans .pak binary file parser for extracting addo
 
 ### 11. Batch Reparse Command
 
-- **File**: `app/Console/Commands/Article/ReparsePakFilesCommand.php`
-- **Command**: `php artisan article:reparse-pak-files`
+- **File**: `app/Console/Commands/Attachment/ReparsePakFilesCommand.php`
+- **Command**: `php artisan attachment:reparse-pak-files`
 - **Options**:
   - `--limit=N` - Limit number of files to reparse
   - `--dry-run` - Show files without reparsing
@@ -255,13 +255,13 @@ $result = $parser->parse($binary);
 
 ```bash
 # Dry run (show files without reparsing)
-php artisan article:reparse-pak-files --dry-run
+php artisan attachment:reparse-pak-files --dry-run
 
 # Reparse first 10 files
-php artisan article:reparse-pak-files --limit=10
+php artisan attachment:reparse-pak-files --limit=10
 
 # Reparse all files
-php artisan article:reparse-pak-files
+php artisan attachment:reparse-pak-files
 ```
 
 ### Frontend Access (TypeScript)

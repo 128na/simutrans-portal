@@ -134,7 +134,7 @@ This ensures backward compatibility and graceful degradation.
 
 1. Check if file is actually a valid .pak file
 2. Check Laravel logs for parser warnings
-3. Try manual reparse: `php artisan article:reparse-pak-files --limit=1`
+3. Try manual reparse: `php artisan attachment:reparse-pak-files --limit=1`
 4. Verify file is not corrupted
 
 ### Incorrect Metadata

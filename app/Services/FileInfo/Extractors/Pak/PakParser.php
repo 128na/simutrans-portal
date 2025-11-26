@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak;
 
 /**
- * Main pak file parser
+ * Simutrans .pak ファイルパーサー
+ *
+ * Simutrans のバイナリ形式を参考に独自実装。
+ * 参考: https://github.com/128na/simutrans/tree/OTRP-KUTAv6/descriptor
  */
 final readonly class PakParser
 {
@@ -28,7 +31,7 @@ final readonly class PakParser
         $metadata = $this->extractMetadata($root, $header->compilerVersionCode);
 
         // Extract names for backward compatibility
-        $names = array_map(fn (array $m): string => $m['name'], $metadata);
+        $names = array_map(fn(array $m): string => $m['name'], $metadata);
 
         return [
             'names' => $names,

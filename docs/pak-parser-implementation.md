@@ -365,4 +365,12 @@ Complete implementation of Simutrans .pak binary parser with:
 - ✅ Batch reparse command available
 - ✅ Documentation complete
 
-Ready for production use.
+Ready for production use。
+
+## ライセンス情報
+
+このパーサーは Simutrans のバイナリファイル仕様を参考に、PHP で独自に実装されています。
+Simutrans プロジェクト（Artistic License）のソースコードを参考にしましたが、
+コードの直接コピーではなく、アルゴリズムの理解に基づく独立した実装です。
+
+参考: https://github.com/128na/simutrans

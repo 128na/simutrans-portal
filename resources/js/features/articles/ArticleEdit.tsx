@@ -34,8 +34,8 @@ export const ArticleEdit = () => {
       });
       window.location.href = `/mypage/articles/edit/${res.data.article_id}?updated=1`;
     } catch (error) {
-      if (isValidationError(error)) {
-        setError(error.response?.data);
+      if (isValidationError(error) && error.response?.data) {
+        setError(error.response.data);
         contentRef.current?.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         handleErrorWithContext(error, { action: "save" });

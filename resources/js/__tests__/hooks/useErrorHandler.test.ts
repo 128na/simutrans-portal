@@ -1,7 +1,11 @@
 import { renderHook } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
-import { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from "axios";
+import {
+  AxiosError,
+  type AxiosResponse,
+  type InternalAxiosRequestConfig,
+} from "axios";
 
 // logger モジュールをモック
 vi.mock("@/utils/logger", () => ({
@@ -119,6 +123,12 @@ function createAxiosError(
       }
     : undefined;
 
-  const error = new AxiosError("Request failed", "ERR_BAD_REQUEST", config, null, response);
+  const error = new AxiosError(
+    "Request failed",
+    "ERR_BAD_REQUEST",
+    config,
+    null,
+    response
+  );
   return error;
 }

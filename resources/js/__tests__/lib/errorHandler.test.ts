@@ -7,7 +7,11 @@ import {
   isAxiosError,
   isValidationError,
 } from "@/lib/errorHandler";
-import { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from "axios";
+import {
+  AxiosError,
+  type AxiosResponse,
+  type InternalAxiosRequestConfig,
+} from "axios";
 
 // logger モジュールをモック
 vi.mock("@/utils/logger", () => ({
@@ -74,16 +78,12 @@ describe("errorHandler", () => {
 
     it("AxiosError 403を適切に処理する", () => {
       const error = createAxiosError(403, {});
-      expect(extractErrorMessage(error)).toBe(
-        "この操作を行う権限がありません"
-      );
+      expect(extractErrorMessage(error)).toBe("この操作を行う権限がありません");
     });
 
     it("AxiosError 404を適切に処理する", () => {
       const error = createAxiosError(404, {});
-      expect(extractErrorMessage(error)).toBe(
-        "リソースが見つかりませんでした"
-      );
+      expect(extractErrorMessage(error)).toBe("リソースが見つかりませんでした");
     });
 
     it("AxiosError 422（バリデーションエラー）を適切に処理する", () => {
@@ -108,9 +108,7 @@ describe("errorHandler", () => {
       expect(extractErrorMessage("文字列エラー")).toBe(
         "予期しないエラーが発生しました"
       );
-      expect(extractErrorMessage(null)).toBe(
-        "予期しないエラーが発生しました"
-      );
+      expect(extractErrorMessage(null)).toBe("予期しないエラーが発生しました");
       expect(extractErrorMessage(undefined)).toBe(
         "予期しないエラーが発生しました"
       );
@@ -219,6 +217,12 @@ function createAxiosError(
       }
     : undefined;
 
-  const error = new AxiosError("Request failed", "ERR_BAD_REQUEST", config, null, response);
+  const error = new AxiosError(
+    "Request failed",
+    "ERR_BAD_REQUEST",
+    config,
+    null,
+    response
+  );
   return error;
 }

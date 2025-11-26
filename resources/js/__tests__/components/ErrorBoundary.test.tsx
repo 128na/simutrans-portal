@@ -12,7 +12,11 @@ vi.mock("@/utils/logger", () => ({
 }));
 
 // エラーを投げるテスト用コンポーネント
-const ThrowErrorComponent = ({ shouldThrow = true }: { shouldThrow?: boolean }) => {
+const ThrowErrorComponent = ({
+  shouldThrow = true,
+}: {
+  shouldThrow?: boolean;
+}) => {
   if (shouldThrow) {
     throw new Error("テストエラー");
   }

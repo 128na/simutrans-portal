@@ -127,11 +127,18 @@ export const isAxiosError = (error: unknown): error is AxiosError => {
 
 /**
  * バリデーションエラー（422）かどうかを判定
+ * response.dataの存在も保証する
  */
 export const isValidationError = (
   error: unknown
-): error is AxiosError<ValidationErrorResponse> => {
-  return isAxiosError(error) && error.response?.status === 422;
+): error is AxiosError<ValidationErrorResponse> & {
+  response: { data: ValidationErrorResponse };
+} => {
+  return (
+    isAxiosError(error) &&
+    error.response?.status === 422 &&
+    error.response?.data !== undefined
+  );
 };
 
 /**

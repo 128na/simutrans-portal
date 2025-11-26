@@ -78,7 +78,7 @@ export const ProfileForm = ({
         window.location.href = `/mypage/profile?updated=1`;
       }
     } catch (error) {
-      if (isValidationError(error) && error.response?.data) {
+      if (isValidationError(error)) {
         setError(error.response.data);
         containerRef.current?.scrollIntoView({
           behavior: "smooth",

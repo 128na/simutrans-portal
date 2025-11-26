@@ -144,6 +144,11 @@ describe("errorHandler", () => {
       expect(isValidationError(error)).toBe(true);
     });
 
+    it("422エラーでもdataがない場合はfalseで判定する", () => {
+      const error = createAxiosError(422, undefined);
+      expect(isValidationError(error)).toBe(false);
+    });
+
     it("400エラーをfalseで判定する", () => {
       const error = createAxiosError(400, {});
       expect(isValidationError(error)).toBe(false);

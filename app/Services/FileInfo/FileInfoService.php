@@ -69,12 +69,12 @@ final readonly class FileInfoService
                 $extracted = $extractor->extract($text);
 
                 // PakExtractor returns ['names' => [...], 'metadata' => [...]]
-                if ($extractor instanceof Extractors\PakExtractor && is_array($extracted)) {
+                if ($extractor instanceof Extractors\PakExtractor) {
                     if (isset($extracted['names'])) {
                         $data[$extractor->getKey()][$filename] = $extracted['names'];
                     }
 
-                    if (isset($extracted['metadata']) && (isset($extracted['metadata']) && ($extracted['metadata'] !== '' && $extracted['metadata'] !== '0'))) {
+                    if (isset($extracted['metadata']) && $extracted['metadata'] !== []) {
                         $data['paks_metadata'][$filename] = $extracted['metadata'];
                     }
                 } else {

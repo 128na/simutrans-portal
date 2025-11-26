@@ -16,7 +16,7 @@ final class PakParserTest extends TestCase
     public function test_parse_makeobj_versions(string $pakFile, string $expectedName): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/' . $pakFile);
+        $data = file_get_contents(__DIR__.'/../file/'.$pakFile);
 
         $result = $parser->parse($data);
 
@@ -51,7 +51,7 @@ final class PakParserTest extends TestCase
     {
         $parser = new PakParser;
         // Use one of the generated test files instead
-        $data = file_get_contents(__DIR__ . '/../file/way.test_transparent_1.pak');
+        $data = file_get_contents(__DIR__.'/../file/way.test_transparent_1.pak');
 
         $result = $parser->parse($data);
 
@@ -82,7 +82,7 @@ final class PakParserTest extends TestCase
     public function test_metadata_structure(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/way.test_1.pak');
+        $data = file_get_contents(__DIR__.'/../file/way.test_1.pak');
 
         $result = $parser->parse($data);
 
@@ -110,7 +110,7 @@ final class PakParserTest extends TestCase
 
         // Test with all makeobj versions - all test files are way objects, not vehicles
         foreach (self::makeobjVersionProvider() as $testCase) {
-            $data = file_get_contents(__DIR__ . '/../file/' . $testCase['pakFile']);
+            $data = file_get_contents(__DIR__.'/../file/'.$testCase['pakFile']);
             $result = $parser->parse($data);
 
             $this->assertNotEmpty($result['metadata'], "Failed for {$testCase['pakFile']}");
@@ -125,7 +125,7 @@ final class PakParserTest extends TestCase
     public function test_parse_vehicle_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/vehicle.TestTruck.pak');
+        $data = file_get_contents(__DIR__.'/../file/vehicle.TestTruck.pak');
 
         $result = $parser->parse($data);
 
@@ -187,7 +187,7 @@ final class PakParserTest extends TestCase
     public function test_parse_way_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/way.test_1.pak');
+        $data = file_get_contents(__DIR__.'/../file/way.test_1.pak');
 
         $result = $parser->parse($data);
 

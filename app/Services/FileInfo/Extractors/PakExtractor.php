@@ -35,7 +35,7 @@ final readonly class PakExtractor implements Extractor
     /**
      * pakバイナリからアドオン名とメタデータを抽出する.
      *
-     * @return array{names: array<int, string>, metadata: array<int, array{name: string, copyright: string|null, objectType: string, compilerVersionCode: int}>}
+     * @return array{names: array<int, string>, metadata: array<int, array<string, mixed>>}
      */
     #[\Override]
     public function extract(string $pakBinary): array

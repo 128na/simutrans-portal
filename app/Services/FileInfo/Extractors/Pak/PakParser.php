@@ -15,7 +15,7 @@ final readonly class PakParser
     /**
      * Parse pak file and extract metadata
      *
-     * @return array{names: array<int, string>, metadata: array<int, array{name: string, copyright: string|null, objectType: string, compilerVersionCode: int}>}
+     * @return array{names: array<int, string>, metadata: array<int, array<string, mixed>>}
      */
     public function parse(string $binary): array
     {
@@ -31,7 +31,11 @@ final readonly class PakParser
         $metadata = $this->extractMetadata($root, $header->compilerVersionCode);
 
         // Extract names for backward compatibility
-        $names = array_map(fn (array $m): string => $m['name'], $metadata);
+        $names = array_map(function (array $m): string {
+            assert(is_string($m['name']));
+
+            return $m['name'];
+        }, $metadata);
 
         return [
             'names' => $names,
@@ -42,7 +46,7 @@ final readonly class PakParser
     /**
      * Extract metadata from node tree recursively
      *
-     * @return array<int, array{name: string, copyright: string|null, objectType: string, compilerVersionCode: int}>
+     * @return array<int, array<string, mixed>>
      */
     private function extractMetadata(Node $node, int $versionCode): array
     {

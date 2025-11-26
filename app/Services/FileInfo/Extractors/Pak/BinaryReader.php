@@ -126,7 +126,7 @@ final class BinaryReader
     public function seek(int $position): void
     {
         if ($position < 0 || $position > strlen($this->binary)) {
-            throw new OutOfBoundsException('Invalid seek position: ' . $position);
+            throw new OutOfBoundsException('Invalid seek position: '.$position);
         }
 
         $this->position = $position;

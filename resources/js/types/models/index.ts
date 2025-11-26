@@ -65,7 +65,13 @@ export type {
 } from "./Attachment";
 
 // FileInfo
-export type { FileInfoShow, FileInfoMypageEdit } from "./FileInfo";
+export type {
+  FileInfoShow,
+  FileInfoMypageEdit,
+  PakMetadata,
+  VehicleData,
+  WayData,
+} from "./FileInfo";
 
 // Count
 export type { Count } from "./Count";

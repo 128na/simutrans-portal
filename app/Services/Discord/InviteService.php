@@ -30,6 +30,8 @@ final class InviteService
             throw new CreateInviteFailedException($response->body());
         }
 
-        return sprintf('%s/%s', Config::string('services.discord.domain'), $body['code']);
+        $code = is_string($body['code']) ? $body['code'] : '';
+
+        return sprintf('%s/%s', Config::string('services.discord.domain'), $code);
     }
 }

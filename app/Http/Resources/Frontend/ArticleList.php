@@ -12,6 +12,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 final class ArticleList extends JsonResource
 {
+    /** @var ModelsArticle */
+    public $resource;
+
     /**
      * @param  \Illuminate\Http\Request  $request
      * @return array<mixed>
@@ -19,8 +22,6 @@ final class ArticleList extends JsonResource
     #[\Override]
     public function toArray($request)
     {
-        assert($this->resource instanceof ModelsArticle);
-
         return [
             'id' => $this->resource->id,
             'title' => $this->resource->title,

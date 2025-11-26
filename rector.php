@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 use Rector\CodeQuality\Rector\Isset_\IssetOnPropertyObjectToPropertyExistsRector;
+use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Assign\RemoveUnusedVariableAssignRector;
+use Rector\DeadCode\Rector\Concat\RemoveConcatAutocastRector;
 use Rector\Transform\Rector\String_\StringToClassConstantRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector;
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
@@ -44,6 +46,8 @@ return RectorConfig::configure()
         // NewlineAfterStatementRector::class => [__DIR__ . '/tests'], // $selfでのアクセスが壊れるので
         DeclareStrictTypesRector::class => [__DIR__.'/resources/views'], // bladeファイルも declare がつくので
         StringToClassConstantRector::class, // view('auth.login') が誤って変換されるため
+        PostIncDecToPreIncDecRector::class,
+        RemoveConcatAutocastRector::class,
     ])
     ->withSets([
         LaravelLevelSetList::UP_TO_LARAVEL_120,

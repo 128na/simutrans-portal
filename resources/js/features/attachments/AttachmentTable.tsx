@@ -15,6 +15,7 @@ import TextSub from "@/components/ui/TextSub";
 import Link from "@/components/ui/Link";
 import axios from "axios";
 import ButtonDanger from "@/components/ui/ButtonDanger";
+import { handleError } from "@/lib/errorHandler";
 
 type Props = {
   attachments: Attachment.MypageEdit[];
@@ -101,8 +102,8 @@ export const AttachmentTable = ({
             attachments.filter((a) => a.id !== attachmentId)
           );
         }
-      } catch {
-        alert("削除に失敗しました");
+      } catch (error) {
+        handleError(error, { component: "AttachmentTable", action: "delete" });
       }
     }
   };

@@ -232,6 +232,7 @@ npm run format
 
 1. `front/pages/` または `mypage/pages/` に `*Page.tsx` を作成
 2. 対応するエントリーポイント（`front.ts` / `mypage.ts`）にインポートを追加
+3. **必ず `ErrorBoundary` でラップする**（`components/ErrorBoundary.tsx`）
 
 ### 新しい機能を追加する場合
 
@@ -249,3 +250,14 @@ npm run format
 
 1. `__tests__/` 配下に対象と同じ構造でテストファイルを配置
 2. `*.test.tsx` または `*.test.ts` の命名規則を使用
+
+### エラーハンドリング
+
+エラー処理の詳細については **[docs/error-handling.md](../../docs/error-handling.md)** を参照してください。
+
+基本ルール：
+
+- API エラーは `useErrorHandler` フックまたは `handleError` 関数を使用
+- バリデーションエラー（422）は `useAxiosError` でフォームにインライン表示
+- `console.log` / `console.error` は直接使用せず `logger.ts` を使用
+- ページコンポーネントは `ErrorBoundary` でラップ

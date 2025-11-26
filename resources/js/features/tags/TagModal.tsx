@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
 import Button from "@/components/ui/Button";
@@ -8,6 +8,8 @@ import { useAxiosErrorState } from "@/hooks/errorState";
 import TextError from "@/components/ui/TextError";
 import TextSub from "@/components/ui/TextSub";
 import { Modal } from "@/components/ui/Modal";
+import { isValidationError } from "@/lib/errorHandler";
+import { useErrorHandler } from "@/hooks/useErrorHandler";
 
 type Props = {
   tag: Tag.MypageEdit | Tag.New | null;
@@ -19,6 +21,7 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
   const [name, setName] = useState(tag?.name ?? "");
   const [description, setDescription] = useState(tag?.description ?? "");
   const { setError, getError } = useAxiosErrorState();
+  const { handleErrorWithContext } = useErrorHandler({ component: "TagModal" });
 
   // tag が null の場合はモーダルを非表示にする
   if (!tag) return null;
@@ -32,8 +35,10 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
         onSave(res.data.data as Tag.MypageEdit);
       }
     } catch (error) {
-      if (error instanceof AxiosError) {
+      if (isValidationError(error)) {
         setError(error);
+      } else {
+        handleErrorWithContext(error, { action: "save" });
       }
     }
   };

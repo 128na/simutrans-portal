@@ -1,5 +1,6 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import InputFile from "../ui/InputFile";
+import { handleError } from "@/lib/errorHandler";
 
 type Prop = {
   onUploaded?: (attachment: Attachment.MypageEdit) => void;
@@ -22,14 +23,7 @@ export const Upload = ({ onUploaded, ...props }: Prop) => {
 
       onUploaded?.(response.data.data);
     } catch (error) {
-      if (error instanceof AxiosError) {
-        alert(
-          `アップロードに失敗しました：${error.response?.data.message ?? "不明なエラー"}`
-        );
-      } else {
-        // 予期しないエラー
-        alert("アップロードに失敗しました：予期しないエラーが発生しました");
-      }
+      handleError(error, { component: "Upload", action: "upload" });
     }
   };
 

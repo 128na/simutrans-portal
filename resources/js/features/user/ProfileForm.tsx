@@ -10,11 +10,13 @@ import Input from "@/components/ui/Input";
 import TextBadge from "@/components/ui/TextBadge";
 import Textarea from "@/components/ui/Textarea";
 import Button from "@/components/ui/Button";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import ButtonSub from "@/components/ui/ButtonSub";
 import TwoColumn from "@/components/ui/TwoColumn";
 import ButtonDanger from "@/components/ui/ButtonDanger";
 import { useRef } from "react";
+import { isValidationError } from "@/lib/errorHandler";
+import { useErrorHandler } from "@/hooks/useErrorHandler";
 
 type Props = {
   user: User.MypageEdit;
@@ -30,10 +32,13 @@ export const ProfileForm = ({
 }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { getError, setError } = useAxiosError();
+  const { handleErrorWithContext } = useErrorHandler({
+    component: "ProfileForm",
+  });
 
   const addWebsite = () => {
     if (user.profile.data.website.length >= 10) {
-      alert("最大10個までです");
+      window.alert("最大10個までです");
       return;
     }
     onChangeUser({
@@ -73,12 +78,14 @@ export const ProfileForm = ({
         window.location.href = `/mypage/profile?updated=1`;
       }
     } catch (error) {
-      if (error instanceof AxiosError) {
-        setError(error.response?.data);
+      if (isValidationError(error)) {
+        setError(error.response.data);
         containerRef.current?.scrollIntoView({
           behavior: "smooth",
           block: "start",
         });
+      } else {
+        handleErrorWithContext(error, { action: "save" });
       }
     }
   };

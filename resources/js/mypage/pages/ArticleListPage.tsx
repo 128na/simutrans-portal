@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import { ArticleTable } from "../../features/articles/ArticleTable";
 import { ArticleModal } from "../../features/articles/ArticleModal";
 import { useState } from "react";
+import { ErrorBoundary } from "../../components/ErrorBoundary";
 
 const app = document.getElementById("app-article-list");
 
@@ -27,5 +28,9 @@ if (app) {
     );
   };
 
-  createRoot(app).render(<App />);
+  createRoot(app).render(
+    <ErrorBoundary name="MypageArticleListPage">
+      <App />
+    </ErrorBoundary>
+  );
 }

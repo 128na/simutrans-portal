@@ -1,10 +1,13 @@
 import { useRef } from "react";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
 import Button from "@/components/ui/Button";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useAxiosError } from "@/hooks/useAxiosError";
 import { ArticlePreview } from "./ArticlePreview";
 import { ArticleForm } from "./ArticleForm";
+import { isValidationError } from "@/lib/errorHandler";
+import { useErrorHandler } from "@/hooks/useErrorHandler";
+
 export const ArticleEdit = () => {
   const contentRef = useRef<HTMLDivElement>(null);
   const article = useArticleEditor((s) => s.article);
@@ -15,6 +18,9 @@ export const ArticleEdit = () => {
   const followRedirect = useArticleEditor((s) => s.followRedirect);
 
   const { setError } = useAxiosError();
+  const { handleErrorWithContext } = useErrorHandler({
+    component: "ArticleEdit",
+  });
   const url = article.id
     ? `/api/v2/articles/${article.id}`
     : "/api/v2/articles";
@@ -28,9 +34,11 @@ export const ArticleEdit = () => {
       });
       window.location.href = `/mypage/articles/edit/${res.data.article_id}?updated=1`;
     } catch (error) {
-      if (error instanceof AxiosError) {
-        setError(error.response?.data);
+      if (isValidationError(error)) {
+        setError(error.response.data);
         contentRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        handleErrorWithContext(error, { action: "save" });
       }
     }
   };

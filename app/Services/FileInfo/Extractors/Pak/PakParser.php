@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak;
 
-use App\Exceptions\InvalidPakFileException;
-
 /**
  * Main pak file parser
  */
@@ -30,7 +28,7 @@ final readonly class PakParser
         $metadata = $this->extractMetadata($root, $header->compilerVersionCode);
 
         // Extract names for backward compatibility
-        $names = array_map(fn($m) => $m['name'], $metadata);
+        $names = array_map(fn (array $m): string => $m['name'], $metadata);
 
         return [
             'names' => $names,
@@ -50,7 +48,7 @@ final readonly class PakParser
         // Check if this node is a named object (has TEXT child nodes)
         if ($node->hasChildren()) {
             $firstChild = $node->getChild(0);
-            if ($firstChild !== null && $firstChild->isType(Node::OBJ_TEXT)) {
+            if ($firstChild instanceof \App\Services\FileInfo\Extractors\Pak\Node && $firstChild->isType(Node::OBJ_TEXT)) {
                 // This is a named object
                 $pakMetadata = PakMetadata::fromNode($node, $versionCode);
                 $metadata[] = $pakMetadata->toArray();

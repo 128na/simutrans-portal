@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands\Attachment;
 
-use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -28,7 +27,7 @@ final class ReparsePakFilesCommand extends Command
 
         // Get all attachments with pak files that have FileInfo
         $query = Attachment::whereHas('fileInfo')
-            ->where(function ($q) {
+            ->where(function ($q): void {
                 $q->where('original_name', 'like', '%.pak')
                     ->orWhere('original_name', 'like', '%.PAK');
             });
@@ -45,7 +44,7 @@ final class ReparsePakFilesCommand extends Command
             return self::SUCCESS;
         }
 
-        $this->info("Found {$total} pak file(s) to reparse.");
+        $this->info(sprintf('Found %s pak file(s) to reparse.', $total));
 
         if ($dryRun) {
             $this->info('Dry-run mode: would reparse these files.');
@@ -60,7 +59,7 @@ final class ReparsePakFilesCommand extends Command
 
         foreach ($query->cursor() as $attachment) {
             try {
-                UpdateFileInfo::dispatchSync($attachment);
+                dispatch_sync(new \App\Jobs\Attachments\UpdateFileInfo($attachment));
                 $successCount++;
             } catch (\Throwable $e) {
                 $errorCount++;
@@ -76,10 +75,10 @@ final class ReparsePakFilesCommand extends Command
 
         $this->output->progressFinish();
 
-        $this->info("Completed: {$successCount} succeeded, {$errorCount} failed.");
+        $this->info(sprintf('Completed: %d succeeded, %d failed.', $successCount, $errorCount));
 
         if ($errorCount > 0) {
-            $this->warn("Check the logs for details on failed files.");
+            $this->warn('Check the logs for details on failed files.');
 
             return self::FAILURE;
         }

@@ -31,6 +31,7 @@ final readonly class PakHeader
             if ($char === "\x1A") {
                 break;
             }
+
             $versionLine .= $char;
         }
 

@@ -20,7 +20,7 @@ final class InvalidPakFileException extends Exception
     {
         $message = 'Corrupted node structure in pak file';
         if ($details !== '') {
-            $message .= ': ' . $details;
+            $message .= ': '.$details;
         }
 
         return new self($message);
@@ -33,6 +33,6 @@ final class InvalidPakFileException extends Exception
 
     public static function unsupportedVersion(int $version): self
     {
-        return new self("Unsupported pak file version: {$version}");
+        return new self('Unsupported pak file version: '.$version);
     }
 }

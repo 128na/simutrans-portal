@@ -11,25 +11,25 @@ use App\Exceptions\InvalidPakFileException;
  */
 final readonly class Node
 {
-    public const OBJ_TEXT = 'TEXT';
+    public const string OBJ_TEXT = 'TEXT';
 
-    public const OBJ_ROOT = 'ROOT';
+    public const string OBJ_ROOT = 'ROOT';
 
-    public const OBJ_VEHICLE = 'VHCL';
+    public const string OBJ_VEHICLE = 'VHCL';
 
-    public const OBJ_BUILDING = 'BUIL';
+    public const string OBJ_BUILDING = 'BUIL';
 
-    public const OBJ_BRIDGE = 'BRDG';
+    public const string OBJ_BRIDGE = 'BRDG';
 
-    public const OBJ_WAY = "WAY\0";
+    public const string OBJ_WAY = "WAY\0";
 
-    public const OBJ_TREE = 'TREE';
+    public const string OBJ_TREE = 'TREE';
 
-    public const OBJ_GOOD = 'GOOD';
+    public const string OBJ_GOOD = 'GOOD';
 
-    private const LARGE_RECORD_SIZE = 0xFFFF;
+    private const int LARGE_RECORD_SIZE = 0xFFFF;
 
-    private const MAX_DEPTH = 100;
+    private const int MAX_DEPTH = 100;
 
     /**
      * @param  array<int, Node>  $childNodes
@@ -88,7 +88,7 @@ final readonly class Node
         return $this->childNodes;
     }
 
-    public function getChild(int $index): ?Node
+    public function getChild(int $index): ?self
     {
         return $this->childNodes[$index] ?? null;
     }

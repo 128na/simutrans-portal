@@ -31,7 +31,7 @@ final class BuildingTypeConverter
             37 => 'Residential',
             38 => 'Commercial',
             39 => 'Industrial',
-            default => "Unknown Type ($type)",
+            default => sprintf('Unknown Type (%s)', $type),
         };
     }
 
@@ -47,7 +47,7 @@ final class BuildingTypeConverter
             5 => 'Monorail',
             7 => 'Tram',
             16 => 'Air',
-            default => "Unknown Waytype ($waytype)",
+            default => sprintf('Unknown Waytype (%s)', $waytype),
         };
     }
 
@@ -58,17 +58,19 @@ final class BuildingTypeConverter
     {
         $features = [];
 
-        if ($enables & 0x01) {
+        if (($enables & 0x01) !== 0) {
             $features[] = 'Passengers';
         }
-        if ($enables & 0x02) {
+
+        if (($enables & 0x02) !== 0) {
             $features[] = 'Mail';
         }
-        if ($enables & 0x04) {
+
+        if (($enables & 0x04) !== 0) {
             $features[] = 'Goods';
         }
 
-        return empty($features) ? 'None' : implode(', ', $features);
+        return $features === [] ? 'None' : implode(', ', $features);
     }
 
     /**

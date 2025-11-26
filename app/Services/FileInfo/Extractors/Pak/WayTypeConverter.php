@@ -24,7 +24,7 @@ final readonly class WayTypeConverter
             6 => 'tram',
             7 => 'narrowgauge',
             8 => 'powerline',
-            default => "unknown($wtyp)",
+            default => sprintf('unknown(%s)', $wtyp),
         };
     }
 
@@ -40,7 +40,7 @@ final readonly class WayTypeConverter
             3 => 'embankment',
             4 => 'tunnel',
             5 => 'runway',
-            default => "unknown($styp)",
+            default => sprintf('unknown(%s)', $styp),
         };
     }
 }

@@ -34,7 +34,7 @@ final readonly class VehicleParser implements TypeParserInterface
         try {
             // Read version stamp
             $v = $reader->readUint16LE();
-            $version = ($v & 0x8000) ? ($v & 0x7FFF) : 0;
+            $version = (($v & 0x8000) !== 0) ? ($v & 0x7FFF) : 0;
 
             $data = match ($version) {
                 0 => $this->parseVersion0($reader, $v),

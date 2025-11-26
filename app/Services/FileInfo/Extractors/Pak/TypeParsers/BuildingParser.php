@@ -28,7 +28,7 @@ final readonly class BuildingParser implements TypeParserInterface
 
         if ($version === 0) {
             // Version 0 format (old format)
-            return $this->parseVersion0($data, $firstWord);
+            return $this->parseVersion0($data);
         }
 
         // Version 1-11 format
@@ -38,7 +38,7 @@ final readonly class BuildingParser implements TypeParserInterface
     /**
      * @return array<string, mixed>
      */
-    private function parseVersion0(string $data, int $firstWord): array
+    private function parseVersion0(string $data): array
     {
         $offset = 0;
         // firstWord is old_btyp, skip it
@@ -77,7 +77,7 @@ final readonly class BuildingParser implements TypeParserInterface
      */
     private function parseVersioned(string $data, int &$offset, int $version): array
     {
-        $oldBtyp = $this->readUint8($data, $offset);
+        $this->readUint8($data, $offset);
         $type = $this->readUint8($data, $offset);
         $level = $this->readUint16($data, $offset);
         $extraData = $this->readUint32($data, $offset);
@@ -103,11 +103,7 @@ final readonly class BuildingParser implements TypeParserInterface
         $flags = $this->readUint8($data, $offset);
 
         // Distribution weight
-        if ($version >= 1) {
-            $distributionWeight = $this->readUint8($data, $offset);
-        } else {
-            $distributionWeight = 100;
-        }
+        $distributionWeight = $version >= 1 ? $this->readUint8($data, $offset) : 100;
 
         // Intro/retire dates
         if ($version >= 3) {
@@ -119,11 +115,7 @@ final readonly class BuildingParser implements TypeParserInterface
         }
 
         // Animation time
-        if ($version >= 5) {
-            $animationTime = $this->readUint16($data, $offset);
-        } else {
-            $animationTime = 300;
-        }
+        $animationTime = $version >= 5 ? $this->readUint16($data, $offset) : 300;
 
         // Capacity, maintenance, price (version 8+)
         $capacity = null;
@@ -217,15 +209,19 @@ final readonly class BuildingParser implements TypeParserInterface
         if ($capacity !== null) {
             $result['capacity'] = $capacity;
         }
+
         if ($maintenance !== null) {
             $result['maintenance'] = $maintenance;
         }
+
         if ($price !== null) {
             $result['price'] = $price;
         }
+
         if ($allowUnderground !== null) {
             $result['allow_underground'] = $allowUnderground;
         }
+
         if ($preservationYearMonth !== null) {
             $result['preservation_year_month'] = $preservationYearMonth;
         }
@@ -256,6 +252,7 @@ final readonly class BuildingParser implements TypeParserInterface
         if ($unpacked === false) {
             throw new \RuntimeException('Failed to unpack uint8');
         }
+
         $value = $unpacked[1];
         $offset += 1;
 
@@ -268,6 +265,7 @@ final readonly class BuildingParser implements TypeParserInterface
         if ($unpacked === false) {
             throw new \RuntimeException('Failed to unpack uint16');
         }
+
         $value = $unpacked[1];
         $offset += 2;
 
@@ -280,6 +278,7 @@ final readonly class BuildingParser implements TypeParserInterface
         if ($unpacked === false) {
             throw new \RuntimeException('Failed to unpack uint32');
         }
+
         $value = $unpacked[1];
         $offset += 4;
 
@@ -292,6 +291,7 @@ final readonly class BuildingParser implements TypeParserInterface
         if ($unpacked === false) {
             throw new \RuntimeException('Failed to unpack int32');
         }
+
         $value = $unpacked[1];
         $offset += 4;
 
@@ -304,6 +304,7 @@ final readonly class BuildingParser implements TypeParserInterface
         if ($unpacked === false) {
             throw new \RuntimeException('Failed to unpack int64');
         }
+
         $value = $unpacked[1];
         $offset += 8;
 

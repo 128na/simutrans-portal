@@ -38,7 +38,7 @@ final readonly class PakMetadata
         ];
 
         // Add type-specific data with appropriate keys for backward compatibility
-        if (! empty($this->typeSpecificData)) {
+        if ($this->typeSpecificData !== []) {
             // Use objectType to determine the key name (e.g., 'vehicleData', 'wayData')
             $dataKey = $this->objectType.'Data';
             $result[$dataKey] = $this->typeSpecificData;
@@ -71,9 +71,9 @@ final readonly class PakMetadata
 
         // Parse type-specific data using appropriate parser
         $typeSpecificData = [];
-        foreach (self::getTypeParsers() as $parser) {
-            if ($parser->canParse($node)) {
-                $typeSpecificData = $parser->parse($node) ?? [];
+        foreach (self::getTypeParsers() as $typeParser) {
+            if ($typeParser->canParse($node)) {
+                $typeSpecificData = $typeParser->parse($node) ?? [];
                 break;
             }
         }

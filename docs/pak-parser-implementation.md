@@ -64,7 +64,7 @@ Complete implementation of Simutrans .pak binary file parser for extracting addo
   - `VHCL` (0x56484C4C) - Vehicle
   - `BUIL` (0x4C495542) - Building
   - `BRDG` (0x47444252) - Bridge
-  - `WAGW` (0x59414757) - Way (road/rail)
+  - `WAY\0` (0x57415900) - Way (road/rail) - Note: 3 chars + null byte
   - `TREE` (0x45455254) - Tree
   - `GOOD` (0x444F4F47) - Good (cargo)
 - **Safety**: Max depth limit of 100 to prevent stack overflow
@@ -77,7 +77,7 @@ Complete implementation of Simutrans .pak binary file parser for extracting addo
   - `VHCL` → `vehicle`
   - `BUIL` → `building`
   - `BRDG` → `bridge`
-  - `WAGW` → `way`
+  - `WAY\0` → `way`
   - `TREE` → `tree`
   - `GOOD` → `good`
   - Other → `unknown_{TYPE}`
@@ -296,12 +296,12 @@ All tests passing (89 total unit tests):
 
 ### Issue 1: Magic String Length
 
-**Problem**: Expected 23 bytes, actual is 22 bytes  
+**Problem**: Expected 23 bytes, actual is 22 bytes
 **Solution**: "Simutrans object file\n" is 22 bytes (21 chars + \n)
 
 ### Issue 2: Type Code Reading
 
-**Problem**: Type codes read as little-endian uint32 resulted in reversed bytes  
+**Problem**: Type codes read as little-endian uint32 resulted in reversed bytes
 **Solution**: Read as 4-character ASCII string instead
 
 ### Issue 3: Hex Analysis

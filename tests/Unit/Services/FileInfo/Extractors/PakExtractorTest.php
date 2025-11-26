@@ -27,14 +27,14 @@ final class PakExtractorTest extends TestCase
     {
         $sUT = $this->getSUT();
 
-        $data = file_get_contents(__DIR__ . '/vehicle.transparent_vehicle.pak');
+        $data = file_get_contents(__DIR__ . '/file/test-60.8.pak');
 
         $result = $sUT->extract($data);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('names', $result);
         $this->assertArrayHasKey('metadata', $result);
-        $this->assertSame(['transparent_vehicle'], $result['names']);
+        $this->assertContains('test_1', $result['names']);
         $this->assertIsArray($result['metadata']);
     }
 

@@ -1,0 +1,4 @@
+[submodule "simutrans"]
+	path = simutrans
+	url = https://github.com/128na/simutrans.git
+	branch = OTRP-KUTAv6

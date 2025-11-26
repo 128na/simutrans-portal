@@ -21,7 +21,7 @@ final readonly class Node
 
     public const OBJ_BRIDGE = 'BRDG';
 
-    public const OBJ_WAY = 'WAGW';
+    public const OBJ_WAY = "WAY\0";
 
     public const OBJ_TREE = 'TREE';
 

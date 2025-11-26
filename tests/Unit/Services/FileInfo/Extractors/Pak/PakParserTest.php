@@ -16,7 +16,7 @@ final class PakParserTest extends TestCase
     public function test_parse_makeobj_versions(string $pakFile, string $expectedName): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/'.$pakFile);
+        $data = file_get_contents(__DIR__ . '/../file/' . $pakFile);
 
         $result = $parser->parse($data);
 
@@ -38,12 +38,12 @@ final class PakParserTest extends TestCase
             'makeobj-50' => ['pakFile' => 'test-50.pak', 'expectedName' => 'test_1'],
             'makeobj-55.4' => ['pakFile' => 'test-55.4.pak', 'expectedName' => 'test_1'],
             'makeobj-60' => ['pakFile' => 'test-60.pak', 'expectedName' => 'test_1'],
-            'makeobj-60.8' => ['pakFile' => 'test-60.8.pak', 'expectedName' => 'test_1'],
+            'makeobj-60.8' => ['pakFile' => 'way.test_1.pak', 'expectedName' => 'test_1'],
             'makeobj-48-transparent' => ['pakFile' => 'test_transparent-48.pak', 'expectedName' => 'test_transparent_1'],
             'makeobj-50-transparent' => ['pakFile' => 'test_transparent-50.pak', 'expectedName' => 'test_transparent_1'],
             'makeobj-55.4-transparent' => ['pakFile' => 'test_transparent-55.4.pak', 'expectedName' => 'test_transparent_1'],
             'makeobj-60-transparent' => ['pakFile' => 'test_transparent-60.pak', 'expectedName' => 'test_transparent_1'],
-            'makeobj-60.8-transparent' => ['pakFile' => 'test_transparent-60.8.pak', 'expectedName' => 'test_transparent_1'],
+            'makeobj-60.8-transparent' => ['pakFile' => 'way.test_transparent_1.pak', 'expectedName' => 'test_transparent_1'],
         ];
     }
 
@@ -51,7 +51,7 @@ final class PakParserTest extends TestCase
     {
         $parser = new PakParser;
         // Use one of the generated test files instead
-        $data = file_get_contents(__DIR__.'/../file/test_transparent-60.8.pak');
+        $data = file_get_contents(__DIR__ . '/../file/way.test_transparent_1.pak');
 
         $result = $parser->parse($data);
 
@@ -82,7 +82,7 @@ final class PakParserTest extends TestCase
     public function test_metadata_structure(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test-60.8.pak');
+        $data = file_get_contents(__DIR__ . '/../file/way.test_1.pak');
 
         $result = $parser->parse($data);
 
@@ -110,7 +110,7 @@ final class PakParserTest extends TestCase
 
         // Test with all makeobj versions - all test files are way objects, not vehicles
         foreach (self::makeobjVersionProvider() as $testCase) {
-            $data = file_get_contents(__DIR__.'/../file/'.$testCase['pakFile']);
+            $data = file_get_contents(__DIR__ . '/../file/' . $testCase['pakFile']);
             $result = $parser->parse($data);
 
             $this->assertNotEmpty($result['metadata'], "Failed for {$testCase['pakFile']}");
@@ -125,7 +125,7 @@ final class PakParserTest extends TestCase
     public function test_parse_vehicle_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/vehicle.TestTruck.pak');
+        $data = file_get_contents(__DIR__ . '/../file/vehicle.TestTruck.pak');
 
         $result = $parser->parse($data);
 
@@ -182,5 +182,42 @@ final class PakParserTest extends TestCase
         // Freight type (extracted from XREF node)
         $this->assertArrayHasKey('freight_type', $vehicleData);
         $this->assertSame('goods', $vehicleData['freight_type']); // freight=goods
+    }
+
+    public function test_parse_way_metadata(): void
+    {
+        $parser = new PakParser;
+        $data = file_get_contents(__DIR__ . '/../file/way.test_1.pak');
+
+        $result = $parser->parse($data);
+
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('metadata', $result);
+        $this->assertNotEmpty($result['metadata']);
+
+        // Check way metadata exists
+        $metadata = $result['metadata'][0] ?? null;
+        $this->assertNotNull($metadata);
+        $this->assertArrayHasKey('wayData', $metadata);
+
+        $wayData = $metadata['wayData'];
+        $this->assertIsArray($wayData);
+        $this->assertNotEmpty($wayData);
+
+        // Basic way properties from test.dat
+        $this->assertArrayHasKey('price', $wayData);
+        $this->assertArrayHasKey('maintenance', $wayData);
+        $this->assertArrayHasKey('topspeed', $wayData);
+        $this->assertArrayHasKey('max_weight', $wayData);
+        $this->assertArrayHasKey('wtyp', $wayData);
+        $this->assertArrayHasKey('styp', $wayData);
+
+        // Way type string
+        $this->assertArrayHasKey('wtyp_str', $wayData);
+        $this->assertIsString($wayData['wtyp_str']);
+
+        // System type string
+        $this->assertArrayHasKey('styp_str', $wayData);
+        $this->assertIsString($wayData['styp_str']);
     }
 }

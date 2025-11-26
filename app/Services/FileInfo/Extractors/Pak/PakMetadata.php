@@ -11,6 +11,7 @@ final readonly class PakMetadata
 {
     /**
      * @param  array<string, mixed>|null  $vehicleData  車両データ（vehicle型の場合のみ）
+     * @param  array<string, mixed>|null  $wayData  道路データ（way型の場合のみ）
      */
     private function __construct(
         public string $name,
@@ -18,10 +19,11 @@ final readonly class PakMetadata
         public string $objectType,
         public int $compilerVersionCode,
         public ?array $vehicleData = null,
+        public ?array $wayData = null,
     ) {}
 
     /**
-     * @return array{name: string, copyright: string|null, objectType: string, compilerVersionCode: int, vehicleData?: array<string, mixed>}
+     * @return array{name: string, copyright: string|null, objectType: string, compilerVersionCode: int, vehicleData?: array<string, mixed>, wayData?: array<string, mixed>}
      */
     public function toArray(): array
     {
@@ -34,6 +36,10 @@ final readonly class PakMetadata
 
         if ($this->vehicleData !== null) {
             $result['vehicleData'] = $this->vehicleData;
+        }
+
+        if ($this->wayData !== null) {
+            $result['wayData'] = $this->wayData;
         }
 
         return $result;
@@ -67,7 +73,13 @@ final readonly class PakMetadata
             $vehicleData = self::parseVehicleData($node);
         }
 
-        return new self($name, $copyright, $objectType, $versionCode, $vehicleData);
+        // Parse way-specific data if this is a way node
+        $wayData = null;
+        if ($node->isType(Node::OBJ_WAY)) {
+            $wayData = self::parseWayData($node);
+        }
+
+        return new self($name, $copyright, $objectType, $versionCode, $vehicleData, $wayData);
     }
 
     private static function extractTextFromNode(Node $node): string
@@ -323,5 +335,176 @@ final readonly class PakMetadata
         } catch (\Throwable) {
             return null;
         }
+    }
+
+    /**
+     * 道路データをパース
+     *
+     * 参考: simutrans/descriptor/reader/way_reader.cc
+     *
+     * @return array<string, mixed>|null
+     */
+    private static function parseWayData(Node $node): ?array
+    {
+        if (strlen($node->data) < 2) {
+            return null;
+        }
+
+        $reader = new BinaryReader($node->data);
+
+        try {
+            // Read version stamp
+            $v = $reader->readUint16LE();
+            $version = $v & 0x7FFF;
+
+            $data = [];
+
+            // Parse based on version
+            if ($version === 0) {
+                // old node, version 0
+                $data['price'] = 10000;
+                $data['maintenance'] = 800;
+                $data['topspeed'] = 999;
+                $data['max_weight'] = 999;
+                $data['intro_date'] = 1930 * 12; // DEFAULT_INTRO_DATE
+                $data['retire_date'] = 2999 * 12; // DEFAULT_RETIRE_DATE
+                $data['wtyp'] = 1; // road_wt
+                $data['styp'] = 0; // type_flat
+                $data['draw_as_obj'] = false;
+                $data['number_of_seasons'] = 0;
+            } elseif ($version === 1) {
+                $data['price'] = $reader->readUint32LE();
+                $data['maintenance'] = $reader->readUint32LE();
+                $data['topspeed'] = $reader->readUint32LE();
+                $data['max_weight'] = $reader->readUint32LE();
+                $introDateRaw = $reader->readUint32LE();
+                $data['intro_date'] = intdiv($introDateRaw, 16) * 12 + ($introDateRaw % 16);
+                $data['wtyp'] = $reader->readUint8();
+                $data['styp'] = $reader->readUint8();
+                $data['retire_date'] = 2999 * 12;
+                $data['draw_as_obj'] = false;
+                $data['number_of_seasons'] = 0;
+            } elseif ($version === 2) {
+                $data['price'] = $reader->readUint32LE();
+                $data['maintenance'] = $reader->readUint32LE();
+                $data['topspeed'] = $reader->readUint32LE();
+                $data['max_weight'] = $reader->readUint32LE();
+                $data['intro_date'] = $reader->readUint16LE();
+                $data['retire_date'] = $reader->readUint16LE();
+                $data['wtyp'] = $reader->readUint8();
+                $data['styp'] = $reader->readUint8();
+                $data['draw_as_obj'] = false;
+                $data['number_of_seasons'] = 0;
+            } elseif ($version === 3) {
+                $data['price'] = $reader->readUint32LE();
+                $data['maintenance'] = $reader->readUint32LE();
+                $data['topspeed'] = $reader->readUint32LE();
+                $data['max_weight'] = $reader->readUint32LE();
+                $data['intro_date'] = $reader->readUint16LE();
+                $data['retire_date'] = $reader->readUint16LE();
+                $data['wtyp'] = $reader->readUint8();
+                $data['styp'] = $reader->readUint8();
+                $data['draw_as_obj'] = $reader->readUint8();
+                $data['number_of_seasons'] = 0;
+            } elseif ($version === 4 || $version === 5) {
+                $data['price'] = $reader->readUint32LE();
+                $data['maintenance'] = $reader->readUint32LE();
+                $data['topspeed'] = $reader->readUint32LE();
+                $data['max_weight'] = $reader->readUint32LE();
+                $data['intro_date'] = $reader->readUint16LE();
+                $data['retire_date'] = $reader->readUint16LE();
+                $data['wtyp'] = $reader->readUint8();
+                $data['styp'] = $reader->readUint8();
+                $data['draw_as_obj'] = $reader->readUint8();
+                $data['number_of_seasons'] = $reader->readSint8();
+            } elseif ($version === 6) {
+                $data['price'] = $reader->readUint32LE();
+                $data['maintenance'] = $reader->readUint32LE();
+                $data['topspeed'] = $reader->readUint32LE();
+                $data['max_weight'] = $reader->readUint32LE();
+                $data['intro_date'] = $reader->readUint16LE();
+                $data['retire_date'] = $reader->readUint16LE();
+                $data['axle_load'] = $reader->readUint16LE();
+                $data['wtyp'] = $reader->readUint8();
+                $data['styp'] = $reader->readUint8();
+                $data['draw_as_obj'] = $reader->readUint8();
+                $data['number_of_seasons'] = $reader->readSint8();
+            } elseif ($version === 7) {
+                // Cost/maintenance as sint64 (but we'll read lower 32 bits for simplicity)
+                $data['price'] = $reader->readUint32LE();
+                $reader->readUint32LE(); // upper 32 bits (ignored)
+                $data['maintenance'] = $reader->readUint32LE();
+                $reader->readUint32LE(); // upper 32 bits (ignored)
+                $data['topspeed'] = $reader->readUint32LE();
+                $data['max_weight'] = $reader->readUint32LE();
+                $data['intro_date'] = $reader->readUint16LE();
+                $data['retire_date'] = $reader->readUint16LE();
+                $data['axle_load'] = $reader->readUint16LE();
+                $data['wtyp'] = $reader->readUint8();
+                $data['styp'] = $reader->readUint8();
+                $data['draw_as_obj'] = $reader->readUint8();
+                $data['number_of_seasons'] = $reader->readSint8();
+            }
+
+            // Apply internal corrections (from way_reader.cc)
+            if (isset($data['wtyp']) && $data['wtyp'] === 5) { // tram_wt
+                $data['styp'] = 7; // type_tram
+                $data['wtyp'] = 1; // track_wt
+            } elseif (isset($data['styp'], $data['wtyp']) && $data['styp'] === 5 && $data['wtyp'] === 1) {
+                $data['wtyp'] = 6; // monorail_wt
+                $data['styp'] = 0; // type_flat
+            } elseif (isset($data['wtyp']) && $data['wtyp'] === 128) {
+                $data['wtyp'] = 7; // powerline_wt
+            }
+
+            // Convert wtyp to string
+            if (isset($data['wtyp'])) {
+                $data['wtyp_str'] = self::getWayTypeName($data['wtyp']);
+            }
+
+            // Convert styp to string
+            if (isset($data['styp'])) {
+                $data['styp_str'] = self::getSystemTypeName($data['styp']);
+            }
+
+            return $data;
+        } catch (\Throwable) {
+            return null;
+        }
+    }
+
+    /**
+     * Get way type name
+     */
+    private static function getWayTypeName(int $wtyp): string
+    {
+        return match ($wtyp) {
+            0 => 'road',
+            1 => 'track',
+            2 => 'water',
+            3 => 'air',
+            4 => 'monorail',
+            5 => 'maglev',
+            6 => 'tram',
+            7 => 'narrowgauge',
+            8 => 'powerline',
+            default => "unknown($wtyp)",
+        };
+    }
+
+    /**
+     * Get system type name
+     */
+    private static function getSystemTypeName(int $styp): string
+    {
+        return match ($styp) {
+            0 => 'flat',
+            1 => 'elevated',
+            2 => 'tram',
+            3 => 'embankment',
+            4 => 'tunnel',
+            5 => 'runway',
+            default => "unknown($styp)",
+        };
     }
 }

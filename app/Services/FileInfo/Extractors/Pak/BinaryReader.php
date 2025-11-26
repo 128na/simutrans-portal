@@ -34,6 +34,22 @@ final class BinaryReader
         return $result[1];
     }
 
+    public function readSint8(): int
+    {
+        if (! $this->hasMore(1)) {
+            throw InvalidPakFileException::unexpectedEof();
+        }
+
+        $result = unpack('c', substr($this->binary, $this->position, 1));
+        if ($result === false) {
+            throw new OutOfBoundsException('Failed to read sint8');
+        }
+
+        $this->position += 1;
+
+        return $result[1];
+    }
+
     public function readUint16LE(): int
     {
         if (! $this->hasMore(2)) {
@@ -110,7 +126,7 @@ final class BinaryReader
     public function seek(int $position): void
     {
         if ($position < 0 || $position > strlen($this->binary)) {
-            throw new OutOfBoundsException('Invalid seek position: '.$position);
+            throw new OutOfBoundsException('Invalid seek position: ' . $position);
         }
 
         $this->position = $position;

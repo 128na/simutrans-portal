@@ -15,8 +15,8 @@ final class PakParserTest extends TestCase
      */
     public function test_parse_makeobj_versions(string $pakFile, string $expectedName): void
     {
-        $parser = new PakParser();
-        $data = file_get_contents(__DIR__ . '/../file/' . $pakFile);
+        $parser = new PakParser;
+        $data = file_get_contents(__DIR__.'/../file/'.$pakFile);
 
         $result = $parser->parse($data);
 
@@ -49,9 +49,9 @@ final class PakParserTest extends TestCase
 
     public function test_parse_existing_file(): void
     {
-        $parser = new PakParser();
+        $parser = new PakParser;
         // Use one of the generated test files instead
-        $data = file_get_contents(__DIR__ . '/../file/test_transparent-60.8.pak');
+        $data = file_get_contents(__DIR__.'/../file/test_transparent-60.8.pak');
 
         $result = $parser->parse($data);
 
@@ -67,7 +67,7 @@ final class PakParserTest extends TestCase
     {
         $this->expectException(InvalidPakFileException::class);
 
-        $parser = new PakParser();
+        $parser = new PakParser;
         $parser->parse('invalid pak data');
     }
 
@@ -75,14 +75,14 @@ final class PakParserTest extends TestCase
     {
         $this->expectException(InvalidPakFileException::class);
 
-        $parser = new PakParser();
+        $parser = new PakParser;
         $parser->parse('');
     }
 
     public function test_metadata_structure(): void
     {
-        $parser = new PakParser();
-        $data = file_get_contents(__DIR__ . '/../file/test-60.8.pak');
+        $parser = new PakParser;
+        $data = file_get_contents(__DIR__.'/../file/test-60.8.pak');
 
         $result = $parser->parse($data);
 

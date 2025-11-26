@@ -34,14 +34,14 @@ final readonly class PakMetadata
         // Child node 0 is name (TEXT node)
         $nameNode = $node->getChild(0);
         $name = '';
-        if ($nameNode !== null && $nameNode->isType(Node::OBJ_TEXT)) {
+        if ($nameNode instanceof \App\Services\FileInfo\Extractors\Pak\Node && $nameNode->isType(Node::OBJ_TEXT)) {
             $name = self::extractTextFromNode($nameNode);
         }
 
         // Child node 1 is copyright (TEXT node)
         $copyrightNode = $node->getChild(1);
         $copyright = null;
-        if ($copyrightNode !== null && $copyrightNode->isType(Node::OBJ_TEXT)) {
+        if ($copyrightNode instanceof \App\Services\FileInfo\Extractors\Pak\Node && $copyrightNode->isType(Node::OBJ_TEXT)) {
             $copyright = self::extractTextFromNode($copyrightNode);
             if ($copyright === '') {
                 $copyright = null;

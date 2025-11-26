@@ -8,10 +8,10 @@ use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\PakParser;
 use Illuminate\Support\Facades\Log;
 
-final class PakExtractor implements Extractor
+final readonly class PakExtractor implements Extractor
 {
     public function __construct(
-        private readonly PakParser $parser,
+        private PakParser $parser,
     ) {}
 
     #[\Override]
@@ -42,9 +42,9 @@ final class PakExtractor implements Extractor
     {
         try {
             return $this->parser->parse($pakBinary);
-        } catch (InvalidPakFileException $e) {
+        } catch (InvalidPakFileException $invalidPakFileException) {
             Log::warning('Failed to parse pak file with new parser, falling back to legacy parser', [
-                'error' => $e->getMessage(),
+                'error' => $invalidPakFileException->getMessage(),
             ]);
 
             return [

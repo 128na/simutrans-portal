@@ -73,7 +73,8 @@ final readonly class FileInfoService
                     if (isset($extracted['names'])) {
                         $data[$extractor->getKey()][$filename] = $extracted['names'];
                     }
-                    if (isset($extracted['metadata']) && ! empty($extracted['metadata'])) {
+
+                    if (isset($extracted['metadata']) && (isset($extracted['metadata']) && ($extracted['metadata'] !== '' && $extracted['metadata'] !== '0'))) {
                         $data['paks_metadata'][$filename] = $extracted['metadata'];
                     }
                 } else {

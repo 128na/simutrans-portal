@@ -97,7 +97,13 @@ export const extractErrorMessage = (error: unknown): string => {
 };
 
 /**
- * エラーをログに記録する
+ * エラーをログに記録する（内部関数）
+ *
+ * 開発環境ではコンソールにログを出力し、
+ * 本番環境では将来的に外部サービス（Sentry等）への送信を追加可能
+ *
+ * @param error - 発生したエラー
+ * @param context - エラーコンテキスト（コンポーネント名、アクション等）
  */
 const logError = (error: unknown, context?: ErrorContext): void => {
   const contextInfo = context
@@ -150,7 +156,9 @@ export const handleError = (error: unknown, context?: ErrorContext): void => {
   // ユーザーへの通知（サイレントモードでない場合）
   if (!context?.silent) {
     const message = extractErrorMessage(error);
-    // alert を使用（将来的にはトースト通知に置き換え可能）
+    // TODO: トースト通知コンポーネントを導入後、alertを置き換える
+    // 現時点ではブラウザ標準のalertを使用
+    // 参考: https://github.com/128na/simutrans-portal/issues/433
     window.alert(message);
   }
 };

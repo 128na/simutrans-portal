@@ -31,7 +31,7 @@ final readonly class PakParser
         $metadata = $this->extractMetadata($root, $header->compilerVersionCode);
 
         // Extract names for backward compatibility
-        $names = array_map(fn(array $m): string => $m['name'], $metadata);
+        $names = array_map(fn (array $m): string => $m['name'], $metadata);
 
         return [
             'names' => $names,

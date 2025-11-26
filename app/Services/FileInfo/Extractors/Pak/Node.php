@@ -27,6 +27,8 @@ final readonly class Node
 
     public const string OBJ_GOOD = 'GOOD';
 
+    public const string OBJ_XREF = 'XREF';
+
     private const int LARGE_RECORD_SIZE = 0xFFFF;
 
     private const int MAX_DEPTH = 100;

@@ -103,4 +103,84 @@ final class PakParserTest extends TestCase
         $this->assertSame('128Na', $metadata['copyright']);
         $this->assertSame('way', $metadata['objectType']);
     }
+
+    public function test_vehicle_metadata_not_present_for_way_objects(): void
+    {
+        $parser = new PakParser;
+
+        // Test with all makeobj versions - all test files are way objects, not vehicles
+        foreach (self::makeobjVersionProvider() as $testCase) {
+            $data = file_get_contents(__DIR__.'/../file/'.$testCase['pakFile']);
+            $result = $parser->parse($data);
+
+            $this->assertNotEmpty($result['metadata'], "Failed for {$testCase['pakFile']}");
+            $metadata = $result['metadata'][0];
+
+            // All test files are way objects, not vehicles
+            // So vehicleData should not be present
+            $this->assertArrayNotHasKey('vehicleData', $metadata, "vehicleData should not exist for way objects in {$testCase['pakFile']}");
+        }
+    }
+
+    public function test_parse_vehicle_metadata(): void
+    {
+        $parser = new PakParser;
+        $data = file_get_contents(__DIR__.'/../file/vehicle.TestTruck.pak');
+
+        $result = $parser->parse($data);
+
+        // Basic structure checks
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('names', $result);
+        $this->assertArrayHasKey('metadata', $result);
+        $this->assertContains('TestTruck', $result['names']);
+
+        // Metadata checks
+        $this->assertNotEmpty($result['metadata']);
+        $metadata = $result['metadata'][0];
+
+        $this->assertSame('TestTruck', $metadata['name']);
+        $this->assertSame('TestAuthor', $metadata['copyright']);
+        $this->assertSame('vehicle', $metadata['objectType']);
+
+        // Vehicle data checks
+        $this->assertArrayHasKey('vehicleData', $metadata);
+        $vehicleData = $metadata['vehicleData'];
+
+        // Basic vehicle properties from vehicle.dat
+        $this->assertSame(10, $vehicleData['capacity']);        // payload=10
+        $this->assertSame(50000, $vehicleData['price']);        // cost=50000
+        $this->assertSame(80, $vehicleData['topspeed']);        // speed=80
+        $this->assertSame(5000, $vehicleData['weight']);        // weight=5 (tons * 1000 = kg in version 10+)
+        $this->assertSame(150, $vehicleData['power']);          // power=150
+        $this->assertSame(100, $vehicleData['running_cost']);   // runningcost=100
+        $this->assertSame(64, $vehicleData['gear']);            // gear=100 → actual value 64 (gear calculation by makeobj)
+        $this->assertSame(8, $vehicleData['len']);              // length=8
+        $this->assertSame(1000, $vehicleData['loading_time']);  // default loading_time
+        $this->assertSame(0, $vehicleData['maintenance']);      // default maintenance
+
+        // Date checks (Simutrans date format: months since year 0)
+        $this->assertSame(23880, $vehicleData['intro_date']);   // 1990*12 + 0 = 23880
+        $this->assertSame(24251, $vehicleData['retire_date']);  // 2020*12 + 11 = 24251
+
+        // Engine type
+        $this->assertSame(1, $vehicleData['engine_type']);      // engine_type=diesel (1)
+        $this->assertSame('diesel', $vehicleData['engine_type_str']); // Converted to string
+
+        // Waytype (road=1 in Simutrans)
+        $this->assertSame(1, $vehicleData['wtyp']);
+
+        // Sound (254 = default sound index)
+        $this->assertSame(254, $vehicleData['sound']);
+
+        // Axle load and counts
+        $this->assertSame(0, $vehicleData['axle_load']);
+        $this->assertSame(0, $vehicleData['leader_count']);
+        $this->assertSame(0, $vehicleData['trailer_count']);
+        $this->assertSame(0, $vehicleData['freight_image_type']);
+
+        // Freight type (extracted from XREF node)
+        $this->assertArrayHasKey('freight_type', $vehicleData);
+        $this->assertSame('goods', $vehicleData['freight_type']); // freight=goods
+    }
 }

@@ -4,6 +4,34 @@
  */
 
 /**
+ * 車両データ型
+ * Vehicle data type
+ */
+export interface VehicleData {
+  capacity?: number;
+  price?: number;
+  topspeed?: number;
+  weight?: number;
+  power?: number;
+  running_cost?: number;
+  maintenance?: number;
+  loading_time?: number;
+  axle_load?: number;
+  intro_date?: number;
+  retire_date?: number;
+  gear?: number;
+  wtyp?: number;
+  sound?: number;
+  engine_type?: number;
+  engine_type_str?: string;
+  len?: number;
+  leader_count?: number;
+  trailer_count?: number;
+  freight_image_type?: number;
+  freight_type?: string;
+}
+
+/**
  * Pakメタデータ型
  * Pak metadata type
  */
@@ -12,6 +40,7 @@ export interface PakMetadata {
   copyright: string | null;
   objectType: string;
   compilerVersionCode: number;
+  vehicleData?: VehicleData;
 }
 
 /**

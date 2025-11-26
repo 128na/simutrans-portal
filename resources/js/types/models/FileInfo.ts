@@ -4,6 +4,17 @@
  */
 
 /**
+ * Pakメタデータ型
+ * Pak metadata type
+ */
+export interface PakMetadata {
+  name: string;
+  copyright: string | null;
+  objectType: string;
+  compilerVersionCode: number;
+}
+
+/**
  * ファイル情報表示型
  * FileInfo display type
  */
@@ -23,6 +34,7 @@ export interface FileInfoMypageEdit {
     dats: Record<string, string[]>;
     tabs: Record<string, Record<string, string>>;
     paks: Record<string, string[]>;
+    paks_metadata?: Record<string, PakMetadata[]>;
     readmes: Record<string, string[]>;
   };
 }

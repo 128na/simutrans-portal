@@ -4,8 +4,16 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors;
 
+use App\Exceptions\InvalidPakFileException;
+use App\Services\FileInfo\Extractors\Pak\PakParser;
+use Illuminate\Support\Facades\Log;
+
 final class PakExtractor implements Extractor
 {
+    public function __construct(
+        private readonly PakParser $parser,
+    ) {}
+
     #[\Override]
     public function isText(): bool
     {
@@ -25,12 +33,33 @@ final class PakExtractor implements Extractor
     }
 
     /**
-     * pakバイナリからアドオン名を抽出する.
+     * pakバイナリからアドオン名とメタデータを抽出する.
      *
-     * @return string[]
+     * @return array{names: array<int, string>, metadata: array<int, array{name: string, copyright: string|null, objectType: string, compilerVersionCode: int}>}
      */
     #[\Override]
     public function extract(string $pakBinary): array
+    {
+        try {
+            return $this->parser->parse($pakBinary);
+        } catch (InvalidPakFileException $e) {
+            Log::warning('Failed to parse pak file with new parser, falling back to legacy parser', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return [
+                'names' => $this->fallbackExtract($pakBinary),
+                'metadata' => [],
+            ];
+        }
+    }
+
+    /**
+     * レガシーパーサー（フォールバック用）
+     *
+     * @return string[]
+     */
+    private function fallbackExtract(string $pakBinary): array
     {
         /** @var PakBinary */
         $pak = app(PakBinary::class, ['binary' => $pakBinary]);

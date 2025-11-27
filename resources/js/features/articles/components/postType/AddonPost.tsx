@@ -6,6 +6,7 @@ import { formatArticleDate } from "../../utils/articleUtil";
 import { Accordion } from "@/components/ui/Accordion";
 import { PakMetadata } from "../PakMetadata";
 import React from "react";
+import { displaySize } from "@/features/attachments/attachmentUtil";
 
 type Props = {
   article: Article.Show;
@@ -69,7 +70,9 @@ export const AddonPost = ({ article, preview }: Props) => {
               </td>
               <td className="border border-gray-300 px-4 py-2">
                 <Link href={preview ? "#" : `/articles/${article.id}/download`}>
-                  {file?.original_name ?? "download"}
+                  {file
+                    ? `${file.original_name} (${displaySize(file.size)})`
+                    : "download"}
                 </Link>
               </td>
             </tr>

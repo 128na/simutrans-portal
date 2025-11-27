@@ -35,6 +35,7 @@ export interface AttachmentShow {
   thumbnail: string;
   original_name: string;
   url: string;
+  size: number;
   fileInfo?: import("./FileInfo").FileInfoShow | null;
 }
 

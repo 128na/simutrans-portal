@@ -68,6 +68,7 @@ final class ArticleShow extends JsonResource
                 'original_name' => $attachment->original_name,
                 'thumbnail' => $attachment->thumbnail,
                 'url' => $attachment->url,
+                'size' => $attachment->size,
                 'fileInfo' => $this->when($attachment->fileInfo instanceof FileInfo, function () use ($attachment): array {
                     /** @var FileInfo $fileInfo */
                     $fileInfo = $attachment->fileInfo;

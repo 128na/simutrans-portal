@@ -154,7 +154,7 @@ export const AddonPost = ({ article, preview }: Props) => {
           )}
 
           {hasPaksMetadata && (
-            <Accordion title="Pakファイル">
+            <Accordion title="Pakファイル（ベータ版）">
               <PakMetadata paksMetadata={paksMetadata} />
             </Accordion>
           )}

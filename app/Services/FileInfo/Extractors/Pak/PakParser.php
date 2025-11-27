@@ -74,6 +74,7 @@ final readonly class PakParser
             if ($child->isType(Node::OBJ_CURSOR)) {
                 continue;
             }
+
             $childMetadata = $this->extractMetadata($child, $versionCode);
             $metadata = array_merge($metadata, $childMetadata);
         }

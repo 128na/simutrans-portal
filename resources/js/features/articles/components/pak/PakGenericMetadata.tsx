@@ -114,20 +114,36 @@ function buildDetailRows(
       return buildVehicleRows(typeData);
     case "way":
       return buildWayRows(typeData);
+    case "wayobj":
+      return buildWayobjRows(typeData);
     case "bridge":
       return buildBridgeRows(typeData);
     case "tunnel":
       return buildTunnelRows(typeData);
+    case "roadsign":
+      return buildRoadsignRows(typeData);
+    case "crossing":
+      return buildCrossingRows(typeData);
     case "building":
       return buildBuildingRows(typeData);
     case "factory":
       return buildFactoryRows(typeData);
     case "good":
       return buildGoodRows(typeData);
+    case "citycar":
+      return buildCitycarRows(typeData);
+    case "pedestrian":
+      return buildPedestrianRows(typeData);
     case "tree":
       return buildTreeRows(typeData);
     case "groundobj":
       return buildGroundobjRows(typeData);
+    case "ground":
+      return buildGroundRows(typeData);
+    case "sound":
+      return buildSoundRows(typeData);
+    case "skin":
+      return buildSkinRows(typeData);
     default:
       return buildGenericRows(typeData);
   }
@@ -488,6 +504,217 @@ function buildGroundobjRows(data: Record<string, unknown>): TableRow[] {
     rows.push({
       label: "軌道タイプ",
       value: getWaytypeName(Number(data.waytype || 0)),
+    });
+  }
+
+  return rows;
+}
+
+/**
+ * Wayobj（軌道オブジェクト）の詳細行
+ */
+function buildWayobjRows(data: Record<string, unknown>): TableRow[] {
+  return [
+    {
+      label: "軌道タイプ",
+      value: data.wtyp_str
+        ? getWaytypeName(Number(data.wtyp))
+        : String(data.wtyp || ""),
+    },
+    {
+      label: "所有タイプ",
+      value: data.own_wtyp_str
+        ? String(data.own_wtyp_str)
+        : String(data.own_wtyp || ""),
+    },
+    {
+      label: "最高速度",
+      value: data.topspeed ? `${data.topspeed} km/h` : "",
+    },
+    {
+      label: "建設費",
+      value: data.price ? `${Number(data.price) / 100} Cr` : "",
+    },
+    {
+      label: "維持費",
+      value: data.maintenance ? `${Number(data.maintenance) / 100} Cr/月` : "",
+    },
+    {
+      label: "登場年月",
+      value: data.intro_date ? formatDate(Number(data.intro_date)) : "",
+    },
+    {
+      label: "引退年月",
+      value: data.retire_date ? formatDate(Number(data.retire_date)) : "",
+    },
+  ];
+}
+
+/**
+ * Roadsign（信号・標識）の詳細行
+ */
+function buildRoadsignRows(data: Record<string, unknown>): TableRow[] {
+  const rows: TableRow[] = [];
+
+  // 最低速度
+  if (data.min_speed !== undefined && data.min_speed !== null) {
+    rows.push({
+      label: "最低速度",
+      value: `${data.min_speed} km/h`,
+    });
+  }
+
+  rows.push(
+    {
+      label: "軌道タイプ",
+      value: data.wtyp_str
+        ? getWaytypeName(Number(data.wtyp))
+        : String(data.wtyp || ""),
+    },
+    {
+      label: "建設費",
+      value: data.price ? `${Number(data.price) / 100} Cr` : "",
+    },
+    {
+      label: "維持費",
+      value: data.maintenance ? `${Number(data.maintenance) / 100} Cr/月` : "",
+    },
+    {
+      label: "登場年月",
+      value: data.intro_date ? formatDate(Number(data.intro_date)) : "",
+    },
+    {
+      label: "引退年月",
+      value: data.retire_date ? formatDate(Number(data.retire_date)) : "",
+    }
+  );
+
+  return rows;
+}
+
+/**
+ * Crossing（踏切）の詳細行
+ */
+function buildCrossingRows(data: Record<string, unknown>): TableRow[] {
+  return [
+    {
+      label: "軌道タイプ1",
+      value: data.ns_wtyp_str
+        ? getWaytypeName(Number(data.ns_wtyp))
+        : String(data.ns_wtyp || ""),
+    },
+    {
+      label: "軌道タイプ2",
+      value: data.ew_wtyp_str
+        ? getWaytypeName(Number(data.ew_wtyp))
+        : String(data.ew_wtyp || ""),
+    },
+    {
+      label: "最高速度",
+      value: data.topspeed ? `${data.topspeed} km/h` : "",
+    },
+    {
+      label: "建設費",
+      value: data.price ? `${Number(data.price) / 100} Cr` : "",
+    },
+    {
+      label: "維持費",
+      value: data.maintenance ? `${Number(data.maintenance) / 100} Cr/月` : "",
+    },
+    {
+      label: "登場年月",
+      value: data.intro_date ? formatDate(Number(data.intro_date)) : "",
+    },
+    {
+      label: "引退年月",
+      value: data.retire_date ? formatDate(Number(data.retire_date)) : "",
+    },
+  ];
+}
+
+/**
+ * Citycar（市内車両）の詳細行
+ */
+function buildCitycarRows(data: Record<string, unknown>): TableRow[] {
+  return [
+    {
+      label: "配置確率",
+      value: String(data.distribution_weight || ""),
+    },
+    {
+      label: "登場年月",
+      value: data.intro_date ? formatDate(Number(data.intro_date)) : "",
+    },
+    {
+      label: "引退年月",
+      value: data.retire_date ? formatDate(Number(data.retire_date)) : "",
+    },
+  ];
+}
+
+/**
+ * Pedestrian（歩行者）の詳細行
+ */
+function buildPedestrianRows(data: Record<string, unknown>): TableRow[] {
+  return [
+    {
+      label: "配置確率",
+      value: String(data.distribution_weight || ""),
+    },
+    {
+      label: "登場年月",
+      value: data.intro_date ? formatDate(Number(data.intro_date)) : "",
+    },
+    {
+      label: "引退年月",
+      value: data.retire_date ? formatDate(Number(data.retire_date)) : "",
+    },
+  ];
+}
+
+/**
+ * Ground（地形）の詳細行
+ */
+function buildGroundRows(data: Record<string, unknown>): TableRow[] {
+  // groundオブジェクトはデータフィールドを持たない（画像のみ）
+  return [
+    {
+      label: "データ",
+      value: data.has_data ? "あり" : "なし（画像のみ）",
+    },
+  ];
+}
+
+/**
+ * Sound（サウンド）の詳細行
+ */
+function buildSoundRows(data: Record<string, unknown>): TableRow[] {
+  // soundオブジェクトはデータフィールドを持たない
+  return [
+    {
+      label: "データ",
+      value: data.has_data ? "あり" : "なし（音声ファイルのみ）",
+    },
+  ];
+}
+
+/**
+ * Skin（スキン）の詳細行
+ */
+function buildSkinRows(data: Record<string, unknown>): TableRow[] {
+  // skinオブジェクトはデータフィールドを持たない（画像のみ）
+  const rows: TableRow[] = [
+    {
+      label: "データ",
+      value: data.has_data ? "あり" : "なし（画像のみ）",
+    },
+  ];
+
+  // サブタイプ（smoke等）
+  if (data.object_subtype) {
+    rows.push({
+      label: "サブタイプ",
+      value: String(data.object_subtype),
     });
   }
 

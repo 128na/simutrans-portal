@@ -7,33 +7,33 @@
  */
 const BUILDING_TYPE_TRANSLATIONS: Record<string, string> = {
   Unknown: "不明",
-  "City Attraction": "都市アトラクション",
-  "Land Attraction": "観光名所",
-  Monument: "記念碑",
+  "City Attraction": "都市内施設",
+  "Land Attraction": "郊外型施設",
+  Monument: "モニュメント",
   Factory: "工場",
   "Town Hall": "市役所",
   Others: "その他",
   Headquarters: "本社",
-  Dock: "ドック",
+  Dock: "港",
   Depot: "車庫",
   Stop: "停留所",
   "Stop Extension": "停留所拡張",
-  "Flat Dock": "平坦ドック",
+  "Flat Dock": "港",
   Residential: "住宅",
-  Commercial: "商業",
-  Industrial: "工業",
+  Commercial: "商店",
+  Industrial: "工場",
 };
 
 /**
  * システムタイプの翻訳
  */
 const SYSTEM_TYPE_TRANSLATIONS: Record<string, string> = {
-  flat: "平坦",
+  flat: "地上",
   elevated: "高架",
-  tram: "路面",
+  tram: "市電",
   monorail: "モノレール",
   maglev: "リニア",
-  narrowgauge: "狭軌",
+  narrowgauge: "ナローゲージ",
 };
 
 /**
@@ -90,7 +90,7 @@ export function getEnablesString(enablesStr: string): string {
  */
 const PLACEMENT_TRANSLATIONS: Record<string, string> = {
   Land: "陸地",
-  Water: "水上",
+  Water: "沿岸",
   City: "市街地",
 };
 
@@ -106,14 +106,14 @@ export function getPlacementName(placementStr: string | number): string {
  * 気候名の翻訳
  */
 const CLIMATE_TRANSLATIONS: Record<string, string> = {
-  water_climate: "水上",
-  desert_climate: "砂漠",
-  tropic_climate: "熱帯",
-  mediterran_climate: "地中海",
-  temperate_climate: "温帯",
-  tundra_climate: "ツンドラ",
-  rocky_climate: "岩石",
-  arctic_climate: "北極",
+  water_climate: "海上",
+  desert_climate: "砂漠気候",
+  tropic_climate: "熱帯気候",
+  mediterran_climate: "地中海性気候",
+  temperate_climate: "温暖気候",
+  tundra_climate: "ツンドラ気候",
+  rocky_climate: "氷雪気候",
+  arctic_climate: "極気候",
 };
 
 /**

@@ -18,7 +18,7 @@ echo.
 
 REM makeobj 60.8 (default output name)
 echo [1/5] makeobj-60.8
-makeobj-60.8.exe pak128 ..\ test.dat
+makeobj-60.8.exe pak128 ..\test.pak test.dat
 
 REM makeobj 60
 echo [2/5] makeobj-60
@@ -40,21 +40,3 @@ REM Cleanup
 echo.
 echo Cleaning up...
 del test.dat test.png test_transparent.png
-
-echo.
-echo ========================================
-echo All pak files generated successfully!
-echo ========================================
-echo.
-echo Generated files:
-echo   - way.test_1.pak (makeobj 60.8, way object)
-echo   - way.test_transparent_1.pak (makeobj 60.8, way object with transparency)
-echo   - vehicle.TestTruck.pak (makeobj 60.8, vehicle object)
-echo   - test-48.pak (makeobj 48, all objects)
-echo   - test-50.pak (makeobj 50, all objects)
-echo   - test-55.4.pak (makeobj 55.4, all objects)
-echo   - test-60.pak (makeobj 60, all objects)
-echo.
-echo Note: makeobj 60.8 creates separate .pak files per object
-echo       makeobj 48-60 combine all objects into one .pak file
-echo.

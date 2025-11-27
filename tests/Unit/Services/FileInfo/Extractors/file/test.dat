@@ -122,10 +122,20 @@ BackImage[0][0][0][0][0]=test.0.0
 obj=citycar
 name=test_citycar
 copyright=TestAuthor
-intro_date=1900
-distribution_weight=10
-image[0][0]=test.0.0
-image[1][0]=test.0.1
+intro_year=1900
+intro_month=1
+retire_year=2999
+retire_month=1
+distributionWeight=1
+speed=100
+Image[S]=test.0.0
+Image[N]=test.0.0
+Image[E]=test.0.0
+Image[W]=test.0.0
+Image[SE]=test.0.0
+Image[NW]=test.0.0
+Image[NE]=test.0.0
+Image[SW]=test.0.0
 
 ---
 
@@ -133,20 +143,39 @@ image[1][0]=test.0.1
 obj=good
 name=test_good
 copyright=TestAuthor
+metric=kg
+catg=1
 value=100
-catg_index=1
-speed_bonus=10
+speed_bonus=1
 weight_per_unit=100
-icon=test.0.0
-
+mapcolor=1
 ---
 
 # Ground object
 obj=ground
-name=test_ground
-copyright=TestAuthor
-climate=temperate
-Image[0][0]=test.0.0
+name=Basement
+image[0][0]=test.0.0
+image[1][0]=test.0.0
+image[2][0]=test.0.0
+image[3][0]=test.0.0
+image[4][0]=test.0.0
+image[5][0]=test.0.0
+image[6][0]=test.0.0
+image[7][0]=test.0.0
+image[8][0]=test.0.0
+image[9][0]=test.0.0
+image[10][0]=test.0.0
+image[11][0]=test.0.0
+image[12][0]=test.0.0
+image[13][0]=test.0.0
+image[14][0]=test.0.0
+image[15][0]=test.0.0
+image[16][0]=test.0.0
+image[17][0]=test.0.0
+image[18][0]=test.0.0
+image[19][0]=test.0.0
+image[20][0]=test.0.0
+image[21][0]=test.0.0
 
 ---
 
@@ -154,128 +183,197 @@ Image[0][0]=test.0.0
 obj=bridge
 name=test_bridge
 copyright=TestAuthor
-waytype=road
-topspeed=80
-price=1000
-maintenance=100
-max_length=10
-max_height=5
-pillar_distance=1
 intro_year=1900
 intro_month=1
+retire_year=2999
+retire_month=1
+waytype=road
+cost=1
+maintenance=1
+topspeed=1
+max_weight=1
+max_height=1
+max_length=1
+pillar_distance=1
+pillar_asymmetric=1
 cursor=test.0.0
-icon=test.0.0
-BackImage[NS][0]=test.0.0
-FrontImage[NS][0]=test.0.0
-BackImage[EW][0]=test.0.0
-FrontImage[EW][0]=test.0.0
-BackStart[N][0]=test.0.0
-FrontStart[N][0]=test.0.0
-BackStart[S][0]=test.0.0
-FrontStart[S][0]=test.0.0
-BackStart[E][0]=test.0.0
-FrontStart[E][0]=test.0.0
-BackStart[W][0]=test.0.0
-FrontStart[W][0]=test.0.0
-BackRamp[N][0]=test.0.0
-FrontRamp[N][0]=test.0.0
-BackRamp[S][0]=test.0.0
-FrontRamp[S][0]=test.0.0
-BackRamp[E][0]=test.0.0
-FrontRamp[E][0]=test.0.0
-BackRamp[W][0]=test.0.0
-FrontRamp[W][0]=test.0.0
-BackPillar[S][0]=test.0.0
-FrontPillar[S][0]=test.0.0
-BackPillar[N][0]=test.0.0
-FrontPillar[N][0]=test.0.0
+icon=> test.0.0
+backImage[NS]=test.0.0
+backImage[EW]=test.0.0
+backImage2[NS]=test.0.0
+backImage2[EW]=test.0.0
+backStart[N]=test.0.0
+backStart[W]=test.0.0
+backStart[S]=test.0.0
+backStart[E]=test.0.0
+backStart2[N]=test.0.0
+backStart2[W]=test.0.0
+backStart2[S]=test.0.0
+backStart2[E]=test.0.0
+backRamp[N]=test.0.0
+backRamp[W]=test.0.0
+backRamp[S]=test.0.0
+backRamp[E]=test.0.0
+backRamp2[N]=test.0.0
+backRamp2[W]=test.0.0
+backRamp2[S]=test.0.0
+backRamp2[E]=test.0.0
+backPillar[S]=test.0.0
+backPillar[W]=test.0.0
+backPillar2[S]=test.0.0
+backPillar2[W]=test.0.0
+frontImage[NS]=test.0.0
+frontImage[EW]=test.0.0
+frontImage2[NS]=test.0.0
+frontImage2[EW]=test.0.0
+frontStart[N]=test.0.0
+frontStart[W]=test.0.0
+frontStart[S]=test.0.0
+frontStart[E]=test.0.0
+frontStart2[N]=test.0.0
+frontStart2[W]=test.0.0
+frontStart2[S]=test.0.0
+frontStart2[E]=test.0.0
+frontRamp[N]=test.0.0
+frontRamp[W]=test.0.0
+frontRamp[S]=test.0.0
+frontRamp[E]=test.0.0
+frontRamp2[N]=test.0.0
+frontRamp2[W]=test.0.0
+frontRamp2[S]=test.0.0
+frontRamp2[E]=test.0.0
+frontPillar[S]=test.0.0
+frontPillar[W]=test.0.0
+frontPillar2[S]=test.0.0
+frontPillar2[W]=test.0.0
 
-# ---
-# 
-# # Crossing object
-# obj=crossing
-# name=test_crossing
-# copyright=TestAuthor
-# waytype[0]=road
-# waytype[1]=track
-# maxspeed[0]=50
-# maxspeed[1]=100
-# intro_year=1900
-# intro_month=1
-# open[ns][0]=test.0.0
-# open[ew][0]=test.0.1
-# front[ns][0]=test.1.0
-# front[ew][0]=test.1.1
-# 
-# ---
-# 
-# # Factory object
-# obj=factory
-# name=test_factory
-# copyright=TestAuthor
-# intro_year=1900
-# intro_month=1
-# productivity=100
-# range=10
-# BackImage[0][0][0][0][0]=test.0.0
-# 
-# ---
-# 
-# # Pedestrian object
-# obj=pedestrian
-# name=test_pedestrian
-# copyright=TestAuthor
-# intro_date=1900
-# distribution_weight=10
-# image[0][0]=test.0.0
-# image[1][0]=test.0.1
-# 
-# ---
-# 
-# # Tree object
-# obj=tree
-# name=test_tree
-# copyright=TestAuthor
-# climate=temperate
-# intro_year=1900
-# intro_month=1
-# image[0][0]=test.0.0
-# image[1][0]=test.1.0
-# 
-# ---
-# 
-# # Groundobj object
-# obj=groundobj
-# name=test_groundobj
-# copyright=TestAuthor
-# climate=temperate
-# intro_year=1900
-# intro_month=1
-# BackImage[0][0]=test.0.0
-# FrontImage[0][0]=test.0.1
-# 
-# ---
-# 
-# # Roadsign object
-# obj=roadsign
-# name=test_signal
-# copyright=TestAuthor
-# waytype=track
-# intro_year=1900
-# intro_month=1
-# cost=100
-# is_signal=1
-# image[0]=test.0.0
-# image[1]=test.0.1
-# image[2]=test.0.2
-# image[3]=test.0.3
-# 
-# ---
-# 
-# # Skin object
-# obj=skin
-# name=test_skin
-# copyright=TestAuthor
-# intro_year=1900
-# intro_month=1
-# image[0]=test.0.0
+---
+
+# Crossing object
+obj=crossing
+name=test_crossing
+copyright=TestAuthor
+sound=1
+waytype[0]=road
+waytype[1]=track
+speed[0]=50
+speed[1]=100
+openImage[ns][0]=test.0.0
+front_openImage[ns][0]=test.0.0
+closedImage[ns][0]=test.0.0
+front_closedImage[ns][0]=test.0.0
+openImage[ew][0]=test.0.0
+front_openImage[ew][0]=test.0.0
+closedImage[ew][0]=test.0.0
+front_closedImage[ew][0]=test.0.0
+
+---
+
+# Factory object
+obj=factory
+name=test_factory
+copyright=TestAuthor
+intro_year=1900
+intro_month=1
+retire_year=2999
+retire_month=1
+location=Land
+distributionWeight=1
+productivity=320
+range=300
+pax_level=35
+inputGood[0]=Passagiere
+inputCapacity[0]=100
+inputSupplier[0]=100
+inputFactor[0]=100
+outputGood[0]=Post
+outputCapacity[0]=100
+OutputFactor[0]=100
+mapColor=1
+needs_ground=1
+climates=arctic
+dims=1,1,1
+backImage[0][0][0][0][0]=test.0.0
+frontImage[0][0][0][0][0]=test.0.0
+
+---
+
+# Pedestrian object
+obj=pedestrian
+name=test_pedestrian
+copyright=TestAuthor
+intro_year=1900
+intro_month=1
+retire_year=2999
+retire_month=1
+steps_per_frame=1
+distributionWeight=1
+Image[S]=test.0.0
+Image[E]=test.0.0
+Image[SE]=test.0.0
+Image[SW]=test.0.0
+Image[N]=test.0.0
+Image[W]=test.0.0
+Image[NW]=test.0.0
+Image[NE]=test.0.0
+
+---
+
+# Tree object
+obj=tree
+name=test_tree
+copyright=TestAuthor
+distributionWeight=1
+height=1
+image[0][0]=test.0.0
+image[1][0]=test.0.0
+image[2][0]=test.0.0
+image[3][0]=test.0.0
+image[4][0]=test.0.0
+
+---
+
+# Groundobj object
+obj=ground_obj
+name=test_groundobj
+copyright=TestAuthor
+cost=1
+distributionWeight=1
+seasons=1
+climates=water
+trees_on_top=1
+image[0][0]=test.0.0
+
+---
+
+# Roadsign object
+obj=roadsign
+name=test_signal
+copyright=TestAuthor
+intro_year=1900
+intro_month=1
+retire_year=2999
+retire_month=1
+waytype=road
+cost=1
+offset_left=14
+is_private=0
+single_way=0
+free_route=0
+min_speed=0
+cursor=test.0.0
+icon=> test.0.0
+image[0]=test.0.0
+image[1]=test.0.0
+image[2]=test.0.0
+image[3]=test.0.0
+
+---
+
+# Skin object
+obj=skin
+name=test_skin
+copyright=TestAuthor
+intro_year=1900
+intro_month=1
+image[0]=test.0.0

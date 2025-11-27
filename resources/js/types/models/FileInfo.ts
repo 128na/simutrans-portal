@@ -556,6 +556,7 @@ export interface FileInfoShow {
   data: {
     dats: Record<string, string[]>;
     tabs: Record<string, Record<string, string>>;
+    paks_metadata?: Record<string, PakMetadata[]>;
   };
 }
 

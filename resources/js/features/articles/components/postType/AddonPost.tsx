@@ -4,6 +4,7 @@ import { TitleH3 } from "../TitleH3";
 import { TextPre } from "../TextPre";
 import { formatArticleDate } from "../../utils/articleUtil";
 import { Accordion } from "@/components/ui/Accordion";
+import { PakMetadata } from "../PakMetadata";
 import React from "react";
 
 type Props = {
@@ -19,6 +20,7 @@ export const AddonPost = ({ article, preview }: Props) => {
   const fileInfo = file?.fileInfo as FileInfo.Show | undefined;
   const dats = fileInfo?.data?.dats;
   const tabs = fileInfo?.data?.tabs;
+  const paksMetadata = fileInfo?.data?.paks_metadata;
 
   return (
     <div>
@@ -141,6 +143,13 @@ export const AddonPost = ({ article, preview }: Props) => {
                 </ul>
               </div>
             </Accordion>
+          )}
+
+          {paksMetadata && (
+            <>
+              <TitleH4>アドオン詳細情報</TitleH4>
+              <PakMetadata paksMetadata={paksMetadata} />
+            </>
           )}
         </>
       )}

@@ -47,7 +47,7 @@ const PakGenericMetadata: React.FC<Props> = ({ metadata }) => {
     );
   }
 
-  return <PakInfoTable title="諸元" rows={rows} />;
+  return <PakInfoTable rows={rows} />;
 };
 
 /**

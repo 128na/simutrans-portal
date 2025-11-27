@@ -4,14 +4,12 @@ export type TableRow = {
 };
 
 type Props = {
-  title: string;
   rows: TableRow[];
 };
 
-export const PakInfoTable = ({ title, rows }: Props) => {
+export const PakInfoTable = ({ rows }: Props) => {
   return (
     <div>
-      <h5 className="font-semibold text-gray-700 mb-2">{title}</h5>
       <div className="overflow-x-auto">
         <table className="border-collapse whitespace-nowrap">
           <tbody>

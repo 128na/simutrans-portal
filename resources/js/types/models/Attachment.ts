@@ -24,6 +24,7 @@ export interface Attachment {
   thumbnail: string;
   original_name: string;
   url: string;
+  size: number;
 }
 
 /**

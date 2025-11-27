@@ -25,7 +25,7 @@ final class ObjectTypeConverter
             Node::OBJ_GROUND => 'ground',
             Node::OBJ_GOOD => 'good',
             Node::OBJ_FACTORY => 'factory',
-            Node::OBJ_CITYCAR => 'citycar',
+            Node::OBJ_CITYCAR, 'CCAR' => 'citycar', // CCAR is used by makeobj 60.8+
             Node::OBJ_PEDESTRIAN => 'pedestrian',
             Node::OBJ_SOUND => 'sound',
             Node::OBJ_SKIN => 'skin',

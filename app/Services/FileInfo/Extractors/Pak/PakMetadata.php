@@ -10,7 +10,11 @@ use App\Services\FileInfo\Extractors\Pak\TypeParsers\CitycarParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\CrossingParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\FactoryParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\GoodParser;
+use App\Services\FileInfo\Extractors\Pak\TypeParsers\GroundobjParser;
+use App\Services\FileInfo\Extractors\Pak\TypeParsers\GroundParser;
+use App\Services\FileInfo\Extractors\Pak\TypeParsers\PedestrianParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\SignParser;
+use App\Services\FileInfo\Extractors\Pak\TypeParsers\TreeParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\TunnelParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\TypeParserInterface;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\VehicleParser;
@@ -48,7 +52,7 @@ final readonly class PakMetadata
         // Add type-specific data with appropriate keys for backward compatibility
         if ($this->typeSpecificData !== []) {
             // Use objectType to determine the key name (e.g., 'vehicleData', 'wayData')
-            $dataKey = $this->objectType.'Data';
+            $dataKey = $this->objectType . 'Data';
             $result[$dataKey] = $this->typeSpecificData;
         }
 
@@ -111,6 +115,10 @@ final readonly class PakMetadata
                 new FactoryParser,
                 new GoodParser,
                 new BuildingParser,
+                new PedestrianParser,
+                new TreeParser,
+                new GroundobjParser,
+                new GroundParser,
             ];
         }
 

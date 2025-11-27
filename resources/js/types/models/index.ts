@@ -80,6 +80,10 @@ export type {
   FactoryData,
   GoodData,
   BuildingData,
+  PedestrianData,
+  TreeData,
+  GroundobjData,
+  GroundData,
 } from "./FileInfo";
 
 // Count

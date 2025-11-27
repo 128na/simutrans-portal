@@ -226,6 +226,76 @@ export interface CitycarData {
 }
 
 /**
+ * Pedestrian（歩行者）データ
+ */
+export interface PedestrianData {
+  /** バージョン */
+  version: number;
+  /** 出現確率（重み） / Distribution weight (spawn probability) */
+  distribution_weight: number;
+  /** 1フレームあたりの歩数（歩行速度） / Steps per frame (walking speed) */
+  steps_per_frame?: number;
+  /** 描画オフセット / Drawing offset */
+  offset?: number;
+  /** 導入日 / Introduction date */
+  intro_date?: number;
+  /** 廃止日 / Retirement date */
+  retire_date?: number;
+}
+
+/**
+ * Tree（木）データ
+ */
+export interface TreeData {
+  /** バージョン */
+  version: number;
+  /** 許可される気候（ビットマスク） / Allowed climates (bitmask) */
+  allowed_climates: number;
+  /** 許可される気候（文字列） / Allowed climates (string) */
+  allowed_climates_str: string;
+  /** 出現確率（重み） / Distribution weight (spawn probability) */
+  distribution_weight: number;
+  /** 季節数（0=旧形式） / Number of seasons (0=old format) */
+  number_of_seasons: number;
+}
+
+/**
+ * Groundobj（地上オブジェクト）データ
+ */
+export interface GroundobjData {
+  /** バージョン */
+  version: number;
+  /** 許可される気候（ビットマスク） / Allowed climates (bitmask) */
+  allowed_climates: number;
+  /** 許可される気候（文字列） / Allowed climates (string) */
+  allowed_climates_str: string;
+  /** 出現確率（重み） / Distribution weight (spawn probability) */
+  distribution_weight: number;
+  /** 季節数 / Number of seasons */
+  number_of_seasons: number;
+  /** 上に木を生やせるか / Can build trees on top */
+  trees_on_top: boolean;
+  /** 速度（0=静止、>0=移動） / Speed (0=static, >0=moving) */
+  speed: number;
+  /** 移動可能地形タイプ / Waytype for movement */
+  waytype: number;
+  /** 移動可能地形タイプ（文字列） / Waytype (string) */
+  waytype_str: string;
+  /** 撤去コスト / Removal cost */
+  price: number;
+}
+
+/**
+ * Ground（地形テクスチャ）データ
+ */
+export interface GroundData {
+  /** バージョン（常に0） */
+  version: number;
+  /** データフィールドの有無（常にfalse） / Has data fields (always false) */
+  has_data: boolean;
+}
+
+/**
  * Factory (Industrial building) data
  * 工場データ型
  */
@@ -440,8 +510,14 @@ export interface PakMetadata {
   factoryData?: FactoryData;
   /** 貨物データ (objectType="good"の場合のみ) */
   goodData?: GoodData;
-  /** 樹木データ (未実装) */
-  treeData?: Record<string, unknown>;
+  /** 歩行者データ (objectType="pedestrian"の場合のみ) */
+  pedestrianData?: PedestrianData;
+  /** 樹木データ (objectType="tree"の場合のみ) */
+  treeData?: TreeData;
+  /** 地上オブジェクトデータ (objectType="groundobj"の場合のみ) */
+  groundobjData?: GroundobjData;
+  /** 地形テクスチャデータ (objectType="ground"の場合のみ) */
+  groundData?: GroundData;
 }
 
 /**

@@ -41,13 +41,13 @@ final readonly class PedestrianParser implements TypeParserInterface
     public function parse(Node $node): array
     {
         $firstUint16 = (unpack('v', substr($node->data, 0, 2)) ?: [])[1] ?? 0;
-        $version = ($firstUint16 & 0x8000) ? ($firstUint16 & 0x7FFF) : 0;
+        $version = (($firstUint16 & 0x8000) !== 0) ? ($firstUint16 & 0x7FFF) : 0;
 
         return match ($version) {
             0 => $this->parseVersion0($firstUint16),
             1 => $this->parseVersion1($node->data),
             2 => $this->parseVersion2($node->data),
-            default => throw new RuntimeException("Unsupported pedestrian version: {$version}"),
+            default => throw new RuntimeException('Unsupported pedestrian version: '.$version),
         };
     }
 

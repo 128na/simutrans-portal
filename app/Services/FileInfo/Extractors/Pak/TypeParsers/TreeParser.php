@@ -33,14 +33,14 @@ use RuntimeException;
  */
 final readonly class TreeParser implements TypeParserInterface
 {
-    private const DEFAULT_DISTRIBUTION_WEIGHT = 3;
+    private const int DEFAULT_DISTRIBUTION_WEIGHT = 3;
 
-    private const ALL_BUT_ARCTIC_CLIMATE = 0x7F; // 北極以外すべて (0b01111111)
+    private const int ALL_BUT_ARCTIC_CLIMATE = 0x7F; // 北極以外すべて (0b01111111)
 
     /**
      * 気候名マッピング
      */
-    private const CLIMATE_NAMES = [
+    private const array CLIMATE_NAMES = [
         0 => 'water_climate',
         1 => 'desert_climate',
         2 => 'tropic_climate',
@@ -68,13 +68,13 @@ final readonly class TreeParser implements TypeParserInterface
     public function parse(Node $node): array
     {
         $firstUint16 = (unpack('v', substr($node->data, 0, 2)) ?: [])[1] ?? 0;
-        $version = ($firstUint16 & 0x8000) ? ($firstUint16 & 0x7FFF) : 0;
+        $version = (($firstUint16 & 0x8000) !== 0) ? ($firstUint16 & 0x7FFF) : 0;
 
         $result = match ($version) {
             0 => $this->parseVersion0(),
             1 => $this->parseVersion1($node->data),
             2 => $this->parseVersion2($node->data),
-            default => throw new RuntimeException("Unsupported tree version: {$version}"),
+            default => throw new RuntimeException('Unsupported tree version: '.$version),
         };
 
         return $this->buildResult($result);

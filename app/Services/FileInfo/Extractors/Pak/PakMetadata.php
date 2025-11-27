@@ -52,7 +52,7 @@ final readonly class PakMetadata
         // Add type-specific data with appropriate keys for backward compatibility
         if ($this->typeSpecificData !== []) {
             // Use objectType to determine the key name (e.g., 'vehicleData', 'wayData')
-            $dataKey = $this->objectType . 'Data';
+            $dataKey = $this->objectType.'Data';
             $result[$dataKey] = $this->typeSpecificData;
         }
 

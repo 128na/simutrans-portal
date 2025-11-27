@@ -84,6 +84,8 @@ export type {
   TreeData,
   GroundobjData,
   GroundData,
+  SoundData,
+  SkinData,
 } from "./FileInfo";
 
 // Count

@@ -14,6 +14,8 @@ use App\Services\FileInfo\Extractors\Pak\TypeParsers\GroundobjParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\GroundParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\PedestrianParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\SignParser;
+use App\Services\FileInfo\Extractors\Pak\TypeParsers\SkinParser;
+use App\Services\FileInfo\Extractors\Pak\TypeParsers\SoundParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\TreeParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\TunnelParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\TypeParserInterface;
@@ -119,6 +121,8 @@ final readonly class PakMetadata
                 new TreeParser,
                 new GroundobjParser,
                 new GroundParser,
+                new SoundParser,
+                new SkinParser,
             ];
         }
 

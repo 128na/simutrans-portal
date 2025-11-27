@@ -296,6 +296,30 @@ export interface GroundData {
 }
 
 /**
+ * Sound（効果音）データ
+ */
+export interface SoundData {
+  /** バージョン (1-2) */
+  version: number;
+  /** サウンドID / Sound ID */
+  sound_id: number;
+  /** ファイル名（v2のみ） / Filename (v2 only) */
+  filename?: string;
+}
+
+/**
+ * Skin（スキン/UI画像）データ
+ */
+export interface SkinData {
+  /** バージョン（常に0） */
+  version: number;
+  /** データフィールドの有無（常にfalse） / Has data fields (always false) */
+  has_data: boolean;
+  /** オブジェクトサブタイプ ('skin' または 'smoke') / Object subtype */
+  object_subtype: string;
+}
+
+/**
  * Factory (Industrial building) data
  * 工場データ型
  */
@@ -518,6 +542,10 @@ export interface PakMetadata {
   groundobjData?: GroundobjData;
   /** 地形テクスチャデータ (objectType="ground"の場合のみ) */
   groundData?: GroundData;
+  /** 効果音データ (objectType="sound"の場合のみ) */
+  soundData?: SoundData;
+  /** スキン/UI画像データ (objectType="skin" または "smoke"の場合のみ) */
+  skinData?: SkinData;
 }
 
 /**

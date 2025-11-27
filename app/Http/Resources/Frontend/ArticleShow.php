@@ -37,7 +37,7 @@ final class ArticleShow extends JsonResource
 
                     return [
                         'data' => $profile->data,
-                        'attachments' => $profile->attachments->map(fn($attachment): array => [
+                        'attachments' => $profile->attachments->map(fn ($attachment): array => [
                             'id' => $attachment->id,
                             'thumbnail' => $attachment->thumbnail,
                             'original_name' => $attachment->original_name,
@@ -46,24 +46,24 @@ final class ArticleShow extends JsonResource
                     ];
                 }),
             ],
-            'categories' => $this->resource->categories->map(fn($category): array => [
+            'categories' => $this->resource->categories->map(fn ($category): array => [
                 'id' => $category->id,
                 'type' => $category->type->value,
                 'slug' => $category->slug,
             ]),
-            'tags' => $this->resource->tags->map(fn($tag): array => [
+            'tags' => $this->resource->tags->map(fn ($tag): array => [
                 'id' => $tag->id,
                 'name' => $tag->name,
             ]),
-            'articles' => $this->resource->articles->map(fn($article): array => [
+            'articles' => $this->resource->articles->map(fn ($article): array => [
                 'id' => $article->id,
                 'title' => $article->title,
             ]),
-            'relatedArticles' => $this->resource->relatedArticles->map(fn($article): array => [
+            'relatedArticles' => $this->resource->relatedArticles->map(fn ($article): array => [
                 'id' => $article->id,
                 'title' => $article->title,
             ]),
-            'attachments' => $this->resource->attachments->map(fn($attachment): array => [
+            'attachments' => $this->resource->attachments->map(fn ($attachment): array => [
                 'id' => $attachment->id,
                 'original_name' => $attachment->original_name,
                 'thumbnail' => $attachment->thumbnail,

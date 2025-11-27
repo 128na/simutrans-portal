@@ -41,11 +41,18 @@ final readonly class FileInfoService
     public function updateOrCreateFromZip(Attachment $attachment): FileInfo
     {
         try {
-            $contentCursor = $this->zipArchiveParser->parseTextContent($attachment);
             $data = [];
-            foreach ($contentCursor as $filename => $text) {
-                $filename = $this->handleText($filename);
-                $data = $this->handleExtractors($filename, $text, $data);
+
+            $contentCursor = $this->zipArchiveParser->parseContent($attachment);
+            foreach ($contentCursor as $filename => $fileData) {
+                $content = $fileData['content'];
+
+                // テキストファイルのみBOM除去を追加で実行
+                if (! $fileData['is_binary']) {
+                    $content = $this->textService->removeBom($content);
+                }
+
+                $data = $this->handleExtractors($filename, $content, $data);
             }
 
             return $this->fileInfoRepository->updateOrCreate(['attachment_id' => $attachment->id], ['data' => $data]);

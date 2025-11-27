@@ -14,7 +14,7 @@ final class ReparsePakFilesCommand extends Command
                             {--limit= : Limit the number of files to process}
                             {--dry-run : Simulate the operation without making changes}';
 
-    protected $description = 'Reparse all pak files to extract metadata';
+    protected $description = 'Reparse all pak and zip files to extract metadata';
 
     public function handle(): int
     {
@@ -25,11 +25,11 @@ final class ReparsePakFilesCommand extends Command
             $this->warn('Running in dry-run mode. No changes will be made.');
         }
 
-        // Get all attachments with pak files that have FileInfo
+        // Get all attachments with pak/zip files that have FileInfo
         $query = Attachment::whereHas('fileInfo')
             ->where(function ($q): void {
                 $q->where('original_name', 'like', '%.pak')
-                    ->orWhere('original_name', 'like', '%.PAK');
+                    ->orWhere('original_name', 'like', '%.zip');
             });
 
         if ($limit !== null) {
@@ -39,12 +39,12 @@ final class ReparsePakFilesCommand extends Command
         $total = $query->count();
 
         if ($total === 0) {
-            $this->info('No pak files found to reparse.');
+            $this->info('No pak or zip files found to reparse.');
 
             return self::SUCCESS;
         }
 
-        $this->info(sprintf('Found %s pak file(s) to reparse.', $total));
+        $this->info(sprintf('Found %s pak/zip file(s) to reparse.', $total));
 
         if ($dryRun) {
             $this->info('Dry-run mode: would reparse these files.');
@@ -63,7 +63,7 @@ final class ReparsePakFilesCommand extends Command
                 $successCount++;
             } catch (\Throwable $e) {
                 $errorCount++;
-                Log::error('Failed to reparse pak file', [
+                Log::error('Failed to reparse pak/zip file', [
                     'attachment_id' => $attachment->id,
                     'filename' => $attachment->original_name,
                     'error' => $e->getMessage(),

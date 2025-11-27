@@ -16,13 +16,13 @@ final readonly class ZipArchiveParser
     ) {}
 
     /**
-     * テキスト系ファイルをパースする(dat,tab,readme).
+     * すべてのファイルをパースする.
      *
-     * @return LazyCollection<string, string>
+     * @return LazyCollection<string, array{content: string, is_binary: bool}>
      */
-    public function parseTextContent(Attachment $attachment): LazyCollection
+    public function parseContent(Attachment $attachment): LazyCollection
     {
-        /** @var \Closure(): Generator<string, string, mixed, void> */
+        /** @var \Closure(): Generator<string, array{content: string, is_binary: bool}, mixed, void> */
         $fn = function () use ($attachment): Generator {
             try {
                 $this->zipArchive->open($attachment->full_path);
@@ -31,9 +31,13 @@ final readonly class ZipArchiveParser
                     $stat = $this->zipArchive->statIndex($i, ZipArchive::FL_ENC_RAW);
                     if ($stat) {
                         $name = $stat['name'];
-                        $text = $this->zipArchive->getFromIndex($stat['index']);
-                        if ($name && $text !== false && $text !== '') {
-                            yield $this->convert($name) => $this->convert($text);
+                        $content = $this->zipArchive->getFromIndex($stat['index']);
+                        if ($name && $content !== false && $content !== '') {
+                            $isBinary = $this->isBinaryFile($name);
+                            yield $this->convert($name) => [
+                                'content' => $isBinary ? $content : $this->convert($content),
+                                'is_binary' => $isBinary,
+                            ];
                         }
                     }
                 }
@@ -43,6 +47,11 @@ final readonly class ZipArchiveParser
         };
 
         return LazyCollection::make($fn);
+    }
+
+    private function isBinaryFile(string $filename): bool
+    {
+        return str_ends_with(strtolower($filename), '.pak');
     }
 
     private function convert(string $str): string

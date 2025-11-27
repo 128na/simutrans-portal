@@ -86,6 +86,164 @@ export interface WayData {
 }
 
 /**
+ * Way-object data type (overhead lines, catenary)
+ */
+export interface WayObjectData {
+  /** データフォーマットバージョン (1-2) */
+  version?: number;
+  /** 建設費用 (単位: 1/100 credits per tile) */
+  price?: number;
+  /** 月間維持費 (単位: 0.01cr/月) */
+  maintenance?: number;
+  /** 最高速度制限 (km/h, 0 = 無制限) */
+  topspeed?: number;
+  /** 導入日 (months since year 0) */
+  intro_date?: number;
+  /** 引退日 (months since year 0) */
+  retire_date?: number;
+  /** 配置可能なwaytype (数値) */
+  wtyp?: number;
+  /** 配置可能なwaytype (文字列) */
+  wtyp_str?: string;
+  /** オブジェクト自身のwaytype (数値) */
+  own_wtyp?: number;
+  /** オブジェクト自身のwaytype (文字列) */
+  own_wtyp_str?: string;
+}
+
+/**
+ * Bridge data
+ * 橋梁データ型
+ */
+export interface BridgeData {
+  /** データフォーマットバージョン (0-10) */
+  version?: number;
+  /** 配置可能なwaytype (数値) */
+  wtyp?: number;
+  /** 配置可能なwaytype (文字列) */
+  wtyp_str?: string;
+  /** 最高速度制限 (km/h, 0 = 無制限) */
+  topspeed?: number;
+  /** 建設費用 (単位: 1/100 credits per tile) */
+  price?: number;
+  /** 月間維持費 (単位: 0.01cr/月) */
+  maintenance?: number;
+  /** 軸重制限 (トン, 9999 = 無制限) */
+  axle_load?: number;
+  /** 導入日 (months since year 0) */
+  intro_date?: number;
+  /** 引退日 (months since year 0) */
+  retire_date?: number;
+  /** 支柱間隔 (タイル, 0 = 支柱なし) */
+  pillars_every?: number;
+  /** 斜面での最下部支柱を省略 */
+  pillars_asymmetric?: boolean;
+  /** 最大橋長 (タイル, 0 = 無制限) */
+  max_length?: number;
+  /** 最大高度 (タイル, 0 = 無制限) */
+  max_height?: number;
+  /** 季節グラフィック数 (0 = なし, 1 = 雪あり) */
+  number_of_seasons?: number;
+}
+
+/**
+ * Tunnel data
+ * トンネルデータ型
+ */
+export interface TunnelData {
+  /** データフォーマットバージョン (1-6) */
+  version?: number;
+  /** 配置可能なwaytype (数値) */
+  wtyp?: number;
+  /** 配置可能なwaytype (文字列) */
+  wtyp_str?: string;
+  /** 最高速度制限 (km/h, 0 = 無制限) */
+  topspeed?: number;
+  /** 建設費用 (単位: 1/100 credits per tile) */
+  price?: number;
+  /** 月間維持費 (単位: 0.01cr/月) */
+  maintenance?: number;
+  /** 軸重制限 (トン, 9999 = 無制限) */
+  axle_load?: number;
+  /** 導入日 (months since year 0) */
+  intro_date?: number;
+  /** 引退日 (months since year 0) */
+  retire_date?: number;
+  /** 季節グラフィック数 (0 = なし, 1 = 雪あり) */
+  number_of_seasons?: number;
+  /** 地下の線路/道路を表示 */
+  has_way?: boolean;
+  /** 広い入口バリエーション (左/右/中央) */
+  broad_portals?: boolean;
+}
+
+/**
+ * Good/Freight data
+ * 貨物データ型
+ */
+export interface GoodData {
+  /** データフォーマットバージョン (0-4) */
+  version: number;
+  /** 基本価値 (経済価値) */
+  base_value: number;
+  /** カテゴリID (0=特殊貨物, 1=小口貨物, 2=バルク貨物, 3=長尺貨物, 4=液体貨物, 5=冷蔵貨物, 6=旅客, 7=郵便, 8=なし) */
+  catg: number;
+  /** カテゴリ名 (例: "passengers", "mail", "piece_goods") */
+  catg_name: string;
+  /** 速度ボーナス (パーセント, 速い輸送で収益増) */
+  speed_bonus: number;
+  /** 単位重量 (KG/単位) */
+  weight_per_unit: number;
+  /** 表示色インデックス (0-255) */
+  color: number;
+}
+
+/**
+ * Roadsign/Signal data
+ * 道路標識/信号データ型
+ */
+export interface SignData {
+  /** データフォーマットバージョン (1-6) */
+  version?: number;
+  /** 配置可能なwaytype (数値) */
+  wtyp?: number;
+  /** 配置可能なwaytype (文字列) */
+  wtyp_str?: string;
+  /** 最低速度制限 (km/h, 0 = 制限なし) */
+  min_speed?: number;
+  /** 建設費用 (単位: 1/100 credits) */
+  price?: number;
+  /** 月間維持費 (単位: 0.01cr/月) */
+  maintenance?: number;
+  /** フラグ (ビットフィールド) */
+  flags?: number;
+  /** 左オフセット (画像配置調整) */
+  offset_left?: number;
+  /** 導入日 (months since year 0) */
+  intro_date?: number;
+  /** 引退日 (months since year 0) */
+  retire_date?: number;
+  /** 一方通行標識 */
+  is_one_way?: boolean;
+  /** ルート選択標識 */
+  is_choose_sign?: boolean;
+  /** 専用道路 */
+  is_private_way?: boolean;
+  /** 信号機 */
+  is_signal?: boolean;
+  /** 予告信号 */
+  is_pre_signal?: boolean;
+  /** 長閉塞信号 */
+  is_longblock_signal?: boolean;
+  /** 優先信号 */
+  is_priority_signal?: boolean;
+  /** ルート選択エリア終端 */
+  is_end_of_choose?: boolean;
+  /** 標識/信号タイプ (文字列) */
+  sign_type?: string;
+}
+
+/**
  * 建物データ型
  * Building data type
  */
@@ -157,14 +315,20 @@ export interface PakMetadata {
   vehicleData?: VehicleData;
   /** 道路データ (objectType="way"の場合のみ) */
   wayData?: WayData;
+  /** Way-object データ (objectType="way-object"の場合のみ, 架線等) */
+  wayObjectData?: WayObjectData;
   /** 建物データ (objectType="building"の場合のみ) */
   buildingData?: BuildingData;
-  /** 橋データ (未実装) */
-  bridgeData?: Record<string, unknown>;
+  /** 橋データ (objectType="bridge"の場合のみ) */
+  bridgeData?: BridgeData;
+  /** トンネルデータ (objectType="tunnel"の場合のみ) */
+  tunnelData?: TunnelData;
+  /** 道路標識/信号データ (objectType="roadsign"の場合のみ) */
+  signData?: SignData;
+  /** 貨物データ (objectType="good"の場合のみ) */
+  goodData?: GoodData;
   /** 樹木データ (未実装) */
   treeData?: Record<string, unknown>;
-  /** 商品データ (未実装) */
-  goodData?: Record<string, unknown>;
 }
 
 /**

@@ -71,6 +71,11 @@ export type {
   PakMetadata,
   VehicleData,
   WayData,
+  WayObjectData,
+  BridgeData,
+  TunnelData,
+  SignData,
+  GoodData,
   BuildingData,
 } from "./FileInfo";
 

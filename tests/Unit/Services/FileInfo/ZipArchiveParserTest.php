@@ -21,7 +21,7 @@ final class ZipArchiveParserTest extends TestCase
         });
 
         $attachment = app(Attachment::class);
-        $result = $this->getSUT()->parseTextContent($attachment)->all();
+        $result = $this->getSUT()->parseContent($attachment)->all();
         // Empty content should be skipped, so result should still be empty
         $this->assertEmpty($result);
 
@@ -37,10 +37,11 @@ final class ZipArchiveParserTest extends TestCase
         });
 
         $attachment = app(Attachment::class);
-        $result = $this->getSUT()->parseTextContent($attachment)->all();
+        $result = $this->getSUT()->parseContent($attachment)->all();
         $this->assertCount(1, $result);
         $this->assertArrayHasKey('readme.txt', $result);
-        $this->assertSame('Hello World', $result['readme.txt']);
+        $this->assertSame('Hello World', $result['readme.txt']['content']);
+        $this->assertFalse($result['readme.txt']['is_binary']);
 
         unlink($zipPath);
     }
@@ -58,14 +59,14 @@ final class ZipArchiveParserTest extends TestCase
         });
 
         $attachment = app(Attachment::class);
-        $result = $this->getSUT()->parseTextContent($attachment)->all();
+        $result = $this->getSUT()->parseContent($attachment)->all();
         $this->assertCount(3, $result);
         $this->assertArrayHasKey('readme.txt', $result);
-        $this->assertSame('README content', $result['readme.txt']);
+        $this->assertSame('README content', $result['readme.txt']['content']);
         $this->assertArrayHasKey('data.dat', $result);
-        $this->assertSame('DAT content', $result['data.dat']);
+        $this->assertSame('DAT content', $result['data.dat']['content']);
         $this->assertArrayHasKey('info.tab', $result);
-        $this->assertSame('TAB content', $result['info.tab']);
+        $this->assertSame('TAB content', $result['info.tab']['content']);
 
         unlink($zipPath);
     }
@@ -82,10 +83,10 @@ final class ZipArchiveParserTest extends TestCase
         });
 
         $attachment = app(Attachment::class);
-        $result = $this->getSUT()->parseTextContent($attachment)->all();
+        $result = $this->getSUT()->parseContent($attachment)->all();
         $this->assertCount(1, $result);
         $this->assertArrayHasKey('valid.txt', $result);
-        $this->assertSame('Valid content', $result['valid.txt']);
+        $this->assertSame('Valid content', $result['valid.txt']['content']);
 
         unlink($zipPath);
     }
@@ -103,13 +104,14 @@ final class ZipArchiveParserTest extends TestCase
         });
 
         $attachment = app(Attachment::class);
-        $result = $this->getSUT()->parseTextContent($attachment)->all();
+        $result = $this->getSUT()->parseContent($attachment)->all();
         $this->assertCount(1, $result);
         // The result should be converted to UTF-8
         $keys = array_keys($result);
         $this->assertNotEmpty($keys);
         // Check that the content was converted to UTF-8
-        $this->assertStringContainsString('こんにちは', reset($result));
+        $firstResult = reset($result);
+        $this->assertStringContainsString('こんにちは', $firstResult['content']);
 
         unlink($zipPath);
     }
@@ -133,7 +135,7 @@ final class ZipArchiveParserTest extends TestCase
         });
 
         $attachment = app(Attachment::class);
-        $result = $this->getSUT()->parseTextContent($attachment)->all();
+        $result = $this->getSUT()->parseContent($attachment)->all();
         // Empty content (directories) should be skipped due to the if condition
         $this->assertCount(2, $result);
         $this->assertArrayHasKey('folder/file.txt', $result);

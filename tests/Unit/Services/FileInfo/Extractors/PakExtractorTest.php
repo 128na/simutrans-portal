@@ -27,10 +27,29 @@ final class PakExtractorTest extends TestCase
     {
         $sUT = $this->getSUT();
 
-        $data = file_get_contents(__DIR__.'/vehicle.transparent_vehicle.pak');
+        $data = file_get_contents(__DIR__.'/file/test.pak');
 
         $result = $sUT->extract($data);
-        $this->assertSame(['transparent_vehicle'], $result);
+
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('names', $result);
+        $this->assertArrayHasKey('metadata', $result);
+        $this->assertContains('test_1', $result['names']);
+        $this->assertIsArray($result['metadata']);
+    }
+
+    public function test_fallback_on_invalid_file(): void
+    {
+        $sUT = $this->getSUT();
+
+        // Invalid pak file (should trigger fallback)
+        $result = $sUT->extract('invalid pak data');
+
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('names', $result);
+        $this->assertArrayHasKey('metadata', $result);
+        $this->assertIsArray($result['names']);
+        $this->assertEmpty($result['metadata']);
     }
 
     private function getSUT(): PakExtractor

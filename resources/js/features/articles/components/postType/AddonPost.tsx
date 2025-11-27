@@ -4,6 +4,7 @@ import { TitleH3 } from "../TitleH3";
 import { TextPre } from "../TextPre";
 import { formatArticleDate } from "../../utils/articleUtil";
 import { Accordion } from "@/components/ui/Accordion";
+import { PakMetadata } from "../PakMetadata";
 import React from "react";
 
 type Props = {
@@ -17,8 +18,14 @@ export const AddonPost = ({ article, preview }: Props) => {
     | Attachment.Show
     | undefined;
   const fileInfo = file?.fileInfo as FileInfo.Show | undefined;
-  const dats = fileInfo?.data?.dats;
-  const tabs = fileInfo?.data?.tabs;
+  const dats = fileInfo?.data?.dats ?? {};
+  const tabs = fileInfo?.data?.tabs ?? {};
+  const paksMetadata = fileInfo?.data?.paks_metadata ?? {};
+
+  const hasDats = Object.keys(dats).length > 0;
+  const hasTabs = Object.keys(tabs).length > 0;
+  const hasPaksMetadata = Object.keys(paksMetadata).length > 0;
+  const hasFileInfo = hasDats || hasTabs || hasPaksMetadata;
 
   return (
     <div>
@@ -70,11 +77,11 @@ export const AddonPost = ({ article, preview }: Props) => {
         </table>
       </div>
 
-      {(dats || tabs) && (
+      {hasFileInfo && (
         <>
           <TitleH4>ファイル情報</TitleH4>
 
-          {dats && Object.keys(dats).length > 0 && (
+          {hasDats && (
             <Accordion title="Datファイル">
               <div className="mt-2 block space-y-2">
                 <ul className="list-none">
@@ -99,7 +106,7 @@ export const AddonPost = ({ article, preview }: Props) => {
             </Accordion>
           )}
 
-          {tabs && Object.keys(tabs).length > 0 && (
+          {hasTabs && (
             <Accordion title="Tabファイル">
               <div className="mt-2 block space-y-2">
                 <ul className="list-none">
@@ -140,6 +147,12 @@ export const AddonPost = ({ article, preview }: Props) => {
                   ))}
                 </ul>
               </div>
+            </Accordion>
+          )}
+
+          {hasPaksMetadata && (
+            <Accordion title="Pakファイル">
+              <PakMetadata paksMetadata={paksMetadata} />
             </Accordion>
           )}
         </>

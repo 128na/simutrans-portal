@@ -76,6 +76,7 @@ final class ArticleShow extends JsonResource
                         'data' => [
                             'dats' => $fileInfo->getDats(),
                             'tabs' => $fileInfo->getTabs(),
+                            'paks_metadata' => $fileInfo->getPaksMetadata(),
                         ],
                     ];
                 }),

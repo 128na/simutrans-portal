@@ -65,7 +65,28 @@ export type {
 } from "./Attachment";
 
 // FileInfo
-export type { FileInfoShow, FileInfoMypageEdit } from "./FileInfo";
+export type {
+  FileInfoShow,
+  FileInfoMypageEdit,
+  PakMetadata,
+  VehicleData,
+  WayData,
+  WayObjectData,
+  BridgeData,
+  TunnelData,
+  SignData,
+  CrossingData,
+  CitycarData,
+  FactoryData,
+  GoodData,
+  BuildingData,
+  PedestrianData,
+  TreeData,
+  GroundobjData,
+  GroundData,
+  SoundData,
+  SkinData,
+} from "./FileInfo";
 
 // Count
 export type { Count } from "./Count";

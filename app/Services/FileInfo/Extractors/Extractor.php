@@ -24,7 +24,7 @@ interface Extractor
     /**
      * データ抽出処理.
      *
-     * @return string[]
+     * @return array<int|string, mixed>
      */
     public function extract(string $filename): array;
 }

@@ -41,11 +41,18 @@ final readonly class FileInfoService
     public function updateOrCreateFromZip(Attachment $attachment): FileInfo
     {
         try {
-            $contentCursor = $this->zipArchiveParser->parseTextContent($attachment);
             $data = [];
-            foreach ($contentCursor as $filename => $text) {
-                $filename = $this->handleText($filename);
-                $data = $this->handleExtractors($filename, $text, $data);
+
+            $contentCursor = $this->zipArchiveParser->parseContent($attachment);
+            foreach ($contentCursor as $filename => $fileData) {
+                $content = $fileData['content'];
+
+                // テキストファイルのみBOM除去を追加で実行
+                if (! $fileData['is_binary']) {
+                    $content = $this->textService->removeBom($content);
+                }
+
+                $data = $this->handleExtractors($filename, $content, $data);
             }
 
             return $this->fileInfoRepository->updateOrCreate(['attachment_id' => $attachment->id], ['data' => $data]);
@@ -66,7 +73,20 @@ final readonly class FileInfoService
                     $text = $this->handleText($text);
                 }
 
-                $data[$extractor->getKey()][$filename] = $extractor->extract($text);
+                $extracted = $extractor->extract($text);
+
+                // PakExtractor returns ['names' => [...], 'metadata' => [...]]
+                if ($extractor instanceof Extractors\PakExtractor) {
+                    if (isset($extracted['names'])) {
+                        $data[$extractor->getKey()][$filename] = $extracted['names'];
+                    }
+
+                    if (isset($extracted['metadata']) && $extracted['metadata'] !== []) {
+                        $data['paks_metadata'][$filename] = $extracted['metadata'];
+                    }
+                } else {
+                    $data[$extractor->getKey()][$filename] = $extracted;
+                }
             }
         }
 

@@ -38,6 +38,17 @@ final class FileInfo extends Model
         return $tabs;
     }
 
+    /**
+     * @return array<string,array<int,array<string,mixed>>>
+     */
+    public function getPaksMetadata(): array
+    {
+        /** @var array<string,array<int,array<string,mixed>>> */
+        $paksMetadata = $this->data['paks_metadata'] ?? [];
+
+        return $paksMetadata;
+    }
+
     #[\Override]
     protected function casts(): array
     {

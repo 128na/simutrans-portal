@@ -24,6 +24,26 @@ export default defineConfig({
   esbuild: {
     jsx: "automatic",
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // React関連を分離
+          react: ["react", "react-dom"],
+          // 大きなライブラリを分離
+          chart: ["recharts"],
+          // 記事表示コンポーネントを分離
+          "article-components": [
+            "./resources/js/features/articles/components/ArticleBase.tsx",
+            "./resources/js/features/articles/components/postType/AddonPost.tsx",
+            "./resources/js/features/articles/components/postType/AddonIntroduction.tsx",
+            "./resources/js/features/articles/components/postType/Markdown.tsx",
+            "./resources/js/features/articles/components/postType/Page.tsx",
+          ],
+        },
+      },
+    },
+  },
   test: {
     globals: true,
     environment: "jsdom",

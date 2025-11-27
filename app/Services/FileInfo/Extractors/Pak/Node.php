@@ -21,11 +21,33 @@ final readonly class Node
 
     public const string OBJ_BRIDGE = 'BRDG';
 
+    public const string OBJ_TUNNEL = 'TUNL';
+
     public const string OBJ_WAY = "WAY\0";
+
+    public const string OBJ_WAYOBJ = 'WYOB';
+
+    public const string OBJ_ROADSIGN = 'ROSG';
+
+    public const string OBJ_CROSSING = 'CRSG';
 
     public const string OBJ_TREE = 'TREE';
 
+    public const string OBJ_GROUNDOBJ = 'GROB';
+
+    public const string OBJ_GROUND = 'GRND';
+
     public const string OBJ_GOOD = 'GOOD';
+
+    public const string OBJ_FACTORY = 'FACT';
+
+    public const string OBJ_CITYCAR = 'CYCR';
+
+    public const string OBJ_PEDESTRIAN = 'PEDE';
+
+    public const string OBJ_SOUND = 'SOND';
+
+    public const string OBJ_SKIN = 'SKIN';
 
     public const string OBJ_XREF = 'XREF';
 

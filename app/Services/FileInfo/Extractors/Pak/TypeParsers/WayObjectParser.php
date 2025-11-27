@@ -20,7 +20,7 @@ final readonly class WayObjectParser implements TypeParserInterface
     {
         $objectType = ObjectTypeConverter::toString($node->type);
 
-        return $objectType === 'way-object';
+        return $objectType === 'wayobj';
     }
 
     /**
@@ -50,7 +50,7 @@ final readonly class WayObjectParser implements TypeParserInterface
             return $this->parseVersion2($binaryData, $offset);
         }
 
-        throw new RuntimeException('Unsupported way-object version: '.$version);
+        throw new RuntimeException('Unsupported way-object version: ' . $version);
     }
 
     /**

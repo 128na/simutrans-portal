@@ -15,6 +15,11 @@ final class TextService
 
     public function encoding(string $text): string
     {
+        // Skip encoding detection for already valid UTF-8 (performance optimization)
+        if (mb_check_encoding($text, 'UTF-8')) {
+            return trim($text);
+        }
+
         $enc = mb_detect_encoding($text, ['UTF-8', 'SJIS', 'EUC-JP']) ?: 'UTF-8';
         $encoded = mb_convert_encoding(trim($text), 'UTF-8', $enc);
         if ($encoded === false) {

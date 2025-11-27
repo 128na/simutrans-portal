@@ -25,6 +25,12 @@ final readonly class FileInfoService
     {
         try {
             $filename = $attachment->original_name;
+
+            // Check file existence before reading
+            if (!file_exists($attachment->full_path)) {
+                throw new Exception('File not found: ' . $attachment->full_path);
+            }
+
             $text = file_get_contents($attachment->full_path);
             if ($text === false) {
                 throw new Exception('failed file read');
@@ -47,7 +53,7 @@ final readonly class FileInfoService
             foreach ($contentCursor as $filename => $fileData) {
                 $content = $fileData['content'];
 
-                // テキストファイルのみBOM除去を追加で実行
+                // Skip BOM removal for binary files (performance optimization)
                 if (! $fileData['is_binary']) {
                     $content = $this->textService->removeBom($content);
                 }
@@ -69,11 +75,10 @@ final readonly class FileInfoService
     {
         foreach ($this->extractors as $extractor) {
             if ($extractor->isTarget($filename)) {
-                if ($extractor->isText()) {
-                    $text = $this->handleText($text);
-                }
+                // Only process text for text extractors (performance optimization)
+                $processedText = $extractor->isText() ? $this->handleText($text) : $text;
 
-                $extracted = $extractor->extract($text);
+                $extracted = $extractor->extract($processedText);
 
                 // PakExtractor returns ['names' => [...], 'metadata' => [...]]
                 if ($extractor instanceof Extractors\PakExtractor) {

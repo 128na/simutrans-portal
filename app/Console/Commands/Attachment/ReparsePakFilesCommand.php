@@ -120,7 +120,8 @@ final class ReparsePakFilesCommand extends Command
         $errorCount = 0;
         $failedIds = [];
 
-        foreach ($builder->cursor() as $lazyCollection) {
+        // Eager load fileInfo to avoid N+1 queries
+        foreach ($builder->with('fileInfo')->cursor() as $lazyCollection) {
             if ($this->reparseAttachment($lazyCollection)) {
                 $successCount++;
             } else {

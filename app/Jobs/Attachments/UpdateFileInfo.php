@@ -23,11 +23,13 @@ final class UpdateFileInfo implements ShouldQueue
 
     public function handle(FileInfoService $fileInfoService): void
     {
-        if (str_ends_with((string) $this->attachment->original_name, 'zip')) {
-            $fileInfoService->updateOrCreateFromZip($this->attachment);
-        }
+        $originalName = (string) $this->attachment->original_name;
+        $lowerName = strtolower($originalName);
 
-        if (str_ends_with((string) $this->attachment->original_name, 'pak')) {
+        // Optimize extension checks (single strtolower call)
+        if (str_ends_with($lowerName, 'zip')) {
+            $fileInfoService->updateOrCreateFromZip($this->attachment);
+        } elseif (str_ends_with($lowerName, 'pak')) {
             $fileInfoService->updateOrCreateFromPak($this->attachment);
         }
     }

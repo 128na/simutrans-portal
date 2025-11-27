@@ -49,6 +49,8 @@ final readonly class Node
 
     public const string OBJ_SKIN = 'SKIN';
 
+    public const string OBJ_CURSOR = 'CURS';
+
     public const string OBJ_XREF = 'XREF';
 
     private const int LARGE_RECORD_SIZE = 0xFFFF;

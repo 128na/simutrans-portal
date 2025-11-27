@@ -52,6 +52,12 @@ final readonly class PakParser
     {
         $metadata = [];
 
+        // Skip CURS (cursor) nodes - they don't need metadata extraction
+        // (ref: simutrans/descriptor/reader/obj_reader.cc - register_nodes<2 || node.type!=obj_cursor)
+        if ($node->isType(Node::OBJ_CURSOR)) {
+            return $metadata;
+        }
+
         // Check if this node is a named object (has TEXT child nodes)
         if ($node->hasChildren()) {
             $firstChild = $node->getChild(0);
@@ -62,8 +68,12 @@ final readonly class PakParser
             }
         }
 
-        // Recursively search child nodes
+        // Recursively search child nodes (skip CURS nodes)
         foreach ($node->getChildren() as $child) {
+            // Skip CURS nodes in recursion as well
+            if ($child->isType(Node::OBJ_CURSOR)) {
+                continue;
+            }
             $childMetadata = $this->extractMetadata($child, $versionCode);
             $metadata = array_merge($metadata, $childMetadata);
         }

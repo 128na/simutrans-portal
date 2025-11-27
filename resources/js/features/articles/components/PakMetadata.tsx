@@ -1,6 +1,7 @@
 import { Accordion } from "@/components/ui/Accordion";
 import type { PakMetadata as PakMetadataType } from "@/types/models";
 import { PakVehicleMetadata } from "./pak/PakVehicleMetadata";
+import PakGenericMetadata from "./pak/PakGenericMetadata";
 import React from "react";
 import { TitleH4 } from "./TitleH4";
 
@@ -36,22 +37,7 @@ export const PakMetadata = ({ paksMetadata }: Props) => {
                     vehicleData={metadata.vehicleData}
                   />
                 ) : (
-                  <div className="mt-2 p-4 bg-gray-50 rounded">
-                    <p className="text-gray-600">
-                      この種類のアドオン詳細情報は準備中です
-                    </p>
-                    {metadata.copyright && (
-                      <p className="mt-2 text-sm text-gray-500">
-                        作者: {metadata.copyright}
-                      </p>
-                    )}
-                    <p className="text-sm text-gray-500">
-                      タイプ: {metadata.objectType}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      バージョン: {metadata.compilerVersionCode}
-                    </p>
-                  </div>
+                  <PakGenericMetadata metadata={metadata} />
                 )}
               </div>
             ))}

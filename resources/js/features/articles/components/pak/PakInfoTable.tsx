@@ -1,4 +1,4 @@
-type TableRow = {
+export type TableRow = {
   label: string;
   value: string | number | null | undefined;
 };

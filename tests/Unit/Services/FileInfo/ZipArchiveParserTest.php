@@ -118,7 +118,7 @@ final class ZipArchiveParserTest extends TestCase
 
     public function test_parse_text_content_with_directories(): void
     {
-        $tempFile = tempnam(sys_get_temp_dir(), 'test_zip_') . '.zip';
+        $tempFile = tempnam(sys_get_temp_dir(), 'test_zip_').'.zip';
         $zip = new ZipArchive;
         $zip->open($tempFile, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
@@ -146,7 +146,7 @@ final class ZipArchiveParserTest extends TestCase
 
     private function createTempZip(array $files): string
     {
-        $tempFile = tempnam(sys_get_temp_dir(), 'test_zip_') . '.zip';
+        $tempFile = tempnam(sys_get_temp_dir(), 'test_zip_').'.zip';
         $zip = new ZipArchive;
         $zip->open($tempFile, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 

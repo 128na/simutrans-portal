@@ -36,6 +36,7 @@ final readonly class WayObjectParser implements TypeParserInterface
         if ($versionData === false) {
             throw new RuntimeException('Failed to read way-object version');
         }
+
         $versionRaw = $versionData[1];
         $version = $versionRaw & 0x7FFF; // Mask out high bit
 
@@ -49,7 +50,7 @@ final readonly class WayObjectParser implements TypeParserInterface
             return $this->parseVersion2($binaryData, $offset);
         }
 
-        throw new RuntimeException("Unsupported way-object version: {$version}");
+        throw new RuntimeException('Unsupported way-object version: '.$version);
     }
 
     /**
@@ -66,6 +67,7 @@ final readonly class WayObjectParser implements TypeParserInterface
         if ($priceData === false) {
             throw new RuntimeException('Failed to read price');
         }
+
         $result['price'] = $priceData[1];
         $offset += 4;
 
@@ -74,6 +76,7 @@ final readonly class WayObjectParser implements TypeParserInterface
         if ($maintenanceData === false) {
             throw new RuntimeException('Failed to read maintenance');
         }
+
         $result['maintenance'] = $maintenanceData[1];
         $offset += 4;
 
@@ -82,6 +85,7 @@ final readonly class WayObjectParser implements TypeParserInterface
         if ($topspeedData === false) {
             throw new RuntimeException('Failed to read topspeed');
         }
+
         $result['topspeed'] = $topspeedData[1];
         $offset += 4;
 
@@ -90,6 +94,7 @@ final readonly class WayObjectParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
         $offset += 2;
 
@@ -98,6 +103,7 @@ final readonly class WayObjectParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
         $offset += 2;
 
@@ -106,6 +112,7 @@ final readonly class WayObjectParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
         $offset += 1;
 
@@ -114,6 +121,7 @@ final readonly class WayObjectParser implements TypeParserInterface
         if ($ownWtypData === false) {
             throw new RuntimeException('Failed to read own_wtyp');
         }
+
         $result['own_wtyp'] = $ownWtypData[1];
 
         return $this->buildResult($result);
@@ -141,6 +149,7 @@ final readonly class WayObjectParser implements TypeParserInterface
         if ($topspeedData === false) {
             throw new RuntimeException('Failed to read topspeed');
         }
+
         $result['topspeed'] = $topspeedData[1];
         $offset += 4;
 
@@ -149,6 +158,7 @@ final readonly class WayObjectParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
         $offset += 2;
 
@@ -157,6 +167,7 @@ final readonly class WayObjectParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
         $offset += 2;
 
@@ -165,6 +176,7 @@ final readonly class WayObjectParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
         $offset += 1;
 
@@ -173,6 +185,7 @@ final readonly class WayObjectParser implements TypeParserInterface
         if ($ownWtypData === false) {
             throw new RuntimeException('Failed to read own_wtyp');
         }
+
         $result['own_wtyp'] = $ownWtypData[1];
 
         return $this->buildResult($result);

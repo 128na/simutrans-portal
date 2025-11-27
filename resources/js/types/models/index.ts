@@ -75,6 +75,9 @@ export type {
   BridgeData,
   TunnelData,
   SignData,
+  CrossingData,
+  CitycarData,
+  FactoryData,
   GoodData,
   BuildingData,
 } from "./FileInfo";

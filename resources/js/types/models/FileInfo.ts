@@ -178,6 +178,113 @@ export interface TunnelData {
 }
 
 /**
+ * Crossing (Level crossing) data
+ * 踏切データ型
+ */
+export interface CrossingData {
+  /** データフォーマットバージョン (1-2) */
+  version: number;
+  /** 道路タイプ1 (数値) */
+  waytype1: number;
+  /** 道路タイプ1 (文字列) */
+  waytype1_str: string;
+  /** 道路タイプ2 (数値) */
+  waytype2: number;
+  /** 道路タイプ2 (文字列) */
+  waytype2_str: string;
+  /** 最高速度1 (km/h) */
+  topspeed1: number;
+  /** 最高速度2 (km/h) */
+  topspeed2: number;
+  /** 開放アニメーション時間 (ms) */
+  open_animation_time: number;
+  /** 閉鎖アニメーション時間 (ms) */
+  closed_animation_time: number;
+  /** サウンドID */
+  sound: number;
+  /** 導入日 (months since year 0) */
+  intro_date: number;
+  /** 引退日 (months since year 0) */
+  retire_date: number;
+}
+
+/**
+ * Citycar (Private city car) data
+ * 市内自動車データ型
+ */
+export interface CitycarData {
+  /** データフォーマットバージョン (0-2) */
+  version: number;
+  /** 出現確率（重み） */
+  distribution_weight: number;
+  /** 最高速度 (km/h) */
+  topspeed: number;
+  /** 導入日 (months since year 0) */
+  intro_date: number;
+  /** 引退日 (months since year 0) */
+  retire_date: number;
+}
+
+/**
+ * Factory (Industrial building) data
+ * 工場データ型
+ */
+export interface FactoryData {
+  /** データフォーマットバージョン (0-5) */
+  version: number;
+  /** 配置タイプ (数値: 0=Land, 1=Water, 2=City) */
+  placement: number;
+  /** 配置タイプ (文字列) */
+  placement_str: string;
+  /** 生産性 */
+  productivity: number;
+  /** 供給範囲 */
+  range: number;
+  /** 出現確率（重み） */
+  distribution_weight: number;
+  /** 表示色 */
+  color: number;
+  /** フィールド数 (v2+) */
+  fields?: number;
+  /** 供給元数 */
+  supplier_count: number;
+  /** 生産物数 */
+  product_count: number;
+  /** 乗客レベル */
+  pax_level: number;
+  /** 拡張確率 (v2+) */
+  expand_probability?: number;
+  /** 拡張最小値 (v2+) */
+  expand_minimum?: number;
+  /** 拡張範囲 (v2+) */
+  expand_range?: number;
+  /** 拡張回数 (v2+) */
+  expand_times?: number;
+  /** 電力ブースト (v3+) */
+  electric_boost?: number;
+  /** 乗客ブースト (v3+) */
+  pax_boost?: number;
+  /** 郵便ブースト (v3+) */
+  mail_boost?: number;
+  /** 電力需要 (v3+) */
+  electric_demand?: number;
+  /** 乗客需要 (v3+) */
+  pax_demand?: number;
+  /** 郵便需要 (v3+) */
+  mail_demand?: number;
+  /** サウンド間隔 (v4+) */
+  sound_interval?: number;
+  /** サウンドID (v4+) */
+  sound_id?: number;
+  /** 煙回転数 (v5+) */
+  smokerotations?: number;
+  /** 煙上昇量 (v5+) */
+  smokeuplift?: number;
+  /** 煙寿命 (v5+) */
+  smokelifetime?: number;
+}
+
+/**
  * Good/Freight data
  * 貨物データ型
  */
@@ -325,6 +432,12 @@ export interface PakMetadata {
   tunnelData?: TunnelData;
   /** 道路標識/信号データ (objectType="roadsign"の場合のみ) */
   signData?: SignData;
+  /** 踏切データ (objectType="crossing"の場合のみ) */
+  crossingData?: CrossingData;
+  /** 市内自動車データ (objectType="citycar"の場合のみ) */
+  citycarData?: CitycarData;
+  /** 工場データ (objectType="factory"の場合のみ) */
+  factoryData?: FactoryData;
   /** 貨物データ (objectType="good"の場合のみ) */
   goodData?: GoodData;
   /** 樹木データ (未実装) */

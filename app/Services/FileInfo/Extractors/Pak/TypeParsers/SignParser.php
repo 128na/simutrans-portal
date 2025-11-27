@@ -19,12 +19,19 @@ final readonly class SignParser implements TypeParserInterface
 {
     // Signal type flags (from roadsign_desc.h)
     private const FLAG_ONE_WAY = 1 << 0;
+
     private const FLAG_CHOOSE_SIGN = 1 << 1;
+
     private const FLAG_PRIVATE_ROAD = 1 << 2;
+
     private const FLAG_SIGN_SIGNAL = 1 << 3;
+
     private const FLAG_SIGN_PRE_SIGNAL = 1 << 4;
+
     private const FLAG_SIGN_LONGBLOCK_SIGNAL = 1 << 6;
+
     private const FLAG_END_OF_CHOOSE_AREA = 1 << 7;
+
     private const FLAG_SIGN_PRIORITY_SIGNAL = 1 << 8;
 
     public function canParse(Node $node): bool
@@ -47,6 +54,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($firstUint16Data === false) {
             throw new RuntimeException('Failed to read roadsign version');
         }
+
         $firstUint16 = $firstUint16Data[1];
 
         // Check if high bit is set (versioned format)
@@ -64,7 +72,7 @@ final readonly class SignParser implements TypeParserInterface
             4 => $this->parseVersion4($binaryData, $offset),
             5 => $this->parseVersion5($binaryData, $offset),
             6 => $this->parseVersion6($binaryData, $offset),
-            default => throw new RuntimeException("Unsupported roadsign version: {$version}"),
+            default => throw new RuntimeException('Unsupported roadsign version: '.$version),
         };
     }
 
@@ -82,6 +90,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($minSpeedData === false) {
             throw new RuntimeException('Failed to read min_speed');
         }
+
         $result['min_speed'] = $minSpeedData[1];
         $offset += 2;
 
@@ -90,6 +99,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($flagsData === false) {
             throw new RuntimeException('Failed to read flags');
         }
+
         $result['flags'] = $flagsData[1];
 
         // Set defaults for missing fields
@@ -117,6 +127,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($minSpeedData === false) {
             throw new RuntimeException('Failed to read min_speed');
         }
+
         $result['min_speed'] = $minSpeedData[1];
         $offset += 2;
 
@@ -125,6 +136,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($priceData === false) {
             throw new RuntimeException('Failed to read price');
         }
+
         $result['price'] = $priceData[1];
         $offset += 4;
 
@@ -133,6 +145,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($flagsData === false) {
             throw new RuntimeException('Failed to read flags');
         }
+
         $result['flags'] = $flagsData[1];
 
         // Set defaults
@@ -159,6 +172,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($minSpeedData === false) {
             throw new RuntimeException('Failed to read min_speed');
         }
+
         $result['min_speed'] = $minSpeedData[1];
         $offset += 2;
 
@@ -167,6 +181,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($priceData === false) {
             throw new RuntimeException('Failed to read price');
         }
+
         $result['price'] = $priceData[1];
         $offset += 4;
 
@@ -175,6 +190,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($flagsData === false) {
             throw new RuntimeException('Failed to read flags');
         }
+
         $result['flags'] = $flagsData[1];
         $offset += 1;
 
@@ -183,6 +199,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
         $offset += 1;
 
@@ -191,6 +208,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
         $offset += 2;
 
@@ -199,6 +217,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
 
         // Set defaults
@@ -222,6 +241,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($minSpeedData === false) {
             throw new RuntimeException('Failed to read min_speed');
         }
+
         $result['min_speed'] = $minSpeedData[1];
         $offset += 2;
 
@@ -230,6 +250,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($priceData === false) {
             throw new RuntimeException('Failed to read price');
         }
+
         $result['price'] = $priceData[1];
         $offset += 4;
 
@@ -238,6 +259,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($flagsData === false) {
             throw new RuntimeException('Failed to read flags');
         }
+
         $result['flags'] = $flagsData[1];
         $offset += 1;
 
@@ -246,6 +268,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($offsetLeftData === false) {
             throw new RuntimeException('Failed to read offset_left');
         }
+
         $result['offset_left'] = $offsetLeftData[1];
         $offset += 1;
 
@@ -254,6 +277,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
         $offset += 1;
 
@@ -262,6 +286,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
         $offset += 2;
 
@@ -270,6 +295,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
 
         // Set defaults
@@ -292,6 +318,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($minSpeedData === false) {
             throw new RuntimeException('Failed to read min_speed');
         }
+
         $result['min_speed'] = $minSpeedData[1];
         $offset += 2;
 
@@ -300,6 +327,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($priceData === false) {
             throw new RuntimeException('Failed to read price');
         }
+
         $result['price'] = $priceData[1];
         $offset += 4;
 
@@ -308,6 +336,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($flagsData === false) {
             throw new RuntimeException('Failed to read flags');
         }
+
         $result['flags'] = $flagsData[1];
         $offset += 2;
 
@@ -316,6 +345,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($offsetLeftData === false) {
             throw new RuntimeException('Failed to read offset_left');
         }
+
         $result['offset_left'] = $offsetLeftData[1];
         $offset += 1;
 
@@ -324,6 +354,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
         $offset += 1;
 
@@ -332,6 +363,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
         $offset += 2;
 
@@ -340,6 +372,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
 
         // Set defaults
@@ -362,6 +395,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($minSpeedData === false) {
             throw new RuntimeException('Failed to read min_speed');
         }
+
         $result['min_speed'] = $minSpeedData[1];
         $offset += 2;
 
@@ -378,6 +412,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($flagsData === false) {
             throw new RuntimeException('Failed to read flags');
         }
+
         $result['flags'] = $flagsData[1];
         $offset += 2;
 
@@ -386,6 +421,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($offsetLeftData === false) {
             throw new RuntimeException('Failed to read offset_left');
         }
+
         $result['offset_left'] = $offsetLeftData[1];
         $offset += 1;
 
@@ -394,6 +430,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
         $offset += 1;
 
@@ -402,6 +439,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
         $offset += 2;
 
@@ -410,6 +448,7 @@ final readonly class SignParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
 
         return $this->buildResult($result);
@@ -467,12 +506,15 @@ final readonly class SignParser implements TypeParserInterface
         if (($flags & self::FLAG_SIGN_PRIORITY_SIGNAL) !== 0) {
             return 'priority_signal';
         }
+
         if (($flags & self::FLAG_SIGN_LONGBLOCK_SIGNAL) !== 0) {
             return 'longblock_signal';
         }
+
         if (($flags & self::FLAG_SIGN_PRE_SIGNAL) !== 0) {
             return 'pre_signal';
         }
+
         if (($flags & self::FLAG_SIGN_SIGNAL) !== 0) {
             if (($flags & self::FLAG_CHOOSE_SIGN) !== 0) {
                 return 'choose_signal';
@@ -480,15 +522,19 @@ final readonly class SignParser implements TypeParserInterface
 
             return 'signal';
         }
+
         if (($flags & self::FLAG_END_OF_CHOOSE_AREA) !== 0) {
             return 'end_of_choose';
         }
+
         if (($flags & self::FLAG_CHOOSE_SIGN) !== 0) {
             return 'choose_sign';
         }
+
         if (($flags & self::FLAG_PRIVATE_ROAD) !== 0) {
             return 'private_way';
         }
+
         if (($flags & self::FLAG_ONE_WAY) !== 0) {
             return 'one_way';
         }

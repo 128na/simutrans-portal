@@ -37,6 +37,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($firstUint16Data === false) {
             throw new RuntimeException('Failed to read bridge version/waytype');
         }
+
         $firstUint16 = $firstUint16Data[1];
 
         // Check if high bit is set (versioned format)
@@ -54,7 +55,7 @@ final readonly class BridgeParser implements TypeParserInterface
                 7, 8 => $this->parseVersion7And8($binaryData, $offset, $version),
                 9 => $this->parseVersion9($binaryData, $offset),
                 10 => $this->parseVersion10($binaryData, $offset),
-                default => throw new RuntimeException("Unsupported bridge version: {$version}"),
+                default => throw new RuntimeException('Unsupported bridge version: '.$version),
             };
         }
 
@@ -82,6 +83,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($priceData === false) {
             throw new RuntimeException('Failed to read price');
         }
+
         $result['price'] = $priceData[1];
 
         // Set defaults for missing fields
@@ -113,6 +115,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1] & 0xFF;
         $offset += 2;
 
@@ -121,6 +124,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($topspeedData === false) {
             throw new RuntimeException('Failed to read topspeed');
         }
+
         $result['topspeed'] = $topspeedData[1];
         $offset += 2;
 
@@ -129,6 +133,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($priceData === false) {
             throw new RuntimeException('Failed to read price');
         }
+
         $result['price'] = $priceData[1];
 
         // Set defaults
@@ -159,6 +164,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($topspeedData === false) {
             throw new RuntimeException('Failed to read topspeed');
         }
+
         $result['topspeed'] = $topspeedData[1];
         $offset += 2;
 
@@ -167,6 +173,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($priceData === false) {
             throw new RuntimeException('Failed to read price');
         }
+
         $result['price'] = $priceData[1];
         $offset += 4;
 
@@ -175,6 +182,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($maintenanceData === false) {
             throw new RuntimeException('Failed to read maintenance');
         }
+
         $result['maintenance'] = $maintenanceData[1];
         $offset += 4;
 
@@ -183,6 +191,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
 
         // Set defaults
@@ -213,6 +222,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($pillarsData === false) {
             throw new RuntimeException('Failed to read pillars_every');
         }
+
         $result['pillars_every'] = $pillarsData[1];
 
         return $this->buildResult($result);
@@ -233,6 +243,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($maxLengthData === false) {
             throw new RuntimeException('Failed to read max_length');
         }
+
         $result['max_length'] = $maxLengthData[1];
 
         return $this->buildResult($result);
@@ -253,6 +264,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
 
         // retire_date (uint16)
@@ -260,6 +272,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
 
         return $this->buildResult($result);
@@ -280,6 +293,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($seasonsData === false) {
             throw new RuntimeException('Failed to read number_of_seasons');
         }
+
         $result['number_of_seasons'] = $seasonsData[1];
 
         return $this->buildResult($result);
@@ -299,6 +313,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($topspeedData === false) {
             throw new RuntimeException('Failed to read topspeed');
         }
+
         $result['topspeed'] = $topspeedData[1];
         $offset += 2;
 
@@ -307,6 +322,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($priceData === false) {
             throw new RuntimeException('Failed to read price');
         }
+
         $result['price'] = $priceData[1];
         $offset += 4;
 
@@ -315,6 +331,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($maintenanceData === false) {
             throw new RuntimeException('Failed to read maintenance');
         }
+
         $result['maintenance'] = $maintenanceData[1];
         $offset += 4;
 
@@ -323,6 +340,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
         $offset += 1;
 
@@ -331,6 +349,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($pillarsData === false) {
             throw new RuntimeException('Failed to read pillars_every');
         }
+
         $result['pillars_every'] = $pillarsData[1];
         $offset += 1;
 
@@ -339,6 +358,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($maxLengthData === false) {
             throw new RuntimeException('Failed to read max_length');
         }
+
         $result['max_length'] = $maxLengthData[1];
         $offset += 1;
 
@@ -347,6 +367,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
         $offset += 2;
 
@@ -355,6 +376,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
         $offset += 2;
 
@@ -363,6 +385,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($asymmetricData === false) {
             throw new RuntimeException('Failed to read pillars_asymmetric');
         }
+
         $result['pillars_asymmetric'] = $asymmetricData[1] !== 0;
         $offset += 1;
 
@@ -371,6 +394,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($maxHeightData === false) {
             throw new RuntimeException('Failed to read max_height');
         }
+
         $result['max_height'] = $maxHeightData[1];
         $offset += 1;
 
@@ -379,6 +403,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($seasonsData === false) {
             throw new RuntimeException('Failed to read number_of_seasons');
         }
+
         $result['number_of_seasons'] = $seasonsData[1];
 
         // Set defaults
@@ -401,6 +426,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($topspeedData === false) {
             throw new RuntimeException('Failed to read topspeed');
         }
+
         $result['topspeed'] = $topspeedData[1];
         $offset += 2;
 
@@ -409,6 +435,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($priceData === false) {
             throw new RuntimeException('Failed to read price');
         }
+
         $result['price'] = $priceData[1];
         $offset += 4;
 
@@ -417,6 +444,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($maintenanceData === false) {
             throw new RuntimeException('Failed to read maintenance');
         }
+
         $result['maintenance'] = $maintenanceData[1];
         $offset += 4;
 
@@ -425,6 +453,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
         $offset += 1;
 
@@ -433,6 +462,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($pillarsData === false) {
             throw new RuntimeException('Failed to read pillars_every');
         }
+
         $result['pillars_every'] = $pillarsData[1];
         $offset += 1;
 
@@ -441,6 +471,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($maxLengthData === false) {
             throw new RuntimeException('Failed to read max_length');
         }
+
         $result['max_length'] = $maxLengthData[1];
         $offset += 1;
 
@@ -449,6 +480,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
         $offset += 2;
 
@@ -457,6 +489,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
         $offset += 2;
 
@@ -465,6 +498,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($asymmetricData === false) {
             throw new RuntimeException('Failed to read pillars_asymmetric');
         }
+
         $result['pillars_asymmetric'] = $asymmetricData[1] !== 0;
         $offset += 1;
 
@@ -473,6 +507,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($axleLoadData === false) {
             throw new RuntimeException('Failed to read axle_load');
         }
+
         $result['axle_load'] = $axleLoadData[1];
         $offset += 2;
 
@@ -481,6 +516,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($maxHeightData === false) {
             throw new RuntimeException('Failed to read max_height');
         }
+
         $result['max_height'] = $maxHeightData[1];
         $offset += 1;
 
@@ -489,6 +525,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($seasonsData === false) {
             throw new RuntimeException('Failed to read number_of_seasons');
         }
+
         $result['number_of_seasons'] = $seasonsData[1];
 
         return $this->buildResult($result);
@@ -508,6 +545,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($topspeedData === false) {
             throw new RuntimeException('Failed to read topspeed');
         }
+
         $result['topspeed'] = $topspeedData[1];
         $offset += 2;
 
@@ -524,6 +562,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
         $offset += 1;
 
@@ -532,6 +571,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($pillarsData === false) {
             throw new RuntimeException('Failed to read pillars_every');
         }
+
         $result['pillars_every'] = $pillarsData[1];
         $offset += 1;
 
@@ -540,6 +580,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($maxLengthData === false) {
             throw new RuntimeException('Failed to read max_length');
         }
+
         $result['max_length'] = $maxLengthData[1];
         $offset += 1;
 
@@ -548,6 +589,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
         $offset += 2;
 
@@ -556,6 +598,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
         $offset += 2;
 
@@ -564,6 +607,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($asymmetricData === false) {
             throw new RuntimeException('Failed to read pillars_asymmetric');
         }
+
         $result['pillars_asymmetric'] = $asymmetricData[1] !== 0;
         $offset += 1;
 
@@ -572,6 +616,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($axleLoadData === false) {
             throw new RuntimeException('Failed to read axle_load');
         }
+
         $result['axle_load'] = $axleLoadData[1];
         $offset += 2;
 
@@ -580,6 +625,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($maxHeightData === false) {
             throw new RuntimeException('Failed to read max_height');
         }
+
         $result['max_height'] = $maxHeightData[1];
         $offset += 1;
 
@@ -588,6 +634,7 @@ final readonly class BridgeParser implements TypeParserInterface
         if ($seasonsData === false) {
             throw new RuntimeException('Failed to read number_of_seasons');
         }
+
         $result['number_of_seasons'] = $seasonsData[1];
 
         return $this->buildResult($result);

@@ -17,7 +17,7 @@ use RuntimeException;
 final readonly class GoodParser implements TypeParserInterface
 {
     // Good categories (from goods_desc.h / goods_manager.cc)
-    private const CATEGORY_NAMES = [
+    private const array CATEGORY_NAMES = [
         0 => 'special_freight',
         1 => 'piece_goods',
         2 => 'bulk_goods',
@@ -49,6 +49,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($firstUint16Data === false) {
             throw new RuntimeException('Failed to read goods version/value');
         }
+
         $firstUint16 = $firstUint16Data[1];
 
         // Check if high bit is set (versioned format)
@@ -61,7 +62,7 @@ final readonly class GoodParser implements TypeParserInterface
                 2 => $this->parseVersion2($binaryData, $offset),
                 3 => $this->parseVersion3($binaryData, $offset),
                 4 => $this->parseVersion4($binaryData, $offset),
-                default => throw new RuntimeException("Unsupported goods version: {$version}"),
+                default => throw new RuntimeException('Unsupported goods version: '.$version),
             };
         }
 
@@ -86,6 +87,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($catgData === false) {
             throw new RuntimeException('Failed to read catg');
         }
+
         $result['catg'] = $catgData[1] & 0xFF; // Cast to uint8
 
         // Set defaults for missing fields
@@ -110,6 +112,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($baseValueData === false) {
             throw new RuntimeException('Failed to read base_value');
         }
+
         $result['base_value'] = $baseValueData[1];
         $offset += 2;
 
@@ -118,6 +121,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($catgData === false) {
             throw new RuntimeException('Failed to read catg');
         }
+
         $result['catg'] = $catgData[1] & 0xFF;
         $offset += 2;
 
@@ -126,6 +130,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($speedBonusData === false) {
             throw new RuntimeException('Failed to read speed_bonus');
         }
+
         $result['speed_bonus'] = $speedBonusData[1];
 
         // Set defaults
@@ -149,6 +154,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($baseValueData === false) {
             throw new RuntimeException('Failed to read base_value');
         }
+
         $result['base_value'] = $baseValueData[1];
         $offset += 2;
 
@@ -157,6 +163,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($catgData === false) {
             throw new RuntimeException('Failed to read catg');
         }
+
         $result['catg'] = $catgData[1] & 0xFF;
         $offset += 2;
 
@@ -165,6 +172,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($speedBonusData === false) {
             throw new RuntimeException('Failed to read speed_bonus');
         }
+
         $result['speed_bonus'] = $speedBonusData[1];
         $offset += 2;
 
@@ -173,6 +181,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($weightData === false) {
             throw new RuntimeException('Failed to read weight_per_unit');
         }
+
         $result['weight_per_unit'] = $weightData[1];
 
         // Set defaults
@@ -195,6 +204,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($baseValueData === false) {
             throw new RuntimeException('Failed to read base_value');
         }
+
         $result['base_value'] = $baseValueData[1];
         $offset += 2;
 
@@ -203,6 +213,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($catgData === false) {
             throw new RuntimeException('Failed to read catg');
         }
+
         $result['catg'] = $catgData[1];
         $offset += 1;
 
@@ -211,6 +222,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($speedBonusData === false) {
             throw new RuntimeException('Failed to read speed_bonus');
         }
+
         $result['speed_bonus'] = $speedBonusData[1];
         $offset += 2;
 
@@ -219,6 +231,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($weightData === false) {
             throw new RuntimeException('Failed to read weight_per_unit');
         }
+
         $result['weight_per_unit'] = $weightData[1];
         $offset += 2;
 
@@ -227,6 +240,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($colorData === false) {
             throw new RuntimeException('Failed to read color');
         }
+
         $result['color'] = $colorData[1];
 
         return $this->buildResult($result);
@@ -250,6 +264,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($catgData === false) {
             throw new RuntimeException('Failed to read catg');
         }
+
         $result['catg'] = $catgData[1];
         $offset += 1;
 
@@ -258,6 +273,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($speedBonusData === false) {
             throw new RuntimeException('Failed to read speed_bonus');
         }
+
         $result['speed_bonus'] = $speedBonusData[1];
         $offset += 2;
 
@@ -266,6 +282,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($weightData === false) {
             throw new RuntimeException('Failed to read weight_per_unit');
         }
+
         $result['weight_per_unit'] = $weightData[1];
         $offset += 2;
 
@@ -274,6 +291,7 @@ final readonly class GoodParser implements TypeParserInterface
         if ($colorData === false) {
             throw new RuntimeException('Failed to read color');
         }
+
         $result['color'] = $colorData[1];
 
         return $this->buildResult($result);

@@ -37,6 +37,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($firstUint16Data === false) {
             throw new RuntimeException('Failed to read tunnel version');
         }
+
         $firstUint16 = $firstUint16Data[1];
 
         // Check if high bit is set (versioned format)
@@ -54,7 +55,7 @@ final readonly class TunnelParser implements TypeParserInterface
             4 => $this->parseVersion4($binaryData, $offset),
             5 => $this->parseVersion5($binaryData, $offset),
             6 => $this->parseVersion6($binaryData, $offset),
-            default => throw new RuntimeException("Unsupported tunnel version: {$version}"),
+            default => throw new RuntimeException('Unsupported tunnel version: '.$version),
         };
     }
 
@@ -72,6 +73,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($topspeedData === false) {
             throw new RuntimeException('Failed to read topspeed');
         }
+
         $result['topspeed'] = $topspeedData[1];
         $offset += 4;
 
@@ -80,6 +82,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($priceData === false) {
             throw new RuntimeException('Failed to read price');
         }
+
         $result['price'] = $priceData[1];
         $offset += 4;
 
@@ -88,6 +91,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($maintenanceData === false) {
             throw new RuntimeException('Failed to read maintenance');
         }
+
         $result['maintenance'] = $maintenanceData[1];
         $offset += 4;
 
@@ -96,6 +100,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
         $offset += 1;
 
@@ -104,6 +109,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
         $offset += 2;
 
@@ -112,6 +118,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
 
         // Set defaults for missing fields
@@ -137,6 +144,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($topspeedData === false) {
             throw new RuntimeException('Failed to read topspeed');
         }
+
         $result['topspeed'] = $topspeedData[1];
         $offset += 4;
 
@@ -145,6 +153,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($priceData === false) {
             throw new RuntimeException('Failed to read price');
         }
+
         $result['price'] = $priceData[1];
         $offset += 4;
 
@@ -153,6 +162,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($maintenanceData === false) {
             throw new RuntimeException('Failed to read maintenance');
         }
+
         $result['maintenance'] = $maintenanceData[1];
         $offset += 4;
 
@@ -161,6 +171,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
         $offset += 1;
 
@@ -169,6 +180,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
         $offset += 2;
 
@@ -177,6 +189,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
         $offset += 2;
 
@@ -185,6 +198,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($seasonsData === false) {
             throw new RuntimeException('Failed to read number_of_seasons');
         }
+
         $result['number_of_seasons'] = $seasonsData[1];
 
         // Set defaults
@@ -209,6 +223,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($topspeedData === false) {
             throw new RuntimeException('Failed to read topspeed');
         }
+
         $result['topspeed'] = $topspeedData[1];
         $offset += 4;
 
@@ -217,6 +232,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($priceData === false) {
             throw new RuntimeException('Failed to read price');
         }
+
         $result['price'] = $priceData[1];
         $offset += 4;
 
@@ -225,6 +241,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($maintenanceData === false) {
             throw new RuntimeException('Failed to read maintenance');
         }
+
         $result['maintenance'] = $maintenanceData[1];
         $offset += 4;
 
@@ -233,6 +250,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
         $offset += 1;
 
@@ -241,6 +259,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
         $offset += 2;
 
@@ -249,6 +268,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
         $offset += 2;
 
@@ -257,6 +277,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($seasonsData === false) {
             throw new RuntimeException('Failed to read number_of_seasons');
         }
+
         $result['number_of_seasons'] = $seasonsData[1];
         $offset += 1;
 
@@ -265,6 +286,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($hasWayData === false) {
             throw new RuntimeException('Failed to read has_way');
         }
+
         $result['has_way'] = $hasWayData[1] !== 0;
 
         // Set defaults
@@ -288,6 +310,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($topspeedData === false) {
             throw new RuntimeException('Failed to read topspeed');
         }
+
         $result['topspeed'] = $topspeedData[1];
         $offset += 4;
 
@@ -296,6 +319,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($priceData === false) {
             throw new RuntimeException('Failed to read price');
         }
+
         $result['price'] = $priceData[1];
         $offset += 4;
 
@@ -304,6 +328,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($maintenanceData === false) {
             throw new RuntimeException('Failed to read maintenance');
         }
+
         $result['maintenance'] = $maintenanceData[1];
         $offset += 4;
 
@@ -312,6 +337,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
         $offset += 1;
 
@@ -320,6 +346,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
         $offset += 2;
 
@@ -328,6 +355,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
         $offset += 2;
 
@@ -336,6 +364,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($seasonsData === false) {
             throw new RuntimeException('Failed to read number_of_seasons');
         }
+
         $result['number_of_seasons'] = $seasonsData[1];
         $offset += 1;
 
@@ -344,6 +373,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($hasWayData === false) {
             throw new RuntimeException('Failed to read has_way');
         }
+
         $result['has_way'] = $hasWayData[1] !== 0;
         $offset += 1;
 
@@ -352,6 +382,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($broadPortalsData === false) {
             throw new RuntimeException('Failed to read broad_portals');
         }
+
         $result['broad_portals'] = $broadPortalsData[1] !== 0;
 
         // Set defaults
@@ -374,6 +405,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($topspeedData === false) {
             throw new RuntimeException('Failed to read topspeed');
         }
+
         $result['topspeed'] = $topspeedData[1];
         $offset += 4;
 
@@ -382,6 +414,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($priceData === false) {
             throw new RuntimeException('Failed to read price');
         }
+
         $result['price'] = $priceData[1];
         $offset += 4;
 
@@ -390,6 +423,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($maintenanceData === false) {
             throw new RuntimeException('Failed to read maintenance');
         }
+
         $result['maintenance'] = $maintenanceData[1];
         $offset += 4;
 
@@ -398,6 +432,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
         $offset += 1;
 
@@ -406,6 +441,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
         $offset += 2;
 
@@ -414,6 +450,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
         $offset += 2;
 
@@ -422,6 +459,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($axleLoadData === false) {
             throw new RuntimeException('Failed to read axle_load');
         }
+
         $result['axle_load'] = $axleLoadData[1];
         $offset += 2;
 
@@ -430,6 +468,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($seasonsData === false) {
             throw new RuntimeException('Failed to read number_of_seasons');
         }
+
         $result['number_of_seasons'] = $seasonsData[1];
         $offset += 1;
 
@@ -438,6 +477,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($hasWayData === false) {
             throw new RuntimeException('Failed to read has_way');
         }
+
         $result['has_way'] = $hasWayData[1] !== 0;
         $offset += 1;
 
@@ -446,6 +486,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($broadPortalsData === false) {
             throw new RuntimeException('Failed to read broad_portals');
         }
+
         $result['broad_portals'] = $broadPortalsData[1] !== 0;
 
         return $this->buildResult($result);
@@ -465,6 +506,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($topspeedData === false) {
             throw new RuntimeException('Failed to read topspeed');
         }
+
         $result['topspeed'] = $topspeedData[1];
         $offset += 4;
 
@@ -481,6 +523,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($wtypData === false) {
             throw new RuntimeException('Failed to read wtyp');
         }
+
         $result['wtyp'] = $wtypData[1];
         $offset += 1;
 
@@ -489,6 +532,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($introDateData === false) {
             throw new RuntimeException('Failed to read intro_date');
         }
+
         $result['intro_date'] = $introDateData[1];
         $offset += 2;
 
@@ -497,6 +541,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($retireDateData === false) {
             throw new RuntimeException('Failed to read retire_date');
         }
+
         $result['retire_date'] = $retireDateData[1];
         $offset += 2;
 
@@ -505,6 +550,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($axleLoadData === false) {
             throw new RuntimeException('Failed to read axle_load');
         }
+
         $result['axle_load'] = $axleLoadData[1];
         $offset += 2;
 
@@ -513,6 +559,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($seasonsData === false) {
             throw new RuntimeException('Failed to read number_of_seasons');
         }
+
         $result['number_of_seasons'] = $seasonsData[1];
         $offset += 1;
 
@@ -521,6 +568,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($hasWayData === false) {
             throw new RuntimeException('Failed to read has_way');
         }
+
         $result['has_way'] = $hasWayData[1] !== 0;
         $offset += 1;
 
@@ -529,6 +577,7 @@ final readonly class TunnelParser implements TypeParserInterface
         if ($broadPortalsData === false) {
             throw new RuntimeException('Failed to read broad_portals');
         }
+
         $result['broad_portals'] = $broadPortalsData[1] !== 0;
 
         return $this->buildResult($result);

@@ -6,6 +6,9 @@ namespace App\Services\FileInfo\Extractors\Pak;
 
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\BridgeParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\BuildingParser;
+use App\Services\FileInfo\Extractors\Pak\TypeParsers\CitycarParser;
+use App\Services\FileInfo\Extractors\Pak\TypeParsers\CrossingParser;
+use App\Services\FileInfo\Extractors\Pak\TypeParsers\FactoryParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\GoodParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\SignParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\TunnelParser;
@@ -45,7 +48,7 @@ final readonly class PakMetadata
         // Add type-specific data with appropriate keys for backward compatibility
         if ($this->typeSpecificData !== []) {
             // Use objectType to determine the key name (e.g., 'vehicleData', 'wayData')
-            $dataKey = $this->objectType . 'Data';
+            $dataKey = $this->objectType.'Data';
             $result[$dataKey] = $this->typeSpecificData;
         }
 
@@ -103,6 +106,10 @@ final readonly class PakMetadata
                 new BridgeParser,
                 new TunnelParser,
                 new SignParser,
+                new CrossingParser,
+                new CitycarParser,
+                new FactoryParser,
+                new GoodParser,
                 new BuildingParser,
             ];
         }

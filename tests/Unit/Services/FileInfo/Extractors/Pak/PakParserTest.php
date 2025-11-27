@@ -13,37 +13,41 @@ final class PakParserTest extends TestCase
     /**
      * @dataProvider makeobjVersionProvider
      */
-    public function test_parse_makeobj_versions(string $pakFile, string $expectedName): void
+    public function test_parse_makeobj_versions(string $pakFile, array $expectedNames): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/'.$pakFile);
+        $data = file_get_contents(__DIR__ . '/../file/' . $pakFile);
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('names', $result);
         $this->assertArrayHasKey('metadata', $result);
-        $this->assertContains($expectedName, $result['names']);
+
+        // Verify all expected names are present
+        foreach ($expectedNames as $expectedName) {
+            $this->assertContains($expectedName, $result['names'], "Expected name '{$expectedName}' not found in pak file '{$pakFile}'");
+        }
+
         $this->assertIsArray($result['metadata']);
         $this->assertNotEmpty($result['metadata']);
     }
 
     /**
-     * @return array<string, array{pakFile: string, expectedName: string}>
+     * @return array<string, array{pakFile: string, expectedNames: array<string>}>
      */
     public static function makeobjVersionProvider(): array
     {
         return [
-            'makeobj-48' => ['pakFile' => 'test-48.pak', 'expectedName' => 'test_1'],
-            'makeobj-50' => ['pakFile' => 'test-50.pak', 'expectedName' => 'test_1'],
-            'makeobj-55.4' => ['pakFile' => 'test-55.4.pak', 'expectedName' => 'test_1'],
-            'makeobj-60' => ['pakFile' => 'test-60.pak', 'expectedName' => 'test_1'],
-            'makeobj-60.8' => ['pakFile' => 'way.test_1.pak', 'expectedName' => 'test_1'],
-            'makeobj-48-transparent' => ['pakFile' => 'test_transparent-48.pak', 'expectedName' => 'test_transparent_1'],
-            'makeobj-50-transparent' => ['pakFile' => 'test_transparent-50.pak', 'expectedName' => 'test_transparent_1'],
-            'makeobj-55.4-transparent' => ['pakFile' => 'test_transparent-55.4.pak', 'expectedName' => 'test_transparent_1'],
-            'makeobj-60-transparent' => ['pakFile' => 'test_transparent-60.pak', 'expectedName' => 'test_transparent_1'],
-            'makeobj-60.8-transparent' => ['pakFile' => 'way.test_transparent_1.pak', 'expectedName' => 'test_transparent_1'],
+            // Unified pak files containing all objects (way normal, way transparent, vehicle)
+            'makeobj-48' => ['pakFile' => 'test-48.pak', 'expectedNames' => ['test_1', 'test_transparent_1', 'TestTruck']],
+            'makeobj-50' => ['pakFile' => 'test-50.pak', 'expectedNames' => ['test_1', 'test_transparent_1', 'TestTruck']],
+            'makeobj-55.4' => ['pakFile' => 'test-55.4.pak', 'expectedNames' => ['test_1', 'test_transparent_1', 'TestTruck']],
+            'makeobj-60' => ['pakFile' => 'test-60.pak', 'expectedNames' => ['test_1', 'test_transparent_1', 'TestTruck']],
+            // makeobj 60.8 creates separate pak files per object
+            'makeobj-60.8-way' => ['pakFile' => 'way.test_1.pak', 'expectedNames' => ['test_1']],
+            'makeobj-60.8-way-transparent' => ['pakFile' => 'way.test_transparent_1.pak', 'expectedNames' => ['test_transparent_1']],
+            'makeobj-60.8-vehicle' => ['pakFile' => 'vehicle.TestTruck.pak', 'expectedNames' => ['TestTruck']],
         ];
     }
 
@@ -51,7 +55,7 @@ final class PakParserTest extends TestCase
     {
         $parser = new PakParser;
         // Use one of the generated test files instead
-        $data = file_get_contents(__DIR__.'/../file/way.test_transparent_1.pak');
+        $data = file_get_contents(__DIR__ . '/../file/way.test_transparent_1.pak');
 
         $result = $parser->parse($data);
 
@@ -82,7 +86,7 @@ final class PakParserTest extends TestCase
     public function test_metadata_structure(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/way.test_1.pak');
+        $data = file_get_contents(__DIR__ . '/../file/way.test_1.pak');
 
         $result = $parser->parse($data);
 
@@ -108,24 +112,29 @@ final class PakParserTest extends TestCase
     {
         $parser = new PakParser;
 
-        // Test with all makeobj versions - all test files are way objects, not vehicles
-        foreach (self::makeobjVersionProvider() as $testCase) {
-            $data = file_get_contents(__DIR__.'/../file/'.$testCase['pakFile']);
-            $result = $parser->parse($data);
+        // Test with way.test_1.pak which contains only way object
+        $data = file_get_contents(__DIR__ . '/../file/way.test_1.pak');
+        $result = $parser->parse($data);
 
-            $this->assertNotEmpty($result['metadata'], "Failed for {$testCase['pakFile']}");
-            $metadata = $result['metadata'][0];
+        $this->assertNotEmpty($result['metadata']);
 
-            // All test files are way objects, not vehicles
-            // So vehicleData should not be present
-            $this->assertArrayNotHasKey('vehicleData', $metadata, "vehicleData should not exist for way objects in {$testCase['pakFile']}");
+        // Find the way object metadata
+        $wayMetadata = null;
+        foreach ($result['metadata'] as $metadata) {
+            if ($metadata['objectType'] === 'way') {
+                $wayMetadata = $metadata;
+                break;
+            }
         }
+
+        $this->assertNotNull($wayMetadata, 'Way metadata not found');
+        $this->assertArrayNotHasKey('vehicleData', $wayMetadata, 'Way object should not have vehicleData');
     }
 
     public function test_parse_vehicle_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/vehicle.TestTruck.pak');
+        $data = file_get_contents(__DIR__ . '/../file/vehicle.TestTruck.pak');
 
         $result = $parser->parse($data);
 
@@ -187,7 +196,7 @@ final class PakParserTest extends TestCase
     public function test_parse_way_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/way.test_1.pak');
+        $data = file_get_contents(__DIR__ . '/../file/way.test_1.pak');
 
         $result = $parser->parse($data);
 

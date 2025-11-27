@@ -1,6 +1,5 @@
 import { Accordion } from "@/components/ui/Accordion";
 import type { PakMetadata as PakMetadataType } from "@/types/models";
-import { PakVehicleMetadata } from "./pak/PakVehicleMetadata";
 import PakGenericMetadata from "./pak/PakGenericMetadata";
 import React from "react";
 import { TitleH4 } from "./TitleH4";
@@ -31,14 +30,7 @@ export const PakMetadata = ({ paksMetadata }: Props) => {
                     ({metadata.objectType})
                   </span>
                 </div>
-                {metadata.objectType === "vehicle" && metadata.vehicleData ? (
-                  <PakVehicleMetadata
-                    metadata={metadata}
-                    vehicleData={metadata.vehicleData}
-                  />
-                ) : (
-                  <PakGenericMetadata metadata={metadata} />
-                )}
+                <PakGenericMetadata metadata={metadata} />
               </div>
             ))}
           </div>

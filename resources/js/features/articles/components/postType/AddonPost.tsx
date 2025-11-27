@@ -147,7 +147,7 @@ export const AddonPost = ({ article, preview }: Props) => {
 
           {paksMetadata && (
             <>
-              <TitleH4>アドオン詳細情報</TitleH4>
+              <TitleH4>Pakファイル情報</TitleH4>
               <PakMetadata paksMetadata={paksMetadata} />
             </>
           )}

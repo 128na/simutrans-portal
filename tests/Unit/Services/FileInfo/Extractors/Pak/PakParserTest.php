@@ -16,7 +16,7 @@ final class PakParserTest extends TestCase
     public function test_parse_makeobj_versions(string $pakFile, array $expectedNames): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/' . $pakFile);
+        $data = file_get_contents(__DIR__.'/../file/'.$pakFile);
 
         $result = $parser->parse($data);
 
@@ -53,7 +53,7 @@ final class PakParserTest extends TestCase
     {
         $parser = new PakParser;
         // Use the unified test.pak file
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -84,7 +84,7 @@ final class PakParserTest extends TestCase
     public function test_metadata_structure(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -111,7 +111,7 @@ final class PakParserTest extends TestCase
         $parser = new PakParser;
 
         // Test with test.pak which contains multiple object types
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
         $result = $parser->parse($data);
 
         $this->assertNotEmpty($result['metadata']);
@@ -132,7 +132,7 @@ final class PakParserTest extends TestCase
     public function test_parse_vehicle_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -203,7 +203,7 @@ final class PakParserTest extends TestCase
     public function test_parse_way_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -240,7 +240,7 @@ final class PakParserTest extends TestCase
     public function test_parse_building_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -275,7 +275,7 @@ final class PakParserTest extends TestCase
     public function test_parse_citycar_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -302,7 +302,7 @@ final class PakParserTest extends TestCase
     public function test_parse_good_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -333,7 +333,7 @@ final class PakParserTest extends TestCase
     public function test_parse_bridge_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -374,7 +374,7 @@ final class PakParserTest extends TestCase
     public function test_parse_ground_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -407,7 +407,7 @@ final class PakParserTest extends TestCase
     public function test_parse_crossing_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -440,7 +440,7 @@ final class PakParserTest extends TestCase
     public function test_parse_factory_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -472,7 +472,7 @@ final class PakParserTest extends TestCase
     public function test_parse_groundobj_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -504,7 +504,7 @@ final class PakParserTest extends TestCase
     public function test_parse_pedestrian_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -536,7 +536,7 @@ final class PakParserTest extends TestCase
     public function test_parse_tree_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -567,7 +567,7 @@ final class PakParserTest extends TestCase
     public function test_parse_roadsign_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__ . '/../file/test.pak');
+        $data = file_get_contents(__DIR__.'/../file/test.pak');
 
         $result = $parser->parse($data);
 

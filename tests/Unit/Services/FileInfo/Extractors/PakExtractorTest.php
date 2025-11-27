@@ -27,7 +27,7 @@ final class PakExtractorTest extends TestCase
     {
         $sUT = $this->getSUT();
 
-        $data = file_get_contents(__DIR__ . '/file/test.pak');
+        $data = file_get_contents(__DIR__.'/file/test.pak');
 
         $result = $sUT->extract($data);
 

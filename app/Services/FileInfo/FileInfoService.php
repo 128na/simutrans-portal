@@ -27,8 +27,8 @@ final readonly class FileInfoService
             $filename = $attachment->original_name;
 
             // Check file existence before reading
-            if (!file_exists($attachment->full_path)) {
-                throw new Exception('File not found: ' . $attachment->full_path);
+            if (! file_exists($attachment->full_path)) {
+                throw new Exception('File not found: '.$attachment->full_path);
             }
 
             $text = file_get_contents($attachment->full_path);

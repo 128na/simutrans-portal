@@ -73,6 +73,7 @@ return [
             'via' => MarvinLabs\DiscordLogger\Logger::class,
             'level' => 'error',
             'url' => env('DISCORD_WEBHOOK_ERROR'),
+            'ignore_exceptions' => true, // Discord送信失敗を無視
         ],
 
         'discord_notification' => [

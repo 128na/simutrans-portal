@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands\Attachment;
 
+use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -162,7 +163,7 @@ final class ReparsePakFilesCommand extends Command
     private function reparseAttachment(Attachment $attachment): bool
     {
         try {
-            dispatch_sync(new \App\Jobs\Attachments\UpdateFileInfo($attachment));
+            dispatch(new UpdateFileInfo($attachment));
 
             return true;
         } catch (\Throwable $throwable) {

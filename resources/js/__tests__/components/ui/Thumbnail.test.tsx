@@ -9,6 +9,7 @@ describe("Thumbnail コンポーネント", () => {
       thumbnail: "/storage/thumbnails/image1.jpg",
       url: "/storage/images/image1.jpg",
       original_name: "image1.jpg",
+      size: 1,
     },
   ];
 

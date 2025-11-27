@@ -9,6 +9,7 @@ describe("Avatar コンポーネント", () => {
       thumbnail: "/storage/avatars/avatar1.jpg",
       url: "/storage/avatars/avatar1.jpg",
       original_name: "avatar1.jpg",
+      size: 1,
     },
   ];
 

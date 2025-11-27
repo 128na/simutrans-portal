@@ -9,12 +9,14 @@ describe("Image コンポーネント", () => {
       thumbnail: "/storage/thumbnails/image1.jpg",
       url: "/storage/images/image1.jpg",
       original_name: "image1.jpg",
+      size: 1,
     },
     {
       id: 2,
       thumbnail: "/storage/thumbnails/image2.jpg",
       url: "/storage/images/image2.jpg",
       original_name: "image2.jpg",
+      size: 1,
     },
   ];
 

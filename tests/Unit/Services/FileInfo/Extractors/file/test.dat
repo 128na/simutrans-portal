@@ -191,7 +191,6 @@ waytype=road
 cost=1
 maintenance=1
 topspeed=1
-max_weight=1
 max_height=1
 max_length=1
 pillar_distance=1
@@ -302,11 +301,6 @@ frontImage[0][0][0][0][0]=test.0.0
 obj=pedestrian
 name=test_pedestrian
 copyright=TestAuthor
-intro_year=1900
-intro_month=1
-retire_year=2999
-retire_month=1
-steps_per_frame=1
 distributionWeight=1
 Image[S]=test.0.0
 Image[E]=test.0.0
@@ -324,7 +318,6 @@ obj=tree
 name=test_tree
 copyright=TestAuthor
 distributionWeight=1
-height=1
 image[0][0]=test.0.0
 image[1][0]=test.0.0
 image[2][0]=test.0.0
@@ -367,13 +360,3 @@ image[0]=test.0.0
 image[1]=test.0.0
 image[2]=test.0.0
 image[3]=test.0.0
-
----
-
-# Skin object
-obj=skin
-name=test_skin
-copyright=TestAuthor
-intro_year=1900
-intro_month=1
-image[0]=test.0.0

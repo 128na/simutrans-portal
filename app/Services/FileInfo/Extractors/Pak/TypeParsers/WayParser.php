@@ -49,6 +49,14 @@ final readonly class WayParser implements TypeParserInterface
             // Apply internal corrections (from way_reader.cc)
             $this->applyInternalCorrections($data);
 
+            // front_images from version 5 on (from way_reader.cc)
+            $data['front_images'] = $version > 4;
+
+            // axle_load defaults to 9999 for versions < 6
+            if ($version < 6 && ! isset($data['axle_load'])) {
+                $data['axle_load'] = 9999;
+            }
+
             // Convert waytype to string
             if (isset($data['waytype'])) {
                 assert(is_int($data['waytype']));

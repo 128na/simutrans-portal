@@ -6,6 +6,7 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\ObjectTypeConverter;
+use App\Services\FileInfo\Extractors\Pak\WayTypeConverter;
 use RuntimeException;
 
 /**
@@ -13,6 +14,8 @@ use RuntimeException;
  *
  * Way objects are infrastructure placed on ways, primarily overhead lines (catenary).
  * Supported versions: 1-2
+ *
+ * @see simutrans/descriptor/reader/way_obj_reader.cc
  */
 final readonly class WayObjectParser implements TypeParserInterface
 {
@@ -212,35 +215,13 @@ final readonly class WayObjectParser implements TypeParserInterface
      */
     private function buildResult(array $data): array
     {
-        // Add waytype string
+        // Add waytype string using WayTypeConverter
         $wtyp = $data['waytype'] ?? 0;
         $ownWtyp = $data['own_waytype'] ?? 0;
 
-        $data['waytype_str'] = $this->getWayTypeName(is_int($wtyp) ? $wtyp : 0);
-        $data['own_waytype_str'] = $this->getWayTypeName(is_int($ownWtyp) ? $ownWtyp : 0);
+        $data['waytype_str'] = WayTypeConverter::getWayTypeName(is_int($wtyp) ? $wtyp : 0);
+        $data['own_waytype_str'] = WayTypeConverter::getWayTypeName(is_int($ownWtyp) ? $ownWtyp : 0);
 
         return $data;
-    }
-
-    /**
-     * Get waytype name
-     */
-    private function getWayTypeName(int $wtyp): string
-    {
-        return match ($wtyp) {
-            0 => 'ignore',
-            1 => 'road',
-            2 => 'track',
-            3 => 'water',
-            4 => 'overheadlines',
-            5 => 'monorail',
-            6 => 'maglev',
-            7 => 'tram',
-            8 => 'narrowgauge',
-            16 => 'air',
-            128 => 'powerline',
-            255 => 'any',
-            default => 'unknown',
-        };
     }
 }

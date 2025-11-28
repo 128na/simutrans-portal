@@ -7,7 +7,7 @@
  * 添付可能な対象タイプ
  * Attachmentable target type
  */
-export type AttachmentableType = "Article" | "Profile";
+export type AttachmentableType = "Article" | "Profile" | "";
 
 /**
  * 添付ファイルタイプ

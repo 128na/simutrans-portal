@@ -32,20 +32,34 @@ export const attachmentFilter = <T extends Attachment.MypageEdit>(
 ): T[] => {
   const q = criteria.toLowerCase();
   return attachments.filter((a) => {
+    // タイプフィルタ
     if (types?.includes(a.type) === false) {
       return false;
     }
-    // 添付先が指定されているときは他記事に紐づくものを除外する
-    if (
-      attachmentableId &&
-      a.attachmentable_id &&
-      !(
-        attachmentableType === a.attachmentable_type &&
-        a.attachmentable_id === attachmentableId
-      )
-    ) {
-      return false;
+
+    // 添付ファイルの紐づき状態を判定
+    const isAttached =
+      a.attachmentable_type !== "" && a.attachmentable_id !== null;
+    const isAttachedToTarget =
+      isAttached &&
+      a.attachmentable_type === attachmentableType &&
+      a.attachmentable_id === attachmentableId;
+
+    // 編集モード（attachmentableId指定あり）: 未割当 or 自身に紐づくもののみ表示
+    if (attachmentableType && attachmentableId) {
+      if (isAttached && !isAttachedToTarget) {
+        return false; // 他の記事に紐づいているものは除外
+      }
     }
+
+    // 新規作成モード（attachmentableId指定なし）: 未割当のもののみ表示
+    if (attachmentableType && !attachmentableId) {
+      if (isAttached) {
+        return false; // すでに紐づいているものは除外
+      }
+    }
+
+    // 検索条件フィルタ
     return a.original_name.toLowerCase().includes(q);
   });
 };

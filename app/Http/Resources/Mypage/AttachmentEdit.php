@@ -23,7 +23,7 @@ final class AttachmentEdit extends JsonResource
     {
         return [
             'id' => $this->resource->id,
-            'attachmentable_type' => class_basename($this->resource->attachmentable_type ?? ''),
+            'attachmentable_type' => class_basename($this->resource->attachmentable_type),
             'attachmentable_id' => $this->resource->attachmentable_id,
             'type' => $this->resource->type,
             'original_name' => $this->resource->original_name,

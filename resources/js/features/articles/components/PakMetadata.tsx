@@ -14,7 +14,7 @@ export const PakMetadata = ({ paksMetadata }: Props) => {
   return (
     <>
       {Object.entries(paksMetadata).map(([filename, metadataArray]) => (
-        <div className="space-y-6">
+        <div className="space-y-6" key={filename}>
           <TitleH4>{filename}</TitleH4>
           {metadataArray.map((metadata, index) => (
             <div

@@ -45,8 +45,7 @@ export const AddonPost = () => {
   const hasPakMetadata = !!file?.fileInfo?.data.paks_metadata;
 
   const handleFillFromFile = () => {
-    // if (hasReadme) {
-    if (false) {
+    if (hasReadme) {
       const description = getReadmeText(file!.fileInfo!);
 
       if (confirm("以下の内容を説明欄に追記します。\n" + description)) {
@@ -69,10 +68,12 @@ export const AddonPost = () => {
       ) {
         update(
           (draft) =>
-            (draft.categories = [
-              ...draft.categories,
-              ...selectedCategories.map((c) => c.id),
-            ])
+            (draft.categories = Array.from(
+              new Set([
+                ...draft.categories,
+                ...selectedCategories.map((c) => c.id),
+              ])
+            ))
         );
       }
     }

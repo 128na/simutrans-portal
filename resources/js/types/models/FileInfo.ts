@@ -2,12 +2,20 @@
  * FileInfo関連の型定義
  * FileInfo-related type definitions
  */
+type BaseObj = {
+  /** 導入日 */
+  intro_date?: number;
+  /** 引退日 */
+  retire_date?: number;
+  /** データフォーマットバージョン */
+  version?: number;
+};
 
 /**
  * 車両データ型
  * Vehicle data type
  */
-export interface VehicleData {
+export interface VehicleData extends BaseObj {
   /** 輸送容量 */
   capacity?: number;
   /** 購入価格 (単位: 100cr) */
@@ -26,9 +34,9 @@ export interface VehicleData {
   loading_time?: number;
   /** 軸重 (ton) */
   axle_load?: number;
-  /** 導入日 (YYYYMMフォーマット) */
+  /** 導入日 */
   intro_date?: number;
-  /** 引退日 (YYYYMMフォーマット) */
+  /** 引退日 */
   retire_date?: number;
   /** ギア比 (64が標準) */
   gear?: number;
@@ -58,7 +66,7 @@ export interface VehicleData {
  * 道路データ型
  * Way data type
  */
-export interface WayData {
+export interface WayData extends BaseObj {
   /** 建設価格 (単位: 100cr/タイル) */
   price?: number;
   /** 維持費 (単位: 0.01cr/月/タイル) */
@@ -67,10 +75,6 @@ export interface WayData {
   topspeed?: number;
   /** 最大重量制限 (ton) */
   max_weight?: number;
-  /** 導入日 (YYYYMMフォーマット) */
-  intro_date?: number;
-  /** 引退日 (YYYYMMフォーマット) */
-  retire_date?: number;
   /** 軸重制限 (ton) */
   axle_load?: number;
   /** 道路タイプID (0=道路, 1=線路, 2=単軌鉄道, etc) */
@@ -90,19 +94,13 @@ export interface WayData {
 /**
  * Way-object data type (overhead lines, catenary)
  */
-export interface WayObjectData {
-  /** データフォーマットバージョン (1-2) */
-  version?: number;
+export interface WayObjectData extends BaseObj {
   /** 建設費用 (単位: 1/100 credits per tile) */
   price?: number;
   /** 月間維持費 (単位: 0.01cr/月) */
   maintenance?: number;
   /** 最高速度制限 (km/h, 0 = 無制限) */
   topspeed?: number;
-  /** 導入日 (months since year 0) */
-  intro_date?: number;
-  /** 引退日 (months since year 0) */
-  retire_date?: number;
   /** 配置可能なwaytype (数値) */
   waytype?: number;
   /** 配置可能なwaytype (文字列) */
@@ -117,7 +115,7 @@ export interface WayObjectData {
  * Bridge data
  * 橋梁データ型
  */
-export interface BridgeData {
+export interface BridgeData extends BaseObj {
   /** データフォーマットバージョン (0-10) */
   version?: number;
   /** 配置可能なwaytype (数値) */
@@ -132,10 +130,6 @@ export interface BridgeData {
   maintenance?: number;
   /** 軸重制限 (トン, 9999 = 無制限) */
   axle_load?: number;
-  /** 導入日 (months since year 0) */
-  intro_date?: number;
-  /** 引退日 (months since year 0) */
-  retire_date?: number;
   /** 支柱間隔 (タイル, 0 = 支柱なし) */
   pillars_every?: number;
   /** 斜面での最下部支柱を省略 */
@@ -152,7 +146,7 @@ export interface BridgeData {
  * Tunnel data
  * トンネルデータ型
  */
-export interface TunnelData {
+export interface TunnelData extends BaseObj {
   /** データフォーマットバージョン (1-6) */
   version?: number;
   /** 配置可能なwaytype (数値) */
@@ -167,10 +161,6 @@ export interface TunnelData {
   maintenance?: number;
   /** 軸重制限 (トン, 9999 = 無制限) */
   axle_load?: number;
-  /** 導入日 (months since year 0) */
-  intro_date?: number;
-  /** 引退日 (months since year 0) */
-  retire_date?: number;
   /** 季節グラフィック数 (0 = なし, 1 = 雪あり) */
   number_of_seasons?: number;
   /** 地下の線路/道路を表示 */
@@ -183,7 +173,7 @@ export interface TunnelData {
  * Crossing (Level crossing) data
  * 踏切データ型
  */
-export interface CrossingData {
+export interface CrossingData extends BaseObj {
   /** データフォーマットバージョン (1-2) */
   version: number;
   /** 道路タイプ1 (数値) */
@@ -204,53 +194,35 @@ export interface CrossingData {
   closed_animation_time: number;
   /** サウンドID */
   sound: number;
-  /** 導入日 (months since year 0) */
-  intro_date: number;
-  /** 引退日 (months since year 0) */
-  retire_date: number;
 }
 
 /**
  * Citycar (Private city car) data
  * 市内自動車データ型
  */
-export interface CitycarData {
-  /** データフォーマットバージョン (0-2) */
-  version: number;
+export interface CitycarData extends BaseObj {
   /** 出現確率（重み） */
   distribution_weight: number;
   /** 最高速度 (km/h) */
   topspeed: number;
-  /** 導入日 (months since year 0) */
-  intro_date: number;
-  /** 引退日 (months since year 0) */
-  retire_date: number;
 }
 
 /**
  * Pedestrian（歩行者）データ
  */
-export interface PedestrianData {
-  /** バージョン */
-  version: number;
+export interface PedestrianData extends BaseObj {
   /** 出現確率（重み） / Distribution weight (spawn probability) */
   distribution_weight: number;
   /** 1フレームあたりの歩数（歩行速度） / Steps per frame (walking speed) */
   steps_per_frame?: number;
   /** 描画オフセット / Drawing offset */
   offset?: number;
-  /** 導入日 / Introduction date */
-  intro_date?: number;
-  /** 廃止日 / Retirement date */
-  retire_date?: number;
 }
 
 /**
  * Tree（木）データ
  */
-export interface TreeData {
-  /** バージョン */
-  version: number;
+export interface TreeData extends BaseObj {
   /** 許可される気候（ビットマスク） / Allowed climates (bitmask) */
   allowed_climates: number;
   /** 許可される気候（文字列） / Allowed climates (string) */
@@ -264,9 +236,7 @@ export interface TreeData {
 /**
  * Groundobj（地上オブジェクト）データ
  */
-export interface GroundobjData {
-  /** バージョン */
-  version: number;
+export interface GroundobjData extends BaseObj {
   /** 許可される気候（ビットマスク） / Allowed climates (bitmask) */
   allowed_climates: number;
   /** 許可される気候（文字列） / Allowed climates (string) */
@@ -290,9 +260,7 @@ export interface GroundobjData {
 /**
  * Ground（地形テクスチャ）データ
  */
-export interface GroundData {
-  /** バージョン（常に0） */
-  version: number;
+export interface GroundData extends BaseObj {
   /** データフィールドの有無（常にfalse） / Has data fields (always false) */
   has_data: boolean;
 }
@@ -300,9 +268,7 @@ export interface GroundData {
 /**
  * Sound（効果音）データ
  */
-export interface SoundData {
-  /** バージョン (1-2) */
-  version: number;
+export interface SoundData extends BaseObj {
   /** サウンドID / Sound ID */
   sound_id: number;
   /** ファイル名（v2のみ） / Filename (v2 only) */
@@ -312,9 +278,7 @@ export interface SoundData {
 /**
  * Skin（スキン/UI画像）データ
  */
-export interface SkinData {
-  /** バージョン（常に0） */
-  version: number;
+export interface SkinData extends BaseObj {
   /** データフィールドの有無（常にfalse） / Has data fields (always false) */
   has_data: boolean;
   /** オブジェクトサブタイプ ('skin' または 'smoke') / Object subtype */
@@ -325,9 +289,7 @@ export interface SkinData {
  * Factory (Industrial building) data
  * 工場データ型
  */
-export interface FactoryData {
-  /** データフォーマットバージョン (0-5) */
-  version: number;
+export interface FactoryData extends BaseObj {
   /** 配置タイプ (数値: 0=Land, 1=Water, 2=City) */
   placement: number;
   /** 配置タイプ (文字列) */
@@ -384,7 +346,7 @@ export interface FactoryData {
  * Good/Freight data
  * 貨物データ型
  */
-export interface GoodData {
+export interface GoodData extends BaseObj {
   /** データフォーマットバージョン (0-4) */
   version: number;
   /** 基本価値 (経済価値) */
@@ -405,9 +367,7 @@ export interface GoodData {
  * Roadsign/Signal data
  * 道路標識/信号データ型
  */
-export interface SignData {
-  /** データフォーマットバージョン (1-6) */
-  version?: number;
+export interface SignData extends BaseObj {
   /** 配置可能なwaytype (数値) */
   waytype?: number;
   /** 配置可能なwaytype (文字列) */
@@ -422,10 +382,6 @@ export interface SignData {
   flags?: number;
   /** 左オフセット (画像配置調整) */
   offset_left?: number;
-  /** 導入日 (months since year 0) */
-  intro_date?: number;
-  /** 引退日 (months since year 0) */
-  retire_date?: number;
   /** 一方通行標識 */
   is_one_way?: boolean;
   /** ルート選択標識 */
@@ -450,9 +406,7 @@ export interface SignData {
  * 建物データ型
  * Building data type
  */
-export interface BuildingData {
-  /** データフォーマットバージョン (0-11) */
-  version?: number;
+export interface BuildingData extends BaseObj {
   /** 建物タイプID (1=都市観光地, 33=車両基地, 34=停留所, 37=住宅, 38=商業, 39=工業, etc) */
   type?: number;
   /** 建物タイプ名 (例: "Stop", "Depot", "Residential") */
@@ -473,10 +427,6 @@ export interface BuildingData {
   flags?: number;
   /** 出現確率（重み） */
   distribution_weight?: number;
-  /** 導入日 (YYYYMMフォーマット) */
-  intro_date?: number;
-  /** 引退日 (YYYYMMフォーマット) */
-  retire_date?: number;
   /** アニメーション間隔 (ms) */
   animation_time?: number;
   /** 容量（駅の場合は乗客数） */
@@ -487,7 +437,7 @@ export interface BuildingData {
   price?: number;
   /** 地下建設可否 (0=不可, 1=地下のみ, 2=どちらでも) */
   allow_underground?: number;
-  /** 保存指定日（リノベーション禁止） (YYYYMMフォーマット) */
+  /** 保存指定日（リノベーション禁止） */
   preservation_year_month?: number;
   /** 道路タイプID（輸送施設の場合: 1=線路, 3=道路, 4=水路, 16=空路） */
   waytype?: number;
@@ -505,7 +455,7 @@ export interface BuildingData {
  * Pakメタデータ型
  * Pak metadata type
  */
-export interface PakMetadata {
+export interface PakMetadata extends BaseObj {
   /** オブジェクト名 */
   name: string;
   /** 著作権情報 */

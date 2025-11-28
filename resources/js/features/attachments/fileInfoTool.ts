@@ -59,16 +59,7 @@ type CategorySlug =
 /**
  * app\Services\FileInfo\Extractors\Pak\WayTypeConverter.php
  */
-type WayType =
-  | "road"
-  | "track"
-  | "water"
-  | "air"
-  | "monorail"
-  | "maglev"
-  | "tram"
-  | "narrowgauge"
-  | "powerline";
+type WayType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 16 | 128 | 255;
 
 const objectTypeCategoryMap = {
   good: "industrial-tools",
@@ -78,25 +69,25 @@ const objectTypeCategoryMap = {
 } as const satisfies Partial<Record<ObjectType, CategorySlug>>;
 
 const wayCategoryMap = {
-  road: "road-vehicles",
-  track: "trains",
-  water: "ships",
-  air: "aircrafts",
-  monorail: "monorail-vehicles",
-  maglev: "maglev-vehicles",
-  tram: "tram-vehicle",
-  narrowgauge: "narrow-gauge-vahicle",
+  1: "road-vehicles",
+  2: "trains",
+  3: "ships",
+  16: "aircrafts",
+  5: "monorail-vehicles",
+  6: "maglev-vehicles",
+  7: "tram-vehicle",
+  8: "narrow-gauge-vahicle",
 } as const satisfies Partial<Record<WayType, CategorySlug>>;
 
 const wayBuildingCategoryMap = {
-  road: "road-tools",
-  track: "rail-tools",
-  water: "seaport-tools",
-  air: "airport-tools",
-  monorail: "monorail-tools",
-  maglev: "maglev-tools",
-  tram: "tram-tools",
-  narrowgauge: "narrow-gauge-tools",
+  1: "road-tools",
+  2: "rail-tools",
+  3: "seaport-tools",
+  16: "airport-tools",
+  5: "monorail-tools",
+  6: "maglev-tools",
+  7: "tram-tools",
+  8: "narrow-gauge-tools",
 } as const satisfies Partial<Record<WayType, CategorySlug>>;
 
 /**
@@ -113,51 +104,81 @@ export const getCategories = (
 
   Object.keys(meta).forEach((filename: keyof typeof meta) => {
     meta[filename].forEach((obj) => {
-      console.log(obj);
+      // console.log(obj);
       // 対応するカテゴリがあれば追加していく
       const objectType = obj.objectType as ObjectType;
-      // objタイプ
-      if (objectType in objectTypeCategoryMap) {
-        add(
-          objectTypeCategoryMap[
-            objectType as keyof typeof objectTypeCategoryMap
-          ],
-          addons,
-          selected
-        );
+      addByObjType(objectType, addons, selected);
+
+      // 建物
+      if (objectType === "building" && obj.buildingData) {
+        const wayType = obj.buildingData.waytype as WayType;
+        addByWayTypeBuilding(wayType, addons, selected);
       }
       // 軌道
       if (objectType === "way" && obj.wayData) {
-        const wayType = obj.wayData.waytype_str as WayType;
-        if (wayType in wayCategoryMap) {
-          add(
-            wayCategoryMap[wayType as keyof typeof wayCategoryMap],
-            addons,
-            selected
-          );
-        }
+        const wayType = obj.wayData.waytype as WayType;
+        addByWayType(wayType, addons, selected);
       }
-      // 建物
-      if (objectType === "building" && obj.buildingData) {
-        const wayType = obj.buildingData.waytype_str as WayType;
-        if (wayType in wayCategoryMap) {
-          add(
-            wayCategoryMap[wayType as keyof typeof wayCategoryMap],
-            addons,
-            selected
-          );
-        }
+      // 橋
+      if (objectType === "bridge" && obj.bridgeData) {
+        const wayType = obj.bridgeData.waytype as WayType;
+        addByWayType(wayType, addons, selected);
       }
-
+      // トンネル
+      if (objectType === "tunnel" && obj.tunnelData) {
+        const wayType = obj.tunnelData.waytype as WayType;
+        addByWayType(wayType, addons, selected);
+      }
       // 車両
       if (objectType === "vehicle" && obj.vehicleData) {
-        // todo
+        const wayType = obj.vehicleData.waytype as WayType;
+        addByWayType(wayType, addons, selected);
+      }
+      // 踏切
+      if (objectType === "crossing" && obj.crossingData) {
+        const wayType1 = obj.crossingData.waytype1 as WayType;
+        addByWayType(wayType1, addons, selected);
+        const wayType2 = obj.crossingData.waytype2 as WayType;
+        addByWayType(wayType2, addons, selected);
       }
     });
   });
 
   return Array.from(selected);
 };
+
+const addByObjType = (
+  objectType: ObjectType,
+  categories: Category.MypageEdit[],
+  selected: Set<Category.MypageEdit>
+) =>
+  add(
+    objectTypeCategoryMap[objectType as keyof typeof objectTypeCategoryMap],
+    categories,
+    selected
+  );
+
+const addByWayType = (
+  wayType: WayType,
+  categories: Category.MypageEdit[],
+  selected: Set<Category.MypageEdit>
+) =>
+  add(
+    wayCategoryMap[wayType as keyof typeof wayCategoryMap],
+    categories,
+    selected
+  );
+
+const addByWayTypeBuilding = (
+  wayType: WayType,
+  categories: Category.MypageEdit[],
+  selected: Set<Category.MypageEdit>
+) =>
+  add(
+    wayBuildingCategoryMap[wayType as keyof typeof wayBuildingCategoryMap],
+    categories,
+    selected
+  );
 
 const add = (
   slug: CategorySlug,

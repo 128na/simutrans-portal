@@ -103,15 +103,18 @@ if (isset($data['waytype'])) {
 
 **Supported waytypes:**
 
-- 0 => 'road'
-- 1 => 'track'
-- 2 => 'water'
-- 3 => 'air'
-- 4 => 'monorail'
-- 5 => 'maglev'
-- 6 => 'tram'
-- 7 => 'narrowgauge'
-- 8 => 'powerline'
+- 0 => 'ignore'
+- 1 => 'road'
+- 2 => 'track'
+- 3 => 'water'
+- 4 => 'overheadlines'
+- 5 => 'monorail'
+- 6 => 'maglev'
+- 7 => 'tram'
+- 8 => 'narrowgauge'
+- 16 => 'air'
+- 128 => 'powerline'
+- 255 => 'any'
 
 ### EngineTypeConverter
 

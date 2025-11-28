@@ -409,27 +409,25 @@ final class PakParserTest extends TestCase
         $this->assertIsArray($result);
         $this->assertNotEmpty($result['metadata']);
 
-        // Factory objects don't have a name property in Simutrans
-        // Find factory metadata by objectType instead
+        // Factory in Simutrans is recognized as building with type 4
         $metadata = null;
         foreach ($result['metadata'] as $item) {
-            if (isset($item['objectType']) && $item['objectType'] === 'building' && empty($item['name'])) {
-                // Factory is recognized as building with empty name
+            if (
+                isset($item['objectType']) &&
+                $item['objectType'] === 'building' &&
+                isset($item['buildingData']['type']) &&
+                $item['buildingData']['type'] === 4
+            ) {
                 $metadata = $item;
                 break;
             }
         }
 
-        $this->assertNotNull($metadata, 'Factory metadata not found in test.pak');
-        $this->assertEmpty($metadata['name'], 'Factory should have empty name');
+        $this->assertNotNull($metadata, 'Factory metadata (building type 4) not found in test.pak');
         $this->assertSame('TestAuthor', $metadata['copyright']);
-        // Factory is recognized as building by PakParser
         $this->assertSame('building', $metadata['objectType']);
-
-        if (isset($metadata['factoryData'])) {
-            $factoryData = $metadata['factoryData'];
-            $this->assertIsArray($factoryData);
-        }
+        $this->assertArrayHasKey('buildingData', $metadata);
+        $this->assertSame(4, $metadata['buildingData']['type'], 'Building type should be 4 (Factory)');
     }
 
     public function test_parse_groundobj_metadata(): void

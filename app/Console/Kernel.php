@@ -10,9 +10,9 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 final class Kernel extends ConsoleKernel
 {
     /**
-     * 設置サーバーのcron実行間隔。レンサバだと毎分に設定できないぞい
+     * 最大実行時間
      */
-    private const int CRON_INTERVAL = 2;
+    private const int CRON_MAX_EXEC = 30;
 
     /**
      * Define the application's command schedule.
@@ -20,8 +20,6 @@ final class Kernel extends ConsoleKernel
     #[\Override]
     protected function schedule(Schedule $schedule): void
     {
-        $startAt = now()->toDateTimeString();
-        logger()->channel('worker')->info('Kernel::schedule start', ['startAt' => $startAt]);
         $output = $this->getLogPath();
 
         // 毎日
@@ -40,14 +38,15 @@ final class Kernel extends ConsoleKernel
 
         // 毎分 サーバー都合でcron設定としては2分周期
         $schedule->command('article:publish-reservation')->everyMinute()
-            ->appendOutputTo($output);
-        $schedule->command('queue:work', [
-            '--stop-when-empty',
-            '--max-time' => self::CRON_INTERVAL / 2,
-        ])->everyMinute()
+            ->withoutOverlapping(self::CRON_MAX_EXEC)
             ->appendOutputTo($output);
 
-        logger()->channel('worker')->info('Kernel::schedule end', ['startAt' => $startAt]);
+        $schedule->command('queue:work', [
+            '--stop-when-empty',
+            '--max-time' => self::CRON_MAX_EXEC,
+        ])->everyMinute()
+            ->withoutOverlapping(self::CRON_MAX_EXEC)
+            ->appendOutputTo($output);
     }
 
     /**
@@ -56,7 +55,7 @@ final class Kernel extends ConsoleKernel
     #[\Override]
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

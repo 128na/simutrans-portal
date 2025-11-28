@@ -62,7 +62,7 @@ final readonly class GoodParser implements TypeParserInterface
                 2 => $this->parseVersion2($binaryData, $offset),
                 3 => $this->parseVersion3($binaryData, $offset),
                 4 => $this->parseVersion4($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported goods version: ' . $version),
+                default => throw new RuntimeException('Unsupported goods version: '.$version),
             };
         }
 

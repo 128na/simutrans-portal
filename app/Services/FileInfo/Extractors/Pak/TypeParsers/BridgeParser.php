@@ -55,7 +55,7 @@ final readonly class BridgeParser implements TypeParserInterface
                 7, 8 => $this->parseVersion7And8($binaryData, $offset, $version),
                 9 => $this->parseVersion9($binaryData, $offset),
                 10 => $this->parseVersion10($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported bridge version: ' . $version),
+                default => throw new RuntimeException('Unsupported bridge version: '.$version),
             };
         }
 

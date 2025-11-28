@@ -7,6 +7,7 @@ import { Accordion } from "@/components/ui/Accordion";
 import { PakMetadata } from "../PakMetadata";
 import React from "react";
 import { displaySize } from "@/features/attachments/attachmentUtil";
+import TextSub from "@/components/ui/TextSub";
 
 type Props = {
   article: Article.Show;
@@ -155,6 +156,9 @@ export const AddonPost = ({ article, preview }: Props) => {
 
           {hasPaksMetadata && (
             <Accordion title="Pakファイル（ベータ版）">
+              <TextSub>
+                独自実装のスキャン処理のため、表示内容が正しくない場合があります。
+              </TextSub>
               <PakMetadata paksMetadata={paksMetadata} />
             </Accordion>
           )}

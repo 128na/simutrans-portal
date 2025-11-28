@@ -14,6 +14,10 @@ return [
 
     'gtag' => env('GTAG'),
 
+    // Max file size (in MB) for file info extraction (pak/zip)
+    // Files larger than this will be skipped during processing
+    'max_file_info_size' => env('MAX_FILE_INFO_SIZE', 100),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

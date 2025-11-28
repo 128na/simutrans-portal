@@ -104,7 +104,10 @@ final class AttachmentController extends Controller
 
         $attachment = $store($user, $file);
         try {
-            dispatch_sync(new \App\Jobs\Attachments\UpdateFileInfo($attachment));
+            $maxSizeMb = is_numeric(config('app.max_file_info_size'))
+                ? (int) config('app.max_file_info_size')
+                : 100;
+            dispatch_sync(new \App\Jobs\Attachments\UpdateFileInfo($attachment, $maxSizeMb));
         } catch (Throwable $throwable) {
             report($throwable);
         }

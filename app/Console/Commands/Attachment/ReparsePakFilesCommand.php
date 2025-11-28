@@ -14,6 +14,7 @@ final class ReparsePakFilesCommand extends Command
     protected $signature = 'attachment:reparse-pak-files
                             {id? : Specific attachment ID to reparse}
                             {--limit= : Limit the number of files to process}
+                            {--max-size=100 : Maximum file size in MB (0 = unlimited)}
                             {--dry-run : Simulate the operation without making changes}';
 
     protected $description = 'Reparse all pak and zip files to extract metadata';
@@ -22,10 +23,18 @@ final class ReparsePakFilesCommand extends Command
     {
         $attachmentId = $this->argument('id') ? (int) $this->argument('id') : null;
         $limit = $this->option('limit') ? (int) $this->option('limit') : null;
+        $maxSize = $this->option('max-size') ? (int) $this->option('max-size') : 100;
+        $maxSizeMb = $maxSize > 0 ? $maxSize : null; // 0 = unlimited
         $dryRun = (bool) $this->option('dry-run');
 
         if ($dryRun) {
             $this->warn('Running in dry-run mode. No changes will be made.');
+        }
+
+        if ($maxSizeMb !== null) {
+            $this->info(sprintf('Max file size: %d MB', $maxSizeMb));
+        } else {
+            $this->info('Max file size: unlimited');
         }
 
         // Build query
@@ -55,7 +64,7 @@ final class ReparsePakFilesCommand extends Command
             return self::SUCCESS;
         }
 
-        return $this->processAttachments($query, $total);
+        return $this->processAttachments($query, $total, $maxSizeMb);
     }
 
     /**
@@ -112,8 +121,9 @@ final class ReparsePakFilesCommand extends Command
      * Process attachments and reparse them
      *
      * @param  \Illuminate\Database\Eloquent\Builder<Attachment>  $builder
+     * @param  int|null  $maxSizeMb  Maximum file size in MB (null = unlimited)
      */
-    private function processAttachments(\Illuminate\Database\Eloquent\Builder $builder, int $total): int
+    private function processAttachments(\Illuminate\Database\Eloquent\Builder $builder, int $total, ?int $maxSizeMb): int
     {
         $this->output->progressStart($total);
 
@@ -123,7 +133,7 @@ final class ReparsePakFilesCommand extends Command
 
         // Eager load fileInfo to avoid N+1 queries
         foreach ($builder->with('fileInfo')->cursor() as $lazyCollection) {
-            if ($this->reparseAttachment($lazyCollection)) {
+            if ($this->reparseAttachment($lazyCollection, $maxSizeMb)) {
                 $successCount++;
             } else {
                 $errorCount++;
@@ -159,11 +169,13 @@ final class ReparsePakFilesCommand extends Command
 
     /**
      * Reparse a single attachment
+     *
+     * @param  int|null  $maxSizeMb  Maximum file size in MB (null = unlimited)
      */
-    private function reparseAttachment(Attachment $attachment): bool
+    private function reparseAttachment(Attachment $attachment, ?int $maxSizeMb): bool
     {
         try {
-            dispatch(new UpdateFileInfo($attachment));
+            dispatch(new UpdateFileInfo($attachment, $maxSizeMb));
 
             return true;
         } catch (\Throwable $throwable) {

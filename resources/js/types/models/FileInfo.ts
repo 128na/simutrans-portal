@@ -75,7 +75,7 @@ export interface WayData extends BaseObj {
   topspeed?: number;
   /** 最大重量制限 (ton) */
   max_weight?: number;
-  /** 軸重制限 (ton) */
+  /** 軸重制限 (ton, 9999 = 無制限) */
   axle_load?: number;
   /** 道路タイプID (0=道路, 1=線路, 2=単軌鉄道, etc) */
   waytype?: number;
@@ -89,6 +89,8 @@ export interface WayData extends BaseObj {
   draw_as_obj?: boolean | number;
   /** 季節画像数 */
   number_of_seasons?: number;
+  /** 前面画像の有無 (version > 4) */
+  front_images?: boolean;
 }
 
 /**
@@ -192,8 +194,10 @@ export interface CrossingData extends BaseObj {
   open_animation_time: number;
   /** 閉鎖アニメーション時間 (ms) */
   closed_animation_time: number;
-  /** サウンドID */
+  /** サウンドID (-2 = 埋め込みファイル名あり) */
   sound: number;
+  /** 埋め込みサウンドファイル名 (sound=-2の場合のみ) */
+  sound_filename?: string;
 }
 
 /**
@@ -419,6 +423,10 @@ export interface BuildingData extends BaseObj {
   size_y?: number;
   /** レイアウト数 (1,2,4,8,16,48) */
   layouts?: number;
+  /** 許可される気候（ビットマスク, version 4+） */
+  allowed_climates?: number;
+  /** 許可される気候（文字列, version 4+） */
+  allowed_climates_str?: string;
   /** 有効化機能ビット (0x01=乗客, 0x02=郵便, 0x04=貨物) */
   enables?: number;
   /** 有効化機能名 (例: "Passengers, Mail") */

@@ -57,7 +57,7 @@ type CategorySlug =
   | "none";
 
 /**
- * app\Services\FileInfo\Extractors\Pak\WayTypeConverter.php
+ * @see app\Services\FileInfo\Extractors\Pak\WayTypeConverter.php
  */
 type WayType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 16 | 128 | 255;
 

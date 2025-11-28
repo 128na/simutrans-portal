@@ -6,24 +6,40 @@ import {
 import type {
   BridgeData,
   BuildingData,
+  CitycarData,
+  CrossingData,
   FactoryData,
+  GoodData,
   PakMetadata,
+  PedestrianData,
+  SignData,
   TunnelData,
   VehicleData,
   WayData,
+  WayObjectData,
 } from "@/types/models";
 import {
   getBuildingTypeName,
   getSystemTypeName,
   getEnablesString,
   getPlacementName,
-  getClimateNames,
 } from "./pakBuildingTranslations";
 import {
   getWaytypeName,
   getEngineTypeName,
   getFreightTypeName,
 } from "./pakTranslations";
+import {
+  formatDate,
+  formatGear,
+  formatMaintenanceCost,
+  formatNum,
+  formatPower,
+  formatPrice,
+  formatRunningCost,
+  formatSpeed,
+  formatWeight,
+} from "./formatter";
 
 interface Props {
   metadata: PakMetadata;
@@ -119,39 +135,29 @@ function buildDetailRows(
 ): TableRow[] {
   switch (objectType) {
     case "vehicle":
-      return buildVehicleRows(typeData);
+      return buildVehicleRows(typeData as unknown as VehicleData);
     case "way":
-      return buildWayRows(typeData);
+      return buildWayRows(typeData as unknown as WayData);
     case "wayobj":
-      return buildWayobjRows(typeData);
+      return buildWayobjRows(typeData as unknown as WayObjectData);
     case "bridge":
-      return buildBridgeRows(typeData);
+      return buildBridgeRows(typeData as unknown as BridgeData);
     case "tunnel":
-      return buildTunnelRows(typeData);
+      return buildTunnelRows(typeData as unknown as TunnelData);
     case "roadsign":
-      return buildRoadsignRows(typeData);
+      return buildRoadsignRows(typeData as unknown as SignData);
     case "crossing":
-      return buildCrossingRows(typeData);
+      return buildCrossingRows(typeData as unknown as CrossingData);
     case "building":
-      return buildBuildingRows(typeData);
+      return buildBuildingRows(typeData as unknown as BuildingData);
     case "factory":
       return buildFactoryRows(typeData as unknown as FactoryData);
     case "good":
-      return buildGoodRows(typeData);
+      return buildGoodRows(typeData as unknown as GoodData);
     case "citycar":
-      return buildCitycarRows(typeData);
+      return buildCitycarRows(typeData as unknown as CitycarData);
     case "pedestrian":
-      return buildPedestrianRows(typeData);
-    case "tree":
-      return buildTreeRows(typeData);
-    case "groundobj":
-      return buildGroundobjRows(typeData);
-    case "ground":
-      return buildGroundRows(typeData);
-    case "sound":
-      return buildSoundRows(typeData);
-    case "skin":
-      return buildSkinRows(typeData);
+      return buildPedestrianRows(typeData as unknown as PedestrianData);
     default:
       return buildGenericRows(typeData);
   }
@@ -176,70 +182,52 @@ function buildDetailRows(
 function buildVehicleRows(data: VehicleData): TableRow[] {
   return [
     {
-      label: "導入年月",
-      value:
-        data.intro_date !== undefined
-          ? `${Math.floor(data.intro_date / 12)}年${(data.intro_date % 12) + 1}月`
-          : undefined,
+      label: "登場年月",
+      value: formatDate(data.intro_date),
     },
     {
       label: "引退年月",
-      value:
-        data.retire_date !== undefined
-          ? `${Math.floor(data.retire_date / 12)}年${(data.retire_date % 12) + 1}月`
-          : undefined,
+      value: formatDate(data.retire_date),
     },
     {
       label: "最高速度",
-      value: data.topspeed !== undefined ? `${data.topspeed} km/h` : undefined,
+      value: formatSpeed(data.topspeed),
     },
     {
       label: "出力",
-      value: data.power !== undefined ? `${data.power} kW` : undefined,
+      value: formatPower(data.power),
     },
     {
       label: "ギア",
-      value: data.gear !== undefined ? data.gear : undefined,
+      value: formatGear(data.gear),
     },
     {
       label: "重量",
-      value:
-        data.weight !== undefined
-          ? `${(data.weight / 1000).toFixed(1)} t`
-          : undefined,
+      value: formatWeight(data.weight),
     },
     {
       label: "軸重",
-      value: data.axle_load !== undefined ? `${data.axle_load} t` : undefined,
+      value: formatWeight(data.axle_load),
     },
     {
       label: "定員/容量",
-      value: data.capacity !== undefined ? data.capacity : undefined,
+      value: formatNum(data.capacity),
     },
     {
       label: "輸送品目",
-      value: getFreightTypeName(data.freight_type as string | undefined),
+      value: getFreightTypeName(data.freight_type),
     },
     {
       label: "購入価格",
-      value:
-        data.price !== undefined
-          ? `${(data.price * 100).toLocaleString()} Cr`
-          : undefined,
+      value: formatPrice(data.price),
     },
     {
       label: "運行費用",
-      value:
-        data.running_cost !== undefined
-          ? `${(data.running_cost / 100).toLocaleString()} Cr/km`
-          : undefined,
+      value: formatRunningCost(data.running_cost),
     },
     {
       label: "維持費",
-      value:
-        data.maintenance !== undefined
-          ? `${(data.maintenance / 100).toLocaleString()} Cr/月`
-          : undefined,
+      value: formatMaintenanceCost(data.maintenance),
     },
     {
       label: "軌道タイプ",
@@ -247,14 +235,11 @@ function buildVehicleRows(data: VehicleData): TableRow[] {
     },
     {
       label: "エンジンタイプ",
-      value: getEngineTypeName(
-        (data.engine_type_str as string | undefined) ||
-          (data.engine_type as number | undefined)
-      ),
+      value: getEngineTypeName(data.engine_type),
     },
     {
       label: "長さ",
-      value: data.len !== undefined ? data.len : undefined,
+      value: data.len,
     },
   ];
 }
@@ -265,36 +250,36 @@ function buildVehicleRows(data: VehicleData): TableRow[] {
 function buildWayRows(data: WayData): TableRow[] {
   return [
     {
-      label: "軌道タイプ",
-      value: data.waytype ? getWaytypeName(data.waytype) : data.waytype || "",
-    },
-    {
-      label: "システムタイプ",
-      value: data.styp_str ? getSystemTypeName(data.styp_str) : data.styp || "",
-    },
-    {
-      label: "最高速度",
-      value: data.topspeed ? `${data.topspeed} km/h` : "",
-    },
-    {
-      label: "最大積載量",
-      value: data.max_weight ? `${data.max_weight} t` : "",
-    },
-    {
-      label: "建設費",
-      value: data.price ? `${data.price / 100} Cr` : "",
-    },
-    {
-      label: "維持費",
-      value: data.maintenance ? `${data.maintenance / 100} Cr/月` : "",
-    },
-    {
       label: "登場年月",
-      value: data.intro_date ? formatDate(data.intro_date) : "",
+      value: formatDate(data.intro_date),
     },
     {
       label: "引退年月",
-      value: data.retire_date ? formatDate(data.retire_date) : "",
+      value: formatDate(data.retire_date),
+    },
+    {
+      label: "軌道タイプ",
+      value: getWaytypeName(data.waytype),
+    },
+    {
+      label: "システムタイプ",
+      value: getSystemTypeName(data.styp || ""),
+    },
+    {
+      label: "最高速度",
+      value: formatSpeed(data.topspeed),
+    },
+    {
+      label: "最大積載量",
+      value: formatWeight(data.max_weight),
+    },
+    {
+      label: "建設費",
+      value: formatPrice(data.price),
+    },
+    {
+      label: "維持費",
+      value: formatMaintenanceCost(data.maintenance),
     },
   ];
 }
@@ -305,32 +290,30 @@ function buildWayRows(data: WayData): TableRow[] {
 function buildBridgeRows(data: BridgeData): TableRow[] {
   return [
     {
-      label: "軌道タイプ",
-      value: data.waytype_str
-        ? getWaytypeName(data.waytype)
-        : String(data.waytype || ""),
-    },
-    {
-      label: "最高速度",
-      value: data.topspeed ? `${data.topspeed} km/h` : "",
-    },
-    {
-      label: "建設費",
-      value: data.price ? `${data.price / 100} Cr` : "",
-    },
-    {
-      label: "維持費",
-      value: data.maintenance ? `${data.maintenance / 100} Cr/月` : "",
-    },
-    { label: "最大長", value: data.max_length ? `${data.max_length}` : "" },
-    {
       label: "登場年月",
-      value: data.intro_date ? formatDate(data.intro_date) : "",
+      value: formatDate(data.intro_date),
     },
     {
       label: "引退年月",
-      value: data.retire_date ? formatDate(data.retire_date) : "",
+      value: formatDate(data.retire_date),
     },
+    {
+      label: "軌道タイプ",
+      value: getWaytypeName(data.waytype),
+    },
+    {
+      label: "最高速度",
+      value: formatSpeed(data.topspeed),
+    },
+    {
+      label: "建設費",
+      value: formatPrice(data.price),
+    },
+    {
+      label: "維持費",
+      value: formatMaintenanceCost(data.maintenance),
+    },
+    { label: "最大長", value: data.max_length },
   ];
 }
 
@@ -340,28 +323,28 @@ function buildBridgeRows(data: BridgeData): TableRow[] {
 function buildTunnelRows(data: TunnelData): TableRow[] {
   return [
     {
-      label: "軌道タイプ",
-      value: data.waytype ? getWaytypeName(data.waytype) : data.waytype || "",
-    },
-    {
-      label: "最高速度",
-      value: data.topspeed ? `${data.topspeed} km/h` : "",
-    },
-    {
-      label: "建設費",
-      value: data.price ? `${data.price / 100} Cr` : "",
-    },
-    {
-      label: "維持費",
-      value: data.maintenance ? `${data.maintenance / 100} Cr/月` : "",
-    },
-    {
       label: "登場年月",
-      value: data.intro_date ? formatDate(data.intro_date) : "",
+      value: formatDate(data.intro_date),
     },
     {
       label: "引退年月",
-      value: data.retire_date ? formatDate(data.retire_date) : "",
+      value: formatDate(data.retire_date),
+    },
+    {
+      label: "軌道タイプ",
+      value: getWaytypeName(data.waytype),
+    },
+    {
+      label: "最高速度",
+      value: formatSpeed(data.topspeed),
+    },
+    {
+      label: "建設費",
+      value: formatPrice(data.price),
+    },
+    {
+      label: "維持費",
+      value: formatMaintenanceCost(data.maintenance),
     },
   ];
 }
@@ -372,10 +355,16 @@ function buildTunnelRows(data: TunnelData): TableRow[] {
 function buildBuildingRows(data: BuildingData): TableRow[] {
   const rows: TableRow[] = [
     {
+      label: "登場年月",
+      value: formatDate(data.intro_date),
+    },
+    {
+      label: "引退年月",
+      value: formatDate(data.retire_date),
+    },
+    {
       label: "建物タイプ",
-      value: data.type_str
-        ? getBuildingTypeName(data.type_str)
-        : data.type || "",
+      value: getBuildingTypeName(data.type_str ?? ""),
     },
     { label: "レベル", value: data.level || "" },
     { label: "サイズ", value: `${data.size_x || 1} x ${data.size_y || 1}` },
@@ -398,17 +387,6 @@ function buildBuildingRows(data: BuildingData): TableRow[] {
     });
   }
 
-  rows.push(
-    {
-      label: "登場年月",
-      value: data.intro_date ? formatDate(data.intro_date) : "",
-    },
-    {
-      label: "引退年月",
-      value: data.retire_date ? formatDate(data.retire_date) : "",
-    }
-  );
-
   return rows;
 }
 
@@ -417,6 +395,14 @@ function buildBuildingRows(data: BuildingData): TableRow[] {
  */
 function buildFactoryRows(data: FactoryData): TableRow[] {
   const rows: TableRow[] = [
+    {
+      label: "登場年月",
+      value: formatDate(data.intro_date),
+    },
+    {
+      label: "引退年月",
+      value: formatDate(data.retire_date),
+    },
     { label: "生産力", value: data.productivity || "" },
     { label: "生産範囲", value: data.range || "" },
     { label: "配置確率", value: data.distribution_weight || "" },
@@ -430,112 +416,64 @@ function buildFactoryRows(data: FactoryData): TableRow[] {
     });
   }
 
-  rows.push(
-    {
-      label: "登場年月",
-      value: data.intro_date ? formatDate(data.intro_date) : "",
-    },
-    {
-      label: "引退年月",
-      value: data.retire_date ? formatDate(data.retire_date) : "",
-    }
-  );
-
   return rows;
 }
 
 /**
  * Good（輸送品目）の詳細行
  */
-function buildGoodRows(data: Record<string, unknown>): TableRow[] {
+function buildGoodRows(data: GoodData): TableRow[] {
   return [
-    { label: "カテゴリ", value: String(data.catg_index || "") },
-    { label: "重量", value: data.weight ? `${data.weight}` : "" },
-    { label: "価値", value: String(data.value || "") },
-    { label: "速度ボーナス", value: String(data.speed_bonus || "") },
+    {
+      label: "登場年月",
+      value: formatDate(data.intro_date),
+    },
+    {
+      label: "引退年月",
+      value: formatDate(data.retire_date),
+    },
+    { label: "カテゴリ", value: data.catg_str },
+    {
+      label: "重量",
+      value: data.weight_per_unit,
+    },
+    { label: "価値", value: data.base_value },
+    { label: "速度ボーナス", value: data.speed_bonus },
   ];
-}
-
-/**
- * Tree（樹木）の詳細行
- */
-function buildTreeRows(data: Record<string, unknown>): TableRow[] {
-  const rows: TableRow[] = [
-    { label: "種類数", value: String(data.number_of_seasons || "") },
-  ];
-
-  // 許可気候
-  if (data.allowed_climates_str) {
-    rows.push({
-      label: "許可気候",
-      value: getClimateNames(String(data.allowed_climates_str)),
-    });
-  }
-
-  return rows;
-}
-
-/**
- * Groundobj（地形オブジェクト）の詳細行
- */
-function buildGroundobjRows(data: Record<string, unknown>): TableRow[] {
-  const rows: TableRow[] = [];
-
-  // 許可気候
-  if (data.allowed_climates_str) {
-    rows.push({
-      label: "許可気候",
-      value: getClimateNames(String(data.allowed_climates_str)),
-    });
-  }
-
-  // 軌道タイプ
-  if (data.waytype_str) {
-    rows.push({
-      label: "軌道タイプ",
-      value: getWaytypeName(Number(data.waytype || 0)),
-    });
-  }
-
-  return rows;
 }
 
 /**
  * Wayobj（軌道オブジェクト）の詳細行
  */
-function buildWayobjRows(data: Record<string, unknown>): TableRow[] {
+function buildWayobjRows(data: WayObjectData): TableRow[] {
   return [
     {
-      label: "軌道タイプ",
-      value: data.wtyp_str
-        ? getWaytypeName(Number(data.wtyp))
-        : String(data.wtyp || ""),
-    },
-    {
-      label: "所有タイプ",
-      value: data.own_wtyp_str
-        ? String(data.own_wtyp_str)
-        : String(data.own_wtyp || ""),
-    },
-    {
-      label: "最高速度",
-      value: data.topspeed ? `${data.topspeed} km/h` : "",
-    },
-    {
-      label: "建設費",
-      value: data.price ? `${Number(data.price) / 100} Cr` : "",
-    },
-    {
-      label: "維持費",
-      value: data.maintenance ? `${Number(data.maintenance) / 100} Cr/月` : "",
-    },
-    {
       label: "登場年月",
-      value: data.intro_date ? formatDate(Number(data.intro_date)) : "",
+      value: formatDate(data.intro_date),
     },
     {
       label: "引退年月",
-      value: data.retire_date ? formatDate(Number(data.retire_date)) : "",
+      value: formatDate(data.retire_date),
+    },
+    {
+      label: "軌道タイプ",
+      value: getWaytypeName(data.waytype),
+    },
+    {
+      label: "所有タイプ",
+      value: getWaytypeName(data.own_waytype),
+    },
+    {
+      label: "最高速度",
+      value: formatSpeed(data.topspeed),
+    },
+    {
+      label: "建設費",
+      value: formatPrice(data.price),
+    },
+    {
+      label: "維持費",
+      value: formatMaintenanceCost(data.maintenance),
     },
   ];
 }
@@ -543,39 +481,38 @@ function buildWayobjRows(data: Record<string, unknown>): TableRow[] {
 /**
  * Roadsign（信号・標識）の詳細行
  */
-function buildRoadsignRows(data: Record<string, unknown>): TableRow[] {
-  const rows: TableRow[] = [];
+function buildRoadsignRows(data: SignData): TableRow[] {
+  const rows: TableRow[] = [
+    {
+      label: "登場年月",
+      value: formatDate(data.intro_date),
+    },
+    {
+      label: "引退年月",
+      value: formatDate(data.retire_date),
+    },
+  ];
 
   // 最低速度
   if (data.min_speed !== undefined && data.min_speed !== null) {
     rows.push({
       label: "最低速度",
-      value: `${data.min_speed} km/h`,
+      value: formatSpeed(data.min_speed),
     });
   }
 
   rows.push(
     {
       label: "軌道タイプ",
-      value: data.wtyp_str
-        ? getWaytypeName(Number(data.wtyp))
-        : String(data.wtyp || ""),
+      value: getWaytypeName(data.waytype),
     },
     {
       label: "建設費",
-      value: data.price ? `${Number(data.price) / 100} Cr` : "",
+      value: formatPrice(data.price),
     },
     {
       label: "維持費",
-      value: data.maintenance ? `${Number(data.maintenance) / 100} Cr/月` : "",
-    },
-    {
-      label: "登場年月",
-      value: data.intro_date ? formatDate(Number(data.intro_date)) : "",
-    },
-    {
-      label: "引退年月",
-      value: data.retire_date ? formatDate(Number(data.retire_date)) : "",
+      value: formatMaintenanceCost(data.maintenance),
     }
   );
 
@@ -585,39 +522,31 @@ function buildRoadsignRows(data: Record<string, unknown>): TableRow[] {
 /**
  * Crossing（踏切）の詳細行
  */
-function buildCrossingRows(data: Record<string, unknown>): TableRow[] {
+function buildCrossingRows(data: CrossingData): TableRow[] {
   return [
     {
-      label: "軌道タイプ1",
-      value: data.ns_wtyp_str
-        ? getWaytypeName(Number(data.ns_wtyp))
-        : String(data.ns_wtyp || ""),
-    },
-    {
-      label: "軌道タイプ2",
-      value: data.ew_wtyp_str
-        ? getWaytypeName(Number(data.ew_wtyp))
-        : String(data.ew_wtyp || ""),
-    },
-    {
-      label: "最高速度",
-      value: data.topspeed ? `${data.topspeed} km/h` : "",
-    },
-    {
-      label: "建設費",
-      value: data.price ? `${Number(data.price) / 100} Cr` : "",
-    },
-    {
-      label: "維持費",
-      value: data.maintenance ? `${Number(data.maintenance) / 100} Cr/月` : "",
-    },
-    {
       label: "登場年月",
-      value: data.intro_date ? formatDate(Number(data.intro_date)) : "",
+      value: formatDate(data.intro_date),
     },
     {
       label: "引退年月",
-      value: data.retire_date ? formatDate(Number(data.retire_date)) : "",
+      value: formatDate(data.retire_date),
+    },
+    {
+      label: "軌道タイプ1",
+      value: getWaytypeName(data.waytype1),
+    },
+    {
+      label: "最高速度1",
+      value: formatSpeed(data.topspeed1),
+    },
+    {
+      label: "軌道タイプ2",
+      value: getWaytypeName(data.waytype2),
+    },
+    {
+      label: "最高速度2",
+      value: formatSpeed(data.topspeed2),
     },
   ];
 }
@@ -625,19 +554,19 @@ function buildCrossingRows(data: Record<string, unknown>): TableRow[] {
 /**
  * Citycar（市内車両）の詳細行
  */
-function buildCitycarRows(data: Record<string, unknown>): TableRow[] {
+function buildCitycarRows(data: CitycarData): TableRow[] {
   return [
     {
-      label: "配置確率",
-      value: String(data.distribution_weight || ""),
-    },
-    {
       label: "登場年月",
-      value: data.intro_date ? formatDate(Number(data.intro_date)) : "",
+      value: formatDate(data.intro_date),
     },
     {
       label: "引退年月",
-      value: data.retire_date ? formatDate(Number(data.retire_date)) : "",
+      value: formatDate(data.retire_date),
+    },
+    {
+      label: "配置確率",
+      value: data.distribution_weight,
     },
   ];
 }
@@ -645,70 +574,21 @@ function buildCitycarRows(data: Record<string, unknown>): TableRow[] {
 /**
  * Pedestrian（歩行者）の詳細行
  */
-function buildPedestrianRows(data: Record<string, unknown>): TableRow[] {
+function buildPedestrianRows(data: PedestrianData): TableRow[] {
   return [
     {
-      label: "配置確率",
-      value: String(data.distribution_weight || ""),
-    },
-    {
       label: "登場年月",
-      value: data.intro_date ? formatDate(Number(data.intro_date)) : "",
+      value: formatDate(data.intro_date),
     },
     {
       label: "引退年月",
-      value: data.retire_date ? formatDate(Number(data.retire_date)) : "",
+      value: formatDate(data.retire_date),
     },
-  ];
-}
-
-/**
- * Ground（地形）の詳細行
- */
-function buildGroundRows(data: Record<string, unknown>): TableRow[] {
-  // groundオブジェクトはデータフィールドを持たない（画像のみ）
-  return [
     {
-      label: "データ",
-      value: data.has_data ? "あり" : "なし（画像のみ）",
+      label: "配置確率",
+      value: data.distribution_weight,
     },
   ];
-}
-
-/**
- * Sound（サウンド）の詳細行
- */
-function buildSoundRows(data: Record<string, unknown>): TableRow[] {
-  // soundオブジェクトはデータフィールドを持たない
-  return [
-    {
-      label: "データ",
-      value: data.has_data ? "あり" : "なし（音声ファイルのみ）",
-    },
-  ];
-}
-
-/**
- * Skin（スキン）の詳細行
- */
-function buildSkinRows(data: Record<string, unknown>): TableRow[] {
-  // skinオブジェクトはデータフィールドを持たない（画像のみ）
-  const rows: TableRow[] = [
-    {
-      label: "データ",
-      value: data.has_data ? "あり" : "なし（画像のみ）",
-    },
-  ];
-
-  // サブタイプ（smoke等）
-  if (data.object_subtype) {
-    rows.push({
-      label: "サブタイプ",
-      value: String(data.object_subtype),
-    });
-  }
-
-  return rows;
 }
 
 /**
@@ -717,24 +597,6 @@ function buildSkinRows(data: Record<string, unknown>): TableRow[] {
 function buildGenericRows(data: Record<string, unknown>): TableRow[] {
   return Object.entries(data)
     .filter(([key]) => !key.endsWith("_str")) // *_str系は除外（元データと重複）
-    .map(([key, value]) => ({
-      label: key,
-      value: String(value ?? ""),
-    }));
+    .map(([label, value]) => ({ label, value: String(value) }));
 }
-
-/**
- * 日付フォーマット (year*12+month → YYYY/MM)
- */
-function formatDate(monthsSinceZero: number): string {
-  if (monthsSinceZero === 0 || monthsSinceZero >= 999912) {
-    return "";
-  }
-
-  const year = Math.floor(monthsSinceZero / 12);
-  const month = (monthsSinceZero % 12) + 1;
-
-  return `${year}/${month.toString().padStart(2, "0")}`;
-}
-
 export default PakGenericMetadata;

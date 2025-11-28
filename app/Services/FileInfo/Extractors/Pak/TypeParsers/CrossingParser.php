@@ -132,6 +132,8 @@ final readonly class CrossingParser implements TypeParserInterface
         $offset += 1;
 
         // Handle LOAD_SOUND - embedded sound file name
+        // Note: offset is passed by reference but not used after this in version 1
+        // (intro_date and retire_date are defaults, not read from data)
         if ($result['sound'] === self::LOAD_SOUND) {
             $soundInfo = $this->readEmbeddedSoundName($binaryData, $offset);
             if ($soundInfo !== null) {
@@ -250,6 +252,10 @@ final readonly class CrossingParser implements TypeParserInterface
      * Read embedded sound file name (for LOAD_SOUND)
      *
      * Format: uint8 len, char[len] wavname
+     *
+     * @param  string  $binaryData  The binary data buffer
+     * @param  int  $offset  Current offset in the buffer (will be updated)
+     * @return string|null The sound filename or null if not present
      */
     private function readEmbeddedSoundName(string $binaryData, int &$offset): ?string
     {

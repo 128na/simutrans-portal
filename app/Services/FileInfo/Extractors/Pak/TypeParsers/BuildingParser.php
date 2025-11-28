@@ -14,7 +14,7 @@ use App\Services\FileInfo\Extractors\Pak\WayTypeConverter;
 final readonly class BuildingParser implements TypeParserInterface
 {
     /**
-     * 気候名マッピング
+     * Climate name mapping
      */
     private const array CLIMATE_NAMES = [
         0 => 'water_climate',

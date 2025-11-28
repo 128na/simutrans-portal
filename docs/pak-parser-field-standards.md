@@ -145,15 +145,16 @@ if (isset($data['engine_type'])) {
 **Methods:**
 
 - `getBuildingTypeName(int $type): string`
-- `getWaytypeName(int $waytype): string` (Note: different mapping from WayTypeConverter)
 - `getEnablesString(int $enables): string`
 
 **Usage:**
 
 ```php
 $data['type_str'] = BuildingTypeConverter::getBuildingTypeName($data['type']);
-$data['waytype_str'] = BuildingTypeConverter::getWaytypeName($data['waytype']);
 $data['enables_str'] = BuildingTypeConverter::getEnablesString($data['enables']);
+
+// For waytype conversion, use WayTypeConverter
+$data['waytype_str'] = WayTypeConverter::getWayTypeName($data['waytype']);
 ```
 
 ## Parser Implementation Pattern

@@ -6,6 +6,7 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\BuildingTypeConverter;
 use App\Services\FileInfo\Extractors\Pak\Node;
+use App\Services\FileInfo\Extractors\Pak\WayTypeConverter;
 
 /**
  * Building-specific parser for BUIL nodes
@@ -230,7 +231,7 @@ final readonly class BuildingParser implements TypeParserInterface
         if (BuildingTypeConverter::usesWaytype($type)) {
             // Transport buildings (depot, stop, extension, dock)
             $result['waytype'] = $extraData;
-            $result['waytype_str'] = BuildingTypeConverter::getWaytypeName($extraData);
+            $result['waytype_str'] = WayTypeConverter::getWayTypeName($extraData);
             $result['enables_str'] = BuildingTypeConverter::getEnablesString($enables);
         } elseif (BuildingTypeConverter::isCityBuilding($type)) {
             // City buildings (residential, commercial, industrial)

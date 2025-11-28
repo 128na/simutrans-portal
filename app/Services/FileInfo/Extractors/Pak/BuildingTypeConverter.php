@@ -36,22 +36,6 @@ final class BuildingTypeConverter
     }
 
     /**
-     * Convert waytype ID to human-readable string
-     */
-    public static function getWaytypeName(int $waytype): string
-    {
-        return match ($waytype) {
-            1 => 'Track',
-            3 => 'Road',
-            4 => 'Water',
-            5 => 'Monorail',
-            7 => 'Tram',
-            16 => 'Air',
-            default => sprintf('Unknown Waytype (%s)', $waytype),
-        };
-    }
-
-    /**
      * Convert enables bitfield to human-readable string
      */
     public static function getEnablesString(int $enables): string
@@ -79,14 +63,6 @@ final class BuildingTypeConverter
     public static function usesWaytype(int $type): bool
     {
         return in_array($type, [11, 33, 34, 35, 36], true);
-    }
-
-    /**
-     * Check if building type is transport-related
-     */
-    public static function isTransportBuilding(int $type): bool
-    {
-        return $type > 7 && $type <= 36;
     }
 
     /**

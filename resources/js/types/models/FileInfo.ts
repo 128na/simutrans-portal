@@ -34,6 +34,8 @@ export interface VehicleData {
   gear?: number;
   /** 道路タイプID */
   waytype?: number;
+  /** 道路タイプ名 (例: "road", "track", "water") */
+  waytype_str?: string;
   /** サウンドID */
   sound?: number;
   /** エンジンタイプID (0-5) */

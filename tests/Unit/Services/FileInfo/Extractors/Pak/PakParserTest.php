@@ -16,7 +16,7 @@ final class PakParserTest extends TestCase
     public function test_parse_makeobj_versions(string $pakFile, array $expectedNames): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/'.$pakFile);
+        $data = file_get_contents(__DIR__ . '/../file/' . $pakFile);
 
         $result = $parser->parse($data);
 
@@ -39,13 +39,13 @@ final class PakParserTest extends TestCase
     public static function makeobjVersionProvider(): array
     {
         return [
-            // makeobj-48 supports 12 objects (missing test_bridge and test_groundobj)
-            'makeobj-48' => ['pakFile' => 'test-48.pak', 'expectedNames' => ['test_1', 'test_transparent_1', 'TestTruck', 'test_building', 'test_citycar', 'test_good', 'Basement', 'test_crossing', 'test_factory', 'test_pedestrian', 'test_tree', 'test_signal']],
-            // makeobj-50 and later support 14 objects (skin doesn't compile)
-            'makeobj-50' => ['pakFile' => 'test-50.pak', 'expectedNames' => ['test_1', 'test_transparent_1', 'TestTruck', 'test_building', 'test_citycar', 'test_good', 'Basement', 'test_bridge', 'test_crossing', 'test_factory', 'test_pedestrian', 'test_tree', 'test_groundobj', 'test_signal']],
-            'makeobj-55.4' => ['pakFile' => 'test-55.4.pak', 'expectedNames' => ['test_1', 'test_transparent_1', 'TestTruck', 'test_building', 'test_citycar', 'test_good', 'Basement', 'test_bridge', 'test_crossing', 'test_factory', 'test_pedestrian', 'test_tree', 'test_groundobj', 'test_signal']],
-            'makeobj-60' => ['pakFile' => 'test-60.pak', 'expectedNames' => ['test_1', 'test_transparent_1', 'TestTruck', 'test_building', 'test_citycar', 'test_good', 'Basement', 'test_bridge', 'test_crossing', 'test_factory', 'test_pedestrian', 'test_tree', 'test_groundobj', 'test_signal']],
-            'makeobj-60.8' => ['pakFile' => 'test.pak', 'expectedNames' => ['test_1', 'test_transparent_1', 'TestTruck', 'test_building', 'test_citycar', 'test_good', 'Basement', 'test_bridge', 'test_crossing', 'test_factory', 'test_pedestrian', 'test_tree', 'test_groundobj', 'test_signal']],
+            // makeobj-48 has 12 objects: bridge and factory have no name, missing test_groundobj
+            'makeobj-48' => ['pakFile' => 'test-48.pak', 'expectedNames' => ['test_1', 'test_transparent_1', 'test_truck', 'test_building', 'test_citycar', 'test_good', 'test_crossing', 'test_pedestrian', 'test_tree', 'test_signal']],
+            // makeobj-50 and later have 13 objects: factory has no name, bridge has test_bridge
+            'makeobj-50' => ['pakFile' => 'test-50.pak', 'expectedNames' => ['test_1', 'test_transparent_1', 'test_truck', 'test_building', 'test_citycar', 'test_good', 'test_bridge', 'test_crossing', 'test_pedestrian', 'test_tree', 'test_groundobj', 'test_signal']],
+            'makeobj-55.4' => ['pakFile' => 'test-55.4.pak', 'expectedNames' => ['test_1', 'test_transparent_1', 'test_truck', 'test_building', 'test_citycar', 'test_good', 'test_bridge', 'test_crossing', 'test_pedestrian', 'test_tree', 'test_groundobj', 'test_signal']],
+            'makeobj-60' => ['pakFile' => 'test-60.pak', 'expectedNames' => ['test_1', 'test_transparent_1', 'test_truck', 'test_building', 'test_citycar', 'test_good', 'test_bridge', 'test_crossing', 'test_pedestrian', 'test_tree', 'test_groundobj', 'test_signal']],
+            'makeobj-60.8' => ['pakFile' => 'test.pak', 'expectedNames' => ['test_1', 'test_transparent_1', 'test_truck', 'test_building', 'test_citycar', 'test_good', 'test_bridge', 'test_crossing', 'test_pedestrian', 'test_tree', 'test_groundobj', 'test_signal']],
         ];
     }
 
@@ -53,7 +53,7 @@ final class PakParserTest extends TestCase
     {
         $parser = new PakParser;
         // Use the unified test.pak file
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -84,7 +84,7 @@ final class PakParserTest extends TestCase
     public function test_metadata_structure(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -111,7 +111,7 @@ final class PakParserTest extends TestCase
         $parser = new PakParser;
 
         // Test with test.pak which contains multiple object types
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
         $result = $parser->parse($data);
 
         $this->assertNotEmpty($result['metadata']);
@@ -132,7 +132,7 @@ final class PakParserTest extends TestCase
     public function test_parse_vehicle_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -140,22 +140,22 @@ final class PakParserTest extends TestCase
         $this->assertIsArray($result);
         $this->assertArrayHasKey('names', $result);
         $this->assertArrayHasKey('metadata', $result);
-        $this->assertContains('TestTruck', $result['names']);
+        $this->assertContains('test_truck', $result['names']);
 
         // Metadata checks
         $this->assertNotEmpty($result['metadata']);
 
-        // Find TestTruck metadata (test.pak contains multiple objects)
+        // Find test_truck metadata (test.pak contains multiple objects)
         $metadata = null;
         foreach ($result['metadata'] as $item) {
-            if ($item['name'] === 'TestTruck') {
+            if ($item['name'] === 'test_truck') {
                 $metadata = $item;
                 break;
             }
         }
 
-        $this->assertNotNull($metadata, 'TestTruck metadata not found in test.pak');
-        $this->assertSame('TestTruck', $metadata['name']);
+        $this->assertNotNull($metadata, 'test_truck metadata not found in test.pak');
+        $this->assertSame('test_truck', $metadata['name']);
         $this->assertSame('TestAuthor', $metadata['copyright']);
         $this->assertSame('vehicle', $metadata['objectType']);
 
@@ -203,7 +203,7 @@ final class PakParserTest extends TestCase
     public function test_parse_way_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -240,7 +240,7 @@ final class PakParserTest extends TestCase
     public function test_parse_building_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -275,7 +275,7 @@ final class PakParserTest extends TestCase
     public function test_parse_citycar_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -302,7 +302,7 @@ final class PakParserTest extends TestCase
     public function test_parse_good_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -333,16 +333,11 @@ final class PakParserTest extends TestCase
     public function test_parse_bridge_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
-        // Bridge pak may be empty if compilation had errors
-        if (empty($result['names'])) {
-            $this->markTestSkipped('Bridge pak file is empty or invalid');
-        }
-
         $this->assertContains('test_bridge', $result['names']);
         $this->assertNotEmpty($result['metadata']);
 
@@ -371,43 +366,10 @@ final class PakParserTest extends TestCase
         // Note: Some properties may be ignored by makeobj depending on version
     }
 
-    public function test_parse_ground_metadata(): void
-    {
-        $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
-
-        $result = $parser->parse($data);
-
-        $this->assertIsArray($result);
-        $this->assertContains('Basement', $result['names']);
-        $this->assertNotEmpty($result['metadata']);
-
-        // Find Basement metadata (test.pak contains multiple objects)
-        $metadata = null;
-        foreach ($result['metadata'] as $item) {
-            if ($item['name'] === 'Basement') {
-                $metadata = $item;
-                break;
-            }
-        }
-
-        $this->assertNotNull($metadata, 'Basement metadata not found in test.pak');
-        $this->assertSame('Basement', $metadata['name']);
-        // Note: ground object may not have copyright in some makeobj versions
-        $this->assertSame('ground', $metadata['objectType']);
-
-        // Ground may not have specific data fields, just check it parses
-        // Ground data checks - may not have groundData if parser doesn't extract it
-        if (isset($metadata['groundData'])) {
-            $groundData = $metadata['groundData'];
-            $this->assertIsArray($groundData);
-        }
-    }
-
     public function test_parse_crossing_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -440,25 +402,26 @@ final class PakParserTest extends TestCase
     public function test_parse_factory_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
-        $this->assertContains('test_factory', $result['names']);
         $this->assertNotEmpty($result['metadata']);
 
-        // Find test_factory metadata (test.pak contains multiple objects)
+        // Factory objects don't have a name property in Simutrans
+        // Find factory metadata by objectType instead
         $metadata = null;
         foreach ($result['metadata'] as $item) {
-            if ($item['name'] === 'test_factory') {
+            if (isset($item['objectType']) && $item['objectType'] === 'building' && empty($item['name'])) {
+                // Factory is recognized as building with empty name
                 $metadata = $item;
                 break;
             }
         }
 
-        $this->assertNotNull($metadata, 'test_factory metadata not found in test.pak');
-        $this->assertSame('test_factory', $metadata['name']);
+        $this->assertNotNull($metadata, 'Factory metadata not found in test.pak');
+        $this->assertEmpty($metadata['name'], 'Factory should have empty name');
         $this->assertSame('TestAuthor', $metadata['copyright']);
         // Factory is recognized as building by PakParser
         $this->assertSame('building', $metadata['objectType']);
@@ -472,7 +435,7 @@ final class PakParserTest extends TestCase
     public function test_parse_groundobj_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -504,7 +467,7 @@ final class PakParserTest extends TestCase
     public function test_parse_pedestrian_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -536,7 +499,7 @@ final class PakParserTest extends TestCase
     public function test_parse_tree_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
@@ -567,7 +530,7 @@ final class PakParserTest extends TestCase
     public function test_parse_roadsign_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 

@@ -48,15 +48,6 @@ cd tests\Unit\Services\FileInfo\Extractors\file\makeobjs
 - `test_transparent-50.pak` - makeobj 50で生成
 - `test_transparent-55.4.pak` - makeobj 55.4で生成
 - `test_transparent-60.pak` - makeobj 60で生成
-- `way.test_transparent_1.pak` - makeobj 60.8で生成（個別ファイル）
-
-### Vehicle Objects（車両）
-
-- `vehicle.TestTruck-48.pak` - makeobj 48で生成
-- `vehicle.TestTruck-50.pak` - makeobj 50で生成
-- `vehicle.TestTruck-55.4.pak` - makeobj 55.4で生成
-- `vehicle.TestTruck-60.pak` - makeobj 60で生成
-- `vehicle.TestTruck.pak` - makeobj 60.8で生成（個別ファイル）
 
 ## ソースファイル
 
@@ -73,38 +64,6 @@ maintenance=10
 intro_year=1900
 Image[NS][0]=test.0.0
 Image[EW][0]=test.0.0
-```
-
-### vehicle.dat
-
-```dat
-obj=vehicle
-name=TestTruck
-copyright=TestAuthor
-intro_year=1990
-intro_month=1
-retire_year=2020
-retire_month=12
-speed=80
-power=150
-gear=100
-weight=5
-length=8
-cost=50000
-runningcost=100
-payload=10
-freight=goods
-waytype=road
-engine_type=diesel
-sound=trucks
-EmptyImage[S]=test.0.0
-EmptyImage[E]=test.0.0
-EmptyImage[N]=test.0.0
-EmptyImage[W]=test.0.0
-EmptyImage[SE]=test.0.0
-EmptyImage[SW]=test.0.0
-EmptyImage[NE]=test.0.0
-EmptyImage[NW]=test.0.0
 ```
 
 ## makeobjバージョンの違い

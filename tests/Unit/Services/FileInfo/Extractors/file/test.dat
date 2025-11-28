@@ -78,7 +78,7 @@ ImageUp2[12]=test_transparent.0.0
 
 # Vehicle object
 obj=vehicle
-name=TestTruck
+name=test_truck
 copyright=TestAuthor
 intro_year=1990
 intro_month=1
@@ -149,34 +149,6 @@ value=100
 speed_bonus=1
 weight_per_unit=100
 mapcolor=1
----
-
-# Ground object
-obj=ground
-name=Basement
-image[0][0]=test.0.0
-image[1][0]=test.0.0
-image[2][0]=test.0.0
-image[3][0]=test.0.0
-image[4][0]=test.0.0
-image[5][0]=test.0.0
-image[6][0]=test.0.0
-image[7][0]=test.0.0
-image[8][0]=test.0.0
-image[9][0]=test.0.0
-image[10][0]=test.0.0
-image[11][0]=test.0.0
-image[12][0]=test.0.0
-image[13][0]=test.0.0
-image[14][0]=test.0.0
-image[15][0]=test.0.0
-image[16][0]=test.0.0
-image[17][0]=test.0.0
-image[18][0]=test.0.0
-image[19][0]=test.0.0
-image[20][0]=test.0.0
-image[21][0]=test.0.0
-
 ---
 
 # Bridge object

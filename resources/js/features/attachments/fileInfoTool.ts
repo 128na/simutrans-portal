@@ -128,7 +128,7 @@ export const getCategories = (
       }
       // 軌道
       if (objectType === "way" && obj.wayData) {
-        const wayType = obj.wayData.wtyp_str as WayType;
+        const wayType = obj.wayData.waytype_str as WayType;
         if (wayType in wayCategoryMap) {
           add(
             wayCategoryMap[wayType as keyof typeof wayCategoryMap],

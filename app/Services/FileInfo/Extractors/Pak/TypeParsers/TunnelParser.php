@@ -101,7 +101,7 @@ final readonly class TunnelParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // intro_date (uint16)
@@ -172,7 +172,7 @@ final readonly class TunnelParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // intro_date (uint16)
@@ -251,7 +251,7 @@ final readonly class TunnelParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // intro_date (uint16)
@@ -338,7 +338,7 @@ final readonly class TunnelParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // intro_date (uint16)
@@ -433,7 +433,7 @@ final readonly class TunnelParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // intro_date (uint16)
@@ -524,7 +524,7 @@ final readonly class TunnelParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // intro_date (uint16)
@@ -605,8 +605,8 @@ final readonly class TunnelParser implements TypeParserInterface
     private function buildResult(array $data): array
     {
         // Add waytype string
-        $wtyp = $data['wtyp'] ?? 0;
-        $data['wtyp_str'] = WayTypeConverter::getWaytypeName(is_int($wtyp) ? $wtyp : 0);
+        $wtyp = $data['waytype'] ?? 0;
+        $data['waytype_str'] = WayTypeConverter::getWayTypeName(is_int($wtyp) ? $wtyp : 0);
 
         return $data;
     }

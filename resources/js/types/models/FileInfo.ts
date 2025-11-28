@@ -33,7 +33,7 @@ export interface VehicleData {
   /** ギア比 (64が標準) */
   gear?: number;
   /** 道路タイプID */
-  wtyp?: number;
+  waytype?: number;
   /** サウンドID */
   sound?: number;
   /** エンジンタイプID (0-5) */
@@ -72,9 +72,9 @@ export interface WayData {
   /** 軸重制限 (ton) */
   axle_load?: number;
   /** 道路タイプID (0=道路, 1=線路, 2=単軌鉄道, etc) */
-  wtyp?: number;
+  waytype?: number;
   /** 道路タイプ名 (例: "Road", "Track", "Monorail") */
-  wtyp_str?: string;
+  waytype_str?: string;
   /** システムタイプID (0=平地, 1=高架, 7=地下, etc) */
   styp?: number;
   /** システムタイプ名 (例: "Flat", "Elevated", "Tram") */
@@ -102,13 +102,13 @@ export interface WayObjectData {
   /** 引退日 (months since year 0) */
   retire_date?: number;
   /** 配置可能なwaytype (数値) */
-  wtyp?: number;
+  waytype?: number;
   /** 配置可能なwaytype (文字列) */
-  wtyp_str?: string;
+  waytype_str?: string;
   /** オブジェクト自身のwaytype (数値) */
-  own_wtyp?: number;
+  own_waytype?: number;
   /** オブジェクト自身のwaytype (文字列) */
-  own_wtyp_str?: string;
+  own_waytype_str?: string;
 }
 
 /**
@@ -119,9 +119,9 @@ export interface BridgeData {
   /** データフォーマットバージョン (0-10) */
   version?: number;
   /** 配置可能なwaytype (数値) */
-  wtyp?: number;
+  waytype?: number;
   /** 配置可能なwaytype (文字列) */
-  wtyp_str?: string;
+  waytype_str?: string;
   /** 最高速度制限 (km/h, 0 = 無制限) */
   topspeed?: number;
   /** 建設費用 (単位: 1/100 credits per tile) */
@@ -154,9 +154,9 @@ export interface TunnelData {
   /** データフォーマットバージョン (1-6) */
   version?: number;
   /** 配置可能なwaytype (数値) */
-  wtyp?: number;
+  waytype?: number;
   /** 配置可能なwaytype (文字列) */
-  wtyp_str?: string;
+  waytype_str?: string;
   /** 最高速度制限 (km/h, 0 = 無制限) */
   topspeed?: number;
   /** 建設費用 (単位: 1/100 credits per tile) */
@@ -390,7 +390,7 @@ export interface GoodData {
   /** カテゴリID (0=特殊貨物, 1=小口貨物, 2=バルク貨物, 3=長尺貨物, 4=液体貨物, 5=冷蔵貨物, 6=旅客, 7=郵便, 8=なし) */
   catg: number;
   /** カテゴリ名 (例: "passengers", "mail", "piece_goods") */
-  catg_name: string;
+  catg_str: string;
   /** 速度ボーナス (パーセント, 速い輸送で収益増) */
   speed_bonus: number;
   /** 単位重量 (KG/単位) */
@@ -407,9 +407,9 @@ export interface SignData {
   /** データフォーマットバージョン (1-6) */
   version?: number;
   /** 配置可能なwaytype (数値) */
-  wtyp?: number;
+  waytype?: number;
   /** 配置可能なwaytype (文字列) */
-  wtyp_str?: string;
+  waytype_str?: string;
   /** 最低速度制限 (km/h, 0 = 制限なし) */
   min_speed?: number;
   /** 建設費用 (単位: 1/100 credits) */

@@ -62,7 +62,7 @@ final readonly class GoodParser implements TypeParserInterface
                 2 => $this->parseVersion2($binaryData, $offset),
                 3 => $this->parseVersion3($binaryData, $offset),
                 4 => $this->parseVersion4($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported goods version: '.$version),
+                default => throw new RuntimeException('Unsupported goods version: ' . $version),
             };
         }
 
@@ -320,7 +320,7 @@ final readonly class GoodParser implements TypeParserInterface
     {
         // Add category name string
         $catg = $data['catg'] ?? 8; // Default to 'none'
-        $data['catg_name'] = self::CATEGORY_NAMES[is_int($catg) && isset(self::CATEGORY_NAMES[$catg]) ? $catg : 8];
+        $data['catg_str'] = self::CATEGORY_NAMES[is_int($catg) && isset(self::CATEGORY_NAMES[$catg]) ? $catg : 8];
 
         return $data;
     }

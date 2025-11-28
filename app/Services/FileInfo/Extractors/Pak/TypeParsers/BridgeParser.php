@@ -55,7 +55,7 @@ final readonly class BridgeParser implements TypeParserInterface
                 7, 8 => $this->parseVersion7And8($binaryData, $offset, $version),
                 9 => $this->parseVersion9($binaryData, $offset),
                 10 => $this->parseVersion10($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported bridge version: '.$version),
+                default => throw new RuntimeException('Unsupported bridge version: ' . $version),
             };
         }
 
@@ -72,7 +72,7 @@ final readonly class BridgeParser implements TypeParserInterface
     {
         $result = [
             'version' => 0,
-            'wtyp' => $wtyp,
+            'waytype' => $wtyp,
         ];
 
         // Skip menupos (uint16, deprecated)
@@ -116,7 +116,7 @@ final readonly class BridgeParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1] & 0xFF;
+        $result['waytype'] = $wtypData[1] & 0xFF;
         $offset += 2;
 
         // topspeed (uint16)
@@ -192,7 +192,7 @@ final readonly class BridgeParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
 
         // Set defaults
         $result['axle_load'] = 9999;
@@ -341,7 +341,7 @@ final readonly class BridgeParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // pillars_every (uint8)
@@ -454,7 +454,7 @@ final readonly class BridgeParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // pillars_every (uint8)
@@ -563,7 +563,7 @@ final readonly class BridgeParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // pillars_every (uint8)
@@ -662,8 +662,8 @@ final readonly class BridgeParser implements TypeParserInterface
     private function buildResult(array $data): array
     {
         // Add waytype string
-        $wtyp = $data['wtyp'] ?? 0;
-        $data['wtyp_str'] = WayTypeConverter::getWaytypeName(is_int($wtyp) ? $wtyp : 0);
+        $wtyp = $data['waytype'] ?? 0;
+        $data['waytype_str'] = WayTypeConverter::getWayTypeName(is_int($wtyp) ? $wtyp : 0);
 
         // Post-processing: if pillars exist and max_height is 0, set it to 7
         $pillarsEvery = $data['pillars_every'] ?? 0;

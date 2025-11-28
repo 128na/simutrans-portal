@@ -106,7 +106,7 @@ final readonly class SignParser implements TypeParserInterface
         $result['price'] = 50000;
         $result['maintenance'] = 0;
         $result['offset_left'] = 14;
-        $result['wtyp'] = 1; // road_wt
+        $result['waytype'] = 1; // road_wt
         $result['intro_date'] = 0;
         $result['retire_date'] = 65535;
 
@@ -151,7 +151,7 @@ final readonly class SignParser implements TypeParserInterface
         // Set defaults
         $result['maintenance'] = 0;
         $result['offset_left'] = 14;
-        $result['wtyp'] = 1; // road_wt
+        $result['waytype'] = 1; // road_wt
         $result['intro_date'] = 0;
         $result['retire_date'] = 65535;
 
@@ -200,7 +200,7 @@ final readonly class SignParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // intro_date (uint16) - NEW in version 3
@@ -278,7 +278,7 @@ final readonly class SignParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // intro_date (uint16)
@@ -355,7 +355,7 @@ final readonly class SignParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // intro_date (uint16)
@@ -431,7 +431,7 @@ final readonly class SignParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // intro_date (uint16)
@@ -476,8 +476,8 @@ final readonly class SignParser implements TypeParserInterface
     private function buildResult(array $data): array
     {
         // Add waytype string
-        $wtyp = $data['wtyp'] ?? 0;
-        $data['wtyp_str'] = WayTypeConverter::getWaytypeName(is_int($wtyp) ? $wtyp : 0);
+        $wtyp = $data['waytype'] ?? 0;
+        $data['waytype_str'] = WayTypeConverter::getWayTypeName(is_int($wtyp) ? $wtyp : 0);
 
         // Decode flags into human-readable boolean properties
         $flags = $data['flags'] ?? 0;

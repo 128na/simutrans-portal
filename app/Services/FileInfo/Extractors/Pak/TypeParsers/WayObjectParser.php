@@ -113,7 +113,7 @@ final readonly class WayObjectParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // own_wtyp (uint8)
@@ -122,7 +122,7 @@ final readonly class WayObjectParser implements TypeParserInterface
             throw new RuntimeException('Failed to read own_wtyp');
         }
 
-        $result['own_wtyp'] = $ownWtypData[1];
+        $result['own_waytype'] = $ownWtypData[1];
 
         return $this->buildResult($result);
     }
@@ -177,7 +177,7 @@ final readonly class WayObjectParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // own_wtyp (uint8)
@@ -186,7 +186,7 @@ final readonly class WayObjectParser implements TypeParserInterface
             throw new RuntimeException('Failed to read own_wtyp');
         }
 
-        $result['own_wtyp'] = $ownWtypData[1];
+        $result['own_waytype'] = $ownWtypData[1];
 
         return $this->buildResult($result);
     }
@@ -213,11 +213,11 @@ final readonly class WayObjectParser implements TypeParserInterface
     private function buildResult(array $data): array
     {
         // Add waytype string
-        $wtyp = $data['wtyp'] ?? 0;
-        $ownWtyp = $data['own_wtyp'] ?? 0;
+        $wtyp = $data['waytype'] ?? 0;
+        $ownWtyp = $data['own_waytype'] ?? 0;
 
-        $data['wtyp_str'] = $this->getWaytypeName(is_int($wtyp) ? $wtyp : 0);
-        $data['own_wtyp_str'] = $this->getWaytypeName(is_int($ownWtyp) ? $ownWtyp : 0);
+        $data['waytype_str'] = $this->getWayTypeName(is_int($wtyp) ? $wtyp : 0);
+        $data['own_waytype_str'] = $this->getWayTypeName(is_int($ownWtyp) ? $ownWtyp : 0);
 
         return $data;
     }
@@ -225,7 +225,7 @@ final readonly class WayObjectParser implements TypeParserInterface
     /**
      * Get waytype name
      */
-    private function getWaytypeName(int $wtyp): string
+    private function getWayTypeName(int $wtyp): string
     {
         return match ($wtyp) {
             0 => 'ignore',

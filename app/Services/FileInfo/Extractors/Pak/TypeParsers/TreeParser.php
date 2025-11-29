@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Enums\SimutransClimate;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use RuntimeException;
 
@@ -37,20 +38,6 @@ final readonly class TreeParser implements TypeParserInterface
 
     private const int ALL_BUT_ARCTIC_CLIMATE = 0x7F; // 北極以外すべて (0b01111111)
 
-    /**
-     * 気候名マッピング
-     */
-    private const array CLIMATE_NAMES = [
-        0 => 'water_climate',
-        1 => 'desert_climate',
-        2 => 'tropic_climate',
-        3 => 'mediterran_climate',
-        4 => 'temperate_climate',
-        5 => 'tundra_climate',
-        6 => 'rocky_climate',
-        7 => 'arctic_climate',
-    ];
-
     public function canParse(Node $node): bool
     {
         return $node->type === Node::OBJ_TREE;
@@ -73,7 +60,7 @@ final readonly class TreeParser implements TypeParserInterface
             0 => $this->parseVersion0(),
             1 => $this->parseVersion1($node->data),
             2 => $this->parseVersion2($node->data),
-            default => throw new RuntimeException('Unsupported tree version: ' . $version),
+            default => throw new RuntimeException('Unsupported tree version: '.$version),
         };
 
         return $this->buildResult($result);
@@ -167,12 +154,8 @@ final readonly class TreeParser implements TypeParserInterface
      */
     private function buildResult(array $data): array
     {
-        $climateNames = [];
-        for ($i = 0; $i < 8; $i++) {
-            if (($data['allowed_climates'] & (1 << $i)) !== 0) {
-                $climateNames[] = self::CLIMATE_NAMES[$i];
-            }
-        }
+        $climateNames = SimutransClimate::fromBitFlags($data['allowed_climates']);
+        $data['climate_names'] = $climateNames;
 
         return $data;
     }

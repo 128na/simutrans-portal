@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Enums\SimutransClimate;
 use App\Services\FileInfo\Extractors\Pak\BuildingTypeConverter;
 use App\Services\FileInfo\Extractors\Pak\Node;
 
@@ -12,20 +13,6 @@ use App\Services\FileInfo\Extractors\Pak\Node;
  */
 final readonly class BuildingParser implements TypeParserInterface
 {
-    /**
-     * Climate name mapping
-     */
-    private const array CLIMATE_NAMES = [
-        0 => 'water_climate',
-        1 => 'desert_climate',
-        2 => 'tropic_climate',
-        3 => 'mediterran_climate',
-        4 => 'temperate_climate',
-        5 => 'tundra_climate',
-        6 => 'rocky_climate',
-        7 => 'arctic_climate',
-    ];
-
     public function canParse(Node $node): bool
     {
         return $node->type === Node::OBJ_BUILDING;
@@ -208,12 +195,7 @@ final readonly class BuildingParser implements TypeParserInterface
         ?int $preservationYearMonth = null
     ): array {
         // Build allowed climates string
-        $climateNames = [];
-        for ($i = 0; $i < 8; $i++) {
-            if (($allowedClimates & (1 << $i)) !== 0) {
-                $climateNames[] = self::CLIMATE_NAMES[$i];
-            }
-        }
+        $climateNames = SimutransClimate::fromBitFlags($allowedClimates);
 
         $result = [
             'version' => $version,
@@ -223,6 +205,7 @@ final readonly class BuildingParser implements TypeParserInterface
             'size_y' => $sizeY,
             'layouts' => $layouts,
             'allowed_climates' => $allowedClimates,
+            'climate_names' => $climateNames,
             'enables' => $enables,
             'flags' => $flags,
             'distribution_weight' => $distributionWeight,

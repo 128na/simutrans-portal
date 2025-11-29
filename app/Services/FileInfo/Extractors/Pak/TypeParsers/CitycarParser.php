@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
-use App\Services\FileInfo\Extractors\Pak\ObjectTypeConverter;
 use RuntimeException;
 
 /**
@@ -51,7 +50,7 @@ final readonly class CitycarParser implements TypeParserInterface
             return match ($version) {
                 1 => $this->parseVersion1($binaryData, $offset),
                 2 => $this->parseVersion2($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported citycar version: ' . $version),
+                default => throw new RuntimeException('Unsupported citycar version: '.$version),
             };
         }
 

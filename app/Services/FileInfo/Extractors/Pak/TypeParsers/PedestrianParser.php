@@ -47,7 +47,7 @@ final readonly class PedestrianParser implements TypeParserInterface
             0 => $this->parseVersion0($firstUint16),
             1 => $this->parseVersion1($node->data),
             2 => $this->parseVersion2($node->data),
-            default => throw new RuntimeException('Unsupported pedestrian version: ' . $version),
+            default => throw new RuntimeException('Unsupported pedestrian version: '.$version),
         };
     }
 

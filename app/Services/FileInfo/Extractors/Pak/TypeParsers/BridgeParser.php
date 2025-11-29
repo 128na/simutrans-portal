@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
-use App\Services\FileInfo\Extractors\Pak\ObjectTypeConverter;
 use RuntimeException;
 
 /**

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
-use App\Services\FileInfo\Extractors\Pak\ObjectTypeConverter;
 use RuntimeException;
 
 /**
@@ -52,7 +51,7 @@ final readonly class TunnelParser implements TypeParserInterface
             4 => $this->parseVersion4($binaryData, $offset),
             5 => $this->parseVersion5($binaryData, $offset),
             6 => $this->parseVersion6($binaryData, $offset),
-            default => throw new RuntimeException('Unsupported tunnel version: ' . $version),
+            default => throw new RuntimeException('Unsupported tunnel version: '.$version),
         };
     }
 

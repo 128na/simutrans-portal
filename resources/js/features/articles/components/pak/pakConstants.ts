@@ -175,6 +175,58 @@ export const GOOD_CATEGORY_TRANSLATIONS: Record<number, string> = {
   8: "なし",
 };
 
+/**
+ * Building type translations
+ */
+export const BUILDING_TYPE_TRANSLATIONS: Record<number, string> = {
+  1: "都市内施設", // City Attraction
+  2: "郊外型施設", // Land Attraction
+  7: "本社", // Headquarters
+  16: "港", // Dock
+  17: "港", // Flat Dock
+  33: "車庫", // Depot
+  34: "停留所", // Stop
+  36: "停留所拡張", // Stop Extension
+  37: "住宅", // Residential
+  38: "商店", // Commercial
+  39: "工場", // Industrial
+};
+
+/**
+ * System type translations
+ */
+export const SYSTEM_TYPE_TRANSLATIONS: Record<number, string> = {
+  0: "地上", // flat
+  1: "高架", // elevated
+  2: "市電", // tram
+  3: "モノレール", // monorail
+  4: "リニア", // maglev
+  5: "ナローゲージ", // narrowgauge
+};
+
+/**
+ * Placement type translations
+ */
+export const PLACEMENT_TRANSLATIONS: Record<number, string> = {
+  0: "陸地", // Land
+  1: "沿岸", // Water
+  2: "市街地", // City
+};
+
+/**
+ * Climate translations (bit flags)
+ */
+export const CLIMATE_TRANSLATIONS: Record<number, string> = {
+  0: "海上", // water_climate
+  1: "砂漠気候", // desert_climate
+  2: "熱帯気候", // tropic_climate
+  3: "地中海性気候", // mediterran_climate
+  4: "温暖気候", // temperate_climate
+  5: "ツンドラ気候", // tundra_climate
+  6: "氷雪気候", // rocky_climate
+  7: "極気候", // arctic_climate
+};
+
 // ============================================================================
 // Category Mapping
 // ============================================================================

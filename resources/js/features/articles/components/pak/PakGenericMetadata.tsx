@@ -132,6 +132,8 @@ function buildDetailRows(
   objectType: string,
   typeData: Record<string, unknown>
 ): TableRow[] {
+  // eslint-disable-next-line no-console
+  console.log(objectType, typeData);
   switch (objectType) {
     case "vehicle":
       return buildVehicleRows(typeData as unknown as VehicleData);
@@ -254,7 +256,7 @@ function buildWayRows(data: WayData): TableRow[] {
     },
     {
       label: "システムタイプ",
-      value: getSystemTypeName(data.styp || ""),
+      value: getSystemTypeName(data.styp),
     },
     {
       label: "最高速度",

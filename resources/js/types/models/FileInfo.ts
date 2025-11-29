@@ -42,15 +42,11 @@ export interface VehicleData extends BaseObj {
   gear?: number;
   /** 道路タイプID */
   waytype?: number;
-  /** 道路タイプ名 (例: "road", "track", "water") */
-  waytype_str?: string;
   /** サウンドID */
   sound?: number;
   /** エンジンタイプID (0-5) */
   engine_type?: number;
-  /** エンジンタイプ名 (例: "Steam", "Diesel", "Electric") */
-  engine_type_str?: string;
-  /** 車両長 (タイル数の8倍) */
+  /** 車両長 (タイル数〆8倍) */
   len?: number;
   /** 先頭車両数 */
   leader_count?: number;
@@ -79,12 +75,8 @@ export interface WayData extends BaseObj {
   axle_load?: number;
   /** 道路タイプID (0=道路, 1=線路, 2=単軌鉄道, etc) */
   waytype?: number;
-  /** 道路タイプ名 (例: "Road", "Track", "Monorail") */
-  waytype_str?: string;
   /** システムタイプID (0=平地, 1=高架, 7=地下, etc) */
   styp?: number;
-  /** システムタイプ名 (例: "Flat", "Elevated", "Tram") */
-  styp_str?: string;
   /** オブジェクトとして描画するか */
   draw_as_obj?: boolean | number;
   /** 季節画像数 */
@@ -105,12 +97,8 @@ export interface WayObjectData extends BaseObj {
   topspeed?: number;
   /** 配置可能なwaytype (数値) */
   waytype?: number;
-  /** 配置可能なwaytype (文字列) */
-  waytype_str?: string;
   /** オブジェクト自身のwaytype (数値) */
   own_waytype?: number;
-  /** オブジェクト自身のwaytype (文字列) */
-  own_waytype_str?: string;
 }
 
 /**
@@ -122,8 +110,6 @@ export interface BridgeData extends BaseObj {
   version?: number;
   /** 配置可能なwaytype (数値) */
   waytype?: number;
-  /** 配置可能なwaytype (文字列) */
-  waytype_str?: string;
   /** 最高速度制限 (km/h, 0 = 無制限) */
   topspeed?: number;
   /** 建設費用 (単位: 1/100 credits per tile) */
@@ -153,8 +139,6 @@ export interface TunnelData extends BaseObj {
   version?: number;
   /** 配置可能なwaytype (数値) */
   waytype?: number;
-  /** 配置可能なwaytype (文字列) */
-  waytype_str?: string;
   /** 最高速度制限 (km/h, 0 = 無制限) */
   topspeed?: number;
   /** 建設費用 (単位: 1/100 credits per tile) */
@@ -180,12 +164,10 @@ export interface CrossingData extends BaseObj {
   version: number;
   /** 道路タイプ1 (数値) */
   waytype1: number;
-  /** 道路タイプ1 (文字列) */
-  waytype1_str: string;
+  /** NS方向の対角 */
+  ns_diagonal: boolean;
   /** 道路タイプ2 (数値) */
   waytype2: number;
-  /** 道路タイプ2 (文字列) */
-  waytype2_str: string;
   /** 最高速度1 (km/h) */
   topspeed1: number;
   /** 最高速度2 (km/h) */
@@ -255,8 +237,6 @@ export interface GroundobjData extends BaseObj {
   speed: number;
   /** 移動可能地形タイプ / Waytype for movement */
   waytype: number;
-  /** 移動可能地形タイプ（文字列） / Waytype (string) */
-  waytype_str: string;
   /** 撤去コスト / Removal cost */
   price: number;
 }
@@ -296,8 +276,6 @@ export interface SkinData extends BaseObj {
 export interface FactoryData extends BaseObj {
   /** 配置タイプ (数値: 0=Land, 1=Water, 2=City) */
   placement: number;
-  /** 配置タイプ (文字列) */
-  placement_str: string;
   /** 生産性 */
   productivity: number;
   /** 供給範囲 */
@@ -357,8 +335,6 @@ export interface GoodData extends BaseObj {
   base_value: number;
   /** カテゴリID (0=特殊貨物, 1=小口貨物, 2=バルク貨物, 3=長尺貨物, 4=液体貨物, 5=冷蔵貨物, 6=旅客, 7=郵便, 8=なし) */
   catg: number;
-  /** カテゴリ名 (例: "passengers", "mail", "piece_goods") */
-  catg_str: string;
   /** 速度ボーナス (パーセント, 速い輸送で収益増) */
   speed_bonus: number;
   /** 単位重量 (KG/単位) */
@@ -374,8 +350,6 @@ export interface GoodData extends BaseObj {
 export interface SignData extends BaseObj {
   /** 配置可能なwaytype (数値) */
   waytype?: number;
-  /** 配置可能なwaytype (文字列) */
-  waytype_str?: string;
   /** 最低速度制限 (km/h, 0 = 制限なし) */
   min_speed?: number;
   /** 建設費用 (単位: 1/100 credits) */
@@ -413,8 +387,6 @@ export interface SignData extends BaseObj {
 export interface BuildingData extends BaseObj {
   /** 建物タイプID (1=都市観光地, 33=車両基地, 34=停留所, 37=住宅, 38=商業, 39=工業, etc) */
   type?: number;
-  /** 建物タイプ名 (例: "Stop", "Depot", "Residential") */
-  type_str?: string;
   /** 建物レベル（価格・容量計算に使用） */
   level?: number;
   /** 幅（タイル数） */
@@ -425,12 +397,8 @@ export interface BuildingData extends BaseObj {
   layouts?: number;
   /** 許可される気候（ビットマスク, version 4+） */
   allowed_climates?: number;
-  /** 許可される気候（文字列, version 4+） */
-  allowed_climates_str?: string;
   /** 有効化機能ビット (0x01=乗客, 0x02=郵便, 0x04=貨物) */
   enables?: number;
-  /** 有効化機能名 (例: "Passengers, Mail") */
-  enables_str?: string;
   /** フラグビット（情報非表示、建設ピット無し等） */
   flags?: number;
   /** 出現確率（重み） */
@@ -449,8 +417,6 @@ export interface BuildingData extends BaseObj {
   preservation_year_month?: number;
   /** 道路タイプID（輸送施設の場合: 1=線路, 3=道路, 4=水路, 16=空路） */
   waytype?: number;
-  /** 道路タイプ名 (例: "Track", "Road", "Water") */
-  waytype_str?: string;
   /** クラスター番号（都市建物の場合、0=クラスター化なし） */
   cluster?: number;
   /** 最小人口（観光地の場合） */

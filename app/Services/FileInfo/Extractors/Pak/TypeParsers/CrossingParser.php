@@ -6,7 +6,6 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\ObjectTypeConverter;
-use App\Services\FileInfo\Extractors\Pak\WayTypeConverter;
 use RuntimeException;
 
 /**
@@ -291,17 +290,6 @@ final readonly class CrossingParser implements TypeParserInterface
      */
     private function buildResult(array $data): array
     {
-        // Add waytype name strings
-        if (isset($data['waytype1'])) {
-            assert(is_int($data['waytype1']));
-            $data['waytype1_str'] = WayTypeConverter::getWayTypeName($data['waytype1']);
-        }
-
-        if (isset($data['waytype2'])) {
-            assert(is_int($data['waytype2']));
-            $data['waytype2_str'] = WayTypeConverter::getWayTypeName($data['waytype2']);
-        }
-
         return $data;
     }
 }

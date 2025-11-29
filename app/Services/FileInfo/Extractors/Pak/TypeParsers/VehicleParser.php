@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
-use App\Services\FileInfo\Extractors\Pak\EngineTypeConverter;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TextNodeExtractor;
-use App\Services\FileInfo\Extractors\Pak\WayTypeConverter;
 
 /**
  * Vehicle data parser
@@ -51,16 +49,8 @@ final readonly class VehicleParser implements TypeParserInterface
                 default => [],
             };
 
-            // Convert waytype to string if present
-            if (isset($data['waytype'])) {
-                assert(is_int($data['waytype']));
-                $data['waytype_str'] = WayTypeConverter::getWayTypeName($data['waytype']);
-            }
-
-            // Convert engine_type to string if present
             if (isset($data['engine_type'])) {
                 assert(is_int($data['engine_type']));
-                $data['engine_type_str'] = EngineTypeConverter::convert($data['engine_type']);
             }
 
             // Get freight type from child node 2 if exists

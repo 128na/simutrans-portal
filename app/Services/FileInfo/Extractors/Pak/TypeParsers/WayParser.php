@@ -6,7 +6,6 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
-use App\Services\FileInfo\Extractors\Pak\WayTypeConverter;
 
 /**
  * Way data parser
@@ -57,16 +56,8 @@ final readonly class WayParser implements TypeParserInterface
                 $data['axle_load'] = 9999;
             }
 
-            // Convert waytype to string
-            if (isset($data['waytype'])) {
-                assert(is_int($data['waytype']));
-                $data['waytype_str'] = WayTypeConverter::getWayTypeName($data['waytype']);
-            }
-
-            // Convert styp to string
             if (isset($data['styp'])) {
                 assert(is_int($data['styp']));
-                $data['styp_str'] = WayTypeConverter::getSystemTypeName($data['styp']);
             }
 
             return $data;

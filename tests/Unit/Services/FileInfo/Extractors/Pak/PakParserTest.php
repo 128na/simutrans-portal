@@ -180,7 +180,6 @@ final class PakParserTest extends TestCase
 
         // Engine type
         $this->assertSame(1, $vehicleData['engine_type']);      // engine_type=diesel (1)
-        $this->assertSame('diesel', $vehicleData['engine_type_str']); // Converted to string
 
         // Waytype (road=1 in Simutrans)
         $this->assertSame(1, $vehicleData['waytype']);
@@ -226,14 +225,6 @@ final class PakParserTest extends TestCase
         $this->assertArrayHasKey('max_weight', $wayData);
         $this->assertArrayHasKey('waytype', $wayData);
         $this->assertArrayHasKey('styp', $wayData);
-
-        // Way type string
-        $this->assertArrayHasKey('waytype_str', $wayData);
-        $this->assertIsString($wayData['waytype_str']);
-
-        // System type string
-        $this->assertArrayHasKey('styp_str', $wayData);
-        $this->assertIsString($wayData['styp_str']);
     }
 
     public function test_parse_building_metadata(): void

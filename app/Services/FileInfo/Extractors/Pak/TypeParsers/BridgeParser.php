@@ -6,7 +6,6 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\ObjectTypeConverter;
-use App\Services\FileInfo\Extractors\Pak\WayTypeConverter;
 use RuntimeException;
 
 /**
@@ -661,10 +660,6 @@ final readonly class BridgeParser implements TypeParserInterface
      */
     private function buildResult(array $data): array
     {
-        // Add waytype string
-        $wtyp = $data['waytype'] ?? 0;
-        $data['waytype_str'] = WayTypeConverter::getWayTypeName(is_int($wtyp) ? $wtyp : 0);
-
         // Post-processing: if pillars exist and max_height is 0, set it to 7
         $pillarsEvery = $data['pillars_every'] ?? 0;
         $maxHeight = $data['max_height'] ?? 0;

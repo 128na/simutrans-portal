@@ -16,19 +16,6 @@ use RuntimeException;
  */
 final readonly class GoodParser implements TypeParserInterface
 {
-    // Good categories (from goods_desc.h / goods_manager.cc)
-    private const array CATEGORY_NAMES = [
-        0 => 'special_freight',
-        1 => 'piece_goods',
-        2 => 'bulk_goods',
-        3 => 'long_goods',
-        4 => 'liquid_goods',
-        5 => 'cooled_goods',
-        6 => 'passengers',
-        7 => 'mail',
-        8 => 'none',
-    ];
-
     public function canParse(Node $node): bool
     {
         $objectType = ObjectTypeConverter::toString($node->type);
@@ -318,10 +305,6 @@ final readonly class GoodParser implements TypeParserInterface
      */
     private function buildResult(array $data): array
     {
-        // Add category name string
-        $catg = $data['catg'] ?? 8; // Default to 'none'
-        $data['catg_str'] = self::CATEGORY_NAMES[is_int($catg) && isset(self::CATEGORY_NAMES[$catg]) ? $catg : 8];
-
         return $data;
     }
 }

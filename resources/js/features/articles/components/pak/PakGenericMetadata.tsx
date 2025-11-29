@@ -32,6 +32,7 @@ import {
 import {
   formatDate,
   formatGear,
+  formatGoodCategory,
   formatMaintenanceCost,
   formatNum,
   formatPower,
@@ -356,7 +357,7 @@ function buildBuildingRows(data: BuildingData): TableRow[] {
   return [
     {
       label: "建物タイプ",
-      value: getBuildingTypeName(data.type_str ?? ""),
+      value: getBuildingTypeName(data.type ?? 0),
     },
     {
       label: "軌道タイプ",
@@ -364,7 +365,7 @@ function buildBuildingRows(data: BuildingData): TableRow[] {
     },
     {
       label: "取扱い品目",
-      value: getEnablesString(data.enables_str || ""),
+      value: getEnablesString(data.enables ?? 0),
     },
     { label: "レベル", value: data.level || "" },
     { label: "サイズ", value: `${data.size_x || 1} x ${data.size_y || 1}` },
@@ -390,7 +391,7 @@ function buildFactoryRows(data: FactoryData): TableRow[] {
     { label: "配置確率", value: data.distribution_weight || "" },
     {
       label: "配置場所",
-      value: getPlacementName(data.placement_str),
+      value: getPlacementName(data.placement),
     },
     {
       label: "登場年月",
@@ -408,7 +409,7 @@ function buildFactoryRows(data: FactoryData): TableRow[] {
  */
 function buildGoodRows(data: GoodData): TableRow[] {
   return [
-    { label: "カテゴリ", value: data.catg_str },
+    { label: "カテゴリ", value: formatGoodCategory(data.catg) },
     {
       label: "重量",
       value: data.weight_per_unit,

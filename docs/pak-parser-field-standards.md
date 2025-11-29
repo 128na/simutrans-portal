@@ -10,6 +10,22 @@ All parser output field names follow the **Simutrans Squirrel API** naming conve
 - Content creator expectations (.dat file format)
 - Public-facing API documentation
 
+## Architecture
+
+**Parsers output numeric fields only.** String conversions are handled by frontend formatters.
+
+```php
+// ✅ Parsers only output numeric fields
+$data['waytype'] = $reader->readUint8();
+// Frontend converts on-demand using formatWayType()
+```
+
+**Rationale:**
+
+- **Data size reduction**: Eliminates 10-30 bytes per string field
+- **Separation of concerns**: Backend stores data, frontend handles presentation
+- **Flexibility**: Frontend can localize without backend changes
+
 ## Field Naming Rules
 
 ### 1. Waytype Fields
@@ -19,11 +35,9 @@ All parser output field names follow the **Simutrans Squirrel API** naming conve
 ```php
 // ✅ Correct
 $data['waytype'] = $reader->readUint8();
-$data['waytype_str'] = WayTypeConverter::getWayTypeName($data['waytype']);
 
 // ❌ Incorrect
 $data['wtyp'] = $reader->readUint8();
-$data['wtyp_str'] = WayTypeConverter::getWayTypeName($data['wtyp']);
 ```
 
 **Rationale:**
@@ -35,9 +49,7 @@ $data['wtyp_str'] = WayTypeConverter::getWayTypeName($data['wtyp']);
 **Related fields:**
 
 - `waytype` (integer) - Numeric waytype value
-- `waytype_str` (string) - Human-readable waytype name
 - `own_waytype` (integer) - For way-objects (catenary)
-- `own_waytype_str` (string) - String representation of own_waytype
 
 ### 2. Engine Type Fields
 
@@ -46,7 +58,6 @@ $data['wtyp_str'] = WayTypeConverter::getWayTypeName($data['wtyp']);
 ```php
 // ✅ Correct
 $data['engine_type'] = $reader->readUint8();
-$data['engine_type_str'] = EngineTypeConverter::convert($data['engine_type']);
 ```
 
 **Rationale:**
@@ -54,119 +65,96 @@ $data['engine_type_str'] = EngineTypeConverter::convert($data['engine_type']);
 - .dat files use `engine_type=` parameter
 - Consistent with other field names (snake_case)
 
-### 3. String Conversion Suffix
+### 3. ~~String Conversion Suffix~~ (Deprecated)
 
-**Always use `_str` suffix for string conversions, never `_name`**
+**String conversion fields have been removed. Use frontend formatters instead.**
 
-```php
-// ✅ Correct
-$data['catg_str'] = self::CATEGORY_NAMES[$catg];
-$data['waytype_str'] = WayTypeConverter::getWayTypeName($waytype);
-$data['engine_type_str'] = EngineTypeConverter::convert($engineType);
+````typescript
+// ✅ Frontend formatting
+import { formatWayType } from "@/features/articles/components/pak/formatter";
+const waytypeName = formatWayType(vehicleData.waytype);
 
-// ❌ Incorrect
-$data['catg_name'] = self::CATEGORY_NAMES[$catg];
-$data['waytype_name'] = WayTypeConverter::getWayTypeName($waytype);
+// ❌ Removed from backend
+### 3. Other Field Names
+
+## Frontend Formatting Functions
+
+String conversions are now handled by frontend formatter functions.
+
+### Location
+
+**File:** `resources/js/features/articles/components/pak/formatter.ts`
+
+### Available Formatters
+
+```typescript
+// Waytype conversion
+export function formatWayType(waytype: number | undefined): string;
+
+// Good category conversion
+export function formatGoodCategory(catg: number | undefined): string;
+
+// Date formatting
+export function formatDate(value: number | undefined): string;
+
+// Numeric formatting
+export const formatSpeed = (speed: number | undefined): string;
+export const formatPower = (power: number | undefined): string;
+export const formatPrice = (price: number | undefined): string;
+export const formatRunningCost = (cost: number | undefined): string;
+export const formatMaintenanceCost = (cost: number | undefined): string;
+````
+
+### Additional Conversions
+
+**File:** `resources/js/features/articles/components/pak/pakBuildingTranslations.ts`
+
+```typescript
+// Building type conversion (supports both number and string)
+export function getBuildingTypeName(type: string | number): string;
+
+// Enables flags conversion (bitfield to Japanese)
+export function getEnablesString(enables: string | number): string;
+
+// Placement type conversion
+export function getPlacementName(placement: string | number): string;
+
+// System type conversion
+export function getSystemTypeName(type: string | number): string;
 ```
 
-**Rationale:**
+**File:** `resources/js/features/articles/components/pak/pakTranslations.ts`
 
-- Consistency across 18+ parser output fields
-- Clear distinction between numeric value and string representation
+```typescript
+// Engine type conversion
+export function getEngineTypeName(type: string | number): string;
 
-### 4. Other Field Names
-
-**Use snake_case for all field names**
-
-```php
-$data['intro_date'] = $reader->readUint16LE();
-$data['retire_date'] = $reader->readUint16LE();
-$data['running_cost'] = $reader->readUint16LE();
-$data['axle_load'] = $reader->readUint16LE();
-$data['freight_type'] = $freightType;
+// Freight type conversion
+export function getFreightTypeName(type: string): string;
 ```
 
-## Converter Utility Usage
+## ~~Converter Utility Usage~~ (Deprecated)
 
-### WayTypeConverter
+**The following converter utilities are no longer used for parser output:**
 
-**Method:** `getWayTypeName(int $waytype): string`
+- ~~`WayTypeConverter::getWayTypeName()`~~ - Use `formatWayType()` in frontend
+- ~~`EngineTypeConverter::convert()`~~ - Use `getEngineTypeName()` in frontend
+- ~~`BuildingTypeConverter::getBuildingTypeName()`~~ - Use `getBuildingTypeName()` in frontend
+- ~~`BuildingTypeConverter::getEnablesString()`~~ - Use `getEnablesString()` in frontend
 
-**Usage:**
-
-```php
-if (isset($data['waytype'])) {
-    assert(is_int($data['waytype']));
-    $data['waytype_str'] = WayTypeConverter::getWayTypeName($data['waytype']);
-}
-```
-
-**Supported waytypes:**
-
-- 0 => 'ignore'
-- 1 => 'road'
-- 2 => 'track'
-- 3 => 'water'
-- 4 => 'overheadlines'
-- 5 => 'monorail'
-- 6 => 'maglev'
-- 7 => 'tram'
-- 8 => 'narrowgauge'
-- 16 => 'air'
-- 128 => 'powerline'
-- 255 => 'any'
-
-### EngineTypeConverter
-
-**Method:** `convert(int $engineType): string`
-
-**Usage:**
-
-```php
-if (isset($data['engine_type'])) {
-    assert(is_int($data['engine_type']));
-    $data['engine_type_str'] = EngineTypeConverter::convert($data['engine_type']);
-}
-```
-
-**Supported engine types:**
-
-- 0 => 'steam'
-- 1 => 'diesel'
-- 2 => 'electric'
-- 3 => 'bio'
-- 4 => 'sail'
-- 5 => 'fuel_cell'
-- 6 => 'hydrogene'
-- 7 => 'battery'
-
-### BuildingTypeConverter
-
-**Methods:**
-
-- `getBuildingTypeName(int $type): string`
-- `getEnablesString(int $enables): string`
-
-**Usage:**
-
-```php
-$data['type_str'] = BuildingTypeConverter::getBuildingTypeName($data['type']);
-$data['enables_str'] = BuildingTypeConverter::getEnablesString($data['enables']);
-
-// For waytype conversion, use WayTypeConverter
-$data['waytype_str'] = WayTypeConverter::getWayTypeName($data['waytype']);
-```
+**Note:** These utilities still exist in backend code but are not used in parser output.
 
 ## Parser Implementation Pattern
 
-### Complete Example
+## Parser Implementation Pattern - numeric fields only
 
-```php
-final readonly class ExampleParser implements TypeParserInterface
-{
-    #[\Override]
-    public function parse(Node $node): ?array
-    {
+            $data = [
+                'waytype' => $reader->readUint8(),
+                'engine_type' => $reader->readUint8(),
+                'intro_date' => $reader->readUint16LE(),
+                'retire_date' => $reader->readUint16LE(),
+                // ... other numeric fields
+            ];
         try {
             $reader = new BinaryReader($node->data);
 
@@ -174,90 +162,64 @@ final readonly class ExampleParser implements TypeParserInterface
             $data = [
                 'waytype' => $reader->readUint8(),
                 'engine_type' => $reader->readUint8(),
+                'intro_date' => $reader->readUint16LE(),
+                'retire_date' => $reader->readUint16LE(),
                 // ... other fields
             ];
 
-            // Apply string conversions at the end of parse()
-            if (isset($data['waytype'])) {
-                assert(is_int($data['waytype']));
-                $data['waytype_str'] = WayTypeConverter::getWayTypeName($data['waytype']);
-            }
-
-            if (isset($data['engine_type'])) {
-                assert(is_int($data['engine_type']));
-                $data['engine_type_str'] = EngineTypeConverter::convert($data['engine_type']);
-            }
-
             return $data;
-        } catch (\Throwable) {
-            return null;
-        }
-    }
-}
-```
-
-## TypeScript Type Definitions
-
-**File:** `resources/js/types/models/FileInfo.ts`
 
 **Naming convention:**
 
 - Use same field names as PHP parsers
 - Mark all fields as optional (`?`)
+- **Do not include `*_str` fields**
+
+**Example:**
+
+````typescript
+export interface VehicleData {
+  waytype?: number;
+  // waytype_str removed - use formatWayType()
+  engine_type?: number;
+  // engine_type_str removed - use getEngineTypeName()
+**Naming convention:**
+
+- Use same field names as PHP parsers
+- Mark all fields as optional (`?`)
+- Numeric fields only (no `*_str` fields)
 
 **Example:**
 
 ```typescript
 export interface VehicleData {
   waytype?: number;
-  waytype_str?: string;
   engine_type?: number;
-  engine_type_str?: string;
   // ... other fields
 }
 
 export interface WayObjectData {
   waytype?: number;
-  waytype_str?: string;
   own_waytype?: number;
-  own_waytype_str?: string;
   // ... other fields
 }
-```
 
-## Migration Notes
+export interface BuildingData {
+  type?: number;
+  enables?: number;
+  allowed_climates?: number;
+  // ... other fields
+}
+```own_wtyp` → `own_waytype`
+- `own_wtyp_str` → `own_waytype_str` (then removed in Phase 2)
 
-### Breaking Changes (2025-11-29)
+#### Phase 2: String Field Removal
 
-The following field names were changed for Squirrel API compliance:
+All `*_str` suffix fields were removed from parser output:
 
-**PHP Parsers:**
+**Removed fields:**
 
-- `wtyp` → `waytype`
-- `wtyp_str` → `waytype_str`
-- `own_wtyp` → `own_waytype`
-- `own_wtyp_str` → `own_waytype_str`
-- `catg_name` → `catg_str`
-
-**TypeScript Types:**
-
-- Same changes as PHP parsers
-
-**Frontend Code:**
-
-- `obj.wayData.wtyp_str` → `obj.wayData.waytype_str`
-
-### Data Migration
-
-All existing parsed data will be re-parsed with new field names. No manual data migration is required.
-
-## References
-
-- **Simutrans Source:** `simutrans/descriptor/reader/vehicle_reader.cc`
-- **Squirrel API:** `script/api/squirrel_types_*.awk`
-- **.dat Format:** Content creator documentation
-
----
+## References---
 
 **Last Updated:** 2025-11-29
-**Version:** 1.0.0
+````

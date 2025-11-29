@@ -6,7 +6,6 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\BuildingTypeConverter;
 use App\Services\FileInfo\Extractors\Pak\Node;
-use App\Services\FileInfo\Extractors\Pak\WayTypeConverter;
 
 /**
  * Building-specific parser for BUIL nodes
@@ -219,13 +218,11 @@ final readonly class BuildingParser implements TypeParserInterface
         $result = [
             'version' => $version,
             'type' => $type,
-            'type_str' => BuildingTypeConverter::getBuildingTypeName($type),
             'level' => $level,
             'size_x' => $sizeX,
             'size_y' => $sizeY,
             'layouts' => $layouts,
             'allowed_climates' => $allowedClimates,
-            'allowed_climates_str' => implode(', ', $climateNames),
             'enables' => $enables,
             'flags' => $flags,
             'distribution_weight' => $distributionWeight,
@@ -259,8 +256,6 @@ final readonly class BuildingParser implements TypeParserInterface
         if (BuildingTypeConverter::usesWaytype($type)) {
             // Transport buildings (depot, stop, extension, dock)
             $result['waytype'] = $extraData;
-            $result['waytype_str'] = WayTypeConverter::getWayTypeName($extraData);
-            $result['enables_str'] = BuildingTypeConverter::getEnablesString($enables);
         } elseif (BuildingTypeConverter::isCityBuilding($type)) {
             // City buildings (residential, commercial, industrial)
             $result['cluster'] = $extraData;

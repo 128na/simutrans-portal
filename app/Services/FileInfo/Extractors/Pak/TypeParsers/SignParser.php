@@ -6,7 +6,6 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\ObjectTypeConverter;
-use App\Services\FileInfo\Extractors\Pak\WayTypeConverter;
 use RuntimeException;
 
 /**
@@ -475,10 +474,6 @@ final readonly class SignParser implements TypeParserInterface
      */
     private function buildResult(array $data): array
     {
-        // Add waytype string
-        $wtyp = $data['waytype'] ?? 0;
-        $data['waytype_str'] = WayTypeConverter::getWayTypeName(is_int($wtyp) ? $wtyp : 0);
-
         // Decode flags into human-readable boolean properties
         $flags = $data['flags'] ?? 0;
         if (is_int($flags)) {

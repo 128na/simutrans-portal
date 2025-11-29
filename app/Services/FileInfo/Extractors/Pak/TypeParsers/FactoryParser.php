@@ -19,13 +19,6 @@ use RuntimeException;
  */
 final readonly class FactoryParser implements TypeParserInterface
 {
-    // Site placement types
-    private const array SITE_NAMES = [
-        0 => 'Land',        // Site_Land
-        1 => 'Water',       // Site_Water
-        2 => 'City',        // Site_City
-    ];
-
     public function canParse(Node $node): bool
     {
         $objectType = ObjectTypeConverter::toString($node->type);
@@ -481,12 +474,6 @@ final readonly class FactoryParser implements TypeParserInterface
      */
     private function buildResult(array $data): array
     {
-        // Add placement name string
-        if (isset($data['placement'])) {
-            $placement = $data['placement'];
-            $data['placement_str'] = self::SITE_NAMES[is_int($placement) && isset(self::SITE_NAMES[$placement]) ? $placement : 0];
-        }
-
         return $data;
     }
 }

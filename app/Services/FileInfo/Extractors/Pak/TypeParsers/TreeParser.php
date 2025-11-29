@@ -60,7 +60,6 @@ final readonly class TreeParser implements TypeParserInterface
      * @return array{
      *     version: int,
      *     allowed_climates: int,
-     *     allowed_climates_str: string,
      *     distribution_weight: int,
      *     number_of_seasons: int
      * }
@@ -162,7 +161,6 @@ final readonly class TreeParser implements TypeParserInterface
      * @return array{
      *     version: int,
      *     allowed_climates: int,
-     *     allowed_climates_str: string,
      *     distribution_weight: int,
      *     number_of_seasons: int
      * }
@@ -176,9 +174,6 @@ final readonly class TreeParser implements TypeParserInterface
             }
         }
 
-        return [
-            ...$data,
-            'allowed_climates_str' => implode(', ', $climateNames),
-        ];
+        return $data;
     }
 }

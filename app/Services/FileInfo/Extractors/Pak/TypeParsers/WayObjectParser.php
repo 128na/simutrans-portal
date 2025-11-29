@@ -6,7 +6,6 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\ObjectTypeConverter;
-use App\Services\FileInfo\Extractors\Pak\WayTypeConverter;
 use RuntimeException;
 
 /**
@@ -215,13 +214,6 @@ final readonly class WayObjectParser implements TypeParserInterface
      */
     private function buildResult(array $data): array
     {
-        // Add waytype string using WayTypeConverter
-        $wtyp = $data['waytype'] ?? 0;
-        $ownWtyp = $data['own_waytype'] ?? 0;
-
-        $data['waytype_str'] = WayTypeConverter::getWayTypeName(is_int($wtyp) ? $wtyp : 0);
-        $data['own_waytype_str'] = WayTypeConverter::getWayTypeName(is_int($ownWtyp) ? $ownWtyp : 0);
-
         return $data;
     }
 }

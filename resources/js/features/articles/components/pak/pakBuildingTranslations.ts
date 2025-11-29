@@ -40,6 +40,24 @@ const SYSTEM_TYPE_TRANSLATIONS: Record<string, string> = {
  * 建物タイプ名を日本語に変換
  */
 export function getBuildingTypeName(typeStr: string | number): string {
+  // 数値の場合は対応する文字列に変換
+  if (typeof typeStr === "number") {
+    const typeMap: Record<number, string> = {
+      1: "City Attraction",
+      2: "Land Attraction",
+      7: "Headquarters",
+      16: "Dock",
+      17: "Flat Dock",
+      33: "Depot",
+      34: "Stop",
+      36: "Stop Extension",
+      37: "Residential",
+      38: "Commercial",
+      39: "Industrial",
+    };
+    typeStr = typeMap[typeStr] || `Unknown Type (${typeStr})`;
+  }
+
   const str = String(typeStr);
 
   // 完全一致
@@ -71,7 +89,17 @@ export function getSystemTypeName(typeStr: string | number): string {
 /**
  * Enables フラグを日本語に変換
  */
-export function getEnablesString(enablesStr: string): string {
+export function getEnablesString(enablesStr: string | number): string {
+  // 数値の場合はビットフラグから文字列に変換
+  if (typeof enablesStr === "number") {
+    const flags: string[] = [];
+    if (enablesStr & 0x01) flags.push("Passengers");
+    if (enablesStr & 0x02) flags.push("Mail");
+    if (enablesStr & 0x04) flags.push("Goods");
+    if (flags.length === 0) flags.push("None");
+    enablesStr = flags.join(", ");
+  }
+
   const translations: Record<string, string> = {
     Passengers: "旅客",
     Mail: "郵便",
@@ -98,6 +126,16 @@ const PLACEMENT_TRANSLATIONS: Record<string, string> = {
  * 配置場所タイプを日本語に変換
  */
 export function getPlacementName(placementStr: string | number): string {
+  // 数値の場合は対応する文字列に変換
+  if (typeof placementStr === "number") {
+    const placementMap: Record<number, string> = {
+      0: "Land",
+      1: "Water",
+      2: "City",
+    };
+    placementStr = placementMap[placementStr] || String(placementStr);
+  }
+
   const str = String(placementStr);
   return PLACEMENT_TRANSLATIONS[str] || str;
 }

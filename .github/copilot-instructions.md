@@ -6,6 +6,8 @@
 
 ## 📚 関連ドキュメント
 
+**[📖 全ドキュメント索引はこちら](../docs/INDEX.md)** - カテゴリ別に整理された完全なドキュメント一覧
+
 詳細なドキュメントは以下を参照してください：
 
 ### 全体構造
@@ -38,6 +40,8 @@
 - **[app/OpenApi/README.md](../app/OpenApi/README.md)** - OpenAPI/Swagger ドキュメント
 - **[tests/Unit/Services/Twitter/README.md](../tests/Unit/Services/Twitter/README.md)** - Twitter PKCE Service のテストドキュメント
 - **[.github/workflows/README.md](../.github/workflows/README.md)** - CI/CD 設定と環境変数
+
+**その他のドキュメント**: [docs/INDEX.md](../docs/INDEX.md) を参照してください。
 
 ---
 
@@ -216,6 +220,8 @@ final class ArticleRepository
 
 ## 迷ったら最初に見る場所
 
+**[📖 全ドキュメント索引](../docs/INDEX.md)** - すべてのドキュメントを一覧で確認できます
+
 - **フロントエンドの UI バグ**: `resources/js/components` と `resources/js/features` を確認 → [resources/js/README.md](../resources/js/README.md)
 - **コントローラーの配置**: `Auth/`, `Pages/`, `Mypage/`, `Admin/` で機能別分類 → [README.md](../README.md)
 - **Services/Actions の判断**: [docs/README-services-actions.md](../docs/README-services-actions.md) の判断フローチャート
@@ -246,6 +252,7 @@ final class ArticleRepository
   - ルートを追加/変更 → `routes/README.md` を更新
   - フロントエンドの構造を変更 → `resources/js/README.md` を更新
   - テスト方針を変更 → 該当する README（`resources/js/__tests__/README.md` 等）を更新
+  - 新しいドキュメントを追加 → `docs/INDEX.md` のドキュメント索引を更新
 - **PR 説明:** 変更内容、レビュアが落とすべきコマンド（例: `npm run build`, `composer run stan`）、マイグレーションや手動手順があれば記載する。
 - **CI の確認:** CI がグリーン（`composer run all` 相当のチェックを含む）になるまでマージしない。
 

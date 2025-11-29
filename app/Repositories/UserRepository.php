@@ -115,14 +115,13 @@ final class UserRepository
     public function getForList(): Collection
     {
         return $this->model->query()
-            ->select(['users.id', 'users.name', 'users.nickname'])
+            ->select(['users.id', 'users.name', 'users.nickname', DB::raw('count(articles.id) as articles_count')])
             ->join('articles', function ($join): void {
                 $join->on('articles.user_id', '=', 'users.id')
                     ->where('articles.status', ArticleStatus::Publish);
             })
             ->groupBy('users.id')
             ->orderByRaw('COUNT(articles.id) DESC')
-            ->withCount('articles')
             ->get();
     }
 

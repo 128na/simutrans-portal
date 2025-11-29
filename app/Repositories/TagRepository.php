@@ -49,11 +49,10 @@ final class TagRepository
     public function getForList(): Collection
     {
         return $this->model->query()
-            ->select(['tags.id', 'tags.name'])
+            ->select(['tags.id', 'tags.name', DB::raw('COUNT(article_tag.article_id) as articles_count')])
             ->join('article_tag', 'tags.id', '=', 'article_tag.tag_id')
-            ->groupBy('tags.id')
+            ->groupBy('tags.id', 'tags.name')
             ->orderByRaw('COUNT(article_tag.article_id) DESC')
-            ->withCount('articles')
             ->get();
     }
 
@@ -77,6 +76,6 @@ final class TagRepository
      */
     public function update(Tag $tag, array $data): Tag
     {
-        return tap($tag, fn ($t) => $t->update($data));
+        return tap($tag, fn($t) => $t->update($data));
     }
 }

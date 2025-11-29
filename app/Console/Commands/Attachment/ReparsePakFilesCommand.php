@@ -114,7 +114,8 @@ final class ReparsePakFilesCommand extends Command
             ->where(function ($q): void {
                 $q->where('original_name', 'like', '%.pak')
                     ->orWhere('original_name', 'like', '%.zip');
-            });
+            })
+            ->orderBy('size', 'asc');
     }
 
     /**
@@ -175,7 +176,7 @@ final class ReparsePakFilesCommand extends Command
     private function reparseAttachment(Attachment $attachment, ?int $maxSizeMb): bool
     {
         try {
-            dispatch(new UpdateFileInfo($attachment, $maxSizeMb));
+            dispatch(new UpdateFileInfo($attachment, $maxSizeMb))->onQueue('parse');
 
             return true;
         } catch (\Throwable $throwable) {

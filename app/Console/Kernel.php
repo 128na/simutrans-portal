@@ -12,7 +12,7 @@ final class Kernel extends ConsoleKernel
     /**
      * 最大実行時間
      */
-    private const int CRON_MAX_EXEC = 30;
+    private const int CRON_MAX_EXEC = 2;
 
     /**
      * Define the application's command schedule.
@@ -38,14 +38,12 @@ final class Kernel extends ConsoleKernel
 
         // 毎分 サーバー都合でcron設定としては2分周期
         $schedule->command('article:publish-reservation')->everyMinute()
-            ->withoutOverlapping(self::CRON_MAX_EXEC)
             ->appendOutputTo($output);
 
         $schedule->command('queue:work', [
             '--stop-when-empty',
             '--max-time' => self::CRON_MAX_EXEC,
         ])->everyMinute()
-            ->withoutOverlapping(self::CRON_MAX_EXEC)
             ->appendOutputTo($output);
     }
 
@@ -55,7 +53,7 @@ final class Kernel extends ConsoleKernel
     #[\Override]
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

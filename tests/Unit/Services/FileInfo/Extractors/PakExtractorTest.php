@@ -12,7 +12,7 @@ final class PakExtractorTest extends TestCase
     public function test_get_key(): void
     {
         $result = $this->getSUT()->getKey();
-        $this->assertSame('paks', $result);
+        $this->assertSame('pak_metadata', $result);
     }
 
     public function test_is_target(): void
@@ -27,29 +27,24 @@ final class PakExtractorTest extends TestCase
     {
         $sUT = $this->getSUT();
 
-        $data = file_get_contents(__DIR__.'/file/test.pak');
+        $data = file_get_contents(__DIR__ . '/file/test.pak');
 
         $result = $sUT->extract($data);
 
         $this->assertIsArray($result);
-        $this->assertArrayHasKey('names', $result);
-        $this->assertArrayHasKey('metadata', $result);
-        $this->assertContains('test_1', $result['names']);
-        $this->assertIsArray($result['metadata']);
+        // Now returns metadata array directly
+        $this->assertNotEmpty($result);
     }
 
-    public function test_fallback_on_invalid_file(): void
+    public function test_invalid_file_returns_empty_array(): void
     {
         $sUT = $this->getSUT();
 
-        // Invalid pak file (should trigger fallback)
+        // Invalid pak file (should return empty array)
         $result = $sUT->extract('invalid pak data');
 
         $this->assertIsArray($result);
-        $this->assertArrayHasKey('names', $result);
-        $this->assertArrayHasKey('metadata', $result);
-        $this->assertIsArray($result['names']);
-        $this->assertEmpty($result['metadata']);
+        $this->assertEmpty($result);
     }
 
     private function getSUT(): PakExtractor

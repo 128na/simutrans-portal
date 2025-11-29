@@ -15,21 +15,20 @@ final class PakParserTest extends TestCase
     public function test_parse_makeobj_versions(string $pakFile, array $expectedNames): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/'.$pakFile);
+        $data = file_get_contents(__DIR__ . '/../file/' . $pakFile);
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
-        $this->assertArrayHasKey('names', $result);
-        $this->assertArrayHasKey('metadata', $result);
+        $this->assertNotEmpty($result);
+
+        // Extract names from metadata
+        $extractedNames = array_map(fn($m) => $m['name'], $result);
 
         // Verify all expected names are present
         foreach ($expectedNames as $expectedName) {
-            $this->assertContains($expectedName, $result['names'], "Expected name '{$expectedName}' not found in pak file '{$pakFile}'");
+            $this->assertContains($expectedName, $extractedNames, "Expected name '{$expectedName}' not found in pak file '{$pakFile}'");
         }
-
-        $this->assertIsArray($result['metadata']);
-        $this->assertNotEmpty($result['metadata']);
     }
 
     /**
@@ -52,16 +51,16 @@ final class PakParserTest extends TestCase
     {
         $parser = new PakParser;
         // Use the unified test.pak file
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
-        $this->assertArrayHasKey('names', $result);
-        $this->assertArrayHasKey('metadata', $result);
-        $this->assertContains('test_transparent_1', $result['names']);
-        $this->assertIsArray($result['metadata']);
-        $this->assertNotEmpty($result['metadata']);
+        $this->assertNotEmpty($result);
+
+        // Extract names from metadata
+        $extractedNames = array_map(fn($m) => $m['name'], $result);
+        $this->assertContains('test_transparent_1', $extractedNames);
     }
 
     public function test_invalid_header(): void
@@ -83,12 +82,12 @@ final class PakParserTest extends TestCase
     public function test_metadata_structure(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
-        $this->assertNotEmpty($result['metadata']);
-        $metadata = $result['metadata'][0];
+        $this->assertNotEmpty($result);
+        $metadata = $result[0];
 
         $this->assertArrayHasKey('name', $metadata);
         $this->assertArrayHasKey('copyright', $metadata);
@@ -110,7 +109,7 @@ final class PakParserTest extends TestCase
         $parser = new PakParser;
 
         // Test with test.pak which contains multiple object types
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
         $result = $parser->parse($data);
 
         $this->assertNotEmpty($result['metadata']);
@@ -131,22 +130,21 @@ final class PakParserTest extends TestCase
     public function test_parse_vehicle_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
         // Basic structure checks
         $this->assertIsArray($result);
-        $this->assertArrayHasKey('names', $result);
-        $this->assertArrayHasKey('metadata', $result);
-        $this->assertContains('test_truck', $result['names']);
+        $this->assertNotEmpty($result);
 
-        // Metadata checks
-        $this->assertNotEmpty($result['metadata']);
+        // Extract names from metadata
+        $extractedNames = array_map(fn($m) => $m['name'], $result);
+        $this->assertContains('test_truck', $extractedNames);
 
         // Find test_truck metadata (test.pak contains multiple objects)
         $metadata = null;
-        foreach ($result['metadata'] as $item) {
+        foreach ($result as $item) {
             if ($item['name'] === 'test_truck') {
                 $metadata = $item;
                 break;
@@ -201,16 +199,15 @@ final class PakParserTest extends TestCase
     public function test_parse_way_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
-        $this->assertArrayHasKey('metadata', $result);
-        $this->assertNotEmpty($result['metadata']);
+        $this->assertNotEmpty($result);
 
         // Check way metadata exists
-        $metadata = $result['metadata'][0] ?? null;
+        $metadata = $result[0] ?? null;
         $this->assertNotNull($metadata);
         $this->assertArrayHasKey('wayData', $metadata);
 
@@ -230,17 +227,20 @@ final class PakParserTest extends TestCase
     public function test_parse_building_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
-        $this->assertContains('test_building', $result['names']);
-        $this->assertNotEmpty($result['metadata']);
+        $this->assertNotEmpty($result);
+
+        // Extract names from metadata
+        $extractedNames = array_map(fn($m) => $m['name'], $result);
+        $this->assertContains('test_building', $extractedNames);
 
         // Find test_building metadata (test.pak contains multiple objects)
         $metadata = null;
-        foreach ($result['metadata'] as $item) {
+        foreach ($result as $item) {
             if ($item['name'] === 'test_building') {
                 $metadata = $item;
                 break;
@@ -265,17 +265,20 @@ final class PakParserTest extends TestCase
     public function test_parse_citycar_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
-        $this->assertContains('test_citycar', $result['names']);
-        $this->assertNotEmpty($result['metadata']);
+        $this->assertNotEmpty($result);
+
+        // Extract names from metadata
+        $extractedNames = array_map(fn($m) => $m['name'], $result);
+        $this->assertContains('test_citycar', $extractedNames);
 
         // Find test_citycar metadata (test.pak contains multiple objects)
         $metadata = null;
-        foreach ($result['metadata'] as $item) {
+        foreach ($result as $item) {
             if ($item['name'] === 'test_citycar') {
                 $metadata = $item;
                 break;
@@ -297,17 +300,20 @@ final class PakParserTest extends TestCase
     public function test_parse_good_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
-        $this->assertContains('test_good', $result['names']);
-        $this->assertNotEmpty($result['metadata']);
+        $this->assertNotEmpty($result);
+
+        // Extract names from metadata
+        $extractedNames = array_map(fn($m) => $m['name'], $result);
+        $this->assertContains('test_good', $extractedNames);
 
         // Find test_good metadata (test.pak contains multiple objects)
         $metadata = null;
-        foreach ($result['metadata'] as $item) {
+        foreach ($result as $item) {
             if ($item['name'] === 'test_good') {
                 $metadata = $item;
                 break;
@@ -330,17 +336,20 @@ final class PakParserTest extends TestCase
     public function test_parse_bridge_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
-        $this->assertContains('test_bridge', $result['names']);
-        $this->assertNotEmpty($result['metadata']);
+        $this->assertNotEmpty($result);
+
+        // Extract names from metadata
+        $extractedNames = array_map(fn($m) => $m['name'], $result);
+        $this->assertContains('test_bridge', $extractedNames);
 
         // Find test_bridge metadata (test.pak contains multiple objects)
         $metadata = null;
-        foreach ($result['metadata'] as $item) {
+        foreach ($result as $item) {
             if ($item['name'] === 'test_bridge') {
                 $metadata = $item;
                 break;
@@ -366,17 +375,20 @@ final class PakParserTest extends TestCase
     public function test_parse_crossing_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
-        $this->assertContains('test_crossing', $result['names']);
-        $this->assertNotEmpty($result['metadata']);
+        $this->assertNotEmpty($result);
+
+        // Extract names from metadata
+        $extractedNames = array_map(fn($m) => $m['name'], $result);
+        $this->assertContains('test_crossing', $extractedNames);
 
         // Find test_crossing metadata (test.pak contains multiple objects)
         $metadata = null;
-        foreach ($result['metadata'] as $item) {
+        foreach ($result as $item) {
             if ($item['name'] === 'test_crossing') {
                 $metadata = $item;
                 break;
@@ -411,16 +423,16 @@ final class PakParserTest extends TestCase
     public function test_parse_factory_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
-        $this->assertNotEmpty($result['metadata']);
+        $this->assertNotEmpty($result);
 
         // Find factory metadata (objectType = 'factory')
         $metadata = null;
-        foreach ($result['metadata'] as $item) {
+        foreach ($result as $item) {
             if (isset($item['objectType']) && $item['objectType'] === 'factory') {
                 $metadata = $item;
                 break;
@@ -456,17 +468,20 @@ final class PakParserTest extends TestCase
     public function test_parse_groundobj_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
-        $this->assertContains('test_groundobj', $result['names']);
-        $this->assertNotEmpty($result['metadata']);
+        $this->assertNotEmpty($result);
+
+        // Extract names from metadata
+        $extractedNames = array_map(fn($m) => $m['name'], $result);
+        $this->assertContains('test_groundobj', $extractedNames);
 
         // Find test_groundobj metadata (test.pak contains multiple objects)
         $metadata = null;
-        foreach ($result['metadata'] as $item) {
+        foreach ($result as $item) {
             if ($item['name'] === 'test_groundobj') {
                 $metadata = $item;
                 break;
@@ -488,17 +503,20 @@ final class PakParserTest extends TestCase
     public function test_parse_pedestrian_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
-        $this->assertContains('test_pedestrian', $result['names']);
-        $this->assertNotEmpty($result['metadata']);
+        $this->assertNotEmpty($result);
+
+        // Extract names from metadata
+        $extractedNames = array_map(fn($m) => $m['name'], $result);
+        $this->assertContains('test_pedestrian', $extractedNames);
 
         // Find test_pedestrian metadata (test.pak contains multiple objects)
         $metadata = null;
-        foreach ($result['metadata'] as $item) {
+        foreach ($result as $item) {
             if ($item['name'] === 'test_pedestrian') {
                 $metadata = $item;
                 break;
@@ -520,17 +538,20 @@ final class PakParserTest extends TestCase
     public function test_parse_tree_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
-        $this->assertContains('test_tree', $result['names']);
-        $this->assertNotEmpty($result['metadata']);
+        $this->assertNotEmpty($result);
+
+        // Extract names from metadata
+        $extractedNames = array_map(fn($m) => $m['name'], $result);
+        $this->assertContains('test_tree', $extractedNames);
 
         // Find test_tree metadata (test.pak contains multiple objects)
         $metadata = null;
-        foreach ($result['metadata'] as $item) {
+        foreach ($result as $item) {
             if ($item['name'] === 'test_tree') {
                 $metadata = $item;
                 break;
@@ -551,17 +572,20 @@ final class PakParserTest extends TestCase
     public function test_parse_roadsign_metadata(): void
     {
         $parser = new PakParser;
-        $data = file_get_contents(__DIR__.'/../file/test.pak');
+        $data = file_get_contents(__DIR__ . '/../file/test.pak');
 
         $result = $parser->parse($data);
 
         $this->assertIsArray($result);
-        $this->assertContains('test_signal', $result['names']);
-        $this->assertNotEmpty($result['metadata']);
+        $this->assertNotEmpty($result);
+
+        // Extract names from metadata
+        $extractedNames = array_map(fn($m) => $m['name'], $result);
+        $this->assertContains('test_signal', $extractedNames);
 
         // Find test_signal metadata (test.pak contains multiple objects)
         $metadata = null;
-        foreach ($result['metadata'] as $item) {
+        foreach ($result as $item) {
             if ($item['name'] === 'test_signal') {
                 $metadata = $item;
                 break;

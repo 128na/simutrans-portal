@@ -15,7 +15,7 @@ final readonly class PakParser
     /**
      * Parse pak file and extract metadata
      *
-     * @return array{names: array<int, string>, metadata: array<int, array<string, mixed>>}
+     * @return array<int, array<string, mixed>>
      */
     public function parse(string $binary): array
     {
@@ -28,19 +28,7 @@ final readonly class PakParser
         $root = Node::parse($reader);
 
         // Extract metadata from nodes
-        $metadata = $this->extractMetadata($root, $header->compilerVersionCode);
-
-        // Extract names for backward compatibility
-        $names = array_map(function (array $m): string {
-            assert(is_string($m['name']));
-
-            return $m['name'];
-        }, $metadata);
-
-        return [
-            'names' => $names,
-            'metadata' => $metadata,
-        ];
+        return $this->extractMetadata($root, $header->compilerVersionCode);
     }
 
     /**

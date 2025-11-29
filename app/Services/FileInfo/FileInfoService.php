@@ -28,7 +28,7 @@ final readonly class FileInfoService
 
             // Check file existence before reading
             if (! file_exists($attachment->full_path)) {
-                throw new Exception('File not found: '.$attachment->full_path);
+                throw new Exception('File not found: ' . $attachment->full_path);
             }
 
             $text = file_get_contents($attachment->full_path);
@@ -80,16 +80,8 @@ final readonly class FileInfoService
 
                 $extracted = $extractor->extract($processedText);
 
-                // PakExtractor returns ['names' => [...], 'metadata' => [...]]
-                if ($extractor instanceof Extractors\PakExtractor) {
-                    if (isset($extracted['names'])) {
-                        $data[$extractor->getKey()][$filename] = $extracted['names'];
-                    }
-
-                    if (isset($extracted['metadata']) && $extracted['metadata'] !== []) {
-                        $data['paks_metadata'][$filename] = $extracted['metadata'];
-                    }
-                } else {
+                // Store extracted data with extractor key
+                if ($extracted !== []) {
                     $data[$extractor->getKey()][$filename] = $extracted;
                 }
             }

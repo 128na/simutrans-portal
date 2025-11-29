@@ -12,11 +12,11 @@ import type {
   GoodData,
   PakMetadata,
   PedestrianData,
-  SignData,
+  RoadsignData,
   TunnelData,
   VehicleData,
   WayData,
-  WayObjectData,
+  wayobjData,
 } from "@/types/models";
 import {
   getBuildingTypeName,
@@ -31,7 +31,7 @@ import {
   formatMaintenanceCost,
   formatNum,
   formatPower,
-  formatPrice,
+  formatBuildPrice,
   formatRunningCost,
   formatSpeed,
   formatWeight,
@@ -39,7 +39,12 @@ import {
   formatEngineType,
   formatFreightType,
   formatGoodMetric,
+  formatBoolean,
+  formatSignalType,
+  formatSignalAttribute,
+  formatGoodPrice,
 } from "./formatter";
+import { ObjectType } from "./pakConstants";
 
 interface Props {
   metadata: PakMetadata;
@@ -58,7 +63,7 @@ const PakGenericMetadata: React.FC<Props> = ({ metadata }) => {
     { label: "著作権", value: metadata.copyright || "" },
     {
       label: "タイプ",
-      value: getObjectTypeLabel(metadata.objectType),
+      value: getObjectTypeLabel(metadata.objectType as ObjectType),
     },
   ];
 
@@ -77,14 +82,14 @@ const PakGenericMetadata: React.FC<Props> = ({ metadata }) => {
 /**
  * オブジェクトタイプのラベルを取得
  */
-function getObjectTypeLabel(objectType: string): string {
-  const labels: Record<string, string> = {
+function getObjectTypeLabel(objectType: ObjectType): string {
+  const labels: Record<ObjectType, string> = {
     vehicle: "車両",
     way: "軌道",
     wayobj: "軌道オブジェクト",
     bridge: "橋",
     tunnel: "トンネル",
-    sign: "信号・標識",
+    roadsign: "信号・標識",
     crossing: "踏切",
     citycar: "市内車両",
     factory: "産業施設",
@@ -92,10 +97,6 @@ function getObjectTypeLabel(objectType: string): string {
     building: "建物",
     pedestrian: "歩行者",
     tree: "樹木",
-    groundobj: "地表オブジェクト",
-    ground: "地形",
-    sound: "サウンド",
-    skin: "スキン",
   };
 
   return labels[objectType]
@@ -135,21 +136,19 @@ function buildDetailRows(
   objectType: string,
   typeData: Record<string, unknown>
 ): TableRow[] {
-  // eslint-disable-next-line no-console
-  console.log(objectType, typeData);
   switch (objectType) {
     case "vehicle":
       return buildVehicleRows(typeData as unknown as VehicleData);
     case "way":
       return buildWayRows(typeData as unknown as WayData);
     case "wayobj":
-      return buildWayobjRows(typeData as unknown as WayObjectData);
+      return buildWayobjRows(typeData as unknown as wayobjData);
     case "bridge":
       return buildBridgeRows(typeData as unknown as BridgeData);
     case "tunnel":
       return buildTunnelRows(typeData as unknown as TunnelData);
     case "roadsign":
-      return buildRoadsignRows(typeData as unknown as SignData);
+      return buildRoadsignRows(typeData as unknown as RoadsignData);
     case "crossing":
       return buildCrossingRows(typeData as unknown as CrossingData);
     case "building":
@@ -207,15 +206,11 @@ function buildVehicleRows(data: VehicleData): TableRow[] {
     },
     {
       label: "購入価格",
-      value: formatPrice(data.price),
+      value: formatBuildPrice(data.price),
     },
     {
       label: "運行費用",
-      value: formatRunningCost(data.running_cost),
-    },
-    {
-      label: "維持費",
-      value: formatMaintenanceCost(data.maintenance),
+      value: formatRunningCost(data.running_cost, 2),
     },
     {
       label: "出力",
@@ -228,10 +223,6 @@ function buildVehicleRows(data: VehicleData): TableRow[] {
     {
       label: "重量",
       value: formatWeight(data.weight),
-    },
-    {
-      label: "軸重",
-      value: formatWeight(data.axle_load),
     },
     {
       label: "長さ",
@@ -266,16 +257,16 @@ function buildWayRows(data: WayData): TableRow[] {
       value: formatSpeed(data.topspeed),
     },
     {
-      label: "最大積載量",
-      value: formatWeight(data.max_weight),
-    },
-    {
       label: "建設費",
-      value: formatPrice(data.price),
+      value: formatBuildPrice(data.price),
     },
     {
       label: "維持費",
       value: formatMaintenanceCost(data.maintenance),
+    },
+    {
+      label: "降雪対応",
+      value: formatBoolean((data.number_of_seasons ?? 0) > 0),
     },
     {
       label: "登場年月",
@@ -303,13 +294,17 @@ function buildBridgeRows(data: BridgeData): TableRow[] {
     },
     {
       label: "建設費",
-      value: formatPrice(data.price),
+      value: formatBuildPrice(data.price),
     },
     {
       label: "維持費",
       value: formatMaintenanceCost(data.maintenance),
     },
-    { label: "最大長", value: data.max_length },
+    { label: "最大長", value: data.max_length || "無制限" },
+    {
+      label: "降雪対応",
+      value: formatBoolean((data.number_of_seasons ?? 0) > 0),
+    },
     {
       label: "登場年月",
       value: formatDate(data.intro_date),
@@ -336,11 +331,15 @@ function buildTunnelRows(data: TunnelData): TableRow[] {
     },
     {
       label: "建設費",
-      value: formatPrice(data.price),
+      value: formatBuildPrice(data.price),
     },
     {
       label: "維持費",
       value: formatMaintenanceCost(data.maintenance),
+    },
+    {
+      label: "降雪対応",
+      value: formatBoolean((data.number_of_seasons ?? 0) > 0),
     },
     {
       label: "登場年月",
@@ -391,7 +390,7 @@ function buildFactoryRows(data: FactoryData): TableRow[] {
   return [
     { label: "生産力", value: data.productivity || "" },
     { label: "生産範囲", value: data.range || "" },
-    { label: "配置確率", value: data.distribution_weight || "" },
+    { label: "出現確率（重み）", value: data.distribution_weight || "" },
     {
       label: "配置場所",
       value: getPlacementName(data.placement),
@@ -429,8 +428,8 @@ function buildGoodRows(data: GoodData): TableRow[] {
       label: "重量",
       value: formatGoodMetric(data.weight_per_unit, data.metric),
     },
-    { label: "価値", value: data.base_value },
-    { label: "速度ボーナス", value: data.speed_bonus },
+    { label: "基本価格", value: formatGoodPrice(data.base_value, data.metric) },
+    { label: "速度ボーナス基準", value: data.speed_bonus },
     {
       label: "登場年月",
       value: formatDate(data.intro_date),
@@ -445,14 +444,14 @@ function buildGoodRows(data: GoodData): TableRow[] {
 /**
  * Wayobj（軌道オブジェクト）の詳細行
  */
-function buildWayobjRows(data: WayObjectData): TableRow[] {
+function buildWayobjRows(data: wayobjData): TableRow[] {
   return [
     {
       label: "軌道タイプ",
       value: formatWaytype(data.waytype),
     },
     {
-      label: "電化の有無",
+      label: "電化/非電化",
       value: data.waytype !== data.own_waytype ? "電化" : "非電化",
     },
     {
@@ -461,7 +460,7 @@ function buildWayobjRows(data: WayObjectData): TableRow[] {
     },
     {
       label: "建設費",
-      value: formatPrice(data.price),
+      value: formatBuildPrice(data.price),
     },
     {
       label: "維持費",
@@ -481,7 +480,7 @@ function buildWayobjRows(data: WayObjectData): TableRow[] {
 /**
  * Roadsign（信号・標識）の詳細行
  */
-function buildRoadsignRows(data: SignData): TableRow[] {
+function buildRoadsignRows(data: RoadsignData): TableRow[] {
   return [
     {
       label: "軌道タイプ",
@@ -492,8 +491,16 @@ function buildRoadsignRows(data: SignData): TableRow[] {
       value: formatSpeed(data.min_speed),
     },
     {
+      label: "信号/標識",
+      value: formatSignalType(data),
+    },
+    {
+      label: "属性",
+      value: formatSignalAttribute(data),
+    },
+    {
       label: "建設費",
-      value: formatPrice(data.price),
+      value: formatBuildPrice(data.price),
     },
     {
       label: "維持費",
@@ -548,7 +555,7 @@ function buildCrossingRows(data: CrossingData): TableRow[] {
 function buildCitycarRows(data: CitycarData): TableRow[] {
   return [
     {
-      label: "配置確率",
+      label: "出現確率（重み）",
       value: data.distribution_weight,
     },
     {
@@ -568,7 +575,7 @@ function buildCitycarRows(data: CitycarData): TableRow[] {
 function buildPedestrianRows(data: PedestrianData): TableRow[] {
   return [
     {
-      label: "配置確率",
+      label: "出現確率（重み）",
       value: data.distribution_weight,
     },
     {

@@ -198,7 +198,7 @@ export interface VehicleData {
   // ... other fields
 }
 
-export interface WayObjectData {
+export interface wayobjData {
   waytype?: number;
   own_waytype?: number;
   // ... other fields

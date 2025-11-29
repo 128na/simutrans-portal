@@ -1,4 +1,4 @@
-import { CategoryGrouping, FileInfoMypageEdit } from "@/types/models";
+import { CategoryGrouping, PakMetadata } from "@/types/models";
 import {
   type CategorySlug,
   type ObjectType,
@@ -11,8 +11,8 @@ import {
 /**
  * readmesの内容を結合して返す
  */
-export const getReadmeText = (fileInfo: FileInfoMypageEdit) => {
-  return Object.entries(fileInfo.data.readmes ?? {})
+export const getReadmeText = (readmes: Record<string, string[]>) => {
+  return Object.entries(readmes)
     .map(
       ([filename, readme]) =>
         `\n--------\n${filename}\n--------\n${readme.join("\n")}\n--------\n`
@@ -25,51 +25,64 @@ export const getReadmeText = (fileInfo: FileInfoMypageEdit) => {
  * @param fileInfo
  */
 export const getCategories = (
-  fileInfo: FileInfoMypageEdit,
+  paksMetadata: Record<string, PakMetadata[]>,
   categoryGrouping: CategoryGrouping
 ) => {
-  const meta = fileInfo.data.paks_metadata ?? {};
   const addons = categoryGrouping.addon;
   const selected = new Set<Category.MypageEdit>();
 
-  Object.keys(meta).forEach((filename: keyof typeof meta) => {
-    meta[filename].forEach((obj) => {
-      // console.log(obj);
+  Object.keys(paksMetadata).forEach((filename: keyof typeof paksMetadata) => {
+    paksMetadata[filename].forEach((obj) => {
       // 対応するカテゴリがあれば追加していく
       const objectType = obj.objectType as ObjectType;
       addByObjType(objectType, addons, selected);
 
+      // 車両
+      if (objectType === "vehicle" && obj.vehicleData) {
+        const wayType = obj.vehicleData.waytype as WayType;
+        return addByWayType(wayType, addons, selected);
+      }
       // 建物
       if (objectType === "building" && obj.buildingData) {
         const wayType = obj.buildingData.waytype as WayType;
-        addByWayTypeBuilding(wayType, addons, selected);
+        return addByWayTypeBuilding(wayType, addons, selected);
       }
       // 軌道
       if (objectType === "way" && obj.wayData) {
         const wayType = obj.wayData.waytype as WayType;
-        addByWayType(wayType, addons, selected);
+        return addByWayTypeBuilding(wayType, addons, selected);
+      }
+      // 軌道オブジェクト
+      if (objectType === "wayobj" && obj.wayobjData) {
+        const wayType = obj.wayobjData.waytype as WayType;
+        return addByWayTypeBuilding(wayType, addons, selected);
       }
       // 橋
       if (objectType === "bridge" && obj.bridgeData) {
         const wayType = obj.bridgeData.waytype as WayType;
-        addByWayType(wayType, addons, selected);
+        return addByWayTypeBuilding(wayType, addons, selected);
       }
       // トンネル
       if (objectType === "tunnel" && obj.tunnelData) {
         const wayType = obj.tunnelData.waytype as WayType;
-        addByWayType(wayType, addons, selected);
+        return addByWayTypeBuilding(wayType, addons, selected);
       }
-      // 車両
-      if (objectType === "vehicle" && obj.vehicleData) {
-        const wayType = obj.vehicleData.waytype as WayType;
-        addByWayType(wayType, addons, selected);
+      // 標識
+      if (objectType === "roadsign" && obj.roadsignData) {
+        const wayType = obj.roadsignData.waytype as WayType;
+        return addByWayTypeBuilding(wayType, addons, selected);
       }
       // 踏切
       if (objectType === "crossing" && obj.crossingData) {
         const wayType1 = obj.crossingData.waytype1 as WayType;
-        addByWayType(wayType1, addons, selected);
+        addByWayTypeBuilding(wayType1, addons, selected);
         const wayType2 = obj.crossingData.waytype2 as WayType;
-        addByWayType(wayType2, addons, selected);
+        addByWayTypeBuilding(wayType2, addons, selected);
+        return;
+      }
+      // 産業
+      if (objectType === "factory" || objectType === "good") {
+        return add("industrial-tools", addons, selected);
       }
     });
   });

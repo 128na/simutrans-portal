@@ -12,7 +12,7 @@ final class PakExtractorTest extends TestCase
     public function test_get_key(): void
     {
         $result = $this->getSUT()->getKey();
-        $this->assertSame('pak_metadata', $result);
+        $this->assertSame('paks_metadata', $result);
     }
 
     public function test_is_target(): void

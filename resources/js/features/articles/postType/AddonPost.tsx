@@ -15,12 +15,12 @@ import { useAxiosError } from "@/hooks/useAxiosError";
 import TextError from "@/components/ui/TextError";
 import { ModalFull } from "@/components/ui/ModalFull";
 import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
-import ButtonSub from "@/components/ui/ButtonSub";
 import {
   getCategories,
   getReadmeText,
 } from "@/features/attachments/fileInfoTool";
 import { t } from "@/utils/translate";
+import ButtonOutline from "@/components/ui/ButtonOutline";
 
 export const AddonPost = () => {
   const article = useArticleEditor((s) => s.article);
@@ -46,9 +46,12 @@ export const AddonPost = () => {
 
   const handleFillFromFile = () => {
     if (hasReadme) {
-      const description = getReadmeText(file!.fileInfo!);
+      const description = getReadmeText(file!.fileInfo!.data!.readmes!);
 
-      if (confirm("以下の内容を説明欄に追記します。\n" + description)) {
+      if (
+        description &&
+        confirm("以下の内容を説明欄に追記します。\n" + description)
+      ) {
         updateContents<ArticleContent.AddonPost>(
           (draft) => (draft.description += description)
         );
@@ -56,9 +59,13 @@ export const AddonPost = () => {
     }
 
     if (hasPakMetadata) {
-      const selectedCategories = getCategories(file!.fileInfo!, categories);
+      const selectedCategories = getCategories(
+        file!.fileInfo!.data!.paks_metadata!,
+        categories
+      );
 
       if (
+        selectedCategories.length &&
         confirm(
           "以下のカテゴリを選択します。\n" +
             selectedCategories
@@ -129,12 +136,12 @@ export const AddonPost = () => {
         </div>
       </div>
       <div>
-        <ButtonSub
+        <ButtonOutline
           disabled={!hasReadme && !hasPakMetadata}
           onClick={handleFillFromFile}
         >
           ファイルの内容から項目を入力する
-        </ButtonSub>
+        </ButtonOutline>
       </div>
 
       <div>

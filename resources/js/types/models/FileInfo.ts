@@ -88,7 +88,7 @@ export interface WayData extends BaseObj {
 /**
  * Way-object data type (overhead lines, catenary)
  */
-export interface WayObjectData extends BaseObj {
+export interface wayobjData extends BaseObj {
   /** 建設費用 (単位: 1/100 credits per tile) */
   price?: number;
   /** 月間維持費 (単位: 0.01cr/月) */
@@ -369,7 +369,7 @@ export interface GoodData extends BaseObj {
  * Roadsign/Signal data
  * 道路標識/信号データ型
  */
-export interface SignData extends BaseObj {
+export interface RoadsignData extends BaseObj {
   /** 配置可能なwaytype (数値) */
   waytype?: number;
   /** 最低速度制限 (km/h, 0 = 制限なし) */
@@ -465,7 +465,7 @@ export interface PakMetadata extends BaseObj {
   /** 道路データ (objectType="way"の場合のみ) */
   wayData?: WayData;
   /** Way-object データ (objectType="way-object"の場合のみ, 架線等) */
-  wayObjectData?: WayObjectData;
+  wayobjData?: wayobjData;
   /** 建物データ (objectType="building"の場合のみ) */
   buildingData?: BuildingData;
   /** 橋データ (objectType="bridge"の場合のみ) */
@@ -473,7 +473,7 @@ export interface PakMetadata extends BaseObj {
   /** トンネルデータ (objectType="tunnel"の場合のみ) */
   tunnelData?: TunnelData;
   /** 道路標識/信号データ (objectType="roadsign"の場合のみ) */
-  signData?: SignData;
+  roadsignData?: RoadsignData;
   /** 踏切データ (objectType="crossing"の場合のみ) */
   crossingData?: CrossingData;
   /** 市内自動車データ (objectType="citycar"の場合のみ) */

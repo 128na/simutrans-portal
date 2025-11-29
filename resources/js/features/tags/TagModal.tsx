@@ -3,7 +3,6 @@ import axios from "axios";
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
 import Button from "@/components/ui/Button";
-import ButtonOutline from "@/components/ui/ButtonOutline";
 import { useAxiosErrorState } from "@/hooks/errorState";
 import TextError from "@/components/ui/TextError";
 import TextSub from "@/components/ui/TextSub";
@@ -74,7 +73,6 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
       </div>
 
       <div className="flex justify-end space-x-2">
-        <ButtonOutline onClick={onClose}>キャンセル</ButtonOutline>
         <Button onClick={handleSave}>保存</Button>
       </div>
     </Modal>

@@ -1,3 +1,4 @@
+import { RoadsignData } from "@/types/models";
 import {
   ENGINE_TYPE_TRANSLATIONS,
   FREIGHT_TYPE_TRANSLATIONS,
@@ -61,7 +62,7 @@ export const formatGear = (gear: number | undefined): string => {
   if (gear === undefined) {
     return "";
   }
-  return `${gear.toFixed(1)}`;
+  return `${(gear / 100).toFixed(1)}`;
 };
 
 export const formatWeight = (weight: number | undefined): string => {
@@ -82,21 +83,40 @@ export const formatPrice = (price: number | undefined): string => {
   if (price === undefined) {
     return "";
   }
-  return `${(price * 100).toLocaleString()} Cr`;
+  return `${price.toLocaleString()} Cr`;
 };
 
-export const formatRunningCost = (cost: number | undefined): string => {
+export const formatBuildPrice = (price: number | undefined): string => {
+  if (price === undefined) {
+    return "";
+  }
+  return formatPrice(price * 100);
+};
+
+export const formatRunningCost = (
+  cost: number | undefined,
+  digit: number | undefined = 2
+): string => {
   if (cost === undefined) {
     return "";
   }
-  return `${(cost / 100).toLocaleString()} Cr/km`;
+  return `${(cost / 100).toLocaleString(undefined, {
+    minimumFractionDigits: digit,
+    maximumFractionDigits: digit,
+  })} Cr/km`;
 };
 
-export const formatMaintenanceCost = (cost: number | undefined): string => {
+export const formatMaintenanceCost = (
+  cost: number | undefined,
+  digit: number | undefined = 2
+): string => {
   if (cost === undefined) {
     return "";
   }
-  return `${(cost / 100).toLocaleString()} Cr/月`;
+  return `${(cost / 100).toLocaleString(undefined, {
+    minimumFractionDigits: digit,
+    maximumFractionDigits: digit,
+  })} Cr/月`;
 };
 
 export const formatGoodCategory = (catg: number | undefined): string => {
@@ -114,4 +134,51 @@ export const formatGoodMetric = (
     return "";
   }
   return `${weight_per_unit.toLocaleString()} kg/${metric}`;
+};
+
+export const formatGoodPrice = (
+  base_value: number | undefined,
+  metric: string | undefined
+): string => {
+  if (base_value === undefined || metric === undefined) {
+    return "";
+  }
+  return `${base_value.toLocaleString()} Cr/${metric}`;
+};
+
+export const formatBoolean = (value: boolean | undefined): string => {
+  if (value === undefined) {
+    return "";
+  }
+  return value ? "Yes" : "No";
+};
+
+export const formatSignalType = (data: RoadsignData) => {
+  return data.is_signal ? "信号" : "標識";
+};
+
+export const formatSignalAttribute = (data: RoadsignData) => {
+  const attributes: string[] = [];
+  if (data.is_one_way) {
+    attributes.push("一方通行");
+  }
+  if (data.is_choose_sign) {
+    attributes.push("チューズ");
+  }
+  if (data.is_private_way) {
+    attributes.push("プライベート");
+  }
+  if (data.is_pre_signal) {
+    attributes.push("プレシグナル");
+  }
+  if (data.is_longblock_signal) {
+    attributes.push("ロングブロック");
+  }
+  if (data.is_priority_signal) {
+    attributes.push("プライオリティ");
+  }
+  if (data.is_end_of_choose) {
+    attributes.push("End of choose");
+  }
+  return attributes.join(", ");
 };

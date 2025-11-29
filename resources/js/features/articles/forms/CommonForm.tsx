@@ -9,7 +9,7 @@ import { useAxiosError } from "@/hooks/useAxiosError";
 import { ModalFull } from "@/components/ui/ModalFull";
 import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
 import Checkbox from "@/components/ui/Checkbox";
-import ButtonSub from "@/components/ui/ButtonSub";
+import ButtonOutline from "@/components/ui/ButtonOutline";
 
 const regReplace =
   /(!|"|#|\$|%|&|'|\(|\)|\*|\+|,|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\s|\.)+/gi;
@@ -61,14 +61,14 @@ export const CommonForm = () => {
         <TextSub>
           URLプレビュー: /users/{user.nickname ?? user.id}/{article.slug || ""}
         </TextSub>
-        <ButtonSub
+        <ButtonOutline
           disabled={!article.title}
           onClick={() => {
             update((draft) => (draft.slug = escape(draft.title || "")));
           }}
         >
           タイトルから入力
-        </ButtonSub>
+        </ButtonOutline>
       </div>
       {isSlugUpdated && (
         <div>

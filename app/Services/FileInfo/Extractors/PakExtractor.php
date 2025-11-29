@@ -23,7 +23,7 @@ final readonly class PakExtractor implements Extractor
     #[\Override]
     public function getKey(): string
     {
-        return 'pak_metadata';
+        return 'paks_metadata';
     }
 
     #[\Override]

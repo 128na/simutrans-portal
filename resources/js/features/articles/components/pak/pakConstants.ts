@@ -84,7 +84,7 @@ export const WAYTYPE_TRANSLATIONS: Record<number | string, string> = {
   0: "指定なし",
   1: "道路",
   2: "鉄道",
-  3: "沿岸",
+  3: "運河",
   4: "架線",
   5: "モノレール",
   6: "リニア",

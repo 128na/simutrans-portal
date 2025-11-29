@@ -2,6 +2,8 @@ namespace Analytics {
   type Article = {
     id: number;
     title: string;
+    total_conversion_count: import("./Count").Count | null;
+    total_view_count: import("./Count").Count | null;
     published_at: string;
     modified_at: string;
   };

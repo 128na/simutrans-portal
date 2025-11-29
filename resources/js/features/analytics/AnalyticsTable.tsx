@@ -6,6 +6,7 @@ import { DataTable, DataTableHeader } from "@/components/layout/DataTable";
 import { compareArticleValues } from "../articles/utils/articleUtil";
 import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
 import { analyticsFilter } from "./analyticsUtil";
+import { format } from "date-fns";
 
 type Props = {
   articles: Analytics.Article[];
@@ -18,9 +19,16 @@ type Sort = {
 };
 
 const headers: DataTableHeader<keyof Analytics.Article>[] = [
-  { name: "タイトル", key: "title", width: "w-2/4", sortable: true },
-  { name: "投稿日", key: "published_at", width: "w-1/4", sortable: true },
-  { name: "更新日", key: "modified_at", width: "w-1/4", sortable: true },
+  { name: "タイトル", key: "title", width: "w-4/10", sortable: true },
+  { name: "投稿日", key: "published_at", width: "w-2/10", sortable: true },
+  { name: "更新日", key: "modified_at", width: "w-2/10", sortable: true },
+  { name: "PV数", key: "total_view_count", width: "w-1/10", sortable: true },
+  {
+    name: "CV数",
+    key: "total_conversion_count",
+    width: "w-1/10",
+    sortable: true,
+  },
 ];
 
 export const AnalyticsTable = ({ articles, limit }: Props) => {
@@ -102,9 +110,17 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
             >
               <td className="px-6 py-4 font-medium">{article.title}</td>
               <td className="px-6 py-4">
-                {article.published_at?.slice(0, 10)}
+                {format(new Date(article.published_at), "yyyy/MM/dd")}
               </td>
-              <td className="px-6 py-4">{article.modified_at?.slice(0, 10)}</td>
+              <td className="px-6 py-4">
+                {format(new Date(article.modified_at), "yyyy/MM/dd")}
+              </td>
+              <td className="px-6 py-4">
+                {article.total_view_count?.count ?? 0}
+              </td>
+              <td className="px-6 py-4">
+                {article.total_conversion_count?.count ?? 0}
+              </td>
             </tr>
           )}
         />

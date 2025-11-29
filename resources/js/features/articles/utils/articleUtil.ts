@@ -2,8 +2,6 @@ import { compareAsc, format, parseISO } from "date-fns";
 export const compareArticleValues = (a: unknown, b: unknown): number => {
   // null を末尾扱いにする
   if (a == null && b == null) return 0;
-  if (a == null) return 1;
-  if (b == null) return -1;
 
   if (typeof a === "object" || typeof b === "object") {
     const aCount = a as Count | null;

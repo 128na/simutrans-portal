@@ -15,7 +15,7 @@ final class ReparsePakFilesCommand extends Command
                             {id? : Specific attachment ID to reparse}
                             {--limit= : Limit the number of files to process}
                             {--max-size=100 : Maximum file size in MB (0 = unlimited)}
-                            {--dry-run : Simulate the operation without making changes}';
+                            {--sync : Process synchronously instead of using queue}';
 
     protected $description = 'Reparse all pak and zip files to extract metadata';
 
@@ -23,18 +23,20 @@ final class ReparsePakFilesCommand extends Command
     {
         $attachmentId = $this->argument('id') ? (int) $this->argument('id') : null;
         $limit = $this->option('limit') ? (int) $this->option('limit') : null;
-        $maxSize = $this->option('max-size') ? (int) $this->option('max-size') : 100;
+        $maxSize = $this->option('max-size') !== null ? (int) $this->option('max-size') : 100;
         $maxSizeMb = $maxSize > 0 ? $maxSize : null; // 0 = unlimited
-        $dryRun = (bool) $this->option('dry-run');
-
-        if ($dryRun) {
-            $this->warn('Running in dry-run mode. No changes will be made.');
-        }
+        $sync = (bool) $this->option('sync');
 
         if ($maxSizeMb !== null) {
             $this->info(sprintf('Max file size: %d MB', $maxSizeMb));
         } else {
             $this->info('Max file size: unlimited');
+        }
+
+        if ($sync) {
+            $this->info('Processing mode: synchronous');
+        } else {
+            $this->info('Processing mode: asynchronous (queue)');
         }
 
         // Build query
@@ -58,13 +60,7 @@ final class ReparsePakFilesCommand extends Command
 
         $this->info(sprintf('Found %s pak/zip file(s) to reparse.', $total));
 
-        if ($dryRun) {
-            $this->info('Dry-run mode: would reparse these files.');
-
-            return self::SUCCESS;
-        }
-
-        return $this->processAttachments($query, $total, $maxSizeMb);
+        return $this->processAttachments($query, $total, $maxSizeMb, $sync);
     }
 
     /**
@@ -123,8 +119,9 @@ final class ReparsePakFilesCommand extends Command
      *
      * @param  \Illuminate\Database\Eloquent\Builder<Attachment>  $builder
      * @param  int|null  $maxSizeMb  Maximum file size in MB (null = unlimited)
+     * @param  bool  $sync  Process synchronously
      */
-    private function processAttachments(\Illuminate\Database\Eloquent\Builder $builder, int $total, ?int $maxSizeMb): int
+    private function processAttachments(\Illuminate\Database\Eloquent\Builder $builder, int $total, ?int $maxSizeMb, bool $sync): int
     {
         $this->output->progressStart($total);
 
@@ -134,7 +131,7 @@ final class ReparsePakFilesCommand extends Command
 
         // Eager load fileInfo to avoid N+1 queries
         foreach ($builder->with('fileInfo')->cursor() as $lazyCollection) {
-            if ($this->reparseAttachment($lazyCollection, $maxSizeMb)) {
+            if ($this->reparseAttachment($lazyCollection, $maxSizeMb, $sync)) {
                 $successCount++;
             } else {
                 $errorCount++;
@@ -172,11 +169,18 @@ final class ReparsePakFilesCommand extends Command
      * Reparse a single attachment
      *
      * @param  int|null  $maxSizeMb  Maximum file size in MB (null = unlimited)
+     * @param  bool  $sync  Process synchronously
      */
-    private function reparseAttachment(Attachment $attachment, ?int $maxSizeMb): bool
+    private function reparseAttachment(Attachment $attachment, ?int $maxSizeMb, bool $sync): bool
     {
         try {
-            dispatch(new UpdateFileInfo($attachment, $maxSizeMb))->onQueue('parse');
+            $job = new UpdateFileInfo($attachment, $maxSizeMb);
+
+            if ($sync) {
+                dispatch_sync($job);
+            } else {
+                dispatch($job)->onQueue('parse');
+            }
 
             return true;
         } catch (\Throwable $throwable) {

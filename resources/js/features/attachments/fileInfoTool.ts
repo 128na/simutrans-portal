@@ -1,4 +1,12 @@
 import { CategoryGrouping, FileInfoMypageEdit } from "@/types/models";
+import {
+  type CategorySlug,
+  type ObjectType,
+  type WayType,
+  OBJECT_TYPE_CATEGORY_MAP,
+  WAY_BUILDING_CATEGORY_MAP,
+  WAY_CATEGORY_MAP,
+} from "@/features/articles/components/pak/pakConstants";
 
 /**
  * readmesの内容を結合して返す
@@ -11,84 +19,6 @@ export const getReadmeText = (fileInfo: FileInfoMypageEdit) => {
     )
     .join("\n");
 };
-
-/**
- * app\Services\FileInfo\Extractors\Pak\ObjectTypeConverter.php
- */
-type ObjectType =
-  | "vehicle"
-  | "building"
-  | "bridge"
-  | "tunnel"
-  | "way"
-  | "wayobj"
-  | "roadsign"
-  | "crossing"
-  | "tree"
-  | "good"
-  | "factory"
-  | "citycar"
-  | "pedestrian";
-
-/**
- * lang\ja\category.php
- */
-type CategorySlug =
-  | "trains"
-  | "rail-tools"
-  | "road-tools"
-  | "ships"
-  | "aircrafts"
-  | "road-vehicles"
-  | "airport-tools"
-  | "industrial-tools"
-  | "seaport-tools"
-  | "buildings"
-  | "monorail-vehicles"
-  | "monorail-tools"
-  | "maglev-vehicles"
-  | "maglev-tools"
-  | "narrow-gauge-vahicle"
-  | "narrow-gauge-tools"
-  | "tram-vehicle"
-  | "tram-tools"
-  | "scripts"
-  | "others"
-  | "none";
-
-/**
- * @see app\Services\FileInfo\Extractors\Pak\WayTypeConverter.php
- */
-type WayType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 16 | 128 | 255;
-
-const objectTypeCategoryMap = {
-  good: "industrial-tools",
-  factory: "industrial-tools",
-  citycar: "others",
-  pedestrian: "others",
-} as const satisfies Partial<Record<ObjectType, CategorySlug>>;
-
-const wayCategoryMap = {
-  1: "road-vehicles",
-  2: "trains",
-  3: "ships",
-  16: "aircrafts",
-  5: "monorail-vehicles",
-  6: "maglev-vehicles",
-  7: "tram-vehicle",
-  8: "narrow-gauge-vahicle",
-} as const satisfies Partial<Record<WayType, CategorySlug>>;
-
-const wayBuildingCategoryMap = {
-  1: "road-tools",
-  2: "rail-tools",
-  3: "seaport-tools",
-  16: "airport-tools",
-  5: "monorail-tools",
-  6: "maglev-tools",
-  7: "tram-tools",
-  8: "narrow-gauge-tools",
-} as const satisfies Partial<Record<WayType, CategorySlug>>;
 
 /**
  * ファイル情報から適切なカテゴリ一覧を返す
@@ -153,7 +83,9 @@ const addByObjType = (
   selected: Set<Category.MypageEdit>
 ) =>
   add(
-    objectTypeCategoryMap[objectType as keyof typeof objectTypeCategoryMap],
+    OBJECT_TYPE_CATEGORY_MAP[
+      objectType as keyof typeof OBJECT_TYPE_CATEGORY_MAP
+    ],
     categories,
     selected
   );
@@ -164,7 +96,7 @@ const addByWayType = (
   selected: Set<Category.MypageEdit>
 ) =>
   add(
-    wayCategoryMap[wayType as keyof typeof wayCategoryMap],
+    WAY_CATEGORY_MAP[wayType as keyof typeof WAY_CATEGORY_MAP],
     categories,
     selected
   );
@@ -175,7 +107,9 @@ const addByWayTypeBuilding = (
   selected: Set<Category.MypageEdit>
 ) =>
   add(
-    wayBuildingCategoryMap[wayType as keyof typeof wayBuildingCategoryMap],
+    WAY_BUILDING_CATEGORY_MAP[
+      wayType as keyof typeof WAY_BUILDING_CATEGORY_MAP
+    ],
     categories,
     selected
   );

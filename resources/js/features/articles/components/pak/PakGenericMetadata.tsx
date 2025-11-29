@@ -25,11 +25,6 @@ import {
   getPlacementName,
 } from "./pakBuildingTranslations";
 import {
-  getWaytypeName,
-  getEngineTypeName,
-  getFreightTypeName,
-} from "./pakTranslations";
-import {
   formatDate,
   formatGear,
   formatGoodCategory,
@@ -40,6 +35,9 @@ import {
   formatRunningCost,
   formatSpeed,
   formatWeight,
+  formatWaytype,
+  formatEngineType,
+  formatFreightType,
 } from "./formatter";
 
 interface Props {
@@ -184,11 +182,11 @@ function buildVehicleRows(data: VehicleData): TableRow[] {
   return [
     {
       label: "軌道タイプ",
-      value: getWaytypeName(data.waytype as number | undefined),
+      value: formatWaytype(data.waytype as number | undefined),
     },
     {
       label: "エンジンタイプ",
-      value: getEngineTypeName(data.engine_type),
+      value: formatEngineType(data.engine_type),
     },
     {
       label: "定員/容量",
@@ -200,7 +198,7 @@ function buildVehicleRows(data: VehicleData): TableRow[] {
     },
     {
       label: "輸送品目",
-      value: getFreightTypeName(data.freight_type),
+      value: formatFreightType(data.freight_type),
     },
     {
       label: "購入価格",
@@ -252,7 +250,7 @@ function buildWayRows(data: WayData): TableRow[] {
   return [
     {
       label: "軌道タイプ",
-      value: getWaytypeName(data.waytype),
+      value: formatWaytype(data.waytype),
     },
     {
       label: "システムタイプ",
@@ -292,7 +290,7 @@ function buildBridgeRows(data: BridgeData): TableRow[] {
   return [
     {
       label: "軌道タイプ",
-      value: getWaytypeName(data.waytype),
+      value: formatWaytype(data.waytype),
     },
     {
       label: "最高速度",
@@ -325,7 +323,7 @@ function buildTunnelRows(data: TunnelData): TableRow[] {
   return [
     {
       label: "軌道タイプ",
-      value: getWaytypeName(data.waytype),
+      value: formatWaytype(data.waytype),
     },
     {
       label: "最高速度",
@@ -361,7 +359,7 @@ function buildBuildingRows(data: BuildingData): TableRow[] {
     },
     {
       label: "軌道タイプ",
-      value: getWaytypeName(data.waytype),
+      value: formatWaytype(data.waytype),
     },
     {
       label: "取扱い品目",
@@ -434,7 +432,7 @@ function buildWayobjRows(data: WayObjectData): TableRow[] {
   return [
     {
       label: "軌道タイプ",
-      value: getWaytypeName(data.waytype),
+      value: formatWaytype(data.waytype),
     },
     {
       label: "電化の有無",
@@ -470,7 +468,7 @@ function buildRoadsignRows(data: SignData): TableRow[] {
   return [
     {
       label: "軌道タイプ",
-      value: getWaytypeName(data.waytype),
+      value: formatWaytype(data.waytype),
     },
     {
       label: "最低速度",
@@ -502,7 +500,7 @@ function buildCrossingRows(data: CrossingData): TableRow[] {
   return [
     {
       label: "軌道タイプ1",
-      value: getWaytypeName(data.waytype1),
+      value: formatWaytype(data.waytype1),
     },
     {
       label: "最高速度1",
@@ -510,7 +508,7 @@ function buildCrossingRows(data: CrossingData): TableRow[] {
     },
     {
       label: "軌道タイプ2",
-      value: getWaytypeName(data.waytype2),
+      value: formatWaytype(data.waytype2),
     },
     {
       label: "最高速度2",

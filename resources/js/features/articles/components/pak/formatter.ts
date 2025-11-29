@@ -1,3 +1,10 @@
+import {
+  ENGINE_TYPE_TRANSLATIONS,
+  FREIGHT_TYPE_TRANSLATIONS,
+  GOOD_CATEGORY_TRANSLATIONS,
+  WAYTYPE_TRANSLATIONS,
+} from "./pakConstants";
+
 /**
  * 日付フォーマット (year*12+month → YYYY/MM)
  */
@@ -12,18 +19,42 @@ export function formatDate(value: number | undefined): string {
   return `${year}/${month.toString().padStart(2, "0")}`;
 }
 
+/**
+ * Waytype番号を日本語名に変換
+ */
+export const formatWaytype = (type: number | undefined): string => {
+  if (type === undefined || type === null) return "(none)";
+  return WAYTYPE_TRANSLATIONS[type] || String(type);
+};
+
+/**
+ * エンジンタイプ番号を日本語名に変換
+ */
+export const formatEngineType = (type: number | undefined): string => {
+  if (type === undefined || type === null) return "(none)";
+  return ENGINE_TYPE_TRANSLATIONS[type] || String(type);
+};
+
+/**
+ * 貨物タイプ文字列を日本語名に変換
+ */
+export const formatFreightType = (type: string | undefined): string => {
+  if (!type) return "(none)";
+  return FREIGHT_TYPE_TRANSLATIONS[type] || type;
+};
+
 export const formatSpeed = (speed: number | undefined): string => {
   if (speed === undefined) {
     return "";
   }
-  return `${speed} km/h`;
+  return `${speed.toLocaleString()} km/h`;
 };
 
 export const formatPower = (power: number | undefined): string => {
   if (power === undefined) {
     return "";
   }
-  return `${power} kW`;
+  return `${power.toLocaleString()} kW`;
 };
 
 export const formatGear = (gear: number | undefined): string => {
@@ -44,7 +75,7 @@ export const formatNum = (num: number | undefined): string => {
   if (num === undefined) {
     return "";
   }
-  return `${num}`;
+  return `${num.toLocaleString()}`;
 };
 
 export const formatPrice = (price: number | undefined): string => {
@@ -72,18 +103,5 @@ export const formatGoodCategory = (catg: number | undefined): string => {
   if (catg === undefined) {
     return "";
   }
-
-  const categories: Record<number, string> = {
-    0: "特殊貨物",
-    1: "小口貨物",
-    2: "バルク貨物",
-    3: "長尺貨物",
-    4: "液体貨物",
-    5: "冷蔵貨物",
-    6: "旅客",
-    7: "郵便",
-    8: "なし",
-  };
-
-  return categories[catg] || "";
+  return GOOD_CATEGORY_TRANSLATIONS[catg] || "";
 };

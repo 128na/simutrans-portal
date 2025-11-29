@@ -24,9 +24,7 @@ final readonly class CitycarParser implements TypeParserInterface
 
     public function canParse(Node $node): bool
     {
-        $objectType = ObjectTypeConverter::toString($node->type);
-
-        return $objectType === 'citycar';
+        return $node->type === Node::OBJ_CITYCAR;
     }
 
     /**
@@ -53,7 +51,7 @@ final readonly class CitycarParser implements TypeParserInterface
             return match ($version) {
                 1 => $this->parseVersion1($binaryData, $offset),
                 2 => $this->parseVersion2($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported citycar version: '.$version),
+                default => throw new RuntimeException('Unsupported citycar version: ' . $version),
             };
         }
 

@@ -21,9 +21,7 @@ final readonly class CrossingParser implements TypeParserInterface
 
     public function canParse(Node $node): bool
     {
-        $objectType = ObjectTypeConverter::toString($node->type);
-
-        return $objectType === 'crossing';
+        return $node->type === Node::OBJ_CROSSING;
     }
 
     /**
@@ -54,7 +52,7 @@ final readonly class CrossingParser implements TypeParserInterface
         return match ($version) {
             1 => $this->parseVersion1($binaryData, $offset),
             2 => $this->parseVersion2($binaryData, $offset),
-            default => throw new RuntimeException('Unsupported crossing version: '.$version),
+            default => throw new RuntimeException('Unsupported crossing version: ' . $version),
         };
     }
 

@@ -45,7 +45,7 @@ final readonly class GroundobjParser implements TypeParserInterface
 
     public function canParse(Node $node): bool
     {
-        return $node->type === 'groundobj';
+        return $node->type === Node::OBJ_GROUNDOBJ;
     }
 
     /**
@@ -69,7 +69,7 @@ final readonly class GroundobjParser implements TypeParserInterface
             0 => throw new RuntimeException('Groundobj version 0 does not exist'),
             1 => $this->parseVersion1($node->data),
             2 => $this->parseVersion2($node->data),
-            default => throw new RuntimeException('Unsupported groundobj version: '.$version),
+            default => throw new RuntimeException('Unsupported groundobj version: ' . $version),
         };
 
         return $this->buildResult($result);

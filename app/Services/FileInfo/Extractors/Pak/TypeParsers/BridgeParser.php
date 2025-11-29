@@ -18,9 +18,7 @@ final readonly class BridgeParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {
-        $objectType = ObjectTypeConverter::toString($node->type);
-
-        return $objectType === 'bridge';
+        return $node->type === Node::OBJ_BRIDGE;
     }
 
     /**

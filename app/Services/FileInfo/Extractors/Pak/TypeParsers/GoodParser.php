@@ -19,9 +19,7 @@ final readonly class GoodParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {
-        $objectType = ObjectTypeConverter::toString($node->type);
-
-        return $objectType === 'good';
+        return $node->type === Node::OBJ_GOOD;
     }
 
     /**
@@ -60,7 +58,7 @@ final readonly class GoodParser implements TypeParserInterface
                 2 => $this->parseVersion2($binaryData, $offset),
                 3 => $this->parseVersion3($binaryData, $offset),
                 4 => $this->parseVersion4($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported goods version: '.$version),
+                default => throw new RuntimeException('Unsupported goods version: ' . $version),
             };
         } else {
             // Version 0 (legacy format): firstUint16 is actually base_value

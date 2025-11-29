@@ -285,8 +285,13 @@ final class PakParserTest extends TestCase
         $this->assertNotNull($metadata, 'test_citycar metadata not found in test.pak');
         $this->assertSame('test_citycar', $metadata['name']);
         $this->assertSame('TestAuthor', $metadata['copyright']);
-        // Note: citycar may be parsed as 'unknown_CCAR' depending on version
-        $this->assertStringContainsString('citycar', strtolower($metadata['objectType']));
+        // Citycar should now be properly recognized
+        $this->assertSame('citycar', $metadata['objectType']);
+
+        // Citycar data should be populated
+        $this->assertArrayHasKey('citycarData', $metadata);
+        $citycarData = $metadata['citycarData'];
+        $this->assertIsArray($citycarData);
     }
 
     public function test_parse_good_metadata(): void
@@ -471,13 +476,13 @@ final class PakParserTest extends TestCase
         $this->assertNotNull($metadata, 'test_groundobj metadata not found in test.pak');
         $this->assertSame('test_groundobj', $metadata['name']);
         $this->assertSame('TestAuthor', $metadata['copyright']);
-        // Groundobj is recognized as unknown_GOBJ by PakParser
-        $this->assertSame('unknown_GOBJ', $metadata['objectType']);
+        // Groundobj should now be properly recognized
+        $this->assertSame('groundobj', $metadata['objectType']);
 
-        if (isset($metadata['groundobjData'])) {
-            $groundobjData = $metadata['groundobjData'];
-            $this->assertIsArray($groundobjData);
-        }
+        // Groundobj data should be populated
+        $this->assertArrayHasKey('groundobjData', $metadata);
+        $groundobjData = $metadata['groundobjData'];
+        $this->assertIsArray($groundobjData);
     }
 
     public function test_parse_pedestrian_metadata(): void
@@ -503,13 +508,13 @@ final class PakParserTest extends TestCase
         $this->assertNotNull($metadata, 'test_pedestrian metadata not found in test.pak');
         $this->assertSame('test_pedestrian', $metadata['name']);
         $this->assertSame('TestAuthor', $metadata['copyright']);
-        // Pedestrian is recognized as unknown_PASS by PakParser
-        $this->assertSame('unknown_PASS', $metadata['objectType']);
+        // Pedestrian should now be properly recognized
+        $this->assertSame('pedestrian', $metadata['objectType']);
 
-        if (isset($metadata['pedestrianData'])) {
-            $pedestrianData = $metadata['pedestrianData'];
-            $this->assertIsArray($pedestrianData);
-        }
+        // Pedestrian data should be populated
+        $this->assertArrayHasKey('pedestrianData', $metadata);
+        $pedestrianData = $metadata['pedestrianData'];
+        $this->assertIsArray($pedestrianData);
     }
 
     public function test_parse_tree_metadata(): void
@@ -566,13 +571,13 @@ final class PakParserTest extends TestCase
         $this->assertNotNull($metadata, 'test_signal metadata not found in test.pak');
         $this->assertSame('test_signal', $metadata['name']);
         $this->assertSame('TestAuthor', $metadata['copyright']);
-        // Roadsign is recognized as unknown_SIGN by PakParser
-        $this->assertSame('unknown_SIGN', $metadata['objectType']);
+        // Roadsign should now be properly recognized
+        $this->assertSame('roadsign', $metadata['objectType']);
 
-        if (isset($metadata['roadsignData'])) {
-            $roadsignData = $metadata['roadsignData'];
-            $this->assertIsArray($roadsignData);
-        }
+        // Roadsign data should be populated
+        $this->assertArrayHasKey('roadsignData', $metadata);
+        $roadsignData = $metadata['roadsignData'];
+        $this->assertIsArray($roadsignData);
     }
 
     // Note: skin object test is removed because the object doesn't compile with makeobj

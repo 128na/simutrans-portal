@@ -18,9 +18,7 @@ final readonly class TunnelParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {
-        $objectType = ObjectTypeConverter::toString($node->type);
-
-        return $objectType === 'tunnel';
+        return $node->type === Node::OBJ_TUNNEL;
     }
 
     /**
@@ -54,7 +52,7 @@ final readonly class TunnelParser implements TypeParserInterface
             4 => $this->parseVersion4($binaryData, $offset),
             5 => $this->parseVersion5($binaryData, $offset),
             6 => $this->parseVersion6($binaryData, $offset),
-            default => throw new RuntimeException('Unsupported tunnel version: '.$version),
+            default => throw new RuntimeException('Unsupported tunnel version: ' . $version),
         };
     }
 

@@ -27,13 +27,13 @@ final readonly class Node
 
     public const string OBJ_WAYOBJ = 'WYOB';
 
-    public const string OBJ_ROADSIGN = 'ROSG';
+    public const string OBJ_ROADSIGN = 'SIGN';
 
     public const string OBJ_CROSSING = 'CRSS';
 
     public const string OBJ_TREE = 'TREE';
 
-    public const string OBJ_GROUNDOBJ = 'GROB';
+    public const string OBJ_GROUNDOBJ = 'GOBJ';
 
     public const string OBJ_GROUND = 'GRND';
 
@@ -45,9 +45,9 @@ final readonly class Node
 
     public const string OBJ_FACTORY_PRODUCT = 'FPRO';
 
-    public const string OBJ_CITYCAR = 'CYCR';
+    public const string OBJ_CITYCAR = 'CCAR';
 
-    public const string OBJ_PEDESTRIAN = 'PEDE';
+    public const string OBJ_PEDESTRIAN = 'PASS';
 
     public const string OBJ_SOUND = 'SOND';
 

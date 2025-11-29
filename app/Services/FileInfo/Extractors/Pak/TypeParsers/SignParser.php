@@ -35,9 +35,7 @@ final readonly class SignParser implements TypeParserInterface
 
     public function canParse(Node $node): bool
     {
-        $objectType = ObjectTypeConverter::toString($node->type);
-
-        return $objectType === 'roadsign';
+        return $node->type === Node::OBJ_ROADSIGN;
     }
 
     /**
@@ -71,7 +69,7 @@ final readonly class SignParser implements TypeParserInterface
             4 => $this->parseVersion4($binaryData, $offset),
             5 => $this->parseVersion5($binaryData, $offset),
             6 => $this->parseVersion6($binaryData, $offset),
-            default => throw new RuntimeException('Unsupported roadsign version: '.$version),
+            default => throw new RuntimeException('Unsupported roadsign version: ' . $version),
         };
     }
 

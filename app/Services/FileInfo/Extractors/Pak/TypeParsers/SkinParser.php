@@ -25,7 +25,7 @@ final readonly class SkinParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {
-        return $node->type === 'skin' || $node->type === 'smoke';
+        return $node->type === Node::OBJ_SKIN || $node->type === 'smoke';
     }
 
     /**

@@ -53,7 +53,7 @@ final readonly class TreeParser implements TypeParserInterface
 
     public function canParse(Node $node): bool
     {
-        return $node->type === 'tree';
+        return $node->type === Node::OBJ_TREE;
     }
 
     /**
@@ -73,7 +73,7 @@ final readonly class TreeParser implements TypeParserInterface
             0 => $this->parseVersion0(),
             1 => $this->parseVersion1($node->data),
             2 => $this->parseVersion2($node->data),
-            default => throw new RuntimeException('Unsupported tree version: '.$version),
+            default => throw new RuntimeException('Unsupported tree version: ' . $version),
         };
 
         return $this->buildResult($result);

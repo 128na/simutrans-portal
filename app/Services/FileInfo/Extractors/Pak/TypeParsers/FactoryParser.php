@@ -22,9 +22,7 @@ final readonly class FactoryParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {
-        $objectType = ObjectTypeConverter::toString($node->type);
-
-        return $objectType === 'factory';
+        return $node->type === Node::OBJ_FACTORY;
     }
 
     /**
@@ -54,7 +52,7 @@ final readonly class FactoryParser implements TypeParserInterface
                 3 => $this->parseVersion3($binaryData, $offset),
                 4 => $this->parseVersion4($binaryData, $offset),
                 5 => $this->parseVersion5($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported factory version: '.$version),
+                default => throw new RuntimeException('Unsupported factory version: ' . $version),
             };
         } else {
             // Version 0 (legacy): firstUint16 is placement type
@@ -477,7 +475,7 @@ final readonly class FactoryParser implements TypeParserInterface
         foreach ($fields as $field) {
             $data = unpack('v', substr($binaryData, $offset, 2));
             if ($data === false) {
-                throw new RuntimeException('Failed to read '.$field);
+                throw new RuntimeException('Failed to read ' . $field);
             }
 
             $result[$field] = $data[1];

@@ -24,7 +24,7 @@ final readonly class GroundParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {
-        return $node->type === 'ground';
+        return $node->type === Node::OBJ_GROUND;
     }
 
     /**

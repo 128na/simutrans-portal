@@ -28,7 +28,7 @@ final readonly class BuildingParser implements TypeParserInterface
 
     public function canParse(Node $node): bool
     {
-        return $node->type === 'BUIL';
+        return $node->type === Node::OBJ_BUILDING;
     }
 
     public function parse(Node $node): array

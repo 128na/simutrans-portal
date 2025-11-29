@@ -29,7 +29,7 @@ final readonly class SoundParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {
-        return $node->type === 'sound';
+        return $node->type === Node::OBJ_SOUND;
     }
 
     /**
@@ -48,7 +48,7 @@ final readonly class SoundParser implements TypeParserInterface
             0 => throw new RuntimeException('Sound version 0 does not exist'),
             1 => $this->parseVersion1($node->data),
             2 => $this->parseVersion2($node->data),
-            default => throw new RuntimeException('Unsupported sound version: '.$version),
+            default => throw new RuntimeException('Unsupported sound version: ' . $version),
         };
     }
 

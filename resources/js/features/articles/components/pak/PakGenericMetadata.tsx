@@ -57,7 +57,7 @@ const PakGenericMetadata: React.FC<Props> = ({ metadata }) => {
     { label: "オブジェクト名", value: metadata.name },
     { label: "著作権", value: metadata.copyright || "" },
     {
-      label: "オブジェクトタイプ",
+      label: "タイプ",
       value: getObjectTypeLabel(metadata.objectType),
     },
   ];
@@ -98,7 +98,9 @@ function getObjectTypeLabel(objectType: string): string {
     skin: "スキン",
   };
 
-  return labels[objectType] || objectType;
+  return labels[objectType]
+    ? `${labels[objectType]} (${objectType})`
+    : objectType;
 }
 
 /**

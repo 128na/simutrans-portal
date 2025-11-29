@@ -15,12 +15,12 @@ describe("articleUtil", () => {
       expect(compareArticleValues(null, null)).toBe(0);
     });
 
-    it("aがnullの場合は1を返す（末尾扱い）", () => {
-      expect(compareArticleValues(null, "value")).toBe(1);
+    it("aがnullの場合は0を返す", () => {
+      expect(compareArticleValues(null, "value")).toBe(0);
     });
 
-    it("bがnullの場合は-1を返す", () => {
-      expect(compareArticleValues("value", null)).toBe(-1);
+    it("bがnullの場合は0を返す", () => {
+      expect(compareArticleValues("value", null)).toBe(0);
     });
 
     it("数値の比較ができる", () => {

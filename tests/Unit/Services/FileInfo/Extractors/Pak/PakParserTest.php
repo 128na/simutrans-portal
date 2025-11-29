@@ -112,11 +112,11 @@ final class PakParserTest extends TestCase
         $data = file_get_contents(__DIR__ . '/../file/test.pak');
         $result = $parser->parse($data);
 
-        $this->assertNotEmpty($result['metadata']);
+        $this->assertNotEmpty($result);
 
         // Find the way object metadata
         $wayMetadata = null;
-        foreach ($result['metadata'] as $metadata) {
+        foreach ($result as $metadata) {
             if ($metadata['objectType'] === 'way') {
                 $wayMetadata = $metadata;
                 break;

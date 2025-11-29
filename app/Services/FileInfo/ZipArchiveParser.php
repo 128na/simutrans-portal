@@ -56,7 +56,13 @@ final readonly class ZipArchiveParser
 
     private function convert(string $str): string
     {
-        $detected = mb_detect_encoding($str, mb_list_encodings());
+        // Fast path: Check if already valid UTF-8
+        if (mb_check_encoding($str, 'UTF-8')) {
+            return $str;
+        }
+
+        // Limited encoding detection (most common in Simutrans addons)
+        $detected = mb_detect_encoding($str, ['UTF-8', 'SJIS', 'EUC-JP', 'ISO-8859-1'], true);
         $result = mb_convert_encoding($str, 'UTF-8', $detected ?: 'UTF-8');
 
         return $result === false ? $str : $result;

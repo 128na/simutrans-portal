@@ -9,8 +9,13 @@ use App\Models\Attachment\FileInfo;
 use App\Repositories\Attachment\FileInfoRepository;
 use Exception;
 
-final readonly class FileInfoService
+final class FileInfoService
 {
+    /**
+     * @var array<string, array<int, \App\Services\FileInfo\Extractors\Extractor>>
+     */
+    private array $extractorCache = [];
+
     /**
      * @param  \App\Services\FileInfo\Extractors\Extractor[]  $extractors
      */
@@ -73,17 +78,25 @@ final readonly class FileInfoService
      */
     private function handleExtractors(string $filename, string $text, array $data): array
     {
-        foreach ($this->extractors as $extractor) {
-            if ($extractor->isTarget($filename)) {
-                // Only process text for text extractors (performance optimization)
-                $processedText = $extractor->isText() ? $this->handleText($text) : $text;
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
-                $extracted = $extractor->extract($processedText);
+        // Cache extractors by extension
+        if (! isset($this->extractorCache[$ext])) {
+            $this->extractorCache[$ext] = array_filter(
+                $this->extractors,
+                fn($e) => $e->isTarget($filename)
+            );
+        }
 
-                // Store extracted data with extractor key
-                if ($extracted !== []) {
-                    $data[$extractor->getKey()][$filename] = $extracted;
-                }
+        foreach ($this->extractorCache[$ext] as $extractor) {
+            // Only process text for text extractors (performance optimization)
+            $processedText = $extractor->isText() ? $this->handleText($text) : $text;
+
+            $extracted = $extractor->extract($processedText);
+
+            // Store extracted data with extractor key
+            if ($extracted !== []) {
+                $data[$extractor->getKey()][$filename] = $extracted;
             }
         }
 

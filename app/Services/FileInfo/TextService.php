@@ -8,9 +8,12 @@ final class TextService
 {
     public function removeBom(string $text): string
     {
-        $bom = pack('H*', 'EFBBBF');
+        // Fast path: Check if BOM exists before regex
+        if (! str_starts_with($text, "\xEF\xBB\xBF")) {
+            return $text;
+        }
 
-        return preg_replace(sprintf('/^%s/', $bom), '', $text) ?? $text;
+        return substr($text, 3); // Remove 3-byte UTF-8 BOM
     }
 
     public function encoding(string $text): string

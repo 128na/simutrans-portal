@@ -80,12 +80,6 @@ final class ReparsePakFilesCommand extends Command
                 return null;
             }
 
-            if ($attachment->fileInfo === null) {
-                $this->error(sprintf('Attachment #%d does not have FileInfo.', $attachmentId));
-
-                return null;
-            }
-
             if (! $this->isPakOrZipFile($attachment->original_name)) {
                 $this->error(sprintf(
                     'Attachment #%d (%s) is not a pak or zip file.',
@@ -97,20 +91,20 @@ final class ReparsePakFilesCommand extends Command
             }
 
             $this->info(sprintf(
-                'Processing attachment #%d: %s',
+                'Processing attachment #%d: %s (FileInfo: %s)',
                 $attachmentId,
-                $attachment->original_name
+                $attachment->original_name,
+                $attachment->fileInfo ? 'exists' : 'not found - will be created'
             ));
 
             return Attachment::where('id', $attachmentId);
         }
 
-        // Query all pak/zip files
-        return Attachment::whereHas('fileInfo')
-            ->where(function ($q): void {
-                $q->where('original_name', 'like', '%.pak')
-                    ->orWhere('original_name', 'like', '%.zip');
-            })
+        // Query all pak/zip files (including those without fileInfo)
+        return Attachment::where(function ($q): void {
+            $q->where('original_name', 'like', '%.pak')
+                ->orWhere('original_name', 'like', '%.zip');
+        })
             ->orderBy('size', 'asc');
     }
 

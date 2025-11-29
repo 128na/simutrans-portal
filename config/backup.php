@@ -91,6 +91,7 @@ return [
              */
             'disks' => [
                 'dropbox',
+                'local_backup',
             ],
         ],
 
@@ -144,7 +145,10 @@ return [
     'monitor_backups' => [
         [
             'name' => env('APP_NAME', 'laravel-backup'),
-            'disks' => ['dropbox'],
+            'disks' => [
+                'dropbox',
+                'local_backup',
+            ],
             'health_checks' => [
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,

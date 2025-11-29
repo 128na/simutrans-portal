@@ -16,6 +16,11 @@ import TextError from "@/components/ui/TextError";
 import { ModalFull } from "@/components/ui/ModalFull";
 import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
 import ButtonSub from "@/components/ui/ButtonSub";
+import {
+  getCategories,
+  getReadmeText,
+} from "@/features/attachments/fileInfoTool";
+import { t } from "@/utils/translate";
 
 export const AddonPost = () => {
   const article = useArticleEditor((s) => s.article);
@@ -35,6 +40,44 @@ export const AddonPost = () => {
   const file = attachments.find((a) => a.id === contents.file);
 
   const { getError } = useAxiosError();
+
+  const hasReadme = !!file?.fileInfo?.data.readmes;
+  const hasPakMetadata = !!file?.fileInfo?.data.paks_metadata;
+
+  const handleFillFromFile = () => {
+    if (hasReadme) {
+      const description = getReadmeText(file!.fileInfo!);
+
+      if (confirm("以下の内容を説明欄に追記します。\n" + description)) {
+        updateContents<ArticleContent.AddonPost>(
+          (draft) => (draft.description += description)
+        );
+      }
+    }
+
+    if (hasPakMetadata) {
+      const selectedCategories = getCategories(file!.fileInfo!, categories);
+
+      if (
+        confirm(
+          "以下のカテゴリを選択します。\n" +
+            selectedCategories
+              .map((c) => t(`category.${c.type}.${c.slug}`))
+              .join(", ")
+        )
+      ) {
+        update(
+          (draft) =>
+            (draft.categories = Array.from(
+              new Set([
+                ...draft.categories,
+                ...selectedCategories.map((c) => c.id),
+              ])
+            ))
+        );
+      }
+    }
+  };
 
   return (
     <div className="grid gap-4">
@@ -85,6 +128,14 @@ export const AddonPost = () => {
           </ModalFull>
         </div>
       </div>
+      <div>
+        <ButtonSub
+          disabled={!hasReadme && !hasPakMetadata}
+          onClick={handleFillFromFile}
+        >
+          ファイルの内容から項目を入力する
+        </ButtonSub>
+      </div>
 
       <div>
         <Textarea
@@ -102,22 +153,6 @@ export const AddonPost = () => {
           説明
           <TextError>{getError("article.contents.description")}</TextError>
         </Textarea>
-        <ButtonSub
-          disabled={!file?.fileInfo?.data.readmes}
-          onClick={() => {
-            const text = Object.entries(file?.fileInfo?.data.readmes ?? {})
-              .map(
-                ([filename, readme]) =>
-                  `\n--------\n${filename}\n--------\n${readme.join("\n")}\n--------\n`
-              )
-              .join("\n");
-            updateContents<ArticleContent.AddonPost>(
-              (draft) => (draft.description += text)
-            );
-          }}
-        >
-          Readmeファイルから入力
-        </ButtonSub>
       </div>
 
       <SelectCategories

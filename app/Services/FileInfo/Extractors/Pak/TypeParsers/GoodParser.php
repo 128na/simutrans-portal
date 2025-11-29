@@ -6,6 +6,7 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\ObjectTypeConverter;
+use App\Services\FileInfo\Extractors\Pak\TextNodeExtractor;
 use RuntimeException;
 
 /**
@@ -16,19 +17,6 @@ use RuntimeException;
  */
 final readonly class GoodParser implements TypeParserInterface
 {
-    // Good categories (from goods_desc.h / goods_manager.cc)
-    private const array CATEGORY_NAMES = [
-        0 => 'special_freight',
-        1 => 'piece_goods',
-        2 => 'bulk_goods',
-        3 => 'long_goods',
-        4 => 'liquid_goods',
-        5 => 'cooled_goods',
-        6 => 'passengers',
-        7 => 'mail',
-        8 => 'none',
-    ];
-
     public function canParse(Node $node): bool
     {
         $objectType = ObjectTypeConverter::toString($node->type);
@@ -41,6 +29,16 @@ final readonly class GoodParser implements TypeParserInterface
      */
     public function parse(Node $node): array
     {
+        // Extract metric from TEXT node (child node 2)
+        $metric = null;
+        $metricNode = $node->getChild(2);
+        if ($metricNode instanceof Node && $metricNode->isType(Node::OBJ_TEXT)) {
+            $metric = TextNodeExtractor::extract($metricNode);
+            if ($metric === '') {
+                $metric = null;
+            }
+        }
+
         $binaryData = $node->data;
         $offset = 0;
 
@@ -57,17 +55,24 @@ final readonly class GoodParser implements TypeParserInterface
             $version = $firstUint16 & 0x7FFF; // Mask out high bit
             $offset += 2;
 
-            return match ($version) {
+            $result = match ($version) {
                 1 => $this->parseVersion1($binaryData, $offset),
                 2 => $this->parseVersion2($binaryData, $offset),
                 3 => $this->parseVersion3($binaryData, $offset),
                 4 => $this->parseVersion4($binaryData, $offset),
                 default => throw new RuntimeException('Unsupported goods version: '.$version),
             };
+        } else {
+            // Version 0 (legacy format): firstUint16 is actually base_value
+            $result = $this->parseVersion0($binaryData, $offset, $firstUint16);
         }
 
-        // Version 0 (legacy format): firstUint16 is actually base_value
-        return $this->parseVersion0($binaryData, $offset, $firstUint16);
+        // Add metric to result
+        if ($metric !== null) {
+            $result['metric'] = $metric;
+        }
+
+        return $result;
     }
 
     /**
@@ -318,10 +323,6 @@ final readonly class GoodParser implements TypeParserInterface
      */
     private function buildResult(array $data): array
     {
-        // Add category name string
-        $catg = $data['catg'] ?? 8; // Default to 'none'
-        $data['catg_name'] = self::CATEGORY_NAMES[is_int($catg) && isset(self::CATEGORY_NAMES[$catg]) ? $catg : 8];
-
         return $data;
     }
 }

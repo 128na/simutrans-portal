@@ -6,7 +6,6 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
-use App\Services\FileInfo\Extractors\Pak\WayTypeConverter;
 
 /**
  * Way data parser
@@ -49,16 +48,16 @@ final readonly class WayParser implements TypeParserInterface
             // Apply internal corrections (from way_reader.cc)
             $this->applyInternalCorrections($data);
 
-            // Convert wtyp to string
-            if (isset($data['wtyp'])) {
-                assert(is_int($data['wtyp']));
-                $data['wtyp_str'] = WayTypeConverter::getWayTypeName($data['wtyp']);
+            // front_images from version 5 on (from way_reader.cc)
+            $data['front_images'] = $version > 4;
+
+            // axle_load defaults to 9999 for versions < 6
+            if ($version < 6 && ! isset($data['axle_load'])) {
+                $data['axle_load'] = 9999;
             }
 
-            // Convert styp to string
             if (isset($data['styp'])) {
                 assert(is_int($data['styp']));
-                $data['styp_str'] = WayTypeConverter::getSystemTypeName($data['styp']);
             }
 
             return $data;
@@ -79,7 +78,7 @@ final readonly class WayParser implements TypeParserInterface
             'max_weight' => 999,
             'intro_date' => 1930 * 12,
             'retire_date' => 2999 * 12,
-            'wtyp' => 1,
+            'waytype' => 1,
             'styp' => 0,
             'draw_as_obj' => false,
             'number_of_seasons' => 0,
@@ -99,7 +98,7 @@ final readonly class WayParser implements TypeParserInterface
             'topspeed' => $reader->readUint32LE(),
             'max_weight' => $reader->readUint32LE(),
             'intro_date' => intdiv($introDateRaw, 16) * 12 + ($introDateRaw % 16),
-            'wtyp' => $reader->readUint8(),
+            'waytype' => $reader->readUint8(),
             'styp' => $reader->readUint8(),
             'retire_date' => 2999 * 12,
             'draw_as_obj' => false,
@@ -119,7 +118,7 @@ final readonly class WayParser implements TypeParserInterface
             'max_weight' => $reader->readUint32LE(),
             'intro_date' => $reader->readUint16LE(),
             'retire_date' => $reader->readUint16LE(),
-            'wtyp' => $reader->readUint8(),
+            'waytype' => $reader->readUint8(),
             'styp' => $reader->readUint8(),
             'draw_as_obj' => false,
             'number_of_seasons' => 0,
@@ -138,7 +137,7 @@ final readonly class WayParser implements TypeParserInterface
             'max_weight' => $reader->readUint32LE(),
             'intro_date' => $reader->readUint16LE(),
             'retire_date' => $reader->readUint16LE(),
-            'wtyp' => $reader->readUint8(),
+            'waytype' => $reader->readUint8(),
             'styp' => $reader->readUint8(),
             'draw_as_obj' => $reader->readUint8(),
             'number_of_seasons' => 0,
@@ -157,7 +156,7 @@ final readonly class WayParser implements TypeParserInterface
             'max_weight' => $reader->readUint32LE(),
             'intro_date' => $reader->readUint16LE(),
             'retire_date' => $reader->readUint16LE(),
-            'wtyp' => $reader->readUint8(),
+            'waytype' => $reader->readUint8(),
             'styp' => $reader->readUint8(),
             'draw_as_obj' => $reader->readUint8(),
             'number_of_seasons' => $reader->readSint8(),
@@ -177,7 +176,7 @@ final readonly class WayParser implements TypeParserInterface
             'intro_date' => $reader->readUint16LE(),
             'retire_date' => $reader->readUint16LE(),
             'axle_load' => $reader->readUint16LE(),
-            'wtyp' => $reader->readUint8(),
+            'waytype' => $reader->readUint8(),
             'styp' => $reader->readUint8(),
             'draw_as_obj' => $reader->readUint8(),
             'number_of_seasons' => $reader->readSint8(),
@@ -202,7 +201,7 @@ final readonly class WayParser implements TypeParserInterface
             'intro_date' => $reader->readUint16LE(),
             'retire_date' => $reader->readUint16LE(),
             'axle_load' => $reader->readUint16LE(),
-            'wtyp' => $reader->readUint8(),
+            'waytype' => $reader->readUint8(),
             'styp' => $reader->readUint8(),
             'draw_as_obj' => $reader->readUint8(),
             'number_of_seasons' => $reader->readSint8(),
@@ -216,14 +215,14 @@ final readonly class WayParser implements TypeParserInterface
      */
     private function applyInternalCorrections(array &$data): void
     {
-        if (isset($data['wtyp']) && $data['wtyp'] === 5) { // tram_wt
+        if (isset($data['waytype']) && $data['waytype'] === 5) { // tram_wt
             $data['styp'] = 7; // type_tram
-            $data['wtyp'] = 1; // track_wt
-        } elseif (isset($data['styp'], $data['wtyp']) && $data['styp'] === 5 && $data['wtyp'] === 1) {
-            $data['wtyp'] = 6; // monorail_wt
+            $data['waytype'] = 1; // track_wt
+        } elseif (isset($data['styp'], $data['waytype']) && $data['styp'] === 5 && $data['waytype'] === 1) {
+            $data['waytype'] = 6; // monorail_wt
             $data['styp'] = 0; // type_flat
-        } elseif (isset($data['wtyp']) && $data['wtyp'] === 128) {
-            $data['wtyp'] = 7; // powerline_wt
+        } elseif (isset($data['waytype']) && $data['waytype'] === 128) {
+            $data['waytype'] = 7; // powerline_wt
         }
     }
 }

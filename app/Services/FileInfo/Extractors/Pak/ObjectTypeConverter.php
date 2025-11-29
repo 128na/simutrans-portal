@@ -25,6 +25,9 @@ final class ObjectTypeConverter
             Node::OBJ_GROUND => 'ground',
             Node::OBJ_GOOD => 'good',
             Node::OBJ_FACTORY => 'factory',
+            Node::OBJ_FACTORY_SUPPLIER => 'fsup',
+            Node::OBJ_FACTORY_PRODUCT => 'fpro',
+            Node::OBJ_XREF => 'xref',
             Node::OBJ_CITYCAR, 'CCAR' => 'citycar', // CCAR is used by makeobj 60.8+
             Node::OBJ_PEDESTRIAN => 'pedestrian',
             Node::OBJ_SOUND => 'sound',

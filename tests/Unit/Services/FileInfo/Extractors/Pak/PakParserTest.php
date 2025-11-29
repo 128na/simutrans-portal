@@ -180,10 +180,9 @@ final class PakParserTest extends TestCase
 
         // Engine type
         $this->assertSame(1, $vehicleData['engine_type']);      // engine_type=diesel (1)
-        $this->assertSame('diesel', $vehicleData['engine_type_str']); // Converted to string
 
         // Waytype (road=1 in Simutrans)
-        $this->assertSame(1, $vehicleData['wtyp']);
+        $this->assertSame(1, $vehicleData['waytype']);
 
         // Sound (254 = default sound index)
         $this->assertSame(254, $vehicleData['sound']);
@@ -224,16 +223,8 @@ final class PakParserTest extends TestCase
         $this->assertArrayHasKey('maintenance', $wayData);
         $this->assertArrayHasKey('topspeed', $wayData);
         $this->assertArrayHasKey('max_weight', $wayData);
-        $this->assertArrayHasKey('wtyp', $wayData);
+        $this->assertArrayHasKey('waytype', $wayData);
         $this->assertArrayHasKey('styp', $wayData);
-
-        // Way type string
-        $this->assertArrayHasKey('wtyp_str', $wayData);
-        $this->assertIsString($wayData['wtyp_str']);
-
-        // System type string
-        $this->assertArrayHasKey('styp_str', $wayData);
-        $this->assertIsString($wayData['styp_str']);
     }
 
     public function test_parse_building_metadata(): void
@@ -327,6 +318,8 @@ final class PakParserTest extends TestCase
         $this->assertArrayHasKey('goodData', $metadata);
         $goodData = $metadata['goodData'];
         $this->assertIsArray($goodData);
+        $this->assertArrayHasKey('metric', $goodData);
+        $this->assertSame('kg', $goodData['metric']);
     }
 
     public function test_parse_bridge_metadata(): void
@@ -360,7 +353,7 @@ final class PakParserTest extends TestCase
         $this->assertIsArray($bridgeData);
 
         // Basic bridge properties from test_bridge.dat
-        $this->assertArrayHasKey('wtyp', $bridgeData);
+        $this->assertArrayHasKey('waytype', $bridgeData);
         $this->assertArrayHasKey('topspeed', $bridgeData);
         // Note: Some properties may be ignored by makeobj depending on version
     }
@@ -408,25 +401,39 @@ final class PakParserTest extends TestCase
         $this->assertIsArray($result);
         $this->assertNotEmpty($result['metadata']);
 
-        // Factory in Simutrans is recognized as building with type 4
+        // Find factory metadata (objectType = 'factory')
         $metadata = null;
         foreach ($result['metadata'] as $item) {
-            if (
-                isset($item['objectType']) &&
-                $item['objectType'] === 'building' &&
-                isset($item['buildingData']['type']) &&
-                $item['buildingData']['type'] === 4
-            ) {
+            if (isset($item['objectType']) && $item['objectType'] === 'factory') {
                 $metadata = $item;
                 break;
             }
         }
 
-        $this->assertNotNull($metadata, 'Factory metadata (building type 4) not found in test.pak');
+        $this->assertNotNull($metadata, 'Factory metadata not found in test.pak');
         $this->assertSame('TestAuthor', $metadata['copyright']);
-        $this->assertSame('building', $metadata['objectType']);
-        $this->assertArrayHasKey('buildingData', $metadata);
-        $this->assertSame(4, $metadata['buildingData']['type'], 'Building type should be 4 (Factory)');
+        $this->assertSame('factory', $metadata['objectType']);
+        $this->assertArrayHasKey('factoryData', $metadata);
+
+        // Verify factory-specific fields
+        $factoryData = $metadata['factoryData'];
+        $this->assertArrayHasKey('input', $factoryData);
+        $this->assertArrayHasKey('output', $factoryData);
+        $this->assertIsArray($factoryData['input']);
+        $this->assertIsArray($factoryData['output']);
+
+        // Verify actual input data from test.pak (Postamt)
+        $this->assertCount(1, $factoryData['input']);
+        $this->assertSame('Passagiere', $factoryData['input'][0]['good']);
+        $this->assertIsInt($factoryData['input'][0]['capacity']);
+        $this->assertIsInt($factoryData['input'][0]['supplier']);
+        $this->assertIsInt($factoryData['input'][0]['factor']);
+
+        // Verify actual output data from test.pak (Postamt)
+        $this->assertCount(1, $factoryData['output']);
+        $this->assertSame('Post', $factoryData['output'][0]['good']);
+        $this->assertIsInt($factoryData['output'][0]['capacity']);
+        $this->assertIsInt($factoryData['output'][0]['factor']);
     }
 
     public function test_parse_groundobj_metadata(): void

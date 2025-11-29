@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Pages;
 
 use App\Http\Resources\Frontend\ArticleList;
+use App\Http\Resources\Frontend\UserShow;
 use App\Repositories\ArticleRepository;
 use App\Repositories\UserRepository;
 use App\Services\Front\MetaOgpService;
@@ -32,7 +33,7 @@ final class UserController extends Controller
         $user = $this->userRepository->firstOrFailByIdOrNickname($userIdOrNickname);
 
         return view('pages.users.show', [
-            'user' => $user,
+            'user' => new UserShow($user),
             'articles' => ArticleList::collection($this->articleRepository->getByUser($user->id)),
             'meta' => $this->metaOgpService->frontUser($user),
         ]);

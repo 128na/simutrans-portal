@@ -13,6 +13,8 @@ use RuntimeException;
  *
  * Way objects are infrastructure placed on ways, primarily overhead lines (catenary).
  * Supported versions: 1-2
+ *
+ * @see simutrans/descriptor/reader/way_obj_reader.cc
  */
 final readonly class WayObjectParser implements TypeParserInterface
 {
@@ -113,7 +115,7 @@ final readonly class WayObjectParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // own_wtyp (uint8)
@@ -122,7 +124,7 @@ final readonly class WayObjectParser implements TypeParserInterface
             throw new RuntimeException('Failed to read own_wtyp');
         }
 
-        $result['own_wtyp'] = $ownWtypData[1];
+        $result['own_waytype'] = $ownWtypData[1];
 
         return $this->buildResult($result);
     }
@@ -177,7 +179,7 @@ final readonly class WayObjectParser implements TypeParserInterface
             throw new RuntimeException('Failed to read wtyp');
         }
 
-        $result['wtyp'] = $wtypData[1];
+        $result['waytype'] = $wtypData[1];
         $offset += 1;
 
         // own_wtyp (uint8)
@@ -186,7 +188,7 @@ final readonly class WayObjectParser implements TypeParserInterface
             throw new RuntimeException('Failed to read own_wtyp');
         }
 
-        $result['own_wtyp'] = $ownWtypData[1];
+        $result['own_waytype'] = $ownWtypData[1];
 
         return $this->buildResult($result);
     }
@@ -212,35 +214,6 @@ final readonly class WayObjectParser implements TypeParserInterface
      */
     private function buildResult(array $data): array
     {
-        // Add waytype string
-        $wtyp = $data['wtyp'] ?? 0;
-        $ownWtyp = $data['own_wtyp'] ?? 0;
-
-        $data['wtyp_str'] = $this->getWaytypeName(is_int($wtyp) ? $wtyp : 0);
-        $data['own_wtyp_str'] = $this->getWaytypeName(is_int($ownWtyp) ? $ownWtyp : 0);
-
         return $data;
-    }
-
-    /**
-     * Get waytype name
-     */
-    private function getWaytypeName(int $wtyp): string
-    {
-        return match ($wtyp) {
-            0 => 'ignore',
-            1 => 'road',
-            2 => 'track',
-            3 => 'water',
-            4 => 'overheadlines',
-            5 => 'monorail',
-            6 => 'maglev',
-            7 => 'tram',
-            8 => 'narrowgauge',
-            16 => 'air',
-            128 => 'powerline',
-            255 => 'any',
-            default => 'unknown',
-        };
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
-use App\Services\FileInfo\Extractors\Pak\WayTypeConverter;
 use RuntimeException;
 
 /**
@@ -53,13 +52,11 @@ final readonly class GroundobjParser implements TypeParserInterface
      * @return array{
      *     version: int,
      *     allowed_climates: int,
-     *     allowed_climates_str: string,
      *     distribution_weight: int,
      *     number_of_seasons: int,
      *     trees_on_top: bool,
      *     speed: int,
      *     waytype: int,
-     *     waytype_str: string,
      *     price: int
      * }
      */
@@ -164,13 +161,11 @@ final readonly class GroundobjParser implements TypeParserInterface
      * @return array{
      *     version: int,
      *     allowed_climates: int,
-     *     allowed_climates_str: string,
      *     distribution_weight: int,
      *     number_of_seasons: int,
      *     trees_on_top: bool,
      *     speed: int,
      *     waytype: int,
-     *     waytype_str: string,
      *     price: int
      * }
      */
@@ -186,13 +181,11 @@ final readonly class GroundobjParser implements TypeParserInterface
         return [
             'version' => $data['version'],
             'allowed_climates' => $data['allowed_climates'],
-            'allowed_climates_str' => implode(', ', $climateNames),
             'distribution_weight' => $data['distribution_weight'],
             'number_of_seasons' => $data['number_of_seasons'],
             'trees_on_top' => (bool) $data['trees_on_top'],
             'speed' => $data['speed'],
             'waytype' => $data['waytype'],
-            'waytype_str' => WayTypeConverter::getWayTypeName($data['waytype']),
             'price' => $data['price'],
         ];
     }

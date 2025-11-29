@@ -6,7 +6,6 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\ObjectTypeConverter;
-use App\Services\FileInfo\Extractors\Pak\WayTypeConverter;
 use RuntimeException;
 
 /**
@@ -17,6 +16,9 @@ use RuntimeException;
  */
 final readonly class CrossingParser implements TypeParserInterface
 {
+    // LOAD_SOUND marker - indicates embedded sound file name (sint8)(0xFFFE) = -2
+    private const int LOAD_SOUND = -2;
+
     public function canParse(Node $node): bool
     {
         $objectType = ObjectTypeConverter::toString($node->type);
@@ -119,13 +121,24 @@ final readonly class CrossingParser implements TypeParserInterface
         $result['closed_animation_time'] = $closedAnimData[1];
         $offset += 4;
 
-        // sound (sint8) - note: sound loading is handled in source, we just store the value
+        // sound (sint8)
         $soundData = unpack('c', substr($binaryData, $offset, 1));
         if ($soundData === false) {
             throw new RuntimeException('Failed to read sound');
         }
 
         $result['sound'] = $soundData[1];
+        $offset += 1;
+
+        // Handle LOAD_SOUND - embedded sound file name
+        // Note: offset is passed by reference but not used after this in version 1
+        // (intro_date and retire_date are defaults, not read from data)
+        if ($result['sound'] === self::LOAD_SOUND) {
+            $soundInfo = $this->readEmbeddedSoundName($binaryData, $offset);
+            if ($soundInfo !== null) {
+                $result['sound_filename'] = $soundInfo;
+            }
+        }
 
         // Set defaults for missing fields in version 1
         $result['intro_date'] = 0;
@@ -206,6 +219,14 @@ final readonly class CrossingParser implements TypeParserInterface
         $result['sound'] = $soundData[1];
         $offset += 1;
 
+        // Handle LOAD_SOUND - embedded sound file name
+        if ($result['sound'] === self::LOAD_SOUND) {
+            $soundInfo = $this->readEmbeddedSoundName($binaryData, $offset);
+            if ($soundInfo !== null) {
+                $result['sound_filename'] = $soundInfo;
+            }
+        }
+
         // intro_date (uint16) - NEW in version 2
         $introDateData = unpack('v', substr($binaryData, $offset, 2));
         if ($introDateData === false) {
@@ -227,6 +248,41 @@ final readonly class CrossingParser implements TypeParserInterface
     }
 
     /**
+     * Read embedded sound file name (for LOAD_SOUND)
+     *
+     * Format: uint8 len, char[len] wavname
+     *
+     * @param  string  $binaryData  The binary data buffer
+     * @param  int  $offset  Current offset in the buffer (will be updated)
+     * @return string|null The sound filename or null if not present
+     */
+    private function readEmbeddedSoundName(string $binaryData, int &$offset): ?string
+    {
+        if (strlen($binaryData) <= $offset) {
+            return null;
+        }
+
+        $lenData = unpack('C', substr($binaryData, $offset, 1));
+        if ($lenData === false) {
+            return null;
+        }
+
+        /** @var int $len */
+        $len = $lenData[1];
+        $offset += 1;
+
+        if ($len === 0 || strlen($binaryData) < $offset + $len) {
+            return null;
+        }
+
+        $wavname = substr($binaryData, $offset, $len);
+        $offset += $len;
+
+        // Remove null terminator if present
+        return rtrim($wavname, "\0");
+    }
+
+    /**
      * Build final result with human-readable waytype names
      *
      * @param  array<string, mixed>  $data
@@ -234,17 +290,6 @@ final readonly class CrossingParser implements TypeParserInterface
      */
     private function buildResult(array $data): array
     {
-        // Add waytype name strings
-        if (isset($data['waytype1'])) {
-            assert(is_int($data['waytype1']));
-            $data['waytype1_str'] = WayTypeConverter::getWayTypeName($data['waytype1']);
-        }
-
-        if (isset($data['waytype2'])) {
-            assert(is_int($data['waytype2']));
-            $data['waytype2_str'] = WayTypeConverter::getWayTypeName($data['waytype2']);
-        }
-
         return $data;
     }
 }

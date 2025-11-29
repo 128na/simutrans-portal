@@ -12,6 +12,20 @@ use App\Services\FileInfo\Extractors\Pak\Node;
  */
 final readonly class BuildingParser implements TypeParserInterface
 {
+    /**
+     * Climate name mapping
+     */
+    private const array CLIMATE_NAMES = [
+        0 => 'water_climate',
+        1 => 'desert_climate',
+        2 => 'tropic_climate',
+        3 => 'mediterran_climate',
+        4 => 'temperate_climate',
+        5 => 'tundra_climate',
+        6 => 'rocky_climate',
+        7 => 'arctic_climate',
+    ];
+
     public function canParse(Node $node): bool
     {
         return $node->type === 'BUIL';
@@ -63,6 +77,7 @@ final readonly class BuildingParser implements TypeParserInterface
             sizeX: $sizeX,
             sizeY: $sizeY,
             layouts: $layouts,
+            allowedClimates: 0x7F, // all_but_water_climate
             enables: 0x80,
             flags: $flags,
             distributionWeight: 100,
@@ -86,8 +101,9 @@ final readonly class BuildingParser implements TypeParserInterface
         $layouts = $this->readUint8($data, $offset);
 
         // Allowed climates
+        $allowedClimates = 0x7F; // Default: all_but_water_climate (all but water)
         if ($version >= 4) {
-            $allowedClimates = $this->readUint16($data, $offset);
+            $allowedClimates = $this->readUint16($data, $offset) & 0xFF; // ALL_CLIMATES mask
         }
 
         // Enables
@@ -152,6 +168,7 @@ final readonly class BuildingParser implements TypeParserInterface
             sizeX: $sizeX,
             sizeY: $sizeY,
             layouts: $layouts,
+            allowedClimates: $allowedClimates,
             enables: $enables,
             flags: $flags,
             distributionWeight: $distributionWeight,
@@ -177,6 +194,7 @@ final readonly class BuildingParser implements TypeParserInterface
         int $sizeX,
         int $sizeY,
         int $layouts,
+        int $allowedClimates,
         int $enables,
         int $flags,
         int $distributionWeight,
@@ -189,14 +207,22 @@ final readonly class BuildingParser implements TypeParserInterface
         ?int $allowUnderground = null,
         ?int $preservationYearMonth = null
     ): array {
+        // Build allowed climates string
+        $climateNames = [];
+        for ($i = 0; $i < 8; $i++) {
+            if (($allowedClimates & (1 << $i)) !== 0) {
+                $climateNames[] = self::CLIMATE_NAMES[$i];
+            }
+        }
+
         $result = [
             'version' => $version,
             'type' => $type,
-            'type_str' => BuildingTypeConverter::getBuildingTypeName($type),
             'level' => $level,
             'size_x' => $sizeX,
             'size_y' => $sizeY,
             'layouts' => $layouts,
+            'allowed_climates' => $allowedClimates,
             'enables' => $enables,
             'flags' => $flags,
             'distribution_weight' => $distributionWeight,
@@ -230,8 +256,6 @@ final readonly class BuildingParser implements TypeParserInterface
         if (BuildingTypeConverter::usesWaytype($type)) {
             // Transport buildings (depot, stop, extension, dock)
             $result['waytype'] = $extraData;
-            $result['waytype_str'] = BuildingTypeConverter::getWaytypeName($extraData);
-            $result['enables_str'] = BuildingTypeConverter::getEnablesString($enables);
         } elseif (BuildingTypeConverter::isCityBuilding($type)) {
             // City buildings (residential, commercial, industrial)
             $result['cluster'] = $extraData;

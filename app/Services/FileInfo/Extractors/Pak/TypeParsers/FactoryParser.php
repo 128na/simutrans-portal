@@ -6,6 +6,7 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\ObjectTypeConverter;
+use App\Services\FileInfo\Extractors\Pak\TextNodeExtractor;
 use RuntimeException;
 
 /**
@@ -19,13 +20,6 @@ use RuntimeException;
  */
 final readonly class FactoryParser implements TypeParserInterface
 {
-    // Site placement types
-    private const array SITE_NAMES = [
-        0 => 'Land',        // Site_Land
-        1 => 'Water',       // Site_Water
-        2 => 'City',        // Site_City
-    ];
-
     public function canParse(Node $node): bool
     {
         $objectType = ObjectTypeConverter::toString($node->type);
@@ -54,7 +48,7 @@ final readonly class FactoryParser implements TypeParserInterface
         if (($firstUint16 & 0x8000) !== 0) {
             $version = $firstUint16 & 0x7FFF;
 
-            return match ($version) {
+            $result = match ($version) {
                 1 => $this->parseVersion1($binaryData, $offset),
                 2 => $this->parseVersion2($binaryData, $offset),
                 3 => $this->parseVersion3($binaryData, $offset),
@@ -62,10 +56,18 @@ final readonly class FactoryParser implements TypeParserInterface
                 5 => $this->parseVersion5($binaryData, $offset),
                 default => throw new RuntimeException('Unsupported factory version: '.$version),
             };
+        } else {
+            // Version 0 (legacy): firstUint16 is placement type
+            $result = $this->parseVersion0($binaryData, $offset, $firstUint16);
         }
 
-        // Version 0 (legacy): firstUint16 is placement type
-        return $this->parseVersion0($binaryData, $offset, $firstUint16);
+        // Extract input data from FSUP (factory supplier) child nodes
+        $result['input'] = $this->extractInputFromChildren($node);
+
+        // Extract output data from FPRO (factory product) child nodes
+        $result['output'] = $this->extractOutputFromChildren($node);
+
+        return $result;
     }
 
     /**
@@ -400,6 +402,14 @@ final readonly class FactoryParser implements TypeParserInterface
     {
         $result = [];
 
+        // Check if we have enough data
+        if ($offset + 8 > strlen($binaryData)) {
+            // Not enough data for expansion fields, return empty result
+            $result['_offset'] = $offset;
+
+            return $result;
+        }
+
         // expand_probability (uint16) - rescaled in source
         $probData = unpack('v', substr($binaryData, $offset, 2));
         if ($probData === false) {
@@ -457,6 +467,12 @@ final readonly class FactoryParser implements TypeParserInterface
             'mail_demand',
         ];
 
+        // Check if we have enough data (6 fields * 2 bytes each = 12 bytes)
+        if ($offset + 12 > strlen($binaryData)) {
+            // Not enough data for boost/demand fields, return empty result
+            return ['_offset' => $offset];
+        }
+
         $result = [];
         foreach ($fields as $field) {
             $data = unpack('v', substr($binaryData, $offset, 2));
@@ -481,12 +497,109 @@ final readonly class FactoryParser implements TypeParserInterface
      */
     private function buildResult(array $data): array
     {
-        // Add placement name string
-        if (isset($data['placement'])) {
-            $placement = $data['placement'];
-            $data['placement_str'] = self::SITE_NAMES[is_int($placement) && isset(self::SITE_NAMES[$placement]) ? $placement : 0];
+        return $data;
+    }
+
+    /**
+     * Extract input data from FSUP (factory supplier) child nodes
+     *
+     * @return array<array{good: string, capacity: int, supplier: int, factor: int}>
+     */
+    private function extractInputFromChildren(Node $node): array
+    {
+        $inputs = [];
+
+        foreach ($node->getChildren() as $child) {
+            $childType = ObjectTypeConverter::toString($child->type);
+
+            if ($childType !== 'fsup') {
+                continue;
+            }
+
+            // Extract good name from XREF child node
+            $goodName = null;
+            foreach ($child->getChildren() as $xrefNode) {
+                $xrefType = ObjectTypeConverter::toString($xrefNode->type);
+                if ($xrefType === 'xref') {
+                    $goodName = TextNodeExtractor::extract($xrefNode);
+                    if ($goodName !== '' && strlen($goodName) > 5) {
+                        $goodName = substr($goodName, 5); // Remove "GOOD:" prefix
+                    }
+
+                    break;
+                }
+            }
+
+            if ($goodName === null) {
+                continue;
+            }
+
+            // Parse FSUP node data: capacity (uint16), supplier (uint16), factor (uint16)
+            $data = $child->data;
+            if (strlen($data) >= 6) {
+                $values = unpack('vcapacity/vsupplier/vfactor', substr($data, 0, 6));
+                if ($values !== false) {
+                    $inputs[] = [
+                        'good' => $goodName,
+                        'capacity' => $values['capacity'],
+                        'supplier' => $values['supplier'],
+                        'factor' => $values['factor'],
+                    ];
+                }
+            }
         }
 
-        return $data;
+        return $inputs;
+    }
+
+    /**
+     * Extract output data from FPRO (factory product) child nodes
+     *
+     * @return array<array{good: string, capacity: int, factor: int}>
+     */
+    private function extractOutputFromChildren(Node $node): array
+    {
+        $outputs = [];
+
+        foreach ($node->getChildren() as $child) {
+            $childType = ObjectTypeConverter::toString($child->type);
+
+            if ($childType !== 'fpro') {
+                continue;
+            }
+
+            // Extract good name from XREF child node
+            $goodName = null;
+            foreach ($child->getChildren() as $xrefNode) {
+                $xrefType = ObjectTypeConverter::toString($xrefNode->type);
+                if ($xrefType === 'xref') {
+                    $goodName = TextNodeExtractor::extract($xrefNode);
+                    if ($goodName !== '' && strlen($goodName) > 5) {
+                        $goodName = substr($goodName, 5); // Remove "GOOD:" prefix
+                    }
+
+                    break;
+                }
+            }
+
+            if ($goodName === null) {
+                continue;
+            }
+
+            // Parse FPRO node data: capacity (uint16), factor (uint16)
+            $data = $child->data;
+            if (strlen($data) >= 4) {
+                $values = unpack('vcapacity/vfactor', substr($data, 0, 4));
+                if ($values !== false) {
+                    $outputs[] = [
+                        'good' => $goodName,
+                        'capacity' => $values['capacity'],
+                        'factor' => $values['factor'],
+                    ];
+                }
+            }
+        }
+
+        return $outputs;
     }
 }

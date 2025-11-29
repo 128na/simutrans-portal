@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
-use App\Services\FileInfo\Extractors\Pak\EngineTypeConverter;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TextNodeExtractor;
 
@@ -50,10 +49,8 @@ final readonly class VehicleParser implements TypeParserInterface
                 default => [],
             };
 
-            // Convert engine_type to string if present
             if (isset($data['engine_type'])) {
                 assert(is_int($data['engine_type']));
-                $data['engine_type_str'] = EngineTypeConverter::convert($data['engine_type']);
             }
 
             // Get freight type from child node 2 if exists
@@ -74,7 +71,7 @@ final readonly class VehicleParser implements TypeParserInterface
     private function parseVersion0(BinaryReader $reader, int $v): array
     {
         return [
-            'wtyp' => $v,
+            'waytype' => $v,
             'capacity' => $reader->readUint16LE(),
             'price' => $reader->readUint32LE(),
             'topspeed' => $reader->readUint16LE(),
@@ -98,7 +95,7 @@ final readonly class VehicleParser implements TypeParserInterface
             'running_cost' => $reader->readUint16LE(),
             'intro_date' => $reader->readUint16LE(),
             'gear' => $reader->readUint8(),
-            'wtyp' => $reader->readUint8(),
+            'waytype' => $reader->readUint8(),
             'sound' => $reader->readUint8(),
             'leader_count' => $reader->readUint8(),
             'trailer_count' => $reader->readUint8(),
@@ -126,7 +123,7 @@ final readonly class VehicleParser implements TypeParserInterface
             'intro_date' => $reader->readUint16LE(),
             'retire_date' => $reader->readUint16LE(),
             'gear' => $reader->readUint8(),
-            'wtyp' => $reader->readUint8(),
+            'waytype' => $reader->readUint8(),
             'sound' => $reader->readUint8(),
             'leader_count' => $reader->readUint8(),
             'trailer_count' => $reader->readUint8(),
@@ -149,7 +146,7 @@ final readonly class VehicleParser implements TypeParserInterface
             'intro_date' => $reader->readUint16LE(),
             'retire_date' => $reader->readUint16LE(),
             'gear' => $reader->readUint16LE(),
-            'wtyp' => $reader->readUint8(),
+            'waytype' => $reader->readUint8(),
             'sound' => $reader->readUint8(),
             'engine_type' => $reader->readUint8(),
             'leader_count' => $reader->readUint8(),
@@ -172,7 +169,7 @@ final readonly class VehicleParser implements TypeParserInterface
             'intro_date' => $reader->readUint16LE(),
             'retire_date' => $reader->readUint16LE(),
             'gear' => $reader->readUint16LE(),
-            'wtyp' => $reader->readUint8(),
+            'waytype' => $reader->readUint8(),
             'sound' => $reader->readUint8(),
             'engine_type' => $reader->readUint8(),
             'len' => $reader->readUint8(),
@@ -196,7 +193,7 @@ final readonly class VehicleParser implements TypeParserInterface
             'intro_date' => $reader->readUint16LE(),
             'retire_date' => $reader->readUint16LE(),
             'gear' => $reader->readUint16LE(),
-            'wtyp' => $reader->readUint8(),
+            'waytype' => $reader->readUint8(),
             'sound' => $reader->readUint8(),
             'engine_type' => $reader->readUint8(),
             'len' => $reader->readUint8(),
@@ -224,7 +221,7 @@ final readonly class VehicleParser implements TypeParserInterface
             'intro_date' => $reader->readUint16LE(),
             'retire_date' => $reader->readUint16LE(),
             'gear' => $reader->readUint16LE(),
-            'wtyp' => $reader->readUint8(),
+            'waytype' => $reader->readUint8(),
             'sound' => $reader->readUint8(),
             'engine_type' => $reader->readUint8(),
             'len' => $reader->readUint8(),
@@ -252,7 +249,7 @@ final readonly class VehicleParser implements TypeParserInterface
             'intro_date' => $reader->readUint16LE(),
             'retire_date' => $reader->readUint16LE(),
             'gear' => $reader->readUint16LE(),
-            'wtyp' => $reader->readUint8(),
+            'waytype' => $reader->readUint8(),
             'sound' => $reader->readUint8(),
             'engine_type' => $reader->readUint8(),
             'len' => $reader->readUint8(),
@@ -280,7 +277,7 @@ final readonly class VehicleParser implements TypeParserInterface
             'intro_date' => $reader->readUint16LE(),
             'retire_date' => $reader->readUint16LE(),
             'gear' => $reader->readUint16LE(),
-            'wtyp' => $reader->readUint8(),
+            'waytype' => $reader->readUint8(),
             'sound' => $reader->readUint8(),
             'engine_type' => $reader->readUint8(),
             'len' => $reader->readUint8(),
@@ -321,7 +318,7 @@ final readonly class VehicleParser implements TypeParserInterface
             'intro_date' => $reader->readUint16LE(),
             'retire_date' => $reader->readUint16LE(),
             'gear' => $reader->readUint16LE(),
-            'wtyp' => $reader->readUint8(),
+            'waytype' => $reader->readUint8(),
             'sound' => $reader->readUint8(),
             'engine_type' => $reader->readUint8(),
             'len' => $reader->readUint8(),

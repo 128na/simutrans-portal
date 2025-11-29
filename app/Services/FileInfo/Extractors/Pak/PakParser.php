@@ -65,6 +65,18 @@ final readonly class PakParser
                 // This is a named object
                 $pakMetadata = PakMetadata::fromNode($node, $versionCode);
                 $metadata[] = $pakMetadata->toArray();
+            } elseif ($firstChild instanceof \App\Services\FileInfo\Extractors\Pak\Node && ObjectTypeConverter::toString($firstChild->type) === 'building') {
+                // Special case: FACT node has BUIL as first child
+                // Check if this is a factory (FACT node containing BUIL node)
+                $objectType = ObjectTypeConverter::toString($node->type);
+                if ($objectType === 'factory' && $firstChild->hasChildren()) {
+                    $buildingFirstChild = $firstChild->getChild(0);
+                    if ($buildingFirstChild instanceof \App\Services\FileInfo\Extractors\Pak\Node && $buildingFirstChild->isType(Node::OBJ_TEXT)) {
+                        // This is a factory node - process it
+                        $pakMetadata = PakMetadata::fromNode($node, $versionCode);
+                        $metadata[] = $pakMetadata->toArray();
+                    }
+                }
             }
         }
 

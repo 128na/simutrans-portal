@@ -38,6 +38,7 @@ import {
   formatWaytype,
   formatEngineType,
   formatFreightType,
+  formatGoodMetric,
 } from "./formatter";
 
 interface Props {
@@ -393,6 +394,18 @@ function buildFactoryRows(data: FactoryData): TableRow[] {
       label: "配置場所",
       value: getPlacementName(data.placement),
     },
+    ...(data.input || []).flatMap((item, index) => [
+      {
+        label: `入力貨物名${index + 1}`,
+        value: item.good,
+      },
+    ]),
+    ...(data.output || []).flatMap((item, index) => [
+      {
+        label: `出力貨物名${index + 1}`,
+        value: item.good,
+      },
+    ]),
     {
       label: "登場年月",
       value: formatDate(data.intro_date),
@@ -412,7 +425,7 @@ function buildGoodRows(data: GoodData): TableRow[] {
     { label: "カテゴリ", value: formatGoodCategory(data.catg) },
     {
       label: "重量",
-      value: data.weight_per_unit,
+      value: formatGoodMetric(data.weight_per_unit, data.metric),
     },
     { label: "価値", value: data.base_value },
     { label: "速度ボーナス", value: data.speed_bonus },

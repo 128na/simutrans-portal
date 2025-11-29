@@ -105,3 +105,13 @@ export const formatGoodCategory = (catg: number | undefined): string => {
   }
   return GOOD_CATEGORY_TRANSLATIONS[catg] || "";
 };
+
+export const formatGoodMetric = (
+  weight_per_unit: number | undefined,
+  metric: string | undefined
+): string => {
+  if (weight_per_unit === undefined || metric === undefined) {
+    return "";
+  }
+  return `${weight_per_unit.toLocaleString()} kg/${metric}`;
+};

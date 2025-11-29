@@ -41,6 +41,10 @@ final readonly class Node
 
     public const string OBJ_FACTORY = 'FACT';
 
+    public const string OBJ_FACTORY_SUPPLIER = 'FSUP';
+
+    public const string OBJ_FACTORY_PRODUCT = 'FPRO';
+
     public const string OBJ_CITYCAR = 'CYCR';
 
     public const string OBJ_PEDESTRIAN = 'PEDE';

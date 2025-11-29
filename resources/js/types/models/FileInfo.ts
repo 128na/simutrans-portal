@@ -322,6 +322,26 @@ export interface FactoryData extends BaseObj {
   smokeuplift?: number;
   /** 煙寿命 (v5+) */
   smokelifetime?: number;
+  /** 入力品目配列 */
+  input?: Array<{
+    /** 品目名 */
+    good: string;
+    /** 容量 */
+    capacity: number;
+    /** サプライヤー数 */
+    supplier: number;
+    /** ファクター */
+    factor: number;
+  }>;
+  /** 出力品目配列 */
+  output?: Array<{
+    /** 品目名 */
+    good: string;
+    /** 容量 */
+    capacity: number;
+    /** ファクター */
+    factor: number;
+  }>;
 }
 
 /**
@@ -341,6 +361,8 @@ export interface GoodData extends BaseObj {
   weight_per_unit: number;
   /** 表示色インデックス (0-255) */
   color: number;
+  /** 計量単位 (例: "kg", "t", "m³") */
+  metric?: string;
 }
 
 /**

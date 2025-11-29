@@ -63,11 +63,21 @@ final readonly class PakMetadata
 
     public static function fromNode(Node $node, int $versionCode): self
     {
+        // Determine object type first
+        $objectType = ObjectTypeConverter::toString($node->type);
+
         // Child node 0 is name (TEXT node)
         $nameNode = $node->getChild(0);
         $name = '';
         if ($nameNode instanceof \App\Services\FileInfo\Extractors\Pak\Node && $nameNode->isType(Node::OBJ_TEXT)) {
             $name = TextNodeExtractor::extract($nameNode);
+        } elseif ($objectType === 'factory' && $nameNode instanceof \App\Services\FileInfo\Extractors\Pak\Node) {
+            // Special case: Factory (FACT) node has BUIL node as first child
+            // Extract name from BUIL node's first child (TEXT node)
+            $buildingTextNode = $nameNode->getChild(0);
+            if ($buildingTextNode instanceof \App\Services\FileInfo\Extractors\Pak\Node && $buildingTextNode->isType(Node::OBJ_TEXT)) {
+                $name = TextNodeExtractor::extract($buildingTextNode);
+            }
         }
 
         // Child node 1 is copyright (TEXT node)
@@ -78,10 +88,16 @@ final readonly class PakMetadata
             if ($copyright === '') {
                 $copyright = null;
             }
+        } elseif ($objectType === 'factory' && $nameNode instanceof \App\Services\FileInfo\Extractors\Pak\Node) {
+            // Special case: Factory (FACT) node - get copyright from BUIL node's second child
+            $buildingCopyrightNode = $nameNode->getChild(1);
+            if ($buildingCopyrightNode instanceof \App\Services\FileInfo\Extractors\Pak\Node && $buildingCopyrightNode->isType(Node::OBJ_TEXT)) {
+                $copyright = TextNodeExtractor::extract($buildingCopyrightNode);
+                if ($copyright === '') {
+                    $copyright = null;
+                }
+            }
         }
-
-        // Determine object type from parent node
-        $objectType = ObjectTypeConverter::toString($node->type);
 
         // Parse type-specific data using appropriate parser
         $typeSpecificData = [];

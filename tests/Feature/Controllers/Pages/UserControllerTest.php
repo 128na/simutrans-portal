@@ -25,4 +25,40 @@ final class UserControllerTest extends TestCase
         $testResponse = $this->get(route('users.show', ['userIdOrNickname' => $user->nickname]));
         $testResponse->assertOk();
     }
+
+    public function test_users_json_response(): void
+    {
+        User::factory()->count(3)->create();
+
+        // Accept: application/jsonヘッダーでJSONレスポンス
+        $response = $this->get('/users', ['Accept' => 'application/json']);
+        $response->assertOk()
+            ->assertHeader('Content-Type', 'application/json')
+            ->assertJsonStructure([
+                '*' => ['id', 'name', 'nickname'],
+            ]);
+    }
+
+    public function test_user_json_response(): void
+    {
+        $user = User::factory()->create();
+
+        // .json拡張子でJSONレスポンス
+        $response = $this->get("/users/{$user->id}.json");
+        $response->assertOk()
+            ->assertHeader('Content-Type', 'application/json')
+            ->assertJsonStructure([
+                'user' => ['id', 'name', 'nickname'],
+                'articles',
+            ]);
+
+        // Accept: application/jsonヘッダーでJSONレスポンス
+        $response = $this->get("/users/{$user->nickname}", ['Accept' => 'application/json']);
+        $response->assertOk()
+            ->assertHeader('Content-Type', 'application/json')
+            ->assertJsonStructure([
+                'user' => ['id', 'name', 'nickname'],
+                'articles',
+            ]);
+    }
 }

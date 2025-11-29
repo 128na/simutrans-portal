@@ -69,4 +69,35 @@ final class ShowControllerTest extends TestCase
         $testResponse = $this->get('/articles/'.$article->id);
         $testResponse->assertRedirect(sprintf('/users/%s/%s', $article->user_id, $article->slug));
     }
+
+    public function test_show_json_response(): void
+    {
+        $article = Article::factory()->publish()->create();
+
+        // Test with .json extension
+        $testResponse = $this->get(route('articles.show', [
+            'userIdOrNickname' => $article->user_id,
+            'articleSlug' => $article->slug.'.json',
+        ]));
+
+        $testResponse->assertOk();
+        $testResponse->assertJson([
+            'id' => $article->id,
+            'slug' => $article->slug,
+            'title' => $article->title,
+        ]);
+
+        // Test with Accept: application/json header
+        $testResponse = $this->getJson(route('articles.show', [
+            'userIdOrNickname' => $article->user_id,
+            'articleSlug' => $article->slug,
+        ]));
+
+        $testResponse->assertOk();
+        $testResponse->assertJson([
+            'id' => $article->id,
+            'slug' => $article->slug,
+            'title' => $article->title,
+        ]);
+    }
 }

@@ -3,5 +3,9 @@ type HTMLProps = React.HTMLAttributes<HTMLElement> & {
 };
 
 export const TitleH4 = ({ children }: HTMLProps) => {
-  return <h4 className="text-xl font-semibold sm:text-xl my-8">{children}</h4>;
+  return (
+    <h4 className="text-xl font-semibold sm:text-xl my-8 break-all">
+      {children}
+    </h4>
+  );
 };

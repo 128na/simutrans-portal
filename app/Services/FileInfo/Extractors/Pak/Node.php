@@ -29,7 +29,7 @@ final readonly class Node
 
     public const string OBJ_ROADSIGN = 'ROSG';
 
-    public const string OBJ_CROSSING = 'CRSG';
+    public const string OBJ_CROSSING = 'CRSS';
 
     public const string OBJ_TREE = 'TREE';
 

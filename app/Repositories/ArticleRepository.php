@@ -34,7 +34,7 @@ final class ArticleRepository
                     ->whereNull('users.deleted_at');
             })
             ->where('articles.status', ArticleStatus::Publish)
-            ->when($article, fn($q, Article $article) => $q->where('articles.id', '!=', $article->id))
+            ->when($article, fn ($q, Article $article) => $q->where('articles.id', '!=', $article->id))
             ->whereNull('articles.deleted_at')
             ->latest('articles.modified_at')
             ->get();
@@ -56,7 +56,6 @@ final class ArticleRepository
             ->with('totalConversionCount', 'totalViewCount')
             ->get();
     }
-
 
     /**
      * アナリティクス用記事一覧取得
@@ -140,7 +139,7 @@ final class ArticleRepository
             str_replace(['　', ',', '、', '・'], ' ', $rawWord)
         ));
         if ($words !== []) {
-            $queryString = implode(' ', array_map(fn(string $w): string => '+' . $w, $words));
+            $queryString = implode(' ', array_map(fn (string $w): string => '+'.$w, $words));
             $baseQuery->join('article_search_index as idx', function (JoinClause $joinClause) use ($queryString): void {
                 $joinClause->on('idx.article_id', '=', 'articles.id')
                     ->whereRaw('MATCH(idx.text) AGAINST (? IN BOOLEAN MODE)', [$queryString]);

@@ -147,7 +147,7 @@ namespace App\Models\Article{
  * @property string $period 集計期間
  * @property int $count カウント
  * @property int $user_id
- * @property-read \App\Models\Article $article
+ * @property-read \App\Models\Article|null $article
  * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversionCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversionCount newQuery()
@@ -166,7 +166,7 @@ namespace App\Models\Article{
  * @property string $period 集計期間
  * @property int $count カウント
  * @property int $user_id
- * @property-read \App\Models\Article $article
+ * @property-read \App\Models\Article|null $article
  * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount newQuery()

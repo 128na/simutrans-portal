@@ -20,10 +20,10 @@ final class FileInfoService
      * @param  \App\Services\FileInfo\Extractors\Extractor[]  $extractors
      */
     public function __construct(
-        private FileInfoRepository $fileInfoRepository,
-        private ZipArchiveParser $zipArchiveParser,
-        private TextService $textService,
-        private array $extractors,
+        private readonly FileInfoRepository $fileInfoRepository,
+        private readonly ZipArchiveParser $zipArchiveParser,
+        private readonly TextService $textService,
+        private readonly array $extractors,
     ) {}
 
     public function updateOrCreateFromPak(Attachment $attachment): FileInfo
@@ -33,7 +33,7 @@ final class FileInfoService
 
             // Check file existence before reading
             if (! file_exists($attachment->full_path)) {
-                throw new Exception('File not found: ' . $attachment->full_path);
+                throw new Exception('File not found: '.$attachment->full_path);
             }
 
             $text = file_get_contents($attachment->full_path);
@@ -66,6 +66,9 @@ final class FileInfoService
                 $data = $this->handleExtractors($filename, $content, $data);
             }
 
+            // Sanitize data before JSON encoding to prevent UTF-8 errors
+            $data = $this->sanitizeForJson($data);
+
             return $this->fileInfoRepository->updateOrCreate(['attachment_id' => $attachment->id], ['data' => $data]);
         } catch (InvalidEncodingException) {
             return $this->fileInfoRepository->updateOrCreate(['attachment_id' => $attachment->id], ['data' => []]);
@@ -84,7 +87,7 @@ final class FileInfoService
         if (! isset($this->extractorCache[$ext])) {
             $this->extractorCache[$ext] = array_filter(
                 $this->extractors,
-                fn($e) => $e->isTarget($filename)
+                fn (\App\Services\FileInfo\Extractors\Extractor $e): bool => $e->isTarget($filename)
             );
         }
 
@@ -108,5 +111,27 @@ final class FileInfoService
         $text = $this->textService->encoding($text);
 
         return $this->textService->removeBom($text);
+    }
+
+    /**
+     * Recursively sanitize data to ensure valid UTF-8 for JSON encoding
+     */
+    private function sanitizeForJson(mixed $data): mixed
+    {
+        if (is_array($data)) {
+            return array_map($this->sanitizeForJson(...), $data);
+        }
+
+        if (is_string($data)) {
+            // If already valid UTF-8, return as-is
+            if (mb_check_encoding($data, 'UTF-8')) {
+                return $data;
+            }
+
+            // Force sanitization: replace invalid UTF-8 sequences
+            return mb_convert_encoding($data, 'UTF-8', 'UTF-8');
+        }
+
+        return $data;
     }
 }

@@ -24,8 +24,14 @@ final readonly class ZipArchiveParser
     {
         /** @var \Closure(): Generator<string, array{content: string, is_binary: bool}, mixed, void> */
         $fn = function () use ($attachment): Generator {
+            $opened = false;
             try {
-                $this->zipArchive->open($attachment->full_path);
+                $result = $this->zipArchive->open($attachment->full_path);
+                if ($result !== true) {
+                    throw new \Exception('Failed to open zip file: '.$this->getZipError($result));
+                }
+
+                $opened = true;
 
                 for ($i = 0; $i < $this->zipArchive->numFiles; $i++) {
                     $stat = $this->zipArchive->statIndex($i, ZipArchive::FL_ENC_RAW);
@@ -42,7 +48,9 @@ final readonly class ZipArchiveParser
                     }
                 }
             } finally {
-                $this->zipArchive->close();
+                if ($opened) {
+                    $this->zipArchive->close();
+                }
             }
         };
 
@@ -65,6 +73,33 @@ final readonly class ZipArchiveParser
         $detected = mb_detect_encoding($str, ['UTF-8', 'SJIS', 'EUC-JP', 'ISO-8859-1'], true);
         $result = mb_convert_encoding($str, 'UTF-8', $detected ?: 'UTF-8');
 
-        return $result === false ? $str : $result;
+        if ($result === false) {
+            // Conversion failed, try to sanitize
+            return mb_convert_encoding($str, 'UTF-8', 'UTF-8');
+        }
+
+        // Verify converted string is valid UTF-8
+        if (! mb_check_encoding($result, 'UTF-8')) {
+            // If still invalid, force sanitize by converting UTF-8 to UTF-8 (drops invalid bytes)
+            return mb_convert_encoding($result, 'UTF-8', 'UTF-8');
+        }
+
+        return $result;
+    }
+
+    private function getZipError(int $code): string
+    {
+        return match ($code) {
+            ZipArchive::ER_EXISTS => 'File already exists',
+            ZipArchive::ER_INCONS => 'Zip archive inconsistent',
+            ZipArchive::ER_INVAL => 'Invalid argument',
+            ZipArchive::ER_MEMORY => 'Malloc failure',
+            ZipArchive::ER_NOENT => 'No such file',
+            ZipArchive::ER_NOZIP => 'Not a zip archive',
+            ZipArchive::ER_OPEN => "Can't open file",
+            ZipArchive::ER_READ => 'Read error',
+            ZipArchive::ER_SEEK => 'Seek error',
+            default => sprintf('Unknown error (%s)', $code),
+        };
     }
 }

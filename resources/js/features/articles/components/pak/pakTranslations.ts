@@ -21,19 +21,6 @@ export const WAYTYPE_TRANSLATIONS: Record<number | string, string> = {
   16: "航空",
   128: "送電線",
   255: "全て",
-  invalid_wt: "無効",
-  ignore_wt: "指定なし",
-  road_wt: "道路",
-  track_wt: "鉄道",
-  water_wt: "沿岸",
-  overheadlines_wt: "架線",
-  monorail_wt: "モノレール",
-  maglev_wt: "リニア",
-  tram_wt: "市電",
-  narrowgauge_wt: "ナローゲージ",
-  air_wt: "航空",
-  powerline_wt: "送電線",
-  any_wt: "全て",
 };
 
 /**
@@ -50,15 +37,6 @@ export const ENGINE_TYPE_TRANSLATIONS: Record<number | string, string> = {
   5: "燃料電池",
   6: "水素",
   7: "バッテリー",
-  unknown: "不明",
-  steam: "蒸気",
-  diesel: "ディーゼル",
-  electric: "電気",
-  bio: "バイオ",
-  sail: "帆",
-  fuel_cell: "燃料電池",
-  hydrogene: "水素",
-  battery: "バッテリー",
 };
 
 /**

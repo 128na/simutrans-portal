@@ -2,50 +2,30 @@ name: OpenAPI Documentation
 
 on:
   push:
-    branches: [main, develop]
+    branches: [master]
   pull_request:
-    branches: [main, develop]
+    branches: [master]
 
 jobs:
   validate-openapi:
+    name: Validate OpenAPI Spec
     runs-on: ubuntu-latest
-    
+
     permissions:
       contents: read
-    
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          extensions: mbstring, xml, ctype, json, mysql, pdo, pdo_mysql
-          coverage: none
-      
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-      
-      - name: Cache composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-      
-      - name: Install PHP dependencies
-        run: composer install --prefer-dist --no-progress --no-interaction
-      
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/php
+
       - name: Prepare Laravel application
         run: |
           cp .env.example .env
           php artisan key:generate
-      
+
       - name: Generate OpenAPI documentation
         run: php artisan l5-swagger:generate
-      
+
       - name: Check if documentation was generated
         run: |
           if [ ! -f storage/api-docs/api-docs.json ]; then
@@ -53,19 +33,19 @@ jobs:
             exit 1
           fi
           echo "OpenAPI documentation generated successfully"
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      
+
       - name: Install Spectral CLI
         run: npm install -g @stoplight/spectral-cli
-      
+
       - name: Validate OpenAPI specification
         run: spectral lint storage/api-docs/api-docs.json --ruleset spectral:oas
         continue-on-error: true
-      
+
       - name: Upload OpenAPI documentation artifact
         if: success()
         uses: actions/upload-artifact@v4

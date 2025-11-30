@@ -103,14 +103,14 @@ jobs:
           asset-key: "deploy"
 
       - name: Install SSH key
-        run: |
+        run: >
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 0600 ~/.ssh/id_rsa
           echo "${{ secrets.KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
 
       - name: Deploy to server
-        run: |
+        run: > # | だと壊れるぞ
           ssh -i ~/.ssh/id_rsa ${{ secrets.USER }}@${{ secrets.HOST }} "
             cd ${{ secrets.APP_DIR }} &&
             git fetch -p &&

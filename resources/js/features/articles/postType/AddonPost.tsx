@@ -230,7 +230,7 @@ export const AddonPost = () => {
           </Textarea>
 
           <div>
-            <Label>
+            <Label className="mb-2">
               <div className="font-medium">タグ</div>
               <SelectableSearch
                 className="font-normal"

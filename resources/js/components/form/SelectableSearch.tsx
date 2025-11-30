@@ -55,7 +55,7 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
       !selectedIds.includes(o.id)
   );
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <div>
         <div className="flex flex-wrap gap-2">
           {selectedItems.map((item) => (
@@ -75,7 +75,7 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
       </div>
 
       <Input
-        className={twMerge(className, "mb-2")}
+        className={twMerge(className, "mb-0")}
         type="text"
         value={criteria}
         onChange={(e) => setCriteria(e.target.value)}

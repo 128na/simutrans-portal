@@ -7,7 +7,7 @@
 
 </script>
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
-    <div>
+    <div class="mb-6">
         <h2 class="text-4xl font-semibold text-pretty text-gray-900 sm:text-5xl">タグ「{{$tag->name}}」の記事</h2>
         <pre class="mt-2 text-lg/8 text-gray-600 whitespace-pre-wrap break-all">{{$tag->description}}</pre>
         <div class="mt-2">

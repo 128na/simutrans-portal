@@ -2,13 +2,13 @@
 
 @section('content')
 <div class="mx-auto max-w-xl p-6 lg:px-8">
-    <div>
+    <div class="mb-6">
         <h2 class="text-3xl font-semibold text-pretty text-gray-900 sm:text-3xl">パスワードリセット</h2>
     </div>
     <form action="{{route('password.update')}}" method="POST">
         @csrf
         <input type="hidden" name="token" value="{{ $token }}" />
-        <div class="mt-10 flex flex-col gap-y-6 border-t border-gray-200 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
+        <div class="flex flex-col gap-y-4 border-t border-gray-200 pt-6 lg:mx-0">
             <div>
                 <label for="email" class="block text-sm/6 font-semibold text-gray-900">メールアドレス</label>
                 <div class="mt-2.5">

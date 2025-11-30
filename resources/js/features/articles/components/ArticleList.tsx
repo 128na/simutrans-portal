@@ -12,7 +12,7 @@ export const ArticleList = ({ articles }: Props) => {
   }
 
   return (
-    <div className="mt-10 flex flex-col gap-y-12 border-t border-gray-200 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
+    <div className="flex flex-col gap-y-4 border-t border-gray-200 pt-6 lg:mx-0">
       {articles.map((article) => (
         <article
           className="flex flex-col sm:flex-row gap-6 items-start"

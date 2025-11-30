@@ -2,14 +2,14 @@
 @section('max-w', 'max-w-7xl')
 @section('content')
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
-    <div>
+    <div class="mb-6">
         <h2 class="text-3xl font-semibold text-pretty text-gray-900 sm:text-3xl">招待</h2>
         <p class="mt-2 text-gray-600">
             招待リンクの発行と招待したユーザーを確認できます。
         </p>
     </div>
-    <div class="mt-10 flex flex-col gap-y-4 border-t border-gray-200 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
-        <h3 class="text-2xl font-semibold text-brand sm:text-2xl my-4">招待リンク</h3>
+    <div class="flex flex-col gap-y-4 border-t border-gray-200 pt-6 lg:mx-0">
+        <h4 class="text-xl font-semibold sm:text-xl my-8">招待リンク</h4>
         <div>
             <form id="revoke" action="{{route('mypage.invite')}}" method="POST" class="js-confirm" data-text="招待リンクを削除しますか？">
                 @csrf
@@ -40,7 +40,7 @@
             </form>
         </div>
 
-        <h3 class="text-2xl font-semibold text-brand sm:text-2xl my-4">招待履歴</h3>
+        <h4 class="text-xl font-semibold sm:text-xl my-8">招待履歴</h4>
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">
                 <thead>

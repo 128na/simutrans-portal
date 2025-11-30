@@ -3,12 +3,12 @@
 @section('max-w', 'max-w-xl')
 @section('content')
 <div class="mx-auto max-w-xl p-6 lg:px-8">
-    <div>
+    <div class="mb-6">
         <h2 class="text-3xl font-semibold text-pretty text-gray-900 sm:text-3xl">二要素認証</h2>
     </div>
     <form action="{{route('two-factor.login.store')}}" method="POST">
         @csrf
-        <div class="mt-10 flex flex-col gap-y-6 border-t border-gray-200 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
+        <div class="flex flex-col gap-y-4 border-t border-gray-200 pt-6 lg:mx-0">
             <div>
                 <label for="code" class="block text-sm/6 font-semibold text-gray-900">認証コード</label>
                 <div class="mt-2.5">

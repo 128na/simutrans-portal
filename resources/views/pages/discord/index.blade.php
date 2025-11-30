@@ -6,7 +6,7 @@
 </script>
 
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
-    <div>
+    <div class="mb-6">
         <h2 class="text-4xl font-semibold text-pretty text-gray-900 sm:text-5xl">
             Discord招待リンクの発行
         </h2>
@@ -16,7 +16,7 @@
         </p>
     </div>
 
-    <div class="mt-10 border-t border-gray-200 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
+    <div class="flex flex-col gap-y-4 border-t border-gray-200 pt-6 lg:mx-0">
         @if(isset($url))
         @include('components.ui.link-external', ['url' => $url])
         @else

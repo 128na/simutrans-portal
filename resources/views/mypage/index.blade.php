@@ -2,10 +2,10 @@
 @section('max-w', 'max-w-7xl')
 @section('content')
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
-    <div>
+    <div class="mb-6">
         <h2 class="text-3xl font-semibold text-pretty text-gray-900 sm:text-3xl">マイページ</h2>
     </div>
-    <div class="mt-10 flex flex-col gap-y-4 border-t border-gray-200 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
+    <div class="flex flex-col gap-y-4 border-t border-gray-200 pt-6 lg:mx-0">
         <h3 class="text-2xl font-semibold text-brand sm:text-2xl my-4">アクティビティ</h3>
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">

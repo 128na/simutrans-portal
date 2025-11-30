@@ -10,6 +10,7 @@ enum UserRole: string
      * 管理者
      */
     case Admin = 'admin';
+
     /**
      * 一般
      */

@@ -16,12 +16,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - run: php -r "copy('.env.ci', '.env');"
       - uses: ./.github/actions/php
-
-      - name: Prepare Laravel application
-        run: |
-          cp .env.example .env
-          php artisan key:generate
+      - uses: ./.github/actions/nodejs
 
       - name: Generate OpenAPI documentation
         run: php artisan l5-swagger:generate
@@ -33,11 +30,6 @@ jobs:
             exit 1
           fi
           echo "OpenAPI documentation generated successfully"
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
 
       - name: Install Spectral CLI
         run: npm install -g @stoplight/spectral-cli

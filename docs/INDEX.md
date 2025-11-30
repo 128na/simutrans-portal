@@ -65,7 +65,7 @@
 - **[routes/README.md](../routes/README.md)** - ルーティング定義（web, api, internal_api）
 - **[app/OpenApi/README.md](../app/OpenApi/README.md)** - OpenAPI/Swagger ドキュメント
 - **[docs/openapi-implementation-summary.md](openapi-implementation-summary.md)** - OpenAPI実装サマリー
-- **[docs/openapi-typescript-types.md](openapi-typescript-types.md)** - TypeScript型定義の生成
+- **[docs/openapi-typescript-types.md](openapi-typescript-types.md)** - TypeScript型定義の管理方針（手動管理）
 
 ### データベース
 
@@ -78,7 +78,7 @@
 ### 構造とセットアップ
 
 - **[resources/js/README.md](../resources/js/README.md)** - フロントエンドディレクトリ構成の詳細
-- **[resources/js/**tests**/README.md](../resources/js/__tests__/README.md)** - フロントエンドテストのセットアップ（Vitest）
+- **[resources/js/**tests**/README.md](../resources/js/**tests**/README.md)** - フロントエンドテストのセットアップ（Vitest）
 
 ---
 
@@ -101,7 +101,7 @@ Simutrans の PAK ファイルからメタデータを抽出する機能。
 
 - **[tests/Unit/Services/Twitter/README.md](../tests/Unit/Services/Twitter/README.md)** - Twitter PKCE Service のテストドキュメント
 - **[tests/Unit/Services/FileInfo/Extractors/file/makeobjs/README.md](../tests/Unit/Services/FileInfo/Extractors/file/makeobjs/README.md)** - makeobj テストデータ
-- **[resources/js/**tests**/README.md](../resources/js/__tests__/README.md)** - フロントエンドテスト
+- **[resources/js/**tests**/README.md](../resources/js/**tests**/README.md)** - フロントエンドテスト
 
 ---
 

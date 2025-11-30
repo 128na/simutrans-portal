@@ -28,8 +28,3 @@ mix-manifest.json
 
 # Vitest
 coverage/
-
-# OpenAPI/Swagger documentation
-storage/api-docs/
-public/api-docs.json
-public/api-docs.yaml

@@ -10,12 +10,20 @@ jobs:
   validate-openapi:
     name: Validate OpenAPI Spec
     runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == '128na/simutrans-portal' || github.event_name == 'push'
 
     permissions:
-      contents: read
+      contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - if: github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'push'
+        uses: actions/checkout@v4
+        with:
+          # Must be used to trigger workflow after push
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - if: github.event.pull_request.head.repo.full_name != github.repository && github.event_name != 'push'
+        uses: actions/checkout@v4
       - run: php -r "copy('.env.ci', '.env');"
       - uses: ./.github/actions/php
       - uses: ./.github/actions/nodejs
@@ -38,10 +46,11 @@ jobs:
         run: spectral lint storage/api-docs/api-docs.json --ruleset spectral:oas
         continue-on-error: true
 
-      - name: Upload OpenAPI documentation artifact
-        if: success()
-        uses: actions/upload-artifact@v4
+      - name: Commit OpenAPI documentation
+        if: github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'push'
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          name: openapi-docs
-          path: storage/api-docs/api-docs.json
-          retention-days: 30
+          commit_message: "[openapi] Update OpenAPI documentation"
+          commit_author: "GitHub Action <actions@github.com>"
+          commit_user_email: "action@github.com"
+          file_pattern: "storage/api-docs/api-docs.json"

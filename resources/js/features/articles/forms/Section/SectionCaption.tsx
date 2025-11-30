@@ -10,16 +10,16 @@ type Props = {
 export const SectionCaption = ({ section, idx, ...props }: Props) => {
   const { getError } = useAxiosError();
   return (
-    <Input
-      value={section.caption ?? ""}
-      labelClassName="font-medium"
-      className="font-normal"
-      {...props}
-    >
-      見出し
+    <>
       <TextError>
         {getError(`article.contents.sections.${idx}.caption`)}
       </TextError>
-    </Input>
+      <Input
+        value={section.caption ?? ""}
+        labelClassName="font-medium"
+        className="font-normal"
+        {...props}
+      />
+    </>
   );
 };

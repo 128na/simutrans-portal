@@ -11,15 +11,15 @@ export const SectionText = ({ section, idx, ...props }: Props) => {
   const { getError } = useAxiosError();
 
   return (
-    <Textarea
-      value={section.text ?? ""}
-      labelClassName="font-medium"
-      className="font-normal"
-      rows={5}
-      {...props}
-    >
-      テキスト
+    <>
       <TextError>{getError(`article.contents.sections.${idx}.text`)}</TextError>
-    </Textarea>
+      <Textarea
+        value={section.text ?? ""}
+        labelClassName="font-medium"
+        className="font-normal"
+        rows={5}
+        {...props}
+      />
+    </>
   );
 };

@@ -1,7 +1,6 @@
 import Textarea from "@/components/ui/Textarea";
 import { SelectCategories } from "../components/SelectCategories";
 import { SelectableSearch } from "@/components/form/SelectableSearch";
-import Label from "@/components/ui/Label";
 import { Accordion } from "@/components/ui/Accordion";
 import TextBadge from "@/components/ui/TextBadge";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
@@ -9,6 +8,7 @@ import { CommonForm } from "../forms/CommonForm";
 import { StatusForm } from "../forms/StatusForm";
 import TextError from "@/components/ui/TextError";
 import { useAxiosError } from "@/hooks/useAxiosError";
+import { FormCaption } from "@/components/ui/FormCaption";
 
 export const Markdown = () => {
   const article = useArticleEditor((s) => s.article);
@@ -23,26 +23,30 @@ export const Markdown = () => {
   const { getError } = useAxiosError();
 
   return (
-    <div className="grid gap-4">
+    <>
       <CommonForm />
-      <Textarea
-        labelClassName="font-medium"
-        className="font-normal"
-        value={contents.markdown || ""}
-        rows={15}
-        onChange={(e) =>
-          updateContents<ArticleContent.Markdown>((draft) => {
-            draft.markdown = e.target.value;
-          })
-        }
-      >
-        <TextBadge className="bg-red-500">必須</TextBadge>
-        本文
+
+      <div>
+        <FormCaption>
+          <TextBadge className="bg-red-500">必須</TextBadge>
+          本文
+        </FormCaption>
         <TextError>{getError("article.contents.markdown")}</TextError>
-      </Textarea>
+
+        <Textarea
+          labelClassName="font-medium"
+          className="font-normal"
+          value={contents.markdown || ""}
+          rows={15}
+          onChange={(e) =>
+            updateContents<ArticleContent.Markdown>((draft) => {
+              draft.markdown = e.target.value;
+            })
+          }
+        />
+      </div>
+
       <SelectCategories
-        typeClassName="font-medium"
-        className="font-normal"
         categories={categories}
         selected={article.categories}
         only={["page"]}
@@ -50,12 +54,12 @@ export const Markdown = () => {
           update((draft) => (draft.categories = categoryIds))
         }
       />
+
       <Accordion title="その他の項目" defaultOpen={!!article.articles.length}>
-        <div className="pl-4 grid gap-4">
-          <Label className="font-medium">
-            関連記事
+        <div className="grid gap-4">
+          <div>
+            <FormCaption>関連記事</FormCaption>
             <SelectableSearch
-              className="font-normal"
               labelKey="title"
               options={relationalArticles}
               selectedIds={article.articles}
@@ -64,10 +68,10 @@ export const Markdown = () => {
               }
               render={(o) => `${o.title} (${o.user_name})`}
             />
-          </Label>
+          </div>
         </div>
       </Accordion>
       <StatusForm />
-    </div>
+    </>
   );
 };

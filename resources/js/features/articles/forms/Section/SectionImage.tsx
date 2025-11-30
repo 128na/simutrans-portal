@@ -1,5 +1,4 @@
 import { Upload } from "@/components/form/Upload";
-import Label from "@/components/ui/Label";
 import { ModalFull } from "@/components/ui/ModalFull";
 import TextError from "@/components/ui/TextError";
 import TextSub from "@/components/ui/TextSub";
@@ -28,18 +27,13 @@ export const SectionImage = ({
   return (
     <>
       <div>
-        <Label className="font-medium">
-          画像
-          <TextError>
-            {getError(`article.contents.sections.${idx}.id`)}
-          </TextError>
-        </Label>
-        <TextSub>
+        <TextError>{getError(`article.contents.sections.${idx}.id`)}</TextError>
+        <TextSub className="mb-1">
           {(section.id &&
             attachments.find((a) => a.id === section.id)?.original_name) ??
             "未選択"}
         </TextSub>
-        <div className="space-x-2">
+        <div className="space-x-2 mb-2">
           <Upload accept="image/*" onUploaded={onUploaded}>
             画像をアップロード
           </Upload>

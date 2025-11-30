@@ -1,6 +1,5 @@
 import { Upload } from "@/components/form/Upload";
 import Input from "@/components/ui/Input";
-import Label from "@/components/ui/Label";
 import TextBadge from "@/components/ui/TextBadge";
 import { useArticleEditor, useIsSlugUpdated } from "@/hooks/useArticleEditor";
 import TextSub from "@/components/ui/TextSub";
@@ -10,6 +9,7 @@ import { ModalFull } from "@/components/ui/ModalFull";
 import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
 import Checkbox from "@/components/ui/Checkbox";
 import ButtonOutline from "@/components/ui/ButtonOutline";
+import { FormCaption } from "@/components/ui/FormCaption";
 
 const regReplace =
   /(!|"|#|\$|%|&|'|\(|\)|\*|\+|,|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\s|\.)+/gi;
@@ -34,18 +34,26 @@ export const CommonForm = () => {
 
   return (
     <>
-      <Input
-        labelClassName="font-medium"
-        className="font-normal"
-        value={article.title || ""}
-        onChange={(e) => update((draft) => (draft.title = e.target.value))}
-      >
-        <TextBadge className="bg-red-500">必須</TextBadge>
-        タイトル
+      <div>
+        <FormCaption>
+          <TextBadge className="bg-red-500">必須</TextBadge>
+          タイトル
+        </FormCaption>
         <TextError>{getError("article.title")}</TextError>
-      </Input>
+        <Input
+          labelClassName="font-medium"
+          className="font-normal"
+          value={article.title || ""}
+          onChange={(e) => update((draft) => (draft.title = e.target.value))}
+        />
+      </div>
 
       <div>
+        <FormCaption>
+          <TextBadge className="bg-red-500">必須</TextBadge>
+          記事URL
+        </FormCaption>
+        <TextError>{getError("article.slug")}</TextError>
         <Input
           labelClassName="font-medium"
           className="font-normal"
@@ -53,12 +61,8 @@ export const CommonForm = () => {
           onChange={(e) =>
             update((draft) => (draft.slug = escape(e.target.value)))
           }
-        >
-          <TextBadge className="bg-red-500">必須</TextBadge>
-          記事URL
-          <TextError>{getError("article.slug")}</TextError>
-        </Input>
-        <TextSub>
+        />
+        <TextSub className="my-1">
           URLプレビュー: /users/{user.nickname ?? user.id}/{article.slug || ""}
         </TextSub>
         <ButtonOutline
@@ -72,7 +76,7 @@ export const CommonForm = () => {
       </div>
       {isSlugUpdated && (
         <div>
-          <Label className="font-medium mb-1">リダイレクト設定</Label>
+          <FormCaption>リダイレクト設定</FormCaption>
           <Checkbox
             checked={followRedirect}
             onChange={() => {
@@ -90,17 +94,15 @@ export const CommonForm = () => {
       )}
 
       <div>
-        <Label className="font-medium">
-          サムネイル
-          <TextError>{getError("article.contents.thumbnail")}</TextError>
-        </Label>
-        <TextSub>
+        <FormCaption>サムネイル</FormCaption>
+        <TextError>{getError("article.contents.thumbnail")}</TextError>
+        <TextSub className="mb-1">
           {(article.contents.thumbnail &&
             attachments.find((a) => a.id === article.contents.thumbnail)
               ?.original_name) ??
             "未選択"}
         </TextSub>
-        <div className="space-x-2">
+        <div className="space-x-2 mb-2">
           <Upload
             accept="image/*"
             onUploaded={(a) => {

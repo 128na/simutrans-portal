@@ -13,7 +13,7 @@ export default function TextBadge({
   return (
     <span
       className={twMerge(
-        "text-xs p-0.5 mr-0.5 text-white font-normal rounded-md bg-gray-500",
+        "text-[.75rem] p-0.5 mr-0.5 text-white font-normal rounded-md bg-gray-500",
         className
       )}
       {...props}

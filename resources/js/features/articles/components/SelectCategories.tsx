@@ -1,7 +1,7 @@
 import { t } from "@/utils/translate";
 import { typedKeys } from "../utils/articleUtil";
 import Checkbox from "@/components/ui/Checkbox";
-import { twMerge } from "tailwind-merge";
+import { FormCaption } from "@/components/ui/FormCaption";
 
 type Props = {
   categories: Category.Grouping;
@@ -9,8 +9,6 @@ type Props = {
   only?: CategoryType[];
   showAdmin?: boolean;
   onChange: (categoryIds: number[]) => void;
-  typeClassName?: string;
-  className?: string;
 };
 
 export const SelectCategories = ({
@@ -18,8 +16,6 @@ export const SelectCategories = ({
   selected,
   only,
   showAdmin,
-  typeClassName,
-  className,
   onChange,
 }: Props) => {
   const pak128Id = categories["pak"].find((c) => c.slug === "128")?.id;
@@ -59,24 +55,27 @@ export const SelectCategories = ({
     onChange(next);
   };
 
-  return typedKeys(categories)
-    .filter(categoryGroupFilter)
-    .map((type) => (
-      <div key={type} className="mb-6">
-        <div className={twMerge("text-sm text-gray-900", typeClassName)}>
-          {t(`category.type.${type}`)}
-        </div>
-        {categories[type].filter(categoryFilter).map((category) => (
-          <Checkbox
-            className={className}
-            key={category.id}
-            value={category.id}
-            checked={selected.includes(category.id)}
-            onChange={() => handle(category.id)}
-          >
-            {t(`category.${category.type}.${category.slug}`)}
-          </Checkbox>
+  return (
+    <div className="grid gap-4">
+      {typedKeys(categories)
+        .filter(categoryGroupFilter)
+        .map((type) => (
+          <div key={type}>
+            <FormCaption>{t(`category.type.${type}`)}</FormCaption>
+
+            {categories[type].filter(categoryFilter).map((category) => (
+              <Checkbox
+                className="mr-2"
+                key={category.id}
+                value={category.id}
+                checked={selected.includes(category.id)}
+                onChange={() => handle(category.id)}
+              >
+                {t(`category.${category.type}.${category.slug}`)}
+              </Checkbox>
+            ))}
+          </div>
         ))}
-      </div>
-    ));
+    </div>
+  );
 };

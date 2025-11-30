@@ -2,7 +2,6 @@ import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
 import { SelectCategories } from "../components/SelectCategories";
 import { SelectableSearch } from "@/components/form/SelectableSearch";
-import Label from "@/components/ui/Label";
 import { Accordion } from "@/components/ui/Accordion";
 import { TagEdit } from "../../tags/TagEdit";
 import TextBadge from "@/components/ui/TextBadge";
@@ -21,6 +20,7 @@ import {
 } from "@/features/attachments/fileInfoTool";
 import { t } from "@/utils/translate";
 import ButtonOutline from "@/components/ui/ButtonOutline";
+import { FormCaption } from "@/components/ui/FormCaption";
 
 export const AddonPost = () => {
   const article = useArticleEditor((s) => s.article);
@@ -87,16 +87,19 @@ export const AddonPost = () => {
   };
 
   return (
-    <div className="grid gap-4">
+    <>
       <CommonForm />
 
       <div>
-        <Label className="font-medium">
+        <FormCaption>
+          <TextBadge className="bg-red-500">必須</TextBadge>
           ファイル
-          <TextError>{getError("article.contents.file")}</TextError>
-        </Label>
-        <TextSub>{(contents.file && file?.original_name) ?? "未選択"}</TextSub>
-        <div className="space-x-2">
+        </FormCaption>
+        <TextError>{getError("article.contents.file")}</TextError>
+        <TextSub className="mb-1">
+          {(contents.file && file?.original_name) ?? "未選択"}
+        </TextSub>
+        <div className="space-x-2 mb-2">
           <Upload
             onUploaded={(a) => {
               useArticleEditor.setState((state) => {
@@ -134,17 +137,21 @@ export const AddonPost = () => {
             )}
           </ModalFull>
         </div>
-      </div>
-      <div>
         <ButtonOutline
           disabled={!hasReadme && !hasPakMetadata}
           onClick={handleFillFromFile}
         >
           ファイルの内容から項目を入力する
         </ButtonOutline>
+        <TextSub>pakファイルの内容から説明・カテゴリを自動選択します。</TextSub>
       </div>
 
       <div>
+        <FormCaption>
+          <TextBadge className="bg-red-500">必須</TextBadge>
+          説明
+        </FormCaption>
+        <TextError>{getError("article.contents.description")}</TextError>
         <Textarea
           labelClassName="font-medium"
           className="font-normal"
@@ -155,16 +162,10 @@ export const AddonPost = () => {
               (draft) => (draft.description = e.target.value)
             )
           }
-        >
-          <TextBadge className="bg-red-500">必須</TextBadge>
-          説明
-          <TextError>{getError("article.contents.description")}</TextError>
-        </Textarea>
+        />
       </div>
 
       <SelectCategories
-        typeClassName="font-medium"
-        className="font-normal"
         categories={categories}
         selected={article.categories}
         only={["pak", "addon", "pak128_position", "license", "double_slope"]}
@@ -184,62 +185,60 @@ export const AddonPost = () => {
           )
         }
       >
-        <div className="pl-4 grid gap-4">
-          <Input
-            labelClassName="font-medium"
-            className="font-normal"
-            value={contents.author || ""}
-            onChange={(e) =>
-              updateContents<ArticleContent.AddonPost>(
-                (draft) => (draft.author = e.target.value)
-              )
-            }
-          >
-            作者
-            <TextError>{getError("article.contents.author")}</TextError>
-          </Input>
-
-          <Textarea
-            labelClassName="font-medium"
-            className="font-normal"
-            value={contents.thanks || ""}
-            rows={3}
-            onChange={(e) =>
-              updateContents<ArticleContent.AddonPost>(
-                (draft) => (draft.thanks = e.target.value)
-              )
-            }
-          >
-            謝辞
-            <TextError>{getError("article.contents.thanks")}</TextError>
-          </Textarea>
-
-          <Textarea
-            labelClassName="font-medium"
-            className="font-normal"
-            value={contents.license || ""}
-            rows={3}
-            onChange={(e) =>
-              updateContents<ArticleContent.AddonPost>(
-                (draft) => (draft.license = e.target.value)
-              )
-            }
-          >
-            ライセンス
-            <TextError>{getError("article.contents.license")}</TextError>
-          </Textarea>
-
+        <div className="grid gap-4">
           <div>
-            <Label className="mb-2">
-              <div className="font-medium">タグ</div>
-              <SelectableSearch
-                className="font-normal"
-                labelKey="name"
-                options={tags}
-                selectedIds={article.tags}
-                onChange={(tagIds) => update((draft) => (draft.tags = tagIds))}
-              />
-            </Label>
+            <FormCaption>作者</FormCaption>
+            <TextError>{getError("article.contents.author")}</TextError>
+            <Input
+              labelClassName="font-medium"
+              className="font-normal"
+              value={contents.author || ""}
+              onChange={(e) =>
+                updateContents<ArticleContent.AddonIntroduction>(
+                  (draft) => (draft.author = e.target.value)
+                )
+              }
+            />
+          </div>
+          <div>
+            <FormCaption>謝辞</FormCaption>
+            <TextError>{getError("article.contents.thanks")}</TextError>
+            <Textarea
+              labelClassName="font-medium"
+              className="font-normal"
+              value={contents.thanks || ""}
+              rows={3}
+              onChange={(e) =>
+                updateContents<ArticleContent.AddonIntroduction>(
+                  (draft) => (draft.thanks = e.target.value)
+                )
+              }
+            />
+          </div>
+          <div>
+            <FormCaption>ライセンス</FormCaption>
+            <TextError>{getError("article.contents.license")}</TextError>
+            <Textarea
+              labelClassName="font-medium"
+              className="font-normal"
+              value={contents.license || ""}
+              rows={3}
+              onChange={(e) =>
+                updateContents<ArticleContent.AddonIntroduction>(
+                  (draft) => (draft.license = e.target.value)
+                )
+              }
+            />
+          </div>{" "}
+          <div>
+            <FormCaption>タグ</FormCaption>
+            <SelectableSearch
+              className="mb-1"
+              labelKey="name"
+              options={tags}
+              selectedIds={article.tags}
+              onChange={(tagIds) => update((draft) => (draft.tags = tagIds))}
+            />
             <ModalFull buttonTitle="タグの作成・編集" title="タグの作成・編集">
               <TagEdit
                 tags={tags}
@@ -249,11 +248,9 @@ export const AddonPost = () => {
               />
             </ModalFull>
           </div>
-
-          <Label className="font-medium">
-            関連記事
+          <div>
+            <FormCaption>関連記事</FormCaption>
             <SelectableSearch
-              className="font-normal"
               labelKey="title"
               options={relationalArticles}
               selectedIds={article.articles}
@@ -262,10 +259,10 @@ export const AddonPost = () => {
               }
               render={(o) => `${o.title} (${o.user_name})`}
             />
-          </Label>
+          </div>
         </div>
       </Accordion>
       <StatusForm />
-    </div>
+    </>
   );
 };

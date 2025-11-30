@@ -1,11 +1,11 @@
 import { SelectCategories } from "../components/SelectCategories";
 import { SelectableSearch } from "@/components/form/SelectableSearch";
-import Label from "@/components/ui/Label";
 import { Accordion } from "@/components/ui/Accordion";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
 import { CommonForm } from "../forms/CommonForm";
 import { StatusForm } from "../forms/StatusForm";
 import { SectionForm } from "../forms/SectionForm";
+import { FormCaption } from "@/components/ui/FormCaption";
 
 export const Page = () => {
   const article = useArticleEditor((s) => s.article);
@@ -15,12 +15,10 @@ export const Page = () => {
   const relationalArticles = useArticleEditor((s) => s.relationalArticles);
 
   return (
-    <div className="grid gap-4">
+    <>
       <CommonForm />
       <SectionForm />
       <SelectCategories
-        typeClassName="font-medium"
-        className="font-normal"
         categories={categories}
         selected={article.categories}
         only={["page"]}
@@ -29,9 +27,9 @@ export const Page = () => {
         }
       />
       <Accordion title="その他の項目" defaultOpen={!!article.articles.length}>
-        <div className="pl-4 grid gap-4">
-          <Label className="font-medium">
-            関連記事
+        <div className="grid gap-4">
+          <div>
+            <FormCaption>関連記事</FormCaption>
             <SelectableSearch
               className="font-normal"
               labelKey="title"
@@ -42,10 +40,10 @@ export const Page = () => {
               }
               render={(o) => `${o.title} (${o.user_name})`}
             />
-          </Label>
+          </div>
         </div>
       </Accordion>
       <StatusForm />
-    </div>
+    </>
   );
 };

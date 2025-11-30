@@ -7,6 +7,7 @@ import { compareArticleValues } from "../articles/utils/articleUtil";
 import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
 import { analyticsFilter } from "./analyticsUtil";
 import { format } from "date-fns";
+import { FormCaption } from "@/components/ui/FormCaption";
 
 type Props = {
   articles: Analytics.Article[];
@@ -72,7 +73,8 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
   };
 
   return (
-    <>
+    <div>
+      <FormCaption>表示記事</FormCaption>
       <div className="gap-4 flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between py-4">
         <div>
           <Input
@@ -125,6 +127,6 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
           )}
         />
       </div>
-    </>
+    </div>
   );
 };

@@ -105,6 +105,7 @@ export const ProfileForm = ({
           onChange={(e) => onChangeUser({ ...user, name: e.target.value })}
         />
       </div>
+
       <div>
         <FormCaption>
           <TextBadge className="bg-red-500">必須</TextBadge>
@@ -134,6 +135,7 @@ export const ProfileForm = ({
           /users/my-nickname/my-article
         </TextSub>
       </div>
+
       <div>
         <FormCaption>アバター画像</FormCaption>
         <TextError>{getError("user.profile.data.avatar")}</TextError>

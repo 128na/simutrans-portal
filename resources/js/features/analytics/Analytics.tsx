@@ -8,7 +8,7 @@ type Props = {
 
 export const Analytics = ({ articles }: Props) => {
   return (
-    <div className="space-y-4">
+    <div className="grid gap-4">
       <AnalyticsGraph articles={articles} />
       <AnalyticsOption />
       <AnalyticsTable articles={articles} limit={15} />

@@ -1,4 +1,5 @@
 import Button from "@/components/ui/Button";
+import { FormCaption } from "@/components/ui/FormCaption";
 import TextSub from "@/components/ui/TextSub";
 import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
 import axios from "axios";
@@ -112,8 +113,9 @@ export function AnalyticsGraph({ articles }: Props) {
 
   return (
     <div>
+      <FormCaption>グラフ</FormCaption>
       {data.length === 0 ? (
-        <TextSub>グラフを表示するには記事を選んでください</TextSub>
+        <TextSub>記事を選んでください</TextSub>
       ) : (
         <LineChart
           style={{ width: "100%", aspectRatio: 2 }}

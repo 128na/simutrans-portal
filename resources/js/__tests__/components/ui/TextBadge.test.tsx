@@ -22,7 +22,7 @@ describe("TextBadge コンポーネント", () => {
   it("デフォルトのスタイルが適用される", () => {
     render(<TextBadge>バッジ</TextBadge>);
     const badge = screen.getByText("バッジ");
-    expect(badge).toHaveClass("text-xs");
+    expect(badge).toHaveClass("text-[.75rem]");
     expect(badge).toHaveClass("bg-gray-500");
     expect(badge).toHaveClass("text-white");
   });

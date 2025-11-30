@@ -121,6 +121,6 @@ jobs:
             php -c ~/www/php.ini artisan optimize
             php -c ~/www/php.ini artisan event:cache
             php -c ~/www/php.ini artisan view:cache
-          'EOF'
+          EOF
       - name: Sync assets
         run: rsync -ah -e "ssh -i ~/.ssh/id_rsa" ./public/ ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/public

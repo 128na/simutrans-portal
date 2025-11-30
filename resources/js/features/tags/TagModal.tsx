@@ -9,6 +9,7 @@ import TextSub from "@/components/ui/TextSub";
 import { Modal } from "@/components/ui/Modal";
 import { isValidationError } from "@/lib/errorHandler";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
+import { FormCaption } from "@/components/ui/FormCaption";
 
 type Props = {
   tag: Tag.MypageEdit | Tag.New | null;
@@ -49,27 +50,29 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
       modalClass="max-w-2xl"
     >
       <div className="grid gap-x-4 mb-4">
-        <Input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          disabled={!!tag.id}
-          className={tag.id ? "bg-gray-100" : ""}
-        >
-          名前
-        </Input>
-        {tag.id ? (
-          <TextSub className="mb-2">タグ名は編集できません。</TextSub>
-        ) : null}
-        <TextError>{getError("name")?.join("\n")}</TextError>
-        <Textarea
-          rows={4}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        >
-          説明
-        </Textarea>
-        <TextError>{getError("description")?.join("\n")}</TextError>
+        <div>
+          <FormCaption>名前</FormCaption>
+          <TextError>{getError("name")?.join("\n")}</TextError>
+          <Input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            disabled={!!tag.id}
+            className={tag.id ? "bg-gray-100" : ""}
+          />
+          {tag.id ? (
+            <TextSub className="mb-2">タグ名は編集できません。</TextSub>
+          ) : null}
+        </div>
+        <div>
+          <FormCaption>説明</FormCaption>
+          <TextError>{getError("description")?.join("\n")}</TextError>
+          <Textarea
+            rows={4}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
       </div>
 
       <div className="flex justify-end space-x-2">

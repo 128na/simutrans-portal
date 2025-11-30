@@ -1,5 +1,4 @@
 import { Upload } from "@/components/form/Upload";
-import Label from "@/components/ui/Label";
 import { ModalFull } from "@/components/ui/ModalFull";
 import TextError from "@/components/ui/TextError";
 import TextSub from "@/components/ui/TextSub";
@@ -17,6 +16,7 @@ import ButtonDanger from "@/components/ui/ButtonDanger";
 import { useRef } from "react";
 import { isValidationError } from "@/lib/errorHandler";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
+import { FormCaption } from "@/components/ui/FormCaption";
 
 type Props = {
   user: User.MypageEdit;
@@ -92,54 +92,56 @@ export const ProfileForm = ({
 
   return (
     <div ref={containerRef} className="grid gap-4">
-      <Input
-        labelClassName="font-medium"
-        className="font-normal"
-        value={user.name}
-        onChange={(e) => onChangeUser({ ...user, name: e.target.value })}
-      >
-        <TextBadge className="bg-red-500">必須</TextBadge>
-        表示名
+      <div>
+        <FormCaption>
+          <TextBadge className="bg-red-500">必須</TextBadge>
+          表示名
+        </FormCaption>
         <TextError>{getError("user.name")}</TextError>
-      </Input>
-
-      <Input
-        labelClassName="font-medium"
-        type="email"
-        className="font-normal"
-        value={user.email}
-        onChange={(e) => onChangeUser({ ...user, email: e.target.value })}
-      >
-        <TextBadge className="bg-red-500">必須</TextBadge>
-        メールアドレス
+        <Input
+          labelClassName="font-medium"
+          className="font-normal"
+          value={user.name}
+          onChange={(e) => onChangeUser({ ...user, name: e.target.value })}
+        />
+      </div>
+      <div>
+        <FormCaption>
+          <TextBadge className="bg-red-500">必須</TextBadge>
+          メールアドレス
+        </FormCaption>
         <TextError>{getError("user.email")}</TextError>
-      </Input>
+        <Input
+          labelClassName="font-medium"
+          type="email"
+          className="font-normal"
+          value={user.email}
+          onChange={(e) => onChangeUser({ ...user, email: e.target.value })}
+        />
+      </div>
 
       <div>
+        <FormCaption>ニックネーム</FormCaption>
+        <TextError>{getError("user.nickname")}</TextError>
         <Input
           labelClassName="font-medium"
           className="font-normal"
           value={user.nickname || ""}
           onChange={(e) => onChangeUser({ ...user, nickname: e.target.value })}
-        >
-          ニックネーム
-          <TextError>{getError("user.nickname")}</TextError>
-        </Input>
+        />
         <TextSub>
           設定すると記事URLがユーザーIDの代わりに使用されます。 例：
           /users/my-nickname/my-article
         </TextSub>
       </div>
       <div>
-        <Label className="font-medium">
-          アバター画像
-          <TextError>{getError("user.profile.data.avatar")}</TextError>
-          <Avatar
-            attachmentId={user.profile.data.avatar}
-            attachments={attachments}
-          />
-        </Label>
-        <TextSub>
+        <FormCaption>アバター画像</FormCaption>
+        <TextError>{getError("user.profile.data.avatar")}</TextError>
+        <Avatar
+          attachmentId={user.profile.data.avatar}
+          attachments={attachments}
+        />
+        <TextSub className="mb-1">
           {(user.profile.data.avatar &&
             attachments.find((a) => a.id === user.profile.data.avatar)
               ?.original_name) ??
@@ -194,32 +196,33 @@ export const ProfileForm = ({
           </ModalFull>
         </div>
       </div>
-      <Textarea
-        labelClassName="font-medium"
-        className="font-normal"
-        value={user.profile.data.description || ""}
-        rows={2}
-        onChange={(e) => {
-          onChangeUser({
-            ...user,
-            profile: {
-              ...user.profile,
-              data: {
-                ...user.profile.data,
-                description: e.target.value,
-              },
-            },
-          });
-        }}
-      >
-        説明
-        <TextError>{getError("user.profile.data.description")}</TextError>
-      </Textarea>
+
       <div>
-        <Label>
-          <div className="font-medium">Webサイト</div>
-        </Label>
-        <TextSub>SNSなども登録できます。</TextSub>
+        <FormCaption>説明</FormCaption>
+        <TextError>{getError("user.profile.data.description")}</TextError>
+        <Textarea
+          labelClassName="font-medium"
+          className="font-normal"
+          value={user.profile.data.description || ""}
+          rows={2}
+          onChange={(e) => {
+            onChangeUser({
+              ...user,
+              profile: {
+                ...user.profile,
+                data: {
+                  ...user.profile.data,
+                  description: e.target.value,
+                },
+              },
+            });
+          }}
+        />
+      </div>
+
+      <div>
+        <FormCaption>Webサイト</FormCaption>
+        <TextSub className="mb-1">SNSなども登録できます。</TextSub>
         <div>
           <ButtonSub onClick={addWebsite}>Webサイトを追加</ButtonSub>
         </div>

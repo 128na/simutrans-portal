@@ -26,6 +26,7 @@ export const ProfileEdit = ({
           <ProfileShow user={user} attachments={attachments} preview={true} />
         </div>
       </div>
+
       <ProfileForm
         user={user}
         onChangeUser={onChangeUser}

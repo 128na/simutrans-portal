@@ -16,18 +16,25 @@ namespace App\Enums;
 enum SimutransClimate: int
 {
     case Water = 0;
+
     // 水域
     case Desert = 1;
+
     // 砂漠
     case Tropic = 2;
+
     // 熱帯
     case Mediterran = 3;
+
     // 地中海性
     case Temperate = 4;
+
     // 温帯
     case Tundra = 5;
+
     // ツンドラ
     case Rocky = 6;
+
     // 岩地
     case Arctic = 7;       // 極地
 

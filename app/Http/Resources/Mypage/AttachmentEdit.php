@@ -28,7 +28,6 @@ final class AttachmentEdit extends JsonResource
             'type' => $this->resource->type,
             'original_name' => $this->resource->original_name,
             'thumbnail' => $this->resource->thumbnail,
-            'url' => $this->resource->url,
             'size' => $this->resource->size,
             'fileInfo' => $this->when(
                 $this->resource->attachmentable_type !== Profile::class && $this->resource->fileInfo !== null,

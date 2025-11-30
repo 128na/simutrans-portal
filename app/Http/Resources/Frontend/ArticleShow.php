@@ -41,7 +41,6 @@ final class ArticleShow extends JsonResource
                             'id' => $attachment->id,
                             'thumbnail' => $attachment->thumbnail,
                             'original_name' => $attachment->original_name,
-                            'url' => $attachment->url,
                         ]),
                     ];
                 }),
@@ -67,7 +66,6 @@ final class ArticleShow extends JsonResource
                 'id' => $attachment->id,
                 'original_name' => $attachment->original_name,
                 'thumbnail' => $attachment->thumbnail,
-                'url' => $attachment->url,
                 'size' => $attachment->size,
                 'fileInfo' => $this->when($attachment->fileInfo instanceof FileInfo, function () use ($attachment): array {
                     /** @var FileInfo $fileInfo */

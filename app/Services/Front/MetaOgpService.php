@@ -68,13 +68,13 @@ final class MetaOgpService
         return [
             'title' => sprintf(
                 '%s / %s の記事'.' - '.Config::string('app.name'),
-                __('categories.pak.'.$pak->slug),
-                __('categories.addon.'.$addon->slug)
+                __('category.pak.'.$pak->slug),
+                __('category.addon.'.$addon->slug)
             ),
             'description' => sprintf(
                 '%s / %s の記事一覧です。',
-                __('categories.pak.'.$pak->slug),
-                __('categories.addon.'.$addon->slug)
+                __('category.pak.'.$pak->slug),
+                __('category.addon.'.$addon->slug)
             ),
         ];
     }

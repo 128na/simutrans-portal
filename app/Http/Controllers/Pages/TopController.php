@@ -17,7 +17,7 @@ final class TopController extends Controller
     public function top(): View
     {
         return view('pages.top.index', [
-            'announces' => $this->articleRepository->getAnnounces(3),
+            'announces' => $this->articleRepository->getAnnouncesForTop(3),
         ]);
     }
 }

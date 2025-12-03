@@ -11,6 +11,7 @@ use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\User;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -27,16 +28,15 @@ final class ArticleRepository
      */
     public function getForEdit(?Article $article = null): Collection
     {
-        return $this->model->query()
-            ->select(['articles.id', 'articles.title', 'articles.user_id', 'users.name as user_name'])
-            ->join('users', function (JoinClause $joinClause): void {
-                $joinClause->on('users.id', '=', 'articles.user_id')
-                    ->whereNull('users.deleted_at');
-            })
-            ->where('articles.status', ArticleStatus::Publish)
+        $builder = $this->model->query()
+            ->select(['articles.id', 'articles.title', 'articles.user_id', 'users.name as user_name']);
+
+        $this->joinActiveUsers($builder);
+        $this->wherePublished($builder);
+        $this->orderByLatest($builder);
+
+        return $builder
             ->when($article, fn ($q, Article $article) => $q->where('articles.id', '!=', $article->id))
-            ->whereNull('articles.deleted_at')
-            ->latest('articles.modified_at')
             ->get();
     }
 
@@ -47,12 +47,14 @@ final class ArticleRepository
      */
     public function getForMypageList(User $user): Collection
     {
-        return $this->model->query()
+        $builder = $this->model->query()
             ->select('id', 'title', 'slug', 'status', 'post_type', 'published_at', 'modified_at')
-            ->where('articles.status', ArticleStatus::Publish)
-            ->where('articles.user_id', $user->id)
-            ->whereNull('articles.deleted_at')
-            ->latest('articles.modified_at')
+            ->where('articles.user_id', $user->id);
+
+        $this->wherePublished($builder);
+        $this->orderByLatest($builder);
+
+        return $builder
             ->with('totalConversionCount', 'totalViewCount')
             ->get();
     }
@@ -64,12 +66,14 @@ final class ArticleRepository
      */
     public function getForAnalyticsList(User $user): Collection
     {
-        return $this->model->query()
+        $builder = $this->model->query()
             ->select(['articles.id', 'articles.title', 'articles.published_at', 'articles.modified_at'])
-            ->where('articles.status', ArticleStatus::Publish)
-            ->where('articles.user_id', $user->id)
-            ->whereNull('articles.deleted_at')
-            ->latest('articles.modified_at')
+            ->where('articles.user_id', $user->id);
+
+        $this->wherePublished($builder);
+        $this->orderByLatest($builder);
+
+        return $builder
             ->with('totalConversionCount', 'totalViewCount')
             ->get();
     }
@@ -82,15 +86,13 @@ final class ArticleRepository
         $query = $this->model->query()
             ->select(['articles.*'])
             ->withoutGlobalScopes()
-            ->join('users', function (JoinClause $joinClause): void {
-                $joinClause->on('users.id', '=', 'articles.user_id')
-                    ->whereNull('users.deleted_at');
-            })
-            ->where('articles.status', ArticleStatus::Publish)
-            ->where('articles.slug', urlencode($slug))
-            ->whereNull('articles.deleted_at')
-            ->orderBy('articles.modified_at', 'desc')
-            ->with('categories', 'tags', 'attachments.fileInfo', 'user.profile.attachments', 'articles.user', 'relatedArticles.user');
+            ->where('articles.slug', urlencode($slug));
+
+        $this->joinActiveUsers($query);
+        $this->wherePublished($query);
+        $this->orderByLatest($query);
+
+        $query->with('categories', 'tags', 'attachments.fileInfo', 'user.profile.attachments', 'articles.user', 'relatedArticles.user');
 
         if (is_numeric($userIdOrNickname)) {
             $query->where('articles.user_id', $userIdOrNickname);
@@ -122,15 +124,12 @@ final class ArticleRepository
         $baseQuery = $this->model->query()
             ->select(['articles.*'])
             ->distinct()
-            ->withoutGlobalScopes()
-            ->join('users', function (JoinClause $joinClause): void {
-                $joinClause->on('users.id', '=', 'articles.user_id')
-                    ->whereNull('users.deleted_at');
-            })
-            ->where('articles.status', ArticleStatus::Publish)
-            ->whereNull('articles.deleted_at')
-            ->orderByDesc('articles.modified_at')
-            ->with('categories', 'tags', 'attachments', 'user.profile.attachments');
+            ->withoutGlobalScopes();
+
+        $this->joinActiveUsers($baseQuery);
+        $this->wherePublished($baseQuery);
+        $this->orderByLatest($baseQuery);
+        $this->withStandardRelations($baseQuery);
 
         // キーワード
         $rawWord = $condition['word'] ?? '';
@@ -191,20 +190,18 @@ final class ArticleRepository
      */
     public function getLatestAllPak(int $limit = 24): LengthAwarePaginator
     {
-        return $this->model->query()
+        $query = $this->model->query()
             ->select(['articles.*'])
             ->distinct()
-            ->withoutGlobalScopes()
-            ->join('users', function (JoinClause $joinClause): void {
-                $joinClause->on('users.id', '=', 'articles.user_id')
-                    ->whereNull('users.deleted_at');
-            })
-            ->where('articles.status', ArticleStatus::Publish)
-            ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
-            ->whereNull('articles.deleted_at')
-            ->orderBy('articles.modified_at', 'desc')
-            ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
-            ->paginate($limit);
+            ->withoutGlobalScopes();
+
+        $this->joinActiveUsers($query);
+        $this->wherePublished($query);
+        $this->whereAddonPostTypes($query);
+        $this->orderByLatest($query);
+        $this->withStandardRelations($query);
+
+        return $query->paginate($limit);
     }
 
     /**
@@ -214,26 +211,26 @@ final class ArticleRepository
      */
     public function getLatest(string $pak, int $limit = 24): LengthAwarePaginator
     {
-        return $this->model->query()
+        $query = $this->model->query()
             ->select(['articles.*'])
             ->distinct()
-            ->withoutGlobalScopes()
-            ->join('users', function (JoinClause $joinClause): void {
-                $joinClause->on('users.id', '=', 'articles.user_id')
-                    ->whereNull('users.deleted_at');
-            })
-            ->join('article_category', 'articles.id', '=', 'article_category.article_id')
+            ->withoutGlobalScopes();
+
+        $this->joinActiveUsers($query);
+
+        $query->join('article_category', 'articles.id', '=', 'article_category.article_id')
             ->join('categories', function (JoinClause $joinClause) use ($pak): void {
                 $joinClause->on('article_category.category_id', '=', 'categories.id')
                     ->where('categories.type', CategoryType::Pak)
                     ->where('categories.slug', $pak);
-            })
-            ->where('articles.status', ArticleStatus::Publish)
-            ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
-            ->whereNull('articles.deleted_at')
-            ->orderBy('articles.modified_at', 'desc')
-            ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
-            ->paginate($limit);
+            });
+
+        $this->wherePublished($query);
+        $this->whereAddonPostTypes($query);
+        $this->orderByLatest($query);
+        $this->withStandardRelations($query);
+
+        return $query->paginate($limit);
     }
 
     /**
@@ -243,26 +240,26 @@ final class ArticleRepository
      */
     public function getPages(int $limit = 24): LengthAwarePaginator
     {
-        return $this->model->query()
+        $query = $this->model->query()
             ->select(['articles.*'])
             ->distinct()
-            ->withoutGlobalScopes()
-            ->join('users', function (JoinClause $joinClause): void {
-                $joinClause->on('users.id', '=', 'articles.user_id')
-                    ->whereNull('users.deleted_at');
-            })
-            ->join('article_category', 'articles.id', '=', 'article_category.article_id')
+            ->withoutGlobalScopes();
+
+        $this->joinActiveUsers($query);
+
+        $query->join('article_category', 'articles.id', '=', 'article_category.article_id')
             ->join('categories', function (JoinClause $joinClause): void {
                 $joinClause->on('article_category.category_id', '=', 'categories.id')
                     ->where('categories.type', CategoryType::Page)
                     ->where('categories.slug', '!=', 'announce');
-            })
-            ->where('articles.status', ArticleStatus::Publish)
-            ->whereIn('articles.post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
-            ->whereNull('articles.deleted_at')
-            ->orderBy('articles.modified_at', 'desc')
-            ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
-            ->paginate($limit);
+            });
+
+        $this->wherePublished($query);
+        $this->wherePagePostTypes($query);
+        $this->orderByLatest($query);
+        $this->withStandardRelations($query);
+
+        return $query->paginate($limit);
     }
 
     /**
@@ -274,27 +271,55 @@ final class ArticleRepository
     {
         $excludeSlugs = ['64', '128', '128-japan'];
 
-        return $this->model->query()
+        $query = $this->model->query()
             ->select('articles.*')
-            ->withoutGlobalScopes()
-            ->join('users', function (JoinClause $joinClause): void {
-                $joinClause->on('users.id', '=', 'articles.user_id')
-                    ->whereNull('users.deleted_at');
-            })
-            ->where('articles.status', ArticleStatus::Publish)
-            ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
-            ->whereNull('articles.deleted_at')
-            ->whereNotExists(function ($q) use ($excludeSlugs): void {
-                $q->selectRaw(1)
-                    ->from('article_category as ac')
-                    ->join('categories as c', 'ac.category_id', '=', 'c.id')
-                    ->whereColumn('ac.article_id', 'articles.id')
-                    ->where('c.type', CategoryType::Pak)
-                    ->whereIn('c.slug', $excludeSlugs);
-            })
-            ->orderByDesc('articles.modified_at')
-            ->with(['categories', 'tags', 'attachments', 'user.profile.attachments'])
-            ->paginate($limit);
+            ->withoutGlobalScopes();
+
+        $this->joinActiveUsers($query);
+        $this->wherePublished($query);
+        $this->whereAddonPostTypes($query);
+
+        $query->whereNotExists(function ($q) use ($excludeSlugs): void {
+            $q->selectRaw(1)
+                ->from('article_category as ac')
+                ->join('categories as c', 'ac.category_id', '=', 'c.id')
+                ->whereColumn('ac.article_id', 'articles.id')
+                ->where('c.type', CategoryType::Pak)
+                ->whereIn('c.slug', $excludeSlugs);
+        });
+
+        $this->orderByLatest($query);
+        $this->withStandardRelations($query);
+
+        return $query->paginate($limit);
+    }
+
+    /**
+     * トップページ用アナウンス記事一覧取得
+     *
+     * @return Collection<int,Article>
+     */
+    public function getAnnouncesForTop(int $limit = 3): Collection
+    {
+        $query = $this->model->query()
+            ->select('articles.*', 'users.nickname as user_nickname')
+            ->distinct()
+            ->withoutGlobalScopes();
+
+        $this->joinActiveUsers($query);
+
+        $query->join('article_category', 'articles.id', '=', 'article_category.article_id')
+            ->join('categories', function (JoinClause $joinClause): void {
+                $joinClause->on('article_category.category_id', '=', 'categories.id')
+                    ->where('categories.type', CategoryType::Page)
+                    ->where('categories.slug', 'announce');
+            });
+
+        $this->wherePublished($query);
+        $this->wherePagePostTypes($query);
+        $this->orderByLatest($query);
+
+        return $query->limit($limit)->get();
     }
 
     /**
@@ -304,26 +329,26 @@ final class ArticleRepository
      */
     public function getAnnounces(int $limit = 24): LengthAwarePaginator
     {
-        return $this->model->query()
-            ->select('articles.*', 'users.nickname as user_nickname')
+        $query = $this->model->query()
+            ->select(['articles.*'])
             ->distinct()
-            ->withoutGlobalScopes()
-            ->join('users', function (JoinClause $joinClause): void {
-                $joinClause->on('users.id', '=', 'articles.user_id')
-                    ->whereNull('users.deleted_at');
-            })
-            ->join('article_category', 'articles.id', '=', 'article_category.article_id')
+            ->withoutGlobalScopes();
+
+        $this->joinActiveUsers($query);
+
+        $query->join('article_category', 'articles.id', '=', 'article_category.article_id')
             ->join('categories', function (JoinClause $joinClause): void {
                 $joinClause->on('article_category.category_id', '=', 'categories.id')
                     ->where('categories.type', CategoryType::Page)
                     ->where('categories.slug', 'announce');
-            })
-            ->where('articles.status', ArticleStatus::Publish)
-            ->whereIn('articles.post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
-            ->whereNull('articles.deleted_at')
-            ->orderBy('articles.modified_at', 'desc')
-            ->with(['categories', 'tags', 'attachments', 'user.profile.attachments'])
-            ->paginate($limit);
+            });
+
+        $this->wherePublished($query);
+        $this->wherePagePostTypes($query);
+        $this->orderByLatest($query);
+        $this->withStandardRelations($query);
+
+        return $query->paginate($limit);
     }
 
     /**
@@ -333,24 +358,24 @@ final class ArticleRepository
      */
     public function getByTag(int $tagId, int $limit = 24): LengthAwarePaginator
     {
-        return $this->model->query()
+        $query = $this->model->query()
             ->select(['articles.*'])
             ->distinct()
-            ->withoutGlobalScopes()
-            ->join('users', function (JoinClause $joinClause): void {
-                $joinClause->on('users.id', '=', 'articles.user_id')
-                    ->whereNull('users.deleted_at');
-            })
-            ->join('article_tag', function (JoinClause $joinClause) use ($tagId): void {
-                $joinClause->on('articles.id', '=', 'article_tag.article_id')
-                    ->where('article_tag.tag_id', $tagId);
-            })
-            ->where('articles.status', ArticleStatus::Publish)
-            ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
-            ->whereNull('articles.deleted_at')
-            ->orderBy('articles.modified_at', 'desc')
-            ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
-            ->paginate($limit);
+            ->withoutGlobalScopes();
+
+        $this->joinActiveUsers($query);
+
+        $query->join('article_tag', function (JoinClause $joinClause) use ($tagId): void {
+            $joinClause->on('articles.id', '=', 'article_tag.article_id')
+                ->where('article_tag.tag_id', $tagId);
+        });
+
+        $this->wherePublished($query);
+        $this->whereAddonPostTypes($query);
+        $this->orderByLatest($query);
+        $this->withStandardRelations($query);
+
+        return $query->paginate($limit);
     }
 
     /**
@@ -360,28 +385,28 @@ final class ArticleRepository
      */
     public function getForPakAddon(int $pakId, int $addonId, int $limit = 24): LengthAwarePaginator
     {
-        return $this->model->query()
+        $query = $this->model->query()
             ->select(['articles.*'])
             ->distinct()
-            ->withoutGlobalScopes()
-            ->join('users', function (JoinClause $joinClause): void {
-                $joinClause->on('users.id', '=', 'articles.user_id')
-                    ->whereNull('users.deleted_at');
-            })
-            ->join('article_category as pak', function (JoinClause $joinClause) use ($pakId): void {
-                $joinClause->on('pak.article_id', '=', 'articles.id')
-                    ->where('pak.category_id', $pakId);
-            })
+            ->withoutGlobalScopes();
+
+        $this->joinActiveUsers($query);
+
+        $query->join('article_category as pak', function (JoinClause $joinClause) use ($pakId): void {
+            $joinClause->on('pak.article_id', '=', 'articles.id')
+                ->where('pak.category_id', $pakId);
+        })
             ->join('article_category as addon', function (JoinClause $joinClause) use ($addonId): void {
                 $joinClause->on('addon.article_id', '=', 'articles.id')
                     ->where('addon.category_id', $addonId);
-            })
-            ->where('articles.status', ArticleStatus::Publish)
-            ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
-            ->whereNull('articles.deleted_at')
-            ->orderBy('articles.modified_at', 'desc')
-            ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
-            ->paginate($limit);
+            });
+
+        $this->wherePublished($query);
+        $this->whereAddonPostTypes($query);
+        $this->orderByLatest($query);
+        $this->withStandardRelations($query);
+
+        return $query->paginate($limit);
     }
 
     /**
@@ -391,20 +416,19 @@ final class ArticleRepository
      */
     public function getByUser(int $userId, int $limit = 24): LengthAwarePaginator
     {
-        return $this->model->query()
+        $query = $this->model->query()
             ->select(['articles.*'])
             ->distinct()
             ->withoutGlobalScopes()
-            ->join('users', function (JoinClause $joinClause): void {
-                $joinClause->on('users.id', '=', 'articles.user_id')
-                    ->whereNull('users.deleted_at');
-            })->where('articles.user_id', $userId)
-            ->where('articles.status', ArticleStatus::Publish)
-            ->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost])
-            ->whereNull('articles.deleted_at')
-            ->orderBy('articles.modified_at', 'desc')
-            ->with('categories', 'tags', 'attachments', 'user.profile.attachments')
-            ->paginate($limit);
+            ->where('articles.user_id', $userId);
+
+        $this->joinActiveUsers($query);
+        $this->wherePublished($query);
+        $this->whereAddonPostTypes($query);
+        $this->orderByLatest($query);
+        $this->withStandardRelations($query);
+
+        return $query->paginate($limit);
     }
 
     /**
@@ -536,5 +560,75 @@ final class ArticleRepository
             ->where('status', ArticleStatus::Reservation)
             ->where('published_at', '<=', $date)
             ->cursor();
+    }
+
+    /**
+     * 削除済みユーザーを除外したusers JOINを追加
+     *
+     * @param  Builder<Article>  $builder
+     * @return Builder<Article>
+     */
+    private function joinActiveUsers(Builder $builder): Builder
+    {
+        return $builder->join('users', function (JoinClause $joinClause): void {
+            $joinClause->on('users.id', '=', 'articles.user_id')
+                ->whereNull('users.deleted_at');
+        });
+    }
+
+    /**
+     * 公開済み記事の基本条件を追加
+     *
+     * @param  Builder<Article>  $builder
+     * @return Builder<Article>
+     */
+    private function wherePublished(Builder $builder): Builder
+    {
+        return $builder->where('articles.status', ArticleStatus::Publish)
+            ->whereNull('articles.deleted_at');
+    }
+
+    /**
+     * アドオン投稿タイプの条件を追加
+     *
+     * @param  Builder<Article>  $builder
+     * @return Builder<Article>
+     */
+    private function whereAddonPostTypes(Builder $builder): Builder
+    {
+        return $builder->whereIn('articles.post_type', [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost]);
+    }
+
+    /**
+     * ページ投稿タイプの条件を追加
+     *
+     * @param  Builder<Article>  $builder
+     * @return Builder<Article>
+     */
+    private function wherePagePostTypes(Builder $builder): Builder
+    {
+        return $builder->whereIn('articles.post_type', [ArticlePostType::Page, ArticlePostType::Markdown]);
+    }
+
+    /**
+     * 標準的な関連データの読み込み
+     *
+     * @param  Builder<Article>  $builder
+     * @return Builder<Article>
+     */
+    private function withStandardRelations(Builder $builder): Builder
+    {
+        return $builder->with('categories', 'tags', 'attachments', 'user.profile.attachments');
+    }
+
+    /**
+     * modified_atで降順ソート
+     *
+     * @param  Builder<Article>  $builder
+     * @return Builder<Article>
+     */
+    private function orderByLatest(Builder $builder): Builder
+    {
+        return $builder->latest('articles.modified_at');
     }
 }

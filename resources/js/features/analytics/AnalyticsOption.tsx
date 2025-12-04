@@ -67,7 +67,7 @@ export function AnalyticsOption() {
       </div>
       <div>
         <FormCaption>表示条件</FormCaption>
-        <div className="gap-2 flex items-end">
+        <div className="gap-2 flex flex-col sm:flex-row">
           <Input
             type="date"
             value={format(start_date, "yyyy-MM-dd")}
@@ -100,7 +100,7 @@ export function AnalyticsOption() {
       </div>
       <div>
         <FormCaption>表示データ</FormCaption>
-        <div className="gap-2 flex items-end">
+        <div className="gap-2 flex flex-col sm:flex-row">
           {AXES.map((axis) => (
             <Checkbox
               value={axis.value}

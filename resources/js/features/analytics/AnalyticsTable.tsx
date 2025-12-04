@@ -73,9 +73,9 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
   };
 
   return (
-    <div>
+    <>
       <FormCaption>表示記事</FormCaption>
-      <div className="gap-4 flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between py-4">
+      <div className="gap-4 flex flex-col sm:flex-row pb-4">
         <div>
           <Input
             type="text"
@@ -127,6 +127,6 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
           )}
         />
       </div>
-    </div>
+    </>
   );
 };

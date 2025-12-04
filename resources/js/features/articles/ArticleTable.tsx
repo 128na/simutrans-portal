@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Pagination } from "@/components/layout/Pagination";
 import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
 import { twMerge } from "tailwind-merge";
 import { DataTable, DataTableHeader } from "@/components/layout/DataTable";
 import {
@@ -41,13 +42,21 @@ const headers: DataTableHeader<keyof Article.MypageShow>[] = [
 
 export const ArticleTable = ({ articles, limit, onClick }: Props) => {
   const [criteria, setCriteria] = useState("");
+  const [statusFilter, setStatusFilter] = useState<ArticleStatus | "">("");
+  const [postTypeFilter, setPostTypeFilter] = useState<ArticlePostType | "">(
+    ""
+  );
   const [sort, setSort] = useState<Sort>({
     column: "modified_at",
     order: "desc",
   });
   const [current, setCurrent] = useState(1);
 
-  const filtereArticles = articleFilter(articles, criteria);
+  const filtereArticles = articleFilter(articles, criteria)
+    .filter((article) => !statusFilter || article.status === statusFilter)
+    .filter(
+      (article) => !postTypeFilter || article.post_type === postTypeFilter
+    );
 
   const totalPages = Math.ceil(filtereArticles.length / limit);
 
@@ -68,14 +77,44 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
   };
 
   const createUrl = `${import.meta.env.VITE_APP_URL}/mypage/articles/create`;
-
   return (
     <>
-      <div className="gap-4 flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between py-4">
+      <div className="gap-4 flex flex-col sm:flex-row pb-4">
         <div>
           <Button onClick={() => (window.location.href = createUrl)}>
             作成
           </Button>
+        </div>
+        <div>
+          <Select
+            value={statusFilter}
+            onChange={(e) =>
+              setStatusFilter(e.target.value as ArticleStatus | "")
+            }
+            options={{
+              "": "すべてのステータス",
+              publish: StatusText["publish"],
+              reservation: StatusText["reservation"],
+              draft: StatusText["draft"],
+              private: StatusText["private"],
+              trash: StatusText["trash"],
+            }}
+          />
+        </div>
+        <div>
+          <Select
+            value={postTypeFilter}
+            onChange={(e) =>
+              setPostTypeFilter(e.target.value as ArticlePostType | "")
+            }
+            options={{
+              "": "すべての投稿形式",
+              "addon-post": PostTypeText["addon-post"],
+              "addon-introduction": PostTypeText["addon-introduction"],
+              page: PostTypeText["page"],
+              markdown: PostTypeText["markdown"],
+            }}
+          />
         </div>
         <div>
           <Input

@@ -4,15 +4,16 @@ type HTMLProps = React.HTMLAttributes<HTMLElement> & {
   children: React.ReactNode;
 };
 
-export const TitleH4 = ({ children, className }: HTMLProps) => {
+export const Card = ({ children, className, ...props }: HTMLProps) => {
   return (
-    <h4
+    <div
       className={twMerge(
-        "text-xl font-semibold sm:text-xl my-8 break-all",
+        "rounded-lg shadow-sm p-4 cursor-pointer hover:bg-brand/10",
         className
       )}
+      {...props}
     >
       {children}
-    </h4>
+    </div>
   );
 };

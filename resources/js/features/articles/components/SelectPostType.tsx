@@ -1,80 +1,41 @@
+import { FormCaption } from "@/components/ui/FormCaption";
+import { TitleH4 } from "./TitleH4";
+import TextSub from "@/components/ui/TextSub";
+import { Card } from "@/components/ui/Card";
+
 type Props = {
   onClick: (postType: ArticlePostType) => void;
 };
 export const SelectPostType = ({ onClick }: Props) => {
   return (
     <div className="mx-auto px-6 lg:px-8">
-      <p className="mx-auto mt-2 max-w-lg text-center text-xl font-semibold tracking-tight text-balance text-gray-950 sm:text-xl">
-        記事の形式を選んでください
-      </p>
-      <div className="mt-10 grid gap-4 sm:mt-16 lg:grid-cols-3 lg:grid-rows-2">
-        <div
-          className="relative lg:row-span-2 cursor-pointer hover:bg-brand/10 rounded-lg"
-          onClick={() => onClick("addon-post")}
-        >
-          <div className="relative flex h-full flex-col overflow-hidden">
-            <div className="px-8 py-8 pb-3 sm:px-10 sm:py-4">
-              <p className="mt-2 text-lg font-medium tracking-tight text-gray-950">
-                アドオン投稿
-              </p>
-              <p className="mt-2 max-w-lg text-sm/6 text-gray-600">
-                アドオンファイルをアップロードして投稿記事を作成します。
-              </p>
-            </div>
-          </div>
-          <div className="pointer-events-none absolute inset-px rounded-lg shadow-sm outline outline-black/5 "></div>
-        </div>
-
-        <div
-          className="relative lg:row-span-2 cursor-pointer hover:bg-brand/10 rounded-lg"
+      <FormCaption>記事の形式</FormCaption>
+      <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4">
+        <Card onClick={() => onClick("addon-post")} className="md:row-span-2">
+          <TitleH4 className="mb-2 mt-0">アドオン投稿</TitleH4>
+          <TextSub>
+            pakやzipファイルをアップロードして投稿記事を作成します。
+          </TextSub>
+        </Card>
+        <Card
           onClick={() => onClick("addon-introduction")}
+          className="md:row-span-2"
         >
-          <div className="relative flex h-full flex-col overflow-hidden lg:rounded-none">
-            <div className="px-8 py-8 pb-3 sm:px-10 sm:py-4">
-              <p className="mt-2 text-lg font-medium tracking-tight text-gray-950">
-                アドオン紹介
-              </p>
-              <p className="mt-2 max-w-lg text-sm/6 text-gray-600">
-                Wikiや個人サイトなどアドオン掲載ページへのリンクがある紹介記事を作成します。
-              </p>
-            </div>
-          </div>
-          <div className="pointer-events-none absolute inset-px rounded-lg shadow-sm outline outline-black/5 "></div>
-        </div>
-
-        <div
-          className="relative lg:col-start-3 lg:row-start-1 cursor-pointer hover:bg-brand/10 rounded-lg"
-          onClick={() => onClick("page")}
-        >
-          <div className="relative flex h-full flex-col overflow-hidden">
-            <div className="px-8 py-8 sm:px-10 sm:py-4">
-              <p className="mt-2 text-lg font-medium tracking-tight text-gray-950">
-                一般記事
-              </p>
-              <p className="mt-2 max-w-lg text-sm/6 text-gray-600">
-                アドオン以外の文章記事を作成します。Simutransに関する話題であれば自由に使ってください。
-              </p>
-            </div>
-          </div>
-          <div className="pointer-events-none absolute inset-px rounded-lg shadow-sm outline outline-black/5 "></div>
-        </div>
-
-        <div
-          className="relative lg:col-start-3 lg:row-start-2 cursor-pointer hover:bg-brand/10 rounded-lg"
-          onClick={() => onClick("markdown")}
-        >
-          <div className="relative flex h-full flex-col overflow-hidden">
-            <div className="px-8 py-8 sm:px-10 sm:py-4">
-              <p className="mt-2 text-lg font-medium tracking-tight text-gray-950">
-                一般記事（マークダウン）
-              </p>
-              <p className="mt-2 max-w-lg text-sm/6 text-gray-600">
-                マークダウン形式で文章記事を作成します。{" "}
-              </p>
-            </div>
-          </div>
-          <div className="pointer-events-none absolute inset-px rounded-lg shadow-sm outline outline-black/5 "></div>
-        </div>
+          <TitleH4 className="mb-2 mt-0">アドオン紹介</TitleH4>
+          <TextSub>
+            Wikiや個人サイトなどアドオン掲載ページへのリンクがある紹介記事を作成します。
+          </TextSub>
+        </Card>
+        <Card onClick={() => onClick("page")} className="md:row-span-1">
+          <TitleH4 className="mb-2 mt-0">一般記事</TitleH4>
+          <TextSub>
+            アドオン以外の文章記事を作成します。Simutransに関する話題であれば自由に使ってください。
+          </TextSub>
+        </Card>
+        <Card onClick={() => onClick("markdown")} className="md:row-span-1">
+          <TitleH4 className="mb-2 mt-0">一般記事（マークダウン）</TitleH4>
+          <TextSub>マークダウン形式で文章記事を作成します。</TextSub>
+        </Card>
       </div>
     </div>
   );

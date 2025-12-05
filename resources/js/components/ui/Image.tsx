@@ -20,11 +20,13 @@ export const Image = ({
     />
   );
 
-  return openFullSize ? (
+  if (!openFullSize) {
+    return <div>{img}</div>;
+  }
+
+  return (
     <a href={attachment?.url} target="_blank" rel="noopener noreferrer">
       {img}
     </a>
-  ) : (
-    img
   );
 };

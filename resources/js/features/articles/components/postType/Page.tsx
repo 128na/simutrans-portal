@@ -35,6 +35,7 @@ export const Page = ({ article, preview }: Props) => {
               key={index}
               attachmentId={section.id}
               attachments={article.attachments}
+              openFullSize={preview ? false : true}
             />
           );
         }

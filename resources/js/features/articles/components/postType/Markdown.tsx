@@ -33,12 +33,11 @@ export const Markdown = ({ article }: Props) => {
   const contents = article.contents as ArticleContent.Markdown;
 
   return (
-    <div className="markdown-body break-all">
-      <div
-        dangerouslySetInnerHTML={{
-          __html: sanitize(render(contents.markdown || "(本文未入力)")),
-        }}
-      />
-    </div>
+    <div
+      className="markdown-body break-all"
+      dangerouslySetInnerHTML={{
+        __html: sanitize(render(contents.markdown || "(本文未入力)")),
+      }}
+    />
   );
 };

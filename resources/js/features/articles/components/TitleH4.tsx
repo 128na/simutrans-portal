@@ -8,7 +8,7 @@ export const TitleH4 = ({ children, className }: HTMLProps) => {
   return (
     <h4
       className={twMerge(
-        "text-xl font-semibold sm:text-xl my-8 break-all",
+        "text-xl font-semibold sm:text-xl my-2 break-all",
         className
       )}
     >

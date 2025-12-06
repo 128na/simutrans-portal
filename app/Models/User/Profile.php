@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models\User;
 
 use App\Casts\ToProfileData;
-use App\Constants\DefaultThumbnail;
 use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -69,24 +68,6 @@ final class Profile extends Model
 
             return null;
         });
-    }
-
-    /**
-     * @return Attribute<bool, never>
-     */
-    protected function hasAvatar(): Attribute
-    {
-        return Attribute::make(get: fn (): bool => (bool) $this->avatar);
-    }
-
-    /**
-     * @return Attribute<string, never>
-     */
-    protected function avatarUrl(): Attribute
-    {
-        return Attribute::make(get: fn (): string => $this->getPublicDisk()->url($this->has_avatar && $this->avatar
-            ? $this->avatar->path
-            : DefaultThumbnail::NO_AVATAR));
     }
 
     /*

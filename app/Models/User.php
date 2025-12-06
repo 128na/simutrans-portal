@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\UserRole;
-use App\Models\Article\ViewCount;
 use App\Models\User\LoginHistory;
 use App\Models\User\Profile;
 use App\Notifications\ResetPassword;
@@ -19,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Config;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
 /**
@@ -60,11 +58,6 @@ final class User extends Authenticatable implements MustVerifyEmail
         if ($this->profile()->doesntExist()) {
             $this->profile()->create();
         }
-    }
-
-    public function routeNotificationForSlack(mixed $notification): string
-    {
-        return Config::string('logging.channels.slack.url');
     }
 
     /*
@@ -132,22 +125,6 @@ final class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * @return HasMany<User,$this>
-     */
-    public function invitesReclusive(): HasMany
-    {
-        return $this->hasMany(self::class, 'invited_by')->with(['invites']);
-    }
-
-    /**
-     * @return HasMany<Tag,$this>
-     */
-    public function createdTags(): HasMany
-    {
-        return $this->hasMany(Tag::class, 'created_by');
-    }
-
-    /**
      * @return HasMany<Tag,$this>
      */
     public function lastModifiedBy(): HasMany
@@ -169,16 +146,6 @@ final class User extends Authenticatable implements MustVerifyEmail
     public function redirects(): HasMany
     {
         return $this->hasMany(Redirect::class);
-    }
-
-    /**
-     * @return HasOne<ViewCount,$this>
-     */
-    public function currentMonthViewCount(): HasOne
-    {
-        return $this->hasOne(ViewCount::class)
-            ->where('type', ViewCount::TYPE_MONTHLY)
-            ->where('period', now()->format('Ym'));
     }
 
     /*

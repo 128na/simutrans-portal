@@ -81,14 +81,6 @@ final class Attachment extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
      */
-    protected function pathExists(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->exists($this->path));
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
-     */
     protected function isImage(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->type === 'image');
@@ -118,18 +110,6 @@ final class Attachment extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
-     */
-    protected function isPng(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): bool {
-            $mime = $this->getPublicDisk()->mimeType($this->path) ?: '';
-
-            return mb_stripos((string) $mime, 'image/png') !== false;
-        });
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
      */
     protected function thumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
@@ -145,40 +125,9 @@ final class Attachment extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
      */
-    protected function url(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->url($this->path));
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
-     */
     protected function fullPath(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->path($this->path));
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string|null, never>
-     */
-    protected function fileContents(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->get($this->path));
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
-     */
-    protected function extension(): \Illuminate\Database\Eloquent\Casts\Attribute
-    {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {
-            $tmp = explode('.', (string) $this->original_name);
-            if (count($tmp) > 1) {
-                return array_pop($tmp);
-            }
-
-            return '';
-        });
     }
 
     /*

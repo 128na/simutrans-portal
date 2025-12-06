@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -67,16 +66,6 @@ final class Tag extends Model
     | スコープ
     |--------------------------------------------------------------------------
     */
-    /**
-     * @param  Builder<Tag>  $builder
-     */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
-    protected function popular(Builder $builder): void
-    {
-        $builder->withCount(['articles' => fn ($q) => $q->active()])
-            ->orderBy('articles_count', 'desc');
-    }
-
     #[\Override]
     protected function casts(): array
     {

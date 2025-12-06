@@ -32,7 +32,6 @@ final class UserShow extends JsonResource
                     'id' => $attachment->id,
                     'thumbnail' => $attachment->thumbnail,
                     'original_name' => $attachment->original_name,
-                    'url' => $attachment->url,
                 ]) ?? [],
             ],
         ];

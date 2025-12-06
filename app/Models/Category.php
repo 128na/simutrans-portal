@@ -80,33 +80,6 @@ final class Category extends Model
      * @param  Builder|Category  $builder
      */
     #[\Illuminate\Database\Eloquent\Attributes\Scope]
-    protected function addon(Builder $builder): void
-    {
-        $builder->type(CategoryType::Addon);
-    }
-
-    /**
-     * @param  Builder|Category  $builder
-     */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
-    protected function pak128Position(Builder $builder): void
-    {
-        $builder->type(CategoryType::Pak128Position);
-    }
-
-    /**
-     * @param  Builder|Category  $builder
-     */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
-    protected function license(Builder $builder): void
-    {
-        $builder->type(CategoryType::License);
-    }
-
-    /**
-     * @param  Builder|Category  $builder
-     */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
     protected function page(Builder $builder): void
     {
         $builder->type(CategoryType::Page);

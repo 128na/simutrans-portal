@@ -169,16 +169,11 @@ namespace App\Models{
  * @property int $order 表示順（画像向け）
  * @property int $size ファイルサイズ(byte)
  * @property-read \Illuminate\Database\Eloquent\Model|null $attachmentable
- * @property-read string $extension
- * @property-read mixed $file_contents
  * @property-read \App\Models\Attachment\FileInfo|null $fileInfo
  * @property-read mixed $full_path
  * @property-read bool $is_image
- * @property-read bool $is_png
- * @property-read mixed $path_exists
  * @property-read mixed $thumbnail
  * @property-read string $type
- * @property-read mixed $url
  * @property-read \App\Models\User $user
  * @method static \Database\Factories\AttachmentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment newModelQuery()
@@ -217,16 +212,13 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
  * @property-read int|null $articles_count
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Category addon()
  * @method static \Database\Factories\CategoryFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category forUser(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Category license()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category order()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category page()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category pak()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Category pak128Position()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category slug(string $slug)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category type(\App\Enums\CategoryType $categoryType)
@@ -308,7 +300,6 @@ namespace App\Models{
  * @method static \Database\Factories\TagFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tag newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tag newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Tag popular()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tag query()
  * @mixin \Eloquent
  */
@@ -336,14 +327,9 @@ namespace App\Models{
  * @property string|null $invitation_code 紹介用コード
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
  * @property-read int|null $articles_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $createdTags
- * @property-read int|null $created_tags_count
- * @property-read \App\Models\Article\ViewCount|null $currentMonthViewCount
  * @property-read User|null $invited
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $invites
  * @property-read int|null $invites_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $invitesReclusive
- * @property-read int|null $invites_reclusive_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $lastModifiedBy
  * @property-read int|null $last_modified_by_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User\LoginHistory> $loginHistories
@@ -399,8 +385,6 @@ namespace App\Models\User{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read mixed $avatar
- * @property-read string $avatar_url
- * @property-read bool $has_avatar
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile newQuery()

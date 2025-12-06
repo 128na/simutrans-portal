@@ -45,7 +45,7 @@ jobs:
       - run: php -r "copy('.env.ci', '.env');"
       - uses: ./.github/actions/php
       - uses: ./.github/actions/nodejs
-      - run: npm test -- --run
+      - run: npm run test
         env:
           LARAVEL_BYPASS_ENV_CHECK: 1
       - uses: actions/upload-artifact@v4

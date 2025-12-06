@@ -27,7 +27,7 @@ final class ToMisskeyTest extends TestCase
         $this->mock(GetArticleParam::class, function (MockInterface $mock) use ($article, $articleParam): void {
             $mock->expects('__invoke')
                 ->once()
-                ->with(\Mockery::on(fn($arg) => $arg->id === $article->id))
+                ->with(\Mockery::on(fn ($arg) => $arg->id === $article->id))
                 ->andReturn($articleParam);
         });
 
@@ -59,7 +59,7 @@ final class ToMisskeyTest extends TestCase
         $this->mock(GetArticleParam::class, function (MockInterface $mock) use ($article, $articleParam): void {
             $mock->expects('__invoke')
                 ->once()
-                ->with(\Mockery::on(fn($arg) => $arg->id === $article->id))
+                ->with(\Mockery::on(fn ($arg) => $arg->id === $article->id))
                 ->andReturn($articleParam);
         });
 

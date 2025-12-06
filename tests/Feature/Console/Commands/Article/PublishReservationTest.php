@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Console\Commands\Article;
 
 use App\Enums\ArticleStatus;
-use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Queue;

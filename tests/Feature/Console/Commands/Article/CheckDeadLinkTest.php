@@ -8,7 +8,6 @@ use App\Actions\DeadLink\Check;
 use App\Actions\DeadLink\OnDead;
 use Mockery\MockInterface;
 use Tests\TestCase;
-use Throwable;
 
 final class CheckDeadLinkTest extends TestCase
 {

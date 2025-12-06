@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Listeners\User;
 
 use App\Listeners\User\OnLogin;
-use App\Models\User;
-use App\Models\User\LoginHistory;
-use App\Notifications\SendLoggedInEmail;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Notification;
@@ -28,6 +25,7 @@ final class OnLoginTest extends TestCase
         // Unitテストでは常にfalseになるため、このテストはスキップ
         $this->markTestSkipped('isNewLogin() requires specific controller backtrace');
     }
+
     public function test_does_not_process_when_user_is_not_user_instance(): void
     {
         /** @var Logger */

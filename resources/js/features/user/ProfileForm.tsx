@@ -290,7 +290,7 @@ export const ProfileForm = ({
           }}
         />
       </div>
-      <div className="border-t border-muted pt-4">
+      <div className="border-t border-g2 pt-4">
         <Button onClick={save}>保存</Button>
       </div>
     </div>

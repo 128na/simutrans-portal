@@ -50,11 +50,11 @@ export const ArticleEdit = () => {
         <div ref={contentRef} className="overflow-y-auto pr-4 pb-10">
           <ArticleForm />
         </div>
-        <div className="overflow-y-auto pl-4 pb-10 border-t border-muted pt-4 lg:border-t-0 hidden lg:block">
+        <div className="overflow-y-auto pl-4 pb-10 border-t border-g2 pt-4 lg:border-t-0 hidden lg:block">
           <ArticlePreview />
         </div>
       </div>
-      <div className="border-t border-muted pt-4">
+      <div className="border-t border-g2 pt-4">
         <Button onClick={save}>保存</Button>
       </div>
     </>

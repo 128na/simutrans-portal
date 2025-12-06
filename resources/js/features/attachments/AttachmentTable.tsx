@@ -141,11 +141,11 @@ export const AttachmentTable = ({
             <tr
               key={a.id}
               className={twMerge(
-                "bg-white border-b border-muted",
+                "bg-white border-b border-g2",
                 onSelectAttachment &&
                   (selected === a.id
                     ? "cursor-pointer bg-brand/20 hover:bg-brand/30"
-                    : "cursor-pointer hover:bg-muted")
+                    : "cursor-pointer hover:bg-g2")
               )}
               onClick={() => onSelectAttachment?.(selected === a.id ? null : a)}
             >

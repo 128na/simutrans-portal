@@ -5,17 +5,17 @@
 <div class="mx-auto max-w-xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl">パスワードリセット</h2>
-        <p class="mt-2 text-md text-secondary">
+        <p class="mt-2 text-md text-g5">
             ユーザー登録時に使用したメールアドレス宛にパスワード再設定用のリンクを送信します。
         </p>
     </div>
     <form action="{{route('password.email')}}" method="POST">
         @csrf
-        <div class="flex flex-col gap-y-4 border-t border-muted pt-6 lg:mx-0">
+        <div class="flex flex-col gap-y-4 border-t border-g2 pt-6 lg:mx-0">
             <div>
-                <label for="email" class="block text-sm/6 font-semibold text-primary">メールアドレス</label>
+                <label for="email" class="block text-sm/6 font-semibold text-g9">メールアドレス</label>
                 <div class="mt-2.5">
-                    <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-primary outline-1 -outline-offset-1 outline-tertiary placeholder:text-tertiary focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
+                    <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-g9 outline-1 -outline-offset-1 outline-g4 placeholder:text-g4 focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
                 </div>
                 @error('email')
                 <div class="text-sm text-danger">{{ $message }}</div>

@@ -143,7 +143,7 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
             <tr
               key={article.id}
               className={twMerge(
-                "bg-white border-b border-muted cursor-pointer",
+                "bg-white border-b border-g2 cursor-pointer",
                 StatusClass[article.status]
               )}
               onClick={() => onClick?.(article)}

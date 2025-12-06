@@ -19,7 +19,7 @@ export const PakMetadata = ({ paksMetadata }: Props) => {
           {metadataArray.map((metadata, index) => (
             <div
               key={`${filename}-${index}`}
-              className="border-muted pb-6 last:border-b-0 last:pb-0"
+              className="border-g2 pb-6 last:border-b-0 last:pb-0"
             >
               <PakGenericMetadata metadata={metadata} />
             </div>

@@ -20,42 +20,42 @@ export const AddonIntroduction = ({ article, preview }: Props) => {
           <table className="border-collapse whitespace-nowrap">
             <tbody>
               <tr>
-                <td className="border border-tertiary px-4 py-2 bg-secondary text-white">
+                <td className="border border-g3 px-4 py-2 bg-g5 text-white">
                   作者
                 </td>
-                <td className="border border-tertiary px-4 py-2">
+                <td className="border border-g3 px-4 py-2">
                   {contents.author ?? article.user.name}
                 </td>
               </tr>
               <tr>
-                <td className="border border-tertiary px-4 py-2 bg-secondary text-white">
+                <td className="border border-g3 px-4 py-2 bg-g5 text-white">
                   作者による掲載許可
                 </td>
-                <td className="border border-tertiary px-4 py-2">
+                <td className="border border-g3 px-4 py-2">
                   {contents.agreement ? "取得済み" : "未取得"}
                 </td>
               </tr>
               <tr>
-                <td className="border border-tertiary px-4 py-2 bg-secondary text-white">
+                <td className="border border-g3 px-4 py-2 bg-g5 text-white">
                   公開日時
                 </td>
-                <td className="border border-tertiary px-4 py-2">
+                <td className="border border-g3 px-4 py-2">
                   {formatArticleDate(article.published_at)}
                 </td>
               </tr>
               <tr>
-                <td className="border border-tertiary px-4 py-2 bg-secondary text-white">
+                <td className="border border-g3 px-4 py-2 bg-g5 text-white">
                   最終更新日時
                 </td>
-                <td className="border border-tertiary px-4 py-2">
+                <td className="border border-g3 px-4 py-2">
                   {formatArticleDate(article.modified_at)}
                 </td>
               </tr>
               <tr>
-                <td className="border border-tertiary px-4 py-2 bg-secondary text-white">
+                <td className="border border-g3 px-4 py-2 bg-g5 text-white">
                   掲載URL
                 </td>
-                <td className="border border-tertiary px-4 py-2">
+                <td className="border border-g3 px-4 py-2">
                   <LinkExternal
                     href={preview ? "#" : `/articles/${article.id}/conversion`}
                   >

@@ -15,7 +15,7 @@
     </div>
     <div id="app-article-list"></div>
 
-    <div class="mt-10 border-t border-muted pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
+    <div class="mt-10 border-t border-g2 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
         {{ $articles->links() }}
     </div>
 </div>

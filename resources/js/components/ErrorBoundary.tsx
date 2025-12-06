@@ -16,7 +16,7 @@ interface Props {
  * デフォルトのフォールバックUI
  */
 const DefaultFallback = () => (
-  <div className="p-4 text-center text-secondary">
+  <div className="p-4 text-center text-g5">
     <p>エラーが発生しました</p>
     <p className="text-sm mt-2">
       ページを再読み込みしてください。問題が続く場合はお問い合わせください。

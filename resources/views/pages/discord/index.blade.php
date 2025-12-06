@@ -10,13 +10,13 @@
         <h2 class="title-xl2">
             Discord招待リンクの発行
         </h2>
-        <p class="mt-2 text-lg/8 text-secondary">
+        <p class="mt-2 text-lg/8 text-g5">
             「シムトランス交流会議-~simutrans-interact-meeting~」の招待リンクを発行できます。<br>
             ※リンクは5分間のみ有効で、招待できる人数は1人までです。
         </p>
     </div>
 
-    <div class="flex flex-col gap-y-4 border-t border-muted pt-6 lg:mx-0">
+    <div class="flex flex-col gap-y-4 border-t border-g2 pt-6 lg:mx-0">
         @if(isset($url))
         @include('components.ui.link-external', ['url' => $url])
         @else

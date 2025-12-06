@@ -11,7 +11,7 @@ export default function Checkbox({
   return (
     <Label
       className={twMerge(
-        "sm:mr-2 mr-4 sm:mb-1 mb-2 inline-block text-sm text-primary cursor-pointer",
+        "sm:mr-2 mr-4 sm:mb-1 mb-2 inline-block text-sm text-g9 cursor-pointer",
         labelClassName
       )}
     >

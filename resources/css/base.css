@@ -15,10 +15,11 @@
   --color-warn: theme(colors.yellow.500);
   --color-warn-light: theme(colors.yellow.300);
 
-  --color-muted: theme(colors.gray.200); /* 背景的な要素 */
-  --color-tertiary: theme(colors.gray.400); /* 補助的な要素 */
-  --color-secondary: theme(colors.gray.500); /* 説明文・サブテキスト */
-  --color-primary: theme(colors.gray.900); /* メインテキスト・見出し */
+  --color-g2: theme(colors.gray.200);
+  --color-g3: theme(colors.gray.300);
+  --color-g4: theme(colors.gray.400);
+  --color-g5: theme(colors.gray.500);
+  --color-g9: theme(colors.gray.900);
 
   --font-sans:
     "Inter", "Noto Sans JP", ui-sans-serif, system-ui, -apple-system,
@@ -32,33 +33,33 @@
 }
 
 .title-xl2 {
-  @apply text-4xl font-semibold tracking-tight text-pretty text-primary;
+  @apply text-4xl font-semibold tracking-tight text-pretty text-g9;
 }
 .title-xl {
-  @apply text-3xl font-semibold tracking-tight text-pretty text-primary;
+  @apply text-3xl font-semibold tracking-tight text-pretty text-g9;
 }
 .title-md {
-  @apply text-2xl font-semibold tracking-tight text-pretty text-primary;
+  @apply text-2xl font-semibold tracking-tight text-pretty text-g9;
 }
 .title-sm {
   @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl;
 }
 .title-xs {
-  @apply text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-muted;
+  @apply text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-g2;
 }
 
 .link-internal {
-  @apply text-secondary hover:text-tertiary decoration-tertiary underline break-all;
+  @apply text-g5 hover:text-g4 decoration-g4 underline break-all;
 }
 .link-external {
   @apply decoration-brand text-brand hover:text-brand/70 underline break-all;
 }
 
 .markdown-body h1 {
-  @apply text-3xl font-semibold tracking-tight text-pretty text-primary;
+  @apply text-3xl font-semibold tracking-tight text-pretty text-g9;
 }
 .markdown-body h2 {
-  @apply text-2xl font-semibold tracking-tight text-pretty text-primary;
+  @apply text-2xl font-semibold tracking-tight text-pretty text-g9;
 }
 .markdown-body h3 {
   @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl;
@@ -74,7 +75,7 @@
 }
 
 .markdown-body hr {
-  @apply my-6 border-t border-tertiary;
+  @apply my-6 border-t border-g3;
 }
 
 .markdown-body p {
@@ -87,13 +88,13 @@
   @apply mt-6 mb-12 rounded-lg shadow-md;
 }
 .markdown-body code {
-  @apply bg-muted rounded p-1 text-sm font-mono break-all;
+  @apply bg-g2 rounded p-1 text-sm font-mono break-all;
 }
 .markdown-body pre code {
-  @apply block bg-muted rounded p-2 text-sm font-mono;
+  @apply block bg-g2 rounded p-2 text-sm font-mono;
 }
 .markdown-body pre {
-  @apply bg-muted rounded p-4 my-6 overflow-x-auto;
+  @apply bg-g2 rounded p-4 my-6 overflow-x-auto;
 }
 
 .markdown-body table {
@@ -101,10 +102,10 @@
 }
 .markdown-body th,
 .markdown-body td {
-  @apply border border-tertiary px-4 py-2;
+  @apply border border-g3 px-4 py-2;
 }
 .markdown-body th {
-  @apply bg-secondary text-white;
+  @apply bg-g5 text-white;
 }
 
 .markdown-body ul {

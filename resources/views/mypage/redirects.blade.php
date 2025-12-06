@@ -4,27 +4,27 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl">リダイレクトの設定</h2>
-        <p class="mt-2 text-secondary">
+        <p class="mt-2 text-g5">
             記事のURLを変更したときに、自動で作成されるリダイレクト設定です。旧URLから新URLへ転送されます。
         </p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-muted pt-6 lg:mx-0">
+    <div class="flex flex-col gap-y-4 border-t border-g2 pt-6 lg:mx-0">
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">
                 <thead>
                     <tr>
-                        <th class="border border-tertiary px-4 py-2 bg-secondary text-white">作成日時</th>
-                        <th class="border border-tertiary px-4 py-2 bg-secondary text-white">転送元</th>
-                        <th class="border border-tertiary px-4 py-2 bg-secondary text-white">転送先</th>
-                        <th class="border border-tertiary px-4 py-2 bg-secondary text-white">操作</th>
+                        <th class="border border-g3 px-4 py-2 bg-g5 text-white">作成日時</th>
+                        <th class="border border-g3 px-4 py-2 bg-g5 text-white">転送元</th>
+                        <th class="border border-g3 px-4 py-2 bg-g5 text-white">転送先</th>
+                        <th class="border border-g3 px-4 py-2 bg-g5 text-white">操作</th>
                     </tr>
                 <tbody>
                     @forelse($redirects as $redirect)
                     <tr>
-                        <td class="border border-tertiary px-4 py-2">{{$redirect->created_at->format('Y/m/d H:i:s')}}</td>
-                        <td class="border border-tertiary px-4 py-2">{{urldecode($redirect->from)}}</td>
-                        <td class="border border-tertiary px-4 py-2">{{urldecode($redirect->to)}}</td>
-                        <td class="border border-tertiary px-4 py-2">
+                        <td class="border border-g3 px-4 py-2">{{$redirect->created_at->format('Y/m/d H:i:s')}}</td>
+                        <td class="border border-g3 px-4 py-2">{{urldecode($redirect->from)}}</td>
+                        <td class="border border-g3 px-4 py-2">{{urldecode($redirect->to)}}</td>
+                        <td class="border border-g3 px-4 py-2">
                             <form method="POST" action="{{route('mypage.redirects.destroy', [$redirect->id])}}" class="js-confirm" data-text="リダイレクト設定を削除しますか？">
                                 @csrf
                                 @method('DELETE')
@@ -36,7 +36,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td class="border border-tertiary px-4 py-2" colspan="4">設定はありません</td>
+                        <td class="border border-g3 px-4 py-2" colspan="4">設定はありません</td>
                     </tr>
                     @endforelse
                 </tbody>

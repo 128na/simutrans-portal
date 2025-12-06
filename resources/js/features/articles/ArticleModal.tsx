@@ -23,7 +23,7 @@ export const ArticleModal = ({ user, article, onClose }: Props) => {
       <div className="grid gap-x-4 mb-4">
         <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
           <div className="flex-auto">
-            <a href={editUrl} className="block font-semibold text-primary">
+            <a href={editUrl} className="block font-semibold text-g9">
               編集する
               <span className="absolute inset-0"></span>
             </a>
@@ -33,7 +33,7 @@ export const ArticleModal = ({ user, article, onClose }: Props) => {
           <div className="flex-auto">
             <a
               href={showUrl}
-              className="block font-semibold text-primary"
+              className="block font-semibold text-g9"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -45,7 +45,7 @@ export const ArticleModal = ({ user, article, onClose }: Props) => {
         <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
           <div className="flex-auto">
             <button
-              className="block font-semibold text-primary cursor-pointer"
+              className="block font-semibold text-g9 cursor-pointer"
               onClick={() => onCopyClick()}
             >
               URLをコピー

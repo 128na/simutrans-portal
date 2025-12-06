@@ -5,7 +5,7 @@
     <div class="mb-6">
         <h2 class="title-xl">管理</h2>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-muted pt-6 lg:mx-0">
+    <div class="flex flex-col gap-y-4 border-t border-g2 pt-6 lg:mx-0">
         <div>
             @include('components.ui.link', ['url'=>route('admin.oauth.twitter.authorize'), 'title' =>'認証'])<br>
             @include('components.ui.link', ['url'=>route('admin.oauth.twitter.refresh'), 'title' =>'トークンリフレッシュ'])<br>

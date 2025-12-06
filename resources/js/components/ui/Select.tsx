@@ -23,7 +23,7 @@ export default function Select({
         value={value}
         onChange={onChange}
         className={twMerge(
-          "w-full border border-muted rounded-lg px-4 py-2",
+          "w-full border border-g2 rounded-lg px-4 py-2",
           hasChildren ? "mt-1" : "mb-0",
           className
         )}

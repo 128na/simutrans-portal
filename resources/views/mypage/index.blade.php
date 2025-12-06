@@ -5,46 +5,46 @@
     <div class="mb-6">
         <h2 class="title-xl">マイページ</h2>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-muted pt-6 lg:mx-0">
+    <div class="flex flex-col gap-y-4 border-t border-g2 pt-6 lg:mx-0">
         <h3 class="title-md">ダッシュボード</h3>
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">
                 <tbody>
                     <tr>
-                        <td class="border border-tertiary px-4 py-2 bg-secondary text-white">投稿記事</td>
-                        <td class="border border-tertiary px-4 py-2">{{$summary->article_count ?? 0}} 件</td>
-                        <td class="border border-tertiary px-4 py-2">
+                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">投稿記事</td>
+                        <td class="border border-g3 px-4 py-2">{{$summary->article_count ?? 0}} 件</td>
+                        <td class="border border-g3 px-4 py-2">
                             @include('components.ui.link', ['url' => route('mypage.articles.index'), 'title' => '記事一覧']),
                             @include('components.ui.link', ['url' => route('mypage.articles.create'), 'title' => '作成'])
                         </td>
                     </tr>
                     <tr>
-                        <td class="border border-tertiary px-4 py-2 bg-secondary text-white">記事リダイレクト設定数</td>
-                        <td class="border border-tertiary px-4 py-2">{{$summary->redirect_count ?? 0}} 件</td>
-                        <td class="border border-tertiary px-4 py-2">@include('components.ui.link', ['url' => route('mypage.redirects'), 'title' => 'リダイレクト設定'])</td>
+                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">記事リダイレクト設定数</td>
+                        <td class="border border-g3 px-4 py-2">{{$summary->redirect_count ?? 0}} 件</td>
+                        <td class="border border-g3 px-4 py-2">@include('components.ui.link', ['url' => route('mypage.redirects'), 'title' => 'リダイレクト設定'])</td>
                     </tr>
                     <tr>
-                        <td class="border border-tertiary px-4 py-2 bg-secondary text-white">投稿ファイル数</td>
-                        <td class="border border-tertiary px-4 py-2">{{$summary->attachment_count ?? 0}} 件</td>
-                        <td class="border border-tertiary px-4 py-2" rowspan="2">@include('components.ui.link', ['url' => route('mypage.attachments'), 'title' => 'ファイル管理'])</td>
+                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">投稿ファイル数</td>
+                        <td class="border border-g3 px-4 py-2">{{$summary->attachment_count ?? 0}} 件</td>
+                        <td class="border border-g3 px-4 py-2" rowspan="2">@include('components.ui.link', ['url' => route('mypage.attachments'), 'title' => 'ファイル管理'])</td>
                     </tr>
                     <tr>
-                        <td class="border border-tertiary px-4 py-2 bg-secondary text-white">ファイルストレージ使用量</td>
-                        <td class="border border-tertiary px-4 py-2">{{ round(($summary->total_attachment_size ?? 0)/1024/1024,1) }} MB</td>
+                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">ファイルストレージ使用量</td>
+                        <td class="border border-g3 px-4 py-2">{{ round(($summary->total_attachment_size ?? 0)/1024/1024,1) }} MB</td>
                     </tr>
                     <tr>
-                        <td class="border border-tertiary px-4 py-2 bg-secondary text-white">今月の合計PV数</td>
-                        <td class="border border-tertiary px-4 py-2">{{$summary->total_view_count ?? 0}} 件</td>
-                        <td class="border border-tertiary px-4 py-2" rowspan="2">@include('components.ui.link', ['url' => route('mypage.analytics'), 'title' => 'アナリティクス'])</td>
+                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">今月の合計PV数</td>
+                        <td class="border border-g3 px-4 py-2">{{$summary->total_view_count ?? 0}} 件</td>
+                        <td class="border border-g3 px-4 py-2" rowspan="2">@include('components.ui.link', ['url' => route('mypage.analytics'), 'title' => 'アナリティクス'])</td>
                     </tr>
                     <tr>
-                        <td class="border border-tertiary px-4 py-2 bg-secondary text-white">今月の合計CV数</td>
-                        <td class="border border-tertiary px-4 py-2">{{$summary->total_conversion_count ?? 0}} 件</td>
+                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">今月の合計CV数</td>
+                        <td class="border border-g3 px-4 py-2">{{$summary->total_conversion_count ?? 0}} 件</td>
                     </tr>
                     <tr>
-                        <td class="border border-tertiary px-4 py-2 bg-secondary text-white">作成したタグ</td>
-                        <td class="border border-tertiary px-4 py-2">{{$summary->tag_count ?? 0}} 件</td>
-                        <td class="border border-tertiary px-4 py-2">@include('components.ui.link', ['url' => route('mypage.tags'), 'title' => 'タグ編集'])</td>
+                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">作成したタグ</td>
+                        <td class="border border-g3 px-4 py-2">{{$summary->tag_count ?? 0}} 件</td>
+                        <td class="border border-g3 px-4 py-2">@include('components.ui.link', ['url' => route('mypage.tags'), 'title' => 'タグ編集'])</td>
                     </tr>
                 </tbody>
             </table>
@@ -54,18 +54,18 @@
             <table class="border-collapse whitespace-nowrap">
                 <tbody>
                     <tr>
-                        <td class="border border-tertiary px-4 py-2 bg-secondary text-white">ユーザー名</td>
-                        <td class="border border-tertiary px-4 py-2">{{$user->name}}</td>
-                        <td class="border border-tertiary px-4 py-2" rowspan="2">@include('components.ui.link', ['url' => route('mypage.profile'), 'title' => 'プロフィール編集'])</td>
+                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">ユーザー名</td>
+                        <td class="border border-g3 px-4 py-2">{{$user->name}}</td>
+                        <td class="border border-g3 px-4 py-2" rowspan="2">@include('components.ui.link', ['url' => route('mypage.profile'), 'title' => 'プロフィール編集'])</td>
                     </tr>
                     <tr>
-                        <td class="border border-tertiary px-4 py-2 bg-secondary text-white">ニックネーム</td>
-                        <td class="border border-tertiary px-4 py-2">{{$user->nickname ?? '未設定'}}</td>
+                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">ニックネーム</td>
+                        <td class="border border-g3 px-4 py-2">{{$user->nickname ?? '未設定'}}</td>
                     </tr>
                     <tr>
-                        <td class="border border-tertiary px-4 py-2 bg-secondary text-white">ユーザータイプ</td>
-                        <td class="border border-tertiary px-4 py-2">@lang("role.{$user->role->value}")</td>
-                        <td class="border border-tertiary px-4 py-2">
+                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">ユーザータイプ</td>
+                        <td class="border border-g3 px-4 py-2">@lang("role.{$user->role->value}")</td>
+                        <td class="border border-g3 px-4 py-2">
                             @if($user->role === \App\Enums\UserRole::Admin)
                             @include('components.ui.link', ['url' => route('admin.index'), 'title' => '管理画面'])
                             @else
@@ -74,9 +74,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="border border-tertiary px-4 py-2 bg-secondary text-white">メールアドレス認証</td>
-                        <td class="border border-tertiary px-4 py-2">{{$user->email_verified_at ? '✅完了' : '⚠️未完了'}}</td>
-                        <td class="border border-tertiary px-4 py-2">
+                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">メールアドレス認証</td>
+                        <td class="border border-g3 px-4 py-2">{{$user->email_verified_at ? '✅完了' : '⚠️未完了'}}</td>
+                        <td class="border border-g3 px-4 py-2">
                             @if($user->email_verified_at)
                             -
                             @else
@@ -85,19 +85,19 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="border border-tertiary px-4 py-2 bg-secondary text-white">二要素認証</td>
-                        <td class="border border-tertiary px-4 py-2">{{$user->two_factor_confirmed_at ? '✅有効' : '⚠️無効'}}</td>
-                        <td class="border border-tertiary px-4 py-2">@include('components.ui.link', ['url' => route('mypage.two-factor'), 'title' => '設定'])</td>
+                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">二要素認証</td>
+                        <td class="border border-g3 px-4 py-2">{{$user->two_factor_confirmed_at ? '✅有効' : '⚠️無効'}}</td>
+                        <td class="border border-g3 px-4 py-2">@include('components.ui.link', ['url' => route('mypage.two-factor'), 'title' => '設定'])</td>
                     </tr>
                     <tr>
-                        <td class="border border-tertiary px-4 py-2 bg-secondary text-white">招待リンク</td>
-                        <td class="border border-tertiary px-4 py-2">{{$user->invitation_code ? '⚠️発行済み' : '✅未発行'}}</td>
-                        <td class="border border-tertiary px-4 py-2">@include('components.ui.link', ['url' => route('mypage.invite'), 'title' => '設定'])</td>
+                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">招待リンク</td>
+                        <td class="border border-g3 px-4 py-2">{{$user->invitation_code ? '⚠️発行済み' : '✅未発行'}}</td>
+                        <td class="border border-g3 px-4 py-2">@include('components.ui.link', ['url' => route('mypage.invite'), 'title' => '設定'])</td>
                     </tr>
                     <tr>
-                        <td class="border border-tertiary px-4 py-2 bg-secondary text-white">最終ログイン日時</td>
-                        <td class="border border-tertiary px-4 py-2">{{$user->loginHistories()->latest()->first()?->created_at->format('Y/m/d H:i:s')}}</td>
-                        <td class="border border-tertiary px-4 py-2">@include('components.ui.link', ['url' => route('mypage.login-histories'), 'title' => 'ログイン履歴'])</td>
+                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">最終ログイン日時</td>
+                        <td class="border border-g3 px-4 py-2">{{$user->loginHistories()->latest()->first()?->created_at->format('Y/m/d H:i:s')}}</td>
+                        <td class="border border-g3 px-4 py-2">@include('components.ui.link', ['url' => route('mypage.login-histories'), 'title' => 'ログイン履歴'])</td>
                     </tr>
 
                 </tbody>

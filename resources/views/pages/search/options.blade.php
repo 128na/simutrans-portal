@@ -1,6 +1,6 @@
 <form method="GET" action="{{ route('search') }}">
     <div class="flex flex-col gap-y-4 sm:flex-row sm:items-center sm:gap-x-4">
-        <input type="text" name="word" value="{{ $condition['word'] ?? '' }}" placeholder="キーワードを入力" class="w-full rounded-md border border-tertiary px-4 sm:py-2 py-4  focus:border-blue-500 focus:ring-blue-500 sm:w-64" />
+        <input type="text" name="word" value="{{ $condition['word'] ?? '' }}" placeholder="キーワードを入力" class="w-full rounded-md border border-g3 px-4 sm:py-2 py-4  focus:border-blue-500 focus:ring-blue-500 sm:w-64" />
         <button type="submit" class="rounded-md bg-brand px-8 sm:py-2 py-4 text-white cursor-pointer hover:bg-brand/90">
             検索
         </button>
@@ -10,7 +10,7 @@
 
     </script>
     <div>
-        <button type="button" command="--toggle" commandfor="search-options" class="my-2 p-2 sm:py-2 py-4 flex w-full items-center justify-between bg-muted cursor-pointer">
+        <button type="button" command="--toggle" commandfor="search-options" class="my-2 p-2 sm:py-2 py-4 flex w-full items-center justify-between bg-g2 cursor-pointer">
             詳細条件
             <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none in-aria-expanded:rotate-180">
                 <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
@@ -42,7 +42,7 @@
             </div>
             @endforeach
 
-            <button type="button" command="--toggle" commandfor="search-users" class="my-2 p-2 sm:py-2 py-4 flex w-full items-center justify-between bg-muted cursor-pointer">
+            <button type="button" command="--toggle" commandfor="search-users" class="my-2 p-2 sm:py-2 py-4 flex w-full items-center justify-between bg-g2 cursor-pointer">
                 ユーザー
                 <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none in-aria-expanded:rotate-180">
                     <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
@@ -52,7 +52,7 @@
                 <div id="app-search-users" data-user-ids='@json($condition["userIds"] ?? [])'>Loading...</div>
             </el-disclosure>
 
-            <button type="button" command="--toggle" commandfor="search-tags" class="my-2 p-2 sm:py-2 py-4 flex w-full items-center justify-between bg-muted cursor-pointer">
+            <button type="button" command="--toggle" commandfor="search-tags" class="my-2 p-2 sm:py-2 py-4 flex w-full items-center justify-between bg-g2 cursor-pointer">
                 タグ
                 <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none in-aria-expanded:rotate-180">
                     <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />

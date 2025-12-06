@@ -3,16 +3,18 @@
 
 @theme {
   --color-brand: rgb(42, 134, 234);
+
   --color-tag: #757575;
   --color-category: #607d8b;
+
+  --color-muted: theme(colors.gray.200);      /* 背景的な要素 */
+  --color-tertiary: theme(colors.gray.400);      /* 補助的な要素 */
+  --color-secondary: theme(colors.gray.500);  /* 説明文・サブテキスト */
+  --color-primary: theme(colors.gray.900);    /* メインテキスト・見出し */
+
   --font-sans: "Inter", "Noto Sans JP", ui-sans-serif, system-ui,
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
-
-  /* グレースケール統一（3段階） */
-  --color-text-muted: theme(colors.gray.400);      /* 補助的な要素 */
-  --color-text-secondary: theme(colors.gray.600);  /* 説明文・サブテキスト */
-  --color-text-primary: theme(colors.gray.900);    /* メインテキスト・見出し */
 }
 
 @layer base {
@@ -21,46 +23,34 @@
   }
 }
 
-@layer utilities {
-  .text-muted {
-    color: var(--color-text-muted);
-  }
-  .text-secondary {
-    color: var(--color-text-secondary);
-  }
-  .text-primary {
-    color: var(--color-text-primary);
-  }
-}
-
 .title-xl2 {
-  @apply text-4xl font-semibold tracking-tight text-pretty text-gray-900
+  @apply text-4xl font-semibold tracking-tight text-pretty text-primary
 }
 .title-xl {
-  @apply text-3xl font-semibold tracking-tight text-pretty text-gray-900
+  @apply text-3xl font-semibold tracking-tight text-pretty text-primary
 }
 .title-md {
-  @apply text-2xl font-semibold tracking-tight text-pretty text-gray-900
+  @apply text-2xl font-semibold tracking-tight text-pretty text-primary
 }
 .title-sm {
   @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl
 }
 .title-xs {
-  @apply text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-gray-100
+  @apply text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-muted
 }
 
 .link-internal {
-  @apply text-gray-600 hover:text-gray-400 decoration-gray-400 underline break-all
+  @apply text-secondary hover:text-tertiary decoration-tertiary underline break-all
 }
 .link-external {
   @apply decoration-brand text-brand hover:text-brand/70 underline break-all
 }
 
 .markdown-body h1 {
-  @apply text-3xl font-semibold tracking-tight text-pretty text-gray-900
+  @apply text-3xl font-semibold tracking-tight text-pretty text-primary
 }
 .markdown-body h2 {
-  @apply text-2xl font-semibold tracking-tight text-pretty text-gray-900
+  @apply text-2xl font-semibold tracking-tight text-pretty text-primary
 }
 .markdown-body h3 {
   @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl
@@ -76,7 +66,7 @@
 }
 
 .markdown-body hr {
-  @apply my-6 border-t border-gray-300;
+  @apply my-6 border-t border-tertiary;
 }
 
 .markdown-body p {
@@ -89,24 +79,24 @@
   @apply mt-6 mb-12 rounded-lg shadow-md;
 }
 .markdown-body code {
-  @apply bg-gray-100 rounded p-1 text-sm font-mono break-all;
+  @apply bg-muted rounded p-1 text-sm font-mono break-all;
 }
 .markdown-body pre code {
-  @apply block bg-gray-100 rounded p-2 text-sm font-mono;
+  @apply block bg-muted rounded p-2 text-sm font-mono;
 }
 .markdown-body pre {
-  @apply bg-gray-100 rounded p-4 my-6 overflow-x-auto;
+  @apply bg-muted rounded p-4 my-6 overflow-x-auto;
 }
 
 .markdown-body table {
   @apply border-collapse my-6;
 }
 .markdown-body th,
-td {
-  @apply border border-gray-300 px-4 py-2;
+.markdown-body td {
+  @apply border border-tertiary px-4 py-2;
 }
 .markdown-body th {
-  @apply bg-gray-600 text-white;
+  @apply bg-secondary text-white;
 }
 
 .markdown-body ul {

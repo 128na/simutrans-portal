@@ -8,7 +8,7 @@
             ログイン時に Google Authenticator などの多要素認証アプリによる追加認証を設定できます。
         </p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-gray-200 pt-6 lg:mx-0">
+    <div class="flex flex-col gap-y-4 border-t border-muted pt-6 lg:mx-0">
         @switch(true)
 
         @case(session('status') ===\Laravel\Fortify\Fortify::TWO_FACTOR_AUTHENTICATION_ENABLED || $errors->getBag('confirmTwoFactorAuthentication')->has('code'))
@@ -22,7 +22,7 @@
             <div class="mb-4">
                 <label for="code" class="block text-sm/6 font-semibold text-primary">認証コード</label>
                 <div class="mt-2.5">
-                    <input id="code" type="code" name="code" autocomplete="one-time-code" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-primary outline-1 -outline-offset-1 outline-gray-300 placeholder:text-muted focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
+                    <input id="code" type="code" name="code" autocomplete="one-time-code" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-primary outline-1 -outline-offset-1 outline-tertiary placeholder:text-tertiary focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
                 </div>
                 @error('code', 'confirmTwoFactorAuthentication')
                 <div class="text-sm text-red-600">{{$message}}</div>
@@ -44,7 +44,7 @@
                 アプリが使用できなくなったときに使用できます。コードは安全な場所に保存してください。それぞれのコードは一度使用すると無効になります。
             </p>
 
-            <p class="p-4 mb-4 text-sm text-primary rounded-lg bg-gray-50 border border-gray-300 ">
+            <p class="p-4 mb-4 text-sm text-primary rounded-lg bg-gray-50 border border-tertiary ">
                 @foreach ($user->recoveryCodes() as $recoveryCode)
                 {{ $recoveryCode }}<br>
                 @endforeach
@@ -52,7 +52,7 @@
             <form action="{{route('two-factor.regenerate-recovery-codes')}}" method="POST">
                 @csrf
                 <div class="gap-x-2 flex">
-                    <button type="submit" class="rounded-md bg-gray-500 px-4 sm:py-2 py-4 text-white cursor-pointer js-clipboard" data-text="{{implode(" ", $user->recoveryCodes())}}">
+                    <button type="submit" class="rounded-md bg-secondary px-4 sm:py-2 py-4 text-white cursor-pointer js-clipboard" data-text="{{implode(" ", $user->recoveryCodes())}}">
                         コードをコピー
                     </button>
                     <button type="submit" class="rounded-md bg-brand px-4 sm:py-2 py-4 text-white cursor-pointer">

@@ -12,7 +12,7 @@
             アップロード済みのファイルを編集できます
         </p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-gray-200 pt-6 lg:mx-0">
+    <div class="flex flex-col gap-y-4 border-t border-muted pt-6 lg:mx-0">
         <div id="app-attachment-edit"></div>
     </div>
     @endsection

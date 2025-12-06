@@ -92,8 +92,8 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
             <tr
               key={tag.id}
               className={twMerge(
-                "bg-white border-b border-gray-200",
-                tag.editable && "cursor-pointer hover:bg-gray-100"
+                "bg-white border-b border-muted",
+                tag.editable && "cursor-pointer hover:bg-muted"
               )}
               onClick={() => onClick?.(tag)}
             >

@@ -9,7 +9,7 @@
             {{$meta['description']}}
         </p>
     </div>
-    <div class="mt-10 border-t border-gray-200 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
+    <div class="mt-10 border-t border-muted pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
         @foreach($users as $user)
         <div>
             @include('components.ui.link', [

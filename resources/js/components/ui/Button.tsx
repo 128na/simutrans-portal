@@ -17,7 +17,7 @@ export default function Button({ children, className, ...props }: ButtonProps) {
         rounded-lg
         cursor-pointer
         hover:bg-brand/90
-        disabled:bg-gray-300
+        disabled:bg-tertiary
         disabled:cursor-not-allowed
         `,
         className

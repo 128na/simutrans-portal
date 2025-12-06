@@ -13,7 +13,7 @@
     <div class="mb-6">
         <h2 class="title-xl">記事の一覧</h2>
     </div>
-    <div class="flex flex-col gap-y-12 border-t border-gray-200 pt-6 lg:mx-0">
+    <div class="flex flex-col gap-y-12 border-t border-muted pt-6 lg:mx-0">
         <div id="app-article-list"></div>
     </div>
     @endsection

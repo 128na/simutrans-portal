@@ -47,7 +47,7 @@ export function DataTable<T, K extends string>({
               )}
             >
               {header.name}
-              <span className="ml-1 text-[10px] text-muted">
+              <span className="ml-1 text-[10px] text-tertiary">
                 {header?.sortable && sort.column === header.key
                   ? sort.order === "asc"
                     ? "▲"

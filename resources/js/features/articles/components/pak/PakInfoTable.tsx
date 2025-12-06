@@ -15,10 +15,10 @@ export const PakInfoTable = ({ rows }: Props) => {
           <tbody>
             {rows.map((row, index) => (
               <tr key={index}>
-                <td className="border border-gray-300 px-4 py-2 bg-gray-500 text-white">
+                <td className="border border-muted px-4 py-2 bg-secondary text-white">
                   {row.label}
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
+                <td className="border border-muted px-4 py-2">
                   {row.value !== undefined &&
                   row.value !== null &&
                   row.value !== ""

@@ -20,10 +20,10 @@ export default function Select({
     <Label className={labelClassName}>
       {children}
       <select
-        value={value} // ← ここが重要！
-        onChange={onChange} // ← props経由で受け取る
+        value={value}
+        onChange={onChange}
         className={twMerge(
-          "w-full border border-gray-300 rounded-lg px-4 py-2",
+          "w-full border border-muted rounded-lg px-4 py-2",
           hasChildren ? "mt-1" : "mb-0",
           className
         )}

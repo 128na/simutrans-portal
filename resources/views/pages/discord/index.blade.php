@@ -16,7 +16,7 @@
         </p>
     </div>
 
-    <div class="flex flex-col gap-y-4 border-t border-gray-200 pt-6 lg:mx-0">
+    <div class="flex flex-col gap-y-4 border-t border-muted pt-6 lg:mx-0">
         @if(isset($url))
         @include('components.ui.link-external', ['url' => $url])
         @else

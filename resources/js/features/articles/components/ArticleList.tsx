@@ -8,11 +8,11 @@ type Props = {
 
 export const ArticleList = ({ articles }: Props) => {
   if (articles.length === 0) {
-    return <div className="text-muted">記事が見つかりませんでした。</div>;
+    return <div className="text-tertiary">記事が見つかりませんでした。</div>;
   }
 
   return (
-    <div className="flex flex-col gap-y-12 border-t border-gray-200 pt-6 lg:mx-0">
+    <div className="flex flex-col gap-y-12 border-t border-muted pt-6 lg:mx-0">
       {articles.map((article) => (
         <article key={article.id}>
           <div className="flex flex-col md:flex-row gap-4">
@@ -26,7 +26,7 @@ export const ArticleList = ({ articles }: Props) => {
               </a>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="text-sm text-muted">
+              <div className="text-sm text-tertiary">
                 {article.modified_at} ({article.published_at} 投稿)
               </div>
               <h3 className="title-md">

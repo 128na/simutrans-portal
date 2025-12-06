@@ -162,8 +162,8 @@ describe("articleUtil", () => {
       expect(StatusClass.publish).toContain("bg-white");
       expect(StatusClass.reservation).toContain("bg-green-100");
       expect(StatusClass.draft).toContain("bg-orange-100");
-      expect(StatusClass.trash).toContain("bg-gray-200");
-      expect(StatusClass.private).toContain("bg-gray-200");
+      expect(StatusClass.trash).toContain("bg-muted");
+      expect(StatusClass.private).toContain("bg-muted");
     });
   });
 

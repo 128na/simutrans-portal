@@ -4,7 +4,7 @@
 @section('content')
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="absolute inset-0 -z-10 overflow-hidden">
-        <svg aria-hidden="true" class="absolute top-0 left-[max(50%,25rem)] h-256 w-512 -translate-x-1/2 mask-[radial-gradient(64rem_64rem_at_top,white,transparent)] stroke-gray-200">
+        <svg aria-hidden="true" class="absolute top-0 left-[max(50%,25rem)] h-256 w-512 -translate-x-1/2 mask-[radial-gradient(64rem_64rem_at_top,white,transparent)] stroke-muted">
             <defs>
                 <pattern id="e813992c-7d03-4cc4-a2bd-151760b470a0" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
                     <path d="M100 200V.5M.5 .5H200" fill="none" />

@@ -8,7 +8,7 @@
             登録に使用したメールアドレスが有効なものか検証します。
         </p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-gray-200 pt-6 lg:mx-0">
+    <div class="flex flex-col gap-y-4 border-t border-muted pt-6 lg:mx-0">
         <form action="{{route('verification.send')}}" method="POST">
             @csrf
             <button type="submit" class="rounded-md bg-brand px-4 sm:py-2 py-4 text-white cursor-pointer">

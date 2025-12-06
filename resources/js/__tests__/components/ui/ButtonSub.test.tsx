@@ -14,7 +14,7 @@ describe("ButtonSub コンポーネント", () => {
   it("サブスタイルが適用される", () => {
     render(<ButtonSub>ボタン</ButtonSub>);
     const button = screen.getByRole("button");
-    expect(button).toHaveClass("bg-gray-500");
+    expect(button).toHaveClass("bg-secondary");
     expect(button).toHaveClass("text-sm");
   });
 

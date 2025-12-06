@@ -12,15 +12,15 @@
                 @foreach ($errors->all() as $key => $error)
                 <div class="text-sm text-red-600">{{$error}}</div>
                 @endforeach
-                <label for="email" class="block text-sm/6 font-semibold text-gray-900">メールアドレス</label>
+                <label for="email" class="block text-sm/6 font-semibold text-primary">メールアドレス</label>
                 <div class="mt-2.5">
-                    <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
+                    <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-primary outline-1 -outline-offset-1 outline-gray-300 placeholder:text-muted focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
                 </div>
             </div>
             <div>
-                <label for="password" class="block text-sm/6 font-semibold text-gray-900">パスワード</label>
+                <label for="password" class="block text-sm/6 font-semibold text-primary">パスワード</label>
                 <div class="mt-2.5">
-                    <input id="password" type="password" name="password" value="{{old('password', '')}}" autocomplete="current-password" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
+                    <input id="password" type="password" name="password" value="{{old('password', '')}}" autocomplete="current-password" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-primary outline-1 -outline-offset-1 outline-gray-300 placeholder:text-muted focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
                 </div>
             </div>
             <div>

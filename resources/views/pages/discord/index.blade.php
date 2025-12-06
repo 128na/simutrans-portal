@@ -10,7 +10,7 @@
         <h2 class="title-xl2">
             Discord招待リンクの発行
         </h2>
-        <p class="mt-2 text-lg/8 text-gray-600">
+        <p class="mt-2 text-lg/8 text-secondary">
             「シムトランス交流会議-~simutrans-interact-meeting~」の招待リンクを発行できます。<br>
             ※リンクは5分間のみ有効で、招待できる人数は1人までです。
         </p>

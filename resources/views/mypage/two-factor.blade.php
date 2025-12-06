@@ -4,7 +4,7 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl">二要素認証の設定</h2>
-        <p class="mt-2 text-gray-600">
+        <p class="mt-2 text-secondary">
             ログイン時に Google Authenticator などの多要素認証アプリによる追加認証を設定できます。
         </p>
     </div>
@@ -14,15 +14,15 @@
         @case(session('status') ===\Laravel\Fortify\Fortify::TWO_FACTOR_AUTHENTICATION_ENABLED || $errors->getBag('confirmTwoFactorAuthentication')->has('code'))
         {{-- Step.2 設定開始 --}}
         {!! $user->twoFactorQrCodeSvg() !!}
-        <p class="mt-2 text-gray-600">
+        <p class="mt-2 text-secondary">
             表示されたQRコードを多要素認証アプリで読み取り、表示されたコードを入力してください。
         </p>
         <form action="{{route('two-factor.confirm')}}" method="POST">
             @csrf
             <div class="mb-4">
-                <label for="code" class="block text-sm/6 font-semibold text-gray-900">認証コード</label>
+                <label for="code" class="block text-sm/6 font-semibold text-primary">認証コード</label>
                 <div class="mt-2.5">
-                    <input id="code" type="code" name="code" autocomplete="one-time-code" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
+                    <input id="code" type="code" name="code" autocomplete="one-time-code" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-primary outline-1 -outline-offset-1 outline-gray-300 placeholder:text-muted focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
                 </div>
                 @error('code', 'confirmTwoFactorAuthentication')
                 <div class="text-sm text-red-600">{{$message}}</div>
@@ -40,11 +40,11 @@
         {{-- Step. コード入力成功 または設定済み --}}
         <div>
             <h4 class="title-md">リカバリコード</h4>
-            <p class="my-2 text-gray-600">
+            <p class="my-2 text-secondary">
                 アプリが使用できなくなったときに使用できます。コードは安全な場所に保存してください。それぞれのコードは一度使用すると無効になります。
             </p>
 
-            <p class="p-4 mb-4 text-sm text-gray-900 rounded-lg bg-gray-50 border border-gray-300 ">
+            <p class="p-4 mb-4 text-sm text-primary rounded-lg bg-gray-50 border border-gray-300 ">
                 @foreach ($user->recoveryCodes() as $recoveryCode)
                 {{ $recoveryCode }}<br>
                 @endforeach

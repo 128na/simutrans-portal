@@ -23,24 +23,24 @@
 
 @layer utilities {
   .text-muted {
-    @apply text-gray-400;
+    color: var(--color-text-muted);
   }
   .text-secondary {
-    @apply text-gray-600;
+    color: var(--color-text-secondary);
   }
   .text-primary {
-    @apply text-gray-900;
+    color: var(--color-text-primary);
   }
 }
 
 .title-xl2 {
-  @apply text-4xl font-semibold tracking-tight text-pretty text-primary
+  @apply text-4xl font-semibold tracking-tight text-pretty text-gray-900
 }
 .title-xl {
-  @apply text-3xl font-semibold tracking-tight text-pretty text-primary
+  @apply text-3xl font-semibold tracking-tight text-pretty text-gray-900
 }
 .title-md {
-  @apply text-2xl font-semibold tracking-tight text-pretty text-primary
+  @apply text-2xl font-semibold tracking-tight text-pretty text-gray-900
 }
 .title-sm {
   @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl
@@ -50,17 +50,17 @@
 }
 
 .link-internal {
-  @apply text-secondary hover:text-muted decoration-gray-400 underline break-all
+  @apply text-gray-600 hover:text-gray-400 decoration-gray-400 underline break-all
 }
 .link-external {
   @apply decoration-brand text-brand hover:text-brand/70 underline break-all
 }
 
 .markdown-body h1 {
-  @apply text-3xl font-semibold tracking-tight text-pretty text-primary
+  @apply text-3xl font-semibold tracking-tight text-pretty text-gray-900
 }
 .markdown-body h2 {
-  @apply text-2xl font-semibold tracking-tight text-pretty text-primary
+  @apply text-2xl font-semibold tracking-tight text-pretty text-gray-900
 }
 .markdown-body h3 {
   @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl

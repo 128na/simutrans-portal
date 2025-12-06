@@ -6,11 +6,11 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl2">SNS・通知ツール</h2>
-        <p class="mt-2 text-lg/8 text-gray-600">記事投稿や更新通知を受け取ることができるSNSアカウントやツールです。</p>
+        <p class="mt-2 text-lg/8 text-secondary">記事投稿や更新通知を受け取ることができるSNSアカウントやツールです。</p>
     </div>
     <div class="flex flex-col gap-y-4 border-t border-gray-200 pt-6 lg:mx-0">
         <h4 class="title-md">プッシュ通知</h4>
-        <div class="text-gray-600">
+        <div class="text-secondary">
             スマホやPCにプッシュ通知ができます。右下のアイコンから登録・解除ができます。
         </div>
 
@@ -60,7 +60,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="text-gray-600">
+        <div class="text-secondary">
             RSSフィーダーやSlackなど各種ツールと連携させると新着情報が入手できます。
         </div>
         <h4 class="title-md">その他開発情報など</h4>

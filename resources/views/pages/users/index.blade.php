@@ -5,7 +5,7 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl2">ユーザー一覧</h2>
-        <p class="mt-2 text-lg/8 text-gray-600">
+        <p class="mt-2 text-lg/8 text-secondary">
             {{$meta['description']}}
         </p>
     </div>

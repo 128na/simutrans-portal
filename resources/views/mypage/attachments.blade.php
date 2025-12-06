@@ -8,7 +8,7 @@
     </script>
     <div class="mb-6">
         <h2 class="title-xl">ファイルの編集</h2>
-        <p class="mt-2 text-gray-600">
+        <p class="mt-2 text-secondary">
             アップロード済みのファイルを編集できます
         </p>
     </div>

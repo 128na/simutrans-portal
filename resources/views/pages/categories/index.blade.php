@@ -5,7 +5,7 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl2">Pak別アドオン一覧</h2>
-        <p class="mt-2 text-lg/8 text-gray-600">
+        <p class="mt-2 text-lg/8 text-secondary">
             {{$meta['description']}}<br>
             記載以外のPaksetやカテゴリは @include('components.ui.link', ['url' => route('search'), 'title' => '検索']) から探せます。
         </p>
@@ -19,7 +19,7 @@
                 <div class="mb-1 break-all font-semibold">
                     @lang("category.pak.{$pakSlug}")
                 </div>
-                <ul class="list-disc text-gray-400 ml-8 break-all">
+                <ul class="list-disc text-muted ml-8 break-all">
                     @foreach($addonCategories as $addonCategorie)
                     <li class="mb-1 text-black break-all">
                         @include('components.ui.link', [

@@ -9,7 +9,7 @@
             </a>
         </div>
         <div class="flex lg:hidden">
-            <button type="button" command="show-modal" commandfor="mobile-menu" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+            <button type="button" command="show-modal" commandfor="mobile-menu" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-secondary">
                 <span class="sr-only">Open main menu</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
                     <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -17,12 +17,12 @@
             </button>
         </div>
         <el-popover-group class="hidden lg:flex lg:gap-x-12">
-            <a href="{{route('index')}}" class="text-sm/6 font-semibold text-gray-900">トップ</a>
-            <a href="{{route('mypage.index')}}" class="text-sm/6 font-semibold text-gray-900">マイページ</a>
+            <a href="{{route('index')}}" class="text-sm/6 font-semibold text-primary">トップ</a>
+            <a href="{{route('mypage.index')}}" class="text-sm/6 font-semibold text-primary">マイページ</a>
             <div class="relative">
-                <button popovertarget="desktop-menu-article" class="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 cursor-pointer">
+                <button popovertarget="desktop-menu-article" class="flex items-center gap-x-1 text-sm/6 font-semibold text-primary cursor-pointer">
                     記事
-                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none text-gray-400">
+                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none text-muted">
                         <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
                     </svg>
                 </button>
@@ -31,42 +31,42 @@
                     <div class="p-4">
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.articles.index')}}" class="block font-semibold text-gray-900">
+                                <a href="{{route('mypage.articles.index')}}" class="block font-semibold text-primary">
                                     記事一覧
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.articles.create')}}" class="block font-semibold text-gray-900">
+                                <a href="{{route('mypage.articles.create')}}" class="block font-semibold text-primary">
                                     記事作成
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.redirects')}}" class="block font-semibold text-gray-900">
+                                <a href="{{route('mypage.redirects')}}" class="block font-semibold text-primary">
                                     記事のリダイレクト設定
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.attachments')}}" class="block font-semibold text-gray-900">
+                                <a href="{{route('mypage.attachments')}}" class="block font-semibold text-primary">
                                     ファイル管理
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.analytics')}}" class="block font-semibold text-gray-900">
+                                <a href="{{route('mypage.analytics')}}" class="block font-semibold text-primary">
                                     アナリティクス
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.tags')}}" class="block font-semibold text-gray-900">
+                                <a href="{{route('mypage.tags')}}" class="block font-semibold text-primary">
                                     タグの編集
                                 </a>
                             </div>
@@ -75,9 +75,9 @@
                 </el-popover>
             </div>
             <div class="relative">
-                <button popovertarget="desktop-menu-user" class="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 cursor-pointer">
+                <button popovertarget="desktop-menu-user" class="flex items-center gap-x-1 text-sm/6 font-semibold text-primary cursor-pointer">
                     ユーザー
-                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none text-gray-400">
+                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none text-muted">
                         <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
                     </svg>
                 </button>
@@ -86,28 +86,28 @@
                     <div class="p-4">
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.profile')}}" class="block font-semibold text-gray-900">
+                                <a href="{{route('mypage.profile')}}" class="block font-semibold text-primary">
                                     プロフィール
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.two-factor')}}" class="block font-semibold text-gray-900">
+                                <a href="{{route('mypage.two-factor')}}" class="block font-semibold text-primary">
                                     二要素認証
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.invite')}}" class="block font-semibold text-gray-900">
+                                <a href="{{route('mypage.invite')}}" class="block font-semibold text-primary">
                                     ユーザー招待
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.login-histories')}}" class="block font-semibold text-gray-900">
+                                <a href="{{route('mypage.login-histories')}}" class="block font-semibold text-primary">
                                     ログイン履歴
                                 </a>
                             </div>
@@ -115,13 +115,13 @@
                     </div>
                 </el-popover>
             </div>
-            <a href="{{config('app.support_site_url')}}" class="text-sm/6 font-semibold text-gray-900" target="_blank" rel="noopener">サイトの使い方<span class="text-sm text-gray-500">↗</span></a>
+            <a href="{{config('app.support_site_url')}}" class="text-sm/6 font-semibold text-primary" target="_blank" rel="noopener">サイトの使い方<span class="text-sm text-muted">↗</span></a>
 
         </el-popover-group>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
             <form action="{{route('logout')}}" method="POST">
                 @csrf
-                <button type="submit" class="text-sm/6 font-semibold text-gray-900 cursor-pointer">ログアウト</button>
+                <button type="submit" class="text-sm/6 font-semibold text-primary cursor-pointer">ログアウト</button>
             </form>
         </div>
     </nav>
@@ -134,7 +134,7 @@
                             <span class="sr-only">{{config('app.name')}}</span>
                             <img src="{{asset('v2/logo.svg')}}" alt="" class="h-8 w-auto" />
                         </a>
-                        <button type="button" command="close" commandfor="mobile-menu" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                        <button type="button" command="close" commandfor="mobile-menu" class="-m-2.5 rounded-md p-2.5 text-secondary">
                             <span class="sr-only">Close menu</span>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
                                 <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
@@ -144,26 +144,26 @@
                     <div class="mt-6 flow-root">
                         <div class="-my-6 divide-y divide-gray-500/10">
                             <div class="space-y-2 py-6">
-                                <a href="{{route('index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">トップ</a>
-                                <a href="{{route('mypage.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">マイページ</a>
-                                <a href="{{route('mypage.articles.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">記事一覧</a>
-                                <a href="{{route('mypage.articles.create')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">記事作成</a>
-                                <a href="{{route('mypage.redirects')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">記事のリダイレクト設定</a>
-                                <a href="{{route('mypage.attachments')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ファイル管理</a>
-                                <a href="{{route('mypage.analytics')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">アナリティクス</a>
-                                <a href="{{route('mypage.tags')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">タグの編集</a>
+                                <a href="{{route('index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-primary hover:bg-gray-50">トップ</a>
+                                <a href="{{route('mypage.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-primary hover:bg-gray-50">マイページ</a>
+                                <a href="{{route('mypage.articles.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-primary hover:bg-gray-50">記事一覧</a>
+                                <a href="{{route('mypage.articles.create')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-primary hover:bg-gray-50">記事作成</a>
+                                <a href="{{route('mypage.redirects')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-primary hover:bg-gray-50">記事のリダイレクト設定</a>
+                                <a href="{{route('mypage.attachments')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-primary hover:bg-gray-50">ファイル管理</a>
+                                <a href="{{route('mypage.analytics')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-primary hover:bg-gray-50">アナリティクス</a>
+                                <a href="{{route('mypage.tags')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-primary hover:bg-gray-50">タグの編集</a>
                             </div>
                             <div class="space-y-2 py-6">
-                                <a href="{{route('mypage.profile')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">プロフィール</a>
-                                <a href="{{route('mypage.two-factor')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">二要素認証</a>
-                                <a href="{{route('mypage.invite')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ユーザー招待</a>
-                                <a href="{{route('mypage.login-histories')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ログイン履歴</a>
-                                <a href="{{config('app.support_site_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50" target="_blank" rel="noopener">サイトの使い方<span class="text-sm text-gray-500">↗</span></a>
+                                <a href="{{route('mypage.profile')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-primary hover:bg-gray-50">プロフィール</a>
+                                <a href="{{route('mypage.two-factor')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-primary hover:bg-gray-50">二要素認証</a>
+                                <a href="{{route('mypage.invite')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-primary hover:bg-gray-50">ユーザー招待</a>
+                                <a href="{{route('mypage.login-histories')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-primary hover:bg-gray-50">ログイン履歴</a>
+                                <a href="{{config('app.support_site_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-primary hover:bg-gray-50" target="_blank" rel="noopener">サイトの使い方<span class="text-sm text-muted">↗</span></a>
                             </div>
                             <div class="py-6">
                                 <form action="{{route('logout')}}" method="POST">
                                     @csrf
-                                    <button type="submit" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 cursor-pointer">ログアウト</button>
+                                    <button type="submit" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-primary hover:bg-gray-50 cursor-pointer">ログアウト</button>
                                 </form>
                             </div>
                         </div>

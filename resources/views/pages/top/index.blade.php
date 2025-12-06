@@ -20,7 +20,7 @@
         <div class="lg:mx-auto lg:grid lg:w-full">
             <div class="lg:pr-4">
                 <h1 class="title-xl2">{{ config('app.name') }}</h1>
-                <p class="mt-6 text-xl/8 text-gray-700">
+                <p class="mt-6 text-xl/8 text-secondary">
                     Simutrans（シムトランス）のaddon（アドオン）を気軽に投稿・紹介できるポータルサイトです。<br />
                     投稿だけでなく、様々なWikiや個人サイト、アップローダーに掲載・投稿されているアドオン紹介記事も掲載できます。<br />
                 </p>
@@ -35,7 +35,7 @@
                     @endforeach
                 </div>
                 <p>
-                    <a href="{{ route('announces') }}" class="text-gray-600">一覧<span aria-hidden="true">→</span></a>
+                    <a href="{{ route('announces') }}" class="text-secondary">一覧<span aria-hidden="true">→</span></a>
                 </p>
             </div>
         </div>

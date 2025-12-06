@@ -9,7 +9,7 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl2">お知らせ</h2>
-        <p class="mt-2 text-lg/8 text-gray-600">運営からのお知らせです。</p>
+        <p class="mt-2 text-lg/8 text-secondary">運営からのお知らせです。</p>
     </div>
     <div id="app-article-list"></div>
     <div class="mt-10 border-t border-gray-200 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">

@@ -4,7 +4,7 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl">タグの編集</h2>
-        <p class="mt-2 text-gray-600">
+        <p class="mt-2 text-secondary">
             タグの作成、作成済みタグの説明文を編集できます。
         </p>
     </div>

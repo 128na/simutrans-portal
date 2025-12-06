@@ -4,7 +4,7 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl">招待</h2>
-        <p class="mt-2 text-gray-600">
+        <p class="mt-2 text-secondary">
             招待リンクの発行と招待したユーザーを確認できます。
         </p>
     </div>
@@ -18,7 +18,7 @@
             <form id="generate" action="{{route('mypage.invite')}}" method="POST">
                 @csrf
                 @if($user->invitation_code)
-                <p class="text-lg font-semibold p-4 mb-4 text-sm text-gray-900 rounded-lg bg-gray-50 border border-gray-300 ">
+                <p class="text-lg font-semibold p-4 mb-4 text-sm text-primary rounded-lg bg-gray-50 border border-gray-300 ">
                     {{route('user.invite',$user->invitation_code)}}
                 </p>
                 <div class="gap-x-2 flex">

@@ -541,13 +541,17 @@ final class ArticleRepository
     public function cursorCheckLink(): LazyCollection
     {
         $builder = $this->model
-            ->select('id', 'user_id', 'title', 'slug', 'post_type', 'contents')
-            ->where('post_type', ArticlePostType::AddonIntroduction)
+            ->withoutGlobalScopes()
+            ->select('articles.id', 'articles.user_id', 'articles.title', 'articles.slug', 'articles.post_type', 'articles.contents')
+            ->where('articles.post_type', ArticlePostType::AddonIntroduction->value)
             ->where(
-                fn ($query) => $query->whereNull('contents->exclude_link_check')
-                    ->orWhere('contents->exclude_link_check', false)
+                fn ($query) => $query
+                    // 古い記事は項目がないのでnullも含める
+                    ->whereNull('articles.contents->exclude_link_check')
+                    ->orWhere('articles.contents->exclude_link_check', false)
             );
 
+        $this->joinActiveUsers($builder);
         $this->wherePublished($builder);
 
         return $builder
@@ -562,10 +566,16 @@ final class ArticleRepository
      */
     public function cursorReservations(CarbonImmutable $date): LazyCollection
     {
-        return $this->model
-            ->where('status', ArticleStatus::Reservation)
-            ->where('published_at', '<=', $date)
-            ->cursor();
+        $builder = $this->model
+            ->select('articles.*')
+            ->withoutGlobalScopes()
+            ->whereNull('articles.deleted_at')
+            ->where('articles.status', ArticleStatus::Reservation->value)
+            ->where('articles.published_at', '<=', $date);
+
+        $this->joinActiveUsers($builder);
+
+        return $builder->cursor();
     }
 
     /**

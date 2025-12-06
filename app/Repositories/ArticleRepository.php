@@ -32,6 +32,7 @@ final class ArticleRepository
             ->select(['articles.id', 'articles.title', 'articles.user_id', 'users.name as user_name']);
 
         $this->joinActiveUsers($builder);
+        $this->wherePublished($builder);
         $this->orderByLatest($builder);
 
         return $builder

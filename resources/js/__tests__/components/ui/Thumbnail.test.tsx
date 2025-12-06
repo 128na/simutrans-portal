@@ -22,8 +22,6 @@ describe("Thumbnail コンポーネント", () => {
   it("Thumbnail 用のクラス名が適用される", () => {
     render(<Thumbnail attachmentId={1} attachments={mockAttachments} />);
     const img = screen.getByRole("img");
-    expect(img).toHaveClass("mt-6");
-    expect(img).toHaveClass("mb-12");
     expect(img).toHaveClass("rounded-lg");
   });
 

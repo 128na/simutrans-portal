@@ -69,7 +69,7 @@
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
                                 <a href="{{config('app.support_site_url')}}" class="block font-semibold text-gray-900" target="_blank" rel="noopener">
-                                    サイトの使い方
+                                    サイトの使い方<span class="text-sm text-gray-500">↗</span>
                                     <span class="absolute inset-0"></span>
                                 </a>
                             </div>
@@ -77,7 +77,7 @@
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
                                 <a href="{{config('app.privacy_policy_url')}}" class="block font-semibold text-gray-900" target="_blank" rel="noopener">
-                                    プライバシーポリシー
+                                    プライバシーポリシー<span class="text-sm text-gray-500">↗</span>
                                     <span class="absolute inset-0"></span>
                                 </a>
                             </div>
@@ -121,8 +121,8 @@
                                 <a href="{{route('pages')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">一般記事</a>
                                 <a href="{{route('search')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">検索</a>
                                 <a href="{{ route('social') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">SNS・通知ツール</a>
-                                <a href="{{config('app.support_site_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50" target="_blank" rel="noopener">サイトの使い方</a>
-                                <a href="{{config('app.privacy_policy_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50" target="_blank" rel="noopener">プライバシーポリシー</a>
+                                <a href="{{config('app.support_site_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50" target="_blank" rel="noopener">サイトの使い方<span class="text-sm text-gray-500">↗</span></a>
+                                <a href="{{config('app.privacy_policy_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50" target="_blank" rel="noopener">プライバシーポリシー<span class="text-sm text-gray-500">↗</span></a>
                             </div>
                             <div class="py-6">
                                 <a href="{{ route('login') }}" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">マイページ</a>

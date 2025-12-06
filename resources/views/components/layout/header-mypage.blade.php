@@ -115,7 +115,7 @@
                     </div>
                 </el-popover>
             </div>
-            <a href="{{config('app.support_site_url')}}" class="text-sm/6 font-semibold text-gray-900" target="_blank" rel="noopener">サイトの使い方</a>
+            <a href="{{config('app.support_site_url')}}" class="text-sm/6 font-semibold text-gray-900" target="_blank" rel="noopener">サイトの使い方<span class="text-sm text-gray-500">↗</span></a>
 
         </el-popover-group>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -158,7 +158,7 @@
                                 <a href="{{route('mypage.two-factor')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">二要素認証</a>
                                 <a href="{{route('mypage.invite')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ユーザー招待</a>
                                 <a href="{{route('mypage.login-histories')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">ログイン履歴</a>
-                                <a href="{{config('app.support_site_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50" target="_blank" rel="noopener">サイトの使い方</a>
+                                <a href="{{config('app.support_site_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50" target="_blank" rel="noopener">サイトの使い方<span class="text-sm text-gray-500">↗</span></a>
                             </div>
                             <div class="py-6">
                                 <form action="{{route('logout')}}" method="POST">

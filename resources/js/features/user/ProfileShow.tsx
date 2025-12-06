@@ -9,14 +9,16 @@ type Props = {
 export const ProfileShow = ({ user, attachments, preview }: Props) => {
   return (
     <div className="flex items-center gap-x-3">
-      <Avatar
-        attachmentId={user.profile.data.avatar}
-        attachments={
-          "attachments" in user.profile
-            ? user.profile.attachments
-            : (attachments ?? [])
-        }
-      />
+      <div className="flex-shrink-0">
+        <Avatar
+          attachmentId={user.profile.data.avatar}
+          attachments={
+            "attachments" in user.profile
+              ? user.profile.attachments
+              : (attachments ?? [])
+          }
+        />
+      </div>
       <div className="text-sm">
         <p className="font-semibold text-g9 break-all">
           <a href={preview ? "#" : `/users/${user.nickname ?? user.id}`}>

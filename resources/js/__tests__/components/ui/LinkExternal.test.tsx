@@ -32,8 +32,7 @@ describe("LinkExternal コンポーネント", () => {
   it("デフォルトのスタイルが適用される", () => {
     render(<LinkExternal href="https://example.com">リンク</LinkExternal>);
     const span = screen.getByText("リンク");
-    expect(span).toHaveClass("underline");
-    expect(span).toHaveClass("text-brand");
+    expect(span).toHaveClass("link-external");
   });
 
   it("target 属性が設定される", () => {

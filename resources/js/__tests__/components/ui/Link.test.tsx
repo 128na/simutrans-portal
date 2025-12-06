@@ -27,8 +27,7 @@ describe("Link コンポーネント", () => {
   it("デフォルトのスタイルが適用される", () => {
     render(<Link href="/test">リンク</Link>);
     const span = screen.getByText("リンク");
-    expect(span).toHaveClass("underline");
-    expect(span).toHaveClass("text-gray-700");
+    expect(span).toHaveClass("link-internal");
   });
 
   it("target 属性が設定される", () => {

@@ -1,9 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+JP:wght@100..900&display=swap');
 @import "tailwindcss";
 
 @theme {
   --color-brand: rgb(42, 134, 234);
   --color-tag: #757575;
   --color-category: #607d8b;
+  --font-sans: "Inter", "Noto Sans JP", ui-sans-serif, system-ui,
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+  }
 }
 
 .markdown-body h1 {

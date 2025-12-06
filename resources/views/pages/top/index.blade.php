@@ -34,7 +34,7 @@
                     @include('components.partials.announce-one-liner', ['article' => $article])
                     @endforeach
                     <p class="mt-3">
-                        <a href="{{ route('announces') }}" class="font-bold">一覧<span aria-hidden="true">→</span></a>
+                        <a href="{{ route('announces') }}" class="font-semibold">一覧<span aria-hidden="true">→</span></a>
                     </p>
                 </div>
             </div>

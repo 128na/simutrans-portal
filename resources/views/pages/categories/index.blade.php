@@ -16,7 +16,7 @@
                lg:grid lg:grid-cols-3 lg:gap-8">
             @foreach($pakAddonCategories as $pakSlug => $addonCategories)
             <li>
-                <div class="mb-1 break-all font-bold">
+                <div class="mb-1 break-all font-semibold">
                     @lang("category.pak.{$pakSlug}")
                 </div>
                 <ul class="list-disc text-gray-400 ml-8 break-all">

@@ -21,7 +21,7 @@
         @endphp
         <el-disclosure id="search-options" {{ $showOptions ? '' : 'hidden' }} class="mt-2 block space-y-2">
             <div class="mb-4">
-                <div class="font-bold">投稿形式</div>
+                <div class="font-semibold">投稿形式</div>
                 @foreach($options['postTypes'] as $postType)
                 <label class="sm:mr-2 mr-4 sm:mb-1 mb-2 inline-block cursor-pointer">
                     <input class="accent-brand mr-0.5" type="checkbox" name="postTypes[]" value="{{ $postType->value }}" {{ in_array($postType->value, $condition['postTypes'] ?? []) ? 'checked' : '' }} />
@@ -32,7 +32,7 @@
 
             @foreach($options['categories']->groupBy('type') as $type => $categories)
             <div class="mb-4">
-                <div class="font-bold ">@lang("category.type.{$type}")</div>
+                <div class="font-semibold ">@lang("category.type.{$type}")</div>
                 @foreach($categories as $category)
                 <label class="sm:mr-2 mr-4 sm:mb-1 mb-2 inline-block cursor-pointer">
                     <input class="accent-brand mr-0.5" type="checkbox" name="categoryIds[]" value="{{ $category->id }}" {{ in_array($category->id, $condition['categoryIds'] ?? []) ? 'checked' : '' }} />

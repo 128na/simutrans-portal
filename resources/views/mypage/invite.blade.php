@@ -18,7 +18,7 @@
             <form id="generate" action="{{route('mypage.invite')}}" method="POST">
                 @csrf
                 @if($user->invitation_code)
-                <p class="text-lg font-bold p-4 mb-4 text-sm text-gray-900 rounded-lg bg-gray-50 border border-gray-300 ">
+                <p class="text-lg font-semibold p-4 mb-4 text-sm text-gray-900 rounded-lg bg-gray-50 border border-gray-300 ">
                     {{route('user.invite',$user->invitation_code)}}
                 </p>
                 <div class="gap-x-2 flex">

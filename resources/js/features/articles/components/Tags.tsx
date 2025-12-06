@@ -9,7 +9,7 @@ export const Tags = ({ tags, preview }: Props) => {
         <a
           href={preview ? "#" : `/tags/${tag.id}`}
           key={`tag-${tag.id}`}
-          className="rounded bg-tag px-2.5 py-0.5 text-white inline-block"
+          className="rounded bg-tag px-2.5 py-0.5 text-white inline-block hover:bg-tag/80"
         >
           {tag.name}
         </a>

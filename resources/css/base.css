@@ -52,7 +52,7 @@
   @apply text-g5 hover:text-g4 decoration-g4 underline break-all;
 }
 .link-external {
-  @apply decoration-brand text-brand hover:text-brand/70 underline break-all;
+  @apply decoration-brand text-brand hover:text-brand/80 underline break-all;
 }
 
 .markdown-body h1 {
@@ -82,7 +82,7 @@
   @apply text-base leading-relaxed my-4 break-all;
 }
 .markdown-body a {
-  @apply decoration-brand text-brand hover:text-brand/70 underline break-all;
+  @apply decoration-brand text-brand hover:text-brand/80 underline break-all;
 }
 .markdown-body img {
   @apply mt-6 mb-12 rounded-lg shadow-md;

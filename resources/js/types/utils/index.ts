@@ -15,3 +15,9 @@ export type {
   PaginationLinks,
   PaginationParams,
 } from "./pagination";
+
+export type ProfileService = {
+  service: string;
+  src: string;
+  match: boolean;
+};

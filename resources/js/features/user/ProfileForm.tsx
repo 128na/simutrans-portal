@@ -17,6 +17,8 @@ import { isValidationError } from "@/lib/errorHandler";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
 import { FormCaption } from "@/components/ui/FormCaption";
 import MultiColumn from "@/components/ui/MultiColumn";
+import { ProfileIcon } from "./ProfileIcon";
+import { getService } from "./profileUtil";
 
 type Props = {
   user: User.MypageEdit;

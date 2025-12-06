@@ -6,14 +6,7 @@ export default function Link({
 }: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
   return (
     <a {...props}>
-      <span
-        className={twMerge(
-          "text-gray-700 hover:text-gray-500 decoration-gray-400 underline break-all",
-          className
-        )}
-      >
-        {children}
-      </span>
+      <span className={twMerge("link-internal", className)}>{children}</span>
     </a>
   );
 }

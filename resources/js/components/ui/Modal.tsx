@@ -26,7 +26,7 @@ export const Modal = ({ title, children, modalClass, onClose }: Props) => {
       >
         <div className="bg-white rounded-lg shadow p-5">
           <div className="flex justify-between items-center py-3 mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 ">{title}</h3>
+            <h3 className="title-md">{title}</h3>
             <ButtonClose onClick={onClose} />
           </div>
           {typeof children === "function" ? children({ close }) : children}

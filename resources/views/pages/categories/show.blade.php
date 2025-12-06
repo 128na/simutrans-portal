@@ -8,7 +8,7 @@
 </script>
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
-        <h2 class="text-4xl font-semibold text-pretty text-gray-900 sm:text-5xl">
+        <h2 class="title-xl2">
             @lang("category.pak.{$pak->slug}") / @lang("category.addon.{$addon->slug}") の記事
         </h2>
         <div class="mt-2">

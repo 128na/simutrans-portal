@@ -29,7 +29,7 @@ export const ArticleList = ({ articles }: Props) => {
               <div className="text-sm text-gray-500">
                 {article.modified_at} ({article.published_at} 投稿)
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 hover:text-gray-600">
+              <h3 className="title-md">
                 <a href={article.url}>{article.title}</a>
               </h3>
               <div className="text-sm text-gray-600 line-clamp-3 break-all">

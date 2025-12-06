@@ -16,6 +16,29 @@
   }
 }
 
+.title-xl2 {
+  @apply text-4xl font-semibold tracking-tight text-pretty text-gray-900
+}
+.title-xl {
+  @apply text-3xl font-semibold tracking-tight text-pretty text-gray-900
+}
+.title-md {
+  @apply text-2xl font-semibold tracking-tight text-pretty text-gray-900
+}
+.title-sm {
+  @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl
+}
+.title-xs {
+  @apply text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-gray-100
+}
+
+.link-internal {
+  @apply text-gray-700 hover:text-gray-500 decoration-gray-400 underline break-all
+}
+.link-external {
+  @apply decoration-brand text-brand hover:text-brand/70 underline break-all
+}
+
 .markdown-body h1 {
   @apply text-2xl font-semibold sm:text-2xl my-2 break-all;
 }

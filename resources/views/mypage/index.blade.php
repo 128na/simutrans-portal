@@ -3,10 +3,10 @@
 @section('content')
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
-        <h2 class="text-3xl font-semibold text-pretty text-gray-900 sm:text-3xl">マイページ</h2>
+        <h2 class="title-xl">マイページ</h2>
     </div>
     <div class="flex flex-col gap-y-4 border-t border-gray-200 pt-6 lg:mx-0">
-        <h3 class="text-2xl font-semibold text-brand sm:text-2xl my-4">アクティビティ</h3>
+        <h3 class="title-md">ダッシュボード</h3>
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">
                 <tbody>
@@ -49,7 +49,7 @@
                 </tbody>
             </table>
         </div>
-        <h3 class="text-2xl font-semibold text-brand sm:text-2xl my-4">ユーザー情報</h3>
+        <h3 class="title-md">ユーザー情報</h3>
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">
                 <tbody>

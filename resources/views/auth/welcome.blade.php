@@ -4,7 +4,7 @@
 @section('content')
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
-        <h2 class="text-3xl font-semibold text-pretty text-gray-900">ユーザー登録完了</h2>
+        <h2 class="title-xl">ユーザー登録完了</h2>
         <p class="mt-2 text-md text-gray-600">
             ようこそ「{{$inviter->name}}」さん。
         </p>

@@ -6,14 +6,7 @@ export default function LinkExternal({
 }: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
   return (
     <a {...props}>
-      <span
-        className={twMerge(
-          "decoration-sky-600 text-brand hover:text-brand/70 underline break-all",
-          className
-        )}
-      >
-        {children}
-      </span>
+      <span className={twMerge("link-external", className)}>{children}</span>
       <span className="text-xs text-gray-500">↗</span>
     </a>
   );

@@ -3,7 +3,7 @@
 @section('content')
 <div class="mx-auto max-w-xl p-6 lg:px-8">
     <div class="mb-6">
-        <h2 class="text-3xl font-semibold text-pretty text-gray-900 sm:text-3xl">ログイン</h2>
+        <h2 class="title-xl">ログイン</h2>
     </div>
     <form action="{{route('login.store')}}" method="POST">
         @csrf

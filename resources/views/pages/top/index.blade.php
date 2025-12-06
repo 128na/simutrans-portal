@@ -19,7 +19,7 @@
     <div class="mx-auto grid gap-y-16 lg:mx-0 lg:max-w-none lg:gap-y-10">
         <div class="lg:mx-auto lg:grid lg:w-full">
             <div class="lg:pr-4">
-                <h1 class="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">{{ config('app.name') }}</h1>
+                <h1 class="title-xl2">{{ config('app.name') }}</h1>
                 <p class="mt-6 text-xl/8 text-gray-700">
                     Simutrans（シムトランス）のaddon（アドオン）を気軽に投稿・紹介できるポータルサイトです。<br />
                     投稿だけでなく、様々なWikiや個人サイト、アップローダーに掲載・投稿されているアドオン紹介記事も掲載できます。<br />
@@ -29,7 +29,7 @@
         <div class="lg:mx-auto lg:grid lg:w-full">
             <div class="lg:pr-4">
                 <div class=" text-base/7 text-gray-600 ">
-                    <h2 class="text-2xl font-bold tracking-tight text-gray-900">お知らせ</h2>
+                    <h2 class="title-md">お知らせ</h2>
                     @foreach($announces as $article)
                     @include('components.partials.announce-one-liner', ['article' => $article])
                     @endforeach
@@ -42,7 +42,7 @@
         <div class="lg:mx-auto lg:grid lg:w-full">
             <div class="lg:pr-4">
                 <div class=" text-base/7 text-gray-600 ">
-                    <h2 class="text-2xl font-bold tracking-tight text-gray-900">アドオン関連サイト</h2>
+                    <h2 class="title-md">アドオン関連サイト</h2>
                     <p class="mt-3">
                         @include('components.ui.link-external', ['url' => 'https://forum.simutrans.com/', 'title' => 'International Simutrans Forum'])
                     </p>

@@ -14,6 +14,8 @@ if (app) {
     document.getElementById("data-articles")?.textContent || "{}"
   ) as Article.MypageShow[];
 
+  console.log(articles);
+
   const App = () => {
     const [selected, setSelected] = useState<Article.MypageShow | null>(null);
     return (

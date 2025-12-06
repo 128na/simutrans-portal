@@ -3,9 +3,5 @@ type HTMLProps = React.HTMLAttributes<HTMLElement> & {
 };
 
 export const TitleH3 = ({ children }: HTMLProps) => {
-  return (
-    <h3 className="text-2xl font-semibold text-brand sm:text-2xl my-2 break-all">
-      {children}
-    </h3>
-  );
+  return <h3 className="title-md my-4">{children}</h3>;
 };

@@ -3,7 +3,7 @@
 @section('content')
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
-        <h2 class="text-3xl font-semibold text-pretty text-gray-900 sm:text-3xl">二要素認証の設定</h2>
+        <h2 class="title-xl">二要素認証の設定</h2>
         <p class="mt-2 text-gray-600">
             ログイン時に Google Authenticator などの多要素認証アプリによる追加認証を設定できます。
         </p>
@@ -39,7 +39,7 @@
         @case(session('status') === \Laravel\Fortify\Fortify::TWO_FACTOR_AUTHENTICATION_CONFIRMED || $user->two_factor_confirmed_at)
         {{-- Step. コード入力成功 または設定済み --}}
         <div>
-            <h4 class="text-xl font-semibold sm:text-xl my-8">リカバリコード</h4>
+            <h4 class="title-md">リカバリコード</h4>
             <p class="my-2 text-gray-600">
                 アプリが使用できなくなったときに使用できます。コードは安全な場所に保存してください。それぞれのコードは一度使用すると無効になります。
             </p>
@@ -61,7 +61,7 @@
                 </div>
             </form>
 
-            <h4 class="text-xl font-semibold sm:text-xl my-8">二要素認証の無効化</h4>
+            <h4 class="title-md">二要素認証の無効化</h4>
             <form action="{{route('two-factor.disable')}}" method="POST" class="js-confirm" data-text="二要素認証を無効化しますか？">
                 @csrf
                 @method('DELETE')

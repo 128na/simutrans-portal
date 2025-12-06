@@ -4,7 +4,7 @@
 @section('content')
 <div class="mx-auto max-w-xl p-6 lg:px-8">
     <div class="mb-6">
-        <h2 class="text-3xl font-semibold text-pretty text-gray-900 sm:text-3xl">二要素認証</h2>
+        <h2 class="title-xl">二要素認証</h2>
     </div>
     <form action="{{route('two-factor.login.store')}}" method="POST">
         @csrf

@@ -37,9 +37,7 @@ export const ModalFull = ({
           <div className={twMerge("relative w-full h-screen", modalClass)}>
             <div className="bg-white shadow px-5 pb-5 h-full overflow-y-auto">
               <div className="flex justify-between items-center py-3 mb-4 sticky top-0 bg-white z-10">
-                <h3 className="text-lg font-semibold text-gray-900 ">
-                  {title}
-                </h3>
+                <h3 className="title-md">{title}</h3>
                 <ButtonClose onClick={() => setIsOpen(false)} />
               </div>
               {typeof children === "function" ? children({ close }) : children}

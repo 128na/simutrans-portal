@@ -5,14 +5,5 @@ type HTMLProps = React.HTMLAttributes<HTMLElement> & {
 };
 
 export const TitleH4 = ({ children, className }: HTMLProps) => {
-  return (
-    <h4
-      className={twMerge(
-        "text-xl font-semibold sm:text-xl my-2 break-all",
-        className
-      )}
-    >
-      {children}
-    </h4>
-  );
+  return <h4 className={twMerge("title-sm my-4", className)}>{children}</h4>;
 };

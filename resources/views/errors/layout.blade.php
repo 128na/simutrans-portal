@@ -35,7 +35,7 @@ $bgPath = asset("images/{$status}.png");
     <div class="absolute top-0 bottom-0 left-0 right-0 overflow-hidden bg-gray-400 py-24 sm:py-32" style="background-blend-mode: multiply;background-image: url('{{ $bgPath }}');">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-2xl lg:mx-0">
-                <h2 class="text-5xl font-semibold tracking-tight text-white sm:text-7xl">@yield('message')</h2>
+                <h2 class="title-xl2">@yield('message')</h2>
                 <p class="mt-8 text-lg font-medium text-pretty text-white sm:text-xl/8">@yield('description')</p>
             </div>
             <div class="mx-auto mt-10 max-w-2xl lg:mx-0 lg:max-w-none">

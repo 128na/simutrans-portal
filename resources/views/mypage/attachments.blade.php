@@ -7,7 +7,7 @@
 
     </script>
     <div class="mb-6">
-        <h2 class="text-3xl font-semibold text-pretty text-gray-900 sm:text-3xl">ファイルの編集</h2>
+        <h2 class="title-xl">ファイルの編集</h2>
         <p class="mt-2 text-gray-600">
             アップロード済みのファイルを編集できます
         </p>

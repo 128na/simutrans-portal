@@ -40,29 +40,33 @@
 }
 
 .markdown-body h1 {
-  @apply text-2xl font-semibold sm:text-2xl my-2 break-all;
+  @apply text-3xl font-semibold tracking-tight text-pretty text-gray-900
 }
 .markdown-body h2 {
-  @apply text-2xl font-semibold text-brand sm:text-2xl my-2 break-all;
+  @apply text-2xl font-semibold tracking-tight text-pretty text-gray-900
 }
 .markdown-body h3 {
-  @apply text-xl sm:text-xl my-2 p-2 flex w-full items-center justify-between bg-gray-100 break-all;
+  @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl
 }
 .markdown-body h4 {
-  @apply text-xl font-semibold sm:text-xl my-4 break-all;
+  @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl;
 }
 .markdown-body h5 {
-  @apply text-xl font-semibold sm:text-xl my-4 break-all;
+  @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl;
 }
 .markdown-body h6 {
-  @apply text-xl font-semibold sm:text-xl my-4 break-all;
+  @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl;
+}
+
+.markdown-body hr {
+  @apply my-6 border-t border-gray-300;
 }
 
 .markdown-body p {
-  @apply text-base leading-relaxed mb-8 break-all;
+  @apply text-base leading-relaxed my-4 break-all;
 }
 .markdown-body a {
-  @apply decoration-sky-600 text-sky-600 underline break-all;
+  @apply decoration-brand text-brand hover:text-brand/70 underline break-all
 }
 .markdown-body img {
   @apply mt-6 mb-12 rounded-lg shadow-md;

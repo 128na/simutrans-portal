@@ -5,9 +5,9 @@ import { SectionCaption } from "./Section/SectionCaption";
 import { SectionText } from "./Section/SectionText";
 import { SectionImage } from "./Section/SectionImage";
 import { SectionUrl } from "./Section/SectionUrl";
-import TwoColumn from "@/components/ui/TwoColumn";
 import ButtonDanger from "@/components/ui/ButtonDanger";
 import { FormCaption } from "@/components/ui/FormCaption";
+import MultiColumn from "@/components/ui/MultiColumn";
 
 const template = {
   caption: { type: "caption", caption: "" } as ArticleContent.Section.Caption,
@@ -48,7 +48,7 @@ export const SectionForm = () => {
         return (
           <div>
             <FormCaption>{SectionName[section.type]}</FormCaption>
-            <TwoColumn key={idx} grow="left">
+            <MultiColumn classNames={["grow", "shrink-0"]} key={idx}>
               {match(section)
                 .with({ type: "caption" }, (s) => (
                   <SectionCaption
@@ -129,7 +129,7 @@ export const SectionForm = () => {
                 ))
                 .exhaustive()}
               <ButtonDanger onClick={() => remove(idx)}>削除</ButtonDanger>
-            </TwoColumn>
+            </MultiColumn>
           </div>
         );
       })}

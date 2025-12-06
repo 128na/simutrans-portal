@@ -110,7 +110,6 @@ resources/js/
 │   │   ├── TextError.tsx
 │   │   ├── TextSub.tsx
 │   │   ├── Thumbnail.tsx
-│   │   ├── TwoColumn.tsx
 │   │   └── ui.d.ts
 │   ├── layout/           # レイアウトコンポーネント
 │   │   ├── DataTable.tsx

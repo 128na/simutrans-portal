@@ -11,12 +11,12 @@ import Textarea from "@/components/ui/Textarea";
 import Button from "@/components/ui/Button";
 import axios from "axios";
 import ButtonSub from "@/components/ui/ButtonSub";
-import TwoColumn from "@/components/ui/TwoColumn";
 import ButtonDanger from "@/components/ui/ButtonDanger";
 import { useRef } from "react";
 import { isValidationError } from "@/lib/errorHandler";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
 import { FormCaption } from "@/components/ui/FormCaption";
+import MultiColumn from "@/components/ui/MultiColumn";
 
 type Props = {
   user: User.MypageEdit;
@@ -230,7 +230,7 @@ export const ProfileForm = ({
         </div>
         {user.profile.data.website.map((website, idx) => {
           return (
-            <TwoColumn grow="left" key={idx}>
+            <MultiColumn classNames={["grow", "shrink-0"]} key={idx}>
               <Input
                 type="url"
                 labelClassName="font-medium mb-0"
@@ -258,7 +258,7 @@ export const ProfileForm = ({
               <ButtonDanger onClick={() => removeWebsite(idx)}>
                 削除
               </ButtonDanger>
-            </TwoColumn>
+            </MultiColumn>
           );
         })}
       </div>

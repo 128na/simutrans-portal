@@ -6,8 +6,8 @@ import { SectionText } from "./Section/SectionText";
 import { SectionImage } from "./Section/SectionImage";
 import { SectionUrl } from "./Section/SectionUrl";
 import Label from "@/components/ui/Label";
-import TwoColumn from "@/components/ui/TwoColumn";
 import ButtonDanger from "@/components/ui/ButtonDanger";
+import MultiColumn from "@/components/ui/MultiColumn";
 
 const template = {
   caption: { type: "caption", caption: "" } as ArticleContent.Section.Caption,
@@ -39,7 +39,7 @@ export const SectionForm = () => {
     <div className="space-y-4">
       {contents.sections.map((section, idx) => {
         return (
-          <TwoColumn key={idx} grow="left">
+          <MultiColumn classNames={["grow", "shrink-0"]} key={idx}>
             {match(section)
               .with({ type: "caption" }, (s) => (
                 <SectionCaption
@@ -118,7 +118,7 @@ export const SectionForm = () => {
               ))
               .exhaustive()}
             <ButtonDanger onClick={() => remove(idx)}>削除</ButtonDanger>
-          </TwoColumn>
+          </MultiColumn>
         );
       })}
       <div className="space-x-2">

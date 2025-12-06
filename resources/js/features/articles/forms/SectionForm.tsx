@@ -8,6 +8,7 @@ import { SectionUrl } from "./Section/SectionUrl";
 import ButtonDanger from "@/components/ui/ButtonDanger";
 import { FormCaption } from "@/components/ui/FormCaption";
 import MultiColumn from "@/components/ui/MultiColumn";
+import { SortableList } from "@/components/ui/SortableList";
 
 const template = {
   caption: { type: "caption", caption: "" } as ArticleContent.Section.Caption,
@@ -44,11 +45,18 @@ export const SectionForm = () => {
 
   return (
     <div className="space-y-4">
-      {contents.sections.map((section, idx) => {
-        return (
+      <SortableList
+        items={contents.sections}
+        onReorder={(newSections) => {
+          updateContents<ArticleContent.Page>((draft) => {
+            draft.sections = newSections;
+          });
+        }}
+        getItemId={(_, idx) => `section-${idx}`}
+        renderItem={(section, idx) => (
           <div>
             <FormCaption>{SectionName[section.type]}</FormCaption>
-            <MultiColumn classNames={["grow", "shrink-0"]} key={idx}>
+            <MultiColumn classNames={["grow", "shrink-0"]}>
               {match(section)
                 .with({ type: "caption" }, (s) => (
                   <SectionCaption
@@ -131,8 +139,8 @@ export const SectionForm = () => {
               <ButtonDanger onClick={() => remove(idx)}>削除</ButtonDanger>
             </MultiColumn>
           </div>
-        );
-      })}
+        )}
+      />
       <div className="space-x-2">
         <FormCaption>項目の追加</FormCaption>
         <Button onClick={() => add("caption")}>見出し</Button>

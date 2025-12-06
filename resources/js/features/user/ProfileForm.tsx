@@ -19,6 +19,7 @@ import { FormCaption } from "@/components/ui/FormCaption";
 import MultiColumn from "@/components/ui/MultiColumn";
 import { ProfileIcon } from "./ProfileIcon";
 import { getService } from "./profileUtil";
+import { SortableList } from "@/components/ui/SortableList";
 
 type Props = {
   user: User.MypageEdit;
@@ -26,6 +27,7 @@ type Props = {
   attachments: Attachment.MypageEdit[];
   onChangeAttachments: (attachments: Attachment.MypageEdit[]) => void;
 };
+
 export const ProfileForm = ({
   user,
   onChangeUser,
@@ -230,39 +232,63 @@ export const ProfileForm = ({
         <div>
           <ButtonSub onClick={addWebsite}>Webサイトを追加</ButtonSub>
         </div>
-        {user.profile.data.website.map((website, idx) => {
-          return (
-            <MultiColumn classNames={["grow", "shrink-0"]} key={idx}>
-              <Input
-                type="url"
-                labelClassName="font-medium mb-0"
-                className="font-normal"
-                value={website}
-                onChange={(e) => {
-                  onChangeUser({
-                    ...user,
-                    profile: {
-                      ...user.profile,
-                      data: {
-                        ...user.profile.data,
-                        website: user.profile.data.website.map((w, i) =>
-                          i === idx ? e.target.value : w
-                        ),
-                      },
-                    },
-                  });
-                }}
-              >
-                <TextError>
-                  {getError(`user.profile.data.website.${idx}`)}
-                </TextError>
-              </Input>
-              <ButtonDanger onClick={() => removeWebsite(idx)}>
-                削除
-              </ButtonDanger>
-            </MultiColumn>
-          );
-        })}
+        <SortableList
+          items={user.profile.data.website}
+          onReorder={(newWebsites) => {
+            onChangeUser({
+              ...user,
+              profile: {
+                ...user.profile,
+                data: {
+                  ...user.profile.data,
+                  website: newWebsites,
+                },
+              },
+            });
+          }}
+          getItemId={(_, idx) => `website-${idx}`}
+          renderItem={(website, idx) => {
+            const service = getService(website);
+            return (
+              <MultiColumn classNames={["grow", "shrink-0"]}>
+                <div className="flex items-center gap-2 flex-1">
+                  {website && service ? (
+                    <ProfileIcon service={service} />
+                  ) : null}
+                  <div className="flex-1">
+                    <Input
+                      type="url"
+                      labelClassName="font-medium mb-0"
+                      className="font-normal"
+                      value={website}
+                      onChange={(e) => {
+                        onChangeUser({
+                          ...user,
+                          profile: {
+                            ...user.profile,
+                            data: {
+                              ...user.profile.data,
+                              website: user.profile.data.website.map((w, i) =>
+                                i === idx ? e.target.value : w
+                              ),
+                            },
+                          },
+                        });
+                      }}
+                    >
+                      <TextError>
+                        {getError(`user.profile.data.website.${idx}`)}
+                      </TextError>
+                    </Input>
+                  </div>
+                </div>
+                <ButtonDanger onClick={() => removeWebsite(idx)}>
+                  削除
+                </ButtonDanger>
+              </MultiColumn>
+            );
+          }}
+        />
       </div>
       <div className="border-t border-gray-200 pt-4">
         <Button onClick={save}>保存</Button>

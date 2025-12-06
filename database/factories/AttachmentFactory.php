@@ -29,7 +29,7 @@ final class AttachmentFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::factory()->create()->id,
+            'user_id' => User::factory(),
             'attachmentable_id' => null,
             'attachmentable_type' => null,
             'original_name' => 'test.png',
@@ -40,7 +40,7 @@ final class AttachmentFactory extends Factory
     public function zipFile(): array
     {
         return [
-            'user_id' => User::factory()->create()->id,
+            'user_id' => User::factory(),
             'attachmentable_id' => null,
             'attachmentable_type' => null,
             'original_name' => 'test.zip',

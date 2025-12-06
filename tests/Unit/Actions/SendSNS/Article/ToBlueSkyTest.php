@@ -22,6 +22,7 @@ final class ToBlueSkyTest extends TestCase
     {
         $article = Article::factory()->make([
             'id' => 1,
+            'user_id' => 1,
             'title' => 'Test Article',
         ]);
 
@@ -59,7 +60,7 @@ final class ToBlueSkyTest extends TestCase
 
     public function test_posts_to_bluesky_on_article_updated(): void
     {
-        $article = Article::factory()->make(['id' => 2]);
+        $article = Article::factory()->make(['id' => 2, 'user_id' => 1]);
 
         $this->mock(GetArticleParam::class, function (MockInterface $mock): void {
             $mock->allows('__invoke')->andReturn([]);
@@ -81,7 +82,7 @@ final class ToBlueSkyTest extends TestCase
 
     public function test_handles_exception_gracefully(): void
     {
-        $article = Article::factory()->make();
+        $article = Article::factory()->make(['user_id' => 1]);
 
         $this->mock(GetArticleParam::class, function (MockInterface $mock): void {
             $mock->allows('__invoke')->andReturn([]);
@@ -101,7 +102,7 @@ final class ToBlueSkyTest extends TestCase
 
     public function test_handles_resize_failed_exception(): void
     {
-        $article = Article::factory()->make();
+        $article = Article::factory()->make(['user_id' => 1]);
 
         $this->mock(GetArticleParam::class, function (MockInterface $mock): void {
             $mock->allows('__invoke')->andReturn([]);

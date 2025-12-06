@@ -19,6 +19,7 @@ final class ToTwitterTest extends TestCase
     {
         $article = Article::factory()->make([
             'id' => 1,
+            'user_id' => 1,
             'title' => 'Test Article',
             'slug' => 'test-article',
         ]);
@@ -54,6 +55,7 @@ final class ToTwitterTest extends TestCase
     {
         $article = Article::factory()->make([
             'id' => 2,
+            'user_id' => 1,
             'title' => 'Updated Article',
             'slug' => 'updated-article',
         ]);
@@ -85,7 +87,7 @@ final class ToTwitterTest extends TestCase
 
     public function test_handles_exception_gracefully(): void
     {
-        $article = Article::factory()->make(['id' => 3]);
+        $article = Article::factory()->make(['id' => 3, 'user_id' => 1]);
 
         $this->mock(GetArticleParam::class, function (MockInterface $mock): void {
             $mock->allows('__invoke')->andReturn([]);

@@ -54,7 +54,7 @@ final class ArticleFactory extends Factory
         $sentence = fake()->sentence();
 
         return [
-            'user_id' => User::factory()->create()->id,
+            'user_id' => User::factory(),
             'title' => $sentence,
             'slug' => $sentence,
             'contents' => $contents[$postType],

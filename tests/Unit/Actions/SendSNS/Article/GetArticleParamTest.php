@@ -13,6 +13,13 @@ use Tests\Unit\TestCase;
 
 final class GetArticleParamTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        // Fakerのuniqueリセット（複数テスト実行時の重複を防ぐ）
+        fake()->unique(true);
+    }
+
     public function test_returns_article_parameters_with_nickname(): void
     {
         $carbon = Carbon::parse('2024-01-15 12:30:45');
@@ -22,15 +29,17 @@ final class GetArticleParamTest extends TestCase
             'id' => 1,
             'name' => 'Test User',
             'nickname' => 'testuser',
+            'email' => 'test1@example.com',
         ]);
 
         $article = Article::factory()->make([
             'id' => 1,
+            'user_id' => 1,
             'title' => 'Test Article',
             'slug' => 'test-article',
-            'user_id' => $user->id,
         ]);
         $article->setRelation('user', $user);
+        $article->setRelation('categories', collect());
         $article->setRelation('categoryPaks', collect());
 
         $result = $action($article);
@@ -59,15 +68,17 @@ final class GetArticleParamTest extends TestCase
             'id' => 2,
             'name' => 'Another User',
             'nickname' => null,
+            'email' => 'test2@example.com',
         ]);
 
         $article = Article::factory()->make([
             'id' => 2,
+            'user_id' => 2,
             'title' => 'Another Article',
             'slug' => 'another-article',
-            'user_id' => $user->id,
         ]);
         $article->setRelation('user', $user);
+        $article->setRelation('categories', collect());
         $article->setRelation('categoryPaks', collect());
 
         $result = $action($article);
@@ -83,18 +94,19 @@ final class GetArticleParamTest extends TestCase
         $carbon = Carbon::parse('2024-03-10 10:00:00');
         $action = new GetArticleParam($carbon);
 
-        $user = User::factory()->make(['id' => 3, 'name' => 'User']);
+        $user = User::factory()->make(['id' => 3, 'name' => 'User', 'email' => 'test3@example.com']);
 
-        $pak128 = Category::factory()->make(['slug' => 'pak128', 'type' => 'pak']);
-        $pak64 = Category::factory()->make(['slug' => 'pak64', 'type' => 'pak']);
+        $pak128 = Category::factory()->make(['slug' => 'pak128', 'type' => 'pak', 'user_id' => 3]);
+        $pak64 = Category::factory()->make(['slug' => 'pak64', 'type' => 'pak', 'user_id' => 3]);
 
         $article = Article::factory()->make([
             'id' => 3,
+            'user_id' => 3,
             'title' => 'Pak Article',
             'slug' => 'pak-article',
-            'user_id' => $user->id,
         ]);
         $article->setRelation('user', $user);
+        $article->setRelation('categories', collect([$pak128, $pak64]));
         $article->setRelation('categoryPaks', collect([$pak128, $pak64]));
 
         $result = $action($article);
@@ -110,16 +122,17 @@ final class GetArticleParamTest extends TestCase
         $carbon = Carbon::now();
         $action = new GetArticleParam($carbon);
 
-        $user = User::factory()->make(['id' => 4, 'name' => 'User']);
-        $pak128 = Category::factory()->make(['slug' => 'pak128', 'type' => 'pak']);
+        $user = User::factory()->make(['id' => 4, 'name' => 'User', 'email' => 'test4@example.com']);
+        $pak128 = Category::factory()->make(['slug' => 'pak128', 'type' => 'pak', 'user_id' => 4]);
 
         $article = Article::factory()->make([
             'id' => 4,
+            'user_id' => 4,
             'title' => 'Title',
             'slug' => 'slug',
-            'user_id' => $user->id,
         ]);
         $article->setRelation('user', $user);
+        $article->setRelation('categories', collect([$pak128]));
         $article->setRelation('categoryPaks', collect([$pak128]));
 
         $result = $action($article);

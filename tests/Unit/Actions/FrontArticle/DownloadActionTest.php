@@ -22,12 +22,14 @@ final class DownloadActionTest extends TestCase
 
         $attachment = Attachment::factory()->make([
             'id' => 1,
+            'user_id' => 1,
             'path' => 'test/file.zip',
             'original_name' => 'test.zip',
         ]);
 
         $article = Article::factory()->make([
             'id' => 1,
+            'user_id' => 1,
             'post_type' => 'addon-post',
             'contents' => ['file' => 1, 'author' => 'Test Author', 'description' => 'Test'],
         ]);
@@ -55,6 +57,7 @@ final class DownloadActionTest extends TestCase
 
         $attachment = Attachment::factory()->make([
             'id' => 1,
+            'user_id' => 1,
             'path' => 'test/file.zip',
             'original_name' => 'test.zip',
         ]);
@@ -85,6 +88,7 @@ final class DownloadActionTest extends TestCase
 
         $attachment = Attachment::factory()->make([
             'id' => 1,
+            'user_id' => 1,
             'path' => 'test/file.zip',
             'original_name' => 'test.zip',
         ]);
@@ -108,10 +112,13 @@ final class DownloadActionTest extends TestCase
 
     public function test_aborts_when_no_file_attached(): void
     {
+        Event::fake();
+
         $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
 
         $article = Article::factory()->make([
             'id' => 1,
+            'user_id' => 1,
             'post_type' => 'addon-post',
             'contents' => ['file' => null, 'author' => 'Test Author', 'description' => 'Test'],
         ]);

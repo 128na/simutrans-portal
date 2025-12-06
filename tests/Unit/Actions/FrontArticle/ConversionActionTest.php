@@ -17,7 +17,7 @@ final class ConversionActionTest extends TestCase
     {
         Event::fake();
 
-        $article = Article::factory()->make(['id' => 1]);
+        $article = Article::factory()->make(['id' => 1, 'user_id' => 1]);
 
         $action = new ConversionAction;
         $action($article, null);

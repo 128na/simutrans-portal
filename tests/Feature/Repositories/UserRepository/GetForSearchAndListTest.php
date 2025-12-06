@@ -28,7 +28,8 @@ final class GetForSearchAndListTest extends TestCase
         $results = $this->userRepository->getForSearch();
 
         $this->assertNotEmpty($results);
-        $this->assertSame($user->name, $results->first()->name);
+        // 公開記事を持つユーザーが含まれていることを確認（順序は不定）
+        $this->assertTrue($results->contains('id', $user->id));
     }
 
     public function test_get_for_list(): void

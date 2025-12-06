@@ -48,11 +48,13 @@ final class ToBlueSkyTest extends TestCase
                 ->andReturn('at://did:plc:123/app.bsky.feed.post/abc'); // URI文字列を直接返す
         });
 
-        $sut = app(ToBluesky::class);
+        $notification = new SendArticlePublished($article);
+        $action = app(ToBluesky::class);
 
-        $result = ($sut)(new SendArticlePublished($article));
+        $action($article, $notification);
 
-        $this->assertTrue($result);
+        // Mock expectationsが検証される
+        $this->expectNotToPerformAssertions();
     }
 
     public function test_posts_to_bluesky_on_article_updated(): void
@@ -107,15 +109,16 @@ final class ToBlueSkyTest extends TestCase
 
         $postMock = $this->mock(Post::class);
 
-        $this->mock(BlueSkyApiClient::class, function (MockInterface $mock) use ($postMock): void {
+        $this->mock(BlueSkyApiClient::class, function (MockInterface $mock) use ($article): void {
             $mock->expects('addWebsiteCard')
                 ->once()
+                ->with(\Mockery::type(Post::class), $article)
                 ->andThrow(new ResizeFailedException('Image resize failed'));
-            // ResizeFailedExceptionの場合はそのままPostを返してsendを実行
+            // ResizeFailedException後もsendは呼ばれる（元のPostで）
             $mock->expects('send')
                 ->once()
-                ->with($postMock)
-                ->andReturn('at://test'); // URI文字列を直接返す
+                ->with(\Mockery::type(Post::class))
+                ->andReturn((object)['uri' => 'at://test']);
         });
 
         $notification = new SendArticlePublished($article);

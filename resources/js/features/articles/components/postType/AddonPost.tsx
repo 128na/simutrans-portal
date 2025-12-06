@@ -96,7 +96,7 @@ export const AddonPost = ({ article, preview }: Props) => {
                     <React.Fragment key={filename}>
                       <li className="mb-1 break-all">{filename}</li>
                       <li className="mb-6">
-                        <ul className="list-disc text-gray-400 ml-8 break-all">
+                        <ul className="list-disc text-muted ml-8 break-all">
                           {addonNames.map((name: string) => (
                             <li key={name}>
                               <span className="text-black break-all">

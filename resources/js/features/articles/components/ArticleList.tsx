@@ -8,7 +8,7 @@ type Props = {
 
 export const ArticleList = ({ articles }: Props) => {
   if (articles.length === 0) {
-    return <div className="text-gray-500">記事が見つかりませんでした。</div>;
+    return <div className="text-muted">記事が見つかりませんでした。</div>;
   }
 
   return (
@@ -26,15 +26,15 @@ export const ArticleList = ({ articles }: Props) => {
               </a>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-muted">
                 {article.modified_at} ({article.published_at} 投稿)
               </div>
               <h3 className="title-md">
-                <a href={article.url} className="hover:text-gray-700">
+                <a href={article.url} className="hover:text-secondary">
                   {article.title}
                 </a>
               </h3>
-              <div className="text-sm text-gray-600 line-clamp-3 break-all">
+              <div className="text-sm text-secondary line-clamp-3 break-all">
                 {article.description}
               </div>
               <div className="text-xs flex flex-wrap gap-2">

@@ -13,7 +13,7 @@ function getPagination(total: number, current: number) {
 }
 
 const baseClass =
-  "flex items-center justify-center px-4 h-10 text-gray-500 bg-white border border-gray-300";
+  "flex items-center justify-center px-4 h-10 text-muted bg-white border border-gray-300";
 
 export const Pagination = ({ total, current, onChange }: PaginationProps) => {
   const pages = getPagination(total, current);

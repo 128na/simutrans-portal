@@ -6,7 +6,7 @@ export default function Label({
 }: React.LabelHTMLAttributes<HTMLLabelElement>) {
   return (
     <label
-      className={twMerge(`block text-sm text-gray-900`, className)}
+      className={twMerge(`block text-sm text-primary`, className)}
       {...props}
     >
       {children}

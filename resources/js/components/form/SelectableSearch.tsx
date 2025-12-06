@@ -69,7 +69,7 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
             </span>
           ))}
           {selectedItems.length === 0 && (
-            <span className="text-gray-400">（未選択）</span>
+            <span className="text-muted">（未選択）</span>
           )}
         </div>
       </div>

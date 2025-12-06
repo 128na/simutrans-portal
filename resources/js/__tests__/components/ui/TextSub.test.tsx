@@ -23,7 +23,7 @@ describe("TextSub コンポーネント", () => {
     render(<TextSub>テキスト</TextSub>);
     const text = screen.getByText("テキスト");
     expect(text).toHaveClass("text-sm");
-    expect(text).toHaveClass("text-gray-600");
+    expect(text).toHaveClass("text-secondary");
   });
 
   it("長いテキストが表示される", () => {

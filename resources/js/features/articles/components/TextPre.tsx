@@ -4,8 +4,6 @@ type HTMLProps = React.HTMLAttributes<HTMLElement> & {
 
 export const TextPre = ({ children }: HTMLProps) => {
   return (
-    <pre className="whitespace-pre-wrap text-gray-800 break-all">
-      {children}
-    </pre>
+    <pre className="whitespace-pre-wrap text-primary break-all">{children}</pre>
   );
 };

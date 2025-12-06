@@ -32,11 +32,10 @@ final class ArticleRepository
             ->select(['articles.id', 'articles.title', 'articles.user_id', 'users.name as user_name']);
 
         $this->joinActiveUsers($builder);
-        $this->wherePublished($builder);
         $this->orderByLatest($builder);
 
         return $builder
-            ->when($article, fn ($q, Article $article) => $q->where('articles.id', '!=', $article->id))
+            ->when($article, fn($q, Article $article) => $q->where('articles.id', '!=', $article->id))
             ->get();
     }
 
@@ -51,7 +50,6 @@ final class ArticleRepository
             ->select('id', 'title', 'slug', 'status', 'post_type', 'published_at', 'modified_at')
             ->where('articles.user_id', $user->id);
 
-        $this->wherePublished($builder);
         $this->orderByLatest($builder);
 
         return $builder
@@ -138,7 +136,7 @@ final class ArticleRepository
             str_replace(['　', ',', '、', '・'], ' ', $rawWord)
         ));
         if ($words !== []) {
-            $queryString = implode(' ', array_map(fn (string $w): string => '+'.$w, $words));
+            $queryString = implode(' ', array_map(fn(string $w): string => '+' . $w, $words));
             $baseQuery->join('article_search_index as idx', function (JoinClause $joinClause) use ($queryString): void {
                 $joinClause->on('idx.article_id', '=', 'articles.id')
                     ->whereRaw('MATCH(idx.text) AGAINST (? IN BOOLEAN MODE)', [$queryString]);

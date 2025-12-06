@@ -6,6 +6,7 @@ namespace Tests\Feature\Repositories\ArticleRepository;
 
 use App\Enums\ArticleStatus;
 use App\Models\Article;
+use App\Models\Contents\AddonIntroductionContent;
 use App\Repositories\ArticleRepository;
 use Illuminate\Support\LazyCollection;
 use Tests\Feature\TestCase;
@@ -41,6 +42,7 @@ final class CursorCheckLinkTest extends TestCase
     public function testチェック無効(): void
     {
         $contents = $this->article->contents;
+        assert($contents instanceof AddonIntroductionContent);
         $contents->exclude_link_check = true;
 
         $this->article->update([

@@ -35,7 +35,7 @@ final class DownloadActionTest extends TestCase
 
         Storage::disk('public')->put('test/file.zip', 'dummy content');
 
-        $action = new DownloadAction();
+        $action = new DownloadAction;
         $response = $action($article, null);
 
         Event::assertDispatched(ArticleConversion::class, function ($event) use ($article) {
@@ -69,7 +69,7 @@ final class DownloadActionTest extends TestCase
 
         Storage::disk('public')->put('test/file.zip', 'dummy content');
 
-        $action = new DownloadAction();
+        $action = new DownloadAction;
         $response = $action($article, $otherUser);
 
         Event::assertDispatched(ArticleConversion::class);
@@ -99,7 +99,7 @@ final class DownloadActionTest extends TestCase
 
         Storage::disk('public')->put('test/file.zip', 'dummy content');
 
-        $action = new DownloadAction();
+        $action = new DownloadAction;
         $response = $action($article, $author);
 
         Event::assertNotDispatched(ArticleConversion::class);
@@ -117,7 +117,7 @@ final class DownloadActionTest extends TestCase
         ]);
         $article->setRelation('attachments', collect());
 
-        $action = new DownloadAction();
+        $action = new DownloadAction;
         $action($article, null);
     }
 }

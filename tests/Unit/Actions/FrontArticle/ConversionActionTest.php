@@ -19,7 +19,7 @@ final class ConversionActionTest extends TestCase
 
         $article = Article::factory()->make(['id' => 1]);
 
-        $action = new ConversionAction();
+        $action = new ConversionAction;
         $action($article, null);
 
         Event::assertDispatched(ArticleConversion::class, function ($event) use ($article) {
@@ -36,7 +36,7 @@ final class ConversionActionTest extends TestCase
 
         $article = Article::factory()->make(['id' => 1, 'user_id' => $author->id]);
 
-        $action = new ConversionAction();
+        $action = new ConversionAction;
         $action($article, $otherUser);
 
         Event::assertDispatched(ArticleConversion::class);
@@ -50,7 +50,7 @@ final class ConversionActionTest extends TestCase
 
         $article = Article::factory()->make(['id' => 1, 'user_id' => $author->id]);
 
-        $action = new ConversionAction();
+        $action = new ConversionAction;
         $action($article, $author);
 
         Event::assertNotDispatched(ArticleConversion::class);

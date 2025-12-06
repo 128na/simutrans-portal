@@ -540,10 +540,17 @@ final class ArticleRepository
      */
     public function cursorCheckLink(): LazyCollection
     {
-        return $this->model
-            ->active()
-            ->linkCheckTarget()
+        $builder = $this->model
             ->select('id', 'user_id', 'title', 'slug', 'post_type', 'contents')
+            ->where('post_type', ArticlePostType::AddonIntroduction)
+            ->where(
+                fn ($query) => $query->whereNull('contents->exclude_link_check')
+                    ->orWhere('contents->exclude_link_check', false)
+            );
+
+        $this->wherePublished($builder);
+
+        return $builder
             ->with('user:id,email')
             ->cursor();
     }

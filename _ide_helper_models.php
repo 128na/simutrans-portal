@@ -13,14 +13,6 @@
 
 namespace App\Models{
 /**
- * @property-read int|null $past_view_count
- * @property-read int|null $past_conversion_count
- * @property-read bool $hasFile
- * @property-read Collection<int, Category> $categoryPaks
- * @property-read bool $hasThumbnail
- * @method static Builder<Article> page()
- * @method static Builder<Article> pak(string $slug)
- * @mixin IdeHelperArticle
  * @property int $id
  * @property int $user_id
  * @property string $title タイトル
@@ -40,8 +32,6 @@ namespace App\Models{
  * @property-read int|null $attachments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
- * @property-read mixed $category_addons
- * @property-read mixed $category_pak128_positions
  * @property-read mixed $category_paks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ConversionCount> $conversionCounts
  * @property-read int|null $conversion_counts_count
@@ -49,13 +39,10 @@ namespace App\Models{
  * @property-read bool $has_file
  * @property-read bool $has_file_info
  * @property-read bool $has_thumbnail
- * @property-read string $headline_description
  * @property-read bool $is_addon_post
  * @property-read bool $is_inactive
- * @property-read bool $is_page
  * @property-read bool $is_publish
  * @property-read bool $is_reservation
- * @property-read string $meta_description
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Article> $relatedArticles
@@ -67,7 +54,6 @@ namespace App\Models{
  * @property-read mixed $thumbnail_url
  * @property-read \App\Models\Article\ConversionCount|null $totalConversionCount
  * @property-read \App\Models\Article\ViewCount|null $totalViewCount
- * @property-read string $url_decoded_slug
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ViewCount> $viewCounts
  * @property-read int|null $view_counts_count
@@ -77,10 +63,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article category(\App\Models\Category $category)
  * @method static \Database\Factories\ArticleFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article latest()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article linkCheckTarget()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article page()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article pak(string $slug)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article pakAddonCategory(\App\Models\Category $pak, \App\Models\Category $addon)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article slug(string $slug)
@@ -90,8 +77,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withUserTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withoutAnnounce()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withoutTrashed()
+ * @mixin \Eloquent
  */
-	final class Article extends \Eloquent implements \Spatie\Feed\Feedable {}
+	#[\AllowDynamicProperties]
+	final class IdeHelperArticle {}
 }
 
 namespace App\Models{
@@ -99,21 +88,21 @@ namespace App\Models{
  * @property int $id
  * @property int $article_id
  * @property int $failed_count
- * @property \Illuminate\Support\Carbon $last_checked_at
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
- * @property-read Article $article
- * @mixin IdeHelperArticleLinkCheckHistory
+ * @property \Carbon\CarbonImmutable $last_checked_at
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property-read \App\Models\Article $article
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleLinkCheckHistory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleLinkCheckHistory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleLinkCheckHistory query()
+ * @mixin \Eloquent
  */
-	final class ArticleLinkCheckHistory extends \Eloquent {}
+	#[\AllowDynamicProperties]
+	final class IdeHelperArticleLinkCheckHistory {}
 }
 
 namespace App\Models\Article{
 /**
- * @mixin IdeHelperArticleSearchIndex
  * @property int $article_id
  * @property string|null $text
  * @property \Carbon\CarbonImmutable|null $created_at
@@ -122,13 +111,14 @@ namespace App\Models\Article{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleSearchIndex newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleSearchIndex newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleSearchIndex query()
+ * @mixin \Eloquent
  */
-	final class ArticleSearchIndex extends \Eloquent {}
+	#[\AllowDynamicProperties]
+	final class IdeHelperArticleSearchIndex {}
 }
 
 namespace App\Models\Article{
 /**
- * @mixin IdeHelperConversionCount
  * @property int $id
  * @property int $article_id
  * @property int $type 集計区分 1:日次,2:月次,3:年次,4:全体
@@ -140,13 +130,14 @@ namespace App\Models\Article{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversionCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversionCount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ConversionCount query()
+ * @mixin \Eloquent
  */
-	final class ConversionCount extends \Eloquent {}
+	#[\AllowDynamicProperties]
+	final class IdeHelperConversionCount {}
 }
 
 namespace App\Models\Article{
 /**
- * @mixin IdeHelperViewCount
  * @property int $id
  * @property int $article_id
  * @property int $type 集計区分 1:日次,2:月次,3:年次,4:全体
@@ -158,14 +149,14 @@ namespace App\Models\Article{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount query()
+ * @mixin \Eloquent
  */
-	final class ViewCount extends \Eloquent {}
+	#[\AllowDynamicProperties]
+	final class IdeHelperViewCount {}
 }
 
 namespace App\Models{
 /**
- * @property-read string $fullPath
- * @mixin IdeHelperAttachment
  * @property int $id
  * @property int $user_id
  * @property int|null $attachmentable_id 添付先ID
@@ -193,13 +184,14 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment query()
+ * @mixin \Eloquent
  */
-	final class Attachment extends \Eloquent {}
+	#[\AllowDynamicProperties]
+	final class IdeHelperAttachment {}
 }
 
 namespace App\Models\Attachment{
 /**
- * @mixin IdeHelperFileInfo
  * @property int $id
  * @property int $attachment_id
  * @property array<array-key, mixed> $data
@@ -208,13 +200,14 @@ namespace App\Models\Attachment{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FileInfo newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FileInfo newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FileInfo query()
+ * @mixin \Eloquent
  */
-	final class FileInfo extends \Eloquent {}
+	#[\AllowDynamicProperties]
+	final class IdeHelperFileInfo {}
 }
 
 namespace App\Models{
 /**
- * @mixin IdeHelperCategory
  * @property int $id
  * @property \App\Enums\CategoryType $type 分類
  * @property string $slug スラッグ
@@ -237,13 +230,14 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category slug(string $slug)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category type(\App\Enums\CategoryType $categoryType)
+ * @mixin \Eloquent
  */
-	final class Category extends \Eloquent {}
+	#[\AllowDynamicProperties]
+	final class IdeHelperCategory {}
 }
 
 namespace App\Models{
 /**
- * @mixin IdeHelperControllOption
  * @property \App\Enums\ControllOptionKey $key
  * @property bool $value
  * @property \Carbon\CarbonImmutable|null $created_at
@@ -251,13 +245,14 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ControllOption newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ControllOption newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ControllOption query()
+ * @mixin \Eloquent
  */
-	final class ControllOption extends \Eloquent {}
+	#[\AllowDynamicProperties]
+	final class IdeHelperControllOption {}
 }
 
 namespace App\Models{
 /**
- * @mixin IdeHelperOauthToken
  * @property string $application
  * @property string $token_type
  * @property string $scope
@@ -269,13 +264,14 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OauthToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OauthToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OauthToken query()
+ * @mixin \Eloquent
  */
-	final class OauthToken extends \Eloquent {}
+	#[\AllowDynamicProperties]
+	final class IdeHelperOauthToken {}
 }
 
 namespace App\Models{
 /**
- * @mixin IdeHelperRedirect
  * @property int $id
  * @property string $from リダイレクト元
  * @property string $to リダイレクト先
@@ -288,13 +284,14 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Redirect newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Redirect newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Redirect query()
+ * @mixin \Eloquent
  */
-	final class Redirect extends \Eloquent {}
+	#[\AllowDynamicProperties]
+	final class IdeHelperRedirect {}
 }
 
 namespace App\Models{
 /**
- * @mixin IdeHelperTag
  * @property int $id
  * @property string $name タグ名
  * @property string|null $description 説明
@@ -313,13 +310,14 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tag newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tag popular()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tag query()
+ * @mixin \Eloquent
  */
-	final class Tag extends \Eloquent {}
+	#[\AllowDynamicProperties]
+	final class IdeHelperTag {}
 }
 
 namespace App\Models{
 /**
- * @mixin IdeHelperUser
  * @property int $id
  * @property \App\Enums\UserRole $role 権限
  * @property string $name ユーザー名
@@ -365,13 +363,14 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutTrashed()
+ * @mixin \Eloquent
  */
-	final class User extends \Eloquent implements \Illuminate\Contracts\Auth\MustVerifyEmail {}
+	#[\AllowDynamicProperties]
+	final class IdeHelperUser {}
 }
 
 namespace App\Models\User{
 /**
- * @mixin IdeHelperLoginHistory
  * @property int $id
  * @property int $user_id
  * @property string|null $ip
@@ -384,13 +383,14 @@ namespace App\Models\User{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginHistory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginHistory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginHistory query()
+ * @mixin \Eloquent
  */
-	final class LoginHistory extends \Eloquent {}
+	#[\AllowDynamicProperties]
+	final class IdeHelperLoginHistory {}
 }
 
 namespace App\Models\User{
 /**
- * @mixin IdeHelperProfile
  * @property int $id
  * @property int $user_id
  * @property \App\Models\User\ProfileData $data プロフィール情報
@@ -405,7 +405,9 @@ namespace App\Models\User{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile query()
+ * @mixin \Eloquent
  */
-	final class Profile extends \Eloquent {}
+	#[\AllowDynamicProperties]
+	final class IdeHelperProfile {}
 }
 

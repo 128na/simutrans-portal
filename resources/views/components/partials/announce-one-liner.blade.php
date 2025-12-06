@@ -1,4 +1,4 @@
-<p class="mt-3">
+<p>
     <span class="text-sm text-gray-500 mr-1">
         {{$article->published_at->format('Y/m/d')}}
     </span>

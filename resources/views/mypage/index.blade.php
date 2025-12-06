@@ -29,7 +29,7 @@
                         <td class="border border-gray-300 px-4 py-2" rowspan="2">@include('components.ui.link', ['url' => route('mypage.attachments'), 'title' => 'ファイル管理'])</td>
                     </tr>
                     <tr>
-                        <td class=" border border-gray-300 px-4 py-2 bg-gray-500 text-white">ファイルストレージ使用量</td>
+                        <td class="border border-gray-300 px-4 py-2 bg-gray-500 text-white">ファイルストレージ使用量</td>
                         <td class="border border-gray-300 px-4 py-2">{{ round(($summary->total_attachment_size ?? 0)/1024/1024,1) }} MB</td>
                     </tr>
                     <tr>

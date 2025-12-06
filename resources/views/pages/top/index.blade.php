@@ -28,37 +28,26 @@
         </div>
         <div class="lg:mx-auto lg:grid lg:w-full">
             <div class="lg:pr-4">
-                <div class=" text-base/7 text-gray-600 ">
-                    <h2 class="title-md">お知らせ</h2>
+                <h2 class="title-md mb-4">お知らせ</h2>
+                <div class="gap-2 flex flex-col mb-4">
                     @foreach($announces as $article)
                     @include('components.partials.announce-one-liner', ['article' => $article])
                     @endforeach
-                    <p class="mt-3">
-                        <a href="{{ route('announces') }}" class="font-semibold">一覧<span aria-hidden="true">→</span></a>
-                    </p>
                 </div>
+                <p>
+                    <a href="{{ route('announces') }}" class="text-gray-600">一覧<span aria-hidden="true">→</span></a>
+                </p>
             </div>
         </div>
         <div class="lg:mx-auto lg:grid lg:w-full">
             <div class="lg:pr-4">
-                <div class=" text-base/7 text-gray-600 ">
-                    <h2 class="title-md">アドオン関連サイト</h2>
-                    <p class="mt-3">
-                        @include('components.ui.link-external', ['url' => 'https://forum.simutrans.com/', 'title' => 'International Simutrans Forum'])
-                    </p>
-                    <p class="mt-3">
-                        @include('components.ui.link-external', ['url' => 'https://japanese.simutrans.com/index.php', 'title' => 'Simutrans日本語化･解説'])
-                    </p>
-                    <p class="mt-3">
-                        @include('components.ui.link-external', ['url' => 'https://wikiwiki.jp/twitrans/', 'title' => 'Simutrans的な実験室'])
-                    </p>
-                    <p class="mt-3">
-                        @include('components.ui.link-external', ['url' => 'https://cross-search.128-bit.net/', 'title' => 'Simutrans 横断検索'])
-                    </p>
-                    <p class="mt-3">
-                        @include('components.ui.link-external', ['url' => route('redirect', ['name' => 'simutrans-interact-meeting']), 'title' => 'シムトランス交流会議'])
-                    </p>
-
+                <h2 class="title-md mb-4">アドオン関連サイト</h2>
+                <div class="gap-2 flex flex-col">
+                    @include('components.ui.link-external', ['url' => 'https://forum.simutrans.com/', 'title' => 'International Simutrans Forum'])
+                    @include('components.ui.link-external', ['url' => 'https://japanese.simutrans.com/index.php', 'title' => 'Simutrans日本語化･解説'])
+                    @include('components.ui.link-external', ['url' => 'https://wikiwiki.jp/twitrans/', 'title' => 'Simutrans的な実験室'])
+                    @include('components.ui.link-external', ['url' => 'https://cross-search.128-bit.net/', 'title' => 'Simutrans 横断検索'])
+                    @include('components.ui.link-external', ['url' => route('redirect', ['name' => 'simutrans-interact-meeting']), 'title' => 'シムトランス交流会議'])
                 </div>
             </div>
         </div>

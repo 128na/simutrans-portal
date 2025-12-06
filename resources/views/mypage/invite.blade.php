@@ -28,7 +28,7 @@
                     <button type="submit" class="rounded-md bg-brand px-4 sm:py-2 py-4 text-white cursor-pointer">
                         再発行
                     </button>
-                    <button type="submit" class="rounded-md bg-red-500 px-4 sm:py-2 py-4 text-white cursor-pointer" form="revoke">
+                    <button type="submit" class="rounded-md bg-danger px-4 sm:py-2 py-4 text-white cursor-pointer" form="revoke">
                         削除
                     </button>
                 </div>

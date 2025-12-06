@@ -25,7 +25,7 @@
 @endsession
 @session('error')
 <div class="mx-auto @yield('max-w', 'max-w-xl') p-6 lg:px-8">
-    <p class="p-4 text-sm text-red-900 rounded-lg bg-red-50 border border-red-300 ">
+    <p class="p-4 text-sm text-red-900 rounded-lg bg-red-50 border border-danger-light ">
         @lang(session('error'))
     </p>
 </div>

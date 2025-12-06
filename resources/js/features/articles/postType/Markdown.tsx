@@ -28,7 +28,7 @@ export const Markdown = () => {
 
       <div>
         <FormCaption>
-          <TextBadge className="bg-red-500">必須</TextBadge>
+          <TextBadge className="bg-danger">必須</TextBadge>
           本文
         </FormCaption>
         <TextError>{getError("article.contents.markdown")}</TextError>

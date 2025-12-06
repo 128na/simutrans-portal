@@ -21,7 +21,7 @@
                     <input id="name" type="text" name="name" maxlength="100" autocomplete="name" value="{{old('name', '')}}" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-primary outline-1 -outline-offset-1 outline-tertiary placeholder:text-tertiary focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
                 </div>
                 @error('name')
-                <div class="text-sm text-red-600">{{ $message }}</div>
+                <div class="text-sm text-danger">{{ $message }}</div>
                 @enderror
             </div>
             <div>
@@ -30,7 +30,7 @@
                     <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-primary outline-1 -outline-offset-1 outline-tertiary placeholder:text-tertiary focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
                 </div>
                 @error('email')
-                <div class="text-sm text-red-600">{{ $message }}</div>
+                <div class="text-sm text-danger">{{ $message }}</div>
                 @enderror
             </div>
             <div>
@@ -39,7 +39,7 @@
                     <input id="password" type="password" name="password" minlength="11" value="{{old('password', '')}}" autocomplete="new-password" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-primary outline-1 -outline-offset-1 outline-tertiary placeholder:text-tertiary focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
                 </div>
                 @error('password')
-                <div class="text-sm text-red-600">{{ $message }}</div>
+                <div class="text-sm text-danger">{{ $message }}</div>
                 @enderror
             </div>
             <div>
@@ -48,7 +48,7 @@
                     @include('components.ui.link-external', ['url' => config('app.privacy_policy_url'), 'title' => 'プライバシーポリシー']) に同意します。
                 </label>
                 @error('agreement')
-                <div class="text-sm text-red-600">{{ $message }}</div>
+                <div class="text-sm text-danger">{{ $message }}</div>
                 @enderror
             </div>
             <div>

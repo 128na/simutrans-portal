@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+JP:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+JP:wght@100..900&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -7,14 +7,22 @@
   --color-tag: #757575;
   --color-category: #607d8b;
 
-  --color-muted: theme(colors.gray.200);      /* 背景的な要素 */
-  --color-tertiary: theme(colors.gray.400);      /* 補助的な要素 */
-  --color-secondary: theme(colors.gray.500);  /* 説明文・サブテキスト */
-  --color-primary: theme(colors.gray.900);    /* メインテキスト・見出し */
+  --color-danger-dark: theme(colors.red.700);
+  --color-danger: theme(colors.red.500);
+  --color-danger-light: theme(colors.red.300);
 
-  --font-sans: "Inter", "Noto Sans JP", ui-sans-serif, system-ui,
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  --color-warn-dark: theme(colors.yellow.900);
+  --color-warn: theme(colors.yellow.500);
+  --color-warn-light: theme(colors.yellow.300);
+
+  --color-muted: theme(colors.gray.200); /* 背景的な要素 */
+  --color-tertiary: theme(colors.gray.400); /* 補助的な要素 */
+  --color-secondary: theme(colors.gray.500); /* 説明文・サブテキスト */
+  --color-primary: theme(colors.gray.900); /* メインテキスト・見出し */
+
+  --font-sans:
+    "Inter", "Noto Sans JP", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 @layer base {
@@ -24,36 +32,36 @@
 }
 
 .title-xl2 {
-  @apply text-4xl font-semibold tracking-tight text-pretty text-primary
+  @apply text-4xl font-semibold tracking-tight text-pretty text-primary;
 }
 .title-xl {
-  @apply text-3xl font-semibold tracking-tight text-pretty text-primary
+  @apply text-3xl font-semibold tracking-tight text-pretty text-primary;
 }
 .title-md {
-  @apply text-2xl font-semibold tracking-tight text-pretty text-primary
+  @apply text-2xl font-semibold tracking-tight text-pretty text-primary;
 }
 .title-sm {
-  @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl
+  @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl;
 }
 .title-xs {
-  @apply text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-muted
+  @apply text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-muted;
 }
 
 .link-internal {
-  @apply text-secondary hover:text-tertiary decoration-tertiary underline break-all
+  @apply text-secondary hover:text-tertiary decoration-tertiary underline break-all;
 }
 .link-external {
-  @apply decoration-brand text-brand hover:text-brand/70 underline break-all
+  @apply decoration-brand text-brand hover:text-brand/70 underline break-all;
 }
 
 .markdown-body h1 {
-  @apply text-3xl font-semibold tracking-tight text-pretty text-primary
+  @apply text-3xl font-semibold tracking-tight text-pretty text-primary;
 }
 .markdown-body h2 {
-  @apply text-2xl font-semibold tracking-tight text-pretty text-primary
+  @apply text-2xl font-semibold tracking-tight text-pretty text-primary;
 }
 .markdown-body h3 {
-  @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl
+  @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl;
 }
 .markdown-body h4 {
   @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl;
@@ -73,7 +81,7 @@
   @apply text-base leading-relaxed my-4 break-all;
 }
 .markdown-body a {
-  @apply decoration-brand text-brand hover:text-brand/70 underline break-all
+  @apply decoration-brand text-brand hover:text-brand/70 underline break-all;
 }
 .markdown-body img {
   @apply mt-6 mb-12 rounded-lg shadow-md;

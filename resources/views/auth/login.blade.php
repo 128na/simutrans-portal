@@ -10,7 +10,7 @@
         <div class="flex flex-col gap-y-4 border-t border-muted pt-6 lg:mx-0">
             <div>
                 @foreach ($errors->all() as $key => $error)
-                <div class="text-sm text-red-600">{{$error}}</div>
+                <div class="text-sm text-danger">{{$error}}</div>
                 @endforeach
                 <label for="email" class="block text-sm/6 font-semibold text-primary">メールアドレス</label>
                 <div class="mt-2.5">

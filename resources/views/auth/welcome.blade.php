@@ -10,7 +10,7 @@
         </p>
     </div>
     <div class="flex flex-col gap-y-4 border-t border-muted pt-6 lg:mx-0">
-        <p class="p-4 mb-4 text-sm text-yellow-900 rounded-lg bg-yellow-50 border border-yellow-300 ">
+        <p class="p-4 mb-4 text-sm text-warn-dark rounded-lg bg-warn-light border border-warn-light ">
             記事の投稿などすべての機能を使うには<strong>メールアドレスの確認</strong>が必要です。<br>
             登録したメールアドレスへ後ほど送られてくるメールからメールアドレスの確認を行ってください。
         </p>

@@ -25,7 +25,7 @@
                     <input id="code" type="code" name="code" autocomplete="one-time-code" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-primary outline-1 -outline-offset-1 outline-tertiary placeholder:text-tertiary focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
                 </div>
                 @error('code', 'confirmTwoFactorAuthentication')
-                <div class="text-sm text-red-600">{{$message}}</div>
+                <div class="text-sm text-danger">{{$message}}</div>
                 @enderror
             </div>
             <div>
@@ -65,7 +65,7 @@
             <form action="{{route('two-factor.disable')}}" method="POST" class="js-confirm" data-text="二要素認証を無効化しますか？">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="rounded-md bg-red-500 px-4 sm:py-2 py-4 text-white cursor-pointer">
+                <button type="submit" class="rounded-md bg-danger px-4 sm:py-2 py-4 text-white cursor-pointer">
                     無効化
                 </button>
             </form>

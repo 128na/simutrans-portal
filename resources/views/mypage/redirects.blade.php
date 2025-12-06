@@ -28,7 +28,7 @@
                             <form method="POST" action="{{route('mypage.redirects.destroy', [$redirect->id])}}" class="js-confirm" data-text="リダイレクト設定を削除しますか？">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="rounded-md bg-red-500 px-4 sm:py-2 py-4 text-white cursor-pointer">
+                                <button type="submit" class="rounded-md bg-danger px-4 sm:py-2 py-4 text-white cursor-pointer">
                                     削除
                                 </button>
                             </form>

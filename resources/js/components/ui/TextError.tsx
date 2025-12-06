@@ -13,7 +13,7 @@ export default function TextError({
     return null;
   }
   return (
-    <div className={twMerge("text-sm text-red-600", className)} {...props}>
+    <div className={twMerge("text-sm text-danger", className)} {...props}>
       {children}
     </div>
   );

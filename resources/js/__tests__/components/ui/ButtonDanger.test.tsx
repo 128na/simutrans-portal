@@ -12,7 +12,7 @@ describe("ButtonDanger コンポーネント", () => {
   it("危険スタイルが適用される", () => {
     render(<ButtonDanger>ボタン</ButtonDanger>);
     const button = screen.getByRole("button");
-    expect(button).toHaveClass("bg-red-600");
+    expect(button).toHaveClass("bg-danger");
   });
 
   it("disabled 属性が適用される", () => {

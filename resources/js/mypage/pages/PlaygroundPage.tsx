@@ -1,11 +1,10 @@
 import { createRoot } from "react-dom/client";
-import Button from "@/components/ui/Button";
 import V2Button from "@/components/ui/v2/V2Button";
+import V2Card from "@/components/ui/v2/V2Card";
 
 const app = document.getElementById("app-playground");
 
 type Condition = Record<string, unknown[]>;
-
 type Pattern<T extends React.ElementType> = {
   name: string;
   props: React.ComponentProps<T>;
@@ -54,36 +53,64 @@ function generateAllPatterns<T extends React.ElementType>(
 
 if (app) {
   const App = () => {
-    const conditions: Condition = {
-      variant: [
-        "primary",
-        "primaryOutline",
-        "secondary",
-        "secondaryOutline",
-        "danger",
-        "dangerOutline",
-        "warn",
-        "warnOutline",
-        "info",
-        "infoOutline",
-        "success",
-        "successOutline",
-      ],
-      disabled: [false, true],
-    };
-
-    const pattern = generateAllPatterns(conditions) as {
-      name: string;
-      props: React.ComponentProps<typeof Button>;
-    }[];
+    const components = [
+      {
+        name: "V2Button",
+        render: (p) => <V2Button {...p}>ボタン</V2Button>,
+        condition: {
+          variant: [
+            "primary",
+            "primaryOutline",
+            "secondary",
+            "secondaryOutline",
+            "danger",
+            "dangerOutline",
+            "warn",
+            "warnOutline",
+            "info",
+            "infoOutline",
+            "success",
+            "successOutline",
+          ],
+          disabled: [false, true],
+        },
+      },
+      {
+        name: "V2Button",
+        render: (p) => (
+          <V2Card {...p}>
+            <h3>カード</h3>
+            <div>これはV2Cardコンポーネントの内容です。</div>
+          </V2Card>
+        ),
+        condition: {
+          variant: [
+            "primary",
+            "secondary",
+            "danger",
+            "warn",
+            "info",
+            "success",
+          ],
+        },
+      },
+    ];
 
     return (
       <div className="flex flex-col gap-4">
-        {pattern.map((pattern, index) => {
+        {components.map((component, componentIndex) => {
+          const pattern = generateAllPatterns(component.condition);
           return (
-            <div key={index}>
-              <p>{pattern.name}</p>
-              <V2Button {...pattern.props}>ボタン</V2Button>
+            <div key={componentIndex}>
+              <p>{component.name}</p>
+              {pattern.map((pattern, patternIndex) => {
+                return (
+                  <div key={patternIndex} className="mb-4">
+                    <p>{pattern.name}</p>
+                    {component.render(pattern.props)}
+                  </div>
+                );
+              })}
             </div>
           );
         })}

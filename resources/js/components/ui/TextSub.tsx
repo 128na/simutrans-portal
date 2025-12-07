@@ -12,7 +12,7 @@ export default function TextSub({ children, className, ...props }: HTMLProps) {
     <div
       className={twMerge(
         `
-        text-sm text-g5 break-all
+        text-sm text-c-sub break-all
         `,
         className
       )}

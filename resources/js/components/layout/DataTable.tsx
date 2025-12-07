@@ -35,7 +35,7 @@ export function DataTable<T, K extends string>({
   return (
     <table className="table-fixed text-sm text-left min-w-[960px]">
       <thead>
-        <tr className="text-xs text-g5 bg-gray-50">
+        <tr className="text-xs text-c-sub bg-gray-50">
           {headers.map((header) => (
             <th
               key={header.key}
@@ -47,7 +47,7 @@ export function DataTable<T, K extends string>({
               )}
             >
               {header.name}
-              <span className="ml-1 text-[10px] text-g4">
+              <span className="ml-1 text-[10px] text-c-sub">
                 {header?.sortable && sort.column === header.key
                   ? sort.order === "asc"
                     ? "▲"

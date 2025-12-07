@@ -5,12 +5,12 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl2">Pak別アドオン一覧</h2>
-        <p class="mt-2 text-lg/8 text-g5">
+        <p class="mt-2 text-lg/8 text-c-sub">
             {{$meta['description']}}<br>
             記載以外のPaksetやカテゴリは @include('components.ui.link', ['url' => route('search'), 'title' => '検索']) から探せます。
         </p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-g2 pt-6 lg:mx-0">
+    <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
         <ul class="list-none
                flex flex-col gap-y-2
                lg:grid lg:grid-cols-3 lg:gap-8">
@@ -19,7 +19,7 @@
                 <div class="mb-1 break-all font-semibold">
                     @lang("category.pak.{$pakSlug}")
                 </div>
-                <ul class="list-disc text-g4 ml-8 break-all">
+                <ul class="list-disc text-c-sub ml-8 break-all">
                     @foreach($addonCategories as $addonCategorie)
                     <li class="mb-1 text-black break-all">
                         @include('components.ui.link', [

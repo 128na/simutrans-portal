@@ -23,7 +23,7 @@ describe("TextBadge コンポーネント", () => {
     render(<TextBadge>バッジ</TextBadge>);
     const badge = screen.getByText("バッジ");
     expect(badge).toHaveClass("text-[.7rem]");
-    expect(badge).toHaveClass("bg-g5");
+    expect(badge).toHaveClass("bg-c-sub");
     expect(badge).toHaveClass("text-white");
   });
 

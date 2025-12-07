@@ -5,11 +5,11 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl2">ユーザー一覧</h2>
-        <p class="mt-2 text-lg/8 text-g5">
+        <p class="mt-2 text-lg/8 text-c-sub">
             {{$meta['description']}}
         </p>
     </div>
-    <div class="mt-10 border-t border-g2 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
+    <div class="mt-10 border-t border-c-sub/10 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
         @foreach($users as $user)
         <div>
             @include('components.ui.link', [

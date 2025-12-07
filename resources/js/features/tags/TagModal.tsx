@@ -58,7 +58,7 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={!!tag.id}
-            className={tag.id ? "bg-g2" : ""}
+            className={tag.id ? "bg-c-sub" : ""}
           />
           {tag.id ? (
             <TextSub className="mb-2">タグ名は編集できません。</TextSub>

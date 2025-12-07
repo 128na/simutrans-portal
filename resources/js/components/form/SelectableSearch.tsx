@@ -61,7 +61,7 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
           {selectedItems.map((item) => (
             <span
               key={item.id}
-              className="bg-brand text-white px-2 py-1 rounded cursor-pointer"
+              className="bg-c-primary text-white px-2 py-1 rounded cursor-pointer"
               onClick={() => remove(item.id)}
             >
               {getLabel(item)}
@@ -69,7 +69,7 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
             </span>
           ))}
           {selectedItems.length === 0 && (
-            <span className="text-g4">（未選択）</span>
+            <span className="text-c-sub">（未選択）</span>
           )}
         </div>
       </div>
@@ -84,7 +84,7 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
 
       <div
         className={twMerge(
-          "max-h-40 overflow-y-auto border border-g2 rounded-lg p-2 bg-white",
+          "max-h-40 overflow-y-auto border border-c-sub/10 rounded-lg p-2 bg-white",
           className
         )}
       >
@@ -94,7 +94,7 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
           filteredItems.map((o) => (
             <div
               key={o.id}
-              className="py-1.5 px-2 rounded cursor-pointer hover:bg-g2"
+              className="py-1.5 px-2 rounded cursor-pointer hover:bg-c-sub/10"
               onClick={() => add(o.id)}
             >
               {getLabel(o)}

@@ -15,8 +15,8 @@ export default function ButtonDanger({
       className={twMerge(
         `
         text-sm
-        bg-danger
-        hover:bg-danger-dark
+        bg-c-danger
+        hover:bg-c-danger/80
         `,
         className
       )}

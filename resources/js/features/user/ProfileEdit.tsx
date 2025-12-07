@@ -18,7 +18,7 @@ export const ProfileEdit = ({
   return (
     <>
       <div>
-        <TextBadge className="bg-warn">プレビュー表示</TextBadge>
+        <TextBadge className="bg-c-warn">プレビュー表示</TextBadge>
         <TextSub>
           プレビュー表示ではリンクが反応しないようになっています。
         </TextSub>

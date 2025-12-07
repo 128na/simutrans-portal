@@ -20,12 +20,12 @@ export const ProfileShow = ({ user, attachments, preview }: Props) => {
         />
       </div>
       <div className="text-sm">
-        <p className="font-semibold text-g9 break-all">
+        <p className="font-semibold break-all">
           <a href={preview ? "#" : `/users/${user.nickname ?? user.id}`}>
             {user.name ?? "(名前がありません)"}
           </a>
         </p>
-        <p className="text-g5 break-all">{user.profile.data.description}</p>
+        <p className="text-c-sub break-all">{user.profile.data.description}</p>
 
         {user.profile.data.website.map((website) =>
           website ? (

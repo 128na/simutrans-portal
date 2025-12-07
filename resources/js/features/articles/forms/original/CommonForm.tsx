@@ -40,7 +40,7 @@ export const CommonForm = () => {
         value={article.title || ""}
         onChange={(e) => update((draft) => (draft.title = e.target.value))}
       >
-        <TextBadge className="bg-danger">必須</TextBadge>
+        <TextBadge className="bg-c-danger">必須</TextBadge>
         タイトル
         <TextError>{getError("article.title")}</TextError>
       </Input>
@@ -54,7 +54,7 @@ export const CommonForm = () => {
             update((draft) => (draft.slug = escape(e.target.value)))
           }
         >
-          <TextBadge className="bg-danger">必須</TextBadge>
+          <TextBadge className="bg-c-danger">必須</TextBadge>
           記事URL
           <TextError>{getError("article.slug")}</TextError>
         </Input>

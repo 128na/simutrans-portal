@@ -9,12 +9,12 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl2">@lang("category.pak.{$pak}")</h2>
-        <p class="mt-2 text-lg/8 text-g5">
+        <p class="mt-2 text-lg/8 text-c-sub">
             @include('pages.pak.description', ['pak' => $pak])
         </p>
     </div>
     <div id="app-article-list"></div>
-    <div class="mt-10 border-t border-g2 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
+    <div class="mt-10 border-t border-c-sub/10 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
         {{ $articles->links() }}
     </div>
 </div>

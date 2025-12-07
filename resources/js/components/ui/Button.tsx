@@ -11,13 +11,13 @@ export default function Button({ children, className, ...props }: ButtonProps) {
       className={twMerge(
         `
         px-4 py-2
-        bg-brand
+        bg-c-primary
         text-md
         text-white
         rounded-lg
         cursor-pointer
-        hover:bg-brand/80
-        disabled:bg-g4
+        hover:bg-c-primary/80
+        disabled:bg-c-sub
         disabled:cursor-not-allowed
         `,
         className

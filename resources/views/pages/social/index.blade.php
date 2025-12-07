@@ -6,11 +6,11 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl2">SNS・通知ツール</h2>
-        <p class="mt-2 text-lg/8 text-g5">記事投稿や更新通知を受け取ることができるSNSアカウントやツールです。</p>
+        <p class="mt-2 text-lg/8 text-c-sub">記事投稿や更新通知を受け取ることができるSNSアカウントやツールです。</p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-g2 pt-6 lg:mx-0">
+    <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
         <h4 class="title-md">プッシュ通知</h4>
-        <div class="text-g5">
+        <div class="text-c-sub">
             スマホやPCにプッシュ通知ができます。右下のアイコンから登録・解除ができます。
         </div>
 
@@ -20,22 +20,22 @@
             <table class="border-collapse whitespace-nowrap">
                 <tbody>
                     <tr>
-                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">Twitter</td>
-                        <td class="border border-g3 px-4 py-2">
+                        <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">Twitter</td>
+                        <td class="border border-c-sub/10 px-4 py-2">
                             @include('components.ui.link-external', [
                             'url' => 'https://twitter.com/PortalSimutrans', 'title' => '@PortalSimutrans'])
                         </td>
                     </tr>
                     <tr>
-                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">Misskey</td>
-                        <td class="border border-g3 px-4 py-2">
+                        <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">Misskey</td>
+                        <td class="border border-c-sub/10 px-4 py-2">
                             @include('components.ui.link-external', [
                             'url' => 'https://misskey.io/@PortalSimutrans', 'title' => '@PortalSimutrans'])
                         </td>
                     </tr>
                     <tr>
-                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">Bluesky</td>
-                        <td class="border border-g3 px-4 py-2">
+                        <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">Bluesky</td>
+                        <td class="border border-c-sub/10 px-4 py-2">
                             @include('components.ui.link-external', [
                             'url' => 'https://bsky.app/profile/portalsimutrans.bsky.social', 'title' => '@PortalSimutrans.bsky.social'])
                         </td>
@@ -49,8 +49,8 @@
                 <tbody>
                     @foreach(config('feed.feeds') as $feed)
                     <tr>
-                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">{{ $feed['title'] }}</td>
-                        <td class="border border-g3 px-4 py-2">
+                        <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">{{ $feed['title'] }}</td>
+                        <td class="border border-c-sub/10 px-4 py-2">
                             <a href="{{ $feed['url'] }}" target="_blank" rel="noopener noreferrer">
                                 <img src="{{ asset('storage/social/feed.png') }}" alt="RSS Feed" class="inline-block h-[1em] align-text-bottom">
                             </a>
@@ -60,7 +60,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="text-g5">
+        <div class="text-c-sub">
             RSSフィーダーやSlackなど各種ツールと連携させると新着情報が入手できます。
         </div>
         <h4 class="title-md">その他開発情報など</h4>
@@ -68,15 +68,15 @@
             <table class="border-collapse whitespace-nowrap">
                 <tbody>
                     <tr>
-                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">中の人のTwitter</td>
-                        <td class="border border-g3 px-4 py-2">
+                        <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">中の人のTwitter</td>
+                        <td class="border border-c-sub/10 px-4 py-2">
                             @include('components.ui.link-external', [
                             'url' => 'https://twitter.com/128Na', 'title' => '@128Na'])
                         </td>
                     </tr>
                     <tr>
-                        <td class="border border-g3 px-4 py-2 bg-g5 text-white">Github</td>
-                        <td class="border border-g3 px-4 py-2">
+                        <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">Github</td>
+                        <td class="border border-c-sub/10 px-4 py-2">
                             @include('components.ui.link-external', [
                             'url' => 'https://github.com/128na/simutrans-portal', 'title' => '128na/simutrans-portal'])
                         </td>

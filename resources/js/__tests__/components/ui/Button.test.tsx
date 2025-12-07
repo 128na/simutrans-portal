@@ -35,7 +35,10 @@ describe("Button", () => {
     render(<Button disabled>クリック</Button>);
     const button = screen.getByRole("button");
     expect(button).toBeDisabled();
-    expect(button).toHaveClass("disabled:bg-g4", "disabled:cursor-not-allowed");
+    expect(button).toHaveClass(
+      "disabled:bg-c-sub",
+      "disabled:cursor-not-allowed"
+    );
   });
 
   it("カスタムクラスが追加できる", () => {
@@ -56,9 +59,9 @@ describe("Button", () => {
   it("ブランドカラーのスタイルが適用される", () => {
     render(<Button>クリック</Button>);
     expect(screen.getByRole("button")).toHaveClass(
-      "bg-brand",
+      "bg-c-primary",
       "text-white",
-      "hover:bg-brand/80"
+      "hover:bg-c-primary/80"
     );
   });
 });

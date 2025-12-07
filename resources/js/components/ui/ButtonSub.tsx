@@ -15,7 +15,7 @@ export default function ButtonSub({
       type="button"
       className={twMerge(
         className,
-        "px-3 py-1.5 text-sm text-white bg-g5 hover:bg-g4"
+        "px-3 py-1.5 text-sm text-white bg-c-sub/70 hover:bg-c-sub/90"
       )}
       {...props}
     >

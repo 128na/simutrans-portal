@@ -10,7 +10,7 @@
     @include('pages.search.options')
     <div id="app-article-list"></div>
 
-    <div class="mt-10 border-t border-g2 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
+    <div class="mt-10 border-t border-c-sub/10 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
         {{ $articles->withQueryString() }}
     </div>
 </div>

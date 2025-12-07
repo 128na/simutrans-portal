@@ -4,7 +4,7 @@
 @section('content')
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="absolute inset-0 -z-10 overflow-hidden">
-        <svg aria-hidden="true" class="absolute top-0 left-[max(50%,25rem)] h-256 w-512 -translate-x-1/2 mask-[radial-gradient(64rem_64rem_at_top,white,transparent)] stroke-g2">
+        <svg aria-hidden="true" class="absolute top-0 left-[max(50%,25rem)] h-256 w-512 -translate-x-1/2 mask-[radial-gradient(64rem_64rem_at_top,white,transparent)] stroke-c-sub/10">
             <defs>
                 <pattern id="e813992c-7d03-4cc4-a2bd-151760b470a0" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
                     <path d="M100 200V.5M.5 .5H200" fill="none" />
@@ -20,7 +20,7 @@
         <div class="lg:mx-auto lg:grid lg:w-full">
             <div class="lg:pr-4">
                 <h1 class="title-xl2">{{ config('app.name') }}</h1>
-                <p class="mt-6 text-xl/8 text-g5">
+                <p class="mt-6 text-xl/8 text-c-sub">
                     Simutrans（シムトランス）のaddon（アドオン）を気軽に投稿・紹介できるポータルサイトです。<br />
                     投稿だけでなく、様々なWikiや個人サイト、アップローダーに掲載・投稿されているアドオン紹介記事も掲載できます。<br />
                 </p>
@@ -35,7 +35,7 @@
                     @endforeach
                 </div>
                 <p>
-                    <a href="{{ route('announces') }}" class="text-g5">一覧<span aria-hidden="true">→</span></a>
+                    <a href="{{ route('announces') }}" class="text-c-sub">一覧<span aria-hidden="true">→</span></a>
                 </p>
             </div>
         </div>

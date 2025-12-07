@@ -9,3 +9,4 @@ import "./mypage/pages/ArticleEditPage";
 import "./mypage/pages/AttachmentPage";
 import "./mypage/pages/ProfileEditPage";
 import "./mypage/pages/AnalyticsPage";
+import "./mypage/pages/PlaygroundPage";

@@ -15,7 +15,7 @@ describe("ButtonOutline コンポーネント", () => {
     render(<ButtonOutline>ボタン</ButtonOutline>);
     const button = screen.getByRole("button");
     expect(button).toHaveClass("border");
-    expect(button).toHaveClass("bg-g2/50");
+    expect(button).toHaveClass("bg-c-sub/50");
   });
 
   it("disabled 属性が適用される", () => {

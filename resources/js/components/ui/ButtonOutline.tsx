@@ -15,7 +15,7 @@ export default function ButtonOutline({
       type="button"
       className={twMerge(
         className,
-        "px-3 py-1.5 text-sm border border-g2 text-g4 bg-g2/50 hover:bg-g4 hover:text-white disabled:bg-g1"
+        "px-3 py-1.5 text-sm border border-c-sub/10 text-c-sub bg-c-sub/20 hover:bg-c-sub/40 disabled:bg-c-sub/10"
       )}
       {...props}
     >

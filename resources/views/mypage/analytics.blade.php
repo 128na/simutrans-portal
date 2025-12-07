@@ -9,7 +9,7 @@
         @json($articles)
 
     </script>
-    <div class="flex flex-col gap-y-12 border-t border-g2 pt-6 lg:mx-0">
+    <div class="flex flex-col gap-y-12 border-t border-c-sub/10 pt-6 lg:mx-0">
         <div id="app-analytics"></div>
     </div>
     @endsection

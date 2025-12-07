@@ -7,7 +7,7 @@ export default function LinkExternal({
   return (
     <a {...props}>
       <span className={twMerge("link-external", className)}>{children}</span>
-      <span className="text-xs text-g4">↗</span>
+      <span className="text-xs text-c-sub/50">↗</span>
     </a>
   );
 }

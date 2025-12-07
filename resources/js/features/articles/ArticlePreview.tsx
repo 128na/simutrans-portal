@@ -77,7 +77,7 @@ export const ArticlePreview = () => {
   return (
     <div>
       <div className="mt-2 mb-8">
-        <TextBadge className="bg-warn">プレビュー表示</TextBadge>
+        <TextBadge className="bg-c-warn">プレビュー表示</TextBadge>
         <TextSub>
           プレビュー表示ではリンクやボタンが反応しないようになっています。（マークダウン形式を除く）
         </TextSub>

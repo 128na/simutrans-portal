@@ -11,13 +11,13 @@ export default function Checkbox({
   return (
     <Label
       className={twMerge(
-        "sm:mr-2 mr-4 sm:mb-1 mb-2 inline-block text-sm text-g9 cursor-pointer",
+        "sm:mr-2 mr-4 sm:mb-1 mb-2 inline-block text-sm cursor-pointer",
         labelClassName
       )}
     >
       <input
         type="checkbox"
-        className={twMerge("mr-0.5 accent-brand", className)}
+        className={twMerge("mr-0.5 accent-c-primary", className)}
         {...props}
       />
       {children}

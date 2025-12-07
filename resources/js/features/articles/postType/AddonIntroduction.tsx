@@ -36,7 +36,7 @@ export const AddonIntroduction = () => {
 
       <div>
         <FormCaption>
-          <TextBadge className="bg-danger">必須</TextBadge>
+          <TextBadge className="bg-c-danger">必須</TextBadge>
           説明
         </FormCaption>
         <TextError>{getError("article.contents.description")}</TextError>
@@ -55,7 +55,7 @@ export const AddonIntroduction = () => {
 
       <div>
         <FormCaption>
-          <TextBadge className="bg-danger">必須</TextBadge>
+          <TextBadge className="bg-c-danger">必須</TextBadge>
           リンク先
         </FormCaption>
         <TextError>{getError("article.contents.link")}</TextError>

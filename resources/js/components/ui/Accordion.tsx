@@ -13,7 +13,7 @@ export const Accordion = ({ title, children, defaultOpen = false }: Props) => {
     <>
       <button
         type="button"
-        className="my-2 p-2 sm:py-2 py-4 flex w-full bg-g2 cursor-pointer"
+        className="my-2 p-2 sm:py-2 py-4 flex w-full bg-c-sub/10 cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
       >

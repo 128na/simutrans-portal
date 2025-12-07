@@ -7,24 +7,24 @@
     </div>
     <form action="{{route('login.store')}}" method="POST">
         @csrf
-        <div class="flex flex-col gap-y-4 border-t border-g2 pt-6 lg:mx-0">
+        <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
             <div>
                 @foreach ($errors->all() as $key => $error)
                 <div class="text-sm text-danger">{{$error}}</div>
                 @endforeach
-                <label for="email" class="block text-sm/6 font-semibold text-g9">メールアドレス</label>
+                <label for="email" class="block text-sm/6 font-semibold text-c-main">メールアドレス</label>
                 <div class="mt-2.5">
-                    <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-g9 outline-1 -outline-offset-1 outline-g4 placeholder:text-g4 focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
+                    <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="block w-full rounded-md bg-white px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-c-sub placeholder:text-c-sub focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:w-128" />
                 </div>
             </div>
             <div>
-                <label for="password" class="block text-sm/6 font-semibold text-g9">パスワード</label>
+                <label for="password" class="block text-sm/6 font-semibold text-c-main">パスワード</label>
                 <div class="mt-2.5">
-                    <input id="password" type="password" name="password" value="{{old('password', '')}}" autocomplete="current-password" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-g9 outline-1 -outline-offset-1 outline-g4 placeholder:text-g4 focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
+                    <input id="password" type="password" name="password" value="{{old('password', '')}}" autocomplete="current-password" class="block w-full rounded-md bg-white px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-c-sub placeholder:text-c-sub focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:w-128" />
                 </div>
             </div>
             <div>
-                <button type="submit" class="rounded-md bg-brand px-8 sm:py-2 py-4 text-white cursor-pointer hover:bg-brand/80 w-full sm:w-64">
+                <button type="submit" class="rounded-md bg-c-primary px-8 sm:py-2 py-4 text-white cursor-pointer hover:bg-c-primary/80 w-full sm:w-64">
                     ログイン
                 </button>
             </div>

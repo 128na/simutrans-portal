@@ -13,7 +13,7 @@ function getPagination(total: number, current: number) {
 }
 
 const baseClass =
-  "flex items-center justify-center px-4 h-10 text-g5 bg-white border border-g2";
+  "flex items-center justify-center px-4 h-10 text-c-sub bg-white border border-c-sub/10";
 
 export const Pagination = ({ total, current, onChange }: PaginationProps) => {
   const pages = getPagination(total, current);
@@ -26,7 +26,7 @@ export const Pagination = ({ total, current, onChange }: PaginationProps) => {
             className={twMerge(
               baseClass,
               "ms-0 border-e-0 rounded-s-lg",
-              current === 1 ? "" : "hover:bg-g2 cursor-pointer"
+              current === 1 ? "" : "hover:bg-c-sub/10 cursor-pointer"
             )}
             onClick={() => onChange(Math.max(1, current - 1))}
             disabled={current === 1}
@@ -49,7 +49,7 @@ export const Pagination = ({ total, current, onChange }: PaginationProps) => {
                 "cursor-pointer",
                 current === p
                   ? "bg-blue-50 text-blue-600 hover:text-blue-700"
-                  : "hover:bg-g2"
+                  : "hover:bg-c-sub/10"
               )}
               onClick={() => onChange(p)}
             >
@@ -69,7 +69,7 @@ export const Pagination = ({ total, current, onChange }: PaginationProps) => {
             className={twMerge(
               baseClass,
               "rounded-e-lg",
-              current === total ? "" : "hover:bg-g2 cursor-pointer"
+              current === total ? "" : "hover:bg-c-sub/10 cursor-pointer"
             )}
             onClick={() => onChange(Math.min(total, current + 1))}
             disabled={current === total}

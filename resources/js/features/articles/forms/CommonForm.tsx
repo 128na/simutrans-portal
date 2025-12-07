@@ -36,7 +36,7 @@ export const CommonForm = () => {
     <>
       <div>
         <FormCaption>
-          <TextBadge className="bg-danger">必須</TextBadge>
+          <TextBadge className="bg-c-danger">必須</TextBadge>
           タイトル
         </FormCaption>
         <TextError>{getError("article.title")}</TextError>
@@ -50,7 +50,7 @@ export const CommonForm = () => {
 
       <div>
         <FormCaption>
-          <TextBadge className="bg-danger">必須</TextBadge>
+          <TextBadge className="bg-c-danger">必須</TextBadge>
           記事URL
         </FormCaption>
         <TextError>{getError("article.slug")}</TextError>

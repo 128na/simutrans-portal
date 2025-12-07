@@ -9,11 +9,11 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl2">記事</h2>
-        <p class="mt-2 text-lg/8 text-g5">アドオン以外の記事です。</p>
+        <p class="mt-2 text-lg/8 text-c-sub">アドオン以外の記事です。</p>
     </div>
     <div id="app-article-list"></div>
 
-    <div class="mt-10 border-t border-g2 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
+    <div class="mt-10 border-t border-c-sub/10 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
         {{ $articles->links() }}
     </div>
 </div>

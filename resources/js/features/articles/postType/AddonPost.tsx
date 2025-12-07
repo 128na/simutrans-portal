@@ -92,7 +92,7 @@ export const AddonPost = () => {
 
       <div>
         <FormCaption>
-          <TextBadge className="bg-danger">必須</TextBadge>
+          <TextBadge className="bg-c-danger">必須</TextBadge>
           ファイル
         </FormCaption>
         <TextError>{getError("article.contents.file")}</TextError>
@@ -148,7 +148,7 @@ export const AddonPost = () => {
 
       <div>
         <FormCaption>
-          <TextBadge className="bg-danger">必須</TextBadge>
+          <TextBadge className="bg-c-danger">必須</TextBadge>
           説明
         </FormCaption>
         <TextError>{getError("article.contents.description")}</TextError>

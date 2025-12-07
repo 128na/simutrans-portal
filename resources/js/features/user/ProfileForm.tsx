@@ -98,7 +98,7 @@ export const ProfileForm = ({
     <div ref={containerRef} className="grid gap-4">
       <div>
         <FormCaption>
-          <TextBadge className="bg-danger">必須</TextBadge>
+          <TextBadge className="bg-c-danger">必須</TextBadge>
           表示名
         </FormCaption>
         <TextError>{getError("user.name")}</TextError>
@@ -112,7 +112,7 @@ export const ProfileForm = ({
 
       <div>
         <FormCaption>
-          <TextBadge className="bg-danger">必須</TextBadge>
+          <TextBadge className="bg-c-danger">必須</TextBadge>
           メールアドレス
         </FormCaption>
         <TextError>{getError("user.email")}</TextError>
@@ -290,7 +290,7 @@ export const ProfileForm = ({
           }}
         />
       </div>
-      <div className="border-t border-g2 pt-4">
+      <div className="border-t border-c-sub/10 pt-4">
         <Button onClick={save}>保存</Button>
       </div>
     </div>

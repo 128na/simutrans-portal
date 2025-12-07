@@ -2,25 +2,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand: rgb(42, 134, 234);
-
   --color-tag: #757575;
   --color-category: #607d8b;
 
-  --color-danger-dark: theme(colors.red.700);
-  --color-danger: theme(colors.red.500);
-  --color-danger-light: theme(colors.red.300);
-
-  --color-warn-dark: theme(colors.yellow.900);
-  --color-warn: theme(colors.yellow.500);
-  --color-warn-light: theme(colors.yellow.300);
-
-  --color-g1: theme(colors.gray.100);
-  --color-g2: theme(colors.gray.200);
-  --color-g3: theme(colors.gray.300);
-  --color-g4: theme(colors.gray.400);
-  --color-g5: theme(colors.gray.500);
-  --color-g9: theme(colors.gray.900);
+  --color-c-main: theme(colors.gray.900);
+  --color-c-sub: theme(colors.gray.600);
+  --color-c-primary: rgb(42, 134, 234);
+  --color-c-secondary: theme(colors.gray.500);
+  --color-c-danger: theme(colors.red.600);
+  --color-c-warn: theme(colors.yellow.500);
+  --color-c-info: theme(colors.cyan.600);
+  --color-c-success: theme(colors.emerald.600);
 
   --font-sans:
     "Inter", "Noto Sans JP", ui-sans-serif, system-ui, -apple-system,
@@ -34,33 +26,33 @@
 }
 
 .title-xl2 {
-  @apply text-4xl font-semibold tracking-tight text-pretty text-g9;
+  @apply text-4xl font-semibold tracking-tight text-pretty;
 }
 .title-xl {
-  @apply text-3xl font-semibold tracking-tight text-pretty text-g9;
+  @apply text-3xl font-semibold tracking-tight text-pretty;
 }
 .title-md {
-  @apply text-2xl font-semibold tracking-tight text-pretty text-g9;
+  @apply text-2xl font-semibold tracking-tight text-pretty;
 }
 .title-sm {
   @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl;
 }
 .title-xs {
-  @apply text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-g2;
+  @apply text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-c-sub/10;
 }
 
 .link-internal {
-  @apply text-g5 hover:text-g4 decoration-g4 underline break-all;
+  @apply text-c-sub/90 hover:text-c-sub/70 decoration-c-sub/90 hover:decoration-c-sub/70 underline break-all;
 }
 .link-external {
-  @apply decoration-brand text-brand hover:text-brand/80 underline break-all;
+  @apply decoration-c-primary text-c-primary hover:text-c-primary/80 underline break-all;
 }
 
 .markdown-body h1 {
-  @apply text-3xl font-semibold tracking-tight text-pretty text-g9;
+  @apply text-3xl font-semibold tracking-tight text-pretty;
 }
 .markdown-body h2 {
-  @apply text-2xl font-semibold tracking-tight text-pretty text-g9;
+  @apply text-2xl font-semibold tracking-tight text-pretty;
 }
 .markdown-body h3 {
   @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl;
@@ -76,26 +68,26 @@
 }
 
 .markdown-body hr {
-  @apply my-6 border-t border-g3;
+  @apply my-6 border-t border-c-sub/10;
 }
 
 .markdown-body p {
   @apply text-base leading-relaxed my-4 break-all;
 }
 .markdown-body a {
-  @apply decoration-brand text-brand hover:text-brand/80 underline break-all;
+  @apply decoration-c-primary text-c-primary hover:text-c-primary/80 underline break-all;
 }
 .markdown-body img {
   @apply mt-6 mb-12 rounded-lg shadow-md;
 }
 .markdown-body code {
-  @apply bg-g2 rounded p-1 text-sm font-mono break-all;
+  @apply bg-c-sub rounded p-1 text-sm font-mono break-all;
 }
 .markdown-body pre code {
-  @apply block bg-g2 rounded p-2 text-sm font-mono;
+  @apply block bg-c-sub rounded p-2 text-sm font-mono;
 }
 .markdown-body pre {
-  @apply bg-g2 rounded p-4 my-6 overflow-x-auto;
+  @apply bg-c-sub rounded p-4 my-6 overflow-x-auto;
 }
 
 .markdown-body table {
@@ -103,10 +95,10 @@
 }
 .markdown-body th,
 .markdown-body td {
-  @apply border border-g3 px-4 py-2;
+  @apply border border-c-sub/10 px-4 py-2;
 }
 .markdown-body th {
-  @apply bg-g5 text-white;
+  @apply bg-c-sub/80 text-white;
 }
 
 .markdown-body ul {

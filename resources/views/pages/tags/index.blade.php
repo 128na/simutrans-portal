@@ -5,11 +5,11 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl2">タグ一覧</h2>
-        <p class="mt-2 text-lg/8 text-g5">
+        <p class="mt-2 text-lg/8 text-c-sub">
             {{$meta['description']}}
         </p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-g2 pt-6 lg:mx-0">
+    <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
         @foreach($tags as $tag)
         <div>
             @include('components.ui.link', [

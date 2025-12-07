@@ -5,12 +5,12 @@
 <div class="mx-auto max-w-7xl p-6 lg:px-8">
     <div class="mb-6">
         <h2 class="title-xl">ユーザー登録完了</h2>
-        <p class="mt-2 text-md text-g5">
+        <p class="mt-2 text-md text-c-sub">
             ようこそ「{{$inviter->name}}」さん。
         </p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-g2 pt-6 lg:mx-0">
-        <p class="p-4 mb-4 text-sm text-warn-dark rounded-lg bg-warn-light border border-warn-light ">
+    <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
+        <p class="p-4 mb-4 text-sm text-warn-dark rounded-lg bg-c-warn-light border border-warn-light ">
             記事の投稿などすべての機能を使うには<strong>メールアドレスの確認</strong>が必要です。<br>
             登録したメールアドレスへ後ほど送られてくるメールからメールアドレスの確認を行ってください。
         </p>

@@ -13,7 +13,7 @@
         @json($attachments)
 
     </script>
-    <div class="flex flex-col gap-y-4 border-t border-g2 pt-6 lg:mx-0">
+    <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
         <div id="app-profile-edit"></div>
     </div>
     @endsection

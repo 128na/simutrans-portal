@@ -26,7 +26,8 @@ abstract class TestCase extends TestsTestCase
     #[\Override]
     protected function setUp(): void
     {
-        parent::setup();
+        parent::setUp();
+        $this->dirtyDatabaseCheck();
 
         $this->seed(CategorySeeder::class);
         $this->seed(ControllOptionsSeeder::class);
@@ -136,5 +137,22 @@ abstract class TestCase extends TestsTestCase
         $article->categories()->save($category);
 
         return $article;
+    }
+
+    private function dirtyDatabaseCheck()
+    {
+        $classes = [Article::class, User::class];
+        foreach ($classes as $class) {
+            $record = $class::withoutGlobalScopes()->count();
+            if ($record !== 0) {
+                dump("Database is dirty before test run. Model: {$class}, Record count: {$record}");
+                // 明示的にデータベースをクリーンアップ
+                try {
+                    \Illuminate\Support\Facades\DB::rollBack();
+                } catch (\Throwable) {
+                    // ロールバックが失敗してもテストは続行
+                }
+            }
+        }
     }
 }

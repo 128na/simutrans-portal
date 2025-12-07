@@ -36,7 +36,7 @@ final class CursorCheckLinkTest extends TestCase
         $lazyCollection = $this->articleRepository->cursorCheckLink();
 
         $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
-        dump('test', $lazyCollection->toArray());
+        dump('test', Article::withoutGlobalScopes()->get()->toArray());
         $this->assertCount(1, $lazyCollection, 'アドオン紹介記事のみ取得できること');
     }
 
@@ -51,7 +51,7 @@ final class CursorCheckLinkTest extends TestCase
         ]);
 
         $lazyCollection = $this->articleRepository->cursorCheckLink();
-        dump('testチェック無効', $lazyCollection->toArray());
+        dump('testチェック無効', Article::withoutGlobalScopes()->get()->toArray());
 
         $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
         $this->assertEmpty($lazyCollection, 'チェック無効の記事は取得できないこと');
@@ -61,7 +61,7 @@ final class CursorCheckLinkTest extends TestCase
     {
         $this->article->update(['status' => ArticleStatus::Draft]);
         $lazyCollection = $this->articleRepository->cursorCheckLink();
-        dump('test公開以外のステータス', $lazyCollection->toArray());
+        dump('test公開以外のステータス', Article::withoutGlobalScopes()->get()->toArray());
 
         $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
         $this->assertEmpty($lazyCollection, '非公開記事は取得できないこと');
@@ -71,7 +71,7 @@ final class CursorCheckLinkTest extends TestCase
     {
         $this->article->delete();
         $lazyCollection = $this->articleRepository->cursorCheckLink();
-        dump('test論理削除', $lazyCollection->toArray());
+        dump('test論理削除', Article::withoutGlobalScopes()->get()->toArray());
 
         $this->assertInstanceOf(LazyCollection::class, $lazyCollection);
         $this->assertEmpty($lazyCollection, '削除済み記事は取得できないこと');

@@ -11,6 +11,12 @@ use Tests\Feature\TestCase;
 
 final class MetaOgpServiceTest extends TestCase
 {
+    #[\Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
     public function test_show_returns_expected_structure(): void
     {
         config(['app.name' => 'SimuPortal', 'app.url' => 'http://localhost', 'app.meta-description' => 'default']);

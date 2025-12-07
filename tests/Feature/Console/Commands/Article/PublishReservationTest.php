@@ -18,6 +18,12 @@ final class PublishReservationTest extends TestCase
         Queue::fake();
     }
 
+    protected function tearDown(): void
+    {
+        Article::truncate();
+        parent::tearDown();
+    }
+
     public function test_publishes_reservation_articles(): void
     {
         $now = CarbonImmutable::parse('2024-01-15 12:00:00');

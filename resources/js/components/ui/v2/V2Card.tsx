@@ -6,12 +6,13 @@ type Props = React.ButtonHTMLAttributes<HTMLElement> & {
 };
 
 const variants: Record<string, string> = {
-  primary: "bg-transparent border border-c-primary text-c-primary",
-  danger: "bg-transparent border border-c-danger text-c-danger",
-  warn: "bg-transparent border border-c-warn text-c-warn",
-  info: "bg-transparent border border-c-info text-c-info",
-  success: "bg-transparent border border-c-success text-c-success",
-  secondary: "bg-transparent border border-c-secondary text-c-secondary",
+  main: "v2-card-main",
+  sub: "v2-card-sub",
+  primary: "v2-card-primary",
+  danger: "v2-card-danger",
+  warn: "v2-card-warn",
+  info: "v2-card-info",
+  success: "v2-card-success",
 } as const;
 
 export default function V2Card({
@@ -23,8 +24,8 @@ export default function V2Card({
   return (
     <div
       className={twMerge(
-        "p-4 rounded-lg block w-full text-left",
-        variant in variants ? variants[variant] : variants.secondary,
+        "p-4 rounded-lg block w-full text-left v2-card",
+        variant in variants ? variants[variant] : variants.sub,
         className
       )}
       {...props}

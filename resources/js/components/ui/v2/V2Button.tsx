@@ -2,45 +2,48 @@ import React from "react";
 import { twMerge } from "tailwind-merge";
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: keyof typeof variants;
+  size?: keyof typeof sizes;
   children: React.ReactNode;
 };
 
 const variants: Record<string, string> = {
-  primary: "bg-c-primary text-white hover:bg-c-primary/80",
-  primaryOutline:
-    "bg-transparent border border-c-primary text-c-primary hover:bg-c-primary/10",
-  danger: "bg-c-danger text-white hover:bg-c-danger/80",
-  dangerOutline:
-    "bg-transparent border border-c-danger text-c-danger hover:bg-c-danger/10",
-  warn: "bg-c-warn text-white hover:bg-c-warn/80",
-  warnOutline:
-    "bg-transparent border border-c-warn text-c-warn hover:bg-c-warn/10",
-  info: "bg-c-info text-white hover:bg-c-info/80",
-  infoOutline:
-    "bg-transparent border border-c-info text-c-info hover:bg-c-info/10",
-  success: "bg-c-success text-white hover:bg-c-success/80",
-  successOutline:
-    "bg-transparent border border-c-success text-c-success hover:bg-c-success/10",
-  secondary: "bg-c-secondary text-white hover:bg-c-secondary/80",
-  secondaryOutline:
-    "bg-transparent border border-c-secondary text-c-secondary hover:bg-c-secondary/10",
+  main: "v2-button-main",
+  mainOutline: "v2-button-main-outline",
+  sub: "v2-button-sub",
+  subOutline: "v2-button-sub-outline",
+  primary: "v2-button-primary",
+  primaryOutline: "v2-button-primary-outline",
+  danger: "v2-button-danger",
+  dangerOutline: "v2-button-danger-outline",
+  warn: "v2-button-warn",
+  warnOutline: "v2-button-warn-outline",
+  info: "v2-button-info",
+  infoOutline: "v2-button-info-outline",
+  success: "v2-button-success",
+  successOutline: "v2-button-success-outline",
+} as const;
+
+const sizes: Record<string, string> = {
+  sm: "v2-button-sm",
+  md: "v2-button-md",
+  lg: "v2-button-lg",
 } as const;
 
 export default function V2Button({
   children,
   className,
   variant = "primary",
+  size = "md",
   ...props
 }: ButtonProps) {
   return (
     <button
       type="button"
       className={twMerge(
-        "px-4 py-2 rounded-lg",
+        variant.includes("Outline") ? "v2-button-outline" : "v2-button",
         variants[variant],
-        props.disabled
-          ? "cursor-not-allowed opacity-50 hover:bg-none"
-          : "cursor-pointer",
+        sizes[size],
+        props.disabled && "v2-button-disabled",
         className
       )}
       {...props}

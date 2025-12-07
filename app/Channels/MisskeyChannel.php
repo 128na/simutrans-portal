@@ -15,7 +15,7 @@ final class MisskeyChannel extends BaseChannel
     public function send(Model $model, SendSNSNotification $sendSNSNotification): void
     {
         match (true) {
-            $model instanceof Article => app(ArticleToMisskey::class)($model, $sendSNSNotification),
+            $model instanceof Article => resolve(ArticleToMisskey::class)($model, $sendSNSNotification),
             default => throw new Exception(sprintf('unsupport model "%s" provided', $model::class)),
         };
     }

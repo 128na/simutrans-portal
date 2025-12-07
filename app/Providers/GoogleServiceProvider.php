@@ -42,7 +42,7 @@ final class GoogleServiceProvider extends ServiceProvider implements DeferrableP
             return new RecaptchaService(
                 $recaptchaEnterpriseServiceClient,
                 $projectName,
-                app(Event::class),
+                resolve(Event::class),
             );
         });
 

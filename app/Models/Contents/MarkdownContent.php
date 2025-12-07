@@ -22,6 +22,6 @@ final class MarkdownContent extends Content
     #[\Override]
     public function getDescription(): string
     {
-        return app(MarkdownService::class)->toEscapedText($this->markdown ?? '');
+        return resolve(MarkdownService::class)->toEscapedText($this->markdown ?? '');
     }
 }

@@ -13,11 +13,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 
-#[OA\Info(
-    version: '1.0.0',
-    title: 'Simutrans Portal API',
-    description: 'Simutrans Addon Portal API Documentation'
-)]
+#[OA\Info(version: '1.0.0', description: 'Simutrans Addon Portal API Documentation', title: 'Simutrans Portal API')]
 #[OA\Server(
     url: 'http://localhost',
     description: 'Local Development Server'

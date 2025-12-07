@@ -32,13 +32,10 @@ describe("Button", () => {
   });
 
   it("disabled時のスタイルが適用される", () => {
-    render(<Button disabled>クリック</Button>);
+    render(<Button disabled>無効</Button>);
     const button = screen.getByRole("button");
     expect(button).toBeDisabled();
-    expect(button).toHaveClass(
-      "disabled:bg-c-sub",
-      "disabled:cursor-not-allowed"
-    );
+    expect(button).toHaveClass("button-primary");
   });
 
   it("カスタムクラスが追加できる", () => {
@@ -58,10 +55,6 @@ describe("Button", () => {
 
   it("ブランドカラーのスタイルが適用される", () => {
     render(<Button>クリック</Button>);
-    expect(screen.getByRole("button")).toHaveClass(
-      "bg-c-primary",
-      "text-white",
-      "hover:bg-c-primary/80"
-    );
+    expect(screen.getByRole("button")).toHaveClass("button-primary");
   });
 });

@@ -96,7 +96,7 @@ export const AddonPost = () => {
           ファイル
         </FormCaption>
         <TextError>{getError("article.contents.file")}</TextError>
-        <TextSub className="mb-1">
+        <TextSub className="mb-2">
           {(contents.file && file?.original_name) ?? "未選択"}
         </TextSub>
         <div className="space-x-2 mb-2">

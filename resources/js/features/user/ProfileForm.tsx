@@ -147,7 +147,7 @@ export const ProfileForm = ({
           attachmentId={user.profile.data.avatar}
           attachments={attachments}
         />
-        <TextSub className="mb-1">
+        <TextSub className="mb-2">
           {(user.profile.data.avatar &&
             attachments.find((a) => a.id === user.profile.data.avatar)
               ?.original_name) ??
@@ -228,7 +228,7 @@ export const ProfileForm = ({
 
       <div>
         <FormCaption>Webサイト</FormCaption>
-        <TextSub className="mb-1">SNSなども登録できます。</TextSub>
+        <TextSub className="mb-2">SNSなども登録できます。</TextSub>
         <div>
           <ButtonSub onClick={addWebsite}>Webサイトを追加</ButtonSub>
         </div>

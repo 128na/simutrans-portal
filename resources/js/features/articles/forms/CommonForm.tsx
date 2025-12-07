@@ -96,7 +96,7 @@ export const CommonForm = () => {
       <div>
         <FormCaption>サムネイル</FormCaption>
         <TextError>{getError("article.contents.thumbnail")}</TextError>
-        <TextSub className="mb-1">
+        <TextSub className="mb-2">
           {(article.contents.thumbnail &&
             attachments.find((a) => a.id === article.contents.thumbnail)
               ?.original_name) ??

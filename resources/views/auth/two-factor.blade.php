@@ -15,7 +15,7 @@
                     <input id="code" type="code" name="code" autocomplete="one-time-code" class="block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-c-sub/10 placeholder:text-c-sub focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:w-128" />
                 </div>
                 @error('code')
-                <div class="text-sm text-danger">{{$message}}</div>
+                <div class="text-sm text-c-danger">{{$message}}</div>
                 @enderror
             </div>
             <div>
@@ -27,7 +27,7 @@
                     <input id="recovery_code" type="recovery_code" name="recovery_code" class="block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-c-sub/10 placeholder:text-c-sub focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:w-128" />
                 </div>
                 @error('recovery_code')
-                <div class="text-sm text-danger">{{$message}}</div>
+                <div class="text-sm text-c-danger">{{$message}}</div>
                 @enderror
             </div>
             <div>

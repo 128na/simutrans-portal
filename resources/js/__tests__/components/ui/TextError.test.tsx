@@ -22,7 +22,7 @@ describe("TextError コンポーネント", () => {
   it("デフォルトのスタイルが適用される", () => {
     render(<TextError>エラー</TextError>);
     const error = screen.getByText("エラー");
-    expect(error).toHaveClass("text-danger");
+    expect(error).toHaveClass("text-c-danger");
     expect(error).toHaveClass("text-sm");
   });
 

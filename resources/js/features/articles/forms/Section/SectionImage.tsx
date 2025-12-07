@@ -28,7 +28,7 @@ export const SectionImage = ({
     <>
       <div>
         <TextError>{getError(`article.contents.sections.${idx}.id`)}</TextError>
-        <TextSub className="mb-1">
+        <TextSub className="mb-2">
           {(section.id &&
             attachments.find((a) => a.id === section.id)?.original_name) ??
             "未選択"}

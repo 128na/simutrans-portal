@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import Button from "@/components/ui/Button";
-import V2Button from "@/components/ui/V2Button";
+import V2Button from "@/components/ui/v2/V2Button";
 
 const app = document.getElementById("app-playground");
 
@@ -81,7 +81,7 @@ if (app) {
       <div className="flex flex-col gap-4">
         {pattern.map((pattern, index) => {
           return (
-            <div className="" key={index}>
+            <div key={index}>
               <p>{pattern.name}</p>
               <V2Button {...pattern.props}>ボタン</V2Button>
             </div>

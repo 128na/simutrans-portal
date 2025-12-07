@@ -27,15 +27,13 @@
 /* reactとblade双方から共通利用できるように定義した主要パーツ用クラス */
 /* フォーム */
 .v2-input {
-  @apply
-    border-0 border-b border-b-c-sub/20 p-2
+  @apply border-0 border-b border-b-c-sub/20 p-2
     focus:outline-none focus:ring-0 focus:border-b-c-primary
     invalid:border-b-c-danger invalid:bg-c-danger/10
     disabled:cursor-text disabled:bg-c-sub/10;
 }
 .v2-input-file {
-  @apply
-    file:ml-0 file:border-0
+  @apply file:ml-0 file:border-0
     file:px-3 file:py-1.5 file:text-sm file:rounded-lg
     file:bg-c-sub;
 }

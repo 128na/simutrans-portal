@@ -13,6 +13,6 @@
 
     </script>
     <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
-        <div id="app-tag-edit"></div>
+        <div id="app-tag-edit">読み込み中...</div>
     </div>
     @endsection

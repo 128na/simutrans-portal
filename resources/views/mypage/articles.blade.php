@@ -14,6 +14,6 @@
         <h2 class="title-xl">記事の一覧</h2>
     </div>
     <div class="flex flex-col gap-y-12 border-t border-c-sub/10 pt-6 lg:mx-0">
-        <div id="app-article-list"></div>
+        <div id="app-article-list">読み込み中...</div>
     </div>
     @endsection

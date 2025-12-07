@@ -13,7 +13,7 @@
             @include('pages.pak.description', ['pak' => $pak])
         </p>
     </div>
-    <div id="app-article-list"></div>
+    <div id="app-article-list">読み込み中...</div>
     <div class="mt-10 border-t border-c-sub/10 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
         {{ $articles->links() }}
     </div>

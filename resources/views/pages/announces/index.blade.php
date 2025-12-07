@@ -11,7 +11,7 @@
         <h2 class="title-xl2">お知らせ</h2>
         <p class="mt-2 text-lg/8 text-c-sub">運営からのお知らせです。</p>
     </div>
-    <div id="app-article-list"></div>
+    <div id="app-article-list">読み込み中...</div>
     <div class="mt-10 border-t border-c-sub/10 pt-10 sm:mt-8 sm:pt-8 lg:mx-0">
         {{ $articles->links() }}
     </div>

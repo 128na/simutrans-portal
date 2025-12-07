@@ -27,6 +27,6 @@
 
     </script>
     <div class="flex flex-col gap-y-12 lg:mx-0">
-        <div id="app-article-edit"></div>
+        <div id="app-article-edit">読み込み中...</div>
     </div>
     @endsection

@@ -85,9 +85,7 @@ Route::middleware(['auth'])->group(function (): void {
         Route::post('/mypage/articles/edit/{article}', [\App\Http\Controllers\Mypage\Article\EditController::class, 'update']);
     });
 
-    Route::get('/mypage/playground', function () {
-        return view('mypage.playground');
-    });
+    Route::get('/mypage/playground', fn (): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View => view('mypage.playground'));
 });
 
 Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function (): void {

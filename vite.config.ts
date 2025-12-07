@@ -40,6 +40,9 @@ export default defineConfig({
             "./resources/js/features/articles/components/postType/Markdown.tsx",
             "./resources/js/features/articles/components/postType/Page.tsx",
           ],
+          "playground-components": [
+            "./resources/js/mypage/pages/PlaygroundPage.tsx",
+          ],
         },
       },
     },

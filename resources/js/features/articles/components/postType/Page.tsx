@@ -17,7 +17,11 @@ export const Page = ({ article, preview }: Props) => {
           return <TextPre key={index}>{section.text || "(本文)"}</TextPre>;
         }
         if (section.type === "caption") {
-          return <TitleH4 key={index}>{section.caption || "(見出し)"}</TitleH4>;
+          return (
+            <TitleH4 key={index} className="my-0">
+              {section.caption || "(見出し)"}
+            </TitleH4>
+          );
         }
         if (section.type === "url") {
           return (

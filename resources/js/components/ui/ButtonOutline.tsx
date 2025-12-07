@@ -13,10 +13,7 @@ export default function ButtonOutline({
   return (
     <Button
       type="button"
-      className={twMerge(
-        className,
-        "px-3 py-1.5 text-sm border border-c-sub/10 text-c-sub bg-c-sub/20 hover:bg-c-sub/40 disabled:bg-c-sub/10"
-      )}
+      className={twMerge(className, "button-outline")}
       {...props}
     >
       {children}

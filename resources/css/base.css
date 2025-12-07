@@ -36,7 +36,16 @@
   @apply
     px-3 py-1.5
     text-white rounded-lg cursor-pointer text-sm
-    bg-c-sub/70 hover:bg-c-sub/90;
+    bg-c-sub/90 hover:bg-c-sub/70
+    disabled:bg-c-sub/30
+    disabled:cursor-not-allowed;
+}
+.button-outline {
+  @apply
+    px-3 py-1.5
+    text-sm text-c-sub bg-c-sub/20
+    border border-c-sub/10 hover:bg-c-sub/40
+    disabled:bg-c-sub/10
 }
 .button-danger {
   @apply

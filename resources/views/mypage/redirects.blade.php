@@ -13,10 +13,10 @@
             <table class="border-collapse whitespace-nowrap">
                 <thead>
                     <tr>
-                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub text-white">作成日時</th>
-                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub text-white">転送元</th>
-                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub text-white">転送先</th>
-                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub text-white">操作</th>
+                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">作成日時</th>
+                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">転送元</th>
+                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">転送先</th>
+                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">操作</th>
                     </tr>
                 <tbody>
                     @forelse($redirects as $redirect)
@@ -28,7 +28,7 @@
                             <form method="POST" action="{{route('mypage.redirects.destroy', [$redirect->id])}}" class="js-confirm" data-text="リダイレクト設定を削除しますか？">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="rounded-md bg-c-danger px-4 sm:py-2 py-4 text-white cursor-pointer">
+                                <button type="submit" class="button-danger">
                                     削除
                                 </button>
                             </form>

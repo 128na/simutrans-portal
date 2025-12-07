@@ -17,12 +17,12 @@
             </button>
         </div>
         <el-popover-group class="hidden lg:flex lg:gap-x-12">
-            <a href="{{route('pak.128japan')}}" class="text-sm/6 font-semibold text-c-main">pak128.japan</a>
-            <a href="{{route('pak.128')}}" class="text-sm/6 font-semibold text-c-main">pak128</a>
-            <a href="{{route('pak.64')}}" class="text-sm/6 font-semibold text-c-main">pak64</a>
-            <a href="{{route('users.index')}}" class="text-sm/6 font-semibold text-c-main">ユーザー</a>
-            <a href="{{route('categories.index')}}" class="text-sm/6 font-semibold text-c-main">カテゴリ</a>
-            <a href="{{route('tags.index')}}" class="text-sm/6 font-semibold text-c-main">タグ</a>
+            <a href="{{route('pak.128japan')}}" class="text-sm/6 font-semibold">pak128.japan</a>
+            <a href="{{route('pak.128')}}" class="text-sm/6 font-semibold">pak128</a>
+            <a href="{{route('pak.64')}}" class="text-sm/6 font-semibold">pak64</a>
+            <a href="{{route('users.index')}}" class="text-sm/6 font-semibold">ユーザー</a>
+            <a href="{{route('categories.index')}}" class="text-sm/6 font-semibold">カテゴリ</a>
+            <a href="{{route('tags.index')}}" class="text-sm/6 font-semibold">タグ</a>
 
             <div class="relative">
                 <button popovertarget="desktop-menu-misc" class="flex items-center gap-x-1 text-sm/6 font-semibold cursor-pointer">
@@ -32,11 +32,11 @@
                     </svg>
                 </button>
 
-                <el-popover id="desktop-menu-misc" anchor="bottom" popover class="w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg outline-1 outline-c-main/5 transition transition-discrete [--anchor-gap:--spacing(3)] backdrop:bg-transparent open:block data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+                <el-popover id="desktop-menu-misc" anchor="bottom" popover class="w-screen max-w-md overflow-hidden rounded-3xl shadow-lg outline-1 outline-c-main/5 transition transition-discrete [--anchor-gap:--spacing(3)] backdrop:bg-transparent open:block data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
                     <div class="p-4">
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('pak.others')}}" class="block font-semibold text-c-main">
+                                <a href="{{route('pak.others')}}" class="block font-semibold">
                                     他pak
                                     <span class="absolute inset-0"></span>
                                 </a>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('pages')}}" class="block font-semibold text-c-main">
+                                <a href="{{route('pages')}}" class="block font-semibold">
                                     一般記事
                                     <span class="absolute inset-0"></span>
                                 </a>
@@ -52,7 +52,7 @@
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('search')}}" class="block font-semibold text-c-main">
+                                <a href="{{route('search')}}" class="block font-semibold">
                                     検索
                                     <span class="absolute inset-0"></span>
                                 </a>
@@ -60,7 +60,7 @@
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{ route('social') }}" class="block font-semibold text-c-main">
+                                <a href="{{ route('social') }}" class="block font-semibold">
                                     SNS・通知ツール
                                     <span class="absolute inset-0"></span>
                                 </a>
@@ -68,7 +68,7 @@
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{config('app.support_site_url')}}" class="block font-semibold text-c-main" target="_blank" rel="noopener">
+                                <a href="{{config('app.support_site_url')}}" class="block font-semibold" target="_blank" rel="noopener">
                                     サイトの使い方<span class="text-sm text-c-sub/50">↗</span>
                                     <span class="absolute inset-0"></span>
                                 </a>
@@ -76,7 +76,7 @@
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{config('app.privacy_policy_url')}}" class="block font-semibold text-c-main" target="_blank" rel="noopener">
+                                <a href="{{config('app.privacy_policy_url')}}" class="block font-semibold" target="_blank" rel="noopener">
                                     プライバシーポリシー<span class="text-sm text-c-sub/50">↗</span>
                                     <span class="absolute inset-0"></span>
                                 </a>
@@ -89,13 +89,13 @@
 
         </el-popover-group>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="{{ route('login') }}" class="text-sm/6 font-semibold text-c-main">マイページ <span aria-hidden="true">&rarr;</span></a>
+            <a href="{{ route('login') }}" class="text-sm/6 font-semibold">マイページ <span aria-hidden="true">&rarr;</span></a>
         </div>
     </nav>
     <el-dialog>
         <dialog id="mobile-menu" class="backdrop:bg-transparent lg:hidden">
             <div tabindex="0" class="fixed inset-0 focus:outline-none">
-                <el-dialog-panel class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-c-main/10">
+                <el-dialog-panel class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto p-6 sm:max-w-sm sm:ring-1 sm:ring-c-main/10">
                     <div class="flex items-center justify-between">
                         <a href="#" class="-m-1.5 p-1.5">
                             <span class="sr-only">{{config('app.name')}}</span>

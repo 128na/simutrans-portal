@@ -4,11 +4,11 @@
         {{-- Previous Page Link --}}
         <li>
             @if ($paginator->onFirstPage())
-            <span class="flex items-center justify-center px-4 h-10 text-c-sub bg-white border border-c-sub/10 ms-0 border-e-0 rounded-s-lg cursor-default">
+            <span class="flex items-center justify-center px-4 h-10 text-c-sub border border-c-sub/10 ms-0 border-e-0 rounded-s-lg cursor-default">
                 前
             </span>
             @else
-            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="flex items-center justify-center px-4 h-10 text-c-sub bg-white border border-c-sub/10 ms-0 border-e-0 rounded-s-lg hover:bg-c-sub/10 cursor-pointer" aria-label="{{ __('pagination.previous') }}">
+            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="flex items-center justify-center px-4 h-10 text-c-sub border border-c-sub/10 ms-0 border-e-0 rounded-s-lg hover:bg-c-sub/10 cursor-pointer" aria-label="{{ __('pagination.previous') }}">
                 前
             </a>
             @endif
@@ -19,7 +19,7 @@
         {{-- "Three Dots" Separator --}}
         @if (is_string($element))
         <li>
-            <span class="flex items-center justify-center px-4 h-10 text-c-sub bg-white border border-c-sub/10">{{ $element }}</span>
+            <span class="flex items-center justify-center px-4 h-10 text-c-sub border border-c-sub/10">{{ $element }}</span>
         </li>
         @endif
 
@@ -32,7 +32,7 @@
                 {{ $page }}
             </span>
             @else
-            <a href="{{ $url }}" class="flex items-center justify-center px-4 h-10 text-c-sub bg-white border border-c-sub/10 cursor-pointer hover:bg-c-sub/10" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
+            <a href="{{ $url }}" class="flex items-center justify-center px-4 h-10 text-c-sub border border-c-sub/10 cursor-pointer hover:bg-c-sub/10" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
                 {{ $page }}
             </a>
             @endif
@@ -44,11 +44,11 @@
         {{-- Next Page Link --}}
         <li>
             @if ($paginator->hasMorePages())
-            <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="flex items-center justify-center px-4 h-10 text-c-sub bg-white border border-c-sub/10 rounded-e-lg hover:bg-c-sub/10 cursor-pointer" aria-label="{{ __('pagination.next') }}">
+            <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="flex items-center justify-center px-4 h-10 text-c-sub border border-c-sub/10 rounded-e-lg hover:bg-c-sub/10 cursor-pointer" aria-label="{{ __('pagination.next') }}">
                 次
             </a>
             @else
-            <span class="flex items-center justify-center px-4 h-10 text-c-sub bg-white border border-c-sub/10 rounded-e-lg cursor-default">
+            <span class="flex items-center justify-center px-4 h-10 text-c-sub border border-c-sub/10 rounded-e-lg cursor-default">
                 次
             </span>
             @endif

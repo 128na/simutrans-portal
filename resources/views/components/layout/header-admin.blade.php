@@ -17,8 +17,8 @@
             </button>
         </div>
         <el-popover-group class="hidden lg:flex lg:gap-x-12">
-            <a href="{{route('index')}}" class="text-sm/6 font-semibold text-c-main">トップページ</a>
-            <a href="{{route('mypage.index')}}" class="text-sm/6 font-semibold text-c-main">マイページ</a>
+            <a href="{{route('index')}}" class="text-sm/6 font-semibold">トップページ</a>
+            <a href="{{route('mypage.index')}}" class="text-sm/6 font-semibold">マイページ</a>
             <div class="relative">
                 <button popovertarget="desktop-menu-article" class="flex items-center gap-x-1 text-sm/6 font-semibold cursor-pointer">
                     記事
@@ -27,39 +27,39 @@
                     </svg>
                 </button>
 
-                <el-popover id="desktop-menu-article" anchor="bottom" popover class="w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg outline-1 outline-c-main/5 transition transition-discrete [--anchor-gap:--spacing(3)] backdrop:bg-transparent open:block data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+                <el-popover id="desktop-menu-article" anchor="bottom" popover class="w-screen max-w-md overflow-hidden rounded-3xl shadow-lg outline-1 outline-c-main/5 transition transition-discrete [--anchor-gap:--spacing(3)] backdrop:bg-transparent open:block data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
                     <div class="p-4">
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.articles.index')}}" class="block font-semibold text-c-main">
+                                <a href="{{route('mypage.articles.index')}}" class="block font-semibold">
                                     一覧
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.articles.create')}}" class="block font-semibold text-c-main">
+                                <a href="{{route('mypage.articles.create')}}" class="block font-semibold">
                                     作成
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.analytics')}}" class="block font-semibold text-c-main">
+                                <a href="{{route('mypage.analytics')}}" class="block font-semibold">
                                     アクセス解析
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.redirects')}}" class="block font-semibold text-c-main">
+                                <a href="{{route('mypage.redirects')}}" class="block font-semibold">
                                     記事のリダイレクト設定
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.tags')}}" class="block font-semibold text-c-main">
+                                <a href="{{route('mypage.tags')}}" class="block font-semibold">
                                     タグの編集
                                 </a>
                             </div>
@@ -75,32 +75,32 @@
                     </svg>
                 </button>
 
-                <el-popover id="desktop-menu-user" anchor="bottom" popover class="w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg outline-1 outline-c-main/5 transition transition-discrete [--anchor-gap:--spacing(3)] backdrop:bg-transparent open:block data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+                <el-popover id="desktop-menu-user" anchor="bottom" popover class="w-screen max-w-md overflow-hidden rounded-3xl shadow-lg outline-1 outline-c-main/5 transition transition-discrete [--anchor-gap:--spacing(3)] backdrop:bg-transparent open:block data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
                     <div class="p-4">
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.profile')}}" class="block font-semibold text-c-main">
+                                <a href="{{route('mypage.profile')}}" class="block font-semibold">
                                     プロフィール
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.invite')}}" class="block font-semibold text-c-main">
+                                <a href="{{route('mypage.invite')}}" class="block font-semibold">
                                     ユーザー招待
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.login-histories')}}" class="block font-semibold text-c-main">
+                                <a href="{{route('mypage.login-histories')}}" class="block font-semibold">
                                     ログイン履歴
                                 </a>
                             </div>
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
-                                <a href="{{route('mypage.two-factor')}}" class="block font-semibold text-c-main">
+                                <a href="{{route('mypage.two-factor')}}" class="block font-semibold">
                                     二要素認証
                                 </a>
                             </div>
@@ -108,7 +108,7 @@
                     </div>
                 </el-popover>
             </div>
-            <a href="{{config('app.support_site_url')}}" class="text-sm/6 font-semibold text-c-main" target="_blank" rel="noopener">サイトの使い方</a>
+            <a href="{{config('app.support_site_url')}}" class="text-sm/6 font-semibold" target="_blank" rel="noopener">サイトの使い方</a>
 
         </el-popover-group>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -121,7 +121,7 @@
     <el-dialog>
         <dialog id="mobile-menu" class="backdrop:bg-transparent lg:hidden">
             <div tabindex="0" class="fixed inset-0 focus:outline-none">
-                <el-dialog-panel class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-c-main/10">
+                <el-dialog-panel class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto p-6 sm:max-w-sm sm:ring-1 sm:ring-c-main/10">
                     <div class="flex items-center justify-between">
                         <a href="#" class="-m-1.5 p-1.5">
                             <span class="sr-only">{{config('app.name')}}</span>

@@ -11,17 +11,7 @@ export default function ButtonDanger({
   ...props
 }: ButtonProps) {
   return (
-    <Button
-      className={twMerge(
-        `
-        text-sm
-        bg-c-danger
-        hover:bg-c-danger/80
-        `,
-        className
-      )}
-      {...props}
-    >
+    <Button className={twMerge("button-danger", className)} {...props}>
       {children}
     </Button>
   );

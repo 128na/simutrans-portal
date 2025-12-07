@@ -11,7 +11,7 @@
     <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
         <form action="{{route('verification.send')}}" method="POST">
             @csrf
-            <button type="submit" class="rounded-md bg-c-primary px-4 sm:py-2 py-4 text-white cursor-pointer">
+            <button type="submit" class="button-primary">
                 送信する
             </button>
         </form>

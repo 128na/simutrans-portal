@@ -20,9 +20,9 @@
         <form action="{{route('two-factor.confirm')}}" method="POST">
             @csrf
             <div class="mb-4">
-                <label for="code" class="block text-sm/6 font-semibold text-c-main">認証コード</label>
+                <label for="code" class="block text-sm/6 font-semibold">認証コード</label>
                 <div class="mt-2.5">
-                    <input id="code" type="code" name="code" autocomplete="one-time-code" class="block w-full rounded-md bg-white px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-c-sub placeholder:text-c-sub focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:w-128" />
+                    <input id="code" type="code" name="code" autocomplete="one-time-code" class="block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-c-sub/10 placeholder:text-c-sub focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:w-128" />
                 </div>
                 @error('code', 'confirmTwoFactorAuthentication')
                 <div class="text-sm text-danger">{{$message}}</div>
@@ -52,10 +52,10 @@
             <form action="{{route('two-factor.regenerate-recovery-codes')}}" method="POST">
                 @csrf
                 <div class="gap-x-2 flex">
-                    <button type="submit" class="rounded-md bg-c-sub px-4 sm:py-2 py-4 text-white cursor-pointer js-clipboard" data-text="{{implode(" ", $user->recoveryCodes())}}">
+                    <button type="submit" class="button-sub js-clipboard" data-text="{{implode(" ", $user->recoveryCodes())}}">
                         コードをコピー
                     </button>
-                    <button type="submit" class="rounded-md bg-c-primary px-4 sm:py-2 py-4 text-white cursor-pointer">
+                    <button type="submit" class="button-primary">
                         再生成
                     </button>
                 </div>
@@ -65,7 +65,7 @@
             <form action="{{route('two-factor.disable')}}" method="POST" class="js-confirm" data-text="二要素認証を無効化しますか？">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="rounded-md bg-c-danger px-4 sm:py-2 py-4 text-white cursor-pointer">
+                <button type="submit" class="button-danger">
                     無効化
                 </button>
             </form>
@@ -76,7 +76,7 @@
         {{-- Step.1 未設定 --}}
         <form action="{{route('two-factor.enable')}}" method="POST">
             @csrf
-            <button type="submit" class="rounded-md bg-c-primary px-4 sm:py-2 py-4 text-white cursor-pointer">
+            <button type="submit" class="button-primary">
                 設定を始める
             </button>
         </form>

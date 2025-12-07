@@ -14,7 +14,7 @@
     @stack('styles')
 </head>
 
-<body class="text-main bg-white">
+<body class="text-c-main bg-white">
     @yield('header')
     @include('components.ui.session-message')
     @yield('content')

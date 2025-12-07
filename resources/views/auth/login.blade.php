@@ -12,15 +12,15 @@
                 @foreach ($errors->all() as $key => $error)
                 <div class="text-sm text-danger">{{$error}}</div>
                 @endforeach
-                <label for="email" class="block text-sm/6 font-semibold text-c-main">メールアドレス</label>
+                <label for="email" class="block text-sm/6 font-semibold">メールアドレス</label>
                 <div class="mt-2.5">
-                    <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="block w-full rounded-md bg-white px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-c-sub placeholder:text-c-sub focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:w-128" />
+                    <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-c-sub/10 placeholder:text-c-sub focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:w-128" />
                 </div>
             </div>
             <div>
-                <label for="password" class="block text-sm/6 font-semibold text-c-main">パスワード</label>
+                <label for="password" class="block text-sm/6 font-semibold">パスワード</label>
                 <div class="mt-2.5">
-                    <input id="password" type="password" name="password" value="{{old('password', '')}}" autocomplete="current-password" class="block w-full rounded-md bg-white px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-c-sub placeholder:text-c-sub focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:w-128" />
+                    <input id="password" type="password" name="password" value="{{old('password', '')}}" autocomplete="current-password" class="block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-c-sub/10 placeholder:text-c-sub focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:w-128" />
                 </div>
             </div>
             <div>

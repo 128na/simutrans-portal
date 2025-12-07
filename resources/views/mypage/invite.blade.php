@@ -22,18 +22,18 @@
                     {{route('user.invite',$user->invitation_code)}}
                 </p>
                 <div class="gap-x-2 flex">
-                    <button type="submit" class="rounded-md bg-c-sub px-4 sm:py-2 py-4 text-white cursor-pointer js-clipboard" data-text="{{route('user.invite',$user->invitation_code)}}">
+                    <button type="submit" class="button-sub js-clipboard" data-text="{{route('user.invite',$user->invitation_code)}}">
                         リンクをコピー
                     </button>
-                    <button type="submit" class="rounded-md bg-c-primary px-4 sm:py-2 py-4 text-white cursor-pointer">
+                    <button type="submit" class="button-primary">
                         再発行
                     </button>
-                    <button type="submit" class="rounded-md bg-c-danger px-4 sm:py-2 py-4 text-white cursor-pointer" form="revoke">
+                    <button type="submit" class="button-danger" form="revoke">
                         削除
                     </button>
                 </div>
                 @else
-                <button type="submit" class="rounded-md bg-c-primary px-4 sm:py-2 py-4 text-white cursor-pointer">
+                <button type="submit" class="button-primary">
                     発行
                 </button>
                 @endif
@@ -45,8 +45,8 @@
             <table class="border-collapse whitespace-nowrap">
                 <thead>
                     <tr>
-                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub text-white">日時</th>
-                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub text-white">ユーザー名</th>
+                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">日時</th>
+                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">ユーザー名</th>
                     </tr>
                 <tbody>
                     @forelse($user->invites as $invite)

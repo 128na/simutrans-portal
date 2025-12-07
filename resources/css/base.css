@@ -17,12 +17,32 @@
   --font-sans:
     "Inter", "Noto Sans JP", ui-sans-serif, system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
 }
 
 @layer base {
   body {
     font-family: var(--font-sans);
   }
+}
+.button-primary {
+  @apply
+    px-4 py-2
+    text-white rounded-lg cursor-pointer
+    bg-c-primary hover:bg-c-primary/80 disabled:bg-c-sub
+    disabled:cursor-not-allowed;
+}
+.button-sub {
+  @apply
+    px-3 py-1.5
+    text-white rounded-lg cursor-pointer text-sm
+    bg-c-sub/70 hover:bg-c-sub/90;
+}
+.button-danger {
+  @apply
+  px-4 py-2
+  text-white rounded-lg cursor-pointer text-sm
+  bg-c-danger hover:bg-c-danger/80;
 }
 
 .title-xl2 {
@@ -81,13 +101,13 @@
   @apply mt-6 mb-12 rounded-lg shadow-md;
 }
 .markdown-body code {
-  @apply bg-c-sub rounded p-1 text-sm font-mono break-all;
+  @apply bg-c-sub/80 rounded p-1 text-sm font-mono break-all;
 }
 .markdown-body pre code {
-  @apply block bg-c-sub rounded p-2 text-sm font-mono;
+  @apply block bg-c-sub/80 rounded p-2 text-sm font-mono;
 }
 .markdown-body pre {
-  @apply bg-c-sub rounded p-4 my-6 overflow-x-auto;
+  @apply bg-c-sub/80 rounded p-4 my-6 overflow-x-auto;
 }
 
 .markdown-body table {

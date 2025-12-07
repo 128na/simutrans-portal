@@ -13,10 +13,10 @@
             <table class="border-collapse whitespace-nowrap">
                 <thead>
                     <tr>
-                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub text-white">日時</th>
-                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub text-white">IP</th>
-                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub text-white">ユーザーエージェント</th>
-                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub text-white">ログイン元</th>
+                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">日時</th>
+                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">IP</th>
+                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">ユーザーエージェント</th>
+                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">ログイン元</th>
                     </tr>
                 <tbody>
                     @foreach($loginHistories as $loginHistory)

@@ -38,7 +38,7 @@
     file:bg-c-sub/80 hover:file:bg-c-sub/60;
 }
 .v2-input-select {
-  @apply pr-8
+  @apply pr-8;
 }
 
 /* カード */

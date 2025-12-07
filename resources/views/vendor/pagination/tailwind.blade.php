@@ -1,105 +1,58 @@
 @if ($paginator->hasPages())
-<nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="flex items-center justify-between">
-    <div class="flex justify-between flex-1 sm:hidden">
-        @if ($paginator->onFirstPage())
-        <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-c-sub bg-white border border-c-sub/10 cursor-default leading-5 rounded-md">
-            {!! __('pagination.previous') !!}
-        </span>
-        @else
-        <a href="{{ $paginator->previousPageUrl() }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-c-sub bg-white border border-c-sub/10 leading-5 rounded-md hover:text-c-sub focus:outline-none focus:ring ring-c-sub focus:border-blue-300 active:bg-c-sub active:text-c-sub transition ease-in-out duration-150">
-            {!! __('pagination.previous') !!}
-        </a>
-        @endif
-
-        @if ($paginator->hasMorePages())
-        <a href="{{ $paginator->nextPageUrl() }}" class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-c-sub bg-white border border-c-sub/10 leading-5 rounded-md hover:text-c-sub focus:outline-none focus:ring ring-c-sub focus:border-blue-300 active:bg-c-sub active:text-c-sub transition ease-in-out duration-150">
-            {!! __('pagination.next') !!}
-        </a>
-        @else
-        <span class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-c-sub bg-white border border-c-sub/10 cursor-default leading-5 rounded-md">
-            {!! __('pagination.next') !!}
-        </span>
-        @endif
-    </div>
-
-    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-        <div>
-            <p class="text-sm text-c-sub leading-5">
-                <span class="font-medium">{{ $paginator->total() }}</span>
-                {!! __('件中') !!}
-                @if ($paginator->firstItem())
-                <span class="font-medium">{{ $paginator->firstItem() }}</span>
-                {!! __('～') !!}
-                <span class="font-medium">{{ $paginator->lastItem() }}</span>
-                @else
-                {{ $paginator->count() }}
-                @endif
-                {!! __('件目表示') !!}
-            </p>
-        </div>
-
-        <div>
-            <span class="relative z-0 inline-flex rtl:flex-row-reverse shadow-sm rounded-md">
-                {{-- Previous Page Link --}}
-                @if ($paginator->onFirstPage())
-                <span aria-disabled="true" aria-label="{{ __('pagination.previous') }}">
-                    <span class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-c-sub bg-white border border-c-sub/10 cursor-default rounded-l-md leading-5" aria-hidden=" true">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                        </svg>
-                    </span>
-                </span>
-                @else
-                <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-c-sub bg-white border border-c-sub/10 rounded-l-md leading-5 hover:text-c-sub focus:z-10 focus:outline-none focus:ring ring-c-sub focus:border-blue-300 active:bg-c-sub active:text-c-sub transition ease-in-out duration-150 aria-label=" {{ __('pagination.previous') }}">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                    </svg>
-                </a>
-                @endif
-
-                {{-- Pagination Elements --}}
-                @foreach ($elements as $element)
-                {{-- "Three Dots" Separator --}}
-                @if (is_string($element))
-                <span aria-disabled="true">
-                    <span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-c-sub bg-white border border-c-sub/10 cursor-default leading-5">{{ $element }}</span>
-                </span>
-                @endif
-
-                {{-- Array Of Links --}}
-                @if (is_array($element))
-                @foreach ($element as $page => $url)
-                @if ($page == $paginator->currentPage())
-                <span aria-current="page">
-                    <span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-c-sub bg-white border border-c-sub/10 cursor-default leading-5">{{ $page }}</span>
-                </span>
-                @else
-                <a href="{{ $url }}" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-c-sub bg-white border border-c-sub/10 leading-5 hover:text-c-sub focus:z-10 focus:outline-none focus:ring ring-c-sub focus:border-blue-300 active:bg-c-sub active:text-c-sub transition ease-in-out duration-150" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
-                    {{ $page }}
-                </a>
-                @endif
-                @endforeach
-                @endif
-                @endforeach
-
-                {{-- Next Page Link --}}
-                @if ($paginator->hasMorePages())
-                <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-c-sub bg-white border border-c-sub/10 rounded-r-md leading-5 hover:text-c-sub focus:z-10 focus:outline-none focus:ring ring-c-sub focus:border-blue-300 active:bg-c-sub active:text-c-sub transition ease-in-out duration-150 aria-label=" {{ __('pagination.next') }}">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                    </svg>
-                </a>
-                @else
-                <span aria-disabled="true" aria-label="{{ __('pagination.next') }}">
-                    <span class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-c-sub bg-white border border-c-sub/10 cursor-default rounded-r-md leading-5" aria-hidden="true">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                        </svg>
-                    </span>
-                </span>
-                @endif
+<nav role="navigation" aria-label="{{ __('Pagination Navigation') }}">
+    <ul class="inline-flex -space-x-px text-base h-10">
+        {{-- Previous Page Link --}}
+        <li>
+            @if ($paginator->onFirstPage())
+            <span class="flex items-center justify-center px-4 h-10 text-c-sub bg-white border border-c-sub/10 ms-0 border-e-0 rounded-s-lg cursor-default">
+                前
             </span>
-        </div>
-    </div>
+            @else
+            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="flex items-center justify-center px-4 h-10 text-c-sub bg-white border border-c-sub/10 ms-0 border-e-0 rounded-s-lg hover:bg-c-sub/10 cursor-pointer" aria-label="{{ __('pagination.previous') }}">
+                前
+            </a>
+            @endif
+        </li>
+
+        {{-- Pagination Elements --}}
+        @foreach ($elements as $element)
+        {{-- "Three Dots" Separator --}}
+        @if (is_string($element))
+        <li>
+            <span class="flex items-center justify-center px-4 h-10 text-c-sub bg-white border border-c-sub/10">{{ $element }}</span>
+        </li>
+        @endif
+
+        {{-- Array Of Links --}}
+        @if (is_array($element))
+        @foreach ($element as $page => $url)
+        <li>
+            @if ($page == $paginator->currentPage())
+            <span aria-current="page" class="flex items-center justify-center px-4 h-10 text-c-sub bg-blue-50 text-blue-600 border border-c-sub/10 cursor-pointer">
+                {{ $page }}
+            </span>
+            @else
+            <a href="{{ $url }}" class="flex items-center justify-center px-4 h-10 text-c-sub bg-white border border-c-sub/10 cursor-pointer hover:bg-c-sub/10" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
+                {{ $page }}
+            </a>
+            @endif
+        </li>
+        @endforeach
+        @endif
+        @endforeach
+
+        {{-- Next Page Link --}}
+        <li>
+            @if ($paginator->hasMorePages())
+            <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="flex items-center justify-center px-4 h-10 text-c-sub bg-white border border-c-sub/10 rounded-e-lg hover:bg-c-sub/10 cursor-pointer" aria-label="{{ __('pagination.next') }}">
+                次
+            </a>
+            @else
+            <span class="flex items-center justify-center px-4 h-10 text-c-sub bg-white border border-c-sub/10 rounded-e-lg cursor-default">
+                次
+            </span>
+            @endif
+        </li>
+    </ul>
 </nav>
 @endif

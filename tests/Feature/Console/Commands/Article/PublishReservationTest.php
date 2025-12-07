@@ -112,7 +112,7 @@ final class PublishReservationTest extends TestCase
 
     public function test_command_signature_is_correct(): void
     {
-        $this->markTestSkipped('DB壊す？');
+        $this->markTestSkipped('RefreshDatabase実行してもレコードが残るのでスキップ');
         $command = $this->app->make(\App\Console\Commands\Article\PublishReservation::class);
 
         $this->assertEquals('article:publish-reservation', $command->getName());

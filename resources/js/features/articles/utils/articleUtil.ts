@@ -58,11 +58,11 @@ export const StatusText: Record<ArticleStatus, string> = {
 };
 
 export const StatusClass: Record<ArticleStatus, string> = {
-  publish: "bg-white hover:bg-g2",
+  publish: "bg-white hover:bg-g1",
   reservation: "bg-green-100 hover:bg-green-200",
   draft: "bg-orange-100 hover:bg-orange-200",
-  trash: "bg-g2 hover:bg-g4",
-  private: "bg-g2 hover:bg-g4",
+  trash: "bg-g2 hover:bg-g3",
+  private: "bg-g2 hover:bg-g3",
 };
 
 export const deepCopy = <T>(obj: T): T => {

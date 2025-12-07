@@ -15,6 +15,7 @@
   --color-warn: theme(colors.yellow.500);
   --color-warn-light: theme(colors.yellow.300);
 
+  --color-g1: theme(colors.gray.100);
   --color-g2: theme(colors.gray.200);
   --color-g3: theme(colors.gray.300);
   --color-g4: theme(colors.gray.400);

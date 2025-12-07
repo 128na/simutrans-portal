@@ -37,7 +37,10 @@
   @apply
     file:ml-0 file:border-0
     file:px-3 file:py-1.5 file:text-sm file:rounded-lg
-    file:bg-c-sub;
+    file:bg-c-sub/80 hover:file:bg-c-sub/60;
+}
+.v2-input-select {
+  @apply pr-8
 }
 
 /* カード */
@@ -49,7 +52,7 @@
   @apply border-c-main text-c-main;
 }
 .v2-card-sub {
-  @apply border-c-sub text-c-sub;
+  @apply border-c-sub/80 text-c-sub/80;
 }
 .v2-card-primary {
   @apply border-c-primary text-c-primary;
@@ -72,7 +75,7 @@
   @apply text-white cursor-pointer;
 }
 .v2-button-outline {
-  @apply bg-transparent border;
+  @apply bg-transparent border cursor-pointer;
 }
 /* ボタン：サイズ */
 .v2-button-sm {
@@ -89,17 +92,11 @@
   @apply cursor-not-allowed opacity-50 hover:bg-none;
 }
 /* ボタン：色 */
-.v2-button-main {
-  @apply bg-c-main hover:bg-c-main/80;
-}
-.v2-button-main-outline {
-  @apply border-c-main text-c-main hover:bg-c-main/10;
-}
 .v2-button-sub {
-  @apply bg-c-sub hover:bg-c-sub/80;
+  @apply bg-c-sub/80 hover:bg-c-sub/60;
 }
 .v2-button-sub-outline {
-  @apply border-c-sub text-c-sub hover:bg-c-sub/10;
+  @apply border-c-sub/80 text-c-sub/80 hover:bg-c-sub/10;
 }
 .v2-button-primary {
   @apply bg-c-primary hover:bg-c-primary/80;

@@ -7,8 +7,6 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const variants: Record<string, string> = {
-  main: "v2-button-main",
-  mainOutline: "v2-button-main-outline",
   sub: "v2-button-sub",
   subOutline: "v2-button-sub-outline",
   primary: "v2-button-primary",

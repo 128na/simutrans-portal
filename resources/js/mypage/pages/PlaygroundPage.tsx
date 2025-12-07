@@ -3,6 +3,7 @@ import V2Button from "@/components/ui/v2/V2Button";
 import V2Card from "@/components/ui/v2/V2Card";
 import V2Input from "@/components/ui/v2/V2Input";
 import V2Textarea from "@/components/ui/v2/V2Textarea";
+import V2Select from "@/components/ui/v2/V2Select";
 
 const app = document.getElementById("app-playground");
 if (app) {
@@ -14,8 +15,6 @@ if (app) {
         render: (p: Props) => <V2Button {...p}>ボタン</V2Button>,
         condition: {
           variant: [
-            "main",
-            "mainOutline",
             "sub",
             "subOutline",
             "primary",
@@ -109,6 +108,36 @@ if (app) {
           required: [true],
         },
       },
+      {
+        name: "v2Select",
+        show: true,
+        render: (p: Props) => (
+          <V2Select
+            options={{ option1: "Option 1", option2: "Option 2" }}
+            {...p}
+          />
+        ),
+        condition: {
+          disabled: [false, true],
+        },
+      },
+      {
+        name: "v2Select (required)",
+        show: true,
+        render: (p: Props) => (
+          <V2Select
+            options={{ "": "none", option1: "Option 1", option2: "Option 2" }}
+            {...p}
+          />
+        ),
+        condition: {
+          required: [true],
+        },
+      },
+      // TODO: checkbox
+      // TODO: checkboxes
+      // TODO: badge
+      // TODO: table
     ];
 
     const filteredComponents = components

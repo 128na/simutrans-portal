@@ -32,6 +32,12 @@
     @apply text-c-sub/90 hover:text-c-sub/70 decoration-c-sub/90 hover:decoration-c-sub/70 underline break-all;
   }
 
+  /* ヘッダメニュー */
+  .v2-header-link {
+    @apply text-sm/6 font-semibold
+    after:content-['↗'] after:text-c-sub/50 after:text-xs;
+  }
+
   /* reactとblade双方から共通利用できるように定義した主要パーツ用クラス */
   /* フォーム */
   .v2-input {

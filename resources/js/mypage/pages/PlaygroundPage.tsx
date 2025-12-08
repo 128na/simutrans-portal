@@ -213,7 +213,7 @@ if (app) {
         },
       },
       {
-        name: "table",
+        name: "v2-table",
         show: true,
         render: (p: Props) => (
           <table className="v2-table" {...p}>
@@ -236,7 +236,7 @@ if (app) {
         condition: {},
       },
       {
-        name: "table vertical header",
+        name: "v2-table vertical header",
         show: true,
         render: (p: Props) => (
           <div className="v2-table-wrapper">
@@ -267,7 +267,7 @@ if (app) {
         condition: {},
       },
       {
-        name: "text",
+        name: "v2-text",
         show: true,
         render: (p: Props) => <div {...p}>テスト</div>,
         condition: {
@@ -278,7 +278,7 @@ if (app) {
         },
       },
       {
-        name: "link",
+        name: "v2-link",
         show: true,
         render: (p: Props) => (
           <a className="v2-link" {...p}>
@@ -293,6 +293,16 @@ if (app) {
             "http://localhost:1080",
           ],
         },
+      },
+      {
+        name: "v2-link-title",
+        show: true,
+        render: (p: Props) => (
+          <a className="v2-header-link" href="#" {...p}>
+            リンクテキスト
+          </a>
+        ),
+        condition: {},
       },
     ];
 

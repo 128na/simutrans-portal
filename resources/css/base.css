@@ -24,7 +24,9 @@
   }
 }
 @layer utilities {
-  .v2-link:not([href^="https://simutrans-portal.128-bit.net"]):not([href^="http://localhost:1080"]):not([href^="#"]):not([href^="/"]) {
+  .v2-link:not([href^="https://simutrans-portal.128-bit.net"]):not(
+      [href^="http://localhost:1080"]
+    ):not([href^="#"]):not([href^="/"]) {
     @apply decoration-c-primary text-c-primary hover:text-c-primary/80 underline break-all
     after:content-['↗'] after:text-c-sub/50 after:text-xs;
   }
@@ -63,15 +65,12 @@
       checked:text-c-primary
       focus:outline-none focus:ring-0
       invalid:text-c-danger invalid:bg-c-danger/10
-      disabled:cursor-not-allowed disabled:text-c-sub/70
-      ;
+      disabled:cursor-not-allowed disabled:text-c-sub/70;
   }
   .v2-checkbox-label {
-    @apply
-    peer-checked:text-c-primary
+    @apply peer-checked:text-c-primary
     peer-disabled:text-c-sub/70 peer-disabled:cursor-not-allowed
-    peer-invalid:text-c-danger
-    ;
+    peer-invalid:text-c-danger;
   }
 
   /* カード */

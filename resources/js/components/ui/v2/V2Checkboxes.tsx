@@ -1,7 +1,6 @@
 import V2Checkbox from "./V2Checkbox";
 
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {
-  id: string;
   options: Record<string, string>;
   checkedOptions?: string[];
 };
@@ -9,14 +8,12 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
 export default function V2Checkboxes({
   options,
   checkedOptions,
-  id,
   ...props
 }: Props) {
   return (
-    <div className="space-x-4 space-y-1">
+    <div className="v2-checkboxes">
       {Object.entries(options).map(([key, label], index) => (
         <V2Checkbox
-          id={`${id}-${index}`}
           key={index}
           value={key}
           checked={checkedOptions?.includes(key)}

@@ -40,6 +40,9 @@
 .v2-input-select {
   @apply pr-8;
 }
+.v2-checkboxes {
+  @apply space-x-4 space-y-1;
+}
 .v2-checkbox {
   @apply mr-0.5
     text-c-main
@@ -49,17 +52,12 @@
     disabled:cursor-not-allowed disabled:text-c-sub/70
     ;
 }
-.v2-checkbox-label-checked {
+.v2-checkbox-label {
   @apply
-    text-c-primary
-}
-.v2-checkbox-label-disabled {
-  @apply
-    text-c-sub/70 cursor-not-allowed
-}
-.v2-checkbox-label-required {
-  @apply
-    text-c-danger
+  peer-checked:text-c-primary
+  peer-disabled:text-c-sub/70 peer-disabled:cursor-not-allowed
+  peer-invalid:text-c-danger
+  ;
 }
 
 /* カード */

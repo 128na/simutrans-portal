@@ -62,7 +62,7 @@
 
 /* カード */
 .v2-card {
-  @apply bg-transparent border;
+  @apply bg-transparent border p-4 rounded-lg w-full;
 }
 /* カード：色 */
 .v2-card-main {
@@ -144,6 +144,45 @@
 }
 .v2-button-success-outline {
   @apply border-c-success text-c-success hover:bg-c-success/10;
+}
+
+/* バッジ */
+.v2-badge {
+  @apply text-[.7rem] px-1 py-0.5 mr-0.5 text-white rounded-md;
+}
+.v2-badge-main {
+  @apply bg-c-main;
+}
+.v2-badge-sub {
+  @apply bg-c-sub/80;
+}
+.v2-badge-primary {
+  @apply bg-c-primary;
+}
+.v2-badge-danger {
+  @apply bg-c-danger;
+}
+.v2-badge-warn {
+  @apply bg-c-warn;
+}
+.v2-badge-info {
+  @apply bg-c-info;
+}
+.v2-badge-success {
+  @apply bg-c-success;
+}
+/* テーブル */
+.v2-table-wrapper {
+  @apply overflow-x-auto;
+}
+.v2-table {
+  @apply text-left border-collapse;
+}
+.v2-table th {
+  @apply font-normal bg-c-sub/80 text-white px-4 py-2 border border-c-sub/20 break-keep text-nowrap;
+}
+.v2-table td {
+  @apply px-4 py-2 border border-c-sub/20 break-keep text-nowrap;
 }
 
 /* v1 */

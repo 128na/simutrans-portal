@@ -6,6 +6,7 @@ import V2Textarea from "@/components/ui/v2/V2Textarea";
 import V2Select from "@/components/ui/v2/V2Select";
 import V2Checkbox from "@/components/ui/v2/V2Checkbox";
 import V2Checkboxes from "@/components/ui/v2/V2Checkboxes";
+import V2TextBadge from "@/components/ui/v2/V2TextBadge";
 
 const app = document.getElementById("app-playground");
 if (app) {
@@ -195,7 +196,76 @@ if (app) {
         ),
         condition: {},
       },
-      // TODO: badge
+      {
+        name: "v2badge",
+        show: true,
+        render: (p: Props) => <V2TextBadge {...p}>バッジ</V2TextBadge>,
+        condition: {
+          variant: [
+            "main",
+            "sub",
+            "primary",
+            "danger",
+            "warn",
+            "info",
+            "success",
+          ],
+        },
+      },
+      {
+        name: "table",
+        show: true,
+        render: (p: Props) => (
+          <table className="v2-table" {...p}>
+            <thead>
+              <tr>
+                <th>Header 1</th>
+                <th>Header 2</th>
+                <th>Header 3</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Data 1</td>
+                <td>Data 2</td>
+                <td>Data 3</td>
+              </tr>
+            </tbody>
+          </table>
+        ),
+        condition: {},
+      },
+      {
+        name: "table vertical header",
+        show: true,
+        render: (p: Props) => (
+          <div className="v2-table-wrapper">
+            <table className="v2-table" {...p}>
+              <tbody>
+                <tr>
+                  <th>Header 1</th>
+                  <td>Data 1</td>
+                  <td>Data 1</td>
+                  <td>Data 1</td>
+                  <td>Data 1</td>
+                  <td>Data 1</td>
+                  <td>Data 1</td>
+                </tr>
+                <tr>
+                  <th>Header 2</th>
+                  <td>Data 2</td>
+                  <td>Data 2</td>
+                  <td>Data 2</td>
+                  <td>Data 2</td>
+                  <td>Data 2</td>
+                  <td>Data 2</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        ),
+        condition: {},
+      },
       // TODO: table
     ];
 

@@ -2,7 +2,6 @@ import React from "react";
 import { twMerge } from "tailwind-merge";
 type Props = React.ButtonHTMLAttributes<HTMLElement> & {
   variant?: keyof typeof variants;
-  children: React.ReactNode;
 };
 
 const variants: Record<string, string> = {
@@ -24,7 +23,7 @@ export default function V2Card({
   return (
     <div
       className={twMerge(
-        "p-4 rounded-lg block w-full text-left v2-card",
+        "v2-card",
         variant in variants ? variants[variant] : variants.sub,
         className
       )}

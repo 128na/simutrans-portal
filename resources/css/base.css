@@ -40,6 +40,27 @@
 .v2-input-select {
   @apply pr-8
 }
+.v2-checkbox {
+  @apply mr-0.5
+    text-c-main
+    checked:text-c-primary
+    focus:outline-none focus:ring-0
+    invalid:text-c-danger invalid:bg-c-danger/10
+    disabled:cursor-not-allowed disabled:text-c-sub/70
+    ;
+}
+.v2-checkbox-label-checked {
+  @apply
+    text-c-primary
+}
+.v2-checkbox-label-disabled {
+  @apply
+    text-c-sub/70 cursor-not-allowed
+}
+.v2-checkbox-label-required {
+  @apply
+    text-c-danger
+}
 
 /* カード */
 .v2-card {

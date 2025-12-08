@@ -4,6 +4,8 @@ import V2Card from "@/components/ui/v2/V2Card";
 import V2Input from "@/components/ui/v2/V2Input";
 import V2Textarea from "@/components/ui/v2/V2Textarea";
 import V2Select from "@/components/ui/v2/V2Select";
+import V2Checkbox from "@/components/ui/v2/V2Checkbox";
+import V2Checkboxes from "@/components/ui/v2/V2Checkboxes";
 
 const app = document.getElementById("app-playground");
 if (app) {
@@ -134,8 +136,65 @@ if (app) {
           required: [true],
         },
       },
-      // TODO: checkbox
-      // TODO: checkboxes
+      {
+        name: "v2Checkbox",
+        show: true,
+        render: (p: Props, index: number) => (
+          <V2Checkbox id={`c-${index}`} {...p}>
+            チェックボックスのラベル
+          </V2Checkbox>
+        ),
+        condition: {
+          disabled: [false, true],
+          checked: [false, true],
+        },
+      },
+      {
+        name: "v2Checkbox (required)",
+        show: true,
+        render: (p: Props, index: number) => (
+          <V2Checkbox id={`c-${index}`} {...p}>
+            チェックボックスのラベル
+          </V2Checkbox>
+        ),
+        condition: {
+          required: [true],
+        },
+      },
+      {
+        name: "v2Checkboxes",
+        show: true,
+        render: (p: Props, index: number) => (
+          <V2Checkboxes
+            id={`c-${index}`}
+            {...p}
+            options={{
+              option1: "Option 1",
+              option2: "Option 2",
+              option3: "Option 3",
+              option4: "Option 4",
+              option5: "Option 5",
+              option6: "Option 6",
+              option7: "Option 7",
+              option8: "Option 8",
+              option9: "Option 9",
+              option10: "Option 10",
+              option11: "Option 11",
+              option12: "Option 12",
+              option13: "Option 13",
+              option14: "Option 14",
+              option15: "Option 15",
+              option16: "Option 16",
+              option17: "Option 17",
+              option18: "Option 18",
+              option19: "Option 19",
+              option20: "Option 20",
+            }}
+            checkedOptions={["option1", "option3", "option5"]}
+          />
+        ),
+        condition: {},
+      },
       // TODO: badge
       // TODO: table
     ];
@@ -189,7 +248,7 @@ if (app) {
                       >
                         <p>{pattern.name}</p>
                       </a>
-                      {component.render(pattern.props)}
+                      {component.render(pattern.props, patternIndex)}
                     </div>
                   );
                 })}

@@ -23,166 +23,199 @@
     font-family: var(--font-sans);
   }
 }
+@layer utilities {
+  .v2-link:not([href^="https://simutrans-portal.128-bit.net"]):not([href^="http://localhost:1080"]):not([href^="#"]):not([href^="/"]) {
+    @apply decoration-c-primary text-c-primary hover:text-c-primary/80 underline break-all
+    after:content-['↗'] after:text-c-sub/50 after:text-xs;
+  }
+  .v2-link {
+    @apply text-c-sub/90 hover:text-c-sub/70 decoration-c-sub/90 hover:decoration-c-sub/70 underline break-all;
+  }
 
-/* reactとblade双方から共通利用できるように定義した主要パーツ用クラス */
-/* フォーム */
-.v2-input {
-  @apply border-0 border-b border-b-c-sub/20 p-2
-    focus:outline-none focus:ring-0 focus:border-b-c-primary
-    invalid:border-b-c-danger invalid:bg-c-danger/10
-    disabled:cursor-text disabled:bg-c-sub/10;
-}
-.v2-input-file {
-  @apply file:ml-0 file:border-0
-    file:px-3 file:py-1.5 file:text-sm file:rounded-lg
-    file:bg-c-sub/80 hover:file:bg-c-sub/60;
-}
-.v2-input-select {
-  @apply pr-8;
-}
-.v2-checkboxes {
-  @apply space-x-4 space-y-1;
-}
-.v2-checkbox {
-  @apply mr-0.5
-    text-c-main
-    checked:text-c-primary
-    focus:outline-none focus:ring-0
-    invalid:text-c-danger invalid:bg-c-danger/10
-    disabled:cursor-not-allowed disabled:text-c-sub/70
+  /* reactとblade双方から共通利用できるように定義した主要パーツ用クラス */
+  /* フォーム */
+  .v2-input {
+    @apply border-0 border-b border-b-c-sub/20 p-2
+      focus:outline-none focus:ring-0 focus:border-b-c-primary focus:bg-c-primary/10
+      invalid:border-b-c-danger invalid:bg-c-danger/10
+      disabled:cursor-text disabled:bg-c-sub/10;
+  }
+  .v2-input-file {
+    @apply file:ml-0 file:border-0
+      file:px-3 file:py-1.5 file:text-sm file:rounded-lg
+      file:bg-c-sub/80 hover:file:bg-c-sub/60;
+  }
+  .v2-input-select {
+    @apply pr-8;
+  }
+  .v2-checkboxes {
+    @apply space-x-4 space-y-1;
+  }
+  .v2-checkbox {
+    @apply mr-0.5
+      text-c-main
+      checked:text-c-primary
+      focus:outline-none focus:ring-0
+      invalid:text-c-danger invalid:bg-c-danger/10
+      disabled:cursor-not-allowed disabled:text-c-sub/70
+      ;
+  }
+  .v2-checkbox-label {
+    @apply
+    peer-checked:text-c-primary
+    peer-disabled:text-c-sub/70 peer-disabled:cursor-not-allowed
+    peer-invalid:text-c-danger
     ;
-}
-.v2-checkbox-label {
-  @apply
-  peer-checked:text-c-primary
-  peer-disabled:text-c-sub/70 peer-disabled:cursor-not-allowed
-  peer-invalid:text-c-danger
-  ;
-}
+  }
 
-/* カード */
-.v2-card {
-  @apply bg-transparent border p-4 rounded-lg w-full;
-}
-/* カード：色 */
-.v2-card-main {
-  @apply border-c-main text-c-main;
-}
-.v2-card-sub {
-  @apply border-c-sub/80 text-c-sub/80;
-}
-.v2-card-primary {
-  @apply border-c-primary text-c-primary;
-}
-.v2-card-danger {
-  @apply border-c-danger text-c-danger;
-}
-.v2-card-warn {
-  @apply border-c-warn text-c-warn;
-}
-.v2-card-info {
-  @apply border-c-info text-c-info;
-}
-.v2-card-success {
-  @apply border-c-success text-c-success;
-}
+  /* カード */
+  .v2-card {
+    @apply bg-transparent border p-4 rounded-lg w-full;
+  }
+  /* カード：色 */
+  .v2-card-main {
+    @apply border-c-main text-c-main;
+  }
+  .v2-card-sub {
+    @apply border-c-sub/80 text-c-sub/80;
+  }
+  .v2-card-primary {
+    @apply border-c-primary text-c-primary;
+  }
+  .v2-card-danger {
+    @apply border-c-danger text-c-danger;
+  }
+  .v2-card-warn {
+    @apply border-c-warn text-c-warn;
+  }
+  .v2-card-info {
+    @apply border-c-info text-c-info;
+  }
+  .v2-card-success {
+    @apply border-c-success text-c-success;
+  }
 
-/* ボタン */
-.v2-button {
-  @apply text-white cursor-pointer;
-}
-.v2-button-outline {
-  @apply bg-transparent border cursor-pointer;
-}
-/* ボタン：サイズ */
-.v2-button-sm {
-  @apply px-2 py-1 text-xs rounded-md;
-}
-.v2-button-md {
-  @apply px-3 py-1.5 text-sm rounded-lg;
-}
-.v2-button-lg {
-  @apply px-4 py-2 text-base rounded-lg;
-}
-/* ボタン：disabled */
-.v2-button-disabled {
-  @apply cursor-not-allowed opacity-50 hover:bg-none;
-}
-/* ボタン：色 */
-.v2-button-sub {
-  @apply bg-c-sub/80 hover:bg-c-sub/60;
-}
-.v2-button-sub-outline {
-  @apply border-c-sub/80 text-c-sub/80 hover:bg-c-sub/10;
-}
-.v2-button-primary {
-  @apply bg-c-primary hover:bg-c-primary/80;
-}
-.v2-button-primary-outline {
-  @apply border-c-primary text-c-primary hover:bg-c-primary/10;
-}
-.v2-button-danger {
-  @apply bg-c-danger hover:bg-c-danger/80;
-}
-.v2-button-danger-outline {
-  @apply border-c-danger text-c-danger hover:bg-c-danger/10;
-}
-.v2-button-warn {
-  @apply bg-c-warn hover:bg-c-warn/80;
-}
-.v2-button-warn-outline {
-  @apply border-c-warn text-c-warn hover:bg-c-warn/10;
-}
-.v2-button-info {
-  @apply bg-c-info hover:bg-c-info/80;
-}
-.v2-button-info-outline {
-  @apply border-c-info text-c-info hover:bg-c-info/10;
-}
-.v2-button-success {
-  @apply bg-c-success hover:bg-c-success/80;
-}
-.v2-button-success-outline {
-  @apply border-c-success text-c-success hover:bg-c-success/10;
-}
+  /* ボタン */
+  .v2-button {
+    @apply text-white cursor-pointer shadow-md hover:shadow-lg transition-shadow;
+  }
+  .v2-button-outline {
+    @apply bg-transparent border cursor-pointer shadow-md hover:shadow-lg transition-shadow;
+  }
+  /* ボタン：サイズ */
+  .v2-button-sm {
+    @apply px-2 py-1 text-xs rounded-md;
+  }
+  .v2-button-md {
+    @apply px-3 py-1.5 text-sm rounded-lg;
+  }
+  .v2-button-lg {
+    @apply px-4 py-2 text-base rounded-lg;
+  }
+  /* ボタン：disabled */
+  .v2-button-disabled {
+    @apply cursor-not-allowed opacity-50 hover:bg-none;
+  }
+  /* ボタン：色 */
+  .v2-button-sub {
+    @apply bg-c-sub/80 hover:bg-c-sub/60;
+  }
+  .v2-button-sub-outline {
+    @apply border-c-sub/80 text-c-sub/80 hover:bg-c-sub/10;
+  }
+  .v2-button-primary {
+    @apply bg-c-primary hover:bg-c-primary/80;
+  }
+  .v2-button-primary-outline {
+    @apply border-c-primary text-c-primary hover:bg-c-primary/10;
+  }
+  .v2-button-danger {
+    @apply bg-c-danger hover:bg-c-danger/80;
+  }
+  .v2-button-danger-outline {
+    @apply border-c-danger text-c-danger hover:bg-c-danger/10;
+  }
+  .v2-button-warn {
+    @apply bg-c-warn hover:bg-c-warn/80;
+  }
+  .v2-button-warn-outline {
+    @apply border-c-warn text-c-warn hover:bg-c-warn/10;
+  }
+  .v2-button-info {
+    @apply bg-c-info hover:bg-c-info/80;
+  }
+  .v2-button-info-outline {
+    @apply border-c-info text-c-info hover:bg-c-info/10;
+  }
+  .v2-button-success {
+    @apply bg-c-success hover:bg-c-success/80;
+  }
+  .v2-button-success-outline {
+    @apply border-c-success text-c-success hover:bg-c-success/10;
+  }
 
-/* バッジ */
-.v2-badge {
-  @apply text-[.7rem] px-1 py-0.5 mr-0.5 text-white rounded-md;
-}
-.v2-badge-main {
-  @apply bg-c-main;
-}
-.v2-badge-sub {
-  @apply bg-c-sub/80;
-}
-.v2-badge-primary {
-  @apply bg-c-primary;
-}
-.v2-badge-danger {
-  @apply bg-c-danger;
-}
-.v2-badge-warn {
-  @apply bg-c-warn;
-}
-.v2-badge-info {
-  @apply bg-c-info;
-}
-.v2-badge-success {
-  @apply bg-c-success;
-}
-/* テーブル */
-.v2-table-wrapper {
-  @apply overflow-x-auto;
-}
-.v2-table {
-  @apply text-left border-collapse;
-}
-.v2-table th {
-  @apply font-normal bg-c-sub/80 text-white px-4 py-2 border border-c-sub/20 break-keep text-nowrap;
-}
-.v2-table td {
-  @apply px-4 py-2 border border-c-sub/20 break-keep text-nowrap;
+  /* バッジ */
+  .v2-badge {
+    @apply text-[.7rem] px-1 py-0.5 mr-0.5 text-white rounded-md;
+  }
+  .v2-badge-main {
+    @apply bg-c-main;
+  }
+  .v2-badge-sub {
+    @apply bg-c-sub/80;
+  }
+  .v2-badge-primary {
+    @apply bg-c-primary;
+  }
+  .v2-badge-danger {
+    @apply bg-c-danger;
+  }
+  .v2-badge-warn {
+    @apply bg-c-warn;
+  }
+  .v2-badge-info {
+    @apply bg-c-info;
+  }
+  .v2-badge-success {
+    @apply bg-c-success;
+  }
+  /* テーブル */
+  .v2-table-wrapper {
+    @apply overflow-x-auto;
+  }
+  .v2-table {
+    @apply text-left border-collapse;
+  }
+  .v2-table th {
+    @apply font-normal bg-c-sub/80 text-white px-4 py-2 border border-c-sub/20 break-keep text-nowrap;
+  }
+  .v2-table td {
+    @apply px-4 py-2 border border-c-sub/20 break-keep text-nowrap;
+  }
+  /* misc */
+  .v2-category {
+    @apply px-2.5 py-0.5 text-white inline-block rounded bg-category hover:bg-category/80;
+  }
+  .v2-tag {
+    @apply px-2.5 py-0.5 text-white inline-block rounded bg-tag hover:bg-tag/80;
+  }
+
+  /* テキスト */
+  .v2-text-h1 {
+    @apply text-4xl font-semibold tracking-tight text-pretty;
+  }
+  .v2-text-h2 {
+    @apply text-3xl font-semibold tracking-tight text-pretty;
+  }
+  .v2-text-h3 {
+    @apply text-2xl font-semibold tracking-tight text-pretty;
+  }
+  .v2-text-h4 {
+    @apply text-xl font-semibold tracking-tight text-pretty;
+  }
+  .v2-text-caption {
+    @apply text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-c-sub/10;
+  }
 }
 
 /* v1 */

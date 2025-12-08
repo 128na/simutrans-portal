@@ -266,7 +266,34 @@ if (app) {
         ),
         condition: {},
       },
-      // TODO: table
+      {
+        name: "text",
+        show: true,
+        render: (p: Props) => <div {...p}>テスト</div>,
+        condition: {
+          className: [
+            ...["v2-text-h1", "v2-text-h2", "v2-text-h3", "v2-text-h4"],
+            ...["v2-text-caption"],
+          ],
+        },
+      },
+      {
+        name: "link",
+        show: true,
+        render: (p: Props) => (
+          <a className="v2-link" {...p}>
+            {String(p.href) || "リンクテキスト"}
+          </a>
+        ),
+        condition: {
+          href: [
+            "#",
+            "https://example.com",
+            "https://simutrans-portal.128-bit.net",
+            "http://localhost:1080",
+          ],
+        },
+      },
     ];
 
     const filteredComponents = components

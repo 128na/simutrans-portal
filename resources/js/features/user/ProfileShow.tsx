@@ -9,7 +9,7 @@ type Props = {
 export const ProfileShow = ({ user, attachments, preview }: Props) => {
   return (
     <div className="flex items-center gap-x-3">
-      <div className="flex-shrink-0">
+      <div className="shrink-0">
         <Avatar
           attachmentId={user.profile.data.avatar}
           attachments={

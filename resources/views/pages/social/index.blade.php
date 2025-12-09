@@ -1,49 +1,49 @@
 @extends('layouts.front')
 
-@section('max-w', 'max-w-7xl')
+@section('max-w', '2-content-lg')
 @section('content')
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<div class="mx-auto max-w-7xl p-6 lg:px-8">
-    <div class="mb-6">
-        <h2 class="title-xl2">SNS・通知ツール</h2>
-        <p class="mt-2 text-lg/8 text-c-sub">記事投稿や更新通知を受け取ることができるSNSアカウントやツールです。</p>
+<div class="v2-page v2-page-lg">
+    <div class="mb-12">
+        <h2 class="v2-text-h1 mb-4">SNS・通知ツール</h2>
+        <p class="v2-page-text-sub">記事投稿や更新通知を受け取ることができるSNSアカウントやツールです。</p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
-        <h4 class="title-md">プッシュ通知</h4>
+    <div class="pt-6 v2-page-content-area">
+        <h4 class="v2-text-h3">プッシュ通知</h4>
         <div class="text-c-sub">
             スマホやPCにプッシュ通知ができます。右下のアイコンから登録・解除ができます。
         </div>
 
 
-        <h4 class="title-md">SNSアカウント</h4>
+        <h4 class="v2-text-h3">SNSアカウント</h4>
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">
                 <tbody>
                     <tr>
                         <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">Twitter</td>
                         <td class="border border-c-sub/10 px-4 py-2">
-                            @include('components.ui.link-external', [
+                            @include('components.ui.link', [
                             'url' => 'https://twitter.com/PortalSimutrans', 'title' => '@PortalSimutrans'])
                         </td>
                     </tr>
                     <tr>
                         <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">Misskey</td>
                         <td class="border border-c-sub/10 px-4 py-2">
-                            @include('components.ui.link-external', [
+                            @include('components.ui.link', [
                             'url' => 'https://misskey.io/@PortalSimutrans', 'title' => '@PortalSimutrans'])
                         </td>
                     </tr>
                     <tr>
                         <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">Bluesky</td>
                         <td class="border border-c-sub/10 px-4 py-2">
-                            @include('components.ui.link-external', [
+                            @include('components.ui.link', [
                             'url' => 'https://bsky.app/profile/portalsimutrans.bsky.social', 'title' => '@PortalSimutrans.bsky.social'])
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <h4 class="title-md">RSS</h4>
+        <h4 class="v2-text-h3">RSS</h4>
         <div class="overflow-x-auto mb-4">
             <table class="border-collapse whitespace-nowrap">
                 <tbody>
@@ -63,21 +63,21 @@
         <div class="text-c-sub">
             RSSフィーダーやSlackなど各種ツールと連携させると新着情報が入手できます。
         </div>
-        <h4 class="title-md">その他開発情報など</h4>
+        <h4 class="v2-text-h3">その他開発情報など</h4>
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">
                 <tbody>
                     <tr>
                         <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">中の人のTwitter</td>
                         <td class="border border-c-sub/10 px-4 py-2">
-                            @include('components.ui.link-external', [
+                            @include('components.ui.link', [
                             'url' => 'https://twitter.com/128Na', 'title' => '@128Na'])
                         </td>
                     </tr>
                     <tr>
                         <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">Github</td>
                         <td class="border border-c-sub/10 px-4 py-2">
-                            @include('components.ui.link-external', [
+                            @include('components.ui.link', [
                             'url' => 'https://github.com/128na/simutrans-portal', 'title' => '128na/simutrans-portal'])
                         </td>
                     </tr>

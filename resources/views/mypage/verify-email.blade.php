@@ -1,14 +1,14 @@
 @extends('layouts.mypage')
-@section('max-w', 'max-w-7xl')
+@section('max-w', '2-content-lg')
 @section('content')
-<div class="mx-auto max-w-7xl p-6 lg:px-8">
-    <div class="mb-6">
-        <h2 class="title-xl">メールアドレスの検証</h2>
+<div class="v2-page v2-page-lg">
+    <div class="mb-12">
+        <h2 class="v2-text-h2">メールアドレスの検証</h2>
         <p class="mt-2 text-c-sub">
             登録に使用したメールアドレスが有効なものか検証します。
         </p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
+    <div class="pt-6 v2-page-content-area">
         <form action="{{route('verification.send')}}" method="POST">
             @csrf
             <button type="submit" class="button-primary">

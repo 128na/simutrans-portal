@@ -1,6 +1,7 @@
 import { useState } from "react";
-import Input from "@/components/ui/Input";
 import { twMerge } from "tailwind-merge";
+import V2Button from "../ui/v2/V2Button";
+import V2Input from "../ui/v2/V2Input";
 
 type SearchableItem = {
   id: number;
@@ -59,14 +60,10 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
       <div>
         <div className="flex flex-wrap gap-2">
           {selectedItems.map((item) => (
-            <span
-              key={item.id}
-              className="bg-c-primary text-white px-2 py-1 rounded cursor-pointer"
-              onClick={() => remove(item.id)}
-            >
+            <V2Button key={item.id} onClick={() => remove(item.id)}>
               {getLabel(item)}
               <span className="ml-2">✕</span>
-            </span>
+            </V2Button>
           ))}
           {selectedItems.length === 0 && (
             <span className="text-c-sub">（未選択）</span>
@@ -74,20 +71,15 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
         </div>
       </div>
 
-      <Input
-        className={twMerge(className, "mb-0")}
+      <V2Input
         type="text"
+        className="w-full"
         value={criteria}
         onChange={(e) => setCriteria(e.target.value)}
         placeholder={placeholder}
       />
 
-      <div
-        className={twMerge(
-          "max-h-40 overflow-y-auto border border-c-sub/10 rounded-lg p-2 bg-white",
-          className
-        )}
-      >
+      <div className={twMerge("max-h-40 overflow-y-auto v2-input", className)}>
         {filteredItems.length < 1 ? (
           <div>該当なし</div>
         ) : (

@@ -1,8 +1,8 @@
 @extends('layouts.front')
 
-@section('max-w', 'max-w-7xl')
+@section('max-w', '2-content-lg')
 @section('content')
-<div class="mx-auto max-w-7xl p-6 lg:px-8">
+<div class="v2-page v2-page-lg">
     <div class="absolute inset-0 -z-10 overflow-hidden">
         <svg aria-hidden="true" class="absolute top-0 left-[max(50%,25rem)] h-256 w-512 -translate-x-1/2 mask-[radial-gradient(64rem_64rem_at_top,white,transparent)] stroke-c-sub/10">
             <defs>
@@ -19,8 +19,8 @@
     <div class="mx-auto grid gap-y-16 lg:mx-0 lg:max-w-none lg:gap-y-10">
         <div class="lg:mx-auto lg:grid lg:w-full">
             <div class="lg:pr-4">
-                <h1 class="title-xl2">{{ config('app.name') }}</h1>
-                <p class="mt-6 text-xl/8 text-c-sub">
+                <h1 class="v2-text-h1 mb-6">{{ config('app.name') }}</h1>
+                <p class="text-xl/8 text-c-sub">
                     Simutrans（シムトランス）のaddon（アドオン）を気軽に投稿・紹介できるポータルサイトです。<br />
                     投稿だけでなく、様々なWikiや個人サイト、アップローダーに掲載・投稿されているアドオン紹介記事も掲載できます。<br />
                 </p>
@@ -28,7 +28,7 @@
         </div>
         <div class="lg:mx-auto lg:grid lg:w-full">
             <div class="lg:pr-4">
-                <h2 class="title-md mb-4">お知らせ</h2>
+                <h2 class="v2-text-h3 mb-4">お知らせ</h2>
                 <div class="gap-2 flex flex-col mb-4">
                     @foreach($announces as $article)
                     @include('components.partials.announce-one-liner', ['article' => $article])
@@ -41,13 +41,13 @@
         </div>
         <div class="lg:mx-auto lg:grid lg:w-full">
             <div class="lg:pr-4">
-                <h2 class="title-md mb-4">アドオン関連サイト</h2>
+                <h2 class="v2-text-h3 mb-4">アドオン関連サイト</h2>
                 <div class="gap-2 flex flex-col">
-                    @include('components.ui.link-external', ['url' => 'https://forum.simutrans.com/', 'title' => 'International Simutrans Forum'])
-                    @include('components.ui.link-external', ['url' => 'https://japanese.simutrans.com/index.php', 'title' => 'Simutrans日本語化･解説'])
-                    @include('components.ui.link-external', ['url' => 'https://wikiwiki.jp/twitrans/', 'title' => 'Simutrans的な実験室'])
-                    @include('components.ui.link-external', ['url' => 'https://cross-search.128-bit.net/', 'title' => 'Simutrans 横断検索'])
-                    @include('components.ui.link-external', ['url' => route('redirect', ['name' => 'simutrans-interact-meeting']), 'title' => 'シムトランス交流会議'])
+                    @include('components.ui.link', ['url' => 'https://forum.simutrans.com/', 'title' => 'International Simutrans Forum'])
+                    @include('components.ui.link', ['url' => 'https://japanese.simutrans.com/index.php', 'title' => 'Simutrans日本語化･解説'])
+                    @include('components.ui.link', ['url' => 'https://wikiwiki.jp/twitrans/', 'title' => 'Simutrans的な実験室'])
+                    @include('components.ui.link', ['url' => 'https://cross-search.128-bit.net/', 'title' => 'Simutrans 横断検索'])
+                    @include('components.ui.link', ['url' => route('redirect', ['name' => 'simutrans-interact-meeting']), 'title' => 'シムトランス交流会議'])
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 <!-- Include this script tag or install `@tailwindplus/elements` via npm: -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script> -->
-<header class="bg-white">
-    <nav aria-label="Global" class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 border-b border-c-sub/10">
+<header>
+    <nav aria-label="Global" class="mx-auto flex v2-page-lg items-center justify-between p-6 lg:px-8 border-b border-c-sub/10">
         <div class="flex lg:flex-1">
             <a href="/" class="-m-1.5 p-1.5">
                 <span class="sr-only">{{config('app.name')}}</span>
@@ -17,15 +17,15 @@
             </button>
         </div>
         <el-popover-group class="hidden lg:flex lg:gap-x-12">
-            <a href="{{route('pak.128japan')}}" class="text-sm/6 font-semibold">pak128.japan</a>
-            <a href="{{route('pak.128')}}" class="text-sm/6 font-semibold">pak128</a>
-            <a href="{{route('pak.64')}}" class="text-sm/6 font-semibold">pak64</a>
-            <a href="{{route('users.index')}}" class="text-sm/6 font-semibold">ユーザー</a>
-            <a href="{{route('categories.index')}}" class="text-sm/6 font-semibold">カテゴリ</a>
-            <a href="{{route('tags.index')}}" class="text-sm/6 font-semibold">タグ</a>
+            <a href="{{route('pak.128japan')}}" class="v2-header-menu-item">pak128.japan</a>
+            <a href="{{route('pak.128')}}" class="v2-header-menu-item">pak128</a>
+            <a href="{{route('pak.64')}}" class="v2-header-menu-item">pak64</a>
+            <a href="{{route('users.index')}}" class="v2-header-menu-item">ユーザー</a>
+            <a href="{{route('categories.index')}}" class="v2-header-menu-item">カテゴリ</a>
+            <a href="{{route('tags.index')}}" class="v2-header-menu-item">タグ</a>
 
             <div class="relative">
-                <button popovertarget="desktop-menu-misc" class="flex items-center gap-x-1 text-sm/6 font-semibold cursor-pointer">
+                <button popovertarget="desktop-menu-misc" class="flex items-center gap-x-1 v2-header-menu-item cursor-pointer">
                     その他
                     <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none text-c-sub">
                         <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
@@ -89,13 +89,13 @@
 
         </el-popover-group>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="{{ route('login') }}" class="text-sm/6 font-semibold">マイページ <span aria-hidden="true">&rarr;</span></a>
+            <a href="{{ route('login') }}" class="v2-header-menu-item">マイページ <span aria-hidden="true">&rarr;</span></a>
         </div>
     </nav>
     <el-dialog>
         <dialog id="mobile-menu" class="backdrop:bg-transparent lg:hidden">
             <div tabindex="0" class="fixed inset-0 focus:outline-none">
-                <el-dialog-panel class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto p-6 sm:max-w-sm sm:ring-1 sm:ring-c-main/10">
+                <el-dialog-panel class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto p-6 sm:max-w-sm sm:ring-1 sm:ring-c-main/10 bg-white">
                     <div class="flex items-center justify-between">
                         <a href="#" class="-m-1.5 p-1.5">
                             <span class="sr-only">{{config('app.name')}}</span>
@@ -111,18 +111,18 @@
                     <div class="mt-6 flow-root">
                         <div class="-my-6 divide-y divide-c-sub/10">
                             <div class="space-y-2 py-6">
-                                <a href="{{route('pak.128japan')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-50">pak128.japan</a>
-                                <a href="{{route('pak.128')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-50">pak128</a>
-                                <a href="{{route('pak.64')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-50">pak64</a>
-                                <a href="{{route('pak.others')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-50">他pak</a>
-                                <a href="{{route('users.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-50">ユーザー一覧</a>
-                                <a href="{{route('categories.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-50">カテゴリ一覧</a>
-                                <a href="{{route('tags.index')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-50">タグ一覧</a>
-                                <a href="{{route('pages')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-50">一般記事</a>
-                                <a href="{{route('search')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-50">検索</a>
-                                <a href="{{ route('social') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-50">SNS・通知ツール</a>
-                                <a href="{{config('app.support_site_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-50" target="_blank" rel="noopener">サイトの使い方<span class="text-sm text-c-sub/50">↗</span></a>
-                                <a href="{{config('app.privacy_policy_url')}}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-50" target="_blank" rel="noopener">プライバシーポリシー<span class="text-sm text-c-sub/50">↗</span></a>
+                                <a href="{{route('pak.128japan')}}" class="v2-header-menu-item-sp">pak128.japan</a>
+                                <a href="{{route('pak.128')}}" class="v2-header-menu-item-sp">pak128</a>
+                                <a href="{{route('pak.64')}}" class="v2-header-menu-item-sp">pak64</a>
+                                <a href="{{route('pak.others')}}" class="v2-header-menu-item-sp">他pak</a>
+                                <a href="{{route('users.index')}}" class="v2-header-menu-item-sp">ユーザー一覧</a>
+                                <a href="{{route('categories.index')}}" class="v2-header-menu-item-sp">カテゴリ一覧</a>
+                                <a href="{{route('tags.index')}}" class="v2-header-menu-item-sp">タグ一覧</a>
+                                <a href="{{route('pages')}}" class="v2-header-menu-item-sp">一般記事</a>
+                                <a href="{{route('search')}}" class="v2-header-menu-item-sp">検索</a>
+                                <a href="{{ route('social') }}" class="v2-header-menu-item-sp">SNS・通知ツール</a>
+                                <a href="{{config('app.support_site_url')}}" class="v2-header-menu-item-sp" target="_blank" rel="noopener">サイトの使い方<span class="text-sm text-c-sub/50">↗</span></a>
+                                <a href="{{config('app.privacy_policy_url')}}" class="v2-header-menu-item-sp" target="_blank" rel="noopener">プライバシーポリシー<span class="text-sm text-c-sub/50">↗</span></a>
                             </div>
                             <div class="py-6">
                                 <a href="{{ route('login') }}" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold hover:bg-gray-50">マイページ</a>

@@ -1,15 +1,15 @@
 @extends('layouts.mypage')
-@section('max-w', 'max-w-7xl')
+@section('max-w', '2-content-lg')
 @section('content')
-<div class="mx-auto max-w-7xl p-6 lg:px-8">
-    <div class="mb-6">
-        <h2 class="title-xl">アナリティクス</h2>
+<div class="v2-page v2-page-lg">
+    <div class="mb-12">
+        <h2 class="v2-text-h2">アナリティクス</h2>
     </div>
     <script id="data-articles" type="application/json">
         @json($articles)
 
     </script>
-    <div class="flex flex-col gap-y-12 border-t border-c-sub/10 pt-6 lg:mx-0">
+    <div class="v2-page-content-area">
         <div id="app-analytics">読み込み中...</div>
     </div>
     @endsection

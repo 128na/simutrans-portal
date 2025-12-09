@@ -1,30 +1,30 @@
 @extends('layouts.front')
 
 @section('content')
-<div class="mx-auto max-w-xl p-6 lg:px-8">
-    <div class="mb-6">
-        <h2 class="title-xl">ログイン</h2>
+<div class="v2-page v2-page-sm">
+    <div class="mb-12">
+        <h2 class="v2-text-h2">ログイン</h2>
     </div>
     <form action="{{route('login.store')}}" method="POST">
         @csrf
-        <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
+        <div class="pt-6 v2-page-content-area">
             <div>
                 @foreach ($errors->all() as $key => $error)
                 <div class="text-sm text-c-danger">{{$error}}</div>
                 @endforeach
                 <label for="email" class="block text-sm/6 font-semibold">メールアドレス</label>
                 <div class="mt-2.5">
-                    <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-c-sub/10 placeholder:text-c-sub focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:w-128" />
+                    <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="v2-input w-full" />
                 </div>
             </div>
             <div>
                 <label for="password" class="block text-sm/6 font-semibold">パスワード</label>
                 <div class="mt-2.5">
-                    <input id="password" type="password" name="password" value="{{old('password', '')}}" autocomplete="current-password" class="block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-c-sub/10 placeholder:text-c-sub focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:w-128" />
+                    <input id="password" type="password" name="password" value="{{old('password', '')}}" autocomplete="current-password" class="v2-input w-full" />
                 </div>
             </div>
             <div>
-                <button type="submit" class="rounded-md bg-c-primary px-8 sm:py-2 py-4 text-white cursor-pointer hover:bg-c-primary/80 w-full sm:w-64">
+                <button type="submit" class="v2-button v2-button-lg v2-button-primary w-full sm:w-64">
                     ログイン
                 </button>
             </div>

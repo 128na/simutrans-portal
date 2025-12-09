@@ -1,18 +1,18 @@
 @extends('layouts.front')
 
-@section('max-w', 'max-w-xl')
+@section('max-w', '2-content-sm')
 @section('content')
-<div class="mx-auto max-w-xl p-6 lg:px-8">
-    <div class="mb-6">
-        <h2 class="title-xl">二要素認証</h2>
+<div class="v2-page v2-page-sm">
+    <div class="mb-12">
+        <h2 class="v2-text-h2">二要素認証</h2>
     </div>
     <form action="{{route('two-factor.login.store')}}" method="POST">
         @csrf
-        <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
+        <div class="pt-6 v2-page-content-area">
             <div>
                 <label for="code" class="block text-sm/6 font-semibold">認証コード</label>
                 <div class="mt-2.5">
-                    <input id="code" type="code" name="code" autocomplete="one-time-code" class="block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-c-sub/10 placeholder:text-c-sub focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:w-128" />
+                    <input id="code" type="code" name="code" autocomplete="one-time-code" class="v2-input w-full" />
                 </div>
                 @error('code')
                 <div class="text-sm text-c-danger">{{$message}}</div>
@@ -24,7 +24,7 @@
                     認証コードが利用できないときは、二要素認証登録時に発行したリカバリコードを使用してください。
                 </p>
                 <div class="mt-2.5">
-                    <input id="recovery_code" type="recovery_code" name="recovery_code" class="block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-c-sub/10 placeholder:text-c-sub focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:w-128" />
+                    <input id="recovery_code" type="recovery_code" name="recovery_code" class="v2-input w-full" />
                 </div>
                 @error('recovery_code')
                 <div class="text-sm text-c-danger">{{$message}}</div>

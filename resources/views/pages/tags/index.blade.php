@@ -1,15 +1,15 @@
 @extends('layouts.front')
 
-@section('max-w', 'max-w-7xl')
+@section('max-w', '2-content-lg')
 @section('content')
-<div class="mx-auto max-w-7xl p-6 lg:px-8">
-    <div class="mb-6">
-        <h2 class="title-xl2">タグ一覧</h2>
-        <p class="mt-2 text-lg/8 text-c-sub">
+<div class="v2-page v2-page-lg">
+    <div class="mb-12">
+        <h2 class="v2-text-h1 mb-4">タグ一覧</h2>
+        <p class="v2-page-text-sub">
             {{$meta['description']}}
         </p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-1">
         @foreach($tags as $tag)
         <div>
             @include('components.ui.link', [

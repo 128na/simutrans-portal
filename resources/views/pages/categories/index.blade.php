@@ -1,41 +1,37 @@
 @extends('layouts.front')
 
-@section('max-w', 'max-w-7xl')
+@section('max-w', '2-content-lg')
 @section('content')
-<div class="mx-auto max-w-7xl p-6 lg:px-8">
-    <div class="mb-6">
-        <h2 class="title-xl2">Pak別アドオン一覧</h2>
-        <p class="mt-2 text-lg/8 text-c-sub">
+<div class="v2-page v2-page-lg">
+    <div class="mb-12">
+        <h2 class="v2-text-h1 mb-4">Pak別アドオン一覧</h2>
+        <p class="v2-page-text-sub">
             {{$meta['description']}}<br>
             記載以外のPaksetやカテゴリは @include('components.ui.link', ['url' => route('search'), 'title' => '検索']) から探せます。
         </p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
-        <ul class="list-none
-               flex flex-col gap-y-2
-               lg:grid lg:grid-cols-3 lg:gap-8">
-            @foreach($pakAddonCategories as $pakSlug => $addonCategories)
-            <li>
-                <div class="mb-1 break-all font-semibold">
-                    @lang("category.pak.{$pakSlug}")
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        @foreach($pakAddonCategories as $pakSlug => $addonCategories)
+        <div class="mb-1 break-all">
+            <div class="font-semibold">
+                @lang("category.pak.{$pakSlug}")
+            </div>
+            <div class="ml-2 space-y-1">
+                @foreach($addonCategories as $addonCategorie)
+                <div>
+                    @include('components.ui.link', [
+                    'url' => route('categories.pakAddon', [
+                    'pak' => $pakSlug,
+                    'addon' => $addonCategorie->addon_slug
+                    ]),
+                    'title' => __("category.addon.{$addonCategorie->addon_slug}")
+                    ." ({$addonCategorie->article_count})"
+                    ])
                 </div>
-                <ul class="list-disc text-c-sub ml-8 break-all">
-                    @foreach($addonCategories as $addonCategorie)
-                    <li class="mb-1 text-black break-all">
-                        @include('components.ui.link', [
-                        'url' => route('categories.pakAddon', [
-                        'pak' => $pakSlug,
-                        'addon' => $addonCategorie->addon_slug
-                        ]),
-                        'title' => __("category.addon.{$addonCategorie->addon_slug}")
-                        ." ({$addonCategorie->article_count})"
-                        ])
-                    </li>
-                    @endforeach
-                </ul>
-            </li>
-            @endforeach
-        </ul>
+                @endforeach
+            </div>
+        </div>
+        @endforeach
     </div>
 
 </div>

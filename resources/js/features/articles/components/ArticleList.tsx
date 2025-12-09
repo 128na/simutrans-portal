@@ -12,11 +12,11 @@ export const ArticleList = ({ articles }: Props) => {
   }
 
   return (
-    <div className="flex flex-col gap-y-12 border-t border-c-sub/10 pt-6 lg:mx-0">
+    <div className="v2-page-content-area">
       {articles.map((article) => (
         <article key={article.id}>
           <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <a href={article.url}>
                 <img
                   className="w-full sm:w-80 h-45 object-cover rounded-lg shadow-lg"
@@ -29,7 +29,7 @@ export const ArticleList = ({ articles }: Props) => {
               <div className="text-sm text-c-sub">
                 {article.modified_at} ({article.published_at} 投稿)
               </div>
-              <h3 className="title-md">
+              <h3 className="v2-text-h3">
                 <a href={article.url} className="hover:text-c-sub">
                   {article.title}
                 </a>

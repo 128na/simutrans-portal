@@ -1,15 +1,15 @@
 @extends('layouts.mypage')
-@section('max-w', 'max-w-7xl')
+@section('max-w', '2-content-lg')
 @section('content')
-<div class="mx-auto max-w-7xl p-6 lg:px-8">
-    <div class="mb-6">
-        <h2 class="title-xl">招待</h2>
+<div class="v2-page v2-page-lg">
+    <div class="mb-12">
+        <h2 class="v2-text-h2">招待</h2>
         <p class="mt-2 text-c-sub">
             招待リンクの発行と招待したユーザーを確認できます。
         </p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
-        <h4 class="title-md">招待リンク</h4>
+    <div class="pt-6 v2-page-content-area">
+        <h4 class="v2-text-h3">招待リンク</h4>
         <div>
             <form id="revoke" action="{{route('mypage.invite')}}" method="POST" class="js-confirm" data-text="招待リンクを削除しますか？">
                 @csrf
@@ -40,7 +40,7 @@
             </form>
         </div>
 
-        <h4 class="title-md">招待履歴</h4>
+        <h4 class="v2-text-h3">招待履歴</h4>
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">
                 <thead>

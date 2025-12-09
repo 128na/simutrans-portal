@@ -328,7 +328,7 @@ if (app) {
                     href={`#component-${componentIndex}-pattern-${patternIndex}`}
                     className="link-internal inline-block"
                   >
-                    {pattern.name}
+                    {pattern.name || "(単一パターン)"}
                   </a>
                 ))}
               </div>
@@ -353,7 +353,7 @@ if (app) {
                         id={`component-${componentIndex}-pattern-${patternIndex}`}
                         href={`#component-${componentIndex}-pattern-${patternIndex}`}
                       >
-                        <p>{pattern.name}</p>
+                        <p>{pattern.name || "(単一パターン)"}</p>
                       </a>
                       {component.render(pattern.props, patternIndex)}
                     </div>

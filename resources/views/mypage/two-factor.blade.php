@@ -1,14 +1,14 @@
 @extends('layouts.mypage')
-@section('max-w', 'max-w-7xl')
+@section('max-w', '2-content-lg')
 @section('content')
-<div class="mx-auto max-w-7xl p-6 lg:px-8">
-    <div class="mb-6">
-        <h2 class="title-xl">二要素認証の設定</h2>
+<div class="v2-page v2-page-lg">
+    <div class="mb-12">
+        <h2 class="v2-text-h2">二要素認証の設定</h2>
         <p class="mt-2 text-c-sub">
             ログイン時に Google Authenticator などの多要素認証アプリによる追加認証を設定できます。
         </p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-c-sub/10 pt-6 lg:mx-0">
+    <div class="pt-6 v2-page-content-area">
         @switch(true)
 
         @case(session('status') ===\Laravel\Fortify\Fortify::TWO_FACTOR_AUTHENTICATION_ENABLED || $errors->getBag('confirmTwoFactorAuthentication')->has('code'))
@@ -22,7 +22,7 @@
             <div class="mb-4">
                 <label for="code" class="block text-sm/6 font-semibold">認証コード</label>
                 <div class="mt-2.5">
-                    <input id="code" type="code" name="code" autocomplete="one-time-code" class="block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-c-sub/10 placeholder:text-c-sub focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:w-128" />
+                    <input id="code" type="code" name="code" autocomplete="one-time-code" class="v2-input w-full" />
                 </div>
                 @error('code', 'confirmTwoFactorAuthentication')
                 <div class="text-sm text-c-danger">{{$message}}</div>
@@ -39,7 +39,7 @@
         @case(session('status') === \Laravel\Fortify\Fortify::TWO_FACTOR_AUTHENTICATION_CONFIRMED || $user->two_factor_confirmed_at)
         {{-- Step. コード入力成功 または設定済み --}}
         <div>
-            <h4 class="title-md">リカバリコード</h4>
+            <h4 class="v2-text-h3">リカバリコード</h4>
             <p class="my-2 text-c-sub">
                 アプリが使用できなくなったときに使用できます。コードは安全な場所に保存してください。それぞれのコードは一度使用すると無効になります。
             </p>
@@ -61,7 +61,7 @@
                 </div>
             </form>
 
-            <h4 class="title-md">二要素認証の無効化</h4>
+            <h4 class="v2-text-h3">二要素認証の無効化</h4>
             <form action="{{route('two-factor.disable')}}" method="POST" class="js-confirm" data-text="二要素認証を無効化しますか？">
                 @csrf
                 @method('DELETE')

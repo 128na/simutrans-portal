@@ -1,4 +1,4 @@
-import LinkExternal from "@/components/ui/LinkExternal";
+import Link from "@/components/ui/Link";
 import { formatArticleDate } from "../../utils/articleUtil";
 import { TextPre } from "../TextPre";
 import { TitleH3 } from "../TitleH3";
@@ -56,11 +56,11 @@ export const AddonIntroduction = ({ article, preview }: Props) => {
                   掲載URL
                 </td>
                 <td className="border border-c-sub/10 px-4 py-2">
-                  <LinkExternal
+                  <Link
                     href={preview ? "#" : `/articles/${article.id}/conversion`}
                   >
                     {contents.link ?? "未設定"}
-                  </LinkExternal>
+                  </Link>
                 </td>
               </tr>
             </tbody>

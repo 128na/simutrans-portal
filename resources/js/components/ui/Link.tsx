@@ -5,8 +5,8 @@ export default function Link({
   ...props
 }: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
   return (
-    <a {...props}>
-      <span className={twMerge("link-internal", className)}>{children}</span>
+    <a className={twMerge("v2-link", className)} {...props}>
+      {children}
     </a>
   );
 }

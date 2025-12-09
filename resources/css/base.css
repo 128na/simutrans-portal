@@ -39,11 +39,42 @@
     @apply text-sm/6 font-semibold
     after:content-['↗'] after:text-c-sub/50 after:text-xs;
   }
+  .v2-header-menu-item {
+    @apply text-sm/6 font-semibold;
+  }
+  .v2-header-menu-item-sp {
+    @apply -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-50;
+  }
+
+  /* ページ */
+  .v2-page {
+    @apply mx-auto p-6 lg:px-8;
+  }
+  .v2-page-sm {
+    @apply max-w-xl;
+  }
+  .v2-page-lg {
+    @apply max-w-7xl;
+  }
+  .v2-page-text-sub {
+    @apply text-lg/8 text-c-sub;
+  }
+  .v2-page-content-area {
+    @apply flex flex-col gap-y-12 lg:mx-0;
+  }
+  .v2-page-pagination-area {
+    @apply pt-10 sm:mt-8 sm:pt-8 lg:mx-0;
+  }
+
+  /* ui */
+  .v2-accordion {
+    @apply my-2 p-2 sm:py-2 py-4 flex w-full items-center justify-between bg-c-sub/10 cursor-pointer;
+  }
 
   /* reactとblade双方から共通利用できるように定義した主要パーツ用クラス */
   /* フォーム */
   .v2-input {
-    @apply border-0 border-b border-b-c-sub/20 p-2
+    @apply border-0 border-b border-b-c-sub/30 p-2
       focus:outline-none focus:ring-0 focus:border-b-c-primary focus:bg-c-primary/10
       invalid:border-b-c-danger invalid:bg-c-danger/10
       disabled:cursor-text disabled:bg-c-sub/10;

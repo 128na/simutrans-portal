@@ -1,7 +1,7 @@
 @extends('layouts.mypage')
-@section('max-w', 'max-w-7xl')
+@section('max-w', '2-content-lg')
 @section('content')
-<div class="mx-auto max-w-7xl p-6 lg:px-8">
+<div class="v2-page v2-page-lg">
     <script id="data-user" type="application/json">
         @json($user)
 

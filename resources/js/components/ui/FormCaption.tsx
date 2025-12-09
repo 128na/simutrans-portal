@@ -4,7 +4,7 @@ type HTMLProps = React.HTMLAttributes<HTMLElement> & {
 
 export const FormCaption = ({ children, ...props }: HTMLProps) => {
   return (
-    <div className="title-xs mb-2" {...props}>
+    <div className="v2-text-caption mb-2" {...props}>
       {children}
     </div>
   );

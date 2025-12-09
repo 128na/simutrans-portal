@@ -1,4 +1,4 @@
-import LinkExternal from "@/components/ui/LinkExternal";
+import Link from "@/components/ui/Link";
 import { TextPre } from "../TextPre";
 import { TitleH4 } from "../TitleH4";
 import { Thumbnail } from "@/components/ui/Thumbnail";
@@ -25,12 +25,9 @@ export const Page = ({ article, preview }: Props) => {
         }
         if (section.type === "url") {
           return (
-            <LinkExternal
-              key={index}
-              href={preview ? "#" : (section.url ?? "")}
-            >
+            <Link key={index} href={preview ? "#" : (section.url ?? "")}>
               {section.url ?? "(URL)"}
-            </LinkExternal>
+            </Link>
           );
         }
         if (section.type === "image") {

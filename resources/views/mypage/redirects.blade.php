@@ -8,7 +8,7 @@
             記事のURLを変更したときに、自動で作成されるリダイレクト設定です。旧URLから新URLへ転送されます。
         </p>
     </div>
-    <div class="pt-6 v2-page-content-area">
+    <div class="v2-page-content-area">
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">
                 <thead>

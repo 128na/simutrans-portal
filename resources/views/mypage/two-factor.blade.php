@@ -8,7 +8,7 @@
             ログイン時に Google Authenticator などの多要素認証アプリによる追加認証を設定できます。
         </p>
     </div>
-    <div class="pt-6 v2-page-content-area">
+    <div class="v2-page-content-area">
         @switch(true)
 
         @case(session('status') ===\Laravel\Fortify\Fortify::TWO_FACTOR_AUTHENTICATION_ENABLED || $errors->getBag('confirmTwoFactorAuthentication')->has('code'))

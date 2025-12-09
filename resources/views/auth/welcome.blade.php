@@ -9,7 +9,7 @@
             ようこそ「{{$inviter->name}}」さん。
         </p>
     </div>
-    <div class="pt-6 v2-page-content-area">
+    <div class="v2-page-content-area">
         <p class="p-4 mb-4 text-sm text-warn-dark rounded-lg bg-c-warn-light border border-warn-light ">
             記事の投稿などすべての機能を使うには<strong>メールアドレスの確認</strong>が必要です。<br>
             登録したメールアドレスへ後ほど送られてくるメールからメールアドレスの確認を行ってください。

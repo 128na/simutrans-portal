@@ -8,7 +8,7 @@
             登録に使用したメールアドレスが有効なものか検証します。
         </p>
     </div>
-    <div class="pt-6 v2-page-content-area">
+    <div class="v2-page-content-area">
         <form action="{{route('verification.send')}}" method="POST">
             @csrf
             <button type="submit" class="button-primary">

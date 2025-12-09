@@ -8,7 +8,7 @@
             招待リンクの発行と招待したユーザーを確認できます。
         </p>
     </div>
-    <div class="pt-6 v2-page-content-area">
+    <div class="v2-page-content-area">
         <h4 class="v2-text-h3">招待リンク</h4>
         <div>
             <form id="revoke" action="{{route('mypage.invite')}}" method="POST" class="js-confirm" data-text="招待リンクを削除しますか？">

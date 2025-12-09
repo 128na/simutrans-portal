@@ -11,7 +11,7 @@
     </div>
     <form action="{{route('user.registration', $invitee->invitation_code)}}" method="POST">
         @csrf
-        <div class="pt-6 v2-page-content-area">
+        <div class="v2-page-content-area">
             <div>
                 <label for="name" class="block text-sm/6 font-semibold">名前</label>
                 <p class="mt-2 text-sm text-c-sub">

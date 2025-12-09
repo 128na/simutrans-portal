@@ -5,7 +5,7 @@
     <div class="mb-12">
         <h2 class="v2-text-h2">マイページ</h2>
     </div>
-    <div class="pt-6 v2-page-content-area">
+    <div class="v2-page-content-area">
         <h3 class="v2-text-h3">ダッシュボード</h3>
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">

@@ -250,7 +250,10 @@
     @apply text-xl font-semibold tracking-tight text-pretty;
   }
   .v2-text-caption {
-    @apply text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-c-sub/10;
+    @apply block w-full text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-c-sub/10;
+  }
+  .v2-form-caption {
+    @apply inline-block font-semibold mb-2;
   }
 }
 

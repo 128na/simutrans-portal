@@ -8,7 +8,7 @@
             最新10件のログイン履歴を確認できます。
         </p>
     </div>
-    <div class="pt-6 v2-page-content-area">
+    <div class="v2-page-content-area">
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">
                 <thead>

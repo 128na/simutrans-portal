@@ -8,7 +8,7 @@
     </div>
     <form action="{{route('two-factor.login.store')}}" method="POST">
         @csrf
-        <div class="pt-6 v2-page-content-area">
+        <div class="v2-page-content-area">
             <div>
                 <label for="code" class="block text-sm/6 font-semibold">認証コード</label>
                 <div class="mt-2.5">

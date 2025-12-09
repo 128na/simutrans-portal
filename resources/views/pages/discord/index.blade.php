@@ -16,7 +16,7 @@
         </p>
     </div>
 
-    <div class="pt-6 v2-page-content-area">
+    <div class="v2-page-content-area">
         @if(isset($url))
         @include('components.ui.link', ['url' => $url])
         @else

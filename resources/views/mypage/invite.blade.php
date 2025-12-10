@@ -1,14 +1,14 @@
 @extends('layouts.mypage')
-@section('max-w', '2-content-lg')
+@section('max-w', 'v2-page-lg')
 @section('content')
 <div class="v2-page v2-page-lg">
     <div class="mb-12">
-        <h2 class="v2-text-h2">招待</h2>
-        <p class="mt-2 text-c-sub">
+        <h2 class="v2-text-h2 mb-2">招待</h2>
+        <p class="text-c-sub">
             招待リンクの発行と招待したユーザーを確認できます。
         </p>
     </div>
-    <div class="v2-page-content-area">
+    <div class="v2-page-content-area-lg">
         <h4 class="v2-text-h3">招待リンク</h4>
         <div>
             <form id="revoke" action="{{route('mypage.invite')}}" method="POST" class="js-confirm" data-text="招待リンクを削除しますか？">
@@ -18,7 +18,7 @@
             <form id="generate" action="{{route('mypage.invite')}}" method="POST">
                 @csrf
                 @if($user->invitation_code)
-                <p class="text-lg font-semibold p-4 mb-4 text-sm rounded-lg bg-gray-50 border border-c-sub/10 ">
+                <p class="text-lg font-semibold p-4 mb-4 rounded-lg bg-gray-50 border border-c-sub/10 ">
                     {{route('user.invite',$user->invitation_code)}}
                 </p>
                 <div class="gap-x-2 flex">

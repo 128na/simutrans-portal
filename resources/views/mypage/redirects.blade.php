@@ -1,14 +1,14 @@
 @extends('layouts.mypage')
-@section('max-w', '2-content-lg')
+@section('max-w', 'v2-page-lg')
 @section('content')
 <div class="v2-page v2-page-lg">
     <div class="mb-12">
-        <h2 class="v2-text-h2">リダイレクトの設定</h2>
-        <p class="mt-2 text-c-sub">
+        <h2 class="v2-text-h2 mb-2">リダイレクトの設定</h2>
+        <p class="text-c-sub">
             記事のURLを変更したときに、自動で作成されるリダイレクト設定です。旧URLから新URLへ転送されます。
         </p>
     </div>
-    <div class="v2-page-content-area">
+    <div class="v2-page-content-area-lg">
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">
                 <thead>

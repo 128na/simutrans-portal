@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('max-w', '2-content-lg')
+@section('max-w', 'v2-page-lg')
 @section('content')
 <div class="v2-page v2-page-lg">
     <div class="absolute inset-0 -z-10 overflow-hidden">
@@ -16,7 +16,7 @@
             <rect width="100%" height="100%" fill="url(#e813992c-7d03-4cc4-a2bd-151760b470a0)" stroke-width="0" />
         </svg>
     </div>
-    <div class="v2-page-content-area">
+    <div class="v2-page-content-area-lg">
         <div>
             <h1 class="v2-text-h1 mb-6">{{ config('app.name') }}</h1>
             <p class="text-xl/8 text-c-sub">

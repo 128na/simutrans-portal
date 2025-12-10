@@ -8,27 +8,23 @@
     <form action="{{route('password.update')}}" method="POST">
         @csrf
         <input type="hidden" name="token" value="{{ $token }}" />
-        <div class="v2-page-content-area">
+        <div class="v2-page-content-area-md">
             <div>
-                <label for="email" class="block text-sm/6 font-semibold">メールアドレス</label>
-                <div class="mt-2.5">
-                    <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="v2-input w-full" />
-                </div>
+                <label for="email" class="v2-form-caption">メールアドレス</label>
+                <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="v2-input w-full" required />
                 @error('email')
-                <div class="text-sm text-c-danger">{{ $message }}</div>
+                <div class="v2-form-error">{{ $message }}</div>
                 @enderror
             </div>
             <div>
-                <label for="password" class="block text-sm/6 font-semibold">パスワード</label>
-                <div class="mt-2.5">
-                    <input id="password" type="password" name="password" value="{{old('password', '')}}" autocomplete="new-password" class="v2-input w-full" />
-                </div>
+                <label for="password" class="v2-form-caption">パスワード</label>
+                <input id="password" type="password" name="password" value="{{old('password', '')}}" autocomplete="new-password" class="v2-input w-full" required />
                 @error('password')
-                <div class="text-sm text-c-danger">{{ $message }}</div>
+                <div class="v2-form-error">{{ $message }}</div>
                 @enderror
             </div>
             <div>
-                <button type="submit" class="rounded-md bg-c-primary px-8 sm:py-2 py-4 text-white cursor-pointer hover:bg-c-primary/80 w-full sm:w-64">
+                <button type="submit" class="v2-button v2-button-lg v2-button-primary w-full sm:w-64">
                     パスワードをリセット
                 </button>
             </div>

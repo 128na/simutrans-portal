@@ -1,5 +1,5 @@
 @extends('layouts.mypage')
-@section('max-w', '2-content-lg')
+@section('max-w', 'v2-page-lg')
 @section('content')
 <div class="v2-page v2-page-lg">
     <div class="mb-12">

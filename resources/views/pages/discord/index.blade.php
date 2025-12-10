@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('max-w', '2-content-lg')
+@section('max-w', 'v2-page-lg')
 @section('content')
 <script src="https://www.google.com/recaptcha/enterprise.js?render={{ config('services.google_recaptcha.siteKey') }}">
 </script>
@@ -16,7 +16,7 @@
         </p>
     </div>
 
-    <div class="v2-page-content-area">
+    <div class="v2-page-content-area-lg">
         @if(isset($url))
         @include('components.ui.link', ['url' => $url])
         @else

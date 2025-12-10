@@ -1,11 +1,11 @@
 @extends('layouts.mypage')
-@section('max-w', '2-content-lg')
+@section('max-w', 'v2-page-lg')
 @section('content')
 <div class="v2-page v2-page-lg">
     <div class="mb-12">
         <h2 class="v2-text-h2">マイページ</h2>
     </div>
-    <div class="v2-page-content-area">
+    <div class="v2-page-content-area-lg">
         <h3 class="v2-text-h3">ダッシュボード</h3>
         <div class="overflow-x-auto">
             <table class="border-collapse whitespace-nowrap">

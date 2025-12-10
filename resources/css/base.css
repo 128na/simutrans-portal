@@ -59,8 +59,11 @@
   .v2-page-text-sub {
     @apply text-lg/8 text-c-sub;
   }
-  .v2-page-content-area {
+  .v2-page-content-area-lg {
     @apply flex flex-col gap-y-12 lg:mx-0;
+  }
+  .v2-page-content-area-md {
+    @apply flex flex-col gap-y-8 lg:mx-0;
   }
   .v2-page-pagination-area {
     @apply pt-10 sm:mt-8 sm:pt-8 lg:mx-0;
@@ -82,6 +85,7 @@
   .v2-input-file {
     @apply file:ml-0 file:border-0
       file:px-3 file:py-1.5 file:text-sm file:rounded-lg
+      file:text-white
       file:bg-c-sub/80 hover:file:bg-c-sub/60;
   }
   .v2-input-select {
@@ -93,6 +97,7 @@
   .v2-checkbox {
     @apply mr-0.5
       text-c-main
+      accent-c-primary
       checked:text-c-primary
       focus:outline-none focus:ring-0
       invalid:text-c-danger invalid:bg-c-danger/10
@@ -110,25 +115,25 @@
   }
   /* カード：色 */
   .v2-card-main {
-    @apply border-c-main text-c-main;
+    @apply border-c-main bg-c-main/2 text-c-main;
   }
   .v2-card-sub {
-    @apply border-c-sub/80 text-c-sub/80;
+    @apply border-c-sub/80 bg-c-sub/2 text-c-sub/80;
   }
   .v2-card-primary {
-    @apply border-c-primary text-c-primary;
+    @apply border-c-primary bg-c-primary/2 text-c-primary;
   }
   .v2-card-danger {
-    @apply border-c-danger text-c-danger;
+    @apply border-c-danger bg-c-danger/2 text-c-danger;
   }
   .v2-card-warn {
-    @apply border-c-warn text-c-warn;
+    @apply border-c-warn bg-c-warn/2 text-c-warn;
   }
   .v2-card-info {
-    @apply border-c-info text-c-info;
+    @apply border-c-info bg-c-info/2 text-c-info;
   }
   .v2-card-success {
-    @apply border-c-success text-c-success;
+    @apply border-c-success bg-c-success/2 text-c-success;
   }
 
   /* ボタン */
@@ -253,7 +258,10 @@
     @apply block w-full text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-c-sub/10;
   }
   .v2-form-caption {
-    @apply inline-block font-semibold mb-2;
+    @apply inline-block font-semibold;
+  }
+  .v2-form-error {
+    @apply text-sm text-c-danger my-2;
   }
 }
 

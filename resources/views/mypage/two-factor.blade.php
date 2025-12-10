@@ -1,14 +1,14 @@
 @extends('layouts.mypage')
-@section('max-w', '2-content-lg')
+@section('max-w', 'v2-page-lg')
 @section('content')
 <div class="v2-page v2-page-lg">
     <div class="mb-12">
-        <h2 class="v2-text-h2">二要素認証の設定</h2>
-        <p class="mt-2 text-c-sub">
+        <h2 class="v2-text-h2 mb-2">二要素認証の設定</h2>
+        <p class="text-c-sub">
             ログイン時に Google Authenticator などの多要素認証アプリによる追加認証を設定できます。
         </p>
     </div>
-    <div class="v2-page-content-area">
+    <div class="v2-page-content-area-lg">
         @switch(true)
 
         @case(session('status') ===\Laravel\Fortify\Fortify::TWO_FACTOR_AUTHENTICATION_ENABLED || $errors->getBag('confirmTwoFactorAuthentication')->has('code'))
@@ -20,16 +20,16 @@
         <form action="{{route('two-factor.confirm')}}" method="POST">
             @csrf
             <div class="mb-4">
-                <label for="code" class="block text-sm/6 font-semibold">認証コード</label>
+                <label for="code" class="v2-form-caption">認証コード</label>
                 <div class="mt-2.5">
                     <input id="code" type="code" name="code" autocomplete="one-time-code" class="v2-input w-full" />
                 </div>
                 @error('code', 'confirmTwoFactorAuthentication')
-                <div class="text-sm text-c-danger">{{$message}}</div>
+                <div class="v2-form-error">{{$message}}</div>
                 @enderror
             </div>
             <div>
-                <button type="submit" class="rounded-md bg-c-primary px-8 sm:py-2 py-4 text-white cursor-pointer hover:bg-c-primary/80 w-full sm:w-64">
+                <button type="submit" class="v2-button v2-button-lg v2-button-primary w-full sm:w-64">
                     送信
                 </button>
             </div>

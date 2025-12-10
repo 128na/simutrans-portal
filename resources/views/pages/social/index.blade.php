@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('max-w', '2-content-lg')
+@section('max-w', 'v2-page-lg')
 @section('content')
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <div class="v2-page v2-page-lg">
@@ -8,7 +8,7 @@
         <h2 class="v2-text-h1 mb-4">SNS・通知ツール</h2>
         <p class="v2-page-text-sub">記事投稿や更新通知を受け取ることができるSNSアカウントやツールです。</p>
     </div>
-    <div class="v2-page-content-area">
+    <div class="v2-page-content-area-lg">
         <div>
             <h4 class="v2-text-h3 mb-4">プッシュ通知</h4>
             <div class="text-c-sub">

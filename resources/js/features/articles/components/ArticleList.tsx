@@ -12,7 +12,7 @@ export const ArticleList = ({ articles }: Props) => {
   }
 
   return (
-    <div className="v2-page-content-area">
+    <div className="v2-page-content-area-lg">
       {articles.map((article) => (
         <article key={article.id}>
           <div className="flex flex-col md:flex-row gap-4">

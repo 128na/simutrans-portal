@@ -1,11 +1,11 @@
 @extends('layouts.admin')
-@section('max-w', '2-content-lg')
+@section('max-w', 'v2-page-lg')
 @section('content')
 <div class="v2-page v2-page-lg">
     <div class="mb-12">
         <h2 class="v2-text-h2">管理</h2>
     </div>
-    <div class="v2-page-content-area">
+    <div class="v2-page-content-area-lg">
         <div>
             @include('components.ui.link', ['url'=>route('admin.oauth.twitter.authorize'), 'title' =>'認証'])<br>
             @include('components.ui.link', ['url'=>route('admin.oauth.twitter.refresh'), 'title' =>'トークンリフレッシュ'])<br>

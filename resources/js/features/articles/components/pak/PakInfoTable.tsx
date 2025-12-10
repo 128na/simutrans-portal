@@ -10,15 +10,13 @@ type Props = {
 export const PakInfoTable = ({ rows }: Props) => {
   return (
     <div>
-      <div className="overflow-x-auto">
-        <table className="border-collapse whitespace-nowrap">
+      <div className="v2-table-wrapper">
+        <table className="v2-table">
           <tbody>
             {rows.map((row, index) => (
               <tr key={index}>
-                <td className="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">
-                  {row.label}
-                </td>
-                <td className="border border-c-sub/10 px-4 py-2">
+                <th>{row.label}</th>
+                <td>
                   {row.value !== undefined &&
                   row.value !== null &&
                   row.value !== ""

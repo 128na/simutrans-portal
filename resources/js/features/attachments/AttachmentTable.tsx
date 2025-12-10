@@ -5,7 +5,6 @@ import {
   compareAttachmentValues,
   displaySize,
 } from "./attachmentUtil";
-import Input from "@/components/ui/Input";
 import { twMerge } from "tailwind-merge";
 import { DataTable, DataTableHeader } from "@/components/layout/DataTable";
 import { format } from "date-fns";
@@ -16,6 +15,7 @@ import Link from "@/components/ui/Link";
 import axios from "axios";
 import ButtonDanger from "@/components/ui/ButtonDanger";
 import { handleError } from "@/lib/errorHandler";
+import V2Input from "@/components/ui/v2/V2Input";
 
 type Props = {
   attachments: Attachment.MypageEdit[];
@@ -110,10 +110,10 @@ export const AttachmentTable = ({
 
   return (
     <>
-      <div className="gap-4 flex flex-col sm:flex-row pb-4">
+      <div className="v2-table-container">
         <div>
-          <Input
-            type="text"
+          <V2Input
+            type="search"
             value={criteria}
             onChange={(e) => setCriteria(e.target.value)}
             placeholder="検索"
@@ -126,7 +126,7 @@ export const AttachmentTable = ({
           onChange={setCurrent}
         />
       </div>
-      <div className="relative overflow-x-auto">
+      <div className="v2-table-wrapper">
         <TextSub>
           利用先の無いファイルのみ削除できます。利用先の記事でファイルを差し替えてから削除してください。
         </TextSub>
@@ -141,7 +141,6 @@ export const AttachmentTable = ({
             <tr
               key={a.id}
               className={twMerge(
-                "bg-white border-b border-c-sub/10",
                 onSelectAttachment &&
                   (selected === a.id
                     ? "cursor-pointer bg-c-primary/20 hover:bg-c-primary/30"
@@ -149,7 +148,7 @@ export const AttachmentTable = ({
               )}
               onClick={() => onSelectAttachment?.(selected === a.id ? null : a)}
             >
-              <td className="px-6 py-4 ">
+              <td>
                 <Image
                   attachmentId={a.id}
                   attachments={[a]}
@@ -157,9 +156,9 @@ export const AttachmentTable = ({
                   openFullSize={attachmentableId ? false : true}
                 />
               </td>
-              <td className="px-6 py-4 font-medium">{a.original_name}</td>
-              <td className="px-6 py-4">{t(`attachments.type.${a.type}`)}</td>
-              <td className="px-6 py-4">
+              <td>{a.original_name}</td>
+              <td>{t(`attachments.type.${a.type}`)}</td>
+              <td>
                 {a.attachmentable_type === "Profile" ? (
                   <Link href="/mypage/profile">プロフィール</Link>
                 ) : (
@@ -170,11 +169,9 @@ export const AttachmentTable = ({
                   )
                 )}
               </td>
-              <td className="px-6 py-4">{displaySize(a.size)}</td>
-              <td className="px-6 py-4">
-                {format(new Date(a.created_at), "yyyy/MM/dd H:mm")}
-              </td>
-              <td className="px-6 py-4">
+              <td>{displaySize(a.size)}</td>
+              <td>{format(new Date(a.created_at), "yyyy/MM/dd H:mm")}</td>
+              <td>
                 {a.attachmentable_id === null && a.id !== selected && (
                   <ButtonDanger
                     onClick={(e) => {

@@ -9,7 +9,5 @@
         @json($articles)
 
     </script>
-    <div class="v2-page-content-area-lg">
-        <div id="app-analytics">読み込み中...</div>
-    </div>
+    <div id="app-analytics" class="v2-page-content-area-lg">読み込み中...</div>
     @endsection

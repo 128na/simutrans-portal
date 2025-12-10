@@ -138,6 +138,21 @@ if (app) {
         },
       },
       {
+        name: "v2Select & v2input",
+        show: true,
+        render: (p: Props) => (
+          <div>
+            <V2Select
+              options={{ "": "none", option1: "Option 1", option2: "Option 2" }}
+              className="mr-2"
+              {...p}
+            />
+            <V2Input value="test" {...p} />
+          </div>
+        ),
+        condition: {},
+      },
+      {
         name: "v2Checkbox",
         show: true,
         render: (p: Props, index: number) => (

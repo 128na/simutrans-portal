@@ -1,6 +1,6 @@
 <form method="GET" action="{{ route('search') }}">
     <div class="flex flex-col gap-y-4 sm:flex-row sm:items-center sm:gap-x-4 mb-4">
-        <input type="text" name="word" value="{{ $condition['word'] ?? '' }}" placeholder="キーワードを入力" class="w-full sm:w-64 v2-input" />
+        <input type="search" name="word" value="{{ $condition['word'] ?? '' }}" placeholder="キーワードを入力" class="w-full sm:w-64 v2-input" />
         <button type="submit" class="v2-button v2-button-lg v2-button-primary">
             検索
         </button>

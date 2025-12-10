@@ -77,7 +77,7 @@
   /* reactとblade双方から共通利用できるように定義した主要パーツ用クラス */
   /* フォーム */
   .v2-input {
-    @apply border-0 border-b border-b-c-sub/30 p-2
+    @apply border-0 border-b border-b-c-sub/30 p-2 leading-none
       focus:outline-none focus:ring-0 focus:border-b-c-primary focus:bg-c-primary/10
       invalid:border-b-c-danger invalid:bg-c-danger/10
       disabled:cursor-text disabled:bg-c-sub/10;
@@ -221,17 +221,23 @@
     @apply bg-c-success;
   }
   /* テーブル */
+  .v2-table-container {
+    @apply gap-4 flex flex-col sm:flex-row pb-4 items-end;
+  }
   .v2-table-wrapper {
     @apply overflow-x-auto;
   }
   .v2-table {
     @apply text-left border-collapse;
   }
+  .v2-table-fixed {
+    @apply table-fixed w-full min-w-[960px];
+  }
   .v2-table th {
-    @apply font-normal bg-c-sub/80 text-white px-4 py-2 border border-c-sub/20 break-keep text-nowrap;
+    @apply font-normal bg-c-sub/80 text-white px-4 py-2 border border-c-sub/20 break-all;
   }
   .v2-table td {
-    @apply px-4 py-2 border border-c-sub/20 break-keep text-nowrap;
+    @apply px-4 py-2 border border-c-sub/20 break-all;
   }
   /* misc */
   .v2-category {

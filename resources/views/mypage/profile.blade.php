@@ -13,7 +13,5 @@
         @json($attachments)
 
     </script>
-    <div class="v2-page-content-area-lg">
-        <div id="app-profile-edit">読み込み中...</div>
-    </div>
+    <div id="app-profile-edit">読み込み中...</div>
     @endsection

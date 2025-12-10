@@ -12,7 +12,5 @@
             アップロード済みのファイルを編集できます
         </p>
     </div>
-    <div class="v2-page-content-area-lg">
-        <div id="app-attachment-edit">読み込み中...</div>
-    </div>
+    <div id="app-attachment-edit">読み込み中...</div>
     @endsection

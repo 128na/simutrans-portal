@@ -17,6 +17,7 @@ export const Accordion = ({ title, children, defaultOpen = false }: Props) => {
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
       >
+        {title}
         <svg
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -30,7 +31,6 @@ export const Accordion = ({ title, children, defaultOpen = false }: Props) => {
             fillRule="evenodd"
           />
         </svg>
-        {title}
       </button>
       {isOpen && children}
     </>

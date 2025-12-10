@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Pagination } from "@/components/layout/Pagination";
 import { compareTagValues, tagFilter } from "./tagUtil";
-import Button from "@/components/ui/Button";
-import Input from "@/components/ui/Input";
 import { twMerge } from "tailwind-merge";
 import { DataTable, DataTableHeader } from "@/components/layout/DataTable";
 import TextSub from "@/components/ui/TextSub";
+import V2Button from "@/components/ui/v2/V2Button";
+import V2Input from "@/components/ui/v2/V2Input";
 
 type Props = {
   tags: Tag.MypageEdit[];
@@ -54,19 +54,20 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
 
   return (
     <>
-      <div className="gap-4 flex flex-col sm:flex-row pb-4">
+      <div className="v2-table-container">
         <div>
-          <Button
+          <V2Button
+            size="lg"
             onClick={() =>
               onClick?.({ id: null, name: criteria, description: null })
             }
           >
             作成
-          </Button>
+          </V2Button>
         </div>
         <div>
-          <Input
-            type="text"
+          <V2Input
+            type="search"
             value={criteria}
             onChange={(e) => setCriteria(e.target.value)}
             placeholder="検索"
@@ -80,7 +81,7 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
         />
       </div>
       <TextSub>紐づく記事が無いタグは数日後に自動的に削除されます。</TextSub>
-      <div className="relative overflow-x-auto">
+      <div className="v2-table-wrapper">
         <DataTable
           headers={headers}
           data={sorted}
@@ -92,21 +93,16 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
             <tr
               key={tag.id}
               className={twMerge(
-                "bg-white border-b border-c-sub/10",
-                tag.editable && "cursor-pointer hover:bg-c-sub"
+                tag.editable && "cursor-pointer hover:bg-c-sub/10"
               )}
               onClick={() => onClick?.(tag)}
             >
-              <td className="px-6 py-4 font-medium">{tag.name}</td>
-              <td className="px-6 py-4 whitespace-pre-wrap">
-                {tag.description ?? "-"}
-              </td>
-              <td className="px-6 py-4">{tag.articles_count}</td>
-              <td className="px-6 py-4">{tag.created_by?.name ?? "-"}</td>
-              <td className="px-6 py-4">{tag.last_modified_by?.name ?? "-"}</td>
-              <td className="px-6 py-4">
-                {tag.last_modified_at?.slice(0, 10)}
-              </td>
+              <td>{tag.name}</td>
+              <td className="whitespace-pre-wrap">{tag.description ?? "-"}</td>
+              <td>{tag.articles_count}</td>
+              <td>{tag.created_by?.name ?? "-"}</td>
+              <td>{tag.last_modified_by?.name ?? "-"}</td>
+              <td>{tag.last_modified_at?.slice(0, 10)}</td>
             </tr>
           )}
         />

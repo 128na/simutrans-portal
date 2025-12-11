@@ -77,7 +77,7 @@
   /* reactとblade双方から共通利用できるように定義した主要パーツ用クラス */
   /* フォーム */
   .v2-input {
-    @apply border-0 border-b border-b-c-sub/30 p-2 leading-none
+    @apply border-0 border-b border-b-c-sub/30 p-2 leading-none bg-c-sub/3
       focus:outline-none focus:ring-0 focus:border-b-c-primary focus:bg-c-primary/10
       invalid:border-b-c-danger invalid:bg-c-danger/10
       disabled:cursor-text disabled:bg-c-sub/10;
@@ -265,7 +265,7 @@
     @apply block w-full text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-c-sub/10;
   }
   .v2-form-caption {
-    @apply inline-block font-semibold;
+    @apply block font-semibold;
   }
   .v2-form-error {
     @apply text-sm text-c-danger my-1;

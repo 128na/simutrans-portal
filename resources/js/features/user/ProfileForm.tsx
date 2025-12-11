@@ -5,7 +5,7 @@ import TextSub from "@/components/ui/TextSub";
 import { useAxiosError } from "@/hooks/useAxiosError";
 import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
 import { Avatar } from "@/components/ui/Avatar";
-import TextBadge from "@/components/ui/TextBadge";
+import V2TextBadge from "@/components/ui/v2/V2TextBadge";
 import axios from "axios";
 import { useRef } from "react";
 import { isValidationError } from "@/lib/errorHandler";
@@ -96,7 +96,7 @@ export const ProfileForm = ({
     <div ref={containerRef} className="grid gap-4">
       <div>
         <FormCaption>
-          <TextBadge className="bg-c-danger">必須</TextBadge>
+          <V2TextBadge variant="danger">必須</V2TextBadge>
           表示名
         </FormCaption>
         <TextError>{getError("user.name")}</TextError>
@@ -111,7 +111,7 @@ export const ProfileForm = ({
 
       <div>
         <FormCaption>
-          <TextBadge className="bg-c-danger">必須</TextBadge>
+          <V2TextBadge variant="danger">必須</V2TextBadge>
           メールアドレス
         </FormCaption>
         <TextError>{getError("user.email")}</TextError>

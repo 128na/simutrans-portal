@@ -1,7 +1,14 @@
 import { twMerge } from "tailwind-merge";
-type Props = React.InputHTMLAttributes<HTMLInputElement> & {};
+type Props = React.InputHTMLAttributes<HTMLInputElement> & {
+  counter?: (value: string) => number;
+};
 
-export default function V2Input({ className, ...props }: Props) {
+export default function V2Input({ counter, className, ...props }: Props) {
+  const count =
+    counter && typeof props.value === "string"
+      ? counter(props.value ?? "")
+      : [...String(props.value ?? "")].length;
+
   return (
     <>
       <input
@@ -10,7 +17,7 @@ export default function V2Input({ className, ...props }: Props) {
       />
       {props.maxLength !== undefined ? (
         <div className="text-right text-sm text-c-sub/70 mt-1">
-          {[...String(props.value ?? "")].length} / {props.maxLength}
+          {count} / {props.maxLength}
         </div>
       ) : null}
     </>

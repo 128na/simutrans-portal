@@ -1,13 +1,8 @@
-import Input from "@/components/ui/Input";
-import Textarea from "@/components/ui/Textarea";
 import { SelectCategories } from "../components/SelectCategories";
 import { SelectableSearch } from "@/components/form/SelectableSearch";
 import { Accordion } from "@/components/ui/Accordion";
 import { TagEdit } from "../../tags/TagEdit";
-import TextBadge from "@/components/ui/TextBadge";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
-import { CommonForm } from "../forms/CommonForm";
-import { StatusForm } from "../forms/StatusForm";
 import { Upload } from "@/components/form/Upload";
 import TextSub from "@/components/ui/TextSub";
 import { useAxiosError } from "@/hooks/useAxiosError";
@@ -19,8 +14,11 @@ import {
   getReadmeText,
 } from "@/features/attachments/fileInfoTool";
 import { t } from "@/utils/translate";
-import ButtonOutline from "@/components/ui/ButtonOutline";
 import { FormCaption } from "@/components/ui/FormCaption";
+import V2TextBadge from "@/components/ui/v2/V2TextBadge";
+import V2Button from "@/components/ui/v2/V2Button";
+import V2Textarea from "@/components/ui/v2/V2Textarea";
+import V2Input from "@/components/ui/v2/V2Input";
 
 export const AddonPost = () => {
   const article = useArticleEditor((s) => s.article);
@@ -88,74 +86,69 @@ export const AddonPost = () => {
 
   return (
     <>
-      <CommonForm />
-
       <div>
         <FormCaption>
-          <TextBadge className="bg-c-danger">必須</TextBadge>
+          <V2TextBadge variant="danger">必須</V2TextBadge>
           ファイル
         </FormCaption>
         <TextError>{getError("article.contents.file")}</TextError>
-        <TextSub className="mb-2">
-          {(contents.file && file?.original_name) ?? "未選択"}
-        </TextSub>
-        <div className="space-x-2 mb-2">
-          <Upload
-            onUploaded={(a) => {
-              useArticleEditor.setState((state) => {
-                state.attachments.unshift(a);
-                if ("file" in state.article.contents) {
-                  state.article.contents.file = a.id;
-                }
-              });
-            }}
-          >
-            ファイルをアップロード
-          </Upload>
-          <ModalFull
-            buttonTitle="アップロード済みのファイルから選択"
-            title="ファイルを選択"
-          >
-            {({ close }) => (
-              <AttachmentEdit
-                attachments={attachments}
-                attachmentableId={article.id}
-                selected={contents.file}
-                types={["file"]}
-                onSelectAttachment={(attachmentId) => {
-                  updateContents<ArticleContent.AddonPost>(
-                    (draft) => (draft.file = attachmentId)
-                  );
-                  close();
-                }}
-                onChangeAttachments={(attachments) => {
-                  useArticleEditor.setState((state) => {
-                    state.attachments = attachments;
-                  });
-                }}
-              />
-            )}
-          </ModalFull>
-        </div>
-        <ButtonOutline
+        <Upload
+          className="w-full mb-4"
+          onUploaded={(a) => {
+            useArticleEditor.setState((state) => {
+              state.attachments.unshift(a);
+              if ("file" in state.article.contents) {
+                state.article.contents.file = a.id;
+              }
+            });
+          }}
+        />
+        <ModalFull
+          buttonTitle="アップロード済みのファイルから選択"
+          title="ファイルを選択"
+        >
+          {({ close }) => (
+            <AttachmentEdit
+              attachments={attachments}
+              attachmentableId={article.id}
+              selected={contents.file}
+              types={["file"]}
+              onSelectAttachment={(attachmentId) => {
+                updateContents<ArticleContent.AddonPost>(
+                  (draft) => (draft.file = attachmentId)
+                );
+                close();
+              }}
+              onChangeAttachments={(attachments) => {
+                useArticleEditor.setState((state) => {
+                  state.attachments = attachments;
+                });
+              }}
+            />
+          )}
+        </ModalFull>
+        <V2Button
+          variant="subOutline"
+          className="mt-4 mb-2 block"
           disabled={!hasReadme && !hasPakMetadata}
           onClick={handleFillFromFile}
         >
           ファイルの内容から項目を入力する
-        </ButtonOutline>
+        </V2Button>
         <TextSub>pakファイルの内容から説明・カテゴリを自動選択します。</TextSub>
       </div>
 
       <div>
         <FormCaption>
-          <TextBadge className="bg-c-danger">必須</TextBadge>
+          <V2TextBadge variant="danger">必須</V2TextBadge>
           説明
         </FormCaption>
         <TextError>{getError("article.contents.description")}</TextError>
-        <Textarea
-          labelClassName="font-medium"
-          className="font-normal"
+        <V2Textarea
+          className="w-full"
           value={contents.description || ""}
+          required
+          maxLength={2048}
           rows={9}
           onChange={(e) =>
             updateContents<ArticleContent.AddonPost>(
@@ -189,9 +182,9 @@ export const AddonPost = () => {
           <div>
             <FormCaption>作者</FormCaption>
             <TextError>{getError("article.contents.author")}</TextError>
-            <Input
-              labelClassName="font-medium"
-              className="font-normal"
+            <V2Input
+              className="w-full"
+              maxLength={255}
               value={contents.author || ""}
               onChange={(e) =>
                 updateContents<ArticleContent.AddonIntroduction>(
@@ -203,9 +196,9 @@ export const AddonPost = () => {
           <div>
             <FormCaption>謝辞</FormCaption>
             <TextError>{getError("article.contents.thanks")}</TextError>
-            <Textarea
-              labelClassName="font-medium"
-              className="font-normal"
+            <V2Textarea
+              className="w-full"
+              maxLength={2048}
               value={contents.thanks || ""}
               rows={3}
               onChange={(e) =>
@@ -218,9 +211,9 @@ export const AddonPost = () => {
           <div>
             <FormCaption>ライセンス</FormCaption>
             <TextError>{getError("article.contents.license")}</TextError>
-            <Textarea
-              labelClassName="font-medium"
-              className="font-normal"
+            <V2Textarea
+              className="w-full"
+              maxLength={2048}
               value={contents.license || ""}
               rows={3}
               onChange={(e) =>
@@ -262,7 +255,6 @@ export const AddonPost = () => {
           </div>
         </div>
       </Accordion>
-      <StatusForm />
     </>
   );
 };

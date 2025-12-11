@@ -5,8 +5,10 @@ import { Page } from "./postType/Page";
 import { Markdown } from "./postType/Markdown";
 import { AddonPost } from "./postType/AddonPost";
 import { AddonIntroduction } from "./postType/AddonIntroduction";
-import Checkbox from "@/components/ui/Checkbox";
 import { FormCaption } from "@/components/ui/FormCaption";
+import V2Checkbox from "@/components/ui/v2/V2Checkbox";
+import { StatusForm } from "./forms/StatusForm";
+import { CommonForm } from "./forms/CommonForm";
 export const ArticleForm = () => {
   const article = useArticleEditor((s) => s.article);
   const shouldNotify = useArticleEditor((s) => s.shouldNotify);
@@ -18,7 +20,8 @@ export const ArticleForm = () => {
   if (!article || !article.post_type) return null;
 
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-6">
+      <CommonForm />
       {match<ArticlePostType>(article.post_type)
         .returnType<JSX.Element>()
         .with("page", () => <Page />)
@@ -26,9 +29,10 @@ export const ArticleForm = () => {
         .with("addon-post", () => <AddonPost />)
         .with("addon-introduction", () => <AddonIntroduction />)
         .exhaustive()}
+      <StatusForm />
       <div>
         <FormCaption>保存時の更新日時</FormCaption>
-        <Checkbox
+        <V2Checkbox
           checked={withoutUpdateModifiedAt}
           onChange={() => {
             useArticleEditor.setState((state) => {
@@ -41,17 +45,17 @@ export const ArticleForm = () => {
           }}
         >
           更新しない
-        </Checkbox>
+        </V2Checkbox>
       </div>
       {article.status === "publish" && (
         <div>
           <FormCaption>公開時のSNS通知</FormCaption>
-          <Checkbox
+          <V2Checkbox
             checked={shouldNotify}
             onChange={() => updateShouldNotify(!shouldNotify)}
           >
             通知する
-          </Checkbox>
+          </V2Checkbox>
         </div>
       )}
     </div>

@@ -4,7 +4,7 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {};
 
 export default function V2Checkbox({ children, className, ...props }: Props) {
   return (
-    <label>
+    <label className="inline-block">
       <input
         type="checkbox"
         className={twMerge("v2-checkbox peer", className)}

@@ -1,4 +1,4 @@
-import TextBadge from "@/components/ui/TextBadge";
+import V2TextBadge from "@/components/ui/v2/V2TextBadge";
 import TextSub from "@/components/ui/TextSub";
 import { ProfileShow } from "./ProfileShow";
 import { ProfileForm } from "./ProfileForm";
@@ -18,7 +18,7 @@ export const ProfileEdit = ({
   return (
     <>
       <div>
-        <TextBadge className="bg-c-warn">プレビュー表示</TextBadge>
+        <V2TextBadge variant="warn">プレビュー表示</V2TextBadge>
         <TextSub>
           プレビュー表示ではリンクが反応しないようになっています。
         </TextSub>

@@ -1,6 +1,6 @@
-import Checkbox from "@/components/ui/Checkbox";
 import { FormCaption } from "@/components/ui/FormCaption";
 import V2Button from "@/components/ui/v2/V2Button";
+import V2Checkbox from "@/components/ui/v2/V2Checkbox";
 import V2Input from "@/components/ui/v2/V2Input";
 import V2Select from "@/components/ui/v2/V2Select";
 import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
@@ -111,9 +111,9 @@ export function AnalyticsOption() {
       </div>
       <div>
         <FormCaption>表示データ</FormCaption>
-        <div className="gap-2 flex flex-col sm:flex-row">
+        <div className="gap-4 flex flex-col sm:flex-row">
           {AXES.map((axis) => (
-            <Checkbox
+            <V2Checkbox
               value={axis.value}
               key={axis.value}
               checked={axes.includes(axis.value)}
@@ -126,7 +126,7 @@ export function AnalyticsOption() {
               }
             >
               {axis.label}
-            </Checkbox>
+            </V2Checkbox>
           ))}
         </div>
       </div>

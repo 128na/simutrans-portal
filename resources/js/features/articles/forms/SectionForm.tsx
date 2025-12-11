@@ -1,4 +1,3 @@
-import Button from "@/components/ui/Button";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
 import { match } from "ts-pattern";
 import { SectionCaption } from "./Section/SectionCaption";
@@ -9,6 +8,7 @@ import ButtonDanger from "@/components/ui/ButtonDanger";
 import { FormCaption } from "@/components/ui/FormCaption";
 import MultiColumn from "@/components/ui/MultiColumn";
 import { SortableList } from "@/components/ui/SortableList";
+import V2Button from "@/components/ui/v2/V2Button";
 
 const template = {
   caption: { type: "caption", caption: "" } as ArticleContent.Section.Caption,
@@ -45,6 +45,7 @@ export const SectionForm = () => {
 
   return (
     <div className="space-y-4">
+      <FormCaption>項目</FormCaption>
       <SortableList
         items={contents.sections}
         onReorder={(newSections) => {
@@ -143,10 +144,18 @@ export const SectionForm = () => {
       />
       <div className="space-x-2">
         <FormCaption>項目の追加</FormCaption>
-        <Button onClick={() => add("caption")}>見出し</Button>
-        <Button onClick={() => add("text")}>テキスト</Button>
-        <Button onClick={() => add("image")}>画像</Button>
-        <Button onClick={() => add("url")}>URL</Button>
+        <V2Button size="lg" onClick={() => add("caption")}>
+          見出し
+        </V2Button>
+        <V2Button size="lg" onClick={() => add("text")}>
+          テキスト
+        </V2Button>
+        <V2Button size="lg" onClick={() => add("image")}>
+          画像
+        </V2Button>
+        <V2Button size="lg" onClick={() => add("url")}>
+          URL
+        </V2Button>
       </div>
     </div>
   );

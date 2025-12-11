@@ -91,13 +91,23 @@
 
 ### 重要ポイント
 
-### 重要ポイント
-
 - React + TypeScript + Vite 構成
 - エントリポイント: `front.ts`, `mypage.ts`
 - HTTP クライアント: `axios`（エラー処理は `state/useAxiosError.ts`）
 - ロギング: `resources/js/utils/logger.ts` を使用（console.log 直接使用禁止）
 - テスト: Vitest + React Testing Library（詳細: [resources/js/**tests**/README.md](../resources/js/__tests__/README.md)）
+
+### 最近の主要な変更（PR #458 - 2025年12月）
+
+**UIコンポーネントの整理と統合:**
+- 新規追加: `Card`, `Checkboxes`, `FormCaption`, `MultiColumn`, `SortableList`
+- 統合・削除: `ButtonDanger`/`ButtonOutline`/`ButtonSub` → `Button`, `Label` → `FormCaption`, `InputFile` → `Upload`
+- 全26個のUIコンポーネントに包括的なテストカバレッジを実装
+
+**ディレクトリ構造の調整:**
+- Features層のutilsを各featureディレクトリ直下に配置（`features/articles/utils/` → `features/articles/articleUtil.ts`）
+- Pak関連メタデータコンポーネントの追加（`features/articles/components/pak/`）
+- プロフィール機能の拡充（`ProfileIcon`, `profileUtil.ts`）
 
 ### 型定義の配置ルール
 

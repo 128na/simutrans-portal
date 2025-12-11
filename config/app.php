@@ -194,8 +194,6 @@ return [
         App\Providers\GoogleServiceProvider::class,
         App\Providers\TwitterOauthProvider::class,
 
-        // discord notifiaction
-        NotificationChannels\Discord\DiscordServiceProvider::class,
         // auth
         App\Providers\FortifyServiceProvider::class,
         App\Providers\ActionDIServiceProvider::class,

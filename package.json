@@ -7,7 +7,7 @@
     "test": "vitest --run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage",
+    "test:coverage": "vitest --run --coverage",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --fix",
     "check": "npm run typecheck && npm run lint",

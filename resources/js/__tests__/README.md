@@ -56,6 +56,7 @@ resources/js/__tests__/
 PR #458 で追加された新しいコンポーネントを含む、全26個のUIコンポーネントのテストが実装されています：
 
 **フォーム関連:**
+
 - `Button.test.tsx` - 基本ボタンのクリック、disabled状態
 - `ButtonClose.test.tsx` - 閉じるボタンの動作
 - `Input.test.tsx` - テキスト入力、値の変更
@@ -66,6 +67,7 @@ PR #458 で追加された新しいコンポーネントを含む、全26個のU
 - `FormCaption.test.tsx` - **新規** キャプション表示
 
 **レイアウト・表示:**
+
 - `Card.test.tsx` - **新規** カードコンテナのレンダリング
 - `Accordion.test.tsx` - 開閉動作
 - `Modal.test.tsx` - モーダル表示・非表示
@@ -74,14 +76,17 @@ PR #458 で追加された新しいコンポーネントを含む、全26個のU
 - `SortableList.test.tsx` - **新規** ドラッグ&ドロップ操作
 
 **テキスト・バッジ:**
+
 - `TextBadge.test.tsx` - バッジ表示
 - `TextError.test.tsx` - エラーメッセージ
 - `TextSub.test.tsx` - サブテキスト
 
 **リンク・ナビゲーション:**
+
 - `Link.test.tsx` - 内部リンク
 
 **画像:**
+
 - `Avatar.test.tsx` - アバター表示
 - `Image.test.tsx` - 画像読み込み、エラーハンドリング
 - `Thumbnail.test.tsx` - サムネイル表示
@@ -225,10 +230,10 @@ describe("Checkboxes", () => {
     const user = userEvent.setup();
     const handleChange = vi.fn();
     render(<Checkboxes options={options} value={[]} onChange={handleChange} />);
-    
+
     await user.click(screen.getByLabelText("オプション1"));
     expect(handleChange).toHaveBeenCalledWith(["1"]);
-    
+
     await user.click(screen.getByLabelText("オプション2"));
     expect(handleChange).toHaveBeenCalledWith(["1", "2"]);
   });

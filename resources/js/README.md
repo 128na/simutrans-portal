@@ -171,6 +171,7 @@ resources/js/
 基本的なUIパーツを提供するコンポーネント群です。
 
 #### フォーム関連
+
 - **Button.tsx** - 基本ボタン（プライマリアクション用）
 - **ButtonClose.tsx** - 閉じるボタン（×アイコン）
 - **Input.tsx** - テキスト入力フィールド
@@ -181,6 +182,7 @@ resources/js/
 - **FormCaption.tsx** - フォーム項目のキャプション・説明文
 
 #### レイアウト・表示
+
 - **Card.tsx** - カードコンテナ（枠線付きのコンテンツ表示）
 - **Accordion.tsx** - アコーディオン（開閉可能なセクション）
 - **Modal.tsx** - モーダルダイアログ
@@ -189,14 +191,17 @@ resources/js/
 - **SortableList.tsx** - ドラッグ&ドロップ可能なソート可能リスト
 
 #### テキスト・バッジ
+
 - **TextBadge.tsx** - バッジ表示（ステータス・タグ等）
 - **TextError.tsx** - エラーメッセージ表示
 - **TextSub.tsx** - サブテキスト（補足説明等）
 
 #### リンク・ナビゲーション
+
 - **Link.tsx** - 内部リンク
 
 #### 画像
+
 - **Avatar.tsx** - アバター画像（丸型）
 - **Image.tsx** - 汎用画像表示
 - **Thumbnail.tsx** - サムネイル画像
@@ -220,6 +225,7 @@ resources/js/
 以下のコンポーネントがPR #458で整理・追加されました：
 
 **新規追加:**
+
 - `Card.tsx` - 統一されたカードスタイルの提供
 - `Checkboxes.tsx` - 複数選択チェックボックスの簡易化
 - `FormCaption.tsx` - フォーム説明文の統一
@@ -227,6 +233,7 @@ resources/js/
 - `SortableList.tsx` - ドラッグ&ドロップ並び替え機能
 
 **削除されたコンポーネント:**
+
 - `ButtonDanger.tsx`, `ButtonOutline.tsx`, `ButtonSub.tsx` - `Button.tsx` に統合
 - `InputFile.tsx` - `Upload.tsx` に統合
 - `Label.tsx` - `FormCaption.tsx` に置き換え

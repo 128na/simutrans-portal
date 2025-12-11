@@ -50,7 +50,7 @@ describe("ButtonClose コンポーネント", () => {
   it("デフォルトのスタイルが適用される", () => {
     render(<ButtonClose />);
     const button = screen.getByRole("button");
-    expect(button).toHaveClass("text-c-sub");
+    expect(button).toHaveClass("v2-text-sub");
     expect(button).toHaveClass("hover:rounded-lg");
     expect(button).toHaveClass("cursor-pointer");
   });

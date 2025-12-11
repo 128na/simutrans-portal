@@ -143,8 +143,8 @@ export const AttachmentTable = ({
               className={twMerge(
                 onSelectAttachment &&
                   (selected === a.id
-                    ? "cursor-pointer bg-c-primary/20 hover:bg-c-primary/30"
-                    : "cursor-pointer hover:bg-c-sub/10")
+                    ? "cursor-pointer v2-selected-bg"
+                    : "cursor-pointer v2-hover-bg-sub")
               )}
               onClick={() => onSelectAttachment?.(selected === a.id ? null : a)}
             >

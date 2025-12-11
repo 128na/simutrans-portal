@@ -293,7 +293,7 @@ export const ProfileForm = ({
           }}
         />
       </div>
-      <div className="border-t border-c-sub/10 pt-4">
+      <div className="v2-divider pt-4">
         <Button size="lg" onClick={save}>
           保存
         </Button>

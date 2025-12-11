@@ -104,8 +104,8 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
               key={article.id}
               className={twMerge(
                 selected.includes(article.id)
-                  ? "cursor-pointer bg-c-primary/10 hover:bg-c-primary/20"
-                  : "cursor-pointer hover:bg-c-sub/10"
+                  ? "cursor-pointer v2-hover-bg-primary"
+                  : "cursor-pointer v2-hover-bg-sub"
               )}
               onClick={() => onClick(article.id)}
             >

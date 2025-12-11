@@ -7,7 +7,7 @@ export default function ButtonClose({ className, ...props }: ButtonProps) {
     <button
       type="button"
       className={twMerge(
-        "text-c-sub hover:rounded-lg text-sm p-1.5 cursor-pointer",
+        "v2-text-sub hover:rounded-lg text-sm p-1.5 cursor-pointer",
         className
       )}
       {...props}

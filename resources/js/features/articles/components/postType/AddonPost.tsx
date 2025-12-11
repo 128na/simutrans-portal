@@ -39,37 +39,37 @@ export const AddonPost = ({ article, preview }: Props) => {
           <table className="border-collapse whitespace-nowrap">
             <tbody>
               <tr>
-                <td className="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">
+                <td className="v2-table-header">
                   作者
                 </td>
-                <td className="border border-c-sub/10 px-4 py-2">
+                <td className="v2-table-cell">
                   {contents.author ?? article.user.name}
                 </td>
               </tr>
 
               <tr>
-                <td className="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">
+                <td className="v2-table-header">
                   公開日時
                 </td>
-                <td className="border border-c-sub/10 px-4 py-2">
+                <td className="v2-table-cell">
                   {formatArticleDate(article.published_at)}
                 </td>
               </tr>
 
               <tr>
-                <td className="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">
+                <td className="v2-table-header">
                   最終更新日時
                 </td>
-                <td className="border border-c-sub/10 px-4 py-2">
+                <td className="v2-table-cell">
                   {formatArticleDate(article.modified_at)}
                 </td>
               </tr>
 
               <tr>
-                <td className="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">
+                <td className="v2-table-header">
                   ダウンロード
                 </td>
-                <td className="border border-c-sub/10 px-4 py-2">
+                <td className="v2-table-cell">
                   <Link
                     href={preview ? "#" : `/articles/${article.id}/download`}
                   >
@@ -96,7 +96,7 @@ export const AddonPost = ({ article, preview }: Props) => {
                     <React.Fragment key={filename}>
                       <li className="mb-1 break-all">{filename}</li>
                       <li className="mb-6">
-                        <ul className="list-disc text-c-sub ml-8 break-all">
+                        <ul className="v2-list-disc v2-list-item-sub">
                           {addonNames.map((name: string) => (
                             <li key={name}>
                               <span className="text-black break-all">
@@ -137,10 +137,10 @@ export const AddonPost = ({ article, preview }: Props) => {
                               {Object.entries(translateMap).map(
                                 ([addonName, translateName]) => (
                                   <tr key={addonName}>
-                                    <td className="border border-c-sub/10 px-4 py-2">
+                                    <td className="v2-table-cell">
                                       {addonName}
                                     </td>
-                                    <td className="border border-c-sub/10 px-4 py-2">
+                                    <td className="v2-table-cell">
                                       {translateName}
                                     </td>
                                   </tr>
@@ -184,3 +184,4 @@ export const AddonPost = ({ article, preview }: Props) => {
     </>
   );
 };
+

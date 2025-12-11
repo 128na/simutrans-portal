@@ -145,6 +145,14 @@
     @apply border-c-success bg-c-success/2 text-c-success;
   }
 
+  /* テーブル */
+  .v2-table-cell {
+    @apply border border-c-sub/10 px-4 py-2;
+  }
+  .v2-table-header {
+    @apply border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white;
+  }
+
   /* ボタン：基底 */
   .v2-button {
     @apply text-white cursor-pointer shadow-md hover:shadow-lg transition-shadow;
@@ -268,7 +276,29 @@
     @apply px-2.5 py-0.5 text-white inline-block rounded bg-tag hover:bg-tag/80 shadow-md hover:shadow-lg transition-shadow;
   }
 
-  /* テキスト */
+  /* ホバー・インタラクション */
+  .v2-hover-bg-sub {
+    @apply hover:bg-c-sub/10;
+  }
+  .v2-hover-bg-primary {
+    @apply hover:bg-c-primary/10;
+  }
+  .v2-hover-text-sub {
+    @apply hover:text-c-sub;
+  }
+  .v2-selected-bg {
+    @apply bg-c-primary/20 hover:bg-c-primary/30;
+  }
+
+  /* 境界線・セパレーター */
+  .v2-border-sub {
+    @apply border-c-sub/10;
+  }
+  .v2-divider {
+    @apply border-t border-c-sub/10;
+  }
+
+  /* テキスト：見出し */
   .v2-text-h1 {
     @apply text-4xl font-semibold tracking-tight text-pretty;
   }
@@ -281,9 +311,25 @@
   .v2-text-h4 {
     @apply text-xl font-semibold tracking-tight text-pretty;
   }
+
+  /* テキスト：共通スタイル */
   .v2-text-caption {
     @apply block w-full text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-c-sub/10;
   }
+  .v2-text-sub {
+    @apply text-c-sub;
+  }
+  .v2-text-main {
+    @apply text-c-main;
+  }
+  .v2-text-primary {
+    @apply text-c-primary;
+  }
+  .v2-text-danger {
+    @apply text-c-danger;
+  }
+
+  /* フォーム */
   .v2-form-caption {
     @apply block font-semibold;
   }
@@ -362,10 +408,16 @@
 
   /* テーブルスタイルは .v2-table と共通化済み */
 
+  /* リスト：共通スタイル */
+  .v2-list-disc,
   .markdown-body ul {
     @apply list-disc mb-4 ml-6;
   }
+  .v2-list-decimal,
   .markdown-body ol {
     @apply list-decimal mb-4 ml-6;
+  }
+  .v2-list-item-sub {
+    @apply text-c-sub ml-8 break-all;
   }
 }

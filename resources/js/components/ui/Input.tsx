@@ -16,7 +16,7 @@ export default function Input({ counter, className, ...props }: Props) {
         {...props}
       />
       {props.maxLength !== undefined ? (
-        <div className="text-right text-sm text-c-sub/70 mt-1">
+        <div className="text-right text-sm v2-text-sub/70 mt-1">
           {count} / {props.maxLength}
         </div>
       ) : null}

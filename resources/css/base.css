@@ -145,14 +145,6 @@
     @apply border-c-success bg-c-success/2 text-c-success;
   }
 
-  /* テーブル */
-  .v2-table-cell {
-    @apply border border-c-sub/10 px-4 py-2;
-  }
-  .v2-table-header {
-    @apply border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white;
-  }
-
   /* ボタン：基底 */
   .v2-button {
     @apply text-white cursor-pointer shadow-md hover:shadow-lg transition-shadow;

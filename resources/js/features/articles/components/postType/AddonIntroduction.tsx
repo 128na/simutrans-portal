@@ -16,36 +16,28 @@ export const AddonIntroduction = ({ article, preview }: Props) => {
 
       <div>
         <TitleH3>詳細情報</TitleH3>
-        <div className="overflow-x-auto">
-          <table className="border-collapse whitespace-nowrap">
+        <div className="v2-table-wrapper">
+          <table className="v2-table">
             <tbody>
               <tr>
-                <td className="v2-table-header">作者</td>
-                <td className="v2-table-cell">
-                  {contents.author ?? article.user.name}
-                </td>
+                <th>作者</th>
+                <td>{contents.author ?? article.user.name}</td>
               </tr>
               <tr>
-                <td className="v2-table-header">作者による掲載許可</td>
-                <td className="v2-table-cell">
-                  {contents.agreement ? "取得済み" : "未取得"}
-                </td>
+                <th>作者による掲載許可</th>
+                <td>{contents.agreement ? "取得済み" : "未取得"}</td>
               </tr>
               <tr>
-                <td className="v2-table-header">公開日時</td>
-                <td className="v2-table-cell">
-                  {formatArticleDate(article.published_at)}
-                </td>
+                <th>公開日時</th>
+                <td>{formatArticleDate(article.published_at)}</td>
               </tr>
               <tr>
-                <td className="v2-table-header">最終更新日時</td>
-                <td className="v2-table-cell">
-                  {formatArticleDate(article.modified_at)}
-                </td>
+                <th>最終更新日時</th>
+                <td>{formatArticleDate(article.modified_at)}</td>
               </tr>
               <tr>
-                <td className="v2-table-header">掲載URL</td>
-                <td className="v2-table-cell">
+                <th>掲載URL</th>
+                <td>
                   <Link
                     href={preview ? "#" : `/articles/${article.id}/conversion`}
                   >

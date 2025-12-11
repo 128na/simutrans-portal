@@ -35,33 +35,27 @@ export const AddonPost = ({ article, preview }: Props) => {
 
       <div>
         <TitleH3>詳細情報</TitleH3>
-        <div className="overflow-x-auto">
-          <table className="border-collapse whitespace-nowrap">
+        <div className="v2-table-wrapper">
+          <table className="v2-table">
             <tbody>
               <tr>
-                <td className="v2-table-header">作者</td>
-                <td className="v2-table-cell">
-                  {contents.author ?? article.user.name}
-                </td>
+                <th>作者</th>
+                <td>{contents.author ?? article.user.name}</td>
               </tr>
 
               <tr>
-                <td className="v2-table-header">公開日時</td>
-                <td className="v2-table-cell">
-                  {formatArticleDate(article.published_at)}
-                </td>
+                <th>公開日時</th>
+                <td>{formatArticleDate(article.published_at)}</td>
               </tr>
 
               <tr>
-                <td className="v2-table-header">最終更新日時</td>
-                <td className="v2-table-cell">
-                  {formatArticleDate(article.modified_at)}
-                </td>
+                <th>最終更新日時</th>
+                <td>{formatArticleDate(article.modified_at)}</td>
               </tr>
 
               <tr>
-                <td className="v2-table-header">ダウンロード</td>
-                <td className="v2-table-cell">
+                <th>ダウンロード</th>
+                <td>
                   <Link
                     href={preview ? "#" : `/articles/${article.id}/download`}
                   >
@@ -113,28 +107,20 @@ export const AddonPost = ({ article, preview }: Props) => {
                     <React.Fragment key={filename}>
                       <li className="mb-1 break-all">{filename}</li>
                       <li className="mb-6">
-                        <div className="overflow-x-auto">
-                          <table className="border-collapse whitespace-nowrap">
+                        <div className="v2-table-wrapper">
+                          <table className="v2-table">
                             <thead>
                               <tr>
-                                <th className="border border-c-sub/10 px-4 py-2 bg-c-sub/80text-white">
-                                  アドオン名
-                                </th>
-                                <th className="border border-c-sub/10 px-4 py-2 bg-c-sub/80text-white">
-                                  翻訳テキスト
-                                </th>
+                                <th>アドオン名</th>
+                                <th>翻訳テキスト</th>
                               </tr>
                             </thead>
                             <tbody>
                               {Object.entries(translateMap).map(
                                 ([addonName, translateName]) => (
                                   <tr key={addonName}>
-                                    <td className="v2-table-cell">
-                                      {addonName}
-                                    </td>
-                                    <td className="v2-table-cell">
-                                      {translateName}
-                                    </td>
+                                    <td>{addonName}</td>
+                                    <td>{translateName}</td>
                                   </tr>
                                 )
                               )}

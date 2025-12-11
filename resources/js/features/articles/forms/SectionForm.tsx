@@ -4,7 +4,6 @@ import { SectionCaption } from "./Section/SectionCaption";
 import { SectionText } from "./Section/SectionText";
 import { SectionImage } from "./Section/SectionImage";
 import { SectionUrl } from "./Section/SectionUrl";
-import ButtonDanger from "@/components/ui/ButtonDanger";
 import { FormCaption } from "@/components/ui/FormCaption";
 import MultiColumn from "@/components/ui/MultiColumn";
 import { SortableList } from "@/components/ui/SortableList";
@@ -137,7 +136,9 @@ export const SectionForm = () => {
                   />
                 ))
                 .exhaustive()}
-              <ButtonDanger onClick={() => remove(idx)}>削除</ButtonDanger>
+              <V2Button variant="dangerOutline" onClick={() => remove(idx)}>
+                削除
+              </V2Button>
             </MultiColumn>
           </div>
         )}

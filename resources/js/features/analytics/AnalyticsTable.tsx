@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Pagination } from "@/components/layout/Pagination";
-import Input from "@/components/ui/Input";
 import { twMerge } from "tailwind-merge";
 import { DataTable, DataTableHeader } from "@/components/layout/DataTable";
 import { compareArticleValues } from "../articles/utils/articleUtil";
@@ -8,6 +7,7 @@ import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
 import { analyticsFilter } from "./analyticsUtil";
 import { format } from "date-fns";
 import { FormCaption } from "@/components/ui/FormCaption";
+import Input from "@/components/ui/Input";
 
 type Props = {
   articles: Analytics.Article[];
@@ -75,10 +75,10 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
   return (
     <>
       <FormCaption>表示記事</FormCaption>
-      <div className="gap-4 flex flex-col sm:flex-row pb-4">
+      <div className="v2-table-container">
         <div>
           <Input
-            type="text"
+            type="search"
             value={criteria}
             onChange={(e) => setCriteria(e.target.value)}
             placeholder="検索"
@@ -91,7 +91,7 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
           onChange={setCurrent}
         />
       </div>
-      <div className="relative overflow-x-auto">
+      <div className="v2-table-wrapper">
         <DataTable
           headers={headers}
           data={sorted}
@@ -103,26 +103,17 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
             <tr
               key={article.id}
               className={twMerge(
-                "bg-white border-b border-g2",
                 selected.includes(article.id)
-                  ? "cursor-pointer bg-brand/20 hover:bg-brand/30"
-                  : "cursor-pointer hover:bg-g2"
+                  ? "cursor-pointer v2-hover-bg-primary"
+                  : "cursor-pointer v2-hover-bg-sub"
               )}
               onClick={() => onClick(article.id)}
             >
-              <td className="px-6 py-4 font-medium">{article.title}</td>
-              <td className="px-6 py-4">
-                {format(new Date(article.published_at), "yyyy/MM/dd")}
-              </td>
-              <td className="px-6 py-4">
-                {format(new Date(article.modified_at), "yyyy/MM/dd")}
-              </td>
-              <td className="px-6 py-4">
-                {article.total_view_count?.count ?? 0}
-              </td>
-              <td className="px-6 py-4">
-                {article.total_conversion_count?.count ?? 0}
-              </td>
+              <td>{article.title}</td>
+              <td>{format(new Date(article.published_at), "yyyy/MM/dd")}</td>
+              <td>{format(new Date(article.modified_at), "yyyy/MM/dd")}</td>
+              <td>{article.total_view_count?.count ?? 0}</td>
+              <td>{article.total_conversion_count?.count ?? 0}</td>
             </tr>
           )}
         />

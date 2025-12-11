@@ -5,7 +5,18 @@ declare(strict_types=1);
 use App\Http\Controllers\Admin\OauthController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Middleware\ExcludePaths;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
+
+// POSTなど表示デバッグしづらいルート用
+if (\Illuminate\Support\Facades\App::environment('local')) {
+    Route::get('/playground', fn (): Factory|View => view('mypage.playground'));
+    Route::get('/invite-welcome', fn (): Factory|View => view('auth.welcome', [
+        'inviter' => new \App\Models\User(['name' => 'dummy']),
+    ]));
+    Route::get('/two-factor', fn (): Factory|View => view('auth.two-factor'));
+}
 
 Route::feeds();
 
@@ -84,6 +95,7 @@ Route::middleware(['auth'])->group(function (): void {
         Route::get('/mypage/articles/edit/{article}', [\App\Http\Controllers\Mypage\Article\EditController::class, 'edit'])->name('mypage.articles.edit');
         Route::post('/mypage/articles/edit/{article}', [\App\Http\Controllers\Mypage\Article\EditController::class, 'update']);
     });
+
 });
 
 Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function (): void {

@@ -9,11 +9,11 @@ export default function TextError({
   className,
   ...props
 }: HTMLProps) {
-  if (children === "") {
+  if (!children) {
     return null;
   }
   return (
-    <div className={twMerge("text-sm text-danger", className)} {...props}>
+    <div className={twMerge("v2-form-error", className)} {...props}>
       {children}
     </div>
   );

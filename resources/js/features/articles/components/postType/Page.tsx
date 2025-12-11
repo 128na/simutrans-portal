@@ -1,4 +1,4 @@
-import LinkExternal from "@/components/ui/LinkExternal";
+import Link from "@/components/ui/Link";
 import { TextPre } from "../TextPre";
 import { TitleH4 } from "../TitleH4";
 import { Thumbnail } from "@/components/ui/Thumbnail";
@@ -17,16 +17,17 @@ export const Page = ({ article, preview }: Props) => {
           return <TextPre key={index}>{section.text || "(本文)"}</TextPre>;
         }
         if (section.type === "caption") {
-          return <TitleH4 key={index}>{section.caption || "(見出し)"}</TitleH4>;
+          return (
+            <TitleH4 key={index} className="my-0">
+              {section.caption || "(見出し)"}
+            </TitleH4>
+          );
         }
         if (section.type === "url") {
           return (
-            <LinkExternal
-              key={index}
-              href={preview ? "#" : (section.url ?? "")}
-            >
+            <Link key={index} href={preview ? "#" : (section.url ?? "")}>
               {section.url ?? "(URL)"}
-            </LinkExternal>
+            </Link>
           );
         }
         if (section.type === "image") {

@@ -1,6 +1,7 @@
 import { useState } from "react";
-import Input from "@/components/ui/Input";
 import { twMerge } from "tailwind-merge";
+import Button from "../ui/Button";
+import Input from "../ui/Input";
 
 type SearchableItem = {
   id: number;
@@ -59,42 +60,33 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
       <div>
         <div className="flex flex-wrap gap-2">
           {selectedItems.map((item) => (
-            <span
-              key={item.id}
-              className="bg-brand text-white px-2 py-1 rounded cursor-pointer"
-              onClick={() => remove(item.id)}
-            >
+            <Button key={item.id} onClick={() => remove(item.id)}>
               {getLabel(item)}
               <span className="ml-2">✕</span>
-            </span>
+            </Button>
           ))}
           {selectedItems.length === 0 && (
-            <span className="text-g4">（未選択）</span>
+            <span className="text-c-sub">（未選択）</span>
           )}
         </div>
       </div>
 
       <Input
-        className={twMerge(className, "mb-0")}
         type="text"
+        className="w-full"
         value={criteria}
         onChange={(e) => setCriteria(e.target.value)}
         placeholder={placeholder}
       />
 
-      <div
-        className={twMerge(
-          "max-h-40 overflow-y-auto border border-g2 rounded-lg p-2 bg-white",
-          className
-        )}
-      >
+      <div className={twMerge("max-h-40 overflow-y-auto v2-input", className)}>
         {filteredItems.length < 1 ? (
           <div>該当なし</div>
         ) : (
           filteredItems.map((o) => (
             <div
               key={o.id}
-              className="py-1.5 px-2 rounded cursor-pointer hover:bg-g2"
+              className="py-1.5 px-2 rounded cursor-pointer hover:bg-c-sub/10"
               onClick={() => add(o.id)}
             >
               {getLabel(o)}

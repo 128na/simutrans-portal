@@ -1,11 +1,11 @@
 @extends('layouts.admin')
-@section('max-w', 'max-w-7xl')
+@section('max-w', 'v2-page-lg')
 @section('content')
-<div class="mx-auto max-w-7xl p-6 lg:px-8">
-    <div class="mb-6">
-        <h2 class="title-xl">管理</h2>
+<div class="v2-page v2-page-lg">
+    <div class="mb-12">
+        <h2 class="v2-text-h2">管理</h2>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-g2 pt-6 lg:mx-0">
+    <div class="v2-page-content-area-lg">
         <div>
             @include('components.ui.link', ['url'=>route('admin.oauth.twitter.authorize'), 'title' =>'認証'])<br>
             @include('components.ui.link', ['url'=>route('admin.oauth.twitter.refresh'), 'title' =>'トークンリフレッシュ'])<br>

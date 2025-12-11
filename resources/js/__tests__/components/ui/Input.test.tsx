@@ -1,36 +1,65 @@
 import Input from "@/components/ui/Input";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 describe("Input コンポーネント", () => {
-  it("基本的なレンダリング", () => {
+  it("入力フィールドが表示される", () => {
     render(<Input />);
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
-  });
-
-  it("ラベル付きでレンダリングされる", () => {
-    render(<Input>ユーザー名</Input>);
-    expect(screen.getByText("ユーザー名")).toBeInTheDocument();
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
 
   it("placeholder が設定される", () => {
-    render(<Input placeholder="名前を入力" />);
-    expect(screen.getByPlaceholderText("名前を入力")).toBeInTheDocument();
+    render(<Input placeholder="テスト入力" />);
+    expect(screen.getByPlaceholderText("テスト入力")).toBeInTheDocument();
   });
 
-  it("値の入力ができる", async () => {
+  it("value が設定される", () => {
+    render(<Input value="テスト値" readOnly />);
+    expect(screen.getByRole("textbox")).toHaveValue("テスト値");
+  });
+
+  it("onChange イベントが発火する", async () => {
     const user = userEvent.setup();
-    render(<Input />);
-    const input = screen.getByRole("textbox");
-    await user.type(input, "テスト入力");
-    expect(input).toHaveValue("テスト入力");
+    const handleChange = vi.fn();
+    render(<Input onChange={handleChange} />);
+
+    await user.type(screen.getByRole("textbox"), "test");
+    expect(handleChange).toHaveBeenCalled();
   });
 
-  it("disabled 状態が適用される", () => {
+  it("disabled 状態で動作する", () => {
     render(<Input disabled />);
     expect(screen.getByRole("textbox")).toBeDisabled();
+  });
+
+  it("type 属性が設定される", () => {
+    render(<Input type="email" />);
+    expect(screen.getByRole("textbox")).toHaveAttribute("type", "email");
+
+    const { container: passwordContainer } = render(<Input type="password" />);
+    const passwordInput = passwordContainer.querySelector(
+      'input[type="password"]'
+    );
+    expect(passwordInput).toHaveAttribute("type", "password");
+  });
+
+  it("maxLength が設定されたときカウンターが表示される", () => {
+    render(<Input value="test" maxLength={10} readOnly />);
+    expect(screen.getByText("4 / 10")).toBeInTheDocument();
+  });
+
+  it("maxLength がない場合カウンターは表示されない", () => {
+    const { container } = render(<Input value="test" readOnly />);
+    expect(container.textContent).not.toContain("/");
+  });
+
+  it("カスタムカウンター関数が使用される", () => {
+    const customCounter = (value: string) => value.split(",").length;
+    render(
+      <Input value="a,b,c" maxLength={5} counter={customCounter} readOnly />
+    );
+    expect(screen.getByText("3 / 5")).toBeInTheDocument();
   });
 
   it("カスタムクラス名が適用される", () => {
@@ -38,28 +67,18 @@ describe("Input コンポーネント", () => {
     expect(screen.getByRole("textbox")).toHaveClass("custom-class");
   });
 
-  it("ラベルにカスタムクラス名が適用される", () => {
-    render(<Input labelClassName="custom-label-class">ラベル</Input>);
-    const label = screen.getByText("ラベル");
-    expect(label).toHaveClass("custom-label-class");
+  it("デフォルトのスタイルが適用される", () => {
+    render(<Input />);
+    expect(screen.getByRole("textbox")).toHaveClass("v2-input");
   });
 
-  it("type 属性が設定される", () => {
+  it("type に応じたクラスが適用される", () => {
     render(<Input type="email" />);
-    expect(screen.getByRole("textbox")).toHaveAttribute("type", "email");
+    expect(screen.getByRole("textbox")).toHaveClass("v2-input-email");
   });
 
-  it("required 属性が適用される", () => {
-    render(<Input required />);
-    expect(screen.getByRole("textbox")).toBeRequired();
-  });
-
-  it("onChange ハンドラーが動作する", async () => {
-    const user = userEvent.setup();
-    let value = "";
-    render(<Input onChange={(e) => (value = e.target.value)} />);
-    const input = screen.getByRole("textbox");
-    await user.type(input, "test");
-    expect(value).toBe("test");
+  it("絵文字を含む文字列のカウントが正しい", () => {
+    render(<Input value="👍😀" maxLength={10} readOnly />);
+    expect(screen.getByText("2 / 10")).toBeInTheDocument();
   });
 });

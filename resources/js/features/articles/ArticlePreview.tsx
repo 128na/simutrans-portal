@@ -77,13 +77,13 @@ export const ArticlePreview = () => {
   return (
     <div>
       <div className="mt-2 mb-8">
-        <TextBadge className="bg-warn">プレビュー表示</TextBadge>
+        <TextBadge variant="warn">プレビュー表示</TextBadge>
         <TextSub>
           プレビュー表示ではリンクやボタンが反応しないようになっています。（マークダウン形式を除く）
         </TextSub>
       </div>
 
-      <h2 className="title-xl mb-8 break-words">
+      <h2 className="v2-text-h2 mb-8 wrap-break-word">
         {article.title || "(タイトル)"}
       </h2>
 

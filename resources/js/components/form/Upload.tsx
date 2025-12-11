@@ -1,6 +1,6 @@
 import axios from "axios";
-import InputFile from "../ui/InputFile";
 import { handleError } from "@/lib/errorHandler";
+import Input from "../ui/Input";
 
 type Prop = {
   onUploaded?: (attachment: Attachment.MypageEdit) => void;
@@ -27,5 +27,5 @@ export const Upload = ({ onUploaded, ...props }: Prop) => {
     }
   };
 
-  return <InputFile onChange={onUpload} multiple={false} {...props} />;
+  return <Input type="file" onChange={onUpload} multiple={false} {...props} />;
 };

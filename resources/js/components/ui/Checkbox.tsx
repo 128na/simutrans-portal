@@ -1,26 +1,16 @@
 import { twMerge } from "tailwind-merge";
-import Label from "./Label";
-export default function Checkbox({
-  children,
-  className,
-  labelClassName,
-  ...props
-}: React.InputHTMLAttributes<HTMLInputElement> & {
-  labelClassName?: string;
-}) {
+
+type Props = React.InputHTMLAttributes<HTMLInputElement> & {};
+
+export default function Checkbox({ children, className, ...props }: Props) {
   return (
-    <Label
-      className={twMerge(
-        "sm:mr-2 mr-4 sm:mb-1 mb-2 inline-block text-sm text-g9 cursor-pointer",
-        labelClassName
-      )}
-    >
+    <label className="inline-block">
       <input
         type="checkbox"
-        className={twMerge("mr-0.5 accent-brand", className)}
+        className={twMerge("v2-checkbox peer", className)}
         {...props}
       />
-      {children}
-    </Label>
+      <span className="v2-checkbox-label">{children}</span>
+    </label>
   );
 }

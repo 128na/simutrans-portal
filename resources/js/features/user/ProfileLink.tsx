@@ -1,4 +1,4 @@
-import LinkExternal from "@/components/ui/LinkExternal";
+import Link from "@/components/ui/Link";
 import { ProfileIcon } from "./ProfileIcon";
 import { getService } from "./profileUtil";
 
@@ -29,5 +29,5 @@ export const ProfileLink = ({ url, preview }: Props) => {
     }
   })();
 
-  return <LinkExternal href={preview ? "#" : url}>{host}</LinkExternal>;
+  return <Link href={preview ? "#" : url}>{host}</Link>;
 };

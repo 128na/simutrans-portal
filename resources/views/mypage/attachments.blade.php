@@ -1,18 +1,16 @@
 @extends('layouts.mypage')
-@section('max-w', 'max-w-7xl')
+@section('max-w', 'v2-page-lg')
 @section('content')
-<div class="mx-auto max-w-7xl p-6 lg:px-8">
+<div class="v2-page v2-page-lg">
     <script id="data-attachments" type="application/json">
         @json($attachments)
 
     </script>
-    <div class="mb-6">
-        <h2 class="title-xl">ファイルの編集</h2>
-        <p class="mt-2 text-g5">
+    <div class="mb-12">
+        <h2 class="v2-text-h2 mb-2">ファイルの編集</h2>
+        <p class="text-c-sub">
             アップロード済みのファイルを編集できます
         </p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-g2 pt-6 lg:mx-0">
-        <div id="app-attachment-edit"></div>
-    </div>
+    <div id="app-attachment-edit">読み込み中...</div>
     @endsection

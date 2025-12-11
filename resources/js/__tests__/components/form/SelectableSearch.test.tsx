@@ -224,7 +224,7 @@ describe("SelectableSearch", () => {
   });
 
   it("カスタムclassNameが適用される", () => {
-    render(
+    const { container } = render(
       <SelectableSearch
         options={mockOptions}
         selectedIds={[]}
@@ -233,7 +233,7 @@ describe("SelectableSearch", () => {
       />
     );
 
-    const input = screen.getByPlaceholderText("検索...");
-    expect(input).toHaveClass("custom-class");
+    const element = container.querySelector(".custom-class");
+    expect(element).toBeInTheDocument();
   });
 });

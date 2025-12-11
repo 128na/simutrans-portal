@@ -1,14 +1,30 @@
+import React from "react";
 import { twMerge } from "tailwind-merge";
-
-type HTMLProps = React.HTMLAttributes<HTMLElement> & {
-  children: React.ReactNode;
+type Props = React.ButtonHTMLAttributes<HTMLElement> & {
+  variant?: keyof typeof variants;
 };
 
-export const Card = ({ children, className, ...props }: HTMLProps) => {
+const variants: Record<string, string> = {
+  main: "v2-card-main",
+  sub: "v2-card-sub",
+  primary: "v2-card-primary",
+  danger: "v2-card-danger",
+  warn: "v2-card-warn",
+  info: "v2-card-info",
+  success: "v2-card-success",
+} as const;
+
+export default function Card({
+  children,
+  className,
+  variant = "primary",
+  ...props
+}: Props) {
   return (
     <div
       className={twMerge(
-        "rounded-lg shadow-sm p-4 cursor-pointer hover:bg-brand/10",
+        "v2-card",
+        variant in variants ? variants[variant] : variants.sub,
         className
       )}
       {...props}
@@ -16,4 +32,4 @@ export const Card = ({ children, className, ...props }: HTMLProps) => {
       {children}
     </div>
   );
-};
+}

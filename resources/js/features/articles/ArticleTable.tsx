@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { Pagination } from "@/components/layout/Pagination";
-import Input from "@/components/ui/Input";
-import Select from "@/components/ui/Select";
 import { twMerge } from "tailwind-merge";
 import { DataTable, DataTableHeader } from "@/components/layout/DataTable";
 import {
@@ -13,6 +11,8 @@ import {
 } from "./utils/articleUtil";
 import { format } from "date-fns";
 import Button from "@/components/ui/Button";
+import Select from "@/components/ui/Select";
+import Input from "@/components/ui/Input";
 
 type Props = {
   articles: Article.MypageShow[];
@@ -79,9 +79,9 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
   const createUrl = `${import.meta.env.VITE_APP_URL}/mypage/articles/create`;
   return (
     <>
-      <div className="gap-4 flex flex-col sm:flex-row pb-4">
+      <div className="v2-table-container">
         <div>
-          <Button onClick={() => (window.location.href = createUrl)}>
+          <Button size="lg" onClick={() => (window.location.href = createUrl)}>
             作成
           </Button>
         </div>
@@ -118,7 +118,7 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
         </div>
         <div>
           <Input
-            type="text"
+            type="search"
             value={criteria}
             onChange={(e) => setCriteria(e.target.value)}
             placeholder="検索"
@@ -142,30 +142,23 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
           renderRow={(article) => (
             <tr
               key={article.id}
-              className={twMerge(
-                "bg-white border-b border-g2 cursor-pointer",
-                StatusClass[article.status]
-              )}
+              className={twMerge("cursor-pointer", StatusClass[article.status])}
               onClick={() => onClick?.(article)}
             >
-              <td className="px-6 py-4 font-medium">{article.title}</td>
-              <td className="px-6 py-4">{StatusText[article.status]}</td>
-              <td className="px-6 py-4">{PostTypeText[article.post_type]}</td>
-              <td className="px-6 py-4">
+              <td>{article.title}</td>
+              <td>{StatusText[article.status]}</td>
+              <td>{PostTypeText[article.post_type]}</td>
+              <td>
                 {article.published_at
                   ? format(new Date(article.published_at), "yyyy/MM/dd H:mm")
                   : "-"}
                 {article.status === "reservation" && "（予約）"}
               </td>
-              <td className="px-6 py-4">
+              <td>
                 {format(new Date(article.modified_at), "yyyy/MM/dd H:mm")}
               </td>
-              <td className="px-6 py-4">
-                {article.total_view_count?.count ?? 0}
-              </td>
-              <td className="px-6 py-4">
-                {article.total_conversion_count?.count ?? 0}
-              </td>
+              <td>{article.total_view_count?.count ?? 0}</td>
+              <td>{article.total_conversion_count?.count ?? 0}</td>
             </tr>
           )}
         />

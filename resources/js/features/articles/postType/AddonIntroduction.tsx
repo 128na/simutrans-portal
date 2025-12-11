@@ -1,19 +1,17 @@
-import Input from "@/components/ui/Input";
-import Textarea from "@/components/ui/Textarea";
 import { SelectCategories } from "../components/SelectCategories";
 import { SelectableSearch } from "@/components/form/SelectableSearch";
 import { Accordion } from "@/components/ui/Accordion";
 import { TagEdit } from "../../tags/TagEdit";
 import TextBadge from "@/components/ui/TextBadge";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
-import { CommonForm } from "../forms/CommonForm";
-import { StatusForm } from "../forms/StatusForm";
-import Checkbox from "@/components/ui/Checkbox";
 import { useAxiosError } from "@/hooks/useAxiosError";
 import TextError from "@/components/ui/TextError";
 import { ModalFull } from "@/components/ui/ModalFull";
 import { FormCaption } from "@/components/ui/FormCaption";
 import TextSub from "@/components/ui/TextSub";
+import Textarea from "@/components/ui/Textarea";
+import Input from "@/components/ui/Input";
+import Checkbox from "@/components/ui/Checkbox";
 
 export const AddonIntroduction = () => {
   const article = useArticleEditor((s) => s.article);
@@ -32,18 +30,17 @@ export const AddonIntroduction = () => {
 
   return (
     <>
-      <CommonForm />
-
       <div>
         <FormCaption>
-          <TextBadge className="bg-danger">必須</TextBadge>
+          <TextBadge variant="danger">必須</TextBadge>
           説明
         </FormCaption>
         <TextError>{getError("article.contents.description")}</TextError>
         <Textarea
-          labelClassName="font-medium"
-          className="font-normal"
+          className="w-full"
           value={contents.description || ""}
+          required
+          maxLength={2048}
           rows={9}
           onChange={(e) =>
             updateContents<ArticleContent.AddonIntroduction>(
@@ -55,15 +52,15 @@ export const AddonIntroduction = () => {
 
       <div>
         <FormCaption>
-          <TextBadge className="bg-danger">必須</TextBadge>
+          <TextBadge variant="danger">必須</TextBadge>
           リンク先
         </FormCaption>
         <TextError>{getError("article.contents.link")}</TextError>
-
         <Input
-          labelClassName="font-medium"
-          className="font-normal"
           type="url"
+          className="w-full"
+          required
+          maxLength={255}
           value={contents.link || ""}
           onChange={(e) =>
             updateContents<ArticleContent.AddonIntroduction>(
@@ -113,8 +110,8 @@ export const AddonIntroduction = () => {
             <FormCaption>作者</FormCaption>
             <TextError>{getError("article.contents.author")}</TextError>
             <Input
-              labelClassName="font-medium"
-              className="font-normal"
+              className="w-full"
+              maxLength={255}
               value={contents.author || ""}
               onChange={(e) =>
                 updateContents<ArticleContent.AddonIntroduction>(
@@ -127,9 +124,9 @@ export const AddonIntroduction = () => {
             <FormCaption>謝辞</FormCaption>
             <TextError>{getError("article.contents.thanks")}</TextError>
             <Textarea
-              labelClassName="font-medium"
-              className="font-normal"
+              className="w-full"
               value={contents.thanks || ""}
+              maxLength={2048}
               rows={3}
               onChange={(e) =>
                 updateContents<ArticleContent.AddonIntroduction>(
@@ -142,8 +139,8 @@ export const AddonIntroduction = () => {
             <FormCaption>ライセンス</FormCaption>
             <TextError>{getError("article.contents.license")}</TextError>
             <Textarea
-              labelClassName="font-medium"
-              className="font-normal"
+              className="w-full"
+              maxLength={2048}
               value={contents.license || ""}
               rows={3}
               onChange={(e) =>
@@ -205,8 +202,6 @@ export const AddonIntroduction = () => {
           </div>
         </div>
       </Accordion>
-
-      <StatusForm />
     </>
   );
 };

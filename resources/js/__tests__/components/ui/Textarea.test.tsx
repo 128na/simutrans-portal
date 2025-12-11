@@ -1,56 +1,36 @@
 import Textarea from "@/components/ui/Textarea";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 describe("Textarea コンポーネント", () => {
-  it("基本的なレンダリング", () => {
+  it("テキストエリアが表示される", () => {
     render(<Textarea />);
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
-  });
-
-  it("ラベル付きでレンダリングされる", () => {
-    render(<Textarea>説明</Textarea>);
-    expect(screen.getByText("説明")).toBeInTheDocument();
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
 
   it("placeholder が設定される", () => {
-    render(<Textarea placeholder="詳細を入力" />);
-    expect(screen.getByPlaceholderText("詳細を入力")).toBeInTheDocument();
+    render(<Textarea placeholder="テスト入力" />);
+    expect(screen.getByPlaceholderText("テスト入力")).toBeInTheDocument();
   });
 
-  it("値の入力ができる", async () => {
+  it("value が設定される", () => {
+    render(<Textarea value="テスト値" readOnly />);
+    expect(screen.getByRole("textbox")).toHaveValue("テスト値");
+  });
+
+  it("onChange イベントが発火する", async () => {
     const user = userEvent.setup();
-    render(<Textarea />);
-    const textarea = screen.getByRole("textbox");
-    await user.type(textarea, "テスト入力");
-    expect(textarea).toHaveValue("テスト入力");
+    const handleChange = vi.fn();
+    render(<Textarea onChange={handleChange} />);
+
+    await user.type(screen.getByRole("textbox"), "test");
+    expect(handleChange).toHaveBeenCalled();
   });
 
-  it("複数行のテキストが入力できる", async () => {
-    const user = userEvent.setup();
-    render(<Textarea />);
-    const textarea = screen.getByRole("textbox");
-    const multilineText = "行1\n行2\n行3";
-    await user.type(textarea, multilineText);
-    expect(textarea).toHaveValue(multilineText);
-  });
-
-  it("disabled 状態が適用される", () => {
+  it("disabled 状態で動作する", () => {
     render(<Textarea disabled />);
     expect(screen.getByRole("textbox")).toBeDisabled();
-  });
-
-  it("カスタムクラス名が適用される", () => {
-    render(<Textarea className="custom-class" />);
-    expect(screen.getByRole("textbox")).toHaveClass("custom-class");
-  });
-
-  it("ラベルにカスタムクラス名が適用される", () => {
-    render(<Textarea labelClassName="custom-label-class">ラベル</Textarea>);
-    const label = screen.getByText("ラベル");
-    expect(label).toHaveClass("custom-label-class");
   });
 
   it("rows 属性が設定される", () => {
@@ -58,12 +38,40 @@ describe("Textarea コンポーネント", () => {
     expect(screen.getByRole("textbox")).toHaveAttribute("rows", "5");
   });
 
-  it("onChange ハンドラーが動作する", async () => {
-    const user = userEvent.setup();
-    let value = "";
-    render(<Textarea onChange={(e) => (value = e.target.value)} />);
-    const textarea = screen.getByRole("textbox");
-    await user.type(textarea, "test");
-    expect(value).toBe("test");
+  it("maxLength が設定されたときカウンターが表示される", () => {
+    render(<Textarea value="test" maxLength={100} readOnly />);
+    expect(screen.getByText("4 / 100")).toBeInTheDocument();
+  });
+
+  it("maxLength がない場合カウンターは表示されない", () => {
+    const { container } = render(<Textarea value="test" readOnly />);
+    expect(container.textContent).not.toContain("/");
+  });
+
+  it("カスタムクラス名が適用される", () => {
+    render(<Textarea className="custom-class" />);
+    expect(screen.getByRole("textbox")).toHaveClass("custom-class");
+  });
+
+  it("デフォルトのスタイルが適用される", () => {
+    render(<Textarea />);
+    expect(screen.getByRole("textbox")).toHaveClass("v2-input");
+  });
+
+  it("複数行のテキストが正しくカウントされる", () => {
+    const multilineText = "行1\n行2\n行3";
+    render(<Textarea value={multilineText} maxLength={50} readOnly />);
+    // "行1\n行2\n行3" は8文字（改行も1文字としてカウント）
+    expect(screen.getByText("8 / 50")).toBeInTheDocument();
+  });
+
+  it("絵文字を含む文字列のカウントが正しい", () => {
+    render(<Textarea value="👍😀テスト" maxLength={50} readOnly />);
+    expect(screen.getByText("5 / 50")).toBeInTheDocument();
+  });
+
+  it("空の値の時カウンターが 0 を表示する", () => {
+    render(<Textarea value="" maxLength={10} readOnly />);
+    expect(screen.getByText("0 / 10")).toBeInTheDocument();
   });
 });

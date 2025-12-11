@@ -1,25 +1,25 @@
 import { twMerge } from "tailwind-merge";
-import Label from "./Label";
-export default function Input({
-  children,
-  className,
-  labelClassName,
-  ...props
-}: React.InputHTMLAttributes<HTMLInputElement> & { labelClassName?: string }) {
-  const hasChildren = Array.isArray(children)
-    ? children.length > 0
-    : !!children;
+type Props = React.InputHTMLAttributes<HTMLInputElement> & {
+  counter?: (value: string) => number;
+};
+
+export default function Input({ counter, className, ...props }: Props) {
+  const count =
+    counter && typeof props.value === "string"
+      ? counter(props.value ?? "")
+      : [...String(props.value ?? "")].length;
+
   return (
-    <Label className={labelClassName}>
-      {children}
+    <>
       <input
-        className={twMerge(
-          "w-full border border-g2 rounded-lg px-4 py-2 invalid:border-danger invalid:bg-red-100",
-          hasChildren ? "mt-1" : "mb-0",
-          className
-        )}
+        className={twMerge("v2-input", `v2-input-${props.type}`, className)}
         {...props}
       />
-    </Label>
+      {props.maxLength !== undefined ? (
+        <div className="text-right text-sm v2-text-sub/70 mt-1">
+          {count} / {props.maxLength}
+        </div>
+      ) : null}
+    </>
   );
 }

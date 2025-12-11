@@ -1,8 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import Input from "@/components/ui/Input";
-import Textarea from "@/components/ui/Textarea";
-import Button from "@/components/ui/Button";
 import { useAxiosErrorState } from "@/hooks/errorState";
 import TextError from "@/components/ui/TextError";
 import TextSub from "@/components/ui/TextSub";
@@ -10,6 +7,9 @@ import { Modal } from "@/components/ui/Modal";
 import { isValidationError } from "@/lib/errorHandler";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
 import { FormCaption } from "@/components/ui/FormCaption";
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
+import Button from "@/components/ui/Button";
 
 type Props = {
   tag: Tag.MypageEdit | Tag.New | null;
@@ -58,7 +58,9 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={!!tag.id}
-            className={tag.id ? "bg-g2" : ""}
+            className="block w-full"
+            required
+            maxLength={20}
           />
           {tag.id ? (
             <TextSub className="mb-2">タグ名は編集できません。</TextSub>
@@ -71,12 +73,16 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
             rows={4}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            className="block w-full"
+            maxLength={1024}
           />
         </div>
       </div>
 
       <div className="flex justify-end space-x-2">
-        <Button onClick={handleSave}>保存</Button>
+        <Button onClick={handleSave} size="lg">
+          保存
+        </Button>
       </div>
     </Modal>
   );

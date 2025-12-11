@@ -1,27 +1,15 @@
 import { twMerge } from "tailwind-merge";
-import Label from "./Label";
-export default function Textarea({
-  children,
-  className,
-  labelClassName,
-  ...props
-}: React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
-  labelClassName?: string;
-}) {
-  const hasChildren = Array.isArray(children)
-    ? children.length > 0
-    : !!children;
+type Props = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {};
+
+export default function Textarea({ className, ...props }: Props) {
   return (
-    <Label className={labelClassName}>
-      {children}
-      <textarea
-        className={twMerge(
-          "w-full border border-g2 rounded-lg px-4 py-2",
-          hasChildren ? "mt-1" : "mb-0",
-          className
-        )}
-        {...props}
-      />
-    </Label>
+    <>
+      <textarea className={twMerge("v2-input", className)} {...props} />
+      {props.maxLength !== undefined ? (
+        <div className="text-right text-sm v2-text-sub/70 mt-1">
+          {[...String(props.value ?? "")].length} / {props.maxLength}
+        </div>
+      ) : null}
+    </>
   );
 }

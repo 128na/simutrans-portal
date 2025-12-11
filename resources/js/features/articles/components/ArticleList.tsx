@@ -8,15 +8,15 @@ type Props = {
 
 export const ArticleList = ({ articles }: Props) => {
   if (articles.length === 0) {
-    return <div className="text-g4">記事が見つかりませんでした。</div>;
+    return <div className="v2-text-sub">記事が見つかりませんでした。</div>;
   }
 
   return (
-    <div className="flex flex-col gap-y-12 border-t border-g2 pt-6 lg:mx-0">
+    <div className="v2-page-content-area-lg">
       {articles.map((article) => (
         <article key={article.id}>
           <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <a href={article.url}>
                 <img
                   className="w-full sm:w-80 h-45 object-cover rounded-lg shadow-lg"
@@ -26,15 +26,15 @@ export const ArticleList = ({ articles }: Props) => {
               </a>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="text-sm text-g4">
+              <div className="text-sm v2-text-sub">
                 {article.modified_at} ({article.published_at} 投稿)
               </div>
-              <h3 className="title-md">
-                <a href={article.url} className="hover:text-g5">
+              <h3 className="v2-text-h3">
+                <a href={article.url} className="v2-hover-text-sub">
                   {article.title}
                 </a>
               </h3>
-              <div className="text-sm text-g5 line-clamp-3 break-all">
+              <div className="text-sm v2-text-sub line-clamp-3 break-all">
                 {article.description}
               </div>
               <div className="text-xs flex flex-wrap gap-2">

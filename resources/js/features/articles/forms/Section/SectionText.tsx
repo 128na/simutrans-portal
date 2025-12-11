@@ -1,5 +1,5 @@
-import Textarea from "@/components/ui/Textarea";
 import TextError from "@/components/ui/TextError";
+import Textarea from "@/components/ui/Textarea";
 import { useAxiosError } from "@/hooks/useAxiosError";
 
 type Props = {
@@ -14,9 +14,10 @@ export const SectionText = ({ section, idx, ...props }: Props) => {
     <>
       <TextError>{getError(`article.contents.sections.${idx}.text`)}</TextError>
       <Textarea
+        className="w-full"
+        required
+        maxLength={2048}
         value={section.text ?? ""}
-        labelClassName="font-medium"
-        className="font-normal"
         rows={5}
         {...props}
       />

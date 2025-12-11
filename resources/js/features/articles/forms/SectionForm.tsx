@@ -1,14 +1,13 @@
-import Button from "@/components/ui/Button";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
 import { match } from "ts-pattern";
 import { SectionCaption } from "./Section/SectionCaption";
 import { SectionText } from "./Section/SectionText";
 import { SectionImage } from "./Section/SectionImage";
 import { SectionUrl } from "./Section/SectionUrl";
-import ButtonDanger from "@/components/ui/ButtonDanger";
 import { FormCaption } from "@/components/ui/FormCaption";
 import MultiColumn from "@/components/ui/MultiColumn";
 import { SortableList } from "@/components/ui/SortableList";
+import Button from "@/components/ui/Button";
 
 const template = {
   caption: { type: "caption", caption: "" } as ArticleContent.Section.Caption,
@@ -45,6 +44,7 @@ export const SectionForm = () => {
 
   return (
     <div className="space-y-4">
+      <FormCaption>項目</FormCaption>
       <SortableList
         items={contents.sections}
         onReorder={(newSections) => {
@@ -136,17 +136,27 @@ export const SectionForm = () => {
                   />
                 ))
                 .exhaustive()}
-              <ButtonDanger onClick={() => remove(idx)}>削除</ButtonDanger>
+              <Button variant="dangerOutline" onClick={() => remove(idx)}>
+                削除
+              </Button>
             </MultiColumn>
           </div>
         )}
       />
       <div className="space-x-2">
         <FormCaption>項目の追加</FormCaption>
-        <Button onClick={() => add("caption")}>見出し</Button>
-        <Button onClick={() => add("text")}>テキスト</Button>
-        <Button onClick={() => add("image")}>画像</Button>
-        <Button onClick={() => add("url")}>URL</Button>
+        <Button size="lg" onClick={() => add("caption")}>
+          見出し
+        </Button>
+        <Button size="lg" onClick={() => add("text")}>
+          テキスト
+        </Button>
+        <Button size="lg" onClick={() => add("image")}>
+          画像
+        </Button>
+        <Button size="lg" onClick={() => add("url")}>
+          URL
+        </Button>
       </div>
     </div>
   );

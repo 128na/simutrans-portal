@@ -1,12 +1,12 @@
 import { useRef } from "react";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
-import Button from "@/components/ui/Button";
 import axios from "axios";
 import { useAxiosError } from "@/hooks/useAxiosError";
 import { ArticlePreview } from "./ArticlePreview";
 import { ArticleForm } from "./ArticleForm";
 import { isValidationError } from "@/lib/errorHandler";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
+import Button from "@/components/ui/Button";
 
 export const ArticleEdit = () => {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -50,12 +50,14 @@ export const ArticleEdit = () => {
         <div ref={contentRef} className="overflow-y-auto pr-4 pb-10">
           <ArticleForm />
         </div>
-        <div className="overflow-y-auto pl-4 pb-10 border-t border-g2 pt-4 lg:border-t-0 hidden lg:block">
+        <div className="overflow-y-auto pl-4 pb-10 v2-divider pt-4 lg:border-t-0 hidden lg:block">
           <ArticlePreview />
         </div>
       </div>
-      <div className="border-t border-g2 pt-4">
-        <Button onClick={save}>保存</Button>
+      <div className="v2-divider pt-4">
+        <Button onClick={save} size="lg">
+          保存
+        </Button>
       </div>
     </>
   );

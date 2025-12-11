@@ -1,6 +1,6 @@
-import Button from "@/components/ui/Button";
 import { FormCaption } from "@/components/ui/FormCaption";
 import TextSub from "@/components/ui/TextSub";
+import Button from "@/components/ui/Button";
 import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
 import axios from "axios";
 import { useState } from "react";
@@ -140,7 +140,7 @@ export function AnalyticsGraph({ articles }: Props) {
           <Tooltip />
         </LineChart>
       )}
-      <Button onClick={onClick} disabled={selected.length < 1}>
+      <Button onClick={onClick} disabled={selected.length < 1} size="lg">
         グラフを表示
       </Button>
     </div>

@@ -32,10 +32,10 @@ $status = $__env->yieldContent('status', '404');
 $bgPath = asset("images/{$status}.png");
 @endphp
 <body>
-    <div class="absolute top-0 bottom-0 left-0 right-0 overflow-hidden bg-g4 py-24 sm:py-32" style="background-blend-mode: multiply;background-image: url('{{ $bgPath }}');">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="absolute top-0 bottom-0 left-0 right-0 overflow-hidden bg-c-sub/50 py-24 sm:py-32" style="background-blend-mode: multiply;background-image: url('{{ $bgPath }}');">
+        <div class="mx-auto v2-page-lg px-6 lg:px-8">
             <div class="mx-auto max-w-2xl lg:mx-0">
-                <h2 class="title-xl2">@yield('message')</h2>
+                <h2 class="text-4xl font-bold text-white">@yield('message')</h2>
                 <p class="mt-8 text-lg font-medium text-pretty text-white sm:text-xl/8">@yield('description')</p>
             </div>
             <div class="mx-auto mt-10 max-w-2xl lg:mx-0 lg:max-w-none">

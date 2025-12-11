@@ -33,21 +33,20 @@ export function DataTable<T, K extends string>({
   renderRow,
 }: Props<T, K>) {
   return (
-    <table className="table-fixed text-sm text-left min-w-[960px]">
+    <table className="v2-table v2-table-fixed">
       <thead>
-        <tr className="text-xs text-g5 bg-gray-50">
+        <tr>
           {headers.map((header) => (
             <th
               key={header.key}
               onClick={() => header?.sortable && onSort(header.key)}
               className={twMerge(
-                "px-3 py-3",
                 header.width,
                 header.sortable && "cursor-pointer"
               )}
             >
               {header.name}
-              <span className="ml-1 text-[10px] text-g4">
+              <span className="ml-1 text-[10px]">
                 {header?.sortable && sort.column === header.key
                   ? sort.order === "asc"
                     ? "▲"

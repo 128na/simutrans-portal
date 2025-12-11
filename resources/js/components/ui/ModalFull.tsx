@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import ButtonClose from "./ButtonClose";
-import ButtonSub from "./ButtonSub";
+import Button from "./Button";
 
 type Props = {
   children:
@@ -25,9 +25,13 @@ export const ModalFull = ({
 
   return (
     <>
-      <ButtonSub onClick={() => setIsOpen(!isOpen)} className={buttonClass}>
+      <Button
+        variant="subOutline"
+        onClick={() => setIsOpen(!isOpen)}
+        className={buttonClass}
+      >
         {buttonTitle}
-      </ButtonSub>
+      </Button>
       {isOpen && (
         <div
           className="fixed inset-0 z-50 flex justify-center bg-black/40 overflow-hidden"
@@ -37,7 +41,7 @@ export const ModalFull = ({
           <div className={twMerge("relative w-full h-screen", modalClass)}>
             <div className="bg-white shadow px-5 pb-5 h-full overflow-y-auto">
               <div className="flex justify-between items-center py-3 mb-4 sticky top-0 bg-white z-10">
-                <h3 className="title-md">{title}</h3>
+                <h3 className="v2-text-h3">{title}</h3>
                 <ButtonClose onClick={() => setIsOpen(false)} />
               </div>
               {typeof children === "function" ? children({ close }) : children}

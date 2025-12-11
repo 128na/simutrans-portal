@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import axios from "axios";
@@ -13,9 +13,9 @@ describe("Upload", () => {
   });
 
   it("アップロードボタンが表示される", () => {
-    render(<Upload />);
-    const button = screen.getByRole("button", { name: /アップロード/i });
-    expect(button).toBeInTheDocument();
+    const { container } = render(<Upload />);
+    const input = container.querySelector('input[type="file"]');
+    expect(input).toBeInTheDocument();
   });
 
   it("ファイルアップロード成功時にonUploadedが呼ばれる", async () => {

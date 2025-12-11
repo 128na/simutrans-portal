@@ -8,10 +8,10 @@ describe("FormCaption", () => {
     expect(screen.getByText("フォームのキャプション")).toBeInTheDocument();
   });
 
-  it("title-xsクラスが適用される", () => {
+  it("v2-text-captionクラスが適用される", () => {
     render(<FormCaption>キャプション</FormCaption>);
     const caption = screen.getByText("キャプション");
-    expect(caption).toHaveClass("title-xs", "mb-2");
+    expect(caption).toHaveClass("v2-form-caption", "mb-2");
   });
 
   it("複数の子要素を表示できる", () => {

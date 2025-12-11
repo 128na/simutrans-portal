@@ -2,8 +2,6 @@ import { SelectCategories } from "../components/SelectCategories";
 import { SelectableSearch } from "@/components/form/SelectableSearch";
 import { Accordion } from "@/components/ui/Accordion";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
-import { CommonForm } from "../forms/CommonForm";
-import { StatusForm } from "../forms/StatusForm";
 import { SectionForm } from "../forms/SectionForm";
 import { FormCaption } from "@/components/ui/FormCaption";
 
@@ -16,7 +14,6 @@ export const Page = () => {
 
   return (
     <>
-      <CommonForm />
       <SectionForm />
       <SelectCategories
         categories={categories}
@@ -43,7 +40,6 @@ export const Page = () => {
           </div>
         </div>
       </Accordion>
-      <StatusForm />
     </>
   );
 };

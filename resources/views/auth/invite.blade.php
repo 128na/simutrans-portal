@@ -1,58 +1,54 @@
 @extends('layouts.front')
 
-@section('max-w', 'max-w-xl')
+@section('max-w', 'v2-page-sm')
 @section('content')
-<div class="mx-auto max-w-xl p-6 lg:px-8">
-    <div class="mb-6">
-        <h2 class="title-xl">ユーザー登録</h2>
-        <p class="mt-2 text-md text-g5">
+<div class="v2-page v2-page-sm">
+    <div class="mb-12">
+        <h2 class="v2-text-h2 mb-2">ユーザー登録</h2>
+        <p class="text-md text-c-sub">
             このコードは「{{$invitee->name}}」さんからの招待コードです。
         </p>
     </div>
     <form action="{{route('user.registration', $invitee->invitation_code)}}" method="POST">
         @csrf
-        <div class="flex flex-col gap-y-4 border-t border-g2 pt-6 lg:mx-0">
+        <div class="v2-page-content-area-md">
             <div>
-                <label for="name" class="block text-sm/6 font-semibold text-g9">名前</label>
-                <p class="mt-2 text-sm text-g5">
+                <label for="name" class="v2-form-caption">名前</label>
+                @error('name')
+                <div class="v2-form-error">{{ $message }}</div>
+                @enderror
+                <input id="name" type="text" name="name" maxlength="100" autocomplete="name" value="{{old('name', '')}}" class="v2-input w-full" required />
+                <p class="mt-2 text-sm text-c-sub">
                     記事やユーザー一覧に表示される名称です。
                 </p>
-                <div class="mt-2.5">
-                    <input id="name" type="text" name="name" maxlength="100" autocomplete="name" value="{{old('name', '')}}" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-g9 outline-1 -outline-offset-1 outline-g4 placeholder:text-g4 focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
-                </div>
-                @error('name')
-                <div class="text-sm text-danger">{{ $message }}</div>
-                @enderror
             </div>
             <div>
-                <label for="email" class="block text-sm/6 font-semibold text-g9">メールアドレス</label>
-                <div class="mt-2.5">
-                    <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-g9 outline-1 -outline-offset-1 outline-g4 placeholder:text-g4 focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
-                </div>
+                <label for="email" class="v2-form-caption">メールアドレス</label>
                 @error('email')
-                <div class="text-sm text-danger">{{ $message }}</div>
+                <div class="v2-form-error">{{ $message }}</div>
                 @enderror
+                <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="v2-input w-full" required />
             </div>
             <div>
-                <label for="password" class="block text-sm/6 font-semibold text-g9">パスワード</label>
-                <div class="mt-2.5">
-                    <input id="password" type="password" name="password" minlength="11" value="{{old('password', '')}}" autocomplete="new-password" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-g9 outline-1 -outline-offset-1 outline-g4 placeholder:text-g4 focus:outline-2 focus:-outline-offset-2 focus:outline-brand sm:w-128" />
-                </div>
+                <label for="password" class="v2-form-caption">パスワード</label>
                 @error('password')
-                <div class="text-sm text-danger">{{ $message }}</div>
+                <div class="v2-form-error">{{ $message }}</div>
                 @enderror
+                <input id="password" type="password" name="password" minlength="11" value="{{old('password', '')}}" autocomplete="new-password" class="v2-input w-full" required />
             </div>
             <div>
-                <label class="sm:mr-2 mr-4 sm:mb-1 mb-2 inline-block cursor-pointer">
-                    <input class="accent-brand mr-0.5" type="checkbox" name="agreement" id="agreement" {{ old('agreement', '') ? 'checked' : '' }} />
-                    @include('components.ui.link-external', ['url' => config('app.privacy_policy_url'), 'title' => 'プライバシーポリシー']) に同意します。
+                <label>
+                    <input class="v2-checkbox peer" type="checkbox" name="agreement" id="agreement" {{ old('agreement', '') ? 'checked' : '' }} required />
+                    <span class="v2-checkbox-label">
+                        @include('components.ui.link', ['url' => config('app.privacy_policy_url'), 'title' => 'プライバシーポリシー']) に同意します。
+                    </span>
                 </label>
                 @error('agreement')
-                <div class="text-sm text-danger">{{ $message }}</div>
+                <div class="v2-form-error">{{ $message }}</div>
                 @enderror
             </div>
             <div>
-                <button type="submit" class="rounded-md bg-brand px-8 sm:py-2 py-4 text-white cursor-pointer hover:bg-brand/80 w-full sm:w-64">
+                <button type="submit" class="v2-button v2-button-lg v2-button-primary w-full sm:w-64">
                     登録する
                 </button>
             </div>

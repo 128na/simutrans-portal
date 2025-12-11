@@ -1,18 +1,18 @@
 @extends('layouts.mypage')
-@section('max-w', 'max-w-7xl')
+@section('max-w', 'v2-page-sm')
 @section('content')
-<div class="mx-auto max-w-7xl p-6 lg:px-8">
-    <div class="mb-6">
-        <h2 class="title-xl">メールアドレスの検証</h2>
-        <p class="mt-2 text-g5">
+<div class="v2-page v2-page-sm">
+    <div class="mb-12">
+        <h2 class="v2-text-h2 mb-2">メールアドレスの検証</h2>
+        <p class="text-c-sub">
             登録に使用したメールアドレスが有効なものか検証します。
         </p>
     </div>
-    <div class="flex flex-col gap-y-4 border-t border-g2 pt-6 lg:mx-0">
+    <div class="v2-page-content-area-lg">
         <form action="{{route('verification.send')}}" method="POST">
             @csrf
-            <button type="submit" class="rounded-md bg-brand px-4 sm:py-2 py-4 text-white cursor-pointer">
-                送信する
+            <button type="submit" class="v2-button v2-button-lg v2-button-primary">
+                メールを再送信する
             </button>
         </form>
     </div>

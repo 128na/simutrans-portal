@@ -13,10 +13,11 @@ export const Accordion = ({ title, children, defaultOpen = false }: Props) => {
     <>
       <button
         type="button"
-        className="my-2 p-2 sm:py-2 py-4 flex w-full bg-g2 cursor-pointer"
+        className="v2-accordion"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
       >
+        {title}
         <svg
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -30,7 +31,6 @@ export const Accordion = ({ title, children, defaultOpen = false }: Props) => {
             fillRule="evenodd"
           />
         </svg>
-        {title}
       </button>
       {isOpen && children}
     </>

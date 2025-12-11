@@ -1,7 +1,7 @@
 import Select from "@/components/ui/Select";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 describe("Select コンポーネント", () => {
   const mockOptions = {
@@ -10,19 +10,14 @@ describe("Select コンポーネント", () => {
     option3: "オプション3",
   };
 
-  it("基本的なレンダリング", () => {
+  it("セレクトボックスが表示される", () => {
     render(<Select options={mockOptions} />);
     expect(screen.getByRole("combobox")).toBeInTheDocument();
   });
 
-  it("ラベル付きでレンダリングされる", () => {
-    render(<Select options={mockOptions}>カテゴリー</Select>);
-    expect(screen.getByText("カテゴリー")).toBeInTheDocument();
-    expect(screen.getByRole("combobox")).toBeInTheDocument();
-  });
-
-  it("オプションが表示される", () => {
+  it("オプションが正しく表示される", () => {
     render(<Select options={mockOptions} />);
+
     expect(
       screen.getByRole("option", { name: "オプション1" })
     ).toBeInTheDocument();
@@ -34,22 +29,30 @@ describe("Select コンポーネント", () => {
     ).toBeInTheDocument();
   });
 
-  it("選択ができる", async () => {
-    const user = userEvent.setup();
+  it("option の value が正しく設定される", () => {
     render(<Select options={mockOptions} />);
-    const select = screen.getByRole("combobox");
-    await user.selectOptions(select, "option2");
-    expect(select).toHaveValue("option2");
+
+    const options = screen.getAllByRole("option");
+    expect(options[0]).toHaveValue("option1");
+    expect(options[1]).toHaveValue("option2");
+    expect(options[2]).toHaveValue("option3");
   });
 
-  it("初期値が設定される", () => {
-    render(
-      <Select options={mockOptions} value="option2" onChange={() => {}} />
-    );
+  it("value が設定される", () => {
+    render(<Select options={mockOptions} value="option2" />);
     expect(screen.getByRole("combobox")).toHaveValue("option2");
   });
 
-  it("disabled 状態が適用される", () => {
+  it("onChange イベントが発火する", async () => {
+    const user = userEvent.setup();
+    const handleChange = vi.fn();
+    render(<Select options={mockOptions} onChange={handleChange} />);
+
+    await user.selectOptions(screen.getByRole("combobox"), "option2");
+    expect(handleChange).toHaveBeenCalled();
+  });
+
+  it("disabled 状態で動作する", () => {
     render(<Select options={mockOptions} disabled />);
     expect(screen.getByRole("combobox")).toBeDisabled();
   });
@@ -59,27 +62,16 @@ describe("Select コンポーネント", () => {
     expect(screen.getByRole("combobox")).toHaveClass("custom-class");
   });
 
-  it("ラベルにカスタムクラス名が適用される", () => {
-    render(
-      <Select options={mockOptions} labelClassName="custom-label-class">
-        ラベル
-      </Select>
-    );
-    const label = screen.getByText("ラベル");
-    expect(label).toHaveClass("custom-label-class");
+  it("デフォルトのスタイルが適用される", () => {
+    render(<Select options={mockOptions} />);
+    const select = screen.getByRole("combobox");
+    expect(select).toHaveClass("v2-input");
+    expect(select).toHaveClass("v2-input-select");
   });
 
-  it("onChange ハンドラーが動作する", async () => {
-    const user = userEvent.setup();
-    let value = "";
-    render(
-      <Select
-        options={mockOptions}
-        onChange={(e) => (value = e.target.value)}
-      />
-    );
-    const select = screen.getByRole("combobox");
-    await user.selectOptions(select, "option3");
-    expect(value).toBe("option3");
+  it("空のオプションでもエラーにならない", () => {
+    render(<Select options={{}} />);
+    expect(screen.getByRole("combobox")).toBeInTheDocument();
+    expect(screen.queryAllByRole("option")).toHaveLength(0);
   });
 });

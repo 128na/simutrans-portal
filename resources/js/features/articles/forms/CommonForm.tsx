@@ -1,15 +1,15 @@
 import { Upload } from "@/components/form/Upload";
-import Input from "@/components/ui/Input";
-import TextBadge from "@/components/ui/TextBadge";
 import { useArticleEditor, useIsSlugUpdated } from "@/hooks/useArticleEditor";
 import TextSub from "@/components/ui/TextSub";
 import TextError from "@/components/ui/TextError";
 import { useAxiosError } from "@/hooks/useAxiosError";
 import { ModalFull } from "@/components/ui/ModalFull";
 import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
-import Checkbox from "@/components/ui/Checkbox";
-import ButtonOutline from "@/components/ui/ButtonOutline";
 import { FormCaption } from "@/components/ui/FormCaption";
+import Input from "@/components/ui/Input";
+import TextBadge from "@/components/ui/TextBadge";
+import Button from "@/components/ui/Button";
+import Checkbox from "@/components/ui/Checkbox";
 
 const regReplace =
   /(!|"|#|\$|%|&|'|\(|\)|\*|\+|,|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\s|\.)+/gi;
@@ -36,28 +36,31 @@ export const CommonForm = () => {
     <>
       <div>
         <FormCaption>
-          <TextBadge className="bg-danger">必須</TextBadge>
+          <TextBadge variant="danger">必須</TextBadge>
           タイトル
         </FormCaption>
         <TextError>{getError("article.title")}</TextError>
         <Input
-          labelClassName="font-medium"
-          className="font-normal"
+          className="w-full"
           value={article.title || ""}
+          required
+          maxLength={255}
           onChange={(e) => update((draft) => (draft.title = e.target.value))}
         />
       </div>
 
       <div>
         <FormCaption>
-          <TextBadge className="bg-danger">必須</TextBadge>
+          <TextBadge variant="danger">必須</TextBadge>
           記事URL
         </FormCaption>
         <TextError>{getError("article.slug")}</TextError>
         <Input
-          labelClassName="font-medium"
-          className="font-normal"
+          className="w-full"
           value={decodeURI(article.slug || "")}
+          required
+          maxLength={255}
+          counter={(value) => [...escape(value)].length}
           onChange={(e) =>
             update((draft) => (draft.slug = escape(e.target.value)))
           }
@@ -65,15 +68,17 @@ export const CommonForm = () => {
         <TextSub className="my-1">
           URLプレビュー: /users/{user.nickname ?? user.id}/{article.slug || ""}
         </TextSub>
-        <ButtonOutline
+        <Button
+          variant="subOutline"
           disabled={!article.title}
           onClick={() => {
             update((draft) => (draft.slug = escape(draft.title || "")));
           }}
         >
           タイトルから入力
-        </ButtonOutline>
+        </Button>
       </div>
+
       {isSlugUpdated && (
         <div>
           <FormCaption>リダイレクト設定</FormCaption>
@@ -96,48 +101,39 @@ export const CommonForm = () => {
       <div>
         <FormCaption>サムネイル</FormCaption>
         <TextError>{getError("article.contents.thumbnail")}</TextError>
-        <TextSub className="mb-1">
-          {(article.contents.thumbnail &&
-            attachments.find((a) => a.id === article.contents.thumbnail)
-              ?.original_name) ??
-            "未選択"}
-        </TextSub>
-        <div className="space-x-2 mb-2">
-          <Upload
-            accept="image/*"
-            onUploaded={(a) => {
-              useArticleEditor.setState((state) => {
-                // アップロードした画像を同時にセットする
-                state.attachments.unshift(a);
-                state.article.contents.thumbnail = a.id;
-              });
-            }}
-          >
-            画像をアップロード
-          </Upload>
-          <ModalFull
-            buttonTitle="アップロード済みの画像から選択"
-            title="画像を選択"
-          >
-            {({ close }) => (
-              <AttachmentEdit
-                attachments={attachments}
-                attachmentableId={article.id}
-                selected={article.contents.thumbnail}
-                types={["image"]}
-                onSelectAttachment={(attachmentId) => {
-                  updateContents((draft) => (draft.thumbnail = attachmentId));
-                  close();
-                }}
-                onChangeAttachments={(attachments) => {
-                  useArticleEditor.setState((state) => {
-                    state.attachments = attachments;
-                  });
-                }}
-              />
-            )}
-          </ModalFull>
-        </div>
+        <Upload
+          className="w-full mb-4"
+          accept="image/*"
+          onUploaded={(a) => {
+            useArticleEditor.setState((state) => {
+              // アップロードした画像を同時にセットする
+              state.attachments.unshift(a);
+              state.article.contents.thumbnail = a.id;
+            });
+          }}
+        />
+        <ModalFull
+          buttonTitle="アップロード済みの画像から選択"
+          title="画像を選択"
+        >
+          {({ close }) => (
+            <AttachmentEdit
+              attachments={attachments}
+              attachmentableId={article.id}
+              selected={article.contents.thumbnail}
+              types={["image"]}
+              onSelectAttachment={(attachmentId) => {
+                updateContents((draft) => (draft.thumbnail = attachmentId));
+                close();
+              }}
+              onChangeAttachments={(attachments) => {
+                useArticleEditor.setState((state) => {
+                  state.attachments = attachments;
+                });
+              }}
+            />
+          )}
+        </ModalFull>
       </div>
     </>
   );

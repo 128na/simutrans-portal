@@ -1,14 +1,12 @@
-import Textarea from "@/components/ui/Textarea";
 import { SelectCategories } from "../components/SelectCategories";
 import { SelectableSearch } from "@/components/form/SelectableSearch";
 import { Accordion } from "@/components/ui/Accordion";
 import TextBadge from "@/components/ui/TextBadge";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
-import { CommonForm } from "../forms/CommonForm";
-import { StatusForm } from "../forms/StatusForm";
 import TextError from "@/components/ui/TextError";
 import { useAxiosError } from "@/hooks/useAxiosError";
 import { FormCaption } from "@/components/ui/FormCaption";
+import Textarea from "@/components/ui/Textarea";
 
 export const Markdown = () => {
   const article = useArticleEditor((s) => s.article);
@@ -24,18 +22,17 @@ export const Markdown = () => {
 
   return (
     <>
-      <CommonForm />
-
       <div>
         <FormCaption>
-          <TextBadge className="bg-danger">必須</TextBadge>
+          <TextBadge variant="danger">必須</TextBadge>
           本文
         </FormCaption>
         <TextError>{getError("article.contents.markdown")}</TextError>
 
         <Textarea
-          labelClassName="font-medium"
-          className="font-normal"
+          className="w-full"
+          required
+          maxLength={65535}
           value={contents.markdown || ""}
           rows={15}
           onChange={(e) =>
@@ -71,7 +68,6 @@ export const Markdown = () => {
           </div>
         </div>
       </Accordion>
-      <StatusForm />
     </>
   );
 };

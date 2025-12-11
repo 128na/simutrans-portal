@@ -1,6 +1,6 @@
-import ButtonSub from "@/components/ui/ButtonSub";
-import Checkbox from "@/components/ui/Checkbox";
 import { FormCaption } from "@/components/ui/FormCaption";
+import Button from "@/components/ui/Button";
+import Checkbox from "@/components/ui/Checkbox";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
@@ -30,7 +30,8 @@ export function AnalyticsOption() {
       <div>
         <FormCaption>期間プリセット</FormCaption>
         <div className="gap-2 flex items-end">
-          <ButtonSub
+          <Button
+            variant="sub"
             onClick={() =>
               set({
                 start_date: subMonths(new Date(), 3),
@@ -40,8 +41,9 @@ export function AnalyticsOption() {
             }
           >
             3ヵ月
-          </ButtonSub>
-          <ButtonSub
+          </Button>
+          <Button
+            variant="sub"
             onClick={() =>
               set({
                 start_date: subMonths(new Date(), 12),
@@ -51,8 +53,9 @@ export function AnalyticsOption() {
             }
           >
             12ヵ月
-          </ButtonSub>
-          <ButtonSub
+          </Button>
+          <Button
+            variant="sub"
             onClick={() =>
               set({
                 start_date: subYears(new Date(), 3),
@@ -62,45 +65,53 @@ export function AnalyticsOption() {
             }
           >
             3年
-          </ButtonSub>
+          </Button>
         </div>
       </div>
       <div>
         <FormCaption>表示条件</FormCaption>
-        <div className="gap-2 flex flex-col sm:flex-row">
-          <Input
-            type="date"
-            value={format(start_date, "yyyy-MM-dd")}
-            onChange={(e) => set({ start_date: new Date(e.target.value) })}
-          >
-            開始日
-          </Input>
-          <Input
-            type="date"
-            value={format(end_date, "yyyy-MM-dd")}
-            onChange={(e) => set({ end_date: new Date(e.target.value) })}
-          >
-            終了日
-          </Input>
-          <Select
-            value={type}
-            onChange={(e) => set({ type: e.target.value as Analytics.Type })}
-            options={TYPES}
-          >
-            間隔
-          </Select>
-          <Select
-            value={mode}
-            onChange={(e) => set({ mode: e.target.value as Analytics.Mode })}
-            options={MODES}
-          >
-            間隔
-          </Select>
+        <div className="gap-2 flex flex-col sm:flex-row sm:items-end">
+          <div className="flex flex-col">
+            <label htmlFor="start-date">開始日</label>
+            <Input
+              id="start-date"
+              type="date"
+              value={format(start_date, "yyyy-MM-dd")}
+              onChange={(e) => set({ start_date: new Date(e.target.value) })}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="end-date">終了日</label>
+            <Input
+              id="end-date"
+              type="date"
+              value={format(end_date, "yyyy-MM-dd")}
+              onChange={(e) => set({ end_date: new Date(e.target.value) })}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="type">間隔</label>
+            <Select
+              id="type"
+              value={type}
+              onChange={(e) => set({ type: e.target.value as Analytics.Type })}
+              options={TYPES}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="mode">モード</label>
+            <Select
+              id="mode"
+              value={mode}
+              onChange={(e) => set({ mode: e.target.value as Analytics.Mode })}
+              options={MODES}
+            />
+          </div>
         </div>
       </div>
       <div>
         <FormCaption>表示データ</FormCaption>
-        <div className="gap-2 flex flex-col sm:flex-row">
+        <div className="gap-4 flex flex-col sm:flex-row">
           {AXES.map((axis) => (
             <Checkbox
               value={axis.value}

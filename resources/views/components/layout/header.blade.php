@@ -1,6 +1,6 @@
 <!-- Include this script tag or install `@tailwindplus/elements` via npm: -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script> -->
-<header>
+<header class="bg-white">
     <nav aria-label="Global" class="mx-auto flex v2-page-lg items-center justify-between p-6 lg:px-8 border-b border-c-sub/10">
         <div class="flex lg:flex-1">
             <a href="/" class="-m-1.5 p-1.5">

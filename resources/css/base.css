@@ -262,10 +262,10 @@
   }
   /* misc */
   .v2-category {
-    @apply px-2.5 py-0.5 text-white inline-block rounded bg-category hover:bg-category/80;
+    @apply px-2.5 py-0.5 text-white inline-block rounded bg-category hover:bg-category/80 shadow-md hover:shadow-lg transition-shadow;
   }
   .v2-tag {
-    @apply px-2.5 py-0.5 text-white inline-block rounded bg-tag hover:bg-tag/80;
+    @apply px-2.5 py-0.5 text-white inline-block rounded bg-tag hover:bg-tag/80 shadow-md hover:shadow-lg transition-shadow;
   }
 
   /* テキスト */

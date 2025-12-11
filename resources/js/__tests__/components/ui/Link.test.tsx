@@ -49,4 +49,30 @@ describe("Link コンポーネント", () => {
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("rel", "noopener");
   });
+
+  it("外部リンクの場合は自動的に target=_blank と rel が設定される", () => {
+    render(<Link href="https://example.com">外部リンク</Link>);
+    const link = screen.getByRole("link");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  });
+
+  it("内部リンク（相対パス）の場合は target が設定されない", () => {
+    render(<Link href="/internal">内部リンク</Link>);
+    const link = screen.getByRole("link");
+    expect(link).not.toHaveAttribute("target");
+  });
+
+  it("ハッシュリンクの場合は target が設定されない", () => {
+    render(<Link href="#section">ハッシュリンク</Link>);
+    const link = screen.getByRole("link");
+    expect(link).not.toHaveAttribute("target");
+  });
+
+  it("同一オリジンのフルURLは外部リンクとして扱われない", () => {
+    const origin = window.location.origin;
+    render(<Link href={`${origin}/page`}>同一オリジン</Link>);
+    const link = screen.getByRole("link");
+    expect(link).not.toHaveAttribute("target", "_blank");
+  });
 });

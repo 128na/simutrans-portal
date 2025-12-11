@@ -10,9 +10,9 @@ import {
   StatusText,
 } from "./utils/articleUtil";
 import { format } from "date-fns";
-import V2Button from "@/components/ui/v2/V2Button";
-import V2Select from "@/components/ui/v2/V2Select";
-import V2Input from "@/components/ui/v2/V2Input";
+import Button from "@/components/ui/Button";
+import Select from "@/components/ui/Select";
+import Input from "@/components/ui/Input";
 
 type Props = {
   articles: Article.MypageShow[];
@@ -81,15 +81,12 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
     <>
       <div className="v2-table-container">
         <div>
-          <V2Button
-            size="lg"
-            onClick={() => (window.location.href = createUrl)}
-          >
+          <Button size="lg" onClick={() => (window.location.href = createUrl)}>
             作成
-          </V2Button>
+          </Button>
         </div>
         <div>
-          <V2Select
+          <Select
             value={statusFilter}
             onChange={(e) =>
               setStatusFilter(e.target.value as ArticleStatus | "")
@@ -105,7 +102,7 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
           />
         </div>
         <div>
-          <V2Select
+          <Select
             value={postTypeFilter}
             onChange={(e) =>
               setPostTypeFilter(e.target.value as ArticlePostType | "")
@@ -120,7 +117,7 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
           />
         </div>
         <div>
-          <V2Input
+          <Input
             type="search"
             value={criteria}
             onChange={(e) => setCriteria(e.target.value)}

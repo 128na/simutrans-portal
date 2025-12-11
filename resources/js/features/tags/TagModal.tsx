@@ -7,9 +7,9 @@ import { Modal } from "@/components/ui/Modal";
 import { isValidationError } from "@/lib/errorHandler";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
 import { FormCaption } from "@/components/ui/FormCaption";
-import V2Input from "@/components/ui/v2/V2Input";
-import V2Textarea from "@/components/ui/v2/V2Textarea";
-import V2Button from "@/components/ui/v2/V2Button";
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
+import Button from "@/components/ui/Button";
 
 type Props = {
   tag: Tag.MypageEdit | Tag.New | null;
@@ -53,7 +53,7 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
         <div>
           <FormCaption>名前</FormCaption>
           <TextError>{getError("name")?.join("\n")}</TextError>
-          <V2Input
+          <Input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -69,7 +69,7 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
         <div>
           <FormCaption>説明</FormCaption>
           <TextError>{getError("description")?.join("\n")}</TextError>
-          <V2Textarea
+          <Textarea
             rows={4}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -80,9 +80,9 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
       </div>
 
       <div className="flex justify-end space-x-2">
-        <V2Button onClick={handleSave} size="lg">
+        <Button onClick={handleSave} size="lg">
           保存
-        </V2Button>
+        </Button>
       </div>
     </Modal>
   );

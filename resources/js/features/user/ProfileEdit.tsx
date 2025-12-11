@@ -1,4 +1,4 @@
-import V2TextBadge from "@/components/ui/v2/V2TextBadge";
+import TextBadge from "@/components/ui/TextBadge";
 import TextSub from "@/components/ui/TextSub";
 import { ProfileShow } from "./ProfileShow";
 import { ProfileForm } from "./ProfileForm";
@@ -18,7 +18,7 @@ export const ProfileEdit = ({
   return (
     <>
       <div>
-        <V2TextBadge variant="warn">プレビュー表示</V2TextBadge>
+        <TextBadge variant="warn">プレビュー表示</TextBadge>
         <TextSub>
           プレビュー表示ではリンクが反応しないようになっています。
         </TextSub>

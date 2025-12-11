@@ -14,7 +14,7 @@ const variants: Record<string, string> = {
   success: "v2-badge-success",
 } as const;
 
-export default function V2TextBadge({
+export default function TextBadge({
   children,
   className,
   variant = "sub",

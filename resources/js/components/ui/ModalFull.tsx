@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import ButtonClose from "./ButtonClose";
-import V2Button from "./v2/V2Button";
+import Button from "./Button";
 
 type Props = {
   children:
@@ -25,13 +25,13 @@ export const ModalFull = ({
 
   return (
     <>
-      <V2Button
+      <Button
         variant="subOutline"
         onClick={() => setIsOpen(!isOpen)}
         className={buttonClass}
       >
         {buttonTitle}
-      </V2Button>
+      </Button>
       {isOpen && (
         <div
           className="fixed inset-0 z-50 flex justify-center bg-black/40 overflow-hidden"

@@ -6,10 +6,10 @@ import { useAxiosError } from "@/hooks/useAxiosError";
 import { ModalFull } from "@/components/ui/ModalFull";
 import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
 import { FormCaption } from "@/components/ui/FormCaption";
-import V2Input from "@/components/ui/v2/V2Input";
-import V2TextBadge from "@/components/ui/v2/V2TextBadge";
-import V2Button from "@/components/ui/v2/V2Button";
-import V2Checkbox from "@/components/ui/v2/V2Checkbox";
+import Input from "@/components/ui/Input";
+import TextBadge from "@/components/ui/TextBadge";
+import Button from "@/components/ui/Button";
+import Checkbox from "@/components/ui/Checkbox";
 
 const regReplace =
   /(!|"|#|\$|%|&|'|\(|\)|\*|\+|,|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\s|\.)+/gi;
@@ -36,11 +36,11 @@ export const CommonForm = () => {
     <>
       <div>
         <FormCaption>
-          <V2TextBadge variant="danger">必須</V2TextBadge>
+          <TextBadge variant="danger">必須</TextBadge>
           タイトル
         </FormCaption>
         <TextError>{getError("article.title")}</TextError>
-        <V2Input
+        <Input
           className="w-full"
           value={article.title || ""}
           required
@@ -51,11 +51,11 @@ export const CommonForm = () => {
 
       <div>
         <FormCaption>
-          <V2TextBadge variant="danger">必須</V2TextBadge>
+          <TextBadge variant="danger">必須</TextBadge>
           記事URL
         </FormCaption>
         <TextError>{getError("article.slug")}</TextError>
-        <V2Input
+        <Input
           className="w-full"
           value={decodeURI(article.slug || "")}
           required
@@ -68,7 +68,7 @@ export const CommonForm = () => {
         <TextSub className="my-1">
           URLプレビュー: /users/{user.nickname ?? user.id}/{article.slug || ""}
         </TextSub>
-        <V2Button
+        <Button
           variant="subOutline"
           disabled={!article.title}
           onClick={() => {
@@ -76,20 +76,20 @@ export const CommonForm = () => {
           }}
         >
           タイトルから入力
-        </V2Button>
+        </Button>
       </div>
 
       {isSlugUpdated && (
         <div>
           <FormCaption>リダイレクト設定</FormCaption>
-          <V2Checkbox
+          <Checkbox
             checked={followRedirect}
             onChange={() => {
               updateFollowRedirect(!followRedirect);
             }}
           >
             追加する
-          </V2Checkbox>
+          </Checkbox>
           <TextSub>
             記事URLを変更したとき、古い記事URLからのアクセスを新しい記事URLへ転送します。
             <br />

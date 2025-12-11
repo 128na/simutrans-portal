@@ -1,6 +1,6 @@
 import { useArticleEditor } from "@/hooks/useArticleEditor";
 import { ArticleBase } from "./components/ArticleBase";
-import V2TextBadge from "@/components/ui/v2/V2TextBadge";
+import TextBadge from "@/components/ui/TextBadge";
 import TextSub from "@/components/ui/TextSub";
 
 function toArticleShow(
@@ -77,7 +77,7 @@ export const ArticlePreview = () => {
   return (
     <div>
       <div className="mt-2 mb-8">
-        <V2TextBadge variant="warn">プレビュー表示</V2TextBadge>
+        <TextBadge variant="warn">プレビュー表示</TextBadge>
         <TextSub>
           プレビュー表示ではリンクやボタンが反応しないようになっています。（マークダウン形式を除く）
         </TextSub>

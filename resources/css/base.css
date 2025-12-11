@@ -298,88 +298,40 @@
   }
 }
 
-/* v1 */
-.button-primary {
-  @apply px-4 py-2
-    text-white rounded-lg cursor-pointer
-    bg-c-primary hover:bg-c-primary/80 disabled:bg-c-sub
-    disabled:cursor-not-allowed;
-}
-.button-sub {
-  @apply px-3 py-1.5
-    text-white rounded-lg cursor-pointer text-sm
-    bg-c-sub/80 hover:bg-c-sub/70
-    disabled:bg-c-sub/30
-    disabled:cursor-not-allowed;
-}
-.button-outline {
-  @apply px-3 py-1.5
-    text-sm text-c-sub bg-c-sub/20
-    border border-c-sub/10 hover:bg-c-sub/30
-    disabled:bg-c-sub/10;
-}
-.button-danger {
-  @apply px-4 py-2
-  text-white rounded-lg cursor-pointer text-sm
-  bg-c-danger hover:bg-c-danger/80;
-}
-
-.title-xl2 {
-  @apply text-4xl font-semibold tracking-tight text-pretty;
-}
-.title-xl {
-  @apply text-3xl font-semibold tracking-tight text-pretty;
-}
-.title-md {
-  @apply text-2xl font-semibold tracking-tight text-pretty;
-}
-.title-sm {
-  @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl;
-}
-.title-xs {
-  @apply text-sm font-semibold tracking-tight text-pretty px-2 py-1 bg-c-sub/10;
-}
-
-.link-internal {
-  @apply text-c-sub/90 hover:text-c-sub/70 decoration-c-sub/90 hover:decoration-c-sub/70 underline break-all;
-}
-.link-external {
-  @apply decoration-c-primary text-c-primary hover:text-c-primary/80 underline break-all;
-}
-
+/* markdown */
 .markdown-body h1 {
-  @apply text-3xl font-semibold tracking-tight text-pretty my-8;
+  @apply text-3xl font-semibold tracking-tight text-pretty mb-2;
 }
 .markdown-body h2 {
-  @apply text-2xl font-semibold tracking-tight text-pretty my-8;
+  @apply text-2xl font-semibold tracking-tight text-pretty mb-2;
 }
-.markdown-body h3 {
-  @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl my-8;
-}
-.markdown-body h4 {
-  @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl my-8;
-}
-.markdown-body h5 {
-  @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl my-8;
-}
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
 .markdown-body h6 {
-  @apply text-xl font-semibold tracking-tight text-pretty sm:text-xl my-8;
+  @apply text-xl font-semibold tracking-tight text-pretty mb-2;
 }
 
 .markdown-body hr {
   @apply my-6 border-t border-c-sub/10;
 }
-
 .markdown-body p {
-  @apply text-base leading-relaxed my-4 break-all;
+  @apply text-base leading-relaxed mb-8 break-all;
 }
 .markdown-body a {
   @apply decoration-c-primary text-c-primary hover:text-c-primary/80 underline break-all;
 }
-.markdown-body a::after {
-  content: "↗";
-  @apply text-xs text-c-sub/50;
+.markdown-body
+  a:not([href^="https://simutrans-portal.128-bit.net"]):not(
+    [href^="http://localhost:1080"]
+  ):not([href^="#"]):not([href^="/"]) {
+  @apply decoration-c-primary text-c-primary hover:text-c-primary/80 underline break-all
+    after:content-['↗'] after:text-c-sub/50 after:text-xs;
 }
+.markdown-body a {
+  @apply text-c-sub/90 hover:text-c-sub/70 decoration-c-sub/90 hover:decoration-c-sub/70 underline break-all;
+}
+
 .markdown-body img {
   @apply mt-6 mb-12 rounded-lg shadow-md;
 }
@@ -391,14 +343,13 @@
 }
 
 .markdown-body table {
-  @apply border-collapse my-6;
-}
-.markdown-body th,
-.markdown-body td {
-  @apply border border-c-sub/10 px-4 py-2;
+  @apply text-left border-collapse;
 }
 .markdown-body th {
-  @apply bg-c-sub/80 text-white;
+  @apply font-normal bg-c-sub/80 text-white px-4 py-2 border border-c-sub/20 break-all;
+}
+.markdown-body td {
+  @apply px-4 py-2 border border-c-sub/20 break-all;
 }
 
 .markdown-body ul {

@@ -14,8 +14,8 @@ import TextSub from "@/components/ui/TextSub";
 import Link from "@/components/ui/Link";
 import axios from "axios";
 import { handleError } from "@/lib/errorHandler";
-import V2Input from "@/components/ui/v2/V2Input";
-import V2Button from "@/components/ui/v2/V2Button";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 
 type Props = {
   attachments: Attachment.MypageEdit[];
@@ -112,7 +112,7 @@ export const AttachmentTable = ({
     <>
       <div className="v2-table-container">
         <div>
-          <V2Input
+          <Input
             type="search"
             value={criteria}
             onChange={(e) => setCriteria(e.target.value)}
@@ -173,7 +173,7 @@ export const AttachmentTable = ({
               <td>{format(new Date(a.created_at), "yyyy/MM/dd H:mm")}</td>
               <td>
                 {a.attachmentable_id === null && a.id !== selected && (
-                  <V2Button
+                  <Button
                     variant="danger"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -181,7 +181,7 @@ export const AttachmentTable = ({
                     }}
                   >
                     削除
-                  </V2Button>
+                  </Button>
                 )}
               </td>
             </tr>

@@ -1,8 +1,8 @@
 import { FormCaption } from "@/components/ui/FormCaption";
-import V2Button from "@/components/ui/v2/V2Button";
-import V2Checkbox from "@/components/ui/v2/V2Checkbox";
-import V2Input from "@/components/ui/v2/V2Input";
-import V2Select from "@/components/ui/v2/V2Select";
+import Button from "@/components/ui/Button";
+import Checkbox from "@/components/ui/Checkbox";
+import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
 import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
 import { format, subMonths, subYears } from "date-fns";
 
@@ -30,7 +30,7 @@ export function AnalyticsOption() {
       <div>
         <FormCaption>期間プリセット</FormCaption>
         <div className="gap-2 flex items-end">
-          <V2Button
+          <Button
             variant="sub"
             onClick={() =>
               set({
@@ -41,8 +41,8 @@ export function AnalyticsOption() {
             }
           >
             3ヵ月
-          </V2Button>
-          <V2Button
+          </Button>
+          <Button
             variant="sub"
             onClick={() =>
               set({
@@ -53,8 +53,8 @@ export function AnalyticsOption() {
             }
           >
             12ヵ月
-          </V2Button>
-          <V2Button
+          </Button>
+          <Button
             variant="sub"
             onClick={() =>
               set({
@@ -65,7 +65,7 @@ export function AnalyticsOption() {
             }
           >
             3年
-          </V2Button>
+          </Button>
         </div>
       </div>
       <div>
@@ -73,7 +73,7 @@ export function AnalyticsOption() {
         <div className="gap-2 flex flex-col sm:flex-row sm:items-end">
           <div className="flex flex-col">
             <label htmlFor="start-date">開始日</label>
-            <V2Input
+            <Input
               id="start-date"
               type="date"
               value={format(start_date, "yyyy-MM-dd")}
@@ -82,7 +82,7 @@ export function AnalyticsOption() {
           </div>
           <div className="flex flex-col">
             <label htmlFor="end-date">終了日</label>
-            <V2Input
+            <Input
               id="end-date"
               type="date"
               value={format(end_date, "yyyy-MM-dd")}
@@ -91,7 +91,7 @@ export function AnalyticsOption() {
           </div>
           <div className="flex flex-col">
             <label htmlFor="type">間隔</label>
-            <V2Select
+            <Select
               id="type"
               value={type}
               onChange={(e) => set({ type: e.target.value as Analytics.Type })}
@@ -100,7 +100,7 @@ export function AnalyticsOption() {
           </div>
           <div className="flex flex-col">
             <label htmlFor="mode">モード</label>
-            <V2Select
+            <Select
               id="mode"
               value={mode}
               onChange={(e) => set({ mode: e.target.value as Analytics.Mode })}
@@ -113,7 +113,7 @@ export function AnalyticsOption() {
         <FormCaption>表示データ</FormCaption>
         <div className="gap-4 flex flex-col sm:flex-row">
           {AXES.map((axis) => (
-            <V2Checkbox
+            <Checkbox
               value={axis.value}
               key={axis.value}
               checked={axes.includes(axis.value)}
@@ -126,7 +126,7 @@ export function AnalyticsOption() {
               }
             >
               {axis.label}
-            </V2Checkbox>
+            </Checkbox>
           ))}
         </div>
       </div>

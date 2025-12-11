@@ -6,7 +6,7 @@ import { Markdown } from "./postType/Markdown";
 import { AddonPost } from "./postType/AddonPost";
 import { AddonIntroduction } from "./postType/AddonIntroduction";
 import { FormCaption } from "@/components/ui/FormCaption";
-import V2Checkbox from "@/components/ui/v2/V2Checkbox";
+import Checkbox from "@/components/ui/Checkbox";
 import { StatusForm } from "./forms/StatusForm";
 import { CommonForm } from "./forms/CommonForm";
 export const ArticleForm = () => {
@@ -32,7 +32,7 @@ export const ArticleForm = () => {
       <StatusForm />
       <div>
         <FormCaption>保存時の更新日時</FormCaption>
-        <V2Checkbox
+        <Checkbox
           checked={withoutUpdateModifiedAt}
           onChange={() => {
             useArticleEditor.setState((state) => {
@@ -45,17 +45,17 @@ export const ArticleForm = () => {
           }}
         >
           更新しない
-        </V2Checkbox>
+        </Checkbox>
       </div>
       {article.status === "publish" && (
         <div>
           <FormCaption>公開時のSNS通知</FormCaption>
-          <V2Checkbox
+          <Checkbox
             checked={shouldNotify}
             onChange={() => updateShouldNotify(!shouldNotify)}
           >
             通知する
-          </V2Checkbox>
+          </Checkbox>
         </div>
       )}
     </div>

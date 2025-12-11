@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
-import V2Button from "../ui/v2/V2Button";
-import V2Input from "../ui/v2/V2Input";
+import Button from "../ui/Button";
+import Input from "../ui/Input";
 
 type SearchableItem = {
   id: number;
@@ -60,10 +60,10 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
       <div>
         <div className="flex flex-wrap gap-2">
           {selectedItems.map((item) => (
-            <V2Button key={item.id} onClick={() => remove(item.id)}>
+            <Button key={item.id} onClick={() => remove(item.id)}>
               {getLabel(item)}
               <span className="ml-2">✕</span>
-            </V2Button>
+            </Button>
           ))}
           {selectedItems.length === 0 && (
             <span className="text-c-sub">（未選択）</span>
@@ -71,7 +71,7 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
         </div>
       </div>
 
-      <V2Input
+      <Input
         type="text"
         className="w-full"
         value={criteria}

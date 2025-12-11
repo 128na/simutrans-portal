@@ -2,7 +2,7 @@ import { twMerge } from "tailwind-merge";
 
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {};
 
-export default function V2Checkbox({ children, className, ...props }: Props) {
+export default function Checkbox({ children, className, ...props }: Props) {
   return (
     <label className="inline-block">
       <input

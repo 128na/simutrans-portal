@@ -15,10 +15,10 @@ import {
 } from "@/features/attachments/fileInfoTool";
 import { t } from "@/utils/translate";
 import { FormCaption } from "@/components/ui/FormCaption";
-import V2TextBadge from "@/components/ui/v2/V2TextBadge";
-import V2Button from "@/components/ui/v2/V2Button";
-import V2Textarea from "@/components/ui/v2/V2Textarea";
-import V2Input from "@/components/ui/v2/V2Input";
+import TextBadge from "@/components/ui/TextBadge";
+import Button from "@/components/ui/Button";
+import Textarea from "@/components/ui/Textarea";
+import Input from "@/components/ui/Input";
 
 export const AddonPost = () => {
   const article = useArticleEditor((s) => s.article);
@@ -88,7 +88,7 @@ export const AddonPost = () => {
     <>
       <div>
         <FormCaption>
-          <V2TextBadge variant="danger">必須</V2TextBadge>
+          <TextBadge variant="danger">必須</TextBadge>
           ファイル
         </FormCaption>
         <TextError>{getError("article.contents.file")}</TextError>
@@ -127,24 +127,24 @@ export const AddonPost = () => {
             />
           )}
         </ModalFull>
-        <V2Button
+        <Button
           variant="subOutline"
           className="mt-4 mb-2 block"
           disabled={!hasReadme && !hasPakMetadata}
           onClick={handleFillFromFile}
         >
           ファイルの内容から項目を入力する
-        </V2Button>
+        </Button>
         <TextSub>pakファイルの内容から説明・カテゴリを自動選択します。</TextSub>
       </div>
 
       <div>
         <FormCaption>
-          <V2TextBadge variant="danger">必須</V2TextBadge>
+          <TextBadge variant="danger">必須</TextBadge>
           説明
         </FormCaption>
         <TextError>{getError("article.contents.description")}</TextError>
-        <V2Textarea
+        <Textarea
           className="w-full"
           value={contents.description || ""}
           required
@@ -182,7 +182,7 @@ export const AddonPost = () => {
           <div>
             <FormCaption>作者</FormCaption>
             <TextError>{getError("article.contents.author")}</TextError>
-            <V2Input
+            <Input
               className="w-full"
               maxLength={255}
               value={contents.author || ""}
@@ -196,7 +196,7 @@ export const AddonPost = () => {
           <div>
             <FormCaption>謝辞</FormCaption>
             <TextError>{getError("article.contents.thanks")}</TextError>
-            <V2Textarea
+            <Textarea
               className="w-full"
               maxLength={2048}
               value={contents.thanks || ""}
@@ -211,7 +211,7 @@ export const AddonPost = () => {
           <div>
             <FormCaption>ライセンス</FormCaption>
             <TextError>{getError("article.contents.license")}</TextError>
-            <V2Textarea
+            <Textarea
               className="w-full"
               maxLength={2048}
               value={contents.license || ""}

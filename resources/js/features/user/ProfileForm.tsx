@@ -5,7 +5,7 @@ import TextSub from "@/components/ui/TextSub";
 import { useAxiosError } from "@/hooks/useAxiosError";
 import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
 import { Avatar } from "@/components/ui/Avatar";
-import V2TextBadge from "@/components/ui/v2/V2TextBadge";
+import TextBadge from "@/components/ui/TextBadge";
 import axios from "axios";
 import { useRef } from "react";
 import { isValidationError } from "@/lib/errorHandler";
@@ -15,9 +15,9 @@ import MultiColumn from "@/components/ui/MultiColumn";
 import { ProfileIcon } from "./ProfileIcon";
 import { getService } from "./profileUtil";
 import { SortableList } from "@/components/ui/SortableList";
-import V2Input from "@/components/ui/v2/V2Input";
-import V2Textarea from "@/components/ui/v2/V2Textarea";
-import V2Button from "@/components/ui/v2/V2Button";
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
+import Button from "@/components/ui/Button";
 
 type Props = {
   user: User.MypageEdit;
@@ -96,11 +96,11 @@ export const ProfileForm = ({
     <div ref={containerRef} className="grid gap-4">
       <div>
         <FormCaption>
-          <V2TextBadge variant="danger">必須</V2TextBadge>
+          <TextBadge variant="danger">必須</TextBadge>
           表示名
         </FormCaption>
         <TextError>{getError("user.name")}</TextError>
-        <V2Input
+        <Input
           className="w-full"
           value={user.name}
           onChange={(e) => onChangeUser({ ...user, name: e.target.value })}
@@ -111,11 +111,11 @@ export const ProfileForm = ({
 
       <div>
         <FormCaption>
-          <V2TextBadge variant="danger">必須</V2TextBadge>
+          <TextBadge variant="danger">必須</TextBadge>
           メールアドレス
         </FormCaption>
         <TextError>{getError("user.email")}</TextError>
-        <V2Input
+        <Input
           type="email"
           className="w-full"
           value={user.email}
@@ -128,7 +128,7 @@ export const ProfileForm = ({
       <div>
         <FormCaption>ニックネーム</FormCaption>
         <TextError>{getError("user.nickname")}</TextError>
-        <V2Input
+        <Input
           className="w-full"
           value={user.nickname || ""}
           onChange={(e) => onChangeUser({ ...user, nickname: e.target.value })}
@@ -198,7 +198,7 @@ export const ProfileForm = ({
       <div>
         <FormCaption>説明</FormCaption>
         <TextError>{getError("user.profile.data.description")}</TextError>
-        <V2Textarea
+        <Textarea
           className="w-full"
           value={user.profile.data.description || ""}
           rows={4}
@@ -222,9 +222,9 @@ export const ProfileForm = ({
         <FormCaption>Webサイト</FormCaption>
         <TextSub className="mb-2">SNSなども登録できます。</TextSub>
         <div className="mb-2">
-          <V2Button variant="sub" onClick={addWebsite}>
+          <Button variant="sub" onClick={addWebsite}>
             Webサイトを追加
-          </V2Button>
+          </Button>
         </div>
         <SortableList
           items={user.profile.data.website}
@@ -259,7 +259,7 @@ export const ProfileForm = ({
                     <TextError>
                       {getError(`user.profile.data.website.${idx}`)}
                     </TextError>
-                    <V2Input
+                    <Input
                       type="url"
                       className="w-full"
                       maxLength={255}
@@ -281,22 +281,22 @@ export const ProfileForm = ({
                     />
                   </div>
                 </div>
-                <V2Button
+                <Button
                   variant="dangerOutline"
                   size="sm"
                   onClick={() => removeWebsite(idx)}
                 >
                   削除
-                </V2Button>
+                </Button>
               </MultiColumn>
             );
           }}
         />
       </div>
       <div className="border-t border-c-sub/10 pt-4">
-        <V2Button size="lg" onClick={save}>
+        <Button size="lg" onClick={save}>
           保存
-        </V2Button>
+        </Button>
       </div>
     </div>
   );

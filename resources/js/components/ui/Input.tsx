@@ -3,7 +3,7 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   counter?: (value: string) => number;
 };
 
-export default function V2Input({ counter, className, ...props }: Props) {
+export default function Input({ counter, className, ...props }: Props) {
   const count =
     counter && typeof props.value === "string"
       ? counter(props.value ?? "")

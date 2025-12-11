@@ -1,5 +1,5 @@
 import TextError from "@/components/ui/TextError";
-import V2Input from "@/components/ui/v2/V2Input";
+import Input from "@/components/ui/Input";
 import { useAxiosError } from "@/hooks/useAxiosError";
 
 type Props = {
@@ -13,7 +13,7 @@ export const SectionUrl = ({ section, idx, ...props }: Props) => {
   return (
     <>
       <TextError>{getError(`article.contents.sections.${idx}.url`)}</TextError>
-      <V2Input
+      <Input
         type="url"
         className="w-full"
         required

@@ -4,8 +4,8 @@ import { StatusText } from "../utils/articleUtil";
 import { useAxiosError } from "@/hooks/useAxiosError";
 import TextError from "@/components/ui/TextError";
 import { FormCaption } from "@/components/ui/FormCaption";
-import V2Select from "@/components/ui/v2/V2Select";
-import V2Input from "@/components/ui/v2/V2Input";
+import Select from "@/components/ui/Select";
+import Input from "@/components/ui/Input";
 
 export const StatusForm = () => {
   const article = useArticleEditor((s) => s.article);
@@ -17,7 +17,7 @@ export const StatusForm = () => {
       <div>
         <FormCaption>ステータス</FormCaption>
         <TextError>{getError("article.status")}</TextError>
-        <V2Select
+        <Select
           className="w-full"
           options={StatusText}
           value={article.status}
@@ -30,7 +30,7 @@ export const StatusForm = () => {
         <div>
           <FormCaption>予約日時</FormCaption>
           <TextError>{getError("article.published_at")}</TextError>
-          <V2Input
+          <Input
             className="w-full"
             type="datetime-local"
             value={article.published_at ?? ""}

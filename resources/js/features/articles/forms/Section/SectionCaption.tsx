@@ -1,5 +1,5 @@
 import TextError from "@/components/ui/TextError";
-import V2Input from "@/components/ui/v2/V2Input";
+import Input from "@/components/ui/Input";
 import { useAxiosError } from "@/hooks/useAxiosError";
 
 type Props = {
@@ -14,7 +14,7 @@ export const SectionCaption = ({ section, idx, ...props }: Props) => {
       <TextError>
         {getError(`article.contents.sections.${idx}.caption`)}
       </TextError>
-      <V2Input
+      <Input
         className="w-full"
         required
         maxLength={255}

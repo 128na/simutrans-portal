@@ -6,7 +6,7 @@ import { ArticlePreview } from "./ArticlePreview";
 import { ArticleForm } from "./ArticleForm";
 import { isValidationError } from "@/lib/errorHandler";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
-import V2Button from "@/components/ui/v2/V2Button";
+import Button from "@/components/ui/Button";
 
 export const ArticleEdit = () => {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -55,9 +55,9 @@ export const ArticleEdit = () => {
         </div>
       </div>
       <div className="border-t border-c-sub/10 pt-4">
-        <V2Button onClick={save} size="lg">
+        <Button onClick={save} size="lg">
           保存
-        </V2Button>
+        </Button>
       </div>
     </>
   );

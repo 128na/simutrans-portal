@@ -1,7 +1,7 @@
 import { t } from "@/utils/translate";
 import { typedKeys } from "../utils/articleUtil";
 import { FormCaption } from "@/components/ui/FormCaption";
-import V2Checkbox from "@/components/ui/v2/V2Checkbox";
+import Checkbox from "@/components/ui/Checkbox";
 
 type Props = {
   categories: Category.Grouping;
@@ -64,14 +64,14 @@ export const SelectCategories = ({
             <FormCaption>{t(`category.type.${type}`)}</FormCaption>
             <div className="space-x-4">
               {categories[type].filter(categoryFilter).map((category) => (
-                <V2Checkbox
+                <Checkbox
                   key={category.id}
                   value={category.id}
                   checked={selected.includes(category.id)}
                   onChange={() => handle(category.id)}
                 >
                   {t(`category.${category.type}.${category.slug}`)}
-                </V2Checkbox>
+                </Checkbox>
               ))}
             </div>
           </div>

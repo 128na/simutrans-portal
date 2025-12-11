@@ -14,7 +14,7 @@ const variants: Record<string, string> = {
   success: "v2-card-success",
 } as const;
 
-export default function V2Card({
+export default function Card({
   children,
   className,
   variant = "primary",

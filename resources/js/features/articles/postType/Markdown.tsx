@@ -1,12 +1,12 @@
 import { SelectCategories } from "../components/SelectCategories";
 import { SelectableSearch } from "@/components/form/SelectableSearch";
 import { Accordion } from "@/components/ui/Accordion";
-import V2TextBadge from "@/components/ui/v2/V2TextBadge";
+import TextBadge from "@/components/ui/TextBadge";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
 import TextError from "@/components/ui/TextError";
 import { useAxiosError } from "@/hooks/useAxiosError";
 import { FormCaption } from "@/components/ui/FormCaption";
-import V2Textarea from "@/components/ui/v2/V2Textarea";
+import Textarea from "@/components/ui/Textarea";
 
 export const Markdown = () => {
   const article = useArticleEditor((s) => s.article);
@@ -24,12 +24,12 @@ export const Markdown = () => {
     <>
       <div>
         <FormCaption>
-          <V2TextBadge variant="danger">必須</V2TextBadge>
+          <TextBadge variant="danger">必須</TextBadge>
           本文
         </FormCaption>
         <TextError>{getError("article.contents.markdown")}</TextError>
 
-        <V2Textarea
+        <Textarea
           className="w-full"
           required
           maxLength={65535}

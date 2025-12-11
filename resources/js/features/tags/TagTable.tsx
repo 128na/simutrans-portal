@@ -4,8 +4,8 @@ import { compareTagValues, tagFilter } from "./tagUtil";
 import { twMerge } from "tailwind-merge";
 import { DataTable, DataTableHeader } from "@/components/layout/DataTable";
 import TextSub from "@/components/ui/TextSub";
-import V2Button from "@/components/ui/v2/V2Button";
-import V2Input from "@/components/ui/v2/V2Input";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
 
 type Props = {
   tags: Tag.MypageEdit[];
@@ -56,17 +56,17 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
     <>
       <div className="v2-table-container">
         <div>
-          <V2Button
+          <Button
             size="lg"
             onClick={() =>
               onClick?.({ id: null, name: criteria, description: null })
             }
           >
             作成
-          </V2Button>
+          </Button>
         </div>
         <div>
-          <V2Input
+          <Input
             type="search"
             value={criteria}
             onChange={(e) => setCriteria(e.target.value)}

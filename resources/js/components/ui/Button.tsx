@@ -27,7 +27,7 @@ const sizes: Record<string, string> = {
   lg: "v2-button-lg",
 } as const;
 
-export default function V2Button({
+export default function Button({
   children,
   className,
   variant = "primary",

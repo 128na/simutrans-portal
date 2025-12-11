@@ -7,7 +7,7 @@ import { SectionUrl } from "./Section/SectionUrl";
 import { FormCaption } from "@/components/ui/FormCaption";
 import MultiColumn from "@/components/ui/MultiColumn";
 import { SortableList } from "@/components/ui/SortableList";
-import V2Button from "@/components/ui/v2/V2Button";
+import Button from "@/components/ui/Button";
 
 const template = {
   caption: { type: "caption", caption: "" } as ArticleContent.Section.Caption,
@@ -136,27 +136,27 @@ export const SectionForm = () => {
                   />
                 ))
                 .exhaustive()}
-              <V2Button variant="dangerOutline" onClick={() => remove(idx)}>
+              <Button variant="dangerOutline" onClick={() => remove(idx)}>
                 削除
-              </V2Button>
+              </Button>
             </MultiColumn>
           </div>
         )}
       />
       <div className="space-x-2">
         <FormCaption>項目の追加</FormCaption>
-        <V2Button size="lg" onClick={() => add("caption")}>
+        <Button size="lg" onClick={() => add("caption")}>
           見出し
-        </V2Button>
-        <V2Button size="lg" onClick={() => add("text")}>
+        </Button>
+        <Button size="lg" onClick={() => add("text")}>
           テキスト
-        </V2Button>
-        <V2Button size="lg" onClick={() => add("image")}>
+        </Button>
+        <Button size="lg" onClick={() => add("image")}>
           画像
-        </V2Button>
-        <V2Button size="lg" onClick={() => add("url")}>
+        </Button>
+        <Button size="lg" onClick={() => add("url")}>
           URL
-        </V2Button>
+        </Button>
       </div>
     </div>
   );

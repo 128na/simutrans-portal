@@ -1,21 +1,21 @@
 import { createRoot } from "react-dom/client";
-import V2Button from "@/components/ui/v2/V2Button";
-import V2Card from "@/components/ui/v2/V2Card";
-import V2Input from "@/components/ui/v2/V2Input";
-import V2Textarea from "@/components/ui/v2/V2Textarea";
-import V2Select from "@/components/ui/v2/V2Select";
-import V2Checkbox from "@/components/ui/v2/V2Checkbox";
-import V2Checkboxes from "@/components/ui/v2/V2Checkboxes";
-import V2TextBadge from "@/components/ui/v2/V2TextBadge";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
+import Select from "@/components/ui/Select";
+import Checkbox from "@/components/ui/Checkbox";
+import Checkboxes from "@/components/ui/Checkboxes";
+import TextBadge from "@/components/ui/TextBadge";
 
 const app = document.getElementById("app-playground");
 if (app) {
   const App = () => {
     const components = [
       {
-        name: "V2Button",
+        name: "Button",
         show: true,
-        render: (p: Props) => <V2Button {...p}>ボタン</V2Button>,
+        render: (p: Props) => <Button {...p}>ボタン</Button>,
         condition: {
           variant: [
             "sub",
@@ -35,21 +35,21 @@ if (app) {
         },
       },
       {
-        name: "V2Button (size)",
+        name: "Button (size)",
         show: true,
-        render: (p: Props) => <V2Button {...p}>ボタン</V2Button>,
+        render: (p: Props) => <Button {...p}>ボタン</Button>,
         condition: {
           size: ["sm", "md", "lg"],
         },
       },
       {
-        name: "V2Card",
+        name: "Card",
         show: true,
         render: (p: Props) => (
-          <V2Card {...p}>
+          <Card {...p}>
             <h3>カード</h3>
-            <div>これはV2Cardコンポーネントの内容です。</div>
-          </V2Card>
+            <div>これはCardコンポーネントの内容です。</div>
+          </Card>
         ),
         condition: {
           variant: [
@@ -66,7 +66,7 @@ if (app) {
       {
         name: "v2Input",
         show: true,
-        render: (p: Props) => <V2Input value="test" {...p} />,
+        render: (p: Props) => <Input value="test" {...p} />,
         condition: {
           disabled: [false, true],
         },
@@ -74,7 +74,7 @@ if (app) {
       {
         name: "v2Input (required)",
         show: true,
-        render: (p: Props) => <V2Input {...p} />,
+        render: (p: Props) => <Input {...p} />,
         condition: {
           required: [true],
         },
@@ -82,7 +82,7 @@ if (app) {
       {
         name: "v2Input (type)",
         show: true,
-        render: (p: Props) => <V2Input {...p} />,
+        render: (p: Props) => <Input {...p} />,
         condition: {
           type: [
             "text",
@@ -98,7 +98,7 @@ if (app) {
       {
         name: "v2Textarea",
         show: true,
-        render: (p: Props) => <V2Textarea value={"test\ntest"} {...p} />,
+        render: (p: Props) => <Textarea value={"test\ntest"} {...p} />,
         condition: {
           disabled: [false, true],
         },
@@ -106,7 +106,7 @@ if (app) {
       {
         name: "v2Textarea (required)",
         show: true,
-        render: (p: Props) => <V2Textarea {...p} />,
+        render: (p: Props) => <Textarea {...p} />,
         condition: {
           required: [true],
         },
@@ -115,7 +115,7 @@ if (app) {
         name: "v2Select",
         show: true,
         render: (p: Props) => (
-          <V2Select
+          <Select
             options={{ option1: "Option 1", option2: "Option 2" }}
             {...p}
           />
@@ -128,7 +128,7 @@ if (app) {
         name: "v2Select (required)",
         show: true,
         render: (p: Props) => (
-          <V2Select
+          <Select
             options={{ "": "none", option1: "Option 1", option2: "Option 2" }}
             {...p}
           />
@@ -142,12 +142,12 @@ if (app) {
         show: true,
         render: (p: Props) => (
           <div>
-            <V2Select
+            <Select
               options={{ "": "none", option1: "Option 1", option2: "Option 2" }}
               className="mr-2"
               {...p}
             />
-            <V2Input value="test" {...p} />
+            <Input value="test" {...p} />
           </div>
         ),
         condition: {},
@@ -156,9 +156,9 @@ if (app) {
         name: "v2Checkbox",
         show: true,
         render: (p: Props, index: number) => (
-          <V2Checkbox id={`c-${index}`} {...p}>
+          <Checkbox id={`c-${index}`} {...p}>
             チェックボックスのラベル
-          </V2Checkbox>
+          </Checkbox>
         ),
         condition: {
           disabled: [false, true],
@@ -169,9 +169,9 @@ if (app) {
         name: "v2Checkbox (required)",
         show: true,
         render: (p: Props, index: number) => (
-          <V2Checkbox id={`c-${index}`} {...p}>
+          <Checkbox id={`c-${index}`} {...p}>
             チェックボックスのラベル
-          </V2Checkbox>
+          </Checkbox>
         ),
         condition: {
           required: [true],
@@ -181,7 +181,7 @@ if (app) {
         name: "v2Checkboxes",
         show: true,
         render: (p: Props, index: number) => (
-          <V2Checkboxes
+          <Checkboxes
             id={`c-${index}`}
             {...p}
             options={{
@@ -214,7 +214,7 @@ if (app) {
       {
         name: "v2badge",
         show: true,
-        render: (p: Props) => <V2TextBadge {...p}>バッジ</V2TextBadge>,
+        render: (p: Props) => <TextBadge {...p}>バッジ</TextBadge>,
         condition: {
           variant: [
             "main",
@@ -332,7 +332,7 @@ if (app) {
             <div key={componentIndex} className="mb-2">
               <a
                 href={`#component-${componentIndex}`}
-                className="link-internal block"
+                className="v2-link block"
               >
                 {component.name}
               </a>
@@ -341,7 +341,7 @@ if (app) {
                   <a
                     key={patternIndex}
                     href={`#component-${componentIndex}-pattern-${patternIndex}`}
-                    className="link-internal inline-block"
+                    className="v2-link inline-block"
                   >
                     {pattern.name || "(単一パターン)"}
                   </a>

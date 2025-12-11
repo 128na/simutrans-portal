@@ -7,7 +7,7 @@ import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
 import { analyticsFilter } from "./analyticsUtil";
 import { format } from "date-fns";
 import { FormCaption } from "@/components/ui/FormCaption";
-import V2Input from "@/components/ui/v2/V2Input";
+import Input from "@/components/ui/Input";
 
 type Props = {
   articles: Analytics.Article[];
@@ -77,7 +77,7 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
       <FormCaption>表示記事</FormCaption>
       <div className="v2-table-container">
         <div>
-          <V2Input
+          <Input
             type="search"
             value={criteria}
             onChange={(e) => setCriteria(e.target.value)}

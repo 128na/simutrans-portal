@@ -2,16 +2,16 @@ import { SelectCategories } from "../components/SelectCategories";
 import { SelectableSearch } from "@/components/form/SelectableSearch";
 import { Accordion } from "@/components/ui/Accordion";
 import { TagEdit } from "../../tags/TagEdit";
-import V2TextBadge from "@/components/ui/v2/V2TextBadge";
+import TextBadge from "@/components/ui/TextBadge";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
 import { useAxiosError } from "@/hooks/useAxiosError";
 import TextError from "@/components/ui/TextError";
 import { ModalFull } from "@/components/ui/ModalFull";
 import { FormCaption } from "@/components/ui/FormCaption";
 import TextSub from "@/components/ui/TextSub";
-import V2Textarea from "@/components/ui/v2/V2Textarea";
-import V2Input from "@/components/ui/v2/V2Input";
-import V2Checkbox from "@/components/ui/v2/V2Checkbox";
+import Textarea from "@/components/ui/Textarea";
+import Input from "@/components/ui/Input";
+import Checkbox from "@/components/ui/Checkbox";
 
 export const AddonIntroduction = () => {
   const article = useArticleEditor((s) => s.article);
@@ -32,11 +32,11 @@ export const AddonIntroduction = () => {
     <>
       <div>
         <FormCaption>
-          <V2TextBadge variant="danger">必須</V2TextBadge>
+          <TextBadge variant="danger">必須</TextBadge>
           説明
         </FormCaption>
         <TextError>{getError("article.contents.description")}</TextError>
-        <V2Textarea
+        <Textarea
           className="w-full"
           value={contents.description || ""}
           required
@@ -52,11 +52,11 @@ export const AddonIntroduction = () => {
 
       <div>
         <FormCaption>
-          <V2TextBadge variant="danger">必須</V2TextBadge>
+          <TextBadge variant="danger">必須</TextBadge>
           リンク先
         </FormCaption>
         <TextError>{getError("article.contents.link")}</TextError>
-        <V2Input
+        <Input
           type="url"
           className="w-full"
           required
@@ -73,7 +73,7 @@ export const AddonIntroduction = () => {
       <div>
         <FormCaption>掲載許可</FormCaption>
         <TextError>{getError("article.contents.agreement")}</TextError>
-        <V2Checkbox
+        <Checkbox
           checked={contents.agreement}
           onChange={() =>
             updateContents<ArticleContent.AddonIntroduction>(
@@ -82,7 +82,7 @@ export const AddonIntroduction = () => {
           }
         >
           取得済み
-        </V2Checkbox>
+        </Checkbox>
       </div>
 
       <SelectCategories
@@ -109,7 +109,7 @@ export const AddonIntroduction = () => {
           <div>
             <FormCaption>作者</FormCaption>
             <TextError>{getError("article.contents.author")}</TextError>
-            <V2Input
+            <Input
               className="w-full"
               maxLength={255}
               value={contents.author || ""}
@@ -123,7 +123,7 @@ export const AddonIntroduction = () => {
           <div>
             <FormCaption>謝辞</FormCaption>
             <TextError>{getError("article.contents.thanks")}</TextError>
-            <V2Textarea
+            <Textarea
               className="w-full"
               value={contents.thanks || ""}
               maxLength={2048}
@@ -138,7 +138,7 @@ export const AddonIntroduction = () => {
           <div>
             <FormCaption>ライセンス</FormCaption>
             <TextError>{getError("article.contents.license")}</TextError>
-            <V2Textarea
+            <Textarea
               className="w-full"
               maxLength={2048}
               value={contents.license || ""}
@@ -155,7 +155,7 @@ export const AddonIntroduction = () => {
             <TextError>
               {getError("article.contents.exclude_link_check")}
             </TextError>
-            <V2Checkbox
+            <Checkbox
               checked={contents.exclude_link_check}
               onChange={() =>
                 updateContents<ArticleContent.AddonIntroduction>(
@@ -165,7 +165,7 @@ export const AddonIntroduction = () => {
               }
             >
               有効にする
-            </V2Checkbox>
+            </Checkbox>
             <TextSub>
               デイリーで自動的にリンク先URLがアクセスできる状態かチェックします。3日間リンク切れ状態が続くと記事を非公開に変更し、メールで通知します。
             </TextSub>

@@ -17,6 +17,7 @@ final class StoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:20', 'unique:tags,name'],
+            'description' => ['nullable', 'string', 'max:1024'],
         ];
     }
 }

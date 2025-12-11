@@ -13,9 +13,9 @@ import { t } from "@/utils/translate";
 import TextSub from "@/components/ui/TextSub";
 import Link from "@/components/ui/Link";
 import axios from "axios";
-import ButtonDanger from "@/components/ui/ButtonDanger";
 import { handleError } from "@/lib/errorHandler";
 import V2Input from "@/components/ui/v2/V2Input";
+import V2Button from "@/components/ui/v2/V2Button";
 
 type Props = {
   attachments: Attachment.MypageEdit[];
@@ -144,7 +144,7 @@ export const AttachmentTable = ({
                 onSelectAttachment &&
                   (selected === a.id
                     ? "cursor-pointer bg-c-primary/20 hover:bg-c-primary/30"
-                    : "cursor-pointer hover:bg-c-sub")
+                    : "cursor-pointer hover:bg-c-sub/10")
               )}
               onClick={() => onSelectAttachment?.(selected === a.id ? null : a)}
             >
@@ -173,14 +173,15 @@ export const AttachmentTable = ({
               <td>{format(new Date(a.created_at), "yyyy/MM/dd H:mm")}</td>
               <td>
                 {a.attachmentable_id === null && a.id !== selected && (
-                  <ButtonDanger
+                  <V2Button
+                    variant="danger"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleDelete(a.id);
                     }}
                   >
                     削除
-                  </ButtonDanger>
+                  </V2Button>
                 )}
               </td>
             </tr>

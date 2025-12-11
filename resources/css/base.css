@@ -86,7 +86,8 @@
     @apply file:ml-0 file:border-0
       file:px-3 file:py-1.5 file:text-sm file:rounded-lg
       file:text-white
-      file:bg-c-sub/80 hover:file:bg-c-sub/60;
+      file:bg-c-sub/80 file:shadow-md file:transition-shadow
+      hover:file:bg-c-sub/60 hover:file:shadow-lg;
   }
   .v2-input-select {
     @apply pr-4;
@@ -267,7 +268,7 @@
     @apply inline-block font-semibold;
   }
   .v2-form-error {
-    @apply text-sm text-c-danger my-2;
+    @apply text-sm text-c-danger my-1;
   }
 
   /* ページネーション */

@@ -18,26 +18,26 @@
 
         <div>
             <h4 class="v2-text-h3 mb-4">SNSアカウント</h4>
-            <div class="overflow-x-auto">
-                <table class="border-collapse whitespace-nowrap">
+            <div class="v2-table-wrapper">
+                <table class="v2-table">
                     <tbody>
                         <tr>
-                            <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">Twitter</td>
-                            <td class="border border-c-sub/10 px-4 py-2">
+                            <th>Twitter</th>
+                            <td>
                                 @include('components.ui.link', [
                                 'url' => 'https://twitter.com/PortalSimutrans', 'title' => '@PortalSimutrans'])
                             </td>
                         </tr>
                         <tr>
-                            <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">Misskey</td>
-                            <td class="border border-c-sub/10 px-4 py-2">
+                            <th>Misskey</th>
+                            <td>
                                 @include('components.ui.link', [
                                 'url' => 'https://misskey.io/@PortalSimutrans', 'title' => '@PortalSimutrans'])
                             </td>
                         </tr>
                         <tr>
-                            <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">Bluesky</td>
-                            <td class="border border-c-sub/10 px-4 py-2">
+                            <th>Bluesky</th>
+                            <td>
                                 @include('components.ui.link', [
                                 'url' => 'https://bsky.app/profile/portalsimutrans.bsky.social', 'title' => '@PortalSimutrans.bsky.social'])
                             </td>
@@ -49,15 +49,18 @@
 
         <div>
             <h4 class="v2-text-h3 mb-4">RSS</h4>
-            <div class="overflow-x-auto mb-4">
-                <table class="border-collapse whitespace-nowrap">
+            <div class="v2-table-wrapper mb-4">
+                <table class="v2-table">
                     <tbody>
                         @foreach(config('feed.feeds') as $feed)
                         <tr>
-                            <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">{{ $feed['title'] }}</td>
-                            <td class="border border-c-sub/10 px-4 py-2">
-                                <a href="{{ $feed['url'] }}" target="_blank" rel="noopener noreferrer">
-                                    <img src="{{ asset('storage/social/feed.png') }}" alt="RSS Feed" class="inline-block h-[1em] align-text-bottom">
+                            <th>{{ $feed['title'] }}</th>
+                            <td>
+                                <a href="{{ $feed['url'] }}" class="v2-link">
+                                    <img src="{{ asset('storage/social/feed.png') }}" alt="RSS Feed" class="inline-block h-[1em] align-text-bottom mr-2">
+                                    <span>
+                                        {{ config('app.url') }}{{ $feed['url'] }}
+                                    </span>
                                 </a>
                             </td>
                         </tr>
@@ -72,19 +75,19 @@
 
         <div>
             <h4 class="v2-text-h3 mb-4">その他開発情報など</h4>
-            <div class="overflow-x-auto">
-                <table class="border-collapse whitespace-nowrap">
+            <div class="v2-table-wrapper">
+                <table class="v2-table">
                     <tbody>
                         <tr>
-                            <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">中の人のTwitter</td>
-                            <td class="border border-c-sub/10 px-4 py-2">
+                            <th>中の人のTwitter</th>
+                            <td>
                                 @include('components.ui.link', [
                                 'url' => 'https://twitter.com/128Na', 'title' => '@128Na'])
                             </td>
                         </tr>
                         <tr>
-                            <td class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">Github</td>
-                            <td class="border border-c-sub/10 px-4 py-2">
+                            <th>Github</th>
+                            <td>
                                 @include('components.ui.link', [
                                 'url' => 'https://github.com/128na/simutrans-portal', 'title' => '128na/simutrans-portal'])
                             </td>

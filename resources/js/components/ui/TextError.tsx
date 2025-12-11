@@ -9,7 +9,7 @@ export default function TextError({
   className,
   ...props
 }: HTMLProps) {
-  if (children === "") {
+  if (!children) {
     return null;
   }
   return (

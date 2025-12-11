@@ -9,22 +9,22 @@
         </p>
     </div>
     <div class="v2-page-content-area-lg">
-        <div class="overflow-x-auto">
-            <table class="border-collapse whitespace-nowrap">
+        <div class="v2-table-wrapper">
+            <table class="v2-table v2-table-fixed">
                 <thead>
                     <tr>
-                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">日時</th>
-                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">IP</th>
-                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">ユーザーエージェント</th>
-                        <th class="border border-c-sub/10 px-4 py-2 bg-c-sub/80 text-white">ログイン元</th>
+                        <th class="w-2/12">日時</th>
+                        <th class="w-3/12">IP</th>
+                        <th class="w-4/12">ユーザーエージェント</th>
+                        <th class="w-3/12">ログイン元</th>
                     </tr>
                 <tbody>
                     @foreach($loginHistories as $loginHistory)
                     <tr>
-                        <td class="border border-c-sub/10 px-4 py-2">{{$loginHistory->created_at->format('Y/m/d H:i:s')}}</td>
-                        <td class="border border-c-sub/10 px-4 py-2">{{$loginHistory->ip}}</td>
-                        <td class="border border-c-sub/10 px-4 py-2">{{$loginHistory->ua}}</td>
-                        <td class="border border-c-sub/10 px-4 py-2">{{$loginHistory->referer}}</td>
+                        <td>{{$loginHistory->created_at->format('Y/m/d H:i:s')}}</td>
+                        <td>{{$loginHistory->ip}}</td>
+                        <td>{{$loginHistory->ua}}</td>
+                        <td>{{$loginHistory->referer}}</td>
                     </tr>
                     @endforeach
                 </tbody>

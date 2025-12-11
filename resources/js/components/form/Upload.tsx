@@ -1,6 +1,6 @@
 import axios from "axios";
-import InputFile from "../ui/InputFile";
 import { handleError } from "@/lib/errorHandler";
+import V2Input from "../ui/v2/V2Input";
 
 type Prop = {
   onUploaded?: (attachment: Attachment.MypageEdit) => void;
@@ -27,5 +27,7 @@ export const Upload = ({ onUploaded, ...props }: Prop) => {
     }
   };
 
-  return <InputFile onChange={onUpload} multiple={false} {...props} />;
+  return (
+    <V2Input type="file" onChange={onUpload} multiple={false} {...props} />
+  );
 };

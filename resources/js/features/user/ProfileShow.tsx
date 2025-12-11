@@ -30,15 +30,17 @@ export const ProfileShow = ({ user, attachments, preview }: Props) => {
         </p>
         <p className="text-c-sub break-all">{user.profile.data.description}</p>
 
-        {user.profile.data.website.map((website) =>
-          website ? (
-            <ProfileLink
-              key={website}
-              url={website}
-              preview={preview ?? false}
-            />
-          ) : null
-        )}
+        <div className="space-x-2">
+          {user.profile.data.website.map((website) =>
+            website ? (
+              <ProfileLink
+                key={website}
+                url={website}
+                preview={preview ?? false}
+              />
+            ) : null
+          )}
+        </div>
       </div>
     </div>
   );

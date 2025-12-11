@@ -14,27 +14,27 @@
         <div class="v2-page-content-area-md">
             <div>
                 <label for="name" class="v2-form-caption">名前</label>
-                <input id="name" type="text" name="name" maxlength="100" autocomplete="name" value="{{old('name', '')}}" class="v2-input w-full" required />
                 @error('name')
                 <div class="v2-form-error">{{ $message }}</div>
                 @enderror
+                <input id="name" type="text" name="name" maxlength="100" autocomplete="name" value="{{old('name', '')}}" class="v2-input w-full" required />
                 <p class="mt-2 text-sm text-c-sub">
                     記事やユーザー一覧に表示される名称です。
                 </p>
             </div>
             <div>
                 <label for="email" class="v2-form-caption">メールアドレス</label>
-                <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="v2-input w-full" required />
                 @error('email')
                 <div class="v2-form-error">{{ $message }}</div>
                 @enderror
+                <input id="email" type="email" name="email" autocomplete="email" value="{{old('email', '')}}" class="v2-input w-full" required />
             </div>
             <div>
                 <label for="password" class="v2-form-caption">パスワード</label>
-                <input id="password" type="password" name="password" minlength="11" value="{{old('password', '')}}" autocomplete="new-password" class="v2-input w-full" required />
                 @error('password')
                 <div class="v2-form-error">{{ $message }}</div>
                 @enderror
+                <input id="password" type="password" name="password" minlength="11" value="{{old('password', '')}}" autocomplete="new-password" class="v2-input w-full" required />
             </div>
             <div>
                 <label>

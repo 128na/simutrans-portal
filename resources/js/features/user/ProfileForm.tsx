@@ -5,13 +5,8 @@ import TextSub from "@/components/ui/TextSub";
 import { useAxiosError } from "@/hooks/useAxiosError";
 import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
 import { Avatar } from "@/components/ui/Avatar";
-import Input from "@/components/ui/Input";
 import TextBadge from "@/components/ui/TextBadge";
-import Textarea from "@/components/ui/Textarea";
-import Button from "@/components/ui/Button";
 import axios from "axios";
-import ButtonSub from "@/components/ui/ButtonSub";
-import ButtonDanger from "@/components/ui/ButtonDanger";
 import { useRef } from "react";
 import { isValidationError } from "@/lib/errorHandler";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
@@ -20,6 +15,9 @@ import MultiColumn from "@/components/ui/MultiColumn";
 import { ProfileIcon } from "./ProfileIcon";
 import { getService } from "./profileUtil";
 import { SortableList } from "@/components/ui/SortableList";
+import V2Input from "@/components/ui/v2/V2Input";
+import V2Textarea from "@/components/ui/v2/V2Textarea";
+import V2Button from "@/components/ui/v2/V2Button";
 
 type Props = {
   user: User.MypageEdit;
@@ -102,11 +100,12 @@ export const ProfileForm = ({
           表示名
         </FormCaption>
         <TextError>{getError("user.name")}</TextError>
-        <Input
-          labelClassName="font-medium"
-          className="font-normal"
+        <V2Input
+          className="w-full"
           value={user.name}
           onChange={(e) => onChangeUser({ ...user, name: e.target.value })}
+          required
+          maxLength={255}
         />
       </div>
 
@@ -116,23 +115,24 @@ export const ProfileForm = ({
           メールアドレス
         </FormCaption>
         <TextError>{getError("user.email")}</TextError>
-        <Input
-          labelClassName="font-medium"
+        <V2Input
           type="email"
-          className="font-normal"
+          className="w-full"
           value={user.email}
           onChange={(e) => onChangeUser({ ...user, email: e.target.value })}
+          required
+          maxLength={255}
         />
       </div>
 
       <div>
         <FormCaption>ニックネーム</FormCaption>
         <TextError>{getError("user.nickname")}</TextError>
-        <Input
-          labelClassName="font-medium"
-          className="font-normal"
+        <V2Input
+          className="w-full"
           value={user.nickname || ""}
           onChange={(e) => onChangeUser({ ...user, nickname: e.target.value })}
+          maxLength={20}
         />
         <TextSub>
           設定すると記事URLがユーザーIDの代わりに使用されます。 例：
@@ -147,12 +147,6 @@ export const ProfileForm = ({
           attachmentId={user.profile.data.avatar}
           attachments={attachments}
         />
-        <TextSub className="mb-2">
-          {(user.profile.data.avatar &&
-            attachments.find((a) => a.id === user.profile.data.avatar)
-              ?.original_name) ??
-            "未選択"}
-        </TextSub>
         <div className="space-x-2">
           <Upload
             accept="image/*"
@@ -169,9 +163,7 @@ export const ProfileForm = ({
               });
               onChangeAttachments([a, ...attachments]);
             }}
-          >
-            画像をアップロード
-          </Upload>
+          />
           <ModalFull
             buttonTitle="アップロード済みの画像から選択"
             title="画像を選択"
@@ -206,11 +198,11 @@ export const ProfileForm = ({
       <div>
         <FormCaption>説明</FormCaption>
         <TextError>{getError("user.profile.data.description")}</TextError>
-        <Textarea
-          labelClassName="font-medium"
-          className="font-normal"
+        <V2Textarea
+          className="w-full"
           value={user.profile.data.description || ""}
-          rows={2}
+          rows={4}
+          maxLength={1024}
           onChange={(e) => {
             onChangeUser({
               ...user,
@@ -229,8 +221,10 @@ export const ProfileForm = ({
       <div>
         <FormCaption>Webサイト</FormCaption>
         <TextSub className="mb-2">SNSなども登録できます。</TextSub>
-        <div>
-          <ButtonSub onClick={addWebsite}>Webサイトを追加</ButtonSub>
+        <div className="mb-2">
+          <V2Button variant="sub" onClick={addWebsite}>
+            Webサイトを追加
+          </V2Button>
         </div>
         <SortableList
           items={user.profile.data.website}
@@ -250,16 +244,25 @@ export const ProfileForm = ({
           renderItem={(website, idx) => {
             const service = getService(website);
             return (
-              <MultiColumn classNames={["grow", "shrink-0"]}>
-                <div className="flex items-center gap-2 flex-1">
+              <MultiColumn
+                classNames={["grow", "shrink-0"]}
+                className="space-y-0"
+              >
+                <div className="flex items-center flex-1">
                   {website && service ? (
-                    <ProfileIcon service={service} />
+                    <ProfileIcon
+                      service={service}
+                      className="mr-2 self-start mt-3"
+                    />
                   ) : null}
                   <div className="flex-1">
-                    <Input
+                    <TextError>
+                      {getError(`user.profile.data.website.${idx}`)}
+                    </TextError>
+                    <V2Input
                       type="url"
-                      labelClassName="font-medium mb-0"
-                      className="font-normal"
+                      className="w-full"
+                      maxLength={255}
                       value={website}
                       onChange={(e) => {
                         onChangeUser({
@@ -275,23 +278,25 @@ export const ProfileForm = ({
                           },
                         });
                       }}
-                    >
-                      <TextError>
-                        {getError(`user.profile.data.website.${idx}`)}
-                      </TextError>
-                    </Input>
+                    />
                   </div>
                 </div>
-                <ButtonDanger onClick={() => removeWebsite(idx)}>
+                <V2Button
+                  variant="dangerOutline"
+                  size="sm"
+                  onClick={() => removeWebsite(idx)}
+                >
                   削除
-                </ButtonDanger>
+                </V2Button>
               </MultiColumn>
             );
           }}
         />
       </div>
       <div className="border-t border-c-sub/10 pt-4">
-        <Button onClick={save}>保存</Button>
+        <V2Button size="lg" onClick={save}>
+          保存
+        </V2Button>
       </div>
     </div>
   );

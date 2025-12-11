@@ -39,36 +39,28 @@ export const AddonPost = ({ article, preview }: Props) => {
           <table className="border-collapse whitespace-nowrap">
             <tbody>
               <tr>
-                <td className="v2-table-header">
-                  作者
-                </td>
+                <td className="v2-table-header">作者</td>
                 <td className="v2-table-cell">
                   {contents.author ?? article.user.name}
                 </td>
               </tr>
 
               <tr>
-                <td className="v2-table-header">
-                  公開日時
-                </td>
+                <td className="v2-table-header">公開日時</td>
                 <td className="v2-table-cell">
                   {formatArticleDate(article.published_at)}
                 </td>
               </tr>
 
               <tr>
-                <td className="v2-table-header">
-                  最終更新日時
-                </td>
+                <td className="v2-table-header">最終更新日時</td>
                 <td className="v2-table-cell">
                   {formatArticleDate(article.modified_at)}
                 </td>
               </tr>
 
               <tr>
-                <td className="v2-table-header">
-                  ダウンロード
-                </td>
+                <td className="v2-table-header">ダウンロード</td>
                 <td className="v2-table-cell">
                   <Link
                     href={preview ? "#" : `/articles/${article.id}/download`}
@@ -184,4 +176,3 @@ export const AddonPost = ({ article, preview }: Props) => {
     </>
   );
 };
-

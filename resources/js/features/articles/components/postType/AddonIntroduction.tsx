@@ -20,41 +20,31 @@ export const AddonIntroduction = ({ article, preview }: Props) => {
           <table className="border-collapse whitespace-nowrap">
             <tbody>
               <tr>
-                <td className="v2-table-header">
-                  作者
-                </td>
+                <td className="v2-table-header">作者</td>
                 <td className="v2-table-cell">
                   {contents.author ?? article.user.name}
                 </td>
               </tr>
               <tr>
-                <td className="v2-table-header">
-                  作者による掲載許可
-                </td>
+                <td className="v2-table-header">作者による掲載許可</td>
                 <td className="v2-table-cell">
                   {contents.agreement ? "取得済み" : "未取得"}
                 </td>
               </tr>
               <tr>
-                <td className="v2-table-header">
-                  公開日時
-                </td>
+                <td className="v2-table-header">公開日時</td>
                 <td className="v2-table-cell">
                   {formatArticleDate(article.published_at)}
                 </td>
               </tr>
               <tr>
-                <td className="v2-table-header">
-                  最終更新日時
-                </td>
+                <td className="v2-table-header">最終更新日時</td>
                 <td className="v2-table-cell">
                   {formatArticleDate(article.modified_at)}
                 </td>
               </tr>
               <tr>
-                <td className="v2-table-header">
-                  掲載URL
-                </td>
+                <td className="v2-table-header">掲載URL</td>
                 <td className="v2-table-cell">
                   <Link
                     href={preview ? "#" : `/articles/${article.id}/conversion`}
@@ -84,4 +74,3 @@ export const AddonIntroduction = ({ article, preview }: Props) => {
     </>
   );
 };
-

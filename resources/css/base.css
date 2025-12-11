@@ -89,7 +89,7 @@
       file:bg-c-sub/80 hover:file:bg-c-sub/60;
   }
   .v2-input-select {
-    @apply pr-8;
+    @apply pr-4;
   }
   .v2-checkboxes {
     @apply space-x-4 space-y-1;
@@ -222,7 +222,7 @@
   }
   /* テーブル */
   .v2-table-container {
-    @apply gap-4 flex flex-col sm:flex-row pb-4 items-end;
+    @apply gap-4 flex flex-col lg:flex-row pb-4 lg:items-end;
   }
   .v2-table-wrapper {
     @apply overflow-x-auto;
@@ -268,6 +268,32 @@
   }
   .v2-form-error {
     @apply text-sm text-c-danger my-2;
+  }
+
+  /* ページネーション */
+  .v2-pagination {
+    @apply inline-flex -space-x-px text-base h-10;
+  }
+  .v2-pagination-item {
+    @apply flex items-center justify-center px-4 h-10 text-c-sub bg-white border border-c-sub/10;
+  }
+  .v2-pagination-item-single {
+    @apply ms-0 border-e-0 rounded-lg;
+  }
+  .v2-pagination-item-start {
+    @apply ms-0 border-e-0 rounded-s-lg;
+  }
+  .v2-pagination-item-end {
+    @apply rounded-e-lg;
+  }
+  .v2-pagination-item-active {
+    @apply bg-blue-50 text-blue-600 hover:text-blue-700;
+  }
+  .v2-pagination-item-hover {
+    @apply hover:bg-c-sub/10 cursor-pointer;
+  }
+  .v2-pagination-item-disabled {
+    @apply cursor-default;
   }
 }
 

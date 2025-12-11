@@ -12,21 +12,19 @@ function getPagination(total: number, current: number) {
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 }
 
-const baseClass =
-  "flex items-center justify-center px-4 h-10 text-c-sub bg-white border border-c-sub/10";
-
 export const Pagination = ({ total, current, onChange }: PaginationProps) => {
   const pages = getPagination(total, current);
 
   return (
     <nav>
-      <ul className="inline-flex -space-x-px text-base h-10">
+      <ul className="v2-pagination">
         <li>
           <button
             className={twMerge(
-              baseClass,
-              "ms-0 border-e-0 rounded-s-lg",
-              current === 1 ? "" : "hover:bg-c-sub/10 cursor-pointer"
+              "v2-pagination-item v2-pagination-item-start",
+              current === 1
+                ? "v2-pagination-item-disabled"
+                : "v2-pagination-item-hover"
             )}
             onClick={() => onChange(Math.max(1, current - 1))}
             disabled={current === 1}
@@ -37,7 +35,7 @@ export const Pagination = ({ total, current, onChange }: PaginationProps) => {
 
         {pages[0] > 1 && (
           <li>
-            <button className={twMerge(baseClass)}>...</button>
+            <button className="v2-pagination-item">...</button>
           </li>
         )}
 
@@ -45,11 +43,10 @@ export const Pagination = ({ total, current, onChange }: PaginationProps) => {
           <li key={p}>
             <button
               className={twMerge(
-                baseClass,
-                "cursor-pointer",
+                "v2-pagination-item",
                 current === p
-                  ? "bg-blue-50 text-blue-600 hover:text-blue-700"
-                  : "hover:bg-c-sub/10"
+                  ? "v2-pagination-item-active"
+                  : "v2-pagination-item-hover"
               )}
               onClick={() => onChange(p)}
             >
@@ -60,16 +57,17 @@ export const Pagination = ({ total, current, onChange }: PaginationProps) => {
 
         {pages[pages.length - 1] < total && (
           <li>
-            <button className={twMerge(baseClass)}>...</button>
+            <button className="v2-pagination-item">...</button>
           </li>
         )}
 
         <li>
           <button
             className={twMerge(
-              baseClass,
-              "rounded-e-lg",
-              current === total ? "" : "hover:bg-c-sub/10 cursor-pointer"
+              "v2-pagination-item v2-pagination-item-end",
+              current === total
+                ? "v2-pagination-item-disabled"
+                : "v2-pagination-item-hover"
             )}
             onClick={() => onChange(Math.min(total, current + 1))}
             disabled={current === total}

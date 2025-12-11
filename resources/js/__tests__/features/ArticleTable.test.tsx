@@ -43,7 +43,7 @@ describe("ArticleTable コンポーネント", () => {
     const user = userEvent.setup();
     render(<ArticleTable articles={mockArticles} limit={10} />);
 
-    const searchInput = screen.getByRole("textbox");
+    const searchInput = screen.getByRole("searchbox");
     await user.type(searchInput, "テスト記事1");
 
     expect(screen.getByText("テスト記事1")).toBeInTheDocument();

@@ -68,8 +68,7 @@ describe("Pagination コンポーネント", () => {
   it("現在のページがハイライトされる", () => {
     render(<Pagination total={5} current={3} onChange={() => {}} />);
     const currentButton = screen.getByRole("button", { name: "3" });
-    expect(currentButton).toHaveClass("bg-blue-50");
-    expect(currentButton).toHaveClass("text-blue-600");
+    expect(currentButton).toHaveClass("v2-pagination-item-active");
   });
 
   it("総ページ数が多い場合は省略記号が表示される", () => {

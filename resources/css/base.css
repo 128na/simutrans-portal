@@ -16,6 +16,11 @@
   --font-sans:
     "Inter", "Noto Sans JP", ui-sans-serif, system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* サイズバリアント */
+  --size-sm: 0.5rem 0.25rem;
+  --size-md: 0.75rem 0.375rem;
+  --size-lg: 1rem 0.5rem;
 }
 
 @layer base {
@@ -24,12 +29,15 @@
   }
 }
 @layer utilities {
+  /* 外部リンク判定（共通） */
   .v2-link:not([href^="https://simutrans-portal.128-bit.net"]):not(
       [href^="http://localhost:1080"]
     ):not([href^="#"]):not([href^="/"]) {
     @apply decoration-c-primary text-c-primary hover:text-c-primary/80 underline break-all
     after:content-['↗'] after:text-c-sub/50 after:text-xs;
   }
+
+  /* リンク：基底 */
   .v2-link {
     @apply text-c-sub/90 hover:text-c-sub/70 decoration-c-sub/90 hover:decoration-c-sub/70 underline break-all;
   }
@@ -114,7 +122,7 @@
   .v2-card {
     @apply bg-transparent border p-4 rounded-lg w-full;
   }
-  /* カード：色 */
+  /* カラーバリアント：カード */
   .v2-card-main {
     @apply border-c-main bg-c-main/2 text-c-main;
   }
@@ -137,14 +145,15 @@
     @apply border-c-success bg-c-success/2 text-c-success;
   }
 
-  /* ボタン */
+  /* ボタン：基底 */
   .v2-button {
     @apply text-white cursor-pointer shadow-md hover:shadow-lg transition-shadow;
   }
   .v2-button-outline {
     @apply bg-transparent border cursor-pointer shadow-md hover:shadow-lg transition-shadow;
   }
-  /* ボタン：サイズ */
+
+  /* サイズバリアント：ボタン */
   .v2-button-sm {
     @apply px-2 py-1 text-xs rounded-md;
   }
@@ -154,52 +163,58 @@
   .v2-button-lg {
     @apply px-4 py-2 text-base rounded-lg;
   }
-  /* ボタン：disabled */
+
+  /* ボタン：状態 */
   .v2-button-disabled {
     @apply cursor-not-allowed opacity-50 hover:bg-none;
   }
-  /* ボタン：色 */
+
+  /* カラーバリアント：ボタン（塗りつぶし） */
   .v2-button-sub {
     @apply bg-c-sub/80 hover:bg-c-sub/60;
-  }
-  .v2-button-sub-outline {
-    @apply border-c-sub/80 text-c-sub/80 hover:bg-c-sub/10;
   }
   .v2-button-primary {
     @apply bg-c-primary hover:bg-c-primary/80;
   }
-  .v2-button-primary-outline {
-    @apply border-c-primary text-c-primary hover:bg-c-primary/10;
-  }
   .v2-button-danger {
     @apply bg-c-danger hover:bg-c-danger/80;
-  }
-  .v2-button-danger-outline {
-    @apply border-c-danger text-c-danger hover:bg-c-danger/10;
   }
   .v2-button-warn {
     @apply bg-c-warn hover:bg-c-warn/80;
   }
-  .v2-button-warn-outline {
-    @apply border-c-warn text-c-warn hover:bg-c-warn/10;
-  }
   .v2-button-info {
     @apply bg-c-info hover:bg-c-info/80;
   }
-  .v2-button-info-outline {
-    @apply border-c-info text-c-info hover:bg-c-info/10;
-  }
   .v2-button-success {
     @apply bg-c-success hover:bg-c-success/80;
+  }
+
+  /* カラーバリアント：ボタン（アウトライン） */
+  .v2-button-sub-outline {
+    @apply border-c-sub/80 text-c-sub/80 hover:bg-c-sub/10;
+  }
+  .v2-button-primary-outline {
+    @apply border-c-primary text-c-primary hover:bg-c-primary/10;
+  }
+  .v2-button-danger-outline {
+    @apply border-c-danger text-c-danger hover:bg-c-danger/10;
+  }
+  .v2-button-warn-outline {
+    @apply border-c-warn text-c-warn hover:bg-c-warn/10;
+  }
+  .v2-button-info-outline {
+    @apply border-c-info text-c-info hover:bg-c-info/10;
   }
   .v2-button-success-outline {
     @apply border-c-success text-c-success hover:bg-c-success/10;
   }
 
-  /* バッジ */
+  /* バッジ：基底 */
   .v2-badge {
     @apply text-[.7rem] px-1 py-0.5 mr-0.5 text-white rounded-md;
   }
+
+  /* カラーバリアント：バッジ */
   .v2-badge-main {
     @apply bg-c-main;
   }
@@ -228,16 +243,21 @@
   .v2-table-wrapper {
     @apply overflow-x-auto;
   }
-  .v2-table {
+
+  /* テーブル：共通スタイル（.v2-table と .markdown-body table で共有） */
+  .v2-table,
+  .markdown-body table {
     @apply text-left border-collapse;
   }
   .v2-table-fixed {
     @apply table-fixed w-full min-w-[960px];
   }
-  .v2-table th {
+  .v2-table th,
+  .markdown-body th {
     @apply font-normal bg-c-sub/80 text-white px-4 py-2 border border-c-sub/20 break-all;
   }
-  .v2-table td {
+  .v2-table td,
+  .markdown-body td {
     @apply px-4 py-2 border border-c-sub/20 break-all;
   }
   /* misc */
@@ -296,65 +316,56 @@
   .v2-pagination-item-disabled {
     @apply cursor-default;
   }
-}
 
-/* markdown */
-.markdown-body h1 {
-  @apply text-3xl font-semibold tracking-tight text-pretty mb-2;
-}
-.markdown-body h2 {
-  @apply text-2xl font-semibold tracking-tight text-pretty mb-2;
-}
-.markdown-body h3,
-.markdown-body h4,
-.markdown-body h5,
-.markdown-body h6 {
-  @apply text-xl font-semibold tracking-tight text-pretty mb-2;
-}
+  /* markdown */
+  .markdown-body h1 {
+    @apply text-3xl font-semibold tracking-tight text-pretty mb-2;
+  }
+  .markdown-body h2 {
+    @apply text-2xl font-semibold tracking-tight text-pretty mb-2;
+  }
+  .markdown-body h3,
+  .markdown-body h4,
+  .markdown-body h5,
+  .markdown-body h6 {
+    @apply text-xl font-semibold tracking-tight text-pretty mb-2;
+  }
 
-.markdown-body hr {
-  @apply my-6 border-t border-c-sub/10;
-}
-.markdown-body p {
-  @apply text-base leading-relaxed mb-8 break-all;
-}
-.markdown-body a {
-  @apply decoration-c-primary text-c-primary hover:text-c-primary/80 underline break-all;
-}
-.markdown-body
-  a:not([href^="https://simutrans-portal.128-bit.net"]):not(
-    [href^="http://localhost:1080"]
-  ):not([href^="#"]):not([href^="/"]) {
-  @apply decoration-c-primary text-c-primary hover:text-c-primary/80 underline break-all
+  .markdown-body hr {
+    @apply my-6 border-t border-c-sub/10;
+  }
+  .markdown-body p {
+    @apply text-base leading-relaxed mb-8 break-all;
+  }
+
+  /* リンクスタイルは .v2-external-link と共通化 */
+  .markdown-body a {
+    @apply text-c-sub/90 hover:text-c-sub/70 decoration-c-sub/90 hover:decoration-c-sub/70 underline break-all;
+  }
+  .markdown-body
+    a:not([href^="https://simutrans-portal.128-bit.net"]):not(
+      [href^="http://localhost:1080"]
+    ):not([href^="#"]):not([href^="/"]) {
+    @apply decoration-c-primary text-c-primary hover:text-c-primary/80 underline break-all
     after:content-['↗'] after:text-c-sub/50 after:text-xs;
-}
-.markdown-body a {
-  @apply text-c-sub/90 hover:text-c-sub/70 decoration-c-sub/90 hover:decoration-c-sub/70 underline break-all;
-}
+  }
 
-.markdown-body img {
-  @apply mt-6 mb-12 rounded-lg shadow-md;
-}
-.markdown-body code {
-  @apply bg-c-sub/10 rounded p-1 text-sm font-mono break-all;
-}
-.markdown-body pre code {
-  @apply block text-sm font-mono bg-c-sub/10 rounded p-4 my-6 overflow-x-auto;
-}
+  .markdown-body img {
+    @apply mt-6 mb-12 rounded-lg shadow-md;
+  }
+  .markdown-body code {
+    @apply bg-c-sub/10 rounded p-1 text-sm font-mono break-all;
+  }
+  .markdown-body pre code {
+    @apply block text-sm font-mono bg-c-sub/10 rounded p-4 my-6 overflow-x-auto;
+  }
 
-.markdown-body table {
-  @apply text-left border-collapse;
-}
-.markdown-body th {
-  @apply font-normal bg-c-sub/80 text-white px-4 py-2 border border-c-sub/20 break-all;
-}
-.markdown-body td {
-  @apply px-4 py-2 border border-c-sub/20 break-all;
-}
+  /* テーブルスタイルは .v2-table と共通化済み */
 
-.markdown-body ul {
-  @apply list-disc mb-4 ml-6;
-}
-.markdown-body ol {
-  @apply list-decimal mb-4 ml-6;
+  .markdown-body ul {
+    @apply list-disc mb-4 ml-6;
+  }
+  .markdown-body ol {
+    @apply list-decimal mb-4 ml-6;
+  }
 }

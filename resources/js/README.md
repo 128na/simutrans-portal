@@ -38,12 +38,19 @@ resources/js/
 │   │   │   ├── ArticleList.tsx
 │   │   │   ├── ArticleRelation.tsx
 │   │   │   ├── Categories.tsx
+│   │   │   ├── PakMetadata.tsx
 │   │   │   ├── SelectCategories.tsx
 │   │   │   ├── SelectPostType.tsx
 │   │   │   ├── Tags.tsx
 │   │   │   ├── TextPre.tsx
 │   │   │   ├── TitleH3.tsx
 │   │   │   ├── TitleH4.tsx
+│   │   │   ├── pak/        # Pak関連メタデータ
+│   │   │   │   ├── PakGenericMetadata.tsx
+│   │   │   │   ├── PakInfoTable.tsx
+│   │   │   │   ├── formatter.ts
+│   │   │   │   ├── pakBuildingTranslations.ts
+│   │   │   │   └── pakConstants.ts
 │   │   │   └── postType/   # 投稿タイプ別表示
 │   │   │       ├── AddonIntroduction.tsx
 │   │   │       ├── AddonPost.tsx
@@ -53,11 +60,16 @@ resources/js/
 │   │   │   ├── CommonForm.tsx
 │   │   │   ├── SectionForm.tsx
 │   │   │   ├── StatusForm.tsx
-│   │   │   └── sections/
+│   │   │   └── Section/
 │   │   │       ├── SectionCaption.tsx
 │   │   │       ├── SectionImage.tsx
 │   │   │       ├── SectionText.tsx
 │   │   │       └── SectionUrl.tsx
+│   │   ├── postType/       # 投稿タイプ別フォーム（レガシー）
+│   │   │   ├── AddonIntroduction.tsx
+│   │   │   ├── AddonPost.tsx
+│   │   │   ├── Markdown.tsx
+│   │   │   └── Page.tsx
 │   │   ├── utils/
 │   │   │   └── articleUtil.ts
 │   │   ├── ArticleEdit.tsx
@@ -67,24 +79,25 @@ resources/js/
 │   │   └── ArticleTable.tsx
 │   │
 │   ├── attachments/        # 添付ファイル機能
-│   │   ├── utils/
-│   │   │   └── attachmentUtil.ts
 │   │   ├── AttachmentEdit.tsx
 │   │   ├── AttachmentManage.tsx
-│   │   └── AttachmentTable.tsx
+│   │   ├── AttachmentTable.tsx
+│   │   ├── attachmentUtil.ts
+│   │   └── fileInfoTool.ts
 │   │
 │   ├── tags/              # タグ機能
-│   │   ├── utils/
-│   │   │   └── tagUtil.ts
 │   │   ├── TagEdit.tsx
 │   │   ├── TagModal.tsx
-│   │   └── TagTable.tsx
+│   │   ├── TagTable.tsx
+│   │   └── tagUtil.ts
 │   │
 │   └── user/              # ユーザー/プロフィール機能
 │       ├── ProfileEdit.tsx
 │       ├── ProfileForm.tsx
+│       ├── ProfileIcon.tsx
 │       ├── ProfileLink.tsx
-│       └── ProfileShow.tsx
+│       ├── ProfileShow.tsx
+│       └── profileUtil.ts
 │
 ├── components/            # 共通UIコンポーネント
 │   ├── ui/               # 基本UIコンポーネント
@@ -92,19 +105,18 @@ resources/js/
 │   │   ├── Avatar.tsx
 │   │   ├── Button.tsx
 │   │   ├── ButtonClose.tsx
-│   │   ├── ButtonDanger.tsx
-│   │   ├── ButtonOutline.tsx
-│   │   ├── ButtonSub.tsx
+│   │   ├── Card.tsx
 │   │   ├── Checkbox.tsx
+│   │   ├── Checkboxes.tsx
+│   │   ├── FormCaption.tsx
 │   │   ├── Image.tsx
 │   │   ├── Input.tsx
-│   │   ├── InputFile.tsx
-│   │   ├── Label.tsx
 │   │   ├── Link.tsx
-│   │   ├── LinkExternal.tsx
 │   │   ├── Modal.tsx
 │   │   ├── ModalFull.tsx
+│   │   ├── MultiColumn.tsx
 │   │   ├── Select.tsx
+│   │   ├── SortableList.tsx
 │   │   ├── Textarea.tsx
 │   │   ├── TextBadge.tsx
 │   │   ├── TextError.tsx
@@ -114,17 +126,20 @@ resources/js/
 │   ├── layout/           # レイアウトコンポーネント
 │   │   ├── DataTable.tsx
 │   │   └── Pagination.tsx
-│   └── form/             # フォーム関連コンポーネント
-│       ├── SelectableSearch.tsx
-│       └── Upload.tsx
+│   ├── form/             # フォーム関連コンポーネント
+│   │   ├── SelectableSearch.tsx
+│   │   └── Upload.tsx
+│   └── ErrorBoundary.tsx # エラーバウンダリー
 │
 ├── hooks/                # 共通hooks（グローバル状態管理）
 │   ├── errorState.ts
 │   ├── useAnalyticsStore.ts
 │   ├── useArticleEditor.ts
-│   └── useAxiosError.ts
+│   ├── useAxiosError.ts
+│   └── useErrorHandler.ts
 │
 ├── utils/                # 共通ユーティリティ
+│   ├── logger.ts
 │   └── translate.ts
 │
 ├── types/                # 型定義
@@ -148,6 +163,74 @@ resources/js/
 ├── mypage.ts            # マイページエントリーポイント
 └── vite-env.d.ts        # Vite型定義
 ```
+
+## 主要コンポーネント一覧
+
+### UI コンポーネント (`components/ui/`)
+
+基本的なUIパーツを提供するコンポーネント群です。
+
+#### フォーム関連
+- **Button.tsx** - 基本ボタン（プライマリアクション用）
+- **ButtonClose.tsx** - 閉じるボタン（×アイコン）
+- **Input.tsx** - テキスト入力フィールド
+- **Textarea.tsx** - 複数行テキスト入力
+- **Select.tsx** - セレクトボックス
+- **Checkbox.tsx** - 単一チェックボックス
+- **Checkboxes.tsx** - 複数チェックボックスグループ（複数選択対応）
+- **FormCaption.tsx** - フォーム項目のキャプション・説明文
+
+#### レイアウト・表示
+- **Card.tsx** - カードコンテナ（枠線付きのコンテンツ表示）
+- **Accordion.tsx** - アコーディオン（開閉可能なセクション）
+- **Modal.tsx** - モーダルダイアログ
+- **ModalFull.tsx** - フルスクリーンモーダル
+- **MultiColumn.tsx** - マルチカラムレイアウト（レスポンシブ対応）
+- **SortableList.tsx** - ドラッグ&ドロップ可能なソート可能リスト
+
+#### テキスト・バッジ
+- **TextBadge.tsx** - バッジ表示（ステータス・タグ等）
+- **TextError.tsx** - エラーメッセージ表示
+- **TextSub.tsx** - サブテキスト（補足説明等）
+
+#### リンク・ナビゲーション
+- **Link.tsx** - 内部リンク
+
+#### 画像
+- **Avatar.tsx** - アバター画像（丸型）
+- **Image.tsx** - 汎用画像表示
+- **Thumbnail.tsx** - サムネイル画像
+
+### レイアウトコンポーネント (`components/layout/`)
+
+- **DataTable.tsx** - データテーブル（ソート・フィルタリング対応）
+- **Pagination.tsx** - ページネーション
+
+### フォームコンポーネント (`components/form/`)
+
+- **SelectableSearch.tsx** - 検索可能なセレクトボックス（複数選択対応）
+- **Upload.tsx** - ファイルアップロードコンポーネント
+
+### その他
+
+- **ErrorBoundary.tsx** - エラーバウンダリー（エラー時のフォールバック表示）
+
+### 主要な変更点（PR #458）
+
+以下のコンポーネントがPR #458で整理・追加されました：
+
+**新規追加:**
+- `Card.tsx` - 統一されたカードスタイルの提供
+- `Checkboxes.tsx` - 複数選択チェックボックスの簡易化
+- `FormCaption.tsx` - フォーム説明文の統一
+- `MultiColumn.tsx` - レスポンシブカラムレイアウト
+- `SortableList.tsx` - ドラッグ&ドロップ並び替え機能
+
+**削除されたコンポーネント:**
+- `ButtonDanger.tsx`, `ButtonOutline.tsx`, `ButtonSub.tsx` - `Button.tsx` に統合
+- `InputFile.tsx` - `Upload.tsx` に統合
+- `Label.tsx` - `FormCaption.tsx` に置き換え
+- `LinkExternal.tsx` - `Link.tsx` に統合
 
 ## 設計原則
 

@@ -39,7 +39,7 @@
 
   /* リンク：基底 */
   .v2-link {
-    @apply text-c-sub/90 hover:text-c-sub/70 decoration-c-sub/90 hover:decoration-c-sub/70 underline break-all;
+    @apply text-c-sub hover:text-c-sub/80 decoration-c-sub/90 hover:decoration-c-sub/70 underline break-all;
   }
 
   /* ヘッダメニュー */

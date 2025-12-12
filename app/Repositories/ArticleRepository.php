@@ -36,7 +36,7 @@ final class ArticleRepository
         $this->orderByLatest($builder);
 
         return $builder
-            ->when($article, fn($q, Article $article) => $q->where('articles.id', '!=', $article->id))
+            ->when($article, fn ($q, Article $article) => $q->where('articles.id', '!=', $article->id))
             ->get();
     }
 
@@ -137,7 +137,7 @@ final class ArticleRepository
             str_replace(['　', ',', '、', '・'], ' ', $rawWord)
         ));
         if ($words !== []) {
-            $queryString = implode(' ', array_map(fn(string $w): string => '+' . $w, $words));
+            $queryString = implode(' ', array_map(fn (string $w): string => '+'.$w, $words));
             $baseQuery->join('article_search_index as idx', function (JoinClause $joinClause) use ($queryString): void {
                 $joinClause->on('idx.article_id', '=', 'articles.id')
                     ->whereRaw('MATCH(idx.text) AGAINST (? IN BOOLEAN MODE)', [$queryString]);
@@ -290,7 +290,6 @@ final class ArticleRepository
         return $query->paginate($limit);
     }
 
-
     /**
      * 一般記事一覧取得
      *
@@ -350,6 +349,99 @@ final class ArticleRepository
         $this->withStandardRelations($query);
 
         return $query->paginate($limit);
+    }
+
+    /**
+     * トップページ用全記事を1クエリで取得（UNION ALL）
+     *
+     * @return array{announces: Collection<int,Article>, pak128Japan: Collection<int,Article>, pak128: Collection<int,Article>, pak64: Collection<int,Article>, pages: Collection<int,Article>}
+     */
+    public function getTopPageArticles(
+        int $announcesLimit = 3,
+        int $pak128JapanLimit = 5,
+        int $pak128Limit = 5,
+        int $pak64Limit = 5,
+        int $pagesLimit = 5
+    ): array {
+        // クエリ設定を配列で定義
+        $queries = [
+            [
+                'type' => 'announces',
+                'categoryType' => CategoryType::Page,
+                'categorySlug' => 'announce',
+                'categoryOperator' => '=',
+                'postTypes' => [ArticlePostType::Page, ArticlePostType::Markdown],
+                'limit' => $announcesLimit,
+            ],
+            [
+                'type' => 'pak128Japan',
+                'categoryType' => CategoryType::Pak,
+                'categorySlug' => '128-japan',
+                'categoryOperator' => '=',
+                'postTypes' => [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost],
+                'limit' => $pak128JapanLimit,
+            ],
+            [
+                'type' => 'pak128',
+                'categoryType' => CategoryType::Pak,
+                'categorySlug' => '128',
+                'categoryOperator' => '=',
+                'postTypes' => [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost],
+                'limit' => $pak128Limit,
+            ],
+            [
+                'type' => 'pak64',
+                'categoryType' => CategoryType::Pak,
+                'categorySlug' => '64',
+                'categoryOperator' => '=',
+                'postTypes' => [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost],
+                'limit' => $pak64Limit,
+            ],
+            [
+                'type' => 'pages',
+                'categoryType' => CategoryType::Page,
+                'categorySlug' => 'announce',
+                'categoryOperator' => '!=',
+                'postTypes' => [ArticlePostType::Page, ArticlePostType::Markdown],
+                'limit' => $pagesLimit,
+            ],
+        ];
+
+        // 最初のクエリを構築
+        $firstConfig = array_shift($queries);
+        $builder = $this->buildTopPageQuery(
+            $firstConfig['type'],
+            $firstConfig['categoryType'],
+            $firstConfig['categorySlug'],
+            $firstConfig['categoryOperator'],
+            $firstConfig['postTypes'],
+            $firstConfig['limit']
+        );
+
+        // 残りのクエリをUNION ALLで追加
+        foreach ($queries as $query) {
+            $builder->unionAll(
+                $this->buildTopPageQuery(
+                    $query['type'],
+                    $query['categoryType'],
+                    $query['categorySlug'],
+                    $query['categoryOperator'],
+                    $query['postTypes'],
+                    $query['limit']
+                )
+            );
+        }
+
+        // 実行して結果をグループ化
+        $results = $builder->get();
+
+        return [
+            'announces' => $results->where('article_type', 'announces')->values(),
+            'pak128Japan' => $results->where('article_type', 'pak128Japan')->values(),
+            'pak128' => $results->where('article_type', 'pak128')->values(),
+            'pak64' => $results->where('article_type', 'pak64')->values(),
+            'pages' => $results->where('article_type', 'pages')->values(),
+        ];
     }
 
     /**
@@ -604,7 +696,7 @@ final class ArticleRepository
             ->select('articles.id', 'articles.user_id', 'articles.title', 'articles.slug', 'articles.post_type', 'articles.contents')
             ->where('articles.post_type', ArticlePostType::AddonIntroduction->value)
             ->where(
-                fn($query) => $query
+                fn ($query) => $query
                     // 古い記事は項目がないのでnullも含める
                     ->whereNull('articles.contents->exclude_link_check')
                     ->orWhere('articles.contents->exclude_link_check', false)
@@ -635,6 +727,40 @@ final class ArticleRepository
         $this->joinActiveUsers($builder);
 
         return $builder->cursor();
+    }
+
+    /**
+     * トップページ用の個別クエリを構築
+     *
+     * @param  array<ArticlePostType>  $postTypes
+     * @return Builder<Article>
+     */
+    private function buildTopPageQuery(
+        string $articleType,
+        CategoryType $categoryType,
+        string $categorySlug,
+        string $categoryOperator,
+        array $postTypes,
+        int $limit
+    ): Builder {
+        return $this->model->query()
+            ->select('articles.id', 'articles.title', 'articles.user_id', 'articles.modified_at', 'articles.published_at', 'articles.slug', 'users.nickname as user_nickname')
+            ->selectRaw('? as article_type', [$articleType])
+            ->distinct()
+            ->withoutGlobalScopes()
+            ->join('users', 'articles.user_id', '=', 'users.id')
+            ->join('article_category', 'articles.id', '=', 'article_category.article_id')
+            ->join('categories', function (JoinClause $joinClause) use ($categoryType, $categorySlug, $categoryOperator): void {
+                $joinClause->on('article_category.category_id', '=', 'categories.id')
+                    ->where('categories.type', $categoryType)
+                    ->where('categories.slug', $categoryOperator, $categorySlug);
+            })
+            ->where('articles.status', ArticleStatus::Publish)
+            ->whereNull('articles.deleted_at')
+            ->whereNull('users.deleted_at')
+            ->whereIn('articles.post_type', $postTypes)
+            ->latest('articles.modified_at')
+            ->limit($limit);
     }
 
     /**

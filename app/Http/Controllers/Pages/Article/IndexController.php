@@ -22,7 +22,7 @@ final class IndexController extends Controller
     public function announces(): View
     {
         return view('pages.announces.index', [
-            'articles' => ArticleList::collection($this->articleRepository->getAnnounces()),
+            'articles' => ArticleList::collection($this->articleRepository->paginateAnnounces()),
             'meta' => $this->metaOgpService->frontAnnounces(),
         ]);
     }
@@ -30,7 +30,7 @@ final class IndexController extends Controller
     public function pages(): View
     {
         return view('pages.static.index', [
-            'articles' => ArticleList::collection($this->articleRepository->getPages()),
+            'articles' => ArticleList::collection($this->articleRepository->paginatePages()),
             'meta' => $this->metaOgpService->frontPages(),
         ]);
     }

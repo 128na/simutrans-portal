@@ -36,7 +36,7 @@ final class ArticleRepository
         $this->orderByLatest($builder);
 
         return $builder
-            ->when($article, fn ($q, Article $article) => $q->where('articles.id', '!=', $article->id))
+            ->when($article, fn($q, Article $article) => $q->where('articles.id', '!=', $article->id))
             ->get();
     }
 
@@ -137,7 +137,7 @@ final class ArticleRepository
             str_replace(['　', ',', '、', '・'], ' ', $rawWord)
         ));
         if ($words !== []) {
-            $queryString = implode(' ', array_map(fn (string $w): string => '+'.$w, $words));
+            $queryString = implode(' ', array_map(fn(string $w): string => '+' . $w, $words));
             $baseQuery->join('article_search_index as idx', function (JoinClause $joinClause) use ($queryString): void {
                 $joinClause->on('idx.article_id', '=', 'articles.id')
                     ->whereRaw('MATCH(idx.text) AGAINST (? IN BOOLEAN MODE)', [$queryString]);
@@ -208,7 +208,7 @@ final class ArticleRepository
      *
      * @return LengthAwarePaginator<int,Article>
      */
-    public function getLatest(string $pak, int $limit = 24): LengthAwarePaginator
+    public function paginateLatest(string $pak, int $limit = 24): LengthAwarePaginator
     {
         $query = $this->model->query()
             ->select(['articles.*'])
@@ -233,11 +233,40 @@ final class ArticleRepository
     }
 
     /**
+     * 新着記事一覧取得(PAKごと)
+     *
+     * @return Collection<int,Article>
+     */
+    public function getLatest(string $pak, int $limit = 24): Collection
+    {
+        $query = $this->model->query()
+            ->select('articles.*', 'users.nickname as user_nickname')
+            ->distinct()
+            ->withoutGlobalScopes();
+
+        $this->joinActiveUsers($query);
+
+        $query->join('article_category', 'articles.id', '=', 'article_category.article_id')
+            ->join('categories', function (JoinClause $joinClause) use ($pak): void {
+                $joinClause->on('article_category.category_id', '=', 'categories.id')
+                    ->where('categories.type', CategoryType::Pak)
+                    ->where('categories.slug', $pak);
+            });
+
+        $this->wherePublished($query);
+        $this->whereAddonPostTypes($query);
+        $this->orderByLatest($query);
+        $query->limit($limit);
+
+        return $query->get();
+    }
+
+    /**
      * 一般記事一覧取得
      *
      * @return LengthAwarePaginator<int,Article>
      */
-    public function getPages(int $limit = 24): LengthAwarePaginator
+    public function paginatePages(int $limit = 24): LengthAwarePaginator
     {
         $query = $this->model->query()
             ->select(['articles.*'])
@@ -259,6 +288,36 @@ final class ArticleRepository
         $this->withStandardRelations($query);
 
         return $query->paginate($limit);
+    }
+
+
+    /**
+     * 一般記事一覧取得
+     *
+     * @return Collection<int,Article>
+     */
+    public function getPages(int $limit = 24): Collection
+    {
+        $query = $this->model->query()
+            ->select('articles.*', 'users.nickname as user_nickname')
+            ->distinct()
+            ->withoutGlobalScopes();
+
+        $this->joinActiveUsers($query);
+
+        $query->join('article_category', 'articles.id', '=', 'article_category.article_id')
+            ->join('categories', function (JoinClause $joinClause): void {
+                $joinClause->on('article_category.category_id', '=', 'categories.id')
+                    ->where('categories.type', CategoryType::Page)
+                    ->where('categories.slug', '!=', 'announce');
+            });
+
+        $this->wherePublished($query);
+        $this->wherePagePostTypes($query);
+        $this->orderByLatest($query);
+        $query->limit($limit);
+
+        return $query->get();
     }
 
     /**
@@ -298,7 +357,7 @@ final class ArticleRepository
      *
      * @return Collection<int,Article>
      */
-    public function getAnnouncesForTop(int $limit = 3): Collection
+    public function getAnnounces(int $limit = 3): Collection
     {
         $query = $this->model->query()
             ->select('articles.*', 'users.nickname as user_nickname')
@@ -326,7 +385,7 @@ final class ArticleRepository
      *
      * @return LengthAwarePaginator<int,Article>
      */
-    public function getAnnounces(int $limit = 24): LengthAwarePaginator
+    public function paginateAnnounces(int $limit = 24): LengthAwarePaginator
     {
         $query = $this->model->query()
             ->select(['articles.*'])
@@ -545,7 +604,7 @@ final class ArticleRepository
             ->select('articles.id', 'articles.user_id', 'articles.title', 'articles.slug', 'articles.post_type', 'articles.contents')
             ->where('articles.post_type', ArticlePostType::AddonIntroduction->value)
             ->where(
-                fn ($query) => $query
+                fn($query) => $query
                     // 古い記事は項目がないのでnullも含める
                     ->whereNull('articles.contents->exclude_link_check')
                     ->orWhere('articles.contents->exclude_link_check', false)

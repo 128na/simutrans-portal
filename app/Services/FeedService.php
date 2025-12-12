@@ -30,7 +30,7 @@ final readonly class FeedService
      */
     public function latestPak(string $pak): Collection
     {
-        return $this->articleRepository->getLatest($pak)->getCollection();
+        return $this->articleRepository->paginateLatest($pak)->getCollection();
     }
 
     /**
@@ -38,7 +38,7 @@ final readonly class FeedService
      */
     public function page(): Collection
     {
-        return $this->articleRepository->getPages()->getCollection();
+        return $this->articleRepository->paginatePages()->getCollection();
     }
 
     /**
@@ -46,6 +46,6 @@ final readonly class FeedService
      */
     public function announce(): Collection
     {
-        return $this->articleRepository->getAnnounces()->getCollection();
+        return $this->articleRepository->paginateAnnounces()->getCollection();
     }
 }

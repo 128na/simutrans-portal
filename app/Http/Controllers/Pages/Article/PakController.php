@@ -21,7 +21,7 @@ final class PakController extends Controller
     {
         return view('pages.pak.index', [
             'pak' => '128-japan',
-            'articles' => ArticleList::collection($this->articleRepository->getLatest('128-japan')),
+            'articles' => ArticleList::collection($this->articleRepository->paginateLatest('128-japan')),
             'meta' => $this->metaOgpService->frontPak('128-japan'),
         ]);
     }
@@ -30,7 +30,7 @@ final class PakController extends Controller
     {
         return view('pages.pak.index', [
             'pak' => '128',
-            'articles' => ArticleList::collection($this->articleRepository->getLatest('128')),
+            'articles' => ArticleList::collection($this->articleRepository->paginateLatest('128')),
             'meta' => $this->metaOgpService->frontPak('128'),
         ]);
     }
@@ -39,7 +39,7 @@ final class PakController extends Controller
     {
         return view('pages.pak.index', [
             'pak' => '64',
-            'articles' => ArticleList::collection($this->articleRepository->getLatest('64')),
+            'articles' => ArticleList::collection($this->articleRepository->paginateLatest('64')),
             'meta' => $this->metaOgpService->frontPak('64'),
         ]);
     }

@@ -17,7 +17,11 @@ final class TopController extends Controller
     public function top(): View
     {
         return view('pages.top.index', [
-            'announces' => $this->articleRepository->getAnnouncesForTop(3),
+            'announces' => $this->articleRepository->getAnnounces(3),
+            'pak128Japan' => $this->articleRepository->getLatest('128-japan', 5),
+            'pak128' => $this->articleRepository->getLatest('128', 5),
+            'pak64' => $this->articleRepository->getLatest('64', 5),
+            'pages' => $this->articleRepository->getPages(5),
         ]);
     }
 }

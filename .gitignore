@@ -28,3 +28,4 @@ mix-manifest.json
 
 # Vitest
 coverage/
+coverage-repos/

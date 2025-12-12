@@ -25,9 +25,6 @@ final class GetByUserTest extends TestCase
         $user = User::factory()->create();
         $loginHistory = LoginHistory::factory()->create([
             'user_id' => $user->id,
-            'ip' => '192.168.1.1',
-            'ua' => 'Mozilla/5.0',
-            'referer' => 'https://example.com',
         ]);
 
         $results = $this->loginHistoryRepository->getByUser($user->id);

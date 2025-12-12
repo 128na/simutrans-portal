@@ -85,7 +85,7 @@ final class ArticleRepository
         $query = $this->model->query()
             ->select(['articles.*'])
             ->withoutGlobalScopes()
-            ->where('articles.slug', urlencode($slug));
+            ->where('articles.slug', $slug);
 
         $this->joinActiveUsers($query);
         $this->wherePublished($query);
@@ -275,12 +275,15 @@ final class ArticleRepository
 
         $this->joinActiveUsers($query);
 
-        $query->join('article_category', 'articles.id', '=', 'article_category.article_id')
-            ->join('categories', function (JoinClause $joinClause): void {
-                $joinClause->on('article_category.category_id', '=', 'categories.id')
-                    ->where('categories.type', CategoryType::Page)
-                    ->where('categories.slug', '!=', 'announce');
-            });
+        // announceカテゴリを持つ記事IDを除外
+        $query->whereNotExists(function ($subQuery): void {
+            $subQuery->select('article_category.article_id')
+                ->from('article_category')
+                ->join('categories', 'article_category.category_id', '=', 'categories.id')
+                ->whereColumn('article_category.article_id', 'articles.id')
+                ->where('categories.type', CategoryType::Page)
+                ->where('categories.slug', 'announce');
+        });
 
         $this->wherePublished($query);
         $this->wherePagePostTypes($query);
@@ -304,12 +307,15 @@ final class ArticleRepository
 
         $this->joinActiveUsers($query);
 
-        $query->join('article_category', 'articles.id', '=', 'article_category.article_id')
-            ->join('categories', function (JoinClause $joinClause): void {
-                $joinClause->on('article_category.category_id', '=', 'categories.id')
-                    ->where('categories.type', CategoryType::Page)
-                    ->where('categories.slug', '!=', 'announce');
-            });
+        // announceカテゴリを持つ記事IDを除外
+        $query->whereNotExists(function ($subQuery): void {
+            $subQuery->select('article_category.article_id')
+                ->from('article_category')
+                ->join('categories', 'article_category.category_id', '=', 'categories.id')
+                ->whereColumn('article_category.article_id', 'articles.id')
+                ->where('categories.type', CategoryType::Page)
+                ->where('categories.slug', 'announce');
+        });
 
         $this->wherePublished($query);
         $this->wherePagePostTypes($query);

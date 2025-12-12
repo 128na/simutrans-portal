@@ -7,6 +7,18 @@ parameters:
 			path: app/Actions/Fortify/ResetUserPassword.php
 
 		-
+			message: '#^Cannot access property \$original_name on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Actions/FrontArticle/DownloadAction.php
+
+		-
+			message: '#^Cannot access property \$path on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Actions/FrontArticle/DownloadAction.php
+
+		-
 			message: '#^Call to an undefined method App\\Models\\User\:\:notify\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -15,12 +27,6 @@ parameters:
 		-
 			message: '#^Call to method pluck\(\) on an unknown class App\\Models\\Collection\.$#'
 			identifier: class.notFound
-			count: 1
-			path: app/Actions/SendSNS/Article/GetArticleParam.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
 			count: 1
 			path: app/Actions/SendSNS/Article/GetArticleParam.php
 
@@ -37,6 +43,12 @@ parameters:
 			path: app/Actions/User/Registration.php
 
 		-
+			message: '#^Relation ''fileInfo'' is not found in App\\Models\\Attachment model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Console/Commands/Attachment/ReparsePakFilesCommand.php
+
+		-
 			message: '#^Call to an undefined method App\\Models\\User\:\:cannot\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -59,12 +71,6 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: app/Http/Controllers/Mypage/Article/EditController.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:articles\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Mypage/Article/IndexController.php
 
 		-
 			message: '#^Call to an undefined method App\\Models\\User\:\:cannot\(\)\.$#'
@@ -140,6 +146,12 @@ parameters:
 
 		-
 			message: '#^Call to an undefined method App\\Models\\Attachment\\FileInfo\:\:getDats\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/Frontend/ArticleShow.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Attachment\\FileInfo\:\:getPaksMetadata\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: app/Http/Resources/Frontend/ArticleShow.php
@@ -241,49 +253,13 @@ parameters:
 			path: app/Listeners/User/OnTwoFactorAuthenticationIncomplete.php
 
 		-
-			message: '#^Access to undefined constant App\\Models\\Article\\ConversionCount\:\:TYPE_DAILY\.$#'
-			identifier: classConstant.notFound
-			count: 2
-			path: app/Models/Article.php
-
-		-
-			message: '#^Access to undefined constant App\\Models\\Article\\ConversionCount\:\:TYPE_MONTHLY\.$#'
-			identifier: classConstant.notFound
-			count: 1
-			path: app/Models/Article.php
-
-		-
 			message: '#^Access to undefined constant App\\Models\\Article\\ConversionCount\:\:TYPE_TOTAL\.$#'
 			identifier: classConstant.notFound
 			count: 1
 			path: app/Models/Article.php
 
 		-
-			message: '#^Access to undefined constant App\\Models\\Article\\ConversionCount\:\:TYPE_YEARLY\.$#'
-			identifier: classConstant.notFound
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Access to undefined constant App\\Models\\Article\\ViewCount\:\:TYPE_DAILY\.$#'
-			identifier: classConstant.notFound
-			count: 2
-			path: app/Models/Article.php
-
-		-
-			message: '#^Access to undefined constant App\\Models\\Article\\ViewCount\:\:TYPE_MONTHLY\.$#'
-			identifier: classConstant.notFound
-			count: 1
-			path: app/Models/Article.php
-
-		-
 			message: '#^Access to undefined constant App\\Models\\Article\\ViewCount\:\:TYPE_TOTAL\.$#'
-			identifier: classConstant.notFound
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Access to undefined constant App\\Models\\Article\\ViewCount\:\:TYPE_YEARLY\.$#'
 			identifier: classConstant.notFound
 			count: 1
 			path: app/Models/Article.php
@@ -307,6 +283,18 @@ parameters:
 			path: app/Models/Article.php
 
 		-
+			message: '#^Cannot access property \$email on App\\Models\\User\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Models/Article.php
+
+		-
+			message: '#^Cannot access property \$name on App\\Models\\User\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Models/Article.php
+
+		-
 			message: '#^Cannot access property \$thumbnail on string\.$#'
 			identifier: property.nonObject
 			count: 2
@@ -315,7 +303,7 @@ parameters:
 		-
 			message: '#^Cannot call method getDescription\(\) on string\.$#'
 			identifier: method.nonObject
-			count: 3
+			count: 1
 			path: app/Models/Article.php
 
 		-
@@ -361,12 +349,6 @@ parameters:
 			path: app/Models/Article.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\ArticlePostType\:\:Page will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: app/Models/Article.php
-
-		-
 			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\ArticleStatus\:\:Publish will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 1
@@ -397,6 +379,12 @@ parameters:
 			path: app/Models/Article/ViewCount.php
 
 		-
+			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperArticleLinkCheckHistory\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/ArticleLinkCheckHistory.php
+
+		-
 			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperAttachment\.$#'
 			identifier: class.notFound
 			count: 1
@@ -404,6 +392,12 @@ parameters:
 
 		-
 			message: '#^Offset ''dats'' on string on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Models/Attachment/FileInfo.php
+
+		-
+			message: '#^Offset ''paks_metadata'' on string on left side of \?\? does not exist\.$#'
 			identifier: nullCoalesce.offset
 			count: 1
 			path: app/Models/Attachment/FileInfo.php
@@ -429,7 +423,7 @@ parameters:
 		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Category\>\:\:type\(\)\.$#'
 			identifier: method.notFound
-			count: 5
+			count: 2
 			path: app/Models/Category.php
 
 		-
@@ -463,20 +457,8 @@ parameters:
 			path: app/Models/Tag.php
 
 		-
-			message: '#^Access to undefined constant App\\Models\\Article\\ViewCount\:\:TYPE_MONTHLY\.$#'
-			identifier: classConstant.notFound
-			count: 1
-			path: app/Models/User.php
-
-		-
 			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperUser\.$#'
 			identifier: class.notFound
-			count: 1
-			path: app/Models/User.php
-
-		-
-			message: '#^Relation ''invites'' is not found in App\\Models\\User model\.$#'
-			identifier: larastan.relationExistence
 			count: 1
 			path: app/Models/User.php
 
@@ -549,19 +531,19 @@ parameters:
 		-
 			message: '#^Method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Article\>\:\:select\(\) invoked with 2 parameters, 0\-1 required\.$#'
 			identifier: arguments.count
-			count: 1
+			count: 3
 			path: app/Repositories/ArticleRepository.php
 
 		-
-			message: '#^Method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Article\>\:\:select\(\) invoked with 6 parameters, 0\-1 required\.$#'
+			message: '#^Method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Article\>\:\:select\(\) invoked with 7 parameters, 0\-1 required\.$#'
 			identifier: arguments.count
-			count: 1
+			count: 2
 			path: app/Repositories/ArticleRepository.php
 
 		-
 			message: '#^Relation ''categories'' is not found in App\\Models\\Article model\.$#'
 			identifier: larastan.relationExistence
-			count: 8
+			count: 2
 			path: app/Repositories/ArticleRepository.php
 
 		-
@@ -571,9 +553,15 @@ parameters:
 			path: app/Repositories/ArticleRepository.php
 
 		-
+			message: '#^Relation ''totalConversionCount'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/ArticleRepository.php
+
+		-
 			message: '#^Relation ''user'' is not found in App\\Models\\Article model\.$#'
 			identifier: larastan.relationExistence
-			count: 3
+			count: 1
 			path: app/Repositories/ArticleRepository.php
 
 		-
@@ -617,6 +605,36 @@ parameters:
 			identifier: booleanNot.alwaysFalse
 			count: 1
 			path: app/Services/BlueSky/BlueSkyApiClient.php
+
+		-
+			message: '#^Binary operation "\." between ''File not found\: '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Services/FileInfo/FileInfoService.php
+
+		-
+			message: '#^Parameter \#1 \$filename of function file_exists expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/FileInfo/FileInfoService.php
+
+		-
+			message: '#^Parameter \#1 \$filename of function file_get_contents expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/FileInfo/FileInfoService.php
+
+		-
+			message: '#^Parameter \#1 \$filename of method ZipArchive\:\:open\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/FileInfo/ZipArchiveParser.php
+
+		-
+			message: '#^Method App\\Services\\Front\\MetaOgpService\:\:frontArticleShow\(\) should return array\{title\: string, description\: string, image\: string\|null, canonical\: string, card_type\: string\} but returns array\{title\: non\-falsy\-string, description\: string, image\: mixed, canonical\: string, card_type\: ''summary_large_image''\}\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/Front/MetaOgpService.php
 
 		-
 			message: '#^Call to an undefined method App\\Models\\OauthToken\:\:isExpired\(\)\.$#'

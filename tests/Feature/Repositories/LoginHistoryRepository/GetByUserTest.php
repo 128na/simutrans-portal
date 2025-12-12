@@ -33,8 +33,10 @@ final class GetByUserTest extends TestCase
         $results = $this->loginHistoryRepository->getByUser($user->id);
 
         $this->assertCount(1, $results);
-        $this->assertEquals($loginHistory->id, $results->first()->id);
-        $this->assertEquals($user->id, $results->first()->user_id);
+        $first = $results->first();
+        $this->assertNotNull($first);
+        $this->assertEquals($loginHistory->id, $first->id);
+        $this->assertEquals($user->id, $first->user_id);
     }
 
     public function test_returns_histories_ordered_by_latest_first(): void
@@ -58,6 +60,9 @@ final class GetByUserTest extends TestCase
         $results = $this->loginHistoryRepository->getByUser($user->id);
 
         $this->assertCount(3, $results);
+        $this->assertNotNull($results[0]);
+        $this->assertNotNull($results[1]);
+        $this->assertNotNull($results[2]);
         $this->assertEquals($thirdHistory->id, $results[0]->id);
         $this->assertEquals($secondHistory->id, $results[1]->id);
         $this->assertEquals($firstHistory->id, $results[2]->id);
@@ -101,7 +106,9 @@ final class GetByUserTest extends TestCase
         $results = $this->loginHistoryRepository->getByUser($user1->id);
 
         $this->assertCount(1, $results);
-        $this->assertEquals($user1->id, $results->first()->user_id);
+        $first = $results->first();
+        $this->assertNotNull($first);
+        $this->assertEquals($user1->id, $first->user_id);
     }
 
     public function test_returns_only_latest_10_when_more_exist(): void
@@ -122,7 +129,9 @@ final class GetByUserTest extends TestCase
         $this->assertCount(10, $results);
         // Verify the latest 10 are returned
         for ($i = 0; $i < 10; $i++) {
-            $this->assertEquals($histories[11 - $i]->id, $results[$i]->id);
+            $resultItem = $results[$i];
+            $this->assertNotNull($resultItem);
+            $this->assertEquals($histories[11 - $i]->id, $resultItem->id);
         }
     }
 
@@ -136,7 +145,7 @@ final class GetByUserTest extends TestCase
         $results = $this->loginHistoryRepository->getByUser($user->id);
 
         $result = $results->first();
-        $this->assertNotNull($result->id);
+        $this->assertNotNull($result);
         $this->assertEquals($user->id, $result->user_id);
         $this->assertNotNull($result->ip);
         $this->assertNotNull($result->ua);

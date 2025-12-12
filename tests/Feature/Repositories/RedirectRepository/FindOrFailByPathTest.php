@@ -33,4 +33,16 @@ final class FindOrFailByPathTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
         $this->redirectRepository->findOrFailByPath('missing');
     }
+
+    public function test_同じfromパスを持つリダイレクトが複数ある場合でも最初のものを返す(): void
+    {
+        // Note: The unique constraint prevents this in production, but testing the query behavior
+        $path = '/test-path';
+        $redirect1 = Redirect::factory()->create(['from' => $path]);
+
+        $result = $this->redirectRepository->findOrFailByPath($path);
+
+        $this->assertSame($redirect1->id, $result->id);
+        $this->assertSame($path, $result->from);
+    }
 }

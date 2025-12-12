@@ -25,7 +25,7 @@ final class RedirectRepository
     }
 
     /**
-     * @param  array{user_id:number,from:string,to:string}  $data
+     * @param  array{user_id?:number,from:string,to:string}  $data
      */
     public function store(array $data): Redirect
     {

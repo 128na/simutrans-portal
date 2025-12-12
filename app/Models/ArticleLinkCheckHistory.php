@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  * @property-read Article $article
- *
  * @mixin IdeHelperArticleLinkCheckHistory
  */
 final class ArticleLinkCheckHistory extends Model

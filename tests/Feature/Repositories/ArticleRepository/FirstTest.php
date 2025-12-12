@@ -82,7 +82,8 @@ final class FirstTest extends TestCase
     public function test関連データが読み込まれる(): void
     {
         $article = $this->createPage($this->user);
-        $this->attachRandomCategory($article, \App\Enums\CategoryType::Page);
+        // createPage()で既にPageカテゴリが設定されているので、別のカテゴリタイプを追加
+        $this->attachRandomCategory($article, \App\Enums\CategoryType::Pak);
 
         $result = $this->articleRepository->first((string) $this->user->id, $article->slug);
 
@@ -99,11 +100,11 @@ final class FirstTest extends TestCase
     {
         $article = Article::factory()->page()->publish()->create([
             'user_id' => $this->user->id,
-            'slug' => 'test slug with spaces',
+            'slug' => 'test-slug-with-spaces',
         ]);
 
         // スラッグが自動的にURLエンコードされて検索される
-        $result = $this->articleRepository->first((string) $this->user->id, 'test slug with spaces');
+        $result = $this->articleRepository->first((string) $this->user->id, 'test-slug-with-spaces');
 
         $this->assertNotNull($result);
         $this->assertEquals($article->id, $result->id);

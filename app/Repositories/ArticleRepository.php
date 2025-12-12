@@ -36,7 +36,7 @@ final class ArticleRepository
         $this->orderByLatest($builder);
 
         return $builder
-            ->when($article, fn ($q, Article $article) => $q->where('articles.id', '!=', $article->id))
+            ->when($article, fn($q, Article $article) => $q->where('articles.id', '!=', $article->id))
             ->get();
     }
 
@@ -85,7 +85,7 @@ final class ArticleRepository
         $query = $this->model->query()
             ->select(['articles.*'])
             ->withoutGlobalScopes()
-            ->where('articles.slug', urlencode($slug));
+            ->where('articles.slug', $slug);
 
         $this->joinActiveUsers($query);
         $this->wherePublished($query);
@@ -137,7 +137,7 @@ final class ArticleRepository
             str_replace(['　', ',', '、', '・'], ' ', $rawWord)
         ));
         if ($words !== []) {
-            $queryString = implode(' ', array_map(fn (string $w): string => '+'.$w, $words));
+            $queryString = implode(' ', array_map(fn(string $w): string => '+' . $w, $words));
             $baseQuery->join('article_search_index as idx', function (JoinClause $joinClause) use ($queryString): void {
                 $joinClause->on('idx.article_id', '=', 'articles.id')
                     ->whereRaw('MATCH(idx.text) AGAINST (? IN BOOLEAN MODE)', [$queryString]);
@@ -275,12 +275,15 @@ final class ArticleRepository
 
         $this->joinActiveUsers($query);
 
-        $query->join('article_category', 'articles.id', '=', 'article_category.article_id')
-            ->join('categories', function (JoinClause $joinClause): void {
-                $joinClause->on('article_category.category_id', '=', 'categories.id')
-                    ->where('categories.type', CategoryType::Page)
-                    ->where('categories.slug', '!=', 'announce');
-            });
+        // announceカテゴリを持つ記事IDを除外
+        $query->whereNotExists(function ($subQuery): void {
+            $subQuery->select('article_category.article_id')
+                ->from('article_category')
+                ->join('categories', 'article_category.category_id', '=', 'categories.id')
+                ->whereColumn('article_category.article_id', 'articles.id')
+                ->where('categories.type', CategoryType::Page)
+                ->where('categories.slug', 'announce');
+        });
 
         $this->wherePublished($query);
         $this->wherePagePostTypes($query);
@@ -304,12 +307,15 @@ final class ArticleRepository
 
         $this->joinActiveUsers($query);
 
-        $query->join('article_category', 'articles.id', '=', 'article_category.article_id')
-            ->join('categories', function (JoinClause $joinClause): void {
-                $joinClause->on('article_category.category_id', '=', 'categories.id')
-                    ->where('categories.type', CategoryType::Page)
-                    ->where('categories.slug', '!=', 'announce');
-            });
+        // announceカテゴリを持つ記事IDを除外
+        $query->whereNotExists(function ($subQuery): void {
+            $subQuery->select('article_category.article_id')
+                ->from('article_category')
+                ->join('categories', 'article_category.category_id', '=', 'categories.id')
+                ->whereColumn('article_category.article_id', 'articles.id')
+                ->where('categories.type', CategoryType::Page)
+                ->where('categories.slug', 'announce');
+        });
 
         $this->wherePublished($query);
         $this->wherePagePostTypes($query);
@@ -696,7 +702,7 @@ final class ArticleRepository
             ->select('articles.id', 'articles.user_id', 'articles.title', 'articles.slug', 'articles.post_type', 'articles.contents')
             ->where('articles.post_type', ArticlePostType::AddonIntroduction->value)
             ->where(
-                fn ($query) => $query
+                fn($query) => $query
                     // 古い記事は項目がないのでnullも含める
                     ->whereNull('articles.contents->exclude_link_check')
                     ->orWhere('articles.contents->exclude_link_check', false)

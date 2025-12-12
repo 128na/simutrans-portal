@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Storage;
 
 /**
  * @property-read string $fullPath
- *
  * @mixin IdeHelperAttachment
  */
 final class Attachment extends Model

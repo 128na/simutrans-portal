@@ -39,10 +39,8 @@ use Spatie\Feed\FeedItem;
  * @property-read bool $hasFile
  * @property-read Collection<int, Category> $categoryPaks
  * @property-read bool $hasThumbnail
- *
  * @method static Builder<Article> page()
  * @method static Builder<Article> pak(string $slug)
- *
  * @mixin IdeHelperArticle
  */
 final class Article extends Model implements Feedable

@@ -154,7 +154,8 @@ final class PaginatePagesTest extends TestCase
     public function test関連データが読み込まれる(): void
     {
         $article = $this->createPage($this->user);
-        $this->attachRandomCategory($article, \App\Enums\CategoryType::Page);
+        // createPage()で既にPageカテゴリが設定されているので、別のカテゴリタイプを追加
+        $this->attachRandomCategory($article, \App\Enums\CategoryType::Pak);
 
         $result = $this->articleRepository->paginatePages(24);
 

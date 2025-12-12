@@ -94,15 +94,25 @@ abstract class TestCase extends TestsTestCase
     protected function createPage(?User $user = null): Article
     {
         $user ??= User::factory()->create();
+        $article = Article::factory()->page()->publish()->create(['user_id' => $user->id]);
+        
+        // Attach a default Page category (common)
+        $category = Category::where('type', CategoryType::Page)->where('slug', 'common')->firstOrFail();
+        $article->categories()->save($category);
 
-        return Article::factory()->page()->publish()->create(['user_id' => $user->id]);
+        return $article;
     }
 
     protected function createMarkdown(?User $user = null): Article
     {
         $user ??= User::factory()->create();
+        $article = Article::factory()->markdown()->publish()->create(['user_id' => $user->id]);
+        
+        // Attach a default Page category (common)
+        $category = Category::where('type', CategoryType::Page)->where('slug', 'common')->firstOrFail();
+        $article->categories()->save($category);
 
-        return Article::factory()->markdown()->publish()->create(['user_id' => $user->id]);
+        return $article;
     }
 
     protected function createAnnounce(?User $user = null): Article

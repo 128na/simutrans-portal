@@ -56,4 +56,19 @@ final class StoreTest extends TestCase
         $this->assertSame('/old-path', $redirect->from);
         $this->assertSame('/new-path', $redirect->to);
     }
+
+    public function test_作成時にタイムスタンプが自動設定される(): void
+    {
+        $user = User::factory()->create();
+        $data = [
+            'user_id' => $user->id,
+            'from' => '/test-old',
+            'to' => '/test-new',
+        ];
+
+        $redirect = $this->redirectRepository->store($data);
+
+        $this->assertNotNull($redirect->created_at);
+        $this->assertNotNull($redirect->updated_at);
+    }
 }

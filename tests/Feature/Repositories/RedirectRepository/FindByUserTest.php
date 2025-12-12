@@ -44,4 +44,21 @@ final class FindByUserTest extends TestCase
         $this->assertCount(0, $results);
         $this->assertTrue($results->isEmpty());
     }
+
+    public function test_複数ユーザーのリダイレクトが混在しても正しくフィルタリングできる(): void
+    {
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+
+        $redirect1 = Redirect::factory()->create(['user_id' => $user1->id]);
+        $redirect2 = Redirect::factory()->create(['user_id' => $user2->id]);
+        $redirect3 = Redirect::factory()->create(['user_id' => $user1->id]);
+
+        $results = $this->redirectRepository->findByUser($user1->id);
+
+        $this->assertCount(2, $results);
+        $this->assertTrue($results->contains($redirect1));
+        $this->assertTrue($results->contains($redirect3));
+        $this->assertFalse($results->contains($redirect2));
+    }
 }

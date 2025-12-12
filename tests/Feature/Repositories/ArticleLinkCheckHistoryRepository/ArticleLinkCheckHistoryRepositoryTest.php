@@ -55,7 +55,7 @@ final class ArticleLinkCheckHistoryRepositoryTest extends TestCase
 
         $history = ArticleLinkCheckHistory::where('article_id', $article->id)->first();
         $this->assertNotNull($history);
-        $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $history->last_checked_at);
+        $this->assertInstanceOf(\DateTimeInterface::class, $history->last_checked_at);
     }
 
     public function test_increment_increments_existing_history(): void

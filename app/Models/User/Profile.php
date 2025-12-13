@@ -61,9 +61,11 @@ class Profile extends Model
     protected function avatar(): Attribute
     {
         return Attribute::make(get: function () {
-            $id = (int) $this->data->avatar;
+            /** @var object{avatar?: int} $data */
+            $data = $this->data;
+            $id = (int) ($data->avatar ?? 0);
             if ($id !== 0) {
-                return $this->attachments->first(fn (Attachment $attachment): bool => $id === $attachment->id);
+                return $this->attachments->first(fn(Attachment $attachment): bool => $id === $attachment->id);
             }
 
             return null;

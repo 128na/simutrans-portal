@@ -16,7 +16,10 @@ class OnDeadLinkDetected
     {
         $article = $deadLinkDetected->article;
         $contents = $article->contents;
-        assert($contents instanceof AddonIntroductionContent);
+
+        if (! $contents instanceof AddonIntroductionContent) {
+            return;
+        }
 
         $this->logger->channel('audit')->warning('リンク切れ検知', [
             'articleId' => $article->id,

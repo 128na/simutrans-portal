@@ -18,6 +18,13 @@ class ArticleEdit extends JsonResource
     {
         assert($this->resource instanceof ModelsArticle);
 
+        /** @var \Carbon\CarbonImmutable|null $createdAt */
+        $createdAt = $this->resource->created_at;
+        /** @var \Carbon\CarbonImmutable|null $publishedAt */
+        $publishedAt = $this->resource->published_at;
+        /** @var \Carbon\CarbonImmutable|null $modifiedAt */
+        $modifiedAt = $this->resource->modified_at;
+
         return [
             'id' => $this->resource->id,
             'title' => $this->resource->title,
@@ -29,9 +36,9 @@ class ArticleEdit extends JsonResource
             'tags' => $this->resource->tags->pluck('id'),
             'articles' => $this->resource->articles->pluck('id'),
             'attachments' => $this->resource->attachments->pluck('id'),
-            'created_at' => $this->resource->created_at?->format('Y-m-d\TH:i'),
-            'published_at' => $this->resource->published_at?->format('Y-m-d\TH:i'),
-            'modified_at' => $this->resource->modified_at?->format('Y-m-d\TH:i'),
+            'created_at' => $createdAt?->format('Y-m-d\TH:i'),
+            'published_at' => $publishedAt?->format('Y-m-d\TH:i'),
+            'modified_at' => $modifiedAt?->format('Y-m-d\TH:i'),
         ];
     }
 }

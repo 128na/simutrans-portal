@@ -25,11 +25,17 @@ class ArticlePolicy extends BasePolicy
 
     public function download(?User $user, Article $article): bool
     {
-        return $article->is_publish && $article->post_type === ArticlePostType::AddonPost && $article->has_file && $article->file;
+        /** @var ArticlePostType $postType */
+        $postType = $article->post_type;
+
+        return $article->is_publish && $postType === ArticlePostType::AddonPost && $article->has_file && $article->file;
     }
 
     public function conversion(?User $user, Article $article): bool
     {
-        return $article->is_publish && $article->post_type === ArticlePostType::AddonIntroduction;
+        /** @var ArticlePostType $postType */
+        $postType = $article->post_type;
+
+        return $article->is_publish && $postType === ArticlePostType::AddonIntroduction;
     }
 }

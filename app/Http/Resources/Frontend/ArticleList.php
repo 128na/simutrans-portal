@@ -31,12 +31,12 @@ class ArticleList extends JsonResource
             ]),
             'thumbnail' => $this->resource->thumbnail_url,
             'description' => $this->resource->contents->getDescription(),
-            'categories' => $this->resource->categories->map(fn (Category $category): array => [
+            'categories' => $this->resource->categories->map(fn(Category $category): array => [
                 'id' => $category->id,
                 'type' => $category->type,
                 'slug' => $category->slug,
             ]),
-            'tags' => $this->resource->tags->map(fn (Tag $tag): array => [
+            'tags' => $this->resource->tags->map(fn(Tag $tag): array => [
                 'id' => $tag->id,
                 'name' => $tag->name,
             ]),
@@ -50,7 +50,7 @@ class ArticleList extends JsonResource
 
                     return [
                         'data' => $profile->data,
-                        'attachments' => $profile->attachments->map(fn ($attachment): array => [
+                        'attachments' => $profile->attachments->map(fn($attachment): array => [
                             'id' => $attachment->id,
                             'thumbnail' => $attachment->thumbnail,
                             'original_name' => $attachment->original_name,

@@ -38,7 +38,10 @@ use Spatie\Feed\FeedItem;
  * @property-read int|null $past_conversion_count
  * @property-read bool $hasFile
  * @property-read Collection<int, Category> $categoryPaks
- * @property-read bool $hasThumbnail
+ * @property-read bool $hasTrhumbnail
+ * @property \Carbon\CarbonImmutable|null $published_at
+ * @property \Carbon\CarbonImmutable|null $modified_at
+ * @property \Carbon\CarbonImmutable|null $created_at
  *
  * @method static Builder<Article> page()
  * @method static Builder<Article> pak(string $slug)
@@ -73,7 +76,7 @@ class Article extends Model implements Feedable
 
     public function routeNotificationForMail(mixed $notification): string
     {
-        if (! $this->user->email) {
+        if (! $this->user || ! $this->user->email) {
             throw new Exception('email not found');
         }
 
@@ -194,7 +197,7 @@ class Article extends Model implements Feedable
             'articleId' => $this->id,
             'articleTitle' => $this->title,
             'articleStatus' => $this->status,
-            'articleUserName' => $this->user->name,
+            'articleUserName' => $this->user?->name ?? 'Unknown',
         ];
     }
 
@@ -206,11 +209,14 @@ class Article extends Model implements Feedable
     #[\Override]
     public function toFeedItem(): FeedItem
     {
+        /** @var \Carbon\CarbonImmutable|null $modifiedAt */
+        $modifiedAt = $this->modified_at;
+
         return FeedItem::create([
             'id' => $this->id,
             'title' => $this->title,
             'summary' => $this->contents->getDescription(),
-            'updated' => $this->modified_at?->toMutable(), // CarbonImmutableは未対応
+            'updated' => $modifiedAt?->toMutable(), // CarbonImmutableは未対応
             'link' => route('articles.show', ['userIdOrNickname' => $this->user->nickname ?? $this->user_id, 'articleSlug' => $this->slug]),
             'authorName' => $this->user->name ?? '',
         ]);
@@ -361,7 +367,10 @@ class Article extends Model implements Feedable
      */
     protected function isAddonPost(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->post_type === ArticlePostType::AddonPost);
+        /** @var ArticlePostType $postType */
+        $postType = $this->post_type;
+
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $postType === ArticlePostType::AddonPost);
     }
 
     /**
@@ -369,7 +378,10 @@ class Article extends Model implements Feedable
      */
     protected function isPublish(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->status === ArticleStatus::Publish);
+        /** @var ArticleStatus $status */
+        $status = $this->status;
+
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $status === ArticleStatus::Publish);
     }
 
     /**
@@ -377,7 +389,10 @@ class Article extends Model implements Feedable
      */
     protected function isReservation(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->status === ArticleStatus::Reservation);
+        /** @var ArticleStatus $status */
+        $status = $this->status;
+
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $status === ArticleStatus::Reservation);
     }
 
     /**
@@ -385,7 +400,10 @@ class Article extends Model implements Feedable
      */
     protected function isInactive(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => in_array($this->status, [
+        /** @var ArticleStatus $status */
+        $status = $this->status;
+
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => in_array($status, [
             ArticleStatus::Draft,
             ArticleStatus::Private,
             ArticleStatus::Trash,
@@ -397,7 +415,7 @@ class Article extends Model implements Feedable
      */
     protected function hasThumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => ! is_null($this->contents->thumbnail) && $this->thumbnail);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => ! is_null($this->contents->thumbnail) && $this->thumbnail);
     }
 
     /**
@@ -406,9 +424,11 @@ class Article extends Model implements Feedable
     protected function thumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
-            $id = $this->contents->thumbnail;
+            /** @var object{thumbnail?: int|null} $contents */
+            $contents = $this->contents;
+            $id = $contents->thumbnail ?? null;
 
-            return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
+            return $this->attachments->first(fn($attachment): bool => (string) $id == $attachment->id);
         });
     }
 
@@ -417,7 +437,7 @@ class Article extends Model implements Feedable
      */
     protected function thumbnailUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => ($this->has_thumbnail && $this->thumbnail) ? $this->thumbnail->thumbnail : $this->getPublicDisk()->url(DefaultThumbnail::NO_THUMBNAIL));
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => ($this->has_thumbnail && $this->thumbnail) ? $this->thumbnail->thumbnail : $this->getPublicDisk()->url(DefaultThumbnail::NO_THUMBNAIL));
     }
 
     /**
@@ -425,7 +445,7 @@ class Article extends Model implements Feedable
      */
     protected function hasFile(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->is_addon_post
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $this->is_addon_post
             && $this->contents instanceof AddonPostContent
             && ! is_null($this->contents->file) && $this->file);
     }
@@ -439,7 +459,7 @@ class Article extends Model implements Feedable
             if ($this->contents instanceof AddonPostContent) {
                 $id = $this->contents->file;
 
-                return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
+                return $this->attachments->first(fn($attachment): bool => (string) $id == $attachment->id);
             }
 
             throw new Exception('invalid post type');
@@ -451,7 +471,7 @@ class Article extends Model implements Feedable
      */
     protected function hasFileInfo(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->hasFile && $this->file && $this->file->fileInfo);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $this->hasFile && $this->file && $this->file->fileInfo);
     }
 
     /**
@@ -459,7 +479,7 @@ class Article extends Model implements Feedable
      */
     protected function categoryPaks(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak));
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->categories->filter(fn($category): bool => $category->type === CategoryType::Pak));
     }
 
     #[\Override]

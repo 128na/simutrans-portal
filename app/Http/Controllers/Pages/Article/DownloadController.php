@@ -32,8 +32,7 @@ class DownloadController extends Controller
             $conversionAction($article, Auth::user());
         }
 
-        assert($article->contents instanceof AddonIntroductionContent);
-        if ($article->contents->link) {
+        if ($article->contents instanceof AddonIntroductionContent && $article->contents->link) {
             return redirect($article->contents->link, Response::HTTP_FOUND);
         }
 

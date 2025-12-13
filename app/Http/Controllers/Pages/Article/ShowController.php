@@ -48,7 +48,7 @@ class ShowController extends Controller
             $request,
             $articleShow,
             'pages.show.index',
-            ['meta' => $this->metaOgpService->frontArticleShow($article->user, $article)]
+            ['meta' => $article->user ? $this->metaOgpService->frontArticleShow($article->user, $article) : []]
         );
     }
 

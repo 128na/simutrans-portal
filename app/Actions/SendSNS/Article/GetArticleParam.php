@@ -20,12 +20,12 @@ class GetArticleParam
     {
         $url = route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]);
         $now = $this->carbon->format('Y/m/d H:i');
-        $name = $article->user->name;
+        $name = $article->user->name ?? 'Unknown';
         /** @var array<int, string> $pakSlugs */
         $pakSlugs = $article->categoryPaks->pluck('slug')->all();
         $tags = collect(['simutrans', ...$pakSlugs])
             ->map(function (string $slug): string {
-                $translated = __('hash_tag.'.$slug);
+                $translated = __('hash_tag.' . $slug);
 
                 return is_string($translated) ? $translated : $slug;
             })

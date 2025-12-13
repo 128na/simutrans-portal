@@ -31,7 +31,10 @@ class ToArticleContents implements CastsAttributes
         /** @var array{thumbnail?:int,sections?:array<int,array{type:string,caption?:string,text?:string,url?:string,id?:int}>,markdown?:string,description?:string,file?:int,author?:string,license?:string,thanks?:string,link?:string,agreement?:bool,exclude_link_check?:bool} */
         $data = json_decode((string) $value, true);
 
-        return match ($model->post_type) {
+        /** @var ArticlePostType $postType */
+        $postType = $model->post_type;
+
+        return match ($postType) {
             ArticlePostType::AddonIntroduction => new AddonIntroductionContent($data),
             ArticlePostType::AddonPost => new AddonPostContent($data),
             ArticlePostType::Page => new PageContent($data),

@@ -53,7 +53,7 @@ class UpdateArticle
 
         ($this->syncRelatedModels)($article, $data);
 
-        if ($followRedirect && $oldSlug !== $data['article']['slug']) {
+        if ($followRedirect && $oldSlug !== $data['article']['slug'] && $article->user) {
             ($this->addRedirect)($article->user, $oldSlug, $data['article']['slug']);
         }
 

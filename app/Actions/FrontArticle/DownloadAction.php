@@ -20,6 +20,7 @@ class DownloadAction
             event(new ArticleConversion($article));
         }
 
+        /** @var \App\Models\Attachment|null $file */
         $file = $article->file;
         if ($file === null) {
             abort(404);

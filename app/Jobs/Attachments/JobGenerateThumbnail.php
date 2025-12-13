@@ -70,8 +70,10 @@ class JobGenerateThumbnail implements ShouldQueue
             }
 
             // サムネイル生成
-            $thumbnailWidth = (int) config('thumbnail.width', 300);
-            $thumbnailFormat = (string) config('thumbnail.format', 'webp');
+            $configWidth = config('thumbnail.width');
+            $thumbnailWidth = is_int($configWidth) ? $configWidth : 300;
+            $configFormat = config('thumbnail.format');
+            $thumbnailFormat = is_string($configFormat) ? $configFormat : 'webp';
             $tempThumbnailPath = $imageResizeService->resize($originalPath, $thumbnailWidth, $thumbnailFormat);
 
             // 元画像と同じ幅の場合はサムネイル不要（そのまま返される）
@@ -84,14 +86,20 @@ class JobGenerateThumbnail implements ShouldQueue
             }
 
             // サムネイルを保存
-            $thumbnailDirectory = (string) config('thumbnail.directory', 'thumbnails');
+            $configDirectory = config('thumbnail.directory');
+            $thumbnailDirectory = is_string($configDirectory) ? $configDirectory : 'thumbnails';
             $thumbnailExtension = $thumbnailFormat === 'jpeg' ? 'jpg' : $thumbnailFormat;
-            $thumbnailFilename = pathinfo($this->attachment->path, PATHINFO_FILENAME).'_thumb.'.$thumbnailExtension;
-            $thumbnailPath = $thumbnailDirectory.'/'.$thumbnailFilename;
+            $thumbnailFilename = pathinfo($this->attachment->path, PATHINFO_FILENAME) . '_thumb.' . $thumbnailExtension;
+            $thumbnailPath = $thumbnailDirectory . '/' . $thumbnailFilename;
+
+            $thumbnailContent = file_get_contents($tempThumbnailPath);
+            if ($thumbnailContent === false) {
+                throw new ResizeFailedException('Failed to read thumbnail file');
+            }
 
             $filesystem->put(
                 $thumbnailPath,
-                file_get_contents($tempThumbnailPath)
+                $thumbnailContent
             );
 
             // 一時ファイルを削除

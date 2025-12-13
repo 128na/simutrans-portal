@@ -15,7 +15,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 
-final class ProfileController extends Controller
+class ProfileController extends Controller
 {
     public function __construct(
         private readonly MetaOgpService $metaOgpService,

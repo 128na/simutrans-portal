@@ -13,7 +13,7 @@ use App\Rules\ReservationPublishedAt;
 use App\Rules\UniqueSlugByUser;
 use Illuminate\Validation\Rule;
 
-final class StoreRequest extends BaseRequest
+class StoreRequest extends BaseRequest
 {
     /**
      * @return array<mixed>

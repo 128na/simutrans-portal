@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 /**
  * feed item はCollectionしか受け付けないのでここで変換する
  */
-final readonly class FeedService
+class FeedService
 {
     public function __construct(
         private ArticleRepository $articleRepository,

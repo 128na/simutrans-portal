@@ -7,7 +7,7 @@ namespace App\Actions\FrontArticle;
 use App\Models\Article;
 use Illuminate\Http\RedirectResponse;
 
-final class FallbackShowAction
+class FallbackShowAction
 {
     public function __invoke(int|string $slugOrId): RedirectResponse
     {

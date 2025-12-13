@@ -10,7 +10,7 @@ use App\Services\Twitter\Exceptions\InvalidStateException;
 use Illuminate\Support\Facades\Session;
 use Tests\Feature\TestCase;
 
-final class OauthControllerTest extends TestCase
+class OauthControllerTest extends TestCase
 {
     private User $adminUser;
 

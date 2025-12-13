@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Repositories\RedirectRepository;
 use Illuminate\Database\Eloquent\Collection;
 
-final readonly class FindMyRedirects
+class FindMyRedirects
 {
     public function __construct(
         private RedirectRepository $redirectRepository,

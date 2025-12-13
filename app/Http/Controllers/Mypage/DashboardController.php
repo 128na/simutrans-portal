@@ -12,7 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
-final class DashboardController extends Controller
+class DashboardController extends Controller
 {
     public function __construct(
         private readonly UserRepository $userRepository,

@@ -50,7 +50,6 @@ Services は**技術的な関心事**を扱い、以下の役割を担います�
 1. **外部APIとの通信**
    - Twitter, Discord, BlueSky, Misskey, Google 等のAPI連携
    - 認証、リクエスト/レスポンスの正規化
-   
 2. **インフラストラクチャのラッパー**
    - ファイルシステム操作
    - キャッシュ操作
@@ -86,7 +85,7 @@ use GuzzleHttp\Client;
  * 外部APIとの通信を担当
  * ビジネスロジックは含まない
  */
-final readonly class ExternalApiService
+class ExternalApiService
 {
     public function __construct(
         private Client $client,
@@ -95,7 +94,7 @@ final readonly class ExternalApiService
 
     /**
      * APIからデータを取得
-     * 
+     *
      * @throws ApiException
      */
     public function fetchData(string $endpoint): array
@@ -103,7 +102,7 @@ final readonly class ExternalApiService
         $response = $this->client->get($endpoint, [
             'headers' => ['Authorization' => "Bearer {$this->apiKey}"],
         ]);
-        
+
         return json_decode($response->getBody()->getContents(), true);
     }
 }
@@ -133,7 +132,7 @@ Services\FeedService      // RSS/Atom フィード生成
 // ❌ ビジネスロジックを含む
 class UserService
 {
-    public function registerUser(array $data) 
+    public function registerUser(array $data)
     {
         // バリデーション、ビジネスルール、DB保存が混在
         // → Actions へ移動すべき
@@ -159,7 +158,6 @@ Actions は**ビジネスの関心事**を扱い、以下の役割を担いま�
 1. **1つの具体的なユースケースを表現**
    - 「記事を作成する」「ユーザーを登録する」など
    - コントローラーから直接呼び出される
-   
 2. **アプリケーション固有のビジネスルール**
    - ドメイン特有のバリデーション
    - 状態遷移のロジック
@@ -168,7 +166,6 @@ Actions は**ビジネスの関心事**を扱い、以下の役割を担いま�
 3. **複数のRepository/Serviceを組み合わせた処理**
    - オーケストレーション層
    - トランザクション境界の管理
-   
 4. **単一責任の原則（SRP）に従う**
    - 1クラス = 1ユースケース
 
@@ -195,7 +192,7 @@ use App\Services\MarkdownService;
  * 記事作成のユースケース
  * ビジネスルールとオーケストレーションを担当
  */
-final readonly class StoreArticle
+class StoreArticle
 {
     public function __construct(
         private ArticleRepository $articleRepository,
@@ -212,23 +209,23 @@ final readonly class StoreArticle
         if (!$user->canCreateArticle()) {
             throw new UnauthorizedException();
         }
-        
+
         // Markdown変換（Service を利用）
         $html = $this->markdownService->toEscapedHTML($data['content']);
-        
+
         // 記事を作成（Repository を利用）
         $article = $this->articleRepository->store([
             'user_id' => $user->id,
             'title' => $data['title'],
             'content' => $html,
         ]);
-        
+
         // 関連モデルの同期（別の Action を利用）
         ($this->syncRelatedModels)($article, $data);
-        
+
         // イベントの発火
         event(new ArticleStored($article));
-        
+
         return $article;
     }
 }
@@ -320,14 +317,14 @@ class ArticleManagerAction
 
 ### 具体的な判断例
 
-| ケース | 配置先 | 理由 |
-|--------|--------|------|
-| Twitter API呼び出し | `Services/Twitter/` | 外部API連携 |
-| Markdown変換 | `Services/MarkdownService` | 汎用ユーティリティ、複数箇所で利用 |
-| 記事の作成 | `Actions/Article/StoreArticle` | 特定のユースケース |
-| 記事公開日時の決定ロジック | `Actions/Article/DecidePublishedAt` | ドメイン固有のビジネスルール |
-| ファイル解析 | `Services/FileInfo/` | インフラ層の処理 |
-| アナリティクスデータ取得 | `Actions/Analytics/FindArticles` | 特定のユースケース |
+| ケース                     | 配置先                              | 理由                               |
+| -------------------------- | ----------------------------------- | ---------------------------------- |
+| Twitter API呼び出し        | `Services/Twitter/`                 | 外部API連携                        |
+| Markdown変換               | `Services/MarkdownService`          | 汎用ユーティリティ、複数箇所で利用 |
+| 記事の作成                 | `Actions/Article/StoreArticle`      | 特定のユースケース                 |
+| 記事公開日時の決定ロジック | `Actions/Article/DecidePublishedAt` | ドメイン固有のビジネスルール       |
+| ファイル解析               | `Services/FileInfo/`                | インフラ層の処理                   |
+| アナリティクスデータ取得   | `Actions/Analytics/FindArticles`    | 特定のユースケース                 |
 
 ---
 
@@ -508,7 +505,7 @@ use HTMLPurifier;
  * Markdown変換サービス
  * 汎用的な変換ロジックを提供
  */
-final readonly class MarkdownService
+class MarkdownService
 {
     public function __construct(
         private GithubMarkdown $githubMarkdown,
@@ -526,7 +523,8 @@ final readonly class MarkdownService
 }
 ```
 
-**理由**: 
+**理由**:
+
 - 汎用的なユーティリティ機能
 - 複数のドメイン（記事、コメント等）で利用される
 - ビジネスルールを含まない
@@ -547,7 +545,7 @@ use App\Repositories\ArticleRepository;
 /**
  * 記事作成のユースケース
  */
-final readonly class StoreArticle
+class StoreArticle
 {
     public function __construct(
         private ArticleRepository $articleRepository,
@@ -562,27 +560,28 @@ final readonly class StoreArticle
             $data['published_at'] ?? null,
             $data['status']
         );
-        
+
         // 記事を保存
         $article = $this->articleRepository->store([
             'user_id' => $user->id,
             'title' => $data['title'],
             'published_at' => $publishedAt,
         ]);
-        
+
         // 関連モデルを同期
         ($this->syncRelatedModels)($article, $data);
-        
+
         // イベント発火
         dispatch(new JobUpdateRelated($article->id));
         event(new ArticleStored($article));
-        
+
         return $article;
     }
 }
 ```
 
 **理由**:
+
 - 特定のユースケース（記事作成）
 - 複数のRepository/Serviceを組み合わせている
 - ビジネスルール（公開日時の決定）を含む
@@ -597,13 +596,13 @@ namespace App\Services;
 // ❌ Serviceにビジネスロジックを含めるのは不適切
 class ArticleService
 {
-    public function createArticle(User $user, array $data) 
+    public function createArticle(User $user, array $data)
     {
         // ビジネスロジックがServiceに混在
         // コントローラーから直接呼ばれる想定
         // → Actionとして実装すべき
     }
-    
+
     public function updateArticle(Article $article, array $data)
     {
         // 複数のユースケースが1つのクラスに
@@ -627,7 +626,7 @@ use Abraham\TwitterOAuth\TwitterOAuth;
  * Twitter API v2 クライアント
  * 外部API連携の抽象化層
  */
-final class TwitterV2Api extends TwitterOAuth
+class TwitterV2Api extends TwitterOAuth
 {
     public function __construct(
         string $consumerKey,
@@ -649,6 +648,7 @@ final class TwitterV2Api extends TwitterOAuth
 ```
 
 **理由**:
+
 - 外部APIとの通信
 - 技術的な関心事に集中
 - 複数のActionから利用される
@@ -658,6 +658,7 @@ final class TwitterV2Api extends TwitterOAuth
 #### 🤔 検討が必要: Front/MetaOgpService
 
 現在の実装:
+
 ```php
 <?php
 
@@ -666,7 +667,7 @@ namespace App\Services\Front;
 /**
  * OGPメタ情報生成サービス
  */
-final class MetaOgpService
+class MetaOgpService
 {
     public function frontArticleShow(User $user, Article $article): array
     {
@@ -680,11 +681,13 @@ final class MetaOgpService
 ```
 
 **検討ポイント**:
+
 - ビュー層のヘルパー的な役割
 - ビジネスロジックは含まない
 - 汎用性は低い（フロントページ専用）
 
 **推奨**: 現状の配置で問題ないが、以下の選択肢も検討可能
+
 1. `Services/View/MetaOgpService` へ移動（ビュー関連サービスとしてグループ化）
 2. View Composer として実装
 3. 現状維持（`Services/Front/`）
@@ -708,13 +711,13 @@ use Tests\TestCase;
 class MarkdownServiceTest extends TestCase
 {
     private MarkdownService $service;
-    
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->service = app(MarkdownService::class);
     }
-    
+
     /**
      * @test
      */
@@ -722,10 +725,10 @@ class MarkdownServiceTest extends TestCase
     {
         $markdown = '# Hello World';
         $html = $this->service->toEscapedHTML($markdown);
-        
+
         $this->assertStringContainsString('<h1>Hello World</h1>', $html);
     }
-    
+
     /**
      * @test
      */
@@ -733,13 +736,14 @@ class MarkdownServiceTest extends TestCase
     {
         $markdown = '<script>alert("XSS")</script>';
         $html = $this->service->toEscapedHTML($markdown);
-        
+
         $this->assertStringNotContainsString('<script>', $html);
     }
 }
 ```
 
 **ポイント**:
+
 - ユニットテスト (`tests/Unit/Services/`)
 - 外部依存はモック化
 - 入力と出力の検証に集中
@@ -761,7 +765,7 @@ use Tests\TestCase;
 class StoreArticleTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     /**
      * @test
      */
@@ -769,7 +773,7 @@ class StoreArticleTest extends TestCase
     {
         $user = User::factory()->create();
         $action = app(StoreArticle::class);
-        
+
         $data = [
             'article' => [
                 'status' => 'publish',
@@ -779,17 +783,17 @@ class StoreArticleTest extends TestCase
                 'contents' => ['description' => 'Test content'],
             ],
         ];
-        
+
         $article = $action($user, $data);
-        
+
         $this->assertDatabaseHas('articles', [
             'user_id' => $user->id,
             'title' => 'Test Article',
         ]);
-        
+
         $this->assertNotNull($article->published_at);
     }
-    
+
     /**
      * @test
      */
@@ -802,6 +806,7 @@ class StoreArticleTest extends TestCase
 ```
 
 **ポイント**:
+
 - 機能テスト (`tests/Feature/Actions/`)
 - データベースを使用
 - ビジネスルールの検証
@@ -812,40 +817,40 @@ class StoreArticleTest extends TestCase
 
 ### Services/ の分析結果
 
-| カテゴリ | ファイル | 配置評価 | 備考 |
-|---------|---------|---------|------|
-| **外部API** | Twitter/TwitterV2Api | ✅ 適切 | API連携の抽象化 |
-| | Twitter/PKCEService | ✅ 適切 | OAuth認証 |
-| | Discord/InviteService | ✅ 適切 | Discord API |
-| | BlueSky/BlueSkyApiClient | ✅ 適切 | BlueSky API |
-| | Misskey/MisskeyApiClient | ✅ 適切 | Misskey API |
-| | Google/Recaptcha/RecaptchaService | ✅ 適切 | reCAPTCHA検証 |
-| **インフラ** | FileInfo/FileInfoService | ✅ 適切 | ファイル解析 |
-| | FileInfo/ZipArchiveParser | ✅ 適切 | ZIP処理 |
-| | FileInfo/Extractors/* | ✅ 適切 | ファイル抽出 |
-| **ユーティリティ** | MarkdownService | ✅ 適切 | Markdown変換 |
-| | FeedService | ✅ 適切 | Feed生成 |
-| **ビュー** | Front/MetaOgpService | 🤔 検討 | ビューヘルパー |
+| カテゴリ           | ファイル                          | 配置評価 | 備考            |
+| ------------------ | --------------------------------- | -------- | --------------- |
+| **外部API**        | Twitter/TwitterV2Api              | ✅ 適切  | API連携の抽象化 |
+|                    | Twitter/PKCEService               | ✅ 適切  | OAuth認証       |
+|                    | Discord/InviteService             | ✅ 適切  | Discord API     |
+|                    | BlueSky/BlueSkyApiClient          | ✅ 適切  | BlueSky API     |
+|                    | Misskey/MisskeyApiClient          | ✅ 適切  | Misskey API     |
+|                    | Google/Recaptcha/RecaptchaService | ✅ 適切  | reCAPTCHA検証   |
+| **インフラ**       | FileInfo/FileInfoService          | ✅ 適切  | ファイル解析    |
+|                    | FileInfo/ZipArchiveParser         | ✅ 適切  | ZIP処理         |
+|                    | FileInfo/Extractors/\*            | ✅ 適切  | ファイル抽出    |
+| **ユーティリティ** | MarkdownService                   | ✅ 適切  | Markdown変換    |
+|                    | FeedService                       | ✅ 適切  | Feed生成        |
+| **ビュー**         | Front/MetaOgpService              | 🤔 検討  | ビューヘルパー  |
 
 **総評**: ほとんどのServicesは適切に配置されています。
 
 ### Actions/ の分析結果
 
-| カテゴリ | ファイル | 配置評価 | 備考 |
-|---------|---------|---------|------|
-| **記事** | Article/StoreArticle | ✅ 適切 | 記事作成ユースケース |
-| | Article/UpdateArticle | ✅ 適切 | 記事更新ユースケース |
-| | Article/DecidePublishedAt | ✅ 適切 | ビジネスルール |
-| | Article/SyncRelatedModels | ✅ 適切 | オーケストレーション |
-| **ユーザー** | User/Registration | ✅ 適切 | ユーザー登録 |
-| | User/UpdateProfile | ✅ 適切 | プロフィール更新 |
-| **アナリティクス** | Analytics/FindArticles | ✅ 適切 | データ取得ロジック |
-| **デッドリンク** | DeadLink/Check | ✅ 適切 | チェックロジック |
-| | DeadLink/OnDead | ✅ 適切 | イベントハンドラ |
-| **SNS** | SendSNS/Article/ToTwitter | ✅ 適切 | SNS投稿ユースケース |
-| | SendSNS/Article/ToBluesky | ✅ 適切 | SNS投稿ユースケース |
-| **OAuth** | Oauth/CallbackAction | ✅ 適切 | OAuth認証フロー |
-| **リダイレクト** | Redirect/AddRedirect | ✅ 適切 | リダイレクト管理 |
+| カテゴリ           | ファイル                  | 配置評価 | 備考                 |
+| ------------------ | ------------------------- | -------- | -------------------- |
+| **記事**           | Article/StoreArticle      | ✅ 適切  | 記事作成ユースケース |
+|                    | Article/UpdateArticle     | ✅ 適切  | 記事更新ユースケース |
+|                    | Article/DecidePublishedAt | ✅ 適切  | ビジネスルール       |
+|                    | Article/SyncRelatedModels | ✅ 適切  | オーケストレーション |
+| **ユーザー**       | User/Registration         | ✅ 適切  | ユーザー登録         |
+|                    | User/UpdateProfile        | ✅ 適切  | プロフィール更新     |
+| **アナリティクス** | Analytics/FindArticles    | ✅ 適切  | データ取得ロジック   |
+| **デッドリンク**   | DeadLink/Check            | ✅ 適切  | チェックロジック     |
+|                    | DeadLink/OnDead           | ✅ 適切  | イベントハンドラ     |
+| **SNS**            | SendSNS/Article/ToTwitter | ✅ 適切  | SNS投稿ユースケース  |
+|                    | SendSNS/Article/ToBluesky | ✅ 適切  | SNS投稿ユースケース  |
+| **OAuth**          | Oauth/CallbackAction      | ✅ 適切  | OAuth認証フロー      |
+| **リダイレクト**   | Redirect/AddRedirect      | ✅ 適切  | リダイレクト管理     |
 
 **総評**: Actionsは明確なユースケースとして適切に分離されています。
 
@@ -856,6 +861,7 @@ class StoreArticleTest extends TestCase
 **推奨される改善（オプション）**:
 
 1. **Services のグループ化**（将来的な拡張のため）
+
    ```
    Services/
    ├── ExternalApi/    # 外部API関連をグループ化

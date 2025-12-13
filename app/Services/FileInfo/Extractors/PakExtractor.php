@@ -8,7 +8,7 @@ use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\PakParser;
 use Illuminate\Support\Facades\Log;
 
-final readonly class PakExtractor implements Extractor
+class PakExtractor implements Extractor
 {
     public function __construct(
         private PakParser $parser,

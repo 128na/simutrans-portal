@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-final class DownloadController extends Controller
+class DownloadController extends Controller
 {
     public function download(Article $article, DownloadAction $downloadAction): StreamedResponse
     {

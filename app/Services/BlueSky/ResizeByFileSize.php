@@ -6,7 +6,7 @@ namespace App\Services\BlueSky;
 
 use GdImage;
 
-final class ResizeByFileSize
+class ResizeByFileSize
 {
     public function __invoke(string $inputPath, int $targetFileSize): string
     {

@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Throwable;
 
-final class DiscordController extends Controller
+class DiscordController extends Controller
 {
     public function __construct(
         private readonly MetaOgpService $metaOgpService,

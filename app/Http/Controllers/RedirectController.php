@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 /**
  * 旧サイト -> 新サイトのリダイレクトを行う.
  */
-final class RedirectController extends Controller
+class RedirectController extends Controller
 {
     // 特定ページへの固定リダイレクト
     public const array REDIRECT_MAP = [

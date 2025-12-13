@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Tests\Feature\TestCase;
 
-final class RegisterControllerTest extends TestCase
+class RegisterControllerTest extends TestCase
 {
     private User $user;
 

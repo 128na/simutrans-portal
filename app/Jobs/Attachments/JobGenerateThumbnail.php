@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Storage;
 /**
  * 添付ファイルのサムネイルを生成するジョブ
  */
-final class JobGenerateThumbnail implements ShouldQueue
+class JobGenerateThumbnail implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

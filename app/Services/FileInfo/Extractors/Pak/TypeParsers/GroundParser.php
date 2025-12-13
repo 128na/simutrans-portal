@@ -20,7 +20,7 @@ use App\Services\FileInfo\Extractors\Pak\Node;
  *
  * @see simutrans/descriptor/reader/ground_reader.cc
  */
-final readonly class GroundParser implements TypeParserInterface
+class GroundParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {

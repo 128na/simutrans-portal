@@ -13,7 +13,7 @@ use Illuminate\Translation\PotentiallyTranslatedString;
 use Mockery\MockInterface;
 use Tests\Feature\TestCase;
 
-final class UniqueSlugByUserTest extends TestCase
+class UniqueSlugByUserTest extends TestCase
 {
     private User $user;
 

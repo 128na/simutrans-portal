@@ -13,7 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
-final class RedirectController extends Controller
+class RedirectController extends Controller
 {
     public function __construct(
         private readonly MetaOgpService $metaOgpService,

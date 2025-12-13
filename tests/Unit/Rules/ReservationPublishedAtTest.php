@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Unit\TestCase;
 
-final class ReservationPublishedAtTest extends TestCase
+class ReservationPublishedAtTest extends TestCase
 {
     private Closure $failClosure;
 

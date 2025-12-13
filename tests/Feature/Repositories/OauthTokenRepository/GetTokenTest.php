@@ -9,7 +9,7 @@ use App\Repositories\OauthTokenRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\Feature\TestCase;
 
-final class GetTokenTest extends TestCase
+class GetTokenTest extends TestCase
 {
     private OauthTokenRepository $oauthTokenRepository;
 

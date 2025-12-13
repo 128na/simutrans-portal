@@ -14,7 +14,7 @@ use App\Repositories\RedirectRepository;
 use Mockery\MockInterface;
 use Tests\Feature\TestCase;
 
-final class RedirectActionsTest extends TestCase
+class RedirectActionsTest extends TestCase
 {
     public function test_add_redirect_calls_repository_store(): void
     {

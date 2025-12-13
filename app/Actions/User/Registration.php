@@ -11,7 +11,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 
-final readonly class Registration
+class Registration
 {
     public function __construct(
         private UserRepository $userRepository,

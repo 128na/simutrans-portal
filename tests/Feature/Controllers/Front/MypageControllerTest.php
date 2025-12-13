@@ -6,7 +6,7 @@ namespace Tests\Feature\Controllers\Front;
 
 use Tests\Feature\TestCase;
 
-final class MypageControllerTest extends TestCase
+class MypageControllerTest extends TestCase
 {
     private string $url;
 

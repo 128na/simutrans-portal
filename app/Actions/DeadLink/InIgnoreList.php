@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\DeadLink;
 
-final class InIgnoreList
+class InIgnoreList
 {
     private const array IGNORE_LIST = [
         'getuploader.com',

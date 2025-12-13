@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 use Throwable;
 
-final class AttachmentController extends Controller
+class AttachmentController extends Controller
 {
     public function __construct(
         private readonly MetaOgpService $metaOgpService,

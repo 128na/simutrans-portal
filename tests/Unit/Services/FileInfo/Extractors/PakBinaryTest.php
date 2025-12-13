@@ -7,7 +7,7 @@ namespace Tests\Unit\Services\FileInfo\Extractors;
 use App\Services\FileInfo\Extractors\PakBinary;
 use Tests\Unit\TestCase;
 
-final class PakBinaryTest extends TestCase
+class PakBinaryTest extends TestCase
 {
     public function test_get(): void
     {

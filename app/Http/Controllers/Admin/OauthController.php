@@ -12,7 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-final class OauthController extends Controller
+class OauthController extends Controller
 {
     public function index(): \Illuminate\Contracts\View\View
     {

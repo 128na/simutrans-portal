@@ -8,7 +8,7 @@ use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-final class AttachmentPolicy extends BasePolicy
+class AttachmentPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 

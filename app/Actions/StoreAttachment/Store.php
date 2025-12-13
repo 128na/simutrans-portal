@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 
-final readonly class Store
+class Store
 {
     public function __construct(
         private FilesystemAdapter $filesystemAdapter,

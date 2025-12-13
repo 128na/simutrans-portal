@@ -318,7 +318,7 @@ public static function tryFromName(string $name): ?self
 ```php
 use App\Enums\ArticleStatus;
 
-final class ArticleStatusTest extends TestCase
+class ArticleStatusTest extends TestCase
 {
     public function test_label_returns_japanese(): void
     {

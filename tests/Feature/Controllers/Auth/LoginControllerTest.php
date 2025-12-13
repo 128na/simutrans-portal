@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Auth;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-final class LoginControllerTest extends TestCase
+class LoginControllerTest extends TestCase
 {
     public function test_show_login_guest(): void
     {

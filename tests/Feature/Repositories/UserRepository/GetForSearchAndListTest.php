@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Repositories\UserRepository;
 use Tests\Feature\TestCase;
 
-final class GetForSearchAndListTest extends TestCase
+class GetForSearchAndListTest extends TestCase
 {
     private UserRepository $userRepository;
 

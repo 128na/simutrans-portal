@@ -11,7 +11,7 @@ use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Auth;
 
-final class UniqueSlugByUser implements DataAwareRule, ValidationRule
+class UniqueSlugByUser implements DataAwareRule, ValidationRule
 {
     /**
      * @var array{article?:array{id?:int}}

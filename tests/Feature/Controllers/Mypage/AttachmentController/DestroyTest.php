@@ -8,7 +8,7 @@ use App\Models\Attachment;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-final class DestroyTest extends TestCase
+class DestroyTest extends TestCase
 {
     private User $user;
 

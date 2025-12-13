@@ -21,7 +21,7 @@ use App\Services\FileInfo\Extractors\Pak\Node;
  *
  * @see simutrans/descriptor/reader/skin_reader.cc
  */
-final readonly class SkinParser implements TypeParserInterface
+class SkinParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {

@@ -80,7 +80,7 @@ use App\Services\SomeService;
  *
  * 例: 記事を作成する
  */
-final readonly class ExampleAction
+class ExampleAction
 {
     public function __construct(
         private ModelRepository $repository,
@@ -114,7 +114,7 @@ final readonly class ExampleAction
 ### 複数のService/Repositoryを組み合わせる例
 
 ```php
-final readonly class StoreArticle
+class StoreArticle
 {
     public function __construct(
         private ArticleRepository $articleRepository,
@@ -160,7 +160,7 @@ final readonly class StoreArticle
 Actionsのテストは `tests/Unit/Actions/` に配置します。
 
 ```php
-final class StoreArticleTest extends TestCase
+class StoreArticleTest extends TestCase
 {
     public function test_記事を作成できる(): void
     {

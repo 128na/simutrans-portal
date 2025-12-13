@@ -9,7 +9,7 @@ use cebe\markdown\GithubMarkdown;
 use Mockery;
 use Tests\Unit\TestCase;
 
-final class MarkdownServiceTest extends TestCase
+class MarkdownServiceTest extends TestCase
 {
     public function test_to_escaped_htm_l_adds_target_and_rel_to_links(): void
     {

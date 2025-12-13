@@ -13,7 +13,7 @@ use App\Services\Twitter\TwitterV2Api;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
-final class ToTwitterTest extends TestCase
+class ToTwitterTest extends TestCase
 {
     public function test_posts_to_twitter_on_article_published(): void
     {

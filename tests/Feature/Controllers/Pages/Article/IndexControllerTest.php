@@ -6,7 +6,7 @@ namespace Tests\Feature\Controllers\Pages\Article;
 
 use Tests\Feature\TestCase;
 
-final class IndexControllerTest extends TestCase
+class IndexControllerTest extends TestCase
 {
     public function test_announces(): void
     {

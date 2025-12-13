@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Queue;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
-final class StoreArticleTest extends TestCase
+class StoreArticleTest extends TestCase
 {
     public function test投稿(): void
     {

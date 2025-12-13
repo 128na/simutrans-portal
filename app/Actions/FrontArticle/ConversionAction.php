@@ -8,7 +8,7 @@ use App\Events\ArticleConversion;
 use App\Models\Article;
 use App\Models\User;
 
-final class ConversionAction
+class ConversionAction
 {
     public function __invoke(Article $article, ?User $user): void
     {

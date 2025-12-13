@@ -6,7 +6,7 @@ namespace Tests\Feature\Controllers\Pages;
 
 use Tests\Feature\TestCase;
 
-final class SocialControllerTest extends TestCase
+class SocialControllerTest extends TestCase
 {
     public function test_social(): void
     {

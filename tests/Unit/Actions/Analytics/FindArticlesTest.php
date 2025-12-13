@@ -14,7 +14,7 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Unit\TestCase;
 
-final class FindArticlesTest extends TestCase
+class FindArticlesTest extends TestCase
 {
     #[DataProvider('data')]
     public function test(array $data, array $expected): void

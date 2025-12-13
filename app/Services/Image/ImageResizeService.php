@@ -11,7 +11,7 @@ use GdImage;
  *
  * ResizeByFileSizeを参考に、より汎用的な固定幅リサイズを実装
  */
-final class ImageResizeService
+class ImageResizeService
 {
     /**
      * 画像を指定した幅にリサイズ

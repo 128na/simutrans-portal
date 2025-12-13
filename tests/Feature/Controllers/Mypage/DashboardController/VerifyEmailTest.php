@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Mypage\DashboardController;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-final class VerifyEmailTest extends TestCase
+class VerifyEmailTest extends TestCase
 {
     private User $user;
 

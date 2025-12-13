@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Repositories\TagRepository;
 use Tests\Feature\TestCase;
 
-final class StoreUpdateTest extends TestCase
+class StoreUpdateTest extends TestCase
 {
     private TagRepository $tagRepository;
 

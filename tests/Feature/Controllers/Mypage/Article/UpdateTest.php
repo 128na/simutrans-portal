@@ -12,7 +12,7 @@ use App\Notifications\SendArticleUpdated;
 use Illuminate\Support\Facades\Notification;
 use Tests\Feature\TestCase;
 
-final class UpdateTest extends TestCase
+class UpdateTest extends TestCase
 {
     private Article $article;
 

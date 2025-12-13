@@ -13,7 +13,7 @@ use RuntimeException;
  * Road signs and railway signals control traffic flow.
  * Supported versions: 1-6
  */
-final readonly class SignParser implements TypeParserInterface
+class SignParser implements TypeParserInterface
 {
     // Signal type flags (from roadsign_desc.h)
     private const FLAG_ONE_WAY = 1 << 0;

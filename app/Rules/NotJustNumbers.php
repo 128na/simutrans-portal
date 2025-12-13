@@ -7,7 +7,7 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-final class NotJustNumbers implements ValidationRule
+class NotJustNumbers implements ValidationRule
 {
     /**
      * Run the validation rule.

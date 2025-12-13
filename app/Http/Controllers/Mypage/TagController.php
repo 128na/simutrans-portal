@@ -15,7 +15,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 
-final class TagController extends Controller
+class TagController extends Controller
 {
     public function __construct(
         private readonly TagRepository $tagRepository,

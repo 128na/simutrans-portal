@@ -10,7 +10,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Tests\Feature\TestCase;
 
-final class GetForEditTest extends TestCase
+class GetForEditTest extends TestCase
 {
     private ArticleRepository $articleRepository;
 

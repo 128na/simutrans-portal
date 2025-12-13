@@ -11,7 +11,7 @@ use App\Models\User;
 use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
 
-final readonly class StoreArticle
+class StoreArticle
 {
     public function __construct(
         private ArticleRepository $articleRepository,

@@ -47,7 +47,7 @@ namespace App\Repositories;
 
 use App\Models\Article;
 
-final class ArticleRepository
+class ArticleRepository
 {
     public function __construct(public Article $model) {}
 
@@ -214,7 +214,7 @@ public function publishArticle(Article $article): void
 
 ```php
 // ✅ 推奨パターン
-final class ArticleRepository
+class ArticleRepository
 {
     public function __construct(public Article $model) {}
 
@@ -251,7 +251,7 @@ public function getForEdit(?Article $article = null): Collection
 Repositoryのテストは `tests/Feature/Repositories/` に配置します。
 
 ```php
-final class ArticleRepositoryTest extends TestCase
+class ArticleRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 

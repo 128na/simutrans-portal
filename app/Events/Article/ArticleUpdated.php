@@ -8,7 +8,7 @@ use App\Models\Article;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-final readonly class ArticleUpdated
+class ArticleUpdated
 {
     use Dispatchable;
     use SerializesModels;

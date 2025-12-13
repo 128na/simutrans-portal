@@ -11,7 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Event;
 use Tests\Unit\TestCase;
 
-final class ConversionActionTest extends TestCase
+class ConversionActionTest extends TestCase
 {
     public function test_dispatches_conversion_event_for_guest(): void
     {

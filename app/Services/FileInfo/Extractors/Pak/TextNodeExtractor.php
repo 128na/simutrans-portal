@@ -7,7 +7,7 @@ namespace App\Services\FileInfo\Extractors\Pak;
 /**
  * Extract text from TEXT node
  */
-final readonly class TextNodeExtractor
+class TextNodeExtractor
 {
     /**
      * Extract null-terminated string from node data

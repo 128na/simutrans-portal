@@ -7,7 +7,7 @@ namespace App\Listeners\Tag;
 use App\Events\Tag\TagDescriptionUpdated;
 use Illuminate\Log\Logger;
 
-final readonly class OnTagDescriptionUpdated
+class OnTagDescriptionUpdated
 {
     public function __construct(private Logger $logger) {}
 

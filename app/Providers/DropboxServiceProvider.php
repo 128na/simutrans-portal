@@ -12,7 +12,7 @@ use League\Flysystem\Filesystem;
 use Spatie\Dropbox\Client as DropboxClient;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 
-final class DropboxServiceProvider extends ServiceProvider
+class DropboxServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -30,9 +30,11 @@ final class DropboxServiceProvider extends ServiceProvider
         Storage::extend('dropbox', function ($app, array $config): \Illuminate\Filesystem\FilesystemAdapter {
             $autoRefreshingDropBoxTokenService = new AutoRefreshingDropBoxTokenService;
             $client = new DropboxClient(
-                $autoRefreshingDropBoxTokenService->getToken($config['appKey'],
+                $autoRefreshingDropBoxTokenService->getToken(
+                    $config['appKey'],
                     $config['appSecret'],
-                    $config['refreshToken'])
+                    $config['refreshToken']
+                )
             );
             $dropboxAdapter = new DropboxAdapter($client);
             $filesystem = new Filesystem($dropboxAdapter, ['case_sensitive' => false]);

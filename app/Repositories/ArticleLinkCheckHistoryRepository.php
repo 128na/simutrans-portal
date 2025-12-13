@@ -7,7 +7,7 @@ namespace App\Repositories;
 use App\Models\Article;
 use App\Models\ArticleLinkCheckHistory;
 
-final class ArticleLinkCheckHistoryRepository
+class ArticleLinkCheckHistoryRepository
 {
     public function __construct(
         private ArticleLinkCheckHistory $articleLinkCheckHistory

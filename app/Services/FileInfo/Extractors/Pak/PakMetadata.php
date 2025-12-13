@@ -26,7 +26,7 @@ use App\Services\FileInfo\Extractors\Pak\TypeParsers\WayParser;
 /**
  * Pak metadata information
  */
-final readonly class PakMetadata
+class PakMetadata
 {
     /**
      * @param  array<string, mixed>  $typeSpecificData  オブジェクトタイプ固有のデータ（vehicle, way, building等）

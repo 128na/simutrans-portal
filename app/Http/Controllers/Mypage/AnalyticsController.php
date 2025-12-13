@@ -14,7 +14,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 
-final class AnalyticsController extends Controller
+class AnalyticsController extends Controller
 {
     public function __construct(
         private readonly ArticleRepository $articleRepository,

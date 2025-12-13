@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @mixin IdeHelperArticleLinkCheckHistory
  */
-final class ArticleLinkCheckHistory extends Model
+class ArticleLinkCheckHistory extends Model
 {
     /** @use HasFactory<\Database\Factories\ArticleLinkCheckHistoryFactory> */
     use HasFactory;

@@ -15,7 +15,7 @@ use potibm\Bluesky\Exception\HttpStatusCodeException;
 use potibm\Bluesky\Feed\Post;
 use Throwable;
 
-final readonly class ToBluesky
+class ToBluesky
 {
     public function __construct(
         private BlueSkyApiClient $blueSkyApiClient,

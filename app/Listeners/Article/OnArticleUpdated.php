@@ -9,7 +9,7 @@ use App\Notifications\SendArticlePublished;
 use App\Notifications\SendArticleUpdated;
 use Illuminate\Log\Logger;
 
-final readonly class OnArticleUpdated
+class OnArticleUpdated
 {
     public function __construct(private Logger $logger) {}
 

@@ -9,7 +9,7 @@ use App\Repositories\RedirectRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\Feature\TestCase;
 
-final class FindOrFailByPathTest extends TestCase
+class FindOrFailByPathTest extends TestCase
 {
     private RedirectRepository $redirectRepository;
 

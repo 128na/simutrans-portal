@@ -6,7 +6,7 @@ namespace App\Repositories\Attachment;
 
 use App\Models\Attachment\FileInfo;
 
-final readonly class FileInfoRepository
+class FileInfoRepository
 {
     public function __construct(private FileInfo $model) {}
 

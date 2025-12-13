@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors;
 
-final class DatExtractor implements Extractor
+class DatExtractor implements Extractor
 {
     #[\Override]
     public function isText(): bool

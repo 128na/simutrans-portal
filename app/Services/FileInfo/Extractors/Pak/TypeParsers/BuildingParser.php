@@ -11,7 +11,7 @@ use App\Services\FileInfo\Extractors\Pak\Node;
 /**
  * Building-specific parser for BUIL nodes
  */
-final readonly class BuildingParser implements TypeParserInterface
+class BuildingParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {

@@ -12,7 +12,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use Throwable;
 
-final readonly class PKCEService
+class PKCEService
 {
     public function __construct(
         private Carbon $now,

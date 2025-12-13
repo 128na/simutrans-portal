@@ -12,7 +12,7 @@ use App\Services\FileInfo\Extractors\Pak\Node;
  *
  * 参考: simutrans/descriptor/reader/way_reader.cc
  */
-final readonly class WayParser implements TypeParserInterface
+class WayParser implements TypeParserInterface
 {
     #[\Override]
     public function canParse(Node $node): bool

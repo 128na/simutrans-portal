@@ -13,7 +13,7 @@ use Carbon\CarbonImmutable as Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use UnexpectedValueException;
 
-final readonly class FindArticles
+class FindArticles
 {
     public function __construct(private ArticleRepository $articleRepository) {}
 

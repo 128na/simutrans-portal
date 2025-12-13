@@ -291,7 +291,7 @@ php artisan schedule:work
 ```php
 use Illuminate\Support\Facades\Artisan;
 
-final class CheckDeadLinkCommandTest extends TestCase
+class CheckDeadLinkCommandTest extends TestCase
 {
     public function test_command_runs_successfully(): void
     {

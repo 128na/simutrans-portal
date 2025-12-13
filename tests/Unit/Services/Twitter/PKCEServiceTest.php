@@ -17,7 +17,7 @@ use GuzzleHttp\Psr7\Response;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
-final class PKCEServiceTest extends TestCase
+class PKCEServiceTest extends TestCase
 {
     public function test_generate_state_returns_random_string(): void
     {

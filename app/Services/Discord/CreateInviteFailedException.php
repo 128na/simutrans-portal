@@ -6,4 +6,4 @@ namespace App\Services\Discord;
 
 use Exception;
 
-final class CreateInviteFailedException extends Exception {}
+class CreateInviteFailedException extends Exception {}

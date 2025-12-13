@@ -23,7 +23,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 /**
  * @mixin IdeHelperUser
  */
-final class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;

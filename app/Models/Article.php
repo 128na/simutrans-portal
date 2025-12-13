@@ -45,7 +45,7 @@ use Spatie\Feed\FeedItem;
  *
  * @mixin IdeHelperArticle
  */
-final class Article extends Model implements Feedable
+class Article extends Model implements Feedable
 {
     /** @use HasFactory<\Database\Factories\ArticleFactory> */
     use HasFactory;

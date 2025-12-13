@@ -9,7 +9,7 @@ use App\Notifications\SendLoggedInEmail;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Log\Logger;
 
-final readonly class OnLogin
+class OnLogin
 {
     public function __construct(private Logger $logger) {}
 

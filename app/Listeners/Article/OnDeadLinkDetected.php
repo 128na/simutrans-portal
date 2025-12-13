@@ -8,7 +8,7 @@ use App\Events\Article\DeadLinkDetected;
 use App\Models\Contents\AddonIntroductionContent;
 use Illuminate\Log\Logger;
 
-final readonly class OnDeadLinkDetected
+class OnDeadLinkDetected
 {
     public function __construct(private Logger $logger) {}
 

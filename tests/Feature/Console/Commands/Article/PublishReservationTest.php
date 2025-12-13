@@ -10,7 +10,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
-final class PublishReservationTest extends TestCase
+class PublishReservationTest extends TestCase
 {
     protected function setUp(): void
     {

@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Queue;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
-final class UpdateArticleTest extends TestCase
+class UpdateArticleTest extends TestCase
 {
     public function test更新(): void
     {

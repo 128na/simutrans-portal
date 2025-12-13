@@ -7,7 +7,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-final class ExcludePaths
+class ExcludePaths
 {
     /**
      * @return mixed

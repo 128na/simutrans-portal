@@ -10,7 +10,7 @@ use App\Models\Tag;
 use App\Models\User\Profile;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-final class ArticleList extends JsonResource
+class ArticleList extends JsonResource
 {
     /** @var ModelsArticle */
     public $resource;

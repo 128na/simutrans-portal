@@ -6,4 +6,4 @@ namespace App\Services\Image;
 
 use Exception;
 
-final class ResizeFailedException extends Exception {}
+class ResizeFailedException extends Exception {}

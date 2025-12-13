@@ -15,7 +15,7 @@ use potibm\Bluesky\Response\RecordResponse;
 /**
  * @see https://www.docs.bsky.app/docs
  */
-final readonly class BlueSkyApiClient
+class BlueSkyApiClient
 {
     public function __construct(
         private BlueskyApi $blueskyApi,

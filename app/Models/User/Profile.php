@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Storage;
 /**
  * @mixin IdeHelperProfile
  */
-final class Profile extends Model
+class Profile extends Model
 {
     /** @var array<string, mixed> */
     protected $attributes = [

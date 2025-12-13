@@ -9,7 +9,7 @@ use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
-final class PasswordController extends Controller
+class PasswordController extends Controller
 {
     public function __construct(
         private readonly MetaOgpService $metaOgpService,

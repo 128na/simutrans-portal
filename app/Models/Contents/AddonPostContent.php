@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Contents;
 
-final class AddonPostContent extends Content
+class AddonPostContent extends Content
 {
     public ?string $description;
 

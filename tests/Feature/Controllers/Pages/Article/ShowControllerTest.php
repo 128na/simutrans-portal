@@ -8,7 +8,7 @@ use App\Models\Article;
 use App\Models\Redirect;
 use Tests\Feature\TestCase;
 
-final class ShowControllerTest extends TestCase
+class ShowControllerTest extends TestCase
 {
     public function test_show(): void
     {

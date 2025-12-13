@@ -6,7 +6,7 @@ namespace App\Actions\ArticleSearchIndex;
 
 use Illuminate\Support\Facades\DB;
 
-final readonly class UpdateOrCreateAction
+class UpdateOrCreateAction
 {
     public function __invoke(int $articleId): void
     {

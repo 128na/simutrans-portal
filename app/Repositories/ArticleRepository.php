@@ -17,7 +17,7 @@ use Illuminate\Database\Query\JoinClause;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\LazyCollection;
 
-final class ArticleRepository
+class ArticleRepository
 {
     public function __construct(public Article $model) {}
 

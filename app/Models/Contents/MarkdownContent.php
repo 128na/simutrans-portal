@@ -6,7 +6,7 @@ namespace App\Models\Contents;
 
 use App\Services\MarkdownService;
 
-final class MarkdownContent extends Content
+class MarkdownContent extends Content
 {
     public ?string $markdown;
 

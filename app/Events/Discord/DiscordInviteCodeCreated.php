@@ -7,7 +7,7 @@ namespace App\Events\Discord;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-final class DiscordInviteCodeCreated
+class DiscordInviteCodeCreated
 {
     use Dispatchable;
     use SerializesModels;

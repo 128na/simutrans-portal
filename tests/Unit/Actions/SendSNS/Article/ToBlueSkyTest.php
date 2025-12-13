@@ -13,10 +13,9 @@ use App\Services\BlueSky\BlueSkyApiClient;
 use App\Services\BlueSky\ResizeFailedException;
 use Mockery\MockInterface;
 use potibm\Bluesky\Feed\Post;
-use potibm\Bluesky\Response\CreateRecordResponse;
 use Tests\Unit\TestCase;
 
-final class ToBlueSkyTest extends TestCase
+class ToBlueSkyTest extends TestCase
 {
     public function test_posts_to_bluesky_on_article_published(): void
     {

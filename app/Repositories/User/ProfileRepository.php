@@ -6,7 +6,7 @@ namespace App\Repositories\User;
 
 use App\Models\User\Profile;
 
-final readonly class ProfileRepository
+class ProfileRepository
 {
     public function __construct(private Profile $profile) {}
 

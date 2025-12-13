@@ -9,7 +9,7 @@ use App\Models\Attachment\FileInfo;
 use App\Models\User\Profile;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-final class ArticleShow extends JsonResource
+class ArticleShow extends JsonResource
 {
     /** @var ModelsArticle */
     public $resource;

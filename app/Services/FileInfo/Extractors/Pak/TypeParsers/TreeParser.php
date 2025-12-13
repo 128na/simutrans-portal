@@ -32,7 +32,7 @@ use RuntimeException;
  *
  * @see simutrans/descriptor/reader/tree_reader.cc
  */
-final readonly class TreeParser implements TypeParserInterface
+class TreeParser implements TypeParserInterface
 {
     private const int DEFAULT_DISTRIBUTION_WEIGHT = 3;
 

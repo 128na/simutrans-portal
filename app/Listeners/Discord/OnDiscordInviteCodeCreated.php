@@ -6,7 +6,7 @@ namespace App\Listeners\Discord;
 
 use Illuminate\Log\Logger;
 
-final readonly class OnDiscordInviteCodeCreated
+class OnDiscordInviteCodeCreated
 {
     public function __construct(private Logger $logger) {}
 

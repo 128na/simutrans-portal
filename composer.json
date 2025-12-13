@@ -29,7 +29,6 @@
     "barryvdh/laravel-debugbar": "^3.16.1",
     "barryvdh/laravel-ide-helper": "^3.6.0",
     "darkaonline/l5-swagger": "^8.6.5",
-    "dg/bypass-finals": "^1.9",
     "driftingly/rector-laravel": "^2.1.6",
     "fakerphp/faker": "^1.24.1",
     "filp/whoops": "^2.18.4",

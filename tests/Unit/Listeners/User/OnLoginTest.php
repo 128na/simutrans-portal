@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Notification;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
-final class OnLoginTest extends TestCase
+class OnLoginTest extends TestCase
 {
     protected function setUp(): void
     {

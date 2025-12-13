@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Illuminate\Support\Str;
 
+$attr_ssl_ca = class_exists('\Pdo\Mysql') && defined('\Pdo\Mysql::ATTR_SSL_CA') ? \Pdo\Mysql::ATTR_SSL_CA : PDO::MYSQL_ATTR_SSL_CA;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -51,7 +53,7 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                \Pdo\Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                $attr_ssl_ca => env('MYSQL_ATTR_SSL_CA'),
                 PDO::ATTR_EMULATE_PREPARES => true,
             ]) : [],
 
@@ -78,7 +80,7 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                \Pdo\Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                $attr_ssl_ca => env('MYSQL_ATTR_SSL_CA'),
                 PDO::ATTR_EMULATE_PREPARES => true,
             ]) : [],
         ],

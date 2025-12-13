@@ -7,7 +7,7 @@ namespace App\Listeners\Article;
 use App\Events\ArticleShown;
 use App\Repositories\Article\ViewCountRepository;
 
-final readonly class AddViewRecord
+class AddViewRecord
 {
     public function __construct(private ViewCountRepository $viewCountRepository) {}
 

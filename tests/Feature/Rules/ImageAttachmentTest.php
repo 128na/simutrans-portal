@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\TestCase;
 
-final class ImageAttachmentTest extends TestCase
+class ImageAttachmentTest extends TestCase
 {
     private Closure $failClosure;
 

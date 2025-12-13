@@ -8,7 +8,7 @@ use App\Services\Twitter\Exceptions\InvalidStateException;
 use App\Services\Twitter\PKCEService;
 use Illuminate\Support\Facades\Session;
 
-final readonly class CallbackAction
+class CallbackAction
 {
     public function __construct(
         private PKCEService $pkceService,

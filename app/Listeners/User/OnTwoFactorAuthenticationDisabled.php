@@ -7,7 +7,7 @@ namespace App\Listeners\User;
 use Illuminate\Log\Logger;
 use Laravel\Fortify\Events\TwoFactorAuthenticationDisabled;
 
-final readonly class OnTwoFactorAuthenticationDisabled
+class OnTwoFactorAuthenticationDisabled
 {
     public function __construct(private Logger $logger) {}
 

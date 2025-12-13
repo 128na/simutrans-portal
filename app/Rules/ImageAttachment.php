@@ -8,7 +8,7 @@ use App\Repositories\AttachmentRepository;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-final readonly class ImageAttachment implements ValidationRule
+class ImageAttachment implements ValidationRule
 {
     /**
      * Create a new rule instance.

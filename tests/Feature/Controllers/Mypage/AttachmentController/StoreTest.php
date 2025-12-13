@@ -10,7 +10,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Tests\Feature\TestCase;
 
-final class StoreTest extends TestCase
+class StoreTest extends TestCase
 {
     private User $user;
 

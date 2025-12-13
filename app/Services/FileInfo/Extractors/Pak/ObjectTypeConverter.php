@@ -7,7 +7,7 @@ namespace App\Services\FileInfo\Extractors\Pak;
 /**
  * Convert object type ID to human-readable string
  */
-final class ObjectTypeConverter
+class ObjectTypeConverter
 {
     public static function toString(string $type): string
     {

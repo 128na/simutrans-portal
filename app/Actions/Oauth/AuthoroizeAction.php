@@ -7,7 +7,7 @@ namespace App\Actions\Oauth;
 use App\Services\Twitter\PKCEService;
 use Illuminate\Support\Facades\Session;
 
-final readonly class AuthoroizeAction
+class AuthoroizeAction
 {
     public function __construct(
         private PKCEService $pkceService,

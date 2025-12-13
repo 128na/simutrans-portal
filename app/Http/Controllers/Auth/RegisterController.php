@@ -11,7 +11,7 @@ use App\Models\User;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 
-final class RegisterController extends Controller
+class RegisterController extends Controller
 {
     public function __construct(
         private readonly MetaOgpService $metaOgpService,

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Tests\Unit\TestCase;
 
-final class DownloadActionTest extends TestCase
+class DownloadActionTest extends TestCase
 {
     public function test_dispatches_conversion_event_for_guest(): void
     {

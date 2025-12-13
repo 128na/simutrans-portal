@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-final readonly class TagDescriptionUpdated
+class TagDescriptionUpdated
 {
     use Dispatchable;
     use SerializesModels;

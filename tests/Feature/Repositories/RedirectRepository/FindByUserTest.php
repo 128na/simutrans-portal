@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Repositories\RedirectRepository;
 use Tests\Feature\TestCase;
 
-final class FindByUserTest extends TestCase
+class FindByUserTest extends TestCase
 {
     private RedirectRepository $redirectRepository;
 

@@ -8,7 +8,7 @@ use App\Models\Redirect;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-final class RedirectPolicy extends BasePolicy
+class RedirectPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 

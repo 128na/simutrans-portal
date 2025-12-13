@@ -11,7 +11,7 @@ use HTMLPurifier_Config;
 /**
  * @see https://github.com/cebe/markdown
  */
-final readonly class MarkdownService
+class MarkdownService
 {
     public function __construct(
         private GithubMarkdown $githubMarkdown,

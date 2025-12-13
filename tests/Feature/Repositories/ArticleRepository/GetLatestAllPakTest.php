@@ -12,7 +12,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Tests\Feature\TestCase;
 
-final class GetLatestAllPakTest extends TestCase
+class GetLatestAllPakTest extends TestCase
 {
     private ArticleRepository $articleRepository;
 

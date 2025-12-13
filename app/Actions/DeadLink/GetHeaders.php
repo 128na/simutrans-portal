@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\DeadLink;
 
-final class GetHeaders
+class GetHeaders
 {
     /**
      * @return array<string>

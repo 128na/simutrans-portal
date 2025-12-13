@@ -7,7 +7,7 @@ namespace App\Console\Commands;
 use App\Actions\GenerateStatic\DeleteUnrelatedTags;
 use Illuminate\Console\Command;
 
-final class RemoveUnusedTagsCommand extends Command
+class RemoveUnusedTagsCommand extends Command
 {
     /**
      * The name and signature of the console command.

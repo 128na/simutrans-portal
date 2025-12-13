@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Contents\Sections;
 
-final class SectionUrl extends Section
+class SectionUrl extends Section
 {
     public ?string $url;
 

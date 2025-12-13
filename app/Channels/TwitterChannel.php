@@ -10,7 +10,7 @@ use App\Notifications\SendSNSNotification;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 
-final class TwitterChannel extends BaseChannel
+class TwitterChannel extends BaseChannel
 {
     public function send(Model $model, SendSNSNotification $sendSNSNotification): void
     {

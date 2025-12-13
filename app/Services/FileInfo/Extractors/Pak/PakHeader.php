@@ -9,7 +9,7 @@ use App\Exceptions\InvalidPakFileException;
 /**
  * Pak file header information
  */
-final readonly class PakHeader
+class PakHeader
 {
     private function __construct(
         public string $compilerVersion,

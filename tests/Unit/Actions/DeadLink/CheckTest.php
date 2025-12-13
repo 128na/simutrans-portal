@@ -16,7 +16,7 @@ use Illuminate\Support\LazyCollection;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
-final class CheckTest extends TestCase
+class CheckTest extends TestCase
 {
     public function test_200(): void
     {

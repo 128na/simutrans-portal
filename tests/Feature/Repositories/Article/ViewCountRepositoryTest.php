@@ -10,7 +10,7 @@ use App\Repositories\Article\ViewCountRepository;
 use Illuminate\Support\Facades\DB;
 use Tests\Feature\TestCase;
 
-final class ViewCountRepositoryTest extends TestCase
+class ViewCountRepositoryTest extends TestCase
 {
     private ViewCountRepository $viewCountRepository;
 

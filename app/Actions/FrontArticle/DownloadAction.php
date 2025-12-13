@@ -11,7 +11,7 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-final class DownloadAction
+class DownloadAction
 {
     public function __invoke(Article $article, ?User $user): StreamedResponse
     {

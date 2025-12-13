@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @mixin IdeHelperViewCount
  */
-final class ViewCount extends Model
+class ViewCount extends Model
 {
     public const int TYPE_DAILY = 1;
 

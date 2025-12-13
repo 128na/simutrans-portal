@@ -7,7 +7,7 @@ namespace App\Http\Resources\Mypage;
 use App\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-final class TagEdit extends JsonResource
+class TagEdit extends JsonResource
 {
     /** @var Tag */
     public $resource;

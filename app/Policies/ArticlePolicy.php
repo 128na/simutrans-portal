@@ -9,7 +9,7 @@ use App\Models\Article;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-final class ArticlePolicy extends BasePolicy
+class ArticlePolicy extends BasePolicy
 {
     use HandlesAuthorization;
 

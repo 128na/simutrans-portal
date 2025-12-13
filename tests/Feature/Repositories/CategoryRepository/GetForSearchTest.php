@@ -8,7 +8,7 @@ use App\Models\Category;
 use App\Repositories\CategoryRepository;
 use Tests\Feature\TestCase;
 
-final class GetForSearchTest extends TestCase
+class GetForSearchTest extends TestCase
 {
     private CategoryRepository $categoryRepository;
 

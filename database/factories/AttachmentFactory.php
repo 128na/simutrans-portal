@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Attachment>
  */
-final class AttachmentFactory extends Factory
+class AttachmentFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

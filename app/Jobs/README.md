@@ -360,7 +360,7 @@ Webダッシュボード: `http://localhost:8000/horizon`
 ```php
 use Illuminate\Support\Facades\Queue;
 
-final class CheckDeadLinkJobTest extends TestCase
+class CheckDeadLinkJobTest extends TestCase
 {
     use RefreshDatabase;
 

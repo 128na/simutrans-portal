@@ -10,7 +10,7 @@ use OutOfBoundsException;
 /**
  * Binary reader for little-endian data
  */
-final class BinaryReader
+class BinaryReader
 {
     private int $position = 0;
 

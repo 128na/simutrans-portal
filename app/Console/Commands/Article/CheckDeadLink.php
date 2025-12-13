@@ -9,7 +9,7 @@ use App\Actions\DeadLink\OnDead;
 use Illuminate\Console\Command;
 use Throwable;
 
-final class CheckDeadLink extends Command
+class CheckDeadLink extends Command
 {
     protected $signature = 'check:deadlink';
 

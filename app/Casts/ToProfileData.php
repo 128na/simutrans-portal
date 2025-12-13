@@ -10,7 +10,7 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 /**
  * @implements CastsAttributes<ProfileData,ProfileData>
  */
-final class ToProfileData implements CastsAttributes
+class ToProfileData implements CastsAttributes
 {
     /**
      * 指定された値をキャスト.

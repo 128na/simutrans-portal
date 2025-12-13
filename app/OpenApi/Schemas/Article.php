@@ -27,4 +27,4 @@ use OpenApi\Attributes as OA;
  *     @OA\Property(property="modified_at", type="string", format="date-time", example="2024-01-01T12:00", description="更新日時")
  * )
  */
-final class Article {}
+class Article {}

@@ -9,7 +9,7 @@ use App\Models\ArticleLinkCheckHistory;
 use App\Repositories\ArticleLinkCheckHistoryRepository;
 use Tests\Feature\TestCase;
 
-final class ArticleLinkCheckHistoryRepositoryTest extends TestCase
+class ArticleLinkCheckHistoryRepositoryTest extends TestCase
 {
     private ArticleLinkCheckHistoryRepository $repository;
 

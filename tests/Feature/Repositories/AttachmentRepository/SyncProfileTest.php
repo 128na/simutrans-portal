@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Repositories\AttachmentRepository;
 use Tests\Feature\TestCase;
 
-final class SyncProfileTest extends TestCase
+class SyncProfileTest extends TestCase
 {
     private AttachmentRepository $attachmentRepository;
 

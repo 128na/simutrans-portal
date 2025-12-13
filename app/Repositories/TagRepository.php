@@ -8,7 +8,7 @@ use App\Models\Tag;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
-final class TagRepository
+class TagRepository
 {
     public function __construct(public Tag $model) {}
 

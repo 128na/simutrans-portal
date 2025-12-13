@@ -9,7 +9,7 @@ use App\Exceptions\InvalidPakFileException;
 /**
  * Pak file node structure
  */
-final readonly class Node
+class Node
 {
     public const string OBJ_TEXT = 'TEXT';
 

@@ -10,7 +10,7 @@ use App\Repositories\AttachmentRepository;
 use App\Repositories\User\ProfileRepository;
 use App\Repositories\UserRepository;
 
-final readonly class UpdateProfile
+class UpdateProfile
 {
     public function __construct(
         private UserRepository $userRepository,

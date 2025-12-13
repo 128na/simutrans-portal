@@ -13,7 +13,7 @@
 ```php
 use App\Http\Controllers\Concerns\RespondsWithJson;
 
-final class YourController extends Controller
+class YourController extends Controller
 {
     use RespondsWithJson;
 
@@ -171,7 +171,7 @@ ArticleList::collection($articles) → ['articles' => $articles]
 ### ShowController（記事詳細）
 
 ```php
-final class ShowController extends Controller
+class ShowController extends Controller
 {
     use RespondsWithJson;
 
@@ -193,7 +193,7 @@ final class ShowController extends Controller
 ### UserController（ユーザー一覧・詳細）
 
 ```php
-final class UserController extends Controller
+class UserController extends Controller
 {
     use RespondsWithJson;
 

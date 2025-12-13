@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @mixin IdeHelperRedirect
  */
-final class Redirect extends Model
+class Redirect extends Model
 {
     /** @use HasFactory<\Database\Factories\RedirectFactory> */
     use HasFactory;

@@ -10,7 +10,7 @@ use App\Repositories\Article\ConversionCountRepository;
 use Illuminate\Support\Facades\DB;
 use Tests\Feature\TestCase;
 
-final class ConversionCountRepositoryTest extends TestCase
+class ConversionCountRepositoryTest extends TestCase
 {
     private ConversionCountRepository $conversionCountRepository;
 

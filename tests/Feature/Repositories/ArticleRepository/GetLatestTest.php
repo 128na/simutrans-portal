@@ -12,7 +12,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Tests\Feature\TestCase;
 
-final class GetLatestTest extends TestCase
+class GetLatestTest extends TestCase
 {
     private ArticleRepository $articleRepository;
 

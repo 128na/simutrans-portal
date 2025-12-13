@@ -21,7 +21,7 @@ use RuntimeException;
  *
  * @see simutrans/descriptor/reader/pedestrian_reader.cc
  */
-final readonly class PedestrianParser implements TypeParserInterface
+class PedestrianParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {

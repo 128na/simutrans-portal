@@ -7,7 +7,7 @@ namespace Tests\Unit\Services\FileInfo\Extractors;
 use App\Services\FileInfo\Extractors\TabExtractor;
 use Tests\Unit\TestCase;
 
-final class TabExtractorTest extends TestCase
+class TabExtractorTest extends TestCase
 {
     public function test_get_key(): void
     {

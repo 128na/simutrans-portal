@@ -16,11 +16,11 @@ use RectorLaravel\Set\LaravelSetList;
 
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__.'/app',
-        __DIR__.'/database',
-        __DIR__.'/lang',
-        __DIR__.'/resources',
-        __DIR__.'/routes',
+        __DIR__ . '/app',
+        __DIR__ . '/database',
+        __DIR__ . '/lang',
+        __DIR__ . '/resources',
+        __DIR__ . '/routes',
         // __DIR__ . '/tests',
     ])
     ->withPhpSets(php83: true)
@@ -42,14 +42,22 @@ return RectorConfig::configure()
     )
     ->withSkip([
         IssetOnPropertyObjectToPropertyExistsRector::class, // property_exists($model, 'hoge') return false
-        ReturnTypeFromStrictTypedCallRector::class => [__DIR__.'/app/Repositories/BaseRepository.php'], // Generics壊れる
-        RemoveUnusedVariableAssignRector::class => [__DIR__.'/tests'], // $selfでのアクセスが壊れるので
+        ReturnTypeFromStrictTypedCallRector::class => [__DIR__ . '/app/Repositories/BaseRepository.php'], // Generics壊れる
+        RemoveUnusedVariableAssignRector::class => [__DIR__ . '/tests'], // $selfでのアクセスが壊れるので
         // NewlineAfterStatementRector::class => [__DIR__ . '/tests'], // $selfでのアクセスが壊れるので
-        DeclareStrictTypesRector::class => [__DIR__.'/resources/views'], // bladeファイルも declare がつくので
+        DeclareStrictTypesRector::class => [__DIR__ . '/resources/views'], // bladeファイルも declare がつくので
         StringToClassConstantRector::class, // view('auth.login') が誤って変換されるため
         PostIncDecToPreIncDecRector::class,
         RemoveConcatAutocastRector::class,
         ReadOnlyPropertyRector::class,
+        // Laravel 12 + Rector互換性問題: Illuminate\Foundation\Support\Providers\EventServiceProvider解析エラー回避
+        __DIR__ . '/app/Actions',
+        __DIR__ . '/app/Console/Commands',
+        __DIR__ . '/app/Http/Resources',
+        __DIR__ . '/app/Models',
+        __DIR__ . '/app/Providers',
+        __DIR__ . '/app/Repositories',
+        __DIR__ . '/app/Services',
     ])
     ->withSets([
         LaravelLevelSetList::UP_TO_LARAVEL_120,

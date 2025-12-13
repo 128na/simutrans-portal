@@ -46,13 +46,13 @@ class CompareThumbnailSizesCommand extends Command
         $data = [];
 
         foreach ($attachments as $attachment) {
-            if (! $disk->exists($attachment->path)) {
+            if (! $attachment->path || ! $disk->exists($attachment->path)) {
                 $bar->advance();
 
                 continue;
             }
 
-            if (! $disk->exists($attachment->thumbnail_path)) {
+            if (! $attachment->thumbnail_path || ! $disk->exists($attachment->thumbnail_path)) {
                 $bar->advance();
 
                 continue;

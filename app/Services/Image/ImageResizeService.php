@@ -83,10 +83,13 @@ class ImageResizeService
             throw new ResizeFailedException('tempnam failed');
         }
 
+        $qualityConfig = config('thumbnail.quality', 90);
         /** @var int<0, 100> $quality */
-        $quality = max(0, min(100, (int) config('thumbnail.quality', 90)));
+        $quality = max(0, min(100, is_int($qualityConfig) ? $qualityConfig : 90));
+
+        $pngCompressionConfig = config('thumbnail.png_compression', 5);
         /** @var int<0, 9> $pngCompression */
-        $pngCompression = max(0, min(9, (int) config('thumbnail.png_compression', 5)));
+        $pngCompression = max(0, min(9, is_int($pngCompressionConfig) ? $pngCompressionConfig : 5));
 
         $result = match ($format) {
             'webp' => @imagewebp($gdImage, $tmpPath, $quality),

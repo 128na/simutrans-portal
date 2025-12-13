@@ -30,6 +30,7 @@ final class Attachment extends Model
         'attachmentable_type',
         'original_name',
         'path',
+        'thumbnail_path',
         'caption',
         'order',
         'size',
@@ -115,7 +116,9 @@ final class Attachment extends Model
     protected function thumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => match ($this->type) {
-            'image' => $this->getPublicDisk()->url($this->path),
+            'image' => $this->thumbnail_path
+                ? $this->getPublicDisk()->url($this->thumbnail_path)
+                : $this->getPublicDisk()->url($this->path),
             'zip' => $this->getPublicDisk()->url(DefaultThumbnail::ZIP),
             'movie' => $this->getPublicDisk()->url(DefaultThumbnail::MOVIE),
             default => $this->getPublicDisk()->url(DefaultThumbnail::FILE),

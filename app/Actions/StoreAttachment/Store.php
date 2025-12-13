@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\StoreAttachment;
 
 use App\Enums\ImageFormat;
+use App\Jobs\Attachments\JobGenerateThumbnail;
 use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Filesystem\FilesystemAdapter;
@@ -40,12 +41,17 @@ final readonly class Store
         try {
             $filepath = $this->filesystemAdapter->put('user/'.$user->id, $uploadedFile);
 
-            return Attachment::create([
+            $attachment = Attachment::create([
                 'user_id' => $user->id,
                 'path' => $filepath,
                 'original_name' => $uploadedFile->getClientOriginalName(),
                 'size' => $uploadedFile->getSize(),
             ]);
+
+            // サムネイル生成ジョブをディスパッチ
+            JobGenerateThumbnail::dispatch($attachment);
+
+            return $attachment;
         } catch (ConvertFailedException $convertFailedException) {
             report($convertFailedException);
 

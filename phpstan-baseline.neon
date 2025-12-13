@@ -163,6 +163,24 @@ parameters:
 			path: app/Http/Resources/Frontend/ArticleShow.php
 
 		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: app/Jobs/Attachments/JobGenerateThumbnail.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 2
+			path: app/Jobs/Attachments/JobGenerateThumbnail.php
+
+		-
+			message: '#^Parameter \#2 \$contents of method Illuminate\\Filesystem\\FilesystemAdapter\:\:put\(\) expects Illuminate\\Http\\File\|Illuminate\\Http\\UploadedFile\|Psr\\Http\\Message\\StreamInterface\|resource\|string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Jobs/Attachments/JobGenerateThumbnail.php
+
+		-
 			message: '#^Call to an undefined method App\\Models\\Article\:\:getInfoLogging\(\)\.$#'
 			identifier: method.notFound
 			count: 1

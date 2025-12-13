@@ -30,21 +30,21 @@ class ToBlueSkyTest extends TestCase
         $this->mock(GetArticleParam::class, function (MockInterface $mock) use ($article, $articleParam): void {
             $mock->expects('__invoke')
                 ->once()
-                ->with(\Mockery::on(fn ($arg) => $arg->id === $article->id))
+                ->with(\Mockery::on(fn($arg) => $arg->id === $article->id))
                 ->andReturn($articleParam);
         });
 
-        // CreateRecordResponse のモックは不要（BlueSkyApiClient 内で処理）
-        $postMock = $this->mock(Post::class);
+        // Post クラスは final なので実際のインスタンスを使用
+        $post = new Post('Test content');
 
-        $this->mock(BlueSkyApiClient::class, function (MockInterface $mock) use ($article, $postMock): void {
+        $this->mock(BlueSkyApiClient::class, function (MockInterface $mock) use ($article, $post): void {
             $mock->expects('addWebsiteCard')
                 ->once()
                 ->with(\Mockery::type(Post::class), $article)
-                ->andReturn($postMock);
+                ->andReturn($post);
             $mock->expects('send')
                 ->once()
-                ->with($postMock)
+                ->with($post)
                 ->andReturn('at://did:plc:123/app.bsky.feed.post/abc'); // URI文字列を直接返す
         });
 
@@ -65,8 +65,11 @@ class ToBlueSkyTest extends TestCase
             $mock->allows('__invoke')->andReturn([]);
         });
 
-        $this->mock(BlueSkyApiClient::class, function (MockInterface $mock): void {
-            $mock->allows('addWebsiteCard')->andReturn($this->mock(Post::class));
+        // Post クラスは final なので実際のインスタンスを使用
+        $post = new Post('Updated content');
+
+        $this->mock(BlueSkyApiClient::class, function (MockInterface $mock) use ($post): void {
+            $mock->allows('addWebsiteCard')->andReturn($post);
             $mock->expects('send')->once()->andReturn('at://test');
         });
 
@@ -107,9 +110,10 @@ class ToBlueSkyTest extends TestCase
             $mock->allows('__invoke')->andReturn([]);
         });
 
-        $postMock = $this->mock(Post::class);
+        // Post クラスは final なので実際のインスタンスを使用
+        $post = new Post('Content with failed image');
 
-        $this->mock(BlueSkyApiClient::class, function (MockInterface $mock) use ($article): void {
+        $this->mock(BlueSkyApiClient::class, function (MockInterface $mock) use ($article, $post): void {
             $mock->expects('addWebsiteCard')
                 ->once()
                 ->with(\Mockery::type(Post::class), $article)

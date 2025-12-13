@@ -10,7 +10,7 @@ namespace App\Services\FileInfo\Extractors\Pak;
  * Simutrans のバイナリ形式を参考に独自実装。
  * 参考: https://github.com/128na/simutrans/tree/OTRP-KUTAv6/descriptor
  */
-final readonly class PakParser
+class PakParser
 {
     /**
      * Parse pak file and extract metadata

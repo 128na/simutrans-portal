@@ -6,7 +6,7 @@ namespace App\Adapters;
 
 use Exception;
 
-final class AutoRefreshingDropBoxTokenService
+class AutoRefreshingDropBoxTokenService
 {
     public function getToken(string $key, string $secret, string $refreshToken): string
     {

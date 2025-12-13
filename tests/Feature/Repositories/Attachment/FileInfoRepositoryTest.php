@@ -8,7 +8,7 @@ use App\Models\Attachment;
 use App\Repositories\Attachment\FileInfoRepository;
 use Tests\Feature\TestCase;
 
-final class FileInfoRepositoryTest extends TestCase
+class FileInfoRepositoryTest extends TestCase
 {
     private FileInfoRepository $fileInfoRepository;
 

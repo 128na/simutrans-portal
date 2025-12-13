@@ -9,7 +9,7 @@ use App\Models\User;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Feature\TestCase;
 
-final class StoreRequestTest extends TestCase
+class StoreRequestTest extends TestCase
 {
     #[\Override]
     protected function setUp(): void

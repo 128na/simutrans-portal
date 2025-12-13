@@ -11,7 +11,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-final class InviteController extends Controller
+class InviteController extends Controller
 {
     public function __construct(
         private readonly MetaOgpService $metaOgpService,

@@ -9,7 +9,7 @@ use App\Models\Attachment;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
-final class ReparsePakFilesCommand extends Command
+class ReparsePakFilesCommand extends Command
 {
     protected $signature = 'attachment:reparse-pak-files
                             {id? : Specific attachment ID to reparse}

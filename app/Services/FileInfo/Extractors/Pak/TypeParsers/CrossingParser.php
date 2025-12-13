@@ -13,7 +13,7 @@ use RuntimeException;
  * Crossings define where two different way types intersect (e.g., road crossing railway).
  * Supported versions: 1-2 (version 0 is legacy and unsupported)
  */
-final readonly class CrossingParser implements TypeParserInterface
+class CrossingParser implements TypeParserInterface
 {
     // LOAD_SOUND marker - indicates embedded sound file name (sint8)(0xFFFE) = -2
     private const int LOAD_SOUND = -2;

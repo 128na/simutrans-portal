@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * Duskテスト用シーダー
  */
-final class DuskSeeder extends Seeder
+class DuskSeeder extends Seeder
 {
     public function run(): void
     {

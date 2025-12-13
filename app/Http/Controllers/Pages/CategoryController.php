@@ -12,7 +12,7 @@ use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller;
 
-final class CategoryController extends Controller
+class CategoryController extends Controller
 {
     public function __construct(
         private readonly ArticleRepository $articleRepository,

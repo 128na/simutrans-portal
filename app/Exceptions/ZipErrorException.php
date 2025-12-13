@@ -7,7 +7,7 @@ namespace App\Exceptions;
 use Exception;
 use ZipArchive;
 
-final class ZipErrorException extends Exception
+class ZipErrorException extends Exception
 {
     public function __construct(string $message, ?int $code = null)
     {

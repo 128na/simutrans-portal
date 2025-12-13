@@ -9,7 +9,7 @@ use Exception;
 /**
  * Exception thrown when a .pak file cannot be parsed
  */
-final class InvalidPakFileException extends Exception
+class InvalidPakFileException extends Exception
 {
     public static function invalidHeader(): self
     {

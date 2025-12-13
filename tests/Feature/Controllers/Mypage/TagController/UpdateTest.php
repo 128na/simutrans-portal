@@ -10,7 +10,7 @@ use App\Models\Tag;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-final class UpdateTest extends TestCase
+class UpdateTest extends TestCase
 {
     private User $user;
 

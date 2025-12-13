@@ -9,7 +9,7 @@ use App\Services\Twitter\PKCEService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Session;
 
-final readonly class RefreshAction
+class RefreshAction
 {
     public function __construct(
         private PKCEService $pkceService,

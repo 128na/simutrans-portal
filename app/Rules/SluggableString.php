@@ -7,7 +7,7 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-final class SluggableString implements ValidationRule
+class SluggableString implements ValidationRule
 {
     /**
      * Run the validation rule.

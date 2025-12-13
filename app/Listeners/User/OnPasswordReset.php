@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Log\Logger;
 
-final readonly class OnPasswordReset
+class OnPasswordReset
 {
     public function __construct(private Logger $logger) {}
 

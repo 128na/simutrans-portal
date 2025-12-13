@@ -7,7 +7,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-final class CountUserIdSeeder extends Seeder
+class CountUserIdSeeder extends Seeder
 {
     /**
      * user_idが未設定(0)のレコードを更新する

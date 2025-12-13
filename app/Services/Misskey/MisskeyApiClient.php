@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Http;
 /**
  * @see https://misskey-hub.net/docs/api/
  */
-final readonly class MisskeyApiClient
+class MisskeyApiClient
 {
     public function __construct(
         private string $baseUrl,

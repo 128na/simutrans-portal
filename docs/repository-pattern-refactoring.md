@@ -30,12 +30,14 @@
 以下の Repository から継承を除去し、必要なメソッドのみを実装:
 
 #### AttachmentRepository
+
 - 継承を除去
 - 実装したメソッド:
   - `find()` - ImageAttachment ルールで使用
   - `syncProfile()` - UpdateProfile アクションで使用
 
 #### OauthTokenRepository
+
 - 継承を除去
 - 実装したメソッド:
   - `getToken()` - Twitter API 関連で使用
@@ -43,12 +45,14 @@
   - `delete()` - PKCE サービスで使用
 
 #### User/ProfileRepository
+
 - 継承を除去
 - 実装したメソッド:
   - `update()` - UpdateProfile アクションで使用
   - `store()`, `find()`, `delete()` - テストでのみ使用
 
 #### Attachment/FileInfoRepository
+
 - 継承を除去
 - 実装したメソッド:
   - `updateOrCreate()` - FileInfoService で使用
@@ -57,11 +61,13 @@
 ### 2. BaseCountRepository を継承していた Repository の変更
 
 #### Article/ViewCountRepository
+
 - 継承を除去
 - `countUp()` メソッドの機能をインライン化
 - テーブル名 `view_counts` をハードコード
 
 #### Article/ConversionCountRepository
+
 - 継承を除去
 - `countUp()` メソッドの機能をインライン化
 - テーブル名 `conversion_counts` をハードコード
@@ -80,6 +86,7 @@
 ### 5. ドキュメントの更新
 
 `.github/copilot-instructions.md` に Repository パターンのガイドラインを追加:
+
 - 継承を使用しない基本方針
 - 実装パターンの例
 - 命名規則
@@ -90,16 +97,16 @@
 ### 基本構造
 
 ```php
-final class ExampleRepository
+class ExampleRepository
 {
     public function __construct(private readonly Example $model) {}
-    
+
     // 必要なメソッドのみを実装
     public function find(int $id): ?Example
     {
         return $this->model->find($id);
     }
-    
+
     // ドメイン固有のメソッド
     public function findByCondition(string $condition): ?Example
     {
@@ -137,6 +144,7 @@ tests/Feature/Repositories/BaseRepositoryTest.php      | -294
 ### 影響を受けなかったファイル
 
 以下の Repository は元々継承を使用していなかったため、変更なし:
+
 - ArticleRepository
 - UserRepository
 - TagRepository

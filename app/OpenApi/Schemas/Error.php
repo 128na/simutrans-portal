@@ -21,4 +21,4 @@ use OpenApi\Attributes as OA;
  *     )
  * )
  */
-final class Error {}
+class Error {}

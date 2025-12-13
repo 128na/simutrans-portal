@@ -10,7 +10,7 @@ use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
 
-final readonly class UpdateArticle
+class UpdateArticle
 {
     public function __construct(
         private ArticleRepository $articleRepository,

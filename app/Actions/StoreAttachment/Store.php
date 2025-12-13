@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 
-final readonly class Store
+class Store
 {
     public function __construct(
         private FilesystemAdapter $filesystemAdapter,
@@ -40,12 +40,17 @@ final readonly class Store
         try {
             $filepath = $this->filesystemAdapter->put('user/'.$user->id, $uploadedFile);
 
-            return Attachment::create([
+            $attachment = Attachment::create([
                 'user_id' => $user->id,
                 'path' => $filepath,
                 'original_name' => $uploadedFile->getClientOriginalName(),
                 'size' => $uploadedFile->getSize(),
             ]);
+
+            // サムネイル生成ジョブをディスパッチ
+            dispatch(new \App\Jobs\Attachments\JobGenerateThumbnail($attachment));
+
+            return $attachment;
         } catch (ConvertFailedException $convertFailedException) {
             report($convertFailedException);
 

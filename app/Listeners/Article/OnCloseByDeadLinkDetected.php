@@ -7,7 +7,7 @@ namespace App\Listeners\Article;
 use App\Events\Article\CloseByDeadLinkDetected;
 use App\Notifications\SendDeadLinkDetectedEmail;
 
-final class OnCloseByDeadLinkDetected
+class OnCloseByDeadLinkDetected
 {
     public function handle(CloseByDeadLinkDetected $closeByDeadLinkDetected): void
     {

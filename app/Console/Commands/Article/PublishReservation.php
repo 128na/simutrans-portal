@@ -9,7 +9,7 @@ use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Command;
 
-final class PublishReservation extends Command
+class PublishReservation extends Command
 {
     /**
      * The name and signature of the console command.

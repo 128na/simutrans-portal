@@ -36,4 +36,4 @@ use OpenApi\Attributes as OA;
  *     @OA\Property(property="articles_count", type="integer", example=10, description="記事数")
  * )
  */
-final class Tag {}
+class Tag {}

@@ -8,7 +8,7 @@ use App\Models\Attachment;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-final class AttachmentFileSizeSeeder extends Seeder
+class AttachmentFileSizeSeeder extends Seeder
 {
     use WithoutModelEvents;
 

@@ -7,7 +7,7 @@ namespace App\Http\Resources\Mypage;
 use App\Models\Article as ModelsArticle;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-final class ArticleEdit extends JsonResource
+class ArticleEdit extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request

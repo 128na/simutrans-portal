@@ -19,4 +19,4 @@ use OpenApi\Attributes as OA;
  *     @OA\Property(property="description", type="string", example="乗り物関連アドオン", description="説明")
  * )
  */
-final class Category {}
+class Category {}

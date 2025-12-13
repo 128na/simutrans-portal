@@ -11,7 +11,7 @@ use Illuminate\Log\Logger;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
-final class OnRegisteredTest extends TestCase
+class OnRegisteredTest extends TestCase
 {
     public function test_logs_user_registration(): void
     {

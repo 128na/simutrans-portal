@@ -419,7 +419,7 @@ Echo.channel("articles").listen("ArticlePublished", (e) => {
 ```php
 use Illuminate\Support\Facades\Event;
 
-final class ArticlePublishedTest extends TestCase
+class ArticlePublishedTest extends TestCase
 {
     public function test_event_is_dispatched(): void
     {
@@ -441,7 +441,7 @@ final class ArticlePublishedTest extends TestCase
 ```php
 use Illuminate\Support\Facades\Notification;
 
-final class OnArticlePublishedTest extends TestCase
+class OnArticlePublishedTest extends TestCase
 {
     public function test_listener_sends_notifications(): void
     {

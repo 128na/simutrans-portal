@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 /**
  * ユーザーが管理者権限を持つか確認する.
  */
-final class AdminCheck
+class AdminCheck
 {
     /**
      * Handle an incoming request.

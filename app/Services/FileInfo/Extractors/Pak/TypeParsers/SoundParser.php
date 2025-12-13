@@ -25,7 +25,7 @@ use RuntimeException;
  *
  * @see simutrans/descriptor/reader/sound_reader.cc
  */
-final readonly class SoundParser implements TypeParserInterface
+class SoundParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {

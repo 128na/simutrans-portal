@@ -11,7 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
-final class IndexController extends Controller
+class IndexController extends Controller
 {
     public function __construct(
         private readonly ArticleRepository $articleRepository,

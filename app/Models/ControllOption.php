@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @mixin IdeHelperControllOption
  */
-final class ControllOption extends Model
+class ControllOption extends Model
 {
     public $incrementing = false;
 

@@ -6,4 +6,4 @@ namespace App\Actions\StoreAttachment;
 
 use Exception;
 
-final class ConvertFailedException extends Exception {}
+class ConvertFailedException extends Exception {}

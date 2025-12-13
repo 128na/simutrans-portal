@@ -7,7 +7,7 @@ namespace App\Repositories;
 use App\Models\User\LoginHistory;
 use Illuminate\Database\Eloquent\Collection;
 
-final class LoginHistoryRepository
+class LoginHistoryRepository
 {
     public function __construct(public LoginHistory $model) {}
 

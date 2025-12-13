@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Log\Logger;
 use Laravel\Fortify\Events\RecoveryCodeReplaced;
 
-final readonly class OnRecoveryCodeReplaced
+class OnRecoveryCodeReplaced
 {
     public function __construct(private Logger $logger) {}
 

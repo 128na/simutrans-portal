@@ -8,7 +8,7 @@ use App\Models\Attachment;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-final class IndexTest extends TestCase
+class IndexTest extends TestCase
 {
     private User $user;
 

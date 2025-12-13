@@ -38,4 +38,4 @@ use OpenApi\Attributes as OA;
  *     )
  * )
  */
-final class User {}
+class User {}

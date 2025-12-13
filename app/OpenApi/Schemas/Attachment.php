@@ -40,4 +40,4 @@ use OpenApi\Attributes as OA;
  *     @OA\Property(property="created_at", type="string", format="date-time", example="2024-01-01T12:00:00Z", description="作成日時")
  * )
  */
-final class Attachment {}
+class Attachment {}

@@ -7,7 +7,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
-final class Kernel extends ConsoleKernel
+class Kernel extends ConsoleKernel
 {
     /**
      * 最大実行時間

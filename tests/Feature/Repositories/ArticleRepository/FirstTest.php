@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Repositories\ArticleRepository;
 use Tests\Feature\TestCase;
 
-final class FirstTest extends TestCase
+class FirstTest extends TestCase
 {
     private ArticleRepository $articleRepository;
 

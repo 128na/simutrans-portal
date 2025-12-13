@@ -8,7 +8,7 @@ use App\Enums\ControllOptionKey;
 use App\Models\ControllOption;
 use Illuminate\Database\Seeder;
 
-final class ControllOptionsSeeder extends Seeder
+class ControllOptionsSeeder extends Seeder
 {
     public function run(): void
     {

@@ -11,7 +11,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\LazyCollection;
 use Tests\Feature\TestCase;
 
-final class CursorReservationsTest extends TestCase
+class CursorReservationsTest extends TestCase
 {
     private ArticleRepository $articleRepository;
 

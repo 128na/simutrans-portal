@@ -10,7 +10,7 @@ use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 use ZipArchive;
 
-final class ZipArchiveParserTest extends TestCase
+class ZipArchiveParserTest extends TestCase
 {
     public function test_parse_text_content_with_empty_zip(): void
     {

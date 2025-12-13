@@ -7,7 +7,7 @@ namespace App\Http\Resources\Mypage;
 use App\Models\Article;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-final class ArticleAnalytic extends JsonResource
+class ArticleAnalytic extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request

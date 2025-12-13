@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
-final class UserRepository
+class UserRepository
 {
     public function __construct(public User $model) {}
 

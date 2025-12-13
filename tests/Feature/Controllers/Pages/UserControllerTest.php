@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Pages;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-final class UserControllerTest extends TestCase
+class UserControllerTest extends TestCase
 {
     public function test_users(): void
     {

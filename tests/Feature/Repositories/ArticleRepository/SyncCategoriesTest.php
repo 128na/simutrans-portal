@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Repositories\ArticleRepository;
 use Tests\Feature\TestCase;
 
-final class SyncCategoriesTest extends TestCase
+class SyncCategoriesTest extends TestCase
 {
     private ArticleRepository $articleRepository;
 

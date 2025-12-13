@@ -12,7 +12,7 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Unit\TestCase;
 
-final class OnArticleStoredTest extends TestCase
+class OnArticleStoredTest extends TestCase
 {
     #[DataProvider('data')]
     public function test(bool $isPublish, bool $shouldNotify, bool $expectNotify): void

@@ -8,7 +8,7 @@ use App\Models\Article;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
-final class ViewCountRepository
+class ViewCountRepository
 {
     /**
      * 日次、月次、年次、全体の合計をカウントアップする.

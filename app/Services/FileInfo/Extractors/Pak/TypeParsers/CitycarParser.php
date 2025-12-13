@@ -14,7 +14,7 @@ use RuntimeException;
  * They are not player-owned.
  * Supported versions: 0-2
  */
-final readonly class CitycarParser implements TypeParserInterface
+class CitycarParser implements TypeParserInterface
 {
     // Default intro/retire dates from intro_dates.h
     private const int DEFAULT_INTRO_DATE = 1930;

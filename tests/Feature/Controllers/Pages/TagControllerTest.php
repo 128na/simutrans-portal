@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Pages;
 use App\Models\Tag;
 use Tests\Feature\TestCase;
 
-final class TagControllerTest extends TestCase
+class TagControllerTest extends TestCase
 {
     public function test_tags(): void
     {

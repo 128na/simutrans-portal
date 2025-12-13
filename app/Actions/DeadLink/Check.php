@@ -11,7 +11,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Sleep;
 
-final class Check
+class Check
 {
     private const int FAILED_LIMIT = 3;
 

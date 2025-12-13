@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 
-final class RedirectUnlessSSL
+class RedirectUnlessSSL
 {
     /**
      * 本番、ステージング環境でhttpアクセスの場合リダイレクトする.

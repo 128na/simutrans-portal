@@ -11,7 +11,7 @@ use Illuminate\Database\Seeder;
 /**
  * カテゴリ
  */
-final class CategorySeeder extends Seeder
+class CategorySeeder extends Seeder
 {
     private const array CATEGORIES = [
         // pak

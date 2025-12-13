@@ -80,7 +80,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	final class IdeHelperArticle {}
+	class IdeHelperArticle {}
 }
 
 namespace App\Models{
@@ -92,13 +92,14 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \App\Models\Article $article
+ * @method static \Database\Factories\ArticleLinkCheckHistoryFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleLinkCheckHistory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleLinkCheckHistory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleLinkCheckHistory query()
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	final class IdeHelperArticleLinkCheckHistory {}
+	class IdeHelperArticleLinkCheckHistory {}
 }
 
 namespace App\Models\Article{
@@ -114,7 +115,7 @@ namespace App\Models\Article{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	final class IdeHelperArticleSearchIndex {}
+	class IdeHelperArticleSearchIndex {}
 }
 
 namespace App\Models\Article{
@@ -133,7 +134,7 @@ namespace App\Models\Article{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	final class IdeHelperConversionCount {}
+	class IdeHelperConversionCount {}
 }
 
 namespace App\Models\Article{
@@ -152,7 +153,7 @@ namespace App\Models\Article{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	final class IdeHelperViewCount {}
+	class IdeHelperViewCount {}
 }
 
 namespace App\Models{
@@ -163,6 +164,7 @@ namespace App\Models{
  * @property string|null $attachmentable_type 添付先クラス名
  * @property string $original_name オリジナルファイル名
  * @property string $path 保存先パス
+ * @property string|null $thumbnail_path
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property string|null $caption キャプション（画像向け）
@@ -172,6 +174,7 @@ namespace App\Models{
  * @property-read \App\Models\Attachment\FileInfo|null $fileInfo
  * @property-read mixed $full_path
  * @property-read bool $is_image
+ * @property-read mixed $original
  * @property-read mixed $thumbnail
  * @property-read string $type
  * @property-read \App\Models\User $user
@@ -182,7 +185,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	final class IdeHelperAttachment {}
+	class IdeHelperAttachment {}
 }
 
 namespace App\Models\Attachment{
@@ -198,7 +201,7 @@ namespace App\Models\Attachment{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	final class IdeHelperFileInfo {}
+	class IdeHelperFileInfo {}
 }
 
 namespace App\Models{
@@ -225,7 +228,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	final class IdeHelperCategory {}
+	class IdeHelperCategory {}
 }
 
 namespace App\Models{
@@ -240,7 +243,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	final class IdeHelperControllOption {}
+	class IdeHelperControllOption {}
 }
 
 namespace App\Models{
@@ -259,7 +262,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	final class IdeHelperOauthToken {}
+	class IdeHelperOauthToken {}
 }
 
 namespace App\Models{
@@ -279,7 +282,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	final class IdeHelperRedirect {}
+	class IdeHelperRedirect {}
 }
 
 namespace App\Models{
@@ -304,7 +307,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	final class IdeHelperTag {}
+	class IdeHelperTag {}
 }
 
 namespace App\Models{
@@ -352,7 +355,7 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	final class IdeHelperUser {}
+	class IdeHelperUser {}
 }
 
 namespace App\Models\User{
@@ -372,7 +375,7 @@ namespace App\Models\User{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	final class IdeHelperLoginHistory {}
+	class IdeHelperLoginHistory {}
 }
 
 namespace App\Models\User{
@@ -392,6 +395,6 @@ namespace App\Models\User{
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]
-	final class IdeHelperProfile {}
+	class IdeHelperProfile {}
 }
 

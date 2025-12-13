@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Mypage\Article;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-final class CreateTest extends TestCase
+class CreateTest extends TestCase
 {
     private User $user;
 

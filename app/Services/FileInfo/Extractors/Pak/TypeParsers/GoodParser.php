@@ -14,7 +14,7 @@ use RuntimeException;
  * Goods define cargo types that can be transported.
  * Supported versions: 0-4
  */
-final readonly class GoodParser implements TypeParserInterface
+class GoodParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {

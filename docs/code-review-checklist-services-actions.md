@@ -116,7 +116,7 @@ namespace App\Services;
  * ✅ ビジネスロジックなし
  * ✅ モック化しやすい
  */
-final readonly class TwitterV2Api
+class TwitterV2Api
 {
     public function __construct(
         private TwitterOAuth $client,
@@ -132,6 +132,7 @@ final readonly class TwitterV2Api
 ```
 
 **レビューコメント例**:
+
 > ✅ 外部API連携として適切に実装されています。ステートレスでテスタビリティも高いです。
 
 ### Actions の良い例
@@ -147,7 +148,7 @@ namespace App\Actions\Article;
  * ✅ 複数のService/Repositoryを組み合わせ
  * ✅ __invoke() 一つのみ
  */
-final readonly class StoreArticle
+class StoreArticle
 {
     public function __construct(
         private ArticleRepository $articleRepository,
@@ -162,26 +163,27 @@ final readonly class StoreArticle
             $data['published_at'] ?? null,
             $data['status']
         );
-        
+
         // 記事を保存
         $article = $this->articleRepository->store([
             'user_id' => $user->id,
             'published_at' => $publishedAt,
             // ...
         ]);
-        
+
         // 関連モデルの同期
         ($this->syncRelatedModels)($article, $data);
-        
+
         // イベント発火
         event(new ArticleStored($article));
-        
+
         return $article;
     }
 }
 ```
 
 **レビューコメント例**:
+
 > ✅ 記事作成のユースケースとして適切に実装されています。単一責任の原則に従い、ビジネスロジックが明確です。
 
 ---
@@ -205,6 +207,7 @@ ArticleService      // 複数のユースケースを持つ可能性
 ```
 
 **レビューコメント例**:
+
 > `MarkdownUtil` は `MarkdownService` にリネームして、プロジェクト全体で命名を統一しましょう。
 
 ### Actions
@@ -228,6 +231,7 @@ ArticleCreate       // 動詞が後ろ → CreateArticle または StoreArticle
 ```
 
 **レビューコメント例**:
+
 > `ArticleStore` は `StoreArticle` にリネームして、動詞を前に配置しましょう。プロジェクト全体の規約に従います。
 
 ---
@@ -246,7 +250,7 @@ class MarkdownServiceTest extends TestCase
     {
         $service = app(MarkdownService::class);
         $html = $service->toEscapedHTML('# Hello');
-        
+
         $this->assertStringContainsString('<h1>Hello</h1>', $html);
     }
 }
@@ -255,7 +259,7 @@ class MarkdownServiceTest extends TestCase
 class MarkdownServiceTest extends TestCase
 {
     use RefreshDatabase; // ← Services のテストでは不要
-    
+
     public function test_記事を作成してマークダウン変換() // ← ユースケーステスト
     {
         $article = Article::factory()->create();
@@ -265,6 +269,7 @@ class MarkdownServiceTest extends TestCase
 ```
 
 **レビューコメント例**:
+
 > Services のテストはユニットテストとして実装し、データベースに依存しないようにしましょう。
 
 ### Actions のテスト
@@ -276,14 +281,14 @@ namespace Tests\Feature\Actions\Article;
 class StoreArticleTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     public function test_記事を作成できる()
     {
         $user = User::factory()->create();
         $action = app(StoreArticle::class);
-        
+
         $article = $action($user, ['title' => 'Test']);
-        
+
         $this->assertDatabaseHas('articles', ['title' => 'Test']);
     }
 }
@@ -300,6 +305,7 @@ class StoreArticleTest extends TestCase
 ```
 
 **レビューコメント例**:
+
 > Actions のテストは機能テストとして実装し、実際のデータベースを使ってビジネスロジックを検証しましょう。
 
 ---
@@ -367,6 +373,7 @@ class ServiceB
 ```
 
 **レビューコメント例**:
+
 > Service が Action に依存しています。依存の方向を見直し、適切なレイヤー構造にしましょう。
 
 ---
@@ -379,16 +386,20 @@ class ServiceB
 ## ✅ Services/Actions の配置レビュー
 
 ### 配置の妥当性
+
 - ✅ Services: 外部API連携として適切
 - ✅ Actions: 記事作成のユースケースとして適切
 
 ### 命名規則
+
 - ✅ 命名規則に従っている
 
 ### テスト
+
 - ✅ 適切なテストが実装されている
 
 ### 依存関係
+
 - ✅ レイヤー構造が適切
 
 **総評**: Services と Actions の責務分離が適切に実装されています。LGTM! 🎉
@@ -400,15 +411,18 @@ class ServiceB
 ## 🔄 Services/Actions の配置レビュー
 
 ### 配置の妥当性
+
 - ❌ `UserService` にビジネスロジックが含まれている
   - 提案: `Actions/User/Registration` へ移動
   - 理由: ユーザー登録は特定のユースケースであり、ビジネスルールを含む
 
 ### 命名規則
+
 - ❌ `ArticleStore` → `StoreArticle` にリネーム
   - 理由: 動詞を前に配置するプロジェクト規約に従う
 
 ### テスト
+
 - ⚠️ Services のユニットテストが不足
   - 提案: 外部依存をモック化したテストを追加
 

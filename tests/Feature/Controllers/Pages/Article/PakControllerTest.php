@@ -6,7 +6,7 @@ namespace Tests\Feature\Controllers\Pages\Article;
 
 use Tests\Feature\TestCase;
 
-final class PakControllerTest extends TestCase
+class PakControllerTest extends TestCase
 {
     public function test_pak128_japan(): void
     {

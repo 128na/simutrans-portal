@@ -11,7 +11,7 @@ use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
 use App\Repositories\UserRepository;
 
-final readonly class SearchAction
+class SearchAction
 {
     public function __construct(
         private ArticleRepository $articleRepository,

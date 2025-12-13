@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Unit\TestCase;
 
-final class NotJustNumbersTest extends TestCase
+class NotJustNumbersTest extends TestCase
 {
     private Closure $failClosure;
 

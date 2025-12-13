@@ -27,7 +27,7 @@ use Illuminate\Support\ServiceProvider;
 use potibm\Bluesky\BlueskyApi;
 use potibm\Bluesky\BlueskyPostService;
 
-final class DIServiceProvider extends ServiceProvider implements DeferrableProvider
+class DIServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * @return array<string>

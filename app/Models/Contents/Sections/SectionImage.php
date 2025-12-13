@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Contents\Sections;
 
-final class SectionImage extends Section
+class SectionImage extends Section
 {
     public ?int $id;
 

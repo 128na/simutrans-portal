@@ -7,7 +7,7 @@ namespace Tests\Unit\Services\FileInfo\Extractors;
 use App\Services\FileInfo\Extractors\ReadmeExtractor;
 use Tests\Unit\TestCase;
 
-final class ReadmeExtractorTest extends TestCase
+class ReadmeExtractorTest extends TestCase
 {
     public function test_get_key(): void
     {

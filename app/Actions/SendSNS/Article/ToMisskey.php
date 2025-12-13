@@ -12,7 +12,7 @@ use App\Services\Misskey\MisskeyApiClient;
 use Exception;
 use Throwable;
 
-final readonly class ToMisskey
+class ToMisskey
 {
     public function __construct(
         private MisskeyApiClient $misskeyApiClient,

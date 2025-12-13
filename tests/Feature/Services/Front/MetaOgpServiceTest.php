@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Services\Front\MetaOgpService;
 use Tests\Feature\TestCase;
 
-final class MetaOgpServiceTest extends TestCase
+class MetaOgpServiceTest extends TestCase
 {
     #[\Override]
     protected function setUp(): void

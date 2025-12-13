@@ -12,7 +12,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\DB;
 use Tests\Feature\TestCase;
 
-final class GetSummaryTest extends TestCase
+class GetSummaryTest extends TestCase
 {
     private UserRepository $userRepository;
 

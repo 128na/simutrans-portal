@@ -10,7 +10,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-final class VerifyEmail extends BaseVerifyEmail implements ShouldQueue
+class VerifyEmail extends BaseVerifyEmail implements ShouldQueue
 {
     use Queueable;
 

@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use OpenApi\Attributes as OA;
 
-final class CreateController extends Controller
+class CreateController extends Controller
 {
     public function __construct(
         private readonly ArticleRepository $articleRepository,

@@ -7,7 +7,7 @@ namespace App\Actions\GenerateStatic;
 use App\Models\Tag;
 use Illuminate\Support\Facades\DB;
 
-final class DeleteUnrelatedTags
+class DeleteUnrelatedTags
 {
     public function __invoke(): void
     {

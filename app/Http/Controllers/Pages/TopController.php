@@ -8,7 +8,7 @@ use App\Repositories\ArticleRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller;
 
-final class TopController extends Controller
+class TopController extends Controller
 {
     public function __construct(
         private readonly ArticleRepository $articleRepository,

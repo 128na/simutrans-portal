@@ -13,7 +13,7 @@ use RuntimeException;
  * Tunnels allow underground passage through terrain.
  * Supported versions: 1-6
  */
-final readonly class TunnelParser implements TypeParserInterface
+class TunnelParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {

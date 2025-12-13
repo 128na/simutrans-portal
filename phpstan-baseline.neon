@@ -1,268 +1,184 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Parameter \#1 \$user of class Illuminate\\Auth\\Events\\PasswordReset constructor expects Illuminate\\Contracts\\Auth\\Authenticatable, App\\Models\\User given\.$#'
+			message: '#^Parameter \#1 \$user of callable App\\Actions\\Redirect\\AddRedirect expects App\\Models\\User, App\\Models\\User\|null given\.$#'
 			identifier: argument.type
 			count: 1
-			path: app/Actions/Fortify/ResetUserPassword.php
+			path: app/Actions/Article/UpdateArticle.php
 
 		-
-			message: '#^Cannot access property \$original_name on mixed\.$#'
+			message: '#^Call to function assert\(\) with false will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 2
+			path: app/Actions/DeadLink/Check.php
+
+		-
+			message: '#^Instanceof between string and App\\Models\\Contents\\AddonIntroductionContent will always evaluate to false\.$#'
+			identifier: instanceof.alwaysFalse
+			count: 2
+			path: app/Actions/DeadLink/Check.php
+
+		-
+			message: '#^Cannot access property \$name on App\\Models\\User\|null\.$#'
 			identifier: property.nonObject
-			count: 1
-			path: app/Actions/FrontArticle/DownloadAction.php
-
-		-
-			message: '#^Cannot access property \$path on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Actions/FrontArticle/DownloadAction.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:notify\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Actions/MFA/RecoveryIncompleteUsers.php
-
-		-
-			message: '#^Call to method pluck\(\) on an unknown class App\\Models\\Collection\.$#'
-			identifier: class.notFound
 			count: 1
 			path: app/Actions/SendSNS/Article/GetArticleParam.php
 
 		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:notify\(\)\.$#'
-			identifier: method.notFound
+			message: '#^Match arm comparison between string and App\\Enums\\ArticlePostType\:\:AddonIntroduction is always false\.$#'
+			identifier: match.alwaysFalse
 			count: 1
-			path: app/Actions/User/Registration.php
+			path: app/Casts/ToArticleContents.php
 
 		-
-			message: '#^Parameter \#1 \$user of class Illuminate\\Auth\\Events\\Registered constructor expects Illuminate\\Contracts\\Auth\\Authenticatable, App\\Models\\User given\.$#'
+			message: '#^Match arm comparison between string and App\\Enums\\ArticlePostType\:\:AddonPost is always false\.$#'
+			identifier: match.alwaysFalse
+			count: 1
+			path: app/Casts/ToArticleContents.php
+
+		-
+			message: '#^Match arm comparison between string and App\\Enums\\ArticlePostType\:\:Markdown is always false\.$#'
+			identifier: match.alwaysFalse
+			count: 1
+			path: app/Casts/ToArticleContents.php
+
+		-
+			message: '#^Match arm comparison between string and App\\Enums\\ArticlePostType\:\:Page is always false\.$#'
+			identifier: match.alwaysFalse
+			count: 1
+			path: app/Casts/ToArticleContents.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
+			count: 1
+			path: app/Casts/ToArticleContents.php
+
+		-
+			message: '#^Call to function assert\(\) with false will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Http/Controllers/Pages/Article/DownloadController.php
+
+		-
+			message: '#^Instanceof between string and App\\Models\\Contents\\AddonIntroductionContent will always evaluate to false\.$#'
+			identifier: instanceof.alwaysFalse
+			count: 1
+			path: app/Http/Controllers/Pages/Article/DownloadController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Pages\\Article\\DownloadController\:\:conversion\(\) should return Illuminate\\Http\\RedirectResponse but returns Illuminate\\Http\\RedirectResponse\|Illuminate\\Routing\\Redirector\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/Pages/Article/DownloadController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Services\\Front\\MetaOgpService\:\:frontArticleShow\(\) expects App\\Models\\User, App\\Models\\User\|null given\.$#'
 			identifier: argument.type
 			count: 1
-			path: app/Actions/User/Registration.php
+			path: app/Http/Controllers/Pages/Article/ShowController.php
 
 		-
-			message: '#^Relation ''fileInfo'' is not found in App\\Models\\Attachment model\.$#'
-			identifier: larastan.relationExistence
+			message: '#^Cannot access property \$id on App\\Models\\User\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/Frontend/ArticleList.php
+
+		-
+			message: '#^Cannot access property \$name on App\\Models\\User\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/Frontend/ArticleList.php
+
+		-
+			message: '#^Cannot access property \$nickname on App\\Models\\User\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/Frontend/ArticleList.php
+
+		-
+			message: '#^Cannot access property \$profile on App\\Models\\User\|null\.$#'
+			identifier: property.nonObject
 			count: 2
-			path: app/Console/Commands/Attachment/ReparsePakFilesCommand.php
+			path: app/Http/Resources/Frontend/ArticleList.php
 
 		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:cannot\(\)\.$#'
-			identifier: method.notFound
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
 			count: 2
-			path: app/Http/Controllers/Mypage/Article/CreateController.php
+			path: app/Http/Resources/Frontend/ArticleList.php
 
 		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:myAttachments\(\)\.$#'
-			identifier: method.notFound
+			message: '#^Cannot call method getDescription\(\) on string\.$#'
+			identifier: method.nonObject
 			count: 1
-			path: app/Http/Controllers/Mypage/Article/CreateController.php
+			path: app/Http/Resources/Frontend/ArticleList.php
 
 		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:cannot\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: app/Http/Controllers/Mypage/Article/EditController.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:myAttachments\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Mypage/Article/EditController.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:cannot\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: app/Http/Controllers/Mypage/AttachmentController.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:myAttachments\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Mypage/AttachmentController.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:myAttachments\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Mypage/ProfileController.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:cannot\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Mypage/RedirectController.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:cannot\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Controllers/Mypage/TagController.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:isAdmin\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Middleware/AdminCheck.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:isAdmin\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Middleware/RedirectIfAuthenticated.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\ControllOption\:\:restrictArticleUpdate\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Middleware/RestrictControl.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\ControllOption\:\:restrictInvitationCode\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Middleware/RestrictControl.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\ControllOption\:\:restrictLogin\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Middleware/RestrictControl.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\ControllOption\:\:restrictRegister\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Middleware/RestrictControl.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\ControllOption\:\:restrictTagUpdate\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Http/Middleware/RestrictControl.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\Attachment\\FileInfo\:\:getDats\(\)\.$#'
-			identifier: method.notFound
+			message: '#^Cannot access property \$id on App\\Models\\User\|null\.$#'
+			identifier: property.nonObject
 			count: 1
 			path: app/Http/Resources/Frontend/ArticleShow.php
 
 		-
-			message: '#^Call to an undefined method App\\Models\\Attachment\\FileInfo\:\:getPaksMetadata\(\)\.$#'
-			identifier: method.notFound
+			message: '#^Cannot access property \$name on App\\Models\\User\|null\.$#'
+			identifier: property.nonObject
 			count: 1
 			path: app/Http/Resources/Frontend/ArticleShow.php
 
 		-
-			message: '#^Call to an undefined method App\\Models\\Attachment\\FileInfo\:\:getTabs\(\)\.$#'
-			identifier: method.notFound
+			message: '#^Cannot access property \$nickname on App\\Models\\User\|null\.$#'
+			identifier: property.nonObject
 			count: 1
 			path: app/Http/Resources/Frontend/ArticleShow.php
 
 		-
-			message: '#^Call to an undefined method App\\Models\\Article\:\:getInfoLogging\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Listeners/Article/OnArticleStored.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\Article\:\:notify\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Listeners/Article/OnArticleStored.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\Article\:\:getInfoLogging\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Listeners/Article/OnArticleUpdated.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\Article\:\:notify\(\)\.$#'
-			identifier: method.notFound
+			message: '#^Cannot access property \$profile on App\\Models\\User\|null\.$#'
+			identifier: property.nonObject
 			count: 2
-			path: app/Listeners/Article/OnArticleUpdated.php
+			path: app/Http/Resources/Frontend/ArticleShow.php
 
 		-
-			message: '#^Call to an undefined method App\\Models\\Article\:\:notify\(\)\.$#'
-			identifier: method.notFound
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/Frontend/ArticleShow.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/Mypage/ArticleEdit.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
 			count: 1
-			path: app/Listeners/Article/OnCloseByDeadLinkDetected.php
+			path: app/Jobs/Attachments/JobGenerateThumbnail.php
 
 		-
-			message: '#^Call to an undefined method App\\Models\\Tag\:\:getInfoLogging\(\)\.$#'
-			identifier: method.notFound
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 2
+			path: app/Jobs/Attachments/JobGenerateThumbnail.php
+
+		-
+			message: '#^Parameter \#2 \$contents of method Illuminate\\Filesystem\\FilesystemAdapter\:\:put\(\) expects Illuminate\\Http\\File\|Illuminate\\Http\\UploadedFile\|Psr\\Http\\Message\\StreamInterface\|resource\|string, string\|false given\.$#'
+			identifier: argument.type
 			count: 1
-			path: app/Listeners/Tag/OnTagDescriptionUpdated.php
+			path: app/Jobs/Attachments/JobGenerateThumbnail.php
 
 		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:getInfoLogging\(\)\.$#'
-			identifier: method.notFound
+			message: '#^Call to function assert\(\) with false will always evaluate to false\.$#'
+			identifier: function.impossibleType
 			count: 1
-			path: app/Listeners/Tag/OnTagDescriptionUpdated.php
+			path: app/Listeners/Article/OnDeadLinkDetected.php
 
 		-
-			message: '#^Instanceof between Illuminate\\Contracts\\Auth\\Authenticatable and App\\Models\\User will always evaluate to false\.$#'
+			message: '#^Instanceof between string and App\\Models\\Contents\\AddonIntroductionContent will always evaluate to false\.$#'
 			identifier: instanceof.alwaysFalse
 			count: 1
-			path: app/Listeners/User/OnLogin.php
-
-		-
-			message: '#^Result of && is always false\.$#'
-			identifier: booleanAnd.alwaysFalse
-			count: 1
-			path: app/Listeners/User/OnLogin.php
-
-		-
-			message: '#^Instanceof between Illuminate\\Contracts\\Auth\\Authenticatable and App\\Models\\User will always evaluate to false\.$#'
-			identifier: instanceof.alwaysFalse
-			count: 1
-			path: app/Listeners/User/OnPasswordReset.php
-
-		-
-			message: '#^Instanceof between Illuminate\\Contracts\\Auth\\Authenticatable and App\\Models\\User will always evaluate to false\.$#'
-			identifier: instanceof.alwaysFalse
-			count: 1
-			path: app/Listeners/User/OnRecoveryCodeReplaced.php
-
-		-
-			message: '#^Instanceof between Illuminate\\Contracts\\Auth\\Authenticatable and App\\Models\\User will always evaluate to false\.$#'
-			identifier: instanceof.alwaysFalse
-			count: 1
-			path: app/Listeners/User/OnRegistered.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:getInfoLogging\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Listeners/User/OnTwoFactorAuthenticationDisabled.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:getInfoLogging\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Listeners/User/OnTwoFactorAuthenticationEnabled.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:getInfoLogging\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Listeners/User/OnTwoFactorAuthenticationIncomplete.php
-
-		-
-			message: '#^Access to undefined constant App\\Models\\Article\\ConversionCount\:\:TYPE_TOTAL\.$#'
-			identifier: classConstant.notFound
-			count: 1
-			path: app/Models/Article.php
-
-		-
-			message: '#^Access to undefined constant App\\Models\\Article\\ViewCount\:\:TYPE_TOTAL\.$#'
-			identifier: classConstant.notFound
-			count: 1
-			path: app/Models/Article.php
+			path: app/Listeners/Article/OnDeadLinkDetected.php
 
 		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\:\:page\(\)\.$#'
@@ -290,6 +206,12 @@ parameters:
 
 		-
 			message: '#^Cannot access property \$name on App\\Models\\User\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Cannot access property \$thumbnail on App\\Models\\Attachment\|null\.$#'
 			identifier: property.nonObject
 			count: 1
 			path: app/Models/Article.php
@@ -331,12 +253,6 @@ parameters:
 			path: app/Models/Article.php
 
 		-
-			message: '#^Relation ''categories'' is not found in App\\Models\\Article model\.$#'
-			identifier: larastan.relationExistence
-			count: 3
-			path: app/Models/Article.php
-
-		-
 			message: '#^Result of && is always false\.$#'
 			identifier: booleanAnd.alwaysFalse
 			count: 2
@@ -361,283 +277,31 @@ parameters:
 			path: app/Models/Article.php
 
 		-
-			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\Article\\IdeHelperArticleSearchIndex\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Article/ArticleSearchIndex.php
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 4
+			path: app/Policies/ArticlePolicy.php
 
 		-
-			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\Article\\IdeHelperConversionCount\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Article/ConversionCount.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\Article\\IdeHelperViewCount\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Article/ViewCount.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperArticleLinkCheckHistory\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/ArticleLinkCheckHistory.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperAttachment\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Attachment.php
-
-		-
-			message: '#^Offset ''dats'' on string on left side of \?\? does not exist\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: app/Models/Attachment/FileInfo.php
-
-		-
-			message: '#^Offset ''paks_metadata'' on string on left side of \?\? does not exist\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: app/Models/Attachment/FileInfo.php
-
-		-
-			message: '#^Offset ''tabs'' on string on left side of \?\? does not exist\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: app/Models/Attachment/FileInfo.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\Attachment\\IdeHelperFileInfo\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Attachment/FileInfo.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:isAdmin\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Models/Category.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Category\>\:\:type\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: app/Models/Category.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperCategory\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Category.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperControllOption\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/ControllOption.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperOauthToken\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/OauthToken.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperRedirect\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Redirect.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperTag\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/Tag.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\IdeHelperUser\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/User.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\UserRole\:\:Admin will always evaluate to false\.$#'
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\ArticlePostType\:\:AddonIntroduction will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 1
-			path: app/Models/User.php
+			path: app/Policies/ArticlePolicy.php
 
 		-
-			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\User\\IdeHelperLoginHistory\.$#'
-			identifier: class.notFound
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\ArticlePostType\:\:AddonPost will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
 			count: 1
-			path: app/Models/User/LoginHistory.php
+			path: app/Policies/ArticlePolicy.php
 
 		-
-			message: '#^Cannot access property \$avatar on string\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Models/User/Profile.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains unknown class App\\Models\\User\\IdeHelperProfile\.$#'
-			identifier: class.notFound
-			count: 1
-			path: app/Models/User/Profile.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:isAdmin\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: app/Policies/TagPolicy.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\Article\:\:articles\(\)\.$#'
-			identifier: method.notFound
+			message: '#^Cannot call method myAttachments\(\) on App\\Models\\User\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: app/Repositories/ArticleRepository.php
 
 		-
-			message: '#^Call to an undefined method App\\Models\\Article\:\:attachments\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: app/Repositories/ArticleRepository.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\Article\:\:categories\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Repositories/ArticleRepository.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\Article\:\:tags\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Repositories/ArticleRepository.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\Attachment\:\:attachmentable\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Repositories/ArticleRepository.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:myAttachments\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Repositories/ArticleRepository.php
-
-		-
-			message: '#^Method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Article\>\:\:select\(\) invoked with 2 parameters, 0\-1 required\.$#'
-			identifier: arguments.count
-			count: 3
-			path: app/Repositories/ArticleRepository.php
-
-		-
-			message: '#^Method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Article\>\:\:select\(\) invoked with 7 parameters, 0\-1 required\.$#'
-			identifier: arguments.count
-			count: 2
-			path: app/Repositories/ArticleRepository.php
-
-		-
-			message: '#^Relation ''categories'' is not found in App\\Models\\Article model\.$#'
-			identifier: larastan.relationExistence
-			count: 2
-			path: app/Repositories/ArticleRepository.php
-
-		-
-			message: '#^Relation ''conversionCounts'' is not found in App\\Models\\Article model\.$#'
-			identifier: larastan.relationExistence
-			count: 1
-			path: app/Repositories/ArticleRepository.php
-
-		-
-			message: '#^Relation ''totalConversionCount'' is not found in App\\Models\\Article model\.$#'
-			identifier: larastan.relationExistence
-			count: 2
-			path: app/Repositories/ArticleRepository.php
-
-		-
-			message: '#^Relation ''user'' is not found in App\\Models\\Article model\.$#'
-			identifier: larastan.relationExistence
-			count: 1
-			path: app/Repositories/ArticleRepository.php
-
-		-
-			message: '#^Relation ''viewCounts'' is not found in App\\Models\\Article model\.$#'
-			identifier: larastan.relationExistence
-			count: 1
-			path: app/Repositories/ArticleRepository.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:myAttachments\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Repositories/AttachmentRepository.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\\Profile\:\:attachments\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Repositories/AttachmentRepository.php
-
-		-
-			message: '#^Method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Tag\>\:\:select\(\) invoked with 2 parameters, 0\-1 required\.$#'
-			identifier: arguments.count
-			count: 1
-			path: app/Repositories/TagRepository.php
-
-		-
-			message: '#^Relation ''createdBy'' is not found in App\\Models\\Tag model\.$#'
-			identifier: larastan.relationExistence
-			count: 1
-			path: app/Repositories/TagRepository.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\User\:\:isAdmin\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Rules/UniqueSlugByUser.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: app/Services/BlueSky/BlueSkyApiClient.php
-
-		-
-			message: '#^Binary operation "\." between ''File not found\: '' and mixed results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: app/Services/FileInfo/FileInfoService.php
-
-		-
-			message: '#^Parameter \#1 \$filename of function file_exists expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/FileInfo/FileInfoService.php
-
-		-
-			message: '#^Parameter \#1 \$filename of function file_get_contents expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/FileInfo/FileInfoService.php
-
-		-
-			message: '#^Parameter \#1 \$filename of method ZipArchive\:\:open\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/FileInfo/ZipArchiveParser.php
-
-		-
-			message: '#^Method App\\Services\\Front\\MetaOgpService\:\:frontArticleShow\(\) should return array\{title\: string, description\: string, image\: string\|null, canonical\: string, card_type\: string\} but returns array\{title\: non\-falsy\-string, description\: string, image\: mixed, canonical\: string, card_type\: ''summary_large_image''\}\.$#'
-			identifier: return.type
+			message: '#^Cannot call method getDescription\(\) on string\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: app/Services/Front/MetaOgpService.php
-
-		-
-			message: '#^Call to an undefined method App\\Models\\OauthToken\:\:isExpired\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Services/Twitter/TwitterV2Api.php

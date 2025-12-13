@@ -34,4 +34,4 @@ use OpenApi\Attributes as OA;
  *     )
  * )
  */
-final class OpenApiSpec {}
+class OpenApiSpec {}

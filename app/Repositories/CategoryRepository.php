@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\DB;
 
-final class CategoryRepository
+class CategoryRepository
 {
     public function __construct(public Category $model) {}
 

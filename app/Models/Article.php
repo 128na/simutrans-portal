@@ -45,7 +45,7 @@ use Spatie\Feed\FeedItem;
  *
  * @mixin IdeHelperArticle
  */
-final class Article extends Model implements Feedable
+class Article extends Model implements Feedable
 {
     /** @use HasFactory<\Database\Factories\ArticleFactory> */
     use HasFactory;
@@ -417,9 +417,7 @@ final class Article extends Model implements Feedable
      */
     protected function thumbnailUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->url($this->has_thumbnail && $this->thumbnail
-            ? $this->thumbnail->path
-            : DefaultThumbnail::NO_THUMBNAIL));
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => ($this->has_thumbnail && $this->thumbnail) ? $this->thumbnail->thumbnail : $this->getPublicDisk()->url(DefaultThumbnail::NO_THUMBNAIL));
     }
 
     /**

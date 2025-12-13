@@ -9,7 +9,7 @@ use App\Models\Article;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-final class ArticleSearchIndexSeeder extends Seeder
+class ArticleSearchIndexSeeder extends Seeder
 {
     use WithoutModelEvents;
 

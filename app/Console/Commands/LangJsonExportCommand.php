@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 
-final class LangJsonExportCommand extends Command
+class LangJsonExportCommand extends Command
 {
     /**
      * @var string

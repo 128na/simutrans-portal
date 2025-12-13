@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Tests\Feature\TestCase;
 
-final class CreateOrUpdateTest extends TestCase
+class CreateOrUpdateTest extends TestCase
 {
     private User $user;
 

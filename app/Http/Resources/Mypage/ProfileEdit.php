@@ -7,7 +7,7 @@ namespace App\Http\Resources\Mypage;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-final class ProfileEdit extends JsonResource
+class ProfileEdit extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request  $request

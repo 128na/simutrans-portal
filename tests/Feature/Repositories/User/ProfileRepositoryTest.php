@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Repositories\User\ProfileRepository;
 use Tests\Feature\TestCase;
 
-final class ProfileRepositoryTest extends TestCase
+class ProfileRepositoryTest extends TestCase
 {
     private ProfileRepository $profileRepository;
 

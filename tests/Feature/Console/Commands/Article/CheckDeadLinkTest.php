@@ -9,7 +9,7 @@ use App\Actions\DeadLink\OnDead;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
-final class CheckDeadLinkTest extends TestCase
+class CheckDeadLinkTest extends TestCase
 {
     public function test_command_runs_successfully(): void
     {

@@ -9,7 +9,7 @@ use App\Models\User\LoginHistory;
 use App\Repositories\LoginHistoryRepository;
 use Tests\Feature\TestCase;
 
-final class GetByUserTest extends TestCase
+class GetByUserTest extends TestCase
 {
     private LoginHistoryRepository $loginHistoryRepository;
 

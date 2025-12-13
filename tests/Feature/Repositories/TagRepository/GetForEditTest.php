@@ -9,7 +9,7 @@ use App\Models\Tag;
 use App\Repositories\TagRepository;
 use Tests\Feature\TestCase;
 
-final class GetForEditTest extends TestCase
+class GetForEditTest extends TestCase
 {
     private TagRepository $tagRepository;
 

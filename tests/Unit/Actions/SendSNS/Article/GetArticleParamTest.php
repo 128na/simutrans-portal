@@ -11,7 +11,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Tests\Unit\TestCase;
 
-final class GetArticleParamTest extends TestCase
+class GetArticleParamTest extends TestCase
 {
     protected function setUp(): void
     {

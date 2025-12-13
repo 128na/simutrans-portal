@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @mixin IdeHelperArticleSearchIndex
  */
-final class ArticleSearchIndex extends Model
+class ArticleSearchIndex extends Model
 {
     public $incrementing = false;
 

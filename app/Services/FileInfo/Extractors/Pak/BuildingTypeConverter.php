@@ -7,7 +7,7 @@ namespace App\Services\FileInfo\Extractors\Pak;
 /**
  * Building type converter
  */
-final class BuildingTypeConverter
+class BuildingTypeConverter
 {
     /**
      * Check if building type uses waytype

@@ -8,7 +8,7 @@ use App\Events\Article\ArticleStored;
 use App\Notifications\SendArticlePublished;
 use Illuminate\Log\Logger;
 
-final readonly class OnArticleStored
+class OnArticleStored
 {
     public function __construct(private Logger $logger) {}
 

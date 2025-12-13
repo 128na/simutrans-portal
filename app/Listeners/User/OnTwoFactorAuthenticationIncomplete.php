@@ -7,7 +7,7 @@ namespace App\Listeners\User;
 use App\Events\User\TwoFactorAuthenticationIncomplete;
 use Illuminate\Log\Logger;
 
-final readonly class OnTwoFactorAuthenticationIncomplete
+class OnTwoFactorAuthenticationIncomplete
 {
     public function __construct(private Logger $logger) {}
 

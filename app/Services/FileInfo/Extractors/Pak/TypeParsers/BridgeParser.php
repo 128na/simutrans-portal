@@ -13,7 +13,7 @@ use RuntimeException;
  * Bridges are infrastructure for crossing gaps and obstacles.
  * Supported versions: 0-10
  */
-final readonly class BridgeParser implements TypeParserInterface
+class BridgeParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {

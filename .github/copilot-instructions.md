@@ -100,11 +100,13 @@
 ### 最近の主要な変更（PR #458 - 2025年12月）
 
 **UIコンポーネントの整理と統合:**
+
 - 新規追加: `Card`, `Checkboxes`, `FormCaption`, `MultiColumn`, `SortableList`
 - 統合・削除: `ButtonDanger`/`ButtonOutline`/`ButtonSub` → `Button`, `Label` → `FormCaption`, `InputFile` → `Upload`
 - 全26個のUIコンポーネントに包括的なテストカバレッジを実装
 
 **ディレクトリ構造の調整:**
+
 - Features層のutilsを各featureディレクトリ直下に配置（`features/articles/utils/` → `features/articles/articleUtil.ts`）
 - Pak関連メタデータコンポーネントの追加（`features/articles/components/pak/`）
 - プロフィール機能の拡充（`ProfileIcon`, `profileUtil.ts`）
@@ -170,7 +172,7 @@ import type { ArticleListResponse } from "@/types/api";
 - モデルは `private readonly` プロパティとして受け取る
 
 ```php
-final class ArticleRepository
+class ArticleRepository
 {
     public function __construct(public Article $model) {}
 

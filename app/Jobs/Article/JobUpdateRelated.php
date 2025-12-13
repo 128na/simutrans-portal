@@ -15,7 +15,7 @@ use Illuminate\Queue\SerializesModels;
 /**
  * 記事更新に連動する関連データを更新する.
  */
-final class JobUpdateRelated implements ShouldQueue
+class JobUpdateRelated implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

@@ -9,7 +9,7 @@ use App\Models\Attachment\FileInfo;
 use App\Models\User\Profile;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-final class ArticleShow extends JsonResource
+class ArticleShow extends JsonResource
 {
     /** @var ModelsArticle */
     public $resource;
@@ -39,7 +39,7 @@ final class ArticleShow extends JsonResource
                         'data' => $profile->data,
                         'attachments' => $profile->attachments->map(fn ($attachment): array => [
                             'id' => $attachment->id,
-                            'thumbnail' => $attachment->thumbnail,
+                            'thumbnail' => $attachment->original,
                             'original_name' => $attachment->original_name,
                         ]),
                     ];
@@ -65,7 +65,7 @@ final class ArticleShow extends JsonResource
             'attachments' => $this->resource->attachments->map(fn ($attachment): array => [
                 'id' => $attachment->id,
                 'original_name' => $attachment->original_name,
-                'thumbnail' => $attachment->thumbnail,
+                'thumbnail' => $attachment->original,
                 'size' => $attachment->size,
                 'fileInfo' => $this->when($attachment->fileInfo instanceof FileInfo, function () use ($attachment): array {
                     /** @var FileInfo $fileInfo */

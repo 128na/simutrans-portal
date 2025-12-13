@@ -9,7 +9,7 @@ use App\Models\Article;
 use App\Repositories\ArticleLinkCheckHistoryRepository;
 use App\Repositories\ArticleRepository;
 
-final readonly class OnDead
+class OnDead
 {
     private const int FAILED_LIMIT = 3;
 

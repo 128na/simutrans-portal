@@ -9,7 +9,7 @@ use App\Services\Google\Recaptcha\RecaptchaService;
 use Mockery\MockInterface;
 use Tests\Feature\TestCase;
 
-final class DiscordControllerTest extends TestCase
+class DiscordControllerTest extends TestCase
 {
     public function test_index(): void
     {

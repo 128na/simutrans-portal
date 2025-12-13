@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-final class SendLoggedInEmail extends Notification implements ShouldQueue
+class SendLoggedInEmail extends Notification implements ShouldQueue
 {
     use Queueable;
 

@@ -9,7 +9,7 @@ use App\Models\Attachment\FileInfo;
 use App\Repositories\Attachment\FileInfoRepository;
 use Exception;
 
-final class FileInfoService
+class FileInfoService
 {
     /**
      * @var array<string, array<int, \App\Services\FileInfo\Extractors\Extractor>>

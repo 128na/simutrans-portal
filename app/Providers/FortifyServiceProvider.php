@@ -12,7 +12,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 
-final class FortifyServiceProvider extends ServiceProvider
+class FortifyServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.

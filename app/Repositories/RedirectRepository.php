@@ -7,7 +7,7 @@ namespace App\Repositories;
 use App\Models\Redirect;
 use Illuminate\Database\Eloquent\Collection;
 
-final class RedirectRepository
+class RedirectRepository
 {
     public function __construct(public Redirect $model) {}
 

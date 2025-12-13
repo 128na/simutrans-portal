@@ -6,7 +6,7 @@ namespace Tests\Feature\Controllers\Auth;
 
 use Tests\Feature\TestCase;
 
-final class TwoFactorControllerTest extends TestCase
+class TwoFactorControllerTest extends TestCase
 {
     public function test_show_two_factor_guest(): void
     {

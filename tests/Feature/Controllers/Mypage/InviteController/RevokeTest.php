@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Tests\Feature\TestCase;
 
-final class RevokeTest extends TestCase
+class RevokeTest extends TestCase
 {
     private User $user;
 

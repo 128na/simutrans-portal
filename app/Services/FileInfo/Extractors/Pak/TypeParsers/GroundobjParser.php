@@ -28,7 +28,7 @@ use RuntimeException;
  *
  * @see simutrans/descriptor/reader/groundobj_reader.cc
  */
-final readonly class GroundobjParser implements TypeParserInterface
+class GroundobjParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {

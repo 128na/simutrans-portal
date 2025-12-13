@@ -8,7 +8,7 @@ use App\Models\Article;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-final class EditTest extends TestCase
+class EditTest extends TestCase
 {
     private User $user;
 

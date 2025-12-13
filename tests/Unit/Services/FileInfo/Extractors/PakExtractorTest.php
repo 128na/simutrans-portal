@@ -7,7 +7,7 @@ namespace Tests\Unit\Services\FileInfo\Extractors;
 use App\Services\FileInfo\Extractors\PakExtractor;
 use Tests\Unit\TestCase;
 
-final class PakExtractorTest extends TestCase
+class PakExtractorTest extends TestCase
 {
     public function test_get_key(): void
     {

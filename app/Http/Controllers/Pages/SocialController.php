@@ -8,7 +8,7 @@ use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller;
 
-final class SocialController extends Controller
+class SocialController extends Controller
 {
     public function __construct(
         private readonly MetaOgpService $metaOgpService,

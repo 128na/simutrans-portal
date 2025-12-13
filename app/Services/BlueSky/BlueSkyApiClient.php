@@ -15,7 +15,7 @@ use potibm\Bluesky\Response\RecordResponse;
 /**
  * @see https://www.docs.bsky.app/docs
  */
-final readonly class BlueSkyApiClient
+class BlueSkyApiClient
 {
     public function __construct(
         private BlueskyApi $blueskyApi,
@@ -37,10 +37,6 @@ final readonly class BlueSkyApiClient
      */
     public function addWebsiteCard(Post $post, Article $article): Post
     {
-        if (! $article->user) {
-            throw new \RuntimeException('Article user is required');
-        }
-
         $ogp = $this->metaOgpService->frontArticleShow($article->user, $article);
         $thumbnail = null;
         if ($article->hasThumbnail && $article->thumbnail instanceof Attachment) {

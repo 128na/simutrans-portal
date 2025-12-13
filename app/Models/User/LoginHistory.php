@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @mixin IdeHelperLoginHistory
  */
-final class LoginHistory extends Model
+class LoginHistory extends Model
 {
     /** @use HasFactory<\Database\Factories\User\LoginHistoryFactory> */
     use HasFactory;

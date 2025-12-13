@@ -11,7 +11,7 @@ use Illuminate\Log\Logger;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
-final class OnPasswordResetTest extends TestCase
+class OnPasswordResetTest extends TestCase
 {
     public function test_logs_password_reset(): void
     {

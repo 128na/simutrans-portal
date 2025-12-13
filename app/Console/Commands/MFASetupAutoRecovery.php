@@ -8,7 +8,7 @@ use App\Actions\MFA\RecoveryIncompleteUsers;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
-final class MFASetupAutoRecovery extends Command
+class MFASetupAutoRecovery extends Command
 {
     /**
      * The name and signature of the console command.

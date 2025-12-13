@@ -6,7 +6,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-final class InvalidRedirectUrlException extends Exception
+class InvalidRedirectUrlException extends Exception
 {
     //
 }

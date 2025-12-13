@@ -13,7 +13,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-final class UpdateFileInfo implements ShouldQueue
+class UpdateFileInfo implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

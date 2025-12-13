@@ -8,7 +8,7 @@ use App\Models\OauthToken;
 use App\Repositories\OauthTokenRepository;
 use Tests\Feature\TestCase;
 
-final class DeleteTest extends TestCase
+class DeleteTest extends TestCase
 {
     private OauthTokenRepository $oauthTokenRepository;
 

@@ -9,7 +9,7 @@ use App\Services\FileInfo\Extractors\Pak\PakParser;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Unit\TestCase;
 
-final class PakParserTest extends TestCase
+class PakParserTest extends TestCase
 {
     #[DataProvider('makeobjVersionProvider')]
     public function test_parse_makeobj_versions(string $pakFile, array $expectedNames): void

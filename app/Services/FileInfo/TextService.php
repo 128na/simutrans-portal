@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo;
 
-final class TextService
+class TextService
 {
     public function removeBom(string $text): string
     {

@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Log\Logger;
 
-final readonly class OnRegistered
+class OnRegistered
 {
     public function __construct(private Logger $logger) {}
 

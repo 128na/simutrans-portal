@@ -17,7 +17,7 @@ use Illuminate\Database\Query\JoinClause;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\LazyCollection;
 
-final class ArticleRepository
+class ArticleRepository
 {
     public function __construct(public Article $model) {}
 
@@ -85,7 +85,7 @@ final class ArticleRepository
         $query = $this->model->query()
             ->select(['articles.*'])
             ->withoutGlobalScopes()
-            ->where('articles.slug', $slug);
+            ->where('articles.slug', urlencode($slug));
 
         $this->joinActiveUsers($query);
         $this->wherePublished($query);

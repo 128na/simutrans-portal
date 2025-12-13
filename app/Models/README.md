@@ -339,7 +339,7 @@ public function publish(Builder $query): void  // scopeプレフィックス必�
 モデルのテストは `tests/Unit/Models/` に配置します。
 
 ```php
-final class ArticleTest extends TestCase
+class ArticleTest extends TestCase
 {
     use RefreshDatabase;
 

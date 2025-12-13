@@ -18,7 +18,7 @@ use RuntimeException;
  * Note: This parser only extracts the main factory metadata.
  * Child nodes (suppliers, products, fields, smoke) are not parsed.
  */
-final readonly class FactoryParser implements TypeParserInterface
+class FactoryParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {

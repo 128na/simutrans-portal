@@ -26,4 +26,4 @@ use OpenApi\Attributes as OA;
  *     )
  * )
  */
-final class ProfileEdit {}
+class ProfileEdit {}

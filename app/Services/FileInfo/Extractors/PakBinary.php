@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors;
 
-final class PakBinary
+class PakBinary
 {
     private int $position = 0;
 

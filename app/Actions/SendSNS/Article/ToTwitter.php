@@ -12,7 +12,7 @@ use App\Services\Twitter\TwitterV2Api;
 use Exception;
 use Throwable;
 
-final readonly class ToTwitter
+class ToTwitter
 {
     public function __construct(
         private TwitterV2Api $twitterV2Api,

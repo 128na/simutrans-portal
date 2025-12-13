@@ -8,7 +8,7 @@ use App\Models\Tag;
 use App\Repositories\TagRepository;
 use Tests\Feature\TestCase;
 
-final class GetForSearchTest extends TestCase
+class GetForSearchTest extends TestCase
 {
     private TagRepository $tagRepository;
 

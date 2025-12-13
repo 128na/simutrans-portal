@@ -13,7 +13,7 @@ use App\Services\FileInfo\Extractors\Pak\TextNodeExtractor;
  *
  * 参考: simutrans/descriptor/reader/vehicle_reader.cc
  */
-final readonly class VehicleParser implements TypeParserInterface
+class VehicleParser implements TypeParserInterface
 {
     #[\Override]
     public function canParse(Node $node): bool

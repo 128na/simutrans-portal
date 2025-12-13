@@ -7,7 +7,7 @@ namespace Tests\Unit\Services\FileInfo;
 use App\Services\FileInfo\TextService;
 use Tests\Unit\TestCase;
 
-final class TextServiceTest extends TestCase
+class TextServiceTest extends TestCase
 {
     public function test_remove_bom(): void
     {

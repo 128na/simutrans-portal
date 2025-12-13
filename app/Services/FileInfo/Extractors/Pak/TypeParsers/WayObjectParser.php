@@ -15,7 +15,7 @@ use RuntimeException;
  *
  * @see simutrans/descriptor/reader/way_obj_reader.cc
  */
-final readonly class WayObjectParser implements TypeParserInterface
+class WayObjectParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {

@@ -7,7 +7,7 @@ namespace App\Actions\Article;
 use App\Enums\ArticleStatus;
 use Carbon\CarbonImmutable;
 
-final readonly class DecidePublishedAt
+class DecidePublishedAt
 {
     public function __construct(
         private CarbonImmutable $now,

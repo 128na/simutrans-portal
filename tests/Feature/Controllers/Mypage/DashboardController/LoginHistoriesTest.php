@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Mypage\DashboardController;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-final class LoginHistoriesTest extends TestCase
+class LoginHistoriesTest extends TestCase
 {
     private User $user;
 

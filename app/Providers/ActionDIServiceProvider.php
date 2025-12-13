@@ -9,7 +9,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 
-final class ActionDIServiceProvider extends ServiceProvider
+class ActionDIServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.

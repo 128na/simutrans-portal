@@ -13,7 +13,7 @@ use App\Services\Misskey\MisskeyApiClient;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
-final class ToMisskeyTest extends TestCase
+class ToMisskeyTest extends TestCase
 {
     public function test_posts_to_misskey_on_article_published(): void
     {

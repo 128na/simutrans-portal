@@ -23,16 +23,16 @@
 
 ## 🎯 Services vs Actions 一覧表
 
-| 観点 | Services | Actions |
-|------|----------|---------|
-| **責務** | 技術的な関心事 | ビジネスの関心事 |
-| **目的** | 外部依存の抽象化 | ユースケースの実装 |
+| 観点         | Services                     | Actions                      |
+| ------------ | ---------------------------- | ---------------------------- |
+| **責務**     | 技術的な関心事               | ビジネスの関心事             |
+| **目的**     | 外部依存の抽象化             | ユースケースの実装           |
 | **再利用性** | 高い（複数ドメインから利用） | 低い（特定ユースケース専用） |
-| **ステート** | ステートレス | ステートレス |
-| **依存** | インフラ・ライブラリ | Repository/Service |
-| **テスト** | モックで外部依存を置換 | ビジネスロジックを検証 |
-| **メソッド** | 複数の公開メソッドOK | `__invoke()` 1つ推奨 |
-| **命名** | `{機能}Service` | `{動詞}{対象}` |
+| **ステート** | ステートレス                 | ステートレス                 |
+| **依存**     | インフラ・ライブラリ         | Repository/Service           |
+| **テスト**   | モックで外部依存を置換       | ビジネスロジックを検証       |
+| **メソッド** | 複数の公開メソッドOK         | `__invoke()` 1つ推奨         |
+| **命名**     | `{機能}Service`              | `{動詞}{対象}`               |
 
 ---
 
@@ -181,7 +181,7 @@ namespace App\Services;
  * {何をする}サービス
  * {技術的な処理の説明}
  */
-final readonly class ExampleService
+class ExampleService
 {
     public function __construct(
         private Client $client,
@@ -190,7 +190,7 @@ final readonly class ExampleService
 
     /**
      * {何を}する
-     * 
+     *
      * @throws ExampleException
      */
     public function doSomething(string $input): string
@@ -213,7 +213,7 @@ use App\Models\Model;
 /**
  * {ユースケースの説明}
  */
-final readonly class ExampleAction
+class ExampleAction
 {
     public function __construct(
         private ModelRepository $repository,

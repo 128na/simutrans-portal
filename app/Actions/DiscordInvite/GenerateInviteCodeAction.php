@@ -7,7 +7,7 @@ namespace App\Actions\DiscordInvite;
 use App\Services\Discord\InviteService;
 use App\Services\Google\Recaptcha\RecaptchaService;
 
-final readonly class GenerateInviteCodeAction
+class GenerateInviteCodeAction
 {
     public function __construct(
         private InviteService $inviteService,

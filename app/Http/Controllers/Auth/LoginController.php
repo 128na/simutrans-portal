@@ -10,7 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
-final class LoginController extends Controller
+class LoginController extends Controller
 {
     public function __construct(
         private readonly MetaOgpService $metaOgpService,

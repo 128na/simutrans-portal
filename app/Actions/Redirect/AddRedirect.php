@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Repositories\RedirectRepository;
 use Illuminate\Support\Facades\Config;
 
-final readonly class AddRedirect
+class AddRedirect
 {
     public function __construct(
         private RedirectRepository $redirectRepository,

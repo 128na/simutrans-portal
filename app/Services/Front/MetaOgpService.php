@@ -11,7 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 
-final class MetaOgpService
+class MetaOgpService
 {
     /**
      * @return array{title:string,description:string,image:string|null,canonical:string,card_type:string}

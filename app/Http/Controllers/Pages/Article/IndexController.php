@@ -12,7 +12,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-final class IndexController extends Controller
+class IndexController extends Controller
 {
     public function __construct(
         private readonly ArticleRepository $articleRepository,

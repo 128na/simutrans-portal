@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 /**
  * 記事閲覧時に閲覧をカウントする.
  */
-final class ArticleShown
+class ArticleShown
 {
     use Dispatchable;
     use SerializesModels;

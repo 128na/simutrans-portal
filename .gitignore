@@ -8,6 +8,7 @@
 /public/icons
 /public/storage
 /storage/*.key
+/storage/app/public/thumbnails/
 /vendor
 .env
 .env.testing

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Event;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
-final class OnDeadTest extends TestCase
+class OnDeadTest extends TestCase
 {
     public function test_2回目まで(): void
     {

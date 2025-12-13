@@ -10,7 +10,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
-final class PublishReservationTest extends TestCase
+class PublishReservationTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -113,8 +113,8 @@ final class PublishReservationTest extends TestCase
     public function test_command_signature_is_correct(): void
     {
         $this->markTestSkipped('RefreshDatabase実行してもレコードが残るのでスキップ');
-        $command = $this->app->make(\App\Console\Commands\Article\PublishReservation::class);
+        // $command = $this->app->make(\App\Console\Commands\Article\PublishReservation::class);
 
-        $this->assertEquals('article:publish-reservation', $command->getName());
+        // $this->assertEquals('article:publish-reservation', $command->getName());
     }
 }

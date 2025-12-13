@@ -11,7 +11,7 @@ use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-final class ReservationPublishedAt implements DataAwareRule, ValidationRule
+class ReservationPublishedAt implements DataAwareRule, ValidationRule
 {
     /**
      * @var array{article?:array{status?:string,published_at?:string}}

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ArticleLinkCheckHistory>
  */
-final class ArticleLinkCheckHistoryFactory extends Factory
+class ArticleLinkCheckHistoryFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

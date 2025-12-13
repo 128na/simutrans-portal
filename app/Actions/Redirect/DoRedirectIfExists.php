@@ -9,7 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Config;
 
-final readonly class DoRedirectIfExists
+class DoRedirectIfExists
 {
     public function __construct(
         private RedirectRepository $redirectRepository,

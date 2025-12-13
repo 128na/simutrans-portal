@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Mypage\TagController;
 use App\Models\User;
 use Tests\Feature\TestCase;
 
-final class IndexTest extends TestCase
+class IndexTest extends TestCase
 {
     private User $user;
 

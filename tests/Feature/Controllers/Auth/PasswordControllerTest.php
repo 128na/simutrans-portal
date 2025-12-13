@@ -6,7 +6,7 @@ namespace Tests\Feature\Controllers\Auth;
 
 use Tests\Feature\TestCase;
 
-final class PasswordControllerTest extends TestCase
+class PasswordControllerTest extends TestCase
 {
     public function test_show_forgot_password_guest(): void
     {

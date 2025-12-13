@@ -101,6 +101,9 @@
     "stan": [
       "php ./vendor/bin/phpstan analyse --memory-limit=2G"
     ],
+    "stan:b": [
+      "php ./vendor/bin/phpstan -b --memory-limit=2G"
+    ],
     "stan:clear": [
       "php ./vendor/bin/phpstan clear-result-cache"
     ],

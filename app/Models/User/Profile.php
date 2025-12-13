@@ -65,7 +65,7 @@ class Profile extends Model
             $data = $this->data;
             $id = (int) ($data->avatar ?? 0);
             if ($id !== 0) {
-                return $this->attachments->first(fn(Attachment $attachment): bool => $id === $attachment->id);
+                return $this->attachments->first(fn (Attachment $attachment): bool => $id === $attachment->id);
             }
 
             return null;

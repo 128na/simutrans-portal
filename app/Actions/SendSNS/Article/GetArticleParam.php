@@ -25,7 +25,7 @@ class GetArticleParam
         $pakSlugs = $article->categoryPaks->pluck('slug')->all();
         $tags = collect(['simutrans', ...$pakSlugs])
             ->map(function (string $slug): string {
-                $translated = __('hash_tag.' . $slug);
+                $translated = __('hash_tag.'.$slug);
 
                 return is_string($translated) ? $translated : $slug;
             })

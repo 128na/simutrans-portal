@@ -89,8 +89,8 @@ class JobGenerateThumbnail implements ShouldQueue
             $configDirectory = config('thumbnail.directory');
             $thumbnailDirectory = is_string($configDirectory) ? $configDirectory : 'thumbnails';
             $thumbnailExtension = $thumbnailFormat === 'jpeg' ? 'jpg' : $thumbnailFormat;
-            $thumbnailFilename = pathinfo($this->attachment->path, PATHINFO_FILENAME) . '_thumb.' . $thumbnailExtension;
-            $thumbnailPath = $thumbnailDirectory . '/' . $thumbnailFilename;
+            $thumbnailFilename = pathinfo($this->attachment->path, PATHINFO_FILENAME).'_thumb.'.$thumbnailExtension;
+            $thumbnailPath = $thumbnailDirectory.'/'.$thumbnailFilename;
 
             $thumbnailContent = file_get_contents($tempThumbnailPath);
             if ($thumbnailContent === false) {

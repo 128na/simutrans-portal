@@ -58,7 +58,7 @@ class GenerateThumbnailsCommand extends Command
 
         // 画像のみをフィルタリング（isImageアクセサを使用）
         /** @var \Illuminate\Support\Collection<int, \App\Models\Attachment> $imageAttachments */
-        $imageAttachments = $attachments->filter(fn(\App\Models\Attachment $attachment) => $attachment->isImage);
+        $imageAttachments = $attachments->filter(fn (\App\Models\Attachment $attachment) => $attachment->isImage);
 
         if ($imageAttachments->isEmpty()) {
             $this->info('処理対象の画像がありません。');
@@ -95,7 +95,7 @@ class GenerateThumbnailsCommand extends Command
                     }
                 } catch (\Throwable $throwable) {
                     $this->newLine();
-                    $this->error('Failed to generate thumbnail for attachment ID: ' . $imageAttachment->id);
+                    $this->error('Failed to generate thumbnail for attachment ID: '.$imageAttachment->id);
                     $this->error($throwable->getMessage());
                 }
             } else {
@@ -120,9 +120,9 @@ class GenerateThumbnailsCommand extends Command
 
                 $this->newLine();
                 $this->line('=== サイズ削減情報 ===');
-                $this->line('元画像合計: ' . $this->formatBytes($totalOriginalSize));
-                $this->line('サムネイル合計: ' . $this->formatBytes($totalThumbnailSize));
-                $this->line('削減容量: ' . $this->formatBytes($reduction) . ' (' . sprintf('%.1f%%', $reductionPercent) . '削減)');
+                $this->line('元画像合計: '.$this->formatBytes($totalOriginalSize));
+                $this->line('サムネイル合計: '.$this->formatBytes($totalThumbnailSize));
+                $this->line('削減容量: '.$this->formatBytes($reduction).' ('.sprintf('%.1f%%', $reductionPercent).'削減)');
             }
         } else {
             $this->info(sprintf('✓ %d件のジョブをキューに投入しました。', $dispatched));
@@ -150,6 +150,6 @@ class GenerateThumbnailsCommand extends Command
             return sprintf('%.2f KB', $bytes / 1024);
         }
 
-        return $bytes . ' B';
+        return $bytes.' B';
     }
 }

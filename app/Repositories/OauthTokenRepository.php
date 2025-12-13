@@ -6,7 +6,7 @@ namespace App\Repositories;
 
 use App\Models\OauthToken;
 
-final readonly class OauthTokenRepository
+final class OauthTokenRepository
 {
     public function __construct(private OauthToken $oauthToken) {}
 

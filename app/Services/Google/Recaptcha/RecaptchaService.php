@@ -9,7 +9,7 @@ use Google\Cloud\RecaptchaEnterprise\V1\Client\RecaptchaEnterpriseServiceClient;
 use Google\Cloud\RecaptchaEnterprise\V1\CreateAssessmentRequest;
 use Google\Cloud\RecaptchaEnterprise\V1\Event;
 
-final readonly class RecaptchaService
+final class RecaptchaService
 {
     private const float ALLOW_SCORE = 0.5;
 

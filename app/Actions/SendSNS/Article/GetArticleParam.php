@@ -7,7 +7,7 @@ namespace App\Actions\SendSNS\Article;
 use App\Models\Article;
 use Carbon\Carbon;
 
-final readonly class GetArticleParam
+final class GetArticleParam
 {
     public function __construct(
         private Carbon $carbon,

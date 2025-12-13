@@ -7,7 +7,7 @@ namespace App\Actions\Article;
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
 
-final readonly class SyncRelatedModels
+final class SyncRelatedModels
 {
     public function __construct(
         private ArticleRepository $articleRepository,

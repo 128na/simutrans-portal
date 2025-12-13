@@ -86,12 +86,12 @@ final class ImageResizeService
             'webp' => @imagewebp($gdImage, $tmpPath, 80),
             'jpeg' => @imagejpeg($gdImage, $tmpPath, 80),
             'png' => @imagepng($gdImage, $tmpPath, 6),
-            default => throw new ResizeFailedException("Unsupported format: {$format}"),
+            default => throw new ResizeFailedException('Unsupported format: '.$format),
         };
 
         if (! $result) {
             @unlink($tmpPath);
-            throw new ResizeFailedException("image{$format} failed");
+            throw new ResizeFailedException(sprintf('image%s failed', $format));
         }
 
         return $tmpPath;

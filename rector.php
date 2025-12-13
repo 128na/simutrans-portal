@@ -7,6 +7,7 @@ use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Assign\RemoveUnusedVariableAssignRector;
 use Rector\DeadCode\Rector\Concat\RemoveConcatAutocastRector;
+use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 use Rector\Transform\Rector\String_\StringToClassConstantRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector;
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
@@ -48,6 +49,7 @@ return RectorConfig::configure()
         StringToClassConstantRector::class, // view('auth.login') が誤って変換されるため
         PostIncDecToPreIncDecRector::class,
         RemoveConcatAutocastRector::class,
+        ReadOnlyPropertyRector::class,
     ])
     ->withSets([
         LaravelLevelSetList::UP_TO_LARAVEL_120,

@@ -50,7 +50,7 @@ final class JobGenerateThumbnail implements ShouldQueue
         ImageResizeService $imageResizeService,
         AttachmentRepository $attachmentRepository,
     ): void {
-        $publicDisk = Storage::disk('public');
+        $filesystem = Storage::disk('public');
 
         // 画像でない場合はスキップ
         if ($this->attachment->type !== 'image') {
@@ -64,7 +64,7 @@ final class JobGenerateThumbnail implements ShouldQueue
 
         try {
             // 元画像のパスを取得
-            $originalPath = $publicDisk->path($this->attachment->path);
+            $originalPath = $filesystem->path($this->attachment->path);
             if (! file_exists($originalPath)) {
                 throw new ResizeFailedException('Original file not found');
             }
@@ -86,10 +86,10 @@ final class JobGenerateThumbnail implements ShouldQueue
             // サムネイルを保存
             $thumbnailDirectory = (string) config('thumbnail.directory', 'thumbnails');
             $thumbnailExtension = $thumbnailFormat === 'jpeg' ? 'jpg' : $thumbnailFormat;
-            $thumbnailFilename = pathinfo($this->attachment->path, PATHINFO_FILENAME) . '_thumb.' . $thumbnailExtension;
-            $thumbnailPath = $thumbnailDirectory . '/' . $thumbnailFilename;
+            $thumbnailFilename = pathinfo($this->attachment->path, PATHINFO_FILENAME).'_thumb.'.$thumbnailExtension;
+            $thumbnailPath = $thumbnailDirectory.'/'.$thumbnailFilename;
 
-            $publicDisk->put(
+            $filesystem->put(
                 $thumbnailPath,
                 file_get_contents($tempThumbnailPath)
             );
@@ -106,24 +106,24 @@ final class JobGenerateThumbnail implements ShouldQueue
                 'attachment_id' => $this->attachment->id,
                 'thumbnail_path' => $thumbnailPath,
             ]);
-        } catch (ResizeFailedException $e) {
+        } catch (ResizeFailedException $resizeFailedException) {
             Log::error('Failed to generate thumbnail', [
                 'attachment_id' => $this->attachment->id,
-                'error' => $e->getMessage(),
+                'error' => $resizeFailedException->getMessage(),
             ]);
 
-            throw $e;
+            throw $resizeFailedException;
         }
     }
 
     /**
      * ジョブ失敗時の処理
      */
-    public function failed(?\Throwable $exception): void
+    public function failed(?\Throwable $throwable): void
     {
         Log::error('JobGenerateThumbnail failed', [
             'attachment_id' => $this->attachment->id,
-            'exception' => $exception?->getMessage(),
+            'exception' => $throwable?->getMessage(),
         ]);
     }
 }

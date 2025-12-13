@@ -7,7 +7,7 @@ namespace App\Repositories;
 use App\Models\Attachment;
 use App\Models\User;
 
-final readonly class AttachmentRepository
+final class AttachmentRepository
 {
     public function __construct(private Attachment $attachment) {}
 

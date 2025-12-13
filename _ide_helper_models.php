@@ -14,78 +14,6 @@
 namespace App\Models{
 /**
  * @property int $id
- * @property int $user_id
- * @property string $title タイトル
- * @property string $slug スラッグ
- * @property \App\Enums\ArticlePostType $post_type 投稿形式
- * @property \App\Models\Contents\Content $contents コンテンツ
- * @property \App\Enums\ArticleStatus $status 公開状態
- * @property bool $pr PR記事
- * @property \Carbon\CarbonImmutable|null $published_at 投稿日時
- * @property \Carbon\CarbonImmutable|null $modified_at 更新日時
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property \Carbon\CarbonImmutable|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Article> $articles
- * @property-read int|null $articles_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
- * @property-read int|null $attachments_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
- * @property-read int|null $categories_count
- * @property-read mixed $category_paks
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ConversionCount> $conversionCounts
- * @property-read int|null $conversion_counts_count
- * @property-read mixed $file
- * @property-read bool $has_file
- * @property-read bool $has_file_info
- * @property-read bool $has_thumbnail
- * @property-read bool $is_addon_post
- * @property-read bool $is_inactive
- * @property-read bool $is_publish
- * @property-read bool $is_reservation
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
- * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Article> $relatedArticles
- * @property-read int|null $related_articles_count
- * @property-read \App\Models\Article\ArticleSearchIndex|null $seachIndex
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
- * @property-read int|null $tags_count
- * @property-read mixed $thumbnail
- * @property-read mixed $thumbnail_url
- * @property-read \App\Models\Article\ConversionCount|null $totalConversionCount
- * @property-read \App\Models\Article\ViewCount|null $totalViewCount
- * @property-read \App\Models\User $user
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ViewCount> $viewCounts
- * @property-read int|null $view_counts_count
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article active()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article addon()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article announce()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article category(\App\Models\Category $category)
- * @method static \Database\Factories\ArticleFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article latest()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article page()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article pak(string $slug)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article pakAddonCategory(\App\Models\Category $pak, \App\Models\Category $addon)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article slug(string $slug)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article tag(\App\Models\Tag $tag)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article user(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withTrashed(bool $withTrashed = true)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withUserTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withoutAnnounce()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withoutTrashed()
- * @mixin \Eloquent
- */
-	#[\AllowDynamicProperties]
-	class IdeHelperArticle {}
-}
-
-namespace App\Models{
-/**
- * @property int $id
  * @property int $article_id
  * @property int $failed_count
  * @property \Carbon\CarbonImmutable $last_checked_at
@@ -174,6 +102,7 @@ namespace App\Models{
  * @property-read \App\Models\Attachment\FileInfo|null $fileInfo
  * @property-read mixed $full_path
  * @property-read bool $is_image
+ * @property-read mixed $original
  * @property-read mixed $thumbnail
  * @property-read string $type
  * @property-read \App\Models\User $user

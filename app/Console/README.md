@@ -11,6 +11,8 @@ Console/
 │   │   ├── CheckDeadLinkCommand.php      # デッドリンクチェック
 │   │   ├── ConvertCommand.php            # pak変換
 │   │   └── UpdateSearchIndexCommand.php  # 検索インデックス更新
+│   ├── Attachment/
+│   │   └── GenerateThumbnailsCommand.php # サムネイル一括生成
 │   ├── LangJsonExportCommand.php         # 翻訳JSONエクスポート
 │   ├── MFASetupAutoRecovery.php          # 2FA自動リカバリ
 │   └── RemoveUnusedTagsCommand.php       # 未使用タグ削除
@@ -84,6 +86,40 @@ php artisan article:update-search-index
 - 全文検索のパフォーマンス向上
 
 **スケジュール**: 1時間毎に実行
+
+### Attachment/GenerateThumbnailsCommand
+
+アップロード済み画像のサムネイルを一括生成します。
+
+```bash
+php artisan attachment:generate-thumbnails
+```
+
+**オプション**:
+
+- `--force`: サムネイルが既に存在する場合も再生成
+- `--limit=N`: 処理する件数の上限を指定
+- `--sync`: キューを使わず同期実行
+
+**機能**:
+
+- 画像タイプの添付ファイルを取得
+- サムネイルが未生成のものを対象（`--force`で全件）
+- `JobGenerateThumbnail`をキューにディスパッチ（`--sync`で同期実行）
+- プログレスバーで進捗表示
+
+**使用例**:
+
+```bash
+# サムネイル未生成の画像を処理
+php artisan attachment:generate-thumbnails
+
+# 全画像を再生成（上限100件）
+php artisan attachment:generate-thumbnails --force --limit=100
+
+# 同期実行（キューワーカー不要）
+php artisan attachment:generate-thumbnails --sync
+```
 
 ### LangJsonExportCommand
 

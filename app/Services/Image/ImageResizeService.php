@@ -37,7 +37,8 @@ class ImageResizeService
         // アスペクト比を維持して高さを計算
         $targetHeight = (int) (($targetWidth / $originalWidth) * $originalHeight);
 
-        $resized = @imagescale($gdImage, $targetWidth, $targetHeight, IMG_BILINEAR_FIXED);
+        // IMG_BICUBICを使用してよりシャープなリサイズを実現
+        $resized = @imagescale($gdImage, $targetWidth, $targetHeight, IMG_BICUBIC);
         @imagedestroy($gdImage);
 
         if (! $resized) {
@@ -82,11 +83,16 @@ class ImageResizeService
             throw new ResizeFailedException('tempnam failed');
         }
 
+        /** @var int<0, 100> $quality */
+        $quality = max(0, min(100, (int) config('thumbnail.quality', 90)));
+        /** @var int<0, 9> $pngCompression */
+        $pngCompression = max(0, min(9, (int) config('thumbnail.png_compression', 5)));
+
         $result = match ($format) {
-            'webp' => @imagewebp($gdImage, $tmpPath, 80),
-            'jpeg' => @imagejpeg($gdImage, $tmpPath, 80),
-            'png' => @imagepng($gdImage, $tmpPath, 6),
-            default => throw new ResizeFailedException('Unsupported format: '.$format),
+            'webp' => @imagewebp($gdImage, $tmpPath, $quality),
+            'jpeg' => @imagejpeg($gdImage, $tmpPath, $quality),
+            'png' => @imagepng($gdImage, $tmpPath, $pngCompression),
+            default => throw new ResizeFailedException('Unsupported format: ' . $format),
         };
 
         if (! $result) {

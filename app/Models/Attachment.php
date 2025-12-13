@@ -128,6 +128,14 @@ class Attachment extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
      */
+    protected function original(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->url($this->path));
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     */
     protected function fullPath(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->path($this->path));

@@ -85,7 +85,7 @@ class ArticleRepository
         $query = $this->model->query()
             ->select(['articles.*'])
             ->withoutGlobalScopes()
-            ->where('articles.slug', $slug);
+            ->where('articles.slug', urlencode($slug));
 
         $this->joinActiveUsers($query);
         $this->wherePublished($query);

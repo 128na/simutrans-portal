@@ -30,7 +30,7 @@ class ToBlueSkyTest extends TestCase
         $this->mock(GetArticleParam::class, function (MockInterface $mock) use ($article, $articleParam): void {
             $mock->expects('__invoke')
                 ->once()
-                ->with(\Mockery::on(fn($arg) => $arg->id === $article->id))
+                ->with(\Mockery::on(fn ($arg) => $arg->id === $article->id))
                 ->andReturn($articleParam);
         });
 
@@ -113,7 +113,7 @@ class ToBlueSkyTest extends TestCase
         // Post クラスは final なので実際のインスタンスを使用
         $post = new Post('Content with failed image');
 
-        $this->mock(BlueSkyApiClient::class, function (MockInterface $mock) use ($article, $post): void {
+        $this->mock(BlueSkyApiClient::class, function (MockInterface $mock) use ($article): void {
             $mock->expects('addWebsiteCard')
                 ->once()
                 ->with(\Mockery::type(Post::class), $article)

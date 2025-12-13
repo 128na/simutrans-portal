@@ -95,7 +95,7 @@ class ImageResizeService
             'webp' => @imagewebp($gdImage, $tmpPath, $quality),
             'jpeg' => @imagejpeg($gdImage, $tmpPath, $quality),
             'png' => @imagepng($gdImage, $tmpPath, $pngCompression),
-            default => throw new ResizeFailedException('Unsupported format: ' . $format),
+            default => throw new ResizeFailedException('Unsupported format: '.$format),
         };
 
         if (! $result) {

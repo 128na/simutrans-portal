@@ -24,7 +24,7 @@ class CompareThumbnailSizesCommand extends Command
             $query->limit((int) $limit);
         }
 
-        $attachments = $query->get()->filter(fn($attachment) => $attachment->isImage);
+        $attachments = $query->get()->filter(fn ($attachment) => $attachment->isImage);
 
         if ($attachments->isEmpty()) {
             $this->info('サムネイルが存在する画像がありません。');
@@ -103,9 +103,9 @@ class CompareThumbnailSizesCommand extends Command
 
         $this->info('=== 統計情報 ===');
         $this->line("比較件数: {$count}件");
-        $this->line('元画像合計: ' . $this->formatBytes($totalOriginalSize));
-        $this->line('サムネイル合計: ' . $this->formatBytes($totalThumbnailSize));
-        $this->line('削減容量: ' . $this->formatBytes($totalOriginalSize - $totalThumbnailSize));
+        $this->line('元画像合計: '.$this->formatBytes($totalOriginalSize));
+        $this->line('サムネイル合計: '.$this->formatBytes($totalThumbnailSize));
+        $this->line('削減容量: '.$this->formatBytes($totalOriginalSize - $totalThumbnailSize));
         $this->line(sprintf('平均削減率: %.1f%%', $avgReduction));
 
         return self::SUCCESS;
@@ -125,6 +125,6 @@ class CompareThumbnailSizesCommand extends Command
             return sprintf('%.2f KB', $bytes / 1024);
         }
 
-        return $bytes . ' B';
+        return $bytes.' B';
     }
 }

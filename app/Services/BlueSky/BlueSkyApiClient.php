@@ -37,10 +37,6 @@ class BlueSkyApiClient
      */
     public function addWebsiteCard(Post $post, Article $article): Post
     {
-        if (! $article->user) {
-            throw new \RuntimeException('Article user is required');
-        }
-
         $ogp = $this->metaOgpService->frontArticleShow($article->user, $article);
         $thumbnail = null;
         if ($article->hasThumbnail && $article->thumbnail instanceof Attachment) {

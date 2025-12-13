@@ -417,9 +417,7 @@ class Article extends Model implements Feedable
      */
     protected function thumbnailUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        $has = $this->has_thumbnail && $this->thumbnail;
-
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $has ? $this->thumbnail->thumbnail : $this->getPublicDisk()->url(DefaultThumbnail::NO_THUMBNAIL));
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => ($this->has_thumbnail && $this->thumbnail) ? $this->thumbnail->thumbnail : $this->getPublicDisk()->url(DefaultThumbnail::NO_THUMBNAIL));
     }
 
     /**

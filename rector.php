@@ -51,13 +51,13 @@ return RectorConfig::configure()
         RemoveConcatAutocastRector::class,
         ReadOnlyPropertyRector::class,
         // Laravel 12 + Rector互換性問題: Illuminate\Foundation\Support\Providers\EventServiceProvider解析エラー回避
-        __DIR__.'/app/Actions',
-        __DIR__.'/app/Console/Commands',
-        __DIR__.'/app/Http/Resources',
-        __DIR__.'/app/Models',
-        __DIR__.'/app/Providers',
-        __DIR__.'/app/Repositories',
-        __DIR__.'/app/Services',
+        // __DIR__.'/app/Actions',
+        // __DIR__.'/app/Console/Commands',
+        // __DIR__.'/app/Http/Resources',
+        // __DIR__.'/app/Models',
+        // __DIR__.'/app/Providers',
+        // __DIR__.'/app/Repositories',
+        // __DIR__.'/app/Services',
     ])
     ->withSets([
         LaravelLevelSetList::UP_TO_LARAVEL_120,

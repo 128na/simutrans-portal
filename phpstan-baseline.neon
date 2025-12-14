@@ -43,7 +43,7 @@ parameters:
 			path: app/Models/Article.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between null and ''addon\-post'' will always evaluate to false\.$#'
+			message: '#^Strict comparison using \=\=\= between ''addon\-post'' and null will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 1
 			path: app/Models/Article.php

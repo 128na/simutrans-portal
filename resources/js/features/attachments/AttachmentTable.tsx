@@ -113,6 +113,7 @@ export const AttachmentTable = ({
       <div className="v2-table-container">
         <div>
           <Input
+            className="w-full"
             type="search"
             value={criteria}
             onChange={(e) => setCriteria(e.target.value)}

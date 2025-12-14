@@ -87,6 +87,7 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
         </div>
         <div>
           <Select
+            className="w-full"
             value={statusFilter}
             onChange={(e) =>
               setStatusFilter(e.target.value as ArticleStatus | "")
@@ -103,6 +104,7 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
         </div>
         <div>
           <Select
+            className="w-full"
             value={postTypeFilter}
             onChange={(e) =>
               setPostTypeFilter(e.target.value as ArticlePostType | "")
@@ -118,6 +120,7 @@ export const ArticleTable = ({ articles, limit, onClick }: Props) => {
         </div>
         <div>
           <Input
+            className="w-full"
             type="search"
             value={criteria}
             onChange={(e) => setCriteria(e.target.value)}

@@ -67,6 +67,7 @@ export const TagTable = ({ tags, limit, onClick }: Props) => {
         </div>
         <div>
           <Input
+            className="w-full"
             type="search"
             value={criteria}
             onChange={(e) => setCriteria(e.target.value)}

@@ -6,7 +6,6 @@ import * as fs from "fs";
 
 export default defineConfig({
   plugins: [
-    // react(),
     LaravelLangWatcher(),
     tailwindcss(),
     laravel({
@@ -26,25 +25,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      output: {
-        manualChunks: {
-          // React関連を分離
-          react: ["react", "react-dom"],
-          // 大きなライブラリを分離
-          chart: ["recharts"],
-          // 記事表示コンポーネントを分離
-          "article-components": [
-            "./resources/js/features/articles/components/ArticleBase.tsx",
-            "./resources/js/features/articles/components/postType/AddonPost.tsx",
-            "./resources/js/features/articles/components/postType/AddonIntroduction.tsx",
-            "./resources/js/features/articles/components/postType/Markdown.tsx",
-            "./resources/js/features/articles/components/postType/Page.tsx",
-          ],
-          "playground-components": [
-            "./resources/js/mypage/pages/PlaygroundPage.tsx",
-          ],
-        },
-      },
+      output: {},
     },
   },
   test: {

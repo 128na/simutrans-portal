@@ -147,7 +147,7 @@
 
   /* ボタン：基底 */
   .v2-button {
-    @apply text-white cursor-pointer shadow-md hover:shadow-lg transition-shadow;
+    @apply text-white cursor-pointer shadow-md hover:shadow-lg transition-shadow break-keep;
   }
   .v2-button-outline {
     @apply bg-transparent border cursor-pointer shadow-md hover:shadow-lg transition-shadow;

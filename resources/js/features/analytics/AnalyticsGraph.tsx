@@ -118,7 +118,7 @@ export function AnalyticsGraph({ articles }: Props) {
         <TextSub>記事を選んでください</TextSub>
       ) : (
         <LineChart
-          style={{ width: "100%", aspectRatio: 2 }}
+          style={{ width: "100%", minHeight: 300, maxHeight: 600 }}
           responsive
           data={data}
         >

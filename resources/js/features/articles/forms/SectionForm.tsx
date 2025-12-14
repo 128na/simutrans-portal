@@ -143,7 +143,7 @@ export const SectionForm = () => {
           </div>
         )}
       />
-      <div className="space-x-2">
+      <div className="space-x-2 space-y-4">
         <FormCaption>項目の追加</FormCaption>
         <Button size="lg" onClick={() => add("caption")}>
           見出し

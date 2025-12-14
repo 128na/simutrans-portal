@@ -30,7 +30,7 @@ export const ProfileShow = ({ user, attachments, preview }: Props) => {
         </p>
         <p className="v2-text-sub break-all">{user.profile.data.description}</p>
 
-        <div className="space-x-2">
+        <div className="space-x-2 space-y-4">
           {user.profile.data.website.map((website) =>
             website ? (
               <ProfileLink

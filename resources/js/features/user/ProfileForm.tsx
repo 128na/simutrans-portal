@@ -147,7 +147,7 @@ export const ProfileForm = ({
           attachmentId={user.profile.data.avatar}
           attachments={attachments}
         />
-        <div className="space-x-2">
+        <div className="space-x-2 space-y-4">
           <Upload
             accept="image/*"
             onUploaded={(a) => {

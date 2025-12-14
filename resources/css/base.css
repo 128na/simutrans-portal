@@ -273,7 +273,7 @@
     @apply hover:bg-c-sub/10;
   }
   .v2-hover-bg-primary {
-    @apply hover:bg-c-primary/10;
+    @apply bg-c-primary/10 hover:bg-c-primary/20;
   }
   .v2-hover-text-sub {
     @apply hover:text-c-sub;

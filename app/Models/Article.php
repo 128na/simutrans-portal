@@ -368,7 +368,7 @@ class Article extends Model implements Feedable
     protected function isAddonPost(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(
-            get: fn (): bool => $this->attributes['post_type'] ?? ArticlePostType::AddonPost->value === null
+            get: fn (): bool => ($this->attributes['post_type'] ?? null) === ArticlePostType::AddonPost->value
         );
     }
 

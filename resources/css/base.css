@@ -81,6 +81,12 @@
   .v2-accordion {
     @apply my-2 p-2 sm:py-2 py-4 flex w-full items-center justify-between bg-c-sub/10 cursor-pointer;
   }
+  .v2-accordion svg {
+    @apply transition-transform duration-300;
+  }
+  .v2-accordion[aria-expanded="true"] svg {
+    @apply rotate-180;
+  }
 
   /* reactとblade双方から共通利用できるように定義した主要パーツ用クラス */
   /* フォーム */

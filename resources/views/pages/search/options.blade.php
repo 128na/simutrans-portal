@@ -12,14 +12,14 @@
     <div class="mb-12">
         <button type="button" command="--toggle" commandfor="search-options" class="v2-accordion">
             詳細条件
-            <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none in-aria-expanded:rotate-180">
+            <svg viewBox="0 0 20 20" fill="currentColor" class="size-5 flex-none">
                 <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
             </svg>
         </button>
         @php
         $showOptions = ($condition['tagIds'] ?? []) || ($condition['categoryIds'] ?? []) || ($condition['userIds'] ?? []) || ($condition['postTypes'] ?? []);
         @endphp
-        <el-disclosure id="search-options" {{ $showOptions ? '' : 'hidden' }} class="mt-2 block space-y-2">
+        <el-disclosure id="search-options" {{ $showOptions ? '' : 'hidden' }} class="v2-accordion-content mt-2 block space-y-2">
             <div class="mb-4">
                 <div class="font-semibold">投稿形式</div>
                 <div class="v2-checkboxes">
@@ -52,7 +52,7 @@
 
             <button type="button" command="--toggle" commandfor="search-users" class="v2-accordion">
                 ユーザー
-                <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none in-aria-expanded:rotate-180">
+                <svg viewBox="0 0 20 20" fill="currentColor" class="size-5 flex-none">
                     <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
                 </svg>
             </button>
@@ -62,7 +62,7 @@
 
             <button type="button" command="--toggle" commandfor="search-tags" class="v2-accordion">
                 タグ
-                <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none in-aria-expanded:rotate-180">
+                <svg viewBox="0 0 20 20" fill="currentColor" class="size-5 flex-none">
                     <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
                 </svg>
             </button>

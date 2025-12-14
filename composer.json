@@ -88,7 +88,6 @@
       "composer dump-autoload",
       "php artisan ide-helper:generate",
       "php artisan ide-helper:models -WMR",
-      "@rector",
       "@stan",
       "@pint"
     ],

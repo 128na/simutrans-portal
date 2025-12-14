@@ -41,9 +41,3 @@ parameters:
 			identifier: booleanNot.alwaysFalse
 			count: 1
 			path: app/Repositories/ArticleRepository.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: app/Services/Front/MetaOgpService.php

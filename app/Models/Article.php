@@ -282,7 +282,7 @@ class Article extends Model implements Feedable
     #[\Illuminate\Database\Eloquent\Attributes\Scope]
     protected function page(Builder $builder): void
     {
-        $builder->where('post_type', [ArticlePostType::Page, ArticlePostType::Markdown]);
+        $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown]);
     }
 
     /**
@@ -305,7 +305,7 @@ class Article extends Model implements Feedable
     protected function announce(Builder $builder): void
     {
         $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
-            ->whereHas('categories', function ($query): void {
+            ->whereHas('categories', function (Builder $query): void {
                 $query->page()->slug('announce');
             });
     }
@@ -317,7 +317,7 @@ class Article extends Model implements Feedable
     protected function withoutAnnounce(Builder $builder): void
     {
         $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
-            ->whereDoesntHave('categories', function ($query): void {
+            ->whereDoesntHave('categories', function (Builder $query): void {
                 $query->page()->slug('announce');
             });
     }
@@ -370,7 +370,7 @@ class Article extends Model implements Feedable
         /** @var ArticlePostType $postType */
         $postType = $this->post_type;
 
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $postType === ArticlePostType::AddonPost);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $postType === ArticlePostType::AddonPost);
     }
 
     /**
@@ -381,7 +381,7 @@ class Article extends Model implements Feedable
         /** @var ArticleStatus $status */
         $status = $this->status;
 
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $status === ArticleStatus::Publish);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $status === ArticleStatus::Publish);
     }
 
     /**
@@ -392,7 +392,7 @@ class Article extends Model implements Feedable
         /** @var ArticleStatus $status */
         $status = $this->status;
 
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $status === ArticleStatus::Reservation);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $status === ArticleStatus::Reservation);
     }
 
     /**
@@ -403,7 +403,7 @@ class Article extends Model implements Feedable
         /** @var ArticleStatus $status */
         $status = $this->status;
 
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => in_array($status, [
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => in_array($status, [
             ArticleStatus::Draft,
             ArticleStatus::Private,
             ArticleStatus::Trash,
@@ -415,7 +415,7 @@ class Article extends Model implements Feedable
      */
     protected function hasThumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => ! is_null($this->contents->thumbnail) && $this->thumbnail);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => ! is_null($this->contents->thumbnail) && $this->thumbnail);
     }
 
     /**
@@ -428,7 +428,7 @@ class Article extends Model implements Feedable
             $contents = $this->contents;
             $id = $contents->thumbnail ?? null;
 
-            return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
+            return $this->attachments->first(fn($attachment): bool => (string) $id == $attachment->id);
         });
     }
 
@@ -437,7 +437,7 @@ class Article extends Model implements Feedable
      */
     protected function thumbnailUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => ($this->has_thumbnail && $this->thumbnail) ? $this->thumbnail->thumbnail : $this->getPublicDisk()->url(DefaultThumbnail::NO_THUMBNAIL));
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => ($this->has_thumbnail && $this->thumbnail) ? $this->thumbnail->thumbnail : $this->getPublicDisk()->url(DefaultThumbnail::NO_THUMBNAIL));
     }
 
     /**
@@ -445,7 +445,7 @@ class Article extends Model implements Feedable
      */
     protected function hasFile(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->is_addon_post
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $this->is_addon_post
             && $this->contents instanceof AddonPostContent
             && ! is_null($this->contents->file) && $this->file);
     }
@@ -459,7 +459,7 @@ class Article extends Model implements Feedable
             if ($this->contents instanceof AddonPostContent) {
                 $id = $this->contents->file;
 
-                return $this->attachments->first(fn ($attachment): bool => (string) $id == $attachment->id);
+                return $this->attachments->first(fn($attachment): bool => (string) $id == $attachment->id);
             }
 
             throw new Exception('invalid post type');
@@ -471,7 +471,7 @@ class Article extends Model implements Feedable
      */
     protected function hasFileInfo(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->hasFile && $this->file && $this->file->fileInfo);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): bool => $this->hasFile && $this->file && $this->file->fileInfo);
     }
 
     /**
@@ -479,7 +479,7 @@ class Article extends Model implements Feedable
      */
     protected function categoryPaks(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak));
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->categories->filter(fn($category): bool => $category->type === CategoryType::Pak));
     }
 
     #[\Override]

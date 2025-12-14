@@ -292,16 +292,16 @@
 
   /* テキスト：見出し */
   .v2-text-h1 {
-    @apply text-4xl font-semibold tracking-tight text-pretty;
+    @apply text-4xl font-semibold tracking-tight text-pretty break-all;
   }
   .v2-text-h2 {
-    @apply text-3xl font-semibold tracking-tight text-pretty;
+    @apply text-3xl font-semibold tracking-tight text-pretty break-all;
   }
   .v2-text-h3 {
-    @apply text-2xl font-semibold tracking-tight text-pretty;
+    @apply text-2xl font-semibold tracking-tight text-pretty break-all;
   }
   .v2-text-h4 {
-    @apply text-xl font-semibold tracking-tight text-pretty;
+    @apply text-xl font-semibold tracking-tight text-pretty break-all;
   }
 
   /* テキスト：共通スタイル */

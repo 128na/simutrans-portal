@@ -13,6 +13,12 @@ parameters:
 			path: app/Http/Controllers/Pages/Article/ShowController.php
 
 		-
+			message: '#^Anonymous function should return bool but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/Article.php
+
+		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\:\:page\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -33,6 +39,12 @@ parameters:
 		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: app/Models/Article.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between null and ''addon\-post'' will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
 			count: 1
 			path: app/Models/Article.php
 

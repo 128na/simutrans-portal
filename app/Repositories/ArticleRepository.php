@@ -609,7 +609,7 @@ class ArticleRepository
         /** @var Collection<int, Article> */
         return $this->model
             ->query()
-            ->select('id')
+            ->select('id', 'post_type', 'published_at')
             ->where('user_id', $user->id)
             ->whereIn('id', $ids)
             ->with([

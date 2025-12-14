@@ -367,10 +367,9 @@ class Article extends Model implements Feedable
      */
     protected function isAddonPost(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        /** @var ArticlePostType $postType */
-        $postType = $this->post_type;
-
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $postType === ArticlePostType::AddonPost);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn (): bool => $this->attributes['post_type'] ?? ArticlePostType::AddonPost->value === null
+        );
     }
 
     /**
@@ -378,10 +377,9 @@ class Article extends Model implements Feedable
      */
     protected function isPublish(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        /** @var ArticleStatus $status */
-        $status = $this->status;
-
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $status === ArticleStatus::Publish);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn (): bool => ($this->attributes['status'] ?? null) === ArticleStatus::Publish->value
+        );
     }
 
     /**
@@ -389,10 +387,9 @@ class Article extends Model implements Feedable
      */
     protected function isReservation(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        /** @var ArticleStatus $status */
-        $status = $this->status;
-
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $status === ArticleStatus::Reservation);
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn (): bool => ($this->attributes['status'] ?? null) === ArticleStatus::Reservation->value
+        );
     }
 
     /**
@@ -400,14 +397,13 @@ class Article extends Model implements Feedable
      */
     protected function isInactive(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        /** @var ArticleStatus $status */
-        $status = $this->status;
-
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => in_array($status, [
-            ArticleStatus::Draft,
-            ArticleStatus::Private,
-            ArticleStatus::Trash,
-        ]));
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn (): bool => in_array($this->attributes['status'] ?? null, [
+                ArticleStatus::Draft->value,
+                ArticleStatus::Private->value,
+                ArticleStatus::Trash->value,
+            ])
+        );
     }
 
     /**

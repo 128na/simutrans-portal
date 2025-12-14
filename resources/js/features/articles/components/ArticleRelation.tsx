@@ -13,7 +13,7 @@ export const ArticleRelation = ({ title, articles, preview }: Props) => {
   }
 
   return (
-    <>
+    <div>
       <TitleH4>{title}</TitleH4>
       {articles.map((relatedArticle) => (
         <div>
@@ -25,6 +25,6 @@ export const ArticleRelation = ({ title, articles, preview }: Props) => {
           </Link>
         </div>
       ))}
-    </>
+    </div>
   );
 };

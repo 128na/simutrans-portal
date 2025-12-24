@@ -84,26 +84,25 @@
     "post-create-project-cmd": [
       "php artisan key:generate --ansi"
     ],
-    "all": [
+    "pint": [
       "composer dump-autoload",
       "php artisan ide-helper:generate",
       "php artisan ide-helper:models -WMR",
-      "@stan",
-      "@pint"
-    ],
-    "pint": [
       "php ./vendor/bin/pint"
     ],
     "pint:check": [
+      "composer dump-autoload",
+      "php artisan ide-helper:generate",
+      "php artisan ide-helper:models -WMR",
       "php ./vendor/bin/pint --test"
     ],
-    "stan": [
+    "phpstan": [
       "php ./vendor/bin/phpstan analyse --memory-limit=2G"
     ],
-    "stan:b": [
+    "phpstan:b": [
       "php ./vendor/bin/phpstan -b --memory-limit=2G"
     ],
-    "stan:clear": [
+    "phpstan:clear": [
       "php ./vendor/bin/phpstan clear-result-cache"
     ],
     "rector": [

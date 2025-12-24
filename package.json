@@ -2,16 +2,21 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "test": "vitest --run",
+    "test:front": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --run --coverage",
-    "typecheck": "tsc --noEmit",
+    "test:coverage": "vitest run --coverage",
+    "test:back:unit": "php artisan test --testsuite=Unit --no-ansi",
+    "test:back:feature": "php artisan test --testsuite=Feature --no-ansi",
+    "test": "node scripts/run-parallel.js \"front:npm run test:front\" \"unit:npm run test:back:unit\" \"feature:npm run test:back:feature\"",
+    "build": "vite build",
+    "dev": "vite",
+    "format": "prettier --write resources/",
+    "format:check": "prettier --check resources/",
     "lint": "eslint . --fix",
-    "check": "npm run typecheck && npm run lint",
-    "format": "prettier --write resources/"
+    "types": "tsc --noEmit",
+    "check": "node scripts/run-parallel.js \"types:npm run types\" \"format:npm run format\" \"lint:npm run lint\" \"pint:composer run pint\" \"phpstan:composer run phpstan\"",
+    "all": "npm run check && npm run test"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6",

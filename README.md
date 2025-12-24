@@ -51,7 +51,7 @@ npm run dev
 npm run build
 
 # TypeScript型チェック
-npm run typecheck
+npm run type
 
 # Lint（自動修正）
 npm run lint

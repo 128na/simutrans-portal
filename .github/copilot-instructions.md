@@ -69,7 +69,7 @@
 - バックエンド一括チェック: `composer run all`（ide-helper, rector, phpstan, pint を順に実行）
 - テスト実行: `php artisan test --testsuite=Unit` / `php artisan test --testsuite=Feature`
 - コードスタイル整形: `composer run pint`
-- 静的解析: `composer run stan`
+- 静的解析: `composer run phpstan`
 
 ## 主要な配置とパターン（まずここを確認）
 
@@ -135,7 +135,7 @@ import type { ArticleListResponse } from "@/types/api";
 
 - `composer run all` — 全チェック（ide-helper, rector, phpstan, pint）
 - `composer run pint` — コード整形
-- `composer run stan` — 静的解析
+- `composer run phpstan` — 静的解析
 
 ### Services と Actions の責務分離
 
@@ -245,7 +245,7 @@ class ArticleRepository
 ## PR チェックリスト
 
 - **Lint / Format:** フロントエンドは `npm run lint` と `npm run format`、バックエンドは `composer run pint` を実行して整形しておく。
-- **静的解析:** PHP 側は `composer run stan` を実行して問題がないか確認する。
+- **静的解析:** PHP 側は `composer run phpstan` を実行して問題がないか確認する。
 - **依存とビルド:** `composer install` と `npm ci` が通り、フロント変更があれば `npm run build` でビルドが成功すること。
 - **テスト:** `php artisan test --testsuite=Unit` と `php artisan test --testsuite=Feature` を通す。Dusk テストは CI 設定が整っている場合のみ実行確認。
 - **型の更新:** フロントエンドで props/API を変更したら `resources/js/types/` 配下の型定義を必ず更新する。
@@ -265,7 +265,7 @@ class ArticleRepository
   - フロントエンドの構造を変更 → `resources/js/README.md` を更新
   - テスト方針を変更 → 該当する README（`resources/js/__tests__/README.md` 等）を更新
   - 新しいドキュメントを追加 → `docs/INDEX.md` のドキュメント索引を更新
-- **PR 説明:** 変更内容、レビュアが落とすべきコマンド（例: `npm run build`, `composer run stan`）、マイグレーションや手動手順があれば記載する。
+- **PR 説明:** 変更内容、レビュアが落とすべきコマンド（例: `npm run build`, `composer run phpstan`）、マイグレーションや手動手順があれば記載する。
 - **CI の確認:** CI がグリーン（`composer run all` 相当のチェックを含む）になるまでマージしない。
 
 ## 未実装のテスト候補

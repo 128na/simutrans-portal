@@ -9,6 +9,7 @@ This directory contains comprehensive unit tests for `App\Services\Twitter\PKCES
 The `PKCEServiceTest.php` file includes 12 test cases covering all major functionality:
 
 ### PKCE Flow Generation Tests
+
 - `test_generate_state_returns_random_string` - Verifies state generation with default length
 - `test_generate_state_with_custom_length` - Tests state generation with custom length
 - `test_generate_code_verifier_returns_valid_format` - Validates code verifier format
@@ -16,10 +17,12 @@ The `PKCEServiceTest.php` file includes 12 test cases covering all major functio
 - `test_generate_authorize_url_with_correct_parameters` - Verifies authorization URL construction
 
 ### State Verification Tests
+
 - `test_verify_state_success` - Tests successful state verification
 - `test_verify_state_throws_exception_on_mismatch` - Validates exception on state mismatch
 
 ### Token Operations Tests
+
 - `test_generate_token_success` - Tests initial token generation from auth code
 - `test_refresh_token_success` - Validates token refresh flow
 - `test_refresh_token_failure_throws_exception` - Tests error handling during refresh
@@ -120,7 +123,7 @@ composer run pint
 ### Static Analysis (PHPStan)
 
 ```bash
-composer run stan
+composer run phpstan
 ```
 
 ## Integration with CI/CD

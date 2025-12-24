@@ -122,7 +122,7 @@ php artisan l5-swagger:generate
 # resources/js/types/api/ 配下のファイルを編集
 
 # 4. 型チェック
-npm run typecheck
+npm run type
 ```
 
 ## 型定義の例
@@ -194,7 +194,7 @@ API を変更したら、必ず対応する TypeScript 型も更新してくだ�
 2. OpenAPI アノテーションを更新
 3. `php artisan l5-swagger:generate` で仕様を確認
 4. TypeScript 型定義を更新
-5. `npm run typecheck` で型エラーをチェック
+5. `npm run type` で型エラーをチェック
 
 ### 3. 型の命名規則
 

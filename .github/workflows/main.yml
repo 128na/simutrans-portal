@@ -25,7 +25,7 @@ jobs:
       - uses: ./.github/actions/php
       - uses: ./.github/actions/nodejs
       - run: npm run build
-      - run: npm run typecheck
+      - run: npm run type
       - run: npm run lint
 
   phpstan:
@@ -35,7 +35,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: php -r "copy('.env.ci', '.env');"
       - uses: ./.github/actions/php
-      - run: composer run stan
+      - run: composer run phpstan
 
   vitest:
     name: Test (Vitest)

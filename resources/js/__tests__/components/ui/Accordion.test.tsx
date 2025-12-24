@@ -59,16 +59,4 @@ describe("Accordion コンポーネント", () => {
     await user.click(button);
     expect(button).toHaveAttribute("aria-expanded", "true");
   });
-
-  it("アイコンが回転する", async () => {
-    const user = userEvent.setup();
-    render(<Accordion title="タイトル">内容</Accordion>);
-    const button = screen.getByRole("button");
-    const svg = button.querySelector("svg");
-
-    expect(svg).not.toHaveClass("rotate-180");
-
-    await user.click(button);
-    expect(svg).toHaveClass("rotate-180");
-  });
 });

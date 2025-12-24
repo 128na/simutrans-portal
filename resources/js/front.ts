@@ -5,3 +5,4 @@ import "./front/pages/ArticleShowPage";
 import "./front/pages/ArticleListPage";
 import "./lib/discord";
 import "./lib/onesignal";
+import "./lib/submitOnce";

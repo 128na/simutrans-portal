@@ -9,7 +9,7 @@
             ユーザー登録時に使用したメールアドレス宛にパスワード再設定用のリンクを送信します。
         </p>
     </div>
-    <form action="{{route('password.email')}}" method="POST">
+    <form action="{{route('password.email')}}" method="POST" class="js-submit-once">
         @csrf
         <div class="v2-page-content-area-md">
             <div>

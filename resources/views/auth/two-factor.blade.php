@@ -6,7 +6,7 @@
     <div class="mb-12">
         <h2 class="v2-text-h2">二要素認証</h2>
     </div>
-    <form action="{{route('two-factor.login.store')}}" method="POST">
+    <form action="{{route('two-factor.login.store')}}" method="POST" class="js-submit-once">
         @csrf
         <div class="v2-page-content-area-md">
             <div>

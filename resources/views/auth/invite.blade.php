@@ -9,7 +9,7 @@
             このコードは「{{$invitee->name}}」さんからの招待コードです。
         </p>
     </div>
-    <form action="{{route('user.registration', $invitee->invitation_code)}}" method="POST">
+    <form action="{{route('user.registration', $invitee->invitation_code)}}" method="POST" class="js-submit-once">
         @csrf
         <div class="v2-page-content-area-md">
             <div>

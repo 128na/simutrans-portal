@@ -5,7 +5,7 @@
     <div class="mb-12">
         <h2 class="v2-text-h2">パスワードリセット</h2>
     </div>
-    <form action="{{route('password.update')}}" method="POST">
+    <form action="{{route('password.update')}}" method="POST" class="js-submit-once">
         @csrf
         <input type="hidden" name="token" value="{{ $token }}" />
         <div class="v2-page-content-area-md">

@@ -16,7 +16,7 @@
                 </svg>
             </button>
         </div>
-        <el-popover-group class="hidden lg:flex lg:gap-x-12">
+        <el-popover-group class="hidden lg:flex lg:gap-x-4">
             <a href="{{route('index')}}" class="v2-header-menu-item">トップページ</a>
             <a href="{{route('mypage.index')}}" class="v2-header-menu-item">マイページ</a>
         </el-popover-group>

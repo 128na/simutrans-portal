@@ -72,6 +72,14 @@ if (app) {
         },
       },
       {
+        name: "v2Input (readonly)",
+        show: true,
+        render: (p: Props) => <Input value="test" {...p} />,
+        condition: {
+          readonly: [true],
+        },
+      },
+      {
         name: "v2Input (required)",
         show: true,
         render: (p: Props) => <Input {...p} />,

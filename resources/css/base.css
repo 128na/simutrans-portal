@@ -7,7 +7,8 @@
 
   --color-c-main: theme(colors.gray.900);
   --color-c-sub: theme(colors.gray.600);
-  --color-c-primary: rgb(42, 134, 234);
+  /* --color-c-primary: rgb(42, 134, 234); */
+  --color-c-primary: hsl(211 82% 50% / 1);
   --color-c-danger: theme(colors.red.600);
   --color-c-warn: theme(colors.yellow.500);
   --color-c-info: theme(colors.cyan.600);
@@ -39,7 +40,7 @@
 
   /* リンク：基底 */
   .v2-link {
-    @apply text-c-sub hover:text-c-sub/80 decoration-c-sub/90 hover:decoration-c-sub/70 underline break-all;
+    @apply text-c-main hover:text-c-main/70 decoration-c-sub/90 hover:decoration-c-sub/70 underline break-all;
   }
 
   /* ヘッダメニュー */
@@ -48,10 +49,10 @@
     after:content-['↗'] after:text-c-sub/50 after:text-xs;
   }
   .v2-header-menu-item {
-    @apply text-sm/6 font-semibold;
+    @apply text-sm/6 font-semibold text-c-main hover:text-c-main/70 py-2 px-4;
   }
   .v2-header-menu-item-sp {
-    @apply -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-50;
+    @apply -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold;
   }
 
   /* ページ */
@@ -94,7 +95,7 @@
     @apply border-0 border-b border-b-c-sub/30 p-2 leading-none bg-c-sub/3
       focus:outline-none focus:ring-0 focus:border-b-c-primary focus:bg-c-primary/10
       invalid:border-b-c-danger invalid:bg-c-danger/10
-      disabled:cursor-text disabled:bg-c-sub/10;
+      disabled:cursor-text disabled:text-c-sub disabled:bg-c-sub/10;
   }
   .v2-input-file {
     @apply file:ml-0 file:border-0
@@ -153,10 +154,10 @@
 
   /* ボタン：基底 */
   .v2-button {
-    @apply text-white cursor-pointer shadow-md hover:shadow-lg transition-shadow break-keep;
+    @apply text-white cursor-pointer shadow-md hover:shadow-lg transition-shadow break-keep disabled:hover:shadow-md;
   }
   .v2-button-outline {
-    @apply bg-transparent border cursor-pointer shadow-md hover:shadow-lg transition-shadow;
+    @apply bg-transparent border cursor-pointer shadow-md hover:shadow-lg transition-shadow disabled:hover:shadow-md disabled:hover:bg-transparent;
   }
 
   /* サイズバリアント：ボタン */
@@ -177,22 +178,22 @@
 
   /* カラーバリアント：ボタン（塗りつぶし） */
   .v2-button-sub {
-    @apply bg-c-sub/80 hover:bg-c-sub/60;
+    @apply bg-c-sub/80 hover:bg-c-sub/60 disabled:hover:bg-c-sub/80;
   }
   .v2-button-primary {
-    @apply bg-c-primary hover:bg-c-primary/80;
+    @apply bg-c-primary hover:bg-c-primary/80 disabled:hover:bg-c-primary;
   }
   .v2-button-danger {
-    @apply bg-c-danger hover:bg-c-danger/80;
+    @apply bg-c-danger hover:bg-c-danger/80 disabled:hover:bg-c-danger;
   }
   .v2-button-warn {
-    @apply bg-c-warn hover:bg-c-warn/80;
+    @apply bg-c-warn hover:bg-c-warn/80 disabled:hover:bg-c-warn;
   }
   .v2-button-info {
-    @apply bg-c-info hover:bg-c-info/80;
+    @apply bg-c-info hover:bg-c-info/80 disabled:hover:bg-c-info;
   }
   .v2-button-success {
-    @apply bg-c-success hover:bg-c-success/80;
+    @apply bg-c-success hover:bg-c-success/80 disabled:hover:bg-c-success;
   }
 
   /* カラーバリアント：ボタン（アウトライン） */
@@ -298,7 +299,7 @@
 
   /* テキスト：見出し */
   .v2-text-h1 {
-    @apply text-4xl font-semibold tracking-tight text-pretty break-all;
+    @apply text-3xl font-semibold tracking-tight text-pretty break-all;
   }
   .v2-text-h2 {
     @apply text-3xl font-semibold tracking-tight text-pretty break-all;

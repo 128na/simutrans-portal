@@ -16,7 +16,7 @@
                 </svg>
             </button>
         </div>
-        <el-popover-group class="hidden lg:flex lg:gap-x-12">
+        <el-popover-group class="hidden lg:flex lg:gap-x-4">
             <a href="{{route('pak.128japan')}}" class="v2-header-menu-item">pak128.japan</a>
             <a href="{{route('pak.128')}}" class="v2-header-menu-item">pak128</a>
             <a href="{{route('pak.64')}}" class="v2-header-menu-item">pak64</a>

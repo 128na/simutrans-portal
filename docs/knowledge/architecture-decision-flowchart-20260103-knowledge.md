@@ -1,3 +1,4 @@
+````markdown
 # Services と Actions の配置判断フローチャート
 
 新しいクラスを作成する際に、`Services/` と `Actions/` のどちらに配置するかを判断するためのフローチャートです。
@@ -43,12 +44,14 @@
 **Yes の場合 → `Services/ExternalApi/` または `Services/Infrastructure/`**
 
 **例:**
+
 - Twitter API 呼び出し → `Services/Twitter/TwitterV2Api`
 - Discord API 呼び出し → `Services/Discord/InviteService`
 - ファイルシステム操作 → `Services/FileInfo/FileInfoService`
 - メール送信 → `Services/Mail/MailService`
 
 **特徴:**
+
 - 外部システムとの境界
 - 技術的な詳細を隠蔽
 - テストでモック化される
@@ -60,6 +63,7 @@
 **Yes の場合 → `Services/Utility/`**
 
 **例:**
+
 - Markdown変換 → `Services/MarkdownService`
   - 記事、コメント、プロフィールなど複数箇所で利用
 - Feed生成 → `Services/FeedService`
@@ -68,6 +72,7 @@
   - アプリケーション全体で利用
 
 **特徴:**
+
 - ドメイン非依存
 - 汎用的なユーティリティ
 - ビジネスロジックを含まない
@@ -79,12 +84,14 @@
 **Yes の場合 → `Actions/{Domain}/`**
 
 **例:**
+
 - 記事作成 → `Actions/Article/StoreArticle`
 - ユーザー登録 → `Actions/User/Registration`
 - アナリティクス取得 → `Actions/Analytics/FindArticles`
 - SNS投稿 → `Actions/SendSNS/Article/ToTwitter`
 
 **特徴:**
+
 - 1クラス = 1ユースケース
 - ビジネスルールを含む
 - 複数のRepository/Serviceを組み合わせる
@@ -125,6 +132,7 @@
 **質問**: Markdown → HTML 変換クラスをどこに配置する？
 
 **分析**:
+
 - 外部ライブラリ（cebe/markdown）を使用 ✓
 - 記事、コメント、プロフィールなど複数箇所で利用 ✓
 - ビジネスルールなし ✓
@@ -139,6 +147,7 @@
 **質問**: 記事作成ロジックをどこに配置する？
 
 **分析**:
+
 - 特定のユースケース（記事を作成する） ✓
 - ビジネスルール（公開日時の決定、権限チェック等）を含む ✓
 - Repository（記事保存）と Service（Markdown変換）を組み合わせる ✓
@@ -153,6 +162,7 @@
 **質問**: Twitter投稿機能をどこに配置する？
 
 **分析**:
+
 - 外部API（Twitter）と通信 ✓
 - 技術的な詳細を隠蔽 ✓
 - 複数のユースケースから利用される可能性 ✓
@@ -167,6 +177,7 @@
 **質問**: アナリティクスの記事検索をどこに配置する？
 
 **分析**:
+
 - 特定のユースケース（アナリティクス用の記事取得） ✓
 - ビジネスルール（期間の計算、権限チェック等）を含む ✓
 - Repository を利用 ✓
@@ -214,6 +225,7 @@
 **A**: 可能です。実際に既存コードでも使われています。
 
 例:
+
 ```php
 // Actions/Article/StoreArticle.php
 public function __invoke(User $user, array $data): Article
@@ -254,6 +266,7 @@ public function __invoke(User $user, array $data): Article
 
 ---
 
-**関連ドキュメント**: [architecture-services-and-actions.md](./architecture-services-and-actions.md)
+**関連ドキュメント**: [architecture-services-actions-20260103-knowledge.md](./architecture-services-actions-20260103-knowledge.md)
 
 **最終更新**: 2025-11-24
+````

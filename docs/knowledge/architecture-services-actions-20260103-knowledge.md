@@ -1,3 +1,4 @@
+````markdown
 # Services と Actions の役割分担ガイドライン
 
 ## 概要
@@ -85,7 +86,7 @@ use GuzzleHttp\Client;
  * 外部APIとの通信を担当
  * ビジネスロジックは含まない
  */
-class ExternalApiService
+class ExampleApiService
 {
     public function __construct(
         private Client $client,
@@ -910,3 +911,4 @@ class StoreArticleTest extends TestCase
 
 **最終更新**: 2025-11-24  
 **バージョン**: 1.0.0
+````

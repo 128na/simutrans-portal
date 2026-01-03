@@ -8,11 +8,12 @@
 
 ### 1. **完全ガイド** （最初に読むべき）
 
-**[architecture-services-and-actions.md](./architecture-services-and-actions.md)**
+**[architecture-services-actions-20260103-knowledge.md](./architecture-services-actions-20260103-knowledge.md)**
 
 Services と Actions の責務分離に関する包括的なガイドラインです。
 
 **内容:**
+
 - アーキテクチャの原則
 - Services と Actions の詳細な責務定義
 - 実装パターンと Good/Bad Examples
@@ -21,6 +22,7 @@ Services と Actions の責務分離に関する包括的なガイドライン�
 - 既存コードの分析結果
 
 **対象読者:**
+
 - 新規参加者（必読）
 - アーキテクチャを理解したい開発者
 - 設計の背景を知りたい開発者
@@ -31,11 +33,12 @@ Services と Actions の責務分離に関する包括的なガイドライン�
 
 ### 2. **判断フローチャート** （日常的に参照）
 
-**[decision-flowchart-services-actions.md](./decision-flowchart-services-actions.md)**
+**[architecture-decision-flowchart-20260103-knowledge.md](./architecture-decision-flowchart-20260103-knowledge.md)**
 
 新しいクラスを作成する際に、どこに配置するかを判断するためのガイドです。
 
 **内容:**
+
 - 配置判断のフローチャート
 - 判断基準の詳細な説明
 - クイックチェックリスト
@@ -43,6 +46,7 @@ Services と Actions の責務分離に関する包括的なガイドライン�
 - よくある質問（FAQ）
 
 **対象読者:**
+
 - 新しいクラスを作成する開発者
 - 配置に迷った開発者
 
@@ -52,11 +56,12 @@ Services と Actions の責務分離に関する包括的なガイドライン�
 
 ### 3. **クイックリファレンス** （手元に置く）
 
-**[quick-reference-services-actions.md](./quick-reference-services-actions.md)**
+**[architecture-quick-reference-20260103-knowledge.md](./architecture-quick-reference-20260103-knowledge.md)**
 
 30秒で配置を判断するための簡易リファレンスカードです。
 
 **内容:**
+
 - 判断チャート（30秒版）
 - Services vs Actions 一覧表
 - 典型例とアンチパターン
@@ -64,6 +69,7 @@ Services と Actions の責務分離に関する包括的なガイドライン�
 - よくある間違い
 
 **対象読者:**
+
 - 素早く判断したい開発者
 - 既にガイドラインを理解している開発者
 
@@ -75,11 +81,12 @@ Services と Actions の責務分離に関する包括的なガイドライン�
 
 ### 4. **コードレビューチェックリスト** （レビュー時に使用）
 
-**[code-review-checklist-services-actions.md](./code-review-checklist-services-actions.md)**
+**[architecture-code-review-checklist-20260103-knowledge.md](./architecture-code-review-checklist-20260103-knowledge.md)**
 
 コードレビュー時に Services と Actions の配置が適切かを確認するためのチェックリストです。
 
 **内容:**
+
 - 配置の妥当性チェック項目
 - レッドフラグ（即座に指摘すべき問題）
 - 良いコード例
@@ -89,6 +96,7 @@ Services と Actions の責務分離に関する包括的なガイドライン�
 - レビューコメントのテンプレート
 
 **対象読者:**
+
 - コードレビュアー
 - PRを作成する開発者（セルフチェック用）
 
@@ -100,25 +108,25 @@ Services と Actions の責務分離に関する包括的なガイドライン�
 
 ### シナリオ1: 初めてプロジェクトに参加した
 
-1. **[完全ガイド](./architecture-services-and-actions.md)** を読む（30分）
-2. **[判断フローチャート](./decision-flowchart-services-actions.md)** に目を通す（15分）
-3. **[クイックリファレンス](./quick-reference-services-actions.md)** を手元に置く
+1. **[完全ガイド](./architecture-services-actions-20260103-knowledge.md)** を読む（30分）
+2. **[判断フローチャート](./architecture-decision-flowchart-20260103-knowledge.md)** に目を通す（15分）
+3. **[クイックリファレンス](./architecture-quick-reference-20260103-knowledge.md)** を手元に置く
 
 ### シナリオ2: 新しいクラスを作成する
 
-1. **[クイックリファレンス](./quick-reference-services-actions.md)** で判断チャートを確認（30秒）
-2. 判断に迷ったら **[判断フローチャート](./decision-flowchart-services-actions.md)** を参照（5分）
-3. 実装後、セルフチェックとして **[コードレビューチェックリスト](./code-review-checklist-services-actions.md)** を使用
+1. **[クイックリファレンス](./architecture-quick-reference-20260103-knowledge.md)** で判断チャートを確認（30秒）
+2. 判断に迷ったら **[判断フローチャート](./architecture-decision-flowchart-20260103-knowledge.md)** を参照（5分）
+3. 実装後、セルフチェックとして **[コードレビューチェックリスト](./architecture-code-review-checklist-20260103-knowledge.md)** を使用
 
 ### シナリオ3: コードレビューする
 
-1. **[コードレビューチェックリスト](./code-review-checklist-services-actions.md)** を開く
+1. **[コードレビューチェックリスト](./architecture-code-review-checklist-20260103-knowledge.md)** を開く
 2. 各チェック項目を確認しながらレビュー
-3. 必要に応じて **[完全ガイド](./architecture-services-and-actions.md)** を参照してコメント
+3. 必要に応じて **[完全ガイド](./architecture-services-actions-20260103-knowledge.md)** を参照してコメント
 
 ### シナリオ4: 設計の背景を理解したい
 
-1. **[完全ガイド](./architecture-services-and-actions.md)** の「アーキテクチャの原則」セクションを読む
+1. **[完全ガイド](./architecture-services-actions-20260103-knowledge.md)** の「アーキテクチャの原則」セクションを読む
 2. 「既存コードの分析」セクションで実例を確認
 
 ---
@@ -127,17 +135,17 @@ Services と Actions の責務分離に関する包括的なガイドライン�
 
 ### 初級（必須）
 
-1. [完全ガイド](./architecture-services-and-actions.md) - Services と Actions の基本理解
-2. [クイックリファレンス](./quick-reference-services-actions.md) - 判断チャートを覚える
+1. [完全ガイド](./architecture-services-actions-20260103-knowledge.md) - Services と Actions の基本理解
+2. [クイックリファレンス](./architecture-quick-reference-20260103-knowledge.md) - 判断チャートを覚える
 
 ### 中級（推奨）
 
-3. [判断フローチャート](./decision-flowchart-services-actions.md) - 詳細な判断基準を理解
+3. [判断フローチャート](./architecture-decision-flowchart-20260103-knowledge.md) - 詳細な判断基準を理解
 4. 既存コードを読んで実例を確認
 
 ### 上級（任意）
 
-5. [コードレビューチェックリスト](./code-review-checklist-services-actions.md) - レビュー観点を理解
+5. [コードレビューチェックリスト](./architecture-code-review-checklist-20260103-knowledge.md) - レビュー観点を理解
 6. アーキテクチャの改善提案
 
 ---
@@ -171,21 +179,27 @@ Services と Actions の責務分離に関する包括的なガイドライン�
 
 ### プロジェクト全体
 
-- **[README.md](../README.md)** - プロジェクト概要
-- **[.github/copilot-instructions.md](../.github/copilot-instructions.md)** - AI エージェント向けガイド
+- **[README.md](../../README.md)** - プロジェクト概要
+- **[.github/copilot-instructions.md](../../.github/copilot-instructions.md)** - AI エージェント向けガイド
 
 ### その他のアーキテクチャドキュメント
 
-- **[openapi-implementation-summary.md](./openapi-implementation-summary.md)** - OpenAPI 実装
-- **[openapi-typescript-types.md](./openapi-typescript-types.md)** - TypeScript 型定義
+- **[openapi-implementation-summary.md](../log/api-openapi-implementation-20260103-log.md)** - OpenAPI 実装
+- **[openapi-typescript-types.md](../spec/api-contract-typescript-types-spec.md)** - TypeScript 型定義
+
+### ディレクトリ別ドキュメント
+
+- **[Actions README](../../app/Actions/README.md)** - Actions 実装パターン
+- **[Repositories README](../../app/Repositories/README.md)** - Repository 設計
 
 ---
 
 ## 📝 ドキュメントの更新履歴
 
-| 日付 | バージョン | 変更内容 |
-|------|-----------|---------|
-| 2025-11-24 | 1.0.0 | 初版リリース: 全4ドキュメントを作成 |
+| 日付       | バージョン | 変更内容                             |
+| ---------- | ---------- | ------------------------------------ |
+| 2025-01-03 | 1.1.0      | ドキュメント整理・分類システムに統合 |
+| 2024-11-24 | 1.0.0      | 初版リリース: 全4ドキュメントを作成  |
 
 ---
 
@@ -194,6 +208,7 @@ Services と Actions の責務分離に関する包括的なガイドライン�
 このドキュメントの改善提案や誤りの指摘は歓迎します。
 
 **フィードバック方法:**
+
 1. GitHub Issue を作成
 2. Pull Request を送信
 3. チームメンバーに直接連絡
@@ -213,15 +228,16 @@ Services と Actions の責務分離に関する包括的なガイドライン�
 ### Q: 複数のドキュメントのどれを読めばいいですか？
 
 **A:** 以下の基準で選んでください：
-- **初めて** → [完全ガイド](./architecture-services-and-actions.md)
-- **今すぐ判断したい** → [クイックリファレンス](./quick-reference-services-actions.md)
-- **レビュー中** → [コードレビューチェックリスト](./code-review-checklist-services-actions.md)
+
+- **初めて** → [完全ガイド](./architecture-services-actions-20260103-knowledge.md)
+- **今すぐ判断したい** → [クイックリファレンス](./architecture-quick-reference-20260103-knowledge.md)
+- **レビュー中** → [コードレビューチェックリスト](./architecture-code-review-checklist-20260103-knowledge.md)
 
 ### Q: AI/Copilot はこのガイドラインを理解していますか？
 
-**A:** はい。[.github/copilot-instructions.md](../.github/copilot-instructions.md) に本ガイドラインの要約が含まれています。
+**A:** はい。[.github/copilot-instructions.md](../../.github/copilot-instructions.md) に本ガイドラインの要約が含まれています。
 
 ---
 
-**最終更新**: 2025-11-24  
+**最終更新**: 2025-01-03  
 **メンテナー**: Architecture Team

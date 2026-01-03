@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Repositories\ArticleRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery\MockInterface;
+use UnexpectedValueException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Unit\TestCase;
 
@@ -26,6 +27,20 @@ class FindArticlesTest extends TestCase
         });
         $result = $this->getSUT()($user, $searchRequest);
         $this->assertInstanceOf(Collection::class, $result);
+    }
+
+    public function test_unknown_type_throws_exception(): void
+    {
+        $user = new User;
+        $searchRequest = new SearchRequest([
+            'ids' => [1, 2],
+            'type' => 'weekly',
+            'start_date' => '2024-01-01',
+            'end_date' => '2024-02-01',
+        ]);
+
+        $this->expectException(UnexpectedValueException::class);
+        $this->getSUT()($user, $searchRequest);
     }
 
     public static function data(): \Generator

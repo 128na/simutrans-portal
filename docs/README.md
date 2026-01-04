@@ -46,15 +46,8 @@
 
 ```
 ●●をしたい。まず変更個所を洗い出してdocs/tempにまとめて。フォーマットはdocs/readme.mdを参照
-```
 
-```
 docs配下のドキュメントを整理したい。フォルダ分けやフォーマットはdocs/readme.mdを参照して。
-
-## 参考リンク（モーダル v2）
-
- - ModalShell 利用ガイド（設計原則・使い方）: knowledge/ui-modal-shell-guide-20260101-knowledge.md
- - モーダル v2 移行ログ: log/ui-modal-v2-migration-20251228-log.md
 ```
 
 ## ファイル命名規則

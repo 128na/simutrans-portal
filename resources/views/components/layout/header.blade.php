@@ -89,7 +89,11 @@
 
         </el-popover-group>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="{{ route('login') }}" class="v2-header-menu-item">マイページ <span aria-hidden="true">&rarr;</span></a>
+            @auth
+                <a href="{{ route('mypage.index') }}" class="v2-header-menu-item">マイページ <span aria-hidden="true">&rarr;</span></a>
+            @else
+                <a href="{{ route('login') }}" class="v2-header-menu-item">ログイン <span aria-hidden="true">&rarr;</span></a>
+            @endauth
         </div>
     </nav>
     <el-dialog>
@@ -125,7 +129,11 @@
                                 <a href="{{config('app.privacy_policy_url')}}" class="v2-header-menu-item-sp" target="_blank" rel="noopener">プライバシーポリシー<span class="text-sm text-c-sub/50">↗</span></a>
                             </div>
                             <div class="py-6">
-                                <a href="{{ route('login') }}" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold hover:bg-gray-50">マイページ</a>
+                                @auth
+                                    <a href="{{ route('mypage.index') }}" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold hover:bg-gray-50">マイページ</a>
+                                @else
+                                    <a href="{{ route('login') }}" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold hover:bg-gray-50">ログイン</a>
+                                @endauth
                             </div>
                         </div>
                     </div>

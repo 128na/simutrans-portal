@@ -90,7 +90,14 @@
         </el-popover-group>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
             @auth
-                <a href="{{ route('mypage.index') }}" class="v2-header-menu-item">マイページ <span aria-hidden="true">&rarr;</span></a>
+                @php
+                    $avatarUrl = optional(auth()->user()?->profile?->avatar)?->thumbnail
+                        ?? \Illuminate\Support\Facades\Storage::disk('public')->url(\App\Constants\DefaultThumbnail::NO_AVATAR);
+                @endphp
+                <a href="{{ route('mypage.index') }}" class="v2-header-menu-item flex items-center gap-2">
+                    <img class="w-6 h-6 rounded-full bg-gray-50" src="{{ $avatarUrl }}" alt="" />
+                    <span>マイページ</span>
+                </a>
             @else
                 <a href="{{ route('login') }}" class="v2-header-menu-item">ログイン <span aria-hidden="true">&rarr;</span></a>
             @endauth

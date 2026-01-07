@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { ProfileLink } from "@/features/user/ProfileLink";
 
 vi.mock("@/features/user/ProfileIcon", () => ({
-  ProfileIcon: ({ service }: any) => (
+  ProfileIcon: ({ service }: { service: { service: string } }) => (
     <span data-testid="icon">{service.service}</span>
   ),
 }));

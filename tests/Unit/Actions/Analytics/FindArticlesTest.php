@@ -11,9 +11,9 @@ use App\Models\User;
 use App\Repositories\ArticleRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery\MockInterface;
-use UnexpectedValueException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Unit\TestCase;
+use UnexpectedValueException;
 
 class FindArticlesTest extends TestCase
 {

@@ -21,11 +21,16 @@ vi.mock("@/hooks/useErrorHandler", () => ({
 }));
 
 vi.mock("@/lib/errorHandler", () => ({
-  isValidationError: (error: any) => Boolean(error?.isValidationError),
+  isValidationError: (error: unknown) =>
+    Boolean((error as { isValidationError?: boolean })?.isValidationError),
 }));
 
 vi.mock("@/components/form/Upload", () => ({
-  Upload: ({ onUploaded }: any) => (
+  Upload: ({
+    onUploaded,
+  }: {
+    onUploaded: (payload: { id: number }) => void;
+  }) => (
     <button data-testid="upload" onClick={() => onUploaded({ id: 42 })}>
       upload
     </button>
@@ -37,7 +42,11 @@ vi.mock("@/features/attachments/AttachmentEdit", () => ({
 }));
 
 vi.mock("@/components/ui/ModalFull", () => ({
-  ModalFull: ({ children }: any) => <div>{children({ close: () => {} })}</div>,
+  ModalFull: ({
+    children,
+  }: {
+    children: (args: { close: () => void }) => React.ReactNode;
+  }) => <div>{children({ close: () => {} })}</div>,
 }));
 
 vi.mock("@/components/ui/Avatar", () => ({
@@ -45,33 +54,51 @@ vi.mock("@/components/ui/Avatar", () => ({
 }));
 
 vi.mock("@/components/ui/TextError", () => ({
-  default: ({ children }: any) => (
+  default: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="text-error">{children}</div>
   ),
 }));
 
 vi.mock("@/components/ui/TextSub", () => ({
-  default: ({ children, ...props }: any) => <p {...props}>{children}</p>,
+  default: ({ children, ...props }: React.HTMLProps<HTMLParagraphElement>) => (
+    <p {...props}>{children}</p>
+  ),
 }));
 
 vi.mock("@/components/ui/FormCaption", () => ({
-  FormCaption: ({ children }: any) => <div>{children}</div>,
+  FormCaption: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
 }));
 
 vi.mock("@/components/ui/TextBadge", () => ({
-  default: ({ children }: any) => <span>{children}</span>,
+  default: ({ children }: { children: React.ReactNode }) => (
+    <span>{children}</span>
+  ),
 }));
 
 vi.mock("@/components/ui/MultiColumn", () => ({
-  default: ({ children, classNames, ...rest }: any) => (
-    <div {...rest}>{children}</div>
+  default: ({
+    children,
+    className,
+    ...rest
+  }: React.HTMLProps<HTMLDivElement>) => (
+    <div {...rest} className={className}>
+      {children}
+    </div>
   ),
 }));
 
 vi.mock("@/components/ui/SortableList", () => ({
-  SortableList: ({ items, renderItem }: any) => (
+  SortableList: ({
+    items,
+    renderItem,
+  }: {
+    items: unknown[];
+    renderItem: (item: unknown, idx: number) => React.ReactNode;
+  }) => (
     <div>
-      {items.map((item: any, idx: number) => (
+      {items.map((item, idx: number) => (
         <div key={idx}>{renderItem(item, idx)}</div>
       ))}
     </div>
@@ -79,21 +106,28 @@ vi.mock("@/components/ui/SortableList", () => ({
 }));
 
 vi.mock("@/components/ui/Input", () => ({
-  default: (props: any) => <input {...props} />,
+  default: (props: React.InputHTMLAttributes<HTMLInputElement>) => (
+    <input {...props} />
+  ),
 }));
 
 vi.mock("@/components/ui/Textarea", () => ({
-  default: (props: any) => <textarea {...props} />,
+  default: (props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) => (
+    <textarea {...props} />
+  ),
 }));
 
 vi.mock("@/components/ui/Button", () => ({
-  default: ({ children, ...props }: any) => (
+  default: ({
+    children,
+    ...props
+  }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
     <button {...props}>{children}</button>
   ),
 }));
 
 describe("ProfileForm", () => {
-  const baseUser: User.MypageEdit = {
+  const baseUser = {
     id: 1,
     name: "user",
     email: "user@example.com",
@@ -106,7 +140,7 @@ describe("ProfileForm", () => {
         website: ["https://example.com"],
       },
     },
-  } as any;
+  } as const satisfies User.MypageEdit;
 
   const baseAttachments: Attachment.MypageEdit[] = [];
 
@@ -115,14 +149,19 @@ describe("ProfileForm", () => {
     vi.spyOn(window, "alert").mockImplementation(() => {});
 
     const Wrapper = () => {
-      const [user, setUser] = useState(baseUser);
-      const [attachments, setAttachments] = useState(baseAttachments);
+      const [user, setUser] = useState<User.MypageEdit>(baseUser);
+      const [attachments, setAttachments] =
+        useState<Attachment.MypageEdit[]>(baseAttachments);
+      const handleUserChange = (nextUser: User.MypageEdit) => setUser(nextUser);
+      const handleAttachmentsChange = (
+        nextAttachments: Attachment.MypageEdit[]
+      ) => setAttachments(nextAttachments);
       return (
         <ProfileForm
           user={user}
-          onChangeUser={setUser}
+          onChangeUser={handleUserChange}
           attachments={attachments}
-          onChangeAttachments={setAttachments}
+          onChangeAttachments={handleAttachmentsChange}
         />
       );
     };

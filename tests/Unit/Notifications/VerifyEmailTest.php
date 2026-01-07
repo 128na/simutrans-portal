@@ -13,10 +13,11 @@ class VerifyEmailTest extends TestCase
 {
     public function test_mail_message_uses_custom_verification_url(): void
     {
-        $notifiable = new User();
+        $notifiable = new User;
         $notifiable->id = 1;
         $notifiable->email = 'user@example.com';
-        $notification = new class extends VerifyEmail {
+        $notification = new class extends VerifyEmail
+        {
             protected function verificationUrl($notifiable)
             {
                 return 'https://example.com/verify';

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // Consolidated coverage report: frontend (Vitest JSON) + backend (PHPUnit Clover XML)
 // Outputs a text summary to the console.
 
@@ -8,7 +9,7 @@ function readJson(filePath) {
   try {
     const content = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(content);
-  } catch (e) {
+  } catch {
     return null;
   }
 }
@@ -16,7 +17,7 @@ function readJson(filePath) {
 function readText(filePath) {
   try {
     return fs.readFileSync(filePath, 'utf-8');
-  } catch (e) {
+  } catch {
     return null;
   }
 }

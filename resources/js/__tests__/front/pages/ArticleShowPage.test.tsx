@@ -1,8 +1,9 @@
+import React from "react";
 import { describe, expect, it } from "vitest";
 import { waitFor } from "@testing-library/react";
 
 vi.mock("../../../features/articles/components/ArticleBase", () => ({
-  ArticleBase: ({ article }: { article: any }) => (
+  ArticleBase: ({ article }: { article: { title: string } }) => (
     <div data-testid="article-title">{article.title}</div>
   ),
 }));

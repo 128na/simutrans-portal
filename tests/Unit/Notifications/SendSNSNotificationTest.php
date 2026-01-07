@@ -7,7 +7,6 @@ namespace Tests\Unit\Notifications;
 use App\Channels\BlueSkyChannel;
 use App\Channels\MisskeyChannel;
 use App\Channels\OneSignalChannel;
-use App\Channels\TwitterChannel;
 use App\Notifications\SendSNSNotification;
 use Tests\Unit\TestCase;
 
@@ -23,7 +22,7 @@ class SendSNSNotificationTest extends TestCase
 
         $notification = new class extends SendSNSNotification {};
 
-        $channels = $notification->via(new \stdClass());
+        $channels = $notification->via(new \stdClass);
 
         $this->assertSame(
             [MisskeyChannel::class, OneSignalChannel::class, BlueSkyChannel::class],
@@ -41,6 +40,6 @@ class SendSNSNotificationTest extends TestCase
 
         $notification = new class extends SendSNSNotification {};
 
-        $this->assertSame([], array_values($notification->via(new \stdClass())));
+        $this->assertSame([], array_values($notification->via(new \stdClass)));
     }
 }

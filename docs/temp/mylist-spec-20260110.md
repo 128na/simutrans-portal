@@ -211,12 +211,40 @@
   - `app/Policies/MyListPolicy.php`
 - 公開閲覧エンドポイント: 読み取り専用レスポンス（非公開記事除外）✅
 
-### Frontend（未実装）
+### Frontend（完了）✅
 
-- `AddToMyList` island（カード/詳細に組み込み）
-- `MyListIndexPage` Blade + island（一覧・編集・削除）
-- `MyListDetailPage` Blade + island（アイテム一覧・メモ編集・並び替え）
-- 初期データ埋め込みScript（ログイン状態/自分のリスト概要）
+- TypeScript型定義 ✅
+  - `resources/js/types/models/MyList.ts`
+- コンポーネント ✅
+  - `resources/js/features/mylist/AddToMyList.tsx`
+  - `resources/js/features/mylist/MyListTable.tsx`
+  - `resources/js/features/mylist/MyListItemsTable.tsx`
+- ページ実装 ✅
+  - `resources/js/mypage/pages/MyListIndexPage.tsx`
+  - `resources/js/mypage/pages/MyListDetailPage.tsx`
+- Bladeテンプレート ✅
+  - `resources/views/mypage/mylists.blade.php`
+  - `resources/views/mypage/mylist-detail.blade.php`
+- Viteエントリーポイント更新 ✅
+  - `resources/js/mypage.ts`
+
+#### 実装した機能
+
+- **AddToMyListButton**: 記事をマイリストに追加するボタン・モーダル
+  - リスト選択（チェックボックス）
+  - 新規リスト作成（モーダル内）
+  - 複数リストへの一括追加
+  - 重複チェック
+- **MyListIndexPage**: マイリスト一覧管理
+  - テーブル表示（タイトル/公開状態/アイテム数/更新日）
+  - リスト作成・編集・削除
+  - モーダルUI
+- **MyListDetailPage**: リスト内アイテム管理
+  - アイテム一覧テーブル
+  - インラインメモ編集
+  - 並び替え（上下ボタン）
+  - アイテム削除
+  - 非公開記事の視覚的表示（バッジ、リンク無効化）
 
 ### Test（未実装）
 

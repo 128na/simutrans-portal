@@ -248,6 +248,37 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MyListItem> $items
+ * @property-read int|null $items_count
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyList newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyList newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyList query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyList whereBelongsToUser(\App\Models\User|int $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyList wherePublic()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperMyList {}
+}
+
+namespace App\Models{
+/**
+ * @property-read \App\Models\Article|null $article
+ * @property-read \App\Models\MyList|null $list
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyListItem newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyListItem newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyListItem orderByPosition()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyListItem query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyListItem whereListId(int $listId)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperMyListItem {}
+}
+
+namespace App\Models{
+/**
  * @property string $application
  * @property string $token_type
  * @property string $scope

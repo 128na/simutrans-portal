@@ -13,12 +13,6 @@ parameters:
 			path: app/Http/Controllers/Pages/Article/ShowController.php
 
 		-
-			message: '#^Anonymous function should return bool but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Models/Article.php
-
-		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\:\:page\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -43,13 +37,139 @@ parameters:
 			path: app/Models/Article.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between ''addon\-post'' and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
+			message: '#^Method App\\Models\\MyList\:\:items\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
 			count: 1
-			path: app/Models/Article.php
+			path: app/Models/MyList.php
+
+		-
+			message: '#^Method App\\Models\\MyList\:\:scopeWhereBelongsToUser\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MyList.php
+
+		-
+			message: '#^Method App\\Models\\MyList\:\:scopeWhereBelongsToUser\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MyList.php
+
+		-
+			message: '#^Method App\\Models\\MyList\:\:scopeWherePublic\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MyList.php
+
+		-
+			message: '#^Method App\\Models\\MyList\:\:scopeWherePublic\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MyList.php
+
+		-
+			message: '#^Method App\\Models\\MyList\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MyList.php
+
+		-
+			message: '#^PHPDoc tag @use has invalid type Database\\Factories\\MyListFactory\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/MyList.php
+
+		-
+			message: '#^Type Database\\Factories\\MyListFactory in generic type Illuminate\\Database\\Eloquent\\Factories\\HasFactory\<Database\\Factories\\MyListFactory\> in PHPDoc tag @use is not subtype of template type TFactory of Illuminate\\Database\\Eloquent\\Factories\\Factory of trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Models/MyList.php
+
+		-
+			message: '#^Method App\\Models\\MyListItem\:\:article\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MyListItem.php
+
+		-
+			message: '#^Method App\\Models\\MyListItem\:\:list\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MyListItem.php
+
+		-
+			message: '#^Method App\\Models\\MyListItem\:\:scopeOrderByPosition\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MyListItem.php
+
+		-
+			message: '#^Method App\\Models\\MyListItem\:\:scopeOrderByPosition\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MyListItem.php
+
+		-
+			message: '#^Method App\\Models\\MyListItem\:\:scopeWhereListId\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MyListItem.php
+
+		-
+			message: '#^Method App\\Models\\MyListItem\:\:scopeWhereListId\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MyListItem.php
+
+		-
+			message: '#^PHPDoc tag @use has invalid type Database\\Factories\\MyListItemFactory\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Models/MyListItem.php
+
+		-
+			message: '#^Type Database\\Factories\\MyListItemFactory in generic type Illuminate\\Database\\Eloquent\\Factories\\HasFactory\<Database\\Factories\\MyListItemFactory\> in PHPDoc tag @use is not subtype of template type TFactory of Illuminate\\Database\\Eloquent\\Factories\\Factory of trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Models/MyListItem.php
 
 		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
 			count: 1
 			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: app/Services/MyListService.php
+
+		-
+			message: '#^Method App\\Services\\MyListService\:\:getItemsForList\(\) should return Illuminate\\Pagination\\Paginator\<int, App\\Models\\MyListItem\> but returns Illuminate\\Pagination\\Paginator\<int, Illuminate\\Database\\Eloquent\\Model\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/MyListService.php
+
+		-
+			message: '#^Parameter \#1 \$query of method App\\Services\\MyListService\:\:applyPublicArticleFilter\(\) expects Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Article\>, Illuminate\\Database\\Eloquent\\Builder\<TRelatedModel of Illuminate\\Database\\Eloquent\\Model\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/MyListService.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 1
+			path: app/Services/MyListService.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between ''draft''\|''private''\|''publish''\|''reservation''\|''trash'' and ''published'' will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Services/MyListService.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Services/MyListService.php

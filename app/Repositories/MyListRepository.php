@@ -77,13 +77,13 @@ class MyListRepository
     }
 
     /**
-     * 公開リストを slug で取得
+     * 公開リストを slug で取得（存在しない場合は例外）
      */
-    public function findPublicBySlug(string $slug): ?MyList
+    public function findOrFailPublicBySlug(string $slug): MyList
     {
         return $this->model
             ->where('is_public', true)
             ->where('slug', $slug)
-            ->first();
+            ->firstOrFail();
     }
 }

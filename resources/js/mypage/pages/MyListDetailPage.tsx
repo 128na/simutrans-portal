@@ -3,19 +3,17 @@ import { createRoot } from "react-dom/client";
 import { useState, useEffect } from "react";
 import { ErrorBoundary } from "../../components/ErrorBoundary";
 import { MyListItemsTable } from "../../features/mylist/MyListItemsTable";
-import TextBadge from "../../components/ui/TextBadge";
-import Link from "../../components/ui/Link";
-import type { MyListShow, MyListItemShow } from "@/types/models";
+import type { MyListItemShow } from "@/types/models";
 
 const app = document.getElementById("app-mylist-detail");
 
 if (app) {
-  const listData = JSON.parse(
-    document.getElementById("data-mylist")?.textContent || "{}"
-  ) as MyListShow;
+  const listId = Number(app.getAttribute("data-mylist-id"));
+  if (!listId) {
+    throw new Error("MyList ID is not provided");
+  }
 
   const App = () => {
-    const [list] = useState<MyListShow>(listData);
     const [items, setItems] = useState<MyListItemShow[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -25,7 +23,7 @@ if (app) {
         setIsLoading(true);
         setError(null);
 
-        const { data } = await axios.get(`/api/v1/mylist/${list.id}/items`);
+        const { data } = await axios.get(`/api/v1/mylist/${listId}/items`);
         if (data.ok && data.data?.items) {
           setItems(data.data.items);
         } else {
@@ -47,30 +45,7 @@ if (app) {
     };
 
     return (
-      <div className="v2-page v2-page-lg">
-        {/* ナビゲーション */}
-        <div className="flex items-center gap-3 mb-6">
-          <Link href="/mypage/mylists">← マイリスト一覧へ</Link>
-          {list.is_public && list.slug && (
-            <Link href={`/mylist/${list.slug}`}>公開ページを表示</Link>
-          )}
-        </div>
-
-        {/* ヘッダー情報 */}
-        <div className="v2-card v2-card-default mb-6">
-          <h1 className="v2-text-h2 mb-3">
-            <TextBadge variant={list.is_public ? "success" : "secondary"}>
-              {list.is_public ? "公開" : "非公開"}
-            </TextBadge>
-            {list.title}
-          </h1>
-          {list.note && (
-            <p className="v2-text-body text-gray-600 whitespace-pre-wrap mb-3">
-              {list.note}
-            </p>
-          )}
-        </div>
-
+      <>
         {/* エラー表示 */}
         {error && (
           <div className="v2-card v2-card-danger mb-6" role="alert">
@@ -80,7 +55,7 @@ if (app) {
 
         {/* アイテム一覧 */}
         {isLoading ? (
-          <div className="v2-card v2-card-default">
+          <div className="v2-card v2-card-main">
             <div className="v2-text-center py-12">
               <p className="v2-text-body text-gray-500">読み込み中...</p>
             </div>
@@ -88,11 +63,11 @@ if (app) {
         ) : (
           <MyListItemsTable
             items={items}
-            listId={list.id}
+            listId={listId}
             onUpdate={handleUpdate}
           />
         )}
-      </div>
+      </>
     );
   };
 

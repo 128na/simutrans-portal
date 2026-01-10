@@ -86,7 +86,7 @@ if (app) {
         )}
 
         {isLoading ? (
-          <div className="v2-card v2-card-default">
+          <div className="v2-card v2-card-main">
             <div className="v2-text-center py-12">
               <p className="v2-text-body text-gray-500">読み込み中...</p>
             </div>

@@ -14,19 +14,10 @@ class PublicMyListController extends Controller
 
     public function show(string $slug): View
     {
-        $list = $this->service->getPublicListBySlug($slug);
-        abort_if(! $list, 404);
+        $mylist = $this->service->getPublicListBySlug($slug);
 
         return view('pages.mylist.show', [
-            'mylist' => [
-                'id' => $list->id,
-                'title' => $list->title,
-                'note' => $list->note,
-                'is_public' => $list->is_public,
-                'slug' => $list->slug,
-                'created_at' => $list->created_at,
-                'updated_at' => $list->updated_at,
-            ],
+            'mylist' => $mylist,
         ]);
     }
 }

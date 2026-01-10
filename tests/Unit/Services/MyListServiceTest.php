@@ -61,21 +61,29 @@ class MyListServiceTest extends TestCase
         $this->assertSame($list, $result);
     }
 
-    public function test_create_list_does_not_generate_slug_when_private(): void
+    public function test_create_list_generates_slug_when_private(): void
     {
         $user = Mockery::mock(User::class)->makePartial();
         $user->id = 1;
 
         $list = Mockery::mock(MyList::class)->makePartial();
+        $list->id = 123;
 
         $this->listRepository->shouldReceive('create')
             ->once()
-            ->with(Mockery::on(function ($data) {
-                return $data['is_public'] === false;
+            ->with(Mockery::on(function ($data) use ($user) {
+                return $data['user_id'] === $user->id
+                    && $data['title'] === 'Test'
+                    && $data['is_public'] === false;
             }))
             ->andReturn($list);
 
-        $this->listRepository->shouldNotReceive('update');
+        $this->listRepository->shouldReceive('update')
+            ->once()
+            ->with($list, Mockery::on(function ($data) {
+                return isset($data['slug']) && str_ends_with($data['slug'], '-123');
+            }))
+            ->andReturn($list);
 
         $result = $this->service->createList($user, 'Test', null, false);
 
@@ -282,7 +290,7 @@ class MyListServiceTest extends TestCase
     {
         $list = Mockery::mock(MyList::class);
 
-        $this->listRepository->shouldReceive('findPublicBySlug')
+        $this->listRepository->shouldReceive('findOrFailPublicBySlug')
             ->once()
             ->with('test-slug')
             ->andReturn($list);

@@ -19,16 +19,8 @@ class MyListPageController extends Controller
     {
         $this->authorize('view', $mylist);
 
-        return view('mypage.mylist-detail', [
-            'mylist' => [
-                'id' => $mylist->id,
-                'title' => $mylist->title,
-                'note' => $mylist->note,
-                'is_public' => $mylist->is_public,
-                'slug' => $mylist->slug,
-                'created_at' => $mylist->created_at,
-                'updated_at' => $mylist->updated_at,
-            ],
+        return view('mypage.mylist-show', [
+            'mylist' => $mylist,
         ]);
     }
 }

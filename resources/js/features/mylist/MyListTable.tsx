@@ -37,7 +37,7 @@ export const MyListTable = ({ lists, onEdit, onDelete }: MyListTableProps) => {
 
   if (lists.length === 0) {
     return (
-      <div className="v2-card v2-card-default">
+      <div className="v2-card v2-card-main">
         <div className="v2-text-center py-12">
           <p className="v2-text-body text-gray-500">
             マイリストがありません。新しく作成してください。
@@ -52,10 +52,10 @@ export const MyListTable = ({ lists, onEdit, onDelete }: MyListTableProps) => {
       <table className="v2-table v2-table-fixed">
         <thead>
           <tr>
-            <th>タイトル</th>
-            <th>アイテム数</th>
-            <th>更新日</th>
-            <th className="w-40">操作</th>
+            <th className="w-5/12">タイトル</th>
+            <th className="w-2/12">アイテム数</th>
+            <th className="w-2/12">更新日</th>
+            <th className="w-3/12">操作</th>
           </tr>
         </thead>
         <tbody>
@@ -88,11 +88,11 @@ export const MyListTable = ({ lists, onEdit, onDelete }: MyListTableProps) => {
               <td>{list.items_count || 0}件</td>
               <td>{new Date(list.updated_at).toLocaleDateString("ja-JP")}</td>
               <td>
-                <div className="flex gap-2 justify-center flex-wrap">
+                <div className="flex gap-2 justify-end flex-wrap">
                   {list.is_public && (
                     <Button
                       onClick={() => handleCopyPublicUrl(list)}
-                      variant={copiedId === list.id ? "success" : "sub"}
+                      variant={copiedId === list.id ? "success" : "subOutline"}
                       aria-label={`${list.title}の公開URLをコピー`}
                       title="公開URLをクリップボードにコピーします"
                     >
@@ -111,7 +111,7 @@ export const MyListTable = ({ lists, onEdit, onDelete }: MyListTableProps) => {
                   )}
                   <Button
                     onClick={() => onEdit(list)}
-                    variant="sub"
+                    variant="primary"
                     aria-label={`${list.title}を編集`}
                   >
                     編集
@@ -237,8 +237,9 @@ export const MyListEditModal = ({
             checked={isPublic}
             onChange={(e) => setIsPublic(e.target.checked)}
             disabled={isLoading}
-          />
-          <label htmlFor="isPublic">このリストを公開する</label>
+          >
+            このリストを公開する
+          </Checkbox>
         </div>
         <div className="text-sm v2-text-sub">
           公開すると、URLを知っている人が閲覧できます

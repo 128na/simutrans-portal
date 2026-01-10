@@ -186,11 +186,7 @@ export const MyListItemsTable = ({
                       <>
                         {item.article.thumbnail ? (
                           <img
-                            src={
-                              typeof item.article.thumbnail === "string"
-                                ? item.article.thumbnail
-                                : item.article.thumbnail.url
-                            }
+                            src={item.article.thumbnail}
                             alt=""
                             className="w-16 h-16 object-cover rounded"
                           />
@@ -230,17 +226,13 @@ export const MyListItemsTable = ({
                   <td>
                     {isPublic ? (
                       <div className="flex items-center gap-2">
-                        {item.article.user.profile?.avatar ? (
-                          <img
-                            src={item.article.user.profile.avatar}
-                            alt=""
-                            className="w-8 h-8 rounded-full"
-                          />
-                        ) : (
-                          <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
-                        )}
+                        <img
+                          src={item.article.user!.avatar}
+                          alt=""
+                          className="w-8 h-8 rounded-full"
+                        />
                         <span className="text-sm">
-                          {item.article.user.name}
+                          {item.article.user!.name}
                         </span>
                       </div>
                     ) : (
@@ -296,7 +288,6 @@ export const MyListItemsTable = ({
                         onClick={() => handleDelete(item.id)}
                         disabled={isLoading}
                         variant="danger"
-                        size="sm"
                         aria-label="削除"
                       >
                         削除

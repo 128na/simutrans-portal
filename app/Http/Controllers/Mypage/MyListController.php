@@ -227,7 +227,6 @@ class MyListController extends Controller
     public function showPublic(string $slug): JsonResponse
     {
         $list = $this->service->getPublicListBySlug($slug);
-        abort_if(! $list, 404);
 
         $page = (int) request()->query('page', 1);
         $perPage = (int) request()->query('per_page', 20);

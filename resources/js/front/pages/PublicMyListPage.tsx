@@ -1,26 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
-import TextBadge from "@/components/ui/TextBadge";
-import type { MyListShow, MyListItemShow } from "@/types/models";
+import type { MyListItemShow } from "@/types/models";
 
 /**
  * 公開マイリスト表示ページ
  */
-const PublicMyListPage = ({
-  mylist: initialMyList,
-}: {
-  mylist: {
-    id: number;
-    title: string;
-    note: string | null;
-    is_public: boolean;
-    slug: string;
-    created_at: string;
-    updated_at: string;
-  };
-}) => {
-  const mylist = initialMyList as unknown as MyListShow;
+const PublicMyListPage = ({ mylistSlug }: { mylistSlug: string }) => {
   const [items, setItems] = useState<MyListItemShow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,9 +14,7 @@ const PublicMyListPage = ({
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const { data } = await axios.get(
-          `/api/v1/mylist/public/${mylist.slug}`
-        );
+        const { data } = await axios.get(`/api/v1/mylist/public/${mylistSlug}`);
         if (data.ok && data.data?.items) {
           setItems(data.data.items || []);
         } else {
@@ -44,28 +28,10 @@ const PublicMyListPage = ({
     };
 
     fetchItems();
-  }, [mylist.slug]);
+  }, [mylistSlug]);
 
   return (
     <div>
-      {/* ヘッダー情報 */}
-      <div className="v2-card v2-card-default mb-6">
-        <h1 className="v2-text-h2 mb-3">
-          <TextBadge variant="success" className="mr-2">
-            公開
-          </TextBadge>
-          {mylist.title}
-        </h1>
-        {mylist.note && (
-          <p className="v2-text-body text-gray-600 whitespace-pre-wrap mb-3">
-            {mylist.note}
-          </p>
-        )}
-        <p className="text-sm v2-text-sub">
-          更新日: {new Date(mylist.updated_at).toLocaleDateString("ja-JP")}
-        </p>
-      </div>
-
       {/* エラー表示 */}
       {error && (
         <div className="v2-card v2-card-danger mb-6" role="alert">
@@ -75,35 +41,31 @@ const PublicMyListPage = ({
 
       {/* アイテム一覧 */}
       {isLoading ? (
-        <div className="v2-card v2-card-default">
-          <p className="v2-text-body text-gray-500">読み込み中...</p>
+        <div className="v2-card v2-card-main">
+          <p className="v2-text-body v2-text-sub">読み込み中...</p>
         </div>
       ) : items.length === 0 ? (
-        <div className="v2-card v2-card-default">
-          <p className="v2-text-body text-gray-500">アイテムがありません</p>
+        <div className="v2-card v2-card-main">
+          <p className="v2-text-body v2-text-sub">アイテムがありません</p>
         </div>
       ) : (
         <div className="space-y-4">
           {items.map((item) => (
-            <div key={item.id} className="v2-card v2-card-default">
+            <div key={item.id} className="v2-card v2-card-main">
               <div className="flex gap-4">
                 {/* サムネイル */}
-                <div className="flex-shrink-0 w-24 h-24">
+                <div className="shrink-0 w-24 h-24">
                   {item.article &&
                   "thumbnail" in item.article &&
                   item.article.thumbnail ? (
                     <img
-                      src={
-                        typeof item.article.thumbnail === "string"
-                          ? item.article.thumbnail
-                          : item.article.thumbnail.url
-                      }
+                      src={item.article.thumbnail}
                       alt={item.article.title}
                       className="w-full h-full object-cover rounded"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gray-200 rounded flex items-center justify-center">
-                      <span className="text-gray-400 text-sm">No Image</span>
+                    <div className="w-full h-full v2-card v2-card-sub p-0 flex items-center justify-center">
+                      <span className="v2-text-sub text-sm">No Image</span>
                     </div>
                   )}
                 </div>
@@ -118,7 +80,7 @@ const PublicMyListPage = ({
                         href={item.article.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
+                        className="v2-link"
                       >
                         {item.article.title}
                       </a>
@@ -143,7 +105,7 @@ const PublicMyListPage = ({
                   {/* メモ */}
                   {item.note && (
                     <div className="bg-yellow-50 border border-yellow-200 rounded p-2 mt-2">
-                      <p className="text-sm text-gray-700 break-words">
+                      <p className="text-sm text-gray-700 wrap-break-word">
                         {item.note}
                       </p>
                     </div>
@@ -159,12 +121,12 @@ const PublicMyListPage = ({
 };
 
 // Reactマウント
-const script = document.getElementById("data-public-mylist");
-if (script) {
-  const mylist = JSON.parse(script.textContent || "{}");
-  const container = document.getElementById("app-public-mylist");
-  if (container) {
-    const root = ReactDOM.createRoot(container);
-    root.render(<PublicMyListPage mylist={mylist} />);
+const container = document.getElementById("app-public-mylist");
+if (container) {
+  const mylistSlug = container.getAttribute("data-mylist-slug");
+  if (!mylistSlug) {
+    throw new Error("MyList slug is not provided");
   }
+  const root = ReactDOM.createRoot(container);
+  root.render(<PublicMyListPage mylistSlug={mylistSlug} />);
 }

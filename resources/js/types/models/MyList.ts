@@ -39,35 +39,22 @@ export interface MyListItemBase {
 /**
  * マイリストアイテム一覧表示用
  */
-export type MyListItemShow = Omit<
-  MyListItemBase,
-  "list_id" | "article_id" | "updated_at"
-> & {
+export type MyListItemShow = {
+  id: number;
+  note: string | null;
+  position: number;
+  created_at: string;
   article: {
     id: number;
-    slug: string;
     title: string;
+    // 以下は公開記事の場合のみ
+    published_at?: string | null;
+    thumbnail?: string;
     url?: string;
-    user: {
-      id: number;
+    user?: {
       name: string;
-      slug: string;
-      profile: {
-        avatar: string | null;
-      } | null;
+      avatar: string;
     };
-    thumbnail:
-      | {
-          url: string;
-          alt: string | null;
-        }
-      | string
-      | null;
-    file: {
-      url: string;
-      size: number;
-    } | null;
-    published_at?: string;
   };
 };
 

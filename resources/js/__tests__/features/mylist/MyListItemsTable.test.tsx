@@ -13,16 +13,14 @@ describe("MyListItemsTable コンポーネント", () => {
       created_at: "2025-01-01 10:00:00",
       article: {
         id: 100,
-        slug: "test-addon-1",
         title: "テストアドオン1",
+        published_at: "2025-01-01 10:00:00",
+        thumbnail: "https://example.com/thumb1.jpg",
+        url: "https://example.com/addon1",
         user: {
-          id: 1,
           name: "テストユーザー",
-          slug: "test-user",
-          profile: null,
+          avatar: "https://example.com/avatar1.jpg",
         },
-        thumbnail: null,
-        file: null,
       },
     },
     {
@@ -32,16 +30,7 @@ describe("MyListItemsTable コンポーネント", () => {
       created_at: "2025-01-02 12:00:00",
       article: {
         id: 101,
-        slug: "test-addon-2",
         title: "テストアドオン2",
-        user: {
-          id: 2,
-          name: "ユーザー2",
-          slug: "user2",
-          profile: null,
-        },
-        thumbnail: null,
-        file: null,
       },
     },
   ];

@@ -41,17 +41,14 @@ class MyListService
             'title' => $title,
             'note' => $note,
             'is_public' => $isPublic,
+            'slug' => Str::uuid()->toString(),
         ];
 
-        // 公開化する場合は slug を生成
-        if ($isPublic) {
-            $list = $this->listRepository->create($data);
-            $this->listRepository->update($list, ['slug' => $this->generateSlug($list->id)]);
+        // 新規作成時は常に slug を生成（URLの一貫性を保つ）
+        $list = $this->listRepository->create($data);
+        $this->listRepository->update($list, []);
 
-            return $list;
-        }
-
-        return $this->listRepository->create($data);
+        return $list;
     }
 
     /**
@@ -64,14 +61,6 @@ class MyListService
             'note' => $note,
             'is_public' => $isPublic,
         ];
-
-        // 公開化する場合は slug を生成（既になければ）
-        if ($isPublic && ! $list->slug) {
-            $data['slug'] = $this->generateSlug($list->id);
-        } elseif (! $isPublic) {
-            // 非公開化する場合は slug をクリア
-            $data['slug'] = null;
-        }
 
         $this->listRepository->update($list, $data);
         $list->refresh();
@@ -178,9 +167,12 @@ class MyListService
     /**
      * 公開リストを slug で取得
      */
-    public function getPublicListBySlug(string $slug): ?MyList
+    public function getPublicListBySlug(string $slug): MyList
     {
-        return $this->listRepository->findPublicBySlug($slug);
+        $mylist = $this->listRepository->findOrFailPublicBySlug($slug);
+        $mylist->load('user');
+
+        return $mylist;
     }
 
     /**
@@ -221,13 +213,5 @@ class MyListService
         }
 
         return [$sort, 'asc'];
-    }
-
-    /**
-     * slug を生成（UUID ベース）
-     */
-    private function generateSlug(int $listId): string
-    {
-        return Str::slug(Str::random(10)).'-'.$listId;
     }
 }

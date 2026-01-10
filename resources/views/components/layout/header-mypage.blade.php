@@ -45,6 +45,13 @@
                         </div>
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
+                                <a href="{{route('mypage.mylists.index')}}" class="block font-semibold">
+                                    マイリスト
+                                </a>
+                            </div>
+                        </div>
+                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
+                            <div class="flex-auto">
                                 <a href="{{route('mypage.redirects')}}" class="block font-semibold">
                                     記事のリダイレクト設定
                                 </a>
@@ -148,6 +155,7 @@
                                 <a href="{{route('mypage.index')}}" class="v2-header-menu-item-sp">マイページ</a>
                                 <a href="{{route('mypage.articles.index')}}" class="v2-header-menu-item-sp">記事一覧</a>
                                 <a href="{{route('mypage.articles.create')}}" class="v2-header-menu-item-sp">記事作成</a>
+                                <a href="{{route('mypage.mylists.index')}}" class="v2-header-menu-item-sp">マイリスト</a>
                                 <a href="{{route('mypage.redirects')}}" class="v2-header-menu-item-sp">記事のリダイレクト設定</a>
                                 <a href="{{route('mypage.attachments')}}" class="v2-header-menu-item-sp">ファイル管理</a>
                                 <a href="{{route('mypage.analytics')}}" class="v2-header-menu-item-sp">アナリティクス</a>

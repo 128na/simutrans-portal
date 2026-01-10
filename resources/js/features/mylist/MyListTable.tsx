@@ -1,4 +1,12 @@
+import axios from "axios";
 import { useState } from "react";
+import Button from "@/components/ui/Button";
+import { Modal } from "@/components/ui/Modal";
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
+import Checkbox from "@/components/ui/Checkbox";
+import TextBadge from "@/components/ui/TextBadge";
+import Link from "@/components/ui/Link";
 import type { MyListShow } from "@/types/models";
 
 interface MyListTableProps {
@@ -13,64 +21,72 @@ interface MyListTableProps {
 export const MyListTable = ({ lists, onEdit, onDelete }: MyListTableProps) => {
   if (lists.length === 0) {
     return (
-      <div className="text-center py-12 text-gray-600">
-        マイリストがありません。新しく作成してください。
+      <div className="v2-card v2-card-default">
+        <div className="v2-text-center py-12">
+          <p className="v2-text-body text-gray-500">
+            マイリストがありません。新しく作成してください。
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="table-auto w-full">
+    <div className="v2-table-wrapper">
+      <table className="v2-table v2-table-fixed">
         <thead>
-          <tr className="border-b">
-            <th className="text-left p-3">タイトル</th>
-            <th className="text-left p-3">公開状態</th>
-            <th className="text-left p-3">アイテム数</th>
-            <th className="text-left p-3">更新日</th>
-            <th className="text-center p-3 w-32">操作</th>
+          <tr>
+            <th>タイトル</th>
+            <th>アイテム数</th>
+            <th>更新日</th>
+            <th className="w-32">操作</th>
           </tr>
         </thead>
         <tbody>
           {lists.map((list) => (
-            <tr key={list.id} className="border-b hover:bg-gray-50">
-              <td className="p-3">
-                <div className="font-medium">{list.title}</div>
+            <tr key={list.id}>
+              <td>
+                <div>
+                  {list.is_public ? (
+                    <TextBadge variant="success" className="mr-2">
+                      公開
+                    </TextBadge>
+                  ) : (
+                    <TextBadge variant="sub" className="mr-2">
+                      非公開
+                    </TextBadge>
+                  )}
+                  <Link
+                    href={`/mypage/mylists/${list.id}`}
+                    className="font-medium"
+                  >
+                    {list.title}
+                  </Link>
+                </div>
                 {list.note && (
-                  <div className="text-sm text-gray-600 mt-1 line-clamp-2">
+                  <div className="text-sm v2-text-sub mt-1 line-clamp-2">
                     {list.note}
                   </div>
                 )}
               </td>
-              <td className="p-3">
-                {list.is_public ? (
-                  <span className="badge badge-success">公開</span>
-                ) : (
-                  <span className="badge badge-secondary">非公開</span>
-                )}
-              </td>
-              <td className="p-3">{list.items_count || 0}件</td>
-              <td className="p-3">
-                {new Date(list.updated_at).toLocaleDateString("ja-JP")}
-              </td>
-              <td className="p-3">
+              <td>{list.items_count || 0}件</td>
+              <td>{new Date(list.updated_at).toLocaleDateString("ja-JP")}</td>
+              <td>
                 <div className="flex gap-2 justify-center">
-                  <button
-                    type="button"
+                  <Button
                     onClick={() => onEdit(list)}
-                    className="btn btn-sm btn-secondary"
+                    variant="sub"
                     aria-label={`${list.title}を編集`}
                   >
                     編集
-                  </button>
-                  <button
-                    type="button"
+                  </Button>
+                  <Button
                     onClick={() => onDelete(list)}
-                    className="btn btn-sm btn-danger"
+                    variant="danger"
                     aria-label={`${list.title}を削除`}
                   >
                     削除
-                  </button>
+                  </Button>
                 </div>
               </td>
             </tr>
@@ -116,27 +132,15 @@ export const MyListEditModal = ({
       const method = list ? "PATCH" : "POST";
       const url = list ? `/api/v1/mylist/${list.id}` : "/api/v1/mylist";
 
-      const response = await fetch(url, {
+      await axios({
         method,
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN":
-            document
-              .querySelector('meta[name="csrf-token"]')
-              ?.getAttribute("content") || "",
-        },
-        credentials: "include",
-        body: JSON.stringify({
+        url,
+        data: {
           title: title.trim(),
           note: note.trim() || null,
           is_public: isPublic,
-        }),
+        },
       });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "保存に失敗しました");
-      }
 
       onSuccess();
     } catch (err) {
@@ -151,100 +155,78 @@ export const MyListEditModal = ({
   }
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div
-        className="modal-content modal-md"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <form onSubmit={handleSubmit}>
-          <div className="modal-header">
-            <h3 className="modal-title">
-              {list ? "マイリストを編集" : "マイリストを作成"}
-            </h3>
-            <button
-              type="button"
-              onClick={onClose}
-              className="btn-close"
-              aria-label="閉じる"
-            >
-              ×
-            </button>
-          </div>
+    <Modal
+      title={list ? "マイリストを編集" : "マイリストを作成"}
+      onClose={onClose}
+    >
+      {error && (
+        <div className="v2-card v2-card-danger mb-4" role="alert">
+          <p className="v2-text-body">{error}</p>
+        </div>
+      )}
 
-          <div className="modal-body">
-            {error && (
-              <div className="alert alert-danger mb-4" role="alert">
-                {error}
-              </div>
-            )}
+      <form onSubmit={handleSubmit} className="space-y-4 mb-6">
+        <div>
+          <label htmlFor="title" className="v2-form-caption">
+            <TextBadge variant="danger">必須</TextBadge>
+            タイトル
+          </label>
+          <Input
+            id="title"
+            className="w-full"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            maxLength={120}
+            required
+            disabled={isLoading}
+          />
+        </div>
 
-            <div className="mb-4">
-              <label htmlFor="title" className="form-label required">
-                タイトル
-              </label>
-              <input
-                id="title"
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="form-input"
-                maxLength={120}
-                required
-                disabled={isLoading}
-              />
-            </div>
+        <div>
+          <label htmlFor="note" className="v2-form-caption">
+            メモ
+          </label>
+          <Textarea
+            id="note"
+            className="w-full"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            rows={4}
+            disabled={isLoading}
+          />
+        </div>
 
-            <div className="mb-4">
-              <label htmlFor="note" className="form-label">
-                メモ
-              </label>
-              <textarea
-                id="note"
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                className="form-textarea"
-                rows={4}
-                disabled={isLoading}
-              />
-            </div>
+        <div className="flex items-center gap-2">
+          <Checkbox
+            checked={isPublic}
+            onChange={(e) => setIsPublic(e.target.checked)}
+            disabled={isLoading}
+          />
+          <label htmlFor="isPublic">このリストを公開する</label>
+        </div>
+        <div className="text-sm v2-text-sub">
+          公開すると、URLを知っている人が閲覧できます
+        </div>
 
-            <div className="mb-4">
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={isPublic}
-                  onChange={(e) => setIsPublic(e.target.checked)}
-                  className="form-checkbox"
-                  disabled={isLoading}
-                />
-                <span>このリストを公開する</span>
-              </label>
-              <div className="text-sm text-gray-600 mt-1">
-                公開すると、URLを知っている人が閲覧できます
-              </div>
-            </div>
-          </div>
-
-          <div className="modal-footer">
-            <button
-              type="button"
-              onClick={onClose}
-              className="btn btn-secondary"
-              disabled={isLoading}
-            >
-              キャンセル
-            </button>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={isLoading || !title.trim()}
-            >
-              {isLoading ? "保存中..." : "保存"}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <div className="flex gap-2 justify-end mt-6">
+          <Button
+            type="button"
+            onClick={onClose}
+            variant="subOutline"
+            disabled={isLoading}
+          >
+            キャンセル
+          </Button>
+          <Button
+            type="submit"
+            variant="primary"
+            disabled={isLoading || !title.trim()}
+          >
+            {isLoading ? "保存中..." : "保存"}
+          </Button>
+        </div>
+      </form>
+    </Modal>
   );
 };
 
@@ -272,21 +254,7 @@ export const MyListDeleteModal = ({
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/v1/mylist/${list.id}`, {
-        method: "DELETE",
-        headers: {
-          "X-CSRF-TOKEN":
-            document
-              .querySelector('meta[name="csrf-token"]')
-              ?.getAttribute("content") || "",
-        },
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "削除に失敗しました");
-      }
+      await axios.delete(`/api/v1/mylist/${list.id}`);
 
       onSuccess();
     } catch (err) {
@@ -301,57 +269,28 @@ export const MyListDeleteModal = ({
   }
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div
-        className="modal-content modal-sm"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="modal-header">
-          <h3 className="modal-title">マイリストを削除</h3>
-          <button
-            type="button"
-            onClick={onClose}
-            className="btn-close"
-            aria-label="閉じる"
-          >
-            ×
-          </button>
+    <Modal title="マイリストを削除" onClose={onClose}>
+      {error && (
+        <div className="v2-card v2-card-danger mb-4" role="alert">
+          <p className="v2-text-body">{error}</p>
         </div>
+      )}
 
-        <div className="modal-body">
-          {error && (
-            <div className="alert alert-danger mb-4" role="alert">
-              {error}
-            </div>
-          )}
+      <p className="v2-text-body mb-4">
+        「<strong>{list.title}</strong>」を削除してもよろしいですか？
+      </p>
+      <p className="text-sm v2-text-sub mb-6">
+        この操作は取り消せません。リスト内のアイテムもすべて削除されます。
+      </p>
 
-          <p className="mb-4">
-            「<strong>{list.title}</strong>」を削除してもよろしいですか？
-          </p>
-          <p className="text-sm text-gray-600">
-            この操作は取り消せません。リスト内のアイテムもすべて削除されます。
-          </p>
-        </div>
-
-        <div className="modal-footer">
-          <button
-            type="button"
-            onClick={onClose}
-            className="btn btn-secondary"
-            disabled={isLoading}
-          >
-            キャンセル
-          </button>
-          <button
-            type="button"
-            onClick={handleDelete}
-            className="btn btn-danger"
-            disabled={isLoading}
-          >
-            {isLoading ? "削除中..." : "削除"}
-          </button>
-        </div>
+      <div className="flex gap-2 justify-end">
+        <Button onClick={onClose} variant="subOutline" disabled={isLoading}>
+          キャンセル
+        </Button>
+        <Button onClick={handleDelete} variant="danger" disabled={isLoading}>
+          {isLoading ? "削除中..." : "削除"}
+        </Button>
       </div>
-    </div>
+    </Modal>
   );
 };

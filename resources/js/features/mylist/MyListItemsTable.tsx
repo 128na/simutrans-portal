@@ -1,4 +1,8 @@
+import axios from "axios";
 import { useState } from "react";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+import TextBadge from "@/components/ui/TextBadge";
 import type { MyListItemShow } from "@/types/models";
 
 interface MyListItemsTableProps {
@@ -22,7 +26,7 @@ export const MyListItemsTable = ({
 
   if (items.length === 0) {
     return (
-      <div className="text-center py-12 text-gray-600">
+      <div className="text-center py-12 v2-text-sub">
         アイテムがありません。記事をマイリストに追加してください。
       </div>
     );
@@ -38,25 +42,9 @@ export const MyListItemsTable = ({
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/v1/mylist/${listId}/items/${itemId}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN":
-            document
-              .querySelector('meta[name="csrf-token"]')
-              ?.getAttribute("content") || "",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          note: editingNote.trim() || null,
-        }),
+      await axios.patch(`/api/v1/mylist/${listId}/items/${itemId}`, {
+        note: editingNote.trim() || null,
       });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "更新に失敗しました");
-      }
 
       setEditingItemId(null);
       onUpdate();
@@ -81,21 +69,7 @@ export const MyListItemsTable = ({
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/v1/mylist/${listId}/items/${itemId}`, {
-        method: "DELETE",
-        headers: {
-          "X-CSRF-TOKEN":
-            document
-              .querySelector('meta[name="csrf-token"]')
-              ?.getAttribute("content") || "",
-        },
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "削除に失敗しました");
-      }
+      await axios.delete(`/api/v1/mylist/${listId}/items/${itemId}`);
 
       onUpdate();
     } catch (err) {
@@ -116,28 +90,12 @@ export const MyListItemsTable = ({
       const currentItem = items[index];
       const prevItem = items[index - 1];
 
-      const response = await fetch(`/api/v1/mylist/${listId}/items/reorder`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN":
-            document
-              .querySelector('meta[name="csrf-token"]')
-              ?.getAttribute("content") || "",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          items: [
-            { id: currentItem.id, position: prevItem.position },
-            { id: prevItem.id, position: currentItem.position },
-          ],
-        }),
+      await axios.patch(`/api/v1/mylist/${listId}/items/reorder`, {
+        items: [
+          { id: currentItem.id, position: prevItem.position },
+          { id: prevItem.id, position: currentItem.position },
+        ],
       });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "並び替えに失敗しました");
-      }
 
       onUpdate();
     } catch (err) {
@@ -158,28 +116,12 @@ export const MyListItemsTable = ({
       const currentItem = items[index];
       const nextItem = items[index + 1];
 
-      const response = await fetch(`/api/v1/mylist/${listId}/items/reorder`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN":
-            document
-              .querySelector('meta[name="csrf-token"]')
-              ?.getAttribute("content") || "",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          items: [
-            { id: currentItem.id, position: nextItem.position },
-            { id: nextItem.id, position: currentItem.position },
-          ],
-        }),
+      await axios.patch(`/api/v1/mylist/${listId}/items/reorder`, {
+        items: [
+          { id: currentItem.id, position: nextItem.position },
+          { id: nextItem.id, position: currentItem.position },
+        ],
       });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "並び替えに失敗しました");
-      }
 
       onUpdate();
     } catch (err) {
@@ -192,22 +134,22 @@ export const MyListItemsTable = ({
   return (
     <div>
       {error && (
-        <div className="alert alert-danger mb-4" role="alert">
+        <div className="v2-card v2-card-danger mb-4" role="alert">
           {error}
         </div>
       )}
 
-      <div className="overflow-x-auto">
-        <table className="table-auto w-full">
+      <div className="v2-table-wrapper">
+        <table className="v2-table v2-table-fixed">
           <thead>
-            <tr className="border-b">
-              <th className="text-left p-3 w-16">順序</th>
-              <th className="text-left p-3 w-24">サムネ</th>
-              <th className="text-left p-3">タイトル</th>
-              <th className="text-left p-3">投稿者</th>
-              <th className="text-left p-3">メモ</th>
-              <th className="text-left p-3">追加日</th>
-              <th className="text-center p-3 w-32">操作</th>
+            <tr>
+              <th className="w-16">順序</th>
+              <th className="w-24">サムネ</th>
+              <th>タイトル</th>
+              <th>投稿者</th>
+              <th>メモ</th>
+              <th>追加日</th>
+              <th className="w-32">操作</th>
             </tr>
           </thead>
           <tbody>
@@ -215,33 +157,30 @@ export const MyListItemsTable = ({
               const isNonPublic = item.is_article_public === false;
 
               return (
-                <tr
-                  key={item.id}
-                  className={`border-b hover:bg-gray-50 ${isNonPublic ? "bg-gray-100" : ""}`}
-                >
-                  <td className="p-3">
+                <tr key={item.id} className={isNonPublic ? "bg-gray-100" : ""}>
+                  <td>
                     <div className="flex flex-col gap-1">
-                      <button
-                        type="button"
+                      <Button
                         onClick={() => handleMoveUp(item, index)}
                         disabled={isLoading || index === 0}
-                        className="btn btn-xs btn-secondary"
+                        variant="sub"
+                        size="sm"
                         aria-label="上へ移動"
                       >
                         ↑
-                      </button>
-                      <button
-                        type="button"
+                      </Button>
+                      <Button
                         onClick={() => handleMoveDown(item, index)}
                         disabled={isLoading || index === items.length - 1}
-                        className="btn btn-xs btn-secondary"
+                        variant="sub"
+                        size="sm"
                         aria-label="下へ移動"
                       >
                         ↓
-                      </button>
+                      </Button>
                     </div>
                   </td>
-                  <td className="p-3">
+                  <td>
                     {item.article.thumbnail ? (
                       <img
                         src={item.article.thumbnail}
@@ -249,26 +188,24 @@ export const MyListItemsTable = ({
                         className="w-16 h-16 object-cover rounded"
                       />
                     ) : (
-                      <div className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500">
+                      <div className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-xs v2-text-sub">
                         No Image
                       </div>
                     )}
                   </td>
-                  <td className="p-3">
+                  <td>
                     <div>
                       {isNonPublic ? (
                         <>
                           <div className="text-gray-700">
                             {item.article.title}
                           </div>
-                          <span className="badge badge-warning mt-1">
-                            非公開
-                          </span>
+                          <TextBadge variant="warn">非公開</TextBadge>
                         </>
                       ) : (
                         <a
                           href={`/articles/${item.article.slug}`}
-                          className="text-blue-600 hover:underline"
+                          className="v2-link"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -277,7 +214,7 @@ export const MyListItemsTable = ({
                       )}
                     </div>
                   </td>
-                  <td className="p-3">
+                  <td>
                     <div className="flex items-center gap-2">
                       {item.article.user.profile?.avatar ? (
                         <img
@@ -294,59 +231,58 @@ export const MyListItemsTable = ({
                       </span>
                     </div>
                   </td>
-                  <td className="p-3">
+                  <td>
                     {editingItemId === item.id ? (
                       <div className="flex gap-2">
-                        <input
-                          type="text"
+                        <Input
                           value={editingNote}
                           onChange={(e) => setEditingNote(e.target.value)}
-                          className="form-input form-input-sm flex-1"
                           maxLength={255}
                           disabled={isLoading}
+                          className="flex-1"
                         />
-                        <button
-                          type="button"
+                        <Button
                           onClick={() => handleSaveNote(item.id)}
                           disabled={isLoading}
-                          className="btn btn-xs btn-primary"
+                          variant="primary"
+                          size="sm"
                         >
                           保存
-                        </button>
-                        <button
-                          type="button"
+                        </Button>
+                        <Button
                           onClick={handleCancelEdit}
                           disabled={isLoading}
-                          className="btn btn-xs btn-secondary"
+                          variant="sub"
+                          size="sm"
                         >
                           キャンセル
-                        </button>
+                        </Button>
                       </div>
                     ) : (
                       <div
-                        className="text-sm cursor-pointer hover:bg-gray-100 p-1 rounded"
+                        className="text-sm cursor-pointer v2-hover-bg-sub p-1 rounded"
                         onClick={() => handleEditNote(item)}
                       >
                         {item.note || (
-                          <span className="text-gray-400">メモを追加</span>
+                          <span className="v2-text-sub">メモを追加</span>
                         )}
                       </div>
                     )}
                   </td>
-                  <td className="p-3">
+                  <td>
                     {new Date(item.created_at).toLocaleDateString("ja-JP")}
                   </td>
-                  <td className="p-3">
+                  <td>
                     <div className="flex justify-center">
-                      <button
-                        type="button"
+                      <Button
                         onClick={() => handleDelete(item.id)}
                         disabled={isLoading}
-                        className="btn btn-sm btn-danger"
+                        variant="danger"
+                        size="sm"
                         aria-label="削除"
                       >
                         削除
-                      </button>
+                      </Button>
                     </div>
                   </td>
                 </tr>

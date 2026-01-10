@@ -1,7 +1,10 @@
+import axios from "axios";
 import { createRoot } from "react-dom/client";
 import { useState, useEffect } from "react";
 import { ErrorBoundary } from "../../components/ErrorBoundary";
 import { MyListItemsTable } from "../../features/mylist/MyListItemsTable";
+import TextBadge from "../../components/ui/TextBadge";
+import Link from "../../components/ui/Link";
 import type { MyListShow, MyListItemShow } from "@/types/models";
 
 const app = document.getElementById("app-mylist-detail");
@@ -22,17 +25,11 @@ if (app) {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch(`/api/v1/mylist/${list.id}/items`, {
-          credentials: "include",
-        });
-
-        if (!response.ok) {
-          throw new Error("アイテムの取得に失敗しました");
-        }
-
-        const data = await response.json();
+        const { data } = await axios.get(`/api/v1/mylist/${list.id}/items`);
         if (data.ok && data.data?.items) {
           setItems(data.data.items);
+        } else {
+          throw new Error("アイテムの取得に失敗しました");
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "エラーが発生しました");
@@ -51,44 +48,43 @@ if (app) {
 
     return (
       <div className="v2-page v2-page-lg">
-        <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <a href="/mypage/mylists" className="btn btn-secondary btn-sm">
-              ← マイリスト一覧へ
-            </a>
-            {list.is_public && list.slug && (
-              <a
-                href={`/mylist/${list.slug}`}
-                className="btn btn-secondary btn-sm"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                公開ページを表示
-              </a>
-            )}
-          </div>
-
-          <h2 className="v2-text-h2 mb-2">{list.title}</h2>
-          {list.note && (
-            <p className="text-gray-600 whitespace-pre-wrap">{list.note}</p>
+        {/* ナビゲーション */}
+        <div className="flex items-center gap-3 mb-6">
+          <Link href="/mypage/mylists">← マイリスト一覧へ</Link>
+          {list.is_public && list.slug && (
+            <Link href={`/mylist/${list.slug}`}>公開ページを表示</Link>
           )}
-          <div className="flex gap-2 mt-2">
-            {list.is_public ? (
-              <span className="badge badge-success">公開</span>
-            ) : (
-              <span className="badge badge-secondary">非公開</span>
-            )}
-          </div>
         </div>
 
+        {/* ヘッダー情報 */}
+        <div className="v2-card v2-card-default mb-6">
+          <h1 className="v2-text-h2 mb-3">
+            <TextBadge variant={list.is_public ? "success" : "secondary"}>
+              {list.is_public ? "公開" : "非公開"}
+            </TextBadge>
+            {list.title}
+          </h1>
+          {list.note && (
+            <p className="v2-text-body text-gray-600 whitespace-pre-wrap mb-3">
+              {list.note}
+            </p>
+          )}
+        </div>
+
+        {/* エラー表示 */}
         {error && (
-          <div className="alert alert-danger mb-6" role="alert">
-            {error}
+          <div className="v2-card v2-card-danger mb-6" role="alert">
+            <p className="v2-text-body">{error}</p>
           </div>
         )}
 
+        {/* アイテム一覧 */}
         {isLoading ? (
-          <div className="text-center py-12">読み込み中...</div>
+          <div className="v2-card v2-card-default">
+            <div className="v2-text-center py-12">
+              <p className="v2-text-body text-gray-500">読み込み中...</p>
+            </div>
+          </div>
         ) : (
           <MyListItemsTable
             items={items}

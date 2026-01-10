@@ -1,4 +1,9 @@
-import { useState } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import Button from "@/components/ui/Button";
+import { Modal } from "@/components/ui/Modal";
+import Input from "@/components/ui/Input";
+import TextBadge from "@/components/ui/TextBadge";
 import type { MyListShow, MyListCreateRequest } from "@/types/models";
 
 interface AddToMyListButtonProps {
@@ -33,15 +38,15 @@ export const AddToMyListButton = ({
 
   return (
     <>
-      <button
-        type="button"
+      <Button
+        variant="sub"
         onClick={handleClick}
-        className={`btn btn-secondary ${className}`}
+        className={className}
         aria-label="マイリストに追加"
       >
         <span className="icon-plus"></span>
         マイリスト
-      </button>
+      </Button>
 
       {isOpen && (
         <AddToMyListModal
@@ -78,21 +83,15 @@ const AddToMyListModal = ({
   const [newListTitle, setNewListTitle] = useState("");
 
   // リスト一覧を取得
-  useState(() => {
+  useEffect(() => {
     const fetchLists = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch("/api/v1/mylist", {
-          credentials: "include",
-        });
-
-        if (!response.ok) {
-          throw new Error("リストの取得に失敗しました");
-        }
-
-        const data = await response.json();
+        const { data } = await axios.get("/api/v1/mylist");
         if (data.ok && data.data?.lists) {
           setLists(data.data.lists);
+        } else {
+          throw new Error("リストの取得に失敗しました");
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "エラーが発生しました");
@@ -102,7 +101,7 @@ const AddToMyListModal = ({
     };
 
     fetchLists();
-  });
+  }, []);
 
   const handleToggleList = (listId: number) => {
     const newSelected = new Set(selectedListIds);
@@ -128,29 +127,13 @@ const AddToMyListModal = ({
         title: newListTitle.trim(),
       };
 
-      const response = await fetch("/api/v1/mylist", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN":
-            document
-              .querySelector('meta[name="csrf-token"]')
-              ?.getAttribute("content") || "",
-        },
-        credentials: "include",
-        body: JSON.stringify(requestBody),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "リストの作成に失敗しました");
-      }
-
-      const data = await response.json();
+      const { data } = await axios.post("/api/v1/mylist", requestBody);
       if (data.ok && data.data?.list) {
         setLists([...lists, data.data.list]);
         setNewListTitle("");
         setError(null);
+      } else {
+        throw new Error("リストの作成に失敗しました");
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "エラーが発生しました");
@@ -170,26 +153,16 @@ const AddToMyListModal = ({
       setError(null);
 
       const promises = Array.from(selectedListIds).map(async (listId) => {
-        const response = await fetch(`/api/v1/mylist/${listId}/items`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN":
-              document
-                .querySelector('meta[name="csrf-token"]')
-                ?.getAttribute("content") || "",
-          },
-          credentials: "include",
-          body: JSON.stringify({ article_id: articleId }),
-        });
-
-        if (!response.ok && response.status !== 409) {
-          // 409は重複エラーなので無視
-          const data = await response.json();
-          throw new Error(data.error || "追加に失敗しました");
+        try {
+          await axios.post(`/api/v1/mylist/${listId}/items`, {
+            article_id: articleId,
+          });
+        } catch (err) {
+          // 409 は重複なので握りつぶす
+          if (!axios.isAxiosError(err) || err.response?.status !== 409) {
+            throw err;
+          }
         }
-
-        return response;
       });
 
       await Promise.all(promises);
@@ -202,108 +175,81 @@ const AddToMyListModal = ({
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div
-        className="modal-content modal-md"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="modal-header">
-          <h3 className="modal-title">マイリストに追加</h3>
-          <button
-            type="button"
-            onClick={onClose}
-            className="btn-close"
-            aria-label="閉じる"
-          >
-            ×
-          </button>
+    <Modal title="マイリストに追加" onClose={onClose}>
+      {error && (
+        <div className="v2-card v2-card-danger mb-4" role="alert">
+          <p className="v2-text-body">{error}</p>
         </div>
+      )}
 
-        <div className="modal-body">
-          {error && (
-            <div className="alert alert-danger mb-4" role="alert">
-              {error}
-            </div>
-          )}
-
-          {isLoading ? (
-            <div className="text-center py-8">読み込み中...</div>
-          ) : lists.length === 0 ? (
-            <div className="text-center py-8 text-gray-600">
-              マイリストがありません。新しく作成してください。
-            </div>
-          ) : (
-            <div className="space-y-2 mb-6">
-              {lists.map((list) => (
-                <label
-                  key={list.id}
-                  className="flex items-center gap-3 p-3 border rounded hover:bg-gray-50 cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedListIds.has(list.id)}
-                    onChange={() => handleToggleList(list.id)}
-                    className="form-checkbox"
-                  />
-                  <div className="flex-1">
-                    <div className="font-medium">{list.title}</div>
-                    {list.note && (
-                      <div className="text-sm text-gray-600 mt-1">
-                        {list.note}
-                      </div>
-                    )}
-                  </div>
-                  {list.is_public && (
-                    <span className="badge badge-secondary">公開</span>
-                  )}
-                </label>
-              ))}
-            </div>
-          )}
-
-          <div className="border-t pt-4">
-            <h4 className="font-medium mb-3">新しいリストを作成</h4>
-            <div className="flex gap-2">
+      {isLoading ? (
+        <div className="v2-text-center py-8">
+          <p className="v2-text-body text-gray-500">読み込み中...</p>
+        </div>
+      ) : lists.length === 0 ? (
+        <div className="v2-text-center py-8">
+          <p className="v2-text-body text-gray-500">
+            マイリストがありません。新しく作成してください。
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-2 mb-6">
+          {lists.map((list) => (
+            <label
+              key={list.id}
+              className="flex items-center gap-3 p-3 border v2-border-sub rounded hover:bg-gray-50 cursor-pointer"
+            >
               <input
-                type="text"
-                value={newListTitle}
-                onChange={(e) => setNewListTitle(e.target.value)}
-                placeholder="リストのタイトル"
-                className="form-input flex-1"
-                maxLength={120}
-                disabled={isCreating}
+                type="checkbox"
+                checked={selectedListIds.has(list.id)}
+                onChange={() => handleToggleList(list.id)}
+                className="v2-checkbox"
               />
-              <button
-                type="button"
-                onClick={handleCreateList}
-                disabled={isCreating || !newListTitle.trim()}
-                className="btn btn-secondary"
-              >
-                {isCreating ? "作成中..." : "作成"}
-              </button>
-            </div>
-          </div>
+              <div className="flex-1">
+                <div className="font-medium">{list.title}</div>
+                {list.note && (
+                  <div className="text-sm v2-text-sub mt-1">{list.note}</div>
+                )}
+              </div>
+              {list.is_public && <TextBadge variant="primary">公開</TextBadge>}
+            </label>
+          ))}
         </div>
+      )}
 
-        <div className="modal-footer">
-          <button
-            type="button"
-            onClick={onClose}
-            className="btn btn-secondary"
-            disabled={isLoading}
+      <div className="v2-divider pt-4">
+        <h4 className="font-medium mb-3">新しいリストを作成</h4>
+        <div className="flex gap-2">
+          <Input
+            value={newListTitle}
+            onChange={(e) => setNewListTitle(e.target.value)}
+            placeholder="リストのタイトル"
+            maxLength={120}
+            disabled={isCreating}
+            className="flex-1"
+          />
+          <Button
+            onClick={handleCreateList}
+            disabled={isCreating || !newListTitle.trim()}
+            variant="sub"
           >
-            キャンセル
-          </button>
-          <button
-            type="button"
-            onClick={handleAddToLists}
-            disabled={isLoading || selectedListIds.size === 0}
-            className="btn btn-primary"
-          >
-            {isLoading ? "追加中..." : "追加"}
-          </button>
+            {isCreating ? "作成中..." : "作成"}
+          </Button>
         </div>
       </div>
-    </div>
+
+      <div className="flex gap-2 justify-end mt-6">
+        <Button onClick={onClose} disabled={isLoading} variant="subOutline">
+          キャンセル
+        </Button>
+        <Button
+          onClick={handleAddToLists}
+          disabled={isLoading || selectedListIds.size === 0}
+          variant="primary"
+        >
+          {isLoading ? "追加中..." : "追加"}
+        </Button>
+      </div>
+    </Modal>
   );
 };

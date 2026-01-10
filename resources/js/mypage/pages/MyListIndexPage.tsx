@@ -1,5 +1,7 @@
+import axios from "axios";
 import { createRoot } from "react-dom/client";
 import { useState, useEffect } from "react";
+import Button from "@/components/ui/Button";
 import { ErrorBoundary } from "../../components/ErrorBoundary";
 import {
   MyListTable,
@@ -24,17 +26,11 @@ if (app) {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch("/api/v1/mylist", {
-          credentials: "include",
-        });
-
-        if (!response.ok) {
-          throw new Error("リストの取得に失敗しました");
-        }
-
-        const data = await response.json();
+        const { data } = await axios.get("/api/v1/mylist");
         if (data.ok && data.data?.lists) {
           setLists(data.data.lists);
+        } else {
+          throw new Error("リストの取得に失敗しました");
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "エラーが発生しました");
@@ -77,26 +73,24 @@ if (app) {
 
     return (
       <div className="v2-page v2-page-lg">
-        <div className="mb-12 flex justify-between items-center">
-          <h2 className="v2-text-h2">マイリスト</h2>
-          <button
-            type="button"
-            onClick={handleCreate}
-            className="btn btn-primary"
-          >
-            <span className="icon-plus"></span>
-            新しいリストを作成
-          </button>
+        <div className="mb-6">
+          <Button onClick={handleCreate} variant="primary" size="lg">
+            マイリストを作成
+          </Button>
         </div>
 
         {error && (
-          <div className="alert alert-danger mb-6" role="alert">
-            {error}
+          <div className="v2-card v2-card-danger mb-6" role="alert">
+            <p className="v2-text-body">{error}</p>
           </div>
         )}
 
         {isLoading ? (
-          <div className="text-center py-12">読み込み中...</div>
+          <div className="v2-card v2-card-default">
+            <div className="v2-text-center py-12">
+              <p className="v2-text-body text-gray-500">読み込み中...</p>
+            </div>
+          </div>
         ) : (
           <MyListTable
             lists={lists}

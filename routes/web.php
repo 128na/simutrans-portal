@@ -89,13 +89,15 @@ Route::middleware(['auth'])->group(function (): void {
 
         Route::get('/mypage/analytics', [\App\Http\Controllers\Mypage\AnalyticsController::class, 'index'])->name('mypage.analytics');
 
+        Route::get('/mypage/mylists', [\App\Http\Controllers\Mypage\MyListPageController::class, 'index'])->name('mypage.mylists.index');
+        Route::get('/mypage/mylists/{mylist}', [\App\Http\Controllers\Mypage\MyListPageController::class, 'show'])->name('mypage.mylists.show');
+
         Route::get('/mypage/articles', [\App\Http\Controllers\Mypage\Article\IndexController::class, 'index'])->name('mypage.articles.index');
         Route::get('/mypage/articles/create', [\App\Http\Controllers\Mypage\Article\CreateController::class, 'create'])->name('mypage.articles.create');
         Route::post('/mypage/articles/create', [\App\Http\Controllers\Mypage\Article\CreateController::class, 'store']);
         Route::get('/mypage/articles/edit/{article}', [\App\Http\Controllers\Mypage\Article\EditController::class, 'edit'])->name('mypage.articles.edit');
         Route::post('/mypage/articles/edit/{article}', [\App\Http\Controllers\Mypage\Article\EditController::class, 'update']);
     });
-
 });
 
 Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function (): void {

@@ -12,6 +12,28 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
+ * @property int $id
+ * @property CategoryType $type 分類
+ * @property string $slug スラッグ
+ * @property bool $need_admin 管理者専用カテゴリ
+ * @property int $order 表示順
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
+ * @property-read int|null $articles_count
+ *
+ * @method static \Database\Factories\CategoryFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Category forUser(\App\Models\User $user)
+ * @method static Builder<static>|Category newModelQuery()
+ * @method static Builder<static>|Category newQuery()
+ * @method static Builder<static>|Category order()
+ * @method static Builder<static>|Category page()
+ * @method static Builder<static>|Category pak()
+ * @method static Builder<static>|Category query()
+ * @method static Builder<static>|Category slug(string $slug)
+ * @method static Builder<static>|Category type(\App\Enums\CategoryType $categoryType)
+ *
+ * @mixin \Eloquent
  * @mixin IdeHelperCategory
  */
 class Category extends Model

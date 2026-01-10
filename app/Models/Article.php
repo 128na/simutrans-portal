@@ -34,18 +34,73 @@ use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
 
 /**
- * @property-read int|null $past_view_count
- * @property-read int|null $past_conversion_count
- * @property-read bool $hasFile
- * @property-read Collection<int, Category> $categoryPaks
- * @property-read bool $hasTrhumbnail
- * @property \Carbon\CarbonImmutable|null $published_at
- * @property \Carbon\CarbonImmutable|null $modified_at
+ * @property int $id
+ * @property int $user_id
+ * @property string $title タイトル
+ * @property string $slug スラッグ
+ * @property ArticlePostType $post_type 投稿形式
+ * @property \App\Models\Contents\Content $contents コンテンツ
+ * @property ArticleStatus $status 公開状態
+ * @property bool $pr PR記事
+ * @property \Carbon\CarbonImmutable|null $published_at 投稿日時
+ * @property \Carbon\CarbonImmutable|null $modified_at 更新日時
  * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property \Carbon\CarbonImmutable|null $deleted_at
+ * @property-read Collection<int, Article> $articles
+ * @property-read int|null $articles_count
+ * @property-read Collection<int, \App\Models\Attachment> $attachments
+ * @property-read int|null $attachments_count
+ * @property-read Collection<int, \App\Models\Category> $categories
+ * @property-read int|null $categories_count
+ * @property-read mixed $category_paks
+ * @property-read Collection<int, ConversionCount> $conversionCounts
+ * @property-read int|null $conversion_counts_count
+ * @property-read mixed $file
+ * @property-read bool $has_file
+ * @property-read bool $has_file_info
+ * @property-read bool $has_thumbnail
+ * @property-read bool $is_addon_post
+ * @property-read bool $is_inactive
+ * @property-read bool $is_publish
+ * @property-read bool $is_reservation
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read Collection<int, Article> $relatedArticles
+ * @property-read int|null $related_articles_count
+ * @property-read ArticleSearchIndex|null $seachIndex
+ * @property-read Collection<int, \App\Models\Tag> $tags
+ * @property-read int|null $tags_count
+ * @property-read mixed $thumbnail
+ * @property-read mixed $thumbnail_url
+ * @property-read ConversionCount|null $totalConversionCount
+ * @property-read ViewCount|null $totalViewCount
+ * @property-read \App\Models\User $user
+ * @property-read Collection<int, ViewCount> $viewCounts
+ * @property-read int|null $view_counts_count
  *
- * @method static Builder<Article> page()
- * @method static Builder<Article> pak(string $slug)
+ * @method static Builder<static>|Article active()
+ * @method static Builder<static>|Article addon()
+ * @method static Builder<static>|Article announce()
+ * @method static Builder<static>|Article category(\App\Models\Category $category)
+ * @method static \Database\Factories\ArticleFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Article latest()
+ * @method static Builder<static>|Article newModelQuery()
+ * @method static Builder<static>|Article newQuery()
+ * @method static Builder<static>|Article onlyTrashed()
+ * @method static Builder<static>|Article page()
+ * @method static Builder<static>|Article pak(string $slug)
+ * @method static Builder<static>|Article pakAddonCategory(\App\Models\Category $pak, \App\Models\Category $addon)
+ * @method static Builder<static>|Article query()
+ * @method static Builder<static>|Article slug(string $slug)
+ * @method static Builder<static>|Article tag(\App\Models\Tag $tag)
+ * @method static Builder<static>|Article user(\App\Models\User $user)
+ * @method static Builder<static>|Article withTrashed(bool $withTrashed = true)
+ * @method static Builder<static>|Article withUserTrashed()
+ * @method static Builder<static>|Article withoutAnnounce()
+ * @method static Builder<static>|Article withoutTrashed()
  *
+ * @mixin \Eloquent
  * @mixin IdeHelperArticle
  */
 class Article extends Model implements Feedable

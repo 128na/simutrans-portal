@@ -21,6 +21,49 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
 /**
+ * @property int $id
+ * @property UserRole $role 権限
+ * @property string $name ユーザー名
+ * @property string|null $nickname 表示名
+ * @property string $email
+ * @property \Carbon\CarbonImmutable|null $email_verified_at
+ * @property string $password
+ * @property string|null $two_factor_secret
+ * @property string|null $two_factor_recovery_codes
+ * @property \Carbon\CarbonImmutable|null $two_factor_confirmed_at
+ * @property string|null $remember_token
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property \Carbon\CarbonImmutable|null $deleted_at
+ * @property int|null $invited_by 紹介ユーザーID
+ * @property string|null $invitation_code 紹介用コード
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
+ * @property-read int|null $articles_count
+ * @property-read User|null $invited
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $invites
+ * @property-read int|null $invites_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $lastModifiedBy
+ * @property-read int|null $last_modified_by_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, LoginHistory> $loginHistories
+ * @property-read int|null $login_histories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $myAttachments
+ * @property-read int|null $my_attachments_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read Profile|null $profile
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Redirect> $redirects
+ * @property-read int|null $redirects_count
+ *
+ * @method static Builder<static>|User admin()
+ * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
+ * @method static Builder<static>|User newModelQuery()
+ * @method static Builder<static>|User newQuery()
+ * @method static Builder<static>|User onlyTrashed()
+ * @method static Builder<static>|User query()
+ * @method static Builder<static>|User withTrashed(bool $withTrashed = true)
+ * @method static Builder<static>|User withoutTrashed()
+ *
+ * @mixin \Eloquent
  * @mixin IdeHelperUser
  */
 class User extends Authenticatable implements MustVerifyEmail

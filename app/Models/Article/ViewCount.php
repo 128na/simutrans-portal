@@ -10,6 +10,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * @property int $id
+ * @property int $article_id
+ * @property int $type 集計区分 1:日次,2:月次,3:年次,4:全体
+ * @property string $period 集計期間
+ * @property int $count カウント
+ * @property int $user_id
+ * @property-read Article|null $article
+ * @property-read User|null $user
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ViewCount query()
+ *
+ * @mixin \Eloquent
  * @mixin IdeHelperViewCount
  */
 class ViewCount extends Model

@@ -17,12 +17,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int|null $position
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read MyList $list
- * @property-read Article $article
+ * @property-read \App\Models\Article $article
+ * @property-read \App\Models\MyList $list
  *
- * @method static Builder<MyListItem> whereListId(int $listId)
- * @method static Builder<MyListItem> orderByPosition()
+ * @method static \Database\Factories\MyListItemFactory factory($count = null, $state = [])
+ * @method static Builder<static>|MyListItem newModelQuery()
+ * @method static Builder<static>|MyListItem newQuery()
+ * @method static Builder<static>|MyListItem orderByPosition()
+ * @method static Builder<static>|MyListItem query()
+ * @method static Builder<static>|MyListItem whereListId(int $listId)
+ * @method \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Article, self> article()
+ * @method \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\MyList, self> list()
  *
+ * @mixin \Eloquent
  * @mixin IdeHelperMyListItem
  */
 class MyListItem extends Model
@@ -47,6 +54,8 @@ class MyListItem extends Model
 
     /**
      * このアイテムが属するリストを取得
+     *
+     * @return BelongsTo<MyList, self>
      */
     public function list(): BelongsTo
     {
@@ -55,6 +64,8 @@ class MyListItem extends Model
 
     /**
      * このアイテムが参照する記事を取得
+     *
+     * @return BelongsTo<Article, self>
      */
     public function article(): BelongsTo
     {
@@ -63,6 +74,9 @@ class MyListItem extends Model
 
     /**
      * 特定リストのアイテムをフィルタ
+     *
+     * @param  Builder<MyListItem>  $query
+     * @return Builder<MyListItem>
      */
     public function scopeWhereListId(Builder $query, int $listId): Builder
     {
@@ -71,6 +85,9 @@ class MyListItem extends Model
 
     /**
      * 位置順にソート
+     *
+     * @param  Builder<MyListItem>  $query
+     * @return Builder<MyListItem>
      */
     public function scopeOrderByPosition(Builder $query): Builder
     {

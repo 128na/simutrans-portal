@@ -15,6 +15,21 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 
 /**
+ * @property int $id
+ * @property int $user_id
+ * @property \App\Models\User\ProfileData $data プロフィール情報
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Attachment> $attachments
+ * @property-read int|null $attachments_count
+ * @property-read mixed $avatar
+ * @property-read User $user
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile query()
+ *
+ * @mixin \Eloquent
  * @mixin IdeHelperProfile
  */
 class Profile extends Model

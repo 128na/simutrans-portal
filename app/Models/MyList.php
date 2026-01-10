@@ -20,13 +20,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $slug
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read User $user
- * @property-read Collection<int, MyListItem> $items
+ * @property-read Collection<int, \App\Models\MyListItem> $items
  * @property-read int|null $items_count
+ * @property-read \App\Models\User $user
  *
- * @method static Builder<MyList> whereBelongsToUser(User|int $user)
- * @method static Builder<MyList> wherePublic()
+ * @method static \Database\Factories\MyListFactory factory($count = null, $state = [])
+ * @method static Builder<static>|MyList newModelQuery()
+ * @method static Builder<static>|MyList newQuery()
+ * @method static Builder<static>|MyList query()
+ * @method static Builder<static>|MyList whereBelongsToUser(\App\Models\User|int $user)
+ * @method static Builder<static>|MyList wherePublic()
+ * @method \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\MyListItem, self> items()
  *
+ * @mixin \Eloquent
  * @mixin IdeHelperMyList
  */
 class MyList extends Model
@@ -52,6 +58,8 @@ class MyList extends Model
 
     /**
      * リストの所有者（ユーザー）を取得
+     *
+     * @return BelongsTo<User, self>
      */
     public function user(): BelongsTo
     {
@@ -60,6 +68,8 @@ class MyList extends Model
 
     /**
      * リストのアイテムを取得
+     *
+     * @return HasMany<MyListItem, self>
      */
     public function items(): HasMany
     {
@@ -68,6 +78,9 @@ class MyList extends Model
 
     /**
      * 特定ユーザーのリストをフィルタ
+     *
+     * @param  Builder<MyList>  $query
+     * @return Builder<MyList>
      */
     public function scopeWhereBelongsToUser(Builder $query, int|User $user): Builder
     {
@@ -78,6 +91,9 @@ class MyList extends Model
 
     /**
      * 公開リストのみをフィルタ
+     *
+     * @param  Builder<MyList>  $query
+     * @return Builder<MyList>
      */
     public function scopeWherePublic(Builder $query): Builder
     {

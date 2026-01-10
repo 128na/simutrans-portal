@@ -12,11 +12,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int $article_id
  * @property int $failed_count
- * @property \Illuminate\Support\Carbon $last_checked_at
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
- * @property-read Article $article
+ * @property \Carbon\CarbonImmutable $last_checked_at
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property-read \App\Models\Article $article
  *
+ * @method static \Database\Factories\ArticleLinkCheckHistoryFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleLinkCheckHistory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleLinkCheckHistory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleLinkCheckHistory query()
+ *
+ * @mixin \Eloquent
  * @mixin IdeHelperArticleLinkCheckHistory
  */
 class ArticleLinkCheckHistory extends Model

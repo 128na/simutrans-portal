@@ -7,6 +7,17 @@ namespace App\Models\Attachment;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * @property int $id
+ * @property int $attachment_id
+ * @property array<array-key, mixed> $data
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FileInfo newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FileInfo newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FileInfo query()
+ *
+ * @mixin \Eloquent
  * @mixin IdeHelperFileInfo
  */
 class FileInfo extends Model

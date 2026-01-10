@@ -45,6 +45,7 @@ class MyListItemRepository
         $query = $list->items()
             ->with([
                 'article.user.profile.attachments',
+                'article.attachments',
             ])
             ->whereHas('article', function ($q) {
                 $q->where('status', \App\Enums\ArticleStatus::Publish)

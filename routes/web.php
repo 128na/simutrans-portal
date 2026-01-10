@@ -45,6 +45,10 @@ Route::post('/invite-simutrans-interact-meeting', [\App\Http\Controllers\Pages\D
 Route::get('/users', [\App\Http\Controllers\Pages\UserController::class, 'users'])->name('users.index');
 Route::get('/users/{userIdOrNickname}', [\App\Http\Controllers\Pages\UserController::class, 'user'])->name('users.show');
 Route::get('/users/{userIdOrNickname}/{articleSlug}', [\App\Http\Controllers\Pages\Article\ShowController::class, 'show'])->name('articles.show')->where('articleSlug', '.*');
+
+// 公開マイリスト
+Route::get('/mylist/{slug}', [\App\Http\Controllers\Pages\PublicMyListController::class, 'show'])->name('public-mylist.show');
+
 // 記事詳細・ダウンロード
 Route::get('/articles/{id}', [\App\Http\Controllers\Pages\Article\ShowController::class, 'fallbackShow'])->name('articles.fallbackShow');
 Route::get('/articles/{article}/download', [\App\Http\Controllers\Pages\Article\DownloadController::class, 'download'])->name('articles.download');

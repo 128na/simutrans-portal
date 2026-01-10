@@ -7,6 +7,7 @@ import Textarea from "@/components/ui/Textarea";
 import Checkbox from "@/components/ui/Checkbox";
 import TextBadge from "@/components/ui/TextBadge";
 import Link from "@/components/ui/Link";
+import { copyToClipboard, showToast } from "@/lib/copyText";
 import type { MyListShow } from "@/types/models";
 
 interface MyListTableProps {
@@ -19,6 +20,21 @@ interface MyListTableProps {
  * マイリスト一覧テーブルコンポーネント
  */
 export const MyListTable = ({ lists, onEdit, onDelete }: MyListTableProps) => {
+  const [copiedId, setCopiedId] = useState<number | null>(null);
+
+  const handleCopyPublicUrl = async (list: MyListShow) => {
+    const publicUrl = `${window.location.origin}/mylist/${list.slug}`;
+    const success = await copyToClipboard(publicUrl);
+
+    if (success) {
+      setCopiedId(list.id);
+      showToast("公開URLをコピーしました");
+      setTimeout(() => setCopiedId(null), 2000);
+    } else {
+      showToast("コピーに失敗しました");
+    }
+  };
+
   if (lists.length === 0) {
     return (
       <div className="v2-card v2-card-default">
@@ -39,7 +55,7 @@ export const MyListTable = ({ lists, onEdit, onDelete }: MyListTableProps) => {
             <th>タイトル</th>
             <th>アイテム数</th>
             <th>更新日</th>
-            <th className="w-32">操作</th>
+            <th className="w-40">操作</th>
           </tr>
         </thead>
         <tbody>
@@ -72,7 +88,27 @@ export const MyListTable = ({ lists, onEdit, onDelete }: MyListTableProps) => {
               <td>{list.items_count || 0}件</td>
               <td>{new Date(list.updated_at).toLocaleDateString("ja-JP")}</td>
               <td>
-                <div className="flex gap-2 justify-center">
+                <div className="flex gap-2 justify-center flex-wrap">
+                  {list.is_public && (
+                    <Button
+                      onClick={() => handleCopyPublicUrl(list)}
+                      variant={copiedId === list.id ? "success" : "sub"}
+                      aria-label={`${list.title}の公開URLをコピー`}
+                      title="公開URLをクリップボードにコピーします"
+                    >
+                      {copiedId === list.id ? (
+                        <>
+                          <span className="icon-check"></span>
+                          コピー済
+                        </>
+                      ) : (
+                        <>
+                          <span className="icon-copy"></span>
+                          URLコピー
+                        </>
+                      )}
+                    </Button>
+                  )}
                   <Button
                     onClick={() => onEdit(list)}
                     variant="sub"

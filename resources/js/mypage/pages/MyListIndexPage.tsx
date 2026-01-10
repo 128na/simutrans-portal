@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { useState, useEffect } from "react";
 import Button from "@/components/ui/Button";
 import { ErrorBoundary } from "../../components/ErrorBoundary";
+import { extractErrorMessage } from "@/lib/errorHandler";
 import {
   MyListTable,
   MyListEditModal,
@@ -33,7 +34,7 @@ if (app) {
           throw new Error("リストの取得に失敗しました");
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : "エラーが発生しました");
+        setError(extractErrorMessage(err));
       } finally {
         setIsLoading(false);
       }

@@ -4,6 +4,7 @@ import Button from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import Input from "@/components/ui/Input";
 import TextBadge from "@/components/ui/TextBadge";
+import { extractErrorMessage } from "@/lib/errorHandler";
 import type { MyListShow, MyListCreateRequest } from "@/types/models";
 
 interface AddToMyListButtonProps {
@@ -136,7 +137,7 @@ const AddToMyListModal = ({
         throw new Error("リストの作成に失敗しました");
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "エラーが発生しました");
+      setError(extractErrorMessage(err));
     } finally {
       setIsCreating(false);
     }
@@ -168,7 +169,7 @@ const AddToMyListModal = ({
       await Promise.all(promises);
       onSuccess();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "エラーが発生しました");
+      setError(extractErrorMessage(err));
     } finally {
       setIsLoading(false);
     }

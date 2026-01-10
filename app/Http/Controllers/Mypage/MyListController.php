@@ -124,14 +124,6 @@ class MyListController extends Controller
                 'ok' => false,
                 'error' => $e->getMessage(),
             ], 422);
-        } catch (\Exception $e) {
-            if (str_contains($e->getMessage(), 'Unique constraint')) {
-                return response()->json([
-                    'ok' => false,
-                    'error' => 'Article already in this list',
-                ], 409);
-            }
-            throw $e;
         }
     }
 

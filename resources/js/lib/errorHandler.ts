@@ -56,21 +56,20 @@ export const extractErrorMessage = (error: unknown): string => {
   }
 
   if (isAxiosError(error)) {
-    // バリデーションエラー（422）の場合はメッセージを返す
-    if (error.response?.status === 422) {
-      const data = error.response?.data as ValidationErrorResponse | undefined;
-      return data?.message || "入力内容に問題があります";
+    // APIレスポンスのエラーメッセージを優先的に取得
+    const responseData = error.response?.data as
+      | { error?: string; message?: string }
+      | undefined;
+    if (responseData?.error) {
+      return responseData.error;
+    }
+    if (responseData?.message) {
+      return responseData.message;
     }
 
     // ネットワークエラー
     if (!error.response) {
       return "ネットワークエラーが発生しました。接続を確認してください";
-    }
-
-    // サーバーからのメッセージがある場合
-    const data = error.response?.data as { message?: string } | undefined;
-    if (data?.message) {
-      return data.message;
     }
 
     // HTTPステータスコードに基づくメッセージ
@@ -82,6 +81,8 @@ export const extractErrorMessage = (error: unknown): string => {
         return "この操作を行う権限がありません";
       case 404:
         return "リソースが見つかりませんでした";
+      case 422:
+        return "入力内容に問題があります";
       case 500:
         return "サーバーエラーが発生しました";
       default:

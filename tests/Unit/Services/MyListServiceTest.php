@@ -101,9 +101,11 @@ class MyListServiceTest extends TestCase
     public function test_add_item_to_list_assigns_correct_position(): void
     {
         $list = Mockery::mock(MyList::class)->makePartial();
+        $list->id = 1;
         $list->shouldReceive('items->max')->with('position')->andReturn(5);
 
         $article = Mockery::mock(Article::class)->makePartial();
+        $article->id = 10;
         $article->status = ArticleStatus::Publish;
         $article->shouldReceive('trashed')->andReturn(false);
 
@@ -112,6 +114,12 @@ class MyListServiceTest extends TestCase
         $article->user = $user;
 
         $item = Mockery::mock(MyListItem::class);
+
+        // 新しい findByListAndArticle メソッドのモック
+        $this->itemRepository->shouldReceive('findByListAndArticle')
+            ->once()
+            ->with(1, 10)
+            ->andReturn(null);
 
         $this->itemRepository->shouldReceive('create')
             ->once()
@@ -136,7 +144,7 @@ class MyListServiceTest extends TestCase
         $article->status = ArticleStatus::Draft;
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Only published articles can be added to the list.');
+        $this->expectExceptionMessage('公開されていない記事は追加できません。');
 
         $this->service->addItemToList($list, $article);
     }

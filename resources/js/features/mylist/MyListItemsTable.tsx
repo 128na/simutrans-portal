@@ -3,6 +3,7 @@ import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import TextBadge from "@/components/ui/TextBadge";
+import { extractErrorMessage } from "@/lib/errorHandler";
 import type { MyListItemShow } from "@/types/models";
 
 interface MyListItemsTableProps {
@@ -49,7 +50,7 @@ export const MyListItemsTable = ({
       setEditingItemId(null);
       onUpdate();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "エラーが発生しました");
+      setError(extractErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
@@ -73,7 +74,7 @@ export const MyListItemsTable = ({
 
       onUpdate();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "エラーが発生しました");
+      setError(extractErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
@@ -99,7 +100,7 @@ export const MyListItemsTable = ({
 
       onUpdate();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "エラーが発生しました");
+      setError(extractErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
@@ -125,7 +126,7 @@ export const MyListItemsTable = ({
 
       onUpdate();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "エラーが発生しました");
+      setError(extractErrorMessage(err));
     } finally {
       setIsLoading(false);
     }

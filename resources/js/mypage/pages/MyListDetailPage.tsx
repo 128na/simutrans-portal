@@ -2,6 +2,7 @@ import axios from "axios";
 import { createRoot } from "react-dom/client";
 import { useState, useEffect } from "react";
 import { ErrorBoundary } from "../../components/ErrorBoundary";
+import { extractErrorMessage } from "@/lib/errorHandler";
 import { MyListItemsTable } from "../../features/mylist/MyListItemsTable";
 import type { MyListItemShow } from "@/types/models";
 
@@ -30,7 +31,7 @@ if (app) {
           throw new Error("アイテムの取得に失敗しました");
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : "エラーが発生しました");
+        setError(extractErrorMessage(err));
       } finally {
         setIsLoading(false);
       }

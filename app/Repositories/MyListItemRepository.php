@@ -76,6 +76,17 @@ class MyListItemRepository
     }
 
     /**
+     * リストと記事で既存アイテムを取得
+     */
+    public function findByListAndArticle(int $listId, int $articleId): ?MyListItem
+    {
+        return $this->model
+            ->where('list_id', $listId)
+            ->where('article_id', $articleId)
+            ->first();
+    }
+
+    /**
      * アイテムを作成
      *
      * @param  array<string, mixed>  $data

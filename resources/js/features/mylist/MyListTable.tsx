@@ -8,6 +8,7 @@ import Checkbox from "@/components/ui/Checkbox";
 import TextBadge from "@/components/ui/TextBadge";
 import Link from "@/components/ui/Link";
 import { copyToClipboard, showToast } from "@/lib/copyText";
+import { extractErrorMessage } from "@/lib/errorHandler";
 import type { MyListShow } from "@/types/models";
 
 interface MyListTableProps {
@@ -180,7 +181,7 @@ export const MyListEditModal = ({
 
       onSuccess();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "エラーが発生しました");
+      setError(extractErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
@@ -295,7 +296,7 @@ export const MyListDeleteModal = ({
 
       onSuccess();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "エラーが発生しました");
+      setError(extractErrorMessage(err));
     } finally {
       setIsLoading(false);
     }

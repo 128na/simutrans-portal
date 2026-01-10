@@ -123,4 +123,24 @@ class StoreItemTest extends TestCase
             ->assertUnprocessable()
             ->assertJsonValidationErrors(['article_id']);
     }
+
+    public function test_returns_422_when_article_already_in_list(): void
+    {
+        $user = User::factory()->create();
+        /** @var MyList $list */
+        $list = MyList::factory()->create(['user_id' => $user->id]);
+        $article = Article::factory()->create(['status' => 'publish']);
+
+        // 1回目は成功
+        $this->actingAs($user)
+            ->postJson("/api/v1/mylist/{$list->id}/items", ['article_id' => $article->id])
+            ->assertCreated();
+
+        // 2回目は 422 エラー
+        $res = $this->actingAs($user)
+            ->postJson("/api/v1/mylist/{$list->id}/items", ['article_id' => $article->id]);
+
+        $res->assertUnprocessable()
+            ->assertJsonPath('error', 'この記事は既にこのマイリストに追加されています。');
+    }
 }

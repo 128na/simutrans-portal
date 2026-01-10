@@ -110,7 +110,13 @@ class MyListService
     {
         // 公開記事のみ追加可能
         if (! $this->isArticlePublic($article)) {
-            throw new \InvalidArgumentException('Only published articles can be added to the list.');
+            throw new \InvalidArgumentException(__('validation.custom.mylist_not_public_article'));
+        }
+
+        // 既に追加済みのアイテムは追加不可
+        $existingItem = $this->itemRepository->findByListAndArticle($list->id, $article->id);
+        if ($existingItem !== null) {
+            throw new \InvalidArgumentException(__('validation.custom.mylist_article_already_exists'));
         }
 
         // 位置は末尾に設定

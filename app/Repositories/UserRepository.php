@@ -53,6 +53,19 @@ class UserRepository
                 'total_attachment_size'
             )
             ->selectSub(
+                DB::table('mylists')
+                    ->where('user_id', $userId)
+                    ->selectRaw('COUNT(*)'),
+                'mylist_count'
+            )
+            ->selectSub(
+                DB::table('mylists')
+                    ->where('user_id', $userId)
+                    ->where('is_public', true)
+                    ->selectRaw('COUNT(*)'),
+                'public_mylist_count'
+            )
+            ->selectSub(
                 DB::table('conversion_counts')
                     ->where('user_id', $userId)
                     ->where('type', 2)
@@ -98,7 +111,7 @@ class UserRepository
         return $this->model->query()
             ->select(['users.id', 'users.nickname', 'users.name'])
             ->whereExists(
-                fn ($q) => $q->selectRaw(1)
+                fn($q) => $q->selectRaw(1)
                     ->from('articles as a')
                     ->whereColumn('a.user_id', 'users.id')
                     ->where('a.status', ArticleStatus::Publish)

@@ -25,20 +25,17 @@ class ShowPublicTest extends TestCase
 
         // Assert
         $res->assertOk()
-            ->assertJsonPath('ok', true)
-            ->assertJsonPath('data.list.slug', $list->slug)
+            ->assertJsonPath('list.slug', $list->slug)
             ->assertJsonStructure([
-                'ok',
                 'data' => [
-                    'list' => ['id', 'title', 'note', 'slug', 'created_at', 'updated_at'],
-                    'items' => [
-                        ['id', 'note', 'position', 'created_at', 'article' => ['id', 'title']],
-                    ],
-                    'pagination' => ['current_page', 'per_page', 'from', 'to'],
+                    '*' => ['id', 'note', 'position', 'created_at', 'article' => ['id', 'title']],
                 ],
+                'list' => ['id', 'title', 'note', 'is_public', 'slug', 'items_count', 'created_at', 'updated_at'],
+                'links' => ['first', 'last', 'prev', 'next'],
+                'meta' => ['current_page', 'from', 'path', 'per_page', 'to'],
             ]);
 
-        $this->assertCount(3, $res->json('data.items'));
+        $this->assertCount(3, $res->json('data'));
     }
 
     public function test_respects_pagination_parameters(): void
@@ -50,8 +47,8 @@ class ShowPublicTest extends TestCase
         $res = $this->getJson('/api/v1/mylist/public/'.$list->slug.'?per_page=2&page=1');
 
         $res->assertOk()
-            ->assertJsonPath('data.pagination.per_page', 2);
-        $this->assertCount(2, $res->json('data.items'));
+            ->assertJsonPath('meta.per_page', 2);
+        $this->assertCount(2, $res->json('data'));
     }
 
     public function test_returns_404_when_slug_not_found(): void

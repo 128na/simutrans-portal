@@ -27,17 +27,15 @@ class GetItemsTest extends TestCase
 
         // Assert
         $res->assertOk()
-            ->assertJsonPath('ok', true)
             ->assertJsonStructure([
-                'ok',
                 'data' => [
-                    'items' => [
-                        '*' => ['id', 'note', 'position', 'created_at', 'article'],
-                    ],
+                    '*' => ['id', 'note', 'position', 'created_at', 'article'],
                 ],
+                'links' => ['first', 'last', 'prev', 'next'],
+                'meta' => ['current_page', 'from', 'path', 'per_page', 'to'],
             ]);
 
-        $this->assertCount(5, $res->json('data.items'));
+        $this->assertCount(5, $res->json('data'));
     }
 
     public function test_returns_items_ordered_by_position(): void
@@ -53,7 +51,7 @@ class GetItemsTest extends TestCase
         $res = $this->actingAs($user)->getJson("/api/v1/mylist/{$list->id}/items");
 
         $res->assertOk();
-        $items = $res->json('data.items');
+        $items = $res->json('data');
         $this->assertEquals($item2->id, $items[0]['id']);
         $this->assertEquals($item3->id, $items[1]['id']);
         $this->assertEquals($item1->id, $items[2]['id']);

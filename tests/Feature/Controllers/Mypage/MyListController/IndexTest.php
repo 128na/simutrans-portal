@@ -22,17 +22,15 @@ class IndexTest extends TestCase
         $res = $this->actingAs($user)->getJson('/api/v1/mylist');
 
         $res->assertOk()
-            ->assertJsonPath('ok', true)
             ->assertJsonStructure([
-                'ok',
                 'data' => [
-                    'lists' => [
-                        '*' => ['id', 'title', 'note', 'is_public', 'slug', 'items_count', 'created_at', 'updated_at'],
-                    ],
+                    '*' => ['id', 'title', 'note', 'is_public', 'slug', 'items_count', 'created_at', 'updated_at'],
                 ],
+                'links' => ['first', 'last', 'prev', 'next'],
+                'meta' => ['current_page', 'from', 'path', 'per_page', 'to'],
             ]);
 
-        $this->assertCount(3, $res->json('data.lists'));
+        $this->assertCount(3, $res->json('data'));
     }
 
     public function test_returns_empty_array_when_no_lists(): void
@@ -42,8 +40,7 @@ class IndexTest extends TestCase
         $res = $this->actingAs($user)->getJson('/api/v1/mylist');
 
         $res->assertOk()
-            ->assertJsonPath('ok', true)
-            ->assertJsonPath('data.lists', []);
+            ->assertJsonPath('data', []);
     }
 
     public function test_returns_401_when_unauthenticated(): void

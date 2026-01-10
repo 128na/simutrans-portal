@@ -23,9 +23,8 @@ class StoreTest extends TestCase
         ]);
 
         $res->assertCreated()
-            ->assertJsonPath('ok', true)
-            ->assertJsonPath('data.list.title', 'Test List')
-            ->assertJsonPath('data.list.is_public', true);
+            ->assertJsonPath('data.title', 'Test List')
+            ->assertJsonPath('data.is_public', true);
 
         $this->assertDatabaseHas('mylists', [
             'user_id' => $user->id,
@@ -43,8 +42,8 @@ class StoreTest extends TestCase
         ]);
 
         $res->assertCreated()
-            ->assertJsonPath('data.list.title', 'Minimal List')
-            ->assertJsonPath('data.list.is_public', false);
+            ->assertJsonPath('data.title', 'Minimal List')
+            ->assertJsonPath('data.is_public', false);
     }
 
     public function test_generates_slug_when_list_is_public(): void
@@ -57,7 +56,7 @@ class StoreTest extends TestCase
         ]);
 
         $res->assertCreated();
-        $slug = $res->json('data.list.slug');
+        $slug = $res->json('data.slug');
         $this->assertNotNull($slug);
         $this->assertIsString($slug);
     }

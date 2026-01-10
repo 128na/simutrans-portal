@@ -27,8 +27,8 @@ if (app) {
         setError(null);
 
         const { data } = await axios.get("/api/v1/mylist");
-        if (data.ok && data.data?.lists) {
-          setLists(data.data.lists);
+        if (Array.isArray(data.data)) {
+          setLists(data.data);
         } else {
           throw new Error("リストの取得に失敗しました");
         }

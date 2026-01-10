@@ -35,7 +35,7 @@ class ReorderItemsTest extends TestCase
         ]);
 
         // Assert
-        $res->assertOk()->assertJsonPath('ok', true);
+        $res->assertOk();
 
         $this->assertDatabaseHas('mylist_items', ['id' => $item3->id, 'position' => 1]);
         $this->assertDatabaseHas('mylist_items', ['id' => $item2->id, 'position' => 2]);

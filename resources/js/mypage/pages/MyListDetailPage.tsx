@@ -24,8 +24,8 @@ if (app) {
         setError(null);
 
         const { data } = await axios.get(`/api/v1/mylist/${listId}/items`);
-        if (data.ok && data.data?.items) {
-          setItems(data.data.items);
+        if (Array.isArray(data.data)) {
+          setItems(data.data);
         } else {
           throw new Error("アイテムの取得に失敗しました");
         }

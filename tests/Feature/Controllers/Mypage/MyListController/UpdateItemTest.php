@@ -26,8 +26,7 @@ class UpdateItemTest extends TestCase
         ]);
 
         $res->assertOk()
-            ->assertJsonPath('ok', true)
-            ->assertJsonPath('data.item.note', 'New note');
+            ->assertJsonPath('data.note', 'New note');
 
         $this->assertDatabaseHas('mylist_items', [
             'id' => $item->id,

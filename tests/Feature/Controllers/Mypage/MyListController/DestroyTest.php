@@ -22,7 +22,7 @@ class DestroyTest extends TestCase
 
         $res = $this->actingAs($user)->deleteJson("/api/v1/mylist/{$list->id}");
 
-        $res->assertOk()->assertJsonPath('ok', true);
+        $res->assertOk();
 
         $this->assertDatabaseMissing('mylists', ['id' => $list->id]);
     }

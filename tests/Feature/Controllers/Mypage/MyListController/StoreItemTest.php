@@ -27,8 +27,7 @@ class StoreItemTest extends TestCase
         ]);
 
         $res->assertCreated()
-            ->assertJsonPath('ok', true)
-            ->assertJsonPath('data.item.note', 'Test note');
+            ->assertJsonPath('data.note', 'Test note');
 
         $this->assertDatabaseHas('mylist_items', [
             'list_id' => $list->id,
@@ -48,7 +47,7 @@ class StoreItemTest extends TestCase
             'article_id' => $article->id,
         ]);
 
-        $res->assertCreated()->assertJsonPath('data.item.note', null);
+        $res->assertCreated()->assertJsonPath('data.note', null);
     }
 
     public function test_assigns_correct_position_to_new_item(): void
@@ -63,7 +62,7 @@ class StoreItemTest extends TestCase
         ]);
 
         $res->assertCreated();
-        $position = $res->json('data.item.position');
+        $position = $res->json('data.position');
         $this->assertIsInt($position);
         $this->assertGreaterThan(0, $position);
     }

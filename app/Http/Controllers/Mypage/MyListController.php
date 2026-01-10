@@ -11,12 +11,14 @@ use App\Http\Requests\MyList\StoreMyListRequest;
 use App\Http\Requests\MyList\UpdateMyListItemRequest;
 use App\Http\Requests\MyList\UpdateMyListRequest;
 use App\Http\Resources\Mypage\MyListItem as MyListItemResource;
+use App\Http\Resources\Mypage\MyListShow as MyListShowResource;
 use App\Models\Article;
 use App\Models\MyList;
 use App\Models\MyListItem;
 use App\Services\MyListService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class MyListController extends Controller
 {
@@ -25,7 +27,7 @@ class MyListController extends Controller
     /**
      * 自分のマイリスト一覧取得
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): ResourceCollection
     {
         $user = $this->loggedinUser();
         $page = (int) $request->query('page', 1);
@@ -34,18 +36,7 @@ class MyListController extends Controller
 
         $lists = $this->service->getListsForUser($user, $page, $perPage, $sort);
 
-        return response()->json([
-            'ok' => true,
-            'data' => [
-                'lists' => $lists->items(),
-                'pagination' => [
-                    'current_page' => $lists->currentPage(),
-                    'per_page' => $lists->perPage(),
-                    'from' => $lists->firstItem(),
-                    'to' => $lists->lastItem(),
-                ],
-            ],
-        ]);
+        return MyListShowResource::collection($lists);
     }
 
     /**
@@ -62,16 +53,13 @@ class MyListController extends Controller
 
         $list = $this->service->createList($user, $title, $note, $isPublic);
 
-        return response()->json([
-            'ok' => true,
-            'data' => ['list' => $list],
-        ], 201);
+        return (new MyListShowResource($list))->response()->setStatusCode(201);
     }
 
     /**
      * マイリストを更新
      */
-    public function update(UpdateMyListRequest $request, MyList $mylist): JsonResponse
+    public function update(UpdateMyListRequest $request, MyList $mylist): MyListShowResource
     {
         $this->authorize('update', $mylist);
 
@@ -83,10 +71,7 @@ class MyListController extends Controller
 
         $updatedList = $this->service->updateList($mylist, $title, $note, $isPublic);
 
-        return response()->json([
-            'ok' => true,
-            'data' => ['list' => $updatedList],
-        ]);
+        return new MyListShowResource($updatedList);
     }
 
     /**
@@ -98,16 +83,13 @@ class MyListController extends Controller
 
         $this->service->deleteList($mylist);
 
-        return response()->json([
-            'ok' => true,
-            'data' => [],
-        ]);
+        return response()->json(status: 200);
     }
 
     /**
      * リスト内のアイテム一覧取得
      */
-    public function getItems(Request $request, MyList $mylist): JsonResponse
+    public function getItems(Request $request, MyList $mylist): ResourceCollection
     {
         $this->authorize('view', $mylist);
 
@@ -117,18 +99,7 @@ class MyListController extends Controller
 
         $items = $this->service->getItemsForList($mylist, $page, $perPage, $sort);
 
-        return response()->json([
-            'ok' => true,
-            'data' => [
-                'items' => MyListItemResource::collection($items->items()),
-                'pagination' => [
-                    'current_page' => $items->currentPage(),
-                    'per_page' => $items->perPage(),
-                    'from' => $items->firstItem(),
-                    'to' => $items->lastItem(),
-                ],
-            ],
-        ]);
+        return MyListItemResource::collection($items);
     }
 
     /**
@@ -147,10 +118,7 @@ class MyListController extends Controller
         try {
             $item = $this->service->addItemToList($mylist, $article, $note);
 
-            return response()->json([
-                'ok' => true,
-                'data' => ['item' => new MyListItemResource($item)],
-            ], 201);
+            return (new MyListItemResource($item))->response()->setStatusCode(201);
         } catch (\InvalidArgumentException $e) {
             return response()->json([
                 'ok' => false,
@@ -170,7 +138,7 @@ class MyListController extends Controller
     /**
      * アイテムをアップデート
      */
-    public function updateItem(UpdateMyListItemRequest $request, MyList $mylist, MyListItem $item): JsonResponse
+    public function updateItem(UpdateMyListItemRequest $request, MyList $mylist, MyListItem $item): MyListItemResource
     {
         $this->authorize('update', $mylist);
         abort_if($item->list_id !== $mylist->id, 404);
@@ -182,10 +150,7 @@ class MyListController extends Controller
 
         $updatedItem = $this->service->updateItem($item, $note, $position);
 
-        return response()->json([
-            'ok' => true,
-            'data' => ['item' => new MyListItemResource($updatedItem)],
-        ]);
+        return new MyListItemResource($updatedItem);
     }
 
     /**
@@ -198,10 +163,7 @@ class MyListController extends Controller
 
         $this->service->removeItem($item);
 
-        return response()->json([
-            'ok' => true,
-            'data' => [],
-        ]);
+        return response()->json(status: 200);
     }
 
     /**
@@ -215,16 +177,13 @@ class MyListController extends Controller
         $items = $request->validated('items');
         $this->service->reorderItems($mylist, $items);
 
-        return response()->json([
-            'ok' => true,
-            'data' => [],
-        ]);
+        return response()->json(status: 200);
     }
 
     /**
      * 公開リストを表示（認証不要）
      */
-    public function showPublic(string $slug): JsonResponse
+    public function showPublic(string $slug): ResourceCollection
     {
         $list = $this->service->getPublicListBySlug($slug);
 
@@ -234,18 +193,9 @@ class MyListController extends Controller
 
         $items = $this->service->getPublicItemsForList($list, $page, $perPage, $sort);
 
-        return response()->json([
-            'ok' => true,
-            'data' => [
-                'list' => $list->only(['id', 'title', 'note', 'slug', 'created_at', 'updated_at']),
-                'items' => MyListItemResource::collection($items->items()),
-                'pagination' => [
-                    'current_page' => $items->currentPage(),
-                    'per_page' => $items->perPage(),
-                    'from' => $items->firstItem(),
-                    'to' => $items->lastItem(),
-                ],
-            ],
-        ]);
+        return MyListItemResource::collection($items)
+            ->additional([
+                'list' => new MyListShowResource($list),
+            ]);
     }
 }

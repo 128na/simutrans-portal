@@ -88,8 +88,8 @@ const AddToMyListModal = ({
       try {
         setIsLoading(true);
         const { data } = await axios.get("/api/v1/mylist");
-        if (data.ok && data.data?.lists) {
-          setLists(data.data.lists);
+        if (Array.isArray(data.data)) {
+          setLists(data.data);
         } else {
           throw new Error("リストの取得に失敗しました");
         }
@@ -128,8 +128,8 @@ const AddToMyListModal = ({
       };
 
       const { data } = await axios.post("/api/v1/mylist", requestBody);
-      if (data.ok && data.data?.list) {
-        setLists([...lists, data.data.list]);
+      if (data.data && typeof data.data === "object") {
+        setLists([...lists, data.data]);
         setNewListTitle("");
         setError(null);
       } else {

@@ -1,0 +1,109 @@
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { MyListItemsTable } from "@/features/mylist/MyListItemsTable";
+import type { MyListItemShow } from "@/types/models/MyList";
+
+describe("MyListItemsTable コンポーネント", () => {
+  const mockItems: MyListItemShow[] = [
+    {
+      id: 1,
+      note: "便利なアドオン",
+      position: 1,
+      created_at: "2025-01-01 10:00:00",
+      article: {
+        id: 100,
+        slug: "test-addon-1",
+        title: "テストアドオン1",
+        user: {
+          id: 1,
+          name: "テストユーザー",
+          slug: "test-user",
+          profile: null,
+        },
+        thumbnail: null,
+        file: null,
+      },
+    },
+    {
+      id: 2,
+      note: null,
+      position: 2,
+      created_at: "2025-01-02 12:00:00",
+      article: {
+        id: 101,
+        slug: "test-addon-2",
+        title: "テストアドオン2",
+        user: {
+          id: 2,
+          name: "ユーザー2",
+          slug: "user2",
+          profile: null,
+        },
+        thumbnail: null,
+        file: null,
+      },
+    },
+  ];
+
+  it("アイテム一覧が表示される", () => {
+    render(
+      <MyListItemsTable listId={1} items={mockItems} onUpdate={vi.fn()} />
+    );
+
+    expect(screen.getByText("テストアドオン1")).toBeInTheDocument();
+    expect(screen.getByText("テストアドオン2")).toBeInTheDocument();
+  });
+
+  it("メモが表示される", () => {
+    render(
+      <MyListItemsTable listId={1} items={mockItems} onUpdate={vi.fn()} />
+    );
+
+    expect(screen.getByText("便利なアドオン")).toBeInTheDocument();
+  });
+
+  it("非公開記事は作成者が非表示になる", () => {
+    render(
+      <MyListItemsTable listId={1} items={mockItems} onUpdate={vi.fn()} />
+    );
+
+    // 非公開記事は「-」表示
+    const minusSigns = screen.getAllByText("-");
+    expect(minusSigns.length).toBeGreaterThan(0);
+  });
+
+  it("削除ボタンが表示される", () => {
+    render(
+      <MyListItemsTable listId={1} items={mockItems} onUpdate={vi.fn()} />
+    );
+
+    const deleteButtons = screen.getAllByLabelText("削除");
+    expect(deleteButtons.length).toBe(2);
+  });
+
+  it("空のリストでメッセージが表示される", () => {
+    render(<MyListItemsTable listId={1} items={[]} onUpdate={vi.fn()} />);
+
+    expect(
+      screen.getByText(
+        "アイテムがありません。記事をマイリストに追加してください。"
+      )
+    ).toBeInTheDocument();
+  });
+
+  it("メモ編集モードに切り替わる", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <MyListItemsTable listId={1} items={mockItems} onUpdate={vi.fn()} />
+    );
+
+    const noteTexts = screen.getAllByText("便利なアドオン");
+    await user.click(noteTexts[0]);
+
+    // 編集モードでinputが表示される
+    const input = screen.getByDisplayValue("便利なアドオン");
+    expect(input).toBeInTheDocument();
+  });
+});

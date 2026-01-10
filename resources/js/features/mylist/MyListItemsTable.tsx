@@ -24,25 +24,6 @@ export const MyListItemsTable = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  type PublicArticleType = {
-    id: number;
-    title: string;
-    url: string;
-    thumbnail: string | null;
-    user: {
-      name: string;
-      avatar: string | null;
-    };
-    published_at: string;
-  };
-
-  // 型ガード関数
-  const isPublicArticle = (
-    article: MyListItemShow["article"]
-  ): article is PublicArticleType => {
-    return "url" in article && "thumbnail" in article && "user" in article;
-  };
-
   if (items.length === 0) {
     return (
       <div className="text-center py-12 v2-text-sub">
@@ -173,15 +154,8 @@ export const MyListItemsTable = ({
           </thead>
           <tbody>
             {items.map((item, index) => {
-              const isPublic = isPublicArticle(item.article);
-              const publicArticleData: PublicArticleType | null = isPublic
-                ? (item.article as PublicArticleType)
-                : null;
-              const privateArticleData = !isPublic
-                ? {
-                    title: item.article.title,
-                  }
-                : null;
+              const isPublic =
+                "url" in item.article && "published_at" in item.article;
 
               return (
                 <tr key={item.id} className={!isPublic ? "bg-gray-100" : ""}>
@@ -210,9 +184,13 @@ export const MyListItemsTable = ({
                   <td>
                     {isPublic ? (
                       <>
-                        {publicArticleData?.thumbnail ? (
+                        {item.article.thumbnail ? (
                           <img
-                            src={publicArticleData.thumbnail}
+                            src={
+                              typeof item.article.thumbnail === "string"
+                                ? item.article.thumbnail
+                                : item.article.thumbnail.url
+                            }
                             alt=""
                             className="w-16 h-16 object-cover rounded"
                           />
@@ -232,17 +210,17 @@ export const MyListItemsTable = ({
                     <div>
                       {isPublic ? (
                         <a
-                          href={publicArticleData?.url || ""}
+                          href={item.article.url || ""}
                           className="v2-link"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          {publicArticleData?.title}
+                          {item.article.title}
                         </a>
                       ) : (
                         <>
                           <div className="text-gray-700">
-                            {privateArticleData?.title}
+                            {item.article.title}
                           </div>
                           <TextBadge variant="warn">非公開</TextBadge>
                         </>
@@ -252,9 +230,9 @@ export const MyListItemsTable = ({
                   <td>
                     {isPublic ? (
                       <div className="flex items-center gap-2">
-                        {publicArticleData?.user.avatar ? (
+                        {item.article.user.profile?.avatar ? (
                           <img
-                            src={publicArticleData.user.avatar}
+                            src={item.article.user.profile.avatar}
                             alt=""
                             className="w-8 h-8 rounded-full"
                           />
@@ -262,7 +240,7 @@ export const MyListItemsTable = ({
                           <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
                         )}
                         <span className="text-sm">
-                          {publicArticleData?.user.name}
+                          {item.article.user.name}
                         </span>
                       </div>
                     ) : (

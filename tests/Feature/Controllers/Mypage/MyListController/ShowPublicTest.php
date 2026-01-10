@@ -21,7 +21,7 @@ class ShowPublicTest extends TestCase
         MyListItem::factory()->count(3)->create(['list_id' => $list->id]);
 
         // Act
-        $res = $this->getJson('/api/v1/mylist/public/' . $list->slug);
+        $res = $this->getJson('/api/v1/mylist/public/'.$list->slug);
 
         // Assert
         $res->assertOk()
@@ -47,7 +47,7 @@ class ShowPublicTest extends TestCase
         $list = MyList::factory()->public()->create(['slug' => 'page-slug']);
         MyListItem::factory()->count(5)->create(['list_id' => $list->id]);
 
-        $res = $this->getJson('/api/v1/mylist/public/' . $list->slug . '?per_page=2&page=1');
+        $res = $this->getJson('/api/v1/mylist/public/'.$list->slug.'?per_page=2&page=1');
 
         $res->assertOk()
             ->assertJsonPath('data.pagination.per_page', 2);
@@ -64,6 +64,6 @@ class ShowPublicTest extends TestCase
         /** @var MyList $list */
         $list = MyList::factory()->create(['slug' => 'private-slug', 'is_public' => false]);
 
-        $this->getJson('/api/v1/mylist/public/' . $list->slug)->assertNotFound();
+        $this->getJson('/api/v1/mylist/public/'.$list->slug)->assertNotFound();
     }
 }

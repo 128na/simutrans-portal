@@ -29,7 +29,7 @@ class MyListFactory extends Factory
 
     public function public(): self
     {
-        return $this->state(fn() => [
+        return $this->state(fn () => [
             'is_public' => true,
             'slug' => fake()->slug(),
         ]);

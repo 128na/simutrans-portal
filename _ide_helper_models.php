@@ -259,6 +259,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MyListItem> $items
  * @property-read int|null $items_count
  * @property-read \App\Models\User $user
+ * @method static \Database\Factories\MyListFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MyList newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MyList newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MyList query()
@@ -281,6 +282,7 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \App\Models\Article $article
  * @property-read \App\Models\MyList $list
+ * @method static \Database\Factories\MyListItemFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MyListItem newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MyListItem newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MyListItem orderByPosition()

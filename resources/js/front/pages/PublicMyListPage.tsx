@@ -93,7 +93,11 @@ const PublicMyListPage = ({
                   "thumbnail" in item.article &&
                   item.article.thumbnail ? (
                     <img
-                      src={item.article.thumbnail}
+                      src={
+                        typeof item.article.thumbnail === "string"
+                          ? item.article.thumbnail
+                          : item.article.thumbnail.url
+                      }
                       alt={item.article.title}
                       className="w-full h-full object-cover rounded"
                     />
@@ -107,7 +111,9 @@ const PublicMyListPage = ({
                 {/* 記事情報 */}
                 <div className="flex-1 min-w-0">
                   <h3 className="v2-text-h4 mb-2 truncate">
-                    {item.article && "url" in item.article ? (
+                    {item.article &&
+                    "url" in item.article &&
+                    item.article.url ? (
                       <a
                         href={item.article.url}
                         target="_blank"

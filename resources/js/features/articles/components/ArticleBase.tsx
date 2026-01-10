@@ -4,6 +4,7 @@ import { Thumbnail } from "@/components/ui/Thumbnail";
 import { TitleH4 } from "./TitleH4";
 import { ArticleRelation } from "./ArticleRelation";
 import { ProfileShow } from "../../user/ProfileShow";
+import { AddToMyListButton } from "../../mylist/AddToMyList";
 import { match } from "ts-pattern";
 import { JSX } from "react";
 import { Page } from "./postType/Page";
@@ -14,13 +15,23 @@ import { AddonIntroduction } from "./postType/AddonIntroduction";
 type Props = {
   article: Article.Show;
   preview?: boolean;
+  isAuthenticated?: boolean;
 };
-export const ArticleBase = ({ article, preview = false }: Props) => {
+export const ArticleBase = ({
+  article,
+  preview = false,
+  isAuthenticated = false,
+}: Props) => {
   return (
     <div className="flex flex-col gap-6">
-      <div className="text-sm flex flex-wrap gap-2">
-        <Categories categories={article.categories} preview={preview} />
-        <Tags tags={article.tags} preview={preview} />
+      <div className="flex items-center justify-between gap-4 mb-2">
+        <div className="text-sm flex flex-wrap gap-2">
+          <Categories categories={article.categories} preview={preview} />
+          <Tags tags={article.tags} preview={preview} />
+        </div>
+        {isAuthenticated && !preview && article.id && (
+          <AddToMyListButton articleId={article.id} />
+        )}
       </div>
 
       <Thumbnail

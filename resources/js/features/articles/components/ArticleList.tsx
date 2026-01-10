@@ -1,12 +1,14 @@
 import { Categories } from "./Categories";
 import { ProfileShow } from "../../user/ProfileShow";
 import { Tags } from "./Tags";
+import { AddToMyListButton } from "../../mylist/AddToMyList";
 
 type Props = {
   articles: Article.List[];
+  isAuthenticated?: boolean;
 };
 
-export const ArticleList = ({ articles }: Props) => {
+export const ArticleList = ({ articles, isAuthenticated = false }: Props) => {
   if (articles.length === 0) {
     return <div className="v2-text-sub">記事が見つかりませんでした。</div>;
   }
@@ -41,8 +43,11 @@ export const ArticleList = ({ articles }: Props) => {
                 <Categories categories={article.categories} />
                 <Tags tags={article.tags} />
               </div>
-              <div className="flex items-center gap-x-3">
+              <div className="flex items-center justify-between gap-3">
                 <ProfileShow user={article.user} />
+                {isAuthenticated && article.id && (
+                  <AddToMyListButton articleId={article.id} />
+                )}
               </div>
             </div>
           </div>

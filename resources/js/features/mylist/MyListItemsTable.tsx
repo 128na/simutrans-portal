@@ -24,6 +24,25 @@ export const MyListItemsTable = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  type PublicArticleType = {
+    id: number;
+    title: string;
+    url: string;
+    thumbnail: string | null;
+    user: {
+      name: string;
+      avatar: string | null;
+    };
+    published_at: string;
+  };
+
+  // 型ガード関数
+  const isPublicArticle = (
+    article: MyListItemShow["article"]
+  ): article is PublicArticleType => {
+    return "url" in article && "thumbnail" in article && "user" in article;
+  };
+
   if (items.length === 0) {
     return (
       <div className="text-center py-12 v2-text-sub">
@@ -154,10 +173,18 @@ export const MyListItemsTable = ({
           </thead>
           <tbody>
             {items.map((item, index) => {
-              const isNonPublic = item.is_article_public === false;
+              const isPublic = isPublicArticle(item.article);
+              const publicArticleData: PublicArticleType | null = isPublic
+                ? (item.article as PublicArticleType)
+                : null;
+              const privateArticleData = !isPublic
+                ? {
+                    title: item.article.title,
+                  }
+                : null;
 
               return (
-                <tr key={item.id} className={isNonPublic ? "bg-gray-100" : ""}>
+                <tr key={item.id} className={!isPublic ? "bg-gray-100" : ""}>
                   <td>
                     <div className="flex flex-col gap-1">
                       <Button
@@ -181,12 +208,20 @@ export const MyListItemsTable = ({
                     </div>
                   </td>
                   <td>
-                    {item.article.thumbnail ? (
-                      <img
-                        src={item.article.thumbnail}
-                        alt=""
-                        className="w-16 h-16 object-cover rounded"
-                      />
+                    {isPublic ? (
+                      <>
+                        {publicArticleData?.thumbnail ? (
+                          <img
+                            src={publicArticleData.thumbnail}
+                            alt=""
+                            className="w-16 h-16 object-cover rounded"
+                          />
+                        ) : (
+                          <div className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-xs v2-text-sub">
+                            No Image
+                          </div>
+                        )}
+                      </>
                     ) : (
                       <div className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-xs v2-text-sub">
                         No Image
@@ -195,73 +230,78 @@ export const MyListItemsTable = ({
                   </td>
                   <td>
                     <div>
-                      {isNonPublic ? (
-                        <>
-                          <div className="text-gray-700">
-                            {item.article.title}
-                          </div>
-                          <TextBadge variant="warn">非公開</TextBadge>
-                        </>
-                      ) : (
+                      {isPublic ? (
                         <a
-                          href={`/articles/${item.article.slug}`}
+                          href={publicArticleData?.url || ""}
                           className="v2-link"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          {item.article.title}
+                          {publicArticleData?.title}
                         </a>
+                      ) : (
+                        <>
+                          <div className="text-gray-700">
+                            {privateArticleData?.title}
+                          </div>
+                          <TextBadge variant="warn">非公開</TextBadge>
+                        </>
                       )}
                     </div>
                   </td>
                   <td>
-                    <div className="flex items-center gap-2">
-                      {item.article.user.profile?.avatar ? (
-                        <img
-                          src={item.article.user.profile.avatar}
-                          alt=""
-                          className="w-8 h-8 rounded-full"
-                        />
-                      ) : (
-                        <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
-                      )}
-                      <span className="text-sm">
-                        {item.article.user.profile?.nickname ||
-                          item.article.user.name}
-                      </span>
-                    </div>
+                    {isPublic ? (
+                      <div className="flex items-center gap-2">
+                        {publicArticleData?.user.avatar ? (
+                          <img
+                            src={publicArticleData.user.avatar}
+                            alt=""
+                            className="w-8 h-8 rounded-full"
+                          />
+                        ) : (
+                          <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+                        )}
+                        <span className="text-sm">
+                          {publicArticleData?.user.name}
+                        </span>
+                      </div>
+                    ) : (
+                      <span className="text-sm v2-text-sub">-</span>
+                    )}
                   </td>
                   <td>
                     {editingItemId === item.id ? (
-                      <div className="flex gap-2">
+                      <>
                         <Input
                           value={editingNote}
                           onChange={(e) => setEditingNote(e.target.value)}
-                          maxLength={255}
                           disabled={isLoading}
-                          className="flex-1"
+                          className="w-full mb-2"
                         />
-                        <Button
-                          onClick={() => handleSaveNote(item.id)}
-                          disabled={isLoading}
-                          variant="primary"
-                          size="sm"
-                        >
-                          保存
-                        </Button>
-                        <Button
-                          onClick={handleCancelEdit}
-                          disabled={isLoading}
-                          variant="sub"
-                          size="sm"
-                        >
-                          キャンセル
-                        </Button>
-                      </div>
+                        <div className="space-x-2">
+                          <Button
+                            onClick={() => handleSaveNote(item.id)}
+                            disabled={isLoading}
+                            variant="primary"
+                            size="sm"
+                          >
+                            保存
+                          </Button>
+                          <Button
+                            onClick={handleCancelEdit}
+                            disabled={isLoading}
+                            variant="sub"
+                            size="sm"
+                          >
+                            キャンセル
+                          </Button>
+                        </div>
+                      </>
                     ) : (
                       <div
-                        className="text-sm cursor-pointer v2-hover-bg-sub p-1 rounded"
+                        className="text-sm cursor-pointer v2-hover-bg-sub p-1 rounded truncate"
                         onClick={() => handleEditNote(item)}
+                        title={item.note || "メモを追加"}
                       >
                         {item.note || (
                           <span className="v2-text-sub">メモを追加</span>

@@ -9,8 +9,10 @@ if (app) {
     const article = JSON.parse(
       document.getElementById("data-article")?.textContent || "{}"
     );
+    const isAuthenticated =
+      document.getElementById("data-is-authenticated")?.textContent === "true";
 
-    return <ArticleBase article={article} />;
+    return <ArticleBase article={article} isAuthenticated={isAuthenticated} />;
   };
 
   createRoot(app).render(

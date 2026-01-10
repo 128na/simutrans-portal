@@ -39,25 +39,24 @@ export interface MyListItemBase {
 /**
  * マイリストアイテム一覧表示用
  */
-export interface MyListItemShow extends MyListItemBase {
-  article: {
-    id: number;
-    user_id: number;
-    slug: string;
-    title: string;
-    status: string;
-    thumbnail: string | null;
-    user: {
-      id: number;
-      name: string;
-      profile: {
-        nickname: string;
-        avatar: string | null;
-      } | null;
-    };
-  };
-  is_article_public?: boolean;
-}
+export type MyListItemShow = MyListItemBase & {
+  article:
+    | {
+        id: number;
+        title: string;
+        url: string;
+        thumbnail: string | null;
+        user: {
+          name: string;
+          avatar: string | null;
+        };
+        published_at: string;
+      }
+    | {
+        id: number;
+        title: string;
+      };
+};
 
 /**
  * マイリスト作成リクエスト

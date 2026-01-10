@@ -10,6 +10,8 @@ use App\Http\Requests\MyList\StoreMyListItemRequest;
 use App\Http\Requests\MyList\StoreMyListRequest;
 use App\Http\Requests\MyList\UpdateMyListItemRequest;
 use App\Http\Requests\MyList\UpdateMyListRequest;
+use App\Http\Resources\Mypage\MyListItem as MyListItemResource;
+use App\Models\Article;
 use App\Models\MyList;
 use App\Models\MyListItem;
 use App\Services\MyListService;
@@ -118,7 +120,7 @@ class MyListController extends Controller
         return response()->json([
             'ok' => true,
             'data' => [
-                'items' => $items->items(),
+                'items' => MyListItemResource::collection($items->items()),
                 'pagination' => [
                     'current_page' => $items->currentPage(),
                     'per_page' => $items->perPage(),
@@ -140,14 +142,14 @@ class MyListController extends Controller
         $articleId = $request->validated('article_id');
         /** @var string|null $note */
         $note = $request->validated('note');
-        $article = $mylist->user->articles()->findOrFail($articleId);
+        $article = Article::findOrFail($articleId);
 
         try {
             $item = $this->service->addItemToList($mylist, $article, $note);
 
             return response()->json([
                 'ok' => true,
-                'data' => ['item' => $item],
+                'data' => ['item' => new MyListItemResource($item)],
             ], 201);
         } catch (\InvalidArgumentException $e) {
             return response()->json([
@@ -182,7 +184,7 @@ class MyListController extends Controller
 
         return response()->json([
             'ok' => true,
-            'data' => ['item' => $updatedItem],
+            'data' => ['item' => new MyListItemResource($updatedItem)],
         ]);
     }
 
@@ -227,7 +229,7 @@ class MyListController extends Controller
         $list = $this->service->getPublicListBySlug($slug);
         abort_if(! $list, 404);
 
-        $page = request()->query('page', 1);
+        $page = (int) request()->query('page', 1);
         $perPage = (int) request()->query('per_page', 20);
         $sort = (string) request()->query('sort', 'position');
 
@@ -237,7 +239,7 @@ class MyListController extends Controller
             'ok' => true,
             'data' => [
                 'list' => $list->only(['id', 'title', 'note', 'slug', 'created_at', 'updated_at']),
-                'items' => $items->items(),
+                'items' => MyListItemResource::collection($items->items()),
                 'pagination' => [
                     'current_page' => $items->currentPage(),
                     'per_page' => $items->perPage(),

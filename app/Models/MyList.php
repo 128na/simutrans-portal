@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read User $user
  * @property-read Collection<int, MyListItem> $items
+ * @property-read int|null $items_count
  *
  * @method static Builder<MyList> whereBelongsToUser(User|int $user)
  * @method static Builder<MyList> wherePublic()

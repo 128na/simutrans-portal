@@ -77,12 +77,16 @@
 
 - 認証: Sanctum（既存運用に合わせる）。CSRF保護。
 - レート制限（例）: リスト作成/更新/削除・アイテム追加/削除・並び替え各 30 req/min。
+- **リソースクラス統一**: すべてのAPIレスポンスは `MyListItemResource` を使用して統一フォーマットで返却 ✅
+  - 公開記事: `{ id, title, url, thumbnail, user: { name, avatar }, published_at }` を含む完全な情報
+  - 非公開記事: `{ id, title }` のみの最小限の情報（セキュリティ考慮）
+  - フロントエンドはUnion型で両方の構造に対応
 - エンドポイント（認証必須、`/api/v1/mylist`）:
   - GET `/` — 自分のリスト一覧取得（`page`, `per_page`, `sort=updated_at:desc|asc`）。✅
   - POST `/` — リスト作成（Body: `title` 必須, `note` 任意, `is_public` 任意）。公開化する場合は `slug` を生成。✅
   - PATCH `/{mylist}` — リスト更新（`title`, `note`, `is_public`）。公開化/非公開化時には `slug` の生成/無効化を適切に処理。✅
   - DELETE `/{mylist}` — リスト削除（関連 `mylist_items` もcascade）。✅
-  - GET `/{mylist}/items` — 指定リストの記事一覧（`page`, `per_page`, `sort=position|created_at:desc|asc`）。所有者ビューでは非公開記事も含めて返却（レスポンスに `is_article_public=false` を付与）。✅
+  - GET `/{mylist}/items` — 指定リストの記事一覧（`page`, `per_page`, `sort=position|created_at:desc|asc`）。所有者ビューでは非公開記事も含めて返却（`article` が最小限の情報のみ）。✅
   - POST `/{mylist}/items` — アイテム追加（Body: `article_id`, `note` 任意）。重複は409。✅
   - PATCH `/{mylist}/items/{item}` — アイテム更新（`note`, `position`）。✅
   - DELETE `/{mylist}/items/{item}` — アイテム削除（冪等）。✅
@@ -94,6 +98,7 @@
 - レスポンス例:
   - 作成成功: `{ ok: true, list: { id, title, is_public, ... } }`
   - 重複（アイテム追加）: `{ ok: false, code: "ALREADY_IN_LIST" }`
+  - アイテム一覧: `{ items: [{ id, memo, position, created_at, article: { ... } }], ... }`
 
 ## バリデーション / ビジネスルール
 
@@ -169,15 +174,32 @@
 
 1. ✅ **マイグレーション実行**: `php artisan migrate` で `mylists` と `mylist_items` テーブルを作成
 2. ✅ **バックエンド実装**: API エンドポイント完了（11エンドポイント）
-3. ✅ **フロントエンド実装**: React islands とBlade テンプレート作成
-4. ✅ **マイリスト一覧CRUD**: 動作確認完了（作成・読取・更新・削除）
-5. **記事追加機能**: AddToMyListButton の動作確認
-6. **アイテム管理機能**: 詳細ページのメモ編集・並び替え・削除の動作確認
-7. **公開リスト機能**: 公開URLでの閲覧動作確認
-8. **テスト実装**: Feature/Unit/Vitest テストを追加
-9. **ステージング検証**: UX・負荷確認（公開リストの閲覧も含む）
-10. **本番デプロイ**: マイグレーション → キャッシュクリア → 監視設定
-11. **フィードバック収集後**: 公開ページのソーシャル共有導入等を検討
+3. ✅ **リソースクラス統一**: `MyListItemResource` で公開/非公開記事のレスポンス形式を統一
+4. ✅ **フロントエンド実装**: React islands とBlade テンプレート作成
+5. ✅ **型安全対応**: Union型で公開/非公開記事の構造の違いに対応
+6. ✅ **マイリスト一覧CRUD**: 動作確認完了（作成・読取・更新・削除）
+7. ✅ **アイテム管理UI**: 詳細ページのメモ編集・並び替え・削除の表示実装完了
+8. **記事追加機能**: AddToMyListButton の動作確認（残タスク）
+9. **公開リスト機能**: 公開URLでの閲覧動作確認（残タスク）
+10. **テスト実装**: Feature/Unit/Vitest テストを追加（残タスク）
+11. **ステージング検証**: UX・負荷確認（公開リストの閲覧も含む）
+12. **本番デプロイ**: マイグレーション → キャッシュクリア → 監視設定
+13. **フィードバック収集後**: 公開ページのソーシャル共有導入等を検討
+
+#### 最近の実装（2026-01-10）
+
+- **リソースクラスによるAPI統一** ✅
+  - `MyListItemResource` を全エンドポイントで使用
+  - 公開記事と非公開記事で異なるデータ構造を返却
+  - セキュリティ: 非公開記事のメタデータ保護を徹底
+- **フロントエンド型安全対応** ✅
+  - Union型で公開/非公開記事の両方の構造に対応
+  - 型ガード関数で記事状態を判定
+  - 型アサーションを使用してESLintルール準拠
+- **UIの改善** ✅
+  - メモ編集: 1行入力でセル内に収まる設計
+  - 長いメモ: `truncate`で省略、ホバー時に全文表示
+  - 非公開記事: 視覚的にわかりやすい表示（バッジ、リンク無効化）
 
 ## リスク / 代替案
 
@@ -206,18 +228,39 @@
   - `app/Http/Controllers/Mypage/MyListController.php`（11エンドポイント）
   - `routes/internal_api.php`（認証必須エンドポイント）
   - `routes/api.php`（公開エンドポイント）
+- **Resource Layer: リソースクラスによる統一レスポンス形式** ✅
+  - `app/Http/Resources/Mypage/MyListItem.php`
+  - 公開記事と非公開記事で異なるデータ構造を返却
+  - 公開記事: 完全な記事情報（URL、サムネイル、投稿者情報等）
+  - 非公開記事: 最小限の情報（ID、"非公開記事"タイトル）のみ
+  - セキュリティ考慮: 非公開記事のメタデータ保護を徹底
 - Validation: Form Request 5クラス作成（型安全なバリデーション）✅
   - `app/Http/Requests/MyList/StoreMyListRequest.php`
   - `app/Http/Requests/MyList/UpdateMyListRequest.php`
   - `app/Http/Requests/MyList/StoreMyListItemRequest.php`
   - `app/Http/Requests/MyList/UpdateMyListItemRequest.php`
   - `app/Http/Requests/MyList/ReorderMyListItemsRequest.php`
-- Policy: 所有者権限チェック ✅
-  - `app/Policies/MyListPolicy.php`
-- 公開閲覧エンドポイント: 読み取り専用レスポンス（非公開記事除外）✅
-
-### Frontend（完了）✅
-
+- **TypeScript型定義** ✅
+  - `resources/js/types/models/MyList.ts`
+  - **Union型対応**: `MyListItemShow["article"]` は公開/非公開で異なる型構造
+    ```typescript
+    type MyListItemShow = {
+      // ...
+      article:
+        | { id: number; title: string; url: string; thumbnail: string | null; user: {...}; published_at: string; }
+        | { id: number; title: string; } // 非公開記事
+    }
+    ```
+- コンポーネント ✅
+  - `resources/js/features/mylist/AddToMyList.tsx`
+  - `resources/js/features/mylist/MyListTable.tsx`
+  - **`resources/js/features/mylist/MyListItemsTable.tsx` - 型安全実装** ✅
+    - 型ガード関数 `isPublicArticle()` で記事の公開状態を判定
+    - 公開記事: サムネイル、リンク、投稿者情報を表示
+    - 非公開記事: 「非公開」バッジ表示、リンク無効化、サムネイル非表示
+    - **メモ編集UI改善**: 1行入力、セル内に収まる設計（`min-w-0`、`truncate`クラス使用）
+    - 並び替え（上下ボタン）
+    - アイテム削除
 - TypeScript型定義 ✅
   - `resources/js/types/models/MyList.ts`
 - コンポーネント ✅
@@ -231,12 +274,18 @@
   - `resources/views/mypage/mylists.blade.php`
   - `resources/views/mypage/mylist-detail.blade.php`
 - Viteエントリーポイント更新 ✅
-  - `resources/js/mypage.ts`
-
-#### 実装した機能
-
-- **AddToMyListButton**: 記事をマイリストに追加するボタン・モーダル
-  - リスト選択（チェックボックス）
+  - `resources/js/mypage.ts` ✅
+  - アイテム一覧テーブル（サムネイル/タイトル/投稿者/メモ/追加日/操作）
+  - **インラインメモ編集**: クリックで編集モード、保存/キャンセルボタン
+    - 1行入力でテーブルセル内に収まる設計
+    - 長いメモは `truncate` で省略、ホバー時に全文表示（title属性）
+  - **並び替え**: 上下ボタンで位置変更
+  - **アイテム削除**: 削除ボタンで即時削除
+  - **非公開記事の表示**:
+    - 所有者ビュー: 非公開記事も表示（「非公開」バッジ、リンク無効化）
+    - サムネイル: 非公開記事は「No Image」表示
+    - 投稿者: 非公開記事は「-」表示
+    - 削除/メモ編集は可能
   - 新規リスト作成（モーダル内）
   - 複数リストへの一括追加
   - 重複チェック

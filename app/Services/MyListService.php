@@ -8,25 +8,27 @@ use App\Models\Article;
 use App\Models\MyList;
 use App\Models\MyListItem;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\Paginator;
+use App\Repositories\MyListItemRepository;
+use App\Repositories\MyListRepository;
 use Illuminate\Support\Str;
 
 class MyListService
 {
+    public function __construct(
+        private readonly MyListRepository $listRepository,
+        private readonly MyListItemRepository $itemRepository,
+    ) {}
+
     /**
      * ユーザーのマイリスト一覧取得（ページネーション付き）
      *
-     * @return Paginator<int, MyList>
+     * @return \Illuminate\Contracts\Pagination\Paginator<int, MyList>
      */
-    public function getListsForUser(User $user, int $page = 1, int $perPage = 20, string $sort = 'updated_at:desc'): Paginator
+    public function getListsForUser(User $user, int $page = 1, int $perPage = 20, string $sort = 'updated_at:desc')
     {
-        $query = MyList::whereBelongsToUser($user);
-
         [$sortField, $sortDirection] = $this->parseSortParam($sort);
-        $query->orderBy($sortField, $sortDirection);
 
-        return $query->simplePaginate($perPage, ['*'], 'page', $page);
+        return $this->listRepository->paginateForUser($user, $page, $perPage, $sortField, $sortDirection);
     }
 
     /**
@@ -34,20 +36,22 @@ class MyListService
      */
     public function createList(User $user, string $title, ?string $note = null, bool $isPublic = false): MyList
     {
-        $list = MyList::create([
+        $data = [
             'user_id' => $user->id,
             'title' => $title,
             'note' => $note,
             'is_public' => $isPublic,
-        ]);
+        ];
 
         // 公開化する場合は slug を生成
         if ($isPublic) {
-            $list->slug = $this->generateSlug($list->id);
-            $list->save();
+            $list = $this->listRepository->create($data);
+            $this->listRepository->update($list, ['slug' => $this->generateSlug($list->id)]);
+
+            return $list;
         }
 
-        return $list;
+        return $this->listRepository->create($data);
     }
 
     /**
@@ -55,21 +59,22 @@ class MyListService
      */
     public function updateList(MyList $list, string $title, ?string $note = null, bool $isPublic = false): MyList
     {
-        $list->fill([
+        $data = [
             'title' => $title,
             'note' => $note,
             'is_public' => $isPublic,
-        ]);
+        ];
 
         // 公開化する場合は slug を生成（既になければ）
         if ($isPublic && ! $list->slug) {
-            $list->slug = $this->generateSlug($list->id);
+            $data['slug'] = $this->generateSlug($list->id);
         } elseif (! $isPublic) {
             // 非公開化する場合は slug をクリア
-            $list->slug = null;
+            $data['slug'] = null;
         }
 
-        $list->save();
+        $this->listRepository->update($list, $data);
+        $list->refresh();
 
         return $list;
     }
@@ -77,44 +82,36 @@ class MyListService
     /**
      * リストを削除
      */
-    public function deleteList(MyList $list): bool
+    public function deleteList(MyList $list): void
     {
-        return (bool) $list->delete();
+        $this->listRepository->delete($list);
     }
 
     /**
      * リストのアイテム一覧取得（ページネーション付き）
-     * 非公開記事は除外したビューを返す（所有者向け）
+     * 所有者向け: 非公開記事も含めて返す
      *
-     * @return Paginator<int, MyListItem>
+     * @return \Illuminate\Contracts\Pagination\Paginator<int, MyListItem>
      */
-    public function getItemsForList(MyList $list, int $page = 1, int $perPage = 20, string $sort = 'position'): Paginator
+    public function getItemsForList(MyList $list, int $page = 1, int $perPage = 20, string $sort = 'position')
     {
-        $query = $list->items()
-            ->with(['article', 'article.user'])
-            ->whereHas('article', function ($q) {
-                $this->applyPublicArticleFilter($q);
-            });
-
         [$sortField, $sortDirection] = $this->parseSortParam($sort);
 
-        if ($sortField === 'position') {
-            $query->orderBy('position', $sortDirection);
-        } else {
-            $query->orderBy($sortField, $sortDirection);
-        }
+        $paginator = $this->itemRepository->paginateForList($list, $page, $perPage, $sortField, $sortDirection);
 
-        return $query->simplePaginate($perPage, ['*'], 'page', $page);
+        return $paginator;
     }
 
     /**
      * リストのアイテム一覧取得（公開用 - 非公開記事を除外）
      *
-     * @return Paginator<int, MyListItem>
+     * @return \Illuminate\Contracts\Pagination\Paginator<int, MyListItem>
      */
-    public function getPublicItemsForList(MyList $list, int $page = 1, int $perPage = 20, string $sort = 'position'): Paginator
+    public function getPublicItemsForList(MyList $list, int $page = 1, int $perPage = 20, string $sort = 'position')
     {
-        return $this->getItemsForList($list, $page, $perPage, $sort);
+        [$sortField, $sortDirection] = $this->parseSortParam($sort);
+
+        return $this->itemRepository->paginatePublicForList($list, $page, $perPage, $sortField, $sortDirection);
     }
 
     /**
@@ -131,7 +128,7 @@ class MyListService
         $maxPosition = (int) ($list->items()->max('position') ?? 0);
         $position = $maxPosition + 1;
 
-        return MyListItem::create([
+        return $this->itemRepository->create([
             'list_id' => $list->id,
             'article_id' => $article->id,
             'note' => $note,
@@ -144,13 +141,18 @@ class MyListService
      */
     public function updateItem(MyListItem $item, ?string $note = null, ?int $position = null): MyListItem
     {
+        $data = [];
         if ($note !== null) {
-            $item->note = $note;
+            $data['note'] = $note;
         }
         if ($position !== null) {
-            $item->position = $position;
+            $data['position'] = $position;
         }
-        $item->save();
+
+        if (! empty($data)) {
+            $this->itemRepository->update($item, $data);
+            $item->refresh();
+        }
 
         return $item;
     }
@@ -158,9 +160,9 @@ class MyListService
     /**
      * アイテムを削除（冪等）
      */
-    public function removeItem(MyListItem $item): bool
+    public function removeItem(MyListItem $item): void
     {
-        return (bool) $item->delete();
+        $this->itemRepository->delete($item);
     }
 
     /**
@@ -170,12 +172,7 @@ class MyListService
      */
     public function reorderItems(MyList $list, array $itemPositions): void
     {
-        // $itemPositions は [['id' => 1, 'position' => 1], ...] 形式を想定
-        foreach ($itemPositions as $item) {
-            MyListItem::where('id', $item['id'])
-                ->where('list_id', $list->id)
-                ->update(['position' => $item['position']]);
-        }
+        $this->itemRepository->updatePositions($list, $itemPositions);
     }
 
     /**
@@ -183,7 +180,7 @@ class MyListService
      */
     public function getPublicListBySlug(string $slug): ?MyList
     {
-        return MyList::wherePublic()->where('slug', $slug)->first();
+        return $this->listRepository->findPublicBySlug($slug);
     }
 
     /**
@@ -192,7 +189,7 @@ class MyListService
     public function isArticlePublic(Article $article): bool
     {
         // Check status
-        if (! isset($article->status) || $article->status->value !== 'published') {
+        if (! isset($article->status) || $article->status !== \App\Enums\ArticleStatus::Publish) {
             return false;
         }
 
@@ -232,18 +229,5 @@ class MyListService
     private function generateSlug(int $listId): string
     {
         return Str::slug(Str::random(10)).'-'.$listId;
-    }
-
-    /**
-     * 公開記事フィルタを適用
-     *
-     * @param  Builder<Article>  $query
-     * @return Builder<Article>
-     */
-    private function applyPublicArticleFilter(Builder $query): Builder
-    {
-        return $query->whereNotNull('status')
-            ->where('status', 'published')
-            ->whereNull('deleted_at');
     }
 }

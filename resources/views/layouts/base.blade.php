@@ -18,6 +18,7 @@
     @yield('header')
     @include('components.ui.session-message')
     @yield('content')
+    <script id="data-is-authenticated" type="application/json">{{ Auth::check() ? 'true' : 'false' }}</script>
     @stack('scripts')
 </body>
 

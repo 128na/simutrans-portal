@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import TextBadge from "@/components/ui/TextBadge";
 import { extractErrorMessage } from "@/lib/errorHandler";
 import type { MyListItemShow } from "@/types/models";
 
@@ -219,7 +218,6 @@ export const MyListItemsTable = ({
                           <div className="text-gray-700">
                             {item.article.title}
                           </div>
-                          <TextBadge variant="warn">非公開</TextBadge>
                         </>
                       )}
                     </div>

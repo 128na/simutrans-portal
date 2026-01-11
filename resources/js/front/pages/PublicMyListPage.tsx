@@ -15,8 +15,8 @@ const PublicMyListPage = ({ mylistSlug }: { mylistSlug: string }) => {
     const fetchItems = async () => {
       try {
         const { data } = await axios.get(`/api/v1/mylist/public/${mylistSlug}`);
-        if (data.ok && data.data?.items) {
-          setItems(data.data.items || []);
+        if (Array.isArray(data.data)) {
+          setItems(data.data);
         } else {
           throw new Error("アイテムの取得に失敗しました");
         }

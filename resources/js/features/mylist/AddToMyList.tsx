@@ -194,7 +194,7 @@ const AddToMyListModal = ({
           </p>
         </div>
       ) : (
-        <div className="space-y-2 mb-6">
+        <div className="space-y-2 mb-6 max-h-60 overflow-y-auto">
           {lists.map((list) => (
             <label
               key={list.id}
@@ -206,10 +206,12 @@ const AddToMyListModal = ({
                 onChange={() => handleToggleList(list.id)}
                 className="v2-checkbox"
               />
-              <div className="flex-1">
-                <div className="font-medium">{list.title}</div>
+              <div className="flex-1 min-w-0">
+                <div className="font-medium truncate">{list.title}</div>
                 {list.note && (
-                  <div className="text-sm v2-text-sub mt-1">{list.note}</div>
+                  <div className="text-sm v2-text-sub mt-1 line-clamp-2">
+                    {list.note}
+                  </div>
                 )}
               </div>
               {list.is_public && <TextBadge variant="primary">公開</TextBadge>}
@@ -220,7 +222,7 @@ const AddToMyListModal = ({
 
       <div className="v2-divider pt-4">
         <h4 className="font-medium mb-3">新しいリストを作成</h4>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <Input
             value={newListTitle}
             onChange={(e) => setNewListTitle(e.target.value)}
@@ -233,6 +235,7 @@ const AddToMyListModal = ({
             onClick={handleCreateList}
             disabled={isCreating || !newListTitle.trim()}
             variant="sub"
+            className="w-full sm:w-auto"
           >
             {isCreating ? "作成中..." : "作成"}
           </Button>

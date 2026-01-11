@@ -9,7 +9,7 @@ use App\Listeners\Article\AddViewRecord;
 use App\Models\Article;
 use App\Repositories\Article\ViewCountRepository;
 use Mockery;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class AddViewRecordTest extends TestCase
 {

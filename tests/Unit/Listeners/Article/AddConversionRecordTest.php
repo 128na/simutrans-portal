@@ -9,7 +9,7 @@ use App\Listeners\Article\AddConversionRecord;
 use App\Models\Article;
 use App\Repositories\Article\ConversionCountRepository;
 use Mockery;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class AddConversionRecordTest extends TestCase
 {

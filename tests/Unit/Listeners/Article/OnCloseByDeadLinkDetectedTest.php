@@ -10,7 +10,7 @@ use App\Models\Article;
 use App\Notifications\SendDeadLinkDetectedEmail;
 use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class OnCloseByDeadLinkDetectedTest extends TestCase
 {

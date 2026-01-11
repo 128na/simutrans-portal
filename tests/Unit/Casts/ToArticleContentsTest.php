@@ -12,7 +12,7 @@ use App\Models\Contents\AddonPostContent;
 use App\Models\Contents\MarkdownContent;
 use App\Models\Contents\PageContent;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class ToArticleContentsTest extends TestCase
 {

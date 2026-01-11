@@ -6,7 +6,7 @@ namespace Tests\Unit\Enums;
 
 use App\Enums\ArticleStatus;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class ArticleStatusTest extends TestCase
 {

@@ -277,7 +277,7 @@ class UserProfileAndArticleFlowTest extends TestCase
     protected function createUpdateRequest(array $data): UpdateRequest
     {
         $request = UpdateRequest::create('/', 'POST', $data);
-        $request->setUserResolver(fn() => auth()->user());
+        $request->setUserResolver(fn () => auth()->user());
 
         return $request;
     }

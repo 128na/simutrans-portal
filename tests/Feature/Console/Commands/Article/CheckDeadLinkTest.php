@@ -7,7 +7,7 @@ namespace Tests\Feature\Console\Commands\Article;
 use App\Actions\DeadLink\Check;
 use App\Actions\DeadLink\OnDead;
 use Mockery\MockInterface;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class CheckDeadLinkTest extends TestCase
 {

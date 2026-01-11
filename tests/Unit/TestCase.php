@@ -69,7 +69,7 @@ abstract class TestCase extends BaseTestCase
      */
     final public function createApplication()
     {
-        $app = require Application::inferBasePath() . '/bootstrap/app.php';
+        $app = require Application::inferBasePath().'/bootstrap/app.php';
 
         $this->traitsUsedByTest = array_flip(class_uses_recursive(static::class));
 

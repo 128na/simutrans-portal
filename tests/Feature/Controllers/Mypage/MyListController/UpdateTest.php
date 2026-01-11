@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Mypage\MyListController;
 use App\Models\MyList;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class UpdateTest extends TestCase
 {

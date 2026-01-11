@@ -12,7 +12,7 @@ use App\Models\Contents\AddonIntroductionContent;
 use App\Models\Contents\MarkdownContent;
 use App\Models\User;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class OnDeadLinkDetectedTest extends TestCase
 {

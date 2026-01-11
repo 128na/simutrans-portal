@@ -8,7 +8,7 @@ use App\Enums\ArticleStatus;
 use App\Models\Article;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Queue;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class PublishReservationTest extends TestCase
 {

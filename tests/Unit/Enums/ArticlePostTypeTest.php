@@ -6,7 +6,7 @@ namespace Tests\Unit\Enums;
 
 use App\Enums\ArticlePostType;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class ArticlePostTypeTest extends TestCase
 {

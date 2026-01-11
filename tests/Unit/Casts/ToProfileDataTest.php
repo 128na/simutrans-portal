@@ -8,7 +8,7 @@ use App\Casts\ToProfileData;
 use App\Models\User;
 use App\Models\User\ProfileData;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class ToProfileDataTest extends TestCase
 {

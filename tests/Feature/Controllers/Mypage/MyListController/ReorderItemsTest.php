@@ -8,7 +8,7 @@ use App\Models\MyList;
 use App\Models\MyListItem;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 class ReorderItemsTest extends TestCase
 {

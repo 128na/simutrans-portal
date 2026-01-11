@@ -7,7 +7,7 @@ namespace Tests\Unit\Notifications;
 use App\Models\Article;
 use App\Models\User;
 use App\Notifications\SendDeadLinkDetectedEmail;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class SendDeadLinkDetectedEmailTest extends TestCase
 {

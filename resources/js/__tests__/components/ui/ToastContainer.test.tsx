@@ -1,7 +1,7 @@
 import ToastContainer from "@/components/ui/ToastContainer";
 import { ToastProvider } from "@/providers/ToastProvider";
 import { useToast } from "@/hooks/useToast";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 // useToast を使用するテストコンポーネント
@@ -21,25 +21,42 @@ function TestComponent() {
 }
 
 describe("ToastContainer", () => {
-  it("トーストコンテナが存在する", () => {
+  it("トーストがある場合、コンテナが存在する", () => {
     render(
       <ToastProvider>
+        <TestComponent />
         <ToastContainer />
       </ToastProvider>
     );
+
+    // ボタンをクリックしてトースト表示
+    const button = screen.getByRole("button", { name: "成功を表示" });
+    fireEvent.click(button);
 
     expect(screen.getByRole("region")).toBeInTheDocument();
   });
 
-  it("aria-live が polite に設定されている", () => {
+  it("aria-live が polite に設定されている", async () => {
+    const user = await import("@testing-library/user-event").then((m) =>
+      m.default.setup()
+    );
+
     render(
       <ToastProvider>
+        <TestComponent />
         <ToastContainer />
       </ToastProvider>
     );
 
-    const region = screen.getByRole("region");
-    expect(region).toHaveAttribute("aria-live", "polite");
+    const successButton = screen.getByRole("button", {
+      name: "成功を表示",
+    });
+    await user.click(successButton);
+
+    await waitFor(() => {
+      const region = screen.getByRole("region");
+      expect(region).toHaveAttribute("aria-live", "polite");
+    });
   });
 
   it("複数のトーストが表示される", async () => {
@@ -98,29 +115,49 @@ describe("ToastContainer", () => {
     });
   });
 
-  it("トーストコンテナが正しいクラスを持つ", () => {
-    const { container } = render(
+  it("トーストコンテナが正しいクラスを持つ", async () => {
+    const user = await import("@testing-library/user-event").then((m) =>
+      m.default.setup()
+    );
+
+    render(
       <ToastProvider>
+        <TestComponent />
         <ToastContainer />
       </ToastProvider>
     );
 
-    const region = container.querySelector("[role='region']") as HTMLElement;
-    expect(region).toHaveClass("fixed");
-    expect(region).toHaveClass("z-[60]");
+    const button = screen.getByRole("button", { name: "成功を表示" });
+    await user.click(button);
+
+    await waitFor(() => {
+      const region = screen.getByRole("region");
+      expect(region).toHaveClass("fixed");
+      expect(region).toHaveClass("z-[60]");
+    });
   });
 
-  it("レスポンシブレイアウトが適用される", () => {
-    const { container } = render(
+  it("レスポンシブレイアウトが適用される", async () => {
+    const user = await import("@testing-library/user-event").then((m) =>
+      m.default.setup()
+    );
+
+    render(
       <ToastProvider>
+        <TestComponent />
         <ToastContainer />
       </ToastProvider>
     );
 
-    const region = container.querySelector("[role='region']") as HTMLElement;
+    const button = screen.getByRole("button", { name: "成功を表示" });
+    await user.click(button);
 
-    // レスポンシブクラスが含まれている
-    expect(region).toHaveClass("bottom-4");
-    expect(region).toHaveClass("right-4");
+    await waitFor(() => {
+      const region = screen.getByRole("region");
+
+      // レスポンシブクラスが含まれている
+      expect(region).toHaveClass("inset-0");
+      expect(region).toHaveClass("pointer-events-none");
+    });
   });
 });

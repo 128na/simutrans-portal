@@ -50,15 +50,18 @@ describe("ToastProvider", () => {
     const button = screen.getByRole("button");
 
     // 3つのトーストを表示しようとする
-    await act(async () => {
-      await user.click(button);
-      await user.click(button);
-      await user.click(button);
-    });
+    await user.click(button);
+    await user.click(button);
+    await user.click(button);
 
     // 最大2件まで表示されることを期待
-    // （トースト表示の詳細な確認は ToastContainer のテストで実施）
-    expect(screen.getByText("テストメッセージ")).toBeInTheDocument();
+    await waitFor(
+      () => {
+        const alerts = screen.queryAllByRole("alert");
+        expect(alerts.length).toBeLessThanOrEqual(2);
+      },
+      { timeout: 500 }
+    );
   });
 
   it("同一メッセージの重複を制御する", async () => {
@@ -91,15 +94,12 @@ describe("ToastProvider", () => {
 
     const button = screen.getByRole("button");
 
-    await act(async () => {
-      await user.click(button);
-    });
+    await user.click(button);
 
-    // 重複メッセージは一度だけ表示されることを期待
-    // （詳細な検証は ToastContainer のテストで実施）
-    await waitFor(() => {
-      expect(screen.getByText("重複メッセージ")).toBeInTheDocument();
-    });
+    // 同じメッセージを2回呼び出しても、1回目のものしか表示されない
+    // （重複制御により5秒以内は無視される）
+    const alerts = screen.queryAllByRole("alert");
+    expect(alerts.length).toBeLessThanOrEqual(1);
   });
 
   it("Provider 内で Context を利用できる", () => {

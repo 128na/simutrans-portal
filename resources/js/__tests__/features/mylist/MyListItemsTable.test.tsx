@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { MyListItemsTable } from "@/features/mylist/MyListItemsTable";
+import { ToastProvider } from "@/providers/ToastProvider";
 import type { MyListItemShow } from "@/types/models/MyList";
 
 describe("MyListItemsTable コンポーネント", () => {
@@ -37,7 +38,9 @@ describe("MyListItemsTable コンポーネント", () => {
 
   it("アイテム一覧が表示される", () => {
     render(
-      <MyListItemsTable listId={1} items={mockItems} onUpdate={vi.fn()} />
+      <ToastProvider>
+        <MyListItemsTable listId={1} items={mockItems} onUpdate={vi.fn()} />
+      </ToastProvider>
     );
 
     expect(screen.getByText("テストアドオン1")).toBeInTheDocument();
@@ -46,7 +49,9 @@ describe("MyListItemsTable コンポーネント", () => {
 
   it("メモが表示される", () => {
     render(
-      <MyListItemsTable listId={1} items={mockItems} onUpdate={vi.fn()} />
+      <ToastProvider>
+        <MyListItemsTable listId={1} items={mockItems} onUpdate={vi.fn()} />
+      </ToastProvider>
     );
 
     expect(screen.getByText("便利なアドオン")).toBeInTheDocument();
@@ -54,7 +59,9 @@ describe("MyListItemsTable コンポーネント", () => {
 
   it("非公開記事は作成者が非表示になる", () => {
     render(
-      <MyListItemsTable listId={1} items={mockItems} onUpdate={vi.fn()} />
+      <ToastProvider>
+        <MyListItemsTable listId={1} items={mockItems} onUpdate={vi.fn()} />
+      </ToastProvider>
     );
 
     // 非公開記事は「-」表示
@@ -64,7 +71,9 @@ describe("MyListItemsTable コンポーネント", () => {
 
   it("削除ボタンが表示される", () => {
     render(
-      <MyListItemsTable listId={1} items={mockItems} onUpdate={vi.fn()} />
+      <ToastProvider>
+        <MyListItemsTable listId={1} items={mockItems} onUpdate={vi.fn()} />
+      </ToastProvider>
     );
 
     const deleteButtons = screen.getAllByLabelText("削除");
@@ -72,7 +81,11 @@ describe("MyListItemsTable コンポーネント", () => {
   });
 
   it("空のリストでメッセージが表示される", () => {
-    render(<MyListItemsTable listId={1} items={[]} onUpdate={vi.fn()} />);
+    render(
+      <ToastProvider>
+        <MyListItemsTable listId={1} items={[]} onUpdate={vi.fn()} />
+      </ToastProvider>
+    );
 
     expect(
       screen.getByText(
@@ -85,7 +98,9 @@ describe("MyListItemsTable コンポーネント", () => {
     const user = userEvent.setup();
 
     render(
-      <MyListItemsTable listId={1} items={mockItems} onUpdate={vi.fn()} />
+      <ToastProvider>
+        <MyListItemsTable listId={1} items={mockItems} onUpdate={vi.fn()} />
+      </ToastProvider>
     );
 
     const noteTexts = screen.getAllByText("便利なアドオン");

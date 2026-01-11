@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { MyListTable } from "@/features/mylist/MyListTable";
+import { ToastProvider } from "@/providers/ToastProvider";
 import type { MyListShow } from "@/types/models/MyList";
 
 describe("MyListTable コンポーネント", () => {
@@ -35,7 +36,9 @@ describe("MyListTable コンポーネント", () => {
     const onDelete = vi.fn();
 
     render(
-      <MyListTable lists={mockLists} onEdit={onEdit} onDelete={onDelete} />
+      <ToastProvider>
+        <MyListTable lists={mockLists} onEdit={onEdit} onDelete={onDelete} />
+      </ToastProvider>
     );
 
     expect(screen.getByText("お気に入りアドオン")).toBeInTheDocument();
@@ -47,7 +50,9 @@ describe("MyListTable コンポーネント", () => {
     const onDelete = vi.fn();
 
     render(
-      <MyListTable lists={mockLists} onEdit={onEdit} onDelete={onDelete} />
+      <ToastProvider>
+        <MyListTable lists={mockLists} onEdit={onEdit} onDelete={onDelete} />
+      </ToastProvider>
     );
 
     expect(screen.getByText("公開")).toBeInTheDocument();
@@ -58,7 +63,9 @@ describe("MyListTable コンポーネント", () => {
     const onDelete = vi.fn();
 
     render(
-      <MyListTable lists={mockLists} onEdit={onEdit} onDelete={onDelete} />
+      <ToastProvider>
+        <MyListTable lists={mockLists} onEdit={onEdit} onDelete={onDelete} />
+      </ToastProvider>
     );
 
     expect(screen.getByText("5件")).toBeInTheDocument();
@@ -71,7 +78,9 @@ describe("MyListTable コンポーネント", () => {
     const onDelete = vi.fn();
 
     render(
-      <MyListTable lists={mockLists} onEdit={onEdit} onDelete={onDelete} />
+      <ToastProvider>
+        <MyListTable lists={mockLists} onEdit={onEdit} onDelete={onDelete} />
+      </ToastProvider>
     );
 
     const editButtons = screen.getAllByText("編集");
@@ -86,7 +95,9 @@ describe("MyListTable コンポーネント", () => {
     const onDelete = vi.fn();
 
     render(
-      <MyListTable lists={mockLists} onEdit={onEdit} onDelete={onDelete} />
+      <ToastProvider>
+        <MyListTable lists={mockLists} onEdit={onEdit} onDelete={onDelete} />
+      </ToastProvider>
     );
 
     const deleteButtons = screen.getAllByText("削除");
@@ -99,7 +110,11 @@ describe("MyListTable コンポーネント", () => {
     const onEdit = vi.fn();
     const onDelete = vi.fn();
 
-    render(<MyListTable lists={[]} onEdit={onEdit} onDelete={onDelete} />);
+    render(
+      <ToastProvider>
+        <MyListTable lists={[]} onEdit={onEdit} onDelete={onDelete} />
+      </ToastProvider>
+    );
 
     expect(
       screen.getByText("マイリストがありません。新しく作成してください。")

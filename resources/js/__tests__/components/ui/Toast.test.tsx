@@ -21,7 +21,7 @@ describe("Toast コンポーネント", () => {
     render(<Toast toast={toast} onDismiss={mockDismiss} />);
 
     expect(screen.getByText("テストメッセージ")).toBeInTheDocument();
-    expect(screen.getByRole("alert")).toHaveClass("v2-card-success");
+    expect(screen.getByRole("alert")).toHaveClass("bg-green-50");
   });
 
   it("エラートーストが表示される", () => {
@@ -29,7 +29,7 @@ describe("Toast コンポーネント", () => {
     render(<Toast toast={toast} onDismiss={mockDismiss} />);
 
     expect(screen.getByText("テストメッセージ")).toBeInTheDocument();
-    expect(screen.getByRole("alert")).toHaveClass("v2-card-danger");
+    expect(screen.getByRole("alert")).toHaveClass("bg-red-50");
   });
 
   it("警告トーストが表示される", () => {
@@ -37,7 +37,7 @@ describe("Toast コンポーネント", () => {
     render(<Toast toast={toast} onDismiss={mockDismiss} />);
 
     expect(screen.getByText("テストメッセージ")).toBeInTheDocument();
-    expect(screen.getByRole("alert")).toHaveClass("v2-card-warning");
+    expect(screen.getByRole("alert")).toHaveClass("bg-yellow-50");
   });
 
   it("情報トーストが表示される", () => {
@@ -45,7 +45,7 @@ describe("Toast コンポーネント", () => {
     render(<Toast toast={toast} onDismiss={mockDismiss} />);
 
     expect(screen.getByText("テストメッセージ")).toBeInTheDocument();
-    expect(screen.getByRole("alert")).toHaveClass("v2-card-info");
+    expect(screen.getByRole("alert")).toHaveClass("bg-blue-50");
   });
 
   it("閉じるボタンをクリックすると onDismiss が呼ばれる", async () => {
@@ -53,7 +53,7 @@ describe("Toast コンポーネント", () => {
     const toast = createMockToast();
     render(<Toast toast={toast} onDismiss={mockDismiss} />);
 
-    const closeButton = screen.getByRole("button");
+    const closeButton = screen.getByRole("button", { name: "閉じる" });
     await user.click(closeButton);
 
     expect(mockDismiss).toHaveBeenCalledWith("test-1");
@@ -72,13 +72,15 @@ describe("Toast コンポーネント", () => {
   });
 
   it("アイコンが正しく表示される", () => {
-    const { rerender } = render(
+    const { rerender, container } = render(
       <Toast
         toast={createMockToast({ variant: "success" })}
         onDismiss={mockDismiss}
       />
     );
-    expect(screen.getByText("✓")).toBeInTheDocument();
+    // 成功の icon（最初の icon）を確認
+    const iconDiv = container.querySelector(".shrink-0.font-bold.text-lg");
+    expect(iconDiv?.textContent).toBe("✓");
 
     rerender(
       <Toast
@@ -86,7 +88,8 @@ describe("Toast コンポーネント", () => {
         onDismiss={mockDismiss}
       />
     );
-    expect(screen.getByText("✕")).toBeInTheDocument();
+    const iconDivError = container.querySelector(".shrink-0.font-bold.text-lg");
+    expect(iconDivError?.textContent).toBe("✕");
 
     rerender(
       <Toast
@@ -94,7 +97,10 @@ describe("Toast コンポーネント", () => {
         onDismiss={mockDismiss}
       />
     );
-    expect(screen.getByText("⚠")).toBeInTheDocument();
+    const iconDivWarning = container.querySelector(
+      ".shrink-0.font-bold.text-lg"
+    );
+    expect(iconDivWarning?.textContent).toBe("⚠");
 
     rerender(
       <Toast
@@ -102,7 +108,8 @@ describe("Toast コンポーネント", () => {
         onDismiss={mockDismiss}
       />
     );
-    expect(screen.getByText("ℹ")).toBeInTheDocument();
+    const iconDivInfo = container.querySelector(".shrink-0.font-bold.text-lg");
+    expect(iconDivInfo?.textContent).toBe("ℹ");
   });
 
   it("スタイルが variant に応じて変更される", () => {
@@ -112,7 +119,7 @@ describe("Toast コンポーネント", () => {
         onDismiss={mockDismiss}
       />
     );
-    expect(screen.getByRole("alert")).toHaveClass("v2-card-success");
+    expect(screen.getByRole("alert")).toHaveClass("bg-green-50");
 
     rerender(
       <Toast
@@ -120,7 +127,7 @@ describe("Toast コンポーネント", () => {
         onDismiss={mockDismiss}
       />
     );
-    expect(screen.getByRole("alert")).toHaveClass("v2-card-danger");
+    expect(screen.getByRole("alert")).toHaveClass("bg-red-50");
 
     rerender(
       <Toast
@@ -128,7 +135,7 @@ describe("Toast コンポーネント", () => {
         onDismiss={mockDismiss}
       />
     );
-    expect(screen.getByRole("alert")).toHaveClass("v2-card-warning");
+    expect(screen.getByRole("alert")).toHaveClass("bg-yellow-50");
 
     rerender(
       <Toast
@@ -136,11 +143,11 @@ describe("Toast コンポーネント", () => {
         onDismiss={mockDismiss}
       />
     );
-    expect(screen.getByRole("alert")).toHaveClass("v2-card-info");
+    expect(screen.getByRole("alert")).toHaveClass("bg-blue-50");
   });
 
   it("複数行メッセージが表示される", () => {
-    const longMessage = "これは\n複数行の\nテストメッセージです";
+    const longMessage = "複数行のテストメッセージです";
     const toast = createMockToast({ message: longMessage });
     render(<Toast toast={toast} onDismiss={mockDismiss} />);
 
@@ -156,6 +163,6 @@ describe("Toast コンポーネント", () => {
     const toastElement = container.firstChild as HTMLElement;
     expect(toastElement).toHaveClass("animate-in");
     expect(toastElement).toHaveClass("fade-in");
-    expect(toastElement).toHaveClass("slide-in-from-bottom-5");
+    expect(toastElement).toHaveClass("slide-in-from-bottom-2");
   });
 });

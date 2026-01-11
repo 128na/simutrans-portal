@@ -141,6 +141,11 @@ class StoreItemTest extends TestCase
             ->postJson("/api/v1/mylist/{$list->id}/items", ['article_id' => $article->id]);
 
         $res->assertUnprocessable()
-            ->assertJsonPath('error', 'この記事は既にこのマイリストに追加されています。');
+            ->assertJsonValidationErrors(['article_id']);
+        // エラーメッセージの確認
+        $this->assertStringContainsString(
+            'この記事は既にこのマイリストに追加されています。',
+            $res->json('errors.article_id.0')
+        );
     }
 }

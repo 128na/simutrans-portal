@@ -1,10 +1,19 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { AddToMyListButton } from "@/features/mylist/AddToMyList";
 import { ToastProvider } from "@/providers/ToastProvider";
+import axios from "axios";
 
 describe("AddToMyListButton コンポーネント", () => {
+  beforeEach(() => {
+    vi.spyOn(axios, "get").mockResolvedValue({ data: [] });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("ボタンが表示される", () => {
     render(
       <ToastProvider>

@@ -295,10 +295,18 @@ export const MyListDeleteModal = ({
 
     setError(null);
 
-    await call(() => axios.delete(`/api/v1/mylist/${list.id}`), {
+    const result = await call(() => axios.delete(`/api/v1/mylist/${list.id}`), {
       successMessage: "マイリストを削除しました",
       onSuccess: () => onSuccess(),
     });
+
+    // バリデーションエラーがある場合は表示
+    if (result.validationErrors) {
+      const errorMessages = Object.values(result.validationErrors)
+        .flat()
+        .join("\n");
+      setError(errorMessages);
+    }
   };
 
   if (!list) {

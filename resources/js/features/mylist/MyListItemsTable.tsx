@@ -40,7 +40,7 @@ export const MyListItemsTable = ({
   const handleSaveNote = async (itemId: number) => {
     setError(null);
 
-    await call(
+    const result = await call(
       () =>
         axios.patch(`/api/v1/mylist/${listId}/items/${itemId}`, {
           note: editingNote.trim() || null,
@@ -53,6 +53,14 @@ export const MyListItemsTable = ({
         },
       }
     );
+
+    // バリデーションエラーがある場合は表示
+    if (result.validationErrors) {
+      const errorMessages = Object.values(result.validationErrors)
+        .flat()
+        .join("\n");
+      setError(errorMessages);
+    }
   };
 
   const handleCancelEdit = () => {
@@ -67,10 +75,21 @@ export const MyListItemsTable = ({
 
     setError(null);
 
-    await call(() => axios.delete(`/api/v1/mylist/${listId}/items/${itemId}`), {
-      successMessage: "アイテムを削除しました",
-      onSuccess: () => onUpdate(),
-    });
+    const result = await call(
+      () => axios.delete(`/api/v1/mylist/${listId}/items/${itemId}`),
+      {
+        successMessage: "アイテムを削除しました",
+        onSuccess: () => onUpdate(),
+      }
+    );
+
+    // バリデーションエラーがある場合は表示
+    if (result.validationErrors) {
+      const errorMessages = Object.values(result.validationErrors)
+        .flat()
+        .join("\n");
+      setError(errorMessages);
+    }
   };
 
   const handleMoveUp = async (item: MyListItemShow, index: number) => {
@@ -82,7 +101,7 @@ export const MyListItemsTable = ({
     const currentItem = items[index];
     const prevItem = items[index - 1];
 
-    await call(
+    const result = await call(
       () =>
         axios.patch(`/api/v1/mylist/${listId}/items/reorder`, {
           items: [
@@ -95,6 +114,14 @@ export const MyListItemsTable = ({
         onSuccess: () => onUpdate(),
       }
     );
+
+    // バリデーションエラーがある場合は表示
+    if (result.validationErrors) {
+      const errorMessages = Object.values(result.validationErrors)
+        .flat()
+        .join("\n");
+      setError(errorMessages);
+    }
   };
 
   const handleMoveDown = async (item: MyListItemShow, index: number) => {
@@ -106,7 +133,7 @@ export const MyListItemsTable = ({
     const currentItem = items[index];
     const nextItem = items[index + 1];
 
-    await call(
+    const result = await call(
       () =>
         axios.patch(`/api/v1/mylist/${listId}/items/reorder`, {
           items: [
@@ -119,6 +146,14 @@ export const MyListItemsTable = ({
         onSuccess: () => onUpdate(),
       }
     );
+
+    // バリデーションエラーがある場合は表示
+    if (result.validationErrors) {
+      const errorMessages = Object.values(result.validationErrors)
+        .flat()
+        .join("\n");
+      setError(errorMessages);
+    }
   };
 
   return (

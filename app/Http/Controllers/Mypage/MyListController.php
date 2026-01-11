@@ -121,8 +121,10 @@ class MyListController extends Controller
             return (new MyListItemResource($item))->response()->setStatusCode(201);
         } catch (\InvalidArgumentException $e) {
             return response()->json([
-                'ok' => false,
-                'error' => $e->getMessage(),
+                'message' => 'Validation failed',
+                'errors' => [
+                    'article_id' => [$e->getMessage()],
+                ],
             ], 422);
         }
     }

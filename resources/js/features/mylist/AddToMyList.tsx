@@ -143,6 +143,14 @@ const AddToMyListModal = ({
     if (result.hasError && !result.validationErrors) {
       setError("リストの作成に失敗しました");
     }
+
+    // バリデーションエラーがある場合は表示
+    if (result.validationErrors) {
+      const errorMessages = Object.values(result.validationErrors)
+        .flat()
+        .join("\n");
+      setError(errorMessages);
+    }
   };
 
   const handleAddToLists = async () => {
@@ -153,7 +161,7 @@ const AddToMyListModal = ({
 
     setError(null);
 
-    await call(
+    const result = await call(
       async () => {
         const promises = Array.from(selectedListIds).map(async (listId) => {
           try {
@@ -175,6 +183,14 @@ const AddToMyListModal = ({
         onSuccess: () => onSuccess(),
       }
     );
+
+    // バリデーションエラーがある場合は表示
+    if (result.validationErrors) {
+      const errorMessages = Object.values(result.validationErrors)
+        .flat()
+        .join("\n");
+      setError(errorMessages);
+    }
   };
 
   return (

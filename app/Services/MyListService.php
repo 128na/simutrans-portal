@@ -45,6 +45,7 @@ class MyListService
         ];
 
         // 新規作成時は常に slug を生成（URLの一貫性を保つ）
+        /** @var MyList $list */
         $list = $this->listRepository->create($data);
         $this->listRepository->update($list, []);
 
@@ -123,12 +124,15 @@ class MyListService
         $maxPosition = (int) ($list->items()->max('position') ?? 0);
         $position = $maxPosition + 1;
 
-        return $this->itemRepository->create([
+        /** @var MyListItem $item */
+        $item = $this->itemRepository->create([
             'list_id' => $list->id,
             'article_id' => $article->id,
             'note' => $note,
             'position' => $position,
         ]);
+
+        return $item;
     }
 
     /**

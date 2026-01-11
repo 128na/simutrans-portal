@@ -4,8 +4,7 @@ import Button from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import Input from "@/components/ui/Input";
 import TextBadge from "@/components/ui/TextBadge";
-import { extractErrorMessage } from "@/lib/errorHandler";
-import { useToast } from "@/hooks/useToast";
+import { useApiCall } from "@/hooks/useApiCall";
 import type { MyListShow, MyListCreateRequest } from "@/types/models";
 
 interface AddToMyListButtonProps {
@@ -75,7 +74,7 @@ const AddToMyListModal = ({
   onClose,
   onSuccess,
 }: AddToMyListModalProps) => {
-  const { showSuccess } = useToast();
+  const { call } = useApiCall();
   const [lists, setLists] = useState<MyListShow[]>([]);
   const [selectedListIds, setSelectedListIds] = useState<Set<number>>(
     new Set()
@@ -122,27 +121,27 @@ const AddToMyListModal = ({
       return;
     }
 
-    try {
-      setIsCreating(true);
-      setError(null);
+    setError(null);
+    setIsCreating(true);
 
-      const requestBody: MyListCreateRequest = {
-        title: newListTitle.trim(),
-      };
+    const requestBody: MyListCreateRequest = {
+      title: newListTitle.trim(),
+    };
 
-      const { data } = await axios.post("/api/v1/mylist", requestBody);
-      if (data.data && typeof data.data === "object") {
-        setLists([...lists, data.data]);
-        setNewListTitle("");
-        setError(null);
-        showSuccess("マイリストを作成しました");
-      } else {
-        throw new Error("リストの作成に失敗しました");
-      }
-    } catch (err) {
-      setError(extractErrorMessage(err));
-    } finally {
-      setIsCreating(false);
+    const result = await call(() => axios.post("/api/v1/mylist", requestBody), {
+      successMessage: "マイリストを作成しました",
+      onSuccess: (response) => {
+        if (response.data && typeof response.data === "object") {
+          setLists([...lists, response.data]);
+          setNewListTitle("");
+        }
+      },
+    });
+
+    setIsCreating(false);
+
+    if (result.hasError && !result.validationErrors) {
+      setError("リストの作成に失敗しました");
     }
   };
 
@@ -152,31 +151,30 @@ const AddToMyListModal = ({
       return;
     }
 
-    try {
-      setIsLoading(true);
-      setError(null);
+    setError(null);
 
-      const promises = Array.from(selectedListIds).map(async (listId) => {
-        try {
-          await axios.post(`/api/v1/mylist/${listId}/items`, {
-            article_id: articleId,
-          });
-        } catch (err) {
-          // 409 は重複なので握りつぶす
-          if (!axios.isAxiosError(err) || err.response?.status !== 409) {
-            throw err;
+    await call(
+      async () => {
+        const promises = Array.from(selectedListIds).map(async (listId) => {
+          try {
+            await axios.post(`/api/v1/mylist/${listId}/items`, {
+              article_id: articleId,
+            });
+          } catch (err) {
+            // 409 は重複なので握りつぶす
+            if (!axios.isAxiosError(err) || err.response?.status !== 409) {
+              throw err;
+            }
           }
-        }
-      });
+        });
 
-      await Promise.all(promises);
-      showSuccess("マイリストに追加しました");
-      onSuccess();
-    } catch (err) {
-      setError(extractErrorMessage(err));
-    } finally {
-      setIsLoading(false);
-    }
+        await Promise.all(promises);
+      },
+      {
+        successMessage: "マイリストに追加しました",
+        onSuccess: () => onSuccess(),
+      }
+    );
   };
 
   return (

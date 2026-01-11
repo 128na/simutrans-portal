@@ -6,10 +6,13 @@ namespace App\Repositories;
 
 use App\Models\MyList;
 use App\Models\MyListItem;
+use App\Repositories\Concerns\HasCrud;
 use Illuminate\Contracts\Pagination\Paginator;
 
 class MyListItemRepository
 {
+    use HasCrud;
+
     public function __construct(
         private readonly MyListItem $model,
     ) {}
@@ -60,22 +63,6 @@ class MyListItemRepository
     }
 
     /**
-     * アイテムを ID で取得
-     */
-    public function findById(int $id): ?MyListItem
-    {
-        return $this->model->find($id);
-    }
-
-    /**
-     * アイテムを ID で取得（存在しない場合は例外）
-     */
-    public function findByIdOrFail(int $id): MyListItem
-    {
-        return $this->model->findOrFail($id);
-    }
-
-    /**
      * リストと記事で既存アイテムを取得
      */
     public function findByListAndArticle(int $listId, int $articleId): ?MyListItem
@@ -84,34 +71,6 @@ class MyListItemRepository
             ->where('list_id', $listId)
             ->where('article_id', $articleId)
             ->first();
-    }
-
-    /**
-     * アイテムを作成
-     *
-     * @param  array<string, mixed>  $data
-     */
-    public function create(array $data): MyListItem
-    {
-        return $this->model->create($data);
-    }
-
-    /**
-     * アイテムを更新
-     *
-     * @param  array<string, mixed>  $data
-     */
-    public function update(MyListItem $item, array $data): void
-    {
-        $item->update($data);
-    }
-
-    /**
-     * アイテムを削除
-     */
-    public function delete(MyListItem $item): void
-    {
-        $item->delete();
     }
 
     /**

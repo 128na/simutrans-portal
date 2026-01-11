@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Models\Tag;
+use App\Repositories\Concerns\HasCrud;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class TagRepository
 {
+    use HasCrud;
+
     public function __construct(public Tag $model) {}
 
     /**
@@ -76,6 +79,6 @@ class TagRepository
      */
     public function update(Tag $tag, array $data): Tag
     {
-        return tap($tag, fn ($t) => $t->update($data));
+        return tap($tag, fn($t) => $t->update($data));
     }
 }

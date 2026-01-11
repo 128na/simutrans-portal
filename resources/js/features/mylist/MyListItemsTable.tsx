@@ -2,8 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { useToast } from "@/hooks/useToast";
-import { extractErrorMessage } from "@/lib/errorHandler";
+import { useApiCall } from "@/hooks/useApiCall";
 import type { MyListItemShow } from "@/types/models";
 
 interface MyListItemsTableProps {
@@ -20,10 +19,9 @@ export const MyListItemsTable = ({
   listId,
   onUpdate,
 }: MyListItemsTableProps) => {
-  const { showSuccess } = useToast();
+  const { call, isLoading } = useApiCall();
   const [editingItemId, setEditingItemId] = useState<number | null>(null);
   const [editingNote, setEditingNote] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   if (items.length === 0) {
@@ -40,22 +38,21 @@ export const MyListItemsTable = ({
   };
 
   const handleSaveNote = async (itemId: number) => {
-    try {
-      setIsLoading(true);
-      setError(null);
+    setError(null);
 
-      await axios.patch(`/api/v1/mylist/${listId}/items/${itemId}`, {
-        note: editingNote.trim() || null,
-      });
-
-      showSuccess("メモを保存しました");
-      setEditingItemId(null);
-      onUpdate();
-    } catch (err) {
-      setError(extractErrorMessage(err));
-    } finally {
-      setIsLoading(false);
-    }
+    await call(
+      () =>
+        axios.patch(`/api/v1/mylist/${listId}/items/${itemId}`, {
+          note: editingNote.trim() || null,
+        }),
+      {
+        successMessage: "メモを保存しました",
+        onSuccess: () => {
+          setEditingItemId(null);
+          onUpdate();
+        },
+      }
+    );
   };
 
   const handleCancelEdit = () => {
@@ -68,73 +65,60 @@ export const MyListItemsTable = ({
       return;
     }
 
-    try {
-      setIsLoading(true);
-      setError(null);
+    setError(null);
 
-      await axios.delete(`/api/v1/mylist/${listId}/items/${itemId}`);
-
-      showSuccess("アイテムを削除しました");
-      onUpdate();
-    } catch (err) {
-      setError(extractErrorMessage(err));
-    } finally {
-      setIsLoading(false);
-    }
+    await call(() => axios.delete(`/api/v1/mylist/${listId}/items/${itemId}`), {
+      successMessage: "アイテムを削除しました",
+      onSuccess: () => onUpdate(),
+    });
   };
 
   const handleMoveUp = async (item: MyListItemShow, index: number) => {
     if (index === 0) return;
 
-    try {
-      setIsLoading(true);
-      setError(null);
+    setError(null);
 
-      // 現在のアイテムと1つ上のアイテムの位置を入れ替え
-      const currentItem = items[index];
-      const prevItem = items[index - 1];
+    // 現在のアイテムと1つ上のアイテムの位置を入れ替え
+    const currentItem = items[index];
+    const prevItem = items[index - 1];
 
-      await axios.patch(`/api/v1/mylist/${listId}/items/reorder`, {
-        items: [
-          { id: currentItem.id, position: prevItem.position },
-          { id: prevItem.id, position: currentItem.position },
-        ],
-      });
-
-      showSuccess("並び替えを保存しました");
-      onUpdate();
-    } catch (err) {
-      setError(extractErrorMessage(err));
-    } finally {
-      setIsLoading(false);
-    }
+    await call(
+      () =>
+        axios.patch(`/api/v1/mylist/${listId}/items/reorder`, {
+          items: [
+            { id: currentItem.id, position: prevItem.position },
+            { id: prevItem.id, position: currentItem.position },
+          ],
+        }),
+      {
+        successMessage: "並び替えを保存しました",
+        onSuccess: () => onUpdate(),
+      }
+    );
   };
 
   const handleMoveDown = async (item: MyListItemShow, index: number) => {
     if (index === items.length - 1) return;
 
-    try {
-      setIsLoading(true);
-      setError(null);
+    setError(null);
 
-      // 現在のアイテムと1つ下のアイテムの位置を入れ替え
-      const currentItem = items[index];
-      const nextItem = items[index + 1];
+    // 現在のアイテムと1つ下のアイテムの位置を入れ替え
+    const currentItem = items[index];
+    const nextItem = items[index + 1];
 
-      await axios.patch(`/api/v1/mylist/${listId}/items/reorder`, {
-        items: [
-          { id: currentItem.id, position: nextItem.position },
-          { id: nextItem.id, position: currentItem.position },
-        ],
-      });
-
-      showSuccess("並び替えを保存しました");
-      onUpdate();
-    } catch (err) {
-      setError(extractErrorMessage(err));
-    } finally {
-      setIsLoading(false);
-    }
+    await call(
+      () =>
+        axios.patch(`/api/v1/mylist/${listId}/items/reorder`, {
+          items: [
+            { id: currentItem.id, position: nextItem.position },
+            { id: nextItem.id, position: currentItem.position },
+          ],
+        }),
+      {
+        successMessage: "並び替えを保存しました",
+        onSuccess: () => onUpdate(),
+      }
+    );
   };
 
   return (

@@ -6,10 +6,13 @@ namespace App\Repositories;
 
 use App\Models\MyList;
 use App\Models\User;
+use App\Repositories\Concerns\HasCrud;
 use Illuminate\Contracts\Pagination\Paginator;
 
 class MyListRepository
 {
+    use HasCrud;
+
     public function __construct(
         private readonly MyList $model,
     ) {}
@@ -30,50 +33,6 @@ class MyListRepository
         $result = $query->simplePaginate($perPage, ['*'], 'page', $page);
 
         return $result;
-    }
-
-    /**
-     * リストを ID で取得
-     */
-    public function findById(int $id): ?MyList
-    {
-        return $this->model->find($id);
-    }
-
-    /**
-     * リストを ID で取得（存在しない場合は例外）
-     */
-    public function findByIdOrFail(int $id): MyList
-    {
-        return $this->model->findOrFail($id);
-    }
-
-    /**
-     * リストを作成
-     *
-     * @param  array<string, mixed>  $data
-     */
-    public function create(array $data): MyList
-    {
-        return $this->model->create($data);
-    }
-
-    /**
-     * リストを更新
-     *
-     * @param  array<string, mixed>  $data
-     */
-    public function update(MyList $list, array $data): void
-    {
-        $list->update($data);
-    }
-
-    /**
-     * リストを削除
-     */
-    public function delete(MyList $list): void
-    {
-        $list->delete();
     }
 
     /**

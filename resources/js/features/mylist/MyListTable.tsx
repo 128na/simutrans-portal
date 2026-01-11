@@ -9,7 +9,7 @@ import TextBadge from "@/components/ui/TextBadge";
 import Link from "@/components/ui/Link";
 import { copyToClipboard } from "@/lib/copyText";
 import { useToast } from "@/hooks/useToast";
-import { extractErrorMessage } from "@/lib/errorHandler";
+import { useApiCall } from "@/hooks/useApiCall";
 import type { MyListShow } from "@/types/models";
 
 interface MyListTableProps {
@@ -150,11 +150,10 @@ export const MyListEditModal = ({
   onClose,
   onSuccess,
 }: MyListEditModalProps) => {
-  const { showSuccess } = useToast();
+  const { call, isLoading } = useApiCall();
   const [title, setTitle] = useState(list?.title || "");
   const [note, setNote] = useState(list?.note || "");
   const [isPublic, setIsPublic] = useState(list?.is_public || false);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -165,32 +164,29 @@ export const MyListEditModal = ({
       return;
     }
 
-    try {
-      setIsLoading(true);
-      setError(null);
+    setError(null);
 
-      const method = list ? "PATCH" : "POST";
-      const url = list ? `/api/v1/mylist/${list.id}` : "/api/v1/mylist";
+    const method = list ? "PATCH" : "POST";
+    const url = list ? `/api/v1/mylist/${list.id}` : "/api/v1/mylist";
 
-      await axios({
-        method,
-        url,
-        data: {
-          title: title.trim(),
-          note: note.trim() || null,
-          is_public: isPublic,
-        },
-      });
-
-      showSuccess(
-        list ? "マイリストを更新しました" : "マイリストを作成しました"
-      );
-      onSuccess();
-    } catch (err) {
-      setError(extractErrorMessage(err));
-    } finally {
-      setIsLoading(false);
-    }
+    await call(
+      () =>
+        axios({
+          method,
+          url,
+          data: {
+            title: title.trim(),
+            note: note.trim() || null,
+            is_public: isPublic,
+          },
+        }),
+      {
+        successMessage: list
+          ? "マイリストを更新しました"
+          : "マイリストを作成しました",
+        onSuccess: () => onSuccess(),
+      }
+    );
   };
 
   if (!list && list !== null) {
@@ -288,26 +284,18 @@ export const MyListDeleteModal = ({
   onClose,
   onSuccess,
 }: MyListDeleteModalProps) => {
-  const { showSuccess } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const { call, isLoading } = useApiCall();
   const [error, setError] = useState<string | null>(null);
 
   const handleDelete = async () => {
     if (!list) return;
 
-    try {
-      setIsLoading(true);
-      setError(null);
+    setError(null);
 
-      await axios.delete(`/api/v1/mylist/${list.id}`);
-
-      showSuccess("マイリストを削除しました");
-      onSuccess();
-    } catch (err) {
-      setError(extractErrorMessage(err));
-    } finally {
-      setIsLoading(false);
-    }
+    await call(() => axios.delete(`/api/v1/mylist/${list.id}`), {
+      successMessage: "マイリストを削除しました",
+      onSuccess: () => onSuccess(),
+    });
   };
 
   if (!list) {

@@ -8,7 +8,6 @@ use App\Events\Article\CloseByDeadLinkDetected;
 use App\Listeners\Article\OnCloseByDeadLinkDetected;
 use App\Models\Article;
 use App\Notifications\SendDeadLinkDetectedEmail;
-use Illuminate\Support\Facades\Notification;
 use Mockery;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Unit\TestCase;
@@ -18,53 +17,54 @@ class OnCloseByDeadLinkDetectedTest extends TestCase
     #[Test]
     public function it_sends_notification_to_article(): void
     {
-        Notification::fake();
         $article = Mockery::mock(Article::class)->shouldAllowMockingProtectedMethods();
         $article->shouldReceive('setAttribute')->andReturnNull();
-        $article->shouldReceive('routeNotificationFor')->andReturn('test@example.com');
+        $article->shouldReceive('notify')->once()->with(Mockery::type(SendDeadLinkDetectedEmail::class));
         $article->id = 1;
 
         $listener = new OnCloseByDeadLinkDetected;
         $event = new CloseByDeadLinkDetected($article);
         $listener->handle($event);
 
-        Notification::assertSentTo($article, SendDeadLinkDetectedEmail::class);
+        // モックの期待値が満たされることを確認
+        $this->assertTrue(true);
     }
 
     #[Test]
     public function it_sends_correct_notification_type(): void
     {
-        Notification::fake();
+        $notificationReceived = null;
         $article = Mockery::mock(Article::class)->shouldAllowMockingProtectedMethods();
         $article->shouldReceive('setAttribute')->andReturnNull();
-        $article->shouldReceive('routeNotificationFor')->andReturn('test@example.com');
+        $article->shouldReceive('notify')->once()->with(Mockery::on(function ($notification) use (&$notificationReceived) {
+            $notificationReceived = $notification;
+
+            return $notification instanceof SendDeadLinkDetectedEmail;
+        }));
         $article->id = 2;
 
         $listener = new OnCloseByDeadLinkDetected;
         $event = new CloseByDeadLinkDetected($article);
         $listener->handle($event);
 
-        Notification::assertSentTo(
-            $article,
-            function (SendDeadLinkDetectedEmail $notification) {
-                return $notification instanceof SendDeadLinkDetectedEmail;
-            }
-        );
+        $this->assertInstanceOf(SendDeadLinkDetectedEmail::class, $notificationReceived);
     }
 
     #[Test]
     public function it_sends_only_one_notification(): void
     {
-        Notification::fake();
+        $callCount = 0;
         $article = Mockery::mock(Article::class)->shouldAllowMockingProtectedMethods();
         $article->shouldReceive('setAttribute')->andReturnNull();
-        $article->shouldReceive('routeNotificationFor')->andReturn('test@example.com');
+        $article->shouldReceive('notify')->once()->with(Mockery::type(SendDeadLinkDetectedEmail::class))->andReturnUsing(function () use (&$callCount) {
+            $callCount++;
+        });
         $article->id = 3;
 
         $listener = new OnCloseByDeadLinkDetected;
         $event = new CloseByDeadLinkDetected($article);
         $listener->handle($event);
 
-        Notification::assertCount(1);
+        $this->assertSame(1, $callCount);
     }
 }

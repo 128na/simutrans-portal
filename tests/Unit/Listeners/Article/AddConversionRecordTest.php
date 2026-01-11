@@ -16,7 +16,9 @@ class AddConversionRecordTest extends TestCase
     public function test_handle_calls_count_up(): void
     {
         // Arrange
-        $article = Article::factory()->make(['id' => 1]);
+        $article = Mockery::mock(Article::class)->shouldAllowMockingProtectedMethods();
+        $article->shouldReceive('setAttribute')->andReturnNull();
+        $article->id = 1;
         $event = new ArticleConversion($article);
 
         $conversionCountRepository = Mockery::mock(ConversionCountRepository::class);
@@ -36,8 +38,14 @@ class AddConversionRecordTest extends TestCase
     public function test_handle_with_different_articles(): void
     {
         // Arrange
-        $article1 = Article::factory()->make(['id' => 1]);
-        $article2 = Article::factory()->make(['id' => 2]);
+        $article1 = Mockery::mock(Article::class)->shouldAllowMockingProtectedMethods();
+        $article1->shouldReceive('setAttribute')->andReturnNull();
+        $article1->id = 1;
+
+        $article2 = Mockery::mock(Article::class)->shouldAllowMockingProtectedMethods();
+        $article2->shouldReceive('setAttribute')->andReturnNull();
+        $article2->id = 2;
+
         $event1 = new ArticleConversion($article1);
         $event2 = new ArticleConversion($article2);
 

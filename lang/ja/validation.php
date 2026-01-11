@@ -142,6 +142,10 @@ return [
         '属性名' => [
             'ルール名' => 'カスタムメッセージ',
         ],
+
+        // MyList
+        'mylist_not_public_article' => '公開されていない記事は追加できません。',
+        'mylist_article_already_exists' => 'この記事は既にこのマイリストに追加されています。',
     ],
 
     /*

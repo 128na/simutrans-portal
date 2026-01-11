@@ -13,10 +13,16 @@ parameters:
 			path: app/Http/Controllers/Pages/Article/ShowController.php
 
 		-
-			message: '#^Anonymous function should return bool but returns mixed\.$#'
-			identifier: return.type
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$past_conversion_count\.$#'
+			identifier: property.notFound
 			count: 1
-			path: app/Models/Article.php
+			path: app/Http/Resources/Mypage/ArticleAnalytic.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Article\:\:\$past_view_count\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/Mypage/ArticleAnalytic.php
 
 		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\:\:page\(\)\.$#'
@@ -43,13 +49,73 @@ parameters:
 			path: app/Models/Article.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between ''addon\-post'' and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
+			message: '#^Relation ''user'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
 			count: 1
 			path: app/Models/Article.php
+
+		-
+			message: '#^Method App\\Models\\MyList\:\:items\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\MyListItem, App\\Models\\MyList\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Models\\MyListItem, \$this\(App\\Models\\MyList\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/MyList.php
+
+		-
+			message: '#^Method App\\Models\\MyList\:\:user\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\User, App\\Models\\MyList\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\User, \$this\(App\\Models\\MyList\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/MyList.php
+
+		-
+			message: '#^Method App\\Models\\MyListItem\:\:article\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\Article, App\\Models\\MyListItem\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\Article, \$this\(App\\Models\\MyListItem\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/MyListItem.php
+
+		-
+			message: '#^Method App\\Models\\MyListItem\:\:list\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\MyList, App\\Models\\MyListItem\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Models\\MyList, \$this\(App\\Models\\MyListItem\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/MyListItem.php
+
+		-
+			message: '#^Method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Article\>\:\:select\(\) invoked with 2 parameters, 0\-1 required\.$#'
+			identifier: arguments.count
+			count: 3
+			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Article\>\:\:select\(\) invoked with 3 parameters, 0\-1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Article\>\:\:select\(\) invoked with 7 parameters, 0\-1 required\.$#'
+			identifier: arguments.count
+			count: 2
+			path: app/Repositories/ArticleRepository.php
 
 		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
 			count: 1
 			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Repositories/ArticleRepository.php
+
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/MyListItemRepository.php
+
+		-
+			message: '#^Method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Tag\>\:\:select\(\) invoked with 2 parameters, 0\-1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: app/Repositories/TagRepository.php

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ProfileEdit } from "../../features/user/ProfileEdit";
 import { createRoot } from "react-dom/client";
-import { ErrorBoundary } from "../../components/ErrorBoundary";
+import { AppWrapper } from "../../components/AppWrapper";
 
 const app = document.getElementById("app-profile-edit");
 
@@ -27,8 +27,8 @@ if (app) {
   };
 
   createRoot(app).render(
-    <ErrorBoundary name="ProfileEditPage">
+    <AppWrapper boundaryName="ProfileEditPage">
       <App />
-    </ErrorBoundary>
+    </AppWrapper>
   );
 }

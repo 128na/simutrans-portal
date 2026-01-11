@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { useState } from "react";
 import { AttachmentManage } from "../../features/attachments/AttachmentManage";
-import { ErrorBoundary } from "../../components/ErrorBoundary";
+import { AppWrapper } from "../../components/AppWrapper";
 
 const app = document.getElementById("app-attachment-edit");
 
@@ -22,8 +22,8 @@ if (app) {
   };
 
   createRoot(app).render(
-    <ErrorBoundary name="AttachmentPage">
+    <AppWrapper boundaryName="AttachmentPage">
       <App />
-    </ErrorBoundary>
+    </AppWrapper>
   );
 }

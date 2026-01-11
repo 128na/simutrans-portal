@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import { useEffect } from "react";
 import { useArticleEditor } from "../../hooks/useArticleEditor";
 import { ArticleEdit } from "../../features/articles/ArticleEdit";
-import { ErrorBoundary } from "../../components/ErrorBoundary";
+import { AppWrapper } from "../../components/AppWrapper";
 
 const el = (id: string) => document.getElementById(id);
 const app = el("app-article-edit");
@@ -31,8 +31,8 @@ if (app) {
   };
 
   createRoot(app).render(
-    <ErrorBoundary name="ArticleEditPage">
+    <AppWrapper boundaryName="ArticleEditPage">
       <App />
-    </ErrorBoundary>
+    </AppWrapper>
   );
 }

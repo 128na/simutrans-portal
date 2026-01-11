@@ -248,6 +248,54 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * @property int $id
+ * @property int $user_id
+ * @property string $title
+ * @property string|null $note
+ * @property bool $is_public
+ * @property string|null $slug
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MyListItem> $items
+ * @property-read int|null $items_count
+ * @property-read \App\Models\User $user
+ * @method static \Database\Factories\MyListFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyList newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyList newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyList query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyList whereBelongsToUser(\App\Models\User|int $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyList wherePublic()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperMyList {}
+}
+
+namespace App\Models{
+/**
+ * @property int $id
+ * @property int $list_id
+ * @property int $article_id
+ * @property string|null $note
+ * @property int|null $position
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property-read \App\Models\Article $article
+ * @property-read \App\Models\MyList $list
+ * @method static \Database\Factories\MyListItemFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyListItem newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyListItem newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyListItem orderByPosition()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyListItem query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MyListItem whereListId(int $listId)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperMyListItem {}
+}
+
+namespace App\Models{
+/**
  * @property string $application
  * @property string $token_type
  * @property string $scope

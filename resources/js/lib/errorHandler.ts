@@ -1,6 +1,26 @@
 /**
  * 統一されたエラーハンドリングユーティリティ
  * フロントエンド全体で一貫性のあるエラー処理を提供する
+ *
+ * 【推奨利用方法】
+ * - コンポーネント内: useToastの showError() を直接使用
+ *   ```typescript
+ *   const { showError } = useToast();
+ *   try {
+ *     await api.call();
+ *   } catch (err) {
+ *     showError(extractErrorMessage(err));
+ *   }
+ *   ```
+ *
+ * - ユーティリティ関数内: handleError() を使用
+ *   ```typescript
+ *   try {
+ *     await someAsyncOperation();
+ *   } catch (error) {
+ *     handleError(error, { component: 'Service', action: 'fetch', silent: false });
+ *   }
+ *   ```
  */
 
 import type { AxiosError } from "axios";
@@ -56,21 +76,20 @@ export const extractErrorMessage = (error: unknown): string => {
   }
 
   if (isAxiosError(error)) {
-    // バリデーションエラー（422）の場合はメッセージを返す
-    if (error.response?.status === 422) {
-      const data = error.response?.data as ValidationErrorResponse | undefined;
-      return data?.message || "入力内容に問題があります";
+    // APIレスポンスのエラーメッセージを優先的に取得
+    const responseData = error.response?.data as
+      | { error?: string; message?: string }
+      | undefined;
+    if (responseData?.error) {
+      return responseData.error;
+    }
+    if (responseData?.message) {
+      return responseData.message;
     }
 
     // ネットワークエラー
     if (!error.response) {
       return "ネットワークエラーが発生しました。接続を確認してください";
-    }
-
-    // サーバーからのメッセージがある場合
-    const data = error.response?.data as { message?: string } | undefined;
-    if (data?.message) {
-      return data.message;
     }
 
     // HTTPステータスコードに基づくメッセージ
@@ -82,6 +101,8 @@ export const extractErrorMessage = (error: unknown): string => {
         return "この操作を行う権限がありません";
       case 404:
         return "リソースが見つかりませんでした";
+      case 422:
+        return "入力内容に問題があります";
       case 500:
         return "サーバーエラーが発生しました";
       default:
@@ -144,15 +165,28 @@ export const isValidationError = (
 /**
  * 統一されたエラーハンドラー
  *
+ * 注意: このハンドラーはユーティリティ関数として機能します。
+ * コンポーネント内で使用する場合は、useToast() フックの showError() を
+ * 直接使用する方が推奨されます（UIの一貫性とアクセシビリティが向上）。
+ *
  * @param error - 発生したエラー
  * @param context - エラーコンテキスト（任意）
  *
  * @example
  * ```typescript
+ * // コンポーネント内での推奨用法
+ * const { showError } = useToast();
  * try {
  *   await someAsyncOperation();
  * } catch (error) {
- *   handleError(error, { component: 'ArticleEdit', action: 'save' });
+ *   showError(extractErrorMessage(error));
+ * }
+ *
+ * // ユーティリティ関数内
+ * try {
+ *   await someAsyncOperation();
+ * } catch (error) {
+ *   handleError(error, { component: 'Service', action: 'fetch' });
  * }
  * ```
  */
@@ -163,9 +197,9 @@ export const handleError = (error: unknown, context?: ErrorContext): void => {
   // ユーザーへの通知（サイレントモードでない場合）
   if (!context?.silent) {
     const message = extractErrorMessage(error);
-    // TODO: トースト通知コンポーネントを導入後、alertを置き換える
-    // 現時点ではブラウザ標準のalertを使用
-    // 参考: https://github.com/128na/simutrans-portal/issues/433
+    // コンポーネント内の useToast() showError() が推奨される。
+    // ここではユーティリティ関数からのエラーハンドリング対応
+    // 本番環境での改善: Sentry等の外部サービスへの送信
     window.alert(message);
   }
 };

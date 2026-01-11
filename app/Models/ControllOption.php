@@ -8,6 +8,16 @@ use App\Enums\ControllOptionKey;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * @property ControllOptionKey $key
+ * @property bool $value
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ControllOption newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ControllOption newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ControllOption query()
+ *
+ * @mixin \Eloquent
  * @mixin IdeHelperControllOption
  */
 class ControllOption extends Model

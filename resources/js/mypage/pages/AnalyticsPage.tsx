@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { Analytics } from "../../features/analytics/Analytics";
-import { ErrorBoundary } from "../../components/ErrorBoundary";
+import { AppWrapper } from "../../components/AppWrapper";
 
 const app = document.getElementById("app-analytics");
 const articles = JSON.parse(
@@ -12,8 +12,8 @@ if (app) {
   };
 
   createRoot(app).render(
-    <ErrorBoundary name="AnalyticsPage">
+    <AppWrapper boundaryName="AnalyticsPage">
       <App />
-    </ErrorBoundary>
+    </AppWrapper>
   );
 }

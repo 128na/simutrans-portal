@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { ArticleList } from "../../features/articles/components/ArticleList";
-import { ErrorBoundary } from "../../components/ErrorBoundary";
+import { AppWrapper } from "../../components/AppWrapper";
 
 const app = document.getElementById("app-article-list");
 
@@ -9,13 +9,17 @@ if (app) {
     const articles = JSON.parse(
       document.getElementById("data-articles")?.textContent || "{}"
     );
+    const isAuthenticated =
+      document.getElementById("data-is-authenticated")?.textContent === "true";
 
-    return <ArticleList articles={articles} />;
+    return (
+      <ArticleList articles={articles} isAuthenticated={isAuthenticated} />
+    );
   };
 
   createRoot(app).render(
-    <ErrorBoundary name="ArticleListPage">
+    <AppWrapper boundaryName="ArticleListPage">
       <App />
-    </ErrorBoundary>
+    </AppWrapper>
   );
 }

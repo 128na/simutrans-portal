@@ -25,6 +25,11 @@
                             <td>@include('components.ui.link', ['url' => route('mypage.redirects'), 'title' => 'リダイレクト設定'])</td>
                         </tr>
                         <tr>
+                            <th>作成マイリスト数（公開数）</th>
+                            <td>{{$summary->mylist_count ?? 0}} 件（{{$summary->public_mylist_count ?? 0}} 件）</td>
+                            <td>@include('components.ui.link', ['url' => route('mypage.mylists.index'), 'title' => 'マイリスト管理'])</td>
+                        </tr>
+                        <tr>
                             <th>投稿ファイル数</th>
                             <td>{{$summary->attachment_count ?? 0}} 件</td>
                             <td rowspan="2">@include('components.ui.link', ['url' => route('mypage.attachments'), 'title' => 'ファイル管理'])</td>

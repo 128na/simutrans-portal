@@ -53,6 +53,19 @@ class UserRepository
                 'total_attachment_size'
             )
             ->selectSub(
+                DB::table('mylists')
+                    ->where('user_id', $userId)
+                    ->selectRaw('COUNT(*)'),
+                'mylist_count'
+            )
+            ->selectSub(
+                DB::table('mylists')
+                    ->where('user_id', $userId)
+                    ->where('is_public', true)
+                    ->selectRaw('COUNT(*)'),
+                'public_mylist_count'
+            )
+            ->selectSub(
                 DB::table('conversion_counts')
                     ->where('user_id', $userId)
                     ->where('type', 2)

@@ -11,33 +11,23 @@ use App\Models\Category;
 use App\Models\User;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\ControllOptionsSeeder;
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
 use Mockery;
-use Tests\CreatesApplication;
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Foundation\Application;
 
 abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
-    /**
-     * アプリケーション生成
-     */
-    public function createApplication()
-    {
-        $app = require Application::inferBasePath() . '/bootstrap/app.php';
-        $app->make(Kernel::class)->bootstrap();
-
-        return $app;
-    }
 
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
+        \Illuminate\Support\Sleep::fake();
         $this->dirtyDatabaseCheck();
 
         $this->seed(CategorySeeder::class);
@@ -49,6 +39,17 @@ abstract class TestCase extends BaseTestCase
     {
         Mockery::close();
         parent::tearDown();
+    }
+
+    /**
+     * アプリケーション生成
+     */
+    final public function createApplication()
+    {
+        $app = require Application::inferBasePath().'/bootstrap/app.php';
+        $app->make(Kernel::class)->bootstrap();
+
+        return $app;
     }
 
     /**
@@ -66,7 +67,7 @@ abstract class TestCase extends BaseTestCase
     {
         return Attachment::factory()->create([
             'user_id' => $userId,
-            'path' => $uploadedFile->store('user/' . $userId, 'public'),
+            'path' => $uploadedFile->store('user/'.$userId, 'public'),
             'original_name' => $uploadedFile->getClientOriginalName(),
         ]);
     }

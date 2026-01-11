@@ -26,7 +26,7 @@ class ArticleCreationFlowTest extends TestCase
      * @test
      * 完全な記事作成フローが正常に動作する
      */
-    public function testCompleteArticleCreationFlow(): void
+    public function test_complete_article_creation_flow(): void
     {
         // ユーザー、カテゴリ、タグを作成
         $user = User::factory()->create();
@@ -84,7 +84,7 @@ class ArticleCreationFlowTest extends TestCase
      * @test
      * 下書き記事の作成とその後の公開
      */
-    public function testDraftArticleThenPublish(): void
+    public function test_draft_article_then_publish(): void
     {
         $user = User::factory()->create();
 
@@ -133,7 +133,7 @@ class ArticleCreationFlowTest extends TestCase
      * @test
      * 複数カテゴリとタグの関連付け
      */
-    public function testMultipleCategoriesAndTags(): void
+    public function test_multiple_categories_and_tags(): void
     {
         $user = User::factory()->create();
         $categories = Category::factory()->count(3)->create();
@@ -166,7 +166,7 @@ class ArticleCreationFlowTest extends TestCase
      * @test
      * 既存タグと新規タグの混在
      */
-    public function testMixedExistingAndNewTags(): void
+    public function test_mixed_existing_and_new_tags(): void
     {
         $user = User::factory()->create();
         $tag1 = Tag::factory()->create(['name' => 'Tag1']);
@@ -202,7 +202,7 @@ class ArticleCreationFlowTest extends TestCase
      * @test
      * 予約投稿の作成
      */
-    public function testScheduledArticleCreation(): void
+    public function test_scheduled_article_creation(): void
     {
         $user = User::factory()->create();
         $futureDate = now()->addDays(7)->toDateTimeString();

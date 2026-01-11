@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit;
 
 use Illuminate\Contracts\Console\Kernel;
@@ -32,11 +34,40 @@ abstract class TestCase extends BaseTestCase
     protected array $traitsUsedByTest;
 
     /**
+     * Clean up the testing environment before the next test case.
+     */
+    final public static function tearDownAfterClass(): void
+    {
+        static::tearDownAfterClassUsingTestCase();
+    }
+
+    /**
+     * Setup the test environment.
+     */
+    protected function setUp(): void
+    {
+        $this->setUpTheTestEnvironment();
+        \Illuminate\Support\Sleep::fake();
+    }
+
+    /**
+     * Clean up the testing environment before the next test.
+     *
+     *
+     * @throws \Mockery\Exception\InvalidCountException
+     */
+    protected function tearDown(): void
+    {
+        Mockery::close();
+        $this->tearDownTheTestEnvironment();
+    }
+
+    /**
      * Creates the application.
      *
      * @return \Illuminate\Foundation\Application
      */
-    public function createApplication()
+    final public function createApplication()
     {
         $app = require Application::inferBasePath() . '/bootstrap/app.php';
 
@@ -62,14 +93,6 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * Setup the test environment.
-     */
-    protected function setUp(): void
-    {
-        $this->setUpTheTestEnvironment();
-    }
-
-    /**
      * Refresh the application instance.
      *
      * @return void
@@ -77,26 +100,6 @@ abstract class TestCase extends BaseTestCase
     protected function refreshApplication()
     {
         $this->app = $this->createApplication();
-    }
-
-    /**
-     * Clean up the testing environment before the next test.
-     *
-     *
-     * @throws \Mockery\Exception\InvalidCountException
-     */
-    protected function tearDown(): void
-    {
-        Mockery::close();
-        $this->tearDownTheTestEnvironment();
-    }
-
-    /**
-     * Clean up the testing environment before the next test case.
-     */
-    public static function tearDownAfterClass(): void
-    {
-        static::tearDownAfterClassUsingTestCase();
     }
 
     /**

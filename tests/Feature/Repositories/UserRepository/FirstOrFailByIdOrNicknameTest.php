@@ -19,14 +19,14 @@ class FirstOrFailByIdOrNicknameTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = new UserRepository(new User());
+        $this->repository = new UserRepository(new User);
     }
 
     /**
      * @test
      * 数値IDでユーザーを取得できる
      */
-    public function testFindsUserById(): void
+    public function test_finds_user_by_id(): void
     {
         $user = User::factory()->create(['id' => 123]);
 
@@ -39,7 +39,7 @@ class FirstOrFailByIdOrNicknameTest extends TestCase
      * @test
      * ニックネームでユーザーを取得できる
      */
-    public function testFindsUserByNickname(): void
+    public function test_finds_user_by_nickname(): void
     {
         $user = User::factory()->create(['nickname' => 'test_user']);
 
@@ -52,7 +52,7 @@ class FirstOrFailByIdOrNicknameTest extends TestCase
      * @test
      * 存在しないIDでは例外が発生する
      */
-    public function testThrowsExceptionForNonExistentId(): void
+    public function test_throws_exception_for_non_existent_id(): void
     {
         $this->expectException(ModelNotFoundException::class);
 
@@ -63,7 +63,7 @@ class FirstOrFailByIdOrNicknameTest extends TestCase
      * @test
      * 存在しないニックネームでは例外が発生する
      */
-    public function testThrowsExceptionForNonExistentNickname(): void
+    public function test_throws_exception_for_non_existent_nickname(): void
     {
         $this->expectException(ModelNotFoundException::class);
 
@@ -74,7 +74,7 @@ class FirstOrFailByIdOrNicknameTest extends TestCase
      * @test
      * 数値形式のニックネームがある場合でもID優先で検索する
      */
-    public function testPrioritizesIdOverNickname(): void
+    public function test_prioritizes_id_over_nickname(): void
     {
         $userWithNumericNickname = User::factory()->create([
             'id' => 100,

@@ -27,7 +27,7 @@ class ArticleViewAndConversionTest extends TestCase
      * @test
      * ビューカウントが正しく記録される
      */
-    public function testViewCountIsRecorded(): void
+    public function test_view_count_is_recorded(): void
     {
         $user = User::factory()->create();
         $article = Article::factory()->create([
@@ -53,7 +53,7 @@ class ArticleViewAndConversionTest extends TestCase
      * @test
      * コンバージョンカウントが正しく記録される
      */
-    public function testConversionCountIsRecorded(): void
+    public function test_conversion_count_is_recorded(): void
     {
         $user = User::factory()->create();
         $article = Article::factory()->create([
@@ -78,7 +78,7 @@ class ArticleViewAndConversionTest extends TestCase
      * @test
      * 記事作者自身のアクセスはコンバージョンカウントされない
      */
-    public function testAuthorAccessDoesNotCountConversion(): void
+    public function test_author_access_does_not_count_conversion(): void
     {
         $author = User::factory()->create();
         $article = Article::factory()->create([
@@ -101,7 +101,7 @@ class ArticleViewAndConversionTest extends TestCase
      * @test
      * 他ユーザーのアクセスはコンバージョンカウントされる
      */
-    public function testOtherUserAccessCountsConversion(): void
+    public function test_other_user_access_counts_conversion(): void
     {
         $author = User::factory()->create();
         $visitor = User::factory()->create();
@@ -125,7 +125,7 @@ class ArticleViewAndConversionTest extends TestCase
      * @test
      * ダウンロードアクションでコンバージョンが記録される
      */
-    public function testDownloadActionRecordsConversion(): void
+    public function test_download_action_records_conversion(): void
     {
         $author = User::factory()->create();
         $visitor = User::factory()->create();
@@ -173,7 +173,7 @@ class ArticleViewAndConversionTest extends TestCase
      * @test
      * ファイルがない記事のダウンロード試行はエラーになる
      */
-    public function testDownloadActionAbortsWhenNoFile(): void
+    public function test_download_action_aborts_when_no_file(): void
     {
         $user = User::factory()->create();
         $article = Article::factory()->create([
@@ -197,7 +197,7 @@ class ArticleViewAndConversionTest extends TestCase
      * @test
      * 複数ユーザーからのアクセスが正しくカウントされる
      */
-    public function testMultipleUsersAccessCounting(): void
+    public function test_multiple_users_access_counting(): void
     {
         $author = User::factory()->create();
         $article = Article::factory()->create([

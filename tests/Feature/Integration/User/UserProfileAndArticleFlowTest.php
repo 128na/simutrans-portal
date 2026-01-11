@@ -26,27 +26,26 @@ class UserProfileAndArticleFlowTest extends TestCase
      * @test
      * プロフィール更新後に記事投稿が正常に動作する
      */
-    public function testProfileUpdateThenArticleCreation(): void
+    public function test_profile_update_then_article_creation(): void
     {
         $user = User::factory()->create();
+        $this->actingAs($user);
 
-        // プロフィール更新リクエストをモック
-        $updateRequest = UpdateRequest::createFrom(
-            request()->merge([
-                'user' => [
-                    'name' => 'Updated Name',
-                    'nickname' => 'updated_nick',
-                    'email' => $user->email,
-                    'profile' => [
-                        'data' => [
-                            'description' => 'Updated description',
-                            'website' => ['https://example.com'],
-                            'avatar' => null,
-                        ],
+        // プロフィール更新リクエストを作成
+        $updateRequest = $this->createUpdateRequest([
+            'user' => [
+                'name' => 'Updated Name',
+                'nickname' => 'updated_nick',
+                'email' => $user->email,
+                'profile' => [
+                    'data' => [
+                        'description' => 'Updated description',
+                        'website' => ['https://example.com'],
+                        'avatar' => null,
                     ],
                 ],
-            ])
-        );
+            ],
+        ]);
 
         // プロフィール更新
         $updateProfileAction = app(UpdateProfile::class);
@@ -85,9 +84,10 @@ class UserProfileAndArticleFlowTest extends TestCase
      * @test
      * アバター設定とプロフィール更新が正常に動作する
      */
-    public function testAvatarSettingAndProfileUpdate(): void
+    public function test_avatar_setting_and_profile_update(): void
     {
         $user = User::factory()->create();
+        $this->actingAs($user);
 
         // アバター用の添付ファイル作成
         $avatar = Attachment::factory()->create([
@@ -96,22 +96,20 @@ class UserProfileAndArticleFlowTest extends TestCase
         ]);
 
         // アバター付きプロフィール更新
-        $updateRequest = UpdateRequest::createFrom(
-            request()->merge([
-                'user' => [
-                    'name' => $user->name,
-                    'nickname' => $user->nickname,
-                    'email' => $user->email,
-                    'profile' => [
-                        'data' => [
-                            'avatar' => $avatar->id,
-                            'description' => 'Profile with avatar',
-                            'website' => [],
-                        ],
+        $updateRequest = $this->createUpdateRequest([
+            'user' => [
+                'name' => $user->name,
+                'nickname' => $user->nickname,
+                'email' => $user->email,
+                'profile' => [
+                    'data' => [
+                        'avatar' => $avatar->id,
+                        'description' => 'Profile with avatar',
+                        'website' => [],
                     ],
                 ],
-            ])
-        );
+            ],
+        ]);
 
         $updateProfileAction = app(UpdateProfile::class);
         $updatedUser = $updateProfileAction($user, $updateRequest);
@@ -133,30 +131,29 @@ class UserProfileAndArticleFlowTest extends TestCase
      * @test
      * メールアドレス変更時に認証状態がリセットされる
      */
-    public function testEmailChangeResetsVerification(): void
+    public function test_email_change_resets_verification(): void
     {
         $user = User::factory()->create([
             'email' => 'old@example.com',
             'email_verified_at' => now(),
         ]);
+        $this->actingAs($user);
 
         // メールアドレス変更
-        $updateRequest = UpdateRequest::createFrom(
-            request()->merge([
-                'user' => [
-                    'name' => $user->name,
-                    'nickname' => $user->nickname,
-                    'email' => 'new@example.com',
-                    'profile' => [
-                        'data' => [
-                            'avatar' => null,
-                            'description' => '',
-                            'website' => [],
-                        ],
+        $updateRequest = $this->createUpdateRequest([
+            'user' => [
+                'name' => $user->name,
+                'nickname' => $user->nickname,
+                'email' => 'new@example.com',
+                'profile' => [
+                    'data' => [
+                        'avatar' => null,
+                        'description' => '',
+                        'website' => [],
                     ],
                 ],
-            ])
-        );
+            ],
+        ]);
 
         $updateProfileAction = app(UpdateProfile::class);
         $updatedUser = $updateProfileAction($user, $updateRequest);
@@ -179,33 +176,32 @@ class UserProfileAndArticleFlowTest extends TestCase
      * @test
      * ウェブサイトURLのフィルタリングが正常に動作する
      */
-    public function testWebsiteUrlFiltering(): void
+    public function test_website_url_filtering(): void
     {
         $user = User::factory()->create();
+        $this->actingAs($user);
 
         // 空文字やnullを含むウェブサイトリスト
-        $updateRequest = UpdateRequest::createFrom(
-            request()->merge([
-                'user' => [
-                    'name' => $user->name,
-                    'nickname' => $user->nickname,
-                    'email' => $user->email,
-                    'profile' => [
-                        'data' => [
-                            'avatar' => null,
-                            'description' => '',
-                            'website' => [
-                                'https://example.com',
-                                '', // 空文字
-                                'https://github.com/user',
-                                null, // null
-                                'https://twitter.com/user',
-                            ],
+        $updateRequest = $this->createUpdateRequest([
+            'user' => [
+                'name' => $user->name,
+                'nickname' => $user->nickname,
+                'email' => $user->email,
+                'profile' => [
+                    'data' => [
+                        'avatar' => null,
+                        'description' => '',
+                        'website' => [
+                            'https://example.com',
+                            '', // 空文字
+                            'https://github.com/user',
+                            null, // null
+                            'https://twitter.com/user',
                         ],
                     ],
                 ],
-            ])
-        );
+            ],
+        ]);
 
         $updateProfileAction = app(UpdateProfile::class);
         $updatedUser = $updateProfileAction($user, $updateRequest);
@@ -224,27 +220,26 @@ class UserProfileAndArticleFlowTest extends TestCase
      * @test
      * 複数記事投稿後もプロフィール情報が保持される
      */
-    public function testMultipleArticlesWithProfileIntegrity(): void
+    public function test_multiple_articles_with_profile_integrity(): void
     {
         $user = User::factory()->create();
+        $this->actingAs($user);
 
         // プロフィール設定
-        $updateRequest = UpdateRequest::createFrom(
-            request()->merge([
-                'user' => [
-                    'name' => 'Article Author',
-                    'nickname' => 'author123',
-                    'email' => $user->email,
-                    'profile' => [
-                        'data' => [
-                            'avatar' => null,
-                            'description' => 'Prolific writer',
-                            'website' => ['https://blog.example.com'],
-                        ],
+        $updateRequest = $this->createUpdateRequest([
+            'user' => [
+                'name' => 'Article Author',
+                'nickname' => 'author123',
+                'email' => $user->email,
+                'profile' => [
+                    'data' => [
+                        'avatar' => null,
+                        'description' => 'Prolific writer',
+                        'website' => ['https://blog.example.com'],
                     ],
                 ],
-            ])
-        );
+            ],
+        ]);
 
         $updateProfileAction = app(UpdateProfile::class);
         $updatedUser = $updateProfileAction($user, $updateRequest);
@@ -277,5 +272,13 @@ class UserProfileAndArticleFlowTest extends TestCase
 
         // 全記事がユーザーに紐づいていることを確認
         $this->assertEquals(3, $updatedUser->articles()->count());
+    }
+
+    protected function createUpdateRequest(array $data): UpdateRequest
+    {
+        $request = UpdateRequest::create('/', 'POST', $data);
+        $request->setUserResolver(fn() => auth()->user());
+
+        return $request;
     }
 }

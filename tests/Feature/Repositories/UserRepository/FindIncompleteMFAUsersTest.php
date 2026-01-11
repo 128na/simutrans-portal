@@ -18,14 +18,14 @@ class FindIncompleteMFAUsersTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = new UserRepository(new User());
+        $this->repository = new UserRepository(new User);
     }
 
     /**
      * @test
      * MFA設定未完了のユーザー (15分以上経過) を取得する
      */
-    public function testFindsUsersWithIncompleteMFAAfter15Minutes(): void
+    public function test_finds_users_with_incomplete_mfa_after15_minutes(): void
     {
         // 15分以上前に更新された未完了MFAユーザー
         $incompleteUser = User::factory()->create([
@@ -44,7 +44,7 @@ class FindIncompleteMFAUsersTest extends TestCase
      * @test
      * MFA設定完了済みユーザーは取得しない
      */
-    public function testDoesNotFindUsersWithCompletedMFA(): void
+    public function test_does_not_find_users_with_completed_mfa(): void
     {
         User::factory()->create([
             'two_factor_secret' => encrypt('test-secret'),
@@ -61,7 +61,7 @@ class FindIncompleteMFAUsersTest extends TestCase
      * @test
      * MFA設定がないユーザーは取得しない
      */
-    public function testDoesNotFindUsersWithoutMFA(): void
+    public function test_does_not_find_users_without_mfa(): void
     {
         User::factory()->create([
             'two_factor_secret' => null,
@@ -78,7 +78,7 @@ class FindIncompleteMFAUsersTest extends TestCase
      * @test
      * 15分以内に更新されたユーザーは取得しない
      */
-    public function testDoesNotFindRecentlyUpdatedUsers(): void
+    public function test_does_not_find_recently_updated_users(): void
     {
         User::factory()->create([
             'two_factor_secret' => encrypt('test-secret'),
@@ -95,7 +95,7 @@ class FindIncompleteMFAUsersTest extends TestCase
      * @test
      * 複数の条件に合致するユーザーを取得する
      */
-    public function testFindsMultipleIncompleteUsers(): void
+    public function test_finds_multiple_incomplete_users(): void
     {
         $user1 = User::factory()->create([
             'two_factor_secret' => encrypt('secret1'),

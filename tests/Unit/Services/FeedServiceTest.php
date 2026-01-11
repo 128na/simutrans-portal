@@ -15,6 +15,7 @@ use Tests\Unit\TestCase;
 class FeedServiceTest extends TestCase
 {
     private FeedService $service;
+
     private ArticleRepository $articleRepository;
 
     protected function setUp(): void
@@ -34,10 +35,10 @@ class FeedServiceTest extends TestCase
      * @test
      * pakAll: 全 PAK 記事取得
      */
-    public function testPakAllReturnsCollection(): void
+    public function test_pak_all_returns_collection(): void
     {
-        $article1 = (new Article())->forceFill(['id' => 1, 'title' => 'PAK 1']);
-        $article2 = (new Article())->forceFill(['id' => 2, 'title' => 'PAK 2']);
+        $article1 = (new Article)->forceFill(['id' => 1, 'title' => 'PAK 1']);
+        $article2 = (new Article)->forceFill(['id' => 2, 'title' => 'PAK 2']);
         $articles = collect([$article1, $article2]);
 
         $mockPaginator = Mockery::mock(LengthAwarePaginator::class)
@@ -61,7 +62,7 @@ class FeedServiceTest extends TestCase
      * @test
      * pakAll: 空コレクション対応
      */
-    public function testPakAllEmptyCollection(): void
+    public function test_pak_all_empty_collection(): void
     {
         $articles = collect([]);
 
@@ -84,10 +85,10 @@ class FeedServiceTest extends TestCase
      * @test
      * latestPak: PAK タイプ別取得
      */
-    public function testLatestPakReturnsFilteredArticles(): void
+    public function test_latest_pak_returns_filtered_articles(): void
     {
         $pak = 'addon-pack';
-        $article = (new Article())->forceFill(['id' => 1, 'title' => 'Latest Addon Pack']);
+        $article = (new Article)->forceFill(['id' => 1, 'title' => 'Latest Addon Pack']);
         $articles = collect([$article]);
 
         $mockPaginator = Mockery::mock(LengthAwarePaginator::class)
@@ -112,12 +113,12 @@ class FeedServiceTest extends TestCase
      * @test
      * latestPak: 複数 PAK タイプ対応
      */
-    public function testLatestPakDifferentTypes(): void
+    public function test_latest_pak_different_types(): void
     {
         $types = ['addon-pack', 'object-pack', 'face-graphic'];
 
         foreach ($types as $pak) {
-            $article = (new Article())->forceFill(['id' => 1, 'title' => "Latest $pak"]);
+            $article = (new Article)->forceFill(['id' => 1, 'title' => "Latest $pak"]);
             $articles = collect([$article]);
 
             $mockPaginator = Mockery::mock(LengthAwarePaginator::class)
@@ -140,11 +141,11 @@ class FeedServiceTest extends TestCase
      * @test
      * page: ページ記事取得
      */
-    public function testPageReturnsPageArticles(): void
+    public function test_page_returns_page_articles(): void
     {
-        $article1 = (new Article())->forceFill(['id' => 1, 'title' => 'Page 1']);
-        $article2 = (new Article())->forceFill(['id' => 2, 'title' => 'Page 2']);
-        $article3 = (new Article())->forceFill(['id' => 3, 'title' => 'Page 3']);
+        $article1 = (new Article)->forceFill(['id' => 1, 'title' => 'Page 1']);
+        $article2 = (new Article)->forceFill(['id' => 2, 'title' => 'Page 2']);
+        $article3 = (new Article)->forceFill(['id' => 3, 'title' => 'Page 3']);
         $articles = collect([$article1, $article2, $article3]);
 
         $mockPaginator = Mockery::mock(LengthAwarePaginator::class)
@@ -167,7 +168,7 @@ class FeedServiceTest extends TestCase
      * @test
      * page: 空ページ対応
      */
-    public function testPageEmptyWhenNoPages(): void
+    public function test_page_empty_when_no_pages(): void
     {
         $articles = collect([]);
 
@@ -190,10 +191,10 @@ class FeedServiceTest extends TestCase
      * @test
      * announce: 告知記事取得
      */
-    public function testAnnounceReturnsAnnouncements(): void
+    public function test_announce_returns_announcements(): void
     {
-        $article1 = (new Article())->forceFill(['id' => 1, 'title' => 'Announcement 1']);
-        $article2 = (new Article())->forceFill(['id' => 2, 'title' => 'Announcement 2']);
+        $article1 = (new Article)->forceFill(['id' => 1, 'title' => 'Announcement 1']);
+        $article2 = (new Article)->forceFill(['id' => 2, 'title' => 'Announcement 2']);
         $articles = collect([$article1, $article2]);
 
         $mockPaginator = Mockery::mock(LengthAwarePaginator::class)
@@ -217,7 +218,7 @@ class FeedServiceTest extends TestCase
      * @test
      * announce: 告知なし対応
      */
-    public function testAnnounceEmptyWhenNone(): void
+    public function test_announce_empty_when_none(): void
     {
         $articles = collect([]);
 

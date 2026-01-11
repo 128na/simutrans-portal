@@ -25,7 +25,7 @@ class UserRegistrationFlowTest extends TestCase
      * @test
      * 完全なユーザー招待・登録フローが正常に動作する
      */
-    public function testCompleteUserRegistrationFlow(): void
+    public function test_complete_user_registration_flow(): void
     {
         Notification::fake();
 
@@ -70,7 +70,7 @@ class UserRegistrationFlowTest extends TestCase
      * @test
      * 複数ユーザーの連続登録が正常に動作する
      */
-    public function testMultipleUserRegistrations(): void
+    public function test_multiple_user_registrations(): void
     {
         Notification::fake();
 
@@ -105,7 +105,7 @@ class UserRegistrationFlowTest extends TestCase
      * @test
      * ユーザー登録時にプロフィールが自動作成される
      */
-    public function testUserProfileAutoCreation(): void
+    public function test_user_profile_auto_creation(): void
     {
         $admin = User::factory()->create();
 
@@ -127,7 +127,7 @@ class UserRegistrationFlowTest extends TestCase
      * @test
      * 招待者がAdminでなくてもユーザー登録できる
      */
-    public function testNonAdminCanInviteUser(): void
+    public function test_non_admin_can_invite_user(): void
     {
         Notification::fake();
 
@@ -155,7 +155,7 @@ class UserRegistrationFlowTest extends TestCase
      * @test
      * パスワードが正しくハッシュ化される
      */
-    public function testPasswordIsHashedCorrectly(): void
+    public function test_password_is_hashed_correctly(): void
     {
         $admin = User::factory()->create();
 
